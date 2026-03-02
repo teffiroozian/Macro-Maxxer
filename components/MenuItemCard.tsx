@@ -142,7 +142,7 @@ export default function MenuItemCard({
   );
   const [selectedCommonChangeIds, setSelectedCommonChangeIds] = useState<string[]>([]);
   const [isAddFeedbackVisible, setIsAddFeedbackVisible] = useState(false);
-  const { addItem } = useCart();
+  const { items, addItem, updateQuantity } = useCart();
   const selectedVariant = variants?.find((variant) => variant.id === selectedVariantId);
   const baseNutrition = selectedVariant?.nutrition ?? item.nutrition;
   const applicableCommonChanges = useMemo(
@@ -323,6 +323,29 @@ export default function MenuItemCard({
     return variants[0];
   }, [defaultVariantId, selectedVariantId, variants]);
 
+  const matchingCartItem = useMemo(() => {
+    if (isCartMode) return undefined;
+
+    const customizationSignature = (customizations ?? []).join("|");
+
+    return items.find((cartItem) => {
+      if (cartItem.restaurantId !== restaurantId) return false;
+      if (cartItem.itemId !== (item.id ?? item.name)) return false;
+      if ((cartItem.variantId ?? "") !== (selectedVariantForCart?.id ?? "")) return false;
+      if ((cartItem.optionsLabel ?? "") !== (optionsLabel ?? "")) return false;
+      return (cartItem.customizations ?? []).join("|") === customizationSignature;
+    });
+  }, [
+    customizations,
+    isCartMode,
+    item.id,
+    item.name,
+    items,
+    optionsLabel,
+    restaurantId,
+    selectedVariantForCart?.id,
+  ]);
+
   const emitCartConfiguration = (
     nextVariantId: string,
     nextAddons: Partial<Record<AddonRef, AddonOption>>
@@ -366,23 +389,27 @@ export default function MenuItemCard({
 
     const baseForCart = selectedVariantForCart?.nutrition ?? item.nutrition;
 
-    addItem({
-      id: crypto.randomUUID(),
-      restaurantId,
-      itemId: item.id ?? item.name,
-      name: item.name,
-      variantId: selectedVariantForCart?.id,
-      variantLabel: selectedVariantForCart?.label,
-      optionsLabel,
-      customizations,
-      quantity: 1,
-      macrosPerItem: {
-        calories: baseForCart.calories + addonTotals.calories,
-        protein: baseForCart.protein + addonTotals.protein,
-        carbs: baseForCart.carbs + addonTotals.carbs,
-        fat: baseForCart.totalFat + addonTotals.fat,
-      },
-    });
+    if (matchingCartItem) {
+      updateQuantity(matchingCartItem.id, matchingCartItem.quantity + 1);
+    } else {
+      addItem({
+        id: crypto.randomUUID(),
+        restaurantId,
+        itemId: item.id ?? item.name,
+        name: item.name,
+        variantId: selectedVariantForCart?.id,
+        variantLabel: selectedVariantForCart?.label,
+        optionsLabel,
+        customizations,
+        quantity: 1,
+        macrosPerItem: {
+          calories: baseForCart.calories + addonTotals.calories,
+          protein: baseForCart.protein + addonTotals.protein,
+          carbs: baseForCart.carbs + addonTotals.carbs,
+          fat: baseForCart.totalFat + addonTotals.fat,
+        },
+      });
+    }
 
     setIsAddFeedbackVisible(true);
   };
@@ -505,26 +532,40 @@ export default function MenuItemCard({
             </div>
 
             <div className={styles.actionsWrap}>
-              {isCartMode ? (
+              {isCartMode || matchingCartItem ? (
                 <div className={styles.qtyStepper}>
                   <button
                     type="button"
                     className={styles.qtyStepButton}
                     onClick={(event) => {
                       event.stopPropagation();
-                      onCartDecrement?.();
+
+                      if (isCartMode) {
+                        onCartDecrement?.();
+                        return;
+                      }
+
+                      if (!matchingCartItem) return;
+                      updateQuantity(matchingCartItem.id, matchingCartItem.quantity - 1);
                     }}
                     aria-label={`Decrease quantity of ${item.name}`}
                   >
                     -
                   </button>
-                  <span className={styles.qtyValue}>{cartQuantity}</span>
+                  <span className={styles.qtyValue}>{isCartMode ? cartQuantity : matchingCartItem.quantity}</span>
                   <button
                     type="button"
                     className={styles.qtyStepButton}
                     onClick={(event) => {
                       event.stopPropagation();
-                      onCartIncrement?.();
+
+                      if (isCartMode) {
+                        onCartIncrement?.();
+                        return;
+                      }
+
+                      if (!matchingCartItem) return;
+                      updateQuantity(matchingCartItem.id, matchingCartItem.quantity + 1);
                     }}
                     aria-label={`Increase quantity of ${item.name}`}
                   >
