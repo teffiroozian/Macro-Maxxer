@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import ingredientsCatalog from "@/data/ingredientsCatalog.json";
 import styles from "./ItemDetails.module.css";
 import type {
@@ -53,8 +53,7 @@ function resolveIngredients(ingredientIds?: string[]) {
     .filter((ingredient): ingredient is { id: string; label: string; icon: string } => ingredient !== null);
 }
 
-function scrollRow(rowId: string, direction: "left" | "right") {
-  const row = document.getElementById(rowId);
+function scrollRow(row: HTMLUListElement | null | undefined, direction: "left" | "right") {
   if (!row) return;
   row.scrollBy({
     left: direction === "left" ? -rowScrollPx : rowScrollPx,
@@ -108,6 +107,7 @@ export default function ItemDetailsPanel({
   const n = nutrition;
   const addonRefs = item.addonRefs ?? [];
   const [sectionOpenState, setSectionOpenState] = useState<Record<string, boolean>>({});
+  const addonRowRefs = useRef<Record<string, HTMLUListElement | null>>({});
 
   const availableAddonSections = addonRefs
     .map((ref) => {
@@ -171,7 +171,7 @@ export default function ItemDetailsPanel({
                             aria-label={`Scroll ${section.title} left`}
                             onClick={(event) => {
                               event.stopPropagation();
-                              scrollRow(`addon-row-${section.ref}`, "left");
+                              scrollRow(addonRowRefs.current[`addon-row-${section.ref}`], "left");
                             }}
                           >
                             ⬅
@@ -182,7 +182,7 @@ export default function ItemDetailsPanel({
                             aria-label={`Scroll ${section.title} right`}
                             onClick={(event) => {
                               event.stopPropagation();
-                              scrollRow(`addon-row-${section.ref}`, "right");
+                              scrollRow(addonRowRefs.current[`addon-row-${section.ref}`], "right");
                             }}
                           >
                             ➡
@@ -195,7 +195,12 @@ export default function ItemDetailsPanel({
                     </div>
                   </div>
                   {isSectionOpen ? (
-                    <ul id={`addon-row-${section.ref}`} className={styles.addonList}>
+                    <ul
+                      ref={(element) => {
+                        addonRowRefs.current[`addon-row-${section.ref}`] = element;
+                      }}
+                      className={styles.addonList}
+                    >
                       {section.addons.map((addon) => (
                         <li key={`${section.ref}-${addon.name}`} className={styles.addonItem}>
                           <button
@@ -288,7 +293,7 @@ export default function ItemDetailsPanel({
                               aria-label="Scroll Common Changes left"
                               onClick={(event) => {
                                 event.stopPropagation();
-                                scrollRow("common-changes-row", "left");
+                                scrollRow(addonRowRefs.current["common-changes-row"], "left");
                               }}
                             >
                               ⬅
@@ -299,7 +304,7 @@ export default function ItemDetailsPanel({
                               aria-label="Scroll Common Changes right"
                               onClick={(event) => {
                                 event.stopPropagation();
-                                scrollRow("common-changes-row", "right");
+                                scrollRow(addonRowRefs.current["common-changes-row"], "right");
                               }}
                             >
                               ➡
@@ -312,7 +317,12 @@ export default function ItemDetailsPanel({
                       </div>
                     </div>
                     {isCommonOpen ? (
-                      <ul id="common-changes-row" className={styles.addonList}>
+                      <ul
+                        ref={(element) => {
+                          addonRowRefs.current["common-changes-row"] = element;
+                        }}
+                        className={styles.addonList}
+                      >
                         {commonChanges.map((change) => {
                           const isActive = selectedCommonChangeIds?.includes(change.id) ?? false;
                           const calorieDeltaLabel = `${change.delta.calories >= 0 ? "+" : ""}${change.delta.calories}cal`;
