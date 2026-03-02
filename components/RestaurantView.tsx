@@ -58,6 +58,15 @@ export default function RestaurantView({
   commonChanges?: CommonChange[];
   autoScrollOnViewChange?: boolean;
 }) {
+  const getStickyOffset = () => {
+    const stickyBar = document.querySelector('[data-sticky-nav="true"]');
+    if (!(stickyBar instanceof HTMLElement)) {
+      return 0;
+    }
+
+    return Math.max(0, stickyBar.getBoundingClientRect().bottom);
+  };
+
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
@@ -214,7 +223,11 @@ export default function RestaurantView({
     const section = document.getElementById(categorySectionId(categoryId));
     if (!section) return;
 
-    section.scrollIntoView({ behavior: "smooth", block: "start" });
+    const stickyOffset = getStickyOffset();
+    const sectionTop = window.scrollY + section.getBoundingClientRect().top;
+    const nextScrollTop = Math.max(0, sectionTop - stickyOffset);
+
+    window.scrollTo({ top: nextScrollTop, behavior: "smooth" });
   };
 
 
@@ -242,7 +255,7 @@ export default function RestaurantView({
     }
 
     const updateActiveCategoryOnScroll = () => {
-      const activationOffset = 160;
+      const activationOffset = getStickyOffset() + 1;
       const reachedSections = sectionElements.filter(
         (section) => section.element.getBoundingClientRect().top <= activationOffset
       );
