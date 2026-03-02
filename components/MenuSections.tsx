@@ -261,7 +261,7 @@ export default function MenuSections({
         <section
           key={section}
           id={categorySectionId(section)}
-          style={{ scrollMarginTop: 200 }}
+          style={{ scrollMarginTop: 0 }}
         >
           <h2 style={{ fontSize: 28, fontWeight: 800 }}>
             {categoryHeading(section)}

@@ -112,7 +112,7 @@ export default function StickyRestaurantBar({
   };
 
   return (
-    <div className="fixed left-0 right-0 top-0 z-50">
+    <div className="fixed left-0 right-0 top-0 z-50" data-sticky-nav="true">
       <div className="relative z-[110] w-full border-b border-slate-200/70 bg-white/95 backdrop-blur">
         <div className="mx-auto flex w-full max-w-5xl items-center gap-3 px-4 py-2 sm:px-6">
           <Link
