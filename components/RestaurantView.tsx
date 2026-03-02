@@ -336,10 +336,11 @@ export default function RestaurantView({
         }}
       >
         <aside className="sticky top-[90px] pt-8">
-          <div className="max-h-[calc(100vh-122px)] overflow-y-auto pr-2">
-            <h3 className="mb-5 text-2xl font-bold text-slate-900">
-              {viewMode === "ingredients" ? "Ingredients" : "Categories"}
-            </h3>
+          <h3 className="mb-5 text-2xl font-bold text-slate-900">
+            {viewMode === "ingredients" ? "Ingredients" : "Categories"}
+          </h3>
+
+          <div className="max-h-[calc(100vh-185px)] overflow-y-auto pr-2">
 
             <nav
               aria-label={
