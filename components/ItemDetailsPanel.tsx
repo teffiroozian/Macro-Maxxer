@@ -11,6 +11,7 @@ import type {
   Nutrition,
   RestaurantAddons,
 } from "@/types/menu";
+import type { AddonCountMap } from "@/lib/addonSelections";
 
 function format(n?: number, suffix = "") {
   return n === undefined || n === null ? "—" : `${n}${suffix}`;
@@ -80,8 +81,8 @@ export default function ItemDetailsPanel({
   selectedVariantId,
   onSelectVariant,
   addons,
-  selectedAddons,
-  onSelectAddon,
+  selectedAddonCounts,
+  onSelectAddonCountChange,
   commonChanges,
   selectedCommonChangeIds,
   onToggleCommonChange,
@@ -95,8 +96,8 @@ export default function ItemDetailsPanel({
   selectedVariantId?: string;
   onSelectVariant?: (id: string) => void;
   addons?: RestaurantAddons;
-  selectedAddons?: Partial<Record<AddonRef, AddonOption>>;
-  onSelectAddon?: (ref: AddonRef, addon: AddonOption) => void;
+  selectedAddonCounts?: AddonCountMap;
+  onSelectAddonCountChange?: (ref: AddonRef, addon: AddonOption, quantity: number) => void;
   commonChanges?: CommonChange[];
   selectedCommonChangeIds?: string[];
   onToggleCommonChange?: (id: string) => void;
@@ -134,8 +135,16 @@ export default function ItemDetailsPanel({
             {availableAddonSections.map((section) => {
               const sectionStateKey = `addon-${section.ref}`;
               const isSectionOpen = sectionOpenState[sectionStateKey] ?? true;
-              const selectedAddon = selectedAddons?.[section.ref] ?? section.addons[0];
-              const summaryDetail = formatSummaryDetail(selectedAddon?.name ?? "None", selectedAddon?.calories ?? 0);
+              const selectedCounts = selectedAddonCounts?.[section.ref] ?? {};
+              const selectedAddons = section.addons.filter((addon) => (selectedCounts[addon.name] ?? 0) > 0);
+              const totalSelected = selectedAddons.reduce((sum, addon) => sum + (selectedCounts[addon.name] ?? 0), 0);
+              const totalCalories = selectedAddons.reduce(
+                (sum, addon) => sum + (addon.calories * (selectedCounts[addon.name] ?? 0)),
+                0
+              );
+              const summaryDetail = totalSelected === 0
+                ? formatSummaryDetail("None", 0)
+                : `• ${totalSelected} selected (+${totalCalories}cal)`;
               return (
                 <div key={section.ref} className={styles.addonGroup}>
                   <div
@@ -206,11 +215,18 @@ export default function ItemDetailsPanel({
                           <button
                             type="button"
                             className={`${styles.addonTileButton} ${
-                              (selectedAddons?.[section.ref]?.name ?? "None") === addon.name
+                              (selectedAddonCounts?.[section.ref]?.[addon.name] ?? 0) > 0
                                 ? styles.addonTileButtonActive
                                 : ""
                             }`}
-                            onClick={() => onSelectAddon?.(section.ref, addon)}
+                            onClick={() => {
+                              const currentQuantity = selectedAddonCounts?.[section.ref]?.[addon.name] ?? 0;
+                              if (addon.name === "None") {
+                                onSelectAddonCountChange?.(section.ref, addon, 0);
+                                return;
+                              }
+                              onSelectAddonCountChange?.(section.ref, addon, currentQuantity + 1);
+                            }}
                           >
                             {addon.image === "none" ? (
                               <div className={`${styles.addonImage} ${styles.addonImageNone}`}>✕</div>
@@ -226,6 +242,41 @@ export default function ItemDetailsPanel({
                               <div className={styles.addonName}>{addon.name}</div>
                               <div className={styles.addonCalories}>+{addon.calories} Cal</div>
                             </div>
+                            {addon.name !== "None" && (selectedAddonCounts?.[section.ref]?.[addon.name] ?? 0) > 0 ? (
+                              <div
+                                className={styles.addonQuantityControl}
+                                onClick={(event) => event.stopPropagation()}
+                                onKeyDown={(event) => event.stopPropagation()}
+                              >
+                                <button
+                                  type="button"
+                                  className={styles.addonQuantityButton}
+                                  onClick={(event) => {
+                                    event.stopPropagation();
+                                    const currentQuantity = selectedAddonCounts?.[section.ref]?.[addon.name] ?? 0;
+                                    onSelectAddonCountChange?.(section.ref, addon, currentQuantity - 1);
+                                  }}
+                                  aria-label={`Decrease ${addon.name}`}
+                                >
+                                  -
+                                </button>
+                                <span className={styles.addonQuantityValue}>
+                                  {selectedAddonCounts?.[section.ref]?.[addon.name] ?? 0}
+                                </span>
+                                <button
+                                  type="button"
+                                  className={styles.addonQuantityButton}
+                                  onClick={(event) => {
+                                    event.stopPropagation();
+                                    const currentQuantity = selectedAddonCounts?.[section.ref]?.[addon.name] ?? 0;
+                                    onSelectAddonCountChange?.(section.ref, addon, currentQuantity + 1);
+                                  }}
+                                  aria-label={`Increase ${addon.name}`}
+                                >
+                                  +
+                                </button>
+                              </div>
+                            ) : null}
                           </button>
                         </li>
                       ))}

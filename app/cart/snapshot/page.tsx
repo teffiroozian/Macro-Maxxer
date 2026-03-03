@@ -4,9 +4,10 @@ import Link from "next/link";
 import { useMemo } from "react";
 import restaurants from "@/app/data/index.json";
 import { useCart } from "@/stores/cartStore";
+import { parseOptionsLabel } from "@/lib/addonSelections";
 
 function summarizeItem(item: { variantLabel?: string; optionsLabel?: string; customizations?: string[] }) {
-  const addonNames = new Set((item.optionsLabel ?? "").split("+").map((segment) => segment.trim()).filter(Boolean));
+  const addonNames = new Set(parseOptionsLabel(item.optionsLabel).map((selection) => selection.name));
   const dedupedCustomizations = (item.customizations ?? []).filter((label) => {
     const normalized = label.replace(/^\+\s*/, "").trim();
     return !addonNames.has(normalized);

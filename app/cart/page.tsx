@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useRef, useState } from "react";
 import type { CartMacros } from "@/stores/cartStore";
 import type { AddonOption, MenuItem, Nutrition, RestaurantAddons } from "@/types/menu";
+import { parseOptionsLabel } from "@/lib/addonSelections";
 import MenuItemCard from "@/components/MenuItemCard";
 import StickyMacroTotalsBar from "@/components/StickyMacroTotalsBar";
 import restaurants from "@/app/data/index.json";
@@ -58,7 +59,7 @@ type NutritionTotals = {
 };
 
 function summarizeItem(item: { variantLabel?: string; optionsLabel?: string; customizations?: string[] }) {
-  const addonNames = new Set((item.optionsLabel ?? "").split("+").map((segment) => segment.trim()).filter(Boolean));
+  const addonNames = new Set(parseOptionsLabel(item.optionsLabel).map((selection) => selection.name));
   const dedupedCustomizations = (item.customizations ?? []).filter((label) => {
     const normalized = label.replace(/^\+\s*/, "").trim();
     return !addonNames.has(normalized);
@@ -85,20 +86,22 @@ function getSelectedAddonNutrition(
   sourceItem: MenuItem | undefined,
   restaurantAddons: RestaurantAddons | undefined
 ) {
-  const selectedAddonNames = new Set(
-    (optionsLabel ?? "")
-      .split("+")
-      .map((segment) => segment.trim())
-      .filter(Boolean)
-  );
+  const selectedAddonQuantities = new Map<string, number>();
+  parseOptionsLabel(optionsLabel).forEach(({ name, quantity }) => {
+    selectedAddonQuantities.set(name, (selectedAddonQuantities.get(name) ?? 0) + quantity);
+  });
 
-  if (selectedAddonNames.size === 0 || !sourceItem || !restaurantAddons) {
-    return [] as AddonOption[];
+  if (selectedAddonQuantities.size === 0 || !sourceItem || !restaurantAddons) {
+    return [] as Array<AddonOption & { quantity: number }>;
   }
 
   return (sourceItem.addonRefs ?? [])
     .flatMap((ref) => restaurantAddons[ref] ?? [])
-    .filter((addon) => selectedAddonNames.has(addon.name));
+    .flatMap((addon) => {
+      const quantity = selectedAddonQuantities.get(addon.name) ?? 0;
+      if (!quantity) return [];
+      return [{ ...addon, quantity }];
+    });
 }
 
 function buildCartNutritionTotals(items: ReturnType<typeof useCart>["items"]): NutritionTotals {
@@ -112,12 +115,12 @@ function buildCartNutritionTotals(items: ReturnType<typeof useCart>["items"]): N
 
       const addonNutrition = selectedAddons.reduce(
         (addonSum, addon) => ({
-          satFat: addonSum.satFat + (addon.satFat ?? 0),
-          transFat: addonSum.transFat + (addon.transFat ?? 0),
-          cholesterol: addonSum.cholesterol + (addon.cholesterol ?? 0),
-          sodium: addonSum.sodium + (addon.sodium ?? 0),
-          fiber: addonSum.fiber + (addon.fiber ?? 0),
-          sugars: addonSum.sugars + (addon.sugars ?? 0),
+          satFat: addonSum.satFat + (addon.satFat ?? 0) * addon.quantity,
+          transFat: addonSum.transFat + (addon.transFat ?? 0) * addon.quantity,
+          cholesterol: addonSum.cholesterol + (addon.cholesterol ?? 0) * addon.quantity,
+          sodium: addonSum.sodium + (addon.sodium ?? 0) * addon.quantity,
+          fiber: addonSum.fiber + (addon.fiber ?? 0) * addon.quantity,
+          sugars: addonSum.sugars + (addon.sugars ?? 0) * addon.quantity,
         }),
         { satFat: 0, transFat: 0, cholesterol: 0, sodium: 0, fiber: 0, sugars: 0 }
       );

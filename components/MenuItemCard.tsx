@@ -1,7 +1,8 @@
 "use client";
 
 import { useEffect, useId, useMemo, useState } from "react";
-import type { AddonOption, AddonRef, CommonChange, MacroDelta, MenuItem, RestaurantAddons } from "@/types/menu";
+import type { CommonChange, MacroDelta, MenuItem, RestaurantAddons } from "@/types/menu";
+import { getSelectedAddonCountsFromLabel, serializeOptionsLabel, type AddonCountMap } from "@/lib/addonSelections";
 import styles from "./MenuItemCard.module.css";
 import { useCart } from "@/stores/cartStore";
 import ItemDetailsPanel from "./ItemDetailsPanel";
@@ -48,15 +49,6 @@ function getApplicableCommonChanges(item: MenuItem, commonChanges?: CommonChange
   });
 }
 
-const emptyAddon: AddonOption = {
-  name: "None",
-  calories: 0,
-  protein: 0,
-  carbs: 0,
-  fat: 0,
-  image: "none",
-};
-
 type CartConfigurationPayload = {
   variantId?: string;
   variantLabel?: string;
@@ -69,23 +61,6 @@ type CartConfigurationPayload = {
     fat: number;
   };
 };
-
-function getSelectedAddonsFromLabel(item: MenuItem, addons: RestaurantAddons | undefined, optionsLabel?: string) {
-  if (!optionsLabel) return {} as Partial<Record<AddonRef, AddonOption>>;
-
-  const selectedNames = optionsLabel.split("+").map((segment) => segment.trim()).filter(Boolean);
-  const selectedMap: Partial<Record<AddonRef, AddonOption>> = {};
-
-  for (const ref of item.addonRefs ?? []) {
-    const options = addons?.[ref] ?? [];
-    const matched = options.find((addon) => selectedNames.includes(addon.name));
-    if (matched) {
-      selectedMap[ref] = matched;
-    }
-  }
-
-  return selectedMap;
-}
 
 export default function MenuItemCard({
   restaurantId,
@@ -137,8 +112,8 @@ export default function MenuItemCard({
     return flaggedDefault?.id ?? variants[0]?.id ?? "";
   }, [item.defaultVariantId, variants]);
   const [selectedVariantId, setSelectedVariantId] = useState(initialCartVariantId ?? defaultVariantId);
-  const [selectedAddons, setSelectedAddons] = useState<Partial<Record<AddonRef, AddonOption>>>(() =>
-    mode === "cart" ? getSelectedAddonsFromLabel(item, addons, initialCartOptionsLabel) : {}
+  const [selectedAddonCounts, setSelectedAddonCounts] = useState<AddonCountMap>(() =>
+    mode === "cart" ? getSelectedAddonCountsFromLabel(item, addons, initialCartOptionsLabel) : {}
   );
   const [selectedCommonChangeIds, setSelectedCommonChangeIds] = useState<string[]>([]);
   const [isAddFeedbackVisible, setIsAddFeedbackVisible] = useState(false);
@@ -150,34 +125,46 @@ export default function MenuItemCard({
     [item, commonChanges]
   );
 
+  const selectedAddonOptions = useMemo(() => {
+    return (item.addonRefs ?? []).flatMap((ref) => {
+      const addonCountsByName = selectedAddonCounts[ref] ?? {};
+      const options = addons?.[ref] ?? [];
+      return options.flatMap((addon) => {
+        const quantity = addonCountsByName[addon.name] ?? 0;
+        if (!quantity) return [];
+        return [{ addon, quantity, ref }] as const;
+      });
+    });
+  }, [addons, item.addonRefs, selectedAddonCounts]);
+
   const addonTotals = useMemo(
     () =>
-      Object.values(selectedAddons).reduce(
-        (sum, addon) => ({
-          calories: sum.calories + (addon?.calories ?? 0),
-          protein: sum.protein + (addon?.protein ?? 0),
-          carbs: sum.carbs + (addon?.carbs ?? 0),
-          fat: sum.fat + (addon?.fat ?? 0),
+      selectedAddonOptions.reduce(
+        (sum, { addon, quantity }) => ({
+          calories: sum.calories + (addon.calories * quantity),
+          protein: sum.protein + (addon.protein * quantity),
+          carbs: sum.carbs + (addon.carbs * quantity),
+          fat: sum.fat + (addon.fat * quantity),
         }),
         { calories: 0, protein: 0, carbs: 0, fat: 0 }
       ),
-    [selectedAddons]
+    [selectedAddonOptions]
   );
 
   const addonNutritionTotals = useMemo(
     () =>
-      Object.values(selectedAddons).reduce(
-        (sum, addon) => ({
-          calories: sum.calories + (addon?.calories ?? 0),
-          protein: sum.protein + (addon?.protein ?? 0),
-          carbs: sum.carbs + (addon?.carbs ?? 0),
-          totalFat: sum.totalFat + (addon?.fat ?? 0),
-          satFat: sum.satFat + (addon?.satFat ?? 0),
-          transFat: sum.transFat + (addon?.transFat ?? 0),
-          cholesterol: sum.cholesterol + (addon?.cholesterol ?? 0),
-          sodium: sum.sodium + (addon?.sodium ?? 0),
-          fiber: sum.fiber + (addon?.fiber ?? 0),
-          sugars: sum.sugars + (addon?.sugars ?? 0),
+      selectedAddonOptions.reduce(
+        (sum, { addon, quantity }) => ({
+          calories: sum.calories + (addon.calories * quantity),
+          protein: sum.protein + (addon.protein * quantity),
+          carbs: sum.carbs + (addon.carbs * quantity),
+          totalFat: sum.totalFat + (addon.fat * quantity),
+          satFat: sum.satFat + ((addon.satFat ?? 0) * quantity),
+          transFat: sum.transFat + ((addon.transFat ?? 0) * quantity),
+          cholesterol: sum.cholesterol + ((addon.cholesterol ?? 0) * quantity),
+          sodium: sum.sodium + ((addon.sodium ?? 0) * quantity),
+          fiber: sum.fiber + ((addon.fiber ?? 0) * quantity),
+          sugars: sum.sugars + ((addon.sugars ?? 0) * quantity),
         }),
         {
           calories: 0,
@@ -192,7 +179,7 @@ export default function MenuItemCard({
           sugars: 0,
         }
       ),
-    [selectedAddons]
+    [selectedAddonOptions]
   );
 
   const commonChangeTotals = useMemo(
@@ -224,15 +211,15 @@ export default function MenuItemCard({
 
   const hasMods = useMemo(
     () =>
-      Object.values(selectedAddons).some((addon) => addon && addon.name !== "None") ||
+      selectedAddonOptions.length > 0 ||
       selectedCommonChangeIds.length > 0,
-    [selectedAddons, selectedCommonChangeIds]
+    [selectedAddonOptions.length, selectedCommonChangeIds]
   );
 
   const hasActiveCustomization = hasMods;
 
   function resetMods() {
-    setSelectedAddons({});
+    setSelectedAddonCounts({});
     setSelectedCommonChangeIds([]);
   }
 
@@ -267,11 +254,6 @@ export default function MenuItemCard({
     return Math.round(caloriesPerProtein({ calories, protein }));
   }, [calories, protein]);
 
-  const selectedAddonOptions = useMemo(
-    () => Object.values(selectedAddons).filter((addon): addon is AddonOption => Boolean(addon && addon.name !== "None")),
-    [selectedAddons]
-  );
-
   const selectedCommonChanges = useMemo(
     () => applicableCommonChanges.filter((change) => selectedCommonChangeIds.includes(change.id)),
     [applicableCommonChanges, selectedCommonChangeIds]
@@ -302,10 +284,10 @@ export default function MenuItemCard({
     });
   }, [addons, initialCartCustomizations, item.addonRefs]);
 
-  const optionsLabel = useMemo(() => {
-    if (selectedAddonOptions.length === 0) return undefined;
-    return selectedAddonOptions.map((addon) => addon.name).join(" + ");
-  }, [selectedAddonOptions]);
+  const optionsLabel = useMemo(
+    () => serializeOptionsLabel(selectedAddonOptions.map(({ addon, quantity }) => ({ addon, quantity }))),
+    [selectedAddonOptions]
+  );
 
   const customizations = useMemo(() => {
     const modifierLabels = selectedCommonChanges.map((change) => formatCommonChangeForCart(change.label));
@@ -348,26 +330,32 @@ export default function MenuItemCard({
 
   const emitCartConfiguration = (
     nextVariantId: string,
-    nextAddons: Partial<Record<AddonRef, AddonOption>>
+    nextAddonCounts: AddonCountMap
   ) => {
     if (!isCartMode || !onCartConfigurationChange || !cartItemId) return;
 
     const activeVariant = variants?.find((variant) => variant.id === nextVariantId) ?? selectedVariantForCart;
     const baseForCart = activeVariant?.nutrition ?? item.nutrition;
-    const activeAddons = Object.values(nextAddons).filter(
-      (addon): addon is AddonOption => Boolean(addon && addon.name !== "None")
-    );
+    const activeAddons = (item.addonRefs ?? []).flatMap((ref) => {
+      const addonCountsByName = nextAddonCounts[ref] ?? {};
+      return (addons?.[ref] ?? []).flatMap((addon) => {
+        const quantity = addonCountsByName[addon.name] ?? 0;
+        if (!quantity) return [];
+        return [{ addon, quantity }];
+      });
+    });
+
     const addonTotalsForCart = activeAddons.reduce(
       (sum, addon) => ({
-        calories: sum.calories + addon.calories,
-        protein: sum.protein + addon.protein,
-        carbs: sum.carbs + addon.carbs,
-        fat: sum.fat + addon.fat,
+        calories: sum.calories + (addon.addon.calories * addon.quantity),
+        protein: sum.protein + (addon.addon.protein * addon.quantity),
+        carbs: sum.carbs + (addon.addon.carbs * addon.quantity),
+        fat: sum.fat + (addon.addon.fat * addon.quantity),
       }),
       { calories: 0, protein: 0, carbs: 0, fat: 0 }
     );
 
-    const nextOptionsLabel = activeAddons.length > 0 ? activeAddons.map((addon) => addon.name).join(" + ") : undefined;
+    const nextOptionsLabel = serializeOptionsLabel(activeAddons);
     const nextCustomizations = [...retainedCustomizations];
 
     onCartConfigurationChange({
@@ -400,7 +388,7 @@ export default function MenuItemCard({
         variantId: selectedVariantForCart?.id,
         variantLabel: selectedVariantForCart?.label,
         optionsLabel,
-        customizations,
+    customizations,
         quantity: 1,
         macrosPerItem: {
           calories: baseForCart.calories + addonTotals.calories,
@@ -487,7 +475,7 @@ export default function MenuItemCard({
                       selectedId={selectedVariantId}
                       onChange={(nextVariantId) => {
                         setSelectedVariantId(nextVariantId);
-                        emitCartConfiguration(nextVariantId, selectedAddons);
+                        emitCartConfiguration(nextVariantId, selectedAddonCounts);
                       }}
                       ariaLabel={`${item.name} portion size`}
                     />
@@ -645,13 +633,26 @@ export default function MenuItemCard({
               selectedVariantId={selectedVariantId}
               onSelectVariant={(nextVariantId) => {
                 setSelectedVariantId(nextVariantId);
-                emitCartConfiguration(nextVariantId, selectedAddons);
+                emitCartConfiguration(nextVariantId, selectedAddonCounts);
               }}
               addons={addons}
-              selectedAddons={selectedAddons}
-              onSelectAddon={(ref, addon) => {
-                setSelectedAddons((prev) => {
-                  const next = { ...prev, [ref]: addon ?? emptyAddon };
+              selectedAddonCounts={selectedAddonCounts}
+              onSelectAddonCountChange={(ref, addon, quantity) => {
+                setSelectedAddonCounts((prev) => {
+                  const nextRefCounts = { ...(prev[ref] ?? {}) };
+                  if (quantity <= 0) {
+                    delete nextRefCounts[addon.name];
+                  } else {
+                    nextRefCounts[addon.name] = quantity;
+                  }
+
+                  const next = { ...prev };
+                  if (Object.keys(nextRefCounts).length === 0) {
+                    delete next[ref];
+                  } else {
+                    next[ref] = nextRefCounts;
+                  }
+
                   emitCartConfiguration(selectedVariantId, next);
                   return next;
                 });
