@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useId, useMemo, useState } from "react";
+import { useRouter } from "next/navigation";
 import type { AddonOption, AddonRef, CommonChange, MacroDelta, MenuItem, RestaurantAddons } from "@/types/menu";
 import styles from "./MenuItemCard.module.css";
 import { useCart } from "@/stores/cartStore";
@@ -142,6 +143,7 @@ export default function MenuItemCard({
   initialCartOptionsLabel,
   initialCartCustomizations,
   onCartConfigurationChange,
+  itemHref,
 }: {
   restaurantId: string;
   item: MenuItem;
@@ -160,8 +162,10 @@ export default function MenuItemCard({
   initialCartOptionsLabel?: string;
   initialCartCustomizations?: string[];
   onCartConfigurationChange?: (next: CartConfigurationPayload) => void;
+  itemHref?: string;
 }) {
   const [open, setOpen] = useState(false);
+  const router = useRouter();
   const id = useId();
   const variants = item.variants?.length ? item.variants : null;
   const hasVariantDropdown = Boolean(variants && variants.length > 1);
@@ -595,6 +599,18 @@ export default function MenuItemCard({
             </div>
 
             <div className={styles.actionsWrap}>
+              {!isCartMode && itemHref ? (
+                <button
+                  type="button"
+                  className={styles.detailsButton}
+                  onClick={(event) => {
+                    event.stopPropagation();
+                    router.push(itemHref, { scroll: false });
+                  }}
+                >
+                  Details
+                </button>
+              ) : null}
               {isCartMode || matchingCartItem ? (
                 <div className={styles.qtyStepper}>
                   <button

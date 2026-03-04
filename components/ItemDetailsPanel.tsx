@@ -55,10 +55,6 @@ function sortByCalories(addons: AddonOption[]) {
   return [...addons].sort((a, b) => a.calories - b.calories);
 }
 
-function withNoneOption(addons: AddonOption[]) {
-  return [{ name: "None", calories: 0, protein: 0, carbs: 0, fat: 0, image: "none" }, ...addons];
-}
-
 function formatSummaryDetail(name: string, calories: number) {
   return `• ${name} (${calories >= 0 ? "+" : ""}${calories}cal)`;
 }
@@ -90,7 +86,7 @@ export default function ItemDetailsPanel({
   onSelectVariant?: (id: string) => void;
   addons?: RestaurantAddons;
   selectedAddons?: Partial<Record<AddonRef, AddonOption>>;
-  onSelectAddon?: (ref: AddonRef, addon: AddonOption) => void;
+  onSelectAddon?: (ref: AddonRef, addon?: AddonOption) => void;
   sauceSelectionCounts?: Partial<Record<string, number>>;
   onIncrementSauce?: (addon: AddonOption) => void;
   onDecrementSauce?: (addon: AddonOption) => void;
@@ -113,7 +109,7 @@ export default function ItemDetailsPanel({
       return {
         ref,
         title: addonSectionTitles[ref],
-        addons: withNoneOption(sortByCalories(list)),
+        addons: sortByCalories(list),
       };
     })
     .filter((section): section is { ref: AddonRef; title: string; addons: AddonOption[] } =>
@@ -131,7 +127,7 @@ export default function ItemDetailsPanel({
             {availableAddonSections.map((section) => {
               const sectionStateKey = `addon-${section.ref}`;
               const isSectionOpen = sectionOpenState[sectionStateKey] ?? true;
-              const selectedAddon = selectedAddons?.[section.ref] ?? section.addons[0];
+              const selectedAddon = selectedAddons?.[section.ref];
               const sauceSelections =
                 section.ref === "sauces"
                   ? section.addons.filter((addon) => addon.name !== "None" && (sauceSelectionCounts?.[addon.name] ?? 0) > 0)
@@ -183,7 +179,7 @@ export default function ItemDetailsPanel({
                         const isSelected =
                           section.ref === "sauces"
                             ? sauceCount > 0
-                            : (selectedAddons?.[section.ref]?.name ?? "None") === addon.name;
+                            : selectedAddons?.[section.ref]?.name === addon.name;
 
                         return (
                         <li key={`${section.ref}-${addon.name}`} className={styles.addonItem}>
@@ -195,7 +191,7 @@ export default function ItemDetailsPanel({
                                 onToggleSauce?.(addon);
                                 return;
                               }
-                              onSelectAddon?.(section.ref, addon);
+                              onSelectAddon?.(section.ref, isSelected ? undefined : addon);
                             }}
                           >
                             {addon.image === "none" ? (

@@ -113,9 +113,20 @@
 .actionsWrap {
   margin-left: auto;
   display: inline-flex;
-  flex-direction: column;
+  flex-direction: row;
   align-items: flex-end;
   gap: 8px;
+}
+
+.detailsButton {
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  background: #fff;
+  color: rgba(0, 0, 0, 0.84);
+  border-radius: 12px;
+  padding: 8px 16px;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
 }
 
 .macro {

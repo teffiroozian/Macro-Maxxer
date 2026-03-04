@@ -3,6 +3,7 @@
 import type { CommonChange, MenuItem, RestaurantAddons } from "@/types/menu";
 import type { SortOption } from "./ControlsRow";
 import MenuItemCard from "./MenuItemCard";
+import { toItemSlug } from "@/lib/restaurants";
 
 function normalizeCategory(category: string) {
   return category.trim().toLowerCase();
@@ -203,6 +204,7 @@ export default function MenuSections({
               item={item}
               addons={addons}
               commonChanges={commonChanges}
+              itemHref={`/restaurant/${restaurantId}/items/${toItemSlug(item)}`}
             />
           ))}
         </ul>
@@ -274,6 +276,7 @@ export default function MenuSections({
                 item={item}
                 addons={addons}
                 commonChanges={commonChanges}
+                itemHref={`/restaurant/${restaurantId}/items/${toItemSlug(item)}`}
               />
             ))}
           </ul>

@@ -7,7 +7,7 @@ import ScrollToTopOnMount from "@/components/ScrollToTopOnMount";
 import { RestaurantSearchProvider } from "@/components/RestaurantSearchContext";
 import { RestaurantUiProvider } from "@/components/RestaurantUiContext";
 import CartPreviewDrawer from "@/components/CartPreviewDrawer";
-import type { CommonChange, IngredientItem, MenuItem, RestaurantAddons } from "@/types/menu";
+import { getRestaurantData } from "@/lib/restaurants";
 
 export default async function RestaurantPage({
   params,
@@ -17,8 +17,9 @@ export default async function RestaurantPage({
   const { id } = await params;
 
   const restaurant = restaurants.find((r) => r.id === id);
+  const restaurantData = await getRestaurantData(id);
 
-  if (!restaurant) {
+  if (!restaurant || !restaurantData) {
     return (
       <main style={{ maxWidth: 900, margin: "48px auto", padding: 16 }}>
         <Link href="/" style={{ textDecoration: "none" }}>
@@ -28,13 +29,6 @@ export default async function RestaurantPage({
       </main>
     );
   }
-
-  const menu = await import(`../../data/${restaurant.menuFile}`);
-  const items = menu.default.items as MenuItem[];
-  const ingredients = (menu.default.ingredients ?? []) as IngredientItem[];
-  const addons = (menu.default.addons ?? {}) as RestaurantAddons;
-  const commonChanges = (menu.default.commonChanges ?? []) as CommonChange[];
-
 
   return (
     <RestaurantSearchProvider>
@@ -56,10 +50,10 @@ export default async function RestaurantPage({
               restaurantId={restaurant.id}
               restaurantName={restaurant.name}
               restaurantLogo={restaurant.logo}
-              items={items}
-              ingredients={ingredients}
-              addons={addons}
-              commonChanges={commonChanges}
+              items={restaurantData.items}
+              ingredients={restaurantData.ingredients}
+              addons={restaurantData.addons}
+              commonChanges={restaurantData.commonChanges}
               autoScrollOnViewChange
             />
           </main>
