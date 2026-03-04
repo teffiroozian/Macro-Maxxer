@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useState } from "react";
 import ingredientsCatalog from "@/data/ingredientsCatalog.json";
 import styles from "./ItemDetails.module.css";
 import type {
@@ -30,8 +30,6 @@ const addonSectionTitles: Record<AddonRef, string> = {
   dressings: "Dressings",
 };
 
-const rowScrollPx = 240;
-
 type IngredientEntry = {
   label: string;
   icon: string;
@@ -51,14 +49,6 @@ function resolveIngredients(ingredientIds?: string[]) {
       };
     })
     .filter((ingredient): ingredient is { id: string; label: string; icon: string } => ingredient !== null);
-}
-
-function scrollRow(row: HTMLUListElement | null | undefined, direction: "left" | "right") {
-  if (!row) return;
-  row.scrollBy({
-    left: direction === "left" ? -rowScrollPx : rowScrollPx,
-    behavior: "smooth",
-  });
 }
 
 function sortByCalories(addons: AddonOption[]) {
@@ -107,7 +97,6 @@ export default function ItemDetailsPanel({
   const n = nutrition;
   const addonRefs = item.addonRefs ?? [];
   const [sectionOpenState, setSectionOpenState] = useState<Record<string, boolean>>({});
-  const addonRowRefs = useRef<Record<string, HTMLUListElement | null>>({});
 
   const availableAddonSections = addonRefs
     .map((ref) => {
@@ -163,44 +152,13 @@ export default function ItemDetailsPanel({
                       {!isSectionOpen ? <span className={styles.addonSummaryDetail}> {summaryDetail}</span> : null}
                     </h3>
                     <div className={styles.addonHeaderControls}>
-                      {isSectionOpen ? (
-                        <div className={styles.addonScrollButtons} onClick={(event) => event.stopPropagation()}>
-                          <button
-                            type="button"
-                            className={styles.addonArrowButton}
-                            aria-label={`Scroll ${section.title} left`}
-                            onClick={(event) => {
-                              event.stopPropagation();
-                              scrollRow(addonRowRefs.current[`addon-row-${section.ref}`], "left");
-                            }}
-                          >
-                            ⬅
-                          </button>
-                          <button
-                            type="button"
-                            className={styles.addonArrowButton}
-                            aria-label={`Scroll ${section.title} right`}
-                            onClick={(event) => {
-                              event.stopPropagation();
-                              scrollRow(addonRowRefs.current[`addon-row-${section.ref}`], "right");
-                            }}
-                          >
-                            ➡
-                          </button>
-                        </div>
-                      ) : null}
                       <span className={styles.chevronButton} aria-hidden="true">
                         {isSectionOpen ? "˄" : "˅"}
                       </span>
                     </div>
                   </div>
                   {isSectionOpen ? (
-                    <ul
-                      ref={(element) => {
-                        addonRowRefs.current[`addon-row-${section.ref}`] = element;
-                      }}
-                      className={styles.addonList}
-                    >
+                    <ul className={styles.addonList}>
                       {section.addons.map((addon) => (
                         <li key={`${section.ref}-${addon.name}`} className={styles.addonItem}>
                           <button
@@ -285,44 +243,13 @@ export default function ItemDetailsPanel({
                         {!isCommonOpen ? <span className={styles.addonSummaryDetail}> {commonSummaryDetail}</span> : null}
                       </h3>
                       <div className={styles.addonHeaderControls}>
-                        {isCommonOpen ? (
-                          <div className={styles.addonScrollButtons} onClick={(event) => event.stopPropagation()}>
-                            <button
-                              type="button"
-                              className={styles.addonArrowButton}
-                              aria-label="Scroll Common Changes left"
-                              onClick={(event) => {
-                                event.stopPropagation();
-                                scrollRow(addonRowRefs.current["common-changes-row"], "left");
-                              }}
-                            >
-                              ⬅
-                            </button>
-                            <button
-                              type="button"
-                              className={styles.addonArrowButton}
-                              aria-label="Scroll Common Changes right"
-                              onClick={(event) => {
-                                event.stopPropagation();
-                                scrollRow(addonRowRefs.current["common-changes-row"], "right");
-                              }}
-                            >
-                              ➡
-                            </button>
-                          </div>
-                        ) : null}
                         <span className={styles.chevronButton} aria-hidden="true">
                           {isCommonOpen ? "˄" : "˅"}
                         </span>
                       </div>
                     </div>
                     {isCommonOpen ? (
-                      <ul
-                        ref={(element) => {
-                          addonRowRefs.current["common-changes-row"] = element;
-                        }}
-                        className={styles.addonList}
-                      >
+                      <ul className={styles.addonList}>
                         {commonChanges.map((change) => {
                           const isActive = selectedCommonChangeIds?.includes(change.id) ?? false;
                           const calorieDeltaLabel = `${change.delta.calories >= 0 ? "+" : ""}${change.delta.calories}cal`;
