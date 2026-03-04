@@ -241,6 +241,7 @@ export default function CartPage() {
               const menuItem: MenuItem = sourceItem ?? {
                 id: cartItem.itemId,
                 name: cartItem.name,
+                image: cartItem.image,
                 categories: ["Cart"],
                 portionType: "single",
                 nutrition: {

@@ -464,6 +464,7 @@ export default function MenuItemCard({
         restaurantId,
         itemId: item.id ?? item.name,
         name: item.name,
+        image: item.image,
         variantId: selectedVariantForCart?.id,
         variantLabel: selectedVariantForCart?.label,
         optionsLabel,

@@ -14,6 +14,7 @@ export type CartItem = {
   restaurantId: string;
   itemId: string;
   name: string;
+  image?: string;
   variantId?: string;
   variantLabel?: string;
   optionsLabel?: string;

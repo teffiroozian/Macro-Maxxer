@@ -209,6 +209,7 @@ export default function ItemRouteModal({
       restaurantId,
       itemId: item.id ?? item.name,
       name: item.name,
+      image: item.image,
       variantId: selectedVariant?.id,
       variantLabel: selectedVariant?.label,
       optionsLabel,
