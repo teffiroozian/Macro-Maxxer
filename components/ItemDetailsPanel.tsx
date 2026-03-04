@@ -354,6 +354,12 @@ export default function ItemDetailsPanel({
                                   <div className={styles.addonName}>{change.label}</div>
                                   <div className={styles.addonCalories}>{`${calorieDeltaLabel} • ${proteinDeltaLabel}`}</div>
                                 </div>
+                                <span
+                                  className={`${styles.commonChangeCheckbox} ${isActive ? styles.commonChangeCheckboxActive : ""}`}
+                                  aria-hidden="true"
+                                >
+                                  {isActive ? "✓" : ""}
+                                </span>
                               </button>
                             </li>
                           );

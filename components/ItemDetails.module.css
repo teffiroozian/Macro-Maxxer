@@ -320,6 +320,29 @@
 }
 
 
+.commonChangeCheckbox {
+  margin-left: auto;
+  width: 22px;
+  height: 22px;
+  border-radius: 4px;
+  border: 2px solid rgba(0, 0, 0, 0.45);
+  background: #fff;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 800;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.commonChangeCheckboxActive {
+  background: #16a34a;
+  border-color: #16a34a;
+  color: #fff;
+}
+
+
 .addonCounter {
   margin-left: auto;
   display: inline-flex;
