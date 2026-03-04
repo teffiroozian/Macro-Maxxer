@@ -57,8 +57,27 @@ type NutritionTotals = {
   sugars?: number;
 };
 
+
+function parseOptionLabelCounts(optionsLabel?: string) {
+  const counts: Record<string, number> = {};
+
+  for (const rawSegment of (optionsLabel ?? "").split("+")) {
+    const segment = rawSegment.trim();
+    if (!segment) continue;
+
+    const match = segment.match(/^(.*?)(?:\s*x(\d+))?$/i);
+    const name = match?.[1]?.trim() ?? segment;
+    const quantity = Number(match?.[2] ?? "1");
+    if (!name) continue;
+
+    counts[name] = (counts[name] ?? 0) + (Number.isFinite(quantity) && quantity > 0 ? quantity : 1);
+  }
+
+  return counts;
+}
+
 function summarizeItem(item: { variantLabel?: string; optionsLabel?: string; customizations?: string[] }) {
-  const addonNames = new Set((item.optionsLabel ?? "").split("+").map((segment) => segment.trim()).filter(Boolean));
+  const addonNames = new Set(Object.keys(parseOptionLabelCounts(item.optionsLabel)));
   const dedupedCustomizations = (item.customizations ?? []).filter((label) => {
     const normalized = label.replace(/^\+\s*/, "").trim();
     return !addonNames.has(normalized);
@@ -85,20 +104,15 @@ function getSelectedAddonNutrition(
   sourceItem: MenuItem | undefined,
   restaurantAddons: RestaurantAddons | undefined
 ) {
-  const selectedAddonNames = new Set(
-    (optionsLabel ?? "")
-      .split("+")
-      .map((segment) => segment.trim())
-      .filter(Boolean)
-  );
+  const selectedAddonCounts = parseOptionLabelCounts(optionsLabel);
 
-  if (selectedAddonNames.size === 0 || !sourceItem || !restaurantAddons) {
+  if (Object.keys(selectedAddonCounts).length === 0 || !sourceItem || !restaurantAddons) {
     return [] as AddonOption[];
   }
 
   return (sourceItem.addonRefs ?? [])
     .flatMap((ref) => restaurantAddons[ref] ?? [])
-    .filter((addon) => selectedAddonNames.has(addon.name));
+    .flatMap((addon) => Array.from({ length: selectedAddonCounts[addon.name] ?? 0 }, () => addon));
 }
 
 function buildCartNutritionTotals(items: ReturnType<typeof useCart>["items"]): NutritionTotals {
