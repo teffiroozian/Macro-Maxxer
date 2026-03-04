@@ -145,6 +145,53 @@
 
 .body {
   margin-top: 18px;
+  display: grid;
+  gap: 14px;
+}
+
+.ingredientsSection {
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  border-radius: 14px;
+  background: #fff;
+  padding: 14px;
+}
+
+.ingredientsTitle {
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: 12px;
+}
+
+.ingredientsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  gap: 10px;
+}
+
+.ingredientCard {
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  border-radius: 12px;
+  padding: 10px;
+  display: grid;
+  gap: 6px;
+  justify-items: center;
+  text-align: center;
+  background: #fafafa;
+}
+
+.ingredientIcon {
+  font-size: 24px;
+}
+
+.ingredientName {
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.ingredientCalories {
+  font-size: 12px;
+  font-weight: 600;
+  color: rgba(0, 0, 0, 0.6);
 }
 
 .stickyBar {

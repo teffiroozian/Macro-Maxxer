@@ -22,6 +22,7 @@ export default async function ItemModalPage({
       item={item}
       addons={restaurant.addons}
       commonChanges={restaurant.commonChanges}
+      ingredients={restaurant.ingredients}
     />
   );
 }

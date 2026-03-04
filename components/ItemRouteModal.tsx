@@ -10,9 +10,11 @@ import type {
   MacroDelta,
   MenuItem,
   RestaurantAddons,
+  IngredientItem,
 } from "@/types/menu";
 import { useCart } from "@/stores/cartStore";
 import styles from "./ItemRouteModal.module.css";
+import ingredientsCatalog from "@/data/ingredientsCatalog.json";
 
 const emptyAddon: AddonOption = {
   name: "None",
@@ -47,18 +49,42 @@ function getApplicableCommonChanges(item: MenuItem, commonChanges?: CommonChange
   });
 }
 
+function resolveModalIngredients(item: MenuItem, ingredients: IngredientItem[] = []) {
+  const ingredientLookup = ingredientsCatalog as Record<string, { label: string; icon: string }>;
+
+  return (item.ingredients ?? []).map((ingredientId) => {
+    const catalogEntry = ingredientLookup[ingredientId];
+    const fallbackLabel = ingredientId
+      .split(/[-_]/)
+      .map((segment) => segment.charAt(0).toUpperCase() + segment.slice(1))
+      .join(" ");
+
+    const label = catalogEntry?.label ?? fallbackLabel;
+    const match = ingredients.find((entry) => entry.name.toLowerCase().includes(label.toLowerCase()));
+
+    return {
+      id: ingredientId,
+      label,
+      icon: catalogEntry?.icon ?? "🥣",
+      calories: match?.nutrition.calories,
+    };
+  });
+}
+
 export default function ItemRouteModal({
   restaurantId,
   restaurantPath,
   item,
   addons,
   commonChanges,
+  ingredients,
 }: {
   restaurantId: string;
   restaurantPath: string;
   item: MenuItem;
   addons?: RestaurantAddons;
   commonChanges?: CommonChange[];
+  ingredients?: IngredientItem[];
 }) {
   const router = useRouter();
   const variants = item.variants?.length ? item.variants : null;
@@ -76,6 +102,7 @@ export default function ItemRouteModal({
   const [selectedCommonChangeIds, setSelectedCommonChangeIds] = useState<string[]>([]);
   const [isAddFeedbackVisible, setIsAddFeedbackVisible] = useState(false);
   const { addItem } = useCart();
+  const modalIngredients = useMemo(() => resolveModalIngredients(item, ingredients), [item, ingredients]);
 
   const selectedVariant = variants?.find((variant) => variant.id === selectedVariantId);
   const baseNutrition = selectedVariant?.nutrition ?? item.nutrition;
@@ -276,6 +303,25 @@ export default function ItemRouteModal({
         </div>
 
         <div className={styles.body}>
+          {modalIngredients.length > 0 ? (
+            <section className={styles.ingredientsSection}>
+              <h3 className={styles.ingredientsTitle}>Ingredients</h3>
+              <div className={styles.ingredientsGrid}>
+                {modalIngredients.map((ingredient) => (
+                  <article key={ingredient.id} className={styles.ingredientCard}>
+                    <div className={styles.ingredientIcon} aria-hidden="true">
+                      {ingredient.icon}
+                    </div>
+                    <div className={styles.ingredientName}>{ingredient.label}</div>
+                    <div className={styles.ingredientCalories}>
+                      {ingredient.calories !== undefined ? `${ingredient.calories} Cal` : "— Cal"}
+                    </div>
+                  </article>
+                ))}
+              </div>
+            </section>
+          ) : null}
+
           <ItemDetailsPanel
             item={item}
             nutrition={nutrition}
