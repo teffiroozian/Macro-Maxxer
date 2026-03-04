@@ -36,27 +36,68 @@
 
 .hero {
   display: grid;
-  gap: 12px;
+  gap: 16px;
+  justify-items: center;
 }
 
 .title {
   font-size: 38px;
   font-weight: 800;
+  text-align: center;
 }
 
 .image {
-  width: 100%;
-  max-height: 340px;
+  width: min(560px, 100%);
+  max-height: 300px;
   object-fit: cover;
   border-radius: 14px;
 }
 
 .macroSummary {
   display: flex;
+  justify-content: center;
   flex-wrap: wrap;
-  gap: 12px;
-  font-weight: 600;
-  color: rgba(0, 0, 0, 0.72);
+  gap: 28px;
+}
+
+.macro {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.macroValueWrap {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 6px;
+}
+
+.macroValue {
+  font-size: 24px;
+  font-weight: 700;
+}
+
+.macroLabel {
+  font-size: 10px;
+  font-weight: 700;
+}
+
+.protein {
+  color: #c2410c;
+}
+
+.carbs {
+  color: #ca8a04;
+}
+
+.fat {
+  color: #2563eb;
+}
+
+.macroDelta {
+  font-size: 14px;
+  font-weight: 700;
+  color: #16a34a;
 }
 
 .body {

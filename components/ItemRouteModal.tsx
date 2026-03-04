@@ -30,6 +30,10 @@ function normalizeCategory(category: string) {
   return category.trim().toLowerCase();
 }
 
+function formatDelta(value: number) {
+  return `${value >= 0 ? "+" : ""}${value}`;
+}
+
 function getApplicableCommonChanges(item: MenuItem, commonChanges?: CommonChange[]) {
   if (!commonChanges || commonChanges.length === 0) return [];
   const itemCategories = new Set(
@@ -118,12 +122,31 @@ export default function ItemRouteModal({
     [applicableCommonChanges, selectedCommonChangeIds]
   );
 
+  const customizationTotals = useMemo(
+    () => ({
+      calories: addonTotals.calories + commonChangeTotals.calories,
+      protein: addonTotals.protein + commonChangeTotals.protein,
+      carbs: addonTotals.carbs + commonChangeTotals.carbs,
+      fat: addonTotals.fat + commonChangeTotals.fat,
+    }),
+    [addonTotals, commonChangeTotals]
+  );
+
+  const hasActiveCustomization = useMemo(
+    () =>
+      customizationTotals.calories !== 0 ||
+      customizationTotals.protein !== 0 ||
+      customizationTotals.carbs !== 0 ||
+      customizationTotals.fat !== 0,
+    [customizationTotals]
+  );
+
   const nutrition = {
     ...baseNutrition,
-    calories: baseNutrition.calories + addonTotals.calories + commonChangeTotals.calories,
-    protein: baseNutrition.protein + addonTotals.protein + commonChangeTotals.protein,
-    carbs: baseNutrition.carbs + addonTotals.carbs + commonChangeTotals.carbs,
-    totalFat: baseNutrition.totalFat + addonTotals.fat + commonChangeTotals.fat,
+    calories: baseNutrition.calories + customizationTotals.calories,
+    protein: baseNutrition.protein + customizationTotals.protein,
+    carbs: baseNutrition.carbs + customizationTotals.carbs,
+    totalFat: baseNutrition.totalFat + customizationTotals.fat,
   };
 
   const optionsLabel = useMemo(() => {
@@ -188,10 +211,42 @@ export default function ItemRouteModal({
           <h1 className={styles.title}>{item.name}</h1>
           {item.image ? <img className={styles.image} src={item.image} alt={item.name} /> : null}
           <div className={styles.macroSummary}>
-            <span>{nutrition.calories} cal</span>
-            <span>{nutrition.protein}g protein</span>
-            <span>{nutrition.carbs}g carbs</span>
-            <span>{nutrition.totalFat}g fats</span>
+            <div className={styles.macro}>
+              <div className={styles.macroValueWrap}>
+                <span className={styles.macroValue}>{nutrition.calories}</span>
+                {hasActiveCustomization ? (
+                  <span className={styles.macroDelta}>{formatDelta(customizationTotals.calories)}</span>
+                ) : null}
+              </div>
+              <span className={styles.macroLabel}>CAL</span>
+            </div>
+            <div className={styles.macro}>
+              <div className={styles.macroValueWrap}>
+                <span className={`${styles.macroValue} ${styles.protein}`}>{nutrition.protein}g</span>
+                {hasActiveCustomization ? (
+                  <span className={styles.macroDelta}>{formatDelta(customizationTotals.protein)}</span>
+                ) : null}
+              </div>
+              <span className={styles.macroLabel}>PROTEIN</span>
+            </div>
+            <div className={styles.macro}>
+              <div className={styles.macroValueWrap}>
+                <span className={`${styles.macroValue} ${styles.carbs}`}>{nutrition.carbs}g</span>
+                {hasActiveCustomization ? (
+                  <span className={styles.macroDelta}>{formatDelta(customizationTotals.carbs)}</span>
+                ) : null}
+              </div>
+              <span className={styles.macroLabel}>CARBS</span>
+            </div>
+            <div className={styles.macro}>
+              <div className={styles.macroValueWrap}>
+                <span className={`${styles.macroValue} ${styles.fat}`}>{nutrition.totalFat}g</span>
+                {hasActiveCustomization ? (
+                  <span className={styles.macroDelta}>{formatDelta(customizationTotals.fat)}</span>
+                ) : null}
+              </div>
+              <span className={styles.macroLabel}>FAT</span>
+            </div>
           </div>
         </div>
 
@@ -244,7 +299,7 @@ export default function ItemRouteModal({
                 prev.includes(changeId) ? prev.filter((id) => id !== changeId) : [...prev, changeId]
               )
             }
-            customizationTotals={commonChangeTotals}
+            customizationTotals={customizationTotals}
             showCustomizationDeltas
           />
         </div>
