@@ -1,9 +1,9 @@
 {
-  "bun": { "label": "Bun", "icon": "🍞" },
-  "lettuce": { "label": "Lettuce", "icon": "🥬" },
-  "tomato": { "label": "Tomato", "icon": "🍅" },
-  "bacon": { "label": "Bacon", "icon": "🥓" },
-  "cheese": { "label": "Cheese", "icon": "🧀" },
-  "chicken": { "label": "Chicken", "icon": "🍗" },
-  "pickle": { "label": "Pickles", "icon": "🥒" }
+  "bun": { "label": "Bun", "icon": "/restaurants/chickfila/ingredients/buns/white-bun.webp" },
+  "lettuce": { "label": "Lettuce", "icon": "/restaurants/chickfila/ingredients/sandwich-toppings/lettuce.webp" },
+  "tomato": { "label": "Tomato", "icon": "/restaurants/chickfila/ingredients/sandwich-toppings/tomato.webp" },
+  "bacon": { "label": "Bacon", "icon": "/restaurants/chickfila/ingredients/proteins/bacon.webp" },
+  "cheese": { "label": "Cheese", "icon": "/restaurants/chickfila/ingredients/sandwich-toppings/colby-jack-cheese.webp" },
+  "chicken": { "label": "Chicken", "icon": "/restaurants/chickfila/ingredients/proteins/cfa-filet.webp" },
+  "pickle": { "label": "Pickles", "icon": "/restaurants/chickfila/ingredients/sandwich-toppings/pickles.webp" }
 }

@@ -1,4 +1,5 @@
 import { useState } from "react";
+import Image from "next/image";
 import ingredientsCatalog from "@/data/ingredientsCatalog.json";
 import styles from "./ItemDetails.module.css";
 import type {
@@ -58,6 +59,11 @@ function sortByCalories(addons: AddonOption[]) {
 
 function formatSummaryDetail(name: string, calories: number) {
   return `• ${name} (${calories >= 0 ? "+" : ""}${calories}cal)`;
+}
+
+
+function isIconImage(icon: string) {
+  return icon.startsWith("/") || icon.startsWith("http://") || icon.startsWith("https://");
 }
 
 export default function ItemDetailsPanel({
@@ -507,7 +513,7 @@ export default function ItemDetailsPanel({
               <div className={styles.ingredientsGrid}>
                 {ingredients.map((ingredient) => (
                   <div key={ingredient.id} className={styles.ingredientChip}>
-                    <span aria-hidden="true">{ingredient.icon}</span>
+                    <span aria-hidden="true">{isIconImage(ingredient.icon) ? <Image src={ingredient.icon} alt="" width={24} height={24} /> : ingredient.icon}</span>
                     <span>{ingredient.label}</span>
                   </div>
                 ))}

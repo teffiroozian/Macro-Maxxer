@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 import ItemDetailsPanel from "@/components/ItemDetailsPanel";
 import type {
@@ -49,6 +50,10 @@ function formatCalories(value?: number) {
   return value === undefined || Number.isNaN(value) ? "—" : String(value);
 }
 
+function isIconImage(icon: string) {
+  return icon.startsWith("/") || icon.startsWith("http://") || icon.startsWith("https://");
+}
+
 
 function addonFat(addon?: AddonOption) {
   return addon?.totalFat ?? addon?.fat ?? 0;
@@ -71,13 +76,27 @@ function getApplicableCommonChanges(item: MenuItem, commonChanges?: CommonChange
   });
 }
 
+
+function normalizeIngredientToken(value: string) {
+  return value.toLowerCase().replace(/[^a-z0-9]+/g, "").trim();
+}
+
 function resolveModalIngredients(
   item: MenuItem,
   ingredients: IngredientItem[] = [],
   addons?: RestaurantAddons
 ) {
   const ingredientLookup = ingredientsCatalog as Record<string, { label: string; icon: string }>;
+  const ingredientByIdLookup = new Map<string, IngredientItem>();
+  const ingredientByNameLookup = new Map<string, IngredientItem>();
   const addonLookup = new Map<string, AddonOption>();
+
+  ingredients.forEach((entry) => {
+    if (entry.id) {
+      ingredientByIdLookup.set(entry.id.toLowerCase(), entry);
+    }
+    ingredientByNameLookup.set(normalizeIngredientToken(entry.name), entry);
+  });
 
   Object.values(addons ?? {}).forEach((addonGroup) => {
     addonGroup?.forEach((addon) => {
@@ -92,14 +111,17 @@ function resolveModalIngredients(
       .map((segment) => segment.charAt(0).toUpperCase() + segment.slice(1))
       .join(" ");
 
-    const label = catalogEntry?.label ?? fallbackLabel;
-    const match = ingredients.find((entry) => entry.name.toLowerCase().includes(label.toLowerCase()));
+    const match =
+      ingredientByIdLookup.get(ingredientId.toLowerCase()) ??
+      ingredientByNameLookup.get(normalizeIngredientToken(ingredientId)) ??
+      ingredientByNameLookup.get(normalizeIngredientToken(fallbackLabel));
+    const label = catalogEntry?.label ?? match?.name ?? fallbackLabel;
     const addonMatch = addonLookup.get(label.toLowerCase());
 
     return {
       id: ingredientId,
       label,
-      icon: catalogEntry?.icon ?? "🥣",
+      icon: catalogEntry?.icon ?? match?.image ?? addonMatch?.image ?? "🥣",
       calories: match?.nutrition.calories ?? addonMatch?.calories,
     };
   });
@@ -348,7 +370,11 @@ export default function ItemRouteModal({
                 {modalIngredients.map((ingredient) => (
                   <article key={ingredient.id} className={styles.ingredientCard}>
                     <div className={styles.ingredientIcon} aria-hidden="true">
-                      {ingredient.icon}
+                      {isIconImage(ingredient.icon) ? (
+                        <Image src={ingredient.icon} alt="" width={24} height={24} />
+                      ) : (
+                        ingredient.icon
+                      )}
                     </div>
                     <div className={styles.ingredientName}>{ingredient.label}</div>
                     <div className={styles.ingredientCalories}>
