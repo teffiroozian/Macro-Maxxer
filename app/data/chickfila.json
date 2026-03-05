@@ -19,6 +19,11 @@
             "categories": [
                 "Sandwich"
             ],
+            "ingredients": [
+                "buttery-white-bun",
+                "chick-fil-a-filet",
+                "pickles"
+            ],
             "portionType": "single",
             "image": "/restaurants/chickfila/menu/sandwiches/chicken-sandwich.webp"
         },
@@ -40,6 +45,14 @@
                 "Sandwich"
             ],
             "portionType": "single",
+            "ingredients": [
+                "buttery-white-bun",
+                "pepper-jack",
+                "spicy-filet",
+                "pickles",
+                "tomato",
+                "lettuce"
+            ],
             "image": "/restaurants/chickfila/menu/sandwiches/spicy-deluxe-sandwich.webp"
         },
         {
@@ -60,6 +73,11 @@
                 "Sandwich"
             ],
             "portionType": "single",
+            "ingredients": [
+                "buttery-white-bun",
+                "spicy-filet",
+                "pickles"
+            ],
             "image": "/restaurants/chickfila/menu/sandwiches/spicy-chicken-sandwich.webp"
         },
         {
@@ -178,6 +196,13 @@
                 "Sandwich"
             ],
             "portionType": "single",
+            "ingredients": [
+                "buttery-white-bun",
+                "chick-fil-a-filet",
+                "pickles",
+                "lettuce",
+                "tomato"
+            ],
             "image": "/restaurants/chickfila/menu/sandwiches/deluxe-sandwich.webp"
         },
         {
@@ -198,10 +223,30 @@
                 "Wrap"
             ],
             "portionType": "single",
+            "ingredients": [
+                "shredded-cheese"
+            ],
             "addonRefs": [
                 "dressings"
             ],
             "image": "/restaurants/chickfila/menu/wraps/cool-wrap.webp"
+        },
+        {
+            "name": "Southwest Veggie Wrap",
+            "nutrition": {
+                "calories": 660
+            },
+            "categories": [
+                "Wrap"
+            ],
+            "portionType": "single",
+            "ingredients": [
+                "shredded-cheese"
+            ],
+            "addonRefs": [
+                "dressings"
+            ],
+            "image": "/restaurants/chickfila/menu/wraps/southwest-veggie-wrap.webp"
         },
         {
             "name": "Chick-fil-A Chick-n-Strips\u00ae",
@@ -319,6 +364,12 @@
                 "Sandwich"
             ],
             "portionType": "single",
+            "ingredients": [
+                "buttery-white-bun",
+                "grilled-filet",
+                "tomato",
+                "lettuce"
+            ],
             "image": "/restaurants/chickfila/menu/sandwiches/grilled-chicken-sandwich.webp"
         },
         {
@@ -461,6 +512,14 @@
                 "Salad"
             ],
             "portionType": "single",
+            "ingredients": [
+                "grape-tomatoes",
+                "roasted-corn",
+                "bacon-crumble",
+                "sliced-egg",
+                "shredded-cheese",
+                "crispy-bell-peppers"
+            ],
             "addonRefs": [
                 "dressings"
             ],
@@ -482,6 +541,12 @@
             },
             "categories": [
                 "Salad"
+            ],
+            "ingredients": [
+                "grape-tomatoes",
+                "black-beans-corn",
+                "seasoned-tortilla-strips",
+                "chili-lime-pepitas"
             ],
             "portionType": "single",
             "addonRefs": [
@@ -507,6 +572,14 @@
                 "Salad"
             ],
             "portionType": "single",
+            "ingredients": [
+                "blueberries",
+                "apples",
+                "strawberries",
+                "blue-cheese-crumbs",
+                "harvest-nut-granola",
+                "roasted-nut-blend"
+            ],
             "addonRefs": [
                 "dressings"
             ],
@@ -920,6 +993,9 @@
             "categories": [
                 "Breakfast"
             ],
+            "ingredients": [
+                "buttery-biscuit"
+            ],
             "portionType": "single",
             "image": "/restaurants/chickfila/menu/breakfast/spicy-chicken-biscuit.webp"
         },
@@ -981,6 +1057,11 @@
                 "Breakfast"
             ],
             "portionType": "single",
+            "ingredients": [
+                "english-muffin",
+                "american-cheese",
+                "egg-whites"
+            ],
             "image": "/restaurants/chickfila/menu/breakfast/egg-white-grill.webp"
         },
         {
@@ -1001,6 +1082,10 @@
                 "Breakfast"
             ],
             "portionType": "single",
+            "ingredients": [
+                "salsa",
+                "shredded-cheese"
+            ],
             "image": "/restaurants/chickfila/menu/breakfast/hash-brown-scramble-burrito.webp"
         },
         {
@@ -1021,6 +1106,10 @@
                 "Breakfast"
             ],
             "portionType": "single",
+            "ingredients": [
+                "salsa",
+                "shredded-cheese"
+            ],
             "image": "/restaurants/chickfila/menu/breakfast/hash-brown-scramble-bowl.webp"
         },
         {
@@ -1041,6 +1130,10 @@
                 "Breakfast"
             ],
             "portionType": "single",
+            "ingredients": [
+                "american-cheese",
+                "egg"
+            ],
             "image": "/restaurants/chickfila/menu/breakfast/chicken-egg-cheese-biscuit.webp"
         },
         {
@@ -1061,6 +1154,11 @@
                 "Breakfast"
             ],
             "portionType": "single",
+            "ingredients": [
+                "bacon",
+                "american-cheese",
+                "egg"
+            ],
             "image": "/restaurants/chickfila/menu/breakfast/bacon-egg-cheese-biscuit.webp"
         },
         {
@@ -1081,6 +1179,11 @@
                 "Breakfast"
             ],
             "portionType": "single",
+            "ingredients": [
+                "sausage",
+                "american-cheese",
+                "egg"
+            ],
             "image": "/restaurants/chickfila/menu/breakfast/sausage-egg-cheese-biscuit.webp"
         },
         {
@@ -1101,6 +1204,11 @@
                 "Breakfast"
             ],
             "portionType": "single",
+            "ingredients": [
+                "sausage",
+                "american-cheese",
+                "egg"
+            ],
             "image": "/restaurants/chickfila/menu/breakfast/chicken-egg-cheese-muffin.webp"
         },
         {
@@ -1121,6 +1229,11 @@
                 "Breakfast"
             ],
             "portionType": "single",
+            "ingredients": [
+                "sausage",
+                "american-cheese",
+                "egg"
+            ],
             "image": "/restaurants/chickfila/menu/breakfast/bacon-egg-cheese-muffin.webp"
         },
         {
@@ -1141,6 +1254,10 @@
                 "Breakfast"
             ],
             "portionType": "single",
+            "ingredients": [
+                "american-cheese",
+                "egg"
+            ],
             "image": "/restaurants/chickfila/menu/breakfast/sausage-egg-cheese-muffin.webp"
         },
         {
@@ -2727,7 +2844,7 @@
                 "protein": 1
             },
             "categories": [
-                "Salad Toppings"
+                "Salad Extras"
             ],
             "image": "/restaurants/chickfila/ingredients/salad-toppings/roasted-nut-blend.png",
             "id": "roasted-nut-blend"
@@ -2747,7 +2864,7 @@
                 "protein": 1
             },
             "categories": [
-                "Salad Toppings"
+                "Salad Extras"
             ],
             "image": "/restaurants/chickfila/ingredients/salad-toppings/harvest-nut-granola.png",
             "id": "harvest-nut-granola"
@@ -2767,7 +2884,7 @@
                 "protein": 1
             },
             "categories": [
-                "Salad Toppings"
+                "Salad Extras"
             ],
             "image": "/restaurants/chickfila/ingredients/salad-toppings/seasoned-tortilla-strips.png",
             "id": "seasoned-tortilla-strips"
@@ -2787,6 +2904,7 @@
                 "protein": 2
             },
             "categories": [
+                "Salad Extras",
                 "Salad Toppings"
             ],
             "image": "/restaurants/chickfila/ingredients/salad-toppings/blue-cheese-crumbles.png",
@@ -2807,7 +2925,7 @@
                 "protein": 1
             },
             "categories": [
-                "Salad Toppings"
+                "Salad Extras"
             ],
             "image": "/restaurants/chickfila/ingredients/salad-toppings/crispy-bell-peppers.png",
             "id": "crispy-bell-peppers"
@@ -2827,7 +2945,7 @@
                 "protein": 4
             },
             "categories": [
-                "Salad Toppings"
+                "Salad Extras"
             ],
             "image": "/restaurants/chickfila/ingredients/salad-toppings/chili-lime-pepitas.png",
             "id": "chili-lime-pepitas"
@@ -2971,6 +3089,205 @@
             ],
             "image": "/restaurants/chickfila/ingredients/soup-toppings/saltines.png",
             "id": "saltines"
+        },
+        {
+            "name": "Shredded Monterey Cheddar Cheese",
+            "nutrition": {
+                "calories": 50
+            },
+            "categories": [
+                "Wrap Toppings",
+                "Salad Toppings"
+            ],
+            "image": "/restaurants/chickfila/ingredients/soup-toppings/saltines.png",
+            "id": "shredded-cheese"
+        },
+        {
+            "name": "Grape Tomatoes",
+            "nutrition": {
+                "calories": 15
+            },
+            "categories": [
+                "Salad Toppings"
+            ],
+            "image": "/restaurants/chickfila/ingredients/soup-toppings/saltines.png",
+            "id": "grape-tomato"
+        },
+        {
+            "name": "Roasted Corn",
+            "nutrition": {
+                "calories": 10
+            },
+            "categories": [
+                "Salad Toppings"
+            ],
+            "image": "/restaurants/chickfila/ingredients/soup-toppings/saltines.png",
+            "id": "roasted-corn"
+        },
+        {
+            "name": "Black Beans and Corn",
+            "nutrition": {
+                "calories": 45
+            },
+            "categories": [
+                "Salad Toppings"
+            ],
+            "image": "/restaurants/chickfila/ingredients/soup-toppings/saltines.png",
+            "id": "black-beans-corn"
+        },
+        {
+            "name": "Blueberries",
+            "nutrition": {
+                "calories": 5
+            },
+            "categories": [
+                "Salad Toppings"
+            ],
+            "image": "/restaurants/chickfila/ingredients/soup-toppings/saltines.png",
+            "id": "blueberries"
+        },
+        {
+            "name": "Apples",
+            "nutrition": {
+                "calories": 15
+            },
+            "categories": [
+                "Salad Toppings"
+            ],
+            "image": "/restaurants/chickfila/ingredients/soup-toppings/saltines.png",
+            "id": "apples"
+        },
+        {
+            "name": "Strawberries",
+            "nutrition": {
+                "calories": 5
+            },
+            "categories": [
+                "Salad Toppings"
+            ],
+            "image": "/restaurants/chickfila/ingredients/soup-toppings/saltines.png",
+            "id": "strawberries"
+        },
+        {
+            "name": "Bacon Crumbles",
+            "nutrition": {
+                "calories": 35
+            },
+            "categories": [
+                "Salad Toppings"
+            ],
+            "image": "/restaurants/chickfila/ingredients/soup-toppings/saltines.png",
+            "id": "bacon-crumbles"
+        },
+        {
+            "name": "Sliced Egg",
+            "nutrition": {
+                "calories": 20
+            },
+            "categories": [
+                "Salad Toppings"
+            ],
+            "image": "/restaurants/chickfila/ingredients/soup-toppings/saltines.png",
+            "id": "sliced-egg"
+        },
+        {
+            "name": "Bacon Crumbles",
+            "nutrition": {
+                "calories": 15
+            },
+            "categories": [
+                "Salad Toppings"
+            ],
+            "image": "/restaurants/chickfila/ingredients/soup-toppings/saltines.png",
+            "id": "bacon-crumbles"
+        },
+        {
+            "name": "Fruit",
+            "nutrition": {
+                "calories": 15
+            },
+            "categories": [
+                "Parfait Toppings"
+            ],
+            "image": "/restaurants/chickfila/ingredients/soup-toppings/saltines.png",
+            "id": "fruit"
+        },
+        {
+            "name": "Grape Jam",
+            "nutrition": {
+                "calories": 35
+            },
+            "categories": [
+                "Breakfast"
+            ],
+            "image": "/restaurants/chickfila/ingredients/soup-toppings/saltines.png",
+            "id": "grape-jam"
+        },
+        {
+            "name": "Strawberry Jam",
+            "nutrition": {
+                "calories": 35
+            },
+            "categories": [
+                "Breakfast"
+            ],
+            "image": "/restaurants/chickfila/ingredients/soup-toppings/saltines.png",
+            "id": "strawberry-jam"
+        },
+        {
+            "name": "Buttery Biscuit",
+            "nutrition": {
+                "calories": 290
+            },
+            "categories": [
+                "Breakfast"
+            ],
+            "image": "/restaurants/chickfila/ingredients/soup-toppings/saltines.png",
+            "id": "buttery-biscuit"
+        },
+        {
+            "name": "English Muffin",
+            "nutrition": {
+                "calories": 140
+            },
+            "categories": [
+                "Breakfast"
+            ],
+            "image": "/restaurants/chickfila/ingredients/soup-toppings/saltines.png",
+            "id": "english-muffin"
+        },
+        {
+            "name": "Egg Whites",
+            "nutrition": {
+                "calories": 30
+            },
+            "categories": [
+                "Breakfast"
+            ],
+            "image": "/restaurants/chickfila/ingredients/soup-toppings/saltines.png",
+            "id": "egg-whites"
+        },
+        {
+            "name": "Salsa",
+            "nutrition": {
+                "calories": 5
+            },
+            "categories": [
+                "Breakfast"
+            ],
+            "image": "/restaurants/chickfila/ingredients/soup-toppings/saltines.png",
+            "id": "salsa"
+        },
+        {
+            "name": "egg",
+            "nutrition": {
+                "calories": 60
+            },
+            "categories": [
+                "Breakfast"
+            ],
+            "image": "/restaurants/chickfila/ingredients/soup-toppings/saltines.png",
+            "id": "egg"
         }
     ],
     "addons": {
