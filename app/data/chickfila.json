@@ -3117,20 +3117,39 @@
         ],
         "extras": [
             {
-                "id": "ketchup",
                 "name": "Ketchup",
-                "image": "/restaurants/chickfila/menu/extras/ketchup.webp",
-                "nutrition": {
-                    "calories": 35
-                }
+                "calories": 35,
+                "image": "/restaurants/chickfila/menu/extras/ketchup.webp"
             },
             {
-                "id": "mayo",
                 "name": "Mayonnaise",
-                "image": "/restaurants/chickfila/menu/extras/mayo.webp",
-                "nutrition": {
-                    "calories": 90
-                }
+                "calories": 70,
+                "image": "/restaurants/chickfila/menu/extras/mayo.webp"
+            },
+            {
+                "name": "Mustard",
+                "calories": 5,
+                "image": "/restaurants/chickfila/menu/extras/mustard.webp"
+            },
+            {
+                "name": "Hot Sauce",
+                "calories": 0,
+                "image": "/restaurants/chickfila/menu/extras/hot-sauce.webp"
+            },
+            {
+                "name": "Honey",
+                "calories": 25,
+                "image": "/restaurants/chickfila/menu/extras/honey.webp"
+            },
+            {
+                "name": "Salt Packet",
+                "calories": 0,
+                "image": "/restaurants/chickfila/menu/extras/salt-packet.webp"
+            },
+            {
+                "name": "Pepper",
+                "calories": 5,
+                "image": "/restaurants/chickfila/menu/extras/pepper.webp"
             }
         ]
     },
