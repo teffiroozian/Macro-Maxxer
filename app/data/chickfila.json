@@ -550,6 +550,9 @@
                 "Side"
             ],
             "portionType": "single",
+            "addonRefs": [
+                "sauces"
+            ],
             "image": "/restaurants/chickfila/menu/sides/waffle-fries.webp",
             "defaultVariantId": "medium",
             "variants": [
