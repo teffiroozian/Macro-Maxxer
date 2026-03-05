@@ -42,11 +42,11 @@ function sumNutrition(base?: number, delta = 0) {
 }
 
 function formatMacro(value?: number) {
-  return value === undefined || Number.isNaN(value) ? "-g" : `${value}g`;
+  return value === undefined || Number.isNaN(value) ? "—g" : `${value}g`;
 }
 
 function formatCalories(value?: number) {
-  return value === undefined || Number.isNaN(value) ? "-" : String(value);
+  return value === undefined || Number.isNaN(value) ? "—" : String(value);
 }
 
 
