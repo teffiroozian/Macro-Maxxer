@@ -36,6 +36,19 @@ function formatDelta(value: number) {
   return `${value >= 0 ? "+" : ""}${value}`;
 }
 
+function sumNutrition(base?: number, delta = 0) {
+  if (base === undefined) return undefined;
+  return base + delta;
+}
+
+function formatMacro(value?: number) {
+  return value === undefined || Number.isNaN(value) ? "-g" : `${value}g`;
+}
+
+function formatCalories(value?: number) {
+  return value === undefined || Number.isNaN(value) ? "-" : String(value);
+}
+
 
 function addonFat(addon?: AddonOption) {
   return addon?.totalFat ?? addon?.fat ?? 0;
@@ -194,10 +207,10 @@ export default function ItemRouteModal({
 
   const nutrition = {
     ...baseNutrition,
-    calories: baseNutrition.calories + customizationTotals.calories,
-    protein: baseNutrition.protein + customizationTotals.protein,
-    carbs: baseNutrition.carbs + customizationTotals.carbs,
-    totalFat: baseNutrition.totalFat + customizationTotals.fat,
+    calories: sumNutrition(baseNutrition.calories, customizationTotals.calories),
+    protein: sumNutrition(baseNutrition.protein, customizationTotals.protein),
+    carbs: sumNutrition(baseNutrition.carbs, customizationTotals.carbs),
+    totalFat: sumNutrition(baseNutrition.totalFat, customizationTotals.fat),
   };
 
   const optionsLabel = useMemo(() => {
@@ -240,10 +253,10 @@ export default function ItemRouteModal({
       customizations: selectedCommonChanges.length ? selectedCommonChanges : undefined,
       quantity: 1,
       macrosPerItem: {
-        calories: nutrition.calories,
-        protein: nutrition.protein,
-        carbs: nutrition.carbs,
-        fat: nutrition.totalFat,
+        calories: nutrition.calories ?? 0,
+        protein: nutrition.protein ?? 0,
+        carbs: nutrition.carbs ?? 0,
+        fat: nutrition.totalFat ?? 0,
       },
     });
 
@@ -265,7 +278,7 @@ export default function ItemRouteModal({
           <div className={styles.macroSummary}>
             <div className={styles.macro}>
               <div className={styles.macroValueWrap}>
-                <span className={styles.macroValue}>{nutrition.calories}</span>
+                <span className={styles.macroValue}>{formatCalories(nutrition.calories)}</span>
                 {hasActiveCustomization ? (
                   <span className={styles.macroDelta}>{formatDelta(customizationTotals.calories)}</span>
                 ) : null}
@@ -274,7 +287,7 @@ export default function ItemRouteModal({
             </div>
             <div className={styles.macro}>
               <div className={styles.macroValueWrap}>
-                <span className={`${styles.macroValue} ${styles.protein}`}>{nutrition.protein}g</span>
+                <span className={`${styles.macroValue} ${styles.protein}`}>{formatMacro(nutrition.protein)}</span>
                 {hasActiveCustomization ? (
                   <span className={styles.macroDelta}>{formatDelta(customizationTotals.protein)}</span>
                 ) : null}
@@ -283,7 +296,7 @@ export default function ItemRouteModal({
             </div>
             <div className={styles.macro}>
               <div className={styles.macroValueWrap}>
-                <span className={`${styles.macroValue} ${styles.carbs}`}>{nutrition.carbs}g</span>
+                <span className={`${styles.macroValue} ${styles.carbs}`}>{formatMacro(nutrition.carbs)}</span>
                 {hasActiveCustomization ? (
                   <span className={styles.macroDelta}>{formatDelta(customizationTotals.carbs)}</span>
                 ) : null}
@@ -292,7 +305,7 @@ export default function ItemRouteModal({
             </div>
             <div className={styles.macro}>
               <div className={styles.macroValueWrap}>
-                <span className={`${styles.macroValue} ${styles.fat}`}>{nutrition.totalFat}g</span>
+                <span className={`${styles.macroValue} ${styles.fat}`}>{formatMacro(nutrition.totalFat)}</span>
                 {hasActiveCustomization ? (
                   <span className={styles.macroDelta}>{formatDelta(customizationTotals.fat)}</span>
                 ) : null}

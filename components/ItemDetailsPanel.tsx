@@ -13,7 +13,7 @@ import type {
 } from "@/types/menu";
 
 function format(n?: number, suffix = "") {
-  return n === undefined || n === null ? "—" : `${n}${suffix}`;
+  return n === undefined || n === null || Number.isNaN(n) ? `-${suffix}` : `${n}${suffix}`;
 }
 
 function calToProteinRatio(calories: number, protein: number) {
@@ -377,7 +377,7 @@ export default function ItemDetailsPanel({
         <div className={styles.caloriesRow}>
           <div className={styles.caloriesText}>Calories</div>
           <div className={styles.valueWithDelta}>
-            <div className={styles.caloriesValue}>{n.calories}</div>
+            <div className={styles.caloriesValue}>{n.calories === undefined || Number.isNaN(n.calories) ? "-" : n.calories}</div>
             {showCustomizationDeltas ? (
               <span className={styles.deltaValue}>{formatDelta(activeCustomizationTotals.calories)}</span>
             ) : null}

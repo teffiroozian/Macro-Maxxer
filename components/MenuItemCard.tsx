@@ -21,6 +21,19 @@ function formatDelta(value: number) {
   return `${value >= 0 ? "+" : ""}${value}`;
 }
 
+function formatMacro(value?: number) {
+  return value === undefined || Number.isNaN(value) ? "-g" : `${value}g`;
+}
+
+function formatCalories(value?: number) {
+  return value === undefined || Number.isNaN(value) ? "-" : String(value);
+}
+
+function sumNutrition(base?: number, delta = 0) {
+  if (base === undefined) return undefined;
+  return base + delta;
+}
+
 function formatCommonChangeForCart(label: string) {
   const [firstSegment] = label.split("→");
   const normalized = firstSegment.trim();
@@ -302,10 +315,10 @@ export default function MenuItemCard({
 
   const nutrition = {
     ...baseNutrition,
-    calories: baseNutrition.calories + addonNutritionTotals.calories + commonChangeTotals.calories,
-    protein: baseNutrition.protein + addonNutritionTotals.protein + commonChangeTotals.protein,
-    carbs: baseNutrition.carbs + addonNutritionTotals.carbs + commonChangeTotals.carbs,
-    totalFat: baseNutrition.totalFat + addonNutritionTotals.totalFat + commonChangeTotals.fat,
+    calories: sumNutrition(baseNutrition.calories, addonNutritionTotals.calories + commonChangeTotals.calories),
+    protein: sumNutrition(baseNutrition.protein, addonNutritionTotals.protein + commonChangeTotals.protein),
+    carbs: sumNutrition(baseNutrition.carbs, addonNutritionTotals.carbs + commonChangeTotals.carbs),
+    totalFat: sumNutrition(baseNutrition.totalFat, addonNutritionTotals.totalFat + commonChangeTotals.fat),
     satFat: addNutritionValue(baseNutrition.satFat, addonNutritionTotals.satFat),
     transFat: addNutritionValue(baseNutrition.transFat, addonNutritionTotals.transFat),
     cholesterol: addNutritionValue(baseNutrition.cholesterol, addonNutritionTotals.cholesterol),
@@ -322,9 +335,7 @@ export default function MenuItemCard({
   const rankText = typeof rankIndex === "number" ? pad2(rankIndex + 1) : null;
   const isCartMode = mode === "cart";
 
-  const ratio = useMemo(() => {
-    return Math.round(caloriesPerProtein({ calories, protein }));
-  }, [calories, protein]);
+  const ratio = Math.round(caloriesPerProtein({ calories: calories ?? 0, protein: protein ?? 0 }));
 
   const selectedCommonChanges = useMemo(
     () => applicableCommonChanges.filter((change) => selectedCommonChangeIds.includes(change.id)),
@@ -426,9 +437,9 @@ export default function MenuItemCard({
     ];
     const addonTotalsForCart = activeAddons.reduce(
       (sum, addon) => ({
-        calories: sum.calories + addon.calories,
-        protein: sum.protein + addon.protein,
-        carbs: sum.carbs + addon.carbs,
+        calories: sum.calories + (addon.calories ?? 0),
+        protein: sum.protein + (addon.protein ?? 0),
+        carbs: sum.carbs + (addon.carbs ?? 0),
         fat: sum.fat + addonFat(addon),
       }),
       { calories: 0, protein: 0, carbs: 0, fat: 0 }
@@ -451,10 +462,10 @@ export default function MenuItemCard({
       optionsLabel: nextOptionsLabel,
       customizations: nextCustomizations.length > 0 ? nextCustomizations : undefined,
       macrosPerItem: {
-        calories: baseForCart.calories + addonTotalsForCart.calories,
-        protein: baseForCart.protein + addonTotalsForCart.protein,
-        carbs: baseForCart.carbs + addonTotalsForCart.carbs,
-        fat: baseForCart.totalFat + addonTotalsForCart.fat,
+        calories: (baseForCart.calories ?? 0) + addonTotalsForCart.calories,
+        protein: (baseForCart.protein ?? 0) + addonTotalsForCart.protein,
+        carbs: (baseForCart.carbs ?? 0) + addonTotalsForCart.carbs,
+        fat: (baseForCart.totalFat ?? 0) + addonTotalsForCart.fat,
       },
     });
   };
@@ -479,10 +490,10 @@ export default function MenuItemCard({
         customizations,
         quantity: 1,
         macrosPerItem: {
-          calories: baseForCart.calories + addonTotals.calories,
-          protein: baseForCart.protein + addonTotals.protein,
-          carbs: baseForCart.carbs + addonTotals.carbs,
-          fat: baseForCart.totalFat + addonTotals.fat,
+          calories: (baseForCart.calories ?? 0) + addonTotals.calories,
+          protein: (baseForCart.protein ?? 0) + addonTotals.protein,
+          carbs: (baseForCart.carbs ?? 0) + addonTotals.carbs,
+          fat: (baseForCart.totalFat ?? 0) + addonTotals.fat,
         },
       });
     }
@@ -545,7 +556,7 @@ export default function MenuItemCard({
             <div className={styles.title}>{item.name}</div>
             <div className={styles.caloriesRow}>
               <div className={styles.caloriesWrap}>
-                <div className={styles.calories}>{calories} calories</div>
+                <div className={styles.calories}>{formatCalories(calories)} calories</div>
                 {hasActiveCustomization ? (
                   <span className={styles.macroDelta}>{formatDelta(customizationTotals.calories)}</span>
                 ) : null}
@@ -587,21 +598,21 @@ export default function MenuItemCard({
             )}
             <div className={styles.macro}>
               <div className={styles.macroValueWrap}>
-                <div className={`${styles.macroValue} ${styles.protein}`}>{protein}g</div>
+                <div className={`${styles.macroValue} ${styles.protein}`}>{formatMacro(protein)}</div>
                 {hasActiveCustomization ? <span className={styles.macroDelta}>{formatDelta(customizationTotals.protein)}</span> : null}
               </div>
               <div className={styles.macroLabel}>PROTEIN</div>
             </div>
             <div className={styles.macro}>
               <div className={styles.macroValueWrap}>
-                <div className={`${styles.macroValue} ${styles.carbs}`}>{carbs}g</div>
+                <div className={`${styles.macroValue} ${styles.carbs}`}>{formatMacro(carbs)}</div>
                 {hasActiveCustomization ? <span className={styles.macroDelta}>{formatDelta(customizationTotals.carbs)}</span> : null}
               </div>
               <div className={styles.macroLabel}>CARBS</div>
             </div>
             <div className={styles.macro}>
               <div className={styles.macroValueWrap}>
-                <div className={`${styles.macroValue} ${styles.fat}`}>{fat}g</div>
+                <div className={`${styles.macroValue} ${styles.fat}`}>{formatMacro(fat)}</div>
                 {hasActiveCustomization ? <span className={styles.macroDelta}>{formatDelta(customizationTotals.fat)}</span> : null}
               </div>
               <div className={styles.macroLabel}>FAT</div>

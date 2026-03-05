@@ -8,10 +8,10 @@ export type PortionType =
   | "dessert";
 
 export type Nutrition = {
-  calories: number;
-  protein: number;
-  totalFat: number;
-  carbs: number;
+  calories?: number;
+  protein?: number;
+  totalFat?: number;
+  carbs?: number;
 
   satFat?: number;
   transFat?: number;
@@ -34,10 +34,10 @@ export type AddonRef = "sauces" | "dressings" | "extras";
 
 export type AddonOption = {
   name: string;
-  calories: number;
-  protein: number;
-  carbs: number;
-  fat: number;
+  calories?: number;
+  protein?: number;
+  carbs?: number;
+  fat?: number;
   totalFat?: number;
   satFat?: number;
   transFat?: number;

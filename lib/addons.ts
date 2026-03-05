@@ -30,8 +30,8 @@ type RawAddonOption = {
   }>;
 };
 
-function toNumber(value: unknown, fallback = 0) {
-  return typeof value === "number" && Number.isFinite(value) ? value : fallback;
+function toNumber(value: unknown) {
+  return typeof value === "number" && Number.isFinite(value) ? value : undefined;
 }
 
 function normalizeAddonOption(addon: RawAddonOption): AddonOption {
