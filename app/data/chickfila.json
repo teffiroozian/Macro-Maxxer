@@ -3114,6 +3114,24 @@
                 "protein": 0,
                 "image": "/restaurants/chickfila/menu/dressings/zesty-apple-cider-vinaigrette.webp"
             }
+        ],
+        "extras": [
+            {
+                "id": "ketchup",
+                "name": "Ketchup",
+                "image": "/restaurants/chickfila/menu/extras/ketchup.webp",
+                "nutrition": {
+                    "calories": 35
+                }
+            },
+            {
+                "id": "mayo",
+                "name": "Mayonnaise",
+                "image": "/restaurants/chickfila/menu/extras/mayo.webp",
+                "nutrition": {
+                    "calories": 90
+                }
+            }
         ]
     },
     "commonChanges": [

@@ -18,6 +18,7 @@ import paneraMenu from "@/app/data/panera.json";
 import starbucksMenu from "@/app/data/starbucks.json";
 import subwayMenu from "@/app/data/subway.json";
 import { useCart } from "@/stores/cartStore";
+import { normalizeAddons } from "@/lib/addons";
 import styles from "@/components/ItemDetails.module.css";
 
 const menuLookupByRestaurant: Record<string, MenuItem[]> = {
@@ -33,15 +34,15 @@ const menuLookupByRestaurant: Record<string, MenuItem[]> = {
 };
 
 const addonsLookupByRestaurant: Record<string, RestaurantAddons> = {
-  chickfila: chickfilaMenu.addons,
-  chipotle: chipotleMenu.addons,
-  habit: habitMenu.addons,
-  mcdonalds: mcdonaldsMenu.addons,
-  mod: modMenu.addons,
-  panda: pandaMenu.addons,
-  panera: paneraMenu.addons,
-  starbucks: starbucksMenu.addons,
-  subway: subwayMenu.addons,
+  chickfila: normalizeAddons(chickfilaMenu.addons),
+  chipotle: normalizeAddons(chipotleMenu.addons),
+  habit: normalizeAddons(habitMenu.addons),
+  mcdonalds: normalizeAddons(mcdonaldsMenu.addons),
+  mod: normalizeAddons(modMenu.addons),
+  panda: normalizeAddons(pandaMenu.addons),
+  panera: normalizeAddons(paneraMenu.addons),
+  starbucks: normalizeAddons(starbucksMenu.addons),
+  subway: normalizeAddons(subwayMenu.addons),
 };
 
 type NutritionTotals = {

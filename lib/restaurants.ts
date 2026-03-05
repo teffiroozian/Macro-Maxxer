@@ -1,4 +1,5 @@
 import restaurants from "@/app/data/index.json";
+import { normalizeAddons } from "@/lib/addons";
 import type { CommonChange, IngredientItem, MenuItem, RestaurantAddons } from "@/types/menu";
 
 export type RestaurantData = {
@@ -33,7 +34,7 @@ export async function getRestaurantData(id: string): Promise<RestaurantData | nu
     menuFile: restaurant.menuFile,
     items: menu.default.items as MenuItem[],
     ingredients: (menu.default.ingredients ?? []) as IngredientItem[],
-    addons: (menu.default.addons ?? {}) as RestaurantAddons,
+    addons: normalizeAddons(menu.default.addons),
     commonChanges: (menu.default.commonChanges ?? []) as CommonChange[],
   };
 }
