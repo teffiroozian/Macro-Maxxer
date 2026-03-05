@@ -342,12 +342,12 @@
             "portionType": "single",
             "ingredients": [
                 "Honey Roasted BBQ Sauce",
-                "Multigrain Brioche Bun",
-                "grilled filet",
+                "multigrain-brioche-bun",
+                "grilled-filet",
                 "bacon",
                 "tomato",
                 "lettuce",
-                "colby jack cheese"
+                "colby-jack-cheese"
             ],
             "image": "/restaurants/chickfila/menu/sandwiches/grilled-chicken-club.webp"
         },
@@ -1816,7 +1816,7 @@
             ]
         },
         {
-            "name": "Sunjoy® (1/2 Sweet Tea, 1/2 Lemonade)",
+            "name": "Sunjoy\u00ae (1/2 Sweet Tea, 1/2 Lemonade)",
             "nutrition": {
                 "calories": 240,
                 "totalFat": 0,
@@ -1890,7 +1890,7 @@
             ]
         },
         {
-            "name": "Sunjoy® (1/2 Sweet Tea, 1/2 Diet Lemonade)",
+            "name": "Sunjoy\u00ae (1/2 Sweet Tea, 1/2 Diet Lemonade)",
             "nutrition": {
                 "calories": 110,
                 "totalFat": 0,
@@ -1964,7 +1964,7 @@
             ]
         },
         {
-            "name": "Sunjoy® (1/2 Unsweet Tea, 1/2 Lemonade)",
+            "name": "Sunjoy\u00ae (1/2 Unsweet Tea, 1/2 Lemonade)",
             "nutrition": {
                 "calories": 160,
                 "totalFat": 0,
@@ -2038,7 +2038,7 @@
             ]
         },
         {
-            "name": "Sunjoy® (1/2 Unsweet Tea, 1/2 Diet Lemonade)",
+            "name": "Sunjoy\u00ae (1/2 Unsweet Tea, 1/2 Diet Lemonade)",
             "nutrition": {
                 "calories": 35,
                 "totalFat": 0,
@@ -2169,7 +2169,7 @@
             ]
         },
         {
-            "name": "Coca-Cola®",
+            "name": "Coca-Cola\u00ae",
             "nutrition": {
                 "calories": 170,
                 "totalFat": 0,
@@ -2243,7 +2243,7 @@
             ]
         },
         {
-            "name": "DASANI® Bottled Water",
+            "name": "DASANI\u00ae Bottled Water",
             "nutrition": {
                 "calories": 0,
                 "totalFat": 0,
@@ -2263,7 +2263,7 @@
             "image": "/restaurants/chickfila/menu/drinks/dasani-water.webp"
         },
         {
-            "name": "Honest Kids® Apple Juice",
+            "name": "Honest Kids\u00ae Apple Juice",
             "nutrition": {
                 "calories": 35,
                 "totalFat": 0,
@@ -2283,7 +2283,7 @@
             "image": "/restaurants/chickfila/menu/drinks/apple-juice.webp"
         },
         {
-            "name": "Simply Orange®",
+            "name": "Simply Orange\u00ae",
             "nutrition": {
                 "calories": 160,
                 "totalFat": 0,
@@ -2343,7 +2343,7 @@
             "image": "/restaurants/chickfila/menu/drinks/1-milk.webp"
         },
         {
-            "name": "Dr Pepper®",
+            "name": "Dr Pepper\u00ae",
             "nutrition": {
                 "calories": 170,
                 "totalFat": 0,
@@ -2465,7 +2465,8 @@
                 "Ingredients",
                 "Buns"
             ],
-            "image": "/restaurants/chickfila/ingredients/buns/gluten-free-bun.webp"
+            "image": "/restaurants/chickfila/ingredients/buns/gluten-free-bun.webp",
+            "id": "gluten-free-bun"
         },
         {
             "name": "Buttery White Bun",
@@ -2485,7 +2486,8 @@
                 "Ingredients",
                 "Buns"
             ],
-            "image": "/restaurants/chickfila/ingredients/buns/white-bun.webp"
+            "image": "/restaurants/chickfila/ingredients/buns/white-bun.webp",
+            "id": "buttery-white-bun"
         },
         {
             "name": "Multigrain Brioche Bun",
@@ -2505,7 +2507,8 @@
                 "Ingredients",
                 "Buns"
             ],
-            "image": "/restaurants/chickfila/ingredients/buns/multigrain-brioche.webp"
+            "image": "/restaurants/chickfila/ingredients/buns/multigrain-brioche.webp",
+            "id": "multigrain-brioche-bun"
         },
         {
             "name": "White Bun (Unbuttered)",
@@ -2525,383 +2528,450 @@
                 "Ingredients",
                 "Buns"
             ],
-            "image": "/restaurants/chickfila/ingredients/buns/white-bun.webp"
+            "image": "/restaurants/chickfila/ingredients/buns/white-bun.webp",
+            "id": "white-bun-unbuttered"
         },
         {
-  "name": "Wrapped in Lettuce",
-  "nutrition": {
-    "calories": 5,
-    "totalFat": 0,
-    "satFat": 0,
-    "transFat": 0,
-    "cholesterol": 0,
-    "sodium": 5,
-    "carbs": 1,
-    "fiber": 0,
-    "sugars": 0,
-    "protein": 0
-  },
-  "categories": ["Buns"],
-  "image": "/restaurants/chickfila/ingredients/buns/lettuce-wrap.webp"
-},
+            "name": "Wrapped in Lettuce",
+            "nutrition": {
+                "calories": 5,
+                "totalFat": 0,
+                "satFat": 0,
+                "transFat": 0,
+                "cholesterol": 0,
+                "sodium": 5,
+                "carbs": 1,
+                "fiber": 0,
+                "sugars": 0,
+                "protein": 0
+            },
+            "categories": [
+                "Buns"
+            ],
+            "image": "/restaurants/chickfila/ingredients/buns/lettuce-wrap.webp",
+            "id": "wrapped-in-lettuce"
+        },
         {
-  "name": "Grilled Breakfast Filet",
-  "nutrition": {
-    "calories": 60,
-    "totalFat": 1,
-    "satFat": 0,
-    "transFat": 0,
-    "cholesterol": 40,
-    "sodium": 420,
-    "carbs": 0,
-    "fiber": 0,
-    "sugars": 0,
-    "protein": 13
-  },
-  "categories": ["Proteins"],
-  "image": "/restaurants/chickfila/ingredients/proteins/grilled-filet.webp"
-},
-{
-  "name": "Chick-fil-A® Breakfast Filet",
-  "nutrition": {
-    "calories": 160,
-    "totalFat": 8,
-    "satFat": 1.5,
-    "transFat": 0,
-    "cholesterol": 45,
-    "sodium": 750,
-    "carbs": 8,
-    "fiber": 0,
-    "sugars": 2,
-    "protein": 15
-  },
-  "categories": ["Proteins"],
-  "image": "/restaurants/chickfila/ingredients/proteins/cfa-filet.webp"
-},
-{
-  "name": "Spicy Breakfast Filet",
-  "nutrition": {
-    "calories": 150,
-    "totalFat": 7,
-    "satFat": 1.5,
-    "transFat": 0,
-    "cholesterol": 40,
-    "sodium": 810,
-    "carbs": 7,
-    "fiber": 1,
-    "sugars": 1,
-    "protein": 15
-  },
-  "categories": ["Proteins"],
-  "image": "/restaurants/chickfila/ingredients/proteins/spicy-filet.webp"
-},
-{
-  "name": "Grilled Filet",
-  "nutrition": {
-    "calories": 110,
-    "totalFat": 2,
-    "satFat": 0,
-    "transFat": 0,
-    "cholesterol": 70,
-    "sodium": 370,
-    "carbs": 1,
-    "fiber": 0,
-    "sugars": 1,
-    "protein": 21
-  },
-  "categories": ["Proteins"],
-  "image": "/restaurants/chickfila/ingredients/proteins/grilled-filet.webp"
-},
-{
-  "name": "Spicy Filet",
-  "nutrition": {
-    "calories": 280,
-    "totalFat": 13,
-    "satFat": 2.5,
-    "transFat": 0,
-    "cholesterol": 65,
-    "sodium": 1390,
-    "carbs": 16,
-    "fiber": 1,
-    "sugars": 2,
-    "protein": 23
-  },
-  "categories": ["Proteins"],
-  "image": "/restaurants/chickfila/ingredients/proteins/spicy-filet.webp"
-},
-{
-  "name": "Chick-fil-A® Filet",
-  "nutrition": {
-    "calories": 250,
-    "totalFat": 12,
-    "satFat": 2.5,
-    "transFat": 0,
-    "cholesterol": 70,
-    "sodium": 1120,
-    "carbs": 12,
-    "fiber": 0,
-    "sugars": 1,
-    "protein": 24
-  },
-  "categories": ["Proteins"],
-  "image": "/restaurants/chickfila/ingredients/proteins/cfa-filet.webp"
-},
-{
-  "name": "Bacon",
-  "nutrition": {
-    "calories": 50,
-    "totalFat": 3.5,
-    "satFat": 1.5,
-    "transFat": 0,
-    "cholesterol": 10,
-    "sodium": 210,
-    "carbs": 0,
-    "fiber": 0,
-    "sugars": 0,
-    "protein": 4
-  },
-  "categories": ["Proteins", "Sandwich Toppings"],
-  "image": "/restaurants/chickfila/ingredients/proteins/bacon.webp"
-},
-{
-  "name": "Sausage",
-  "nutrition": {
-    "calories": 240,
-    "totalFat": 22,
-    "satFat": 8,
-    "transFat": 0,
-    "cholesterol": 35,
-    "sodium": 430,
-    "carbs": 1,
-    "fiber": 0,
-    "sugars": 0,
-    "protein": 11
-  },
-  "categories": ["Proteins"],
-  "image": "/restaurants/chickfila/ingredients/proteins/sausage.webp"
-},
-{
-  "name": "Roasted Nut Blend",
-  "nutrition": {
-    "calories": 70,
-    "totalFat": 6,
-    "satFat": 0.5,
-    "transFat": 0,
-    "cholesterol": 0,
-    "sodium": 0,
-    "carbs": 2,
-    "fiber": 1,
-    "sugars": 1,
-    "protein": 1
-  },
-  "categories": ["Salad Toppings"],
-  "image": "/restaurants/chickfila/ingredients/salad-toppings/roasted-nut-blend.png"
-},
-{
-  "name": "Harvest Nut Granola",
-  "nutrition": {
-    "calories": 70,
-    "totalFat": 2,
-    "satFat": 0,
-    "transFat": 0,
-    "cholesterol": 0,
-    "sodium": 35,
-    "carbs": 10,
-    "fiber": 0,
-    "sugars": 4,
-    "protein": 1
-  },
-  "categories": ["Salad Toppings"],
-  "image": "/restaurants/chickfila/ingredients/salad-toppings/harvest-nut-granola.png"
-},
-{
-  "name": "Seasoned Tortilla Strips",
-  "nutrition": {
-    "calories": 70,
-    "totalFat": 4,
-    "satFat": 0,
-    "transFat": 0,
-    "cholesterol": 0,
-    "sodium": 55,
-    "carbs": 8,
-    "fiber": 1,
-    "sugars": 0,
-    "protein": 1
-  },
-  "categories": ["Salad Toppings"],
-  "image": "/restaurants/chickfila/ingredients/salad-toppings/seasoned-tortilla-strips.png"
-  
-},
-{
-  "name": "Blue Cheese Crumbles",
-  "nutrition": {
-    "calories": 30,
-    "totalFat": 2.5,
-    "satFat": 1.5,
-    "transFat": 0,
-    "cholesterol": 10,
-    "sodium": 110,
-    "carbs": 0,
-    "fiber": 0,
-    "sugars": 0,
-    "protein": 2
-  },
-  "categories": ["Salad Toppings"],
-  "image": "/restaurants/chickfila/ingredients/salad-toppings/blue-cheese-crumbles.png"
-},
-{
-  "name": "Crispy Bell Peppers",
-  "nutrition": {
-    "calories": 80,
-    "totalFat": 6,
-    "satFat": 0,
-    "transFat": 0,
-    "cholesterol": 0,
-    "sodium": 75,
-    "carbs": 6,
-    "fiber": 0,
-    "sugars": 0,
-    "protein": 1
-  },
-  "categories": ["Salad Toppings"],
-  "image": "/restaurants/chickfila/ingredients/salad-toppings/crispy-bell-peppers.png"
-},
-{
-  "name": "Chili Lime Pepitas",
-  "nutrition": {
-    "calories": 80,
-    "totalFat": 7,
-    "satFat": 1,
-    "transFat": 0,
-    "cholesterol": 0,
-    "sodium": 50,
-    "carbs": 2,
-    "fiber": 1,
-    "sugars": 0,
-    "protein": 4
-  },
-  "categories": ["Salad Toppings"],
-  "image": "/restaurants/chickfila/ingredients/salad-toppings/chili-lime-pepitas.png"
-},
-{
-  "name": "American Cheese",
-  "nutrition": {
-    "calories": 50,
-    "totalFat": 4.5,
-    "satFat": 2.5,
-    "transFat": 0,
-    "cholesterol": 15,
-    "sodium": 230,
-    "carbs": 1,
-    "fiber": 0,
-    "sugars": 0,
-    "protein": 3
-  },
-  "categories": ["Sandwich Toppings"],
-  "image": "/restaurants/chickfila/ingredients/sandwich-toppings/american-cheese.webp"
-},
-{
-  "name": "Colby Jack Cheese",
-  "nutrition": {
-    "calories": 80,
-    "totalFat": 7,
-    "satFat": 4,
-    "transFat": 0,
-    "cholesterol": 20,
-    "sodium": 140,
-    "carbs": 0,
-    "fiber": 0,
-    "sugars": 0,
-    "protein": 5
-  },
-  "categories": ["Sandwich Toppings"],
-  "image": "/restaurants/chickfila/ingredients/sandwich-toppings/colby-jack-cheese.webp"
-},
-{
-  "name": "Pepper Jack Cheese",
-  "nutrition": {
-    "calories": 80,
-    "totalFat": 6,
-    "satFat": 4,
-    "transFat": 0,
-    "cholesterol": 20,
-    "sodium": 140,
-    "carbs": 0,
-    "fiber": 0,
-    "sugars": 0,
-    "protein": 4
-  },
-  "categories": ["Sandwich Toppings"],
-  "image": "/restaurants/chickfila/ingredients/sandwich-toppings/pepper-jack-cheese.webp"
-},
-{
-  "name": "Tomato",
-  "nutrition": {
-    "calories": 5,
-    "totalFat": 0,
-    "satFat": 0,
-    "transFat": 0,
-    "cholesterol": 0,
-    "sodium": 0,
-    "carbs": 1,
-    "fiber": 0,
-    "sugars": 1,
-    "protein": 0
-  },
-  "categories": ["Sandwich Toppings"],
-  "image": "/restaurants/chickfila/ingredients/sandwich-toppings/tomato.webp"
-},
-{
-  "name": "Lettuce",
-  "nutrition": {
-    "calories": 5,
-    "totalFat": 0,
-    "satFat": 0,
-    "transFat": 0,
-    "cholesterol": 0,
-    "sodium": 5,
-    "carbs": 1,
-    "fiber": 0,
-    "sugars": 0,
-    "protein": 0
-  },
-  "categories": ["Sandwich Toppings"],
-  "image": "/restaurants/chickfila/ingredients/sandwich-toppings/lettuce.webp"
-},
-{
-  "name": "Pickles",
-  "nutrition": {
-    "calories": 0,
-    "totalFat": 0,
-    "satFat": 0,
-    "transFat": 0,
-    "cholesterol": 0,
-    "sodium": 115,
-    "carbs": 0,
-    "fiber": 0,
-    "sugars": 0,
-    "protein": 0
-  },
-  "categories": ["Sandwich Toppings"],
-  "image": "/restaurants/chickfila/ingredients/sandwich-toppings/pickles.webp"
-},
-{
-  "name": "Saltines",
-  "nutrition": {
-    "calories": 50,
-    "totalFat": 1,
-    "satFat": 0,
-    "transFat": 0,
-    "cholesterol": 0,
-    "sodium": 180,
-    "carbs": 9,
-    "fiber": 0,
-    "sugars": 0,
-    "protein": 1
-  },
-  "categories": ["Soup Toppings"],
-  "image": "/restaurants/chickfila/ingredients/soup-toppings/saltines.png"
-}
+            "name": "Grilled Breakfast Filet",
+            "nutrition": {
+                "calories": 60,
+                "totalFat": 1,
+                "satFat": 0,
+                "transFat": 0,
+                "cholesterol": 40,
+                "sodium": 420,
+                "carbs": 0,
+                "fiber": 0,
+                "sugars": 0,
+                "protein": 13
+            },
+            "categories": [
+                "Proteins"
+            ],
+            "image": "/restaurants/chickfila/ingredients/proteins/grilled-filet.webp",
+            "id": "grilled-breakfast-filet"
+        },
+        {
+            "name": "Chick-fil-A\u00ae Breakfast Filet",
+            "nutrition": {
+                "calories": 160,
+                "totalFat": 8,
+                "satFat": 1.5,
+                "transFat": 0,
+                "cholesterol": 45,
+                "sodium": 750,
+                "carbs": 8,
+                "fiber": 0,
+                "sugars": 2,
+                "protein": 15
+            },
+            "categories": [
+                "Proteins"
+            ],
+            "image": "/restaurants/chickfila/ingredients/proteins/cfa-filet.webp",
+            "id": "chick-fil-a-breakfast-filet"
+        },
+        {
+            "name": "Spicy Breakfast Filet",
+            "nutrition": {
+                "calories": 150,
+                "totalFat": 7,
+                "satFat": 1.5,
+                "transFat": 0,
+                "cholesterol": 40,
+                "sodium": 810,
+                "carbs": 7,
+                "fiber": 1,
+                "sugars": 1,
+                "protein": 15
+            },
+            "categories": [
+                "Proteins"
+            ],
+            "image": "/restaurants/chickfila/ingredients/proteins/spicy-filet.webp",
+            "id": "spicy-breakfast-filet"
+        },
+        {
+            "name": "Grilled Filet",
+            "nutrition": {
+                "calories": 110,
+                "totalFat": 2,
+                "satFat": 0,
+                "transFat": 0,
+                "cholesterol": 70,
+                "sodium": 370,
+                "carbs": 1,
+                "fiber": 0,
+                "sugars": 1,
+                "protein": 21
+            },
+            "categories": [
+                "Proteins"
+            ],
+            "image": "/restaurants/chickfila/ingredients/proteins/grilled-filet.webp",
+            "id": "grilled-filet"
+        },
+        {
+            "name": "Spicy Filet",
+            "nutrition": {
+                "calories": 280,
+                "totalFat": 13,
+                "satFat": 2.5,
+                "transFat": 0,
+                "cholesterol": 65,
+                "sodium": 1390,
+                "carbs": 16,
+                "fiber": 1,
+                "sugars": 2,
+                "protein": 23
+            },
+            "categories": [
+                "Proteins"
+            ],
+            "image": "/restaurants/chickfila/ingredients/proteins/spicy-filet.webp",
+            "id": "spicy-filet"
+        },
+        {
+            "name": "Chick-fil-A\u00ae Filet",
+            "nutrition": {
+                "calories": 250,
+                "totalFat": 12,
+                "satFat": 2.5,
+                "transFat": 0,
+                "cholesterol": 70,
+                "sodium": 1120,
+                "carbs": 12,
+                "fiber": 0,
+                "sugars": 1,
+                "protein": 24
+            },
+            "categories": [
+                "Proteins"
+            ],
+            "image": "/restaurants/chickfila/ingredients/proteins/cfa-filet.webp",
+            "id": "chick-fil-a-filet"
+        },
+        {
+            "name": "Bacon",
+            "nutrition": {
+                "calories": 50,
+                "totalFat": 3.5,
+                "satFat": 1.5,
+                "transFat": 0,
+                "cholesterol": 10,
+                "sodium": 210,
+                "carbs": 0,
+                "fiber": 0,
+                "sugars": 0,
+                "protein": 4
+            },
+            "categories": [
+                "Proteins",
+                "Sandwich Toppings"
+            ],
+            "image": "/restaurants/chickfila/ingredients/proteins/bacon.webp",
+            "id": "bacon"
+        },
+        {
+            "name": "Sausage",
+            "nutrition": {
+                "calories": 240,
+                "totalFat": 22,
+                "satFat": 8,
+                "transFat": 0,
+                "cholesterol": 35,
+                "sodium": 430,
+                "carbs": 1,
+                "fiber": 0,
+                "sugars": 0,
+                "protein": 11
+            },
+            "categories": [
+                "Proteins"
+            ],
+            "image": "/restaurants/chickfila/ingredients/proteins/sausage.webp",
+            "id": "sausage"
+        },
+        {
+            "name": "Roasted Nut Blend",
+            "nutrition": {
+                "calories": 70,
+                "totalFat": 6,
+                "satFat": 0.5,
+                "transFat": 0,
+                "cholesterol": 0,
+                "sodium": 0,
+                "carbs": 2,
+                "fiber": 1,
+                "sugars": 1,
+                "protein": 1
+            },
+            "categories": [
+                "Salad Toppings"
+            ],
+            "image": "/restaurants/chickfila/ingredients/salad-toppings/roasted-nut-blend.png",
+            "id": "roasted-nut-blend"
+        },
+        {
+            "name": "Harvest Nut Granola",
+            "nutrition": {
+                "calories": 70,
+                "totalFat": 2,
+                "satFat": 0,
+                "transFat": 0,
+                "cholesterol": 0,
+                "sodium": 35,
+                "carbs": 10,
+                "fiber": 0,
+                "sugars": 4,
+                "protein": 1
+            },
+            "categories": [
+                "Salad Toppings"
+            ],
+            "image": "/restaurants/chickfila/ingredients/salad-toppings/harvest-nut-granola.png",
+            "id": "harvest-nut-granola"
+        },
+        {
+            "name": "Seasoned Tortilla Strips",
+            "nutrition": {
+                "calories": 70,
+                "totalFat": 4,
+                "satFat": 0,
+                "transFat": 0,
+                "cholesterol": 0,
+                "sodium": 55,
+                "carbs": 8,
+                "fiber": 1,
+                "sugars": 0,
+                "protein": 1
+            },
+            "categories": [
+                "Salad Toppings"
+            ],
+            "image": "/restaurants/chickfila/ingredients/salad-toppings/seasoned-tortilla-strips.png",
+            "id": "seasoned-tortilla-strips"
+        },
+        {
+            "name": "Blue Cheese Crumbles",
+            "nutrition": {
+                "calories": 30,
+                "totalFat": 2.5,
+                "satFat": 1.5,
+                "transFat": 0,
+                "cholesterol": 10,
+                "sodium": 110,
+                "carbs": 0,
+                "fiber": 0,
+                "sugars": 0,
+                "protein": 2
+            },
+            "categories": [
+                "Salad Toppings"
+            ],
+            "image": "/restaurants/chickfila/ingredients/salad-toppings/blue-cheese-crumbles.png",
+            "id": "blue-cheese-crumbles"
+        },
+        {
+            "name": "Crispy Bell Peppers",
+            "nutrition": {
+                "calories": 80,
+                "totalFat": 6,
+                "satFat": 0,
+                "transFat": 0,
+                "cholesterol": 0,
+                "sodium": 75,
+                "carbs": 6,
+                "fiber": 0,
+                "sugars": 0,
+                "protein": 1
+            },
+            "categories": [
+                "Salad Toppings"
+            ],
+            "image": "/restaurants/chickfila/ingredients/salad-toppings/crispy-bell-peppers.png",
+            "id": "crispy-bell-peppers"
+        },
+        {
+            "name": "Chili Lime Pepitas",
+            "nutrition": {
+                "calories": 80,
+                "totalFat": 7,
+                "satFat": 1,
+                "transFat": 0,
+                "cholesterol": 0,
+                "sodium": 50,
+                "carbs": 2,
+                "fiber": 1,
+                "sugars": 0,
+                "protein": 4
+            },
+            "categories": [
+                "Salad Toppings"
+            ],
+            "image": "/restaurants/chickfila/ingredients/salad-toppings/chili-lime-pepitas.png",
+            "id": "chili-lime-pepitas"
+        },
+        {
+            "name": "American Cheese",
+            "nutrition": {
+                "calories": 50,
+                "totalFat": 4.5,
+                "satFat": 2.5,
+                "transFat": 0,
+                "cholesterol": 15,
+                "sodium": 230,
+                "carbs": 1,
+                "fiber": 0,
+                "sugars": 0,
+                "protein": 3
+            },
+            "categories": [
+                "Sandwich Toppings"
+            ],
+            "image": "/restaurants/chickfila/ingredients/sandwich-toppings/american-cheese.webp",
+            "id": "american-cheese"
+        },
+        {
+            "name": "Colby Jack Cheese",
+            "nutrition": {
+                "calories": 80,
+                "totalFat": 7,
+                "satFat": 4,
+                "transFat": 0,
+                "cholesterol": 20,
+                "sodium": 140,
+                "carbs": 0,
+                "fiber": 0,
+                "sugars": 0,
+                "protein": 5
+            },
+            "categories": [
+                "Sandwich Toppings"
+            ],
+            "image": "/restaurants/chickfila/ingredients/sandwich-toppings/colby-jack-cheese.webp",
+            "id": "colby-jack-cheese"
+        },
+        {
+            "name": "Pepper Jack Cheese",
+            "nutrition": {
+                "calories": 80,
+                "totalFat": 6,
+                "satFat": 4,
+                "transFat": 0,
+                "cholesterol": 20,
+                "sodium": 140,
+                "carbs": 0,
+                "fiber": 0,
+                "sugars": 0,
+                "protein": 4
+            },
+            "categories": [
+                "Sandwich Toppings"
+            ],
+            "image": "/restaurants/chickfila/ingredients/sandwich-toppings/pepper-jack-cheese.webp",
+            "id": "pepper-jack-cheese"
+        },
+        {
+            "name": "Tomato",
+            "nutrition": {
+                "calories": 5,
+                "totalFat": 0,
+                "satFat": 0,
+                "transFat": 0,
+                "cholesterol": 0,
+                "sodium": 0,
+                "carbs": 1,
+                "fiber": 0,
+                "sugars": 1,
+                "protein": 0
+            },
+            "categories": [
+                "Sandwich Toppings"
+            ],
+            "image": "/restaurants/chickfila/ingredients/sandwich-toppings/tomato.webp",
+            "id": "tomato"
+        },
+        {
+            "name": "Lettuce",
+            "nutrition": {
+                "calories": 5,
+                "totalFat": 0,
+                "satFat": 0,
+                "transFat": 0,
+                "cholesterol": 0,
+                "sodium": 5,
+                "carbs": 1,
+                "fiber": 0,
+                "sugars": 0,
+                "protein": 0
+            },
+            "categories": [
+                "Sandwich Toppings"
+            ],
+            "image": "/restaurants/chickfila/ingredients/sandwich-toppings/lettuce.webp",
+            "id": "lettuce"
+        },
+        {
+            "name": "Pickles",
+            "nutrition": {
+                "calories": 0,
+                "totalFat": 0,
+                "satFat": 0,
+                "transFat": 0,
+                "cholesterol": 0,
+                "sodium": 115,
+                "carbs": 0,
+                "fiber": 0,
+                "sugars": 0,
+                "protein": 0
+            },
+            "categories": [
+                "Sandwich Toppings"
+            ],
+            "image": "/restaurants/chickfila/ingredients/sandwich-toppings/pickles.webp",
+            "id": "pickles"
+        },
+        {
+            "name": "Saltines",
+            "nutrition": {
+                "calories": 50,
+                "totalFat": 1,
+                "satFat": 0,
+                "transFat": 0,
+                "cholesterol": 0,
+                "sodium": 180,
+                "carbs": 9,
+                "fiber": 0,
+                "sugars": 0,
+                "protein": 1
+            },
+            "categories": [
+                "Soup Toppings"
+            ],
+            "image": "/restaurants/chickfila/ingredients/soup-toppings/saltines.png",
+            "id": "saltines"
+        }
     ],
     "addons": {
         "sauces": [
