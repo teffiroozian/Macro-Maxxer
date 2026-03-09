@@ -61,17 +61,8 @@ export default function ControlsRow({
   onSortChange,
   filters,
   onFiltersChange,
-  restaurantName,
-  restaurantLogo,
-  categoryOptions = [],
-  activeCategory,
-  onCategorySelect,
   showChips = true,
   wrapperId,
-  searchQuery,
-  onSearchChange,
-  onBrandClick,
-  showBranding = true,
   entireMenu = false,
   onEntireMenuChange,
   calorieBounds,
@@ -82,17 +73,8 @@ export default function ControlsRow({
   onSortChange: (sort: SortOption) => void;
   filters: Filters;
   onFiltersChange: (filters: Filters) => void;
-  restaurantName: string;
-  restaurantLogo: string;
-  categoryOptions?: Array<{ id: string; label: string }>;
-  activeCategory?: string;
-  onCategorySelect?: (id: string) => void;
   showChips?: boolean;
   wrapperId?: string;
-  searchQuery: string;
-  onSearchChange: (value: string) => void;
-  onBrandClick: () => void;
-  showBranding?: boolean;
   entireMenu?: boolean;
   onEntireMenuChange?: (checked: boolean) => void;
   calorieBounds: {
@@ -100,16 +82,6 @@ export default function ControlsRow({
     max: number;
   };
 }) {
-  void restaurantName;
-  void restaurantLogo;
-  void categoryOptions;
-  void activeCategory;
-  void onCategorySelect;
-  void searchQuery;
-  void onSearchChange;
-  void onBrandClick;
-  void showBranding;
-
   const [isFiltersOpen, setIsFiltersOpen] = useState(false);
   const [isSortOpen, setIsSortOpen] = useState(false);
   const [draftFilters, setDraftFilters] = useState<Filters>(filters);
