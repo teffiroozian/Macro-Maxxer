@@ -20,6 +20,7 @@ export default async function ItemPage({
       restaurantId={restaurant.id}
       restaurantPath={`/restaurant/${restaurant.id}`}
       item={item}
+      menuItems={restaurant.items}
       addons={restaurant.addons}
       commonChanges={restaurant.commonChanges}
       ingredients={restaurant.ingredients}
