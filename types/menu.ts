@@ -30,7 +30,7 @@ export type ItemVariant = {
   isDefault?: boolean;
 };
 
-export type AddonRef = "sauces" | "dressings" | "extras";
+export type AddonRef = "sauces" | "dressings" | "condiments";
 
 export type AddonOption = {
   name: string;

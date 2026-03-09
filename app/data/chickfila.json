@@ -2919,7 +2919,7 @@
                 "protein": 1
             },
             "categories": [
-                "Salad Extras"
+                "Salad Condiments"
             ],
             "image": "/restaurants/chickfila/ingredients/salad-extras/roasted-nut-blend.png",
             "id": "roasted-nut-blend"
@@ -2939,7 +2939,7 @@
                 "protein": 1
             },
             "categories": [
-                "Salad Extras"
+                "Salad Condiments"
             ],
             "image": "/restaurants/chickfila/ingredients/salad-extras/harvest-nut-granola.png",
             "id": "harvest-nut-granola"
@@ -2959,7 +2959,7 @@
                 "protein": 1
             },
             "categories": [
-                "Salad Extras"
+                "Salad Condiments"
             ],
             "image": "/restaurants/chickfila/ingredients/salad-extras/seasoned-tortilla-strips.png",
             "id": "seasoned-tortilla-strips"
@@ -2979,7 +2979,7 @@
                 "protein": 2
             },
             "categories": [
-                "Salad Extras",
+                "Salad Condiments",
                 "Salad Toppings"
             ],
             "image": "/restaurants/chickfila/ingredients/salad-extras/blue-cheese-crumbles.png",
@@ -3000,7 +3000,7 @@
                 "protein": 1
             },
             "categories": [
-                "Salad Extras"
+                "Salad Condiments"
             ],
             "image": "/restaurants/chickfila/ingredients/salad-extras/crispy-bell-peppers.png",
             "id": "crispy-bell-peppers"
@@ -3020,7 +3020,7 @@
                 "protein": 4
             },
             "categories": [
-                "Salad Extras"
+                "Salad Condiments"
             ],
             "image": "/restaurants/chickfila/ingredients/salad-extras/chili-lime-pepitas.png",
             "id": "chili-lime-pepitas"
@@ -3612,7 +3612,7 @@
                 "image": "/restaurants/chickfila/menu/dressings/zesty-apple-cider-vinaigrette.webp"
             }
         ],
-        "extras": [
+        "condiments": [
             {
                 "name": "Ketchup",
                 "calories": 35,

@@ -86,7 +86,7 @@ export default function RestaurantView({
     const categoryByAddonRef: Record<AddonRef, string> = {
       sauces: "Dipping Sauces",
       dressings: "Dressings",
-      extras: "Extras",
+      condiments: "Condiments",
     };
 
     return (Object.entries(addons) as [AddonRef, NonNullable<RestaurantAddons[AddonRef]>][])

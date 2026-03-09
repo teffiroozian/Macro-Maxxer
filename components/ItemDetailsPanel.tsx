@@ -29,7 +29,7 @@ function formatDelta(value: number, suffix = "") {
 const addonSectionTitles: Record<AddonRef, string> = {
   sauces: "Sauces",
   dressings: "Dressings",
-  extras: "Extras",
+  condiments: "Condiments",
 };
 
 type IngredientEntry = {
