@@ -42,6 +42,11 @@ function sumNutrition(base?: number, delta = 0) {
   return base + delta;
 }
 
+function sumNutritionWithFallback(base?: number, delta = 0) {
+  if (delta === 0) return base;
+  return (base ?? 0) + delta;
+}
+
 function formatMacro(value?: number) {
   return value === undefined || Number.isNaN(value) ? "—g" : `${value}g`;
 }
@@ -185,8 +190,25 @@ export default function ItemRouteModal({
           protein: sum.protein + (addon?.protein ?? 0),
           carbs: sum.carbs + (addon?.carbs ?? 0),
           fat: sum.fat + addonFat(addon),
+          satFat: sum.satFat + (addon?.satFat ?? 0),
+          transFat: sum.transFat + (addon?.transFat ?? 0),
+          cholesterol: sum.cholesterol + (addon?.cholesterol ?? 0),
+          sodium: sum.sodium + (addon?.sodium ?? 0),
+          fiber: sum.fiber + (addon?.fiber ?? 0),
+          sugars: sum.sugars + (addon?.sugars ?? 0),
         }),
-        { calories: 0, protein: 0, carbs: 0, fat: 0 }
+        {
+          calories: 0,
+          protein: 0,
+          carbs: 0,
+          fat: 0,
+          satFat: 0,
+          transFat: 0,
+          cholesterol: 0,
+          sodium: 0,
+          fiber: 0,
+          sugars: 0,
+        }
       ),
     [selectedAddons, selectedSauceOptions]
   );
@@ -233,6 +255,12 @@ export default function ItemRouteModal({
     protein: sumNutrition(baseNutrition.protein, customizationTotals.protein),
     carbs: sumNutrition(baseNutrition.carbs, customizationTotals.carbs),
     totalFat: sumNutrition(baseNutrition.totalFat, customizationTotals.fat),
+    satFat: sumNutritionWithFallback(baseNutrition.satFat, addonTotals.satFat),
+    transFat: sumNutritionWithFallback(baseNutrition.transFat, addonTotals.transFat),
+    cholesterol: sumNutritionWithFallback(baseNutrition.cholesterol, addonTotals.cholesterol),
+    sodium: sumNutritionWithFallback(baseNutrition.sodium, addonTotals.sodium),
+    fiber: sumNutritionWithFallback(baseNutrition.fiber, addonTotals.fiber),
+    sugars: sumNutritionWithFallback(baseNutrition.sugars, addonTotals.sugars),
   };
 
   const optionsLabel = useMemo(() => {
