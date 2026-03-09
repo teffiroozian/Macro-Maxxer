@@ -20,9 +20,6 @@ type StickyRestaurantBarProps = {
   onSortChange: (sort: SortOption) => void;
   filters: Filters;
   onFiltersChange: (filters: Filters) => void;
-  categoryOptions: Array<{ id: string; label: string }>;
-  activeCategory?: string;
-  onCategorySelect?: (id: string) => void;
   searchOpen: boolean;
   searchQuery: string;
   setSearchQuery: (value: string) => void;
@@ -45,9 +42,6 @@ export default function StickyRestaurantBar({
   onSortChange,
   filters,
   onFiltersChange,
-  categoryOptions,
-  activeCategory,
-  onCategorySelect,
   searchOpen,
   searchQuery,
   setSearchQuery,
@@ -201,14 +195,6 @@ export default function StickyRestaurantBar({
               onSortChange={onSortChange}
               filters={filters}
               onFiltersChange={onFiltersChange}
-              restaurantName={restaurantName}
-              restaurantLogo={restaurantLogo}
-              categoryOptions={categoryOptions}
-              activeCategory={activeCategory}
-              onCategorySelect={onCategorySelect}
-              searchQuery={searchQuery}
-              onSearchChange={setSearchQuery}
-              onBrandClick={handleBrandClick}
               showChips={false}
               entireMenu={entireMenu}
               onEntireMenuChange={onEntireMenuChange}

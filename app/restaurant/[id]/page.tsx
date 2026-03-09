@@ -54,7 +54,6 @@ export default async function RestaurantPage({
               ingredients={restaurantData.ingredients}
               addons={restaurantData.addons}
               commonChanges={restaurantData.commonChanges}
-              autoScrollOnViewChange
             />
           </main>
         </div>

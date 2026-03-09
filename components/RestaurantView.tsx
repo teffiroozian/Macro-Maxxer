@@ -56,7 +56,6 @@ export default function RestaurantView({
   ingredients?: IngredientItem[];
   addons?: RestaurantAddons;
   commonChanges?: CommonChange[];
-  autoScrollOnViewChange?: boolean;
 }) {
   const SECTION_HEADER_TOP_GAP = 24;
 
@@ -308,9 +307,6 @@ export default function RestaurantView({
         onSortChange={handleSortChange}
         filters={filters}
         onFiltersChange={setFilters}
-        categoryOptions={categoryOptions}
-        activeCategory={resolvedActiveCategory}
-        onCategorySelect={handleCategorySelect}
         searchOpen={searchOpen}
         searchQuery={searchQuery}
         setSearchQuery={setSearchQuery}
@@ -328,15 +324,7 @@ export default function RestaurantView({
         onSortChange={handleSortChange}
         filters={filters}
         onFiltersChange={setFilters}
-        restaurantName={restaurantName}
-        restaurantLogo={restaurantLogo}
-        categoryOptions={categoryOptions}
-        activeCategory={resolvedActiveCategory}
-        onCategorySelect={handleCategorySelect}
         wrapperId="controls-row"
-        searchQuery={searchQuery}
-        onSearchChange={setSearchQuery}
-        showBranding={false}
         entireMenu={entireMenu}
         onEntireMenuChange={setEntireMenu}
         calorieBounds={calorieBounds}
