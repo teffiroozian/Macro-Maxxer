@@ -272,6 +272,7 @@ export default function CartPage() {
                     updateItem(cartItem.id, {
                       variantId: next.variantId,
                       variantLabel: next.variantLabel,
+                      image: next.image,
                       optionsLabel: next.optionsLabel,
                       customizations: next.customizations,
                       macrosPerItem: next.macrosPerItem as CartMacros,

@@ -85,6 +85,7 @@ const maxSauceSelections = 5;
 type CartConfigurationPayload = {
   variantId?: string;
   variantLabel?: string;
+  image?: string;
   optionsLabel?: string;
   customizations?: string[];
   macrosPerItem: {
@@ -209,6 +210,7 @@ export default function MenuItemCard({
   const [isAddFeedbackVisible, setIsAddFeedbackVisible] = useState(false);
   const { items, addItem, updateQuantity } = useCart();
   const selectedVariant = variants?.find((variant) => variant.id === selectedVariantId);
+  const selectedItemImage = selectedVariant?.image ?? item.image;
   const baseNutrition = selectedVariant?.nutrition ?? item.nutrition;
   const applicableCommonChanges = useMemo(
     () => getApplicableCommonChanges(item, commonChanges),
@@ -461,6 +463,7 @@ export default function MenuItemCard({
       variantLabel: activeVariant?.label,
       optionsLabel: nextOptionsLabel,
       customizations: nextCustomizations.length > 0 ? nextCustomizations : undefined,
+      image: activeVariant?.image ?? item.image,
       macrosPerItem: {
         calories: (baseForCart.calories ?? 0) + addonTotalsForCart.calories,
         protein: (baseForCart.protein ?? 0) + addonTotalsForCart.protein,
@@ -483,7 +486,7 @@ export default function MenuItemCard({
         restaurantId,
         itemId: item.id ?? item.name,
         name: item.name,
-        image: item.image,
+        image: selectedVariantForCart?.image ?? item.image,
         variantId: selectedVariantForCart?.id,
         variantLabel: selectedVariantForCart?.label,
         optionsLabel,
@@ -539,8 +542,8 @@ export default function MenuItemCard({
         aria-controls={!isCartMode || hasAddonSections ? `${id}-details` : undefined}
       >
         <div className={styles.leftMedia}>
-          {item.image ? (
-            <img className={styles.image} src={item.image} alt={item.name} />
+          {selectedItemImage ? (
+            <img className={styles.image} src={selectedItemImage} alt={item.name} />
           ) : (
             <div className={styles.imagePlaceholder} />
           )}

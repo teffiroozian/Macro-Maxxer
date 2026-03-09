@@ -25,6 +25,7 @@ export type ItemVariant = {
   id: string;          // e.g. "8pc", "12pc", "30pc"
   label: string;       // e.g. "8 piece"
   nutrition: Nutrition;
+  image?: string;
   portionType?: PortionType;   // Optional override: variant can differ from base item
   categories?: string[];
   isDefault?: boolean;

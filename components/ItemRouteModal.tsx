@@ -191,6 +191,7 @@ export default function ItemRouteModal({
   );
 
   const selectedVariant = variants?.find((variant) => variant.id === selectedVariantId);
+  const selectedItemImage = selectedVariant?.image ?? item.image;
   const baseNutrition = selectedVariant?.nutrition ?? item.nutrition;
   const applicableCommonChanges = useMemo(
     () => getApplicableCommonChanges(item, commonChanges),
@@ -318,7 +319,7 @@ export default function ItemRouteModal({
       restaurantId,
       itemId: item.id ?? item.name,
       name: item.name,
-      image: item.image,
+      image: selectedVariant?.image ?? item.image,
       variantId: selectedVariant?.id,
       variantLabel: selectedVariant?.label,
       optionsLabel,
@@ -346,7 +347,7 @@ export default function ItemRouteModal({
 
         <div className={styles.hero}>
           <h1 className={styles.title}>{item.name}</h1>
-          {item.image ? <img className={styles.image} src={item.image} alt={item.name} /> : null}
+          {selectedItemImage ? <img className={styles.image} src={selectedItemImage} alt={item.name} /> : null}
           <div className={styles.macroSummary}>
             <div className={styles.macro}>
               <div className={styles.macroValueWrap}>
