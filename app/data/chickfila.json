@@ -740,6 +740,7 @@
                 {
                     "id": "cookie_crumbs",
                     "portionType": "single",
+                    "image": "/restaurants/chickfila/menu/sides/berry-parfait-cookie-crumbs.webp",
                     "nutrition": {
                         "calories": 240,
                         "totalFat": 8,
