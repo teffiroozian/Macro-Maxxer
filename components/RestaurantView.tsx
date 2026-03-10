@@ -79,6 +79,7 @@ export default function RestaurantView({
   const { searchOpen, searchQuery, setSearchQuery, openSearch, closeSearch } =
     useRestaurantSearch();
   const contentSectionRef = useRef<HTMLDivElement | null>(null);
+  const shouldScrollToContentRef = useRef(false);
 
   const addonItems = useMemo<MenuItem[]>(() => {
     if (!addons) return [];
@@ -281,18 +282,31 @@ export default function RestaurantView({
     };
   }, [activeCategory, entireMenu, orderedSections]);
 
+  useEffect(() => {
+    if (!shouldScrollToContentRef.current) {
+      return;
+    }
+
+    shouldScrollToContentRef.current = false;
+    requestAnimationFrame(() => {
+      const contentSection = contentSectionRef.current;
+      if (!contentSection) {
+        return;
+      }
+
+      const stickyOffset = getStickyOffset();
+      const contentTop = window.scrollY + contentSection.getBoundingClientRect().top;
+      const nextScrollTop = Math.max(0, contentTop - stickyOffset - SECTION_HEADER_TOP_GAP);
+      window.scrollTo({ top: nextScrollTop, behavior: "auto" });
+    });
+  }, [viewMode]);
+
   const handleViewChange = (nextView: ViewOption) => {
     if (nextView === viewMode) {
       return;
     }
 
-    const contentSection = contentSectionRef.current;
-    if (contentSection) {
-      const stickyOffset = getStickyOffset();
-      const contentTop = window.scrollY + contentSection.getBoundingClientRect().top;
-      const nextScrollTop = Math.max(0, contentTop - stickyOffset - SECTION_HEADER_TOP_GAP);
-      window.scrollTo({ top: nextScrollTop, behavior: "auto" });
-    }
+    shouldScrollToContentRef.current = true;
 
     const nextParams = new URLSearchParams(searchParams.toString());
     nextParams.set("view", nextView);
