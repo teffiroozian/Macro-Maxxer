@@ -107,7 +107,7 @@ export default function StickyRestaurantBar({
 
   return (
     <div className="fixed left-0 right-0 top-0 z-50" data-sticky-nav="true">
-      <div className="relative z-[110] w-full border-b border-slate-200/70 bg-white/95 backdrop-blur">
+      <div className="relative z-[110] mx-2 mt-1 w-auto rounded-md border border-slate-200/70 bg-white/95 backdrop-blur">
         <div className="mx-auto flex w-full max-w-5xl items-center gap-3 px-4 py-2 sm:px-6">
           <Link
             href="/"
@@ -180,7 +180,7 @@ export default function StickyRestaurantBar({
       </div>
 
       <div
-        className={`relative z-[100] w-full border-b border-slate-200/70 bg-white/95 backdrop-blur transition-all duration-300 ${
+        className={`relative z-[100] mx-2 mt-1 w-auto rounded-md border border-slate-200/70 bg-white/95 backdrop-blur transition-all duration-300 ${
           isControlsFloating
             ? "translate-y-0 opacity-100 shadow-[0_6px_16px_rgba(15,23,42,0.12)]"
             : "-translate-y-2 opacity-0 pointer-events-none shadow-none"
