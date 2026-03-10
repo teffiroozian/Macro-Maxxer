@@ -285,11 +285,19 @@ export default function RestaurantView({
       return;
     }
 
-    window.scrollTo({ top: 220, behavior: "auto" });
-
     const nextParams = new URLSearchParams(searchParams.toString());
     nextParams.set("view", nextView);
-    router.replace(`${pathname}?${nextParams.toString()}`, { scroll: false });
+
+    const shouldScrollToTop = nextView === "menu";
+    router.replace(`${pathname}?${nextParams.toString()}`, {
+      scroll: shouldScrollToTop,
+    });
+
+    if (shouldScrollToTop) {
+      requestAnimationFrame(() => {
+        window.scrollTo({ top: 0, behavior: "auto" });
+      });
+    }
   };
 
   const handleSortChange = (nextSort: SortOption) => {
