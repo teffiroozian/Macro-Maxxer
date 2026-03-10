@@ -79,7 +79,6 @@ export default function RestaurantView({
   const { searchOpen, searchQuery, setSearchQuery, openSearch, closeSearch } =
     useRestaurantSearch();
   const contentSectionRef = useRef<HTMLDivElement | null>(null);
-  const shouldScrollToContentRef = useRef(false);
 
   const addonItems = useMemo<MenuItem[]>(() => {
     if (!addons) return [];
@@ -222,6 +221,18 @@ export default function RestaurantView({
     [orderedSections]
   );
 
+  const scrollToContentSection = (behavior: ScrollBehavior = "auto") => {
+    const contentSection = contentSectionRef.current;
+    if (!contentSection) {
+      return;
+    }
+
+    const stickyOffset = getStickyOffset();
+    const contentTop = window.scrollY + contentSection.getBoundingClientRect().top;
+    const nextScrollTop = Math.max(0, contentTop - stickyOffset - SECTION_HEADER_TOP_GAP);
+    window.scrollTo({ top: nextScrollTop, behavior });
+  };
+
   const handleCategorySelect = (categoryId: string) => {
     setActiveCategory(categoryId);
     const section = document.getElementById(categorySectionId(categoryId));
@@ -282,36 +293,18 @@ export default function RestaurantView({
     };
   }, [activeCategory, entireMenu, orderedSections]);
 
-  useEffect(() => {
-    if (!shouldScrollToContentRef.current) {
-      return;
-    }
-
-    shouldScrollToContentRef.current = false;
-    requestAnimationFrame(() => {
-      const contentSection = contentSectionRef.current;
-      if (!contentSection) {
-        return;
-      }
-
-      const stickyOffset = getStickyOffset();
-      const contentTop = window.scrollY + contentSection.getBoundingClientRect().top;
-      const nextScrollTop = Math.max(0, contentTop - stickyOffset - SECTION_HEADER_TOP_GAP);
-      window.scrollTo({ top: nextScrollTop, behavior: "auto" });
-    });
-  }, [viewMode]);
-
   const handleViewChange = (nextView: ViewOption) => {
     if (nextView === viewMode) {
       return;
     }
 
-    window.scrollTo({ top: 0, behavior: "auto" });
-    shouldScrollToContentRef.current = true;
-
     const nextParams = new URLSearchParams(searchParams.toString());
     nextParams.set("view", nextView);
     router.replace(`${pathname}?${nextParams.toString()}`, { scroll: false });
+
+    requestAnimationFrame(() => {
+      scrollToContentSection("smooth");
+    });
   };
 
   const handleSortChange = (nextSort: SortOption) => {
