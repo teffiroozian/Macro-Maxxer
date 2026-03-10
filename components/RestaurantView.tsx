@@ -10,7 +10,7 @@ import type {
   MenuItem,
   RestaurantAddons,
 } from "@/types/menu";
-import ControlsRow, {
+import {
   type Filters,
   type SortOption,
   type ViewOption,
@@ -317,18 +317,6 @@ export default function RestaurantView({
         calorieBounds={calorieBounds}
       />
 
-      <ControlsRow
-        view={viewMode}
-        onChange={handleViewChange}
-        sort={sort}
-        onSortChange={handleSortChange}
-        filters={filters}
-        onFiltersChange={setFilters}
-        wrapperId="controls-row"
-        entireMenu={entireMenu}
-        onEntireMenuChange={setEntireMenu}
-        calorieBounds={calorieBounds}
-      />
 
       <div
         style={{
