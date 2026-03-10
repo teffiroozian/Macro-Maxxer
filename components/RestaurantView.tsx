@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useRestaurantSearch } from "@/components/RestaurantSearchContext";
 import type {
@@ -78,6 +78,7 @@ export default function RestaurantView({
   const [filters, setFilters] = useState<Filters>({});
   const { searchOpen, searchQuery, setSearchQuery, openSearch, closeSearch } =
     useRestaurantSearch();
+  const contentSectionRef = useRef<HTMLDivElement | null>(null);
 
   const addonItems = useMemo<MenuItem[]>(() => {
     if (!addons) return [];
@@ -285,7 +286,13 @@ export default function RestaurantView({
       return;
     }
 
-    window.scrollTo({ top: 220, behavior: "auto" });
+    const contentSection = contentSectionRef.current;
+    if (contentSection) {
+      const stickyOffset = getStickyOffset();
+      const contentTop = window.scrollY + contentSection.getBoundingClientRect().top;
+      const nextScrollTop = Math.max(0, contentTop - stickyOffset - SECTION_HEADER_TOP_GAP);
+      window.scrollTo({ top: nextScrollTop, behavior: "auto" });
+    }
 
     const nextParams = new URLSearchParams(searchParams.toString());
     nextParams.set("view", nextView);
@@ -372,7 +379,7 @@ export default function RestaurantView({
           </div>
         </aside>
 
-        <div style={{ minWidth: 0 }}>
+        <div ref={contentSectionRef} style={{ minWidth: 0 }}>
           <div style={{ maxWidth: 900, margin: "0 auto" }}>
             <MenuSections
               restaurantId={restaurantId}
