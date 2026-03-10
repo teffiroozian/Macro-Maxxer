@@ -234,6 +234,10 @@ export default function RestaurantView({
 
 
   useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "auto" });
+  }, [viewMode]);
+
+  useEffect(() => {
     if (entireMenu || orderedSections.length === 0) {
       return;
     }
@@ -284,8 +288,6 @@ export default function RestaurantView({
     if (nextView === viewMode) {
       return;
     }
-
-    window.scrollTo({ top: 220, behavior: "auto" });
 
     const nextParams = new URLSearchParams(searchParams.toString());
     nextParams.set("view", nextView);
