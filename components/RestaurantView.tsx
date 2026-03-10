@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useRestaurantSearch } from "@/components/RestaurantSearchContext";
 import type {
@@ -76,8 +76,22 @@ export default function RestaurantView({
   const [entireMenu, setEntireMenu] = useState(false);
   const [sort, setSort] = useState<SortOption>("highest-protein");
   const [filters, setFilters] = useState<Filters>({});
+  const foodContentRef = useRef<HTMLDivElement | null>(null);
   const { searchOpen, searchQuery, setSearchQuery, openSearch, closeSearch } =
     useRestaurantSearch();
+
+  const scrollToFoodContent = (behavior: ScrollBehavior = "smooth") => {
+    const foodContent = foodContentRef.current;
+    if (!foodContent) {
+      return;
+    }
+
+    const stickyOffset = getStickyOffset();
+    const foodContentTop = window.scrollY + foodContent.getBoundingClientRect().top;
+    const nextScrollTop = Math.max(0, foodContentTop - stickyOffset - SECTION_HEADER_TOP_GAP);
+
+    window.scrollTo({ top: nextScrollTop, behavior });
+  };
 
   const addonItems = useMemo<MenuItem[]>(() => {
     if (!addons) return [];
@@ -285,7 +299,7 @@ export default function RestaurantView({
       return;
     }
 
-    window.scrollTo({ top: 220, behavior: "auto" });
+    scrollToFoodContent("auto");
 
     const nextParams = new URLSearchParams(searchParams.toString());
     nextParams.set("view", nextView);
@@ -372,7 +386,7 @@ export default function RestaurantView({
           </div>
         </aside>
 
-        <div style={{ minWidth: 0 }}>
+        <div ref={foodContentRef} style={{ minWidth: 0, paddingTop: SECTION_HEADER_TOP_GAP }}>
           <div style={{ maxWidth: 900, margin: "0 auto" }}>
             <MenuSections
               restaurantId={restaurantId}
