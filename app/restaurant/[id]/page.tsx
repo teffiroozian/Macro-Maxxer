@@ -1,6 +1,5 @@
 import Link from "next/link";
 import restaurants from "../../data/index.json";
-import RestaurantHeader from "@/components/RestaurantHeader";
 import RestaurantView from "@/components/RestaurantView";
 import RecentRestaurantTracker from "@/components/RecentRestaurantTracker";
 import ScrollToTopOnMount from "@/components/ScrollToTopOnMount";
@@ -33,19 +32,11 @@ export default async function RestaurantPage({
   return (
     <RestaurantSearchProvider>
       <RestaurantUiProvider>
-        <div className="w-full pt-14">
-          <div id="restaurant-hero" className="mt-6">
-            <RestaurantHeader
-              name={restaurant.name}
-              logo={restaurant.logo}
-              restaurantSlug={restaurant.id}
-            />
-          </div>
-
+        <div className="w-full pt-28">
           <RecentRestaurantTracker restaurantId={restaurant.id} />
           <ScrollToTopOnMount />
 
-          <main className="mx-auto mt-6 w-full max-w-6xl px-6 pb-12">
+          <main className="mx-auto w-full max-w-6xl px-6 pb-12">
             <RestaurantView
               restaurantId={restaurant.id}
               restaurantName={restaurant.name}
