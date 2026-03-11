@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
+import Image from "next/image";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import type { LucideIcon } from "lucide-react";
 import {
@@ -14,7 +15,6 @@ import {
   Leaf,
   Soup,
   Utensils,
-  WrapText,
 } from "lucide-react";
 import { useRestaurantSearch } from "@/components/RestaurantSearchContext";
 import type {
@@ -38,7 +38,9 @@ import MenuSections from "./MenuSections";
 import StickyRestaurantBar from "./StickyRestaurantBar";
 
 
-const CATEGORY_ICONS: Record<string, LucideIcon> = {
+type CategoryIcon = LucideIcon | "wrap";
+
+const CATEGORY_ICONS: Record<string, CategoryIcon> = {
   sandwiches: Croissant,
   chicken: Drumstick,
   salads: Leaf,
@@ -46,7 +48,7 @@ const CATEGORY_ICONS: Record<string, LucideIcon> = {
   breakfast: Coffee,
   sides: Utensils,
   desserts: CakeSlice,
-  wraps: WrapText,
+  wraps: "wrap",
   burgers: Beef,
   entrees: Utensils,
   "bowls & plates": Soup,
@@ -348,7 +350,8 @@ export default function RestaurantView({
             >
               {categoryOptions.map((option) => {
                 const isActive = option.id === resolvedActiveCategory;
-                const Icon = CATEGORY_ICONS[option.label.toLowerCase()] ?? Circle;
+                const icon = CATEGORY_ICONS[option.label.toLowerCase()] ?? Circle;
+                const Icon = icon === "wrap" ? null : icon;
 
                 return (
                   <div key={option.id} className="relative pl-3">
@@ -364,7 +367,18 @@ export default function RestaurantView({
                           : "text-slate-700 hover:bg-slate-200"
                         }`}
                     >
-                      <Icon className="h-4 w-4" aria-hidden="true" />
+                      {icon === "wrap" ? (
+                        <Image
+                          src="/icons/wrap.svg"
+                          alt=""
+                          width={16}
+                          height={16}
+                          className="h-4 w-4"
+                          aria-hidden="true"
+                        />
+                      ) : Icon ? (
+                        <Icon className="h-4 w-4" aria-hidden="true" />
+                      ) : null}
                       <span>{option.label}</span>
                     </button>
                   </div>
