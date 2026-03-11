@@ -11,6 +11,7 @@ export type Filters = {
   includeSidesDrinks?: boolean;
   includeLargeShareables?: boolean;
 };
+import { SlidersHorizontal } from "lucide-react";
 
 const PROTEIN_OPTIONS = [20, 30, 40, 50];
 
@@ -290,8 +291,13 @@ export default function ControlsRow({
             ) : null}
           </div>
 
-          <button type="button" onClick={openFilters} style={{ padding: "6px 14px", borderRadius: 999, border: "1px solid rgba(0,0,0,0.2)", background: "white", color: "rgba(0,0,0,0.8)", fontWeight: 600, cursor: "pointer", whiteSpace: "nowrap", flexShrink: 0 }}>
-            Filters ⚙️
+          <button
+            type="button"
+            onClick={openFilters}
+            className="cursor-pointer inline-flex items-center gap-2 rounded-full border border-black/20 bg-white px-[14px] py-[6px] font-semibold text-black/80 whitespace-nowrap shrink-0"
+          >
+            Filters
+            <SlidersHorizontal className="h-4 w-4" strokeWidth={2.5} />
           </button>
         </div>
 

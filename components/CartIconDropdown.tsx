@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useCart } from "@/stores/cartStore";
 import { useRestaurantUi } from "@/components/RestaurantUiContext";
+import { ShoppingCart } from "lucide-react";
 
 type CartIconDropdownProps = {
   buttonClassName: string;
@@ -74,12 +75,12 @@ export default function CartIconDropdown({
     };
   }, [isOpen, lastAddedAt]);
 
-  const countLabel =
-    cartCount > 0
-      ? countFormat === "parenthesized"
-        ? `🛒 (${cartCount})`
-        : `🛒 ${cartCount}`
-      : "🛒";
+  const countLabel = (
+  <>
+    <ShoppingCart className="h-4 w-4" strokeWidth={2.5} />
+    {cartCount > 0 && ` (${cartCount})`}
+  </>
+);
 
   const itemMeta = [lastAddedItem?.variantLabel, lastAddedItem?.optionsLabel]
     .filter(Boolean)

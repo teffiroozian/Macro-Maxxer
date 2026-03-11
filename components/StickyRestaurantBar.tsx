@@ -10,6 +10,7 @@ import ControlsRow, {
   type SortOption,
   type ViewOption,
 } from "./ControlsRow";
+import { Search,  } from "lucide-react";
 
 type StickyRestaurantBarProps = {
   restaurantName: string;
@@ -144,7 +145,7 @@ export default function StickyRestaurantBar({
                   className="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-slate-300/80 bg-white text-base text-slate-800 transition hover:bg-slate-50"
                   aria-label="Search menu items"
                 >
-                🔍
+                <Search className="h-4 w-4" strokeWidth={2.5}/>
               </button>
             )}
 

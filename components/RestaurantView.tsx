@@ -316,21 +316,13 @@ export default function RestaurantView({
       />
 
 
-      <div
-        style={{
-          display: "grid",
-          gridTemplateColumns: "240px minmax(0, 1fr)",
-          gap: 24,
-          alignItems: "start",
-          marginTop: 16,
-        }}
-      >
-        <aside className="sticky top-[90px] pt-8">
-          <h3 className="mb-5 text-2xl font-bold text-slate-900">
+      <div className="grid items-start gap-6 [grid-template-columns:240px_minmax(0,1fr)]">
+        <aside className="sticky top-[160px] py-6">
+          <h3 className="mb-8 text-2xl font-bold text-slate-900">
             {viewMode === "ingredients" ? "Ingredients" : "Categories"}
           </h3>
 
-          <div className="max-h-[calc(100vh-185px)] overflow-y-auto pr-2">
+          <div className="max-h-[calc(100vh-185px)] overflow-visible pr-2">
 
             <nav
               aria-label={
@@ -338,7 +330,7 @@ export default function RestaurantView({
                   ? "Ingredient categories"
                   : "Menu categories"
               }
-              className="grid gap-3"
+              className="grid gap-4"
             >
               {categoryOptions.map((option) => {
                 const isActive = option.id === resolvedActiveCategory;
@@ -347,15 +339,15 @@ export default function RestaurantView({
                 return (
                   <div key={option.id} className="relative pl-3">
                     {isActive ? (
-                      <span className="absolute left-0 top-1/2 h-7 w-1 -translate-y-1/2 rounded-full bg-blue-600" aria-hidden="true" />
+                      <span className="absolute left-0 top-1/2 h-7 w-1 -translate-y-1/2 rounded-full shadow-[0px_0_8px_rgba(0,0,0,0.25)] bg-white" aria-hidden="true" />
                     ) : null}
 
                     <button
                       type="button"
                       onClick={() => handleCategorySelect(option.id)}
-                      className={`inline-flex items-center gap-2 rounded-full px-4 py-2 text-left text-base font-semibold transition-colors ${isActive
-                          ? "bg-blue-600 text-white"
-                          : "text-slate-700 hover:bg-slate-100"
+                      className={`inline-flex items-center gap-2 rounded-full px-4 py-2 text-left text-base font-semibold transition-colors duration-50 ease-in ${isActive
+                          ? "shadow-[0px_0_8px_rgba(0,0,0,0.25)] bg-white text-black"
+                          : "text-slate-700 hover:bg-slate-200"
                         }`}
                     >
                       <span className="text-lg leading-none" aria-hidden="true">
@@ -370,8 +362,8 @@ export default function RestaurantView({
           </div>
         </aside>
 
-        <div style={{ minWidth: 0 }}>
-          <div style={{ maxWidth: 900, margin: "0 auto" }}>
+        <div className="min-w-0">
+          <div className="mx-auto max-w-[900px]">
             <MenuSections
               restaurantId={restaurantId}
               items={filteredItems}

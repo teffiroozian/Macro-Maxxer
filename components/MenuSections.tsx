@@ -258,14 +258,14 @@ export default function MenuSections({
   }
 
   return (
-    <div style={{ marginTop: 32, display: "grid", gap: 48 }}>
+    <div style={{display: "grid", gap: 80 }}>
       {sections.map((section) => (
         <section
           key={section}
           id={categorySectionId(section)}
           style={{ scrollMarginTop: 0 }}
         >
-          <h2 style={{ fontSize: 28, fontWeight: 800 }}>
+          <h2 className="my-5 text-3xl font-bold text-slate-900">
             {categoryHeading(section)}
           </h2>
           <ul style={{ marginTop: 12, padding: 0, display: "grid", gap: 12 }}>
