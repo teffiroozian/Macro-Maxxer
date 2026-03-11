@@ -348,12 +348,12 @@ export default function RestaurantView({
 
 
       <div className="grid items-start gap-6 [grid-template-columns:240px_minmax(0,1fr)]">
-        <aside className="sticky top-[160px] py-6">
-          <h3 className="mb-8 text-2xl font-bold text-slate-900">
+        <aside className="sticky top-[160px] flex max-h-[calc(100vh-160px)] flex-col py-6">
+          <h3 className="mb-8 shrink-0 text-2xl font-bold text-slate-900">
             {viewMode === "ingredients" ? "Ingredients" : "Categories"}
           </h3>
 
-          <div className="max-h-[calc(100vh-185px)] overflow-visible pr-2">
+          <div className="min-h-0 flex-1 overflow-y-auto px-2 py-2">
 
             <nav
               aria-label={
@@ -377,7 +377,7 @@ export default function RestaurantView({
                       type="button"
                       onClick={() => handleCategorySelect(option.id)}
                       className={`inline-flex items-center gap-3 rounded-full px-4 py-2 text-left text-base font-semibold transition-colors duration-50 ease-in ${isActive
-                          ? "shadow-[0px_0_8px_rgba(0,0,0,0.25)] bg-white text-black"
+                          ? "shadow-[0px_0_8px_rgba(0,0,0,0.25)] bg-white text-slate-800"
                           : "text-slate-700 hover:bg-slate-200"
                         }`}
                     >
