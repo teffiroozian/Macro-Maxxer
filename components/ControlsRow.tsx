@@ -35,19 +35,19 @@ export function FilterChips({
   withMargin?: boolean;
 }) {
   return (
-    <div style={{ width: "100%", marginTop: withMargin ? 10 : 0, display: "flex", justifyContent: "flex-end", gap: 8, flexWrap: "wrap" }}>
+    <div className={`${withMargin ? "mt-2.5" : "mt-0"} flex w-full flex-wrap justify-end gap-2`}>
       {filters.proteinMin ? (
-        <button type="button" onClick={onClearProtein} style={{ padding: "4px 10px", borderRadius: 999, border: "1px solid rgba(0,0,0,0.2)", background: "rgba(0,0,0,0.05)", fontWeight: 600, fontSize: 12 }}>
+        <button type="button" onClick={onClearProtein} className="rounded-full border border-black/20 bg-black/5 px-2.5 py-1 text-xs font-semibold">
           Protein {filters.proteinMin}g+ ✕
         </button>
       ) : null}
       {filters.caloriesMax ? (
-        <button type="button" onClick={onClearCalories} style={{ padding: "4px 10px", borderRadius: 999, border: "1px solid rgba(0,0,0,0.2)", background: "rgba(0,0,0,0.05)", fontWeight: 600, fontSize: 12 }}>
+        <button type="button" onClick={onClearCalories} className="rounded-full border border-black/20 bg-black/5 px-2.5 py-1 text-xs font-semibold">
           Under {filters.caloriesMax} cal ✕
         </button>
       ) : null}
       {(filters.proteinMin || filters.caloriesMax) ? (
-        <button type="button" onClick={onClearAll} style={{ padding: "4px 10px", borderRadius: 999, border: "1px solid rgba(0,0,0,0.2)", background: "white", fontWeight: 600, fontSize: 12 }}>
+        <button type="button" onClick={onClearAll} className="rounded-full border border-black/20 bg-white px-2.5 py-1 text-xs font-semibold">
           Clear All
         </button>
       ) : null}
@@ -142,17 +142,17 @@ export default function ControlsRow({
   };
 
   const filtersDialog = isFiltersOpen ? (
-    <div role="dialog" aria-modal="true" style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.35)", display: "flex", justifyContent: "center", alignItems: "flex-end", padding: 16, zIndex: 50 }} onClick={() => setIsFiltersOpen(false)}>
-      <div style={{ width: "100%", maxWidth: 520, background: "white", borderRadius: 20, padding: 20, boxShadow: "0 16px 40px rgba(0,0,0,0.2)" }} onClick={(event) => event.stopPropagation()}>
-        <h3 style={{ fontSize: 20, fontWeight: 700, marginBottom: 16 }}>Filters</h3>
-        <div style={{ display: "grid", gap: 16 }}>
+    <div role="dialog" aria-modal="true" className="fixed inset-0 z-50 flex items-end justify-center bg-black/35 p-4" onClick={() => setIsFiltersOpen(false)}>
+      <div className="w-full max-w-[520px] rounded-[20px] bg-white p-5 shadow-[0_16px_40px_rgba(0,0,0,0.2)]" onClick={(event) => event.stopPropagation()}>
+        <h3 className="mb-4 text-xl font-bold">Filters</h3>
+        <div className="grid gap-4">
           <div>
-            <div style={{ fontWeight: 600, marginBottom: 8 }}>Protein minimum</div>
-            <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
+            <div className="mb-2 font-semibold">Protein minimum</div>
+            <div className="flex flex-wrap gap-2">
               {PROTEIN_OPTIONS.map((value) => {
                 const isActive = draftFilters.proteinMin === value;
                 return (
-                  <button key={value} type="button" onClick={() => setDraftFilters((prev) => ({ ...prev, proteinMin: value }))} style={{ padding: "6px 12px", borderRadius: 999, border: "1px solid rgba(0,0,0,0.2)", background: isActive ? "rgba(0,0,0,0.85)" : "white", color: isActive ? "white" : "rgba(0,0,0,0.8)", fontWeight: 600, cursor: "pointer" }}>
+                  <button key={value} type="button" onClick={() => setDraftFilters((prev) => ({ ...prev, proteinMin: value }))} className={`cursor-pointer rounded-full border border-black/20 px-3 py-1.5 font-semibold ${isActive ? "bg-black/85 text-white" : "bg-white text-black/80"}`}>
                     {value}g+
                   </button>
                 );
@@ -160,8 +160,8 @@ export default function ControlsRow({
             </div>
           </div>
           <div>
-            <div style={{ fontWeight: 600, marginBottom: 8 }}>Calories max: {draftFilters.caloriesMax ?? defaultCaloriesMax}</div>
-            <div style={{ display: "grid", gap: 8 }}>
+            <div className="mb-2 font-semibold">Calories max: {draftFilters.caloriesMax ?? defaultCaloriesMax}</div>
+            <div className="grid gap-2">
               <input
                 type="range"
                 min={calorieBounds.min}
@@ -172,20 +172,20 @@ export default function ControlsRow({
                   const value = Number(event.target.value);
                   setDraftFilters((prev) => ({ ...prev, caloriesMax: value }));
                 }}
-                style={{ width: "100%", cursor: "pointer" }}
+                className="w-full cursor-pointer"
               />
-              <div style={{ display: "flex", justifyContent: "space-between", fontSize: 12, color: "rgba(0,0,0,0.6)", fontWeight: 600 }}>
+              <div className="flex justify-between text-xs font-semibold text-black/60">
                 <span>{calorieBounds.min}</span>
                 <span>{calorieBounds.max}</span>
               </div>
             </div>
           </div>
         </div>
-        <div style={{ marginTop: 20, display: "flex", gap: 12, justifyContent: "flex-end" }}>
-          <button type="button" onClick={resetFilters} style={{ padding: "8px 16px", borderRadius: 999, border: "1px solid rgba(0,0,0,0.2)", background: "white", color: "rgba(0,0,0,0.8)", fontWeight: 600, cursor: "pointer" }}>
+        <div className="mt-5 flex justify-end gap-3">
+          <button type="button" onClick={resetFilters} className="cursor-pointer rounded-full border border-black/20 bg-white px-4 py-2 font-semibold text-black/80">
             Reset
           </button>
-          <button type="button" onClick={applyFilters} style={{ padding: "8px 16px", borderRadius: 999, border: "1px solid rgba(0,0,0,0.8)", background: "rgba(0,0,0,0.85)", color: "white", fontWeight: 700, cursor: "pointer" }}>
+          <button type="button" onClick={applyFilters} className="cursor-pointer rounded-full border border-black/80 bg-black/85 px-4 py-2 font-bold text-white">
             Apply
           </button>
         </div>
@@ -197,12 +197,12 @@ export default function ControlsRow({
 
   return (
     <>
-      <div id={wrapperId} style={{ display: "grid", gap: 8 }}>
-        <div style={{ display: "flex", justifyContent: "flex-end", alignItems: "center", gap: 10, minWidth: 0 }}>
+      <div id={wrapperId} className="grid gap-2">
+        <div className="flex min-w-0 items-center justify-end gap-2.5">
           <div
             role="group"
             aria-label="View"
-            style={{ display: "inline-flex", borderRadius: 999, border: "1px solid rgba(0,0,0,0.2)", padding: 2, background: "white" }}
+            className="inline-flex rounded-full border border-black/20 bg-white p-0.5"
           >
             {([
               { label: "Menu", value: "menu" },
@@ -216,16 +216,7 @@ export default function ControlsRow({
                   type="button"
                   onClick={() => onChange(option.value)}
                   aria-pressed={isActive}
-                  style={{
-                    padding: "6px 12px",
-                    borderRadius: 999,
-                    border: "none",
-                    background: isActive ? "rgba(15,23,42,0.9)" : "transparent",
-                    color: isActive ? "white" : "rgba(0,0,0,0.75)",
-                    fontWeight: 600,
-                    cursor: "pointer",
-                    whiteSpace: "nowrap",
-                  }}
+                  className={`cursor-pointer whitespace-nowrap rounded-full border-none px-3 py-1.5 font-semibold ${isActive ? "bg-slate-900/90 text-white" : "bg-transparent text-black/75"}`}
                 >
                   {option.label}
                 </button>
@@ -233,20 +224,20 @@ export default function ControlsRow({
             })}
           </div>
 
-          <div ref={sortMenuRef} style={{ position: "relative", flexShrink: 0 }}>
+          <div ref={sortMenuRef} className="relative shrink-0">
             <button
               type="button"
               onClick={() => setIsSortOpen((prev) => !prev)}
               aria-haspopup="menu"
               aria-expanded={isSortOpen}
-              style={{ padding: "6px 14px", borderRadius: 999, border: "1px solid rgba(0,0,0,0.2)", background: "white", color: "rgba(0,0,0,0.85)", fontWeight: 600, cursor: "pointer", whiteSpace: "nowrap" }}
+              className="cursor-pointer whitespace-nowrap rounded-full border border-black/20 bg-white px-[14px] py-[6px] font-semibold text-black/85"
             >
               {sortLabel} ▾
             </button>
 
             {isSortOpen ? (
-              <div role="menu" style={{ position: "absolute", right: 0, top: "calc(100% + 8px)", width: 220, borderRadius: 14, border: "1px solid rgba(0,0,0,0.15)", background: "white", boxShadow: "0 12px 28px rgba(0,0,0,0.12)", padding: 8, zIndex: 20 }}>
-                <div style={{ display: "grid", gap: 4 }}>
+              <div role="menu" className="absolute right-0 top-[calc(100%+8px)] z-20 w-[220px] rounded-[14px] border border-black/15 bg-white p-2 shadow-[0_12px_28px_rgba(0,0,0,0.12)]">
+                <div className="grid gap-1">
                   {SORT_OPTIONS.map((option) => {
                     const isActive = option.value === sort;
                     const isHovered = option.value === hoveredSortOption;
@@ -261,29 +252,17 @@ export default function ControlsRow({
                         }}
                         onMouseEnter={() => setHoveredSortOption(option.value)}
                         onMouseLeave={() => setHoveredSortOption(null)}
-                        style={{
-                          textAlign: "left",
-                          border: "none",
-                          background: isActive
-                            ? "rgba(0,0,0,0.1)"
-                            : isHovered
-                              ? "rgba(15,23,42,0.06)"
-                              : "transparent",
-                          color: "rgba(0,0,0,0.88)",
-                          padding: "8px 10px",
-                          borderRadius: 10,
-                          fontWeight: 600,
-                          cursor: "pointer",
-                          transition: "background 120ms ease",
-                        }}
+                        className={`cursor-pointer rounded-[10px] border-none px-2.5 py-2 text-left font-semibold text-black/88 transition-colors duration-100 ${
+                          isActive ? "bg-black/10" : isHovered ? "bg-slate-900/5" : "bg-transparent"
+                        }`}
                       >
                         {option.label}
                       </button>
                     );
                   })}
                 </div>
-                <div style={{ height: 1, background: "rgba(0,0,0,0.12)", margin: "8px 0" }} />
-                <label style={{ display: "flex", alignItems: "center", gap: 8, padding: "6px 8px", fontSize: 14, fontWeight: 500 }}>
+                <div className="my-2 h-px bg-black/12" />
+                <label className="flex items-center gap-2 px-2 py-1.5 text-sm font-medium">
                   <input type="checkbox" checked={entireMenu} onChange={(event) => onEntireMenuChange?.(event.target.checked)} />
                   Entire menu
                 </label>
@@ -303,7 +282,7 @@ export default function ControlsRow({
 
         {hasActiveFilters && showChips ? (
           <>
-            <div style={{ height: 1, background: "rgba(148, 163, 184, 0.5)" }} />
+            <div className="h-px bg-slate-400/50" />
             <FilterChips filters={filters} onClearProtein={clearProteinFilter} onClearCalories={clearCaloriesFilter} onClearAll={resetFilters} withMargin={false} />
           </>
         ) : null}
