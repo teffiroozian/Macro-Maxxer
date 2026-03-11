@@ -2,6 +2,20 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import type { LucideIcon } from "lucide-react";
+import {
+  Beef,
+  CakeSlice,
+  Circle,
+  Coffee,
+  Croissant,
+  Drumstick,
+  GlassWater,
+  Leaf,
+  Soup,
+  Utensils,
+  WrapText,
+} from "lucide-react";
 import { useRestaurantSearch } from "@/components/RestaurantSearchContext";
 import type {
   AddonRef,
@@ -24,20 +38,20 @@ import MenuSections from "./MenuSections";
 import StickyRestaurantBar from "./StickyRestaurantBar";
 
 
-const CATEGORY_ICONS: Record<string, string> = {
-  sandwiches: "🥪",
-  chicken: "🍗",
-  salads: "🥗",
-  drinks: "🥤",
-  breakfast: "🍳",
-  sides: "🍟",
-  desserts: "🍰",
-  wraps: "🌯",
-  burgers: "🍔",
-  entrees: "🍽️",
-  "bowls & plates": "🥣",
-  dressings: "🥣",
-  "dipping sauces": "🫙",
+const CATEGORY_ICONS: Record<string, LucideIcon> = {
+  sandwiches: Croissant,
+  chicken: Drumstick,
+  salads: Leaf,
+  drinks: GlassWater,
+  breakfast: Coffee,
+  sides: Utensils,
+  desserts: CakeSlice,
+  wraps: WrapText,
+  burgers: Beef,
+  entrees: Utensils,
+  "bowls & plates": Soup,
+  dressings: Soup,
+  "dipping sauces": Soup,
 };
 
 export default function RestaurantView({
@@ -334,7 +348,7 @@ export default function RestaurantView({
             >
               {categoryOptions.map((option) => {
                 const isActive = option.id === resolvedActiveCategory;
-                const icon = CATEGORY_ICONS[option.label.toLowerCase()] ?? "◻️";
+                const Icon = CATEGORY_ICONS[option.label.toLowerCase()] ?? Circle;
 
                 return (
                   <div key={option.id} className="relative pl-3">
@@ -350,9 +364,7 @@ export default function RestaurantView({
                           : "text-slate-700 hover:bg-slate-200"
                         }`}
                     >
-                      <span className="text-lg leading-none" aria-hidden="true">
-                        {icon}
-                      </span>
+                      <Icon className="h-4 w-4" aria-hidden="true" />
                       <span>{option.label}</span>
                     </button>
                   </div>
