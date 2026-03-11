@@ -337,7 +337,7 @@ export default function ItemRouteModal({
   };
 
   return (
-    <div className="fixed inset-0 z-[100]" role="dialog" aria-modal="true" aria-label={item.name}>
+    <div className="fixed inset-0 z-[100] flex items-center justify-center" role="dialog" aria-modal="true" aria-label={item.name}>
       <button
         type="button"
         className="absolute inset-0 border-0 bg-slate-900/66"
@@ -357,9 +357,9 @@ export default function ItemRouteModal({
         <div className="grid justify-items-center gap-4">
           <h1 className="text-center text-[38px] font-extrabold">{item.name}</h1>
           {selectedItemImage ? (
-            <img className="max-h-[300px] w-[min(560px,100%)] rounded-[14px] object-cover" src={selectedItemImage} alt={item.name} />
+            <img className="max-h-[300px] w-[min(560px,100%)] rounded-[14px] object-contain" src={selectedItemImage} alt={item.name} />
           ) : null}
-          <div className="flex flex-wrap justify-center gap-7">
+          <div className="flex flex-wrap justify-center gap-14">
             <div className="flex flex-col items-center">
               <div className="inline-flex items-baseline gap-1.5">
                 <span className="text-2xl font-bold">{formatCalories(nutrition.calories)}</span>
