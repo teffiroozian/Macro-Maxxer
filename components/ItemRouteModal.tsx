@@ -14,7 +14,6 @@ import type {
   IngredientItem,
 } from "@/types/menu";
 import { useCart } from "@/stores/cartStore";
-import styles from "./ItemRouteModal.module.css";
 import ingredientsCatalog from "@/data/ingredientsCatalog.json";
 
 const emptyAddon: AddonOption = {
@@ -338,68 +337,82 @@ export default function ItemRouteModal({
   };
 
   return (
-    <div className={styles.overlay} role="dialog" aria-modal="true" aria-label={item.name}>
-      <button type="button" className={styles.backdrop} onClick={handleClose} aria-label="Close item modal" />
-      <div className={styles.modal}>
-        <button type="button" className={styles.close} onClick={handleClose} aria-label="Close item modal">
+    <div className="fixed inset-0 z-[100]" role="dialog" aria-modal="true" aria-label={item.name}>
+      <button
+        type="button"
+        className="absolute inset-0 border-0 bg-slate-900/66"
+        onClick={handleClose}
+        aria-label="Close item modal"
+      />
+      <div className="relative m-4 h-[calc(100%-32px)] w-[min(1024px,calc(100%-32px))] overflow-auto rounded-2xl bg-white px-6 pt-6 pb-24">
+        <button
+          type="button"
+          className="sticky top-0 ml-auto h-9 w-9 rounded-full border border-black/12 bg-white/95 text-2xl"
+          onClick={handleClose}
+          aria-label="Close item modal"
+        >
           ×
         </button>
 
-        <div className={styles.hero}>
-          <h1 className={styles.title}>{item.name}</h1>
-          {selectedItemImage ? <img className={styles.image} src={selectedItemImage} alt={item.name} /> : null}
-          <div className={styles.macroSummary}>
-            <div className={styles.macro}>
-              <div className={styles.macroValueWrap}>
-                <span className={styles.macroValue}>{formatCalories(nutrition.calories)}</span>
+        <div className="grid justify-items-center gap-4">
+          <h1 className="text-center text-[38px] font-extrabold">{item.name}</h1>
+          {selectedItemImage ? (
+            <img className="max-h-[300px] w-[min(560px,100%)] rounded-[14px] object-cover" src={selectedItemImage} alt={item.name} />
+          ) : null}
+          <div className="flex flex-wrap justify-center gap-7">
+            <div className="flex flex-col items-center">
+              <div className="inline-flex items-baseline gap-1.5">
+                <span className="text-2xl font-bold">{formatCalories(nutrition.calories)}</span>
                 {hasActiveCustomization ? (
-                  <span className={styles.macroDelta}>{formatDelta(customizationTotals.calories)}</span>
+                  <span className="text-sm font-bold text-green-600">{formatDelta(customizationTotals.calories)}</span>
                 ) : null}
               </div>
-              <span className={styles.macroLabel}>CAL</span>
+              <span className="text-[10px] font-bold">CAL</span>
             </div>
-            <div className={styles.macro}>
-              <div className={styles.macroValueWrap}>
-                <span className={`${styles.macroValue} ${styles.protein}`}>{formatMacro(nutrition.protein)}</span>
+            <div className="flex flex-col items-center">
+              <div className="inline-flex items-baseline gap-1.5">
+                <span className="text-2xl font-bold text-orange-700">{formatMacro(nutrition.protein)}</span>
                 {hasActiveCustomization ? (
-                  <span className={styles.macroDelta}>{formatDelta(customizationTotals.protein)}</span>
+                  <span className="text-sm font-bold text-green-600">{formatDelta(customizationTotals.protein)}</span>
                 ) : null}
               </div>
-              <span className={styles.macroLabel}>PROTEIN</span>
+              <span className="text-[10px] font-bold">PROTEIN</span>
             </div>
-            <div className={styles.macro}>
-              <div className={styles.macroValueWrap}>
-                <span className={`${styles.macroValue} ${styles.carbs}`}>{formatMacro(nutrition.carbs)}</span>
+            <div className="flex flex-col items-center">
+              <div className="inline-flex items-baseline gap-1.5">
+                <span className="text-2xl font-bold text-yellow-600">{formatMacro(nutrition.carbs)}</span>
                 {hasActiveCustomization ? (
-                  <span className={styles.macroDelta}>{formatDelta(customizationTotals.carbs)}</span>
+                  <span className="text-sm font-bold text-green-600">{formatDelta(customizationTotals.carbs)}</span>
                 ) : null}
               </div>
-              <span className={styles.macroLabel}>CARBS</span>
+              <span className="text-[10px] font-bold">CARBS</span>
             </div>
-            <div className={styles.macro}>
-              <div className={styles.macroValueWrap}>
-                <span className={`${styles.macroValue} ${styles.fat}`}>{formatMacro(nutrition.totalFat)}</span>
+            <div className="flex flex-col items-center">
+              <div className="inline-flex items-baseline gap-1.5">
+                <span className="text-2xl font-bold text-blue-600">{formatMacro(nutrition.totalFat)}</span>
                 {hasActiveCustomization ? (
-                  <span className={styles.macroDelta}>{formatDelta(customizationTotals.fat)}</span>
+                  <span className="text-sm font-bold text-green-600">{formatDelta(customizationTotals.fat)}</span>
                 ) : null}
               </div>
-              <span className={styles.macroLabel}>FAT</span>
+              <span className="text-[10px] font-bold">FAT</span>
             </div>
           </div>
 
           {variants && variants.length > 1 ? (
             <>
-              <div className={styles.heroDivider} />
-              <div className={styles.portionWrap}>
-                <div className={styles.portionTitle}>PORTION SIZE</div>
-                <div className={styles.portionOptions}>
+              <div className="h-px w-[min(720px,100%)] bg-black/16" />
+              <div className="grid w-[min(720px,100%)] justify-items-center gap-3">
+                <div className="text-[13px] font-extrabold tracking-[0.06em] text-black/78">PORTION SIZE</div>
+                <div className="flex flex-wrap justify-center gap-2.5">
                   {variants.map((variant) => {
                     const isActive = variant.id === selectedVariantId;
                     return (
                       <button
                         key={variant.id}
                         type="button"
-                        className={`${styles.portionButton} ${isActive ? styles.portionButtonActive : ""}`}
+                        className={`min-w-[110px] rounded-full border px-4 py-1.5 text-sm font-bold ${
+                          isActive ? "border-neutral-900 bg-neutral-900 text-white" : "border-black/20 bg-white"
+                        }`}
                         onClick={() => setSelectedVariantId(variant.id)}
                       >
                         {variant.label}
@@ -408,27 +421,30 @@ export default function ItemRouteModal({
                   })}
                 </div>
               </div>
-              <div className={styles.heroDivider} />
+              <div className="h-px w-[min(720px,100%)] bg-black/16" />
             </>
           ) : null}
         </div>
 
-        <div className={styles.body}>
+        <div className="mt-[18px] grid gap-3.5">
           {modalIngredients.length > 0 ? (
-            <section className={styles.ingredientsSection}>
-              <h3 className={styles.ingredientsTitle}>Ingredients</h3>
-              <div className={styles.ingredientsGrid}>
+            <section className="rounded-[14px] border border-black/12 bg-white p-3.5">
+              <h3 className="mb-3 text-lg font-bold">Ingredients</h3>
+              <div className="grid grid-cols-[repeat(auto-fill,minmax(120px,1fr))] gap-2.5">
                 {modalIngredients.map((ingredient) => (
-                  <article key={ingredient.id} className={styles.ingredientCard}>
-                    <div className={styles.ingredientIcon} aria-hidden="true">
+                  <article
+                    key={ingredient.id}
+                    className="grid justify-items-center gap-1.5 rounded-xl border border-black/12 bg-zinc-50 p-2.5 text-center"
+                  >
+                    <div className="text-2xl" aria-hidden="true">
                       {isIconImage(ingredient.icon) ? (
                         <Image src={ingredient.icon} alt="" width={24} height={24} />
                       ) : (
                         ingredient.icon
                       )}
                     </div>
-                    <div className={styles.ingredientName}>{ingredient.label}</div>
-                    <div className={styles.ingredientCalories}>
+                    <div className="line-clamp-2 text-sm leading-[1.3] font-bold">{ingredient.label}</div>
+                    <div className="text-xs font-semibold text-black/60">
                       {ingredient.calories !== undefined ? `${ingredient.calories} Cal` : "— Cal"}
                     </div>
                   </article>
@@ -490,8 +506,12 @@ export default function ItemRouteModal({
           />
         </div>
 
-        <div className={styles.stickyBar}>
-          <button type="button" className={styles.addButton} onClick={handleAddToCart}>
+        <div className="fixed right-0 bottom-0 left-0 flex justify-center border-t border-black/10 bg-white/95 px-4 py-3">
+          <button
+            type="button"
+            className="rounded-xl border border-black/20 bg-black/90 px-6 py-2.5 text-base font-bold text-white"
+            onClick={handleAddToCart}
+          >
             {isAddFeedbackVisible ? "Added ✓" : "Add to Cart"}
           </button>
         </div>
