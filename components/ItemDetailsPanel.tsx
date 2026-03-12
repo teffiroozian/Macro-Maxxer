@@ -121,18 +121,27 @@ export function PortionSelector({
   selectedVariantId,
   onSelectVariant,
   className = "mt-4",
+  layout = "details",
 }: {
   variants?: ItemVariant[] | null;
   selectedVariantId?: string;
   onSelectVariant?: (id: string) => void;
   className?: string;
+  layout?: "top" | "details";
 }) {
   if (!variants || variants.length === 0) return null;
 
+  const isTopLayout = layout === "top";
+  const wrapperClasses = isTopLayout
+    ? `${className} my-3 flex flex-col items-center justify-between gap-4`
+    : `${className} flex flex-col items-start justify-between gap-4`;
+
   return (
-    <div className={`${className} flex items-center justify-between gap-4 flex-col items-start`}>
-      <div className="text-lg font-semibold text-[rgba(0,0,0,0.8)]">Portion</div>
-      <div className="grid w-full grid-cols-3 gap-2">
+    <div className={wrapperClasses}>
+      <div className={`text-lg font-semibold text-[rgba(0,0,0,0.8)] ${isTopLayout ? "w-full text-center" : ""}`}>
+        Portion
+      </div>
+      <div className={`grid w-full gap-2 ${isTopLayout ? "grid-cols-4" : "grid-cols-3"}`}>
         {variants.map((variant) => {
           const isActive = variant.id === selectedVariantId;
           const variantColorClasses = isActive
@@ -598,6 +607,7 @@ export default function ItemDetailsPanel({
               variants={variants}
               selectedVariantId={selectedVariantId}
               onSelectVariant={onSelectVariant}
+              layout="details"
             />
           </>
         ) : null}

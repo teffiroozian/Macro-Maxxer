@@ -325,6 +325,7 @@ export default function ItemRouteModal({
                   selectedVariantId={selectedVariantId}
                   onSelectVariant={setSelectedVariantId}
                   className="mt-0"
+                  layout="top"
                 />
               </div>
               <div className="h-px w-[min(720px,100%)] bg-black/16" />
