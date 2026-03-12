@@ -262,7 +262,7 @@ export default function ItemRouteModal({
         onClick={handleClose}
         aria-label="Close item modal"
       />
-      <div className="relative m-4 h-[calc(100%-32px)] w-[min(1024px,calc(100%-32px))] overflow-auto rounded-2xl bg-white px-6 pt-6 pb-24">
+      <div className="relative m-4 h-[calc(100%-32px)] w-[min(1024px,calc(100%-32px))] overflow-auto rounded-2xl bg-white px-6 pt-6">
         <button
           type="button"
           className="sticky top-0 ml-auto h-9 w-9 rounded-full border border-black/12 bg-white/95 text-2xl"
@@ -390,7 +390,7 @@ export default function ItemRouteModal({
           />
         </div>
 
-        <div className="fixed right-0 bottom-0 left-0 flex justify-center border-t border-black/10 bg-white/95 px-4 py-3">
+        <div className="sticky bottom-0 -mx-6 flex justify-center border-t border-black/10 bg-white mt-4 px-4 py-3 shadow-[0_-4px_10px_rgba(0,0,0,0.08)]">
           <button
             type="button"
             className="rounded-xl border border-black/20 bg-black/90 px-6 py-2.5 text-base font-bold text-white"
