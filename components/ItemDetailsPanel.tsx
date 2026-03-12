@@ -135,11 +135,15 @@ export function PortionSelector({
       <div className="grid w-full grid-cols-3 gap-2">
         {variants.map((variant) => {
           const isActive = variant.id === selectedVariantId;
+          const variantColorClasses = isActive
+            ? "bg-black text-white"
+            : "bg-transparent text-[rgba(0,0,0,0.6)]";
+
           return (
             <button
               key={variant.id}
               type="button"
-              className={`w-full cursor-inherit rounded-lg border-2 border-[rgba(0,0,0,0.6)] bg-transparent px-3 py-1.5 text-center text-[18px] font-bold text-[rgba(0,0,0,0.6)] ${isActive ? "bg-black text-white" : ""}`}
+              className={`w-full cursor-inherit rounded-lg border-2 border-[rgba(0,0,0,0.6)] px-3 py-1.5 text-center text-[18px] font-bold ${variantColorClasses}`}
               onClick={() => onSelectVariant?.(variant.id)}
             >
               {variant.label}
