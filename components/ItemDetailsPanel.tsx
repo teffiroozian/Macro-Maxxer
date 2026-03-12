@@ -239,7 +239,7 @@ export default function ItemDetailsPanel({
             {ingredients.map((ingredient) => (
               <article
                 key={ingredient.id}
-                className="grid justify-items-center gap-1.5 rounded-xl border border-black/12 bg-zinc-50 p-2.5 text-center"
+                className="grid justify-items-center gap-1.5 rounded-xl border border-black/12 bg-white p-2.5 text-center"
               >
                 <div className="flex h-[100px] w-[100px] items-center justify-center" aria-hidden="true">
                   {isIconImage(ingredient.icon) ? (
