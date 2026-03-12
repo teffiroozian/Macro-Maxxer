@@ -262,7 +262,7 @@ export default function ItemRouteModal({
         onClick={handleClose}
         aria-label="Close item modal"
       />
-      <div className="relative m-4 h-[calc(100%-32px)] w-[min(1024px,calc(100%-32px))] overflow-auto rounded-2xl bg-white px-6 pt-6">
+      <div className="relative m-4 h-[calc(100%-32px)] w-[min(1024px,calc(100%-32px))] overflow-hidden rounded-2xl bg-white px-6 pt-6">
         <button
           type="button"
           className="sticky top-0 ml-auto h-9 w-9 rounded-full border border-black/12 bg-white/95 text-2xl"
@@ -272,6 +272,7 @@ export default function ItemRouteModal({
           ×
         </button>
 
+        <div className="h-[calc(100%-52px-56px)] overflow-y-auto pr-2 pb-4">
         <div className="grid justify-items-center gap-8">
           <h1 className="text-center text-[32px] font-extrabold">{item.name}</h1>
           {selectedItemImage ? (
@@ -389,11 +390,12 @@ export default function ItemRouteModal({
             showVariantsInDetails={true}
           />
         </div>
+        </div>
 
-        <div className="sticky bottom-0 -mx-6 flex justify-center border-t border-black/10 bg-white mt-4 px-4 py-3 shadow-[0_-4px_10px_rgba(0,0,0,0.08)]">
+        <div className="sticky bottom-0 -mx-6 z-10 flex h-fit justify-center border-t border-black/10 bg-white px-4 py-3 shadow-[0_-4px_10px_rgba(0,0,0,0.08)]">
           <button
             type="button"
-            className="rounded-xl border border-black/20 bg-black/90 px-6 py-2.5 text-base font-bold text-white"
+            className="cursor-pointer rounded-xl border border-black/20 bg-black/90 px-6 py-2.5 text-base font-bold text-white"
             onClick={handleAddToCart}
           >
             {isAddFeedbackVisible ? "Added ✓" : "Add to Cart"}
