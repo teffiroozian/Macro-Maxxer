@@ -105,7 +105,6 @@ export default function ItemRouteModal({
   const [selectedAddons, setSelectedAddons] = useState<Partial<Record<AddonRef, AddonOption>>>({});
   const [selectedSauceCounts, setSelectedSauceCounts] = useState<Record<string, number>>({});
   const [selectedCommonChangeIds, setSelectedCommonChangeIds] = useState<string[]>([]);
-  const [isAddFeedbackVisible, setIsAddFeedbackVisible] = useState(false);
   const { addItem } = useCart();
   const selectedVariant = variants?.find((variant) => variant.id === selectedVariantId);
   const selectedItemImage = selectedVariant?.image ?? item.image;
@@ -229,9 +228,7 @@ export default function ItemRouteModal({
   };
 
   const handleAddToCart = () => {
-    if (isAddFeedbackVisible) return;
-
-    addItem({
+    const cartItem = {
       id: crypto.randomUUID(),
       restaurantId,
       itemId: item.id ?? item.name,
@@ -248,10 +245,10 @@ export default function ItemRouteModal({
         carbs: nutrition.carbs ?? 0,
         fat: nutrition.totalFat ?? 0,
       },
-    });
+    };
 
-    setIsAddFeedbackVisible(true);
-    window.setTimeout(() => setIsAddFeedbackVisible(false), 1000);
+    handleClose();
+    window.setTimeout(() => addItem(cartItem), 0);
   };
 
   return (
@@ -398,7 +395,7 @@ export default function ItemRouteModal({
             className="cursor-pointer rounded-xl border border-black/20 bg-black/90 px-6 py-2.5 text-base font-bold text-white"
             onClick={handleAddToCart}
           >
-            {isAddFeedbackVisible ? "Added ✓" : "Add to Cart"}
+            Add to Cart
           </button>
         </div>
       </div>
