@@ -131,7 +131,7 @@ export function PortionSelector({
 
   return (
     <div className={`${className} flex items-center justify-between gap-4 flex-col items-start`}>
-      <div className="text-4 font-semibold text-[rgba(0,0,0,0.8)]">Portion</div>
+      <div className="text-lg font-semibold text-[rgba(0,0,0,0.8)]">Portion</div>
       <div className="grid w-full grid-cols-3 gap-2">
         {variants.map((variant) => {
           const isActive = variant.id === selectedVariantId;
@@ -598,7 +598,6 @@ export default function ItemDetailsPanel({
           </>
         ) : null}
 
-        <div className="mt-3 h-px bg-[rgba(0,0,0,0.2)]" />
 
         {item.restaurant ? (
           <>

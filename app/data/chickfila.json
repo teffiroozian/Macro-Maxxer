@@ -192,6 +192,7 @@
             "image": "/restaurants/chickfila/menu/sandwiches/deluxe-sandwich.webp",
             "ingredients": [
                 "buttery-white-bun",
+                "american-cheese",
                 "cfa-filet",
                 "pickles",
                 "lettuce",
@@ -373,7 +374,7 @@
             "image": "/restaurants/chickfila/menu/sandwiches/grilled-chicken-sandwich.webp",
             "ingredients": [
                 "Honey Roasted BBQ Sauce",
-                "buttery-white-bun",
+                "multigrain-brioche-bun",
                 "grilled-filet",
                 "tomato",
                 "lettuce"
@@ -3130,7 +3131,7 @@
             }
         },
         {
-            "id": "pepper-jack-cheese",
+            "id": "pepper-jack",
             "name": "Pepper Jack Cheese",
             "categories": [
                 "Sandwich Toppings"
