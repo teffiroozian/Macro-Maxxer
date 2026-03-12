@@ -348,6 +348,16 @@ export default function ItemDetailsPanel({
                               <div className="line-clamp-2 break-words text-left text-base font-bold leading-[1.2]">{addon.name}</div>
                               <div className="text-base font-bold text-[rgba(0,0,0,0.5)]">+{addon.calories} Cal</div>
                             </div>
+                            {section.ref === "dressings" ? (
+                              <span
+                                aria-hidden="true"
+                                className={`ml-auto inline-flex h-6 w-6 items-center justify-center rounded-full border ${isSelected ? "border-[3px] border-[#16a34a]" : "border-2 border-[rgba(0,0,0,0.25)]"}`}
+                              >
+                                <span
+                                  className={`h-2.5 w-2.5 rounded-full ${isSelected ? "bg-[#16a34a]" : "bg-transparent"}`}
+                                />
+                              </span>
+                            ) : null}
                             {section.ref === "sauces" && addon.name !== "None" ? (
                               <div
                                 className="ml-auto inline-flex items-center gap-[6px]"
