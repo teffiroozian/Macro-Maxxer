@@ -1,7 +1,6 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import Image from "next/image";
 import { useRouter } from "next/navigation";
 import ItemDetailsPanel from "@/components/ItemDetailsPanel";
 import type {
@@ -14,7 +13,6 @@ import type {
   IngredientItem,
 } from "@/types/menu";
 import { useCart } from "@/stores/cartStore";
-import ingredientsCatalog from "@/data/ingredientsCatalog.json";
 
 const emptyAddon: AddonOption = {
   name: "None",
@@ -54,11 +52,6 @@ function formatCalories(value?: number) {
   return value === undefined || Number.isNaN(value) ? "—" : String(value);
 }
 
-function isIconImage(icon: string) {
-  return icon.startsWith("/") || icon.startsWith("http://") || icon.startsWith("https://");
-}
-
-
 function addonFat(addon?: AddonOption) {
   return addon?.totalFat ?? addon?.fat ?? 0;
 }
@@ -80,76 +73,6 @@ function getApplicableCommonChanges(item: MenuItem, commonChanges?: CommonChange
   });
 }
 
-
-function normalizeIngredientToken(value: string) {
-  return value.toLowerCase().replace(/[^a-z0-9]+/g, "").trim();
-}
-
-function resolveModalIngredients(
-  item: MenuItem,
-  ingredients: IngredientItem[] = [],
-  addons?: RestaurantAddons,
-  menuItems: MenuItem[] = []
-) {
-  const ingredientIds =
-    item.ingredients && item.ingredients.length > 0
-      ? item.ingredients
-      : item.portionType === "single"
-        ? [item.id ?? item.name]
-        : [];
-  const ingredientLookup = ingredientsCatalog as Record<string, { label: string; icon: string }>;
-  const ingredientByIdLookup = new Map<string, IngredientItem>();
-  const ingredientByNameLookup = new Map<string, IngredientItem>();
-  const addonLookup = new Map<string, AddonOption>();
-  const menuItemByIdLookup = new Map<string, MenuItem>();
-  const menuItemByNameLookup = new Map<string, MenuItem>();
-
-  ingredients.forEach((entry) => {
-    if (entry.id) {
-      ingredientByIdLookup.set(entry.id.toLowerCase(), entry);
-    }
-    ingredientByNameLookup.set(normalizeIngredientToken(entry.name), entry);
-  });
-
-  Object.values(addons ?? {}).forEach((addonGroup) => {
-    addonGroup?.forEach((addon) => {
-      addonLookup.set(addon.name.toLowerCase(), addon);
-    });
-  });
-
-  menuItems.forEach((menuItem) => {
-    if (menuItem.id) {
-      menuItemByIdLookup.set(menuItem.id.toLowerCase(), menuItem);
-    }
-    menuItemByNameLookup.set(normalizeIngredientToken(menuItem.name), menuItem);
-  });
-
-  return ingredientIds.map((ingredientId) => {
-    const catalogEntry = ingredientLookup[ingredientId];
-    const fallbackLabel = ingredientId
-      .split(/[-_]/)
-      .map((segment) => segment.charAt(0).toUpperCase() + segment.slice(1))
-      .join(" ");
-
-    const match =
-      ingredientByIdLookup.get(ingredientId.toLowerCase()) ??
-      ingredientByNameLookup.get(normalizeIngredientToken(ingredientId)) ??
-      ingredientByNameLookup.get(normalizeIngredientToken(fallbackLabel));
-    const menuItemMatch =
-      menuItemByIdLookup.get(ingredientId.toLowerCase()) ??
-      menuItemByNameLookup.get(normalizeIngredientToken(ingredientId)) ??
-      menuItemByNameLookup.get(normalizeIngredientToken(fallbackLabel));
-    const label = catalogEntry?.label ?? match?.name ?? fallbackLabel;
-    const addonMatch = addonLookup.get(label.toLowerCase());
-
-    return {
-      id: ingredientId,
-      label: menuItemMatch?.name ?? label,
-      icon: catalogEntry?.icon ?? match?.image ?? menuItemMatch?.image ?? addonMatch?.image ?? "🥣",
-      calories: menuItemMatch?.nutrition.calories ?? match?.nutrition.calories ?? addonMatch?.calories,
-    };
-  });
-}
 
 export default function ItemRouteModal({
   restaurantId,
@@ -184,11 +107,6 @@ export default function ItemRouteModal({
   const [selectedCommonChangeIds, setSelectedCommonChangeIds] = useState<string[]>([]);
   const [isAddFeedbackVisible, setIsAddFeedbackVisible] = useState(false);
   const { addItem } = useCart();
-  const modalIngredients = useMemo(
-    () => resolveModalIngredients(item, ingredients, addons, menuItems),
-    [item, ingredients, addons, menuItems]
-  );
-
   const selectedVariant = variants?.find((variant) => variant.id === selectedVariantId);
   const selectedItemImage = selectedVariant?.image ?? item.image;
   const baseNutrition = selectedVariant?.nutrition ?? item.nutrition;
@@ -427,32 +345,6 @@ export default function ItemRouteModal({
         </div>
 
         <div className="mt-[18px] grid gap-3">
-          {modalIngredients.length > 0 ? (
-            <section className="rounded-[14px] border border-black/12 bg-[#e0e0e0] p-3.5">
-              <h3 className="mb-3 text-lg font-bold">Ingredients</h3>
-              <div className="grid grid-cols-[repeat(auto-fill,minmax(120px,1fr))] gap-2.5">
-                {modalIngredients.map((ingredient) => (
-                  <article
-                    key={ingredient.id}
-                    className="grid justify-items-center gap-1.5 rounded-xl border border-black/12 bg-zinc-50 p-2.5 text-center"
-                  >
-                    <div className="text-2xl" aria-hidden="true">
-                      {isIconImage(ingredient.icon) ? (
-                        <Image src={ingredient.icon} alt="" width={24} height={24} />
-                      ) : (
-                        ingredient.icon
-                      )}
-                    </div>
-                    <div className="line-clamp-2 text-sm leading-[1.3] font-bold">{ingredient.label}</div>
-                    <div className="text-xs font-semibold text-black/60">
-                      {ingredient.calories !== undefined ? `${ingredient.calories} Cal` : "— Cal"}
-                    </div>
-                  </article>
-                ))}
-              </div>
-            </section>
-          ) : null}
-
           <ItemDetailsPanel
             item={item}
             nutrition={nutrition}
@@ -460,6 +352,8 @@ export default function ItemRouteModal({
             selectedVariantId={selectedVariantId}
             onSelectVariant={setSelectedVariantId}
             addons={addons}
+            ingredientItems={ingredients}
+            menuItems={menuItems}
             selectedAddons={selectedAddons}
             onSelectAddon={(ref, addon) => setSelectedAddons((prev) => ({ ...prev, [ref]: addon ?? emptyAddon }))}
             sauceSelectionCounts={selectedSauceCounts}

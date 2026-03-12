@@ -398,6 +398,7 @@ export default function RestaurantView({
               items={filteredItems}
               sort={sort}
               addons={addons}
+              ingredients={ingredients}
               commonChanges={commonChanges}
               groupByCategory={!entireMenu}
             />

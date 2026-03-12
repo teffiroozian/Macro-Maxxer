@@ -2,7 +2,7 @@
 
 import { useEffect, useId, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
-import type { AddonOption, AddonRef, CommonChange, MacroDelta, MenuItem, RestaurantAddons } from "@/types/menu";
+import type { AddonOption, AddonRef, CommonChange, IngredientItem, MacroDelta, MenuItem, RestaurantAddons } from "@/types/menu";
 import styles from "./MenuItemCard.module.css";
 import { useCart } from "@/stores/cartStore";
 import ItemDetailsPanel from "./ItemDetailsPanel";
@@ -154,6 +154,8 @@ export default function MenuItemCard({
   showRatio = false,
   isTopRanked,
   addons,
+  ingredientItems,
+  menuItems,
   commonChanges,
   mode = "menu",
   cartQuantity = 1,
@@ -173,6 +175,8 @@ export default function MenuItemCard({
   showRatio?: boolean;
   isTopRanked?: boolean;
   addons?: RestaurantAddons;
+  ingredientItems?: IngredientItem[];
+  menuItems?: MenuItem[];
   commonChanges?: CommonChange[];
   mode?: "menu" | "cart";
   cartQuantity?: number;
@@ -750,6 +754,8 @@ export default function MenuItemCard({
                 emitCartConfiguration(nextVariantId, selectedAddons, selectedSauceCounts);
               }}
               addons={addons}
+              ingredientItems={ingredientItems}
+              menuItems={menuItems}
               selectedAddons={selectedAddons}
               onSelectAddon={(ref, addon) => {
                 setSelectedAddons((prev) => {

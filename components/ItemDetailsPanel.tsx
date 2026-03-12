@@ -10,6 +10,7 @@ import type {
   MenuItem,
   Nutrition,
   RestaurantAddons,
+  IngredientItem,
 } from "@/types/menu";
 
 
@@ -32,25 +33,72 @@ const addonSectionTitles: Record<AddonRef, string> = {
   condiments: "Condiments",
 };
 
-type IngredientEntry = {
-  label: string;
-  icon: string;
-};
+function normalizeIngredientToken(value: string) {
+  return value.toLowerCase().replace(/[^a-z0-9]+/g, "").trim();
+}
 
-function resolveIngredients(ingredientIds?: string[]) {
-  if (!ingredientIds || ingredientIds.length === 0) return [];
+function resolvePanelIngredients(
+  item: MenuItem,
+  ingredientItems: IngredientItem[] = [],
+  addons?: RestaurantAddons,
+  menuItems: MenuItem[] = []
+) {
+  const ingredientIds =
+    item.ingredients && item.ingredients.length > 0
+      ? item.ingredients
+      : item.portionType === "single"
+        ? [item.id ?? item.name]
+        : [];
 
-  return ingredientIds
-    .map((ingredientId) => {
-      const ingredient = (ingredientsCatalog as Record<string, IngredientEntry>)[ingredientId];
-      if (!ingredient) return null;
-      return {
-        id: ingredientId,
-        label: ingredient.label,
-        icon: ingredient.icon,
-      };
-    })
-    .filter((ingredient): ingredient is { id: string; label: string; icon: string } => ingredient !== null);
+  const ingredientLookup = ingredientsCatalog as Record<string, { label: string; icon: string }>;
+  const ingredientByIdLookup = new Map<string, IngredientItem>();
+  const ingredientByNameLookup = new Map<string, IngredientItem>();
+  const addonLookup = new Map<string, AddonOption>();
+  const menuItemByIdLookup = new Map<string, MenuItem>();
+  const menuItemByNameLookup = new Map<string, MenuItem>();
+
+  ingredientItems.forEach((entry) => {
+    if (entry.id) ingredientByIdLookup.set(entry.id.toLowerCase(), entry);
+    ingredientByNameLookup.set(normalizeIngredientToken(entry.name), entry);
+  });
+
+  Object.values(addons ?? {}).forEach((addonGroup) => {
+    addonGroup?.forEach((addon) => {
+      addonLookup.set(addon.name.toLowerCase(), addon);
+    });
+  });
+
+  menuItems.forEach((menuItem) => {
+    if (menuItem.id) menuItemByIdLookup.set(menuItem.id.toLowerCase(), menuItem);
+    menuItemByNameLookup.set(normalizeIngredientToken(menuItem.name), menuItem);
+  });
+
+  return ingredientIds.map((ingredientId) => {
+    const catalogEntry = ingredientLookup[ingredientId];
+    const fallbackLabel = ingredientId
+      .split(/[-_]/)
+      .map((segment) => segment.charAt(0).toUpperCase() + segment.slice(1))
+      .join(" ");
+
+    const match =
+      ingredientByIdLookup.get(ingredientId.toLowerCase()) ??
+      ingredientByNameLookup.get(normalizeIngredientToken(ingredientId)) ??
+      ingredientByNameLookup.get(normalizeIngredientToken(fallbackLabel));
+    const menuItemMatch =
+      menuItemByIdLookup.get(ingredientId.toLowerCase()) ??
+      menuItemByNameLookup.get(normalizeIngredientToken(ingredientId)) ??
+      menuItemByNameLookup.get(normalizeIngredientToken(fallbackLabel));
+
+    const label = catalogEntry?.label ?? match?.name ?? fallbackLabel;
+    const addonMatch = addonLookup.get(label.toLowerCase());
+
+    return {
+      id: ingredientId,
+      label: menuItemMatch?.name ?? label,
+      icon: catalogEntry?.icon ?? match?.image ?? menuItemMatch?.image ?? addonMatch?.image ?? "🥣",
+      calories: menuItemMatch?.nutrition.calories ?? match?.nutrition.calories ?? addonMatch?.calories,
+    };
+  });
 }
 
 function sortByCalories(addons: AddonOption[]) {
@@ -73,6 +121,8 @@ export default function ItemDetailsPanel({
   selectedVariantId,
   onSelectVariant,
   addons,
+  ingredientItems,
+  menuItems,
   selectedAddons,
   onSelectAddon,
   sauceSelectionCounts,
@@ -92,6 +142,8 @@ export default function ItemDetailsPanel({
   selectedVariantId?: string;
   onSelectVariant?: (id: string) => void;
   addons?: RestaurantAddons;
+  ingredientItems?: IngredientItem[];
+  menuItems?: MenuItem[];
   selectedAddons?: Partial<Record<AddonRef, AddonOption>>;
   onSelectAddon?: (ref: AddonRef, addon?: AddonOption) => void;
   sauceSelectionCounts?: Partial<Record<string, number>>;
@@ -124,10 +176,36 @@ export default function ItemDetailsPanel({
     );
 
   const activeCustomizationTotals = customizationTotals ?? { calories: 0, protein: 0, carbs: 0, fat: 0 };
-  const ingredients = resolveIngredients(item.ingredients);
+  const ingredients = resolvePanelIngredients(item, ingredientItems, addons, menuItems);
 
   return (
     <div className="grid grid-cols-2 gap-3 rounded-[18px] bg-[#e0e0e0] px-3 py-2">
+      {ingredients.length > 0 ? (
+        <section className="col-span-2 rounded-[14px] border border-black/12 bg-white p-3.5">
+          <h3 className="mb-3 text-lg font-bold">Ingredients</h3>
+          <div className="grid grid-cols-[repeat(auto-fill,minmax(120px,1fr))] gap-2.5">
+            {ingredients.map((ingredient) => (
+              <article
+                key={ingredient.id}
+                className="grid justify-items-center gap-1.5 rounded-xl border border-black/12 bg-zinc-50 p-2.5 text-center"
+              >
+                <div className="text-2xl" aria-hidden="true">
+                  {isIconImage(ingredient.icon) ? (
+                    <Image src={ingredient.icon} alt="" width={24} height={24} />
+                  ) : (
+                    ingredient.icon
+                  )}
+                </div>
+                <div className="line-clamp-2 text-sm leading-[1.3] font-bold">{ingredient.label}</div>
+                <div className="text-xs font-semibold text-black/60">
+                  {ingredient.calories !== undefined ? `${ingredient.calories} Cal` : "— Cal"}
+                </div>
+              </article>
+            ))}
+          </div>
+        </section>
+      ) : null}
+
       {availableAddonSections.length > 0 ? (
         <section className="col-span-2 rounded-[18px] border border-[rgba(0,0,0,0.15)] bg-white px-[18px] py-[14px]">
           <div className="grid gap-[14px]">
@@ -505,22 +583,6 @@ export default function ItemDetailsPanel({
           </>
         ) : null}
 
-        {ingredients.length > 0 ? (
-          <>
-            <div className="mt-[14px] h-px bg-[rgba(0,0,0,0.2)]" />
-            <div className={`mt-[18px] flex items-center justify-between gap-[14px] flex-col items-start`}>
-              <div className="text-[18px] font-semibold text-[rgba(0,0,0,0.8)]">Ingredients</div>
-              <div className="grid w-full grid-cols-3 gap-2">
-                {ingredients.map((ingredient) => (
-                  <div key={ingredient.id} className="inline-flex items-center gap-[6px] whitespace-nowrap rounded-[999px] border border-[rgba(0,0,0,0.2)] bg-[#f8f8f8] px-[10px] py-1.5 text-sm font-semibold">
-                    <span aria-hidden="true">{isIconImage(ingredient.icon) ? <Image src={ingredient.icon} alt="" width={24} height={24} /> : ingredient.icon}</span>
-                    <span>{ingredient.label}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </>
-        ) : null}
       </section> : null}
     </div>
   );

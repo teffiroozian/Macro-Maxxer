@@ -1,6 +1,6 @@
 "use client";
 
-import type { CommonChange, MenuItem, RestaurantAddons } from "@/types/menu";
+import type { CommonChange, IngredientItem, MenuItem, RestaurantAddons } from "@/types/menu";
 import type { SortOption } from "./ControlsRow";
 import MenuItemCard from "./MenuItemCard";
 import { toItemSlug } from "@/lib/restaurants";
@@ -176,6 +176,7 @@ export default function MenuSections({
   items,
   sort,
   addons,
+  ingredients,
   commonChanges,
   groupByCategory = true,
 }: {
@@ -183,6 +184,7 @@ export default function MenuSections({
   items: MenuItem[];
   sort: SortOption;
   addons?: RestaurantAddons;
+  ingredients?: IngredientItem[];
   commonChanges?: CommonChange[];
   groupByCategory?: boolean;
 }) {
@@ -203,6 +205,8 @@ export default function MenuSections({
               restaurantId={restaurantId}
               item={item}
               addons={addons}
+              ingredientItems={ingredients}
+              menuItems={items}
               commonChanges={commonChanges}
               itemHref={`/restaurant/${restaurantId}/items/${toItemSlug(item)}`}
             />
@@ -275,6 +279,8 @@ export default function MenuSections({
                 restaurantId={restaurantId}
                 item={item}
                 addons={addons}
+                ingredientItems={ingredients}
+                menuItems={items}
                 commonChanges={commonChanges}
                 itemHref={`/restaurant/${restaurantId}/items/${toItemSlug(item)}`}
               />
