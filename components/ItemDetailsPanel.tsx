@@ -181,17 +181,17 @@ export default function ItemDetailsPanel({
   return (
     <div className="grid grid-cols-2 gap-3 rounded-[18px] bg-[#e0e0e0] px-3 py-2">
       {ingredients.length > 0 ? (
-        <section className="col-span-2 rounded-[14px] border border-black/12 bg-white p-3.5">
-          <h3 className="mb-3 text-lg font-bold">Ingredients</h3>
-          <div className="grid grid-cols-[repeat(auto-fill,minmax(120px,1fr))] gap-2.5">
+        <section className="col-span-2 rounded-[14px] border border-black/12 bg-white p-5">
+          <h2 className="mb-4 text-2xl font-bold">Ingredients</h2>
+          <div className="grid grid-cols-5 gap-2.5">
             {ingredients.map((ingredient) => (
               <article
                 key={ingredient.id}
                 className="grid justify-items-center gap-1.5 rounded-xl border border-black/12 bg-zinc-50 p-2.5 text-center"
               >
-                <div className="text-2xl" aria-hidden="true">
+                <div className="flex h-[100px] w-[100px] items-center justify-center" aria-hidden="true">
                   {isIconImage(ingredient.icon) ? (
-                    <Image src={ingredient.icon} alt="" width={24} height={24} />
+                    <Image src={ingredient.icon} alt="" width={100} height={100} />
                   ) : (
                     ingredient.icon
                   )}
@@ -455,25 +455,27 @@ export default function ItemDetailsPanel({
         </section>
       ) : null}
 
-      {displayMode === "full" ? <section className="rounded-[18px] border border-[rgba(0,0,0,0.15)] bg-white p-[18px]">
+      {displayMode === "full" ? <section className="rounded-[18px] border border-[rgba(0,0,0,0.15)] bg-white p-5">
+        <h2 className="mb-4 text-2xl font-bold">Nutrition Facts</h2>
+
         <div className="text-xs font-medium text-[rgba(0,0,0,0.55)]">Amount per serving</div>
 
         <div className="mt-1 flex items-end justify-between">
-          <div className="text-2xl font-bold">Calories</div>
+          <h3 className="text-xl font-bold">Calories</h3>
           <div className="inline-flex items-baseline gap-[6px]">
-            <div className="text-2xl font-bold">{n.calories === undefined || Number.isNaN(n.calories) ? "—" : n.calories}</div>
+            <div className="text-xl font-bold">{n.calories === undefined || Number.isNaN(n.calories) ? "—" : n.calories}</div>
             {showCustomizationDeltas ? (
               <span className="text-sm font-bold text-[#16a34a]">{formatDelta(activeCustomizationTotals.calories)}</span>
             ) : null}
           </div>
         </div>
 
-        <div className="my-[12px] mb-2 h-[5px] rounded-[999px] bg-[rgba(0,0,0,0.75)]" />
+        <div className="my-[12px] mb-2 h-[4px] rounded-[999px] bg-[rgba(0,0,0,0.75)]" />
 
         <div className="flex items-baseline justify-between border-b border-[rgba(0,0,0,0.2)] py-[10px]">
-          <div className="text-[18px] font-semibold">Total Fat</div>
+          <div className="text-lg font-semibold">Total Fat</div>
           <div className="inline-flex items-baseline gap-[6px]">
-            <div className="text-[18px] font-semibold">{format(n.totalFat, "g")}</div>
+            <div className="text-lg font-semibold">{format(n.totalFat, "g")}</div>
             {showCustomizationDeltas ? <span className="text-sm font-bold text-[#16a34a]">{formatDelta(activeCustomizationTotals.fat, "g")}</span> : null}
           </div>
         </div>
@@ -489,19 +491,19 @@ export default function ItemDetailsPanel({
         </div>
 
         <div className="flex items-baseline justify-between border-b border-[rgba(0,0,0,0.2)] py-[10px]">
-          <div className="text-[18px] font-semibold">Cholesterol</div>
-          <div className="text-[18px] font-semibold">{format(n.cholesterol, "mg")}</div>
+          <div className="text-lg font-semibold">Cholesterol</div>
+          <div className="text-lg font-semibold">{format(n.cholesterol, "mg")}</div>
         </div>
 
         <div className="flex items-baseline justify-between border-b border-[rgba(0,0,0,0.2)] py-[10px]">
-          <div className="text-[18px] font-semibold">Sodium</div>
-          <div className="text-[18px] font-semibold">{format(n.sodium, "mg")}</div>
+          <div className="text-lg font-semibold">Sodium</div>
+          <div className="text-lg font-semibold">{format(n.sodium, "mg")}</div>
         </div>
 
         <div className="flex items-baseline justify-between border-b border-[rgba(0,0,0,0.2)] py-[10px]">
-          <div className="text-[18px] font-semibold">Carbohydrates</div>
+          <div className="text-lg font-semibold">Carbohydrates</div>
           <div className="inline-flex items-baseline gap-[6px]">
-            <div className="text-[18px] font-semibold">{format(n.carbs, "g")}</div>
+            <div className="text-lg font-semibold">{format(n.carbs, "g")}</div>
             {showCustomizationDeltas ? <span className="text-sm font-bold text-[#16a34a]">{formatDelta(activeCustomizationTotals.carbs, "g")}</span> : null}
           </div>
         </div>
@@ -517,9 +519,9 @@ export default function ItemDetailsPanel({
         </div>
 
         <div className="flex items-baseline justify-between border-b border-[rgba(0,0,0,0.2)] py-[10px]">
-          <div className="text-[18px] font-semibold">Protein</div>
+          <div className="text-lg font-semibold">Protein</div>
           <div className="inline-flex items-baseline gap-[6px]">
-            <div className="text-[18px] font-semibold">{format(n.protein, "g")}</div>
+            <div className="text-lg font-semibold">{format(n.protein, "g")}</div>
             {showCustomizationDeltas ? <span className="text-sm font-bold text-[#16a34a]">{formatDelta(activeCustomizationTotals.protein, "g")}</span> : null}
           </div>
         </div>
@@ -530,28 +532,28 @@ export default function ItemDetailsPanel({
         </div>
       </section> : null}
 
-      {displayMode === "full" ? <section className="rounded-[18px] border border-[rgba(0,0,0,0.15)] bg-white p-[18px]">
-        <div className="text-2xl font-bold">Details</div>
+      {displayMode === "full" ? <section className="rounded-2xl border border-[rgba(0,0,0,0.15)] bg-white p-5">
+        <h2 className="mb-4 text-2xl font-bold">Details</h2>
 
-        <div className="mt-[18px] flex items-center justify-between gap-[14px]">
-          <div className="text-[18px] font-semibold text-[rgba(0,0,0,0.8)]">Category</div>
-          <div className="rounded-[999px] border-2 border-[rgba(0,0,0,0.8)] px-3 py-1 text-[18px] font-extrabold">{item.categories?.join(", ") ?? "—"}</div>
+        <div className="mb-4 flex items-center justify-between gap-3">
+          <div className="text-lg font-semibold text-[rgba(0,0,0,0.8)]">Category</div>
+          <div className="rounded-full border-2 border-[rgba(0,0,0,0.8)] px-3 py-1 text-lg font-extrabold">{item.categories?.join(", ") ?? "—"}</div>
         </div>
 
-        <div className="mt-[14px] h-px bg-[rgba(0,0,0,0.2)]" />
+        <div className="mt-3 h-px bg-[rgba(0,0,0,0.2)]" />
 
-        <div className="mt-[18px] flex items-center justify-between gap-[14px]">
-          <div className="text-[18px] font-semibold text-[rgba(0,0,0,0.8)]">Cal to Protein Ratio</div>
-          <div className="text-[18px] font-semibold">
+        <div className="mt-4 flex items-center justify-between gap-[14px]">
+          <div className="text-lg font-semibold text-[rgba(0,0,0,0.8)]">Cal to Protein Ratio</div>
+          <div className="text-lg font-semibold">
             {calToProteinRatio(n.calories, n.protein)}
           </div>
         </div>
 
         {variants && variants.length > 0 ? (
           <>
-            <div className="mt-[14px] h-px bg-[rgba(0,0,0,0.2)]" />
-            <div className={`mt-[18px] flex items-center justify-between gap-[14px] flex-col items-start`}>
-              <div className="text-[18px] font-semibold text-[rgba(0,0,0,0.8)]">Portion</div>
+            <div className="mt-3 h-px bg-[rgba(0,0,0,0.2)]" />
+            <div className={`mt-4 flex items-center justify-between gap-4 flex-col items-start`}>
+              <div className="text-4 font-semibold text-[rgba(0,0,0,0.8)]">Portion</div>
               <div className="grid w-full grid-cols-3 gap-2">
                 {variants.map((variant) => {
                   const isActive = variant.id === selectedVariantId;
@@ -571,14 +573,14 @@ export default function ItemDetailsPanel({
           </>
         ) : null}
 
-        <div className="mt-[14px] h-px bg-[rgba(0,0,0,0.2)]" />
+        <div className="mt-3 h-px bg-[rgba(0,0,0,0.2)]" />
 
         {item.restaurant ? (
           <>
-            <div className="mt-[14px] h-px bg-[rgba(0,0,0,0.2)]" />
-            <div className="mt-[18px] flex items-center justify-between gap-[14px]">
-              <div className="text-[18px] font-semibold text-[rgba(0,0,0,0.8)]">Restaurant</div>
-              <div className="text-[18px] font-semibold">{item.restaurant}</div>
+            <div className="mt-3 h-px bg-[rgba(0,0,0,0.2)]" />
+            <div className="mt-4 flex items-center justify-between gap-3">
+              <div className="text-4 font-semibold text-[rgba(0,0,0,0.8)]">Restaurant</div>
+              <div className="text-4 font-semibold">{item.restaurant}</div>
             </div>
           </>
         ) : null}
