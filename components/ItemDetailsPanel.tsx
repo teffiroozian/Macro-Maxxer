@@ -114,6 +114,42 @@ function isIconImage(icon: string) {
   return icon.startsWith("/") || icon.startsWith("http://") || icon.startsWith("https://");
 }
 
+
+
+export function PortionSelector({
+  variants,
+  selectedVariantId,
+  onSelectVariant,
+  className = "mt-4",
+}: {
+  variants?: ItemVariant[] | null;
+  selectedVariantId?: string;
+  onSelectVariant?: (id: string) => void;
+  className?: string;
+}) {
+  if (!variants || variants.length === 0) return null;
+
+  return (
+    <div className={`${className} flex items-center justify-between gap-4 flex-col items-start`}>
+      <div className="text-4 font-semibold text-[rgba(0,0,0,0.8)]">Portion</div>
+      <div className="grid w-full grid-cols-3 gap-2">
+        {variants.map((variant) => {
+          const isActive = variant.id === selectedVariantId;
+          return (
+            <button
+              key={variant.id}
+              type="button"
+              className={`w-full cursor-inherit rounded-lg border-2 border-[rgba(0,0,0,0.6)] bg-transparent px-3 py-1.5 text-center text-[18px] font-bold text-[rgba(0,0,0,0.6)] ${isActive ? "bg-black text-white" : ""}`}
+              onClick={() => onSelectVariant?.(variant.id)}
+            >
+              {variant.label}
+            </button>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
 export default function ItemDetailsPanel({
   item,
   nutrition,
@@ -135,6 +171,7 @@ export default function ItemDetailsPanel({
   customizationTotals,
   showCustomizationDeltas,
   displayMode = "full",
+  showVariantsInDetails = true,
 }: {
   item: MenuItem;
   nutrition: Nutrition;
@@ -156,6 +193,7 @@ export default function ItemDetailsPanel({
   customizationTotals?: MacroDelta;
   showCustomizationDeltas?: boolean;
   displayMode?: "full" | "addonsOnly";
+  showVariantsInDetails?: boolean;
 }) {
   const n = nutrition;
   const addonRefs = item.addonRefs ?? [];
@@ -549,27 +587,14 @@ export default function ItemDetailsPanel({
           </div>
         </div>
 
-        {variants && variants.length > 0 ? (
+        {showVariantsInDetails ? (
           <>
             <div className="mt-3 h-px bg-[rgba(0,0,0,0.2)]" />
-            <div className={`mt-4 flex items-center justify-between gap-4 flex-col items-start`}>
-              <div className="text-4 font-semibold text-[rgba(0,0,0,0.8)]">Portion</div>
-              <div className="grid w-full grid-cols-3 gap-2">
-                {variants.map((variant) => {
-                  const isActive = variant.id === selectedVariantId;
-                  return (
-                    <button
-                      key={variant.id}
-                      type="button"
-                      className={`w-full cursor-inherit rounded-lg border-2 border-[rgba(0,0,0,0.6)] bg-transparent px-3 py-1.5 text-center text-[18px] font-bold text-[rgba(0,0,0,0.6)] ${isActive ? "bg-black text-white" : ""}`}
-                      onClick={() => onSelectVariant?.(variant.id)}
-                    >
-                      {variant.label}
-                    </button>
-                  );
-                })}
-              </div>
-            </div>
+            <PortionSelector
+              variants={variants}
+              selectedVariantId={selectedVariantId}
+              onSelectVariant={onSelectVariant}
+            />
           </>
         ) : null}
 

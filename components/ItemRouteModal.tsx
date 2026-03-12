@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
-import ItemDetailsPanel from "@/components/ItemDetailsPanel";
+import ItemDetailsPanel, { PortionSelector } from "@/components/ItemDetailsPanel";
 import type {
   AddonOption,
   AddonRef,
@@ -316,28 +316,16 @@ export default function ItemRouteModal({
             </div>
           </div>
 
-          {variants && variants.length > 1 ? (
+          {variants && variants.length > 0 ? (
             <>
               <div className="h-px w-[min(720px,100%)] bg-black/16" />
-              <div className="grid w-[min(720px,100%)] justify-items-center gap-3">
-                <div className="text-[13px] font-extrabold tracking-[0.06em] text-black/78">PORTION SIZE</div>
-                <div className="flex flex-wrap justify-center gap-2.5">
-                  {variants.map((variant) => {
-                    const isActive = variant.id === selectedVariantId;
-                    return (
-                      <button
-                        key={variant.id}
-                        type="button"
-                        className={`min-w-[110px] rounded-full border px-4 py-1.5 text-sm font-bold ${
-                          isActive ? "border-neutral-900 bg-neutral-900 text-white" : "border-black/20 bg-white"
-                        }`}
-                        onClick={() => setSelectedVariantId(variant.id)}
-                      >
-                        {variant.label}
-                      </button>
-                    );
-                  })}
-                </div>
+              <div className="w-[min(720px,100%)]">
+                <PortionSelector
+                  variants={variants}
+                  selectedVariantId={selectedVariantId}
+                  onSelectVariant={setSelectedVariantId}
+                  className="mt-0"
+                />
               </div>
               <div className="h-px w-[min(720px,100%)] bg-black/16" />
             </>
@@ -348,7 +336,7 @@ export default function ItemRouteModal({
           <ItemDetailsPanel
             item={item}
             nutrition={nutrition}
-            variants={null}
+            variants={variants}
             selectedVariantId={selectedVariantId}
             onSelectVariant={setSelectedVariantId}
             addons={addons}
@@ -397,6 +385,7 @@ export default function ItemRouteModal({
             }
             customizationTotals={customizationTotals}
             showCustomizationDeltas={hasActiveCustomization}
+            showVariantsInDetails={true}
           />
         </div>
 
