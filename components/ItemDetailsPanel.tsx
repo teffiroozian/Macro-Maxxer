@@ -12,7 +12,7 @@ import type {
   RestaurantAddons,
   IngredientItem,
 } from "@/types/menu";
-import { ChevronDown } from "lucide-react";
+import { Check, ChevronDown } from "lucide-react";
 
 
 function format(n?: number, suffix = "") {
@@ -520,10 +520,10 @@ export default function ItemDetailsPanel({
                                   <div className="text-base font-bold text-[rgba(0,0,0,0.5)]">{`${calorieDeltaLabel} • ${proteinDeltaLabel}`}</div>
                                 </div>
                                 <span
-                                  className={`ml-auto inline-flex h-[22px] w-[22px] shrink-0 items-center justify-center rounded-[4px] border-2 border-[rgba(0,0,0,0.45)] bg-white text-sm font-extrabold text-white ${isActive ? "border-[#16a34a] bg-[#16a34a] text-white" : ""}`}
+                                  className={`ml-auto inline-flex h-[22px] w-[22px] shrink-0 items-center justify-center rounded-[4px] border-2 transition-colors ${isActive ? "border-[#16a34a] bg-[#16a34a] text-white" : "border-[rgba(0,0,0,0.45)] bg-white text-transparent"}`}
                                   aria-hidden="true"
                                 >
-                                  {isActive ? "✓" : ""}
+                                  <Check size={14} strokeWidth={3} />
                                 </span>
                               </button>
                             </li>
