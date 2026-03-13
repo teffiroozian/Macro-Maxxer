@@ -47,8 +47,7 @@ function resolvePanelIngredients(
   selectedVariantId?: string
 ) {
   const activeVariant = variants?.find((variant) => variant.id === selectedVariantId);
-  const activePortionType = activeVariant?.portionType ?? item.portionType;
-  const isSingleIngredientItem = activePortionType === "single";
+  const isSingleIngredientItem = item.portionType === "single";
   const ingredientIds =
     item.ingredients && item.ingredients.length > 0
       ? item.ingredients
