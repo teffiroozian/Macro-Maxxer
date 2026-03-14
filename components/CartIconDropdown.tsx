@@ -169,7 +169,7 @@ export default function CartIconDropdown({
 
           <div className="my-3 h-px bg-slate-200" />
 
-          <div className="text-center">
+          <div>
             <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-slate-500">Total Macros</p>
             <div className="mt-3 grid grid-cols-4 gap-2">
               <div className="px-1 py-1">
@@ -177,15 +177,15 @@ export default function CartIconDropdown({
                 <p className="mt-2 text-[10px] uppercase tracking-wide text-slate-500">Calories</p>
               </div>
               <div className="px-1 py-1">
-                <p className="text-2xl font-bold leading-none text-slate-900">{totals.protein}g</p>
+                <p className="text-2xl font-bold leading-none text-emerald-700">{totals.protein}g</p>
                 <p className="mt-2 text-[10px] uppercase tracking-wide text-slate-500">Protein</p>
               </div>
               <div className="px-1 py-1">
-                <p className="text-2xl font-bold leading-none text-slate-900">{totals.carbs}g</p>
+                <p className="text-2xl font-bold leading-none text-amber-700">{totals.carbs}g</p>
                 <p className="mt-2 text-[10px] uppercase tracking-wide text-slate-500">Carbs</p>
               </div>
               <div className="px-1 py-1">
-                <p className="text-2xl font-bold leading-none text-slate-900">{totals.fat}g</p>
+                <p className="text-2xl font-bold leading-none text-sky-700">{totals.fat}g</p>
                 <p className="mt-2 text-[10px] uppercase tracking-wide text-slate-500">Fat</p>
               </div>
             </div>
