@@ -19,8 +19,10 @@ function format(n?: number, suffix = "") {
   return n === undefined || n === null || Number.isNaN(n) ? `—${suffix}` : `${n}${suffix}`;
 }
 
-function calToProteinRatio(calories: number, protein: number) {
-  if (!protein) return "—";
+const toNumber = (value?: number) => value ?? 0;
+
+function calToProteinRatio(calories?: number, protein?: number) {
+  if (calories === undefined || protein === undefined || protein === 0) return "—";
   return `${Math.round(calories / protein)}:1`;
 }
 
@@ -112,7 +114,7 @@ function resolvePanelIngredients(
 }
 
 function sortByCalories(addons: AddonOption[]) {
-  return [...addons].sort((a, b) => a.calories - b.calories);
+  return [...addons].sort((a, b) => toNumber(a.calories) - toNumber(b.calories));
 }
 
 function formatSummaryDetail(name: string, calories: number) {
@@ -288,7 +290,7 @@ export default function ItemDetailsPanel({
                   ? section.addons.filter((addon) => addon.name !== "None" && (sauceSelectionCounts?.[addon.name] ?? 0) > 0)
                   : [];
               const sauceSummaryCalories = sauceSelections.reduce(
-                (sum, addon) => sum + addon.calories * (sauceSelectionCounts?.[addon.name] ?? 0),
+                (sum, addon) => sum + toNumber(addon.calories) * (sauceSelectionCounts?.[addon.name] ?? 0),
                 0
               );
               const summaryDetail =
@@ -364,7 +366,7 @@ export default function ItemDetailsPanel({
                             )}
                             <div className="flex min-w-0 flex-col items-start justify-center gap-[6px]">
                               <div className="line-clamp-2 break-words text-left text-base font-bold leading-[1.2]">{addon.name}</div>
-                              <div className="text-base font-bold text-[rgba(0,0,0,0.5)]">+{addon.calories} Cal</div>
+                              <div className="text-base font-bold text-[rgba(0,0,0,0.5)]">+{toNumber(addon.calories)} Cal</div>
                             </div>
                             {section.ref === "dressings" ? (
                               <span
