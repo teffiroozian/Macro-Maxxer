@@ -75,17 +75,24 @@ export default function CartIconDropdown({
     };
   }, [isOpen, lastAddedAt]);
 
+  const countValue = cartCount > 0
+    ? countFormat === "parenthesized"
+      ? ` (${cartCount})`
+      : ` ${cartCount}`
+    : "";
+
   const countLabel = (
-  <>
-    <ShoppingCart className="h-4 w-4" strokeWidth={2.5} />
-    {cartCount > 0 && ` (${cartCount})`}
-  </>
-);
+    <>
+      <ShoppingCart className="h-4 w-4" strokeWidth={2.5} />
+      {countValue}
+    </>
+  );
 
   const itemMeta = [lastAddedItem?.variantLabel, lastAddedItem?.optionsLabel]
     .filter(Boolean)
     .join(" • ");
   const itemInitial = (lastAddedItem?.name?.trim().charAt(0) || "+").toUpperCase();
+  const lastAddedMacros = lastAddedItem?.macrosPerItem;
 
   return (
     <div ref={containerRef} className="relative">
@@ -112,27 +119,44 @@ export default function CartIconDropdown({
             : "pointer-events-none -translate-y-1 opacity-0"
         }`}
       >
-          <div className="rounded-xl border border-emerald-100 bg-emerald-50/70 p-3">
-            <p className="text-[10px] font-semibold uppercase tracking-[0.14em] text-emerald-700">
+          <div className="p-1">
+            <p className="text-[10px] font-semibold uppercase tracking-[0.14em] text-slate-500">
               Just added
             </p>
-            <div className="mt-2 flex gap-3">
+            <div className="mt-3 flex items-start gap-3">
             {lastAddedItem ? (
               <>
-                <div className="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-lg bg-white text-base font-semibold text-emerald-700 ring-1 ring-emerald-200">
-                  {itemInitial}
+                <div className="relative h-14 w-14 shrink-0 overflow-hidden rounded-lg bg-slate-100 ring-1 ring-slate-200">
+                  {lastAddedItem.image ? (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img
+                      src={lastAddedItem.image}
+                      alt={lastAddedItem.name}
+                      className="h-full w-full object-cover"
+                    />
+                  ) : (
+                    <div className="inline-flex h-full w-full items-center justify-center text-base font-semibold text-slate-600">
+                      {itemInitial}
+                    </div>
+                  )}
                 </div>
-                <div className="min-w-0 space-y-1">
-                  <p className="truncate text-sm font-semibold leading-tight text-slate-900">
+                <div className="min-w-0 space-y-2.5">
+                  <p className="truncate text-base font-semibold leading-tight text-slate-900">
                     {lastAddedItem.name}
                   </p>
                   {itemMeta ? <p className="line-clamp-1 text-xs text-slate-500">{itemMeta}</p> : null}
-                  <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs leading-none">
-                    <p className="whitespace-nowrap text-slate-600">
-                      Cal <span className="font-semibold text-slate-900">{lastAddedItem.macrosPerItem.calories}</span>
+                  <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-sm leading-none">
+                    <p className="whitespace-nowrap text-slate-500">
+                      Cal:<span className="ml-1 font-semibold text-slate-900">{lastAddedMacros?.calories ?? 0}</span>
                     </p>
-                    <p className="whitespace-nowrap text-slate-600">
-                      Protein <span className="font-semibold text-emerald-700">{lastAddedItem.macrosPerItem.protein}g</span>
+                    <p className="whitespace-nowrap text-slate-500">
+                      P:<span className="ml-1 font-semibold text-slate-900">{lastAddedMacros?.protein ?? 0}g</span>
+                    </p>
+                    <p className="whitespace-nowrap text-slate-500">
+                      C:<span className="ml-1 font-semibold text-slate-900">{lastAddedMacros?.carbs ?? 0}g</span>
+                    </p>
+                    <p className="whitespace-nowrap text-slate-500">
+                      F:<span className="ml-1 font-semibold text-slate-900">{lastAddedMacros?.fat ?? 0}g</span>
                     </p>
                   </div>
                 </div>
@@ -146,23 +170,23 @@ export default function CartIconDropdown({
           <div className="my-3 h-px bg-slate-200" />
 
           <div>
-            <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-slate-500">Totals</p>
-            <div className="mt-2 grid grid-cols-4 gap-2">
-              <div className="rounded-lg bg-slate-50 px-2 py-1.5">
-                <p className="text-base font-semibold leading-none text-slate-900">{totals.calories}</p>
-                <p className="mt-1 text-[10px] uppercase tracking-wide text-slate-500">Calories</p>
+            <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-slate-500">Total Macros</p>
+            <div className="mt-3 grid grid-cols-4 gap-2 text-center">
+              <div className="px-1 py-1">
+                <p className="text-xl font-bold leading-none text-slate-900">{totals.calories}</p>
+                <p className="mt-2 text-[10px] uppercase tracking-wide text-slate-500">Calories</p>
               </div>
-              <div className="rounded-lg bg-emerald-50 px-2 py-1.5">
-                <p className="text-base font-semibold leading-none text-emerald-700">{totals.protein}g</p>
-                <p className="mt-1 text-[10px] uppercase tracking-wide text-emerald-700/80">Protein</p>
+              <div className="px-1 py-1">
+                <p className="text-xl font-bold leading-none text-[#c2410c]">{totals.protein}g</p>
+                <p className="mt-2 text-[10px] uppercase tracking-wide text-slate-500">Protein</p>
               </div>
-              <div className="rounded-lg bg-amber-50 px-2 py-1.5">
-                <p className="text-base font-semibold leading-none text-amber-700">{totals.carbs}g</p>
-                <p className="mt-1 text-[10px] uppercase tracking-wide text-amber-700/80">Carbs</p>
+              <div className="px-1 py-1">
+                <p className="text-xl font-bold leading-none text-[#ca8a04]">{totals.carbs}g</p>
+                <p className="mt-2 text-[10px] uppercase tracking-wide text-slate-500">Carbs</p>
               </div>
-              <div className="rounded-lg bg-sky-50 px-2 py-1.5">
-                <p className="text-base font-semibold leading-none text-sky-700">{totals.fat}g</p>
-                <p className="mt-1 text-[10px] uppercase tracking-wide text-sky-700/80">Fat</p>
+              <div className="px-1 py-1">
+                <p className="text-xl font-bold leading-none text-[#2563eb]">{totals.fat}g</p>
+                <p className="mt-2 text-[10px] uppercase tracking-wide text-slate-500">Fat</p>
               </div>
             </div>
           </div>
@@ -180,7 +204,7 @@ export default function CartIconDropdown({
               }}
               className="inline-flex h-10 flex-1 items-center justify-center rounded-lg border border-slate-300 bg-white px-3 text-sm font-medium text-slate-900 transition hover:bg-slate-50"
             >
-              Open Cart
+              View Cart
             </button>
             <Link
               href="/cart"
@@ -191,7 +215,7 @@ export default function CartIconDropdown({
               }}
               className="inline-flex h-10 flex-1 items-center justify-center rounded-lg bg-slate-900 px-3 text-sm font-medium text-white transition hover:bg-slate-800"
             >
-              View Full Page
+              View All Items
             </Link>
           </div>
         </div>
