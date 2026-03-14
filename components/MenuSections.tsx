@@ -65,24 +65,79 @@ const CATEGORY_PRIORITY_GROUPS = [
   { label: "Drinks", aliases: ["drink", "drinks", "beverage", "beverages"] },
 ] as const;
 
-const categoryPriorityLookup = new Map(
-  CATEGORY_PRIORITY_GROUPS.flatMap((group, index) =>
-    group.aliases.map((alias) => [normalizeCategory(alias), index] as const)
-  )
-);
+const INGREDIENT_CATEGORY_PRIORITY_GROUPS = [
+  { label: "Proteins", aliases: ["protein", "proteins"] },
+  { label: "Buns", aliases: ["bun", "buns"] },
+  {
+    label: "Sandwich Toppings",
+    aliases: ["sandwich topping", "sandwich toppings"],
+  },
+  { label: "Wrap Toppings", aliases: ["wrap topping", "wrap toppings"] },
+  { label: "Salad Toppings", aliases: ["salad topping", "salad toppings"] },
+  {
+    label: "Salad Condiments",
+    aliases: ["salad condiment", "salad condiments"],
+  },
+  { label: "Soup Toppings", aliases: ["soup topping", "soup toppings"] },
+  {
+    label: "Parfait Toppings",
+    aliases: ["parfait topping", "parfait toppings"],
+  },
+  { label: "Treat Toppings", aliases: ["treat topping", "treat toppings"] },
+  { label: "Condiments", aliases: ["condiment", "condiments"] },
+  {
+    label: "Dipping Sauces",
+    aliases: ["sauce", "sauces", "dipping sauce", "dipping sauces"],
+  },
+  { label: "Dressings", aliases: ["dressing", "dressings"] },
+] as const;
 
-const categoryLabelLookup = new Map(
-  CATEGORY_PRIORITY_GROUPS.flatMap((group) =>
-    group.aliases.map((alias) => [normalizeCategory(alias), group.label] as const)
-  )
-);
+type CategoryMode = "menu" | "ingredients";
 
-function categoryPriority(category: string) {
-  return categoryPriorityLookup.get(category) ?? Number.POSITIVE_INFINITY;
+function buildCategoryPriorityLookup(
+  categoryGroups: ReadonlyArray<{ aliases: readonly string[] }>
+) {
+  return new Map(
+    categoryGroups.flatMap((group, index) =>
+      group.aliases.map((alias) => [normalizeCategory(alias), index] as const)
+    )
+  );
 }
 
-function categoryHeading(category: string) {
-  return categoryLabelLookup.get(category) ?? titleCase(category);
+function buildCategoryLabelLookup(
+  categoryGroups: ReadonlyArray<{ label: string; aliases: readonly string[] }>
+) {
+  return new Map(
+    categoryGroups.flatMap((group) =>
+      group.aliases.map((alias) => [normalizeCategory(alias), group.label] as const)
+    )
+  );
+}
+
+const menuCategoryPriorityLookup = buildCategoryPriorityLookup(
+  CATEGORY_PRIORITY_GROUPS
+);
+const ingredientCategoryPriorityLookup = buildCategoryPriorityLookup(
+  INGREDIENT_CATEGORY_PRIORITY_GROUPS
+);
+
+const menuCategoryLabelLookup = buildCategoryLabelLookup(CATEGORY_PRIORITY_GROUPS);
+const ingredientCategoryLabelLookup = buildCategoryLabelLookup(
+  INGREDIENT_CATEGORY_PRIORITY_GROUPS
+);
+
+function categoryPriority(category: string, mode: CategoryMode) {
+  const lookup =
+    mode === "ingredients"
+      ? ingredientCategoryPriorityLookup
+      : menuCategoryPriorityLookup;
+  return lookup.get(category) ?? Number.POSITIVE_INFINITY;
+}
+
+function categoryHeading(category: string, mode: CategoryMode) {
+  const lookup =
+    mode === "ingredients" ? ingredientCategoryLabelLookup : menuCategoryLabelLookup;
+  return lookup.get(category) ?? titleCase(category);
 }
 
 function titleCase(text: string) {
@@ -168,7 +223,10 @@ function getSectionSort(section: string, sort: SortOption): SortOption {
   return sort;
 }
 
-export function getOrderedMenuSections(items: MenuItem[]) {
+export function getOrderedMenuSections(
+  items: MenuItem[],
+  mode: CategoryMode = "menu"
+) {
   const sectionSet = new Set<string>();
 
   items.forEach((item) => {
@@ -181,14 +239,14 @@ export function getOrderedMenuSections(items: MenuItem[]) {
   });
 
   return [...sectionSet].sort((a, b) => {
-    const priorityDiff = categoryPriority(a) - categoryPriority(b);
+    const priorityDiff = categoryPriority(a, mode) - categoryPriority(b, mode);
     if (priorityDiff !== 0) return priorityDiff;
     return a.localeCompare(b);
   });
 }
 
-export function getCategoryLabel(category: string) {
-  return categoryHeading(category);
+export function getCategoryLabel(category: string, mode: CategoryMode = "menu") {
+  return categoryHeading(category, mode);
 }
 
 
@@ -217,6 +275,7 @@ export default function MenuSections({
   ingredients,
   commonChanges,
   groupByCategory = true,
+  categoryMode = "menu",
 }: {
   restaurantId: string;
   items: MenuItem[];
@@ -225,6 +284,7 @@ export default function MenuSections({
   ingredients?: IngredientItem[];
   commonChanges?: CommonChange[];
   groupByCategory?: boolean;
+  categoryMode?: CategoryMode;
 }) {
 
   if (!groupByCategory) {
@@ -293,7 +353,7 @@ export default function MenuSections({
     ])
   );
 
-  const sections = getOrderedMenuSections(items);
+  const sections = getOrderedMenuSections(items, categoryMode);
 
   if (!sections.length) {
     return <EmptyFilteredState />;
@@ -308,7 +368,7 @@ export default function MenuSections({
           style={{ scrollMarginTop: 0 }}
         >
           <h2 className="my-5 text-3xl font-bold text-slate-900">
-            {categoryHeading(section)}
+            {categoryHeading(section, categoryMode)}
           </h2>
           <ul style={{ marginTop: 12, padding: 0, display: "grid", gap: 12 }}>
             {(sortedGrouped[section] ?? []).map((item, index) => (

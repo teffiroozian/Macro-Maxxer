@@ -231,8 +231,8 @@ export default function RestaurantView({
   }, [sourceItems, filters, searchTerms]);
 
   const orderedSections = useMemo(
-    () => getOrderedMenuSections(filteredItems),
-    [filteredItems]
+    () => getOrderedMenuSections(filteredItems, viewMode),
+    [filteredItems, viewMode]
   );
   const [activeCategory, setActiveCategory] = useState<string>(
     () => orderedSections[0] ?? ""
@@ -246,9 +246,9 @@ export default function RestaurantView({
     () =>
       orderedSections.map((section) => ({
         id: section,
-        label: getCategoryLabel(section),
+        label: getCategoryLabel(section, viewMode),
       })),
-    [orderedSections]
+    [orderedSections, viewMode]
   );
 
   const handleCategorySelect = (categoryId: string) => {
@@ -401,6 +401,7 @@ export default function RestaurantView({
               ingredients={ingredients}
               commonChanges={commonChanges}
               groupByCategory={!entireMenu}
+              categoryMode={viewMode}
             />
           </div>
         </div>
