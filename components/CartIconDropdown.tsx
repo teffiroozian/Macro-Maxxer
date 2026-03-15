@@ -145,7 +145,6 @@ export default function CartIconDropdown({
                   <p className="truncate text-base font-semibold leading-tight text-slate-900">
                     {lastAddedItem.name}
                   </p>
-                  {itemMeta ? <p className="line-clamp-1 text-xs text-slate-500">{itemMeta}</p> : null}
                   <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-sm leading-none">
                     <p className="whitespace-nowrap text-slate-500">
                       Cal:<span className="ml-1 font-semibold text-slate-900">{lastAddedMacros?.calories ?? 0}</span>
@@ -160,6 +159,7 @@ export default function CartIconDropdown({
                       F:<span className="ml-1 font-semibold text-slate-900">{lastAddedMacros?.fat ?? 0}g</span>
                     </p>
                   </div>
+                  {itemMeta ? <p className="line-clamp-1 text-xs text-slate-500">{itemMeta}</p> : null}
                 </div>
               </>
             ) : (
