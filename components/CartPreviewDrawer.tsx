@@ -231,42 +231,26 @@ export default function CartPreviewDrawer() {
           </section>
 
           <section className="shrink-0 border-t border-slate-200 px-5 py-4">
-            <div className="rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3">
-              <p className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-500">
+            <div>
+              <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-slate-500">
                 Total Macros
               </p>
               <div className="mt-3 grid grid-cols-4 gap-2 text-center">
-                <div className="rounded-xl border border-slate-200 bg-white px-2 py-2">
-                  <p className="text-[11px] uppercase tracking-wide text-slate-500">
-                    Calories
-                  </p>
-                  <p className="mt-0.5 text-sm font-semibold text-slate-900">
-                    {totals.calories}
-                  </p>
+                <div className="px-1 py-1">
+                  <p className="text-2xl font-bold leading-none text-slate-900">{totals.calories}</p>
+                  <p className="mt-2 text-[10px] uppercase tracking-wide text-slate-500">Calories</p>
                 </div>
-                <div className="rounded-xl border border-slate-200 bg-white px-2 py-2">
-                  <p className="text-[11px] uppercase tracking-wide text-slate-500">
-                    Protein
-                  </p>
-                  <p className="mt-0.5 text-sm font-semibold text-slate-900">
-                    {totals.protein}g
-                  </p>
+                <div className="px-1 py-1">
+                  <p className="text-2xl font-bold leading-none text-[#c2410c]">{totals.protein}g</p>
+                  <p className="mt-2 text-[10px] uppercase tracking-wide text-slate-500">Protein</p>
                 </div>
-                <div className="rounded-xl border border-slate-200 bg-white px-2 py-2">
-                  <p className="text-[11px] uppercase tracking-wide text-slate-500">
-                    Carbs
-                  </p>
-                  <p className="mt-0.5 text-sm font-semibold text-slate-900">
-                    {totals.carbs}g
-                  </p>
+                <div className="px-1 py-1">
+                  <p className="text-2xl font-bold leading-none text-[#ca8a04]">{totals.carbs}g</p>
+                  <p className="mt-2 text-[10px] uppercase tracking-wide text-slate-500">Carbs</p>
                 </div>
-                <div className="rounded-xl border border-slate-200 bg-white px-2 py-2">
-                  <p className="text-[11px] uppercase tracking-wide text-slate-500">
-                    Fat
-                  </p>
-                  <p className="mt-0.5 text-sm font-semibold text-slate-900">
-                    {totals.fat}g
-                  </p>
+                <div className="px-1 py-1">
+                  <p className="text-2xl font-bold leading-none text-[#2563eb]">{totals.fat}g</p>
+                  <p className="mt-2 text-[10px] uppercase tracking-wide text-slate-500">Fat</p>
                 </div>
               </div>
             </div>
