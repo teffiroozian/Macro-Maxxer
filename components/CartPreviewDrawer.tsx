@@ -237,19 +237,19 @@ export default function CartPreviewDrawer() {
               </p>
               <div className="mt-3 grid grid-cols-4 gap-2 text-center">
                 <div className="px-1 py-1">
-                  <p className="text-xl font-bold leading-none text-slate-900">{totals.calories}</p>
+                  <p className="text-2xl font-bold leading-none text-slate-900">{totals.calories}</p>
                   <p className="mt-2 text-[10px] uppercase tracking-wide text-slate-500">Calories</p>
                 </div>
                 <div className="px-1 py-1">
-                  <p className="text-xl font-bold leading-none text-[#c2410c]">{totals.protein}g</p>
+                  <p className="text-2xl font-bold leading-none text-[#c2410c]">{totals.protein}g</p>
                   <p className="mt-2 text-[10px] uppercase tracking-wide text-slate-500">Protein</p>
                 </div>
                 <div className="px-1 py-1">
-                  <p className="text-xl font-bold leading-none text-[#ca8a04]">{totals.carbs}g</p>
+                  <p className="text-2xl font-bold leading-none text-[#ca8a04]">{totals.carbs}g</p>
                   <p className="mt-2 text-[10px] uppercase tracking-wide text-slate-500">Carbs</p>
                 </div>
                 <div className="px-1 py-1">
-                  <p className="text-xl font-bold leading-none text-[#2563eb]">{totals.fat}g</p>
+                  <p className="text-2xl font-bold leading-none text-[#2563eb]">{totals.fat}g</p>
                   <p className="mt-2 text-[10px] uppercase tracking-wide text-slate-500">Fat</p>
                 </div>
               </div>
