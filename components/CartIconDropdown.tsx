@@ -84,7 +84,8 @@ export default function CartIconDropdown({
   const countLabel = (
     <>
       <ShoppingCart className="h-4 w-4" strokeWidth={2.5} />
-      {countValue}
+      
+      {countValue ? <span className="ml-1">({countValue})</span> : null}
     </>
   );
 
@@ -123,7 +124,7 @@ export default function CartIconDropdown({
             <p className="text-[10px] font-semibold uppercase tracking-[0.14em] text-slate-500">
               Just added
             </p>
-            <div className="mt-3 flex items-start gap-3">
+            <div className="mt-3 flex items-center gap-3">
             {lastAddedItem ? (
               <>
                 <div className="relative h-14 w-14 shrink-0 overflow-hidden rounded-lg bg-slate-100 ring-1 ring-slate-200">
@@ -140,7 +141,7 @@ export default function CartIconDropdown({
                     </div>
                   )}
                 </div>
-                <div className="min-w-0 space-y-2.5">
+                <div className="min-w-0 space-y-1.5">
                   <p className="truncate text-base font-semibold leading-tight text-slate-900">
                     {lastAddedItem.name}
                   </p>
