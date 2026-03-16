@@ -178,11 +178,14 @@ export default function RestaurantView({
   const sourceItems = viewMode === "ingredients" ? ingredientMenuItems : allItems;
 
   const calorieBounds = useMemo(() => {
-    if (!sourceItems.length) {
+    const calories = sourceItems
+      .map((item) => item.nutrition.calories)
+      .filter((calories): calories is number => typeof calories === "number");
+
+    if (!calories.length) {
       return { min: 0, max: 0 };
     }
 
-    const calories = sourceItems.map((item) => item.nutrition.calories);
     const minCal = Math.min(...calories);
     const maxCal = Math.max(...calories);
 
@@ -200,10 +203,13 @@ export default function RestaurantView({
 
   const filteredItems = useMemo(() => {
     return sourceItems.filter((item) => {
-      if (filters.proteinMin && item.nutrition.protein < filters.proteinMin) {
+      const protein = item.nutrition.protein ?? 0;
+      const calories = item.nutrition.calories ?? 0;
+
+      if (filters.proteinMin && protein < filters.proteinMin) {
         return false;
       }
-      if (filters.caloriesMax && item.nutrition.calories > filters.caloriesMax) {
+      if (filters.caloriesMax && calories > filters.caloriesMax) {
         return false;
       }
       if (!searchTerms.length) {
