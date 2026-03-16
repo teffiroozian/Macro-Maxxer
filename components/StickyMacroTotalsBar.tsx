@@ -9,8 +9,6 @@ type StickyMacroTotalsBarProps = {
   inline?: boolean;
   onSaveMeal?: () => void;
   onGenerateSnapshot?: () => void;
-  saveMealDisabled?: boolean;
-  generateSnapshotDisabled?: boolean;
 };
 
 const macroRows: Array<{
@@ -31,8 +29,6 @@ export default function StickyMacroTotalsBar({
   inline = false,
   onSaveMeal,
   onGenerateSnapshot,
-  saveMealDisabled = false,
-  generateSnapshotDisabled = false,
 }: StickyMacroTotalsBarProps) {
   const wrapperClassName = inline
     ? "w-full"
@@ -78,8 +74,7 @@ export default function StickyMacroTotalsBar({
             <button
               type="button"
               onClick={onSaveMeal}
-              disabled={saveMealDisabled}
-              className="inline-flex h-11 items-center justify-center gap-2 rounded-xl border-2 border-black/80 bg-transparent px-6 text-base font-semibold text-[#1A1A1A] transition hover:bg-black/5 disabled:cursor-not-allowed disabled:border-black/30 disabled:text-[#1A1A1A]/50 disabled:hover:bg-transparent"
+              className="inline-flex h-11 items-center justify-center gap-2 rounded-xl border-2 border-black/80 bg-transparent px-6 text-base font-semibold text-[#1A1A1A] transition hover:bg-black/5"
             >
               <Bookmark className="h-4 w-4" strokeWidth={2.5} aria-hidden="true" />
               <span>Save Meal</span>
@@ -87,8 +82,7 @@ export default function StickyMacroTotalsBar({
             <button
               type="button"
               onClick={onGenerateSnapshot}
-              disabled={generateSnapshotDisabled}
-              className="inline-flex h-11 items-center justify-center gap-2 rounded-xl border border-black bg-black px-6 text-base font-semibold text-white transition hover:bg-neutral-900 disabled:cursor-not-allowed disabled:border-black/30 disabled:bg-black/20 disabled:text-white/60 disabled:hover:bg-black/20"
+              className="inline-flex h-11 items-center justify-center gap-2 rounded-xl border border-black bg-black px-6 text-base font-semibold text-white transition hover:bg-neutral-900"
             >
               <Camera className="h-4 w-4" strokeWidth={2.5} />
               <span>Generate Snapshot</span>

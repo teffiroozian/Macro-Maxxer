@@ -447,8 +447,6 @@ export default function CartPage() {
             inline
             onSaveMeal={() => window.alert("Save Meal coming soon")}
             onGenerateSnapshot={() => window.alert("Generate Snapshot coming soon")}
-            saveMealDisabled
-            generateSnapshotDisabled
           />
         </div>
         </div>
@@ -462,8 +460,6 @@ export default function CartPage() {
         visible={showStickyBar}
         onSaveMeal={() => window.alert("Save Meal coming soon")}
         onGenerateSnapshot={() => window.alert("Generate Snapshot coming soon")}
-        saveMealDisabled
-        generateSnapshotDisabled
       />
     </main>
   );
