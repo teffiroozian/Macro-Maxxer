@@ -381,12 +381,12 @@ export default function CartPage() {
             
             <div className="flex min-h-0 flex-col rounded-3xl border border-black/10 bg-white p-5">
               <h2 className="text-2xl font-bold text-neutral-900">Meal Breakdown</h2>
-              <div className="mt-6 flex min-h-0 flex-1 flex-col justify-between gap-2">
-                <p className="text-sm font-semibold uppercase tracking-wide text-neutral-500">Items</p>
+              <div className="mt-6 flex min-h-0 flex-1 flex-col justify-between gap-4">
+                <p className="text-md font-semibold uppercase tracking-wide text-neutral-500">Items</p>
                 {items.length === 0 ? (
                   <p className="text-sm text-neutral-600">No meal items yet.</p>
                 ) : (
-                  <ul className="min-h-0 flex-1 space-y-2 overflow-y-auto pr-1">
+                  <ul className="min-h-0 flex-1 space-y-2 overflow-y-auto max-h-[300px] bg-[#efefef] p-2 rounded-xl">
                     {items.map((item) => {
                       const detailLine = summarizeItem(item);
 
@@ -414,13 +414,13 @@ export default function CartPage() {
                 )}
 
                 <div className="space-y-2 pt-4">
-                  <p className="text-xs font-semibold uppercase tracking-wide text-neutral-500">Protein Efficiency</p>
-                  <div className="rounded-xl border border-black/10 bg-neutral-50 px-3 py-2">
+                  <p className="text-md font-semibold uppercase tracking-wide text-neutral-500">Protein Efficiency</p>
+                  <div className="rounded-xl bg-[#efefef] px-3 py-2">
                     <p className="mt-1 text-sm font-medium text-neutral-900">{proteinPer100Calories}g of Protein in 100cals</p>
                   </div>
-
-                  <div>
-                    <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-neutral-500">Macro Split</p>
+                </div>
+                   <div className="space-y-2 pt-4">
+                    <p className="text-md font-semibold uppercase tracking-wide text-neutral-500">Macro Split</p>
                     <div className="flex h-11 w-full overflow-hidden rounded-full border border-black/10 bg-neutral-100">
                       {macroSegments.map((segment) => (
                         <div
@@ -433,7 +433,6 @@ export default function CartPage() {
                       ))}
                     </div>
                   </div>
-                </div>
               </div>
             </div>
         </div>
