@@ -182,7 +182,7 @@ export default function CartIconDropdown({
                 <p className="mt-2 text-[10px] uppercase tracking-wide text-slate-500">Calories</p>
               </div>
               <div className="px-1 py-1">
-                <p className="text-xl font-bold leading-none text-[]#c2410c">{totals.protein}g</p>
+                <p className="text-xl font-bold leading-none text-[#c2410c]">{totals.protein}g</p>
                 <p className="mt-2 text-[10px] uppercase tracking-wide text-slate-500">Protein</p>
               </div>
               <div className="px-1 py-1">
