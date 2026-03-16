@@ -227,7 +227,7 @@ export default function CartPage() {
         </div>
       </header>
 
-      <section className="space-y-3">
+      <section className="mx-auto w-full max-w-[900px] space-y-3">
         {items.length === 0 ? (
           <div className="rounded-2xl border border-black/10 bg-white px-5 py-8 text-center shadow-sm">
             <p className="text-lg font-medium text-neutral-900">Your cart is empty.</p>

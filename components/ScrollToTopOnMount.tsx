@@ -1,6 +1,7 @@
 "use client";
 
 import { useLayoutEffect } from "react";
+import { Bookmark, Camera, ChevronDown } from "lucide-react";
 
 export default function ScrollToTopOnMount() {
   useLayoutEffect(() => {
