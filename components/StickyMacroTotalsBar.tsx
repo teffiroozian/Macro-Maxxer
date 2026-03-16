@@ -40,7 +40,7 @@ export default function StickyMacroTotalsBar({
 
   const panelClassName = inline
     ? "w-full rounded-3xl border border-black/10 bg-white px-4 py-4"
-    : `mx-auto w-full rounded-[2.25rem] border border-black/10 bg-[#f5f5f5] px-6 py-5 shadow-[0_10px_30px_rgba(0,0,0,0.24)] transition-all duration-300 sm:px-8 sm:py-6 ${
+    : `mx-auto w-full rounded-[2.25rem] border border-black/10 bg-white px-6 py-6 shadow-[0_10px_30px_rgba(0,0,0,0.24)] transition-all duration-300 ${
         visible ? "pointer-events-auto" : "pointer-events-none"
       }`;
 
