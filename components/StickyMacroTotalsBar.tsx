@@ -29,7 +29,7 @@ export default function StickyMacroTotalsBar({
 }: StickyMacroTotalsBarProps) {
   return (
     <div
-      className={`fixed inset-x-0 bottom-4 z-40 px-4 transition-all duration-300 ease-out sm:px-6 ${
+      className={`fixed left-0 right-0 bottom-4 mx-auto z-40 max-w-5xl px-4 transition-all duration-300 ease-out sm:px-6 ${
         visible
           ? "pointer-events-none translate-y-0 opacity-100"
           : "pointer-events-none translate-y-4 opacity-0"
@@ -42,18 +42,18 @@ export default function StickyMacroTotalsBar({
       >
         <div className="grid items-center gap-6 lg:grid-cols-[1fr_auto] lg:gap-10">
           <section>
-            <p className="text-center text-3xl font-semibold tracking-tight text-neutral-500 sm:text-4xl lg:text-5xl">
+            <p className="text-center text-xl font-semibold tracking-tight text-neutral-500">
               TOTAL MACROS
             </p>
 
-            <div className="mt-4 grid grid-cols-2 gap-x-6 gap-y-4 text-center sm:grid-cols-4 lg:mt-6">
+            <div className="mt-6 grid grid-cols-4 gap-x-6 gap-y-4 text-center">
               {macroRows.map((macro) => (
                 <div key={macro.key}>
-                  <p className={`text-4xl font-bold leading-none sm:text-5xl ${macro.valueClassName}`}>
+                  <p className={`text-3xl font-bold leading-none ${macro.valueClassName}`}>
                     {totals[macro.key]}
                     {macro.unit ?? ""}
                   </p>
-                  <p className="mt-2 text-lg font-semibold uppercase tracking-wide text-[#1A1A1A] sm:text-2xl">
+                  <p className="mt-2 text-sm font-semibold uppercase tracking-wide text-[#1A1A1A]">
                     {macro.label}
                   </p>
                 </div>
@@ -61,11 +61,11 @@ export default function StickyMacroTotalsBar({
             </div>
           </section>
 
-          <div className="grid gap-3 sm:mx-auto sm:w-full sm:max-w-md lg:mx-0 lg:w-[320px]">
+          <div className="flex flex-col gap-3">
             <button
               type="button"
               onClick={onSaveMeal}
-              className="inline-flex h-14 items-center justify-center gap-3 rounded-2xl border-2 border-black/85 bg-transparent px-5 text-2xl font-semibold text-[#1A1A1A] transition hover:bg-black/5"
+              className="inline-flex h-12 items-center justify-center gap-3 rounded-2xl border-2 border-black/85 bg-transparent px-10 text-lg font-semibold text-[#1A1A1A] transition hover:bg-black/5"
             >
               <span aria-hidden="true">🔖</span>
               <span>Save Meal</span>
@@ -73,7 +73,7 @@ export default function StickyMacroTotalsBar({
             <button
               type="button"
               onClick={onGenerateSnapshot}
-              className="inline-flex h-14 items-center justify-center gap-3 rounded-2xl border border-black bg-black px-5 text-2xl font-semibold text-white transition hover:bg-neutral-900"
+              className="inline-flex h-12 items-center justify-center gap-3 rounded-2xl border border-black bg-black px-10 text-lg font-semibold text-white transition hover:bg-neutral-900"
             >
               <span aria-hidden="true">↓</span>
               <span>Generate Snapshot</span>
