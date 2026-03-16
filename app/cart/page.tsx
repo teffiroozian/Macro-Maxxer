@@ -417,10 +417,7 @@ export default function CartPage() {
                   </div>
               </div>
             </div>
-        </div>
-      
-
-        <div className="mt-4">
+            <div className="col-span-2">
           <StickyMacroTotalsBar
             totals={totals}
             inline
@@ -428,6 +425,10 @@ export default function CartPage() {
             onGenerateSnapshot={() => router.push("/cart/snapshot")}
           />
         </div>
+        </div>
+      
+
+        
       </section>
     </main>
   );
