@@ -41,9 +41,9 @@ export default function StickyMacroTotalsBar({
           visible ? "pointer-events-auto" : "pointer-events-none"
         }`}
       >
-        <div className="grid items-center gap-6 lg:grid-cols-[1fr_auto] lg:gap-10">
-          <section>
-            <p className="text-center text-xl font-semibold tracking-tight text-neutral-500">
+        <div className="flex items-center gap-10">
+          <section className="flex-1">
+            <p className="text-center text-md font-semibold tracking-tight text-neutral-500">
               TOTAL MACROS
             </p>
 
@@ -54,7 +54,7 @@ export default function StickyMacroTotalsBar({
                     {totals[macro.key]}
                     {macro.unit ?? ""}
                   </p>
-                  <p className="mt-2 text-sm font-semibold uppercase tracking-wide text-[#1A1A1A]">
+                  <p className="mt-2 text-xs font-semibold uppercase tracking-wide text-[#1A1A1A]">
                     {macro.label}
                   </p>
                 </div>
@@ -62,11 +62,13 @@ export default function StickyMacroTotalsBar({
             </div>
           </section>
 
+          
+
           <div className="flex flex-col gap-3">
             <button
               type="button"
               onClick={onSaveMeal}
-              className="inline-flex h-12 items-center justify-center gap-3 rounded-2xl border-2 border-black/85 bg-transparent px-10 text-lg font-semibold text-[#1A1A1A] transition hover:bg-black/5"
+              className="inline-flex h-12 items-center justify-center gap-3 rounded-2xl border-2 border-black/85 bg-transparent px-8 text-lg font-semibold text-[#1A1A1A] transition hover:bg-black/5"
             >
               <Bookmark className="h-5 w-5" strokeWidth={2.5} aria-hidden="true" />
               <span>Save Meal</span>
@@ -74,7 +76,7 @@ export default function StickyMacroTotalsBar({
             <button
               type="button"
               onClick={onGenerateSnapshot}
-              className="inline-flex h-12 items-center justify-center gap-3 rounded-2xl border border-black bg-black px-10 text-lg font-semibold text-white transition hover:bg-neutral-900"
+              className="inline-flex h-12 items-center justify-center gap-3 rounded-2xl border border-black bg-black px-8 text-lg font-semibold text-white transition hover:bg-neutral-900"
             >
               <Camera className="w-5 h-5" strokeWidth={2.5} />
               <span>Generate Snapshot</span>
