@@ -2,72 +2,72 @@
     {
         "id": "chickfila",
         "name": "Chick-fil-A",
-        "logo": "/brands/chickfila/logo.png",
-        "cover": "/brands/chickfila/chickcover.jpg",
+        "logo": "/restaurants/chickfila/brand/logo.png",
+        "cover": "/restaurants/chickfila/brand/chickcover.jpg",
         "menuFile": "chickfila.json",
         "isMacroFriendly": true
     },
     {
         "id": "chipotle",
         "name": "Chipotle",
-        "logo": "/brands/chipotle/logo.jpeg",
-        "cover": "/brands/chipotle/cover.png",
+        "logo": "/restaurants/chipotle/logo.jpeg",
+        "cover": "/restaurants/chipotle/cover.png",
         "menuFile": "chipotle.json",
         "isMacroFriendly": true
     },
     {
         "id": "panera",
         "name": "Panera Bread",
-        "logo": "/brands/panera/logo.jpeg",
-        "cover": "/brands/panera/cover.png",
+        "logo": "/restaurants/panera/logo.jpeg",
+        "cover": "/restaurants/panera/cover.png",
         "menuFile": "panera.json",
         "isMacroFriendly": true
     },
     {
         "id": "mcdonalds",
         "name": "McDonald's",
-        "logo": "/brands/mcdonalds/logo.png",
-        "cover": "/brands/mcdonalds/mcdcover.png",
+        "logo": "/restaurants/mcdonalds/logo.png",
+        "cover": "/restaurants/mcdonalds/mcdcover.png",
         "menuFile": "mcdonlads.json",
         "isMacroFriendly": false
     },
     {
         "id": "starbucks",
         "name": "Starbucks",
-        "logo": "/brands/starbucks/logo.jpeg",
-        "cover": "/brands/starbucks/cover.png",
+        "logo": "/restaurants/starbucks/logo.jpeg",
+        "cover": "/restaurants/starbucks/cover.png",
         "menuFile": "starbucks.json",
         "isMacroFriendly": true
     },
     {
         "id": "habit",
         "name": "The Habit Burger Grill",
-        "logo": "/brands/habitburger/logo.jpeg",
-        "cover": "/brands/habitburger/cover.png",
+        "logo": "/restaurants/habitburger/logo.jpeg",
+        "cover": "/restaurants/habitburger/cover.png",
         "menuFile": "habit.json",
         "isMacroFriendly": true
     },
     {
         "id": "panda",
         "name": "Panda Express",
-        "logo": "/brands/pandaexpress/logo.jpeg",
-        "cover": "/brands/pandaexpress/cover.png",
+        "logo": "/restaurants/pandaexpress/logo.jpeg",
+        "cover": "/restaurants/pandaexpress/cover.png",
         "menuFile": "panda.json",
         "isMacroFriendly": true
     },
     {
         "id": "mod",
         "name": "MOD Pizza",
-        "logo": "/brands/modpizza/logo.jpeg",
-        "cover": "/brands/modpizza/cover.png",
+        "logo": "/restaurants/modpizza/logo.jpeg",
+        "cover": "/restaurants/modpizza/cover.png",
         "menuFile": "mod.json",
         "isMacroFriendly": true
     },
     {
         "id": "subway",
         "name": "Subway",
-        "logo": "/brands/subway/logo.png",
-        "cover": "/brands/subway/cover.png",
+        "logo": "/restaurants/subway/logo.png",
+        "cover": "/restaurants/subway/cover.png",
         "menuFile": "subway.json",
         "isMacroFriendly": true
     }
