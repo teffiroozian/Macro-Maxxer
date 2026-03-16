@@ -422,16 +422,18 @@ export default function CartPage() {
                 <div className="space-y-2 pt-4">
                   <p className="text-md font-semibold uppercase tracking-wide text-neutral-500">Protein Efficiency</p>
                   <div className="rounded-xl bg-[#efefef] px-3 py-2">
-                    <p className="mt-1 text-sm font-medium text-neutral-900">{proteinPer100Calories}g of Protein in 100cals</p>
+                    <p className="mt-1 text-sm text-neutral-900">
+                      <span className="font-bold">{proteinPer100Calories}g</span> of Protein in <span className="font-semibold">100cals</span>
+                    </p>
                   </div>
                 </div>
                    <div className="space-y-2 pt-4">
                     <p className="text-md font-semibold uppercase tracking-wide text-neutral-500">Macro Split</p>
-                    <div className="flex h-11 w-full overflow-hidden rounded-full border border-black/10 bg-neutral-100">
+                    <div className="flex h-11 w-full overflow-hidden p-1 gap-1 rounded-xl border border-black/10 bg-neutral-100">
                       {macroSegments.map((segment) => (
                         <div
                           key={segment.label}
-                          className={`flex min-w-0 items-center justify-center px-1 text-[11px] font-semibold text-neutral-900 ${segment.color}`}
+                          className={`flex min-w-0 items-center justify-center px-1 rounded-xl text-[11px] font-semibold text-neutral-900 ${segment.color}`}
                           style={{ width: `${segment.percent}%` }}
                         >
                           {segment.percent >= 18 ? `${segment.label} ${Math.round(segment.percent)}%` : ""}
