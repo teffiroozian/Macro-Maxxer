@@ -3,7 +3,6 @@
 import { useEffect, useId, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import type { AddonOption, AddonRef, CommonChange, IngredientItem, MacroDelta, MenuItem, RestaurantAddons } from "@/types/menu";
-import styles from "./MenuItemCard.module.css";
 import { useCart } from "@/stores/cartStore";
 import ItemDetailsPanel from "./ItemDetailsPanel";
 import VariantSelector from "./VariantSelector";
@@ -556,15 +555,14 @@ export default function MenuItemCard({
 
   return (
     <li
-      className={styles.card}
-      style={{
-        border: isTopRanked ? "1.5px solid rgba(0,0,0,0.8)" : "1px solid rgba(0,0,0,0.12)",
-      }}
+      className={`list-none overflow-hidden rounded-2xl bg-white shadow-[0_4px_12px_rgba(0,0,0,0.2)] ${
+        isTopRanked ? "border-[1.5px] border-black/80" : "border border-black/15"
+      }`}
     >
       <div
         role="button"
         tabIndex={0}
-        className={styles.header}
+        className="group relative flex w-full cursor-pointer items-stretch gap-6 bg-transparent p-4 text-left focus-visible:outline-2 focus-visible:outline-blue-600 focus-visible:outline-offset-[-2px]"
         onClick={() => setOpen((v) => !v)}
         onKeyDown={(event) => {
           if (event.key === "Enter" || event.key === " ") {
@@ -575,36 +573,40 @@ export default function MenuItemCard({
         aria-expanded={open}
         aria-controls={`${id}-details`}
       >
-        <div className={styles.leftMedia}>
+        <div className="shrink-0">
           {selectedItemImage ? (
-            <img className={styles.image} src={selectedItemImage} alt={item.name} />
+            <img
+              className="block h-[210px] w-[210px] rounded-[14px] bg-[#efefef] object-cover shadow-[0_0_5px_rgba(0,0,0,0.25)]"
+              src={selectedItemImage}
+              alt={item.name}
+            />
           ) : (
-            <div className={styles.imagePlaceholder} />
+            <div className="h-[210px] w-[210px] rounded-[14px] bg-[#efefef]" />
           )}
         </div>
 
-        <div className={styles.content}>
-          <div className={styles.topBlock}>
+        <div className="flex min-w-0 flex-1 flex-col self-stretch py-1">
+          <div className="flex flex-col gap-2">
             {rankText && (
-              <div className={styles.rankWrap}>
-                <div className={styles.rank}>{rankText}</div>
+              <div>
+                <div className="inline-block border-b-[5px] border-b-yellow-500 px-1.5 text-xl font-bold">{rankText}</div>
               </div>
             )}
-            <div className={styles.title}>{item.name}</div>
-            <div className={styles.caloriesRow}>
-              <div className={styles.caloriesWrap}>
-                <div className={styles.calories}>{formatCalories(calories)} calories</div>
+            <div className="text-[30px] leading-[1.05] font-bold">{item.name}</div>
+            <div className="flex flex-wrap items-center">
+              <div className="inline-flex items-baseline gap-2">
+                <div className="text-lg font-bold text-black/50">{formatCalories(calories)} calories</div>
                 {hasActiveCustomization ? (
-                  <span className={styles.macroDelta}>{formatDelta(customizationTotals.calories)}</span>
+                  <span className="text-sm font-bold text-green-600">{formatDelta(customizationTotals.calories)}</span>
                 ) : null}
               </div>
               {variants ? (
                 <div
-                  className={styles.variantSelect}
+                  className="inline-flex items-center"
                   onClick={hasVariantDropdown ? (event) => event.stopPropagation() : undefined}
                   onKeyDown={hasVariantDropdown ? (event) => event.stopPropagation() : undefined}
                 >
-                  <div className={styles.divider} />
+                  <div className="mx-[10px] h-5 w-0.5 rounded-full bg-black/50" />
                   {hasVariantDropdown ? (
                     <VariantSelector
                       variants={variants}
@@ -616,50 +618,58 @@ export default function MenuItemCard({
                       ariaLabel={`${item.name} portion size`}
                     />
                   ) : (
-                    <span className={styles.variantLabel}>{selectedVariantForCart?.label ?? variants[0]?.label}</span>
+                    <span className="rounded-full bg-[#121212] px-4 py-0.5 text-base font-bold text-white">
+                      {selectedVariantForCart?.label ?? variants[0]?.label}
+                    </span>
                   )}
                 </div>
               ) : null}
             </div>
             {isCartMode && cartSummaryLine ? (
-              <p className={styles.cartSummaryLine}>{cartSummaryLine}</p>
+              <p className="mt-0.5 truncate text-xs text-black/55">{cartSummaryLine}</p>
             ) : null}
           </div>
 
-          <div className={styles.macros}>
+          <div className="mt-auto flex items-end gap-[60px]">
             {showRatio && Number.isFinite(ratio) && (
-              <div className={styles.macro}>
-                <div className={`${styles.macroValue}`}>{ratio}:1</div>
-                <div className={styles.macroLabel}>RATIO</div>
+              <div className="flex flex-col items-center justify-start">
+                <div className="text-2xl font-bold">{ratio}:1</div>
+                <div className="text-[10px] font-bold">RATIO</div>
               </div>
             )}
-            <div className={styles.macro}>
-              <div className={styles.macroValueWrap}>
-                <div className={`${styles.macroValue} ${styles.protein}`}>{formatMacro(protein)}</div>
-                {hasActiveCustomization ? <span className={styles.macroDelta}>{formatDelta(customizationTotals.protein)}</span> : null}
+            <div className="flex flex-col items-center justify-start">
+              <div className="inline-flex items-baseline gap-1.5">
+                <div className="text-2xl font-bold text-orange-700">{formatMacro(protein)}</div>
+                {hasActiveCustomization ? (
+                  <span className="text-sm font-bold text-green-600">{formatDelta(customizationTotals.protein)}</span>
+                ) : null}
               </div>
-              <div className={styles.macroLabel}>PROTEIN</div>
+              <div className="text-[10px] font-bold">PROTEIN</div>
             </div>
-            <div className={styles.macro}>
-              <div className={styles.macroValueWrap}>
-                <div className={`${styles.macroValue} ${styles.carbs}`}>{formatMacro(carbs)}</div>
-                {hasActiveCustomization ? <span className={styles.macroDelta}>{formatDelta(customizationTotals.carbs)}</span> : null}
+            <div className="flex flex-col items-center justify-start">
+              <div className="inline-flex items-baseline gap-1.5">
+                <div className="text-2xl font-bold text-amber-600">{formatMacro(carbs)}</div>
+                {hasActiveCustomization ? (
+                  <span className="text-sm font-bold text-green-600">{formatDelta(customizationTotals.carbs)}</span>
+                ) : null}
               </div>
-              <div className={styles.macroLabel}>CARBS</div>
+              <div className="text-[10px] font-bold">CARBS</div>
             </div>
-            <div className={styles.macro}>
-              <div className={styles.macroValueWrap}>
-                <div className={`${styles.macroValue} ${styles.fat}`}>{formatMacro(fat)}</div>
-                {hasActiveCustomization ? <span className={styles.macroDelta}>{formatDelta(customizationTotals.fat)}</span> : null}
+            <div className="flex flex-col items-center justify-start">
+              <div className="inline-flex items-baseline gap-1.5">
+                <div className="text-2xl font-bold text-blue-600">{formatMacro(fat)}</div>
+                {hasActiveCustomization ? (
+                  <span className="text-sm font-bold text-green-600">{formatDelta(customizationTotals.fat)}</span>
+                ) : null}
               </div>
-              <div className={styles.macroLabel}>FAT</div>
+              <div className="text-[10px] font-bold">FAT</div>
             </div>
 
-            <div className={styles.actionsWrap}>
+            <div className="ml-auto inline-flex flex-row items-end gap-2">
               {!isCartMode && itemHref ? (
                 <button
                   type="button"
-                  className={styles.detailsButton}
+                  className="cursor-pointer rounded-xl border border-black/20 bg-white px-4 py-2 text-[15px] font-bold text-black/85"
                   onClick={(event) => {
                     event.stopPropagation();
                     router.push(itemHref, { scroll: false });
@@ -669,11 +679,11 @@ export default function MenuItemCard({
                 </button>
               ) : null}
               {isCartMode || matchingCartItem ? (
-                <div className={styles.qtyStepperWrap}>
+                <div className="inline-flex items-center gap-2">
                   {isCartMode ? (
                     <button
                       type="button"
-                      className={styles.modifyButton}
+                      className="cursor-pointer rounded-xl border border-black/20 bg-white px-3 py-2 text-sm font-bold"
                       onClick={(event) => {
                         event.stopPropagation();
                         setOpen(true);
@@ -682,50 +692,56 @@ export default function MenuItemCard({
                       Modify
                     </button>
                   ) : null}
-                  <div className={styles.qtyStepper}>
-                  <button
-                    type="button"
-                    className={styles.qtyStepButton}
-                    onClick={(event) => {
-                      event.stopPropagation();
+                  <div className="inline-flex items-center gap-2 rounded-xl border border-black/15 bg-white/90 px-2 py-1">
+                    <button
+                      type="button"
+                      className="h-7 w-7 cursor-pointer rounded-lg border border-black/15 bg-white text-lg leading-none"
+                      onClick={(event) => {
+                        event.stopPropagation();
 
-                      if (isCartMode) {
-                        onCartDecrement?.();
-                        return;
-                      }
+                        if (isCartMode) {
+                          onCartDecrement?.();
+                          return;
+                        }
 
-                      if (!matchingCartItem) return;
-                      updateQuantity(matchingCartItem.id, matchingCartItem.quantity - 1);
-                    }}
-                    aria-label={`Decrease quantity of ${item.name}`}
-                  >
-                    -
-                  </button>
-                  <span className={styles.qtyValue}>{isCartMode ? cartQuantity : matchingCartItem.quantity}</span>
-                  <button
-                    type="button"
-                    className={styles.qtyStepButton}
-                    onClick={(event) => {
-                      event.stopPropagation();
+                        if (!matchingCartItem) return;
+                        updateQuantity(matchingCartItem.id, matchingCartItem.quantity - 1);
+                      }}
+                      aria-label={`Decrease quantity of ${item.name}`}
+                    >
+                      -
+                    </button>
+                    <span className="min-w-6 text-center text-base font-bold">
+                      {isCartMode ? cartQuantity : (matchingCartItem?.quantity ?? 0)}
+                    </span>
+                    <button
+                      type="button"
+                      className="h-7 w-7 cursor-pointer rounded-lg border border-black/15 bg-white text-lg leading-none"
+                      onClick={(event) => {
+                        event.stopPropagation();
 
-                      if (isCartMode) {
-                        onCartIncrement?.();
-                        return;
-                      }
+                        if (isCartMode) {
+                          onCartIncrement?.();
+                          return;
+                        }
 
-                      if (!matchingCartItem) return;
-                      updateQuantity(matchingCartItem.id, matchingCartItem.quantity + 1);
-                    }}
-                    aria-label={`Increase quantity of ${item.name}`}
-                  >
-                    +
-                  </button>
+                        if (!matchingCartItem) return;
+                        updateQuantity(matchingCartItem.id, matchingCartItem.quantity + 1);
+                      }}
+                      aria-label={`Increase quantity of ${item.name}`}
+                    >
+                      +
+                    </button>
                   </div>
                 </div>
               ) : (
                 <button
                   type="button"
-                  className={`${styles.addToCartButton} ${isAddFeedbackVisible ? styles.addToCartButtonAdded : ""}`}
+                  className={`cursor-pointer rounded-xl border px-[18px] py-2 text-base font-bold text-white transition ${
+                    isAddFeedbackVisible
+                      ? "border-green-700 bg-green-600 -translate-y-px"
+                      : "border-black/20 bg-black/90"
+                  } disabled:cursor-not-allowed`}
                   disabled={isAddFeedbackVisible}
                   onClick={(event) => {
                     event.stopPropagation();
@@ -739,13 +755,13 @@ export default function MenuItemCard({
           </div>
         </div>
 
-        <div className={styles.iconActions}>
+        <div className="absolute top-[18px] right-[18px] inline-flex items-center gap-2">
           {hasMods && !isCartMode ? (
             <div
               role="button"
               tabIndex={0}
               aria-label="Reset customizations"
-              className={`${styles.iconButton} ${styles.resetIcon}`}
+              className="cursor-pointer text-[26px] leading-none font-medium text-black/75 transition-colors duration-200 group-hover:text-black/95"
               onClick={(event) => {
                 event.stopPropagation();
                 resetMods();
@@ -762,114 +778,120 @@ export default function MenuItemCard({
             </div>
           ) : null}
           <div
-              role="button"
-              tabIndex={0}
-              aria-label={`Toggle addon options for ${item.name}`}
-              className={`${styles.iconButton} ${styles.expandIcon} ${open ? styles.expandIconOpen : ""}`}
-              onClick={(event) => {
+            role="button"
+            tabIndex={0}
+            aria-label={`Toggle addon options for ${item.name}`}
+            className={`text-[26px] leading-none font-medium text-black/75 transition duration-200 group-hover:text-black/95 ${
+              open ? "rotate-45" : ""
+            }`}
+            onClick={(event) => {
+              event.stopPropagation();
+              setOpen((v) => !v);
+            }}
+            onKeyDown={(event) => {
+              if (event.key === "Enter" || event.key === " ") {
+                event.preventDefault();
                 event.stopPropagation();
                 setOpen((v) => !v);
-              }}
-              onKeyDown={(event) => {
-                if (event.key === "Enter" || event.key === " ") {
-                  event.preventDefault();
-                  event.stopPropagation();
-                  setOpen((v) => !v);
-                }
-              }}
-            >
-              +
-            </div>
+              }
+            }}
+          >
+            +
+          </div>
         </div>
       </div>
 
-      <div id={`${id}-details`} className={`${styles.details} ${open ? styles.detailsOpen : ""}`}>
-          <div className={styles.detailsInner}>
-            <ItemDetailsPanel
-              item={item}
-              nutrition={nutrition}
-              variants={variants}
-              selectedVariantId={selectedVariantId}
-              onSelectVariant={(nextVariantId) => {
-                setSelectedVariantId(nextVariantId);
-                emitCartConfiguration(nextVariantId, selectedAddons, selectedSauceCounts, selectedCommonChangeIds);
-              }}
-              addons={addons}
-              ingredientItems={ingredientItems}
-              menuItems={menuItems}
-              selectedAddons={selectedAddons}
-              onSelectAddon={(ref, addon) => {
-                setSelectedAddons((prev) => {
-                  const next = { ...prev, [ref]: addon ?? emptyAddon };
-                  emitCartConfiguration(selectedVariantId, next, selectedSauceCounts, selectedCommonChangeIds);
-                  return next;
-                });
-              }}
-              sauceSelectionCounts={selectedSauceCounts}
-              onIncrementSauce={(addon) => {
-                setSelectedSauceCounts((prev) => {
-                  const currentTotal = Object.values(prev).reduce((sum, count) => sum + count, 0);
-                  if (currentTotal >= maxSauceSelections) return prev;
-                  const next = { ...prev, [addon.name]: (prev[addon.name] ?? 0) + 1 };
-                  emitCartConfiguration(selectedVariantId, selectedAddons, next, selectedCommonChangeIds);
-                  return next;
-                });
-              }}
-              onDecrementSauce={(addon) => {
-                setSelectedSauceCounts((prev) => {
-                  const current = prev[addon.name] ?? 0;
-                  if (current <= 0) return prev;
+      <div
+        id={`${id}-details`}
+        className={`overflow-hidden bg-white transition-[max-height] duration-300 ease-in-out ${
+          open ? "max-h-[5000px]" : "max-h-0"
+        }`}
+      >
+        <div className="p-3">
+          <ItemDetailsPanel
+            item={item}
+            nutrition={nutrition}
+            variants={variants}
+            selectedVariantId={selectedVariantId}
+            onSelectVariant={(nextVariantId) => {
+              setSelectedVariantId(nextVariantId);
+              emitCartConfiguration(nextVariantId, selectedAddons, selectedSauceCounts, selectedCommonChangeIds);
+            }}
+            addons={addons}
+            ingredientItems={ingredientItems}
+            menuItems={menuItems}
+            selectedAddons={selectedAddons}
+            onSelectAddon={(ref, addon) => {
+              setSelectedAddons((prev) => {
+                const next = { ...prev, [ref]: addon ?? emptyAddon };
+                emitCartConfiguration(selectedVariantId, next, selectedSauceCounts, selectedCommonChangeIds);
+                return next;
+              });
+            }}
+            sauceSelectionCounts={selectedSauceCounts}
+            onIncrementSauce={(addon) => {
+              setSelectedSauceCounts((prev) => {
+                const currentTotal = Object.values(prev).reduce((sum, count) => sum + count, 0);
+                if (currentTotal >= maxSauceSelections) return prev;
+                const next = { ...prev, [addon.name]: (prev[addon.name] ?? 0) + 1 };
+                emitCartConfiguration(selectedVariantId, selectedAddons, next, selectedCommonChangeIds);
+                return next;
+              });
+            }}
+            onDecrementSauce={(addon) => {
+              setSelectedSauceCounts((prev) => {
+                const current = prev[addon.name] ?? 0;
+                if (current <= 0) return prev;
+                const next = { ...prev };
+                if (current === 1) {
+                  delete next[addon.name];
+                } else {
+                  next[addon.name] = current - 1;
+                }
+                emitCartConfiguration(selectedVariantId, selectedAddons, next, selectedCommonChangeIds);
+                return next;
+              });
+            }}
+            onToggleSauce={(addon) => {
+              setSelectedSauceCounts((prev) => {
+                if (addon.name === "None") {
+                  if (Object.keys(prev).length === 0) return prev;
+                  emitCartConfiguration(selectedVariantId, selectedAddons, {}, selectedCommonChangeIds);
+                  return {};
+                }
+
+                const current = prev[addon.name] ?? 0;
+                if (current > 0) {
                   const next = { ...prev };
-                  if (current === 1) {
-                    delete next[addon.name];
-                  } else {
-                    next[addon.name] = current - 1;
-                  }
+                  delete next[addon.name];
                   emitCartConfiguration(selectedVariantId, selectedAddons, next, selectedCommonChangeIds);
                   return next;
-                });
-              }}
-              onToggleSauce={(addon) => {
-                setSelectedSauceCounts((prev) => {
-                  if (addon.name === "None") {
-                    if (Object.keys(prev).length === 0) return prev;
-                    emitCartConfiguration(selectedVariantId, selectedAddons, {}, selectedCommonChangeIds);
-                    return {};
-                  }
+                }
 
-                  const current = prev[addon.name] ?? 0;
-                  if (current > 0) {
-                    const next = { ...prev };
-                    delete next[addon.name];
-                    emitCartConfiguration(selectedVariantId, selectedAddons, next, selectedCommonChangeIds);
-                    return next;
-                  }
-
-                  const currentTotal = Object.values(prev).reduce((sum, count) => sum + count, 0);
-                  if (currentTotal >= maxSauceSelections) return prev;
-                  const next = { ...prev, [addon.name]: 1 };
-                  emitCartConfiguration(selectedVariantId, selectedAddons, next, selectedCommonChangeIds);
-                  return next;
-                });
-              }}
-              commonChanges={applicableCommonChanges}
-              selectedCommonChangeIds={selectedCommonChangeIds}
-              onToggleCommonChange={(changeId) =>
-                setSelectedCommonChangeIds((prev) => {
-                  const next = prev.includes(changeId)
-                    ? prev.filter((id) => id !== changeId)
-                    : [...prev, changeId];
-                  emitCartConfiguration(selectedVariantId, selectedAddons, selectedSauceCounts, next);
-                  return next;
-                })
-              }
-              customizationTotals={customizationTotals}
-              showCustomizationDeltas={hasActiveCustomization}
-              displayMode="full"
-            />
-
-          </div>
+                const currentTotal = Object.values(prev).reduce((sum, count) => sum + count, 0);
+                if (currentTotal >= maxSauceSelections) return prev;
+                const next = { ...prev, [addon.name]: 1 };
+                emitCartConfiguration(selectedVariantId, selectedAddons, next, selectedCommonChangeIds);
+                return next;
+              });
+            }}
+            commonChanges={applicableCommonChanges}
+            selectedCommonChangeIds={selectedCommonChangeIds}
+            onToggleCommonChange={(changeId) =>
+              setSelectedCommonChangeIds((prev) => {
+                const next = prev.includes(changeId)
+                  ? prev.filter((id) => id !== changeId)
+                  : [...prev, changeId];
+                emitCartConfiguration(selectedVariantId, selectedAddons, selectedSauceCounts, next);
+                return next;
+              })
+            }
+            customizationTotals={customizationTotals}
+            showCustomizationDeltas={hasActiveCustomization}
+            displayMode="full"
+          />
         </div>
+      </div>
     </li>
   );
 }
