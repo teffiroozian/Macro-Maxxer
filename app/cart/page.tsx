@@ -19,37 +19,53 @@ import subwayMenu from "@/app/data/subway.json";
 import { useCart } from "@/stores/cartStore";
 import { normalizeAddons } from "@/lib/addons";
 
+type MenuDataset = {
+  items?: MenuItem[];
+  addons?: unknown;
+  ingredients?: IngredientItem[];
+  commonChanges?: CommonChange[];
+};
+
+const chickfilaData = chickfilaMenu as unknown as MenuDataset;
+const chipotleData = chipotleMenu as unknown as MenuDataset;
+const habitData = habitMenu as unknown as MenuDataset;
+const mcdonaldsData = mcdonaldsMenu as unknown as MenuDataset;
+const modData = modMenu as unknown as MenuDataset;
+const pandaData = pandaMenu as unknown as MenuDataset;
+const paneraData = paneraMenu as unknown as MenuDataset;
+const starbucksData = starbucksMenu as unknown as MenuDataset;
+const subwayData = subwayMenu as unknown as MenuDataset;
 
 const menuLookupByRestaurant: Record<string, MenuItem[]> = {
-  chickfila: chickfilaMenu.items,
-  chipotle: chipotleMenu.items,
-  habit: habitMenu.items,
-  mcdonalds: mcdonaldsMenu.items,
-  mod: modMenu.items,
-  panda: pandaMenu.items,
-  panera: paneraMenu.items,
-  starbucks: starbucksMenu.items,
-  subway: subwayMenu.items,
+  chickfila: chickfilaData.items ?? [],
+  chipotle: chipotleData.items ?? [],
+  habit: habitData.items ?? [],
+  mcdonalds: mcdonaldsData.items ?? [],
+  mod: modData.items ?? [],
+  panda: pandaData.items ?? [],
+  panera: paneraData.items ?? [],
+  starbucks: starbucksData.items ?? [],
+  subway: subwayData.items ?? [],
 };
 
 const addonsLookupByRestaurant: Record<string, RestaurantAddons> = {
-  chickfila: normalizeAddons(chickfilaMenu.addons),
-  chipotle: normalizeAddons(chipotleMenu.addons),
-  habit: normalizeAddons(habitMenu.addons),
-  mcdonalds: normalizeAddons(mcdonaldsMenu.addons),
-  mod: normalizeAddons(modMenu.addons),
-  panda: normalizeAddons(pandaMenu.addons),
-  panera: normalizeAddons(paneraMenu.addons),
-  starbucks: normalizeAddons(starbucksMenu.addons),
-  subway: normalizeAddons(subwayMenu.addons),
+  chickfila: normalizeAddons(chickfilaData.addons),
+  chipotle: normalizeAddons(chipotleData.addons),
+  habit: normalizeAddons(habitData.addons),
+  mcdonalds: normalizeAddons(mcdonaldsData.addons),
+  mod: normalizeAddons(modData.addons),
+  panda: normalizeAddons(pandaData.addons),
+  panera: normalizeAddons(paneraData.addons),
+  starbucks: normalizeAddons(starbucksData.addons),
+  subway: normalizeAddons(subwayData.addons),
 };
 
 const ingredientLookupByRestaurant: Partial<Record<string, IngredientItem[]>> = {
-  chickfila: chickfilaMenu.ingredients,
+  chickfila: chickfilaData.ingredients,
 };
 
 const commonChangesLookupByRestaurant: Partial<Record<string, CommonChange[]>> = {
-  chickfila: chickfilaMenu.commonChanges,
+  chickfila: chickfilaData.commonChanges,
 };
 
 type NutritionTotals = {
