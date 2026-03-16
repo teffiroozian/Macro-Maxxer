@@ -205,6 +205,25 @@ export default function CartPage() {
   }, []);
 
   const showStickyBar = items.length > 0 && !expandedTotalsInView;
+  const macroTotalGrams = totals.protein + totals.carbs + totals.fat;
+  const macroSegments = [
+    {
+      label: "Protein",
+      percent: macroTotalGrams > 0 ? (totals.protein / macroTotalGrams) * 100 : 0,
+      color: "bg-[#c2410c] text-white",
+    },
+    {
+      label: "Carbs",
+      percent: macroTotalGrams > 0 ? (totals.carbs / macroTotalGrams) * 100 : 0,
+      color: "bg-[#ca8a04] text-white",
+    },
+    {
+      label: "Fat",
+      percent: macroTotalGrams > 0 ? (totals.fat / macroTotalGrams) * 100 : 0,
+      color: "bg-[#2563eb] text-white",
+    },
+  ];
+  const proteinPer100Calories = totals.calories > 0 ? Math.round((totals.protein / totals.calories) * 100) : 0;
 
   return (
     <main className="mx-auto flex min-h-screen w-full max-w-5xl flex-col gap-6 px-4 pb-72 pt-8 sm:px-6 sm:pt-10">
@@ -296,27 +315,11 @@ export default function CartPage() {
         )}
       </section>
 
-      <section ref={expandedTotalsRef} className="rounded-3xl border border-black/10 bg-white p-5 shadow-sm sm:p-6">
+      <section ref={expandedTotalsRef} className="grid gap-4 grid-cols-2 rounded-3xl border border-black/10 bg-white p-5 shadow-sm sm:p-6">
         <div>
-          <h2 className="text-xl font-semibold text-neutral-900">Meal Breakdown</h2>
-          {items.length === 0 ? (
-            <p className="mt-3 text-sm text-neutral-600">No meal items yet.</p>
-          ) : (
-            <ul className="mt-3 list-disc space-y-1 pl-5 text-sm text-neutral-700">
-              {items.map((item) => (
-                <li key={`${item.id}-breakdown`}>
-                  {item.quantity}x {item.name}
-                  {summarizeItem(item) !== "No customizations" ? ` — ${summarizeItem(item)}` : ""}
-                </li>
-              ))}
-            </ul>
-          )}
-        </div>
-
-        <div className="mt-6">
           <h2 className="text-xl font-semibold text-neutral-900">Nutrition Summary</h2>
 
-          <section className={`rounded-[18px] border border-[rgba(0,0,0,0.15)] bg-white p-[18px] mt-4`}>
+          <section className="mt-4 rounded-[18px] border border-[rgba(0,0,0,0.15)] bg-white p-[18px]">
             <div className="text-xs font-medium text-[rgba(0,0,0,0.55)]">Amount per serving</div>
 
             <div className="mt-1 flex items-end justify-between">
@@ -375,46 +378,65 @@ export default function CartPage() {
               Aggregated nutrition totals for all items currently in your cart.
             </div>
           </section>
+        </div>
+        <div className="flex flex-col">
+          <h2 className="text-xl font-semibold text-neutral-900">Meal Breakdown</h2>
+        <div className="flex min-h-[520px] flex-col mt-4 rounded-3xl border border-black/10 bg-white p-5">
 
-          <div className="mt-6 rounded-2xl border border-black/10 bg-white px-4 py-4">
-            <h3 className="text-lg font-semibold text-neutral-900">Macro Totals</h3>
-            <div className="mt-3 grid grid-cols-2 gap-3 sm:grid-cols-4">
-              <div className="rounded-xl border border-black/10 px-3 py-2 text-center">
-                <p className="text-lg font-semibold">{totals.calories}</p>
-                <p className="text-xs uppercase tracking-wide text-neutral-500">Calories</p>
+          <div className="mt-4 flex min-h-0 flex-1 flex-col justify-between gap-4">
+            <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-neutral-500">Items</p>
+            {items.length === 0 ? (
+              <p className="text-sm text-neutral-600">No meal items yet.</p>
+            ) : (
+              <ul className="min-h-0 flex-1 space-y-2 overflow-y-auto pr-1">
+                {items.map((item) => {
+                  const detailLine = summarizeItem(item);
+
+                  return (
+                    <li
+                      key={`${item.id}-breakdown`}
+                      className="flex items-center gap-3 rounded-xl border border-black/10 bg-neutral-50 px-3 py-2"
+                    >
+                      <div className="h-11 w-11 shrink-0 overflow-hidden rounded-lg border border-black/10 bg-white">
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                        <img src={item.image} alt={item.name} className="h-full w-full object-cover" />
+                      </div>
+                      <div className="min-w-0">
+                        <p className="truncate text-sm font-medium text-neutral-900">
+                          {item.quantity}x {item.name}
+                        </p>
+                        {detailLine !== "No customizations" ? (
+                          <p className="truncate text-xs text-neutral-500">{detailLine}</p>
+                        ) : null}
+                      </div>
+                    </li>
+                  );
+                })}
+              </ul>
+            )}
+
+            <div className="space-y-3 pt-2">
+              <p className="text-xs font-semibold uppercase tracking-wide text-neutral-500">Protein Efficiency</p>
+              <div className="rounded-xl border border-black/10 bg-neutral-50 px-3 py-2">
+                <p className="mt-1 text-sm font-medium text-neutral-900">{proteinPer100Calories}g of Protein in 100cals</p>
               </div>
-              <div className="rounded-xl border border-black/10 px-3 py-2 text-center">
-                <p className="text-lg font-semibold">{totals.protein}g</p>
-                <p className="text-xs uppercase tracking-wide text-neutral-500">Protein</p>
-              </div>
-              <div className="rounded-xl border border-black/10 px-3 py-2 text-center">
-                <p className="text-lg font-semibold">{totals.carbs}g</p>
-                <p className="text-xs uppercase tracking-wide text-neutral-500">Carbs</p>
-              </div>
-              <div className="rounded-xl border border-black/10 px-3 py-2 text-center">
-                <p className="text-lg font-semibold">{totals.fat}g</p>
-                <p className="text-xs uppercase tracking-wide text-neutral-500">Fat</p>
+
+              <div>
+                <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-neutral-500">Macro Split</p>
+                <div className="flex h-11 w-full overflow-hidden rounded-full border border-black/10 bg-neutral-100">
+                  {macroSegments.map((segment) => (
+                    <div
+                      key={segment.label}
+                      className={`flex min-w-0 items-center justify-center px-1 text-[11px] font-semibold text-neutral-900 ${segment.color}`}
+                      style={{ width: `${segment.percent}%` }}
+                    >
+                      {segment.percent >= 18 ? `${segment.label} ${Math.round(segment.percent)}%` : ""}
+                    </div>
+                  ))}
+                </div>
               </div>
             </div>
-
-                        <div className="my-4 h-px w-full bg-black/10" />
-
-            <div className="flex items-center justify-center gap-3">
-              <button
-                type="button"
-                onClick={() => window.alert("Save Meal coming soon")}
-                className="rounded-xl border border-black/15 bg-neutral-100 px-4 py-2 text-sm font-medium text-neutral-800 transition hover:bg-neutral-200"
-              >
-                Save Meal
-              </button>
-              <button
-                type="button"
-                onClick={() => router.push("/cart/snapshot")}
-                className="rounded-xl border border-black/90 bg-neutral-900 px-4 py-2 text-sm font-medium text-white transition hover:bg-black"
-              >
-                Generate Snapshot
-              </button>
-            </div>
+          </div>
           </div>
         </div>
       </section>
