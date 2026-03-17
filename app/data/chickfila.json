@@ -373,7 +373,7 @@
             "portionType": "single",
             "image": "/restaurants/chickfila/menu/sandwiches/grilled-chicken-sandwich.webp",
             "ingredients": [
-                "Honey Roasted BBQ Sauce",
+                "honey-roasted-bbq-sauce",
                 "multigrain-brioche-bun",
                 "grilled-filet",
                 "tomato",
@@ -401,7 +401,7 @@
             "portionType": "single",
             "image": "/restaurants/chickfila/menu/sandwiches/grilled-chicken-club.webp",
             "ingredients": [
-                "Honey Roasted BBQ Sauce",
+                "honey-roasted-bbq-sauce",
                 "multigrain-brioche-bun",
                 "colby-jack-cheese",
                 "grilled-filet",
@@ -524,7 +524,7 @@
             "portionType": "single",
             "image": "/restaurants/chickfila/menu/salads/cobb-salad.webp",
             "ingredients": [
-                "grape-tomatoes",
+                "grape-tomato",
                 "roasted-corn",
                 "bacon-crumbles",
                 "sliced-egg",
@@ -556,7 +556,7 @@
             "portionType": "single",
             "image": "/restaurants/chickfila/menu/salads/spicy-southwest-salad.webp",
             "ingredients": [
-                "grape-tomatoes",
+                "grape-tomato",
                 "black-beans-corn",
                 "shredded-cheddar",
                 "seasoned-tortilla-strips",
@@ -925,7 +925,7 @@
             "image": "/restaurants/chickfila/menu/sides/side-salad.webp",
             "ingredients": [
                 "crispy-bell-peppers",
-                "grape-tomatoes",
+                "grape-tomato",
                 "shredded-cheddar"
             ],
             "nutrition": {
@@ -3453,6 +3453,39 @@
             "image": "/restaurants/chickfila/ingredients/treat-toppings/cherry.webp",
             "nutrition": {
                 "calories": 5
+            }
+        },
+        {
+            "id": "honey-roasted-bbq-sauce",
+            "name": "Honey Roasted BBQ Sauce",
+            "categories": [
+                "Sauces"
+            ],
+            "image": "/restaurants/chickfila/menu/dipping-sauces/honey_roasted_bbq.webp",
+            "nutrition": {
+                "calories": 60
+            }
+        },
+        {
+            "id": "crispy-nuggets",
+            "name": "Crispy Nuggets",
+            "categories": [
+                "Proteins"
+            ],
+            "image": "/restaurants/chickfila/menu/chicken/crispy-nuggets.webp",
+            "nutrition": {
+                "calories": 250
+            }
+        },
+        {
+            "id": "hash-browns",
+            "name": "Hash Browns",
+            "categories": [
+                "Breakfast Sides"
+            ],
+            "image": "/restaurants/chickfila/menu/breakfast/hash-browns.webp",
+            "nutrition": {
+                "calories": 270
             }
         }
     ],

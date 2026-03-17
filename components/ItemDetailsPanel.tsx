@@ -1,6 +1,5 @@
 import { useState } from "react";
 import Image from "next/image";
-import ingredientsCatalog from "@/data/ingredientsCatalog.json";
 import type {
   AddonOption,
   AddonRef,
@@ -57,7 +56,6 @@ function resolvePanelIngredients(
         ? [item.id ?? item.name]
         : [];
 
-  const ingredientLookup = ingredientsCatalog as Record<string, { label: string; icon: string }>;
   const ingredientByIdLookup = new Map<string, IngredientItem>();
   const ingredientByNameLookup = new Map<string, IngredientItem>();
   const addonLookup = new Map<string, AddonOption>();
@@ -81,7 +79,6 @@ function resolvePanelIngredients(
   });
 
   return ingredientIds.map((ingredientId) => {
-    const catalogEntry = ingredientLookup[ingredientId];
     const fallbackLabel = ingredientId
       .split(/[-_]/)
       .map((segment) => segment.charAt(0).toUpperCase() + segment.slice(1))
@@ -96,15 +93,15 @@ function resolvePanelIngredients(
       menuItemByNameLookup.get(normalizeIngredientToken(ingredientId)) ??
       menuItemByNameLookup.get(normalizeIngredientToken(fallbackLabel));
 
-    const label = catalogEntry?.label ?? match?.name ?? fallbackLabel;
+    const label = menuItemMatch?.name ?? match?.name ?? fallbackLabel;
     const addonMatch = addonLookup.get(label.toLowerCase());
     const isSingleIngredientRow = isSingleIngredientItem && ingredientIds.length === 1;
     const activeVariantCalories = activeVariant?.nutrition.calories;
 
     return {
       id: ingredientId,
-      label: menuItemMatch?.name ?? label,
-      icon: catalogEntry?.icon ?? match?.image ?? menuItemMatch?.image ?? addonMatch?.image ?? "🥣",
+      label,
+      icon: match?.image ?? menuItemMatch?.image ?? addonMatch?.image ?? "🥣",
       calories:
         isSingleIngredientRow && activeVariantCalories !== undefined
           ? activeVariantCalories
