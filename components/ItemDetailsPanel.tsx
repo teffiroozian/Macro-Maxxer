@@ -11,7 +11,7 @@ import type {
   RestaurantAddons,
   IngredientItem,
 } from "@/types/menu";
-import { Check, ChevronDown } from "lucide-react";
+import { Check, ChevronDown, Pencil } from "lucide-react";
 
 
 function format(n?: number, suffix = "") {
@@ -238,6 +238,22 @@ export default function ItemDetailsPanel({
     );
 
   const activeCustomizationTotals = customizationTotals ?? { calories: 0, protein: 0, carbs: 0, fat: 0 };
+  const hasIngredientCustomizationOptions =
+    displayMode === "full" &&
+    Boolean(commonChanges?.some((change) => change.id.startsWith("ingredient:")));
+
+  const openIngredientCustomization = () => {
+    setSectionOpenState((prev) => ({
+      ...prev,
+      ["common-changes"]: true,
+    }));
+
+    const section = document.getElementById("common-changes-section");
+    if (section) {
+      section.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  };
+
   const ingredients = resolvePanelIngredients(
     item,
     ingredientItems,
@@ -251,7 +267,20 @@ export default function ItemDetailsPanel({
     <div className="grid grid-cols-2 gap-3 rounded-[18px] bg-[#e0e0e0] px-3 py-2">
       {ingredients.length > 0 ? (
         <section className="col-span-2 rounded-[14px] border border-black/12 bg-white p-5">
-          <h2 className="mb-4 text-2xl font-bold">Ingredients</h2>
+          <div className="mb-4 flex items-center justify-between gap-3">
+            <h2 className="text-2xl font-bold">Ingredients</h2>
+            {hasIngredientCustomizationOptions ? (
+              <button
+                type="button"
+                onClick={openIngredientCustomization}
+                className="inline-flex h-8 w-8 cursor-pointer items-center justify-center rounded-md border border-black/20 bg-white text-black/70 transition hover:bg-black/5"
+                aria-label="Customize ingredients"
+                title="Customize ingredients"
+              >
+                <Pencil size={16} />
+              </button>
+            ) : null}
+          </div>
           <div className="grid grid-cols-5 gap-2.5">
             {ingredients.map((ingredient) => (
               <article
@@ -448,7 +477,7 @@ export default function ItemDetailsPanel({
       ) : null}
 
       {displayMode === "full" && commonChanges && commonChanges.length > 0 ? (
-        <section className="col-span-2 rounded-[18px] border border-[rgba(0,0,0,0.15)] bg-white px-[18px] py-[14px]">
+        <section id="common-changes-section" className="col-span-2 rounded-[18px] border border-[rgba(0,0,0,0.15)] bg-white px-[18px] py-[14px]">
           <div className="grid gap-[14px]">
             <div className="min-w-0">
               {(() => {
