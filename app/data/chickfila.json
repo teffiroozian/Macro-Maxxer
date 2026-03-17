@@ -2739,7 +2739,11 @@
                 "fiber": 1,
                 "sugars": 4,
                 "protein": 5
-            }
+            },
+            "allowedModifiers": [
+                "remove",
+                "light"
+            ]
         },
         {
             "id": "multigrain-brioche-bun",
@@ -2881,7 +2885,10 @@
                 "fiber": 0,
                 "sugars": 1,
                 "protein": 21
-            }
+            },
+            "allowedModifiers": [
+                "remove"
+            ]
         },
         {
             "id": "spicy-filet",
@@ -2901,7 +2908,10 @@
                 "fiber": 1,
                 "sugars": 2,
                 "protein": 23
-            }
+            },
+            "allowedModifiers": [
+                "remove"
+            ]
         },
         {
             "id": "cfa-filet",
@@ -2921,7 +2931,10 @@
                 "fiber": 0,
                 "sugars": 1,
                 "protein": 24
-            }
+            },
+            "allowedModifiers": [
+                "remove"
+            ]
         },
         {
             "id": "bacon",
@@ -3103,7 +3116,12 @@
                 "fiber": 0,
                 "sugars": 0,
                 "protein": 3
-            }
+            },
+            "allowedModifiers": [
+                "remove",
+                "light",
+                "extra"
+            ]
         },
         {
             "id": "colby-jack-cheese",
@@ -3123,7 +3141,12 @@
                 "fiber": 0,
                 "sugars": 0,
                 "protein": 5
-            }
+            },
+            "allowedModifiers": [
+                "remove",
+                "light",
+                "extra"
+            ]
         },
         {
             "id": "pepper-jack",
@@ -3143,7 +3166,12 @@
                 "fiber": 0,
                 "sugars": 0,
                 "protein": 4
-            }
+            },
+            "allowedModifiers": [
+                "remove",
+                "light",
+                "extra"
+            ]
         },
         {
             "id": "tomato",
@@ -3163,7 +3191,11 @@
                 "fiber": 0,
                 "sugars": 1,
                 "protein": 0
-            }
+            },
+            "allowedModifiers": [
+                "remove",
+                "extra"
+            ]
         },
         {
             "id": "lettuce",
@@ -3183,7 +3215,11 @@
                 "fiber": 0,
                 "sugars": 0,
                 "protein": 0
-            }
+            },
+            "allowedModifiers": [
+                "remove",
+                "extra"
+            ]
         },
         {
             "id": "pickles",
@@ -3203,7 +3239,11 @@
                 "fiber": 0,
                 "sugars": 0,
                 "protein": 0
-            }
+            },
+            "allowedModifiers": [
+                "remove",
+                "extra"
+            ]
         },
         {
             "id": "saltines",
@@ -3782,6 +3822,28 @@
             }
         ]
     },
+    "ingredientModifiers": [
+        {
+            "id": "remove",
+            "label": "Remove",
+            "multiplier": 0
+        },
+        {
+            "id": "light",
+            "label": "Light",
+            "multiplier": 0.5
+        },
+        {
+            "id": "extra",
+            "label": "Extra",
+            "multiplier": 1.5
+        },
+        {
+            "id": "double",
+            "label": "2x",
+            "multiplier": 2
+        }
+    ],
     "commonChanges": [
         {
             "id": "swap_crispy_grilled",

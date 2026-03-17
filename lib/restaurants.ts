@@ -1,6 +1,12 @@
 import restaurants from "@/app/data/index.json";
 import { normalizeAddons } from "@/lib/addons";
-import type { CommonChange, IngredientItem, MenuItem, RestaurantAddons } from "@/types/menu";
+import type {
+  CommonChange,
+  IngredientItem,
+  IngredientModifier,
+  MenuItem,
+  RestaurantAddons,
+} from "@/types/menu";
 
 export type RestaurantData = {
   id: string;
@@ -11,6 +17,7 @@ export type RestaurantData = {
   ingredients: IngredientItem[];
   addons: RestaurantAddons;
   commonChanges: CommonChange[];
+  ingredientModifiers: IngredientModifier[];
 };
 
 export function toItemSlug(item: MenuItem) {
@@ -36,6 +43,7 @@ export async function getRestaurantData(id: string): Promise<RestaurantData | nu
     ingredients: (menu.default.ingredients ?? []) as IngredientItem[],
     addons: normalizeAddons(menu.default.addons),
     commonChanges: (menu.default.commonChanges ?? []) as CommonChange[],
+    ingredientModifiers: (menu.default.ingredientModifiers ?? []) as IngredientModifier[],
   };
 }
 

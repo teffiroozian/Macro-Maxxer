@@ -7,6 +7,7 @@ import type {
   AddonOption,
   AddonRef,
   CommonChange,
+  IngredientModifier,
   MacroDelta,
   MenuItem,
   RestaurantAddons,
@@ -73,6 +74,69 @@ function getApplicableCommonChanges(item: MenuItem, commonChanges?: CommonChange
   });
 }
 
+function resolveIngredientForItemToken(token: string, ingredientItems: IngredientItem[]) {
+  const normalizedToken = token.trim().toLowerCase();
+  const normalizedByName = token.replace(/[-_]+/g, " ").trim().toLowerCase();
+
+  return ingredientItems.find((ingredient) => {
+    const byId = ingredient.id?.trim().toLowerCase();
+    const byName = ingredient.name.trim().toLowerCase();
+    return byId === normalizedToken || byName === normalizedToken || byName === normalizedByName;
+  });
+}
+
+function roundMacro(value: number) {
+  return Math.round(value * 10) / 10;
+}
+
+function buildIngredientModifierChanges(
+  item: MenuItem,
+  ingredientItems?: IngredientItem[],
+  ingredientModifiers?: IngredientModifier[]
+) {
+  if (!item.ingredients?.length || !ingredientItems?.length || !ingredientModifiers?.length) {
+    return [] as CommonChange[];
+  }
+
+  const modifierById = new Map(ingredientModifiers.map((modifier) => [modifier.id, modifier]));
+
+  return item.ingredients.flatMap((ingredientToken) => {
+    const ingredient = resolveIngredientForItemToken(ingredientToken, ingredientItems);
+    if (!ingredient?.allowedModifiers?.length) return [];
+
+    const ingredientId = ingredient.id ?? ingredientToken;
+    const ingredientName = ingredient.name;
+    const baseCalories = ingredient.nutrition.calories ?? 0;
+    const baseProtein = ingredient.nutrition.protein ?? 0;
+    const baseCarbs = ingredient.nutrition.carbs ?? 0;
+    const baseFat = ingredient.nutrition.totalFat ?? 0;
+
+    return ingredient.allowedModifiers.flatMap((modifierId) => {
+      const modifier = modifierById.get(modifierId);
+      if (!modifier || modifier.multiplier === 1) return [];
+
+      const multiplierDelta = modifier.multiplier - 1;
+
+      return {
+        id: `ingredient:${ingredientId}:${modifier.id}`,
+        label: `${ingredientName}: ${modifier.label}`,
+        delta: {
+          calories: roundMacro(baseCalories * multiplierDelta),
+          protein: roundMacro(baseProtein * multiplierDelta),
+          carbs: roundMacro(baseCarbs * multiplierDelta),
+          fat: roundMacro(baseFat * multiplierDelta),
+        },
+      } as CommonChange;
+    });
+  });
+}
+
+function getIngredientKeyFromChangeId(changeId: string) {
+  if (!changeId.startsWith("ingredient:")) return null;
+  const parts = changeId.split(":");
+  return parts.length >= 3 ? parts[1] : null;
+}
+
 
 export default function ItemRouteModal({
   restaurantId,
@@ -80,6 +144,7 @@ export default function ItemRouteModal({
   item,
   addons,
   commonChanges,
+  ingredientModifiers,
   ingredients,
   menuItems,
 }: {
@@ -88,6 +153,7 @@ export default function ItemRouteModal({
   item: MenuItem;
   addons?: RestaurantAddons;
   commonChanges?: CommonChange[];
+  ingredientModifiers?: IngredientModifier[];
   ingredients?: IngredientItem[];
   menuItems?: MenuItem[];
 }) {
@@ -113,6 +179,14 @@ export default function ItemRouteModal({
   const applicableCommonChanges = useMemo(
     () => getApplicableCommonChanges(item, commonChanges),
     [item, commonChanges]
+  );
+  const ingredientModifierChanges = useMemo(
+    () => buildIngredientModifierChanges(item, ingredients, ingredientModifiers),
+    [item, ingredients, ingredientModifiers]
+  );
+  const allCommonChanges = useMemo(
+    () => [...applicableCommonChanges, ...ingredientModifierChanges],
+    [applicableCommonChanges, ingredientModifierChanges]
   );
 
   const selectedSauceOptions = useMemo(() => {
@@ -155,7 +229,7 @@ export default function ItemRouteModal({
 
   const commonChangeTotals = useMemo(
     () =>
-      applicableCommonChanges.reduce<MacroDelta>(
+      allCommonChanges.reduce<MacroDelta>(
         (sum, change) => {
           if (!selectedCommonChangeIds.includes(change.id)) return sum;
           return {
@@ -167,7 +241,7 @@ export default function ItemRouteModal({
         },
         { calories: 0, protein: 0, carbs: 0, fat: 0 }
       ),
-    [applicableCommonChanges, selectedCommonChangeIds]
+    [allCommonChanges, selectedCommonChangeIds]
   );
 
   const customizationTotals = useMemo(
@@ -216,8 +290,8 @@ export default function ItemRouteModal({
   }, [selectedAddons, selectedSauceCounts]);
 
   const selectedCommonChanges = useMemo(
-    () => applicableCommonChanges.filter((change) => selectedCommonChangeIds.includes(change.id)).map((change) => change.label),
-    [applicableCommonChanges, selectedCommonChangeIds]
+    () => allCommonChanges.filter((change) => selectedCommonChangeIds.includes(change.id)).map((change) => change.label),
+    [allCommonChanges, selectedCommonChangeIds]
   );
 
   const handleClose = () => {
@@ -384,12 +458,25 @@ export default function ItemRouteModal({
                 return { ...prev, [addon.name]: 1 };
               });
             }}
-            commonChanges={applicableCommonChanges}
+            commonChanges={allCommonChanges}
             selectedCommonChangeIds={selectedCommonChangeIds}
             onToggleCommonChange={(changeId) =>
-              setSelectedCommonChangeIds((prev) =>
-                prev.includes(changeId) ? prev.filter((id) => id !== changeId) : [...prev, changeId]
-              )
+              setSelectedCommonChangeIds((prev) => {
+                const ingredientKey = getIngredientKeyFromChangeId(changeId);
+
+                if (prev.includes(changeId)) {
+                  return prev.filter((id) => id !== changeId);
+                }
+
+                if (!ingredientKey) {
+                  return [...prev, changeId];
+                }
+
+                const withoutSameIngredient = prev.filter(
+                  (id) => getIngredientKeyFromChangeId(id) !== ingredientKey
+                );
+                return [...withoutSameIngredient, changeId];
+              })
             }
             customizationTotals={customizationTotals}
             showCustomizationDeltas={hasActiveCustomization}
