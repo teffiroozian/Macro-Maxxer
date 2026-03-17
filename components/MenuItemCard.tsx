@@ -773,12 +773,6 @@ export default function MenuItemCard({
           </div>
 
           <div className="mt-auto flex items-end gap-[60px]">
-            {showRatio && Number.isFinite(ratio) && (
-              <div className="flex flex-col items-center justify-start">
-                <div className="text-2xl font-bold">{ratio}:1</div>
-                <div className="text-[10px] font-bold">RATIO</div>
-              </div>
-            )}
             <div className="flex flex-col items-center justify-start">
               <div className="inline-flex items-baseline gap-1.5">
                 <div className="text-2xl font-bold text-[#c2410c]">{formatMacro(protein)}</div>
