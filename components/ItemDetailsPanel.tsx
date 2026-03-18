@@ -291,7 +291,7 @@ export default function ItemDetailsPanel({
             {ingredients.map((ingredient) => (
               <article
                 key={ingredient.id}
-                className="overflow-hidden rounded-[10px] border border-[rgba(0,0,0,0.15)] bg-[#f9f9f9] text-left"
+                className="overflow-hidden rounded-[10px] border border-[rgba(0,0,0,0.15)] bg-white text-left"
               >
                 <div className="flex items-center gap-3 px-3 py-2">
                   <div
@@ -312,13 +312,13 @@ export default function ItemDetailsPanel({
                   </div>
                   <div className="flex min-w-0 flex-col items-start justify-center gap-[6px]">
                     <div className="line-clamp-2 break-words text-left text-base font-bold leading-[1.2]">{ingredient.label}</div>
-                    <div className="text-base font-bold text-[rgba(0,0,0,0.5)]">
+                    <div className="text-sm font-bold text-[rgba(0,0,0,0.5)]">
                       {ingredient.calories !== undefined ? `${ingredient.calories} Cal` : "— Cal"}
                     </div>
                   </div>
                 </div>
                 {ingredient.supportedModifiers.length > 0 ? (
-                  <div className="border-t border-black/10 px-3 py-2.5">
+                  <div className="px-3 py-2.5">
                     <div className="flex flex-wrap justify-end gap-1.5">
                       {[
                         { id: "normal" as const, label: "Normal" },
@@ -331,10 +331,10 @@ export default function ItemDetailsPanel({
                           <button
                             key={modifier.id}
                             type="button"
-                            className={`cursor-pointer rounded-full border px-2.5 py-1 text-[11px] font-semibold transition ${
+                            className={`cursor-pointer rounded-full border px-4 py-1.5 text-xs font-semibold transition ${
                               isSelected
                                 ? "border-black bg-black text-white"
-                                : "border-black/15 bg-[#f6f6f6] text-black/65 hover:bg-black/5"
+                                : "border-black/15 bg-white text-black/65 hover:bg-black/5"
                             }`}
                             onClick={() => onIngredientModifierChange?.(ingredient.id, modifier.id)}
                             aria-pressed={isSelected}
@@ -440,7 +440,7 @@ export default function ItemDetailsPanel({
                             )}
                             <div className="flex min-w-0 flex-col items-start justify-center gap-[6px]">
                               <div className="line-clamp-2 break-words text-left text-base font-bold leading-[1.2]">{addon.name}</div>
-                              <div className="text-base font-bold text-[rgba(0,0,0,0.5)]">+{toNumber(addon.calories)} Cal</div>
+                              <div className="text-sm font-bold text-[rgba(0,0,0,0.5)]">+{toNumber(addon.calories)} Cal</div>
                             </div>
                             {section.ref === "dressings" ? (
                               <span
@@ -593,7 +593,7 @@ export default function ItemDetailsPanel({
                                 <div className={`grid h-[72px] w-[72px] min-w-[72px] place-items-center rounded-lg bg-cover bg-center text-[32px] font-bold text-black `}>↺</div>
                                 <div className="flex min-w-0 flex-col items-start justify-center gap-[6px]">
                                   <div className="line-clamp-2 break-words text-left text-base font-bold leading-[1.2]">{change.label}</div>
-                                  <div className="text-base font-bold text-[rgba(0,0,0,0.5)]">{`${calorieDeltaLabel} • ${proteinDeltaLabel}`}</div>
+                                  <div className="text-sm font-bold text-[rgba(0,0,0,0.5)]">{`${calorieDeltaLabel} • ${proteinDeltaLabel}`}</div>
                                 </div>
                                 <span
                                   className={`ml-auto inline-flex h-[22px] w-[22px] shrink-0 items-center justify-center rounded-[4px] border-2 transition-colors ${isActive ? "border-[#16a34a] bg-[#16a34a] text-white" : "border-[rgba(0,0,0,0.45)] bg-white text-transparent"}`}
