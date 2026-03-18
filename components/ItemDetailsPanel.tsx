@@ -272,55 +272,57 @@ export default function ItemDetailsPanel({
       {ingredients.length > 0 ? (
         <section className="col-span-2 rounded-[14px] border border-black/12 bg-white p-5">
           <h2 className="mb-4 text-2xl font-bold">Ingredients</h2>
-          <div className="grid grid-cols-5 gap-2.5">
+          <div className="grid grid-cols-2 gap-3">
             {ingredients.map((ingredient) => (
               <article
                 key={ingredient.id}
-                className="grid justify-items-center gap-2 rounded-xl border border-black/12 bg-white p-2.5 text-center"
+                className="grid grid-cols-[88px_minmax(0,1fr)] items-center gap-3 rounded-xl border border-black/12 bg-white p-3 text-left"
               >
-                <div className="flex h-[100px] w-[100px] items-center justify-center" aria-hidden="true">
+                <div className="flex h-[88px] w-[88px] items-center justify-center" aria-hidden="true">
                   {isIconImage(ingredient.icon) ? (
-                    <Image src={ingredient.icon} alt="" width={100} height={100} />
+                    <Image src={ingredient.icon} alt="" width={88} height={88} />
                   ) : (
                     ingredient.icon
                   )}
                 </div>
-                <div className="line-clamp-2 text-sm leading-[1.3] font-bold">{ingredient.label}</div>
-                <div className="text-xs font-semibold text-black/60">
-                  {ingredient.calories !== undefined ? `${ingredient.calories} Cal` : "— Cal"}
-                </div>
-                {ingredient.supportedModifiers.length > 0 ? (
-                  <div className="flex w-full flex-col gap-1.5">
-                    <div className="text-[11px] font-semibold uppercase tracking-[0.08em] text-black/45">
-                      Customize
-                    </div>
-                    <div className="flex flex-wrap justify-center gap-1.5">
-                      {[
-                        { id: "normal" as const, label: "Normal" },
-                        ...ingredient.supportedModifiers,
-                      ].map((modifier) => {
-                        const isSelected =
-                          (selectedIngredientModifierIds?.[ingredient.id] ?? "normal") === modifier.id;
-
-                        return (
-                          <button
-                            key={modifier.id}
-                            type="button"
-                            className={`cursor-pointer rounded-full border px-2.5 py-1 text-[11px] font-semibold transition ${
-                              isSelected
-                                ? "border-black bg-black text-white"
-                                : "border-black/15 bg-[#f6f6f6] text-black/65 hover:bg-black/5"
-                            }`}
-                            onClick={() => onSetIngredientModifier?.(ingredient.id, modifier.id)}
-                            aria-pressed={isSelected}
-                          >
-                            {modifier.label}
-                          </button>
-                        );
-                      })}
-                    </div>
+                <div className="flex min-w-0 flex-col gap-1.5">
+                  <div className="line-clamp-2 text-sm leading-[1.3] font-bold">{ingredient.label}</div>
+                  <div className="text-xs font-semibold text-black/60">
+                    {ingredient.calories !== undefined ? `${ingredient.calories} Cal` : "— Cal"}
                   </div>
-                ) : null}
+                  {ingredient.supportedModifiers.length > 0 ? (
+                    <div className="mt-1 flex flex-col gap-1.5">
+                      <div className="text-[11px] font-semibold uppercase tracking-[0.08em] text-black/45">
+                        Customize
+                      </div>
+                      <div className="flex flex-wrap gap-1.5">
+                        {[
+                          { id: "normal" as const, label: "Normal" },
+                          ...ingredient.supportedModifiers,
+                        ].map((modifier) => {
+                          const isSelected =
+                            (selectedIngredientModifierIds?.[ingredient.id] ?? "normal") === modifier.id;
+
+                          return (
+                            <button
+                              key={modifier.id}
+                              type="button"
+                              className={`cursor-pointer rounded-full border px-2.5 py-1 text-[11px] font-semibold transition ${
+                                isSelected
+                                  ? "border-black bg-black text-white"
+                                  : "border-black/15 bg-[#f6f6f6] text-black/65 hover:bg-black/5"
+                              }`}
+                              onClick={() => onSetIngredientModifier?.(ingredient.id, modifier.id)}
+                              aria-pressed={isSelected}
+                            >
+                              {modifier.label}
+                            </button>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  ) : null}
+                </div>
               </article>
             ))}
           </div>
