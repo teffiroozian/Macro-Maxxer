@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
-import ItemDetailsPanel, { PortionSelector } from "@/components/ItemDetailsPanel";
+import ItemDetailsPanel, { PortionSelector, resolvePanelIngredients } from "@/components/ItemDetailsPanel";
 import type {
   AddonOption,
   AddonRef,
@@ -164,22 +164,22 @@ export default function ItemRouteModal({
     [selectedAddons, selectedSauceOptions]
   );
 
+  const resolvedIngredients = useMemo(
+    () => resolvePanelIngredients(item, ingredients, addons, menuItems ?? [], variants, selectedVariantId),
+    [addons, ingredients, item, menuItems, selectedVariantId, variants]
+  );
+
   const ingredientLookup = useMemo(() => {
-    const lookup = new Map<string, IngredientItem>();
+    const lookup = new Map<string, (typeof resolvedIngredients)[number]>();
 
-    (ingredients ?? []).forEach((ingredient) => {
-      const ingredientId = ingredient.id ?? ingredient.name;
-      lookup.set(ingredientId, ingredient);
-
-      if (ingredient.id) {
-        lookup.set(ingredient.id.toLowerCase(), ingredient);
-      }
-
-      lookup.set(ingredient.name.toLowerCase(), ingredient);
+    resolvedIngredients.forEach((ingredient) => {
+      lookup.set(ingredient.id, ingredient);
+      lookup.set(ingredient.id.toLowerCase(), ingredient);
+      lookup.set(ingredient.label.toLowerCase(), ingredient);
     });
 
     return lookup;
-  }, [ingredients]);
+  }, [resolvedIngredients]);
 
   const commonChangeTotals = useMemo(
     () =>
@@ -279,8 +279,8 @@ export default function ItemRouteModal({
         .filter(([, modifierId]) => modifierId !== "normal")
         .flatMap(([ingredientId, modifierId]) => {
           const ingredientName =
-            ingredientLookup.get(ingredientId)?.name ??
-            ingredientLookup.get(ingredientId.toLowerCase())?.name ??
+            ingredientLookup.get(ingredientId)?.label ??
+            ingredientLookup.get(ingredientId.toLowerCase())?.label ??
             ingredientId;
           const label = formatIngredientCustomizationLabel(ingredientName, modifierId);
           return label ? [label] : [];

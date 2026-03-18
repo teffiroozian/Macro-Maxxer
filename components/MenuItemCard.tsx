@@ -4,7 +4,7 @@ import { useEffect, useId, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import type { AddonOption, AddonRef, CommonChange, IngredientItem, MacroDelta, MenuItem, RestaurantAddons } from "@/types/menu";
 import { useCart } from "@/stores/cartStore";
-import ItemDetailsPanel from "./ItemDetailsPanel";
+import ItemDetailsPanel, { resolvePanelIngredients } from "./ItemDetailsPanel";
 import VariantSelector from "./VariantSelector";
 
 function pad2(n: number) {
@@ -282,6 +282,23 @@ export default function MenuItemCard({
     [item, commonChanges]
   );
 
+  const resolvedIngredients = useMemo(
+    () => resolvePanelIngredients(item, ingredientItems, addons, menuItems ?? [], variants, selectedVariantId),
+    [addons, ingredientItems, item, menuItems, selectedVariantId, variants]
+  );
+
+  const ingredientLookup = useMemo(() => {
+    const lookup = new Map<string, (typeof resolvedIngredients)[number]>();
+
+    resolvedIngredients.forEach((ingredient) => {
+      lookup.set(ingredient.id, ingredient);
+      lookup.set(ingredient.id.toLowerCase(), ingredient);
+      lookup.set(ingredient.label.toLowerCase(), ingredient);
+    });
+
+    return lookup;
+  }, [resolvedIngredients]);
+
   const selectedSauceOptions = useMemo(() => {
     const sauceOptions = addons?.[sauceRef] ?? [];
     return sauceOptions.flatMap((addon) => Array.from({ length: selectedSauceCounts[addon.name] ?? 0 }, () => addon));
@@ -349,14 +366,40 @@ export default function MenuItemCard({
     [applicableCommonChanges, selectedCommonChangeIds]
   );
 
+  const ingredientModifierTotals = useMemo(
+    () =>
+      Object.entries(selectedIngredientModifierIds).reduce<MacroDelta>(
+        (sum, [ingredientId, modifierId]) => {
+          if (modifierId === "normal") return sum;
+
+          const ingredient =
+            ingredientLookup.get(ingredientId) ??
+            ingredientLookup.get(ingredientId.toLowerCase());
+
+          if (!ingredient) return sum;
+
+          const direction = modifierId === "remove" ? -1 : 1;
+
+          return {
+            calories: sum.calories + (ingredient.nutrition.calories ?? 0) * direction,
+            protein: sum.protein + (ingredient.nutrition.protein ?? 0) * direction,
+            carbs: sum.carbs + (ingredient.nutrition.carbs ?? 0) * direction,
+            fat: sum.fat + (ingredient.nutrition.totalFat ?? 0) * direction,
+          };
+        },
+        { calories: 0, protein: 0, carbs: 0, fat: 0 }
+      ),
+    [ingredientLookup, selectedIngredientModifierIds]
+  );
+
   const customizationTotals = useMemo(
     () => ({
-      calories: addonTotals.calories + commonChangeTotals.calories,
-      protein: addonTotals.protein + commonChangeTotals.protein,
-      carbs: addonTotals.carbs + commonChangeTotals.carbs,
-      fat: addonTotals.fat + commonChangeTotals.fat,
+      calories: addonTotals.calories + commonChangeTotals.calories + ingredientModifierTotals.calories,
+      protein: addonTotals.protein + commonChangeTotals.protein + ingredientModifierTotals.protein,
+      carbs: addonTotals.carbs + commonChangeTotals.carbs + ingredientModifierTotals.carbs,
+      fat: addonTotals.fat + commonChangeTotals.fat + ingredientModifierTotals.fat,
     }),
-    [addonTotals, commonChangeTotals]
+    [addonTotals, commonChangeTotals, ingredientModifierTotals]
   );
 
   const hasMods = useMemo(
@@ -384,10 +427,10 @@ export default function MenuItemCard({
 
   const nutrition = {
     ...baseNutrition,
-    calories: sumNutrition(baseNutrition.calories, addonNutritionTotals.calories + commonChangeTotals.calories),
-    protein: sumNutrition(baseNutrition.protein, addonNutritionTotals.protein + commonChangeTotals.protein),
-    carbs: sumNutrition(baseNutrition.carbs, addonNutritionTotals.carbs + commonChangeTotals.carbs),
-    totalFat: sumNutrition(baseNutrition.totalFat, addonNutritionTotals.totalFat + commonChangeTotals.fat),
+    calories: sumNutrition(baseNutrition.calories, addonNutritionTotals.calories + commonChangeTotals.calories + ingredientModifierTotals.calories),
+    protein: sumNutrition(baseNutrition.protein, addonNutritionTotals.protein + commonChangeTotals.protein + ingredientModifierTotals.protein),
+    carbs: sumNutrition(baseNutrition.carbs, addonNutritionTotals.carbs + commonChangeTotals.carbs + ingredientModifierTotals.carbs),
+    totalFat: sumNutrition(baseNutrition.totalFat, addonNutritionTotals.totalFat + commonChangeTotals.fat + ingredientModifierTotals.fat),
     satFat: addNutritionValue(baseNutrition.satFat, addonNutritionTotals.satFat),
     transFat: addNutritionValue(baseNutrition.transFat, addonNutritionTotals.transFat),
     cholesterol: addNutritionValue(baseNutrition.cholesterol, addonNutritionTotals.cholesterol),
@@ -457,7 +500,8 @@ export default function MenuItemCard({
       .filter(([, modifierId]) => modifierId !== "normal")
       .flatMap(([ingredientId, modifierId]) => {
         const ingredientName =
-          ingredientItems?.find((ingredient) => (ingredient.id ?? ingredient.name) === ingredientId)?.name ??
+          ingredientLookup.get(ingredientId)?.label ??
+          ingredientLookup.get(ingredientId.toLowerCase())?.label ??
           ingredientId;
         const label = formatIngredientCustomizationLabel(ingredientName, modifierId);
         return label ? [label] : [];
@@ -465,7 +509,7 @@ export default function MenuItemCard({
 
     const labels = [...modifierLabels, ...ingredientModifierLabels];
     return labels.length > 0 ? labels : undefined;
-  }, [ingredientItems, selectedCommonChanges, selectedIngredientModifierIds]);
+  }, [ingredientLookup, selectedCommonChanges, selectedIngredientModifierIds]);
 
   const selectedVariantForCart = useMemo(() => {
     if (!variants || variants.length === 0) return undefined;
@@ -543,6 +587,28 @@ export default function MenuItemCard({
       { calories: 0, protein: 0, carbs: 0, fat: 0 }
     );
 
+    const ingredientModifierTotalsForCart = Object.entries(nextSelectedIngredientModifierIds).reduce<MacroDelta>(
+      (sum, [ingredientId, modifierId]) => {
+        if (modifierId === "normal") return sum;
+
+        const ingredient =
+          ingredientLookup.get(ingredientId) ??
+          ingredientLookup.get(ingredientId.toLowerCase());
+
+        if (!ingredient) return sum;
+
+        const direction = modifierId === "remove" ? -1 : 1;
+
+        return {
+          calories: sum.calories + (ingredient.nutrition.calories ?? 0) * direction,
+          protein: sum.protein + (ingredient.nutrition.protein ?? 0) * direction,
+          carbs: sum.carbs + (ingredient.nutrition.carbs ?? 0) * direction,
+          fat: sum.fat + (ingredient.nutrition.totalFat ?? 0) * direction,
+        };
+      },
+      { calories: 0, protein: 0, carbs: 0, fat: 0 }
+    );
+
     const dressingSegments = Object.values(nextAddons)
       .filter((addon): addon is AddonOption => Boolean(addon && addon.name !== "None"))
       .map((addon) => addon.name);
@@ -559,7 +625,8 @@ export default function MenuItemCard({
       .filter(([, modifierId]) => modifierId !== "normal")
       .flatMap(([ingredientId, modifierId]) => {
         const ingredientName =
-          ingredientItems?.find((ingredient) => (ingredient.id ?? ingredient.name) === ingredientId)?.name ??
+          ingredientLookup.get(ingredientId)?.label ??
+          ingredientLookup.get(ingredientId.toLowerCase())?.label ??
           ingredientId;
         const label = formatIngredientCustomizationLabel(ingredientName, modifierId);
         return label ? [label] : [];
@@ -577,10 +644,10 @@ export default function MenuItemCard({
       customizations: nextCustomizations.length > 0 ? nextCustomizations : undefined,
       image: activeVariant?.image ?? item.image,
       macrosPerItem: {
-        calories: (baseForCart.calories ?? 0) + addonTotalsForCart.calories,
-        protein: (baseForCart.protein ?? 0) + addonTotalsForCart.protein + commonChangeTotalsForCart.protein,
-        carbs: (baseForCart.carbs ?? 0) + addonTotalsForCart.carbs + commonChangeTotalsForCart.carbs,
-        fat: (baseForCart.totalFat ?? 0) + addonTotalsForCart.fat + commonChangeTotalsForCart.fat,
+        calories: (baseForCart.calories ?? 0) + addonTotalsForCart.calories + ingredientModifierTotalsForCart.calories,
+        protein: (baseForCart.protein ?? 0) + addonTotalsForCart.protein + commonChangeTotalsForCart.protein + ingredientModifierTotalsForCart.protein,
+        carbs: (baseForCart.carbs ?? 0) + addonTotalsForCart.carbs + commonChangeTotalsForCart.carbs + ingredientModifierTotalsForCart.carbs,
+        fat: (baseForCart.totalFat ?? 0) + addonTotalsForCart.fat + commonChangeTotalsForCart.fat + ingredientModifierTotalsForCart.fat,
       },
     });
   };
@@ -605,10 +672,10 @@ export default function MenuItemCard({
         customizations,
         quantity: 1,
         macrosPerItem: {
-          calories: (baseForCart.calories ?? 0) + addonTotals.calories,
-          protein: (baseForCart.protein ?? 0) + addonTotals.protein,
-          carbs: (baseForCart.carbs ?? 0) + addonTotals.carbs,
-          fat: (baseForCart.totalFat ?? 0) + addonTotals.fat,
+          calories: (baseForCart.calories ?? 0) + addonTotals.calories + ingredientModifierTotals.calories,
+          protein: (baseForCart.protein ?? 0) + addonTotals.protein + ingredientModifierTotals.protein,
+          carbs: (baseForCart.carbs ?? 0) + addonTotals.carbs + ingredientModifierTotals.carbs,
+          fat: (baseForCart.totalFat ?? 0) + addonTotals.fat + ingredientModifierTotals.fat,
         },
       });
     }
