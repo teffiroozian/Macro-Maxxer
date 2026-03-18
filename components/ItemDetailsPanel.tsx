@@ -286,7 +286,7 @@ export default function ItemDetailsPanel({
     <div className="grid grid-cols-2 gap-3 rounded-[18px] bg-[#e0e0e0] px-3 py-2">
       {ingredients.length > 0 ? (
         <section className="col-span-2 rounded-[14px] border border-black/12 bg-white p-5">
-          <h2 className="mb-4 text-2xl font-bold">Ingredients</h2>
+          <h2 className="mb-6 text-2xl font-bold">Ingredients</h2>
           <div className="grid grid-cols-2 gap-3">
             {ingredients.map((ingredient) => (
               <article
@@ -407,7 +407,7 @@ export default function ItemDetailsPanel({
                     </div>
                   </div>
                   {isSectionOpen ? (
-                    <ul className="mt-2 grid list-none grid-cols-2 items-stretch gap-[10px] pl-0">
+                    <ul className="mt-4 grid list-none grid-cols-2 items-stretch gap-[10px] pl-0">
                       {section.addons.map((addon) => {
                         const sauceCount = section.ref === "sauces" ? (sauceSelectionCounts?.[addon.name] ?? 0) : 0;
                         const isSelected =
@@ -578,7 +578,7 @@ export default function ItemDetailsPanel({
                       </span>
                     </div>
                     {isCommonOpen ? (
-                      <ul className="mt-2 grid list-none grid-cols-2 items-stretch gap-[10px] pl-0">
+                      <ul className="mt-4 grid list-none grid-cols-2 items-stretch gap-[10px] pl-0">
                         {commonChanges.map((change) => {
                           const isActive = selectedCommonChangeIds?.includes(change.id) ?? false;
                           const calorieDeltaLabel = `${change.delta.calories >= 0 ? "+" : ""}${change.delta.calories}cal`;
