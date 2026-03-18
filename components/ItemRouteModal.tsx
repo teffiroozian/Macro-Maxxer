@@ -38,11 +38,6 @@ function formatDelta(value: number) {
   return `${value >= 0 ? "+" : ""}${value}`;
 }
 
-function sumNutrition(base?: number, delta = 0) {
-  if (base === undefined) return undefined;
-  return base + delta;
-}
-
 function sumNutritionWithFallback(base?: number, delta = 0) {
   if (delta === 0) return base;
   return (base ?? 0) + delta;
@@ -245,10 +240,10 @@ export default function ItemRouteModal({
 
   const nutrition = {
     ...baseNutrition,
-    calories: sumNutrition(baseNutrition.calories, customizationTotals.calories),
-    protein: sumNutrition(baseNutrition.protein, customizationTotals.protein),
-    carbs: sumNutrition(baseNutrition.carbs, customizationTotals.carbs),
-    totalFat: sumNutrition(baseNutrition.totalFat, customizationTotals.fat),
+    calories: sumNutritionWithFallback(baseNutrition.calories, customizationTotals.calories),
+    protein: sumNutritionWithFallback(baseNutrition.protein, customizationTotals.protein),
+    carbs: sumNutritionWithFallback(baseNutrition.carbs, customizationTotals.carbs),
+    totalFat: sumNutritionWithFallback(baseNutrition.totalFat, customizationTotals.fat),
     satFat: sumNutritionWithFallback(baseNutrition.satFat, addonTotals.satFat),
     transFat: sumNutritionWithFallback(baseNutrition.transFat, addonTotals.transFat),
     cholesterol: sumNutritionWithFallback(baseNutrition.cholesterol, addonTotals.cholesterol),
@@ -297,6 +292,8 @@ export default function ItemRouteModal({
   };
 
   const handleAddToCart = () => {
+    const customizations = [...selectedCommonChanges, ...selectedIngredientCustomizations];
+
     const cartItem = {
       id: crypto.randomUUID(),
       restaurantId,
@@ -306,10 +303,7 @@ export default function ItemRouteModal({
       variantId: selectedVariant?.id,
       variantLabel: selectedVariant?.label,
       optionsLabel,
-      customizations:
-        [...selectedCommonChanges, ...selectedIngredientCustomizations].length > 0
-          ? [...selectedCommonChanges, ...selectedIngredientCustomizations]
-          : undefined,
+      customizations: customizations.length > 0 ? customizations : undefined,
       quantity,
       macrosPerItem: {
         calories: nutrition.calories ?? 0,

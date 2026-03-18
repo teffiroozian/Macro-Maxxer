@@ -315,7 +315,7 @@ export default function CartPage() {
                   initialCartVariantId={cartItem.variantId}
                   initialCartOptionsLabel={cartItem.optionsLabel}
                   initialCartCustomizations={cartItem.customizations}
-                  cartSummaryLine={cartItem.optionsLabel ? summarizeItem(cartItem) : undefined}
+                  cartSummaryLine={summarizeItem(cartItem)}
                   onCartDecrement={() => updateQuantity(cartItem.id, cartItem.quantity - 1)}
                   onCartIncrement={() => updateQuantity(cartItem.id, cartItem.quantity + 1)}
                   onCartConfigurationChange={(next) => {
