@@ -25,6 +25,10 @@ const emptyAddon: AddonOption = {
 
 const sauceRef: AddonRef = "sauces";
 const maxSauceSelections = 5;
+const ingredientModifierLabelById: Record<string, string> = {
+  remove: "Remove",
+  extra: "Extra",
+};
 
 function normalizeCategory(category: string) {
   return category.trim().toLowerCase();
@@ -73,6 +77,12 @@ function getApplicableCommonChanges(item: MenuItem, commonChanges?: CommonChange
   });
 }
 
+function formatIngredientCustomizationLabel(ingredientName: string, modifierId: string) {
+  const modifierLabel = ingredientModifierLabelById[modifierId];
+  if (!modifierLabel) return undefined;
+  return `${ingredientName}: ${modifierLabel}`;
+}
+
 
 export default function ItemRouteModal({
   restaurantId,
@@ -106,6 +116,7 @@ export default function ItemRouteModal({
   const [selectedAddons, setSelectedAddons] = useState<Partial<Record<AddonRef, AddonOption>>>({});
   const [selectedSauceCounts, setSelectedSauceCounts] = useState<Record<string, number>>({});
   const [selectedCommonChangeIds, setSelectedCommonChangeIds] = useState<string[]>([]);
+  const [selectedIngredientModifierIds, setSelectedIngredientModifierIds] = useState<Record<string, "normal" | "remove" | "extra">>({});
   const { addItem } = useCart();
   const selectedVariant = variants?.find((variant) => variant.id === selectedVariantId);
   const selectedItemImage = selectedVariant?.image ?? item.image;
@@ -219,6 +230,19 @@ export default function ItemRouteModal({
     () => applicableCommonChanges.filter((change) => selectedCommonChangeIds.includes(change.id)).map((change) => change.label),
     [applicableCommonChanges, selectedCommonChangeIds]
   );
+  const selectedIngredientCustomizations = useMemo(
+    () =>
+      Object.entries(selectedIngredientModifierIds)
+        .filter(([, modifierId]) => modifierId !== "normal")
+        .flatMap(([ingredientId, modifierId]) => {
+          const ingredientName =
+            ingredients?.find((ingredient) => ingredient.id === ingredientId)?.name ??
+            ingredientId;
+          const label = formatIngredientCustomizationLabel(ingredientName, modifierId);
+          return label ? [label] : [];
+        }),
+    [ingredients, selectedIngredientModifierIds]
+  );
 
   const handleClose = () => {
     if (window.history.length > 1) {
@@ -238,7 +262,10 @@ export default function ItemRouteModal({
       variantId: selectedVariant?.id,
       variantLabel: selectedVariant?.label,
       optionsLabel,
-      customizations: selectedCommonChanges.length ? selectedCommonChanges : undefined,
+      customizations:
+        [...selectedCommonChanges, ...selectedIngredientCustomizations].length > 0
+          ? [...selectedCommonChanges, ...selectedIngredientCustomizations]
+          : undefined,
       quantity,
       macrosPerItem: {
         calories: nutrition.calories ?? 0,
@@ -394,6 +421,10 @@ export default function ItemRouteModal({
             customizationTotals={customizationTotals}
             showCustomizationDeltas={hasActiveCustomization}
             showVariantsInDetails={true}
+            selectedIngredientModifierIds={selectedIngredientModifierIds}
+            onSetIngredientModifier={(ingredientId, modifierId) =>
+              setSelectedIngredientModifierIds((prev) => ({ ...prev, [ingredientId]: modifierId }))
+            }
           />
         </div>
         </div>

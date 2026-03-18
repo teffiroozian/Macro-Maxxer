@@ -80,6 +80,10 @@ const emptyAddon: AddonOption = {
 
 const sauceRef: AddonRef = "sauces";
 const maxSauceSelections = 5;
+const ingredientModifierLabelById: Record<string, string> = {
+  remove: "Remove",
+  extra: "Extra",
+};
 
 type CartConfigurationPayload = {
   variantId?: string;
@@ -165,6 +169,40 @@ function getSelectedCommonChangeIdsFromCustomizations(
     .map((change) => change.id);
 }
 
+function formatIngredientCustomizationLabel(ingredientName: string, modifierId: string) {
+  const modifierLabel = ingredientModifierLabelById[modifierId];
+  if (!modifierLabel) return undefined;
+  return `${ingredientName}: ${modifierLabel}`;
+}
+
+function getSelectedIngredientModifierIdsFromCustomizations(
+  ingredientItems: IngredientItem[] | undefined,
+  customizations: string[] | undefined
+) {
+  if (!ingredientItems || ingredientItems.length === 0 || !customizations || customizations.length === 0) {
+    return {} as Record<string, "normal" | "remove" | "extra">;
+  }
+
+  const ingredientLookup = new Map<string, string>();
+  ingredientItems.forEach((ingredient) => {
+    if (ingredient.id) ingredientLookup.set(ingredient.id.trim().toLowerCase(), ingredient.id);
+    ingredientLookup.set(ingredient.name.trim().toLowerCase(), ingredient.id ?? ingredient.name);
+  });
+
+  return customizations.reduce<Record<string, "normal" | "remove" | "extra">>((acc, label) => {
+    const match = label.match(/^(.*?):\s*(Remove|Extra)$/i);
+    if (!match) return acc;
+
+    const ingredientKey = match[1].trim().toLowerCase();
+    const modifierId = match[2].trim().toLowerCase() as "remove" | "extra";
+    const ingredientId = ingredientLookup.get(ingredientKey);
+    if (!ingredientId) return acc;
+
+    acc[ingredientId] = modifierId;
+    return acc;
+  }, {});
+}
+
 export default function MenuItemCard({
   restaurantId,
   item,
@@ -230,6 +268,9 @@ export default function MenuItemCard({
   );
   const [selectedCommonChangeIds, setSelectedCommonChangeIds] = useState<string[]>(() =>
     mode === "cart" ? getSelectedCommonChangeIdsFromCustomizations(commonChanges, initialCartCustomizations) : []
+  );
+  const [selectedIngredientModifierIds, setSelectedIngredientModifierIds] = useState<Record<string, "normal" | "remove" | "extra">>(() =>
+    mode === "cart" ? getSelectedIngredientModifierIdsFromCustomizations(ingredientItems, initialCartCustomizations) : {}
   );
   const [isAddFeedbackVisible, setIsAddFeedbackVisible] = useState(false);
   const { items, addItem, updateQuantity } = useCart();
@@ -322,8 +363,9 @@ export default function MenuItemCard({
     () =>
       Object.values(selectedAddons).some((addon) => addon && addon.name !== "None") ||
       Object.values(selectedSauceCounts).some((count) => count > 0) ||
-      selectedCommonChangeIds.length > 0,
-    [selectedAddons, selectedCommonChangeIds, selectedSauceCounts]
+      selectedCommonChangeIds.length > 0 ||
+      Object.values(selectedIngredientModifierIds).some((modifierId) => modifierId !== "normal"),
+    [selectedAddons, selectedCommonChangeIds, selectedIngredientModifierIds, selectedSauceCounts]
   );
 
   const hasActiveCustomization = hasMods;
@@ -332,6 +374,7 @@ export default function MenuItemCard({
     setSelectedAddons({});
     setSelectedSauceCounts({});
     setSelectedCommonChangeIds([]);
+    setSelectedIngredientModifierIds({});
   }
 
   function addNutritionValue(baseValue?: number, deltaValue?: number) {
@@ -382,12 +425,19 @@ export default function MenuItemCard({
       change.label.replace(/^\+\s*/, "").trim(),
       formatCommonChangeForCart(change.label).replace(/^\+\s*/, "").trim(),
     ]));
+    const ingredientCustomizationLabels = new Set(
+      (ingredientItems ?? []).flatMap((ingredient) =>
+        Object.keys(ingredientModifierLabelById)
+          .map((modifierId) => formatIngredientCustomizationLabel(ingredient.name, modifierId))
+          .filter((label): label is string => Boolean(label))
+      )
+    );
 
     return initialCartCustomizations.filter((label) => {
       const normalized = label.replace(/^\+\s*/, "").trim();
-      return !addonNames.has(normalized) && !commonChangeLabels.has(normalized);
+      return !addonNames.has(normalized) && !commonChangeLabels.has(normalized) && !ingredientCustomizationLabels.has(normalized);
     });
-  }, [addons, commonChanges, initialCartCustomizations, item.addonRefs]);
+  }, [addons, commonChanges, ingredientItems, initialCartCustomizations, item.addonRefs]);
 
   const optionsLabel = useMemo(() => {
     const dressingSegments = Object.values(selectedAddons)
@@ -403,8 +453,19 @@ export default function MenuItemCard({
 
   const customizations = useMemo(() => {
     const modifierLabels = selectedCommonChanges.map((change) => formatCommonChangeForCart(change.label));
-    return modifierLabels.length > 0 ? modifierLabels : undefined;
-  }, [selectedCommonChanges]);
+    const ingredientModifierLabels = Object.entries(selectedIngredientModifierIds)
+      .filter(([, modifierId]) => modifierId !== "normal")
+      .flatMap(([ingredientId, modifierId]) => {
+        const ingredientName =
+          ingredientItems?.find((ingredient) => (ingredient.id ?? ingredient.name) === ingredientId)?.name ??
+          ingredientId;
+        const label = formatIngredientCustomizationLabel(ingredientName, modifierId);
+        return label ? [label] : [];
+      });
+
+    const labels = [...modifierLabels, ...ingredientModifierLabels];
+    return labels.length > 0 ? labels : undefined;
+  }, [ingredientItems, selectedCommonChanges, selectedIngredientModifierIds]);
 
   const selectedVariantForCart = useMemo(() => {
     if (!variants || variants.length === 0) return undefined;
@@ -444,7 +505,8 @@ export default function MenuItemCard({
     nextVariantId: string,
     nextAddons: Partial<Record<AddonRef, AddonOption>>,
     nextSauceCounts: Record<string, number>,
-    nextSelectedCommonChangeIds: string[] = selectedCommonChangeIds
+    nextSelectedCommonChangeIds: string[] = selectedCommonChangeIds,
+    nextSelectedIngredientModifierIds: Record<string, "normal" | "remove" | "extra"> = selectedIngredientModifierIds
   ) => {
     if (!isCartMode || !onCartConfigurationChange || !cartItemId) return;
 
@@ -493,7 +555,20 @@ export default function MenuItemCard({
     const selectedCommonChangesForCart = applicableCommonChanges
       .filter((change) => nextSelectedCommonChangeIds.includes(change.id))
       .map((change) => formatCommonChangeForCart(change.label));
-    const nextCustomizations = [...retainedCustomizations, ...selectedCommonChangesForCart];
+    const selectedIngredientCustomizationsForCart = Object.entries(nextSelectedIngredientModifierIds)
+      .filter(([, modifierId]) => modifierId !== "normal")
+      .flatMap(([ingredientId, modifierId]) => {
+        const ingredientName =
+          ingredientItems?.find((ingredient) => (ingredient.id ?? ingredient.name) === ingredientId)?.name ??
+          ingredientId;
+        const label = formatIngredientCustomizationLabel(ingredientName, modifierId);
+        return label ? [label] : [];
+      });
+    const nextCustomizations = [
+      ...retainedCustomizations,
+      ...selectedCommonChangesForCart,
+      ...selectedIngredientCustomizationsForCart,
+    ];
 
     onCartConfigurationChange({
       variantId: activeVariant?.id,
@@ -883,6 +958,20 @@ export default function MenuItemCard({
                   ? prev.filter((id) => id !== changeId)
                   : [...prev, changeId];
                 emitCartConfiguration(selectedVariantId, selectedAddons, selectedSauceCounts, next);
+                return next;
+              })
+            }
+            selectedIngredientModifierIds={selectedIngredientModifierIds}
+            onSetIngredientModifier={(ingredientId, modifierId) =>
+              setSelectedIngredientModifierIds((prev) => {
+                const next = { ...prev, [ingredientId]: modifierId };
+                emitCartConfiguration(
+                  selectedVariantId,
+                  selectedAddons,
+                  selectedSauceCounts,
+                  selectedCommonChangeIds,
+                  next
+                );
                 return next;
               })
             }
