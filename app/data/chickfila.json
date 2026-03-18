@@ -3163,7 +3163,12 @@
                 "fiber": 0,
                 "sugars": 1,
                 "protein": 0
-            }
+            },
+            "allowedModifiers": [
+                "remove",
+                "light",
+                "double"
+            ]
         },
         {
             "id": "lettuce",
@@ -3487,6 +3492,23 @@
             "nutrition": {
                 "calories": 270
             }
+        }
+    ],
+    "ingredientModifiers": [
+        {
+            "id": "remove",
+            "label": "Remove",
+            "multiplier": 0
+        },
+        {
+            "id": "light",
+            "label": "Light",
+            "multiplier": 0.5
+        },
+        {
+            "id": "double",
+            "label": "2x",
+            "multiplier": 2
         }
     ],
     "addons": {

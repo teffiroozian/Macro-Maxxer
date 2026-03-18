@@ -68,6 +68,12 @@ export type CommonChange = {
   delta: MacroDelta;
 };
 
+export type IngredientModifier = {
+  id: string;
+  label: string;
+  multiplier: number;
+};
+
 export type MenuItem = {
   id?: string;          // optional but recommended later
   name: string;
@@ -90,4 +96,5 @@ export type IngredientItem = {
   image?: string;
   category?: string;
   categories?: string[];
+  allowedModifiers?: string[];
 };

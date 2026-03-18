@@ -639,7 +639,7 @@ export default function MenuItemCard({
             )}
             <div className="flex flex-col items-center justify-start">
               <div className="inline-flex items-baseline gap-1.5">
-                <div className="text-2xl font-bold text-orange-700">{formatMacro(protein)}</div>
+                <div className="text-2xl font-bold text-[#c2410c]">{formatMacro(protein)}</div>
                 {hasActiveCustomization ? (
                   <span className="text-sm font-bold text-green-600">{formatDelta(customizationTotals.protein)}</span>
                 ) : null}
@@ -648,7 +648,7 @@ export default function MenuItemCard({
             </div>
             <div className="flex flex-col items-center justify-start">
               <div className="inline-flex items-baseline gap-1.5">
-                <div className="text-2xl font-bold text-amber-600">{formatMacro(carbs)}</div>
+                <div className="text-2xl font-bold text-[#ca8a04]">{formatMacro(carbs)}</div>
                 {hasActiveCustomization ? (
                   <span className="text-sm font-bold text-green-600">{formatDelta(customizationTotals.carbs)}</span>
                 ) : null}
@@ -657,7 +657,7 @@ export default function MenuItemCard({
             </div>
             <div className="flex flex-col items-center justify-start">
               <div className="inline-flex items-baseline gap-1.5">
-                <div className="text-2xl font-bold text-blue-600">{formatMacro(fat)}</div>
+                <div className="text-2xl font-bold text-[#2563eb]">{formatMacro(fat)}</div>
                 {hasActiveCustomization ? (
                   <span className="text-sm font-bold text-green-600">{formatDelta(customizationTotals.fat)}</span>
                 ) : null}
