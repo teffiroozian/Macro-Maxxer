@@ -6,7 +6,8 @@
             "Sandwich": [
                 "Buns",
                 "Cheeses",
-                "Sandwich Toppings"
+                "Sandwich Toppings",
+                "Sauces"
             ],
             "Wrap": [
                 "Wrap Toppings"
@@ -412,14 +413,6 @@
             "categories": [
                 "Sandwich"
             ],
-            "customization": {
-                "ingredientTabs": [
-                    "Buns",
-                    "Cheeses",
-                    "Sandwich Toppings",
-                    "Sauces"
-                ]
-            },
             "portionType": "single",
             "image": "/restaurants/chickfila/menu/sandwiches/grilled-chicken-sandwich.webp",
             "ingredients": [
@@ -448,14 +441,6 @@
             "categories": [
                 "Sandwich"
             ],
-            "customization": {
-                "ingredientTabs": [
-                    "Buns",
-                    "Cheeses",
-                    "Sandwich Toppings",
-                    "Sauces"
-                ]
-            },
             "portionType": "single",
             "image": "/restaurants/chickfila/menu/sandwiches/grilled-chicken-club.webp",
             "ingredients": [
