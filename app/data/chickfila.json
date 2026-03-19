@@ -8,7 +8,6 @@
                     "name": "Buns",
                     "selectionMode": "single"
                 },
-                "Proteins",
                 "Sandwich Toppings"
             ],
             "Wrap": [
@@ -3243,7 +3242,8 @@
                 "fiber": 0,
                 "sugars": 0,
                 "protein": 0
-            }
+            },
+            "maxQuantity": 3
         },
         {
             "id": "saltines",
