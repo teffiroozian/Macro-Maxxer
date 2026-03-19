@@ -96,5 +96,5 @@ export type IngredientItem = {
   image?: string;
   category?: string;
   categories?: string[];
-  allowedModifiers?: string[];
+  maxQuantity?: number;
 };

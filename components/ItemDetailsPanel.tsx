@@ -39,13 +39,6 @@ function normalizeIngredientToken(value: string) {
   return value.toLowerCase().replace(/[^a-z0-9]+/g, "").trim();
 }
 
-const supportedIngredientModifierOptions = [
-  { id: "remove", label: "Remove", aliases: ["remove"] },
-  { id: "extra", label: "Extra", aliases: ["extra", "double"] },
-] as const;
-
-type SupportedIngredientModifierId = (typeof supportedIngredientModifierOptions)[number]["id"];
-
 export function resolvePanelIngredients(
   item: MenuItem,
   ingredientItems: IngredientItem[] = [],
@@ -103,13 +96,6 @@ export function resolvePanelIngredients(
     const label = menuItemMatch?.name ?? match?.name ?? fallbackLabel;
     const addonMatch = addonLookup.get(label.toLowerCase());
     const isSingleIngredientRow = isSingleIngredientItem && ingredientIds.length === 1;
-    const normalizedAllowedModifiers = new Set(
-      (match?.allowedModifiers ?? []).map((modifier) => modifier.trim().toLowerCase())
-    );
-    const supportedModifiers = supportedIngredientModifierOptions
-      .filter((modifier) => modifier.aliases.some((alias) => normalizedAllowedModifiers.has(alias)))
-      .map((modifier) => ({ id: modifier.id, label: modifier.label }));
-
     const nutrition =
       isSingleIngredientRow && activeVariant?.nutrition
         ? activeVariant.nutrition
@@ -132,7 +118,7 @@ export function resolvePanelIngredients(
       label,
       icon: match?.image ?? menuItemMatch?.image ?? addonMatch?.image ?? "🥣",
       ingredientItem: match,
-      supportedModifiers,
+      maxQuantity: match?.maxQuantity,
       nutrition,
       calories: nutrition.calories,
     };
@@ -227,8 +213,9 @@ export default function ItemDetailsPanel({
   showCustomizationDeltas,
   displayMode = "full",
   showVariantsInDetails = true,
-  selectedIngredientModifiers,
-  onIngredientModifierChange,
+  selectedIngredientCounts,
+  onIncrementIngredient,
+  onDecrementIngredient,
 }: {
   item: MenuItem;
   nutrition: Nutrition;
@@ -251,8 +238,9 @@ export default function ItemDetailsPanel({
   showCustomizationDeltas?: boolean;
   displayMode?: "full" | "addonsOnly";
   showVariantsInDetails?: boolean;
-  selectedIngredientModifiers?: Partial<Record<string, SupportedIngredientModifierId | "normal">>;
-  onIngredientModifierChange?: (ingredientId: string, modifierId: SupportedIngredientModifierId | "normal") => void;
+  selectedIngredientCounts?: Partial<Record<string, number>>;
+  onIncrementIngredient?: (ingredientId: string) => void;
+  onDecrementIngredient?: (ingredientId: string) => void;
 }) {
   const n = nutrition;
   const addonRefs = item.addonRefs ?? [];
@@ -317,32 +305,30 @@ export default function ItemDetailsPanel({
                     </div>
                   </div>
                 </div>
-                {ingredient.supportedModifiers.length > 0 ? (
+                {typeof ingredient.maxQuantity === "number" ? (
                   <div className="px-3 py-2.5">
-                    <div className="flex flex-wrap justify-end gap-1.5">
-                      {[
-                        { id: "normal" as const, label: "Normal" },
-                        ...ingredient.supportedModifiers,
-                      ].map((modifier) => {
-                        const isSelected =
-                          (selectedIngredientModifiers?.[ingredient.id] ?? "normal") === modifier.id;
-
-                        return (
-                          <button
-                            key={modifier.id}
-                            type="button"
-                            className={`cursor-pointer rounded-full border px-4 py-1.5 text-xs font-semibold transition ${
-                              isSelected
-                                ? "border-black bg-black text-white"
-                                : "border-black/15 bg-white text-black/65 hover:bg-black/5"
-                            }`}
-                            onClick={() => onIngredientModifierChange?.(ingredient.id, modifier.id)}
-                            aria-pressed={isSelected}
-                          >
-                            {modifier.label}
-                          </button>
-                        );
-                      })}
+                    <div className="flex items-center justify-end gap-2">
+                      <button
+                        type="button"
+                        className="cursor-pointer inline-flex h-8 w-8 items-center justify-center rounded-full border border-black/15 bg-white text-base font-semibold text-slate-700 transition hover:bg-black/5 disabled:cursor-not-allowed disabled:opacity-40"
+                        onClick={() => onDecrementIngredient?.(ingredient.id)}
+                        disabled={(selectedIngredientCounts?.[ingredient.id] ?? 1) <= 0}
+                        aria-label={`Decrease ${ingredient.label}`}
+                      >
+                        −
+                      </button>
+                      <span className="min-w-6 text-center text-sm font-semibold text-slate-900">
+                        {selectedIngredientCounts?.[ingredient.id] ?? 1}
+                      </span>
+                      <button
+                        type="button"
+                        className="cursor-pointer inline-flex h-8 w-8 items-center justify-center rounded-full border border-black/15 bg-white text-base font-semibold text-slate-700 transition hover:bg-black/5 disabled:cursor-not-allowed disabled:opacity-40"
+                        onClick={() => onIncrementIngredient?.(ingredient.id)}
+                        disabled={(selectedIngredientCounts?.[ingredient.id] ?? 1) >= ingredient.maxQuantity}
+                        aria-label={`Increase ${ingredient.label}`}
+                      >
+                        +
+                      </button>
                     </div>
                   </div>
                 ) : null}
