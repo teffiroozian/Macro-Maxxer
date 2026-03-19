@@ -13,7 +13,7 @@ import type {
   RestaurantCustomizationRules,
 } from "@/types/menu";
 import { Check, ChevronDown, ChevronRight } from "lucide-react";
-import { INCLUDED_INGREDIENT_TAB, ingredientMatchesTab, isSingleSelectIngredientTab, resolveIngredientTabs } from "@/lib/ingredientTabs";
+import { INCLUDED_INGREDIENT_TAB, getIngredientTabDisplayLabel, ingredientMatchesTab, isSingleSelectIngredientTab, resolveIngredientTabs } from "@/lib/ingredientTabs";
 
 
 function format(n?: number, suffix = "") {
@@ -379,7 +379,7 @@ export default function ItemDetailsPanel({
                   }`}
                   onClick={() => setActiveIngredientTab(tab.label)}
                 >
-                  {tab.label}
+                  {getIngredientTabDisplayLabel(tab.label)}
                 </button>
               );
             })}

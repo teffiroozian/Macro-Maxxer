@@ -5,22 +5,18 @@
         "ingredientTabsByItemCategory": {
             "Sandwich": [
                 "Buns",
-                "Proteins",
                 "Cheeses",
                 "Sandwich Toppings"
             ],
             "Wrap": [
-                "Proteins",
                 "Wrap Toppings"
             ],
             "Salad": [
-                "Proteins",
                 "Salad Toppings",
                 "Salad Condiments"
             ],
             "Breakfast": [
                 "Breakfast",
-                "Proteins",
                 "Cheeses",
                 "Sandwich Toppings",
                 "Breakfast Sides"

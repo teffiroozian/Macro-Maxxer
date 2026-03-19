@@ -47,6 +47,7 @@ import StickyRestaurantBar from "./StickyRestaurantBar";
 const CATEGORY_ICONS: Record<string, LucideIcon> = {
   sandwiches: Sandwich,
   "sandwich toppings": Sandwich,
+  toppings: Sandwich,
   chicken: Drumstick,
   proteins: Drumstick,
   condiments: Utensils,

@@ -6,6 +6,10 @@ function normalizeTabName(value: string) {
   return value.trim().toLowerCase();
 }
 
+export function getIngredientTabDisplayLabel(tabName: string) {
+  return normalizeTabName(tabName) === "sandwich toppings" ? "Toppings" : tabName;
+}
+
 export function resolveIngredientTabs(
   item: MenuItem,
   customizationRules?: RestaurantCustomizationRules
