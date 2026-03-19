@@ -14,7 +14,8 @@
             ],
             "Salad": [
                 "Salad Toppings",
-                "Salad Condiments"
+                "Salad Condiments",
+                "Protein"
             ],
             "Breakfast": [
                 "Breakfast",
@@ -46,7 +47,11 @@
         "ingredientTabMaxQuantities": {
             "Buns": 1,
             "Cheeses": 1,
-            "Sandwich Toppings": 5
+            "Protein": 1,
+            "Sandwich Toppings": 6,
+            "Salad Toppings": 6,
+            "Salad Condiments": 6
+
         }
     },
     "items": [
