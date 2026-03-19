@@ -12,8 +12,8 @@ import type {
   RestaurantAddons,
   RestaurantCustomizationRules,
 } from "@/types/menu";
-import { Check, ChevronDown } from "lucide-react";
-import { INCLUDED_INGREDIENT_TAB, ingredientMatchesTab, resolveIngredientTabs } from "@/lib/ingredientTabs";
+import { Check, ChevronDown, ChevronRight } from "lucide-react";
+import { INCLUDED_INGREDIENT_TAB, ingredientMatchesTab, isSingleSelectIngredientTab, resolveIngredientTabs } from "@/lib/ingredientTabs";
 
 
 function format(n?: number, suffix = "") {
@@ -290,6 +290,7 @@ export default function ItemDetailsPanel({
   selectedIngredientCounts,
   onIncrementIngredient,
   onDecrementIngredient,
+  onSelectSingleIngredientOption,
 }: {
   item: MenuItem;
   nutrition: Nutrition;
@@ -316,6 +317,7 @@ export default function ItemDetailsPanel({
   selectedIngredientCounts?: Partial<Record<string, number>>;
   onIncrementIngredient?: (ingredientId: string) => void;
   onDecrementIngredient?: (ingredientId: string) => void;
+  onSelectSingleIngredientOption?: (ingredientId: string, ingredientIdsInTab: string[]) => void;
 }) {
   const n = nutrition;
   const addonRefs = item.addonRefs ?? [];
@@ -351,6 +353,9 @@ export default function ItemDetailsPanel({
     ingredientTabs.find((tab) => tab.label === activeIngredientTab) ??
     availableIngredientTabs[0] ??
     ingredientTabs[0];
+  const isSelectedIngredientTabSingleSelect = selectedIngredientTab
+    ? isSingleSelectIngredientTab(selectedIngredientTab.label, customizationRules)
+    : false;
   const shouldShowIngredientSection =
     ingredientTabs.length > 1 || (ingredientTabs[0]?.ingredients.length ?? 0) > 0;
 
@@ -384,11 +389,33 @@ export default function ItemDetailsPanel({
               {selectedIngredientTab.ingredients.map((ingredient) => {
                 const ingredientCount = selectedIngredientCounts?.[ingredient.id] ?? ingredient.defaultCount;
                 const isSelected = ingredientCount > 0;
+                const linkedSingleSelectTab =
+                  selectedIngredientTab.label === INCLUDED_INGREDIENT_TAB
+                    ? availableIngredientTabs.find(
+                        (tab) =>
+                          tab.label !== INCLUDED_INGREDIENT_TAB &&
+                          isSingleSelectIngredientTab(tab.label, customizationRules) &&
+                          tab.ingredients.some((candidate) => candidate.id === ingredient.id)
+                      )
+                    : undefined;
+                const ingredientIdsInTab = selectedIngredientTab.ingredients.map((candidate) => candidate.id);
 
                 return (
                   <li key={ingredient.id} className="flex">
-                    <div
-                      className={`box-border flex h-full w-full flex-row items-center gap-3 rounded-[10px] border border-[rgba(0,0,0,0.15)] bg-[#f9f9f9] px-3 py-2 ${isSelected ? "shadow-[inset_0_0_0_1px_#000000]" : ""}`}
+                    <button
+                      type="button"
+                      className={`box-border flex h-full w-full flex-row items-center gap-3 rounded-[10px] border border-[rgba(0,0,0,0.15)] bg-[#f9f9f9] px-3 py-2 text-left ${isSelected ? "shadow-[inset_0_0_0_1px_#000000]" : ""} ${isSelectedIngredientTabSingleSelect || linkedSingleSelectTab ? "cursor-pointer" : "cursor-default"}`}
+                      onClick={() => {
+                        if (isSelectedIngredientTabSingleSelect) {
+                          onSelectSingleIngredientOption?.(ingredient.id, ingredientIdsInTab);
+                          return;
+                        }
+
+                        if (linkedSingleSelectTab) {
+                          setActiveIngredientTab(linkedSingleSelectTab.label);
+                        }
+                      }}
+                      disabled={!isSelectedIngredientTabSingleSelect && !linkedSingleSelectTab}
                     >
                       <div
                         className="grid h-[72px] w-[72px] min-w-[72px] place-items-center rounded-lg bg-cover bg-center"
@@ -412,8 +439,17 @@ export default function ItemDetailsPanel({
                           {ingredient.calories !== undefined ? `${ingredient.calories} Cal` : "— Cal"}
                         </div>
                       </div>
-                      {typeof ingredient.maxQuantity === "number" ? (
-                        <div className="ml-auto inline-flex items-center gap-[6px]">
+                      {isSelectedIngredientTabSingleSelect ? (
+                        <span
+                          aria-hidden="true"
+                          className={`ml-auto inline-flex h-6 w-6 shrink-0 items-center justify-center rounded-full border ${isSelected ? "border-[3px] border-[#16a34a]" : "border-2 border-[rgba(0,0,0,0.25)]"}`}
+                        >
+                          <span
+                            className={`h-2.5 w-2.5 rounded-full ${isSelected ? "bg-[#16a34a]" : "bg-transparent"}`}
+                          />
+                        </span>
+                      ) : typeof ingredient.maxQuantity === "number" ? (
+                        <div className="ml-auto inline-flex items-center gap-[6px]" onClick={(event) => event.stopPropagation()}>
                           {ingredientCount > 0 ? (
                             <>
                               <button
@@ -446,8 +482,12 @@ export default function ItemDetailsPanel({
                             </button>
                           )}
                         </div>
+                      ) : linkedSingleSelectTab ? (
+                        <span className="ml-auto inline-flex h-7 w-7 shrink-0 items-center justify-center text-black/55" aria-hidden="true">
+                          <ChevronRight size={22} />
+                        </span>
                       ) : null}
-                    </div>
+                    </button>
                   </li>
                 );
               })}

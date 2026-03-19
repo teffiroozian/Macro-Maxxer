@@ -6,6 +6,7 @@
             "Sandwich": [
                 "Buns",
                 "Proteins",
+                "Cheeses",
                 "Sandwich Toppings"
             ],
             "Wrap": [
@@ -20,6 +21,7 @@
             "Breakfast": [
                 "Breakfast",
                 "Proteins",
+                "Cheeses",
                 "Sandwich Toppings",
                 "Breakfast Sides"
             ],
@@ -33,7 +35,11 @@
             "Treats": [
                 "Treat Toppings"
             ]
-        }
+        },
+        "singleSelectIngredientTabs": [
+            "Buns",
+            "Cheeses"
+        ]
     },
     "items": [
         {
@@ -3124,7 +3130,7 @@
             "id": "american-cheese",
             "name": "American Cheese",
             "categories": [
-                "Sandwich Toppings"
+                "Cheeses"
             ],
             "image": "/restaurants/chickfila/ingredients/sandwich-toppings/american-cheese.webp",
             "nutrition": {
@@ -3144,7 +3150,7 @@
             "id": "colby-jack-cheese",
             "name": "Colby Jack Cheese",
             "categories": [
-                "Sandwich Toppings"
+                "Cheeses"
             ],
             "image": "/restaurants/chickfila/ingredients/sandwich-toppings/colby-jack-cheese.webp",
             "nutrition": {
@@ -3164,7 +3170,7 @@
             "id": "pepper-jack",
             "name": "Pepper Jack Cheese",
             "categories": [
-                "Sandwich Toppings"
+                "Cheeses"
             ],
             "image": "/restaurants/chickfila/ingredients/sandwich-toppings/pepper-jack-cheese.webp",
             "nutrition": {

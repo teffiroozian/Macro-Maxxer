@@ -39,3 +39,11 @@ export function ingredientMatchesTab(ingredient: IngredientItem, tabName: string
 
   return ingredientCategories.some((category) => normalizeTabName(category) === normalizeTabName(tabName));
 }
+
+export function isSingleSelectIngredientTab(
+  tabName: string,
+  customizationRules?: RestaurantCustomizationRules
+) {
+  const singleSelectTabs = customizationRules?.singleSelectIngredientTabs ?? [];
+  return singleSelectTabs.some((tab) => normalizeTabName(tab) === normalizeTabName(tabName));
+}

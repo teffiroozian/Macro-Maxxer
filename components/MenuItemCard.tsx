@@ -1058,6 +1058,31 @@ export default function MenuItemCard({
                 return next;
               })
             }
+            onSelectSingleIngredientOption={(ingredientId, ingredientIdsInTab) =>
+              setSelectedIngredientCounts((prev) => {
+                const next = { ...prev };
+                let didChange = false;
+
+                ingredientIdsInTab.forEach((candidateId) => {
+                  const nextCount = candidateId === ingredientId ? 1 : 0;
+                  if ((next[candidateId] ?? 0) !== nextCount) {
+                    next[candidateId] = nextCount;
+                    didChange = true;
+                  }
+                });
+
+                if (!didChange) return prev;
+
+                emitCartConfiguration(
+                  selectedVariantId,
+                  selectedAddons,
+                  selectedSauceCounts,
+                  selectedCommonChangeIds,
+                  next
+                );
+                return next;
+              })
+            }
             onIncrementIngredient={(ingredientId) =>
               setSelectedIngredientCounts((prev) => {
                 const ingredient =

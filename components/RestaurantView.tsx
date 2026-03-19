@@ -64,6 +64,7 @@ const CATEGORY_ICONS: Record<string, LucideIcon> = {
   entrees: Utensils,
   "bowls & plates": Soup,
   buns: Sandwich,
+  cheeses: Circle,
   "soup toppings": Soup,
   "parfait toppings": IceCreamCone,
   "treat toppings": IceCreamCone,
