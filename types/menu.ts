@@ -74,6 +74,14 @@ export type IngredientModifier = {
   multiplier: number;
 };
 
+export type IngredientTabsOverride = {
+  ingredientTabs?: string[];
+};
+
+export type RestaurantCustomizationRules = {
+  ingredientTabsByItemCategory?: Partial<Record<string, string[]>>;
+};
+
 export type MenuItem = {
   id?: string;          // optional but recommended later
   name: string;
@@ -86,7 +94,7 @@ export type MenuItem = {
   defaultVariantId?: string;
   addonRefs?: AddonRef[];
   ingredients?: string[];
-
+  customization?: IngredientTabsOverride;
 };
 
 export type IngredientItem = {
@@ -97,4 +105,15 @@ export type IngredientItem = {
   category?: string;
   categories?: string[];
   maxQuantity?: number;
+};
+
+export type RestaurantMenu = {
+  id: string;
+  name?: string;
+  items: MenuItem[];
+  ingredients?: IngredientItem[];
+  addons?: RestaurantAddons;
+  commonChanges?: CommonChange[];
+  ingredientModifiers?: IngredientModifier[];
+  customizationRules?: RestaurantCustomizationRules;
 };

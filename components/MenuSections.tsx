@@ -1,6 +1,6 @@
 "use client";
 
-import type { CommonChange, IngredientItem, MenuItem, RestaurantAddons } from "@/types/menu";
+import type { CommonChange, IngredientItem, MenuItem, RestaurantAddons, RestaurantCustomizationRules } from "@/types/menu";
 import type { SortOption } from "./ControlsRow";
 import MenuItemCard from "./MenuItemCard";
 import { toItemSlug } from "@/lib/restaurants";
@@ -266,6 +266,7 @@ export default function MenuSections({
   addons,
   ingredients,
   commonChanges,
+  customizationRules,
   groupByCategory = true,
   categoryMode = "menu",
 }: {
@@ -275,6 +276,7 @@ export default function MenuSections({
   addons?: RestaurantAddons;
   ingredients?: IngredientItem[];
   commonChanges?: CommonChange[];
+  customizationRules?: RestaurantCustomizationRules;
   groupByCategory?: boolean;
   categoryMode?: CategoryMode;
 }) {
@@ -297,6 +299,7 @@ export default function MenuSections({
               addons={addons}
               ingredientItems={ingredients}
               menuItems={items}
+              customizationRules={customizationRules}
               commonChanges={commonChanges}
               itemHref={`/restaurant/${restaurantId}/items/${toItemSlug(item)}`}
             />
@@ -371,6 +374,7 @@ export default function MenuSections({
                 addons={addons}
                 ingredientItems={ingredients}
                 menuItems={items}
+                customizationRules={customizationRules}
                 commonChanges={commonChanges}
                 itemHref={`/restaurant/${restaurantId}/items/${toItemSlug(item)}`}
               />

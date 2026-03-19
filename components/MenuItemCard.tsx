@@ -2,18 +2,22 @@
 
 import { useEffect, useId, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
-import type { AddonOption, AddonRef, CommonChange, IngredientItem, MacroDelta, MenuItem, RestaurantAddons } from "@/types/menu";
+import type {
+  AddonOption,
+  AddonRef,
+  CommonChange,
+  IngredientItem,
+  MacroDelta,
+  MenuItem,
+  RestaurantAddons,
+  RestaurantCustomizationRules,
+} from "@/types/menu";
 import { useCart } from "@/stores/cartStore";
-import ItemDetailsPanel, { resolvePanelIngredients } from "./ItemDetailsPanel";
+import ItemDetailsPanel, { type ResolvedPanelIngredient, resolvePanelIngredients } from "./ItemDetailsPanel";
 import VariantSelector from "./VariantSelector";
 
 function pad2(n: number) {
   return String(n).padStart(2, "0");
-}
-
-function caloriesPerProtein(item: { calories: number; protein: number }) {
-  if (!item.protein) return Number.POSITIVE_INFINITY;
-  return item.calories / item.protein;
 }
 
 function formatDelta(value: number) {
@@ -169,24 +173,29 @@ function formatIngredientCountCustomizationLabel(ingredientName: string, count: 
   return count === 0 ? `${ingredientName}: Removed` : `${ingredientName}: ${count}x`;
 }
 
-function getSelectedIngredientCountsFromCustomizations(
-  item: MenuItem,
-  ingredientItems: IngredientItem[] | undefined,
-  customizations: string[] | undefined
+function getDefaultIngredientCounts(
+  resolvedIngredients: ResolvedPanelIngredient[]
 ) {
-  const baseCounts = (item.ingredients ?? []).reduce<Record<string, number>>((acc, ingredientId) => {
-    if (!(ingredientId in acc)) acc[ingredientId] = 1;
+  return resolvedIngredients.reduce<Record<string, number>>((acc, ingredient) => {
+    acc[ingredient.id] = ingredient.defaultCount;
     return acc;
   }, {});
+}
 
-  if (!ingredientItems || ingredientItems.length === 0 || !customizations || customizations.length === 0) {
+function getSelectedIngredientCountsFromCustomizations(
+  resolvedIngredients: ResolvedPanelIngredient[],
+  customizations: string[] | undefined
+) {
+  const baseCounts = getDefaultIngredientCounts(resolvedIngredients);
+
+  if (!customizations || customizations.length === 0) {
     return baseCounts;
   }
 
   const ingredientLookup = new Map<string, string>();
-  ingredientItems.forEach((ingredient) => {
-    if (ingredient.id) ingredientLookup.set(ingredient.id.trim().toLowerCase(), ingredient.id);
-    ingredientLookup.set(ingredient.name.trim().toLowerCase(), ingredient.id ?? ingredient.name);
+  resolvedIngredients.forEach((ingredient) => {
+    ingredientLookup.set(ingredient.id.trim().toLowerCase(), ingredient.id);
+    ingredientLookup.set(ingredient.label.trim().toLowerCase(), ingredient.id);
   });
 
   return customizations.reduce<Record<string, number>>((acc, label) => {
@@ -216,11 +225,11 @@ export default function MenuItemCard({
   restaurantId,
   item,
   rankIndex,
-  showRatio = false,
   isTopRanked,
   addons,
   ingredientItems,
   menuItems,
+  customizationRules,
   commonChanges,
   mode = "menu",
   cartQuantity = 1,
@@ -237,11 +246,11 @@ export default function MenuItemCard({
   restaurantId: string;
   item: MenuItem;
   rankIndex?: number;
-  showRatio?: boolean;
   isTopRanked?: boolean;
   addons?: RestaurantAddons;
   ingredientItems?: IngredientItem[];
   menuItems?: MenuItem[];
+  customizationRules?: RestaurantCustomizationRules;
   commonChanges?: CommonChange[];
   mode?: "menu" | "cart";
   cartQuantity?: number;
@@ -278,9 +287,6 @@ export default function MenuItemCard({
   const [selectedCommonChangeIds, setSelectedCommonChangeIds] = useState<string[]>(() =>
     mode === "cart" ? getSelectedCommonChangeIdsFromCustomizations(commonChanges, initialCartCustomizations) : []
   );
-  const [selectedIngredientCounts, setSelectedIngredientCounts] = useState<Record<string, number>>(() =>
-    getSelectedIngredientCountsFromCustomizations(item, ingredientItems, mode === "cart" ? initialCartCustomizations : undefined)
-  );
   const [isAddFeedbackVisible, setIsAddFeedbackVisible] = useState(false);
   const { items, addItem, updateQuantity } = useCart();
   const selectedVariant = variants?.find((variant) => variant.id === selectedVariantId);
@@ -292,8 +298,14 @@ export default function MenuItemCard({
   );
 
   const resolvedIngredients = useMemo(
-    () => resolvePanelIngredients(item, ingredientItems, addons, menuItems ?? [], variants, selectedVariantId),
-    [addons, ingredientItems, item, menuItems, selectedVariantId, variants]
+    () => resolvePanelIngredients(item, ingredientItems, addons, menuItems ?? [], variants, selectedVariantId, customizationRules),
+    [addons, customizationRules, ingredientItems, item, menuItems, selectedVariantId, variants]
+  );
+  const [selectedIngredientCounts, setSelectedIngredientCounts] = useState<Record<string, number>>(() =>
+    getSelectedIngredientCountsFromCustomizations(
+      resolvedIngredients,
+      mode === "cart" ? initialCartCustomizations : undefined
+    )
   );
 
   const ingredientLookup = useMemo(() => {
@@ -307,6 +319,16 @@ export default function MenuItemCard({
 
     return lookup;
   }, [resolvedIngredients]);
+
+  const ingredientCounts = useMemo(() => {
+    const defaults = getDefaultIngredientCounts(resolvedIngredients);
+    return Object.keys(defaults).reduce<Record<string, number>>((acc, ingredientId) => {
+      acc[ingredientId] = ingredientId in selectedIngredientCounts
+        ? selectedIngredientCounts[ingredientId]
+        : defaults[ingredientId];
+      return acc;
+    }, {});
+  }, [resolvedIngredients, selectedIngredientCounts]);
 
   const selectedSauceOptions = useMemo(() => {
     const sauceOptions = addons?.[sauceRef] ?? [];
@@ -377,16 +399,15 @@ export default function MenuItemCard({
 
   const ingredientCountTotals = useMemo(
     () =>
-      Object.entries(selectedIngredientCounts).reduce<MacroDelta>(
+      Object.entries(ingredientCounts).reduce<MacroDelta>(
         (sum, [ingredientId, count]) => {
-          const countDelta = count - 1;
-          if (countDelta === 0) return sum;
-
           const ingredient =
             ingredientLookup.get(ingredientId) ??
             ingredientLookup.get(ingredientId.toLowerCase());
 
           if (!ingredient) return sum;
+          const countDelta = count - ingredient.defaultCount;
+          if (countDelta === 0) return sum;
 
           return {
             calories: sum.calories + (ingredient.nutrition.calories ?? 0) * countDelta,
@@ -397,7 +418,7 @@ export default function MenuItemCard({
         },
         { calories: 0, protein: 0, carbs: 0, fat: 0 }
       ),
-    [ingredientLookup, selectedIngredientCounts]
+    [ingredientCounts, ingredientLookup]
   );
 
   const customizationTotals = useMemo(
@@ -415,8 +436,8 @@ export default function MenuItemCard({
       Object.values(selectedAddons).some((addon) => addon && addon.name !== "None") ||
       Object.values(selectedSauceCounts).some((count) => count > 0) ||
       selectedCommonChangeIds.length > 0 ||
-      Object.values(selectedIngredientCounts).some((count) => count !== 1),
-    [selectedAddons, selectedCommonChangeIds, selectedIngredientCounts, selectedSauceCounts]
+      resolvedIngredients.some((ingredient) => (ingredientCounts[ingredient.id] ?? ingredient.defaultCount) !== ingredient.defaultCount),
+    [ingredientCounts, resolvedIngredients, selectedAddons, selectedCommonChangeIds, selectedSauceCounts]
   );
 
   const hasActiveCustomization = hasMods;
@@ -425,7 +446,7 @@ export default function MenuItemCard({
     setSelectedAddons({});
     setSelectedSauceCounts({});
     setSelectedCommonChangeIds([]);
-    setSelectedIngredientCounts(getSelectedIngredientCountsFromCustomizations(item, ingredientItems, undefined));
+    setSelectedIngredientCounts(getDefaultIngredientCounts(resolvedIngredients));
   }
 
   function addNutritionValue(baseValue?: number, deltaValue?: number) {
@@ -455,8 +476,6 @@ export default function MenuItemCard({
   const rankText = typeof rankIndex === "number" ? pad2(rankIndex + 1) : null;
   const isCartMode = mode === "cart";
 
-  const ratio = Math.round(caloriesPerProtein({ calories: calories ?? 0, protein: protein ?? 0 }));
-
   const selectedCommonChanges = useMemo(
     () => applicableCommonChanges.filter((change) => selectedCommonChangeIds.includes(change.id)),
     [applicableCommonChanges, selectedCommonChangeIds]
@@ -476,19 +495,17 @@ export default function MenuItemCard({
       change.label.replace(/^\+\s*/, "").trim(),
       formatCommonChangeForCart(change.label).replace(/^\+\s*/, "").trim(),
     ]));
-    const ingredientCustomizationLabels = new Set(
-      (ingredientItems ?? []).flatMap((ingredient) => [
-        formatIngredientCountCustomizationLabel(ingredient.name, 0),
-        formatIngredientCountCustomizationLabel(ingredient.name, 2),
-        formatIngredientCountCustomizationLabel(ingredient.name, 3),
-      ])
-    );
+    const ingredientLabels = new Set(resolvedIngredients.map((ingredient) => ingredient.label.toLowerCase()));
 
     return initialCartCustomizations.filter((label) => {
       const normalized = label.replace(/^\+\s*/, "").trim();
-      return !addonNames.has(normalized) && !commonChangeLabels.has(normalized) && !ingredientCustomizationLabels.has(normalized);
+      const ingredientMatch = normalized.match(/^(.*?):\s*(Removed|(\d+)x|Remove|Extra)$/i);
+      const isIngredientCustomization =
+        ingredientMatch ? ingredientLabels.has(ingredientMatch[1].trim().toLowerCase()) : false;
+
+      return !addonNames.has(normalized) && !commonChangeLabels.has(normalized) && !isIngredientCustomization;
     });
-  }, [addons, commonChanges, ingredientItems, initialCartCustomizations, item.addonRefs]);
+  }, [addons, commonChanges, initialCartCustomizations, item.addonRefs, resolvedIngredients]);
 
   const optionsLabel = useMemo(() => {
     const dressingSegments = Object.values(selectedAddons)
@@ -504,19 +521,16 @@ export default function MenuItemCard({
 
   const customizations = useMemo(() => {
     const modifierLabels = selectedCommonChanges.map((change) => formatCommonChangeForCart(change.label));
-    const ingredientCountLabels = Object.entries(selectedIngredientCounts)
-      .filter(([, count]) => count !== 1)
-      .flatMap(([ingredientId, count]) => {
-        const ingredientName =
-          ingredientLookup.get(ingredientId)?.label ??
-          ingredientLookup.get(ingredientId.toLowerCase())?.label ??
-          ingredientId;
-        return [formatIngredientCountCustomizationLabel(ingredientName, count)];
+    const ingredientCountLabels = resolvedIngredients
+      .filter((ingredient) => (ingredientCounts[ingredient.id] ?? ingredient.defaultCount) !== ingredient.defaultCount)
+      .flatMap((ingredient) => {
+        const ingredientCount = ingredientCounts[ingredient.id] ?? ingredient.defaultCount;
+        return [formatIngredientCountCustomizationLabel(ingredient.label, ingredientCount)];
       });
 
     const labels = [...modifierLabels, ...ingredientCountLabels];
     return labels.length > 0 ? labels : undefined;
-  }, [ingredientLookup, selectedCommonChanges, selectedIngredientCounts]);
+  }, [ingredientCounts, resolvedIngredients, selectedCommonChanges]);
 
   const selectedVariantForCart = useMemo(() => {
     if (!variants || variants.length === 0) return undefined;
@@ -557,7 +571,7 @@ export default function MenuItemCard({
     nextAddons: Partial<Record<AddonRef, AddonOption>>,
     nextSauceCounts: Record<string, number>,
     nextSelectedCommonChangeIds: string[] = selectedCommonChangeIds,
-    nextSelectedIngredientCounts: Record<string, number> = selectedIngredientCounts
+    nextSelectedIngredientCounts: Record<string, number> = ingredientCounts
   ) => {
     if (!isCartMode || !onCartConfigurationChange || !cartItemId) return;
 
@@ -596,14 +610,13 @@ export default function MenuItemCard({
 
     const ingredientCountTotalsForCart = Object.entries(nextSelectedIngredientCounts).reduce<MacroDelta>(
       (sum, [ingredientId, count]) => {
-        const countDelta = count - 1;
-        if (countDelta === 0) return sum;
-
         const ingredient =
           ingredientLookup.get(ingredientId) ??
           ingredientLookup.get(ingredientId.toLowerCase());
 
         if (!ingredient) return sum;
+        const countDelta = count - ingredient.defaultCount;
+        if (countDelta === 0) return sum;
 
         return {
           calories: sum.calories + (ingredient.nutrition.calories ?? 0) * countDelta,
@@ -627,14 +640,14 @@ export default function MenuItemCard({
     const selectedCommonChangesForCart = applicableCommonChanges
       .filter((change) => nextSelectedCommonChangeIds.includes(change.id))
       .map((change) => formatCommonChangeForCart(change.label));
-    const selectedIngredientCustomizationsForCart = Object.entries(nextSelectedIngredientCounts)
-      .filter(([, count]) => count !== 1)
-      .flatMap(([ingredientId, count]) => {
-        const ingredientName =
-          ingredientLookup.get(ingredientId)?.label ??
-          ingredientLookup.get(ingredientId.toLowerCase())?.label ??
-          ingredientId;
-        return [formatIngredientCountCustomizationLabel(ingredientName, count)];
+    const selectedIngredientCustomizationsForCart = resolvedIngredients
+      .filter((ingredient) => {
+        const ingredientCount = nextSelectedIngredientCounts[ingredient.id] ?? ingredient.defaultCount;
+        return ingredientCount !== ingredient.defaultCount;
+      })
+      .flatMap((ingredient) => {
+        const ingredientCount = nextSelectedIngredientCounts[ingredient.id] ?? ingredient.defaultCount;
+        return [formatIngredientCountCustomizationLabel(ingredient.label, ingredientCount)];
       });
     const nextCustomizations = [
       ...retainedCustomizations,
@@ -961,6 +974,7 @@ export default function MenuItemCard({
             addons={addons}
             ingredientItems={ingredientItems}
             menuItems={menuItems}
+            customizationRules={customizationRules}
             selectedAddons={selectedAddons}
             onSelectAddon={(ref, addon) => {
               setSelectedAddons((prev) => {
@@ -1027,12 +1041,10 @@ export default function MenuItemCard({
                 return next;
               })
             }
-            selectedIngredientCounts={selectedIngredientCounts}
+            selectedIngredientCounts={ingredientCounts}
             onDecrementIngredient={(ingredientId) =>
               setSelectedIngredientCounts((prev) => {
-                if (!(ingredientId in prev)) return prev;
-
-                const current = prev[ingredientId] ?? 0;
+                const current = ingredientCounts[ingredientId] ?? 0;
                 const next = { ...prev, [ingredientId]: Math.max(0, current - 1) };
                 if (next[ingredientId] === current) return prev;
 
@@ -1048,15 +1060,13 @@ export default function MenuItemCard({
             }
             onIncrementIngredient={(ingredientId) =>
               setSelectedIngredientCounts((prev) => {
-                if (!(ingredientId in prev)) return prev;
-
                 const ingredient =
                   ingredientLookup.get(ingredientId) ??
                   ingredientLookup.get(ingredientId.toLowerCase());
                 const maxQuantity = ingredient?.maxQuantity;
                 if (typeof maxQuantity !== "number") return prev;
 
-                const current = prev[ingredientId] ?? 0;
+                const current = ingredientCounts[ingredientId] ?? ingredient?.defaultCount ?? 0;
                 const next = { ...prev, [ingredientId]: Math.min(maxQuantity, current + 1) };
                 if (next[ingredientId] === current) return prev;
 

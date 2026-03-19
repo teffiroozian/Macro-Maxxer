@@ -1,6 +1,6 @@
 import restaurants from "@/app/data/index.json";
 import { normalizeAddons } from "@/lib/addons";
-import type { CommonChange, IngredientItem, IngredientModifier, MenuItem, RestaurantAddons } from "@/types/menu";
+import type { CommonChange, IngredientItem, IngredientModifier, MenuItem, RestaurantAddons, RestaurantCustomizationRules, RestaurantMenu } from "@/types/menu";
 
 export type RestaurantData = {
   id: string;
@@ -12,6 +12,7 @@ export type RestaurantData = {
   addons: RestaurantAddons;
   commonChanges: CommonChange[];
   ingredientModifiers: IngredientModifier[];
+  customizationRules?: RestaurantCustomizationRules;
 };
 
 export function toItemSlug(item: MenuItem) {
@@ -27,17 +28,19 @@ export async function getRestaurantData(id: string): Promise<RestaurantData | nu
   const restaurant = restaurants.find((entry) => entry.id === id);
   if (!restaurant) return null;
 
-  const menu = await import(`@/app/data/${restaurant.menuFile}`);
+  const menuModule = await import(`@/app/data/${restaurant.menuFile}`);
+  const menu = menuModule.default as RestaurantMenu;
   return {
     id: restaurant.id,
     name: restaurant.name,
     logo: restaurant.logo,
     menuFile: restaurant.menuFile,
-    items: menu.default.items as MenuItem[],
-    ingredients: (menu.default.ingredients ?? []) as IngredientItem[],
-    addons: normalizeAddons(menu.default.addons),
-    commonChanges: (menu.default.commonChanges ?? []) as CommonChange[],
-    ingredientModifiers: (menu.default.ingredientModifiers ?? []) as IngredientModifier[],
+    items: menu.items as MenuItem[],
+    ingredients: (menu.ingredients ?? []) as IngredientItem[],
+    addons: normalizeAddons(menu.addons),
+    commonChanges: (menu.commonChanges ?? []) as CommonChange[],
+    ingredientModifiers: (menu.ingredientModifiers ?? []) as IngredientModifier[],
+    customizationRules: menu.customizationRules,
   };
 }
 
