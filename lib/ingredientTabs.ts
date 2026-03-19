@@ -1,6 +1,7 @@
 import type { IngredientItem, MenuItem, RestaurantCustomizationRules } from "@/types/menu";
 
 export const INCLUDED_INGREDIENT_TAB = "Included";
+export type IngredientSelectionMode = "quantity" | "single";
 
 function normalizeTabName(value: string) {
   return value.trim().toLowerCase();
@@ -32,6 +33,26 @@ export function resolveIngredientTabs(
   });
 
   return [INCLUDED_INGREDIENT_TAB, ...dedupedConfiguredTabs];
+}
+
+export function resolveSingleSelectIngredientTabs(
+  item: MenuItem,
+  customizationRules?: RestaurantCustomizationRules
+) {
+  const itemLevelTabs = item.customization?.singleSelectIngredientTabs?.filter(Boolean) ?? [];
+  const primaryCategory = item.categories?.[0];
+  const restaurantLevelTabs =
+    primaryCategory
+      ? customizationRules?.singleSelectIngredientTabsByItemCategory?.[primaryCategory]?.filter(Boolean) ?? []
+      : [];
+
+  const configuredTabs = itemLevelTabs.length > 0 ? itemLevelTabs : restaurantLevelTabs;
+
+  return new Set(
+    configuredTabs
+      .map((tab) => normalizeTabName(tab))
+      .filter((tab) => tab && tab !== normalizeTabName(INCLUDED_INGREDIENT_TAB))
+  );
 }
 
 export function ingredientMatchesTab(ingredient: IngredientItem, tabName: string) {

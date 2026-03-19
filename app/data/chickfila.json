@@ -32,10 +32,14 @@
                 "Treat Toppings"
             ]
         },
-        "singleSelectIngredientTabs": [
-            "Buns",
-            "Cheeses"
-        ]
+        "singleSelectIngredientTabsByItemCategory": {
+            "Sandwich": [
+                "Buns"
+            ],
+            "Breakfast": [
+                "Buns"
+            ]
+        }
     },
     "items": [
         {

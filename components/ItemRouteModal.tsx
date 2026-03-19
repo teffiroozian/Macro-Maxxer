@@ -511,6 +511,22 @@ export default function ItemRouteModal({
                 return { ...prev, [ingredientId]: nextCount };
               })
             }
+            onSelectSingleIngredient={(ingredientId, ingredientIdsInTab) =>
+              setSelectedIngredientCounts((prev) => {
+                const next = { ...prev };
+
+                ingredientIdsInTab.forEach((id) => {
+                  next[id] = id === ingredientId ? 1 : 0;
+                });
+
+                const hasChanged = ingredientIdsInTab.some(
+                  (id) => (ingredientCounts[id] ?? ingredientLookup.get(id)?.defaultCount ?? 0) !== next[id]
+                );
+                if (!hasChanged) return prev;
+
+                return next;
+              })
+            }
           />
         </div>
         </div>
