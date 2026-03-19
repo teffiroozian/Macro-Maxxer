@@ -1,6 +1,40 @@
 {
     "id": "chickfila",
     "name": "Chick-fil-A",
+    "customizationRules": {
+        "ingredientTabsByItemCategory": {
+            "Sandwich": [
+                "Buns",
+                "Proteins",
+                "Sandwich Toppings"
+            ],
+            "Wrap": [
+                "Proteins",
+                "Wrap Toppings"
+            ],
+            "Salad": [
+                "Proteins",
+                "Salad Toppings",
+                "Salad Condiments"
+            ],
+            "Breakfast": [
+                "Breakfast",
+                "Proteins",
+                "Sandwich Toppings",
+                "Breakfast Sides"
+            ],
+            "Side": [
+                "Soup Toppings",
+                "Parfait Toppings",
+                "Salad Toppings",
+                "Salad Condiments",
+                "Wrap Toppings"
+            ],
+            "Treats": [
+                "Treat Toppings"
+            ]
+        }
+    },
     "items": [
         {
             "id": "chick_fil_a_chicken_sandwich",

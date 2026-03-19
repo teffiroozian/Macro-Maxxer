@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useEffect, useMemo, useRef, useState } from "react";
 import type { CartMacros } from "@/stores/cartStore";
-import type { AddonOption, CommonChange, IngredientItem, MenuItem, Nutrition, RestaurantAddons } from "@/types/menu";
+import type { AddonOption, CommonChange, IngredientItem, MenuItem, Nutrition, RestaurantAddons, RestaurantMenu } from "@/types/menu";
 import MenuItemCard from "@/components/MenuItemCard";
 import StickyMacroTotalsBar from "@/components/StickyMacroTotalsBar";
 import restaurants from "@/app/data/index.json";
@@ -19,12 +19,7 @@ import subwayMenu from "@/app/data/subway.json";
 import { useCart } from "@/stores/cartStore";
 import { normalizeAddons } from "@/lib/addons";
 
-type MenuDataset = {
-  items?: MenuItem[];
-  addons?: unknown;
-  ingredients?: IngredientItem[];
-  commonChanges?: CommonChange[];
-};
+type MenuDataset = RestaurantMenu;
 
 const chickfilaData = chickfilaMenu as unknown as MenuDataset;
 const chipotleData = chipotleMenu as unknown as MenuDataset;
