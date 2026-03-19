@@ -83,6 +83,7 @@ export type IngredientTabsOverride = {
 export type RestaurantCustomizationRules = {
   ingredientTabsByItemCategory?: Partial<Record<string, string[]>>;
   singleSelectIngredientTabsByItemCategory?: Partial<Record<string, string[]>>;
+  ingredientTabMaxQuantities?: Partial<Record<string, number>>;
   ingredientTabMaxQuantitiesByItemCategory?: Partial<Record<string, Partial<Record<string, number>>>>;
 };
 

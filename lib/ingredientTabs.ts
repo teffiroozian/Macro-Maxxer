@@ -57,11 +57,19 @@ export function resolveIngredientTabMaxQuantity(
     return itemLevelMax;
   }
 
+  const restaurantLevelMax = Object.entries(customizationRules?.ingredientTabMaxQuantities ?? {}).find(
+    ([candidateTab]) => normalizeTabName(candidateTab) === normalizedTabName
+  )?.[1];
+
+  if (typeof restaurantLevelMax === "number") {
+    return restaurantLevelMax;
+  }
+
   const primaryCategory = item.categories?.[0];
-  const restaurantLevelMaxQuantities =
+  const restaurantLevelMaxQuantitiesByCategory =
     primaryCategory ? customizationRules?.ingredientTabMaxQuantitiesByItemCategory?.[primaryCategory] : undefined;
 
-  return Object.entries(restaurantLevelMaxQuantities ?? {}).find(
+  return Object.entries(restaurantLevelMaxQuantitiesByCategory ?? {}).find(
     ([candidateTab]) => normalizeTabName(candidateTab) === normalizedTabName
   )?.[1];
 }
