@@ -16,7 +16,7 @@ import { Check, ChevronDown, ChevronRight} from "lucide-react";
 import {
   INCLUDED_INGREDIENT_TAB,
   getIngredientTabDisplayLabel, ingredientMatchesTab,
-  isSingleSelectIngredientTab, resolveIngredientTabs,
+  resolveIngredientTabs,
   resolveSingleSelectIngredientTabs,
   type IngredientSelectionMode,
 } from "@/lib/ingredientTabs";
@@ -428,9 +428,14 @@ export default function ItemDetailsPanel({
       return selectedIngredientTab.ingredients;
     }
 
+    const selectedCountFor = (ingredient: ResolvedPanelIngredient) => {
+      return selectedIngredientCounts?.[ingredient.id] ?? ingredient.defaultCount;
+    };
+    const includedIngredients: ResolvedPanelIngredient[] = [];
+    const includedIngredientIds = new Set<string>();
     const seenSingleSelectTabs = new Set<string>();
 
-    return selectedIngredientTab.ingredients.flatMap((ingredient) => {
+    selectedIngredientTab.ingredients.forEach((ingredient) => {
       const linkedSingleSelectTab =
         ingredient.tabLabel
           ? ingredientTabs.find(
@@ -439,22 +444,57 @@ export default function ItemDetailsPanel({
           : undefined;
 
       if (!linkedSingleSelectTab) {
-        return [ingredient];
+        includedIngredients.push(ingredient);
+        includedIngredientIds.add(ingredient.id);
+        return;
       }
 
       if (seenSingleSelectTabs.has(linkedSingleSelectTab.label)) {
-        return [];
+        return;
       }
 
       seenSingleSelectTabs.add(linkedSingleSelectTab.label);
 
       const selectedIngredient =
-        linkedSingleSelectTab.ingredients.find(
-          (candidate) => (selectedIngredientCounts?.[candidate.id] ?? candidate.defaultCount) > 0
-        ) ?? ingredient;
+        linkedSingleSelectTab.ingredients.find((candidate) => selectedCountFor(candidate) > 0) ?? ingredient;
+      const includedIngredient = { ...selectedIngredient, tabLabel: linkedSingleSelectTab.label };
 
-      return [{ ...selectedIngredient, tabLabel: linkedSingleSelectTab.label }];
+      includedIngredients.push(includedIngredient);
+      includedIngredientIds.add(includedIngredient.id);
     });
+
+    ingredientTabs.forEach((tab) => {
+      if (tab.label === INCLUDED_INGREDIENT_TAB) {
+        return;
+      }
+
+      if (tab.selectionMode === "single") {
+        if (seenSingleSelectTabs.has(tab.label)) {
+          return;
+        }
+
+        const selectedIngredient = tab.ingredients.find((ingredient) => selectedCountFor(ingredient) > 0);
+        if (!selectedIngredient || includedIngredientIds.has(selectedIngredient.id)) {
+          return;
+        }
+
+        seenSingleSelectTabs.add(tab.label);
+        includedIngredients.push({ ...selectedIngredient, tabLabel: tab.label });
+        includedIngredientIds.add(selectedIngredient.id);
+        return;
+      }
+
+      tab.ingredients.forEach((ingredient) => {
+        if (selectedCountFor(ingredient) <= 0 || includedIngredientIds.has(ingredient.id)) {
+          return;
+        }
+
+        includedIngredients.push(ingredient);
+        includedIngredientIds.add(ingredient.id);
+      });
+    });
+
+    return includedIngredients;
   }, [ingredientTabs, selectedIngredientCounts, selectedIngredientTab]);
   const shouldShowIngredientSection =
     ingredientTabs.length > 1 || (ingredientTabs[0]?.ingredients.length ?? 0) > 0;
