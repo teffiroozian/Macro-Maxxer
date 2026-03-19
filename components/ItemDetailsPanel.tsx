@@ -17,6 +17,7 @@ import {
   INCLUDED_INGREDIENT_TAB,
   ingredientMatchesTab,
   resolveIngredientTabs,
+  resolveSingleSelectIngredientIdsByTab,
   resolveSingleSelectIngredientTabs,
   type IngredientSelectionMode,
 } from "@/lib/ingredientTabs";
@@ -52,6 +53,7 @@ export type ResolvedPanelIngredient = {
   label: string;
   icon: string;
   tabLabel?: string;
+  selectionMode: IngredientSelectionMode;
   ingredientItem?: IngredientItem;
   maxQuantity?: number;
   nutrition: Nutrition;
@@ -110,6 +112,7 @@ export function resolvePanelIngredientTabs(
   const includedIngredientIds = new Set(ingredientIds.map((ingredientId) => ingredientId.toLowerCase()));
   const resolvedTabs = resolveIngredientTabs(item, customizationRules);
   const singleSelectTabs = resolveSingleSelectIngredientTabs(item, customizationRules);
+  const singleSelectIngredientIdsByTab = resolveSingleSelectIngredientIdsByTab(item, customizationRules);
 
   const ingredientByIdLookup = new Map<string, IngredientItem>();
   const ingredientByNameLookup = new Map<string, IngredientItem>();
@@ -160,6 +163,15 @@ export function resolvePanelIngredientTabs(
     const ingredientTabLabel = resolvedTabs.find((tab) => {
       return tab !== INCLUDED_INGREDIENT_TAB && match ? ingredientMatchesTab(match, tab) : false;
     });
+    const normalizedIngredientTabLabel = ingredientTabLabel
+      ? normalizeIngredientToken(ingredientTabLabel)
+      : undefined;
+    const ingredientSelectionMode: IngredientSelectionMode =
+      normalizedIngredientTabLabel &&
+      (singleSelectTabs.has(normalizedIngredientTabLabel) ||
+        singleSelectIngredientIdsByTab[normalizedIngredientTabLabel]?.has(normalizedId))
+        ? "single"
+        : "quantity";
     const addonMatch = addonLookup.get(label.toLowerCase());
     const nutrition =
       menuItemMatch?.nutrition ??
@@ -181,6 +193,7 @@ export function resolvePanelIngredientTabs(
       label,
       icon: match?.image ?? menuItemMatch?.image ?? addonMatch?.image ?? "🥣",
       tabLabel: ingredientTabLabel,
+      selectionMode: ingredientSelectionMode,
       ingredientItem: match,
       maxQuantity: match?.maxQuantity,
       nutrition,
@@ -378,12 +391,10 @@ export default function ItemDetailsPanel({
     return selectedIngredientTab.ingredients.flatMap((ingredient) => {
       const linkedSingleSelectTab =
         ingredient.tabLabel
-          ? ingredientTabs.find(
-              (tab) => tab.label === ingredient.tabLabel && tab.selectionMode === "single"
-            )
+          ? ingredientTabs.find((tab) => tab.label === ingredient.tabLabel)
           : undefined;
 
-      if (!linkedSingleSelectTab) {
+      if (!linkedSingleSelectTab || ingredient.selectionMode !== "single") {
         return [ingredient];
       }
 
@@ -394,13 +405,33 @@ export default function ItemDetailsPanel({
       seenSingleSelectTabs.add(linkedSingleSelectTab.label);
 
       const selectedIngredient =
-        linkedSingleSelectTab.ingredients.find(
+        linkedSingleSelectTab.ingredients.filter((candidate) => candidate.selectionMode === "single").find(
           (candidate) => (selectedIngredientCounts?.[candidate.id] ?? candidate.defaultCount) > 0
         ) ?? ingredient;
 
       return [{ ...selectedIngredient, tabLabel: linkedSingleSelectTab.label }];
     });
   }, [ingredientTabs, selectedIngredientCounts, selectedIngredientTab]);
+  const singleSelectIngredientsInTab = useMemo(
+    () => (selectedIngredientTab ? selectedIngredientTab.ingredients.filter((ingredient) => ingredient.selectionMode === "single") : []),
+    [selectedIngredientTab]
+  );
+  const groupedDisplayIngredients = useMemo(() => {
+    if (selectedIngredientTab?.label === INCLUDED_INGREDIENT_TAB) {
+      return {
+        singleSelectIngredients: [] as ResolvedPanelIngredient[],
+        quantityIngredients: displayIngredients,
+      };
+    }
+
+    const singleSelectIngredients = displayIngredients.filter((ingredient) => ingredient.selectionMode === "single");
+    const quantityIngredients = displayIngredients.filter((ingredient) => ingredient.selectionMode !== "single");
+
+    return {
+      singleSelectIngredients,
+      quantityIngredients,
+    };
+  }, [displayIngredients, selectedIngredientTab]);
   const shouldShowIngredientSection =
     ingredientTabs.length > 1 || (ingredientTabs[0]?.ingredients.length ?? 0) > 0;
 
@@ -430,25 +461,85 @@ export default function ItemDetailsPanel({
             })}
           </div>
           {displayIngredients.length > 0 ? (
-            <ul className="grid list-none grid-cols-2 items-stretch gap-[10px] pl-0">
-              {displayIngredients.map((ingredient) => {
+            <div className="grid gap-4">
+              {groupedDisplayIngredients.singleSelectIngredients.length > 0 ? (
+                <ul className="grid list-none grid-cols-2 items-stretch gap-[10px] pl-0">
+                  {groupedDisplayIngredients.singleSelectIngredients.map((ingredient) => {
+                    const ingredientCount = selectedIngredientCounts?.[ingredient.id] ?? ingredient.defaultCount;
+                    const isSelected = ingredientCount > 0;
+                    const cardClasses = `box-border flex h-full w-full cursor-pointer flex-row items-center gap-3 rounded-[10px] border border-[rgba(0,0,0,0.15)] bg-[#f9f9f9] px-3 py-2 text-left ${
+                      isSelected ? "shadow-[inset_0_0_0_3px_#16a34a]" : ""
+                    }`;
+
+                    return (
+                      <li key={ingredient.id} className="flex">
+                        <button
+                          type="button"
+                          className={cardClasses}
+                          onClick={() =>
+                            onSelectSingleIngredient?.(
+                              ingredient.id,
+                              singleSelectIngredientsInTab.map((candidate) => candidate.id)
+                            )
+                          }
+                        >
+                          <div
+                            className="grid h-[72px] w-[72px] min-w-[72px] place-items-center rounded-lg bg-cover bg-center"
+                            aria-hidden="true"
+                          >
+                            {isIconImage(ingredient.icon) ? (
+                              <Image
+                                src={ingredient.icon}
+                                alt=""
+                                width={72}
+                                height={72}
+                                className="h-[72px] w-[72px] rounded-lg object-cover"
+                              />
+                            ) : (
+                              ingredient.icon
+                            )}
+                          </div>
+                          <div className="flex min-w-0 flex-col items-start justify-center gap-[6px]">
+                            <div className="line-clamp-2 break-words text-left text-base font-bold leading-[1.2]">{ingredient.label}</div>
+                            <div className="text-sm font-bold text-[rgba(0,0,0,0.5)]">
+                              {ingredient.calories !== undefined ? `${ingredient.calories} Cal` : "— Cal"}
+                            </div>
+                          </div>
+                          <span
+                            aria-hidden="true"
+                            className={`ml-auto inline-flex h-6 w-6 items-center justify-center rounded-full border ${
+                              isSelected ? "border-[3px] border-[#16a34a]" : "border-2 border-[rgba(0,0,0,0.25)]"
+                            }`}
+                          >
+                            <span
+                              className={`h-2.5 w-2.5 rounded-full ${isSelected ? "bg-[#16a34a]" : "bg-transparent"}`}
+                            />
+                          </span>
+                        </button>
+                      </li>
+                    );
+                  })}
+                </ul>
+              ) : null}
+              {groupedDisplayIngredients.singleSelectIngredients.length > 0 &&
+              groupedDisplayIngredients.quantityIngredients.length > 0 ? (
+                <div className="h-px w-full bg-black/10" aria-hidden="true" />
+              ) : null}
+              {groupedDisplayIngredients.quantityIngredients.length > 0 ? (
+                <ul className="grid list-none grid-cols-2 items-stretch gap-[10px] pl-0">
+                  {groupedDisplayIngredients.quantityIngredients.map((ingredient) => {
                 const ingredientCount = selectedIngredientCounts?.[ingredient.id] ?? ingredient.defaultCount;
                 const isSelected = ingredientCount > 0;
                 const linkedSingleSelectTab =
                   ingredient.tabLabel
-                    ? ingredientTabs.find(
-                        (tab) => tab.label === ingredient.tabLabel && tab.selectionMode === "single"
-                      )
+                    ? ingredientTabs.find((tab) => tab.label === ingredient.tabLabel)
                     : undefined;
                 const shouldShowSingleSelectNavigator =
-                  selectedIngredientTab.label === INCLUDED_INGREDIENT_TAB && Boolean(linkedSingleSelectTab);
-                const isSingleSelectTab = selectedIngredientTab.selectionMode === "single";
+                  selectedIngredientTab.label === INCLUDED_INGREDIENT_TAB &&
+                  ingredient.selectionMode === "single" &&
+                  Boolean(linkedSingleSelectTab);
                 const cardClasses = `box-border flex h-full w-full flex-row items-center gap-3 rounded-[10px] border border-[rgba(0,0,0,0.15)] bg-[#f9f9f9] px-3 py-2 ${
-                  isSelected
-                    ? isSingleSelectTab
-                      ? "shadow-[inset_0_0_0_3px_#16a34a]"
-                      : "shadow-[inset_0_0_0_1px_#000000]"
-                    : ""
+                  isSelected ? "shadow-[inset_0_0_0_1px_#000000]" : ""
                 }`;
                 const ingredientContent = (
                   <>
@@ -479,86 +570,63 @@ export default function ItemDetailsPanel({
 
                 return (
                   <li key={ingredient.id} className="flex">
-                    {isSingleSelectTab ? (
-                      <button
-                        type="button"
-                        className={`${cardClasses} cursor-pointer text-left`}
-                        onClick={() =>
-                          onSelectSingleIngredient?.(
-                            ingredient.id,
-                            selectedIngredientTab.ingredients.map((candidate) => candidate.id)
-                          )
-                        }
-                      >
-                        {ingredientContent}
-                        <span
-                          aria-hidden="true"
-                          className={`ml-auto inline-flex h-6 w-6 items-center justify-center rounded-full border ${
-                            isSelected ? "border-[3px] border-[#16a34a]" : "border-2 border-[rgba(0,0,0,0.25)]"
-                          }`}
+                    <div className={cardClasses}>
+                      {ingredientContent}
+                      {shouldShowSingleSelectNavigator ? (
+                        <button
+                          type="button"
+                          className="ml-auto inline-flex h-9 w-9 cursor-pointer items-center justify-center rounded-full border border-[rgba(0,0,0,0.2)] bg-white text-black/70 transition hover:bg-black hover:text-white"
+                          aria-label={`Customize ${linkedSingleSelectTab?.label ?? ingredient.label}`}
+                          onClick={() => {
+                            if (linkedSingleSelectTab) {
+                              setActiveIngredientTab(linkedSingleSelectTab.label);
+                            }
+                          }}
                         >
-                          <span
-                            className={`h-2.5 w-2.5 rounded-full ${isSelected ? "bg-[#16a34a]" : "bg-transparent"}`}
-                          />
-                        </span>
-                      </button>
-                    ) : (
-                      <div className={cardClasses}>
-                        {ingredientContent}
-                        {shouldShowSingleSelectNavigator ? (
-                          <button
-                            type="button"
-                            className="ml-auto inline-flex h-9 w-9 cursor-pointer items-center justify-center rounded-full border border-[rgba(0,0,0,0.2)] bg-white text-black/70 transition hover:bg-black hover:text-white"
-                            aria-label={`Customize ${linkedSingleSelectTab?.label ?? ingredient.label}`}
-                            onClick={() => {
-                              if (linkedSingleSelectTab) {
-                                setActiveIngredientTab(linkedSingleSelectTab.label);
-                              }
-                            }}
-                          >
-                            <ChevronRight size={18} />
-                          </button>
-                        ) : typeof ingredient.maxQuantity === "number" ? (
-                          <div className="ml-auto inline-flex items-center gap-[6px]">
-                            {ingredientCount > 0 ? (
-                              <>
-                                <button
-                                  type="button"
-                                  className="inline-flex h-7 w-7 cursor-pointer items-center justify-center rounded-md border border-[rgba(0,0,0,0.35)] bg-white text-[18px] font-bold leading-none"
-                                  aria-label={`Remove one ${ingredient.label}`}
-                                  onClick={() => onDecrementIngredient?.(ingredient.id)}
-                                >
-                                  -
-                                </button>
-                                <span className="min-w-4 text-center text-base font-bold">{ingredientCount}</span>
-                                <button
-                                  type="button"
-                                  className="inline-flex h-7 w-7 cursor-pointer items-center justify-center rounded-md border border-[rgba(0,0,0,0.35)] bg-white text-[18px] font-bold leading-none disabled:cursor-not-allowed disabled:opacity-40"
-                                  aria-label={`Add one more ${ingredient.label}`}
-                                  onClick={() => onIncrementIngredient?.(ingredient.id)}
-                                  disabled={ingredientCount >= ingredient.maxQuantity}
-                                >
-                                  +
-                                </button>
-                              </>
-                            ) : (
+                          <ChevronRight size={18} />
+                        </button>
+                      ) : typeof ingredient.maxQuantity === "number" ? (
+                        <div className="ml-auto inline-flex items-center gap-[6px]">
+                          {ingredientCount > 0 ? (
+                            <>
                               <button
                                 type="button"
                                 className="inline-flex h-7 w-7 cursor-pointer items-center justify-center rounded-md border border-[rgba(0,0,0,0.35)] bg-white text-[18px] font-bold leading-none"
-                                aria-label={`Add ${ingredient.label}`}
+                                aria-label={`Remove one ${ingredient.label}`}
+                                onClick={() => onDecrementIngredient?.(ingredient.id)}
+                              >
+                                -
+                              </button>
+                              <span className="min-w-4 text-center text-base font-bold">{ingredientCount}</span>
+                              <button
+                                type="button"
+                                className="inline-flex h-7 w-7 cursor-pointer items-center justify-center rounded-md border border-[rgba(0,0,0,0.35)] bg-white text-[18px] font-bold leading-none disabled:cursor-not-allowed disabled:opacity-40"
+                                aria-label={`Add one more ${ingredient.label}`}
                                 onClick={() => onIncrementIngredient?.(ingredient.id)}
+                                disabled={ingredientCount >= ingredient.maxQuantity}
                               >
                                 +
                               </button>
-                            )}
-                          </div>
-                        ) : null}
-                      </div>
-                    )}
+                            </>
+                          ) : (
+                            <button
+                              type="button"
+                              className="inline-flex h-7 w-7 cursor-pointer items-center justify-center rounded-md border border-[rgba(0,0,0,0.35)] bg-white text-[18px] font-bold leading-none"
+                              aria-label={`Add ${ingredient.label}`}
+                              onClick={() => onIncrementIngredient?.(ingredient.id)}
+                            >
+                              +
+                            </button>
+                          )}
+                        </div>
+                      ) : null}
+                    </div>
                   </li>
                 );
-              })}
-            </ul>
+                  })}
+                </ul>
+              ) : null}
+            </div>
           ) : (
             <div className="rounded-[10px] border border-dashed border-black/12 bg-[#f9f9f9] px-4 py-6 text-sm font-medium text-black/55">
               No ingredients available in this tab.

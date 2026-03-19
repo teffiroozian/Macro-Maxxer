@@ -41,6 +41,22 @@
             "Breakfast": [
                 "Buns"
             ]
+        },
+        "singleSelectIngredientIdsByTabByItemCategory": {
+            "Sandwich": {
+                "Sandwich Toppings": [
+                    "american-cheese",
+                    "colby-jack-cheese",
+                    "pepper-jack"
+                ]
+            },
+            "Breakfast": {
+                "Sandwich Toppings": [
+                    "american-cheese",
+                    "colby-jack-cheese",
+                    "pepper-jack"
+                ]
+            }
         }
     },
     "items": [

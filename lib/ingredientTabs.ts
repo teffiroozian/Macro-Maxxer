@@ -51,6 +51,29 @@ export function resolveSingleSelectIngredientTabs(
   );
 }
 
+export function resolveSingleSelectIngredientIdsByTab(
+  item: MenuItem,
+  customizationRules?: RestaurantCustomizationRules
+) {
+  const primaryCategory = item.categories?.[0];
+  const restaurantLevelConfig =
+    primaryCategory
+      ? customizationRules?.singleSelectIngredientIdsByTabByItemCategory?.[primaryCategory] ?? {}
+      : {};
+  const itemLevelConfig = item.customization?.singleSelectIngredientIdsByTab ?? {};
+  const mergedConfig = { ...restaurantLevelConfig, ...itemLevelConfig };
+
+  return Object.entries(mergedConfig).reduce<Record<string, Set<string>>>((acc, [tabName, ingredientIds]) => {
+    const normalizedTabName = normalizeTabName(tabName);
+    if (!normalizedTabName || normalizedTabName === normalizeTabName(INCLUDED_INGREDIENT_TAB)) {
+      return acc;
+    }
+
+    acc[normalizedTabName] = new Set((ingredientIds ?? []).map((ingredientId) => ingredientId.toLowerCase()));
+    return acc;
+  }, {});
+}
+
 export function ingredientMatchesTab(ingredient: IngredientItem, tabName: string) {
   const ingredientCategories = ingredient.categories?.length
     ? ingredient.categories
