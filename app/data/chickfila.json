@@ -34,10 +34,12 @@
         },
         "singleSelectIngredientTabsByItemCategory": {
             "Sandwich": [
-                "Buns"
+                "Buns",
+                "Cheeses"
             ],
             "Breakfast": [
-                "Buns"
+                "Buns",
+                "Cheeses"
             ]
         }
     },

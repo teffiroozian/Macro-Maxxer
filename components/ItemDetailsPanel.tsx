@@ -12,7 +12,7 @@ import type {
   RestaurantAddons,
   RestaurantCustomizationRules,
 } from "@/types/menu";
-import { Check, ChevronDown, ChevronRight, ChevronRight } from "lucide-react";
+import { Check, ChevronDown, ChevronRight} from "lucide-react";
 import {
   INCLUDED_INGREDIENT_TAB,
   getIngredientTabDisplayLabel, ingredientMatchesTab,
