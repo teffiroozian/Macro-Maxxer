@@ -283,7 +283,7 @@ export default function ItemDetailsPanel({
               return (
                 <li key={ingredient.id} className="flex">
                   <div
-                    className={`box-border flex h-full w-full flex-row items-center gap-3 rounded-[10px] border border-[rgba(0,0,0,0.15)] bg-[#f9f9f9] px-3 py-2 ${isSelected ? "shadow-[inset_0_0_0_2px_#000000]" : ""}`}
+                    className={`box-border flex h-full w-full flex-row items-center gap-3 rounded-[10px] border border-[rgba(0,0,0,0.15)] bg-[#f9f9f9] px-3 py-2 ${isSelected ? "shadow-[inset_0_0_0_1px_#000000]" : ""}`}
                   >
                     <div
                       className="grid h-[72px] w-[72px] min-w-[72px] place-items-center rounded-lg bg-cover bg-center"
@@ -417,7 +417,7 @@ export default function ItemDetailsPanel({
                         <li key={`${section.ref}-${addon.name}`} className="flex">
                           <button
                             type="button"
-                            className={`box-border flex h-full w-full cursor-pointer flex-row items-center gap-3 rounded-[10px] border border-[rgba(0,0,0,0.15)] bg-[#f9f9f9] px-3 py-2 ${isSelected ? "shadow-[inset_0_0_0_2px_#16a34a]" : ""}`}
+                            className={`box-border flex h-full w-full cursor-pointer flex-row items-center gap-3 rounded-[10px] border border-[rgba(0,0,0,0.15)] bg-[#f9f9f9] px-3 py-2 ${isSelected ? "shadow-[inset_0_0_0_3px_#16a34a]" : ""}`}
                             onClick={() => {
                               if (section.ref === "sauces") {
                                 onToggleSauce?.(addon);
