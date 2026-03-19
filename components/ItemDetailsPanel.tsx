@@ -39,13 +39,6 @@ function normalizeIngredientToken(value: string) {
   return value.toLowerCase().replace(/[^a-z0-9]+/g, "").trim();
 }
 
-const supportedIngredientModifierOptions = [
-  { id: "remove", label: "Remove", aliases: ["remove"] },
-  { id: "extra", label: "Extra", aliases: ["extra", "double"] },
-] as const;
-
-type SupportedIngredientModifierId = (typeof supportedIngredientModifierOptions)[number]["id"];
-
 export function resolvePanelIngredients(
   item: MenuItem,
   ingredientItems: IngredientItem[] = [],
@@ -103,13 +96,6 @@ export function resolvePanelIngredients(
     const label = menuItemMatch?.name ?? match?.name ?? fallbackLabel;
     const addonMatch = addonLookup.get(label.toLowerCase());
     const isSingleIngredientRow = isSingleIngredientItem && ingredientIds.length === 1;
-    const normalizedAllowedModifiers = new Set(
-      (match?.allowedModifiers ?? []).map((modifier) => modifier.trim().toLowerCase())
-    );
-    const supportedModifiers = supportedIngredientModifierOptions
-      .filter((modifier) => modifier.aliases.some((alias) => normalizedAllowedModifiers.has(alias)))
-      .map((modifier) => ({ id: modifier.id, label: modifier.label }));
-
     const nutrition =
       isSingleIngredientRow && activeVariant?.nutrition
         ? activeVariant.nutrition
@@ -132,7 +118,7 @@ export function resolvePanelIngredients(
       label,
       icon: match?.image ?? menuItemMatch?.image ?? addonMatch?.image ?? "🥣",
       ingredientItem: match,
-      supportedModifiers,
+      maxQuantity: match?.maxQuantity,
       nutrition,
       calories: nutrition.calories,
     };
@@ -227,8 +213,9 @@ export default function ItemDetailsPanel({
   showCustomizationDeltas,
   displayMode = "full",
   showVariantsInDetails = true,
-  selectedIngredientModifiers,
-  onIngredientModifierChange,
+  selectedIngredientCounts,
+  onIncrementIngredient,
+  onDecrementIngredient,
 }: {
   item: MenuItem;
   nutrition: Nutrition;
@@ -251,8 +238,9 @@ export default function ItemDetailsPanel({
   showCustomizationDeltas?: boolean;
   displayMode?: "full" | "addonsOnly";
   showVariantsInDetails?: boolean;
-  selectedIngredientModifiers?: Partial<Record<string, SupportedIngredientModifierId | "normal">>;
-  onIngredientModifierChange?: (ingredientId: string, modifierId: SupportedIngredientModifierId | "normal") => void;
+  selectedIngredientCounts?: Partial<Record<string, number>>;
+  onIncrementIngredient?: (ingredientId: string) => void;
+  onDecrementIngredient?: (ingredientId: string) => void;
 }) {
   const n = nutrition;
   const addonRefs = item.addonRefs ?? [];
@@ -287,68 +275,78 @@ export default function ItemDetailsPanel({
       {ingredients.length > 0 ? (
         <section className="col-span-2 rounded-[14px] border border-black/12 bg-white p-5">
           <h2 className="mb-6 text-2xl font-bold">Ingredients</h2>
-          <div className="grid grid-cols-2 gap-3">
-            {ingredients.map((ingredient) => (
-              <article
-                key={ingredient.id}
-                className="overflow-hidden rounded-[10px] border border-[rgba(0,0,0,0.15)] bg-white text-left"
-              >
-                <div className="flex items-center gap-3 px-3 py-2">
-                  <div
-                    className="grid h-[72px] w-[72px] min-w-[72px] place-items-center rounded-lg bg-cover bg-center"
-                    aria-hidden="true"
-                  >
-                    {isIconImage(ingredient.icon) ? (
-                      <Image
-                        src={ingredient.icon}
-                        alt=""
-                        width={72}
-                        height={72}
-                        className="h-[72px] w-[72px] rounded-lg object-cover"
-                      />
-                    ) : (
-                      ingredient.icon
-                    )}
-                  </div>
-                  <div className="flex min-w-0 flex-col items-start justify-center gap-[6px]">
-                    <div className="line-clamp-2 break-words text-left text-base font-bold leading-[1.2]">{ingredient.label}</div>
-                    <div className="text-sm font-bold text-[rgba(0,0,0,0.5)]">
-                      {ingredient.calories !== undefined ? `${ingredient.calories} Cal` : "— Cal"}
-                    </div>
-                  </div>
-                </div>
-                {ingredient.supportedModifiers.length > 0 ? (
-                  <div className="px-3 py-2.5">
-                    <div className="flex flex-wrap justify-end gap-1.5">
-                      {[
-                        { id: "normal" as const, label: "Normal" },
-                        ...ingredient.supportedModifiers,
-                      ].map((modifier) => {
-                        const isSelected =
-                          (selectedIngredientModifiers?.[ingredient.id] ?? "normal") === modifier.id;
+          <ul className="grid list-none grid-cols-2 items-stretch gap-[10px] pl-0">
+            {ingredients.map((ingredient) => {
+              const ingredientCount = selectedIngredientCounts?.[ingredient.id] ?? 1;
+              const isSelected = ingredientCount > 0;
 
-                        return (
-                          <button
-                            key={modifier.id}
-                            type="button"
-                            className={`cursor-pointer rounded-full border px-4 py-1.5 text-xs font-semibold transition ${
-                              isSelected
-                                ? "border-black bg-black text-white"
-                                : "border-black/15 bg-white text-black/65 hover:bg-black/5"
-                            }`}
-                            onClick={() => onIngredientModifierChange?.(ingredient.id, modifier.id)}
-                            aria-pressed={isSelected}
-                          >
-                            {modifier.label}
-                          </button>
-                        );
-                      })}
+              return (
+                <li key={ingredient.id} className="flex">
+                  <div
+                    className={`box-border flex h-full w-full flex-row items-center gap-3 rounded-[10px] border border-[rgba(0,0,0,0.15)] bg-[#f9f9f9] px-3 py-2 ${isSelected ? "shadow-[inset_0_0_0_2px_#000000]" : ""}`}
+                  >
+                    <div
+                      className="grid h-[72px] w-[72px] min-w-[72px] place-items-center rounded-lg bg-cover bg-center"
+                      aria-hidden="true"
+                    >
+                      {isIconImage(ingredient.icon) ? (
+                        <Image
+                          src={ingredient.icon}
+                          alt=""
+                          width={72}
+                          height={72}
+                          className="h-[72px] w-[72px] rounded-lg object-cover"
+                        />
+                      ) : (
+                        ingredient.icon
+                      )}
                     </div>
+                    <div className="flex min-w-0 flex-col items-start justify-center gap-[6px]">
+                      <div className="line-clamp-2 break-words text-left text-base font-bold leading-[1.2]">{ingredient.label}</div>
+                      <div className="text-sm font-bold text-[rgba(0,0,0,0.5)]">
+                        {ingredient.calories !== undefined ? `${ingredient.calories} Cal` : "— Cal"}
+                      </div>
+                    </div>
+                    {typeof ingredient.maxQuantity === "number" ? (
+                      <div className="ml-auto inline-flex items-center gap-[6px]">
+                        {ingredientCount > 0 ? (
+                          <>
+                            <button
+                              type="button"
+                              className="inline-flex h-7 w-7 cursor-pointer items-center justify-center rounded-md border border-[rgba(0,0,0,0.35)] bg-white text-[18px] font-bold leading-none"
+                              aria-label={`Remove one ${ingredient.label}`}
+                              onClick={() => onDecrementIngredient?.(ingredient.id)}
+                            >
+                              -
+                            </button>
+                            <span className="min-w-4 text-center text-base font-bold">{ingredientCount}</span>
+                            <button
+                              type="button"
+                              className="inline-flex h-7 w-7 cursor-pointer items-center justify-center rounded-md border border-[rgba(0,0,0,0.35)] bg-white text-[18px] font-bold leading-none disabled:cursor-not-allowed disabled:opacity-40"
+                              aria-label={`Add one more ${ingredient.label}`}
+                              onClick={() => onIncrementIngredient?.(ingredient.id)}
+                              disabled={ingredientCount >= ingredient.maxQuantity}
+                            >
+                              +
+                            </button>
+                          </>
+                        ) : (
+                          <button
+                            type="button"
+                            className="inline-flex h-7 w-7 cursor-pointer items-center justify-center rounded-md border border-[rgba(0,0,0,0.35)] bg-white text-[18px] font-bold leading-none"
+                            aria-label={`Add ${ingredient.label}`}
+                            onClick={() => onIncrementIngredient?.(ingredient.id)}
+                          >
+                            +
+                          </button>
+                        )}
+                      </div>
+                    ) : null}
                   </div>
-                ) : null}
-              </article>
-            ))}
-          </div>
+                </li>
+              );
+            })}
+          </ul>
         </section>
       ) : null}
 
@@ -419,7 +417,7 @@ export default function ItemDetailsPanel({
                         <li key={`${section.ref}-${addon.name}`} className="flex">
                           <button
                             type="button"
-                            className={`box-border flex h-full w-full cursor-pointer flex-row items-center gap-3 rounded-[10px] border border-[rgba(0,0,0,0.15)] bg-[#f9f9f9] px-3 py-2 ${isSelected ? "shadow-[inset_0_0_0_3px_#16a34a]" : ""}`}
+                            className={`box-border flex h-full w-full cursor-pointer flex-row items-center gap-3 rounded-[10px] border border-[rgba(0,0,0,0.15)] bg-[#f9f9f9] px-3 py-2 ${isSelected ? "shadow-[inset_0_0_0_2px_#16a34a]" : ""}`}
                             onClick={() => {
                               if (section.ref === "sauces") {
                                 onToggleSauce?.(addon);

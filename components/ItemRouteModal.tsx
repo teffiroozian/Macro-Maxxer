@@ -25,10 +25,6 @@ const emptyAddon: AddonOption = {
 
 const sauceRef: AddonRef = "sauces";
 const maxSauceSelections = 5;
-const ingredientModifierLabelById: Record<string, string> = {
-  remove: "Remove",
-  extra: "Extra",
-};
 
 function normalizeCategory(category: string) {
   return category.trim().toLowerCase();
@@ -72,13 +68,6 @@ function getApplicableCommonChanges(item: MenuItem, commonChanges?: CommonChange
   });
 }
 
-function formatIngredientCustomizationLabel(ingredientName: string, modifierId: string) {
-  const modifierLabel = ingredientModifierLabelById[modifierId];
-  if (!modifierLabel) return undefined;
-  return `${ingredientName}: ${modifierLabel}`;
-}
-
-
 export default function ItemRouteModal({
   restaurantId,
   restaurantPath,
@@ -111,11 +100,25 @@ export default function ItemRouteModal({
   const [selectedAddons, setSelectedAddons] = useState<Partial<Record<AddonRef, AddonOption>>>({});
   const [selectedSauceCounts, setSelectedSauceCounts] = useState<Record<string, number>>({});
   const [selectedCommonChangeIds, setSelectedCommonChangeIds] = useState<string[]>([]);
-  const [selectedIngredientModifiers, setSelectedIngredientModifiers] = useState<Record<string, "normal" | "remove" | "extra">>({});
   const { addItem } = useCart();
   const selectedVariant = variants?.find((variant) => variant.id === selectedVariantId);
   const selectedItemImage = selectedVariant?.image ?? item.image;
   const baseNutrition = selectedVariant?.nutrition ?? item.nutrition;
+  const resolvedIngredients = useMemo(
+    () => resolvePanelIngredients(item, ingredients, addons, menuItems ?? [], variants, selectedVariantId),
+    [addons, ingredients, item, menuItems, selectedVariantId, variants]
+  );
+  const initialIngredientCounts = useMemo(() => {
+    const resolvedIngredientIds = new Set(resolvedIngredients.map((ingredient) => ingredient.id));
+
+    return (item.ingredients ?? []).reduce<Record<string, number>>((counts, ingredientId) => {
+      if (!resolvedIngredientIds.has(ingredientId) || ingredientId in counts) return counts;
+      counts[ingredientId] = 1;
+      return counts;
+    }, {});
+  }, [item.ingredients, resolvedIngredients]);
+  const [selectedIngredientCounts, setSelectedIngredientCounts] = useState<Record<string, number>>(initialIngredientCounts);
+
   const applicableCommonChanges = useMemo(
     () => getApplicableCommonChanges(item, commonChanges),
     [item, commonChanges]
@@ -159,11 +162,6 @@ export default function ItemRouteModal({
     [selectedAddons, selectedSauceOptions]
   );
 
-  const resolvedIngredients = useMemo(
-    () => resolvePanelIngredients(item, ingredients, addons, menuItems ?? [], variants, selectedVariantId),
-    [addons, ingredients, item, menuItems, selectedVariantId, variants]
-  );
-
   const ingredientLookup = useMemo(() => {
     const lookup = new Map<string, (typeof resolvedIngredients)[number]>();
 
@@ -193,11 +191,12 @@ export default function ItemRouteModal({
     [applicableCommonChanges, selectedCommonChangeIds]
   );
 
-  const ingredientModifierTotals = useMemo(
+  const ingredientCountTotals = useMemo(
     () =>
-      Object.entries(selectedIngredientModifiers).reduce<MacroDelta>(
-        (sum, [ingredientId, modifierId]) => {
-          if (modifierId === "normal") return sum;
+      Object.entries(selectedIngredientCounts).reduce<MacroDelta>(
+        (sum, [ingredientId, count]) => {
+          const countDelta = count - 1;
+          if (countDelta === 0) return sum;
 
           const ingredient =
             ingredientLookup.get(ingredientId) ??
@@ -205,28 +204,26 @@ export default function ItemRouteModal({
 
           if (!ingredient) return sum;
 
-          const direction = modifierId === "remove" ? -1 : 1;
-
           return {
-            calories: sum.calories + (ingredient.nutrition.calories ?? 0) * direction,
-            protein: sum.protein + (ingredient.nutrition.protein ?? 0) * direction,
-            carbs: sum.carbs + (ingredient.nutrition.carbs ?? 0) * direction,
-            fat: sum.fat + (ingredient.nutrition.totalFat ?? 0) * direction,
+            calories: sum.calories + (ingredient.nutrition.calories ?? 0) * countDelta,
+            protein: sum.protein + (ingredient.nutrition.protein ?? 0) * countDelta,
+            carbs: sum.carbs + (ingredient.nutrition.carbs ?? 0) * countDelta,
+            fat: sum.fat + (ingredient.nutrition.totalFat ?? 0) * countDelta,
           };
         },
         { calories: 0, protein: 0, carbs: 0, fat: 0 }
       ),
-    [ingredientLookup, selectedIngredientModifiers]
+    [ingredientLookup, selectedIngredientCounts]
   );
 
   const customizationTotals = useMemo(
     () => ({
-      calories: addonTotals.calories + commonChangeTotals.calories + ingredientModifierTotals.calories,
-      protein: addonTotals.protein + commonChangeTotals.protein + ingredientModifierTotals.protein,
-      carbs: addonTotals.carbs + commonChangeTotals.carbs + ingredientModifierTotals.carbs,
-      fat: addonTotals.fat + commonChangeTotals.fat + ingredientModifierTotals.fat,
+      calories: addonTotals.calories + commonChangeTotals.calories + ingredientCountTotals.calories,
+      protein: addonTotals.protein + commonChangeTotals.protein + ingredientCountTotals.protein,
+      carbs: addonTotals.carbs + commonChangeTotals.carbs + ingredientCountTotals.carbs,
+      fat: addonTotals.fat + commonChangeTotals.fat + ingredientCountTotals.fat,
     }),
-    [addonTotals, commonChangeTotals, ingredientModifierTotals]
+    [addonTotals, commonChangeTotals, ingredientCountTotals]
   );
 
   const hasActiveCustomization = useMemo(
@@ -270,17 +267,17 @@ export default function ItemRouteModal({
   );
   const selectedIngredientCustomizations = useMemo(
     () =>
-      Object.entries(selectedIngredientModifiers)
-        .filter(([, modifierId]) => modifierId !== "normal")
-        .flatMap(([ingredientId, modifierId]) => {
+      Object.entries(selectedIngredientCounts)
+        .filter(([, count]) => count !== 1)
+        .flatMap(([ingredientId, count]) => {
           const ingredientName =
             ingredientLookup.get(ingredientId)?.label ??
             ingredientLookup.get(ingredientId.toLowerCase())?.label ??
             ingredientId;
-          const label = formatIngredientCustomizationLabel(ingredientName, modifierId);
-          return label ? [label] : [];
+
+          return [count === 0 ? `${ingredientName}: Removed` : `${ingredientName}: ${count}x`];
         }),
-    [ingredientLookup, selectedIngredientModifiers]
+    [ingredientLookup, selectedIngredientCounts]
   );
 
   const handleClose = () => {
@@ -459,9 +456,35 @@ export default function ItemRouteModal({
             customizationTotals={customizationTotals}
             showCustomizationDeltas={hasActiveCustomization}
             showVariantsInDetails={true}
-            selectedIngredientModifiers={selectedIngredientModifiers}
-            onIngredientModifierChange={(ingredientId, modifierId) =>
-              setSelectedIngredientModifiers((prev) => ({ ...prev, [ingredientId]: modifierId }))
+            selectedIngredientCounts={selectedIngredientCounts}
+            onDecrementIngredient={(ingredientId) =>
+              setSelectedIngredientCounts((prev) => {
+                if (!(ingredientId in prev)) return prev;
+
+                const current = prev[ingredientId] ?? 0;
+                const nextCount = Math.max(0, current - 1);
+                if (nextCount === current) return prev;
+
+                return { ...prev, [ingredientId]: nextCount };
+              })
+            }
+            onIncrementIngredient={(ingredientId) =>
+              setSelectedIngredientCounts((prev) => {
+                if (!(ingredientId in prev)) return prev;
+
+                const ingredient =
+                  ingredientLookup.get(ingredientId) ??
+                  ingredientLookup.get(ingredientId.toLowerCase());
+                const maxQuantity = ingredient?.maxQuantity;
+
+                if (typeof maxQuantity !== "number") return prev;
+
+                const current = prev[ingredientId] ?? 0;
+                const nextCount = Math.min(maxQuantity, current + 1);
+                if (nextCount === current) return prev;
+
+                return { ...prev, [ingredientId]: nextCount };
+              })
             }
           />
         </div>
