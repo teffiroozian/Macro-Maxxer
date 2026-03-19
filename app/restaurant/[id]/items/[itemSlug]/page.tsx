@@ -24,6 +24,7 @@ export default async function ItemPage({
       addons={restaurant.addons}
       commonChanges={restaurant.commonChanges}
       ingredients={restaurant.ingredients}
+      customizationRules={restaurant.customizationRules}
     />
   );
 }

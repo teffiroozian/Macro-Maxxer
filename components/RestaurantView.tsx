@@ -28,6 +28,7 @@ import type {
   IngredientItem,
   MenuItem,
   RestaurantAddons,
+  RestaurantCustomizationRules,
 } from "@/types/menu";
 import {
   type Filters,
@@ -79,6 +80,7 @@ export default function RestaurantView({
   ingredients = [],
   addons,
   commonChanges,
+  customizationRules,
 }: {
   restaurantId: string;
   restaurantName: string;
@@ -87,6 +89,7 @@ export default function RestaurantView({
   ingredients?: IngredientItem[];
   addons?: RestaurantAddons;
   commonChanges?: CommonChange[];
+  customizationRules?: RestaurantCustomizationRules;
 }) {
   const SECTION_HEADER_TOP_GAP = 24;
 
@@ -406,6 +409,7 @@ export default function RestaurantView({
               addons={addons}
               ingredients={ingredients}
               commonChanges={commonChanges}
+              customizationRules={customizationRules}
               groupByCategory={!entireMenu}
               categoryMode={viewMode}
             />

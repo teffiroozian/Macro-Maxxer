@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
-import ItemDetailsPanel, { PortionSelector, resolvePanelIngredients } from "@/components/ItemDetailsPanel";
+import ItemDetailsPanel, { PortionSelector, type ResolvedPanelIngredient, resolvePanelIngredients } from "@/components/ItemDetailsPanel";
 import type {
   AddonOption,
   AddonRef,
@@ -11,6 +11,7 @@ import type {
   MenuItem,
   RestaurantAddons,
   IngredientItem,
+  RestaurantCustomizationRules,
 } from "@/types/menu";
 import { useCart } from "@/stores/cartStore";
 
@@ -55,6 +56,15 @@ function deltaFat(change: CommonChange) {
   return change.delta.totalFat ?? change.delta.fat ?? 0;
 }
 
+function getDefaultIngredientCounts(
+  resolvedIngredients: ResolvedPanelIngredient[]
+) {
+  return resolvedIngredients.reduce<Record<string, number>>((acc, ingredient) => {
+    acc[ingredient.id] = ingredient.defaultCount;
+    return acc;
+  }, {});
+}
+
 function getApplicableCommonChanges(item: MenuItem, commonChanges?: CommonChange[]) {
   if (!commonChanges || commonChanges.length === 0) return [];
   const itemCategories = new Set(
@@ -76,6 +86,7 @@ export default function ItemRouteModal({
   commonChanges,
   ingredients,
   menuItems,
+  customizationRules,
 }: {
   restaurantId: string;
   restaurantPath: string;
@@ -84,6 +95,7 @@ export default function ItemRouteModal({
   commonChanges?: CommonChange[];
   ingredients?: IngredientItem[];
   menuItems?: MenuItem[];
+  customizationRules?: RestaurantCustomizationRules;
 }) {
   const router = useRouter();
   const variants = item.variants?.length ? item.variants : null;
@@ -105,19 +117,12 @@ export default function ItemRouteModal({
   const selectedItemImage = selectedVariant?.image ?? item.image;
   const baseNutrition = selectedVariant?.nutrition ?? item.nutrition;
   const resolvedIngredients = useMemo(
-    () => resolvePanelIngredients(item, ingredients, addons, menuItems ?? [], variants, selectedVariantId),
-    [addons, ingredients, item, menuItems, selectedVariantId, variants]
+    () => resolvePanelIngredients(item, ingredients, addons, menuItems ?? [], variants, selectedVariantId, customizationRules),
+    [addons, customizationRules, ingredients, item, menuItems, selectedVariantId, variants]
   );
-  const initialIngredientCounts = useMemo(() => {
-    const resolvedIngredientIds = new Set(resolvedIngredients.map((ingredient) => ingredient.id));
-
-    return (item.ingredients ?? []).reduce<Record<string, number>>((counts, ingredientId) => {
-      if (!resolvedIngredientIds.has(ingredientId) || ingredientId in counts) return counts;
-      counts[ingredientId] = 1;
-      return counts;
-    }, {});
-  }, [item.ingredients, resolvedIngredients]);
-  const [selectedIngredientCounts, setSelectedIngredientCounts] = useState<Record<string, number>>(initialIngredientCounts);
+  const [selectedIngredientCounts, setSelectedIngredientCounts] = useState<Record<string, number>>(() =>
+    getDefaultIngredientCounts(resolvedIngredients)
+  );
 
   const applicableCommonChanges = useMemo(
     () => getApplicableCommonChanges(item, commonChanges),
@@ -174,6 +179,16 @@ export default function ItemRouteModal({
     return lookup;
   }, [resolvedIngredients]);
 
+  const ingredientCounts = useMemo(() => {
+    const defaults = getDefaultIngredientCounts(resolvedIngredients);
+    return Object.keys(defaults).reduce<Record<string, number>>((acc, ingredientId) => {
+      acc[ingredientId] = ingredientId in selectedIngredientCounts
+        ? selectedIngredientCounts[ingredientId]
+        : defaults[ingredientId];
+      return acc;
+    }, {});
+  }, [resolvedIngredients, selectedIngredientCounts]);
+
   const commonChangeTotals = useMemo(
     () =>
       applicableCommonChanges.reduce<MacroDelta>(
@@ -193,16 +208,15 @@ export default function ItemRouteModal({
 
   const ingredientCountTotals = useMemo(
     () =>
-      Object.entries(selectedIngredientCounts).reduce<MacroDelta>(
+      Object.entries(ingredientCounts).reduce<MacroDelta>(
         (sum, [ingredientId, count]) => {
-          const countDelta = count - 1;
-          if (countDelta === 0) return sum;
-
           const ingredient =
             ingredientLookup.get(ingredientId) ??
             ingredientLookup.get(ingredientId.toLowerCase());
 
           if (!ingredient) return sum;
+          const countDelta = count - ingredient.defaultCount;
+          if (countDelta === 0) return sum;
 
           return {
             calories: sum.calories + (ingredient.nutrition.calories ?? 0) * countDelta,
@@ -213,7 +227,7 @@ export default function ItemRouteModal({
         },
         { calories: 0, protein: 0, carbs: 0, fat: 0 }
       ),
-    [ingredientLookup, selectedIngredientCounts]
+    [ingredientCounts, ingredientLookup]
   );
 
   const customizationTotals = useMemo(
@@ -267,17 +281,13 @@ export default function ItemRouteModal({
   );
   const selectedIngredientCustomizations = useMemo(
     () =>
-      Object.entries(selectedIngredientCounts)
-        .filter(([, count]) => count !== 1)
-        .flatMap(([ingredientId, count]) => {
-          const ingredientName =
-            ingredientLookup.get(ingredientId)?.label ??
-            ingredientLookup.get(ingredientId.toLowerCase())?.label ??
-            ingredientId;
-
-          return [count === 0 ? `${ingredientName}: Removed` : `${ingredientName}: ${count}x`];
+      resolvedIngredients
+        .filter((ingredient) => (ingredientCounts[ingredient.id] ?? ingredient.defaultCount) !== ingredient.defaultCount)
+        .flatMap((ingredient) => {
+          const ingredientCount = ingredientCounts[ingredient.id] ?? ingredient.defaultCount;
+          return [ingredientCount === 0 ? `${ingredient.label}: Removed` : `${ingredient.label}: ${ingredientCount}x`];
         }),
-    [ingredientLookup, selectedIngredientCounts]
+    [ingredientCounts, resolvedIngredients]
   );
 
   const handleClose = () => {
@@ -412,6 +422,7 @@ export default function ItemRouteModal({
             addons={addons}
             ingredientItems={ingredients}
             menuItems={menuItems}
+            customizationRules={customizationRules}
             selectedAddons={selectedAddons}
             onSelectAddon={(ref, addon) => setSelectedAddons((prev) => ({ ...prev, [ref]: addon ?? emptyAddon }))}
             sauceSelectionCounts={selectedSauceCounts}
@@ -456,12 +467,10 @@ export default function ItemRouteModal({
             customizationTotals={customizationTotals}
             showCustomizationDeltas={hasActiveCustomization}
             showVariantsInDetails={true}
-            selectedIngredientCounts={selectedIngredientCounts}
+            selectedIngredientCounts={ingredientCounts}
             onDecrementIngredient={(ingredientId) =>
               setSelectedIngredientCounts((prev) => {
-                if (!(ingredientId in prev)) return prev;
-
-                const current = prev[ingredientId] ?? 0;
+                const current = ingredientCounts[ingredientId] ?? 0;
                 const nextCount = Math.max(0, current - 1);
                 if (nextCount === current) return prev;
 
@@ -470,8 +479,6 @@ export default function ItemRouteModal({
             }
             onIncrementIngredient={(ingredientId) =>
               setSelectedIngredientCounts((prev) => {
-                if (!(ingredientId in prev)) return prev;
-
                 const ingredient =
                   ingredientLookup.get(ingredientId) ??
                   ingredientLookup.get(ingredientId.toLowerCase());
@@ -479,7 +486,7 @@ export default function ItemRouteModal({
 
                 if (typeof maxQuantity !== "number") return prev;
 
-                const current = prev[ingredientId] ?? 0;
+                const current = ingredientCounts[ingredientId] ?? ingredient?.defaultCount ?? 0;
                 const nextCount = Math.min(maxQuantity, current + 1);
                 if (nextCount === current) return prev;
 

@@ -3,7 +3,16 @@
 import Link from "next/link";
 import { useEffect, useMemo, useRef, useState } from "react";
 import type { CartMacros } from "@/stores/cartStore";
-import type { AddonOption, CommonChange, IngredientItem, MenuItem, Nutrition, RestaurantAddons, RestaurantMenu } from "@/types/menu";
+import type {
+  AddonOption,
+  CommonChange,
+  IngredientItem,
+  MenuItem,
+  Nutrition,
+  RestaurantAddons,
+  RestaurantCustomizationRules,
+  RestaurantMenu,
+} from "@/types/menu";
 import MenuItemCard from "@/components/MenuItemCard";
 import StickyMacroTotalsBar from "@/components/StickyMacroTotalsBar";
 import restaurants from "@/app/data/index.json";
@@ -61,6 +70,10 @@ const ingredientLookupByRestaurant: Partial<Record<string, IngredientItem[]>> = 
 
 const commonChangesLookupByRestaurant: Partial<Record<string, CommonChange[]>> = {
   chickfila: chickfilaData.commonChanges,
+};
+
+const customizationRulesLookupByRestaurant: Partial<Record<string, RestaurantCustomizationRules>> = {
+  chickfila: chickfilaData.customizationRules,
 };
 
 type NutritionTotals = {
@@ -303,6 +316,7 @@ export default function CartPage() {
                   addons={addonsLookupByRestaurant[cartItem.restaurantId]}
                   ingredientItems={ingredientLookupByRestaurant[cartItem.restaurantId]}
                   menuItems={menuLookupByRestaurant[cartItem.restaurantId]}
+                  customizationRules={customizationRulesLookupByRestaurant[cartItem.restaurantId]}
                   commonChanges={commonChangesLookupByRestaurant[cartItem.restaurantId]}
                   mode="cart"
                   cartQuantity={cartItem.quantity}
