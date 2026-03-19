@@ -32,24 +32,47 @@ export function resolveIngredientTabs(
     return configuredTabs.findIndex((candidate) => normalizeTabName(candidate) === normalizedTab) === index;
   });
 
-  return [INCLUDED_INGREDIENT_TAB, ...dedupedConfiguredTabs];
+  return [
+    INCLUDED_INGREDIENT_TAB,
+    ...dedupedConfiguredTabs.filter((tab) => typeof resolveIngredientTabMaxQuantity(item, tab, customizationRules) === "number"),
+  ];
+}
+
+export function resolveIngredientTabMaxQuantity(
+  item: MenuItem,
+  tabName: string,
+  customizationRules?: RestaurantCustomizationRules
+) {
+  const normalizedTabName = normalizeTabName(tabName);
+  if (!normalizedTabName || normalizedTabName === normalizeTabName(INCLUDED_INGREDIENT_TAB)) {
+    return undefined;
+  }
+
+  const itemLevelMaxQuantities = item.customization?.ingredientTabMaxQuantities;
+  const itemLevelMax = Object.entries(itemLevelMaxQuantities ?? {}).find(
+    ([candidateTab]) => normalizeTabName(candidateTab) === normalizedTabName
+  )?.[1];
+
+  if (typeof itemLevelMax === "number") {
+    return itemLevelMax;
+  }
+
+  const primaryCategory = item.categories?.[0];
+  const restaurantLevelMaxQuantities =
+    primaryCategory ? customizationRules?.ingredientTabMaxQuantitiesByItemCategory?.[primaryCategory] : undefined;
+
+  return Object.entries(restaurantLevelMaxQuantities ?? {}).find(
+    ([candidateTab]) => normalizeTabName(candidateTab) === normalizedTabName
+  )?.[1];
 }
 
 export function resolveSingleSelectIngredientTabs(
   item: MenuItem,
   customizationRules?: RestaurantCustomizationRules
 ) {
-  const itemLevelTabs = item.customization?.singleSelectIngredientTabs?.filter(Boolean) ?? [];
-  const primaryCategory = item.categories?.[0];
-  const restaurantLevelTabs =
-    primaryCategory
-      ? customizationRules?.singleSelectIngredientTabsByItemCategory?.[primaryCategory]?.filter(Boolean) ?? []
-      : [];
-
-  const configuredTabs = itemLevelTabs.length > 0 ? itemLevelTabs : restaurantLevelTabs;
-
   return new Set(
-    configuredTabs
+    resolveIngredientTabs(item, customizationRules)
+      .filter((tab) => resolveIngredientTabMaxQuantity(item, tab, customizationRules) === 1)
       .map((tab) => normalizeTabName(tab))
       .filter((tab) => tab && tab !== normalizeTabName(INCLUDED_INGREDIENT_TAB))
   );
@@ -66,9 +89,9 @@ export function ingredientMatchesTab(ingredient: IngredientItem, tabName: string
 }
 
 export function isSingleSelectIngredientTab(
+  item: MenuItem,
   tabName: string,
   customizationRules?: RestaurantCustomizationRules
 ) {
-  const singleSelectTabs = customizationRules?.singleSelectIngredientTabs ?? [];
-  return singleSelectTabs.some((tab) => normalizeTabName(tab) === normalizeTabName(tabName));
+  return resolveIngredientTabMaxQuantity(item, tabName, customizationRules) === 1;
 }

@@ -282,7 +282,7 @@ export default function ItemRouteModal({
   const selectedIngredientCustomizations = useMemo(
     () =>
       resolvedIngredients
-        .filter((ingredient) => (ingredientCounts[ingredient.id] ?? ingredient.defaultCount) !== ingredient.defaultCount)
+        .filter((ingredient) => !ingredient.isNoneOption && (ingredientCounts[ingredient.id] ?? ingredient.defaultCount) !== ingredient.defaultCount)
         .flatMap((ingredient) => {
           const ingredientCount = ingredientCounts[ingredient.id] ?? ingredient.defaultCount;
           return [ingredientCount === 0 ? `${ingredient.label}: Removed` : `${ingredient.label}: ${ingredientCount}x`];
@@ -475,24 +475,6 @@ export default function ItemRouteModal({
                 if (nextCount === current) return prev;
 
                 return { ...prev, [ingredientId]: nextCount };
-              })
-            }
-            onSelectSingleIngredientOption={(ingredientId, ingredientIdsInTab) =>
-              setSelectedIngredientCounts((prev) => {
-                const next = { ...prev };
-                let didChange = false;
-
-                ingredientIdsInTab.forEach((candidateId) => {
-                  const nextCount = candidateId === ingredientId ? 1 : 0;
-                  if ((next[candidateId] ?? 0) !== nextCount) {
-                    next[candidateId] = nextCount;
-                    didChange = true;
-                  }
-                });
-
-                if (!didChange) return prev;
-
-                return next;
               })
             }
             onIncrementIngredient={(ingredientId) =>

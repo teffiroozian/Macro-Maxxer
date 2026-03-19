@@ -12,15 +12,16 @@ import type {
   RestaurantAddons,
   RestaurantCustomizationRules,
 } from "@/types/menu";
-import { Check, ChevronDown, ChevronRight} from "lucide-react";
+import { Check, ChevronDown, ChevronRight } from "lucide-react";
 import {
   INCLUDED_INGREDIENT_TAB,
-  getIngredientTabDisplayLabel, ingredientMatchesTab,
+  getIngredientTabDisplayLabel,
+  ingredientMatchesTab,
+  resolveIngredientTabMaxQuantity,
   resolveIngredientTabs,
   resolveSingleSelectIngredientTabs,
   type IngredientSelectionMode,
 } from "@/lib/ingredientTabs";
-
 
 function format(n?: number, suffix = "") {
   return n === undefined || n === null || Number.isNaN(n) ? `—${suffix}` : `${n}${suffix}`;
@@ -99,6 +100,7 @@ export type ResolvedPanelIngredient = {
   nutrition: Nutrition;
   calories?: number;
   defaultCount: number;
+  isNoneOption?: boolean;
 };
 
 export type ResolvedIngredientTab = {
@@ -224,7 +226,8 @@ export function resolvePanelIngredientTabs(
       icon: match?.image ?? menuItemMatch?.image ?? addonMatch?.image ?? "🥣",
       tabLabel: ingredientTabLabel,
       ingredientItem: match,
-      maxQuantity: match?.maxQuantity,
+      maxQuantity:
+        ingredientTabLabel ? resolveIngredientTabMaxQuantity(item, ingredientTabLabel, customizationRules) : undefined,
       nutrition,
       calories: nutrition.calories,
       defaultCount: includedIngredientIds.has(normalizedId) ? 1 : 0,
@@ -259,13 +262,39 @@ export function resolvePanelIngredientTabs(
       return tabIngredients.findIndex((candidate) => candidate.id === ingredient.id) === index;
     });
 
+    const tabMaxQuantity = resolveIngredientTabMaxQuantity(item, tab, customizationRules);
+    const selectionMode = singleSelectTabs.has(normalizeIngredientToken(tab)) ? "single" : "quantity";
+    const hasDefaultIngredient = uniqueTabIngredients.some((ingredient) => ingredient.defaultCount > 0);
+    const ingredients =
+      selectionMode === "single" && isCheeseTab(tab)
+        ? [
+            {
+              id: `none-${normalizeIngredientToken(tab)}`,
+              label: "None",
+              icon: "✕",
+              tabLabel: tab,
+              maxQuantity: tabMaxQuantity,
+              nutrition: {},
+              calories: 0,
+              defaultCount: hasDefaultIngredient ? 0 : 1,
+              isNoneOption: true,
+            },
+            ...uniqueTabIngredients,
+          ]
+        : uniqueTabIngredients;
+
     return {
       id: normalizeIngredientToken(tab),
       label: tab,
-      selectionMode: singleSelectTabs.has(normalizeIngredientToken(tab)) ? "single" : "quantity",
-      ingredients: uniqueTabIngredients,
+      selectionMode,
+      ingredients,
     };
   });
+}
+
+function isCheeseTab(tabName: string) {
+  const normalized = normalizeIngredientCategory(tabName);
+  return normalized === "cheese" || normalized === "cheeses";
 }
 
 function sortByCalories(addons: AddonOption[]) {
@@ -276,12 +305,9 @@ function formatSummaryDetail(name: string, calories: number) {
   return `• ${name} (${calories >= 0 ? "+" : ""}${calories}cal)`;
 }
 
-
 function isIconImage(icon: string) {
   return icon.startsWith("/") || icon.startsWith("http://") || icon.startsWith("https://");
 }
-
-
 
 export function PortionSelector({
   variants,
@@ -457,6 +483,11 @@ export default function ItemDetailsPanel({
 
       const selectedIngredient =
         linkedSingleSelectTab.ingredients.find((candidate) => selectedCountFor(candidate) > 0) ?? ingredient;
+
+      if (selectedIngredient.isNoneOption) {
+        return;
+      }
+
       const includedIngredient = { ...selectedIngredient, tabLabel: linkedSingleSelectTab.label };
 
       includedIngredients.push(includedIngredient);
@@ -474,7 +505,7 @@ export default function ItemDetailsPanel({
         }
 
         const selectedIngredient = tab.ingredients.find((ingredient) => selectedCountFor(ingredient) > 0);
-        if (!selectedIngredient || includedIngredientIds.has(selectedIngredient.id)) {
+        if (!selectedIngredient || selectedIngredient.isNoneOption || includedIngredientIds.has(selectedIngredient.id)) {
           return;
         }
 

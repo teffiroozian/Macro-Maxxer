@@ -77,11 +77,13 @@ export type IngredientModifier = {
 export type IngredientTabsOverride = {
   ingredientTabs?: string[];
   singleSelectIngredientTabs?: string[];
+  ingredientTabMaxQuantities?: Partial<Record<string, number>>;
 };
 
 export type RestaurantCustomizationRules = {
   ingredientTabsByItemCategory?: Partial<Record<string, string[]>>;
   singleSelectIngredientTabsByItemCategory?: Partial<Record<string, string[]>>;
+  ingredientTabMaxQuantitiesByItemCategory?: Partial<Record<string, Partial<Record<string, number>>>>;
 };
 
 export type MenuItem = {

@@ -42,6 +42,17 @@
                 "Buns",
                 "Cheeses"
             ]
+        },
+        "ingredientTabMaxQuantitiesByItemCategory": {
+            "Sandwich": {
+                "Buns": 1,
+                "Cheeses": 1,
+                "Sandwich Toppings": 5
+            },
+            "Breakfast": {
+                "Buns": 1,
+                "Cheeses": 1
+            }
         }
     },
     "items": [
