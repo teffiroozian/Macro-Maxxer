@@ -59,7 +59,9 @@
                     "grilled-filet",
                     "spicy-filet",
                     "cfa-filet",
-                    "spicy-grilled-filet-cold"
+                    "crispy-nuggets",
+                    "grilled-nuggets",
+                    "chick-n-strips"
                 ]
             }
         }
@@ -3542,6 +3544,28 @@
             "image": "/restaurants/chickfila/menu/chicken/crispy-nuggets.webp",
             "nutrition": {
                 "calories": 250
+            }
+        },
+        {
+            "id": "grilled-nuggets",
+            "name": "Grilled Nuggets",
+            "categories": [
+                "Proteins"
+            ],
+            "image": "/restaurants/chickfila/menu/chicken/grilled-nuggets.webp",
+            "nutrition": {
+                "calories": 130
+            }
+        },
+        {
+            "id": "chick-n-strips",
+            "name": "Chick-fil-A Chick-n-Strips®",
+            "categories": [
+                "Proteins"
+            ],
+            "image": "/restaurants/chickfila/menu/chicken/chicken-strips.webp",
+            "nutrition": {
+                "calories": 310
             }
         },
         {
