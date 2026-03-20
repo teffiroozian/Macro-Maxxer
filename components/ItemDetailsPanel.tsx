@@ -154,6 +154,7 @@ export function resolvePanelIngredientTabs(
   const includedIngredientIds = new Set(ingredientIds.map((ingredientId) => ingredientId.toLowerCase()));
   const resolvedTabs = resolveIngredientTabs(item, customizationRules);
   const singleSelectTabs = resolveSingleSelectIngredientTabs(item, customizationRules);
+  const primaryCategory = item.categories?.[0];
 
   const ingredientByIdLookup = new Map<string, IngredientItem>();
   const ingredientByNameLookup = new Map<string, IngredientItem>();
@@ -237,7 +238,20 @@ export function resolvePanelIngredientTabs(
     return resolvedIngredient;
   }
 
+  function getConfiguredIngredientIdsForTab(tabName: string) {
+    if (!primaryCategory) return undefined;
+
+    const categoryIngredientOptions = Object.entries(customizationRules?.ingredientOptionsByItemCategory ?? {}).find(
+      ([candidateCategory]) => normalizeIngredientCategory(candidateCategory) === normalizeIngredientCategory(primaryCategory)
+    )?.[1];
+
+    return Object.entries(categoryIngredientOptions ?? {}).find(
+      ([candidateTab]) => normalizeIngredientCategory(candidateTab) === normalizeIngredientCategory(tabName)
+    )?.[1];
+  }
+
   return resolvedTabs.map((tab) => {
+    const configuredIngredientIds = tab === INCLUDED_INGREDIENT_TAB ? undefined : getConfiguredIngredientIdsForTab(tab);
     const tabIngredients =
       tab === INCLUDED_INGREDIENT_TAB
         ? ingredientIds
@@ -254,6 +268,8 @@ export function resolvePanelIngredientTabs(
                 : left.index - right.index;
             })
             .map(({ ingredient }) => ingredient)
+        : configuredIngredientIds?.length
+            ? configuredIngredientIds.map((ingredientId) => getResolvedIngredient(ingredientId))
         : ingredientItems
             .filter((ingredient) => ingredientMatchesTab(ingredient, tab))
             .map((ingredient) => getResolvedIngredient(ingredient.id ?? ingredient.name, ingredient));

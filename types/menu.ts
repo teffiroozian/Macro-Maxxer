@@ -85,6 +85,7 @@ export type RestaurantCustomizationRules = {
   singleSelectIngredientTabsByItemCategory?: Partial<Record<string, string[]>>;
   ingredientTabMaxQuantities?: Partial<Record<string, number>>;
   ingredientTabMaxQuantitiesByItemCategory?: Partial<Record<string, Partial<Record<string, number>>>>;
+  ingredientOptionsByItemCategory?: Partial<Record<string, Partial<Record<string, string[]>>>>;
 };
 
 export type MenuItem = {
