@@ -50,12 +50,13 @@
             "Proteins": 1,
             "Sandwich Toppings": 6,
             "Salad Toppings": 6,
-            "Salad Condiments": 6
+            "Salad Condiments": 6,
+            "Wrap Toppings": 2
 
         },
         "ingredientOptionsByItemCategory": {
             "Salad": {
-                "Protein": [
+                "Proteins": [
                     "grilled-filet",
                     "spicy-filet",
                     "cfa-filet",
