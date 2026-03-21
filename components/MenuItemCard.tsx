@@ -1085,6 +1085,28 @@ export default function MenuItemCard({
                 return next;
               })
             }
+            onToggleIngredient={(ingredientId) =>
+              setSelectedIngredientCounts((prev) => {
+                const ingredient =
+                  ingredientLookup.get(ingredientId) ??
+                  ingredientLookup.get(ingredientId.toLowerCase());
+                const maxQuantity = ingredient?.maxQuantity;
+                if (typeof maxQuantity !== "number") return prev;
+
+                const current = prev[ingredientId] ?? ingredient?.defaultCount ?? 0;
+                const next = { ...prev, [ingredientId]: current > 0 ? 0 : 1 };
+                if (next[ingredientId] === current) return prev;
+
+                emitCartConfiguration(
+                  selectedVariantId,
+                  selectedAddons,
+                  selectedSauceCounts,
+                  selectedCommonChangeIds,
+                  next
+                );
+                return next;
+              })
+            }
             onSelectSingleIngredient={(ingredientId, ingredientIdsInTab) =>
               setSelectedIngredientCounts((prev) => {
                 const next = { ...prev };

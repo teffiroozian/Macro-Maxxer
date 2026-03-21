@@ -493,6 +493,21 @@ export default function ItemRouteModal({
                 return { ...prev, [ingredientId]: nextCount };
               })
             }
+            onToggleIngredient={(ingredientId) =>
+              setSelectedIngredientCounts((prev) => {
+                const ingredient =
+                  ingredientLookup.get(ingredientId) ??
+                  ingredientLookup.get(ingredientId.toLowerCase());
+                const maxQuantity = ingredient?.maxQuantity;
+                if (typeof maxQuantity !== "number") return prev;
+
+                const current = prev[ingredientId] ?? ingredient?.defaultCount ?? 0;
+                const nextCount = current > 0 ? 0 : 1;
+                if (nextCount === current) return prev;
+
+                return { ...prev, [ingredientId]: nextCount };
+              })
+            }
             onSelectSingleIngredient={(ingredientId, ingredientIdsInTab) =>
               setSelectedIngredientCounts((prev) => {
                 const next = { ...prev };

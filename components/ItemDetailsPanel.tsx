@@ -401,6 +401,7 @@ export default function ItemDetailsPanel({
   selectedIngredientCounts,
   onIncrementIngredient,
   onDecrementIngredient,
+  onToggleIngredient,
   onSelectSingleIngredient,
 }: {
   item: MenuItem;
@@ -428,6 +429,7 @@ export default function ItemDetailsPanel({
   selectedIngredientCounts?: Partial<Record<string, number>>;
   onIncrementIngredient?: (ingredientId: string) => void;
   onDecrementIngredient?: (ingredientId: string) => void;
+  onToggleIngredient?: (ingredientId: string) => void;
   onSelectSingleIngredient?: (ingredientId: string, ingredientIdsInTab: string[]) => void;
 }) {
   const n = nutrition;
@@ -645,7 +647,25 @@ export default function ItemDetailsPanel({
                         </span>
                       </button>
                     ) : (
-                      <div className={cardClasses}>
+                      <div
+                        className={`${cardClasses} ${typeof ingredient.maxQuantity === "number" ? "cursor-pointer text-left" : ""}`}
+                        role={typeof ingredient.maxQuantity === "number" ? "button" : undefined}
+                        tabIndex={typeof ingredient.maxQuantity === "number" ? 0 : undefined}
+                        onClick={() => {
+                          if (typeof ingredient.maxQuantity === "number") {
+                            onToggleIngredient?.(ingredient.id);
+                          }
+                        }}
+                        onKeyDown={(event) => {
+                          if (
+                            typeof ingredient.maxQuantity === "number" &&
+                            (event.key === "Enter" || event.key === " ")
+                          ) {
+                            event.preventDefault();
+                            onToggleIngredient?.(ingredient.id);
+                          }
+                        }}
+                      >
                         {ingredientContent}
                         {shouldShowSingleSelectNavigator ? (
                           <button
@@ -661,7 +681,11 @@ export default function ItemDetailsPanel({
                             <ChevronRight size={18} />
                           </button>
                         ) : typeof ingredient.maxQuantity === "number" ? (
-                          <div className="ml-auto inline-flex items-center gap-[6px]">
+                          <div
+                            className="ml-auto inline-flex items-center gap-[6px]"
+                            onClick={(event) => event.stopPropagation()}
+                            onMouseDown={(event) => event.stopPropagation()}
+                          >
                             {ingredientCount > 0 ? (
                               <>
                                 <button
