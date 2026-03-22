@@ -9,9 +9,15 @@ function normalizeTabName(value: string) {
 
 export function getIngredientTabDisplayLabel(tabName: string) {
   const normalized = normalizeTabName(tabName);
-  return normalized.endsWith(" toppings") || normalized === "toppings"
-    ? "Toppings"
-    : tabName;
+    if (normalized.endsWith(" toppings") || normalized === "toppings") {
+    return "Toppings";
+  }
+
+  if (normalized.endsWith(" condiments") || normalized === "condiments") {
+    return "Condiments";
+  }
+
+  return tabName;
 }
 
 export function resolveIngredientTabs(
