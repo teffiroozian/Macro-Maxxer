@@ -18,10 +18,7 @@
                 "Proteins"
             ],
             "Breakfast": [
-                "Breakfast",
-                "Cheeses",
-                "Sandwich Toppings",
-                "Breakfast Sides"
+                "Wrap Toppings"
             ],
             "Side": [
                 "Soup Toppings",
@@ -56,6 +53,16 @@
         },
         "ingredientOptionsByItemCategory": {
             "Salad": {
+                "Proteins": [
+                    "grilled-filet",
+                    "spicy-filet",
+                    "cfa-filet",
+                    "crispy-nuggets",
+                    "grilled-nuggets",
+                    "chick-n-strips"
+                ]
+            },
+            "Breakfast": {
                 "Proteins": [
                     "grilled-filet",
                     "spicy-filet",
@@ -623,6 +630,7 @@
             "portionType": "single",
             "image": "/restaurants/chickfila/menu/salads/spicy-southwest-salad.webp",
             "ingredients": [
+                "grilled-filet",
                 "grape-tomato",
                 "black-beans-corn",
                 "shredded-cheddar",
@@ -654,6 +662,7 @@
             "portionType": "single",
             "image": "/restaurants/chickfila/menu/salads/market-salad.webp",
             "ingredients": [
+                "grilled-filet",
                 "blueberries",
                 "apples",
                 "strawberries",
@@ -3300,7 +3309,8 @@
             "name": "Shredded Monterey Cheddar Cheese",
             "categories": [
                 "Wrap Toppings",
-                "Salad Toppings"
+                "Salad Toppings",
+                "Breakfast"
             ],
             "image": "/restaurants/chickfila/ingredients/salad-toppings/shredded-cheddar.webp",
             "nutrition": {
@@ -3338,6 +3348,17 @@
             "image": "/restaurants/chickfila/ingredients/salad-toppings/black-beans-corn.webp",
             "nutrition": {
                 "calories": 45
+            }
+        },
+        {
+            "id": "jalapenos",
+            "name": "Jalapeños",
+            "categories": [
+                "Salad Toppings"
+            ],
+            "image": "/restaurants/chickfila/ingredients/salad-toppings/jalapenos.png",
+            "nutrition": {
+                "calories": 5
             }
         },
         {

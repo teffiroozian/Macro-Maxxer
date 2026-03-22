@@ -637,7 +637,7 @@ export default function ItemDetailsPanel({
                         {ingredientContent}
                         <span
                           aria-hidden="true"
-                          className={`ml-auto inline-flex h-6 w-6 items-center justify-center rounded-full border ${
+                          className={`ml-auto inline-flex h-6 w-6 shrink-0 items-center justify-center rounded-full border ${
                             isSelected ? "border-[3px] border-[#16a34a]" : "border-2 border-[rgba(0,0,0,0.25)]"
                           }`}
                         >
@@ -826,7 +826,7 @@ export default function ItemDetailsPanel({
                             {section.ref === "dressings" ? (
                               <span
                                 aria-hidden="true"
-                                className={`ml-auto inline-flex h-6 w-6 items-center justify-center rounded-full border ${isSelected ? "border-[3px] border-[#16a34a]" : "border-2 border-[rgba(0,0,0,0.25)]"}`}
+                                className={`ml-auto inline-flex h-6 w-6 shrink-0 items-center justify-center rounded-full border ${isSelected ? "border-[3px] border-[#16a34a]" : "border-2 border-[rgba(0,0,0,0.25)]"}`}
                               >
                                 <span
                                   className={`h-2.5 w-2.5 rounded-full ${isSelected ? "bg-[#16a34a]" : "bg-transparent"}`}
