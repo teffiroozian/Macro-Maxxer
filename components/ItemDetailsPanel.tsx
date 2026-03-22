@@ -152,6 +152,7 @@ export function resolvePanelIngredientTabs(
 ): ResolvedIngredientTab[] {
   const ingredientIds = item.ingredients ?? [];
   const includedIngredientIds = new Set(ingredientIds.map((ingredientId) => ingredientId.toLowerCase()));
+  const includedIngredientTokens = new Set(ingredientIds.map((ingredientId) => normalizeIngredientToken(ingredientId)));
   const resolvedTabs = resolveIngredientTabs(item, customizationRules);
   const singleSelectTabs = resolveSingleSelectIngredientTabs(item, customizationRules);
   const primaryCategory = item.categories?.[0];
@@ -210,17 +211,17 @@ export function resolvePanelIngredientTabs(
       menuItemByNameLookup.get(normalizeIngredientToken(ingredientId)) ??
       menuItemByNameLookup.get(normalizeIngredientToken(fallbackLabel));
 
-    const label = menuItemMatch?.name ?? match?.name ?? fallbackLabel;
+    const addonMatch =
+      addonLookup.get(ingredientId.toLowerCase()) ??
+      addonLookup.get(normalizeIngredientToken(ingredientId)) ??
+      addonLookup.get(fallbackLabel.toLowerCase()) ??
+      addonLookup.get(normalizeIngredientToken(fallbackLabel));
+    const label = menuItemMatch?.name ?? match?.name ?? addonMatch?.name ?? fallbackLabel;
     const ingredientTabLabel =
       explicitTabLabel ??
       resolvedTabs.find((tab) => {
         return tab !== INCLUDED_INGREDIENT_TAB && match ? ingredientMatchesTab(match, tab) : false;
       });
-    const addonMatch =
-      addonLookup.get(ingredientId.toLowerCase()) ??
-      addonLookup.get(normalizeIngredientToken(ingredientId)) ??
-      addonLookup.get(label.toLowerCase()) ??
-      addonLookup.get(normalizeIngredientToken(label));
     const nutrition =
       menuItemMatch?.nutrition ??
       match?.nutrition ?? {
@@ -246,7 +247,10 @@ export function resolvePanelIngredientTabs(
         ingredientTabLabel ? resolveIngredientTabMaxQuantity(item, ingredientTabLabel, customizationRules) : undefined,
       nutrition,
       calories: nutrition.calories,
-      defaultCount: includedIngredientIds.has(normalizedId) ? 1 : 0,
+      defaultCount:
+        includedIngredientIds.has(normalizedId) || includedIngredientTokens.has(normalizeIngredientToken(ingredientId))
+          ? 1
+          : 0,
     };
 
     resolvedIngredientLookup.set(normalizedId, resolvedIngredient);
