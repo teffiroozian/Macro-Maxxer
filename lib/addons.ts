@@ -40,6 +40,7 @@ function normalizeAddonOption(addon: RawAddonOption): AddonOption {
   const totalFat = toNumber(addon.totalFat ?? addon.fat ?? nutrition.totalFat ?? nutrition.fat);
 
   return {
+    id: addon.id,
     name: addon.name ?? addon.id ?? "Unnamed Add-on",
     calories: toNumber(addon.calories ?? nutrition.calories),
     protein: toNumber(addon.protein ?? nutrition.protein),

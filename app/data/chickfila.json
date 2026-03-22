@@ -49,7 +49,6 @@
             "Salad Toppings": 6,
             "Salad Condiments": 6,
             "Wrap Toppings": 2
-
         },
         "ingredientOptionsByItemCategory": {
             "Salad": {
@@ -60,6 +59,18 @@
                     "crispy-nuggets",
                     "grilled-nuggets",
                     "chick-n-strips"
+                ]
+            },
+            "Sandwich": {
+                "Sauces": [
+                    "Barbeque Sauce",
+                    "Chick-fil-A Sauce",
+                    "Garden Herb Ranch Sauce",
+                    "Honey Mustard Sauce",
+                    "Polynesian Sauce",
+                    "Sweet & Spicy Sriracha Sauce",
+                    "Zesty Buffalo Sauce",
+                    "Honey Roasted BBQ Sauce"
                 ]
             }
         }
@@ -3535,18 +3546,6 @@
             "nutrition": {
                 "calories": 5
             }
-        },
-        {
-            "id": "honey-roasted-bbq-sauce",
-            "name": "Honey Roasted BBQ Sauce",
-            "categories": [
-                "Sauces"
-            ],
-            "image": "/restaurants/chickfila/menu/dipping-sauces/honey_roasted_bbq.webp",
-            "nutrition": {
-                "calories": 60
-            },
-            "maxQuantity": 2
         },
         {
             "id": "crispy-nuggets",

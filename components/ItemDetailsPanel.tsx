@@ -170,7 +170,12 @@ export function resolvePanelIngredientTabs(
 
   Object.values(addons ?? {}).forEach((addonGroup) => {
     addonGroup?.forEach((addon) => {
+      if (addon.id) {
+        addonLookup.set(addon.id.toLowerCase(), addon);
+      }
+
       addonLookup.set(addon.name.toLowerCase(), addon);
+      addonLookup.set(normalizeIngredientToken(addon.name), addon);
     });
   });
 
@@ -205,7 +210,11 @@ export function resolvePanelIngredientTabs(
     const ingredientTabLabel = resolvedTabs.find((tab) => {
       return tab !== INCLUDED_INGREDIENT_TAB && match ? ingredientMatchesTab(match, tab) : false;
     });
-    const addonMatch = addonLookup.get(label.toLowerCase());
+    const addonMatch =
+      addonLookup.get(ingredientId.toLowerCase()) ??
+      addonLookup.get(normalizeIngredientToken(ingredientId)) ??
+      addonLookup.get(label.toLowerCase()) ??
+      addonLookup.get(normalizeIngredientToken(label));
     const nutrition =
       menuItemMatch?.nutrition ??
       match?.nutrition ?? {

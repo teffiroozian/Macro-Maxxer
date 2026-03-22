@@ -34,6 +34,7 @@ export type ItemVariant = {
 export type AddonRef = "sauces" | "dressings" | "condiments";
 
 export type AddonOption = {
+  id?: string;
   name: string;
   calories?: number;
   protein?: number;
