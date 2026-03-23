@@ -3,7 +3,7 @@ import type { IngredientItem, MenuItem, RestaurantCustomizationRules } from "@/t
 export const INCLUDED_INGREDIENT_TAB = "Included";
 export type IngredientSelectionMode = "quantity" | "single";
 
-function normalizeTabName(value: string) {
+export function normalizeTabName(value: string) {
   return value.trim().toLowerCase();
 }
 

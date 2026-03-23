@@ -17,6 +17,7 @@ import {
   INCLUDED_INGREDIENT_TAB,
   getIngredientTabDisplayLabel,
   ingredientMatchesTab,
+  normalizeTabName,
   resolveIngredientTabMaxQuantity,
   resolveIngredientTabs,
   resolveSingleSelectIngredientTabs,
@@ -279,7 +280,7 @@ export function resolvePanelIngredientTabs(
     });
 
     const tabMaxQuantity = resolveIngredientTabMaxQuantity(item, tab, customizationRules);
-    const selectionMode = singleSelectTabs.has(normalizeIngredientToken(tab)) ? "single" : "quantity";
+    const selectionMode = singleSelectTabs.has(normalizeTabName(tab)) ? "single" : "quantity";
     const hasDefaultIngredient = uniqueTabIngredients.some((ingredient) => ingredient.defaultCount > 0);
     const ingredients =
       selectionMode === "single" && isCheeseTab(tab)
