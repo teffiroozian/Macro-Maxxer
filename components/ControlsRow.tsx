@@ -11,14 +11,19 @@ export type Filters = {
   includeSidesDrinks?: boolean;
   includeLargeShareables?: boolean;
 };
-import { SlidersHorizontal, ChevronDown } from "lucide-react";
+import { SlidersHorizontal, ChevronDown, ClipboardList, Carrot, Flame, Leaf, Scale } from "lucide-react";
 
 const PROTEIN_OPTIONS = [20, 30, 40, 50];
 
-const SORT_OPTIONS: Array<{ label: string; value: SortOption }> = [
-  { label: "Highest Protein", value: "highest-protein" },
-  { label: "Lowest Calories", value: "lowest-calories" },
-  { label: "Best Ratio", value: "best-ratio" },
+const VIEW_OPTIONS: Array<{ label: string; value: ViewOption; icon: typeof ClipboardList }> = [
+  { label: "Menu", value: "menu", icon: ClipboardList },
+  { label: "Ingredients", value: "ingredients", icon: Carrot },
+];
+
+const SORT_OPTIONS: Array<{ label: string; value: SortOption; icon: typeof Flame }> = [
+  { label: "Highest Protein", value: "highest-protein", icon: Flame },
+  { label: "Lowest Calories", value: "lowest-calories", icon: Leaf },
+  { label: "Best Ratio", value: "best-ratio", icon: Scale },
 ];
 
 export function FilterChips({
@@ -84,27 +89,41 @@ export default function ControlsRow({
   };
 }) {
   const [isFiltersOpen, setIsFiltersOpen] = useState(false);
+  const [isViewOpen, setIsViewOpen] = useState(false);
   const [isSortOpen, setIsSortOpen] = useState(false);
   const [draftFilters, setDraftFilters] = useState<Filters>(filters);
+  const [hoveredViewOption, setHoveredViewOption] = useState<ViewOption | null>(null);
   const [hoveredSortOption, setHoveredSortOption] = useState<SortOption | null>(null);
+  const viewMenuRef = useRef<HTMLDivElement>(null);
   const sortMenuRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const handlePointerDown = (event: MouseEvent) => {
-      if (!sortMenuRef.current?.contains(event.target as Node)) {
+      const target = event.target as Node;
+
+      if (!viewMenuRef.current?.contains(target)) {
+        setIsViewOpen(false);
+      }
+
+      if (!sortMenuRef.current?.contains(target)) {
         setIsSortOpen(false);
       }
     };
 
-    if (isSortOpen) {
+    if (isViewOpen || isSortOpen) {
       document.addEventListener("mousedown", handlePointerDown);
     }
 
     return () => document.removeEventListener("mousedown", handlePointerDown);
-  }, [isSortOpen]);
+  }, [isViewOpen, isSortOpen]);
 
-  const sortLabel = useMemo(
-    () => SORT_OPTIONS.find((option) => option.value === sort)?.label ?? "Highest Protein",
+  const currentViewOption = useMemo(
+    () => VIEW_OPTIONS.find((option) => option.value === view) ?? VIEW_OPTIONS[0],
+    [view]
+  );
+
+  const currentSortOption = useMemo(
+    () => SORT_OPTIONS.find((option) => option.value === sort) ?? SORT_OPTIONS[0],
     [sort]
   );
 
@@ -199,40 +218,67 @@ export default function ControlsRow({
     <>
       <div id={wrapperId} className="grid gap-2">
         <div className="flex min-w-0 items-center justify-end gap-2.5">
-          <div
-            role="group"
-            aria-label="View"
-            className="inline-flex rounded-full border border-black/20 bg-white p-0.5"
-          >
-            {([
-              { label: "Menu", value: "menu" },
-              { label: "Ingredients", value: "ingredients" },
-            ] as const).map((option) => {
-              const isActive = view === option.value;
+          <div ref={viewMenuRef} className="relative shrink-0">
+            <button
+              type="button"
+              onClick={() => {
+                setIsViewOpen((prev) => !prev);
+                setIsSortOpen(false);
+              }}
+              aria-haspopup="menu"
+              aria-expanded={isViewOpen}
+              className="cursor-pointer inline-flex items-center gap-2 whitespace-nowrap rounded-full border border-black/20 bg-white px-[14px] py-[6px] font-semibold text-black/85"
+            >
+              <currentViewOption.icon className="h-4 w-4" strokeWidth={2.2} />
+              {currentViewOption.label}
+              <ChevronDown className="h-4 w-4" strokeWidth={2.5} />
+            </button>
 
-              return (
-                <button
-                  key={option.value}
-                  type="button"
-                  onClick={() => onChange(option.value)}
-                  aria-pressed={isActive}
-                  className={`cursor-pointer whitespace-nowrap rounded-full border-none px-3 py-1.5 font-semibold ${isActive ? "bg-slate-900/90 text-white" : "bg-transparent text-black/75"}`}
-                >
-                  {option.label}
-                </button>
-              );
-            })}
+            {isViewOpen ? (
+              <div role="menu" className="absolute left-0 top-[calc(100%+8px)] z-20 w-[220px] rounded-[14px] border border-black/15 bg-white p-2 shadow-[0_12px_28px_rgba(0,0,0,0.12)]">
+                <div className="grid gap-1">
+                  {VIEW_OPTIONS.map((option) => {
+                    const isActive = option.value === view;
+                    const isHovered = option.value === hoveredViewOption;
+                    const Icon = option.icon;
+
+                    return (
+                      <button
+                        key={option.value}
+                        type="button"
+                        onClick={() => {
+                          onChange(option.value);
+                          setIsViewOpen(false);
+                        }}
+                        onMouseEnter={() => setHoveredViewOption(option.value)}
+                        onMouseLeave={() => setHoveredViewOption(null)}
+                        className={`cursor-pointer inline-flex items-center gap-2 rounded-[10px] border-none px-2.5 py-2 text-left font-semibold text-black/88 transition-colors duration-100 ${
+                          isActive ? "bg-black/10" : isHovered ? "bg-slate-900/5" : "bg-transparent"
+                        }`}
+                      >
+                        <Icon className="h-4 w-4 shrink-0" strokeWidth={2.2} />
+                        <span>{option.label}</span>
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+            ) : null}
           </div>
 
           <div ref={sortMenuRef} className="relative shrink-0">
             <button
               type="button"
-              onClick={() => setIsSortOpen((prev) => !prev)}
+              onClick={() => {
+                setIsSortOpen((prev) => !prev);
+                setIsViewOpen(false);
+              }}
               aria-haspopup="menu"
               aria-expanded={isSortOpen}
               className="cursor-pointer inline-flex items-center gap-2 whitespace-nowrap rounded-full border border-black/20 bg-white px-[14px] py-[6px] font-semibold text-black/85"
             >
-              {sortLabel}
+              <currentSortOption.icon className="h-4 w-4" strokeWidth={2.2} />
+              {currentSortOption.label}
               <ChevronDown className="h-4 w-4" strokeWidth={2.5} />
             </button>
 
@@ -242,6 +288,7 @@ export default function ControlsRow({
                   {SORT_OPTIONS.map((option) => {
                     const isActive = option.value === sort;
                     const isHovered = option.value === hoveredSortOption;
+                    const Icon = option.icon;
 
                     return (
                       <button
@@ -253,11 +300,12 @@ export default function ControlsRow({
                         }}
                         onMouseEnter={() => setHoveredSortOption(option.value)}
                         onMouseLeave={() => setHoveredSortOption(null)}
-                        className={`cursor-pointer rounded-[10px] border-none px-2.5 py-2 text-left font-semibold text-black/88 transition-colors duration-100 ${
+                        className={`cursor-pointer inline-flex items-center gap-2 rounded-[10px] border-none px-2.5 py-2 text-left font-semibold text-black/88 transition-colors duration-100 ${
                           isActive ? "bg-black/10" : isHovered ? "bg-slate-900/5" : "bg-transparent"
                         }`}
                       >
-                        {option.label}
+                        <Icon className="h-4 w-4 shrink-0" strokeWidth={2.2} />
+                        <span>{option.label}</span>
                       </button>
                     );
                   })}
