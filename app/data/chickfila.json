@@ -783,7 +783,12 @@
                     },
                     "label": "Large"
                 }
-            ]
+            ],
+            "customization": {
+                "ingredientTabs": [
+                    "Included"
+                ]
+            }
         },
         {
             "id": "berry_parfait",
@@ -881,6 +886,11 @@
                 "fiber": 2,
                 "sugars": 12,
                 "protein": 1
+            },
+            "customization": {
+                "ingredientTabs": [
+                    "Included"
+                ]
             }
         },
         {
@@ -1124,6 +1134,11 @@
                 "fiber": 2,
                 "sugars": 0,
                 "protein": 3
+            },
+            "customization": {
+                "ingredientTabs": [
+                    "Included"
+                ]
             }
         },
         {
@@ -1145,6 +1160,11 @@
                 "fiber": 1,
                 "sugars": 8,
                 "protein": 0
+            },
+            "customization": {
+                "ingredientTabs": [
+                    "Included"
+                ]
             }
         },
         {
@@ -1166,6 +1186,11 @@
                 "fiber": 2,
                 "sugars": 3,
                 "protein": 3
+            },
+            "customization": {
+                "ingredientTabs": [
+                    "Included"
+                ]
             }
         },
         {
