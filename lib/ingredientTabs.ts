@@ -75,11 +75,15 @@ export function resolveIngredientTabs(
     primaryCategory
       ? customizationRules?.singleSelectIngredientTabsByItemCategory?.[primaryCategory]?.filter(Boolean) ?? []
       : [];
+  const configuredIngredientOptionTabs = primaryCategory
+    ? Object.keys(customizationRules?.ingredientOptionsByItemCategory?.[primaryCategory] ?? {})
+    : [];
 
-  const hasItemLevelOverrides = itemLevelTabs.length > 0 || itemLevelSingleSelectTabs.length > 0;
-  const configuredTabs = hasItemLevelOverrides
-    ? [...itemLevelTabs, ...itemLevelSingleSelectTabs]
-    : [...restaurantLevelTabs, ...restaurantLevelSingleSelectTabs];
+  const explicitTabs = [...itemLevelTabs, ...itemLevelSingleSelectTabs];
+  const aliasTabs =
+    explicitTabs.length > 0
+      ? explicitTabs
+      : [...restaurantLevelTabs, ...restaurantLevelSingleSelectTabs, ...configuredIngredientOptionTabs];
 
   const ingredientById = new Map<string, IngredientItem>();
   const ingredientByName = new Map<string, IngredientItem>();
@@ -93,19 +97,18 @@ export function resolveIngredientTabs(
   });
 
   const detectedTabs = (item.ingredients ?? [])
-    .map((ingredientId) => {
+    .flatMap((ingredientId) => {
       const ingredient =
         ingredientById.get(ingredientId.toLowerCase()) ??
         ingredientByName.get(normalizeLookupKey(ingredientId));
 
       return ingredient ? getIngredientCategories(ingredient) : [];
     })
-    .flat()
     .map((category) => {
-      return configuredTabs.find((tab) => ingredientCategoryMatchesTab(category, tab)) ?? category;
+      return aliasTabs.find((tab) => ingredientCategoryMatchesTab(category, tab)) ?? category;
     });
 
-  const dedupedConfiguredTabs = [...configuredTabs, ...detectedTabs].filter((tab, index, tabs) => {
+  const tabsToRender = [...explicitTabs, ...configuredIngredientOptionTabs, ...detectedTabs].filter((tab, index, tabs) => {
     const normalizedTab = normalizeTabName(tab);
     if (!normalizedTab || normalizedTab === normalizeTabName(INCLUDED_INGREDIENT_TAB)) {
       return false;
@@ -116,7 +119,7 @@ export function resolveIngredientTabs(
 
   return [
     INCLUDED_INGREDIENT_TAB,
-    ...dedupedConfiguredTabs.filter((tab) => typeof resolveIngredientTabMaxQuantity(item, tab, customizationRules) === "number"),
+    ...tabsToRender.filter((tab) => typeof resolveIngredientTabMaxQuantity(item, tab, customizationRules) === "number"),
   ];
 }
 
