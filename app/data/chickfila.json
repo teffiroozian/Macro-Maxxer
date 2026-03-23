@@ -18,7 +18,6 @@
                 "Proteins"
             ],
             "Breakfast": [
-                "Wrap Toppings",
                 "Breakfast Buns",
                 "Cheeses",
                 "Eggs"
@@ -3322,8 +3321,7 @@
             "name": "Shredded Monterey Cheddar Cheese",
             "categories": [
                 "Wrap Toppings",
-                "Salad Toppings",
-                "Breakfast"
+                "Salad Toppings"
             ],
             "image": "/restaurants/chickfila/ingredients/salad-toppings/shredded-cheddar.webp",
             "nutrition": {
