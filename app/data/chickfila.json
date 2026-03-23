@@ -992,7 +992,7 @@
                     "Soup Toppings"
                 ],
                 "ingredientTabMaxQuantities": {
-                    "Soup Toppings": 1
+                    "Soup Toppings": 5
                 },
                 "ingredientOptionsByTab": {
                     "Soup Toppings": [
@@ -1059,8 +1059,8 @@
                     "Soup Toppings"
                 ],
                 "ingredientTabMaxQuantities": {
-                    "Condiments": 1,
-                    "Soup Toppings": 1
+                    "Condiments": 5,
+                    "Soup Toppings": 5
                 },
                 "ingredientOptionsByTab": {
                     "Condiments": [
