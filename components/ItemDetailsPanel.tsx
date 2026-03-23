@@ -153,8 +153,8 @@ export function resolvePanelIngredientTabs(
 ): ResolvedIngredientTab[] {
   const ingredientIds = item.ingredients ?? [];
   const includedIngredientIds = new Set(ingredientIds.map((ingredientId) => ingredientId.toLowerCase()));
-  const resolvedTabs = resolveIngredientTabs(item, customizationRules);
-  const singleSelectTabs = resolveSingleSelectIngredientTabs(item, customizationRules);
+  const resolvedTabs = resolveIngredientTabs(item, customizationRules, ingredientItems);
+  const singleSelectTabs = resolveSingleSelectIngredientTabs(item, customizationRules, ingredientItems);
   const primaryCategory = item.categories?.[0];
 
   const ingredientByIdLookup = new Map<string, IngredientItem>();

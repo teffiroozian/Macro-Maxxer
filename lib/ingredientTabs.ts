@@ -7,9 +7,55 @@ export function normalizeTabName(value: string) {
   return value.trim().toLowerCase();
 }
 
+function getIngredientCategories(ingredient?: Pick<IngredientItem, "category" | "categories">) {
+  return ingredient.categories?.length
+    ? ingredient.categories.filter(Boolean)
+    : ingredient.category
+      ? [ingredient.category]
+      : [];
+}
+
+export function deriveIngredientTabsFromIncludedIngredients(
+  item: MenuItem,
+  ingredientItems: IngredientItem[] = []
+) {
+  if (!item.ingredients?.length || ingredientItems.length === 0) {
+    return [];
+  }
+
+  const ingredientLookup = new Map<string, IngredientItem>();
+  const ingredientNameLookup = new Map<string, IngredientItem>();
+
+  ingredientItems.forEach((ingredient) => {
+    if (ingredient.id) {
+      ingredientLookup.set(ingredient.id.toLowerCase(), ingredient);
+    }
+
+    ingredientNameLookup.set(normalizeTabName(ingredient.name), ingredient);
+  });
+
+  return item.ingredients.reduce<string[]>((tabs, ingredientId) => {
+    const ingredient =
+      ingredientLookup.get(ingredientId.toLowerCase()) ?? ingredientNameLookup.get(normalizeTabName(ingredientId));
+
+    getIngredientCategories(ingredient).forEach((category) => {
+      const normalizedCategory = normalizeTabName(category);
+      if (!normalizedCategory || normalizedCategory === normalizeTabName(INCLUDED_INGREDIENT_TAB)) {
+        return;
+      }
+
+      if (!tabs.some((candidate) => normalizeTabName(candidate) === normalizedCategory)) {
+        tabs.push(category);
+      }
+    });
+
+    return tabs;
+  }, []);
+}
+
 export function getIngredientTabDisplayLabel(tabName: string) {
   const normalized = normalizeTabName(tabName);
-    if (normalized.endsWith(" toppings") || normalized === "toppings") {
+  if (normalized.endsWith(" toppings") || normalized === "toppings") {
     return "Toppings";
   }
 
@@ -22,7 +68,8 @@ export function getIngredientTabDisplayLabel(tabName: string) {
 
 export function resolveIngredientTabs(
   item: MenuItem,
-  customizationRules?: RestaurantCustomizationRules
+  customizationRules?: RestaurantCustomizationRules,
+  ingredientItems: IngredientItem[] = []
 ) {
   const itemLevelTabs = item.customization?.ingredientTabs?.filter(Boolean) ?? [];
   const primaryCategory = item.categories?.[0];
@@ -30,15 +77,16 @@ export function resolveIngredientTabs(
     primaryCategory
       ? customizationRules?.ingredientTabsByItemCategory?.[primaryCategory]?.filter(Boolean) ?? []
       : [];
+  const derivedTabs = deriveIngredientTabsFromIncludedIngredients(item, ingredientItems);
 
   const configuredTabs = itemLevelTabs.length > 0 ? itemLevelTabs : restaurantLevelTabs;
-  const dedupedConfiguredTabs = configuredTabs.filter((tab, index) => {
+  const dedupedConfiguredTabs = [...configuredTabs, ...derivedTabs].filter((tab, index, allTabs) => {
     const normalizedTab = normalizeTabName(tab);
     if (!normalizedTab || normalizedTab === normalizeTabName(INCLUDED_INGREDIENT_TAB)) {
       return false;
     }
 
-    return configuredTabs.findIndex((candidate) => normalizeTabName(candidate) === normalizedTab) === index;
+    return allTabs.findIndex((candidate) => normalizeTabName(candidate) === normalizedTab) === index;
   });
 
   return [
@@ -85,10 +133,11 @@ export function resolveIngredientTabMaxQuantity(
 
 export function resolveSingleSelectIngredientTabs(
   item: MenuItem,
-  customizationRules?: RestaurantCustomizationRules
+  customizationRules?: RestaurantCustomizationRules,
+  ingredientItems: IngredientItem[] = []
 ) {
   return new Set(
-    resolveIngredientTabs(item, customizationRules)
+    resolveIngredientTabs(item, customizationRules, ingredientItems)
       .filter((tab) => resolveIngredientTabMaxQuantity(item, tab, customizationRules) === 1)
       .map((tab) => normalizeTabName(tab))
       .filter((tab) => tab && tab !== normalizeTabName(INCLUDED_INGREDIENT_TAB))
@@ -96,13 +145,9 @@ export function resolveSingleSelectIngredientTabs(
 }
 
 export function ingredientMatchesTab(ingredient: IngredientItem, tabName: string) {
-  const ingredientCategories = ingredient.categories?.length
-    ? ingredient.categories
-    : ingredient.category
-      ? [ingredient.category]
-      : [];
-
-  return ingredientCategories.some((category) => normalizeTabName(category) === normalizeTabName(tabName));
+  return getIngredientCategories(ingredient).some(
+    (category) => normalizeTabName(category) === normalizeTabName(tabName)
+  );
 }
 
 export function isSingleSelectIngredientTab(
