@@ -61,20 +61,28 @@ function includedIngredientPriority(ingredient: ResolvedPanelIngredient) {
       : [];
   const normalizedCategories = categories.map((category) => normalizeIngredientCategory(category));
 
-  if (normalizedCategories.some((category) => category === "buns" || category === "bun")) {
+  if (normalizedCategories.some((category) => category.includes("bun"))) {
     return 0;
   }
 
-  if (normalizedCategories.some((category) => category === "cheeses" || category === "cheese")) {
+  if (normalizedCategories.some((category) => category.includes("cheese"))) {
     return 1;
   }
 
-  if (normalizedCategories.some((category) => category === "proteins" || category === "protein")) {
+  if (normalizedCategories.some((category) => category === "eggs" || category === "egg")) {
     return 2;
   }
 
-  if (normalizedCategories.some((category) => category.includes("topping"))) {
+  if (normalizedCategories.some((category) => category.includes("protein"))) {
     return 3;
+  }
+
+  if (
+    normalizedCategories.some(
+      (category) => category.includes("topping")
+    )
+  ) {
+    return 4;
   }
 
   if (
@@ -85,10 +93,10 @@ function includedIngredientPriority(ingredient: ResolvedPanelIngredient) {
         category.includes("dressing")
     )
   ) {
-    return 4;
+    return 5;
   }
 
-  return 5;
+  return 6;
 }
 
 export type ResolvedPanelIngredient = {
