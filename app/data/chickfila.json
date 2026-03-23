@@ -1745,6 +1745,20 @@
                 "fiber": 1,
                 "sugars": 80,
                 "protein": 13
+            },
+            "customization": {
+                "ingredientTabs": [
+                    "Treat Toppings"
+                ],
+                "ingredientTabMaxQuantities": {
+                    "Treat Toppings": 1
+                },
+                "ingredientOptionsByTab": {
+                    "Treat Toppings": [
+                        "whipped-cream",
+                        "cherry"
+                    ]
+                }
             }
         },
         {
@@ -1770,6 +1784,20 @@
                 "fiber": 1,
                 "sugars": 84,
                 "protein": 13
+            },
+            "customization": {
+                "ingredientTabs": [
+                    "Treat Toppings"
+                ],
+                "ingredientTabMaxQuantities": {
+                    "Treat Toppings": 1
+                },
+                "ingredientOptionsByTab": {
+                    "Treat Toppings": [
+                        "whipped-cream",
+                        "cherry"
+                    ]
+                }
             }
         },
         {
@@ -1795,6 +1823,20 @@
                 "fiber": 1,
                 "sugars": 90,
                 "protein": 12
+            },
+            "customization": {
+                "ingredientTabs": [
+                    "Treat Toppings"
+                ],
+                "ingredientTabMaxQuantities": {
+                    "Treat Toppings": 1
+                },
+                "ingredientOptionsByTab": {
+                    "Treat Toppings": [
+                        "whipped-cream",
+                        "cherry"
+                    ]
+                }
             }
         },
         {
@@ -1820,6 +1862,20 @@
                 "fiber": 1,
                 "sugars": 87,
                 "protein": 10
+            },
+            "customization": {
+                "ingredientTabs": [
+                    "Treat Toppings"
+                ],
+                "ingredientTabMaxQuantities": {
+                    "Treat Toppings": 1
+                },
+                "ingredientOptionsByTab": {
+                    "Treat Toppings": [
+                        "whipped-cream",
+                        "cherry"
+                    ]
+                }
             }
         },
         {
