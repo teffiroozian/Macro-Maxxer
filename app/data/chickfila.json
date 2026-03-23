@@ -1224,6 +1224,14 @@
                 "fiber": 3,
                 "sugars": 2,
                 "protein": 34
+            },
+            "customization": {
+                "ingredientTabs": [
+                    "Wrap Toppings"
+                ],
+                "ingredientTabMaxQuantities": {
+                    "Wrap Toppings": 2
+                }
             }
         },
         {
@@ -1248,6 +1256,14 @@
                 "fiber": 2,
                 "sugars": 2,
                 "protein": 29
+            },
+            "customization": {
+                "ingredientTabs": [
+                    "Wrap Toppings"
+                ],
+                "ingredientTabMaxQuantities": {
+                    "Wrap Toppings": 2
+                }
             }
         },
         {
