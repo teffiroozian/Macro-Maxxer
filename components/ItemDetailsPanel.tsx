@@ -153,8 +153,8 @@ export function resolvePanelIngredientTabs(
 ): ResolvedIngredientTab[] {
   const ingredientIds = item.ingredients ?? [];
   const includedIngredientIds = new Set(ingredientIds.map((ingredientId) => ingredientId.toLowerCase()));
-  const resolvedTabs = resolveIngredientTabs(item, customizationRules);
-  const singleSelectTabs = resolveSingleSelectIngredientTabs(item, customizationRules);
+  const resolvedTabs = resolveIngredientTabs(item, customizationRules, ingredientItems);
+  const singleSelectTabs = resolveSingleSelectIngredientTabs(item, customizationRules, ingredientItems);
   const primaryCategory = item.categories?.[0];
 
   const ingredientByIdLookup = new Map<string, IngredientItem>();
@@ -461,12 +461,14 @@ export default function ItemDetailsPanel({
     selectedVariantId,
     customizationRules
   );
-  const [activeIngredientTab, setActiveIngredientTab] = useState(ingredientTabs[0]?.label ?? INCLUDED_INGREDIENT_TAB);
   const availableIngredientTabs = ingredientTabs.filter((tab) => tab.ingredients.length > 0);
+  const renderedIngredientTabs = availableIngredientTabs.length > 0 ? availableIngredientTabs : ingredientTabs;
+  const [activeIngredientTab, setActiveIngredientTab] = useState(
+    renderedIngredientTabs[0]?.label ?? INCLUDED_INGREDIENT_TAB
+  );
   const selectedIngredientTab =
-    ingredientTabs.find((tab) => tab.label === activeIngredientTab) ??
-    availableIngredientTabs[0] ??
-    ingredientTabs[0];
+    renderedIngredientTabs.find((tab) => tab.label === activeIngredientTab) ??
+    renderedIngredientTabs[0];
   const navigateToSingleSelectTab = (
     ingredientId: string,
     linkedTab?: (typeof ingredientTabs)[number]
@@ -559,7 +561,7 @@ export default function ItemDetailsPanel({
     return includedIngredients;
   }, [ingredientTabs, selectedIngredientCounts, selectedIngredientTab]);
   const shouldShowIngredientSection =
-    ingredientTabs.length > 1 || (ingredientTabs[0]?.ingredients.length ?? 0) > 0;
+    renderedIngredientTabs.length > 1 || (renderedIngredientTabs[0]?.ingredients.length ?? 0) > 0;
 
   return (
     <div className="grid grid-cols-2 gap-3 rounded-[18px] bg-[#e0e0e0] px-3 py-2">
@@ -567,7 +569,7 @@ export default function ItemDetailsPanel({
         <section className="col-span-2 rounded-[14px] border border-black/12 bg-white p-5">
           <h2 className="mb-6 text-2xl font-bold">Ingredients</h2>
           <div className="mb-4 flex flex-wrap gap-2">
-            {ingredientTabs.map((tab) => {
+            {renderedIngredientTabs.map((tab) => {
               const isActive = tab.label === selectedIngredientTab.label;
 
               return (

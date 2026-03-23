@@ -58,18 +58,6 @@
             "Salad Condiments": 6,
             "Wrap Toppings": 2,
             "Sauces": 2
-        },
-        "ingredientOptionsByItemCategory": {
-            "Salad": {
-                "Proteins": [
-                    "grilled-filet",
-                    "spicy-filet",
-                    "cfa-filet",
-                    "crispy-nuggets",
-                    "grilled-nuggets",
-                    "chick-n-strips"
-                ]
-            }
         }
     },
     "items": [

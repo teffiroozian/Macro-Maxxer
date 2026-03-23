@@ -3,42 +3,115 @@ import type { IngredientItem, MenuItem, RestaurantCustomizationRules } from "@/t
 export const INCLUDED_INGREDIENT_TAB = "Included";
 export type IngredientSelectionMode = "quantity" | "single";
 
+function singularizeCategoryToken(token: string) {
+  if (token.endsWith("ies") && token.length > 3) {
+    return `${token.slice(0, -3)}y`;
+  }
+
+  if (token.endsWith("ses") || token.endsWith("xes") || token.endsWith("zes") || token.endsWith("ches") || token.endsWith("shes")) {
+    return token;
+  }
+
+  if (token.endsWith("s") && !token.endsWith("ss") && token.length > 1) {
+    return token.slice(0, -1);
+  }
+
+  return token;
+}
+
+function normalizeCategoryTokens(value: string) {
+  return value
+    .trim()
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, " ")
+    .split(/\s+/)
+    .filter(Boolean)
+    .map(singularizeCategoryToken);
+}
+
 export function normalizeTabName(value: string) {
-  return value.trim().toLowerCase();
+  return normalizeCategoryTokens(value).join(" ");
+}
+
+export function getIngredientCategories(ingredient: IngredientItem) {
+  return ingredient.categories?.length ? ingredient.categories : ingredient.category ? [ingredient.category] : [];
+}
+
+export function ingredientCategoryMatchesTab(category: string, tabName: string) {
+  return normalizeTabName(category) === normalizeTabName(tabName);
 }
 
 export function getIngredientTabDisplayLabel(tabName: string) {
   const normalized = normalizeTabName(tabName);
-    if (normalized.endsWith(" toppings") || normalized === "toppings") {
+
+  if (normalized.endsWith(" topping") || normalized === "topping") {
     return "Toppings";
   }
 
-  if (normalized.endsWith(" condiments") || normalized === "condiments") {
+  if (normalized.endsWith(" condiment") || normalized === "condiment") {
     return "Condiments";
   }
 
   return tabName;
 }
 
+function normalizeLookupKey(value: string) {
+  return value.trim().toLowerCase().replace(/[^a-z0-9]+/g, "");
+}
+
 export function resolveIngredientTabs(
   item: MenuItem,
-  customizationRules?: RestaurantCustomizationRules
+  customizationRules?: RestaurantCustomizationRules,
+  ingredientItems: IngredientItem[] = []
 ) {
   const itemLevelTabs = item.customization?.ingredientTabs?.filter(Boolean) ?? [];
+  const itemLevelSingleSelectTabs = item.customization?.singleSelectIngredientTabs?.filter(Boolean) ?? [];
   const primaryCategory = item.categories?.[0];
   const restaurantLevelTabs =
     primaryCategory
       ? customizationRules?.ingredientTabsByItemCategory?.[primaryCategory]?.filter(Boolean) ?? []
       : [];
+  const restaurantLevelSingleSelectTabs =
+    primaryCategory
+      ? customizationRules?.singleSelectIngredientTabsByItemCategory?.[primaryCategory]?.filter(Boolean) ?? []
+      : [];
 
-  const configuredTabs = itemLevelTabs.length > 0 ? itemLevelTabs : restaurantLevelTabs;
-  const dedupedConfiguredTabs = configuredTabs.filter((tab, index) => {
+  const hasItemLevelOverrides = itemLevelTabs.length > 0 || itemLevelSingleSelectTabs.length > 0;
+  const configuredTabs = hasItemLevelOverrides
+    ? [...itemLevelTabs, ...itemLevelSingleSelectTabs]
+    : [...restaurantLevelTabs, ...restaurantLevelSingleSelectTabs];
+
+  const ingredientById = new Map<string, IngredientItem>();
+  const ingredientByName = new Map<string, IngredientItem>();
+
+  ingredientItems.forEach((ingredient) => {
+    if (ingredient.id) {
+      ingredientById.set(ingredient.id.toLowerCase(), ingredient);
+    }
+
+    ingredientByName.set(normalizeLookupKey(ingredient.name), ingredient);
+  });
+
+  const detectedTabs = (item.ingredients ?? [])
+    .map((ingredientId) => {
+      const ingredient =
+        ingredientById.get(ingredientId.toLowerCase()) ??
+        ingredientByName.get(normalizeLookupKey(ingredientId));
+
+      return ingredient ? getIngredientCategories(ingredient) : [];
+    })
+    .flat()
+    .map((category) => {
+      return configuredTabs.find((tab) => ingredientCategoryMatchesTab(category, tab)) ?? category;
+    });
+
+  const dedupedConfiguredTabs = [...configuredTabs, ...detectedTabs].filter((tab, index, tabs) => {
     const normalizedTab = normalizeTabName(tab);
     if (!normalizedTab || normalizedTab === normalizeTabName(INCLUDED_INGREDIENT_TAB)) {
       return false;
     }
 
-    return configuredTabs.findIndex((candidate) => normalizeTabName(candidate) === normalizedTab) === index;
+    return tabs.findIndex((candidate) => normalizeTabName(candidate) === normalizedTab) === index;
   });
 
   return [
@@ -85,10 +158,11 @@ export function resolveIngredientTabMaxQuantity(
 
 export function resolveSingleSelectIngredientTabs(
   item: MenuItem,
-  customizationRules?: RestaurantCustomizationRules
+  customizationRules?: RestaurantCustomizationRules,
+  ingredientItems: IngredientItem[] = []
 ) {
   return new Set(
-    resolveIngredientTabs(item, customizationRules)
+    resolveIngredientTabs(item, customizationRules, ingredientItems)
       .filter((tab) => resolveIngredientTabMaxQuantity(item, tab, customizationRules) === 1)
       .map((tab) => normalizeTabName(tab))
       .filter((tab) => tab && tab !== normalizeTabName(INCLUDED_INGREDIENT_TAB))
@@ -96,13 +170,7 @@ export function resolveSingleSelectIngredientTabs(
 }
 
 export function ingredientMatchesTab(ingredient: IngredientItem, tabName: string) {
-  const ingredientCategories = ingredient.categories?.length
-    ? ingredient.categories
-    : ingredient.category
-      ? [ingredient.category]
-      : [];
-
-  return ingredientCategories.some((category) => normalizeTabName(category) === normalizeTabName(tabName));
+  return getIngredientCategories(ingredient).some((category) => ingredientCategoryMatchesTab(category, tabName));
 }
 
 export function isSingleSelectIngredientTab(
