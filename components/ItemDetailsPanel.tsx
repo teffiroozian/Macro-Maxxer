@@ -467,6 +467,18 @@ export default function ItemDetailsPanel({
     ingredientTabs.find((tab) => tab.label === activeIngredientTab) ??
     availableIngredientTabs[0] ??
     ingredientTabs[0];
+  const navigateToSingleSelectTab = (
+    ingredientId: string,
+    linkedTab?: (typeof ingredientTabs)[number]
+  ) => {
+    if (!linkedTab) return;
+
+    onSelectSingleIngredient?.(
+      ingredientId,
+      linkedTab.ingredients.map((candidate) => candidate.id)
+    );
+    setActiveIngredientTab(linkedTab.label);
+  };
   const displayIngredients = useMemo(() => {
     if (!selectedIngredientTab) return [];
     if (selectedIngredientTab.label !== INCLUDED_INGREDIENT_TAB) {
@@ -588,6 +600,8 @@ export default function ItemDetailsPanel({
                 const shouldShowSingleSelectNavigator =
                   selectedIngredientTab.label === INCLUDED_INGREDIENT_TAB && Boolean(linkedSingleSelectTab);
                 const isSingleSelectTab = selectedIngredientTab.selectionMode === "single";
+                const canToggleIngredientFromCard =
+                  !shouldShowSingleSelectNavigator && typeof ingredient.maxQuantity === "number";
                 const cardClasses = `box-border flex h-full w-full flex-row items-center gap-3 rounded-[10px] border border-[rgba(0,0,0,0.15)] bg-[#f9f9f9] px-3 py-2 ${
                   isSelected
                     ? isSingleSelectTab
@@ -649,19 +663,31 @@ export default function ItemDetailsPanel({
                       </button>
                     ) : (
                       <div
-                        className={`${cardClasses} ${typeof ingredient.maxQuantity === "number" ? "cursor-pointer text-left" : ""}`}
-                        role={typeof ingredient.maxQuantity === "number" ? "button" : undefined}
-                        tabIndex={typeof ingredient.maxQuantity === "number" ? 0 : undefined}
+                        className={`${cardClasses} ${canToggleIngredientFromCard || shouldShowSingleSelectNavigator ? "cursor-pointer text-left" : ""}`}
+                        role={canToggleIngredientFromCard || shouldShowSingleSelectNavigator ? "button" : undefined}
+                        tabIndex={canToggleIngredientFromCard || shouldShowSingleSelectNavigator ? 0 : undefined}
                         onClick={() => {
-                          if (typeof ingredient.maxQuantity === "number") {
+                          if (shouldShowSingleSelectNavigator) {
+                            navigateToSingleSelectTab(ingredient.id, linkedSingleSelectTab);
+                            return;
+                          }
+
+                          if (canToggleIngredientFromCard) {
                             onToggleIngredient?.(ingredient.id);
                           }
                         }}
                         onKeyDown={(event) => {
-                          if (
-                            typeof ingredient.maxQuantity === "number" &&
-                            (event.key === "Enter" || event.key === " ")
-                          ) {
+                          if (event.key !== "Enter" && event.key !== " ") {
+                            return;
+                          }
+
+                          if (shouldShowSingleSelectNavigator) {
+                            event.preventDefault();
+                            navigateToSingleSelectTab(ingredient.id, linkedSingleSelectTab);
+                            return;
+                          }
+
+                          if (canToggleIngredientFromCard) {
                             event.preventDefault();
                             onToggleIngredient?.(ingredient.id);
                           }
@@ -674,9 +700,7 @@ export default function ItemDetailsPanel({
                             className="ml-auto inline-flex h-9 w-9 cursor-pointer items-center justify-center rounded-full border border-[rgba(0,0,0,0.2)] bg-white text-black/70 transition hover:bg-black hover:text-white"
                             aria-label={`Customize ${linkedSingleSelectTab?.label ?? ingredient.label}`}
                             onClick={() => {
-                              if (linkedSingleSelectTab) {
-                                setActiveIngredientTab(linkedSingleSelectTab.label);
-                              }
+                              navigateToSingleSelectTab(ingredient.id, linkedSingleSelectTab);
                             }}
                           >
                             <ChevronRight size={18} />
