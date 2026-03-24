@@ -243,6 +243,8 @@ export default function MenuItemCard({
   onCartConfigurationChange,
   itemHref,
   displayMode = "default",
+  isIngredientSelected: controlledIngredientSelected,
+  onIngredientSelectionChange,
 }: {
   restaurantId: string;
   item: MenuItem;
@@ -265,6 +267,8 @@ export default function MenuItemCard({
   onCartConfigurationChange?: (next: CartConfigurationPayload) => void;
   itemHref?: string;
   displayMode?: "default" | "ingredient-compact";
+  isIngredientSelected?: boolean;
+  onIngredientSelectionChange?: (item: MenuItem, selected: boolean) => void;
 }) {
   const [open, setOpen] = useState(false);
   const router = useRouter();
@@ -290,7 +294,7 @@ export default function MenuItemCard({
     mode === "cart" ? getSelectedCommonChangeIdsFromCustomizations(commonChanges, initialCartCustomizations) : []
   );
   const [isAddFeedbackVisible, setIsAddFeedbackVisible] = useState(false);
-  const [isIngredientSelected, setIsIngredientSelected] = useState(false);
+  const [isIngredientSelected, setIsIngredientSelected] = useState(controlledIngredientSelected ?? false);
   const { items, addItem, updateQuantity } = useCart();
   const selectedVariant = variants?.find((variant) => variant.id === selectedVariantId);
   const selectedItemImage = selectedVariant?.image ?? item.image;
@@ -721,11 +725,13 @@ export default function MenuItemCard({
     };
   }, [isAddFeedbackVisible]);
 
+  const ingredientSelectionState = controlledIngredientSelected ?? isIngredientSelected;
+
   if (displayMode === "ingredient-compact") {
     return (
       <li
         className={`list-none overflow-hidden rounded-2xl bg-white transition ${
-          isIngredientSelected
+          ingredientSelectionState
             ? "border-2 border-lime-500 shadow-[0_4px_12px_rgba(132,204,22,0.25)]"
             : "border border-black/15 shadow-[0_4px_12px_rgba(0,0,0,0.12)]"
         }`}
@@ -733,7 +739,7 @@ export default function MenuItemCard({
         <label className="flex cursor-pointer items-center gap-4 px-4 py-3">
           <span
             className={`flex h-6 w-6 items-center justify-center rounded-md border text-sm font-bold transition ${
-              isIngredientSelected
+              ingredientSelectionState
                 ? "border-lime-500 bg-lime-500 text-black"
                 : "border-black/40 bg-white text-transparent"
             }`}
@@ -744,8 +750,12 @@ export default function MenuItemCard({
           <input
             type="checkbox"
             className="sr-only"
-            checked={isIngredientSelected}
-            onChange={(event) => setIsIngredientSelected(event.target.checked)}
+            checked={ingredientSelectionState}
+            onChange={(event) => {
+              const nextSelected = event.target.checked;
+              setIsIngredientSelected(nextSelected);
+              onIngredientSelectionChange?.(item, nextSelected);
+            }}
             aria-label={`Select ${item.name}`}
           />
 

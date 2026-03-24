@@ -1,14 +1,20 @@
 "use client";
 
 import type { CartMacros } from "@/stores/cartStore";
+import type { LucideIcon } from "lucide-react";
 import { Bookmark, Camera } from "lucide-react";
 
 type StickyMacroTotalsBarProps = {
   totals: CartMacros;
   visible?: boolean;
   inline?: boolean;
-  onSaveMeal?: () => void;
-  onGenerateSnapshot?: () => void;
+  contextLine?: string;
+  primaryActionLabel?: string;
+  secondaryActionLabel?: string;
+  PrimaryActionIcon?: LucideIcon;
+  SecondaryActionIcon?: LucideIcon;
+  onPrimaryAction?: () => void;
+  onSecondaryAction?: () => void;
 };
 
 const macroRows: Array<{
@@ -27,8 +33,13 @@ export default function StickyMacroTotalsBar({
   totals,
   visible = true,
   inline = false,
-  onSaveMeal,
-  onGenerateSnapshot,
+  contextLine,
+  primaryActionLabel = "Generate Snapshot",
+  secondaryActionLabel = "Save Meal",
+  PrimaryActionIcon = Camera,
+  SecondaryActionIcon = Bookmark,
+  onPrimaryAction,
+  onSecondaryAction,
 }: StickyMacroTotalsBarProps) {
   const wrapperClassName = inline
     ? "w-full"
@@ -49,7 +60,12 @@ export default function StickyMacroTotalsBar({
       <div className={panelClassName}>
         <div className="flex flex-col gap-5 lg:flex-row lg:items-center lg:gap-8">
           <section className="flex-1">
-            <p className="text-center text-sm font-semibold tracking-tight text-neutral-500">
+            {contextLine ? (
+              <p className="text-sm font-medium tracking-tight text-neutral-500">
+                {contextLine}
+              </p>
+            ) : null}
+            <p className={`text-sm font-semibold tracking-tight text-neutral-500 ${contextLine ? "mt-1 text-left" : "text-center"}`}>
               TOTAL MACROS
             </p>
 
@@ -73,19 +89,19 @@ export default function StickyMacroTotalsBar({
           <div className="flex w-full flex-col gap-3 sm:w-auto">
             <button
               type="button"
-              onClick={onSaveMeal}
+              onClick={onSecondaryAction}
               className="cursor-pointer inline-flex h-11 items-center justify-center gap-2 rounded-xl border-2 border-black/80 bg-transparent px-6 text-base font-semibold text-[#1A1A1A] transition hover:bg-black/5"
             >
-              <Bookmark className="h-4 w-4" strokeWidth={2.5} aria-hidden="true" />
-              <span>Save Meal</span>
+              <SecondaryActionIcon className="h-4 w-4" strokeWidth={2.5} aria-hidden="true" />
+              <span>{secondaryActionLabel}</span>
             </button>
             <button
               type="button"
-              onClick={onGenerateSnapshot}
+              onClick={onPrimaryAction}
               className="cursor-pointer inline-flex h-11 items-center justify-center gap-2 rounded-xl border border-black bg-black px-6 text-base font-semibold text-white transition hover:bg-neutral-900"
             >
-              <Camera className="h-4 w-4" strokeWidth={2.5} />
-              <span>Generate Snapshot</span>
+              <PrimaryActionIcon className="h-4 w-4" strokeWidth={2.5} aria-hidden="true" />
+              <span>{primaryActionLabel}</span>
             </button>
           </div>
         </div>
