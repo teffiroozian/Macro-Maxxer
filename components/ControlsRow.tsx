@@ -11,7 +11,7 @@ export type Filters = {
   includeSidesDrinks?: boolean;
   includeLargeShareables?: boolean;
 };
-import { SlidersHorizontal, ChevronDown, ClipboardList, Carrot, Flame, Leaf, Scale, Check } from "lucide-react";
+import { SlidersHorizontal, ChevronDown, ClipboardList, Carrot, Flame, Leaf, Scale, Award } from "lucide-react";
 
 const PROTEIN_OPTIONS = [20, 30, 40, 50];
 
@@ -273,7 +273,7 @@ export default function ControlsRow({
                       entireMenu ? "bg-black/10" : hoveredViewOption === "all-ranked" ? "bg-slate-900/5" : "bg-transparent"
                     }`}
                   >
-                    <Check className="h-4 w-4 shrink-0" strokeWidth={2.2} />
+                    <Award className="h-4 w-4 shrink-0" strokeWidth={2.2} />
                     <span>All Ranked</span>
                   </button>
                 </div>
