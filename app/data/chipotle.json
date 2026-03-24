@@ -1,8 +1,34 @@
 {
-    "id": "chipotle",
-    "items": [
-        { "name": "Chicken Bowl", "calories": 600, "protein": 45 },
-        { "name": "Steak Bowl", "calories": 650, "protein": 40 },
-        { "name": "Chicken Salad Bowl", "calories": 450, "protein": 38 }
-    ]
+  "id": "chipotle",
+  "name": "Chipotle",
+  "isBuildYourOwn": true,
+  "items": [
+    {
+      "id": "chipotle-chicken",
+      "name": "Chicken",
+      "categories": ["Proteins"],
+      "portionType": "addon",
+      "image": "/restaurants/chipotle/logo.jpeg",
+      "nutrition": {
+        "calories": 180,
+        "protein": 32,
+        "carbs": 0,
+        "totalFat": 7
+      }
+    }
+  ],
+  "ingredients": [
+    {
+      "id": "chipotle-ingredient-chicken",
+      "name": "Chicken",
+      "category": "Proteins",
+      "image": "/restaurants/chipotle/logo.jpeg",
+      "nutrition": {
+        "calories": 180,
+        "protein": 32,
+        "carbs": 0,
+        "totalFat": 7
+      }
+    }
+  ]
 }

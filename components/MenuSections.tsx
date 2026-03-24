@@ -267,6 +267,7 @@ export default function MenuSections({
   customizationRules,
   groupByCategory = true,
   categoryMode = "menu",
+  isBuildYourOwn = false,
 }: {
   restaurantId: string;
   items: MenuItem[];
@@ -277,6 +278,7 @@ export default function MenuSections({
   customizationRules?: RestaurantCustomizationRules;
   groupByCategory?: boolean;
   categoryMode?: CategoryMode;
+  isBuildYourOwn?: boolean;
 }) {
 
   if (!groupByCategory) {
@@ -300,6 +302,11 @@ export default function MenuSections({
               customizationRules={customizationRules}
               commonChanges={commonChanges}
               itemHref={`/restaurant/${restaurantId}/items/${toItemSlug(item)}`}
+              displayMode={
+                categoryMode === "ingredients" && isBuildYourOwn
+                  ? "ingredient-compact"
+                  : "default"
+              }
             />
           ))}
         </ul>
@@ -375,6 +382,11 @@ export default function MenuSections({
                 customizationRules={customizationRules}
                 commonChanges={commonChanges}
                 itemHref={`/restaurant/${restaurantId}/items/${toItemSlug(item)}`}
+                displayMode={
+                  categoryMode === "ingredients" && isBuildYourOwn
+                    ? "ingredient-compact"
+                    : "default"
+                }
               />
             ))}
           </ul>

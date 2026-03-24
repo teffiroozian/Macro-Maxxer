@@ -119,6 +119,7 @@ export type IngredientItem = {
 export type RestaurantMenu = {
   id: string;
   name?: string;
+  isBuildYourOwn?: boolean;
   items: MenuItem[];
   ingredients?: IngredientItem[];
   addons?: RestaurantAddons;
