@@ -442,6 +442,7 @@ export default function RestaurantView({
   const selectedIngredientCount = Object.keys(selectedIngredientItems).length;
   const buildName = `${restaurantName} Build`;
   const buildContextLine = `${selectedIngredientCount} selected · ${buildName}`;
+  const shouldShowBuildStickyBar = isBuildYourOwn && viewMode === "ingredients";
 
   const handleIngredientSelectionChange = (item: MenuItem, selected: boolean) => {
     const itemId = item.id;
@@ -605,7 +606,8 @@ export default function RestaurantView({
           </div>
         </div>
       </div>
-      {isBuildYourOwn && viewMode === "ingredients" ? (
+      {shouldShowBuildStickyBar ? <div className="h-48" aria-hidden="true" /> : null}
+      {shouldShowBuildStickyBar ? (
         <StickyMacroTotalsBar
           totals={selectedIngredientTotals}
           contextLine={buildContextLine}
