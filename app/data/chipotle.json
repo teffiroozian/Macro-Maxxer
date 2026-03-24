@@ -15,6 +15,124 @@
         "carbs": 0,
         "totalFat": 7
       }
+    },
+    {
+      "id": "chipotle-chicken-al-pastor",
+      "name": "Chicken al Pastor",
+      "categories": ["Proteins"],
+      "portionType": "addon",
+      "image": "/restaurants/chipotle/logo.jpeg",
+      "nutrition": {
+        "calories": 200,
+        "protein": 23,
+        "carbs": 4,
+        "totalFat": 11
+      }
+    },
+    {
+      "id": "chipotle-steak",
+      "name": "Steak",
+      "categories": ["Proteins"],
+      "portionType": "addon",
+      "image": "/restaurants/chipotle/logo.jpeg",
+      "nutrition": {
+        "calories": 150,
+        "protein": 21,
+        "carbs": 1,
+        "totalFat": 6
+      }
+    },
+    {
+      "id": "chipotle-beef-barbacoa",
+      "name": "Beef Barbacoa",
+      "categories": ["Proteins"],
+      "portionType": "addon",
+      "image": "/restaurants/chipotle/logo.jpeg",
+      "nutrition": {
+        "calories": 170,
+        "protein": 24,
+        "carbs": 2,
+        "totalFat": 7
+      }
+    },
+    {
+      "id": "chipotle-carnitas",
+      "name": "Carnitas",
+      "categories": ["Proteins"],
+      "portionType": "addon",
+      "image": "/restaurants/chipotle/logo.jpeg",
+      "nutrition": {
+        "calories": 210,
+        "protein": 23,
+        "carbs": 0,
+        "totalFat": 12
+      }
+    },
+    {
+      "id": "chipotle-sofritas",
+      "name": "Sofritas",
+      "description": "Plant-Based Protein",
+      "categories": ["Proteins"],
+      "portionType": "addon",
+      "image": "/restaurants/chipotle/logo.jpeg",
+      "nutrition": {
+        "calories": 150,
+        "protein": 8,
+        "carbs": 9,
+        "totalFat": 10
+      }
+    },
+    {
+      "id": "chipotle-white-rice",
+      "name": "White Rice",
+      "categories": ["Rice"],
+      "portionType": "addon",
+      "image": "/restaurants/chipotle/logo.jpeg",
+      "nutrition": {
+        "calories": 210,
+        "protein": 4,
+        "carbs": 40,
+        "totalFat": 4
+      }
+    },
+    {
+      "id": "chipotle-brown-rice",
+      "name": "Brown Rice",
+      "categories": ["Rice"],
+      "portionType": "addon",
+      "image": "/restaurants/chipotle/logo.jpeg",
+      "nutrition": {
+        "calories": 210,
+        "protein": 4,
+        "carbs": 36,
+        "totalFat": 6
+      }
+    },
+    {
+      "id": "chipotle-black-beans",
+      "name": "Black Beans",
+      "categories": ["Beans"],
+      "portionType": "addon",
+      "image": "/restaurants/chipotle/logo.jpeg",
+      "nutrition": {
+        "calories": 130,
+        "protein": 8,
+        "carbs": 22,
+        "totalFat": 2
+      }
+    },
+    {
+      "id": "chipotle-pinto-beans",
+      "name": "Pinto Beans",
+      "categories": ["Beans"],
+      "portionType": "addon",
+      "image": "/restaurants/chipotle/logo.jpeg",
+      "nutrition": {
+        "calories": 130,
+        "protein": 8,
+        "carbs": 21,
+        "totalFat": 2
+      }
     }
   ],
   "ingredients": [
@@ -28,6 +146,115 @@
         "protein": 32,
         "carbs": 0,
         "totalFat": 7
+      }
+    },
+    {
+      "id": "chipotle-ingredient-chicken-al-pastor",
+      "name": "Chicken al Pastor",
+      "category": "Proteins",
+      "image": "/restaurants/chipotle/logo.jpeg",
+      "nutrition": {
+        "calories": 200,
+        "protein": 23,
+        "carbs": 4,
+        "totalFat": 11
+      }
+    },
+    {
+      "id": "chipotle-ingredient-steak",
+      "name": "Steak",
+      "category": "Proteins",
+      "image": "/restaurants/chipotle/logo.jpeg",
+      "nutrition": {
+        "calories": 150,
+        "protein": 21,
+        "carbs": 1,
+        "totalFat": 6
+      }
+    },
+    {
+      "id": "chipotle-ingredient-beef-barbacoa",
+      "name": "Beef Barbacoa",
+      "category": "Proteins",
+      "image": "/restaurants/chipotle/logo.jpeg",
+      "nutrition": {
+        "calories": 170,
+        "protein": 24,
+        "carbs": 2,
+        "totalFat": 7
+      }
+    },
+    {
+      "id": "chipotle-ingredient-carnitas",
+      "name": "Carnitas",
+      "category": "Proteins",
+      "image": "/restaurants/chipotle/logo.jpeg",
+      "nutrition": {
+        "calories": 210,
+        "protein": 23,
+        "carbs": 0,
+        "totalFat": 12
+      }
+    },
+    {
+      "id": "chipotle-ingredient-sofritas",
+      "name": "Sofritas",
+      "description": "Plant-Based Protein",
+      "category": "Proteins",
+      "image": "/restaurants/chipotle/logo.jpeg",
+      "nutrition": {
+        "calories": 150,
+        "protein": 8,
+        "carbs": 9,
+        "totalFat": 10
+      }
+    },
+    {
+      "id": "chipotle-ingredient-white-rice",
+      "name": "White Rice",
+      "category": "Rice",
+      "image": "/restaurants/chipotle/logo.jpeg",
+      "nutrition": {
+        "calories": 210,
+        "protein": 4,
+        "carbs": 40,
+        "totalFat": 4
+      }
+    },
+    {
+      "id": "chipotle-ingredient-brown-rice",
+      "name": "Brown Rice",
+      "category": "Rice",
+      "image": "/restaurants/chipotle/logo.jpeg",
+      "nutrition": {
+        "calories": 210,
+        "protein": 4,
+        "carbs": 36,
+        "totalFat": 6
+      }
+    },
+    {
+      "id": "chipotle-ingredient-black-beans",
+      "name": "Black Beans",
+      "category": "Beans",
+      "image": "/restaurants/chipotle/logo.jpeg",
+      "nutrition": {
+        "calories": 130,
+        "protein": 8,
+        "carbs": 22,
+        "totalFat": 2
+      }
+    },
+    {
+      "id": "chipotle-ingredient-pinto-beans",
+      "name": "Pinto Beans",
+      "category": "Beans",
+      "image": "/restaurants/chipotle/logo.jpeg",
+      "nutrition": {
+        "calories": 130,
+        "protein": 8,
+        "carbs": 21,
+        "totalFat": 2
       }
     }
   ]
