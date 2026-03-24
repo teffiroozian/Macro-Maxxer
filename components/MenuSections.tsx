@@ -70,9 +70,10 @@ const INGREDIENT_CATEGORY_PRIORITY_GROUPS = [
   { label: "Buns", aliases: ["bun", "buns"] },
   { label: "Proteins", aliases: ["protein", "proteins"] },
   { label: "Cheeses", aliases: ["cheese", "cheeses"] },
+  { label: "Toppings", aliases: ["topping", "toppings"] },
   {
     label: "Sandwich Toppings",
-    aliases: ["sandwich topping", "sandwich toppings", "topping", "toppings"],
+    aliases: ["sandwich topping", "sandwich toppings"],
   },
   { label: "Salad Toppings", aliases: ["salad topping", "salad toppings"] },
   {
