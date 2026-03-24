@@ -52,7 +52,7 @@ export default function StickyMacroTotalsBar({
 }: StickyMacroTotalsBarProps) {
   const wrapperClassName = inline
     ? "w-full"
-    : `fixed left-0 right-0 bottom-4 mx-auto z-40 max-w-5xl px-4 transition-all duration-300 ease-out sm:px-6 ${
+    : `fixed left-0 right-0 bottom-4 mx-auto z-[120] max-w-5xl px-4 transition-all duration-300 ease-out sm:px-6 ${
         visible
           ? "pointer-events-none translate-y-0 opacity-100"
           : "pointer-events-none translate-y-4 opacity-0"
@@ -82,7 +82,7 @@ export default function StickyMacroTotalsBar({
                 {contextLine}
               </p>
             ) : null}
-            <p className={`text-sm font-semibold tracking-tight text-neutral-500 ${contextLine ? "mt-1 text-left" : "text-center"}`}>
+            <p className={`text-sm font-semibold tracking-tight text-neutral-500 ${contextLine ? "mt-1" : ""} text-center`}>
               TOTAL MACROS
             </p>
 

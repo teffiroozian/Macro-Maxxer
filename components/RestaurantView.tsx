@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import Image from "next/image";
 import type { LucideIcon } from "lucide-react";
@@ -168,6 +168,7 @@ export default function RestaurantView({
     Record<string, { item: MenuItem; quantity: number }>
   >({});
   const [isBuildSummaryExpanded, setIsBuildSummaryExpanded] = useState(false);
+  const buildStickyContainerRef = useRef<HTMLDivElement | null>(null);
   const [selectedEntree, setSelectedEntree] = useState<EntreeSelection>(null);
   const selectedEntreeConfig = selectedEntree ? CHIPOTLE_ENTREE_CONFIGURATIONS[selectedEntree] : null;
   const selectedIncludedIngredientIds = useMemo(
@@ -537,7 +538,6 @@ export default function RestaurantView({
   const buildName = selectedEntree
     ? `${restaurantName} ${CHIPOTLE_ENTREE_CONFIGURATIONS[selectedEntree].label} Build`
     : `${restaurantName} Build`;
-  const buildContextLine = `${selectedIngredientCount} selected · ${buildName}`;
   const shouldShowBuildStickyBar = isBuildYourOwn && viewMode === "ingredients" && (!isChipotleBuildPage || selectedEntree !== null);
   const lockedIngredientIds = useMemo(() => {
     if (selectedIncludedIngredientIds.length === 0) {
@@ -648,6 +648,29 @@ export default function RestaurantView({
   };
 
   const selectedIngredientEntries = Object.entries(selectedIngredientItems);
+
+  useEffect(() => {
+    if (!isBuildSummaryExpanded) return;
+
+    const handlePointerDown = (event: MouseEvent | TouchEvent) => {
+      const target = event.target;
+      if (!(target instanceof Node)) return;
+
+      if (buildStickyContainerRef.current?.contains(target)) {
+        return;
+      }
+
+      setIsBuildSummaryExpanded(false);
+    };
+
+    document.addEventListener("mousedown", handlePointerDown);
+    document.addEventListener("touchstart", handlePointerDown);
+
+    return () => {
+      document.removeEventListener("mousedown", handlePointerDown);
+      document.removeEventListener("touchstart", handlePointerDown);
+    };
+  }, [isBuildSummaryExpanded]);
 
   return (
     <div>
@@ -811,118 +834,119 @@ export default function RestaurantView({
       )}
       {shouldShowBuildStickyBar ? <div className="h-48" aria-hidden="true" /> : null}
       {shouldShowBuildStickyBar ? (
-        <StickyMacroTotalsBar
-          totals={selectedIngredientTotals}
-          contextLine={buildContextLine}
-          secondaryActionLabel="View Selected"
-          secondaryActionExpandedLabel="View Selected"
-          primaryActionLabel="Add to Cart"
-          SecondaryActionIcon={ChevronDown}
-          SecondaryActionExpandedIcon={ChevronUp}
-          PrimaryActionIcon={ShoppingCart}
-          detailsOpen={isBuildSummaryExpanded}
-          detailsContent={
-            <div className="grid gap-4 lg:grid-cols-2">
-              <section className="rounded-[18px] border border-[rgba(0,0,0,0.15)] bg-white p-[18px]">
-                <h3 className="text-2xl font-bold text-neutral-900">Nutrition Summary</h3>
-                <div className="mt-6 text-xs font-medium text-[rgba(0,0,0,0.55)]">Amount per serving</div>
+        <div ref={buildStickyContainerRef}>
+          <StickyMacroTotalsBar
+            totals={selectedIngredientTotals}
+            secondaryActionLabel="View Selected"
+            secondaryActionExpandedLabel="View Selected"
+            primaryActionLabel="Add to Cart"
+            SecondaryActionIcon={ChevronDown}
+            SecondaryActionExpandedIcon={ChevronUp}
+            PrimaryActionIcon={ShoppingCart}
+            detailsOpen={isBuildSummaryExpanded}
+            detailsContent={
+              <div className="grid gap-4 lg:grid-cols-2">
+                <section className="rounded-[18px] border border-[rgba(0,0,0,0.15)] bg-white p-[18px]">
+                  <h3 className="text-2xl font-bold text-neutral-900">Nutrition Summary</h3>
+                  <div className="mt-6 text-xs font-medium text-[rgba(0,0,0,0.55)]">Amount per serving</div>
 
-                <div className="mt-1 flex items-end justify-between">
-                  <div className="text-xl font-bold">Calories</div>
-                  <div className="text-xl font-bold">{selectedNutritionLabelTotals.calories}</div>
-                </div>
+                  <div className="mt-1 flex items-end justify-between">
+                    <div className="text-xl font-bold">Calories</div>
+                    <div className="text-xl font-bold">{selectedNutritionLabelTotals.calories}</div>
+                  </div>
 
-                <div className="my-[12px] mb-2 h-[5px] rounded-[999px] bg-[rgba(0,0,0,0.75)]" />
+                  <div className="my-[12px] mb-2 h-[5px] rounded-[999px] bg-[rgba(0,0,0,0.75)]" />
 
-                <div className="flex items-baseline justify-between border-b border-[rgba(0,0,0,0.2)] py-[10px]">
-                  <div className="text-lg font-semibold">Total Fat</div>
-                  <div className="text-lg font-semibold">{formatValue(selectedNutritionLabelTotals.totalFat, "g")}</div>
-                </div>
-                <div className="flex items-baseline justify-between border-b border-[rgba(0,0,0,0.2)] py-[10px] pl-5">
-                  <div className="text-base font-medium text-[rgba(0,0,0,0.8)]">Sat Fat</div>
-                  <div className="text-base font-medium text-[rgba(0,0,0,0.8)]">{formatValue(selectedNutritionLabelTotals.satFat, "g")}</div>
-                </div>
-                <div className="flex items-baseline justify-between border-b border-[rgba(0,0,0,0.2)] py-[10px] pl-5">
-                  <div className="text-base font-medium text-[rgba(0,0,0,0.8)]">Trans Fat</div>
-                  <div className="text-base font-medium text-[rgba(0,0,0,0.8)]">{formatValue(selectedNutritionLabelTotals.transFat, "g")}</div>
-                </div>
-                <div className="flex items-baseline justify-between border-b border-[rgba(0,0,0,0.2)] py-[10px]">
-                  <div className="text-lg font-semibold">Cholesterol</div>
-                  <div className="text-lg font-semibold">{formatValue(selectedNutritionLabelTotals.cholesterol, "mg")}</div>
-                </div>
-                <div className="flex items-baseline justify-between border-b border-[rgba(0,0,0,0.2)] py-[10px]">
-                  <div className="text-lg font-semibold">Sodium</div>
-                  <div className="text-lg font-semibold">{formatValue(selectedNutritionLabelTotals.sodium, "mg")}</div>
-                </div>
-                <div className="flex items-baseline justify-between border-b border-[rgba(0,0,0,0.2)] py-[10px]">
-                  <div className="text-lg font-semibold">Carbohydrates</div>
-                  <div className="text-lg font-semibold">{formatValue(selectedNutritionLabelTotals.carbs, "g")}</div>
-                </div>
-                <div className="flex items-baseline justify-between border-b border-[rgba(0,0,0,0.2)] py-[10px] pl-5">
-                  <div className="text-base font-medium text-[rgba(0,0,0,0.8)]">Fiber</div>
-                  <div className="text-base font-medium text-[rgba(0,0,0,0.8)]">{formatValue(selectedNutritionLabelTotals.fiber, "g")}</div>
-                </div>
-                <div className="flex items-baseline justify-between border-b border-[rgba(0,0,0,0.2)] py-[10px] pl-5">
-                  <div className="text-base font-medium text-[rgba(0,0,0,0.8)]">Sugars</div>
-                  <div className="text-base font-medium text-[rgba(0,0,0,0.8)]">{formatValue(selectedNutritionLabelTotals.sugars, "g")}</div>
-                </div>
-                <div className="flex items-baseline justify-between border-b border-[rgba(0,0,0,0.2)] py-[10px]">
-                  <div className="text-lg font-semibold">Protein</div>
-                  <div className="text-lg font-semibold">{formatValue(selectedNutritionLabelTotals.protein, "g")}</div>
-                </div>
-              </section>
+                  <div className="flex items-baseline justify-between border-b border-[rgba(0,0,0,0.2)] py-[10px]">
+                    <div className="text-lg font-semibold">Total Fat</div>
+                    <div className="text-lg font-semibold">{formatValue(selectedNutritionLabelTotals.totalFat, "g")}</div>
+                  </div>
+                  <div className="flex items-baseline justify-between border-b border-[rgba(0,0,0,0.2)] py-[10px] pl-5">
+                    <div className="text-base font-medium text-[rgba(0,0,0,0.8)]">Sat Fat</div>
+                    <div className="text-base font-medium text-[rgba(0,0,0,0.8)]">{formatValue(selectedNutritionLabelTotals.satFat, "g")}</div>
+                  </div>
+                  <div className="flex items-baseline justify-between border-b border-[rgba(0,0,0,0.2)] py-[10px] pl-5">
+                    <div className="text-base font-medium text-[rgba(0,0,0,0.8)]">Trans Fat</div>
+                    <div className="text-base font-medium text-[rgba(0,0,0,0.8)]">{formatValue(selectedNutritionLabelTotals.transFat, "g")}</div>
+                  </div>
+                  <div className="flex items-baseline justify-between border-b border-[rgba(0,0,0,0.2)] py-[10px]">
+                    <div className="text-lg font-semibold">Cholesterol</div>
+                    <div className="text-lg font-semibold">{formatValue(selectedNutritionLabelTotals.cholesterol, "mg")}</div>
+                  </div>
+                  <div className="flex items-baseline justify-between border-b border-[rgba(0,0,0,0.2)] py-[10px]">
+                    <div className="text-lg font-semibold">Sodium</div>
+                    <div className="text-lg font-semibold">{formatValue(selectedNutritionLabelTotals.sodium, "mg")}</div>
+                  </div>
+                  <div className="flex items-baseline justify-between border-b border-[rgba(0,0,0,0.2)] py-[10px]">
+                    <div className="text-lg font-semibold">Carbohydrates</div>
+                    <div className="text-lg font-semibold">{formatValue(selectedNutritionLabelTotals.carbs, "g")}</div>
+                  </div>
+                  <div className="flex items-baseline justify-between border-b border-[rgba(0,0,0,0.2)] py-[10px] pl-5">
+                    <div className="text-base font-medium text-[rgba(0,0,0,0.8)]">Fiber</div>
+                    <div className="text-base font-medium text-[rgba(0,0,0,0.8)]">{formatValue(selectedNutritionLabelTotals.fiber, "g")}</div>
+                  </div>
+                  <div className="flex items-baseline justify-between border-b border-[rgba(0,0,0,0.2)] py-[10px] pl-5">
+                    <div className="text-base font-medium text-[rgba(0,0,0,0.8)]">Sugars</div>
+                    <div className="text-base font-medium text-[rgba(0,0,0,0.8)]">{formatValue(selectedNutritionLabelTotals.sugars, "g")}</div>
+                  </div>
+                  <div className="flex items-baseline justify-between border-b border-[rgba(0,0,0,0.2)] py-[10px]">
+                    <div className="text-lg font-semibold">Protein</div>
+                    <div className="text-lg font-semibold">{formatValue(selectedNutritionLabelTotals.protein, "g")}</div>
+                  </div>
+                </section>
 
-              <section className="flex min-h-0 flex-col rounded-3xl border border-black/10 bg-white p-5">
-                <h3 className="text-2xl font-bold text-neutral-900">Selected Ingredients</h3>
-                <p className="mt-2 text-sm font-semibold text-slate-600">
-                  {CHIPOTLE_ENTREE_CONFIGURATIONS[selectedEntree ?? "bowl"].label} · {selectedIngredientCount} selected
-                </p>
-                <ul className="mt-4 grid gap-2 rounded-xl bg-[#efefef] p-2">
-                  {selectedIngredientEntries.map(([ingredientId, selectedIngredient]) => (
-                    <li key={ingredientId} className="flex items-center justify-between rounded-xl border border-black/10 bg-white px-3 py-2">
-                      <div className="flex min-w-0 items-center gap-2">
-                        <div className="h-8 w-8 shrink-0 overflow-hidden rounded-md border border-black/10 bg-neutral-100">
-                          <Image
-                            src={selectedIngredient.item.image || restaurantLogo}
-                            alt={selectedIngredient.item.name}
-                            width={32}
-                            height={32}
-                            className="h-full w-full object-cover"
-                          />
+                <section className="flex min-h-0 flex-col rounded-3xl border border-black/10 bg-white p-5">
+                  <h3 className="text-2xl font-bold text-neutral-900">Selected Ingredients</h3>
+                  <p className="mt-2 text-sm font-semibold text-slate-600">
+                    {CHIPOTLE_ENTREE_CONFIGURATIONS[selectedEntree ?? "bowl"].label} · {selectedIngredientCount} selected
+                  </p>
+                  <ul className="mt-4 grid gap-2 rounded-xl bg-[#efefef] p-2">
+                    {selectedIngredientEntries.map(([ingredientId, selectedIngredient]) => (
+                      <li key={ingredientId} className="flex items-center justify-between rounded-xl border border-black/10 bg-white px-3 py-2">
+                        <div className="flex min-w-0 items-center gap-2">
+                          <div className="h-8 w-8 shrink-0 overflow-hidden rounded-md border border-black/10 bg-neutral-100">
+                            <Image
+                              src={selectedIngredient.item.image || restaurantLogo}
+                              alt={selectedIngredient.item.name}
+                              width={32}
+                              height={32}
+                              className="h-full w-full object-cover"
+                            />
+                          </div>
+                          <span className="truncate text-sm font-medium text-slate-900">
+                            {selectedIngredient.item.name}
+                            {selectedIngredient.quantity > 1 ? ` (x${selectedIngredient.quantity})` : ""}
+                          </span>
                         </div>
-                        <span className="truncate text-sm font-medium text-slate-900">
-                          {selectedIngredient.item.name}
-                          {selectedIngredient.quantity > 1 ? ` (x${selectedIngredient.quantity})` : ""}
-                        </span>
-                      </div>
-                      <div className="inline-flex items-center gap-2">
-                        <button
-                          type="button"
-                          onClick={() => adjustIngredientQuantity(ingredientId, -1)}
-                          disabled={lockedIngredientIds.has(ingredientId)}
-                          className="h-7 w-7 rounded-full border border-black/20 text-base font-bold text-slate-700 disabled:cursor-not-allowed disabled:opacity-40"
-                        >
-                          −
-                        </button>
-                        <span className="w-4 text-center text-sm font-semibold text-slate-900">{selectedIngredient.quantity}</span>
-                        <button
-                          type="button"
-                          onClick={() => adjustIngredientQuantity(ingredientId, 1)}
-                          disabled={lockedIngredientIds.has(ingredientId)}
-                          className="h-7 w-7 rounded-full border border-black/20 text-base font-bold text-slate-700 disabled:cursor-not-allowed disabled:opacity-40"
-                        >
-                          +
-                        </button>
-                      </div>
-                    </li>
-                  ))}
-                </ul>
-              </section>
-            </div>
-          }
-          onSecondaryAction={() => setIsBuildSummaryExpanded((previous) => !previous)}
-          onPrimaryAction={handleAddBuildToCart}
-        />
+                        <div className="inline-flex items-center gap-2">
+                          <button
+                            type="button"
+                            onClick={() => adjustIngredientQuantity(ingredientId, -1)}
+                            disabled={lockedIngredientIds.has(ingredientId)}
+                            className="h-7 w-7 rounded-full border border-black/20 text-base font-bold text-slate-700 disabled:cursor-not-allowed disabled:opacity-40"
+                          >
+                            −
+                          </button>
+                          <span className="w-4 text-center text-sm font-semibold text-slate-900">{selectedIngredient.quantity}</span>
+                          <button
+                            type="button"
+                            onClick={() => adjustIngredientQuantity(ingredientId, 1)}
+                            disabled={lockedIngredientIds.has(ingredientId)}
+                            className="h-7 w-7 rounded-full border border-black/20 text-base font-bold text-slate-700 disabled:cursor-not-allowed disabled:opacity-40"
+                          >
+                            +
+                          </button>
+                        </div>
+                      </li>
+                    ))}
+                  </ul>
+                </section>
+              </div>
+            }
+            onSecondaryAction={() => setIsBuildSummaryExpanded((previous) => !previous)}
+            onPrimaryAction={handleAddBuildToCart}
+          />
+        </div>
       ) : null}
     </div>
   );
