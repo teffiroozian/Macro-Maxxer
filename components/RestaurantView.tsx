@@ -243,24 +243,46 @@ export default function RestaurantView({
       }
     };
 
-    const getRankedAllFilterKeys = (item: MenuItem) => {
-      const keys = new Set<RankedAllFilterKey>();
-      const itemKey = getRankedAllFilterKey(item.portionType);
-      if (itemKey) {
-        keys.add(itemKey);
-      }
-
-      item.variants?.forEach((variant) => {
-        const variantKey = getRankedAllFilterKey(variant.portionType);
-        if (variantKey) {
-          keys.add(variantKey);
+    return sourceItems
+      .map((item) => {
+        if (!(entireMenu && viewMode === "menu")) {
+          return item;
         }
-      });
 
-      return keys;
-    };
+        const selectedRankedKeys = new Set<RankedAllFilterKey>(
+          (Object.entries(rankedAllFilters) as [RankedAllFilterKey, boolean][])
+            .filter(([, isEnabled]) => isEnabled)
+            .map(([key]) => key)
+        );
 
-    return sourceItems.filter((item) => {
+        const filteredVariants = item.variants?.filter((variant) => {
+          const variantKey = getRankedAllFilterKey(variant.portionType);
+          if (!variantKey) {
+            return false;
+          }
+
+          return selectedRankedKeys.has(variantKey);
+        });
+
+        const itemKey = getRankedAllFilterKey(item.portionType);
+        const itemKeyMatches = itemKey ? selectedRankedKeys.has(itemKey) : false;
+        const hasMatchingVariants = Boolean(filteredVariants && filteredVariants.length > 0);
+
+        if (!itemKeyMatches && !hasMatchingVariants) {
+          return null;
+        }
+
+        if (!item.variants || item.variants.length === 0) {
+          return item;
+        }
+
+        return {
+          ...item,
+          variants: hasMatchingVariants ? filteredVariants : [],
+        };
+      })
+      .filter((item): item is MenuItem => Boolean(item))
+      .filter((item) => {
       const protein = item.nutrition.protein ?? 0;
       const calories = item.nutrition.calories ?? 0;
 
@@ -269,16 +291,6 @@ export default function RestaurantView({
       }
       if (filters.caloriesMax && calories > filters.caloriesMax) {
         return false;
-      }
-
-      if (entireMenu && viewMode === "menu") {
-        const rankedAllFilterKeys = getRankedAllFilterKeys(item);
-        if (
-          rankedAllFilterKeys.size === 0 ||
-          ![...rankedAllFilterKeys].some((key) => rankedAllFilters[key])
-        ) {
-          return false;
-        }
       }
 
       if (!searchTerms.length) {
