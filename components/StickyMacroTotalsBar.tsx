@@ -3,6 +3,7 @@
 import type { CartMacros } from "@/stores/cartStore";
 import type { LucideIcon } from "lucide-react";
 import { Bookmark, Camera } from "lucide-react";
+import type { ReactNode } from "react";
 
 type StickyMacroTotalsBarProps = {
   totals: CartMacros;
@@ -11,10 +12,14 @@ type StickyMacroTotalsBarProps = {
   contextLine?: string;
   primaryActionLabel?: string;
   secondaryActionLabel?: string;
+  secondaryActionExpandedLabel?: string;
   PrimaryActionIcon?: LucideIcon;
   SecondaryActionIcon?: LucideIcon;
+  SecondaryActionExpandedIcon?: LucideIcon;
   onPrimaryAction?: () => void;
   onSecondaryAction?: () => void;
+  detailsOpen?: boolean;
+  detailsContent?: ReactNode;
 };
 
 const macroRows: Array<{
@@ -36,14 +41,18 @@ export default function StickyMacroTotalsBar({
   contextLine,
   primaryActionLabel = "Generate Snapshot",
   secondaryActionLabel = "Save Meal",
+  secondaryActionExpandedLabel,
   PrimaryActionIcon = Camera,
   SecondaryActionIcon = Bookmark,
+  SecondaryActionExpandedIcon,
   onPrimaryAction,
   onSecondaryAction,
+  detailsOpen = false,
+  detailsContent,
 }: StickyMacroTotalsBarProps) {
   const wrapperClassName = inline
     ? "w-full"
-    : `fixed left-0 right-0 bottom-4 mx-auto z-40 max-w-5xl px-4 transition-all duration-300 ease-out sm:px-6 ${
+    : `fixed left-0 right-0 bottom-4 mx-auto z-[120] max-w-5xl px-4 transition-all duration-300 ease-out sm:px-6 ${
         visible
           ? "pointer-events-none translate-y-0 opacity-100"
           : "pointer-events-none translate-y-4 opacity-0"
@@ -58,6 +67,14 @@ export default function StickyMacroTotalsBar({
   return (
     <div className={wrapperClassName}>
       <div className={panelClassName}>
+        {detailsOpen && detailsContent ? (
+          <div className="mb-5">
+            {detailsContent}
+          </div>
+        ) : null}
+        {detailsOpen && detailsContent ? (
+          <div className="mb-5 border-t border-black/10" aria-hidden="true" />
+        ) : null}
         <div className="flex flex-col gap-5 lg:flex-row lg:items-center lg:gap-8">
           <section className="flex-1">
             {contextLine ? (
@@ -65,7 +82,7 @@ export default function StickyMacroTotalsBar({
                 {contextLine}
               </p>
             ) : null}
-            <p className={`text-sm font-semibold tracking-tight text-neutral-500 ${contextLine ? "mt-1 text-left" : "text-center"}`}>
+            <p className={`text-sm font-semibold tracking-tight text-neutral-500 ${contextLine ? "mt-1" : ""} text-center`}>
               TOTAL MACROS
             </p>
 
@@ -84,16 +101,18 @@ export default function StickyMacroTotalsBar({
             </div>
           </section>
 
-          
-
           <div className="flex w-full flex-col gap-3 sm:w-auto">
             <button
               type="button"
               onClick={onSecondaryAction}
               className="cursor-pointer inline-flex h-11 items-center justify-center gap-2 rounded-xl border-2 border-black/80 bg-transparent px-6 text-base font-semibold text-[#1A1A1A] transition hover:bg-black/5"
             >
-              <SecondaryActionIcon className="h-4 w-4" strokeWidth={2.5} aria-hidden="true" />
-              <span>{secondaryActionLabel}</span>
+              {detailsOpen && SecondaryActionExpandedIcon ? (
+                <SecondaryActionExpandedIcon className="h-4 w-4" strokeWidth={2.5} aria-hidden="true" />
+              ) : (
+                <SecondaryActionIcon className="h-4 w-4" strokeWidth={2.5} aria-hidden="true" />
+              )}
+              <span>{detailsOpen && secondaryActionExpandedLabel ? secondaryActionExpandedLabel : secondaryActionLabel}</span>
             </button>
             <button
               type="button"

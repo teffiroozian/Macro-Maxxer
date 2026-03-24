@@ -1,12 +1,14 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import Image from "next/image";
 import type { LucideIcon } from "lucide-react";
 import {
   Beef,
   CakeSlice,
+  ChevronDown,
+  ChevronUp,
   Circle,
   CircleDashed,
   CupSoda,
@@ -24,7 +26,6 @@ import {
   SquarePlus,
   Soup,
   ToggleLeft,
-  RotateCcw,
   ShoppingCart,
   Utensils,
   Waves,
@@ -101,6 +102,10 @@ const CHIPOTLE_ENTREE_CONFIGURATIONS: Record<
   },
 };
 
+function formatValue(value?: number, suffix = "") {
+  return value === undefined ? "—" : `${value}${suffix}`;
+}
+
 export default function RestaurantView({
   restaurantId,
   restaurantName,
@@ -159,7 +164,11 @@ export default function RestaurantView({
   const { searchOpen, searchQuery, setSearchQuery, openSearch, closeSearch } =
     useRestaurantSearch();
   const { addItem } = useCart();
-  const [selectedIngredientItems, setSelectedIngredientItems] = useState<Record<string, MenuItem>>({});
+  const [selectedIngredientItems, setSelectedIngredientItems] = useState<
+    Record<string, { item: MenuItem; quantity: number }>
+  >({});
+  const [isBuildSummaryExpanded, setIsBuildSummaryExpanded] = useState(false);
+  const buildStickyContainerRef = useRef<HTMLDivElement | null>(null);
   const [selectedEntree, setSelectedEntree] = useState<EntreeSelection>(null);
   const selectedEntreeConfig = selectedEntree ? CHIPOTLE_ENTREE_CONFIGURATIONS[selectedEntree] : null;
   const selectedIncludedIngredientIds = useMemo(
@@ -469,22 +478,66 @@ export default function RestaurantView({
   const selectedIngredientTotals = useMemo(
     () =>
       Object.values(selectedIngredientItems).reduce(
-        (acc, ingredient) => ({
-          calories: acc.calories + (ingredient.nutrition.calories ?? 0),
-          protein: acc.protein + (ingredient.nutrition.protein ?? 0),
-          carbs: acc.carbs + (ingredient.nutrition.carbs ?? 0),
-          fat: acc.fat + (ingredient.nutrition.totalFat ?? 0),
+        (acc, selectedIngredient) => ({
+          calories:
+            acc.calories +
+            (selectedIngredient.item.nutrition.calories ?? 0) * selectedIngredient.quantity,
+          protein:
+            acc.protein +
+            (selectedIngredient.item.nutrition.protein ?? 0) * selectedIngredient.quantity,
+          carbs:
+            acc.carbs +
+            (selectedIngredient.item.nutrition.carbs ?? 0) * selectedIngredient.quantity,
+          fat:
+            acc.fat +
+            (selectedIngredient.item.nutrition.totalFat ?? 0) * selectedIngredient.quantity,
         }),
         { calories: 0, protein: 0, carbs: 0, fat: 0 }
       ),
     [selectedIngredientItems]
   );
 
-  const selectedIngredientCount = Object.keys(selectedIngredientItems).length;
+  const selectedNutritionLabelTotals = useMemo(
+    () =>
+      Object.values(selectedIngredientItems).reduce(
+        (acc, selectedIngredient) => {
+          const { item, quantity } = selectedIngredient;
+          return {
+            calories: acc.calories + (item.nutrition.calories ?? 0) * quantity,
+            totalFat: acc.totalFat + (item.nutrition.totalFat ?? 0) * quantity,
+            satFat: acc.satFat + (item.nutrition.satFat ?? 0) * quantity,
+            transFat: acc.transFat + (item.nutrition.transFat ?? 0) * quantity,
+            cholesterol: acc.cholesterol + (item.nutrition.cholesterol ?? 0) * quantity,
+            sodium: acc.sodium + (item.nutrition.sodium ?? 0) * quantity,
+            carbs: acc.carbs + (item.nutrition.carbs ?? 0) * quantity,
+            fiber: acc.fiber + (item.nutrition.fiber ?? 0) * quantity,
+            sugars: acc.sugars + (item.nutrition.sugars ?? 0) * quantity,
+            protein: acc.protein + (item.nutrition.protein ?? 0) * quantity,
+          };
+        },
+        {
+          calories: 0,
+          totalFat: 0,
+          satFat: 0,
+          transFat: 0,
+          cholesterol: 0,
+          sodium: 0,
+          carbs: 0,
+          fiber: 0,
+          sugars: 0,
+          protein: 0,
+        }
+      ),
+    [selectedIngredientItems]
+  );
+
+  const selectedIngredientCount = Object.values(selectedIngredientItems).reduce(
+    (acc, selectedIngredient) => acc + selectedIngredient.quantity,
+    0
+  );
   const buildName = selectedEntree
     ? `${restaurantName} ${CHIPOTLE_ENTREE_CONFIGURATIONS[selectedEntree].label} Build`
     : `${restaurantName} Build`;
-  const buildContextLine = `${selectedIngredientCount} selected · ${buildName}`;
   const shouldShowBuildStickyBar = isBuildYourOwn && viewMode === "ingredients" && (!isChipotleBuildPage || selectedEntree !== null);
   const lockedIngredientIds = useMemo(() => {
     if (selectedIncludedIngredientIds.length === 0) {
@@ -505,7 +558,7 @@ export default function RestaurantView({
         delete next[itemId];
         return next;
       }
-      return { ...prev, [itemId]: item };
+      return { ...prev, [itemId]: { item, quantity: 1 } };
     });
   };
 
@@ -535,28 +588,11 @@ export default function RestaurantView({
           return;
         }
 
-        next[includedIngredientId] = includedIngredientItem;
+        next[includedIngredientId] = { item: includedIngredientItem, quantity: 1 };
       });
 
       return next;
     });
-  };
-
-  const handleResetBuildSelections = () => {
-    if (selectedIncludedIngredientIds.length === 0) {
-      setSelectedIngredientItems({});
-      return;
-    }
-
-    const includedIngredientSelections: Record<string, MenuItem> = {};
-    selectedIncludedIngredientIds.forEach((includedIngredientId) => {
-      const includedIngredientItem = ingredientItemsById.get(includedIngredientId);
-      if (includedIngredientItem) {
-        includedIngredientSelections[includedIngredientId] = includedIngredientItem;
-      }
-    });
-
-    setSelectedIngredientItems(includedIngredientSelections);
   };
 
   const handleAddBuildToCart = () => {
@@ -567,9 +603,32 @@ export default function RestaurantView({
       restaurantId,
       itemId: `${restaurantId}-build`,
       name: buildName,
-      customizations: Object.values(selectedIngredientItems).map((ingredient) => ingredient.name),
+      customizations: Object.values(selectedIngredientItems).flatMap(({ item, quantity }) =>
+        Array.from({ length: quantity }, () => item.name)
+      ),
       quantity: 1,
       macrosPerItem: selectedIngredientTotals,
+    });
+  };
+
+  const adjustIngredientQuantity = (ingredientId: string, delta: 1 | -1) => {
+    if (lockedIngredientIds.has(ingredientId)) return;
+
+    setSelectedIngredientItems((previous) => {
+      const existing = previous[ingredientId];
+      if (!existing) return previous;
+
+      const maxQuantity = ingredients.find((ingredient) => ingredient.id === ingredientId)?.maxQuantity ?? 2;
+      const nextQuantity = Math.max(0, Math.min(maxQuantity, existing.quantity + delta));
+      const next = { ...previous };
+
+      if (nextQuantity === 0) {
+        delete next[ingredientId];
+        return next;
+      }
+
+      next[ingredientId] = { ...existing, quantity: nextQuantity };
+      return next;
     });
   };
 
@@ -587,6 +646,31 @@ export default function RestaurantView({
       };
     });
   };
+
+  const selectedIngredientEntries = Object.entries(selectedIngredientItems);
+
+  useEffect(() => {
+    if (!isBuildSummaryExpanded) return;
+
+    const handlePointerDown = (event: MouseEvent | TouchEvent) => {
+      const target = event.target;
+      if (!(target instanceof Node)) return;
+
+      if (buildStickyContainerRef.current?.contains(target)) {
+        return;
+      }
+
+      setIsBuildSummaryExpanded(false);
+    };
+
+    document.addEventListener("mousedown", handlePointerDown);
+    document.addEventListener("touchstart", handlePointerDown);
+
+    return () => {
+      document.removeEventListener("mousedown", handlePointerDown);
+      document.removeEventListener("touchstart", handlePointerDown);
+    };
+  }, [isBuildSummaryExpanded]);
 
   return (
     <div>
@@ -750,16 +834,119 @@ export default function RestaurantView({
       )}
       {shouldShowBuildStickyBar ? <div className="h-48" aria-hidden="true" /> : null}
       {shouldShowBuildStickyBar ? (
-        <StickyMacroTotalsBar
-          totals={selectedIngredientTotals}
-          contextLine={buildContextLine}
-          secondaryActionLabel="Reset"
-          primaryActionLabel="Add to Cart"
-          SecondaryActionIcon={RotateCcw}
-          PrimaryActionIcon={ShoppingCart}
-          onSecondaryAction={handleResetBuildSelections}
-          onPrimaryAction={handleAddBuildToCart}
-        />
+        <div ref={buildStickyContainerRef}>
+          <StickyMacroTotalsBar
+            totals={selectedIngredientTotals}
+            secondaryActionLabel="View Selected"
+            secondaryActionExpandedLabel="View Selected"
+            primaryActionLabel="Add to Cart"
+            SecondaryActionIcon={ChevronDown}
+            SecondaryActionExpandedIcon={ChevronUp}
+            PrimaryActionIcon={ShoppingCart}
+            detailsOpen={isBuildSummaryExpanded}
+            detailsContent={
+              <div className="grid gap-4 lg:grid-cols-2">
+                <section className="rounded-[18px] border border-[rgba(0,0,0,0.15)] bg-white p-[18px]">
+                  <h3 className="text-2xl font-bold text-neutral-900">Nutrition Summary</h3>
+                  <div className="mt-6 text-xs font-medium text-[rgba(0,0,0,0.55)]">Amount per serving</div>
+
+                  <div className="mt-1 flex items-end justify-between">
+                    <div className="text-xl font-bold">Calories</div>
+                    <div className="text-xl font-bold">{selectedNutritionLabelTotals.calories}</div>
+                  </div>
+
+                  <div className="my-[12px] mb-2 h-[5px] rounded-[999px] bg-[rgba(0,0,0,0.75)]" />
+
+                  <div className="flex items-baseline justify-between border-b border-[rgba(0,0,0,0.2)] py-[10px]">
+                    <div className="text-lg font-semibold">Total Fat</div>
+                    <div className="text-lg font-semibold">{formatValue(selectedNutritionLabelTotals.totalFat, "g")}</div>
+                  </div>
+                  <div className="flex items-baseline justify-between border-b border-[rgba(0,0,0,0.2)] py-[10px] pl-5">
+                    <div className="text-base font-medium text-[rgba(0,0,0,0.8)]">Sat Fat</div>
+                    <div className="text-base font-medium text-[rgba(0,0,0,0.8)]">{formatValue(selectedNutritionLabelTotals.satFat, "g")}</div>
+                  </div>
+                  <div className="flex items-baseline justify-between border-b border-[rgba(0,0,0,0.2)] py-[10px] pl-5">
+                    <div className="text-base font-medium text-[rgba(0,0,0,0.8)]">Trans Fat</div>
+                    <div className="text-base font-medium text-[rgba(0,0,0,0.8)]">{formatValue(selectedNutritionLabelTotals.transFat, "g")}</div>
+                  </div>
+                  <div className="flex items-baseline justify-between border-b border-[rgba(0,0,0,0.2)] py-[10px]">
+                    <div className="text-lg font-semibold">Cholesterol</div>
+                    <div className="text-lg font-semibold">{formatValue(selectedNutritionLabelTotals.cholesterol, "mg")}</div>
+                  </div>
+                  <div className="flex items-baseline justify-between border-b border-[rgba(0,0,0,0.2)] py-[10px]">
+                    <div className="text-lg font-semibold">Sodium</div>
+                    <div className="text-lg font-semibold">{formatValue(selectedNutritionLabelTotals.sodium, "mg")}</div>
+                  </div>
+                  <div className="flex items-baseline justify-between border-b border-[rgba(0,0,0,0.2)] py-[10px]">
+                    <div className="text-lg font-semibold">Carbohydrates</div>
+                    <div className="text-lg font-semibold">{formatValue(selectedNutritionLabelTotals.carbs, "g")}</div>
+                  </div>
+                  <div className="flex items-baseline justify-between border-b border-[rgba(0,0,0,0.2)] py-[10px] pl-5">
+                    <div className="text-base font-medium text-[rgba(0,0,0,0.8)]">Fiber</div>
+                    <div className="text-base font-medium text-[rgba(0,0,0,0.8)]">{formatValue(selectedNutritionLabelTotals.fiber, "g")}</div>
+                  </div>
+                  <div className="flex items-baseline justify-between border-b border-[rgba(0,0,0,0.2)] py-[10px] pl-5">
+                    <div className="text-base font-medium text-[rgba(0,0,0,0.8)]">Sugars</div>
+                    <div className="text-base font-medium text-[rgba(0,0,0,0.8)]">{formatValue(selectedNutritionLabelTotals.sugars, "g")}</div>
+                  </div>
+                  <div className="flex items-baseline justify-between border-b border-[rgba(0,0,0,0.2)] py-[10px]">
+                    <div className="text-lg font-semibold">Protein</div>
+                    <div className="text-lg font-semibold">{formatValue(selectedNutritionLabelTotals.protein, "g")}</div>
+                  </div>
+                </section>
+
+                <section className="flex min-h-0 flex-col rounded-3xl border border-black/10 bg-white p-5">
+                  <h3 className="text-2xl font-bold text-neutral-900">Selected Ingredients</h3>
+                  <p className="mt-2 text-sm font-semibold text-slate-600">
+                    {CHIPOTLE_ENTREE_CONFIGURATIONS[selectedEntree ?? "bowl"].label} · {selectedIngredientCount} selected
+                  </p>
+                  <ul className="mt-4 grid gap-2 rounded-xl bg-[#efefef] p-2">
+                    {selectedIngredientEntries.map(([ingredientId, selectedIngredient]) => (
+                      <li key={ingredientId} className="flex items-center justify-between rounded-xl border border-black/10 bg-white px-3 py-2">
+                        <div className="flex min-w-0 items-center gap-2">
+                          <div className="h-8 w-8 shrink-0 overflow-hidden rounded-md border border-black/10 bg-neutral-100">
+                            <Image
+                              src={selectedIngredient.item.image || restaurantLogo}
+                              alt={selectedIngredient.item.name}
+                              width={32}
+                              height={32}
+                              className="h-full w-full object-cover"
+                            />
+                          </div>
+                          <span className="truncate text-sm font-medium text-slate-900">
+                            {selectedIngredient.item.name}
+                            {selectedIngredient.quantity > 1 ? ` (x${selectedIngredient.quantity})` : ""}
+                          </span>
+                        </div>
+                        <div className="inline-flex items-center gap-2">
+                          <button
+                            type="button"
+                            onClick={() => adjustIngredientQuantity(ingredientId, -1)}
+                            disabled={lockedIngredientIds.has(ingredientId)}
+                            className="h-7 w-7 rounded-full border border-black/20 text-base font-bold text-slate-700 disabled:cursor-not-allowed disabled:opacity-40"
+                          >
+                            −
+                          </button>
+                          <span className="w-4 text-center text-sm font-semibold text-slate-900">{selectedIngredient.quantity}</span>
+                          <button
+                            type="button"
+                            onClick={() => adjustIngredientQuantity(ingredientId, 1)}
+                            disabled={lockedIngredientIds.has(ingredientId)}
+                            className="h-7 w-7 rounded-full border border-black/20 text-base font-bold text-slate-700 disabled:cursor-not-allowed disabled:opacity-40"
+                          >
+                            +
+                          </button>
+                        </div>
+                      </li>
+                    ))}
+                  </ul>
+                </section>
+              </div>
+            }
+            onSecondaryAction={() => setIsBuildSummaryExpanded((previous) => !previous)}
+            onPrimaryAction={handleAddBuildToCart}
+          />
+        </div>
       ) : null}
     </div>
   );
