@@ -230,9 +230,53 @@ export default function RestaurantView({
     .filter(Boolean);
 
   const filteredItems = useMemo(() => {
-    const getRankedAllFilterKey = (
-      portionType: MenuItem["portionType"] | undefined
+    const getRankedCategoryFromCategories = (
+      categories: readonly string[] | undefined
     ): RankedAllFilterKey | null => {
+      if (!categories?.length) {
+        return null;
+      }
+
+      const normalizedCategories = categories.map((category) =>
+        category.trim().toLowerCase()
+      );
+
+      if (
+        normalizedCategories.some((category) =>
+          ["drink", "drinks", "beverage", "beverages"].includes(category)
+        )
+      ) {
+        return "drinks";
+      }
+
+      if (
+        normalizedCategories.some((category) =>
+          ["side", "sides"].includes(category)
+        )
+      ) {
+        return "sides";
+      }
+
+      if (
+        normalizedCategories.some((category) =>
+          ["shareable", "shareables"].includes(category)
+        )
+      ) {
+        return "shareables";
+      }
+
+      return null;
+    };
+
+    const getRankedAllFilterKey = (
+      portionType: MenuItem["portionType"] | undefined,
+      categories?: readonly string[]
+    ): RankedAllFilterKey | null => {
+      const categoryMatch = getRankedCategoryFromCategories(categories);
+      if (categoryMatch) {
+        return categoryMatch;
+      }
+
       switch (portionType) {
         case "single":
           return "main-entrees";
@@ -260,7 +304,10 @@ export default function RestaurantView({
         );
 
         const filteredVariants = item.variants?.filter((variant) => {
-          const variantKey = getRankedAllFilterKey(variant.portionType);
+          const variantKey = getRankedAllFilterKey(
+            variant.portionType,
+            variant.categories ?? item.categories
+          );
           if (!variantKey) {
             return false;
           }
@@ -268,7 +315,7 @@ export default function RestaurantView({
           return selectedRankedKeys.has(variantKey);
         });
 
-        const itemKey = getRankedAllFilterKey(item.portionType);
+        const itemKey = getRankedAllFilterKey(item.portionType, item.categories);
         const itemKeyMatches = itemKey ? selectedRankedKeys.has(itemKey) : false;
         const hasMatchingVariants = Boolean(filteredVariants && filteredVariants.length > 0);
 
