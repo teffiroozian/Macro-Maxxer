@@ -67,6 +67,14 @@ export default function StickyMacroTotalsBar({
   return (
     <div className={wrapperClassName}>
       <div className={panelClassName}>
+        {detailsOpen && detailsContent ? (
+          <div className="mb-5">
+            {detailsContent}
+          </div>
+        ) : null}
+        {detailsOpen && detailsContent ? (
+          <div className="mb-5 border-t border-black/10" aria-hidden="true" />
+        ) : null}
         <div className="flex flex-col gap-5 lg:flex-row lg:items-center lg:gap-8">
           <section className="flex-1">
             {contextLine ? (
@@ -116,11 +124,6 @@ export default function StickyMacroTotalsBar({
             </button>
           </div>
         </div>
-        {detailsOpen && detailsContent ? (
-          <div className="mt-5 border-t border-black/10 pt-5">
-            {detailsContent}
-          </div>
-        ) : null}
       </div>
     </div>
   );

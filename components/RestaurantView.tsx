@@ -102,6 +102,10 @@ const CHIPOTLE_ENTREE_CONFIGURATIONS: Record<
   },
 };
 
+function formatValue(value?: number, suffix = "") {
+  return value === undefined ? "—" : `${value}${suffix}`;
+}
+
 export default function RestaurantView({
   restaurantId,
   restaurantName,
@@ -819,39 +823,78 @@ export default function RestaurantView({
           detailsOpen={isBuildSummaryExpanded}
           detailsContent={
             <div className="grid gap-4 lg:grid-cols-2">
-              <section className="rounded-2xl border border-black/10 bg-[#F6F6F6] p-4">
-                <h3 className="text-2xl font-bold text-slate-900">Nutrition Summary</h3>
-                <p className="mt-2 text-sm text-slate-500">Amount per serving</p>
-                <div className="mt-1 flex items-end justify-between border-b border-black/60 pb-2">
-                  <span className="text-[2rem] font-extrabold leading-tight text-slate-900">Calories</span>
-                  <span className="text-3xl font-extrabold leading-tight text-slate-900">{selectedNutritionLabelTotals.calories}</span>
+              <section className="rounded-[18px] border border-[rgba(0,0,0,0.15)] bg-white p-[18px]">
+                <h3 className="text-2xl font-bold text-neutral-900">Nutrition Summary</h3>
+                <div className="mt-6 text-xs font-medium text-[rgba(0,0,0,0.55)]">Amount per serving</div>
+
+                <div className="mt-1 flex items-end justify-between">
+                  <div className="text-xl font-bold">Calories</div>
+                  <div className="text-xl font-bold">{selectedNutritionLabelTotals.calories}</div>
                 </div>
 
-                <div className="mt-3 space-y-2 text-lg text-slate-900">
-                  <div className="flex justify-between border-b border-black/10 pb-1.5"><span className="font-semibold">Total Fat</span><span className="font-semibold">{selectedNutritionLabelTotals.totalFat}g</span></div>
-                  <div className="flex justify-between border-b border-black/10 pb-1.5 pl-4"><span>Sat Fat</span><span>{selectedNutritionLabelTotals.satFat}g</span></div>
-                  <div className="flex justify-between border-b border-black/10 pb-1.5 pl-4"><span>Trans Fat</span><span>{selectedNutritionLabelTotals.transFat}g</span></div>
-                  <div className="flex justify-between border-b border-black/10 pb-1.5"><span className="font-semibold">Cholesterol</span><span className="font-semibold">{selectedNutritionLabelTotals.cholesterol}mg</span></div>
-                  <div className="flex justify-between border-b border-black/10 pb-1.5"><span className="font-semibold">Sodium</span><span className="font-semibold">{selectedNutritionLabelTotals.sodium}mg</span></div>
-                  <div className="flex justify-between border-b border-black/10 pb-1.5"><span className="font-semibold">Carbohydrates</span><span className="font-semibold">{selectedNutritionLabelTotals.carbs}g</span></div>
-                  <div className="flex justify-between border-b border-black/10 pb-1.5 pl-4"><span>Fiber</span><span>{selectedNutritionLabelTotals.fiber}g</span></div>
-                  <div className="flex justify-between border-b border-black/10 pb-1.5 pl-4"><span>Sugars</span><span>{selectedNutritionLabelTotals.sugars}g</span></div>
-                  <div className="flex justify-between pb-1.5"><span className="text-2xl font-bold">Protein</span><span className="text-2xl font-bold">{selectedNutritionLabelTotals.protein}g</span></div>
+                <div className="my-[12px] mb-2 h-[5px] rounded-[999px] bg-[rgba(0,0,0,0.75)]" />
+
+                <div className="flex items-baseline justify-between border-b border-[rgba(0,0,0,0.2)] py-[10px]">
+                  <div className="text-lg font-semibold">Total Fat</div>
+                  <div className="text-lg font-semibold">{formatValue(selectedNutritionLabelTotals.totalFat, "g")}</div>
+                </div>
+                <div className="flex items-baseline justify-between border-b border-[rgba(0,0,0,0.2)] py-[10px] pl-5">
+                  <div className="text-base font-medium text-[rgba(0,0,0,0.8)]">Sat Fat</div>
+                  <div className="text-base font-medium text-[rgba(0,0,0,0.8)]">{formatValue(selectedNutritionLabelTotals.satFat, "g")}</div>
+                </div>
+                <div className="flex items-baseline justify-between border-b border-[rgba(0,0,0,0.2)] py-[10px] pl-5">
+                  <div className="text-base font-medium text-[rgba(0,0,0,0.8)]">Trans Fat</div>
+                  <div className="text-base font-medium text-[rgba(0,0,0,0.8)]">{formatValue(selectedNutritionLabelTotals.transFat, "g")}</div>
+                </div>
+                <div className="flex items-baseline justify-between border-b border-[rgba(0,0,0,0.2)] py-[10px]">
+                  <div className="text-lg font-semibold">Cholesterol</div>
+                  <div className="text-lg font-semibold">{formatValue(selectedNutritionLabelTotals.cholesterol, "mg")}</div>
+                </div>
+                <div className="flex items-baseline justify-between border-b border-[rgba(0,0,0,0.2)] py-[10px]">
+                  <div className="text-lg font-semibold">Sodium</div>
+                  <div className="text-lg font-semibold">{formatValue(selectedNutritionLabelTotals.sodium, "mg")}</div>
+                </div>
+                <div className="flex items-baseline justify-between border-b border-[rgba(0,0,0,0.2)] py-[10px]">
+                  <div className="text-lg font-semibold">Carbohydrates</div>
+                  <div className="text-lg font-semibold">{formatValue(selectedNutritionLabelTotals.carbs, "g")}</div>
+                </div>
+                <div className="flex items-baseline justify-between border-b border-[rgba(0,0,0,0.2)] py-[10px] pl-5">
+                  <div className="text-base font-medium text-[rgba(0,0,0,0.8)]">Fiber</div>
+                  <div className="text-base font-medium text-[rgba(0,0,0,0.8)]">{formatValue(selectedNutritionLabelTotals.fiber, "g")}</div>
+                </div>
+                <div className="flex items-baseline justify-between border-b border-[rgba(0,0,0,0.2)] py-[10px] pl-5">
+                  <div className="text-base font-medium text-[rgba(0,0,0,0.8)]">Sugars</div>
+                  <div className="text-base font-medium text-[rgba(0,0,0,0.8)]">{formatValue(selectedNutritionLabelTotals.sugars, "g")}</div>
+                </div>
+                <div className="flex items-baseline justify-between border-b border-[rgba(0,0,0,0.2)] py-[10px]">
+                  <div className="text-lg font-semibold">Protein</div>
+                  <div className="text-lg font-semibold">{formatValue(selectedNutritionLabelTotals.protein, "g")}</div>
                 </div>
               </section>
 
-              <section className="rounded-2xl border border-black/10 bg-[#F6F6F6] p-4">
-                <h3 className="text-2xl font-bold text-slate-900">Selected Ingredients</h3>
-                <p className="mt-1 text-sm font-semibold text-slate-600">
+              <section className="flex min-h-0 flex-col rounded-3xl border border-black/10 bg-white p-5">
+                <h3 className="text-2xl font-bold text-neutral-900">Selected Ingredients</h3>
+                <p className="mt-2 text-sm font-semibold text-slate-600">
                   {CHIPOTLE_ENTREE_CONFIGURATIONS[selectedEntree ?? "bowl"].label} · {selectedIngredientCount} selected
                 </p>
-                <ul className="mt-4 grid gap-2">
+                <ul className="mt-4 grid gap-2 rounded-xl bg-[#efefef] p-2">
                   {selectedIngredientEntries.map(([ingredientId, selectedIngredient]) => (
                     <li key={ingredientId} className="flex items-center justify-between rounded-xl border border-black/10 bg-white px-3 py-2">
-                      <span className="text-sm font-medium text-slate-900">
-                        {selectedIngredient.item.name}
-                        {selectedIngredient.quantity > 1 ? ` (x${selectedIngredient.quantity})` : ""}
-                      </span>
+                      <div className="flex min-w-0 items-center gap-2">
+                        <div className="h-8 w-8 shrink-0 overflow-hidden rounded-md border border-black/10 bg-neutral-100">
+                          <Image
+                            src={selectedIngredient.item.image || restaurantLogo}
+                            alt={selectedIngredient.item.name}
+                            width={32}
+                            height={32}
+                            className="h-full w-full object-cover"
+                          />
+                        </div>
+                        <span className="truncate text-sm font-medium text-slate-900">
+                          {selectedIngredient.item.name}
+                          {selectedIngredient.quantity > 1 ? ` (x${selectedIngredient.quantity})` : ""}
+                        </span>
+                      </div>
                       <div className="inline-flex items-center gap-2">
                         <button
                           type="button"
