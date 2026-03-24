@@ -116,12 +116,13 @@ export default function RestaurantView({
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const requestedView = searchParams.get("view");
+  const defaultView: ViewOption = restaurantId === "chipotle" ? "ingredients" : "menu";
   const viewMode: ViewOption =
     requestedView === "ingredients"
       ? "ingredients"
       : requestedView === "ranking"
         ? "ranking"
-        : "menu";
+        : defaultView;
   const [sort, setSort] = useState<SortOption>("highest-protein");
   const [filters, setFilters] = useState<Filters>({});
   type RankedAllFilterKey = "main-entrees" | "shareables" | "sides" | "drinks";
