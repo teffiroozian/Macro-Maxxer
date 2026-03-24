@@ -268,6 +268,8 @@ export default function MenuSections({
   groupByCategory = true,
   categoryMode = "menu",
   isBuildYourOwn = false,
+  selectedIngredientIds,
+  onIngredientSelectionChange,
 }: {
   restaurantId: string;
   items: MenuItem[];
@@ -279,6 +281,8 @@ export default function MenuSections({
   groupByCategory?: boolean;
   categoryMode?: CategoryMode;
   isBuildYourOwn?: boolean;
+  selectedIngredientIds?: Set<string>;
+  onIngredientSelectionChange?: (item: MenuItem, selected: boolean) => void;
 }) {
 
   if (!groupByCategory) {
@@ -307,6 +311,8 @@ export default function MenuSections({
                   ? "ingredient-compact"
                   : "default"
               }
+              isIngredientSelected={selectedIngredientIds?.has(item.id ?? "")}
+              onIngredientSelectionChange={onIngredientSelectionChange}
             />
           ))}
         </ul>
@@ -387,6 +393,8 @@ export default function MenuSections({
                     ? "ingredient-compact"
                     : "default"
                 }
+                isIngredientSelected={selectedIngredientIds?.has(item.id ?? "")}
+                onIngredientSelectionChange={onIngredientSelectionChange}
               />
             ))}
           </ul>

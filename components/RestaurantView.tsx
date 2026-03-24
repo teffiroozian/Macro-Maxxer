@@ -23,6 +23,8 @@ import {
   SquarePlus,
   Soup,
   ToggleLeft,
+  RotateCcw,
+  ShoppingCart,
   Utensils,
   Waves,
 } from "lucide-react";
@@ -47,6 +49,8 @@ import {
 } from "./MenuSections";
 import MenuSections from "./MenuSections";
 import StickyRestaurantBar from "./StickyRestaurantBar";
+import StickyMacroTotalsBar from "./StickyMacroTotalsBar";
+import { useCart } from "@/stores/cartStore";
 
 
 const CATEGORY_ICONS: Record<string, LucideIcon> = {
@@ -138,6 +142,8 @@ export default function RestaurantView({
   });
   const { searchOpen, searchQuery, setSearchQuery, openSearch, closeSearch } =
     useRestaurantSearch();
+  const { addItem } = useCart();
+  const [selectedIngredientItems, setSelectedIngredientItems] = useState<Record<string, MenuItem>>({});
 
   const addonItems = useMemo<MenuItem[]>(() => {
     if (!addons) return [];
@@ -419,6 +425,57 @@ export default function RestaurantView({
     setSort(nextSort);
   };
 
+  const selectedIngredientTotals = useMemo(
+    () =>
+      Object.values(selectedIngredientItems).reduce(
+        (acc, ingredient) => ({
+          calories: acc.calories + (ingredient.nutrition.calories ?? 0),
+          protein: acc.protein + (ingredient.nutrition.protein ?? 0),
+          carbs: acc.carbs + (ingredient.nutrition.carbs ?? 0),
+          fat: acc.fat + (ingredient.nutrition.totalFat ?? 0),
+        }),
+        { calories: 0, protein: 0, carbs: 0, fat: 0 }
+      ),
+    [selectedIngredientItems]
+  );
+
+  const selectedIngredientCount = Object.keys(selectedIngredientItems).length;
+  const buildName = `${restaurantName} Build`;
+  const buildContextLine = `${selectedIngredientCount} selected · ${buildName}`;
+
+  const handleIngredientSelectionChange = (item: MenuItem, selected: boolean) => {
+    const itemId = item.id;
+    if (!itemId) return;
+
+    setSelectedIngredientItems((prev) => {
+      if (!selected) {
+        if (!(itemId in prev)) return prev;
+        const next = { ...prev };
+        delete next[itemId];
+        return next;
+      }
+      return { ...prev, [itemId]: item };
+    });
+  };
+
+  const handleResetBuildSelections = () => {
+    setSelectedIngredientItems({});
+  };
+
+  const handleAddBuildToCart = () => {
+    if (selectedIngredientCount === 0) return;
+
+    addItem({
+      id: crypto.randomUUID(),
+      restaurantId,
+      itemId: `${restaurantId}-build`,
+      name: buildName,
+      customizations: Object.values(selectedIngredientItems).map((ingredient) => ingredient.name),
+      quantity: 1,
+      macrosPerItem: selectedIngredientTotals,
+    });
+  };
+
   const toggleRankedAllFilter = (key: RankedAllFilterKey) => {
     setRankedAllFilters((previous) => {
       const isCurrentlyChecked = previous[key];
@@ -542,10 +599,24 @@ export default function RestaurantView({
               groupByCategory={viewMode !== "ranking"}
               categoryMode={viewMode === "ranking" ? "menu" : viewMode}
               isBuildYourOwn={isBuildYourOwn}
+              selectedIngredientIds={new Set(Object.keys(selectedIngredientItems))}
+              onIngredientSelectionChange={handleIngredientSelectionChange}
             />
           </div>
         </div>
       </div>
+      {isBuildYourOwn && viewMode === "ingredients" ? (
+        <StickyMacroTotalsBar
+          totals={selectedIngredientTotals}
+          contextLine={buildContextLine}
+          secondaryActionLabel="Reset"
+          primaryActionLabel="Add to Cart"
+          SecondaryActionIcon={RotateCcw}
+          PrimaryActionIcon={ShoppingCart}
+          onSecondaryAction={handleResetBuildSelections}
+          onPrimaryAction={handleAddBuildToCart}
+        />
+      ) : null}
     </div>
   );
 }
