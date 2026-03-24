@@ -1,6 +1,7 @@
 {
   "id": "chipotle",
   "name": "Chipotle",
+  "isBuildYourOwn": true,
   "items": [
     {
       "id": "chipotle-chicken",

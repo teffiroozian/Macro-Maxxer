@@ -732,7 +732,7 @@ export default function MenuItemCard({
       >
         <label className="flex cursor-pointer items-center gap-4 px-4 py-3">
           <span
-            className={`flex h-7 w-7 items-center justify-center rounded-md border text-base font-bold transition ${
+            className={`flex h-6 w-6 items-center justify-center rounded-md border text-sm font-bold transition ${
               isIngredientSelected
                 ? "border-lime-500 bg-lime-500 text-black"
                 : "border-black/40 bg-white text-transparent"
@@ -751,12 +751,12 @@ export default function MenuItemCard({
 
           {selectedItemImage ? (
             <img
-              className="h-20 w-20 shrink-0 rounded-xl bg-[#efefef] object-cover"
+              className="h-24 w-24 shrink-0 rounded-xl bg-[#efefef] object-cover"
               src={selectedItemImage}
               alt={item.name}
             />
           ) : (
-            <div className="h-20 w-20 shrink-0 rounded-xl bg-[#efefef]" />
+            <div className="h-24 w-24 shrink-0 rounded-xl bg-[#efefef]" />
           )}
 
           <div className="min-w-0 flex-1">
@@ -765,19 +765,19 @@ export default function MenuItemCard({
 
           <div className="ml-auto grid grid-cols-4 gap-6 text-center">
             <div className="flex min-w-[54px] flex-col items-center">
-              <div className="text-[34px] leading-none font-bold text-black">{formatCalories(calories)}</div>
+              <div className="text-2xl leading-none font-bold text-black">{formatCalories(calories)}</div>
               <div className="text-[10px] font-semibold uppercase tracking-wide text-black/80">cal</div>
             </div>
             <div className="flex min-w-[54px] flex-col items-center">
-              <div className="text-[34px] leading-none font-bold text-[#c2410c]">{formatMacro(protein)}</div>
+              <div className="text-2xl leading-none font-bold text-[#c2410c]">{formatMacro(protein)}</div>
               <div className="text-[10px] font-semibold uppercase tracking-wide text-black/80">protein</div>
             </div>
             <div className="flex min-w-[54px] flex-col items-center">
-              <div className="text-[34px] leading-none font-bold text-[#ca8a04]">{formatMacro(carbs)}</div>
+              <div className="text-2xl leading-none font-bold text-[#ca8a04]">{formatMacro(carbs)}</div>
               <div className="text-[10px] font-semibold uppercase tracking-wide text-black/80">carbs</div>
             </div>
             <div className="flex min-w-[54px] flex-col items-center">
-              <div className="text-[34px] leading-none font-bold text-[#2563eb]">{formatMacro(fat)}</div>
+              <div className="text-2xl leading-none font-bold text-[#2563eb]">{formatMacro(fat)}</div>
               <div className="text-[10px] font-semibold uppercase tracking-wide text-black/80">fat</div>
             </div>
           </div>

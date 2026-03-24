@@ -86,6 +86,7 @@ export default function RestaurantView({
   restaurantId,
   restaurantName,
   restaurantLogo,
+  isBuildYourOwn = false,
   items,
   ingredients = [],
   addons,
@@ -95,6 +96,7 @@ export default function RestaurantView({
   restaurantId: string;
   restaurantName: string;
   restaurantLogo: string;
+  isBuildYourOwn?: boolean;
   items: MenuItem[];
   ingredients?: IngredientItem[];
   addons?: RestaurantAddons;
@@ -116,7 +118,7 @@ export default function RestaurantView({
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const requestedView = searchParams.get("view");
-  const defaultView: ViewOption = restaurantId === "chipotle" ? "ingredients" : "menu";
+  const defaultView: ViewOption = isBuildYourOwn ? "ingredients" : "menu";
   const viewMode: ViewOption =
     requestedView === "ingredients"
       ? "ingredients"
@@ -539,6 +541,7 @@ export default function RestaurantView({
               customizationRules={customizationRules}
               groupByCategory={viewMode !== "ranking"}
               categoryMode={viewMode === "ranking" ? "menu" : viewMode}
+              isBuildYourOwn={isBuildYourOwn}
             />
           </div>
         </div>
