@@ -6,7 +6,9 @@
     {
       "id": "chipotle-chicken",
       "name": "Chicken",
-      "categories": ["Proteins"],
+      "categories": [
+        "Proteins"
+      ],
       "portionType": "addon",
       "image": "/restaurants/chipotle/logo.jpeg",
       "nutrition": {
@@ -19,7 +21,9 @@
     {
       "id": "chipotle-chicken-al-pastor",
       "name": "Chicken al Pastor",
-      "categories": ["Proteins"],
+      "categories": [
+        "Proteins"
+      ],
       "portionType": "addon",
       "image": "/restaurants/chipotle/logo.jpeg",
       "nutrition": {
@@ -32,7 +36,9 @@
     {
       "id": "chipotle-steak",
       "name": "Steak",
-      "categories": ["Proteins"],
+      "categories": [
+        "Proteins"
+      ],
       "portionType": "addon",
       "image": "/restaurants/chipotle/logo.jpeg",
       "nutrition": {
@@ -45,7 +51,9 @@
     {
       "id": "chipotle-beef-barbacoa",
       "name": "Beef Barbacoa",
-      "categories": ["Proteins"],
+      "categories": [
+        "Proteins"
+      ],
       "portionType": "addon",
       "image": "/restaurants/chipotle/logo.jpeg",
       "nutrition": {
@@ -58,7 +66,9 @@
     {
       "id": "chipotle-carnitas",
       "name": "Carnitas",
-      "categories": ["Proteins"],
+      "categories": [
+        "Proteins"
+      ],
       "portionType": "addon",
       "image": "/restaurants/chipotle/logo.jpeg",
       "nutrition": {
@@ -72,7 +82,9 @@
       "id": "chipotle-sofritas",
       "name": "Sofritas",
       "description": "Plant-Based Protein",
-      "categories": ["Proteins"],
+      "categories": [
+        "Proteins"
+      ],
       "portionType": "addon",
       "image": "/restaurants/chipotle/logo.jpeg",
       "nutrition": {
@@ -85,7 +97,9 @@
     {
       "id": "chipotle-white-rice",
       "name": "White Rice",
-      "categories": ["Rice"],
+      "categories": [
+        "Rice"
+      ],
       "portionType": "addon",
       "image": "/restaurants/chipotle/logo.jpeg",
       "nutrition": {
@@ -98,7 +112,9 @@
     {
       "id": "chipotle-brown-rice",
       "name": "Brown Rice",
-      "categories": ["Rice"],
+      "categories": [
+        "Rice"
+      ],
       "portionType": "addon",
       "image": "/restaurants/chipotle/logo.jpeg",
       "nutrition": {
@@ -111,7 +127,9 @@
     {
       "id": "chipotle-black-beans",
       "name": "Black Beans",
-      "categories": ["Beans"],
+      "categories": [
+        "Beans"
+      ],
       "portionType": "addon",
       "image": "/restaurants/chipotle/logo.jpeg",
       "nutrition": {
@@ -124,7 +142,9 @@
     {
       "id": "chipotle-pinto-beans",
       "name": "Pinto Beans",
-      "categories": ["Beans"],
+      "categories": [
+        "Beans"
+      ],
       "portionType": "addon",
       "image": "/restaurants/chipotle/logo.jpeg",
       "nutrition": {
@@ -136,6 +156,18 @@
     }
   ],
   "ingredients": [
+    {
+      "id": "chipotle-ingredient-tortilla",
+      "name": "Tortilla",
+      "category": "Included Ingredient",
+      "image": "/restaurants/chipotle/logo.jpeg",
+      "nutrition": {
+        "calories": 320,
+        "protein": 9,
+        "carbs": 50,
+        "totalFat": 8
+      }
+    },
     {
       "id": "chipotle-ingredient-chicken",
       "name": "Chicken",

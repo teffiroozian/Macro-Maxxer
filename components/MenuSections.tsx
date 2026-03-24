@@ -66,6 +66,7 @@ const CATEGORY_PRIORITY_GROUPS = [
 ] as const;
 
 const INGREDIENT_CATEGORY_PRIORITY_GROUPS = [
+  { label: "Included Ingredient", aliases: ["included ingredient", "included ingredients"] },
   { label: "Buns", aliases: ["bun", "buns"] },
   { label: "Proteins", aliases: ["protein", "proteins"] },
   { label: "Cheeses", aliases: ["cheese", "cheeses"] },
@@ -270,6 +271,7 @@ export default function MenuSections({
   isBuildYourOwn = false,
   selectedIngredientIds,
   onIngredientSelectionChange,
+  lockedIngredientIds,
 }: {
   restaurantId: string;
   items: MenuItem[];
@@ -283,6 +285,7 @@ export default function MenuSections({
   isBuildYourOwn?: boolean;
   selectedIngredientIds?: Set<string>;
   onIngredientSelectionChange?: (item: MenuItem, selected: boolean) => void;
+  lockedIngredientIds?: Set<string>;
 }) {
 
   if (!groupByCategory) {
@@ -312,6 +315,7 @@ export default function MenuSections({
                   : "default"
               }
               isIngredientSelected={selectedIngredientIds?.has(item.id ?? "")}
+              isIngredientLocked={lockedIngredientIds?.has(item.id ?? "")}
               onIngredientSelectionChange={onIngredientSelectionChange}
             />
           ))}
@@ -394,6 +398,7 @@ export default function MenuSections({
                     : "default"
                 }
                 isIngredientSelected={selectedIngredientIds?.has(item.id ?? "")}
+                isIngredientLocked={lockedIngredientIds?.has(item.id ?? "")}
                 onIngredientSelectionChange={onIngredientSelectionChange}
               />
             ))}

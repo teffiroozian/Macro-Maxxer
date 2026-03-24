@@ -244,6 +244,7 @@ export default function MenuItemCard({
   itemHref,
   displayMode = "default",
   isIngredientSelected: controlledIngredientSelected,
+  isIngredientLocked = false,
   onIngredientSelectionChange,
 }: {
   restaurantId: string;
@@ -268,6 +269,7 @@ export default function MenuItemCard({
   itemHref?: string;
   displayMode?: "default" | "ingredient-compact";
   isIngredientSelected?: boolean;
+  isIngredientLocked?: boolean;
   onIngredientSelectionChange?: (item: MenuItem, selected: boolean) => void;
 }) {
   const [open, setOpen] = useState(false);
@@ -736,7 +738,9 @@ export default function MenuItemCard({
             : "border border-black/15 shadow-[0_4px_12px_rgba(0,0,0,0.12)]"
         }`}
       >
-        <label className="flex cursor-pointer items-center gap-4 px-4 py-3">
+        <label
+          className={`flex items-center gap-4 px-4 py-3 ${isIngredientLocked ? "cursor-not-allowed opacity-95" : "cursor-pointer"}`}
+        >
           <span
             className={`flex h-6 w-6 items-center justify-center rounded-md border text-sm font-bold transition ${
               ingredientSelectionState
@@ -751,12 +755,13 @@ export default function MenuItemCard({
             type="checkbox"
             className="sr-only"
             checked={ingredientSelectionState}
+            disabled={isIngredientLocked}
             onChange={(event) => {
               const nextSelected = event.target.checked;
               setIsIngredientSelected(nextSelected);
               onIngredientSelectionChange?.(item, nextSelected);
             }}
-            aria-label={`Select ${item.name}`}
+            aria-label={`${isIngredientLocked ? "Included" : "Select"} ${item.name}`}
           />
 
           {selectedItemImage ? (

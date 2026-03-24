@@ -107,6 +107,9 @@ export default function RestaurantView({
   commonChanges?: CommonChange[];
   customizationRules?: RestaurantCustomizationRules;
 }) {
+  type EntreeSelection = "bowl" | "burrito" | null;
+  const burritoTortillaIngredientId = "chipotle-ingredient-tortilla";
+  const isChipotleBuildPage = isBuildYourOwn && restaurantId === "chipotle";
   const SECTION_HEADER_TOP_GAP = 24;
 
   const getStickyOffset = () => {
@@ -144,6 +147,7 @@ export default function RestaurantView({
     useRestaurantSearch();
   const { addItem } = useCart();
   const [selectedIngredientItems, setSelectedIngredientItems] = useState<Record<string, MenuItem>>({});
+  const [selectedEntree, setSelectedEntree] = useState<EntreeSelection>(null);
 
   const addonItems = useMemo<MenuItem[]>(() => {
     if (!addons) return [];
@@ -210,6 +214,11 @@ export default function RestaurantView({
         portionType: "addon",
       }));
   }, [ingredients, restaurantId]);
+
+  const tortillaIngredientItem = useMemo(
+    () => ingredientMenuItems.find((ingredient) => ingredient.id === burritoTortillaIngredientId),
+    [ingredientMenuItems]
+  );
 
   const allItems = useMemo(() => [...items, ...addonItems], [items, addonItems]);
   const sourceItems = viewMode === "ingredients" ? ingredientMenuItems : allItems;
@@ -440,13 +449,22 @@ export default function RestaurantView({
   );
 
   const selectedIngredientCount = Object.keys(selectedIngredientItems).length;
-  const buildName = `${restaurantName} Build`;
+  const buildName = selectedEntree
+    ? `${restaurantName} ${selectedEntree === "burrito" ? "Burrito" : "Bowl"} Build`
+    : `${restaurantName} Build`;
   const buildContextLine = `${selectedIngredientCount} selected · ${buildName}`;
-  const shouldShowBuildStickyBar = isBuildYourOwn && viewMode === "ingredients";
+  const shouldShowBuildStickyBar = isBuildYourOwn && viewMode === "ingredients" && (!isChipotleBuildPage || selectedEntree !== null);
+  const lockedIngredientIds = useMemo(() => {
+    if (selectedEntree !== "burrito") {
+      return new Set<string>();
+    }
+    return new Set<string>([burritoTortillaIngredientId]);
+  }, [selectedEntree]);
 
   const handleIngredientSelectionChange = (item: MenuItem, selected: boolean) => {
     const itemId = item.id;
     if (!itemId) return;
+    if (lockedIngredientIds.has(itemId)) return;
 
     setSelectedIngredientItems((prev) => {
       if (!selected) {
@@ -456,6 +474,27 @@ export default function RestaurantView({
         return next;
       }
       return { ...prev, [itemId]: item };
+    });
+  };
+
+  const handleEntreeSelection = (entree: Exclude<EntreeSelection, null>) => {
+    setSelectedEntree(entree);
+    setSelectedIngredientItems((previous) => {
+      if (entree !== "burrito") {
+        if (!(burritoTortillaIngredientId in previous)) return previous;
+        const next = { ...previous };
+        delete next[burritoTortillaIngredientId];
+        return next;
+      }
+
+      if (!tortillaIngredientItem || previous[burritoTortillaIngredientId]) {
+        return previous;
+      }
+
+      return {
+        ...previous,
+        [burritoTortillaIngredientId]: tortillaIngredientItem,
+      };
     });
   };
 
@@ -494,6 +533,48 @@ export default function RestaurantView({
 
   return (
     <div>
+      {isChipotleBuildPage && selectedEntree === null ? (
+        <section className="mx-auto mb-8 mt-4 max-w-2xl rounded-3xl border border-black/10 bg-white p-8 shadow-[0_12px_30px_rgba(0,0,0,0.08)]">
+          <h2 className="text-center text-3xl font-bold text-slate-900">Choose your entrée</h2>
+          <p className="mt-2 text-center text-sm font-medium text-slate-500">
+            Pick your base to start building.
+          </p>
+          <div className="mt-8 grid gap-3 sm:grid-cols-2">
+            <button
+              type="button"
+              onClick={() => handleEntreeSelection("bowl")}
+              className="cursor-pointer rounded-2xl border border-black/20 bg-white px-4 py-4 text-lg font-semibold text-slate-900 transition hover:border-black/40 hover:bg-slate-50"
+            >
+              Bowl
+            </button>
+            <button
+              type="button"
+              onClick={() => handleEntreeSelection("burrito")}
+              className="cursor-pointer rounded-2xl border border-black/20 bg-white px-4 py-4 text-lg font-semibold text-slate-900 transition hover:border-black/40 hover:bg-slate-50"
+            >
+              Burrito
+            </button>
+          </div>
+        </section>
+      ) : null}
+
+      {isChipotleBuildPage && selectedEntree !== null ? (
+        <div className="mb-5 flex items-center justify-between rounded-2xl border border-black/10 bg-white px-5 py-3">
+          <p className="text-sm font-semibold text-slate-700">
+            Entrée: <span className="text-slate-900">{selectedEntree === "burrito" ? "Burrito" : "Bowl"}</span>
+          </p>
+          <button
+            type="button"
+            onClick={() => setSelectedEntree(null)}
+            className="cursor-pointer text-sm font-semibold text-slate-600 underline underline-offset-2 hover:text-slate-900"
+          >
+            Change
+          </button>
+        </div>
+      ) : null}
+
+      {!isChipotleBuildPage || selectedEntree !== null ? (
+        <>
       <StickyRestaurantBar
         restaurantName={restaurantName}
         restaurantLogo={restaurantLogo}
@@ -601,6 +682,7 @@ export default function RestaurantView({
               categoryMode={viewMode === "ranking" ? "menu" : viewMode}
               isBuildYourOwn={isBuildYourOwn}
               selectedIngredientIds={new Set(Object.keys(selectedIngredientItems))}
+              lockedIngredientIds={lockedIngredientIds}
               onIngredientSelectionChange={handleIngredientSelectionChange}
             />
           </div>
@@ -618,6 +700,8 @@ export default function RestaurantView({
           onSecondaryAction={handleResetBuildSelections}
           onPrimaryAction={handleAddBuildToCart}
         />
+      ) : null}
+        </>
       ) : null}
     </div>
   );
