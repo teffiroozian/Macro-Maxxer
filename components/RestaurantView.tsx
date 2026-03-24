@@ -115,9 +115,13 @@ export default function RestaurantView({
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
+  const requestedView = searchParams.get("view");
   const viewMode: ViewOption =
-    searchParams.get("view") === "ingredients" ? "ingredients" : "menu";
-  const [entireMenu, setEntireMenu] = useState(false);
+    requestedView === "ingredients"
+      ? "ingredients"
+      : requestedView === "ranking"
+        ? "ranking"
+        : "menu";
   const [sort, setSort] = useState<SortOption>("highest-protein");
   const [filters, setFilters] = useState<Filters>({});
   type RankedAllFilterKey = "main-entrees" | "shareables" | "sides" | "drinks";
@@ -245,7 +249,7 @@ export default function RestaurantView({
 
     return sourceItems
       .map((item) => {
-        if (!(entireMenu && viewMode === "menu")) {
+        if (viewMode !== "ranking") {
           return item;
         }
 
@@ -315,7 +319,7 @@ export default function RestaurantView({
       const searchableText = [item.name.toLowerCase(), ...categoryVariants].join(" ");
       return searchTerms.every((term) => searchableText.includes(term));
     });
-  }, [sourceItems, filters, searchTerms, entireMenu, rankedAllFilters, viewMode]);
+  }, [sourceItems, filters, searchTerms, rankedAllFilters, viewMode]);
 
   const orderedSections = useMemo(
     () => getOrderedMenuSections(filteredItems, viewMode),
@@ -352,7 +356,7 @@ export default function RestaurantView({
 
 
   useEffect(() => {
-    if (entireMenu || orderedSections.length === 0) {
+    if (viewMode === "ranking" || orderedSections.length === 0) {
       return;
     }
 
@@ -396,7 +400,7 @@ export default function RestaurantView({
       window.removeEventListener("scroll", updateActiveCategoryOnScroll);
       window.removeEventListener("resize", updateActiveCategoryOnScroll);
     };
-  }, [activeCategory, entireMenu, orderedSections]);
+  }, [activeCategory, viewMode, orderedSections]);
 
   const handleViewChange = (nextView: ViewOption) => {
     if (nextView === viewMode) {
@@ -443,8 +447,6 @@ export default function RestaurantView({
         setSearchQuery={setSearchQuery}
         onOpenSearch={openSearch}
         onCloseSearch={closeSearch}
-        entireMenu={entireMenu}
-        onEntireMenuChange={setEntireMenu}
         calorieBounds={calorieBounds}
       />
 
@@ -452,7 +454,7 @@ export default function RestaurantView({
       <div className="grid items-start gap-6 [grid-template-columns:240px_minmax(0,1fr)]">
         <aside className="sticky top-[160px] flex max-h-[calc(100vh-160px)] flex-col py-6">
           <h3 className="mb-8 shrink-0 text-2xl font-bold text-slate-900">
-            {entireMenu && viewMode === "menu"
+            {viewMode === "ranking"
               ? "Show"
               : viewMode === "ingredients"
                 ? "Ingredients"
@@ -460,7 +462,7 @@ export default function RestaurantView({
           </h3>
 
           <div className="min-h-0 flex-1 overflow-y-auto px-2 py-2">
-            {entireMenu && viewMode === "menu" ? (
+            {viewMode === "ranking" ? (
               <div className="grid gap-3">
                 {[
                   { key: "main-entrees" as const, label: "Main Entrees" },
@@ -534,8 +536,8 @@ export default function RestaurantView({
               ingredients={ingredients}
               commonChanges={commonChanges}
               customizationRules={customizationRules}
-              groupByCategory={!entireMenu}
-              categoryMode={viewMode}
+              groupByCategory={viewMode !== "ranking"}
+              categoryMode={viewMode === "ranking" ? "menu" : viewMode}
             />
           </div>
         </div>

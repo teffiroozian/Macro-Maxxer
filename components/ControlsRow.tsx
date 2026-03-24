@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 
-export type ViewOption = "menu" | "ingredients";
+export type ViewOption = "menu" | "ingredients" | "ranking";
 export type SortOption = "highest-protein" | "best-ratio" | "lowest-calories";
 export type Filters = {
   proteinMin?: number;
@@ -18,6 +18,7 @@ const PROTEIN_OPTIONS = [20, 30, 40, 50];
 const VIEW_OPTIONS: Array<{ label: string; value: ViewOption; icon: typeof ClipboardList }> = [
   { label: "Menu", value: "menu", icon: ClipboardList },
   { label: "Ingredients", value: "ingredients", icon: Carrot },
+  { label: "Ranking", value: "ranking", icon: Award },
 ];
 
 const SORT_OPTIONS: Array<{ label: string; value: SortOption; icon: typeof Flame }> = [
@@ -69,8 +70,6 @@ export default function ControlsRow({
   onFiltersChange,
   showChips = true,
   wrapperId,
-  entireMenu = false,
-  onEntireMenuChange,
   calorieBounds,
 }: {
   view: ViewOption;
@@ -81,8 +80,6 @@ export default function ControlsRow({
   onFiltersChange: (filters: Filters) => void;
   showChips?: boolean;
   wrapperId?: string;
-  entireMenu?: boolean;
-  onEntireMenuChange?: (checked: boolean) => void;
   calorieBounds: {
     min: number;
     max: number;
@@ -92,7 +89,7 @@ export default function ControlsRow({
   const [isViewOpen, setIsViewOpen] = useState(false);
   const [isSortOpen, setIsSortOpen] = useState(false);
   const [draftFilters, setDraftFilters] = useState<Filters>(filters);
-  const [hoveredViewOption, setHoveredViewOption] = useState<ViewOption | "all-ranked" | null>(null);
+  const [hoveredViewOption, setHoveredViewOption] = useState<ViewOption | null>(null);
   const [hoveredSortOption, setHoveredSortOption] = useState<SortOption | null>(null);
   const viewMenuRef = useRef<HTMLDivElement>(null);
   const sortMenuRef = useRef<HTMLDivElement>(null);
@@ -261,21 +258,6 @@ export default function ControlsRow({
                       </button>
                     );
                   })}
-                  <button
-                    type="button"
-                    onClick={() => {
-                      onEntireMenuChange?.(!entireMenu);
-                      setIsViewOpen(false);
-                    }}
-                    onMouseEnter={() => setHoveredViewOption("all-ranked")}
-                    onMouseLeave={() => setHoveredViewOption(null)}
-                    className={`cursor-pointer inline-flex items-center gap-2 rounded-[10px] border-none px-2.5 py-2 text-left font-semibold text-black/88 transition-colors duration-100 ${
-                      entireMenu ? "bg-black/10" : hoveredViewOption === "all-ranked" ? "bg-slate-900/5" : "bg-transparent"
-                    }`}
-                  >
-                    <Award className="h-4 w-4 shrink-0" strokeWidth={2.2} />
-                    <span>All Ranked</span>
-                  </button>
                 </div>
               </div>
             ) : null}

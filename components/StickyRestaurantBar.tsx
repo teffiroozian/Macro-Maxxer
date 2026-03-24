@@ -26,8 +26,6 @@ type StickyRestaurantBarProps = {
   setSearchQuery: (value: string) => void;
   onOpenSearch: () => void;
   onCloseSearch: () => void;
-  entireMenu?: boolean;
-  onEntireMenuChange?: (checked: boolean) => void;
   calorieBounds: {
     min: number;
     max: number;
@@ -48,8 +46,6 @@ export default function StickyRestaurantBar({
   setSearchQuery,
   onOpenSearch,
   onCloseSearch,
-  entireMenu,
-  onEntireMenuChange,
   calorieBounds,
 }: StickyRestaurantBarProps) {
   const searchInputRef = useRef<HTMLInputElement>(null);
@@ -169,8 +165,6 @@ export default function StickyRestaurantBar({
               filters={filters}
               onFiltersChange={onFiltersChange}
               showChips={false}
-              entireMenu={entireMenu}
-              onEntireMenuChange={onEntireMenuChange}
               calorieBounds={calorieBounds}
             />
           </div>
