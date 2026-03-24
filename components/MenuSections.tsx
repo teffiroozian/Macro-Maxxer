@@ -252,8 +252,8 @@ export function getCategoryLabel(category: string, mode: CategoryMode = "menu") 
 function EmptyFilteredState() {
   return (
     <div className="mt-8 border border-black/10 rounded-2xl px-4 py-[18px] text-black/70 font-medium">
-  No items match these filters. Try lowering protein minimum or increasing calories.
-</div>
+      No items match the selected options.
+    </div>
   );
 }
 

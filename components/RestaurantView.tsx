@@ -227,9 +227,9 @@ export default function RestaurantView({
 
   const filteredItems = useMemo(() => {
     const getRankedAllFilterKey = (
-      item: MenuItem
+      portionType: MenuItem["portionType"] | undefined
     ): RankedAllFilterKey | null => {
-      switch (item.portionType) {
+      switch (portionType) {
         case "single":
           return "main-entrees";
         case "shareable":
@@ -241,6 +241,23 @@ export default function RestaurantView({
         default:
           return null;
       }
+    };
+
+    const getRankedAllFilterKeys = (item: MenuItem) => {
+      const keys = new Set<RankedAllFilterKey>();
+      const itemKey = getRankedAllFilterKey(item.portionType);
+      if (itemKey) {
+        keys.add(itemKey);
+      }
+
+      item.variants?.forEach((variant) => {
+        const variantKey = getRankedAllFilterKey(variant.portionType);
+        if (variantKey) {
+          keys.add(variantKey);
+        }
+      });
+
+      return keys;
     };
 
     return sourceItems.filter((item) => {
@@ -255,8 +272,11 @@ export default function RestaurantView({
       }
 
       if (entireMenu && viewMode === "menu") {
-        const rankedAllFilterKey = getRankedAllFilterKey(item);
-        if (!rankedAllFilterKey || !rankedAllFilters[rankedAllFilterKey]) {
+        const rankedAllFilterKeys = getRankedAllFilterKeys(item);
+        if (
+          rankedAllFilterKeys.size === 0 ||
+          ![...rankedAllFilterKeys].some((key) => rankedAllFilters[key])
+        ) {
           return false;
         }
       }
