@@ -169,6 +169,18 @@
       }
     },
     {
+      "id": "chipotle-ingredient-cheese",
+      "name": "Cheese",
+      "category": "Toppings",
+      "image": "/restaurants/chipotle/logo.jpeg",
+      "nutrition": {
+        "calories": 330,
+        "protein": 24,
+        "carbs": 3,
+        "totalFat": 18
+      }
+    },
+    {
       "id": "chipotle-ingredient-chicken",
       "name": "Chicken",
       "category": "Proteins",
