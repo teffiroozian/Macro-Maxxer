@@ -480,10 +480,110 @@
       "category": "Toppings",
       "image": "/restaurants/chipotle/logo.jpeg",
       "nutrition": {
-        "calories": 330,
-        "protein": 24,
-        "carbs": 3,
-        "totalFat": 18
+        "calories": 110,
+        "protein": 6,
+        "carbs": 1,
+        "totalFat": 8
+      }
+    },
+    {
+      "id": "ingredient-guacamole",
+      "name": "Guacamole",
+      "category": "Toppings",
+      "image": "/restaurants/chipotle/logo.jpeg",
+      "nutrition": {
+        "calories": 230,
+        "protein": 2,
+        "carbs": 8,
+        "totalFat": 22
+      }
+    },
+    {
+      "id": "ingredient-fresh-tomato-salsa",
+      "name": "Fresh Tomato Salsa",
+      "description": "Mild",
+      "category": "Toppings",
+      "image": "/restaurants/chipotle/logo.jpeg",
+      "nutrition": {
+        "calories": 25,
+        "protein": 0,
+        "carbs": 4,
+        "totalFat": 0
+      }
+    },
+    {
+      "id": "ingredient-roasted-chili-corn-salsa",
+      "name": "Roasted Chili-Corn Salsa",
+      "description": "Medium",
+      "category": "Toppings",
+      "image": "/restaurants/chipotle/logo.jpeg",
+      "nutrition": {
+        "calories": 80,
+        "protein": 3,
+        "carbs": 16,
+        "totalFat": 2
+      }
+    },
+    {
+      "id": "ingredient-tomatillo-green-chili-salsa",
+      "name": "Tomatillo-Green Chili Salsa",
+      "description": "Medium",
+      "category": "Toppings",
+      "image": "/restaurants/chipotle/logo.jpeg",
+      "nutrition": {
+        "calories": 15,
+        "protein": 0,
+        "carbs": 4,
+        "totalFat": 0
+      }
+    },
+    {
+      "id": "ingredient-tomatillo-red-chili-salsa",
+      "name": "Tomatillo-Red Chili Salsa",
+      "description": "Hot",
+      "category": "Toppings",
+      "image": "/restaurants/chipotle/logo.jpeg",
+      "nutrition": {
+        "calories": 30,
+        "protein": 0,
+        "carbs": 4,
+        "totalFat": 0
+      }
+    },
+    {
+      "id": "ingredient-sour-cream",
+      "name": "Sour Cream",
+      "category": "Toppings",
+      "image": "/restaurants/chipotle/logo.jpeg",
+      "nutrition": {
+        "calories": 110,
+        "protein": 2,
+        "carbs": 2,
+        "totalFat": 9
+      }
+    },
+    {
+      "id": "ingredient-fajita-veggies",
+      "name": "Fajita Veggies",
+      "category": "Toppings",
+      "image": "/restaurants/chipotle/logo.jpeg",
+      "nutrition": {
+        "calories": 20,
+        "protein": 1,
+        "carbs": 5,
+        "totalFat": 0
+      }
+    },
+    {
+      "id": "ingredient-queso-blanco",
+      "name": "Queso Blanco",
+      "category": "Toppings",
+      "image": "/restaurants/chipotle/logo.jpeg",
+      "nutrition": {
+        "calories": 120,
+        "protein": 5,
+        "carbs": 4,
+        "totalFat": 9
       }
     },
     {

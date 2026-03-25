@@ -108,26 +108,26 @@ type EntreeConfiguration = {
   getIncludedIngredientIds?: (options: { tacoShell: TacoShellSelection }) => string[];
 };
 const CHIPOTLE_TACO_SHELL_INGREDIENT_IDS = [
-  "chipotle-ingredient-crispy-corn-tortilla",
-  "chipotle-ingredient-soft-flour-tortilla",
+  "ingredient-crispy-corn-tortilla",
+  "ingredient-soft-flour-tortilla",
 ];
 const CHIPOTLE_ENTREE_CONFIGURATIONS: Record<
   Exclude<EntreeSelection, null>,
   EntreeConfiguration
 > = {
   bowl: { label: "Bowl" },
-  burrito: { label: "Burrito", includedIngredientIds: ["chipotle-ingredient-tortilla"] },
+  burrito: { label: "Burrito", includedIngredientIds: ["ingredient-tortilla"] },
   quesadilla: {
     label: "Quesadilla",
-    includedIngredientIds: ["chipotle-ingredient-tortilla", "chipotle-ingredient-cheese"],
+    includedIngredientIds: ["ingredient-tortilla", "ingredient-cheese"],
   },
-  salad: { label: "Salad", includedIngredientIds: ["chipotle-ingredient-romaine-lettuce"] },
+  salad: { label: "Salad", includedIngredientIds: ["ingredient-romaine-lettuce"] },
   tacos: {
     label: "Tacos",
     getIncludedIngredientIds: ({ tacoShell }) => [
       tacoShell === "crispy"
-        ? "chipotle-ingredient-crispy-corn-tortilla"
-        : "chipotle-ingredient-soft-flour-tortilla",
+        ? "ingredient-crispy-corn-tortilla"
+        : "ingredient-soft-flour-tortilla",
     ],
   },
   "kids-meal": {
@@ -143,17 +143,17 @@ const CHIPOTLE_ENTREE_CONFIGURATIONS: Record<
 };
 
 const CHIPOTLE_KIDS_QUESADILLA_INCLUDED_INGREDIENT_IDS = [
-  "chipotle-ingredient-soft-flour-tortilla",
-  "chipotle-ingredient-cheese",
+  "ingredient-soft-flour-tortilla",
+  "ingredient-cheese",
 ];
 const CHIPOTLE_KIDS_QUESADILLA_NUTRITION_OVERRIDES: Record<string, IngredientItem["nutrition"]> = {
-  "chipotle-ingredient-soft-flour-tortilla": {
+  "ingredient-soft-flour-tortilla": {
     calories: 80,
     totalFat: 3,
     protein: 2,
     carbs: 13,
   },
-  "chipotle-ingredient-cheese": {
+  "ingredient-cheese": {
     calories: 110,
     totalFat: 8,
     protein: 6,
@@ -375,12 +375,12 @@ export default function RestaurantView({
     const baseItems = [...items, ...addonItems];
     if (isChipotleBuildPage && selectedEntree === "chips-sides") {
       return baseItems.filter(
-        (item) => item.id === "chipotle-chips" || item.id === "chipotle-side-of-guacamole"
+        (item) => item.id === "chips" || item.id === "side-of-guacamole"
       );
     }
     if (isChipotleBuildPage && selectedEntree === "drinks") {
       return baseItems.filter(
-        (item) => item.id === "chipotle-mexican-coca-cola" || item.id === "chipotle-mexican-sprite"
+        (item) => item.id === "mexican-coca-cola" || item.id === "mexican-sprite"
       );
     }
     return baseItems;
@@ -720,7 +720,7 @@ export default function RestaurantView({
 
     if (selectedEntree === "tacos" && tacoShellIngredientIds.includes(itemId)) {
       if (!selected) return;
-      const nextTacoShell = itemId === "chipotle-ingredient-soft-flour-tortilla" ? "soft" : "crispy";
+      const nextTacoShell = itemId === "ingredient-soft-flour-tortilla" ? "soft" : "crispy";
       setSelectedTacoShell(nextTacoShell);
       applyIncludedIngredients(
         CHIPOTLE_ENTREE_CONFIGURATIONS.tacos.getIncludedIngredientIds?.({ tacoShell: nextTacoShell }) ?? []
