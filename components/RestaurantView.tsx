@@ -108,6 +108,7 @@ type TacoCountSelection = 3 | 1;
 type KidsMealSelection = "build-your-own" | "quesadilla";
 type EntreeConfiguration = {
   label: string;
+  imageSrc: string;
   nutritionMultiplier?: number;
   includedIngredientIds?: string[];
   getIncludedIngredientIds?: (options: { tacoShell: TacoShellSelection }) => string[];
@@ -120,31 +121,45 @@ const CHIPOTLE_ENTREE_CONFIGURATIONS: Record<
   Exclude<EntreeSelection, null>,
   EntreeConfiguration
 > = {
-  bowl: { label: "Bowl" },
-  burrito: { label: "Burrito", includedIngredientIds: ["tortilla"] },
+  bowl: { label: "Bowl", imageSrc: "/restaurants/chipotle/entrees/burrito-bowl.png" },
+  burrito: {
+    label: "Burrito",
+    imageSrc: "/restaurants/chipotle/entrees/burrito.png",
+    includedIngredientIds: ["tortilla"],
+  },
   quesadilla: {
     label: "Quesadilla",
+    imageSrc: "/restaurants/chipotle/entrees/quesadilla.png",
     includedIngredientIds: ["tortilla", "cheese"],
   },
-  salad: { label: "Salad", includedIngredientIds: ["romaine-lettuce"] },
+  salad: {
+    label: "Salad",
+    imageSrc: "/restaurants/chipotle/entrees/salad.png",
+    includedIngredientIds: ["romaine-lettuce"],
+  },
   tacos: {
     label: "Tacos",
+    imageSrc: "/restaurants/chipotle/entrees/tacos.png",
     getIncludedIngredientIds: ({ tacoShell }) => [
       tacoShell === "crispy" ? "crispy-corn-tortilla" : "soft-flour-tortilla",
     ],
   },
   "high-protein-menu": {
     label: "High Protein Menu",
+    imageSrc: "/restaurants/chipotle/entrees/high-protein-menu.png",
   },
   "kids-meal": {
     label: "Kid's Meal",
+    imageSrc: "/restaurants/chipotle/entrees/kids-meal.png",
     nutritionMultiplier: 0.5,
   },
   "chips-sides": {
     label: "Chips & Sides",
+    imageSrc: "/restaurants/chipotle/entrees/chips-and-sides.png",
   },
   drinks: {
     label: "Drinks",
+    imageSrc: "/restaurants/chipotle/entrees/drinks.png",
   },
 };
 
@@ -1015,8 +1030,8 @@ export default function RestaurantView({
                     className="cursor-pointer rounded-3xl border border-black/15 bg-white px-6 py-8 text-left text-2xl font-semibold text-slate-900 shadow-[0_8px_22px_rgba(0,0,0,0.08)] transition hover:-translate-y-0.5 hover:border-black/30 hover:shadow-[0_12px_26px_rgba(0,0,0,0.12)]"
                   >
                     <Image
-                      src={restaurantLogo}
-                      alt={`${entree.label} placeholder`}
+                      src={entree.imageSrc}
+                      alt={entree.label}
                       width={64}
                       height={64}
                       className="mb-4 h-16 w-16 rounded-xl object-cover"
