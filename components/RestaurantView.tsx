@@ -808,6 +808,18 @@ export default function RestaurantView({
       ),
       quantity: 1,
       macrosPerItem: adjustedSelectedIngredientTotals,
+      nutritionPerItem: {
+        calories: adjustedNutritionLabelTotals.calories,
+        totalFat: adjustedNutritionLabelTotals.totalFat,
+        satFat: adjustedNutritionLabelTotals.satFat,
+        transFat: adjustedNutritionLabelTotals.transFat,
+        cholesterol: adjustedNutritionLabelTotals.cholesterol,
+        sodium: adjustedNutritionLabelTotals.sodium,
+        carbs: adjustedNutritionLabelTotals.carbs,
+        fiber: adjustedNutritionLabelTotals.fiber,
+        sugars: adjustedNutritionLabelTotals.sugars,
+        protein: adjustedNutritionLabelTotals.protein,
+      },
     });
   };
 

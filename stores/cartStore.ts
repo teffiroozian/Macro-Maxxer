@@ -9,6 +9,19 @@ export type CartMacros = {
   fat: number;
 };
 
+export type CartNutrition = {
+  calories: number;
+  totalFat: number;
+  satFat?: number;
+  transFat?: number;
+  cholesterol?: number;
+  sodium?: number;
+  carbs: number;
+  fiber?: number;
+  sugars?: number;
+  protein: number;
+};
+
 export type CartItem = {
   id: string;
   restaurantId: string;
@@ -21,6 +34,7 @@ export type CartItem = {
   customizations?: string[];
   quantity: number;
   macrosPerItem: CartMacros;
+  nutritionPerItem?: CartNutrition;
 };
 
 type CartState = {
