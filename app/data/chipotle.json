@@ -4,7 +4,7 @@
   "isBuildYourOwn": true,
   "items": [
     {
-      "id": "chipotle-chicken",
+      "id": "chicken",
       "name": "Chicken",
       "categories": [
         "Proteins"
@@ -25,7 +25,7 @@
       }
     },
     {
-      "id": "chipotle-chicken-al-pastor",
+      "id": "chicken-al-pastor",
       "name": "Chicken al Pastor",
       "categories": [
         "Proteins"
@@ -40,7 +40,7 @@
       }
     },
     {
-      "id": "chipotle-steak",
+      "id": "steak",
       "name": "Steak",
       "categories": [
         "Proteins"
@@ -55,7 +55,7 @@
       }
     },
     {
-      "id": "chipotle-beef-barbacoa",
+      "id": "beef-barbacoa",
       "name": "Beef Barbacoa",
       "categories": [
         "Proteins"
@@ -70,7 +70,7 @@
       }
     },
     {
-      "id": "chipotle-carnitas",
+      "id": "carnitas",
       "name": "Carnitas",
       "categories": [
         "Proteins"
@@ -85,7 +85,7 @@
       }
     },
     {
-      "id": "chipotle-sofritas",
+      "id": "sofritas",
       "name": "Sofritas",
       "description": "Plant-Based Protein",
       "categories": [
@@ -101,7 +101,7 @@
       }
     },
     {
-      "id": "chipotle-white-rice",
+      "id": "white-rice",
       "name": "White Rice",
       "categories": [
         "Rice"
@@ -116,7 +116,7 @@
       }
     },
     {
-      "id": "chipotle-brown-rice",
+      "id": "brown-rice",
       "name": "Brown Rice",
       "categories": [
         "Rice"
@@ -131,7 +131,7 @@
       }
     },
     {
-      "id": "chipotle-black-beans",
+      "id": "black-beans",
       "name": "Black Beans",
       "categories": [
         "Beans"
@@ -146,7 +146,7 @@
       }
     },
     {
-      "id": "chipotle-pinto-beans",
+      "id": "pinto-beans",
       "name": "Pinto Beans",
       "categories": [
         "Beans"
@@ -161,7 +161,7 @@
       }
     },
     {
-      "id": "chipotle-chips",
+      "id": "chips",
       "name": "Chips",
       "categories": [
         "Chips & Sides"
@@ -201,7 +201,7 @@
       ]
     },
     {
-      "id": "chipotle-side-of-guacamole",
+      "id": "side-of-guacamole",
       "name": "Side of Guacamole",
       "categories": [
         "Chips & Sides"
@@ -241,7 +241,7 @@
       ]
     },
     {
-      "id": "chipotle-mexican-coca-cola",
+      "id": "mexican-coca-cola",
       "name": "Mexican Coca-Cola",
       "categories": [
         "Drinks"
@@ -256,7 +256,7 @@
       }
     },
     {
-      "id": "chipotle-mexican-sprite",
+      "id": "mexican-sprite",
       "name": "Mexican Sprite",
       "categories": [
         "Drinks"
@@ -273,7 +273,7 @@
   ],
   "ingredients": [
     {
-      "id": "chipotle-ingredient-tortilla",
+      "id": "ingredient-tortilla",
       "name": "Tortilla",
       "category": "Side",
       "image": "/restaurants/chipotle/logo.jpeg",
@@ -285,7 +285,7 @@
       }
     },
     {
-      "id": "chipotle-ingredient-crispy-corn-tortilla",
+      "id": "ingredient-crispy-corn-tortilla",
       "name": "Crispy Corn Tortilla",
       "category": "Side",
       "image": "/restaurants/chipotle/logo.jpeg",
@@ -297,7 +297,7 @@
       }
     },
     {
-      "id": "chipotle-ingredient-soft-flour-tortilla",
+      "id": "ingredient-soft-flour-tortilla",
       "name": "Soft Flour Tortilla",
       "category": "Side",
       "image": "/restaurants/chipotle/logo.jpeg",
@@ -309,7 +309,7 @@
       }
     },
     {
-      "id": "chipotle-ingredient-romaine-lettuce",
+      "id": "ingredient-romaine-lettuce",
       "name": "Romaine Lettuce",
       "category": "Toppings",
       "image": "/restaurants/chipotle/logo.jpeg",
@@ -321,7 +321,7 @@
       }
     },
     {
-      "id": "chipotle-ingredient-cheese",
+      "id": "ingredient-cheese",
       "name": "Cheese",
       "category": "Toppings",
       "image": "/restaurants/chipotle/logo.jpeg",
@@ -333,7 +333,7 @@
       }
     },
     {
-      "id": "chipotle-ingredient-chicken",
+      "id": "ingredient-chicken",
       "name": "Chicken",
       "category": "Proteins",
       "image": "/restaurants/chipotle/logo.jpeg",
@@ -351,7 +351,7 @@
       }
     },
     {
-      "id": "chipotle-ingredient-chicken-al-pastor",
+      "id": "ingredient-chicken-al-pastor",
       "name": "Chicken al Pastor",
       "category": "Proteins",
       "image": "/restaurants/chipotle/logo.jpeg",
@@ -363,7 +363,7 @@
       }
     },
     {
-      "id": "chipotle-ingredient-steak",
+      "id": "ingredient-steak",
       "name": "Steak",
       "category": "Proteins",
       "image": "/restaurants/chipotle/logo.jpeg",
@@ -375,7 +375,7 @@
       }
     },
     {
-      "id": "chipotle-ingredient-beef-barbacoa",
+      "id": "ingredient-beef-barbacoa",
       "name": "Beef Barbacoa",
       "category": "Proteins",
       "image": "/restaurants/chipotle/logo.jpeg",
@@ -387,7 +387,7 @@
       }
     },
     {
-      "id": "chipotle-ingredient-carnitas",
+      "id": "ingredient-carnitas",
       "name": "Carnitas",
       "category": "Proteins",
       "image": "/restaurants/chipotle/logo.jpeg",
@@ -399,7 +399,7 @@
       }
     },
     {
-      "id": "chipotle-ingredient-sofritas",
+      "id": "ingredient-sofritas",
       "name": "Sofritas",
       "description": "Plant-Based Protein",
       "category": "Proteins",
@@ -412,7 +412,7 @@
       }
     },
     {
-      "id": "chipotle-ingredient-white-rice",
+      "id": "ingredient-white-rice",
       "name": "White Rice",
       "category": "Rice",
       "image": "/restaurants/chipotle/logo.jpeg",
@@ -424,7 +424,7 @@
       }
     },
     {
-      "id": "chipotle-ingredient-brown-rice",
+      "id": "ingredient-brown-rice",
       "name": "Brown Rice",
       "category": "Rice",
       "image": "/restaurants/chipotle/logo.jpeg",
@@ -436,7 +436,7 @@
       }
     },
     {
-      "id": "chipotle-ingredient-black-beans",
+      "id": "ingredient-black-beans",
       "name": "Black Beans",
       "category": "Beans",
       "image": "/restaurants/chipotle/logo.jpeg",
@@ -448,7 +448,7 @@
       }
     },
     {
-      "id": "chipotle-ingredient-pinto-beans",
+      "id": "ingredient-pinto-beans",
       "name": "Pinto Beans",
       "category": "Beans",
       "image": "/restaurants/chipotle/logo.jpeg",
