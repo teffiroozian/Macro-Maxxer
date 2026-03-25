@@ -153,6 +153,86 @@
         "carbs": 21,
         "totalFat": 2
       }
+    },
+    {
+      "id": "chipotle-chips",
+      "name": "Chips",
+      "categories": [
+        "Chips & Sides"
+      ],
+      "portionType": "side",
+      "image": "/restaurants/chipotle/logo.jpeg",
+      "nutrition": {
+        "calories": 540,
+        "protein": 7,
+        "carbs": 73,
+        "totalFat": 25
+      },
+      "defaultVariantId": "chips",
+      "variants": [
+        {
+          "id": "chips",
+          "label": "Chips",
+          "portionType": "side",
+          "nutrition": {
+            "calories": 540,
+            "protein": 7,
+            "carbs": 73,
+            "totalFat": 25
+          }
+        },
+        {
+          "id": "large-chips",
+          "label": "Large Chips",
+          "portionType": "side",
+          "nutrition": {
+            "calories": 540,
+            "protein": 7,
+            "carbs": 73,
+            "totalFat": 25
+          }
+        }
+      ]
+    },
+    {
+      "id": "chipotle-side-of-guacamole",
+      "name": "Side of Guacamole",
+      "categories": [
+        "Chips & Sides"
+      ],
+      "portionType": "side",
+      "image": "/restaurants/chipotle/logo.jpeg",
+      "nutrition": {
+        "calories": 230,
+        "protein": 2,
+        "carbs": 8,
+        "totalFat": 22
+      },
+      "defaultVariantId": "side-of-guacamole",
+      "variants": [
+        {
+          "id": "side-of-guacamole",
+          "label": "Side of Guacamole",
+          "portionType": "side",
+          "nutrition": {
+            "calories": 230,
+            "protein": 2,
+            "carbs": 8,
+            "totalFat": 22
+          }
+        },
+        {
+          "id": "large-side-of-guacamole",
+          "label": "Large Side of Guacamole",
+          "portionType": "side",
+          "nutrition": {
+            "calories": 460,
+            "protein": 4,
+            "carbs": 16,
+            "totalFat": 44
+          }
+        }
+      ]
     }
   ],
   "ingredients": [

@@ -88,12 +88,22 @@ const CATEGORY_ICONS: Record<string, LucideIcon> = {
   treats: IceCreamCone,
 };
 
-type EntreeSelection = "bowl" | "burrito" | "quesadilla" | "salad" | "tacos" | null;
+type EntreeSelection =
+  | "bowl"
+  | "burrito"
+  | "quesadilla"
+  | "salad"
+  | "tacos"
+  | "kids-build-your-own"
+  | "kids-quesadilla"
+  | null;
 type TacoShellSelection = "crispy" | "soft";
 type TacoCountSelection = 3 | 1;
 type EntreeConfiguration = {
   label: string;
+  nutritionMultiplier?: number;
   includedIngredientIds?: string[];
+  ingredientNutritionOverrides?: Record<string, IngredientItem["nutrition"]>;
   getIncludedIngredientIds?: (options: { tacoShell: TacoShellSelection }) => string[];
 };
 const CHIPOTLE_TACO_SHELL_INGREDIENT_IDS = [
@@ -118,6 +128,29 @@ const CHIPOTLE_ENTREE_CONFIGURATIONS: Record<
         ? "chipotle-ingredient-crispy-corn-tortilla"
         : "chipotle-ingredient-soft-flour-tortilla",
     ],
+  },
+  "kids-build-your-own": {
+    label: "Kid's Build Your Own",
+    nutritionMultiplier: 0.5,
+  },
+  "kids-quesadilla": {
+    label: "Kid's Quesadilla",
+    nutritionMultiplier: 0.5,
+    includedIngredientIds: ["chipotle-ingredient-soft-flour-tortilla", "chipotle-ingredient-cheese"],
+    ingredientNutritionOverrides: {
+      "chipotle-ingredient-soft-flour-tortilla": {
+        calories: 80,
+        totalFat: 3,
+        protein: 2,
+        carbs: 13,
+      },
+      "chipotle-ingredient-cheese": {
+        calories: 110,
+        totalFat: 8,
+        protein: 6,
+        carbs: 1,
+      },
+    },
   },
 };
 
@@ -208,8 +241,10 @@ export default function RestaurantView({
   const [selectedTacoShell, setSelectedTacoShell] = useState<TacoShellSelection>("crispy");
   const [selectedTacoCount, setSelectedTacoCount] = useState<TacoCountSelection>(3);
   const selectedEntreeConfig = selectedEntree ? CHIPOTLE_ENTREE_CONFIGURATIONS[selectedEntree] : null;
+  const selectedEntreeNutritionMultiplier = selectedEntreeConfig?.nutritionMultiplier ?? 1;
   const tacoServingMultiplier = selectedEntree === "tacos" && selectedTacoCount === 1 ? 1 / 3 : 1;
-  const ingredientDisplayMultiplier = selectedEntree === "tacos" && selectedTacoCount === 1 ? 1 / 3 : 1;
+  const servingMultiplier = tacoServingMultiplier * selectedEntreeNutritionMultiplier;
+  const ingredientDisplayMultiplier = servingMultiplier;
   const tacoShellIngredientIds = CHIPOTLE_TACO_SHELL_INGREDIENT_IDS;
   const selectedIncludedIngredientIds = useMemo(
     () =>
@@ -286,7 +321,9 @@ export default function RestaurantView({
         return {
           id: ingredientId,
           name: ingredient.name,
-          nutrition: scaleNutritionValues(ingredient.nutrition, ingredientDisplayMultiplier),
+          nutrition:
+            selectedEntreeConfig?.ingredientNutritionOverrides?.[ingredientId] ??
+            scaleNutritionValues(ingredient.nutrition, ingredientDisplayMultiplier),
           image: ingredient.image,
           categories: [displayCategory],
           portionType: "addon",
@@ -297,6 +334,7 @@ export default function RestaurantView({
     ingredients,
     restaurantId,
     selectedEntree,
+    selectedEntreeConfig,
     selectedIncludedIngredientIds,
     tacoShellIngredientIds,
   ]);
@@ -548,12 +586,12 @@ export default function RestaurantView({
   );
   const adjustedSelectedIngredientTotals = useMemo(
     () => ({
-      calories: Math.round(selectedIngredientTotals.calories * tacoServingMultiplier),
-      protein: Math.round(selectedIngredientTotals.protein * tacoServingMultiplier),
-      carbs: Math.round(selectedIngredientTotals.carbs * tacoServingMultiplier),
-      fat: Math.round(selectedIngredientTotals.fat * tacoServingMultiplier),
+      calories: Math.round(selectedIngredientTotals.calories * servingMultiplier),
+      protein: Math.round(selectedIngredientTotals.protein * servingMultiplier),
+      carbs: Math.round(selectedIngredientTotals.carbs * servingMultiplier),
+      fat: Math.round(selectedIngredientTotals.fat * servingMultiplier),
     }),
-    [selectedIngredientTotals, tacoServingMultiplier]
+    [selectedIngredientTotals, servingMultiplier]
   );
 
   const selectedNutritionLabelTotals = useMemo(
@@ -591,18 +629,18 @@ export default function RestaurantView({
   );
   const adjustedNutritionLabelTotals = useMemo(
     () => ({
-      calories: Math.round(selectedNutritionLabelTotals.calories * tacoServingMultiplier),
-      totalFat: Math.round(selectedNutritionLabelTotals.totalFat * tacoServingMultiplier),
-      satFat: Math.round(selectedNutritionLabelTotals.satFat * tacoServingMultiplier),
-      transFat: Math.round(selectedNutritionLabelTotals.transFat * tacoServingMultiplier),
-      cholesterol: Math.round(selectedNutritionLabelTotals.cholesterol * tacoServingMultiplier),
-      sodium: Math.round(selectedNutritionLabelTotals.sodium * tacoServingMultiplier),
-      carbs: Math.round(selectedNutritionLabelTotals.carbs * tacoServingMultiplier),
-      fiber: Math.round(selectedNutritionLabelTotals.fiber * tacoServingMultiplier),
-      sugars: Math.round(selectedNutritionLabelTotals.sugars * tacoServingMultiplier),
-      protein: Math.round(selectedNutritionLabelTotals.protein * tacoServingMultiplier),
+      calories: Math.round(selectedNutritionLabelTotals.calories * servingMultiplier),
+      totalFat: Math.round(selectedNutritionLabelTotals.totalFat * servingMultiplier),
+      satFat: Math.round(selectedNutritionLabelTotals.satFat * servingMultiplier),
+      transFat: Math.round(selectedNutritionLabelTotals.transFat * servingMultiplier),
+      cholesterol: Math.round(selectedNutritionLabelTotals.cholesterol * servingMultiplier),
+      sodium: Math.round(selectedNutritionLabelTotals.sodium * servingMultiplier),
+      carbs: Math.round(selectedNutritionLabelTotals.carbs * servingMultiplier),
+      fiber: Math.round(selectedNutritionLabelTotals.fiber * servingMultiplier),
+      sugars: Math.round(selectedNutritionLabelTotals.sugars * servingMultiplier),
+      protein: Math.round(selectedNutritionLabelTotals.protein * servingMultiplier),
     }),
-    [selectedNutritionLabelTotals, tacoServingMultiplier]
+    [selectedNutritionLabelTotals, servingMultiplier]
   );
 
   const selectedIngredientCount = Object.values(selectedIngredientItems).reduce(
