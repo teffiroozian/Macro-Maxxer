@@ -798,6 +798,134 @@
         "totalFat": 0
       },
       "entreeGroup": "drinks"
+    },
+    {
+      "id": "topo-chico-mineral-water",
+      "name": "Topo Chico Mineral Water",
+      "categories": [
+        "Drinks"
+      ],
+      "portionType": "drink",
+      "image": "/restaurants/chipotle/logo.jpeg",
+      "nutrition": {
+        "calories": 0,
+        "protein": 0,
+        "carbs": 0,
+        "totalFat": 0
+      },
+      "entreeGroup": "drinks"
+    },
+    {
+      "id": "coke-zero",
+      "name": "Coke Zero",
+      "categories": [
+        "Drinks"
+      ],
+      "portionType": "drink",
+      "image": "/restaurants/chipotle/logo.jpeg",
+      "nutrition": {
+        "calories": 0,
+        "protein": 0,
+        "carbs": 0,
+        "totalFat": 0
+      },
+      "entreeGroup": "drinks"
+    },
+    {
+      "id": "poppi-strawberry-lemon",
+      "name": "Poppi Strawberry Lemon",
+      "categories": [
+        "Drinks"
+      ],
+      "portionType": "drink",
+      "image": "/restaurants/chipotle/logo.jpeg",
+      "nutrition": {
+        "calories": 30,
+        "protein": 0,
+        "carbs": 9,
+        "totalFat": 0
+      },
+      "entreeGroup": "drinks"
+    },
+    {
+      "id": "poppi-orange",
+      "name": "Poppi Orange",
+      "categories": [
+        "Drinks"
+      ],
+      "portionType": "drink",
+      "image": "/restaurants/chipotle/logo.jpeg",
+      "nutrition": {
+        "calories": 25,
+        "protein": 0,
+        "carbs": 9,
+        "totalFat": 0
+      },
+      "entreeGroup": "drinks"
+    },
+    {
+      "id": "grapefruit-izze",
+      "name": "Grapefruit Izze",
+      "categories": [
+        "Drinks"
+      ],
+      "portionType": "drink",
+      "image": "/restaurants/chipotle/logo.jpeg",
+      "nutrition": {
+        "calories": 160,
+        "protein": 0,
+        "carbs": 41,
+        "totalFat": 0
+      },
+      "entreeGroup": "drinks"
+    },
+    {
+      "id": "blackberry-izze",
+      "name": "Blackberry Izze",
+      "categories": [
+        "Drinks"
+      ],
+      "portionType": "drink",
+      "image": "/restaurants/chipotle/logo.jpeg",
+      "nutrition": {
+        "calories": 170,
+        "protein": 0,
+        "carbs": 41,
+        "totalFat": 0
+      },
+      "entreeGroup": "drinks"
+    },
+    {
+      "id": "apple-juice",
+      "name": "Apple Juice",
+      "categories": [
+        "Drinks"
+      ],
+      "portionType": "drink",
+      "image": "/restaurants/chipotle/logo.jpeg",
+      "nutrition": {
+        "calories": 240,
+        "protein": 0,
+        "carbs": 60,
+        "totalFat": 0
+      },
+      "entreeGroup": "drinks"
+    },
+    {
+      "id": "open-water-still",
+      "name": "Open Water Still",
+      "categories": [
+        "Drinks"
+      ],
+      "portionType": "drink",
+      "image": "/restaurants/chipotle/logo.jpeg",
+      "nutrition": {
+        "calories": 0,
+        "protein": 0,
+        "carbs": 0,
+        "totalFat": 0
+      },
+      "entreeGroup": "drinks"
     }
   ],
   "ingredients": [
