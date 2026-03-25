@@ -13,9 +13,16 @@
       "image": "/restaurants/chipotle/logo.jpeg",
       "nutrition": {
         "calories": 180,
-        "protein": 32,
+        "caloriesFromFat": 60,
+        "totalFat": 7,
+        "satFat": 3,
+        "transFat": 0,
+        "cholesterol": 125,
+        "sodium": 310,
         "carbs": 0,
-        "totalFat": 7
+        "fiber": 0,
+        "sugars": 0,
+        "protein": 32
       }
     },
     {
