@@ -94,16 +94,16 @@ type EntreeSelection =
   | "quesadilla"
   | "salad"
   | "tacos"
-  | "kids-build-your-own"
-  | "kids-quesadilla"
+  | "kids-meal"
+  | "chips-sides"
   | null;
 type TacoShellSelection = "crispy" | "soft";
 type TacoCountSelection = 3 | 1;
+type KidsMealSelection = "build-your-own" | "quesadilla";
 type EntreeConfiguration = {
   label: string;
   nutritionMultiplier?: number;
   includedIngredientIds?: string[];
-  ingredientNutritionOverrides?: Record<string, IngredientItem["nutrition"]>;
   getIncludedIngredientIds?: (options: { tacoShell: TacoShellSelection }) => string[];
 };
 const CHIPOTLE_TACO_SHELL_INGREDIENT_IDS = [
@@ -129,28 +129,31 @@ const CHIPOTLE_ENTREE_CONFIGURATIONS: Record<
         : "chipotle-ingredient-soft-flour-tortilla",
     ],
   },
-  "kids-build-your-own": {
-    label: "Kid's Build Your Own",
+  "kids-meal": {
+    label: "Kid's Meal",
     nutritionMultiplier: 0.5,
   },
-  "kids-quesadilla": {
-    label: "Kid's Quesadilla",
-    nutritionMultiplier: 0.5,
-    includedIngredientIds: ["chipotle-ingredient-soft-flour-tortilla", "chipotle-ingredient-cheese"],
-    ingredientNutritionOverrides: {
-      "chipotle-ingredient-soft-flour-tortilla": {
-        calories: 80,
-        totalFat: 3,
-        protein: 2,
-        carbs: 13,
-      },
-      "chipotle-ingredient-cheese": {
-        calories: 110,
-        totalFat: 8,
-        protein: 6,
-        carbs: 1,
-      },
-    },
+  "chips-sides": {
+    label: "Chips & Sides",
+  },
+};
+
+const CHIPOTLE_KIDS_QUESADILLA_INCLUDED_INGREDIENT_IDS = [
+  "chipotle-ingredient-soft-flour-tortilla",
+  "chipotle-ingredient-cheese",
+];
+const CHIPOTLE_KIDS_QUESADILLA_NUTRITION_OVERRIDES: Record<string, IngredientItem["nutrition"]> = {
+  "chipotle-ingredient-soft-flour-tortilla": {
+    calories: 80,
+    totalFat: 3,
+    protein: 2,
+    carbs: 13,
+  },
+  "chipotle-ingredient-cheese": {
+    calories: 110,
+    totalFat: 8,
+    protein: 6,
+    carbs: 1,
   },
 };
 
@@ -240,6 +243,7 @@ export default function RestaurantView({
   const [selectedEntree, setSelectedEntree] = useState<EntreeSelection>(null);
   const [selectedTacoShell, setSelectedTacoShell] = useState<TacoShellSelection>("crispy");
   const [selectedTacoCount, setSelectedTacoCount] = useState<TacoCountSelection>(3);
+  const [selectedKidsMeal, setSelectedKidsMeal] = useState<KidsMealSelection>("build-your-own");
   const selectedEntreeConfig = selectedEntree ? CHIPOTLE_ENTREE_CONFIGURATIONS[selectedEntree] : null;
   const selectedEntreeNutritionMultiplier = selectedEntreeConfig?.nutritionMultiplier ?? 1;
   const tacoServingMultiplier = selectedEntree === "tacos" && selectedTacoCount === 1 ? 1 / 3 : 1;
@@ -247,11 +251,19 @@ export default function RestaurantView({
   const ingredientDisplayMultiplier = servingMultiplier;
   const tacoShellIngredientIds = CHIPOTLE_TACO_SHELL_INGREDIENT_IDS;
   const selectedIncludedIngredientIds = useMemo(
-    () =>
-      selectedEntreeConfig?.getIncludedIngredientIds?.({ tacoShell: selectedTacoShell }) ??
-      selectedEntreeConfig?.includedIngredientIds ??
-      [],
-    [selectedEntreeConfig, selectedTacoShell]
+    () => {
+      if (selectedEntree === "kids-meal") {
+        return selectedKidsMeal === "quesadilla"
+          ? CHIPOTLE_KIDS_QUESADILLA_INCLUDED_INGREDIENT_IDS
+          : [];
+      }
+      return (
+        selectedEntreeConfig?.getIncludedIngredientIds?.({ tacoShell: selectedTacoShell }) ??
+        selectedEntreeConfig?.includedIngredientIds ??
+        []
+      );
+    },
+    [selectedEntree, selectedEntreeConfig, selectedKidsMeal, selectedTacoShell]
   );
 
   const addonItems = useMemo<MenuItem[]>(() => {
@@ -322,8 +334,10 @@ export default function RestaurantView({
           id: ingredientId,
           name: ingredient.name,
           nutrition:
-            selectedEntreeConfig?.ingredientNutritionOverrides?.[ingredientId] ??
-            scaleNutritionValues(ingredient.nutrition, ingredientDisplayMultiplier),
+            selectedEntree === "kids-meal" && selectedKidsMeal === "quesadilla"
+              ? CHIPOTLE_KIDS_QUESADILLA_NUTRITION_OVERRIDES[ingredientId] ??
+                scaleNutritionValues(ingredient.nutrition, ingredientDisplayMultiplier)
+              : scaleNutritionValues(ingredient.nutrition, ingredientDisplayMultiplier),
           image: ingredient.image,
           categories: [displayCategory],
           portionType: "addon",
@@ -334,7 +348,7 @@ export default function RestaurantView({
     ingredients,
     restaurantId,
     selectedEntree,
-    selectedEntreeConfig,
+    selectedKidsMeal,
     selectedIncludedIngredientIds,
     tacoShellIngredientIds,
   ]);
@@ -349,7 +363,15 @@ export default function RestaurantView({
     [ingredientMenuItems]
   );
 
-  const allItems = useMemo(() => [...items, ...addonItems], [items, addonItems]);
+  const allItems = useMemo(() => {
+    const baseItems = [...items, ...addonItems];
+    if (isChipotleBuildPage && selectedEntree === "chips-sides") {
+      return baseItems.filter((item) =>
+        item.categories?.some((category) => category.toLowerCase() === "chips & sides")
+      );
+    }
+    return baseItems;
+  }, [addonItems, isChipotleBuildPage, items, selectedEntree]);
   const sourceItems = viewMode === "ingredients" ? ingredientMenuItems : allItems;
 
   const calorieBounds = useMemo(() => {
@@ -648,9 +670,18 @@ export default function RestaurantView({
     0
   );
   const buildName = selectedEntree
-    ? `${restaurantName} ${CHIPOTLE_ENTREE_CONFIGURATIONS[selectedEntree].label} Build`
+    ? `${restaurantName} ${
+        selectedEntree === "kids-meal"
+          ? selectedKidsMeal === "quesadilla"
+            ? "Kid's Quesadilla"
+            : "Kid's Build Your Own"
+          : CHIPOTLE_ENTREE_CONFIGURATIONS[selectedEntree].label
+      } Build`
     : `${restaurantName} Build`;
-  const shouldShowBuildStickyBar = isBuildYourOwn && viewMode === "ingredients" && (!isChipotleBuildPage || selectedEntree !== null);
+  const shouldShowBuildStickyBar =
+    isBuildYourOwn &&
+    viewMode === "ingredients" &&
+    (!isChipotleBuildPage || (selectedEntree !== null && selectedEntree !== "chips-sides"));
   const lockedIngredientIds = useMemo(() => {
     if (selectedIncludedIngredientIds.length === 0) {
       return new Set<string>();
@@ -692,11 +723,14 @@ export default function RestaurantView({
 
   const applyIncludedIngredients = (nextIncludedIngredientIds: string[]) => {
     const allIncludedIngredientIds = new Set(
-      Object.values(CHIPOTLE_ENTREE_CONFIGURATIONS).flatMap((configuration) => [
-        ...(configuration.includedIngredientIds ?? []),
-        ...(configuration.getIncludedIngredientIds?.({ tacoShell: "crispy" }) ?? []),
-        ...(configuration.getIncludedIngredientIds?.({ tacoShell: "soft" }) ?? []),
-      ])
+      [
+        ...Object.values(CHIPOTLE_ENTREE_CONFIGURATIONS).flatMap((configuration) => [
+          ...(configuration.includedIngredientIds ?? []),
+          ...(configuration.getIncludedIngredientIds?.({ tacoShell: "crispy" }) ?? []),
+          ...(configuration.getIncludedIngredientIds?.({ tacoShell: "soft" }) ?? []),
+        ]),
+        ...CHIPOTLE_KIDS_QUESADILLA_INCLUDED_INGREDIENT_IDS,
+      ]
     );
 
     setSelectedIngredientItems((previous) => {
@@ -723,13 +757,22 @@ export default function RestaurantView({
 
   const handleEntreeSelection = (entree: Exclude<EntreeSelection, null>) => {
     const nextIncludedIngredientIds =
-      CHIPOTLE_ENTREE_CONFIGURATIONS[entree].getIncludedIngredientIds?.({
-        tacoShell: selectedTacoShell,
-      }) ??
-      CHIPOTLE_ENTREE_CONFIGURATIONS[entree].includedIngredientIds ??
-      [];
+      entree === "kids-meal"
+        ? selectedKidsMeal === "quesadilla"
+          ? CHIPOTLE_KIDS_QUESADILLA_INCLUDED_INGREDIENT_IDS
+          : []
+        : CHIPOTLE_ENTREE_CONFIGURATIONS[entree].getIncludedIngredientIds?.({
+            tacoShell: selectedTacoShell,
+          }) ??
+          CHIPOTLE_ENTREE_CONFIGURATIONS[entree].includedIngredientIds ??
+          [];
     setSelectedEntree(entree);
     applyIncludedIngredients(nextIncludedIngredientIds);
+
+    const nextView = entree === "chips-sides" ? "menu" : "ingredients";
+    const nextParams = new URLSearchParams(searchParams.toString());
+    nextParams.set("view", nextView);
+    router.replace(`${pathname}?${nextParams.toString()}`, { scroll: true });
   };
 
   const handleAddBuildToCart = () => {
@@ -844,6 +887,38 @@ export default function RestaurantView({
         onCloseSearch={closeSearch}
         calorieBounds={calorieBounds}
       />
+
+      {isChipotleBuildPage && selectedEntree === "kids-meal" ? (
+        <div className="mt-4 flex flex-wrap items-center gap-3">
+          {([
+            { id: "build-your-own", label: "Kid's Build Your Own" },
+            { id: "quesadilla", label: "Kid's Quesadilla" },
+          ] as const).map((option) => {
+            const isActive = selectedKidsMeal === option.id;
+            return (
+              <button
+                key={option.id}
+                type="button"
+                onClick={() => {
+                  setSelectedKidsMeal(option.id);
+                  applyIncludedIngredients(
+                    option.id === "quesadilla"
+                      ? CHIPOTLE_KIDS_QUESADILLA_INCLUDED_INGREDIENT_IDS
+                      : []
+                  );
+                }}
+                className={`cursor-pointer rounded-full border px-4 py-2 text-sm font-semibold transition ${
+                  isActive
+                    ? "border-slate-900 bg-slate-900 text-white"
+                    : "border-slate-300 bg-white text-slate-800 hover:border-slate-500"
+                }`}
+              >
+                {option.label}
+              </button>
+            );
+          })}
+        </div>
+      ) : null}
 
       {isChipotleBuildPage && selectedEntree === null ? (
         <div className="py-6">
