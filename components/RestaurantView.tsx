@@ -113,26 +113,24 @@ type EntreeConfiguration = {
   getIncludedIngredientIds?: (options: { tacoShell: TacoShellSelection }) => string[];
 };
 const CHIPOTLE_TACO_SHELL_INGREDIENT_IDS = [
-  "ingredient-crispy-corn-tortilla",
-  "ingredient-soft-flour-tortilla",
+  "crispy-corn-tortilla",
+  "soft-flour-tortilla",
 ];
 const CHIPOTLE_ENTREE_CONFIGURATIONS: Record<
   Exclude<EntreeSelection, null>,
   EntreeConfiguration
 > = {
   bowl: { label: "Bowl" },
-  burrito: { label: "Burrito", includedIngredientIds: ["ingredient-tortilla"] },
+  burrito: { label: "Burrito", includedIngredientIds: ["tortilla"] },
   quesadilla: {
     label: "Quesadilla",
-    includedIngredientIds: ["ingredient-tortilla", "ingredient-cheese"],
+    includedIngredientIds: ["tortilla", "cheese"],
   },
-  salad: { label: "Salad", includedIngredientIds: ["ingredient-romaine-lettuce"] },
+  salad: { label: "Salad", includedIngredientIds: ["romaine-lettuce"] },
   tacos: {
     label: "Tacos",
     getIncludedIngredientIds: ({ tacoShell }) => [
-      tacoShell === "crispy"
-        ? "ingredient-crispy-corn-tortilla"
-        : "ingredient-soft-flour-tortilla",
+      tacoShell === "crispy" ? "crispy-corn-tortilla" : "soft-flour-tortilla",
     ],
   },
   "high-protein-menu": {
@@ -151,17 +149,17 @@ const CHIPOTLE_ENTREE_CONFIGURATIONS: Record<
 };
 
 const CHIPOTLE_KIDS_QUESADILLA_INCLUDED_INGREDIENT_IDS = [
-  "ingredient-soft-flour-tortilla",
-  "ingredient-cheese",
+  "soft-flour-tortilla",
+  "cheese",
 ];
 const CHIPOTLE_KIDS_QUESADILLA_NUTRITION_OVERRIDES: Record<string, IngredientItem["nutrition"]> = {
-  "ingredient-soft-flour-tortilla": {
+  "soft-flour-tortilla": {
     calories: 80,
     totalFat: 3,
     protein: 2,
     carbs: 13,
   },
-  "ingredient-cheese": {
+  cheese: {
     calories: 110,
     totalFat: 8,
     protein: 6,
@@ -765,7 +763,7 @@ export default function RestaurantView({
 
     if (selectedEntree === "tacos" && tacoShellIngredientIds.includes(itemId)) {
       if (!selected) return;
-      const nextTacoShell = itemId === "ingredient-soft-flour-tortilla" ? "soft" : "crispy";
+      const nextTacoShell = itemId === "soft-flour-tortilla" ? "soft" : "crispy";
       setSelectedTacoShell(nextTacoShell);
       applyIncludedIngredients(
         CHIPOTLE_ENTREE_CONFIGURATIONS.tacos.getIncludedIngredientIds?.({ tacoShell: nextTacoShell }) ?? []
