@@ -246,7 +246,7 @@
         "Single Sides"
       ],
       "portionType": "side",
-      "image": "/restaurants/chipotle/brand/logo.jpeg",
+      "image": "/restaurants/chipotle/ingredients/toppings/cilantro-lime-sauce.png",
       "nutrition": {
         "calories": 80,
         "protein": 2,
@@ -603,7 +603,7 @@
       "name": "Cilantro Lime Sauce",
       "description": "Served on the Side",
       "category": "Toppings",
-      "image": "/restaurants/chipotle/brand/logo.jpeg",
+      "image": "/restaurants/chipotle/ingredients/toppings/cilantro-lime-sauce.png",
       "nutrition": {
         "calories": 80,
         "protein": 2,
