@@ -215,8 +215,7 @@
             "carbs": 0
           }
         }
-      ],
-      "entreeGroup": "chips-sides"
+      ]
     },
     {
       "id": "roasted-chili-corn-salsa",
@@ -258,8 +257,7 @@
             "carbs": 0
           }
         }
-      ],
-      "entreeGroup": "chips-sides"
+      ]
     },
     {
       "id": "tomatillo-green-chili-salsa",
@@ -301,8 +299,7 @@
             "carbs": 0
           }
         }
-      ],
-      "entreeGroup": "chips-sides"
+      ]
     },
     {
       "id": "tomatillo-red-chili-salsa",
@@ -344,8 +341,7 @@
             "carbs": 0
           }
         }
-      ],
-      "entreeGroup": "chips-sides"
+      ]
     },
     {
       "id": "sour-cream",
@@ -518,8 +514,7 @@
         "protein": 2,
         "carbs": 3,
         "totalFat": 6
-      },
-      "entreeGroup": "chips-sides"
+      }
     },
     {
       "id": "side-of-queso-blanco",
@@ -559,8 +554,7 @@
             "totalFat": 37
           }
         }
-      ],
-      "entreeGroup": "chips-sides"
+      ]
     },
     {
       "id": "tortilla-on-the-side",
@@ -575,8 +569,7 @@
         "protein": 9,
         "carbs": 50,
         "totalFat": 8
-      },
-      "entreeGroup": "chips-sides"
+      }
     },
     {
       "id": "side-of-chicken-al-pastor-high-protein",
