@@ -244,6 +244,8 @@ export default function RestaurantView({
   const [selectedTacoShell, setSelectedTacoShell] = useState<TacoShellSelection>("crispy");
   const [selectedTacoCount, setSelectedTacoCount] = useState<TacoCountSelection>(3);
   const [selectedKidsMeal, setSelectedKidsMeal] = useState<KidsMealSelection>("build-your-own");
+  const isChipotleChipsSidesSelection = isChipotleBuildPage && selectedEntree === "chips-sides";
+  const effectiveViewMode: ViewOption = isChipotleChipsSidesSelection ? "menu" : viewMode;
   const selectedEntreeConfig = selectedEntree ? CHIPOTLE_ENTREE_CONFIGURATIONS[selectedEntree] : null;
   const selectedEntreeNutritionMultiplier = selectedEntreeConfig?.nutritionMultiplier ?? 1;
   const tacoServingMultiplier = selectedEntree === "tacos" && selectedTacoCount === 1 ? 1 / 3 : 1;
@@ -366,13 +368,13 @@ export default function RestaurantView({
   const allItems = useMemo(() => {
     const baseItems = [...items, ...addonItems];
     if (isChipotleBuildPage && selectedEntree === "chips-sides") {
-      return baseItems.filter((item) =>
-        item.categories?.some((category) => category.toLowerCase() === "chips & sides")
+      return baseItems.filter(
+        (item) => item.id === "chipotle-chips" || item.id === "chipotle-side-of-guacamole"
       );
     }
     return baseItems;
   }, [addonItems, isChipotleBuildPage, items, selectedEntree]);
-  const sourceItems = viewMode === "ingredients" ? ingredientMenuItems : allItems;
+  const sourceItems = effectiveViewMode === "ingredients" ? ingredientMenuItems : allItems;
 
   const calorieBounds = useMemo(() => {
     const calories = sourceItems
@@ -418,7 +420,7 @@ export default function RestaurantView({
 
     return sourceItems
       .map((item) => {
-        if (viewMode !== "ranking") {
+        if (effectiveViewMode !== "ranking") {
           return item;
         }
 
@@ -488,11 +490,11 @@ export default function RestaurantView({
       const searchableText = [item.name.toLowerCase(), ...categoryVariants].join(" ");
       return searchTerms.every((term) => searchableText.includes(term));
     });
-  }, [sourceItems, filters, searchTerms, rankedAllFilters, viewMode]);
+  }, [effectiveViewMode, sourceItems, filters, searchTerms, rankedAllFilters]);
 
   const orderedSections = useMemo(
-    () => getOrderedMenuSections(filteredItems, viewMode === "ranking" ? "menu" : viewMode),
-    [filteredItems, viewMode]
+    () => getOrderedMenuSections(filteredItems, effectiveViewMode === "ranking" ? "menu" : effectiveViewMode),
+    [effectiveViewMode, filteredItems]
   );
   const [activeCategory, setActiveCategory] = useState<string>(
     () => orderedSections[0] ?? ""
@@ -506,9 +508,9 @@ export default function RestaurantView({
     () =>
       orderedSections.map((section) => ({
         id: section,
-        label: getCategoryLabel(section, viewMode === "ranking" ? "menu" : viewMode),
+        label: getCategoryLabel(section, effectiveViewMode === "ranking" ? "menu" : effectiveViewMode),
       })),
-    [orderedSections, viewMode]
+    [effectiveViewMode, orderedSections]
   );
 
   const handleCategorySelect = (categoryId: string) => {
@@ -525,7 +527,7 @@ export default function RestaurantView({
 
 
   useEffect(() => {
-    if (viewMode === "ranking" || orderedSections.length === 0) {
+    if (effectiveViewMode === "ranking" || orderedSections.length === 0) {
       return;
     }
 
@@ -569,10 +571,14 @@ export default function RestaurantView({
       window.removeEventListener("scroll", updateActiveCategoryOnScroll);
       window.removeEventListener("resize", updateActiveCategoryOnScroll);
     };
-  }, [activeCategory, viewMode, orderedSections]);
+  }, [activeCategory, effectiveViewMode, orderedSections]);
 
   const handleViewChange = (nextView: ViewOption) => {
-    if (nextView === viewMode) {
+    if (isChipotleChipsSidesSelection && nextView !== "menu") {
+      return;
+    }
+
+    if (nextView === effectiveViewMode) {
       return;
     }
 
@@ -680,7 +686,7 @@ export default function RestaurantView({
     : `${restaurantName} Build`;
   const shouldShowBuildStickyBar =
     isBuildYourOwn &&
-    viewMode === "ingredients" &&
+    effectiveViewMode === "ingredients" &&
     (!isChipotleBuildPage || (selectedEntree !== null && selectedEntree !== "chips-sides"));
   const lockedIngredientIds = useMemo(() => {
     if (selectedIncludedIngredientIds.length === 0) {
@@ -874,7 +880,7 @@ export default function RestaurantView({
       <StickyRestaurantBar
         restaurantName={restaurantName}
         restaurantLogo={restaurantLogo}
-        view={viewMode}
+        view={effectiveViewMode}
         onChange={handleViewChange}
         sort={sort}
         onSortChange={handleSortChange}
@@ -953,15 +959,15 @@ export default function RestaurantView({
         <div className="grid items-start gap-6 [grid-template-columns:240px_minmax(0,1fr)]">
           <aside className="sticky top-[160px] flex max-h-[calc(100vh-160px)] flex-col py-6">
             <h3 className="mb-8 shrink-0 text-2xl font-bold text-slate-900">
-              {viewMode === "ranking"
+              {effectiveViewMode === "ranking"
                 ? "Show"
-                : viewMode === "ingredients"
+                : effectiveViewMode === "ingredients"
                   ? "Ingredients"
                   : "Categories"}
             </h3>
 
             <div className="min-h-0 flex-1 overflow-y-auto px-2 py-2">
-              {viewMode === "ranking" ? (
+              {effectiveViewMode === "ranking" ? (
                 <div className="grid gap-3">
                   {[
                     { key: "main-entrees" as const, label: "Main Entrees" },
@@ -990,7 +996,7 @@ export default function RestaurantView({
               ) : (
                 <nav
                   aria-label={
-                    viewMode === "ingredients"
+                    effectiveViewMode === "ingredients"
                       ? "Ingredient categories"
                       : "Menu categories"
                   }
@@ -1035,8 +1041,8 @@ export default function RestaurantView({
                 ingredients={ingredients}
                 commonChanges={commonChanges}
                 customizationRules={customizationRules}
-                groupByCategory={viewMode !== "ranking"}
-                categoryMode={viewMode === "ranking" ? "menu" : viewMode}
+                groupByCategory={effectiveViewMode !== "ranking"}
+                categoryMode={effectiveViewMode === "ranking" ? "menu" : effectiveViewMode}
                 isBuildYourOwn={isBuildYourOwn}
                 selectedIngredientIds={new Set(Object.keys(selectedIngredientItems))}
                 lockedIngredientIds={lockedIngredientIds}
