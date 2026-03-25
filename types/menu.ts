@@ -96,6 +96,7 @@ export type MenuItem = {
   nutrition: Nutrition; // make this required so label is consistent
   image?: string;
   categories: string[];
+  entreeGroup?: string;
   portionType: PortionType;
   restaurant?: string;
   variants?: ItemVariant[];

@@ -94,6 +94,7 @@ type EntreeSelection =
   | "quesadilla"
   | "salad"
   | "tacos"
+  | "high-protein-menu"
   | "kids-meal"
   | "chips-sides"
   | "drinks"
@@ -129,6 +130,9 @@ const CHIPOTLE_ENTREE_CONFIGURATIONS: Record<
         ? "ingredient-crispy-corn-tortilla"
         : "ingredient-soft-flour-tortilla",
     ],
+  },
+  "high-protein-menu": {
+    label: "High Protein Menu",
   },
   "kids-meal": {
     label: "Kid's Meal",
@@ -249,9 +253,13 @@ export default function RestaurantView({
   const [selectedTacoCount, setSelectedTacoCount] = useState<TacoCountSelection>(3);
   const [selectedKidsMeal, setSelectedKidsMeal] = useState<KidsMealSelection>("build-your-own");
   const isChipotleChipsSidesSelection = isChipotleBuildPage && selectedEntree === "chips-sides";
+  const isChipotleHighProteinSelection =
+    isChipotleBuildPage && selectedEntree === "high-protein-menu";
   const isChipotleDrinksSelection = isChipotleBuildPage && selectedEntree === "drinks";
   const effectiveViewMode: ViewOption =
-    isChipotleChipsSidesSelection || isChipotleDrinksSelection ? "menu" : viewMode;
+    isChipotleChipsSidesSelection || isChipotleHighProteinSelection || isChipotleDrinksSelection
+      ? "menu"
+      : viewMode;
   const selectedEntreeConfig = selectedEntree ? CHIPOTLE_ENTREE_CONFIGURATIONS[selectedEntree] : null;
   const selectedEntreeNutritionMultiplier = selectedEntreeConfig?.nutritionMultiplier ?? 1;
   const tacoServingMultiplier = selectedEntree === "tacos" && selectedTacoCount === 1 ? 1 / 3 : 1;
@@ -373,15 +381,11 @@ export default function RestaurantView({
 
   const allItems = useMemo(() => {
     const baseItems = [...items, ...addonItems];
-    if (isChipotleBuildPage && selectedEntree === "chips-sides") {
-      return baseItems.filter((item) =>
-        item.categories?.some((category) => category.toLowerCase() === "chips & sides")
-      );
-    }
-    if (isChipotleBuildPage && selectedEntree === "drinks") {
-      return baseItems.filter(
-        (item) => item.id === "mexican-coca-cola" || item.id === "mexican-sprite"
-      );
+    if (
+      isChipotleBuildPage &&
+      (selectedEntree === "chips-sides" || selectedEntree === "high-protein-menu" || selectedEntree === "drinks")
+    ) {
+      return baseItems.filter((item) => item.entreeGroup === selectedEntree);
     }
     return baseItems;
   }, [addonItems, isChipotleBuildPage, items, selectedEntree]);
@@ -701,6 +705,7 @@ export default function RestaurantView({
     (!isChipotleBuildPage ||
       (selectedEntree !== null &&
         selectedEntree !== "chips-sides" &&
+        selectedEntree !== "high-protein-menu" &&
         selectedEntree !== "drinks"));
   const lockedIngredientIds = useMemo(() => {
     if (selectedIncludedIngredientIds.length === 0) {
@@ -789,7 +794,10 @@ export default function RestaurantView({
     setSelectedEntree(entree);
     applyIncludedIngredients(nextIncludedIngredientIds);
 
-    const nextView = entree === "chips-sides" || entree === "drinks" ? "menu" : "ingredients";
+    const nextView =
+      entree === "chips-sides" || entree === "high-protein-menu" || entree === "drinks"
+        ? "menu"
+        : "ingredients";
     const nextParams = new URLSearchParams(searchParams.toString());
     nextParams.set("view", nextView);
     router.replace(`${pathname}?${nextParams.toString()}`, { scroll: true });
