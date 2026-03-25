@@ -13,9 +13,15 @@
       "image": "/restaurants/chipotle/logo.jpeg",
       "nutrition": {
         "calories": 180,
-        "protein": 32,
+        "totalFat": 7,
+        "satFat": 3,
+        "transFat": 0,
+        "cholesterol": 125,
+        "sodium": 310,
         "carbs": 0,
-        "totalFat": 7
+        "fiber": 0,
+        "sugars": 0,
+        "protein": 32
       }
     },
     {
@@ -233,6 +239,36 @@
           }
         }
       ]
+    },
+    {
+      "id": "chipotle-mexican-coca-cola",
+      "name": "Mexican Coca-Cola",
+      "categories": [
+        "Drinks"
+      ],
+      "portionType": "drink",
+      "image": "/restaurants/chipotle/logo.jpeg",
+      "nutrition": {
+        "calories": 150,
+        "protein": 0,
+        "carbs": 39,
+        "totalFat": 0
+      }
+    },
+    {
+      "id": "chipotle-mexican-sprite",
+      "name": "Mexican Sprite",
+      "categories": [
+        "Drinks"
+      ],
+      "portionType": "drink",
+      "image": "/restaurants/chipotle/logo.jpeg",
+      "nutrition": {
+        "calories": 160,
+        "protein": 0,
+        "carbs": 40,
+        "totalFat": 0
+      }
     }
   ],
   "ingredients": [
@@ -303,9 +339,15 @@
       "image": "/restaurants/chipotle/logo.jpeg",
       "nutrition": {
         "calories": 180,
-        "protein": 32,
+        "totalFat": 7,
+        "satFat": 3,
+        "transFat": 0,
+        "cholesterol": 125,
+        "sodium": 310,
         "carbs": 0,
-        "totalFat": 7
+        "fiber": 0,
+        "sugars": 0,
+        "protein": 32
       }
     },
     {

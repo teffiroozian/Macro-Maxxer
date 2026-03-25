@@ -96,6 +96,7 @@ type EntreeSelection =
   | "tacos"
   | "kids-meal"
   | "chips-sides"
+  | "drinks"
   | null;
 type TacoShellSelection = "crispy" | "soft";
 type TacoCountSelection = 3 | 1;
@@ -135,6 +136,9 @@ const CHIPOTLE_ENTREE_CONFIGURATIONS: Record<
   },
   "chips-sides": {
     label: "Chips & Sides",
+  },
+  drinks: {
+    label: "Drinks",
   },
 };
 
@@ -245,7 +249,9 @@ export default function RestaurantView({
   const [selectedTacoCount, setSelectedTacoCount] = useState<TacoCountSelection>(3);
   const [selectedKidsMeal, setSelectedKidsMeal] = useState<KidsMealSelection>("build-your-own");
   const isChipotleChipsSidesSelection = isChipotleBuildPage && selectedEntree === "chips-sides";
-  const effectiveViewMode: ViewOption = isChipotleChipsSidesSelection ? "menu" : viewMode;
+  const isChipotleDrinksSelection = isChipotleBuildPage && selectedEntree === "drinks";
+  const effectiveViewMode: ViewOption =
+    isChipotleChipsSidesSelection || isChipotleDrinksSelection ? "menu" : viewMode;
   const selectedEntreeConfig = selectedEntree ? CHIPOTLE_ENTREE_CONFIGURATIONS[selectedEntree] : null;
   const selectedEntreeNutritionMultiplier = selectedEntreeConfig?.nutritionMultiplier ?? 1;
   const tacoServingMultiplier = selectedEntree === "tacos" && selectedTacoCount === 1 ? 1 / 3 : 1;
@@ -370,6 +376,11 @@ export default function RestaurantView({
     if (isChipotleBuildPage && selectedEntree === "chips-sides") {
       return baseItems.filter(
         (item) => item.id === "chipotle-chips" || item.id === "chipotle-side-of-guacamole"
+      );
+    }
+    if (isChipotleBuildPage && selectedEntree === "drinks") {
+      return baseItems.filter(
+        (item) => item.id === "chipotle-mexican-coca-cola" || item.id === "chipotle-mexican-sprite"
       );
     }
     return baseItems;
@@ -574,7 +585,7 @@ export default function RestaurantView({
   }, [activeCategory, effectiveViewMode, orderedSections]);
 
   const handleViewChange = (nextView: ViewOption) => {
-    if (isChipotleChipsSidesSelection && nextView !== "menu") {
+    if ((isChipotleChipsSidesSelection || isChipotleDrinksSelection) && nextView !== "menu") {
       return;
     }
 
@@ -687,7 +698,10 @@ export default function RestaurantView({
   const shouldShowBuildStickyBar =
     isBuildYourOwn &&
     effectiveViewMode === "ingredients" &&
-    (!isChipotleBuildPage || (selectedEntree !== null && selectedEntree !== "chips-sides"));
+    (!isChipotleBuildPage ||
+      (selectedEntree !== null &&
+        selectedEntree !== "chips-sides" &&
+        selectedEntree !== "drinks"));
   const lockedIngredientIds = useMemo(() => {
     if (selectedIncludedIngredientIds.length === 0) {
       return new Set<string>();
@@ -775,7 +789,7 @@ export default function RestaurantView({
     setSelectedEntree(entree);
     applyIncludedIngredients(nextIncludedIngredientIds);
 
-    const nextView = entree === "chips-sides" ? "menu" : "ingredients";
+    const nextView = entree === "chips-sides" || entree === "drinks" ? "menu" : "ingredients";
     const nextParams = new URLSearchParams(searchParams.toString());
     nextParams.set("view", nextView);
     router.replace(`${pathname}?${nextParams.toString()}`, { scroll: true });
@@ -794,6 +808,18 @@ export default function RestaurantView({
       ),
       quantity: 1,
       macrosPerItem: adjustedSelectedIngredientTotals,
+      nutritionPerItem: {
+        calories: adjustedNutritionLabelTotals.calories,
+        totalFat: adjustedNutritionLabelTotals.totalFat,
+        satFat: adjustedNutritionLabelTotals.satFat,
+        transFat: adjustedNutritionLabelTotals.transFat,
+        cholesterol: adjustedNutritionLabelTotals.cholesterol,
+        sodium: adjustedNutritionLabelTotals.sodium,
+        carbs: adjustedNutritionLabelTotals.carbs,
+        fiber: adjustedNutritionLabelTotals.fiber,
+        sugars: adjustedNutritionLabelTotals.sugars,
+        protein: adjustedNutritionLabelTotals.protein,
+      },
     });
   };
 

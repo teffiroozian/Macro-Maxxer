@@ -154,7 +154,8 @@ function buildCartNutritionTotals(items: ReturnType<typeof useCart>["items"]): N
       const restaurantAddons = addonsLookupByRestaurant[cartItem.restaurantId];
       const selectedAddons = getSelectedAddonNutrition(cartItem.optionsLabel, sourceItem, restaurantAddons);
       const selectedVariant = sourceItem?.variants?.find((variant) => variant.id === cartItem.variantId);
-      const baseNutrition: Nutrition | undefined = selectedVariant?.nutrition ?? sourceItem?.nutrition;
+      const baseNutrition: Nutrition | undefined =
+        selectedVariant?.nutrition ?? sourceItem?.nutrition ?? cartItem.nutritionPerItem;
 
       const addonNutrition = selectedAddons.reduce(
         (addonSum, addon) => ({
