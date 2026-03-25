@@ -104,6 +104,7 @@ export type MenuItem = {
   addonRefs?: AddonRef[];
   ingredients?: string[];
   customization?: IngredientTabsOverride;
+  hideVariantSelector?: boolean;
 };
 
 export type IngredientItem = {

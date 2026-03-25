@@ -88,6 +88,10 @@ const CATEGORY_ICONS: Record<string, LucideIcon> = {
   treats: IceCreamCone,
 };
 
+const CHIPOTLE_HIDDEN_MENU_SECTIONS_BY_ENTREE: Record<string, string[]> = {
+  "chips-sides": ["toppings"],
+};
+
 type EntreeSelection =
   | "bowl"
   | "burrito"
@@ -507,9 +511,45 @@ export default function RestaurantView({
     });
   }, [effectiveViewMode, sourceItems, filters, searchTerms, rankedAllFilters]);
 
+  const visibleMenuItems = useMemo(() => {
+    if (!isChipotleBuildPage || !selectedEntree) {
+      return filteredItems;
+    }
+
+    const hiddenSections = new Set(
+      (CHIPOTLE_HIDDEN_MENU_SECTIONS_BY_ENTREE[selectedEntree] ?? []).map((section) =>
+        section.trim().toLowerCase()
+      )
+    );
+
+    if (hiddenSections.size === 0) {
+      return filteredItems;
+    }
+
+    return filteredItems
+      .map((item) => {
+        const nextCategories = (item.categories ?? []).filter(
+          (category) => !hiddenSections.has(category.trim().toLowerCase())
+        );
+        const nextVariants = item.variants?.map((variant) => ({
+          ...variant,
+          categories: variant.categories?.filter(
+            (category) => !hiddenSections.has(category.trim().toLowerCase())
+          ),
+        }));
+
+        return {
+          ...item,
+          categories: nextCategories,
+          variants: nextVariants,
+        };
+      })
+      .filter((item) => item.categories.length > 0);
+  }, [filteredItems, isChipotleBuildPage, selectedEntree]);
+
   const orderedSections = useMemo(
-    () => getOrderedMenuSections(filteredItems, effectiveViewMode === "ranking" ? "menu" : effectiveViewMode),
-    [effectiveViewMode, filteredItems]
+    () => getOrderedMenuSections(visibleMenuItems, effectiveViewMode === "ranking" ? "menu" : effectiveViewMode),
+    [effectiveViewMode, visibleMenuItems]
   );
   const [activeCategory, setActiveCategory] = useState<string>(
     () => orderedSections[0] ?? ""
@@ -1069,7 +1109,7 @@ export default function RestaurantView({
             <div className="mx-auto max-w-[900px]">
               <MenuSections
                 restaurantId={restaurantId}
-                items={filteredItems}
+                items={visibleMenuItems}
                 sort={sort}
                 addons={addons}
                 ingredients={ingredients}
