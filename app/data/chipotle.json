@@ -4,409 +4,6 @@
   "isBuildYourOwn": true,
   "items": [
     {
-      "id": "chicken",
-      "name": "Chicken",
-      "categories": [
-        "Proteins"
-      ],
-      "portionType": "addon",
-      "image": "/restaurants/chipotle/logo.jpeg",
-      "nutrition": {
-        "calories": 180,
-        "totalFat": 7,
-        "satFat": 3,
-        "transFat": 0,
-        "cholesterol": 125,
-        "sodium": 310,
-        "carbs": 0,
-        "fiber": 0,
-        "sugars": 0,
-        "protein": 32
-      }
-    },
-    {
-      "id": "chicken-al-pastor",
-      "name": "Chicken al Pastor",
-      "categories": [
-        "Proteins"
-      ],
-      "portionType": "addon",
-      "image": "/restaurants/chipotle/logo.jpeg",
-      "nutrition": {
-        "calories": 200,
-        "protein": 23,
-        "carbs": 4,
-        "totalFat": 11
-      }
-    },
-    {
-      "id": "steak",
-      "name": "Steak",
-      "categories": [
-        "Proteins"
-      ],
-      "portionType": "addon",
-      "image": "/restaurants/chipotle/logo.jpeg",
-      "nutrition": {
-        "calories": 150,
-        "protein": 21,
-        "carbs": 1,
-        "totalFat": 6
-      }
-    },
-    {
-      "id": "beef-barbacoa",
-      "name": "Beef Barbacoa",
-      "categories": [
-        "Proteins"
-      ],
-      "portionType": "addon",
-      "image": "/restaurants/chipotle/logo.jpeg",
-      "nutrition": {
-        "calories": 170,
-        "protein": 24,
-        "carbs": 2,
-        "totalFat": 7
-      }
-    },
-    {
-      "id": "carnitas",
-      "name": "Carnitas",
-      "categories": [
-        "Proteins"
-      ],
-      "portionType": "addon",
-      "image": "/restaurants/chipotle/logo.jpeg",
-      "nutrition": {
-        "calories": 210,
-        "protein": 23,
-        "carbs": 0,
-        "totalFat": 12
-      }
-    },
-    {
-      "id": "sofritas",
-      "name": "Sofritas",
-      "description": "Plant-Based Protein",
-      "categories": [
-        "Proteins"
-      ],
-      "portionType": "addon",
-      "image": "/restaurants/chipotle/logo.jpeg",
-      "nutrition": {
-        "calories": 150,
-        "protein": 8,
-        "carbs": 9,
-        "totalFat": 10
-      }
-    },
-    {
-      "id": "white-rice",
-      "name": "White Rice",
-      "categories": [
-        "Rice"
-      ],
-      "portionType": "addon",
-      "image": "/restaurants/chipotle/logo.jpeg",
-      "nutrition": {
-        "calories": 210,
-        "protein": 4,
-        "carbs": 40,
-        "totalFat": 4
-      }
-    },
-    {
-      "id": "brown-rice",
-      "name": "Brown Rice",
-      "categories": [
-        "Rice"
-      ],
-      "portionType": "addon",
-      "image": "/restaurants/chipotle/logo.jpeg",
-      "nutrition": {
-        "calories": 210,
-        "protein": 4,
-        "carbs": 36,
-        "totalFat": 6
-      }
-    },
-    {
-      "id": "black-beans",
-      "name": "Black Beans",
-      "categories": [
-        "Beans"
-      ],
-      "portionType": "addon",
-      "image": "/restaurants/chipotle/logo.jpeg",
-      "nutrition": {
-        "calories": 130,
-        "protein": 8,
-        "carbs": 22,
-        "totalFat": 2
-      }
-    },
-    {
-      "id": "pinto-beans",
-      "name": "Pinto Beans",
-      "categories": [
-        "Beans"
-      ],
-      "portionType": "addon",
-      "image": "/restaurants/chipotle/logo.jpeg",
-      "nutrition": {
-        "calories": 130,
-        "protein": 8,
-        "carbs": 21,
-        "totalFat": 2
-      }
-    },
-    {
-      "id": "fresh-tomato-salsa",
-      "name": "Fresh Tomato Salsa",
-      "description": "Mild",
-      "categories": [
-        "Single Sides"
-      ],
-      "portionType": "side",
-      "hideVariantSelector": true,
-      "image": "/restaurants/chipotle/logo.jpeg",
-      "nutrition": {
-        "calories": 25,
-        "totalFat": 0,
-        "protein": 0,
-        "carbs": 4
-      },
-      "defaultVariantId": "fresh-tomato-salsa",
-      "variants": [
-        {
-          "id": "fresh-tomato-salsa",
-          "label": "Regular",
-          "portionType": "side",
-          "nutrition": {
-            "calories": 25,
-            "totalFat": 0,
-            "protein": 0,
-            "carbs": 4
-          }
-        },
-        {
-          "id": "large-fresh-tomato-salsa",
-          "label": "Large",
-          "portionType": "side",
-          "nutrition": {
-            "calories": 40,
-            "totalFat": 0,
-            "protein": 0,
-            "carbs": 0
-          }
-        }
-      ],
-      "entreeGroup": "chips-sides"
-    },
-    {
-      "id": "roasted-chili-corn-salsa",
-      "name": "Roasted Chili-Corn Salsa",
-      "categories": [
-        "Single Sides"
-      ],
-      "portionType": "side",
-      "hideVariantSelector": true,
-      "image": "/restaurants/chipotle/logo.jpeg",
-      "nutrition": {
-        "calories": 80,
-        "totalFat": 2,
-        "protein": 3,
-        "carbs": 16
-      },
-      "defaultVariantId": "roasted-chili-corn-salsa",
-      "variants": [
-        {
-          "id": "roasted-chili-corn-salsa",
-          "label": "Regular",
-          "portionType": "side",
-          "nutrition": {
-            "calories": 80,
-            "totalFat": 2,
-            "protein": 3,
-            "carbs": 16
-          }
-        },
-        {
-          "id": "large-roasted-chili-corn-salsa",
-          "label": "Large",
-          "portionType": "side",
-          "nutrition": {
-            "calories": 120,
-            "totalFat": 0,
-            "protein": 0,
-            "carbs": 0
-          }
-        }
-      ],
-      "entreeGroup": "chips-sides"
-    },
-    {
-      "id": "tomatillo-green-chili-salsa",
-      "name": "Tomatillo-Green Chili Salsa",
-      "categories": [
-        "Single Sides"
-      ],
-      "portionType": "side",
-      "hideVariantSelector": true,
-      "image": "/restaurants/chipotle/logo.jpeg",
-      "nutrition": {
-        "calories": 15,
-        "totalFat": 0,
-        "protein": 0,
-        "carbs": 4
-      },
-      "defaultVariantId": "tomatillo-green-chili-salsa",
-      "variants": [
-        {
-          "id": "tomatillo-green-chili-salsa",
-          "label": "Regular",
-          "portionType": "side",
-          "nutrition": {
-            "calories": 15,
-            "totalFat": 0,
-            "protein": 0,
-            "carbs": 4
-          }
-        },
-        {
-          "id": "large-tomatillo-green-chili-salsa",
-          "label": "Large",
-          "portionType": "side",
-          "nutrition": {
-            "calories": 45,
-            "totalFat": 0,
-            "protein": 0,
-            "carbs": 0
-          }
-        }
-      ],
-      "entreeGroup": "chips-sides"
-    },
-    {
-      "id": "tomatillo-red-chili-salsa",
-      "name": "Tomatillo-Red Chili Salsa",
-   
-      "categories": [
-
-        "Single Sides"
-      ],
-      "portionType": "side",
-      "hideVariantSelector": true,
-      "image": "/restaurants/chipotle/logo.jpeg",
-      "nutrition": {
-        "calories": 30,
-        "totalFat": 0,
-        "protein": 0,
-        "carbs": 4
-      },
-      "defaultVariantId": "tomatillo-red-chili-salsa",
-      "variants": [
-        {
-          "id": "tomatillo-red-chili-salsa",
-          "label": "Regular",
-          "portionType": "side",
-          "nutrition": {
-            "calories": 30,
-            "totalFat": 0,
-            "protein": 0,
-            "carbs": 4
-          }
-        },
-        {
-          "id": "large-tomatillo-red-chili-salsa",
-          "label": "Large",
-          "portionType": "side",
-          "nutrition": {
-            "calories": 90,
-            "totalFat": 0,
-            "protein": 0,
-            "carbs": 0
-          }
-        }
-      ],
-      "entreeGroup": "chips-sides"
-    },
-    {
-      "id": "sour-cream",
-      "name": "Sour Cream",
-      "categories": [
-        "Toppings"
-      ],
-      "portionType": "addon",
-      "image": "/restaurants/chipotle/logo.jpeg",
-      "nutrition": {
-        "calories": 110,
-        "totalFat": 9,
-        "protein": 2,
-        "carbs": 2
-      }
-    },
-    {
-      "id": "fajita-veggies",
-      "name": "Fajita Veggies",
-      "categories": [
-        "Toppings"
-      ],
-      "portionType": "addon",
-      "image": "/restaurants/chipotle/logo.jpeg",
-      "nutrition": {
-        "calories": 20,
-        "totalFat": 0,
-        "protein": 1,
-        "carbs": 5
-      }
-    },
-    {
-      "id": "cheese",
-      "name": "Cheese",
-      "categories": [
-        "Toppings"
-      ],
-      "portionType": "addon",
-      "image": "/restaurants/chipotle/logo.jpeg",
-      "nutrition": {
-        "calories": 110,
-        "totalFat": 8,
-        "protein": 6,
-        "carbs": 1
-      }
-    },
-    {
-      "id": "romaine-lettuce",
-      "name": "Romaine Lettuce",
-      "categories": [
-        "Toppings"
-      ],
-      "portionType": "addon",
-      "image": "/restaurants/chipotle/logo.jpeg",
-      "nutrition": {
-        "calories": 5,
-        "totalFat": 0,
-        "protein": 0,
-        "carbs": 1
-      }
-    },
-    {
-      "id": "queso-blanco",
-      "name": "Queso Blanco",
-      "categories": [
-        "Toppings"
-      ],
-      "portionType": "addon",
-      "image": "/restaurants/chipotle/logo.jpeg",
-      "nutrition": {
-        "calories": 120,
-        "totalFat": 9,
-        "protein": 5,
-        "carbs": 4
-      }
-    },
-    {
       "id": "chips",
       "name": "Chips",
       "categories": [
@@ -930,7 +527,7 @@
   ],
   "ingredients": [
     {
-      "id": "ingredient-tortilla",
+      "id": "tortilla",
       "name": "Tortilla",
       "category": "Side",
       "image": "/restaurants/chipotle/logo.jpeg",
@@ -942,7 +539,7 @@
       }
     },
     {
-      "id": "ingredient-crispy-corn-tortilla",
+      "id": "crispy-corn-tortilla",
       "name": "Crispy Corn Tortilla",
       "category": "Side",
       "image": "/restaurants/chipotle/logo.jpeg",
@@ -954,7 +551,7 @@
       }
     },
     {
-      "id": "ingredient-soft-flour-tortilla",
+      "id": "soft-flour-tortilla",
       "name": "Soft Flour Tortilla",
       "category": "Side",
       "image": "/restaurants/chipotle/logo.jpeg",
@@ -966,7 +563,7 @@
       }
     },
     {
-      "id": "ingredient-romaine-lettuce",
+      "id": "romaine-lettuce",
       "name": "Romaine Lettuce",
       "category": "Toppings",
       "image": "/restaurants/chipotle/logo.jpeg",
@@ -978,7 +575,7 @@
       }
     },
     {
-      "id": "ingredient-cheese",
+      "id": "cheese",
       "name": "Cheese",
       "category": "Toppings",
       "image": "/restaurants/chipotle/logo.jpeg",
@@ -990,7 +587,7 @@
       }
     },
     {
-      "id": "ingredient-guacamole",
+      "id": "guacamole",
       "name": "Guacamole",
       "category": "Toppings",
       "image": "/restaurants/chipotle/logo.jpeg",
@@ -1002,7 +599,7 @@
       }
     },
     {
-      "id": "ingredient-cilantro-lime-sauce",
+      "id": "cilantro-lime-sauce",
       "name": "Cilantro Lime Sauce",
       "description": "Served on the Side",
       "category": "Toppings",
@@ -1015,7 +612,7 @@
       }
     },
     {
-      "id": "ingredient-fresh-tomato-salsa",
+      "id": "fresh-tomato-salsa",
       "name": "Fresh Tomato Salsa",
       "description": "Mild",
       "category": "Toppings",
@@ -1028,7 +625,7 @@
       }
     },
     {
-      "id": "ingredient-roasted-chili-corn-salsa",
+      "id": "roasted-chili-corn-salsa",
       "name": "Roasted Chili-Corn Salsa",
       "description": "Medium",
       "category": "Toppings",
@@ -1041,7 +638,7 @@
       }
     },
     {
-      "id": "ingredient-tomatillo-green-chili-salsa",
+      "id": "tomatillo-green-chili-salsa",
       "name": "Tomatillo-Green Chili Salsa",
       "description": "Medium",
       "category": "Toppings",
@@ -1054,7 +651,7 @@
       }
     },
     {
-      "id": "ingredient-tomatillo-red-chili-salsa",
+      "id": "tomatillo-red-chili-salsa",
       "name": "Tomatillo-Red Chili Salsa",
       "description": "Hot",
       "category": "Toppings",
@@ -1067,7 +664,7 @@
       }
     },
     {
-      "id": "ingredient-sour-cream",
+      "id": "sour-cream",
       "name": "Sour Cream",
       "category": "Toppings",
       "image": "/restaurants/chipotle/logo.jpeg",
@@ -1079,7 +676,7 @@
       }
     },
     {
-      "id": "ingredient-fajita-veggies",
+      "id": "fajita-veggies",
       "name": "Fajita Veggies",
       "category": "Toppings",
       "image": "/restaurants/chipotle/logo.jpeg",
@@ -1091,7 +688,7 @@
       }
     },
     {
-      "id": "ingredient-queso-blanco",
+      "id": "queso-blanco",
       "name": "Queso Blanco",
       "category": "Toppings",
       "image": "/restaurants/chipotle/logo.jpeg",
@@ -1103,7 +700,7 @@
       }
     },
     {
-      "id": "ingredient-chicken",
+      "id": "chicken",
       "name": "Chicken",
       "category": "Proteins",
       "image": "/restaurants/chipotle/logo.jpeg",
@@ -1121,7 +718,7 @@
       }
     },
     {
-      "id": "ingredient-chicken-al-pastor",
+      "id": "chicken-al-pastor",
       "name": "Chicken al Pastor",
       "category": "Proteins",
       "image": "/restaurants/chipotle/logo.jpeg",
@@ -1133,7 +730,7 @@
       }
     },
     {
-      "id": "ingredient-steak",
+      "id": "steak",
       "name": "Steak",
       "category": "Proteins",
       "image": "/restaurants/chipotle/logo.jpeg",
@@ -1145,7 +742,7 @@
       }
     },
     {
-      "id": "ingredient-beef-barbacoa",
+      "id": "beef-barbacoa",
       "name": "Beef Barbacoa",
       "category": "Proteins",
       "image": "/restaurants/chipotle/logo.jpeg",
@@ -1157,7 +754,7 @@
       }
     },
     {
-      "id": "ingredient-carnitas",
+      "id": "carnitas",
       "name": "Carnitas",
       "category": "Proteins",
       "image": "/restaurants/chipotle/logo.jpeg",
@@ -1169,7 +766,7 @@
       }
     },
     {
-      "id": "ingredient-sofritas",
+      "id": "sofritas",
       "name": "Sofritas",
       "description": "Plant-Based Protein",
       "category": "Proteins",
@@ -1182,7 +779,7 @@
       }
     },
     {
-      "id": "ingredient-white-rice",
+      "id": "white-rice",
       "name": "White Rice",
       "category": "Rice",
       "image": "/restaurants/chipotle/logo.jpeg",
@@ -1194,7 +791,7 @@
       }
     },
     {
-      "id": "ingredient-brown-rice",
+      "id": "brown-rice",
       "name": "Brown Rice",
       "category": "Rice",
       "image": "/restaurants/chipotle/logo.jpeg",
@@ -1206,7 +803,7 @@
       }
     },
     {
-      "id": "ingredient-black-beans",
+      "id": "black-beans",
       "name": "Black Beans",
       "category": "Beans",
       "image": "/restaurants/chipotle/logo.jpeg",
@@ -1218,7 +815,7 @@
       }
     },
     {
-      "id": "ingredient-pinto-beans",
+      "id": "pinto-beans",
       "name": "Pinto Beans",
       "category": "Beans",
       "image": "/restaurants/chipotle/logo.jpeg",
