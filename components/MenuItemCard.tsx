@@ -286,7 +286,7 @@ export default function MenuItemCard({
   const router = useRouter();
   const id = useId();
   const variants = item.variants?.length ? item.variants : null;
-  const hasVariantDropdown = Boolean(variants && variants.length > 1);
+  const hasVariantDropdown = Boolean(variants && variants.length > 1 && !item.hideVariantSelector);
   const defaultVariantId = useMemo(() => {
     if (!variants) return "";
     if (item.defaultVariantId && variants.some((variant) => variant.id === item.defaultVariantId)) {
@@ -884,7 +884,7 @@ export default function MenuItemCard({
                   <span className="text-sm font-bold text-green-600">{formatDelta(customizationTotals.calories)}</span>
                 ) : null}
               </div>
-              {variants ? (
+              {variants && !item.hideVariantSelector ? (
                 <div
                   className="inline-flex items-center"
                   onClick={hasVariantDropdown ? (event) => event.stopPropagation() : undefined}

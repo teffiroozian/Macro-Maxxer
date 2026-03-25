@@ -395,7 +395,7 @@ export default function ItemRouteModal({
             </div>
           </div>
 
-          {variants && variants.length > 0 ? (
+          {variants && variants.length > 0 && !item.hideVariantSelector ? (
             <>
               <div className="h-px w-[min(720px,100%)] bg-black/16" />
               <div className="w-[min(720px,100%)]">
@@ -466,7 +466,7 @@ export default function ItemRouteModal({
             }
             customizationTotals={customizationTotals}
             showCustomizationDeltas={hasActiveCustomization}
-            showVariantsInDetails={true}
+            showVariantsInDetails={!item.hideVariantSelector}
             selectedIngredientCounts={ingredientCounts}
             onDecrementIngredient={(ingredientId) =>
               setSelectedIngredientCounts((prev) => {
