@@ -10,7 +10,7 @@
         "Chips & Dips"
       ],
       "portionType": "side",
-      "image": "/restaurants/chipotle/logo.jpeg",
+      "image": "/restaurants/chipotle/menu/sides/chips.png",
       "nutrition": {
         "calories": 540,
         "protein": 7,
@@ -53,7 +53,7 @@
       ],
       "portionType": "side",
       "hideVariantSelector": true,
-      "image": "/restaurants/chipotle/logo.jpeg",
+      "image": "/restaurants/chipotle/ingredients/toppings/gaucamole.png",
       "nutrition": {
         "calories": 230,
         "protein": 2,
@@ -94,7 +94,7 @@
         "Chips & Dips"
       ],
       "portionType": "side",
-      "image": "/restaurants/chipotle/logo.jpeg",
+      "image": "/restaurants/chipotle/menu/sides/chips-guacamole.png",
       "nutrition": {
         "calories": 770,
         "totalFat": 47,
@@ -136,7 +136,7 @@
         "Chips & Dips"
       ],
       "portionType": "side",
-      "image": "/restaurants/chipotle/logo.jpeg",
+      "image": "/restaurants/chipotle/menu/sides/chips-tomato-salsa.png",
       "nutrition": {
         "calories": 565,
         "totalFat": 25,
@@ -153,7 +153,7 @@
         "Chips & Dips"
       ],
       "portionType": "side",
-      "image": "/restaurants/chipotle/logo.jpeg",
+      "image": "/restaurants/chipotle/menu/sides/chips-red-chili-salsa.png",
       "nutrition": {
         "calories": 570,
         "totalFat": 25,
@@ -170,7 +170,7 @@
         "Chips & Dips"
       ],
       "portionType": "side",
-      "image": "/restaurants/chipotle/logo.jpeg",
+      "image": "/restaurants/chipotle/menu/sides/chips-green-chili-salsa.png",
       "nutrition": {
         "calories": 555,
         "totalFat": 25,
@@ -187,7 +187,7 @@
         "Chips & Dips"
       ],
       "portionType": "side",
-      "image": "/restaurants/chipotle/logo.jpeg",
+      "image": "/restaurants/chipotle/menu/sides/chips-chili-corn-salsa.png",
       "nutrition": {
         "calories": 620,
         "totalFat": 27,
@@ -203,7 +203,7 @@
         "Chips & Dips"
       ],
       "portionType": "side",
-      "image": "/restaurants/chipotle/logo.jpeg",
+      "image": "/restaurants/chipotle/menu/sides/chips-queso-blanco.png",
       "nutrition": {
         "calories": 780,
         "totalFat": 43,
@@ -246,7 +246,7 @@
         "Single Sides"
       ],
       "portionType": "side",
-      "image": "/restaurants/chipotle/logo.jpeg",
+      "image": "/restaurants/chipotle/ingredients/toppings/cilantro-lime-sauce.png",
       "nutrition": {
         "calories": 80,
         "protein": 2,
@@ -263,7 +263,7 @@
       ],
       "portionType": "side",
       "hideVariantSelector": true,
-      "image": "/restaurants/chipotle/logo.jpeg",
+      "image": "/restaurants/chipotle/ingredients/toppings/queso-blanco.png",
       "nutrition": {
         "calories": 240,
         "protein": 10,
@@ -304,7 +304,7 @@
         "Single Sides"
       ],
       "portionType": "side",
-      "image": "/restaurants/chipotle/logo.jpeg",
+      "image": "/restaurants/chipotle/menu/sides/tortilla.png",
       "nutrition": {
         "calories": 320,
         "protein": 9,
@@ -321,7 +321,7 @@
         "High Protein Menu"
       ],
       "portionType": "side",
-      "image": "/restaurants/chipotle/logo.jpeg",
+      "image": "/restaurants/chipotle/menu/high-protein/chicken-al-pastor-cup.png",
       "nutrition": {
         "calories": 250,
         "protein": 28,
@@ -338,7 +338,7 @@
         "High Protein Menu"
       ],
       "portionType": "side",
-      "image": "/restaurants/chipotle/logo.jpeg",
+      "image": "/restaurants/chipotle/menu/high-protein/chicken-cup.png",
       "nutrition": {
         "calories": 180,
         "protein": 32,
@@ -355,7 +355,7 @@
         "High Protein Menu"
       ],
       "portionType": "side",
-      "image": "/restaurants/chipotle/logo.jpeg",
+      "image": "/restaurants/chipotle/menu/high-protein/steak-cup.png",
       "nutrition": {
         "calories": 150,
         "protein": 21,
@@ -371,7 +371,7 @@
         "Drinks"
       ],
       "portionType": "drink",
-      "image": "/restaurants/chipotle/logo.jpeg",
+      "image": "/restaurants/chipotle/menu/drinks/mexican-coca-cola.png",
       "nutrition": {
         "calories": 150,
         "protein": 0,
@@ -387,7 +387,7 @@
         "Drinks"
       ],
       "portionType": "drink",
-      "image": "/restaurants/chipotle/logo.jpeg",
+      "image": "/restaurants/chipotle/menu/drinks/mexican-sprite.png",
       "nutrition": {
         "calories": 160,
         "protein": 0,
@@ -403,7 +403,7 @@
         "Drinks"
       ],
       "portionType": "drink",
-      "image": "/restaurants/chipotle/logo.jpeg",
+      "image": "/restaurants/chipotle/menu/drinks/topo-chico-mineral-water.png",
       "nutrition": {
         "calories": 0,
         "protein": 0,
@@ -419,7 +419,7 @@
         "Drinks"
       ],
       "portionType": "drink",
-      "image": "/restaurants/chipotle/logo.jpeg",
+      "image": "/restaurants/chipotle/menu/drinks/coke-zero.png",
       "nutrition": {
         "calories": 0,
         "protein": 0,
@@ -435,7 +435,7 @@
         "Drinks"
       ],
       "portionType": "drink",
-      "image": "/restaurants/chipotle/logo.jpeg",
+      "image": "/restaurants/chipotle/menu/drinks/poppi-strawberry-lemon.png",
       "nutrition": {
         "calories": 30,
         "protein": 0,
@@ -451,7 +451,7 @@
         "Drinks"
       ],
       "portionType": "drink",
-      "image": "/restaurants/chipotle/logo.jpeg",
+      "image": "/restaurants/chipotle/menu/drinks/poppi-orange.png",
       "nutrition": {
         "calories": 25,
         "protein": 0,
@@ -467,7 +467,7 @@
         "Drinks"
       ],
       "portionType": "drink",
-      "image": "/restaurants/chipotle/logo.jpeg",
+      "image": "/restaurants/chipotle/menu/drinks/grapefruit-izze.png",
       "nutrition": {
         "calories": 160,
         "protein": 0,
@@ -483,7 +483,7 @@
         "Drinks"
       ],
       "portionType": "drink",
-      "image": "/restaurants/chipotle/logo.jpeg",
+      "image": "/restaurants/chipotle/menu/drinks/blackberry-izze.png",
       "nutrition": {
         "calories": 170,
         "protein": 0,
@@ -499,7 +499,7 @@
         "Drinks"
       ],
       "portionType": "drink",
-      "image": "/restaurants/chipotle/logo.jpeg",
+      "image": "/restaurants/chipotle/menu/drinks/apple-juice.png",
       "nutrition": {
         "calories": 240,
         "protein": 0,
@@ -515,7 +515,7 @@
         "Drinks"
       ],
       "portionType": "drink",
-      "image": "/restaurants/chipotle/logo.jpeg",
+      "image": "/restaurants/chipotle/menu/drinks/open-still-water.png",
       "nutrition": {
         "calories": 0,
         "protein": 0,
@@ -530,7 +530,7 @@
       "id": "tortilla",
       "name": "Tortilla",
       "category": "Side",
-      "image": "/restaurants/chipotle/logo.jpeg",
+      "image": "/restaurants/chipotle/menu/sides/tortilla.png",
       "nutrition": {
         "calories": 320,
         "protein": 9,
@@ -542,7 +542,7 @@
       "id": "crispy-corn-tortilla",
       "name": "Crispy Corn Tortilla",
       "category": "Side",
-      "image": "/restaurants/chipotle/logo.jpeg",
+      "image": "/restaurants/chipotle/menu/sides/crispy-corn-tortilla.png",
       "nutrition": {
         "calories": 200,
         "protein": 3,
@@ -554,7 +554,7 @@
       "id": "soft-flour-tortilla",
       "name": "Soft Flour Tortilla",
       "category": "Side",
-      "image": "/restaurants/chipotle/logo.jpeg",
+      "image": "/restaurants/chipotle/menu/sides/soft-flour-tortilla.png",
       "nutrition": {
         "calories": 250,
         "protein": 7,
@@ -566,7 +566,7 @@
       "id": "romaine-lettuce",
       "name": "Romaine Lettuce",
       "category": "Toppings",
-      "image": "/restaurants/chipotle/logo.jpeg",
+      "image": "/restaurants/chipotle/ingredients/toppings/romaine-lettuce.png",
       "nutrition": {
         "calories": 5,
         "protein": 0,
@@ -578,7 +578,7 @@
       "id": "cheese",
       "name": "Cheese",
       "category": "Toppings",
-      "image": "/restaurants/chipotle/logo.jpeg",
+      "image": "/restaurants/chipotle/ingredients/toppings/cheese.png",
       "nutrition": {
         "calories": 110,
         "protein": 6,
@@ -590,7 +590,7 @@
       "id": "guacamole",
       "name": "Guacamole",
       "category": "Toppings",
-      "image": "/restaurants/chipotle/logo.jpeg",
+      "image": "/restaurants/chipotle/ingredients/toppings/gaucamole.png",
       "nutrition": {
         "calories": 230,
         "protein": 2,
@@ -603,7 +603,7 @@
       "name": "Cilantro Lime Sauce",
       "description": "Served on the Side",
       "category": "Toppings",
-      "image": "/restaurants/chipotle/logo.jpeg",
+      "image": "/restaurants/chipotle/ingredients/toppings/cilantro-lime-sauce.png",
       "nutrition": {
         "calories": 80,
         "protein": 2,
@@ -616,7 +616,7 @@
       "name": "Fresh Tomato Salsa",
       "description": "Mild",
       "category": "Toppings",
-      "image": "/restaurants/chipotle/logo.jpeg",
+      "image": "/restaurants/chipotle/ingredients/toppings/tomato-salsa.png",
       "nutrition": {
         "calories": 25,
         "protein": 0,
@@ -629,7 +629,7 @@
       "name": "Roasted Chili-Corn Salsa",
       "description": "Medium",
       "category": "Toppings",
-      "image": "/restaurants/chipotle/logo.jpeg",
+      "image": "/restaurants/chipotle/ingredients/toppings/chili-corn-salsa.png",
       "nutrition": {
         "calories": 80,
         "protein": 3,
@@ -642,7 +642,7 @@
       "name": "Tomatillo-Green Chili Salsa",
       "description": "Medium",
       "category": "Toppings",
-      "image": "/restaurants/chipotle/logo.jpeg",
+      "image": "/restaurants/chipotle/ingredients/toppings/green-chili-salsa.png",
       "nutrition": {
         "calories": 15,
         "protein": 0,
@@ -655,7 +655,7 @@
       "name": "Tomatillo-Red Chili Salsa",
       "description": "Hot",
       "category": "Toppings",
-      "image": "/restaurants/chipotle/logo.jpeg",
+      "image": "/restaurants/chipotle/ingredients/toppings/red-chili-salsa.png",
       "nutrition": {
         "calories": 30,
         "protein": 0,
@@ -667,7 +667,7 @@
       "id": "sour-cream",
       "name": "Sour Cream",
       "category": "Toppings",
-      "image": "/restaurants/chipotle/logo.jpeg",
+      "image": "/restaurants/chipotle/ingredients/toppings/sour-cream.png",
       "nutrition": {
         "calories": 110,
         "protein": 2,
@@ -679,7 +679,7 @@
       "id": "fajita-veggies",
       "name": "Fajita Veggies",
       "category": "Toppings",
-      "image": "/restaurants/chipotle/logo.jpeg",
+      "image": "/restaurants/chipotle/ingredients/toppings/fajita-veggies.png",
       "nutrition": {
         "calories": 20,
         "protein": 1,
@@ -691,7 +691,7 @@
       "id": "queso-blanco",
       "name": "Queso Blanco",
       "category": "Toppings",
-      "image": "/restaurants/chipotle/logo.jpeg",
+      "image": "/restaurants/chipotle/ingredients/toppings/queso-blanco.png",
       "nutrition": {
         "calories": 120,
         "protein": 5,
@@ -703,7 +703,7 @@
       "id": "chicken",
       "name": "Chicken",
       "category": "Proteins",
-      "image": "/restaurants/chipotle/logo.jpeg",
+      "image": "/restaurants/chipotle/ingredients/proteins/chicken.png",
       "nutrition": {
         "calories": 180,
         "totalFat": 7,
@@ -721,7 +721,7 @@
       "id": "chicken-al-pastor",
       "name": "Chicken al Pastor",
       "category": "Proteins",
-      "image": "/restaurants/chipotle/logo.jpeg",
+      "image": "/restaurants/chipotle/ingredients/proteins/chicken-al-pastor.png",
       "nutrition": {
         "calories": 200,
         "protein": 23,
@@ -733,7 +733,7 @@
       "id": "steak",
       "name": "Steak",
       "category": "Proteins",
-      "image": "/restaurants/chipotle/logo.jpeg",
+      "image": "/restaurants/chipotle/ingredients/proteins/steak.png",
       "nutrition": {
         "calories": 150,
         "protein": 21,
@@ -745,7 +745,7 @@
       "id": "beef-barbacoa",
       "name": "Beef Barbacoa",
       "category": "Proteins",
-      "image": "/restaurants/chipotle/logo.jpeg",
+      "image": "/restaurants/chipotle/ingredients/proteins/beef-barbacoa.png",
       "nutrition": {
         "calories": 170,
         "protein": 24,
@@ -757,7 +757,7 @@
       "id": "carnitas",
       "name": "Carnitas",
       "category": "Proteins",
-      "image": "/restaurants/chipotle/logo.jpeg",
+      "image": "/restaurants/chipotle/ingredients/proteins/carnitas.png",
       "nutrition": {
         "calories": 210,
         "protein": 23,
@@ -770,7 +770,7 @@
       "name": "Sofritas",
       "description": "Plant-Based Protein",
       "category": "Proteins",
-      "image": "/restaurants/chipotle/logo.jpeg",
+      "image": "/restaurants/chipotle/ingredients/proteins/sofritas.png",
       "nutrition": {
         "calories": 150,
         "protein": 8,
@@ -782,7 +782,7 @@
       "id": "white-rice",
       "name": "White Rice",
       "category": "Rice",
-      "image": "/restaurants/chipotle/logo.jpeg",
+      "image": "/restaurants/chipotle/ingredients/rice/white-rice.png",
       "nutrition": {
         "calories": 210,
         "protein": 4,
@@ -794,7 +794,7 @@
       "id": "brown-rice",
       "name": "Brown Rice",
       "category": "Rice",
-      "image": "/restaurants/chipotle/logo.jpeg",
+      "image": "/restaurants/chipotle/ingredients/rice/brown-rice.png",
       "nutrition": {
         "calories": 210,
         "protein": 4,
@@ -806,7 +806,7 @@
       "id": "black-beans",
       "name": "Black Beans",
       "category": "Beans",
-      "image": "/restaurants/chipotle/logo.jpeg",
+      "image": "/restaurants/chipotle/ingredients/beans/black-beans.png",
       "nutrition": {
         "calories": 130,
         "protein": 8,
@@ -818,7 +818,7 @@
       "id": "pinto-beans",
       "name": "Pinto Beans",
       "category": "Beans",
-      "image": "/restaurants/chipotle/logo.jpeg",
+      "image": "/restaurants/chipotle/ingredients/beans/pinto-beans.png",
       "nutrition": {
         "calories": 130,
         "protein": 8,
