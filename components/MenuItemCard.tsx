@@ -348,15 +348,6 @@ export default function MenuItemCard({
       return acc;
     }, {});
   }, [resolvedIngredients, selectedIngredientCounts]);
-  const includedIngredientLabels = useMemo(() => {
-    const labels = resolvedIngredients
-      .filter((ingredient) => !ingredient.isNoneOption && (ingredientCounts[ingredient.id] ?? ingredient.defaultCount) > 0)
-      .map((ingredient) => ingredient.label.trim())
-      .filter(Boolean);
-
-    return Array.from(new Set(labels));
-  }, [ingredientCounts, resolvedIngredients]);
-
   const selectedSauceOptions = useMemo(() => {
     const sauceOptions = addons?.[sauceRef] ?? [];
     return sauceOptions.flatMap((addon) => Array.from({ length: selectedSauceCounts[addon.name] ?? 0 }, () => addon));
@@ -919,12 +910,6 @@ export default function MenuItemCard({
             </div>
             {isCartMode && cartSummaryLine ? (
               <p className="mt-0.5 truncate text-xs text-black/55">{cartSummaryLine}</p>
-            ) : null}
-            {!isCartMode && includedIngredientLabels.length > 0 ? (
-              <p className="mt-1 line-clamp-2 text-sm text-black/60">
-                <span className="font-semibold text-black/70">Included Ingredients:</span>{" "}
-                {includedIngredientLabels.join(", ")}
-              </p>
             ) : null}
           </div>
 
