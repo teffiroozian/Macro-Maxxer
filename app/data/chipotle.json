@@ -501,6 +501,156 @@
       "entreeGroup": "chips-sides"
     },
     {
+      "id": "chips-guacamole",
+      "name": "Chips & Guacamole",
+      "categories": [
+        "Chips & Dips"
+      ],
+      "portionType": "side",
+      "image": "/restaurants/chipotle/logo.jpeg",
+      "nutrition": {
+        "calories": 770,
+        "totalFat": 47,
+        "protein": 9,
+        "carbs": 81
+      },
+      "defaultVariantId": "chips-guacamole",
+      "variants": [
+        {
+          "id": "chips-guacamole",
+          "label": "Regular",
+          "portionType": "side",
+          "nutrition": {
+            "calories": 770,
+            "totalFat": 47,
+            "protein": 9,
+            "carbs": 81
+          }
+        },
+        {
+          "id": "large-chips-large-guacamole",
+          "label": "Large Chips & Large Guacamole",
+          "portionType": "side",
+          "nutrition": {
+            "calories": 1270,
+            "totalFat": 82,
+            "protein": 15,
+            "carbs": 126
+          }
+        }
+      ],
+      "entreeGroup": "chips-sides"
+    },
+    {
+      "id": "chips-fresh-tomato-salsa",
+      "name": "Chips & Fresh Tomato Salsa",
+      "description": "Mild",
+      "categories": [
+        "Chips & Dips"
+      ],
+      "portionType": "side",
+      "image": "/restaurants/chipotle/logo.jpeg",
+      "nutrition": {
+        "calories": 565,
+        "totalFat": 25,
+        "protein": 7,
+        "carbs": 74
+      },
+      "entreeGroup": "chips-sides"
+    },
+    {
+      "id": "chips-tomatillo-red-chili-salsa",
+      "name": "Chips & Tomatillo-Red Chili Salsa",
+      "description": "Hot",
+      "categories": [
+        "Chips & Dips"
+      ],
+      "portionType": "side",
+      "image": "/restaurants/chipotle/logo.jpeg",
+      "nutrition": {
+        "calories": 570,
+        "totalFat": 25,
+        "protein": 7,
+        "carbs": 77
+      },
+      "entreeGroup": "chips-sides"
+    },
+    {
+      "id": "chips-tomatillo-green-chili-salsa",
+      "name": "Chips & Tomatillo-Green Chili Salsa",
+      "description": "Medium",
+      "categories": [
+        "Chips & Dips"
+      ],
+      "portionType": "side",
+      "image": "/restaurants/chipotle/logo.jpeg",
+      "nutrition": {
+        "calories": 555,
+        "totalFat": 25,
+        "protein": 7,
+        "carbs": 77
+      },
+      "entreeGroup": "chips-sides"
+    },
+    {
+      "id": "chips-roasted-chili-corn-salsa",
+      "name": "Chips & Roasted Chili-Corn Salsa",
+      "description": "Medium",
+      "categories": [
+        "Chips & Dips"
+      ],
+      "portionType": "side",
+      "image": "/restaurants/chipotle/logo.jpeg",
+      "nutrition": {
+        "calories": 620,
+        "totalFat": 27,
+        "protein": 10,
+        "carbs": 89
+      },
+      "entreeGroup": "chips-sides"
+    },
+    {
+      "id": "chips-queso-blanco",
+      "name": "Chips & Queso Blanco",
+      "categories": [
+        "Chips & Dips"
+      ],
+      "portionType": "side",
+      "image": "/restaurants/chipotle/logo.jpeg",
+      "nutrition": {
+        "calories": 780,
+        "totalFat": 43,
+        "protein": 17,
+        "carbs": 80
+      },
+      "defaultVariantId": "chips-queso-blanco",
+      "variants": [
+        {
+          "id": "chips-queso-blanco",
+          "label": "Regular",
+          "portionType": "side",
+          "nutrition": {
+            "calories": 780,
+            "totalFat": 43,
+            "protein": 17,
+            "carbs": 80
+          }
+        },
+        {
+          "id": "large-chips-large-queso-blanco",
+          "label": "Large Chips & Large Queso Blanco",
+          "portionType": "side",
+          "nutrition": {
+            "calories": 1290,
+            "totalFat": 75,
+            "protein": 31,
+            "carbs": 124
+          }
+        }
+      ],
+      "entreeGroup": "chips-sides"
+    },
+    {
       "id": "side-of-cilantro-lime-sauce",
       "name": "Side of Cilantro Lime Sauce",
       "description": "Made Fresh Daily",
