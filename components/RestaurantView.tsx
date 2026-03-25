@@ -1032,9 +1032,9 @@ export default function RestaurantView({
                     <Image
                       src={entree.imageSrc}
                       alt={entree.label}
-                      width={64}
-                      height={64}
-                      className="mb-4 h-16 w-16 rounded-xl object-cover"
+                      width={640}
+                      height={320}
+                      className="mb-4 h-32 w-full rounded-xl object-contain"
                     />
                     {entree.label}
                   </button>
