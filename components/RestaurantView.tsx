@@ -99,7 +99,7 @@ type EntreeConfiguration = {
 const CHIPOTLE_TACO_SHELL_INGREDIENT_IDS = [
   "chipotle-ingredient-crispy-corn-tortilla",
   "chipotle-ingredient-soft-flour-tortilla",
-] as const;
+];
 const CHIPOTLE_ENTREE_CONFIGURATIONS: Record<
   Exclude<EntreeSelection, null>,
   EntreeConfiguration
@@ -123,6 +123,22 @@ const CHIPOTLE_ENTREE_CONFIGURATIONS: Record<
 
 function formatValue(value?: number, suffix = "") {
   return value === undefined ? "—" : `${value}${suffix}`;
+}
+
+function scaleNutritionValues(
+  nutrition: MenuItem["nutrition"] | IngredientItem["nutrition"],
+  multiplier: number
+) {
+  if (multiplier === 1) {
+    return nutrition;
+  }
+
+  return Object.fromEntries(
+    Object.entries(nutrition).map(([key, value]) => [
+      key,
+      typeof value === "number" ? Math.round(value * multiplier) : value,
+    ])
+  );
 }
 
 export default function RestaurantView({
@@ -193,6 +209,7 @@ export default function RestaurantView({
   const [selectedTacoCount, setSelectedTacoCount] = useState<TacoCountSelection>(3);
   const selectedEntreeConfig = selectedEntree ? CHIPOTLE_ENTREE_CONFIGURATIONS[selectedEntree] : null;
   const tacoServingMultiplier = selectedEntree === "tacos" && selectedTacoCount === 1 ? 1 / 3 : 1;
+  const ingredientDisplayMultiplier = selectedEntree === "tacos" && selectedTacoCount === 1 ? 1 / 3 : 1;
   const tacoShellIngredientIds = CHIPOTLE_TACO_SHELL_INGREDIENT_IDS;
   const selectedIncludedIngredientIds = useMemo(
     () =>
@@ -269,13 +286,20 @@ export default function RestaurantView({
         return {
           id: ingredientId,
           name: ingredient.name,
-          nutrition: ingredient.nutrition,
+          nutrition: scaleNutritionValues(ingredient.nutrition, ingredientDisplayMultiplier),
           image: ingredient.image,
           categories: [displayCategory],
           portionType: "addon",
         };
       });
-  }, [ingredients, restaurantId, selectedEntree, selectedIncludedIngredientIds, tacoShellIngredientIds]);
+  }, [
+    ingredientDisplayMultiplier,
+    ingredients,
+    restaurantId,
+    selectedEntree,
+    selectedIncludedIngredientIds,
+    tacoShellIngredientIds,
+  ]);
 
   const ingredientItemsById = useMemo(
     () =>
@@ -407,7 +431,7 @@ export default function RestaurantView({
   }, [sourceItems, filters, searchTerms, rankedAllFilters, viewMode]);
 
   const orderedSections = useMemo(
-    () => getOrderedMenuSections(filteredItems, viewMode),
+    () => getOrderedMenuSections(filteredItems, viewMode === "ranking" ? "menu" : viewMode),
     [filteredItems, viewMode]
   );
   const [activeCategory, setActiveCategory] = useState<string>(
@@ -422,7 +446,7 @@ export default function RestaurantView({
     () =>
       orderedSections.map((section) => ({
         id: section,
-        label: getCategoryLabel(section, viewMode),
+        label: getCategoryLabel(section, viewMode === "ranking" ? "menu" : viewMode),
       })),
     [orderedSections, viewMode]
   );
