@@ -1697,8 +1697,10 @@ export default function RestaurantView({
       </div>
     ) : null;
 
+  const isSecondaryNavHidden = isChipotleBuildPage && selectedEntree === null;
+
   return (
-    <div>
+    <div className={isSecondaryNavHidden ? "-mt-20" : undefined}>
       <StickyRestaurantBar
         restaurantName={restaurantName}
         restaurantLogo={restaurantLogo}
@@ -1716,7 +1718,7 @@ export default function RestaurantView({
         calorieBounds={calorieBounds}
         secondaryNavLeading={entreeSelectionControl}
         hideViewSelector={isBuildYourOwn}
-        hideSecondaryNav={isChipotleBuildPage && selectedEntree === null}
+        hideSecondaryNav={isSecondaryNavHidden}
       />
 
 
