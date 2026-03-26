@@ -318,7 +318,7 @@
       "name": "Side of Chicken al Pastor",
       "description": "28g Protein",
       "categories": [
-        "High Protein Menu"
+        "Protein Cups"
       ],
       "portionType": "side",
       "image": "/restaurants/chipotle/menu/high-protein/chicken-al-pastor-cup.png",
@@ -335,7 +335,7 @@
       "name": "Side of Chicken",
       "description": "32g Protein",
       "categories": [
-        "High Protein Menu"
+        "Protein Cups"
       ],
       "portionType": "side",
       "image": "/restaurants/chipotle/menu/high-protein/chicken-cup.png",
@@ -352,7 +352,7 @@
       "name": "Side of Steak",
       "description": "21g Protein",
       "categories": [
-        "High Protein Menu"
+        "Protein Cups"
       ],
       "portionType": "side",
       "image": "/restaurants/chipotle/menu/high-protein/steak-cup.png",

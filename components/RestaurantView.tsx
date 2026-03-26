@@ -18,6 +18,7 @@ import {
   Diamond,
   Droplets,
   Drumstick,
+  Ham,
   IceCreamCone,
   SquareUser,
   LeafyGreen,
@@ -28,7 +29,9 @@ import {
   SquarePlus,
   Sprout,
   Soup,
+  Triangle,
   ToggleLeft,
+  Cylinder,
   RotateCcw,
   Save,
   Shrink,
@@ -97,6 +100,9 @@ const CATEGORY_ICONS: Record<string, LucideIcon> = {
   "treat toppings": IceCreamCone,
   dressings: Droplets,
   "dipping sauces": ToggleLeft,
+  "chips & dips": Triangle,
+  "single sides": Cylinder,
+  "protein cups": Ham,
   treats: IceCreamCone,
 };
 
@@ -125,6 +131,10 @@ type TacoCountSelection = 3 | 1;
 type KidsMealSelection = "build-your-own" | "quesadilla";
 type ProteinPortionMode = "normal" | "double";
 type SplitPortionMode = "light" | "normal" | "extra";
+type IncludedIngredientContext = {
+  selectedEntree: EntreeSelection;
+  selectedKidsMeal: KidsMealSelection;
+};
 type EntreeConfiguration = {
   label: string;
   imageSrc: string;
@@ -313,6 +323,18 @@ function getSplitExtraMultiplier(item: MenuItem) {
 function getSplitPortionLabel(item: MenuItem, mode: SplitPortionMode) {
   const multiplier = mode === "light" ? 0.5 : mode === "extra" ? getSplitExtraMultiplier(item) : 1;
   return formatMultiplierLabel(multiplier);
+}
+
+function isQuesadillaCheeseSelection(
+  ingredientId: string,
+  context: IncludedIngredientContext
+) {
+  return (
+    ingredientId === "cheese" &&
+    (context.selectedEntree === "quesadilla" ||
+      (context.selectedEntree === "kids-meal" &&
+        context.selectedKidsMeal === "quesadilla"))
+  );
 }
 
 export default function RestaurantView({
@@ -595,9 +617,17 @@ export default function RestaurantView({
 
   const allItems = useMemo(() => {
     const baseItems = [...items, ...addonItems];
+    if (isChipotleBuildPage && selectedEntree === "chips-sides") {
+      return baseItems.filter(
+        (item) =>
+          item.entreeGroup === "chips-sides" ||
+          item.entreeGroup === "high-protein-menu"
+      );
+    }
+
     if (
       isChipotleBuildPage &&
-      (selectedEntree === "chips-sides" || selectedEntree === "high-protein-menu" || selectedEntree === "drinks")
+      (selectedEntree === "high-protein-menu" || selectedEntree === "drinks")
     ) {
       return baseItems.filter((item) => item.entreeGroup === selectedEntree);
     }
@@ -1208,7 +1238,13 @@ export default function RestaurantView({
     }
   };
 
-  const applyIncludedIngredients = (nextIncludedIngredientIds: string[]) => {
+  const applyIncludedIngredients = (
+    nextIncludedIngredientIds: string[],
+    context: IncludedIngredientContext = {
+      selectedEntree,
+      selectedKidsMeal,
+    }
+  ) => {
     const allIncludedIngredientIds = new Set(
       [
         ...Object.values(CHIPOTLE_ENTREE_CONFIGURATIONS).flatMap((configuration) => [
@@ -1235,13 +1271,16 @@ export default function RestaurantView({
           return;
         }
 
+        const useTripleCheese = isQuesadillaCheeseSelection(includedIngredientId, context);
         const defaultVariant = includedIngredientItem.variants?.find(
           (variant) => variant.id === includedIngredientItem.defaultVariantId
         );
         next[includedIngredientId] = {
           item: {
             ...includedIngredientItem,
-            nutrition: defaultVariant?.nutrition ?? includedIngredientItem.nutrition,
+            nutrition: useTripleCheese
+              ? scaleNutritionValues(includedIngredientItem.nutrition, 3)
+              : defaultVariant?.nutrition ?? includedIngredientItem.nutrition,
           },
           quantity: 1,
         };
@@ -1261,7 +1300,16 @@ export default function RestaurantView({
 
       nextIncludedIngredientIds.forEach((includedIngredientId) => {
         const includedIngredientItem = ingredientItemsById.get(includedIngredientId);
-        if (!includedIngredientItem?.defaultVariantId) {
+        if (!includedIngredientItem) {
+          return;
+        }
+
+        if (isQuesadillaCheeseSelection(includedIngredientId, context)) {
+          next[includedIngredientId] = CHIPOTLE_QUESADILLA_TRIPLE_CHEESE_VARIANT_ID;
+          return;
+        }
+
+        if (!includedIngredientItem.defaultVariantId) {
           return;
         }
 
@@ -1272,9 +1320,12 @@ export default function RestaurantView({
     });
   };
 
-  const applyIncludedIngredientsNextFrame = (nextIncludedIngredientIds: string[]) => {
+  const applyIncludedIngredientsNextFrame = (
+    nextIncludedIngredientIds: string[],
+    context?: IncludedIngredientContext
+  ) => {
     window.requestAnimationFrame(() => {
-      applyIncludedIngredients(nextIncludedIngredientIds);
+      applyIncludedIngredients(nextIncludedIngredientIds, context);
     });
   };
 
@@ -1290,7 +1341,10 @@ export default function RestaurantView({
           CHIPOTLE_ENTREE_CONFIGURATIONS[entree].includedIngredientIds ??
           [];
     setSelectedEntree(entree);
-    applyIncludedIngredientsNextFrame(nextIncludedIngredientIds);
+    applyIncludedIngredientsNextFrame(nextIncludedIngredientIds, {
+      selectedEntree: entree,
+      selectedKidsMeal,
+    });
 
     const nextView =
       entree === "chips-sides" || entree === "high-protein-menu" || entree === "drinks"
@@ -1815,7 +1869,11 @@ export default function RestaurantView({
                   applyIncludedIngredientsNextFrame(
                     option.id === "quesadilla"
                       ? CHIPOTLE_KIDS_QUESADILLA_INCLUDED_INGREDIENT_IDS
-                      : []
+                      : [],
+                    {
+                      selectedEntree: "kids-meal",
+                      selectedKidsMeal: option.id,
+                    }
                   );
                 }}
                 className={`cursor-pointer rounded-full border px-4 py-2 text-sm font-semibold transition ${
