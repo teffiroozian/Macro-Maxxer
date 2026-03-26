@@ -941,6 +941,10 @@ export default function RestaurantView({
         selectedEntree !== "chips-sides" &&
         selectedEntree !== "high-protein-menu" &&
         selectedEntree !== "drinks"));
+  const selectedIncludedIngredientIdSet = useMemo(
+    () => new Set<string>(selectedIncludedIngredientIds),
+    [selectedIncludedIngredientIds]
+  );
   const lockedIngredientIds = useMemo(() => {
     if (selectedIncludedIngredientIds.length === 0) {
       return new Set<string>();
@@ -1466,8 +1470,12 @@ export default function RestaurantView({
     );
 
     return [...selectedEntries].sort(([leftId, leftIngredient], [rightId, rightIngredient]) => {
-      const leftCategory = normalizeIngredientCategory(leftIngredient.item.categories?.[0]);
-      const rightCategory = normalizeIngredientCategory(rightIngredient.item.categories?.[0]);
+      const leftCategory = selectedIncludedIngredientIdSet.has(leftId)
+        ? "included ingredient"
+        : normalizeIngredientCategory(leftIngredient.item.categories?.[0]);
+      const rightCategory = selectedIncludedIngredientIdSet.has(rightId)
+        ? "included ingredient"
+        : normalizeIngredientCategory(rightIngredient.item.categories?.[0]);
       const leftCategoryPriority = categoryPriority.get(leftCategory) ?? Number.POSITIVE_INFINITY;
       const rightCategoryPriority = categoryPriority.get(rightCategory) ?? Number.POSITIVE_INFINITY;
 
@@ -1484,7 +1492,7 @@ export default function RestaurantView({
 
       return leftIngredient.item.name.localeCompare(rightIngredient.item.name);
     });
-  }, [ingredientMenuItems, isChipotleBuildPage, selectedIngredientItems]);
+  }, [ingredientMenuItems, isChipotleBuildPage, selectedIncludedIngredientIdSet, selectedIngredientItems]);
   const groupedSelectedIngredientEntries = useMemo(() => {
     const groupedEntries: Array<{
       categoryKey: string;
@@ -1493,7 +1501,10 @@ export default function RestaurantView({
     }> = [];
 
     selectedIngredientEntries.forEach((entry) => {
-      const categoryKey = normalizeIngredientCategory(entry[1].item.categories?.[0]);
+      const [ingredientId, selectedIngredient] = entry;
+      const categoryKey = selectedIncludedIngredientIdSet.has(ingredientId)
+        ? "included ingredient"
+        : normalizeIngredientCategory(selectedIngredient.item.categories?.[0]);
       const existingGroup = groupedEntries.find((group) => group.categoryKey === categoryKey);
       if (existingGroup) {
         existingGroup.entries.push(entry);
@@ -1508,7 +1519,7 @@ export default function RestaurantView({
     });
 
     return groupedEntries;
-  }, [selectedIngredientEntries]);
+  }, [selectedIncludedIngredientIdSet, selectedIngredientEntries]);
   const selectedProteinCount = selectedIngredientEntries.reduce((total, [, selectedIngredient]) => {
     return total + (isProteinIngredientItem(selectedIngredient.item) ? 1 : 0);
   }, 0);
