@@ -200,6 +200,7 @@ const CHIPOTLE_KIDS_QUESADILLA_NUTRITION_OVERRIDES: Record<string, IngredientIte
     carbs: 1,
   },
 };
+const CHIPOTLE_QUESADILLA_TRIPLE_CHEESE_VARIANT_ID = "quesadilla-triple-cheese";
 
 function formatValue(value?: number, suffix = "") {
   return value === undefined ? "—" : `${value}${suffix}`;
@@ -511,6 +512,11 @@ export default function RestaurantView({
           selectedIncludedIngredientIds.includes(ingredientId) ||
           (selectedEntree === "tacos" && tacoShellIngredientIds.includes(ingredientId));
         const displayCategory = shouldPinToIncludedCategory ? "Included Ingredient" : resolvedCategory;
+        const isQuesadillaCheeseIncludedIngredient =
+          ingredientId === "cheese" &&
+          shouldPinToIncludedCategory &&
+          (selectedEntree === "quesadilla" ||
+            (selectedEntree === "kids-meal" && selectedKidsMeal === "quesadilla"));
         const hasCustomVariants = Boolean(ingredient.variants?.length);
         const ingredientBaseNutrition =
           selectedEntree === "kids-meal" && selectedKidsMeal === "quesadilla"
@@ -523,15 +529,25 @@ export default function RestaurantView({
               nutrition: scaleNutritionValues(variant.nutrition, ingredientDisplayMultiplier),
             }))
           : undefined;
-        const defaultVariantId = ingredient.defaultVariantId;
+        const tripleCheeseVariant = isQuesadillaCheeseIncludedIngredient
+          ? {
+              id: CHIPOTLE_QUESADILLA_TRIPLE_CHEESE_VARIANT_ID,
+              label: "",
+              nutrition: scaleNutritionValues(ingredientBaseNutrition, 3),
+            }
+          : null;
+        const defaultVariantId = tripleCheeseVariant
+          ? CHIPOTLE_QUESADILLA_TRIPLE_CHEESE_VARIANT_ID
+          : ingredient.defaultVariantId;
 
         const menuItem: MenuItem = {
           id: ingredientId,
           name: ingredient.name,
           nutrition: ingredientBaseNutrition,
-          variants,
+          variants: tripleCheeseVariant ? [...(variants ?? []), tripleCheeseVariant] : variants,
           defaultVariantId,
-          hideVariantSelector: ingredient.hideVariantSelector,
+          hideVariantSelector:
+            ingredient.hideVariantSelector || isQuesadillaCheeseIncludedIngredient,
           image: ingredient.image,
           categories: [displayCategory],
           portionType: "addon",
@@ -1212,10 +1228,40 @@ export default function RestaurantView({
           return;
         }
 
-        next[includedIngredientId] = { item: includedIngredientItem, quantity: 1 };
+        const defaultVariant = includedIngredientItem.variants?.find(
+          (variant) => variant.id === includedIngredientItem.defaultVariantId
+        );
+        next[includedIngredientId] = {
+          item: {
+            ...includedIngredientItem,
+            nutrition: defaultVariant?.nutrition ?? includedIngredientItem.nutrition,
+          },
+          quantity: 1,
+        };
       });
 
       return applyIngredientPortionNutrition(next);
+    });
+
+    setSelectedIngredientVariantIds((previous) => {
+      const next = { ...previous };
+
+      allIncludedIngredientIds.forEach((ingredientId) => {
+        if (ingredientId in next) {
+          delete next[ingredientId];
+        }
+      });
+
+      nextIncludedIngredientIds.forEach((includedIngredientId) => {
+        const includedIngredientItem = ingredientItemsById.get(includedIngredientId);
+        if (!includedIngredientItem?.defaultVariantId) {
+          return;
+        }
+
+        next[includedIngredientId] = includedIngredientItem.defaultVariantId;
+      });
+
+      return next;
     });
   };
 
@@ -1240,6 +1286,7 @@ export default function RestaurantView({
     const nextParams = new URLSearchParams(searchParams.toString());
     nextParams.set("view", nextView);
     router.push(`${pathname}?${nextParams.toString()}`, { scroll: true });
+    window.scrollTo({ top: 0, left: 0, behavior: "auto" });
   };
 
   const handleAddBuildToCart = () => {
