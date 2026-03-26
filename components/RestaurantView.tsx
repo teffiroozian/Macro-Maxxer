@@ -198,6 +198,24 @@ function normalizeIngredientCategory(value: string | undefined) {
   return value?.trim().toLowerCase() ?? "";
 }
 
+const CHIPOTLE_SELECTED_INGREDIENT_CATEGORY_ORDER = [
+  "included ingredient",
+  "proteins",
+  "rice",
+  "beans",
+  "toppings",
+  "side",
+] as const;
+
+const CHIPOTLE_SELECTED_INGREDIENT_CATEGORY_LABELS: Record<string, string> = {
+  "included ingredient": "Included ingredients",
+  proteins: "Protein",
+  rice: "Rice",
+  beans: "Beans",
+  toppings: "Toppings",
+  side: "Side",
+};
+
 function isProteinIngredientItem(item: Pick<MenuItem, "categories">) {
   return normalizeIngredientCategory(item.categories?.[0]) === "proteins";
 }
@@ -1397,7 +1415,40 @@ export default function RestaurantView({
     });
   };
 
-  const selectedIngredientEntries = Object.entries(selectedIngredientItems);
+  const selectedIngredientEntries = useMemo(() => {
+    const selectedEntries = Object.entries(selectedIngredientItems);
+
+    if (!isChipotleBuildPage) {
+      return selectedEntries;
+    }
+
+    const categoryPriority = new Map(
+      CHIPOTLE_SELECTED_INGREDIENT_CATEGORY_ORDER.map((category, index) => [category, index] as const)
+    );
+    const ingredientIndexById = new Map(
+      ingredientMenuItems.map((ingredient, index) => [ingredient.id ?? `${index}`, index] as const)
+    );
+
+    return [...selectedEntries].sort(([leftId, leftIngredient], [rightId, rightIngredient]) => {
+      const leftCategory = normalizeIngredientCategory(leftIngredient.item.categories?.[0]);
+      const rightCategory = normalizeIngredientCategory(rightIngredient.item.categories?.[0]);
+      const leftCategoryPriority = categoryPriority.get(leftCategory) ?? Number.POSITIVE_INFINITY;
+      const rightCategoryPriority = categoryPriority.get(rightCategory) ?? Number.POSITIVE_INFINITY;
+
+      if (leftCategoryPriority !== rightCategoryPriority) {
+        return leftCategoryPriority - rightCategoryPriority;
+      }
+
+      const leftIngredientIndex = ingredientIndexById.get(leftId) ?? Number.POSITIVE_INFINITY;
+      const rightIngredientIndex = ingredientIndexById.get(rightId) ?? Number.POSITIVE_INFINITY;
+
+      if (leftIngredientIndex !== rightIngredientIndex) {
+        return leftIngredientIndex - rightIngredientIndex;
+      }
+
+      return leftIngredient.item.name.localeCompare(rightIngredient.item.name);
+    });
+  }, [ingredientMenuItems, isChipotleBuildPage, selectedIngredientItems]);
   const selectedProteinCount = selectedIngredientEntries.reduce((total, [, selectedIngredient]) => {
     return total + (isProteinIngredientItem(selectedIngredient.item) ? 1 : 0);
   }, 0);
@@ -2076,13 +2127,20 @@ export default function RestaurantView({
                               className="h-full w-full object-cover"
                             />
                           </div>
-                          <span className="truncate text-sm font-medium text-slate-900">
-                            {selectedIngredient.item.name}
-                            {selectedIngredient.quantity > 1 ? ` (x${selectedIngredient.quantity})` : ""}
-                            {ingredientPortionLabelById[ingredientId]
-                              ? ` · ${ingredientPortionLabelById[ingredientId]}`
-                              : ""}
-                          </span>
+                          <div className="min-w-0">
+                            <p className="truncate text-[10px] font-semibold uppercase tracking-[0.06em] text-slate-500">
+                              {CHIPOTLE_SELECTED_INGREDIENT_CATEGORY_LABELS[
+                                normalizeIngredientCategory(selectedIngredient.item.categories?.[0])
+                              ] ?? "Ingredient"}
+                            </p>
+                            <span className="truncate text-sm font-medium text-slate-900">
+                              {selectedIngredient.item.name}
+                              {selectedIngredient.quantity > 1 ? ` (x${selectedIngredient.quantity})` : ""}
+                              {ingredientPortionLabelById[ingredientId]
+                                ? ` · ${ingredientPortionLabelById[ingredientId]}`
+                                : ""}
+                            </span>
+                          </div>
                         </div>
                         <div className="inline-flex items-center gap-2">
                           <button
