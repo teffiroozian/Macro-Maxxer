@@ -308,7 +308,10 @@ export default function MenuSections({
   ingredientVariantOptionsById?: Record<string, Array<{ id: string; label: string }>>;
   selectedIngredientVariantIdById?: Record<string, string>;
   ingredientPortionBadgeById?: Record<string, string>;
-  ingredientPortionModeOptionsById?: Record<string, Array<{ id: string; label: string }>>;
+  ingredientPortionModeOptionsById?: Record<
+    string,
+    Array<{ id: string; label: string; disabled?: boolean }>
+  >;
   selectedIngredientPortionModeIdById?: Record<string, string>;
   onIngredientPortionModeChange?: (item: MenuItem, modeId: string) => void;
   onIngredientVariantChange?: (item: MenuItem, variantId: string) => void;

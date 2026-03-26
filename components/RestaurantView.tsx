@@ -93,8 +93,8 @@ const CHIPOTLE_HIDDEN_MENU_SECTIONS_BY_ENTREE: Record<string, string[]> = {
 };
 const CHIPOTLE_CATEGORY_MAX_SELECTIONS: Record<string, number> = {
   proteins: 2,
-  rice: 1,
-  beans: 1,
+  rice: 2,
+  beans: 2,
 };
 
 type EntreeSelection =
@@ -112,6 +112,7 @@ type TacoShellSelection = "crispy" | "soft";
 type TacoCountSelection = 3 | 1;
 type KidsMealSelection = "build-your-own" | "quesadilla";
 type ProteinPortionMode = "normal" | "double";
+type SplitPortionMode = "light" | "normal" | "extra";
 type EntreeConfiguration = {
   label: string;
   imageSrc: string;
@@ -200,6 +201,18 @@ function isProteinIngredientItem(item: Pick<MenuItem, "categories">) {
   return normalizeIngredientCategory(item.categories?.[0]) === "proteins";
 }
 
+function isRiceIngredientItem(item: Pick<MenuItem, "categories">) {
+  return normalizeIngredientCategory(item.categories?.[0]) === "rice";
+}
+
+function isBeanIngredientItem(item: Pick<MenuItem, "categories">) {
+  return normalizeIngredientCategory(item.categories?.[0]) === "beans";
+}
+
+function isSplitPortionIngredientItem(item: Pick<MenuItem, "categories">) {
+  return isRiceIngredientItem(item) || isBeanIngredientItem(item);
+}
+
 function scaleNutritionValues(
   nutrition: MenuItem["nutrition"] | IngredientItem["nutrition"],
   multiplier: number
@@ -228,6 +241,36 @@ function getProteinMultiplier(mode: ProteinPortionMode, selectedProteinCount: nu
 function getProteinBadgeLabel(mode: ProteinPortionMode, selectedProteinCount: number) {
   const multiplier = getProteinMultiplier(mode, selectedProteinCount);
   return multiplier === 0.5 ? "1/2x" : `${multiplier}x`;
+}
+
+function getNutritionMultiplier(
+  baseNutrition: MenuItem["nutrition"],
+  nextNutrition: MenuItem["nutrition"]
+) {
+  const comparableKeys: Array<keyof MenuItem["nutrition"]> = ["calories", "protein", "carbs", "totalFat"];
+  for (const key of comparableKeys) {
+    const baseValue = baseNutrition[key];
+    const nextValue = nextNutrition[key];
+    if (typeof baseValue === "number" && baseValue > 0 && typeof nextValue === "number") {
+      return nextValue / baseValue;
+    }
+  }
+
+  return 1;
+}
+
+function getSplitExtraMultiplier(item: MenuItem) {
+  const extraVariant = item.variants?.find((variant) => {
+    const label = variant.label?.trim().toLowerCase() ?? "";
+    const id = variant.id?.trim().toLowerCase() ?? "";
+    return label === "extra" || id === "extra";
+  });
+
+  if (!extraVariant) {
+    return 1.5;
+  }
+
+  return getNutritionMultiplier(item.nutrition, extraVariant.nutrition);
 }
 
 export default function RestaurantView({
@@ -293,6 +336,7 @@ export default function RestaurantView({
   >({});
   const [selectedIngredientVariantIds, setSelectedIngredientVariantIds] = useState<Record<string, string>>({});
   const [proteinPortionMode, setProteinPortionMode] = useState<ProteinPortionMode>("normal");
+  const [splitPortionModeById, setSplitPortionModeById] = useState<Record<string, SplitPortionMode>>({});
   const [isBuildSummaryExpanded, setIsBuildSummaryExpanded] = useState(false);
   const buildStickyContainerRef = useRef<HTMLDivElement | null>(null);
   const [selectedEntree, setSelectedEntree] = useState<EntreeSelection>(null);
@@ -850,6 +894,79 @@ export default function RestaurantView({
     },
     [ingredientItemsById, proteinPortionMode]
   );
+  const applySplitPortionNutrition = useCallback(
+    (
+      itemsById: Record<string, { item: MenuItem; quantity: number }>,
+      portionModesById: Record<string, SplitPortionMode> = splitPortionModeById
+    ) => {
+      const nextItems = { ...itemsById };
+      const splitCategories = ["rice", "beans"] as const;
+
+      splitCategories.forEach((splitCategory) => {
+        const selectedSplitIds = Object.entries(itemsById)
+          .filter(
+            ([, selectedIngredient]) =>
+              normalizeIngredientCategory(selectedIngredient.item.categories?.[0]) === splitCategory
+          )
+          .map(([ingredientId]) => ingredientId);
+
+        if (selectedSplitIds.length === 0) {
+          return;
+        }
+
+        if (selectedSplitIds.length >= 2) {
+          selectedSplitIds.forEach((ingredientId) => {
+            const selectedIngredient = nextItems[ingredientId];
+            const baseIngredient = ingredientItemsById.get(ingredientId);
+            if (!selectedIngredient || !baseIngredient) return;
+
+            nextItems[ingredientId] = {
+              ...selectedIngredient,
+              item: {
+                ...selectedIngredient.item,
+                nutrition: scaleNutritionValues(baseIngredient.nutrition, 0.5),
+              },
+            };
+          });
+          return;
+        }
+
+        const [splitId] = selectedSplitIds;
+        const selectedIngredient = nextItems[splitId];
+        const baseIngredient = ingredientItemsById.get(splitId);
+        if (!selectedIngredient || !baseIngredient) {
+          return;
+        }
+
+        const mode = portionModesById[splitId] ?? "normal";
+        const multiplier =
+          mode === "light" ? 0.5 : mode === "extra" ? getSplitExtraMultiplier(baseIngredient) : 1;
+        nextItems[splitId] = {
+          ...selectedIngredient,
+          item: {
+            ...selectedIngredient.item,
+            nutrition: scaleNutritionValues(baseIngredient.nutrition, multiplier),
+          },
+        };
+      });
+
+      return nextItems;
+    },
+    [ingredientItemsById, splitPortionModeById]
+  );
+  const applyIngredientPortionNutrition = useCallback(
+    (
+      itemsById: Record<string, { item: MenuItem; quantity: number }>,
+      options?: {
+        proteinMode?: ProteinPortionMode;
+        splitModesById?: Record<string, SplitPortionMode>;
+      }
+    ) => {
+      const withProtein = applyProteinPortionNutrition(itemsById, options?.proteinMode);
+      return applySplitPortionNutrition(withProtein, options?.splitModesById);
+    },
+    [applyProteinPortionNutrition, applySplitPortionNutrition]
+  );
 
   const getIngredientCategoryMaxSelections = (item: MenuItem) => {
     const category = normalizeIngredientCategory(item.categories[0]);
@@ -883,12 +1000,45 @@ export default function RestaurantView({
 
     if (lockedIngredientIds.has(itemId)) return;
 
+    const splitCategory = normalizeIngredientCategory(item.categories?.[0]);
+    const isSplitItem = isSplitPortionIngredientItem(item);
+    const currentSelectedSplitIds = Object.entries(selectedIngredientItems)
+      .filter(
+        ([, selectedIngredient]) =>
+          normalizeIngredientCategory(selectedIngredient.item.categories?.[0]) === splitCategory
+      )
+      .map(([ingredientId]) => ingredientId);
+    const nextSplitPortionModes = (() => {
+      if (!isSplitItem) return { ...splitPortionModeById };
+
+      const nextModes = { ...splitPortionModeById };
+      if (!selected) {
+        delete nextModes[itemId];
+        if (currentSelectedSplitIds.length === 2) {
+          const remainingSplitId = currentSelectedSplitIds.find((splitId) => splitId !== itemId);
+          if (remainingSplitId) {
+            nextModes[remainingSplitId] = "normal";
+          }
+        }
+        return nextModes;
+      }
+
+      if (currentSelectedSplitIds.length === 1 && !currentSelectedSplitIds.includes(itemId)) {
+        nextModes[currentSelectedSplitIds[0]] = "normal";
+        nextModes[itemId] = "normal";
+        return nextModes;
+      }
+
+      nextModes[itemId] = nextModes[itemId] ?? "normal";
+      return nextModes;
+    })();
+
     setSelectedIngredientItems((prev) => {
       if (!selected) {
         if (!(itemId in prev)) return prev;
         const next = { ...prev };
         delete next[itemId];
-        return applyProteinPortionNutrition(next);
+        return applyIngredientPortionNutrition(next, { splitModesById: nextSplitPortionModes });
       }
 
       const category = normalizeIngredientCategory(item.categories[0]);
@@ -912,8 +1062,11 @@ export default function RestaurantView({
           quantity: 1,
         },
       };
-      return applyProteinPortionNutrition(next);
+      return applyIngredientPortionNutrition(next, { splitModesById: nextSplitPortionModes });
     });
+    if (isSplitItem) {
+      setSplitPortionModeById(nextSplitPortionModes);
+    }
 
     if (!selected) {
       setSelectedIngredientVariantIds((prev) => {
@@ -964,7 +1117,7 @@ export default function RestaurantView({
         next[includedIngredientId] = { item: includedIngredientItem, quantity: 1 };
       });
 
-      return applyProteinPortionNutrition(next);
+      return applyIngredientPortionNutrition(next);
     });
   };
 
@@ -1412,18 +1565,38 @@ export default function RestaurantView({
                 }
                 ingredientPortionBadgeById={
                   (() => {
-                    if (!proteinBadgeLabel) return undefined;
                     const badgeById = Object.fromEntries(
                       Object.entries(selectedIngredientItems)
-                        .filter(([, selectedIngredient]) => isProteinIngredientItem(selectedIngredient.item))
+                        .filter(
+                          ([, selectedIngredient]) =>
+                            Boolean(proteinBadgeLabel) && isProteinIngredientItem(selectedIngredient.item)
+                        )
                         .map(([ingredientId]) => [ingredientId, proteinBadgeLabel])
-                    );
+                    ) as Record<string, string>;
+
+                    (["rice", "beans"] as const).forEach((splitCategory) => {
+                      const selectedSplitIds = Object.entries(selectedIngredientItems)
+                        .filter(
+                          ([, selectedIngredient]) =>
+                            normalizeIngredientCategory(selectedIngredient.item.categories?.[0]) === splitCategory
+                        )
+                        .map(([ingredientId]) => ingredientId);
+                      if (selectedSplitIds.length === 2) {
+                        selectedSplitIds.forEach((ingredientId) => {
+                          badgeById[ingredientId] = "1/2x";
+                        });
+                      }
+                    });
+
                     return Object.keys(badgeById).length > 0 ? badgeById : undefined;
                   })()
                 }
                 ingredientPortionModeOptionsById={
                   (() => {
-                    const optionsById = Object.fromEntries(
+                    const optionsById: Record<
+                      string,
+                      Array<{ id: string; label: string; disabled?: boolean }>
+                    > = Object.fromEntries(
                       visibleMenuItems
                         .filter((item) => item.id && isProteinIngredientItem(item))
                         .map((item) => [
@@ -1435,27 +1608,100 @@ export default function RestaurantView({
                         ])
                     );
 
+                    (["rice", "beans"] as const).forEach((splitCategory) => {
+                      const selectedSplitCount = Object.values(selectedIngredientItems).filter(
+                        (selectedIngredient) =>
+                          normalizeIngredientCategory(selectedIngredient.item.categories?.[0]) === splitCategory
+                      ).length;
+                      const splitModeOptions =
+                        selectedSplitCount === 2
+                          ? [
+                              { id: "light", label: "Light", disabled: true },
+                              { id: "normal", label: "Normal", disabled: true },
+                              { id: "extra", label: "Extra", disabled: true },
+                            ]
+                          : [
+                              { id: "light", label: "Light" },
+                              { id: "normal", label: "Normal" },
+                              { id: "extra", label: "Extra" },
+                            ];
+                      visibleMenuItems
+                        .filter(
+                          (item) =>
+                            item.id &&
+                            normalizeIngredientCategory(item.categories?.[0]) === splitCategory
+                        )
+                        .forEach((item) => {
+                          optionsById[item.id as string] = splitModeOptions;
+                        });
+                    });
+
                     return Object.keys(optionsById).length > 0 ? optionsById : undefined;
                   })()
                 }
                 selectedIngredientPortionModeIdById={
                   (() => {
-                    const selectedModeById = Object.fromEntries(
+                    const selectedModeById: Record<string, string> = Object.fromEntries(
                       visibleMenuItems
                         .filter((item) => item.id && isProteinIngredientItem(item))
                         .map((item) => [item.id as string, proteinPortionMode])
                     );
+                    (["rice", "beans"] as const).forEach((splitCategory) => {
+                      const selectedSplitIds = Object.entries(selectedIngredientItems)
+                        .filter(
+                          ([, selectedIngredient]) =>
+                            normalizeIngredientCategory(selectedIngredient.item.categories?.[0]) === splitCategory
+                        )
+                        .map(([ingredientId]) => ingredientId);
+                      const isSplitSelection = selectedSplitIds.length === 2;
+
+                      visibleMenuItems
+                        .filter(
+                          (item) =>
+                            item.id &&
+                            normalizeIngredientCategory(item.categories?.[0]) === splitCategory
+                        )
+                        .forEach((item) => {
+                          const itemId = item.id as string;
+                          selectedModeById[itemId] = isSplitSelection
+                            ? "normal"
+                            : (splitPortionModeById[itemId] ?? "normal");
+                        });
+                    });
 
                     return Object.keys(selectedModeById).length > 0 ? selectedModeById : undefined;
                   })()
                 }
                 onIngredientPortionModeChange={(item, modeId) => {
-                  if (!isProteinIngredientItem(item)) return;
-                  if (modeId !== "normal" && modeId !== "double") return;
+                  if (isProteinIngredientItem(item)) {
+                    if (modeId !== "normal" && modeId !== "double") return;
+                    setSelectedIngredientItems((previous) =>
+                      applyIngredientPortionNutrition(previous, { proteinMode: modeId })
+                    );
+                    setProteinPortionMode(modeId);
+                    return;
+                  }
+
+                  if (!isSplitPortionIngredientItem(item) || !item.id) return;
+                  if (modeId !== "light" && modeId !== "normal" && modeId !== "extra") return;
+
+                  const splitCategory = normalizeIngredientCategory(item.categories?.[0]);
+                  const selectedSplitCount = Object.values(selectedIngredientItems).filter(
+                    (selectedIngredient) =>
+                      normalizeIngredientCategory(selectedIngredient.item.categories?.[0]) === splitCategory
+                  ).length;
+                  if (selectedSplitCount >= 2) return;
+
+                  const nextSplitModesById = {
+                    ...splitPortionModeById,
+                    [item.id]: modeId,
+                  };
+                  setSplitPortionModeById(nextSplitModesById);
                   setSelectedIngredientItems((previous) =>
-                    applyProteinPortionNutrition(previous, modeId)
+                    applyIngredientPortionNutrition(previous, {
+                      splitModesById: nextSplitModesById,
+                    })
                   );
-                  setProteinPortionMode(modeId);
                 }}
                 onIngredientVariantChange={
                   (item, variantId) => {

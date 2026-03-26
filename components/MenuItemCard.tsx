@@ -289,7 +289,7 @@ export default function MenuItemCard({
   ingredientVariantOptions?: Array<{ id: string; label: string }>;
   selectedIngredientVariantId?: string;
   ingredientPortionBadge?: string;
-  ingredientPortionModeOptions?: Array<{ id: string; label: string }>;
+  ingredientPortionModeOptions?: Array<{ id: string; label: string; disabled?: boolean }>;
   selectedIngredientPortionModeId?: string;
   onIngredientPortionModeChange?: (modeId: string) => void;
   onIngredientVariantChange?: (variantId: string) => void;
@@ -839,9 +839,13 @@ export default function MenuItemCard({
                   <button
                     key={variantOption.id}
                     type="button"
+                    disabled={Boolean(variantOption.disabled)}
                     onClick={(event) => {
                       event.preventDefault();
                       event.stopPropagation();
+                      if (variantOption.disabled) {
+                        return;
+                      }
                       if (ingredientPortionModeOptions) {
                         onIngredientPortionModeChange?.(variantOption.id);
                       } else {
@@ -852,6 +856,8 @@ export default function MenuItemCard({
                       selectedCompactOptionId === variantOption.id
                         ? "border-slate-900 bg-slate-900 text-white"
                         : "border-black/20 bg-white text-slate-700 hover:border-black/35"
+                    } ${
+                      variantOption.disabled ? "cursor-not-allowed opacity-55 hover:border-black/20" : ""
                     }`}
                   >
                     {variantOption.label}
