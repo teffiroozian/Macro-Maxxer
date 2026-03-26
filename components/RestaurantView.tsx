@@ -1719,10 +1719,6 @@ export default function RestaurantView({
         hideSecondaryNav={isChipotleBuildPage && selectedEntree === null}
       />
 
-      <div
-        className={isChipotleBuildPage && selectedEntree === null ? "h-20" : "h-40"}
-        aria-hidden="true"
-      />
 
       {isChipotleBuildPage && selectedEntree === "kids-meal" ? (
         <div className="mt-4 flex flex-wrap items-center gap-3">

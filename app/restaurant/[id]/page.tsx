@@ -17,6 +17,8 @@ export default async function RestaurantPage({
 
   const restaurant = restaurants.find((r) => r.id === id);
   const restaurantData = await getRestaurantData(id);
+  const isChipotleBuild =
+    restaurant?.id === "chipotle" && Boolean(restaurantData?.isBuildYourOwn);
 
   if (!restaurant || !restaurantData) {
     return (
@@ -32,7 +34,7 @@ export default async function RestaurantPage({
   return (
     <RestaurantSearchProvider>
       <RestaurantUiProvider>
-        <div className="w-full">
+        <div className={`w-full ${isChipotleBuild ? "pt-20" : "pt-40"}`}>
           <RecentRestaurantTracker restaurantId={restaurant.id} />
           <ScrollToTopOnMount />
 
