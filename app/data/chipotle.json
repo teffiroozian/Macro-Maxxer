@@ -703,6 +703,7 @@
       "id": "chicken",
       "name": "Chicken",
       "category": "Proteins",
+      "maxQuantity": 2,
       "image": "/restaurants/chipotle/ingredients/proteins/chicken.png",
       "nutrition": {
         "calories": 180,
@@ -721,6 +722,7 @@
       "id": "chicken-al-pastor",
       "name": "Chicken al Pastor",
       "category": "Proteins",
+      "maxQuantity": 2,
       "image": "/restaurants/chipotle/ingredients/proteins/chicken-al-pastor.png",
       "nutrition": {
         "calories": 200,
@@ -733,6 +735,7 @@
       "id": "steak",
       "name": "Steak",
       "category": "Proteins",
+      "maxQuantity": 2,
       "image": "/restaurants/chipotle/ingredients/proteins/steak.png",
       "nutrition": {
         "calories": 150,
@@ -745,6 +748,7 @@
       "id": "beef-barbacoa",
       "name": "Beef Barbacoa",
       "category": "Proteins",
+      "maxQuantity": 2,
       "image": "/restaurants/chipotle/ingredients/proteins/beef-barbacoa.png",
       "nutrition": {
         "calories": 170,
@@ -757,6 +761,7 @@
       "id": "carnitas",
       "name": "Carnitas",
       "category": "Proteins",
+      "maxQuantity": 2,
       "image": "/restaurants/chipotle/ingredients/proteins/carnitas.png",
       "nutrition": {
         "calories": 210,
@@ -770,6 +775,7 @@
       "name": "Sofritas",
       "description": "Plant-Based Protein",
       "category": "Proteins",
+      "maxQuantity": 2,
       "image": "/restaurants/chipotle/ingredients/proteins/sofritas.png",
       "nutrition": {
         "calories": 150,
@@ -782,6 +788,7 @@
       "id": "white-rice",
       "name": "White Rice",
       "category": "Rice",
+      "maxQuantity": 1,
       "image": "/restaurants/chipotle/ingredients/rice/white-rice.png",
       "nutrition": {
         "calories": 210,
@@ -794,6 +801,7 @@
       "id": "brown-rice",
       "name": "Brown Rice",
       "category": "Rice",
+      "maxQuantity": 1,
       "image": "/restaurants/chipotle/ingredients/rice/brown-rice.png",
       "nutrition": {
         "calories": 210,
@@ -806,6 +814,7 @@
       "id": "black-beans",
       "name": "Black Beans",
       "category": "Beans",
+      "maxQuantity": 1,
       "image": "/restaurants/chipotle/ingredients/beans/black-beans.png",
       "nutrition": {
         "calories": 130,
@@ -818,6 +827,7 @@
       "id": "pinto-beans",
       "name": "Pinto Beans",
       "category": "Beans",
+      "maxQuantity": 1,
       "image": "/restaurants/chipotle/ingredients/beans/pinto-beans.png",
       "nutrition": {
         "calories": 130,
