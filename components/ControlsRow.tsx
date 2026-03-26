@@ -175,7 +175,7 @@ export default function ControlsRow({
   };
 
   const filtersDialog = isFiltersOpen ? (
-    <div role="dialog" aria-modal="true" className="fixed inset-0 z-50 flex items-end justify-center bg-black/35 p-4" onClick={() => setIsFiltersOpen(false)}>
+    <div role="dialog" aria-modal="true" className="fixed inset-0 z-[200] flex items-center justify-center bg-black/35 p-4" onClick={() => setIsFiltersOpen(false)}>
       <div className="w-full max-w-[520px] rounded-[20px] bg-white p-5 shadow-[0_16px_40px_rgba(0,0,0,0.2)]" onClick={(event) => event.stopPropagation()}>
         <h3 className="mb-4 text-xl font-bold">Filters</h3>
         <div className="grid gap-4">
