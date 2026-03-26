@@ -288,6 +288,7 @@ export default function RestaurantView({
   const [selectedIngredientItems, setSelectedIngredientItems] = useState<
     Record<string, { item: MenuItem; quantity: number }>
   >({});
+  const [selectedIngredientVariantIds, setSelectedIngredientVariantIds] = useState<Record<string, string>>({});
   const [isBuildSummaryExpanded, setIsBuildSummaryExpanded] = useState(false);
   const buildStickyContainerRef = useRef<HTMLDivElement | null>(null);
   const [selectedEntree, setSelectedEntree] = useState<EntreeSelection>(null);
@@ -866,8 +867,37 @@ export default function RestaurantView({
         }
       }
 
-      return { ...prev, [itemId]: { item, quantity: 1 } };
+      const selectedVariantId = selectedIngredientVariantIds[itemId] ?? item.defaultVariantId;
+      const selectedVariant = item.variants?.find((variant) => variant.id === selectedVariantId);
+      return {
+        ...prev,
+        [itemId]: {
+          item: {
+            ...item,
+            nutrition: selectedVariant?.nutrition ?? item.nutrition,
+          },
+          quantity: 1,
+        },
+      };
     });
+
+    if (!selected) {
+      setSelectedIngredientVariantIds((prev) => {
+        if (!(itemId in prev)) {
+          return prev;
+        }
+        const next = { ...prev };
+        delete next[itemId];
+        return next;
+      });
+      return;
+    }
+
+    if (item.defaultVariantId) {
+      setSelectedIngredientVariantIds((prev) =>
+        prev[itemId] ? prev : { ...prev, [itemId]: item.defaultVariantId as string }
+      );
+    }
   };
 
   const applyIncludedIngredients = (nextIncludedIngredientIds: string[]) => {
@@ -1285,29 +1315,81 @@ export default function RestaurantView({
                     : undefined
                 }
                 ingredientVariantOptionsById={
-                  selectedEntree === "tacos"
-                    ? Object.fromEntries(
-                        tacoShellIngredientIds.map((ingredientId) => [
-                          ingredientId,
-                          [
-                            { id: "3", label: "3 Tacos" },
-                            { id: "1", label: "1 Taco" },
-                          ],
+                  (() => {
+                    const variantOptionsById = Object.fromEntries(
+                      visibleMenuItems
+                        .filter((item) => item.id && item.variants && item.variants.length > 1)
+                        .map((item) => [
+                          item.id as string,
+                          item.variants!.map((variant) => ({ id: variant.id, label: variant.label })),
                         ])
-                      )
-                    : undefined
+                    );
+
+                    if (selectedEntree === "tacos") {
+                      tacoShellIngredientIds.forEach((ingredientId) => {
+                        variantOptionsById[ingredientId] = [
+                          { id: "3", label: "3 Tacos" },
+                          { id: "1", label: "1 Taco" },
+                        ];
+                      });
+                    }
+
+                    return Object.keys(variantOptionsById).length > 0 ? variantOptionsById : undefined;
+                  })()
                 }
                 selectedIngredientVariantIdById={
-                  selectedEntree === "tacos"
-                    ? Object.fromEntries(
-                        tacoShellIngredientIds.map((ingredientId) => [ingredientId, String(selectedTacoCount)])
-                      )
-                    : undefined
+                  (() => {
+                    const selectedById = Object.fromEntries(
+                      visibleMenuItems
+                        .filter((item) => item.id && item.variants && item.variants.length > 1)
+                        .map((item) => [
+                          item.id as string,
+                          selectedIngredientVariantIds[item.id as string] ??
+                            item.defaultVariantId ??
+                            item.variants?.[0]?.id,
+                        ])
+                    );
+
+                    if (selectedEntree === "tacos") {
+                      tacoShellIngredientIds.forEach((ingredientId) => {
+                        selectedById[ingredientId] = String(selectedTacoCount);
+                      });
+                    }
+
+                    return Object.keys(selectedById).length > 0 ? selectedById : undefined;
+                  })()
                 }
                 onIngredientVariantChange={
-                  selectedEntree === "tacos"
-                    ? (_item, variantId) => setSelectedTacoCount(variantId === "1" ? 1 : 3)
-                    : undefined
+                  (item, variantId) => {
+                    if (selectedEntree === "tacos" && item.id && tacoShellIngredientIds.includes(item.id)) {
+                      setSelectedTacoCount(variantId === "1" ? 1 : 3);
+                      return;
+                    }
+
+                    const itemId = item.id;
+                    if (!itemId) return;
+
+                    setSelectedIngredientVariantIds((prev) => ({ ...prev, [itemId]: variantId }));
+                    setSelectedIngredientItems((prev) => {
+                      const selectedIngredient = prev[itemId];
+                      if (!selectedIngredient) return prev;
+
+                      const nextVariantNutrition =
+                        item.variants?.find((variant) => variant.id === variantId)?.nutrition ??
+                        selectedIngredient.item.nutrition;
+
+                      return {
+                        ...prev,
+                        [itemId]: {
+                          ...selectedIngredient,
+                          item: {
+                            ...selectedIngredient.item,
+                            nutrition: nextVariantNutrition,
+                          },
+                        },
+                      };
+                    });
+                  }
                 }
               />
             </div>
