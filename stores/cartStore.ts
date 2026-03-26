@@ -35,6 +35,21 @@ export type CartItem = {
   quantity: number;
   macrosPerItem: CartMacros;
   nutritionPerItem?: CartNutrition;
+  buildConfiguration?: {
+    selectedEntree: string | null;
+    selectedIngredientItems: Record<
+      string,
+      {
+        quantity: number;
+      }
+    >;
+    selectedIngredientVariantIds: Record<string, string>;
+    proteinPortionMode: "normal" | "double";
+    splitPortionModeById: Record<string, "light" | "normal" | "extra">;
+    selectedTacoShell: "crispy" | "soft";
+    selectedTacoCount: 3 | 1;
+    selectedKidsMeal: "build-your-own" | "quesadilla";
+  };
 };
 
 type CartState = {
@@ -155,7 +170,7 @@ const updateQuantity = (id: string, quantity: number) => {
   }));
 };
 
-const updateItem = (id: string, updates: Partial<Omit<CartItem, "id" | "restaurantId" | "itemId" | "name">>) => {
+const updateItem = (id: string, updates: Partial<Omit<CartItem, "id" | "restaurantId">>) => {
   setCartState((prev) => ({
     ...prev,
     items: prev.items.map((item) =>

@@ -342,7 +342,7 @@ export default function RestaurantView({
   });
   const { searchOpen, searchQuery, setSearchQuery, openSearch, closeSearch } =
     useRestaurantSearch();
-  const { addItem } = useCart();
+  const { addItem, items: cartItems, updateItem } = useCart();
   const [selectedIngredientItems, setSelectedIngredientItems] = useState<
     Record<string, { item: MenuItem; quantity: number }>
   >({});
@@ -386,6 +386,24 @@ export default function RestaurantView({
     },
     [selectedEntree, selectedEntreeConfig, selectedKidsMeal, selectedTacoShell]
   );
+  const editCartItemId = searchParams.get("editCartItem");
+  const editingCartItem = useMemo(() => {
+    if (!isChipotleBuildPage || !editCartItemId) {
+      return null;
+    }
+
+    return (
+      cartItems.find(
+        (item) =>
+          item.id === editCartItemId &&
+          item.restaurantId === restaurantId &&
+          item.itemId === `${restaurantId}-build` &&
+          item.buildConfiguration
+      ) ?? null
+    );
+  }, [cartItems, editCartItemId, isChipotleBuildPage, restaurantId]);
+  const isEditingBuild = Boolean(editingCartItem);
+  const hydratedEditItemIdRef = useRef<string | null>(null);
 
   const addonItems = useMemo<MenuItem[]>(() => {
     if (!addons) return [];
@@ -1192,17 +1210,31 @@ export default function RestaurantView({
 
   const handleAddBuildToCart = () => {
     if (selectedIngredientCount === 0) return;
-
-    addItem({
-      id: crypto.randomUUID(),
+    const nextCustomizations = Object.entries(selectedIngredientItems).flatMap(([ingredientId, { item, quantity }]) => {
+      const portionLabel = ingredientPortionLabelById[ingredientId];
+      const ingredientNameWithPortion = portionLabel ? `${item.name} (${portionLabel})` : item.name;
+      return Array.from({ length: quantity }, () => ingredientNameWithPortion);
+    });
+    const nextBuildConfiguration = {
+      selectedEntree,
+      selectedIngredientItems: Object.fromEntries(
+        Object.entries(selectedIngredientItems).map(([ingredientId, selectedIngredient]) => [
+          ingredientId,
+          { quantity: selectedIngredient.quantity },
+        ])
+      ),
+      selectedIngredientVariantIds,
+      proteinPortionMode,
+      splitPortionModeById,
+      selectedTacoShell,
+      selectedTacoCount,
+      selectedKidsMeal,
+    } as const;
+    const nextItemPayload = {
       restaurantId,
       itemId: `${restaurantId}-build`,
       name: buildName,
-      customizations: Object.entries(selectedIngredientItems).flatMap(([ingredientId, { item, quantity }]) => {
-        const portionLabel = ingredientPortionLabelById[ingredientId];
-        const ingredientNameWithPortion = portionLabel ? `${item.name} (${portionLabel})` : item.name;
-        return Array.from({ length: quantity }, () => ingredientNameWithPortion);
-      }),
+      customizations: nextCustomizations,
       quantity: 1,
       macrosPerItem: adjustedSelectedIngredientTotals,
       nutritionPerItem: {
@@ -1217,8 +1249,97 @@ export default function RestaurantView({
         sugars: adjustedNutritionLabelTotals.sugars,
         protein: adjustedNutritionLabelTotals.protein,
       },
-    });
+      buildConfiguration: nextBuildConfiguration,
+    };
+
+    if (editingCartItem) {
+      updateItem(editingCartItem.id, nextItemPayload);
+    } else {
+      addItem({
+        id: crypto.randomUUID(),
+        ...nextItemPayload,
+      });
+    }
+
+    hydratedEditItemIdRef.current = null;
+    const nextParams = new URLSearchParams(searchParams.toString());
+    nextParams.delete("editCartItem");
+    const nextQuery = nextParams.toString();
+    router.replace(nextQuery ? `${pathname}?${nextQuery}` : pathname, { scroll: false });
+    setIsBuildSummaryExpanded(false);
+    setProteinPortionMode("normal");
+    setSplitPortionModeById({});
+    setSelectedIngredientVariantIds({});
+    if (selectedEntree === "kids-meal") {
+      applyIncludedIngredients(
+        selectedKidsMeal === "quesadilla" ? CHIPOTLE_KIDS_QUESADILLA_INCLUDED_INGREDIENT_IDS : []
+      );
+    } else {
+      applyIncludedIngredients(
+        selectedEntree
+          ? CHIPOTLE_ENTREE_CONFIGURATIONS[selectedEntree].getIncludedIngredientIds?.({
+              tacoShell: selectedTacoShell,
+            }) ??
+              CHIPOTLE_ENTREE_CONFIGURATIONS[selectedEntree].includedIngredientIds ??
+              []
+          : []
+      );
+    }
   };
+
+  useEffect(() => {
+    if (!editingCartItem?.buildConfiguration) {
+      hydratedEditItemIdRef.current = null;
+      return;
+    }
+
+    if (hydratedEditItemIdRef.current === editingCartItem.id) {
+      return;
+    }
+
+    const configuration = editingCartItem.buildConfiguration;
+    hydratedEditItemIdRef.current = editingCartItem.id;
+    const hydrateTimer = window.setTimeout(() => {
+      setSelectedTacoShell(configuration.selectedTacoShell);
+      setSelectedTacoCount(configuration.selectedTacoCount);
+      setSelectedKidsMeal(configuration.selectedKidsMeal);
+      setSelectedEntree((configuration.selectedEntree as EntreeSelection) ?? null);
+      setProteinPortionMode(configuration.proteinPortionMode);
+      setSplitPortionModeById(configuration.splitPortionModeById);
+      setSelectedIngredientVariantIds(configuration.selectedIngredientVariantIds);
+      setSelectedIngredientItems(() => {
+        const next: Record<string, { item: MenuItem; quantity: number }> = {};
+
+        Object.entries(configuration.selectedIngredientItems).forEach(([ingredientId, { quantity }]) => {
+          const ingredient = ingredientItemsById.get(ingredientId);
+          if (!ingredient || quantity <= 0) {
+            return;
+          }
+
+          const selectedVariantId =
+            configuration.selectedIngredientVariantIds[ingredientId] ?? ingredient.defaultVariantId;
+          const selectedVariant = ingredient.variants?.find((variant) => variant.id === selectedVariantId);
+
+          next[ingredientId] = {
+            item: {
+              ...ingredient,
+              nutrition: selectedVariant?.nutrition ?? ingredient.nutrition,
+            },
+            quantity,
+          };
+        });
+
+        return applyIngredientPortionNutrition(next, {
+          proteinMode: configuration.proteinPortionMode,
+          splitModesById: configuration.splitPortionModeById,
+        });
+      });
+    }, 0);
+
+    return () => {
+      window.clearTimeout(hydrateTimer);
+    };
+  }, [applyIngredientPortionNutrition, editingCartItem, ingredientItemsById]);
 
   const adjustIngredientQuantity = (ingredientId: string, delta: 1 | -1) => {
     if (lockedIngredientIds.has(ingredientId)) return;
@@ -1875,7 +1996,7 @@ export default function RestaurantView({
             totals={adjustedSelectedIngredientTotals}
             secondaryActionLabel="View Selected"
             secondaryActionExpandedLabel="View Selected"
-            primaryActionLabel="Add to Cart"
+            primaryActionLabel={isEditingBuild ? "Save & Add" : "Add to Cart"}
             SecondaryActionIcon={ChevronDown}
             SecondaryActionExpandedIcon={ChevronUp}
             PrimaryActionIcon={ShoppingCart}

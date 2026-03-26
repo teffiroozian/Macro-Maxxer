@@ -2,7 +2,9 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { Pencil } from "lucide-react";
 import { useEffect, useMemo } from "react";
+import { useRouter } from "next/navigation";
 import restaurants from "@/app/data/index.json";
 import { useRestaurantUi } from "@/components/RestaurantUiContext";
 import { useCart } from "@/stores/cartStore";
@@ -24,6 +26,7 @@ const getCustomizationDisplayList = (item: {
 export default function CartPreviewDrawer() {
   const { isCartOpen, closeCart } = useRestaurantUi();
   const { items, totals, updateQuantity, clearCart } = useCart();
+  const router = useRouter();
 
   const activeRestaurant = useMemo(() => {
     const activeRestaurantId = items[0]?.restaurantId;
@@ -195,7 +198,22 @@ export default function CartPreviewDrawer() {
                             </p>
                           ) : null}
 
-                          <div className="mt-3 flex justify-end">
+                          <div className="mt-3 flex items-center justify-end gap-2">
+                            {item.buildConfiguration ? (
+                              <button
+                                type="button"
+                                onClick={() => {
+                                  closeCart();
+                                  router.push(
+                                    `/restaurant/${item.restaurantId}?view=ingredients&editCartItem=${item.id}`
+                                  );
+                                }}
+                                className="cursor-pointer inline-flex size-8 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-700 transition hover:bg-slate-100"
+                                aria-label={`Edit ${item.name}`}
+                              >
+                                <Pencil className="size-4" />
+                              </button>
+                            ) : null}
                             <div className="inline-flex items-center rounded-full border border-slate-200 bg-slate-50 p-1">
                               <button
                                 type="button"
