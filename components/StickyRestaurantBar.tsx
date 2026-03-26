@@ -32,6 +32,7 @@ type StickyRestaurantBarProps = {
     max: number;
   };
   secondaryNavLeading?: ReactNode;
+  hideViewSelector?: boolean;
 };
 
 export default function StickyRestaurantBar({
@@ -50,6 +51,7 @@ export default function StickyRestaurantBar({
   onCloseSearch,
   calorieBounds,
   secondaryNavLeading,
+  hideViewSelector = false,
 }: StickyRestaurantBarProps) {
   const searchInputRef = useRef<HTMLInputElement>(null);
   const isSearchMode = searchOpen || searchQuery.trim().length > 0;
@@ -174,6 +176,7 @@ export default function StickyRestaurantBar({
               onFiltersChange={onFiltersChange}
               showChips={false}
               calorieBounds={calorieBounds}
+              hideViewSelector={hideViewSelector}
             />
           </div>
         </div>

@@ -71,6 +71,7 @@ export default function ControlsRow({
   showChips = true,
   wrapperId,
   calorieBounds,
+  hideViewSelector = false,
 }: {
   view: ViewOption;
   onChange: (view: ViewOption) => void;
@@ -84,6 +85,7 @@ export default function ControlsRow({
     min: number;
     max: number;
   };
+  hideViewSelector?: boolean;
 }) {
   const [isFiltersOpen, setIsFiltersOpen] = useState(false);
   const [isViewOpen, setIsViewOpen] = useState(false);
@@ -215,53 +217,55 @@ export default function ControlsRow({
     <>
       <div id={wrapperId} className="grid gap-2">
         <div className="flex min-w-0 items-center justify-end gap-2.5">
-          <div ref={viewMenuRef} className="relative shrink-0">
-            <button
-              type="button"
-              onClick={() => {
-                setIsViewOpen((prev) => !prev);
-                setIsSortOpen(false);
-              }}
-              aria-haspopup="menu"
-              aria-expanded={isViewOpen}
-              className="cursor-pointer inline-flex items-center gap-2 whitespace-nowrap rounded-full border border-black/20 bg-white px-[14px] py-[6px] font-semibold text-black/85"
-            >
-              <currentViewOption.icon className="h-4 w-4" strokeWidth={2.2} />
-              {currentViewOption.label}
-              <ChevronDown className="h-4 w-4" strokeWidth={2.5} />
-            </button>
+          {hideViewSelector ? null : (
+            <div ref={viewMenuRef} className="relative shrink-0">
+              <button
+                type="button"
+                onClick={() => {
+                  setIsViewOpen((prev) => !prev);
+                  setIsSortOpen(false);
+                }}
+                aria-haspopup="menu"
+                aria-expanded={isViewOpen}
+                className="cursor-pointer inline-flex items-center gap-2 whitespace-nowrap rounded-full border border-black/20 bg-white px-[14px] py-[6px] font-semibold text-black/85"
+              >
+                <currentViewOption.icon className="h-4 w-4" strokeWidth={2.2} />
+                {currentViewOption.label}
+                <ChevronDown className="h-4 w-4" strokeWidth={2.5} />
+              </button>
 
-            {isViewOpen ? (
-              <div role="menu" className="absolute left-0 top-[calc(100%+8px)] z-20 w-[220px] rounded-[14px] border border-black/15 bg-white p-2 shadow-[0_12px_28px_rgba(0,0,0,0.12)]">
-                <div className="grid gap-1">
-                  {VIEW_OPTIONS.map((option) => {
-                    const isActive = option.value === view;
-                    const isHovered = option.value === hoveredViewOption;
-                    const Icon = option.icon;
+              {isViewOpen ? (
+                <div role="menu" className="absolute left-0 top-[calc(100%+8px)] z-20 w-[220px] rounded-[14px] border border-black/15 bg-white p-2 shadow-[0_12px_28px_rgba(0,0,0,0.12)]">
+                  <div className="grid gap-1">
+                    {VIEW_OPTIONS.map((option) => {
+                      const isActive = option.value === view;
+                      const isHovered = option.value === hoveredViewOption;
+                      const Icon = option.icon;
 
-                    return (
-                      <button
-                        key={option.value}
-                        type="button"
-                        onClick={() => {
-                          onChange(option.value);
-                          setIsViewOpen(false);
-                        }}
-                        onMouseEnter={() => setHoveredViewOption(option.value)}
-                        onMouseLeave={() => setHoveredViewOption(null)}
-                        className={`cursor-pointer inline-flex items-center gap-2 rounded-[10px] border-none px-2.5 py-2 text-left font-semibold text-black/88 transition-colors duration-100 ${
-                          isActive ? "bg-black/10" : isHovered ? "bg-slate-900/5" : "bg-transparent"
-                        }`}
-                      >
-                        <Icon className="h-4 w-4 shrink-0" strokeWidth={2.2} />
-                        <span>{option.label}</span>
-                      </button>
-                    );
-                  })}
+                      return (
+                        <button
+                          key={option.value}
+                          type="button"
+                          onClick={() => {
+                            onChange(option.value);
+                            setIsViewOpen(false);
+                          }}
+                          onMouseEnter={() => setHoveredViewOption(option.value)}
+                          onMouseLeave={() => setHoveredViewOption(null)}
+                          className={`cursor-pointer inline-flex items-center gap-2 rounded-[10px] border-none px-2.5 py-2 text-left font-semibold text-black/88 transition-colors duration-100 ${
+                            isActive ? "bg-black/10" : isHovered ? "bg-slate-900/5" : "bg-transparent"
+                          }`}
+                        >
+                          <Icon className="h-4 w-4 shrink-0" strokeWidth={2.2} />
+                          <span>{option.label}</span>
+                        </button>
+                      );
+                    })}
+                  </div>
                 </div>
-              </div>
-            ) : null}
-          </div>
+              ) : null}
+            </div>
+          )}
 
           <div ref={sortMenuRef} className="relative shrink-0">
             <button
