@@ -28,6 +28,7 @@ import {
   ToggleLeft,
   ShoppingCart,
   Utensils,
+  UtensilsCrossed,
   Waves,
 } from "lucide-react";
 import { useRestaurantSearch } from "@/components/RestaurantSearchContext";
@@ -350,7 +351,9 @@ export default function RestaurantView({
   const [splitPortionModeById, setSplitPortionModeById] = useState<Record<string, SplitPortionMode>>({});
   const [isBuildSummaryExpanded, setIsBuildSummaryExpanded] = useState(false);
   const buildStickyContainerRef = useRef<HTMLDivElement | null>(null);
+  const entreeMenuRef = useRef<HTMLDivElement | null>(null);
   const [selectedEntree, setSelectedEntree] = useState<EntreeSelection>(null);
+  const [isEntreeMenuOpen, setIsEntreeMenuOpen] = useState(false);
   const [selectedTacoShell, setSelectedTacoShell] = useState<TacoShellSelection>("crispy");
   const [selectedTacoCount, setSelectedTacoCount] = useState<TacoCountSelection>(3);
   const [selectedKidsMeal, setSelectedKidsMeal] = useState<KidsMealSelection>("build-your-own");
@@ -1380,25 +1383,75 @@ export default function RestaurantView({
     };
   }, [isBuildSummaryExpanded]);
 
+  useEffect(() => {
+    if (!isEntreeMenuOpen) return;
+
+    const handlePointerDown = (event: MouseEvent) => {
+      const target = event.target;
+      if (!(target instanceof Node)) return;
+      if (entreeMenuRef.current?.contains(target)) return;
+      setIsEntreeMenuOpen(false);
+    };
+
+    document.addEventListener("mousedown", handlePointerDown);
+    return () => document.removeEventListener("mousedown", handlePointerDown);
+  }, [isEntreeMenuOpen]);
+
+  const entreeSelectionControl =
+    isChipotleBuildPage && selectedEntree !== null ? (
+      <div ref={entreeMenuRef} className="relative">
+        <button
+          type="button"
+          onClick={() => setIsEntreeMenuOpen((prev) => !prev)}
+          className="cursor-pointer inline-flex items-center gap-2 whitespace-nowrap rounded-full border border-black/20 bg-white px-[14px] py-[6px] font-semibold text-black/85"
+          aria-haspopup="menu"
+          aria-expanded={isEntreeMenuOpen}
+        >
+          <UtensilsCrossed className="h-4 w-4" strokeWidth={2.2} />
+          {CHIPOTLE_ENTREE_CONFIGURATIONS[selectedEntree].label}
+          <ChevronDown className="h-4 w-4" strokeWidth={2.5} />
+        </button>
+
+        {isEntreeMenuOpen ? (
+          <div
+            role="menu"
+            className="absolute left-0 top-[calc(100%+8px)] z-20 w-[260px] rounded-[14px] border border-black/15 bg-white p-2 shadow-[0_12px_28px_rgba(0,0,0,0.12)]"
+          >
+            <div className="grid gap-1">
+              {(Object.entries(CHIPOTLE_ENTREE_CONFIGURATIONS) as [Exclude<EntreeSelection, null>, EntreeConfiguration][]).map(([entreeKey, entree]) => {
+                const isActive = entreeKey === selectedEntree;
+                return (
+                  <button
+                    key={entreeKey}
+                    type="button"
+                    onClick={() => {
+                      handleEntreeSelection(entreeKey);
+                      setIsEntreeMenuOpen(false);
+                    }}
+                    className={`cursor-pointer inline-flex items-center gap-2 rounded-[10px] px-2.5 py-2 text-left font-semibold text-black/88 transition-colors duration-100 ${
+                      isActive ? "bg-black/10" : "hover:bg-slate-900/5"
+                    }`}
+                  >
+                    <span className="relative h-6 w-6 shrink-0 overflow-hidden rounded-full border border-slate-200 bg-white">
+                      <Image
+                        src={entree.imageSrc}
+                        alt={entree.label}
+                        fill
+                        className="object-cover"
+                      />
+                    </span>
+                    <span>{entree.label}</span>
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+        ) : null}
+      </div>
+    ) : null;
+
   return (
     <div>
-      {isChipotleBuildPage && selectedEntree !== null ? (
-        <div className="mb-5 rounded-2xl border border-black/10 bg-white px-5 py-3">
-          <div className="flex items-center justify-between">
-            <p className="text-sm font-semibold text-slate-700">
-              Entrée: <span className="text-slate-900">{CHIPOTLE_ENTREE_CONFIGURATIONS[selectedEntree].label}</span>
-            </p>
-            <button
-              type="button"
-              onClick={() => setSelectedEntree(null)}
-              className="cursor-pointer text-sm font-semibold text-slate-600 underline underline-offset-2 hover:text-slate-900"
-            >
-              Change
-            </button>
-          </div>
-        </div>
-      ) : null}
-
       <StickyRestaurantBar
         restaurantName={restaurantName}
         restaurantLogo={restaurantLogo}
@@ -1414,6 +1467,7 @@ export default function RestaurantView({
         onOpenSearch={openSearch}
         onCloseSearch={closeSearch}
         calorieBounds={calorieBounds}
+        secondaryNavLeading={entreeSelectionControl}
       />
 
       {isChipotleBuildPage && selectedEntree === "kids-meal" ? (

@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import type { ReactNode } from "react";
 import { useEffect, useRef } from "react";
 import CartIconDropdown from "@/components/CartIconDropdown";
 import ControlsRow, {
@@ -30,6 +31,7 @@ type StickyRestaurantBarProps = {
     min: number;
     max: number;
   };
+  secondaryNavLeading?: ReactNode;
 };
 
 export default function StickyRestaurantBar({
@@ -47,6 +49,7 @@ export default function StickyRestaurantBar({
   onOpenSearch,
   onCloseSearch,
   calorieBounds,
+  secondaryNavLeading,
 }: StickyRestaurantBarProps) {
   const searchInputRef = useRef<HTMLInputElement>(null);
   const isSearchMode = searchOpen || searchQuery.trim().length > 0;
@@ -156,7 +159,12 @@ export default function StickyRestaurantBar({
         className="relative z-[100] mx-auto flex w-full max-w-6xl items-center rounded-b-2xl border border-slate-200/70 bg-white shadow-[0_6px_16px_rgba(15,23,42,0.12)] backdrop-blur"
       >
         <div className="mx-auto flex w-full max-w-5xl items-center gap-3 px-4 py-2 sm:px-6">
-          <div className="min-w-0 flex-1">
+          {secondaryNavLeading ? (
+            <div className="shrink-0">
+              {secondaryNavLeading}
+            </div>
+          ) : null}
+          <div className={`min-w-0 ${secondaryNavLeading ? "ml-auto" : "flex-1"}`}>
             <ControlsRow
               view={view}
               onChange={onChange}
