@@ -211,6 +211,14 @@ const CHIPOTLE_KIDS_QUESADILLA_NUTRITION_OVERRIDES: Record<string, IngredientIte
   },
 };
 const CHIPOTLE_QUESADILLA_TRIPLE_CHEESE_VARIANT_ID = "quesadilla-triple-cheese";
+const CHIPOTLE_KIDS_MEAL_OPTIONS: Array<{
+  id: KidsMealSelection;
+  label: string;
+  Icon: LucideIcon;
+}> = [
+  { id: "build-your-own", label: "Kid's BYO", Icon: Utensils },
+  { id: "quesadilla", label: "Kid's Quesadilla", Icon: Shell },
+];
 
 function formatValue(value?: number, suffix = "") {
   return value === undefined ? "—" : `${value}${suffix}`;
@@ -883,6 +891,16 @@ export default function RestaurantView({
 
   const handleSortChange = (nextSort: SortOption) => {
     setSort(nextSort);
+  };
+  const handleKidsMealSelection = (kidsMeal: KidsMealSelection) => {
+    setSelectedKidsMeal(kidsMeal);
+    applyIncludedIngredientsNextFrame(
+      kidsMeal === "quesadilla" ? CHIPOTLE_KIDS_QUESADILLA_INCLUDED_INGREDIENT_IDS : [],
+      {
+        selectedEntree: "kids-meal",
+        selectedKidsMeal: kidsMeal,
+      }
+    );
   };
 
   const selectedIngredientTotals = useMemo(
@@ -1852,42 +1870,6 @@ export default function RestaurantView({
         hideSecondaryNav={isChipotleBuildPage && selectedEntree === null}
       />
 
-      {isChipotleBuildPage && selectedEntree === "kids-meal" ? (
-        <div className="mt-4 flex flex-wrap items-center gap-3">
-          {([
-            { id: "build-your-own", label: "Kid's Build Your Own" },
-            { id: "quesadilla", label: "Kid's Quesadilla" },
-          ] as const).map((option) => {
-            const isActive = selectedKidsMeal === option.id;
-            return (
-              <button
-                key={option.id}
-                type="button"
-                onClick={() => {
-                  setSelectedKidsMeal(option.id);
-                  applyIncludedIngredientsNextFrame(
-                    option.id === "quesadilla"
-                      ? CHIPOTLE_KIDS_QUESADILLA_INCLUDED_INGREDIENT_IDS
-                      : [],
-                    {
-                      selectedEntree: "kids-meal",
-                      selectedKidsMeal: option.id,
-                    }
-                  );
-                }}
-                className={`cursor-pointer rounded-full border px-4 py-2 text-sm font-semibold transition ${
-                  isActive
-                    ? "border-slate-900 bg-slate-900 text-white"
-                    : "border-slate-300 bg-white text-slate-800 hover:border-slate-500"
-                }`}
-              >
-                {option.label}
-              </button>
-            );
-          })}
-        </div>
-      ) : null}
-
       {isChipotleBuildPage && selectedEntree === null ? (
         <div>
           <section className="mx-auto flex w-full max-w-5xl flex-col items-center px-4 pb-12">
@@ -1995,6 +1977,36 @@ export default function RestaurantView({
 
           <div className="min-w-0">
             <div className="mx-auto max-w-[900px]">
+              {isChipotleBuildPage && selectedEntree === "kids-meal" ? (
+                <section className="mb-4 rounded-2xl border border-black/10 bg-white p-4">
+                  <p className="text-xs font-semibold uppercase tracking-[0.08em] text-slate-500">
+                    Kid&apos;s meal option
+                  </p>
+                  <div className="mt-3 grid grid-cols-1 gap-3 sm:grid-cols-2">
+                    {CHIPOTLE_KIDS_MEAL_OPTIONS.map((option) => {
+                      const isActive = selectedKidsMeal === option.id;
+                      const Icon = option.Icon;
+                      return (
+                        <button
+                          key={option.id}
+                          type="button"
+                          onClick={() => handleKidsMealSelection(option.id)}
+                          className={`cursor-pointer rounded-xl border px-4 py-3 text-left transition ${
+                            isActive
+                              ? "border-slate-900 bg-slate-900 text-white"
+                              : "border-slate-300 bg-white text-slate-800 hover:border-slate-500"
+                          }`}
+                        >
+                          <span className="inline-flex items-center gap-2">
+                            <Icon className="h-4 w-4" aria-hidden="true" />
+                            <span className="text-sm font-semibold">{option.label}</span>
+                          </span>
+                        </button>
+                      );
+                    })}
+                  </div>
+                </section>
+              ) : null}
               <MenuSections
                 restaurantId={restaurantId}
                 items={visibleMenuItems}
