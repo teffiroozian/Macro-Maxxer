@@ -1,9 +1,9 @@
 "use client";
 
 import Image from "next/image";
-import Link from "next/link";
 import type { ReactNode } from "react";
 import { useEffect, useRef } from "react";
+import { useRouter } from "next/navigation";
 import CartIconDropdown from "@/components/CartIconDropdown";
 import ControlsRow, {
   FilterChips,
@@ -11,7 +11,7 @@ import ControlsRow, {
   type SortOption,
   type ViewOption,
 } from "./ControlsRow";
-import { Search,  } from "lucide-react";
+import { Search } from "lucide-react";
 
 type StickyRestaurantBarProps = {
   restaurantName: string;
@@ -55,6 +55,7 @@ export default function StickyRestaurantBar({
   hideViewSelector = false,
   hideSecondaryNav = false,
 }: StickyRestaurantBarProps) {
+  const router = useRouter();
   const searchInputRef = useRef<HTMLInputElement>(null);
   const isSearchMode = searchOpen || searchQuery.trim().length > 0;
 
@@ -94,13 +95,14 @@ export default function StickyRestaurantBar({
         }`}
       >
         <div className="mx-auto flex w-full max-w-5xl items-center gap-3 px-4 py-2 sm:px-6">
-          <Link
-            href="/"
+          <button
+            type="button"
+            onClick={() => router.back()}
             className="cursor-pointer inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-slate-300/80 bg-white text-base font-semibold text-slate-700 transition hover:text-slate-900"
-            aria-label="Back to home"
+            aria-label="Back to previous page"
           >
             ←
-          </Link>
+          </button>
 
           <button
             type="button"
