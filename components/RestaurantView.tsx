@@ -198,7 +198,7 @@ const CHIPOTLE_KIDS_QUESADILLA_INCLUDED_INGREDIENT_IDS = [
 ];
 const CHIPOTLE_KIDS_QUESADILLA_NUTRITION_OVERRIDES: Record<string, IngredientItem["nutrition"]> = {
   "soft-flour-tortilla": {
-    calories: 80,
+    calories: 83,
     totalFat: 3,
     protein: 2,
     carbs: 13,
@@ -537,8 +537,7 @@ export default function RestaurantView({
         const isQuesadillaCheeseIncludedIngredient =
           ingredientId === "cheese" &&
           shouldPinToIncludedCategory &&
-          (selectedEntree === "quesadilla" ||
-            (selectedEntree === "kids-meal" && selectedKidsMeal === "quesadilla"));
+          selectedEntree === "quesadilla";
         const hasCustomVariants = Boolean(ingredient.variants?.length);
         const ingredientBaseNutrition =
           selectedEntree === "kids-meal" && selectedKidsMeal === "quesadilla"
