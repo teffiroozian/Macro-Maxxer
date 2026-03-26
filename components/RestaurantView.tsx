@@ -2172,7 +2172,7 @@ export default function RestaurantView({
                   </p>
                   <div
                     ref={selectedIngredientsListRef}
-                    className="mt-4 min-h-0 max-h-[620px] flex-1 overflow-y-auto rounded-xl bg-[#efefef] p-2"
+                    className="mt-4 min-h-0 max-h-[min(620px,calc(100vh-420px))] flex-1 overflow-y-auto rounded-xl bg-[#efefef] p-2"
                   >
                     <div className="space-y-3">
                       {groupedSelectedIngredientEntries.map((group) => (
