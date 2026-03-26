@@ -243,6 +243,12 @@ function getProteinBadgeLabel(mode: ProteinPortionMode, selectedProteinCount: nu
   return multiplier === 0.5 ? "1/2x" : `${multiplier}x`;
 }
 
+function formatMultiplierLabel(multiplier: number) {
+  if (multiplier === 0.5) return "1/2x";
+  if (Number.isInteger(multiplier)) return `${multiplier}x`;
+  return `${multiplier.toFixed(1)}x`;
+}
+
 function getNutritionMultiplier(
   baseNutrition: MenuItem["nutrition"],
   nextNutrition: MenuItem["nutrition"]
@@ -271,6 +277,11 @@ function getSplitExtraMultiplier(item: MenuItem) {
   }
 
   return getNutritionMultiplier(item.nutrition, extraVariant.nutrition);
+}
+
+function getSplitPortionLabel(item: MenuItem, mode: SplitPortionMode) {
+  const multiplier = mode === "light" ? 0.5 : mode === "extra" ? getSplitExtraMultiplier(item) : 1;
+  return formatMultiplierLabel(multiplier);
 }
 
 export default function RestaurantView({
@@ -1184,9 +1195,11 @@ export default function RestaurantView({
       restaurantId,
       itemId: `${restaurantId}-build`,
       name: buildName,
-      customizations: Object.values(selectedIngredientItems).flatMap(({ item, quantity }) =>
-        Array.from({ length: quantity }, () => item.name)
-      ),
+      customizations: Object.entries(selectedIngredientItems).flatMap(([ingredientId, { item, quantity }]) => {
+        const portionLabel = ingredientPortionLabelById[ingredientId];
+        const ingredientNameWithPortion = portionLabel ? `${item.name} (${portionLabel})` : item.name;
+        return Array.from({ length: quantity }, () => ingredientNameWithPortion);
+      }),
       quantity: 1,
       macrosPerItem: adjustedSelectedIngredientTotals,
       nutritionPerItem: {
@@ -1260,6 +1273,40 @@ export default function RestaurantView({
   }, 0);
   const proteinBadgeLabel =
     selectedProteinCount > 0 ? getProteinBadgeLabel(proteinPortionMode, selectedProteinCount) : undefined;
+  const ingredientPortionLabelById = (() => {
+    const labelById: Record<string, string> = {};
+
+    Object.entries(selectedIngredientItems).forEach(([ingredientId, selectedIngredient]) => {
+      if (isProteinIngredientItem(selectedIngredient.item)) {
+        if (proteinBadgeLabel) {
+          labelById[ingredientId] = proteinBadgeLabel;
+        }
+        return;
+      }
+
+      const category = normalizeIngredientCategory(selectedIngredient.item.categories?.[0]);
+      if (category !== "rice" && category !== "beans") {
+        return;
+      }
+
+      const selectedSplitIds = Object.entries(selectedIngredientItems)
+        .filter(
+          ([, splitSelectedIngredient]) =>
+            normalizeIngredientCategory(splitSelectedIngredient.item.categories?.[0]) === category
+        )
+        .map(([id]) => id);
+
+      if (selectedSplitIds.length >= 2) {
+        labelById[ingredientId] = "1/2x";
+        return;
+      }
+
+      const portionMode = splitPortionModeById[ingredientId] ?? "normal";
+      labelById[ingredientId] = getSplitPortionLabel(selectedIngredient.item, portionMode);
+    });
+
+    return labelById;
+  })();
   const unavailableIngredientIds = useMemo(() => {
     if (!isChipotleBuildPage || !selectedEntree) {
       return new Set<string>();
@@ -1596,32 +1643,7 @@ export default function RestaurantView({
                   })()
                 }
                 ingredientPortionBadgeById={
-                  (() => {
-                    const badgeById = Object.fromEntries(
-                      Object.entries(selectedIngredientItems)
-                        .filter(
-                          ([, selectedIngredient]) =>
-                            Boolean(proteinBadgeLabel) && isProteinIngredientItem(selectedIngredient.item)
-                        )
-                        .map(([ingredientId]) => [ingredientId, proteinBadgeLabel])
-                    ) as Record<string, string>;
-
-                    (["rice", "beans"] as const).forEach((splitCategory) => {
-                      const selectedSplitIds = Object.entries(selectedIngredientItems)
-                        .filter(
-                          ([, selectedIngredient]) =>
-                            normalizeIngredientCategory(selectedIngredient.item.categories?.[0]) === splitCategory
-                        )
-                        .map(([ingredientId]) => ingredientId);
-                      if (selectedSplitIds.length === 2) {
-                        selectedSplitIds.forEach((ingredientId) => {
-                          badgeById[ingredientId] = "1/2x";
-                        });
-                      }
-                    });
-
-                    return Object.keys(badgeById).length > 0 ? badgeById : undefined;
-                  })()
+                  Object.keys(ingredientPortionLabelById).length > 0 ? ingredientPortionLabelById : undefined
                 }
                 ingredientPortionModeOptionsById={
                   (() => {
@@ -1856,6 +1878,9 @@ export default function RestaurantView({
                           <span className="truncate text-sm font-medium text-slate-900">
                             {selectedIngredient.item.name}
                             {selectedIngredient.quantity > 1 ? ` (x${selectedIngredient.quantity})` : ""}
+                            {ingredientPortionLabelById[ingredientId]
+                              ? ` · ${ingredientPortionLabelById[ingredientId]}`
+                              : ""}
                           </span>
                         </div>
                         <div className="inline-flex items-center gap-2">
