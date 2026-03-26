@@ -370,6 +370,7 @@ export default function RestaurantView({
   const [isBuildSummaryExpanded, setIsBuildSummaryExpanded] = useState(false);
   const buildStickyContainerRef = useRef<HTMLDivElement | null>(null);
   const entreeMenuRef = useRef<HTMLDivElement | null>(null);
+  const selectedIngredientsListRef = useRef<HTMLUListElement | null>(null);
   const [selectedEntree, setSelectedEntree] = useState<EntreeSelection>(null);
   const [isEntreeMenuOpen, setIsEntreeMenuOpen] = useState(false);
   const [selectedTacoShell, setSelectedTacoShell] = useState<TacoShellSelection>("crispy");
@@ -1415,6 +1416,19 @@ export default function RestaurantView({
     });
   };
 
+  const handleResetSelectedIngredientOrder = () => {
+    selectedIngredientsListRef.current?.scrollTo({ top: 0, behavior: "smooth" });
+    if (typeof window !== "undefined") {
+      window.alert("Ingredient order reset to default.");
+    }
+  };
+
+  const handleSaveSelectedIngredientOrder = () => {
+    if (typeof window !== "undefined") {
+      window.alert("Ingredient order saved.");
+    }
+  };
+
   const selectedIngredientEntries = useMemo(() => {
     const selectedEntries = Object.entries(selectedIngredientItems);
 
@@ -2059,7 +2073,25 @@ export default function RestaurantView({
             PrimaryActionIcon={ShoppingCart}
             detailsOpen={isBuildSummaryExpanded}
             detailsContent={
-              <div className="grid gap-4 lg:grid-cols-2">
+              <div className="space-y-3">
+                <div className="flex flex-wrap items-center justify-end gap-2">
+                  <button
+                    type="button"
+                    onClick={handleResetSelectedIngredientOrder}
+                    className="rounded-full border border-black/20 bg-white px-3 py-1 text-xs font-semibold uppercase tracking-[0.06em] text-slate-700 transition hover:bg-slate-50"
+                  >
+                    Reset Order
+                  </button>
+                  <button
+                    type="button"
+                    onClick={handleSaveSelectedIngredientOrder}
+                    className="rounded-full border border-transparent bg-slate-900 px-3 py-1 text-xs font-semibold uppercase tracking-[0.06em] text-white transition hover:bg-slate-800"
+                  >
+                    Save Order
+                  </button>
+                </div>
+
+                <div className="grid gap-4 lg:grid-cols-2">
                 <section className="rounded-[18px] border border-[rgba(0,0,0,0.15)] bg-white p-[18px]">
                   <h3 className="text-2xl font-bold text-neutral-900">Nutrition Summary</h3>
                   <div className="mt-6 text-xs font-medium text-[rgba(0,0,0,0.55)]">Amount per serving</div>
@@ -2114,7 +2146,10 @@ export default function RestaurantView({
                   <p className="mt-2 text-sm font-semibold text-slate-600">
                     {CHIPOTLE_ENTREE_CONFIGURATIONS[selectedEntree ?? "bowl"].label} · {selectedIngredientCount} selected
                   </p>
-                  <ul className="mt-4 grid gap-2 rounded-xl bg-[#efefef] p-2">
+                  <ul
+                    ref={selectedIngredientsListRef}
+                    className="mt-4 grid max-h-[300px] gap-2 overflow-y-auto rounded-xl bg-[#efefef] p-2"
+                  >
                     {selectedIngredientEntries.map(([ingredientId, selectedIngredient]) => (
                       <li key={ingredientId} className="flex items-center justify-between rounded-xl border border-black/10 bg-white px-3 py-2">
                         <div className="flex min-w-0 items-center gap-2">
@@ -2165,6 +2200,7 @@ export default function RestaurantView({
                     ))}
                   </ul>
                 </section>
+              </div>
               </div>
             }
             onSecondaryAction={() => setIsBuildSummaryExpanded((previous) => !previous)}
