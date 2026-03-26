@@ -1407,7 +1407,14 @@ export default function RestaurantView({
           aria-haspopup="menu"
           aria-expanded={isEntreeMenuOpen}
         >
-          <UtensilsCrossed className="h-4 w-4" strokeWidth={2.2} />
+          <span className="relative h-5 w-5 shrink-0 overflow-hidden rounded-full border border-slate-200 bg-white">
+            <Image
+              src={CHIPOTLE_ENTREE_CONFIGURATIONS[selectedEntree].imageSrc}
+              alt={CHIPOTLE_ENTREE_CONFIGURATIONS[selectedEntree].label}
+              fill
+              className="object-cover"
+            />
+          </span>
           {CHIPOTLE_ENTREE_CONFIGURATIONS[selectedEntree].label}
           <ChevronDown className="h-4 w-4" strokeWidth={2.5} />
         </button>
@@ -1418,6 +1425,17 @@ export default function RestaurantView({
             className="absolute left-0 top-[calc(100%+8px)] z-20 w-[260px] rounded-[14px] border border-black/15 bg-white p-2 shadow-[0_12px_28px_rgba(0,0,0,0.12)]"
           >
             <div className="grid gap-1">
+              <button
+                type="button"
+                onClick={() => {
+                  setSelectedEntree(null);
+                  setIsEntreeMenuOpen(false);
+                }}
+                className="cursor-pointer inline-flex items-center gap-2 rounded-[10px] px-2.5 py-2 text-left font-semibold text-black/88 transition-colors duration-100 hover:bg-slate-900/5"
+              >
+                <UtensilsCrossed className="h-4 w-4 shrink-0" strokeWidth={2.2} />
+                <span>Choose entrée</span>
+              </button>
               {(Object.entries(CHIPOTLE_ENTREE_CONFIGURATIONS) as [Exclude<EntreeSelection, null>, EntreeConfiguration][]).map(([entreeKey, entree]) => {
                 const isActive = entreeKey === selectedEntree;
                 return (
