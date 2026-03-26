@@ -26,6 +26,8 @@ import {
   SquarePlus,
   Soup,
   ToggleLeft,
+  RotateCcw,
+  Save,
   ShoppingCart,
   Utensils,
   UtensilsCrossed,
@@ -1417,9 +1419,13 @@ export default function RestaurantView({
   };
 
   const handleResetSelectedIngredientOrder = () => {
+    setSelectedIngredientItems({});
+    setSelectedIngredientVariantIds({});
+    setProteinPortionMode("normal");
+    setSplitPortionModeById({});
     selectedIngredientsListRef.current?.scrollTo({ top: 0, behavior: "smooth" });
     if (typeof window !== "undefined") {
-      window.alert("Ingredient order reset to default.");
+      window.alert("Selections cleared and order reset.");
     }
   };
 
@@ -2102,16 +2108,18 @@ export default function RestaurantView({
                   <button
                     type="button"
                     onClick={handleResetSelectedIngredientOrder}
-                    className="rounded-full border border-black/20 bg-white px-3 py-1 text-xs font-semibold uppercase tracking-[0.06em] text-slate-700 transition hover:bg-slate-50"
+                    className="inline-flex items-center gap-1.5 rounded-full border border-black/20 bg-white px-3 py-1 text-xs font-semibold text-slate-700 transition hover:bg-slate-50"
                   >
-                    Reset Order
+                    <RotateCcw className="h-3.5 w-3.5" aria-hidden="true" />
+                    <span>Reset order</span>
                   </button>
                   <button
                     type="button"
                     onClick={handleSaveSelectedIngredientOrder}
-                    className="rounded-full border border-transparent bg-slate-900 px-3 py-1 text-xs font-semibold uppercase tracking-[0.06em] text-white transition hover:bg-slate-800"
+                    className="inline-flex items-center gap-1.5 rounded-full border border-transparent bg-slate-900 px-3 py-1 text-xs font-semibold text-white transition hover:bg-slate-800"
                   >
-                    Save Order
+                    <Save className="h-3.5 w-3.5" aria-hidden="true" />
+                    <span>Save order</span>
                   </button>
                 </div>
 
