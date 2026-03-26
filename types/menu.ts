@@ -93,6 +93,7 @@ export type RestaurantCustomizationRules = {
 export type MenuItem = {
   id?: string;          // optional but recommended later
   name: string;
+  defaultOrder?: number;
   nutrition: Nutrition; // make this required so label is consistent
   image?: string;
   categories: string[];
@@ -110,6 +111,7 @@ export type MenuItem = {
 export type IngredientItem = {
   id?: string;
   name: string;
+  defaultOrder?: number;
   nutrition: Nutrition;
   image?: string;
   category?: string;

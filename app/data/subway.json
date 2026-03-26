@@ -7,7 +7,10 @@
             "protein": 80,
             "carbs": 92,
             "fat": 74,
-            "categories": ["Sandwich"]
+            "categories": [
+                "Sandwich"
+            ],
+            "defaultOrder": 1
         },
         {
             "name": "Chicken & Bacon Ranch",
@@ -15,7 +18,10 @@
             "protein": 70,
             "carbs": 88,
             "fat": 58,
-            "categories": ["Sandwich"]
+            "categories": [
+                "Sandwich"
+            ],
+            "defaultOrder": 2
         },
         {
             "name": "Meatball Pepperoni",
@@ -23,7 +29,10 @@
             "protein": 66,
             "carbs": 112,
             "fat": 76,
-            "categories": ["Sandwich"]
+            "categories": [
+                "Sandwich"
+            ],
+            "defaultOrder": 3
         },
         {
             "name": "Grilled Chicken",
@@ -31,7 +40,10 @@
             "protein": 62,
             "carbs": 86,
             "fat": 48,
-            "categories": ["Sandwich"]
+            "categories": [
+                "Sandwich"
+            ],
+            "defaultOrder": 4
         },
         {
             "name": "Honey Mustard BBQ Chicken",
@@ -39,7 +51,10 @@
             "protein": 62,
             "carbs": 106,
             "fat": 40,
-            "categories": ["Sandwich"]
+            "categories": [
+                "Sandwich"
+            ],
+            "defaultOrder": 5
         }
     ]
 }

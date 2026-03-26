@@ -4,14 +4,28 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 
 export type ViewOption = "menu" | "ingredients" | "ranking";
-export type SortOption = "highest-protein" | "best-ratio" | "lowest-calories";
+export type SortOption =
+  | "default-order"
+  | "highest-protein"
+  | "best-ratio"
+  | "lowest-calories";
 export type Filters = {
   proteinMin?: number;
   caloriesMax?: number;
   includeSidesDrinks?: boolean;
   includeLargeShareables?: boolean;
 };
-import { SlidersHorizontal, ChevronDown, ClipboardList, Carrot, Flame, Leaf, Scale, Award } from "lucide-react";
+import {
+  SlidersHorizontal,
+  ChevronDown,
+  ClipboardList,
+  Carrot,
+  Flame,
+  Leaf,
+  Scale,
+  Award,
+  ListOrdered,
+} from "lucide-react";
 
 const PROTEIN_OPTIONS = [20, 30, 40, 50];
 
@@ -22,6 +36,7 @@ const VIEW_OPTIONS: Array<{ label: string; value: ViewOption; icon: typeof Clipb
 ];
 
 const SORT_OPTIONS: Array<{ label: string; value: SortOption; icon: typeof Flame }> = [
+  { label: "Default Order", value: "default-order", icon: ListOrdered },
   { label: "Highest Protein", value: "highest-protein", icon: Flame },
   { label: "Lowest Calories", value: "lowest-calories", icon: Leaf },
   { label: "Best Ratio", value: "best-ratio", icon: Scale },

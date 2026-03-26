@@ -181,7 +181,11 @@ function compareNumericWithMissingLast(
 export function sortItems(items: MenuItem[], sort: SortOption) {
   const sorted = [...items];
 
-  if (sort === "highest-protein") {
+  if (sort === "default-order") {
+    sorted.sort((a, b) =>
+      compareNumericWithMissingLast(a.defaultOrder, b.defaultOrder, "asc")
+    );
+  } else if (sort === "highest-protein") {
     sorted.sort((a, b) =>
       compareNumericWithMissingLast(
         a.nutrition.protein,

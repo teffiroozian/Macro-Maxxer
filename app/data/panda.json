@@ -4,17 +4,20 @@
         {
             "name": "Grilled Teriyaki Chicken",
             "calories": 300,
-            "protein": 36
+            "protein": 36,
+            "defaultOrder": 1
         },
-        { 
+        {
             "name": "Broccoli Beef",
             "calories": 150,
-            "protein": 9 
+            "protein": 9,
+            "defaultOrder": 2
         },
         {
             "name": "Black Pepper Angus Steak",
             "calories": 180,
-            "protein": 19
+            "protein": 19,
+            "defaultOrder": 3
         }
     ]
 }

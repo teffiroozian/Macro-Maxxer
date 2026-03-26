@@ -381,7 +381,7 @@ export default function RestaurantView({
       : requestedView === "ranking"
         ? "ranking"
         : defaultView;
-  const [sort, setSort] = useState<SortOption>("highest-protein");
+  const [sort, setSort] = useState<SortOption>("default-order");
   const [filters, setFilters] = useState<Filters>({});
   type RankedAllFilterKey = "main-entrees" | "shareables" | "sides" | "drinks";
   const [rankedAllFilters, setRankedAllFilters] = useState<

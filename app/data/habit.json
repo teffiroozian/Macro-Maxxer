@@ -7,7 +7,10 @@
             "protein": 53,
             "carbs": 60,
             "fat": 53,
-            "categories": ["Burger"]
+            "categories": [
+                "Burger"
+            ],
+            "defaultOrder": 1
         },
         {
             "name": "Santa Barbara Cobb",
@@ -15,7 +18,10 @@
             "protein": 50,
             "carbs": 18,
             "fat": 62,
-            "categories": ["Salad"]
+            "categories": [
+                "Salad"
+            ],
+            "defaultOrder": 2
         },
         {
             "name": "Santa Barbara Char",
@@ -23,7 +29,10 @@
             "protein": 48,
             "carbs": 48,
             "fat": 93,
-            "categories": ["Burger"]
+            "categories": [
+                "Burger"
+            ],
+            "defaultOrder": 3
         },
         {
             "name": "Chicken Club Sandwich",
@@ -31,7 +40,10 @@
             "protein": 47,
             "carbs": 43,
             "fat": 59,
-            "categories": ["Sandwich"]
+            "categories": [
+                "Sandwich"
+            ],
+            "defaultOrder": 4
         },
         {
             "name": "Grilled Chicken Sandwich",
@@ -39,7 +51,10 @@
             "protein": 45,
             "carbs": 59,
             "fat": 57,
-            "categories": ["Sandwich"]
+            "categories": [
+                "Sandwich"
+            ],
+            "defaultOrder": 5
         }
     ]
 }

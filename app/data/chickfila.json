@@ -96,7 +96,8 @@
                 "fiber": 1,
                 "sugars": 6,
                 "protein": 29
-            }
+            },
+            "defaultOrder": 1
         },
         {
             "id": "spicy_deluxe_sandwich",
@@ -125,7 +126,8 @@
                 "fiber": 2,
                 "sugars": 7,
                 "protein": 34
-            }
+            },
+            "defaultOrder": 2
         },
         {
             "id": "spicy_chicken_sandwich",
@@ -151,7 +153,8 @@
                 "fiber": 1,
                 "sugars": 6,
                 "protein": 28
-            }
+            },
+            "defaultOrder": 3
         },
         {
             "id": "crispy-nuggets",
@@ -250,7 +253,8 @@
                     },
                     "label": "30 ct"
                 }
-            ]
+            ],
+            "defaultOrder": 4
         },
         {
             "id": "chick_fil_a_deluxe_sandwich",
@@ -279,7 +283,8 @@
                 "fiber": 1,
                 "sugars": 7,
                 "protein": 32
-            }
+            },
+            "defaultOrder": 5
         },
         {
             "id": "chick_fil_a_cool_wrap",
@@ -306,7 +311,8 @@
             },
             "addonRefs": [
                 "dressings"
-            ]
+            ],
+            "defaultOrder": 6
         },
         {
             "id": "southwest_veggie_wrap",
@@ -333,7 +339,8 @@
             },
             "addonRefs": [
                 "dressings"
-            ]
+            ],
+            "defaultOrder": 7
         },
         {
             "id": "chick_fil_a_chick_n_strips",
@@ -432,7 +439,8 @@
                     },
                     "label": "10 ct"
                 }
-            ]
+            ],
+            "defaultOrder": 8
         },
         {
             "id": "grilled_chicken_sandwich",
@@ -460,7 +468,8 @@
                 "fiber": 3,
                 "sugars": 11,
                 "protein": 28
-            }
+            },
+            "defaultOrder": 9
         },
         {
             "id": "cfa-grilled-chicken-club-sandwich",
@@ -490,7 +499,8 @@
                 "fiber": 3,
                 "sugars": 12,
                 "protein": 37
-            }
+            },
+            "defaultOrder": 10
         },
         {
             "id": "grilled_nuggets",
@@ -583,7 +593,8 @@
                     },
                     "label": "30 ct"
                 }
-            ]
+            ],
+            "defaultOrder": 11
         },
         {
             "id": "cobb_salad",
@@ -616,7 +627,8 @@
             },
             "addonRefs": [
                 "dressings"
-            ]
+            ],
+            "defaultOrder": 12
         },
         {
             "id": "spicy_southwest_salad",
@@ -648,7 +660,8 @@
             },
             "addonRefs": [
                 "dressings"
-            ]
+            ],
+            "defaultOrder": 13
         },
         {
             "id": "market_salad",
@@ -681,7 +694,8 @@
             },
             "addonRefs": [
                 "dressings"
-            ]
+            ],
+            "defaultOrder": 14
         },
         {
             "id": "kale_crunch_side",
@@ -705,7 +719,8 @@
                 "fiber": 4,
                 "sugars": 8,
                 "protein": 4
-            }
+            },
+            "defaultOrder": 15
         },
         {
             "id": "chick_fil_a_waffle_potato_fries",
@@ -788,7 +803,8 @@
                 "ingredientTabs": [
                     "Included"
                 ]
-            }
+            },
+            "defaultOrder": 16
         },
         {
             "id": "berry_parfait",
@@ -865,7 +881,8 @@
                         "harvest-nut-granola"
                     ]
                 }
-            }
+            },
+            "defaultOrder": 17
         },
         {
             "id": "fruit_cup",
@@ -891,7 +908,8 @@
                 "ingredientTabs": [
                     "Included"
                 ]
-            }
+            },
+            "defaultOrder": 18
         },
         {
             "id": "mac_and_cheese",
@@ -968,7 +986,8 @@
             },
             "ingredients": [
                 "mac_and_cheese"
-            ]
+            ],
+            "defaultOrder": 19
         },
         {
             "id": "chicken_noodle_soup",
@@ -1042,7 +1061,8 @@
                         "saltines"
                     ]
                 }
-            }
+            },
+            "defaultOrder": 20
         },
         {
             "id": "side_salad",
@@ -1071,7 +1091,8 @@
             },
             "addonRefs": [
                 "dressings"
-            ]
+            ],
+            "defaultOrder": 21
         },
         {
             "id": "chicken_tortilla_soup",
@@ -1113,7 +1134,8 @@
                         "saltines"
                     ]
                 }
-            }
+            },
+            "defaultOrder": 22
         },
         {
             "id": "original_flavor_waffle_potato_chips",
@@ -1139,7 +1161,8 @@
                 "ingredientTabs": [
                     "Included"
                 ]
-            }
+            },
+            "defaultOrder": 23
         },
         {
             "id": "buddy_fruits_apple_sauce",
@@ -1165,7 +1188,8 @@
                 "ingredientTabs": [
                     "Included"
                 ]
-            }
+            },
+            "defaultOrder": 24
         },
         {
             "id": "chick_fil_a_sauce_flavored_waffle_potato_chips",
@@ -1191,7 +1215,8 @@
                 "ingredientTabs": [
                     "Included"
                 ]
-            }
+            },
+            "defaultOrder": 25
         },
         {
             "id": "spicy_chicken_biscuit",
@@ -1216,7 +1241,8 @@
                 "fiber": 3,
                 "sugars": 5,
                 "protein": 19
-            }
+            },
+            "defaultOrder": 26
         },
         {
             "id": "chick_fil_a_chick_n_minis",
@@ -1266,7 +1292,8 @@
                 "ingredientTabs": [
                     "Included"
                 ]
-            }
+            },
+            "defaultOrder": 27
         },
         {
             "id": "egg_white_grill",
@@ -1293,7 +1320,8 @@
                 "fiber": 1,
                 "sugars": 2,
                 "protein": 27
-            }
+            },
+            "defaultOrder": 28
         },
         {
             "id": "hash_brown_scramble_burrito",
@@ -1325,7 +1353,8 @@
                 "ingredientTabMaxQuantities": {
                     "Wrap Toppings": 2
                 }
-            }
+            },
+            "defaultOrder": 29
         },
         {
             "id": "hash_brown_scramble_bowl",
@@ -1357,7 +1386,8 @@
                 "ingredientTabMaxQuantities": {
                     "Wrap Toppings": 2
                 }
-            }
+            },
+            "defaultOrder": 30
         },
         {
             "id": "chicken_egg_and_cheese_biscuit",
@@ -1384,7 +1414,8 @@
                 "fiber": 3,
                 "sugars": 7,
                 "protein": 27
-            }
+            },
+            "defaultOrder": 31
         },
         {
             "id": "bacon_egg_and_cheese_biscuit",
@@ -1411,7 +1442,8 @@
                 "fiber": 2,
                 "sugars": 4,
                 "protein": 15
-            }
+            },
+            "defaultOrder": 32
         },
         {
             "id": "sausage_egg_and_cheese_biscuit",
@@ -1438,7 +1470,8 @@
                 "fiber": 2,
                 "sugars": 4,
                 "protein": 22
-            }
+            },
+            "defaultOrder": 33
         },
         {
             "id": "chicken_egg_and_cheese_muffin",
@@ -1465,7 +1498,8 @@
                 "fiber": 1,
                 "sugars": 4,
                 "protein": 27
-            }
+            },
+            "defaultOrder": 34
         },
         {
             "id": "bacon_egg_and_cheese_muffin",
@@ -1492,7 +1526,8 @@
                 "fiber": 1,
                 "sugars": 2,
                 "protein": 16
-            }
+            },
+            "defaultOrder": 35
         },
         {
             "id": "sausage_egg_and_cheese_muffin",
@@ -1519,7 +1554,8 @@
                 "fiber": 1,
                 "sugars": 1,
                 "protein": 23
-            }
+            },
+            "defaultOrder": 36
         },
         {
             "id": "hash-browns",
@@ -1585,7 +1621,8 @@
                 "ingredientTabs": [
                     "Included"
                 ]
-            }
+            },
+            "defaultOrder": 37
         },
         {
             "id": "chick_fil_a_chicken_biscuit",
@@ -1610,7 +1647,8 @@
                 "fiber": 2,
                 "sugars": 6,
                 "protein": 19
-            }
+            },
+            "defaultOrder": 38
         },
         {
             "id": "frosted_lemonade",
@@ -1674,7 +1712,8 @@
                     },
                     "label": "Diet Lemonade"
                 }
-            ]
+            ],
+            "defaultOrder": 39
         },
         {
             "id": "frosted_coffee",
@@ -1699,7 +1738,8 @@
                 "fiber": 0,
                 "sugars": 44,
                 "protein": 7
-            }
+            },
+            "defaultOrder": 40
         },
         {
             "id": "frosted_soda",
@@ -1720,7 +1760,8 @@
                 "fiber": 0,
                 "sugars": 59,
                 "protein": 7
-            }
+            },
+            "defaultOrder": 41
         },
         {
             "id": "vanilla_milkshake",
@@ -1759,7 +1800,8 @@
                         "cherry"
                     ]
                 }
-            }
+            },
+            "defaultOrder": 42
         },
         {
             "id": "cookies_and_cream_milkshake",
@@ -1798,7 +1840,8 @@
                         "cherry"
                     ]
                 }
-            }
+            },
+            "defaultOrder": 43
         },
         {
             "id": "chocolate_milkshake",
@@ -1837,7 +1880,8 @@
                         "cherry"
                     ]
                 }
-            }
+            },
+            "defaultOrder": 44
         },
         {
             "id": "strawberry_milkshake",
@@ -1876,7 +1920,8 @@
                         "cherry"
                     ]
                 }
-            }
+            },
+            "defaultOrder": 45
         },
         {
             "id": "chick_fil_a_icedream_cup",
@@ -1897,7 +1942,8 @@
                 "fiber": 0,
                 "sugars": 24,
                 "protein": 4
-            }
+            },
+            "defaultOrder": 46
         },
         {
             "id": "chick_fil_a_icedream_cone",
@@ -1918,7 +1964,8 @@
                 "fiber": 0,
                 "sugars": 25,
                 "protein": 4
-            }
+            },
+            "defaultOrder": 47
         },
         {
             "id": "chocolate_chunk_cookie",
@@ -1939,7 +1986,8 @@
                 "fiber": 3,
                 "sugars": 26,
                 "protein": 5
-            }
+            },
+            "defaultOrder": 48
         },
         {
             "id": "chocolate_fudge_brownie",
@@ -1960,7 +2008,8 @@
                 "fiber": 2,
                 "sugars": 35,
                 "protein": 4
-            }
+            },
+            "defaultOrder": 49
         },
         {
             "id": "freshly_brewed_iced_tea_sweetened",
@@ -2044,7 +2093,8 @@
                     },
                     "label": "Large"
                 }
-            ]
+            ],
+            "defaultOrder": 50
         },
         {
             "id": "freshly_brewed_iced_tea_unsweetened",
@@ -2128,7 +2178,8 @@
                     },
                     "label": "Large"
                 }
-            ]
+            ],
+            "defaultOrder": 51
         },
         {
             "id": "chick_fil_a_lemonade",
@@ -2212,7 +2263,8 @@
                     },
                     "label": "Large"
                 }
-            ]
+            ],
+            "defaultOrder": 52
         },
         {
             "id": "chick_fil_a_diet_lemonade",
@@ -2296,7 +2348,8 @@
                     },
                     "label": "Large"
                 }
-            ]
+            ],
+            "defaultOrder": 53
         },
         {
             "id": "sunjoy_1_2_sweet_tea_1_2_lemonade",
@@ -2371,7 +2424,8 @@
                     },
                     "label": "Large"
                 }
-            ]
+            ],
+            "defaultOrder": 54
         },
         {
             "id": "sunjoy_1_2_sweet_tea_1_2_diet_lemonade",
@@ -2446,7 +2500,8 @@
                     },
                     "label": "Large"
                 }
-            ]
+            ],
+            "defaultOrder": 55
         },
         {
             "id": "sunjoy_1_2_unsweet_tea_1_2_lemonade",
@@ -2521,7 +2576,8 @@
                     },
                     "label": "Large"
                 }
-            ]
+            ],
+            "defaultOrder": 56
         },
         {
             "id": "sunjoy_1_2_unsweet_tea_1_2_diet_lemonade",
@@ -2596,7 +2652,8 @@
                     },
                     "label": "Large"
                 }
-            ]
+            ],
+            "defaultOrder": 57
         },
         {
             "id": "iced_coffee",
@@ -2654,7 +2711,8 @@
                     },
                     "label": "Vanilla Iced Coffee"
                 }
-            ]
+            ],
+            "defaultOrder": 58
         },
         {
             "id": "coca_cola",
@@ -2729,7 +2787,8 @@
                     },
                     "label": "Large"
                 }
-            ]
+            ],
+            "defaultOrder": 59
         },
         {
             "id": "dasani_bottled_water",
@@ -2750,7 +2809,8 @@
                 "fiber": 0,
                 "sugars": 0,
                 "protein": 0
-            }
+            },
+            "defaultOrder": 60
         },
         {
             "id": "honest_kids_apple_juice",
@@ -2771,7 +2831,8 @@
                 "fiber": 0,
                 "sugars": 8,
                 "protein": 0
-            }
+            },
+            "defaultOrder": 61
         },
         {
             "id": "simply_orange",
@@ -2792,7 +2853,8 @@
                 "fiber": 0,
                 "sugars": 30,
                 "protein": 2
-            }
+            },
+            "defaultOrder": 62
         },
         {
             "id": "1_chocolate_milk",
@@ -2813,7 +2875,8 @@
                 "fiber": 0,
                 "sugars": 21,
                 "protein": 7
-            }
+            },
+            "defaultOrder": 63
         },
         {
             "id": "1_milk",
@@ -2834,7 +2897,8 @@
                 "fiber": 0,
                 "sugars": 10,
                 "protein": 7
-            }
+            },
+            "defaultOrder": 64
         },
         {
             "id": "dr_pepper",
@@ -2918,7 +2982,8 @@
                     },
                     "label": "Large"
                 }
-            ]
+            ],
+            "defaultOrder": 65
         },
         {
             "id": "coffee",
@@ -2939,7 +3004,8 @@
                 "fiber": 0,
                 "sugars": 0,
                 "protein": 0
-            }
+            },
+            "defaultOrder": 66
         }
     ],
     "ingredients": [

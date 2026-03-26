@@ -7,7 +7,10 @@
             "protein": 68,
             "carbs": 88,
             "fat": 55,
-            "categories": ["Sandwich"]
+            "categories": [
+                "Sandwich"
+            ],
+            "defaultOrder": 1
         },
         {
             "name": "Chicken Pesto Ciabatta Dipper",
@@ -15,7 +18,10 @@
             "protein": 63,
             "carbs": 93,
             "fat": 34,
-            "categories": ["Sandwich"]
+            "categories": [
+                "Sandwich"
+            ],
+            "defaultOrder": 2
         },
         {
             "name": "Toasted Italiano",
@@ -23,7 +29,10 @@
             "protein": 60,
             "carbs": 116,
             "fat": 64,
-            "categories": ["Sandwich"]
+            "categories": [
+                "Sandwich"
+            ],
+            "defaultOrder": 3
         },
         {
             "name": "Spicy Fiesta Chicken",
@@ -31,7 +40,10 @@
             "protein": 54,
             "carbs": 89,
             "fat": 30,
-            "categories": ["Sandwich"]
+            "categories": [
+                "Sandwich"
+            ],
+            "defaultOrder": 4
         },
         {
             "name": "Chicken Bacon Rancher",
@@ -39,7 +51,10 @@
             "protein": 52,
             "carbs": 74,
             "fat": 45,
-            "categories": ["Sandwich"]
+            "categories": [
+                "Sandwich"
+            ],
+            "defaultOrder": 5
         }
     ]
 }

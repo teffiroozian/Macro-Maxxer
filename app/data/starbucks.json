@@ -7,7 +7,10 @@
             "protein": 36,
             "carbs": 14,
             "fat": 5,
-            "categories": ["Beverage"]
+            "categories": [
+                "Beverage"
+            ],
+            "defaultOrder": 1
         },
         {
             "name": "Iced Protein Matcha",
@@ -15,7 +18,10 @@
             "protein": 36,
             "carbs": 29,
             "fat": 5,
-            "categories": ["Beverage"]
+            "categories": [
+                "Beverage"
+            ],
+            "defaultOrder": 2
         },
         {
             "name": "Iced SF Vanilla Protein Latte",
@@ -23,7 +29,10 @@
             "protein": 29,
             "carbs": 12,
             "fat": 4,
-            "categories": ["Beverage"]
+            "categories": [
+                "Beverage"
+            ],
+            "defaultOrder": 3
         },
         {
             "name": "Iced Vanilla Protein Latte",
@@ -31,7 +40,10 @@
             "protein": 29,
             "carbs": 31,
             "fat": 4,
-            "categories": ["Beverage"]
+            "categories": [
+                "Beverage"
+            ],
+            "defaultOrder": 4
         },
         {
             "name": "SF Protein Matcha",
@@ -39,7 +51,10 @@
             "protein": 28,
             "carbs": 18,
             "fat": 7,
-            "categories": ["Beverage"]
+            "categories": [
+                "Beverage"
+            ],
+            "defaultOrder": 5
         }
     ]
 }

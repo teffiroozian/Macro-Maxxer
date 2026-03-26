@@ -7,7 +7,10 @@
             "protein": 50,
             "carbs": 95,
             "fat": 28,
-            "categories": ["Pizza"]
+            "categories": [
+                "Pizza"
+            ],
+            "defaultOrder": 1
         },
         {
             "name": "Cheesy Garlic Bread",
@@ -15,7 +18,10 @@
             "protein": 50,
             "carbs": 179,
             "fat": 43,
-            "categories": ["Side"]
+            "categories": [
+                "Side"
+            ],
+            "defaultOrder": 2
         },
         {
             "name": "Caspian - MOD",
@@ -23,7 +29,10 @@
             "protein": 49,
             "carbs": 125,
             "fat": 29,
-            "categories": ["Pizza"]
+            "categories": [
+                "Pizza"
+            ],
+            "defaultOrder": 3
         },
         {
             "name": "Mad Dog - MOD",
@@ -31,7 +40,10 @@
             "protein": 49,
             "carbs": 95,
             "fat": 43,
-            "categories": ["Pizza"]
+            "categories": [
+                "Pizza"
+            ],
+            "defaultOrder": 4
         },
         {
             "name": "Jasper - MOD",
@@ -39,7 +51,10 @@
             "protein": 41,
             "carbs": 96,
             "fat": 25,
-            "categories": ["Pizza"]
+            "categories": [
+                "Pizza"
+            ],
+            "defaultOrder": 5
         }
     ]
 }

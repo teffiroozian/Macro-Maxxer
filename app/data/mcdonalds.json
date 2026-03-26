@@ -7,7 +7,10 @@
             "protein": 48,
             "carbs": 43,
             "fat": 42,
-            "categories": ["Burger"]
+            "categories": [
+                "Burger"
+            ],
+            "defaultOrder": 1
         },
         {
             "name": "Bacon Quarter Pounder w Cheese",
@@ -15,7 +18,10 @@
             "protein": 36,
             "carbs": 43,
             "fat": 35,
-            "categories": ["Burger"]
+            "categories": [
+                "Burger"
+            ],
+            "defaultOrder": 2
         },
         {
             "name": "Big Breakfast w Hotcakes",
@@ -23,7 +29,10 @@
             "protein": 36,
             "carbs": 158,
             "fat": 63,
-            "categories": ["Breakfast"]
+            "categories": [
+                "Breakfast"
+            ],
+            "defaultOrder": 3
         },
         {
             "name": "Steak Egg & Cheese Bagel",
@@ -31,7 +40,10 @@
             "protein": 34,
             "carbs": 57,
             "fat": 35,
-            "categories": ["Breakfast"]
+            "categories": [
+                "Breakfast"
+            ],
+            "defaultOrder": 4
         },
         {
             "name": "Triple Cheeseburger",
@@ -39,7 +51,10 @@
             "protein": 32,
             "carbs": 33,
             "fat": 31,
-            "categories": ["Burger"]
+            "categories": [
+                "Burger"
+            ],
+            "defaultOrder": 5
         }
     ]
 }
