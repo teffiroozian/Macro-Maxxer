@@ -26,6 +26,8 @@ import {
   SquarePlus,
   Soup,
   ToggleLeft,
+  RotateCcw,
+  Save,
   ShoppingCart,
   Utensils,
   UtensilsCrossed,
@@ -198,6 +200,24 @@ function normalizeIngredientCategory(value: string | undefined) {
   return value?.trim().toLowerCase() ?? "";
 }
 
+const CHIPOTLE_SELECTED_INGREDIENT_CATEGORY_ORDER = [
+  "included ingredient",
+  "proteins",
+  "rice",
+  "beans",
+  "toppings",
+  "side",
+] as const;
+
+const CHIPOTLE_SELECTED_INGREDIENT_CATEGORY_LABELS: Record<string, string> = {
+  "included ingredient": "Included ingredients",
+  proteins: "Protein",
+  rice: "Rice",
+  beans: "Beans",
+  toppings: "Toppings",
+  side: "Side",
+};
+
 function isProteinIngredientItem(item: Pick<MenuItem, "categories">) {
   return normalizeIngredientCategory(item.categories?.[0]) === "proteins";
 }
@@ -352,6 +372,7 @@ export default function RestaurantView({
   const [isBuildSummaryExpanded, setIsBuildSummaryExpanded] = useState(false);
   const buildStickyContainerRef = useRef<HTMLDivElement | null>(null);
   const entreeMenuRef = useRef<HTMLDivElement | null>(null);
+  const selectedIngredientsListRef = useRef<HTMLDivElement | null>(null);
   const [selectedEntree, setSelectedEntree] = useState<EntreeSelection>(null);
   const [isEntreeMenuOpen, setIsEntreeMenuOpen] = useState(false);
   const [selectedTacoShell, setSelectedTacoShell] = useState<TacoShellSelection>("crispy");
@@ -1261,7 +1282,7 @@ export default function RestaurantView({
       });
     }
 
-    hydratedEditItemIdRef.current = null;
+    hydratedEditItemIdRef.current = editingCartItem ? editingCartItem.id : null;
     const nextParams = new URLSearchParams(searchParams.toString());
     nextParams.delete("editCartItem");
     const nextQuery = nextParams.toString();
@@ -1397,7 +1418,88 @@ export default function RestaurantView({
     });
   };
 
-  const selectedIngredientEntries = Object.entries(selectedIngredientItems);
+  const handleResetSelectedIngredientOrder = () => {
+    setSelectedIngredientItems(() => {
+      const lockedSelections: Record<string, { item: MenuItem; quantity: number }> = {};
+
+      lockedIngredientIds.forEach((ingredientId) => {
+        const ingredientItem = ingredientItemsById.get(ingredientId);
+        if (!ingredientItem) return;
+        lockedSelections[ingredientId] = { item: ingredientItem, quantity: 1 };
+      });
+
+      return applyIngredientPortionNutrition(lockedSelections);
+    });
+    setSelectedIngredientVariantIds({});
+    setProteinPortionMode("normal");
+    setSplitPortionModeById({});
+    selectedIngredientsListRef.current?.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
+  const handleSaveSelectedIngredientOrder = () => {
+    if (typeof window !== "undefined") {
+      window.alert("Ingredient order saved.");
+    }
+  };
+
+  const selectedIngredientEntries = useMemo(() => {
+    const selectedEntries = Object.entries(selectedIngredientItems);
+
+    if (!isChipotleBuildPage) {
+      return selectedEntries;
+    }
+
+    const categoryPriority = new Map(
+      CHIPOTLE_SELECTED_INGREDIENT_CATEGORY_ORDER.map((category, index) => [category, index] as const)
+    );
+    const ingredientIndexById = new Map(
+      ingredientMenuItems.map((ingredient, index) => [ingredient.id ?? `${index}`, index] as const)
+    );
+
+    return [...selectedEntries].sort(([leftId, leftIngredient], [rightId, rightIngredient]) => {
+      const leftCategory = normalizeIngredientCategory(leftIngredient.item.categories?.[0]);
+      const rightCategory = normalizeIngredientCategory(rightIngredient.item.categories?.[0]);
+      const leftCategoryPriority = categoryPriority.get(leftCategory) ?? Number.POSITIVE_INFINITY;
+      const rightCategoryPriority = categoryPriority.get(rightCategory) ?? Number.POSITIVE_INFINITY;
+
+      if (leftCategoryPriority !== rightCategoryPriority) {
+        return leftCategoryPriority - rightCategoryPriority;
+      }
+
+      const leftIngredientIndex = ingredientIndexById.get(leftId) ?? Number.POSITIVE_INFINITY;
+      const rightIngredientIndex = ingredientIndexById.get(rightId) ?? Number.POSITIVE_INFINITY;
+
+      if (leftIngredientIndex !== rightIngredientIndex) {
+        return leftIngredientIndex - rightIngredientIndex;
+      }
+
+      return leftIngredient.item.name.localeCompare(rightIngredient.item.name);
+    });
+  }, [ingredientMenuItems, isChipotleBuildPage, selectedIngredientItems]);
+  const groupedSelectedIngredientEntries = useMemo(() => {
+    const groupedEntries: Array<{
+      categoryKey: string;
+      categoryLabel: string;
+      entries: Array<[string, { item: MenuItem; quantity: number }]>;
+    }> = [];
+
+    selectedIngredientEntries.forEach((entry) => {
+      const categoryKey = normalizeIngredientCategory(entry[1].item.categories?.[0]);
+      const existingGroup = groupedEntries.find((group) => group.categoryKey === categoryKey);
+      if (existingGroup) {
+        existingGroup.entries.push(entry);
+        return;
+      }
+
+      groupedEntries.push({
+        categoryKey,
+        categoryLabel: CHIPOTLE_SELECTED_INGREDIENT_CATEGORY_LABELS[categoryKey] ?? "Ingredient",
+        entries: [entry],
+      });
+    });
+
+    return groupedEntries;
+  }, [selectedIngredientEntries]);
   const selectedProteinCount = selectedIngredientEntries.reduce((total, [, selectedIngredient]) => {
     return total + (isProteinIngredientItem(selectedIngredient.item) ? 1 : 0);
   }, 0);
@@ -1650,14 +1752,14 @@ export default function RestaurantView({
       ) : null}
 
       {isChipotleBuildPage && selectedEntree === null ? (
-        <div className="py-6">
-          <section className="mx-auto flex min-h-[calc(100vh-260px)] w-full max-w-5xl flex-col items-center justify-center px-4 py-12">
+        <div>
+          <section className="mx-auto flex w-full max-w-5xl flex-col items-center px-4 pb-12">
               <p className="text-sm font-semibold uppercase tracking-[0.24em] text-slate-500">Chipotle</p>
-              <h2 className="mt-4 text-center text-5xl font-bold tracking-tight text-slate-900">Choose your entrée</h2>
+              <h2 className="text-center text-5xl font-bold tracking-tight text-slate-900">Choose your entrée</h2>
               <p className="mt-3 text-center text-lg text-slate-600">
                 Start your build by selecting a base.
               </p>
-              <div className="mt-10 grid w-full max-w-3xl gap-4 sm:grid-cols-2">
+              <div className="mt-10 grid w-full max-w-5xl gap-4 sm:grid-cols-3">
                 {(Object.entries(CHIPOTLE_ENTREE_CONFIGURATIONS) as [Exclude<EntreeSelection, null>, EntreeConfiguration][]).map(([entreeKey, entree]) => (
                   <button
                     key={entreeKey}
@@ -2008,7 +2110,27 @@ export default function RestaurantView({
             PrimaryActionIcon={ShoppingCart}
             detailsOpen={isBuildSummaryExpanded}
             detailsContent={
-              <div className="grid gap-4 lg:grid-cols-2">
+              <div className="space-y-3">
+                <div className="flex flex-wrap items-center justify-end gap-2">
+                  <button
+                    type="button"
+                    onClick={handleResetSelectedIngredientOrder}
+                    className="inline-flex cursor-pointer items-center gap-1.5 rounded-full border border-black/20 bg-white px-3 py-1 text-xs font-semibold text-slate-700 transition hover:bg-slate-50"
+                  >
+                    <RotateCcw className="h-3.5 w-3.5" aria-hidden="true" />
+                    <span>Reset order</span>
+                  </button>
+                  <button
+                    type="button"
+                    onClick={handleSaveSelectedIngredientOrder}
+                    className="inline-flex cursor-pointer items-center gap-1.5 rounded-full border border-transparent bg-slate-900 px-3 py-1 text-xs font-semibold text-white transition hover:bg-slate-800"
+                  >
+                    <Save className="h-3.5 w-3.5" aria-hidden="true" />
+                    <span>Save order</span>
+                  </button>
+                </div>
+
+                <div className="grid items-stretch gap-4 lg:grid-cols-2">
                 <section className="rounded-[18px] border border-[rgba(0,0,0,0.15)] bg-white p-[18px]">
                   <h3 className="text-2xl font-bold text-neutral-900">Nutrition Summary</h3>
                   <div className="mt-6 text-xs font-medium text-[rgba(0,0,0,0.55)]">Amount per serving</div>
@@ -2058,55 +2180,70 @@ export default function RestaurantView({
                   </div>
                 </section>
 
-                <section className="flex min-h-0 flex-col rounded-3xl border border-black/10 bg-white p-5">
+                <section className="flex h-full min-h-0 flex-col rounded-3xl border border-black/10 bg-white p-5">
                   <h3 className="text-2xl font-bold text-neutral-900">Selected Ingredients</h3>
                   <p className="mt-2 text-sm font-semibold text-slate-600">
                     {CHIPOTLE_ENTREE_CONFIGURATIONS[selectedEntree ?? "bowl"].label} · {selectedIngredientCount} selected
                   </p>
-                  <ul className="mt-4 grid gap-2 rounded-xl bg-[#efefef] p-2">
-                    {selectedIngredientEntries.map(([ingredientId, selectedIngredient]) => (
-                      <li key={ingredientId} className="flex items-center justify-between rounded-xl border border-black/10 bg-white px-3 py-2">
-                        <div className="flex min-w-0 items-center gap-2">
-                          <div className="h-8 w-8 shrink-0 overflow-hidden rounded-md border border-black/10 bg-neutral-100">
-                            <Image
-                              src={selectedIngredient.item.image || restaurantLogo}
-                              alt={selectedIngredient.item.name}
-                              width={32}
-                              height={32}
-                              className="h-full w-full object-cover"
-                            />
-                          </div>
-                          <span className="truncate text-sm font-medium text-slate-900">
-                            {selectedIngredient.item.name}
-                            {selectedIngredient.quantity > 1 ? ` (x${selectedIngredient.quantity})` : ""}
-                            {ingredientPortionLabelById[ingredientId]
-                              ? ` · ${ingredientPortionLabelById[ingredientId]}`
-                              : ""}
-                          </span>
+                  <div
+                    ref={selectedIngredientsListRef}
+                    className="mt-4 min-h-0 max-h-[min(620px,calc(100vh-420px))] flex-1 overflow-y-auto rounded-xl bg-[#efefef] p-2"
+                  >
+                    <div className="space-y-3">
+                      {groupedSelectedIngredientEntries.map((group) => (
+                        <div key={group.categoryKey || "uncategorized"} className="space-y-1.5">
+                          <p className="px-1 text-[10px] font-semibold uppercase tracking-[0.06em] text-slate-500">
+                            {group.categoryLabel}
+                          </p>
+                          <ul className="grid gap-2">
+                            {group.entries.map(([ingredientId, selectedIngredient]) => (
+                              <li key={ingredientId} className="flex items-center justify-between rounded-xl border border-black/10 bg-white px-3 py-2">
+                                <div className="flex min-w-0 items-center gap-2">
+                                  <div className="h-8 w-8 shrink-0 overflow-hidden rounded-md border border-black/10 bg-neutral-100">
+                                    <Image
+                                      src={selectedIngredient.item.image || restaurantLogo}
+                                      alt={selectedIngredient.item.name}
+                                      width={32}
+                                      height={32}
+                                      className="h-full w-full object-cover"
+                                    />
+                                  </div>
+                                  <span className="truncate text-sm font-medium text-slate-900">
+                                    {selectedIngredient.item.name}
+                                    {selectedIngredient.quantity > 1 ? ` (x${selectedIngredient.quantity})` : ""}
+                                    {ingredientPortionLabelById[ingredientId]
+                                      ? ` · ${ingredientPortionLabelById[ingredientId]}`
+                                      : ""}
+                                  </span>
+                                </div>
+                                <div className="inline-flex items-center gap-2">
+                                  <button
+                                    type="button"
+                                    onClick={() => adjustIngredientQuantity(ingredientId, -1)}
+                                    disabled={lockedIngredientIds.has(ingredientId)}
+                                    className="h-7 w-7 rounded-full border border-black/20 text-base font-bold text-slate-700 disabled:cursor-not-allowed disabled:opacity-40"
+                                  >
+                                    −
+                                  </button>
+                                  <span className="w-4 text-center text-sm font-semibold text-slate-900">{selectedIngredient.quantity}</span>
+                                  <button
+                                    type="button"
+                                    onClick={() => adjustIngredientQuantity(ingredientId, 1)}
+                                    disabled={lockedIngredientIds.has(ingredientId)}
+                                    className="h-7 w-7 rounded-full border border-black/20 text-base font-bold text-slate-700 disabled:cursor-not-allowed disabled:opacity-40"
+                                  >
+                                    +
+                                  </button>
+                                </div>
+                              </li>
+                            ))}
+                          </ul>
                         </div>
-                        <div className="inline-flex items-center gap-2">
-                          <button
-                            type="button"
-                            onClick={() => adjustIngredientQuantity(ingredientId, -1)}
-                            disabled={lockedIngredientIds.has(ingredientId)}
-                            className="h-7 w-7 rounded-full border border-black/20 text-base font-bold text-slate-700 disabled:cursor-not-allowed disabled:opacity-40"
-                          >
-                            −
-                          </button>
-                          <span className="w-4 text-center text-sm font-semibold text-slate-900">{selectedIngredient.quantity}</span>
-                          <button
-                            type="button"
-                            onClick={() => adjustIngredientQuantity(ingredientId, 1)}
-                            disabled={lockedIngredientIds.has(ingredientId)}
-                            className="h-7 w-7 rounded-full border border-black/20 text-base font-bold text-slate-700 disabled:cursor-not-allowed disabled:opacity-40"
-                          >
-                            +
-                          </button>
-                        </div>
-                      </li>
-                    ))}
-                  </ul>
+                      ))}
+                    </div>
+                  </div>
                 </section>
+              </div>
               </div>
             }
             onSecondaryAction={() => setIsBuildSummaryExpanded((previous) => !previous)}
