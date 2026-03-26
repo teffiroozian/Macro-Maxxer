@@ -400,7 +400,7 @@ export default function RestaurantView({
             sugars: option.sugars,
           },
           categories: [categoryByAddonRef[addonRef]],
-          portionType: "addon",
+          portionType: "addon" as const,
           image: option.image,
         }))
       );
@@ -463,7 +463,7 @@ export default function RestaurantView({
           : undefined;
         const defaultVariantId = ingredient.defaultVariantId;
 
-        return {
+        const menuItem: MenuItem = {
           id: ingredientId,
           name: ingredient.name,
           nutrition: ingredientBaseNutrition,
@@ -474,6 +474,7 @@ export default function RestaurantView({
           categories: [displayCategory],
           portionType: "addon",
         };
+        return menuItem;
       });
 
     if (selectedEntree !== "burrito") {
@@ -497,7 +498,6 @@ export default function RestaurantView({
   }, [
     ingredientDisplayMultiplier,
     ingredients,
-    isChipotleBuildPage,
     restaurantId,
     selectedEntree,
     selectedKidsMeal,
@@ -1724,7 +1724,7 @@ export default function RestaurantView({
                   ).length;
                   if (selectedSplitCount >= 2) return;
 
-                  const nextSplitModesById = {
+                  const nextSplitModesById: Record<string, SplitPortionMode> = {
                     ...splitPortionModeById,
                     [item.id]: modeId,
                   };
