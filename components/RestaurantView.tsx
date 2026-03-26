@@ -370,7 +370,7 @@ export default function RestaurantView({
   const [isBuildSummaryExpanded, setIsBuildSummaryExpanded] = useState(false);
   const buildStickyContainerRef = useRef<HTMLDivElement | null>(null);
   const entreeMenuRef = useRef<HTMLDivElement | null>(null);
-  const selectedIngredientsListRef = useRef<HTMLUListElement | null>(null);
+  const selectedIngredientsListRef = useRef<HTMLDivElement | null>(null);
   const [selectedEntree, setSelectedEntree] = useState<EntreeSelection>(null);
   const [isEntreeMenuOpen, setIsEntreeMenuOpen] = useState(false);
   const [selectedTacoShell, setSelectedTacoShell] = useState<TacoShellSelection>("crispy");
@@ -1463,6 +1463,30 @@ export default function RestaurantView({
       return leftIngredient.item.name.localeCompare(rightIngredient.item.name);
     });
   }, [ingredientMenuItems, isChipotleBuildPage, selectedIngredientItems]);
+  const groupedSelectedIngredientEntries = useMemo(() => {
+    const groupedEntries: Array<{
+      categoryKey: string;
+      categoryLabel: string;
+      entries: Array<[string, { item: MenuItem; quantity: number }]>;
+    }> = [];
+
+    selectedIngredientEntries.forEach((entry) => {
+      const categoryKey = normalizeIngredientCategory(entry[1].item.categories?.[0]);
+      const existingGroup = groupedEntries.find((group) => group.categoryKey === categoryKey);
+      if (existingGroup) {
+        existingGroup.entries.push(entry);
+        return;
+      }
+
+      groupedEntries.push({
+        categoryKey,
+        categoryLabel: CHIPOTLE_SELECTED_INGREDIENT_CATEGORY_LABELS[categoryKey] ?? "Ingredient",
+        entries: [entry],
+      });
+    });
+
+    return groupedEntries;
+  }, [selectedIngredientEntries]);
   const selectedProteinCount = selectedIngredientEntries.reduce((total, [, selectedIngredient]) => {
     return total + (isProteinIngredientItem(selectedIngredient.item) ? 1 : 0);
   }, 0);
@@ -2073,7 +2097,7 @@ export default function RestaurantView({
             PrimaryActionIcon={ShoppingCart}
             detailsOpen={isBuildSummaryExpanded}
             detailsContent={
-              <div className="space-y-3">
+              <div className="max-h-[calc(100vh-220px)] space-y-3 overflow-y-auto pr-1">
                 <div className="flex flex-wrap items-center justify-end gap-2">
                   <button
                     type="button"
@@ -2091,7 +2115,7 @@ export default function RestaurantView({
                   </button>
                 </div>
 
-                <div className="grid gap-4 lg:grid-cols-2">
+                <div className="grid items-stretch gap-4 lg:grid-cols-2">
                 <section className="rounded-[18px] border border-[rgba(0,0,0,0.15)] bg-white p-[18px]">
                   <h3 className="text-2xl font-bold text-neutral-900">Nutrition Summary</h3>
                   <div className="mt-6 text-xs font-medium text-[rgba(0,0,0,0.55)]">Amount per serving</div>
@@ -2141,64 +2165,68 @@ export default function RestaurantView({
                   </div>
                 </section>
 
-                <section className="flex min-h-0 flex-col rounded-3xl border border-black/10 bg-white p-5">
+                <section className="flex h-full min-h-0 flex-col rounded-3xl border border-black/10 bg-white p-5">
                   <h3 className="text-2xl font-bold text-neutral-900">Selected Ingredients</h3>
                   <p className="mt-2 text-sm font-semibold text-slate-600">
                     {CHIPOTLE_ENTREE_CONFIGURATIONS[selectedEntree ?? "bowl"].label} · {selectedIngredientCount} selected
                   </p>
-                  <ul
+                  <div
                     ref={selectedIngredientsListRef}
-                    className="mt-4 grid max-h-[300px] gap-2 overflow-y-auto rounded-xl bg-[#efefef] p-2"
+                    className="mt-4 min-h-0 flex-1 overflow-y-auto rounded-xl bg-[#efefef] p-2"
                   >
-                    {selectedIngredientEntries.map(([ingredientId, selectedIngredient]) => (
-                      <li key={ingredientId} className="flex items-center justify-between rounded-xl border border-black/10 bg-white px-3 py-2">
-                        <div className="flex min-w-0 items-center gap-2">
-                          <div className="h-8 w-8 shrink-0 overflow-hidden rounded-md border border-black/10 bg-neutral-100">
-                            <Image
-                              src={selectedIngredient.item.image || restaurantLogo}
-                              alt={selectedIngredient.item.name}
-                              width={32}
-                              height={32}
-                              className="h-full w-full object-cover"
-                            />
-                          </div>
-                          <div className="min-w-0">
-                            <p className="truncate text-[10px] font-semibold uppercase tracking-[0.06em] text-slate-500">
-                              {CHIPOTLE_SELECTED_INGREDIENT_CATEGORY_LABELS[
-                                normalizeIngredientCategory(selectedIngredient.item.categories?.[0])
-                              ] ?? "Ingredient"}
-                            </p>
-                            <span className="truncate text-sm font-medium text-slate-900">
-                              {selectedIngredient.item.name}
-                              {selectedIngredient.quantity > 1 ? ` (x${selectedIngredient.quantity})` : ""}
-                              {ingredientPortionLabelById[ingredientId]
-                                ? ` · ${ingredientPortionLabelById[ingredientId]}`
-                                : ""}
-                            </span>
-                          </div>
+                    <div className="space-y-3">
+                      {groupedSelectedIngredientEntries.map((group) => (
+                        <div key={group.categoryKey || "uncategorized"} className="space-y-1.5">
+                          <p className="px-1 text-[10px] font-semibold uppercase tracking-[0.06em] text-slate-500">
+                            {group.categoryLabel}
+                          </p>
+                          <ul className="grid gap-2">
+                            {group.entries.map(([ingredientId, selectedIngredient]) => (
+                              <li key={ingredientId} className="flex items-center justify-between rounded-xl border border-black/10 bg-white px-3 py-2">
+                                <div className="flex min-w-0 items-center gap-2">
+                                  <div className="h-8 w-8 shrink-0 overflow-hidden rounded-md border border-black/10 bg-neutral-100">
+                                    <Image
+                                      src={selectedIngredient.item.image || restaurantLogo}
+                                      alt={selectedIngredient.item.name}
+                                      width={32}
+                                      height={32}
+                                      className="h-full w-full object-cover"
+                                    />
+                                  </div>
+                                  <span className="truncate text-sm font-medium text-slate-900">
+                                    {selectedIngredient.item.name}
+                                    {selectedIngredient.quantity > 1 ? ` (x${selectedIngredient.quantity})` : ""}
+                                    {ingredientPortionLabelById[ingredientId]
+                                      ? ` · ${ingredientPortionLabelById[ingredientId]}`
+                                      : ""}
+                                  </span>
+                                </div>
+                                <div className="inline-flex items-center gap-2">
+                                  <button
+                                    type="button"
+                                    onClick={() => adjustIngredientQuantity(ingredientId, -1)}
+                                    disabled={lockedIngredientIds.has(ingredientId)}
+                                    className="h-7 w-7 rounded-full border border-black/20 text-base font-bold text-slate-700 disabled:cursor-not-allowed disabled:opacity-40"
+                                  >
+                                    −
+                                  </button>
+                                  <span className="w-4 text-center text-sm font-semibold text-slate-900">{selectedIngredient.quantity}</span>
+                                  <button
+                                    type="button"
+                                    onClick={() => adjustIngredientQuantity(ingredientId, 1)}
+                                    disabled={lockedIngredientIds.has(ingredientId)}
+                                    className="h-7 w-7 rounded-full border border-black/20 text-base font-bold text-slate-700 disabled:cursor-not-allowed disabled:opacity-40"
+                                  >
+                                    +
+                                  </button>
+                                </div>
+                              </li>
+                            ))}
+                          </ul>
                         </div>
-                        <div className="inline-flex items-center gap-2">
-                          <button
-                            type="button"
-                            onClick={() => adjustIngredientQuantity(ingredientId, -1)}
-                            disabled={lockedIngredientIds.has(ingredientId)}
-                            className="h-7 w-7 rounded-full border border-black/20 text-base font-bold text-slate-700 disabled:cursor-not-allowed disabled:opacity-40"
-                          >
-                            −
-                          </button>
-                          <span className="w-4 text-center text-sm font-semibold text-slate-900">{selectedIngredient.quantity}</span>
-                          <button
-                            type="button"
-                            onClick={() => adjustIngredientQuantity(ingredientId, 1)}
-                            disabled={lockedIngredientIds.has(ingredientId)}
-                            className="h-7 w-7 rounded-full border border-black/20 text-base font-bold text-slate-700 disabled:cursor-not-allowed disabled:opacity-40"
-                          >
-                            +
-                          </button>
-                        </div>
-                      </li>
-                    ))}
-                  </ul>
+                      ))}
+                    </div>
+                  </div>
                 </section>
               </div>
               </div>
