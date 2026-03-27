@@ -180,7 +180,6 @@ const CHIPOTLE_ENTREE_CONFIGURATIONS: Record<
   "kids-meal": {
     label: "Kid's Meal",
     imageSrc: "/restaurants/chipotle/entrees/kids-meal.png",
-    nutritionMultiplier: 0.5,
   },
   "chips-sides": {
     label: "Chips & Sides",
@@ -198,7 +197,7 @@ const CHIPOTLE_KIDS_QUESADILLA_INCLUDED_INGREDIENT_IDS = [
 ];
 const CHIPOTLE_KIDS_QUESADILLA_NUTRITION_OVERRIDES: Record<string, IngredientItem["nutrition"]> = {
   "soft-flour-tortilla": {
-    calories: 80,
+    calories: 83,
     totalFat: 3,
     protein: 2,
     carbs: 13,
@@ -211,6 +210,22 @@ const CHIPOTLE_KIDS_QUESADILLA_NUTRITION_OVERRIDES: Record<string, IngredientIte
   },
 };
 const CHIPOTLE_QUESADILLA_TRIPLE_CHEESE_VARIANT_ID = "quesadilla-triple-cheese";
+const CHIPOTLE_KIDS_MEAL_OPTIONS: Array<{
+  id: KidsMealSelection;
+  label: string;
+  imageSrc: string;
+}> = [
+  {
+    id: "build-your-own",
+    label: "Kid's Build Your Own",
+    imageSrc: "/restaurants/chipotle/entrees/kids-meal.png",
+  },
+  {
+    id: "quesadilla",
+    label: "Kid's Quesadilla",
+    imageSrc: "/restaurants/chipotle/entrees/quesadilla.png",
+  },
+];
 
 function formatValue(value?: number, suffix = "") {
   return value === undefined ? "—" : `${value}${suffix}`;
@@ -517,7 +532,19 @@ export default function RestaurantView({
         const isTacoShellIngredient = ingredient.id
           ? tacoShellIngredientIds.includes(ingredient.id)
           : false;
-        if (isTacoShellIngredient && selectedEntree !== "tacos") {
+        const isKidsBuildYourOwnTacoShellOption =
+          isTacoShellIngredient &&
+          selectedEntree === "kids-meal" &&
+          selectedKidsMeal === "build-your-own";
+        const isIncludedForCurrentBuild = ingredient.id
+          ? selectedIncludedIngredientIds.includes(ingredient.id)
+          : false;
+        if (
+          isTacoShellIngredient &&
+          selectedEntree !== "tacos" &&
+          !isKidsBuildYourOwnTacoShellOption &&
+          !isIncludedForCurrentBuild
+        ) {
           return false;
         }
 
@@ -537,8 +564,7 @@ export default function RestaurantView({
         const isQuesadillaCheeseIncludedIngredient =
           ingredientId === "cheese" &&
           shouldPinToIncludedCategory &&
-          (selectedEntree === "quesadilla" ||
-            (selectedEntree === "kids-meal" && selectedKidsMeal === "quesadilla"));
+          selectedEntree === "quesadilla";
         const hasCustomVariants = Boolean(ingredient.variants?.length);
         const ingredientBaseNutrition =
           selectedEntree === "kids-meal" && selectedKidsMeal === "quesadilla"
@@ -885,6 +911,16 @@ export default function RestaurantView({
   const handleSortChange = (nextSort: SortOption) => {
     setSort(nextSort);
   };
+  const handleKidsMealSelection = (kidsMeal: KidsMealSelection) => {
+    setSelectedKidsMeal(kidsMeal);
+    applyIncludedIngredientsNextFrame(
+      kidsMeal === "quesadilla" ? CHIPOTLE_KIDS_QUESADILLA_INCLUDED_INGREDIENT_IDS : [],
+      {
+        selectedEntree: "kids-meal",
+        selectedKidsMeal: kidsMeal,
+      }
+    );
+  };
 
   const selectedIngredientTotals = useMemo(
     () =>
@@ -909,13 +945,21 @@ export default function RestaurantView({
     [selectedIngredientItems, selectedIngredientVariantIds]
   );
   const adjustedSelectedIngredientTotals = useMemo(
-    () => ({
-      calories: Math.round(selectedIngredientTotals.calories * servingMultiplier),
-      protein: Math.round(selectedIngredientTotals.protein * servingMultiplier),
-      carbs: Math.round(selectedIngredientTotals.carbs * servingMultiplier),
-      fat: Math.round(selectedIngredientTotals.fat * servingMultiplier),
-    }),
-    [selectedIngredientTotals, servingMultiplier]
+    () => {
+      const scaledCalories = selectedIngredientTotals.calories * servingMultiplier;
+      const shouldRoundKidsQuesadillaCalories =
+        selectedEntree === "kids-meal" && selectedKidsMeal === "quesadilla";
+
+      return {
+        calories: shouldRoundKidsQuesadillaCalories
+          ? Math.round(scaledCalories / 10) * 10
+          : Math.round(scaledCalories),
+        protein: Math.round(selectedIngredientTotals.protein * servingMultiplier),
+        carbs: Math.round(selectedIngredientTotals.carbs * servingMultiplier),
+        fat: Math.round(selectedIngredientTotals.fat * servingMultiplier),
+      };
+    },
+    [selectedEntree, selectedIngredientTotals, selectedKidsMeal, servingMultiplier]
   );
 
   const selectedNutritionLabelTotals = useMemo(
@@ -958,19 +1002,27 @@ export default function RestaurantView({
     [selectedIngredientItems, selectedIngredientVariantIds]
   );
   const adjustedNutritionLabelTotals = useMemo(
-    () => ({
-      calories: Math.round(selectedNutritionLabelTotals.calories * servingMultiplier),
-      totalFat: Math.round(selectedNutritionLabelTotals.totalFat * servingMultiplier),
-      satFat: Math.round(selectedNutritionLabelTotals.satFat * servingMultiplier),
-      transFat: Math.round(selectedNutritionLabelTotals.transFat * servingMultiplier),
-      cholesterol: Math.round(selectedNutritionLabelTotals.cholesterol * servingMultiplier),
-      sodium: Math.round(selectedNutritionLabelTotals.sodium * servingMultiplier),
-      carbs: Math.round(selectedNutritionLabelTotals.carbs * servingMultiplier),
-      fiber: Math.round(selectedNutritionLabelTotals.fiber * servingMultiplier),
-      sugars: Math.round(selectedNutritionLabelTotals.sugars * servingMultiplier),
-      protein: Math.round(selectedNutritionLabelTotals.protein * servingMultiplier),
-    }),
-    [selectedNutritionLabelTotals, servingMultiplier]
+    () => {
+      const scaledCalories = selectedNutritionLabelTotals.calories * servingMultiplier;
+      const shouldRoundKidsQuesadillaCalories =
+        selectedEntree === "kids-meal" && selectedKidsMeal === "quesadilla";
+
+      return {
+        calories: shouldRoundKidsQuesadillaCalories
+          ? Math.round(scaledCalories / 10) * 10
+          : Math.round(scaledCalories),
+        totalFat: Math.round(selectedNutritionLabelTotals.totalFat * servingMultiplier),
+        satFat: Math.round(selectedNutritionLabelTotals.satFat * servingMultiplier),
+        transFat: Math.round(selectedNutritionLabelTotals.transFat * servingMultiplier),
+        cholesterol: Math.round(selectedNutritionLabelTotals.cholesterol * servingMultiplier),
+        sodium: Math.round(selectedNutritionLabelTotals.sodium * servingMultiplier),
+        carbs: Math.round(selectedNutritionLabelTotals.carbs * servingMultiplier),
+        fiber: Math.round(selectedNutritionLabelTotals.fiber * servingMultiplier),
+        sugars: Math.round(selectedNutritionLabelTotals.sugars * servingMultiplier),
+        protein: Math.round(selectedNutritionLabelTotals.protein * servingMultiplier),
+      };
+    },
+    [selectedEntree, selectedKidsMeal, selectedNutritionLabelTotals, servingMultiplier]
   );
 
   const selectedIngredientCount = Object.values(selectedIngredientItems).reduce(
@@ -1238,7 +1290,7 @@ export default function RestaurantView({
     }
   };
 
-  const applyIncludedIngredients = (
+  const applyIncludedIngredients = useCallback((
     nextIncludedIngredientIds: string[],
     context: IncludedIngredientContext = {
       selectedEntree,
@@ -1266,7 +1318,38 @@ export default function RestaurantView({
       });
 
       nextIncludedIngredientIds.forEach((includedIngredientId) => {
-        const includedIngredientItem = ingredientItemsById.get(includedIngredientId);
+        const includedIngredientItem =
+          ingredientItemsById.get(includedIngredientId) ??
+          (() => {
+            const fallbackIngredient = ingredients.find(
+              (ingredient) => ingredient.id === includedIngredientId
+            );
+            if (!fallbackIngredient) {
+              return null;
+            }
+
+            const fallbackNutrition =
+              context.selectedEntree === "kids-meal" &&
+              context.selectedKidsMeal === "quesadilla"
+                ? CHIPOTLE_KIDS_QUESADILLA_NUTRITION_OVERRIDES[includedIngredientId] ??
+                  scaleNutritionValues(fallbackIngredient.nutrition, ingredientDisplayMultiplier)
+                : scaleNutritionValues(fallbackIngredient.nutrition, ingredientDisplayMultiplier);
+
+            return {
+              id: includedIngredientId,
+              name: fallbackIngredient.name,
+              nutrition: fallbackNutrition,
+              variants: fallbackIngredient.variants?.map((variant) => ({
+                ...variant,
+                nutrition: scaleNutritionValues(variant.nutrition, ingredientDisplayMultiplier),
+              })),
+              defaultVariantId: fallbackIngredient.defaultVariantId,
+              hideVariantSelector: fallbackIngredient.hideVariantSelector,
+              image: fallbackIngredient.image,
+              categories: ["Included Ingredient"],
+              portionType: "addon" as const,
+            } satisfies MenuItem;
+          })();
         if (!includedIngredientItem || next[includedIngredientId]) {
           return;
         }
@@ -1299,7 +1382,31 @@ export default function RestaurantView({
       });
 
       nextIncludedIngredientIds.forEach((includedIngredientId) => {
-        const includedIngredientItem = ingredientItemsById.get(includedIngredientId);
+        const includedIngredientItem =
+          ingredientItemsById.get(includedIngredientId) ??
+          (() => {
+            const fallbackIngredient = ingredients.find(
+              (ingredient) => ingredient.id === includedIngredientId
+            );
+            if (!fallbackIngredient) {
+              return null;
+            }
+
+            return {
+              id: includedIngredientId,
+              name: fallbackIngredient.name,
+              nutrition: scaleNutritionValues(fallbackIngredient.nutrition, ingredientDisplayMultiplier),
+              variants: fallbackIngredient.variants?.map((variant) => ({
+                ...variant,
+                nutrition: scaleNutritionValues(variant.nutrition, ingredientDisplayMultiplier),
+              })),
+              defaultVariantId: fallbackIngredient.defaultVariantId,
+              hideVariantSelector: fallbackIngredient.hideVariantSelector,
+              image: fallbackIngredient.image,
+              categories: ["Included Ingredient"],
+              portionType: "addon" as const,
+            } satisfies MenuItem;
+          })();
         if (!includedIngredientItem) {
           return;
         }
@@ -1318,17 +1425,23 @@ export default function RestaurantView({
 
       return next;
     });
-  };
+  }, [
+    applyIngredientPortionNutrition,
+    ingredientDisplayMultiplier,
+    ingredients,
+    ingredientItemsById,
+    selectedEntree,
+    selectedKidsMeal,
+  ]);
 
-  const applyIncludedIngredientsNextFrame = (
+  const applyIncludedIngredientsNextFrame = useCallback((
     nextIncludedIngredientIds: string[],
     context?: IncludedIngredientContext
   ) => {
     window.requestAnimationFrame(() => {
       applyIncludedIngredients(nextIncludedIngredientIds, context);
     });
-  };
-
+  }, [applyIncludedIngredients]);
   const handleEntreeSelection = (entree: Exclude<EntreeSelection, null>) => {
     const nextIncludedIngredientIds =
       entree === "kids-meal"
@@ -1853,42 +1966,6 @@ export default function RestaurantView({
         hideSecondaryNav={isChipotleBuildPage && selectedEntree === null}
       />
 
-      {isChipotleBuildPage && selectedEntree === "kids-meal" ? (
-        <div className="mt-4 flex flex-wrap items-center gap-3">
-          {([
-            { id: "build-your-own", label: "Kid's Build Your Own" },
-            { id: "quesadilla", label: "Kid's Quesadilla" },
-          ] as const).map((option) => {
-            const isActive = selectedKidsMeal === option.id;
-            return (
-              <button
-                key={option.id}
-                type="button"
-                onClick={() => {
-                  setSelectedKidsMeal(option.id);
-                  applyIncludedIngredientsNextFrame(
-                    option.id === "quesadilla"
-                      ? CHIPOTLE_KIDS_QUESADILLA_INCLUDED_INGREDIENT_IDS
-                      : [],
-                    {
-                      selectedEntree: "kids-meal",
-                      selectedKidsMeal: option.id,
-                    }
-                  );
-                }}
-                className={`cursor-pointer rounded-full border px-4 py-2 text-sm font-semibold transition ${
-                  isActive
-                    ? "border-slate-900 bg-slate-900 text-white"
-                    : "border-slate-300 bg-white text-slate-800 hover:border-slate-500"
-                }`}
-              >
-                {option.label}
-              </button>
-            );
-          })}
-        </div>
-      ) : null}
-
       {isChipotleBuildPage && selectedEntree === null ? (
         <div>
           <section className="mx-auto flex w-full max-w-5xl flex-col items-center px-4 pb-12">
@@ -1996,6 +2073,53 @@ export default function RestaurantView({
 
           <div className="min-w-0">
             <div className="mx-auto max-w-[900px]">
+              {isChipotleBuildPage && selectedEntree === "kids-meal" ? (
+                <section className="mb-6">
+                  <p className="text-sm font-semibold text-slate-700">
+                    Choose Your Kid&apos;s Meal
+                  </p>
+                  <div className="mt-3 grid grid-cols-1 gap-3 sm:grid-cols-2">
+                    {CHIPOTLE_KIDS_MEAL_OPTIONS.map((option) => {
+                      const isActive = selectedKidsMeal === option.id;
+                      return (
+                        <button
+                          key={option.id}
+                          type="button"
+                          onClick={() => handleKidsMealSelection(option.id)}
+                          className={`cursor-pointer rounded-3xl border bg-white p-4 text-left transition ${
+                            isActive
+                              ? "border-2 border-lime-500 shadow-[0_4px_12px_rgba(132,204,22,0.25)]"
+                              : "border-black/10 hover:border-black/25"
+                          }`}
+                          aria-pressed={isActive}
+                        >
+                          <span className="flex items-center gap-3">
+                            <span
+                              className={`inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-full border ${
+                                isActive ? "border-lime-500" : "border-slate-400"
+                              }`}
+                              aria-hidden="true"
+                            >
+                              {isActive ? <span className="h-2.5 w-2.5 rounded-full bg-lime-500" /> : null}
+                            </span>
+                            <span className="flex min-w-0 flex-1 flex-col">
+                              <span className="relative h-20 w-full overflow-hidden rounded-2xl border border-black/5 bg-slate-50">
+                              <Image
+                                src={option.imageSrc}
+                                alt={option.label}
+                                fill
+                                className="object-contain p-2"
+                              />
+                            </span>
+                              <span className="mt-3 block text-sm font-semibold text-slate-900">{option.label}</span>
+                            </span>
+                          </span>
+                        </button>
+                      );
+                    })}
+                  </div>
+                </section>
+              ) : null}
               <MenuSections
                 restaurantId={restaurantId}
                 items={visibleMenuItems}
