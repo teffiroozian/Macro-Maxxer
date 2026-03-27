@@ -945,13 +945,21 @@ export default function RestaurantView({
     [selectedIngredientItems, selectedIngredientVariantIds]
   );
   const adjustedSelectedIngredientTotals = useMemo(
-    () => ({
-      calories: Math.round(selectedIngredientTotals.calories * servingMultiplier),
-      protein: Math.round(selectedIngredientTotals.protein * servingMultiplier),
-      carbs: Math.round(selectedIngredientTotals.carbs * servingMultiplier),
-      fat: Math.round(selectedIngredientTotals.fat * servingMultiplier),
-    }),
-    [selectedIngredientTotals, servingMultiplier]
+    () => {
+      const scaledCalories = selectedIngredientTotals.calories * servingMultiplier;
+      const shouldRoundKidsQuesadillaCalories =
+        selectedEntree === "kids-meal" && selectedKidsMeal === "quesadilla";
+
+      return {
+        calories: shouldRoundKidsQuesadillaCalories
+          ? Math.round(scaledCalories / 10) * 10
+          : Math.round(scaledCalories),
+        protein: Math.round(selectedIngredientTotals.protein * servingMultiplier),
+        carbs: Math.round(selectedIngredientTotals.carbs * servingMultiplier),
+        fat: Math.round(selectedIngredientTotals.fat * servingMultiplier),
+      };
+    },
+    [selectedEntree, selectedIngredientTotals, selectedKidsMeal, servingMultiplier]
   );
 
   const selectedNutritionLabelTotals = useMemo(
@@ -994,19 +1002,27 @@ export default function RestaurantView({
     [selectedIngredientItems, selectedIngredientVariantIds]
   );
   const adjustedNutritionLabelTotals = useMemo(
-    () => ({
-      calories: Math.round(selectedNutritionLabelTotals.calories * servingMultiplier),
-      totalFat: Math.round(selectedNutritionLabelTotals.totalFat * servingMultiplier),
-      satFat: Math.round(selectedNutritionLabelTotals.satFat * servingMultiplier),
-      transFat: Math.round(selectedNutritionLabelTotals.transFat * servingMultiplier),
-      cholesterol: Math.round(selectedNutritionLabelTotals.cholesterol * servingMultiplier),
-      sodium: Math.round(selectedNutritionLabelTotals.sodium * servingMultiplier),
-      carbs: Math.round(selectedNutritionLabelTotals.carbs * servingMultiplier),
-      fiber: Math.round(selectedNutritionLabelTotals.fiber * servingMultiplier),
-      sugars: Math.round(selectedNutritionLabelTotals.sugars * servingMultiplier),
-      protein: Math.round(selectedNutritionLabelTotals.protein * servingMultiplier),
-    }),
-    [selectedNutritionLabelTotals, servingMultiplier]
+    () => {
+      const scaledCalories = selectedNutritionLabelTotals.calories * servingMultiplier;
+      const shouldRoundKidsQuesadillaCalories =
+        selectedEntree === "kids-meal" && selectedKidsMeal === "quesadilla";
+
+      return {
+        calories: shouldRoundKidsQuesadillaCalories
+          ? Math.round(scaledCalories / 10) * 10
+          : Math.round(scaledCalories),
+        totalFat: Math.round(selectedNutritionLabelTotals.totalFat * servingMultiplier),
+        satFat: Math.round(selectedNutritionLabelTotals.satFat * servingMultiplier),
+        transFat: Math.round(selectedNutritionLabelTotals.transFat * servingMultiplier),
+        cholesterol: Math.round(selectedNutritionLabelTotals.cholesterol * servingMultiplier),
+        sodium: Math.round(selectedNutritionLabelTotals.sodium * servingMultiplier),
+        carbs: Math.round(selectedNutritionLabelTotals.carbs * servingMultiplier),
+        fiber: Math.round(selectedNutritionLabelTotals.fiber * servingMultiplier),
+        sugars: Math.round(selectedNutritionLabelTotals.sugars * servingMultiplier),
+        protein: Math.round(selectedNutritionLabelTotals.protein * servingMultiplier),
+      };
+    },
+    [selectedEntree, selectedKidsMeal, selectedNutritionLabelTotals, servingMultiplier]
   );
 
   const selectedIngredientCount = Object.values(selectedIngredientItems).reduce(
