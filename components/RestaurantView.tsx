@@ -180,7 +180,6 @@ const CHIPOTLE_ENTREE_CONFIGURATIONS: Record<
   "kids-meal": {
     label: "Kid's Meal",
     imageSrc: "/restaurants/chipotle/entrees/kids-meal.png",
-    nutritionMultiplier: 0.5,
   },
   "chips-sides": {
     label: "Chips & Sides",
@@ -533,12 +532,17 @@ export default function RestaurantView({
         const isTacoShellIngredient = ingredient.id
           ? tacoShellIngredientIds.includes(ingredient.id)
           : false;
+        const isKidsBuildYourOwnTacoShellOption =
+          isTacoShellIngredient &&
+          selectedEntree === "kids-meal" &&
+          selectedKidsMeal === "build-your-own";
         const isIncludedForCurrentBuild = ingredient.id
           ? selectedIncludedIngredientIds.includes(ingredient.id)
           : false;
         if (
           isTacoShellIngredient &&
           selectedEntree !== "tacos" &&
+          !isKidsBuildYourOwnTacoShellOption &&
           !isIncludedForCurrentBuild
         ) {
           return false;
