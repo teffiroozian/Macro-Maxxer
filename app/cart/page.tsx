@@ -427,7 +427,7 @@ export default function CartPage() {
                         >
                           <div className="h-11 w-11 shrink-0 overflow-hidden rounded-lg border border-black/10 bg-white">
                             {/* eslint-disable-next-line @next/next/no-img-element */}
-                            <img src={item.image} alt={item.name} className="h-full w-full object-cover" />
+                            <img src={item.image} alt={item.name} className="h-full w-full object-contain p-1" />
                           </div>
                           <div className="min-w-0">
                             <p className="truncate text-sm font-medium text-neutral-900">

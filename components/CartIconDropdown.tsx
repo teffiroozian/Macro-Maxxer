@@ -131,7 +131,7 @@ export default function CartIconDropdown({
                     <img
                       src={lastAddedItem.image}
                       alt={lastAddedItem.name}
-                      className="h-full w-full object-cover"
+                      className="h-full w-full object-contain p-1"
                     />
                   ) : (
                     <div className="inline-flex h-full w-full items-center justify-center text-base font-semibold text-slate-600">

@@ -913,7 +913,9 @@ export default function MenuItemCard({
         <div className="shrink-0">
           {selectedItemImage ? (
             <img
-              className="block h-[210px] w-[210px] rounded-[14px] bg-[#efefef] object-cover shadow-[0_0_5px_rgba(0,0,0,0.25)]"
+              className={`block h-[210px] w-[210px] rounded-[14px] bg-[#efefef] shadow-[0_0_5px_rgba(0,0,0,0.25)] ${
+                isCartMode ? "object-contain p-2" : "object-cover"
+              }`}
               src={selectedItemImage}
               alt={item.name}
             />
