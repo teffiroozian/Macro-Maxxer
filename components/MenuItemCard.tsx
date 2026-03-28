@@ -822,7 +822,7 @@ export default function MenuItemCard({
           <div className="min-w-0 flex-1">
             {ingredientSelectionState && ingredientPortionBadge ? (
               <div className="mb-1">
-                <span className="inline-flex rounded-full bg-green-600 px-2 py-0.5 text-xs font-bold text-white">
+                <span className="inline-flex rounded-full bg-lime-500 px-2 py-0.5 text-xs font-bold text-black">
                   {ingredientPortionBadge}
                 </span>
               </div>

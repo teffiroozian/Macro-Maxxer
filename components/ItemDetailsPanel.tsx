@@ -642,7 +642,7 @@ export default function ItemDetailsPanel({
     availableIngredientTabs.length > 1 || (availableIngredientTabs[0]?.ingredients.length ?? 0) > 0;
 
   return (
-    <div className="grid grid-cols-2 gap-3 rounded-[18px] bg-[#e0e0e0] px-3 py-2">
+    <div className="grid grid-cols-2 gap-3 rounded-[18px] bg-[#e0e0e0] p-3">
       {shouldShowIngredientSection && selectedIngredientTab ? (
         <section className="col-span-2 rounded-[14px] border border-black/12 bg-white p-5">
           <h2 className="mb-6 text-2xl font-bold">Ingredients</h2>
