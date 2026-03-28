@@ -62,21 +62,25 @@ export default function StickyMacroTotalsBar({
     ? "w-full rounded-3xl border border-black/10 bg-white px-4 py-3"
     : `mx-auto w-full rounded-2xl border border-slate-200/70 bg-white px-4 py-6 shadow-[0_10px_30px_rgba(0,0,0,0.24)] transition-all duration-300 ${
         visible ? "pointer-events-auto" : "pointer-events-none"
-      }`;
+      } ${detailsOpen && detailsContent ? "flex max-h-[78vh] flex-col" : ""}`;
+
+  const contentContainerClassName = `mx-auto w-full max-w-5xl ${
+    detailsOpen && detailsContent ? "flex min-h-0 flex-1 flex-col" : ""
+  }`;
 
   return (
     <div className={wrapperClassName}>
       <div className={panelClassName}>
-        <div className="mx-auto w-full max-w-5xl">
+        <div className={contentContainerClassName}>
           {detailsOpen && detailsContent ? (
-            <div className="mb-4">
+            <div className="mb-4 min-h-0 flex-1 overflow-hidden">
               {detailsContent}
             </div>
           ) : null}
           {detailsOpen && detailsContent ? (
             <div className="mb-4 border-t border-black/10" aria-hidden="true" />
           ) : null}
-          <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:gap-6">
+          <div className="shrink-0 flex flex-col gap-4 lg:flex-row lg:items-center lg:gap-6">
             <section className="flex-1">
               {contextLine ? (
                 <p className="text-sm font-medium tracking-tight text-neutral-500">
