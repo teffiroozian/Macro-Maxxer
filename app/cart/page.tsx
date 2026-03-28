@@ -101,6 +101,36 @@ function normalizeIngredientKey(value: string) {
   return value.trim().toLowerCase();
 }
 
+function getIncludedIngredientIdsForChipotleBuild(cartItem: ReturnType<typeof useCart>["items"][number]) {
+  if (cartItem.restaurantId !== "chipotle" || !cartItem.buildConfiguration) {
+    return [] as string[];
+  }
+
+  const configuration = cartItem.buildConfiguration;
+
+  if (configuration.selectedEntree === "burrito") {
+    return ["tortilla"];
+  }
+
+  if (configuration.selectedEntree === "quesadilla") {
+    return ["tortilla", "cheese"];
+  }
+
+  if (configuration.selectedEntree === "salad") {
+    return ["romaine-lettuce"];
+  }
+
+  if (configuration.selectedEntree === "tacos") {
+    return [configuration.selectedTacoShell === "crispy" ? "crispy-corn-tortilla" : "soft-flour-tortilla"];
+  }
+
+  if (configuration.selectedEntree === "kids-meal" && configuration.selectedKidsMeal === "quesadilla") {
+    return ["soft-flour-tortilla", "cheese"];
+  }
+
+  return [];
+}
+
 function getBuildIngredientCountCustomizations(
   cartItem: ReturnType<typeof useCart>["items"][number],
   ingredientItems?: IngredientItem[]
@@ -127,10 +157,10 @@ function getBuildIngredientCountCustomizations(
 
 function buildCartBuildYourOwnMenuItem(
   cartItem: ReturnType<typeof useCart>["items"][number],
-  ingredientItems?: IngredientItem[]
+  ingredientItems?: IngredientItem[],
+  includedIngredientIds: string[] = []
 ): MenuItem {
   const ingredientCatalog = ingredientItems ?? [];
-  const selectedIngredientIds = Object.keys(cartItem.buildConfiguration?.selectedIngredientItems ?? {});
 
   const ingredientOptionsByTab = ingredientCatalog.reduce<Record<string, string[]>>((acc, ingredient) => {
     const ingredientId = ingredient.id ?? ingredient.name;
@@ -162,7 +192,7 @@ function buildCartBuildYourOwnMenuItem(
       carbs: cartItem.macrosPerItem.carbs,
       totalFat: cartItem.macrosPerItem.fat,
     },
-    ingredients: selectedIngredientIds,
+    ingredients: includedIngredientIds,
     customization: {
       ingredientTabs: tabNames,
       ingredientTabMaxQuantities,
@@ -388,10 +418,11 @@ export default function CartPage() {
                 cartItem,
                 ingredientItemsForRestaurant
               );
+              const includedIngredientIds = getIncludedIngredientIdsForChipotleBuild(cartItem);
 
               const menuItem: MenuItem = sourceItem
                 ?? (cartItem.buildConfiguration
-                  ? buildCartBuildYourOwnMenuItem(cartItem, ingredientItemsForRestaurant)
+                  ? buildCartBuildYourOwnMenuItem(cartItem, ingredientItemsForRestaurant, includedIngredientIds)
                   : {
                       id: cartItem.itemId,
                       name: cartItem.name,
@@ -423,6 +454,7 @@ export default function CartPage() {
                   initialCartOptionsLabel={cartItem.optionsLabel}
                   initialCartCustomizations={initialIngredientCustomizations}
                   flattenIngredientListInDetails={Boolean(cartItem.buildConfiguration)}
+                  lockedIngredientIdsInDetails={includedIngredientIds}
                   cartSummaryLine={summarizeItem(cartItem)}
                   onCartDecrement={() => updateQuantity(cartItem.id, cartItem.quantity - 1)}
                   onCartIncrement={() => updateQuantity(cartItem.id, cartItem.quantity + 1)}

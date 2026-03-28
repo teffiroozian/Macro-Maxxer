@@ -258,6 +258,7 @@ export default function MenuItemCard({
   onIngredientPortionModeChange,
   onIngredientVariantChange,
   flattenIngredientListInDetails = false,
+  lockedIngredientIdsInDetails,
 }: {
   restaurantId: string;
   item: MenuItem;
@@ -295,6 +296,7 @@ export default function MenuItemCard({
   onIngredientPortionModeChange?: (modeId: string) => void;
   onIngredientVariantChange?: (variantId: string) => void;
   flattenIngredientListInDetails?: boolean;
+  lockedIngredientIdsInDetails?: string[];
 }) {
   const [open, setOpen] = useState(false);
   const router = useRouter();
@@ -1310,6 +1312,7 @@ export default function MenuItemCard({
             showCustomizationDeltas={hasActiveCustomization}
             displayMode="full"
             flattenIngredientList={flattenIngredientListInDetails}
+            lockedIngredientIds={lockedIngredientIdsInDetails}
           />
         </div>
       </div>

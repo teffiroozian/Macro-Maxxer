@@ -481,6 +481,7 @@ export default function ItemDetailsPanel({
   onToggleIngredient,
   onSelectSingleIngredient,
   flattenIngredientList = false,
+  lockedIngredientIds = [],
 }: {
   item: MenuItem;
   nutrition: Nutrition;
@@ -510,6 +511,7 @@ export default function ItemDetailsPanel({
   onToggleIngredient?: (ingredientId: string) => void;
   onSelectSingleIngredient?: (ingredientId: string, ingredientIdsInTab: string[]) => void;
   flattenIngredientList?: boolean;
+  lockedIngredientIds?: string[];
 }) {
   const n = nutrition;
   const addonRefs = item.addonRefs ?? [];
@@ -530,6 +532,10 @@ export default function ItemDetailsPanel({
     );
 
   const activeCustomizationTotals = customizationTotals ?? { calories: 0, protein: 0, carbs: 0, fat: 0 };
+  const normalizedLockedIngredientIds = new Set(
+    lockedIngredientIds.map((ingredientId) => normalizeIngredientToken(ingredientId))
+  );
+  const isLockedIngredient = (ingredientId: string) => normalizedLockedIngredientIds.has(normalizeIngredientToken(ingredientId));
   const ingredientTabs = resolvePanelIngredientTabs(
     item,
     ingredientItems,
@@ -579,7 +585,32 @@ export default function ItemDetailsPanel({
     };
 
     if (flattenIngredientList) {
-      return selectedIngredientTab.ingredients.filter((ingredient) => selectedCountFor(ingredient) > 0);
+      return selectedIngredientTab.ingredients
+        .filter((ingredient) => selectedCountFor(ingredient) > 0)
+        .sort((left, right) => {
+          const categoryPriority = (ingredient: ResolvedPanelIngredient) => {
+            if (isLockedIngredient(ingredient.id)) return 0;
+            const normalizedCategory = normalizeIngredientCategory(
+              ingredient.ingredientItem?.categories?.[0] ?? ingredient.ingredientItem?.category ?? ""
+            );
+            if (normalizedCategory === "proteins") return 1;
+            if (normalizedCategory === "rice") return 2;
+            if (normalizedCategory === "beans") return 3;
+            if (normalizedCategory === "toppings") return 4;
+            if (normalizedCategory === "side") return 5;
+            return 6;
+          };
+
+          const leftPriority = categoryPriority(left);
+          const rightPriority = categoryPriority(right);
+          if (leftPriority !== rightPriority) return leftPriority - rightPriority;
+
+          const leftOrder = left.ingredientItem?.defaultOrder ?? Number.POSITIVE_INFINITY;
+          const rightOrder = right.ingredientItem?.defaultOrder ?? Number.POSITIVE_INFINITY;
+          if (leftOrder !== rightOrder) return leftOrder - rightOrder;
+
+          return left.label.localeCompare(right.label);
+        });
     }
     if (selectedIngredientTab.label !== INCLUDED_INGREDIENT_TAB) {
       return selectedIngredientTab.ingredients;
@@ -707,7 +738,9 @@ export default function ItemDetailsPanel({
                   selectedIngredientTab.label === INCLUDED_INGREDIENT_TAB && Boolean(linkedSingleSelectTab);
                 const isSingleSelectTab = selectedIngredientTab.selectionMode === "single";
                 const canToggleIngredientFromCard =
-                  !shouldShowSingleSelectNavigator && typeof ingredient.maxQuantity === "number";
+                  !isLockedIngredient(ingredient.id) &&
+                  !shouldShowSingleSelectNavigator &&
+                  typeof ingredient.maxQuantity === "number";
                 const cardClasses = `box-border flex h-full w-full flex-row items-center gap-3 rounded-[10px] border border-[rgba(0,0,0,0.15)] bg-[#f9f9f9] px-3 py-2 ${
                   isSelected
                     ? isSingleSelectTab
@@ -821,9 +854,10 @@ export default function ItemDetailsPanel({
                               <>
                                 <button
                                   type="button"
-                                  className="inline-flex h-7 w-7 cursor-pointer items-center justify-center rounded-md border border-[rgba(0,0,0,0.35)] bg-white text-[18px] font-bold leading-none"
+                                  className="inline-flex h-7 w-7 cursor-pointer items-center justify-center rounded-md border border-[rgba(0,0,0,0.35)] bg-white text-[18px] font-bold leading-none disabled:cursor-not-allowed disabled:opacity-40"
                                   aria-label={`Remove one ${ingredient.label}`}
                                   onClick={() => onDecrementIngredient?.(ingredient.id)}
+                                  disabled={isLockedIngredient(ingredient.id)}
                                 >
                                   -
                                 </button>
