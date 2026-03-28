@@ -480,6 +480,7 @@ export default function ItemDetailsPanel({
   onDecrementIngredient,
   onToggleIngredient,
   onSelectSingleIngredient,
+  flattenIngredientList = false,
 }: {
   item: MenuItem;
   nutrition: Nutrition;
@@ -508,6 +509,7 @@ export default function ItemDetailsPanel({
   onDecrementIngredient?: (ingredientId: string) => void;
   onToggleIngredient?: (ingredientId: string) => void;
   onSelectSingleIngredient?: (ingredientId: string, ingredientIdsInTab: string[]) => void;
+  flattenIngredientList?: boolean;
 }) {
   const n = nutrition;
   const addonRefs = item.addonRefs ?? [];
@@ -539,7 +541,21 @@ export default function ItemDetailsPanel({
   );
   const [activeIngredientTab, setActiveIngredientTab] = useState(ingredientTabs[0]?.label ?? INCLUDED_INGREDIENT_TAB);
   const availableIngredientTabs = ingredientTabs.filter((tab) => tab.ingredients.length > 0);
+  const flattenedIngredientTab = flattenIngredientList
+    ? {
+        id: "all-ingredients",
+        label: "Ingredients",
+        selectionMode: "quantity" as const,
+        ingredients: ingredientTabs
+          .flatMap((tab) => tab.ingredients)
+          .filter((ingredient, index, list) => {
+            if (ingredient.isNoneOption) return false;
+            return list.findIndex((candidate) => candidate.id === ingredient.id) === index;
+          }),
+      }
+    : undefined;
   const selectedIngredientTab =
+    flattenedIngredientTab ??
     availableIngredientTabs.find((tab) => tab.label === activeIngredientTab) ??
     availableIngredientTabs[0] ??
     ingredientTabs.find((tab) => tab.label === activeIngredientTab) ??
@@ -558,6 +574,9 @@ export default function ItemDetailsPanel({
   };
   const displayIngredients = (() => {
     if (!selectedIngredientTab) return [];
+    if (flattenIngredientList) {
+      return selectedIngredientTab.ingredients;
+    }
     if (selectedIngredientTab.label !== INCLUDED_INGREDIENT_TAB) {
       return selectedIngredientTab.ingredients;
     }
@@ -638,34 +657,37 @@ export default function ItemDetailsPanel({
 
     return includedIngredients;
   })();
-  const shouldShowIngredientSection =
-    availableIngredientTabs.length > 1 || (availableIngredientTabs[0]?.ingredients.length ?? 0) > 0;
+  const shouldShowIngredientSection = flattenIngredientList
+    ? (flattenedIngredientTab?.ingredients.length ?? 0) > 0
+    : availableIngredientTabs.length > 1 || (availableIngredientTabs[0]?.ingredients.length ?? 0) > 0;
 
   return (
     <div className="grid grid-cols-2 gap-3 rounded-[18px] bg-[#e0e0e0] p-3">
       {shouldShowIngredientSection && selectedIngredientTab ? (
         <section className="col-span-2 rounded-[14px] border border-black/12 bg-white p-5">
           <h2 className="mb-6 text-2xl font-bold">Ingredients</h2>
-          <div className="mb-4 flex flex-wrap gap-2">
-            {availableIngredientTabs.map((tab) => {
-              const isActive = tab.label === selectedIngredientTab.label;
+          {!flattenIngredientList ? (
+            <div className="mb-4 flex flex-wrap gap-2">
+              {availableIngredientTabs.map((tab) => {
+                const isActive = tab.label === selectedIngredientTab.label;
 
-              return (
-                <button
-                  key={tab.id}
-                  type="button"
-                  className={`cursor-pointer rounded-full border px-4 py-2 text-sm font-semibold transition ${
-                    isActive
-                      ? "border-black bg-black text-white"
-                      : "border-black/15 bg-[#f7f7f7] text-black/70"
-                  }`}
-                  onClick={() => setActiveIngredientTab(tab.label)}
-                >
-                  {getIngredientTabDisplayLabel(tab.label)}
-                </button>
-              );
-            })}
-          </div>
+                return (
+                  <button
+                    key={tab.id}
+                    type="button"
+                    className={`cursor-pointer rounded-full border px-4 py-2 text-sm font-semibold transition ${
+                      isActive
+                        ? "border-black bg-black text-white"
+                        : "border-black/15 bg-[#f7f7f7] text-black/70"
+                    }`}
+                    onClick={() => setActiveIngredientTab(tab.label)}
+                  >
+                    {getIngredientTabDisplayLabel(tab.label)}
+                  </button>
+                );
+              })}
+            </div>
+          ) : null}
           {displayIngredients.length > 0 ? (
             <ul className="grid list-none grid-cols-2 items-stretch gap-[10px] pl-0">
               {displayIngredients.map((ingredient) => {

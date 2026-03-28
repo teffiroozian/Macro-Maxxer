@@ -257,6 +257,7 @@ export default function MenuItemCard({
   selectedIngredientPortionModeId,
   onIngredientPortionModeChange,
   onIngredientVariantChange,
+  flattenIngredientListInDetails = false,
 }: {
   restaurantId: string;
   item: MenuItem;
@@ -293,6 +294,7 @@ export default function MenuItemCard({
   selectedIngredientPortionModeId?: string;
   onIngredientPortionModeChange?: (modeId: string) => void;
   onIngredientVariantChange?: (variantId: string) => void;
+  flattenIngredientListInDetails?: boolean;
 }) {
   const [open, setOpen] = useState(false);
   const router = useRouter();
@@ -1307,6 +1309,7 @@ export default function MenuItemCard({
             customizationTotals={customizationTotals}
             showCustomizationDeltas={hasActiveCustomization}
             displayMode="full"
+            flattenIngredientList={flattenIngredientListInDetails}
           />
         </div>
       </div>
