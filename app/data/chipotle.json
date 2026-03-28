@@ -195,16 +195,16 @@
             "portionType": "side",
             "image": "/restaurants/chipotle/menu/sides/chips-tomato-salsa.png",
             "nutrition": {
-                "calories": 25,
-                "totalFat": 0,
-                "satFat": 0,
+                "calories": 565,
+                "totalFat": 25,
+                "satFat": 3.5,
                 "transFat": 0,
                 "cholesterol": 0,
-                "sodium": 550,
-                "carbs": 4,
-                "fiber": 1,
-                "sugars": 1,
-                "protein": 0
+                "sodium": 940,
+                "carbs": 77,
+                "fiber": 8,
+                "sugars": 2,
+                "protein": 7
             },
             "entreeGroup": "chips-sides",
             "defaultOrder": 4
@@ -219,16 +219,16 @@
             "portionType": "side",
             "image": "/restaurants/chipotle/menu/sides/chips-red-chili-salsa.png",
             "nutrition": {
-                "calories": 30,
-                "totalFat": 0,
-                "satFat": 0,
+                "calories": 570,
+                "totalFat": 25,
+                "satFat": 3.5,
                 "transFat": 0,
                 "cholesterol": 0,
-                "sodium": 500,
-                "carbs": 4,
-                "fiber": 1,
-                "sugars": 0,
-                "protein": 0
+                "sodium": 890,
+                "carbs": 77,
+                "fiber": 8,
+                "sugars": 1,
+                "protein": 7
             },
             "entreeGroup": "chips-sides",
             "defaultOrder": 5
@@ -243,16 +243,16 @@
             "portionType": "side",
             "image": "/restaurants/chipotle/menu/sides/chips-green-chili-salsa.png",
             "nutrition": {
-                "calories": 15,
-                "totalFat": 0,
-                "satFat": 0,
+                "calories": 555,
+                "totalFat": 25,
+                "satFat": 3.5,
                 "transFat": 0,
                 "cholesterol": 0,
-                "sodium": 260,
-                "carbs": 4,
-                "fiber": 0,
-                "sugars": 2,
-                "protein": 0
+                "sodium": 650,
+                "carbs": 77,
+                "fiber": 7,
+                "sugars": 3,
+                "protein": 7
             },
             "entreeGroup": "chips-sides",
             "defaultOrder": 6
@@ -267,16 +267,16 @@
             "portionType": "side",
             "image": "/restaurants/chipotle/menu/sides/chips-chili-corn-salsa.png",
             "nutrition": {
-                "calories": 80,
-                "totalFat": 1.5,
-                "satFat": 0,
+                "calories": 620,
+                "totalFat": 26.5,
+                "satFat": 3.5,
                 "transFat": 0,
                 "cholesterol": 0,
-                "sodium": 330,
-                "carbs": 16,
-                "fiber": 3,
-                "sugars": 4,
-                "protein": 3
+                "sodium": 720,
+                "carbs": 89,
+                "fiber": 10,
+                "sugars": 5,
+                "protein": 10
             },
             "entreeGroup": "chips-sides",
             "defaultOrder": 7
@@ -290,16 +290,16 @@
             "portionType": "side",
             "image": "/restaurants/chipotle/menu/sides/chips-queso-blanco.png",
             "nutrition": {
-                "calories": 120,
-                "totalFat": 9,
-                "satFat": 6,
-                "transFat": 0,
-                "cholesterol": 30,
-                "sodium": 250,
-                "carbs": 4,
-                "fiber": 0,
-                "sugars": 1,
-                "protein": 5
+                "calories": 780,
+                "totalFat": 43,
+                "satFat": 15.5,
+                "transFat": 1,
+                "cholesterol": 60,
+                "sodium": 880,
+                "carbs": 80,
+                "fiber": 7,
+                "sugars": 3,
+                "protein": 17
             },
             "defaultVariantId": "chips-queso-blanco",
             "variants": [
@@ -308,16 +308,16 @@
                     "label": "Regular",
                     "portionType": "side",
                     "nutrition": {
-                        "calories": 120,
-                        "totalFat": 9,
-                        "satFat": 6,
-                        "transFat": 0,
-                        "cholesterol": 30,
-                        "sodium": 250,
-                        "carbs": 4,
-                        "fiber": 0,
-                        "sugars": 1,
-                        "protein": 5
+                        "calories": 780,
+                        "totalFat": 43,
+                        "satFat": 15.5,
+                        "transFat": 1,
+                        "cholesterol": 60,
+                        "sodium": 880,
+                        "carbs": 80,
+                        "fiber": 7,
+                        "sugars": 3,
+                        "protein": 17
                     }
                 },
                 {
@@ -325,16 +325,16 @@
                     "label": "Large Chips & Large Queso Blanco",
                     "portionType": "side",
                     "nutrition": {
-                        "calories": 120,
-                        "totalFat": 9,
-                        "satFat": 6,
-                        "transFat": 0,
-                        "cholesterol": 30,
-                        "sodium": 250,
-                        "carbs": 4,
-                        "fiber": 0,
-                        "sugars": 1,
-                        "protein": 5
+                        "calories": 1290,
+                        "totalFat": 75,
+                        "satFat": 28,
+                        "transFat": 1.5,
+                        "cholesterol": 120,
+                        "sodium": 1570,
+                        "carbs": 124,
+                        "fiber": 11,
+                        "sugars": 7,
+                        "protein": 31
                     }
                 }
             ],
