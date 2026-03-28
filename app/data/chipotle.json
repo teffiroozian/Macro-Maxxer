@@ -678,7 +678,7 @@
             "id": "organic-milk-8-oz",
             "name": "Organic Milk 8 oz",
             "categories": [
-                "Kid's Drinks"
+                "Kids Drinks"
             ],
             "portionType": "drink",
             "nutrition": {
@@ -700,7 +700,7 @@
             "id": "organic-chocolate-milk-8-oz",
             "name": "Organic Chocolate Milk 8 oz",
             "categories": [
-                "Kid's Drinks"
+                "Kids Drinks"
             ],
             "portionType": "drink",
             "nutrition": {
@@ -722,9 +722,10 @@
             "id": "organic-apple-juice-6-75-oz",
             "name": "Organic Apple Juice 6.75 oz",
             "categories": [
-                "Kid's Drinks"
+                "Kids Drinks"
             ],
             "portionType": "drink",
+            "image": "/restaurants/chipotle/menu/drinks/apple-juice.png",
             "nutrition": {
                 "calories": 100,
                 "totalFat": 0,
