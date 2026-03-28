@@ -62,7 +62,7 @@ export default function StickyMacroTotalsBar({
     ? "w-full rounded-3xl border border-black/10 bg-white px-4 py-3"
     : `mx-auto w-full rounded-2xl border border-slate-200/70 bg-white px-4 py-6 shadow-[0_10px_30px_rgba(0,0,0,0.24)] transition-all duration-300 ${
         visible ? "pointer-events-auto" : "pointer-events-none"
-      } ${detailsOpen && detailsContent ? "flex max-h-[78vh] flex-col" : ""}`;
+      } ${detailsOpen && detailsContent ? "flex max-h-[90vh] flex-col" : ""}`;
 
   const contentContainerClassName = `mx-auto w-full max-w-5xl ${
     detailsOpen && detailsContent ? "flex min-h-0 flex-1 flex-col" : ""
