@@ -52,6 +52,10 @@ const CATEGORY_PRIORITY_GROUPS = [
   { label: "Breakfast", aliases: ["breakfast"] },
   { label: "Sides", aliases: ["side", "sides"] },
   { label: "Drinks", aliases: ["drink", "drinks", "beverage", "beverages"] },
+  {
+    label: "Kids Drinks",
+    aliases: ["kids drink", "kids drinks", "kid's drink", "kid's drinks"],
+  },
   { label: "Kids", aliases: ["kid", "kids"] },
   { label: "Desserts", aliases: ["dessert", "desserts"] },
   { label: "Treats", aliases: ["treat", "treats"] },

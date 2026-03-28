@@ -673,6 +673,73 @@
             },
             "entreeGroup": "drinks",
             "defaultOrder": 24
+        },
+        {
+            "id": "organic-milk-8-oz",
+            "name": "Organic Milk 8 oz",
+            "categories": [
+                "Kids Drinks"
+            ],
+            "portionType": "drink",
+            "nutrition": {
+                "calories": 110,
+                "totalFat": 2.5,
+                "satFat": 1.5,
+                "transFat": 0,
+                "cholesterol": 15,
+                "sodium": 125,
+                "carbs": 12,
+                "fiber": 0,
+                "sugars": 12,
+                "protein": 8
+            },
+            "entreeGroup": "drinks",
+            "defaultOrder": 25
+        },
+        {
+            "id": "organic-chocolate-milk-8-oz",
+            "name": "Organic Chocolate Milk 8 oz",
+            "categories": [
+                "Kids Drinks"
+            ],
+            "portionType": "drink",
+            "nutrition": {
+                "calories": 160,
+                "totalFat": 3,
+                "satFat": 2,
+                "transFat": 0,
+                "cholesterol": 15,
+                "sodium": 220,
+                "carbs": 24,
+                "fiber": 1,
+                "sugars": 22,
+                "protein": 9
+            },
+            "entreeGroup": "drinks",
+            "defaultOrder": 26
+        },
+        {
+            "id": "organic-apple-juice-6-75-oz",
+            "name": "Organic Apple Juice 6.75 oz",
+            "categories": [
+                "Kids Drinks"
+            ],
+            "portionType": "drink",
+            "image": "/restaurants/chipotle/menu/drinks/apple-juice.png",
+            "nutrition": {
+                "calories": 100,
+                "totalFat": 0,
+                "satFat": 0,
+                "transFat": 0,
+                "cholesterol": 0,
+                "sodium": 10,
+                "carbs": 25,
+                "fiber": 0,
+                "sugars": 22,
+                "protein": 0
+            },
+            "entreeGroup": "drinks",
+            "defaultOrder": 27
         }
     ],
     "ingredients": [
