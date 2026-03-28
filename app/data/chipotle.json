@@ -681,6 +681,7 @@
                 "Kids Drinks"
             ],
             "portionType": "drink",
+            "image": "/restaurants/chipotle/menu/drinks/organic-milk.png",
             "nutrition": {
                 "calories": 110,
                 "totalFat": 2.5,
@@ -703,6 +704,7 @@
                 "Kids Drinks"
             ],
             "portionType": "drink",
+            "image": "/restaurants/chipotle/menu/drinks/organic-chocolate-milk.png",
             "nutrition": {
                 "calories": 160,
                 "totalFat": 3,
@@ -725,7 +727,7 @@
                 "Kids Drinks"
             ],
             "portionType": "drink",
-            "image": "/restaurants/chipotle/menu/drinks/apple-juice.png",
+            "image": "/restaurants/chipotle/menu/drinks/organic-apple-juice.png",
             "nutrition": {
                 "calories": 100,
                 "totalFat": 0,
