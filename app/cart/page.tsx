@@ -604,6 +604,7 @@ export default function CartPage() {
           <StickyMacroTotalsBar
             totals={totals}
             inline
+            layoutPreset="cart"
             onSecondaryAction={() => window.alert("Save Meal coming soon")}
             onPrimaryAction={() => window.alert("Generate Snapshot coming soon")}
           />
@@ -617,6 +618,7 @@ export default function CartPage() {
       <StickyMacroTotalsBar
         totals={totals}
         visible={showStickyBar}
+        layoutPreset="cart"
         onSecondaryAction={() => window.alert("Save Meal coming soon")}
         onPrimaryAction={() => window.alert("Generate Snapshot coming soon")}
       />
