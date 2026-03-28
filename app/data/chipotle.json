@@ -445,6 +445,73 @@
             "defaultOrder": 11
         },
         {
+            "id": "kids-chips",
+            "name": "Kid's Chips",
+            "categories": [
+                "Kids"
+            ],
+            "portionType": "side",
+            "image": "/restaurants/chipotle/menu/sides/chips.png",
+            "nutrition": {
+                "calories": 140,
+                "totalFat": 6,
+                "satFat": 1,
+                "transFat": 0,
+                "cholesterol": 0,
+                "sodium": 95,
+                "carbs": 18,
+                "fiber": 2,
+                "sugars": 0,
+                "protein": 2
+            },
+            "entreeGroup": "chips-sides",
+            "defaultOrder": 12
+        },
+        {
+            "id": "kids-mandarins",
+            "name": "Kid's Mandarins",
+            "categories": [
+                "Kids"
+            ],
+            "portionType": "side",
+            "nutrition": {
+                "calories": 35,
+                "totalFat": 0,
+                "satFat": 0,
+                "transFat": 0,
+                "cholesterol": 0,
+                "sodium": 0,
+                "carbs": 9,
+                "fiber": 1,
+                "sugars": 7,
+                "protein": 1
+            },
+            "entreeGroup": "chips-sides",
+            "defaultOrder": 13
+        },
+        {
+            "id": "kids-blueberries",
+            "name": "Kid's Blueberries",
+            "categories": [
+                "Kids"
+            ],
+            "portionType": "side",
+            "nutrition": {
+                "calories": 20,
+                "totalFat": 0,
+                "satFat": 0,
+                "transFat": 0,
+                "cholesterol": 0,
+                "sodium": 0,
+                "carbs": 5,
+                "fiber": 0,
+                "sugars": 3,
+                "protein": 1
+            },
+            "entreeGroup": "chips-sides",
+            "defaultOrder": 14
+        },
+        {
             "id": "side-of-chicken-al-pastor-high-protein",
             "name": "Side of Chicken al Pastor",
             "description": "28g Protein",
