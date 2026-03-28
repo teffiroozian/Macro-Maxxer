@@ -60,7 +60,7 @@ export default function StickyMacroTotalsBar({
 
   const panelClassName = inline
     ? "w-full rounded-3xl border border-black/10 bg-white px-4 py-3"
-    : `mx-auto w-full rounded-2xl border border-slate-200/70 bg-white px-4 py-4 shadow-[0_10px_30px_rgba(0,0,0,0.24)] transition-all duration-300 ${
+    : `mx-auto w-full rounded-2xl border border-slate-200/70 bg-white px-4 py-6 shadow-[0_10px_30px_rgba(0,0,0,0.24)] transition-all duration-300 ${
         visible ? "pointer-events-auto" : "pointer-events-none"
       }`;
 
@@ -90,7 +90,7 @@ export default function StickyMacroTotalsBar({
                       {totals[macro.key]}
                       {macro.unit ?? ""}
                     </p>
-                    <p className="mt-2 text-xs font-semibold uppercase tracking-wide text-[#1A1A1A]">
+                    <p className="mt-1 text-xs font-semibold uppercase tracking-wide text-[#1A1A1A]">
                       {macro.label}
                     </p>
                   </div>
