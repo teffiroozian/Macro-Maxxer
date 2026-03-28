@@ -134,16 +134,16 @@
             "portionType": "side",
             "image": "/restaurants/chipotle/menu/sides/chips-guacamole.png",
             "nutrition": {
-                "calories": 230,
-                "totalFat": 22,
-                "satFat": 3.5,
+                "calories": 770,
+                "totalFat": 47,
+                "satFat": 7.5,
                 "transFat": 0,
                 "cholesterol": 0,
-                "sodium": 370,
-                "carbs": 8,
-                "fiber": 6,
-                "sugars": 1,
-                "protein": 2
+                "sodium": 760,
+                "carbs": 81,
+                "fiber": 13,
+                "sugars": 2,
+                "protein": 9
             },
             "defaultVariantId": "chips-guacamole",
             "variants": [
@@ -152,16 +152,16 @@
                     "label": "Regular",
                     "portionType": "side",
                     "nutrition": {
-                        "calories": 230,
-                        "totalFat": 22,
-                        "satFat": 3.5,
+                        "calories": 770,
+                        "totalFat": 47,
+                        "satFat": 7.5,
                         "transFat": 0,
                         "cholesterol": 0,
-                        "sodium": 370,
-                        "carbs": 8,
-                        "fiber": 6,
-                        "sugars": 1,
-                        "protein": 2
+                        "sodium": 760,
+                        "carbs": 81,
+                        "fiber": 13,
+                        "sugars": 2,
+                        "protein": 9
                     }
                 },
                 {
@@ -169,16 +169,16 @@
                     "label": "Large Chips & Large Guacamole",
                     "portionType": "side",
                     "nutrition": {
-                        "calories": 230,
-                        "totalFat": 22,
-                        "satFat": 3.5,
+                        "calories": 1270,
+                        "totalFat": 82,
+                        "satFat": 12,
                         "transFat": 0,
                         "cholesterol": 0,
-                        "sodium": 370,
-                        "carbs": 8,
-                        "fiber": 6,
-                        "sugars": 1,
-                        "protein": 2
+                        "sodium": 1330,
+                        "carbs": 126,
+                        "fiber": 23,
+                        "sugars": 4,
+                        "protein": 15
                     }
                 }
             ],
