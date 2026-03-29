@@ -445,7 +445,7 @@ export default function RestaurantView({
       : viewMode;
   const selectedEntreeConfig = selectedEntree ? CHIPOTLE_ENTREE_CONFIGURATIONS[selectedEntree] : null;
   const selectedEntreeNutritionMultiplier = selectedEntreeConfig?.nutritionMultiplier ?? 1;
-  const tacoServingMultiplier = selectedEntree === "tacos" && selectedTacoCount === 1 ? 1 / 3 : 1;
+  const tacoServingMultiplier = selectedEntree === "tacos" ? selectedTacoCount : 1;
   const servingMultiplier = tacoServingMultiplier * selectedEntreeNutritionMultiplier;
   const ingredientDisplayMultiplier = servingMultiplier;
   const tacoShellIngredientIds = CHIPOTLE_TACO_SHELL_INGREDIENT_IDS;

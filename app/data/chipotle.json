@@ -876,10 +876,16 @@
             "category": "Side",
             "image": "/restaurants/chipotle/menu/sides/crispy-corn-tortilla.png",
             "nutrition": {
-                "calories": 200,
-                "protein": 3,
-                "carbs": 29,
-                "totalFat": 9
+                "calories": 70,
+                "totalFat": 3,
+                "satFat": 0,
+                "transFat": 0,
+                "cholesterol": 0,
+                "sodium": 0,
+                "carbs": 10,
+                "fiber": 1,
+                "sugars": 0,
+                "protein": 1
             }
         },
         {
@@ -888,10 +894,16 @@
             "category": "Side",
             "image": "/restaurants/chipotle/menu/sides/soft-flour-tortilla.png",
             "nutrition": {
-                "calories": 250,
-                "protein": 7,
-                "carbs": 40,
-                "totalFat": 8
+                "calories": 80,
+                "totalFat": 2.5,
+                "satFat": 0,
+                "transFat": 0,
+                "cholesterol": 0,
+                "sodium": 160,
+                "carbs": 13,
+                "fiber": 0,
+                "sugars": 0,
+                "protein": 2
             }
         },
         {
