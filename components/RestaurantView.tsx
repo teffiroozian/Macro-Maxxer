@@ -197,6 +197,10 @@ const CHIPOTLE_KIDS_QUESADILLA_INCLUDED_INGREDIENT_IDS = [
   "soft-flour-tortilla",
   "cheese",
 ];
+const CHIPOTLE_KIDS_BUILD_YOUR_OWN_DOUBLE_SIDE_IDS = new Set([
+  "crispy-corn-tortilla",
+  "soft-flour-tortilla",
+]);
 const CHIPOTLE_QUESADILLA_TRIPLE_CHEESE_VARIANT_ID = "quesadilla-triple-cheese";
 const CHIPOTLE_KIDS_MEAL_OPTIONS: Array<{
   id: KidsMealSelection;
@@ -525,6 +529,14 @@ export default function RestaurantView({
           return false;
         }
 
+        const shouldHideFromKidsBuildYourOwn =
+          selectedEntree === "kids-meal" &&
+          selectedKidsMeal === "build-your-own" &&
+          ingredient.id === "tortilla";
+        if (shouldHideFromKidsBuildYourOwn) {
+          return false;
+        }
+
         const isTacoShellIngredient = ingredient.id
           ? tacoShellIngredientIds.includes(ingredient.id)
           : false;
@@ -562,9 +574,16 @@ export default function RestaurantView({
           shouldPinToIncludedCategory &&
           selectedEntree === "quesadilla";
         const hasCustomVariants = Boolean(ingredient.variants?.length);
+        const kidsBuildYourOwnDoubleSideMultiplier =
+          selectedEntree === "kids-meal" &&
+          selectedKidsMeal === "build-your-own" &&
+          ingredient.id &&
+          CHIPOTLE_KIDS_BUILD_YOUR_OWN_DOUBLE_SIDE_IDS.has(ingredient.id)
+            ? 2
+            : 1;
         const ingredientBaseNutrition = scaleNutritionValues(
           ingredient.nutrition,
-          ingredientDisplayMultiplier
+          ingredientDisplayMultiplier * kidsBuildYourOwnDoubleSideMultiplier
         );
         const variants = hasCustomVariants
           ? ingredient.variants?.map((variant) => ({
@@ -1789,6 +1808,15 @@ export default function RestaurantView({
       }
 
       const category = normalizeIngredientCategory(selectedIngredient.item.categories?.[0]);
+      const shouldUseKidsBuildYourOwnDoubleLabel =
+        selectedEntree === "kids-meal" &&
+        selectedKidsMeal === "build-your-own" &&
+        CHIPOTLE_KIDS_BUILD_YOUR_OWN_DOUBLE_SIDE_IDS.has(ingredientId);
+      if (shouldUseKidsBuildYourOwnDoubleLabel) {
+        labelById[ingredientId] = "2x";
+        return;
+      }
+
       if (category !== "rice" && category !== "beans") {
         return;
       }
