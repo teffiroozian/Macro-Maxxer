@@ -728,10 +728,19 @@
             "image": "/restaurants/chipotle/menu/drinks/mexican-coca-cola.png",
             "nutrition": {
                 "calories": 150,
-                "protein": 0,
+                "totalFat": 0,
+                "satFat": 0,
+                "transFat": 0,
+                "polyunsaturatedFat": 0,
+                "cholesterol": 0,
+                "sodium": 85,
                 "carbs": 39,
-                "totalFat": 0
+                "fiber": 0,
+                "sugars": 39,
+                "addedSugars": 39,
+                "protein": 0
             },
+            "source": "third party",
             "entreeGroup": "drinks",
             "defaultOrder": 15
         },
@@ -744,11 +753,16 @@
             "portionType": "drink",
             "image": "/restaurants/chipotle/menu/drinks/mexican-sprite.png",
             "nutrition": {
-                "calories": 160,
-                "protein": 0,
-                "carbs": 40,
-                "totalFat": 0
+                "calories": 140,
+                "totalFat": 0,
+                "sodium": 95,
+                "carbs": 37,
+                "fiber": 0,
+                "sugars": 36,
+                "addedSugars": 36,
+                "protein": 0
             },
+            "source": "third party",
             "entreeGroup": "drinks",
             "defaultOrder": 16
         },
@@ -764,8 +778,10 @@
                 "calories": 0,
                 "protein": 0,
                 "carbs": 0,
-                "totalFat": 0
+                "totalFat": 0,
+                "sodium": 15
             },
+            "source": "third party",
             "entreeGroup": "drinks",
             "defaultOrder": 17
         },
@@ -779,10 +795,15 @@
             "image": "/restaurants/chipotle/menu/drinks/coke-zero.png",
             "nutrition": {
                 "calories": 0,
-                "protein": 0,
+                "totalFat": 0,
+                "sodium": 70,
                 "carbs": 0,
-                "totalFat": 0
+                "fiber": 0,
+                "sugars": 0,
+                "addedSugars": 0,
+                "protein": 0
             },
+            "source": "third party",
             "entreeGroup": "drinks",
             "defaultOrder": 18
         },
@@ -796,10 +817,15 @@
             "image": "/restaurants/chipotle/menu/drinks/poppi-strawberry-lemon.png",
             "nutrition": {
                 "calories": 30,
-                "protein": 0,
+                "totalFat": 0,
+                "sodium": 0,
                 "carbs": 9,
-                "totalFat": 0
+                "fiber": 3,
+                "sugars": 5,
+                "addedSugars": 4,
+                "protein": 0
             },
+            "source": "third party",
             "entreeGroup": "drinks",
             "defaultOrder": 19
         },
@@ -812,11 +838,16 @@
             "portionType": "drink",
             "image": "/restaurants/chipotle/menu/drinks/poppi-orange.png",
             "nutrition": {
-                "calories": 25,
-                "protein": 0,
+                "calories": 30,
+                "totalFat": 0,
+                "sodium": 0,
                 "carbs": 9,
-                "totalFat": 0
+                "fiber": 3,
+                "sugars": 5,
+                "addedSugars": 3,
+                "protein": 0
             },
+            "source": "third party",
             "entreeGroup": "drinks",
             "defaultOrder": 20
         },
@@ -829,11 +860,16 @@
             "portionType": "drink",
             "image": "/restaurants/chipotle/menu/drinks/grapefruit-izze.png",
             "nutrition": {
-                "calories": 160,
-                "protein": 0,
-                "carbs": 41,
-                "totalFat": 0
+                "calories": 100,
+                "totalFat": 0,
+                "sodium": 15,
+                "carbs": 22,
+                "fiber": 0,
+                "sugars": 21,
+                "addedSugars": 0,
+                "protein": 0
             },
+            "source": "third party",
             "entreeGroup": "drinks",
             "defaultOrder": 21
         },
@@ -846,11 +882,16 @@
             "portionType": "drink",
             "image": "/restaurants/chipotle/menu/drinks/blackberry-izze.png",
             "nutrition": {
-                "calories": 170,
-                "protein": 0,
-                "carbs": 41,
-                "totalFat": 0
+                "calories": 100,
+                "totalFat": 0,
+                "sodium": 10,
+                "carbs": 22,
+                "fiber": 0,
+                "sugars": 21,
+                "addedSugars": 0,
+                "protein": 0
             },
+            "source": "third party",
             "entreeGroup": "drinks",
             "defaultOrder": 22
         },
@@ -864,10 +905,17 @@
             "image": "/restaurants/chipotle/menu/drinks/apple-juice.png",
             "nutrition": {
                 "calories": 240,
-                "protein": 0,
-                "carbs": 60,
-                "totalFat": 0
+                "totalFat": 0,
+                "satFat": 0,
+                "transFat": 0,
+                "cholesterol": 0,
+                "sodium": 25,
+                "carbs": 59,
+                "fiber": 0,
+                "sugars": 50,
+                "protein": 0
             },
+            "source": "third party",
             "entreeGroup": "drinks",
             "defaultOrder": 23
         },
@@ -881,10 +929,15 @@
             "image": "/restaurants/chipotle/menu/drinks/open-still-water.png",
             "nutrition": {
                 "calories": 0,
-                "protein": 0,
+                "totalFat": 0,
+                "sodium": 0,
                 "carbs": 0,
-                "totalFat": 0
+                "fiber": 0,
+                "sugars": 0,
+                "addedSugars": 0,
+                "protein": 0
             },
+            "source": "third party",
             "entreeGroup": "drinks",
             "defaultOrder": 24
         },
@@ -897,7 +950,7 @@
             "portionType": "drink",
             "image": "/restaurants/chipotle/menu/drinks/organic-milk.png",
             "nutrition": {
-                "calories": 110,
+                "calories": 106,
                 "totalFat": 2.5,
                 "satFat": 1.5,
                 "transFat": 0,
@@ -906,8 +959,10 @@
                 "carbs": 12,
                 "fiber": 0,
                 "sugars": 12,
+                "addedSugars": 0,
                 "protein": 8
             },
+            "source": "third party",
             "entreeGroup": "drinks",
             "defaultOrder": 25
         },
@@ -920,17 +975,19 @@
             "portionType": "drink",
             "image": "/restaurants/chipotle/menu/drinks/organic-chocolate-milk.png",
             "nutrition": {
-                "calories": 160,
-                "totalFat": 3,
-                "satFat": 2,
+                "calories": 147,
+                "totalFat": 2.5,
+                "satFat": 1.5,
                 "transFat": 0,
-                "cholesterol": 15,
-                "sodium": 220,
-                "carbs": 24,
-                "fiber": 1,
-                "sugars": 22,
-                "protein": 9
+                "cholesterol": 10,
+                "sodium": 200,
+                "carbs": 22,
+                "fiber": 0,
+                "sugars": 21,
+                "addedSugars": 10,
+                "protein": 8
             },
+            "source": "third party",
             "entreeGroup": "drinks",
             "defaultOrder": 26
         },
@@ -948,12 +1005,14 @@
                 "satFat": 0,
                 "transFat": 0,
                 "cholesterol": 0,
-                "sodium": 10,
-                "carbs": 25,
+                "sodium": 5,
+                "carbs": 24,
                 "fiber": 0,
-                "sugars": 22,
+                "sugars": 23,
+                "addedSugars": 0,
                 "protein": 0
             },
+            "source": "third party",
             "entreeGroup": "drinks",
             "defaultOrder": 27
         }
