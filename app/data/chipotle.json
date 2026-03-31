@@ -942,6 +942,242 @@
             "defaultOrder": 24
         },
         {
+            "id": "organic-watermelon-limeade",
+            "name": "Organic Watermelon Limeade",
+            "categories": [
+                "Tractor Beverages"
+            ],
+            "portionType": "drink",
+            "nutrition": {
+                "calories": 230,
+                "totalFat": 0,
+                "satFat": 0,
+                "transFat": 0,
+                "cholesterol": 0,
+                "sodium": 5,
+                "carbs": 56,
+                "fiber": 0,
+                "sugars": 50,
+                "protein": 0
+            },
+            "defaultVariantId": "organic-watermelon-limeade-22-fl-oz",
+            "variants": [
+                {
+                    "id": "organic-watermelon-limeade-22-fl-oz",
+                    "label": "22 fl oz",
+                    "portionType": "drink",
+                    "nutrition": {
+                        "calories": 230,
+                        "totalFat": 0,
+                        "satFat": 0,
+                        "transFat": 0,
+                        "cholesterol": 0,
+                        "sodium": 5,
+                        "carbs": 56,
+                        "fiber": 0,
+                        "sugars": 50,
+                        "protein": 0
+                    }
+                },
+                {
+                    "id": "organic-watermelon-limeade-32-fl-oz",
+                    "label": "32 fl oz",
+                    "portionType": "drink",
+                    "nutrition": {
+                        "calories": 330,
+                        "totalFat": 0,
+                        "satFat": 0,
+                        "transFat": 0,
+                        "cholesterol": 0,
+                        "sodium": 10,
+                        "carbs": 82,
+                        "fiber": 0,
+                        "sugars": 72,
+                        "protein": 0
+                    }
+                }
+            ],
+            "entreeGroup": "drinks",
+            "defaultOrder": 25
+        },
+        {
+            "id": "organic-lemonade",
+            "name": "Organic Lemonade",
+            "categories": [
+                "Tractor Beverages"
+            ],
+            "portionType": "drink",
+            "nutrition": {
+                "calories": 170,
+                "totalFat": 0,
+                "satFat": 0,
+                "transFat": 0,
+                "cholesterol": 0,
+                "sodium": 10,
+                "carbs": 43,
+                "fiber": 0,
+                "sugars": 37,
+                "protein": 0
+            },
+            "defaultVariantId": "organic-lemonade-22-fl-oz",
+            "variants": [
+                {
+                    "id": "organic-lemonade-22-fl-oz",
+                    "label": "22 fl oz",
+                    "portionType": "drink",
+                    "nutrition": {
+                        "calories": 170,
+                        "totalFat": 0,
+                        "satFat": 0,
+                        "transFat": 0,
+                        "cholesterol": 0,
+                        "sodium": 10,
+                        "carbs": 43,
+                        "fiber": 0,
+                        "sugars": 37,
+                        "protein": 0
+                    }
+                },
+                {
+                    "id": "organic-lemonade-32-fl-oz",
+                    "label": "32 fl oz",
+                    "portionType": "drink",
+                    "nutrition": {
+                        "calories": 250,
+                        "totalFat": 0,
+                        "satFat": 0,
+                        "transFat": 0,
+                        "cholesterol": 0,
+                        "sodium": 15,
+                        "carbs": 62,
+                        "fiber": 0,
+                        "sugars": 53,
+                        "protein": 0
+                    }
+                }
+            ],
+            "entreeGroup": "drinks",
+            "defaultOrder": 26
+        },
+        {
+            "id": "organic-mandarin-agua-fresca",
+            "name": "Organic Mandarin Agua Fresca",
+            "categories": [
+                "Tractor Beverages"
+            ],
+            "portionType": "drink",
+            "nutrition": {
+                "calories": 190,
+                "totalFat": 0,
+                "satFat": 0,
+                "transFat": 0,
+                "cholesterol": 0,
+                "sodium": 0,
+                "carbs": 47,
+                "fiber": 0,
+                "sugars": 47,
+                "protein": 0
+            },
+            "defaultVariantId": "organic-mandarin-agua-fresca-22-fl-oz",
+            "variants": [
+                {
+                    "id": "organic-mandarin-agua-fresca-22-fl-oz",
+                    "label": "22 fl oz",
+                    "portionType": "drink",
+                    "nutrition": {
+                        "calories": 190,
+                        "totalFat": 0,
+                        "satFat": 0,
+                        "transFat": 0,
+                        "cholesterol": 0,
+                        "sodium": 0,
+                        "carbs": 47,
+                        "fiber": 0,
+                        "sugars": 47,
+                        "protein": 0
+                    }
+                },
+                {
+                    "id": "organic-mandarin-agua-fresca-32-fl-oz",
+                    "label": "32 fl oz",
+                    "portionType": "drink",
+                    "nutrition": {
+                        "calories": 280,
+                        "totalFat": 0,
+                        "satFat": 0,
+                        "transFat": 0,
+                        "cholesterol": 0,
+                        "sodium": 5,
+                        "carbs": 69,
+                        "fiber": 0,
+                        "sugars": 69,
+                        "protein": 0
+                    }
+                }
+            ],
+            "entreeGroup": "drinks",
+            "defaultOrder": 27
+        },
+        {
+            "id": "organic-berry-agua-fresca",
+            "name": "Organic Berry Agua Fresca",
+            "categories": [
+                "Tractor Beverages"
+            ],
+            "portionType": "drink",
+            "nutrition": {
+                "calories": 200,
+                "totalFat": 0,
+                "satFat": 0,
+                "transFat": 0,
+                "cholesterol": 0,
+                "sodium": 10,
+                "carbs": 50,
+                "fiber": 0,
+                "sugars": 49,
+                "protein": 0
+            },
+            "defaultVariantId": "organic-berry-agua-fresca-22-fl-oz",
+            "variants": [
+                {
+                    "id": "organic-berry-agua-fresca-22-fl-oz",
+                    "label": "22 fl oz",
+                    "portionType": "drink",
+                    "nutrition": {
+                        "calories": 200,
+                        "totalFat": 0,
+                        "satFat": 0,
+                        "transFat": 0,
+                        "cholesterol": 0,
+                        "sodium": 10,
+                        "carbs": 50,
+                        "fiber": 0,
+                        "sugars": 49,
+                        "protein": 0
+                    }
+                },
+                {
+                    "id": "organic-berry-agua-fresca-32-fl-oz",
+                    "label": "32 fl oz",
+                    "portionType": "drink",
+                    "nutrition": {
+                        "calories": 290,
+                        "totalFat": 0,
+                        "satFat": 0,
+                        "transFat": 0,
+                        "cholesterol": 0,
+                        "sodium": 15,
+                        "carbs": 72,
+                        "fiber": 0,
+                        "sugars": 72,
+                        "protein": 0
+                    }
+                }
+            ],
+            "entreeGroup": "drinks",
+            "defaultOrder": 28
+        },
+        {
             "id": "organic-milk-8-oz",
             "name": "Organic Milk 8 oz",
             "categories": [
@@ -964,7 +1200,7 @@
             },
             "source": "third party",
             "entreeGroup": "drinks",
-            "defaultOrder": 25
+            "defaultOrder": 29
         },
         {
             "id": "organic-chocolate-milk-8-oz",
@@ -989,7 +1225,7 @@
             },
             "source": "third party",
             "entreeGroup": "drinks",
-            "defaultOrder": 26
+            "defaultOrder": 30
         },
         {
             "id": "organic-apple-juice-6-75-oz",
@@ -1014,7 +1250,7 @@
             },
             "source": "third party",
             "entreeGroup": "drinks",
-            "defaultOrder": 27
+            "defaultOrder": 31
         }
     ],
     "ingredients": [
