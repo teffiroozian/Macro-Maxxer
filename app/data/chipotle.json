@@ -942,6 +942,440 @@
             "defaultOrder": 24
         },
         {
+            "id": "barqs-root-beer-fountain",
+            "name": "Barq's Root Beer",
+            "categories": [
+                "Fountain Drinks"
+            ],
+            "portionType": "drink",
+            "nutrition": {
+                "calories": 280,
+                "caloriesFromFat": 0,
+                "totalFat": 0,
+                "satFat": 0,
+                "transFat": 0,
+                "cholesterol": 0,
+                "sodium": 130,
+                "carbs": 85,
+                "fiber": 0,
+                "sugars": 85,
+                "protein": 0
+            },
+            "defaultVariantId": "barqs-root-beer-fountain-22-fl-oz",
+            "variants": [
+                {
+                    "id": "barqs-root-beer-fountain-22-fl-oz",
+                    "label": "22 fl oz",
+                    "portionType": "drink",
+                    "nutrition": {
+                        "calories": 280,
+                        "caloriesFromFat": 0,
+                        "totalFat": 0,
+                        "satFat": 0,
+                        "transFat": 0,
+                        "cholesterol": 0,
+                        "sodium": 130,
+                        "carbs": 85,
+                        "fiber": 0,
+                        "sugars": 85,
+                        "protein": 0
+                    }
+                },
+                {
+                    "id": "barqs-root-beer-fountain-32-fl-oz",
+                    "label": "32 fl oz",
+                    "portionType": "drink",
+                    "nutrition": {
+                        "calories": 430,
+                        "caloriesFromFat": 0,
+                        "totalFat": 0,
+                        "satFat": 0,
+                        "transFat": 0,
+                        "cholesterol": 0,
+                        "sodium": 180,
+                        "carbs": 120,
+                        "fiber": 0,
+                        "sugars": 120,
+                        "protein": 0
+                    }
+                }
+            ],
+            "entreeGroup": "drinks",
+            "defaultOrder": 25
+        },
+        {
+            "id": "coca-cola-classic-fountain",
+            "name": "Coca-Cola Classic",
+            "categories": [
+                "Fountain Drinks"
+            ],
+            "portionType": "drink",
+            "nutrition": {
+                "calories": 260,
+                "caloriesFromFat": 0,
+                "totalFat": 0,
+                "satFat": 0,
+                "transFat": 0,
+                "cholesterol": 0,
+                "sodium": 85,
+                "carbs": 70,
+                "fiber": 0,
+                "sugars": 70,
+                "protein": 0
+            },
+            "defaultVariantId": "coca-cola-classic-fountain-22-fl-oz",
+            "variants": [
+                {
+                    "id": "coca-cola-classic-fountain-22-fl-oz",
+                    "label": "22 fl oz",
+                    "portionType": "drink",
+                    "nutrition": {
+                        "calories": 260,
+                        "caloriesFromFat": 0,
+                        "totalFat": 0,
+                        "satFat": 0,
+                        "transFat": 0,
+                        "cholesterol": 0,
+                        "sodium": 85,
+                        "carbs": 70,
+                        "fiber": 0,
+                        "sugars": 70,
+                        "protein": 0
+                    }
+                },
+                {
+                    "id": "coca-cola-classic-fountain-32-fl-oz",
+                    "label": "32 fl oz",
+                    "portionType": "drink",
+                    "nutrition": {
+                        "calories": 380,
+                        "caloriesFromFat": 0,
+                        "totalFat": 0,
+                        "satFat": 0,
+                        "transFat": 0,
+                        "cholesterol": 0,
+                        "sodium": 120,
+                        "carbs": 105,
+                        "fiber": 0,
+                        "sugars": 105,
+                        "protein": 0
+                    }
+                }
+            ],
+            "entreeGroup": "drinks",
+            "defaultOrder": 26
+        },
+        {
+            "id": "coca-cola-life-fountain",
+            "name": "Coca Cola Life",
+            "categories": [
+                "Fountain Drinks"
+            ],
+            "portionType": "drink",
+            "nutrition": {
+                "calories": 170,
+                "caloriesFromFat": 0,
+                "totalFat": 0,
+                "satFat": 0,
+                "transFat": 0,
+                "cholesterol": 0,
+                "sodium": 70,
+                "carbs": 44,
+                "fiber": 0,
+                "sugars": 44,
+                "protein": 0
+            },
+            "defaultVariantId": "coca-cola-life-fountain-22-fl-oz",
+            "variants": [
+                {
+                    "id": "coca-cola-life-fountain-22-fl-oz",
+                    "label": "22 fl oz",
+                    "portionType": "drink",
+                    "nutrition": {
+                        "calories": 170,
+                        "caloriesFromFat": 0,
+                        "totalFat": 0,
+                        "satFat": 0,
+                        "transFat": 0,
+                        "cholesterol": 0,
+                        "sodium": 70,
+                        "carbs": 44,
+                        "fiber": 0,
+                        "sugars": 44,
+                        "protein": 0
+                    }
+                },
+                {
+                    "id": "coca-cola-life-fountain-32-fl-oz",
+                    "label": "32 fl oz",
+                    "portionType": "drink",
+                    "nutrition": {
+                        "calories": 250,
+                        "caloriesFromFat": 0,
+                        "totalFat": 0,
+                        "satFat": 0,
+                        "transFat": 0,
+                        "cholesterol": 0,
+                        "sodium": 105,
+                        "carbs": 64,
+                        "fiber": 0,
+                        "sugars": 64,
+                        "protein": 0
+                    }
+                }
+            ],
+            "entreeGroup": "drinks",
+            "defaultOrder": 27
+        },
+        {
+            "id": "coca-cola-zero-fountain",
+            "name": "Coca-Cola Zero",
+            "categories": [
+                "Fountain Drinks"
+            ],
+            "portionType": "drink",
+            "nutrition": {
+                "calories": 0,
+                "caloriesFromFat": 0,
+                "totalFat": 0,
+                "satFat": 0,
+                "transFat": 0,
+                "cholesterol": 0,
+                "sodium": 75,
+                "carbs": 0,
+                "fiber": 0,
+                "sugars": 0,
+                "protein": 0
+            },
+            "defaultVariantId": "coca-cola-zero-fountain-22-fl-oz",
+            "variants": [
+                {
+                    "id": "coca-cola-zero-fountain-22-fl-oz",
+                    "label": "22 fl oz",
+                    "portionType": "drink",
+                    "nutrition": {
+                        "calories": 0,
+                        "caloriesFromFat": 0,
+                        "totalFat": 0,
+                        "satFat": 0,
+                        "transFat": 0,
+                        "cholesterol": 0,
+                        "sodium": 75,
+                        "carbs": 0,
+                        "fiber": 0,
+                        "sugars": 0,
+                        "protein": 0
+                    }
+                },
+                {
+                    "id": "coca-cola-zero-fountain-32-fl-oz",
+                    "label": "32 fl oz",
+                    "portionType": "drink",
+                    "nutrition": {
+                        "calories": 0,
+                        "caloriesFromFat": 0,
+                        "totalFat": 0,
+                        "satFat": 0,
+                        "transFat": 0,
+                        "cholesterol": 0,
+                        "sodium": 115,
+                        "carbs": 0,
+                        "fiber": 0,
+                        "sugars": 0,
+                        "protein": 0
+                    }
+                }
+            ],
+            "entreeGroup": "drinks",
+            "defaultOrder": 28
+        },
+        {
+            "id": "diet-coke-fountain",
+            "name": "Diet Coke",
+            "categories": [
+                "Fountain Drinks"
+            ],
+            "portionType": "drink",
+            "nutrition": {
+                "calories": 0,
+                "caloriesFromFat": 0,
+                "totalFat": 0,
+                "satFat": 0,
+                "transFat": 0,
+                "cholesterol": 0,
+                "sodium": 75,
+                "carbs": 0,
+                "fiber": 0,
+                "sugars": 0,
+                "protein": 0
+            },
+            "defaultVariantId": "diet-coke-fountain-22-fl-oz",
+            "variants": [
+                {
+                    "id": "diet-coke-fountain-22-fl-oz",
+                    "label": "22 fl oz",
+                    "portionType": "drink",
+                    "nutrition": {
+                        "calories": 0,
+                        "caloriesFromFat": 0,
+                        "totalFat": 0,
+                        "satFat": 0,
+                        "transFat": 0,
+                        "cholesterol": 0,
+                        "sodium": 75,
+                        "carbs": 0,
+                        "fiber": 0,
+                        "sugars": 0,
+                        "protein": 0
+                    }
+                },
+                {
+                    "id": "diet-coke-fountain-32-fl-oz",
+                    "label": "32 fl oz",
+                    "portionType": "drink",
+                    "nutrition": {
+                        "calories": 0,
+                        "caloriesFromFat": 0,
+                        "totalFat": 0,
+                        "satFat": 0,
+                        "transFat": 0,
+                        "cholesterol": 0,
+                        "sodium": 115,
+                        "carbs": 0,
+                        "fiber": 0,
+                        "sugars": 0,
+                        "protein": 0
+                    }
+                }
+            ],
+            "entreeGroup": "drinks",
+            "defaultOrder": 29
+        },
+        {
+            "id": "diet-coke-caffeine-free-fountain",
+            "name": "Diet Coke, Caffeine Free",
+            "categories": [
+                "Fountain Drinks"
+            ],
+            "portionType": "drink",
+            "nutrition": {
+                "calories": 0,
+                "caloriesFromFat": 0,
+                "totalFat": 0,
+                "satFat": 0,
+                "transFat": 0,
+                "cholesterol": 0,
+                "sodium": 90,
+                "carbs": 0,
+                "fiber": 0,
+                "sugars": 0,
+                "protein": 0
+            },
+            "defaultVariantId": "diet-coke-caffeine-free-fountain-22-fl-oz",
+            "variants": [
+                {
+                    "id": "diet-coke-caffeine-free-fountain-22-fl-oz",
+                    "label": "22 fl oz",
+                    "portionType": "drink",
+                    "nutrition": {
+                        "calories": 0,
+                        "caloriesFromFat": 0,
+                        "totalFat": 0,
+                        "satFat": 0,
+                        "transFat": 0,
+                        "cholesterol": 0,
+                        "sodium": 90,
+                        "carbs": 0,
+                        "fiber": 0,
+                        "sugars": 0,
+                        "protein": 0
+                    }
+                },
+                {
+                    "id": "diet-coke-caffeine-free-fountain-32-fl-oz",
+                    "label": "32 fl oz",
+                    "portionType": "drink",
+                    "nutrition": {
+                        "calories": 0,
+                        "caloriesFromFat": 0,
+                        "totalFat": 0,
+                        "satFat": 0,
+                        "transFat": 0,
+                        "cholesterol": 0,
+                        "sodium": 130,
+                        "carbs": 1,
+                        "fiber": 0,
+                        "sugars": 0,
+                        "protein": 0
+                    }
+                }
+            ],
+            "entreeGroup": "drinks",
+            "defaultOrder": 30
+        },
+        {
+            "id": "pibb-xtra-fountain",
+            "name": "Pibb Xtra",
+            "categories": [
+                "Fountain Drinks"
+            ],
+            "portionType": "drink",
+            "nutrition": {
+                "calories": 260,
+                "caloriesFromFat": 0,
+                "totalFat": 0,
+                "satFat": 0,
+                "transFat": 0,
+                "cholesterol": 0,
+                "sodium": 75,
+                "carbs": 70,
+                "fiber": 0,
+                "sugars": 70,
+                "protein": 0
+            },
+            "defaultVariantId": "pibb-xtra-fountain-22-fl-oz",
+            "variants": [
+                {
+                    "id": "pibb-xtra-fountain-22-fl-oz",
+                    "label": "22 fl oz",
+                    "portionType": "drink",
+                    "nutrition": {
+                        "calories": 260,
+                        "caloriesFromFat": 0,
+                        "totalFat": 0,
+                        "satFat": 0,
+                        "transFat": 0,
+                        "cholesterol": 0,
+                        "sodium": 75,
+                        "carbs": 70,
+                        "fiber": 0,
+                        "sugars": 70,
+                        "protein": 0
+                    }
+                },
+                {
+                    "id": "pibb-xtra-fountain-32-fl-oz",
+                    "label": "32 fl oz",
+                    "portionType": "drink",
+                    "nutrition": {
+                        "calories": 380,
+                        "caloriesFromFat": 0,
+                        "totalFat": 0,
+                        "satFat": 0,
+                        "transFat": 0,
+                        "cholesterol": 0,
+                        "sodium": 115,
+                        "carbs": 105,
+                        "fiber": 0,
+                        "sugars": 105,
+                        "protein": 0
+                    }
+                }
+            ],
+            "entreeGroup": "drinks",
+            "defaultOrder": 31
+        },
+        {
             "id": "organic-watermelon-limeade",
             "name": "Organic Watermelon Limeade",
             "image": "/restaurants/chipotle/menu/drinks/organic-watermelon-limeade.webp",
@@ -999,7 +1433,7 @@
                 }
             ],
             "entreeGroup": "drinks",
-            "defaultOrder": 25
+            "defaultOrder": 32
         },
         {
             "id": "organic-lemonade",
@@ -1059,7 +1493,7 @@
                 }
             ],
             "entreeGroup": "drinks",
-            "defaultOrder": 26
+            "defaultOrder": 33
         },
         {
             "id": "organic-mandarin-agua-fresca",
@@ -1119,7 +1553,7 @@
                 }
             ],
             "entreeGroup": "drinks",
-            "defaultOrder": 27
+            "defaultOrder": 34
         },
         {
             "id": "organic-berry-agua-fresca",
@@ -1179,7 +1613,7 @@
                 }
             ],
             "entreeGroup": "drinks",
-            "defaultOrder": 28
+            "defaultOrder": 35
         },
         {
             "id": "organic-milk-8-oz",
@@ -1204,7 +1638,7 @@
             },
             "source": "third party",
             "entreeGroup": "drinks",
-            "defaultOrder": 29
+            "defaultOrder": 36
         },
         {
             "id": "organic-chocolate-milk-8-oz",
@@ -1229,7 +1663,7 @@
             },
             "source": "third party",
             "entreeGroup": "drinks",
-            "defaultOrder": 30
+            "defaultOrder": 37
         },
         {
             "id": "organic-apple-juice-6-75-oz",
@@ -1254,7 +1688,7 @@
             },
             "source": "third party",
             "entreeGroup": "drinks",
-            "defaultOrder": 31
+            "defaultOrder": 38
         }
     ],
     "ingredients": [
