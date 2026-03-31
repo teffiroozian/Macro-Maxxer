@@ -28,7 +28,6 @@ import subwayMenu from "@/app/data/subway.json";
 import { useCart } from "@/stores/cartStore";
 import { normalizeAddons } from "@/lib/addons";
 import { resolveMenuDataset } from "@/lib/menuResolver";
-import { toItemSlug } from "@/lib/restaurants";
 
 type MenuDataset = RestaurantMenu;
 
@@ -440,6 +439,17 @@ export default function CartPage() {
                         totalFat: cartItem.macrosPerItem.fat,
                       },
                     });
+              const cartCustomizeHref = (() => {
+                if (!cartItem.buildConfiguration) return undefined;
+                const params = new URLSearchParams({
+                  view: "ingredients",
+                  editCartItem: cartItem.id,
+                });
+                if (cartItem.buildConfiguration.selectedEntree) {
+                  params.set("selectedEntree", cartItem.buildConfiguration.selectedEntree);
+                }
+                return `/restaurant/${cartItem.restaurantId}?${params.toString()}`;
+              })();
 
               return (
                 <MenuItemCard
@@ -460,11 +470,7 @@ export default function CartPage() {
                   flattenIngredientListInDetails={Boolean(cartItem.buildConfiguration)}
                   lockedIngredientIdsInDetails={includedIngredientIds}
                   suppressRemovedIngredientCustomizationsInCart={Boolean(cartItem.buildConfiguration)}
-                  cartCustomizeHref={cartItem.buildConfiguration
-                    ? sourceItem
-                      ? `/restaurant/${cartItem.restaurantId}/items/${toItemSlug(sourceItem)}?view=ingredients&editCartItem=${cartItem.id}`
-                      : `/restaurant/${cartItem.restaurantId}?view=ingredients&editCartItem=${cartItem.id}`
-                    : undefined}
+                  cartCustomizeHref={cartCustomizeHref}
                   cartSummaryLine={summarizeItem(cartItem)}
                   onCartDecrement={() => updateQuantity(cartItem.id, cartItem.quantity - 1)}
                   onCartIncrement={() => updateQuantity(cartItem.id, cartItem.quantity + 1)}

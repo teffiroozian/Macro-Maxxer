@@ -131,6 +131,17 @@ export default function CartPreviewDrawer() {
                   const addonsLabel = customizationDisplayList.join(" • ");
                   const itemInitial =
                     (item.name?.trim().charAt(0) || "+").toUpperCase();
+                  const cartCustomizeHref = (() => {
+                    if (!item.buildConfiguration) return null;
+                    const params = new URLSearchParams({
+                      view: "ingredients",
+                      editCartItem: item.id,
+                    });
+                    if (item.buildConfiguration.selectedEntree) {
+                      params.set("selectedEntree", item.buildConfiguration.selectedEntree);
+                    }
+                    return `/restaurant/${item.restaurantId}?${params.toString()}`;
+                  })();
 
                   return (
                     <li
@@ -203,10 +214,9 @@ export default function CartPreviewDrawer() {
                               <button
                                 type="button"
                                 onClick={() => {
+                                  if (!cartCustomizeHref) return;
                                   closeCart();
-                                  router.push(
-                                    `/restaurant/${item.restaurantId}?view=ingredients&editCartItem=${item.id}`
-                                  );
+                                  router.push(cartCustomizeHref);
                                 }}
                                 className="cursor-pointer inline-flex size-8 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-700 transition hover:bg-slate-100"
                                 aria-label={`Edit ${item.name}`}

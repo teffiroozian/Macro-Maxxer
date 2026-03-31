@@ -423,7 +423,12 @@ export default function RestaurantView({
   const buildStickyContainerRef = useRef<HTMLDivElement | null>(null);
   const entreeMenuRef = useRef<HTMLDivElement | null>(null);
   const selectedIngredientsListRef = useRef<HTMLDivElement | null>(null);
-  const [selectedEntree, setSelectedEntree] = useState<EntreeSelection>(null);
+  const requestedEntree = searchParams.get("selectedEntree");
+  const initialEntreeSelection: EntreeSelection =
+    isChipotleBuildPage && requestedEntree && requestedEntree in CHIPOTLE_ENTREE_CONFIGURATIONS
+      ? (requestedEntree as Exclude<EntreeSelection, null>)
+      : null;
+  const [selectedEntree, setSelectedEntree] = useState<EntreeSelection>(initialEntreeSelection);
   const [isEntreeMenuOpen, setIsEntreeMenuOpen] = useState(false);
   const [selectedTacoShell, setSelectedTacoShell] = useState<TacoShellSelection>("crispy");
   const [selectedTacoCount, setSelectedTacoCount] = useState<TacoCountSelection>(3);
