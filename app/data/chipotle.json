@@ -1376,6 +1376,626 @@
             "defaultOrder": 31
         },
         {
+            "id": "sprite-fountain",
+            "name": "Sprite",
+            "categories": [
+                "Fountain Drinks"
+            ],
+            "portionType": "drink",
+            "nutrition": {
+                "calories": 260,
+                "caloriesFromFat": 0,
+                "totalFat": 0,
+                "satFat": 0,
+                "transFat": 0,
+                "cholesterol": 0,
+                "sodium": 120,
+                "carbs": 70,
+                "fiber": 0,
+                "sugars": 70,
+                "protein": 0
+            },
+            "defaultVariantId": "sprite-fountain-22-fl-oz",
+            "variants": [
+                {
+                    "id": "sprite-fountain-22-fl-oz",
+                    "label": "22 fl oz",
+                    "portionType": "drink",
+                    "nutrition": {
+                        "calories": 260,
+                        "caloriesFromFat": 0,
+                        "totalFat": 0,
+                        "satFat": 0,
+                        "transFat": 0,
+                        "cholesterol": 0,
+                        "sodium": 120,
+                        "carbs": 70,
+                        "fiber": 0,
+                        "sugars": 70,
+                        "protein": 0
+                    }
+                },
+                {
+                    "id": "sprite-fountain-32-fl-oz",
+                    "label": "32 fl oz",
+                    "portionType": "drink",
+                    "nutrition": {
+                        "calories": 380,
+                        "caloriesFromFat": 0,
+                        "totalFat": 0,
+                        "satFat": 0,
+                        "transFat": 0,
+                        "cholesterol": 0,
+                        "sodium": 180,
+                        "carbs": 105,
+                        "fiber": 0,
+                        "sugars": 105,
+                        "protein": 0
+                    }
+                }
+            ],
+            "entreeGroup": "drinks",
+            "defaultOrder": 32
+        },
+        {
+            "id": "fanta-orange-fountain",
+            "name": "Fanta Orange",
+            "categories": [
+                "Fountain Drinks"
+            ],
+            "portionType": "drink",
+            "nutrition": {
+                "calories": 290,
+                "caloriesFromFat": 0,
+                "totalFat": 0,
+                "satFat": 0,
+                "transFat": 0,
+                "cholesterol": 0,
+                "sodium": 80,
+                "carbs": 80,
+                "fiber": 0,
+                "sugars": 80,
+                "protein": 0
+            },
+            "defaultVariantId": "fanta-orange-fountain-22-fl-oz",
+            "variants": [
+                {
+                    "id": "fanta-orange-fountain-22-fl-oz",
+                    "label": "22 fl oz",
+                    "portionType": "drink",
+                    "nutrition": {
+                        "calories": 290,
+                        "caloriesFromFat": 0,
+                        "totalFat": 0,
+                        "satFat": 0,
+                        "transFat": 0,
+                        "cholesterol": 0,
+                        "sodium": 80,
+                        "carbs": 80,
+                        "fiber": 0,
+                        "sugars": 80,
+                        "protein": 0
+                    }
+                },
+                {
+                    "id": "fanta-orange-fountain-32-fl-oz",
+                    "label": "32 fl oz",
+                    "portionType": "drink",
+                    "nutrition": {
+                        "calories": 430,
+                        "caloriesFromFat": 0,
+                        "totalFat": 0,
+                        "satFat": 0,
+                        "transFat": 0,
+                        "cholesterol": 0,
+                        "sodium": 140,
+                        "carbs": 120,
+                        "fiber": 0,
+                        "sugars": 120,
+                        "protein": 0
+                    }
+                }
+            ],
+            "entreeGroup": "drinks",
+            "defaultOrder": 33
+        },
+        {
+            "id": "minute-maid-lemonade-fountain",
+            "name": "Minute Maid Lemonade",
+            "categories": [
+                "Fountain Drinks"
+            ],
+            "portionType": "drink",
+            "nutrition": {
+                "calories": 280,
+                "caloriesFromFat": 0,
+                "totalFat": 0,
+                "satFat": 0,
+                "transFat": 0,
+                "cholesterol": 0,
+                "sodium": 95,
+                "carbs": 75,
+                "fiber": 0,
+                "sugars": 75,
+                "protein": 0
+            },
+            "defaultVariantId": "minute-maid-lemonade-fountain-22-fl-oz",
+            "variants": [
+                {
+                    "id": "minute-maid-lemonade-fountain-22-fl-oz",
+                    "label": "22 fl oz",
+                    "portionType": "drink",
+                    "nutrition": {
+                        "calories": 280,
+                        "caloriesFromFat": 0,
+                        "totalFat": 0,
+                        "satFat": 0,
+                        "transFat": 0,
+                        "cholesterol": 0,
+                        "sodium": 95,
+                        "carbs": 75,
+                        "fiber": 0,
+                        "sugars": 75,
+                        "protein": 0
+                    }
+                },
+                {
+                    "id": "minute-maid-lemonade-fountain-32-fl-oz",
+                    "label": "32 fl oz",
+                    "portionType": "drink",
+                    "nutrition": {
+                        "calories": 400,
+                        "caloriesFromFat": 0,
+                        "totalFat": 0,
+                        "satFat": 0,
+                        "transFat": 0,
+                        "cholesterol": 0,
+                        "sodium": 140,
+                        "carbs": 110,
+                        "fiber": 0,
+                        "sugars": 110,
+                        "protein": 0
+                    }
+                }
+            ],
+            "entreeGroup": "drinks",
+            "defaultOrder": 34
+        },
+        {
+            "id": "powerade-mountain-berry-blast-fountain",
+            "name": "Powerade Mountain Berry Blast",
+            "categories": [
+                "Fountain Drinks"
+            ],
+            "portionType": "drink",
+            "nutrition": {
+                "calories": 280,
+                "caloriesFromFat": 0,
+                "totalFat": 0,
+                "satFat": 0,
+                "transFat": 0,
+                "cholesterol": 0,
+                "sodium": 95,
+                "carbs": 75,
+                "fiber": 0,
+                "sugars": 75,
+                "protein": 0
+            },
+            "defaultVariantId": "powerade-mountain-berry-blast-fountain-22-fl-oz",
+            "variants": [
+                {
+                    "id": "powerade-mountain-berry-blast-fountain-22-fl-oz",
+                    "label": "22 fl oz",
+                    "portionType": "drink",
+                    "nutrition": {
+                        "calories": 280,
+                        "caloriesFromFat": 0,
+                        "totalFat": 0,
+                        "satFat": 0,
+                        "transFat": 0,
+                        "cholesterol": 0,
+                        "sodium": 95,
+                        "carbs": 75,
+                        "fiber": 0,
+                        "sugars": 75,
+                        "protein": 0
+                    }
+                },
+                {
+                    "id": "powerade-mountain-berry-blast-fountain-32-fl-oz",
+                    "label": "32 fl oz",
+                    "portionType": "drink",
+                    "nutrition": {
+                        "calories": 400,
+                        "caloriesFromFat": 0,
+                        "totalFat": 0,
+                        "satFat": 0,
+                        "transFat": 0,
+                        "cholesterol": 0,
+                        "sodium": 140,
+                        "carbs": 110,
+                        "fiber": 0,
+                        "sugars": 110,
+                        "protein": 0
+                    }
+                }
+            ],
+            "entreeGroup": "drinks",
+            "defaultOrder": 35
+        },
+        {
+            "id": "mello-yello-fountain",
+            "name": "Mello Yello",
+            "categories": [
+                "Fountain Drinks"
+            ],
+            "portionType": "drink",
+            "nutrition": {
+                "calories": 290,
+                "caloriesFromFat": 0,
+                "totalFat": 0,
+                "satFat": 0,
+                "transFat": 0,
+                "cholesterol": 0,
+                "sodium": 100,
+                "carbs": 80,
+                "fiber": 0,
+                "sugars": 100,
+                "protein": 0
+            },
+            "defaultVariantId": "mello-yello-fountain-22-fl-oz",
+            "variants": [
+                {
+                    "id": "mello-yello-fountain-22-fl-oz",
+                    "label": "22 fl oz",
+                    "portionType": "drink",
+                    "nutrition": {
+                        "calories": 290,
+                        "caloriesFromFat": 0,
+                        "totalFat": 0,
+                        "satFat": 0,
+                        "transFat": 0,
+                        "cholesterol": 0,
+                        "sodium": 100,
+                        "carbs": 80,
+                        "fiber": 0,
+                        "sugars": 100,
+                        "protein": 0
+                    }
+                },
+                {
+                    "id": "mello-yello-fountain-32-fl-oz",
+                    "label": "32 fl oz",
+                    "portionType": "drink",
+                    "nutrition": {
+                        "calories": 420,
+                        "caloriesFromFat": 0,
+                        "totalFat": 0,
+                        "satFat": 0,
+                        "transFat": 0,
+                        "cholesterol": 0,
+                        "sodium": 140,
+                        "carbs": 116,
+                        "fiber": 0,
+                        "sugars": 140,
+                        "protein": 0
+                    }
+                }
+            ],
+            "entreeGroup": "drinks",
+            "defaultOrder": 36
+        },
+        {
+            "id": "lemonade-blue-sky-fountain",
+            "name": "Lemonade - Blue Sky",
+            "categories": [
+                "Fountain Drinks"
+            ],
+            "portionType": "drink",
+            "nutrition": {
+                "calories": 300,
+                "caloriesFromFat": 0,
+                "totalFat": 0,
+                "satFat": 0,
+                "transFat": 0,
+                "cholesterol": 0,
+                "sodium": 95,
+                "carbs": 78,
+                "fiber": 0,
+                "sugars": 74,
+                "protein": 0
+            },
+            "defaultVariantId": "lemonade-blue-sky-fountain-22-fl-oz",
+            "variants": [
+                {
+                    "id": "lemonade-blue-sky-fountain-22-fl-oz",
+                    "label": "22 fl oz",
+                    "portionType": "drink",
+                    "nutrition": {
+                        "calories": 300,
+                        "caloriesFromFat": 0,
+                        "totalFat": 0,
+                        "satFat": 0,
+                        "transFat": 0,
+                        "cholesterol": 0,
+                        "sodium": 95,
+                        "carbs": 78,
+                        "fiber": 0,
+                        "sugars": 74,
+                        "protein": 0
+                    }
+                },
+                {
+                    "id": "lemonade-blue-sky-fountain-32-fl-oz",
+                    "label": "32 fl oz",
+                    "portionType": "drink",
+                    "nutrition": {
+                        "calories": 440,
+                        "caloriesFromFat": 0,
+                        "totalFat": 0,
+                        "satFat": 0,
+                        "transFat": 0,
+                        "cholesterol": 0,
+                        "sodium": 135,
+                        "carbs": 113,
+                        "fiber": 0,
+                        "sugars": 108,
+                        "protein": 0
+                    }
+                }
+            ],
+            "entreeGroup": "drinks",
+            "defaultOrder": 37
+        },
+        {
+            "id": "mango-orange-blue-sky-fountain",
+            "name": "Mango Orange - Blue Sky",
+            "categories": [
+                "Fountain Drinks"
+            ],
+            "portionType": "drink",
+            "nutrition": {
+                "calories": 300,
+                "caloriesFromFat": 0,
+                "totalFat": 0,
+                "satFat": 0,
+                "transFat": 0,
+                "cholesterol": 0,
+                "sodium": 80,
+                "carbs": 75,
+                "fiber": 0,
+                "sugars": 74,
+                "protein": 0
+            },
+            "defaultVariantId": "mango-orange-blue-sky-fountain-22-fl-oz",
+            "variants": [
+                {
+                    "id": "mango-orange-blue-sky-fountain-22-fl-oz",
+                    "label": "22 fl oz",
+                    "portionType": "drink",
+                    "nutrition": {
+                        "calories": 300,
+                        "caloriesFromFat": 0,
+                        "totalFat": 0,
+                        "satFat": 0,
+                        "transFat": 0,
+                        "cholesterol": 0,
+                        "sodium": 80,
+                        "carbs": 75,
+                        "fiber": 0,
+                        "sugars": 74,
+                        "protein": 0
+                    }
+                },
+                {
+                    "id": "mango-orange-blue-sky-fountain-32-fl-oz",
+                    "label": "32 fl oz",
+                    "portionType": "drink",
+                    "nutrition": {
+                        "calories": 430,
+                        "caloriesFromFat": 0,
+                        "totalFat": 0,
+                        "satFat": 0,
+                        "transFat": 0,
+                        "cholesterol": 0,
+                        "sodium": 120,
+                        "carbs": 109,
+                        "fiber": 0,
+                        "sugars": 108,
+                        "protein": 0
+                    }
+                }
+            ],
+            "entreeGroup": "drinks",
+            "defaultOrder": 38
+        },
+        {
+            "id": "maine-root-root-beer-fountain",
+            "name": "Maine Root Root Beer",
+            "categories": [
+                "Fountain Drinks"
+            ],
+            "portionType": "drink",
+            "nutrition": {
+                "calories": 170,
+                "caloriesFromFat": 0,
+                "totalFat": 0,
+                "satFat": 0,
+                "transFat": 0,
+                "cholesterol": 0,
+                "sodium": 45,
+                "carbs": 62,
+                "fiber": 0,
+                "sugars": 62,
+                "protein": 0
+            },
+            "defaultVariantId": "maine-root-root-beer-fountain-22-fl-oz",
+            "variants": [
+                {
+                    "id": "maine-root-root-beer-fountain-22-fl-oz",
+                    "label": "22 fl oz",
+                    "portionType": "drink",
+                    "nutrition": {
+                        "calories": 170,
+                        "caloriesFromFat": 0,
+                        "totalFat": 0,
+                        "satFat": 0,
+                        "transFat": 0,
+                        "cholesterol": 0,
+                        "sodium": 45,
+                        "carbs": 62,
+                        "fiber": 0,
+                        "sugars": 62,
+                        "protein": 0
+                    }
+                },
+                {
+                    "id": "maine-root-root-beer-fountain-32-fl-oz",
+                    "label": "32 fl oz",
+                    "portionType": "drink",
+                    "nutrition": {
+                        "calories": 240,
+                        "caloriesFromFat": 0,
+                        "totalFat": 0,
+                        "satFat": 0,
+                        "transFat": 0,
+                        "cholesterol": 0,
+                        "sodium": 65,
+                        "carbs": 90,
+                        "fiber": 0,
+                        "sugars": 90,
+                        "protein": 0
+                    }
+                }
+            ],
+            "entreeGroup": "drinks",
+            "defaultOrder": 39
+        },
+        {
+            "id": "chipotle-iced-tea-fountain",
+            "name": "Chipotle Iced Tea",
+            "categories": [
+                "Fountain Drinks"
+            ],
+            "portionType": "drink",
+            "nutrition": {
+                "calories": 10,
+                "caloriesFromFat": 0,
+                "totalFat": 0,
+                "satFat": 0,
+                "transFat": 0,
+                "cholesterol": 0,
+                "sodium": 0,
+                "carbs": 3,
+                "fiber": 0,
+                "sugars": 0,
+                "protein": 0
+            },
+            "defaultVariantId": "chipotle-iced-tea-fountain-22-fl-oz",
+            "variants": [
+                {
+                    "id": "chipotle-iced-tea-fountain-22-fl-oz",
+                    "label": "22 fl oz",
+                    "portionType": "drink",
+                    "nutrition": {
+                        "calories": 10,
+                        "caloriesFromFat": 0,
+                        "totalFat": 0,
+                        "satFat": 0,
+                        "transFat": 0,
+                        "cholesterol": 0,
+                        "sodium": 0,
+                        "carbs": 3,
+                        "fiber": 0,
+                        "sugars": 0,
+                        "protein": 0
+                    }
+                },
+                {
+                    "id": "chipotle-iced-tea-fountain-32-fl-oz",
+                    "label": "32 fl oz",
+                    "portionType": "drink",
+                    "nutrition": {
+                        "calories": 15,
+                        "caloriesFromFat": 0,
+                        "totalFat": 0,
+                        "satFat": 0,
+                        "transFat": 0,
+                        "cholesterol": 0,
+                        "sodium": 0,
+                        "carbs": 4,
+                        "fiber": 0,
+                        "sugars": 0,
+                        "protein": 0
+                    }
+                }
+            ],
+            "entreeGroup": "drinks",
+            "defaultOrder": 40
+        },
+        {
+            "id": "chipotle-sweet-iced-tea-fountain",
+            "name": "Chipotle Sweet Iced Tea",
+            "categories": [
+                "Fountain Drinks"
+            ],
+            "portionType": "drink",
+            "nutrition": {
+                "calories": 150,
+                "caloriesFromFat": 0,
+                "totalFat": 0,
+                "satFat": 0,
+                "transFat": 0,
+                "cholesterol": 0,
+                "sodium": 0,
+                "carbs": 45,
+                "fiber": 0,
+                "sugars": 45,
+                "protein": 0
+            },
+            "defaultVariantId": "chipotle-sweet-iced-tea-fountain-22-fl-oz",
+            "variants": [
+                {
+                    "id": "chipotle-sweet-iced-tea-fountain-22-fl-oz",
+                    "label": "22 fl oz",
+                    "portionType": "drink",
+                    "nutrition": {
+                        "calories": 150,
+                        "caloriesFromFat": 0,
+                        "totalFat": 0,
+                        "satFat": 0,
+                        "transFat": 0,
+                        "cholesterol": 0,
+                        "sodium": 0,
+                        "carbs": 45,
+                        "fiber": 0,
+                        "sugars": 45,
+                        "protein": 0
+                    }
+                },
+                {
+                    "id": "chipotle-sweet-iced-tea-fountain-32-fl-oz",
+                    "label": "32 fl oz",
+                    "portionType": "drink",
+                    "nutrition": {
+                        "calories": 220,
+                        "caloriesFromFat": 0,
+                        "totalFat": 0,
+                        "satFat": 0,
+                        "transFat": 0,
+                        "cholesterol": 0,
+                        "sodium": 0,
+                        "carbs": 65,
+                        "fiber": 0,
+                        "sugars": 65,
+                        "protein": 0
+                    }
+                }
+            ],
+            "entreeGroup": "drinks",
+            "defaultOrder": 41
+        },
+        {
             "id": "organic-watermelon-limeade",
             "name": "Organic Watermelon Limeade",
             "image": "/restaurants/chipotle/menu/drinks/organic-watermelon-limeade.webp",
@@ -1433,7 +2053,7 @@
                 }
             ],
             "entreeGroup": "drinks",
-            "defaultOrder": 32
+            "defaultOrder": 42
         },
         {
             "id": "organic-lemonade",
@@ -1493,7 +2113,7 @@
                 }
             ],
             "entreeGroup": "drinks",
-            "defaultOrder": 33
+            "defaultOrder": 43
         },
         {
             "id": "organic-mandarin-agua-fresca",
@@ -1553,7 +2173,7 @@
                 }
             ],
             "entreeGroup": "drinks",
-            "defaultOrder": 34
+            "defaultOrder": 44
         },
         {
             "id": "organic-berry-agua-fresca",
@@ -1613,7 +2233,7 @@
                 }
             ],
             "entreeGroup": "drinks",
-            "defaultOrder": 35
+            "defaultOrder": 45
         },
         {
             "id": "organic-milk-8-oz",
@@ -1638,7 +2258,7 @@
             },
             "source": "third party",
             "entreeGroup": "drinks",
-            "defaultOrder": 36
+            "defaultOrder": 46
         },
         {
             "id": "organic-chocolate-milk-8-oz",
@@ -1663,7 +2283,7 @@
             },
             "source": "third party",
             "entreeGroup": "drinks",
-            "defaultOrder": 37
+            "defaultOrder": 47
         },
         {
             "id": "organic-apple-juice-6-75-oz",
@@ -1688,7 +2308,7 @@
             },
             "source": "third party",
             "entreeGroup": "drinks",
-            "defaultOrder": 38
+            "defaultOrder": 48
         }
     ],
     "ingredients": [
