@@ -107,6 +107,7 @@ const CATEGORY_ICONS: Record<string, LucideIcon> = {
   "dipping sauces": ToggleLeft,
   "chips & dips": Triangle,
   "single sides": Cylinder,
+  "protein meals": UtensilsCrossed,
   "protein cups": Ham,
   treats: IceCreamCone,
 };

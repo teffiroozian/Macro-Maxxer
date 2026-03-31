@@ -76,6 +76,7 @@ const CATEGORY_PRIORITY_GROUPS = [
   },
   { label: "Chips & Dips", aliases: ["chips & dips", "chips and dips"] },
   { label: "Single Sides", aliases: ["single side", "single sides"] },
+  { label: "Protein Meals", aliases: ["protein meal", "protein meals"] },
   { label: "Protein Cups", aliases: ["protein cup", "protein cups"] },
   { label: "Kids", aliases: ["kid", "kids", "kid's"] },
 ] as const;
