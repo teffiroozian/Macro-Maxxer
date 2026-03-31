@@ -53,6 +53,10 @@ const CATEGORY_PRIORITY_GROUPS = [
   { label: "Sides", aliases: ["side", "sides"] },
   { label: "Drinks", aliases: ["drink", "drinks", "beverage", "beverages"] },
   {
+    label: "Fountain Drinks",
+    aliases: ["fountain drink", "fountain drinks"],
+  },
+  {
     label: "Tractor Beverages",
     aliases: ["tractor beverage", "tractor beverages"],
   },
