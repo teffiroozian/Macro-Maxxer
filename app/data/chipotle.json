@@ -847,6 +847,7 @@
             "id": "romaine-lettuce",
             "name": "Romaine Lettuce",
             "category": "Toppings",
+            "defaultOrder": 10,
             "image": "/restaurants/chipotle/ingredients/toppings/romaine-lettuce.png",
             "nutrition": {
                 "calories": 5,
@@ -865,6 +866,7 @@
             "id": "cheese",
             "name": "Cheese",
             "category": "Toppings",
+            "defaultOrder": 9,
             "image": "/restaurants/chipotle/ingredients/toppings/cheese.png",
             "nutrition": {
                 "calories": 110,
@@ -883,6 +885,7 @@
             "id": "guacamole",
             "name": "Guacamole",
             "category": "Toppings",
+            "defaultOrder": 2,
             "image": "/restaurants/chipotle/ingredients/toppings/gaucamole.png",
             "nutrition": {
                 "calories": 230,
@@ -902,6 +905,7 @@
             "name": "Cilantro Lime Sauce",
             "description": "Served on the Side",
             "category": "Toppings",
+            "defaultOrder": 1,
             "image": "/restaurants/chipotle/ingredients/toppings/cilantro-lime-sauce.png",
             "nutrition": {
                 "calories": 80,
@@ -915,6 +919,7 @@
             "name": "Fresh Tomato Salsa",
             "description": "Mild",
             "category": "Toppings",
+            "defaultOrder": 3,
             "image": "/restaurants/chipotle/ingredients/toppings/tomato-salsa.png",
             "nutrition": {
                 "calories": 25,
@@ -934,6 +939,7 @@
             "name": "Roasted Chili-Corn Salsa",
             "description": "Medium",
             "category": "Toppings",
+            "defaultOrder": 4,
             "image": "/restaurants/chipotle/ingredients/toppings/chili-corn-salsa.png",
             "nutrition": {
                 "calories": 80,
@@ -953,6 +959,7 @@
             "name": "Tomatillo-Green Chili Salsa",
             "description": "Medium",
             "category": "Toppings",
+            "defaultOrder": 5,
             "image": "/restaurants/chipotle/ingredients/toppings/green-chili-salsa.png",
             "nutrition": {
                 "calories": 15,
@@ -972,6 +979,7 @@
             "name": "Tomatillo-Red Chili Salsa",
             "description": "Hot",
             "category": "Toppings",
+            "defaultOrder": 6,
             "image": "/restaurants/chipotle/ingredients/toppings/red-chili-salsa.png",
             "nutrition": {
                 "calories": 30,
@@ -990,6 +998,7 @@
             "id": "sour-cream",
             "name": "Sour Cream",
             "category": "Toppings",
+            "defaultOrder": 7,
             "image": "/restaurants/chipotle/ingredients/toppings/sour-cream.png",
             "nutrition": {
                 "calories": 110,
@@ -1008,6 +1017,7 @@
             "id": "fajita-veggies",
             "name": "Fajita Veggies",
             "category": "Toppings",
+            "defaultOrder": 8,
             "image": "/restaurants/chipotle/ingredients/toppings/fajita-veggies.png",
             "nutrition": {
                 "calories": 20,
@@ -1026,6 +1036,7 @@
             "id": "queso-blanco",
             "name": "Queso Blanco",
             "category": "Toppings",
+            "defaultOrder": 11,
             "image": "/restaurants/chipotle/ingredients/toppings/queso-blanco.png",
             "nutrition": {
                 "calories": 120,
@@ -1159,6 +1170,7 @@
             "id": "white-rice",
             "name": "White Rice",
             "category": "Rice",
+            "defaultOrder": 1,
             "image": "/restaurants/chipotle/ingredients/rice/white-rice.png",
             "nutrition": {
                 "calories": 210,
@@ -1177,6 +1189,7 @@
             "id": "brown-rice",
             "name": "Brown Rice",
             "category": "Rice",
+            "defaultOrder": 2,
             "image": "/restaurants/chipotle/ingredients/rice/brown-rice.png",
             "nutrition": {
                 "calories": 210,
@@ -1195,6 +1208,7 @@
             "id": "black-beans",
             "name": "Black Beans",
             "category": "Beans",
+            "defaultOrder": 1,
             "image": "/restaurants/chipotle/ingredients/beans/black-beans.png",
             "nutrition": {
                 "calories": 130,
@@ -1213,6 +1227,7 @@
             "id": "pinto-beans",
             "name": "Pinto Beans",
             "category": "Beans",
+            "defaultOrder": 2,
             "image": "/restaurants/chipotle/ingredients/beans/pinto-beans.png",
             "nutrition": {
                 "calories": 130,
