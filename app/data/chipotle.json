@@ -362,12 +362,184 @@
             "ingredientRef": "cilantro-lime-sauce",
             "description": "Served on the Side",
             "categories": [
-                "Toppings",
                 "Single Sides"
             ],
             "portionType": "side",
             "entreeGroup": "chips-sides",
-            "defaultOrder": 9
+            "defaultOrder": 9,
+            "defaultVariantId": "side-of-cilantro-lime-sauce",
+            "variants": [
+                {
+                    "id": "side-of-cilantro-lime-sauce",
+                    "label": "Regular",
+                    "portionType": "side",
+                    "nutrition": {
+                        "calories": 80,
+                        "protein": 2,
+                        "carbs": 3,
+                        "totalFat": 6
+                    }
+                },
+                {
+                    "id": "large-side-of-cilantro-lime-sauce",
+                    "label": "Large",
+                    "portionType": "side",
+                    "nutrition": {
+                        "calories": 320,
+                        "totalFat": 24,
+                        "protein": 8,
+                        "carbs": 12
+                    }
+                }
+            ]
+        },
+        {
+            "id": "side-of-fresh-tomato-salsa",
+            "name": "Fresh Tomato Salsa",
+            "ingredientRef": "fresh-tomato-salsa",
+            "description": "Mild",
+            "categories": [
+                "Single Sides"
+            ],
+            "portionType": "side",
+            "defaultVariantId": "side-of-fresh-tomato-salsa",
+            "variants": [
+                {
+                    "id": "side-of-fresh-tomato-salsa",
+                    "label": "Regular",
+                    "portionType": "side",
+                    "nutrition": {
+                        "calories": 25,
+                        "totalFat": 0,
+                        "protein": 0,
+                        "carbs": 4
+                    }
+                },
+                {
+                    "id": "large-side-of-fresh-tomato-salsa",
+                    "label": "Large",
+                    "portionType": "side",
+                    "nutrition": {
+                        "calories": 40,
+                        "totalFat": 0,
+                        "protein": 0,
+                        "carbs": 0
+                    }
+                }
+            ],
+            "entreeGroup": "chips-sides",
+            "defaultOrder": 10
+        },
+        {
+            "id": "side-of-tomatillo-red-chili-salsa",
+            "name": "Tomatillo-Red Chili Salsa",
+            "ingredientRef": "tomatillo-red-chili-salsa",
+            "description": "Hot",
+            "categories": [
+                "Single Sides"
+            ],
+            "portionType": "side",
+            "defaultVariantId": "side-of-tomatillo-red-chili-salsa",
+            "variants": [
+                {
+                    "id": "side-of-tomatillo-red-chili-salsa",
+                    "label": "Regular",
+                    "portionType": "side",
+                    "nutrition": {
+                        "calories": 30,
+                        "totalFat": 0,
+                        "protein": 0,
+                        "carbs": 4
+                    }
+                },
+                {
+                    "id": "large-side-of-tomatillo-red-chili-salsa",
+                    "label": "Large",
+                    "portionType": "side",
+                    "nutrition": {
+                        "calories": 90,
+                        "totalFat": 0,
+                        "protein": 0,
+                        "carbs": 0
+                    }
+                }
+            ],
+            "entreeGroup": "chips-sides",
+            "defaultOrder": 11
+        },
+        {
+            "id": "side-of-tomatillo-green-chili-salsa",
+            "name": "Tomatillo-Green Chili Salsa",
+            "ingredientRef": "tomatillo-green-chili-salsa",
+            "description": "Medium",
+            "categories": [
+                "Single Sides"
+            ],
+            "portionType": "side",
+            "defaultVariantId": "side-of-tomatillo-green-chili-salsa",
+            "variants": [
+                {
+                    "id": "side-of-tomatillo-green-chili-salsa",
+                    "label": "Regular",
+                    "portionType": "side",
+                    "nutrition": {
+                        "calories": 15,
+                        "totalFat": 0,
+                        "protein": 0,
+                        "carbs": 4
+                    }
+                },
+                {
+                    "id": "large-side-of-tomatillo-green-chili-salsa",
+                    "label": "Large",
+                    "portionType": "side",
+                    "nutrition": {
+                        "calories": 45,
+                        "totalFat": 0,
+                        "protein": 0,
+                        "carbs": 0
+                    }
+                }
+            ],
+            "entreeGroup": "chips-sides",
+            "defaultOrder": 12
+        },
+        {
+            "id": "side-of-roasted-chili-corn-salsa",
+            "name": "Roasted Chili-Corn Salsa",
+            "ingredientRef": "roasted-chili-corn-salsa",
+            "description": "Medium",
+            "categories": [
+                "Single Sides"
+            ],
+            "portionType": "side",
+            "defaultVariantId": "side-of-roasted-chili-corn-salsa",
+            "variants": [
+                {
+                    "id": "side-of-roasted-chili-corn-salsa",
+                    "label": "Regular",
+                    "portionType": "side",
+                    "nutrition": {
+                        "calories": 80,
+                        "totalFat": 1.5,
+                        "protein": 3,
+                        "carbs": 16
+                    }
+                },
+                {
+                    "id": "large-side-of-roasted-chili-corn-salsa",
+                    "label": "Large",
+                    "portionType": "side",
+                    "nutrition": {
+                        "calories": 120,
+                        "totalFat": 0,
+                        "protein": 0,
+                        "carbs": 0
+                    }
+                }
+            ],
+            "entreeGroup": "chips-sides",
+            "defaultOrder": 13
         },
         {
             "id": "side-of-queso-blanco",
@@ -415,7 +587,7 @@
                 }
             ],
             "entreeGroup": "chips-sides",
-            "defaultOrder": 10
+            "defaultOrder": 14
         },
         {
             "id": "tortilla-on-the-side",
@@ -438,7 +610,7 @@
                 "protein": 8
             },
             "entreeGroup": "chips-sides",
-            "defaultOrder": 11
+            "defaultOrder": 15
         },
         {
             "id": "kids-chips",
@@ -461,7 +633,7 @@
                 "protein": 2
             },
             "entreeGroup": "chips-sides",
-            "defaultOrder": 12
+            "defaultOrder": 16
         },
         {
             "id": "kids-mandarins",
@@ -483,7 +655,7 @@
                 "protein": 1
             },
             "entreeGroup": "chips-sides",
-            "defaultOrder": 13
+            "defaultOrder": 17
         },
         {
             "id": "kids-blueberries",
@@ -505,7 +677,7 @@
                 "protein": 1
             },
             "entreeGroup": "chips-sides",
-            "defaultOrder": 14
+            "defaultOrder": 18
         },
         {
             "id": "side-of-chicken-al-pastor-high-protein",
