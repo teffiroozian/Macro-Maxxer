@@ -1001,7 +1001,8 @@
                 }
             ],
             "entreeGroup": "drinks",
-            "defaultOrder": 25
+            "defaultOrder": 25,
+            "image": "/restaurants/chipotle/menu/drinks/fountain-drink.webp"
         },
         {
             "id": "coca-cola-classic-fountain",
@@ -1063,7 +1064,8 @@
                 }
             ],
             "entreeGroup": "drinks",
-            "defaultOrder": 26
+            "defaultOrder": 26,
+            "image": "/restaurants/chipotle/menu/drinks/fountain-drink.webp"
         },
         {
             "id": "coca-cola-life-fountain",
@@ -1125,7 +1127,8 @@
                 }
             ],
             "entreeGroup": "drinks",
-            "defaultOrder": 27
+            "defaultOrder": 27,
+            "image": "/restaurants/chipotle/menu/drinks/fountain-drink.webp"
         },
         {
             "id": "coca-cola-zero-fountain",
@@ -1187,7 +1190,8 @@
                 }
             ],
             "entreeGroup": "drinks",
-            "defaultOrder": 28
+            "defaultOrder": 28,
+            "image": "/restaurants/chipotle/menu/drinks/fountain-drink.webp"
         },
         {
             "id": "diet-coke-fountain",
@@ -1249,7 +1253,8 @@
                 }
             ],
             "entreeGroup": "drinks",
-            "defaultOrder": 29
+            "defaultOrder": 29,
+            "image": "/restaurants/chipotle/menu/drinks/fountain-drink.webp"
         },
         {
             "id": "diet-coke-caffeine-free-fountain",
@@ -1311,7 +1316,8 @@
                 }
             ],
             "entreeGroup": "drinks",
-            "defaultOrder": 30
+            "defaultOrder": 30,
+            "image": "/restaurants/chipotle/menu/drinks/fountain-drink.webp"
         },
         {
             "id": "pibb-xtra-fountain",
@@ -1373,7 +1379,8 @@
                 }
             ],
             "entreeGroup": "drinks",
-            "defaultOrder": 31
+            "defaultOrder": 31,
+            "image": "/restaurants/chipotle/menu/drinks/fountain-drink.webp"
         },
         {
             "id": "sprite-fountain",
@@ -1435,7 +1442,8 @@
                 }
             ],
             "entreeGroup": "drinks",
-            "defaultOrder": 32
+            "defaultOrder": 32,
+            "image": "/restaurants/chipotle/menu/drinks/fountain-drink.webp"
         },
         {
             "id": "fanta-orange-fountain",
@@ -1497,7 +1505,8 @@
                 }
             ],
             "entreeGroup": "drinks",
-            "defaultOrder": 33
+            "defaultOrder": 33,
+            "image": "/restaurants/chipotle/menu/drinks/fountain-drink.webp"
         },
         {
             "id": "minute-maid-lemonade-fountain",
@@ -1559,7 +1568,8 @@
                 }
             ],
             "entreeGroup": "drinks",
-            "defaultOrder": 34
+            "defaultOrder": 34,
+            "image": "/restaurants/chipotle/menu/drinks/fountain-drink.webp"
         },
         {
             "id": "powerade-mountain-berry-blast-fountain",
@@ -1621,7 +1631,8 @@
                 }
             ],
             "entreeGroup": "drinks",
-            "defaultOrder": 35
+            "defaultOrder": 35,
+            "image": "/restaurants/chipotle/menu/drinks/fountain-drink.webp"
         },
         {
             "id": "mello-yello-fountain",
@@ -1683,7 +1694,8 @@
                 }
             ],
             "entreeGroup": "drinks",
-            "defaultOrder": 36
+            "defaultOrder": 36,
+            "image": "/restaurants/chipotle/menu/drinks/fountain-drink.webp"
         },
         {
             "id": "lemonade-blue-sky-fountain",
@@ -1745,7 +1757,8 @@
                 }
             ],
             "entreeGroup": "drinks",
-            "defaultOrder": 37
+            "defaultOrder": 37,
+            "image": "/restaurants/chipotle/menu/drinks/fountain-drink.webp"
         },
         {
             "id": "mango-orange-blue-sky-fountain",
@@ -1807,7 +1820,8 @@
                 }
             ],
             "entreeGroup": "drinks",
-            "defaultOrder": 38
+            "defaultOrder": 38,
+            "image": "/restaurants/chipotle/menu/drinks/fountain-drink.webp"
         },
         {
             "id": "maine-root-root-beer-fountain",
@@ -1869,7 +1883,8 @@
                 }
             ],
             "entreeGroup": "drinks",
-            "defaultOrder": 39
+            "defaultOrder": 39,
+            "image": "/restaurants/chipotle/menu/drinks/fountain-drink.webp"
         },
         {
             "id": "chipotle-iced-tea-fountain",
@@ -1931,7 +1946,8 @@
                 }
             ],
             "entreeGroup": "drinks",
-            "defaultOrder": 40
+            "defaultOrder": 40,
+            "image": "/restaurants/chipotle/menu/drinks/fountain-drink.webp"
         },
         {
             "id": "chipotle-sweet-iced-tea-fountain",
@@ -1993,7 +2009,8 @@
                 }
             ],
             "entreeGroup": "drinks",
-            "defaultOrder": 41
+            "defaultOrder": 41,
+            "image": "/restaurants/chipotle/menu/drinks/fountain-drink.webp"
         },
         {
             "id": "organic-watermelon-limeade",
