@@ -1041,27 +1041,10 @@
             }
         },
         {
-            "id": "chicken",
-            "name": "Chicken",
-            "category": "Proteins",
-            "image": "/restaurants/chipotle/ingredients/proteins/chicken.png",
-            "nutrition": {
-                "calories": 180,
-                "totalFat": 7,
-                "satFat": 3,
-                "transFat": 0,
-                "cholesterol": 125,
-                "sodium": 310,
-                "carbs": 0,
-                "fiber": 0,
-                "sugars": 0,
-                "protein": 32
-            }
-        },
-        {
             "id": "chicken-al-pastor",
             "name": "Chicken al Pastor",
             "category": "Proteins",
+            "defaultOrder": 1,
             "image": "/restaurants/chipotle/ingredients/proteins/chicken-al-pastor.png",
             "nutrition": {
                 "calories": 200,
@@ -1077,9 +1060,29 @@
             }
         },
         {
+            "id": "chicken",
+            "name": "Chicken",
+            "category": "Proteins",
+            "defaultOrder": 2,
+            "image": "/restaurants/chipotle/ingredients/proteins/chicken.png",
+            "nutrition": {
+                "calories": 180,
+                "totalFat": 7,
+                "satFat": 3,
+                "transFat": 0,
+                "cholesterol": 125,
+                "sodium": 310,
+                "carbs": 0,
+                "fiber": 0,
+                "sugars": 0,
+                "protein": 32
+            }
+        },
+        {
             "id": "steak",
             "name": "Steak",
             "category": "Proteins",
+            "defaultOrder": 3,
             "image": "/restaurants/chipotle/ingredients/proteins/steak.png",
             "nutrition": {
                 "calories": 150,
@@ -1098,6 +1101,7 @@
             "id": "beef-barbacoa",
             "name": "Beef Barbacoa",
             "category": "Proteins",
+            "defaultOrder": 4,
             "image": "/restaurants/chipotle/ingredients/proteins/beef-barbacoa.png",
             "nutrition": {
                 "calories": 170,
@@ -1116,6 +1120,7 @@
             "id": "carnitas",
             "name": "Carnitas",
             "category": "Proteins",
+            "defaultOrder": 5,
             "image": "/restaurants/chipotle/ingredients/proteins/carnitas.png",
             "nutrition": {
                 "calories": 210,
@@ -1135,6 +1140,7 @@
             "name": "Sofritas",
             "description": "Plant-Based Protein",
             "category": "Proteins",
+            "defaultOrder": 6,
             "image": "/restaurants/chipotle/ingredients/proteins/sofritas.png",
             "nutrition": {
                 "calories": 150,
