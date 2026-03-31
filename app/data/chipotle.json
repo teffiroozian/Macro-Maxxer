@@ -764,8 +764,10 @@
                 "calories": 0,
                 "protein": 0,
                 "carbs": 0,
-                "totalFat": 0
+                "totalFat": 0,
+                "sodium": 15
             },
+            "source": "third party",
             "entreeGroup": "drinks",
             "defaultOrder": 17
         },
