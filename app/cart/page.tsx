@@ -28,6 +28,7 @@ import subwayMenu from "@/app/data/subway.json";
 import { useCart } from "@/stores/cartStore";
 import { normalizeAddons } from "@/lib/addons";
 import { resolveMenuDataset } from "@/lib/menuResolver";
+import { toItemSlug } from "@/lib/restaurants";
 
 type MenuDataset = RestaurantMenu;
 
@@ -460,7 +461,7 @@ export default function CartPage() {
                   lockedIngredientIdsInDetails={includedIngredientIds}
                   suppressRemovedIngredientCustomizationsInCart={Boolean(cartItem.buildConfiguration)}
                   cartCustomizeHref={cartItem.buildConfiguration
-                    ? `/restaurant/${cartItem.restaurantId}?view=ingredients&editCartItem=${cartItem.id}`
+                    ? `/restaurant/${cartItem.restaurantId}/items/${toItemSlug(menuItem)}?view=ingredients&editCartItem=${cartItem.id}`
                     : undefined}
                   cartSummaryLine={summarizeItem(cartItem)}
                   onCartDecrement={() => updateQuantity(cartItem.id, cartItem.quantity - 1)}

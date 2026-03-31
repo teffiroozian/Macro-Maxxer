@@ -2,6 +2,7 @@
 
 import { useEffect, useId, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
+import { Pencil } from "lucide-react";
 import type {
   AddonOption,
   AddonRef,
@@ -1030,7 +1031,7 @@ export default function MenuItemCard({
                   {isCartMode ? (
                     <button
                       type="button"
-                      className="cursor-pointer rounded-xl border border-black/20 bg-white px-3 py-2 text-sm font-bold"
+                      className="cursor-pointer inline-flex items-center gap-1.5 rounded-xl border border-black/20 bg-white px-3 py-2 text-sm font-bold"
                       onClick={(event) => {
                         event.stopPropagation();
 
@@ -1042,7 +1043,12 @@ export default function MenuItemCard({
                         setOpen(true);
                       }}
                     >
-                      {cartCustomizeHref ? "Customize" : "Modify"}
+                      {cartCustomizeHref ? (
+                        <>
+                          Customize
+                          <Pencil className="size-3.5" />
+                        </>
+                      ) : "Modify"}
                     </button>
                   ) : null}
                   <div className="inline-flex items-center gap-2 rounded-xl border border-black/15 bg-white/90 px-2 py-1">
