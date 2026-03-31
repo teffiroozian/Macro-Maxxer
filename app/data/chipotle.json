@@ -680,6 +680,74 @@
             "defaultOrder": 18
         },
         {
+            "id": "high-protein-high-fiber-bowl",
+            "name": "High Protein-High Fiber Bowl",
+            "categories": [
+                "High Protein"
+            ],
+            "portionType": "entree",
+            "image": "/restaurants/chipotle/menu/high-protein/high-protein-high-fiber-bowl.jpg",
+            "nutrition": {
+                "calories": 545,
+                "totalFat": 13,
+                "carbs": 66,
+                "protein": 46
+            },
+            "entreeGroup": "high-protein-menu",
+            "defaultOrder": 7
+        },
+        {
+            "id": "high-protein-low-calorie-bowl",
+            "name": "High Protein-Low Calorie Bowl",
+            "categories": [
+                "High Protein"
+            ],
+            "portionType": "entree",
+            "image": "/restaurants/chipotle/menu/high-protein/high-protein-low-calorie-bowl.jpg",
+            "nutrition": {
+                "calories": 460,
+                "totalFat": 29,
+                "carbs": 18,
+                "protein": 35
+            },
+            "entreeGroup": "high-protein-menu",
+            "defaultOrder": 8
+        },
+        {
+            "id": "double-high-protein-burrito",
+            "name": "Double High Protein Burrito",
+            "categories": [
+                "High Protein"
+            ],
+            "portionType": "entree",
+            "image": "/restaurants/chipotle/menu/high-protein/double-high-protein-burrito.jpg",
+            "nutrition": {
+                "calories": 840,
+                "totalFat": 31,
+                "carbs": 61,
+                "protein": 79
+            },
+            "entreeGroup": "high-protein-menu",
+            "defaultOrder": 9
+        },
+        {
+            "id": "high-protein-taco",
+            "name": "High Protein Taco",
+            "categories": [
+                "High Protein"
+            ],
+            "portionType": "entree",
+            "image": "/restaurants/chipotle/menu/high-protein/high-protein-taco.jpg",
+            "nutrition": {
+                "calories": 197,
+                "totalFat": 8,
+                "carbs": 17,
+                "protein": 15
+            },
+            "entreeGroup": "high-protein-menu",
+            "defaultOrder": 10
+        },
+        {
             "id": "double-high-protein-bowl",
             "name": "Double High Protein Bowl",
             "categories": [
