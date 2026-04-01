@@ -491,6 +491,8 @@ export default function ItemDetailsPanel({
   onSelectComboDrink,
   selectedComboSideVariantId,
   onSelectComboSideVariant,
+  selectedComboDrinkVariantId,
+  onSelectComboDrinkVariant,
 }: {
   item: MenuItem;
   nutrition: Nutrition;
@@ -530,6 +532,8 @@ export default function ItemDetailsPanel({
   onSelectComboDrink?: (itemId: string) => void;
   selectedComboSideVariantId?: string;
   onSelectComboSideVariant?: (variantId: string) => void;
+  selectedComboDrinkVariantId?: string;
+  onSelectComboDrinkVariant?: (variantId: string) => void;
 }) {
   const n = nutrition;
   const addonRefs = item.addonRefs ?? [];
@@ -995,31 +999,65 @@ export default function ItemDetailsPanel({
               {comboDrinks.map((drink) => {
                 const drinkId = drink.id ?? drink.name;
                 const isSelected = selectedComboDrinkId === drinkId;
+                const drinkVariants = drink.variants ?? [];
                 return (
                   <li key={drinkId} className="flex">
-                    <button
-                      type="button"
-                      className={`box-border flex h-full w-full cursor-pointer flex-row items-center gap-3 rounded-[10px] border border-[rgba(0,0,0,0.12)] bg-[#fcfcfc] px-3 py-2 text-left ${isSelected ? "shadow-[inset_0_0_0_2px_#16a34a]" : ""}`}
+                    <div
+                      className={`box-border flex h-full w-full cursor-pointer flex-col rounded-[10px] border border-[rgba(0,0,0,0.12)] bg-[#fcfcfc] px-3 py-2 text-left ${isSelected ? "shadow-[inset_0_0_0_2px_#16a34a]" : ""}`}
+                      role="button"
+                      tabIndex={0}
                       onClick={() => onSelectComboDrink?.(drinkId)}
+                      onKeyDown={(event) => {
+                        if (event.key === "Enter" || event.key === " ") {
+                          event.preventDefault();
+                          onSelectComboDrink?.(drinkId);
+                        }
+                      }}
                     >
-                      <div className="grid h-[72px] w-[72px] min-w-[72px] place-items-center rounded-lg bg-cover bg-center">
-                        {drink.image ? (
-                          <Image src={drink.image} alt="" width={72} height={72} className="h-[72px] w-[72px] rounded-lg object-cover" />
-                        ) : null}
+                      <div className="flex flex-row items-center gap-3">
+                        <div className="grid h-[72px] w-[72px] min-w-[72px] place-items-center rounded-lg bg-cover bg-center">
+                          {drink.image ? (
+                            <Image src={drink.image} alt="" width={72} height={72} className="h-[72px] w-[72px] rounded-lg object-cover" />
+                          ) : null}
+                        </div>
+                        <div className="flex min-w-0 flex-col items-start justify-center gap-[6px]">
+                          <div className="line-clamp-2 break-words text-left text-base font-bold leading-[1.2]">{drink.name}</div>
+                          <div className="text-sm font-bold text-[rgba(0,0,0,0.5)]">{drink.nutrition.calories ?? "—"} Cal</div>
+                        </div>
+                        <span
+                          aria-hidden="true"
+                          className={`ml-auto inline-flex h-6 w-6 shrink-0 items-center justify-center rounded-full border ${
+                            isSelected ? "border-[3px] border-[#16a34a]" : "border-2 border-[rgba(0,0,0,0.2)]"
+                          }`}
+                        >
+                          <span className={`h-2.5 w-2.5 rounded-full ${isSelected ? "bg-[#16a34a]" : "bg-transparent"}`} />
+                        </span>
                       </div>
-                      <div className="flex min-w-0 flex-col items-start justify-center gap-[6px]">
-                        <div className="line-clamp-2 break-words text-left text-base font-bold leading-[1.2]">{drink.name}</div>
-                        <div className="text-sm font-bold text-[rgba(0,0,0,0.5)]">{drink.nutrition.calories ?? "—"} Cal</div>
-                      </div>
-                      <span
-                        aria-hidden="true"
-                        className={`ml-auto inline-flex h-6 w-6 shrink-0 items-center justify-center rounded-full border ${
-                          isSelected ? "border-[3px] border-[#16a34a]" : "border-2 border-[rgba(0,0,0,0.2)]"
-                        }`}
-                      >
-                        <span className={`h-2.5 w-2.5 rounded-full ${isSelected ? "bg-[#16a34a]" : "bg-transparent"}`} />
-                      </span>
-                    </button>
+                      {isSelected && drinkVariants.length > 0 ? (
+                        <div className="mt-2 flex w-full flex-wrap gap-1.5 pl-[84px]">
+                          {drinkVariants.map((variant) => {
+                            const isVariantSelected = (selectedComboDrinkVariantId ?? drink.defaultVariantId ?? drinkVariants[0]?.id) === variant.id;
+                            return (
+                              <button
+                                key={`${drinkId}-${variant.id}`}
+                                type="button"
+                                className={`cursor-pointer rounded-full border px-2.5 py-1 text-xs font-semibold ${
+                                  isVariantSelected
+                                    ? "border-black bg-black text-white"
+                                    : "border-black/20 bg-white text-black/70"
+                                }`}
+                                onClick={(event) => {
+                                  event.stopPropagation();
+                                  onSelectComboDrinkVariant?.(variant.id);
+                                }}
+                              >
+                                {variant.label}
+                              </button>
+                            );
+                          })}
+                        </div>
+                      ) : null}
+                    </div>
                   </li>
                 );
               })}

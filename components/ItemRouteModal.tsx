@@ -130,6 +130,7 @@ export default function ItemRouteModal({
   const [selectedComboSideId, setSelectedComboSideId] = useState<string>();
   const [selectedComboDrinkId, setSelectedComboDrinkId] = useState<string>();
   const [selectedComboSideVariantId, setSelectedComboSideVariantId] = useState<string>();
+  const [selectedComboDrinkVariantId, setSelectedComboDrinkVariantId] = useState<string>();
   const { addItem } = useCart();
   const selectedVariant = variants?.find((variant) => variant.id === selectedVariantId);
   const selectedItemImage = selectedVariant?.image ?? item.image;
@@ -309,6 +310,10 @@ export default function ItemRouteModal({
     () => comboDrinks.find((drink) => (drink.id ?? drink.name) === selectedComboDrinkId),
     [comboDrinks, selectedComboDrinkId]
   );
+  const selectedComboDrinkVariant = useMemo(
+    () => selectedComboDrink?.variants?.find((variant) => variant.id === selectedComboDrinkVariantId),
+    [selectedComboDrink, selectedComboDrinkVariantId]
+  );
   const comboNutritionTotals = useMemo(() => {
     if (!isComboEligibleCategory || comboType !== "combo-meal") {
       return {
@@ -327,16 +332,16 @@ export default function ItemRouteModal({
 
     return [selectedComboDrink].reduce(
       (sum, comboItem) => ({
-        calories: sum.calories + (comboItem?.nutrition.calories ?? 0),
-        protein: sum.protein + (comboItem?.nutrition.protein ?? 0),
-        carbs: sum.carbs + (comboItem?.nutrition.carbs ?? 0),
-        fat: sum.fat + menuItemFat(comboItem),
-        satFat: sum.satFat + (comboItem?.nutrition.satFat ?? 0),
-        transFat: sum.transFat + (comboItem?.nutrition.transFat ?? 0),
-        cholesterol: sum.cholesterol + (comboItem?.nutrition.cholesterol ?? 0),
-        sodium: sum.sodium + (comboItem?.nutrition.sodium ?? 0),
-        fiber: sum.fiber + (comboItem?.nutrition.fiber ?? 0),
-        sugars: sum.sugars + (comboItem?.nutrition.sugars ?? 0),
+        calories: sum.calories + ((selectedComboDrinkVariant?.nutrition.calories ?? comboItem?.nutrition.calories) ?? 0),
+        protein: sum.protein + ((selectedComboDrinkVariant?.nutrition.protein ?? comboItem?.nutrition.protein) ?? 0),
+        carbs: sum.carbs + ((selectedComboDrinkVariant?.nutrition.carbs ?? comboItem?.nutrition.carbs) ?? 0),
+        fat: sum.fat + (selectedComboDrinkVariant?.nutrition.totalFat ?? menuItemFat(comboItem)),
+        satFat: sum.satFat + ((selectedComboDrinkVariant?.nutrition.satFat ?? comboItem?.nutrition.satFat) ?? 0),
+        transFat: sum.transFat + ((selectedComboDrinkVariant?.nutrition.transFat ?? comboItem?.nutrition.transFat) ?? 0),
+        cholesterol: sum.cholesterol + ((selectedComboDrinkVariant?.nutrition.cholesterol ?? comboItem?.nutrition.cholesterol) ?? 0),
+        sodium: sum.sodium + ((selectedComboDrinkVariant?.nutrition.sodium ?? comboItem?.nutrition.sodium) ?? 0),
+        fiber: sum.fiber + ((selectedComboDrinkVariant?.nutrition.fiber ?? comboItem?.nutrition.fiber) ?? 0),
+        sugars: sum.sugars + ((selectedComboDrinkVariant?.nutrition.sugars ?? comboItem?.nutrition.sugars) ?? 0),
       }),
       {
         calories: 0,
@@ -351,7 +356,7 @@ export default function ItemRouteModal({
         sugars: 0,
       }
     );
-  }, [comboType, isComboEligibleCategory, selectedComboDrink]);
+  }, [comboType, isComboEligibleCategory, selectedComboDrink, selectedComboDrinkVariant]);
 
   const comboSideNutritionTotals = useMemo(() => {
     if (!selectedComboSide) {
@@ -462,7 +467,9 @@ export default function ItemRouteModal({
             selectedComboSide
               ? `Side: ${selectedComboSide.name}${selectedComboSideVariant ? ` (${selectedComboSideVariant.label})` : ""}`
               : undefined,
-            selectedComboDrink ? `Drink: ${selectedComboDrink.name}` : undefined,
+            selectedComboDrink
+              ? `Drink: ${selectedComboDrink.name}${selectedComboDrinkVariant ? ` (${selectedComboDrinkVariant.label})` : ""}`
+              : undefined,
           ].filter((entry): entry is string => Boolean(entry))
         : [];
     const customizations = [...selectedCommonChanges, ...selectedIngredientCustomizations, ...comboCustomizations];
@@ -736,9 +743,15 @@ export default function ItemRouteModal({
               setSelectedComboSideId(sideId);
               setSelectedComboSideVariantId(resolveDefaultVariantId(nextSide));
             }}
-            onSelectComboDrink={setSelectedComboDrinkId}
+            onSelectComboDrink={(drinkId) => {
+              const nextDrink = comboDrinks.find((drink) => (drink.id ?? drink.name) === drinkId);
+              setSelectedComboDrinkId(drinkId);
+              setSelectedComboDrinkVariantId(resolveDefaultVariantId(nextDrink));
+            }}
             selectedComboSideVariantId={selectedComboSideVariantId}
             onSelectComboSideVariant={setSelectedComboSideVariantId}
+            selectedComboDrinkVariantId={selectedComboDrinkVariantId}
+            onSelectComboDrinkVariant={setSelectedComboDrinkVariantId}
           />
         </div>
         </div>
