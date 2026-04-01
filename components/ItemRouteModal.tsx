@@ -311,6 +311,10 @@ export default function ItemRouteModal({
       ),
     [menuItems]
   );
+  const comboTypeOptions = [
+    { id: "just-item" as const, label: "Just Sandwich" },
+    { id: "combo-meal" as const, label: "Combo Meal" },
+  ];
 
   const handleClose = () => {
     if (window.history.length > 1) {
@@ -442,6 +446,37 @@ export default function ItemRouteModal({
               <div className="h-px w-[min(720px,100%)] bg-black/16" />
             </>
           ) : null}
+          {isComboEligibleCategory ? (
+            <>
+              <div className="w-[min(720px,100%)]">
+                <div className="mt-0 my-3 flex flex-col items-center justify-between gap-4">
+                  <div className="w-full text-center text-lg font-semibold text-[rgba(0,0,0,0.8)]">
+                    Combo Type
+                  </div>
+                  <div className="flex w-full flex-wrap justify-center gap-2">
+                    {comboTypeOptions.map((option) => {
+                      const isActive = comboType === option.id;
+                      const variantColorClasses = isActive
+                        ? "bg-black text-white"
+                        : "bg-transparent text-[rgba(0,0,0,0.6)]";
+
+                      return (
+                        <button
+                          key={option.id}
+                          type="button"
+                          className={`min-w-[140px] cursor-pointer rounded-lg border-2 border-[rgba(0,0,0,0.6)] px-3 py-1.5 text-center text-[18px] font-bold ${variantColorClasses}`}
+                          onClick={() => setComboType(option.id)}
+                        >
+                          {option.label}
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+              </div>
+              <div className="h-px w-[min(720px,100%)] bg-black/16" />
+            </>
+          ) : null}
         </div>
 
         <div className="mt-[18px] grid gap-3">
@@ -556,9 +591,7 @@ export default function ItemRouteModal({
                 return next;
               })
             }
-            showComboTypeSelector={isComboEligibleCategory}
             comboType={comboType}
-            onComboTypeChange={setComboType}
             comboSides={comboSides}
             comboDrinks={comboDrinks}
             selectedComboSideId={selectedComboSideId}

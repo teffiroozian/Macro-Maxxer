@@ -482,9 +482,7 @@ export default function ItemDetailsPanel({
   onSelectSingleIngredient,
   flattenIngredientList = false,
   lockedIngredientIds = [],
-  showComboTypeSelector = false,
   comboType = "just-item",
-  onComboTypeChange,
   comboSides = [],
   comboDrinks = [],
   selectedComboSideId,
@@ -521,9 +519,7 @@ export default function ItemDetailsPanel({
   onSelectSingleIngredient?: (ingredientId: string, ingredientIdsInTab: string[]) => void;
   flattenIngredientList?: boolean;
   lockedIngredientIds?: string[];
-  showComboTypeSelector?: boolean;
   comboType?: "just-item" | "combo-meal";
-  onComboTypeChange?: (comboType: "just-item" | "combo-meal") => void;
   comboSides?: MenuItem[];
   comboDrinks?: MenuItem[];
   selectedComboSideId?: string;
@@ -713,37 +709,10 @@ export default function ItemDetailsPanel({
         return ingredientCount > 0;
       }) ?? false)
     : availableIngredientTabs.length > 1 || (availableIngredientTabs[0]?.ingredients.length ?? 0) > 0;
-  const shouldShowComboSelections = showComboTypeSelector && comboType === "combo-meal";
-  const comboTypeOptions = [
-    { id: "just-item" as const, label: "Just Sandwich" },
-    { id: "combo-meal" as const, label: "Combo Meal" },
-  ];
+  const shouldShowComboSelections = comboType === "combo-meal";
 
   return (
     <div className="grid grid-cols-2 gap-3 rounded-[18px] bg-[#e0e0e0] p-3">
-      {showComboTypeSelector ? (
-        <section className="col-span-2 rounded-[14px] border border-black/12 bg-white p-5">
-          <div className="mb-4 text-lg font-semibold uppercase tracking-[0.06em] text-[rgba(0,0,0,0.8)]">Combo Type</div>
-          <div className="flex w-full flex-wrap justify-start gap-2">
-            {comboTypeOptions.map((option) => {
-              const isActive = comboType === option.id;
-              return (
-                <button
-                  key={option.id}
-                  type="button"
-                  className={`min-w-[140px] cursor-pointer rounded-lg border-2 border-[rgba(0,0,0,0.6)] px-3 py-1.5 text-center text-[18px] font-bold ${
-                    isActive ? "bg-black text-white" : "bg-transparent text-[rgba(0,0,0,0.6)]"
-                  }`}
-                  onClick={() => onComboTypeChange?.(option.id)}
-                >
-                  {option.label}
-                </button>
-              );
-            })}
-          </div>
-        </section>
-      ) : null}
-
       {shouldShowIngredientSection && selectedIngredientTab ? (
         <section className="col-span-2 rounded-[14px] border border-black/12 bg-white p-5">
           <h2 className="mb-6 text-2xl font-bold">Ingredients</h2>
