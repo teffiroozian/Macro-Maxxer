@@ -255,24 +255,7 @@ export function sortItems(
   return sorted;
 }
 
-const ALWAYS_LOWEST_CALORIE_SECTIONS = new Set([
-  "sauce",
-  "sauces",
-  "dipping sauce",
-  "dipping sauces",
-  "dressing",
-  "dressings",
-  "drink",
-  "drinks",
-  "treat",
-  "treats",
-]);
-
-function getSectionSort(section: string, sort: SortOption): SortOption {
-  if (ALWAYS_LOWEST_CALORIE_SECTIONS.has(normalizeCategory(section))) {
-    return "lowest-calories";
-  }
-
+function getSectionSort(_section: string, sort: SortOption): SortOption {
   return sort;
 }
 

@@ -720,7 +720,7 @@
                 "sugars": 8,
                 "protein": 4
             },
-            "defaultOrder": 15
+            "defaultOrder": 6
         },
         {
             "id": "chick_fil_a_waffle_potato_fries",
@@ -804,7 +804,7 @@
                     "Included"
                 ]
             },
-            "defaultOrder": 16
+            "defaultOrder": 1
         },
         {
             "id": "berry_parfait",
@@ -882,7 +882,7 @@
                     ]
                 }
             },
-            "defaultOrder": 17
+            "defaultOrder": 7
         },
         {
             "id": "fruit_cup",
@@ -909,7 +909,7 @@
                     "Included"
                 ]
             },
-            "defaultOrder": 18
+            "defaultOrder": 8
         },
         {
             "id": "mac_and_cheese",
@@ -987,7 +987,7 @@
             "ingredients": [
                 "mac_and_cheese"
             ],
-            "defaultOrder": 19
+            "defaultOrder": 2
         },
         {
             "id": "chicken_noodle_soup",
@@ -1062,7 +1062,7 @@
                     ]
                 }
             },
-            "defaultOrder": 20
+            "defaultOrder": 3
         },
         {
             "id": "side_salad",
@@ -1092,7 +1092,7 @@
             "addonRefs": [
                 "dressings"
             ],
-            "defaultOrder": 21
+            "defaultOrder": 5
         },
         {
             "id": "chicken_tortilla_soup",
@@ -1135,7 +1135,7 @@
                     ]
                 }
             },
-            "defaultOrder": 22
+            "defaultOrder": 4
         },
         {
             "id": "original_flavor_waffle_potato_chips",
@@ -1162,7 +1162,7 @@
                     "Included"
                 ]
             },
-            "defaultOrder": 23
+            "defaultOrder": 9
         },
         {
             "id": "buddy_fruits_apple_sauce",
@@ -1189,7 +1189,7 @@
                     "Included"
                 ]
             },
-            "defaultOrder": 24
+            "defaultOrder": 11
         },
         {
             "id": "chick_fil_a_sauce_flavored_waffle_potato_chips",
@@ -1216,7 +1216,7 @@
                     "Included"
                 ]
             },
-            "defaultOrder": 25
+            "defaultOrder": 10
         },
         {
             "id": "spicy_chicken_biscuit",
@@ -1242,7 +1242,7 @@
                 "sugars": 5,
                 "protein": 19
             },
-            "defaultOrder": 26
+            "defaultOrder": 2
         },
         {
             "id": "chick_fil_a_chick_n_minis",
@@ -1293,7 +1293,7 @@
                     "Included"
                 ]
             },
-            "defaultOrder": 27
+            "defaultOrder": 3
         },
         {
             "id": "egg_white_grill",
@@ -1321,7 +1321,7 @@
                 "sugars": 2,
                 "protein": 27
             },
-            "defaultOrder": 28
+            "defaultOrder": 4
         },
         {
             "id": "hash_brown_scramble_burrito",
@@ -1354,7 +1354,7 @@
                     "Wrap Toppings": 2
                 }
             },
-            "defaultOrder": 29
+            "defaultOrder": 5
         },
         {
             "id": "hash_brown_scramble_bowl",
@@ -1387,7 +1387,7 @@
                     "Wrap Toppings": 2
                 }
             },
-            "defaultOrder": 30
+            "defaultOrder": 6
         },
         {
             "id": "chicken_egg_and_cheese_biscuit",
@@ -1415,7 +1415,7 @@
                 "sugars": 7,
                 "protein": 27
             },
-            "defaultOrder": 31
+            "defaultOrder": 7
         },
         {
             "id": "bacon_egg_and_cheese_biscuit",
@@ -1443,7 +1443,7 @@
                 "sugars": 4,
                 "protein": 15
             },
-            "defaultOrder": 32
+            "defaultOrder": 8
         },
         {
             "id": "sausage_egg_and_cheese_biscuit",
@@ -1471,7 +1471,7 @@
                 "sugars": 4,
                 "protein": 22
             },
-            "defaultOrder": 33
+            "defaultOrder": 9
         },
         {
             "id": "chicken_egg_and_cheese_muffin",
@@ -1499,7 +1499,7 @@
                 "sugars": 4,
                 "protein": 27
             },
-            "defaultOrder": 34
+            "defaultOrder": 10
         },
         {
             "id": "bacon_egg_and_cheese_muffin",
@@ -1527,7 +1527,7 @@
                 "sugars": 2,
                 "protein": 16
             },
-            "defaultOrder": 35
+            "defaultOrder": 11
         },
         {
             "id": "sausage_egg_and_cheese_muffin",
@@ -1555,7 +1555,7 @@
                 "sugars": 1,
                 "protein": 23
             },
-            "defaultOrder": 36
+            "defaultOrder": 12
         },
         {
             "id": "hash-browns",
@@ -1622,7 +1622,7 @@
                     "Included"
                 ]
             },
-            "defaultOrder": 37
+            "defaultOrder": 13
         },
         {
             "id": "chick_fil_a_chicken_biscuit",
@@ -1648,7 +1648,7 @@
                 "sugars": 6,
                 "protein": 19
             },
-            "defaultOrder": 38
+            "defaultOrder": 1
         },
         {
             "id": "frosted_lemonade",
