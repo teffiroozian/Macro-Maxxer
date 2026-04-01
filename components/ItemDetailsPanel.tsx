@@ -930,6 +930,13 @@ export default function ItemDetailsPanel({
                 const sideId = side.id ?? side.name;
                 const isSelected = selectedComboSideId === sideId;
                 const sideVariants = side.variants ?? [];
+                const selectedSideVariant =
+                  isSelected && sideVariants.length > 0
+                    ? sideVariants.find(
+                        (variant) => (selectedComboSideVariantId ?? side.defaultVariantId ?? sideVariants[0]?.id) === variant.id
+                      )
+                    : undefined;
+                const sideCalories = selectedSideVariant?.nutrition.calories ?? side.nutrition.calories;
                 return (
                   <li key={sideId} className="flex">
                     <div
@@ -952,7 +959,7 @@ export default function ItemDetailsPanel({
                         </div>
                         <div className="flex min-w-0 flex-col items-start justify-center gap-[6px]">
                           <div className="line-clamp-2 break-words text-left text-base font-bold leading-[1.2]">{side.name}</div>
-                          <div className="text-sm font-bold text-[rgba(0,0,0,0.5)]">{side.nutrition.calories ?? "—"} Cal</div>
+                          <div className="text-sm font-bold text-[rgba(0,0,0,0.5)]">{sideCalories ?? "—"} Cal</div>
                         </div>
                         <span
                           aria-hidden="true"
@@ -1000,6 +1007,13 @@ export default function ItemDetailsPanel({
                 const drinkId = drink.id ?? drink.name;
                 const isSelected = selectedComboDrinkId === drinkId;
                 const drinkVariants = drink.variants ?? [];
+                const selectedDrinkVariant =
+                  isSelected && drinkVariants.length > 0
+                    ? drinkVariants.find(
+                        (variant) => (selectedComboDrinkVariantId ?? drink.defaultVariantId ?? drinkVariants[0]?.id) === variant.id
+                      )
+                    : undefined;
+                const drinkCalories = selectedDrinkVariant?.nutrition.calories ?? drink.nutrition.calories;
                 return (
                   <li key={drinkId} className="flex">
                     <div
@@ -1022,7 +1036,7 @@ export default function ItemDetailsPanel({
                         </div>
                         <div className="flex min-w-0 flex-col items-start justify-center gap-[6px]">
                           <div className="line-clamp-2 break-words text-left text-base font-bold leading-[1.2]">{drink.name}</div>
-                          <div className="text-sm font-bold text-[rgba(0,0,0,0.5)]">{drink.nutrition.calories ?? "—"} Cal</div>
+                          <div className="text-sm font-bold text-[rgba(0,0,0,0.5)]">{drinkCalories ?? "—"} Cal</div>
                         </div>
                         <span
                           aria-hidden="true"
