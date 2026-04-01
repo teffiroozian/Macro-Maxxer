@@ -617,11 +617,29 @@ export default function MenuItemCard({
       Object.values(selectedAddons).some((addon) => addon && addon.name !== "None") ||
       Object.values(selectedSauceCounts).some((count) => count > 0) ||
       selectedCommonChangeIds.length > 0 ||
-      resolvedIngredients.some((ingredient) => (ingredientCounts[ingredient.id] ?? ingredient.defaultCount) !== ingredient.defaultCount),
-    [ingredientCounts, resolvedIngredients, selectedAddons, selectedCommonChangeIds, selectedSauceCounts]
+      resolvedIngredients.some((ingredient) => (ingredientCounts[ingredient.id] ?? ingredient.defaultCount) !== ingredient.defaultCount) ||
+      (isComboEligibleCategory && comboType === "combo-meal" && Boolean(selectedComboSide || selectedComboDrink)),
+    [
+      comboType,
+      ingredientCounts,
+      isComboEligibleCategory,
+      resolvedIngredients,
+      selectedAddons,
+      selectedComboDrink,
+      selectedComboSide,
+      selectedCommonChangeIds,
+      selectedSauceCounts,
+    ]
   );
 
-  const hasActiveCustomization = hasMods;
+  const hasActiveCustomization = useMemo(
+    () =>
+      customizationTotals.calories !== 0 ||
+      customizationTotals.protein !== 0 ||
+      customizationTotals.carbs !== 0 ||
+      customizationTotals.fat !== 0,
+    [customizationTotals]
+  );
 
   function resetMods() {
     setSelectedAddons({});
