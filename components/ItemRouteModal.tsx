@@ -57,6 +57,15 @@ function menuItemFat(item?: MenuItem) {
   return item?.nutrition.totalFat ?? 0;
 }
 
+function resolveDefaultVariantId(item?: MenuItem) {
+  if (!item?.variants || item.variants.length === 0) return undefined;
+  if (item.defaultVariantId && item.variants.some((variant) => variant.id === item.defaultVariantId)) {
+    return item.defaultVariantId;
+  }
+  const flaggedDefault = item.variants.find((variant) => variant.isDefault);
+  return flaggedDefault?.id ?? item.variants[0]?.id;
+}
+
 function deltaFat(change: CommonChange) {
   return change.delta.totalFat ?? change.delta.fat ?? 0;
 }
@@ -120,6 +129,7 @@ export default function ItemRouteModal({
   const [comboType, setComboType] = useState<"just-item" | "combo-meal">("just-item");
   const [selectedComboSideId, setSelectedComboSideId] = useState<string>();
   const [selectedComboDrinkId, setSelectedComboDrinkId] = useState<string>();
+  const [selectedComboSideVariantId, setSelectedComboSideVariantId] = useState<string>();
   const { addItem } = useCart();
   const selectedVariant = variants?.find((variant) => variant.id === selectedVariantId);
   const selectedItemImage = selectedVariant?.image ?? item.image;
@@ -291,6 +301,10 @@ export default function ItemRouteModal({
     () => comboSides.find((side) => (side.id ?? side.name) === selectedComboSideId),
     [comboSides, selectedComboSideId]
   );
+  const selectedComboSideVariant = useMemo(
+    () => selectedComboSide?.variants?.find((variant) => variant.id === selectedComboSideVariantId),
+    [selectedComboSide, selectedComboSideVariantId]
+  );
   const selectedComboDrink = useMemo(
     () => comboDrinks.find((drink) => (drink.id ?? drink.name) === selectedComboDrinkId),
     [comboDrinks, selectedComboDrinkId]
@@ -311,7 +325,7 @@ export default function ItemRouteModal({
       };
     }
 
-    return [selectedComboSide, selectedComboDrink].reduce(
+    return [selectedComboDrink].reduce(
       (sum, comboItem) => ({
         calories: sum.calories + (comboItem?.nutrition.calories ?? 0),
         protein: sum.protein + (comboItem?.nutrition.protein ?? 0),
@@ -337,16 +351,76 @@ export default function ItemRouteModal({
         sugars: 0,
       }
     );
-  }, [comboType, isComboEligibleCategory, selectedComboDrink, selectedComboSide]);
+  }, [comboType, isComboEligibleCategory, selectedComboDrink]);
+
+  const comboSideNutritionTotals = useMemo(() => {
+    if (!selectedComboSide) {
+      return {
+        calories: 0,
+        protein: 0,
+        carbs: 0,
+        fat: 0,
+        satFat: 0,
+        transFat: 0,
+        cholesterol: 0,
+        sodium: 0,
+        fiber: 0,
+        sugars: 0,
+      };
+    }
+
+    const sideNutrition = selectedComboSideVariant?.nutrition ?? selectedComboSide.nutrition;
+    return {
+      calories: sideNutrition.calories ?? 0,
+      protein: sideNutrition.protein ?? 0,
+      carbs: sideNutrition.carbs ?? 0,
+      fat: sideNutrition.totalFat ?? 0,
+      satFat: sideNutrition.satFat ?? 0,
+      transFat: sideNutrition.transFat ?? 0,
+      cholesterol: sideNutrition.cholesterol ?? 0,
+      sodium: sideNutrition.sodium ?? 0,
+      fiber: sideNutrition.fiber ?? 0,
+      sugars: sideNutrition.sugars ?? 0,
+    };
+  }, [selectedComboSide, selectedComboSideVariant]);
+  const activeComboNutritionTotals = useMemo(
+    () =>
+      !isComboEligibleCategory || comboType !== "combo-meal"
+        ? {
+            calories: 0,
+            protein: 0,
+            carbs: 0,
+            fat: 0,
+            satFat: 0,
+            transFat: 0,
+            cholesterol: 0,
+            sodium: 0,
+            fiber: 0,
+            sugars: 0,
+          }
+        : {
+            calories: comboNutritionTotals.calories + comboSideNutritionTotals.calories,
+            protein: comboNutritionTotals.protein + comboSideNutritionTotals.protein,
+            carbs: comboNutritionTotals.carbs + comboSideNutritionTotals.carbs,
+            fat: comboNutritionTotals.fat + comboSideNutritionTotals.fat,
+            satFat: comboNutritionTotals.satFat + comboSideNutritionTotals.satFat,
+            transFat: comboNutritionTotals.transFat + comboSideNutritionTotals.transFat,
+            cholesterol: comboNutritionTotals.cholesterol + comboSideNutritionTotals.cholesterol,
+            sodium: comboNutritionTotals.sodium + comboSideNutritionTotals.sodium,
+            fiber: comboNutritionTotals.fiber + comboSideNutritionTotals.fiber,
+            sugars: comboNutritionTotals.sugars + comboSideNutritionTotals.sugars,
+          },
+    [comboNutritionTotals, comboSideNutritionTotals, comboType, isComboEligibleCategory]
+  );
 
   const customizationTotals = useMemo(
     () => ({
-      calories: addonTotals.calories + commonChangeTotals.calories + ingredientCountTotals.calories + comboNutritionTotals.calories,
-      protein: addonTotals.protein + commonChangeTotals.protein + ingredientCountTotals.protein + comboNutritionTotals.protein,
-      carbs: addonTotals.carbs + commonChangeTotals.carbs + ingredientCountTotals.carbs + comboNutritionTotals.carbs,
-      fat: addonTotals.fat + commonChangeTotals.fat + ingredientCountTotals.fat + comboNutritionTotals.fat,
+      calories: addonTotals.calories + commonChangeTotals.calories + ingredientCountTotals.calories + activeComboNutritionTotals.calories,
+      protein: addonTotals.protein + commonChangeTotals.protein + ingredientCountTotals.protein + activeComboNutritionTotals.protein,
+      carbs: addonTotals.carbs + commonChangeTotals.carbs + ingredientCountTotals.carbs + activeComboNutritionTotals.carbs,
+      fat: addonTotals.fat + commonChangeTotals.fat + ingredientCountTotals.fat + activeComboNutritionTotals.fat,
     }),
-    [addonTotals, comboNutritionTotals, commonChangeTotals, ingredientCountTotals]
+    [activeComboNutritionTotals, addonTotals, commonChangeTotals, ingredientCountTotals]
   );
 
   const hasActiveCustomization = useMemo(
@@ -364,12 +438,12 @@ export default function ItemRouteModal({
     protein: sumNutritionWithFallback(baseNutrition.protein, customizationTotals.protein),
     carbs: sumNutritionWithFallback(baseNutrition.carbs, customizationTotals.carbs),
     totalFat: sumNutritionWithFallback(baseNutrition.totalFat, customizationTotals.fat),
-    satFat: sumNutritionWithFallback(baseNutrition.satFat, addonTotals.satFat + comboNutritionTotals.satFat),
-    transFat: sumNutritionWithFallback(baseNutrition.transFat, addonTotals.transFat + comboNutritionTotals.transFat),
-    cholesterol: sumNutritionWithFallback(baseNutrition.cholesterol, addonTotals.cholesterol + comboNutritionTotals.cholesterol),
-    sodium: sumNutritionWithFallback(baseNutrition.sodium, addonTotals.sodium + comboNutritionTotals.sodium),
-    fiber: sumNutritionWithFallback(baseNutrition.fiber, addonTotals.fiber + comboNutritionTotals.fiber),
-    sugars: sumNutritionWithFallback(baseNutrition.sugars, addonTotals.sugars + comboNutritionTotals.sugars),
+    satFat: sumNutritionWithFallback(baseNutrition.satFat, addonTotals.satFat + activeComboNutritionTotals.satFat),
+    transFat: sumNutritionWithFallback(baseNutrition.transFat, addonTotals.transFat + activeComboNutritionTotals.transFat),
+    cholesterol: sumNutritionWithFallback(baseNutrition.cholesterol, addonTotals.cholesterol + activeComboNutritionTotals.cholesterol),
+    sodium: sumNutritionWithFallback(baseNutrition.sodium, addonTotals.sodium + activeComboNutritionTotals.sodium),
+    fiber: sumNutritionWithFallback(baseNutrition.fiber, addonTotals.fiber + activeComboNutritionTotals.fiber),
+    sugars: sumNutritionWithFallback(baseNutrition.sugars, addonTotals.sugars + activeComboNutritionTotals.sugars),
   };
 
   const handleClose = () => {
@@ -385,7 +459,9 @@ export default function ItemRouteModal({
       isComboEligibleCategory && comboType === "combo-meal"
         ? [
             "Combo Meal",
-            selectedComboSide ? `Side: ${selectedComboSide.name}` : undefined,
+            selectedComboSide
+              ? `Side: ${selectedComboSide.name}${selectedComboSideVariant ? ` (${selectedComboSideVariant.label})` : ""}`
+              : undefined,
             selectedComboDrink ? `Drink: ${selectedComboDrink.name}` : undefined,
           ].filter((entry): entry is string => Boolean(entry))
         : [];
@@ -655,8 +731,14 @@ export default function ItemRouteModal({
             comboDrinks={comboDrinks}
             selectedComboSideId={selectedComboSideId}
             selectedComboDrinkId={selectedComboDrinkId}
-            onSelectComboSide={setSelectedComboSideId}
+            onSelectComboSide={(sideId) => {
+              const nextSide = comboSides.find((side) => (side.id ?? side.name) === sideId);
+              setSelectedComboSideId(sideId);
+              setSelectedComboSideVariantId(resolveDefaultVariantId(nextSide));
+            }}
             onSelectComboDrink={setSelectedComboDrinkId}
+            selectedComboSideVariantId={selectedComboSideVariantId}
+            onSelectComboSideVariant={setSelectedComboSideVariantId}
           />
         </div>
         </div>

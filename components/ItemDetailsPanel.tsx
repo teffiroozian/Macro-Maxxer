@@ -489,6 +489,8 @@ export default function ItemDetailsPanel({
   selectedComboDrinkId,
   onSelectComboSide,
   onSelectComboDrink,
+  selectedComboSideVariantId,
+  onSelectComboSideVariant,
 }: {
   item: MenuItem;
   nutrition: Nutrition;
@@ -526,6 +528,8 @@ export default function ItemDetailsPanel({
   selectedComboDrinkId?: string;
   onSelectComboSide?: (itemId: string) => void;
   onSelectComboDrink?: (itemId: string) => void;
+  selectedComboSideVariantId?: string;
+  onSelectComboSideVariant?: (variantId: string) => void;
 }) {
   const n = nutrition;
   const addonRefs = item.addonRefs ?? [];
@@ -921,8 +925,9 @@ export default function ItemDetailsPanel({
               {comboSides.map((side) => {
                 const sideId = side.id ?? side.name;
                 const isSelected = selectedComboSideId === sideId;
+                const sideVariants = side.variants ?? [];
                 return (
-                  <li key={sideId} className="flex">
+                  <li key={sideId} className="flex flex-col">
                     <button
                       type="button"
                       className={`box-border flex h-full w-full cursor-pointer flex-row items-center gap-3 rounded-[10px] border border-[rgba(0,0,0,0.12)] bg-[#fcfcfc] px-3 py-2 text-left ${isSelected ? "shadow-[inset_0_0_0_2px_#16a34a]" : ""}`}
@@ -946,6 +951,27 @@ export default function ItemDetailsPanel({
                         <span className={`h-2.5 w-2.5 rounded-full ${isSelected ? "bg-[#16a34a]" : "bg-transparent"}`} />
                       </span>
                     </button>
+                    {isSelected && sideVariants.length > 0 ? (
+                      <div className="mt-2 flex w-full flex-wrap gap-1.5 pl-[84px]">
+                        {sideVariants.map((variant) => {
+                          const isVariantSelected = (selectedComboSideVariantId ?? side.defaultVariantId ?? sideVariants[0]?.id) === variant.id;
+                          return (
+                            <button
+                              key={`${sideId}-${variant.id}`}
+                              type="button"
+                              className={`cursor-pointer rounded-full border px-2.5 py-1 text-xs font-semibold ${
+                                isVariantSelected
+                                  ? "border-black bg-black text-white"
+                                  : "border-black/20 bg-white text-black/70"
+                              }`}
+                              onClick={() => onSelectComboSideVariant?.(variant.id)}
+                            >
+                              {variant.label}
+                            </button>
+                          );
+                        })}
+                      </div>
+                    ) : null}
                   </li>
                 );
               })}
