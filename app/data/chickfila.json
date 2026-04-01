@@ -3131,7 +3131,8 @@
                 "fiber": 0,
                 "sugars": 0,
                 "protein": 13
-            }
+            },
+            "defaultOrder": 3
         },
         {
             "id": "cfa-breakfast-filet",
@@ -3151,7 +3152,8 @@
                 "fiber": 0,
                 "sugars": 2,
                 "protein": 15
-            }
+            },
+            "defaultOrder": 1
         },
         {
             "id": "spicy-breakfast-filet",
@@ -3171,7 +3173,8 @@
                 "fiber": 1,
                 "sugars": 1,
                 "protein": 15
-            }
+            },
+            "defaultOrder": 2
         },
         {
             "id": "grilled-filet",
@@ -3191,7 +3194,8 @@
                 "fiber": 0,
                 "sugars": 1,
                 "protein": 21
-            }
+            },
+            "defaultOrder": 3
         },
         {
             "id": "spicy-filet",
@@ -3211,7 +3215,8 @@
                 "fiber": 1,
                 "sugars": 2,
                 "protein": 23
-            }
+            },
+            "defaultOrder": 2
         },
         {
             "id": "cfa-filet",
@@ -3231,7 +3236,8 @@
                 "fiber": 0,
                 "sugars": 1,
                 "protein": 24
-            }
+            },
+            "defaultOrder": 1
         },
         {
             "id": "bacon",
@@ -3253,7 +3259,8 @@
                 "sugars": 0,
                 "protein": 4
             },
-            "maxQuantity": 3
+            "maxQuantity": 3,
+            "defaultOrder": 4
         },
         {
             "id": "sausage",
@@ -3273,7 +3280,8 @@
                 "fiber": 0,
                 "sugars": 0,
                 "protein": 11
-            }
+            },
+            "defaultOrder": 5
         },
         {
             "id": "roasted-nut-blend",
@@ -3353,7 +3361,8 @@
                 "fiber": 0,
                 "sugars": 0,
                 "protein": 2
-            }
+            },
+            "defaultOrder": 11
         },
         {
             "id": "crispy-bell-peppers",
@@ -3550,7 +3559,8 @@
                 "totalFat": 4,
                 "carbs": 0,
                 "protein": 3
-            }
+            },
+            "defaultOrder": 6
         },
         {
             "id": "grape-tomato",
@@ -3561,7 +3571,8 @@
             "image": "/restaurants/chickfila/ingredients/salad-toppings/grape-tomatoes.webp",
             "nutrition": {
                 "calories": 15
-            }
+            },
+            "defaultOrder": 7
         },
         {
             "id": "roasted-corn",
@@ -3572,7 +3583,8 @@
             "image": "/restaurants/chickfila/ingredients/salad-toppings/roasted-corn.webp",
             "nutrition": {
                 "calories": 10
-            }
+            },
+            "defaultOrder": 8
         },
         {
             "id": "black-beans-corn",
@@ -3583,7 +3595,8 @@
             "image": "/restaurants/chickfila/ingredients/salad-toppings/black-beans-corn.webp",
             "nutrition": {
                 "calories": 45
-            }
+            },
+            "defaultOrder": 9
         },
         {
             "id": "jalapenos",
@@ -3594,7 +3607,8 @@
             "image": "/restaurants/chickfila/ingredients/salad-toppings/jalapenos.png",
             "nutrition": {
                 "calories": 5
-            }
+            },
+            "defaultOrder": 10
         },
         {
             "id": "blueberries",
@@ -3605,7 +3619,8 @@
             "image": "/restaurants/chickfila/ingredients/salad-toppings/blueberries.webp",
             "nutrition": {
                 "calories": 5
-            }
+            },
+            "defaultOrder": 3
         },
         {
             "id": "apples",
@@ -3616,7 +3631,8 @@
             "image": "/restaurants/chickfila/ingredients/salad-toppings/apples.webp",
             "nutrition": {
                 "calories": 15
-            }
+            },
+            "defaultOrder": 4
         },
         {
             "id": "strawberries",
@@ -3627,7 +3643,8 @@
             "image": "/restaurants/chickfila/ingredients/salad-toppings/strawberries.webp",
             "nutrition": {
                 "calories": 5
-            }
+            },
+            "defaultOrder": 5
         },
         {
             "id": "bacon-crumbles",
@@ -3638,7 +3655,8 @@
             "image": "/restaurants/chickfila/ingredients/salad-toppings/bacon-crumbles.webp",
             "nutrition": {
                 "calories": 35
-            }
+            },
+            "defaultOrder": 1
         },
         {
             "id": "sliced-egg",
@@ -3649,7 +3667,8 @@
             "image": "/restaurants/chickfila/ingredients/salad-toppings/sliced-egg.webp",
             "nutrition": {
                 "calories": 20
-            }
+            },
+            "defaultOrder": 2
         },
         {
             "id": "parfait-fruit",
@@ -3660,7 +3679,8 @@
             "image": "/restaurants/chickfila/ingredients/parfait-toppings/fruit.webp",
             "nutrition": {
                 "calories": 15
-            }
+            },
+            "defaultOrder": 5
         },
         {
             "id": "buttery-biscuit",
@@ -3735,7 +3755,8 @@
             "image": "/restaurants/chickfila/ingredients/parfait-toppings/cookie-crumbles.webp",
             "nutrition": {
                 "calories": 40
-            }
+            },
+            "defaultOrder": 4
         },
         {
             "id": "chocolate-syrup",
@@ -3746,7 +3767,8 @@
             "image": "/restaurants/chickfila/ingredients/treat-toppings/chocolate-syrup.webp",
             "nutrition": {
                 "calories": 30
-            }
+            },
+            "defaultOrder": 2
         },
         {
             "id": "strawberry-syrup",
@@ -3757,7 +3779,8 @@
             "image": "/restaurants/chickfila/ingredients/treat-toppings/strawberry-syrup.webp",
             "nutrition": {
                 "calories": 50
-            }
+            },
+            "defaultOrder": 3
         },
         {
             "id": "whipped-cream",
@@ -3768,7 +3791,8 @@
             "image": "/restaurants/chickfila/ingredients/treat-toppings/whipped-cream.webp",
             "nutrition": {
                 "calories": 60
-            }
+            },
+            "defaultOrder": 1
         },
         {
             "id": "cherry",
@@ -3779,7 +3803,8 @@
             "image": "/restaurants/chickfila/ingredients/treat-toppings/cherry.webp",
             "nutrition": {
                 "calories": 5
-            }
+            },
+            "defaultOrder": 6
         },
         {
             "id": "honey-roasted-bbq-sauce",
@@ -3804,7 +3829,8 @@
             "nutrition": {
                 "calories": 250
             },
-            "hideFromIngredientView": true
+            "hideFromIngredientView": true,
+            "defaultOrder": 6
         },
         {
             "id": "grilled-nuggets",
@@ -3816,7 +3842,8 @@
             "nutrition": {
                 "calories": 130
             },
-            "hideFromIngredientView": true
+            "hideFromIngredientView": true,
+            "defaultOrder": 7
         },
         {
             "id": "chick-n-strips",
@@ -3828,7 +3855,8 @@
             "nutrition": {
                 "calories": 310
             },
-            "hideFromIngredientView": true
+            "hideFromIngredientView": true,
+            "defaultOrder": 8
         },
         {
             "id": "hash-browns",
