@@ -930,6 +930,36 @@ export default function MenuItemCard({
     });
   };
 
+  useEffect(() => {
+    if (!isCartMode || !isComboEligibleCategory) return;
+
+    emitCartConfiguration(
+      selectedVariantId,
+      selectedAddons,
+      selectedSauceCounts,
+      selectedCommonChangeIds,
+      ingredientCounts,
+      comboType,
+      selectedComboSideId,
+      selectedComboDrinkId,
+      selectedComboSideVariantId,
+      selectedComboDrinkVariantId
+    );
+  }, [
+    comboType,
+    ingredientCounts,
+    isCartMode,
+    isComboEligibleCategory,
+    selectedAddons,
+    selectedComboDrinkId,
+    selectedComboDrinkVariantId,
+    selectedComboSideId,
+    selectedComboSideVariantId,
+    selectedCommonChangeIds,
+    selectedSauceCounts,
+    selectedVariantId,
+  ]);
+
   const handleAddToCart = () => {
     if (isAddFeedbackVisible) return;
 
