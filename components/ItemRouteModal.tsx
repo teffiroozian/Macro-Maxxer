@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
-import { GlassWater, Sandwich } from "lucide-react";
+import { Sandwich, Utensils } from "lucide-react";
 import ItemDetailsPanel, { PortionSelector, type ResolvedPanelIngredient, resolvePanelIngredients } from "@/components/ItemDetailsPanel";
 import type {
   AddonOption,
@@ -64,6 +64,25 @@ function resolveDefaultVariantId(item?: MenuItem) {
   }
   const flaggedDefault = item.variants.find((variant) => variant.isDefault);
   return flaggedDefault?.id ?? item.variants[0]?.id;
+}
+
+function resolveJustItemLabel(item: MenuItem) {
+  const normalizedCategories = (item.categories ?? []).map((category) => normalizeCategory(category));
+
+  if (normalizedCategories.some((category) => category.includes("sandwich"))) {
+    return "Sandwich Only";
+  }
+  if (normalizedCategories.some((category) => category.includes("salad"))) {
+    return "Salad Only";
+  }
+  if (normalizedCategories.some((category) => category.includes("wrap"))) {
+    return "Wrap Only";
+  }
+  if (normalizedCategories.some((category) => category.includes("nugget") || category.includes("chicken"))) {
+    return "Chicken Only";
+  }
+
+  return "Item Only";
 }
 
 function deltaFat(change: CommonChange) {
@@ -294,10 +313,13 @@ export default function ItemRouteModal({
       ),
     [menuItems]
   );
-  const comboTypeOptions = [
-    { id: "just-item" as const, label: "Just Sandwich", icon: Sandwich },
-    { id: "combo-meal" as const, label: "Combo Meal", icon: GlassWater },
-  ];
+  const comboTypeOptions = useMemo(
+    () => [
+      { id: "just-item" as const, label: resolveJustItemLabel(item), icon: Sandwich },
+      { id: "combo-meal" as const, label: "Combo Meal", icon: Utensils },
+    ],
+    [item]
+  );
   const selectedComboSide = useMemo(
     () => comboSides.find((side) => (side.id ?? side.name) === selectedComboSideId),
     [comboSides, selectedComboSideId]
@@ -739,11 +761,21 @@ export default function ItemRouteModal({
             selectedComboSideId={selectedComboSideId}
             selectedComboDrinkId={selectedComboDrinkId}
             onSelectComboSide={(sideId) => {
+              if (selectedComboSideId === sideId) {
+                setSelectedComboSideId(undefined);
+                setSelectedComboSideVariantId(undefined);
+                return;
+              }
               const nextSide = comboSides.find((side) => (side.id ?? side.name) === sideId);
               setSelectedComboSideId(sideId);
               setSelectedComboSideVariantId(resolveDefaultVariantId(nextSide));
             }}
             onSelectComboDrink={(drinkId) => {
+              if (selectedComboDrinkId === drinkId) {
+                setSelectedComboDrinkId(undefined);
+                setSelectedComboDrinkVariantId(undefined);
+                return;
+              }
               const nextDrink = comboDrinks.find((drink) => (drink.id ?? drink.name) === drinkId);
               setSelectedComboDrinkId(drinkId);
               setSelectedComboDrinkVariantId(resolveDefaultVariantId(nextDrink));
