@@ -927,31 +927,39 @@ export default function ItemDetailsPanel({
                 const isSelected = selectedComboSideId === sideId;
                 const sideVariants = side.variants ?? [];
                 return (
-                  <li key={sideId} className="flex flex-col">
-                    <button
-                      type="button"
-                      className={`box-border flex h-full w-full cursor-pointer flex-row items-center gap-3 rounded-[10px] border border-[rgba(0,0,0,0.12)] bg-[#fcfcfc] px-3 py-2 text-left ${isSelected ? "shadow-[inset_0_0_0_2px_#16a34a]" : ""}`}
+                  <li key={sideId} className="flex">
+                    <div
+                      className={`box-border flex h-full w-full cursor-pointer flex-col rounded-[10px] border border-[rgba(0,0,0,0.12)] bg-[#fcfcfc] px-3 py-2 text-left ${isSelected ? "shadow-[inset_0_0_0_2px_#16a34a]" : ""}`}
+                      role="button"
+                      tabIndex={0}
                       onClick={() => onSelectComboSide?.(sideId)}
+                      onKeyDown={(event) => {
+                        if (event.key === "Enter" || event.key === " ") {
+                          event.preventDefault();
+                          onSelectComboSide?.(sideId);
+                        }
+                      }}
                     >
-                      <div className="grid h-[72px] w-[72px] min-w-[72px] place-items-center rounded-lg bg-cover bg-center">
-                        {side.image ? (
-                          <Image src={side.image} alt="" width={72} height={72} className="h-[72px] w-[72px] rounded-lg object-cover" />
-                        ) : null}
+                      <div className="flex flex-row items-center gap-3">
+                        <div className="grid h-[72px] w-[72px] min-w-[72px] place-items-center rounded-lg bg-cover bg-center">
+                          {side.image ? (
+                            <Image src={side.image} alt="" width={72} height={72} className="h-[72px] w-[72px] rounded-lg object-cover" />
+                          ) : null}
+                        </div>
+                        <div className="flex min-w-0 flex-col items-start justify-center gap-[6px]">
+                          <div className="line-clamp-2 break-words text-left text-base font-bold leading-[1.2]">{side.name}</div>
+                          <div className="text-sm font-bold text-[rgba(0,0,0,0.5)]">{side.nutrition.calories ?? "—"} Cal</div>
+                        </div>
+                        <span
+                          aria-hidden="true"
+                          className={`ml-auto inline-flex h-6 w-6 shrink-0 items-center justify-center rounded-full border ${
+                            isSelected ? "border-[3px] border-[#16a34a]" : "border-2 border-[rgba(0,0,0,0.2)]"
+                          }`}
+                        >
+                          <span className={`h-2.5 w-2.5 rounded-full ${isSelected ? "bg-[#16a34a]" : "bg-transparent"}`} />
+                        </span>
                       </div>
-                      <div className="flex min-w-0 flex-col items-start justify-center gap-[6px]">
-                        <div className="line-clamp-2 break-words text-left text-base font-bold leading-[1.2]">{side.name}</div>
-                        <div className="text-sm font-bold text-[rgba(0,0,0,0.5)]">{side.nutrition.calories ?? "—"} Cal</div>
-                      </div>
-                      <span
-                        aria-hidden="true"
-                        className={`ml-auto inline-flex h-6 w-6 shrink-0 items-center justify-center rounded-full border ${
-                          isSelected ? "border-[3px] border-[#16a34a]" : "border-2 border-[rgba(0,0,0,0.2)]"
-                        }`}
-                      >
-                        <span className={`h-2.5 w-2.5 rounded-full ${isSelected ? "bg-[#16a34a]" : "bg-transparent"}`} />
-                      </span>
-                    </button>
-                    {isSelected && sideVariants.length > 0 ? (
+                      {isSelected && sideVariants.length > 0 ? (
                       <div className="mt-2 flex w-full flex-wrap gap-1.5 pl-[84px]">
                         {sideVariants.map((variant) => {
                           const isVariantSelected = (selectedComboSideVariantId ?? side.defaultVariantId ?? sideVariants[0]?.id) === variant.id;
@@ -964,7 +972,10 @@ export default function ItemDetailsPanel({
                                   ? "border-black bg-black text-white"
                                   : "border-black/20 bg-white text-black/70"
                               }`}
-                              onClick={() => onSelectComboSideVariant?.(variant.id)}
+                              onClick={(event) => {
+                                event.stopPropagation();
+                                onSelectComboSideVariant?.(variant.id);
+                              }}
                             >
                               {variant.label}
                             </button>
@@ -972,6 +983,7 @@ export default function ItemDetailsPanel({
                         })}
                       </div>
                     ) : null}
+                    </div>
                   </li>
                 );
               })}
