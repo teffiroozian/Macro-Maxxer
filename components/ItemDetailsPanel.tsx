@@ -482,6 +482,17 @@ export default function ItemDetailsPanel({
   onSelectSingleIngredient,
   flattenIngredientList = false,
   lockedIngredientIds = [],
+  comboType = "just-item",
+  comboSides = [],
+  comboDrinks = [],
+  selectedComboSideId,
+  selectedComboDrinkId,
+  onSelectComboSide,
+  onSelectComboDrink,
+  selectedComboSideVariantId,
+  onSelectComboSideVariant,
+  selectedComboDrinkVariantId,
+  onSelectComboDrinkVariant,
 }: {
   item: MenuItem;
   nutrition: Nutrition;
@@ -512,6 +523,17 @@ export default function ItemDetailsPanel({
   onSelectSingleIngredient?: (ingredientId: string, ingredientIdsInTab: string[]) => void;
   flattenIngredientList?: boolean;
   lockedIngredientIds?: string[];
+  comboType?: "just-item" | "combo-meal";
+  comboSides?: MenuItem[];
+  comboDrinks?: MenuItem[];
+  selectedComboSideId?: string;
+  selectedComboDrinkId?: string;
+  onSelectComboSide?: (itemId: string) => void;
+  onSelectComboDrink?: (itemId: string) => void;
+  selectedComboSideVariantId?: string;
+  onSelectComboSideVariant?: (variantId: string) => void;
+  selectedComboDrinkVariantId?: string;
+  onSelectComboDrinkVariant?: (variantId: string) => void;
 }) {
   const n = nutrition;
   const addonRefs = item.addonRefs ?? [];
@@ -695,6 +717,7 @@ export default function ItemDetailsPanel({
         return ingredientCount > 0;
       }) ?? false)
     : availableIngredientTabs.length > 1 || (availableIngredientTabs[0]?.ingredients.length ?? 0) > 0;
+  const shouldShowComboSelections = comboType === "combo-meal";
 
   return (
     <div className="grid grid-cols-2 gap-3 rounded-[18px] bg-[#e0e0e0] p-3">
@@ -896,6 +919,165 @@ export default function ItemDetailsPanel({
             </div>
           )}
         </section>
+      ) : null}
+
+      {shouldShowComboSelections ? (
+        <>
+          <section className="col-span-2 rounded-[14px] border border-black/12 bg-white p-5">
+            <h2 className="mb-6 text-2xl font-bold">Sides</h2>
+            <ul className="grid list-none grid-cols-2 items-stretch gap-[10px] pl-0">
+              {comboSides.map((side) => {
+                const sideId = side.id ?? side.name;
+                const isSelected = selectedComboSideId === sideId;
+                const sideVariants = side.variants ?? [];
+                const selectedSideVariant =
+                  isSelected && sideVariants.length > 0
+                    ? sideVariants.find(
+                        (variant) => (selectedComboSideVariantId ?? side.defaultVariantId ?? sideVariants[0]?.id) === variant.id
+                      )
+                    : undefined;
+                const sideCalories = selectedSideVariant?.nutrition.calories ?? side.nutrition.calories;
+                return (
+                  <li key={sideId} className="flex">
+                    <div
+                      className={`box-border flex h-full w-full cursor-pointer flex-col rounded-[10px] border border-[rgba(0,0,0,0.12)] bg-[#fcfcfc] px-3 py-2 text-left ${isSelected ? "shadow-[inset_0_0_0_2px_#16a34a]" : ""}`}
+                      role="button"
+                      tabIndex={0}
+                      onClick={() => onSelectComboSide?.(sideId)}
+                      onKeyDown={(event) => {
+                        if (event.key === "Enter" || event.key === " ") {
+                          event.preventDefault();
+                          onSelectComboSide?.(sideId);
+                        }
+                      }}
+                    >
+                      <div className="flex flex-row items-center gap-3">
+                        <div className="grid h-[72px] w-[72px] min-w-[72px] place-items-center rounded-lg bg-cover bg-center">
+                          {side.image ? (
+                            <Image src={side.image} alt="" width={72} height={72} className="h-[72px] w-[72px] rounded-lg object-cover" />
+                          ) : null}
+                        </div>
+                        <div className="flex min-w-0 flex-col items-start justify-center gap-[6px]">
+                          <div className="line-clamp-2 break-words text-left text-base font-bold leading-[1.2]">{side.name}</div>
+                          <div className="text-sm font-bold text-[rgba(0,0,0,0.5)]">{sideCalories ?? "—"} Cal</div>
+                        </div>
+                        <span
+                          aria-hidden="true"
+                          className={`ml-auto inline-flex h-6 w-6 shrink-0 items-center justify-center rounded-full border ${
+                            isSelected ? "border-[3px] border-[#16a34a]" : "border-2 border-[rgba(0,0,0,0.2)]"
+                          }`}
+                        >
+                          <span className={`h-2.5 w-2.5 rounded-full ${isSelected ? "bg-[#16a34a]" : "bg-transparent"}`} />
+                        </span>
+                      </div>
+                      {isSelected && sideVariants.length > 0 ? (
+                      <div className="mt-2 flex w-full flex-wrap gap-1.5 pl-[84px]">
+                        {sideVariants.map((variant) => {
+                          const isVariantSelected = (selectedComboSideVariantId ?? side.defaultVariantId ?? sideVariants[0]?.id) === variant.id;
+                          return (
+                            <button
+                              key={`${sideId}-${variant.id}`}
+                              type="button"
+                              className={`cursor-pointer rounded-full border px-2.5 py-1 text-xs font-semibold ${
+                                isVariantSelected
+                                  ? "border-black bg-black text-white"
+                                  : "border-black/20 bg-white text-black/70"
+                              }`}
+                              onClick={(event) => {
+                                event.stopPropagation();
+                                onSelectComboSideVariant?.(variant.id);
+                              }}
+                            >
+                              {variant.label}
+                            </button>
+                          );
+                        })}
+                      </div>
+                    ) : null}
+                    </div>
+                  </li>
+                );
+              })}
+            </ul>
+          </section>
+          <section className="col-span-2 rounded-[14px] border border-black/12 bg-white p-5">
+            <h2 className="mb-6 text-2xl font-bold">Drinks</h2>
+            <ul className="grid list-none grid-cols-2 items-stretch gap-[10px] pl-0">
+              {comboDrinks.map((drink) => {
+                const drinkId = drink.id ?? drink.name;
+                const isSelected = selectedComboDrinkId === drinkId;
+                const drinkVariants = drink.variants ?? [];
+                const selectedDrinkVariant =
+                  isSelected && drinkVariants.length > 0
+                    ? drinkVariants.find(
+                        (variant) => (selectedComboDrinkVariantId ?? drink.defaultVariantId ?? drinkVariants[0]?.id) === variant.id
+                      )
+                    : undefined;
+                const drinkCalories = selectedDrinkVariant?.nutrition.calories ?? drink.nutrition.calories;
+                return (
+                  <li key={drinkId} className="flex">
+                    <div
+                      className={`box-border flex h-full w-full cursor-pointer flex-col rounded-[10px] border border-[rgba(0,0,0,0.12)] bg-[#fcfcfc] px-3 py-2 text-left ${isSelected ? "shadow-[inset_0_0_0_2px_#16a34a]" : ""}`}
+                      role="button"
+                      tabIndex={0}
+                      onClick={() => onSelectComboDrink?.(drinkId)}
+                      onKeyDown={(event) => {
+                        if (event.key === "Enter" || event.key === " ") {
+                          event.preventDefault();
+                          onSelectComboDrink?.(drinkId);
+                        }
+                      }}
+                    >
+                      <div className="flex flex-row items-center gap-3">
+                        <div className="grid h-[72px] w-[72px] min-w-[72px] place-items-center rounded-lg bg-cover bg-center">
+                          {drink.image ? (
+                            <Image src={drink.image} alt="" width={72} height={72} className="h-[72px] w-[72px] rounded-lg object-cover" />
+                          ) : null}
+                        </div>
+                        <div className="flex min-w-0 flex-col items-start justify-center gap-[6px]">
+                          <div className="line-clamp-2 break-words text-left text-base font-bold leading-[1.2]">{drink.name}</div>
+                          <div className="text-sm font-bold text-[rgba(0,0,0,0.5)]">{drinkCalories ?? "—"} Cal</div>
+                        </div>
+                        <span
+                          aria-hidden="true"
+                          className={`ml-auto inline-flex h-6 w-6 shrink-0 items-center justify-center rounded-full border ${
+                            isSelected ? "border-[3px] border-[#16a34a]" : "border-2 border-[rgba(0,0,0,0.2)]"
+                          }`}
+                        >
+                          <span className={`h-2.5 w-2.5 rounded-full ${isSelected ? "bg-[#16a34a]" : "bg-transparent"}`} />
+                        </span>
+                      </div>
+                      {isSelected && drinkVariants.length > 0 ? (
+                        <div className="mt-2 flex w-full flex-wrap gap-1.5 pl-[84px]">
+                          {drinkVariants.map((variant) => {
+                            const isVariantSelected = (selectedComboDrinkVariantId ?? drink.defaultVariantId ?? drinkVariants[0]?.id) === variant.id;
+                            return (
+                              <button
+                                key={`${drinkId}-${variant.id}`}
+                                type="button"
+                                className={`cursor-pointer rounded-full border px-2.5 py-1 text-xs font-semibold ${
+                                  isVariantSelected
+                                    ? "border-black bg-black text-white"
+                                    : "border-black/20 bg-white text-black/70"
+                                }`}
+                                onClick={(event) => {
+                                  event.stopPropagation();
+                                  onSelectComboDrinkVariant?.(variant.id);
+                                }}
+                              >
+                                {variant.label}
+                              </button>
+                            );
+                          })}
+                        </div>
+                      ) : null}
+                    </div>
+                  </li>
+                );
+              })}
+            </ul>
+          </section>
+        </>
       ) : null}
 
       {availableAddonSections.length > 0 ? (
