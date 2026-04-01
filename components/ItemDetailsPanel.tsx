@@ -482,6 +482,15 @@ export default function ItemDetailsPanel({
   onSelectSingleIngredient,
   flattenIngredientList = false,
   lockedIngredientIds = [],
+  showComboTypeSelector = false,
+  comboType = "just-item",
+  onComboTypeChange,
+  comboSides = [],
+  comboDrinks = [],
+  selectedComboSideId,
+  selectedComboDrinkId,
+  onSelectComboSide,
+  onSelectComboDrink,
 }: {
   item: MenuItem;
   nutrition: Nutrition;
@@ -512,6 +521,15 @@ export default function ItemDetailsPanel({
   onSelectSingleIngredient?: (ingredientId: string, ingredientIdsInTab: string[]) => void;
   flattenIngredientList?: boolean;
   lockedIngredientIds?: string[];
+  showComboTypeSelector?: boolean;
+  comboType?: "just-item" | "combo-meal";
+  onComboTypeChange?: (comboType: "just-item" | "combo-meal") => void;
+  comboSides?: MenuItem[];
+  comboDrinks?: MenuItem[];
+  selectedComboSideId?: string;
+  selectedComboDrinkId?: string;
+  onSelectComboSide?: (itemId: string) => void;
+  onSelectComboDrink?: (itemId: string) => void;
 }) {
   const n = nutrition;
   const addonRefs = item.addonRefs ?? [];
@@ -695,9 +713,37 @@ export default function ItemDetailsPanel({
         return ingredientCount > 0;
       }) ?? false)
     : availableIngredientTabs.length > 1 || (availableIngredientTabs[0]?.ingredients.length ?? 0) > 0;
+  const shouldShowComboSelections = showComboTypeSelector && comboType === "combo-meal";
+  const comboTypeOptions = [
+    { id: "just-item" as const, label: "Just Sandwich" },
+    { id: "combo-meal" as const, label: "Combo Meal" },
+  ];
 
   return (
     <div className="grid grid-cols-2 gap-3 rounded-[18px] bg-[#e0e0e0] p-3">
+      {showComboTypeSelector ? (
+        <section className="col-span-2 rounded-[14px] border border-black/12 bg-white p-5">
+          <div className="mb-4 text-lg font-semibold uppercase tracking-[0.06em] text-[rgba(0,0,0,0.8)]">Combo Type</div>
+          <div className="flex w-full flex-wrap justify-start gap-2">
+            {comboTypeOptions.map((option) => {
+              const isActive = comboType === option.id;
+              return (
+                <button
+                  key={option.id}
+                  type="button"
+                  className={`min-w-[140px] cursor-pointer rounded-lg border-2 border-[rgba(0,0,0,0.6)] px-3 py-1.5 text-center text-[18px] font-bold ${
+                    isActive ? "bg-black text-white" : "bg-transparent text-[rgba(0,0,0,0.6)]"
+                  }`}
+                  onClick={() => onComboTypeChange?.(option.id)}
+                >
+                  {option.label}
+                </button>
+              );
+            })}
+          </div>
+        </section>
+      ) : null}
+
       {shouldShowIngredientSection && selectedIngredientTab ? (
         <section className="col-span-2 rounded-[14px] border border-black/12 bg-white p-5">
           <h2 className="mb-6 text-2xl font-bold">Ingredients</h2>
@@ -896,6 +942,83 @@ export default function ItemDetailsPanel({
             </div>
           )}
         </section>
+      ) : null}
+
+      {shouldShowComboSelections ? (
+        <>
+          <section className="col-span-2 rounded-[14px] border border-black/12 bg-white p-5">
+            <h2 className="mb-6 text-2xl font-bold">Sides</h2>
+            <ul className="grid list-none grid-cols-2 items-stretch gap-[10px] pl-0">
+              {comboSides.map((side) => {
+                const sideId = side.id ?? side.name;
+                const isSelected = selectedComboSideId === sideId;
+                return (
+                  <li key={sideId} className="flex">
+                    <button
+                      type="button"
+                      className={`box-border flex h-full w-full cursor-pointer flex-row items-center gap-3 rounded-[10px] border border-[rgba(0,0,0,0.12)] bg-[#fcfcfc] px-3 py-2 text-left ${isSelected ? "shadow-[inset_0_0_0_2px_#16a34a]" : ""}`}
+                      onClick={() => onSelectComboSide?.(sideId)}
+                    >
+                      <div className="grid h-[72px] w-[72px] min-w-[72px] place-items-center rounded-lg bg-cover bg-center">
+                        {side.image ? (
+                          <Image src={side.image} alt="" width={72} height={72} className="h-[72px] w-[72px] rounded-lg object-cover" />
+                        ) : null}
+                      </div>
+                      <div className="flex min-w-0 flex-col items-start justify-center gap-[6px]">
+                        <div className="line-clamp-2 break-words text-left text-base font-bold leading-[1.2]">{side.name}</div>
+                        <div className="text-sm font-bold text-[rgba(0,0,0,0.5)]">{side.nutrition.calories ?? "—"} Cal</div>
+                      </div>
+                      <span
+                        aria-hidden="true"
+                        className={`ml-auto inline-flex h-6 w-6 shrink-0 items-center justify-center rounded-full border ${
+                          isSelected ? "border-[3px] border-[#16a34a]" : "border-2 border-[rgba(0,0,0,0.2)]"
+                        }`}
+                      >
+                        <span className={`h-2.5 w-2.5 rounded-full ${isSelected ? "bg-[#16a34a]" : "bg-transparent"}`} />
+                      </span>
+                    </button>
+                  </li>
+                );
+              })}
+            </ul>
+          </section>
+          <section className="col-span-2 rounded-[14px] border border-black/12 bg-white p-5">
+            <h2 className="mb-6 text-2xl font-bold">Drinks</h2>
+            <ul className="grid list-none grid-cols-2 items-stretch gap-[10px] pl-0">
+              {comboDrinks.map((drink) => {
+                const drinkId = drink.id ?? drink.name;
+                const isSelected = selectedComboDrinkId === drinkId;
+                return (
+                  <li key={drinkId} className="flex">
+                    <button
+                      type="button"
+                      className={`box-border flex h-full w-full cursor-pointer flex-row items-center gap-3 rounded-[10px] border border-[rgba(0,0,0,0.12)] bg-[#fcfcfc] px-3 py-2 text-left ${isSelected ? "shadow-[inset_0_0_0_2px_#16a34a]" : ""}`}
+                      onClick={() => onSelectComboDrink?.(drinkId)}
+                    >
+                      <div className="grid h-[72px] w-[72px] min-w-[72px] place-items-center rounded-lg bg-cover bg-center">
+                        {drink.image ? (
+                          <Image src={drink.image} alt="" width={72} height={72} className="h-[72px] w-[72px] rounded-lg object-cover" />
+                        ) : null}
+                      </div>
+                      <div className="flex min-w-0 flex-col items-start justify-center gap-[6px]">
+                        <div className="line-clamp-2 break-words text-left text-base font-bold leading-[1.2]">{drink.name}</div>
+                        <div className="text-sm font-bold text-[rgba(0,0,0,0.5)]">{drink.nutrition.calories ?? "—"} Cal</div>
+                      </div>
+                      <span
+                        aria-hidden="true"
+                        className={`ml-auto inline-flex h-6 w-6 shrink-0 items-center justify-center rounded-full border ${
+                          isSelected ? "border-[3px] border-[#16a34a]" : "border-2 border-[rgba(0,0,0,0.2)]"
+                        }`}
+                      >
+                        <span className={`h-2.5 w-2.5 rounded-full ${isSelected ? "bg-[#16a34a]" : "bg-transparent"}`} />
+                      </span>
+                    </button>
+                  </li>
+                );
+              })}
+            </ul>
+          </section>
+        </>
       ) : null}
 
       {availableAddonSections.length > 0 ? (

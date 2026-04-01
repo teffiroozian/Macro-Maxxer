@@ -112,6 +112,9 @@ export default function ItemRouteModal({
   const [selectedAddons, setSelectedAddons] = useState<Partial<Record<AddonRef, AddonOption>>>({});
   const [selectedSauceCounts, setSelectedSauceCounts] = useState<Record<string, number>>({});
   const [selectedCommonChangeIds, setSelectedCommonChangeIds] = useState<string[]>([]);
+  const [comboType, setComboType] = useState<"just-item" | "combo-meal">("just-item");
+  const [selectedComboSideId, setSelectedComboSideId] = useState<string>();
+  const [selectedComboDrinkId, setSelectedComboDrinkId] = useState<string>();
   const { addItem } = useCart();
   const selectedVariant = variants?.find((variant) => variant.id === selectedVariantId);
   const selectedItemImage = selectedVariant?.image ?? item.image;
@@ -289,6 +292,25 @@ export default function ItemRouteModal({
         }),
     [ingredientCounts, resolvedIngredients]
   );
+  const isComboEligibleCategory = useMemo(() => {
+    if (restaurantId !== "chickfila") return false;
+    const allowed = new Set(["sandwich", "nuggets", "chicken", "salad", "wrap"]);
+    return item.categories.some((category) => allowed.has(normalizeCategory(category)));
+  }, [item.categories, restaurantId]);
+  const comboSides = useMemo(
+    () =>
+      (menuItems ?? []).filter((menuItem) =>
+        menuItem.categories.some((category) => normalizeCategory(category) === "side")
+      ),
+    [menuItems]
+  );
+  const comboDrinks = useMemo(
+    () =>
+      (menuItems ?? []).filter((menuItem) =>
+        menuItem.categories.some((category) => normalizeCategory(category) === "drinks")
+      ),
+    [menuItems]
+  );
 
   const handleClose = () => {
     if (window.history.length > 1) {
@@ -299,7 +321,17 @@ export default function ItemRouteModal({
   };
 
   const handleAddToCart = () => {
-    const customizations = [...selectedCommonChanges, ...selectedIngredientCustomizations];
+    const comboSide = comboSides.find((side) => (side.id ?? side.name) === selectedComboSideId);
+    const comboDrink = comboDrinks.find((drink) => (drink.id ?? drink.name) === selectedComboDrinkId);
+    const comboCustomizations =
+      isComboEligibleCategory && comboType === "combo-meal"
+        ? [
+            "Combo Meal",
+            comboSide ? `Side: ${comboSide.name}` : undefined,
+            comboDrink ? `Drink: ${comboDrink.name}` : undefined,
+          ].filter((entry): entry is string => Boolean(entry))
+        : [];
+    const customizations = [...selectedCommonChanges, ...selectedIngredientCustomizations, ...comboCustomizations];
 
     const cartItem = {
       id: crypto.randomUUID(),
@@ -524,6 +556,15 @@ export default function ItemRouteModal({
                 return next;
               })
             }
+            showComboTypeSelector={isComboEligibleCategory}
+            comboType={comboType}
+            onComboTypeChange={setComboType}
+            comboSides={comboSides}
+            comboDrinks={comboDrinks}
+            selectedComboSideId={selectedComboSideId}
+            selectedComboDrinkId={selectedComboDrinkId}
+            onSelectComboSide={setSelectedComboSideId}
+            onSelectComboDrink={setSelectedComboDrinkId}
           />
         </div>
         </div>
