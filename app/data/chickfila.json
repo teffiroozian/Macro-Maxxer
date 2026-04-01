@@ -127,7 +127,7 @@
                 "sugars": 7,
                 "protein": 34
             },
-            "defaultOrder": 2
+            "defaultOrder": 4
         },
         {
             "id": "spicy_chicken_sandwich",
@@ -254,7 +254,7 @@
                     "label": "30 ct"
                 }
             ],
-            "defaultOrder": 4
+            "defaultOrder": 1
         },
         {
             "id": "chick_fil_a_deluxe_sandwich",
@@ -284,7 +284,7 @@
                 "sugars": 7,
                 "protein": 32
             },
-            "defaultOrder": 5
+            "defaultOrder": 2
         },
         {
             "id": "chick_fil_a_cool_wrap",
@@ -440,7 +440,7 @@
                     "label": "10 ct"
                 }
             ],
-            "defaultOrder": 8
+            "defaultOrder": 3
         },
         {
             "id": "grilled_chicken_sandwich",
@@ -469,7 +469,7 @@
                 "sugars": 11,
                 "protein": 28
             },
-            "defaultOrder": 9
+            "defaultOrder": 5
         },
         {
             "id": "cfa-grilled-chicken-club-sandwich",
@@ -500,7 +500,7 @@
                 "sugars": 12,
                 "protein": 37
             },
-            "defaultOrder": 10
+            "defaultOrder": 6
         },
         {
             "id": "grilled_nuggets",
@@ -594,7 +594,7 @@
                     "label": "30 ct"
                 }
             ],
-            "defaultOrder": 11
+            "defaultOrder": 2
         },
         {
             "id": "cobb_salad",
