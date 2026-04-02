@@ -9,7 +9,6 @@ import {
   Beef,
   CakeSlice,
   ChevronDown,
-  Circle,
   CircleDashed,
   CupSoda,
   Egg,
@@ -34,11 +33,8 @@ import {
   Triangle,
   ToggleLeft,
   Cylinder,
-  RotateCcw,
-  Save,
   Shrink,
   ShoppingCart,
-  Utensils,
   UtensilsCrossed,
   Waves,
 } from "lucide-react";
@@ -65,6 +61,41 @@ import MenuSections from "./MenuSections";
 import StickyRestaurantBar from "./StickyRestaurantBar";
 import StickyMacroTotalsBar from "./StickyMacroTotalsBar";
 import { useCart } from "@/stores/cartStore";
+import {
+  CHIPOTLE_ENTREE_CONFIGURATIONS,
+  CHIPOTLE_HIDDEN_MENU_SECTIONS_BY_ENTREE,
+  CHIPOTLE_KIDS_BUILD_YOUR_OWN_DOUBLE_SIDE_IDS,
+  CHIPOTLE_KIDS_MEAL_OPTIONS,
+  CHIPOTLE_KIDS_QUESADILLA_INCLUDED_INGREDIENT_IDS,
+  CHIPOTLE_QUESADILLA_TRIPLE_CHEESE_VARIANT_ID,
+  CHIPOTLE_SELECTED_INGREDIENT_CATEGORY_LABELS,
+  CHIPOTLE_SELECTED_INGREDIENT_CATEGORY_ORDER,
+  CHIPOTLE_TACO_SHELL_INGREDIENT_IDS,
+  type EntreeConfiguration,
+  type EntreeSelection,
+  type KidsMealSelection,
+  type TacoCountSelection,
+  type TacoShellSelection,
+} from "@/app/data/chipotleBuildConfig";
+import BuildSummaryDrawer from "./restaurant-view/BuildSummaryDrawer";
+import EntreeSelectionHero from "./restaurant-view/EntreeSelectionHero";
+import KidsMealSelector from "./restaurant-view/KidsMealSelector";
+import RestaurantCategorySidebar from "./restaurant-view/RestaurantCategorySidebar";
+import {
+  type IncludedIngredientContext,
+  type ProteinPortionMode,
+  type SplitPortionMode,
+  getAllKnownIncludedIngredientIds,
+  getIngredientCategoryMaxSelections,
+  getProteinBadgeLabel,
+  getProteinMultiplier,
+  getSplitExtraMultiplier,
+  getSplitPortionLabel,
+  isQuesadillaCheeseSelection,
+  normalizeIngredientCategory,
+  resolveIncludedIngredientIds,
+  scaleNutritionValues,
+} from "@/lib/chipotleBuild";
 
 
 const CATEGORY_ICONS: Record<string, LucideIcon> = {
@@ -112,121 +143,6 @@ const CATEGORY_ICONS: Record<string, LucideIcon> = {
   treats: IceCreamCone,
 };
 
-const CHIPOTLE_HIDDEN_MENU_SECTIONS_BY_ENTREE: Record<string, string[]> = {
-  "chips-sides": ["toppings"],
-};
-const CHIPOTLE_CATEGORY_MAX_SELECTIONS: Record<string, number> = {
-  proteins: 2,
-  rice: 2,
-  beans: 2,
-};
-
-type EntreeSelection =
-  | "bowl"
-  | "burrito"
-  | "quesadilla"
-  | "salad"
-  | "tacos"
-  | "high-protein-menu"
-  | "kids-meal"
-  | "chips-sides"
-  | "drinks"
-  | null;
-type TacoShellSelection = "crispy" | "soft";
-type TacoCountSelection = 3 | 1;
-type KidsMealSelection = "build-your-own" | "quesadilla";
-type ProteinPortionMode = "normal" | "double";
-type SplitPortionMode = "light" | "normal" | "extra";
-type IncludedIngredientContext = {
-  selectedEntree: EntreeSelection;
-  selectedKidsMeal: KidsMealSelection;
-};
-type EntreeConfiguration = {
-  label: string;
-  imageSrc: string;
-  nutritionMultiplier?: number;
-  includedIngredientIds?: string[];
-  getIncludedIngredientIds?: (options: { tacoShell: TacoShellSelection }) => string[];
-};
-const CHIPOTLE_TACO_SHELL_INGREDIENT_IDS = [
-  "crispy-corn-tortilla",
-  "soft-flour-tortilla",
-];
-const CHIPOTLE_ENTREE_CONFIGURATIONS: Record<
-  Exclude<EntreeSelection, null>,
-  EntreeConfiguration
-> = {
-  bowl: { label: "Bowl", imageSrc: "/restaurants/chipotle/entrees/burrito-bowl.png" },
-  burrito: {
-    label: "Burrito",
-    imageSrc: "/restaurants/chipotle/entrees/burrito.png",
-    includedIngredientIds: ["tortilla"],
-  },
-  quesadilla: {
-    label: "Quesadilla",
-    imageSrc: "/restaurants/chipotle/entrees/quesadilla.png",
-    includedIngredientIds: ["tortilla", "cheese"],
-  },
-  salad: {
-    label: "Salad",
-    imageSrc: "/restaurants/chipotle/entrees/salad.png",
-    includedIngredientIds: ["romaine-lettuce"],
-  },
-  tacos: {
-    label: "Tacos",
-    imageSrc: "/restaurants/chipotle/entrees/tacos.png",
-    getIncludedIngredientIds: ({ tacoShell }) => [
-      tacoShell === "crispy" ? "crispy-corn-tortilla" : "soft-flour-tortilla",
-    ],
-  },
-  "high-protein-menu": {
-    label: "High Protein Menu",
-    imageSrc: "/restaurants/chipotle/entrees/high-protein-menu.png",
-  },
-  "kids-meal": {
-    label: "Kid's Meal",
-    imageSrc: "/restaurants/chipotle/entrees/kids-meal.png",
-  },
-  "chips-sides": {
-    label: "Chips & Sides",
-    imageSrc: "/restaurants/chipotle/entrees/chips-and-sides.png",
-  },
-  drinks: {
-    label: "Drinks",
-    imageSrc: "/restaurants/chipotle/entrees/drinks.png",
-  },
-};
-
-const CHIPOTLE_KIDS_QUESADILLA_INCLUDED_INGREDIENT_IDS = [
-  "soft-flour-tortilla",
-  "cheese",
-];
-const CHIPOTLE_KIDS_BUILD_YOUR_OWN_DOUBLE_SIDE_IDS = new Set([
-  "crispy-corn-tortilla",
-  "soft-flour-tortilla",
-]);
-const CHIPOTLE_QUESADILLA_TRIPLE_CHEESE_VARIANT_ID = "quesadilla-triple-cheese";
-const CHIPOTLE_KIDS_MEAL_OPTIONS: Array<{
-  id: KidsMealSelection;
-  label: string;
-  imageSrc: string;
-}> = [
-  {
-    id: "build-your-own",
-    label: "Kid's Build Your Own",
-    imageSrc: "/restaurants/chipotle/entrees/kids-meal.png",
-  },
-  {
-    id: "quesadilla",
-    label: "Kid's Quesadilla",
-    imageSrc: "/restaurants/chipotle/entrees/kids-quesadilla.png",
-  },
-];
-
-function formatValue(value?: number, suffix = "") {
-  return value === undefined ? "—" : `${value}${suffix}`;
-}
-
 function titleCase(text: string) {
   return text
     .trim()
@@ -234,28 +150,6 @@ function titleCase(text: string) {
     .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
     .join(" ");
 }
-
-function normalizeIngredientCategory(value: string | undefined) {
-  return value?.trim().toLowerCase() ?? "";
-}
-
-const CHIPOTLE_SELECTED_INGREDIENT_CATEGORY_ORDER = [
-  "included ingredient",
-  "proteins",
-  "rice",
-  "beans",
-  "toppings",
-  "side",
-] as const;
-
-const CHIPOTLE_SELECTED_INGREDIENT_CATEGORY_LABELS: Record<string, string> = {
-  "included ingredient": "Included ingredients",
-  proteins: "Protein",
-  rice: "Rice",
-  beans: "Beans",
-  toppings: "Toppings",
-  side: "Side",
-};
 
 function isProteinIngredientItem(item: Pick<MenuItem, "categories">) {
   return normalizeIngredientCategory(item.categories?.[0]) === "proteins";
@@ -271,89 +165,6 @@ function isBeanIngredientItem(item: Pick<MenuItem, "categories">) {
 
 function isSplitPortionIngredientItem(item: Pick<MenuItem, "categories">) {
   return isRiceIngredientItem(item) || isBeanIngredientItem(item);
-}
-
-function scaleNutritionValues(
-  nutrition: MenuItem["nutrition"] | IngredientItem["nutrition"],
-  multiplier: number
-) {
-  if (multiplier === 1) {
-    return nutrition;
-  }
-
-  return Object.fromEntries(
-    Object.entries(nutrition).map(([key, value]) => [
-      key,
-      typeof value === "number" ? Math.round(value * multiplier) : value,
-    ])
-  );
-}
-
-function getProteinMultiplier(mode: ProteinPortionMode, selectedProteinCount: number) {
-  if (selectedProteinCount <= 0) return 0;
-  if (mode === "double") {
-    return selectedProteinCount === 1 ? 2 : 1;
-  }
-
-  return selectedProteinCount === 1 ? 1 : 0.5;
-}
-
-function getProteinBadgeLabel(mode: ProteinPortionMode, selectedProteinCount: number) {
-  const multiplier = getProteinMultiplier(mode, selectedProteinCount);
-  return multiplier === 0.5 ? "1/2x" : `${multiplier}x`;
-}
-
-function formatMultiplierLabel(multiplier: number) {
-  if (multiplier === 0.5) return "1/2x";
-  if (Number.isInteger(multiplier)) return `${multiplier}x`;
-  return `${multiplier.toFixed(1)}x`;
-}
-
-function getNutritionMultiplier(
-  baseNutrition: MenuItem["nutrition"],
-  nextNutrition: MenuItem["nutrition"]
-) {
-  const comparableKeys: Array<keyof MenuItem["nutrition"]> = ["calories", "protein", "carbs", "totalFat"];
-  for (const key of comparableKeys) {
-    const baseValue = baseNutrition[key];
-    const nextValue = nextNutrition[key];
-    if (typeof baseValue === "number" && baseValue > 0 && typeof nextValue === "number") {
-      return nextValue / baseValue;
-    }
-  }
-
-  return 1;
-}
-
-function getSplitExtraMultiplier(item: MenuItem) {
-  const extraVariant = item.variants?.find((variant) => {
-    const label = variant.label?.trim().toLowerCase() ?? "";
-    const id = variant.id?.trim().toLowerCase() ?? "";
-    return label === "extra" || id === "extra";
-  });
-
-  if (!extraVariant) {
-    return 1.5;
-  }
-
-  return getNutritionMultiplier(item.nutrition, extraVariant.nutrition);
-}
-
-function getSplitPortionLabel(item: MenuItem, mode: SplitPortionMode) {
-  const multiplier = mode === "light" ? 0.5 : mode === "extra" ? getSplitExtraMultiplier(item) : 1;
-  return formatMultiplierLabel(multiplier);
-}
-
-function isQuesadillaCheeseSelection(
-  ingredientId: string,
-  context: IncludedIngredientContext
-) {
-  return (
-    ingredientId === "cheese" &&
-    (context.selectedEntree === "quesadilla" ||
-      (context.selectedEntree === "kids-meal" &&
-        context.selectedKidsMeal === "quesadilla"))
-  );
 }
 
 export default function RestaurantView({
@@ -423,7 +234,6 @@ export default function RestaurantView({
   const [isBuildSummaryExpanded, setIsBuildSummaryExpanded] = useState(false);
   const buildStickyContainerRef = useRef<HTMLDivElement | null>(null);
   const entreeMenuRef = useRef<HTMLDivElement | null>(null);
-  const selectedIngredientsListRef = useRef<HTMLDivElement | null>(null);
   const [selectedEntree, setSelectedEntree] = useState<EntreeSelection>(null);
   const [isEntreeMenuOpen, setIsEntreeMenuOpen] = useState(false);
   const [selectedTacoShell, setSelectedTacoShell] = useState<TacoShellSelection>("crispy");
@@ -444,19 +254,13 @@ export default function RestaurantView({
   const ingredientDisplayMultiplier = servingMultiplier;
   const tacoShellIngredientIds = CHIPOTLE_TACO_SHELL_INGREDIENT_IDS;
   const selectedIncludedIngredientIds = useMemo(
-    () => {
-      if (selectedEntree === "kids-meal") {
-        return selectedKidsMeal === "quesadilla"
-          ? CHIPOTLE_KIDS_QUESADILLA_INCLUDED_INGREDIENT_IDS
-          : [];
-      }
-      return (
-        selectedEntreeConfig?.getIncludedIngredientIds?.({ tacoShell: selectedTacoShell }) ??
-        selectedEntreeConfig?.includedIngredientIds ??
-        []
-      );
-    },
-    [selectedEntree, selectedEntreeConfig, selectedKidsMeal, selectedTacoShell]
+    () =>
+      resolveIncludedIngredientIds({
+        selectedEntree,
+        selectedKidsMeal,
+        selectedTacoShell,
+      }),
+    [selectedEntree, selectedKidsMeal, selectedTacoShell]
   );
   const editCartItemId = searchParams.get("editCartItem");
   const editingCartItem = useMemo(() => {
@@ -1220,18 +1024,6 @@ export default function RestaurantView({
     [applyProteinPortionNutrition, applySplitPortionNutrition]
   );
 
-  const getIngredientCategoryMaxSelections = (item: MenuItem) => {
-    const category = normalizeIngredientCategory(item.categories[0]);
-    if (
-      category === "side" &&
-      selectedEntree === "kids-meal" &&
-      selectedKidsMeal === "build-your-own"
-    ) {
-      return 1;
-    }
-    return CHIPOTLE_CATEGORY_MAX_SELECTIONS[category];
-  };
-
   const getSelectedQuantityForCategory = (
     itemsById: Record<string, { item: MenuItem; quantity: number }>,
     category: string
@@ -1301,7 +1093,11 @@ export default function RestaurantView({
       }
 
       const category = normalizeIngredientCategory(item.categories[0]);
-      const categoryMaxSelections = getIngredientCategoryMaxSelections(item);
+      const categoryMaxSelections = getIngredientCategoryMaxSelections({
+        category,
+        selectedEntree,
+        selectedKidsMeal,
+      });
       if (category && typeof categoryMaxSelections === "number") {
         const selectedQuantityInCategory = getSelectedQuantityForCategory(prev, category);
         if (selectedQuantityInCategory >= categoryMaxSelections) {
@@ -1353,16 +1149,7 @@ export default function RestaurantView({
       selectedKidsMeal,
     }
   ) => {
-    const allIncludedIngredientIds = new Set(
-      [
-        ...Object.values(CHIPOTLE_ENTREE_CONFIGURATIONS).flatMap((configuration) => [
-          ...(configuration.includedIngredientIds ?? []),
-          ...(configuration.getIncludedIngredientIds?.({ tacoShell: "crispy" }) ?? []),
-          ...(configuration.getIncludedIngredientIds?.({ tacoShell: "soft" }) ?? []),
-        ]),
-        ...CHIPOTLE_KIDS_QUESADILLA_INCLUDED_INGREDIENT_IDS,
-      ]
-    );
+    const allIncludedIngredientIds = getAllKnownIncludedIngredientIds();
 
     setSelectedIngredientItems((previous) => {
       const next = { ...previous };
@@ -1497,16 +1284,11 @@ export default function RestaurantView({
     });
   }, [applyIncludedIngredients]);
   const handleEntreeSelection = (entree: Exclude<EntreeSelection, null>) => {
-    const nextIncludedIngredientIds =
-      entree === "kids-meal"
-        ? selectedKidsMeal === "quesadilla"
-          ? CHIPOTLE_KIDS_QUESADILLA_INCLUDED_INGREDIENT_IDS
-          : []
-        : CHIPOTLE_ENTREE_CONFIGURATIONS[entree].getIncludedIngredientIds?.({
-            tacoShell: selectedTacoShell,
-          }) ??
-          CHIPOTLE_ENTREE_CONFIGURATIONS[entree].includedIngredientIds ??
-          [];
+    const nextIncludedIngredientIds = resolveIncludedIngredientIds({
+      selectedEntree: entree,
+      selectedKidsMeal,
+      selectedTacoShell,
+    });
     setSelectedEntree(entree);
     applyIncludedIngredientsNextFrame(nextIncludedIngredientIds, {
       selectedEntree: entree,
@@ -1586,18 +1368,11 @@ export default function RestaurantView({
     setProteinPortionMode("normal");
     setSplitPortionModeById({});
     setSelectedIngredientVariantIds({});
-    const nextIncludedIngredientIds =
-      selectedEntree === "kids-meal"
-        ? selectedKidsMeal === "quesadilla"
-          ? CHIPOTLE_KIDS_QUESADILLA_INCLUDED_INGREDIENT_IDS
-          : []
-        : selectedEntree
-          ? CHIPOTLE_ENTREE_CONFIGURATIONS[selectedEntree].getIncludedIngredientIds?.({
-              tacoShell: selectedTacoShell,
-            }) ??
-            CHIPOTLE_ENTREE_CONFIGURATIONS[selectedEntree].includedIngredientIds ??
-            []
-          : [];
+    const nextIncludedIngredientIds = resolveIncludedIngredientIds({
+      selectedEntree,
+      selectedKidsMeal,
+      selectedTacoShell,
+    });
     setSelectedIngredientItems(() => {
       const resetSelections: Record<string, { item: MenuItem; quantity: number }> = {};
       nextIncludedIngredientIds.forEach((ingredientId) => {
@@ -1673,7 +1448,11 @@ export default function RestaurantView({
       const ingredient = ingredients.find((candidate) => candidate.id === ingredientId);
       const ingredientMaxQuantity = ingredient?.maxQuantity ?? 2;
       const category = normalizeIngredientCategory(existing.item.categories[0]);
-      const categoryMaxSelections = getIngredientCategoryMaxSelections(existing.item);
+      const categoryMaxSelections = getIngredientCategoryMaxSelections({
+        category,
+        selectedEntree,
+        selectedKidsMeal,
+      });
       const selectedQuantityInCategory = category
         ? getSelectedQuantityForCategory(previous, category)
         : 0;
@@ -1728,7 +1507,6 @@ export default function RestaurantView({
     setSelectedIngredientVariantIds({});
     setProteinPortionMode("normal");
     setSplitPortionModeById({});
-    selectedIngredientsListRef.current?.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   const handleSaveSelectedIngredientOrder = () => {
@@ -1883,7 +1661,13 @@ export default function RestaurantView({
       if (lockedIngredientIds.has(itemId)) return;
 
       const category = normalizeIngredientCategory(item.categories[0]);
-      const categoryCap = category ? CHIPOTLE_CATEGORY_MAX_SELECTIONS[category] : undefined;
+      const categoryCap = category
+        ? getIngredientCategoryMaxSelections({
+            category,
+            selectedEntree,
+            selectedKidsMeal,
+          })
+        : undefined;
       if (typeof categoryCap !== "number") return;
 
       if ((selectedCategoryQuantities[category] ?? 0) >= categoryCap) {
@@ -1896,6 +1680,7 @@ export default function RestaurantView({
     isChipotleBuildPage,
     lockedIngredientIds,
     selectedEntree,
+    selectedKidsMeal,
     selectedIngredientItems,
     visibleMenuItems,
   ]);
@@ -2040,157 +1825,27 @@ export default function RestaurantView({
 
       {isChipotleBuildPage && selectedEntree === null ? (
         <div>
-          <section className="mx-auto flex w-full max-w-5xl flex-col items-center px-4 pb-12">
-              <p className="text-sm font-semibold uppercase tracking-[0.24em] text-slate-500">Chipotle</p>
-              <h2 className="text-center text-5xl font-bold tracking-tight text-slate-900">Choose your entrée</h2>
-              <p className="mt-3 text-center text-lg text-slate-600">
-                Start your build by selecting a base.
-              </p>
-              <div className="mt-10 grid w-full max-w-5xl gap-4 sm:grid-cols-3">
-                {(Object.entries(CHIPOTLE_ENTREE_CONFIGURATIONS) as [Exclude<EntreeSelection, null>, EntreeConfiguration][]).map(([entreeKey, entree]) => (
-                  <button
-                    key={entreeKey}
-                    type="button"
-                    onClick={() => handleEntreeSelection(entreeKey)}
-                    className="cursor-pointer rounded-3xl border border-black/15 bg-white px-6 py-8 text-center text-2xl font-semibold text-slate-900 shadow-[0_8px_22px_rgba(0,0,0,0.08)] transition hover:-translate-y-0.5 hover:border-black/30 hover:shadow-[0_12px_26px_rgba(0,0,0,0.12)]"
-                  >
-                    <Image
-                      src={entree.imageSrc}
-                      alt={entree.label}
-                      width={640}
-                      height={320}
-                      className="mb-4 h-32 w-full rounded-xl object-contain"
-                    />
-                    {entree.label}
-                  </button>
-                ))}
-              </div>
-            </section>
+          <EntreeSelectionHero onSelectEntree={handleEntreeSelection} />
         </div>
       ) : (
         <div className="grid items-start gap-6 [grid-template-columns:240px_minmax(0,1fr)]">
-          <aside className="sticky top-[160px] flex max-h-[calc(100vh-160px)] flex-col py-6">
-            <h3 className="mb-8 shrink-0 text-2xl font-bold text-slate-900">
-              {effectiveViewMode === "ranking"
-                ? "Show"
-                : effectiveViewMode === "ingredients"
-                  ? "Ingredients"
-                  : "Categories"}
-            </h3>
-
-            <div className="min-h-0 flex-1 overflow-y-auto px-2 py-2">
-              {effectiveViewMode === "ranking" ? (
-                <div className="grid gap-3">
-                  {[
-                    { key: "main-entrees" as const, label: "Main Entrees" },
-                    { key: "shareables" as const, label: "Shareables" },
-                    { key: "sides" as const, label: "Sides" },
-                    { key: "drinks" as const, label: "Drinks" },
-                  ].map((option) => {
-                    const isChecked = rankedAllFilters[option.key];
-
-                    return (
-                      <label
-                        key={option.key}
-                        className="inline-flex cursor-pointer items-center gap-3 rounded-[10px] px-2 py-1.5 text-base font-semibold text-slate-800 hover:bg-slate-200/70"
-                      >
-                        <input
-                          type="checkbox"
-                          checked={isChecked}
-                          onChange={() => toggleRankedAllFilter(option.key)}
-                          className="h-4 w-4 cursor-pointer rounded border border-black/30 accent-black"
-                        />
-                        <span>{option.label}</span>
-                      </label>
-                    );
-                  })}
-                </div>
-              ) : (
-                <nav
-                  aria-label={
-                    effectiveViewMode === "ingredients"
-                      ? "Ingredient categories"
-                      : "Menu categories"
-                  }
-                  className="grid gap-4"
-                >
-                  {categoryOptions.map((option) => {
-                    const isActive = option.id === resolvedActiveCategory;
-                    const Icon = CATEGORY_ICONS[option.label.toLowerCase()] ?? Circle;
-
-                    return (
-                      <div key={option.id} className="relative pl-3">
-                        {isActive ? (
-                          <span className="absolute left-0 top-1/2 h-7 w-1 -translate-y-1/2 rounded-full shadow-[0px_0_8px_rgba(0,0,0,0.25)] bg-white" aria-hidden="true" />
-                        ) : null}
-
-                        <button
-                          type="button"
-                          onClick={() => handleCategorySelect(option.id)}
-                          className={`cursor-pointer inline-flex items-center gap-3 rounded-full px-4 py-2 text-left text-base font-semibold transition-colors duration-50 ease-in ${isActive
-                              ? "shadow-[0px_0_8px_rgba(0,0,0,0.25)] bg-white text-slate-800"
-                              : "text-slate-700 hover:bg-slate-200"
-                            }`}
-                        >
-                          <Icon className="h-4 w-4" strokeWidth={2.5} aria-hidden="true" />
-                          <span>{option.label}</span>
-                        </button>
-                      </div>
-                    );
-                  })}
-                </nav>
-              )}
-            </div>
-          </aside>
+          <RestaurantCategorySidebar
+            effectiveViewMode={effectiveViewMode}
+            rankedAllFilters={rankedAllFilters}
+            toggleRankedAllFilter={toggleRankedAllFilter}
+            categoryOptions={categoryOptions}
+            resolvedActiveCategory={resolvedActiveCategory}
+            onCategorySelect={handleCategorySelect}
+            categoryIcons={CATEGORY_ICONS}
+          />
 
           <div className="min-w-0">
             <div className="mx-auto max-w-[900px]">
               {isChipotleBuildPage && selectedEntree === "kids-meal" ? (
-                <section className="mb-6">
-                  <p className="text-sm font-semibold text-slate-700">
-                    Choose Your Kid&apos;s Meal
-                  </p>
-                  <div className="mt-3 grid grid-cols-1 gap-3 sm:grid-cols-2">
-                    {CHIPOTLE_KIDS_MEAL_OPTIONS.map((option) => {
-                      const isActive = selectedKidsMeal === option.id;
-                      return (
-                        <button
-                          key={option.id}
-                          type="button"
-                          onClick={() => handleKidsMealSelection(option.id)}
-                          className={`cursor-pointer rounded-3xl border bg-white p-4 text-left transition ${
-                            isActive
-                              ? "border-2 border-lime-500 shadow-[0_4px_12px_rgba(132,204,22,0.25)]"
-                              : "border-black/10 hover:border-black/25"
-                          }`}
-                          aria-pressed={isActive}
-                        >
-                          <span className="flex items-center gap-3">
-                            <span
-                              className={`inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-full border ${
-                                isActive ? "border-lime-500" : "border-slate-400"
-                              }`}
-                              aria-hidden="true"
-                            >
-                              {isActive ? <span className="h-2.5 w-2.5 rounded-full bg-lime-500" /> : null}
-                            </span>
-                            <span className="flex min-w-0 flex-1 flex-col">
-                              <span className="relative h-20 w-full overflow-hidden rounded-2xl border border-black/5 bg-slate-50">
-                              <Image
-                                src={option.imageSrc}
-                                alt={option.label}
-                                fill
-                                className="object-contain p-2"
-                              />
-                            </span>
-                              <span className="mt-3 block text-sm font-semibold text-slate-900">{option.label}</span>
-                            </span>
-                          </span>
-                        </button>
-                      );
-                    })}
-                  </div>
-                </section>
+                <KidsMealSelector
+                  selectedKidsMeal={selectedKidsMeal}
+                  onSelectKidsMeal={handleKidsMealSelection}
+                />
               ) : null}
               <MenuSections
                 restaurantId={restaurantId}
@@ -2444,141 +2099,18 @@ export default function RestaurantView({
             PrimaryActionIcon={ShoppingCart}
             detailsOpen={isBuildSummaryExpanded}
             detailsContent={
-              <div className="space-y-3">
-                  <div className="flex flex-wrap items-center justify-end gap-2">
-                    <button
-                      type="button"
-                      onClick={handleResetSelectedIngredientOrder}
-                      className="inline-flex cursor-pointer items-center gap-1.5 rounded-full border border-black/20 bg-white px-3 py-1 text-xs font-semibold text-slate-700 transition hover:bg-slate-50"
-                    >
-                      <RotateCcw className="h-3.5 w-3.5" aria-hidden="true" />
-                      <span>Reset order</span>
-                    </button>
-                    <button
-                      type="button"
-                      onClick={handleSaveSelectedIngredientOrder}
-                      className="inline-flex cursor-pointer items-center gap-1.5 rounded-full border border-transparent bg-slate-900 px-3 py-1 text-xs font-semibold text-white transition hover:bg-slate-800"
-                    >
-                      <Save className="h-3.5 w-3.5" aria-hidden="true" />
-                      <span>Save order</span>
-                    </button>
-                  </div>
-
-                  <div className="grid items-stretch gap-4 lg:grid-cols-2">
-                    <section className="rounded-[18px] border border-[rgba(0,0,0,0.15)] bg-white p-[18px]">
-                      <h3 className="text-2xl font-bold text-neutral-900">Nutrition Summary</h3>
-                      <div className="mt-6 text-xs font-medium text-[rgba(0,0,0,0.55)]">Amount per serving</div>
-
-                  <div className="mt-1 flex items-end justify-between">
-                    <div className="text-xl font-bold">Calories</div>
-                    <div className="text-xl font-bold">{adjustedNutritionLabelTotals.calories}</div>
-                  </div>
-
-                  <div className="my-[12px] mb-2 h-[5px] rounded-[999px] bg-[rgba(0,0,0,0.75)]" />
-
-                  <div className="flex items-baseline justify-between border-b border-[rgba(0,0,0,0.2)] py-[10px]">
-                    <div className="text-lg font-semibold">Total Fat</div>
-                    <div className="text-lg font-semibold">{formatValue(adjustedNutritionLabelTotals.totalFat, "g")}</div>
-                  </div>
-                  <div className="flex items-baseline justify-between border-b border-[rgba(0,0,0,0.2)] py-[10px] pl-5">
-                    <div className="text-base font-medium text-[rgba(0,0,0,0.8)]">Sat Fat</div>
-                    <div className="text-base font-medium text-[rgba(0,0,0,0.8)]">{formatValue(adjustedNutritionLabelTotals.satFat, "g")}</div>
-                  </div>
-                  <div className="flex items-baseline justify-between border-b border-[rgba(0,0,0,0.2)] py-[10px] pl-5">
-                    <div className="text-base font-medium text-[rgba(0,0,0,0.8)]">Trans Fat</div>
-                    <div className="text-base font-medium text-[rgba(0,0,0,0.8)]">{formatValue(adjustedNutritionLabelTotals.transFat, "g")}</div>
-                  </div>
-                  <div className="flex items-baseline justify-between border-b border-[rgba(0,0,0,0.2)] py-[10px]">
-                    <div className="text-lg font-semibold">Cholesterol</div>
-                    <div className="text-lg font-semibold">{formatValue(adjustedNutritionLabelTotals.cholesterol, "mg")}</div>
-                  </div>
-                  <div className="flex items-baseline justify-between border-b border-[rgba(0,0,0,0.2)] py-[10px]">
-                    <div className="text-lg font-semibold">Sodium</div>
-                    <div className="text-lg font-semibold">{formatValue(adjustedNutritionLabelTotals.sodium, "mg")}</div>
-                  </div>
-                  <div className="flex items-baseline justify-between border-b border-[rgba(0,0,0,0.2)] py-[10px]">
-                    <div className="text-lg font-semibold">Carbohydrates</div>
-                    <div className="text-lg font-semibold">{formatValue(adjustedNutritionLabelTotals.carbs, "g")}</div>
-                  </div>
-                  <div className="flex items-baseline justify-between border-b border-[rgba(0,0,0,0.2)] py-[10px] pl-5">
-                    <div className="text-base font-medium text-[rgba(0,0,0,0.8)]">Fiber</div>
-                    <div className="text-base font-medium text-[rgba(0,0,0,0.8)]">{formatValue(adjustedNutritionLabelTotals.fiber, "g")}</div>
-                  </div>
-                  <div className="flex items-baseline justify-between border-b border-[rgba(0,0,0,0.2)] py-[10px] pl-5">
-                    <div className="text-base font-medium text-[rgba(0,0,0,0.8)]">Sugars</div>
-                    <div className="text-base font-medium text-[rgba(0,0,0,0.8)]">{formatValue(adjustedNutritionLabelTotals.sugars, "g")}</div>
-                  </div>
-                  <div className="flex items-baseline justify-between border-b border-[rgba(0,0,0,0.2)] py-[10px]">
-                    <div className="text-lg font-semibold">Protein</div>
-                    <div className="text-lg font-semibold">{formatValue(adjustedNutritionLabelTotals.protein, "g")}</div>
-                  </div>
-                    </section>
-
-                    <section className="flex h-full min-h-0 flex-col rounded-3xl border border-black/10 bg-white p-5">
-                      <h3 className="text-2xl font-bold text-neutral-900">Selected Ingredients</h3>
-                      <p className="mt-2 text-sm font-semibold text-slate-600">
-                        {selectedBuildName} · {selectedIngredientCount} selected
-                      </p>
-                      <div
-                        ref={selectedIngredientsListRef}
-                        className="mt-4 min-h-0 flex-1 rounded-xl bg-[#efefef] p-2"
-                      >
-                        <div className="space-y-3">
-                          {groupedSelectedIngredientEntries.map((group) => (
-                            <div key={group.categoryKey || "uncategorized"} className="space-y-1.5">
-                              <p className="px-1 text-[10px] font-semibold uppercase tracking-[0.06em] text-slate-500">
-                                {group.categoryLabel}
-                              </p>
-                              <ul className="grid gap-2">
-                                {group.entries.map(([ingredientId, selectedIngredient]) => (
-                                  <li key={ingredientId} className="flex items-center justify-between rounded-xl border border-black/10 bg-white px-3 py-2">
-                                    <div className="flex min-w-0 items-center gap-2">
-                                      <div className="h-8 w-8 shrink-0 overflow-hidden rounded-md border border-black/10 bg-neutral-100">
-                                        <Image
-                                          src={selectedIngredient.item.image || restaurantLogo}
-                                          alt={selectedIngredient.item.name}
-                                          width={32}
-                                          height={32}
-                                          className="h-full w-full object-cover"
-                                        />
-                                      </div>
-                                      <span className="truncate text-sm font-medium text-slate-900">
-                                        {selectedIngredient.item.name}
-                                        {selectedIngredient.quantity > 1 ? ` (x${selectedIngredient.quantity})` : ""}
-                                        {ingredientPortionLabelById[ingredientId]
-                                          ? ` · ${ingredientPortionLabelById[ingredientId]}`
-                                          : ""}
-                                      </span>
-                                    </div>
-                                    <div className="inline-flex items-center gap-2">
-                                      <button
-                                        type="button"
-                                        onClick={() => adjustIngredientQuantity(ingredientId, -1)}
-                                        disabled={lockedIngredientIds.has(ingredientId)}
-                                        className="h-7 w-7 rounded-full border border-black/20 text-base font-bold text-slate-700 disabled:cursor-not-allowed disabled:opacity-40"
-                                      >
-                                        −
-                                      </button>
-                                      <span className="w-4 text-center text-sm font-semibold text-slate-900">{selectedIngredient.quantity}</span>
-                                      <button
-                                        type="button"
-                                        onClick={() => adjustIngredientQuantity(ingredientId, 1)}
-                                        disabled={lockedIngredientIds.has(ingredientId)}
-                                        className="h-7 w-7 rounded-full border border-black/20 text-base font-bold text-slate-700 disabled:cursor-not-allowed disabled:opacity-40"
-                                      >
-                                        +
-                                      </button>
-                                    </div>
-                                  </li>
-                                ))}
-                              </ul>
-                            </div>
-                          ))}
-                        </div>
-                      </div>
-                    </section>
-                  </div>
-              </div>
+              <BuildSummaryDrawer
+                adjustedNutritionLabelTotals={adjustedNutritionLabelTotals}
+                selectedBuildName={selectedBuildName}
+                selectedIngredientCount={selectedIngredientCount}
+                groupedSelectedIngredientEntries={groupedSelectedIngredientEntries}
+                ingredientPortionLabelById={ingredientPortionLabelById}
+                lockedIngredientIds={lockedIngredientIds}
+                restaurantLogo={restaurantLogo}
+                onResetOrder={handleResetSelectedIngredientOrder}
+                onSaveOrder={handleSaveSelectedIngredientOrder}
+                onAdjustIngredientQuantity={adjustIngredientQuantity}
+              />
             }
             onSecondaryAction={() => setIsBuildSummaryExpanded((previous) => !previous)}
             onPrimaryAction={handleAddBuildToCart}
