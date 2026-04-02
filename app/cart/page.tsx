@@ -483,7 +483,7 @@ export default function CartPage() {
         <div className="grid grid-cols-1 gap-4 rounded-3xl bg-[#e0e0e0] p-4 lg:grid-cols-2">
 
             <div className="rounded-[18px] border border-[rgba(0,0,0,0.15)] bg-white p-[18px]">
-              <h2 className="text-2xl font-bold text-neutral-900">Nutrition Summary</h2>
+              <h2 className="mb-6 text-2xl font-bold text-neutral-900">Nutrition Summary</h2>
               <div className="mt-1 flex items-end justify-between">
                 <div className="text-xl font-bold">Calories</div>
                 <div className="text-xl font-bold">{nutritionTotals.calories}</div>
