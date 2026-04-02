@@ -57,7 +57,7 @@ import {
   categorySectionId,
   getCategoryLabel,
   getOrderedMenuSections,
-} from "./MenuSections";
+} from "@/lib/menuSections/sorting";
 import MenuSections from "./MenuSections";
 import StickyRestaurantBar from "./StickyRestaurantBar";
 import StickyMacroTotalsBar from "./StickyMacroTotalsBar";
@@ -97,7 +97,6 @@ import {
   resolveIncludedIngredientIds,
   scaleNutritionValues,
 } from "@/lib/chipotleBuild";
-
 
 const CATEGORY_ICONS: Record<string, LucideIcon> = {
   sandwiches: Sandwich,
