@@ -52,6 +52,22 @@ export type ResolvedIngredientTab = {
   ingredients: ResolvedPanelIngredient[];
 };
 
+function hasMeaningfulNutrition(nutrition?: Nutrition) {
+  if (!nutrition) return false;
+  return [
+    nutrition.calories,
+    nutrition.protein,
+    nutrition.carbs,
+    nutrition.totalFat,
+    nutrition.satFat,
+    nutrition.transFat,
+    nutrition.cholesterol,
+    nutrition.sodium,
+    nutrition.fiber,
+    nutrition.sugars,
+  ].some((value) => typeof value === "number" && value > 0);
+}
+
 function includedIngredientPriority(ingredient: ResolvedPanelIngredient) {
   const categories = ingredient.ingredientItem?.categories?.length
     ? ingredient.ingredientItem.categories
@@ -199,6 +215,10 @@ export function resolvePanelIngredientTabs(
       menuItemMatch?.variants?.find((variant) => variant.id === selectedVariantId)?.nutrition ??
       menuItemMatch?.variants?.find((variant) => variant.id === menuItemMatch.defaultVariantId)?.nutrition ??
       menuItemMatch?.variants?.[0]?.nutrition;
+    const menuItemNutrition =
+      menuItemMatch?.variants?.length && !hasMeaningfulNutrition(menuItemMatch?.nutrition)
+        ? undefined
+        : menuItemMatch?.nutrition;
 
     const label = menuItemMatch?.name ?? match?.name ?? fallbackLabel;
     const ingredientTabLabel = resolvedTabs.find((tab) => {
@@ -206,7 +226,7 @@ export function resolvePanelIngredientTabs(
     });
     const addonMatch = addonLookup.get(label.toLowerCase());
     const nutrition =
-      menuItemMatch?.nutrition ??
+      menuItemNutrition ??
       matchedVariantNutrition ??
       match?.nutrition ??
       ingredientRefMatch?.nutrition ?? {
