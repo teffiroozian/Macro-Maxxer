@@ -46,6 +46,13 @@ function isHashBrowns(menuItem: MenuItem) {
   return menuItem.id === "hash-browns";
 }
 
+function compareByDefaultOrder(left: MenuItem, right: MenuItem) {
+  const leftOrder = left.defaultOrder ?? Number.POSITIVE_INFINITY;
+  const rightOrder = right.defaultOrder ?? Number.POSITIVE_INFINITY;
+  if (leftOrder !== rightOrder) return leftOrder - rightOrder;
+  return left.name.localeCompare(right.name);
+}
+
 function formatDelta(value: number) {
   return `${value >= 0 ? "+" : ""}${value}`;
 }
@@ -334,7 +341,7 @@ export default function ItemRouteModal({
         return normalizedCategories.includes("side") || isHashBrowns(menuItem);
       });
 
-      return sides;
+      return [...sides].sort(compareByDefaultOrder);
     },
     [item, menuItems, restaurantId]
   );

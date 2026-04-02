@@ -68,6 +68,13 @@ function isHashBrowns(menuItem: MenuItem) {
   return menuItem.id === "hash-browns";
 }
 
+function compareByDefaultOrder(left: MenuItem, right: MenuItem) {
+  const leftOrder = left.defaultOrder ?? Number.POSITIVE_INFINITY;
+  const rightOrder = right.defaultOrder ?? Number.POSITIVE_INFINITY;
+  if (leftOrder !== rightOrder) return leftOrder - rightOrder;
+  return left.name.localeCompare(right.name);
+}
+
 function resolveJustItemLabel(item: MenuItem) {
   const categories = (item.categories ?? []).map((category) => normalizeCategory(category));
   if (categories.some((category) => category.includes("salad"))) return "Just Salad";
@@ -568,7 +575,7 @@ export default function MenuItemCard({
 
         if (isWaffleFries(menuItem)) return false;
         return normalizedCategories.includes("side") || isHashBrowns(menuItem);
-      });
+      }).sort(compareByDefaultOrder);
     },
     [item, menuItems, restaurantId]
   );
