@@ -15,20 +15,17 @@ import type {
   MenuItem,
   RestaurantAddons,
   RestaurantCustomizationRules,
-  RestaurantMenu,
 } from "@/types/menu";
 
-type MenuDataset = RestaurantMenu;
-
-const chickfilaData = resolveMenuDataset(chickfilaMenu as unknown as MenuDataset);
-const chipotleData = resolveMenuDataset(chipotleMenu as unknown as MenuDataset);
-const habitData = resolveMenuDataset(habitMenu as unknown as MenuDataset);
-const mcdonaldsData = resolveMenuDataset(mcdonaldsMenu as unknown as MenuDataset);
-const modData = resolveMenuDataset(modMenu as unknown as MenuDataset);
-const pandaData = resolveMenuDataset(pandaMenu as unknown as MenuDataset);
-const paneraData = resolveMenuDataset(paneraMenu as unknown as MenuDataset);
-const starbucksData = resolveMenuDataset(starbucksMenu as unknown as MenuDataset);
-const subwayData = resolveMenuDataset(subwayMenu as unknown as MenuDataset);
+const chickfilaData = resolveMenuDataset(chickfilaMenu);
+const chipotleData = resolveMenuDataset(chipotleMenu);
+const habitData = resolveMenuDataset(habitMenu);
+const mcdonaldsData = resolveMenuDataset(mcdonaldsMenu);
+const modData = resolveMenuDataset(modMenu);
+const pandaData = resolveMenuDataset(pandaMenu);
+const paneraData = resolveMenuDataset(paneraMenu);
+const starbucksData = resolveMenuDataset(starbucksMenu);
+const subwayData = resolveMenuDataset(subwayMenu);
 
 export const menuLookupByRestaurant: Record<string, MenuItem[]> = {
   chickfila: chickfilaData.items ?? [],

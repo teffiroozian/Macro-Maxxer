@@ -1,5 +1,45 @@
 import type { IngredientItem, MenuItem, RestaurantMenu } from "@/types/menu";
 
+type FlatLegacyMenuItem = Omit<Partial<MenuItem>, "nutrition"> & {
+  name: string;
+  calories?: number;
+  protein?: number;
+  carbs?: number;
+  totalFat?: number;
+  nutrition?: MenuItem["nutrition"];
+};
+
+function isLegacyFlatItem(item: FlatLegacyMenuItem): item is FlatLegacyMenuItem & {
+  calories?: number;
+  nutrition?: undefined;
+} {
+  return item.nutrition == null && item.calories != null;
+}
+
+function normalizeMenuItem(item: FlatLegacyMenuItem): MenuItem {
+  const baseNutrition = item.nutrition ?? {};
+  const nutrition = isLegacyFlatItem(item)
+    ? {
+        ...baseNutrition,
+        calories: item.calories,
+        protein: item.protein,
+        carbs: item.carbs,
+        totalFat: item.totalFat,
+      }
+    : baseNutrition;
+
+  return {
+    ...item,
+    nutrition,
+    portionType: item.portionType ?? "single",
+    categories: item.categories ?? ["Other"],
+  };
+}
+
+function normalizeMenuItems(items: FlatLegacyMenuItem[]): MenuItem[] {
+  return items.map(normalizeMenuItem);
+}
+
 function resolveIngredientBackedItems(items: MenuItem[], ingredients: IngredientItem[]): MenuItem[] {
   const ingredientById = new Map(
     ingredients
@@ -21,11 +61,14 @@ function resolveIngredientBackedItems(items: MenuItem[], ingredients: Ingredient
   });
 }
 
-export function resolveMenuDataset(menu: RestaurantMenu): RestaurantMenu {
-  const ingredients = (menu.ingredients ?? []) as IngredientItem[];
+export function resolveMenuDataset(menu: RestaurantMenu | unknown): RestaurantMenu {
+  const dataset = menu as RestaurantMenu;
+  const ingredients = (dataset.ingredients ?? []) as IngredientItem[];
+  const normalizedItems = normalizeMenuItems((dataset.items ?? []) as FlatLegacyMenuItem[]);
+
   return {
-    ...menu,
-    items: resolveIngredientBackedItems(menu.items as MenuItem[], ingredients),
+    ...dataset,
+    items: resolveIngredientBackedItems(normalizedItems, ingredients),
     ingredients,
   };
 }
