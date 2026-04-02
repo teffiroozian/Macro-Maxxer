@@ -230,6 +230,7 @@ export default function ItemDetailsPanel({
   );
   const [activeIngredientTab, setActiveIngredientTab] = useState(ingredientTabs[0]?.label ?? INCLUDED_INGREDIENT_TAB);
   const availableIngredientTabs = ingredientTabs.filter((tab) => tab.ingredients.length > 0);
+  const visibleIngredientTabs = availableIngredientTabs.filter((tab) => tab.label !== INCLUDED_INGREDIENT_TAB);
   const flattenedIngredientTab = flattenIngredientList
     ? {
         id: "all-ingredients",
@@ -385,9 +386,9 @@ export default function ItemDetailsPanel({
       {shouldShowIngredientSection && selectedIngredientTab ? (
         <section className="col-span-2 rounded-[14px] border border-black/12 bg-white p-5">
           <h2 className="mb-6 text-2xl font-bold">Ingredients</h2>
-          {!flattenIngredientList ? (
+          {!flattenIngredientList && visibleIngredientTabs.length > 1 ? (
             <div className="mb-4 flex flex-wrap gap-2">
-              {availableIngredientTabs.map((tab) => {
+              {visibleIngredientTabs.map((tab) => {
                 const isActive = tab.label === selectedIngredientTab.label;
 
                 return (

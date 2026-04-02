@@ -52,6 +52,22 @@ export type ResolvedIngredientTab = {
   ingredients: ResolvedPanelIngredient[];
 };
 
+function hasMeaningfulNutrition(nutrition?: Nutrition) {
+  if (!nutrition) return false;
+  return [
+    nutrition.calories,
+    nutrition.protein,
+    nutrition.carbs,
+    nutrition.totalFat,
+    nutrition.satFat,
+    nutrition.transFat,
+    nutrition.cholesterol,
+    nutrition.sodium,
+    nutrition.fiber,
+    nutrition.sugars,
+  ].some((value) => typeof value === "number" && value > 0);
+}
+
 function includedIngredientPriority(ingredient: ResolvedPanelIngredient) {
   const categories = ingredient.ingredientItem?.categories?.length
     ? ingredient.ingredientItem.categories
@@ -143,6 +159,7 @@ export function resolvePanelIngredientTabs(
   selectedVariantId?: string,
   customizationRules?: RestaurantCustomizationRules
 ): ResolvedIngredientTab[] {
+  const selectedParentVariantLabel = variants?.find((variant) => variant.id === selectedVariantId)?.label;
   const ingredientIds = item.ingredients ?? [];
   const includedIngredientIds = new Set(ingredientIds.map((ingredientId) => ingredientId.toLowerCase()));
   const resolvedTabs = resolveIngredientTabs(item, customizationRules);
@@ -191,6 +208,24 @@ export function resolvePanelIngredientTabs(
       menuItemByIdLookup.get(ingredientId.toLowerCase()) ??
       menuItemByNameLookup.get(normalizeIngredientToken(ingredientId)) ??
       menuItemByNameLookup.get(normalizeIngredientToken(fallbackLabel));
+    const ingredientRefMatch =
+      menuItemMatch?.ingredientRef
+        ? ingredientByIdLookup.get(menuItemMatch.ingredientRef.toLowerCase())
+        : undefined;
+    const matchedVariantNutrition =
+      menuItemMatch?.variants?.find((variant) => variant.id === selectedVariantId)?.nutrition ??
+      (selectedParentVariantLabel
+        ? menuItemMatch?.variants?.find(
+            (variant) =>
+              normalizeIngredientToken(variant.label) === normalizeIngredientToken(selectedParentVariantLabel)
+          )?.nutrition
+        : undefined) ??
+      menuItemMatch?.variants?.find((variant) => variant.id === menuItemMatch.defaultVariantId)?.nutrition ??
+      menuItemMatch?.variants?.[0]?.nutrition;
+    const menuItemNutrition =
+      menuItemMatch?.variants?.length && !hasMeaningfulNutrition(menuItemMatch?.nutrition)
+        ? undefined
+        : menuItemMatch?.nutrition;
 
     const label = menuItemMatch?.name ?? match?.name ?? fallbackLabel;
     const ingredientTabLabel = resolvedTabs.find((tab) => {
@@ -198,8 +233,10 @@ export function resolvePanelIngredientTabs(
     });
     const addonMatch = addonLookup.get(label.toLowerCase());
     const nutrition =
-      menuItemMatch?.nutrition ??
-      match?.nutrition ?? {
+      matchedVariantNutrition ??
+      menuItemNutrition ??
+      match?.nutrition ??
+      ingredientRefMatch?.nutrition ?? {
         calories: addonMatch?.calories,
         protein: addonMatch?.protein,
         carbs: addonMatch?.carbs,
