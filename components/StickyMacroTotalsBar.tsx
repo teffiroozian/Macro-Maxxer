@@ -1,6 +1,7 @@
 "use client";
 
 import type { CartMacros } from "@/stores/cartStore";
+import MacroTotalsGrid from "@/components/MacroTotalsGrid";
 import type { LucideIcon } from "lucide-react";
 import { Bookmark, Camera } from "lucide-react";
 import type { ReactNode } from "react";
@@ -22,18 +23,6 @@ type StickyMacroTotalsBarProps = {
   detailsOpen?: boolean;
   detailsContent?: ReactNode;
 };
-
-const macroRows: Array<{
-  key: keyof CartMacros;
-  label: string;
-  unit?: string;
-  valueClassName: string;
-}> = [
-  { key: "calories", label: "Calories", valueClassName: "text-[#111318]" },
-  { key: "protein", label: "Protein", unit: "g", valueClassName: "text-[#C75A1B]" },
-  { key: "carbs", label: "Carbs", unit: "g", valueClassName: "text-[#D0A700]" },
-  { key: "fat", label: "Fat", unit: "g", valueClassName: "text-[#3B8EDB]" },
-];
 
 export default function StickyMacroTotalsBar({
   totals,
@@ -96,23 +85,12 @@ export default function StickyMacroTotalsBar({
                   TOTAL MACROS
                 </p>
               ) : null}
-              <div
-                className={`grid grid-cols-2 gap-x-4 ${isCartLayout ? "gap-y-4 sm:gap-x-6" : "gap-y-3 sm:gap-x-6"} text-center sm:grid-cols-4 ${
-                  isCartLayout ? "mt-4" : contextLine ? "mt-2" : ""
-                }`}
-              >
-                {macroRows.map((macro) => (
-                  <div key={macro.key}>
-                    <p className={`text-2xl font-bold leading-none sm:text-3xl ${macro.valueClassName}`}>
-                      {totals[macro.key]}
-                      {macro.unit ?? ""}
-                    </p>
-                    <p className={`${isCartLayout ? "mt-2" : "mt-1"} text-xs font-semibold uppercase tracking-wide text-[#1A1A1A]`}>
-                      {macro.label}
-                    </p>
-                  </div>
-                ))}
-              </div>
+              <MacroTotalsGrid
+                macros={totals}
+                variant="bar"
+                className={`grid-cols-2 gap-x-4 ${isCartLayout ? "mt-4 gap-y-4 sm:gap-x-6" : `${contextLine ? "mt-2" : ""} gap-y-3 sm:gap-x-6`} sm:grid-cols-4`}
+                labelClassName="text-[#1A1A1A]"
+              />
             </section>
 
             <div className={`flex w-full gap-3 sm:w-auto ${isCartLayout ? "flex-col" : "flex-row"}`}>

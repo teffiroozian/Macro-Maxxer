@@ -7,6 +7,7 @@ import { useEffect, useMemo } from "react";
 import { useRouter } from "next/navigation";
 import restaurants from "@/app/data/index.json";
 import { useRestaurantUi } from "@/components/RestaurantUiContext";
+import MacroTotalsGrid from "@/components/MacroTotalsGrid";
 import { useCart } from "@/stores/cartStore";
 
 const getCustomizationDisplayList = (item: {
@@ -254,24 +255,7 @@ export default function CartPreviewDrawer() {
               <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-slate-500">
                 Total Macros
               </p>
-              <div className="mt-3 grid grid-cols-4 gap-2 text-center">
-                <div className="px-1 py-1">
-                  <p className="text-2xl font-bold leading-none text-slate-900">{totals.calories}</p>
-                  <p className="mt-2 text-[10px] uppercase tracking-wide text-slate-500">Calories</p>
-                </div>
-                <div className="px-1 py-1">
-                  <p className="text-2xl font-bold leading-none text-[#c2410c]">{totals.protein}g</p>
-                  <p className="mt-2 text-[10px] uppercase tracking-wide text-slate-500">Protein</p>
-                </div>
-                <div className="px-1 py-1">
-                  <p className="text-2xl font-bold leading-none text-[#ca8a04]">{totals.carbs}g</p>
-                  <p className="mt-2 text-[10px] uppercase tracking-wide text-slate-500">Carbs</p>
-                </div>
-                <div className="px-1 py-1">
-                  <p className="text-2xl font-bold leading-none text-[#2563eb]">{totals.fat}g</p>
-                  <p className="mt-2 text-[10px] uppercase tracking-wide text-slate-500">Fat</p>
-                </div>
-              </div>
+              <MacroTotalsGrid macros={totals} className="mt-3" />
             </div>
 
             <div className="mt-4 grid grid-cols-2 gap-2 border-t border-slate-200 pt-4">

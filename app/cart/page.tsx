@@ -14,6 +14,7 @@ import type {
   RestaurantMenu,
 } from "@/types/menu";
 import MenuItemCard from "@/components/MenuItemCard";
+import MacroTotalsGrid from "@/components/MacroTotalsGrid";
 import StickyMacroTotalsBar from "@/components/StickyMacroTotalsBar";
 import restaurants from "@/app/data/index.json";
 import chickfilaMenu from "@/app/data/chickfila.json";
@@ -485,6 +486,11 @@ export default function CartPage() {
             <div className="rounded-[18px] border border-[rgba(0,0,0,0.15)] bg-white p-[18px]">
               <h2 className="text-2xl font-bold text-neutral-900">Nutrition Summary</h2>
               <div className="mt-6 text-xs font-medium text-[rgba(0,0,0,0.55)]">Amount per serving</div>
+              <MacroTotalsGrid
+                macros={totals}
+                size="compact"
+                className="mt-4 border-b border-[rgba(0,0,0,0.2)] pb-4"
+              />
 
               <div className="mt-1 flex items-end justify-between">
                 <div className="text-xl font-bold">Calories</div>

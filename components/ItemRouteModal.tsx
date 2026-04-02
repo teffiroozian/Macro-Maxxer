@@ -4,6 +4,7 @@ import { useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Drumstick, EggFried, Salad, Sandwich, Shell, Utensils } from "lucide-react";
 import ItemDetailsPanel, { PortionSelector, type ResolvedPanelIngredient, resolvePanelIngredients } from "@/components/ItemDetailsPanel";
+import MacroTotalsGrid from "@/components/MacroTotalsGrid";
 import type {
   AddonOption,
   AddonRef,
@@ -72,14 +73,6 @@ function formatDelta(value: number) {
 function sumNutritionWithFallback(base?: number, delta = 0) {
   if (delta === 0) return base;
   return (base ?? 0) + delta;
-}
-
-function formatMacro(value?: number) {
-  return value === undefined || Number.isNaN(value) ? "—g" : `${value}g`;
-}
-
-function formatCalories(value?: number) {
-  return value === undefined || Number.isNaN(value) ? "—" : String(value);
 }
 
 function addonFat(addon?: AddonOption) {
@@ -617,44 +610,25 @@ export default function ItemRouteModal({
           {selectedItemImage ? (
             <img className="max-h-[300px] w-[300px] bg-[#efefef] shadow-[0_0_5px_rgba(0,0,0,0.25)] rounded-[14px] object-contain" src={selectedItemImage} alt={item.name} />
           ) : null}
-          <div className="flex flex-wrap justify-center gap-14">
-            <div className="flex flex-col items-center">
-              <div className="inline-flex items-baseline gap-1.5">
-                <span className="text-2xl font-bold">{formatCalories(nutrition.calories)}</span>
-                {hasActiveCustomization ? (
-                  <span className="text-sm font-bold text-green-600">{formatDelta(customizationTotals.calories)}</span>
-                ) : null}
-              </div>
-              <span className="text-[10px] font-bold">CAL</span>
-            </div>
-            <div className="flex flex-col items-center">
-              <div className="inline-flex items-baseline gap-1.5">
-                <span className="text-2xl font-bold text-orange-700">{formatMacro(nutrition.protein)}</span>
-                {hasActiveCustomization ? (
-                  <span className="text-sm font-bold text-green-600">{formatDelta(customizationTotals.protein)}</span>
-                ) : null}
-              </div>
-              <span className="text-[10px] font-bold">PROTEIN</span>
-            </div>
-            <div className="flex flex-col items-center">
-              <div className="inline-flex items-baseline gap-1.5">
-                <span className="text-2xl font-bold text-yellow-600">{formatMacro(nutrition.carbs)}</span>
-                {hasActiveCustomization ? (
-                  <span className="text-sm font-bold text-green-600">{formatDelta(customizationTotals.carbs)}</span>
-                ) : null}
-              </div>
-              <span className="text-[10px] font-bold">CARBS</span>
-            </div>
-            <div className="flex flex-col items-center">
-              <div className="inline-flex items-baseline gap-1.5">
-                <span className="text-2xl font-bold text-blue-600">{formatMacro(nutrition.totalFat)}</span>
-                {hasActiveCustomization ? (
-                  <span className="text-sm font-bold text-green-600">{formatDelta(customizationTotals.fat)}</span>
-                ) : null}
-              </div>
-              <span className="text-[10px] font-bold">FAT</span>
-            </div>
-          </div>
+          <MacroTotalsGrid
+            macros={{
+              calories: Math.round(nutrition.calories ?? 0),
+              protein: Math.round(nutrition.protein ?? 0),
+              carbs: Math.round(nutrition.carbs ?? 0),
+              fat: Math.round(nutrition.totalFat ?? 0),
+            }}
+            className="w-full max-w-[720px] gap-6 sm:gap-10"
+            valueExtras={
+              hasActiveCustomization
+                ? {
+                    calories: <span className="ml-1.5 text-sm font-bold text-green-600">{formatDelta(customizationTotals.calories)}</span>,
+                    protein: <span className="ml-1.5 text-sm font-bold text-green-600">{formatDelta(customizationTotals.protein)}</span>,
+                    carbs: <span className="ml-1.5 text-sm font-bold text-green-600">{formatDelta(customizationTotals.carbs)}</span>,
+                    fat: <span className="ml-1.5 text-sm font-bold text-green-600">{formatDelta(customizationTotals.fat)}</span>,
+                  }
+                : undefined
+            }
+          />
 
           {variants && variants.length > 0 && !item.hideVariantSelector ? (
             <>
