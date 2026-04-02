@@ -46,6 +46,7 @@ import type {
   IngredientItem,
   MenuItem,
   RestaurantAddons,
+  RestaurantBuilderConfig,
   RestaurantCustomizationRules,
 } from "@/types/menu";
 import {
@@ -62,22 +63,6 @@ import MenuSections from "./MenuSections";
 import StickyRestaurantBar from "./StickyRestaurantBar";
 import StickyMacroTotalsBar from "./StickyMacroTotalsBar";
 import { useCart } from "@/stores/cartStore";
-import {
-  CHIPOTLE_ENTREE_CONFIGURATIONS,
-  CHIPOTLE_HIDDEN_MENU_SECTIONS_BY_ENTREE,
-  CHIPOTLE_KIDS_BUILD_YOUR_OWN_DOUBLE_SIDE_IDS,
-  CHIPOTLE_KIDS_MEAL_OPTIONS,
-  CHIPOTLE_KIDS_QUESADILLA_INCLUDED_INGREDIENT_IDS,
-  CHIPOTLE_QUESADILLA_TRIPLE_CHEESE_VARIANT_ID,
-  CHIPOTLE_SELECTED_INGREDIENT_CATEGORY_LABELS,
-  CHIPOTLE_SELECTED_INGREDIENT_CATEGORY_ORDER,
-  CHIPOTLE_TACO_SHELL_INGREDIENT_IDS,
-  type EntreeConfiguration,
-  type EntreeSelection,
-  type KidsMealSelection,
-  type TacoCountSelection,
-  type TacoShellSelection,
-} from "@/app/data/chipotleBuildConfig";
 import BuildSummaryDrawer from "./restaurant-view/BuildSummaryDrawer";
 import EntreeSelectionHero from "./restaurant-view/EntreeSelectionHero";
 import KidsMealSelector from "./restaurant-view/KidsMealSelector";
@@ -143,6 +128,12 @@ const CATEGORY_ICONS: Record<string, LucideIcon> = {
   treats: IceCreamCone,
 };
 
+
+type EntreeSelection = string | null;
+type KidsMealSelection = string;
+type TacoShellSelection = "crispy" | "soft";
+type TacoCountSelection = 3 | 1;
+
 function titleCase(text: string) {
   return text
     .trim()
@@ -177,6 +168,7 @@ export default function RestaurantView({
   addons,
   commonChanges,
   customizationRules,
+  builderConfig,
 }: {
   restaurantId: string;
   restaurantName: string;
@@ -187,8 +179,37 @@ export default function RestaurantView({
   addons?: RestaurantAddons;
   commonChanges?: CommonChange[];
   customizationRules?: RestaurantCustomizationRules;
+  builderConfig?: RestaurantBuilderConfig;
 }) {
   const isChipotleBuildPage = isBuildYourOwn && restaurantId === "chipotle";
+  const chipotleBuilderConfig = useMemo(
+    () => (isChipotleBuildPage ? builderConfig : undefined),
+    [isChipotleBuildPage, builderConfig]
+  );
+  const entreeOptions = useMemo(
+    () => chipotleBuilderConfig?.entreeOptions ?? {},
+    [chipotleBuilderConfig]
+  );
+  const kidsMealOptions = useMemo(
+    () => chipotleBuilderConfig?.kidsMealOptions ?? [],
+    [chipotleBuilderConfig]
+  );
+  const tacoShellIngredientIds = useMemo(
+    () => chipotleBuilderConfig?.includedIngredientRules?.tacoShellIngredientIds ?? [],
+    [chipotleBuilderConfig]
+  );
+  const kidsBuildYourOwnDoubleSideIds = useMemo(
+    () => new Set(chipotleBuilderConfig?.includedIngredientRules?.kidsBuildYourOwnDoubleSideIds ?? []),
+    [chipotleBuilderConfig]
+  );
+  const kidsQuesadillaIncludedIngredientIds = useMemo(
+    () => chipotleBuilderConfig?.includedIngredientRules?.kidsQuesadillaIncludedIngredientIds ?? [],
+    [chipotleBuilderConfig]
+  );
+  const quesadillaTripleCheeseVariantId = useMemo(
+    () => chipotleBuilderConfig?.specialVariantIds?.quesadillaTripleCheese ?? "quesadilla-triple-cheese",
+    [chipotleBuilderConfig]
+  );
   const SECTION_HEADER_TOP_GAP = 24;
 
   const getStickyOffset = () => {
@@ -247,20 +268,20 @@ export default function RestaurantView({
     isChipotleChipsSidesSelection || isChipotleHighProteinSelection || isChipotleDrinksSelection
       ? "menu"
       : viewMode;
-  const selectedEntreeConfig = selectedEntree ? CHIPOTLE_ENTREE_CONFIGURATIONS[selectedEntree] : null;
+  const selectedEntreeConfig = selectedEntree ? entreeOptions[selectedEntree] : null;
   const selectedEntreeNutritionMultiplier = selectedEntreeConfig?.nutritionMultiplier ?? 1;
   const tacoServingMultiplier = selectedEntree === "tacos" ? selectedTacoCount : 1;
   const servingMultiplier = tacoServingMultiplier * selectedEntreeNutritionMultiplier;
   const ingredientDisplayMultiplier = servingMultiplier;
-  const tacoShellIngredientIds = CHIPOTLE_TACO_SHELL_INGREDIENT_IDS;
   const selectedIncludedIngredientIds = useMemo(
     () =>
       resolveIncludedIngredientIds({
         selectedEntree,
         selectedKidsMeal,
         selectedTacoShell,
+        builderConfig: chipotleBuilderConfig,
       }),
-    [selectedEntree, selectedKidsMeal, selectedTacoShell]
+    [selectedEntree, selectedKidsMeal, selectedTacoShell, chipotleBuilderConfig]
   );
   const editCartItemId = searchParams.get("editCartItem");
   const editingCartItem = useMemo(() => {
@@ -386,7 +407,7 @@ export default function RestaurantView({
           selectedEntree === "kids-meal" &&
           selectedKidsMeal === "build-your-own" &&
           ingredient.id &&
-          CHIPOTLE_KIDS_BUILD_YOUR_OWN_DOUBLE_SIDE_IDS.has(ingredient.id)
+          kidsBuildYourOwnDoubleSideIds.has(ingredient.id)
             ? 2
             : 1;
         const ingredientBaseNutrition = scaleNutritionValues(
@@ -401,13 +422,13 @@ export default function RestaurantView({
           : undefined;
         const tripleCheeseVariant = isQuesadillaCheeseIncludedIngredient
           ? {
-              id: CHIPOTLE_QUESADILLA_TRIPLE_CHEESE_VARIANT_ID,
+              id: quesadillaTripleCheeseVariantId,
               label: "",
               nutrition: scaleNutritionValues(ingredientBaseNutrition, 3),
             }
           : null;
         const defaultVariantId = tripleCheeseVariant
-          ? CHIPOTLE_QUESADILLA_TRIPLE_CHEESE_VARIANT_ID
+          ? quesadillaTripleCheeseVariantId
           : ingredient.defaultVariantId;
 
         const menuItem: MenuItem = {
@@ -452,6 +473,8 @@ export default function RestaurantView({
     selectedKidsMeal,
     selectedIncludedIngredientIds,
     tacoShellIngredientIds,
+    kidsBuildYourOwnDoubleSideIds,
+    quesadillaTripleCheeseVariantId,
   ]);
 
   const ingredientItemsById = useMemo(
@@ -613,7 +636,7 @@ export default function RestaurantView({
     }
 
     const hiddenSections = new Set(
-      (CHIPOTLE_HIDDEN_MENU_SECTIONS_BY_ENTREE[selectedEntree] ?? []).map((section) =>
+      (chipotleBuilderConfig?.hiddenSectionsByEntree?.[selectedEntree] ?? []).map((section) =>
         section.trim().toLowerCase()
       )
     );
@@ -641,7 +664,7 @@ export default function RestaurantView({
         };
       })
       .filter((item) => item.categories.length > 0);
-  }, [filteredItems, isChipotleBuildPage, selectedEntree]);
+  }, [filteredItems, isChipotleBuildPage, selectedEntree, chipotleBuilderConfig]);
 
   const orderedSections = useMemo(
     () => getOrderedMenuSections(visibleMenuItems, effectiveViewMode === "ranking" ? "menu" : effectiveViewMode),
@@ -744,7 +767,7 @@ export default function RestaurantView({
   const handleKidsMealSelection = (kidsMeal: KidsMealSelection) => {
     setSelectedKidsMeal(kidsMeal);
     applyIncludedIngredientsNextFrame(
-      kidsMeal === "quesadilla" ? CHIPOTLE_KIDS_QUESADILLA_INCLUDED_INGREDIENT_IDS : [],
+      kidsMeal === "quesadilla" ? kidsQuesadillaIncludedIngredientIds : [],
       {
         selectedEntree: "kids-meal",
         selectedKidsMeal: kidsMeal,
@@ -874,8 +897,8 @@ export default function RestaurantView({
     if (selectedEntree === "kids-meal") {
       return selectedKidsMeal === "quesadilla" ? "Quesadilla" : "Build Your Own";
     }
-    return CHIPOTLE_ENTREE_CONFIGURATIONS[selectedEntree].label;
-  }, [selectedEntree, selectedKidsMeal]);
+    return entreeOptions[selectedEntree]?.label ?? titleCase(selectedEntree);
+  }, [selectedEntree, selectedKidsMeal, entreeOptions]);
   const selectedBuildName = useMemo(() => {
     if (selectedBuildProteinNames.length === 0) {
       return `Veggie ${selectedBuildEntreeLabel}`;
@@ -887,16 +910,16 @@ export default function RestaurantView({
   }, [selectedBuildEntreeLabel, selectedBuildProteinNames]);
   const selectedBuildImageSrc = useMemo(() => {
     if (!selectedEntree) {
-      return CHIPOTLE_ENTREE_CONFIGURATIONS.bowl.imageSrc;
+      return entreeOptions.bowl?.imageSrc ?? "";
     }
     if (selectedEntree === "kids-meal") {
       return (
-        CHIPOTLE_KIDS_MEAL_OPTIONS.find((option) => option.id === selectedKidsMeal)?.imageSrc ??
-        CHIPOTLE_ENTREE_CONFIGURATIONS["kids-meal"].imageSrc
+        kidsMealOptions.find((option) => option.id === selectedKidsMeal)?.imageSrc ??
+        entreeOptions["kids-meal"]?.imageSrc ?? ""
       );
     }
-    return CHIPOTLE_ENTREE_CONFIGURATIONS[selectedEntree].imageSrc;
-  }, [selectedEntree, selectedKidsMeal]);
+    return entreeOptions[selectedEntree]?.imageSrc ?? "";
+  }, [selectedEntree, selectedKidsMeal, entreeOptions, kidsMealOptions]);
   const buildName = selectedBuildName;
   const shouldShowBuildStickyBar =
     isBuildYourOwn &&
@@ -1051,7 +1074,7 @@ export default function RestaurantView({
       const nextTacoShell = itemId === "soft-flour-tortilla" ? "soft" : "crispy";
       setSelectedTacoShell(nextTacoShell);
       applyIncludedIngredientsNextFrame(
-        CHIPOTLE_ENTREE_CONFIGURATIONS.tacos.getIncludedIngredientIds?.({ tacoShell: nextTacoShell }) ?? []
+        entreeOptions.tacos?.includedIngredientIdsByOption?.[nextTacoShell] ?? []
       );
       return;
     }
@@ -1156,7 +1179,7 @@ export default function RestaurantView({
       selectedKidsMeal,
     }
   ) => {
-    const allIncludedIngredientIds = getAllKnownIncludedIngredientIds();
+    const allIncludedIngredientIds = getAllKnownIncludedIngredientIds(chipotleBuilderConfig);
 
     setSelectedIngredientItems((previous) => {
       const next = { ...previous };
@@ -1260,7 +1283,7 @@ export default function RestaurantView({
         }
 
         if (isQuesadillaCheeseSelection(includedIngredientId, context)) {
-          next[includedIngredientId] = CHIPOTLE_QUESADILLA_TRIPLE_CHEESE_VARIANT_ID;
+          next[includedIngredientId] = quesadillaTripleCheeseVariantId;
           return;
         }
 
@@ -1280,6 +1303,8 @@ export default function RestaurantView({
     ingredientItemsById,
     selectedEntree,
     selectedKidsMeal,
+    chipotleBuilderConfig,
+    quesadillaTripleCheeseVariantId,
   ]);
 
   const applyIncludedIngredientsNextFrame = useCallback((
@@ -1530,7 +1555,7 @@ export default function RestaurantView({
     }
 
     const categoryPriority = new Map<string, number>(
-      CHIPOTLE_SELECTED_INGREDIENT_CATEGORY_ORDER.map((category, index) => [category, index] as const)
+      (chipotleBuilderConfig?.selectedIngredientCategoryOrder ?? []).map((category, index) => [category, index] as const)
     );
     const ingredientIndexById = new Map(
       ingredientMenuItems.map((ingredient, index) => [ingredient.id ?? `${index}`, index] as const)
@@ -1559,7 +1584,7 @@ export default function RestaurantView({
 
       return leftIngredient.item.name.localeCompare(rightIngredient.item.name);
     });
-  }, [ingredientMenuItems, isChipotleBuildPage, selectedIncludedIngredientIdSet, selectedIngredientItems]);
+  }, [ingredientMenuItems, isChipotleBuildPage, selectedIncludedIngredientIdSet, selectedIngredientItems, chipotleBuilderConfig]);
   const groupedSelectedIngredientEntries = useMemo(() => {
     const groupedEntries: Array<{
       categoryKey: string;
@@ -1580,13 +1605,13 @@ export default function RestaurantView({
 
       groupedEntries.push({
         categoryKey,
-        categoryLabel: CHIPOTLE_SELECTED_INGREDIENT_CATEGORY_LABELS[categoryKey] ?? "Ingredient",
+        categoryLabel: chipotleBuilderConfig?.selectedIngredientCategoryLabels?.[categoryKey] ?? "Ingredient",
         entries: [entry],
       });
     });
 
     return groupedEntries;
-  }, [selectedIncludedIngredientIdSet, selectedIngredientEntries]);
+  }, [selectedIncludedIngredientIdSet, selectedIngredientEntries, chipotleBuilderConfig]);
   const selectedProteinCount = selectedIngredientEntries.reduce((total, [, selectedIngredient]) => {
     return total + (isProteinIngredientItem(selectedIngredient.item) ? 1 : 0);
   }, 0);
@@ -1596,7 +1621,7 @@ export default function RestaurantView({
     const labelById: Record<string, string> =
       selectedEntree === "kids-meal" && selectedKidsMeal === "build-your-own"
         ? Object.fromEntries(
-            Array.from(CHIPOTLE_KIDS_BUILD_YOUR_OWN_DOUBLE_SIDE_IDS).map((ingredientId) => [
+            Array.from(kidsBuildYourOwnDoubleSideIds).map((ingredientId) => [
               ingredientId,
               "2x",
             ])
@@ -1615,7 +1640,7 @@ export default function RestaurantView({
       const shouldUseKidsBuildYourOwnDoubleLabel =
         selectedEntree === "kids-meal" &&
         selectedKidsMeal === "build-your-own" &&
-        CHIPOTLE_KIDS_BUILD_YOUR_OWN_DOUBLE_SIDE_IDS.has(ingredientId);
+        kidsBuildYourOwnDoubleSideIds.has(ingredientId);
       if (shouldUseKidsBuildYourOwnDoubleLabel) {
         labelById[ingredientId] = "2x";
         return;
@@ -1673,6 +1698,7 @@ export default function RestaurantView({
             category,
             selectedEntree,
             selectedKidsMeal,
+            builderConfig: chipotleBuilderConfig,
           })
         : undefined;
       if (typeof categoryCap !== "number") return;
@@ -1690,6 +1716,7 @@ export default function RestaurantView({
     selectedKidsMeal,
     selectedIngredientItems,
     visibleMenuItems,
+    chipotleBuilderConfig,
   ]);
 
   const unavailableIngredientReasonById = useMemo(
@@ -1749,13 +1776,13 @@ export default function RestaurantView({
         >
           <span className="relative h-5 w-5 shrink-0 overflow-hidden rounded-full border border-slate-200 bg-white">
             <Image
-              src={CHIPOTLE_ENTREE_CONFIGURATIONS[selectedEntree].imageSrc}
-              alt={CHIPOTLE_ENTREE_CONFIGURATIONS[selectedEntree].label}
+              src={entreeOptions[selectedEntree]?.imageSrc ?? ""}
+              alt={entreeOptions[selectedEntree]?.label ?? selectedEntree}
               fill
               className="object-cover"
             />
           </span>
-          {CHIPOTLE_ENTREE_CONFIGURATIONS[selectedEntree].label}
+          {entreeOptions[selectedEntree]?.label ?? selectedEntree}
           <ChevronDown className="h-4 w-4" strokeWidth={2.5} />
         </button>
 
@@ -1776,7 +1803,7 @@ export default function RestaurantView({
                 <UtensilsCrossed className="h-4 w-4 shrink-0" strokeWidth={2.2} />
                 <span>Choose entrée</span>
               </button>
-              {(Object.entries(CHIPOTLE_ENTREE_CONFIGURATIONS) as [Exclude<EntreeSelection, null>, EntreeConfiguration][]).map(([entreeKey, entree]) => {
+              {Object.entries(entreeOptions).map(([entreeKey, entree]) => {
                 const isActive = entreeKey === selectedEntree;
                 return (
                   <button
@@ -1832,7 +1859,7 @@ export default function RestaurantView({
 
       {isChipotleBuildPage && selectedEntree === null ? (
         <div>
-          <EntreeSelectionHero onSelectEntree={handleEntreeSelection} />
+          <EntreeSelectionHero entreeOptions={entreeOptions} onSelectEntree={handleEntreeSelection} />
         </div>
       ) : (
         <div className="grid items-start gap-6 [grid-template-columns:240px_minmax(0,1fr)]">
@@ -1852,6 +1879,7 @@ export default function RestaurantView({
                 <KidsMealSelector
                   selectedKidsMeal={selectedKidsMeal}
                   onSelectKidsMeal={handleKidsMealSelection}
+                  options={kidsMealOptions}
                 />
               ) : null}
               <MenuSections

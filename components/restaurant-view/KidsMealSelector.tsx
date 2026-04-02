@@ -1,20 +1,17 @@
 import Image from "next/image";
-import {
-  CHIPOTLE_KIDS_MEAL_OPTIONS,
-  type KidsMealSelection,
-} from "@/app/data/chipotleBuildConfig";
 
 type Props = {
-  selectedKidsMeal: KidsMealSelection;
-  onSelectKidsMeal: (kidsMeal: KidsMealSelection) => void;
+  selectedKidsMeal: string;
+  onSelectKidsMeal: (kidsMeal: string) => void;
+  options: Array<{ id: string; label: string; imageSrc: string }>;
 };
 
-export default function KidsMealSelector({ selectedKidsMeal, onSelectKidsMeal }: Props) {
+export default function KidsMealSelector({ selectedKidsMeal, onSelectKidsMeal, options }: Props) {
   return (
     <section className="mb-6">
       <p className="text-sm font-semibold text-slate-700">Choose Your Kid&apos;s Meal</p>
       <div className="mt-3 grid grid-cols-1 gap-3 sm:grid-cols-2">
-        {CHIPOTLE_KIDS_MEAL_OPTIONS.map((option) => {
+        {options.map((option) => {
           const isActive = selectedKidsMeal === option.id;
           return (
             <button

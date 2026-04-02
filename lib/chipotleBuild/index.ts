@@ -1,18 +1,10 @@
-import type { MenuItem } from "@/types/menu";
-import {
-  CHIPOTLE_CATEGORY_MAX_SELECTIONS,
-  CHIPOTLE_ENTREE_CONFIGURATIONS,
-  CHIPOTLE_KIDS_QUESADILLA_INCLUDED_INGREDIENT_IDS,
-  type EntreeSelection,
-  type KidsMealSelection,
-  type TacoShellSelection,
-} from "@/app/data/chipotleBuildConfig";
+import type { MenuItem, RestaurantBuilderConfig } from "@/types/menu";
 
 export type ProteinPortionMode = "normal" | "double";
 export type SplitPortionMode = "light" | "normal" | "extra";
 export type IncludedIngredientContext = {
-  selectedEntree: EntreeSelection;
-  selectedKidsMeal: KidsMealSelection;
+  selectedEntree: string | null;
+  selectedKidsMeal: string;
 };
 
 export function normalizeIngredientCategory(value: string | undefined) {
@@ -90,14 +82,15 @@ export function getSplitPortionLabel(item: MenuItem, mode: SplitPortionMode) {
 
 export function getIngredientCategoryMaxSelections(options: {
   category: string;
-  selectedEntree: EntreeSelection;
-  selectedKidsMeal: KidsMealSelection;
+  selectedEntree: string | null;
+  selectedKidsMeal: string;
+  builderConfig?: RestaurantBuilderConfig;
 }) {
-  const { category, selectedEntree, selectedKidsMeal } = options;
+  const { category, selectedEntree, selectedKidsMeal, builderConfig } = options;
   if (category === "side" && selectedEntree === "kids-meal" && selectedKidsMeal === "build-your-own") {
     return 1;
   }
-  return CHIPOTLE_CATEGORY_MAX_SELECTIONS[category];
+  return builderConfig?.categoryMaxSelections?.[category];
 }
 
 export function isQuesadillaCheeseSelection(ingredientId: string, context: IncludedIngredientContext) {
@@ -109,14 +102,19 @@ export function isQuesadillaCheeseSelection(ingredientId: string, context: Inclu
 }
 
 export function resolveIncludedIngredientIds(options: {
-  selectedEntree: EntreeSelection;
-  selectedKidsMeal: KidsMealSelection;
-  selectedTacoShell: TacoShellSelection;
+  selectedEntree: string | null;
+  selectedKidsMeal: string;
+  selectedTacoShell: string;
+  builderConfig?: RestaurantBuilderConfig;
 }) {
-  const { selectedEntree, selectedKidsMeal, selectedTacoShell } = options;
+  const { selectedEntree, selectedKidsMeal, selectedTacoShell, builderConfig } = options;
+  if (!builderConfig?.entreeOptions) {
+    return [];
+  }
+
   if (selectedEntree === "kids-meal") {
     return selectedKidsMeal === "quesadilla"
-      ? [...CHIPOTLE_KIDS_QUESADILLA_INCLUDED_INGREDIENT_IDS]
+      ? [...(builderConfig.includedIngredientRules?.kidsQuesadillaIncludedIngredientIds ?? [])]
       : [];
   }
 
@@ -124,22 +122,28 @@ export function resolveIncludedIngredientIds(options: {
     return [];
   }
 
+  const entreeConfig = builderConfig.entreeOptions[selectedEntree];
+  if (!entreeConfig) return [];
+
   return (
-    CHIPOTLE_ENTREE_CONFIGURATIONS[selectedEntree].getIncludedIngredientIds?.({
-      tacoShell: selectedTacoShell,
-    }) ?? CHIPOTLE_ENTREE_CONFIGURATIONS[selectedEntree].includedIngredientIds ?? []
+    entreeConfig.includedIngredientIdsByOption?.[selectedTacoShell] ??
+    entreeConfig.includedIngredientIds ??
+    []
   );
 }
 
-export function getAllKnownIncludedIngredientIds() {
+export function getAllKnownIncludedIngredientIds(builderConfig?: RestaurantBuilderConfig) {
+  if (!builderConfig?.entreeOptions) {
+    return new Set<string>();
+  }
+
   return new Set(
     [
-      ...Object.values(CHIPOTLE_ENTREE_CONFIGURATIONS).flatMap((configuration) => [
+      ...Object.values(builderConfig.entreeOptions).flatMap((configuration) => [
         ...(configuration.includedIngredientIds ?? []),
-        ...(configuration.getIncludedIngredientIds?.({ tacoShell: "crispy" }) ?? []),
-        ...(configuration.getIncludedIngredientIds?.({ tacoShell: "soft" }) ?? []),
+        ...Object.values(configuration.includedIngredientIdsByOption ?? {}).flat(),
       ]),
-      ...CHIPOTLE_KIDS_QUESADILLA_INCLUDED_INGREDIENT_IDS,
+      ...(builderConfig.includedIngredientRules?.kidsQuesadillaIncludedIngredientIds ?? []),
     ]
   );
 }

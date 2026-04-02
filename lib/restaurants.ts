@@ -1,7 +1,7 @@
 import restaurants from "@/app/data/index.json";
 import { normalizeAddons } from "@/lib/addons";
 import { resolveMenuDataset } from "@/lib/menuResolver";
-import type { CommonChange, IngredientItem, IngredientModifier, MenuItem, RestaurantAddons, RestaurantCustomizationRules } from "@/types/menu";
+import type { CommonChange, IngredientItem, IngredientModifier, MenuItem, RestaurantAddons, RestaurantBuilderConfig, RestaurantCustomizationRules } from "@/types/menu";
 
 export type RestaurantData = {
   id: string;
@@ -15,6 +15,7 @@ export type RestaurantData = {
   commonChanges: CommonChange[];
   ingredientModifiers: IngredientModifier[];
   customizationRules?: RestaurantCustomizationRules;
+  builderConfig?: RestaurantBuilderConfig;
 };
 
 export function toItemSlug(item: MenuItem) {
@@ -46,6 +47,7 @@ export async function getRestaurantData(id: string): Promise<RestaurantData | nu
     commonChanges: (menu.commonChanges ?? []) as CommonChange[],
     ingredientModifiers: (menu.ingredientModifiers ?? []) as IngredientModifier[],
     customizationRules: menu.customizationRules,
+    builderConfig: menu.builderConfig,
   };
 }
 

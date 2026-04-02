@@ -2866,5 +2866,118 @@
                 "protein": 8
             }
         }
-    ]
+    ],
+    "builderConfig": {
+        "entreeOptions": {
+            "bowl": {
+                "label": "Bowl",
+                "imageSrc": "/restaurants/chipotle/entrees/burrito-bowl.png"
+            },
+            "burrito": {
+                "label": "Burrito",
+                "imageSrc": "/restaurants/chipotle/entrees/burrito.png",
+                "includedIngredientIds": [
+                    "tortilla"
+                ]
+            },
+            "quesadilla": {
+                "label": "Quesadilla",
+                "imageSrc": "/restaurants/chipotle/entrees/quesadilla.png",
+                "includedIngredientIds": [
+                    "tortilla",
+                    "cheese"
+                ]
+            },
+            "salad": {
+                "label": "Salad",
+                "imageSrc": "/restaurants/chipotle/entrees/salad.png",
+                "includedIngredientIds": [
+                    "romaine-lettuce"
+                ]
+            },
+            "tacos": {
+                "label": "Tacos",
+                "imageSrc": "/restaurants/chipotle/entrees/tacos.png",
+                "includedIngredientIdsByOption": {
+                    "crispy": [
+                        "crispy-corn-tortilla"
+                    ],
+                    "soft": [
+                        "soft-flour-tortilla"
+                    ]
+                }
+            },
+            "high-protein-menu": {
+                "label": "High Protein Menu",
+                "imageSrc": "/restaurants/chipotle/entrees/high-protein-menu.png"
+            },
+            "kids-meal": {
+                "label": "Kid's Meal",
+                "imageSrc": "/restaurants/chipotle/entrees/kids-meal.png"
+            },
+            "chips-sides": {
+                "label": "Chips & Sides",
+                "imageSrc": "/restaurants/chipotle/entrees/chips-and-sides.png"
+            },
+            "drinks": {
+                "label": "Drinks",
+                "imageSrc": "/restaurants/chipotle/entrees/drinks.png"
+            }
+        },
+        "includedIngredientRules": {
+            "tacoShellIngredientIds": [
+                "crispy-corn-tortilla",
+                "soft-flour-tortilla"
+            ],
+            "kidsQuesadillaIncludedIngredientIds": [
+                "soft-flour-tortilla",
+                "cheese"
+            ],
+            "kidsBuildYourOwnDoubleSideIds": [
+                "crispy-corn-tortilla",
+                "soft-flour-tortilla"
+            ]
+        },
+        "hiddenSectionsByEntree": {
+            "chips-sides": [
+                "toppings"
+            ]
+        },
+        "categoryMaxSelections": {
+            "proteins": 2,
+            "rice": 2,
+            "beans": 2
+        },
+        "kidsMealOptions": [
+            {
+                "id": "build-your-own",
+                "label": "Kid's Build Your Own",
+                "imageSrc": "/restaurants/chipotle/entrees/kids-meal.png"
+            },
+            {
+                "id": "quesadilla",
+                "label": "Kid's Quesadilla",
+                "imageSrc": "/restaurants/chipotle/entrees/kids-quesadilla.png"
+            }
+        ],
+        "selectedIngredientCategoryOrder": [
+            "included ingredient",
+            "proteins",
+            "rice",
+            "beans",
+            "toppings",
+            "side"
+        ],
+        "selectedIngredientCategoryLabels": {
+            "included ingredient": "Included ingredients",
+            "proteins": "Protein",
+            "rice": "Rice",
+            "beans": "Beans",
+            "toppings": "Toppings",
+            "side": "Side"
+        },
+        "specialVariantIds": {
+            "quesadillaTripleCheese": "quesadilla-triple-cheese"
+        }
+    }
 }

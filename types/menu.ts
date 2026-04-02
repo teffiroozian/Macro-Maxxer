@@ -130,6 +130,36 @@ export type IngredientItem = {
   hideFromIngredientView?: boolean;
 };
 
+
+export type BuilderEntreeOption = {
+  label: string;
+  imageSrc: string;
+  nutritionMultiplier?: number;
+  includedIngredientIds?: string[];
+  includedIngredientIdsByOption?: Record<string, string[]>;
+};
+
+export type RestaurantBuilderConfig = {
+  entreeOptions?: Record<string, BuilderEntreeOption>;
+  includedIngredientRules?: {
+    tacoShellIngredientIds?: string[];
+    kidsQuesadillaIncludedIngredientIds?: string[];
+    kidsBuildYourOwnDoubleSideIds?: string[];
+  };
+  hiddenSectionsByEntree?: Record<string, string[]>;
+  categoryMaxSelections?: Record<string, number>;
+  kidsMealOptions?: Array<{
+    id: string;
+    label: string;
+    imageSrc: string;
+  }>;
+  selectedIngredientCategoryOrder?: string[];
+  selectedIngredientCategoryLabels?: Record<string, string>;
+  specialVariantIds?: {
+    quesadillaTripleCheese?: string;
+  };
+};
+
 export type RestaurantMenu = {
   id: string;
   name?: string;
@@ -140,4 +170,5 @@ export type RestaurantMenu = {
   commonChanges?: CommonChange[];
   ingredientModifiers?: IngredientModifier[];
   customizationRules?: RestaurantCustomizationRules;
+  builderConfig?: RestaurantBuilderConfig;
 };
