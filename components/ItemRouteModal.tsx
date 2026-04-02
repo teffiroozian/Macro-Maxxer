@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
-import { Salad, Sandwich, Utensils } from "lucide-react";
+import { Drumstick, Salad, Sandwich, Sunrise, Utensils, WrapText } from "lucide-react";
 import ItemDetailsPanel, { PortionSelector, type ResolvedPanelIngredient, resolvePanelIngredients } from "@/components/ItemDetailsPanel";
 import type {
   AddonOption,
@@ -102,14 +102,29 @@ function resolveJustItemLabel(item: MenuItem) {
   if (normalizedCategories.some((category) => category.includes("nugget") || category.includes("chicken"))) {
     return "Chicken Only";
   }
+  if (normalizedCategories.some((category) => category.includes("breakfast"))) {
+    return "Breakfast Only";
+  }
 
   return "Item Only";
 }
 
 function resolveJustItemIcon(item: MenuItem) {
   const normalizedCategories = (item.categories ?? []).map((category) => normalizeCategory(category));
+  if (normalizedCategories.some((category) => category.includes("sandwich"))) {
+    return Sandwich;
+  }
   if (normalizedCategories.some((category) => category.includes("salad"))) {
     return Salad;
+  }
+  if (normalizedCategories.some((category) => category.includes("wrap"))) {
+    return WrapText;
+  }
+  if (normalizedCategories.some((category) => category.includes("nugget") || category.includes("chicken"))) {
+    return Drumstick;
+  }
+  if (normalizedCategories.some((category) => category.includes("breakfast"))) {
+    return Sunrise;
   }
   return Sandwich;
 }
@@ -669,7 +684,7 @@ export default function ItemRouteModal({
                           className={`inline-flex min-w-[140px] cursor-pointer items-center justify-center gap-2 rounded-lg border-2 border-[rgba(0,0,0,0.6)] px-3 py-1.5 text-center text-[15px] font-semibold ${variantColorClasses}`}
                           onClick={() => setComboType(option.id)}
                         >
-                          <Icon size={15} />
+                          <Icon size={15} strokeWidth={2.5} />
                           {option.label}
                         </button>
                       );

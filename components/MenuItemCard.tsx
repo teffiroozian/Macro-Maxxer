@@ -2,7 +2,7 @@
 
 import { useEffect, useId, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
-import { Salad, Sandwich, Utensils } from "lucide-react";
+import { Drumstick, Salad, Sandwich, Sunrise, Utensils, WrapText } from "lucide-react";
 import type {
   AddonOption,
   AddonRef,
@@ -77,14 +77,21 @@ function compareByDefaultOrder(left: MenuItem, right: MenuItem) {
 
 function resolveJustItemLabel(item: MenuItem) {
   const categories = (item.categories ?? []).map((category) => normalizeCategory(category));
-  if (categories.some((category) => category.includes("salad"))) return "Just Salad";
-  if (categories.some((category) => category.includes("nugget"))) return "Nuggets Only";
+  if (categories.some((category) => category.includes("sandwich"))) return "Sandwich Only";
+  if (categories.some((category) => category.includes("salad"))) return "Salad Only";
+  if (categories.some((category) => category.includes("wrap"))) return "Wrap Only";
+  if (categories.some((category) => category.includes("nugget") || category.includes("chicken"))) return "Chicken Only";
+  if (categories.some((category) => category.includes("breakfast"))) return "Breakfast Only";
   return "Item Only";
 }
 
 function resolveJustItemIcon(item: MenuItem) {
   const categories = (item.categories ?? []).map((category) => normalizeCategory(category));
+  if (categories.some((category) => category.includes("sandwich"))) return Sandwich;
   if (categories.some((category) => category.includes("salad"))) return Salad;
+  if (categories.some((category) => category.includes("wrap"))) return WrapText;
+  if (categories.some((category) => category.includes("nugget") || category.includes("chicken"))) return Drumstick;
+  if (categories.some((category) => category.includes("breakfast"))) return Sunrise;
   return Sandwich;
 }
 
@@ -1450,7 +1457,7 @@ export default function MenuItemCard({
                       );
                     }}
                   >
-                    <Icon size={16} />
+                    <Icon size={16} strokeWidth={2.5} />
                     {option.label}
                   </button>
                 );
