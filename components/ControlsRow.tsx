@@ -175,7 +175,7 @@ export default function ControlsRow({
 
   const filtersDialog = isFiltersOpen ? (
     <div role="dialog" aria-modal="true" className="fixed inset-0 z-[200] flex items-center justify-center bg-black/35 p-4" onClick={() => setIsFiltersOpen(false)}>
-      <div className="w-full max-w-[520px] rounded-[20px] bg-white p-5 shadow-[0_16px_40px_rgba(0,0,0,0.2)]" onClick={(event) => event.stopPropagation()}>
+      <div className="w-full max-w-xl radius-xl card-surface inset-lg elevation-3" onClick={(event) => event.stopPropagation()}>
         <h3 className="mb-4 text-xl font-bold">Filters</h3>
         <div className="grid gap-4">
           <div>
@@ -239,7 +239,7 @@ export default function ControlsRow({
                 }}
                 aria-haspopup="menu"
                 aria-expanded={isViewOpen}
-                className="cursor-pointer inline-flex items-center gap-2 whitespace-nowrap rounded-full border border-black/20 bg-white px-[14px] py-[6px] font-semibold text-black/85"
+                className="cursor-pointer inline-flex items-center gap-2 whitespace-nowrap radius-pill border border-subtle bg-white px-3.5 py-1.5 font-semibold text-black/85"
               >
                 <currentViewOption.icon className="h-4 w-4" strokeWidth={2.2} />
                 {currentViewOption.label}
@@ -247,7 +247,7 @@ export default function ControlsRow({
               </button>
 
               {isViewOpen ? (
-                <div role="menu" className="absolute left-0 top-[calc(100%+8px)] z-20 w-[220px] rounded-[14px] border border-black/15 bg-white p-2 shadow-[0_12px_28px_rgba(0,0,0,0.12)]">
+                <div role="menu" className="absolute left-0 top-full mt-2 z-20 w-56 radius-lg card-surface inset-sm elevation-2">
                   <div className="grid gap-1">
                     {VIEW_OPTIONS.map((option) => {
                       const isActive = option.value === view;
@@ -264,7 +264,7 @@ export default function ControlsRow({
                           }}
                           onMouseEnter={() => setHoveredViewOption(option.value)}
                           onMouseLeave={() => setHoveredViewOption(null)}
-                          className={`cursor-pointer inline-flex items-center gap-2 rounded-[10px] border-none px-2.5 py-2 text-left font-semibold text-black/88 transition-colors duration-100 ${
+                          className={`cursor-pointer inline-flex items-center gap-2 radius-md border-none px-2.5 py-2 text-left font-semibold text-black/88 transition-colors duration-100 ${
                             isActive ? "bg-black/10" : isHovered ? "bg-slate-900/5" : "bg-transparent"
                           }`}
                         >
@@ -288,7 +288,7 @@ export default function ControlsRow({
               }}
               aria-haspopup="menu"
               aria-expanded={isSortOpen}
-              className="cursor-pointer inline-flex items-center gap-2 whitespace-nowrap rounded-full border border-black/20 bg-white px-[14px] py-[6px] font-semibold text-black/85"
+              className="cursor-pointer inline-flex items-center gap-2 whitespace-nowrap radius-pill border border-subtle bg-white px-3.5 py-1.5 font-semibold text-black/85"
             >
               <currentSortOption.icon className="h-4 w-4" strokeWidth={2.2} />
               {currentSortOption.label}
@@ -296,7 +296,7 @@ export default function ControlsRow({
             </button>
 
             {isSortOpen ? (
-              <div role="menu" className="absolute right-0 top-[calc(100%+8px)] z-20 w-[220px] rounded-[14px] border border-black/15 bg-white p-2 shadow-[0_12px_28px_rgba(0,0,0,0.12)]">
+              <div role="menu" className="absolute right-0 top-full mt-2 z-20 w-56 radius-lg card-surface inset-sm elevation-2">
                 <div className="grid gap-1">
                   {SORT_OPTIONS.map((option) => {
                     const isActive = option.value === sort;
@@ -313,7 +313,7 @@ export default function ControlsRow({
                         }}
                         onMouseEnter={() => setHoveredSortOption(option.value)}
                         onMouseLeave={() => setHoveredSortOption(null)}
-                        className={`cursor-pointer inline-flex items-center gap-2 rounded-[10px] border-none px-2.5 py-2 text-left font-semibold text-black/88 transition-colors duration-100 ${
+                        className={`cursor-pointer inline-flex items-center gap-2 radius-md border-none px-2.5 py-2 text-left font-semibold text-black/88 transition-colors duration-100 ${
                           isActive ? "bg-black/10" : isHovered ? "bg-slate-900/5" : "bg-transparent"
                         }`}
                       >
@@ -330,7 +330,7 @@ export default function ControlsRow({
           <button
             type="button"
             onClick={openFilters}
-            className="cursor-pointer inline-flex items-center gap-2 rounded-full border border-black/20 bg-white px-[14px] py-[6px] font-semibold text-black/80 whitespace-nowrap shrink-0"
+            className="cursor-pointer inline-flex items-center gap-2 radius-pill border border-subtle bg-white px-3.5 py-1.5 font-semibold text-black/80 whitespace-nowrap shrink-0"
           >
             Filters
             <SlidersHorizontal className="h-4 w-4" strokeWidth={2.5} />

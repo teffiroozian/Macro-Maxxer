@@ -843,8 +843,8 @@ export default function MenuItemCard({
 
   return (
     <li
-      className={`list-none overflow-hidden rounded-2xl bg-white shadow-[0_4px_12px_rgba(0,0,0,0.2)] ${
-        isTopRanked ? "border-[1.5px] border-black/80" : "border border-black/15"
+      className={`list-none overflow-hidden rounded-2xl card-surface elevation-1 ${
+        isTopRanked ? "border-2 border-black/80" : "border border-soft"
       }`}
     >
       <div
@@ -864,14 +864,14 @@ export default function MenuItemCard({
         <div className="shrink-0">
           {selectedItemImage ? (
             <img
-              className={`block h-[210px] w-[210px] rounded-[14px] bg-[#efefef] shadow-[0_0_5px_rgba(0,0,0,0.25)] ${
+              className={`block h-[210px] w-[210px] radius-lg surface-muted elevation-1 ${
                 isCartMode ? "object-contain p-2" : "object-cover"
               }`}
               src={selectedItemImage}
               alt={item.name}
             />
           ) : (
-            <div className="h-[210px] w-[210px] rounded-[14px] bg-[#efefef]" />
+            <div className="h-[210px] w-[210px] radius-lg surface-muted" />
           )}
         </div>
 
@@ -879,10 +879,10 @@ export default function MenuItemCard({
           <div className="flex flex-col gap-2">
             {rankText && (
               <div>
-                <div className="inline-block border-b-[5px] border-b-yellow-500 px-1.5 text-xl font-bold">{rankText}</div>
+                <div className="inline-block border-b-4 border-b-yellow-500 px-1.5 text-xl font-bold">{rankText}</div>
               </div>
             )}
-            <div className="text-[30px] leading-[1.05] font-bold">{item.name}</div>
+            <div className="text-3xl leading-tight font-bold">{item.name}</div>
             <div className="flex flex-wrap items-center">
               <div className="inline-flex items-baseline gap-2">
                 <div className="text-lg font-bold text-black/50">{formatCalories(calories)} calories</div>
@@ -896,7 +896,7 @@ export default function MenuItemCard({
                   onClick={hasVariantDropdown ? (event) => event.stopPropagation() : undefined}
                   onKeyDown={hasVariantDropdown ? (event) => event.stopPropagation() : undefined}
                 >
-                  <div className="mx-[10px] h-5 w-0.5 rounded-full bg-black/50" />
+                  <div className="mx-2.5 h-5 w-0.5 rounded-full bg-black/50" />
                   {hasVariantDropdown ? (
                     <VariantSelector
                       variants={variants}
@@ -908,7 +908,7 @@ export default function MenuItemCard({
                       ariaLabel={`${item.name} portion size`}
                     />
                   ) : (
-                    <span className="rounded-full bg-[#121212] px-4 py-0.5 text-base font-bold text-white">
+                    <span className="radius-pill bg-neutral-900 px-4 py-0.5 text-base font-bold text-white">
                       {selectedVariantForCart?.label ?? variants[0]?.label}
                     </span>
                   )}
@@ -920,10 +920,10 @@ export default function MenuItemCard({
             ) : null}
           </div>
 
-          <div className="mt-auto flex items-end gap-[60px]">
+          <div className="mt-auto flex items-end gap-14">
             <div className="flex flex-col items-center justify-start">
               <div className="inline-flex items-baseline gap-1.5">
-                <div className="text-2xl font-bold text-[#c2410c]">{formatMacro(protein)}</div>
+                <div className="text-2xl font-bold text-orange-700">{formatMacro(protein)}</div>
                 {hasActiveCustomization ? (
                   <span className="text-sm font-bold text-green-600">{formatDelta(customizationTotals.protein)}</span>
                 ) : null}
@@ -932,7 +932,7 @@ export default function MenuItemCard({
             </div>
             <div className="flex flex-col items-center justify-start">
               <div className="inline-flex items-baseline gap-1.5">
-                <div className="text-2xl font-bold text-[#ca8a04]">{formatMacro(carbs)}</div>
+                <div className="text-2xl font-bold text-yellow-600">{formatMacro(carbs)}</div>
                 {hasActiveCustomization ? (
                   <span className="text-sm font-bold text-green-600">{formatDelta(customizationTotals.carbs)}</span>
                 ) : null}
@@ -941,7 +941,7 @@ export default function MenuItemCard({
             </div>
             <div className="flex flex-col items-center justify-start">
               <div className="inline-flex items-baseline gap-1.5">
-                <div className="text-2xl font-bold text-[#2563eb]">{formatMacro(fat)}</div>
+                <div className="text-2xl font-bold text-blue-600">{formatMacro(fat)}</div>
                 {hasActiveCustomization ? (
                   <span className="text-sm font-bold text-green-600">{formatDelta(customizationTotals.fat)}</span>
                 ) : null}
@@ -953,7 +953,7 @@ export default function MenuItemCard({
               {!isCartMode && itemHref && showDetailsButton ? (
                 <button
                   type="button"
-                  className="cursor-pointer rounded-xl border border-black/20 bg-white px-4 py-2 text-[15px] font-bold text-black/85"
+                  className="cursor-pointer rounded-xl border border-black/20 bg-white px-4 py-2 text-sm font-bold text-black/85"
                   onClick={(event) => {
                     event.stopPropagation();
                     router.push(itemHref, { scroll: false });
@@ -992,13 +992,13 @@ export default function MenuItemCard({
           </div>
         </div>
 
-        <div className="absolute top-[18px] right-[18px] inline-flex items-center gap-2">
+        <div className="absolute top-4 right-4 inline-flex items-center gap-2">
           {hasMods && !isCartMode ? (
             <div
               role="button"
               tabIndex={0}
               aria-label="Reset customizations"
-              className="cursor-pointer text-[26px] leading-none font-medium text-black/75 transition-colors duration-200 group-hover:text-black/95"
+              className="cursor-pointer text-2xl leading-none font-medium text-black/75 transition-colors duration-200 group-hover:text-black/95"
               onClick={(event) => {
                 event.stopPropagation();
                 resetMods();
@@ -1018,7 +1018,7 @@ export default function MenuItemCard({
             role="button"
             tabIndex={0}
             aria-label={`Toggle addon options for ${item.name}`}
-            className={`text-[26px] leading-none font-medium text-black/75 transition duration-200 group-hover:text-black/95 ${
+            className={`text-2xl leading-none font-medium text-black/75 transition duration-200 group-hover:text-black/95 ${
               open ? "rotate-45" : ""
             }`}
             onClick={(event) => {
@@ -1040,7 +1040,7 @@ export default function MenuItemCard({
 
       <div
         id={`${id}-details`}
-        className={`overflow-hidden bg-white transition-[max-height] duration-300 ease-in-out ${
+        className={`overflow-hidden bg-white transition-all duration-300 ease-in-out ${
           open ? "max-h-[5000px]" : "max-h-0"
         }`}
       >

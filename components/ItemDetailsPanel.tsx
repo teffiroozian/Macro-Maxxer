@@ -85,7 +85,7 @@ export function PortionSelector({
 
   return (
     <div className={wrapperClasses}>
-      <div className={`text-lg font-semibold text-[rgba(0,0,0,0.8)] ${isTopLayout ? "w-full text-center" : ""}`}>
+      <div className={`text-lg font-semibold text-black/80 ${isTopLayout ? "w-full text-center" : ""}`}>
         Portion
       </div>
       <div
@@ -95,13 +95,13 @@ export function PortionSelector({
           const isActive = variant.id === selectedVariantId;
           const variantColorClasses = isActive
             ? "bg-black text-white"
-            : "bg-transparent text-[rgba(0,0,0,0.6)]";
+            : "bg-transparent text-black/60";
 
           return (
             <button
               key={variant.id}
               type="button"
-              className={`${isTopLayout ? "min-w-[140px]" : "w-full"} cursor-pointer rounded-lg border-2 border-[rgba(0,0,0,0.6)] px-3 py-1.5 text-center text-[18px] font-bold ${variantColorClasses}`}
+              className={`${isTopLayout ? "min-w-[140px]" : "w-full"} cursor-pointer rounded-lg border-2 border-black/60 px-3 py-1.5 text-center text-lg font-bold ${variantColorClasses}`}
               onClick={() => onSelectVariant?.(variant.id)}
             >
               {variant.label}
@@ -382,9 +382,9 @@ export default function ItemDetailsPanel({
   const shouldShowComboSelections = comboType === "combo-meal";
 
   return (
-    <div className="grid grid-cols-2 gap-3 rounded-[18px] bg-[#e0e0e0] p-3">
+    <div className="grid grid-cols-2 gap-3 radius-xl surface-muted p-3">
       {shouldShowIngredientSection && selectedIngredientTab ? (
-        <section className="col-span-2 rounded-[14px] border border-black/12 bg-white p-5">
+        <section className="col-span-2 radius-lg border border-black/12 bg-white p-5">
           <h2 className="mb-6 text-2xl font-bold">Ingredients</h2>
           {!flattenIngredientList && visibleIngredientTabs.length > 1 ? (
             <div className="mb-4 flex flex-wrap gap-2">
@@ -398,7 +398,7 @@ export default function ItemDetailsPanel({
                     className={`cursor-pointer rounded-full border px-4 py-2 text-sm font-semibold transition ${
                       isActive
                         ? "border-black bg-black text-white"
-                        : "border-black/15 bg-[#f7f7f7] text-black/70"
+                        : "border-black/15 bg-slate-100 text-black/70"
                     }`}
                     onClick={() => setActiveIngredientTab(tab.label)}
                   >
@@ -409,7 +409,7 @@ export default function ItemDetailsPanel({
             </div>
           ) : null}
           {displayIngredients.length > 0 ? (
-            <ul className="grid list-none grid-cols-2 items-stretch gap-[10px] pl-0">
+            <ul className="grid list-none grid-cols-2 items-stretch gap-2.5 pl-0">
               {displayIngredients.map((ingredient) => {
                 const ingredientCount = selectedIngredientCounts?.[ingredient.id] ?? ingredient.defaultCount;
                 const isSelected = ingredientCount > 0;
@@ -426,11 +426,11 @@ export default function ItemDetailsPanel({
                   !isLockedIngredient(ingredient.id) &&
                   !shouldShowSingleSelectNavigator &&
                   typeof ingredient.maxQuantity === "number";
-                const cardClasses = `box-border flex h-full w-full flex-row items-center gap-3 rounded-[10px] border border-[rgba(0,0,0,0.15)] bg-[#f9f9f9] px-3 py-2 ${
+                const cardClasses = `box-border flex h-full w-full flex-row items-center gap-3 radius-md border border-soft card-surface-muted px-3 py-2 ${
                   isSelected
                     ? isSingleSelectTab
-                      ? "shadow-[inset_0_0_0_3px_#16a34a]"
-                      : "shadow-[inset_0_0_0_1px_#000000]"
+                      ? "shadow-[inset_0_0_0_3px_theme(colors.green.600)]"
+                      : "shadow-[inset_0_0_0_1px_theme(colors.black)]"
                     : ""
                 }`;
                 const ingredientContent = (
@@ -451,9 +451,9 @@ export default function ItemDetailsPanel({
                         ingredient.icon
                       )}
                     </div>
-                    <div className="flex min-w-0 flex-col items-start justify-center gap-[6px]">
-                      <div className="line-clamp-2 break-words text-left text-base font-bold leading-[1.2]">{ingredient.label}</div>
-                      <div className="text-sm font-bold text-[rgba(0,0,0,0.5)]">
+                    <div className="flex min-w-0 flex-col items-start justify-center gap-1.5">
+                      <div className="line-clamp-2 break-words text-left text-base font-bold leading-tight">{ingredient.label}</div>
+                      <div className="text-sm font-bold text-black/50">
                         {ingredient.calories !== undefined ? `${ingredient.calories} Cal` : "— Cal"}
                       </div>
                     </div>
@@ -477,11 +477,11 @@ export default function ItemDetailsPanel({
                         <span
                           aria-hidden="true"
                           className={`ml-auto inline-flex h-6 w-6 shrink-0 items-center justify-center rounded-full border ${
-                            isSelected ? "border-[3px] border-[#16a34a]" : "border-2 border-[rgba(0,0,0,0.25)]"
+                            isSelected ? "border-2 border-green-600" : "border-2 border-subtle"
                           }`}
                         >
                           <span
-                            className={`h-2.5 w-2.5 rounded-full ${isSelected ? "bg-[#16a34a]" : "bg-transparent"}`}
+                            className={`h-2.5 w-2.5 rounded-full ${isSelected ? "bg-green-600" : "bg-transparent"}`}
                           />
                         </span>
                       </button>
@@ -521,7 +521,7 @@ export default function ItemDetailsPanel({
                         {shouldShowSingleSelectNavigator ? (
                           <button
                             type="button"
-                            className="ml-auto inline-flex h-9 w-9 cursor-pointer items-center justify-center rounded-full border border-[rgba(0,0,0,0.2)] bg-white text-black/70 transition hover:bg-black hover:text-white"
+                            className="ml-auto inline-flex h-9 w-9 cursor-pointer items-center justify-center rounded-full border border-subtle bg-white text-black/70 transition hover:bg-black hover:text-white"
                             aria-label={`Customize ${linkedSingleSelectTab?.label ?? ingredient.label}`}
                             onClick={() => {
                               navigateToSingleSelectTab(ingredient.id, linkedSingleSelectTab);
@@ -531,7 +531,7 @@ export default function ItemDetailsPanel({
                           </button>
                         ) : typeof ingredient.maxQuantity === "number" ? (
                           <div
-                            className="ml-auto inline-flex items-center gap-[6px]"
+                            className="ml-auto inline-flex items-center gap-1.5"
                             onClick={(event) => event.stopPropagation()}
                             onMouseDown={(event) => event.stopPropagation()}
                           >
@@ -539,7 +539,7 @@ export default function ItemDetailsPanel({
                               <>
                                 <button
                                   type="button"
-                                  className="inline-flex h-7 w-7 cursor-pointer items-center justify-center rounded-md border border-[rgba(0,0,0,0.35)] bg-white text-[18px] font-bold leading-none disabled:cursor-not-allowed disabled:opacity-40"
+                                  className="inline-flex h-7 w-7 cursor-pointer items-center justify-center rounded-md border border-strong bg-white text-lg font-bold leading-none disabled:cursor-not-allowed disabled:opacity-40"
                                   aria-label={`Remove one ${ingredient.label}`}
                                   onClick={() => onDecrementIngredient?.(ingredient.id)}
                                   disabled={isLockedIngredient(ingredient.id)}
@@ -549,7 +549,7 @@ export default function ItemDetailsPanel({
                                 <span className="min-w-4 text-center text-base font-bold">{ingredientCount}</span>
                                 <button
                                   type="button"
-                                  className="inline-flex h-7 w-7 cursor-pointer items-center justify-center rounded-md border border-[rgba(0,0,0,0.35)] bg-white text-[18px] font-bold leading-none disabled:cursor-not-allowed disabled:opacity-40"
+                                  className="inline-flex h-7 w-7 cursor-pointer items-center justify-center rounded-md border border-strong bg-white text-lg font-bold leading-none disabled:cursor-not-allowed disabled:opacity-40"
                                   aria-label={`Add one more ${ingredient.label}`}
                                   onClick={() => onIncrementIngredient?.(ingredient.id)}
                                   disabled={ingredientCount >= ingredient.maxQuantity}
@@ -560,7 +560,7 @@ export default function ItemDetailsPanel({
                             ) : (
                               <button
                                 type="button"
-                                className="inline-flex h-7 w-7 cursor-pointer items-center justify-center rounded-md border border-[rgba(0,0,0,0.35)] bg-white text-[18px] font-bold leading-none"
+                                className="inline-flex h-7 w-7 cursor-pointer items-center justify-center rounded-md border border-strong bg-white text-lg font-bold leading-none"
                                 aria-label={`Add ${ingredient.label}`}
                                 onClick={() => onIncrementIngredient?.(ingredient.id)}
                               >
@@ -576,7 +576,7 @@ export default function ItemDetailsPanel({
               })}
             </ul>
           ) : (
-            <div className="rounded-[10px] border border-dashed border-black/12 bg-[#f9f9f9] px-4 py-6 text-sm font-medium text-black/55">
+            <div className="radius-md border border-dashed border-black/12 card-surface-muted px-4 py-6 text-sm font-medium text-black/55">
               No ingredients available in this tab.
             </div>
           )}
@@ -585,9 +585,9 @@ export default function ItemDetailsPanel({
 
       {shouldShowComboSelections ? (
         <>
-          <section className="col-span-2 rounded-[14px] border border-black/12 bg-white p-5">
+          <section className="col-span-2 radius-lg border border-black/12 bg-white p-5">
             <h2 className="mb-6 text-2xl font-bold">Sides</h2>
-            <ul className="grid list-none grid-cols-2 items-stretch gap-[10px] pl-0">
+            <ul className="grid list-none grid-cols-2 items-stretch gap-2.5 pl-0">
               {comboSides.map((side) => {
                 const sideId = side.id ?? side.name;
                 const isSelected = selectedComboSideId === sideId;
@@ -602,7 +602,7 @@ export default function ItemDetailsPanel({
                 return (
                   <li key={sideId} className="flex">
                     <div
-                      className={`box-border flex h-full w-full cursor-pointer flex-col rounded-[10px] border border-[rgba(0,0,0,0.12)] bg-[#fcfcfc] px-3 py-2 text-left ${isSelected ? "shadow-[inset_0_0_0_2px_#16a34a]" : ""}`}
+                      className={`box-border flex h-full w-full cursor-pointer flex-col radius-md border border-soft card-surface-muted px-3 py-2 text-left ${isSelected ? "shadow-[inset_0_0_0_2px_theme(colors.green.600)]" : ""}`}
                       role="button"
                       tabIndex={0}
                       onClick={() => onSelectComboSide?.(sideId)}
@@ -619,17 +619,17 @@ export default function ItemDetailsPanel({
                             <Image src={side.image} alt="" width={72} height={72} className="h-[72px] w-[72px] rounded-lg object-cover" />
                           ) : null}
                         </div>
-                        <div className="flex min-w-0 flex-col items-start justify-center gap-[6px]">
-                          <div className="line-clamp-2 break-words text-left text-base font-bold leading-[1.2]">{side.name}</div>
-                          <div className="text-sm font-bold text-[rgba(0,0,0,0.5)]">{sideCalories ?? "—"} Cal</div>
+                        <div className="flex min-w-0 flex-col items-start justify-center gap-1.5">
+                          <div className="line-clamp-2 break-words text-left text-base font-bold leading-tight">{side.name}</div>
+                          <div className="text-sm font-bold text-black/50">{sideCalories ?? "—"} Cal</div>
                         </div>
                         <span
                           aria-hidden="true"
                           className={`ml-auto inline-flex h-6 w-6 shrink-0 items-center justify-center rounded-full border ${
-                            isSelected ? "border-[3px] border-[#16a34a]" : "border-2 border-[rgba(0,0,0,0.2)]"
+                            isSelected ? "border-2 border-green-600" : "border-2 border-subtle"
                           }`}
                         >
-                          <span className={`h-2.5 w-2.5 rounded-full ${isSelected ? "bg-[#16a34a]" : "bg-transparent"}`} />
+                          <span className={`h-2.5 w-2.5 rounded-full ${isSelected ? "bg-green-600" : "bg-transparent"}`} />
                         </span>
                       </div>
                       {isSelected && sideVariants.length > 0 ? (
@@ -662,9 +662,9 @@ export default function ItemDetailsPanel({
               })}
             </ul>
           </section>
-          <section className="col-span-2 rounded-[14px] border border-black/12 bg-white p-5">
+          <section className="col-span-2 radius-lg border border-black/12 bg-white p-5">
             <h2 className="mb-6 text-2xl font-bold">Drinks</h2>
-            <ul className="grid list-none grid-cols-2 items-stretch gap-[10px] pl-0">
+            <ul className="grid list-none grid-cols-2 items-stretch gap-2.5 pl-0">
               {comboDrinks.map((drink) => {
                 const drinkId = drink.id ?? drink.name;
                 const isSelected = selectedComboDrinkId === drinkId;
@@ -679,7 +679,7 @@ export default function ItemDetailsPanel({
                 return (
                   <li key={drinkId} className="flex">
                     <div
-                      className={`box-border flex h-full w-full cursor-pointer flex-col rounded-[10px] border border-[rgba(0,0,0,0.12)] bg-[#fcfcfc] px-3 py-2 text-left ${isSelected ? "shadow-[inset_0_0_0_2px_#16a34a]" : ""}`}
+                      className={`box-border flex h-full w-full cursor-pointer flex-col radius-md border border-soft card-surface-muted px-3 py-2 text-left ${isSelected ? "shadow-[inset_0_0_0_2px_theme(colors.green.600)]" : ""}`}
                       role="button"
                       tabIndex={0}
                       onClick={() => onSelectComboDrink?.(drinkId)}
@@ -696,17 +696,17 @@ export default function ItemDetailsPanel({
                             <Image src={drink.image} alt="" width={72} height={72} className="h-[72px] w-[72px] rounded-lg object-cover" />
                           ) : null}
                         </div>
-                        <div className="flex min-w-0 flex-col items-start justify-center gap-[6px]">
-                          <div className="line-clamp-2 break-words text-left text-base font-bold leading-[1.2]">{drink.name}</div>
-                          <div className="text-sm font-bold text-[rgba(0,0,0,0.5)]">{drinkCalories ?? "—"} Cal</div>
+                        <div className="flex min-w-0 flex-col items-start justify-center gap-1.5">
+                          <div className="line-clamp-2 break-words text-left text-base font-bold leading-tight">{drink.name}</div>
+                          <div className="text-sm font-bold text-black/50">{drinkCalories ?? "—"} Cal</div>
                         </div>
                         <span
                           aria-hidden="true"
                           className={`ml-auto inline-flex h-6 w-6 shrink-0 items-center justify-center rounded-full border ${
-                            isSelected ? "border-[3px] border-[#16a34a]" : "border-2 border-[rgba(0,0,0,0.2)]"
+                            isSelected ? "border-2 border-green-600" : "border-2 border-subtle"
                           }`}
                         >
-                          <span className={`h-2.5 w-2.5 rounded-full ${isSelected ? "bg-[#16a34a]" : "bg-transparent"}`} />
+                          <span className={`h-2.5 w-2.5 rounded-full ${isSelected ? "bg-green-600" : "bg-transparent"}`} />
                         </span>
                       </div>
                       {isSelected && drinkVariants.length > 0 ? (
@@ -743,8 +743,8 @@ export default function ItemDetailsPanel({
       ) : null}
 
       {availableAddonSections.length > 0 ? (
-        <section className="col-span-2 rounded-[18px] border border-[rgba(0,0,0,0.15)] bg-white px-[18px] py-[14px]">
-          <div className="grid gap-[14px]">
+        <section className="col-span-2 radius-xl border border-soft bg-white inset-md">
+          <div className="grid gap-3.5">
             {availableAddonSections.map((section) => {
               const sectionStateKey = `addon-${section.ref}`;
               const isSectionOpen = sectionOpenState[sectionStateKey] ?? true;
@@ -764,7 +764,7 @@ export default function ItemDetailsPanel({
               return (
                 <div key={section.ref} className="min-w-0">
                   <div
-                    className="flex min-h-[52px] w-full cursor-pointer items-center justify-between gap-[10px] rounded-[10px] border-0 bg-transparent p-3 text-left"
+                    className="flex min-h-[52px] w-full cursor-pointer items-center justify-between gap-2.5 radius-md border-0 bg-transparent p-3 text-left"
                     role="button"
                     tabIndex={0}
                     onClick={() =>
@@ -785,7 +785,7 @@ export default function ItemDetailsPanel({
                   >
                     <h3 className="m-0 text-2xl font-bold">
                       {section.title}
-                      {!isSectionOpen ? <span className="text-[18px] font-semibold text-[rgba(0,0,0,0.5)]"> {summaryDetail}</span> : null}
+                      {!isSectionOpen ? <span className="text-lg font-semibold text-black/50"> {summaryDetail}</span> : null}
                     </h3>
                     <div className="inline-flex items-center gap-2">
                       <span className="inline-flex h-7 w-7 cursor-inherit items-center justify-center bg-white">
@@ -797,7 +797,7 @@ export default function ItemDetailsPanel({
                     </div>
                   </div>
                   {isSectionOpen ? (
-                    <ul className="mt-4 grid list-none grid-cols-2 items-stretch gap-[10px] pl-0">
+                    <ul className="mt-4 grid list-none grid-cols-2 items-stretch gap-2.5 pl-0">
                       {section.addons.map((addon) => {
                         const sauceCount = section.ref === "sauces" ? (sauceSelectionCounts?.[addon.name] ?? 0) : 0;
                         const isSelected =
@@ -809,7 +809,7 @@ export default function ItemDetailsPanel({
                         <li key={`${section.ref}-${addon.name}`} className="flex">
                           <button
                             type="button"
-                            className={`box-border flex h-full w-full cursor-pointer flex-row items-center gap-3 rounded-[10px] border border-[rgba(0,0,0,0.15)] bg-[#f9f9f9] px-3 py-2 ${isSelected ? "shadow-[inset_0_0_0_3px_#16a34a]" : ""}`}
+                            className={`box-border flex h-full w-full cursor-pointer flex-row items-center gap-3 radius-md border border-soft card-surface-muted px-3 py-2 ${isSelected ? "shadow-[inset_0_0_0_3px_theme(colors.green.600)]" : ""}`}
                             onClick={() => {
                               if (section.ref === "sauces") {
                                 onToggleSauce?.(addon);
@@ -828,23 +828,23 @@ export default function ItemDetailsPanel({
                             ) : (
                               <div className="grid h-[72px] w-[72px] min-w-[72px] place-items-center rounded-lg bg-cover bg-center text-[32px] font-bold text-black" />
                             )}
-                            <div className="flex min-w-0 flex-col items-start justify-center gap-[6px]">
-                              <div className="line-clamp-2 break-words text-left text-base font-bold leading-[1.2]">{addon.name}</div>
-                              <div className="text-sm font-bold text-[rgba(0,0,0,0.5)]">+{toNumber(addon.calories)} Cal</div>
+                            <div className="flex min-w-0 flex-col items-start justify-center gap-1.5">
+                              <div className="line-clamp-2 break-words text-left text-base font-bold leading-tight">{addon.name}</div>
+                              <div className="text-sm font-bold text-black/50">+{toNumber(addon.calories)} Cal</div>
                             </div>
                             {section.ref === "dressings" ? (
                               <span
                                 aria-hidden="true"
-                                className={`ml-auto inline-flex h-6 w-6 shrink-0 items-center justify-center rounded-full border ${isSelected ? "border-[3px] border-[#16a34a]" : "border-2 border-[rgba(0,0,0,0.25)]"}`}
+                                className={`ml-auto inline-flex h-6 w-6 shrink-0 items-center justify-center rounded-full border ${isSelected ? "border-2 border-green-600" : "border-2 border-subtle"}`}
                               >
                                 <span
-                                  className={`h-2.5 w-2.5 rounded-full ${isSelected ? "bg-[#16a34a]" : "bg-transparent"}`}
+                                  className={`h-2.5 w-2.5 rounded-full ${isSelected ? "bg-green-600" : "bg-transparent"}`}
                                 />
                               </span>
                             ) : null}
                             {section.ref === "sauces" && addon.name !== "None" ? (
                               <div
-                                className="ml-auto inline-flex items-center gap-[6px]"
+                                className="ml-auto inline-flex items-center gap-1.5"
                                 onClick={(event) => event.stopPropagation()}
                                 onMouseDown={(event) => event.stopPropagation()}
                               >
@@ -853,7 +853,7 @@ export default function ItemDetailsPanel({
                                     <span
                                       role="button"
                                       tabIndex={0}
-                                      className="inline-flex h-7 w-7 cursor-pointer items-center justify-center rounded-md border border-[rgba(0,0,0,0.35)] bg-white text-[18px] font-bold leading-none"
+                                      className="inline-flex h-7 w-7 cursor-pointer items-center justify-center rounded-md border border-strong bg-white text-lg font-bold leading-none"
                                       aria-label={`Remove one ${addon.name}`}
                                       onClick={() => onDecrementSauce?.(addon)}
                                       onKeyDown={(event) => {
@@ -869,7 +869,7 @@ export default function ItemDetailsPanel({
                                     <span
                                       role="button"
                                       tabIndex={0}
-                                      className="inline-flex h-7 w-7 cursor-pointer items-center justify-center rounded-md border border-[rgba(0,0,0,0.35)] bg-white text-[18px] font-bold leading-none"
+                                      className="inline-flex h-7 w-7 cursor-pointer items-center justify-center rounded-md border border-strong bg-white text-lg font-bold leading-none"
                                       aria-label={`Add one more ${addon.name}`}
                                       onClick={() => onIncrementSauce?.(addon)}
                                       onKeyDown={(event) => {
@@ -886,7 +886,7 @@ export default function ItemDetailsPanel({
                                   <span
                                     role="button"
                                     tabIndex={0}
-                                    className="inline-flex h-7 w-7 cursor-pointer items-center justify-center rounded-md border border-[rgba(0,0,0,0.35)] bg-white text-[18px] font-bold leading-none"
+                                    className="inline-flex h-7 w-7 cursor-pointer items-center justify-center rounded-md border border-strong bg-white text-lg font-bold leading-none"
                                     aria-label={`Add ${addon.name}`}
                                     onClick={() => onIncrementSauce?.(addon)}
                                     onKeyDown={(event) => {
@@ -915,8 +915,8 @@ export default function ItemDetailsPanel({
       ) : null}
 
       {displayMode === "full" && commonChanges && commonChanges.length > 0 ? (
-        <section className="col-span-2 rounded-[18px] border border-[rgba(0,0,0,0.15)] bg-white px-[18px] py-[14px]">
-          <div className="grid gap-[14px]">
+        <section className="col-span-2 radius-xl border border-soft bg-white inset-md">
+          <div className="grid gap-3.5">
             <div className="min-w-0">
               {(() => {
                 const commonKey = "common-changes";
@@ -937,7 +937,7 @@ export default function ItemDetailsPanel({
                 return (
                   <>
                     <div
-                      className="flex min-h-[52px] w-full cursor-pointer items-center justify-between gap-[10px] rounded-[10px] border-0 bg-transparent p-3 text-left"
+                      className="flex min-h-[52px] w-full cursor-pointer items-center justify-between gap-2.5 radius-md border-0 bg-transparent p-3 text-left"
                       role="button"
                       tabIndex={0}
                       onClick={() =>
@@ -958,7 +958,7 @@ export default function ItemDetailsPanel({
                     >
                       <h3 className="m-0 text-2xl font-bold">
                         Common Changes
-                        {!isCommonOpen ? <span className="text-[18px] font-semibold text-[rgba(0,0,0,0.5)]"> {commonSummaryDetail}</span> : null}
+                        {!isCommonOpen ? <span className="text-lg font-semibold text-black/50"> {commonSummaryDetail}</span> : null}
                       </h3>
                       <span className="inline-flex h-7 w-7 cursor-inherit items-center justify-center bg-white">
                         <ChevronDown
@@ -968,7 +968,7 @@ export default function ItemDetailsPanel({
                       </span>
                     </div>
                     {isCommonOpen ? (
-                      <ul className="mt-4 grid list-none grid-cols-2 items-stretch gap-[10px] pl-0">
+                      <ul className="mt-4 grid list-none grid-cols-2 items-stretch gap-2.5 pl-0">
                         {commonChanges.map((change) => {
                           const isActive = selectedCommonChangeIds?.includes(change.id) ?? false;
                           const calorieDeltaLabel = `${change.delta.calories >= 0 ? "+" : ""}${change.delta.calories}cal`;
@@ -977,16 +977,16 @@ export default function ItemDetailsPanel({
                             <li key={change.id} className="flex">
                               <button
                                 type="button"
-                                className={`box-border flex h-full w-full cursor-pointer flex-row items-center gap-3 rounded-[10px] border border-[rgba(0,0,0,0.15)] bg-[#f9f9f9] px-3 py-2 ${isActive ? "shadow-[inset_0_0_0_3px_#16a34a]" : ""}`}
+                                className={`box-border flex h-full w-full cursor-pointer flex-row items-center gap-3 radius-md border border-soft card-surface-muted px-3 py-2 ${isActive ? "shadow-[inset_0_0_0_3px_theme(colors.green.600)]" : ""}`}
                                 onClick={() => onToggleCommonChange?.(change.id)}
                               >
                                 <div className={`grid h-[72px] w-[72px] min-w-[72px] place-items-center rounded-lg bg-cover bg-center text-[32px] font-bold text-black `}>↺</div>
-                                <div className="flex min-w-0 flex-col items-start justify-center gap-[6px]">
-                                  <div className="line-clamp-2 break-words text-left text-base font-bold leading-[1.2]">{change.label}</div>
-                                  <div className="text-sm font-bold text-[rgba(0,0,0,0.5)]">{`${calorieDeltaLabel} • ${proteinDeltaLabel}`}</div>
+                                <div className="flex min-w-0 flex-col items-start justify-center gap-1.5">
+                                  <div className="line-clamp-2 break-words text-left text-base font-bold leading-tight">{change.label}</div>
+                                  <div className="text-sm font-bold text-black/50">{`${calorieDeltaLabel} • ${proteinDeltaLabel}`}</div>
                                 </div>
                                 <span
-                                  className={`ml-auto inline-flex h-[22px] w-[22px] shrink-0 items-center justify-center rounded-[4px] border-2 transition-colors ${isActive ? "border-[#16a34a] bg-[#16a34a] text-white" : "border-[rgba(0,0,0,0.45)] bg-white text-transparent"}`}
+                                  className={`ml-auto inline-flex h-6 w-6 shrink-0 items-center justify-center rounded border-2 transition-colors ${isActive ? "border-green-600 bg-green-600 text-white" : "border-strong bg-white text-transparent"}`}
                                   aria-hidden="true"
                                 >
                                   <Check size={14} strokeWidth={3} />
@@ -1005,95 +1005,95 @@ export default function ItemDetailsPanel({
         </section>
       ) : null}
 
-      {displayMode === "full" ? <section className="rounded-[18px] border border-[rgba(0,0,0,0.15)] bg-white p-5">
+      {displayMode === "full" ? <section className="radius-xl border border-soft bg-white p-5">
         <h2 className="mb-4 text-2xl font-bold">Nutrition Facts</h2>
 
-        <div className="text-xs font-medium text-[rgba(0,0,0,0.55)]">Amount per serving</div>
+        <div className="text-xs font-medium text-black/55">Amount per serving</div>
 
         <div className="mt-1 flex items-end justify-between">
           <h3 className="text-xl font-bold">Calories</h3>
-          <div className="inline-flex items-baseline gap-[6px]">
+          <div className="inline-flex items-baseline gap-1.5">
             <div className="text-xl font-bold">{n.calories === undefined || Number.isNaN(n.calories) ? "—" : n.calories}</div>
             {showCustomizationDeltas ? (
-              <span className="text-sm font-bold text-[#16a34a]">{formatDelta(activeCustomizationTotals.calories)}</span>
+              <span className="text-sm font-bold text-green-600">{formatDelta(activeCustomizationTotals.calories)}</span>
             ) : null}
           </div>
         </div>
 
-        <div className="my-[12px] mb-2 h-[4px] rounded-[999px] bg-[rgba(0,0,0,0.75)]" />
+        <div className="my-3 mb-2 h-1 radius-pill bg-black/75" />
 
-        <div className="flex items-baseline justify-between border-b border-[rgba(0,0,0,0.2)] py-[10px]">
+        <div className="flex items-baseline justify-between border-b border-subtle py-2.5">
           <div className="text-lg font-semibold">Total Fat</div>
-          <div className="inline-flex items-baseline gap-[6px]">
+          <div className="inline-flex items-baseline gap-1.5">
             <div className="text-lg font-semibold">{format(n.totalFat, "g")}</div>
-            {showCustomizationDeltas ? <span className="text-sm font-bold text-[#16a34a]">{formatDelta(activeCustomizationTotals.fat, "g")}</span> : null}
+            {showCustomizationDeltas ? <span className="text-sm font-bold text-green-600">{formatDelta(activeCustomizationTotals.fat, "g")}</span> : null}
           </div>
         </div>
 
-        <div className="flex items-baseline justify-between border-b border-[rgba(0,0,0,0.2)] py-[10px] pl-5">
-          <div className="text-base font-medium text-[rgba(0,0,0,0.8)]">Sat Fat</div>
-          <div className="text-base font-medium text-[rgba(0,0,0,0.8)]">{format(n.satFat, "g")}</div>
+        <div className="flex items-baseline justify-between border-b border-subtle py-2.5 pl-5">
+          <div className="text-base font-medium text-black/80">Sat Fat</div>
+          <div className="text-base font-medium text-black/80">{format(n.satFat, "g")}</div>
         </div>
 
-        <div className="flex items-baseline justify-between border-b border-[rgba(0,0,0,0.2)] py-[10px] pl-5">
-          <div className="text-base font-medium text-[rgba(0,0,0,0.8)]">Trans Fat</div>
-          <div className="text-base font-medium text-[rgba(0,0,0,0.8)]">{format(n.transFat, "g")}</div>
+        <div className="flex items-baseline justify-between border-b border-subtle py-2.5 pl-5">
+          <div className="text-base font-medium text-black/80">Trans Fat</div>
+          <div className="text-base font-medium text-black/80">{format(n.transFat, "g")}</div>
         </div>
 
-        <div className="flex items-baseline justify-between border-b border-[rgba(0,0,0,0.2)] py-[10px]">
+        <div className="flex items-baseline justify-between border-b border-subtle py-2.5">
           <div className="text-lg font-semibold">Cholesterol</div>
           <div className="text-lg font-semibold">{format(n.cholesterol, "mg")}</div>
         </div>
 
-        <div className="flex items-baseline justify-between border-b border-[rgba(0,0,0,0.2)] py-[10px]">
+        <div className="flex items-baseline justify-between border-b border-subtle py-2.5">
           <div className="text-lg font-semibold">Sodium</div>
           <div className="text-lg font-semibold">{format(n.sodium, "mg")}</div>
         </div>
 
-        <div className="flex items-baseline justify-between border-b border-[rgba(0,0,0,0.2)] py-[10px]">
+        <div className="flex items-baseline justify-between border-b border-subtle py-2.5">
           <div className="text-lg font-semibold">Carbohydrates</div>
-          <div className="inline-flex items-baseline gap-[6px]">
+          <div className="inline-flex items-baseline gap-1.5">
             <div className="text-lg font-semibold">{format(n.carbs, "g")}</div>
-            {showCustomizationDeltas ? <span className="text-sm font-bold text-[#16a34a]">{formatDelta(activeCustomizationTotals.carbs, "g")}</span> : null}
+            {showCustomizationDeltas ? <span className="text-sm font-bold text-green-600">{formatDelta(activeCustomizationTotals.carbs, "g")}</span> : null}
           </div>
         </div>
 
-        <div className="flex items-baseline justify-between border-b border-[rgba(0,0,0,0.2)] py-[10px] pl-5">
-          <div className="text-base font-medium text-[rgba(0,0,0,0.8)]">Fiber</div>
-          <div className="text-base font-medium text-[rgba(0,0,0,0.8)]">{format(n.fiber, "g")}</div>
+        <div className="flex items-baseline justify-between border-b border-subtle py-2.5 pl-5">
+          <div className="text-base font-medium text-black/80">Fiber</div>
+          <div className="text-base font-medium text-black/80">{format(n.fiber, "g")}</div>
         </div>
 
-        <div className="flex items-baseline justify-between border-b border-[rgba(0,0,0,0.2)] py-[10px] pl-5">
-          <div className="text-base font-medium text-[rgba(0,0,0,0.8)]">Sugars</div>
-          <div className="text-base font-medium text-[rgba(0,0,0,0.8)]">{format(n.sugars, "g")}</div>
+        <div className="flex items-baseline justify-between border-b border-subtle py-2.5 pl-5">
+          <div className="text-base font-medium text-black/80">Sugars</div>
+          <div className="text-base font-medium text-black/80">{format(n.sugars, "g")}</div>
         </div>
 
-        <div className="flex items-baseline justify-between border-b border-[rgba(0,0,0,0.2)] py-[10px]">
+        <div className="flex items-baseline justify-between border-b border-subtle py-2.5">
           <div className="text-lg font-semibold">Protein</div>
-          <div className="inline-flex items-baseline gap-[6px]">
+          <div className="inline-flex items-baseline gap-1.5">
             <div className="text-lg font-semibold">{format(n.protein, "g")}</div>
-            {showCustomizationDeltas ? <span className="text-sm font-bold text-[#16a34a]">{formatDelta(activeCustomizationTotals.protein, "g")}</span> : null}
+            {showCustomizationDeltas ? <span className="text-sm font-bold text-green-600">{formatDelta(activeCustomizationTotals.protein, "g")}</span> : null}
           </div>
         </div>
 
-        <div className="mt-3 text-xs font-medium leading-[1.05] text-[rgba(0,0,0,0.55)]">
+        <div className="mt-3 text-xs font-medium leading-tight text-black/55">
           2,000 calories a day is used for general nutrition advice, but calorie needs
           vary. Values may vary by location, serving size, and customizations.
         </div>
       </section> : null}
 
-      {displayMode === "full" ? <section className="rounded-2xl border border-[rgba(0,0,0,0.15)] bg-white p-5">
+      {displayMode === "full" ? <section className="rounded-2xl border border-soft bg-white p-5">
         <h2 className="mb-4 text-2xl font-bold">Details</h2>
 
         <div className="mb-4 flex items-center justify-between gap-3">
-          <div className="text-lg font-semibold text-[rgba(0,0,0,0.8)]">Category</div>
-          <div className="rounded-full border-2 border-[rgba(0,0,0,0.8)] px-3 py-1 text-lg font-extrabold">{item.categories?.join(", ") ?? "—"}</div>
+          <div className="text-lg font-semibold text-black/80">Category</div>
+          <div className="rounded-full border-2 border-black/80 px-3 py-1 text-lg font-extrabold">{item.categories?.join(", ") ?? "—"}</div>
         </div>
 
-        <div className="mt-3 h-px bg-[rgba(0,0,0,0.2)]" />
+        <div className="mt-3 h-px bg-black/20" />
 
-        <div className="mt-4 flex items-center justify-between gap-[14px]">
-          <div className="text-lg font-semibold text-[rgba(0,0,0,0.8)]">Cal to Protein Ratio</div>
+        <div className="mt-4 flex items-center justify-between gap-3.5">
+          <div className="text-lg font-semibold text-black/80">Cal to Protein Ratio</div>
           <div className="text-lg font-semibold">
             {calToProteinRatio(n.calories, n.protein)}
           </div>
@@ -1101,7 +1101,7 @@ export default function ItemDetailsPanel({
 
         {showVariantsInDetails ? (
           <>
-            <div className="mt-3 h-px bg-[rgba(0,0,0,0.2)]" />
+            <div className="mt-3 h-px bg-black/20" />
             <PortionSelector
               variants={variants}
               selectedVariantId={selectedVariantId}
@@ -1114,9 +1114,9 @@ export default function ItemDetailsPanel({
 
         {item.restaurant ? (
           <>
-            <div className="mt-3 h-px bg-[rgba(0,0,0,0.2)]" />
+            <div className="mt-3 h-px bg-black/20" />
             <div className="mt-4 flex items-center justify-between gap-3">
-              <div className="text-4 font-semibold text-[rgba(0,0,0,0.8)]">Restaurant</div>
+              <div className="text-4 font-semibold text-black/80">Restaurant</div>
               <div className="text-4 font-semibold">{item.restaurant}</div>
             </div>
           </>
