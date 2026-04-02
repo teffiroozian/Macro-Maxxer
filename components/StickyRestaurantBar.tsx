@@ -13,6 +13,8 @@ import ControlsRow, {
 } from "./ControlsRow";
 import { Search } from "lucide-react";
 
+import { useFilterChipActions } from "./useFilterChipActions";
+
 type StickyRestaurantBarProps = {
   restaurantName: string;
   restaurantLogo: string;
@@ -65,26 +67,17 @@ export default function StickyRestaurantBar({
     }
   }, [searchOpen]);
 
-  const hasActiveFilters = Boolean(filters.proteinMin || filters.caloriesMax);
+  const { hasActiveFilters, clearProteinFilter, clearCaloriesFilter, resetFilters } = useFilterChipActions({
+    filters,
+    onFiltersChange,
+  });
 
   const handleBrandClick = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
-  const clearProteinFilter = () => {
-    onFiltersChange({ ...filters, proteinMin: undefined });
-  };
-
-  const clearCaloriesFilter = () => {
-    onFiltersChange({ ...filters, caloriesMax: undefined });
-  };
-
   const closeSearch = () => {
     onCloseSearch();
-  };
-
-  const resetFilters = () => {
-    onFiltersChange({});
   };
 
   return (

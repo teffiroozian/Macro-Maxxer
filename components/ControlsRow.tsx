@@ -3,6 +3,8 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 
+import { useFilterChipActions } from "./useFilterChipActions";
+
 export type ViewOption = "menu" | "ingredients" | "ranking";
 export type SortOption =
   | "default-order"
@@ -161,17 +163,14 @@ export default function ControlsRow({
     setIsFiltersOpen(false);
   };
 
-  const resetFilters = () => {
+  const { hasActiveFilters, clearProteinFilter, clearCaloriesFilter, resetFilters } = useFilterChipActions({
+    filters,
+    onFiltersChange,
+  });
+
+  const handleResetFilters = () => {
     setDraftFilters({ caloriesMax: defaultCaloriesMax });
-    onFiltersChange({});
-  };
-
-  const clearProteinFilter = () => {
-    onFiltersChange({ ...filters, proteinMin: undefined });
-  };
-
-  const clearCaloriesFilter = () => {
-    onFiltersChange({ ...filters, caloriesMax: undefined });
+    resetFilters();
   };
 
   const filtersDialog = isFiltersOpen ? (
@@ -215,7 +214,7 @@ export default function ControlsRow({
           </div>
         </div>
         <div className="mt-5 flex justify-end gap-3">
-          <button type="button" onClick={resetFilters} className="cursor-pointer rounded-full border border-black/20 bg-white px-4 py-2 font-semibold text-black/80">
+          <button type="button" onClick={handleResetFilters} className="cursor-pointer rounded-full border border-black/20 bg-white px-4 py-2 font-semibold text-black/80">
             Reset
           </button>
           <button type="button" onClick={applyFilters} className="cursor-pointer rounded-full border border-black/80 bg-black/85 px-4 py-2 font-bold text-white">
@@ -225,8 +224,6 @@ export default function ControlsRow({
       </div>
     </div>
   ) : null;
-
-  const hasActiveFilters = Boolean(filters.proteinMin || filters.caloriesMax);
 
   return (
     <>
