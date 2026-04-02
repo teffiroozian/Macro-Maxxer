@@ -5,6 +5,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { useCart } from "@/stores/cartStore";
 import { useRestaurantUi } from "@/components/RestaurantUiContext";
 import MacroTotalsGrid from "@/components/MacroTotalsGrid";
+import CartItemPreviewRow from "@/components/CartItemPreviewRow";
 import { ShoppingCart } from "lucide-react";
 
 type CartIconDropdownProps = {
@@ -91,8 +92,6 @@ export default function CartIconDropdown({
   );
 
   const addonsLabel = lastAddedItem?.optionsLabel ?? "";
-  const itemInitial = (lastAddedItem?.name?.trim().charAt(0) || "+").toUpperCase();
-  const lastAddedMacros = lastAddedItem?.macrosPerItem;
 
   return (
     <div ref={containerRef} className="relative">
@@ -125,48 +124,15 @@ export default function CartIconDropdown({
             </p>
             <div className="mt-3 flex items-center gap-3">
             {lastAddedItem ? (
-              <>
-                <div className="relative h-14 w-14 shrink-0 overflow-hidden rounded-lg bg-slate-100 ring-1 ring-slate-200">
-                  {lastAddedItem.image ? (
-                    // eslint-disable-next-line @next/next/no-img-element
-                    <img
-                      src={lastAddedItem.image}
-                      alt={lastAddedItem.name}
-                      className="h-full w-full object-contain p-1"
-                    />
-                  ) : (
-                    <div className="inline-flex h-full w-full items-center justify-center text-base font-semibold text-slate-600">
-                      {itemInitial}
-                    </div>
-                  )}
-                </div>
-                <div className="min-w-0 space-y-1.5">
-                  <p className="truncate text-base font-semibold leading-tight text-slate-900">
-                    <span>{lastAddedItem.name}</span>
-                    {lastAddedItem.variantLabel ? (
-                      <>
-                        <span className="mx-1.5">•</span>
-                        <span>{lastAddedItem.variantLabel}</span>
-                      </>
-                    ) : null}
-                  </p>
-                  <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-sm leading-none">
-                    <p className="whitespace-nowrap text-slate-500">
-                      Cal:<span className="ml-1 font-semibold text-slate-900">{lastAddedMacros?.calories ?? 0}</span>
-                    </p>
-                    <p className="whitespace-nowrap text-slate-500">
-                      P:<span className="ml-1 font-semibold text-slate-900">{lastAddedMacros?.protein ?? 0}g</span>
-                    </p>
-                    <p className="whitespace-nowrap text-slate-500">
-                      C:<span className="ml-1 font-semibold text-slate-900">{lastAddedMacros?.carbs ?? 0}g</span>
-                    </p>
-                    <p className="whitespace-nowrap text-slate-500">
-                      F:<span className="ml-1 font-semibold text-slate-900">{lastAddedMacros?.fat ?? 0}g</span>
-                    </p>
-                  </div>
-                  {addonsLabel ? <p className="line-clamp-1 text-xs text-slate-500">{addonsLabel}</p> : null}
-                </div>
-              </>
+              <CartItemPreviewRow
+                item={lastAddedItem}
+                imageRenderer="native-img"
+                imageFallback="initial"
+                variantStyle="inline"
+                macroStyle="compact"
+                customizationsText={addonsLabel}
+                customizationsLineClamp={1}
+              />
             ) : (
               <p className="text-sm text-slate-600">Your cart is empty.</p>
             )}

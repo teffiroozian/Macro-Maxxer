@@ -8,6 +8,7 @@ import { useRouter } from "next/navigation";
 import restaurants from "@/app/data/index.json";
 import { useRestaurantUi } from "@/components/RestaurantUiContext";
 import MacroTotalsGrid from "@/components/MacroTotalsGrid";
+import CartItemPreviewRow from "@/components/CartItemPreviewRow";
 import { useCart } from "@/stores/cartStore";
 
 const getCustomizationDisplayList = (item: {
@@ -130,76 +131,21 @@ export default function CartPreviewDrawer() {
                   const customizationDisplayList =
                     getCustomizationDisplayList(item);
                   const addonsLabel = customizationDisplayList.join(" • ");
-                  const itemInitial =
-                    (item.name?.trim().charAt(0) || "+").toUpperCase();
-
                   return (
                     <li
                       key={item.id}
                       className="rounded-2xl border border-slate-200 bg-white px-3 py-3 shadow-sm"
                     >
-                      <div className="flex items-start gap-3">
-                        <div className="relative h-14 w-14 shrink-0 overflow-hidden rounded-lg bg-slate-100 ring-1 ring-slate-200">
-                          {item.image ? (
-                            <Image
-                              src={item.image}
-                              alt={item.name}
-                              fill
-                              className="object-contain p-1"
-                              sizes="56px"
-                            />
-                          ) : (
-                            <div className="inline-flex h-full w-full items-center justify-center text-base font-semibold text-slate-600">
-                              {itemInitial}
-                            </div>
-                          )}
-                        </div>
-
-                        <div className="min-w-0 flex-1">
-                          <p className="truncate text-base font-semibold leading-tight text-slate-900">
-                            <span>{item.name}</span>
-                            {item.variantLabel ? (
-                              <>
-                                <span className="mx-1.5">•</span>
-                                <span>{item.variantLabel}</span>
-                              </>
-                            ) : null}
-                          </p>
-
-                          <div className="mt-1.5 flex flex-wrap items-center gap-x-4 gap-y-1 text-sm leading-none">
-                            <p className="whitespace-nowrap text-slate-500">
-                              <span className="text-base font-semibold text-slate-900">
-                                {item.macrosPerItem.calories}
-                              </span>
-                              <span className="text-xs ml-1">Cal</span>
-                            </p>
-                            <p className="whitespace-nowrap text-slate-500">
-                              <span className="text-base font-semibold text-[#c2410c]">
-                                {item.macrosPerItem.protein}g
-                              </span>
-                              <span className="text-xs ml-1">protein</span>
-                            </p>
-                            <p className="whitespace-nowrap text-slate-500">
-                              <span className="text-base font-semibold text-[#ca8a04]">
-                                {item.macrosPerItem.carbs}g
-                              </span>
-                              <span className="text-xs ml-1">carbs</span>
-                            </p>
-                            <p className="whitespace-nowrap text-slate-500">
-                              <span className="text-base font-semibold text-[#2563eb]">
-                                {item.macrosPerItem.fat}g
-                              </span>
-                              <span className="text-xs ml-1">fat</span>
-                            </p>
-                          </div>
-
-                          {addonsLabel ? (
-                            <p className="mt-1.5 line-clamp-1 text-xs text-slate-500">
-                              {addonsLabel}
-                            </p>
-                          ) : null}
-
-                          <div className="mt-3 flex items-center justify-end gap-2">
+                      <CartItemPreviewRow
+                        item={item}
+                        imageRenderer="next-image"
+                        imageFallback="initial"
+                        variantStyle="inline"
+                        macroStyle="detailed"
+                        customizationsText={addonsLabel}
+                        customizationsLineClamp={1}
+                        actions={
+                          <>
                             {item.buildConfiguration ? (
                               <button
                                 type="button"
@@ -240,9 +186,9 @@ export default function CartPreviewDrawer() {
                                 +
                               </button>
                             </div>
-                          </div>
-                        </div>
-                      </div>
+                          </>
+                        }
+                      />
                     </li>
                   );
                 })}
