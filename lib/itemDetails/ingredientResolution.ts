@@ -191,6 +191,14 @@ export function resolvePanelIngredientTabs(
       menuItemByIdLookup.get(ingredientId.toLowerCase()) ??
       menuItemByNameLookup.get(normalizeIngredientToken(ingredientId)) ??
       menuItemByNameLookup.get(normalizeIngredientToken(fallbackLabel));
+    const ingredientRefMatch =
+      menuItemMatch?.ingredientRef
+        ? ingredientByIdLookup.get(menuItemMatch.ingredientRef.toLowerCase())
+        : undefined;
+    const matchedVariantNutrition =
+      menuItemMatch?.variants?.find((variant) => variant.id === selectedVariantId)?.nutrition ??
+      menuItemMatch?.variants?.find((variant) => variant.id === menuItemMatch.defaultVariantId)?.nutrition ??
+      menuItemMatch?.variants?.[0]?.nutrition;
 
     const label = menuItemMatch?.name ?? match?.name ?? fallbackLabel;
     const ingredientTabLabel = resolvedTabs.find((tab) => {
@@ -199,7 +207,9 @@ export function resolvePanelIngredientTabs(
     const addonMatch = addonLookup.get(label.toLowerCase());
     const nutrition =
       menuItemMatch?.nutrition ??
-      match?.nutrition ?? {
+      matchedVariantNutrition ??
+      match?.nutrition ??
+      ingredientRefMatch?.nutrition ?? {
         calories: addonMatch?.calories,
         protein: addonMatch?.protein,
         carbs: addonMatch?.carbs,
