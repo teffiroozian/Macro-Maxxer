@@ -22,6 +22,7 @@ import {
   getIncludedIngredientIdsForChipotleBuild,
 } from "@/lib/cart/buildItemAdapters";
 import { parseOptionLabelCounts } from "@/lib/cartOptionLabels";
+import { cardVariants } from "@/lib/cardVariants";
 
 function summarizeItem(item: { variantLabel?: string; optionsLabel?: string; customizations?: string[] }) {
   const addonNames = new Set(Object.keys(parseOptionLabelCounts(item.optionsLabel)));
@@ -106,7 +107,7 @@ export default function CartPage() {
 
   return (
     <main className="mx-auto flex min-h-screen w-full max-w-5xl flex-col gap-6 px-4 pb-10 pt-8 sm:px-6 sm:pt-10">
-      <header className="rounded-3xl border border-black/10 bg-white px-5 py-5 shadow-sm sm:px-6">
+      <header className={`${cardVariants("default")} px-5 py-5 sm:px-6`}>
         <div className="mb-4">
           <Link
             href={backToMenuHref}
@@ -135,7 +136,7 @@ export default function CartPage() {
 
       <section className="w-full space-y-3">
         {items.length === 0 ? (
-          <div className="rounded-2xl border border-black/10 bg-white px-5 py-8 text-center shadow-sm">
+          <div className={`${cardVariants("default")} rounded-2xl px-5 py-8 text-center`}>
             <p className="text-lg font-medium text-neutral-900">Your cart is empty.</p>
             <p className="mt-2 text-sm text-neutral-600">Add items from a restaurant to start meal finalization.</p>
           </div>
@@ -193,7 +194,7 @@ export default function CartPage() {
         )}
       </section>
 
-      <section className="rounded-3xl border border-black/10 bg-white p-4 shadow-sm">
+      <section className={`${cardVariants("default")} p-4`}>
         <div className="grid grid-cols-1 gap-4 rounded-3xl bg-[#e0e0e0] p-4 lg:grid-cols-2">
 
             <CartNutritionSummary nutritionTotals={nutritionTotals} />

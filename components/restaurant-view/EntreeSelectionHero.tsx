@@ -1,5 +1,6 @@
 import Image from "next/image";
 import type { BuilderEntreeOption } from "@/types/menu";
+import { cardVariants } from "@/lib/cardVariants";
 
 type Props = {
   entreeOptions: Record<string, BuilderEntreeOption>;
@@ -18,7 +19,7 @@ export default function EntreeSelectionHero({ entreeOptions, onSelectEntree }: P
             key={entreeKey}
             type="button"
             onClick={() => onSelectEntree(entreeKey)}
-            className="cursor-pointer rounded-3xl border border-black/15 bg-white px-6 py-8 text-center text-2xl font-semibold text-slate-900 shadow-[0_8px_22px_rgba(0,0,0,0.08)] transition hover:-translate-y-0.5 hover:border-black/30 hover:shadow-[0_12px_26px_rgba(0,0,0,0.12)]"
+            className={`${cardVariants("interactive")} px-6 py-8 text-center text-2xl font-semibold text-slate-900`}
           >
             <Image
               src={entree.imageSrc}

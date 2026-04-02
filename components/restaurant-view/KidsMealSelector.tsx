@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { cardVariants } from "@/lib/cardVariants";
 
 type Props = {
   selectedKidsMeal: string;
@@ -18,11 +19,7 @@ export default function KidsMealSelector({ selectedKidsMeal, onSelectKidsMeal, o
               key={option.id}
               type="button"
               onClick={() => onSelectKidsMeal(option.id)}
-              className={`cursor-pointer rounded-3xl border bg-white p-4 text-left transition ${
-                isActive
-                  ? "border-2 border-lime-500 shadow-[0_4px_12px_rgba(132,204,22,0.25)]"
-                  : "border-black/10 hover:border-black/25"
-              }`}
+              className={`${cardVariants(isActive ? "selected" : "interactive")} p-4 text-left`}
               aria-pressed={isActive}
             >
               <span className="flex items-center gap-3">

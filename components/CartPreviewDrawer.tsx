@@ -10,6 +10,7 @@ import { useRestaurantUi } from "@/components/RestaurantUiContext";
 import MacroTotalsGrid from "@/components/MacroTotalsGrid";
 import CartItemPreviewRow from "@/components/CartItemPreviewRow";
 import { useCart } from "@/stores/cartStore";
+import { cardVariants } from "@/lib/cardVariants";
 
 const getCustomizationDisplayList = (item: {
   optionsLabel?: string;
@@ -134,7 +135,7 @@ export default function CartPreviewDrawer() {
                   return (
                     <li
                       key={item.id}
-                      className="rounded-2xl border border-slate-200 bg-white px-3 py-3 shadow-sm"
+                      className={`${cardVariants("default")} rounded-2xl border-slate-200 px-3 py-3`}
                     >
                       <CartItemPreviewRow
                         item={item}

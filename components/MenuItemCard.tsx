@@ -42,6 +42,7 @@ import MenuCardActions from "./menu-item-card/MenuCardActions";
 import CartCardActions from "./menu-item-card/CartCardActions";
 import { useMenuItemCartAdapter } from "./menu-item-card/useMenuItemCartAdapter";
 import { useMenuItemConfiguration } from "./menu-item-card/useMenuItemConfiguration";
+import { cardVariants } from "@/lib/cardVariants";
 
 function pad2(n: number) {
   return String(n).padStart(2, "0");
@@ -843,8 +844,8 @@ export default function MenuItemCard({
 
   return (
     <li
-      className={`list-none overflow-hidden rounded-2xl card-surface elevation-1 ${
-        isTopRanked ? "border-2 border-black/80" : "border border-soft"
+      className={`list-none overflow-hidden rounded-2xl ${cardVariants("default")} ${
+        isTopRanked ? "ring-1 ring-black/70" : ""
       }`}
     >
       <div
