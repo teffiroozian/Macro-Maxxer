@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
-import { Drumstick, Salad, Sandwich, Sunrise, Utensils, WrapText } from "lucide-react";
+import { Drumstick, EggFried, Salad, Sandwich, Shell, Utensils } from "lucide-react";
 import ItemDetailsPanel, { PortionSelector, type ResolvedPanelIngredient, resolvePanelIngredients } from "@/components/ItemDetailsPanel";
 import type {
   AddonOption,
@@ -51,6 +51,18 @@ function compareByDefaultOrder(left: MenuItem, right: MenuItem) {
   const rightOrder = right.defaultOrder ?? Number.POSITIVE_INFINITY;
   if (leftOrder !== rightOrder) return leftOrder - rightOrder;
   return left.name.localeCompare(right.name);
+}
+
+function sortComboSides(sides: MenuItem[], prioritizeHashBrowns: boolean) {
+  if (!prioritizeHashBrowns) {
+    return [...sides].sort(compareByDefaultOrder);
+  }
+
+  return [...sides].sort((left, right) => {
+    if (isHashBrowns(left) && !isHashBrowns(right)) return -1;
+    if (!isHashBrowns(left) && isHashBrowns(right)) return 1;
+    return compareByDefaultOrder(left, right);
+  });
 }
 
 function formatDelta(value: number) {
@@ -118,13 +130,13 @@ function resolveJustItemIcon(item: MenuItem) {
     return Salad;
   }
   if (normalizedCategories.some((category) => category.includes("wrap"))) {
-    return WrapText;
+    return Shell;
   }
   if (normalizedCategories.some((category) => category.includes("nugget") || category.includes("chicken"))) {
     return Drumstick;
   }
   if (normalizedCategories.some((category) => category.includes("breakfast"))) {
-    return Sunrise;
+    return EggFried;
   }
   return Sandwich;
 }
@@ -356,7 +368,7 @@ export default function ItemRouteModal({
         return normalizedCategories.includes("side") || isHashBrowns(menuItem);
       });
 
-      return [...sides].sort(compareByDefaultOrder);
+      return sortComboSides(sides, breakfastComboItem);
     },
     [item, menuItems, restaurantId]
   );
