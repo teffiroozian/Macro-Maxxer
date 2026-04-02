@@ -32,6 +32,21 @@ function normalizeCategory(category: string) {
   return category.trim().toLowerCase();
 }
 
+function isChickfilaBreakfastItem(restaurantId: string, menuItem: MenuItem) {
+  if (restaurantId !== "chickfila") return false;
+  return menuItem.categories.some((category) => normalizeCategory(category) === "breakfast");
+}
+
+function isWaffleFries(menuItem: MenuItem) {
+  const normalizedName = menuItem.name.trim().toLowerCase();
+  return menuItem.id === "chick_fil_a_waffle_potato_fries" || normalizedName.includes("waffle potato fries");
+}
+
+function isHashBrowns(menuItem: MenuItem) {
+  const normalizedName = menuItem.name.trim().toLowerCase();
+  return menuItem.id === "hash-browns" || normalizedName.includes("hash brown");
+}
+
 function formatDelta(value: number) {
   return `${value >= 0 ? "+" : ""}${value}`;
 }
@@ -296,15 +311,25 @@ export default function ItemRouteModal({
   );
   const isComboEligibleCategory = useMemo(() => {
     if (restaurantId !== "chickfila") return false;
-    const allowed = new Set(["sandwich", "nuggets", "chicken", "salad", "wrap"]);
+    const allowed = new Set(["sandwich", "nuggets", "chicken", "salad", "wrap", "breakfast"]);
     return item.categories.some((category) => allowed.has(normalizeCategory(category)));
   }, [item.categories, restaurantId]);
   const comboSides = useMemo(
-    () =>
-      (menuItems ?? []).filter((menuItem) =>
-        menuItem.categories.some((category) => normalizeCategory(category) === "side")
-      ),
-    [menuItems]
+    () => {
+      const breakfastComboItem = isChickfilaBreakfastItem(restaurantId, item);
+      const sides = (menuItems ?? []).filter((menuItem) => {
+        const normalizedCategories = menuItem.categories.map((category) => normalizeCategory(category));
+        if (!breakfastComboItem) {
+          return normalizedCategories.includes("side");
+        }
+
+        if (isWaffleFries(menuItem)) return false;
+        return normalizedCategories.includes("side") || isHashBrowns(menuItem);
+      });
+
+      return sides;
+    },
+    [item, menuItems, restaurantId]
   );
   const comboDrinks = useMemo(
     () =>
