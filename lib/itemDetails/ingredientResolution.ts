@@ -233,8 +233,8 @@ export function resolvePanelIngredientTabs(
     });
     const addonMatch = addonLookup.get(label.toLowerCase());
     const nutrition =
-      menuItemNutrition ??
       matchedVariantNutrition ??
+      menuItemNutrition ??
       match?.nutrition ??
       ingredientRefMatch?.nutrition ?? {
         calories: addonMatch?.calories,
