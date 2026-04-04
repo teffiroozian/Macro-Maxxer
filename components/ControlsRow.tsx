@@ -228,7 +228,7 @@ export default function ControlsRow({
   return (
     <>
       <div id={wrapperId} className="grid gap-2">
-        <div className="flex min-w-0 items-center justify-end gap-2.5">
+        <div className="flex min-w-0 items-center justify-between gap-2.5">
           {hideViewSelector ? null : (
             <div ref={viewMenuRef} className="relative shrink-0">
               <button
@@ -279,62 +279,64 @@ export default function ControlsRow({
             </div>
           )}
 
-          <div ref={sortMenuRef} className="relative shrink-0">
+          <div className="ml-auto flex items-center gap-2.5">
+            <div ref={sortMenuRef} className="relative shrink-0">
+              <button
+                type="button"
+                onClick={() => {
+                  setIsSortOpen((prev) => !prev);
+                  setIsViewOpen(false);
+                }}
+                aria-haspopup="menu"
+                aria-expanded={isSortOpen}
+                className="cursor-pointer inline-flex items-center gap-2 whitespace-nowrap rounded-full border border-black/20 bg-white px-[14px] py-[6px] font-semibold text-black/85"
+              >
+                <currentSortOption.icon className="h-4 w-4" strokeWidth={2.2} />
+                {currentSortOption.label}
+                <ChevronDown className="h-4 w-4" strokeWidth={2.5} />
+              </button>
+
+              {isSortOpen ? (
+                <div role="menu" className="absolute right-0 top-[calc(100%+8px)] z-20 w-[220px] rounded-[14px] border border-black/15 bg-white p-2 shadow-[0_12px_28px_rgba(0,0,0,0.12)]">
+                  <div className="grid gap-1">
+                    {SORT_OPTIONS.map((option) => {
+                      const isActive = option.value === sort;
+                      const isHovered = option.value === hoveredSortOption;
+                      const Icon = option.icon;
+
+                      return (
+                        <button
+                          key={option.value}
+                          type="button"
+                          onClick={() => {
+                            onSortChange(option.value);
+                            setIsSortOpen(false);
+                          }}
+                          onMouseEnter={() => setHoveredSortOption(option.value)}
+                          onMouseLeave={() => setHoveredSortOption(null)}
+                          className={`cursor-pointer inline-flex items-center gap-2 rounded-[10px] border-none px-2.5 py-2 text-left font-semibold text-black/88 transition-colors duration-100 ${
+                            isActive ? "bg-black/10" : isHovered ? "bg-slate-900/5" : "bg-transparent"
+                          }`}
+                        >
+                          <Icon className="h-4 w-4 shrink-0" strokeWidth={2.2} />
+                          <span>{option.label}</span>
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+              ) : null}
+            </div>
+
             <button
               type="button"
-              onClick={() => {
-                setIsSortOpen((prev) => !prev);
-                setIsViewOpen(false);
-              }}
-              aria-haspopup="menu"
-              aria-expanded={isSortOpen}
-              className="cursor-pointer inline-flex items-center gap-2 whitespace-nowrap rounded-full border border-black/20 bg-white px-[14px] py-[6px] font-semibold text-black/85"
+              onClick={openFilters}
+              className="cursor-pointer inline-flex items-center gap-2 rounded-full border border-black/20 bg-white px-[14px] py-[6px] font-semibold text-black/80 whitespace-nowrap shrink-0"
             >
-              <currentSortOption.icon className="h-4 w-4" strokeWidth={2.2} />
-              {currentSortOption.label}
-              <ChevronDown className="h-4 w-4" strokeWidth={2.5} />
+              Filters
+              <SlidersHorizontal className="h-4 w-4" strokeWidth={2.5} />
             </button>
-
-            {isSortOpen ? (
-              <div role="menu" className="absolute right-0 top-[calc(100%+8px)] z-20 w-[220px] rounded-[14px] border border-black/15 bg-white p-2 shadow-[0_12px_28px_rgba(0,0,0,0.12)]">
-                <div className="grid gap-1">
-                  {SORT_OPTIONS.map((option) => {
-                    const isActive = option.value === sort;
-                    const isHovered = option.value === hoveredSortOption;
-                    const Icon = option.icon;
-
-                    return (
-                      <button
-                        key={option.value}
-                        type="button"
-                        onClick={() => {
-                          onSortChange(option.value);
-                          setIsSortOpen(false);
-                        }}
-                        onMouseEnter={() => setHoveredSortOption(option.value)}
-                        onMouseLeave={() => setHoveredSortOption(null)}
-                        className={`cursor-pointer inline-flex items-center gap-2 rounded-[10px] border-none px-2.5 py-2 text-left font-semibold text-black/88 transition-colors duration-100 ${
-                          isActive ? "bg-black/10" : isHovered ? "bg-slate-900/5" : "bg-transparent"
-                        }`}
-                      >
-                        <Icon className="h-4 w-4 shrink-0" strokeWidth={2.2} />
-                        <span>{option.label}</span>
-                      </button>
-                    );
-                  })}
-                </div>
-              </div>
-            ) : null}
           </div>
-
-          <button
-            type="button"
-            onClick={openFilters}
-            className="cursor-pointer inline-flex items-center gap-2 rounded-full border border-black/20 bg-white px-[14px] py-[6px] font-semibold text-black/80 whitespace-nowrap shrink-0"
-          >
-            Filters
-            <SlidersHorizontal className="h-4 w-4" strokeWidth={2.5} />
-          </button>
         </div>
 
         {hasActiveFilters && showChips ? (
