@@ -1,4 +1,4 @@
-import { Circle, type LucideIcon } from "lucide-react";
+import { Circle, type LucideIcon, UtensilsCrossed, Soup, SquareStack, CupSoda, Check } from "lucide-react";
 
 type RankedAllFilterKey = "main-entrees" | "shareables" | "sides" | "drinks";
 
@@ -23,6 +23,19 @@ export default function RestaurantCategorySidebar({
   onCategorySelect,
   categoryIcons,
 }: Props) {
+  const rankingOptions: Array<{ key: RankedAllFilterKey; label: string; iconKey: string }> = [
+    { key: "main-entrees", label: "Main Entrees", iconKey: "entrees" },
+    { key: "shareables", label: "Shareables", iconKey: "shareables" },
+    { key: "sides", label: "Sides", iconKey: "sides" },
+    { key: "drinks", label: "Drinks", iconKey: "drinks" },
+  ];
+  const rankingFallbackIcons: Record<RankedAllFilterKey, LucideIcon> = {
+    "main-entrees": UtensilsCrossed,
+    shareables: Soup,
+    sides: SquareStack,
+    drinks: CupSoda,
+  };
+
   return (
     <aside className="sticky top-[160px] flex max-h-[calc(100vh-160px)] flex-col py-6">
       <h3 className="mb-8 shrink-0 text-2xl font-bold text-slate-900">
@@ -31,27 +44,43 @@ export default function RestaurantCategorySidebar({
 
       <div className="min-h-0 flex-1 overflow-y-auto px-2 py-2">
         {effectiveViewMode === "ranking" ? (
-          <div className="grid gap-3">
-            {[
-              { key: "main-entrees" as const, label: "Main Entrees" },
-              { key: "shareables" as const, label: "Shareables" },
-              { key: "sides" as const, label: "Sides" },
-              { key: "drinks" as const, label: "Drinks" },
-            ].map((option) => {
+          <div className="grid gap-4" role="group" aria-label="Ranking categories">
+            {rankingOptions.map((option) => {
               const isChecked = rankedAllFilters[option.key];
+              const Icon = categoryIcons[option.iconKey] ?? rankingFallbackIcons[option.key];
+
               return (
-                <label
+                <button
                   key={option.key}
-                  className="inline-flex cursor-pointer items-center gap-3 rounded-[10px] px-2 py-1.5 text-base font-semibold text-slate-800 hover:bg-slate-200/70"
+                  type="button"
+                  aria-pressed={isChecked}
+                  onClick={() => toggleRankedAllFilter(option.key)}
+                  className={`inline-flex w-full cursor-pointer items-center gap-3 rounded-full px-4 py-2 text-left text-base font-semibold transition-colors duration-100 ${
+                    isChecked
+                      ? "bg-white text-slate-800 shadow-[0px_0_8px_rgba(0,0,0,0.25)]"
+                      : "text-slate-700 hover:bg-slate-200"
+                  }`}
                 >
-                  <input
-                    type="checkbox"
-                    checked={isChecked}
-                    onChange={() => toggleRankedAllFilter(option.key)}
-                    className="h-4 w-4 cursor-pointer rounded border border-black/30 accent-black"
-                  />
+                  <span
+                    className={`inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-full ${
+                      isChecked ? "bg-slate-100 text-slate-900" : "bg-slate-200/80 text-slate-700"
+                    }`}
+                    aria-hidden="true"
+                  >
+                    <Icon className="h-4 w-4" strokeWidth={2.4} />
+                  </span>
                   <span>{option.label}</span>
-                </label>
+                  <span
+                    className={`ml-auto inline-flex h-5 w-5 shrink-0 items-center justify-center rounded border ${
+                      isChecked
+                        ? "border-black bg-black text-white"
+                        : "border-slate-400 bg-transparent text-transparent"
+                    }`}
+                    aria-hidden="true"
+                  >
+                    <Check className="h-3.5 w-3.5" strokeWidth={3} />
+                  </span>
+                </button>
               );
             })}
           </div>

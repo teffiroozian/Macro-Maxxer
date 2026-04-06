@@ -233,7 +233,9 @@ export default function RestaurantView({
       : requestedView === "ranking"
         ? "ranking"
         : defaultView;
-  const [sort, setSort] = useState<SortOption>("default-order");
+  const [sort, setSort] = useState<SortOption>(() =>
+    viewMode === "ranking" ? "highest-protein" : "default-order"
+  );
   const [filters, setFilters] = useState<Filters>({});
   type RankedAllFilterKey = "main-entrees" | "shareables" | "sides" | "drinks";
   const [rankedAllFilters, setRankedAllFilters] = useState<
@@ -757,6 +759,10 @@ export default function RestaurantView({
       return;
     }
 
+    if (nextView === "ranking" && sort === "default-order") {
+      setSort("highest-protein");
+    }
+
     const nextParams = new URLSearchParams(searchParams.toString());
     nextParams.set("view", nextView);
     router.replace(`${pathname}?${nextParams.toString()}`, { scroll: true });
@@ -765,6 +771,7 @@ export default function RestaurantView({
   const handleSortChange = (nextSort: SortOption) => {
     setSort(nextSort);
   };
+
   const handleKidsMealSelection = (kidsMeal: KidsMealSelection) => {
     setSelectedKidsMeal(kidsMeal);
     applyIncludedIngredientsNextFrame(

@@ -138,9 +138,16 @@ export default function ControlsRow({
     [view]
   );
 
+  const visibleSortOptions = useMemo(
+    () =>
+      view === "ranking"
+        ? SORT_OPTIONS.filter((option) => option.value !== "default-order")
+        : SORT_OPTIONS,
+    [view]
+  );
   const currentSortOption = useMemo(
-    () => SORT_OPTIONS.find((option) => option.value === sort) ?? SORT_OPTIONS[0],
-    [sort]
+    () => visibleSortOptions.find((option) => option.value === sort) ?? visibleSortOptions[0],
+    [sort, visibleSortOptions]
   );
 
   const defaultCaloriesMax = calorieBounds.max;
@@ -299,7 +306,7 @@ export default function ControlsRow({
               {isSortOpen ? (
                 <div role="menu" className="absolute right-0 top-[calc(100%+8px)] z-20 w-[220px] rounded-[14px] border border-black/15 bg-white p-2 shadow-[0_12px_28px_rgba(0,0,0,0.12)]">
                   <div className="grid gap-1">
-                    {SORT_OPTIONS.map((option) => {
+                    {visibleSortOptions.map((option) => {
                       const isActive = option.value === sort;
                       const isHovered = option.value === hoveredSortOption;
                       const Icon = option.icon;
