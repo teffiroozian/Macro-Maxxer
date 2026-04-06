@@ -161,7 +161,7 @@
         },
         {
             "id": "crispy-nuggets",
-            "name": "Chick-fil-A® Nuggets",
+            "name": "Chick-fil-A\u00ae Nuggets",
             "categories": [
                 "Nuggets"
             ],
@@ -261,7 +261,7 @@
         },
         {
             "id": "chick_fil_a_deluxe_sandwich",
-            "name": "Chick-fil-A® Deluxe Sandwich",
+            "name": "Chick-fil-A\u00ae Deluxe Sandwich",
             "categories": [
                 "Sandwich"
             ],
@@ -291,7 +291,7 @@
         },
         {
             "id": "chick_fil_a_cool_wrap",
-            "name": "Chick-fil-A® Cool Wrap",
+            "name": "Chick-fil-A\u00ae Cool Wrap",
             "categories": [
                 "Wrap"
             ],
@@ -347,7 +347,7 @@
         },
         {
             "id": "chick_fil_a_chick_n_strips",
-            "name": "Chick-fil-A Chick-n-Strips®",
+            "name": "Chick-fil-A Chick-n-Strips\u00ae",
             "categories": [
                 "Nuggets"
             ],
@@ -1227,7 +1227,7 @@
             "categories": [
                 "Breakfast"
             ],
-            "portionType": "single",
+            "portionType": "breakfast",
             "image": "/restaurants/chickfila/menu/breakfast/spicy-chicken-biscuit.webp",
             "ingredients": [
                 "buttery-biscuit",
@@ -1253,7 +1253,7 @@
             "categories": [
                 "Breakfast"
             ],
-            "portionType": "single",
+            "portionType": "breakfast",
             "image": "/restaurants/chickfila/menu/breakfast/chicken-minis.webp",
             "ingredients": [
                 "mini-yeast-rolls",
@@ -1304,7 +1304,7 @@
             "categories": [
                 "Breakfast"
             ],
-            "portionType": "single",
+            "portionType": "breakfast",
             "image": "/restaurants/chickfila/menu/breakfast/egg-white-grill.webp",
             "ingredients": [
                 "english-muffin",
@@ -1332,7 +1332,7 @@
             "categories": [
                 "Breakfast"
             ],
-            "portionType": "single",
+            "portionType": "breakfast",
             "image": "/restaurants/chickfila/menu/breakfast/hash-brown-scramble-burrito.webp",
             "ingredients": [
                 "shredded-cheddar"
@@ -1365,7 +1365,7 @@
             "categories": [
                 "Breakfast"
             ],
-            "portionType": "single",
+            "portionType": "breakfast",
             "image": "/restaurants/chickfila/menu/breakfast/hash-brown-scramble-bowl.webp",
             "ingredients": [
                 "shredded-cheddar"
@@ -1398,7 +1398,7 @@
             "categories": [
                 "Breakfast"
             ],
-            "portionType": "single",
+            "portionType": "breakfast",
             "image": "/restaurants/chickfila/menu/breakfast/chicken-egg-cheese-biscuit.webp",
             "ingredients": [
                 "buttery-biscuit",
@@ -1426,7 +1426,7 @@
             "categories": [
                 "Breakfast"
             ],
-            "portionType": "single",
+            "portionType": "breakfast",
             "image": "/restaurants/chickfila/menu/breakfast/bacon-egg-cheese-biscuit.webp",
             "ingredients": [
                 "buttery-biscuit",
@@ -1454,7 +1454,7 @@
             "categories": [
                 "Breakfast"
             ],
-            "portionType": "single",
+            "portionType": "breakfast",
             "image": "/restaurants/chickfila/menu/breakfast/sausage-egg-cheese-biscuit.webp",
             "ingredients": [
                 "buttery-biscuit",
@@ -1482,7 +1482,7 @@
             "categories": [
                 "Breakfast"
             ],
-            "portionType": "single",
+            "portionType": "breakfast",
             "image": "/restaurants/chickfila/menu/breakfast/chicken-egg-cheese-muffin.webp",
             "ingredients": [
                 "english-muffin",
@@ -1510,7 +1510,7 @@
             "categories": [
                 "Breakfast"
             ],
-            "portionType": "single",
+            "portionType": "breakfast",
             "image": "/restaurants/chickfila/menu/breakfast/bacon-egg-cheese-muffin.webp",
             "ingredients": [
                 "english-muffin",
@@ -1538,7 +1538,7 @@
             "categories": [
                 "Breakfast"
             ],
-            "portionType": "single",
+            "portionType": "breakfast",
             "image": "/restaurants/chickfila/menu/breakfast/sausage-egg-cheese-muffin.webp",
             "ingredients": [
                 "english-muffin",
@@ -1566,7 +1566,7 @@
             "categories": [
                 "Breakfast"
             ],
-            "portionType": "single",
+            "portionType": "breakfast",
             "image": "/restaurants/chickfila/menu/breakfast/hash-browns.webp",
             "ingredients": [
                 "hash-browns"
@@ -1633,7 +1633,7 @@
             "categories": [
                 "Breakfast"
             ],
-            "portionType": "single",
+            "portionType": "breakfast",
             "image": "/restaurants/chickfila/menu/breakfast/chicken-biscuit.webp",
             "ingredients": [
                 "buttery-biscuit",
@@ -1659,7 +1659,7 @@
             "categories": [
                 "Treats"
             ],
-            "portionType": "single",
+            "portionType": "side",
             "image": "/restaurants/chickfila/menu/treats/frosted-lemonade.webp",
             "nutrition": {
                 "calories": 350,
@@ -1724,7 +1724,7 @@
             "categories": [
                 "Treats"
             ],
-            "portionType": "single",
+            "portionType": "side",
             "image": "/restaurants/chickfila/menu/treats/frosted-coffee.webp",
             "ingredients": [
                 "cookie-crumbles",
@@ -1750,7 +1750,7 @@
             "categories": [
                 "Treats"
             ],
-            "portionType": "single",
+            "portionType": "side",
             "image": "/restaurants/chickfila/menu/treats/frosted-soda.webp",
             "nutrition": {
                 "calories": 320,
@@ -1772,7 +1772,7 @@
             "categories": [
                 "Treats"
             ],
-            "portionType": "single",
+            "portionType": "side",
             "image": "/restaurants/chickfila/menu/treats/vanilla-milkshake.webp",
             "ingredients": [
                 "whipped-cream",
@@ -1812,7 +1812,7 @@
             "categories": [
                 "Treats"
             ],
-            "portionType": "single",
+            "portionType": "side",
             "image": "/restaurants/chickfila/menu/treats/cookies-cream-milkshake.webp",
             "ingredients": [
                 "whipped-cream",
@@ -1852,7 +1852,7 @@
             "categories": [
                 "Treats"
             ],
-            "portionType": "single",
+            "portionType": "side",
             "image": "/restaurants/chickfila/menu/treats/chocolate-milkshake.webp",
             "ingredients": [
                 "whipped-cream",
@@ -1892,7 +1892,7 @@
             "categories": [
                 "Treats"
             ],
-            "portionType": "single",
+            "portionType": "side",
             "image": "/restaurants/chickfila/menu/treats/strawberry-milkshake.webp",
             "ingredients": [
                 "whipped-cream",
@@ -1932,7 +1932,7 @@
             "categories": [
                 "Treats"
             ],
-            "portionType": "single",
+            "portionType": "side",
             "image": "/restaurants/chickfila/menu/treats/icedream-cup.webp",
             "nutrition": {
                 "calories": 140,
@@ -1954,7 +1954,7 @@
             "categories": [
                 "Treats"
             ],
-            "portionType": "single",
+            "portionType": "side",
             "image": "/restaurants/chickfila/menu/treats/icedream-cone.webp",
             "nutrition": {
                 "calories": 180,
@@ -1976,7 +1976,7 @@
             "categories": [
                 "Treats"
             ],
-            "portionType": "single",
+            "portionType": "side",
             "image": "/restaurants/chickfila/menu/treats/chocolate-chunk-cookie.webp",
             "nutrition": {
                 "calories": 370,
@@ -1998,7 +1998,7 @@
             "categories": [
                 "Treats"
             ],
-            "portionType": "single",
+            "portionType": "side",
             "image": "/restaurants/chickfila/menu/treats/chocolate-fudge-brownie.webp",
             "nutrition": {
                 "calories": 370,
@@ -2356,7 +2356,7 @@
         },
         {
             "id": "sunjoy_1_2_sweet_tea_1_2_lemonade",
-            "name": "Sunjoy® (1/2 Sweet Tea, 1/2 Lemonade)",
+            "name": "Sunjoy\u00ae (1/2 Sweet Tea, 1/2 Lemonade)",
             "categories": [
                 "Drinks"
             ],
@@ -2432,7 +2432,7 @@
         },
         {
             "id": "sunjoy_1_2_sweet_tea_1_2_diet_lemonade",
-            "name": "Sunjoy® (1/2 Sweet Tea, 1/2 Diet Lemonade)",
+            "name": "Sunjoy\u00ae (1/2 Sweet Tea, 1/2 Diet Lemonade)",
             "categories": [
                 "Drinks"
             ],
@@ -2508,7 +2508,7 @@
         },
         {
             "id": "sunjoy_1_2_unsweet_tea_1_2_lemonade",
-            "name": "Sunjoy® (1/2 Unsweet Tea, 1/2 Lemonade)",
+            "name": "Sunjoy\u00ae (1/2 Unsweet Tea, 1/2 Lemonade)",
             "categories": [
                 "Drinks"
             ],
@@ -2584,7 +2584,7 @@
         },
         {
             "id": "sunjoy_1_2_unsweet_tea_1_2_diet_lemonade",
-            "name": "Sunjoy® (1/2 Unsweet Tea, 1/2 Diet Lemonade)",
+            "name": "Sunjoy\u00ae (1/2 Unsweet Tea, 1/2 Diet Lemonade)",
             "categories": [
                 "Drinks"
             ],
@@ -2719,7 +2719,7 @@
         },
         {
             "id": "coca_cola",
-            "name": "Coca-Cola®",
+            "name": "Coca-Cola\u00ae",
             "categories": [
                 "Drinks"
             ],
@@ -2795,7 +2795,7 @@
         },
         {
             "id": "dasani_bottled_water",
-            "name": "DASANI® Bottled Water",
+            "name": "DASANI\u00ae Bottled Water",
             "categories": [
                 "Drinks"
             ],
@@ -2817,7 +2817,7 @@
         },
         {
             "id": "honest_kids_apple_juice",
-            "name": "Honest Kids® Apple Juice",
+            "name": "Honest Kids\u00ae Apple Juice",
             "categories": [
                 "Drinks"
             ],
@@ -2839,7 +2839,7 @@
         },
         {
             "id": "simply_orange",
-            "name": "Simply Orange®",
+            "name": "Simply Orange\u00ae",
             "categories": [
                 "Drinks"
             ],
@@ -2905,7 +2905,7 @@
         },
         {
             "id": "dr_pepper",
-            "name": "Dr Pepper®",
+            "name": "Dr Pepper\u00ae",
             "categories": [
                 "Drinks"
             ],
@@ -3139,7 +3139,7 @@
         },
         {
             "id": "cfa-breakfast-filet",
-            "name": "Chick-fil-A® Breakfast Filet",
+            "name": "Chick-fil-A\u00ae Breakfast Filet",
             "categories": [
                 "Breakfast Proteins"
             ],
@@ -3223,7 +3223,7 @@
         },
         {
             "id": "cfa-filet",
-            "name": "Chick-fil-A® Filet",
+            "name": "Chick-fil-A\u00ae Filet",
             "categories": [
                 "Proteins"
             ],
@@ -3603,7 +3603,7 @@
         },
         {
             "id": "jalapenos",
-            "name": "Jalapeños",
+            "name": "Jalape\u00f1os",
             "categories": [
                 "Salad Toppings"
             ],
@@ -3850,7 +3850,7 @@
         },
         {
             "id": "chick-n-strips",
-            "name": "Chick-fil-A Chick-n-Strips®",
+            "name": "Chick-fil-A Chick-n-Strips\u00ae",
             "categories": [
                 "Proteins"
             ],
@@ -4170,7 +4170,7 @@
     "commonChanges": [
         {
             "id": "swap_crispy_grilled",
-            "label": "Swap crispy → grilled chicken",
+            "label": "Swap crispy \u2192 grilled chicken",
             "appliesTo": {
                 "categories": [
                     "Salad"

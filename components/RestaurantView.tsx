@@ -237,11 +237,12 @@ export default function RestaurantView({
     viewMode === "ranking" ? "highest-protein" : "default-order"
   );
   const [filters, setFilters] = useState<Filters>({});
-  type RankedAllFilterKey = "main-entrees" | "shareables" | "sides" | "drinks";
+  type RankedAllFilterKey = "main-entrees" | "breakfast" | "shareables" | "sides" | "drinks";
   const [rankedAllFilters, setRankedAllFilters] = useState<
     Record<RankedAllFilterKey, boolean>
   >({
     "main-entrees": true,
+    breakfast: false,
     shareables: false,
     sides: false,
     drinks: false,
@@ -544,6 +545,8 @@ export default function RestaurantView({
         case "kids":
         case "entree":
           return "main-entrees";
+        case "breakfast":
+          return "breakfast";
         case "shareable":
           return "shareables";
         case "drink":

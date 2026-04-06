@@ -5,6 +5,7 @@ export const PORTION_TYPES = [
   "addon",
   "drink",
   "side",
+  "breakfast",
   "dessert",
   "kids",
   "entree",
@@ -105,7 +106,7 @@ export type MenuItem = {
   image?: string;
   categories: string[];
   entreeGroup?: string;
-  portionType: PortionType;
+  portionType?: PortionType;
   restaurant?: string;
   variants?: ItemVariant[];
   defaultVariantId?: string;

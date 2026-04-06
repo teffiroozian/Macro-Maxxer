@@ -1,6 +1,6 @@
 import { Circle, type LucideIcon, UtensilsCrossed, Soup, SquareStack, CupSoda, Check } from "lucide-react";
 
-type RankedAllFilterKey = "main-entrees" | "shareables" | "sides" | "drinks";
+type RankedAllFilterKey = "main-entrees" | "breakfast" | "shareables" | "sides" | "drinks";
 
 type CategoryOption = { id: string; label: string };
 
@@ -25,12 +25,14 @@ export default function RestaurantCategorySidebar({
 }: Props) {
   const rankingOptions: Array<{ key: RankedAllFilterKey; label: string; iconKey: string }> = [
     { key: "main-entrees", label: "Main Entrees", iconKey: "entrees" },
+    { key: "breakfast", label: "Breakfast", iconKey: "breakfast" },
     { key: "shareables", label: "Shareables", iconKey: "shareables" },
     { key: "sides", label: "Sides", iconKey: "sides" },
     { key: "drinks", label: "Drinks", iconKey: "drinks" },
   ];
   const rankingFallbackIcons: Record<RankedAllFilterKey, LucideIcon> = {
     "main-entrees": UtensilsCrossed,
+    breakfast: UtensilsCrossed,
     shareables: Soup,
     sides: SquareStack,
     drinks: CupSoda,
