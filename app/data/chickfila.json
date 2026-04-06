@@ -2020,7 +2020,7 @@
             "categories": [
                 "Drinks"
             ],
-            "portionType": "single",
+            "portionType": "drink",
             "image": "/restaurants/chickfila/menu/drinks/iced-tea.webp",
             "nutrition": {
                 "calories": 120,
@@ -2041,7 +2041,7 @@
                     "categories": [
                         "Drinks"
                     ],
-                    "portionType": "single",
+                    "portionType": "drink",
                     "nutrition": {
                         "calories": 90,
                         "totalFat": 0,
@@ -2061,7 +2061,7 @@
                     "categories": [
                         "Drinks"
                     ],
-                    "portionType": "single",
+                    "portionType": "drink",
                     "nutrition": {
                         "calories": 120,
                         "totalFat": 0,
@@ -2081,7 +2081,7 @@
                     "categories": [
                         "Drinks"
                     ],
-                    "portionType": "single",
+                    "portionType": "drink",
                     "nutrition": {
                         "calories": 170,
                         "totalFat": 0,
@@ -2105,7 +2105,7 @@
             "categories": [
                 "Drinks"
             ],
-            "portionType": "single",
+            "portionType": "drink",
             "image": "/restaurants/chickfila/menu/drinks/iced-tea.webp",
             "nutrition": {
                 "calories": 0,
@@ -2126,7 +2126,7 @@
                     "categories": [
                         "Drinks"
                     ],
-                    "portionType": "single",
+                    "portionType": "drink",
                     "nutrition": {
                         "calories": 0,
                         "totalFat": 0,
@@ -2146,7 +2146,7 @@
                     "categories": [
                         "Drinks"
                     ],
-                    "portionType": "single",
+                    "portionType": "drink",
                     "nutrition": {
                         "calories": 0,
                         "totalFat": 0,
@@ -2166,7 +2166,7 @@
                     "categories": [
                         "Drinks"
                     ],
-                    "portionType": "single",
+                    "portionType": "drink",
                     "nutrition": {
                         "calories": 0,
                         "totalFat": 0,
@@ -2190,7 +2190,7 @@
             "categories": [
                 "Drinks"
             ],
-            "portionType": "single",
+            "portionType": "drink",
             "image": "/restaurants/chickfila/menu/drinks/lemonade.webp",
             "nutrition": {
                 "calories": 260,
@@ -2211,7 +2211,7 @@
                     "categories": [
                         "Drinks"
                     ],
-                    "portionType": "single",
+                    "portionType": "drink",
                     "nutrition": {
                         "calories": 190,
                         "totalFat": 0,
@@ -2231,7 +2231,7 @@
                     "categories": [
                         "Drinks"
                     ],
-                    "portionType": "single",
+                    "portionType": "drink",
                     "nutrition": {
                         "calories": 260,
                         "totalFat": 0,
@@ -2251,7 +2251,7 @@
                     "categories": [
                         "Drinks"
                     ],
-                    "portionType": "single",
+                    "portionType": "drink",
                     "nutrition": {
                         "calories": 380,
                         "totalFat": 0,
@@ -2275,7 +2275,7 @@
             "categories": [
                 "Drinks"
             ],
-            "portionType": "single",
+            "portionType": "drink",
             "image": "/restaurants/chickfila/menu/drinks/lemonade.webp",
             "nutrition": {
                 "calories": 60,
@@ -2296,7 +2296,7 @@
                     "categories": [
                         "Drinks"
                     ],
-                    "portionType": "single",
+                    "portionType": "drink",
                     "nutrition": {
                         "calories": 40,
                         "totalFat": 0,
@@ -2316,7 +2316,7 @@
                     "categories": [
                         "Drinks"
                     ],
-                    "portionType": "single",
+                    "portionType": "drink",
                     "nutrition": {
                         "calories": 60,
                         "totalFat": 0,
@@ -2336,7 +2336,7 @@
                     "categories": [
                         "Drinks"
                     ],
-                    "portionType": "single",
+                    "portionType": "drink",
                     "nutrition": {
                         "calories": 80,
                         "totalFat": 0,
@@ -2799,7 +2799,7 @@
             "categories": [
                 "Drinks"
             ],
-            "portionType": "single",
+            "portionType": "drink",
             "image": "/restaurants/chickfila/menu/drinks/dasani-water.webp",
             "nutrition": {
                 "calories": 0,
@@ -2821,7 +2821,7 @@
             "categories": [
                 "Drinks"
             ],
-            "portionType": "single",
+            "portionType": "drink",
             "image": "/restaurants/chickfila/menu/drinks/apple-juice.webp",
             "nutrition": {
                 "calories": 35,
@@ -2843,7 +2843,7 @@
             "categories": [
                 "Drinks"
             ],
-            "portionType": "single",
+            "portionType": "drink",
             "image": "/restaurants/chickfila/menu/drinks/orange-juice.webp",
             "nutrition": {
                 "calories": 160,
@@ -2865,7 +2865,7 @@
             "categories": [
                 "Drinks"
             ],
-            "portionType": "single",
+            "portionType": "drink",
             "image": "/restaurants/chickfila/menu/drinks/1-chocolate-milk.webp",
             "nutrition": {
                 "calories": 140,
@@ -2887,7 +2887,7 @@
             "categories": [
                 "Drinks"
             ],
-            "portionType": "single",
+            "portionType": "drink",
             "image": "/restaurants/chickfila/menu/drinks/1-milk.webp",
             "nutrition": {
                 "calories": 90,
@@ -2909,7 +2909,7 @@
             "categories": [
                 "Drinks"
             ],
-            "portionType": "single",
+            "portionType": "drink",
             "image": "/restaurants/chickfila/menu/drinks/dr-pepper.webp",
             "nutrition": {
                 "calories": 170,
@@ -2930,7 +2930,7 @@
                     "categories": [
                         "Drinks"
                     ],
-                    "portionType": "single",
+                    "portionType": "drink",
                     "nutrition": {
                         "calories": 130,
                         "totalFat": 0,
@@ -2950,7 +2950,7 @@
                     "categories": [
                         "Drinks"
                     ],
-                    "portionType": "single",
+                    "portionType": "drink",
                     "nutrition": {
                         "calories": 170,
                         "totalFat": 0,
@@ -2970,7 +2970,7 @@
                     "categories": [
                         "Drinks"
                     ],
-                    "portionType": "single",
+                    "portionType": "drink",
                     "nutrition": {
                         "calories": 250,
                         "totalFat": 0,
@@ -2994,7 +2994,7 @@
             "categories": [
                 "Drinks"
             ],
-            "portionType": "single",
+            "portionType": "drink",
             "image": "/restaurants/chickfila/menu/drinks/coffee.webp",
             "nutrition": {
                 "calories": 0,
