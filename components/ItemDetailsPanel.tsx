@@ -44,12 +44,6 @@ function format(n?: number, suffix = "") {
   return n === undefined || n === null || Number.isNaN(n) ? `—${suffix}` : `${n}${suffix}`;
 }
 
-function proteinScoreLabel(calories?: number, protein?: number) {
-  if (calories === undefined || protein === undefined || calories <= 0) return "—";
-  const proteinScore = Math.round((protein / calories) * 100);
-  return `${proteinScore}g of protein in 100 calories`;
-}
-
 function formatDelta(value: number, suffix = "") {
   return `${value >= 0 ? "+" : ""}${value}${suffix}`;
 }
@@ -1110,10 +1104,19 @@ export default function ItemDetailsPanel({
 
         <div className="mt-3 h-px bg-[rgba(0,0,0,0.2)]" />
 
-        <div className="mt-4 flex items-center justify-between gap-[14px]">
-          <div className="text-lg font-semibold text-[rgba(0,0,0,0.8)]">Protein Score</div>
-          <div className="text-lg font-semibold">
-            {proteinScoreLabel(n.calories, n.protein)}
+        <div className="mt-4 space-y-2">
+          <p className="text-base font-semibold uppercase tracking-wide text-neutral-500">Protein Score</p>
+          <div className="rounded-xl bg-[#efefef] px-3 py-2">
+            <p className="mt-1 text-sm text-neutral-900">
+              {n.calories === undefined || n.protein === undefined || n.calories <= 0 ? (
+                "—"
+              ) : (
+                <>
+                  <span className="font-bold">{Math.round((n.protein / n.calories) * 100)}g</span> of protein in{" "}
+                  <span className="font-semibold">100 calories</span>
+                </>
+              )}
+            </p>
           </div>
         </div>
 
