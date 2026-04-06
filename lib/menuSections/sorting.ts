@@ -92,15 +92,32 @@ function titleCase(text: string) {
 }
 
 function caloriesPerProtein(item: MenuItem) {
+  const nutrition = getSortNutrition(item);
   if (
-    item.nutrition.calories === undefined ||
-    item.nutrition.protein === undefined ||
-    item.nutrition.protein <= 0
+    nutrition.calories === undefined ||
+    nutrition.protein === undefined ||
+    nutrition.protein <= 0
   ) {
     return undefined;
   }
 
-  return item.nutrition.calories / item.nutrition.protein;
+  return nutrition.calories / nutrition.protein;
+}
+
+function getSortNutrition(item: MenuItem) {
+  const variants = item.variants ?? [];
+  if (variants.length === 0) {
+    return item.nutrition;
+  }
+
+  const defaultVariant =
+    (item.defaultVariantId
+      ? variants.find((variant) => variant.id === item.defaultVariantId)
+      : undefined) ??
+    variants.find((variant) => variant.isDefault) ??
+    variants[0];
+
+  return defaultVariant?.nutrition ?? item.nutrition;
 }
 
 function compareNumericWithMissingLast(
@@ -157,8 +174,8 @@ export function sortItems(
   } else if (sort === "highest-protein") {
     sorted.sort((a, b) =>
       compareNumericWithMissingLast(
-        a.nutrition.protein,
-        b.nutrition.protein,
+        getSortNutrition(a).protein,
+        getSortNutrition(b).protein,
         "desc"
       )
     );
@@ -169,8 +186,8 @@ export function sortItems(
   } else {
     sorted.sort((a, b) =>
       compareNumericWithMissingLast(
-        a.nutrition.calories,
-        b.nutrition.calories,
+        getSortNutrition(a).calories,
+        getSortNutrition(b).calories,
         "asc"
       )
     );
