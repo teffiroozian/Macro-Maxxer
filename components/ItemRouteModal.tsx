@@ -490,37 +490,38 @@ export default function ItemRouteModal({
           ×
         </button>
 
-        <div className="h-[calc(100%-52px-56px)] overflow-y-auto pr-2 pb-4">
-        <div className="grid justify-items-center gap-8">
-          <h1 className="text-center text-[32px] font-extrabold">{item.name}</h1>
-          {selectedItemImage ? (
-            <img className="max-h-[300px] w-[300px] bg-[#efefef] shadow-[0_0_5px_rgba(0,0,0,0.25)] rounded-[14px] object-contain" src={selectedItemImage} alt={item.name} />
-          ) : null}
-          <MacroTotalsGrid
-            macros={{
-              calories: Math.round(nutrition.calories ?? 0),
-              protein: Math.round(nutrition.protein ?? 0),
-              carbs: Math.round(nutrition.carbs ?? 0),
-              fat: Math.round(nutrition.totalFat ?? 0),
-            }}
-            size="panel"
-            className="w-full max-w-[720px] gap-6 sm:gap-10"
-            valueExtras={
-              hasActiveCustomization
-                ? {
-                    calories: <span className="ml-1.5 text-sm font-bold text-green-600">{formatDelta(customizationTotals.calories)}</span>,
-                    protein: <span className="ml-1.5 text-sm font-bold text-green-600">{formatDelta(customizationTotals.protein)}</span>,
-                    carbs: <span className="ml-1.5 text-sm font-bold text-green-600">{formatDelta(customizationTotals.carbs)}</span>,
-                    fat: <span className="ml-1.5 text-sm font-bold text-green-600">{formatDelta(customizationTotals.fat)}</span>,
-                  }
-                : undefined
-            }
-          />
+        <div className="h-[calc(100%-52px-56px)] overflow-y-auto pr-2 pb-6">
+        <div className="grid justify-items-center gap-16">
+          <div className="grid justify-items-center gap-8">
+            <h1 className="text-center text-[32px] font-extrabold">{item.name}</h1>
+            {selectedItemImage ? (
+              <img className="max-h-[300px] w-[300px] bg-[#efefef] shadow-[0_0_5px_rgba(0,0,0,0.25)] rounded-[14px] object-contain" src={selectedItemImage} alt={item.name} />
+            ) : null}
+            <MacroTotalsGrid
+              macros={{
+                calories: Math.round(nutrition.calories ?? 0),
+                protein: Math.round(nutrition.protein ?? 0),
+                carbs: Math.round(nutrition.carbs ?? 0),
+                fat: Math.round(nutrition.totalFat ?? 0),
+              }}
+              size="panel"
+              className="w-full max-w-[560px] gap-6 sm:gap-10"
+              valueExtras={
+                hasActiveCustomization
+                  ? {
+                      calories: <span className="ml-1.5 text-sm font-bold text-green-600">{formatDelta(customizationTotals.calories)}</span>,
+                      protein: <span className="ml-1.5 text-sm font-bold text-green-600">{formatDelta(customizationTotals.protein)}</span>,
+                      carbs: <span className="ml-1.5 text-sm font-bold text-green-600">{formatDelta(customizationTotals.carbs)}</span>,
+                      fat: <span className="ml-1.5 text-sm font-bold text-green-600">{formatDelta(customizationTotals.fat)}</span>,
+                    }
+                  : undefined
+              }
+            />
+          </div>
 
-          {variants && variants.length > 0 && !item.hideVariantSelector ? (
-            <>
-              <div className="h-px w-[min(720px,100%)] bg-black/16" />
-              <div className="w-[min(720px,100%)]">
+          <div className="w-[min(720px,100%)] grid gap-7">
+            {variants && variants.length > 0 && !item.hideVariantSelector ? (
+              <div className="w-full">
                 <PortionSelector
                   variants={variants}
                   selectedVariantId={selectedVariantId}
@@ -529,15 +530,12 @@ export default function ItemRouteModal({
                   layout="top"
                 />
               </div>
-              <div className="h-px w-[min(720px,100%)] bg-black/16" />
-            </>
-          ) : null}
-          {isComboEligibleCategory ? (
-            <>
-              {(!variants || variants.length === 0 || item.hideVariantSelector) ? (
-                <div className="h-px w-[min(720px,100%)] bg-black/16" />
-              ) : null}
-              <div className="w-[min(720px,100%)]">
+            ) : null}
+            {variants && variants.length > 0 && !item.hideVariantSelector && isComboEligibleCategory ? (
+              <div className="mx-auto h-px w-[min(520px,100%)] bg-black/12" />
+            ) : null}
+            {isComboEligibleCategory ? (
+              <div className="w-full">
                 <div className="mt-0 my-3 flex flex-col items-center justify-between gap-4">
                   <div className="w-full text-center text-lg font-semibold text-[rgba(0,0,0,0.8)]">
                     Combo Type
@@ -547,17 +545,17 @@ export default function ItemRouteModal({
                       const isActive = comboType === option.id;
                       const Icon = option.icon;
                       const variantColorClasses = isActive
-                        ? "bg-black text-white"
-                        : "bg-transparent text-[rgba(0,0,0,0.6)]";
+                        ? "border-black bg-black text-white"
+                        : "border-black/12 bg-slate-50 text-black/60 hover:bg-slate-100";
 
                       return (
                         <button
                           key={option.id}
                           type="button"
-                          className={`inline-flex min-w-[140px] cursor-pointer items-center justify-center gap-2 rounded-lg border-2 border-[rgba(0,0,0,0.6)] px-3 py-1.5 text-center text-[15px] font-semibold ${variantColorClasses}`}
+                          className={`inline-flex min-w-[210px] cursor-pointer items-center justify-center gap-2 rounded-lg border-[1.5px] px-4 py-2 text-center text-[15px] font-bold transition ${variantColorClasses}`}
                           onClick={() => setComboType(option.id)}
                         >
-                          <Icon size={15} strokeWidth={2.5} />
+                          <Icon size={15} strokeWidth={3} />
                           {option.label}
                         </button>
                       );
@@ -565,12 +563,10 @@ export default function ItemRouteModal({
                   </div>
                 </div>
               </div>
-              <div className="h-px w-[min(720px,100%)] bg-black/16" />
-            </>
-          ) : null}
-        </div>
+            ) : null}
+          </div>
 
-        <div className="mt-[18px] grid gap-3">
+          <div className="w-full">
           <ItemDetailsPanel
             item={item}
             nutrition={nutrition}
@@ -712,6 +708,7 @@ export default function ItemRouteModal({
             selectedComboDrinkVariantId={selectedComboDrinkVariantId}
             onSelectComboDrinkVariant={setSelectedComboDrinkVariantId}
           />
+          </div>
         </div>
         </div>
 

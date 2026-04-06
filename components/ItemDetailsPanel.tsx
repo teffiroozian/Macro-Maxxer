@@ -93,15 +93,19 @@ export function PortionSelector({
       >
         {variants.map((variant) => {
           const isActive = variant.id === selectedVariantId;
-          const variantColorClasses = isActive
-            ? "bg-black text-white"
-            : "bg-transparent text-[rgba(0,0,0,0.6)]";
+          const variantColorClasses = isTopLayout
+            ? isActive
+              ? "border-black bg-black text-white"
+              : "border-black/12 bg-slate-50 text-black/60 hover:bg-slate-100"
+            : isActive
+              ? "border-black bg-black text-white"
+              : "border-[rgba(0,0,0,0.6)] bg-transparent text-[rgba(0,0,0,0.6)]";
 
           return (
             <button
               key={variant.id}
               type="button"
-              className={`${isTopLayout ? "min-w-[140px]" : "w-full"} cursor-pointer rounded-lg border-2 border-[rgba(0,0,0,0.6)] px-3 py-1.5 text-center text-[18px] font-bold ${variantColorClasses}`}
+              className={`${isTopLayout ? "min-w-[140px]" : "w-full"} cursor-pointer rounded-lg px-3 py-1.5 text-center ${isTopLayout ? "border text-[15px] font-bold transition" : "border-2 text-[18px] font-bold"} ${variantColorClasses}`}
               onClick={() => onSelectVariant?.(variant.id)}
             >
               {variant.label}
@@ -380,9 +384,17 @@ export default function ItemDetailsPanel({
       }) ?? false)
     : availableIngredientTabs.length > 1 || (availableIngredientTabs[0]?.ingredients.length ?? 0) > 0;
   const shouldShowComboSelections = comboType === "combo-meal";
+  const hasBuildContent =
+    shouldShowIngredientSection ||
+    shouldShowComboSelections ||
+    availableAddonSections.length > 0 ||
+    (displayMode === "full" && (commonChanges?.length ?? 0) > 0);
+  const shouldShowInfoSection = displayMode === "full";
 
   return (
-    <div className="grid grid-cols-2 gap-3 rounded-[18px] bg-[#e0e0e0] p-3">
+    <div className="grid gap-16">
+      {hasBuildContent ? (
+      <div className="grid grid-cols-2 gap-3 rounded-[18px] bg-[#e9e9e9] p-3">
       {shouldShowIngredientSection && selectedIngredientTab ? (
         <section className="col-span-2 rounded-[14px] border border-black/12 bg-white p-5">
           <h2 className="mb-6 text-2xl font-bold">Ingredients</h2>
@@ -1005,7 +1017,12 @@ export default function ItemDetailsPanel({
         </section>
       ) : null}
 
-      {displayMode === "full" ? <section className="rounded-[18px] border border-[rgba(0,0,0,0.15)] bg-white p-5">
+      </div>
+      ) : null}
+
+      {shouldShowInfoSection ? (
+      <div className="grid grid-cols-2 gap-3 rounded-[18px] border border-black/8 bg-[#efefef] p-3">
+      <section className="rounded-[18px] border border-[rgba(0,0,0,0.15)] bg-white p-5">
         <h2 className="mb-4 text-2xl font-bold">Nutrition Facts</h2>
 
         <div className="text-xs font-medium text-[rgba(0,0,0,0.55)]">Amount per serving</div>
@@ -1080,9 +1097,9 @@ export default function ItemDetailsPanel({
           2,000 calories a day is used for general nutrition advice, but calorie needs
           vary. Values may vary by location, serving size, and customizations.
         </div>
-      </section> : null}
+      </section>
 
-      {displayMode === "full" ? <section className="rounded-2xl border border-[rgba(0,0,0,0.15)] bg-white p-5">
+      <section className="rounded-2xl border border-[rgba(0,0,0,0.15)] bg-white p-5">
         <h2 className="mb-4 text-2xl font-bold">Details</h2>
 
         <div className="mb-4 flex items-center justify-between gap-3">
@@ -1122,7 +1139,9 @@ export default function ItemDetailsPanel({
           </>
         ) : null}
 
-      </section> : null}
+      </section>
+      </div>
+      ) : null}
     </div>
   );
 }
