@@ -96,7 +96,7 @@ export function PortionSelector({
           const variantColorClasses = isTopLayout
             ? isActive
               ? "border-black bg-black text-white"
-              : "border-black/15 bg-slate-100 text-black/55 hover:bg-slate-200"
+              : "border-black/12 bg-slate-50 text-black/60 hover:bg-slate-100"
             : isActive
               ? "border-black bg-black text-white"
               : "border-[rgba(0,0,0,0.6)] bg-transparent text-[rgba(0,0,0,0.6)]";
@@ -105,7 +105,7 @@ export function PortionSelector({
             <button
               key={variant.id}
               type="button"
-              className={`${isTopLayout ? "min-w-[140px]" : "w-full"} cursor-pointer rounded-lg px-3 py-1.5 text-center ${isTopLayout ? "border text-[15px] font-medium transition" : "border-2 text-[18px] font-bold"} ${variantColorClasses}`}
+              className={`${isTopLayout ? "min-w-[140px]" : "w-full"} cursor-pointer rounded-lg px-3 py-1.5 text-center ${isTopLayout ? "border text-[15px] font-bold transition" : "border-2 text-[18px] font-bold"} ${variantColorClasses}`}
               onClick={() => onSelectVariant?.(variant.id)}
             >
               {variant.label}
@@ -392,9 +392,9 @@ export default function ItemDetailsPanel({
   const shouldShowInfoSection = displayMode === "full";
 
   return (
-    <div className="grid gap-8">
+    <div className="grid gap-16">
       {hasBuildContent ? (
-      <div className="grid grid-cols-2 gap-3 rounded-[18px] bg-[#e0e0e0] p-3">
+      <div className="grid grid-cols-2 gap-3 rounded-[18px] bg-[#e9e9e9] p-3">
       {shouldShowIngredientSection && selectedIngredientTab ? (
         <section className="col-span-2 rounded-[14px] border border-black/12 bg-white p-5">
           <h2 className="mb-6 text-2xl font-bold">Ingredients</h2>
@@ -1021,7 +1021,7 @@ export default function ItemDetailsPanel({
       ) : null}
 
       {shouldShowInfoSection ? (
-      <div className="grid grid-cols-2 gap-3 rounded-[18px] border border-black/8 bg-[#ececec] p-3">
+      <div className="grid grid-cols-2 gap-3 rounded-[18px] border border-black/8 bg-[#efefef] p-3">
       <section className="rounded-[18px] border border-[rgba(0,0,0,0.15)] bg-white p-5">
         <h2 className="mb-4 text-2xl font-bold">Nutrition Facts</h2>
 
