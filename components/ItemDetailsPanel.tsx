@@ -424,7 +424,7 @@ export default function ItemDetailsPanel({
       {hasBuildContent ? (
       <div className="grid grid-cols-2 gap-3 rounded-[18px] bg-[#e9e9e9] p-3">
       {sectionNavItems && sectionNavItems.length > 0 ? (
-        <div className="col-span-2 sticky top-0 z-20 w-full rounded-2xl border border-blue-100 bg-white/95 px-2 py-1.5 shadow-[0_3px_10px_rgba(15,23,42,0.08)] backdrop-blur">
+        <div className="col-span-2 sticky top-0 z-20 w-full rounded-2xl border border-black/10 bg-white/95 px-2 py-1.5 shadow-[0_3px_10px_rgba(15,23,42,0.08)] backdrop-blur">
           <div className="flex items-stretch justify-between">
             {sectionNavItems.map((section, index) => {
               const isActive = activeSectionId === section.id;
