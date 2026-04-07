@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { Utensils } from "lucide-react";
 import ItemDetailsPanel, { PortionSelector, resolvePanelIngredients } from "@/components/ItemDetailsPanel";
 import MacroTotalsGrid from "@/components/MacroTotalsGrid";
@@ -16,6 +16,13 @@ import type {
   RestaurantCustomizationRules,
 } from "@/types/menu";
 import { useCart } from "@/stores/cartStore";
+import { parseComboCustomization } from "@/lib/menuItemCard/comboCustomizationParser";
+import {
+  getSelectedAddonsFromLabel,
+  getSelectedCommonChangeIdsFromCustomizations,
+  getSelectedSauceCountsFromLabel,
+} from "@/lib/menuItemCard/cartLabelUtils";
+import { getSelectedIngredientCountsFromCustomizations } from "@/lib/menuItemCard/ingredientCountCustomization";
 import {
   addonFat,
   deltaFat,
@@ -66,6 +73,8 @@ export default function ItemRouteModal({
   customizationRules?: RestaurantCustomizationRules;
 }) {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const editCartItemId = searchParams.get("editCartItem");
   const variants = item.variants?.length ? item.variants : null;
   const defaultVariantId = useMemo(() => {
     if (!variants) return "";
@@ -75,17 +84,35 @@ export default function ItemRouteModal({
     const flaggedDefault = variants.find((variant) => variant.isDefault);
     return flaggedDefault?.id ?? variants[0]?.id ?? "";
   }, [item.defaultVariantId, variants]);
-  const [selectedVariantId, setSelectedVariantId] = useState(defaultVariantId);
-  const [quantity, setQuantity] = useState(1);
-  const [selectedAddons, setSelectedAddons] = useState<Partial<Record<AddonRef, AddonOption>>>({});
-  const [selectedSauceCounts, setSelectedSauceCounts] = useState<Record<string, number>>({});
-  const [selectedCommonChangeIds, setSelectedCommonChangeIds] = useState<string[]>([]);
-  const [comboType, setComboType] = useState<"just-item" | "combo-meal">("just-item");
-  const [selectedComboSideId, setSelectedComboSideId] = useState<string>();
-  const [selectedComboDrinkId, setSelectedComboDrinkId] = useState<string>();
-  const [selectedComboSideVariantId, setSelectedComboSideVariantId] = useState<string>();
-  const [selectedComboDrinkVariantId, setSelectedComboDrinkVariantId] = useState<string>();
-  const { addItem } = useCart();
+  const { addItem, updateItem, items } = useCart();
+  const editingCartItem = useMemo(() => {
+    if (!editCartItemId) return null;
+
+    return (
+      items.find(
+        (cartItem) =>
+          cartItem.id === editCartItemId &&
+          cartItem.restaurantId === restaurantId &&
+          cartItem.itemId === (item.id ?? item.name)
+      ) ?? null
+    );
+  }, [editCartItemId, item.id, item.name, items, restaurantId]);
+  const isCustomizeMode = Boolean(editingCartItem);
+  const parsedInitialComboCustomization = useMemo(
+    () => parseComboCustomization(editingCartItem?.customizations),
+    [editingCartItem?.customizations]
+  );
+  const [selectedVariantId, setSelectedVariantId] = useState(editingCartItem?.variantId ?? defaultVariantId);
+  const [quantity, setQuantity] = useState(editingCartItem?.quantity ?? 1);
+  const [selectedAddons, setSelectedAddons] = useState<Partial<Record<AddonRef, AddonOption>>>(() =>
+    getSelectedAddonsFromLabel(item, addons, editingCartItem?.optionsLabel)
+  );
+  const [selectedSauceCounts, setSelectedSauceCounts] = useState<Record<string, number>>(() =>
+    getSelectedSauceCountsFromLabel(item, addons, editingCartItem?.optionsLabel)
+  );
+  const [selectedCommonChangeIds, setSelectedCommonChangeIds] = useState<string[]>(() =>
+    getSelectedCommonChangeIdsFromCustomizations(commonChanges, editingCartItem?.customizations)
+  );
   const selectedVariant = variants?.find((variant) => variant.id === selectedVariantId);
   const selectedItemImage = selectedVariant?.image ?? item.image;
   const baseNutrition = selectedVariant?.nutrition ?? item.nutrition;
@@ -94,7 +121,7 @@ export default function ItemRouteModal({
     [addons, customizationRules, ingredients, item, menuItems, selectedVariantId, variants]
   );
   const [selectedIngredientCounts, setSelectedIngredientCounts] = useState<Record<string, number>>(() =>
-    getDefaultIngredientCounts(resolvedIngredients)
+    getSelectedIngredientCountsFromCustomizations(resolvedIngredients, editingCartItem?.customizations)
   );
 
   const applicableCommonChanges = useMemo(
@@ -258,6 +285,23 @@ export default function ItemRouteModal({
       ),
     [menuItems]
   );
+  const [comboType, setComboType] = useState<"just-item" | "combo-meal">(parsedInitialComboCustomization.comboType);
+  const [selectedComboSideId, setSelectedComboSideId] = useState<string | undefined>(() => {
+    const side = comboSides.find((option) => option.name === parsedInitialComboCustomization.sideName);
+    return side ? (side.id ?? side.name) : undefined;
+  });
+  const [selectedComboDrinkId, setSelectedComboDrinkId] = useState<string | undefined>(() => {
+    const drink = comboDrinks.find((option) => option.name === parsedInitialComboCustomization.drinkName);
+    return drink ? (drink.id ?? drink.name) : undefined;
+  });
+  const [selectedComboSideVariantId, setSelectedComboSideVariantId] = useState<string | undefined>(() => {
+    const side = comboSides.find((option) => option.name === parsedInitialComboCustomization.sideName);
+    return side?.variants?.find((variant) => variant.label === parsedInitialComboCustomization.sideVariantLabel)?.id;
+  });
+  const [selectedComboDrinkVariantId, setSelectedComboDrinkVariantId] = useState<string | undefined>(() => {
+    const drink = comboDrinks.find((option) => option.name === parsedInitialComboCustomization.drinkName);
+    return drink?.variants?.find((variant) => variant.label === parsedInitialComboCustomization.drinkVariantLabel)?.id;
+  });
   const comboTypeOptions = useMemo(
     () => [
       { id: "just-item" as const, label: resolveJustItemLabel(item), icon: resolveJustItemIcon(item) },
@@ -426,7 +470,7 @@ export default function ItemRouteModal({
     router.replace(restaurantPath, { scroll: false });
   };
 
-  const handleAddToCart = () => {
+  const handleSaveItem = () => {
     const comboCustomizations =
       isComboEligibleCategory && comboType === "combo-meal"
         ? [
@@ -441,10 +485,7 @@ export default function ItemRouteModal({
         : [];
     const customizations = [...selectedCommonChanges, ...selectedIngredientCustomizations, ...comboCustomizations];
 
-    const cartItem = {
-      id: crypto.randomUUID(),
-      restaurantId,
-      itemId: item.id ?? item.name,
+    const nextCartItemPayload = {
       name: item.name,
       image: selectedVariant?.image ?? item.image,
       variantId: selectedVariant?.id,
@@ -461,7 +502,22 @@ export default function ItemRouteModal({
     };
 
     handleClose();
-    window.setTimeout(() => addItem(cartItem), 0);
+    window.setTimeout(() => {
+      if (editingCartItem) {
+        updateItem(editingCartItem.id, nextCartItemPayload);
+        return;
+      }
+
+      addItem({
+        id: crypto.randomUUID(),
+        restaurantId,
+        itemId: item.id ?? item.name,
+        ...nextCartItemPayload,
+      });
+    }, 0);
+  };
+  const handleResetEdits = () => {
+    handleClose();
   };
 
   const handleDecrementQuantity = () => {
@@ -745,12 +801,21 @@ export default function ItemRouteModal({
                 +
               </button>
             </div>
+            {isCustomizeMode ? (
+              <button
+                type="button"
+                className="cursor-pointer rounded-xl border border-black/20 bg-white px-6 py-2.5 text-base font-bold text-black/80"
+                onClick={handleResetEdits}
+              >
+                Reset
+              </button>
+            ) : null}
             <button
               type="button"
               className="cursor-pointer rounded-xl border border-black/20 bg-black/90 px-6 py-2.5 text-base font-bold text-white"
-              onClick={handleAddToCart}
+              onClick={handleSaveItem}
             >
-              Add to Cart
+              {isCustomizeMode ? "Done" : "Add to Cart"}
             </button>
           </div>
         </div>

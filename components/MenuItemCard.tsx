@@ -91,6 +91,7 @@ export default function MenuItemCard({
   cartQuantity = 1,
   onCartIncrement,
   onCartDecrement,
+  onCartModify,
   cartSummaryLine,
   cartItemId,
   initialCartVariantId,
@@ -131,6 +132,7 @@ export default function MenuItemCard({
   cartQuantity?: number;
   onCartIncrement?: () => void;
   onCartDecrement?: () => void;
+  onCartModify?: () => void;
   cartSummaryLine?: string;
   cartItemId?: string;
   initialCartVariantId?: string;
@@ -959,7 +961,13 @@ export default function MenuItemCard({
                 <CartCardActions
                   itemName={item.name}
                   quantity={cartQuantity}
-                  onModify={() => setOpen(true)}
+                  onModify={() => {
+                    if (onCartModify) {
+                      onCartModify();
+                      return;
+                    }
+                    setOpen(true);
+                  }}
                   onIncrement={() => onCartIncrement?.()}
                   onDecrement={() => onCartDecrement?.()}
                 />

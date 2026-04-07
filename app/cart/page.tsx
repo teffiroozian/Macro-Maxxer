@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useRef, useState } from "react";
 import type { CartMacros } from "@/stores/cartStore";
 import MenuItemCard from "@/components/MenuItemCard";
@@ -22,6 +23,7 @@ import {
   getIncludedIngredientIdsForChipotleBuild,
 } from "@/lib/cart/buildItemAdapters";
 import { parseOptionLabelCounts } from "@/lib/cartOptionLabels";
+import { toItemSlug } from "@/lib/restaurants";
 
 function summarizeItem(item: { variantLabel?: string; optionsLabel?: string; customizations?: string[] }) {
   const addonNames = new Set(Object.keys(parseOptionLabelCounts(item.optionsLabel)));
@@ -39,6 +41,7 @@ function summarizeItem(item: { variantLabel?: string; optionsLabel?: string; cus
 
 export default function CartPage() {
   const { items, totals, updateQuantity, updateItem } = useCart();
+  const router = useRouter();
   const inlineMacroBarRef = useRef<HTMLDivElement | null>(null);
   const [showStickyBar, setShowStickyBar] = useState(true);
 
@@ -145,6 +148,9 @@ export default function CartPage() {
               const ingredientItemsForRestaurant = ingredientLookupByRestaurant[cartItem.restaurantId];
               const sourceItem =
                 menuLookupByRestaurant[cartItem.restaurantId]?.find((item) => (item.id ?? item.name) === cartItem.itemId) ?? null;
+              const itemEditHref = sourceItem
+                ? `/restaurant/${cartItem.restaurantId}/items/${toItemSlug(sourceItem)}?editCartItem=${cartItem.id}`
+                : undefined;
 
               const initialIngredientCustomizations = getBuildIngredientCountCustomizations(
                 cartItem,
@@ -186,6 +192,13 @@ export default function CartPage() {
                       macrosPerItem: next.macrosPerItem as CartMacros,
                     });
                   }}
+                  onCartModify={
+                    itemEditHref
+                      ? () => {
+                          router.push(itemEditHref, { scroll: false });
+                        }
+                      : undefined
+                  }
                 />
               );
             })}
