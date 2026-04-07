@@ -691,18 +691,30 @@ export default function ItemRouteModal({
                       const isActive = comboType === option.id;
                       const Icon = option.icon;
                       const variantColorClasses = isActive
-                        ? "border-black bg-black text-white"
-                        : "border-black/10 bg-neutral-100 text-neutral-700 hover:bg-neutral-200";
+                        ? "border-blue-500 bg-blue-50 text-neutral-900 shadow-[0_8px_20px_rgba(37,99,235,0.18)]"
+                        : "border-slate-200 bg-white text-slate-700 shadow-[0_2px_8px_rgba(15,23,42,0.06)] hover:border-slate-300 hover:bg-slate-50";
+                      const iconClasses = isActive
+                        ? "border-blue-500/60 bg-white text-blue-600"
+                        : "border-slate-300 bg-slate-50 text-slate-500";
+                      const labelClasses = isActive ? "text-neutral-900" : "text-slate-700";
+                      const helperClasses = isActive ? "text-blue-700" : "text-slate-500";
 
                       return (
                         <button
                           key={option.id}
                           type="button"
-                          className={`inline-flex min-w-[210px] cursor-pointer items-center justify-center gap-2 rounded-xl border px-4 py-2 text-center text-[18px] font-semibold transition-colors duration-150 ${variantColorClasses}`}
+                          className={`inline-flex min-w-[220px] cursor-pointer items-center justify-center gap-3 rounded-2xl border px-5 py-2.5 text-left transition-all duration-150 ${variantColorClasses}`}
                           onClick={() => setComboType(option.id)}
                         >
-                          <Icon size={15} strokeWidth={3} />
-                          {option.label}
+                          <span className={`inline-flex h-9 w-9 items-center justify-center rounded-full border ${iconClasses}`}>
+                            <Icon size={16} strokeWidth={2.4} />
+                          </span>
+                          <span className="flex flex-col leading-tight">
+                            <span className={`text-[18px] font-semibold ${labelClasses}`}>{option.label}</span>
+                            <span className={`text-[11px] font-semibold uppercase tracking-wide ${helperClasses}`}>
+                              {isActive ? "Selected option" : "Tap to select"}
+                            </span>
+                          </span>
                         </button>
                       );
                     })}
