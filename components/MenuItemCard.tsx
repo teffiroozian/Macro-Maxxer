@@ -2,7 +2,7 @@
 
 import { useEffect, useId, useMemo, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
-import { Utensils } from "lucide-react";
+import { ChevronDown, Utensils } from "lucide-react";
 import type {
   AddonOption,
   AddonRef,
@@ -47,16 +47,35 @@ function pad2(n: number) {
   return String(n).padStart(2, "0");
 }
 
-function macroChipTone(name: "calories" | "protein" | "carbs" | "fat") {
-  if (name === "protein") return "bg-[#fff2e8] text-[#c2410c]";
-  if (name === "carbs") return "bg-[#fffbeb] text-[#a16207]";
-  if (name === "fat") return "bg-[#eff6ff] text-[#1d4ed8]";
-  return "bg-slate-100 text-slate-700";
-}
-
 function toMacroNumber(value?: number) {
   if (typeof value !== "number" || Number.isNaN(value)) return 0;
   return Math.round(value);
+}
+
+function QuickMacro({
+  value,
+  label,
+  tone,
+}: {
+  value?: number;
+  label: string;
+  tone: "calories" | "protein" | "carbs" | "fat";
+}) {
+  const toneClass =
+    tone === "protein"
+      ? "text-[#c2410c]"
+      : tone === "carbs"
+        ? "text-[#ca8a04]"
+        : tone === "fat"
+          ? "text-[#2563eb]"
+          : "text-slate-700";
+
+  return (
+    <div className="flex min-w-[44px] flex-col items-center justify-center">
+      <span className={`text-[21px] leading-5 font-bold ${toneClass}`}>{toMacroNumber(value)}</span>
+      <span className="mt-1 text-[9px] font-bold uppercase tracking-[0.06em] text-slate-600">{label}</span>
+    </div>
+  );
 }
 
 
@@ -1066,7 +1085,7 @@ export default function MenuItemCard({
       >
         <div className="p-3">
           {useCartQuickEditPanel ? (
-            <div className="rounded-2xl border border-black/10 bg-[#f8fafc] p-3">
+            <div className="rounded-2xl border border-black/10 bg-[#e7e7e7] p-3">
               {isComboEligibleCategory ? (
                 <div className="mb-3 flex flex-wrap gap-2">
                   {comboTypeOptions.map((option) => {
@@ -1100,175 +1119,170 @@ export default function MenuItemCard({
               ) : null}
 
               <div className="space-y-3">
-                <section className="rounded-xl border border-black/10 bg-white p-2.5">
-                  <p className="mb-2 text-[11px] font-semibold uppercase tracking-[0.14em] text-slate-500">Main</p>
-                  <div className="grid grid-cols-[44px_minmax(0,1fr)_auto] items-center gap-2 rounded-xl border border-slate-200 bg-slate-50 px-2.5 py-2">
-                    <div className="h-11 w-11 overflow-hidden rounded-lg border border-black/10 bg-white">
+                <section>
+                  <p className="mb-2 px-1 text-[11px] font-semibold uppercase tracking-[0.14em] text-slate-600">Main</p>
+                  <div className="grid grid-cols-[60px_minmax(0,1fr)_auto] items-center gap-3 rounded-xl border border-slate-200 bg-white px-3 py-2.5">
+                    <div className="h-[60px] w-[60px] overflow-hidden rounded-lg border border-black/10 bg-white">
                       {selectedItemImage ? (
-                        <img src={selectedItemImage} alt={item.name} className="h-full w-full object-contain p-1.5" />
+                        <img src={selectedItemImage} alt={item.name} className="h-full w-full object-contain p-1" />
                       ) : null}
                     </div>
                     <div className="min-w-0">
                       <div className="flex min-w-0 items-center gap-2">
                         <p className="truncate text-sm font-semibold text-slate-900">{item.name}</p>
                         {hasVariantDropdown ? (
-                          <select
-                            aria-label={`${item.name} quick portion`}
-                            value={selectedVariantId}
-                            onClick={(event) => event.stopPropagation()}
-                            onChange={(event) => {
-                              const nextVariantId = event.target.value;
-                              setSelectedVariantId(nextVariantId);
-                              emitCartConfiguration(nextVariantId, selectedAddons, selectedSauceCounts, selectedCommonChangeIds);
-                            }}
-                            className="h-8 rounded-lg border border-black/15 bg-white px-2 text-xs font-semibold text-slate-700 outline-none transition focus:border-black/30"
-                          >
-                            {variants?.map((variant) => (
-                              <option key={variant.id} value={variant.id}>{variant.label}</option>
-                            ))}
-                          </select>
+                          <div className="relative">
+                            <select
+                              aria-label={`${item.name} quick portion`}
+                              value={selectedVariantId}
+                              onClick={(event) => event.stopPropagation()}
+                              onChange={(event) => {
+                                const nextVariantId = event.target.value;
+                                setSelectedVariantId(nextVariantId);
+                                emitCartConfiguration(nextVariantId, selectedAddons, selectedSauceCounts, selectedCommonChangeIds);
+                              }}
+                              className="h-8 appearance-none rounded-full border border-slate-300 bg-slate-50 py-1 pl-3 pr-8 text-xs font-semibold text-slate-700 outline-none transition hover:bg-white focus:border-slate-500"
+                            >
+                              {variants?.map((variant) => (
+                                <option key={variant.id} value={variant.id}>{variant.label}</option>
+                              ))}
+                            </select>
+                            <ChevronDown className="pointer-events-none absolute right-2 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-slate-500" />
+                          </div>
                         ) : null}
                       </div>
                     </div>
-                    <div className="flex flex-wrap justify-end gap-1">
-                      <span className={`rounded-md px-1.5 py-1 text-[10px] font-semibold ${macroChipTone("calories")}`}>{toMacroNumber(nutrition.calories)} cal</span>
-                      <span className={`rounded-md px-1.5 py-1 text-[10px] font-semibold ${macroChipTone("protein")}`}>{toMacroNumber(nutrition.protein)}p</span>
-                      <span className={`rounded-md px-1.5 py-1 text-[10px] font-semibold ${macroChipTone("carbs")}`}>{toMacroNumber(nutrition.carbs)}c</span>
-                      <span className={`rounded-md px-1.5 py-1 text-[10px] font-semibold ${macroChipTone("fat")}`}>{toMacroNumber(nutrition.totalFat)}f</span>
+                    <div className="flex items-end justify-end gap-2">
+                      <QuickMacro value={nutrition.calories} label="Cal" tone="calories" />
+                      <QuickMacro value={nutrition.protein} label="Protein" tone="protein" />
+                      <QuickMacro value={nutrition.carbs} label="Carbs" tone="carbs" />
+                      <QuickMacro value={nutrition.totalFat} label="Fat" tone="fat" />
                     </div>
                   </div>
                 </section>
 
                 {comboType === "combo-meal" && selectedComboSide ? (
-                  <section className="rounded-xl border border-black/10 bg-white p-2.5">
-                    <p className="mb-2 text-[11px] font-semibold uppercase tracking-[0.14em] text-slate-500">Side</p>
-                    <div className="grid grid-cols-[44px_minmax(0,1fr)_auto] items-center gap-2 rounded-xl border border-slate-200 bg-slate-50 px-2.5 py-2">
-                      <div className="h-11 w-11 overflow-hidden rounded-lg border border-black/10 bg-white">
+                  <section>
+                    <p className="mb-2 px-1 text-[11px] font-semibold uppercase tracking-[0.14em] text-slate-600">Side</p>
+                    <div className="grid grid-cols-[60px_minmax(0,1fr)_auto] items-center gap-3 rounded-xl border border-slate-200 bg-white px-3 py-2.5">
+                      <div className="h-[60px] w-[60px] overflow-hidden rounded-lg border border-black/10 bg-white">
                         {selectedComboSide.image ? (
-                          <img src={selectedComboSide.image} alt={selectedComboSide.name} className="h-full w-full object-contain p-1.5" />
+                          <img src={selectedComboSide.image} alt={selectedComboSide.name} className="h-full w-full object-contain p-1" />
                         ) : null}
                       </div>
                       <div className="min-w-0">
                         <div className="flex items-center gap-2">
-                          <select
-                            aria-label={`${item.name} side`}
-                            value={selectedComboSideId}
-                            onClick={(event) => event.stopPropagation()}
-                            onChange={(event) => {
-                              const nextSideId = event.target.value;
-                              const nextSide = comboSides.find((side) => (side.id ?? side.name) === nextSideId);
-                              const nextSideVariantId = getDefaultVariantId(nextSide);
-                              setSelectedComboSideId(nextSideId);
-                              setSelectedComboSideVariantId(nextSideVariantId);
-                              emitCartConfiguration(selectedVariantId, selectedAddons, selectedSauceCounts, selectedCommonChangeIds, ingredientCounts, comboType, nextSideId, selectedComboDrinkId, nextSideVariantId, selectedComboDrinkVariantId);
-                            }}
-                            className="h-8 min-w-[130px] rounded-lg border border-black/15 bg-white px-2 text-xs font-semibold text-slate-700 outline-none"
-                          >
-                            {comboSides.map((side) => (
-                              <option key={side.id ?? side.name} value={side.id ?? side.name}>{side.name}</option>
-                            ))}
-                          </select>
+                          <p className="truncate text-sm font-semibold text-slate-900">{selectedComboSide.name}</p>
                           {selectedComboSide.variants && selectedComboSide.variants.length > 1 ? (
-                            <select
-                              aria-label={`${selectedComboSide.name} size`}
-                              value={selectedComboSideVariantId}
-                              onClick={(event) => event.stopPropagation()}
-                              onChange={(event) => {
-                                const variantId = event.target.value;
-                                setSelectedComboSideVariantId(variantId);
-                                emitCartConfiguration(selectedVariantId, selectedAddons, selectedSauceCounts, selectedCommonChangeIds, ingredientCounts, comboType, selectedComboSideId, selectedComboDrinkId, variantId, selectedComboDrinkVariantId);
-                              }}
-                              className="h-8 rounded-lg border border-black/15 bg-white px-2 text-xs font-semibold text-slate-700 outline-none"
-                            >
-                              {selectedComboSide.variants.map((variant) => (
-                                <option key={variant.id} value={variant.id}>{variant.label}</option>
-                              ))}
-                            </select>
+                            <div className="relative">
+                              <select
+                                aria-label={`${selectedComboSide.name} size`}
+                                value={selectedComboSideVariantId}
+                                onClick={(event) => event.stopPropagation()}
+                                onChange={(event) => {
+                                  const variantId = event.target.value;
+                                  setSelectedComboSideVariantId(variantId);
+                                  emitCartConfiguration(selectedVariantId, selectedAddons, selectedSauceCounts, selectedCommonChangeIds, ingredientCounts, comboType, selectedComboSideId, selectedComboDrinkId, variantId, selectedComboDrinkVariantId);
+                                }}
+                                className="h-8 appearance-none rounded-full border border-slate-300 bg-slate-50 py-1 pl-3 pr-8 text-xs font-semibold text-slate-700 outline-none transition hover:bg-white focus:border-slate-500"
+                              >
+                                {selectedComboSide.variants.map((variant) => (
+                                  <option key={variant.id} value={variant.id}>{variant.label}</option>
+                                ))}
+                              </select>
+                              <ChevronDown className="pointer-events-none absolute right-2 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-slate-500" />
+                            </div>
                           ) : null}
                         </div>
                       </div>
-                      <div className="flex flex-wrap justify-end gap-1">
-                        <span className={`rounded-md px-1.5 py-1 text-[10px] font-semibold ${macroChipTone("calories")}`}>{toMacroNumber(selectedComboSideVariant?.nutrition.calories ?? selectedComboSide.nutrition.calories)} cal</span>
-                        <span className={`rounded-md px-1.5 py-1 text-[10px] font-semibold ${macroChipTone("protein")}`}>{toMacroNumber(selectedComboSideVariant?.nutrition.protein ?? selectedComboSide.nutrition.protein)}p</span>
-                        <span className={`rounded-md px-1.5 py-1 text-[10px] font-semibold ${macroChipTone("carbs")}`}>{toMacroNumber(selectedComboSideVariant?.nutrition.carbs ?? selectedComboSide.nutrition.carbs)}c</span>
-                        <span className={`rounded-md px-1.5 py-1 text-[10px] font-semibold ${macroChipTone("fat")}`}>{toMacroNumber(selectedComboSideVariant?.nutrition.totalFat ?? selectedComboSide.nutrition.totalFat)}f</span>
+                      <div className="flex items-end justify-end gap-2">
+                        <QuickMacro value={selectedComboSideVariant?.nutrition.calories ?? selectedComboSide.nutrition.calories} label="Cal" tone="calories" />
+                        <QuickMacro value={selectedComboSideVariant?.nutrition.protein ?? selectedComboSide.nutrition.protein} label="Protein" tone="protein" />
+                        <QuickMacro value={selectedComboSideVariant?.nutrition.carbs ?? selectedComboSide.nutrition.carbs} label="Carbs" tone="carbs" />
+                        <QuickMacro value={selectedComboSideVariant?.nutrition.totalFat ?? selectedComboSide.nutrition.totalFat} label="Fat" tone="fat" />
                       </div>
                     </div>
                   </section>
                 ) : null}
 
                 {comboType === "combo-meal" && selectedComboDrink ? (
-                  <section className="rounded-xl border border-black/10 bg-white p-2.5">
-                    <p className="mb-2 text-[11px] font-semibold uppercase tracking-[0.14em] text-slate-500">Drink</p>
-                    <div className="grid grid-cols-[44px_minmax(0,1fr)_auto] items-center gap-2 rounded-xl border border-slate-200 bg-slate-50 px-2.5 py-2">
-                      <div className="h-11 w-11 overflow-hidden rounded-lg border border-black/10 bg-white">
+                  <section>
+                    <p className="mb-2 px-1 text-[11px] font-semibold uppercase tracking-[0.14em] text-slate-600">Drink</p>
+                    <div className="grid grid-cols-[60px_minmax(0,1fr)_auto] items-center gap-3 rounded-xl border border-slate-200 bg-white px-3 py-2.5">
+                      <div className="h-[60px] w-[60px] overflow-hidden rounded-lg border border-black/10 bg-white">
                         {selectedComboDrink.image ? (
-                          <img src={selectedComboDrink.image} alt={selectedComboDrink.name} className="h-full w-full object-contain p-1.5" />
+                          <img src={selectedComboDrink.image} alt={selectedComboDrink.name} className="h-full w-full object-contain p-1" />
                         ) : null}
                       </div>
                       <div className="min-w-0">
                         <div className="flex items-center gap-2">
-                          <select
-                            aria-label={`${item.name} drink`}
-                            value={selectedComboDrinkId}
-                            onClick={(event) => event.stopPropagation()}
-                            onChange={(event) => {
-                              const nextDrinkId = event.target.value;
-                              const nextDrink = comboDrinks.find((drink) => (drink.id ?? drink.name) === nextDrinkId);
-                              const nextDrinkVariantId = getDefaultVariantId(nextDrink);
-                              setSelectedComboDrinkId(nextDrinkId);
-                              setSelectedComboDrinkVariantId(nextDrinkVariantId);
-                              emitCartConfiguration(selectedVariantId, selectedAddons, selectedSauceCounts, selectedCommonChangeIds, ingredientCounts, comboType, selectedComboSideId, nextDrinkId, selectedComboSideVariantId, nextDrinkVariantId);
-                            }}
-                            className="h-8 min-w-[130px] rounded-lg border border-black/15 bg-white px-2 text-xs font-semibold text-slate-700 outline-none"
-                          >
-                            {comboDrinks.map((drink) => (
-                              <option key={drink.id ?? drink.name} value={drink.id ?? drink.name}>{drink.name}</option>
-                            ))}
-                          </select>
-                          {selectedComboDrink.variants && selectedComboDrink.variants.length > 1 ? (
+                          <div className="relative">
                             <select
-                              aria-label={`${selectedComboDrink.name} size`}
-                              value={selectedComboDrinkVariantId}
+                              aria-label={`${item.name} drink`}
+                              value={selectedComboDrinkId}
                               onClick={(event) => event.stopPropagation()}
                               onChange={(event) => {
-                                const variantId = event.target.value;
-                                setSelectedComboDrinkVariantId(variantId);
-                                emitCartConfiguration(selectedVariantId, selectedAddons, selectedSauceCounts, selectedCommonChangeIds, ingredientCounts, comboType, selectedComboSideId, selectedComboDrinkId, selectedComboSideVariantId, variantId);
+                                const nextDrinkId = event.target.value;
+                                const nextDrink = comboDrinks.find((drink) => (drink.id ?? drink.name) === nextDrinkId);
+                                const nextDrinkVariantId = getDefaultVariantId(nextDrink);
+                                setSelectedComboDrinkId(nextDrinkId);
+                                setSelectedComboDrinkVariantId(nextDrinkVariantId);
+                                emitCartConfiguration(selectedVariantId, selectedAddons, selectedSauceCounts, selectedCommonChangeIds, ingredientCounts, comboType, selectedComboSideId, nextDrinkId, selectedComboSideVariantId, nextDrinkVariantId);
                               }}
-                              className="h-8 rounded-lg border border-black/15 bg-white px-2 text-xs font-semibold text-slate-700 outline-none"
+                              className="h-8 min-w-[130px] appearance-none rounded-full border border-slate-300 bg-slate-50 py-1 pl-3 pr-8 text-xs font-semibold text-slate-700 outline-none transition hover:bg-white focus:border-slate-500"
                             >
-                              {selectedComboDrink.variants.map((variant) => (
-                                <option key={variant.id} value={variant.id}>{variant.label}</option>
+                              {comboDrinks.map((drink) => (
+                                <option key={drink.id ?? drink.name} value={drink.id ?? drink.name}>{drink.name}</option>
                               ))}
                             </select>
+                            <ChevronDown className="pointer-events-none absolute right-2 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-slate-500" />
+                          </div>
+                          {selectedComboDrink.variants && selectedComboDrink.variants.length > 1 ? (
+                            <div className="relative">
+                              <select
+                                aria-label={`${selectedComboDrink.name} size`}
+                                value={selectedComboDrinkVariantId}
+                                onClick={(event) => event.stopPropagation()}
+                                onChange={(event) => {
+                                  const variantId = event.target.value;
+                                  setSelectedComboDrinkVariantId(variantId);
+                                  emitCartConfiguration(selectedVariantId, selectedAddons, selectedSauceCounts, selectedCommonChangeIds, ingredientCounts, comboType, selectedComboSideId, selectedComboDrinkId, selectedComboSideVariantId, variantId);
+                                }}
+                                className="h-8 appearance-none rounded-full border border-slate-300 bg-slate-50 py-1 pl-3 pr-8 text-xs font-semibold text-slate-700 outline-none transition hover:bg-white focus:border-slate-500"
+                              >
+                                {selectedComboDrink.variants.map((variant) => (
+                                  <option key={variant.id} value={variant.id}>{variant.label}</option>
+                                ))}
+                              </select>
+                              <ChevronDown className="pointer-events-none absolute right-2 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-slate-500" />
+                            </div>
                           ) : null}
                         </div>
                       </div>
-                      <div className="flex flex-wrap justify-end gap-1">
-                        <span className={`rounded-md px-1.5 py-1 text-[10px] font-semibold ${macroChipTone("calories")}`}>{toMacroNumber(selectedComboDrinkVariant?.nutrition.calories ?? selectedComboDrink.nutrition.calories)} cal</span>
-                        <span className={`rounded-md px-1.5 py-1 text-[10px] font-semibold ${macroChipTone("protein")}`}>{toMacroNumber(selectedComboDrinkVariant?.nutrition.protein ?? selectedComboDrink.nutrition.protein)}p</span>
-                        <span className={`rounded-md px-1.5 py-1 text-[10px] font-semibold ${macroChipTone("carbs")}`}>{toMacroNumber(selectedComboDrinkVariant?.nutrition.carbs ?? selectedComboDrink.nutrition.carbs)}c</span>
-                        <span className={`rounded-md px-1.5 py-1 text-[10px] font-semibold ${macroChipTone("fat")}`}>{toMacroNumber(selectedComboDrinkVariant?.nutrition.totalFat ?? selectedComboDrink.nutrition.totalFat)}f</span>
+                      <div className="flex items-end justify-end gap-2">
+                        <QuickMacro value={selectedComboDrinkVariant?.nutrition.calories ?? selectedComboDrink.nutrition.calories} label="Cal" tone="calories" />
+                        <QuickMacro value={selectedComboDrinkVariant?.nutrition.protein ?? selectedComboDrink.nutrition.protein} label="Protein" tone="protein" />
+                        <QuickMacro value={selectedComboDrinkVariant?.nutrition.carbs ?? selectedComboDrink.nutrition.carbs} label="Carbs" tone="carbs" />
+                        <QuickMacro value={selectedComboDrinkVariant?.nutrition.totalFat ?? selectedComboDrink.nutrition.totalFat} label="Fat" tone="fat" />
                       </div>
                     </div>
                   </section>
                 ) : null}
 
                 {(addons?.sauces?.length ?? 0) > 0 ? (
-                  <section className="rounded-xl border border-black/10 bg-white p-2.5">
-                    <p className="mb-2 text-[11px] font-semibold uppercase tracking-[0.14em] text-slate-500">Sauces</p>
+                  <section>
+                    <p className="mb-2 px-1 text-[11px] font-semibold uppercase tracking-[0.14em] text-slate-600">Sauces</p>
                     <div className="space-y-1.5">
                       {addons?.sauces?.filter((addon) => addon.name !== "None").map((addon) => {
                         const count = selectedSauceCounts[addon.name] ?? 0;
                         return (
                           <div
                             key={addon.name}
-                            className="grid grid-cols-[44px_minmax(0,1fr)_auto_auto] items-center gap-2 rounded-xl border border-slate-200 bg-slate-50 px-2.5 py-2"
+                            className="grid grid-cols-[60px_minmax(0,1fr)_auto_auto] items-center gap-3 rounded-xl border border-slate-200 bg-white px-3 py-2.5"
                           >
-                            <div className="h-11 w-11 overflow-hidden rounded-lg border border-black/10 bg-white">
+                            <div className="h-[60px] w-[60px] overflow-hidden rounded-lg border border-black/10 bg-white">
                               {addon.image ? (
-                                <img src={addon.image} alt={addon.name} className="h-full w-full object-contain p-1.5" />
+                                <img src={addon.image} alt={addon.name} className="h-full w-full object-contain p-1" />
                               ) : null}
                             </div>
                             <p className="truncate text-sm font-semibold text-slate-900">{addon.name}</p>
@@ -1310,11 +1324,11 @@ export default function MenuItemCard({
                                 +
                               </button>
                             </div>
-                            <div className="flex flex-wrap justify-end gap-1">
-                              <span className={`rounded-md px-1.5 py-1 text-[10px] font-semibold ${macroChipTone("calories")}`}>{toMacroNumber(addon.calories)} cal</span>
-                              <span className={`rounded-md px-1.5 py-1 text-[10px] font-semibold ${macroChipTone("protein")}`}>{toMacroNumber(addon.protein)}p</span>
-                              <span className={`rounded-md px-1.5 py-1 text-[10px] font-semibold ${macroChipTone("carbs")}`}>{toMacroNumber(addon.carbs)}c</span>
-                              <span className={`rounded-md px-1.5 py-1 text-[10px] font-semibold ${macroChipTone("fat")}`}>{toMacroNumber(addon.totalFat)}f</span>
+                            <div className="flex items-end justify-end gap-2">
+                              <QuickMacro value={addon.calories} label="Cal" tone="calories" />
+                              <QuickMacro value={addon.protein} label="Protein" tone="protein" />
+                              <QuickMacro value={addon.carbs} label="Carbs" tone="carbs" />
+                              <QuickMacro value={addon.totalFat} label="Fat" tone="fat" />
                             </div>
                           </div>
                         );
