@@ -1,9 +1,13 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { Utensils } from "lucide-react";
-import ItemDetailsPanel, { PortionSelector, resolvePanelIngredients } from "@/components/ItemDetailsPanel";
+import { CupSoda, Droplets, Leaf, Sandwich, Utensils } from "lucide-react";
+import ItemDetailsPanel, {
+  PortionSelector,
+  resolvePanelIngredientTabs,
+  resolvePanelIngredients,
+} from "@/components/ItemDetailsPanel";
 import MacroTotalsGrid from "@/components/MacroTotalsGrid";
 import type {
   AddonOption,
@@ -52,6 +56,9 @@ const emptyAddon: AddonOption = {
 
 const sauceRef: AddonRef = "sauces";
 const maxSauceSelections = 5;
+const sectionScrollOffset = 96;
+
+type ModalSectionId = "ingredients" | "sides" | "drinks" | "sauces";
 
 export default function ItemRouteModal({
   restaurantId,
@@ -428,6 +435,80 @@ export default function ItemRouteModal({
           },
     [comboNutritionTotals, comboSideNutritionTotals, comboType, isComboEligibleCategory]
   );
+  const ingredientTabs = useMemo(
+    () =>
+      resolvePanelIngredientTabs(
+        item,
+        ingredients,
+        addons,
+        menuItems,
+        variants,
+        selectedVariantId,
+        customizationRules
+      ),
+    [addons, customizationRules, ingredients, item, menuItems, selectedVariantId, variants]
+  );
+  const hasIngredientSection = useMemo(() => {
+    const nonEmptyTabs = ingredientTabs.filter((tab) => tab.ingredients.length > 0);
+    return nonEmptyTabs.length > 1 || (nonEmptyTabs[0]?.ingredients.length ?? 0) > 0;
+  }, [ingredientTabs]);
+  const hasSauceSection = (addons?.[sauceRef]?.length ?? 0) > 0;
+  const hasComboSections = isComboEligibleCategory && comboType === "combo-meal";
+  const visibleSections = useMemo(
+    () =>
+      [
+        hasIngredientSection
+          ? { id: "ingredients" as const, label: "Ingredients", icon: Leaf }
+          : null,
+        hasComboSections ? { id: "sides" as const, label: "Sides", icon: Sandwich } : null,
+        hasComboSections ? { id: "drinks" as const, label: "Drinks", icon: CupSoda } : null,
+        hasSauceSection ? { id: "sauces" as const, label: "Sauces", icon: Droplets } : null,
+      ].filter((section): section is { id: ModalSectionId; label: string; icon: typeof Leaf } => Boolean(section)),
+    [hasComboSections, hasIngredientSection, hasSauceSection]
+  );
+  const [activeSectionId, setActiveSectionId] = useState<ModalSectionId | null>(visibleSections[0]?.id ?? null);
+  const scrollContainerRef = useRef<HTMLDivElement | null>(null);
+  const sectionElementRefs = useRef<Partial<Record<ModalSectionId, HTMLElement | null>>>({});
+
+  useEffect(() => {
+    const container = scrollContainerRef.current;
+    if (!container || visibleSections.length === 0) return;
+
+    const handleScroll = () => {
+      const containerTop = container.getBoundingClientRect().top;
+      const threshold = containerTop + sectionScrollOffset + 12;
+
+      let nextActive = visibleSections[0]?.id ?? null;
+      visibleSections.forEach((section) => {
+        const sectionElement = sectionElementRefs.current[section.id];
+        if (!sectionElement) return;
+        if (sectionElement.getBoundingClientRect().top <= threshold) {
+          nextActive = section.id;
+        }
+      });
+
+      setActiveSectionId(nextActive);
+    };
+
+    handleScroll();
+    container.addEventListener("scroll", handleScroll, { passive: true });
+    return () => container.removeEventListener("scroll", handleScroll);
+  }, [visibleSections]);
+
+  const scrollToSection = (sectionId: ModalSectionId) => {
+    const container = scrollContainerRef.current;
+    const sectionElement = sectionElementRefs.current[sectionId];
+    if (!container || !sectionElement) return;
+
+    const containerTop = container.getBoundingClientRect().top;
+    const sectionTop = sectionElement.getBoundingClientRect().top;
+    const nextScrollTop = container.scrollTop + (sectionTop - containerTop) - sectionScrollOffset;
+
+    container.scrollTo({
+      top: Math.max(0, nextScrollTop),
+      behavior: "smooth",
+    });
+  };
 
   const customizationTotals = useMemo(
     () => ({
@@ -546,7 +627,7 @@ export default function ItemRouteModal({
           ×
         </button>
 
-        <div className="h-[calc(100%-52px-56px)] overflow-y-auto pr-2 pb-6">
+        <div ref={scrollContainerRef} className="h-[calc(100%-52px-56px)] overflow-y-auto pr-2 pb-6">
         <div className="grid justify-items-center gap-16">
           <div className="grid justify-items-center gap-8">
             <h1 className="text-center text-[32px] font-extrabold">{item.name}</h1>
@@ -621,6 +702,34 @@ export default function ItemRouteModal({
               </div>
             ) : null}
           </div>
+
+          {visibleSections.length > 0 ? (
+            <div className="sticky top-0 z-20 w-[min(720px,100%)] rounded-2xl border border-blue-100 bg-white/95 px-2 py-1.5 shadow-[0_3px_10px_rgba(15,23,42,0.08)] backdrop-blur">
+              <div className="flex items-stretch justify-between">
+                {visibleSections.map((section, index) => {
+                  const isActive = activeSectionId === section.id;
+                  const Icon = section.icon;
+                  return (
+                    <div key={section.id} className="flex flex-1 items-center">
+                      <button
+                        type="button"
+                        className="cursor-pointer flex w-full flex-col items-center gap-1 px-2 py-1.5 text-center"
+                        onClick={() => scrollToSection(section.id)}
+                      >
+                        <span className={`inline-flex h-8 w-8 items-center justify-center rounded-full border text-[13px] ${isActive ? "border-blue-500 bg-blue-50 text-blue-600" : "border-slate-200 bg-slate-50 text-slate-500"}`}>
+                          <Icon size={15} />
+                        </span>
+                        <span className={`text-[11px] font-semibold uppercase tracking-wide ${isActive ? "text-blue-600" : "text-slate-500"}`}>
+                          {section.label}
+                        </span>
+                      </button>
+                      {index < visibleSections.length - 1 ? <span className="h-8 w-px bg-slate-200/80" /> : null}
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          ) : null}
 
           <div className="w-full">
           <ItemDetailsPanel
@@ -763,6 +872,18 @@ export default function ItemRouteModal({
             onSelectComboSideVariant={setSelectedComboSideVariantId}
             selectedComboDrinkVariantId={selectedComboDrinkVariantId}
             onSelectComboDrinkVariant={setSelectedComboDrinkVariantId}
+            ingredientsSectionRef={(element) => {
+              sectionElementRefs.current.ingredients = element;
+            }}
+            sidesSectionRef={(element) => {
+              sectionElementRefs.current.sides = element;
+            }}
+            drinksSectionRef={(element) => {
+              sectionElementRefs.current.drinks = element;
+            }}
+            saucesSectionRef={(element) => {
+              sectionElementRefs.current.sauces = element;
+            }}
           />
           </div>
         </div>

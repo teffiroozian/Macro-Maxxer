@@ -149,6 +149,10 @@ export default function ItemDetailsPanel({
   onSelectComboSideVariant,
   selectedComboDrinkVariantId,
   onSelectComboDrinkVariant,
+  ingredientsSectionRef,
+  sidesSectionRef,
+  drinksSectionRef,
+  saucesSectionRef,
 }: {
   item: MenuItem;
   nutrition: Nutrition;
@@ -190,6 +194,10 @@ export default function ItemDetailsPanel({
   onSelectComboSideVariant?: (variantId: string) => void;
   selectedComboDrinkVariantId?: string;
   onSelectComboDrinkVariant?: (variantId: string) => void;
+  ingredientsSectionRef?: (element: HTMLElement | null) => void;
+  sidesSectionRef?: (element: HTMLElement | null) => void;
+  drinksSectionRef?: (element: HTMLElement | null) => void;
+  saucesSectionRef?: (element: HTMLElement | null) => void;
 }) {
   const n = nutrition;
   const proteinGrams = n.protein ?? 0;
@@ -408,7 +416,7 @@ export default function ItemDetailsPanel({
       {hasBuildContent ? (
       <div className="grid grid-cols-2 gap-3 rounded-[18px] bg-[#e9e9e9] p-3">
       {shouldShowIngredientSection && selectedIngredientTab ? (
-        <section className="col-span-2 rounded-[14px] border border-black/12 bg-white p-5">
+        <section ref={ingredientsSectionRef} className="col-span-2 rounded-[14px] border border-black/12 bg-white p-5">
           <h2 className="mb-6 text-2xl font-bold">Ingredients</h2>
           {!flattenIngredientList && visibleIngredientTabs.length > 1 ? (
             <div className="mb-4 flex flex-wrap gap-2">
@@ -609,7 +617,7 @@ export default function ItemDetailsPanel({
 
       {shouldShowComboSelections ? (
         <>
-          <section className="col-span-2 rounded-[14px] border border-black/12 bg-white p-5">
+          <section ref={sidesSectionRef} className="col-span-2 rounded-[14px] border border-black/12 bg-white p-5">
             <h2 className="mb-6 text-2xl font-bold">Sides</h2>
             <ul className="grid list-none grid-cols-2 items-stretch gap-[10px] pl-0">
               {comboSides.map((side) => {
@@ -686,7 +694,7 @@ export default function ItemDetailsPanel({
               })}
             </ul>
           </section>
-          <section className="col-span-2 rounded-[14px] border border-black/12 bg-white p-5">
+          <section ref={drinksSectionRef} className="col-span-2 rounded-[14px] border border-black/12 bg-white p-5">
             <h2 className="mb-6 text-2xl font-bold">Drinks</h2>
             <ul className="grid list-none grid-cols-2 items-stretch gap-[10px] pl-0">
               {comboDrinks.map((drink) => {
@@ -786,7 +794,11 @@ export default function ItemDetailsPanel({
                   ? formatSummaryDetail(sauceSelections[0]?.name ?? "None", sauceSummaryCalories)
                   : formatSummaryDetail(selectedAddon?.name ?? "None", selectedAddon?.calories ?? 0);
               return (
-                <div key={section.ref} className="min-w-0">
+                <div
+                  key={section.ref}
+                  ref={section.ref === "sauces" ? saucesSectionRef : undefined}
+                  className="min-w-0"
+                >
                   <div
                     className="flex min-h-[52px] w-full cursor-pointer items-center justify-between gap-[10px] rounded-[10px] border-0 bg-transparent p-3 text-left"
                     role="button"
