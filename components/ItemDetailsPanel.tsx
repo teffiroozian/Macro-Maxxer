@@ -12,7 +12,7 @@ import type {
   RestaurantAddons,
   RestaurantCustomizationRules,
 } from "@/types/menu";
-import { Check, ChevronDown, ChevronRight } from "lucide-react";
+import { Check, ChevronDown, ChevronRight, type LucideIcon } from "lucide-react";
 import {
   INCLUDED_INGREDIENT_TAB,
   getIngredientTabDisplayLabel,
@@ -149,6 +149,14 @@ export default function ItemDetailsPanel({
   onSelectComboSideVariant,
   selectedComboDrinkVariantId,
   onSelectComboDrinkVariant,
+  ingredientsSectionRef,
+  sidesSectionRef,
+  drinksSectionRef,
+  addonSectionRef,
+  addonSectionRefType,
+  sectionNavItems,
+  activeSectionId,
+  onSelectSection,
 }: {
   item: MenuItem;
   nutrition: Nutrition;
@@ -190,6 +198,14 @@ export default function ItemDetailsPanel({
   onSelectComboSideVariant?: (variantId: string) => void;
   selectedComboDrinkVariantId?: string;
   onSelectComboDrinkVariant?: (variantId: string) => void;
+  ingredientsSectionRef?: (element: HTMLElement | null) => void;
+  sidesSectionRef?: (element: HTMLElement | null) => void;
+  drinksSectionRef?: (element: HTMLElement | null) => void;
+  addonSectionRef?: (element: HTMLElement | null) => void;
+  addonSectionRefType?: AddonRef;
+  sectionNavItems?: Array<{ id: "ingredients" | "sides" | "drinks" | "sauces"; label: string; icon: LucideIcon }>;
+  activeSectionId?: "ingredients" | "sides" | "drinks" | "sauces" | null;
+  onSelectSection?: (sectionId: "ingredients" | "sides" | "drinks" | "sauces") => void;
 }) {
   const n = nutrition;
   const proteinGrams = n.protein ?? 0;
@@ -407,8 +423,35 @@ export default function ItemDetailsPanel({
     <div className="grid gap-16">
       {hasBuildContent ? (
       <div className="grid grid-cols-2 gap-3 rounded-[18px] bg-[#e9e9e9] p-3">
+      {sectionNavItems && sectionNavItems.length > 0 ? (
+        <div className="col-span-2 sticky top-0 z-20 w-full rounded-2xl border border-black/10 bg-white/95 px-2 py-1.5 shadow-[0_3px_10px_rgba(15,23,42,0.08)] backdrop-blur">
+          <div className="flex items-stretch justify-between">
+            {sectionNavItems.map((section, index) => {
+              const isActive = activeSectionId === section.id;
+              const Icon = section.icon;
+              return (
+                <div key={section.id} className="flex flex-1 items-center">
+                  <button
+                    type="button"
+                    className="cursor-pointer flex w-full flex-col items-center gap-1 px-2 py-1.5 text-center"
+                    onClick={() => onSelectSection?.(section.id)}
+                  >
+                    <span className={`inline-flex h-8 w-8 items-center justify-center rounded-full border text-[13px] ${isActive ? "border-blue-500 bg-blue-50 text-blue-600" : "border-slate-200 bg-slate-50 text-slate-500"}`}>
+                      <Icon size={15} />
+                    </span>
+                    <span className={`text-[11px] font-semibold uppercase tracking-wide ${isActive ? "text-blue-600" : "text-slate-500"}`}>
+                      {section.label}
+                    </span>
+                  </button>
+                  {index < sectionNavItems.length - 1 ? <span className="h-8 w-px bg-slate-200/80" /> : null}
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      ) : null}
       {shouldShowIngredientSection && selectedIngredientTab ? (
-        <section className="col-span-2 rounded-[14px] border border-black/12 bg-white p-5">
+        <section ref={ingredientsSectionRef} className="col-span-2 rounded-[14px] border border-black/12 bg-white p-5">
           <h2 className="mb-6 text-2xl font-bold">Ingredients</h2>
           {!flattenIngredientList && visibleIngredientTabs.length > 1 ? (
             <div className="mb-4 flex flex-wrap gap-2">
@@ -609,7 +652,7 @@ export default function ItemDetailsPanel({
 
       {shouldShowComboSelections ? (
         <>
-          <section className="col-span-2 rounded-[14px] border border-black/12 bg-white p-5">
+          <section ref={sidesSectionRef} className="col-span-2 rounded-[14px] border border-black/12 bg-white p-5">
             <h2 className="mb-6 text-2xl font-bold">Sides</h2>
             <ul className="grid list-none grid-cols-2 items-stretch gap-[10px] pl-0">
               {comboSides.map((side) => {
@@ -686,7 +729,7 @@ export default function ItemDetailsPanel({
               })}
             </ul>
           </section>
-          <section className="col-span-2 rounded-[14px] border border-black/12 bg-white p-5">
+          <section ref={drinksSectionRef} className="col-span-2 rounded-[14px] border border-black/12 bg-white p-5">
             <h2 className="mb-6 text-2xl font-bold">Drinks</h2>
             <ul className="grid list-none grid-cols-2 items-stretch gap-[10px] pl-0">
               {comboDrinks.map((drink) => {
@@ -786,7 +829,11 @@ export default function ItemDetailsPanel({
                   ? formatSummaryDetail(sauceSelections[0]?.name ?? "None", sauceSummaryCalories)
                   : formatSummaryDetail(selectedAddon?.name ?? "None", selectedAddon?.calories ?? 0);
               return (
-                <div key={section.ref} className="min-w-0">
+                <div
+                  key={section.ref}
+                  ref={section.ref === addonSectionRefType ? addonSectionRef : undefined}
+                  className="min-w-0"
+                >
                   <div
                     className="flex min-h-[52px] w-full cursor-pointer items-center justify-between gap-[10px] rounded-[10px] border-0 bg-transparent p-3 text-left"
                     role="button"

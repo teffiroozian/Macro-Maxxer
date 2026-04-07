@@ -1,9 +1,13 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { Utensils } from "lucide-react";
-import ItemDetailsPanel, { PortionSelector, resolvePanelIngredients } from "@/components/ItemDetailsPanel";
+import { CupSoda, Droplets, Salad, SquareStack, Utensils } from "lucide-react";
+import ItemDetailsPanel, {
+  PortionSelector,
+  resolvePanelIngredientTabs,
+  resolvePanelIngredients,
+} from "@/components/ItemDetailsPanel";
 import MacroTotalsGrid from "@/components/MacroTotalsGrid";
 import type {
   AddonOption,
@@ -52,6 +56,9 @@ const emptyAddon: AddonOption = {
 
 const sauceRef: AddonRef = "sauces";
 const maxSauceSelections = 5;
+const sectionScrollOffset = 96;
+
+type ModalSectionId = "ingredients" | "sides" | "drinks" | "sauces";
 
 export default function ItemRouteModal({
   restaurantId,
@@ -428,6 +435,89 @@ export default function ItemRouteModal({
           },
     [comboNutritionTotals, comboSideNutritionTotals, comboType, isComboEligibleCategory]
   );
+  const ingredientTabs = useMemo(
+    () =>
+      resolvePanelIngredientTabs(
+        item,
+        ingredients,
+        addons,
+        menuItems,
+        variants,
+        selectedVariantId,
+        customizationRules
+      ),
+    [addons, customizationRules, ingredients, item, menuItems, selectedVariantId, variants]
+  );
+  const hasIngredientSection = useMemo(() => {
+    const nonEmptyTabs = ingredientTabs.filter((tab) => tab.ingredients.length > 0);
+    return nonEmptyTabs.length > 1 || (nonEmptyTabs[0]?.ingredients.length ?? 0) > 0;
+  }, [ingredientTabs]);
+  const addonNavigationRef = useMemo<AddonRef | null>(() => {
+    const itemAddonRefs = new Set(item.addonRefs ?? []);
+    if (itemAddonRefs.has("dressings") && (addons?.dressings?.length ?? 0) > 0) return "dressings";
+    if (itemAddonRefs.has("sauces") && (addons?.sauces?.length ?? 0) > 0) return "sauces";
+    return null;
+  }, [addons, item.addonRefs]);
+  const addonSectionLabel = addonNavigationRef
+    ? addonNavigationRef.charAt(0).toUpperCase() + addonNavigationRef.slice(1)
+    : null;
+  const hasAddonSection = Boolean(addonNavigationRef);
+  const hasComboSections = isComboEligibleCategory && comboType === "combo-meal";
+  const visibleSections = useMemo(
+    () =>
+      [
+        hasIngredientSection
+          ? { id: "ingredients" as const, label: "Ingredients", icon: Salad }
+          : null,
+        hasComboSections ? { id: "sides" as const, label: "Sides", icon: SquareStack } : null,
+        hasComboSections ? { id: "drinks" as const, label: "Drinks", icon: CupSoda } : null,
+        hasAddonSection && addonSectionLabel ? { id: "sauces" as const, label: addonSectionLabel, icon: Droplets } : null,
+      ].filter((section): section is { id: ModalSectionId; label: string; icon: typeof Salad } => Boolean(section)),
+    [addonSectionLabel, hasAddonSection, hasComboSections, hasIngredientSection]
+  );
+  const [activeSectionId, setActiveSectionId] = useState<ModalSectionId | null>(visibleSections[0]?.id ?? null);
+  const scrollContainerRef = useRef<HTMLDivElement | null>(null);
+  const sectionElementRefs = useRef<Partial<Record<ModalSectionId, HTMLElement | null>>>({});
+
+  useEffect(() => {
+    const container = scrollContainerRef.current;
+    if (!container || visibleSections.length === 0) return;
+
+    const handleScroll = () => {
+      const containerTop = container.getBoundingClientRect().top;
+      const threshold = containerTop + sectionScrollOffset + 12;
+
+      let nextActive = visibleSections[0]?.id ?? null;
+      visibleSections.forEach((section) => {
+        const sectionElement = sectionElementRefs.current[section.id];
+        if (!sectionElement) return;
+        if (sectionElement.getBoundingClientRect().top <= threshold) {
+          nextActive = section.id;
+        }
+      });
+
+      setActiveSectionId(nextActive);
+    };
+
+    handleScroll();
+    container.addEventListener("scroll", handleScroll, { passive: true });
+    return () => container.removeEventListener("scroll", handleScroll);
+  }, [visibleSections]);
+
+  const scrollToSection = (sectionId: ModalSectionId) => {
+    const container = scrollContainerRef.current;
+    const sectionElement = sectionElementRefs.current[sectionId];
+    if (!container || !sectionElement) return;
+
+    const containerTop = container.getBoundingClientRect().top;
+    const sectionTop = sectionElement.getBoundingClientRect().top;
+    const nextScrollTop = container.scrollTop + (sectionTop - containerTop) - sectionScrollOffset;
+
+    container.scrollTo({
+      top: Math.max(0, nextScrollTop),
+      behavior: "smooth",
+    });
+  };
 
   const customizationTotals = useMemo(
     () => ({
@@ -546,7 +636,7 @@ export default function ItemRouteModal({
           ×
         </button>
 
-        <div className="h-[calc(100%-52px-56px)] overflow-y-auto pr-2 pb-6">
+        <div ref={scrollContainerRef} className="h-[calc(100%-52px-56px)] overflow-y-auto pr-2 pb-6">
         <div className="grid justify-items-center gap-16">
           <div className="grid justify-items-center gap-8">
             <h1 className="text-center text-[32px] font-extrabold">{item.name}</h1>
@@ -763,6 +853,22 @@ export default function ItemRouteModal({
             onSelectComboSideVariant={setSelectedComboSideVariantId}
             selectedComboDrinkVariantId={selectedComboDrinkVariantId}
             onSelectComboDrinkVariant={setSelectedComboDrinkVariantId}
+            ingredientsSectionRef={(element) => {
+              sectionElementRefs.current.ingredients = element;
+            }}
+            sidesSectionRef={(element) => {
+              sectionElementRefs.current.sides = element;
+            }}
+            drinksSectionRef={(element) => {
+              sectionElementRefs.current.drinks = element;
+            }}
+            addonSectionRef={(element) => {
+              sectionElementRefs.current.sauces = element;
+            }}
+            addonSectionRefType={addonNavigationRef ?? undefined}
+            sectionNavItems={visibleSections}
+            activeSectionId={activeSectionId}
+            onSelectSection={scrollToSection}
           />
           </div>
         </div>
