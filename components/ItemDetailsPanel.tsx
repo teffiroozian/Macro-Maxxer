@@ -266,7 +266,7 @@ export default function ItemDetailsPanel({
   );
   const [activeIngredientTab, setActiveIngredientTab] = useState(ingredientTabs[0]?.label ?? INCLUDED_INGREDIENT_TAB);
   const availableIngredientTabs = ingredientTabs.filter((tab) => tab.ingredients.length > 0);
-  const visibleIngredientTabs = availableIngredientTabs.filter((tab) => tab.label !== INCLUDED_INGREDIENT_TAB);
+  const visibleIngredientTabs = availableIngredientTabs;
   const flattenedIngredientTab = flattenIngredientList
     ? {
         id: "all-ingredients",
