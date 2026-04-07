@@ -79,6 +79,16 @@ function summarizeItem(item: { optionsLabel?: string; customizations?: string[] 
   return segments.join(" • ");
 }
 
+function areStringArraysEqual(a?: string[], b?: string[]) {
+  if (!a?.length && !b?.length) return true;
+  if (!a || !b || a.length !== b.length) return false;
+  return a.every((value, index) => value === b[index]);
+}
+
+function areMacrosEqual(a: CartMacros, b: CartMacros) {
+  return a.calories === b.calories && a.protein === b.protein && a.carbs === b.carbs && a.fat === b.fat;
+}
+
 export default function CartPage() {
   const { items, totals, updateQuantity, updateItem } = useCart();
   const router = useRouter();
@@ -224,6 +234,16 @@ export default function CartPage() {
                   onCartDecrement={() => updateQuantity(cartItem.id, cartItem.quantity - 1)}
                   onCartIncrement={() => updateQuantity(cartItem.id, cartItem.quantity + 1)}
                   onCartConfigurationChange={(next) => {
+                    const hasAnyChange =
+                      cartItem.variantId !== next.variantId
+                      || cartItem.variantLabel !== next.variantLabel
+                      || cartItem.image !== next.image
+                      || cartItem.optionsLabel !== next.optionsLabel
+                      || !areStringArraysEqual(cartItem.customizations, next.customizations)
+                      || !areMacrosEqual(cartItem.macrosPerItem, next.macrosPerItem as CartMacros);
+
+                    if (!hasAnyChange) return;
+
                     updateItem(cartItem.id, {
                       variantId: next.variantId,
                       variantLabel: next.variantLabel,
