@@ -16,12 +16,15 @@ export function getSelectedIngredientCountsFromCustomizations(
   }
 
   const ingredientLookup = new Map<string, string>();
+  const ingredientById = new Map<string, ResolvedPanelIngredient>();
   resolvedIngredients.forEach((ingredient) => {
     ingredientLookup.set(ingredient.id.trim().toLowerCase(), ingredient.id);
     ingredientLookup.set(ingredient.label.trim().toLowerCase(), ingredient.id);
+    ingredientById.set(ingredient.id, ingredient);
   });
 
-  return customizations.reduce<Record<string, number>>((acc, label) => {
+  const customizedIngredientIds = new Set<string>();
+  const parsedCounts = customizations.reduce<Record<string, number>>((acc, label) => {
     const match = label.match(/^(.*?):\s*(Removed|(\d+)x|Remove|Extra)$/i);
     if (!match) return acc;
 
@@ -40,6 +43,42 @@ export function getSelectedIngredientCountsFromCustomizations(
     if (!Number.isFinite(nextCount)) return acc;
 
     acc[ingredientId] = nextCount;
+    customizedIngredientIds.add(ingredientId);
     return acc;
   }, { ...baseCounts });
+
+  const ingredientsByTab = resolvedIngredients.reduce<Map<string, ResolvedPanelIngredient[]>>((acc, ingredient) => {
+    const tabLabel = ingredient.tabLabel?.trim();
+    if (!tabLabel) return acc;
+
+    const tabIngredients = acc.get(tabLabel) ?? [];
+    tabIngredients.push(ingredient);
+    acc.set(tabLabel, tabIngredients);
+    return acc;
+  }, new Map());
+
+  ingredientsByTab.forEach((tabIngredients) => {
+    const noneOption = tabIngredients.find((ingredient) => ingredient.isNoneOption);
+    if (!noneOption) return;
+
+    const customizedIngredientsInTab = tabIngredients.filter((ingredient) => customizedIngredientIds.has(ingredient.id));
+    if (customizedIngredientsInTab.length === 0) return;
+
+    const selectedIngredient = [...customizedIngredientsInTab]
+      .reverse()
+      .find((ingredient) => (parsedCounts[ingredient.id] ?? ingredientById.get(ingredient.id)?.defaultCount ?? 0) > 0);
+
+    if (selectedIngredient) {
+      tabIngredients.forEach((ingredient) => {
+        parsedCounts[ingredient.id] = ingredient.id === selectedIngredient.id ? 1 : 0;
+      });
+      return;
+    }
+
+    tabIngredients.forEach((ingredient) => {
+      parsedCounts[ingredient.id] = ingredient.id === noneOption.id ? 1 : 0;
+    });
+  });
+
+  return parsedCounts;
 }
