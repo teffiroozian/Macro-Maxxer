@@ -573,6 +573,11 @@ export default function MenuItemCard({
 
   const rankText = typeof rankIndex === "number" ? pad2(rankIndex + 1) : null;
   const isCartMode = mode === "cart";
+  const quantityMultiplier = isCartMode ? Math.max(cartQuantity, 1) : 1;
+  const displayCalories = (calories ?? 0) * quantityMultiplier;
+  const displayProtein = (protein ?? 0) * quantityMultiplier;
+  const displayCarbs = (carbs ?? 0) * quantityMultiplier;
+  const displayFat = (fat ?? 0) * quantityMultiplier;
   const isCartPage = pathname === "/cart";
   const useCartQuickEditPanel = isCartMode && isCartPage;
 
@@ -978,9 +983,9 @@ export default function MenuItemCard({
             <div className="text-[30px] leading-[1.05] font-bold">{item.name}</div>
             <div className="flex flex-wrap items-center">
               <div className="inline-flex items-baseline gap-2">
-                <div className="text-lg font-bold text-black/50">{formatCalories(calories)} calories</div>
+                <div className="text-lg font-bold text-black/50">{formatCalories(displayCalories)} calories</div>
                 {hasActiveCustomization ? (
-                  <span className="text-sm font-bold text-green-600">{formatDelta(customizationTotals.calories)}</span>
+                  <span className="text-sm font-bold text-green-600">{formatDelta(customizationTotals.calories * quantityMultiplier)}</span>
                 ) : null}
               </div>
               {variants && !item.hideVariantSelector ? (
@@ -1020,27 +1025,27 @@ export default function MenuItemCard({
           <div className="mt-auto flex items-end gap-[60px]">
             <div className="flex flex-col items-center justify-start">
               <div className="inline-flex items-baseline gap-1.5">
-                <div className="text-2xl font-bold text-[#c2410c]">{formatMacro(protein)}</div>
+                <div className="text-2xl font-bold text-[#c2410c]">{formatMacro(displayProtein)}</div>
                 {hasActiveCustomization ? (
-                  <span className="text-sm font-bold text-green-600">{formatDelta(customizationTotals.protein)}</span>
+                  <span className="text-sm font-bold text-green-600">{formatDelta(customizationTotals.protein * quantityMultiplier)}</span>
                 ) : null}
               </div>
               <div className="text-[10px] font-bold">PROTEIN</div>
             </div>
             <div className="flex flex-col items-center justify-start">
               <div className="inline-flex items-baseline gap-1.5">
-                <div className="text-2xl font-bold text-[#ca8a04]">{formatMacro(carbs)}</div>
+                <div className="text-2xl font-bold text-[#ca8a04]">{formatMacro(displayCarbs)}</div>
                 {hasActiveCustomization ? (
-                  <span className="text-sm font-bold text-green-600">{formatDelta(customizationTotals.carbs)}</span>
+                  <span className="text-sm font-bold text-green-600">{formatDelta(customizationTotals.carbs * quantityMultiplier)}</span>
                 ) : null}
               </div>
               <div className="text-[10px] font-bold">CARBS</div>
             </div>
             <div className="flex flex-col items-center justify-start">
               <div className="inline-flex items-baseline gap-1.5">
-                <div className="text-2xl font-bold text-[#2563eb]">{formatMacro(fat)}</div>
+                <div className="text-2xl font-bold text-[#2563eb]">{formatMacro(displayFat)}</div>
                 {hasActiveCustomization ? (
-                  <span className="text-sm font-bold text-green-600">{formatDelta(customizationTotals.fat)}</span>
+                  <span className="text-sm font-bold text-green-600">{formatDelta(customizationTotals.fat * quantityMultiplier)}</span>
                 ) : null}
               </div>
               <div className="text-[10px] font-bold">FAT</div>
@@ -1168,10 +1173,10 @@ export default function MenuItemCard({
                       </div>
                     </div>
                     <div className="flex items-end justify-end gap-4">
-                      <QuickMacro value={nutrition.calories} label="Cal" tone="calories" />
-                      <QuickMacro value={nutrition.protein} label="Protein" tone="protein" />
-                      <QuickMacro value={nutrition.carbs} label="Carbs" tone="carbs" />
-                      <QuickMacro value={nutrition.totalFat} label="Fat" tone="fat" />
+                      <QuickMacro value={displayCalories} label="Cal" tone="calories" />
+                      <QuickMacro value={displayProtein} label="Protein" tone="protein" />
+                      <QuickMacro value={displayCarbs} label="Carbs" tone="carbs" />
+                      <QuickMacro value={displayFat} label="Fat" tone="fat" />
                     </div>
                   </div>
                 </section>
@@ -1304,10 +1309,10 @@ export default function MenuItemCard({
                               </button>
                             </div>
                             <div className="flex items-end justify-end gap-4">
-                              <QuickMacro value={addon.calories} label="Cal" tone="calories" />
-                              <QuickMacro value={addon.protein} label="Protein" tone="protein" />
-                              <QuickMacro value={addon.carbs} label="Carbs" tone="carbs" />
-                              <QuickMacro value={addon.totalFat} label="Fat" tone="fat" />
+                              <QuickMacro value={addon.calories * count} label="Cal" tone="calories" />
+                              <QuickMacro value={addon.protein * count} label="Protein" tone="protein" />
+                              <QuickMacro value={addon.carbs * count} label="Carbs" tone="carbs" />
+                              <QuickMacro value={addon.totalFat * count} label="Fat" tone="fat" />
                             </div>
                           </div>
                         );
