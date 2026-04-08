@@ -168,6 +168,19 @@ export default function CartPage() {
     },
   ];
   const proteinPer100Calories = totals.calories > 0 ? Math.round((totals.protein / totals.calories) * 100) : 0;
+  const formatMacroSegmentLabel = (label: string, percent: number) => {
+    const roundedPercent = Math.round(percent);
+
+    if (percent >= 18) {
+      return `${label} ${roundedPercent}%`;
+    }
+
+    if (percent >= 10) {
+      return `${label.charAt(0)} ${roundedPercent}%`;
+    }
+
+    return `${roundedPercent}%`;
+  };
 
   return (
     <main className="mx-auto flex min-h-screen w-full max-w-5xl flex-col gap-6 px-4 pb-10 pt-8 sm:px-6 sm:pt-10">
@@ -336,7 +349,7 @@ export default function CartPage() {
                           className={`flex min-w-0 items-center justify-center px-1 rounded-xl text-[11px] font-semibold text-neutral-900 ${segment.color}`}
                           style={{ width: `${segment.percent}%` }}
                         >
-                          {segment.percent >= 18 ? `${segment.label} ${Math.round(segment.percent)}%` : ""}
+                          {formatMacroSegmentLabel(segment.label, segment.percent)}
                         </div>
                       ))}
                     </div>
