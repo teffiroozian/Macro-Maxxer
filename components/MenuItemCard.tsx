@@ -257,6 +257,7 @@ export default function MenuItemCard({
   const router = useRouter();
   const pathname = usePathname();
   const id = useId();
+  const shouldOpenModalOnCardClick = mode !== "cart" && Boolean(itemHref) && showDetailsButton;
   const variants = item.variants?.length ? item.variants : null;
   const hasVariantDropdown = Boolean(variants && variants.length > 1 && !item.hideVariantSelector);
   const variantSelectorDisabled = Boolean(item.disableVariantSelector);
@@ -949,10 +950,20 @@ export default function MenuItemCard({
         role="button"
         tabIndex={0}
         className="group relative flex w-full cursor-pointer items-stretch gap-6 bg-transparent p-4 text-left focus-visible:outline-2 focus-visible:outline-blue-600 focus-visible:outline-offset-[-2px]"
-        onClick={() => setOpen((v) => !v)}
+        onClick={() => {
+          if (shouldOpenModalOnCardClick && itemHref) {
+            router.push(itemHref, { scroll: false });
+            return;
+          }
+          setOpen((v) => !v);
+        }}
         onKeyDown={(event) => {
           if (event.key === "Enter" || event.key === " ") {
             event.preventDefault();
+            if (shouldOpenModalOnCardClick && itemHref) {
+              router.push(itemHref, { scroll: false });
+              return;
+            }
             setOpen((v) => !v);
           }
         }}
@@ -1107,18 +1118,26 @@ export default function MenuItemCard({
           <div
             role="button"
             tabIndex={0}
-            aria-label={`Toggle addon options for ${item.name}`}
+            aria-label={shouldOpenModalOnCardClick ? `Open details for ${item.name}` : `Toggle addon options for ${item.name}`}
             className={`text-[26px] leading-none font-medium text-black/75 transition duration-200 group-hover:text-black/95 ${
               open ? "rotate-45" : ""
             }`}
             onClick={(event) => {
               event.stopPropagation();
+              if (shouldOpenModalOnCardClick && itemHref) {
+                router.push(itemHref, { scroll: false });
+                return;
+              }
               setOpen((v) => !v);
             }}
             onKeyDown={(event) => {
               if (event.key === "Enter" || event.key === " ") {
                 event.preventDefault();
                 event.stopPropagation();
+                if (shouldOpenModalOnCardClick && itemHref) {
+                  router.push(itemHref, { scroll: false });
+                  return;
+                }
                 setOpen((v) => !v);
               }
             }}
