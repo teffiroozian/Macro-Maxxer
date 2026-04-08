@@ -934,7 +934,9 @@ export default function MenuItemCard({
 
   return (
     <li
-      className={`list-none overflow-hidden rounded-2xl bg-white shadow-[0_4px_12px_rgba(0,0,0,0.2)] ${
+      className={`list-none rounded-2xl bg-white shadow-[0_4px_12px_rgba(0,0,0,0.2)] ${
+        open && useCartQuickEditPanel ? "overflow-visible" : "overflow-hidden"
+      } ${
         isTopRanked ? "border-[1.5px] border-black/80" : "border border-black/15"
       }`}
     >
@@ -1244,11 +1246,13 @@ export default function MenuItemCard({
                   </section>
                 ) : null}
 
-                {item.addonRefs?.includes("sauces") && (addons?.sauces?.length ?? 0) > 0 ? (
+                {item.addonRefs?.includes("sauces") &&
+                (addons?.sauces?.length ?? 0) > 0 &&
+                addons?.sauces?.some((addon) => (selectedSauceCounts[addon.name] ?? 0) > 0) ? (
                   <section>
                     <p className="mb-2 px-1 text-[11px] font-semibold uppercase tracking-[0.14em] text-slate-600">Sauces</p>
                     <div className="space-y-1.5">
-                      {addons?.sauces?.filter((addon) => addon.name !== "None").map((addon) => {
+                      {addons?.sauces?.filter((addon) => addon.name !== "None" && (selectedSauceCounts[addon.name] ?? 0) > 0).map((addon) => {
                         const count = selectedSauceCounts[addon.name] ?? 0;
                         return (
                           <div
@@ -1312,43 +1316,28 @@ export default function MenuItemCard({
                   </section>
                 ) : null}
 
-                {item.addonRefs?.includes("dressings") && (addons?.dressings?.length ?? 0) > 0 ? (
+                {item.addonRefs?.includes("dressings") &&
+                selectedAddons.dressings &&
+                selectedAddons.dressings.name !== "None" ? (
                   <section>
                     <p className="mb-2 px-1 text-[11px] font-semibold uppercase tracking-[0.14em] text-slate-600">Dressings</p>
                     <div className="space-y-1.5">
-                      {addons?.dressings?.filter((addon) => addon.name !== "None").map((addon) => {
-                        const isSelected = selectedAddons.dressings?.name === addon.name;
-                        return (
-                          <button
-                            key={addon.name}
-                            type="button"
-                            onClick={() => {
-                              setSelectedAddons((prev) => {
-                                const next = { ...prev, dressings: isSelected ? emptyAddon : addon };
-                                emitCartConfiguration(selectedVariantId, next, selectedSauceCounts, selectedCommonChangeIds);
-                                return next;
-                              });
-                            }}
-                            className="grid w-full grid-cols-[60px_minmax(0,1fr)_auto] items-center gap-3 rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-left"
-                          >
-                            <div className="h-[72px] w-[72px] overflow-hidden rounded-lg border border-black/10 bg-white">
-                              {addon.image ? (
-                                <img src={addon.image} alt={addon.name} className="h-full w-full object-contain p-1" />
-                              ) : null}
-                            </div>
-                            <div className="min-w-0">
-                              <p className="truncate text-sm font-semibold text-slate-900">{addon.name}</p>
-                              <p className="text-xs font-medium text-slate-500">{isSelected ? "Selected" : "Tap to select"}</p>
-                            </div>
-                            <div className="flex items-end justify-end gap-4">
-                              <QuickMacro value={addon.calories} label="Cal" tone="calories" />
-                              <QuickMacro value={addon.protein} label="Protein" tone="protein" />
-                              <QuickMacro value={addon.carbs} label="Carbs" tone="carbs" />
-                              <QuickMacro value={addon.totalFat} label="Fat" tone="fat" />
-                            </div>
-                          </button>
-                        );
-                      })}
+                      <div className="grid w-full grid-cols-[60px_minmax(0,1fr)_auto] items-center gap-3 rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-left">
+                        <div className="h-[72px] w-[72px] overflow-hidden rounded-lg border border-black/10 bg-white">
+                          {selectedAddons.dressings.image ? (
+                            <img src={selectedAddons.dressings.image} alt={selectedAddons.dressings.name} className="h-full w-full object-contain p-1" />
+                          ) : null}
+                        </div>
+                        <div className="min-w-0">
+                          <p className="truncate text-sm font-semibold text-slate-900">{selectedAddons.dressings.name}</p>
+                        </div>
+                        <div className="flex items-end justify-end gap-4">
+                          <QuickMacro value={selectedAddons.dressings.calories} label="Cal" tone="calories" />
+                          <QuickMacro value={selectedAddons.dressings.protein} label="Protein" tone="protein" />
+                          <QuickMacro value={selectedAddons.dressings.carbs} label="Carbs" tone="carbs" />
+                          <QuickMacro value={selectedAddons.dressings.totalFat} label="Fat" tone="fat" />
+                        </div>
+                      </div>
                     </div>
                   </section>
                 ) : null}
