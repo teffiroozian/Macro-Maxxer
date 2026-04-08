@@ -1,7 +1,16 @@
 import restaurants from "@/app/data/index.json";
 import { normalizeAddons } from "@/lib/addons";
 import { resolveMenuDataset } from "@/lib/menuResolver";
-import type { CommonChange, IngredientItem, IngredientModifier, MenuItem, RestaurantAddons, RestaurantBuilderConfig, RestaurantCustomizationRules } from "@/types/menu";
+import type {
+  AddonRef,
+  CommonChange,
+  IngredientItem,
+  IngredientModifier,
+  MenuItem,
+  RestaurantAddons,
+  RestaurantBuilderConfig,
+  RestaurantCustomizationRules,
+} from "@/types/menu";
 
 export type RestaurantData = {
   id: string;
@@ -53,4 +62,37 @@ export async function getRestaurantData(id: string): Promise<RestaurantData | nu
 
 export function getItemBySlug(items: MenuItem[], slug: string) {
   return items.find((item) => toItemSlug(item) === slug);
+}
+
+export function buildAddonMenuItems(restaurantId: string, addons?: RestaurantAddons): MenuItem[] {
+  if (!addons) return [];
+
+  const categoryByAddonRef: Record<AddonRef, string> = {
+    sauces: "Dipping Sauces",
+    dressings: "Dressings",
+    condiments: "Condiments",
+  };
+
+  return (Object.entries(addons) as [AddonRef, NonNullable<RestaurantAddons[AddonRef]>][])
+    .flatMap(([addonRef, options]) =>
+      options.map((option) => ({
+        id: `${restaurantId}-${addonRef}-${option.name}`.toLowerCase().replace(/[^a-z0-9]+/g, "-"),
+        name: option.name,
+        nutrition: {
+          calories: option.calories,
+          protein: option.protein,
+          carbs: option.carbs,
+          totalFat: option.totalFat ?? 0,
+          satFat: option.satFat,
+          transFat: option.transFat,
+          cholesterol: option.cholesterol,
+          sodium: option.sodium,
+          fiber: option.fiber,
+          sugars: option.sugars,
+        },
+        categories: [categoryByAddonRef[addonRef]],
+        portionType: "addon",
+        image: option.image,
+      }))
+    );
 }

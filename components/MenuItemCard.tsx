@@ -1,8 +1,8 @@
 "use client";
 
-import { useEffect, useId, useMemo, useState } from "react";
-import { useRouter } from "next/navigation";
-import { Utensils } from "lucide-react";
+import { useEffect, useId, useMemo, useRef, useState } from "react";
+import { usePathname, useRouter } from "next/navigation";
+import { ChevronDown, Pencil } from "lucide-react";
 import type {
   AddonOption,
   AddonRef,
@@ -29,8 +29,6 @@ import {
   isWaffleFries,
   menuItemFatWithFallback,
   normalizeCategory,
-  resolveJustItemIcon,
-  resolveJustItemLabel,
   sortComboSides,
   sumNutrition,
 } from "@/lib/menuItemCalculations";
@@ -45,6 +43,101 @@ import { useMenuItemConfiguration } from "./menu-item-card/useMenuItemConfigurat
 
 function pad2(n: number) {
   return String(n).padStart(2, "0");
+}
+
+function toMacroNumber(value?: number) {
+  if (typeof value !== "number" || Number.isNaN(value)) return 0;
+  return Math.round(value);
+}
+
+function QuickMacro({
+  value,
+  label,
+  tone,
+}: {
+  value?: number;
+  label: string;
+  tone: "calories" | "protein" | "carbs" | "fat";
+}) {
+  const toneClass =
+    tone === "protein"
+      ? "text-[#c2410c]"
+      : tone === "carbs"
+        ? "text-[#ca8a04]"
+        : tone === "fat"
+          ? "text-[#2563eb]"
+          : "text-slate-700";
+
+  return (
+    <div className="flex min-w-[44px] flex-col items-center justify-center">
+      <span className={`text-[21px] leading-5 font-bold ${toneClass}`}>{toMacroNumber(value)}</span>
+      <span className="mt-1 text-[9px] font-bold uppercase tracking-[0.06em] text-slate-600">{label}</span>
+    </div>
+  );
+}
+
+function QuickVariantDropdown({
+  value,
+  options,
+  ariaLabel,
+  onChange,
+}: {
+  value?: string;
+  options: Array<{ id: string; label: string }>;
+  ariaLabel: string;
+  onChange: (id: string) => void;
+}) {
+  const [open, setOpen] = useState(false);
+  const wrapperRef = useRef<HTMLDivElement | null>(null);
+  const selectedLabel = options.find((option) => option.id === value)?.label ?? options[0]?.label ?? "Select";
+
+  useEffect(() => {
+    if (!open) return;
+    const handlePointerDown = (event: MouseEvent) => {
+      if (!wrapperRef.current?.contains(event.target as Node)) {
+        setOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handlePointerDown);
+    return () => document.removeEventListener("mousedown", handlePointerDown);
+  }, [open, wrapperRef]);
+
+  return (
+    <div ref={(node) => { wrapperRef.current = node; }} className="relative">
+      <button
+        type="button"
+        aria-label={ariaLabel}
+        onClick={() => setOpen((prev) => !prev)}
+        className="inline-flex h-8 max-w-[180px] items-center justify-between gap-2 rounded-full border border-slate-300 bg-slate-50 px-3 text-xs font-semibold text-slate-700 transition hover:bg-white"
+      >
+        <span className="truncate">{selectedLabel}</span>
+        <ChevronDown className={`h-3.5 w-3.5 text-slate-500 transition ${open ? "rotate-180" : ""}`} />
+      </button>
+
+      {open ? (
+        <div className="absolute left-0 top-[calc(100%+6px)] z-40 w-max min-w-full overflow-hidden rounded-xl border border-black/15 bg-white p-1.5 shadow-[0_12px_28px_rgba(0,0,0,0.14)]">
+          {options.map((option) => {
+            const active = option.id === value;
+            return (
+              <button
+                key={option.id}
+                type="button"
+                onClick={() => {
+                  onChange(option.id);
+                  setOpen(false);
+                }}
+                className={`flex w-full items-center rounded-lg px-3 py-2 text-left text-sm font-semibold transition ${
+                  active ? "bg-black text-white" : "text-slate-800 hover:bg-slate-100"
+                }`}
+              >
+                {option.label}
+              </button>
+            );
+          })}
+        </div>
+      ) : null}
+    </div>
+  );
 }
 
 
@@ -162,6 +255,7 @@ export default function MenuItemCard({
 }) {
   const [open, setOpen] = useState(false);
   const router = useRouter();
+  const pathname = usePathname();
   const id = useId();
   const variants = item.variants?.length ? item.variants : null;
   const hasVariantDropdown = Boolean(variants && variants.length > 1 && !item.hideVariantSelector);
@@ -206,7 +300,6 @@ export default function MenuItemCard({
     selectedIngredientCounts,
     setSelectedIngredientCounts,
     comboType,
-    setComboType,
     parsedInitialComboCustomization,
     resetConfiguration,
   } = useMenuItemConfiguration({
@@ -336,13 +429,6 @@ export default function MenuItemCard({
     const allowed = new Set(["sandwich", "nuggets", "chicken", "salad", "wrap", "breakfast"]);
     return item.categories.some((category) => allowed.has(normalizeCategory(category)));
   }, [item.categories, restaurantId]);
-  const comboTypeOptions = useMemo(
-    () => [
-      { id: "just-item" as const, label: resolveJustItemLabel(item), icon: resolveJustItemIcon(item) },
-      { id: "combo-meal" as const, label: "Combo Meal", icon: Utensils },
-    ],
-    [item]
-  );
   const comboSides = useMemo(
     () => {
       const breakfastComboItem = isChickfilaBreakfastItem(restaurantId, item);
@@ -487,6 +573,13 @@ export default function MenuItemCard({
 
   const rankText = typeof rankIndex === "number" ? pad2(rankIndex + 1) : null;
   const isCartMode = mode === "cart";
+  const quantityMultiplier = isCartMode ? Math.max(cartQuantity, 1) : 1;
+  const displayCalories = (calories ?? 0) * quantityMultiplier;
+  const displayProtein = (protein ?? 0) * quantityMultiplier;
+  const displayCarbs = (carbs ?? 0) * quantityMultiplier;
+  const displayFat = (fat ?? 0) * quantityMultiplier;
+  const isCartPage = pathname === "/cart";
+  const useCartQuickEditPanel = isCartMode && isCartPage;
 
   const selectedCommonChanges = useMemo(
     () => applicableCommonChanges.filter((change) => selectedCommonChangeIds.includes(change.id)),
@@ -846,7 +939,9 @@ export default function MenuItemCard({
 
   return (
     <li
-      className={`list-none overflow-hidden rounded-2xl bg-white shadow-[0_4px_12px_rgba(0,0,0,0.2)] ${
+      className={`list-none rounded-2xl bg-white shadow-[0_4px_12px_rgba(0,0,0,0.2)] ${
+        open && useCartQuickEditPanel ? "overflow-visible" : "overflow-hidden"
+      } ${
         isTopRanked ? "border-[1.5px] border-black/80" : "border border-black/15"
       }`}
     >
@@ -888,9 +983,9 @@ export default function MenuItemCard({
             <div className="text-[30px] leading-[1.05] font-bold">{item.name}</div>
             <div className="flex flex-wrap items-center">
               <div className="inline-flex items-baseline gap-2">
-                <div className="text-lg font-bold text-black/50">{formatCalories(calories)} calories</div>
+                <div className="text-lg font-bold text-black/50">{formatCalories(displayCalories)} calories</div>
                 {hasActiveCustomization ? (
-                  <span className="text-sm font-bold text-green-600">{formatDelta(customizationTotals.calories)}</span>
+                  <span className="text-sm font-bold text-green-600">{formatDelta(customizationTotals.calories * quantityMultiplier)}</span>
                 ) : null}
               </div>
               {variants && !item.hideVariantSelector ? (
@@ -930,27 +1025,27 @@ export default function MenuItemCard({
           <div className="mt-auto flex items-end gap-[60px]">
             <div className="flex flex-col items-center justify-start">
               <div className="inline-flex items-baseline gap-1.5">
-                <div className="text-2xl font-bold text-[#c2410c]">{formatMacro(protein)}</div>
+                <div className="text-2xl font-bold text-[#c2410c]">{formatMacro(displayProtein)}</div>
                 {hasActiveCustomization ? (
-                  <span className="text-sm font-bold text-green-600">{formatDelta(customizationTotals.protein)}</span>
+                  <span className="text-sm font-bold text-green-600">{formatDelta(customizationTotals.protein * quantityMultiplier)}</span>
                 ) : null}
               </div>
               <div className="text-[10px] font-bold">PROTEIN</div>
             </div>
             <div className="flex flex-col items-center justify-start">
               <div className="inline-flex items-baseline gap-1.5">
-                <div className="text-2xl font-bold text-[#ca8a04]">{formatMacro(carbs)}</div>
+                <div className="text-2xl font-bold text-[#ca8a04]">{formatMacro(displayCarbs)}</div>
                 {hasActiveCustomization ? (
-                  <span className="text-sm font-bold text-green-600">{formatDelta(customizationTotals.carbs)}</span>
+                  <span className="text-sm font-bold text-green-600">{formatDelta(customizationTotals.carbs * quantityMultiplier)}</span>
                 ) : null}
               </div>
               <div className="text-[10px] font-bold">CARBS</div>
             </div>
             <div className="flex flex-col items-center justify-start">
               <div className="inline-flex items-baseline gap-1.5">
-                <div className="text-2xl font-bold text-[#2563eb]">{formatMacro(fat)}</div>
+                <div className="text-2xl font-bold text-[#2563eb]">{formatMacro(displayFat)}</div>
                 {hasActiveCustomization ? (
-                  <span className="text-sm font-bold text-green-600">{formatDelta(customizationTotals.fat)}</span>
+                  <span className="text-sm font-bold text-green-600">{formatDelta(customizationTotals.fat * quantityMultiplier)}</span>
                 ) : null}
               </div>
               <div className="text-[10px] font-bold">FAT</div>
@@ -1045,244 +1140,429 @@ export default function MenuItemCard({
 
       <div
         id={`${id}-details`}
-        className={`overflow-hidden bg-white transition-[max-height] duration-300 ease-in-out ${
+        className={`${open && useCartQuickEditPanel ? "overflow-visible" : "overflow-hidden"} bg-white transition-[max-height] duration-300 ease-in-out ${
           open ? "max-h-[5000px]" : "max-h-0"
         }`}
       >
         <div className="p-3">
-          {isCartMode && isComboEligibleCategory ? (
-            <div className="mb-3 flex flex-wrap gap-2">
-              {comboTypeOptions.map((option) => {
-                const Icon = option.icon;
-                const isActive = comboType === option.id;
-                return (
-                  <button
-                    key={option.id}
-                    type="button"
-                    className={`inline-flex cursor-pointer items-center gap-2 rounded-full border px-4 py-2 text-sm font-semibold transition ${
-                      isActive ? "border-black bg-black text-white" : "border-black/20 bg-white text-black/75"
-                    }`}
-                    onClick={() => {
-                      setComboType(option.id);
-                      emitCartConfiguration(
-                        selectedVariantId,
-                        selectedAddons,
-                        selectedSauceCounts,
-                        selectedCommonChangeIds,
-                        ingredientCounts,
-                        option.id
-                      );
-                    }}
-                  >
-                    <Icon size={16} strokeWidth={2.5} />
-                    {option.label}
-                  </button>
-                );
-              })}
-            </div>
-          ) : null}
-          <ItemDetailsPanel
-            item={item}
-            nutrition={nutrition}
-            variants={variants}
-            selectedVariantId={selectedVariantId}
-            onSelectVariant={(nextVariantId) => {
-              setSelectedVariantId(nextVariantId);
-              emitCartConfiguration(nextVariantId, selectedAddons, selectedSauceCounts, selectedCommonChangeIds);
-            }}
-            addons={addons}
-            ingredientItems={ingredientItems}
-            menuItems={menuItems}
-            customizationRules={customizationRules}
-            selectedAddons={selectedAddons}
-            onSelectAddon={(ref, addon) => {
-              setSelectedAddons((prev) => {
-                const next = { ...prev, [ref]: addon ?? emptyAddon };
-                emitCartConfiguration(selectedVariantId, next, selectedSauceCounts, selectedCommonChangeIds);
-                return next;
-              });
-            }}
-            sauceSelectionCounts={selectedSauceCounts}
-            onIncrementSauce={(addon) => {
-              setSelectedSauceCounts((prev) => {
-                const currentTotal = Object.values(prev).reduce((sum, count) => sum + count, 0);
-                if (currentTotal >= maxSauceSelections) return prev;
-                const next = { ...prev, [addon.name]: (prev[addon.name] ?? 0) + 1 };
-                emitCartConfiguration(selectedVariantId, selectedAddons, next, selectedCommonChangeIds);
-                return next;
-              });
-            }}
-            onDecrementSauce={(addon) => {
-              setSelectedSauceCounts((prev) => {
-                const current = prev[addon.name] ?? 0;
-                if (current <= 0) return prev;
-                const next = { ...prev };
-                if (current === 1) {
-                  delete next[addon.name];
-                } else {
-                  next[addon.name] = current - 1;
-                }
-                emitCartConfiguration(selectedVariantId, selectedAddons, next, selectedCommonChangeIds);
-                return next;
-              });
-            }}
-            onToggleSauce={(addon) => {
-              setSelectedSauceCounts((prev) => {
-                if (addon.name === "None") {
-                  if (Object.keys(prev).length === 0) return prev;
-                  emitCartConfiguration(selectedVariantId, selectedAddons, {}, selectedCommonChangeIds);
-                  return {};
-                }
+          {useCartQuickEditPanel ? (
+            <div className="rounded-2xl border border-black/10 bg-[#efefef] p-3">
+              <div className="space-y-3">
+                <section>
+                  <p className="mb-2 px-1 text-[11px] font-semibold uppercase tracking-[0.14em] text-slate-600">Main</p>
+                  <div className="grid grid-cols-[72px_minmax(0,1fr)_auto] items-center gap-3 rounded-xl border border-slate-200 bg-white px-3 py-2.5">
+                    <div className="h-[72px] w-[72px] overflow-hidden rounded-lg border border-black/10 bg-white">
+                      {selectedItemImage ? (
+                        <img src={selectedItemImage} alt={item.name} className="h-full w-full object-contain p-1" />
+                      ) : null}
+                    </div>
+                    <div className="min-w-0">
+                      <div className="flex min-w-0 items-center gap-2">
+                        <p className="truncate text-sm font-semibold text-slate-900">{item.name}</p>
+                        {hasVariantDropdown ? (
+                          <QuickVariantDropdown
+                            ariaLabel={`${item.name} quick portion`}
+                            value={selectedVariantId}
+                            options={(variants ?? []).map((variant) => ({ id: variant.id, label: variant.label }))}
+                            onChange={(nextVariantId) => {
+                              setSelectedVariantId(nextVariantId);
+                              emitCartConfiguration(nextVariantId, selectedAddons, selectedSauceCounts, selectedCommonChangeIds);
+                            }}
+                          />
+                        ) : null}
+                      </div>
+                    </div>
+                    <div className="flex items-end justify-end gap-4">
+                      <QuickMacro value={displayCalories} label="Cal" tone="calories" />
+                      <QuickMacro value={displayProtein} label="Protein" tone="protein" />
+                      <QuickMacro value={displayCarbs} label="Carbs" tone="carbs" />
+                      <QuickMacro value={displayFat} label="Fat" tone="fat" />
+                    </div>
+                  </div>
+                </section>
 
-                const current = prev[addon.name] ?? 0;
-                if (current > 0) {
-                  const next = { ...prev };
-                  delete next[addon.name];
+                {comboType === "combo-meal" && selectedComboSide ? (
+                  <section>
+                    <p className="mb-2 px-1 text-[11px] font-semibold uppercase tracking-[0.14em] text-slate-600">Side</p>
+                    <div className="grid grid-cols-[72px_minmax(0,1fr)_auto] items-center gap-3 rounded-xl border border-slate-200 bg-white px-3 py-2.5">
+                      <div className="h-[72px] w-[72px] overflow-hidden rounded-lg border border-black/10 bg-white">
+                        {selectedComboSide.image ? (
+                          <img src={selectedComboSide.image} alt={selectedComboSide.name} className="h-full w-full object-contain p-1" />
+                        ) : null}
+                      </div>
+                      <div className="min-w-0">
+                        <div className="flex items-center gap-2">
+                          <p className="truncate text-sm font-semibold text-slate-900">{selectedComboSide.name}</p>
+                          {selectedComboSide.variants && selectedComboSide.variants.length > 1 ? (
+                            <QuickVariantDropdown
+                              ariaLabel={`${selectedComboSide.name} size`}
+                              value={selectedComboSideVariantId}
+                              options={selectedComboSide.variants.map((variant) => ({ id: variant.id, label: variant.label }))}
+                              onChange={(variantId) => {
+                                setSelectedComboSideVariantId(variantId);
+                                emitCartConfiguration(selectedVariantId, selectedAddons, selectedSauceCounts, selectedCommonChangeIds, ingredientCounts, comboType, selectedComboSideId, selectedComboDrinkId, variantId, selectedComboDrinkVariantId);
+                              }}
+                            />
+                          ) : null}
+                        </div>
+                      </div>
+                      <div className="flex items-end justify-end gap-4">
+                        <QuickMacro value={selectedComboSideVariant?.nutrition.calories ?? selectedComboSide.nutrition.calories} label="Cal" tone="calories" />
+                        <QuickMacro value={selectedComboSideVariant?.nutrition.protein ?? selectedComboSide.nutrition.protein} label="Protein" tone="protein" />
+                        <QuickMacro value={selectedComboSideVariant?.nutrition.carbs ?? selectedComboSide.nutrition.carbs} label="Carbs" tone="carbs" />
+                        <QuickMacro value={selectedComboSideVariant?.nutrition.totalFat ?? selectedComboSide.nutrition.totalFat} label="Fat" tone="fat" />
+                      </div>
+                    </div>
+                  </section>
+                ) : null}
+
+                {comboType === "combo-meal" && selectedComboDrink ? (
+                  <section>
+                    <p className="mb-2 px-1 text-[11px] font-semibold uppercase tracking-[0.14em] text-slate-600">Drink</p>
+                    <div className="grid grid-cols-[72px_minmax(0,1fr)_auto] items-center gap-3 rounded-xl border border-slate-200 bg-white px-3 py-2.5">
+                      <div className="h-[72px] w-[72px] overflow-hidden rounded-lg border border-black/10 bg-white">
+                        {selectedComboDrink.image ? (
+                          <img src={selectedComboDrink.image} alt={selectedComboDrink.name} className="h-full w-full object-contain p-1" />
+                        ) : null}
+                      </div>
+                      <div className="min-w-0">
+                        <div className="flex items-center gap-2">
+                          <p className="truncate text-sm font-semibold text-slate-900">{selectedComboDrink.name}</p>
+                          {selectedComboDrink.variants && selectedComboDrink.variants.length > 1 ? (
+                            <QuickVariantDropdown
+                              ariaLabel={`${selectedComboDrink.name} size`}
+                              value={selectedComboDrinkVariantId}
+                              options={selectedComboDrink.variants.map((variant) => ({ id: variant.id, label: variant.label }))}
+                              onChange={(variantId) => {
+                                setSelectedComboDrinkVariantId(variantId);
+                                emitCartConfiguration(selectedVariantId, selectedAddons, selectedSauceCounts, selectedCommonChangeIds, ingredientCounts, comboType, selectedComboSideId, selectedComboDrinkId, selectedComboSideVariantId, variantId);
+                              }}
+                            />
+                          ) : null}
+                        </div>
+                      </div>
+                      <div className="flex items-end justify-end gap-4">
+                        <QuickMacro value={selectedComboDrinkVariant?.nutrition.calories ?? selectedComboDrink.nutrition.calories} label="Cal" tone="calories" />
+                        <QuickMacro value={selectedComboDrinkVariant?.nutrition.protein ?? selectedComboDrink.nutrition.protein} label="Protein" tone="protein" />
+                        <QuickMacro value={selectedComboDrinkVariant?.nutrition.carbs ?? selectedComboDrink.nutrition.carbs} label="Carbs" tone="carbs" />
+                        <QuickMacro value={selectedComboDrinkVariant?.nutrition.totalFat ?? selectedComboDrink.nutrition.totalFat} label="Fat" tone="fat" />
+                      </div>
+                    </div>
+                  </section>
+                ) : null}
+
+                {item.addonRefs?.includes("sauces") &&
+                (addons?.sauces?.length ?? 0) > 0 &&
+                addons?.sauces?.some((addon) => (selectedSauceCounts[addon.name] ?? 0) > 0) ? (
+                  <section>
+                    <p className="mb-2 px-1 text-[11px] font-semibold uppercase tracking-[0.14em] text-slate-600">Sauces</p>
+                    <div className="space-y-1.5">
+                      {addons?.sauces?.filter((addon) => addon.name !== "None" && (selectedSauceCounts[addon.name] ?? 0) > 0).map((addon) => {
+                        const count = selectedSauceCounts[addon.name] ?? 0;
+                        return (
+                          <div
+                            key={addon.name}
+                            className="grid grid-cols-[72px_minmax(0,1fr)_auto_auto] items-center gap-3 rounded-xl border border-slate-200 bg-white px-3 py-2.5"
+                          >
+                            <div className="h-[72px] w-[72px] overflow-hidden rounded-lg border border-black/10 bg-white">
+                              {addon.image ? (
+                                <img src={addon.image} alt={addon.name} className="h-full w-full object-contain p-1" />
+                              ) : null}
+                            </div>
+                            <p className="truncate text-sm font-semibold text-slate-900">{addon.name}</p>
+                            <div className="inline-flex items-center gap-2 rounded-lg border border-black/10 bg-white px-1 py-1">
+                              <button
+                                type="button"
+                                className="h-7 w-7 rounded-md border border-black/15 text-base font-semibold text-slate-800"
+                                onClick={() => {
+                                  setSelectedSauceCounts((prev) => {
+                                    const current = prev[addon.name] ?? 0;
+                                    if (current <= 0) return prev;
+                                    const next = { ...prev };
+                                    if (current === 1) {
+                                      delete next[addon.name];
+                                    } else {
+                                      next[addon.name] = current - 1;
+                                    }
+                                    emitCartConfiguration(selectedVariantId, selectedAddons, next, selectedCommonChangeIds);
+                                    return next;
+                                  });
+                                }}
+                              >
+                                -
+                              </button>
+                              <span className="min-w-4 text-center text-sm font-semibold">{count}</span>
+                              <button
+                                type="button"
+                                className="h-7 w-7 rounded-md border border-black/15 text-base font-semibold text-slate-800"
+                                onClick={() => {
+                                  setSelectedSauceCounts((prev) => {
+                                    const currentTotal = Object.values(prev).reduce((sum, selectedCount) => sum + selectedCount, 0);
+                                    if (currentTotal >= maxSauceSelections) return prev;
+                                    const next = { ...prev, [addon.name]: (prev[addon.name] ?? 0) + 1 };
+                                    emitCartConfiguration(selectedVariantId, selectedAddons, next, selectedCommonChangeIds);
+                                    return next;
+                                  });
+                                }}
+                              >
+                                +
+                              </button>
+                            </div>
+                            <div className="flex items-end justify-end gap-4">
+                              <QuickMacro value={addon.calories * count} label="Cal" tone="calories" />
+                              <QuickMacro value={addon.protein * count} label="Protein" tone="protein" />
+                              <QuickMacro value={addon.carbs * count} label="Carbs" tone="carbs" />
+                              <QuickMacro value={addon.totalFat * count} label="Fat" tone="fat" />
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </section>
+                ) : null}
+
+                {item.addonRefs?.includes("dressings") &&
+                selectedAddons.dressings &&
+                selectedAddons.dressings.name !== "None" ? (
+                  <section>
+                    <p className="mb-2 px-1 text-[11px] font-semibold uppercase tracking-[0.14em] text-slate-600">Dressings</p>
+                    <div className="space-y-1.5">
+                      <div className="grid w-full grid-cols-[60px_minmax(0,1fr)_auto] items-center gap-3 rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-left">
+                        <div className="h-[72px] w-[72px] overflow-hidden rounded-lg border border-black/10 bg-white">
+                          {selectedAddons.dressings.image ? (
+                            <img src={selectedAddons.dressings.image} alt={selectedAddons.dressings.name} className="h-full w-full object-contain p-1" />
+                          ) : null}
+                        </div>
+                        <div className="min-w-0">
+                          <p className="truncate text-sm font-semibold text-slate-900">{selectedAddons.dressings.name}</p>
+                        </div>
+                        <div className="flex items-end justify-end gap-4">
+                          <QuickMacro value={selectedAddons.dressings.calories} label="Cal" tone="calories" />
+                          <QuickMacro value={selectedAddons.dressings.protein} label="Protein" tone="protein" />
+                          <QuickMacro value={selectedAddons.dressings.carbs} label="Carbs" tone="carbs" />
+                          <QuickMacro value={selectedAddons.dressings.totalFat} label="Fat" tone="fat" />
+                        </div>
+                      </div>
+                    </div>
+                  </section>
+                ) : null}
+
+                <div className="flex justify-end">
+                  <button
+                    type="button"
+                    onClick={() => onCartModify?.()}
+                    aria-label="Customize fully"
+                    className="cursor-pointer inline-flex h-10 w-10 items-center justify-center rounded-lg border border-black bg-black text-white transition hover:bg-slate-800"
+                  >
+                    <Pencil className="h-4 w-4" />
+                  </button>
+                </div>
+              </div>
+            </div>
+          ) : (
+            <ItemDetailsPanel
+              item={item}
+              nutrition={nutrition}
+              variants={variants}
+              selectedVariantId={selectedVariantId}
+              onSelectVariant={(nextVariantId) => {
+                setSelectedVariantId(nextVariantId);
+                emitCartConfiguration(nextVariantId, selectedAddons, selectedSauceCounts, selectedCommonChangeIds);
+              }}
+              addons={addons}
+              ingredientItems={ingredientItems}
+              menuItems={menuItems}
+              customizationRules={customizationRules}
+              selectedAddons={selectedAddons}
+              onSelectAddon={(ref, addon) => {
+                setSelectedAddons((prev) => {
+                  const next = { ...prev, [ref]: addon ?? emptyAddon };
+                  emitCartConfiguration(selectedVariantId, next, selectedSauceCounts, selectedCommonChangeIds);
+                  return next;
+                });
+              }}
+              sauceSelectionCounts={selectedSauceCounts}
+              onIncrementSauce={(addon) => {
+                setSelectedSauceCounts((prev) => {
+                  const currentTotal = Object.values(prev).reduce((sum, count) => sum + count, 0);
+                  if (currentTotal >= maxSauceSelections) return prev;
+                  const next = { ...prev, [addon.name]: (prev[addon.name] ?? 0) + 1 };
                   emitCartConfiguration(selectedVariantId, selectedAddons, next, selectedCommonChangeIds);
                   return next;
-                }
-
-                const currentTotal = Object.values(prev).reduce((sum, count) => sum + count, 0);
-                if (currentTotal >= maxSauceSelections) return prev;
-                const next = { ...prev, [addon.name]: 1 };
-                emitCartConfiguration(selectedVariantId, selectedAddons, next, selectedCommonChangeIds);
-                return next;
-              });
-            }}
-            commonChanges={applicableCommonChanges}
-            selectedCommonChangeIds={selectedCommonChangeIds}
-            onToggleCommonChange={(changeId) =>
-              setSelectedCommonChangeIds((prev) => {
-                const next = prev.includes(changeId)
-                  ? prev.filter((id) => id !== changeId)
-                  : [...prev, changeId];
-                emitCartConfiguration(selectedVariantId, selectedAddons, selectedSauceCounts, next);
-                return next;
-              })
-            }
-            selectedIngredientCounts={ingredientCounts}
-            onDecrementIngredient={(ingredientId) =>
-              setSelectedIngredientCounts((prev) => {
-                const current = ingredientCounts[ingredientId] ?? 0;
-                const next = { ...prev, [ingredientId]: Math.max(0, current - 1) };
-                if (next[ingredientId] === current) return prev;
-
-                emitCartConfiguration(
-                  selectedVariantId,
-                  selectedAddons,
-                  selectedSauceCounts,
-                  selectedCommonChangeIds,
-                  next
-                );
-                return next;
-              })
-            }
-            onIncrementIngredient={(ingredientId) =>
-              setSelectedIngredientCounts((prev) => {
-                const ingredient =
-                  ingredientLookup.get(ingredientId) ??
-                  ingredientLookup.get(ingredientId.toLowerCase());
-                const maxQuantity = ingredient?.maxQuantity;
-                if (typeof maxQuantity !== "number") return prev;
-
-                const current = ingredientCounts[ingredientId] ?? ingredient?.defaultCount ?? 0;
-                const next = { ...prev, [ingredientId]: Math.min(maxQuantity, current + 1) };
-                if (next[ingredientId] === current) return prev;
-
-                emitCartConfiguration(
-                  selectedVariantId,
-                  selectedAddons,
-                  selectedSauceCounts,
-                  selectedCommonChangeIds,
-                  next
-                );
-                return next;
-              })
-            }
-            onToggleIngredient={(ingredientId) =>
-              setSelectedIngredientCounts((prev) => {
-                const ingredient =
-                  ingredientLookup.get(ingredientId) ??
-                  ingredientLookup.get(ingredientId.toLowerCase());
-                const maxQuantity = ingredient?.maxQuantity;
-                if (typeof maxQuantity !== "number") return prev;
-
-                const current = prev[ingredientId] ?? ingredient?.defaultCount ?? 0;
-                const next = { ...prev, [ingredientId]: current > 0 ? 0 : 1 };
-                if (next[ingredientId] === current) return prev;
-
-                emitCartConfiguration(
-                  selectedVariantId,
-                  selectedAddons,
-                  selectedSauceCounts,
-                  selectedCommonChangeIds,
-                  next
-                );
-                return next;
-              })
-            }
-            onSelectSingleIngredient={(ingredientId, ingredientIdsInTab) =>
-              setSelectedIngredientCounts((prev) => {
-                const next = { ...prev };
-
-                ingredientIdsInTab.forEach((id) => {
-                  next[id] = id === ingredientId ? 1 : 0;
                 });
+              }}
+              onDecrementSauce={(addon) => {
+                setSelectedSauceCounts((prev) => {
+                  const current = prev[addon.name] ?? 0;
+                  if (current <= 0) return prev;
+                  const next = { ...prev };
+                  if (current === 1) {
+                    delete next[addon.name];
+                  } else {
+                    next[addon.name] = current - 1;
+                  }
+                  emitCartConfiguration(selectedVariantId, selectedAddons, next, selectedCommonChangeIds);
+                  return next;
+                });
+              }}
+              onToggleSauce={(addon) => {
+                setSelectedSauceCounts((prev) => {
+                  if (addon.name === "None") {
+                    if (Object.keys(prev).length === 0) return prev;
+                    emitCartConfiguration(selectedVariantId, selectedAddons, {}, selectedCommonChangeIds);
+                    return {};
+                  }
 
-                const hasChanged = ingredientIdsInTab.some(
-                  (id) => (ingredientCounts[id] ?? ingredientLookup.get(id)?.defaultCount ?? 0) !== next[id]
-                );
-                if (!hasChanged) return prev;
+                  const current = prev[addon.name] ?? 0;
+                  if (current > 0) {
+                    const next = { ...prev };
+                    delete next[addon.name];
+                    emitCartConfiguration(selectedVariantId, selectedAddons, next, selectedCommonChangeIds);
+                    return next;
+                  }
 
-                emitCartConfiguration(
-                  selectedVariantId,
-                  selectedAddons,
-                  selectedSauceCounts,
-                  selectedCommonChangeIds,
-                  next
-                );
-                return next;
-              })
-            }
-            comboType={comboType}
-            comboSides={comboSides}
-            comboDrinks={comboDrinks}
-            selectedComboSideId={selectedComboSideId}
-            selectedComboDrinkId={selectedComboDrinkId}
-            selectedComboSideVariantId={selectedComboSideVariantId}
-            selectedComboDrinkVariantId={selectedComboDrinkVariantId}
-            onSelectComboSide={(sideId) => {
-              const isDeselecting = selectedComboSideId === sideId;
-              const nextSideId = isDeselecting ? undefined : sideId;
-              const nextSide = comboSides.find((side) => (side.id ?? side.name) === nextSideId);
-              const nextSideVariantId = isDeselecting ? undefined : getDefaultVariantId(nextSide);
-              setSelectedComboSideId(nextSideId);
-              setSelectedComboSideVariantId(nextSideVariantId);
-              emitCartConfiguration(selectedVariantId, selectedAddons, selectedSauceCounts, selectedCommonChangeIds, ingredientCounts, comboType, nextSideId, selectedComboDrinkId, nextSideVariantId, selectedComboDrinkVariantId);
-            }}
-            onSelectComboDrink={(drinkId) => {
-              const isDeselecting = selectedComboDrinkId === drinkId;
-              const nextDrinkId = isDeselecting ? undefined : drinkId;
-              const nextDrink = comboDrinks.find((drink) => (drink.id ?? drink.name) === nextDrinkId);
-              const nextDrinkVariantId = isDeselecting ? undefined : getDefaultVariantId(nextDrink);
-              setSelectedComboDrinkId(nextDrinkId);
-              setSelectedComboDrinkVariantId(nextDrinkVariantId);
-              emitCartConfiguration(selectedVariantId, selectedAddons, selectedSauceCounts, selectedCommonChangeIds, ingredientCounts, comboType, selectedComboSideId, nextDrinkId, selectedComboSideVariantId, nextDrinkVariantId);
-            }}
-            onSelectComboSideVariant={(variantId) => {
-              setSelectedComboSideVariantId(variantId);
-              emitCartConfiguration(selectedVariantId, selectedAddons, selectedSauceCounts, selectedCommonChangeIds, ingredientCounts, comboType, selectedComboSideId, selectedComboDrinkId, variantId, selectedComboDrinkVariantId);
-            }}
-            onSelectComboDrinkVariant={(variantId) => {
-              setSelectedComboDrinkVariantId(variantId);
-              emitCartConfiguration(selectedVariantId, selectedAddons, selectedSauceCounts, selectedCommonChangeIds, ingredientCounts, comboType, selectedComboSideId, selectedComboDrinkId, selectedComboSideVariantId, variantId);
-            }}
-            customizationTotals={customizationTotals}
-            showCustomizationDeltas={hasActiveCustomization}
-            displayMode="full"
-            flattenIngredientList={flattenIngredientListInDetails}
-            lockedIngredientIds={lockedIngredientIdsInDetails}
-          />
+                  const currentTotal = Object.values(prev).reduce((sum, count) => sum + count, 0);
+                  if (currentTotal >= maxSauceSelections) return prev;
+                  const next = { ...prev, [addon.name]: 1 };
+                  emitCartConfiguration(selectedVariantId, selectedAddons, next, selectedCommonChangeIds);
+                  return next;
+                });
+              }}
+              commonChanges={applicableCommonChanges}
+              selectedCommonChangeIds={selectedCommonChangeIds}
+              onToggleCommonChange={(changeId) =>
+                setSelectedCommonChangeIds((prev) => {
+                  const next = prev.includes(changeId)
+                    ? prev.filter((id) => id !== changeId)
+                    : [...prev, changeId];
+                  emitCartConfiguration(selectedVariantId, selectedAddons, selectedSauceCounts, next);
+                  return next;
+                })
+              }
+              selectedIngredientCounts={ingredientCounts}
+              onDecrementIngredient={(ingredientId) =>
+                setSelectedIngredientCounts((prev) => {
+                  const current = ingredientCounts[ingredientId] ?? 0;
+                  const next = { ...prev, [ingredientId]: Math.max(0, current - 1) };
+                  if (next[ingredientId] === current) return prev;
+
+                  emitCartConfiguration(
+                    selectedVariantId,
+                    selectedAddons,
+                    selectedSauceCounts,
+                    selectedCommonChangeIds,
+                    next
+                  );
+                  return next;
+                })
+              }
+              onIncrementIngredient={(ingredientId) =>
+                setSelectedIngredientCounts((prev) => {
+                  const ingredient =
+                    ingredientLookup.get(ingredientId) ??
+                    ingredientLookup.get(ingredientId.toLowerCase());
+                  const maxQuantity = ingredient?.maxQuantity;
+                  if (typeof maxQuantity !== "number") return prev;
+
+                  const current = ingredientCounts[ingredientId] ?? ingredient?.defaultCount ?? 0;
+                  const next = { ...prev, [ingredientId]: Math.min(maxQuantity, current + 1) };
+                  if (next[ingredientId] === current) return prev;
+
+                  emitCartConfiguration(
+                    selectedVariantId,
+                    selectedAddons,
+                    selectedSauceCounts,
+                    selectedCommonChangeIds,
+                    next
+                  );
+                  return next;
+                })
+              }
+              onToggleIngredient={(ingredientId) =>
+                setSelectedIngredientCounts((prev) => {
+                  const ingredient =
+                    ingredientLookup.get(ingredientId) ??
+                    ingredientLookup.get(ingredientId.toLowerCase());
+                  const maxQuantity = ingredient?.maxQuantity;
+                  if (typeof maxQuantity !== "number") return prev;
+
+                  const current = prev[ingredientId] ?? ingredient?.defaultCount ?? 0;
+                  const next = { ...prev, [ingredientId]: current > 0 ? 0 : 1 };
+                  if (next[ingredientId] === current) return prev;
+
+                  emitCartConfiguration(
+                    selectedVariantId,
+                    selectedAddons,
+                    selectedSauceCounts,
+                    selectedCommonChangeIds,
+                    next
+                  );
+                  return next;
+                })
+              }
+              onSelectSingleIngredient={(ingredientId, ingredientIdsInTab) =>
+                setSelectedIngredientCounts((prev) => {
+                  const next = { ...prev };
+
+                  ingredientIdsInTab.forEach((id) => {
+                    next[id] = id === ingredientId ? 1 : 0;
+                  });
+
+                  const hasChanged = ingredientIdsInTab.some(
+                    (id) => (ingredientCounts[id] ?? ingredientLookup.get(id)?.defaultCount ?? 0) !== next[id]
+                  );
+                  if (!hasChanged) return prev;
+
+                  emitCartConfiguration(
+                    selectedVariantId,
+                    selectedAddons,
+                    selectedSauceCounts,
+                    selectedCommonChangeIds,
+                    next
+                  );
+                  return next;
+                })
+              }
+              comboType={comboType}
+              comboSides={comboSides}
+              comboDrinks={comboDrinks}
+              selectedComboSideId={selectedComboSideId}
+              selectedComboDrinkId={selectedComboDrinkId}
+              selectedComboSideVariantId={selectedComboSideVariantId}
+              selectedComboDrinkVariantId={selectedComboDrinkVariantId}
+              onSelectComboSide={(sideId) => {
+                const isDeselecting = selectedComboSideId === sideId;
+                const nextSideId = isDeselecting ? undefined : sideId;
+                const nextSide = comboSides.find((side) => (side.id ?? side.name) === nextSideId);
+                const nextSideVariantId = isDeselecting ? undefined : getDefaultVariantId(nextSide);
+                setSelectedComboSideId(nextSideId);
+                setSelectedComboSideVariantId(nextSideVariantId);
+                emitCartConfiguration(selectedVariantId, selectedAddons, selectedSauceCounts, selectedCommonChangeIds, ingredientCounts, comboType, nextSideId, selectedComboDrinkId, nextSideVariantId, selectedComboDrinkVariantId);
+              }}
+              onSelectComboDrink={(drinkId) => {
+                const isDeselecting = selectedComboDrinkId === drinkId;
+                const nextDrinkId = isDeselecting ? undefined : drinkId;
+                const nextDrink = comboDrinks.find((drink) => (drink.id ?? drink.name) === nextDrinkId);
+                const nextDrinkVariantId = isDeselecting ? undefined : getDefaultVariantId(nextDrink);
+                setSelectedComboDrinkId(nextDrinkId);
+                setSelectedComboDrinkVariantId(nextDrinkVariantId);
+                emitCartConfiguration(selectedVariantId, selectedAddons, selectedSauceCounts, selectedCommonChangeIds, ingredientCounts, comboType, selectedComboSideId, nextDrinkId, selectedComboSideVariantId, nextDrinkVariantId);
+              }}
+              onSelectComboSideVariant={(variantId) => {
+                setSelectedComboSideVariantId(variantId);
+                emitCartConfiguration(selectedVariantId, selectedAddons, selectedSauceCounts, selectedCommonChangeIds, ingredientCounts, comboType, selectedComboSideId, selectedComboDrinkId, variantId, selectedComboDrinkVariantId);
+              }}
+              onSelectComboDrinkVariant={(variantId) => {
+                setSelectedComboDrinkVariantId(variantId);
+                emitCartConfiguration(selectedVariantId, selectedAddons, selectedSauceCounts, selectedCommonChangeIds, ingredientCounts, comboType, selectedComboSideId, selectedComboDrinkId, selectedComboSideVariantId, variantId);
+              }}
+              customizationTotals={customizationTotals}
+              showCustomizationDeltas={hasActiveCustomization}
+              displayMode="full"
+              flattenIngredientList={flattenIngredientListInDetails}
+              lockedIngredientIds={lockedIngredientIdsInDetails}
+            />
+          )}
         </div>
       </div>
     </li>
