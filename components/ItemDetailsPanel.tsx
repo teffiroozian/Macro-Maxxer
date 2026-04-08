@@ -1246,7 +1246,7 @@ export default function ItemDetailsPanel({
 
         <div className="mt-4 space-y-2">
           <p className="text-base font-semibold uppercase tracking-wide text-neutral-500">Items</p>
-          <ul className="max-h-[220px] min-h-0 flex-1 space-y-2 overflow-y-auto rounded-xl bg-[#efefef] p-2">
+          <ul className="max-h-[320px] min-h-0 flex-1 space-y-2 overflow-y-auto rounded-xl bg-[#efefef] p-2">
             {detailItems.map((detailItem) => (
               <li
                 key={detailItem.id}
