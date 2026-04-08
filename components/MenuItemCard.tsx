@@ -1068,8 +1068,6 @@ export default function MenuItemCard({
                 />
               ) : (
                 <MenuCardActions
-                  itemName={item.name}
-                  quantity={matchingCartItem?.quantity}
                   isAddFeedbackVisible={isAddFeedbackVisible}
                   onAddToCart={() => {
                     if (itemHref && showDetailsButton) {
@@ -1077,14 +1075,6 @@ export default function MenuItemCard({
                       return;
                     }
                     handleAddToCart();
-                  }}
-                  onIncrement={() => {
-                    if (!matchingCartItem) return;
-                    updateQuantity(matchingCartItem.id, matchingCartItem.quantity + 1);
-                  }}
-                  onDecrement={() => {
-                    if (!matchingCartItem) return;
-                    updateQuantity(matchingCartItem.id, matchingCartItem.quantity - 1);
                   }}
                 />
               )}
