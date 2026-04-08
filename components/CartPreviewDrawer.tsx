@@ -9,6 +9,8 @@ import restaurants from "@/app/data/index.json";
 import { useRestaurantUi } from "@/components/RestaurantUiContext";
 import MacroTotalsGrid from "@/components/MacroTotalsGrid";
 import CartItemPreviewRow from "@/components/CartItemPreviewRow";
+import { menuLookupByRestaurant } from "@/lib/cart/menuRegistry";
+import { toItemSlug } from "@/lib/restaurants";
 import { useCart } from "@/stores/cartStore";
 
 const getCustomizationDisplayList = (item: {
@@ -131,6 +133,13 @@ export default function CartPreviewDrawer() {
                   const customizationDisplayList =
                     getCustomizationDisplayList(item);
                   const addonsLabel = customizationDisplayList.join(" • ");
+                  const sourceItem =
+                    menuLookupByRestaurant[item.restaurantId]?.find(
+                      (menuItem) => (menuItem.id ?? menuItem.name) === item.itemId
+                    ) ?? null;
+                  const itemEditHref = sourceItem
+                    ? `/restaurant/${item.restaurantId}/items/${toItemSlug(sourceItem)}?editCartItem=${item.id}`
+                    : null;
                   return (
                     <li
                       key={item.id}
@@ -157,6 +166,18 @@ export default function CartPreviewDrawer() {
                                 }}
                                 className="cursor-pointer inline-flex size-8 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-700 transition hover:bg-slate-100"
                                 aria-label={`Edit ${item.name}`}
+                              >
+                                <Pencil className="size-4" />
+                              </button>
+                            ) : itemEditHref ? (
+                              <button
+                                type="button"
+                                onClick={() => {
+                                  closeCart();
+                                  router.push(itemEditHref, { scroll: false });
+                                }}
+                                className="cursor-pointer inline-flex size-8 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-700 transition hover:bg-slate-100"
+                                aria-label={`Customize ${item.name}`}
                               >
                                 <Pencil className="size-4" />
                               </button>
