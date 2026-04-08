@@ -77,17 +77,20 @@ export default function CartIconDropdown({
     };
   }, [isOpen, lastAddedAt]);
 
-  const countValue = cartCount > 0
-    ? countFormat === "parenthesized"
-      ? ` (${cartCount})`
-      : ` ${cartCount}`
-    : "";
-
   const countLabel = (
     <>
       <ShoppingCart className="h-4 w-4" strokeWidth={2.5} />
-      
-      {countValue ? <span className="ml-1">({countValue})</span> : null}
+      {cartCount > 0 ? (
+        <span
+          className={`ml-1 leading-none font-bold tabular-nums ${
+            countFormat === "parenthesized"
+              ? "text-[13px]"
+              : "inline-flex min-w-[1.15rem] items-center justify-center rounded-full bg-slate-900 px-1.5 py-0.5 text-[11px] text-white"
+          }`}
+        >
+          {countFormat === "parenthesized" ? `(${cartCount})` : cartCount}
+        </span>
+      ) : null}
     </>
   );
 
