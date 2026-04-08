@@ -261,7 +261,12 @@ export default function RestaurantView({
   const [isBuildSummaryExpanded, setIsBuildSummaryExpanded] = useState(false);
   const buildStickyContainerRef = useRef<HTMLDivElement | null>(null);
   const entreeMenuRef = useRef<HTMLDivElement | null>(null);
-  const [selectedEntree, setSelectedEntree] = useState<EntreeSelection>(null);
+  const requestedEntree = searchParams.get("entree");
+  const initialSelectedEntree =
+    isChipotleBuildPage && requestedEntree && requestedEntree in entreeOptions
+      ? requestedEntree
+      : null;
+  const [selectedEntree, setSelectedEntree] = useState<EntreeSelection>(initialSelectedEntree);
   const [isEntreeMenuOpen, setIsEntreeMenuOpen] = useState(false);
   const [selectedTacoShell, setSelectedTacoShell] = useState<TacoShellSelection>("crispy");
   const [selectedTacoCount, setSelectedTacoCount] = useState<TacoCountSelection>(3);
@@ -1350,6 +1355,24 @@ export default function RestaurantView({
     window.scrollTo({ top: 0, left: 0, behavior: "auto" });
   };
 
+  useEffect(() => {
+    if (!isChipotleBuildPage) return;
+
+    const currentParams = searchParams.toString();
+    const nextParams = new URLSearchParams(currentParams);
+
+    if (selectedEntree) {
+      nextParams.set("entree", selectedEntree);
+    } else {
+      nextParams.delete("entree");
+    }
+
+    const nextQuery = nextParams.toString();
+    if (nextQuery === currentParams) return;
+
+    router.replace(nextQuery ? `${pathname}?${nextQuery}` : pathname, { scroll: false });
+  }, [isChipotleBuildPage, pathname, router, searchParams, selectedEntree]);
+
   const handleAddBuildToCart = () => {
     if (selectedIngredientCount === 0) return;
     const nextCustomizations = Object.entries(selectedIngredientItems).flatMap(([ingredientId, { item, quantity }]) => {
@@ -1868,6 +1891,15 @@ export default function RestaurantView({
         secondaryNavLeading={entreeSelectionControl}
         hideViewSelector={isBuildYourOwn}
         hideSecondaryNav={isChipotleBuildPage && selectedEntree === null}
+        onBack={
+          isChipotleBuildPage && selectedEntree !== null
+            ? () => {
+                setSelectedEntree(null);
+              }
+            : () => {
+                router.push("/");
+              }
+        }
       />
 
       {isChipotleBuildPage && selectedEntree === null ? (

@@ -36,6 +36,7 @@ type StickyRestaurantBarProps = {
   secondaryNavLeading?: ReactNode;
   hideViewSelector?: boolean;
   hideSecondaryNav?: boolean;
+  onBack?: () => void;
 };
 
 export default function StickyRestaurantBar({
@@ -56,6 +57,7 @@ export default function StickyRestaurantBar({
   secondaryNavLeading,
   hideViewSelector = false,
   hideSecondaryNav = false,
+  onBack,
 }: StickyRestaurantBarProps) {
   const router = useRouter();
   const searchInputRef = useRef<HTMLInputElement>(null);
@@ -90,7 +92,7 @@ export default function StickyRestaurantBar({
         <div className="mx-auto flex w-full max-w-5xl items-center gap-3 px-4 py-2 sm:px-6">
           <button
             type="button"
-            onClick={() => router.back()}
+            onClick={onBack ?? (() => router.back())}
             className="cursor-pointer inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-slate-300/80 bg-white text-base font-semibold text-slate-700 transition hover:text-slate-900"
             aria-label="Back to previous page"
           >

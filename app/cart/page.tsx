@@ -128,7 +128,19 @@ export default function CartPage() {
   );
 
   const headerRestaurant = restaurants.find((restaurant) => restaurant.id === cartRestaurantIds[0]);
-  const backToMenuHref = cartRestaurantIds[0] ? `/restaurant/${cartRestaurantIds[0]}` : "/";
+  const chipotleEntreeFromCart = useMemo(() => {
+    if (cartRestaurantIds.length !== 1 || cartRestaurantIds[0] !== "chipotle") {
+      return null;
+    }
+
+    const selectedEntree = items.find((item) => item.restaurantId === "chipotle")?.buildConfiguration?.selectedEntree;
+    return selectedEntree ?? null;
+  }, [cartRestaurantIds, items]);
+  const backToMenuHref = cartRestaurantIds[0]
+    ? chipotleEntreeFromCart
+      ? `/restaurant/${cartRestaurantIds[0]}?entree=${encodeURIComponent(chipotleEntreeFromCart)}`
+      : `/restaurant/${cartRestaurantIds[0]}`
+    : "/";
   const headerTitle = cartRestaurantIds.length > 1 ? "Mixed Restaurants" : (headerRestaurant?.name ?? "Meal Finalization");
   const headerLogo = cartRestaurantIds.length > 1 ? undefined : headerRestaurant?.logo;
 
