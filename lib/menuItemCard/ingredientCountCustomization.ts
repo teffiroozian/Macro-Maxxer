@@ -25,7 +25,7 @@ export function getSelectedIngredientCountsFromCustomizations(
 
   const customizedIngredientIds = new Set<string>();
   const parsedCounts = customizations.reduce<Record<string, number>>((acc, label) => {
-    const match = label.match(/^(.*?):\s*(Removed|(\d+)x|Remove|Extra)$/i);
+    const match = label.match(/^(.*?):\s*(Removed|(\d+(?:\.\d+)?)x|Remove|Extra)$/i);
     if (!match) return acc;
 
     const ingredientKey = match[1].trim().toLowerCase();
@@ -38,7 +38,7 @@ export function getSelectedIngredientCountsFromCustomizations(
         ? 0
         : rawValue === "extra"
           ? 2
-          : Number.parseInt(match[3] ?? "", 10);
+          : Number.parseFloat(match[3] ?? "");
 
     if (!Number.isFinite(nextCount)) return acc;
 

@@ -609,7 +609,7 @@ export default function MenuItemCard({
 
     return initialCartCustomizations.filter((label) => {
       const normalized = label.replace(/^\+\s*/, "").trim();
-      const ingredientMatch = normalized.match(/^(.*?):\s*(Removed|(\d+)x|Remove|Extra)$/i);
+      const ingredientMatch = normalized.match(/^(.*?):\s*(Removed|(\d+(?:\.\d+)?)x|Remove|Extra)$/i);
       const isIngredientCustomization =
         ingredientMatch ? ingredientLabels.has(ingredientMatch[1].trim().toLowerCase()) : false;
 

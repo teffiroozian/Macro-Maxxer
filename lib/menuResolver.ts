@@ -1,4 +1,5 @@
 import type { IngredientItem, MenuItem, RestaurantMenu } from "@/types/menu";
+import { computeNutritionFromIncludedIngredients } from "@/lib/itemIngredients";
 
 type FlatLegacyMenuItem = Omit<Partial<MenuItem>, "nutrition"> & {
   name: string;
@@ -94,18 +95,41 @@ function resolveIngredientBackedItems(items: MenuItem[], ingredients: Ingredient
   const ingredientById = new Map(
     ingredients
       .filter((ingredient): ingredient is IngredientItem & { id: string } => Boolean(ingredient.id))
-      .map((ingredient) => [ingredient.id, ingredient]),
+      .map((ingredient) => [ingredient.id.toLowerCase(), ingredient]),
+  );
+  const menuItemById = new Map(
+    items
+      .filter((item): item is MenuItem & { id: string } => Boolean(item.id))
+      .map((item) => [item.id.toLowerCase(), item]),
   );
 
   return items.map((item) => {
-    if (!item.ingredientRef) return item;
+    const nutritionFromIncludedIngredients = computeNutritionFromIncludedIngredients({
+      ingredientEntries: item.ingredients,
+      ingredientById,
+      menuItemById,
+    });
 
-    const ingredient = ingredientById.get(item.ingredientRef);
-    if (!ingredient) return item;
+    if (!item.ingredientRef) {
+      if (!nutritionFromIncludedIngredients) return item;
+      return {
+        ...item,
+        nutrition: nutritionFromIncludedIngredients,
+      };
+    }
+
+    const ingredient = ingredientById.get(item.ingredientRef.toLowerCase());
+    if (!ingredient) {
+      if (!nutritionFromIncludedIngredients) return item;
+      return {
+        ...item,
+        nutrition: nutritionFromIncludedIngredients,
+      };
+    }
 
     return {
       ...item,
-      nutrition: item.nutrition ?? ingredient.nutrition,
+      nutrition: nutritionFromIncludedIngredients ?? item.nutrition ?? ingredient.nutrition,
       image: item.image ?? ingredient.image,
     };
   });

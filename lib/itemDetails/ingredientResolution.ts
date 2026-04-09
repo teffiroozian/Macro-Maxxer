@@ -12,6 +12,7 @@ import {
   normalizeIngredientCategory,
   normalizeIngredientToken,
 } from "@/lib/itemDetails/helpers";
+import { resolveIncludedIngredientDefaults } from "@/lib/itemIngredients";
 import type {
   AddonOption,
   IngredientItem,
@@ -160,8 +161,8 @@ export function resolvePanelIngredientTabs(
   customizationRules?: RestaurantCustomizationRules
 ): ResolvedIngredientTab[] {
   const selectedParentVariantLabel = variants?.find((variant) => variant.id === selectedVariantId)?.label;
-  const ingredientIds = item.ingredients ?? [];
-  const includedIngredientIds = new Set(ingredientIds.map((ingredientId) => ingredientId.toLowerCase()));
+  const ingredientDefaultsById = resolveIncludedIngredientDefaults(item.ingredients);
+  const ingredientIds = [...ingredientDefaultsById.keys()];
   const resolvedTabs = resolveIngredientTabs(item, customizationRules);
   const singleSelectTabs = resolveSingleSelectIngredientTabs(item, customizationRules);
   const primaryCategory = item.categories?.[0];
@@ -259,7 +260,7 @@ export function resolvePanelIngredientTabs(
         ingredientTabLabel ? resolveIngredientTabMaxQuantity(item, ingredientTabLabel, customizationRules) : undefined,
       nutrition,
       calories: nutrition.calories,
-      defaultCount: includedIngredientIds.has(normalizedId) ? 1 : 0,
+      defaultCount: ingredientDefaultsById.get(normalizedId) ?? 0,
     };
 
     resolvedIngredientLookup.set(normalizedId, resolvedIngredient);
