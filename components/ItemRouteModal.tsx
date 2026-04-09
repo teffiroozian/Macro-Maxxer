@@ -8,6 +8,7 @@ import ItemDetailsPanel, {
   resolvePanelIngredientTabs,
   resolvePanelIngredients,
 } from "@/components/ItemDetailsPanel";
+import MenuSections from "@/components/MenuSections";
 import MacroTotalsGrid from "@/components/MacroTotalsGrid";
 import type {
   AddonOption,
@@ -112,6 +113,7 @@ export default function ItemRouteModal({
     );
   }, [editCartItemId, item.id, item.name, items, restaurantId]);
   const isCustomizeMode = Boolean(editingCartItem);
+  const isChipotleBuildEdit = restaurantId === "chipotle" && Boolean(editingCartItem?.buildConfiguration);
   const canCustomizeViaBuildPage =
     isChipotleHighProteinMenuItem(item, restaurantId) && Boolean(editingCartItem);
   const parsedInitialComboCustomization = useMemo(
@@ -140,9 +142,48 @@ export default function ItemRouteModal({
     () => resolvePanelIngredients(item, ingredients, addons, menuItems ?? [], variants, selectedVariantId, customizationRules),
     [addons, customizationRules, ingredients, item, menuItems, selectedVariantId, variants]
   );
-  const [selectedIngredientCounts, setSelectedIngredientCounts] = useState<Record<string, number>>(() =>
-    getSelectedIngredientCountsFromCustomizations(resolvedIngredients, editingCartItem?.customizations)
-  );
+  const [selectedIngredientCounts, setSelectedIngredientCounts] = useState<Record<string, number>>(() => {
+    if (restaurantId === "chipotle" && editingCartItem?.buildConfiguration?.selectedIngredientItems) {
+      return Object.fromEntries(
+        Object.entries(editingCartItem.buildConfiguration.selectedIngredientItems).map(([ingredientId, selection]) => [
+          ingredientId,
+          selection.quantity,
+        ])
+      );
+    }
+
+    return getSelectedIngredientCountsFromCustomizations(resolvedIngredients, editingCartItem?.customizations);
+  });
+  const chipotleBuildMenuItems = useMemo(() => {
+    if (!isChipotleBuildEdit || !ingredients) return [] as MenuItem[];
+
+    return ingredients
+      .filter((ingredient) => !ingredient.hideFromIngredientView)
+      .map((ingredient) => ({
+        id: ingredient.id ?? ingredient.name,
+        name: ingredient.name,
+        image: ingredient.image,
+        categories: ingredient.categories?.length
+          ? ingredient.categories
+          : ingredient.category
+            ? [ingredient.category]
+            : ["Ingredients"],
+        portionType: "single" as const,
+        nutrition: ingredient.nutrition,
+        variants: ingredient.variants,
+        defaultVariantId: ingredient.defaultVariantId,
+        hideVariantSelector: ingredient.hideVariantSelector,
+      }));
+  }, [ingredients, isChipotleBuildEdit]);
+  const chipotleBuildSelectedIngredientIds = useMemo(() => {
+    if (!isChipotleBuildEdit) return new Set<string>();
+
+    return new Set(
+      Object.entries(selectedIngredientCounts)
+        .filter(([, count]) => count > 0)
+        .map(([ingredientId]) => ingredientId)
+    );
+  }, [isChipotleBuildEdit, selectedIngredientCounts]);
 
   const applicableCommonChanges = useMemo(
     () => getApplicableCommonChanges(item, commonChanges),
@@ -683,6 +724,40 @@ export default function ItemRouteModal({
             />
           </div>
 
+          {isChipotleBuildEdit ? (
+            <div className="w-[min(900px,100%)]">
+              <MenuSections
+                restaurantId={restaurantId}
+                items={chipotleBuildMenuItems}
+                sort="default-order"
+                addons={addons}
+                ingredients={ingredients}
+                commonChanges={commonChanges}
+                customizationRules={customizationRules}
+                categoryMode="ingredients"
+                isBuildYourOwn
+                selectedIngredientIds={chipotleBuildSelectedIngredientIds}
+                onIngredientSelectionChange={(menuItem, selected) => {
+                  if (!menuItem.id) return;
+
+                  setSelectedIngredientCounts((previous) => ({
+                    ...previous,
+                    [menuItem.id as string]: selected ? Math.max(1, previous[menuItem.id as string] ?? 1) : 0,
+                  }));
+                }}
+                ingredientVariantOptionsById={Object.fromEntries(
+                  chipotleBuildMenuItems
+                    .filter((menuItem) => menuItem.id && (menuItem.variants?.length ?? 0) > 1)
+                    .map((menuItem) => [
+                      menuItem.id as string,
+                      (menuItem.variants ?? []).map((variant) => ({ id: variant.id, label: variant.label })),
+                    ])
+                )}
+                selectedIngredientVariantIdById={editingCartItem?.buildConfiguration?.selectedIngredientVariantIds}
+              />
+            </div>
+          ) : (
+          <>
           <div className="w-[min(720px,100%)] grid gap-7">
             {variants && variants.length > 0 && !item.hideVariantSelector ? (
               <div className="w-full">
@@ -905,6 +980,8 @@ export default function ItemRouteModal({
             }
           />
           </div>
+          </>
+          )}
         </div>
         </div>
 
