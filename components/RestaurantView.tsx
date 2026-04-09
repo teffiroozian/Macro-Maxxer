@@ -1332,6 +1332,23 @@ export default function RestaurantView({
       applyIncludedIngredients(nextIncludedIngredientIds, context);
     });
   }, [applyIncludedIngredients]);
+
+  useEffect(() => {
+    if (!isChipotleBuildPage || isEditingBuild) return;
+
+    applyIncludedIngredientsNextFrame(selectedIncludedIngredientIds, {
+      selectedEntree,
+      selectedKidsMeal,
+    });
+  }, [
+    applyIncludedIngredientsNextFrame,
+    isChipotleBuildPage,
+    isEditingBuild,
+    selectedEntree,
+    selectedIncludedIngredientIds,
+    selectedKidsMeal,
+  ]);
+
   const handleEntreeSelection = (entree: Exclude<EntreeSelection, null>) => {
     const nextIncludedIngredientIds = resolveIncludedIngredientIds({
       selectedEntree: entree,
