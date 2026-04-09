@@ -63,7 +63,7 @@ import MenuSections from "./MenuSections";
 import StickyRestaurantBar from "./StickyRestaurantBar";
 import StickyMacroTotalsBar from "./StickyMacroTotalsBar";
 import MacroTotalsGrid from "@/components/MacroTotalsGrid";
-import { useCart } from "@/stores/cartStore";
+import { useCart, type CartItem } from "@/stores/cartStore";
 import BuildSummaryDrawer from "./restaurant-view/BuildSummaryDrawer";
 import EntreeSelectionHero from "./restaurant-view/EntreeSelectionHero";
 import KidsMealSelector from "./restaurant-view/KidsMealSelector";
@@ -137,6 +137,7 @@ type EntreeSelection = string | null;
 type KidsMealSelection = string;
 type TacoShellSelection = "crispy" | "soft";
 type TacoCountSelection = 3 | 1;
+type BuildConfigurationSnapshot = NonNullable<CartItem["buildConfiguration"]>;
 
 function titleCase(text: string) {
   return text
@@ -312,7 +313,7 @@ export default function RestaurantView({
   }, [cartItems, editCartItemId, isChipotleBuildPage, restaurantId]);
   const isEditingBuild = Boolean(editingCartItem);
   const hydratedEditItemIdRef = useRef<string | null>(null);
-  const editingBuildBaselineConfigRef = useRef<typeof editingCartItem extends null ? null : NonNullable<typeof editingCartItem>["buildConfiguration"] | null>(null);
+  const editingBuildBaselineConfigRef = useRef<BuildConfigurationSnapshot | null>(null);
 
   const addonItems = useMemo<MenuItem[]>(() => {
     if (!addons) return [];
@@ -1405,7 +1406,7 @@ export default function RestaurantView({
     router.replace(nextQuery ? `${pathname}?${nextQuery}` : pathname, { scroll: false });
   }, [isChipotleBuildPage, pathname, router, searchParams, selectedEntree]);
 
-  const buildSelectedItemsFromConfiguration = useCallback((configuration: NonNullable<NonNullable<typeof editingCartItem>["buildConfiguration"]>) => {
+  const buildSelectedItemsFromConfiguration = useCallback((configuration: BuildConfigurationSnapshot) => {
     const next: Record<string, { item: MenuItem; quantity: number }> = {};
 
     Object.entries(configuration.selectedIngredientItems).forEach(([ingredientId, { quantity }]) => {
@@ -1517,6 +1518,9 @@ export default function RestaurantView({
     setSelectedIngredientVariantIds({});
     setProteinPortionMode("normal");
     setSplitPortionModeById({});
+    setSelectedTacoShell("crispy");
+    setSelectedTacoCount(3);
+    setSelectedKidsMeal("build-your-own");
     setSelectedEntree(null);
     editingBuildBaselineConfigRef.current = null;
 
@@ -1530,6 +1534,7 @@ export default function RestaurantView({
   useEffect(() => {
     if (!editingCartItem?.buildConfiguration) {
       hydratedEditItemIdRef.current = null;
+      editingBuildBaselineConfigRef.current = null;
       return;
     }
 
