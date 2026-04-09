@@ -12,6 +12,7 @@ import {
   normalizeIngredientCategory,
   normalizeIngredientToken,
 } from "@/lib/itemDetails/helpers";
+import { resolveIncludedIngredientDefaults } from "@/lib/itemIngredients";
 import type {
   AddonOption,
   IngredientItem,
@@ -108,22 +109,6 @@ function tabSupportsNoneOption(item: MenuItem, tabName: string) {
   }
 
   return normalized === "cheese" || normalized === "cheeses";
-}
-
-function resolveIncludedIngredientDefaults(ingredientEntries: string[] = []) {
-  const defaultCounts = new Map<string, number>();
-
-  ingredientEntries.forEach((entry) => {
-    const [rawId, rawPortion] = entry.split(":");
-    const ingredientId = rawId?.trim();
-    if (!ingredientId) return;
-
-    const portion = rawPortion?.trim().toLowerCase();
-    const defaultCount = portion === "light" ? 0.5 : portion === "extra" ? 2 : 1;
-    defaultCounts.set(ingredientId.toLowerCase(), defaultCount);
-  });
-
-  return defaultCounts;
 }
 
 export function resolvePanelIngredients(

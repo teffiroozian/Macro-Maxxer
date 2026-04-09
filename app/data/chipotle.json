@@ -686,12 +686,6 @@
             ],
             "portionType": "entree",
             "image": "/restaurants/chipotle/menu/high-protein/high-protein-high-fiber-bowl.jpg",
-            "nutrition": {
-                "calories": 545,
-                "totalFat": 13,
-                "carbs": 66,
-                "protein": 46
-            },
             "entreeGroup": "high-protein-menu",
             "defaultOrder": 7,
             "ingredients": [
