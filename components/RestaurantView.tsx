@@ -1518,15 +1518,10 @@ export default function RestaurantView({
     setSelectedIngredientVariantIds({});
     setProteinPortionMode("normal");
     setSplitPortionModeById({});
-    setSelectedTacoShell("crispy");
-    setSelectedTacoCount(3);
-    setSelectedKidsMeal("build-your-own");
-    setSelectedEntree(null);
     editingBuildBaselineConfigRef.current = null;
 
     const nextParams = new URLSearchParams(searchParams.toString());
     nextParams.delete("editCartItem");
-    nextParams.delete("entree");
     const nextQuery = nextParams.toString();
     router.replace(nextQuery ? `${pathname}?${nextQuery}` : pathname, { scroll: false });
   }, [pathname, router, searchParams]);
