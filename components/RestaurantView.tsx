@@ -2257,17 +2257,17 @@ export default function RestaurantView({
             onClick={closeBuildEditModal}
             aria-label="Close customization modal"
           />
-          <div className="relative m-4 h-[calc(100%-32px)] w-[min(1024px,calc(100%-32px))] overflow-hidden rounded-2xl bg-white px-6 pt-6">
+          <div className="relative m-4 flex h-[calc(100%-32px)] w-[min(1024px,calc(100%-32px))] flex-col overflow-hidden rounded-2xl bg-white px-6 pt-6">
             <button
               type="button"
-              className="sticky top-0 ml-auto h-9 w-9 cursor-pointer rounded-full border border-black/12 bg-white/95 text-2xl"
+              className="ml-auto h-9 w-9 cursor-pointer rounded-full border border-black/12 bg-white/95 text-2xl"
               onClick={closeBuildEditModal}
               aria-label="Close customization modal"
             >
               ×
             </button>
 
-            <div className="h-[calc(100%-52px-80px)] overflow-y-auto pb-6 pr-1">
+            <div className="min-h-0 flex-1 overflow-y-auto pb-6 pr-1">
               <div className="mx-auto grid w-full max-w-[900px] gap-6">
                 <section className="grid justify-items-center gap-6">
                   <h1 className="text-center text-[32px] font-extrabold text-neutral-900">{selectedBuildName}</h1>
@@ -2541,7 +2541,7 @@ export default function RestaurantView({
               </div>
             </div>
 
-            <div className="sticky bottom-0 -mx-6 z-10 flex h-fit flex-wrap items-center justify-between gap-3 border-t border-black/10 bg-white p-4 shadow-[0_-4px_10px_rgba(0,0,0,0.08)]">
+            <div className="-mx-6 z-10 flex h-fit flex-wrap items-center justify-between gap-3 border-t border-black/10 bg-white p-4 shadow-[0_-4px_10px_rgba(0,0,0,0.08)]">
               <MacroTotalsGrid
                 macros={adjustedSelectedIngredientTotals}
                 size="panel"
