@@ -36,7 +36,7 @@ export default function CartItemPreviewRow({
     customizationsLineClamp === 2 ? "line-clamp-2" : "line-clamp-1";
 
   return (
-    <div className={["flex items-start gap-3", className].filter(Boolean).join(" ")}>
+    <div className={["flex min-w-0 w-full items-start gap-3", className].filter(Boolean).join(" ")}>
       <div className="relative h-14 w-14 shrink-0 overflow-hidden rounded-lg bg-slate-100 ring-1 ring-slate-200">
         {item.image ? (
           imageRenderer === "next-image" ? (

@@ -1418,7 +1418,7 @@ export default function RestaurantView({
     };
 
     if (editingCartItem) {
-      updateItem(editingCartItem.id, nextItemPayload);
+      updateItem(editingCartItem.id, nextItemPayload, { markAsJustAdded: true });
     } else {
       addItem({
         id: crypto.randomUUID(),

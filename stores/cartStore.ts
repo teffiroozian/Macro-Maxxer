@@ -170,18 +170,37 @@ const updateQuantity = (id: string, quantity: number) => {
   }));
 };
 
-const updateItem = (id: string, updates: Partial<Omit<CartItem, "id" | "restaurantId">>) => {
-  setCartState((prev) => ({
-    ...prev,
-    items: prev.items.map((item) =>
-      item.id === id
-        ? {
-            ...item,
-            ...updates,
-          }
-        : item,
-    ),
-  }));
+const updateItem = (
+  id: string,
+  updates: Partial<Omit<CartItem, "id" | "restaurantId">>,
+  options?: { markAsJustAdded?: boolean }
+) => {
+  setCartState((prev) => {
+    let updatedItem: CartItem | null = null;
+    const items = prev.items.map((item) => {
+      if (item.id !== id) return item;
+
+      updatedItem = {
+        ...item,
+        ...updates,
+      };
+      return updatedItem;
+    });
+
+    if (!updatedItem) {
+      return {
+        ...prev,
+        items,
+      };
+    }
+
+    return {
+      ...prev,
+      items,
+      lastAddedItem: options?.markAsJustAdded ? updatedItem : prev.lastAddedItem,
+      lastAddedAt: options?.markAsJustAdded ? Date.now() : prev.lastAddedAt,
+    };
+  });
 };
 
 const clearCart = () => {
