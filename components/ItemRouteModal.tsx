@@ -44,6 +44,10 @@ import {
   sortComboSides,
   sumNutritionWithFallback,
 } from "@/lib/menuItemCalculations";
+import {
+  buildHighProteinBuildConfiguration,
+  isChipotleHighProteinMenuItem,
+} from "@/lib/chipotleBuild/highProtein";
 
 const emptyAddon: AddonOption = {
   name: "None",
@@ -105,6 +109,8 @@ export default function ItemRouteModal({
     );
   }, [editCartItemId, item.id, item.name, items, restaurantId]);
   const isCustomizeMode = Boolean(editingCartItem);
+  const canCustomizeViaBuildPage =
+    isChipotleHighProteinMenuItem(item, restaurantId) && Boolean(editingCartItem);
   const parsedInitialComboCustomization = useMemo(
     () => parseComboCustomization(editingCartItem?.customizations),
     [editingCartItem?.customizations]
@@ -589,6 +595,11 @@ export default function ItemRouteModal({
         carbs: nutrition.carbs ?? 0,
         fat: nutrition.totalFat ?? 0,
       },
+      buildConfiguration:
+        editingCartItem?.buildConfiguration ??
+        (isChipotleHighProteinMenuItem(item, restaurantId)
+          ? buildHighProteinBuildConfiguration(item, ingredients)
+          : undefined),
     };
 
     handleClose();
@@ -875,6 +886,16 @@ export default function ItemRouteModal({
             sectionNavItems={visibleSections}
             activeSectionId={activeSectionId}
             onSelectSection={scrollToSection}
+            onCustomizeIngredients={
+              canCustomizeViaBuildPage
+                ? () => {
+                    router.push(
+                      `/restaurant/${restaurantId}?view=ingredients&editCartItem=${editingCartItem!.id}`,
+                      { scroll: false }
+                    );
+                  }
+                : undefined
+            }
           />
           </div>
         </div>

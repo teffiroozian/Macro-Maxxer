@@ -226,6 +226,10 @@ export default function CartPage() {
               const itemEditHref = sourceItem
                 ? `/restaurant/${cartItem.restaurantId}/items/${toItemSlug(sourceItem)}?editCartItem=${cartItem.id}`
                 : undefined;
+              const buildEditHref =
+                cartItem.buildConfiguration
+                  ? `/restaurant/${cartItem.restaurantId}?view=ingredients&editCartItem=${cartItem.id}`
+                  : undefined;
 
               const initialIngredientCustomizations = getBuildIngredientCountCustomizations(
                 cartItem,
@@ -279,9 +283,9 @@ export default function CartPage() {
                     });
                   }}
                   onCartModify={
-                    itemEditHref
+                    (buildEditHref ?? itemEditHref)
                       ? () => {
-                          router.push(itemEditHref, { scroll: false });
+                          router.push(buildEditHref ?? itemEditHref!, { scroll: false });
                         }
                       : undefined
                   }

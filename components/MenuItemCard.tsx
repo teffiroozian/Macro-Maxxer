@@ -40,6 +40,10 @@ import MenuCardActions from "./menu-item-card/MenuCardActions";
 import CartCardActions from "./menu-item-card/CartCardActions";
 import { useMenuItemCartAdapter } from "./menu-item-card/useMenuItemCartAdapter";
 import { useMenuItemConfiguration } from "./menu-item-card/useMenuItemConfiguration";
+import {
+  buildHighProteinBuildConfiguration,
+  isChipotleHighProteinMenuItem,
+} from "@/lib/chipotleBuild/highProtein";
 
 function pad2(n: number) {
   return String(n).padStart(2, "0");
@@ -844,6 +848,9 @@ export default function MenuItemCard({
     if (isAddFeedbackVisible) return;
 
     const baseForCart = selectedVariantForCart?.nutrition ?? item.nutrition;
+    const highProteinBuildConfiguration = isChipotleHighProteinMenuItem(item, restaurantId)
+      ? buildHighProteinBuildConfiguration(item, ingredientItems)
+      : undefined;
 
     if (matchingCartItem) {
       updateQuantity(matchingCartItem.id, matchingCartItem.quantity + 1);
@@ -859,6 +866,7 @@ export default function MenuItemCard({
         optionsLabel,
         customizations,
         quantity: 1,
+        buildConfiguration: highProteinBuildConfiguration,
         macrosPerItem: {
           calories: (baseForCart.calories ?? 0) + addonTotals.calories + ingredientCountTotals.calories,
           protein: (baseForCart.protein ?? 0) + addonTotals.protein + ingredientCountTotals.protein,

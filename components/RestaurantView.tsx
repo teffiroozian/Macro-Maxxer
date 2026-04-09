@@ -305,7 +305,6 @@ export default function RestaurantView({
         (item) =>
           item.id === editCartItemId &&
           item.restaurantId === restaurantId &&
-          item.itemId === `${restaurantId}-build` &&
           item.buildConfiguration
       ) ?? null
     );
@@ -1428,9 +1427,9 @@ export default function RestaurantView({
     } as const;
     const nextItemPayload = {
       restaurantId,
-      itemId: `${restaurantId}-build`,
-      name: buildName,
-      image: selectedBuildImageSrc,
+      itemId: editingCartItem?.itemId ?? `${restaurantId}-build`,
+      name: editingCartItem?.name ?? buildName,
+      image: editingCartItem?.image ?? selectedBuildImageSrc,
       customizations: nextCustomizations,
       quantity: 1,
       macrosPerItem: adjustedSelectedIngredientTotals,

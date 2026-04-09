@@ -12,7 +12,7 @@ import type {
   RestaurantAddons,
   RestaurantCustomizationRules,
 } from "@/types/menu";
-import { Check, ChevronDown, ChevronRight, type LucideIcon } from "lucide-react";
+import { Check, ChevronDown, ChevronRight, Pencil, type LucideIcon } from "lucide-react";
 import {
   INCLUDED_INGREDIENT_TAB,
   getIngredientTabDisplayLabel,
@@ -163,6 +163,7 @@ export default function ItemDetailsPanel({
   sectionNavItems,
   activeSectionId,
   onSelectSection,
+  onCustomizeIngredients,
 }: {
   item: MenuItem;
   nutrition: Nutrition;
@@ -212,6 +213,7 @@ export default function ItemDetailsPanel({
   sectionNavItems?: Array<{ id: "ingredients" | "sides" | "drinks" | "sauces"; label: string; icon: LucideIcon }>;
   activeSectionId?: "ingredients" | "sides" | "drinks" | "sauces" | null;
   onSelectSection?: (sectionId: "ingredients" | "sides" | "drinks" | "sauces") => void;
+  onCustomizeIngredients?: () => void;
 }) {
   const n = nutrition;
   const selectedMainVariant = variants?.find((variant) => variant.id === selectedVariantId);
@@ -524,7 +526,19 @@ export default function ItemDetailsPanel({
       ) : null}
       {shouldShowIngredientSection && selectedIngredientTab ? (
         <section ref={ingredientsSectionRef} className="col-span-2 rounded-[14px] border border-black/12 bg-white p-5">
-          <h2 className="mb-6 text-2xl font-bold">Ingredients</h2>
+          <div className="mb-6 flex items-center justify-between gap-3">
+            <h2 className="text-2xl font-bold">Ingredients</h2>
+            {onCustomizeIngredients ? (
+              <button
+                type="button"
+                onClick={onCustomizeIngredients}
+                aria-label="Customize ingredients"
+                className="cursor-pointer inline-flex h-9 w-9 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-700 transition hover:bg-slate-100"
+              >
+                <Pencil className="h-4 w-4" />
+              </button>
+            ) : null}
+          </div>
           {!flattenIngredientList && visibleIngredientTabs.length > 1 ? (
             <div className="mb-4 flex flex-wrap gap-2">
               {visibleIngredientTabs.map((tab) => {
