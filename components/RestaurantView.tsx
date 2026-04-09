@@ -363,6 +363,10 @@ export default function RestaurantView({
       return categories.find((category) => category.toLowerCase() !== "ingredients") ?? categories[0];
     };
 
+    const includedIngredientOrderById = new Map(
+      selectedIncludedIngredientIds.map((ingredientId, index) => [ingredientId, index] as const)
+    );
+
     const mappedIngredientItems = ingredients
       .filter((ingredient) => {
         if (ingredient.hideFromIngredientView) {
@@ -409,6 +413,7 @@ export default function RestaurantView({
           selectedIncludedIngredientIds.includes(ingredientId) ||
           (selectedEntree === "tacos" && tacoShellIngredientIds.includes(ingredientId));
         const displayCategory = shouldPinToIncludedCategory ? "Included Ingredient" : resolvedCategory;
+        const includedIngredientOrder = includedIngredientOrderById.get(ingredientId);
         const isQuesadillaCheeseIncludedIngredient =
           ingredientId === "cheese" &&
           shouldPinToIncludedCategory &&
@@ -446,7 +451,10 @@ export default function RestaurantView({
           id: ingredientId,
           name: ingredient.name,
           nutrition: ingredientBaseNutrition,
-          defaultOrder: ingredient.defaultOrder,
+          defaultOrder:
+            shouldPinToIncludedCategory && typeof includedIngredientOrder === "number"
+              ? includedIngredientOrder
+              : ingredient.defaultOrder,
           variants: tripleCheeseVariant ? [...(variants ?? []), tripleCheeseVariant] : variants,
           defaultVariantId,
           hideVariantSelector:
