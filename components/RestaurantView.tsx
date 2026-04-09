@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import Image from "next/image";
 import type { LucideIcon } from "lucide-react";
@@ -1531,22 +1531,14 @@ export default function RestaurantView({
     }, 0);
   }, [pathname, router, searchParams]);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (!isChipotleBuildPage || !isEditingBuild) {
       return;
     }
 
-    const resetScrollTimer = window.setTimeout(() => {
-      buildCustomizationModalScrollRef.current?.scrollTo({
-        top: 0,
-        left: 0,
-        behavior: "auto",
-      });
-    }, 0);
-
-    return () => {
-      window.clearTimeout(resetScrollTimer);
-    };
+    if (!buildCustomizationModalScrollRef.current) return;
+    buildCustomizationModalScrollRef.current.scrollTop = 0;
+    buildCustomizationModalScrollRef.current.scrollLeft = 0;
   }, [editingCartItem?.id, isChipotleBuildPage, isEditingBuild]);
 
   useEffect(() => {
