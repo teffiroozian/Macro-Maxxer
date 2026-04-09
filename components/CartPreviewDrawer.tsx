@@ -3,12 +3,13 @@
 import Image from "next/image";
 import Link from "next/link";
 import { Pencil } from "lucide-react";
-import { useEffect, useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import restaurants from "@/app/data/index.json";
 import { useRestaurantUi } from "@/components/RestaurantUiContext";
 import MacroTotalsGrid from "@/components/MacroTotalsGrid";
 import CartItemPreviewRow from "@/components/CartItemPreviewRow";
+import BuildEditPlaceholderModal from "@/components/cart/BuildEditPlaceholderModal";
 import { menuLookupByRestaurant } from "@/lib/cart/menuRegistry";
 import { toItemSlug } from "@/lib/restaurants";
 import { useCart } from "@/stores/cartStore";
@@ -31,6 +32,7 @@ export default function CartPreviewDrawer() {
   const { isCartOpen, closeCart } = useRestaurantUi();
   const { items, totals, updateQuantity, clearCart } = useCart();
   const router = useRouter();
+  const [editingBuildItemName, setEditingBuildItemName] = useState<string | null>(null);
 
   const activeRestaurant = useMemo(() => {
     const activeRestaurantId = items[0]?.restaurantId;
@@ -159,10 +161,12 @@ export default function CartPreviewDrawer() {
                               <button
                                 type="button"
                                 onClick={() => {
+                                  if (item.restaurantId === "chipotle") {
+                                    setEditingBuildItemName(item.name);
+                                    return;
+                                  }
                                   closeCart();
-                                  router.push(
-                                    `/restaurant/${item.restaurantId}?view=ingredients&editCartItem=${item.id}`
-                                  );
+                                  router.push(`/restaurant/${item.restaurantId}?view=ingredients&editCartItem=${item.id}`);
                                 }}
                                 className="cursor-pointer inline-flex size-8 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-700 transition hover:bg-slate-100"
                                 aria-label={`Edit ${item.name}`}
@@ -245,6 +249,13 @@ export default function CartPreviewDrawer() {
           </section>
         </div>
       </aside>
+      {editingBuildItemName ? (
+        <BuildEditPlaceholderModal
+          itemName={editingBuildItemName}
+          onClose={() => setEditingBuildItemName(null)}
+          zIndexClass="z-[130]"
+        />
+      ) : null}
     </>
   );
 }

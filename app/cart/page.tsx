@@ -7,6 +7,7 @@ import type { CartMacros } from "@/stores/cartStore";
 import MenuItemCard from "@/components/MenuItemCard";
 import StickyMacroTotalsBar from "@/components/StickyMacroTotalsBar";
 import CartNutritionSummary from "@/components/cart/CartNutritionSummary";
+import BuildEditPlaceholderModal from "@/components/cart/BuildEditPlaceholderModal";
 import restaurants from "@/app/data/index.json";
 import { useCart } from "@/stores/cartStore";
 import {
@@ -94,6 +95,7 @@ export default function CartPage() {
   const router = useRouter();
   const inlineMacroBarRef = useRef<HTMLDivElement | null>(null);
   const [showStickyBar, setShowStickyBar] = useState(true);
+  const [editingBuildItemName, setEditingBuildItemName] = useState<string | null>(null);
 
   useEffect(() => {
     const inlineMacroBar = inlineMacroBarRef.current;
@@ -285,6 +287,10 @@ export default function CartPage() {
                   onCartModify={
                     (buildEditHref ?? itemEditHref)
                       ? () => {
+                          if (cartItem.buildConfiguration && cartItem.restaurantId === "chipotle") {
+                            setEditingBuildItemName(cartItem.name);
+                            return;
+                          }
                           router.push(buildEditHref ?? itemEditHref!, { scroll: false });
                         }
                       : undefined
@@ -382,6 +388,12 @@ export default function CartPage() {
         onSecondaryAction={() => window.alert("Save Meal coming soon")}
         onPrimaryAction={() => window.alert("Generate Snapshot coming soon")}
       />
+      {editingBuildItemName ? (
+        <BuildEditPlaceholderModal
+          itemName={editingBuildItemName}
+          onClose={() => setEditingBuildItemName(null)}
+        />
+      ) : null}
     </main>
   );
 }
