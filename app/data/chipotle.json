@@ -760,7 +760,7 @@
             "entreeGroup": "high-protein-menu",
             "defaultOrder": 11,
             "ingredients": [
-                "chicken",
+                "chicken:extra",
                 "white-rice:light",
                 "black-beans",
                 "fresh-tomato-salsa",

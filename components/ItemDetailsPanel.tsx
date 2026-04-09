@@ -48,6 +48,12 @@ function formatDelta(value: number, suffix = "") {
   return `${value >= 0 ? "+" : ""}${value}${suffix}`;
 }
 
+function formatPortionBadge(count: number) {
+  if (count === 0.5) return "1/2x";
+  if (Number.isInteger(count)) return `${count}x`;
+  return `${count.toFixed(1)}x`;
+}
+
 const addonSectionTitles: Record<AddonRef, string> = {
   sauces: "Sauces",
   dressings: "Dressings",
@@ -550,6 +556,12 @@ export default function ItemDetailsPanel({
               {displayIngredients.map((ingredient) => {
                 const ingredientCount = selectedIngredientCounts?.[ingredient.id] ?? ingredient.defaultCount;
                 const isSelected = ingredientCount > 0;
+                const shouldShowPortionBadge = ingredientCount > 0 && ingredientCount !== 1;
+                const displayCaloriesMultiplier = ingredientCount > 0 ? ingredientCount : 1;
+                const displayedCalories =
+                  ingredient.calories !== undefined
+                    ? Math.round(ingredient.calories * displayCaloriesMultiplier)
+                    : undefined;
                 const linkedSingleSelectTab =
                   ingredient.tabLabel
                     ? ingredientTabs.find(
@@ -589,9 +601,14 @@ export default function ItemDetailsPanel({
                       )}
                     </div>
                     <div className="flex min-w-0 flex-col items-start justify-center gap-[6px]">
+                      {shouldShowPortionBadge ? (
+                        <div className="inline-flex rounded-full bg-lime-500 px-2 py-0.5 text-xs font-bold text-black">
+                          {formatPortionBadge(ingredientCount)}
+                        </div>
+                      ) : null}
                       <div className="line-clamp-2 break-words text-left text-base font-bold leading-[1.2]">{ingredient.label}</div>
                       <div className="text-sm font-bold text-[rgba(0,0,0,0.5)]">
-                        {ingredient.calories !== undefined ? `${ingredient.calories} Cal` : "— Cal"}
+                        {displayedCalories !== undefined ? `${displayedCalories} Cal` : "— Cal"}
                       </div>
                     </div>
                   </>
