@@ -203,7 +203,6 @@ export default function MenuItemCard({
   ingredientUnavailableReason,
   onIngredientSelectionChange,
   ingredientSelectionControl = "checkbox",
-  ingredientRadioGroupName,
   ingredientVariantOptions,
   selectedIngredientVariantId,
   ingredientPortionBadge,
@@ -913,7 +912,6 @@ export default function MenuItemCard({
         ingredientSelectionState={ingredientSelectionState}
         isIngredientSelectionDisabled={isIngredientSelectionDisabled}
         ingredientSelectionControl={ingredientSelectionControl}
-        ingredientRadioGroupName={ingredientRadioGroupName}
         ingredientDisabledReason={ingredientDisabledReason}
         ingredientPortionBadge={ingredientPortionBadge}
         isIngredientUnavailable={isIngredientUnavailable}

@@ -62,7 +62,8 @@ import {
 import MenuSections from "./MenuSections";
 import StickyRestaurantBar from "./StickyRestaurantBar";
 import StickyMacroTotalsBar from "./StickyMacroTotalsBar";
-import { useCart } from "@/stores/cartStore";
+import MacroTotalsGrid from "@/components/MacroTotalsGrid";
+import { useCart, type CartItem } from "@/stores/cartStore";
 import BuildSummaryDrawer from "./restaurant-view/BuildSummaryDrawer";
 import EntreeSelectionHero from "./restaurant-view/EntreeSelectionHero";
 import KidsMealSelector from "./restaurant-view/KidsMealSelector";
@@ -136,6 +137,7 @@ type EntreeSelection = string | null;
 type KidsMealSelection = string;
 type TacoShellSelection = "crispy" | "soft";
 type TacoCountSelection = 3 | 1;
+type BuildConfigurationSnapshot = NonNullable<CartItem["buildConfiguration"]>;
 
 function titleCase(text: string) {
   return text
@@ -311,6 +313,7 @@ export default function RestaurantView({
   }, [cartItems, editCartItemId, isChipotleBuildPage, restaurantId]);
   const isEditingBuild = Boolean(editingCartItem);
   const hydratedEditItemIdRef = useRef<string | null>(null);
+  const editingBuildBaselineConfigRef = useRef<BuildConfigurationSnapshot | null>(null);
 
   const addonItems = useMemo<MenuItem[]>(() => {
     if (!addons) return [];
@@ -1403,6 +1406,34 @@ export default function RestaurantView({
     router.replace(nextQuery ? `${pathname}?${nextQuery}` : pathname, { scroll: false });
   }, [isChipotleBuildPage, pathname, router, searchParams, selectedEntree]);
 
+  const buildSelectedItemsFromConfiguration = useCallback((configuration: BuildConfigurationSnapshot) => {
+    const next: Record<string, { item: MenuItem; quantity: number }> = {};
+
+    Object.entries(configuration.selectedIngredientItems).forEach(([ingredientId, { quantity }]) => {
+      const ingredient = ingredientItemsById.get(ingredientId);
+      if (!ingredient || quantity <= 0) {
+        return;
+      }
+
+      const selectedVariantId =
+        configuration.selectedIngredientVariantIds[ingredientId] ?? ingredient.defaultVariantId;
+      const selectedVariant = ingredient.variants?.find((variant) => variant.id === selectedVariantId);
+
+      next[ingredientId] = {
+        item: {
+          ...ingredient,
+          nutrition: selectedVariant?.nutrition ?? ingredient.nutrition,
+        },
+        quantity,
+      };
+    });
+
+    return applyIngredientPortionNutrition(next, {
+      proteinMode: configuration.proteinPortionMode,
+      splitModesById: configuration.splitPortionModeById,
+    });
+  }, [applyIngredientPortionNutrition, ingredientItemsById]);
+
   const handleAddBuildToCart = () => {
     if (selectedIngredientCount === 0) return;
     const nextCustomizations = Object.entries(selectedIngredientItems).flatMap(([ingredientId, { item, quantity }]) => {
@@ -1482,9 +1513,23 @@ export default function RestaurantView({
     });
   };
 
+  const handleCloseBuildCustomizationModal = useCallback(() => {
+    setSelectedIngredientItems({});
+    setSelectedIngredientVariantIds({});
+    setProteinPortionMode("normal");
+    setSplitPortionModeById({});
+    editingBuildBaselineConfigRef.current = null;
+
+    const nextParams = new URLSearchParams(searchParams.toString());
+    nextParams.delete("editCartItem");
+    const nextQuery = nextParams.toString();
+    router.replace(nextQuery ? `${pathname}?${nextQuery}` : pathname, { scroll: false });
+  }, [pathname, router, searchParams]);
+
   useEffect(() => {
     if (!editingCartItem?.buildConfiguration) {
       hydratedEditItemIdRef.current = null;
+      editingBuildBaselineConfigRef.current = null;
       return;
     }
 
@@ -1493,6 +1538,7 @@ export default function RestaurantView({
     }
 
     const configuration = editingCartItem.buildConfiguration;
+    editingBuildBaselineConfigRef.current = configuration;
     hydratedEditItemIdRef.current = editingCartItem.id;
     const hydrateTimer = window.setTimeout(() => {
       setSelectedTacoShell(configuration.selectedTacoShell);
@@ -1502,39 +1548,13 @@ export default function RestaurantView({
       setProteinPortionMode(configuration.proteinPortionMode);
       setSplitPortionModeById(configuration.splitPortionModeById);
       setSelectedIngredientVariantIds(configuration.selectedIngredientVariantIds);
-      setSelectedIngredientItems(() => {
-        const next: Record<string, { item: MenuItem; quantity: number }> = {};
-
-        Object.entries(configuration.selectedIngredientItems).forEach(([ingredientId, { quantity }]) => {
-          const ingredient = ingredientItemsById.get(ingredientId);
-          if (!ingredient || quantity <= 0) {
-            return;
-          }
-
-          const selectedVariantId =
-            configuration.selectedIngredientVariantIds[ingredientId] ?? ingredient.defaultVariantId;
-          const selectedVariant = ingredient.variants?.find((variant) => variant.id === selectedVariantId);
-
-          next[ingredientId] = {
-            item: {
-              ...ingredient,
-              nutrition: selectedVariant?.nutrition ?? ingredient.nutrition,
-            },
-            quantity,
-          };
-        });
-
-        return applyIngredientPortionNutrition(next, {
-          proteinMode: configuration.proteinPortionMode,
-          splitModesById: configuration.splitPortionModeById,
-        });
-      });
+      setSelectedIngredientItems(() => buildSelectedItemsFromConfiguration(configuration));
     }, 0);
 
     return () => {
       window.clearTimeout(hydrateTimer);
     };
-  }, [applyIngredientPortionNutrition, editingCartItem, ingredientItemsById]);
+  }, [buildSelectedItemsFromConfiguration, editingCartItem]);
 
   const adjustIngredientQuantity = (ingredientId: string, delta: 1 | -1) => {
     if (lockedIngredientIds.has(ingredientId)) return;
@@ -1591,6 +1611,19 @@ export default function RestaurantView({
   };
 
   const handleResetSelectedIngredientOrder = () => {
+    if (isEditingBuild && editingBuildBaselineConfigRef.current) {
+      const baselineConfiguration = editingBuildBaselineConfigRef.current;
+      setSelectedTacoShell(baselineConfiguration.selectedTacoShell);
+      setSelectedTacoCount(baselineConfiguration.selectedTacoCount);
+      setSelectedKidsMeal(baselineConfiguration.selectedKidsMeal);
+      setSelectedEntree((baselineConfiguration.selectedEntree as EntreeSelection) ?? null);
+      setProteinPortionMode(baselineConfiguration.proteinPortionMode);
+      setSplitPortionModeById(baselineConfiguration.splitPortionModeById);
+      setSelectedIngredientVariantIds(baselineConfiguration.selectedIngredientVariantIds);
+      setSelectedIngredientItems(() => buildSelectedItemsFromConfiguration(baselineConfiguration));
+      return;
+    }
+
     setSelectedIngredientItems(() => {
       const lockedSelections: Record<string, { item: MenuItem; quantity: number }> = {};
 
@@ -1829,6 +1862,335 @@ export default function RestaurantView({
     document.addEventListener("mousedown", handlePointerDown);
     return () => document.removeEventListener("mousedown", handlePointerDown);
   }, [isEntreeMenuOpen]);
+
+  if (isChipotleBuildPage && isEditingBuild) {
+    return (
+      <div className="fixed inset-0 z-[130] flex items-center justify-center" role="dialog" aria-modal="true" aria-label={`${editingCartItem.name} customization`}>
+        <button
+          type="button"
+          className="absolute inset-0 border-0 bg-slate-900/66"
+          onClick={handleCloseBuildCustomizationModal}
+          aria-label="Close build customization modal"
+        />
+        <div className="relative m-4 flex h-[calc(100%-32px)] w-[min(1024px,calc(100%-32px))] flex-col overflow-hidden rounded-2xl bg-white px-6 pt-6">
+          <button
+            type="button"
+            className="sticky top-0 z-20 ml-auto h-9 w-9 cursor-pointer rounded-full border border-black/12 bg-white/95 text-2xl"
+            onClick={handleCloseBuildCustomizationModal}
+            aria-label="Close build customization modal"
+          >
+            ×
+          </button>
+
+          <div className="min-h-0 flex-1 overflow-y-auto pr-2 pb-10 [overflow-anchor:none]">
+            <div className="grid justify-items-center gap-8">
+              <div className="grid justify-items-center gap-5">
+                <h1 className="text-center text-[32px] font-extrabold">{editingCartItem.name}</h1>
+                <img
+                  className="h-[300px] w-[300px] rounded-[14px] bg-[#efefef] object-contain p-2 shadow-[0_0_5px_rgba(0,0,0,0.25)]"
+                  src={editingCartItem.image}
+                  alt={editingCartItem.name}
+                />
+                <MacroTotalsGrid
+                  macros={{
+                    calories: Math.round(adjustedSelectedIngredientTotals.calories ?? 0),
+                    protein: Math.round(adjustedSelectedIngredientTotals.protein ?? 0),
+                    carbs: Math.round(adjustedSelectedIngredientTotals.carbs ?? 0),
+                    fat: Math.round(adjustedSelectedIngredientTotals.fat ?? 0),
+                  }}
+                  size="panel"
+                  className="w-full max-w-[560px] gap-6 sm:gap-10"
+                />
+              </div>
+
+              <div className="w-full rounded-3xl border border-black/10 bg-[#e0e0e0] p-4">
+                <MenuSections
+                  restaurantId={restaurantId}
+                  items={visibleMenuItems}
+                  sort={sort}
+                  addons={addons}
+                  ingredients={ingredients}
+                  commonChanges={commonChanges}
+                  customizationRules={customizationRules}
+                  groupByCategory
+                  categoryMode="ingredients"
+                  isBuildYourOwn={isBuildYourOwn}
+                  selectedIngredientIds={new Set(Object.keys(selectedIngredientItems))}
+                  lockedIngredientIds={lockedIngredientIds}
+                  unavailableIngredientIds={unavailableIngredientIds}
+                  unavailableIngredientReasonById={unavailableIngredientReasonById}
+                  onIngredientSelectionChange={handleIngredientSelectionChange}
+                  ingredientSelectionControlById={
+                    selectedEntree === "tacos"
+                      ? Object.fromEntries(
+                          tacoShellIngredientIds.map((ingredientId) => [ingredientId, "radio" as const])
+                        )
+                      : undefined
+                  }
+                  ingredientRadioGroupNameById={
+                    selectedEntree === "tacos"
+                      ? Object.fromEntries(
+                          tacoShellIngredientIds.map((ingredientId) => [ingredientId, "chipotle-taco-shell"])
+                        )
+                      : undefined
+                  }
+                  ingredientVariantOptionsById={
+                    (() => {
+                      const variantOptionsById = Object.fromEntries(
+                        visibleMenuItems
+                          .filter(
+                            (item) =>
+                              item.id &&
+                              item.variants &&
+                              item.variants.length > 1 &&
+                              !isProteinIngredientItem(item)
+                          )
+                          .map((item) => [
+                            item.id as string,
+                            item.variants!.map((variant) => ({ id: variant.id, label: variant.label })),
+                          ])
+                      );
+
+                      if (selectedEntree === "tacos") {
+                        tacoShellIngredientIds.forEach((ingredientId) => {
+                          variantOptionsById[ingredientId] = [
+                            { id: "3", label: "3 Tacos" },
+                            { id: "1", label: "1 Taco" },
+                          ];
+                        });
+                      }
+
+                      return Object.keys(variantOptionsById).length > 0 ? variantOptionsById : undefined;
+                    })()
+                  }
+                  selectedIngredientVariantIdById={
+                    (() => {
+                      const selectedById = Object.fromEntries(
+                        visibleMenuItems
+                          .filter(
+                            (item) =>
+                              item.id &&
+                              item.variants &&
+                              item.variants.length > 1 &&
+                              !isProteinIngredientItem(item)
+                          )
+                          .map((item) => [
+                            item.id as string,
+                            selectedIngredientVariantIds[item.id as string] ??
+                              item.defaultVariantId ??
+                              item.variants?.[0]?.id,
+                          ])
+                      );
+
+                      if (selectedEntree === "tacos") {
+                        tacoShellIngredientIds.forEach((ingredientId) => {
+                          selectedById[ingredientId] = String(selectedTacoCount);
+                        });
+                      }
+
+                      return Object.keys(selectedById).length > 0 ? selectedById : undefined;
+                    })()
+                  }
+                  ingredientPortionBadgeById={
+                    Object.keys(ingredientPortionLabelById).length > 0 ? ingredientPortionLabelById : undefined
+                  }
+                  ingredientPortionModeOptionsById={
+                    (() => {
+                      const optionsById: Record<
+                        string,
+                        Array<{ id: string; label: string; disabled?: boolean }>
+                      > = Object.fromEntries(
+                        visibleMenuItems
+                          .filter((item) => item.id && isProteinIngredientItem(item))
+                          .map((item) => [
+                            item.id as string,
+                            [
+                              { id: "normal", label: "Normal" },
+                              { id: "double", label: "Double" },
+                            ],
+                          ])
+                      );
+
+                      (["rice", "beans"] as const).forEach((splitCategory) => {
+                        const selectedSplitCount = Object.values(selectedIngredientItems).filter(
+                          (selectedIngredient) =>
+                            normalizeIngredientCategory(resolvePrimaryCategory(selectedIngredient.item.categories)) === splitCategory
+                        ).length;
+                        const splitModeOptions =
+                          selectedSplitCount === 2
+                            ? [
+                                { id: "light", label: "Light", disabled: true },
+                                { id: "normal", label: "Normal", disabled: true },
+                                { id: "extra", label: "Extra", disabled: true },
+                              ]
+                            : [
+                                { id: "light", label: "Light" },
+                                { id: "normal", label: "Normal" },
+                                { id: "extra", label: "Extra" },
+                              ];
+                        visibleMenuItems
+                          .filter(
+                            (item) =>
+                              item.id &&
+                              normalizeIngredientCategory(resolvePrimaryCategory(item.categories)) === splitCategory
+                          )
+                          .forEach((item) => {
+                            optionsById[item.id as string] = splitModeOptions;
+                          });
+                      });
+
+                      return Object.keys(optionsById).length > 0 ? optionsById : undefined;
+                    })()
+                  }
+                  selectedIngredientPortionModeIdById={
+                    (() => {
+                      const selectedModeById: Record<string, string> = Object.fromEntries(
+                        visibleMenuItems
+                          .filter((item) => item.id && isProteinIngredientItem(item))
+                          .map((item) => [item.id as string, proteinPortionMode])
+                      );
+                      (["rice", "beans"] as const).forEach((splitCategory) => {
+                        const selectedSplitIds = Object.entries(selectedIngredientItems)
+                          .filter(
+                            ([, selectedIngredient]) =>
+                              normalizeIngredientCategory(resolvePrimaryCategory(selectedIngredient.item.categories)) === splitCategory
+                          )
+                          .map(([ingredientId]) => ingredientId);
+                        const isSplitSelection = selectedSplitIds.length === 2;
+
+                        visibleMenuItems
+                          .filter(
+                            (item) =>
+                              item.id &&
+                              normalizeIngredientCategory(resolvePrimaryCategory(item.categories)) === splitCategory
+                          )
+                          .forEach((item) => {
+                            const itemId = item.id as string;
+                            selectedModeById[itemId] = isSplitSelection
+                              ? "normal"
+                              : (splitPortionModeById[itemId] ?? "normal");
+                          });
+                      });
+
+                      return Object.keys(selectedModeById).length > 0 ? selectedModeById : undefined;
+                    })()
+                  }
+                  onIngredientPortionModeChange={(item, modeId) => {
+                    if (isProteinIngredientItem(item)) {
+                      if (modeId !== "normal" && modeId !== "double") return;
+                      setSelectedIngredientItems((previous) =>
+                        applyIngredientPortionNutrition(previous, { proteinMode: modeId })
+                      );
+                      setProteinPortionMode(modeId);
+                      return;
+                    }
+
+                    if (!isSplitPortionIngredientItem(item) || !item.id) return;
+                    if (modeId !== "light" && modeId !== "normal" && modeId !== "extra") return;
+
+                    const splitCategory = normalizeIngredientCategory(resolvePrimaryCategory(item.categories));
+                    const selectedSplitCount = Object.values(selectedIngredientItems).filter(
+                      (selectedIngredient) =>
+                        normalizeIngredientCategory(resolvePrimaryCategory(selectedIngredient.item.categories)) === splitCategory
+                    ).length;
+                    if (selectedSplitCount >= 2) return;
+
+                    const nextSplitModesById: Record<string, SplitPortionMode> = {
+                      ...splitPortionModeById,
+                      [item.id]: modeId,
+                    };
+                    setSplitPortionModeById(nextSplitModesById);
+                    setSelectedIngredientItems((previous) =>
+                      applyIngredientPortionNutrition(previous, {
+                        splitModesById: nextSplitModesById,
+                      })
+                    );
+                  }}
+                  onIngredientVariantChange={(item, variantId) => {
+                    if (selectedEntree === "tacos" && item.id && tacoShellIngredientIds.includes(item.id)) {
+                      setSelectedTacoCount(variantId === "1" ? 1 : 3);
+                      return;
+                    }
+
+                    const itemId = item.id;
+                    if (!itemId) return;
+
+                    setSelectedIngredientVariantIds((prev) => ({ ...prev, [itemId]: variantId }));
+                    setSelectedIngredientItems((prev) => {
+                      const selectedIngredient = prev[itemId];
+                      if (!selectedIngredient) return prev;
+
+                      const nextVariantNutrition =
+                        item.variants?.find((variant) => variant.id === variantId)?.nutrition ??
+                        selectedIngredient.item.nutrition;
+
+                      return {
+                        ...prev,
+                        [itemId]: {
+                          ...selectedIngredient,
+                          item: {
+                            ...selectedIngredient.item,
+                            nutrition: nextVariantNutrition,
+                          },
+                        },
+                      };
+                    });
+                  }}
+                />
+              </div>
+
+              <div className="w-full rounded-3xl border border-black/10 bg-[#e0e0e0] p-4">
+                <BuildSummaryDrawer
+                  adjustedNutritionLabelTotals={adjustedNutritionLabelTotals}
+                  selectedBuildName={editingCartItem.name}
+                  selectedIngredientCount={selectedIngredientCount}
+                  groupedSelectedIngredientEntries={groupedSelectedIngredientEntries}
+                  ingredientPortionLabelById={ingredientPortionLabelById}
+                  lockedIngredientIds={lockedIngredientIds}
+                  restaurantLogo={restaurantLogo}
+                  onResetOrder={handleResetSelectedIngredientOrder}
+                  onSaveOrder={handleSaveSelectedIngredientOrder}
+                  onAdjustIngredientQuantity={adjustIngredientQuantity}
+                  hideActionButtons
+                />
+              </div>
+            </div>
+          </div>
+
+          <div className="-mx-6 z-10 flex flex-wrap items-center justify-between gap-3 border-t border-black/10 bg-white p-4 shadow-[0_-4px_10px_rgba(0,0,0,0.08)]">
+            <MacroTotalsGrid
+              macros={{
+                calories: Math.round(adjustedSelectedIngredientTotals.calories ?? 0),
+                protein: Math.round(adjustedSelectedIngredientTotals.protein ?? 0),
+                carbs: Math.round(adjustedSelectedIngredientTotals.carbs ?? 0),
+                fat: Math.round(adjustedSelectedIngredientTotals.fat ?? 0),
+              }}
+              size="panel"
+              className="gap-3 sm:gap-6"
+              itemClassName="px-2 py-0.5"
+              labelClassName="text-[#64748b]"
+            />
+            <div className="ml-auto flex items-center gap-3">
+              <button
+                type="button"
+                className="cursor-pointer rounded-xl border border-black/20 bg-white px-6 py-2.5 text-base font-bold text-black/80"
+                onClick={handleResetSelectedIngredientOrder}
+              >
+                Reset
+              </button>
+              <button
+                type="button"
+                className="cursor-pointer rounded-xl border border-black/20 bg-black/90 px-6 py-2.5 text-base font-bold text-white"
+                onClick={handleAddBuildToCart}
+              >
+                Done
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   const entreeSelectionControl =
     isChipotleBuildPage && selectedEntree !== null ? (

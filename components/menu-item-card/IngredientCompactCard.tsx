@@ -9,7 +9,6 @@ export default function IngredientCompactCard({
   ingredientSelectionState,
   isIngredientSelectionDisabled,
   ingredientSelectionControl,
-  ingredientRadioGroupName,
   ingredientDisabledReason,
   ingredientPortionBadge,
   isIngredientUnavailable,
@@ -28,7 +27,6 @@ export default function IngredientCompactCard({
   ingredientSelectionState: boolean;
   isIngredientSelectionDisabled: boolean;
   ingredientSelectionControl: "checkbox" | "radio";
-  ingredientRadioGroupName?: string;
   ingredientDisabledReason?: string;
   ingredientPortionBadge?: string;
   isIngredientUnavailable?: boolean;
@@ -50,8 +48,26 @@ export default function IngredientCompactCard({
           : "border border-black/15 shadow-[0_4px_12px_rgba(0,0,0,0.12)]"
       }`}
     >
-      <label
+      <div
+        role={ingredientSelectionControl}
+        aria-checked={ingredientSelectionState}
+        aria-label={`${isIngredientSelectionDisabled ? ingredientDisabledReason ?? "Unavailable" : "Select"} ${item.name}`}
+        tabIndex={isIngredientSelectionDisabled ? -1 : 0}
         className={`flex items-center gap-4 px-4 py-3 ${isIngredientSelectionDisabled ? "cursor-not-allowed opacity-95" : "cursor-pointer"}`}
+        onClick={() => {
+          if (isIngredientSelectionDisabled) return;
+          const nextSelected =
+            ingredientSelectionControl === "radio" ? true : !ingredientSelectionState;
+          onSelectionChange(nextSelected);
+        }}
+        onKeyDown={(event) => {
+          if (isIngredientSelectionDisabled) return;
+          if (event.key !== "Enter" && event.key !== " ") return;
+          event.preventDefault();
+          const nextSelected =
+            ingredientSelectionControl === "radio" ? true : !ingredientSelectionState;
+          onSelectionChange(nextSelected);
+        }}
       >
         <span
           className={`flex h-6 w-6 items-center justify-center border text-sm font-bold transition ${
@@ -63,15 +79,6 @@ export default function IngredientCompactCard({
         >
           {ingredientSelectionControl === "radio" ? "●" : "✓"}
         </span>
-        <input
-          type={ingredientSelectionControl}
-          className="sr-only"
-          checked={ingredientSelectionState}
-          name={ingredientSelectionControl === "radio" ? ingredientRadioGroupName : undefined}
-          disabled={isIngredientSelectionDisabled}
-          onChange={(event) => onSelectionChange(event.target.checked)}
-          aria-label={`${isIngredientSelectionDisabled ? ingredientDisabledReason ?? "Unavailable" : "Select"} ${item.name}`}
-        />
 
         {selectedItemImage ? (
           <img className="h-24 w-24 shrink-0 rounded-xl bg-[#efefef] object-cover" src={selectedItemImage} alt={item.name} />
@@ -86,32 +93,38 @@ export default function IngredientCompactCard({
             </div>
           ) : null}
           <div className="truncate text-xl font-semibold text-black">{item.name}</div>
-          {isIngredientUnavailable && ingredientUnavailableReason ? (
-            <div className="mt-1 inline-flex rounded-full border border-black/20 bg-black/5 px-2 py-0.5 text-[11px] font-semibold text-black/60">
-              {ingredientUnavailableReason}
-            </div>
-          ) : null}
-          {ingredientSelectionState && activeCompactOptions && activeCompactOptions.length > 1 ? (
-            <div className="mt-2 flex gap-2">
-              {activeCompactOptions.map((variantOption) => (
-                <button
-                  key={variantOption.id}
-                  type="button"
-                  disabled={Boolean(variantOption.disabled)}
-                  onClick={(event) => {
-                    event.preventDefault();
-                    event.stopPropagation();
-                    if (!variantOption.disabled) onCompactOptionSelect(variantOption.id);
-                  }}
-                  className={`cursor-pointer rounded-full border px-3 py-1 text-xs font-semibold ${
-                    selectedCompactOptionId === variantOption.id
-                      ? "border-slate-900 bg-slate-900 text-white"
-                      : "border-black/20 bg-white text-slate-700 hover:border-black/35"
-                  } ${variantOption.disabled ? "cursor-not-allowed opacity-55 hover:border-black/20" : ""}`}
-                >
-                  {variantOption.label}
-                </button>
-              ))}
+          <div className="mt-1 min-h-[22px]">
+            {isIngredientUnavailable && ingredientUnavailableReason ? (
+              <div className="inline-flex rounded-full border border-black/20 bg-black/5 px-2 py-0.5 text-[11px] font-semibold text-black/60">
+                {ingredientUnavailableReason}
+              </div>
+            ) : null}
+          </div>
+          {activeCompactOptions && activeCompactOptions.length > 1 ? (
+            <div className="mt-2 min-h-[34px]">
+              {ingredientSelectionState ? (
+                <div className="flex gap-2">
+                  {activeCompactOptions.map((variantOption) => (
+                    <button
+                      key={variantOption.id}
+                      type="button"
+                      disabled={Boolean(variantOption.disabled)}
+                      onClick={(event) => {
+                        event.preventDefault();
+                        event.stopPropagation();
+                        if (!variantOption.disabled) onCompactOptionSelect(variantOption.id);
+                      }}
+                      className={`cursor-pointer rounded-full border px-3 py-1 text-xs font-semibold ${
+                        selectedCompactOptionId === variantOption.id
+                          ? "border-slate-900 bg-slate-900 text-white"
+                          : "border-black/20 bg-white text-slate-700 hover:border-black/35"
+                      } ${variantOption.disabled ? "cursor-not-allowed opacity-55 hover:border-black/20" : ""}`}
+                    >
+                      {variantOption.label}
+                    </button>
+                  ))}
+                </div>
+              ) : null}
             </div>
           ) : null}
         </div>
@@ -126,7 +139,7 @@ export default function IngredientCompactCard({
             </div>
           ))}
         </div>
-      </label>
+      </div>
     </li>
   );
 }

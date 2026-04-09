@@ -34,6 +34,7 @@ type Props = {
   onResetOrder: () => void;
   onSaveOrder: () => void;
   onAdjustIngredientQuantity: (ingredientId: string, delta: 1 | -1) => void;
+  hideActionButtons?: boolean;
 };
 
 export default function BuildSummaryDrawer({
@@ -47,27 +48,30 @@ export default function BuildSummaryDrawer({
   onResetOrder,
   onSaveOrder,
   onAdjustIngredientQuantity,
+  hideActionButtons = false,
 }: Props) {
   return (
     <div className="space-y-3">
-      <div className="flex flex-wrap items-center justify-end gap-2">
-        <button
-          type="button"
-          onClick={onResetOrder}
-          className="inline-flex cursor-pointer items-center gap-1.5 rounded-full border border-black/20 bg-white px-3 py-1 text-xs font-semibold text-slate-700 transition hover:bg-slate-50"
-        >
-          <RotateCcw className="h-3.5 w-3.5" aria-hidden="true" />
-          <span>Reset order</span>
-        </button>
-        <button
-          type="button"
-          onClick={onSaveOrder}
-          className="inline-flex cursor-pointer items-center gap-1.5 rounded-full border border-transparent bg-slate-900 px-3 py-1 text-xs font-semibold text-white transition hover:bg-slate-800"
-        >
-          <Save className="h-3.5 w-3.5" aria-hidden="true" />
-          <span>Save order</span>
-        </button>
-      </div>
+      {!hideActionButtons ? (
+        <div className="flex flex-wrap items-center justify-end gap-2">
+          <button
+            type="button"
+            onClick={onResetOrder}
+            className="inline-flex cursor-pointer items-center gap-1.5 rounded-full border border-black/20 bg-white px-3 py-1 text-xs font-semibold text-slate-700 transition hover:bg-slate-50"
+          >
+            <RotateCcw className="h-3.5 w-3.5" aria-hidden="true" />
+            <span>Reset order</span>
+          </button>
+          <button
+            type="button"
+            onClick={onSaveOrder}
+            className="inline-flex cursor-pointer items-center gap-1.5 rounded-full border border-transparent bg-slate-900 px-3 py-1 text-xs font-semibold text-white transition hover:bg-slate-800"
+          >
+            <Save className="h-3.5 w-3.5" aria-hidden="true" />
+            <span>Save order</span>
+          </button>
+        </div>
+      ) : null}
 
       <div className="grid items-stretch gap-4 lg:grid-cols-2">
         <section className="rounded-[18px] border border-[rgba(0,0,0,0.15)] bg-white p-[18px]">
