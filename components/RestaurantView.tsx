@@ -2176,7 +2176,7 @@ export default function RestaurantView({
             ×
           </button>
 
-          <div className="h-[calc(100%-52px-88px)] overflow-y-auto pb-6 pr-2">
+          <div className="h-[calc(100%-52px)] overflow-y-auto pb-6 pr-2">
             <div className="grid gap-8">
               <div className="grid justify-items-center gap-6">
                 <h1 className="text-center text-[32px] font-extrabold">{modalBuildName}</h1>
@@ -2200,31 +2200,31 @@ export default function RestaurantView({
                 ) : null}
                 {menuSectionsContent}
               </div>
-            </div>
-          </div>
 
-          <div className="sticky bottom-0 -mx-6 z-10 border-t border-black/10 bg-white p-4 shadow-[0_-4px_10px_rgba(0,0,0,0.08)]">
-            <BuildSummaryDrawer
-              adjustedNutritionLabelTotals={adjustedNutritionLabelTotals}
-              selectedBuildName={modalBuildName}
-              selectedIngredientCount={selectedIngredientCount}
-              groupedSelectedIngredientEntries={groupedSelectedIngredientEntries}
-              ingredientPortionLabelById={ingredientPortionLabelById}
-              lockedIngredientIds={lockedIngredientIds}
-              restaurantLogo={restaurantLogo}
-              onResetOrder={handleResetSelectedIngredientOrder}
-              onSaveOrder={handleSaveSelectedIngredientOrder}
-              onAdjustIngredientQuantity={adjustIngredientQuantity}
-              showOrderActions={false}
-            />
-            <div className="mt-3 flex justify-end">
-              <button
-                type="button"
-                className="cursor-pointer rounded-xl border border-black/20 bg-black/90 px-6 py-2.5 text-base font-bold text-white"
-                onClick={handleAddBuildToCart}
-              >
-                Done
-              </button>
+              <div className="mx-auto w-full max-w-[1400px] border-t border-black/10 pt-4">
+                <BuildSummaryDrawer
+                  adjustedNutritionLabelTotals={adjustedNutritionLabelTotals}
+                  selectedBuildName={modalBuildName}
+                  selectedIngredientCount={selectedIngredientCount}
+                  groupedSelectedIngredientEntries={groupedSelectedIngredientEntries}
+                  ingredientPortionLabelById={ingredientPortionLabelById}
+                  lockedIngredientIds={lockedIngredientIds}
+                  restaurantLogo={restaurantLogo}
+                  onResetOrder={handleResetSelectedIngredientOrder}
+                  onSaveOrder={handleSaveSelectedIngredientOrder}
+                  onAdjustIngredientQuantity={adjustIngredientQuantity}
+                  showOrderActions={false}
+                />
+                <div className="mt-3 flex justify-end">
+                  <button
+                    type="button"
+                    className="cursor-pointer rounded-xl border border-black/20 bg-black/90 px-6 py-2.5 text-base font-bold text-white"
+                    onClick={handleAddBuildToCart}
+                  >
+                    Done
+                  </button>
+                </div>
+              </div>
             </div>
           </div>
         </div>
