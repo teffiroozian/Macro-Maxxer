@@ -381,6 +381,13 @@ export default function RestaurantView({
           return false;
         }
 
+        const shouldHideTortillaSideForEntree =
+          ingredient.id === "tortilla" &&
+          (selectedEntree === "salad" || selectedEntree === "tacos");
+        if (shouldHideTortillaSideForEntree) {
+          return false;
+        }
+
         const isTacoShellIngredient = ingredient.id
           ? tacoShellIngredientIds.includes(ingredient.id)
           : false;
