@@ -1,5 +1,5 @@
 import type { CartItem } from "@/stores/cartStore";
-import type { MenuItem } from "@/types/menu";
+import type { IngredientItem, MenuItem } from "@/types/menu";
 import { parseIncludedIngredientEntry } from "@/lib/itemIngredients";
 
 function resolveHighProteinEntree(item: MenuItem) {
@@ -20,7 +20,21 @@ export function isChipotleHighProteinMenuItem(item: MenuItem, restaurantId: stri
   return restaurantId === "chipotle" && item.entreeGroup === "high-protein-menu";
 }
 
-export function buildHighProteinBuildConfiguration(item: MenuItem): CartItem["buildConfiguration"] {
+function getProteinIngredientIds(ingredientItems: IngredientItem[] = []) {
+  return new Set(
+    ingredientItems
+      .filter((ingredient) => {
+        const categories = ingredient.categories ?? (ingredient.category ? [ingredient.category] : []);
+        return categories.some((category) => category.trim().toLowerCase() === "proteins");
+      })
+      .map((ingredient) => (ingredient.id ?? ingredient.name).toLowerCase())
+  );
+}
+
+export function buildHighProteinBuildConfiguration(
+  item: MenuItem,
+  ingredientItems: IngredientItem[] = []
+): CartItem["buildConfiguration"] {
   const selectedIngredientItems = (item.ingredients ?? []).reduce<Record<string, { quantity: number }>>(
     (acc, entry) => {
       const parsed = parseIncludedIngredientEntry(entry);
@@ -30,12 +44,22 @@ export function buildHighProteinBuildConfiguration(item: MenuItem): CartItem["bu
     },
     {}
   );
+  const proteinIngredientIds = getProteinIngredientIds(ingredientItems);
+  const selectedProteinEntries = Object.entries(selectedIngredientItems)
+    .filter(([ingredientId]) => proteinIngredientIds.has(ingredientId.toLowerCase()));
+  const shouldUseDoubleProteinMode =
+    selectedProteinEntries.length === 1 && selectedProteinEntries[0][1].quantity >= 2;
+
+  if (shouldUseDoubleProteinMode) {
+    const [proteinIngredientId] = selectedProteinEntries[0];
+    selectedIngredientItems[proteinIngredientId] = { quantity: 1 };
+  }
 
   return {
     selectedEntree: resolveHighProteinEntree(item),
     selectedIngredientItems,
     selectedIngredientVariantIds: {},
-    proteinPortionMode: "normal",
+    proteinPortionMode: shouldUseDoubleProteinMode ? "double" : "normal",
     splitPortionModeById: {},
     selectedTacoShell: resolveHighProteinTacoShell(item),
     selectedTacoCount: 1,

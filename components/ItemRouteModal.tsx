@@ -598,7 +598,7 @@ export default function ItemRouteModal({
       buildConfiguration:
         editingCartItem?.buildConfiguration ??
         (isChipotleHighProteinMenuItem(item, restaurantId)
-          ? buildHighProteinBuildConfiguration(item)
+          ? buildHighProteinBuildConfiguration(item, ingredients)
           : undefined),
     };
 

@@ -849,7 +849,7 @@ export default function MenuItemCard({
 
     const baseForCart = selectedVariantForCart?.nutrition ?? item.nutrition;
     const highProteinBuildConfiguration = isChipotleHighProteinMenuItem(item, restaurantId)
-      ? buildHighProteinBuildConfiguration(item)
+      ? buildHighProteinBuildConfiguration(item, ingredientItems)
       : undefined;
 
     if (matchingCartItem) {
