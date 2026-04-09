@@ -1921,10 +1921,16 @@ export default function RestaurantView({
       </div>
     ) : null;
 
-  const renderMenuSections = (categoryModeOverride?: ViewOption) => (
+  const renderMenuSections = ({
+    categoryModeOverride,
+    itemsOverride,
+  }: {
+    categoryModeOverride?: ViewOption;
+    itemsOverride?: MenuItem[];
+  } = {}) => (
     <MenuSections
       restaurantId={restaurantId}
-      items={visibleMenuItems}
+      items={itemsOverride ?? visibleMenuItems}
       sort={sort}
       addons={addons}
       ingredients={ingredients}
@@ -2162,6 +2168,37 @@ export default function RestaurantView({
     />
   );
 
+  const modalIngredientMenuItems = useMemo(() => {
+    if (!isChipotleBuildPage || !selectedEntree) {
+      return ingredientMenuItems;
+    }
+
+    const hiddenSections = new Set(
+      (chipotleBuilderConfig?.hiddenSectionsByEntree?.[selectedEntree] ?? []).map((section) =>
+        section.trim().toLowerCase()
+      )
+    );
+
+    if (hiddenSections.size === 0) {
+      return ingredientMenuItems;
+    }
+
+    return ingredientMenuItems
+      .map((item) => ({
+        ...item,
+        categories: (item.categories ?? []).filter(
+          (category) => !hiddenSections.has(category.trim().toLowerCase())
+        ),
+        variants: item.variants?.map((variant) => ({
+          ...variant,
+          categories: variant.categories?.filter(
+            (category) => !hiddenSections.has(category.trim().toLowerCase())
+          ),
+        })),
+      }))
+      .filter((item) => item.categories.length > 0);
+  }, [chipotleBuilderConfig, ingredientMenuItems, isChipotleBuildPage, selectedEntree]);
+
   if (isBuildEditModal && shouldShowBuildStickyBar) {
     const modalBuildName = editingCartItem?.name ?? selectedBuildName;
     const modalBuildImage = editingCartItem?.image ?? selectedBuildImageSrc;
@@ -2216,23 +2253,10 @@ export default function RestaurantView({
                     options={kidsMealOptions}
                   />
                 ) : null}
-                {renderMenuSections("ingredients")}
-              </div>
-
-              <div className="mx-auto w-full max-w-[1400px] rounded-3xl bg-[#efefef] p-4">
-                <BuildSummaryDrawer
-                  adjustedNutritionLabelTotals={adjustedNutritionLabelTotals}
-                  selectedBuildName={modalBuildName}
-                  selectedIngredientCount={selectedIngredientCount}
-                  groupedSelectedIngredientEntries={groupedSelectedIngredientEntries}
-                  ingredientPortionLabelById={ingredientPortionLabelById}
-                  lockedIngredientIds={lockedIngredientIds}
-                  restaurantLogo={restaurantLogo}
-                  onResetOrder={handleResetSelectedIngredientOrder}
-                  onSaveOrder={handleSaveSelectedIngredientOrder}
-                  onAdjustIngredientQuantity={adjustIngredientQuantity}
-                  showOrderActions={false}
-                />
+                {renderMenuSections({
+                  categoryModeOverride: "ingredients",
+                  itemsOverride: modalIngredientMenuItems,
+                })}
               </div>
             </div>
           </div>
