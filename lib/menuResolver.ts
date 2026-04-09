@@ -91,6 +91,22 @@ function normalizeMenuItems(items: FlatLegacyMenuItem[]): MenuItem[] {
   return items.map(normalizeMenuItem);
 }
 
+function hasMeaningfulNutrition(nutrition?: MenuItem["nutrition"]) {
+  if (!nutrition) return false;
+  return [
+    nutrition.calories,
+    nutrition.protein,
+    nutrition.carbs,
+    nutrition.totalFat,
+    nutrition.satFat,
+    nutrition.transFat,
+    nutrition.cholesterol,
+    nutrition.sodium,
+    nutrition.fiber,
+    nutrition.sugars,
+  ].some((value) => typeof value === "number" && value > 0);
+}
+
 function resolveIngredientBackedItems(items: MenuItem[], ingredients: IngredientItem[]): MenuItem[] {
   const ingredientById = new Map(
     ingredients
@@ -129,7 +145,9 @@ function resolveIngredientBackedItems(items: MenuItem[], ingredients: Ingredient
 
     return {
       ...item,
-      nutrition: nutritionFromIncludedIngredients ?? item.nutrition ?? ingredient.nutrition,
+      nutrition:
+        nutritionFromIncludedIngredients
+        ?? (hasMeaningfulNutrition(item.nutrition) ? item.nutrition : ingredient.nutrition),
       image: item.image ?? ingredient.image,
     };
   });

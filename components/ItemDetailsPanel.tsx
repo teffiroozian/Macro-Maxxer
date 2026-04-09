@@ -94,19 +94,15 @@ export function PortionSelector({
       >
         {variants.map((variant) => {
           const isActive = variant.id === selectedVariantId;
-          const variantColorClasses = isTopLayout
-            ? isActive
-              ? "border-blue-500 bg-blue-50 text-slate-700 shadow-[0_8px_20px_rgba(37,99,235,0.18)]"
-              : "border-slate-200 bg-white text-slate-500 shadow-[0_2px_8px_rgba(15,23,42,0.06)] hover:border-slate-300 hover:bg-slate-50"
-            : isActive
-              ? "border-black bg-black text-white"
-              : "border-black/10 bg-neutral-100 text-neutral-700 hover:bg-neutral-200";
+          const variantColorClasses = isActive
+            ? "border-blue-500 bg-blue-50 text-slate-700 shadow-[0_8px_20px_rgba(37,99,235,0.18)]"
+            : "border-slate-200 bg-white text-slate-500 shadow-[0_2px_8px_rgba(15,23,42,0.06)] hover:border-slate-300 hover:bg-slate-50";
 
           return (
             <button
               key={variant.id}
               type="button"
-              className={`${isTopLayout ? "min-w-[140px] rounded-2xl px-5 py-2.5 text-sm font-bold" : "w-full rounded-xl px-3 py-2 text-[18px] font-semibold"} cursor-pointer border text-center transition-all duration-150 ${variantColorClasses}`}
+              className={`${isTopLayout ? "min-w-[140px]" : "w-full"} cursor-pointer rounded-2xl border px-5 py-2.5 text-center text-sm font-bold transition-all duration-150 ${variantColorClasses}`}
               onClick={() => onSelectVariant?.(variant.id)}
             >
               {variant.label}
