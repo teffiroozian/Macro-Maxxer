@@ -693,7 +693,16 @@
                 "protein": 46
             },
             "entreeGroup": "high-protein-menu",
-            "defaultOrder": 7
+            "defaultOrder": 7,
+            "ingredients": [
+                "chicken",
+                "brown-rice",
+                "black-beans",
+                "fresh-tomato-salsa",
+                "roasted-chili-corn-salsa",
+                "fajita-veggies",
+                "romaine-lettuce"
+            ]
         },
         {
             "id": "high-protein-low-calorie-bowl",
