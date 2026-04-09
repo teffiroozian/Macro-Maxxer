@@ -228,7 +228,7 @@ export default function CartPage() {
                 : undefined;
               const buildEditHref =
                 cartItem.buildConfiguration
-                  ? `/restaurant/${cartItem.restaurantId}?view=ingredients&editCartItem=${cartItem.id}`
+                  ? `/restaurant/${cartItem.restaurantId}?view=ingredients&editCartItem=${cartItem.id}&editMode=modal`
                   : undefined;
 
               const initialIngredientCustomizations = getBuildIngredientCountCustomizations(

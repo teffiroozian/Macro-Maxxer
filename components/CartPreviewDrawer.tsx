@@ -161,7 +161,7 @@ export default function CartPreviewDrawer() {
                                 onClick={() => {
                                   closeCart();
                                   router.push(
-                                    `/restaurant/${item.restaurantId}?view=ingredients&editCartItem=${item.id}`
+                                    `/restaurant/${item.restaurantId}?view=ingredients&editCartItem=${item.id}&editMode=modal`
                                   );
                                 }}
                                 className="cursor-pointer inline-flex size-8 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-700 transition hover:bg-slate-100"

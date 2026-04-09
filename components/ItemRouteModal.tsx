@@ -890,7 +890,7 @@ export default function ItemRouteModal({
               canCustomizeViaBuildPage
                 ? () => {
                     router.push(
-                      `/restaurant/${restaurantId}?view=ingredients&editCartItem=${editingCartItem!.id}`,
+                      `/restaurant/${restaurantId}?view=ingredients&editCartItem=${editingCartItem!.id}&editMode=modal`,
                       { scroll: false }
                     );
                   }
