@@ -8,6 +8,7 @@ import ItemDetailsPanel, {
   resolvePanelIngredientTabs,
   resolvePanelIngredients,
 } from "@/components/ItemDetailsPanel";
+import MenuSections from "@/components/MenuSections";
 import MacroTotalsGrid from "@/components/MacroTotalsGrid";
 import type {
   AddonOption,
@@ -48,6 +49,7 @@ import {
   buildHighProteinBuildConfiguration,
   isChipotleHighProteinMenuItem,
 } from "@/lib/chipotleBuild/highProtein";
+import { normalizeIngredientCategory } from "@/lib/chipotleBuild";
 
 const emptyAddon: AddonOption = {
   name: "None",
@@ -469,17 +471,77 @@ export default function ItemRouteModal({
     : null;
   const hasAddonSection = Boolean(addonNavigationRef);
   const hasComboSections = isComboEligibleCategory && comboType === "combo-meal";
+  const isHighProteinMenuItem = isChipotleHighProteinMenuItem(item, restaurantId);
+  const [highProteinPortionMode, setHighProteinPortionMode] = useState<"normal" | "double">("normal");
+  const highProteinBuildItems = useMemo(() => {
+    const allowedCategories = new Set(["proteins", "rice", "beans", "toppings"]);
+    return (menuItems ?? []).filter((menuItem) =>
+      menuItem.categories.some((category) => allowedCategories.has(normalizeIngredientCategory(category)))
+    );
+  }, [menuItems]);
+  const selectedIngredientIds = useMemo(
+    () =>
+      new Set(
+        Object.entries(ingredientCounts)
+          .filter(([, count]) => count > 0)
+          .map(([ingredientId]) => ingredientId)
+      ),
+    [ingredientCounts]
+  );
+  const selectedProteinIds = useMemo(
+    () =>
+      Object.entries(ingredientCounts)
+        .filter(([ingredientId, count]) => {
+          if (count <= 0) return false;
+          const ingredient = ingredientLookup.get(ingredientId) ?? ingredientLookup.get(ingredientId.toLowerCase());
+          if (!ingredient) return false;
+          const category = normalizeIngredientCategory(
+            ingredient.ingredientItem?.categories?.[0] ?? ingredient.ingredientItem?.category ?? ""
+          );
+          return category === "proteins";
+        })
+        .map(([ingredientId]) => ingredientId),
+    [ingredientCounts, ingredientLookup]
+  );
+  const selectedIngredientPortionModeIdById = useMemo(
+    () =>
+      Object.fromEntries(
+        highProteinBuildItems
+          .filter((menuItem) => menuItem.id && menuItem.categories.some((category) => normalizeIngredientCategory(category) === "proteins"))
+          .map((menuItem) => [menuItem.id as string, highProteinPortionMode])
+      ),
+    [highProteinBuildItems, highProteinPortionMode]
+  );
+  const ingredientPortionModeOptionsById = useMemo(
+    () =>
+      Object.fromEntries(
+        highProteinBuildItems
+          .filter((menuItem) => menuItem.id && menuItem.categories.some((category) => normalizeIngredientCategory(category) === "proteins"))
+          .map((menuItem) => [
+            menuItem.id as string,
+            [
+              { id: "normal", label: "Normal" },
+              {
+                id: "double",
+                label: "Double",
+                disabled: selectedProteinIds.length !== 1 || !selectedIngredientIds.has(menuItem.id as string),
+              },
+            ],
+          ])
+      ),
+    [highProteinBuildItems, selectedIngredientIds, selectedProteinIds.length]
+  );
   const visibleSections = useMemo(
     () =>
       [
-        hasIngredientSection
+        hasIngredientSection && !isHighProteinMenuItem
           ? { id: "ingredients" as const, label: "Ingredients", icon: Salad }
           : null,
         hasComboSections ? { id: "sides" as const, label: "Sides", icon: SquareStack } : null,
         hasComboSections ? { id: "drinks" as const, label: "Drinks", icon: CupSoda } : null,
         hasAddonSection && addonSectionLabel ? { id: "sauces" as const, label: addonSectionLabel, icon: Droplets } : null,
       ].filter((section): section is { id: ModalSectionId; label: string; icon: typeof Salad } => Boolean(section)),
-    [addonSectionLabel, hasAddonSection, hasComboSections, hasIngredientSection]
+    [addonSectionLabel, hasAddonSection, hasComboSections, hasIngredientSection, isHighProteinMenuItem]
   );
   const [activeSectionId, setActiveSectionId] = useState<ModalSectionId | null>(visibleSections[0]?.id ?? null);
   const scrollContainerRef = useRef<HTMLDivElement | null>(null);
@@ -730,6 +792,84 @@ export default function ItemRouteModal({
           </div>
 
           <div className="w-full">
+          {isHighProteinMenuItem ? (
+            <section className="mx-auto mb-7 w-[min(720px,100%)] rounded-[14px] border border-black/12 bg-white p-5">
+              <h2 className="mb-4 text-2xl font-bold">Customize Ingredients</h2>
+              <MenuSections
+                restaurantId={restaurantId}
+                items={highProteinBuildItems}
+                sort="default-order"
+                addons={addons}
+                ingredients={ingredients}
+                commonChanges={commonChanges}
+                customizationRules={customizationRules}
+                categoryMode="ingredients"
+                isBuildYourOwn
+                selectedIngredientIds={selectedIngredientIds}
+                onIngredientSelectionChange={(menuItem, selected) =>
+                  setSelectedIngredientCounts((prev) => {
+                    const itemId = menuItem.id;
+                    if (!itemId) return prev;
+                    const ingredient = ingredientLookup.get(itemId) ?? ingredientLookup.get(itemId.toLowerCase());
+                    const next = { ...prev };
+                    const isProtein = menuItem.categories.some(
+                      (category) => normalizeIngredientCategory(category) === "proteins"
+                    );
+                    const currentCount = ingredientCounts[itemId] ?? ingredient?.defaultCount ?? 0;
+
+                    if (!selected) {
+                      if (currentCount === 0) return prev;
+                      next[itemId] = 0;
+                      if (isProtein && highProteinPortionMode === "double") {
+                        setHighProteinPortionMode("normal");
+                      }
+                      return next;
+                    }
+
+                    if (isProtein && !selectedIngredientIds.has(itemId) && selectedProteinIds.length >= 2) {
+                      return prev;
+                    }
+
+                    next[itemId] = 1;
+
+                    if (isProtein && selectedProteinIds.length >= 1 && highProteinPortionMode === "double") {
+                      const existingProteinId = selectedProteinIds.find((id) => id !== itemId) ?? selectedProteinIds[0];
+                      if (existingProteinId) {
+                        next[existingProteinId] = 1;
+                      }
+                      setHighProteinPortionMode("normal");
+                    }
+
+                    return next;
+                  })
+                }
+                ingredientPortionModeOptionsById={ingredientPortionModeOptionsById}
+                selectedIngredientPortionModeIdById={selectedIngredientPortionModeIdById}
+                onIngredientPortionModeChange={(menuItem, modeId) => {
+                  const itemId = menuItem.id;
+                  if (!itemId) return;
+                  if (modeId !== "normal" && modeId !== "double") return;
+                  if (modeId === "double" && (!selectedIngredientIds.has(itemId) || selectedProteinIds.length !== 1)) {
+                    return;
+                  }
+                  setHighProteinPortionMode(modeId);
+                  setSelectedIngredientCounts((prev) => {
+                    const next = { ...prev };
+                    if (modeId === "double") {
+                      selectedProteinIds.forEach((proteinId) => {
+                        next[proteinId] = proteinId === itemId ? 2 : 0;
+                      });
+                    } else {
+                      selectedProteinIds.forEach((proteinId) => {
+                        next[proteinId] = next[proteinId] > 0 ? 1 : 0;
+                      });
+                    }
+                    return next;
+                  });
+                }}
+              />
+            </section>
+          ) : null}
           <ItemDetailsPanel
             item={item}
             nutrition={nutrition}
@@ -737,7 +877,7 @@ export default function ItemRouteModal({
             selectedVariantId={selectedVariantId}
             onSelectVariant={setSelectedVariantId}
             addons={addons}
-            ingredientItems={ingredients}
+            ingredientItems={isHighProteinMenuItem ? undefined : ingredients}
             menuItems={menuItems}
             customizationRules={customizationRules}
             selectedAddons={selectedAddons}
