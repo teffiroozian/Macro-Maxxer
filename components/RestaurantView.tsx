@@ -1857,7 +1857,7 @@ export default function RestaurantView({
             ×
           </button>
 
-          <div className="h-[calc(100%-52px-56px)] overflow-y-auto pr-2 pb-6">
+          <div className="h-[calc(100%-52px-56px)] overflow-y-auto pr-2 pb-6 [overflow-anchor:none]">
             <div className="grid justify-items-center gap-8">
               <div className="grid justify-items-center gap-5">
                 <h1 className="text-center text-[32px] font-extrabold">{editingCartItem.name}</h1>

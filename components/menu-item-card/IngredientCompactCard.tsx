@@ -86,32 +86,38 @@ export default function IngredientCompactCard({
             </div>
           ) : null}
           <div className="truncate text-xl font-semibold text-black">{item.name}</div>
-          {isIngredientUnavailable && ingredientUnavailableReason ? (
-            <div className="mt-1 inline-flex rounded-full border border-black/20 bg-black/5 px-2 py-0.5 text-[11px] font-semibold text-black/60">
-              {ingredientUnavailableReason}
-            </div>
-          ) : null}
-          {ingredientSelectionState && activeCompactOptions && activeCompactOptions.length > 1 ? (
-            <div className="mt-2 flex gap-2">
-              {activeCompactOptions.map((variantOption) => (
-                <button
-                  key={variantOption.id}
-                  type="button"
-                  disabled={Boolean(variantOption.disabled)}
-                  onClick={(event) => {
-                    event.preventDefault();
-                    event.stopPropagation();
-                    if (!variantOption.disabled) onCompactOptionSelect(variantOption.id);
-                  }}
-                  className={`cursor-pointer rounded-full border px-3 py-1 text-xs font-semibold ${
-                    selectedCompactOptionId === variantOption.id
-                      ? "border-slate-900 bg-slate-900 text-white"
-                      : "border-black/20 bg-white text-slate-700 hover:border-black/35"
-                  } ${variantOption.disabled ? "cursor-not-allowed opacity-55 hover:border-black/20" : ""}`}
-                >
-                  {variantOption.label}
-                </button>
-              ))}
+          <div className="mt-1 min-h-[22px]">
+            {isIngredientUnavailable && ingredientUnavailableReason ? (
+              <div className="inline-flex rounded-full border border-black/20 bg-black/5 px-2 py-0.5 text-[11px] font-semibold text-black/60">
+                {ingredientUnavailableReason}
+              </div>
+            ) : null}
+          </div>
+          {activeCompactOptions && activeCompactOptions.length > 1 ? (
+            <div className="mt-2 min-h-[34px]">
+              {ingredientSelectionState ? (
+                <div className="flex gap-2">
+                  {activeCompactOptions.map((variantOption) => (
+                    <button
+                      key={variantOption.id}
+                      type="button"
+                      disabled={Boolean(variantOption.disabled)}
+                      onClick={(event) => {
+                        event.preventDefault();
+                        event.stopPropagation();
+                        if (!variantOption.disabled) onCompactOptionSelect(variantOption.id);
+                      }}
+                      className={`cursor-pointer rounded-full border px-3 py-1 text-xs font-semibold ${
+                        selectedCompactOptionId === variantOption.id
+                          ? "border-slate-900 bg-slate-900 text-white"
+                          : "border-black/20 bg-white text-slate-700 hover:border-black/35"
+                      } ${variantOption.disabled ? "cursor-not-allowed opacity-55 hover:border-black/20" : ""}`}
+                    >
+                      {variantOption.label}
+                    </button>
+                  ))}
+                </div>
+              ) : null}
             </div>
           ) : null}
         </div>
