@@ -63,7 +63,6 @@ import MenuSections from "./MenuSections";
 import StickyRestaurantBar from "./StickyRestaurantBar";
 import StickyMacroTotalsBar from "./StickyMacroTotalsBar";
 import { useCart } from "@/stores/cartStore";
-import { useRestaurantUi } from "@/components/RestaurantUiContext";
 import BuildSummaryDrawer from "./restaurant-view/BuildSummaryDrawer";
 import EntreeSelectionHero from "./restaurant-view/EntreeSelectionHero";
 import KidsMealSelector from "./restaurant-view/KidsMealSelector";
@@ -253,7 +252,6 @@ export default function RestaurantView({
   const { searchOpen, searchQuery, setSearchQuery, openSearch, closeSearch } =
     useRestaurantSearch();
   const { addItem, items: cartItems, updateItem } = useCart();
-  const { openCart } = useRestaurantUi();
   const [selectedIngredientItems, setSelectedIngredientItems] = useState<
     Record<string, { item: MenuItem; quantity: number }>
   >({});
@@ -1420,7 +1418,7 @@ export default function RestaurantView({
     };
 
     if (editingCartItem) {
-      updateItem(editingCartItem.id, nextItemPayload);
+      updateItem(editingCartItem.id, nextItemPayload, { markAsJustAdded: true });
     } else {
       addItem({
         id: crypto.randomUUID(),
@@ -1442,8 +1440,6 @@ export default function RestaurantView({
       selectedKidsMeal,
       selectedTacoShell,
     });
-    openCart();
-
     setSelectedIngredientItems(() => {
       const resetSelections: Record<string, { item: MenuItem; quantity: number }> = {};
       nextIncludedIngredientIds.forEach((ingredientId) => {
