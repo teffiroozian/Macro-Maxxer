@@ -1,13 +1,16 @@
 "use client";
 
 import { useEffect } from "react";
+import ItemModalHero from "@/components/ItemModalHero";
 
 export default function BuildEditPlaceholderModal({
   itemName,
+  itemImage,
   onClose,
   zIndexClass = "z-[100]",
 }: {
   itemName: string;
+  itemImage?: string;
   onClose: () => void;
   zIndexClass?: string;
 }) {
@@ -35,7 +38,7 @@ export default function BuildEditPlaceholderModal({
         onClick={onClose}
         aria-label="Close build edit modal"
       />
-      <div className="relative m-4 w-[min(720px,calc(100%-32px))] overflow-hidden rounded-2xl bg-white px-6 pt-6 pb-8">
+      <div className="relative m-4 w-[min(1024px,calc(100%-32px))] overflow-hidden rounded-2xl bg-white px-6 pt-6 pb-8">
         <button
           type="button"
           className="cursor-pointer ml-auto block h-9 w-9 rounded-full border border-black/12 bg-white/95 text-2xl"
@@ -44,11 +47,9 @@ export default function BuildEditPlaceholderModal({
         >
           ×
         </button>
-        <div className="mt-6 text-center">
-          <h2 className="text-2xl font-extrabold text-slate-900">Build edit placeholder</h2>
-          <p className="mt-2 text-sm text-slate-600">
-            Placeholder modal for editing <span className="font-semibold">{itemName}</span>.
-          </p>
+        <div className="mt-2 grid justify-items-center gap-10 pb-4">
+          <ItemModalHero name={itemName} image={itemImage} />
+          <p className="text-sm text-slate-600">Build edit placeholder content.</p>
         </div>
       </div>
     </div>

@@ -95,7 +95,7 @@ export default function CartPage() {
   const router = useRouter();
   const inlineMacroBarRef = useRef<HTMLDivElement | null>(null);
   const [showStickyBar, setShowStickyBar] = useState(true);
-  const [editingBuildItemName, setEditingBuildItemName] = useState<string | null>(null);
+  const [editingBuildItem, setEditingBuildItem] = useState<{ name: string; image?: string } | null>(null);
 
   useEffect(() => {
     const inlineMacroBar = inlineMacroBarRef.current;
@@ -288,7 +288,7 @@ export default function CartPage() {
                     (buildEditHref ?? itemEditHref)
                       ? () => {
                           if (cartItem.buildConfiguration && cartItem.restaurantId === "chipotle") {
-                            setEditingBuildItemName(cartItem.name);
+                            setEditingBuildItem({ name: cartItem.name, image: cartItem.image });
                             return;
                           }
                           router.push(buildEditHref ?? itemEditHref!, { scroll: false });
@@ -388,10 +388,11 @@ export default function CartPage() {
         onSecondaryAction={() => window.alert("Save Meal coming soon")}
         onPrimaryAction={() => window.alert("Generate Snapshot coming soon")}
       />
-      {editingBuildItemName ? (
+      {editingBuildItem ? (
         <BuildEditPlaceholderModal
-          itemName={editingBuildItemName}
-          onClose={() => setEditingBuildItemName(null)}
+          itemName={editingBuildItem.name}
+          itemImage={editingBuildItem.image}
+          onClose={() => setEditingBuildItem(null)}
         />
       ) : null}
     </main>

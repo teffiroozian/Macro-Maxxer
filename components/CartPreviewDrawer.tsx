@@ -32,7 +32,7 @@ export default function CartPreviewDrawer() {
   const { isCartOpen, closeCart } = useRestaurantUi();
   const { items, totals, updateQuantity, clearCart } = useCart();
   const router = useRouter();
-  const [editingBuildItemName, setEditingBuildItemName] = useState<string | null>(null);
+  const [editingBuildItem, setEditingBuildItem] = useState<{ name: string; image?: string } | null>(null);
 
   const activeRestaurant = useMemo(() => {
     const activeRestaurantId = items[0]?.restaurantId;
@@ -162,7 +162,7 @@ export default function CartPreviewDrawer() {
                                 type="button"
                                 onClick={() => {
                                   if (item.restaurantId === "chipotle") {
-                                    setEditingBuildItemName(item.name);
+                                    setEditingBuildItem({ name: item.name, image: item.image });
                                     return;
                                   }
                                   closeCart();
@@ -249,10 +249,11 @@ export default function CartPreviewDrawer() {
           </section>
         </div>
       </aside>
-      {editingBuildItemName ? (
+      {editingBuildItem ? (
         <BuildEditPlaceholderModal
-          itemName={editingBuildItemName}
-          onClose={() => setEditingBuildItemName(null)}
+          itemName={editingBuildItem.name}
+          itemImage={editingBuildItem.image}
+          onClose={() => setEditingBuildItem(null)}
           zIndexClass="z-[130]"
         />
       ) : null}

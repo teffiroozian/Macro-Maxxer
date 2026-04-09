@@ -20,6 +20,7 @@ import type {
   RestaurantCustomizationRules,
 } from "@/types/menu";
 import { useCart } from "@/stores/cartStore";
+import ItemModalHero from "@/components/ItemModalHero";
 import { parseComboCustomization } from "@/lib/menuItemCard/comboCustomizationParser";
 import {
   getSelectedAddonsFromLabel,
@@ -649,11 +650,7 @@ export default function ItemRouteModal({
 
         <div ref={scrollContainerRef} className="h-[calc(100%-52px-56px)] overflow-y-auto pr-2 pb-6">
         <div className="grid justify-items-center gap-16">
-          <div className="grid justify-items-center gap-8">
-            <h1 className="text-center text-[32px] font-extrabold">{item.name}</h1>
-            {selectedItemImage ? (
-              <img className="max-h-[300px] w-[300px] bg-[#efefef] shadow-[0_0_5px_rgba(0,0,0,0.25)] rounded-[14px] object-contain" src={selectedItemImage} alt={item.name} />
-            ) : null}
+          <ItemModalHero name={item.name} image={selectedItemImage}>
             <MacroTotalsGrid
               macros={{
                 calories: Math.round(nutrition.calories ?? 0),
@@ -674,7 +671,7 @@ export default function ItemRouteModal({
                   : undefined
               }
             />
-          </div>
+          </ItemModalHero>
 
           <div className="w-[min(720px,100%)] grid gap-7">
             {variants && variants.length > 0 && !item.hideVariantSelector ? (
