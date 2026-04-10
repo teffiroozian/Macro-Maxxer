@@ -263,6 +263,14 @@ export default function RestaurantView({
   const [isBuildSummaryExpanded, setIsBuildSummaryExpanded] = useState(false);
   const buildStickyContainerRef = useRef<HTMLDivElement | null>(null);
   const buildCustomizationModalScrollRef = useRef<HTMLDivElement | null>(null);
+  const pendingBuildCustomizationResetRef = useRef<
+    | { type: "none" }
+    | {
+        type: "included";
+        context: IncludedIngredientContext;
+      }
+    | { type: "empty" }
+  >({ type: "none" });
   const entreeMenuRef = useRef<HTMLDivElement | null>(null);
   const requestedEntree = searchParams.get("entree");
   const initialSelectedEntree =
@@ -936,6 +944,17 @@ export default function RestaurantView({
     return entreeOptions[selectedEntree]?.label ?? titleCase(selectedEntree);
   }, [selectedEntree, selectedKidsMeal, entreeOptions]);
   const selectedBuildName = useMemo(() => {
+    if (selectedEntree === "kids-meal") {
+      const kidsMealLabel = selectedKidsMeal === "quesadilla" ? "Quesadilla" : "Build Your Own";
+      const proteinLabel =
+        selectedBuildProteinNames.length === 0
+          ? "Veggie"
+          : selectedBuildProteinNames.length === 1
+            ? selectedBuildProteinNames[0]
+            : `${selectedBuildProteinNames[0]} and ${selectedBuildProteinNames[1]}`;
+      return `Kid's ${proteinLabel} ${kidsMealLabel}`;
+    }
+
     if (selectedBuildProteinNames.length === 0) {
       return `Veggie ${selectedBuildEntreeLabel}`;
     }
@@ -943,7 +962,7 @@ export default function RestaurantView({
       return `${selectedBuildProteinNames[0]} ${selectedBuildEntreeLabel}`;
     }
     return `${selectedBuildProteinNames[0]} and ${selectedBuildProteinNames[1]} ${selectedBuildEntreeLabel}`;
-  }, [selectedBuildEntreeLabel, selectedBuildProteinNames]);
+  }, [selectedBuildEntreeLabel, selectedBuildProteinNames, selectedEntree, selectedKidsMeal]);
   const selectedBuildImageSrc = useMemo(() => {
     if (!selectedEntree) {
       return entreeOptions.bowl?.imageSrc ?? "";
@@ -1460,7 +1479,7 @@ export default function RestaurantView({
     const nextItemPayload = {
       restaurantId,
       itemId: editingCartItem?.itemId ?? `${restaurantId}-build`,
-      name: editingCartItem?.name ?? buildName,
+      name: editingCartItem?.name && selectedEntree !== "kids-meal" ? editingCartItem.name : buildName,
       image: editingCartItem?.image ?? selectedBuildImageSrc,
       customizations: nextCustomizations,
       quantity: 1,
@@ -1490,45 +1509,28 @@ export default function RestaurantView({
     }
 
     hydratedEditItemIdRef.current = editingCartItem ? editingCartItem.id : null;
+    pendingBuildCustomizationResetRef.current = {
+      type: "included",
+      context: {
+        selectedEntree,
+        selectedKidsMeal,
+        selectedTacoShell,
+      },
+    };
     const nextParams = new URLSearchParams(searchParams.toString());
     nextParams.delete("editCartItem");
     const nextQuery = nextParams.toString();
     router.replace(nextQuery ? `${pathname}?${nextQuery}` : pathname, { scroll: false });
-    window.setTimeout(() => {
-      setIsBuildSummaryExpanded(false);
-      setProteinPortionMode("normal");
-      setSplitPortionModeById({});
-      setSelectedIngredientVariantIds({});
-      const nextIncludedIngredientIds = resolveIncludedIngredientIds({
-        selectedEntree,
-        selectedKidsMeal,
-        selectedTacoShell,
-      });
-      setSelectedIngredientItems(() => {
-        const resetSelections: Record<string, { item: MenuItem; quantity: number }> = {};
-        nextIncludedIngredientIds.forEach((ingredientId) => {
-          const ingredientItem = ingredientItemsById.get(ingredientId);
-          if (!ingredientItem) return;
-          resetSelections[ingredientId] = { item: ingredientItem, quantity: 1 };
-        });
-        return applyIngredientPortionNutrition(resetSelections);
-      });
-    }, 0);
   };
 
   const handleCloseBuildCustomizationModal = useCallback(() => {
     editingBuildBaselineConfigRef.current = null;
+    pendingBuildCustomizationResetRef.current = { type: "empty" };
 
     const nextParams = new URLSearchParams(searchParams.toString());
     nextParams.delete("editCartItem");
     const nextQuery = nextParams.toString();
     router.replace(nextQuery ? `${pathname}?${nextQuery}` : pathname, { scroll: false });
-    window.setTimeout(() => {
-      setSelectedIngredientItems({});
-      setSelectedIngredientVariantIds({});
-      setProteinPortionMode("normal");
-      setSplitPortionModeById({});
-    }, 0);
   }, [pathname, router, searchParams]);
 
   useLayoutEffect(() => {
@@ -1540,6 +1542,51 @@ export default function RestaurantView({
     buildCustomizationModalScrollRef.current.scrollTop = 0;
     buildCustomizationModalScrollRef.current.scrollLeft = 0;
   }, [editingCartItem?.id, isChipotleBuildPage, isEditingBuild]);
+
+  useEffect(() => {
+    if (!isChipotleBuildPage || isEditingBuild) {
+      return;
+    }
+
+    const pendingReset = pendingBuildCustomizationResetRef.current;
+    if (pendingReset.type === "none") {
+      return;
+    }
+
+    const resetTimer = window.setTimeout(() => {
+      setIsBuildSummaryExpanded(false);
+      setProteinPortionMode("normal");
+      setSplitPortionModeById({});
+      setSelectedIngredientVariantIds({});
+
+      if (pendingReset.type === "empty") {
+        setSelectedIngredientItems({});
+        pendingBuildCustomizationResetRef.current = { type: "none" };
+        return;
+      }
+
+      const nextIncludedIngredientIds = resolveIncludedIngredientIds(pendingReset.context);
+      setSelectedIngredientItems(() => {
+        const resetSelections: Record<string, { item: MenuItem; quantity: number }> = {};
+        nextIncludedIngredientIds.forEach((ingredientId) => {
+          const ingredientItem = ingredientItemsById.get(ingredientId);
+          if (!ingredientItem) return;
+          resetSelections[ingredientId] = { item: ingredientItem, quantity: 1 };
+        });
+        return applyIngredientPortionNutrition(resetSelections);
+      });
+      pendingBuildCustomizationResetRef.current = { type: "none" };
+    }, 0);
+
+    return () => {
+      window.clearTimeout(resetTimer);
+    };
+  }, [
+    applyIngredientPortionNutrition,
+    ingredientItemsById,
+    isChipotleBuildPage,
+    isEditingBuild,
+  ]);
 
   useEffect(() => {
     if (!editingCartItem?.buildConfiguration) {
