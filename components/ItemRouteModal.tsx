@@ -617,10 +617,6 @@ export default function ItemRouteModal({
       });
     }, 0);
   };
-  const handleResetEdits = () => {
-    handleClose();
-  };
-
   const handleDecrementQuantity = () => {
     setQuantity((prev) => Math.max(1, prev - 1));
   };
@@ -938,9 +934,9 @@ export default function ItemRouteModal({
               <button
                 type="button"
                 className="cursor-pointer rounded-xl border border-black/20 bg-white px-6 py-2.5 text-base font-bold text-black/80"
-                onClick={handleResetEdits}
+                onClick={onClose}
               >
-                Reset
+                Cancel
               </button>
             ) : null}
             <button
@@ -948,7 +944,7 @@ export default function ItemRouteModal({
               className="cursor-pointer rounded-xl border border-black/20 bg-black/90 px-6 py-2.5 text-base font-bold text-white"
               onClick={handleSaveItem}
             >
-              {isCustomizeMode ? "Done" : "Add to Cart"}
+              {isCustomizeMode ? "Update" : "Add to Cart"}
             </button>
           </div>
         </div>

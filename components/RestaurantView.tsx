@@ -491,7 +491,9 @@ export default function RestaurantView({
           name: ingredient.name,
           nutrition: ingredientBaseNutrition,
           defaultOrder:
-            shouldPinToIncludedCategory && typeof includedIngredientOrder === "number"
+            shouldPinToIncludedCategory &&
+            selectedEntree !== "tacos" &&
+            typeof includedIngredientOrder === "number"
               ? includedIngredientOrder
               : ingredient.defaultOrder,
           variants: tripleCheeseVariant ? [...(variants ?? []), tripleCheeseVariant] : variants,
@@ -844,12 +846,13 @@ export default function RestaurantView({
     () =>
       Object.entries(selectedIngredientItems).reduce(
         (acc, [ingredientId, selectedIngredient]) => {
+          const baseIngredient = ingredientItemsById.get(ingredientId) ?? selectedIngredient.item;
           const selectedVariantId =
-            selectedIngredientVariantIds[ingredientId] ?? selectedIngredient.item.defaultVariantId;
-          const selectedVariant = selectedIngredient.item.variants?.find(
+            selectedIngredientVariantIds[ingredientId] ?? baseIngredient.defaultVariantId;
+          const selectedVariant = baseIngredient.variants?.find(
             (variant) => variant.id === selectedVariantId
           );
-          const nutrition = selectedVariant?.nutrition ?? selectedIngredient.item.nutrition;
+          const nutrition = selectedVariant?.nutrition ?? baseIngredient.nutrition;
 
           return {
             calories: acc.calories + (nutrition.calories ?? 0) * selectedIngredient.quantity,
@@ -860,7 +863,7 @@ export default function RestaurantView({
         },
         { calories: 0, protein: 0, carbs: 0, fat: 0 }
       ),
-    [selectedIngredientItems, selectedIngredientVariantIds]
+    [ingredientItemsById, selectedIngredientItems, selectedIngredientVariantIds]
   );
   const adjustedSelectedIngredientTotals = useMemo(
     () => {
@@ -884,12 +887,13 @@ export default function RestaurantView({
     () =>
       Object.entries(selectedIngredientItems).reduce(
         (acc, [ingredientId, selectedIngredient]) => {
+          const baseIngredient = ingredientItemsById.get(ingredientId) ?? selectedIngredient.item;
           const selectedVariantId =
-            selectedIngredientVariantIds[ingredientId] ?? selectedIngredient.item.defaultVariantId;
-          const selectedVariant = selectedIngredient.item.variants?.find(
+            selectedIngredientVariantIds[ingredientId] ?? baseIngredient.defaultVariantId;
+          const selectedVariant = baseIngredient.variants?.find(
             (variant) => variant.id === selectedVariantId
           );
-          const nutrition = selectedVariant?.nutrition ?? selectedIngredient.item.nutrition;
+          const nutrition = selectedVariant?.nutrition ?? baseIngredient.nutrition;
           const { quantity } = selectedIngredient;
           return {
             calories: acc.calories + (nutrition.calories ?? 0) * quantity,
@@ -917,7 +921,7 @@ export default function RestaurantView({
           protein: 0,
         }
       ),
-    [selectedIngredientItems, selectedIngredientVariantIds]
+    [ingredientItemsById, selectedIngredientItems, selectedIngredientVariantIds]
   );
   const adjustedNutritionLabelTotals = useMemo(
     () => {
@@ -2286,16 +2290,16 @@ export default function RestaurantView({
               <button
                 type="button"
                 className="cursor-pointer rounded-xl border border-black/20 bg-white px-6 py-2.5 text-base font-bold text-black/80"
-                onClick={handleResetSelectedIngredientOrder}
+                onClick={handleCloseBuildCustomizationModal}
               >
-                Reset
+                Cancel
               </button>
               <button
                 type="button"
                 className="cursor-pointer rounded-xl border border-black/20 bg-black/90 px-6 py-2.5 text-base font-bold text-white"
                 onClick={handleAddBuildToCart}
               >
-                Done
+                Update
               </button>
             </div>
           </div>
