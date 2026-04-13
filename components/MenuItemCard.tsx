@@ -44,6 +44,7 @@ import {
   buildHighProteinBuildConfiguration,
   isChipotleHighProteinMenuItem,
 } from "@/lib/chipotleBuild/highProtein";
+import { parseIncludedIngredientEntry } from "@/lib/itemIngredients";
 
 function pad2(n: number) {
   return String(n).padStart(2, "0");
@@ -582,6 +583,29 @@ export default function MenuItemCard({
   const displayProtein = (protein ?? 0) * quantityMultiplier;
   const displayCarbs = (carbs ?? 0) * quantityMultiplier;
   const displayFat = (fat ?? 0) * quantityMultiplier;
+  const highProteinIngredientSummaryLine = useMemo(() => {
+    if (!isChipotleHighProteinMenuItem(item, restaurantId)) return undefined;
+    const ingredientLabelById = new Map(
+      (ingredientItems ?? []).map((ingredient) => [
+        (ingredient.id ?? ingredient.name).toLowerCase(),
+        ingredient.name,
+      ])
+    );
+    const labels = (item.ingredients ?? [])
+      .map((entry) => {
+        const parsed = parseIncludedIngredientEntry(entry);
+        if (!parsed) return null;
+        const ingredientName =
+          ingredientLabelById.get(parsed.ingredientId.toLowerCase()) ?? parsed.ingredientId;
+        const countLabel = Number.isInteger(parsed.defaultCount)
+          ? parsed.defaultCount.toFixed(0)
+          : parsed.defaultCount.toString();
+        return `${ingredientName} (${countLabel}x)`;
+      })
+      .filter((label): label is string => Boolean(label));
+
+    return labels.length > 0 ? labels.join(" • ") : undefined;
+  }, [ingredientItems, item, restaurantId]);
   const isCartPage = pathname === "/cart";
   const useCartQuickEditPanel = isCartMode && isCartPage;
 
@@ -1036,6 +1060,9 @@ export default function MenuItemCard({
             </div>
             {isCartMode && cartSummaryLine ? (
               <p className="mt-0.5 truncate text-xs text-black/55">{cartSummaryLine}</p>
+            ) : null}
+            {!isCartMode && highProteinIngredientSummaryLine ? (
+              <p className="mt-0.5 truncate text-[13px] text-black/55">{highProteinIngredientSummaryLine}</p>
             ) : null}
           </div>
 

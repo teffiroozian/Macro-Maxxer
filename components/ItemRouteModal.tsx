@@ -164,6 +164,12 @@ export default function ItemRouteModal({
     () =>
       (ingredients ?? [])
         .filter((ingredient) => !ingredient.hideFromIngredientView)
+        .filter((ingredient) => {
+          const ingredientId = (ingredient.id ?? ingredient.name).toLowerCase();
+          const isTacoOnlySide = ingredientId === "crispy-corn-tortilla" || ingredientId === "soft-flour-tortilla";
+          const isTacoItem = (item.id ?? "").toLowerCase().includes("taco");
+          return !isTacoOnlySide || isTacoItem;
+        })
         .map((ingredient) => ({
           id: ingredient.id ?? ingredient.name,
           name: ingredient.name,
@@ -173,7 +179,7 @@ export default function ItemRouteModal({
           variants: ingredient.variants,
           defaultVariantId: ingredient.defaultVariantId,
         })),
-    [ingredients]
+    [ingredients, item.id]
   );
   const chipotleIngredientById = useMemo(
     () =>
@@ -182,24 +188,67 @@ export default function ItemRouteModal({
       ),
     [chipotleIngredientMenuItems]
   );
+  const initialChipotleBuilderState = useMemo(() => {
+    const nextSelectedItems: Record<string, { item: MenuItem; quantity: number }> = {};
+    const nextSplitModesById: Record<string, SplitPortionMode> = {
+      ...(chipotleBuildConfiguration.splitPortionModeById ?? {}),
+    };
+
+    Object.entries(chipotleBuildConfiguration.selectedIngredientItems ?? {}).forEach(([ingredientId, selectedEntry]) => {
+      const ingredient = chipotleIngredientById.get(ingredientId);
+      if (!ingredient || selectedEntry.quantity <= 0) return;
+
+      const category = normalizeIngredientCategory(resolvePrimaryCategory(ingredient.categories));
+      const rawQuantity = selectedEntry.quantity;
+
+      if (category === "rice" || category === "beans") {
+        if (!(ingredientId in nextSplitModesById)) {
+          nextSplitModesById[ingredientId] =
+            rawQuantity <= 0.5 ? "light" : rawQuantity >= 2 ? "extra" : "normal";
+        }
+        nextSelectedItems[ingredientId] = { item: ingredient, quantity: 1 };
+        return;
+      }
+
+      nextSelectedItems[ingredientId] = { item: ingredient, quantity: rawQuantity };
+    });
+
+    const isBurrito = (item.id ?? "").toLowerCase().includes("burrito");
+    if (isBurrito && !nextSelectedItems.tortilla) {
+      const tortilla = chipotleIngredientById.get("tortilla");
+      if (tortilla) {
+        nextSelectedItems.tortilla = { item: tortilla, quantity: 1 };
+      }
+    }
+
+    return {
+      selectedItems: nextSelectedItems,
+      proteinMode: chipotleBuildConfiguration.proteinPortionMode ?? "normal",
+      splitModesById: nextSplitModesById,
+      selectedVariantIds: chipotleBuildConfiguration.selectedIngredientVariantIds ?? {},
+    };
+  }, [chipotleBuildConfiguration, chipotleIngredientById, item.id]);
   const [selectedChipotleIngredientItems, setSelectedChipotleIngredientItems] = useState<
     Record<string, { item: MenuItem; quantity: number }>
-  >(() =>
-    Object.entries(chipotleBuildConfiguration.selectedIngredientItems ?? {}).reduce<
-      Record<string, { item: MenuItem; quantity: number }>
-    >((acc, [ingredientId, selectedEntry]) => {
-      const ingredient = chipotleIngredientById.get(ingredientId);
-      if (!ingredient || selectedEntry.quantity <= 0) return acc;
-      acc[ingredientId] = { item: ingredient, quantity: selectedEntry.quantity };
-      return acc;
-    }, {})
-  );
-  const selectedChipotleIngredientVariantIds = chipotleBuildConfiguration.selectedIngredientVariantIds ?? {};
+  >(initialChipotleBuilderState.selectedItems);
+  const selectedChipotleIngredientVariantIds = initialChipotleBuilderState.selectedVariantIds;
   const [chipotleProteinPortionMode, setChipotleProteinPortionMode] = useState<ProteinPortionMode>(
-    chipotleBuildConfiguration.proteinPortionMode ?? "normal"
+    initialChipotleBuilderState.proteinMode
   );
   const [chipotleSplitPortionModeById, setChipotleSplitPortionModeById] = useState<Record<string, SplitPortionMode>>(
-    chipotleBuildConfiguration.splitPortionModeById ?? {}
+    initialChipotleBuilderState.splitModesById
+  );
+  const chipotleLockedIngredientIds = useMemo(() => {
+    const isBurrito = (item.id ?? "").toLowerCase().includes("burrito");
+    if (!isBurrito) return new Set<string>();
+    return new Set(["tortilla"]);
+  }, [item.id]);
+  const chipotlePinnedIncludedIngredients = useMemo(
+    () =>
+      Array.from(chipotleLockedIngredientIds)
+        .map((ingredientId) => chipotleIngredientById.get(ingredientId))
+        .filter((ingredient): ingredient is MenuItem => Boolean(ingredient)),
+    [chipotleIngredientById, chipotleLockedIngredientIds]
   );
 
   const applicableCommonChanges = useMemo(
@@ -927,6 +976,30 @@ export default function ItemRouteModal({
           <div className="w-full">
           {isChipotlePrebuiltBuilderItem ? (
             <div className="grid gap-7">
+              {chipotlePinnedIncludedIngredients.length > 0 ? (
+                <div className="w-full rounded-3xl border border-black/10 bg-[#e0e0e0] p-4">
+                  <p className="mb-3 text-xs font-semibold uppercase tracking-[0.08em] text-slate-600">Included ingredient</p>
+                  {chipotlePinnedIncludedIngredients.map((includedIngredient) => (
+                    <div
+                      key={includedIngredient.id ?? includedIngredient.name}
+                      className="flex items-center gap-3 rounded-2xl border border-black/15 bg-white p-3"
+                    >
+                      <span className="inline-flex h-6 w-6 items-center justify-center rounded-md bg-lime-500 text-xs font-bold text-black">✓</span>
+                      {includedIngredient.image ? (
+                        <img
+                          src={includedIngredient.image}
+                          alt={includedIngredient.name}
+                          className="h-12 w-12 rounded-lg border border-black/10 bg-[#efefef] object-contain"
+                        />
+                      ) : null}
+                      <div>
+                        <p className="text-base font-semibold text-slate-900">{includedIngredient.name}</p>
+                        <p className="text-xs text-slate-500">Included by default</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              ) : null}
               <div className="w-full rounded-3xl border border-black/10 bg-[#e0e0e0] p-4">
                 <MenuSections
                   restaurantId={restaurantId}
@@ -936,9 +1009,11 @@ export default function ItemRouteModal({
                   categoryMode="ingredients"
                   isBuildYourOwn
                   selectedIngredientIds={new Set(Object.keys(selectedChipotleIngredientItems))}
+                  lockedIngredientIds={chipotleLockedIngredientIds}
                   onIngredientSelectionChange={(nextItem, selected) =>
                     setSelectedChipotleIngredientItems((prev) => {
                       const ingredientId = nextItem.id ?? nextItem.name;
+                      if (chipotleLockedIngredientIds.has(ingredientId)) return prev;
                       if (!selected) {
                         const next = { ...prev };
                         delete next[ingredientId];
@@ -1024,12 +1099,13 @@ export default function ItemRouteModal({
                   selectedIngredientCount={Object.values(selectedChipotleIngredientItems).reduce((sum, entry) => sum + entry.quantity, 0)}
                   groupedSelectedIngredientEntries={chipotleGroupedSelectedIngredientEntries}
                   ingredientPortionLabelById={chipotleIngredientPortionLabelById}
-                  lockedIngredientIds={new Set<string>()}
+                  lockedIngredientIds={chipotleLockedIngredientIds}
                   restaurantLogo={item.image ?? ""}
                   onResetOrder={() => {}}
                   onSaveOrder={() => {}}
                   onAdjustIngredientQuantity={(ingredientId, delta) =>
                     setSelectedChipotleIngredientItems((prev) => {
+                      if (chipotleLockedIngredientIds.has(ingredientId)) return prev;
                       const selectedIngredient = prev[ingredientId];
                       if (!selectedIngredient) return prev;
                       const nextQuantity = selectedIngredient.quantity + delta;
