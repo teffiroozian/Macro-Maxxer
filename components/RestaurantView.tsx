@@ -229,6 +229,8 @@ export default function RestaurantView({
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
+  const editOrigin = searchParams.get("editOrigin");
+  const isEditingFromCart = editOrigin === "cart";
   const requestedView = searchParams.get("view");
   const defaultView: ViewOption = isBuildYourOwn ? "ingredients" : "menu";
   const viewMode: ViewOption =
@@ -1571,11 +1573,16 @@ export default function RestaurantView({
     editingBuildBaselineConfigRef.current = null;
     pendingBuildCustomizationResetRef.current = { type: "empty" };
 
+    if (isEditingFromCart) {
+      router.replace("/cart", { scroll: false });
+      return;
+    }
+
     const nextParams = new URLSearchParams(searchParams.toString());
     nextParams.delete("editCartItem");
     const nextQuery = nextParams.toString();
     router.replace(nextQuery ? `${pathname}?${nextQuery}` : pathname, { scroll: false });
-  }, [pathname, router, searchParams]);
+  }, [isEditingFromCart, pathname, router, searchParams]);
 
   useLayoutEffect(() => {
     if (!isChipotleBuildPage || !isEditingBuild) {
