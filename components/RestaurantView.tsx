@@ -1474,10 +1474,16 @@ export default function RestaurantView({
 
   const buildSelectedItemsFromConfiguration = useCallback((configuration: BuildConfigurationSnapshot) => {
     const next: Record<string, { item: MenuItem; quantity: number }> = {};
+    const missingIngredientIds: string[] = [];
 
     Object.entries(configuration.selectedIngredientItems).forEach(([ingredientId, { quantity }]) => {
+      if (quantity <= 0) {
+        return;
+      }
+
       const ingredient = ingredientItemsById.get(ingredientId);
-      if (!ingredient || quantity <= 0) {
+      if (!ingredient) {
+        missingIngredientIds.push(ingredientId);
         return;
       }
 
@@ -1494,10 +1500,13 @@ export default function RestaurantView({
       };
     });
 
-    return applyIngredientPortionNutrition(next, {
-      proteinMode: configuration.proteinPortionMode,
-      splitModesById: configuration.splitPortionModeById,
-    });
+    return {
+      missingIngredientIds,
+      selectedItems: applyIngredientPortionNutrition(next, {
+        proteinMode: configuration.proteinPortionMode,
+        splitModesById: configuration.splitPortionModeById,
+      }),
+    };
   }, [applyIngredientPortionNutrition, ingredientItemsById]);
 
   const handleAddBuildToCart = () => {
@@ -1651,23 +1660,54 @@ export default function RestaurantView({
     }
 
     const configuration = editingCartItem.buildConfiguration;
-    editingBuildBaselineConfigRef.current = configuration;
-    hydratedEditItemIdRef.current = editingCartItem.id;
+    const configuredEntree = (configuration.selectedEntree as EntreeSelection) ?? null;
+    const isHydrationContextReady =
+      selectedEntree === configuredEntree &&
+      selectedTacoShell === configuration.selectedTacoShell &&
+      selectedTacoCount === configuration.selectedTacoCount &&
+      selectedKidsMeal === configuration.selectedKidsMeal;
+
+    if (!isHydrationContextReady) {
+      const contextTimer = window.setTimeout(() => {
+        setSelectedTacoShell(configuration.selectedTacoShell);
+        setSelectedTacoCount(configuration.selectedTacoCount);
+        setSelectedKidsMeal(configuration.selectedKidsMeal);
+        setSelectedEntree(configuredEntree);
+        setProteinPortionMode(configuration.proteinPortionMode);
+        setSplitPortionModeById(configuration.splitPortionModeById);
+        setSelectedIngredientVariantIds(configuration.selectedIngredientVariantIds);
+      }, 0);
+
+      return () => {
+        window.clearTimeout(contextTimer);
+      };
+    }
+
+    const { missingIngredientIds, selectedItems } = buildSelectedItemsFromConfiguration(configuration);
+    if (missingIngredientIds.length > 0) {
+      return;
+    }
+
     const hydrateTimer = window.setTimeout(() => {
-      setSelectedTacoShell(configuration.selectedTacoShell);
-      setSelectedTacoCount(configuration.selectedTacoCount);
-      setSelectedKidsMeal(configuration.selectedKidsMeal);
-      setSelectedEntree((configuration.selectedEntree as EntreeSelection) ?? null);
       setProteinPortionMode(configuration.proteinPortionMode);
       setSplitPortionModeById(configuration.splitPortionModeById);
       setSelectedIngredientVariantIds(configuration.selectedIngredientVariantIds);
-      setSelectedIngredientItems(() => buildSelectedItemsFromConfiguration(configuration));
+      setSelectedIngredientItems(() => selectedItems);
+      editingBuildBaselineConfigRef.current = configuration;
+      hydratedEditItemIdRef.current = editingCartItem.id;
     }, 0);
 
     return () => {
       window.clearTimeout(hydrateTimer);
     };
-  }, [buildSelectedItemsFromConfiguration, editingCartItem]);
+  }, [
+    buildSelectedItemsFromConfiguration,
+    editingCartItem,
+    selectedEntree,
+    selectedKidsMeal,
+    selectedTacoCount,
+    selectedTacoShell,
+  ]);
 
   const adjustIngredientQuantity = (ingredientId: string, delta: 1 | -1) => {
     if (lockedIngredientIds.has(ingredientId)) return;
@@ -1733,7 +1773,7 @@ export default function RestaurantView({
       setProteinPortionMode(baselineConfiguration.proteinPortionMode);
       setSplitPortionModeById(baselineConfiguration.splitPortionModeById);
       setSelectedIngredientVariantIds(baselineConfiguration.selectedIngredientVariantIds);
-      setSelectedIngredientItems(() => buildSelectedItemsFromConfiguration(baselineConfiguration));
+      setSelectedIngredientItems(() => buildSelectedItemsFromConfiguration(baselineConfiguration).selectedItems);
       return;
     }
 
