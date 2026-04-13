@@ -24,28 +24,52 @@ export function getSelectedIngredientCountsFromCustomizations(
   });
 
   const customizedIngredientIds = new Set<string>();
+  const inferredCountByIngredientId: Record<string, number> = {};
   const parsedCounts = customizations.reduce<Record<string, number>>((acc, label) => {
-    const match = label.match(/^(.*?):\s*(Removed|(\d+(?:\.\d+)?)x|Remove|Extra)$/i);
-    if (!match) return acc;
+    const normalizedLabel = label.trim();
+    const explicitCountMatch = normalizedLabel.match(/^(.*?):\s*(Removed|(\d+(?:\.\d+)?)x|Remove|Extra)$/i);
+    if (explicitCountMatch) {
+      const ingredientKey = explicitCountMatch[1].trim().toLowerCase();
+      const ingredientId = ingredientLookup.get(ingredientKey);
+      if (!ingredientId || !(ingredientId in baseCounts)) return acc;
 
-    const ingredientKey = match[1].trim().toLowerCase();
-    const ingredientId = ingredientLookup.get(ingredientKey);
+      const rawValue = explicitCountMatch[2].trim().toLowerCase();
+      const nextCount =
+        rawValue === "removed" || rawValue === "remove"
+          ? 0
+          : rawValue === "extra"
+            ? 2
+            : Number.parseFloat(explicitCountMatch[3] ?? "");
+
+      if (!Number.isFinite(nextCount)) return acc;
+
+      acc[ingredientId] = nextCount;
+      customizedIngredientIds.add(ingredientId);
+      return acc;
+    }
+
+    const parentheticalCountMatch = normalizedLabel.match(/^(.*?)\s*\((\d+(?:\.\d+)?)x\)$/i);
+    if (parentheticalCountMatch) {
+      const ingredientKey = parentheticalCountMatch[1].trim().toLowerCase();
+      const ingredientId = ingredientLookup.get(ingredientKey);
+      const inferredCount = Number.parseFloat(parentheticalCountMatch[2] ?? "");
+      if (!ingredientId || !(ingredientId in baseCounts) || !Number.isFinite(inferredCount)) return acc;
+
+      inferredCountByIngredientId[ingredientId] = inferredCount;
+      return acc;
+    }
+
+    const ingredientId = ingredientLookup.get(normalizedLabel.toLowerCase());
     if (!ingredientId || !(ingredientId in baseCounts)) return acc;
-
-    const rawValue = match[2].trim().toLowerCase();
-    const nextCount =
-      rawValue === "removed" || rawValue === "remove"
-        ? 0
-        : rawValue === "extra"
-          ? 2
-          : Number.parseFloat(match[3] ?? "");
-
-    if (!Number.isFinite(nextCount)) return acc;
-
-    acc[ingredientId] = nextCount;
-    customizedIngredientIds.add(ingredientId);
+    inferredCountByIngredientId[ingredientId] = (inferredCountByIngredientId[ingredientId] ?? 0) + 1;
     return acc;
   }, { ...baseCounts });
+
+  Object.entries(inferredCountByIngredientId).forEach(([ingredientId, inferredCount]) => {
+    if (customizedIngredientIds.has(ingredientId)) return;
+    parsedCounts[ingredientId] = inferredCount;
+    customizedIngredientIds.add(ingredientId);
+  });
 
   const ingredientsByTab = resolvedIngredients.reduce<Map<string, ResolvedPanelIngredient[]>>((acc, ingredient) => {
     const tabLabel = ingredient.tabLabel?.trim();
