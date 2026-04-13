@@ -492,6 +492,7 @@ export default function ItemDetailsPanel({
     availableAddonSections.length > 0 ||
     (displayMode === "full" && (commonChanges?.length ?? 0) > 0);
   const shouldShowInfoSection = displayMode === "full";
+  const useCompactIngredientCards = item.entreeGroup === "high-protein-menu";
 
   return (
     <div className="grid gap-16">
@@ -562,7 +563,11 @@ export default function ItemDetailsPanel({
             </div>
           ) : null}
           {displayIngredients.length > 0 ? (
-            <ul className="grid list-none grid-cols-2 items-stretch gap-[10px] pl-0">
+            <ul
+              className={`grid list-none items-stretch gap-[10px] pl-0 ${
+                useCompactIngredientCards ? "grid-cols-1" : "grid-cols-2"
+              }`}
+            >
               {displayIngredients.map((ingredient) => {
                 const ingredientCount = selectedIngredientCounts?.[ingredient.id] ?? ingredient.defaultCount;
                 const isSelected = ingredientCount > 0;
@@ -584,8 +589,10 @@ export default function ItemDetailsPanel({
                 const canToggleIngredientFromCard =
                   !isLockedIngredient(ingredient.id) &&
                   !shouldShowSingleSelectNavigator &&
-                  typeof ingredient.maxQuantity === "number";
-                const cardClasses = `box-border flex h-full w-full flex-row items-center gap-3 rounded-[10px] border border-[rgba(0,0,0,0.15)] bg-[#f9f9f9] px-3 py-2 ${
+                  (typeof ingredient.maxQuantity === "number" || useCompactIngredientCards);
+                const cardClasses = `box-border flex h-full w-full flex-row items-center ${
+                  useCompactIngredientCards ? "gap-2 rounded-xl px-2.5 py-2.5" : "gap-3 rounded-[10px] px-3 py-2"
+                } border border-[rgba(0,0,0,0.15)] bg-[#f9f9f9] ${
                   isSelected
                     ? isSingleSelectTab
                       ? "shadow-[inset_0_0_0_3px_#16a34a]"
@@ -595,16 +602,20 @@ export default function ItemDetailsPanel({
                 const ingredientContent = (
                   <>
                     <div
-                      className="grid h-[72px] w-[72px] min-w-[72px] place-items-center rounded-lg bg-cover bg-center"
+                      className={`grid place-items-center rounded-lg bg-cover bg-center ${
+                        useCompactIngredientCards ? "h-[52px] w-[52px] min-w-[52px]" : "h-[72px] w-[72px] min-w-[72px]"
+                      }`}
                       aria-hidden="true"
                     >
                       {isIconImage(ingredient.icon) ? (
                         <Image
                           src={ingredient.icon}
                           alt=""
-                          width={72}
-                          height={72}
-                          className="h-[72px] w-[72px] rounded-lg object-cover"
+                          width={useCompactIngredientCards ? 52 : 72}
+                          height={useCompactIngredientCards ? 52 : 72}
+                          className={`rounded-lg object-cover ${
+                            useCompactIngredientCards ? "h-[52px] w-[52px]" : "h-[72px] w-[72px]"
+                          }`}
                         />
                       ) : (
                         ingredient.icon
@@ -693,7 +704,7 @@ export default function ItemDetailsPanel({
                           >
                             <ChevronRight size={18} />
                           </button>
-                        ) : typeof ingredient.maxQuantity === "number" ? (
+                        ) : typeof ingredient.maxQuantity === "number" || useCompactIngredientCards ? (
                           <div
                             className="ml-auto inline-flex items-center gap-[6px]"
                             onClick={(event) => event.stopPropagation()}

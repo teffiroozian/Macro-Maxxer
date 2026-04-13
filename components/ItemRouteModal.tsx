@@ -190,6 +190,18 @@ export default function ItemRouteModal({
 
     return lookup;
   }, [resolvedIngredients]);
+  const resolveIngredientMaxQuantity = useCallback(
+    (ingredientId: string) => {
+      const ingredient =
+        ingredientLookup.get(ingredientId) ??
+        ingredientLookup.get(ingredientId.toLowerCase());
+      if (typeof ingredient?.maxQuantity === "number") {
+        return ingredient.maxQuantity;
+      }
+      return isChipotleHighProteinMenuItem(item, restaurantId) ? 1 : undefined;
+    },
+    [ingredientLookup, item, restaurantId]
+  );
 
   const ingredientCounts = useMemo(() => {
     const defaults = getDefaultIngredientCounts(resolvedIngredients);
@@ -794,7 +806,7 @@ export default function ItemRouteModal({
                 const ingredient =
                   ingredientLookup.get(ingredientId) ??
                   ingredientLookup.get(ingredientId.toLowerCase());
-                const maxQuantity = ingredient?.maxQuantity;
+                const maxQuantity = resolveIngredientMaxQuantity(ingredientId);
 
                 if (typeof maxQuantity !== "number") return prev;
 
@@ -810,7 +822,7 @@ export default function ItemRouteModal({
                 const ingredient =
                   ingredientLookup.get(ingredientId) ??
                   ingredientLookup.get(ingredientId.toLowerCase());
-                const maxQuantity = ingredient?.maxQuantity;
+                const maxQuantity = resolveIngredientMaxQuantity(ingredientId);
                 if (typeof maxQuantity !== "number") return prev;
 
                 const current = prev[ingredientId] ?? ingredient?.defaultCount ?? 0;
