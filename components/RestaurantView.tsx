@@ -1417,7 +1417,7 @@ export default function RestaurantView({
   }, [applyIncludedIngredients]);
 
   useEffect(() => {
-    if (!isChipotleBuildPage || isEditingBuild) return;
+    if (!isChipotleBuildPage || isEditingBuild || editCartItemId) return;
 
     applyIncludedIngredientsNextFrame(selectedIncludedIngredientIds, {
       selectedEntree,
@@ -1425,6 +1425,7 @@ export default function RestaurantView({
     });
   }, [
     applyIncludedIngredientsNextFrame,
+    editCartItemId,
     isChipotleBuildPage,
     isEditingBuild,
     selectedEntree,
