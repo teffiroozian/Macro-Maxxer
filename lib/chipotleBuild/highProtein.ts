@@ -35,6 +35,7 @@ export function buildHighProteinBuildConfiguration(
   item: MenuItem,
   ingredientItems: IngredientItem[] = []
 ): CartItem["buildConfiguration"] {
+  const highProteinEntree = resolveHighProteinEntree(item);
   const selectedIngredientItems = (item.ingredients ?? []).reduce<Record<string, { quantity: number }>>(
     (acc, entry) => {
       const parsed = parseIncludedIngredientEntry(entry);
@@ -49,17 +50,19 @@ export function buildHighProteinBuildConfiguration(
     .filter(([ingredientId]) => proteinIngredientIds.has(ingredientId.toLowerCase()));
   const shouldUseDoubleProteinMode =
     selectedProteinEntries.length === 1 && selectedProteinEntries[0][1].quantity >= 2;
+  const shouldForceSingleProteinForTacos =
+    highProteinEntree === "tacos" && selectedProteinEntries.length === 1 && selectedProteinEntries[0][1].quantity >= 2;
 
-  if (shouldUseDoubleProteinMode) {
+  if (shouldUseDoubleProteinMode || shouldForceSingleProteinForTacos) {
     const [proteinIngredientId] = selectedProteinEntries[0];
     selectedIngredientItems[proteinIngredientId] = { quantity: 1 };
   }
 
   return {
-    selectedEntree: resolveHighProteinEntree(item),
+    selectedEntree: highProteinEntree,
     selectedIngredientItems,
     selectedIngredientVariantIds: {},
-    proteinPortionMode: shouldUseDoubleProteinMode ? "double" : "normal",
+    proteinPortionMode: shouldUseDoubleProteinMode && !shouldForceSingleProteinForTacos ? "double" : "normal",
     splitPortionModeById: {},
     selectedTacoShell: resolveHighProteinTacoShell(item),
     selectedTacoCount: 1,
