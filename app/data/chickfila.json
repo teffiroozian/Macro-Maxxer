@@ -3757,7 +3757,10 @@
             ],
             "image": "/restaurants/chickfila/ingredients/parfait-toppings/cookie-crumbles.webp",
             "nutrition": {
-                "calories": 40
+                "calories": 40,
+                "totalFat": 1,
+                "carbs": 7,
+                "protein": 0
             },
             "defaultOrder": 4
         },
@@ -3769,7 +3772,10 @@
             ],
             "image": "/restaurants/chickfila/ingredients/treat-toppings/chocolate-syrup.webp",
             "nutrition": {
-                "calories": 30
+                "calories": 30,
+                "totalFat": 0,
+                "carbs": 8,
+                "protein": 0
             },
             "defaultOrder": 2
         },
@@ -3781,7 +3787,10 @@
             ],
             "image": "/restaurants/chickfila/ingredients/treat-toppings/strawberry-syrup.webp",
             "nutrition": {
-                "calories": 50
+                "calories": 50,
+                "totalFat": 0,
+                "carbs": 13,
+                "protein": 0
             },
             "defaultOrder": 3
         },
@@ -3793,7 +3802,10 @@
             ],
             "image": "/restaurants/chickfila/ingredients/treat-toppings/whipped-cream.webp",
             "nutrition": {
-                "calories": 60
+                "calories": 60,
+                "totalFat": 5,
+                "carbs": 4,
+                "protein": 0
             },
             "defaultOrder": 1
         },
@@ -3805,7 +3817,10 @@
             ],
             "image": "/restaurants/chickfila/ingredients/treat-toppings/cherry.webp",
             "nutrition": {
-                "calories": 5
+                "calories": 5,
+                "totalFat": 0,
+                "carbs": 1,
+                "protein": 0
             },
             "defaultOrder": 6
         },

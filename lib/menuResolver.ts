@@ -120,6 +120,7 @@ function resolveIngredientBackedItems(items: MenuItem[], ingredients: Ingredient
   );
 
   return items.map((item) => {
+    const itemHasMeaningfulNutrition = hasMeaningfulNutrition(item.nutrition);
     const nutritionFromIncludedIngredients = computeNutritionFromIncludedIngredients({
       ingredientEntries: item.ingredients,
       ingredientById,
@@ -127,7 +128,7 @@ function resolveIngredientBackedItems(items: MenuItem[], ingredients: Ingredient
     });
 
     if (!item.ingredientRef) {
-      if (!nutritionFromIncludedIngredients) return item;
+      if (itemHasMeaningfulNutrition || !nutritionFromIncludedIngredients) return item;
       return {
         ...item,
         nutrition: nutritionFromIncludedIngredients,
@@ -136,7 +137,7 @@ function resolveIngredientBackedItems(items: MenuItem[], ingredients: Ingredient
 
     const ingredient = ingredientById.get(item.ingredientRef.toLowerCase());
     if (!ingredient) {
-      if (!nutritionFromIncludedIngredients) return item;
+      if (itemHasMeaningfulNutrition || !nutritionFromIncludedIngredients) return item;
       return {
         ...item,
         nutrition: nutritionFromIncludedIngredients,
@@ -146,8 +147,9 @@ function resolveIngredientBackedItems(items: MenuItem[], ingredients: Ingredient
     return {
       ...item,
       nutrition:
-        nutritionFromIncludedIngredients
-        ?? (hasMeaningfulNutrition(item.nutrition) ? item.nutrition : ingredient.nutrition),
+        itemHasMeaningfulNutrition
+          ? item.nutrition
+          : (nutritionFromIncludedIngredients ?? ingredient.nutrition),
       image: item.image ?? ingredient.image,
     };
   });
