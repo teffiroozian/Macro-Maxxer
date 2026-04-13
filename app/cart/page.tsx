@@ -224,11 +224,11 @@ export default function CartPage() {
               const sourceItem =
                 menuLookupByRestaurant[cartItem.restaurantId]?.find((item) => (item.id ?? item.name) === cartItem.itemId) ?? null;
               const itemEditHref = sourceItem
-                ? `/restaurant/${cartItem.restaurantId}/items/${toItemSlug(sourceItem)}?editCartItem=${cartItem.id}`
+                ? `/restaurant/${cartItem.restaurantId}/items/${toItemSlug(sourceItem)}?editCartItem=${cartItem.id}&editOrigin=cart`
                 : undefined;
               const buildEditHref =
                 cartItem.buildConfiguration
-                  ? `/restaurant/${cartItem.restaurantId}?view=ingredients&editCartItem=${cartItem.id}`
+                  ? `/restaurant/${cartItem.restaurantId}?view=ingredients&editCartItem=${cartItem.id}&editOrigin=cart`
                   : undefined;
 
               const initialIngredientCustomizations = getBuildIngredientCountCustomizations(
