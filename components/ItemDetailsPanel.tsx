@@ -275,13 +275,14 @@ export default function ItemDetailsPanel({
       detail: ref === "dressings" ? "Dressing" : ref === "sauces" ? "Sauce" : "Addon",
     }));
   const selectedSauceItems = Object.entries(sauceSelectionCounts ?? {})
-    .filter(([name, count]) => name !== "None" && count > 0)
+    .filter(([name, count]) => name !== "None" && (count ?? 0) > 0)
     .map(([name, count]) => {
+      const sauceCount = count ?? 0;
       const matchedSauce = addons?.sauces?.find((addon) => addon.name === name);
       return {
         id: `sauce-${name}`,
         name,
-        quantity: count,
+        quantity: sauceCount,
         image: matchedSauce?.image,
         detail: "Sauce",
       };
