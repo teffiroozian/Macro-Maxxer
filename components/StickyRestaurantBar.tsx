@@ -85,7 +85,7 @@ export default function StickyRestaurantBar({
   return (
     <div className="fixed left-0 right-0 top-0 z-50" data-sticky-nav="true">
       <div
-        className={`relative z-[110] mx-1 mt-1 flex max-w-6xl items-center border border-slate-200/70 bg-white shadow-[0_-6px_16px_rgba(15,23,42,0.12)] backdrop-blur sm:mx-2 ${
+        className={`relative z-[110] mx-auto mt-1 flex w-[calc(100%-0.5rem)] max-w-6xl items-center border border-slate-200/70 bg-white shadow-[0_-6px_16px_rgba(15,23,42,0.12)] backdrop-blur sm:w-[calc(100%-1rem)] ${
           hideSecondaryNav ? "rounded-2xl" : "rounded-t-2xl"
         }`}
       >
@@ -187,7 +187,7 @@ export default function StickyRestaurantBar({
       )}
 
       {hasActiveFilters && !hideSecondaryNav ? (
-        <div className="relative z-[100] mx-auto mx-2 mt-0.5 max-w-6xl rounded-2xl border border-slate-200/70 bg-white/95 shadow-[0_6px_16px_rgba(15,23,42,0.12)] backdrop-blur">
+        <div className="relative z-[100] mx-auto mt-0.5 w-[calc(100%-0.5rem)] max-w-6xl rounded-2xl border border-slate-200/70 bg-white/95 shadow-[0_6px_16px_rgba(15,23,42,0.12)] backdrop-blur sm:w-[calc(100%-1rem)]">
           <div className="mx-auto flex w-full max-w-5xl flex-wrap items-center gap-2 px-4 py-2 text-sm sm:flex-nowrap sm:px-6">
             <FilterChips
               filters={filters}
