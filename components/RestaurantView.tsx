@@ -2018,14 +2018,14 @@ export default function RestaurantView({
 
   if (isChipotleBuildPage && isEditingBuild) {
     return (
-      <div className="fixed inset-0 z-[130] flex items-center justify-center" role="dialog" aria-modal="true" aria-label={`${editingCartItem.name} customization`}>
+      <div className="fixed inset-0 z-[130] flex items-end justify-center p-2 sm:items-center sm:p-4" role="dialog" aria-modal="true" aria-label={`${editingCartItem.name} customization`}>
         <button
           type="button"
           className="absolute inset-0 border-0 bg-slate-900/66"
           onClick={handleCloseBuildCustomizationModal}
           aria-label="Close build customization modal"
         />
-        <div className="relative m-4 flex h-[calc(100%-32px)] w-[min(1024px,calc(100%-32px))] flex-col overflow-hidden rounded-2xl bg-white px-6 pt-6">
+        <div className="relative flex h-[calc(100vh-1rem)] w-full max-w-[1024px] flex-col overflow-hidden rounded-2xl bg-white px-3 pt-3 sm:h-[calc(100vh-2rem)] sm:px-5 sm:pt-5 lg:px-6 lg:pt-6">
           <button
             type="button"
             className="sticky top-0 z-20 ml-auto h-9 w-9 cursor-pointer rounded-full border border-black/12 bg-white/95 text-2xl"
@@ -2035,12 +2035,12 @@ export default function RestaurantView({
             ×
           </button>
 
-          <div ref={buildCustomizationModalScrollRef} className="min-h-0 flex-1 overflow-y-auto pr-2 pb-10 [overflow-anchor:none]">
+          <div ref={buildCustomizationModalScrollRef} className="min-h-0 flex-1 overflow-y-auto pb-10 pr-1 sm:pr-2 [overflow-anchor:none]">
             <div className="grid justify-items-center gap-8">
               <div className="grid justify-items-center gap-5">
-                <h1 className="text-center text-[32px] font-extrabold">{editingCartItem.name}</h1>
+                <h1 className="text-center text-2xl font-extrabold sm:text-[32px]">{editingCartItem.name}</h1>
                 <img
-                  className="h-[300px] w-[300px] rounded-[14px] bg-[#efefef] object-contain p-2 shadow-[0_0_5px_rgba(0,0,0,0.25)]"
+                  className="h-[220px] w-[220px] rounded-[14px] bg-[#efefef] object-contain p-2 shadow-[0_0_5px_rgba(0,0,0,0.25)] sm:h-[300px] sm:w-[300px]"
                   src={editingCartItem.image}
                   alt={editingCartItem.name}
                 />
@@ -2320,7 +2320,7 @@ export default function RestaurantView({
             </div>
           </div>
 
-          <div className="-mx-6 z-10 flex flex-wrap items-center justify-between gap-3 border-t border-black/10 bg-white p-4 shadow-[0_-4px_10px_rgba(0,0,0,0.08)]">
+          <div className="-mx-3 z-10 flex flex-wrap items-center gap-3 border-t border-black/10 bg-white p-3 shadow-[0_-4px_10px_rgba(0,0,0,0.08)] sm:-mx-5 sm:p-4 lg:-mx-6">
             <MacroTotalsGrid
               macros={{
                 calories: Math.round(adjustedSelectedIngredientTotals.calories ?? 0),
@@ -2333,17 +2333,17 @@ export default function RestaurantView({
               itemClassName="px-2 py-0.5"
               labelClassName="text-[#64748b]"
             />
-            <div className="ml-auto flex items-center gap-3">
+            <div className="ml-auto flex w-full flex-col items-stretch gap-2 sm:w-auto sm:flex-row sm:items-center sm:gap-3">
               <button
                 type="button"
-                className="cursor-pointer rounded-xl border border-black/20 bg-white px-6 py-2.5 text-base font-bold text-black/80"
+                className="cursor-pointer rounded-xl border border-black/20 bg-white px-4 py-2.5 text-base font-bold text-black/80 sm:px-6"
                 onClick={handleCloseBuildCustomizationModal}
               >
                 Cancel
               </button>
               <button
                 type="button"
-                className="cursor-pointer rounded-xl border border-black/20 bg-black/90 px-6 py-2.5 text-base font-bold text-white"
+                className="cursor-pointer rounded-xl border border-black/20 bg-black/90 px-4 py-2.5 text-base font-bold text-white sm:px-6"
                 onClick={handleAddBuildToCart}
               >
                 Update
@@ -2462,7 +2462,7 @@ export default function RestaurantView({
           <EntreeSelectionHero entreeOptions={entreeOptions} onSelectEntree={handleEntreeSelection} />
         </div>
       ) : (
-        <div className="grid items-start gap-6 [grid-template-columns:240px_minmax(0,1fr)]">
+        <div className="grid items-start gap-4 lg:gap-6 lg:[grid-template-columns:240px_minmax(0,1fr)]">
           <RestaurantCategorySidebar
             effectiveViewMode={effectiveViewMode}
             rankedAllFilters={rankedAllFilters}
@@ -2474,7 +2474,7 @@ export default function RestaurantView({
           />
 
           <div className="min-w-0">
-            <div className="mx-auto max-w-[900px]">
+            <div className="mx-auto w-full max-w-[900px]">
               {isChipotleBuildPage && selectedEntree === "kids-meal" ? (
                 <KidsMealSelector
                   selectedKidsMeal={selectedKidsMeal}

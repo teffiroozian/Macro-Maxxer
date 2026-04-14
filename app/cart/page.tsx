@@ -296,12 +296,12 @@ export default function CartPage() {
         )}
       </section>
 
-      <section className="rounded-3xl border border-black/10 bg-white p-4 shadow-sm">
-        <div className="grid grid-cols-1 gap-4 rounded-3xl bg-[#e0e0e0] p-4 lg:grid-cols-2">
+      <section className="rounded-3xl border border-black/10 bg-white p-3 shadow-sm sm:p-4">
+        <div className="grid grid-cols-1 gap-4 rounded-3xl bg-[#e0e0e0] p-3 sm:p-4 lg:grid-cols-2">
 
             <CartNutritionSummary nutritionTotals={nutritionTotals} />
             
-            <div className="flex min-h-0 flex-col rounded-3xl border border-black/10 bg-white p-5">
+            <div className="flex min-h-0 flex-col rounded-3xl border border-black/10 bg-white p-4 sm:p-5">
               <h2 className="text-2xl font-bold text-neutral-900">Meal Breakdown</h2>
               <div className="mt-6 flex min-h-0 flex-1 flex-col justify-between gap-4">
                 <p className="text-md font-semibold uppercase tracking-wide text-neutral-500">Items</p>
@@ -346,7 +346,7 @@ export default function CartPage() {
                 </div>
                    <div className="space-y-2 pt-4">
                     <p className="text-md font-semibold uppercase tracking-wide text-neutral-500">Macro Split</p>
-                    <div className="flex h-11 w-full overflow-hidden p-1 gap-1 rounded-xl border border-black/10 bg-neutral-100">
+                    <div className="flex h-11 w-full gap-1 overflow-hidden rounded-xl border border-black/10 bg-neutral-100 p-1">
                       {macroSegments.map((segment) => (
                         <div
                           key={segment.label}
@@ -360,7 +360,7 @@ export default function CartPage() {
                   </div>
               </div>
             </div>
-            <div ref={inlineMacroBarRef} className="col-span-2">
+            <div ref={inlineMacroBarRef} className="col-span-1 lg:col-span-2">
           <StickyMacroTotalsBar
             totals={totals}
             inline

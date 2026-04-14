@@ -181,8 +181,8 @@ export default function ControlsRow({
   };
 
   const filtersDialog = isFiltersOpen ? (
-    <div role="dialog" aria-modal="true" className="fixed inset-0 z-[200] flex items-center justify-center bg-black/35 p-4" onClick={() => setIsFiltersOpen(false)}>
-      <div className="w-full max-w-[520px] rounded-[20px] bg-white p-5 shadow-[0_16px_40px_rgba(0,0,0,0.2)]" onClick={(event) => event.stopPropagation()}>
+    <div role="dialog" aria-modal="true" className="fixed inset-0 z-[200] flex items-end justify-center bg-black/35 p-2 sm:items-center sm:p-4" onClick={() => setIsFiltersOpen(false)}>
+      <div className="max-h-[calc(100vh-1rem)] w-full max-w-[520px] overflow-y-auto rounded-[20px] bg-white p-4 shadow-[0_16px_40px_rgba(0,0,0,0.2)] sm:max-h-[calc(100vh-2rem)] sm:p-5" onClick={(event) => event.stopPropagation()}>
         <h3 className="mb-4 text-xl font-bold">Filters</h3>
         <div className="grid gap-4">
           <div>
@@ -220,7 +220,7 @@ export default function ControlsRow({
             </div>
           </div>
         </div>
-        <div className="mt-5 flex justify-end gap-3">
+        <div className="mt-5 flex flex-col-reverse gap-2 sm:flex-row sm:justify-end sm:gap-3">
           <button type="button" onClick={handleResetFilters} className="cursor-pointer rounded-full border border-black/20 bg-white px-4 py-2 font-semibold text-black/80">
             Reset
           </button>
@@ -234,10 +234,10 @@ export default function ControlsRow({
 
   return (
     <>
-      <div id={wrapperId} className="grid gap-2">
-        <div className="flex min-w-0 items-center justify-between gap-2.5">
+      <div id={wrapperId} className="grid gap-2 overflow-x-clip">
+        <div className="flex min-w-0 flex-wrap items-center gap-2.5">
           {hideViewSelector ? null : (
-            <div ref={viewMenuRef} className="relative shrink-0">
+            <div ref={viewMenuRef} className="relative min-w-0 shrink">
               <button
                 type="button"
                 onClick={() => {
@@ -246,7 +246,7 @@ export default function ControlsRow({
                 }}
                 aria-haspopup="menu"
                 aria-expanded={isViewOpen}
-                className="cursor-pointer inline-flex items-center gap-2 whitespace-nowrap rounded-full border border-black/20 bg-white px-[14px] py-[6px] font-semibold text-black/85"
+                className="cursor-pointer inline-flex max-w-full items-center gap-2 rounded-full border border-black/20 bg-white px-[14px] py-[8px] text-sm font-semibold text-black/85 sm:whitespace-nowrap"
               >
                 <currentViewOption.icon className="h-4 w-4" strokeWidth={2.2} />
                 {currentViewOption.label}
@@ -254,7 +254,7 @@ export default function ControlsRow({
               </button>
 
               {isViewOpen ? (
-                <div role="menu" className="absolute left-0 top-[calc(100%+8px)] z-20 w-[220px] rounded-[14px] border border-black/15 bg-white p-2 shadow-[0_12px_28px_rgba(0,0,0,0.12)]">
+                <div role="menu" className="absolute left-0 top-[calc(100%+8px)] z-20 w-[min(220px,calc(100vw-2rem))] rounded-[14px] border border-black/15 bg-white p-2 shadow-[0_12px_28px_rgba(0,0,0,0.12)]">
                   <div className="grid gap-1">
                     {VIEW_OPTIONS.map((option) => {
                       const isActive = option.value === view;
@@ -286,8 +286,8 @@ export default function ControlsRow({
             </div>
           )}
 
-          <div className="ml-auto flex items-center gap-2.5">
-            <div ref={sortMenuRef} className="relative shrink-0">
+          <div className="ml-auto flex w-full flex-wrap items-center justify-end gap-2 sm:w-auto">
+            <div ref={sortMenuRef} className="relative min-w-0 shrink">
               <button
                 type="button"
                 onClick={() => {
@@ -296,7 +296,7 @@ export default function ControlsRow({
                 }}
                 aria-haspopup="menu"
                 aria-expanded={isSortOpen}
-                className="cursor-pointer inline-flex items-center gap-2 whitespace-nowrap rounded-full border border-black/20 bg-white px-[14px] py-[6px] font-semibold text-black/85"
+                className="cursor-pointer inline-flex max-w-full items-center gap-2 rounded-full border border-black/20 bg-white px-[14px] py-[8px] text-sm font-semibold text-black/85 sm:whitespace-nowrap"
               >
                 <currentSortOption.icon className="h-4 w-4" strokeWidth={2.2} />
                 {currentSortOption.label}
@@ -304,7 +304,7 @@ export default function ControlsRow({
               </button>
 
               {isSortOpen ? (
-                <div role="menu" className="absolute right-0 top-[calc(100%+8px)] z-20 w-[220px] rounded-[14px] border border-black/15 bg-white p-2 shadow-[0_12px_28px_rgba(0,0,0,0.12)]">
+                <div role="menu" className="absolute right-0 top-[calc(100%+8px)] z-20 w-[min(220px,calc(100vw-2rem))] rounded-[14px] border border-black/15 bg-white p-2 shadow-[0_12px_28px_rgba(0,0,0,0.12)]">
                   <div className="grid gap-1">
                     {visibleSortOptions.map((option) => {
                       const isActive = option.value === sort;
@@ -338,7 +338,7 @@ export default function ControlsRow({
             <button
               type="button"
               onClick={openFilters}
-              className="cursor-pointer inline-flex items-center gap-2 rounded-full border border-black/20 bg-white px-[14px] py-[6px] font-semibold text-black/80 whitespace-nowrap shrink-0"
+              className="cursor-pointer inline-flex items-center gap-2 whitespace-nowrap rounded-full border border-black/20 bg-white px-[14px] py-[8px] text-sm font-semibold text-black/80 shrink-0"
             >
               Filters
               <SlidersHorizontal className="h-4 w-4" strokeWidth={2.5} />

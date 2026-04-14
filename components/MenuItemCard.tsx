@@ -979,7 +979,7 @@ export default function MenuItemCard({
       <div
         role="button"
         tabIndex={0}
-        className="group relative flex w-full cursor-pointer items-stretch gap-6 bg-transparent p-4 text-left focus-visible:outline-2 focus-visible:outline-blue-600 focus-visible:outline-offset-[-2px]"
+        className="group relative flex w-full cursor-pointer flex-col items-stretch gap-4 bg-transparent p-3 text-left focus-visible:outline-2 focus-visible:outline-blue-600 focus-visible:outline-offset-[-2px] sm:gap-6 sm:p-4 lg:flex-row"
         onClick={() => {
           if (shouldOpenModalOnCardClick && itemHref) {
             router.push(itemHref, { scroll: false });
@@ -1000,10 +1000,10 @@ export default function MenuItemCard({
         aria-expanded={open}
         aria-controls={`${id}-details`}
       >
-        <div className="shrink-0">
+        <div className="mx-auto shrink-0 lg:mx-0">
           {selectedItemImage ? (
             <img
-              className={`block h-[210px] w-[210px] rounded-[14px] bg-[#efefef] shadow-[0_0_5px_rgba(0,0,0,0.25)] ${
+              className={`block h-[180px] w-[180px] rounded-[14px] bg-[#efefef] shadow-[0_0_5px_rgba(0,0,0,0.25)] sm:h-[210px] sm:w-[210px] ${
                 isCartMode ? "object-contain p-2" : "object-cover"
               }`}
               src={selectedItemImage}
@@ -1021,7 +1021,7 @@ export default function MenuItemCard({
                 <div className="inline-block border-b-[5px] border-b-yellow-500 px-1.5 text-xl font-bold">{rankText}</div>
               </div>
             )}
-            <div className="text-[30px] leading-[1.05] font-bold">{item.name}</div>
+            <div className="text-[26px] leading-[1.05] font-bold sm:text-[30px]">{item.name}</div>
             <div className="flex flex-wrap items-center">
               <div className="inline-flex items-baseline gap-2">
                 <div className="text-lg font-bold text-black/50">{formatCalories(displayCalories)} calories</div>
@@ -1035,7 +1035,7 @@ export default function MenuItemCard({
                   onClick={hasVariantDropdown ? (event) => event.stopPropagation() : undefined}
                   onKeyDown={hasVariantDropdown ? (event) => event.stopPropagation() : undefined}
                 >
-                  <div className="mx-[10px] h-5 w-0.5 rounded-full bg-black/50" />
+                  <div className="mx-2 hidden h-5 w-0.5 rounded-full bg-black/50 sm:block sm:mx-[10px]" />
                   {hasVariantDropdown ? (
                     <VariantSelector
                       variants={variants}
@@ -1066,7 +1066,7 @@ export default function MenuItemCard({
             ) : null}
           </div>
 
-          <div className="mt-auto flex items-end gap-[60px]">
+          <div className="mt-4 flex flex-wrap items-end gap-x-5 gap-y-3 sm:mt-auto sm:gap-x-8 lg:flex-nowrap lg:gap-[60px]">
             <div className="flex flex-col items-center justify-start">
               <div className="inline-flex items-baseline gap-1.5">
                 <div className="text-2xl font-bold text-[#c2410c]">{formatMacro(displayProtein)}</div>
@@ -1095,7 +1095,7 @@ export default function MenuItemCard({
               <div className="text-[10px] font-bold">FAT</div>
             </div>
 
-            <div className="ml-auto inline-flex flex-row items-end gap-2">
+            <div className="ml-0 inline-flex w-full flex-row items-end justify-end gap-2 sm:ml-auto sm:w-auto">
               {isCartMode ? (
                 <CartCardActions
                   itemName={item.name}
@@ -1126,7 +1126,7 @@ export default function MenuItemCard({
           </div>
         </div>
 
-        <div className="absolute top-[18px] right-[18px] inline-flex items-center gap-2">
+        <div className="absolute right-3 top-3 inline-flex items-center gap-2 sm:right-[18px] sm:top-[18px]">
           {hasMods && !isCartMode ? (
             <div
               role="button"

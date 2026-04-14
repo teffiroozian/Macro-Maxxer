@@ -32,11 +32,11 @@ export default async function RestaurantPage({
   return (
     <RestaurantSearchProvider>
       <RestaurantUiProvider>
-        <div className="w-full pt-40">
+        <div className="w-full pt-32 sm:pt-36 lg:pt-40">
           <RecentRestaurantTracker restaurantId={restaurant.id} />
           <ScrollToTopOnMount />
 
-          <main className="mx-auto w-full max-w-6xl px-6 pb-12">
+          <main className="mx-auto w-full max-w-6xl px-3 pb-12 sm:px-4 lg:px-6">
             <RestaurantView
               restaurantId={restaurant.id}
               restaurantName={restaurant.name}
