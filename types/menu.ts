@@ -62,8 +62,7 @@ export type MacroDelta = {
   calories: number;
   protein: number;
   carbs: number;
-  fat: number;
-  totalFat?: number;
+  totalFat: number;
 };
 
 export type CommonChange = {

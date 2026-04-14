@@ -23,7 +23,7 @@ function buildCartFallbackMenuItem(cartItem: CartItem): MenuItem {
       calories: cartItem.macrosPerItem.calories,
       protein: cartItem.macrosPerItem.protein,
       carbs: cartItem.macrosPerItem.carbs,
-      totalFat: cartItem.macrosPerItem.fat,
+      totalFat: cartItem.macrosPerItem.totalFat,
     },
   };
 }

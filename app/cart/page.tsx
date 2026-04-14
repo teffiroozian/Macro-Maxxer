@@ -86,7 +86,7 @@ function areStringArraysEqual(a?: string[], b?: string[]) {
 }
 
 function areMacrosEqual(a: CartMacros, b: CartMacros) {
-  return a.calories === b.calories && a.protein === b.protein && a.carbs === b.carbs && a.fat === b.fat;
+  return a.calories === b.calories && a.protein === b.protein && a.carbs === b.carbs && a.totalFat === b.totalFat;
 }
 
 export default function CartPage() {
@@ -149,7 +149,7 @@ export default function CartPage() {
     [items]
   );
 
-  const macroTotalGrams = totals.protein + totals.carbs + totals.fat;
+  const macroTotalGrams = totals.protein + totals.carbs + totals.totalFat;
   const macroSegments = [
     {
       label: "Protein",
@@ -163,7 +163,7 @@ export default function CartPage() {
     },
     {
       label: "Fat",
-      percent: macroTotalGrams > 0 ? (totals.fat / macroTotalGrams) * 100 : 0,
+      percent: macroTotalGrams > 0 ? (totals.totalFat / macroTotalGrams) * 100 : 0,
       color: "bg-[#2563eb] text-white",
     },
   ];

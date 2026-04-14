@@ -6,7 +6,7 @@ export type CartMacros = {
   calories: number;
   protein: number;
   carbs: number;
-  fat: number;
+  totalFat: number;
 };
 
 export type CartNutrition = {
@@ -62,7 +62,7 @@ const emptyTotals: CartMacros = {
   calories: 0,
   protein: 0,
   carbs: 0,
-  fat: 0,
+  totalFat: 0,
 };
 
 let cartState: CartState = {
@@ -100,7 +100,7 @@ const computeTotals = (items: CartItem[]): CartMacros => {
       acc.calories += item.macrosPerItem.calories * item.quantity;
       acc.protein += item.macrosPerItem.protein * item.quantity;
       acc.carbs += item.macrosPerItem.carbs * item.quantity;
-      acc.fat += item.macrosPerItem.fat * item.quantity;
+      acc.totalFat += item.macrosPerItem.totalFat * item.quantity;
 
       return acc;
     },

@@ -91,7 +91,7 @@ export default function CartItemPreviewRow({
               C:<span className="ml-1 font-semibold text-slate-900">{item.macrosPerItem.carbs}g</span>
             </p>
             <p className={macroLabelClassByStyle[macroStyle]}>
-              F:<span className="ml-1 font-semibold text-slate-900">{item.macrosPerItem.fat}g</span>
+              F:<span className="ml-1 font-semibold text-slate-900">{item.macrosPerItem.totalFat}g</span>
             </p>
           </div>
         ) : (
@@ -109,7 +109,7 @@ export default function CartItemPreviewRow({
               <span className="ml-1 text-xs">carbs</span>
             </p>
             <p className="whitespace-nowrap text-slate-500">
-              <span className="text-base font-semibold text-[#2563eb]">{item.macrosPerItem.fat}g</span>
+              <span className="text-base font-semibold text-[#2563eb]">{item.macrosPerItem.totalFat}g</span>
               <span className="ml-1 text-xs">fat</span>
             </p>
           </div>

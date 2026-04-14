@@ -321,7 +321,7 @@ export default function ItemDetailsPanel({
     ...selectedSauceItems,
   ];
 
-  const activeCustomizationTotals = customizationTotals ?? { calories: 0, protein: 0, carbs: 0, fat: 0 };
+  const activeCustomizationTotals = customizationTotals ?? { calories: 0, protein: 0, carbs: 0, totalFat: 0 };
   const normalizedLockedIngredientIds = new Set(
     lockedIngredientIds.map((ingredientId) => normalizeIngredientToken(ingredientId))
   );
@@ -1200,7 +1200,7 @@ export default function ItemDetailsPanel({
           <div className="text-lg font-semibold">Total Fat</div>
           <div className="inline-flex items-baseline gap-[6px]">
             <div className="text-lg font-semibold">{format(n.totalFat, "g")}</div>
-            {showCustomizationDeltas ? <span className="text-sm font-bold text-[#16a34a]">{formatDelta(activeCustomizationTotals.fat, "g")}</span> : null}
+            {showCustomizationDeltas ? <span className="text-sm font-bold text-[#16a34a]">{formatDelta(activeCustomizationTotals.totalFat, "g")}</span> : null}
           </div>
         </div>
 

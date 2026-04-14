@@ -7,7 +7,6 @@ type RawAddonOption = {
   calories?: number;
   protein?: number;
   carbs?: number;
-  fat?: number;
   totalFat?: number;
   satFat?: number;
   transFat?: number;
@@ -19,7 +18,6 @@ type RawAddonOption = {
     calories: number;
     protein: number;
     carbs: number;
-    fat: number;
     totalFat: number;
     satFat: number;
     transFat: number;
@@ -44,7 +42,6 @@ const CORE_NUTRITION_KEYS = new Set([
   "calories",
   "protein",
   "carbs",
-  "fat",
   "totalFat",
   "satFat",
   "transFat",
@@ -66,7 +63,7 @@ function extractExtraNutrition(addon: RawAddonOption) {
 function normalizeAddonOption(addon: RawAddonOption): AddonOption {
   const nutrition = addon.nutrition ?? {};
 
-  const totalFat = toNumber(addon.totalFat ?? addon.fat ?? nutrition.totalFat ?? nutrition.fat);
+  const totalFat = toNumber(addon.totalFat ?? nutrition.totalFat);
   const extraNutrition = {
     ...(nutrition.extraNutrition ?? {}),
     ...(extractExtraNutrition(addon) ?? {}),

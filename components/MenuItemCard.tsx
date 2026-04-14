@@ -62,14 +62,14 @@ function QuickMacro({
 }: {
   value?: number;
   label: string;
-  tone: "calories" | "protein" | "carbs" | "fat";
+  tone: "calories" | "protein" | "carbs" | "totalFat";
 }) {
   const toneClass =
     tone === "protein"
       ? "text-[#c2410c]"
       : tone === "carbs"
         ? "text-[#ca8a04]"
-        : tone === "fat"
+        : tone === "totalFat"
           ? "text-[#2563eb]"
           : "text-slate-700";
 
@@ -152,7 +152,7 @@ const emptyAddon: AddonOption = {
   calories: 0,
   protein: 0,
   carbs: 0,
-  fat: 0,
+  totalFat: 0,
   image: "none",
 };
 
@@ -169,7 +169,7 @@ type CartConfigurationPayload = {
     calories: number;
     protein: number;
     carbs: number;
-    fat: number;
+    totalFat: number;
   };
 };
 
@@ -350,9 +350,9 @@ export default function MenuItemCard({
           calories: sum.calories + (addon?.calories ?? 0),
           protein: sum.protein + (addon?.protein ?? 0),
           carbs: sum.carbs + (addon?.carbs ?? 0),
-          fat: sum.fat + addonFat(addon),
+          totalFat: sum.totalFat + addonFat(addon),
         }),
-        { calories: 0, protein: 0, carbs: 0, fat: 0 }
+        { calories: 0, protein: 0, carbs: 0, totalFat: 0 }
       ),
     [selectedAddons, selectedSauceOptions]
   );
@@ -397,10 +397,10 @@ export default function MenuItemCard({
             calories: sum.calories + change.delta.calories,
             protein: sum.protein + change.delta.protein,
             carbs: sum.carbs + change.delta.carbs,
-            fat: sum.fat + deltaFat(change),
+            totalFat: sum.totalFat + deltaFat(change),
           };
         },
-        { calories: 0, protein: 0, carbs: 0, fat: 0 }
+        { calories: 0, protein: 0, carbs: 0, totalFat: 0 }
       ),
     [applicableCommonChanges, selectedCommonChangeIds]
   );
@@ -421,10 +421,10 @@ export default function MenuItemCard({
             calories: sum.calories + (ingredient.nutrition.calories ?? 0) * countDelta,
             protein: sum.protein + (ingredient.nutrition.protein ?? 0) * countDelta,
             carbs: sum.carbs + (ingredient.nutrition.carbs ?? 0) * countDelta,
-            fat: sum.fat + (ingredient.nutrition.totalFat ?? 0) * countDelta,
+            totalFat: sum.totalFat + (ingredient.nutrition.totalFat ?? 0) * countDelta,
           };
         },
-        { calories: 0, protein: 0, carbs: 0, fat: 0 }
+        { calories: 0, protein: 0, carbs: 0, totalFat: 0 }
       ),
     [ingredientCounts, ingredientLookup]
   );
@@ -496,7 +496,7 @@ export default function MenuItemCard({
   );
   const comboNutritionTotals = useMemo(() => {
     if (!isComboEligibleCategory || comboType !== "combo-meal") {
-      return { calories: 0, protein: 0, carbs: 0, fat: 0 };
+      return { calories: 0, protein: 0, carbs: 0, totalFat: 0 };
     }
 
     const drinkNutrition = selectedComboDrinkVariant?.nutrition ?? selectedComboDrink?.nutrition;
@@ -505,7 +505,7 @@ export default function MenuItemCard({
       calories: (drinkNutrition?.calories ?? 0) + (sideNutrition?.calories ?? 0),
       protein: (drinkNutrition?.protein ?? 0) + (sideNutrition?.protein ?? 0),
       carbs: (drinkNutrition?.carbs ?? 0) + (sideNutrition?.carbs ?? 0),
-      fat: (drinkNutrition?.totalFat ?? menuItemFatWithFallback(selectedComboDrink)) + (sideNutrition?.totalFat ?? menuItemFatWithFallback(selectedComboSide)),
+      totalFat: (drinkNutrition?.totalFat ?? menuItemFatWithFallback(selectedComboDrink)) + (sideNutrition?.totalFat ?? menuItemFatWithFallback(selectedComboSide)),
     };
   }, [comboType, isComboEligibleCategory, selectedComboDrink, selectedComboDrinkVariant, selectedComboSide, selectedComboSideVariant]);
 
@@ -514,7 +514,7 @@ export default function MenuItemCard({
       calories: addonTotals.calories + commonChangeTotals.calories + ingredientCountTotals.calories + comboNutritionTotals.calories,
       protein: addonTotals.protein + commonChangeTotals.protein + ingredientCountTotals.protein + comboNutritionTotals.protein,
       carbs: addonTotals.carbs + commonChangeTotals.carbs + ingredientCountTotals.carbs + comboNutritionTotals.carbs,
-      fat: addonTotals.fat + commonChangeTotals.fat + ingredientCountTotals.fat + comboNutritionTotals.fat,
+      totalFat: addonTotals.totalFat + commonChangeTotals.totalFat + ingredientCountTotals.totalFat + comboNutritionTotals.totalFat,
     }),
     [addonTotals, comboNutritionTotals, commonChangeTotals, ingredientCountTotals]
   );
@@ -544,7 +544,7 @@ export default function MenuItemCard({
       customizationTotals.calories !== 0 ||
       customizationTotals.protein !== 0 ||
       customizationTotals.carbs !== 0 ||
-      customizationTotals.fat !== 0,
+      customizationTotals.totalFat !== 0,
     [customizationTotals]
   );
 
@@ -562,7 +562,7 @@ export default function MenuItemCard({
     calories: sumNutrition(baseNutrition.calories, addonNutritionTotals.calories + commonChangeTotals.calories + ingredientCountTotals.calories + comboNutritionTotals.calories),
     protein: sumNutrition(baseNutrition.protein, addonNutritionTotals.protein + commonChangeTotals.protein + ingredientCountTotals.protein + comboNutritionTotals.protein),
     carbs: sumNutrition(baseNutrition.carbs, addonNutritionTotals.carbs + commonChangeTotals.carbs + ingredientCountTotals.carbs + comboNutritionTotals.carbs),
-    totalFat: sumNutrition(baseNutrition.totalFat, addonNutritionTotals.totalFat + commonChangeTotals.fat + ingredientCountTotals.fat + comboNutritionTotals.fat),
+    totalFat: sumNutrition(baseNutrition.totalFat, addonNutritionTotals.totalFat + commonChangeTotals.totalFat + ingredientCountTotals.totalFat + comboNutritionTotals.totalFat),
     satFat: addNutritionValue(baseNutrition.satFat, addonNutritionTotals.satFat),
     transFat: addNutritionValue(baseNutrition.transFat, addonNutritionTotals.transFat),
     cholesterol: addNutritionValue(baseNutrition.cholesterol, addonNutritionTotals.cholesterol),
@@ -574,7 +574,7 @@ export default function MenuItemCard({
   const calories = nutrition.calories;
   const protein = nutrition.protein;
   const carbs = nutrition.carbs;
-  const fat = nutrition.totalFat;
+  const totalFat = nutrition.totalFat;
 
   const rankText = typeof rankIndex === "number" ? pad2(rankIndex + 1) : null;
   const isCartMode = mode === "cart";
@@ -582,7 +582,7 @@ export default function MenuItemCard({
   const displayCalories = (calories ?? 0) * quantityMultiplier;
   const displayProtein = (protein ?? 0) * quantityMultiplier;
   const displayCarbs = (carbs ?? 0) * quantityMultiplier;
-  const displayFat = (fat ?? 0) * quantityMultiplier;
+  const displayFat = (totalFat ?? 0) * quantityMultiplier;
   const highProteinIngredientSummaryLine = useMemo(() => {
     if (!isChipotleHighProteinMenuItem(item, restaurantId)) return undefined;
     const ingredientLabelById = new Map(
@@ -730,9 +730,9 @@ export default function MenuItemCard({
         calories: sum.calories + (addon.calories ?? 0),
         protein: sum.protein + (addon.protein ?? 0),
         carbs: sum.carbs + (addon.carbs ?? 0),
-        fat: sum.fat + addonFat(addon),
+        totalFat: sum.totalFat + addonFat(addon),
       }),
-      { calories: 0, protein: 0, carbs: 0, fat: 0 }
+      { calories: 0, protein: 0, carbs: 0, totalFat: 0 }
     );
 
     const commonChangeTotalsForCart = applicableCommonChanges.reduce<MacroDelta>(
@@ -742,10 +742,10 @@ export default function MenuItemCard({
           calories: sum.calories + change.delta.calories,
           protein: sum.protein + change.delta.protein,
           carbs: sum.carbs + change.delta.carbs,
-          fat: sum.fat + deltaFat(change),
+          totalFat: sum.totalFat + deltaFat(change),
         };
       },
-      { calories: 0, protein: 0, carbs: 0, fat: 0 }
+      { calories: 0, protein: 0, carbs: 0, totalFat: 0 }
     );
 
     const ingredientCountTotalsForCart = Object.entries(nextSelectedIngredientCounts).reduce<MacroDelta>(
@@ -762,10 +762,10 @@ export default function MenuItemCard({
           calories: sum.calories + (ingredient.nutrition.calories ?? 0) * countDelta,
           protein: sum.protein + (ingredient.nutrition.protein ?? 0) * countDelta,
           carbs: sum.carbs + (ingredient.nutrition.carbs ?? 0) * countDelta,
-          fat: sum.fat + (ingredient.nutrition.totalFat ?? 0) * countDelta,
+          totalFat: sum.totalFat + (ingredient.nutrition.totalFat ?? 0) * countDelta,
         };
       },
-      { calories: 0, protein: 0, carbs: 0, fat: 0 }
+      { calories: 0, protein: 0, carbs: 0, totalFat: 0 }
     );
 
     const nextOptionsLabel = formatOptionLabelCounts(buildOptionLabelCounts(nextAddons, nextSauceCounts));
@@ -797,10 +797,10 @@ export default function MenuItemCard({
               + (nextComboSideVariant?.nutrition.protein ?? nextComboSide?.nutrition.protein ?? 0),
             carbs: (nextComboDrinkVariant?.nutrition.carbs ?? nextComboDrink?.nutrition.carbs ?? 0)
               + (nextComboSideVariant?.nutrition.carbs ?? nextComboSide?.nutrition.carbs ?? 0),
-            fat: (nextComboDrinkVariant?.nutrition.totalFat ?? menuItemFatWithFallback(nextComboDrink))
+            totalFat: (nextComboDrinkVariant?.nutrition.totalFat ?? menuItemFatWithFallback(nextComboDrink))
               + (nextComboSideVariant?.nutrition.totalFat ?? menuItemFatWithFallback(nextComboSide)),
           }
-        : { calories: 0, protein: 0, carbs: 0, fat: 0 };
+        : { calories: 0, protein: 0, carbs: 0, totalFat: 0 };
 
     const selectedIngredientCustomizationsForCart = resolvedIngredients
       .filter((ingredient) => {
@@ -832,7 +832,7 @@ export default function MenuItemCard({
         calories: (baseForCart.calories ?? 0) + addonTotalsForCart.calories + ingredientCountTotalsForCart.calories + comboMacros.calories,
         protein: (baseForCart.protein ?? 0) + addonTotalsForCart.protein + commonChangeTotalsForCart.protein + ingredientCountTotalsForCart.protein + comboMacros.protein,
         carbs: (baseForCart.carbs ?? 0) + addonTotalsForCart.carbs + commonChangeTotalsForCart.carbs + ingredientCountTotalsForCart.carbs + comboMacros.carbs,
-        fat: (baseForCart.totalFat ?? 0) + addonTotalsForCart.fat + commonChangeTotalsForCart.fat + ingredientCountTotalsForCart.fat + comboMacros.fat,
+        totalFat: (baseForCart.totalFat ?? 0) + addonTotalsForCart.totalFat + commonChangeTotalsForCart.totalFat + ingredientCountTotalsForCart.totalFat + comboMacros.totalFat,
       },
     });
   };
@@ -894,7 +894,7 @@ export default function MenuItemCard({
           calories: (baseForCart.calories ?? 0) + addonTotals.calories + ingredientCountTotals.calories,
           protein: (baseForCart.protein ?? 0) + addonTotals.protein + ingredientCountTotals.protein,
           carbs: (baseForCart.carbs ?? 0) + addonTotals.carbs + ingredientCountTotals.carbs,
-          fat: (baseForCart.totalFat ?? 0) + addonTotals.fat + ingredientCountTotals.fat,
+          totalFat: (baseForCart.totalFat ?? 0) + addonTotals.totalFat + ingredientCountTotals.totalFat,
         },
       });
     }
@@ -945,7 +945,7 @@ export default function MenuItemCard({
         calories={calories}
         protein={protein}
         carbs={carbs}
-        fat={fat}
+        totalFat={totalFat}
         onSelectionChange={(nextSelected) => {
           if (ingredientSelectionControl === "radio" && !nextSelected) {
             return;
@@ -1089,7 +1089,7 @@ export default function MenuItemCard({
               <div className="inline-flex items-baseline gap-1.5">
                 <div className="text-2xl font-bold text-[#2563eb]">{formatMacro(displayFat)}</div>
                 {hasActiveCustomization ? (
-                  <span className="text-sm font-bold text-green-600">{formatDelta(customizationTotals.fat * quantityMultiplier)}</span>
+                  <span className="text-sm font-bold text-green-600">{formatDelta(customizationTotals.totalFat * quantityMultiplier)}</span>
                 ) : null}
               </div>
               <div className="text-[10px] font-bold">FAT</div>
@@ -1218,7 +1218,7 @@ export default function MenuItemCard({
                       <QuickMacro value={displayCalories} label="Cal" tone="calories" />
                       <QuickMacro value={displayProtein} label="Protein" tone="protein" />
                       <QuickMacro value={displayCarbs} label="Carbs" tone="carbs" />
-                      <QuickMacro value={displayFat} label="Fat" tone="fat" />
+                      <QuickMacro value={displayFat} label="Fat" tone="totalFat" />
                     </div>
                   </div>
                 </section>
@@ -1252,7 +1252,7 @@ export default function MenuItemCard({
                         <QuickMacro value={selectedComboSideVariant?.nutrition.calories ?? selectedComboSide.nutrition.calories} label="Cal" tone="calories" />
                         <QuickMacro value={selectedComboSideVariant?.nutrition.protein ?? selectedComboSide.nutrition.protein} label="Protein" tone="protein" />
                         <QuickMacro value={selectedComboSideVariant?.nutrition.carbs ?? selectedComboSide.nutrition.carbs} label="Carbs" tone="carbs" />
-                        <QuickMacro value={selectedComboSideVariant?.nutrition.totalFat ?? selectedComboSide.nutrition.totalFat} label="Fat" tone="fat" />
+                        <QuickMacro value={selectedComboSideVariant?.nutrition.totalFat ?? selectedComboSide.nutrition.totalFat} label="Fat" tone="totalFat" />
                       </div>
                     </div>
                   </section>
@@ -1287,7 +1287,7 @@ export default function MenuItemCard({
                         <QuickMacro value={selectedComboDrinkVariant?.nutrition.calories ?? selectedComboDrink.nutrition.calories} label="Cal" tone="calories" />
                         <QuickMacro value={selectedComboDrinkVariant?.nutrition.protein ?? selectedComboDrink.nutrition.protein} label="Protein" tone="protein" />
                         <QuickMacro value={selectedComboDrinkVariant?.nutrition.carbs ?? selectedComboDrink.nutrition.carbs} label="Carbs" tone="carbs" />
-                        <QuickMacro value={selectedComboDrinkVariant?.nutrition.totalFat ?? selectedComboDrink.nutrition.totalFat} label="Fat" tone="fat" />
+                        <QuickMacro value={selectedComboDrinkVariant?.nutrition.totalFat ?? selectedComboDrink.nutrition.totalFat} label="Fat" tone="totalFat" />
                       </div>
                     </div>
                   </section>
@@ -1354,7 +1354,7 @@ export default function MenuItemCard({
                               <QuickMacro value={addon.calories * count} label="Cal" tone="calories" />
                               <QuickMacro value={addon.protein * count} label="Protein" tone="protein" />
                               <QuickMacro value={addon.carbs * count} label="Carbs" tone="carbs" />
-                              <QuickMacro value={addon.totalFat * count} label="Fat" tone="fat" />
+                              <QuickMacro value={addon.totalFat * count} label="Fat" tone="totalFat" />
                             </div>
                           </div>
                         );
@@ -1382,7 +1382,7 @@ export default function MenuItemCard({
                           <QuickMacro value={selectedAddons.dressings.calories} label="Cal" tone="calories" />
                           <QuickMacro value={selectedAddons.dressings.protein} label="Protein" tone="protein" />
                           <QuickMacro value={selectedAddons.dressings.carbs} label="Carbs" tone="carbs" />
-                          <QuickMacro value={selectedAddons.dressings.totalFat} label="Fat" tone="fat" />
+                          <QuickMacro value={selectedAddons.dressings.totalFat} label="Fat" tone="totalFat" />
                         </div>
                       </div>
                     </div>

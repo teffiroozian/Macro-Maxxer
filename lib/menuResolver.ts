@@ -6,7 +6,6 @@ type FlatLegacyMenuItem = Omit<Partial<MenuItem>, "nutrition"> & {
   calories?: number;
   protein?: number;
   carbs?: number;
-  fat?: number;
   totalFat?: number;
   satFat?: number;
   transFat?: number;
@@ -22,7 +21,6 @@ const CORE_NUTRITION_KEYS = new Set([
   "calories",
   "protein",
   "carbs",
-  "fat",
   "totalFat",
   "satFat",
   "transFat",
@@ -51,7 +49,6 @@ function normalizeMenuItem(item: FlatLegacyMenuItem): MenuItem {
   delete rest.calories;
   delete rest.protein;
   delete rest.carbs;
-  delete rest.fat;
   delete rest.totalFat;
   delete rest.satFat;
   delete rest.transFat;
@@ -69,7 +66,7 @@ function normalizeMenuItem(item: FlatLegacyMenuItem): MenuItem {
     calories: toNumber(item.calories) ?? baseNutrition.calories ?? 0,
     protein: toNumber(item.protein) ?? baseNutrition.protein ?? 0,
     carbs: toNumber(item.carbs) ?? baseNutrition.carbs ?? 0,
-    totalFat: toNumber(item.totalFat ?? item.fat) ?? baseNutrition.totalFat ?? 0,
+    totalFat: toNumber(item.totalFat) ?? baseNutrition.totalFat ?? 0,
     satFat: toNumber(item.satFat) ?? baseNutrition.satFat,
     transFat: toNumber(item.transFat) ?? baseNutrition.transFat,
     cholesterol: toNumber(item.cholesterol) ?? baseNutrition.cholesterol,

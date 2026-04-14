@@ -65,7 +65,7 @@ export function buildCartNutritionTotals(
       sum.calories += cartItem.macrosPerItem.calories * cartItem.quantity;
       sum.protein += cartItem.macrosPerItem.protein * cartItem.quantity;
       sum.carbs += cartItem.macrosPerItem.carbs * cartItem.quantity;
-      sum.totalFat += cartItem.macrosPerItem.fat * cartItem.quantity;
+      sum.totalFat += cartItem.macrosPerItem.totalFat * cartItem.quantity;
       sum.satFat = addOptional(sum.satFat, (baseNutrition?.satFat ?? 0) + addonNutrition.satFat, cartItem.quantity);
       sum.transFat = addOptional(sum.transFat, (baseNutrition?.transFat ?? 0) + addonNutrition.transFat, cartItem.quantity);
       sum.cholesterol = addOptional(

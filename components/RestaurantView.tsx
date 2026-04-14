@@ -917,10 +917,10 @@ export default function RestaurantView({
             calories: acc.calories + (nutrition.calories ?? 0) * selectedIngredient.quantity,
             protein: acc.protein + (nutrition.protein ?? 0) * selectedIngredient.quantity,
             carbs: acc.carbs + (nutrition.carbs ?? 0) * selectedIngredient.quantity,
-            fat: acc.fat + (nutrition.totalFat ?? 0) * selectedIngredient.quantity,
+            totalFat: acc.totalFat + (nutrition.totalFat ?? 0) * selectedIngredient.quantity,
           };
         },
-        { calories: 0, protein: 0, carbs: 0, fat: 0 }
+        { calories: 0, protein: 0, carbs: 0, totalFat: 0 }
       ),
     [ingredientItemsById, selectedIngredientItems, selectedIngredientVariantIds]
   );
@@ -936,7 +936,7 @@ export default function RestaurantView({
           : Math.round(scaledCalories),
         protein: Math.round(selectedIngredientTotals.protein * servingMultiplier),
         carbs: Math.round(selectedIngredientTotals.carbs * servingMultiplier),
-        fat: Math.round(selectedIngredientTotals.fat * servingMultiplier),
+        totalFat: Math.round(selectedIngredientTotals.totalFat * servingMultiplier),
       };
     },
     [selectedEntree, selectedIngredientTotals, selectedKidsMeal, servingMultiplier]
@@ -2104,7 +2104,7 @@ export default function RestaurantView({
                     calories: Math.round(adjustedSelectedIngredientTotals.calories ?? 0),
                     protein: Math.round(adjustedSelectedIngredientTotals.protein ?? 0),
                     carbs: Math.round(adjustedSelectedIngredientTotals.carbs ?? 0),
-                    fat: Math.round(adjustedSelectedIngredientTotals.fat ?? 0),
+                    totalFat: Math.round(adjustedSelectedIngredientTotals.totalFat ?? 0),
                   }}
                   size="panel"
                   className="w-full max-w-[560px] gap-6 sm:gap-10"
@@ -2381,7 +2381,7 @@ export default function RestaurantView({
                 calories: Math.round(adjustedSelectedIngredientTotals.calories ?? 0),
                 protein: Math.round(adjustedSelectedIngredientTotals.protein ?? 0),
                 carbs: Math.round(adjustedSelectedIngredientTotals.carbs ?? 0),
-                fat: Math.round(adjustedSelectedIngredientTotals.fat ?? 0),
+                totalFat: Math.round(adjustedSelectedIngredientTotals.totalFat ?? 0),
               }}
               size="panel"
               className="gap-3 sm:gap-6"

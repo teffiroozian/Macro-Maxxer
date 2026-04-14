@@ -66,7 +66,7 @@ const emptyAddon: AddonOption = {
   calories: 0,
   protein: 0,
   carbs: 0,
-  fat: 0,
+  totalFat: 0,
   image: "none",
 };
 
@@ -310,7 +310,7 @@ export default function ItemRouteModal({
           calories: sum.calories + (addon?.calories ?? 0),
           protein: sum.protein + (addon?.protein ?? 0),
           carbs: sum.carbs + (addon?.carbs ?? 0),
-          fat: sum.fat + addonFat(addon),
+          totalFat: sum.totalFat + addonFat(addon),
           satFat: sum.satFat + (addon?.satFat ?? 0),
           transFat: sum.transFat + (addon?.transFat ?? 0),
           cholesterol: sum.cholesterol + (addon?.cholesterol ?? 0),
@@ -322,7 +322,7 @@ export default function ItemRouteModal({
           calories: 0,
           protein: 0,
           carbs: 0,
-          fat: 0,
+          totalFat: 0,
           satFat: 0,
           transFat: 0,
           cholesterol: 0,
@@ -365,10 +365,10 @@ export default function ItemRouteModal({
             calories: sum.calories + change.delta.calories,
             protein: sum.protein + change.delta.protein,
             carbs: sum.carbs + change.delta.carbs,
-            fat: sum.fat + deltaFat(change),
+            totalFat: sum.totalFat + deltaFat(change),
           };
         },
-        { calories: 0, protein: 0, carbs: 0, fat: 0 }
+        { calories: 0, protein: 0, carbs: 0, totalFat: 0 }
       ),
     [applicableCommonChanges, selectedCommonChangeIds]
   );
@@ -389,10 +389,10 @@ export default function ItemRouteModal({
             calories: sum.calories + (ingredient.nutrition.calories ?? 0) * countDelta,
             protein: sum.protein + (ingredient.nutrition.protein ?? 0) * countDelta,
             carbs: sum.carbs + (ingredient.nutrition.carbs ?? 0) * countDelta,
-            fat: sum.fat + (ingredient.nutrition.totalFat ?? 0) * countDelta,
+            totalFat: sum.totalFat + (ingredient.nutrition.totalFat ?? 0) * countDelta,
           };
         },
-        { calories: 0, protein: 0, carbs: 0, fat: 0 }
+        { calories: 0, protein: 0, carbs: 0, totalFat: 0 }
       ),
     [ingredientCounts, ingredientLookup]
   );
@@ -498,7 +498,7 @@ export default function ItemRouteModal({
         calories: 0,
         protein: 0,
         carbs: 0,
-        fat: 0,
+        totalFat: 0,
         satFat: 0,
         transFat: 0,
         cholesterol: 0,
@@ -513,7 +513,7 @@ export default function ItemRouteModal({
         calories: sum.calories + ((selectedComboDrinkVariant?.nutrition.calories ?? comboItem?.nutrition.calories) ?? 0),
         protein: sum.protein + ((selectedComboDrinkVariant?.nutrition.protein ?? comboItem?.nutrition.protein) ?? 0),
         carbs: sum.carbs + ((selectedComboDrinkVariant?.nutrition.carbs ?? comboItem?.nutrition.carbs) ?? 0),
-        fat: sum.fat + (selectedComboDrinkVariant?.nutrition.totalFat ?? menuItemFat(comboItem)),
+        totalFat: sum.totalFat + (selectedComboDrinkVariant?.nutrition.totalFat ?? menuItemFat(comboItem)),
         satFat: sum.satFat + ((selectedComboDrinkVariant?.nutrition.satFat ?? comboItem?.nutrition.satFat) ?? 0),
         transFat: sum.transFat + ((selectedComboDrinkVariant?.nutrition.transFat ?? comboItem?.nutrition.transFat) ?? 0),
         cholesterol: sum.cholesterol + ((selectedComboDrinkVariant?.nutrition.cholesterol ?? comboItem?.nutrition.cholesterol) ?? 0),
@@ -525,7 +525,7 @@ export default function ItemRouteModal({
         calories: 0,
         protein: 0,
         carbs: 0,
-        fat: 0,
+        totalFat: 0,
         satFat: 0,
         transFat: 0,
         cholesterol: 0,
@@ -542,7 +542,7 @@ export default function ItemRouteModal({
         calories: 0,
         protein: 0,
         carbs: 0,
-        fat: 0,
+        totalFat: 0,
         satFat: 0,
         transFat: 0,
         cholesterol: 0,
@@ -557,7 +557,7 @@ export default function ItemRouteModal({
       calories: sideNutrition.calories ?? 0,
       protein: sideNutrition.protein ?? 0,
       carbs: sideNutrition.carbs ?? 0,
-      fat: sideNutrition.totalFat ?? 0,
+      totalFat: sideNutrition.totalFat ?? 0,
       satFat: sideNutrition.satFat ?? 0,
       transFat: sideNutrition.transFat ?? 0,
       cholesterol: sideNutrition.cholesterol ?? 0,
@@ -573,7 +573,7 @@ export default function ItemRouteModal({
             calories: 0,
             protein: 0,
             carbs: 0,
-            fat: 0,
+            totalFat: 0,
             satFat: 0,
             transFat: 0,
             cholesterol: 0,
@@ -585,7 +585,7 @@ export default function ItemRouteModal({
             calories: comboNutritionTotals.calories + comboSideNutritionTotals.calories,
             protein: comboNutritionTotals.protein + comboSideNutritionTotals.protein,
             carbs: comboNutritionTotals.carbs + comboSideNutritionTotals.carbs,
-            fat: comboNutritionTotals.fat + comboSideNutritionTotals.fat,
+            totalFat: comboNutritionTotals.totalFat + comboSideNutritionTotals.totalFat,
             satFat: comboNutritionTotals.satFat + comboSideNutritionTotals.satFat,
             transFat: comboNutritionTotals.transFat + comboSideNutritionTotals.transFat,
             cholesterol: comboNutritionTotals.cholesterol + comboSideNutritionTotals.cholesterol,
@@ -827,7 +827,7 @@ export default function ItemRouteModal({
             calories: sum.calories + Math.round((baseIngredientNutrition.calories ?? 0) * multiplier * tacoMultiplier),
             protein: sum.protein + Math.round((baseIngredientNutrition.protein ?? 0) * multiplier * tacoMultiplier),
             carbs: sum.carbs + Math.round((baseIngredientNutrition.carbs ?? 0) * multiplier * tacoMultiplier),
-            fat: sum.fat + Math.round((baseIngredientNutrition.totalFat ?? 0) * multiplier * tacoMultiplier),
+            totalFat: sum.totalFat + Math.round((baseIngredientNutrition.totalFat ?? 0) * multiplier * tacoMultiplier),
             satFat: sum.satFat + Math.round((baseIngredientNutrition.satFat ?? 0) * multiplier * tacoMultiplier),
             transFat: sum.transFat + Math.round((baseIngredientNutrition.transFat ?? 0) * multiplier * tacoMultiplier),
             cholesterol: sum.cholesterol + Math.round((baseIngredientNutrition.cholesterol ?? 0) * multiplier * tacoMultiplier),
@@ -836,7 +836,7 @@ export default function ItemRouteModal({
             sugars: sum.sugars + Math.round((baseIngredientNutrition.sugars ?? 0) * multiplier * tacoMultiplier),
           };
         },
-        { calories: 0, protein: 0, carbs: 0, fat: 0, satFat: 0, transFat: 0, cholesterol: 0, sodium: 0, fiber: 0, sugars: 0 }
+        { calories: 0, protein: 0, carbs: 0, totalFat: 0, satFat: 0, transFat: 0, cholesterol: 0, sodium: 0, fiber: 0, sugars: 0 }
       ),
     [chipotleIngredientById, chipotleProteinPortionMode, chipotleSelectedProteinCount, chipotleSplitPortionModeById, getChipotleIngredientMultiplier, selectedChipotleIngredientItems]
   );
@@ -873,7 +873,7 @@ export default function ItemRouteModal({
       calories: addonTotals.calories + commonChangeTotals.calories + ingredientCountTotals.calories + activeComboNutritionTotals.calories,
       protein: addonTotals.protein + commonChangeTotals.protein + ingredientCountTotals.protein + activeComboNutritionTotals.protein,
       carbs: addonTotals.carbs + commonChangeTotals.carbs + ingredientCountTotals.carbs + activeComboNutritionTotals.carbs,
-      fat: addonTotals.fat + commonChangeTotals.fat + ingredientCountTotals.fat + activeComboNutritionTotals.fat,
+      totalFat: addonTotals.totalFat + commonChangeTotals.totalFat + ingredientCountTotals.totalFat + activeComboNutritionTotals.totalFat,
     }),
     [activeComboNutritionTotals, addonTotals, commonChangeTotals, ingredientCountTotals]
   );
@@ -883,7 +883,7 @@ export default function ItemRouteModal({
       customizationTotals.calories !== 0 ||
       customizationTotals.protein !== 0 ||
       customizationTotals.carbs !== 0 ||
-      customizationTotals.fat !== 0,
+      customizationTotals.totalFat !== 0,
     [customizationTotals]
   );
 
@@ -892,7 +892,7 @@ export default function ItemRouteModal({
     calories: sumNutritionWithFallback(baseNutrition.calories, customizationTotals.calories),
     protein: sumNutritionWithFallback(baseNutrition.protein, customizationTotals.protein),
     carbs: sumNutritionWithFallback(baseNutrition.carbs, customizationTotals.carbs),
-    totalFat: sumNutritionWithFallback(baseNutrition.totalFat, customizationTotals.fat),
+    totalFat: sumNutritionWithFallback(baseNutrition.totalFat, customizationTotals.totalFat),
     satFat: sumNutritionWithFallback(baseNutrition.satFat, addonTotals.satFat + activeComboNutritionTotals.satFat),
     transFat: sumNutritionWithFallback(baseNutrition.transFat, addonTotals.transFat + activeComboNutritionTotals.transFat),
     cholesterol: sumNutritionWithFallback(baseNutrition.cholesterol, addonTotals.cholesterol + activeComboNutritionTotals.cholesterol),
@@ -942,7 +942,7 @@ export default function ItemRouteModal({
           calories: chipotleAdjustedTotals.calories,
           protein: chipotleAdjustedTotals.protein,
           carbs: chipotleAdjustedTotals.carbs,
-          fat: chipotleAdjustedTotals.fat,
+          totalFat: chipotleAdjustedTotals.totalFat,
         },
         buildConfiguration: nextBuildConfiguration,
       };
@@ -989,7 +989,7 @@ export default function ItemRouteModal({
         calories: nutrition.calories ?? 0,
         protein: nutrition.protein ?? 0,
         carbs: nutrition.carbs ?? 0,
-        fat: nutrition.totalFat ?? 0,
+        totalFat: nutrition.totalFat ?? 0,
       },
       buildConfiguration:
         editingCartItem?.buildConfiguration ??
@@ -1051,7 +1051,7 @@ export default function ItemRouteModal({
                 calories: Math.round(isChipotlePrebuiltBuilderItem ? chipotleAdjustedTotals.calories : (nutrition.calories ?? 0)),
                 protein: Math.round(isChipotlePrebuiltBuilderItem ? chipotleAdjustedTotals.protein : (nutrition.protein ?? 0)),
                 carbs: Math.round(isChipotlePrebuiltBuilderItem ? chipotleAdjustedTotals.carbs : (nutrition.carbs ?? 0)),
-                fat: Math.round(isChipotlePrebuiltBuilderItem ? chipotleAdjustedTotals.fat : (nutrition.totalFat ?? 0)),
+                totalFat: Math.round(isChipotlePrebuiltBuilderItem ? chipotleAdjustedTotals.totalFat : (nutrition.totalFat ?? 0)),
               }}
               size="panel"
               className="w-full max-w-[560px] gap-6 sm:gap-10"
@@ -1061,7 +1061,7 @@ export default function ItemRouteModal({
                       calories: <span className="ml-1.5 text-sm font-bold text-green-600">{formatDelta(customizationTotals.calories)}</span>,
                       protein: <span className="ml-1.5 text-sm font-bold text-green-600">{formatDelta(customizationTotals.protein)}</span>,
                       carbs: <span className="ml-1.5 text-sm font-bold text-green-600">{formatDelta(customizationTotals.carbs)}</span>,
-                      fat: <span className="ml-1.5 text-sm font-bold text-green-600">{formatDelta(customizationTotals.fat)}</span>,
+                      totalFat: <span className="ml-1.5 text-sm font-bold text-green-600">{formatDelta(customizationTotals.totalFat)}</span>,
                     }
                   : undefined
               }
@@ -1292,7 +1292,7 @@ export default function ItemRouteModal({
                 <BuildSummaryDrawer
                   adjustedNutritionLabelTotals={{
                     calories: chipotleAdjustedTotals.calories,
-                    totalFat: chipotleAdjustedTotals.fat,
+                    totalFat: chipotleAdjustedTotals.totalFat,
                     satFat: chipotleAdjustedTotals.satFat,
                     transFat: chipotleAdjustedTotals.transFat,
                     cholesterol: chipotleAdjustedTotals.cholesterol,
@@ -1510,7 +1510,7 @@ export default function ItemRouteModal({
               calories: Math.round(isChipotlePrebuiltBuilderItem ? chipotleAdjustedTotals.calories : (nutrition.calories ?? 0)),
               protein: Math.round(isChipotlePrebuiltBuilderItem ? chipotleAdjustedTotals.protein : (nutrition.protein ?? 0)),
               carbs: Math.round(isChipotlePrebuiltBuilderItem ? chipotleAdjustedTotals.carbs : (nutrition.carbs ?? 0)),
-              fat: Math.round(isChipotlePrebuiltBuilderItem ? chipotleAdjustedTotals.fat : (nutrition.totalFat ?? 0)),
+              totalFat: Math.round(isChipotlePrebuiltBuilderItem ? chipotleAdjustedTotals.totalFat : (nutrition.totalFat ?? 0)),
             }}
             size="panel"
             className="gap-3 sm:gap-6"

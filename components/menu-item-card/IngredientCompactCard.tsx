@@ -18,7 +18,7 @@ export default function IngredientCompactCard({
   calories,
   protein,
   carbs,
-  fat,
+  totalFat,
   onSelectionChange,
   onCompactOptionSelect,
 }: {
@@ -36,7 +36,7 @@ export default function IngredientCompactCard({
   calories?: number;
   protein?: number;
   carbs?: number;
-  fat?: number;
+  totalFat?: number;
   onSelectionChange: (selected: boolean) => void;
   onCompactOptionSelect: (optionId: string) => void;
 }) {
@@ -124,10 +124,10 @@ export default function IngredientCompactCard({
         </div>
 
         <div className="flex items-center gap-8 text-center">
-          {[[calories, 'black', 'cal'], [protein, '#c2410c', 'protein'], [carbs, '#ca8a04', 'carbs'], [fat, '#2563eb', 'fat']].map(([value, color, label]) => (
+          {[[calories, "black", "cal"], [protein, "#c2410c", "protein"], [carbs, "#ca8a04", "carbs"], [totalFat, "#2563eb", "fat"]].map(([value, color, label]) => (
             <div key={String(label)} className="flex min-w-[54px] flex-col items-center gap-1">
               <div className="text-2xl leading-none font-bold" style={{ color: String(color) }}>
-                {label === 'cal' ? formatCalories(value as number | undefined) : formatMacro(value as number | undefined)}
+                {label === "cal" ? formatCalories(value as number | undefined) : formatMacro(value as number | undefined)}
               </div>
               <div className="text-[10px] font-semibold uppercase tracking-wide text-black/80">{label}</div>
             </div>

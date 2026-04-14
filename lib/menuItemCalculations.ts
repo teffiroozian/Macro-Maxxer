@@ -98,7 +98,7 @@ export function menuItemFatWithFallback(item?: MenuItem) {
 }
 
 export function deltaFat(change: CommonChange) {
-  return change.delta.totalFat ?? change.delta.fat ?? 0;
+  return change.delta.totalFat ?? 0;
 }
 
 export function getDefaultVariantId(item?: MenuItem) {
