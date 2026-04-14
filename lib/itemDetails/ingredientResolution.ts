@@ -241,7 +241,7 @@ export function resolvePanelIngredientTabs(
         calories: addonMatch?.calories,
         protein: addonMatch?.protein,
         carbs: addonMatch?.carbs,
-        totalFat: addonMatch?.totalFat ?? addonMatch?.fat,
+        totalFat: addonMatch?.totalFat,
         satFat: addonMatch?.satFat,
         transFat: addonMatch?.transFat,
         cholesterol: addonMatch?.cholesterol,

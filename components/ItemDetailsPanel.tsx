@@ -220,7 +220,7 @@ export default function ItemDetailsPanel({
   const selectedMainItemImage = selectedMainVariant?.image ?? item.image;
   const proteinGrams = n.protein ?? 0;
   const carbsGrams = n.carbs ?? 0;
-  const fatGrams = n.fat ?? n.totalFat ?? 0;
+  const fatGrams = n.totalFat ?? 0;
   const macroTotalGrams = proteinGrams + carbsGrams + fatGrams;
   const macroSegments = [
     {
