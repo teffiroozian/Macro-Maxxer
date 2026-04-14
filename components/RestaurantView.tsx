@@ -315,6 +315,56 @@ export default function RestaurantView({
       tacoShellIngredientIds,
     ]
   );
+  const selectedProteinCountForPortioning = useMemo(
+    () =>
+      Object.values(selectedIngredientItems).filter((selectedIngredient) =>
+        isProteinIngredientItem(selectedIngredient.item)
+      ).length,
+    [selectedIngredientItems]
+  );
+  const selectedSplitIngredientIdsByCategory = useMemo(
+    () =>
+      Object.entries(selectedIngredientItems).reduce<Record<"rice" | "beans", string[]>>(
+        (acc, [ingredientId, selectedIngredient]) => {
+          const category = normalizeIngredientCategory(resolvePrimaryCategory(selectedIngredient.item.categories));
+          if (category === "rice" || category === "beans") {
+            acc[category].push(ingredientId);
+          }
+          return acc;
+        },
+        { rice: [], beans: [] }
+      ),
+    [selectedIngredientItems]
+  );
+  const getSelectedIngredientPortionMultiplier = useCallback(
+    (ingredientId: string, category: string) => {
+      if (!(ingredientId in selectedIngredientItems)) {
+        return 1;
+      }
+
+      if (category === "proteins") {
+        return getProteinMultiplier(proteinPortionMode, selectedProteinCountForPortioning);
+      }
+
+      if (category === "rice" || category === "beans") {
+        const selectedSplitIds = selectedSplitIngredientIdsByCategory[category];
+        if (selectedSplitIds.length >= 2) {
+          return 0.5;
+        }
+        const portionMode = splitPortionModeById[ingredientId] ?? "normal";
+        return portionMode === "light" ? 0.5 : portionMode === "extra" ? getSplitExtraMultiplier() : 1;
+      }
+
+      return 1;
+    },
+    [
+      proteinPortionMode,
+      selectedIngredientItems,
+      selectedProteinCountForPortioning,
+      selectedSplitIngredientIdsByCategory,
+      splitPortionModeById,
+    ]
+  );
   const selectedIncludedIngredientIds = useMemo(
     () =>
       resolveIncludedIngredientIds({
@@ -464,16 +514,22 @@ export default function RestaurantView({
           kidsBuildYourOwnDoubleSideIds.has(ingredient.id)
             ? 2
             : 1;
+        const ingredientPortionMultiplier = getSelectedIngredientPortionMultiplier(
+          ingredientId,
+          normalizeIngredientCategory(resolvedCategory)
+        );
         const ingredientBaseNutrition = scaleNutritionValues(
           ingredient.nutrition,
-          getIngredientNutritionMultiplier(ingredient.id) * kidsBuildYourOwnDoubleSideMultiplier
+          getIngredientNutritionMultiplier(ingredient.id) *
+            kidsBuildYourOwnDoubleSideMultiplier *
+            ingredientPortionMultiplier
         );
         const variants = hasCustomVariants
           ? ingredient.variants?.map((variant) => ({
               ...variant,
               nutrition: scaleNutritionValues(
                 variant.nutrition,
-                getIngredientNutritionMultiplier(ingredient.id)
+                getIngredientNutritionMultiplier(ingredient.id) * ingredientPortionMultiplier
               ),
             }))
           : undefined;
@@ -536,6 +592,7 @@ export default function RestaurantView({
     selectedIncludedIngredientIds,
     tacoShellIngredientIds,
     kidsBuildYourOwnDoubleSideIds,
+    getSelectedIngredientPortionMultiplier,
     quesadillaTripleCheeseVariantId,
   ]);
 
@@ -1864,9 +1921,7 @@ export default function RestaurantView({
 
     return groupedEntries;
   }, [selectedIncludedIngredientIdSet, selectedIngredientEntries, chipotleBuilderConfig]);
-  const selectedProteinCount = selectedIngredientEntries.reduce((total, [, selectedIngredient]) => {
-    return total + (isProteinIngredientItem(selectedIngredient.item) ? 1 : 0);
-  }, 0);
+  const selectedProteinCount = selectedProteinCountForPortioning;
   const proteinBadgeLabel =
     selectedProteinCount > 0 ? getProteinBadgeLabel(proteinPortionMode, selectedProteinCount) : undefined;
   const ingredientPortionLabelById = (() => {

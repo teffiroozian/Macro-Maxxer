@@ -683,41 +683,6 @@ export default function ItemRouteModal({
     () => new Set(["crispy-corn-tortilla", "soft-flour-tortilla"]),
     []
   );
-  const getChipotleIngredientMultiplier = useCallback((ingredientId: string) => {
-    if (!isChipotleTacoItem) return 1;
-    return chipotleTacoShellIdSet.has(ingredientId)
-      ? selectedChipotleTacoCount
-      : selectedChipotleTacoCount / 3;
-  }, [chipotleTacoShellIdSet, isChipotleTacoItem, selectedChipotleTacoCount]);
-  const chipotleIngredientDisplayItems = useMemo(
-    () =>
-      chipotleIngredientMenuItems.map((ingredientItem) => {
-        const ingredientId = (ingredientItem.id ?? ingredientItem.name).toLowerCase();
-        return {
-          ...ingredientItem,
-          nutrition: scaleNutritionValues(
-            ingredientItem.nutrition,
-            getChipotleIngredientMultiplier(ingredientId)
-          ),
-        };
-      }),
-    [chipotleIngredientMenuItems, getChipotleIngredientMultiplier]
-  );
-  const chipotleIncludedIngredientDisplayItems = useMemo(
-    () =>
-      chipotleIncludedIngredientMenuItems.map((ingredientItem) => {
-        const ingredientId = (ingredientItem.id ?? ingredientItem.name).toLowerCase();
-        return {
-          ...ingredientItem,
-          nutrition: scaleNutritionValues(
-            ingredientItem.nutrition,
-            getChipotleIngredientMultiplier(ingredientId)
-          ),
-        };
-      }),
-    [chipotleIncludedIngredientMenuItems, getChipotleIngredientMultiplier]
-  );
-
   const chipotleSelectedProteinCount = useMemo(
     () =>
       Object.values(selectedChipotleIngredientItems).filter(
@@ -726,6 +691,96 @@ export default function ItemRouteModal({
       ).length,
     [selectedChipotleIngredientItems]
   );
+  const chipotleSelectedSplitIngredientIdsByCategory = useMemo(
+    () =>
+      Object.entries(selectedChipotleIngredientItems).reduce<Record<"rice" | "beans", string[]>>(
+        (acc, [ingredientId, selectedIngredient]) => {
+          const category = normalizeIngredientCategory(resolvePrimaryCategory(selectedIngredient.item.categories));
+          if (category === "rice" || category === "beans") {
+            acc[category].push(ingredientId);
+          }
+          return acc;
+        },
+        { rice: [], beans: [] }
+      ),
+    [selectedChipotleIngredientItems]
+  );
+  const getChipotleIngredientMultiplier = useCallback((ingredientId: string) => {
+    if (!isChipotleTacoItem) return 1;
+    return chipotleTacoShellIdSet.has(ingredientId)
+      ? selectedChipotleTacoCount
+      : selectedChipotleTacoCount / 3;
+  }, [chipotleTacoShellIdSet, isChipotleTacoItem, selectedChipotleTacoCount]);
+  const getChipotleSelectedIngredientPortionMultiplier = useCallback(
+    (ingredientId: string, category: string) => {
+      if (!(ingredientId in selectedChipotleIngredientItems)) {
+        return 1;
+      }
+      if (category === "proteins") {
+        return getProteinMultiplier(chipotleProteinPortionMode, chipotleSelectedProteinCount);
+      }
+      if (category === "rice" || category === "beans") {
+        const selectedSplitIds = chipotleSelectedSplitIngredientIdsByCategory[category];
+        if (selectedSplitIds.length >= 2) {
+          return 0.5;
+        }
+        const splitMode = chipotleSplitPortionModeById[ingredientId] ?? "normal";
+        return splitMode === "light" ? 0.5 : splitMode === "extra" ? 2 : 1;
+      }
+      return 1;
+    },
+    [
+      chipotleProteinPortionMode,
+      chipotleSelectedProteinCount,
+      chipotleSelectedSplitIngredientIdsByCategory,
+      chipotleSplitPortionModeById,
+      selectedChipotleIngredientItems,
+    ]
+  );
+  const chipotleIngredientDisplayItems = useMemo(
+    () =>
+      chipotleIngredientMenuItems.map((ingredientItem) => {
+        const ingredientId = (ingredientItem.id ?? ingredientItem.name).toLowerCase();
+        const category = normalizeIngredientCategory(resolvePrimaryCategory(ingredientItem.categories));
+        const multiplier =
+          getChipotleIngredientMultiplier(ingredientId) *
+          getChipotleSelectedIngredientPortionMultiplier(ingredientId, category);
+        return {
+          ...ingredientItem,
+          nutrition: scaleNutritionValues(
+            ingredientItem.nutrition,
+            multiplier
+          ),
+        };
+      }),
+    [
+      chipotleIngredientMenuItems,
+      getChipotleIngredientMultiplier,
+      getChipotleSelectedIngredientPortionMultiplier,
+    ]
+  );
+  const chipotleIncludedIngredientDisplayItems = useMemo(
+    () =>
+      chipotleIncludedIngredientMenuItems.map((ingredientItem) => {
+        const ingredientId = (ingredientItem.id ?? ingredientItem.name).toLowerCase();
+        const category = normalizeIngredientCategory(resolvePrimaryCategory(ingredientItem.categories));
+        const multiplier =
+          getChipotleIngredientMultiplier(ingredientId) *
+          getChipotleSelectedIngredientPortionMultiplier(ingredientId, category);
+        return {
+          ...ingredientItem,
+          nutrition: scaleNutritionValues(
+            ingredientItem.nutrition,
+            multiplier
+          ),
+        };
+      }),
+    [
+      chipotleIncludedIngredientMenuItems,
+      getChipotleIngredientMultiplier,
+      getChipotleSelectedIngredientPortionMultiplier,
+    ]
+  );
   const chipotleIngredientPortionLabelById = useMemo(
     () =>
       Object.entries(selectedChipotleIngredientItems).reduce<Record<string, string>>((acc, [ingredientId, entry]) => {
@@ -733,11 +788,21 @@ export default function ItemRouteModal({
         if (category === "proteins") {
           acc[ingredientId] = getProteinBadgeLabel(chipotleProteinPortionMode, chipotleSelectedProteinCount);
         } else if (category === "rice" || category === "beans") {
-          acc[ingredientId] = getSplitPortionLabel(chipotleSplitPortionModeById[ingredientId] ?? "normal");
+          const selectedSplitIds = chipotleSelectedSplitIngredientIdsByCategory[category];
+          acc[ingredientId] =
+            selectedSplitIds.length >= 2
+              ? "1/2x"
+              : getSplitPortionLabel(chipotleSplitPortionModeById[ingredientId] ?? "normal");
         }
         return acc;
       }, {}),
-    [chipotleProteinPortionMode, chipotleSelectedProteinCount, chipotleSplitPortionModeById, selectedChipotleIngredientItems]
+    [
+      chipotleProteinPortionMode,
+      chipotleSelectedProteinCount,
+      chipotleSelectedSplitIngredientIdsByCategory,
+      chipotleSplitPortionModeById,
+      selectedChipotleIngredientItems,
+    ]
   );
   const chipotleAdjustedTotals = useMemo(
     () =>
