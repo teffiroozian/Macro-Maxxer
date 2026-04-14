@@ -89,7 +89,7 @@ export default function StickyRestaurantBar({
           hideSecondaryNav ? "rounded-2xl" : "rounded-t-2xl"
         }`}
       >
-        <div className="mx-auto flex w-full max-w-5xl items-center gap-2 px-3 py-2 sm:gap-3 sm:px-6">
+        <div className="relative mx-auto flex w-full max-w-5xl items-center gap-2 px-3 py-2 sm:gap-3 sm:px-6">
           <button
             type="button"
             onClick={onBack ?? (() => router.back())}
@@ -102,7 +102,7 @@ export default function StickyRestaurantBar({
           <button
             type="button"
             onClick={handleBrandClick}
-            className="flex min-w-0 items-center gap-2 cursor-pointer sm:gap-3"
+            className="flex min-w-0 items-center gap-2 cursor-pointer sm:gap-3 md:absolute md:left-1/2 md:z-10 md:-translate-x-1/2"
             aria-label={`Scroll to top of ${restaurantName} page`}
           >
             <span className="relative h-9 w-9 shrink-0 overflow-hidden rounded-lg border border-slate-300/80 bg-white">
@@ -114,7 +114,7 @@ export default function StickyRestaurantBar({
               />
             </span>
 
-            <span className="max-w-[42vw] truncate text-left text-sm font-semibold text-slate-900 sm:max-w-none sm:text-base">
+            <span className="max-w-[42vw] truncate text-left text-sm font-semibold text-slate-900 sm:max-w-none sm:text-base md:max-w-[34vw]">
               {restaurantName}
             </span>
           </button>
