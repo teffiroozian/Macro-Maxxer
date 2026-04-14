@@ -135,6 +135,8 @@ export default function ItemRouteModal({
             selectedIngredientVariantIds?: Record<string, string>;
             proteinPortionMode?: ProteinPortionMode;
             splitPortionModeById?: Record<string, SplitPortionMode>;
+            selectedTacoShell?: "crispy" | "soft";
+            selectedTacoCount?: 1 | 3;
           }
         | undefined) ?? buildHighProteinBuildConfiguration(item, ingredients),
     [editingCartItem?.buildConfiguration, ingredients, item]
@@ -212,30 +214,39 @@ export default function ItemRouteModal({
       ),
     [chipotleAllIngredientMenuItems]
   );
-  const initialChipotleBuilderState = useMemo(() => {
+  const initialChipotleBuilderState = useMemo<{
+    selectedItems: Record<string, { item: MenuItem; quantity: number }>;
+    proteinMode: ProteinPortionMode;
+    splitModesById: Record<string, SplitPortionMode>;
+    selectedVariantIds: Record<string, string>;
+    selectedTacoCount: 1 | 3;
+    selectedTacoShellId: string;
+  }>(() => {
     const nextSelectedItems: Record<string, { item: MenuItem; quantity: number }> = {};
     const nextSplitModesById: Record<string, SplitPortionMode> = {
-      ...(chipotleBuildConfiguration.splitPortionModeById ?? {}),
+      ...(chipotleBuildConfiguration?.splitPortionModeById ?? {}),
     };
 
-    Object.entries(chipotleBuildConfiguration.selectedIngredientItems ?? {}).forEach(([ingredientId, selectedEntry]) => {
-      const ingredient = chipotleIngredientById.get(ingredientId);
-      if (!ingredient || selectedEntry.quantity <= 0) return;
+    Object.entries(chipotleBuildConfiguration?.selectedIngredientItems ?? {}).forEach(
+      ([ingredientId, selectedEntry]) => {
+        const ingredient = chipotleIngredientById.get(ingredientId);
+        if (!ingredient || selectedEntry.quantity <= 0) return;
 
-      const category = normalizeIngredientCategory(resolvePrimaryCategory(ingredient.categories));
-      const rawQuantity = selectedEntry.quantity;
+        const category = normalizeIngredientCategory(resolvePrimaryCategory(ingredient.categories));
+        const rawQuantity = selectedEntry.quantity;
 
-      if (category === "rice" || category === "beans") {
-        if (!(ingredientId in nextSplitModesById)) {
-          nextSplitModesById[ingredientId] =
-            rawQuantity <= 0.5 ? "light" : rawQuantity >= 2 ? "extra" : "normal";
+        if (category === "rice" || category === "beans") {
+          if (!(ingredientId in nextSplitModesById)) {
+            nextSplitModesById[ingredientId] =
+              rawQuantity <= 0.5 ? "light" : rawQuantity >= 2 ? "extra" : "normal";
+          }
+          nextSelectedItems[ingredientId] = { item: ingredient, quantity: 1 };
+          return;
         }
-        nextSelectedItems[ingredientId] = { item: ingredient, quantity: 1 };
-        return;
-      }
 
-      nextSelectedItems[ingredientId] = { item: ingredient, quantity: rawQuantity };
-    });
+        nextSelectedItems[ingredientId] = { item: ingredient, quantity: rawQuantity };
+      }
+    );
 
     const isBurrito = (item.id ?? "").toLowerCase().includes("burrito");
     if (isBurrito && !nextSelectedItems.tortilla) {
@@ -246,7 +257,7 @@ export default function ItemRouteModal({
     }
     if (isChipotleTacoItem) {
       const tacoShellId =
-        chipotleBuildConfiguration.selectedTacoShell === "soft"
+        chipotleBuildConfiguration?.selectedTacoShell === "soft"
           ? "soft-flour-tortilla"
           : "crispy-corn-tortilla";
       const tacoShell = chipotleIngredientById.get(tacoShellId);
@@ -259,12 +270,12 @@ export default function ItemRouteModal({
 
     return {
       selectedItems: nextSelectedItems,
-      proteinMode: chipotleBuildConfiguration.proteinPortionMode ?? "normal",
+      proteinMode: chipotleBuildConfiguration?.proteinPortionMode ?? "normal",
       splitModesById: nextSplitModesById,
-      selectedVariantIds: chipotleBuildConfiguration.selectedIngredientVariantIds ?? {},
-      selectedTacoCount: chipotleBuildConfiguration.selectedTacoCount === 1 ? 1 : 3,
+      selectedVariantIds: chipotleBuildConfiguration?.selectedIngredientVariantIds ?? {},
+      selectedTacoCount: chipotleBuildConfiguration?.selectedTacoCount === 1 ? 1 : 3,
       selectedTacoShellId:
-        chipotleBuildConfiguration.selectedTacoShell === "soft"
+        chipotleBuildConfiguration?.selectedTacoShell === "soft"
           ? "soft-flour-tortilla"
           : "crispy-corn-tortilla",
     };
