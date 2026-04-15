@@ -45,17 +45,20 @@ function extractExtraNutrition(item: FlatLegacyMenuItem) {
 }
 
 function normalizeMenuItem(item: FlatLegacyMenuItem): MenuItem {
-  const rest = { ...item } as Omit<FlatLegacyMenuItem, "nutrition">;
-  delete rest.calories;
-  delete rest.protein;
-  delete rest.carbs;
-  delete rest.totalFat;
-  delete rest.satFat;
-  delete rest.transFat;
-  delete rest.cholesterol;
-  delete rest.sodium;
-  delete rest.fiber;
-  delete rest.sugars;
+  const {
+    nutrition: _legacyNutrition,
+    calories: _legacyCalories,
+    protein: _legacyProtein,
+    carbs: _legacyCarbs,
+    totalFat: _legacyTotalFat,
+    satFat: _legacySatFat,
+    transFat: _legacyTransFat,
+    cholesterol: _legacyCholesterol,
+    sodium: _legacySodium,
+    fiber: _legacyFiber,
+    sugars: _legacySugars,
+    ...rest
+  } = item;
   const baseNutrition = item.nutrition ?? { calories: 0, protein: 0, carbs: 0, totalFat: 0 };
   const extraNutrition = {
     ...(baseNutrition.extraNutrition ?? {}),
@@ -78,6 +81,7 @@ function normalizeMenuItem(item: FlatLegacyMenuItem): MenuItem {
 
   return {
     ...rest,
+    name: item.name,
     nutrition,
     portionType: item.portionType,
     categories: item.categories ?? ["Other"],
