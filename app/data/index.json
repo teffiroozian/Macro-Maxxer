@@ -11,7 +11,7 @@
     "id": "chipotle",
     "name": "Chipotle",
     "logo": "/restaurants/chipotle/brand/logo.jpeg",
-    "cover": "/restaurants/chipotle/brand/cover.jpeg",
+    "cover": "/restaurants/chipotle/brand/cover.jpg",
     "menuFile": "chipotle.json",
     "isMacroFriendly": true
   },
