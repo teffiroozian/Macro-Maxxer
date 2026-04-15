@@ -2082,8 +2082,13 @@ export default function RestaurantView({
   }, [isEntreeMenuOpen]);
 
   if (isChipotleBuildPage && isEditingBuild) {
+    const editingBuildItem = editingCartItem;
+    if (!editingBuildItem) {
+      return null;
+    }
+
     return (
-      <div className="fixed inset-0 z-[130] flex items-end justify-center p-2 sm:items-center sm:p-4" role="dialog" aria-modal="true" aria-label={`${editingCartItem.name} customization`}>
+      <div className="fixed inset-0 z-[130] flex items-end justify-center p-2 sm:items-center sm:p-4" role="dialog" aria-modal="true" aria-label={`${editingBuildItem.name} customization`}>
         <button
           type="button"
           className="absolute inset-0 border-0 bg-slate-900/66"
@@ -2103,11 +2108,11 @@ export default function RestaurantView({
           <div ref={buildCustomizationModalScrollRef} className="min-h-0 flex-1 overflow-y-auto pb-10 pr-1 sm:pr-2 [overflow-anchor:none]">
             <div className="grid justify-items-center gap-8">
               <div className="grid justify-items-center gap-5">
-                <h1 className="text-center text-2xl font-extrabold sm:text-[32px]">{editingCartItem.name}</h1>
+                <h1 className="text-center text-2xl font-extrabold sm:text-[32px]">{editingBuildItem.name}</h1>
                 <img
                   className="h-[220px] w-[220px] rounded-[14px] bg-[#efefef] object-contain p-2 shadow-[0_0_5px_rgba(0,0,0,0.25)] sm:h-[300px] sm:w-[300px]"
-                  src={editingCartItem.image}
-                  alt={editingCartItem.name}
+                  src={editingBuildItem.image}
+                  alt={editingBuildItem.name}
                 />
                 <MacroTotalsGrid
                   macros={{
@@ -2370,7 +2375,7 @@ export default function RestaurantView({
               <div className="w-full rounded-3xl border border-black/10 bg-[#e0e0e0] p-4">
                 <BuildSummaryDrawer
                   adjustedNutritionLabelTotals={adjustedNutritionLabelTotals}
-                  selectedBuildName={editingCartItem.name}
+                  selectedBuildName={editingBuildItem.name}
                   selectedIngredientCount={selectedIngredientCount}
                   groupedSelectedIngredientEntries={groupedSelectedIngredientEntries}
                   ingredientPortionLabelById={ingredientPortionLabelById}
