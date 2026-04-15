@@ -5,7 +5,9 @@ type ParsedIngredientEntry = {
   defaultCount: number;
 };
 
-const NUTRITION_KEYS: Array<keyof Nutrition> = [
+type NutritionNumericKey = Exclude<keyof Nutrition, "extraNutrition">;
+
+const NUTRITION_KEYS: NutritionNumericKey[] = [
   "calories",
   "protein",
   "carbs",
