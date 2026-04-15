@@ -42,8 +42,10 @@ export async function getRestaurantData(id: string): Promise<RestaurantData | nu
 
   const menuModule = await import(`@/app/data/${restaurant.menuFile}`);
   const menu = resolveMenuDataset(menuModule.default);
-  const ingredients = menu.ingredients;
-  const items = menu.items;
+  const ingredients = menu.ingredients ?? [];
+  const items = menu.items ?? [];
+  const commonChanges: CommonChange[] = menu.commonChanges ?? [];
+  const ingredientModifiers: IngredientModifier[] = menu.ingredientModifiers ?? [];
   return {
     id: restaurant.id,
     name: restaurant.name,
@@ -52,9 +54,9 @@ export async function getRestaurantData(id: string): Promise<RestaurantData | nu
     isBuildYourOwn: menu.isBuildYourOwn ?? false,
     items,
     ingredients,
-    addons: normalizeAddons(menu.addons),
-    commonChanges: (menu.commonChanges ?? []) as CommonChange[],
-    ingredientModifiers: (menu.ingredientModifiers ?? []) as IngredientModifier[],
+    addons: normalizeAddons(menu.addons ?? {}),
+    commonChanges,
+    ingredientModifiers,
     customizationRules: menu.customizationRules,
     builderConfig: menu.builderConfig,
   };
