@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo, useSyncExternalStore } from "react";
+import type { ChipotleBuildConfiguration } from "@/lib/chipotleBuild";
 
 export type CartMacros = {
   calories: number;
@@ -35,21 +36,7 @@ export type CartItem = {
   quantity: number;
   macrosPerItem: CartMacros;
   nutritionPerItem?: CartNutrition;
-  buildConfiguration?: {
-    selectedEntree: string | null;
-    selectedIngredientItems: Record<
-      string,
-      {
-        quantity: number;
-      }
-    >;
-    selectedIngredientVariantIds: Record<string, string>;
-    proteinPortionMode: "normal" | "double";
-    splitPortionModeById: Record<string, "light" | "normal" | "extra">;
-    selectedTacoShell: "crispy" | "soft";
-    selectedTacoCount: 3 | 1;
-    selectedKidsMeal: "build-your-own" | "quesadilla";
-  };
+  buildConfiguration?: ChipotleBuildConfiguration;
 };
 
 type CartState = {

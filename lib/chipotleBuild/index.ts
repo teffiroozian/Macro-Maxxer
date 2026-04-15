@@ -1,12 +1,27 @@
 import type { MenuItem, Nutrition, RestaurantBuilderConfig } from "@/types/menu";
 import { normalizeNutrition } from "@/lib/nutrition";
+import type {
+  ChipotleEntreeSelection,
+  ChipotleKidsMealId,
+  ChipotleTacoShell,
+  IncludedIngredientContext,
+  ProteinPortionMode,
+  SplitPortionMode,
+} from "@/lib/chipotleBuild/types";
 
-export type ProteinPortionMode = "normal" | "double";
-export type SplitPortionMode = "light" | "normal" | "extra";
-export type IncludedIngredientContext = {
-  selectedEntree: string | null;
-  selectedKidsMeal: string;
-};
+export { isChipotleEntreeId } from "@/lib/chipotleBuild/types";
+
+export type {
+  ChipotleBuildConfiguration,
+  ChipotleEntreeId,
+  ChipotleEntreeSelection,
+  ChipotleKidsMealId,
+  ChipotleTacoCount,
+  ChipotleTacoShell,
+  IncludedIngredientContext,
+  ProteinPortionMode,
+  SplitPortionMode,
+} from "@/lib/chipotleBuild/types";
 
 export function normalizeIngredientCategory(value: string | undefined) {
   return value?.trim().toLowerCase() ?? "";
@@ -91,8 +106,8 @@ export function getSplitPortionLabel(mode: SplitPortionMode) {
 
 export function getIngredientCategoryMaxSelections(options: {
   category: string;
-  selectedEntree: string | null;
-  selectedKidsMeal: string;
+  selectedEntree: ChipotleEntreeSelection;
+  selectedKidsMeal: ChipotleKidsMealId;
   builderConfig?: RestaurantBuilderConfig;
 }) {
   const { category, selectedEntree, selectedKidsMeal, builderConfig } = options;
@@ -111,12 +126,12 @@ export function isQuesadillaCheeseSelection(ingredientId: string, context: Inclu
 }
 
 export function resolveIncludedIngredientIds(options: {
-  selectedEntree: string | null;
-  selectedKidsMeal: string;
-  selectedTacoShell: string;
+  selectedEntree: ChipotleEntreeSelection;
+  selectedKidsMeal: ChipotleKidsMealId;
+  selectedTacoShell?: ChipotleTacoShell;
   builderConfig?: RestaurantBuilderConfig;
 }) {
-  const { selectedEntree, selectedKidsMeal, selectedTacoShell, builderConfig } = options;
+  const { selectedEntree, selectedKidsMeal, selectedTacoShell = "crispy", builderConfig } = options;
   if (!builderConfig?.entreeOptions) {
     return [];
   }

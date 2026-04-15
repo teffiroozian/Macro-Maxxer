@@ -74,6 +74,10 @@ import EntreeSelectionHero from "./restaurant-view/EntreeSelectionHero";
 import KidsMealSelector from "./restaurant-view/KidsMealSelector";
 import RestaurantCategorySidebar from "./restaurant-view/RestaurantCategorySidebar";
 import {
+  type ChipotleEntreeSelection,
+  type ChipotleKidsMealId,
+  type ChipotleTacoCount,
+  type ChipotleTacoShell,
   type IncludedIngredientContext,
   type ProteinPortionMode,
   type SplitPortionMode,
@@ -83,6 +87,7 @@ import {
   getProteinMultiplier,
   getSplitExtraMultiplier,
   getSplitPortionLabel,
+  isChipotleEntreeId,
   isQuesadillaCheeseSelection,
   normalizeIngredientCategory,
   resolveIncludedIngredientIds,
@@ -138,10 +143,10 @@ const CATEGORY_ICONS: Record<string, LucideIcon> = {
 };
 
 
-type EntreeSelection = string | null;
-type KidsMealSelection = string;
-type TacoShellSelection = "crispy" | "soft";
-type TacoCountSelection = 3 | 1;
+type EntreeSelection = ChipotleEntreeSelection;
+type KidsMealSelection = ChipotleKidsMealId;
+type TacoShellSelection = ChipotleTacoShell;
+type TacoCountSelection = ChipotleTacoCount;
 type BuildConfigurationSnapshot = NonNullable<CartItem["buildConfiguration"]>;
 
 function titleCase(text: string) {
@@ -280,8 +285,8 @@ export default function RestaurantView({
   >({ type: "none" });
   const entreeMenuRef = useRef<HTMLDivElement | null>(null);
   const requestedEntree = searchParams.get("entree");
-  const initialSelectedEntree =
-    isChipotleBuildPage && requestedEntree && requestedEntree in entreeOptions
+  const initialSelectedEntree: EntreeSelection =
+    isChipotleBuildPage && requestedEntree && isChipotleEntreeId(requestedEntree) && requestedEntree in entreeOptions
       ? requestedEntree
       : null;
   const [selectedEntree, setSelectedEntree] = useState<EntreeSelection>(initialSelectedEntree);
@@ -1578,7 +1583,7 @@ export default function RestaurantView({
       const ingredientNameWithPortion = portionLabel ? `${item.name} (${portionLabel})` : item.name;
       return Array.from({ length: quantity }, () => ingredientNameWithPortion);
     });
-    const nextBuildConfiguration = {
+    const nextBuildConfiguration: BuildConfigurationSnapshot = {
       selectedEntree,
       selectedIngredientItems: Object.fromEntries(
         Object.entries(selectedIngredientItems).map(([ingredientId, selectedIngredient]) => [
@@ -1592,7 +1597,7 @@ export default function RestaurantView({
       selectedTacoShell,
       selectedTacoCount,
       selectedKidsMeal,
-    } as const;
+    };
     const nextItemPayload = {
       restaurantId,
       itemId: editingCartItem?.itemId ?? `${restaurantId}-build`,
@@ -1722,7 +1727,7 @@ export default function RestaurantView({
     }
 
     const configuration = editingCartItem.buildConfiguration;
-    const configuredEntree = (configuration.selectedEntree as EntreeSelection) ?? null;
+    const configuredEntree = configuration.selectedEntree;
     const isHydrationContextReady =
       selectedEntree === configuredEntree &&
       selectedTacoShell === configuration.selectedTacoShell &&
@@ -1831,7 +1836,7 @@ export default function RestaurantView({
       setSelectedTacoShell(baselineConfiguration.selectedTacoShell);
       setSelectedTacoCount(baselineConfiguration.selectedTacoCount);
       setSelectedKidsMeal(baselineConfiguration.selectedKidsMeal);
-      setSelectedEntree((baselineConfiguration.selectedEntree as EntreeSelection) ?? null);
+      setSelectedEntree(baselineConfiguration.selectedEntree);
       setProteinPortionMode(baselineConfiguration.proteinPortionMode);
       setSplitPortionModeById(baselineConfiguration.splitPortionModeById);
       setSelectedIngredientVariantIds(baselineConfiguration.selectedIngredientVariantIds);
@@ -2455,6 +2460,10 @@ export default function RestaurantView({
                 <span>Choose entrée</span>
               </button>
               {Object.entries(entreeOptions).map(([entreeKey, entree]) => {
+                if (!isChipotleEntreeId(entreeKey)) {
+                  return null;
+                }
+
                 const isActive = entreeKey === selectedEntree;
                 return (
                   <button

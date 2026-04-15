@@ -1,9 +1,10 @@
 import Image from "next/image";
+import { isChipotleEntreeId, type ChipotleEntreeId } from "@/lib/chipotleBuild";
 import type { BuilderEntreeOption } from "@/types/menu";
 
 type Props = {
   entreeOptions: Record<string, BuilderEntreeOption>;
-  onSelectEntree: (entree: string) => void;
+  onSelectEntree: (entree: ChipotleEntreeId) => void;
 };
 
 export default function EntreeSelectionHero({ entreeOptions, onSelectEntree }: Props) {
@@ -13,7 +14,12 @@ export default function EntreeSelectionHero({ entreeOptions, onSelectEntree }: P
       <h2 className="text-center text-5xl font-bold tracking-tight text-slate-900">Choose your entrée</h2>
       <p className="mt-3 text-center text-lg text-slate-600">Start your build by selecting a base.</p>
       <div className="mt-10 grid w-full max-w-5xl gap-4 sm:grid-cols-3">
-        {Object.entries(entreeOptions).map(([entreeKey, entree]) => (
+        {Object.entries(entreeOptions).map(([entreeKey, entree]) => {
+          if (!isChipotleEntreeId(entreeKey)) {
+            return null;
+          }
+
+          return (
           <button
             key={entreeKey}
             type="button"
@@ -29,7 +35,8 @@ export default function EntreeSelectionHero({ entreeOptions, onSelectEntree }: P
             />
             {entree.label}
           </button>
-        ))}
+          );
+        })}
       </div>
     </section>
   );

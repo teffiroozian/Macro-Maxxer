@@ -1,3 +1,5 @@
+import type { ChipotleKidsMealId, ChipotleTacoShell } from "@/lib/chipotleBuild/types";
+
 export const PORTION_TYPES = [
   "single",
   "combo",
@@ -137,7 +139,7 @@ export type BuilderEntreeOption = {
   imageSrc: string;
   nutritionMultiplier?: number;
   includedIngredientIds?: string[];
-  includedIngredientIdsByOption?: Record<string, string[]>;
+  includedIngredientIdsByOption?: Partial<Record<ChipotleTacoShell, string[]>>;
 };
 
 export type RestaurantBuilderConfig = {
@@ -150,7 +152,7 @@ export type RestaurantBuilderConfig = {
   hiddenSectionsByEntree?: Record<string, string[]>;
   categoryMaxSelections?: Record<string, number>;
   kidsMealOptions?: Array<{
-    id: string;
+    id: ChipotleKidsMealId;
     label: string;
     imageSrc: string;
   }>;

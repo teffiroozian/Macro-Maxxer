@@ -1,9 +1,10 @@
 import Image from "next/image";
+import type { ChipotleKidsMealId } from "@/lib/chipotleBuild";
 
 type Props = {
-  selectedKidsMeal: string;
-  onSelectKidsMeal: (kidsMeal: string) => void;
-  options: Array<{ id: string; label: string; imageSrc: string }>;
+  selectedKidsMeal: ChipotleKidsMealId;
+  onSelectKidsMeal: (kidsMeal: ChipotleKidsMealId) => void;
+  options: Array<{ id: ChipotleKidsMealId; label: string; imageSrc: string }>;
 };
 
 export default function KidsMealSelector({ selectedKidsMeal, onSelectKidsMeal, options }: Props) {

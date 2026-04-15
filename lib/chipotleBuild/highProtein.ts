@@ -1,15 +1,19 @@
-import type { CartItem } from "@/stores/cartStore";
+import type {
+  ChipotleBuildConfiguration,
+  ChipotleEntreeId,
+  ChipotleTacoShell,
+} from "@/lib/chipotleBuild";
 import type { IngredientItem, MenuItem } from "@/types/menu";
 import { parseIncludedIngredientEntry } from "@/lib/itemIngredients";
 
-function resolveHighProteinEntree(item: MenuItem) {
+function resolveHighProteinEntree(item: MenuItem): ChipotleEntreeId {
   const id = (item.id ?? "").toLowerCase();
   if (id.includes("burrito")) return "burrito";
   if (id.includes("taco")) return "tacos";
   return "bowl";
 }
 
-function resolveHighProteinTacoShell(item: MenuItem) {
+function resolveHighProteinTacoShell(item: MenuItem): ChipotleTacoShell {
   const ingredients = item.ingredients ?? [];
   return ingredients.some((entry) => entry.toLowerCase().startsWith("soft-flour-tortilla"))
     ? "soft"
@@ -34,7 +38,7 @@ function getProteinIngredientIds(ingredientItems: IngredientItem[] = []) {
 export function buildHighProteinBuildConfiguration(
   item: MenuItem,
   ingredientItems: IngredientItem[] = []
-): CartItem["buildConfiguration"] {
+): ChipotleBuildConfiguration {
   const highProteinEntree = resolveHighProteinEntree(item);
   const selectedIngredientItems = (item.ingredients ?? []).reduce<Record<string, { quantity: number }>>(
     (acc, entry) => {
