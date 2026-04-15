@@ -4,13 +4,10 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 
 import { useFilterChipActions } from "./useFilterChipActions";
+import { SORT_OPTION_VALUES, type SortOption } from "@/lib/menuSections/sortOptions";
 
 export type ViewOption = "menu" | "ingredients" | "ranking";
-export type SortOption =
-  | "default-order"
-  | "highest-protein"
-  | "best-ratio"
-  | "lowest-calories";
+export type { SortOption };
 export type Filters = {
   proteinMin?: number;
   caloriesMax?: number;
@@ -38,10 +35,10 @@ const VIEW_OPTIONS: Array<{ label: string; value: ViewOption; icon: typeof Clipb
 ];
 
 const SORT_OPTIONS: Array<{ label: string; value: SortOption; icon: typeof Flame }> = [
-  { label: "Default Order", value: "default-order", icon: ListOrdered },
-  { label: "Highest Protein", value: "highest-protein", icon: Flame },
-  { label: "Lowest Calories", value: "lowest-calories", icon: Leaf },
-  { label: "Best Protein Score", value: "best-ratio", icon: Scale },
+  { label: "Default Order", value: SORT_OPTION_VALUES.DEFAULT_ORDER, icon: ListOrdered },
+  { label: "Highest Protein", value: SORT_OPTION_VALUES.HIGHEST_PROTEIN, icon: Flame },
+  { label: "Lowest Calories", value: SORT_OPTION_VALUES.LOWEST_CALORIES, icon: Leaf },
+  { label: "Best Protein Score", value: SORT_OPTION_VALUES.BEST_RATIO, icon: Scale },
 ];
 
 export function FilterChips({
@@ -141,7 +138,7 @@ export default function ControlsRow({
   const visibleSortOptions = useMemo(
     () =>
       view === "ranking"
-        ? SORT_OPTIONS.filter((option) => option.value !== "default-order")
+        ? SORT_OPTIONS.filter((option) => option.value !== SORT_OPTION_VALUES.DEFAULT_ORDER)
         : SORT_OPTIONS,
     [view]
   );

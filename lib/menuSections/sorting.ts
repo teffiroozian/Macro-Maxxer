@@ -3,7 +3,11 @@ import {
   INGREDIENT_CATEGORY_PRIORITY_GROUPS,
 } from "@/app/data/menuCategoryConfig";
 import type { MenuItem } from "@/types/menu";
-import type { SortOption } from "@/components/ControlsRow";
+import {
+  SORT_OPTION_VALUES,
+  isDefaultOrderSort,
+  type SortOption,
+} from "@/lib/menuSections/sortOptions";
 
 export type CategoryMode = "menu" | "ingredients";
 
@@ -142,7 +146,7 @@ export function sortItems(
 ) {
   const sorted = [...items];
 
-  if (sort === "default-order") {
+  if (isDefaultOrderSort(sort)) {
     const groupedByCategory = sorted.reduce<Record<string, MenuItem[]>>((acc, item) => {
       const primaryCategory = getItemCategories(item)[0] ?? "";
       if (!acc[primaryCategory]) {
@@ -171,7 +175,7 @@ export function sortItems(
       ...orderedCategories.flatMap((category) => groupedByCategory[category] ?? []),
       ...orderedUncategorizedItems,
     ];
-  } else if (sort === "highest-protein") {
+  } else if (sort === SORT_OPTION_VALUES.HIGHEST_PROTEIN) {
     sorted.sort((a, b) =>
       compareNumericWithMissingLast(
         getSortNutrition(a).protein,
@@ -179,7 +183,7 @@ export function sortItems(
         "desc"
       )
     );
-  } else if (sort === "best-ratio") {
+  } else if (sort === SORT_OPTION_VALUES.BEST_RATIO) {
     sorted.sort((a, b) =>
       compareNumericWithMissingLast(proteinScore(a), proteinScore(b), "desc")
     );

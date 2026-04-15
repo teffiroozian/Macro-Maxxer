@@ -1,7 +1,7 @@
 "use client";
 
 import type { CommonChange, IngredientItem, MenuItem, RestaurantAddons, RestaurantCustomizationRules } from "@/types/menu";
-import type { SortOption } from "./ControlsRow";
+import type { SortOption } from "@/lib/menuSections/sortOptions";
 import MenuItemCard from "./MenuItemCard";
 import { toItemSlug } from "@/lib/restaurants";
 import {
@@ -14,6 +14,7 @@ import {
   normalizeCategory,
   sortItems,
 } from "@/lib/menuSections/sorting";
+import { isSplitRankingSort } from "@/lib/menuSections/sortOptions";
 
 function getSectionSort(_section: string, sort: SortOption): SortOption {
   return sort;
@@ -120,7 +121,7 @@ export default function MenuSections({
 
   if (!groupByCategory) {
     const displayItems =
-      categoryMode === "menu" && (sort === "highest-protein" || sort === "lowest-calorie")
+      categoryMode === "menu" && isSplitRankingSort(sort)
         ? splitItemsByVariantForRanking(items)
         : items;
     const sortedItems = sortItems(displayItems, sort, categoryMode);

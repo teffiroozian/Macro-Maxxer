@@ -51,9 +51,14 @@ import type {
 } from "@/types/menu";
 import {
   type Filters,
-  type SortOption,
   type ViewOption,
 } from "./ControlsRow";
+import {
+  RANKING_DEFAULT_SORT,
+  SORT_OPTION_VALUES,
+  isDefaultOrderSort,
+  type SortOption,
+} from "@/lib/menuSections/sortOptions";
 import {
   categorySectionId,
   getCategoryLabel,
@@ -240,7 +245,7 @@ export default function RestaurantView({
         ? "ranking"
         : defaultView;
   const [sort, setSort] = useState<SortOption>(() =>
-    viewMode === "ranking" ? "highest-protein" : "default-order"
+    viewMode === "ranking" ? RANKING_DEFAULT_SORT : SORT_OPTION_VALUES.DEFAULT_ORDER
   );
   const [filters, setFilters] = useState<Filters>({});
   type RankedAllFilterKey = "main-entrees" | "breakfast" | "shareables" | "sides" | "drinks";
@@ -877,8 +882,8 @@ export default function RestaurantView({
       return;
     }
 
-    if (nextView === "ranking" && sort === "default-order") {
-      setSort("highest-protein");
+    if (nextView === "ranking" && isDefaultOrderSort(sort)) {
+      setSort(RANKING_DEFAULT_SORT);
     }
 
     const nextParams = new URLSearchParams(searchParams.toString());

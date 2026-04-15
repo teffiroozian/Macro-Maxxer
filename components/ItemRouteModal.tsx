@@ -61,6 +61,7 @@ import {
 } from "@/lib/chipotleBuild";
 import { resolvePrimaryCategory } from "@/lib/ingredientTabs";
 import type { CartItem } from "@/stores/cartStore";
+import { SORT_OPTION_VALUES } from "@/lib/menuSections/sortOptions";
 
 const emptyAddon: AddonOption = {
   name: "None",
@@ -1186,7 +1187,7 @@ export default function ItemRouteModal({
                   <MenuSections
                     restaurantId={restaurantId}
                     items={chipotleIncludedIngredientDisplayItems}
-                    sort="default-order"
+                    sort={SORT_OPTION_VALUES.DEFAULT_ORDER}
                     groupByCategory={false}
                     categoryMode="ingredients"
                     isBuildYourOwn
@@ -1267,7 +1268,7 @@ export default function ItemRouteModal({
                 <MenuSections
                   restaurantId={restaurantId}
                   items={chipotleIngredientDisplayItems}
-                  sort="default-order"
+                  sort={SORT_OPTION_VALUES.DEFAULT_ORDER}
                   groupByCategory
                   categoryMode="ingredients"
                   isBuildYourOwn

@@ -8,9 +8,9 @@ import CartIconDropdown from "@/components/CartIconDropdown";
 import ControlsRow, {
   FilterChips,
   type Filters,
-  type SortOption,
   type ViewOption,
 } from "./ControlsRow";
+import type { SortOption } from "@/lib/menuSections/sortOptions";
 import { Search } from "lucide-react";
 
 import { useFilterChipActions } from "./useFilterChipActions";
