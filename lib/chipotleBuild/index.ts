@@ -1,4 +1,5 @@
-import type { MenuItem, RestaurantBuilderConfig } from "@/types/menu";
+import type { MenuItem, Nutrition, RestaurantBuilderConfig } from "@/types/menu";
+import { normalizeNutrition } from "@/lib/nutrition";
 
 export type ProteinPortionMode = "normal" | "double";
 export type SplitPortionMode = "light" | "normal" | "extra";
@@ -14,15 +15,30 @@ export function normalizeIngredientCategory(value: string | undefined) {
 export function scaleNutritionValues(
   nutrition: MenuItem["nutrition"],
   multiplier: number
-) {
-  if (multiplier === 1) return nutrition;
+): Nutrition {
+  if (multiplier === 1) return normalizeNutrition(nutrition);
 
-  return Object.fromEntries(
-    Object.entries(nutrition).map(([key, value]) => [
-      key,
-      typeof value === "number" ? Math.round(value * multiplier) : value,
-    ])
-  );
+  return normalizeNutrition({
+    ...nutrition,
+    calories: Math.round(nutrition.calories * multiplier),
+    protein: Math.round(nutrition.protein * multiplier),
+    carbs: Math.round(nutrition.carbs * multiplier),
+    totalFat: Math.round(nutrition.totalFat * multiplier),
+    satFat: nutrition.satFat === undefined ? undefined : Math.round(nutrition.satFat * multiplier),
+    transFat: nutrition.transFat === undefined ? undefined : Math.round(nutrition.transFat * multiplier),
+    cholesterol: nutrition.cholesterol === undefined ? undefined : Math.round(nutrition.cholesterol * multiplier),
+    sodium: nutrition.sodium === undefined ? undefined : Math.round(nutrition.sodium * multiplier),
+    fiber: nutrition.fiber === undefined ? undefined : Math.round(nutrition.fiber * multiplier),
+    sugars: nutrition.sugars === undefined ? undefined : Math.round(nutrition.sugars * multiplier),
+    extraNutrition: nutrition.extraNutrition
+      ? Object.fromEntries(
+          Object.entries(nutrition.extraNutrition).map(([key, value]) => [
+            key,
+            Math.round(value * multiplier),
+          ])
+        )
+      : undefined,
+  });
 }
 
 export function getProteinMultiplier(mode: ProteinPortionMode, selectedProteinCount: number) {

@@ -45,6 +45,7 @@ import {
   isChipotleHighProteinMenuItem,
 } from "@/lib/chipotleBuild/highProtein";
 import { parseIncludedIngredientEntry } from "@/lib/itemIngredients";
+import { normalizeNutrition } from "@/lib/nutrition";
 
 function pad2(n: number) {
   return String(n).padStart(2, "0");
@@ -557,7 +558,7 @@ export default function MenuItemCard({
     return (baseValue ?? 0) + (deltaValue ?? 0);
   }
 
-  const nutrition = {
+  const nutrition = normalizeNutrition({
     ...baseNutrition,
     calories: sumNutrition(baseNutrition.calories, addonNutritionTotals.calories + commonChangeTotals.calories + ingredientCountTotals.calories + comboNutritionTotals.calories),
     protein: sumNutrition(baseNutrition.protein, addonNutritionTotals.protein + commonChangeTotals.protein + ingredientCountTotals.protein + comboNutritionTotals.protein),
@@ -569,7 +570,7 @@ export default function MenuItemCard({
     sodium: addNutritionValue(baseNutrition.sodium, addonNutritionTotals.sodium),
     fiber: addNutritionValue(baseNutrition.fiber, addonNutritionTotals.fiber),
     sugars: addNutritionValue(baseNutrition.sugars, addonNutritionTotals.sugars),
-  };
+  });
 
   const calories = nutrition.calories;
   const protein = nutrition.protein;
