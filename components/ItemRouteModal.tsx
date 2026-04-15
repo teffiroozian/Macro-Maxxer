@@ -17,6 +17,7 @@ import type {
   CommonChange,
   MacroDelta,
   MenuItem,
+  Nutrition,
   RestaurantAddons,
   IngredientItem,
   RestaurantCustomizationRules,
@@ -932,18 +933,28 @@ export default function ItemRouteModal({
     [customizationTotals]
   );
 
-  const nutrition = {
+  const satFat = sumNutritionWithFallback(baseNutrition.satFat, addonTotals.satFat + activeComboNutritionTotals.satFat);
+  const transFat = sumNutritionWithFallback(baseNutrition.transFat, addonTotals.transFat + activeComboNutritionTotals.transFat);
+  const cholesterol = sumNutritionWithFallback(
+    baseNutrition.cholesterol,
+    addonTotals.cholesterol + activeComboNutritionTotals.cholesterol
+  );
+  const sodium = sumNutritionWithFallback(baseNutrition.sodium, addonTotals.sodium + activeComboNutritionTotals.sodium);
+  const fiber = sumNutritionWithFallback(baseNutrition.fiber, addonTotals.fiber + activeComboNutritionTotals.fiber);
+  const sugars = sumNutritionWithFallback(baseNutrition.sugars, addonTotals.sugars + activeComboNutritionTotals.sugars);
+
+  const nutrition: Nutrition = {
     ...baseNutrition,
-    calories: sumNutritionWithFallback(baseNutrition.calories, customizationTotals.calories),
-    protein: sumNutritionWithFallback(baseNutrition.protein, customizationTotals.protein),
-    carbs: sumNutritionWithFallback(baseNutrition.carbs, customizationTotals.carbs),
-    totalFat: sumNutritionWithFallback(baseNutrition.totalFat, customizationTotals.totalFat),
-    satFat: sumNutritionWithFallback(baseNutrition.satFat, addonTotals.satFat + activeComboNutritionTotals.satFat),
-    transFat: sumNutritionWithFallback(baseNutrition.transFat, addonTotals.transFat + activeComboNutritionTotals.transFat),
-    cholesterol: sumNutritionWithFallback(baseNutrition.cholesterol, addonTotals.cholesterol + activeComboNutritionTotals.cholesterol),
-    sodium: sumNutritionWithFallback(baseNutrition.sodium, addonTotals.sodium + activeComboNutritionTotals.sodium),
-    fiber: sumNutritionWithFallback(baseNutrition.fiber, addonTotals.fiber + activeComboNutritionTotals.fiber),
-    sugars: sumNutritionWithFallback(baseNutrition.sugars, addonTotals.sugars + activeComboNutritionTotals.sugars),
+    calories: sumNutritionWithFallback(baseNutrition.calories, customizationTotals.calories) ?? 0,
+    protein: sumNutritionWithFallback(baseNutrition.protein, customizationTotals.protein) ?? 0,
+    carbs: sumNutritionWithFallback(baseNutrition.carbs, customizationTotals.carbs) ?? 0,
+    totalFat: sumNutritionWithFallback(baseNutrition.totalFat, customizationTotals.totalFat) ?? 0,
+    ...(satFat !== undefined ? { satFat } : {}),
+    ...(transFat !== undefined ? { transFat } : {}),
+    ...(cholesterol !== undefined ? { cholesterol } : {}),
+    ...(sodium !== undefined ? { sodium } : {}),
+    ...(fiber !== undefined ? { fiber } : {}),
+    ...(sugars !== undefined ? { sugars } : {}),
   };
 
   const handleClose = () => {
