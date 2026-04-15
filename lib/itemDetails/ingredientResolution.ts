@@ -13,6 +13,7 @@ import {
   normalizeIngredientToken,
 } from "@/lib/itemDetails/helpers";
 import { resolveIncludedIngredientDefaults } from "@/lib/itemIngredients";
+import { normalizeNutrition } from "@/lib/nutrition";
 import type {
   AddonOption,
   IngredientItem,
@@ -233,7 +234,7 @@ export function resolvePanelIngredientTabs(
       return tab !== INCLUDED_INGREDIENT_TAB && match ? ingredientMatchesTab(match, tab) : false;
     });
     const addonMatch = addonLookup.get(label.toLowerCase());
-    const nutrition =
+    const nutrition = normalizeNutrition(
       matchedVariantNutrition ??
       menuItemNutrition ??
       match?.nutrition ??
@@ -248,7 +249,8 @@ export function resolvePanelIngredientTabs(
         sodium: addonMatch?.sodium,
         fiber: addonMatch?.fiber,
         sugars: addonMatch?.sugars,
-      };
+      }
+    );
 
     const resolvedIngredient = {
       id: ingredientId,
@@ -327,7 +329,7 @@ export function resolvePanelIngredientTabs(
               icon: "✕",
               tabLabel: tab,
               maxQuantity: tabMaxQuantity,
-              nutrition: {},
+              nutrition: normalizeNutrition(),
               calories: 0,
               defaultCount: hasDefaultIngredient ? 0 : 1,
               isNoneOption: true,
