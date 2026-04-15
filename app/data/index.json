@@ -3,7 +3,7 @@
     "id": "chickfila",
     "name": "Chick-fil-A",
     "logo": "/restaurants/chickfila/brand/logo.png",
-    "cover": "/restaurants/chickfila/brand/chickcover.jpg",
+    "cover": "/restaurants/chickfila/brand/cover.jpeg",
     "menuFile": "chickfila.json",
     "isMacroFriendly": true
   },
@@ -11,7 +11,7 @@
     "id": "chipotle",
     "name": "Chipotle",
     "logo": "/restaurants/chipotle/brand/logo.jpeg",
-    "cover": "/restaurants/chipotle/brand/cover.png",
+    "cover": "/restaurants/chipotle/brand/cover.jpeg",
     "menuFile": "chipotle.json",
     "isMacroFriendly": true
   },
