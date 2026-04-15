@@ -55,7 +55,6 @@ import {
   getProteinMultiplier,
   getSplitPortionLabel,
   normalizeIngredientCategory,
-  scaleNutritionValues,
   type ProteinPortionMode,
   type SplitPortionMode,
 } from "@/lib/chipotleBuild";
@@ -756,7 +755,36 @@ export default function ItemRouteModal({
       selectedChipotleIngredientItems,
     ]
   );
-  const chipotleIngredientDisplayItems = useMemo(
+  const buildScaledNutrition = useCallback(
+    (nutrition: MenuItem["nutrition"], multiplier: number): MenuItem["nutrition"] => {
+      const scaleNumericField = (value: number | undefined) =>
+        value === undefined ? undefined : Math.round(value * multiplier);
+      const scaledExtraNutrition = nutrition.extraNutrition
+        ? Object.fromEntries(
+            Object.entries(nutrition.extraNutrition).map(([key, value]) => [
+              key,
+              Math.round(value * multiplier),
+            ])
+          )
+        : undefined;
+
+      return {
+        calories: Math.round(nutrition.calories * multiplier),
+        protein: Math.round(nutrition.protein * multiplier),
+        carbs: Math.round(nutrition.carbs * multiplier),
+        totalFat: Math.round(nutrition.totalFat * multiplier),
+        satFat: scaleNumericField(nutrition.satFat),
+        transFat: scaleNumericField(nutrition.transFat),
+        cholesterol: scaleNumericField(nutrition.cholesterol),
+        sodium: scaleNumericField(nutrition.sodium),
+        fiber: scaleNumericField(nutrition.fiber),
+        sugars: scaleNumericField(nutrition.sugars),
+        extraNutrition: scaledExtraNutrition,
+      };
+    },
+    []
+  );
+  const chipotleIngredientDisplayItems = useMemo<MenuItem[]>(
     () =>
       chipotleIngredientMenuItems.map((ingredientItem) => {
         const ingredientId = (ingredientItem.id ?? ingredientItem.name).toLowerCase();
@@ -764,21 +792,20 @@ export default function ItemRouteModal({
         const multiplier =
           getChipotleIngredientMultiplier(ingredientId) *
           getChipotleSelectedIngredientPortionMultiplier(ingredientId, category);
+        const nutrition = buildScaledNutrition(ingredientItem.nutrition, multiplier);
         return {
           ...ingredientItem,
-          nutrition: scaleNutritionValues(
-            ingredientItem.nutrition,
-            multiplier
-          ),
+          nutrition,
         };
       }),
     [
       chipotleIngredientMenuItems,
+      buildScaledNutrition,
       getChipotleIngredientMultiplier,
       getChipotleSelectedIngredientPortionMultiplier,
     ]
   );
-  const chipotleIncludedIngredientDisplayItems = useMemo(
+  const chipotleIncludedIngredientDisplayItems = useMemo<MenuItem[]>(
     () =>
       chipotleIncludedIngredientMenuItems.map((ingredientItem) => {
         const ingredientId = (ingredientItem.id ?? ingredientItem.name).toLowerCase();
@@ -786,16 +813,15 @@ export default function ItemRouteModal({
         const multiplier =
           getChipotleIngredientMultiplier(ingredientId) *
           getChipotleSelectedIngredientPortionMultiplier(ingredientId, category);
+        const nutrition = buildScaledNutrition(ingredientItem.nutrition, multiplier);
         return {
           ...ingredientItem,
-          nutrition: scaleNutritionValues(
-            ingredientItem.nutrition,
-            multiplier
-          ),
+          nutrition,
         };
       }),
     [
       chipotleIncludedIngredientMenuItems,
+      buildScaledNutrition,
       getChipotleIngredientMultiplier,
       getChipotleSelectedIngredientPortionMultiplier,
     ]
