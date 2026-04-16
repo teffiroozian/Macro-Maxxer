@@ -25,7 +25,11 @@ Protix brings multiple restaurant menus into one place and makes nutrition data 
 
 ## 📸 Screenshots
 
-(Will add screenshots here later)
+<img width="2500" height="1347" alt="image" src="https://github.com/user-attachments/assets/84af9881-8e0d-4c14-a5d1-faeb42ff8c1b" />
+<img width="2503" height="1352" alt="image" src="https://github.com/user-attachments/assets/b66d09f3-ba31-4105-8214-34c2ea260073" />
+<img width="2504" height="1348" alt="image" src="https://github.com/user-attachments/assets/8c5f7b48-175d-4dd4-8429-21ad7a50045a" />
+<img width="2497" height="1356" alt="image" src="https://github.com/user-attachments/assets/6adc5ed3-640d-4df7-bae6-425822c50447" />
+<img width="2505" height="1356" alt="image" src="https://github.com/user-attachments/assets/0c339b80-d0a6-4b10-995f-d14331419cc8" />
 
 ## 🛠 Tech Stack
 
