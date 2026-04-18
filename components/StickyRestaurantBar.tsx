@@ -161,9 +161,9 @@ export default function StickyRestaurantBar({
 
       {hideSecondaryNav ? null : (
         <div
-          className="relative z-[100] mx-auto flex w-full max-w-6xl items-center rounded-b-2xl border border-slate-200/70 bg-white shadow-[0_6px_16px_rgba(15,23,42,0.12)] backdrop-blur"
+          className="relative z-[100] mx-auto flex w-[calc(100%-0.5rem)] max-w-6xl items-center rounded-b-2xl border border-slate-200/70 bg-white shadow-[0_6px_16px_rgba(15,23,42,0.12)] backdrop-blur sm:w-[calc(100%-1rem)]"
         >
-          <div className="mx-auto flex w-full max-w-5xl items-center gap-2 overflow-x-auto px-3 py-2 sm:gap-3 sm:px-6">
+          <div className="mx-auto flex w-full max-w-5xl items-center gap-2 px-3 py-2 sm:gap-3 sm:px-6">
             {secondaryNavLeading ? (
               <div className="shrink-0">
                 {secondaryNavLeading}

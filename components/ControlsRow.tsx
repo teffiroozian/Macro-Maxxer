@@ -231,7 +231,7 @@ export default function ControlsRow({
 
   return (
     <>
-      <div id={wrapperId} className="grid gap-2 overflow-x-auto">
+      <div id={wrapperId} className="grid gap-2 overflow-visible">
         <div className="flex min-w-0 flex-nowrap items-center gap-2.5">
           {hideViewSelector ? null : (
             <div ref={viewMenuRef} className="relative shrink-0">
