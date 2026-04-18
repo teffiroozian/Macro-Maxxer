@@ -231,10 +231,10 @@ export default function ControlsRow({
 
   return (
     <>
-      <div id={wrapperId} className="grid gap-2 overflow-x-clip">
-        <div className="flex min-w-0 flex-wrap items-center gap-2.5">
+      <div id={wrapperId} className="grid gap-2 overflow-visible">
+        <div className="flex min-w-0 flex-nowrap items-center gap-2.5">
           {hideViewSelector ? null : (
-            <div ref={viewMenuRef} className="relative min-w-0 shrink">
+            <div ref={viewMenuRef} className="relative shrink-0">
               <button
                 type="button"
                 onClick={() => {
@@ -243,7 +243,7 @@ export default function ControlsRow({
                 }}
                 aria-haspopup="menu"
                 aria-expanded={isViewOpen}
-                className="cursor-pointer inline-flex max-w-full items-center gap-2 rounded-full border border-black/20 bg-white px-[14px] py-[8px] text-sm font-semibold text-black/85 sm:whitespace-nowrap"
+                className="cursor-pointer inline-flex max-w-full items-center gap-2 whitespace-nowrap rounded-full border border-black/20 bg-white px-[14px] py-[8px] text-sm font-semibold text-black/85"
               >
                 <currentViewOption.icon className="h-4 w-4" strokeWidth={2.2} />
                 {currentViewOption.label}
@@ -283,8 +283,8 @@ export default function ControlsRow({
             </div>
           )}
 
-          <div className="ml-auto flex w-full flex-wrap items-center justify-end gap-2 sm:w-auto">
-            <div ref={sortMenuRef} className="relative min-w-0 shrink">
+          <div className="ml-auto flex shrink-0 items-center justify-end gap-2">
+            <div ref={sortMenuRef} className="relative shrink-0">
               <button
                 type="button"
                 onClick={() => {
@@ -293,7 +293,7 @@ export default function ControlsRow({
                 }}
                 aria-haspopup="menu"
                 aria-expanded={isSortOpen}
-                className="cursor-pointer inline-flex max-w-full items-center gap-2 rounded-full border border-black/20 bg-white px-[14px] py-[8px] text-sm font-semibold text-black/85 sm:whitespace-nowrap"
+                className="cursor-pointer inline-flex max-w-full items-center gap-2 whitespace-nowrap rounded-full border border-black/20 bg-white px-[14px] py-[8px] text-sm font-semibold text-black/85"
               >
                 <currentSortOption.icon className="h-4 w-4" strokeWidth={2.2} />
                 {currentSortOption.label}

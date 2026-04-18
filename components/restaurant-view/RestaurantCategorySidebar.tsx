@@ -1,3 +1,6 @@
+"use client";
+
+import { useEffect, useState } from "react";
 import { Circle, type LucideIcon, UtensilsCrossed, Soup, SquareStack, CupSoda, Check } from "lucide-react";
 
 type RankedAllFilterKey = "main-entrees" | "breakfast" | "shareables" | "sides" | "drinks";
@@ -23,6 +26,29 @@ export default function RestaurantCategorySidebar({
   onCategorySelect,
   categoryIcons,
 }: Props) {
+  const [mobileNavTop, setMobileNavTop] = useState(0);
+
+  useEffect(() => {
+    const syncMobileNavTop = () => {
+      const stickyNav = document.querySelector('[data-sticky-nav="true"]');
+      if (!(stickyNav instanceof HTMLElement)) {
+        setMobileNavTop(0);
+        return;
+      }
+
+      setMobileNavTop(Math.max(0, Math.ceil(stickyNav.getBoundingClientRect().bottom)));
+    };
+
+    syncMobileNavTop();
+    window.addEventListener("resize", syncMobileNavTop);
+    window.addEventListener("scroll", syncMobileNavTop, { passive: true });
+
+    return () => {
+      window.removeEventListener("resize", syncMobileNavTop);
+      window.removeEventListener("scroll", syncMobileNavTop);
+    };
+  }, []);
+
   const rankingOptions: Array<{ key: RankedAllFilterKey; label: string; iconKey: string }> = [
     { key: "main-entrees", label: "Main Entrees", iconKey: "entrees" },
     { key: "breakfast", label: "Breakfast", iconKey: "breakfast" },
@@ -37,91 +63,155 @@ export default function RestaurantCategorySidebar({
     sides: SquareStack,
     drinks: CupSoda,
   };
+  const categoryNavLabel =
+    effectiveViewMode === "ranking"
+      ? "Ranking categories"
+      : effectiveViewMode === "ingredients"
+        ? "Ingredient categories"
+        : "Menu categories";
 
   return (
-    <aside className="sticky top-[160px] flex max-h-[calc(100vh-160px)] flex-col py-6">
-      <h3 className="mb-8 shrink-0 text-2xl font-bold text-slate-900">
-        {effectiveViewMode === "ranking" ? "Show" : effectiveViewMode === "ingredients" ? "Ingredients" : "Categories"}
-      </h3>
+    <>
+      <div className="fixed left-0 right-0 z-[90] lg:hidden" style={{ top: mobileNavTop + 4 }}>
+        <div className="relative mx-auto w-[calc(100%-0.5rem)] max-w-6xl overflow-hidden rounded-2xl border border-slate-200/70 bg-white/95 shadow-[0_6px_16px_rgba(15,23,42,0.12)] backdrop-blur sm:w-[calc(100%-1rem)]">
+          <div className="mx-auto flex w-full max-w-5xl items-center gap-2 overflow-x-auto px-2 py-1.5 sm:px-4 sm:py-2">
+          {effectiveViewMode === "ranking" ? (
+            <div className="flex min-w-0 items-center gap-2" role="group" aria-label={categoryNavLabel}>
+              {rankingOptions.map((option) => {
+                const isChecked = rankedAllFilters[option.key];
+                const Icon = categoryIcons[option.iconKey] ?? rankingFallbackIcons[option.key];
 
-      <div className="min-h-0 flex-1 overflow-y-auto px-2 py-2">
-        {effectiveViewMode === "ranking" ? (
-          <div className="grid gap-4" role="group" aria-label="Ranking categories">
-            {rankingOptions.map((option) => {
-              const isChecked = rankedAllFilters[option.key];
-              const Icon = categoryIcons[option.iconKey] ?? rankingFallbackIcons[option.key];
-
-              return (
-                <button
-                  key={option.key}
-                  type="button"
-                  aria-pressed={isChecked}
-                  onClick={() => toggleRankedAllFilter(option.key)}
-                  className={`inline-flex w-full cursor-pointer items-center gap-3 rounded-full px-4 py-2 text-left text-base font-semibold transition-colors duration-100 ${
-                    isChecked
-                      ? "bg-white text-slate-800 shadow-[0px_0_8px_rgba(0,0,0,0.25)]"
-                      : "text-slate-700 hover:bg-slate-200"
-                  }`}
-                >
-                  <span
-                    className={`inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-full ${
-                      isChecked ? "bg-slate-100 text-slate-900" : "bg-slate-200/80 text-slate-700"
+                return (
+                  <button
+                    key={option.key}
+                    type="button"
+                    aria-pressed={isChecked}
+                    onClick={() => toggleRankedAllFilter(option.key)}
+                    className={`cursor-pointer inline-flex shrink-0 items-center gap-2 whitespace-nowrap rounded-full border px-[14px] py-[8px] text-sm font-semibold transition-colors duration-100 ${
+                      isChecked
+                        ? "border-black/20 bg-white text-slate-800 shadow-[0px_0_8px_rgba(0,0,0,0.2)]"
+                        : "border-black/20 bg-white text-slate-700 hover:bg-slate-50"
                     }`}
-                    aria-hidden="true"
                   >
                     <Icon className="h-4 w-4" strokeWidth={2.4} />
-                  </span>
-                  <span>{option.label}</span>
-                  <span
-                    className={`ml-auto inline-flex h-5 w-5 shrink-0 items-center justify-center rounded border ${
-                      isChecked
-                        ? "border-black bg-black text-white"
-                        : "border-slate-400 bg-transparent text-transparent"
-                    }`}
-                    aria-hidden="true"
-                  >
-                    <Check className="h-3.5 w-3.5" strokeWidth={3} />
-                  </span>
-                </button>
-              );
-            })}
-          </div>
-        ) : (
-          <nav
-            aria-label={effectiveViewMode === "ingredients" ? "Ingredient categories" : "Menu categories"}
-            className="grid gap-4"
-          >
-            {categoryOptions.map((option) => {
-              const isActive = option.id === resolvedActiveCategory;
-              const Icon = categoryIcons[option.label.toLowerCase()] ?? Circle;
+                    <span>{option.label}</span>
+                    {isChecked ? <Check className="h-3.5 w-3.5" strokeWidth={3} /> : null}
+                  </button>
+                );
+              })}
+            </div>
+          ) : (
+            <nav aria-label={categoryNavLabel} className="flex min-w-0 items-center gap-2">
+              {categoryOptions.map((option) => {
+                const isActive = option.id === resolvedActiveCategory;
+                const Icon = categoryIcons[option.label.toLowerCase()] ?? Circle;
 
-              return (
-                <div key={option.id} className="relative pl-3">
-                  {isActive ? (
-                    <span
-                      className="absolute left-0 top-1/2 h-7 w-1 -translate-y-1/2 rounded-full shadow-[0px_0_8px_rgba(0,0,0,0.25)] bg-white"
-                      aria-hidden="true"
-                    />
-                  ) : null}
-
+                return (
                   <button
+                    key={option.id}
                     type="button"
                     onClick={() => onCategorySelect(option.id)}
-                    className={`cursor-pointer inline-flex items-center gap-3 rounded-full px-4 py-2 text-left text-base font-semibold transition-colors duration-50 ease-in ${
+                    className={`cursor-pointer inline-flex shrink-0 items-center gap-2 whitespace-nowrap rounded-full border px-[14px] py-[8px] text-sm font-semibold transition-colors duration-100 ${
                       isActive
-                        ? "shadow-[0px_0_8px_rgba(0,0,0,0.25)] bg-white text-slate-800"
+                        ? "border-black/20 bg-white text-slate-800 shadow-[0px_0_8px_rgba(0,0,0,0.2)]"
+                        : "border-black/20 bg-white text-slate-700 hover:bg-slate-50"
+                    }`}
+                  >
+                    <Icon className="h-4 w-4" strokeWidth={2.4} aria-hidden="true" />
+                    <span>{option.label}</span>
+                  </button>
+                );
+              })}
+            </nav>
+          )}
+          </div>
+          <div className="pointer-events-none absolute inset-y-0 left-0 w-10 bg-gradient-to-r from-white to-transparent" aria-hidden="true" />
+          <div className="pointer-events-none absolute inset-y-0 right-0 w-10 bg-gradient-to-l from-white to-transparent" aria-hidden="true" />
+        </div>
+      </div>
+      <div className="h-[64px] lg:hidden" aria-hidden="true" />
+
+      <aside className="sticky top-[160px] hidden max-h-[calc(100vh-160px)] flex-col py-6 lg:flex">
+        <h3 className="mb-8 shrink-0 text-2xl font-bold text-slate-900">
+          {effectiveViewMode === "ranking" ? "Show" : effectiveViewMode === "ingredients" ? "Ingredients" : "Categories"}
+        </h3>
+
+        <div className="min-h-0 flex-1 overflow-y-auto px-2 py-2">
+          {effectiveViewMode === "ranking" ? (
+            <div className="grid gap-4" role="group" aria-label="Ranking categories">
+              {rankingOptions.map((option) => {
+                const isChecked = rankedAllFilters[option.key];
+                const Icon = categoryIcons[option.iconKey] ?? rankingFallbackIcons[option.key];
+
+                return (
+                  <button
+                    key={option.key}
+                    type="button"
+                    aria-pressed={isChecked}
+                    onClick={() => toggleRankedAllFilter(option.key)}
+                    className={`inline-flex w-full cursor-pointer items-center gap-3 rounded-full px-4 py-2 text-left text-base font-semibold transition-colors duration-100 ${
+                      isChecked
+                        ? "bg-white text-slate-800 shadow-[0px_0_8px_rgba(0,0,0,0.25)]"
                         : "text-slate-700 hover:bg-slate-200"
                     }`}
                   >
-                    <Icon className="h-4 w-4" strokeWidth={2.5} aria-hidden="true" />
+                    <span
+                      className={`inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-full ${
+                        isChecked ? "bg-slate-100 text-slate-900" : "bg-slate-200/80 text-slate-700"
+                      }`}
+                      aria-hidden="true"
+                    >
+                      <Icon className="h-4 w-4" strokeWidth={2.4} />
+                    </span>
                     <span>{option.label}</span>
+                    <span
+                      className={`ml-auto inline-flex h-5 w-5 shrink-0 items-center justify-center rounded border ${
+                        isChecked
+                          ? "border-black bg-black text-white"
+                          : "border-slate-400 bg-transparent text-transparent"
+                      }`}
+                      aria-hidden="true"
+                    >
+                      <Check className="h-3.5 w-3.5" strokeWidth={3} />
+                    </span>
                   </button>
-                </div>
-              );
-            })}
-          </nav>
-        )}
-      </div>
-    </aside>
+                );
+              })}
+            </div>
+          ) : (
+            <nav aria-label={categoryNavLabel} className="grid gap-4">
+              {categoryOptions.map((option) => {
+                const isActive = option.id === resolvedActiveCategory;
+                const Icon = categoryIcons[option.label.toLowerCase()] ?? Circle;
+
+                return (
+                  <div key={option.id} className="relative pl-3">
+                    {isActive ? (
+                      <span
+                        className="absolute left-0 top-1/2 h-7 w-1 -translate-y-1/2 rounded-full shadow-[0px_0_8px_rgba(0,0,0,0.25)] bg-white"
+                        aria-hidden="true"
+                      />
+                    ) : null}
+
+                    <button
+                      type="button"
+                      onClick={() => onCategorySelect(option.id)}
+                      className={`cursor-pointer inline-flex items-center gap-3 rounded-full px-4 py-2 text-left text-base font-semibold transition-colors duration-50 ease-in ${
+                        isActive
+                          ? "shadow-[0px_0_8px_rgba(0,0,0,0.25)] bg-white text-slate-800"
+                          : "text-slate-700 hover:bg-slate-200"
+                      }`}
+                    >
+                      <Icon className="h-4 w-4" strokeWidth={2.5} aria-hidden="true" />
+                      <span>{option.label}</span>
+                    </button>
+                  </div>
+                );
+              })}
+            </nav>
+          )}
+        </div>
+      </aside>
+    </>
   );
 }
