@@ -163,13 +163,13 @@ export default function StickyRestaurantBar({
         <div
           className="relative z-[100] mx-auto flex w-full max-w-6xl items-center rounded-b-2xl border border-slate-200/70 bg-white shadow-[0_6px_16px_rgba(15,23,42,0.12)] backdrop-blur"
         >
-          <div className="mx-auto flex w-full max-w-5xl flex-wrap items-center gap-2 px-3 py-2 sm:flex-nowrap sm:gap-3 sm:px-6">
+          <div className="mx-auto flex w-full max-w-5xl items-center gap-2 overflow-x-auto px-3 py-2 sm:gap-3 sm:px-6">
             {secondaryNavLeading ? (
               <div className="shrink-0">
                 {secondaryNavLeading}
               </div>
             ) : null}
-            <div className={`min-w-0 ${secondaryNavLeading ? "ml-auto" : "flex-1"}`}>
+            <div className={`min-w-0 shrink-0 ${secondaryNavLeading ? "ml-auto" : "flex-1"}`}>
               <ControlsRow
                 view={view}
                 onChange={onChange}
