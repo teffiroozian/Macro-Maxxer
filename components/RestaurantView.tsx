@@ -229,11 +229,15 @@ export default function RestaurantView({
 
   const getStickyOffset = () => {
     const stickyBar = document.querySelector('[data-sticky-nav="true"]');
-    if (!(stickyBar instanceof HTMLElement)) {
-      return 0;
-    }
+    const mobileCategoryNav = document.querySelector('[data-mobile-category-nav="true"]');
+    const stickyBottom = stickyBar instanceof HTMLElement
+      ? Math.max(0, stickyBar.getBoundingClientRect().bottom)
+      : 0;
+    const mobileCategoryBottom = mobileCategoryNav instanceof HTMLElement
+      ? Math.max(0, mobileCategoryNav.getBoundingClientRect().bottom)
+      : 0;
 
-    return Math.max(0, stickyBar.getBoundingClientRect().bottom);
+    return Math.max(stickyBottom, mobileCategoryBottom);
   };
 
   const router = useRouter();
