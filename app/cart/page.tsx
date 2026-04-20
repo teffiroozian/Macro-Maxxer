@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useMemo } from "react";
 import type { CartMacros } from "@/stores/cartStore";
 import MenuItemCard from "@/components/MenuItemCard";
 import StickyMacroTotalsBar from "@/components/StickyMacroTotalsBar";
@@ -92,31 +92,6 @@ function areMacrosEqual(a: CartMacros, b: CartMacros) {
 export default function CartPage() {
   const { items, totals, updateQuantity, updateItem } = useCart();
   const router = useRouter();
-  const inlineMacroBarRef = useRef<HTMLDivElement | null>(null);
-  const [showStickyBar, setShowStickyBar] = useState(true);
-
-  useEffect(() => {
-    const inlineMacroBar = inlineMacroBarRef.current;
-    if (!inlineMacroBar) return;
-
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        setShowStickyBar(!entry.isIntersecting);
-      },
-      {
-        root: null,
-        rootMargin: "0px 0px -120px 0px",
-        threshold: 0,
-      }
-    );
-
-    observer.observe(inlineMacroBar);
-
-    return () => {
-      observer.disconnect();
-    };
-  }, []);
-
   const itemCount = useMemo(
     () => items.reduce((sum, item) => sum + item.quantity, 0),
     [items]
@@ -360,7 +335,7 @@ export default function CartPage() {
                   </div>
               </div>
             </div>
-            <div ref={inlineMacroBarRef} className="col-span-1 lg:col-span-2">
+            <div className="col-span-1 lg:col-span-2">
           <StickyMacroTotalsBar
             totals={totals}
             inline
@@ -374,14 +349,6 @@ export default function CartPage() {
 
         
       </section>
-
-      <StickyMacroTotalsBar
-        totals={totals}
-        visible={showStickyBar}
-        layoutPreset="cart"
-        onSecondaryAction={() => window.alert("Save Meal coming soon")}
-        onPrimaryAction={() => window.alert("Generate Snapshot coming soon")}
-      />
     </main>
   );
 }
