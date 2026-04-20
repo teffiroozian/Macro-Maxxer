@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { Circle, type LucideIcon, UtensilsCrossed, Soup, SquareStack, CupSoda, Check, Menu, ChevronDown } from "lucide-react";
+import { Circle, type LucideIcon, UtensilsCrossed, Soup, SquareStack, CupSoda, Check, Menu } from "lucide-react";
 
 type RankedAllFilterKey = "main-entrees" | "breakfast" | "shareables" | "sides" | "drinks";
 
@@ -29,6 +29,9 @@ export default function RestaurantCategorySidebar({
   const [mobileNavTop, setMobileNavTop] = useState(0);
   const [isMobileCategoryMenuOpen, setIsMobileCategoryMenuOpen] = useState(false);
   const mobileCategoryMenuRef = useRef<HTMLDivElement | null>(null);
+  const mobileCategoryScrollRef = useRef<HTMLDivElement | null>(null);
+  const [showLeftScrollFade, setShowLeftScrollFade] = useState(false);
+  const [showRightScrollFade, setShowRightScrollFade] = useState(false);
 
   useEffect(() => {
     const syncMobileNavTop = () => {
@@ -67,6 +70,27 @@ export default function RestaurantCategorySidebar({
     };
   }, [isMobileCategoryMenuOpen]);
 
+  useEffect(() => {
+    const scrollElement = mobileCategoryScrollRef.current;
+    if (!scrollElement) return;
+
+    const syncScrollFadeVisibility = () => {
+      const { scrollLeft, scrollWidth, clientWidth } = scrollElement;
+      const maxScrollLeft = Math.max(0, scrollWidth - clientWidth);
+      setShowLeftScrollFade(scrollLeft > 1);
+      setShowRightScrollFade(maxScrollLeft - scrollLeft > 1);
+    };
+
+    syncScrollFadeVisibility();
+    scrollElement.addEventListener("scroll", syncScrollFadeVisibility, { passive: true });
+    window.addEventListener("resize", syncScrollFadeVisibility);
+
+    return () => {
+      scrollElement.removeEventListener("scroll", syncScrollFadeVisibility);
+      window.removeEventListener("resize", syncScrollFadeVisibility);
+    };
+  }, [effectiveViewMode, categoryOptions, rankedAllFilters]);
+
   const rankingOptions: Array<{ key: RankedAllFilterKey; label: string; iconKey: string }> = [
     { key: "main-entrees", label: "Main Entrees", iconKey: "entrees" },
     { key: "breakfast", label: "Breakfast", iconKey: "breakfast" },
@@ -91,7 +115,7 @@ export default function RestaurantCategorySidebar({
   return (
     <>
       <div className="fixed left-0 right-0 z-[90] lg:hidden" style={{ top: mobileNavTop + 4 }}>
-        <div className="relative mx-auto w-[calc(100%-0.5rem)] max-w-6xl overflow-hidden rounded-2xl border border-slate-200/70 bg-white/95 shadow-[0_6px_16px_rgba(15,23,42,0.12)] backdrop-blur sm:w-[calc(100%-1rem)]">
+        <div className="relative mx-auto w-[calc(100%-0.5rem)] max-w-6xl overflow-visible rounded-2xl border border-slate-200/70 bg-white/95 shadow-[0_6px_16px_rgba(15,23,42,0.12)] backdrop-blur sm:w-[calc(100%-1rem)]">
           <div className="mx-auto flex w-full max-w-5xl items-center gap-2 px-2 py-1.5 sm:px-4 sm:py-2">
             <div ref={mobileCategoryMenuRef} className="relative shrink-0">
               <button
@@ -99,11 +123,10 @@ export default function RestaurantCategorySidebar({
                 aria-haspopup="menu"
                 aria-expanded={isMobileCategoryMenuOpen}
                 onClick={() => setIsMobileCategoryMenuOpen((previous) => !previous)}
-                className="cursor-pointer inline-flex items-center gap-2 whitespace-nowrap rounded-full border border-black/20 bg-white px-[14px] py-[8px] text-sm font-semibold text-black/85"
+                className="cursor-pointer inline-flex h-10 w-10 items-center justify-center rounded-full bg-transparent text-black/85 transition-colors duration-150 hover:bg-slate-900/5"
+                aria-label="Open categories menu"
               >
                 <Menu className="h-4 w-4" strokeWidth={2.2} />
-                Menu
-                <ChevronDown className="h-4 w-4" strokeWidth={2.5} />
               </button>
 
               {isMobileCategoryMenuOpen ? (
@@ -159,8 +182,10 @@ export default function RestaurantCategorySidebar({
               ) : null}
             </div>
 
+            <div className="h-8 w-px shrink-0 bg-slate-300/80" aria-hidden="true" />
+
             <div className="relative min-w-0 flex-1">
-              <div className="flex min-w-0 items-center gap-2 overflow-x-auto">
+              <div ref={mobileCategoryScrollRef} className="flex min-w-0 items-center gap-2 overflow-x-auto">
                 {effectiveViewMode === "ranking" ? (
                   <div className="flex min-w-0 items-center gap-2" role="group" aria-label={categoryNavLabel}>
                     {rankingOptions.map((option) => {
@@ -211,8 +236,18 @@ export default function RestaurantCategorySidebar({
                   </nav>
                 )}
               </div>
-              <div className="pointer-events-none absolute inset-y-0 left-0 w-8 bg-gradient-to-r from-white to-transparent" aria-hidden="true" />
-              <div className="pointer-events-none absolute inset-y-0 right-0 w-8 bg-gradient-to-l from-white to-transparent" aria-hidden="true" />
+              <div
+                className={`pointer-events-none absolute inset-y-0 left-0 w-8 bg-gradient-to-r from-white to-transparent transition-opacity duration-200 ${
+                  showLeftScrollFade ? "opacity-100" : "opacity-0"
+                }`}
+                aria-hidden="true"
+              />
+              <div
+                className={`pointer-events-none absolute inset-y-0 right-0 w-8 bg-gradient-to-l from-white to-transparent transition-opacity duration-200 ${
+                  showRightScrollFade ? "opacity-100" : "opacity-0"
+                }`}
+                aria-hidden="true"
+              />
             </div>
           </div>
         </div>
