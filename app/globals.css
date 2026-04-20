@@ -25,3 +25,15 @@ body {
     font-family: Arial, Helvetica, sans-serif;
     overflow-x: hidden;
 }
+
+@supports not (height: 100dvh) {
+    .item-route-modal-root {
+        height: calc(100vh - 1rem);
+    }
+
+    @media (min-width: 640px) {
+        .item-route-modal-root {
+            height: calc(100vh - 2rem);
+        }
+    }
+}

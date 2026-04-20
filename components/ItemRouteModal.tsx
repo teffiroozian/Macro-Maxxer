@@ -1086,7 +1086,7 @@ export default function ItemRouteModal({
         onClick={handleClose}
         aria-label="Close item modal"
       />
-      <div className="relative h-[calc(100vh-1rem)] w-full max-w-[1024px] overflow-hidden rounded-2xl bg-white px-3 pt-3 sm:h-[calc(100vh-2rem)] sm:px-5 sm:pt-5 lg:px-6 lg:pt-6">
+      <div className="item-route-modal-root relative h-[calc(100dvh-1rem)] w-full max-w-[1024px] overflow-hidden rounded-2xl bg-white px-3 pt-3 sm:h-[calc(100dvh-2rem)] sm:px-5 sm:pt-5 lg:px-6 lg:pt-6">
         <button
           type="button"
           className="cursor-pointer sticky top-0 ml-auto h-9 w-9 rounded-full border border-black/12 bg-white/95 text-2xl"
