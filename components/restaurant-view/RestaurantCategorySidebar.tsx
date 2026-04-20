@@ -114,9 +114,9 @@ export default function RestaurantCategorySidebar({
 
   return (
     <>
-      <div className="fixed left-0 right-0 z-[90] lg:hidden" style={{ top: mobileNavTop + 8 }} data-mobile-category-nav="true">
+      <div className="fixed left-0 right-0 z-[90] lg:hidden" style={{ top: mobileNavTop + 4 }} data-mobile-category-nav="true">
         <div className="relative mx-auto w-[calc(100%-0.5rem)] max-w-6xl overflow-visible rounded-2xl border border-slate-200/70 bg-white/95 shadow-[0_6px_16px_rgba(15,23,42,0.12)] backdrop-blur sm:w-[calc(100%-1rem)]">
-          <div className="mx-auto flex w-full max-w-5xl items-center gap-2 px-2 py-2 sm:px-4 sm:py-2">
+          <div className="mx-auto flex w-full max-w-5xl items-center gap-2 px-2 py-1 sm:px-4 sm:py-1">
             <div ref={mobileCategoryMenuRef} className="relative shrink-0">
               <button
                 type="button"
@@ -185,7 +185,7 @@ export default function RestaurantCategorySidebar({
             <div className="h-8 w-px shrink-0 bg-slate-300/80" aria-hidden="true" />
 
             <div className="relative min-w-0 flex-1">
-              <div ref={mobileCategoryScrollRef} className="flex min-w-0 items-center gap-2 overflow-x-auto">
+              <div ref={mobileCategoryScrollRef} className="flex min-w-0 items-center gap-2 overflow-x-auto p-1">
                 {effectiveViewMode === "ranking" ? (
                   <div className="flex min-w-0 items-center gap-2" role="group" aria-label={categoryNavLabel}>
                     {rankingOptions.map((option) => {
