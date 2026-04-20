@@ -114,7 +114,7 @@ export default function RestaurantCategorySidebar({
 
   return (
     <>
-      <div className="fixed left-0 right-0 z-[95] lg:hidden" style={{ top: mobileNavTop + 4 }} data-mobile-category-nav="true">
+      <div className="fixed left-0 right-0 z-[90] lg:hidden" style={{ top: mobileNavTop + 4 }} data-mobile-category-nav="true">
         <div className="relative mx-auto w-[calc(100%-0.5rem)] max-w-6xl overflow-visible rounded-2xl border border-slate-200/70 bg-white/95 shadow-[0_1px_4px_rgba(15,23,42,0.08)] backdrop-blur sm:w-[calc(100%-1rem)]">
           <div className="mx-auto flex w-full max-w-5xl items-center gap-2 px-2 py-1 sm:px-4 sm:py-1">
             <div ref={mobileCategoryMenuRef} className="relative shrink-0">
