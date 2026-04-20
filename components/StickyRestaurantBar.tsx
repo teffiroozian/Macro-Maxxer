@@ -85,7 +85,7 @@ export default function StickyRestaurantBar({
   return (
     <div className="fixed left-0 right-0 top-0 z-[95]" data-sticky-nav="true">
       <div
-        className={`relative z-[110] mx-auto mt-1 flex w-[calc(100%-0.5rem)] max-w-6xl items-center border border-slate-200/70 bg-white shadow-[0_-6px_16px_rgba(15,23,42,0.12)] backdrop-blur sm:w-[calc(100%-1rem)] ${
+        className={`relative z-[110] mx-auto mt-1 flex w-[calc(100%-0.5rem)] max-w-6xl items-center border border-slate-200/70 bg-white shadow-[0_-3px_12px_rgba(15,23,42,0.12)] backdrop-blur sm:w-[calc(100%-1rem)] ${
           hideSecondaryNav ? "rounded-2xl" : "rounded-t-2xl"
         }`}
       >
@@ -161,7 +161,7 @@ export default function StickyRestaurantBar({
 
       {hideSecondaryNav ? null : (
         <div
-          className="relative z-[100] mx-auto flex w-[calc(100%-0.5rem)] max-w-6xl items-center rounded-b-2xl border border-slate-200/70 bg-white shadow-[0_6px_16px_rgba(15,23,42,0.12)] backdrop-blur sm:w-[calc(100%-1rem)]"
+          className="relative z-[100] mx-auto flex w-[calc(100%-0.5rem)] max-w-6xl items-center rounded-b-2xl border border-slate-200/70 bg-white shadow-[0_3px_12px_rgba(15,23,42,0.12)] backdrop-blur sm:w-[calc(100%-1rem)]"
         >
           <div className="mx-auto flex w-full max-w-5xl items-center gap-2 px-3 py-2 sm:gap-3 sm:px-6">
             {secondaryNavLeading ? (

@@ -81,16 +81,16 @@ export function PortionSelector({
 
   const isTopLayout = layout === "top";
   const wrapperClasses = isTopLayout
-    ? `${className} my-3 flex flex-col items-start justify-between gap-4`
+    ? `${className} my-3 flex flex-col items-center justify-between gap-4`
     : `${className} space-y-2`;
 
   return (
     <div className={wrapperClasses}>
-      <div className={`${isTopLayout ? "w-full text-left text-lg font-semibold text-[rgba(0,0,0,0.8)]" : "text-base font-semibold uppercase tracking-wide text-neutral-500"}`}>
+      <div className={`${isTopLayout ? "w-full text-center text-lg font-semibold text-[rgba(0,0,0,0.8)]" : "text-base font-semibold uppercase tracking-wide text-neutral-500"}`}>
         Portion
       </div>
       <div
-        className={isTopLayout ? "flex w-full flex-wrap justify-start gap-2" : "grid w-full grid-cols-3 gap-2"}
+        className="grid w-full grid-flow-col auto-cols-fr gap-2"
       >
         {variants.map((variant) => {
           const isActive = variant.id === selectedVariantId;
@@ -102,7 +102,7 @@ export function PortionSelector({
             <button
               key={variant.id}
               type="button"
-              className={`${isTopLayout ? "min-w-[140px]" : "w-full"} cursor-pointer rounded-2xl border px-5 py-2.5 text-center text-sm font-bold transition-all duration-150 ${variantColorClasses}`}
+              className={`w-full cursor-pointer rounded-2xl border px-5 py-2.5 text-center text-sm font-bold transition-all duration-150 ${variantColorClasses}`}
               onClick={() => onSelectVariant?.(variant.id)}
             >
               {variant.label}
