@@ -508,7 +508,7 @@ export default function ItemDetailsPanel({
                 <button
                   key={section.id}
                   type="button"
-                  className="cursor-pointer flex min-w-[120px] flex-none flex-col items-center gap-1 rounded-xl border border-slate-200/80 bg-white px-3 py-1.5 text-center"
+                  className="cursor-pointer flex min-w-[120px] flex-none flex-col items-center gap-1 rounded-xl bg-white px-3 py-1.5 text-center"
                   onClick={() => onSelectSection?.(section.id)}
                 >
                   <span className={`inline-flex h-8 w-8 items-center justify-center rounded-full border text-[13px] ${isActive ? "border-blue-500 bg-blue-50 text-blue-600" : "border-slate-200 bg-slate-50 text-slate-500"}`}>
@@ -1313,16 +1313,27 @@ export default function ItemDetailsPanel({
 
         <div className="space-y-2 pt-4">
           <p className="text-base font-semibold uppercase tracking-wide text-neutral-500">Macro Split</p>
-          <div className="flex h-11 w-full overflow-hidden gap-1 rounded-xl border border-black/10 bg-neutral-100 p-1">
-            {macroSegments.map((segment) => (
-              <div
-                key={segment.label}
-                className={`flex min-w-0 items-center justify-center rounded-xl px-1 text-[11px] font-semibold text-neutral-900 ${segment.color}`}
-                style={{ width: `${segment.percent}%` }}
-              >
-                {segment.percent >= 18 ? `${segment.label} ${Math.round(segment.percent)}%` : ""}
-              </div>
-            ))}
+          <div className="flex h-11 w-full gap-1 overflow-hidden rounded-xl border border-black/10 bg-neutral-100 p-1">
+            {macroSegments.map((segment) => {
+              const roundedPercent = Math.round(segment.percent);
+              const shortLabel = segment.label === "Protein" ? "P" : segment.label === "Carbs" ? "C" : "F";
+              const segmentLabel =
+                segment.percent >= 16
+                  ? `${shortLabel}: ${roundedPercent}%`
+                  : segment.percent >= 9
+                    ? `${roundedPercent}%`
+                    : "";
+
+              return (
+                <div
+                  key={segment.label}
+                  className={`flex min-w-0 items-center justify-center rounded-xl px-1 text-[11px] font-semibold whitespace-nowrap text-neutral-900 ${segment.color}`}
+                  style={{ width: `${segment.percent}%` }}
+                >
+                  {segmentLabel}
+                </div>
+              );
+            })}
           </div>
         </div>
 

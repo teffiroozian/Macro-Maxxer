@@ -1079,7 +1079,7 @@ export default function ItemRouteModal({
   };
 
   return (
-    <div className="fixed inset-0 z-[100] flex items-end justify-center p-4 sm:items-center sm:p-6" role="dialog" aria-modal="true" aria-label={item.name}>
+    <div className="fixed inset-0 z-[100] flex items-end justify-center px-6 py-4 sm:items-center sm:p-6" role="dialog" aria-modal="true" aria-label={item.name}>
       <button
         type="button"
         className="cursor-pointer absolute inset-0 border-0 bg-slate-900/66"
@@ -1100,7 +1100,7 @@ export default function ItemRouteModal({
         <div className="grid justify-items-center gap-16">
           <div className="grid justify-items-center gap-8">
             {selectedItemImage ? (
-              <img className="max-h-[220px] w-[220px] rounded-[14px] bg-[#efefef] object-contain shadow-[0_0_5px_rgba(0,0,0,0.25)] sm:max-h-[300px] sm:w-[300px]" src={selectedItemImage} alt={item.name} />
+              <img className="max-h-[340px] w-full max-w-[560px] rounded-[14px] bg-[#efefef] object-contain shadow-[0_0_5px_rgba(0,0,0,0.25)]" src={selectedItemImage} alt={item.name} />
             ) : null}
             <h1 className="text-center text-2xl font-extrabold sm:text-[32px]">{item.name}</h1>
             <MacroTotalsGrid
@@ -1574,8 +1574,8 @@ export default function ItemRouteModal({
             itemClassName="px-2 py-0.5"
             labelClassName="text-[#64748b]"
           />
-          <div className="flex w-full flex-row items-center justify-center gap-2 sm:w-auto sm:gap-3">
-            <div className="inline-flex items-center rounded-xl border border-slate-200 bg-slate-50 p-1">
+          <div className="flex w-full flex-row items-center gap-2">
+            <div className="inline-flex w-full flex-1 items-center justify-between rounded-xl border border-slate-200 bg-slate-50 p-1">
               <button
                 type="button"
                 onClick={handleDecrementQuantity}
@@ -1597,7 +1597,7 @@ export default function ItemRouteModal({
             {isCustomizeMode ? (
               <button
                 type="button"
-                className="cursor-pointer rounded-xl border border-black/20 bg-white px-4 py-2.5 text-base font-bold text-black/80 sm:px-6"
+                className="cursor-pointer w-full flex-1 rounded-xl border border-black/20 bg-white px-4 py-2.5 text-base font-bold text-black/80 sm:px-6"
                 onClick={handleClose}
               >
                 Cancel
@@ -1605,7 +1605,7 @@ export default function ItemRouteModal({
             ) : null}
             <button
               type="button"
-              className="cursor-pointer rounded-xl border border-black/20 bg-black/90 px-4 py-2.5 text-base font-bold text-white sm:px-6"
+              className="cursor-pointer w-full flex-1 rounded-xl border border-black/20 bg-black/90 px-4 py-2.5 text-base font-bold text-white sm:px-6"
               onClick={handleSaveItem}
             >
               {isCustomizeMode ? "Update" : "Add to Cart"}
