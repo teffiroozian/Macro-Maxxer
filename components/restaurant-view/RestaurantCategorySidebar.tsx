@@ -111,6 +111,7 @@ export default function RestaurantCategorySidebar({
       : effectiveViewMode === "ingredients"
         ? "Ingredient categories"
         : "Menu categories";
+  const mobileMenuMaxHeight = `calc(100dvh - ${mobileNavTop + 24}px)`;
 
   return (
     <>
@@ -132,7 +133,8 @@ export default function RestaurantCategorySidebar({
               {isMobileCategoryMenuOpen ? (
                 <div
                   role="menu"
-                  className="absolute left-0 top-[calc(100%+8px)] z-20 w-[min(220px,calc(100vw-2rem))] max-h-[50vh] overflow-y-auto rounded-[14px] border border-black/15 bg-white p-2 shadow-[0_12px_28px_rgba(0,0,0,0.12)]"
+                  className="absolute left-0 top-[calc(100%+8px)] z-20 w-[min(220px,calc(100vw-2rem))] overflow-y-auto overscroll-contain rounded-[14px] border border-black/15 bg-white p-2 shadow-[0_12px_28px_rgba(0,0,0,0.12)] [scrollbar-gutter:stable] [-webkit-overflow-scrolling:touch]"
+                  style={{ maxHeight: mobileMenuMaxHeight }}
                 >
                   <div className="grid gap-1">
                     {effectiveViewMode === "ranking"
