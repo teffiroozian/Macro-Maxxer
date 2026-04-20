@@ -1098,9 +1098,9 @@ export default function ItemRouteModal({
 
         <div ref={scrollContainerRef} className="h-[calc(100%-52px-72px)] overflow-y-auto pb-24 pr-1 sm:h-[calc(100%-52px-56px)] sm:pr-2">
         <div className="grid justify-items-center gap-16">
-          <div className="grid justify-items-center gap-8">
+          <div className="grid w-full justify-items-center gap-8">
             {selectedItemImage ? (
-              <img className="max-h-[340px] w-full max-w-[560px] rounded-[14px] bg-[#efefef] object-contain shadow-[0_0_5px_rgba(0,0,0,0.25)]" src={selectedItemImage} alt={item.name} />
+              <img className="max-h-[420px] w-full rounded-[14px] bg-[#efefef] object-contain shadow-[0_0_5px_rgba(0,0,0,0.25)]" src={selectedItemImage} alt={item.name} />
             ) : null}
             <h1 className="text-center text-2xl font-extrabold sm:text-[32px]">{item.name}</h1>
             <MacroTotalsGrid
