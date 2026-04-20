@@ -33,7 +33,6 @@ import { getSelectedIngredientCountsFromCustomizations } from "@/lib/menuItemCar
 import {
   addonFat,
   deltaFat,
-  formatDelta,
   getApplicableCommonChanges,
   getDefaultIngredientCounts,
   getDefaultVariantId,
@@ -1079,14 +1078,14 @@ export default function ItemRouteModal({
   };
 
   return (
-    <div className="fixed inset-0 z-[100] flex items-end justify-center p-2 sm:items-center sm:p-4" role="dialog" aria-modal="true" aria-label={item.name}>
+    <div className="fixed inset-0 z-[100] flex items-end justify-center px-6 py-4 sm:items-center sm:p-6" role="dialog" aria-modal="true" aria-label={item.name}>
       <button
         type="button"
         className="cursor-pointer absolute inset-0 border-0 bg-slate-900/66"
         onClick={handleClose}
         aria-label="Close item modal"
       />
-      <div className="item-route-modal-root relative h-[calc(100dvh-1rem)] w-full max-w-[1024px] overflow-hidden rounded-2xl bg-white px-3 pt-3 sm:h-[calc(100dvh-2rem)] sm:px-5 sm:pt-5 lg:px-6 lg:pt-6">
+      <div className="item-route-modal-root relative h-[calc(100dvh-2rem)] w-full max-w-[1024px] overflow-hidden rounded-2xl bg-white px-3 pt-3 sm:h-[calc(100dvh-3rem)] sm:px-5 sm:pt-5 lg:px-6 lg:pt-6">
         <button
           type="button"
           className="cursor-pointer sticky top-0 ml-auto h-9 w-9 rounded-full border border-black/12 bg-white/95 text-2xl"
@@ -1096,33 +1095,13 @@ export default function ItemRouteModal({
           ×
         </button>
 
-        <div ref={scrollContainerRef} className="h-[calc(100%-52px-72px)] overflow-y-auto pb-6 pr-1 sm:h-[calc(100%-52px-56px)] sm:pr-2">
+        <div ref={scrollContainerRef} className="h-[calc(100%-52px-72px)] overflow-y-auto pb-24 pr-1 sm:h-[calc(100%-52px-56px)] sm:pr-2">
         <div className="grid justify-items-center gap-16">
-          <div className="grid justify-items-center gap-8">
-            <h1 className="text-center text-2xl font-extrabold sm:text-[32px]">{item.name}</h1>
+          <div className="grid w-full justify-items-center gap-6">
             {selectedItemImage ? (
-              <img className="max-h-[220px] w-[220px] rounded-[14px] bg-[#efefef] object-contain shadow-[0_0_5px_rgba(0,0,0,0.25)] sm:max-h-[300px] sm:w-[300px]" src={selectedItemImage} alt={item.name} />
+              <img className="mt-2 h-[220px] w-full rounded-[14px] bg-[#efefef] object-contain p-2 shadow-[0_0_5px_rgba(0,0,0,0.25)] sm:mt-3 sm:h-[300px]" src={selectedItemImage} alt={item.name} />
             ) : null}
-            <MacroTotalsGrid
-              macros={{
-                calories: Math.round(isChipotlePrebuiltBuilderItem ? chipotleAdjustedTotals.calories : (nutrition.calories ?? 0)),
-                protein: Math.round(isChipotlePrebuiltBuilderItem ? chipotleAdjustedTotals.protein : (nutrition.protein ?? 0)),
-                carbs: Math.round(isChipotlePrebuiltBuilderItem ? chipotleAdjustedTotals.carbs : (nutrition.carbs ?? 0)),
-                totalFat: Math.round(isChipotlePrebuiltBuilderItem ? chipotleAdjustedTotals.totalFat : (nutrition.totalFat ?? 0)),
-              }}
-              size="panel"
-              className="w-full max-w-[560px] gap-6 sm:gap-10"
-              valueExtras={
-                hasActiveCustomization
-                  ? {
-                      calories: <span className="ml-1.5 text-sm font-bold text-green-600">{formatDelta(customizationTotals.calories)}</span>,
-                      protein: <span className="ml-1.5 text-sm font-bold text-green-600">{formatDelta(customizationTotals.protein)}</span>,
-                      carbs: <span className="ml-1.5 text-sm font-bold text-green-600">{formatDelta(customizationTotals.carbs)}</span>,
-                      totalFat: <span className="ml-1.5 text-sm font-bold text-green-600">{formatDelta(customizationTotals.totalFat)}</span>,
-                    }
-                  : undefined
-              }
-            />
+            <h1 className="text-center text-2xl font-extrabold sm:text-[32px]">{item.name}</h1>
           </div>
 
           <div className="w-[min(720px,100%)] grid gap-7">
@@ -1162,7 +1141,7 @@ export default function ItemRouteModal({
                         <button
                           key={option.id}
                           type="button"
-                          className={`inline-flex w-full min-w-0 cursor-pointer items-center justify-center gap-3 rounded-2xl border px-5 py-2.5 text-left transition-all duration-150 sm:min-w-[220px] sm:w-auto ${variantColorClasses}`}
+                          className={`inline-flex w-[calc(50%-0.25rem)] min-w-[150px] cursor-pointer items-center justify-center gap-3 rounded-2xl border px-4 py-2.5 text-left transition-all duration-150 sm:min-w-[220px] sm:w-auto ${variantColorClasses}`}
                           onClick={() => setComboType(option.id)}
                         >
                           <span className={`inline-flex h-9 w-9 items-center justify-center rounded-full border ${iconClasses}`}>
@@ -1561,7 +1540,7 @@ export default function ItemRouteModal({
         </div>
         </div>
 
-        <div className="sticky bottom-0 -mx-3 z-10 flex h-fit flex-wrap items-center gap-3 border-t border-black/10 bg-white p-3 shadow-[0_-4px_10px_rgba(0,0,0,0.08)] sm:-mx-5 sm:p-4 lg:-mx-6">
+        <div className="sticky bottom-0 -mx-3 z-30 flex h-fit flex-col items-center gap-3 border-t border-black/10 bg-white p-3 shadow-[0_-4px_10px_rgba(0,0,0,0.08)] sm:-mx-5 sm:p-4 lg:-mx-6">
           <MacroTotalsGrid
             macros={{
               calories: Math.round(isChipotlePrebuiltBuilderItem ? chipotleAdjustedTotals.calories : (nutrition.calories ?? 0)),
@@ -1570,12 +1549,12 @@ export default function ItemRouteModal({
               totalFat: Math.round(isChipotlePrebuiltBuilderItem ? chipotleAdjustedTotals.totalFat : (nutrition.totalFat ?? 0)),
             }}
             size="panel"
-            className="gap-3 sm:gap-6"
+            className="w-full justify-center gap-3 sm:gap-6"
             itemClassName="px-2 py-0.5"
             labelClassName="text-[#64748b]"
           />
-          <div className="ml-auto flex w-full flex-col items-stretch gap-2 sm:w-auto sm:flex-row sm:items-center sm:gap-3">
-            <div className="inline-flex items-center rounded-xl border border-slate-200 bg-slate-50 p-1">
+          <div className="flex w-full flex-row items-center gap-2">
+            <div className="inline-flex w-full flex-1 items-center justify-between rounded-xl border border-slate-200 bg-slate-50 p-1">
               <button
                 type="button"
                 onClick={handleDecrementQuantity}
@@ -1597,7 +1576,7 @@ export default function ItemRouteModal({
             {isCustomizeMode ? (
               <button
                 type="button"
-                className="cursor-pointer rounded-xl border border-black/20 bg-white px-4 py-2.5 text-base font-bold text-black/80 sm:px-6"
+                className="cursor-pointer w-full flex-1 rounded-xl border border-black/20 bg-white px-4 py-2.5 text-base font-bold text-black/80 sm:px-6"
                 onClick={handleClose}
               >
                 Cancel
@@ -1605,7 +1584,7 @@ export default function ItemRouteModal({
             ) : null}
             <button
               type="button"
-              className="cursor-pointer rounded-xl border border-black/20 bg-black/90 px-4 py-2.5 text-base font-bold text-white sm:px-6"
+              className="cursor-pointer w-full flex-1 rounded-xl border border-black/20 bg-black/90 px-4 py-2.5 text-base font-bold text-white sm:px-6"
               onClick={handleSaveItem}
             >
               {isCustomizeMode ? "Update" : "Add to Cart"}

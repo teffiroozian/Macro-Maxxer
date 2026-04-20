@@ -187,7 +187,7 @@ export default function StickyRestaurantBar({
       )}
 
       {hasActiveFilters && !hideSecondaryNav ? (
-        <div className="relative z-[100] mx-auto mt-0.5 w-[calc(100%-0.5rem)] max-w-6xl rounded-2xl border border-slate-200/70 bg-white/95 shadow-[0_6px_16px_rgba(15,23,42,0.12)] backdrop-blur sm:w-[calc(100%-1rem)]">
+        <div className="relative z-[100] mx-auto mt-0.5 w-[calc(100%-0.5rem)] max-w-6xl rounded-2xl border border-slate-200/70 bg-white/95 backdrop-blur sm:w-[calc(100%-1rem)]">
           <div className="mx-auto flex w-full max-w-5xl flex-wrap items-center gap-2 px-4 py-2 text-sm sm:flex-nowrap sm:px-6">
             <FilterChips
               filters={filters}
