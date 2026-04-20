@@ -75,7 +75,7 @@ export default function CartPreviewDrawer() {
       />
 
       <aside
-        className={`fixed right-0 top-0 z-[125] h-full w-full max-w-md border-l border-slate-200 bg-white shadow-[0_18px_50px_rgba(15,23,42,0.22)] transition-transform duration-300 ${
+        className={`fixed right-0 top-0 z-[125] h-full w-[88vw] max-w-md border-l border-slate-200 bg-white shadow-[0_18px_50px_rgba(15,23,42,0.22)] transition-transform duration-300 sm:w-[80vw] ${
           isCartOpen ? "translate-x-0" : "translate-x-full"
         }`}
         aria-hidden={!isCartOpen}
@@ -147,6 +147,7 @@ export default function CartPreviewDrawer() {
                     >
                       <CartItemPreviewRow
                         item={item}
+                        quantity={item.quantity}
                         imageRenderer="next-image"
                         imageFallback="initial"
                         variantStyle="inline"

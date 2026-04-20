@@ -943,19 +943,63 @@ export default function ItemRouteModal({
   const fiber = sumNutritionWithFallback(baseNutrition.fiber, addonTotals.fiber + activeComboNutritionTotals.fiber);
   const sugars = sumNutritionWithFallback(baseNutrition.sugars, addonTotals.sugars + activeComboNutritionTotals.sugars);
 
-  const nutrition: Nutrition = {
-    ...baseNutrition,
-    calories: sumNutritionWithFallback(baseNutrition.calories, customizationTotals.calories) ?? 0,
-    protein: sumNutritionWithFallback(baseNutrition.protein, customizationTotals.protein) ?? 0,
-    carbs: sumNutritionWithFallback(baseNutrition.carbs, customizationTotals.carbs) ?? 0,
-    totalFat: sumNutritionWithFallback(baseNutrition.totalFat, customizationTotals.totalFat) ?? 0,
-    ...(satFat !== undefined ? { satFat } : {}),
-    ...(transFat !== undefined ? { transFat } : {}),
-    ...(cholesterol !== undefined ? { cholesterol } : {}),
-    ...(sodium !== undefined ? { sodium } : {}),
-    ...(fiber !== undefined ? { fiber } : {}),
-    ...(sugars !== undefined ? { sugars } : {}),
-  };
+  const nutrition = useMemo<Nutrition>(
+    () => ({
+      ...baseNutrition,
+      calories: sumNutritionWithFallback(baseNutrition.calories, customizationTotals.calories) ?? 0,
+      protein: sumNutritionWithFallback(baseNutrition.protein, customizationTotals.protein) ?? 0,
+      carbs: sumNutritionWithFallback(baseNutrition.carbs, customizationTotals.carbs) ?? 0,
+      totalFat: sumNutritionWithFallback(baseNutrition.totalFat, customizationTotals.totalFat) ?? 0,
+      ...(satFat !== undefined ? { satFat } : {}),
+      ...(transFat !== undefined ? { transFat } : {}),
+      ...(cholesterol !== undefined ? { cholesterol } : {}),
+      ...(sodium !== undefined ? { sodium } : {}),
+      ...(fiber !== undefined ? { fiber } : {}),
+      ...(sugars !== undefined ? { sugars } : {}),
+    }),
+    [
+      baseNutrition,
+      customizationTotals.calories,
+      customizationTotals.protein,
+      customizationTotals.carbs,
+      customizationTotals.totalFat,
+      satFat,
+      transFat,
+      cholesterol,
+      sodium,
+      fiber,
+      sugars,
+    ]
+  );
+  const quantityMultiplier = Math.max(1, quantity);
+  const scaledNutritionForDisplay = useMemo<Nutrition>(() => {
+    const scaleValue = (value: number | undefined) =>
+      value === undefined ? undefined : Math.round(value * quantityMultiplier);
+
+    return {
+      ...nutrition,
+      calories: Math.round((nutrition.calories ?? 0) * quantityMultiplier),
+      protein: Math.round((nutrition.protein ?? 0) * quantityMultiplier),
+      carbs: Math.round((nutrition.carbs ?? 0) * quantityMultiplier),
+      totalFat: Math.round((nutrition.totalFat ?? 0) * quantityMultiplier),
+      ...(nutrition.satFat !== undefined ? { satFat: scaleValue(nutrition.satFat) } : {}),
+      ...(nutrition.transFat !== undefined ? { transFat: scaleValue(nutrition.transFat) } : {}),
+      ...(nutrition.cholesterol !== undefined ? { cholesterol: scaleValue(nutrition.cholesterol) } : {}),
+      ...(nutrition.sodium !== undefined ? { sodium: scaleValue(nutrition.sodium) } : {}),
+      ...(nutrition.fiber !== undefined ? { fiber: scaleValue(nutrition.fiber) } : {}),
+      ...(nutrition.sugars !== undefined ? { sugars: scaleValue(nutrition.sugars) } : {}),
+      ...(nutrition.extraNutrition
+        ? {
+            extraNutrition: Object.fromEntries(
+              Object.entries(nutrition.extraNutrition).map(([key, value]) => [
+                key,
+                Math.round(value * quantityMultiplier),
+              ])
+            ),
+          }
+        : {}),
+    };
+  }, [nutrition, quantityMultiplier]);
 
   const handleClose = () => {
     if (window.history.length > 1) {
@@ -1327,16 +1371,16 @@ export default function ItemRouteModal({
               <div className="w-full rounded-3xl border border-black/10 bg-[#e0e0e0] p-4">
                 <BuildSummaryDrawer
                   adjustedNutritionLabelTotals={{
-                    calories: chipotleAdjustedTotals.calories,
-                    totalFat: chipotleAdjustedTotals.totalFat,
-                    satFat: chipotleAdjustedTotals.satFat,
-                    transFat: chipotleAdjustedTotals.transFat,
-                    cholesterol: chipotleAdjustedTotals.cholesterol,
-                    sodium: chipotleAdjustedTotals.sodium,
-                    carbs: chipotleAdjustedTotals.carbs,
-                    fiber: chipotleAdjustedTotals.fiber,
-                    sugars: chipotleAdjustedTotals.sugars,
-                    protein: chipotleAdjustedTotals.protein,
+                    calories: Math.round(chipotleAdjustedTotals.calories * quantityMultiplier),
+                    totalFat: Math.round(chipotleAdjustedTotals.totalFat * quantityMultiplier),
+                    satFat: Math.round(chipotleAdjustedTotals.satFat * quantityMultiplier),
+                    transFat: Math.round(chipotleAdjustedTotals.transFat * quantityMultiplier),
+                    cholesterol: Math.round(chipotleAdjustedTotals.cholesterol * quantityMultiplier),
+                    sodium: Math.round(chipotleAdjustedTotals.sodium * quantityMultiplier),
+                    carbs: Math.round(chipotleAdjustedTotals.carbs * quantityMultiplier),
+                    fiber: Math.round(chipotleAdjustedTotals.fiber * quantityMultiplier),
+                    sugars: Math.round(chipotleAdjustedTotals.sugars * quantityMultiplier),
+                    protein: Math.round(chipotleAdjustedTotals.protein * quantityMultiplier),
                   }}
                   selectedBuildName={item.name}
                   selectedIngredientCount={Object.values(selectedChipotleIngredientItems).reduce((sum, entry) => sum + entry.quantity, 0)}
@@ -1370,7 +1414,7 @@ export default function ItemRouteModal({
           ) : (
           <ItemDetailsPanel
             item={item}
-            nutrition={nutrition}
+            nutrition={scaledNutritionForDisplay}
             variants={variants}
             selectedVariantId={selectedVariantId}
             onSelectVariant={setSelectedVariantId}
@@ -1543,10 +1587,10 @@ export default function ItemRouteModal({
         <div className="sticky bottom-0 -mx-3 z-30 flex h-fit flex-col items-center gap-3 border-t border-black/10 bg-white p-3 shadow-[0_-4px_10px_rgba(0,0,0,0.08)] sm:-mx-5 sm:p-4 lg:-mx-6">
           <MacroTotalsGrid
             macros={{
-              calories: Math.round(isChipotlePrebuiltBuilderItem ? chipotleAdjustedTotals.calories : (nutrition.calories ?? 0)),
-              protein: Math.round(isChipotlePrebuiltBuilderItem ? chipotleAdjustedTotals.protein : (nutrition.protein ?? 0)),
-              carbs: Math.round(isChipotlePrebuiltBuilderItem ? chipotleAdjustedTotals.carbs : (nutrition.carbs ?? 0)),
-              totalFat: Math.round(isChipotlePrebuiltBuilderItem ? chipotleAdjustedTotals.totalFat : (nutrition.totalFat ?? 0)),
+              calories: Math.round(isChipotlePrebuiltBuilderItem ? chipotleAdjustedTotals.calories * quantityMultiplier : (scaledNutritionForDisplay.calories ?? 0)),
+              protein: Math.round(isChipotlePrebuiltBuilderItem ? chipotleAdjustedTotals.protein * quantityMultiplier : (scaledNutritionForDisplay.protein ?? 0)),
+              carbs: Math.round(isChipotlePrebuiltBuilderItem ? chipotleAdjustedTotals.carbs * quantityMultiplier : (scaledNutritionForDisplay.carbs ?? 0)),
+              totalFat: Math.round(isChipotlePrebuiltBuilderItem ? chipotleAdjustedTotals.totalFat * quantityMultiplier : (scaledNutritionForDisplay.totalFat ?? 0)),
             }}
             size="panel"
             className="w-full justify-center gap-3 sm:gap-6"

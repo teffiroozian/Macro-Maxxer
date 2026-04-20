@@ -4,6 +4,7 @@ import { CartItem } from "@/stores/cartStore";
 
 type CartItemPreviewRowProps = {
   item: Pick<CartItem, "name" | "image" | "variantLabel" | "macrosPerItem">;
+  quantity?: number;
   variantStyle?: "inline" | "separate" | "hidden";
   macroStyle?: "compact" | "detailed";
   customizationsText?: string;
@@ -21,6 +22,7 @@ const macroLabelClassByStyle = {
 
 export default function CartItemPreviewRow({
   item,
+  quantity = 1,
   variantStyle = "inline",
   macroStyle = "compact",
   customizationsText,
@@ -34,6 +36,13 @@ export default function CartItemPreviewRow({
   const hasVariant = Boolean(item.variantLabel);
   const customizationClampClass =
     customizationsLineClamp === 2 ? "line-clamp-2" : "line-clamp-1";
+  const quantityMultiplier = Math.max(1, quantity);
+  const macros = {
+    calories: item.macrosPerItem.calories * quantityMultiplier,
+    protein: item.macrosPerItem.protein * quantityMultiplier,
+    carbs: item.macrosPerItem.carbs * quantityMultiplier,
+    totalFat: item.macrosPerItem.totalFat * quantityMultiplier,
+  };
 
   return (
     <div className={["flex min-w-0 w-full items-start gap-3", className].filter(Boolean).join(" ")}>
@@ -82,34 +91,34 @@ export default function CartItemPreviewRow({
         {macroStyle === "compact" ? (
           <div className="mt-1.5 flex flex-wrap items-center gap-x-3 gap-y-1 text-sm leading-none">
             <p className={macroLabelClassByStyle[macroStyle]}>
-              Cal:<span className="ml-1 font-semibold text-slate-900">{item.macrosPerItem.calories}</span>
+              Cal:<span className="ml-1 font-semibold text-slate-900">{macros.calories}</span>
             </p>
             <p className={macroLabelClassByStyle[macroStyle]}>
-              P:<span className="ml-1 font-semibold text-slate-900">{item.macrosPerItem.protein}g</span>
+              P:<span className="ml-1 font-semibold text-slate-900">{macros.protein}g</span>
             </p>
             <p className={macroLabelClassByStyle[macroStyle]}>
-              C:<span className="ml-1 font-semibold text-slate-900">{item.macrosPerItem.carbs}g</span>
+              C:<span className="ml-1 font-semibold text-slate-900">{macros.carbs}g</span>
             </p>
             <p className={macroLabelClassByStyle[macroStyle]}>
-              F:<span className="ml-1 font-semibold text-slate-900">{item.macrosPerItem.totalFat}g</span>
+              F:<span className="ml-1 font-semibold text-slate-900">{macros.totalFat}g</span>
             </p>
           </div>
         ) : (
           <div className="mt-1.5 flex flex-wrap items-center gap-x-4 gap-y-1 text-sm leading-none">
             <p className="whitespace-nowrap text-slate-500">
-              <span className="text-base font-semibold text-slate-900">{item.macrosPerItem.calories}</span>
+              <span className="text-base font-semibold text-slate-900">{macros.calories}</span>
               <span className="ml-1 text-xs">Cal</span>
             </p>
             <p className="whitespace-nowrap text-slate-500">
-              <span className="text-base font-semibold text-[#c2410c]">{item.macrosPerItem.protein}g</span>
+              <span className="text-base font-semibold text-[#c2410c]">{macros.protein}g</span>
               <span className="ml-1 text-xs">protein</span>
             </p>
             <p className="whitespace-nowrap text-slate-500">
-              <span className="text-base font-semibold text-[#ca8a04]">{item.macrosPerItem.carbs}g</span>
+              <span className="text-base font-semibold text-[#ca8a04]">{macros.carbs}g</span>
               <span className="ml-1 text-xs">carbs</span>
             </p>
             <p className="whitespace-nowrap text-slate-500">
-              <span className="text-base font-semibold text-[#2563eb]">{item.macrosPerItem.totalFat}g</span>
+              <span className="text-base font-semibold text-[#2563eb]">{macros.totalFat}g</span>
               <span className="ml-1 text-xs">fat</span>
             </p>
           </div>

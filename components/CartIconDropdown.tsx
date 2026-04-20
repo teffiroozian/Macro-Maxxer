@@ -123,9 +123,10 @@ export default function CartIconDropdown({
             {lastAddedItem ? (
               <CartItemPreviewRow
                 item={lastAddedItem}
+                quantity={lastAddedItem.quantity}
                 imageRenderer="native-img"
                 imageFallback="initial"
-                variantStyle="inline"
+                variantStyle="separate"
                 macroStyle="compact"
                 customizationsText={addonsLabel}
                 customizationsLineClamp={1}
