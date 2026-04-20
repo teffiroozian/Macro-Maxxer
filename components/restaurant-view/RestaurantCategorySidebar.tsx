@@ -130,7 +130,10 @@ export default function RestaurantCategorySidebar({
               </button>
 
               {isMobileCategoryMenuOpen ? (
-                <div role="menu" className="absolute left-0 top-[calc(100%+8px)] z-20 w-[min(220px,calc(100vw-2rem))] rounded-[14px] border border-black/15 bg-white p-2 shadow-[0_12px_28px_rgba(0,0,0,0.12)]">
+                <div
+                  role="menu"
+                  className="absolute left-0 top-[calc(100%+8px)] z-20 w-[min(220px,calc(100vw-2rem))] max-h-[70vh] overflow-y-auto rounded-[14px] border border-black/15 bg-white p-2 shadow-[0_12px_28px_rgba(0,0,0,0.12)]"
+                >
                   <div className="grid gap-1">
                     {effectiveViewMode === "ranking"
                       ? rankingOptions.map((option) => {
