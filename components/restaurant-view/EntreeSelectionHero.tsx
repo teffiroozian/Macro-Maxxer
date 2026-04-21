@@ -13,7 +13,7 @@ export default function EntreeSelectionHero({ entreeOptions, onSelectEntree }: P
       <p className="text-sm font-semibold uppercase tracking-[0.24em] text-slate-500">Chipotle</p>
       <h2 className="text-center text-5xl font-bold tracking-tight text-slate-900">Choose your entrée</h2>
       <p className="mt-3 text-center text-lg text-slate-600">Start your build by selecting a base.</p>
-      <div className="mt-10 grid w-full max-w-5xl gap-4 sm:grid-cols-3">
+      <div className="mt-10 grid w-full max-w-5xl gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {Object.entries(entreeOptions).map(([entreeKey, entree]) => {
           if (!isChipotleEntreeId(entreeKey)) {
             return null;

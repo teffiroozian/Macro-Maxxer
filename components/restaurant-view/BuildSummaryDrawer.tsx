@@ -53,7 +53,7 @@ export default function BuildSummaryDrawer({
   return (
     <div className="space-y-3">
       {!hideActionButtons ? (
-        <div className="flex flex-wrap items-center justify-end gap-2">
+        <div className="sticky top-0 z-20 -mx-1 flex flex-wrap items-center justify-end gap-2 bg-white/95 px-1 py-1 backdrop-blur-sm">
           <button
             type="button"
             onClick={onResetOrder}
@@ -73,26 +73,7 @@ export default function BuildSummaryDrawer({
         </div>
       ) : null}
 
-      <div className="grid items-stretch gap-4 lg:grid-cols-2">
-        <section className="rounded-[18px] border border-[rgba(0,0,0,0.15)] bg-white p-[18px]">
-          <h3 className="text-2xl font-bold text-neutral-900">Nutrition Summary</h3>
-          <div className="mt-6 text-xs font-medium text-[rgba(0,0,0,0.55)]">Amount per serving</div>
-          <div className="mt-1 flex items-end justify-between">
-            <div className="text-xl font-bold">Calories</div>
-            <div className="text-xl font-bold">{adjustedNutritionLabelTotals.calories}</div>
-          </div>
-          <div className="my-[12px] mb-2 h-[5px] rounded-[999px] bg-[rgba(0,0,0,0.75)]" />
-          <div className="flex items-baseline justify-between border-b border-[rgba(0,0,0,0.2)] py-[10px]"><div className="text-lg font-semibold">Total Fat</div><div className="text-lg font-semibold">{formatValue(adjustedNutritionLabelTotals.totalFat, "g")}</div></div>
-          <div className="flex items-baseline justify-between border-b border-[rgba(0,0,0,0.2)] py-[10px] pl-5"><div className="text-base font-medium text-[rgba(0,0,0,0.8)]">Sat Fat</div><div className="text-base font-medium text-[rgba(0,0,0,0.8)]">{formatValue(adjustedNutritionLabelTotals.satFat, "g")}</div></div>
-          <div className="flex items-baseline justify-between border-b border-[rgba(0,0,0,0.2)] py-[10px] pl-5"><div className="text-base font-medium text-[rgba(0,0,0,0.8)]">Trans Fat</div><div className="text-base font-medium text-[rgba(0,0,0,0.8)]">{formatValue(adjustedNutritionLabelTotals.transFat, "g")}</div></div>
-          <div className="flex items-baseline justify-between border-b border-[rgba(0,0,0,0.2)] py-[10px]"><div className="text-lg font-semibold">Cholesterol</div><div className="text-lg font-semibold">{formatValue(adjustedNutritionLabelTotals.cholesterol, "mg")}</div></div>
-          <div className="flex items-baseline justify-between border-b border-[rgba(0,0,0,0.2)] py-[10px]"><div className="text-lg font-semibold">Sodium</div><div className="text-lg font-semibold">{formatValue(adjustedNutritionLabelTotals.sodium, "mg")}</div></div>
-          <div className="flex items-baseline justify-between border-b border-[rgba(0,0,0,0.2)] py-[10px]"><div className="text-lg font-semibold">Carbohydrates</div><div className="text-lg font-semibold">{formatValue(adjustedNutritionLabelTotals.carbs, "g")}</div></div>
-          <div className="flex items-baseline justify-between border-b border-[rgba(0,0,0,0.2)] py-[10px] pl-5"><div className="text-base font-medium text-[rgba(0,0,0,0.8)]">Fiber</div><div className="text-base font-medium text-[rgba(0,0,0,0.8)]">{formatValue(adjustedNutritionLabelTotals.fiber, "g")}</div></div>
-          <div className="flex items-baseline justify-between border-b border-[rgba(0,0,0,0.2)] py-[10px] pl-5"><div className="text-base font-medium text-[rgba(0,0,0,0.8)]">Sugars</div><div className="text-base font-medium text-[rgba(0,0,0,0.8)]">{formatValue(adjustedNutritionLabelTotals.sugars, "g")}</div></div>
-          <div className="flex items-baseline justify-between border-b border-[rgba(0,0,0,0.2)] py-[10px]"><div className="text-lg font-semibold">Protein</div><div className="text-lg font-semibold">{formatValue(adjustedNutritionLabelTotals.protein, "g")}</div></div>
-        </section>
-
+      <div className="grid items-stretch gap-4">
         <section className="flex h-full min-h-0 flex-col rounded-3xl border border-black/10 bg-white p-5">
           <h3 className="text-2xl font-bold text-neutral-900">Selected Ingredients</h3>
           <p className="mt-2 text-sm font-semibold text-slate-600">{selectedBuildName} · {selectedIngredientCount} selected</p>
@@ -140,6 +121,25 @@ export default function BuildSummaryDrawer({
               ))}
             </div>
           </div>
+        </section>
+
+        <section className="rounded-[18px] border border-[rgba(0,0,0,0.15)] bg-white p-[18px]">
+          <h3 className="text-2xl font-bold text-neutral-900">Nutrition Summary</h3>
+          <div className="mt-6 text-xs font-medium text-[rgba(0,0,0,0.55)]">Amount per serving</div>
+          <div className="mt-1 flex items-end justify-between">
+            <div className="text-xl font-bold">Calories</div>
+            <div className="text-xl font-bold">{adjustedNutritionLabelTotals.calories}</div>
+          </div>
+          <div className="my-[12px] mb-2 h-[5px] rounded-[999px] bg-[rgba(0,0,0,0.75)]" />
+          <div className="flex items-baseline justify-between border-b border-[rgba(0,0,0,0.2)] py-[10px]"><div className="text-lg font-semibold">Total Fat</div><div className="text-lg font-semibold">{formatValue(adjustedNutritionLabelTotals.totalFat, "g")}</div></div>
+          <div className="flex items-baseline justify-between border-b border-[rgba(0,0,0,0.2)] py-[10px] pl-5"><div className="text-base font-medium text-[rgba(0,0,0,0.8)]">Sat Fat</div><div className="text-base font-medium text-[rgba(0,0,0,0.8)]">{formatValue(adjustedNutritionLabelTotals.satFat, "g")}</div></div>
+          <div className="flex items-baseline justify-between border-b border-[rgba(0,0,0,0.2)] py-[10px] pl-5"><div className="text-base font-medium text-[rgba(0,0,0,0.8)]">Trans Fat</div><div className="text-base font-medium text-[rgba(0,0,0,0.8)]">{formatValue(adjustedNutritionLabelTotals.transFat, "g")}</div></div>
+          <div className="flex items-baseline justify-between border-b border-[rgba(0,0,0,0.2)] py-[10px]"><div className="text-lg font-semibold">Cholesterol</div><div className="text-lg font-semibold">{formatValue(adjustedNutritionLabelTotals.cholesterol, "mg")}</div></div>
+          <div className="flex items-baseline justify-between border-b border-[rgba(0,0,0,0.2)] py-[10px]"><div className="text-lg font-semibold">Sodium</div><div className="text-lg font-semibold">{formatValue(adjustedNutritionLabelTotals.sodium, "mg")}</div></div>
+          <div className="flex items-baseline justify-between border-b border-[rgba(0,0,0,0.2)] py-[10px]"><div className="text-lg font-semibold">Carbohydrates</div><div className="text-lg font-semibold">{formatValue(adjustedNutritionLabelTotals.carbs, "g")}</div></div>
+          <div className="flex items-baseline justify-between border-b border-[rgba(0,0,0,0.2)] py-[10px] pl-5"><div className="text-base font-medium text-[rgba(0,0,0,0.8)]">Fiber</div><div className="text-base font-medium text-[rgba(0,0,0,0.8)]">{formatValue(adjustedNutritionLabelTotals.fiber, "g")}</div></div>
+          <div className="flex items-baseline justify-between border-b border-[rgba(0,0,0,0.2)] py-[10px] pl-5"><div className="text-base font-medium text-[rgba(0,0,0,0.8)]">Sugars</div><div className="text-base font-medium text-[rgba(0,0,0,0.8)]">{formatValue(adjustedNutritionLabelTotals.sugars, "g")}</div></div>
+          <div className="flex items-baseline justify-between border-b border-[rgba(0,0,0,0.2)] py-[10px]"><div className="text-lg font-semibold">Protein</div><div className="text-lg font-semibold">{formatValue(adjustedNutritionLabelTotals.protein, "g")}</div></div>
         </section>
       </div>
     </div>
