@@ -46,7 +46,7 @@ export default function StickyMacroTotalsBar({
     ? detailsOpen && secondaryActionExpandedLabel
       ? secondaryActionExpandedLabel
       : secondaryActionLabel
-    : "View Selections";
+    : "View Build";
   const primaryButtonText = isCartLayout ? primaryActionLabel : "Add to Cart";
 
   const wrapperClassName = inline
