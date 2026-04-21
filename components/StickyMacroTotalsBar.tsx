@@ -82,7 +82,7 @@ export default function StickyMacroTotalsBar({
           {detailsContent ? (
             <div
               className={`min-h-0 overflow-hidden transition-[max-height,transform,margin] duration-300 ease-out ${
-                detailsOpen ? "mb-4 max-h-[200vh] translate-y-0 flex-1" : "mb-0 max-h-0 translate-y-3"
+                detailsOpen ? "mb-4 max-h-full translate-y-0 flex-1" : "mb-0 max-h-0 translate-y-3"
               }`}
             >
               <div className="h-full overflow-y-auto overscroll-contain pr-1">

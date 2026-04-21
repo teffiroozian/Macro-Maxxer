@@ -81,47 +81,25 @@ export default function IngredientCompactCard({
         </span>
 
         {selectedItemImage ? (
-          <img className="h-24 w-24 shrink-0 rounded-xl bg-[#efefef] object-cover" src={selectedItemImage} alt={item.name} />
+          <img className="h-20 w-20 shrink-0 rounded-xl bg-[#efefef] object-cover sm:h-24 sm:w-24" src={selectedItemImage} alt={item.name} />
         ) : (
-          <div className="h-24 w-24 shrink-0 rounded-xl bg-[#efefef]" />
+          <div className="h-20 w-20 shrink-0 rounded-xl bg-[#efefef] sm:h-24 sm:w-24" />
         )}
 
-        <div className="flex min-w-0 flex-1 flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
-          <div className="flex min-w-0 flex-wrap items-center gap-2 lg:flex-1 lg:flex-col lg:items-start lg:gap-2">
-            {ingredientPortionBadge ? (
-              <span className="inline-flex shrink-0 rounded-full bg-lime-500 px-2 py-0.5 text-xs font-bold text-black">{ingredientPortionBadge}</span>
-            ) : null}
-            <div className="min-w-0 flex-1 truncate text-lg font-semibold text-black sm:text-xl">{item.name}</div>
-            {activeCompactOptions && activeCompactOptions.length > 1 && ingredientSelectionState ? (
-              <div className="flex flex-wrap gap-2">
-                {activeCompactOptions.map((variantOption) => (
-                  <button
-                    key={variantOption.id}
-                    type="button"
-                    disabled={Boolean(variantOption.disabled)}
-                    onClick={(event) => {
-                      event.preventDefault();
-                      event.stopPropagation();
-                      if (!variantOption.disabled) onCompactOptionSelect(variantOption.id);
-                    }}
-                    className={`cursor-pointer rounded-full border px-3 py-1 text-xs font-semibold ${
-                      selectedCompactOptionId === variantOption.id
-                        ? "border-slate-900 bg-slate-900 text-white"
-                        : "border-black/20 bg-white text-slate-700 hover:border-black/35"
-                    } ${variantOption.disabled ? "cursor-not-allowed opacity-55 hover:border-black/20" : ""}`}
-                  >
-                    {variantOption.label}
-                  </button>
-                ))}
+        <div className="flex min-w-0 flex-1 flex-col gap-3">
+          <div className="flex min-w-0 items-start justify-between gap-2">
+            <div className="flex min-w-0 flex-1 flex-wrap items-center gap-2">
+              {ingredientPortionBadge ? (
+                <span className="inline-flex shrink-0 rounded-full bg-lime-500 px-2 py-0.5 text-xs font-bold text-black">{ingredientPortionBadge}</span>
+              ) : null}
+              <div className="min-w-0 flex-1 truncate text-lg font-semibold text-black sm:text-xl">{item.name}</div>
+            </div>
+            {isIngredientUnavailable && ingredientUnavailableReason ? (
+              <div className="inline-flex w-fit shrink-0 rounded-full border border-black/20 bg-black/5 px-2 py-0.5 text-[11px] font-semibold text-black/60">
+                {ingredientUnavailableReason}
               </div>
             ) : null}
           </div>
-
-          {isIngredientUnavailable && ingredientUnavailableReason ? (
-            <div className="inline-flex w-fit rounded-full border border-black/20 bg-black/5 px-2 py-0.5 text-[11px] font-semibold text-black/60">
-              {ingredientUnavailableReason}
-            </div>
-          ) : null}
 
           <div className="flex w-full items-center gap-4 text-center lg:w-auto lg:gap-6">
             {[[calories, "black", "cal"], [protein, "#c2410c", "protein"], [carbs, "#ca8a04", "carbs"], [totalFat, "#2563eb", "fat"]].map(([value, color, label]) => (
@@ -135,6 +113,30 @@ export default function IngredientCompactCard({
               </div>
             ))}
           </div>
+
+          {activeCompactOptions && activeCompactOptions.length > 1 && ingredientSelectionState ? (
+            <div className="flex flex-wrap gap-2 pt-0.5">
+              {activeCompactOptions.map((variantOption) => (
+                <button
+                  key={variantOption.id}
+                  type="button"
+                  disabled={Boolean(variantOption.disabled)}
+                  onClick={(event) => {
+                    event.preventDefault();
+                    event.stopPropagation();
+                    if (!variantOption.disabled) onCompactOptionSelect(variantOption.id);
+                  }}
+                  className={`cursor-pointer rounded-full border px-3 py-1 text-xs font-semibold ${
+                    selectedCompactOptionId === variantOption.id
+                      ? "border-slate-900 bg-slate-900 text-white"
+                      : "border-black/20 bg-white text-slate-700 hover:border-black/35"
+                  } ${variantOption.disabled ? "cursor-not-allowed opacity-55 hover:border-black/20" : ""}`}
+                >
+                  {variantOption.label}
+                </button>
+              ))}
+            </div>
+          ) : null}
         </div>
       </div>
     </li>
