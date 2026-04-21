@@ -1541,7 +1541,7 @@ export default function ItemRouteModal({
         </div>
         </div>
 
-        <div className="sticky bottom-0 -mx-3 z-30 flex h-fit flex-row items-center justify-between gap-3 border-t border-black/10 bg-white p-3 shadow-[0_-4px_10px_rgba(0,0,0,0.08)] sm:-mx-5 sm:p-4 lg:-mx-6">
+        <div className="sticky bottom-0 -mx-3 z-30 flex h-fit flex-col gap-3 border-t border-black/10 bg-white p-3 shadow-[0_-4px_10px_rgba(0,0,0,0.08)] sm:-mx-5 sm:p-4 lg:-mx-6 lg:flex-row lg:items-center lg:justify-between">
           <MacroTotalsGrid
             macros={{
               calories: Math.round((isChipotlePrebuiltBuilderItem ? chipotleAdjustedTotals.calories : (nutrition.calories ?? 0)) * quantity),
@@ -1550,12 +1550,12 @@ export default function ItemRouteModal({
               totalFat: Math.round((isChipotlePrebuiltBuilderItem ? chipotleAdjustedTotals.totalFat : (nutrition.totalFat ?? 0)) * quantity),
             }}
             size="panel"
-            className="!w-fit justify-start gap-2 sm:gap-3"
+            className="w-full justify-between gap-2 sm:gap-3 lg:!w-fit lg:justify-start"
             itemClassName="px-2 py-0.5"
             labelClassName="text-[#64748b]"
           />
-          <div className="flex w-auto flex-row items-center gap-2">
-            <div className="inline-flex w-[100px] items-center justify-between rounded-xl border border-slate-200 bg-slate-50 p-1">
+          <div className="flex w-full flex-row items-center gap-2 lg:w-auto">
+            <div className="inline-flex h-12 flex-1 items-center justify-between rounded-xl border border-slate-200 bg-slate-50 p-1 lg:h-auto lg:w-[100px] lg:flex-none">
               <button
                 type="button"
                 onClick={handleDecrementQuantity}
@@ -1577,7 +1577,7 @@ export default function ItemRouteModal({
             {isCustomizeMode ? (
               <button
                 type="button"
-                className="cursor-pointer rounded-xl border border-black/20 bg-white px-4 py-2.5 text-base font-bold text-black/80 sm:px-6"
+                className="cursor-pointer h-12 rounded-xl border border-black/20 bg-white px-4 py-2.5 text-base font-bold text-black/80 sm:px-6"
                 onClick={handleClose}
               >
                 Cancel
@@ -1585,7 +1585,7 @@ export default function ItemRouteModal({
             ) : null}
             <button
               type="button"
-              className="cursor-pointer rounded-xl border border-black/20 bg-black/90 px-4 py-2.5 text-base font-bold text-white sm:px-6"
+              className="cursor-pointer h-12 flex-1 rounded-xl border border-black/20 bg-black/90 px-4 py-2.5 text-base font-bold text-white sm:px-6 lg:flex-none"
               onClick={handleSaveItem}
             >
               {isCustomizeMode ? "Update" : "Add to Cart"}
