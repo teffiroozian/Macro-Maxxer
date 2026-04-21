@@ -1541,7 +1541,7 @@ export default function ItemRouteModal({
         </div>
         </div>
 
-        <div className="sticky bottom-0 -mx-3 z-30 flex h-fit flex-col items-center gap-3 border-t border-black/10 bg-white p-3 shadow-[0_-4px_10px_rgba(0,0,0,0.08)] sm:-mx-5 sm:p-4 md:flex-row md:items-center lg:-mx-6">
+        <div className="sticky bottom-0 -mx-3 z-30 flex h-fit flex-col items-center gap-3 border-t border-black/10 bg-white p-3 shadow-[0_-4px_10px_rgba(0,0,0,0.08)] sm:-mx-5 sm:p-4 md:flex-row md:items-center md:justify-between lg:-mx-6">
           <MacroTotalsGrid
             macros={{
               calories: Math.round((isChipotlePrebuiltBuilderItem ? chipotleAdjustedTotals.calories : (nutrition.calories ?? 0)) * quantity),
@@ -1550,12 +1550,12 @@ export default function ItemRouteModal({
               totalFat: Math.round((isChipotlePrebuiltBuilderItem ? chipotleAdjustedTotals.totalFat : (nutrition.totalFat ?? 0)) * quantity),
             }}
             size="panel"
-            className="w-full justify-center gap-3 sm:gap-6 md:w-auto md:flex-1 md:justify-start"
+            className="w-full justify-center gap-3 sm:gap-6 md:w-auto md:justify-start"
             itemClassName="px-2 py-0.5"
             labelClassName="text-[#64748b]"
           />
-          <div className="flex w-full flex-row items-center gap-2 md:ml-auto md:w-auto">
-            <div className="inline-flex w-full flex-1 items-center justify-between rounded-xl border border-slate-200 bg-slate-50 p-1 md:w-[220px] md:flex-none">
+          <div className="flex w-full flex-row items-center gap-2 md:w-auto">
+            <div className="inline-flex w-full flex-1 items-center justify-between rounded-xl border border-slate-200 bg-slate-50 p-1 md:w-[180px] md:flex-none">
               <button
                 type="button"
                 onClick={handleDecrementQuantity}
