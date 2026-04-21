@@ -164,6 +164,7 @@ export default function ItemDetailsPanel({
   activeSectionId,
   onSelectSection,
   onCustomizeIngredients,
+  quantityMultiplier = 1,
 }: {
   item: MenuItem;
   nutrition: Nutrition;
@@ -214,8 +215,24 @@ export default function ItemDetailsPanel({
   activeSectionId?: "ingredients" | "sides" | "drinks" | "sauces" | null;
   onSelectSection?: (sectionId: "ingredients" | "sides" | "drinks" | "sauces") => void;
   onCustomizeIngredients?: () => void;
+  quantityMultiplier?: number;
 }) {
-  const n = nutrition;
+  const safeQuantityMultiplier = Math.max(quantityMultiplier, 1);
+  const scaleNutritionValue = (value?: number) =>
+    value === undefined || Number.isNaN(value) ? undefined : Math.round(value * safeQuantityMultiplier);
+  const n: Nutrition = {
+    ...nutrition,
+    calories: scaleNutritionValue(nutrition.calories),
+    protein: scaleNutritionValue(nutrition.protein),
+    carbs: scaleNutritionValue(nutrition.carbs),
+    totalFat: scaleNutritionValue(nutrition.totalFat),
+    satFat: scaleNutritionValue(nutrition.satFat),
+    transFat: scaleNutritionValue(nutrition.transFat),
+    cholesterol: scaleNutritionValue(nutrition.cholesterol),
+    sodium: scaleNutritionValue(nutrition.sodium),
+    fiber: scaleNutritionValue(nutrition.fiber),
+    sugars: scaleNutritionValue(nutrition.sugars),
+  };
   const selectedMainVariant = variants?.find((variant) => variant.id === selectedVariantId);
   const selectedMainItemImage = selectedMainVariant?.image ?? item.image;
   const proteinGrams = n.protein ?? 0;
@@ -321,7 +338,12 @@ export default function ItemDetailsPanel({
     ...selectedSauceItems,
   ];
 
-  const activeCustomizationTotals = customizationTotals ?? { calories: 0, protein: 0, carbs: 0, totalFat: 0 };
+  const activeCustomizationTotals = {
+    calories: Math.round((customizationTotals?.calories ?? 0) * safeQuantityMultiplier),
+    protein: Math.round((customizationTotals?.protein ?? 0) * safeQuantityMultiplier),
+    carbs: Math.round((customizationTotals?.carbs ?? 0) * safeQuantityMultiplier),
+    totalFat: Math.round((customizationTotals?.totalFat ?? 0) * safeQuantityMultiplier),
+  };
   const normalizedLockedIngredientIds = new Set(
     lockedIngredientIds.map((ingredientId) => normalizeIngredientToken(ingredientId))
   );

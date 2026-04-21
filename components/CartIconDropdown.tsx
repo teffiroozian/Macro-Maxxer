@@ -125,7 +125,7 @@ export default function CartIconDropdown({
                 item={lastAddedItem}
                 imageRenderer="native-img"
                 imageFallback="initial"
-                variantStyle="inline"
+                variantStyle="separate"
                 macroStyle="compact"
                 customizationsText={addonsLabel}
                 customizationsLineClamp={1}

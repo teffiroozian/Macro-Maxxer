@@ -1371,6 +1371,7 @@ export default function ItemRouteModal({
           <ItemDetailsPanel
             item={item}
             nutrition={nutrition}
+            quantityMultiplier={quantity}
             variants={variants}
             selectedVariantId={selectedVariantId}
             onSelectVariant={setSelectedVariantId}
@@ -1543,10 +1544,10 @@ export default function ItemRouteModal({
         <div className="sticky bottom-0 -mx-3 z-30 flex h-fit flex-col items-center gap-3 border-t border-black/10 bg-white p-3 shadow-[0_-4px_10px_rgba(0,0,0,0.08)] sm:-mx-5 sm:p-4 lg:-mx-6">
           <MacroTotalsGrid
             macros={{
-              calories: Math.round(isChipotlePrebuiltBuilderItem ? chipotleAdjustedTotals.calories : (nutrition.calories ?? 0)),
-              protein: Math.round(isChipotlePrebuiltBuilderItem ? chipotleAdjustedTotals.protein : (nutrition.protein ?? 0)),
-              carbs: Math.round(isChipotlePrebuiltBuilderItem ? chipotleAdjustedTotals.carbs : (nutrition.carbs ?? 0)),
-              totalFat: Math.round(isChipotlePrebuiltBuilderItem ? chipotleAdjustedTotals.totalFat : (nutrition.totalFat ?? 0)),
+              calories: Math.round((isChipotlePrebuiltBuilderItem ? chipotleAdjustedTotals.calories : (nutrition.calories ?? 0)) * quantity),
+              protein: Math.round((isChipotlePrebuiltBuilderItem ? chipotleAdjustedTotals.protein : (nutrition.protein ?? 0)) * quantity),
+              carbs: Math.round((isChipotlePrebuiltBuilderItem ? chipotleAdjustedTotals.carbs : (nutrition.carbs ?? 0)) * quantity),
+              totalFat: Math.round((isChipotlePrebuiltBuilderItem ? chipotleAdjustedTotals.totalFat : (nutrition.totalFat ?? 0)) * quantity),
             }}
             size="panel"
             className="w-full justify-center gap-3 sm:gap-6"
