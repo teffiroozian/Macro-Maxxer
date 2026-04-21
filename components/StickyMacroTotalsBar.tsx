@@ -75,21 +75,19 @@ export default function StickyMacroTotalsBar({
         <div className={contentContainerClassName}>
           {detailsContent ? (
             <div
-              className={`grid min-h-0 transition-all duration-300 ease-out ${
-                detailsOpen ? "mb-4 grid-rows-[1fr] opacity-100" : "mb-0 grid-rows-[0fr] opacity-0"
+              className={`min-h-0 overflow-hidden transition-all duration-300 ease-out ${
+                detailsOpen ? "mb-4 max-h-[70vh] translate-y-0" : "mb-0 max-h-0 translate-y-3"
               }`}
             >
-              <div className="min-h-0 overflow-hidden">
-                <div className="h-full overflow-y-auto overscroll-contain pr-1">
-                  {detailsContent}
-                </div>
+              <div className="h-full overflow-y-auto overscroll-contain pr-1">
+                {detailsContent}
               </div>
             </div>
           ) : null}
           {detailsContent ? (
             <div
               className={`border-t border-black/10 transition-all duration-300 ease-out ${
-                detailsOpen ? "mb-4 opacity-100" : "mb-0 opacity-0"
+                detailsOpen ? "mb-4" : "mb-0"
               }`}
               aria-hidden="true"
             />
@@ -135,7 +133,7 @@ export default function StickyMacroTotalsBar({
                 type="button"
                 onClick={onSecondaryAction}
                 className={`cursor-pointer inline-flex items-center justify-center gap-2 rounded-xl border-2 border-black/80 bg-transparent font-semibold text-[#1A1A1A] transition hover:bg-black/5 ${
-                  isCartLayout ? "h-11 px-6 text-base" : "h-11 px-6 text-base"
+                  isCartLayout ? "h-[48px] px-6 text-base" : "h-[48px] px-6 text-base"
                 } ${
                   isCartLayout ? "" : "flex-1 sm:flex-none"
                 }`}
@@ -151,7 +149,7 @@ export default function StickyMacroTotalsBar({
                 type="button"
                 onClick={onPrimaryAction}
                 className={`cursor-pointer inline-flex items-center justify-center gap-2 rounded-xl border border-black bg-black font-semibold text-white transition hover:bg-neutral-900 ${
-                  isCartLayout ? "h-11 px-6 text-base" : "h-11 px-6 text-base"
+                  isCartLayout ? "h-[48px] px-6 text-base" : "h-[48px] px-6 text-base"
                 } ${
                   isCartLayout ? "" : "flex-1 sm:flex-none"
                 }`}
