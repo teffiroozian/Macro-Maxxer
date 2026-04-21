@@ -1067,7 +1067,7 @@ export default function MenuItemCard({
             ) : null}
           </div>
 
-          <div className="mt-4 flex flex-wrap items-end gap-x-8 gap-y-3 sm:mt-auto sm:gap-x-8 lg:flex-nowrap lg:gap-[60px]">
+          <div className="mt-4 flex flex-wrap items-end gap-x-6 gap-y-3 sm:mt-auto sm:gap-x-8">
             <div className="flex flex-col items-center justify-start">
               <div className="inline-flex items-baseline gap-1.5">
                 <div className="text-2xl font-bold text-[#c2410c]">{formatMacro(displayProtein)}</div>
@@ -1183,7 +1183,7 @@ export default function MenuItemCard({
 
       <div
         id={`${id}-details`}
-        className={`${open && useCartQuickEditPanel ? "overflow-visible" : "overflow-hidden"} bg-white transition-[max-height] duration-300 ease-in-out ${
+        className={`${open && useCartQuickEditPanel ? "overflow-x-hidden overflow-y-visible" : "overflow-hidden"} bg-white transition-[max-height] duration-300 ease-in-out ${
           open ? "max-h-[5000px]" : "max-h-0"
         }`}
       >
@@ -1214,7 +1214,7 @@ export default function MenuItemCard({
                           />
                         </div>
                       ) : null}
-                      <div className="mt-2 grid grid-cols-2 gap-x-3 gap-y-2 sm:grid-cols-4">
+                      <div className="mt-2 flex flex-wrap items-end gap-x-3 gap-y-2">
                         <QuickMacro value={displayCalories} label="Cal" tone="calories" />
                         <QuickMacro value={displayProtein} label="Protein" tone="protein" />
                         <QuickMacro value={displayCarbs} label="Carbs" tone="carbs" />
@@ -1248,7 +1248,7 @@ export default function MenuItemCard({
                             />
                           </div>
                         ) : null}
-                        <div className="mt-2 grid grid-cols-2 gap-x-3 gap-y-2 sm:grid-cols-4">
+                        <div className="mt-2 flex flex-wrap items-end gap-x-3 gap-y-2">
                           <QuickMacro value={selectedComboSideVariant?.nutrition.calories ?? selectedComboSide.nutrition.calories} label="Cal" tone="calories" />
                           <QuickMacro value={selectedComboSideVariant?.nutrition.protein ?? selectedComboSide.nutrition.protein} label="Protein" tone="protein" />
                           <QuickMacro value={selectedComboSideVariant?.nutrition.carbs ?? selectedComboSide.nutrition.carbs} label="Carbs" tone="carbs" />
@@ -1283,7 +1283,7 @@ export default function MenuItemCard({
                             />
                           </div>
                         ) : null}
-                        <div className="mt-2 grid grid-cols-2 gap-x-3 gap-y-2 sm:grid-cols-4">
+                        <div className="mt-2 flex flex-wrap items-end gap-x-3 gap-y-2">
                           <QuickMacro value={selectedComboDrinkVariant?.nutrition.calories ?? selectedComboDrink.nutrition.calories} label="Cal" tone="calories" />
                           <QuickMacro value={selectedComboDrinkVariant?.nutrition.protein ?? selectedComboDrink.nutrition.protein} label="Protein" tone="protein" />
                           <QuickMacro value={selectedComboDrinkVariant?.nutrition.carbs ?? selectedComboDrink.nutrition.carbs} label="Carbs" tone="carbs" />
@@ -1352,7 +1352,7 @@ export default function MenuItemCard({
                                   +
                                 </button>
                               </div>
-                              <div className="mt-2 grid grid-cols-2 gap-x-3 gap-y-2 sm:grid-cols-4">
+                              <div className="mt-2 flex flex-wrap items-end gap-x-3 gap-y-2">
                                 <QuickMacro value={addon.calories * count} label="Cal" tone="calories" />
                                 <QuickMacro value={addon.protein * count} label="Protein" tone="protein" />
                                 <QuickMacro value={addon.carbs * count} label="Carbs" tone="carbs" />
@@ -1380,7 +1380,7 @@ export default function MenuItemCard({
                         </div>
                         <div className="min-w-0">
                           <p className="truncate text-sm font-semibold text-slate-900">{selectedAddons.dressings.name}</p>
-                          <div className="mt-2 grid grid-cols-2 gap-x-3 gap-y-2 sm:grid-cols-4">
+                          <div className="mt-2 flex flex-wrap items-end gap-x-3 gap-y-2">
                             <QuickMacro value={selectedAddons.dressings.calories} label="Cal" tone="calories" />
                             <QuickMacro value={selectedAddons.dressings.protein} label="Protein" tone="protein" />
                             <QuickMacro value={selectedAddons.dressings.carbs} label="Carbs" tone="carbs" />
