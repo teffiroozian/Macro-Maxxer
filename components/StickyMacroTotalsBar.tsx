@@ -42,6 +42,12 @@ export default function StickyMacroTotalsBar({
   detailsContent,
 }: StickyMacroTotalsBarProps) {
   const isCartLayout = layoutPreset === "cart";
+  const secondaryButtonText = isCartLayout
+    ? detailsOpen && secondaryActionExpandedLabel
+      ? secondaryActionExpandedLabel
+      : secondaryActionLabel
+    : "View";
+  const primaryButtonText = isCartLayout ? primaryActionLabel : "Add";
 
   const wrapperClassName = inline
     ? "w-full"
@@ -75,22 +81,14 @@ export default function StickyMacroTotalsBar({
         <div className={contentContainerClassName}>
           {detailsContent ? (
             <div
-              className={`min-h-0 overflow-hidden transition-all duration-300 ease-out ${
-                detailsOpen ? "mb-4 max-h-[70vh] translate-y-0" : "mb-0 max-h-0 translate-y-3"
+              className={`min-h-0 overflow-hidden transition-[max-height,transform,margin] duration-300 ease-out ${
+                detailsOpen ? "mb-4 max-h-[200vh] translate-y-0 flex-1" : "mb-0 max-h-0 translate-y-3"
               }`}
             >
               <div className="h-full overflow-y-auto overscroll-contain pr-1">
                 {detailsContent}
               </div>
             </div>
-          ) : null}
-          {detailsContent ? (
-            <div
-              className={`border-t border-black/10 transition-all duration-300 ease-out ${
-                detailsOpen ? "mb-4" : "mb-0"
-              }`}
-              aria-hidden="true"
-            />
           ) : null}
           <div
             className={`shrink-0 flex ${
@@ -126,14 +124,14 @@ export default function StickyMacroTotalsBar({
 
             <div
               className={`flex gap-2 sm:gap-2.5 ${
-                isCartLayout ? "w-full flex-col sm:w-auto" : "w-auto shrink-0 flex-col sm:flex-row"
+                isCartLayout ? "w-full flex-col sm:w-auto" : "w-auto shrink-0 flex-row"
               }`}
             >
               <button
                 type="button"
                 onClick={onSecondaryAction}
                 className={`cursor-pointer inline-flex items-center justify-center gap-2 rounded-xl border-2 border-black/80 bg-transparent font-semibold text-[#1A1A1A] transition hover:bg-black/5 ${
-                  isCartLayout ? "h-[48px] px-6 text-base" : "h-[48px] px-6 text-base"
+                  isCartLayout ? "h-[48px] px-6 text-base" : "h-10 px-4 text-sm"
                 } ${
                   isCartLayout ? "" : "flex-1 sm:flex-none"
                 }`}
@@ -143,19 +141,19 @@ export default function StickyMacroTotalsBar({
                 ) : (
                   <SecondaryActionIcon className="h-4 w-4" strokeWidth={2.5} aria-hidden="true" />
                 )}
-                <span>{detailsOpen && secondaryActionExpandedLabel ? secondaryActionExpandedLabel : secondaryActionLabel}</span>
+                <span>{secondaryButtonText}</span>
               </button>
               <button
                 type="button"
                 onClick={onPrimaryAction}
                 className={`cursor-pointer inline-flex items-center justify-center gap-2 rounded-xl border border-black bg-black font-semibold text-white transition hover:bg-neutral-900 ${
-                  isCartLayout ? "h-[48px] px-6 text-base" : "h-[48px] px-6 text-base"
+                  isCartLayout ? "h-[48px] px-6 text-base" : "h-10 px-4 text-sm"
                 } ${
                   isCartLayout ? "" : "flex-1 sm:flex-none"
                 }`}
               >
                 <PrimaryActionIcon className="h-4 w-4" strokeWidth={2.5} aria-hidden="true" />
-                <span>{primaryActionLabel}</span>
+                <span>{primaryButtonText}</span>
               </button>
             </div>
           </div>
