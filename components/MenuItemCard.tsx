@@ -1094,7 +1094,7 @@ export default function MenuItemCard({
             ) : null}
           </div>
 
-          <div className="mt-4 flex flex-wrap items-end gap-x-6 gap-y-3 sm:mt-auto sm:gap-x-8">
+          <div className="mt-4 flex flex-wrap items-end gap-x-6 gap-y-3 lg:mt-auto lg:gap-x-8">
             <div className="flex flex-col items-center justify-start">
               <div className="inline-flex items-baseline gap-1.5">
                 <div className="text-2xl font-bold text-[#c2410c]">{formatMacro(displayProtein)}</div>
