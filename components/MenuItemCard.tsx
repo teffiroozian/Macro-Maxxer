@@ -576,6 +576,33 @@ export default function MenuItemCard({
   const protein = nutrition.protein;
   const carbs = nutrition.carbs;
   const totalFat = nutrition.totalFat;
+  const mainItemOnlyNutrition = useMemo(
+    () =>
+      normalizeNutrition({
+        ...baseNutrition,
+        calories: sumNutrition(
+          baseNutrition.calories,
+          addonNutritionTotals.calories + commonChangeTotals.calories + ingredientCountTotals.calories
+        ),
+        protein: sumNutrition(
+          baseNutrition.protein,
+          addonNutritionTotals.protein + commonChangeTotals.protein + ingredientCountTotals.protein
+        ),
+        carbs: sumNutrition(
+          baseNutrition.carbs,
+          addonNutritionTotals.carbs + commonChangeTotals.carbs + ingredientCountTotals.carbs
+        ),
+        totalFat: sumNutrition(
+          baseNutrition.totalFat,
+          addonNutritionTotals.totalFat + commonChangeTotals.totalFat + ingredientCountTotals.totalFat
+        ),
+      }),
+    [addonNutritionTotals, baseNutrition, commonChangeTotals, ingredientCountTotals]
+  );
+  const quickMainName =
+    comboType === "combo-meal"
+      ? item.name.replace(/\s+combo\b/i, "").trim()
+      : item.name;
 
   const rankText = typeof rankIndex === "number" ? pad2(rankIndex + 1) : null;
   const isCartMode = mode === "cart";
@@ -1201,7 +1228,7 @@ export default function MenuItemCard({
                     </div>
                     <div className="min-w-0">
                       <div className="flex items-start justify-between gap-2">
-                        <p className="min-w-0 flex-1 truncate text-lg font-semibold text-slate-900">{item.name}</p>
+                        <p className="min-w-0 flex-1 truncate text-lg font-semibold text-slate-900">{quickMainName}</p>
                         {hasVariantDropdown ? (
                           <QuickVariantDropdown
                             ariaLabel={`${item.name} quick portion`}
@@ -1215,10 +1242,10 @@ export default function MenuItemCard({
                         ) : null}
                       </div>
                       <div className="mt-2 flex flex-wrap items-end gap-x-3 gap-y-2">
-                        <QuickMacro value={displayCalories} label="Cal" tone="calories" />
-                        <QuickMacro value={displayProtein} label="Protein" tone="protein" />
-                        <QuickMacro value={displayCarbs} label="Carbs" tone="carbs" />
-                        <QuickMacro value={displayFat} label="Fat" tone="totalFat" />
+                        <QuickMacro value={mainItemOnlyNutrition.calories} label="Cal" tone="calories" />
+                        <QuickMacro value={mainItemOnlyNutrition.protein} label="Protein" tone="protein" />
+                        <QuickMacro value={mainItemOnlyNutrition.carbs} label="Carbs" tone="carbs" />
+                        <QuickMacro value={mainItemOnlyNutrition.totalFat} label="Fat" tone="totalFat" />
                       </div>
                     </div>
                   </div>
