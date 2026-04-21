@@ -217,15 +217,15 @@ export default function ItemDetailsPanel({
   onCustomizeIngredients?: () => void;
   quantityMultiplier?: number;
 }) {
-  const safeQuantityMultiplier = Math.max(quantityMultiplier, 1);
+  const safeQuantityMultiplier = Math.max(quantityMultiplier ?? 1, 1);
   const scaleNutritionValue = (value?: number) =>
     value === undefined || Number.isNaN(value) ? undefined : Math.round(value * safeQuantityMultiplier);
   const n: Nutrition = {
     ...nutrition,
-    calories: scaleNutritionValue(nutrition.calories),
-    protein: scaleNutritionValue(nutrition.protein),
-    carbs: scaleNutritionValue(nutrition.carbs),
-    totalFat: scaleNutritionValue(nutrition.totalFat),
+    calories: scaleNutritionValue(nutrition.calories) ?? 0,
+    protein: scaleNutritionValue(nutrition.protein) ?? 0,
+    carbs: scaleNutritionValue(nutrition.carbs) ?? 0,
+    totalFat: scaleNutritionValue(nutrition.totalFat) ?? 0,
     satFat: scaleNutritionValue(nutrition.satFat),
     transFat: scaleNutritionValue(nutrition.transFat),
     cholesterol: scaleNutritionValue(nutrition.cholesterol),
