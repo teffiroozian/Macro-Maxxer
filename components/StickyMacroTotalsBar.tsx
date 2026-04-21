@@ -94,10 +94,10 @@ export default function StickyMacroTotalsBar({
             className={`shrink-0 flex ${
               isCartLayout
                 ? "flex-col gap-5 lg:flex-row lg:items-center lg:gap-8"
-                : "flex-row items-center justify-between gap-4"
+                : "flex-col gap-3 lg:flex-row lg:items-center lg:justify-between"
             }`}
           >
-            <section className={`${isCartLayout ? "flex-1" : "w-auto shrink-0"}`}>
+            <section className={`${isCartLayout ? "flex-1" : "w-full lg:w-auto lg:shrink-0"}`}>
               {contextLine ? (
                 <p className="text-sm font-medium tracking-tight text-neutral-500">
                   {contextLine}
@@ -115,7 +115,7 @@ export default function StickyMacroTotalsBar({
                 className={`${
                   isCartLayout
                     ? "mt-4 grid-cols-2 gap-x-4 gap-y-4 sm:grid-cols-4 sm:gap-x-6"
-                    : `mt-1 !w-fit grid-cols-4 gap-x-2 ${contextLine ? "sm:mt-2" : ""} sm:gap-x-3`
+                    : `mt-1 w-full grid-cols-4 gap-x-3 ${contextLine ? "sm:mt-2" : ""}`
                 }`}
                 labelClassName={`${isCartLayout ? "text-[#1A1A1A]" : "text-[#1A1A1A] !text-[9px] sm:!text-[10px]"}`}
                 valueClassName={isCartLayout ? "" : "!text-lg sm:!text-xl"}
@@ -124,7 +124,7 @@ export default function StickyMacroTotalsBar({
 
             <div
               className={`flex gap-2 sm:gap-2.5 ${
-                isCartLayout ? "w-full flex-col sm:w-auto" : "w-auto shrink-0 flex-row"
+                isCartLayout ? "w-full flex-col sm:w-auto" : "w-full shrink-0 flex-row lg:w-auto"
               }`}
             >
               <button
