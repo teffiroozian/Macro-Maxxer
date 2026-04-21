@@ -91,7 +91,7 @@ export default function IngredientCompactCard({
             {ingredientPortionBadge ? (
               <span className="inline-flex shrink-0 rounded-full bg-lime-500 px-2 py-0.5 text-xs font-bold text-black">{ingredientPortionBadge}</span>
             ) : null}
-            <div className="min-w-0 flex-1 truncate text-lg font-semibold text-black sm:text-xl">{item.name}</div>
+            <div className="min-w-0 flex-1 truncate text-xl font-semibold text-black sm:text-2xl">{item.name}</div>
             {activeCompactOptions && activeCompactOptions.length > 1 && ingredientSelectionState ? (
               <div className="flex flex-wrap gap-2">
                 {activeCompactOptions.map((variantOption) => (
@@ -126,7 +126,7 @@ export default function IngredientCompactCard({
           <div className="flex w-full items-center gap-4 text-center lg:gap-8">
             {[[calories, "black", "cal"], [protein, "#c2410c", "protein"], [carbs, "#ca8a04", "carbs"], [totalFat, "#2563eb", "fat"]].map(([value, color, label]) => (
               <div key={String(label)} className="flex min-w-[44px] flex-col items-center gap-1 sm:min-w-[54px]">
-                <div className="text-xl leading-none font-bold sm:text-2xl" style={{ color: String(color) }}>
+                <div className="text-lg leading-none font-bold sm:text-xl" style={{ color: String(color) }}>
                   {label === "cal" ? formatCalories(value as number | undefined) : formatMacro(value as number | undefined)}
                 </div>
                 <div className="text-[10px] font-semibold uppercase tracking-wide text-black/80">{label}</div>

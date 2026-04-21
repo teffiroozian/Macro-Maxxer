@@ -73,8 +73,14 @@ export default function StickyMacroTotalsBar({
           {detailsOpen && detailsContent ? (
             <div className="mb-4 border-t border-black/10" aria-hidden="true" />
           ) : null}
-          <div className={`shrink-0 flex flex-col ${isCartLayout ? "gap-5 lg:gap-8" : "gap-4 lg:gap-6"} lg:flex-row lg:items-center`}>
-            <section className="flex-1">
+          <div
+            className={`shrink-0 flex ${
+              isCartLayout
+                ? "flex-col gap-5 lg:flex-row lg:items-center lg:gap-8"
+                : "flex-row items-end justify-between gap-3"
+            }`}
+          >
+            <section className={`${isCartLayout ? "flex-1" : "min-w-0 flex-1"}`}>
               {contextLine ? (
                 <p className="text-sm font-medium tracking-tight text-neutral-500">
                   {contextLine}
@@ -88,16 +94,28 @@ export default function StickyMacroTotalsBar({
               <MacroTotalsGrid
                 macros={totals}
                 variant="bar"
-                className={`grid-cols-2 gap-x-4 ${isCartLayout ? "mt-4 gap-y-4 sm:gap-x-6" : `${contextLine ? "mt-2" : ""} gap-y-3 sm:gap-x-6`} sm:grid-cols-4`}
-                labelClassName="text-[#1A1A1A]"
+                size={isCartLayout ? "panel" : "compact"}
+                className={`${
+                  isCartLayout
+                    ? "mt-4 grid-cols-2 gap-x-4 gap-y-4 sm:grid-cols-4 sm:gap-x-6"
+                    : `mt-1 grid-cols-4 gap-x-1.5 ${contextLine ? "sm:mt-2" : ""} sm:gap-x-3`
+                }`}
+                labelClassName={`${isCartLayout ? "text-[#1A1A1A]" : "text-[#1A1A1A] !text-[9px] sm:!text-[10px]"}`}
+                valueClassName={isCartLayout ? "" : "!text-lg sm:!text-xl"}
               />
             </section>
 
-            <div className={`flex w-full gap-2.5 sm:w-auto sm:gap-3 ${isCartLayout ? "flex-col" : "flex-row"}`}>
+            <div
+              className={`flex gap-2 sm:gap-2.5 ${
+                isCartLayout ? "w-full flex-col sm:w-auto" : "w-auto shrink-0 flex-row"
+              }`}
+            >
               <button
                 type="button"
                 onClick={onSecondaryAction}
-                className={`cursor-pointer inline-flex h-11 items-center justify-center gap-2 rounded-xl border-2 border-black/80 bg-transparent px-6 text-base font-semibold text-[#1A1A1A] transition hover:bg-black/5 ${
+                className={`cursor-pointer inline-flex items-center justify-center gap-2 rounded-xl border-2 border-black/80 bg-transparent font-semibold text-[#1A1A1A] transition hover:bg-black/5 ${
+                  isCartLayout ? "h-11 px-6 text-base" : "h-9 px-4 text-sm"
+                } ${
                   isCartLayout ? "" : "flex-1 sm:flex-none"
                 }`}
               >
@@ -111,7 +129,9 @@ export default function StickyMacroTotalsBar({
               <button
                 type="button"
                 onClick={onPrimaryAction}
-                className={`cursor-pointer inline-flex h-11 items-center justify-center gap-2 rounded-xl border border-black bg-black px-6 text-base font-semibold text-white transition hover:bg-neutral-900 ${
+                className={`cursor-pointer inline-flex items-center justify-center gap-2 rounded-xl border border-black bg-black font-semibold text-white transition hover:bg-neutral-900 ${
+                  isCartLayout ? "h-11 px-6 text-base" : "h-9 px-4 text-sm"
+                } ${
                   isCartLayout ? "" : "flex-1 sm:flex-none"
                 }`}
               >
