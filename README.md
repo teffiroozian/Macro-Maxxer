@@ -1,10 +1,10 @@
-# Protix
+# Macro Maxxer
 
 A macro-focused fast food app that lets users find high-protein meals across multiple restaurants and customize items with real-time nutrition tracking.
 
 ## 🌍 Live Demo
 
-https://protix-ten.vercel.app/
+https://macromaxxer.vercel.app/
 
 ## 🧠 The Problem
 
