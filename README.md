@@ -12,7 +12,7 @@ Finding meals that match specific macro goals when eating out is time-consuming.
 
 ## 💡 The Solution
 
-Protix brings multiple restaurant menus into one place and makes nutrition data instantly accessible. Users can quickly scan items, compare macros, and customize meals to match their goals without jumping between pages or apps.
+Macro Maxxer brings multiple restaurant menus into one place and makes nutrition data instantly accessible. Users can quickly scan items, compare macros, and customize meals to match their goals without jumping between pages or apps.
 
 ## 🚀 Features
 
