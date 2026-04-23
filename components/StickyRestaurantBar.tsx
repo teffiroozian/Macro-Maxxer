@@ -36,6 +36,13 @@ type StickyRestaurantBarProps = {
     max: number;
   };
   secondaryNavLeading?: ReactNode;
+  mobileEntreeOptions?: Array<{
+    key: string;
+    label: string;
+    imageSrc?: string;
+    selected?: boolean;
+    onSelect: () => void;
+  }>;
   hideViewSelector?: boolean;
   hideSecondaryNav?: boolean;
   onBack?: () => void;
@@ -57,6 +64,7 @@ export default function StickyRestaurantBar({
   onCloseSearch,
   calorieBounds,
   secondaryNavLeading,
+  mobileEntreeOptions,
   hideViewSelector = false,
   hideSecondaryNav = false,
   onBack,
@@ -234,7 +242,7 @@ export default function StickyRestaurantBar({
                 hideViewSelector={hideViewSelector}
                 showMobileTrigger={false}
                 onMobileDrawerOpenReady={handleMobileDrawerOpenReady}
-                mobileDrawerExtraControls={secondaryNavLeading}
+                mobileEntreeOptions={mobileEntreeOptions}
               />
             </div>
           </div>

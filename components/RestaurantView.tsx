@@ -2504,6 +2504,19 @@ export default function RestaurantView({
       </div>
     ) : null;
 
+  const mobileEntreeOptions =
+    isChipotleBuildPage && selectedEntree !== null
+      ? (Object.entries(entreeOptions)
+          .filter(([entreeKey]) => isChipotleEntreeId(entreeKey))
+          .map(([entreeKey, entree]) => ({
+            key: entreeKey,
+            label: entree.label,
+            imageSrc: entree.imageSrc,
+            selected: entreeKey === selectedEntree,
+            onSelect: () => handleEntreeSelection(entreeKey),
+          })))
+      : [];
+
   return (
     <div>
       <StickyRestaurantBar
@@ -2522,6 +2535,7 @@ export default function RestaurantView({
         onCloseSearch={closeSearch}
         calorieBounds={calorieBounds}
         secondaryNavLeading={entreeSelectionControl}
+        mobileEntreeOptions={mobileEntreeOptions}
         hideViewSelector={isBuildYourOwn}
         hideSecondaryNav={isChipotleBuildPage && selectedEntree === null}
         onBack={

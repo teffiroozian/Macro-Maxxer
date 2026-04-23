@@ -1,7 +1,8 @@
 "use client";
 
-import { type ReactNode, useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { createPortal } from "react-dom";
+import Image from "next/image";
 
 import { useFilterChipActions } from "./useFilterChipActions";
 import { SORT_OPTION_VALUES, type SortOption } from "@/lib/menuSections/sortOptions";
@@ -91,7 +92,7 @@ export default function ControlsRow({
   hideViewSelector = false,
   showMobileTrigger = true,
   onMobileDrawerOpenReady,
-  mobileDrawerExtraControls,
+  mobileEntreeOptions,
 }: {
   view: ViewOption;
   onChange: (view: ViewOption) => void;
@@ -108,7 +109,13 @@ export default function ControlsRow({
   hideViewSelector?: boolean;
   showMobileTrigger?: boolean;
   onMobileDrawerOpenReady?: (openDrawer: () => void) => void;
-  mobileDrawerExtraControls?: ReactNode;
+  mobileEntreeOptions?: Array<{
+    key: string;
+    label: string;
+    imageSrc?: string;
+    selected?: boolean;
+    onSelect: () => void;
+  }>;
 }) {
   const [isFiltersOpen, setIsFiltersOpen] = useState(false);
   const [isViewOpen, setIsViewOpen] = useState(false);
@@ -212,11 +219,29 @@ export default function ControlsRow({
 
   const controlsContent = (
     <div className="space-y-4">
-      {mobileDrawerExtraControls ? (
+      {mobileEntreeOptions?.length ? (
         <>
           <section className="space-y-2.5">
             <h4 className="text-sm font-semibold uppercase tracking-wide text-black/50">Entree</h4>
-            <div className="rounded-xl border border-black/10 bg-white p-2">{mobileDrawerExtraControls}</div>
+            <div className="max-h-[40vh] space-y-2 overflow-y-auto rounded-xl border border-black/10 bg-white p-2">
+              {mobileEntreeOptions.map((option) => (
+                <button
+                  key={option.key}
+                  type="button"
+                  onClick={option.onSelect}
+                  className={`inline-flex w-full items-center gap-2.5 rounded-xl border px-3 py-2.5 text-left text-sm font-semibold ${
+                    option.selected ? "border-black/80 bg-black/85 text-white" : "border-black/15 bg-white text-black/80"
+                  }`}
+                >
+                  {option.imageSrc ? (
+                    <span className="relative h-6 w-6 shrink-0 overflow-hidden rounded-full border border-black/10 bg-white">
+                      <Image src={option.imageSrc} alt={option.label} fill className="object-cover" />
+                    </span>
+                  ) : null}
+                  <span>{option.label}</span>
+                </button>
+              ))}
+            </div>
           </section>
           <div className="h-px bg-black/10" />
         </>

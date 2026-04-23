@@ -42,8 +42,7 @@ export default function MobileNavDrawer({
           isOpen ? "translate-x-0" : "-translate-x-full"
         }`}
       >
-        <div className="flex items-center justify-between border-b border-black/10 px-4 py-3">
-          <h3 className="text-lg font-bold text-black/90">Navigation</h3>
+        <div className="flex items-center border-b border-black/10 px-4 py-3">
           <button type="button" onClick={onClose} className="rounded-full border border-black/15 p-2 text-black/70">
             <X className="h-4 w-4" strokeWidth={2.5} />
           </button>
