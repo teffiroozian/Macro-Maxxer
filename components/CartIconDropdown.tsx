@@ -91,17 +91,20 @@ export default function CartIconDropdown({
   );
 
   const addonsLabel = lastAddedItem?.optionsLabel ?? "";
+  const handleOpenCart = () => {
+    if (restaurantUi) {
+      restaurantUi.openCart();
+    } else {
+      router.push("/cart");
+    }
+  };
 
   return (
     <div ref={containerRef} className="relative">
       <button
         type="button"
         onClick={() => {
-          if (restaurantUi) {
-            restaurantUi.openCart();
-          } else {
-            router.push("/cart");
-          }
+          handleOpenCart();
           if (lastAddedAt !== null) {
             setDismissedAddedAt(lastAddedAt);
           }
@@ -155,7 +158,7 @@ export default function CartIconDropdown({
             <button
               type="button"
               onClick={() => {
-                openCart();
+                handleOpenCart();
                 if (lastAddedAt !== null) {
                   setDismissedAddedAt(lastAddedAt);
                 }
