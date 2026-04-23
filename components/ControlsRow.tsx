@@ -92,6 +92,8 @@ export default function ControlsRow({
   showMobileTrigger = true,
   onMobileDrawerOpenReady,
   mobileEntreeOptions,
+  mobileDrawerHeaderTitle,
+  mobileDrawerHeaderLogoSrc,
 }: {
   view: ViewOption;
   onChange: (view: ViewOption) => void;
@@ -115,6 +117,8 @@ export default function ControlsRow({
     selected?: boolean;
     onSelect: () => void;
   }>;
+  mobileDrawerHeaderTitle?: string;
+  mobileDrawerHeaderLogoSrc?: string;
 }) {
   const [isFiltersOpen, setIsFiltersOpen] = useState(false);
   const [isViewOpen, setIsViewOpen] = useState(false);
@@ -348,6 +352,8 @@ export default function ControlsRow({
       defaultTab="controls"
       controlsContent={controlsContent}
       controlsFooter={controlsFooter}
+      headerTitle={mobileDrawerHeaderTitle}
+      headerLogoSrc={mobileDrawerHeaderLogoSrc}
     />
   );
 

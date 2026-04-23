@@ -3,7 +3,7 @@
 import { useMemo, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { Compass, ChevronDown, ChevronRight, SlidersHorizontal, X } from "lucide-react";
+import { Store, ChevronDown, ChevronRight, SlidersHorizontal, X } from "lucide-react";
 import restaurants from "@/app/data/index.json";
 
 type DrawerTab = "controls" | "browse";
@@ -17,6 +17,7 @@ export default function MobileNavDrawer({
   controlsFooter,
   headerTitle,
   headerLogoSrc,
+  browseTopContent,
 }: {
   isOpen: boolean;
   onClose: () => void;
@@ -26,6 +27,7 @@ export default function MobileNavDrawer({
   controlsFooter?: React.ReactNode;
   headerTitle?: string;
   headerLogoSrc?: string;
+  browseTopContent?: React.ReactNode;
 }) {
   const [activeTab, setActiveTab] = useState<DrawerTab>(defaultTab);
   const [isFeaturedOpen, setIsFeaturedOpen] = useState(true);
@@ -89,8 +91,8 @@ export default function MobileNavDrawer({
                   : "border-blue-200 bg-blue-50/50 text-slate-600"
               }`}
             >
-              <Compass className="h-4 w-4" strokeWidth={2.4} />
-              Browse
+              <Store className="h-4 w-4" strokeWidth={2.4} />
+              Restaurants
             </button>
           </div>
         </div>
@@ -100,6 +102,7 @@ export default function MobileNavDrawer({
             <div>{controlsContent}</div>
           ) : (
             <div className="space-y-4">
+              {browseTopContent ? <div>{browseTopContent}</div> : null}
               <section className="space-y-2.5">
                 <button type="button" onClick={() => setIsFeaturedOpen((prev) => !prev)} className="flex w-full items-center justify-between text-left">
                   <h4 className="text-sm font-semibold uppercase tracking-wide text-black/50">Featured Restaurants</h4>

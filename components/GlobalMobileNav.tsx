@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import type { ReactNode } from "react";
 import { useState } from "react";
 import { House, Menu, ShoppingCart } from "lucide-react";
 import MobileNavDrawer from "@/components/MobileNavDrawer";
@@ -9,9 +10,11 @@ import MobileNavDrawer from "@/components/MobileNavDrawer";
 export default function GlobalMobileNav({
   title = "Macro Maxxer",
   logoSrc = "/favicon.ico",
+  browseTopContent,
 }: {
   title?: string;
   logoSrc?: string;
+  browseTopContent?: ReactNode;
 }) {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [drawerKey, setDrawerKey] = useState(0);
@@ -61,6 +64,7 @@ export default function GlobalMobileNav({
         onClose={() => setIsDrawerOpen(false)}
         headerTitle={title}
         headerLogoSrc={logoSrc}
+        browseTopContent={browseTopContent}
       />
     </>
   );

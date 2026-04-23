@@ -243,6 +243,8 @@ export default function StickyRestaurantBar({
                 showMobileTrigger={false}
                 onMobileDrawerOpenReady={handleMobileDrawerOpenReady}
                 mobileEntreeOptions={mobileEntreeOptions}
+                mobileDrawerHeaderTitle={restaurantName}
+                mobileDrawerHeaderLogoSrc={restaurantLogo}
               />
             </div>
           </div>
@@ -263,7 +265,13 @@ export default function StickyRestaurantBar({
         </div>
       ) : null}
 
-      <MobileNavDrawer key={browseDrawerKey} isOpen={isBrowseDrawerOpen} onClose={() => setIsBrowseDrawerOpen(false)} />
+      <MobileNavDrawer
+        key={browseDrawerKey}
+        isOpen={isBrowseDrawerOpen}
+        onClose={() => setIsBrowseDrawerOpen(false)}
+        headerTitle={restaurantName}
+        headerLogoSrc={restaurantLogo}
+      />
     </div>
   );
 }
