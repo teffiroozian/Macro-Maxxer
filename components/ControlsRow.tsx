@@ -24,6 +24,9 @@ import {
   Scale,
   Award,
   ListOrdered,
+  Menu,
+  X,
+  Check,
 } from "lucide-react";
 
 const PROTEIN_OPTIONS = [20, 30, 40, 50];
@@ -104,6 +107,7 @@ export default function ControlsRow({
   const [isFiltersOpen, setIsFiltersOpen] = useState(false);
   const [isViewOpen, setIsViewOpen] = useState(false);
   const [isSortOpen, setIsSortOpen] = useState(false);
+  const [isMobileDrawerOpen, setIsMobileDrawerOpen] = useState(false);
   const [draftFilters, setDraftFilters] = useState<Filters>(filters);
   const [hoveredViewOption, setHoveredViewOption] = useState<ViewOption | null>(null);
   const [hoveredSortOption, setHoveredSortOption] = useState<SortOption | null>(null);
@@ -157,6 +161,14 @@ export default function ControlsRow({
     setIsFiltersOpen(true);
   };
 
+  const openMobileDrawer = () => {
+    setDraftFilters({
+      ...filters,
+      caloriesMax: filters.caloriesMax ?? defaultCaloriesMax,
+    });
+    setIsMobileDrawerOpen(true);
+  };
+
   const applyFilters = () => {
     const nextFilters = { ...draftFilters };
     if (nextFilters.caloriesMax === defaultCaloriesMax) {
@@ -165,6 +177,7 @@ export default function ControlsRow({
 
     onFiltersChange(nextFilters);
     setIsFiltersOpen(false);
+    setIsMobileDrawerOpen(false);
   };
 
   const { hasActiveFilters, clearProteinFilter, clearCaloriesFilter, resetFilters } = useFilterChipActions({
@@ -176,6 +189,132 @@ export default function ControlsRow({
     setDraftFilters({ caloriesMax: defaultCaloriesMax });
     resetFilters();
   };
+
+
+
+  const mobileControlsDrawer = isMobileDrawerOpen ? (
+    <div className="fixed inset-0 z-[210] md:hidden" aria-modal="true" role="dialog">
+      <button
+        type="button"
+        aria-label="Close controls drawer"
+        className="absolute inset-0 bg-black/35"
+        onClick={() => setIsMobileDrawerOpen(false)}
+      />
+      <div className="absolute inset-y-0 left-0 flex w-[min(90vw,360px)] flex-col bg-white shadow-[0_18px_40px_rgba(0,0,0,0.24)]">
+        <div className="flex items-center justify-between border-b border-black/10 px-4 py-3">
+          <h3 className="text-lg font-bold text-black/90">Controls</h3>
+          <button type="button" onClick={() => setIsMobileDrawerOpen(false)} className="rounded-full border border-black/15 p-2 text-black/70">
+            <X className="h-4 w-4" strokeWidth={2.5} />
+          </button>
+        </div>
+
+        <div className="flex-1 space-y-5 overflow-y-auto px-4 py-4">
+          {hideViewSelector ? null : (
+            <section className="space-y-2.5">
+              <h4 className="text-sm font-semibold uppercase tracking-wide text-black/50">View</h4>
+              <div className="grid gap-2">
+                {VIEW_OPTIONS.map((option) => {
+                  const Icon = option.icon;
+                  const isActive = option.value === view;
+                  return (
+                    <button
+                      key={option.value}
+                      type="button"
+                      onClick={() => onChange(option.value)}
+                      className={`inline-flex items-center gap-2.5 rounded-xl border px-3 py-2.5 text-left text-sm font-semibold transition ${
+                        isActive ? "border-black/80 bg-black/85 text-white" : "border-black/15 bg-white text-black/80"
+                      }`}
+                    >
+                      <Icon className="h-4 w-4" strokeWidth={2.2} />
+                      <span className="flex-1">{option.label}</span>
+                      {isActive ? <Check className="h-4 w-4" strokeWidth={2.5} /> : null}
+                    </button>
+                  );
+                })}
+              </div>
+            </section>
+          )}
+
+          <section className="space-y-2.5">
+            <h4 className="text-sm font-semibold uppercase tracking-wide text-black/50">Sort</h4>
+            <div className="grid gap-2">
+              {visibleSortOptions.map((option) => {
+                const Icon = option.icon;
+                const isActive = option.value === sort;
+                return (
+                  <button
+                    key={option.value}
+                    type="button"
+                    onClick={() => onSortChange(option.value)}
+                    className={`inline-flex items-center gap-2.5 rounded-xl border px-3 py-2.5 text-left text-sm font-semibold transition ${
+                      isActive ? "border-black/80 bg-black/85 text-white" : "border-black/15 bg-white text-black/80"
+                    }`}
+                  >
+                    <Icon className="h-4 w-4" strokeWidth={2.2} />
+                    <span className="flex-1">{option.label}</span>
+                    {isActive ? <Check className="h-4 w-4" strokeWidth={2.5} /> : null}
+                  </button>
+                );
+              })}
+            </div>
+          </section>
+
+          <section className="space-y-3">
+            <h4 className="text-sm font-semibold uppercase tracking-wide text-black/50">Filters</h4>
+            <div>
+              <div className="mb-2 text-sm font-semibold text-black/80">Protein minimum</div>
+              <div className="flex flex-wrap gap-2">
+                {PROTEIN_OPTIONS.map((value) => {
+                  const isActive = draftFilters.proteinMin === value;
+                  return (
+                    <button
+                      key={value}
+                      type="button"
+                      onClick={() => setDraftFilters((prev) => ({ ...prev, proteinMin: isActive ? undefined : value }))}
+                      className={`rounded-full border px-3 py-1.5 text-sm font-semibold ${
+                        isActive ? "border-black/80 bg-black/85 text-white" : "border-black/20 bg-white text-black/80"
+                      }`}
+                    >
+                      {value}g+
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+
+            <div>
+              <div className="mb-2 text-sm font-semibold text-black/80">Calories max: {draftFilters.caloriesMax ?? defaultCaloriesMax}</div>
+              <input
+                type="range"
+                min={calorieBounds.min}
+                max={calorieBounds.max}
+                step={10}
+                value={draftFilters.caloriesMax ?? defaultCaloriesMax}
+                onChange={(event) => {
+                  const value = Number(event.target.value);
+                  setDraftFilters((prev) => ({ ...prev, caloriesMax: value }));
+                }}
+                className="w-full cursor-pointer"
+              />
+              <div className="mt-1 flex justify-between text-xs font-semibold text-black/60">
+                <span>{calorieBounds.min}</span>
+                <span>{calorieBounds.max}</span>
+              </div>
+            </div>
+          </section>
+        </div>
+
+        <div className="grid grid-cols-2 gap-2 border-t border-black/10 px-4 py-3">
+          <button type="button" onClick={handleResetFilters} className="rounded-full border border-black/20 bg-white px-4 py-2 text-sm font-semibold text-black/80">
+            Reset
+          </button>
+          <button type="button" onClick={applyFilters} className="rounded-full border border-black/80 bg-black/85 px-4 py-2 text-sm font-bold text-white">
+            Apply
+          </button>
+        </div>
+      </div>
+    </div>
+  ) : null;
 
   const filtersDialog = isFiltersOpen ? (
     <div role="dialog" aria-modal="true" className="fixed inset-0 z-[200] flex items-end justify-center bg-black/35 p-2 sm:items-center sm:p-4" onClick={() => setIsFiltersOpen(false)}>
@@ -232,7 +371,18 @@ export default function ControlsRow({
   return (
     <>
       <div id={wrapperId} className="grid gap-2 overflow-visible">
-        <div className="flex min-w-0 flex-nowrap items-center gap-2.5">
+        <div className="md:hidden">
+          <button
+            type="button"
+            onClick={openMobileDrawer}
+            className="inline-flex items-center gap-2 rounded-full border border-black/20 bg-white px-[14px] py-[8px] text-sm font-semibold text-black/85"
+          >
+            <Menu className="h-4 w-4" strokeWidth={2.5} />
+            Controls
+          </button>
+        </div>
+
+        <div className="hidden min-w-0 flex-nowrap items-center gap-2.5 md:flex">
           {hideViewSelector ? null : (
             <div ref={viewMenuRef} className="relative shrink-0">
               <button
@@ -352,6 +502,7 @@ export default function ControlsRow({
       </div>
 
       {filtersDialog ? (typeof document === "undefined" ? filtersDialog : createPortal(filtersDialog, document.body)) : null}
+      {mobileControlsDrawer ? (typeof document === "undefined" ? mobileControlsDrawer : createPortal(mobileControlsDrawer, document.body)) : null}
     </>
   );
 }
