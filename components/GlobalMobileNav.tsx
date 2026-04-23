@@ -54,7 +54,6 @@ export default function GlobalMobileNav({
         key={drawerKey}
         isOpen={isDrawerOpen}
         onClose={() => setIsDrawerOpen(false)}
-        browseVariant={title === "Macro Maxxer" ? "home" : "default"}
       />
     </>
   );

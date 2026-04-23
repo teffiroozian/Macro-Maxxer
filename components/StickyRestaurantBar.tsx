@@ -234,6 +234,7 @@ export default function StickyRestaurantBar({
                 hideViewSelector={hideViewSelector}
                 showMobileTrigger={false}
                 onMobileDrawerOpenReady={handleMobileDrawerOpenReady}
+                mobileDrawerExtraControls={secondaryNavLeading}
               />
             </div>
           </div>

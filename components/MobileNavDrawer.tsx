@@ -3,7 +3,7 @@
 import { useMemo, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { ChevronDown, ChevronRight, X } from "lucide-react";
+import { Compass, ChevronDown, ChevronRight, SlidersHorizontal, X } from "lucide-react";
 import restaurants from "@/app/data/index.json";
 
 type DrawerTab = "controls" | "browse";
@@ -13,18 +13,16 @@ export default function MobileNavDrawer({
   onClose,
   showControls = false,
   defaultTab = "browse",
-  browseVariant = "default",
   controlsContent,
 }: {
   isOpen: boolean;
   onClose: () => void;
   showControls?: boolean;
   defaultTab?: DrawerTab;
-  browseVariant?: "default" | "home";
   controlsContent?: React.ReactNode;
 }) {
   const [activeTab, setActiveTab] = useState<DrawerTab>(defaultTab);
-  const [isFeaturedOpen, setIsFeaturedOpen] = useState(false);
+  const [isFeaturedOpen, setIsFeaturedOpen] = useState(true);
 
   const featuredRestaurants = useMemo(
     () => restaurants.filter((restaurant) => restaurant.isMacroFriendly).slice(0, 5),
@@ -57,16 +55,26 @@ export default function MobileNavDrawer({
               <button
                 type="button"
                 onClick={() => setActiveTab("controls")}
-                className={`rounded-full border px-3 py-1.5 text-sm font-semibold ${activeTab === "controls" ? "border-black/80 bg-black/85 text-white" : "border-black/20 bg-white text-black/75"}`}
+                className={`inline-flex items-center gap-2 rounded-full border px-3 py-1.5 text-sm font-semibold ${
+                  activeTab === "controls"
+                    ? "border-blue-500 bg-blue-50 text-slate-900"
+                    : "border-blue-200 bg-blue-50/50 text-slate-600"
+                }`}
               >
+                <SlidersHorizontal className="h-4 w-4" strokeWidth={2.4} />
                 Controls
               </button>
             ) : null}
             <button
               type="button"
               onClick={() => setActiveTab("browse")}
-              className={`rounded-full border px-3 py-1.5 text-sm font-semibold ${activeTab === "browse" ? "border-black/80 bg-black/85 text-white" : "border-black/20 bg-white text-black/75"}`}
+              className={`inline-flex items-center gap-2 rounded-full border px-3 py-1.5 text-sm font-semibold ${
+                activeTab === "browse"
+                  ? "border-blue-500 bg-blue-50 text-slate-900"
+                  : "border-blue-200 bg-blue-50/50 text-slate-600"
+              }`}
             >
+              <Compass className="h-4 w-4" strokeWidth={2.4} />
               Browse
             </button>
           </div>
@@ -77,17 +85,6 @@ export default function MobileNavDrawer({
             <div>{controlsContent}</div>
           ) : (
             <div className="space-y-4">
-              {browseVariant === "home" ? (
-                <div className="grid gap-2">
-                  <a href="#macro-friendly-section" onClick={onClose} className="rounded-xl border border-black/15 bg-white px-3 py-2.5 text-sm font-semibold text-black/85">
-                    Macro-Friendly
-                  </a>
-                  <a href="#all-restaurants-section" onClick={onClose} className="rounded-xl border border-black/15 bg-white px-3 py-2.5 text-sm font-semibold text-black/85">
-                    All Restaurants
-                  </a>
-                </div>
-              ) : null}
-
               <section className="space-y-2.5">
                 <button type="button" onClick={() => setIsFeaturedOpen((prev) => !prev)} className="flex w-full items-center justify-between text-left">
                   <h4 className="text-sm font-semibold uppercase tracking-wide text-black/50">Featured Restaurants</h4>

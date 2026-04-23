@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { type ReactNode, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 
 import { useFilterChipActions } from "./useFilterChipActions";
@@ -91,6 +91,7 @@ export default function ControlsRow({
   hideViewSelector = false,
   showMobileTrigger = true,
   onMobileDrawerOpenReady,
+  mobileDrawerExtraControls,
 }: {
   view: ViewOption;
   onChange: (view: ViewOption) => void;
@@ -107,6 +108,7 @@ export default function ControlsRow({
   hideViewSelector?: boolean;
   showMobileTrigger?: boolean;
   onMobileDrawerOpenReady?: (openDrawer: () => void) => void;
+  mobileDrawerExtraControls?: ReactNode;
 }) {
   const [isFiltersOpen, setIsFiltersOpen] = useState(false);
   const [isViewOpen, setIsViewOpen] = useState(false);
@@ -210,6 +212,15 @@ export default function ControlsRow({
 
   const controlsContent = (
     <div className="space-y-4">
+      {mobileDrawerExtraControls ? (
+        <>
+          <section className="space-y-2.5">
+            <h4 className="text-sm font-semibold uppercase tracking-wide text-black/50">Entree</h4>
+            <div className="rounded-xl border border-black/10 bg-white p-2">{mobileDrawerExtraControls}</div>
+          </section>
+          <div className="h-px bg-black/10" />
+        </>
+      ) : null}
       {hideViewSelector ? null : (
         <section className="space-y-2.5">
           <button type="button" onClick={() => setIsViewSectionOpen((prev) => !prev)} className="flex w-full items-center justify-between text-left">
