@@ -40,6 +40,31 @@ export default function IngredientCompactCard({
   onSelectionChange: (selected: boolean) => void;
   onCompactOptionSelect: (optionId: string) => void;
 }) {
+  const showCompactOptions = Boolean(
+    activeCompactOptions && activeCompactOptions.length > 1 && ingredientSelectionState
+  );
+
+  const renderCompactOptions = () =>
+    activeCompactOptions?.map((variantOption) => (
+      <button
+        key={variantOption.id}
+        type="button"
+        disabled={Boolean(variantOption.disabled)}
+        onClick={(event) => {
+          event.preventDefault();
+          event.stopPropagation();
+          if (!variantOption.disabled) onCompactOptionSelect(variantOption.id);
+        }}
+        className={`cursor-pointer rounded-full border px-3 py-1 text-xs font-semibold ${
+          selectedCompactOptionId === variantOption.id
+            ? "border-slate-900 bg-slate-900 text-white"
+            : "border-black/20 bg-white text-slate-700 hover:border-black/35"
+        } ${variantOption.disabled ? "cursor-not-allowed opacity-55 hover:border-black/20" : ""}`}
+      >
+        {variantOption.label}
+      </button>
+    ));
+
   return (
     <li
       className={`list-none overflow-hidden rounded-2xl bg-white transition ${
@@ -80,11 +105,18 @@ export default function IngredientCompactCard({
           {ingredientSelectionControl === "radio" ? "●" : "✓"}
         </span>
 
-        {selectedItemImage ? (
-          <img className="h-20 w-20 shrink-0 rounded-xl bg-[#efefef] object-cover sm:h-24 sm:w-24" src={selectedItemImage} alt={item.name} />
-        ) : (
-          <div className="h-20 w-20 shrink-0 rounded-xl bg-[#efefef] sm:h-24 sm:w-24" />
-        )}
+        <div className="flex shrink-0 flex-col items-center gap-2">
+          {selectedItemImage ? (
+            <img className="h-20 w-20 rounded-xl bg-[#efefef] object-cover sm:h-24 sm:w-24" src={selectedItemImage} alt={item.name} />
+          ) : (
+            <div className="h-20 w-20 rounded-xl bg-[#efefef] sm:h-24 sm:w-24" />
+          )}
+          {showCompactOptions ? (
+            <div className="flex flex-wrap justify-center gap-2 pt-0.5 sm:hidden">
+              {renderCompactOptions()}
+            </div>
+          ) : null}
+        </div>
 
         <div className="flex min-w-0 flex-1 flex-col gap-3">
           <div className="flex min-w-0 items-start justify-between gap-2">
@@ -114,27 +146,9 @@ export default function IngredientCompactCard({
             ))}
           </div>
 
-          {activeCompactOptions && activeCompactOptions.length > 1 && ingredientSelectionState ? (
-            <div className="flex flex-wrap gap-2 pt-0.5">
-              {activeCompactOptions.map((variantOption) => (
-                <button
-                  key={variantOption.id}
-                  type="button"
-                  disabled={Boolean(variantOption.disabled)}
-                  onClick={(event) => {
-                    event.preventDefault();
-                    event.stopPropagation();
-                    if (!variantOption.disabled) onCompactOptionSelect(variantOption.id);
-                  }}
-                  className={`cursor-pointer rounded-full border px-3 py-1 text-xs font-semibold ${
-                    selectedCompactOptionId === variantOption.id
-                      ? "border-slate-900 bg-slate-900 text-white"
-                      : "border-black/20 bg-white text-slate-700 hover:border-black/35"
-                  } ${variantOption.disabled ? "cursor-not-allowed opacity-55 hover:border-black/20" : ""}`}
-                >
-                  {variantOption.label}
-                </button>
-              ))}
+          {showCompactOptions ? (
+            <div className="hidden flex-wrap gap-2 pt-0.5 sm:flex">
+              {renderCompactOptions()}
             </div>
           ) : null}
         </div>

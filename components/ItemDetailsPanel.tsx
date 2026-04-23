@@ -521,8 +521,8 @@ export default function ItemDetailsPanel({
       {hasBuildContent ? (
       <div className="grid grid-cols-2 gap-3 rounded-[18px] bg-[#e9e9e9] p-3">
       {sectionNavItems && sectionNavItems.length > 0 ? (
-        <div className="col-span-2 sticky top-0 z-[5] w-full rounded-2xl border border-black/10 bg-white/95 px-2 py-1.5 shadow-[0_3px_10px_rgba(15,23,42,0.08)] backdrop-blur">
-          <div className="flex items-stretch gap-2 overflow-x-auto pb-1">
+        <div className="col-span-2 sticky top-0 z-[5] w-full rounded-2xl border border-black/10 bg-white/95 px-1.5 py-1.5 md:px-2 md:py-1.5 shadow-[0_3px_10px_rgba(15,23,42,0.08)] backdrop-blur">
+          <div className="flex items-stretch gap-1.5 overflow-x-auto pb-1 md:gap-2">
             {sectionNavItems.map((section) => {
               const isActive = activeSectionId === section.id;
               const Icon = section.icon;
@@ -530,7 +530,7 @@ export default function ItemDetailsPanel({
                 <button
                   key={section.id}
                   type="button"
-                  className="cursor-pointer flex min-w-[120px] flex-none flex-col items-center gap-1 rounded-xl bg-white px-3 py-1.5 text-center"
+                  className="cursor-pointer flex min-w-[96px] flex-none flex-col items-center gap-1 rounded-xl bg-white px-2 py-1.5 text-center md:min-w-[120px] md:px-3"
                   onClick={() => onSelectSection?.(section.id)}
                 >
                   <span className={`inline-flex h-8 w-8 items-center justify-center rounded-full border text-[13px] ${isActive ? "border-blue-500 bg-blue-50 text-blue-600" : "border-slate-200 bg-slate-50 text-slate-500"}`}>
