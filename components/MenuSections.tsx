@@ -217,7 +217,7 @@ export default function MenuSections({
   }
 
   return (
-    <div className="grid gap-20">
+    <div className="grid gap-10">
       {sections.map((section) => (
         <section
           key={section}
