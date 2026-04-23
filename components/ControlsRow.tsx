@@ -2,12 +2,10 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { createPortal } from "react-dom";
-import Link from "next/link";
-import Image from "next/image";
 
 import { useFilterChipActions } from "./useFilterChipActions";
 import { SORT_OPTION_VALUES, type SortOption } from "@/lib/menuSections/sortOptions";
-import restaurants from "@/app/data/index.json";
+import MobileNavDrawer from "@/components/MobileNavDrawer";
 
 export type ViewOption = "menu" | "ingredients" | "ranking";
 export type { SortOption };
@@ -28,9 +26,7 @@ import {
   Award,
   ListOrdered,
   Menu,
-  X,
   Check,
-  ChevronRight,
 } from "lucide-react";
 
 const PROTEIN_OPTIONS = [20, 30, 40, 50];
@@ -116,7 +112,7 @@ export default function ControlsRow({
   const [isViewOpen, setIsViewOpen] = useState(false);
   const [isSortOpen, setIsSortOpen] = useState(false);
   const [isMobileDrawerOpen, setIsMobileDrawerOpen] = useState(false);
-  const [isFeaturedOpen, setIsFeaturedOpen] = useState(false);
+  const [mobileDrawerKey, setMobileDrawerKey] = useState(0);
   const [isViewSectionOpen, setIsViewSectionOpen] = useState(true);
   const [isSortSectionOpen, setIsSortSectionOpen] = useState(true);
   const [isFiltersSectionOpen, setIsFiltersSectionOpen] = useState(true);
@@ -178,10 +174,10 @@ export default function ControlsRow({
       ...filters,
       caloriesMax: filters.caloriesMax ?? defaultCaloriesMax,
     });
-    setIsFeaturedOpen(false);
     setIsViewSectionOpen(true);
     setIsSortSectionOpen(true);
     setIsFiltersSectionOpen(true);
+    setMobileDrawerKey((prev) => prev + 1);
     setIsMobileDrawerOpen(true);
   }, [defaultCaloriesMax, filters]);
 
@@ -210,202 +206,104 @@ export default function ControlsRow({
     onMobileDrawerOpenReady?.(openMobileDrawer);
   }, [onMobileDrawerOpenReady, openMobileDrawer]);
 
-  const featuredRestaurants = useMemo(
-    () => restaurants.filter((restaurant) => restaurant.isMacroFriendly).slice(0, 5),
-    []
-  );
 
 
-
-  const mobileControlsDrawer = isMobileDrawerOpen ? (
-    <div className="fixed inset-0 z-[210] lg:hidden" aria-modal="true" role="dialog">
-      <button
-        type="button"
-        aria-label="Close controls drawer"
-        className="absolute inset-0 bg-black/35"
-        onClick={() => setIsMobileDrawerOpen(false)}
-      />
-      <div className="absolute inset-y-0 left-0 flex w-[min(90vw,360px)] flex-col bg-white shadow-[0_18px_40px_rgba(0,0,0,0.24)]">
-        <div className="flex items-center justify-between border-b border-black/10 px-4 py-3">
-          <h3 className="text-lg font-bold text-black/90">Controls</h3>
-          <button type="button" onClick={() => setIsMobileDrawerOpen(false)} className="rounded-full border border-black/15 p-2 text-black/70">
-            <X className="h-4 w-4" strokeWidth={2.5} />
+  const controlsContent = (
+    <div className="space-y-4">
+      {hideViewSelector ? null : (
+        <section className="space-y-2.5">
+          <button type="button" onClick={() => setIsViewSectionOpen((prev) => !prev)} className="flex w-full items-center justify-between text-left">
+            <h4 className="text-sm font-semibold uppercase tracking-wide text-black/50">View</h4>
+            <ChevronDown className={`h-4 w-4 text-black/60 transition-transform ${isViewSectionOpen ? "rotate-180" : ""}`} strokeWidth={2.5} />
           </button>
-        </div>
-
-        <div className="flex-1 space-y-4 overflow-y-auto px-4 py-4">
-          <section className="space-y-2.5">
-            <button
-              type="button"
-              onClick={() => setIsFeaturedOpen((prev) => !prev)}
-              className="flex w-full items-center justify-between text-left"
-            >
-              <h4 className="text-sm font-semibold uppercase tracking-wide text-black/50">Featured Restaurants</h4>
-              <ChevronDown className={`h-4 w-4 text-black/60 transition-transform ${isFeaturedOpen ? "rotate-180" : ""}`} strokeWidth={2.5} />
-            </button>
-            {isFeaturedOpen ? (
-              <div className="grid gap-1.5">
-                {featuredRestaurants.map((restaurant) => (
-                  <Link
-                    key={restaurant.id}
-                    href={`/restaurant/${restaurant.id}`}
-                    onClick={() => setIsMobileDrawerOpen(false)}
-                    className="inline-flex items-center justify-between rounded-xl border border-black/15 bg-white px-3 py-2.5 text-sm font-semibold text-black/85"
-                  >
-                    <span className="inline-flex min-w-0 items-center gap-2.5">
-                      <span className="relative h-7 w-7 shrink-0 overflow-hidden rounded-md border border-black/10 bg-white">
-                        <Image src={restaurant.logo} alt={`${restaurant.name} logo`} fill className="object-cover" />
-                      </span>
-                      <span className="truncate">{restaurant.name}</span>
-                    </span>
-                    <ChevronRight className="h-4 w-4 text-black/50" strokeWidth={2.5} />
-                  </Link>
-                ))}
-              </div>
-            ) : null}
-          </section>
-
-          <div className="h-px bg-black/10" />
-
-          {hideViewSelector ? null : (
-            <section className="space-y-2.5">
-              <button
-                type="button"
-                onClick={() => setIsViewSectionOpen((prev) => !prev)}
-                className="flex w-full items-center justify-between text-left"
-              >
-                <h4 className="text-sm font-semibold uppercase tracking-wide text-black/50">View</h4>
-                <ChevronDown className={`h-4 w-4 text-black/60 transition-transform ${isViewSectionOpen ? "rotate-180" : ""}`} strokeWidth={2.5} />
-              </button>
-              {isViewSectionOpen ? (
-                <div className="grid gap-2">
-                {VIEW_OPTIONS.map((option) => {
-                  const Icon = option.icon;
-                  const isActive = option.value === view;
-                  return (
-                    <button
-                      key={option.value}
-                      type="button"
-                      onClick={() => onChange(option.value)}
-                      className={`inline-flex items-center gap-2.5 rounded-xl border px-3 py-2.5 text-left text-sm font-semibold transition ${
-                        isActive ? "border-black/80 bg-black/85 text-white" : "border-black/15 bg-white text-black/80"
-                      }`}
-                    >
-                      <Icon className="h-4 w-4" strokeWidth={2.2} />
-                      <span className="flex-1">{option.label}</span>
-                      {isActive ? <Check className="h-4 w-4" strokeWidth={2.5} /> : null}
-                    </button>
-                  );
-                })}
-                </div>
-              ) : null}
-            </section>
-          )}
-
-          {hideViewSelector ? null : <div className="h-px bg-black/10" />}
-
-          <section className="space-y-2.5">
-            <button
-              type="button"
-              onClick={() => setIsSortSectionOpen((prev) => !prev)}
-              className="flex w-full items-center justify-between text-left"
-            >
-              <h4 className="text-sm font-semibold uppercase tracking-wide text-black/50">Sort</h4>
-              <ChevronDown className={`h-4 w-4 text-black/60 transition-transform ${isSortSectionOpen ? "rotate-180" : ""}`} strokeWidth={2.5} />
-            </button>
-            {isSortSectionOpen ? (
-              <div className="grid gap-2">
-              {visibleSortOptions.map((option) => {
+          {isViewSectionOpen ? (
+            <div className="grid gap-2">
+              {VIEW_OPTIONS.map((option) => {
                 const Icon = option.icon;
-                const isActive = option.value === sort;
+                const isActive = option.value === view;
                 return (
-                  <button
-                    key={option.value}
-                    type="button"
-                    onClick={() => onSortChange(option.value)}
-                    className={`inline-flex items-center gap-2.5 rounded-xl border px-3 py-2.5 text-left text-sm font-semibold transition ${
-                      isActive ? "border-black/80 bg-black/85 text-white" : "border-black/15 bg-white text-black/80"
-                    }`}
-                  >
+                  <button key={option.value} type="button" onClick={() => onChange(option.value)} className={`inline-flex items-center gap-2.5 rounded-xl border px-3 py-2.5 text-left text-sm font-semibold transition ${isActive ? "border-black/80 bg-black/85 text-white" : "border-black/15 bg-white text-black/80"}`}>
                     <Icon className="h-4 w-4" strokeWidth={2.2} />
                     <span className="flex-1">{option.label}</span>
                     {isActive ? <Check className="h-4 w-4" strokeWidth={2.5} /> : null}
                   </button>
                 );
               })}
+            </div>
+          ) : null}
+        </section>
+      )}
+      {hideViewSelector ? null : <div className="h-px bg-black/10" />}
+      <section className="space-y-2.5">
+        <button type="button" onClick={() => setIsSortSectionOpen((prev) => !prev)} className="flex w-full items-center justify-between text-left">
+          <h4 className="text-sm font-semibold uppercase tracking-wide text-black/50">Sort</h4>
+          <ChevronDown className={`h-4 w-4 text-black/60 transition-transform ${isSortSectionOpen ? "rotate-180" : ""}`} strokeWidth={2.5} />
+        </button>
+        {isSortSectionOpen ? (
+          <div className="grid gap-2">
+            {visibleSortOptions.map((option) => {
+              const Icon = option.icon;
+              const isActive = option.value === sort;
+              return (
+                <button key={option.value} type="button" onClick={() => onSortChange(option.value)} className={`inline-flex items-center gap-2.5 rounded-xl border px-3 py-2.5 text-left text-sm font-semibold transition ${isActive ? "border-black/80 bg-black/85 text-white" : "border-black/15 bg-white text-black/80"}`}>
+                  <Icon className="h-4 w-4" strokeWidth={2.2} />
+                  <span className="flex-1">{option.label}</span>
+                  {isActive ? <Check className="h-4 w-4" strokeWidth={2.5} /> : null}
+                </button>
+              );
+            })}
+          </div>
+        ) : null}
+      </section>
+      <div className="h-px bg-black/10" />
+      <section className="space-y-3">
+        <button type="button" onClick={() => setIsFiltersSectionOpen((prev) => !prev)} className="flex w-full items-center justify-between text-left">
+          <h4 className="text-sm font-semibold uppercase tracking-wide text-black/50">Filters</h4>
+          <ChevronDown className={`h-4 w-4 text-black/60 transition-transform ${isFiltersSectionOpen ? "rotate-180" : ""}`} strokeWidth={2.5} />
+        </button>
+        {isFiltersSectionOpen ? (
+          <>
+            <div>
+              <div className="mb-2 text-sm font-semibold text-black/80">Protein minimum</div>
+              <div className="flex flex-wrap gap-2">
+                {PROTEIN_OPTIONS.map((value) => {
+                  const isActive = draftFilters.proteinMin === value;
+                  return (
+                    <button key={value} type="button" onClick={() => setDraftFilters((prev) => ({ ...prev, proteinMin: isActive ? undefined : value }))} className={`rounded-full border px-3 py-1.5 text-sm font-semibold ${isActive ? "border-black/80 bg-black/85 text-white" : "border-black/20 bg-white text-black/80"}`}>
+                      {value}g+
+                    </button>
+                  );
+                })}
               </div>
-            ) : null}
-          </section>
-
-          <div className="h-px bg-black/10" />
-
-          <section className="space-y-3">
-            <button
-              type="button"
-              onClick={() => setIsFiltersSectionOpen((prev) => !prev)}
-              className="flex w-full items-center justify-between text-left"
-            >
-              <h4 className="text-sm font-semibold uppercase tracking-wide text-black/50">Filters</h4>
-              <ChevronDown className={`h-4 w-4 text-black/60 transition-transform ${isFiltersSectionOpen ? "rotate-180" : ""}`} strokeWidth={2.5} />
-            </button>
-            {isFiltersSectionOpen ? (
-              <>
-                <div>
-                  <div className="mb-2 text-sm font-semibold text-black/80">Protein minimum</div>
-                  <div className="flex flex-wrap gap-2">
-                    {PROTEIN_OPTIONS.map((value) => {
-                      const isActive = draftFilters.proteinMin === value;
-                      return (
-                        <button
-                          key={value}
-                          type="button"
-                          onClick={() => setDraftFilters((prev) => ({ ...prev, proteinMin: isActive ? undefined : value }))}
-                          className={`rounded-full border px-3 py-1.5 text-sm font-semibold ${
-                            isActive ? "border-black/80 bg-black/85 text-white" : "border-black/20 bg-white text-black/80"
-                          }`}
-                        >
-                          {value}g+
-                        </button>
-                      );
-                    })}
-                  </div>
-                </div>
-
-                <div>
-                  <div className="mb-2 text-sm font-semibold text-black/80">Calories max: {draftFilters.caloriesMax ?? defaultCaloriesMax}</div>
-                  <input
-                    type="range"
-                    min={calorieBounds.min}
-                    max={calorieBounds.max}
-                    step={10}
-                    value={draftFilters.caloriesMax ?? defaultCaloriesMax}
-                    onChange={(event) => {
-                      const value = Number(event.target.value);
-                      setDraftFilters((prev) => ({ ...prev, caloriesMax: value }));
-                    }}
-                    className="w-full cursor-pointer"
-                  />
-                  <div className="mt-1 flex justify-between text-xs font-semibold text-black/60">
-                    <span>{calorieBounds.min}</span>
-                    <span>{calorieBounds.max}</span>
-                  </div>
-                </div>
-              </>
-            ) : null}
-          </section>
-        </div>
-
-        <div className="grid grid-cols-2 gap-2 border-t border-black/10 px-4 py-3">
-          <button type="button" onClick={handleResetFilters} className="rounded-full border border-black/20 bg-white px-4 py-2 text-sm font-semibold text-black/80">
-            Reset
-          </button>
-          <button type="button" onClick={applyFilters} className="rounded-full border border-black/80 bg-black/85 px-4 py-2 text-sm font-bold text-white">
-            Apply
-          </button>
-        </div>
-      </div>
+            </div>
+            <div>
+              <div className="mb-2 text-sm font-semibold text-black/80">Calories max: {draftFilters.caloriesMax ?? defaultCaloriesMax}</div>
+              <input type="range" min={calorieBounds.min} max={calorieBounds.max} step={10} value={draftFilters.caloriesMax ?? defaultCaloriesMax} onChange={(event) => setDraftFilters((prev) => ({ ...prev, caloriesMax: Number(event.target.value) }))} className="w-full cursor-pointer" />
+              <div className="mt-1 flex justify-between text-xs font-semibold text-black/60">
+                <span>{calorieBounds.min}</span>
+                <span>{calorieBounds.max}</span>
+              </div>
+            </div>
+            <div className="grid grid-cols-2 gap-2 border-t border-black/10 pt-3">
+              <button type="button" onClick={handleResetFilters} className="rounded-full border border-black/20 bg-white px-4 py-2 text-sm font-semibold text-black/80">Reset</button>
+              <button type="button" onClick={applyFilters} className="rounded-full border border-black/80 bg-black/85 px-4 py-2 text-sm font-bold text-white">Apply</button>
+            </div>
+          </>
+        ) : null}
+      </section>
     </div>
-  ) : null;
+  );
+
+  const mobileControlsDrawer = (
+    <MobileNavDrawer
+      key={mobileDrawerKey}
+      isOpen={isMobileDrawerOpen}
+      onClose={() => setIsMobileDrawerOpen(false)}
+      showControls
+      defaultTab="controls"
+      controlsContent={controlsContent}
+    />
+  );
 
   const filtersDialog = isFiltersOpen ? (
     <div role="dialog" aria-modal="true" className="fixed inset-0 z-[200] flex items-end justify-center bg-black/35 p-2 sm:items-center sm:p-4" onClick={() => setIsFiltersOpen(false)}>

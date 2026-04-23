@@ -339,7 +339,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="mt-20 flex flex-col gap-8">
+      <section id="macro-friendly-section" className="mt-20 flex flex-col gap-8">
         <div>
           <h2 className="text-center text-3xl font-semibold text-neutral-900">
             Macro Friendly Restaurants
@@ -384,7 +384,7 @@ export default function Home() {
         </section>
       </section>
 
-      <section className="mt-20 flex flex-col gap-4">
+      <section id="all-restaurants-section" className="mt-20 flex flex-col gap-4">
         <div>
           <h2 className="text-center text-3xl font-semibold text-neutral-900">All Restaurants</h2>
         </div>

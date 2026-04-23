@@ -12,8 +12,8 @@ import ControlsRow, {
   type ViewOption,
 } from "./ControlsRow";
 import type { SortOption } from "@/lib/menuSections/sortOptions";
-import { ChevronRight, House, Menu, Search, X } from "lucide-react";
-import restaurants from "@/app/data/index.json";
+import { House, Menu, Search } from "lucide-react";
+import MobileNavDrawer from "@/components/MobileNavDrawer";
 
 import { useFilterChipActions } from "./useFilterChipActions";
 
@@ -65,7 +65,8 @@ export default function StickyRestaurantBar({
   const searchInputRef = useRef<HTMLInputElement>(null);
   const isSearchMode = searchOpen || searchQuery.trim().length > 0;
   const [openMobileControlsDrawer, setOpenMobileControlsDrawer] = useState<() => void>(() => () => {});
-  const [isFeaturedDrawerOpen, setIsFeaturedDrawerOpen] = useState(false);
+  const [isBrowseDrawerOpen, setIsBrowseDrawerOpen] = useState(false);
+  const [browseDrawerKey, setBrowseDrawerKey] = useState(0);
   const handleMobileDrawerOpenReady = useCallback((openDrawer: () => void) => {
     setOpenMobileControlsDrawer(() => openDrawer);
   }, []);
@@ -88,7 +89,6 @@ export default function StickyRestaurantBar({
   const closeSearch = () => {
     onCloseSearch();
   };
-  const featuredRestaurants = restaurants.filter((restaurant) => restaurant.isMacroFriendly).slice(0, 5);
 
   return (
     <div className="fixed left-0 right-0 top-0 z-[95]" data-sticky-nav="true">
@@ -103,7 +103,8 @@ export default function StickyRestaurantBar({
               type="button"
               onClick={() => {
                 if (hideSecondaryNav) {
-                  setIsFeaturedDrawerOpen(true);
+                  setBrowseDrawerKey((prev) => prev + 1);
+                  setIsBrowseDrawerOpen(true);
                   return;
                 }
                 openMobileControlsDrawer();
@@ -253,32 +254,7 @@ export default function StickyRestaurantBar({
         </div>
       ) : null}
 
-      {isFeaturedDrawerOpen ? (
-        <div className="fixed inset-0 z-[210] lg:hidden" aria-modal="true" role="dialog">
-          <button type="button" className="absolute inset-0 bg-black/35" onClick={() => setIsFeaturedDrawerOpen(false)} aria-label="Close drawer" />
-          <div className="absolute inset-y-0 left-0 flex w-[min(90vw,360px)] flex-col bg-white shadow-[0_18px_40px_rgba(0,0,0,0.24)]">
-            <div className="flex items-center justify-between border-b border-black/10 px-4 py-3">
-              <h3 className="text-lg font-bold text-black/90">Featured Restaurants</h3>
-              <button type="button" onClick={() => setIsFeaturedDrawerOpen(false)} className="rounded-full border border-black/15 p-2 text-black/70">
-                <X className="h-4 w-4" strokeWidth={2.5} />
-              </button>
-            </div>
-            <div className="grid gap-1.5 p-4">
-              {featuredRestaurants.map((restaurant) => (
-                <Link key={restaurant.id} href={`/restaurant/${restaurant.id}`} onClick={() => setIsFeaturedDrawerOpen(false)} className="inline-flex items-center justify-between rounded-xl border border-black/15 bg-white px-3 py-2.5 text-sm font-semibold text-black/85">
-                  <span className="inline-flex min-w-0 items-center gap-2.5">
-                    <span className="relative h-7 w-7 shrink-0 overflow-hidden rounded-md border border-black/10 bg-white">
-                      <Image src={restaurant.logo} alt={`${restaurant.name} logo`} fill className="object-cover" />
-                    </span>
-                    <span className="truncate">{restaurant.name}</span>
-                  </span>
-                  <ChevronRight className="h-4 w-4 text-black/50" strokeWidth={2.5} />
-                </Link>
-              ))}
-            </div>
-          </div>
-        </div>
-      ) : null}
+      <MobileNavDrawer key={browseDrawerKey} isOpen={isBrowseDrawerOpen} onClose={() => setIsBrowseDrawerOpen(false)} />
     </div>
   );
 }
