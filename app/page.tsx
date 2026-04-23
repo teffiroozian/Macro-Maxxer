@@ -5,6 +5,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import restaurants from "./data/index.json";
+import GlobalMobileNav from "@/components/GlobalMobileNav";
+import DesktopNav from "@/components/DesktopNav";
 
 const RECENT_RESTAURANTS_KEY = "recentlySearchedRestaurants";
 
@@ -82,7 +84,7 @@ export default function Home() {
     });
 
     return Array.from(grouped.entries()).sort(([a], [b]) => a.localeCompare(b));
-  }, [restaurants]);
+  }, []);
 
   const isEmptyFocusedState = isFocused && !query.trim();
   const suggestions = isEmptyFocusedState
@@ -119,7 +121,12 @@ export default function Home() {
   };
 
   return (
-    <main className="mx-auto flex max-w-5xl flex-col gap-12 px-4 py-24 sm:px-6">
+    <>
+      <GlobalMobileNav />
+      <div className="px-4 pt-4 sm:px-6">
+        <DesktopNav />
+      </div>
+      <main className="mx-auto flex max-w-5xl flex-col gap-12 px-4 py-24 pt-28 sm:px-6 lg:pt-24">
       <header className="mx-auto max-w-3xl text-center">
         <h1 className="text-center text-4xl font-semibold tracking-tight leading-tight text-neutral-900">
           High-Protein Fast Food Orders
@@ -127,7 +134,7 @@ export default function Home() {
       </header>
 
       <section className="flex flex-col gap-3">
-        <div className="relative">
+        <div id="restaurant-search" className="relative">
           <input
             type="text"
             value={query}
@@ -336,7 +343,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="mt-20 flex flex-col gap-8">
+      <section id="macro-friendly-section" className="mt-20 flex flex-col gap-8">
         <div>
           <h2 className="text-center text-3xl font-semibold text-neutral-900">
             Macro Friendly Restaurants
@@ -381,7 +388,7 @@ export default function Home() {
         </section>
       </section>
 
-      <section className="mt-20 flex flex-col gap-4">
+      <section id="all-restaurants-section" className="mt-20 flex flex-col gap-4">
         <div>
           <h2 className="text-center text-3xl font-semibold text-neutral-900">All Restaurants</h2>
         </div>
@@ -419,6 +426,7 @@ export default function Home() {
           ))}
         </div>
       </section>
-    </main>
+      </main>
+    </>
   );
 }

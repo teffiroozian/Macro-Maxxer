@@ -7,6 +7,8 @@ import type { CartMacros } from "@/stores/cartStore";
 import MenuItemCard from "@/components/MenuItemCard";
 import StickyMacroTotalsBar from "@/components/StickyMacroTotalsBar";
 import CartNutritionSummary from "@/components/cart/CartNutritionSummary";
+import GlobalMobileNav from "@/components/GlobalMobileNav";
+import DesktopNav from "@/components/DesktopNav";
 import restaurants from "@/app/data/index.json";
 import { useCart } from "@/stores/cartStore";
 import {
@@ -92,10 +94,6 @@ function areMacrosEqual(a: CartMacros, b: CartMacros) {
 export default function CartPage() {
   const { items, totals, updateQuantity, updateItem } = useCart();
   const router = useRouter();
-  const itemCount = useMemo(
-    () => items.reduce((sum, item) => sum + item.quantity, 0),
-    [items]
-  );
 
   const cartRestaurantIds = useMemo(
     () => [...new Set(items.map((item) => item.restaurantId))],
@@ -117,7 +115,6 @@ export default function CartPage() {
       : `/restaurant/${cartRestaurantIds[0]}`
     : "/";
   const headerTitle = cartRestaurantIds.length > 1 ? "Mixed Restaurants" : (headerRestaurant?.name ?? "Meal Finalization");
-  const headerLogo = cartRestaurantIds.length > 1 ? undefined : headerRestaurant?.logo;
 
   const nutritionTotals = useMemo(
     () => buildCartNutritionTotals(items, menuLookupByRestaurant, addonsLookupByRestaurant),
@@ -158,34 +155,27 @@ export default function CartPage() {
   };
 
   return (
-    <main className="mx-auto flex min-h-screen w-full max-w-5xl flex-col gap-6 px-4 pb-10 pt-8 sm:px-6 sm:pt-10">
-      <header className="rounded-3xl border border-black/10 bg-white px-5 py-5 shadow-sm sm:px-6">
-        <div className="mb-4">
-          <Link
-            href={backToMenuHref}
-            className="cursor-pointer inline-flex items-center gap-2 rounded-lg border border-black/15 px-3 py-1.5 text-sm font-medium text-neutral-700 transition hover:bg-neutral-100"
-          >
-            ← Back to menu
-          </Link>
-        </div>
-
-        <div className="flex items-center gap-4">
-          <div className="h-14 w-14 overflow-hidden rounded-xl border border-black/10 bg-neutral-50 shadow-sm">
-            {headerLogo ? (
-              // eslint-disable-next-line @next/next/no-img-element
-              <img src={headerLogo} alt={`${headerTitle} logo`} className="h-full w-full object-contain" />
-            ) : (
-              <div className="flex h-full w-full items-center justify-center text-xs font-medium text-neutral-500">LOGO</div>
-            )}
-          </div>
-
-          <div>
-            <h1 className="text-2xl font-semibold tracking-tight text-neutral-900 sm:text-3xl">{headerTitle}</h1>
-            <p className="mt-1 text-sm text-neutral-600">[{itemCount}] Items</p>
-          </div>
-        </div>
-      </header>
-
+    <>
+      <GlobalMobileNav
+        title="Cart"
+        browseTopContent={
+          cartRestaurantIds[0] ? (
+            <section className="space-y-2.5 rounded-xl border border-blue-100 bg-blue-50/40 p-3">
+              <h4 className="text-xs font-semibold uppercase tracking-[0.16em] text-blue-700/70">Keep Browsing</h4>
+              <div className="flex items-center justify-between gap-2">
+                <span className="min-w-0 truncate text-sm font-semibold text-slate-900">{headerTitle}</span>
+                <Link href={backToMenuHref} className="rounded-full border border-black/20 bg-white px-3 py-1.5 text-xs font-semibold text-black/80">
+                  Back to menu
+                </Link>
+              </div>
+            </section>
+          ) : null
+        }
+      />
+      <div className="px-4 pt-4 sm:px-6">
+        <DesktopNav />
+      </div>
+      <main className="mx-auto flex min-h-screen w-full max-w-5xl flex-col gap-6 px-4 pb-10 pt-28 sm:px-6 lg:pt-10">
       <section className="w-full space-y-3">
         {items.length === 0 ? (
           <div className="rounded-2xl border border-black/10 bg-white px-5 py-8 text-center shadow-sm">
@@ -349,6 +339,7 @@ export default function CartPage() {
 
         
       </section>
-    </main>
+      </main>
+    </>
   );
 }

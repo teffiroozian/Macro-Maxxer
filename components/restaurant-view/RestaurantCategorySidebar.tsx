@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { Circle, type LucideIcon, UtensilsCrossed, Soup, SquareStack, CupSoda, Check, Menu } from "lucide-react";
+import { Circle, type LucideIcon, UtensilsCrossed, Soup, SquareStack, CupSoda, Check, PanelTopOpen } from "lucide-react";
 
 type RankedAllFilterKey = "main-entrees" | "breakfast" | "shareables" | "sides" | "drinks";
 
@@ -126,7 +126,7 @@ export default function RestaurantCategorySidebar({
                 className="cursor-pointer inline-flex h-10 w-10 items-center justify-center rounded-full bg-transparent text-black/85 transition-colors duration-150 hover:bg-slate-900/5"
                 aria-label="Open categories menu"
               >
-                <Menu className="h-4 w-4" strokeWidth={2.2} />
+                <PanelTopOpen className="h-4 w-4" strokeWidth={2.2} />
               </button>
 
               {isMobileCategoryMenuOpen ? (
