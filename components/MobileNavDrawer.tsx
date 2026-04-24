@@ -4,7 +4,7 @@ import { useMemo, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { Store, ChevronDown, ChevronRight, SlidersHorizontal, X } from "lucide-react";
-import restaurants from "@/app/data/index.json";
+import { getVisibleRestaurants } from "@/lib/restaurants";
 
 type DrawerTab = "controls" | "browse";
 
@@ -31,10 +31,11 @@ export default function MobileNavDrawer({
 }) {
   const [activeTab, setActiveTab] = useState<DrawerTab>(defaultTab);
   const [isFeaturedOpen, setIsFeaturedOpen] = useState(true);
+  const visibleRestaurants = getVisibleRestaurants();
 
   const featuredRestaurants = useMemo(
-    () => restaurants.filter((restaurant) => restaurant.isMacroFriendly).slice(0, 5),
-    []
+    () => visibleRestaurants.filter((restaurant) => restaurant.isMacroFriendly),
+    [visibleRestaurants]
   );
 
   return (
@@ -92,7 +93,7 @@ export default function MobileNavDrawer({
               }`}
             >
               <Store className="h-4 w-4" strokeWidth={2.4} />
-              Restaurants
+              Browse
             </button>
           </div>
         </div>

@@ -11,7 +11,7 @@ import ControlsRow, {
   type ViewOption,
 } from "./ControlsRow";
 import type { SortOption } from "@/lib/menuSections/sortOptions";
-import { House, Menu, Search } from "lucide-react";
+import { Menu, Search } from "lucide-react";
 import MobileNavDrawer from "@/components/MobileNavDrawer";
 
 import { useFilterChipActions } from "./useFilterChipActions";
@@ -86,16 +86,13 @@ export default function StickyRestaurantBar({
     onFiltersChange,
   });
 
-  const handleBrandClick = () => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  };
-
   const closeSearch = () => {
     onCloseSearch();
   };
 
   return (
     <div className="fixed left-0 right-0 top-0 z-[95]" data-sticky-nav="true">
+      <div className="absolute inset-0 -z-10 bg-white/95 backdrop-blur supports-[backdrop-filter]:bg-white/80" />
       <div
         className={`relative z-[110] mx-auto mt-1 flex w-[calc(100%-0.5rem)] max-w-6xl items-center border border-slate-200/70 bg-white shadow-[0_-3px_12px_rgba(15,23,42,0.12)] backdrop-blur sm:w-[calc(100%-1rem)] ${
           hideSecondaryNav ? "rounded-2xl" : "rounded-2xl lg:rounded-t-2xl"
@@ -120,48 +117,31 @@ export default function StickyRestaurantBar({
             </button>
             <Link
               href="/"
-              className="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-slate-300/80 bg-white text-slate-800"
+              className="inline-flex h-9 w-9 shrink-0 items-center justify-center overflow-hidden rounded-lg border border-slate-300/80 bg-white"
               aria-label="Go to homepage"
             >
-              <House className="h-4 w-4" strokeWidth={2.5} />
-            </Link>
-            <button
-              type="button"
-              onClick={handleBrandClick}
-              className="flex min-w-0 items-center gap-2.5 cursor-pointer"
-              aria-label={`Scroll to top of ${restaurantName} page`}
-            >
-              <span className="relative h-9 w-9 shrink-0 overflow-hidden rounded-lg border border-slate-300/80 bg-white">
+              <span className="relative h-7 w-7">
                 <Image
-                  src={restaurantLogo}
-                  alt={`${restaurantName} logo`}
+                  src="/favicon.ico"
+                  alt="Macro Maxxer logo"
                   fill
                   className="object-contain rounded-md"
                 />
               </span>
-              <span className="min-w-0 truncate text-left text-base font-semibold text-slate-900">
-                {restaurantName}
-              </span>
-            </button>
+            </Link>
           </div>
 
           <div className="hidden min-w-0 flex-1 items-center gap-2 lg:flex">
-            <Link href="/" className="inline-flex items-center gap-2 rounded-full border border-slate-300/80 bg-white px-3 py-2 text-sm font-semibold text-slate-800">
-              Home
-            </Link>
-            <button type="button" onClick={handleBrandClick} className="flex min-w-0 items-center gap-3 cursor-pointer" aria-label={`Scroll to top of ${restaurantName} page`}>
-              <span className="relative h-9 w-9 shrink-0 overflow-hidden rounded-lg border border-slate-300/80 bg-white">
+            <Link href="/" className="inline-flex h-9 w-9 shrink-0 items-center justify-center overflow-hidden rounded-lg border border-slate-300/80 bg-white" aria-label="Go to homepage">
+              <span className="relative h-7 w-7">
                 <Image
-                  src={restaurantLogo}
-                  alt={`${restaurantName} logo`}
+                  src="/favicon.ico"
+                  alt="Macro Maxxer logo"
                   fill
                   className="object-contain rounded-md"
                 />
               </span>
-              <span className="min-w-0 truncate text-left text-base font-semibold text-slate-900">
-                {restaurantName}
-              </span>
-            </button>
+            </Link>
           </div>
 
           <div className="ml-auto flex min-w-0 items-center gap-1.5 sm:gap-2">

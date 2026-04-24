@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useMemo } from "react";
 import type { CartMacros } from "@/stores/cartStore";
@@ -9,7 +8,6 @@ import StickyMacroTotalsBar from "@/components/StickyMacroTotalsBar";
 import CartNutritionSummary from "@/components/cart/CartNutritionSummary";
 import GlobalMobileNav from "@/components/GlobalMobileNav";
 import DesktopNav from "@/components/DesktopNav";
-import restaurants from "@/app/data/index.json";
 import { useCart } from "@/stores/cartStore";
 import {
   addonsLookupByRestaurant,
@@ -95,27 +93,6 @@ export default function CartPage() {
   const { items, totals, updateQuantity, updateItem } = useCart();
   const router = useRouter();
 
-  const cartRestaurantIds = useMemo(
-    () => [...new Set(items.map((item) => item.restaurantId))],
-    [items]
-  );
-
-  const headerRestaurant = restaurants.find((restaurant) => restaurant.id === cartRestaurantIds[0]);
-  const chipotleEntreeFromCart = useMemo(() => {
-    if (cartRestaurantIds.length !== 1 || cartRestaurantIds[0] !== "chipotle") {
-      return null;
-    }
-
-    const selectedEntree = items.find((item) => item.restaurantId === "chipotle")?.buildConfiguration?.selectedEntree;
-    return selectedEntree ?? null;
-  }, [cartRestaurantIds, items]);
-  const backToMenuHref = cartRestaurantIds[0]
-    ? chipotleEntreeFromCart
-      ? `/restaurant/${cartRestaurantIds[0]}?entree=${encodeURIComponent(chipotleEntreeFromCart)}`
-      : `/restaurant/${cartRestaurantIds[0]}`
-    : "/";
-  const headerTitle = cartRestaurantIds.length > 1 ? "Mixed Restaurants" : (headerRestaurant?.name ?? "Meal Finalization");
-
   const nutritionTotals = useMemo(
     () => buildCartNutritionTotals(items, menuLookupByRestaurant, addonsLookupByRestaurant),
     [items]
@@ -158,22 +135,9 @@ export default function CartPage() {
     <>
       <GlobalMobileNav
         title="Cart"
-        browseTopContent={
-          cartRestaurantIds[0] ? (
-            <section className="space-y-2.5 rounded-xl border border-blue-100 bg-blue-50/40 p-3">
-              <h4 className="text-xs font-semibold uppercase tracking-[0.16em] text-blue-700/70">Keep Browsing</h4>
-              <div className="flex items-center justify-between gap-2">
-                <span className="min-w-0 truncate text-sm font-semibold text-slate-900">{headerTitle}</span>
-                <Link href={backToMenuHref} className="rounded-full border border-black/20 bg-white px-3 py-1.5 text-xs font-semibold text-black/80">
-                  Back to menu
-                </Link>
-              </div>
-            </section>
-          ) : null
-        }
       />
       <div className="px-4 pt-4 sm:px-6">
-        <DesktopNav />
+        <DesktopNav showCartButton={false} />
       </div>
       <main className="mx-auto flex min-h-screen w-full max-w-5xl flex-col gap-6 px-4 pb-10 pt-28 sm:px-6 lg:pt-10">
       <section className="w-full space-y-3">
