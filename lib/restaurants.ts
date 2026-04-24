@@ -27,6 +27,13 @@ export type RestaurantData = {
   builderConfig?: RestaurantBuilderConfig;
 };
 
+export const ACTIVE_RESTAURANT_IDS = ["chickfila", "chipotle"] as const;
+
+export function getVisibleRestaurants() {
+  const visibleIds = new Set<string>(ACTIVE_RESTAURANT_IDS);
+  return restaurants.filter((restaurant) => visibleIds.has(restaurant.id));
+}
+
 export function toItemSlug(item: MenuItem) {
   const raw = item.id ?? item.name;
   return raw

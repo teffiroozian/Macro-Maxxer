@@ -4,11 +4,12 @@ import { useMemo, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import restaurants from "./data/index.json";
 import GlobalMobileNav from "@/components/GlobalMobileNav";
 import DesktopNav from "@/components/DesktopNav";
+import { getVisibleRestaurants } from "@/lib/restaurants";
 
 const RECENT_RESTAURANTS_KEY = "recentlySearchedRestaurants";
+const restaurants = getVisibleRestaurants();
 
 export default function Home() {
   const router = useRouter();
