@@ -22,7 +22,6 @@ export default function GlobalMobileNav({
   return (
     <>
       <div className="fixed left-0 right-0 top-0 z-[95] lg:hidden" data-global-nav="true">
-        <div className="absolute inset-0 -z-10 bg-white/95 backdrop-blur supports-[backdrop-filter]:bg-white/80" />
         <div className="relative z-[110] mx-auto mt-1 flex w-[calc(100%-0.5rem)] max-w-6xl items-center rounded-2xl border border-slate-200/70 bg-white shadow-[0_-3px_12px_rgba(15,23,42,0.12)] backdrop-blur sm:w-[calc(100%-1rem)]">
           <div className="mx-auto flex w-full max-w-5xl items-center gap-2 px-3 py-2 sm:gap-3 sm:px-6">
             <button

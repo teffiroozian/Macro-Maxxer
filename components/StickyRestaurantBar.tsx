@@ -92,7 +92,6 @@ export default function StickyRestaurantBar({
 
   return (
     <div className="fixed left-0 right-0 top-0 z-[95]" data-sticky-nav="true">
-      <div className="absolute inset-0 -z-10 bg-white/95 backdrop-blur supports-[backdrop-filter]:bg-white/80" />
       <div
         className={`relative z-[110] mx-auto mt-1 flex w-[calc(100%-0.5rem)] max-w-6xl items-center border border-slate-200/70 bg-white shadow-[0_-3px_12px_rgba(15,23,42,0.12)] backdrop-blur sm:w-[calc(100%-1rem)] ${
           hideSecondaryNav ? "rounded-2xl" : "rounded-2xl lg:rounded-t-2xl"
