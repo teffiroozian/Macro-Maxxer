@@ -28,7 +28,6 @@ const CORE_NUTRITION_KEYS = new Set([
   "sodium",
   "fiber",
   "sugars",
-  "extraNutrition",
 ]);
 
 function toNumber(value: unknown) {
@@ -60,10 +59,6 @@ function normalizeMenuItem(item: FlatLegacyMenuItem): MenuItem {
     ...rest
   } = item;
   const baseNutrition = item.nutrition ?? { calories: 0, protein: 0, carbs: 0, totalFat: 0 };
-  const extraNutrition = {
-    ...(baseNutrition.extraNutrition ?? {}),
-    ...(extractExtraNutrition(item) ?? {}),
-  };
   const nutrition = {
     ...baseNutrition,
     calories: toNumber(item.calories) ?? baseNutrition.calories ?? 0,
@@ -76,7 +71,6 @@ function normalizeMenuItem(item: FlatLegacyMenuItem): MenuItem {
     sodium: toNumber(item.sodium) ?? baseNutrition.sodium,
     fiber: toNumber(item.fiber) ?? baseNutrition.fiber,
     sugars: toNumber(item.sugars) ?? baseNutrition.sugars,
-    extraNutrition: Object.keys(extraNutrition).length > 0 ? extraNutrition : undefined,
   };
 
   return {

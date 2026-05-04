@@ -25,7 +25,6 @@ type RawAddonOption = {
     sodium: number;
     fiber: number;
     sugars: number;
-    extraNutrition: Record<string, number>;
   }>;
   [key: string]: unknown;
 };
@@ -66,10 +65,6 @@ function normalizeAddonOption(addon: RawAddonOption): AddonOption {
   const resolvedId = addon.id ?? resolvedName.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
 
   const totalFat = toNumber(addon.totalFat ?? nutrition.totalFat);
-  const extraNutrition = {
-    ...(nutrition.extraNutrition ?? {}),
-    ...(extractExtraNutrition(addon) ?? {}),
-  };
 
   return {
     id: resolvedId || "unnamed-addon",
@@ -84,7 +79,6 @@ function normalizeAddonOption(addon: RawAddonOption): AddonOption {
     sodium: toNumber(addon.sodium ?? nutrition.sodium),
     fiber: toNumber(addon.fiber ?? nutrition.fiber),
     sugars: toNumber(addon.sugars ?? nutrition.sugars),
-    extraNutrition: Object.keys(extraNutrition).length > 0 ? extraNutrition : undefined,
     image: addon.image,
   };
 }

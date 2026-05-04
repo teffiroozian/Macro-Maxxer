@@ -759,15 +759,6 @@ export default function ItemRouteModal({
     (nutrition: MenuItem["nutrition"], multiplier: number): MenuItem["nutrition"] => {
       const scaleNumericField = (value: number | undefined) =>
         value === undefined ? undefined : Math.round(value * multiplier);
-      const scaledExtraNutrition = nutrition.extraNutrition
-        ? Object.fromEntries(
-            Object.entries(nutrition.extraNutrition).map(([key, value]) => [
-              key,
-              Math.round(value * multiplier),
-            ])
-          )
-        : undefined;
-
       return {
         calories: Math.round(nutrition.calories * multiplier),
         protein: Math.round(nutrition.protein * multiplier),
@@ -779,7 +770,6 @@ export default function ItemRouteModal({
         sodium: scaleNumericField(nutrition.sodium),
         fiber: scaleNumericField(nutrition.fiber),
         sugars: scaleNumericField(nutrition.sugars),
-        extraNutrition: scaledExtraNutrition,
       };
     },
     []

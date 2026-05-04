@@ -25,7 +25,6 @@ export type Nutrition = {
   sodium?: number;
   fiber?: number;
   sugars?: number;
-  extraNutrition?: Record<string, number>;
 };
 
 export type ItemVariant = {
@@ -53,7 +52,6 @@ export type AddonOption = {
   sodium?: number;
   fiber?: number;
   sugars?: number;
-  extraNutrition?: Record<string, number>;
   image?: string;
 };
 

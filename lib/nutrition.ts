@@ -9,22 +9,10 @@ const OPTIONAL_NUTRITION_KEYS: OptionalNutritionKey[] = [
   "sodium",
   "fiber",
   "sugars",
-  "extraNutrition",
 ];
 
 function asFiniteNumber(value: unknown) {
   return typeof value === "number" && Number.isFinite(value) ? value : undefined;
-}
-
-function normalizeExtraNutrition(value: unknown) {
-  if (!value || typeof value !== "object") return undefined;
-
-  const entries = Object.entries(value)
-    .map(([key, entryValue]) => [key, asFiniteNumber(entryValue)] as const)
-    .filter((entry): entry is readonly [string, number] => entry[1] !== undefined);
-
-  if (entries.length === 0) return undefined;
-  return Object.fromEntries(entries);
 }
 
 export function normalizeNutrition(nutrition?: Partial<Nutrition> | null): Nutrition {
@@ -38,14 +26,6 @@ export function normalizeNutrition(nutrition?: Partial<Nutrition> | null): Nutri
   };
 
   for (const key of OPTIONAL_NUTRITION_KEYS) {
-    if (key === "extraNutrition") {
-      const normalizedExtraNutrition = normalizeExtraNutrition(source.extraNutrition);
-      if (normalizedExtraNutrition) {
-        normalized.extraNutrition = normalizedExtraNutrition;
-      }
-      continue;
-    }
-
     const value = asFiniteNumber(source[key]);
     if (value !== undefined) {
       normalized[key] = value;
