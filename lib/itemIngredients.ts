@@ -5,7 +5,7 @@ type ParsedIngredientEntry = {
   defaultCount: number;
 };
 
-type NutritionNumericKey = Exclude<keyof Nutrition, "extraNutrition">;
+type NutritionNumericKey = keyof Nutrition;
 
 const NUTRITION_KEYS: NutritionNumericKey[] = [
   "calories",
@@ -88,7 +88,6 @@ export function computeNutritionFromIncludedIngredients(options: {
     carbs: 0,
     totalFat: 0,
   };
-  const extraNutritionTotals: Record<string, number> = {};
   let resolvedCount = 0;
 
   defaultsById.forEach((count, normalizedId) => {
@@ -102,16 +101,10 @@ export function computeNutritionFromIncludedIngredients(options: {
       totals[key] = (current ?? 0) + nextValue;
     });
 
-    Object.entries(nutrition.extraNutrition ?? {}).forEach(([key, value]) => {
-      extraNutritionTotals[key] = (extraNutritionTotals[key] ?? 0) + toNutritionNumber(value) * count;
-    });
   });
 
   if (resolvedCount === 0) return undefined;
 
-  if (Object.keys(extraNutritionTotals).length > 0) {
-    totals.extraNutrition = extraNutritionTotals;
-  }
 
   return totals;
 }

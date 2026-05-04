@@ -47,14 +47,6 @@ export function scaleNutritionValues(
     sodium: nutrition.sodium === undefined ? undefined : Math.round(nutrition.sodium * multiplier),
     fiber: nutrition.fiber === undefined ? undefined : Math.round(nutrition.fiber * multiplier),
     sugars: nutrition.sugars === undefined ? undefined : Math.round(nutrition.sugars * multiplier),
-    extraNutrition: nutrition.extraNutrition
-      ? Object.fromEntries(
-          Object.entries(nutrition.extraNutrition).map(([key, value]) => [
-            key,
-            Math.round(value * multiplier),
-          ])
-        )
-      : undefined,
   });
 }
 
