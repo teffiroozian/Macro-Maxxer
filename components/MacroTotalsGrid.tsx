@@ -1,8 +1,5 @@
-import type { CartMacros } from "@/stores/cartStore";
 import type { ReactNode } from "react";
-
-export type MacroKey = keyof CartMacros;
-export type MacroTotalsInput = Pick<CartMacros, "calories" | "protein" | "carbs" | "totalFat">;
+import type { CoreMacros } from "@/types/menu";
 
 type MacroDisplayConfig = {
   label: string;
@@ -10,7 +7,7 @@ type MacroDisplayConfig = {
   valueClassNameByVariant: Record<"default" | "bar", string>;
 };
 
-export const macroDisplayConfig: Record<MacroKey, MacroDisplayConfig> = {
+export const macroDisplayConfig: Record<keyof CoreMacros, MacroDisplayConfig> = {
   calories: {
     label: "Calories",
     valueClassNameByVariant: {
@@ -44,17 +41,17 @@ export const macroDisplayConfig: Record<MacroKey, MacroDisplayConfig> = {
   },
 };
 
-const macroOrder: MacroKey[] = ["calories", "protein", "carbs", "totalFat"];
+const macroOrder: Array<keyof CoreMacros> = ["calories", "protein", "carbs", "totalFat"];
 
 type MacroTotalsGridProps = {
-  macros: MacroTotalsInput;
+  macros: CoreMacros;
   size?: "compact" | "full" | "panel";
   variant?: "default" | "bar";
   className?: string;
   itemClassName?: string;
   labelClassName?: string;
   valueClassName?: string;
-  valueExtras?: Partial<Record<MacroKey, ReactNode>>;
+  valueExtras?: Partial<Record<keyof CoreMacros, ReactNode>>;
 };
 
 export default function MacroTotalsGrid({

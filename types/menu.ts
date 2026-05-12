@@ -12,6 +12,11 @@ export type Nutrition = {
   sugars?: number;
 };
 
+export type CoreMacros = Pick<
+  Nutrition,
+  "calories" | "protein" | "carbs" | "totalFat"
+>;
+
 export type ItemVariant = {
   id: string;
   label: string;
@@ -31,12 +36,7 @@ export type AddonOption = {
 
 export type RestaurantAddons = Record<string, AddonOption[]>;
 
-export type MacroDelta = {
-  calories: number;
-  protein: number;
-  carbs: number;
-  totalFat: number;
-};
+export type MacroDelta = CoreMacros;
 
 export type IngredientTabsOverride = {
   ingredientTabs?: string[];

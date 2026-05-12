@@ -2,13 +2,9 @@
 
 import { useMemo, useSyncExternalStore } from "react";
 import type { ChipotleBuildConfiguration } from "@/lib/chipotleBuild";
+import type { CoreMacros } from "@/types/menu";
 
-export type CartMacros = {
-  calories: number;
-  protein: number;
-  carbs: number;
-  totalFat: number;
-};
+export type CartMacros = CoreMacros;
 
 export type CartNutrition = {
   calories: number;

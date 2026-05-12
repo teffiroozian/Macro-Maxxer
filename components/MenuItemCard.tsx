@@ -6,6 +6,7 @@ import { ChevronDown } from "lucide-react";
 import type {
   AddonOption,
   AddonRef,
+  CoreMacros,
   IngredientItem,
   MacroDelta,
   MenuItem,
@@ -166,12 +167,7 @@ type CartConfigurationPayload = {
   image?: string;
   optionsLabel?: string;
   customizations?: string[];
-  macrosPerItem: {
-    calories: number;
-    protein: number;
-    carbs: number;
-    totalFat: number;
-  };
+  macrosPerItem: CoreMacros;
 };
 
 
