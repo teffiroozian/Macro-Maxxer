@@ -18,7 +18,7 @@ export function normalizeIngredientCategory(value: string) {
 export const toNumber = (value?: number) => value ?? 0;
 
 export function sortByCalories(addons: AddonOption[]) {
-  return [...addons].sort((a, b) => toNumber(a.calories) - toNumber(b.calories));
+  return [...addons].sort((a, b) => toNumber(a.nutrition.calories) - toNumber(b.nutrition.calories));
 }
 
 export function formatSummaryDetail(name: string, calories: number) {

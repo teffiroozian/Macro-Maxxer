@@ -2,13 +2,13 @@ import restaurants from "@/app/data/index.json";
 import { normalizeAddons } from "@/lib/addons";
 import { resolveMenuDataset } from "@/lib/menuResolver";
 import type {
-  AddonRef,
   IngredientItem,
   MenuItem,
   RestaurantAddons,
   RestaurantBuilderConfig,
   RestaurantCustomizationRules,
 } from "@/types/menu";
+import type { AddonRef } from "@/lib/addonTypes";
 
 export type RestaurantData = {
   id: string;
@@ -89,16 +89,16 @@ export function buildAddonMenuItems(restaurantId: string, addons?: RestaurantAdd
         name: option.name,
         defaultOrder: 0,
         nutrition: {
-          calories: option.calories,
-          protein: option.protein,
-          carbs: option.carbs,
-          totalFat: option.totalFat ?? 0,
-          satFat: option.satFat,
-          transFat: option.transFat,
-          cholesterol: option.cholesterol,
-          sodium: option.sodium,
-          fiber: option.fiber,
-          sugars: option.sugars,
+          calories: option.nutrition.calories,
+          protein: option.nutrition.protein,
+          carbs: option.nutrition.carbs,
+          totalFat: option.nutrition.totalFat ?? 0,
+          satFat: option.nutrition.satFat,
+          transFat: option.nutrition.transFat,
+          cholesterol: option.nutrition.cholesterol,
+          sodium: option.nutrition.sodium,
+          fiber: option.nutrition.fiber,
+          sugars: option.nutrition.sugars,
         },
         categories: [categoryByAddonRef[addonRef]],
         servingType: "addon",

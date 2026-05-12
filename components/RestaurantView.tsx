@@ -41,13 +41,13 @@ import {
 } from "lucide-react";
 import { useRestaurantSearch } from "@/components/RestaurantSearchContext";
 import type {
-  AddonRef,
   IngredientItem,
   MenuItem,
   RestaurantAddons,
   RestaurantBuilderConfig,
   RestaurantCustomizationRules,
 } from "@/types/menu";
+import type { AddonRef } from "@/lib/addonTypes";
 import {
   type Filters,
   type ViewOption,
@@ -423,16 +423,16 @@ export default function RestaurantView({
           name: option.name,
           defaultOrder: 0,
           nutrition: {
-            calories: option.calories,
-            protein: option.protein,
-            carbs: option.carbs,
-            totalFat: option.totalFat,
-            satFat: option.satFat,
-            transFat: option.transFat,
-            cholesterol: option.cholesterol,
-            sodium: option.sodium,
-            fiber: option.fiber,
-            sugars: option.sugars,
+            calories: option.nutrition.calories,
+            protein: option.nutrition.protein,
+            carbs: option.nutrition.carbs,
+            totalFat: option.nutrition.totalFat,
+            satFat: option.nutrition.satFat,
+            transFat: option.nutrition.transFat,
+            cholesterol: option.nutrition.cholesterol,
+            sodium: option.nutrition.sodium,
+            fiber: option.nutrition.fiber,
+            sugars: option.nutrition.sugars,
           },
           categories: [categoryByAddonRef[addonRef]],
           servingType: "addon" as const,
@@ -567,7 +567,7 @@ export default function RestaurantView({
             typeof includedIngredientOrder === "number"
               ? includedIngredientOrder
               : (ingredient.defaultOrder ?? index),
-          variants: tripleCheeseVariant ? [...(variants ?? []), tripleCheeseVariant] : variants,
+          variants: tripleCheeseVariant ? [...(variants ?? []), { ...tripleCheeseVariant, categories: ingredient.categories }] : variants,
           defaultVariantId,
           hideVariantSelector:
             ingredient.hideVariantSelector || isQuesadillaCheeseIncludedIngredient,

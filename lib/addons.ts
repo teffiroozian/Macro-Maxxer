@@ -1,4 +1,5 @@
-import type { AddonOption, AddonRef, RestaurantAddons } from "@/types/menu";
+import type { AddonOption, RestaurantAddons } from "@/types/menu";
+import type { AddonRef } from "@/lib/addonTypes";
 
 type RawAddonOption = {
   id?: string;
@@ -33,32 +34,6 @@ function toNumber(value: unknown) {
   return typeof value === "number" && Number.isFinite(value) ? value : undefined;
 }
 
-const CORE_NUTRITION_KEYS = new Set([
-  "id",
-  "name",
-  "image",
-  "nutrition",
-  "calories",
-  "protein",
-  "carbs",
-  "totalFat",
-  "satFat",
-  "transFat",
-  "cholesterol",
-  "sodium",
-  "fiber",
-  "sugars",
-]);
-
-function extractExtraNutrition(addon: RawAddonOption) {
-  const entries = Object.entries(addon)
-    .filter(([key, value]) => !CORE_NUTRITION_KEYS.has(key) && typeof value === "number" && Number.isFinite(value))
-    .map(([key, value]) => [key, value as number] as const);
-
-  if (entries.length === 0) return undefined;
-  return Object.fromEntries(entries);
-}
-
 function normalizeAddonOption(addon: RawAddonOption): AddonOption {
   const nutrition = addon.nutrition ?? {};
   const resolvedName = addon.name ?? addon.id ?? "Unnamed Add-on";
@@ -69,17 +44,19 @@ function normalizeAddonOption(addon: RawAddonOption): AddonOption {
   return {
     id: resolvedId || "unnamed-addon",
     name: resolvedName,
-    calories: toNumber(addon.calories ?? nutrition.calories) ?? 0,
-    protein: toNumber(addon.protein ?? nutrition.protein) ?? 0,
-    carbs: toNumber(addon.carbs ?? nutrition.carbs) ?? 0,
-    totalFat: totalFat ?? 0,
-    satFat: toNumber(addon.satFat ?? nutrition.satFat),
-    transFat: toNumber(addon.transFat ?? nutrition.transFat),
-    cholesterol: toNumber(addon.cholesterol ?? nutrition.cholesterol),
-    sodium: toNumber(addon.sodium ?? nutrition.sodium),
-    fiber: toNumber(addon.fiber ?? nutrition.fiber),
-    sugars: toNumber(addon.sugars ?? nutrition.sugars),
-    image: addon.image,
+    image: addon.image ?? "",
+    nutrition: {
+      calories: toNumber(addon.calories ?? nutrition.calories) ?? 0,
+      protein: toNumber(addon.protein ?? nutrition.protein) ?? 0,
+      carbs: toNumber(addon.carbs ?? nutrition.carbs) ?? 0,
+      totalFat: totalFat ?? 0,
+      satFat: toNumber(addon.satFat ?? nutrition.satFat),
+      transFat: toNumber(addon.transFat ?? nutrition.transFat),
+      cholesterol: toNumber(addon.cholesterol ?? nutrition.cholesterol),
+      sodium: toNumber(addon.sodium ?? nutrition.sodium),
+      fiber: toNumber(addon.fiber ?? nutrition.fiber),
+      sugars: toNumber(addon.sugars ?? nutrition.sugars),
+    },
   };
 }
 

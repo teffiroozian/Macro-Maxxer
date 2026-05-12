@@ -235,16 +235,16 @@ export function resolvePanelIngredientTabs(
       menuItemNutrition ??
       match?.nutrition ??
       ingredientRefMatch?.nutrition ?? {
-        calories: addonMatch?.calories,
-        protein: addonMatch?.protein,
-        carbs: addonMatch?.carbs,
-        totalFat: addonMatch?.totalFat,
-        satFat: addonMatch?.satFat,
-        transFat: addonMatch?.transFat,
-        cholesterol: addonMatch?.cholesterol,
-        sodium: addonMatch?.sodium,
-        fiber: addonMatch?.fiber,
-        sugars: addonMatch?.sugars,
+        calories: addonMatch?.nutrition.calories,
+        protein: addonMatch?.nutrition.protein,
+        carbs: addonMatch?.nutrition.carbs,
+        totalFat: addonMatch?.nutrition.totalFat,
+        satFat: addonMatch?.nutrition.satFat,
+        transFat: addonMatch?.nutrition.transFat,
+        cholesterol: addonMatch?.nutrition.cholesterol,
+        sodium: addonMatch?.nutrition.sodium,
+        fiber: addonMatch?.nutrition.fiber,
+        sugars: addonMatch?.nutrition.sugars,
       }
     );
 

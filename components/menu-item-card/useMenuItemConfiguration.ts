@@ -1,9 +1,11 @@
 import { useMemo, useState } from "react";
-import type { AddonOption, AddonRef, MenuItem, RestaurantAddons } from "@/types/menu";
+import type { AddonOption, MenuItem, RestaurantAddons } from "@/types/menu";
+import type { AddonRef, CommonChange } from "@/lib/addonTypes";
 import type { ResolvedPanelIngredient } from "@/components/ItemDetailsPanel";
 import { getDefaultIngredientCounts } from "@/lib/menuItemCalculations";
 import {
   getSelectedAddonsFromLabel,
+  getSelectedCommonChangeIdsFromCustomizations,
   getSelectedSauceCountsFromLabel,
 } from "@/lib/menuItemCard/cartLabelUtils";
 import { parseComboCustomization } from "@/lib/menuItemCard/comboCustomizationParser";
@@ -13,6 +15,7 @@ export function useMenuItemConfiguration({
   mode,
   item,
   addons,
+  commonChanges,
   initialCartOptionsLabel,
   initialCartCustomizations,
   resolvedIngredients,
@@ -20,6 +23,7 @@ export function useMenuItemConfiguration({
   mode: "menu" | "cart";
   item: MenuItem;
   addons?: RestaurantAddons;
+  commonChanges?: CommonChange[];
   initialCartOptionsLabel?: string;
   initialCartCustomizations?: string[];
   resolvedIngredients: ResolvedPanelIngredient[];
@@ -29,6 +33,9 @@ export function useMenuItemConfiguration({
   );
   const [selectedSauceCounts, setSelectedSauceCounts] = useState<Record<string, number>>(() =>
     mode === "cart" ? getSelectedSauceCountsFromLabel(item, addons, initialCartOptionsLabel) : {}
+  );
+  const [selectedCommonChangeIds, setSelectedCommonChangeIds] = useState<string[]>(() =>
+    mode === "cart" ? getSelectedCommonChangeIdsFromCustomizations(commonChanges, initialCartCustomizations) : []
   );
 
   const parsedInitialComboCustomization = useMemo(
@@ -44,6 +51,7 @@ export function useMenuItemConfiguration({
   const resetConfiguration = () => {
     setSelectedAddons({});
     setSelectedSauceCounts({});
+    setSelectedCommonChangeIds([]);
     setSelectedIngredientCounts(getDefaultIngredientCounts(resolvedIngredients));
   };
 
@@ -52,6 +60,8 @@ export function useMenuItemConfiguration({
     setSelectedAddons,
     selectedSauceCounts,
     setSelectedSauceCounts,
+    selectedCommonChangeIds,
+    setSelectedCommonChangeIds,
     selectedIngredientCounts,
     setSelectedIngredientCounts,
     comboType,
