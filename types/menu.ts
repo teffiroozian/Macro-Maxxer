@@ -1,24 +1,9 @@
-export const SERVING_TYPES = [
-  "single",
-  "combo",
-  "shareable",
-  "addon",
-  "drink",
-  "side",
-  "breakfast",
-  "dessert",
-  "kids",
-  "entree",
-] as const;
-
-export type ServingType = (typeof SERVING_TYPES)[number];
-
 export type Nutrition = {
   calories: number;
   protein: number;
   totalFat: number;
   carbs: number;
-
+  // optional fields
   satFat?: number;
   transFat?: number;
   cholesterol?: number;
@@ -28,34 +13,23 @@ export type Nutrition = {
 };
 
 export type ItemVariant = {
-  id: string;          // e.g. "8pc", "12pc", "30pc"
-  label: string;       // e.g. "8 piece"
+  id: string;
+  label: string;
   nutrition: Nutrition;
+  categories: string[];
   image?: string;
-  servingType?: ServingType;   // Optional override: variant can differ from base item
-  categories?: string[];
+  servingType?: string;
   isDefault?: boolean;
 };
-
-export type AddonRef = "sauces" | "dressings" | "condiments";
 
 export type AddonOption = {
   id: string;
   name: string;
-  calories: number;
-  protein: number;
-  carbs: number;
-  totalFat: number;
-  satFat?: number;
-  transFat?: number;
-  cholesterol?: number;
-  sodium?: number;
-  fiber?: number;
-  sugars?: number;
-  image?: string;
+  image: string;
+  nutrition: Nutrition;
 };
 
-export type RestaurantAddons = Partial<Record<AddonRef, AddonOption[]>>;
+export type RestaurantAddons = Record<string, AddonOption[]>;
 
 export type MacroDelta = {
   calories: number;
@@ -85,14 +59,14 @@ export type MenuItem = {
   ingredientRef?: string;
   name: string;
   defaultOrder: number;
-  nutrition: Nutrition; // make this required so label is consistent
+  nutrition: Nutrition;
   image: string;
   categories: string[];
   entreeGroup?: string;
-  servingType?: ServingType;
+  servingType?: string;
   variants?: ItemVariant[];
   defaultVariantId?: string;
-  addonRefs?: AddonRef[];
+  addonRefs?: string[];
   ingredients?: string[];
   customization?: IngredientTabsOverride;
   hideVariantSelector?: boolean;
