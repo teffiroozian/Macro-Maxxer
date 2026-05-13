@@ -48,14 +48,17 @@ function buildChipotleBuildYourOwnMenuItem(cartItem: CartItem, ingredientItems?:
   }, {});
 
   const tabNames = Object.keys(ingredientOptionsByTab);
-  const ingredientTabMaxQuantities = tabNames.reduce<Record<string, number>>((acc, tabName) => {
-    acc[tabName] = 10;
-    return acc;
-  }, {});
-
   const singleSelectTabs = ["Proteins", "Rice", "Beans", "Shell"].filter((tabName) =>
     tabNames.some((candidate) => normalizeIngredientKey(candidate) === normalizeIngredientKey(tabName))
   );
+
+  const ingredientTabMaxQuantities = tabNames.reduce<Record<string, number>>((acc, tabName) => {
+    const isSingleSelectTab = singleSelectTabs.some(
+      (candidate) => normalizeIngredientKey(candidate) === normalizeIngredientKey(tabName)
+    );
+    acc[tabName] = isSingleSelectTab ? 1 : 10;
+    return acc;
+  }, {});
 
   return {
     ...buildCartFallbackMenuItem(cartItem),
@@ -64,7 +67,6 @@ function buildChipotleBuildYourOwnMenuItem(cartItem: CartItem, ingredientItems?:
       ingredientTabs: tabNames,
       ingredientTabMaxQuantities,
       ingredientOptionsByTab,
-      singleSelectIngredientTabs: singleSelectTabs,
       tabsWithNoneOption: singleSelectTabs,
     },
   };

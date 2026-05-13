@@ -47,7 +47,6 @@ export type RestaurantAddons = Record<string, AddonOption[]>;
 // item-level overrides for the ingredient tab options, allowing customization for specific items 
 export type IngredientTabsOverride = {
   ingredientTabs?: string[];
-  singleSelectIngredientTabs?: string[];
   ingredientTabMaxQuantities?: Partial<Record<string, number>>;
   ingredientOptionsByTab?: Partial<Record<string, string[]>>;
   tabsWithNoneOption?: string[];
