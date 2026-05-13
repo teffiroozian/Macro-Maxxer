@@ -25,14 +25,11 @@ import { useCart } from "@/stores/cartStore";
 import { parseComboCustomization } from "@/lib/menuItemCard/comboCustomizationParser";
 import {
   getSelectedAddonsFromLabel,
-  
   getSelectedSauceCountsFromLabel,
 } from "@/lib/menuItemCard/cartLabelUtils";
 import { getSelectedIngredientCountsFromCustomizations } from "@/lib/menuItemCard/ingredientCountCustomization";
 import {
   addonFat,
-  
-  
   getDefaultIngredientCounts,
   getDefaultVariantId,
   isChickfilaBreakfastItem,
@@ -64,10 +61,7 @@ import { SORT_OPTION_VALUES } from "@/lib/menuSections/sortOptions";
 const emptyAddon: AddonOption = {
   id: "none",
   name: "None",
-  calories: 0,
-  protein: 0,
-  carbs: 0,
-  totalFat: 0,
+  nutrition: { calories: 0, protein: 0, carbs: 0, totalFat: 0 },
   image: "none",
 };
 
@@ -158,9 +152,6 @@ export default function ItemRouteModal({
   );
   const [selectedSauceCounts, setSelectedSauceCounts] = useState<Record<string, number>>(() =>
     getSelectedSauceCountsFromLabel(item, addons, editingCartItem?.optionsLabel)
-  );
-  const [, ] = useState<string[]>(() =>
-    getSelectedCommonChangeIdsFromCustomizations(undefined, editingCartItem?.customizations)
   );
   const selectedVariant = variants?.find((variant) => variant.id === selectedVariantId);
   const selectedItemImage = selectedVariant?.image ?? item.image;
@@ -309,10 +300,6 @@ export default function ItemRouteModal({
     return new Set(["tortilla"]);
   }, [item.id]);
 
-  const applicableCommonChanges = useMemo(
-    () => getApplicableCommonChanges(item),
-    [item]
-  );
 
   const selectedSauceOptions = useMemo(() => {
     const sauceOptions = addons?.[sauceRef] ?? [];
@@ -325,16 +312,16 @@ export default function ItemRouteModal({
     () =>
       [...Object.values(selectedAddons), ...selectedSauceOptions].reduce(
         (sum, addon) => ({
-          calories: sum.calories + (addon?.calories ?? 0),
-          protein: sum.protein + (addon?.protein ?? 0),
-          carbs: sum.carbs + (addon?.carbs ?? 0),
+          calories: sum.calories + (addon?.nutrition.calories ?? 0),
+          protein: sum.protein + (addon?.nutrition.protein ?? 0),
+          carbs: sum.carbs + (addon?.nutrition.carbs ?? 0),
           totalFat: sum.totalFat + addonFat(addon),
-          satFat: sum.satFat + (addon?.satFat ?? 0),
-          transFat: sum.transFat + (addon?.transFat ?? 0),
-          cholesterol: sum.cholesterol + (addon?.cholesterol ?? 0),
-          sodium: sum.sodium + (addon?.sodium ?? 0),
-          fiber: sum.fiber + (addon?.fiber ?? 0),
-          sugars: sum.sugars + (addon?.sugars ?? 0),
+          satFat: sum.satFat + (addon?.nutrition.satFat ?? 0),
+          transFat: sum.transFat + (addon?.nutrition.transFat ?? 0),
+          cholesterol: sum.cholesterol + (addon?.nutrition.cholesterol ?? 0),
+          sodium: sum.sodium + (addon?.nutrition.sodium ?? 0),
+          fiber: sum.fiber + (addon?.nutrition.fiber ?? 0),
+          sugars: sum.sugars + (addon?.nutrition.sugars ?? 0),
         }),
         {
           calories: 0,
@@ -374,23 +361,6 @@ export default function ItemRouteModal({
     }, {});
   }, [resolvedIngredients, selectedIngredientCounts]);
 
-  const  = useMemo(
-    () =>
-      applicableCommonChanges.reduce<MacroDelta>(
-        (sum, change) => {
-          if (!.includes(change.id)) return sum;
-          return {
-            calories: sum.calories + change.delta.calories,
-            protein: sum.protein + change.delta.protein,
-            carbs: sum.carbs + change.delta.carbs,
-            totalFat: sum.totalFat + deltaFat(change),
-          };
-        },
-        { calories: 0, protein: 0, carbs: 0, totalFat: 0 }
-      ),
-    [applicableCommonChanges, ]
-  );
-
   const ingredientCountTotals = useMemo(
     () =>
       Object.entries(ingredientCounts).reduce<MacroDelta>(
@@ -427,10 +397,6 @@ export default function ItemRouteModal({
     return segments.length > 0 ? segments.join(" + ") : undefined;
   }, [selectedAddons, selectedSauceCounts]);
 
-  const  = useMemo(
-    () => applicableCommonChanges.filter((change) => .includes(change.id)).map((change) => change.label),
-    [applicableCommonChanges, ]
-  );
   const selectedIngredientCustomizations = useMemo(
     () =>
       resolvedIngredients
@@ -905,12 +871,12 @@ export default function ItemRouteModal({
 
   const customizationTotals = useMemo(
     () => ({
-      calories: addonTotals.calories + .calories + ingredientCountTotals.calories + activeComboNutritionTotals.calories,
-      protein: addonTotals.protein + .protein + ingredientCountTotals.protein + activeComboNutritionTotals.protein,
-      carbs: addonTotals.carbs + .carbs + ingredientCountTotals.carbs + activeComboNutritionTotals.carbs,
-      totalFat: addonTotals.totalFat + .totalFat + ingredientCountTotals.totalFat + activeComboNutritionTotals.totalFat,
+      calories: addonTotals.calories + ingredientCountTotals.calories + activeComboNutritionTotals.calories,
+      protein: addonTotals.protein + ingredientCountTotals.protein + activeComboNutritionTotals.protein,
+      carbs: addonTotals.carbs + ingredientCountTotals.carbs + activeComboNutritionTotals.carbs,
+      totalFat: addonTotals.totalFat + ingredientCountTotals.totalFat + activeComboNutritionTotals.totalFat,
     }),
-    [activeComboNutritionTotals, addonTotals, , ingredientCountTotals]
+    [activeComboNutritionTotals, addonTotals, ingredientCountTotals]
   );
 
   const hasActiveCustomization = useMemo(
@@ -1020,7 +986,7 @@ export default function ItemRouteModal({
               : undefined,
           ].filter((entry): entry is string => Boolean(entry))
         : [];
-    const customizations = [..., ...selectedIngredientCustomizations, ...comboCustomizations];
+    const customizations = [...selectedIngredientCustomizations, ...comboCustomizations];
 
     const nextCartItemPayload = {
       name: item.name,
@@ -1402,12 +1368,6 @@ export default function ItemRouteModal({
                 return { ...prev, [addon.name]: 1 };
               });
             }}
-            ={}
-            ={(changeId) =>
-              ((prev) =>
-                prev.includes(changeId) ? prev.filter((id) => id !== changeId) : [...prev, changeId]
-              )
-            }
             customizationTotals={customizationTotals}
             showCustomizationDeltas={hasActiveCustomization}
             showVariantsInDetails={!item.hideVariantSelector}

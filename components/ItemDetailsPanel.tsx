@@ -278,7 +278,7 @@ export default function ItemDetailsPanel({
   const selectedAddonItems = (Object.entries(selectedAddons ?? {}) as Array<[AddonRef, AddonOption | undefined]>)
     .filter(([, addon]) => Boolean(addon && addon.name !== "None"))
     .map(([ref, addon]) => ({
-      id: `${ref}-${addon?.id ?? addon?.name}`,
+      id: `${ref}-${addon?.name}`,
       name: addon?.name ?? "",
       quantity: 1,
       image: addon?.image,
@@ -931,13 +931,13 @@ export default function ItemDetailsPanel({
                   ? section.addons.filter((addon) => addon.name !== "None" && (sauceSelectionCounts?.[addon.name] ?? 0) > 0)
                   : [];
               const sauceSummaryCalories = sauceSelections.reduce(
-                (sum, addon) => sum + toNumber(addon.calories) * (sauceSelectionCounts?.[addon.name] ?? 0),
+                (sum, addon) => sum + toNumber(addon.nutrition.calories) * (sauceSelectionCounts?.[addon.name] ?? 0),
                 0
               );
               const summaryDetail =
                 section.ref === "sauces"
                   ? formatSummaryDetail(sauceSelections[0]?.name ?? "None", sauceSummaryCalories)
-                  : formatSummaryDetail(selectedAddon?.name ?? "None", selectedAddon?.calories ?? 0);
+                  : formatSummaryDetail(selectedAddon?.name ?? "None", selectedAddon?.nutrition.calories ?? 0);
               return (
                 <div
                   key={section.ref}
@@ -984,10 +984,10 @@ export default function ItemDetailsPanel({
                         const isSelected =
                           section.ref === "sauces"
                             ? sauceCount > 0
-                            : selectedAddons?.[section.ref]?.id === addon.id;
+                            : selectedAddons?.[section.ref]?.name === addon.name;
 
                         return (
-                        <li key={`${section.ref}-${addon.id}`} className="flex">
+                        <li key={`${section.ref}-${addon.name}`} className="flex">
                           <button
                             type="button"
                             className={`box-border flex h-full w-full cursor-pointer flex-row items-center gap-3 rounded-[10px] border border-[rgba(0,0,0,0.15)] bg-[#f9f9f9] px-3 py-2 ${isSelected ? "shadow-[inset_0_0_0_3px_#16a34a]" : ""}`}
@@ -1011,7 +1011,7 @@ export default function ItemDetailsPanel({
                             )}
                             <div className="flex min-w-0 flex-col items-start justify-center gap-[6px]">
                               <div className="line-clamp-2 break-words text-left text-base font-bold leading-[1.2]">{addon.name}</div>
-                              <div className="text-sm font-bold text-[rgba(0,0,0,0.5)]">+{toNumber(addon.calories)} Cal</div>
+                              <div className="text-sm font-bold text-[rgba(0,0,0,0.5)]">+{toNumber(addon.nutrition.calories)} Cal</div>
                             </div>
                             {section.ref === "dressings" ? (
                               <span

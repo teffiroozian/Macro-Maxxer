@@ -85,7 +85,7 @@ export function sumNutritionWithFallback(base?: number, delta = 0) {
 }
 
 export function addonFat(addon?: AddonOption) {
-  return addon?.totalFat ?? 0;
+  return addon?.nutrition.totalFat ?? 0;
 }
 
 export function menuItemFat(item?: MenuItem) {
@@ -95,7 +95,6 @@ export function menuItemFat(item?: MenuItem) {
 export function menuItemFatWithFallback(item?: MenuItem) {
   return menuItemFat(item);
 }
-
 
 export function getDefaultVariantId(item?: MenuItem) {
   if (!item) return undefined;
@@ -107,7 +106,6 @@ export function getDefaultVariantId(item?: MenuItem) {
   const flaggedDefault = variants.find((variant) => variant.isDefault);
   return flaggedDefault?.id ?? variants[0]?.id;
 }
-
 
 export function getDefaultIngredientCounts(resolvedIngredients: ResolvedPanelIngredient[]) {
   return resolvedIngredients.reduce<Record<string, number>>((acc, ingredient) => {

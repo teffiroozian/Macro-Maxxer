@@ -34,7 +34,9 @@ export type AddonOption = {
   nutrition: Nutrition;
 };
 
-export type RestaurantAddons = Record<string, AddonOption[]>;
+export type AddonRef = string;
+
+export type RestaurantAddons = Record<AddonRef, AddonOption[]>;
 
 export type MacroDelta = CoreMacros;
 

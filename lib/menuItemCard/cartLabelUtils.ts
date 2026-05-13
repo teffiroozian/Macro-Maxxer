@@ -3,7 +3,6 @@ import { parseOptionLabelCounts, type OptionLabelCountMap } from "@/lib/cartOpti
 
 const sauceRef: AddonRef = "sauces";
 
-
 export function buildOptionLabelCounts(
   selectedAddons: Partial<Record<AddonRef, AddonOption>>,
   selectedSauceCounts: Record<string, number>
@@ -57,4 +56,3 @@ export function getSelectedSauceCountsFromLabel(item: MenuItem, addons: Restaura
     return acc;
   }, {});
 }
-

@@ -52,12 +52,12 @@ export function buildCartNutritionTotals(
 
       const addonNutrition = selectedAddons.reduce(
         (addonSum, addon) => ({
-          satFat: addonSum.satFat + (addon.satFat ?? 0),
-          transFat: addonSum.transFat + (addon.transFat ?? 0),
-          cholesterol: addonSum.cholesterol + (addon.cholesterol ?? 0),
-          sodium: addonSum.sodium + (addon.sodium ?? 0),
-          fiber: addonSum.fiber + (addon.fiber ?? 0),
-          sugars: addonSum.sugars + (addon.sugars ?? 0),
+          satFat: addonSum.satFat + (addon.nutrition.satFat ?? 0),
+          transFat: addonSum.transFat + (addon.nutrition.transFat ?? 0),
+          cholesterol: addonSum.cholesterol + (addon.nutrition.cholesterol ?? 0),
+          sodium: addonSum.sodium + (addon.nutrition.sodium ?? 0),
+          fiber: addonSum.fiber + (addon.nutrition.fiber ?? 0),
+          sugars: addonSum.sugars + (addon.nutrition.sugars ?? 0),
         }),
         { satFat: 0, transFat: 0, cholesterol: 0, sodium: 0, fiber: 0, sugars: 0 }
       );

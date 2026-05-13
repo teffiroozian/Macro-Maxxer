@@ -4253,22 +4253,5 @@
                 "calories": 5
             }
         ]
-    },
-    "commonChanges": [
-        {
-            "id": "swap_crispy_grilled",
-            "label": "Swap crispy \u2192 grilled chicken",
-            "appliesTo": {
-                "categories": [
-                    "Salad"
-                ]
-            },
-            "delta": {
-                "calories": -120,
-                "protein": 5,
-                "carbs": -8,
-                "totalFat": -9
-            }
-        }
-    ]
+    }
 }
