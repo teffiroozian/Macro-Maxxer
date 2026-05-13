@@ -111,14 +111,9 @@ export function resolveSingleSelectIngredientTabs(
   item: MenuItem,
   customizationRules?: RestaurantCustomizationRules
 ) {
-  const itemLevelSingleSelectTabs = item.customization?.singleSelectIngredientTabs?.filter(Boolean) ?? [];
-  const inferredSingleSelectTabs = resolveIngredientTabs(item, customizationRules).filter(
-    (tab) => resolveIngredientTabMaxQuantity(item, tab, customizationRules) === 1
-  );
-  const configuredTabs = [...itemLevelSingleSelectTabs, ...inferredSingleSelectTabs];
-
   return new Set(
-    configuredTabs
+    resolveIngredientTabs(item, customizationRules)
+      .filter((tab) => resolveIngredientTabMaxQuantity(item, tab, customizationRules) === 1)
       .map((tab) => normalizeTabName(tab))
       .filter((tab) => tab && tab !== normalizeTabName(INCLUDED_INGREDIENT_TAB))
   );
