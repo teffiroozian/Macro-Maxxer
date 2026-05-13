@@ -3,7 +3,6 @@ import type {
   AddonOption,
   MenuItem,
 } from "@/types/menu";
-import type { CommonChange } from "@/lib/addonTypes";
 import type { ResolvedPanelIngredient } from "@/components/ItemDetailsPanel";
 
 export function normalizeCategory(category: string) {
@@ -97,10 +96,6 @@ export function menuItemFatWithFallback(item?: MenuItem) {
   return menuItemFat(item);
 }
 
-export function deltaFat(change: CommonChange) {
-  return change.delta.totalFat ?? 0;
-}
-
 export function getDefaultVariantId(item?: MenuItem) {
   if (!item) return undefined;
   const variants = item.variants ?? [];
@@ -110,17 +105,6 @@ export function getDefaultVariantId(item?: MenuItem) {
   }
   const flaggedDefault = variants.find((variant) => variant.isDefault);
   return flaggedDefault?.id ?? variants[0]?.id;
-}
-
-export function getApplicableCommonChanges(item: MenuItem, commonChanges?: CommonChange[]): CommonChange[] {
-  if (!commonChanges || commonChanges.length === 0) return [];
-  const itemCategories = new Set((item.categories ?? []).map((category) => normalizeCategory(category)));
-
-  return commonChanges.filter((change) => {
-    const categories = change.appliesTo?.categories;
-    if (!categories || categories.length === 0) return false;
-    return categories.some((category) => itemCategories.has(normalizeCategory(category)));
-  });
 }
 
 export function getDefaultIngredientCounts(resolvedIngredients: ResolvedPanelIngredient[]) {

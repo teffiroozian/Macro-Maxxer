@@ -1,5 +1,4 @@
-import type { AddonOption, RestaurantAddons } from "@/types/menu";
-import type { AddonRef } from "@/lib/addonTypes";
+import type { AddonOption, AddonRef, RestaurantAddons } from "@/types/menu";
 
 type RawAddonOption = {
   id?: string;

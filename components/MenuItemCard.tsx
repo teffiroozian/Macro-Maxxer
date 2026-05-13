@@ -5,22 +5,20 @@ import { usePathname, useRouter } from "next/navigation";
 import { ChevronDown } from "lucide-react";
 import type {
   AddonOption,
+  AddonRef,
   IngredientItem,
   MacroDelta,
   MenuItem,
   RestaurantAddons,
   RestaurantCustomizationRules,
 } from "@/types/menu";
-import type { AddonRef, CommonChange } from "@/lib/addonTypes";
 import ItemDetailsPanel, { resolvePanelIngredients } from "./ItemDetailsPanel";
 import VariantSelector from "./VariantSelector";
 import {
   addonFat,
-  deltaFat,
   formatCalories,
   formatDelta,
   formatMacro,
-  getApplicableCommonChanges,
   getDefaultIngredientCounts,
   getDefaultVariantId,
   isChickfilaBreakfastItem,
@@ -32,7 +30,7 @@ import {
   sumNutrition,
 } from "@/lib/menuItemCalculations";
 import { formatOptionLabelCounts } from "@/lib/cartOptionLabels";
-import { buildOptionLabelCounts, formatCommonChangeForCart } from "@/lib/menuItemCard/cartLabelUtils";
+import { buildOptionLabelCounts } from "@/lib/menuItemCard/cartLabelUtils";
 import { formatIngredientCountCustomizationLabel } from "@/lib/menuItemCard/ingredientCountCustomization";
 import IngredientCompactCard from "./menu-item-card/IngredientCompactCard";
 import MenuCardActions from "./menu-item-card/MenuCardActions";
@@ -281,10 +279,6 @@ export default function MenuItemCard({
   const selectedItemImage = selectedVariant?.image ?? item.image;
   const baseNutrition = selectedVariant?.nutrition ?? item.nutrition;
 
-  const applicableCommonChanges = useMemo(
-    () => getApplicableCommonChanges(item),
-    [item]
-  );
 
   const resolvedIngredients = useMemo(
     () => resolvePanelIngredients(item, ingredientItems, addons, menuItems ?? [], variants, selectedVariantId, customizationRules),
@@ -296,7 +290,6 @@ export default function MenuItemCard({
     setSelectedAddons,
     selectedSauceCounts,
     setSelectedSauceCounts,
-    selectedCommonChangeIds,
     selectedIngredientCounts,
     setSelectedIngredientCounts,
     comboType,
@@ -380,23 +373,6 @@ export default function MenuItemCard({
         }
       ),
     [selectedAddons, selectedSauceOptions]
-  );
-
-  const commonChangeTotals = useMemo(
-    () =>
-      applicableCommonChanges.reduce<MacroDelta>(
-        (sum, change) => {
-          if (!selectedCommonChangeIds.includes(change.id)) return sum;
-          return {
-            calories: sum.calories + change.delta.calories,
-            protein: sum.protein + change.delta.protein,
-            carbs: sum.carbs + change.delta.carbs,
-            totalFat: sum.totalFat + deltaFat(change),
-          };
-        },
-        { calories: 0, protein: 0, carbs: 0, totalFat: 0 }
-      ),
-    [applicableCommonChanges, selectedCommonChangeIds]
   );
 
   const ingredientCountTotals = useMemo(
@@ -505,19 +481,18 @@ export default function MenuItemCard({
 
   const customizationTotals = useMemo(
     () => ({
-      calories: addonTotals.calories + commonChangeTotals.calories + ingredientCountTotals.calories + comboNutritionTotals.calories,
-      protein: addonTotals.protein + commonChangeTotals.protein + ingredientCountTotals.protein + comboNutritionTotals.protein,
-      carbs: addonTotals.carbs + commonChangeTotals.carbs + ingredientCountTotals.carbs + comboNutritionTotals.carbs,
-      totalFat: addonTotals.totalFat + commonChangeTotals.totalFat + ingredientCountTotals.totalFat + comboNutritionTotals.totalFat,
+      calories: addonTotals.calories + ingredientCountTotals.calories + comboNutritionTotals.calories,
+      protein: addonTotals.protein + ingredientCountTotals.protein + comboNutritionTotals.protein,
+      carbs: addonTotals.carbs + ingredientCountTotals.carbs + comboNutritionTotals.carbs,
+      totalFat: addonTotals.totalFat + ingredientCountTotals.totalFat + comboNutritionTotals.totalFat,
     }),
-    [addonTotals, comboNutritionTotals, commonChangeTotals, ingredientCountTotals]
+    [addonTotals, comboNutritionTotals, ingredientCountTotals]
   );
 
   const hasMods = useMemo(
     () =>
       Object.values(selectedAddons).some((addon) => addon && addon.name !== "None") ||
       Object.values(selectedSauceCounts).some((count) => count > 0) ||
-      selectedCommonChangeIds.length > 0 ||
       resolvedIngredients.some((ingredient) => (ingredientCounts[ingredient.id] ?? ingredient.defaultCount) !== ingredient.defaultCount) ||
       (isComboEligibleCategory && comboType === "combo-meal" && Boolean(selectedComboSide || selectedComboDrink)),
     [
@@ -528,8 +503,7 @@ export default function MenuItemCard({
       selectedAddons,
       selectedComboDrink,
       selectedComboSide,
-      selectedCommonChangeIds,
-      selectedSauceCounts,
+        selectedSauceCounts,
     ]
   );
 
@@ -553,10 +527,10 @@ export default function MenuItemCard({
 
   const nutrition = normalizeNutrition({
     ...baseNutrition,
-    calories: sumNutrition(baseNutrition.calories, addonNutritionTotals.calories + commonChangeTotals.calories + ingredientCountTotals.calories + comboNutritionTotals.calories),
-    protein: sumNutrition(baseNutrition.protein, addonNutritionTotals.protein + commonChangeTotals.protein + ingredientCountTotals.protein + comboNutritionTotals.protein),
-    carbs: sumNutrition(baseNutrition.carbs, addonNutritionTotals.carbs + commonChangeTotals.carbs + ingredientCountTotals.carbs + comboNutritionTotals.carbs),
-    totalFat: sumNutrition(baseNutrition.totalFat, addonNutritionTotals.totalFat + commonChangeTotals.totalFat + ingredientCountTotals.totalFat + comboNutritionTotals.totalFat),
+    calories: sumNutrition(baseNutrition.calories, addonNutritionTotals.calories + ingredientCountTotals.calories + comboNutritionTotals.calories),
+    protein: sumNutrition(baseNutrition.protein, addonNutritionTotals.protein + ingredientCountTotals.protein + comboNutritionTotals.protein),
+    carbs: sumNutrition(baseNutrition.carbs, addonNutritionTotals.carbs + ingredientCountTotals.carbs + comboNutritionTotals.carbs),
+    totalFat: sumNutrition(baseNutrition.totalFat, addonNutritionTotals.totalFat + ingredientCountTotals.totalFat + comboNutritionTotals.totalFat),
     satFat: addNutritionValue(baseNutrition.satFat, addonNutritionTotals.satFat),
     transFat: addNutritionValue(baseNutrition.transFat, addonNutritionTotals.transFat),
     cholesterol: addNutritionValue(baseNutrition.cholesterol, addonNutritionTotals.cholesterol),
@@ -575,22 +549,22 @@ export default function MenuItemCard({
         ...baseNutrition,
         calories: sumNutrition(
           baseNutrition.calories,
-          addonNutritionTotals.calories + commonChangeTotals.calories + ingredientCountTotals.calories
+          addonNutritionTotals.calories + ingredientCountTotals.calories
         ),
         protein: sumNutrition(
           baseNutrition.protein,
-          addonNutritionTotals.protein + commonChangeTotals.protein + ingredientCountTotals.protein
+          addonNutritionTotals.protein + ingredientCountTotals.protein
         ),
         carbs: sumNutrition(
           baseNutrition.carbs,
-          addonNutritionTotals.carbs + commonChangeTotals.carbs + ingredientCountTotals.carbs
+          addonNutritionTotals.carbs + ingredientCountTotals.carbs
         ),
         totalFat: sumNutrition(
           baseNutrition.totalFat,
-          addonNutritionTotals.totalFat + commonChangeTotals.totalFat + ingredientCountTotals.totalFat
+          addonNutritionTotals.totalFat + ingredientCountTotals.totalFat
         ),
       }),
-    [addonNutritionTotals, baseNutrition, commonChangeTotals, ingredientCountTotals]
+    [addonNutritionTotals, baseNutrition, ingredientCountTotals]
   );
   const quickMainName =
     comboType === "combo-meal"
@@ -627,14 +601,9 @@ export default function MenuItemCard({
 
     return labels.length > 0 ? labels.join(" • ") : undefined;
   }, [ingredientItems, item, restaurantId]);
-  const commonChanges = useMemo<CommonChange[]>(() => [], []);
   const isCartPage = pathname === "/cart";
   const useCartQuickEditPanel = isCartMode && isCartPage;
 
-  const selectedCommonChanges = useMemo(
-    () => applicableCommonChanges.filter((change) => selectedCommonChangeIds.includes(change.id)),
-    [applicableCommonChanges, selectedCommonChangeIds]
-  );
 
   const retainedCustomizations = useMemo(() => {
     if (!initialCartCustomizations || initialCartCustomizations.length === 0) return [];
@@ -646,10 +615,6 @@ export default function MenuItemCard({
       }
     }
 
-    const commonChangeLabels = new Set((commonChanges ?? []).flatMap((change) => [
-      change.label.replace(/^\+\s*/, "").trim(),
-      formatCommonChangeForCart(change.label).replace(/^\+\s*/, "").trim(),
-    ]));
     const ingredientLabels = new Set(
       resolvedIngredients
         .filter((ingredient) => !ingredient.isNoneOption)
@@ -662,16 +627,15 @@ export default function MenuItemCard({
       const isIngredientCustomization =
         ingredientMatch ? ingredientLabels.has(ingredientMatch[1].trim().toLowerCase()) : false;
 
-      return !addonNames.has(normalized) && !commonChangeLabels.has(normalized) && !isIngredientCustomization && normalized !== "Combo Meal" && !/^Side:\s*/i.test(normalized) && !/^Drink:\s*/i.test(normalized);
+      return !addonNames.has(normalized) && !isIngredientCustomization && normalized !== "Combo Meal" && !/^Side:\s*/i.test(normalized) && !/^Drink:\s*/i.test(normalized);
     });
-  }, [addons, commonChanges, initialCartCustomizations, item.addonRefs, resolvedIngredients]);
+  }, [addons, initialCartCustomizations, item.addonRefs, resolvedIngredients]);
 
   const optionsLabel = useMemo(() => {
     return formatOptionLabelCounts(buildOptionLabelCounts(selectedAddons, selectedSauceCounts));
   }, [selectedAddons, selectedSauceCounts]);
 
   const customizations = useMemo(() => {
-    const modifierLabels = selectedCommonChanges.map((change) => formatCommonChangeForCart(change.label));
     const ingredientCountLabels = resolvedIngredients
       .filter((ingredient) => !ingredient.isNoneOption && (ingredientCounts[ingredient.id] ?? ingredient.defaultCount) !== ingredient.defaultCount)
       .flatMap((ingredient) => {
@@ -695,9 +659,9 @@ export default function MenuItemCard({
           ].filter((entry): entry is string => Boolean(entry))
         : [];
 
-    const labels = [...modifierLabels, ...ingredientCountLabels, ...comboLabels];
+    const labels = [...ingredientCountLabels, ...comboLabels];
     return labels.length > 0 ? labels : undefined;
-  }, [comboType, ingredientCounts, isComboEligibleCategory, resolvedIngredients, selectedComboDrink, selectedComboDrinkVariant, selectedComboSide, selectedComboSideVariant, selectedCommonChanges, suppressRemovedIngredientCustomizationsInCart]);
+  }, [comboType, ingredientCounts, isComboEligibleCategory, resolvedIngredients, selectedComboDrink, selectedComboDrinkVariant, selectedComboSide, selectedComboSideVariant, suppressRemovedIngredientCustomizationsInCart]);
 
   const selectedVariantForCart = useMemo(() => {
     if (!variants || variants.length === 0) return undefined;
@@ -727,7 +691,6 @@ export default function MenuItemCard({
     nextVariantId: string,
     nextAddons: Partial<Record<AddonRef, AddonOption>>,
     nextSauceCounts: Record<string, number>,
-    nextSelectedCommonChangeIds: string[] = selectedCommonChangeIds,
     nextSelectedIngredientCounts: Record<string, number> = ingredientCounts,
     nextComboType: "just-item" | "combo-meal" = comboType,
     nextComboSideId: string | undefined = selectedComboSideId,
@@ -757,19 +720,6 @@ export default function MenuItemCard({
       { calories: 0, protein: 0, carbs: 0, totalFat: 0 }
     );
 
-    const commonChangeTotalsForCart = applicableCommonChanges.reduce<MacroDelta>(
-      (sum, change) => {
-        if (!nextSelectedCommonChangeIds.includes(change.id)) return sum;
-        return {
-          calories: sum.calories + change.delta.calories,
-          protein: sum.protein + change.delta.protein,
-          carbs: sum.carbs + change.delta.carbs,
-          totalFat: sum.totalFat + deltaFat(change),
-        };
-      },
-      { calories: 0, protein: 0, carbs: 0, totalFat: 0 }
-    );
-
     const ingredientCountTotalsForCart = Object.entries(nextSelectedIngredientCounts).reduce<MacroDelta>(
       (sum, [ingredientId, count]) => {
         const ingredient =
@@ -791,9 +741,6 @@ export default function MenuItemCard({
     );
 
     const nextOptionsLabel = formatOptionLabelCounts(buildOptionLabelCounts(nextAddons, nextSauceCounts));
-    const selectedCommonChangesForCart = applicableCommonChanges
-      .filter((change) => nextSelectedCommonChangeIds.includes(change.id))
-      .map((change) => formatCommonChangeForCart(change.label));
     const nextComboSide = comboSides.find((side) => (side.id ?? side.name) === nextComboSideId);
     const nextComboDrink = comboDrinks.find((drink) => (drink.id ?? drink.name) === nextComboDrinkId);
     const nextComboSideVariant = nextComboSide?.variants?.find((variant) => variant.id === nextComboSideVariantId);
@@ -839,7 +786,6 @@ export default function MenuItemCard({
       });
     const nextCustomizations = [
       ...retainedCustomizations,
-      ...selectedCommonChangesForCart,
       ...selectedIngredientCustomizationsForCart,
       ...comboCustomizations,
     ];
@@ -852,9 +798,9 @@ export default function MenuItemCard({
       image: activeVariant?.image ?? item.image,
       macrosPerItem: {
         calories: (baseForCart.calories ?? 0) + addonTotalsForCart.calories + ingredientCountTotalsForCart.calories + comboMacros.calories,
-        protein: (baseForCart.protein ?? 0) + addonTotalsForCart.protein + commonChangeTotalsForCart.protein + ingredientCountTotalsForCart.protein + comboMacros.protein,
-        carbs: (baseForCart.carbs ?? 0) + addonTotalsForCart.carbs + commonChangeTotalsForCart.carbs + ingredientCountTotalsForCart.carbs + comboMacros.carbs,
-        totalFat: (baseForCart.totalFat ?? 0) + addonTotalsForCart.totalFat + commonChangeTotalsForCart.totalFat + ingredientCountTotalsForCart.totalFat + comboMacros.totalFat,
+        protein: (baseForCart.protein ?? 0) + addonTotalsForCart.protein + ingredientCountTotalsForCart.protein + comboMacros.protein,
+        carbs: (baseForCart.carbs ?? 0) + addonTotalsForCart.carbs + ingredientCountTotalsForCart.carbs + comboMacros.carbs,
+        totalFat: (baseForCart.totalFat ?? 0) + addonTotalsForCart.totalFat + ingredientCountTotalsForCart.totalFat + comboMacros.totalFat,
       },
     });
   };
@@ -866,8 +812,7 @@ export default function MenuItemCard({
       selectedVariantId,
       selectedAddons,
       selectedSauceCounts,
-      selectedCommonChangeIds,
-      ingredientCounts,
+        ingredientCounts,
       comboType,
       selectedComboSideId,
       selectedComboDrinkId,
@@ -884,7 +829,6 @@ export default function MenuItemCard({
     selectedComboDrinkVariantId,
     selectedComboSideId,
     selectedComboSideVariantId,
-    selectedCommonChangeIds,
     selectedSauceCounts,
     selectedVariantId,
   ]);
@@ -1230,7 +1174,7 @@ export default function MenuItemCard({
                             options={(variants ?? []).map((variant) => ({ id: variant.id, label: variant.label }))}
                             onChange={(nextVariantId) => {
                               setSelectedVariantId(nextVariantId);
-                              emitCartConfiguration(nextVariantId, selectedAddons, selectedSauceCounts, selectedCommonChangeIds);
+                              emitCartConfiguration(nextVariantId, selectedAddons, selectedSauceCounts);
                             }}
                           />
                         ) : null}
@@ -1264,7 +1208,7 @@ export default function MenuItemCard({
                               options={selectedComboSide.variants.map((variant) => ({ id: variant.id, label: variant.label }))}
                               onChange={(variantId) => {
                                 setSelectedComboSideVariantId(variantId);
-                                emitCartConfiguration(selectedVariantId, selectedAddons, selectedSauceCounts, selectedCommonChangeIds, ingredientCounts, comboType, selectedComboSideId, selectedComboDrinkId, variantId, selectedComboDrinkVariantId);
+                                emitCartConfiguration(selectedVariantId, selectedAddons, selectedSauceCounts, ingredientCounts, comboType, selectedComboSideId, selectedComboDrinkId, variantId, selectedComboDrinkVariantId);
                               }}
                             />
                           ) : null}
@@ -1299,7 +1243,7 @@ export default function MenuItemCard({
                               options={selectedComboDrink.variants.map((variant) => ({ id: variant.id, label: variant.label }))}
                               onChange={(variantId) => {
                                 setSelectedComboDrinkVariantId(variantId);
-                                emitCartConfiguration(selectedVariantId, selectedAddons, selectedSauceCounts, selectedCommonChangeIds, ingredientCounts, comboType, selectedComboSideId, selectedComboDrinkId, selectedComboSideVariantId, variantId);
+                                emitCartConfiguration(selectedVariantId, selectedAddons, selectedSauceCounts, ingredientCounts, comboType, selectedComboSideId, selectedComboDrinkId, selectedComboSideVariantId, variantId);
                               }}
                             />
                           ) : null}
@@ -1349,7 +1293,7 @@ export default function MenuItemCard({
                                       } else {
                                         next[addon.name] = current - 1;
                                       }
-                                      emitCartConfiguration(selectedVariantId, selectedAddons, next, selectedCommonChangeIds);
+                                      emitCartConfiguration(selectedVariantId, selectedAddons, next);
                                       return next;
                                     });
                                   }}
@@ -1365,7 +1309,7 @@ export default function MenuItemCard({
                                       const currentTotal = Object.values(prev).reduce((sum, selectedCount) => sum + selectedCount, 0);
                                       if (currentTotal >= maxSauceSelections) return prev;
                                       const next = { ...prev, [addon.name]: (prev[addon.name] ?? 0) + 1 };
-                                      emitCartConfiguration(selectedVariantId, selectedAddons, next, selectedCommonChangeIds);
+                                      emitCartConfiguration(selectedVariantId, selectedAddons, next);
                                       return next;
                                     });
                                   }}
@@ -1423,7 +1367,7 @@ export default function MenuItemCard({
               selectedVariantId={selectedVariantId}
               onSelectVariant={(nextVariantId) => {
                 setSelectedVariantId(nextVariantId);
-                emitCartConfiguration(nextVariantId, selectedAddons, selectedSauceCounts, selectedCommonChangeIds);
+                emitCartConfiguration(nextVariantId, selectedAddons, selectedSauceCounts);
               }}
               addons={addons}
               ingredientItems={ingredientItems}
@@ -1433,7 +1377,7 @@ export default function MenuItemCard({
               onSelectAddon={(ref, addon) => {
                 setSelectedAddons((prev) => {
                   const next = { ...prev, [ref]: addon ?? emptyAddon };
-                  emitCartConfiguration(selectedVariantId, next, selectedSauceCounts, selectedCommonChangeIds);
+                  emitCartConfiguration(selectedVariantId, next, selectedSauceCounts);
                   return next;
                 });
               }}
@@ -1443,7 +1387,7 @@ export default function MenuItemCard({
                   const currentTotal = Object.values(prev).reduce((sum, count) => sum + count, 0);
                   if (currentTotal >= maxSauceSelections) return prev;
                   const next = { ...prev, [addon.name]: (prev[addon.name] ?? 0) + 1 };
-                  emitCartConfiguration(selectedVariantId, selectedAddons, next, selectedCommonChangeIds);
+                  emitCartConfiguration(selectedVariantId, selectedAddons, next);
                   return next;
                 });
               }}
@@ -1457,7 +1401,7 @@ export default function MenuItemCard({
                   } else {
                     next[addon.name] = current - 1;
                   }
-                  emitCartConfiguration(selectedVariantId, selectedAddons, next, selectedCommonChangeIds);
+                  emitCartConfiguration(selectedVariantId, selectedAddons, next);
                   return next;
                 });
               }}
@@ -1465,7 +1409,7 @@ export default function MenuItemCard({
                 setSelectedSauceCounts((prev) => {
                   if (addon.name === "None") {
                     if (Object.keys(prev).length === 0) return prev;
-                    emitCartConfiguration(selectedVariantId, selectedAddons, {}, selectedCommonChangeIds);
+                    emitCartConfiguration(selectedVariantId, selectedAddons, {});
                     return {};
                   }
 
@@ -1473,14 +1417,14 @@ export default function MenuItemCard({
                   if (current > 0) {
                     const next = { ...prev };
                     delete next[addon.name];
-                    emitCartConfiguration(selectedVariantId, selectedAddons, next, selectedCommonChangeIds);
+                    emitCartConfiguration(selectedVariantId, selectedAddons, next);
                     return next;
                   }
 
                   const currentTotal = Object.values(prev).reduce((sum, count) => sum + count, 0);
                   if (currentTotal >= maxSauceSelections) return prev;
                   const next = { ...prev, [addon.name]: 1 };
-                  emitCartConfiguration(selectedVariantId, selectedAddons, next, selectedCommonChangeIds);
+                  emitCartConfiguration(selectedVariantId, selectedAddons, next);
                   return next;
                 });
               }}
@@ -1495,8 +1439,7 @@ export default function MenuItemCard({
                     selectedVariantId,
                     selectedAddons,
                     selectedSauceCounts,
-                    selectedCommonChangeIds,
-                    next
+                                    next
                   );
                   return next;
                 })
@@ -1517,8 +1460,7 @@ export default function MenuItemCard({
                     selectedVariantId,
                     selectedAddons,
                     selectedSauceCounts,
-                    selectedCommonChangeIds,
-                    next
+                                    next
                   );
                   return next;
                 })
@@ -1539,8 +1481,7 @@ export default function MenuItemCard({
                     selectedVariantId,
                     selectedAddons,
                     selectedSauceCounts,
-                    selectedCommonChangeIds,
-                    next
+                                    next
                   );
                   return next;
                 })
@@ -1562,8 +1503,7 @@ export default function MenuItemCard({
                     selectedVariantId,
                     selectedAddons,
                     selectedSauceCounts,
-                    selectedCommonChangeIds,
-                    next
+                                    next
                   );
                   return next;
                 })
@@ -1582,7 +1522,7 @@ export default function MenuItemCard({
                 const nextSideVariantId = isDeselecting ? undefined : getDefaultVariantId(nextSide);
                 setSelectedComboSideId(nextSideId);
                 setSelectedComboSideVariantId(nextSideVariantId);
-                emitCartConfiguration(selectedVariantId, selectedAddons, selectedSauceCounts, selectedCommonChangeIds, ingredientCounts, comboType, nextSideId, selectedComboDrinkId, nextSideVariantId, selectedComboDrinkVariantId);
+                emitCartConfiguration(selectedVariantId, selectedAddons, selectedSauceCounts, ingredientCounts, comboType, nextSideId, selectedComboDrinkId, nextSideVariantId, selectedComboDrinkVariantId);
               }}
               onSelectComboDrink={(drinkId) => {
                 const isDeselecting = selectedComboDrinkId === drinkId;
@@ -1591,15 +1531,15 @@ export default function MenuItemCard({
                 const nextDrinkVariantId = isDeselecting ? undefined : getDefaultVariantId(nextDrink);
                 setSelectedComboDrinkId(nextDrinkId);
                 setSelectedComboDrinkVariantId(nextDrinkVariantId);
-                emitCartConfiguration(selectedVariantId, selectedAddons, selectedSauceCounts, selectedCommonChangeIds, ingredientCounts, comboType, selectedComboSideId, nextDrinkId, selectedComboSideVariantId, nextDrinkVariantId);
+                emitCartConfiguration(selectedVariantId, selectedAddons, selectedSauceCounts, ingredientCounts, comboType, selectedComboSideId, nextDrinkId, selectedComboSideVariantId, nextDrinkVariantId);
               }}
               onSelectComboSideVariant={(variantId) => {
                 setSelectedComboSideVariantId(variantId);
-                emitCartConfiguration(selectedVariantId, selectedAddons, selectedSauceCounts, selectedCommonChangeIds, ingredientCounts, comboType, selectedComboSideId, selectedComboDrinkId, variantId, selectedComboDrinkVariantId);
+                emitCartConfiguration(selectedVariantId, selectedAddons, selectedSauceCounts, ingredientCounts, comboType, selectedComboSideId, selectedComboDrinkId, variantId, selectedComboDrinkVariantId);
               }}
               onSelectComboDrinkVariant={(variantId) => {
                 setSelectedComboDrinkVariantId(variantId);
-                emitCartConfiguration(selectedVariantId, selectedAddons, selectedSauceCounts, selectedCommonChangeIds, ingredientCounts, comboType, selectedComboSideId, selectedComboDrinkId, selectedComboSideVariantId, variantId);
+                emitCartConfiguration(selectedVariantId, selectedAddons, selectedSauceCounts, ingredientCounts, comboType, selectedComboSideId, selectedComboDrinkId, selectedComboSideVariantId, variantId);
               }}
               customizationTotals={customizationTotals}
               showCustomizationDeltas={hasActiveCustomization}

@@ -2,6 +2,7 @@ import { useState } from "react";
 import Image from "next/image";
 import type {
   AddonOption,
+  AddonRef,
   IngredientItem,
   ItemVariant,
   MacroDelta,
@@ -10,7 +11,6 @@ import type {
   RestaurantAddons,
   RestaurantCustomizationRules,
 } from "@/types/menu";
-import type { AddonRef } from "@/lib/addonTypes";
 import { ChevronDown, ChevronRight, Pencil, type LucideIcon } from "lucide-react";
 import {
   INCLUDED_INGREDIENT_TAB,

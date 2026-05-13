@@ -41,13 +41,13 @@ import {
 } from "lucide-react";
 import { useRestaurantSearch } from "@/components/RestaurantSearchContext";
 import type {
+  AddonRef,
   IngredientItem,
   MenuItem,
   RestaurantAddons,
   RestaurantBuilderConfig,
   RestaurantCustomizationRules,
 } from "@/types/menu";
-import type { AddonRef } from "@/lib/addonTypes";
 import {
   type Filters,
   type ViewOption,

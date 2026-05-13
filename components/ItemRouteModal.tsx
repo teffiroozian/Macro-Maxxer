@@ -13,6 +13,7 @@ import MenuSections from "@/components/MenuSections";
 import BuildSummaryDrawer from "@/components/restaurant-view/BuildSummaryDrawer";
 import type {
   AddonOption,
+  AddonRef,
   MacroDelta,
   MenuItem,
   Nutrition,
@@ -20,19 +21,15 @@ import type {
   IngredientItem,
   RestaurantCustomizationRules,
 } from "@/types/menu";
-import type { AddonRef } from "@/lib/addonTypes";
 import { useCart } from "@/stores/cartStore";
 import { parseComboCustomization } from "@/lib/menuItemCard/comboCustomizationParser";
 import {
   getSelectedAddonsFromLabel,
-  getSelectedCommonChangeIdsFromCustomizations,
   getSelectedSauceCountsFromLabel,
 } from "@/lib/menuItemCard/cartLabelUtils";
 import { getSelectedIngredientCountsFromCustomizations } from "@/lib/menuItemCard/ingredientCountCustomization";
 import {
   addonFat,
-  deltaFat,
-  getApplicableCommonChanges,
   getDefaultIngredientCounts,
   getDefaultVariantId,
   isChickfilaBreakfastItem,
@@ -155,10 +152,6 @@ export default function ItemRouteModal({
   );
   const [selectedSauceCounts, setSelectedSauceCounts] = useState<Record<string, number>>(() =>
     getSelectedSauceCountsFromLabel(item, addons, editingCartItem?.optionsLabel)
-  );
-  const selectedCommonChangeIds = useMemo(
-    () => getSelectedCommonChangeIdsFromCustomizations(undefined, editingCartItem?.customizations),
-    [editingCartItem?.customizations]
   );
   const selectedVariant = variants?.find((variant) => variant.id === selectedVariantId);
   const selectedItemImage = selectedVariant?.image ?? item.image;
@@ -307,10 +300,6 @@ export default function ItemRouteModal({
     return new Set(["tortilla"]);
   }, [item.id]);
 
-  const applicableCommonChanges = useMemo(
-    () => getApplicableCommonChanges(item),
-    [item]
-  );
 
   const selectedSauceOptions = useMemo(() => {
     const sauceOptions = addons?.[sauceRef] ?? [];
@@ -372,23 +361,6 @@ export default function ItemRouteModal({
     }, {});
   }, [resolvedIngredients, selectedIngredientCounts]);
 
-  const commonChangeTotals = useMemo(
-    () =>
-      applicableCommonChanges.reduce<MacroDelta>(
-        (sum, change) => {
-          if (!selectedCommonChangeIds.includes(change.id)) return sum;
-          return {
-            calories: sum.calories + change.delta.calories,
-            protein: sum.protein + change.delta.protein,
-            carbs: sum.carbs + change.delta.carbs,
-            totalFat: sum.totalFat + deltaFat(change),
-          };
-        },
-        { calories: 0, protein: 0, carbs: 0, totalFat: 0 }
-      ),
-    [applicableCommonChanges, selectedCommonChangeIds]
-  );
-
   const ingredientCountTotals = useMemo(
     () =>
       Object.entries(ingredientCounts).reduce<MacroDelta>(
@@ -425,10 +397,6 @@ export default function ItemRouteModal({
     return segments.length > 0 ? segments.join(" + ") : undefined;
   }, [selectedAddons, selectedSauceCounts]);
 
-  const selectedCommonChanges = useMemo(
-    () => applicableCommonChanges.filter((change) => selectedCommonChangeIds.includes(change.id)).map((change) => change.label),
-    [applicableCommonChanges, selectedCommonChangeIds]
-  );
   const selectedIngredientCustomizations = useMemo(
     () =>
       resolvedIngredients
@@ -903,12 +871,12 @@ export default function ItemRouteModal({
 
   const customizationTotals = useMemo(
     () => ({
-      calories: addonTotals.calories + commonChangeTotals.calories + ingredientCountTotals.calories + activeComboNutritionTotals.calories,
-      protein: addonTotals.protein + commonChangeTotals.protein + ingredientCountTotals.protein + activeComboNutritionTotals.protein,
-      carbs: addonTotals.carbs + commonChangeTotals.carbs + ingredientCountTotals.carbs + activeComboNutritionTotals.carbs,
-      totalFat: addonTotals.totalFat + commonChangeTotals.totalFat + ingredientCountTotals.totalFat + activeComboNutritionTotals.totalFat,
+      calories: addonTotals.calories + ingredientCountTotals.calories + activeComboNutritionTotals.calories,
+      protein: addonTotals.protein + ingredientCountTotals.protein + activeComboNutritionTotals.protein,
+      carbs: addonTotals.carbs + ingredientCountTotals.carbs + activeComboNutritionTotals.carbs,
+      totalFat: addonTotals.totalFat + ingredientCountTotals.totalFat + activeComboNutritionTotals.totalFat,
     }),
-    [activeComboNutritionTotals, addonTotals, commonChangeTotals, ingredientCountTotals]
+    [activeComboNutritionTotals, addonTotals, ingredientCountTotals]
   );
 
   const hasActiveCustomization = useMemo(
@@ -1018,7 +986,7 @@ export default function ItemRouteModal({
               : undefined,
           ].filter((entry): entry is string => Boolean(entry))
         : [];
-    const customizations = [...selectedCommonChanges, ...selectedIngredientCustomizations, ...comboCustomizations];
+    const customizations = [...selectedIngredientCustomizations, ...comboCustomizations];
 
     const nextCartItemPayload = {
       name: item.name,

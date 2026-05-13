@@ -2,13 +2,13 @@ import restaurants from "@/app/data/index.json";
 import { normalizeAddons } from "@/lib/addons";
 import { resolveMenuDataset } from "@/lib/menuResolver";
 import type {
+  AddonRef,
   IngredientItem,
   MenuItem,
   RestaurantAddons,
   RestaurantBuilderConfig,
   RestaurantCustomizationRules,
 } from "@/types/menu";
-import type { AddonRef } from "@/lib/addonTypes";
 
 export type RestaurantData = {
   id: string;
