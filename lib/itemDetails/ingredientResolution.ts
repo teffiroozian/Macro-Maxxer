@@ -3,6 +3,8 @@ import {
   getIngredientTabDisplayLabel,
   ingredientMatchesTab,
   normalizeTabName,
+  resolveFoodCategoryRule,
+  resolveIngredientCategoryRule,
   resolveIngredientTabMaxQuantity,
   resolveIngredientTabs,
   resolveSingleSelectIngredientTabs,
@@ -29,7 +31,7 @@ import type {
  *
  * Data flow:
  * 1) Start from MenuItem ingredient IDs, ingredientItems metadata, addons/menuItems nutrition fallbacks,
- *    and customizationRules tab configuration.
+ *    and customizationRules ingredient-category configuration.
  * 2) Normalize IDs/categories to match across naming variants.
  * 3) Build per-tab ingredient lists (including single-select "None" behavior and max-quantity constraints).
  * 4) Merge tab aliases into display tabs consumed by ItemDetailsPanel.
@@ -93,7 +95,11 @@ function includedIngredientPriority(ingredient: ResolvedPanelIngredient) {
   return 6;
 }
 
-function tabSupportsNoneOption(item: MenuItem, tabName: string) {
+function tabSupportsNoneOption(
+  item: MenuItem,
+  tabName: string,
+  customizationRules?: RestaurantCustomizationRules
+) {
   const normalized = normalizeIngredientCategory(tabName);
   const configuredTabsWithNoneOption = item.customization?.tabsWithNoneOption ?? [];
 
@@ -105,7 +111,7 @@ function tabSupportsNoneOption(item: MenuItem, tabName: string) {
     return true;
   }
 
-  return normalized === "cheese" || normalized === "cheeses";
+  return resolveIngredientCategoryRule(tabName, customizationRules)?.allowNone === true;
 }
 
 export function resolvePanelIngredients(
@@ -273,9 +279,7 @@ export function resolvePanelIngredientTabs(
     if (itemLevelIngredientOptions?.length) return itemLevelIngredientOptions;
     if (!primaryCategory) return undefined;
 
-    const categoryIngredientOptions = Object.entries(customizationRules?.ingredientOptionsByItemCategory ?? {}).find(
-      ([candidateCategory]) => normalizeIngredientCategory(candidateCategory) === normalizeIngredientCategory(primaryCategory)
-    )?.[1];
+    const categoryIngredientOptions = resolveFoodCategoryRule(item, customizationRules)?.ingredientOptionsByCategory;
 
     return Object.entries(categoryIngredientOptions ?? {}).find(
       ([candidateTab]) => normalizeIngredientCategory(candidateTab) === normalizeIngredientCategory(tabName)
@@ -317,7 +321,7 @@ export function resolvePanelIngredientTabs(
           }));
     const hasDefaultIngredient = scopedTabIngredients.some((ingredient) => ingredient.defaultCount > 0);
     const ingredients =
-      selectionMode === "single" && tabSupportsNoneOption(item, tab)
+      selectionMode === "single" && tabSupportsNoneOption(item, tab, customizationRules)
         ? [
             {
               id: `none-${normalizeIngredientToken(tab)}`,

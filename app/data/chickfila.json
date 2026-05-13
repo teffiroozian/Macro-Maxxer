@@ -2,75 +2,93 @@
     "id": "chickfila",
     "name": "Chick-fil-A",
     "customizationRules": {
-        "ingredientTabsByItemCategory": {
-            "Sandwich": [
-                "Buns",
-                "Cheeses",
-                "Sandwich Toppings",
-                "Sauces"
-            ],
-            "Wrap": [
-                "Wrap Toppings"
-            ],
-            "Salad": [
-                "Salad Toppings",
-                "Salad Condiments",
-                "Proteins"
-            ],
-            "Breakfast": [
-                "Breakfast Buns",
-                "Cheeses",
-                "Eggs"
-            ],
-            "Side": [
-                "Soup Toppings",
-                "Treat Toppings",
-                "Salad Toppings",
-                "Salad Condiments",
-                "Wrap Toppings"
-            ],
-            "Treats": [
-                "Treat Toppings"
-            ]
-        },
-        "singleSelectIngredientTabsByItemCategory": {
-            "Sandwich": [
-                "Buns",
-                "Cheeses"
-            ],
-            "Salad": [
-                "Proteins"
-            ],
-            "Breakfast": [
-                "Breakfast Buns",
-                "Breakfast Protein",
-                "Cheeses",
-                "Eggs"
-            ]
-        },
-        "ingredientTabMaxQuantities": {
-            "Buns": 1,
-            "Breakfast Buns": 1,
-            "Cheeses": 1,
-            "Proteins": 1,
-            "Breakfast Protein": 1,
-            "Eggs": 3,
-            "Sandwich Toppings": 6,
-            "Salad Toppings": 6,
-            "Salad Condiments": 6,
-            "Wrap Toppings": 2,
-            "Sauces": 2
-        },
-        "ingredientOptionsByItemCategory": {
-            "Salad": {
-                "Proteins": [
-                    "grilled-filet",
-                    "spicy-filet",
-                    "cfa-filet",
-                    "crispy-nuggets",
-                    "grilled-nuggets",
-                    "chick-n-strips"
+        "foodCategories": {
+            "Sandwich": {
+                "ingredientCategories": [
+                    "Buns",
+                    "Cheeses",
+                    "Sandwich Toppings",
+                    "Sauces"
                 ]
+            },
+            "Wrap": {
+                "ingredientCategories": [
+                    "Wrap Toppings"
+                ]
+            },
+            "Salad": {
+                "ingredientCategories": [
+                    "Salad Toppings",
+                    "Salad Condiments",
+                    "Proteins"
+                ],
+                "ingredientOptionsByCategory": {
+                    "Proteins": [
+                        "grilled-filet",
+                        "spicy-filet",
+                        "cfa-filet",
+                        "crispy-nuggets",
+                        "grilled-nuggets",
+                        "chick-n-strips"
+                    ]
+                }
+            },
+            "Breakfast": {
+                "ingredientCategories": [
+                    "Breakfast Buns",
+                    "Cheeses",
+                    "Eggs"
+                ]
+            },
+            "Side": {
+                "ingredientCategories": [
+                    "Soup Toppings",
+                    "Treat Toppings",
+                    "Salad Toppings",
+                    "Salad Condiments",
+                    "Wrap Toppings"
+                ]
+            },
+            "Treats": {
+                "ingredientCategories": [
+                    "Treat Toppings"
+                ]
+            }
+        },
+        "ingredientCategories": {
+            "Buns": {
+                "maxQuantity": 1
+            },
+            "Breakfast Buns": {
+                "maxQuantity": 1
+            },
+            "Cheeses": {
+                "maxQuantity": 1,
+                "allowNone": true
+            },
+            "Proteins": {
+                "maxQuantity": 1
+            },
+            "Breakfast Protein": {
+                "maxQuantity": 1
+            },
+            "Eggs": {
+                "maxQuantity": 3
+            },
+            "Sandwich Toppings": {
+                "maxQuantity": 6
+            },
+            "Salad Toppings": {
+                "maxQuantity": 6
+            },
+            "Salad Condiments": {
+                "maxQuantity": 6
+            },
+            "Wrap Toppings": {
+                "maxQuantity": 2
+            },
+            "Sauces": {
+                "maxQuantity": 2
             }
         }
     },
