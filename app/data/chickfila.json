@@ -730,9 +730,7 @@
                 "sauces"
             ],
             "customization": {
-                "ingredientTabs": [
-                    "Included"
-                ]
+                "disabled": true
             },
             "defaultOrder": 1
         },
@@ -799,18 +797,15 @@
             ],
             "defaultVariantId": "granola",
             "customization": {
-                "ingredientTabs": [
-                    "Toppings"
-                ],
-                "ingredientTabMaxQuantities": {
-                    "Toppings": 4
-                },
-                "ingredientOptionsByTab": {
-                    "Toppings": [
-                        "parfait-fruit",
-                        "harvest-nut-granola"
-                    ]
-                }
+                "ingredientCategories": [
+                    {
+                        "name": "Parfait Toppings",
+                        "ingredients": [
+                            "parfait-fruit",
+                            "harvest-nut-granola"
+                        ]
+                    }
+                ]
             },
             "defaultOrder": 7
         },
@@ -835,9 +830,7 @@
                 "sugars": 12
             },
             "customization": {
-                "ingredientTabs": [
-                    "Included"
-                ]
+                "disabled": true
             },
             "defaultOrder": 8
         },
@@ -902,19 +895,14 @@
             ],
             "defaultVariantId": "medium",
             "customization": {
-                "ingredientTabs": [
-                    "Toppings"
-                ],
-                "ingredientTabMaxQuantities": {
-                    "Toppings": 1
-                },
-                "ingredientOptionsByTab": {
-                    "Toppings": [
-                        "bacon-crumbles"
-                    ]
-                },
-                "tabsWithNoneOption": [
-                    "Toppings"
+                "ingredientCategories": [
+                    {
+                        "name": "Toppings",
+                        "ingredients": [
+                            "bacon-crumbles"
+                        ],
+                        "allowNone": true
+                    }
                 ]
             },
             "defaultOrder": 2
@@ -980,17 +968,14 @@
             ],
             "defaultVariantId": "cup",
             "customization": {
-                "ingredientTabs": [
-                    "Soup Toppings"
-                ],
-                "ingredientTabMaxQuantities": {
-                    "Soup Toppings": 5
-                },
-                "ingredientOptionsByTab": {
-                    "Soup Toppings": [
-                        "saltines"
-                    ]
-                }
+                "ingredientCategories": [
+                    {
+                        "name": "Soup Toppings",
+                        "ingredients": [
+                            "saltines"
+                        ]
+                    }
+                ]
             },
             "defaultOrder": 3
         },
@@ -1048,22 +1033,20 @@
                 "seasoned-tortilla-strips"
             ],
             "customization": {
-                "ingredientTabs": [
-                    "Condiments",
-                    "Soup Toppings"
-                ],
-                "ingredientTabMaxQuantities": {
-                    "Condiments": 5,
-                    "Soup Toppings": 5
-                },
-                "ingredientOptionsByTab": {
-                    "Condiments": [
-                        "seasoned-tortilla-strips"
-                    ],
-                    "Soup Toppings": [
-                        "saltines"
-                    ]
-                }
+                "ingredientCategories": [
+                    {
+                        "name": "Condiments",
+                        "ingredients": [
+                            "seasoned-tortilla-strips"
+                        ]
+                    },
+                    {
+                        "name": "Soup Toppings",
+                        "ingredients": [
+                            "saltines"
+                        ]
+                    }
+                ]
             },
             "defaultOrder": 4
         },
@@ -1088,9 +1071,7 @@
                 "sugars": 0
             },
             "customization": {
-                "ingredientTabs": [
-                    "Included"
-                ]
+                "disabled": true
             },
             "defaultOrder": 9
         },
@@ -1115,9 +1096,7 @@
                 "sugars": 8
             },
             "customization": {
-                "ingredientTabs": [
-                    "Included"
-                ]
+                "disabled": true
             },
             "defaultOrder": 11
         },
@@ -1142,9 +1121,7 @@
                 "sugars": 3
             },
             "customization": {
-                "ingredientTabs": [
-                    "Included"
-                ]
+                "disabled": true
             },
             "defaultOrder": 10
         },
@@ -1219,9 +1196,7 @@
             ],
             "defaultVariantId": "4ct",
             "customization": {
-                "ingredientTabs": [
-                    "Included"
-                ]
+                "disabled": true
             },
             "defaultOrder": 3
         },
@@ -1277,12 +1252,11 @@
                 "shredded-cheddar"
             ],
             "customization": {
-                "ingredientTabs": [
-                    "Wrap Toppings"
-                ],
-                "ingredientTabMaxQuantities": {
-                    "Wrap Toppings": 2
-                }
+                "ingredientCategories": [
+                    {
+                        "name": "Wrap Toppings"
+                    }
+                ]
             },
             "defaultOrder": 5
         },
@@ -1310,12 +1284,11 @@
                 "shredded-cheddar"
             ],
             "customization": {
-                "ingredientTabs": [
-                    "Wrap Toppings"
-                ],
-                "ingredientTabMaxQuantities": {
-                    "Wrap Toppings": 2
-                }
+                "ingredientCategories": [
+                    {
+                        "name": "Wrap Toppings"
+                    }
+                ]
             },
             "defaultOrder": 6
         },
@@ -1548,9 +1521,7 @@
             ],
             "defaultVariantId": "small",
             "customization": {
-                "ingredientTabs": [
-                    "Included"
-                ]
+                "disabled": true
             },
             "defaultOrder": 13
         },
@@ -1718,18 +1689,15 @@
                 "cherry"
             ],
             "customization": {
-                "ingredientTabs": [
-                    "Treat Toppings"
-                ],
-                "ingredientTabMaxQuantities": {
-                    "Treat Toppings": 1
-                },
-                "ingredientOptionsByTab": {
-                    "Treat Toppings": [
-                        "whipped-cream",
-                        "cherry"
-                    ]
-                }
+                "ingredientCategories": [
+                    {
+                        "name": "Treat Toppings",
+                        "ingredients": [
+                            "whipped-cream",
+                            "cherry"
+                        ]
+                    }
+                ]
             },
             "defaultOrder": 42
         },
@@ -1758,18 +1726,15 @@
                 "cherry"
             ],
             "customization": {
-                "ingredientTabs": [
-                    "Treat Toppings"
-                ],
-                "ingredientTabMaxQuantities": {
-                    "Treat Toppings": 1
-                },
-                "ingredientOptionsByTab": {
-                    "Treat Toppings": [
-                        "whipped-cream",
-                        "cherry"
-                    ]
-                }
+                "ingredientCategories": [
+                    {
+                        "name": "Treat Toppings",
+                        "ingredients": [
+                            "whipped-cream",
+                            "cherry"
+                        ]
+                    }
+                ]
             },
             "defaultOrder": 43
         },
@@ -1798,18 +1763,15 @@
                 "cherry"
             ],
             "customization": {
-                "ingredientTabs": [
-                    "Treat Toppings"
-                ],
-                "ingredientTabMaxQuantities": {
-                    "Treat Toppings": 1
-                },
-                "ingredientOptionsByTab": {
-                    "Treat Toppings": [
-                        "whipped-cream",
-                        "cherry"
-                    ]
-                }
+                "ingredientCategories": [
+                    {
+                        "name": "Treat Toppings",
+                        "ingredients": [
+                            "whipped-cream",
+                            "cherry"
+                        ]
+                    }
+                ]
             },
             "defaultOrder": 44
         },
@@ -1838,18 +1800,15 @@
                 "cherry"
             ],
             "customization": {
-                "ingredientTabs": [
-                    "Treat Toppings"
-                ],
-                "ingredientTabMaxQuantities": {
-                    "Treat Toppings": 1
-                },
-                "ingredientOptionsByTab": {
-                    "Treat Toppings": [
-                        "whipped-cream",
-                        "cherry"
-                    ]
-                }
+                "ingredientCategories": [
+                    {
+                        "name": "Treat Toppings",
+                        "ingredients": [
+                            "whipped-cream",
+                            "cherry"
+                        ]
+                    }
+                ]
             },
             "defaultOrder": 45
         },
@@ -4319,6 +4278,21 @@
             },
             "Sauces": {
                 "maxQuantity": 2
+            },
+            "Parfait Toppings": {
+                "maxQuantity": 4
+            },
+            "Toppings": {
+                "maxQuantity": 1
+            },
+            "Soup Toppings": {
+                "maxQuantity": 5
+            },
+            "Condiments": {
+                "maxQuantity": 5
+            },
+            "Treat Toppings": {
+                "maxQuantity": 1
             }
         }
     }

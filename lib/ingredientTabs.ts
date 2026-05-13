@@ -62,14 +62,26 @@ export function getIngredientTabDisplayLabel(tabName: string) {
   return tabName;
 }
 
+export function resolveItemCustomizationIngredientCategory(item: MenuItem, categoryName: string) {
+  const normalizedCategoryName = normalizeTabName(categoryName);
+
+  return item.customization?.ingredientCategories?.find(
+    (category) => normalizeTabName(category.name) === normalizedCategoryName
+  );
+}
+
 export function resolveIngredientTabs(
   item: MenuItem,
   customizationRules?: RestaurantCustomizationRules
 ) {
-  const itemLevelTabs = item.customization?.ingredientTabs?.filter(Boolean) ?? [];
+  if (item.customization?.disabled) {
+    return [INCLUDED_INGREDIENT_TAB];
+  }
+
+  const itemLevelCategories = item.customization?.ingredientCategories?.map((category) => category.name).filter(Boolean) ?? [];
   const restaurantLevelTabs = resolveFoodCategoryRule(item, customizationRules)?.ingredientCategories.filter(Boolean) ?? [];
 
-  const configuredTabs = itemLevelTabs.length > 0 ? itemLevelTabs : restaurantLevelTabs;
+  const configuredTabs = itemLevelCategories.length > 0 ? itemLevelCategories : restaurantLevelTabs;
   const dedupedConfiguredTabs = configuredTabs.filter((tab, index) => {
     const normalizedTab = normalizeTabName(tab);
     if (!normalizedTab || normalizedTab === normalizeTabName(INCLUDED_INGREDIENT_TAB)) {
@@ -93,15 +105,6 @@ export function resolveIngredientTabMaxQuantity(
   const normalizedTabName = normalizeTabName(tabName);
   if (!normalizedTabName || normalizedTabName === normalizeTabName(INCLUDED_INGREDIENT_TAB)) {
     return undefined;
-  }
-
-  const itemLevelMaxQuantities = item.customization?.ingredientTabMaxQuantities;
-  const itemLevelMax = Object.entries(itemLevelMaxQuantities ?? {}).find(
-    ([candidateTab]) => normalizeTabName(candidateTab) === normalizedTabName
-  )?.[1];
-
-  if (typeof itemLevelMax === "number") {
-    return itemLevelMax;
   }
 
   return resolveIngredientCategoryRule(tabName, customizationRules)?.maxQuantity;

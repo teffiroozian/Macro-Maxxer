@@ -6,6 +6,7 @@ import {
   resolveFoodCategoryRule,
   resolveIngredientCategoryRule,
   resolveIngredientTabMaxQuantity,
+  resolveItemCustomizationIngredientCategory,
   resolveIngredientTabs,
   resolveSingleSelectIngredientTabs,
   type IngredientSelectionMode,
@@ -101,14 +102,12 @@ function tabSupportsNoneOption(
   customizationRules?: RestaurantCustomizationRules
 ) {
   const normalized = normalizeIngredientCategory(tabName);
-  const configuredTabsWithNoneOption = item.customization?.tabsWithNoneOption ?? [];
+  const itemLevelCategory = item.customization?.ingredientCategories?.find(
+    (category) => normalizeIngredientCategory(category.name) === normalized
+  );
 
-  if (
-    configuredTabsWithNoneOption.some(
-      (candidateTab) => normalizeIngredientCategory(candidateTab) === normalized
-    )
-  ) {
-    return true;
+  if (itemLevelCategory) {
+    return itemLevelCategory.allowNone === true;
   }
 
   return resolveIngredientCategoryRule(tabName, customizationRules)?.allowNone === true;
@@ -168,7 +167,6 @@ export function resolvePanelIngredientTabs(
   const ingredientIds = [...ingredientDefaultsById.keys()];
   const resolvedTabs = resolveIngredientTabs(item, customizationRules);
   const singleSelectTabs = resolveSingleSelectIngredientTabs(item, customizationRules);
-  const primaryCategory = item.categories?.[0];
 
   const ingredientByIdLookup = new Map<string, IngredientItem>();
   const ingredientByNameLookup = new Map<string, IngredientItem>();
@@ -272,12 +270,9 @@ export function resolvePanelIngredientTabs(
   }
 
   function getConfiguredIngredientIdsForTab(tabName: string) {
-    const itemLevelIngredientOptions = Object.entries(item.customization?.ingredientOptionsByTab ?? {}).find(
-      ([candidateTab]) => normalizeIngredientCategory(candidateTab) === normalizeIngredientCategory(tabName)
-    )?.[1];
+    const itemLevelIngredientOptions = resolveItemCustomizationIngredientCategory(item, tabName)?.ingredients;
 
     if (itemLevelIngredientOptions?.length) return itemLevelIngredientOptions;
-    if (!primaryCategory) return undefined;
 
     const categoryIngredientOptions = resolveFoodCategoryRule(item, customizationRules)?.ingredientOptionsByCategory;
 
