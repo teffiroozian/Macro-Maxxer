@@ -36,8 +36,6 @@ export type AddonOption = {
 
 export type RestaurantAddons = Record<string, AddonOption[]>;
 
-export type MacroDelta = CoreMacros;
-
 export type IngredientTabsOverride = {
   ingredientTabs?: string[];
   singleSelectIngredientTabs?: string[];

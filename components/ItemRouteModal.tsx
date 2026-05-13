@@ -13,7 +13,7 @@ import MenuSections from "@/components/MenuSections";
 import BuildSummaryDrawer from "@/components/restaurant-view/BuildSummaryDrawer";
 import type {
   AddonOption,
-  MacroDelta,
+  CoreMacros,
   MenuItem,
   Nutrition,
   RestaurantAddons,
@@ -362,7 +362,7 @@ export default function ItemRouteModal({
 
   const ingredientCountTotals = useMemo(
     () =>
-      Object.entries(ingredientCounts).reduce<MacroDelta>(
+      Object.entries(ingredientCounts).reduce<CoreMacros>(
         (sum, [ingredientId, count]) => {
           const ingredient =
             ingredientLookup.get(ingredientId) ??

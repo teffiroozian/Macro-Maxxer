@@ -4,7 +4,7 @@ import type {
   AddonOption,
   IngredientItem,
   ItemVariant,
-  MacroDelta,
+  CoreMacros,
   MenuItem,
   Nutrition,
   RestaurantAddons,
@@ -176,7 +176,7 @@ export default function ItemDetailsPanel({
   onIncrementSauce?: (addon: AddonOption) => void;
   onDecrementSauce?: (addon: AddonOption) => void;
   onToggleSauce?: (addon: AddonOption) => void;
-  customizationTotals?: MacroDelta;
+  customizationTotals?: CoreMacros;
   showCustomizationDeltas?: boolean;
   displayMode?: "full" | "addonsOnly";
   showVariantsInDetails?: boolean;

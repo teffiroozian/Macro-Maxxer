@@ -6,7 +6,7 @@ import { ChevronDown } from "lucide-react";
 import type {
   AddonOption,
   IngredientItem,
-  MacroDelta,
+  CoreMacros,
   MenuItem,
   RestaurantAddons,
   RestaurantCustomizationRules,
@@ -376,7 +376,7 @@ export default function MenuItemCard({
 
   const ingredientCountTotals = useMemo(
     () =>
-      Object.entries(ingredientCounts).reduce<MacroDelta>(
+      Object.entries(ingredientCounts).reduce<CoreMacros>(
         (sum, [ingredientId, count]) => {
           const ingredient =
             ingredientLookup.get(ingredientId) ??
@@ -719,7 +719,7 @@ export default function MenuItemCard({
       { calories: 0, protein: 0, carbs: 0, totalFat: 0 }
     );
 
-    const ingredientCountTotalsForCart = Object.entries(nextSelectedIngredientCounts).reduce<MacroDelta>(
+    const ingredientCountTotalsForCart = Object.entries(nextSelectedIngredientCounts).reduce<CoreMacros>(
       (sum, [ingredientId, count]) => {
         const ingredient =
           ingredientLookup.get(ingredientId) ??
