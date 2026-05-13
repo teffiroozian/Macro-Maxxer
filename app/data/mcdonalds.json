@@ -3,69 +3,79 @@
     "name": "McDonald's",
     "items": [
         {
-            "name": "Double Quarter Pounder w Cheese",
-            "calories": 740,
-            "protein": 48,
-            "carbs": 43,
-            "fat": 42,
-            "categories": [
-                "Burger"
-            ],
-            "defaultOrder": 1,
             "id": "mcdonalds_double_quarter_pounder_w_cheese",
-            "image": ""
-        },
-        {
-            "name": "Bacon Quarter Pounder w Cheese",
-            "calories": 630,
-            "protein": 36,
-            "carbs": 43,
-            "fat": 35,
+            "name": "Double Quarter Pounder w Cheese",
+            "image": "",
             "categories": [
                 "Burger"
             ],
-            "defaultOrder": 2,
+            "nutrition": {
+                "calories": 740,
+                "protein": 48,
+                "carbs": 43
+            },
+            "defaultOrder": 1,
+            "fat": 42
+        },
+        {
             "id": "mcdonalds_bacon_quarter_pounder_w_cheese",
-            "image": ""
-        },
-        {
-            "name": "Big Breakfast w Hotcakes",
-            "calories": 1340,
-            "protein": 36,
-            "carbs": 158,
-            "fat": 63,
-            "categories": [
-                "Breakfast"
-            ],
-            "defaultOrder": 3,
-            "id": "mcdonalds_big_breakfast_w_hotcakes",
-            "image": ""
-        },
-        {
-            "name": "Steak Egg & Cheese Bagel",
-            "calories": 680,
-            "protein": 34,
-            "carbs": 57,
-            "fat": 35,
-            "categories": [
-                "Breakfast"
-            ],
-            "defaultOrder": 4,
-            "id": "mcdonalds_steak_egg_cheese_bagel",
-            "image": ""
-        },
-        {
-            "name": "Triple Cheeseburger",
-            "calories": 530,
-            "protein": 32,
-            "carbs": 33,
-            "fat": 31,
+            "name": "Bacon Quarter Pounder w Cheese",
+            "image": "",
             "categories": [
                 "Burger"
             ],
-            "defaultOrder": 5,
+            "nutrition": {
+                "calories": 630,
+                "protein": 36,
+                "carbs": 43
+            },
+            "defaultOrder": 2,
+            "fat": 35
+        },
+        {
+            "id": "mcdonalds_big_breakfast_w_hotcakes",
+            "name": "Big Breakfast w Hotcakes",
+            "image": "",
+            "categories": [
+                "Breakfast"
+            ],
+            "nutrition": {
+                "calories": 1340,
+                "protein": 36,
+                "carbs": 158
+            },
+            "defaultOrder": 3,
+            "fat": 63
+        },
+        {
+            "id": "mcdonalds_steak_egg_cheese_bagel",
+            "name": "Steak Egg & Cheese Bagel",
+            "image": "",
+            "categories": [
+                "Breakfast"
+            ],
+            "nutrition": {
+                "calories": 680,
+                "protein": 34,
+                "carbs": 57
+            },
+            "defaultOrder": 4,
+            "fat": 35
+        },
+        {
             "id": "mcdonalds_triple_cheeseburger",
-            "image": ""
+            "name": "Triple Cheeseburger",
+            "image": "",
+            "categories": [
+                "Burger"
+            ],
+            "nutrition": {
+                "calories": 530,
+                "protein": 32,
+                "carbs": 33
+            },
+            "defaultOrder": 5,
+            "fat": 31
         }
     ]
 }

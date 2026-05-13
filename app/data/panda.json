@@ -3,28 +3,34 @@
     "name": "Panda Express",
     "items": [
         {
-            "name": "Grilled Teriyaki Chicken",
-            "calories": 300,
-            "protein": 36,
-            "defaultOrder": 1,
             "id": "panda_grilled_teriyaki_chicken",
-            "image": ""
+            "name": "Grilled Teriyaki Chicken",
+            "image": "",
+            "nutrition": {
+                "calories": 300,
+                "protein": 36
+            },
+            "defaultOrder": 1
         },
         {
-            "name": "Broccoli Beef",
-            "calories": 150,
-            "protein": 9,
-            "defaultOrder": 2,
             "id": "panda_broccoli_beef",
-            "image": ""
+            "name": "Broccoli Beef",
+            "image": "",
+            "nutrition": {
+                "calories": 150,
+                "protein": 9
+            },
+            "defaultOrder": 2
         },
         {
-            "name": "Black Pepper Angus Steak",
-            "calories": 180,
-            "protein": 19,
-            "defaultOrder": 3,
             "id": "panda_black_pepper_angus_steak",
-            "image": ""
+            "name": "Black Pepper Angus Steak",
+            "image": "",
+            "nutrition": {
+                "calories": 180,
+                "protein": 19
+            },
+            "defaultOrder": 3
         }
     ]
 }

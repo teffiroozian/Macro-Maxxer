@@ -3,69 +3,79 @@
     "name": "MOD Pizza",
     "items": [
         {
+            "id": "mod_calexico_mod",
             "name": "Calexico - MOD",
-            "calories": 860,
-            "protein": 50,
-            "carbs": 95,
-            "fat": 28,
+            "image": "",
             "categories": [
                 "Pizza"
             ],
+            "nutrition": {
+                "calories": 860,
+                "protein": 50,
+                "carbs": 95
+            },
             "defaultOrder": 1,
-            "id": "mod_calexico_mod",
-            "image": ""
+            "fat": 28
         },
         {
+            "id": "mod_cheesy_garlic_bread",
             "name": "Cheesy Garlic Bread",
-            "calories": 1340,
-            "protein": 50,
-            "carbs": 179,
-            "fat": 43,
+            "image": "",
             "categories": [
                 "Side"
             ],
+            "nutrition": {
+                "calories": 1340,
+                "protein": 50,
+                "carbs": 179
+            },
             "defaultOrder": 2,
-            "id": "mod_cheesy_garlic_bread",
-            "image": ""
+            "fat": 43
         },
         {
-            "name": "Caspian - MOD",
-            "calories": 970,
-            "protein": 49,
-            "carbs": 125,
-            "fat": 29,
-            "categories": [
-                "Pizza"
-            ],
-            "defaultOrder": 3,
             "id": "mod_caspian_mod",
-            "image": ""
-        },
-        {
-            "name": "Mad Dog - MOD",
-            "calories": 980,
-            "protein": 49,
-            "carbs": 95,
-            "fat": 43,
+            "name": "Caspian - MOD",
+            "image": "",
             "categories": [
                 "Pizza"
             ],
-            "defaultOrder": 4,
+            "nutrition": {
+                "calories": 970,
+                "protein": 49,
+                "carbs": 125
+            },
+            "defaultOrder": 3,
+            "fat": 29
+        },
+        {
             "id": "mod_mad_dog_mod",
-            "image": ""
-        },
-        {
-            "name": "Jasper - MOD",
-            "calories": 790,
-            "protein": 41,
-            "carbs": 96,
-            "fat": 25,
+            "name": "Mad Dog - MOD",
+            "image": "",
             "categories": [
                 "Pizza"
             ],
-            "defaultOrder": 5,
+            "nutrition": {
+                "calories": 980,
+                "protein": 49,
+                "carbs": 95
+            },
+            "defaultOrder": 4,
+            "fat": 43
+        },
+        {
             "id": "mod_jasper_mod",
-            "image": ""
+            "name": "Jasper - MOD",
+            "image": "",
+            "categories": [
+                "Pizza"
+            ],
+            "nutrition": {
+                "calories": 790,
+                "protein": 41,
+                "carbs": 96
+            },
+            "defaultOrder": 5,
+            "fat": 25
         }
     ]
 }

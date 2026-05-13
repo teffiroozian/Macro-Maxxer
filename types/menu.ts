@@ -1,9 +1,9 @@
 export type Nutrition = {
   calories: number;
   protein: number;
-  totalFat: number;
   carbs: number;
-  // optional fields
+  totalFat: number;
+
   satFat?: number;
   transFat?: number;
   cholesterol?: number;
@@ -20,10 +20,13 @@ export type CoreMacros = Pick<
 export type ItemVariant = {
   id: string;
   label: string;
-  nutrition: Nutrition;
-  categories: string[];
   image?: string;
+
+  categories: string[];
   servingType?: string;
+
+  nutrition: Nutrition;
+
   isDefault?: boolean;
 };
 
@@ -61,19 +64,27 @@ export type RestaurantCustomizationRules = {
 
 export type MenuItem = {
   id: string;
-  ingredientRef?: string;
   name: string;
-  defaultOrder: number;
-  nutrition: Nutrition;
   image: string;
+
   categories: string[];
-  entreeGroup?: string;
   servingType?: string;
+  entreeGroup?: string;
+
+  nutrition: Nutrition;
+
+  ingredientRef?: string;
+  ingredients?: string[];
+
   variants?: ItemVariant[];
   defaultVariantId?: string;
+
   addonRefs?: string[];
-  ingredients?: string[];
+
   customization?: IngredientTabsOverride;
+
+  defaultOrder: number;
+
   hideVariantSelector?: boolean;
   disableVariantSelector?: boolean;
 };
@@ -81,14 +92,19 @@ export type MenuItem = {
 export type IngredientItem = {
   id: string;
   name: string;
-  defaultOrder: number;
-  nutrition: Nutrition;
   image?: string;
+
   categories: string[];
+
+  nutrition: Nutrition;
+
   variants?: ItemVariant[];
   defaultVariantId?: string;
-  hideVariantSelector?: boolean;
+
   maxQuantity: number;
+  defaultOrder: number;
+
+  hideVariantSelector?: boolean;
   hideFromIngredientView?: boolean;
 };
 

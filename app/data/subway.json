@@ -3,69 +3,79 @@
     "name": "Subway",
     "items": [
         {
-            "name": "5 Meat Italian",
-            "calories": 1360,
-            "protein": 80,
-            "carbs": 92,
-            "fat": 74,
-            "categories": [
-                "Sandwich"
-            ],
-            "defaultOrder": 1,
             "id": "subway_5_meat_italian",
-            "image": ""
-        },
-        {
-            "name": "Chicken & Bacon Ranch",
-            "calories": 1160,
-            "protein": 70,
-            "carbs": 88,
-            "fat": 58,
+            "name": "5 Meat Italian",
+            "image": "",
             "categories": [
                 "Sandwich"
             ],
-            "defaultOrder": 2,
+            "nutrition": {
+                "calories": 1360,
+                "protein": 80,
+                "carbs": 92
+            },
+            "defaultOrder": 1,
+            "fat": 74
+        },
+        {
             "id": "subway_chicken_bacon_ranch",
-            "image": ""
-        },
-        {
-            "name": "Meatball Pepperoni",
-            "calories": 1380,
-            "protein": 66,
-            "carbs": 112,
-            "fat": 76,
+            "name": "Chicken & Bacon Ranch",
+            "image": "",
             "categories": [
                 "Sandwich"
             ],
-            "defaultOrder": 3,
+            "nutrition": {
+                "calories": 1160,
+                "protein": 70,
+                "carbs": 88
+            },
+            "defaultOrder": 2,
+            "fat": 58
+        },
+        {
             "id": "subway_meatball_pepperoni",
-            "image": ""
-        },
-        {
-            "name": "Grilled Chicken",
-            "calories": 1020,
-            "protein": 62,
-            "carbs": 86,
-            "fat": 48,
+            "name": "Meatball Pepperoni",
+            "image": "",
             "categories": [
                 "Sandwich"
             ],
-            "defaultOrder": 4,
+            "nutrition": {
+                "calories": 1380,
+                "protein": 66,
+                "carbs": 112
+            },
+            "defaultOrder": 3,
+            "fat": 76
+        },
+        {
             "id": "subway_grilled_chicken",
-            "image": ""
-        },
-        {
-            "name": "Honey Mustard BBQ Chicken",
-            "calories": 1020,
-            "protein": 62,
-            "carbs": 106,
-            "fat": 40,
+            "name": "Grilled Chicken",
+            "image": "",
             "categories": [
                 "Sandwich"
             ],
-            "defaultOrder": 5,
+            "nutrition": {
+                "calories": 1020,
+                "protein": 62,
+                "carbs": 86
+            },
+            "defaultOrder": 4,
+            "fat": 48
+        },
+        {
             "id": "subway_honey_mustard_bbq_chicken",
-            "image": ""
+            "name": "Honey Mustard BBQ Chicken",
+            "image": "",
+            "categories": [
+                "Sandwich"
+            ],
+            "nutrition": {
+                "calories": 1020,
+                "protein": 62,
+                "carbs": 106
+            },
+            "defaultOrder": 5,
+            "fat": 40
         }
     ]
 }
