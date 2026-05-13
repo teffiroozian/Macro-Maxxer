@@ -44,12 +44,16 @@ export type AddonOption = {
 // allows for defining groups of addons that can be easily referenced by menu items
 export type RestaurantAddons = Record<string, AddonOption[]>;
 
-// item-level overrides for the ingredient tab options, allowing customization for specific items 
-export type IngredientTabsOverride = {
-  ingredientTabs?: string[];
-  ingredientTabMaxQuantities?: Partial<Record<string, number>>;
-  ingredientOptionsByTab?: Partial<Record<string, string[]>>;
-  tabsWithNoneOption?: string[];
+// item-level customization categories, allowing specific items to opt into only the options they support
+export type ItemCustomizationIngredientCategory = {
+  name: string;
+  ingredients?: string[];
+  allowNone?: boolean;
+};
+
+export type ItemCustomizationOverride = {
+  disabled?: boolean;
+  ingredientCategories?: ItemCustomizationIngredientCategory[];
 };
 
 export type FoodCategoryRule = {
@@ -86,7 +90,7 @@ export type MenuItem = {
 
   addonRefs?: string[];
 
-  customization?: IngredientTabsOverride;
+  customization?: ItemCustomizationOverride;
 
   defaultOrder: number;
 

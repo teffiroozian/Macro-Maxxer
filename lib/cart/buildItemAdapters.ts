@@ -35,7 +35,7 @@ function buildChipotleBuildYourOwnMenuItem(cartItem: CartItem, ingredientItems?:
     .filter(([, selection]) => selection.quantity > 0)
     .map(([ingredientId]) => ingredientId);
 
-  const ingredientOptionsByTab = ingredientCatalog.reduce<Record<string, string[]>>((acc, ingredient) => {
+  const ingredientOptionsByCategory = ingredientCatalog.reduce<Record<string, string[]>>((acc, ingredient) => {
     const ingredientId = ingredient.id ?? ingredient.name;
     const tabName = toTitleCase((ingredient.categories[0] ?? "Ingredients").trim());
 
@@ -47,27 +47,26 @@ function buildChipotleBuildYourOwnMenuItem(cartItem: CartItem, ingredientItems?:
     return acc;
   }, {});
 
-  const tabNames = Object.keys(ingredientOptionsByTab);
-  const singleSelectTabs = ["Proteins", "Rice", "Beans", "Shell"].filter((tabName) =>
-    tabNames.some((candidate) => normalizeIngredientKey(candidate) === normalizeIngredientKey(tabName))
+  const categoryNames = Object.keys(ingredientOptionsByCategory);
+  const singleSelectCategories = ["Proteins", "Rice", "Beans", "Shell"].filter((tabName) =>
+    categoryNames.some((candidate) => normalizeIngredientKey(candidate) === normalizeIngredientKey(tabName))
   );
-
-  const ingredientTabMaxQuantities = tabNames.reduce<Record<string, number>>((acc, tabName) => {
-    const isSingleSelectTab = singleSelectTabs.some(
-      (candidate) => normalizeIngredientKey(candidate) === normalizeIngredientKey(tabName)
-    );
-    acc[tabName] = isSingleSelectTab ? 1 : 10;
-    return acc;
-  }, {});
 
   return {
     ...buildCartFallbackMenuItem(cartItem),
     ingredients: selectedIngredientIds,
     customization: {
-      ingredientTabs: tabNames,
-      ingredientTabMaxQuantities,
-      ingredientOptionsByTab,
-      tabsWithNoneOption: singleSelectTabs,
+      ingredientCategories: categoryNames.map((categoryName) => {
+        const allowNone = singleSelectCategories.some(
+          (candidate) => normalizeIngredientKey(candidate) === normalizeIngredientKey(categoryName)
+        );
+
+        return {
+          name: categoryName,
+          ingredients: ingredientOptionsByCategory[categoryName],
+          ...(allowNone ? { allowNone: true } : {}),
+        };
+      }),
     },
   };
 }
