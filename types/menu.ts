@@ -3,7 +3,7 @@ export type Nutrition = {
   protein: number;
   carbs: number;
   totalFat: number;
-
+  // optional fields that are less common = harder to get consistent data for
   satFat?: number;
   transFat?: number;
   cholesterol?: number;
@@ -12,11 +12,14 @@ export type Nutrition = {
   sugars?: number;
 };
 
+// Core macros are the most commonly used nutrition fields that are typically displayed prominently in the UI
 export type CoreMacros = Pick<
   Nutrition,
   "calories" | "protein" | "carbs" | "totalFat"
 >;
 
+// item variants allow for different versions of the same base item, 
+// such as different sizes or flavors, without needing to create entirely separate menu items for each variation
 export type ItemVariant = {
   id: string;
   label: string;
@@ -30,6 +33,7 @@ export type ItemVariant = {
   isDefault?: boolean;
 };
 
+// addons are additional options that can be added to a menu item, such as dippping sauces and dressings
 export type AddonOption = {
   id: string;
   name: string;
@@ -37,8 +41,10 @@ export type AddonOption = {
   nutrition: Nutrition;
 };
 
+// allows for defining groups of addons that can be easily referenced by menu items
 export type RestaurantAddons = Record<string, AddonOption[]>;
 
+// item-level overrides for the ingredient tab options, allowing customization for specific items 
 export type IngredientTabsOverride = {
   ingredientTabs?: string[];
   singleSelectIngredientTabs?: string[];
@@ -63,19 +69,22 @@ export type RestaurantCustomizationRules = {
 };
 
 export type MenuItem = {
+  // required fields
   id: string;
   name: string;
   image: string;
-
+  // categories are used for grouping similar items together, 
+  // and can be used for filtering and search, but don't have a strict hierarchy or exclusivity requirement
   categories: string[];
   servingType?: string;
   entreeGroup?: string;
-
+  // nutrition facts
   nutrition: Nutrition;
-
+  // ingredients are used for building out the item customization experience, 
+  // and can be shared across multiple items to simplify management of shared ingredients
   ingredientRef?: string;
   ingredients?: string[];
-
+  // var
   variants?: ItemVariant[];
   defaultVariantId?: string;
 
