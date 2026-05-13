@@ -2,7 +2,6 @@ import restaurants from "@/app/data/index.json";
 import { normalizeAddons } from "@/lib/addons";
 import { resolveMenuDataset } from "@/lib/menuResolver";
 import type {
-  AddonRef,
   IngredientItem,
   MenuItem,
   RestaurantAddons,
@@ -76,13 +75,13 @@ export function getItemBySlug(items: MenuItem[], slug: string) {
 export function buildAddonMenuItems(restaurantId: string, addons?: RestaurantAddons): MenuItem[] {
   if (!addons) return [];
 
-  const categoryByAddonRef: Record<AddonRef, string> = {
+  const categoryByAddonGroup: Record<string, string> = {
     sauces: "Dipping Sauces",
     dressings: "Dressings",
     condiments: "Condiments",
   };
 
-  return (Object.entries(addons) as [AddonRef, NonNullable<RestaurantAddons[AddonRef]>][])
+  return (Object.entries(addons) as [string, NonNullable<RestaurantAddons[string]>][])
     .flatMap(([addonRef, options]) =>
       options.map((option) => ({
         id: `${restaurantId}-${addonRef}-${option.name}`.toLowerCase().replace(/[^a-z0-9]+/g, "-"),
@@ -100,7 +99,7 @@ export function buildAddonMenuItems(restaurantId: string, addons?: RestaurantAdd
           fiber: option.nutrition.fiber,
           sugars: option.nutrition.sugars,
         },
-        categories: [categoryByAddonRef[addonRef]],
+        categories: [categoryByAddonGroup[addonRef]],
         servingType: "addon",
         image: option.image ?? "",
       }))

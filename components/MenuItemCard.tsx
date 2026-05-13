@@ -5,9 +5,8 @@ import { usePathname, useRouter } from "next/navigation";
 import { ChevronDown } from "lucide-react";
 import type {
   AddonOption,
-  AddonRef,
   IngredientItem,
-  MacroDelta,
+  CoreMacros,
   MenuItem,
   RestaurantAddons,
   RestaurantCustomizationRules,
@@ -152,7 +151,7 @@ const emptyAddon: AddonOption = {
   image: "none",
 };
 
-const sauceRef: AddonRef = "sauces";
+const sauceRef: string = "sauces";
 const maxSauceSelections = 5;
 
 type CartConfigurationPayload = {
@@ -377,7 +376,7 @@ export default function MenuItemCard({
 
   const ingredientCountTotals = useMemo(
     () =>
-      Object.entries(ingredientCounts).reduce<MacroDelta>(
+      Object.entries(ingredientCounts).reduce<CoreMacros>(
         (sum, [ingredientId, count]) => {
           const ingredient =
             ingredientLookup.get(ingredientId) ??
@@ -689,7 +688,7 @@ export default function MenuItemCard({
 
   const emitCartConfiguration = (
     nextVariantId: string,
-    nextAddons: Partial<Record<AddonRef, AddonOption>>,
+    nextAddons: Partial<Record<string, AddonOption>>,
     nextSauceCounts: Record<string, number>,
     nextSelectedIngredientCounts: Record<string, number> = ingredientCounts,
     nextComboType: "just-item" | "combo-meal" = comboType,
@@ -720,7 +719,7 @@ export default function MenuItemCard({
       { calories: 0, protein: 0, carbs: 0, totalFat: 0 }
     );
 
-    const ingredientCountTotalsForCart = Object.entries(nextSelectedIngredientCounts).reduce<MacroDelta>(
+    const ingredientCountTotalsForCart = Object.entries(nextSelectedIngredientCounts).reduce<CoreMacros>(
       (sum, [ingredientId, count]) => {
         const ingredient =
           ingredientLookup.get(ingredientId) ??

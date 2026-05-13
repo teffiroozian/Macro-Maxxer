@@ -41,7 +41,6 @@ import {
 } from "lucide-react";
 import { useRestaurantSearch } from "@/components/RestaurantSearchContext";
 import type {
-  AddonRef,
   IngredientItem,
   MenuItem,
   RestaurantAddons,
@@ -410,13 +409,13 @@ export default function RestaurantView({
   const addonItems = useMemo<MenuItem[]>(() => {
     if (!addons) return [];
 
-    const categoryByAddonRef: Record<AddonRef, string> = {
+    const categoryByAddonGroup: Record<string, string> = {
       sauces: "Dipping Sauces",
       dressings: "Dressings",
       condiments: "Condiments",
     };
 
-    return (Object.entries(addons) as [AddonRef, NonNullable<RestaurantAddons[AddonRef]>][])
+    return (Object.entries(addons) as [string, NonNullable<RestaurantAddons[string]>][])
       .flatMap(([addonRef, options]) =>
         options.map((option) => ({
           id: `${restaurantId}-${addonRef}-${option.name}`.toLowerCase().replace(/[^a-z0-9]+/g, "-"),
@@ -434,7 +433,7 @@ export default function RestaurantView({
             fiber: option.nutrition.fiber,
             sugars: option.nutrition.sugars,
           },
-          categories: [categoryByAddonRef[addonRef]],
+          categories: [categoryByAddonGroup[addonRef]],
           servingType: "addon" as const,
           image: option.image ?? "",
           }))
