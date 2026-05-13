@@ -48,12 +48,19 @@ export type IngredientTabsOverride = {
   tabsWithNoneOption?: string[];
 };
 
+export type FoodCategoryRule = {
+  ingredientCategories: string[];
+  ingredientOptionsByCategory?: Partial<Record<string, string[]>>;
+};
+
+export type IngredientCategoryRule = {
+  maxQuantity?: number;
+  allowNone?: boolean;
+};
+
 export type RestaurantCustomizationRules = {
-  ingredientTabsByItemCategory?: Partial<Record<string, string[]>>;
-  singleSelectIngredientTabsByItemCategory?: Partial<Record<string, string[]>>;
-  ingredientTabMaxQuantities?: Partial<Record<string, number>>;
-  ingredientTabMaxQuantitiesByItemCategory?: Partial<Record<string, Partial<Record<string, number>>>>;
-  ingredientOptionsByItemCategory?: Partial<Record<string, Partial<Record<string, string[]>>>>;
+  foodCategories?: Record<string, FoodCategoryRule>;
+  ingredientCategories?: Record<string, IngredientCategoryRule>;
 };
 
 export type MenuItem = {

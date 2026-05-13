@@ -1,4 +1,10 @@
-import type { IngredientItem, MenuItem, RestaurantCustomizationRules } from "@/types/menu";
+import type {
+  FoodCategoryRule,
+  IngredientCategoryRule,
+  IngredientItem,
+  MenuItem,
+  RestaurantCustomizationRules,
+} from "@/types/menu";
 
 export const INCLUDED_INGREDIENT_TAB = "Included";
 export type IngredientSelectionMode = "quantity" | "single";
@@ -29,9 +35,23 @@ function resolveRuleValueByCategoryKey<T>(
   )?.[1];
 }
 
+export function resolveFoodCategoryRule(
+  item: MenuItem,
+  customizationRules?: RestaurantCustomizationRules
+): FoodCategoryRule | undefined {
+  return resolveRuleValueByCategoryKey(customizationRules?.foodCategories, resolvePrimaryCategory(item.categories));
+}
+
+export function resolveIngredientCategoryRule(
+  categoryName: string,
+  customizationRules?: RestaurantCustomizationRules
+): IngredientCategoryRule | undefined {
+  return resolveRuleValueByCategoryKey(customizationRules?.ingredientCategories, categoryName);
+}
+
 export function getIngredientTabDisplayLabel(tabName: string) {
   const normalized = normalizeTabName(tabName);
-    if (normalized.endsWith(" toppings") || normalized === "toppings") {
+  if (normalized.endsWith(" toppings") || normalized === "toppings") {
     return "Toppings";
   }
 
@@ -47,11 +67,7 @@ export function resolveIngredientTabs(
   customizationRules?: RestaurantCustomizationRules
 ) {
   const itemLevelTabs = item.customization?.ingredientTabs?.filter(Boolean) ?? [];
-  const primaryCategory = resolvePrimaryCategory(item.categories);
-  const restaurantLevelTabs = (resolveRuleValueByCategoryKey(
-    customizationRules?.ingredientTabsByItemCategory,
-    primaryCategory
-  ) ?? []).filter(Boolean);
+  const restaurantLevelTabs = resolveFoodCategoryRule(item, customizationRules)?.ingredientCategories.filter(Boolean) ?? [];
 
   const configuredTabs = itemLevelTabs.length > 0 ? itemLevelTabs : restaurantLevelTabs;
   const dedupedConfiguredTabs = configuredTabs.filter((tab, index) => {
@@ -88,21 +104,7 @@ export function resolveIngredientTabMaxQuantity(
     return itemLevelMax;
   }
 
-  const restaurantLevelMax = Object.entries(customizationRules?.ingredientTabMaxQuantities ?? {}).find(
-    ([candidateTab]) => normalizeTabName(candidateTab) === normalizedTabName
-  )?.[1];
-
-  if (typeof restaurantLevelMax === "number") {
-    return restaurantLevelMax;
-  }
-
-  const primaryCategory = resolvePrimaryCategory(item.categories);
-  const restaurantLevelMaxQuantitiesByCategory =
-    resolveRuleValueByCategoryKey(customizationRules?.ingredientTabMaxQuantitiesByItemCategory, primaryCategory);
-
-  return Object.entries(restaurantLevelMaxQuantitiesByCategory ?? {}).find(
-    ([candidateTab]) => normalizeTabName(candidateTab) === normalizedTabName
-  )?.[1];
+  return resolveIngredientCategoryRule(tabName, customizationRules)?.maxQuantity;
 }
 
 export function resolveSingleSelectIngredientTabs(
@@ -110,13 +112,10 @@ export function resolveSingleSelectIngredientTabs(
   customizationRules?: RestaurantCustomizationRules
 ) {
   const itemLevelSingleSelectTabs = item.customization?.singleSelectIngredientTabs?.filter(Boolean) ?? [];
-  const primaryCategory = resolvePrimaryCategory(item.categories);
-  const restaurantLevelSingleSelectTabs = (resolveRuleValueByCategoryKey(
-    customizationRules?.singleSelectIngredientTabsByItemCategory,
-    primaryCategory
-  ) ?? []).filter(Boolean);
-
-  const configuredTabs = itemLevelSingleSelectTabs.length > 0 ? itemLevelSingleSelectTabs : restaurantLevelSingleSelectTabs;
+  const inferredSingleSelectTabs = resolveIngredientTabs(item, customizationRules).filter(
+    (tab) => resolveIngredientTabMaxQuantity(item, tab, customizationRules) === 1
+  );
+  const configuredTabs = [...itemLevelSingleSelectTabs, ...inferredSingleSelectTabs];
 
   return new Set(
     configuredTabs
