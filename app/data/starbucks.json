@@ -3,69 +3,79 @@
     "name": "Starbucks",
     "items": [
         {
-            "name": "Iced SF Vanilla Protein Matcha",
-            "calories": 250,
-            "protein": 36,
-            "carbs": 14,
-            "fat": 5,
-            "categories": [
-                "Beverage"
-            ],
-            "defaultOrder": 1,
             "id": "starbucks_iced_sf_vanilla_protein_matcha",
-            "image": ""
-        },
-        {
-            "name": "Iced Protein Matcha",
-            "calories": 300,
-            "protein": 36,
-            "carbs": 29,
-            "fat": 5,
+            "name": "Iced SF Vanilla Protein Matcha",
+            "image": "",
             "categories": [
                 "Beverage"
             ],
-            "defaultOrder": 2,
+            "nutrition": {
+                "calories": 250,
+                "protein": 36,
+                "carbs": 14
+            },
+            "defaultOrder": 1,
+            "fat": 5
+        },
+        {
             "id": "starbucks_iced_protein_matcha",
-            "image": ""
-        },
-        {
-            "name": "Iced SF Vanilla Protein Latte",
-            "calories": 200,
-            "protein": 29,
-            "carbs": 12,
-            "fat": 4,
+            "name": "Iced Protein Matcha",
+            "image": "",
             "categories": [
                 "Beverage"
             ],
-            "defaultOrder": 3,
+            "nutrition": {
+                "calories": 300,
+                "protein": 36,
+                "carbs": 29
+            },
+            "defaultOrder": 2,
+            "fat": 5
+        },
+        {
             "id": "starbucks_iced_sf_vanilla_protein_latte",
-            "image": ""
-        },
-        {
-            "name": "Iced Vanilla Protein Latte",
-            "calories": 270,
-            "protein": 29,
-            "carbs": 31,
-            "fat": 4,
+            "name": "Iced SF Vanilla Protein Latte",
+            "image": "",
             "categories": [
                 "Beverage"
             ],
-            "defaultOrder": 4,
+            "nutrition": {
+                "calories": 200,
+                "protein": 29,
+                "carbs": 12
+            },
+            "defaultOrder": 3,
+            "fat": 4
+        },
+        {
             "id": "starbucks_iced_vanilla_protein_latte",
-            "image": ""
-        },
-        {
-            "name": "SF Protein Matcha",
-            "calories": 240,
-            "protein": 28,
-            "carbs": 18,
-            "fat": 7,
+            "name": "Iced Vanilla Protein Latte",
+            "image": "",
             "categories": [
                 "Beverage"
             ],
-            "defaultOrder": 5,
+            "nutrition": {
+                "calories": 270,
+                "protein": 29,
+                "carbs": 31
+            },
+            "defaultOrder": 4,
+            "fat": 4
+        },
+        {
             "id": "starbucks_sf_protein_matcha",
-            "image": ""
+            "name": "SF Protein Matcha",
+            "image": "",
+            "categories": [
+                "Beverage"
+            ],
+            "nutrition": {
+                "calories": 240,
+                "protein": 28,
+                "carbs": 18
+            },
+            "defaultOrder": 5,
+            "fat": 7
         }
     ]
 }

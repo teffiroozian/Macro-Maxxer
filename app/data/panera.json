@@ -3,69 +3,79 @@
     "name": "Panera Bread",
     "items": [
         {
-            "name": "French Ciabatta Dipper",
-            "calories": 1120,
-            "protein": 68,
-            "carbs": 88,
-            "fat": 55,
-            "categories": [
-                "Sandwich"
-            ],
-            "defaultOrder": 1,
             "id": "panera_french_ciabatta_dipper",
-            "image": ""
-        },
-        {
-            "name": "Chicken Pesto Ciabatta Dipper",
-            "calories": 930,
-            "protein": 63,
-            "carbs": 93,
-            "fat": 34,
+            "name": "French Ciabatta Dipper",
+            "image": "",
             "categories": [
                 "Sandwich"
             ],
-            "defaultOrder": 2,
+            "nutrition": {
+                "calories": 1120,
+                "protein": 68,
+                "carbs": 88
+            },
+            "defaultOrder": 1,
+            "fat": 55
+        },
+        {
             "id": "panera_chicken_pesto_ciabatta_dipper",
-            "image": ""
-        },
-        {
-            "name": "Toasted Italiano",
-            "calories": 1280,
-            "protein": 60,
-            "carbs": 116,
-            "fat": 64,
+            "name": "Chicken Pesto Ciabatta Dipper",
+            "image": "",
             "categories": [
                 "Sandwich"
             ],
-            "defaultOrder": 3,
+            "nutrition": {
+                "calories": 930,
+                "protein": 63,
+                "carbs": 93
+            },
+            "defaultOrder": 2,
+            "fat": 34
+        },
+        {
             "id": "panera_toasted_italiano",
-            "image": ""
-        },
-        {
-            "name": "Spicy Fiesta Chicken",
-            "calories": 850,
-            "protein": 54,
-            "carbs": 89,
-            "fat": 30,
+            "name": "Toasted Italiano",
+            "image": "",
             "categories": [
                 "Sandwich"
             ],
-            "defaultOrder": 4,
+            "nutrition": {
+                "calories": 1280,
+                "protein": 60,
+                "carbs": 116
+            },
+            "defaultOrder": 3,
+            "fat": 64
+        },
+        {
             "id": "panera_spicy_fiesta_chicken",
-            "image": ""
-        },
-        {
-            "name": "Chicken Bacon Rancher",
-            "calories": 900,
-            "protein": 52,
-            "carbs": 74,
-            "fat": 45,
+            "name": "Spicy Fiesta Chicken",
+            "image": "",
             "categories": [
                 "Sandwich"
             ],
-            "defaultOrder": 5,
+            "nutrition": {
+                "calories": 850,
+                "protein": 54,
+                "carbs": 89
+            },
+            "defaultOrder": 4,
+            "fat": 30
+        },
+        {
             "id": "panera_chicken_bacon_rancher",
-            "image": ""
+            "name": "Chicken Bacon Rancher",
+            "image": "",
+            "categories": [
+                "Sandwich"
+            ],
+            "nutrition": {
+                "calories": 900,
+                "protein": 52,
+                "carbs": 74
+            },
+            "defaultOrder": 5,
+            "fat": 45
         }
     ]
 }

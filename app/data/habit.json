@@ -3,69 +3,79 @@
     "name": "The Habit Burger Grill",
     "items": [
         {
+            "id": "habit_double_char_w_cheese",
             "name": "Double Char w Cheese",
-            "calories": 870,
-            "protein": 53,
-            "carbs": 60,
-            "fat": 53,
+            "image": "",
             "categories": [
                 "Burger"
             ],
+            "nutrition": {
+                "calories": 870,
+                "protein": 53,
+                "carbs": 60
+            },
             "defaultOrder": 1,
-            "id": "habit_double_char_w_cheese",
-            "image": ""
+            "fat": 53
         },
         {
+            "id": "habit_santa_barbara_cobb",
             "name": "Santa Barbara Cobb",
-            "calories": 820,
-            "protein": 50,
-            "carbs": 18,
-            "fat": 62,
+            "image": "",
             "categories": [
                 "Salad"
             ],
+            "nutrition": {
+                "calories": 820,
+                "protein": 50,
+                "carbs": 18
+            },
             "defaultOrder": 2,
-            "id": "habit_santa_barbara_cobb",
-            "image": ""
+            "fat": 62
         },
         {
+            "id": "habit_santa_barbara_char",
             "name": "Santa Barbara Char",
-            "calories": 1210,
-            "protein": 48,
-            "carbs": 48,
-            "fat": 93,
+            "image": "",
             "categories": [
                 "Burger"
             ],
+            "nutrition": {
+                "calories": 1210,
+                "protein": 48,
+                "carbs": 48
+            },
             "defaultOrder": 3,
-            "id": "habit_santa_barbara_char",
-            "image": ""
+            "fat": 93
         },
         {
-            "name": "Chicken Club Sandwich",
-            "calories": 880,
-            "protein": 47,
-            "carbs": 43,
-            "fat": 59,
-            "categories": [
-                "Sandwich"
-            ],
-            "defaultOrder": 4,
             "id": "habit_chicken_club_sandwich",
-            "image": ""
-        },
-        {
-            "name": "Grilled Chicken Sandwich",
-            "calories": 910,
-            "protein": 45,
-            "carbs": 59,
-            "fat": 57,
+            "name": "Chicken Club Sandwich",
+            "image": "",
             "categories": [
                 "Sandwich"
             ],
-            "defaultOrder": 5,
+            "nutrition": {
+                "calories": 880,
+                "protein": 47,
+                "carbs": 43
+            },
+            "defaultOrder": 4,
+            "fat": 59
+        },
+        {
             "id": "habit_grilled_chicken_sandwich",
-            "image": ""
+            "name": "Grilled Chicken Sandwich",
+            "image": "",
+            "categories": [
+                "Sandwich"
+            ],
+            "nutrition": {
+                "calories": 910,
+                "protein": 45,
+                "carbs": 59
+            },
+            "defaultOrder": 5,
+            "fat": 57
         }
     ]
 }

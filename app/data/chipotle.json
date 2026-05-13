@@ -6,27 +6,27 @@
         {
             "id": "chips",
             "name": "Chips",
+            "image": "/restaurants/chipotle/menu/sides/chips.png",
             "categories": [
                 "Chips & Dips"
             ],
-            "ingredients": [
-                "chips"
-            ],
             "servingType": "side",
-            "image": "/restaurants/chipotle/menu/sides/chips.png",
+            "entreeGroup": "chips-sides",
             "nutrition": {
                 "calories": 540,
+                "protein": 7,
+                "carbs": 73,
                 "totalFat": 25,
                 "satFat": 3.5,
                 "transFat": 0,
                 "cholesterol": 0,
                 "sodium": 390,
-                "carbs": 73,
                 "fiber": 7,
-                "sugars": 1,
-                "protein": 7
+                "sugars": 1
             },
-            "defaultVariantId": "chips",
+            "ingredients": [
+                "chips"
+            ],
             "variants": [
                 {
                     "id": "chips",
@@ -34,15 +34,15 @@
                     "servingType": "side",
                     "nutrition": {
                         "calories": 540,
+                        "protein": 7,
+                        "carbs": 73,
                         "totalFat": 25,
                         "satFat": 3.5,
                         "transFat": 0,
                         "cholesterol": 0,
                         "sodium": 390,
-                        "carbs": 73,
                         "fiber": 7,
-                        "sugars": 1,
-                        "protein": 7
+                        "sugars": 1
                     }
                 },
                 {
@@ -51,31 +51,32 @@
                     "servingType": "side",
                     "nutrition": {
                         "calories": 810,
+                        "protein": 11,
+                        "carbs": 110,
                         "totalFat": 38,
                         "satFat": 5,
                         "transFat": 0,
                         "cholesterol": 0,
                         "sodium": 590,
-                        "carbs": 110,
                         "fiber": 11,
-                        "sugars": 2,
-                        "protein": 11
+                        "sugars": 2
                     }
                 }
             ],
-            "entreeGroup": "chips-sides",
+            "defaultVariantId": "chips",
             "defaultOrder": 1
         },
         {
             "id": "side-of-guacamole",
             "name": "Guacamole",
-            "ingredientRef": "guacamole",
+            "image": "",
             "categories": [
                 "Toppings",
                 "Single Sides"
             ],
             "servingType": "side",
-            "defaultVariantId": "side-of-guacamole",
+            "entreeGroup": "chips-sides",
+            "ingredientRef": "guacamole",
             "variants": [
                 {
                     "id": "side-of-guacamole",
@@ -83,15 +84,15 @@
                     "servingType": "side",
                     "nutrition": {
                         "calories": 230,
+                        "protein": 2,
+                        "carbs": 8,
                         "totalFat": 22,
                         "satFat": 3.5,
                         "transFat": 0,
                         "cholesterol": 0,
                         "sodium": 370,
-                        "carbs": 8,
                         "fiber": 6,
-                        "sugars": 1,
-                        "protein": 2
+                        "sugars": 1
                     }
                 },
                 {
@@ -100,47 +101,46 @@
                     "servingType": "side",
                     "nutrition": {
                         "calories": 460,
+                        "protein": 4,
+                        "carbs": 16,
                         "totalFat": 44,
                         "satFat": 7,
                         "transFat": 0,
                         "cholesterol": 0,
                         "sodium": 740,
-                        "carbs": 16,
                         "fiber": 12,
-                        "sugars": 2,
-                        "protein": 4
+                        "sugars": 2
                     }
                 }
             ],
-            "entreeGroup": "chips-sides",
-            "defaultOrder": 2,
-            "image": ""
+            "defaultVariantId": "side-of-guacamole",
+            "defaultOrder": 2
         },
         {
             "id": "chips-guacamole",
             "name": "Chips & Guacamole",
+            "image": "/restaurants/chipotle/menu/sides/chips-guacamole.png",
             "categories": [
                 "Chips & Dips"
             ],
-            "ingredients": [
-                "chips",
-                "guacamole"
-            ],
             "servingType": "side",
-            "image": "/restaurants/chipotle/menu/sides/chips-guacamole.png",
+            "entreeGroup": "chips-sides",
             "nutrition": {
                 "calories": 770,
+                "protein": 9,
+                "carbs": 81,
                 "totalFat": 47,
                 "satFat": 7.5,
                 "transFat": 0,
                 "cholesterol": 0,
                 "sodium": 760,
-                "carbs": 81,
                 "fiber": 13,
-                "sugars": 2,
-                "protein": 9
+                "sugars": 2
             },
-            "defaultVariantId": "chips-guacamole",
+            "ingredients": [
+                "chips",
+                "guacamole"
+            ],
             "variants": [
                 {
                     "id": "chips-guacamole",
@@ -148,15 +148,15 @@
                     "servingType": "side",
                     "nutrition": {
                         "calories": 770,
+                        "protein": 9,
+                        "carbs": 81,
                         "totalFat": 47,
                         "satFat": 7.5,
                         "transFat": 0,
                         "cholesterol": 0,
                         "sodium": 760,
-                        "carbs": 81,
                         "fiber": 13,
-                        "sugars": 2,
-                        "protein": 9
+                        "sugars": 2
                     }
                 },
                 {
@@ -165,158 +165,158 @@
                     "servingType": "side",
                     "nutrition": {
                         "calories": 1270,
+                        "protein": 15,
+                        "carbs": 126,
                         "totalFat": 82,
                         "satFat": 12,
                         "transFat": 0,
                         "cholesterol": 0,
                         "sodium": 1330,
-                        "carbs": 126,
                         "fiber": 23,
-                        "sugars": 4,
-                        "protein": 15
+                        "sugars": 4
                     }
                 }
             ],
-            "entreeGroup": "chips-sides",
+            "defaultVariantId": "chips-guacamole",
             "defaultOrder": 3
         },
         {
             "id": "chips-fresh-tomato-salsa",
             "name": "Chips & Fresh Tomato Salsa",
-            "description": "Mild",
+            "image": "/restaurants/chipotle/menu/sides/chips-tomato-salsa.png",
             "categories": [
                 "Chips & Dips"
             ],
-            "ingredients": [
-                "chips",
-                "fresh-tomato-salsa"
-            ],
             "servingType": "side",
-            "image": "/restaurants/chipotle/menu/sides/chips-tomato-salsa.png",
+            "entreeGroup": "chips-sides",
             "nutrition": {
                 "calories": 565,
+                "protein": 7,
+                "carbs": 77,
                 "totalFat": 25,
                 "satFat": 3.5,
                 "transFat": 0,
                 "cholesterol": 0,
                 "sodium": 940,
-                "carbs": 77,
                 "fiber": 8,
-                "sugars": 2,
-                "protein": 7
+                "sugars": 2
             },
-            "entreeGroup": "chips-sides",
-            "defaultOrder": 4
+            "ingredients": [
+                "chips",
+                "fresh-tomato-salsa"
+            ],
+            "defaultOrder": 4,
+            "description": "Mild"
         },
         {
             "id": "chips-tomatillo-red-chili-salsa",
             "name": "Chips & Tomatillo-Red Chili Salsa",
-            "description": "Hot",
+            "image": "/restaurants/chipotle/menu/sides/chips-red-chili-salsa.png",
             "categories": [
                 "Chips & Dips"
             ],
-            "ingredients": [
-                "chips",
-                "tomatillo-red-chili-salsa"
-            ],
             "servingType": "side",
-            "image": "/restaurants/chipotle/menu/sides/chips-red-chili-salsa.png",
+            "entreeGroup": "chips-sides",
             "nutrition": {
                 "calories": 570,
+                "protein": 7,
+                "carbs": 77,
                 "totalFat": 25,
                 "satFat": 3.5,
                 "transFat": 0,
                 "cholesterol": 0,
                 "sodium": 890,
-                "carbs": 77,
                 "fiber": 8,
-                "sugars": 1,
-                "protein": 7
+                "sugars": 1
             },
-            "entreeGroup": "chips-sides",
-            "defaultOrder": 5
+            "ingredients": [
+                "chips",
+                "tomatillo-red-chili-salsa"
+            ],
+            "defaultOrder": 5,
+            "description": "Hot"
         },
         {
             "id": "chips-tomatillo-green-chili-salsa",
             "name": "Chips & Tomatillo-Green Chili Salsa",
-            "description": "Medium",
+            "image": "/restaurants/chipotle/menu/sides/chips-green-chili-salsa.png",
             "categories": [
                 "Chips & Dips"
             ],
-            "ingredients": [
-                "chips",
-                "tomatillo-green-chili-salsa"
-            ],
             "servingType": "side",
-            "image": "/restaurants/chipotle/menu/sides/chips-green-chili-salsa.png",
+            "entreeGroup": "chips-sides",
             "nutrition": {
                 "calories": 555,
+                "protein": 7,
+                "carbs": 77,
                 "totalFat": 25,
                 "satFat": 3.5,
                 "transFat": 0,
                 "cholesterol": 0,
                 "sodium": 650,
-                "carbs": 77,
                 "fiber": 7,
-                "sugars": 3,
-                "protein": 7
+                "sugars": 3
             },
-            "entreeGroup": "chips-sides",
-            "defaultOrder": 6
+            "ingredients": [
+                "chips",
+                "tomatillo-green-chili-salsa"
+            ],
+            "defaultOrder": 6,
+            "description": "Medium"
         },
         {
             "id": "chips-roasted-chili-corn-salsa",
             "name": "Chips & Roasted Chili-Corn Salsa",
-            "description": "Medium",
+            "image": "/restaurants/chipotle/menu/sides/chips-chili-corn-salsa.png",
             "categories": [
                 "Chips & Dips"
             ],
-            "ingredients": [
-                "chips",
-                "roasted-chili-corn-salsa"
-            ],
             "servingType": "side",
-            "image": "/restaurants/chipotle/menu/sides/chips-chili-corn-salsa.png",
+            "entreeGroup": "chips-sides",
             "nutrition": {
                 "calories": 620,
+                "protein": 10,
+                "carbs": 89,
                 "totalFat": 26.5,
                 "satFat": 3.5,
                 "transFat": 0,
                 "cholesterol": 0,
                 "sodium": 720,
-                "carbs": 89,
                 "fiber": 10,
-                "sugars": 5,
-                "protein": 10
+                "sugars": 5
             },
-            "entreeGroup": "chips-sides",
-            "defaultOrder": 7
+            "ingredients": [
+                "chips",
+                "roasted-chili-corn-salsa"
+            ],
+            "defaultOrder": 7,
+            "description": "Medium"
         },
         {
             "id": "chips-queso-blanco",
             "name": "Chips & Queso Blanco",
+            "image": "/restaurants/chipotle/menu/sides/chips-queso-blanco.png",
             "categories": [
                 "Chips & Dips"
             ],
-            "ingredients": [
-                "chips",
-                "queso-blanco"
-            ],
             "servingType": "side",
-            "image": "/restaurants/chipotle/menu/sides/chips-queso-blanco.png",
+            "entreeGroup": "chips-sides",
             "nutrition": {
                 "calories": 780,
+                "protein": 17,
+                "carbs": 80,
                 "totalFat": 43,
                 "satFat": 15.5,
                 "transFat": 1,
                 "cholesterol": 60,
                 "sodium": 880,
-                "carbs": 80,
                 "fiber": 7,
-                "sugars": 3,
-                "protein": 17
+                "sugars": 3
             },
-            "defaultVariantId": "chips-queso-blanco",
+            "ingredients": [
+                "chips",
+                "queso-blanco"
+            ],
             "variants": [
                 {
                     "id": "chips-queso-blanco",
@@ -324,15 +324,15 @@
                     "servingType": "side",
                     "nutrition": {
                         "calories": 780,
+                        "protein": 17,
+                        "carbs": 80,
                         "totalFat": 43,
                         "satFat": 15.5,
                         "transFat": 1,
                         "cholesterol": 60,
                         "sodium": 880,
-                        "carbs": 80,
                         "fiber": 7,
-                        "sugars": 3,
-                        "protein": 17
+                        "sugars": 3
                     }
                 },
                 {
@@ -341,33 +341,31 @@
                     "servingType": "side",
                     "nutrition": {
                         "calories": 1290,
+                        "protein": 31,
+                        "carbs": 124,
                         "totalFat": 75,
                         "satFat": 28,
                         "transFat": 1.5,
                         "cholesterol": 120,
                         "sodium": 1570,
-                        "carbs": 124,
                         "fiber": 11,
-                        "sugars": 7,
-                        "protein": 31
+                        "sugars": 7
                     }
                 }
             ],
-            "entreeGroup": "chips-sides",
+            "defaultVariantId": "chips-queso-blanco",
             "defaultOrder": 8
         },
         {
             "id": "side-of-cilantro-lime-sauce",
             "name": "Cilantro Lime Sauce",
-            "ingredientRef": "cilantro-lime-sauce",
-            "description": "Served on the Side",
+            "image": "",
             "categories": [
                 "Single Sides"
             ],
             "servingType": "side",
             "entreeGroup": "chips-sides",
-            "defaultOrder": 9,
-            "defaultVariantId": "side-of-cilantro-lime-sauce",
+            "ingredientRef": "cilantro-lime-sauce",
             "variants": [
                 {
                     "id": "side-of-cilantro-lime-sauce",
@@ -386,24 +384,26 @@
                     "servingType": "side",
                     "nutrition": {
                         "calories": 320,
-                        "totalFat": 24,
                         "protein": 8,
-                        "carbs": 12
+                        "carbs": 12,
+                        "totalFat": 24
                     }
                 }
             ],
-            "image": ""
+            "defaultVariantId": "side-of-cilantro-lime-sauce",
+            "defaultOrder": 9,
+            "description": "Served on the Side"
         },
         {
             "id": "side-of-fresh-tomato-salsa",
             "name": "Fresh Tomato Salsa",
-            "ingredientRef": "fresh-tomato-salsa",
-            "description": "Mild",
+            "image": "",
             "categories": [
                 "Single Sides"
             ],
             "servingType": "side",
-            "defaultVariantId": "side-of-fresh-tomato-salsa",
+            "entreeGroup": "chips-sides",
+            "ingredientRef": "fresh-tomato-salsa",
             "variants": [
                 {
                     "id": "side-of-fresh-tomato-salsa",
@@ -411,9 +411,9 @@
                     "servingType": "side",
                     "nutrition": {
                         "calories": 25,
-                        "totalFat": 0,
                         "protein": 0,
-                        "carbs": 4
+                        "carbs": 4,
+                        "totalFat": 0
                     }
                 },
                 {
@@ -422,26 +422,26 @@
                     "servingType": "side",
                     "nutrition": {
                         "calories": 40,
-                        "totalFat": 0,
                         "protein": 0,
-                        "carbs": 0
+                        "carbs": 0,
+                        "totalFat": 0
                     }
                 }
             ],
-            "entreeGroup": "chips-sides",
+            "defaultVariantId": "side-of-fresh-tomato-salsa",
             "defaultOrder": 10,
-            "image": ""
+            "description": "Mild"
         },
         {
             "id": "side-of-tomatillo-red-chili-salsa",
             "name": "Tomatillo-Red Chili Salsa",
-            "ingredientRef": "tomatillo-red-chili-salsa",
-            "description": "Hot",
+            "image": "",
             "categories": [
                 "Single Sides"
             ],
             "servingType": "side",
-            "defaultVariantId": "side-of-tomatillo-red-chili-salsa",
+            "entreeGroup": "chips-sides",
+            "ingredientRef": "tomatillo-red-chili-salsa",
             "variants": [
                 {
                     "id": "side-of-tomatillo-red-chili-salsa",
@@ -449,9 +449,9 @@
                     "servingType": "side",
                     "nutrition": {
                         "calories": 30,
-                        "totalFat": 0,
                         "protein": 0,
-                        "carbs": 4
+                        "carbs": 4,
+                        "totalFat": 0
                     }
                 },
                 {
@@ -460,26 +460,26 @@
                     "servingType": "side",
                     "nutrition": {
                         "calories": 90,
-                        "totalFat": 0,
                         "protein": 0,
-                        "carbs": 0
+                        "carbs": 0,
+                        "totalFat": 0
                     }
                 }
             ],
-            "entreeGroup": "chips-sides",
+            "defaultVariantId": "side-of-tomatillo-red-chili-salsa",
             "defaultOrder": 11,
-            "image": ""
+            "description": "Hot"
         },
         {
             "id": "side-of-tomatillo-green-chili-salsa",
             "name": "Tomatillo-Green Chili Salsa",
-            "ingredientRef": "tomatillo-green-chili-salsa",
-            "description": "Medium",
+            "image": "",
             "categories": [
                 "Single Sides"
             ],
             "servingType": "side",
-            "defaultVariantId": "side-of-tomatillo-green-chili-salsa",
+            "entreeGroup": "chips-sides",
+            "ingredientRef": "tomatillo-green-chili-salsa",
             "variants": [
                 {
                     "id": "side-of-tomatillo-green-chili-salsa",
@@ -487,9 +487,9 @@
                     "servingType": "side",
                     "nutrition": {
                         "calories": 15,
-                        "totalFat": 0,
                         "protein": 0,
-                        "carbs": 4
+                        "carbs": 4,
+                        "totalFat": 0
                     }
                 },
                 {
@@ -498,26 +498,26 @@
                     "servingType": "side",
                     "nutrition": {
                         "calories": 45,
-                        "totalFat": 0,
                         "protein": 0,
-                        "carbs": 0
+                        "carbs": 0,
+                        "totalFat": 0
                     }
                 }
             ],
-            "entreeGroup": "chips-sides",
+            "defaultVariantId": "side-of-tomatillo-green-chili-salsa",
             "defaultOrder": 12,
-            "image": ""
+            "description": "Medium"
         },
         {
             "id": "side-of-roasted-chili-corn-salsa",
             "name": "Roasted Chili-Corn Salsa",
-            "ingredientRef": "roasted-chili-corn-salsa",
-            "description": "Medium",
+            "image": "",
             "categories": [
                 "Single Sides"
             ],
             "servingType": "side",
-            "defaultVariantId": "side-of-roasted-chili-corn-salsa",
+            "entreeGroup": "chips-sides",
+            "ingredientRef": "roasted-chili-corn-salsa",
             "variants": [
                 {
                     "id": "side-of-roasted-chili-corn-salsa",
@@ -525,9 +525,9 @@
                     "servingType": "side",
                     "nutrition": {
                         "calories": 80,
-                        "totalFat": 1.5,
                         "protein": 3,
-                        "carbs": 16
+                        "carbs": 16,
+                        "totalFat": 1.5
                     }
                 },
                 {
@@ -536,25 +536,26 @@
                     "servingType": "side",
                     "nutrition": {
                         "calories": 120,
-                        "totalFat": 0,
                         "protein": 0,
-                        "carbs": 0
+                        "carbs": 0,
+                        "totalFat": 0
                     }
                 }
             ],
-            "entreeGroup": "chips-sides",
+            "defaultVariantId": "side-of-roasted-chili-corn-salsa",
             "defaultOrder": 13,
-            "image": ""
+            "description": "Medium"
         },
         {
             "id": "side-of-queso-blanco",
             "name": "Side of Queso Blanco",
-            "ingredientRef": "queso-blanco",
+            "image": "",
             "categories": [
                 "Single Sides"
             ],
             "servingType": "side",
-            "defaultVariantId": "side-of-queso-blanco",
+            "entreeGroup": "chips-sides",
+            "ingredientRef": "queso-blanco",
             "variants": [
                 {
                     "id": "side-of-queso-blanco",
@@ -562,15 +563,15 @@
                     "servingType": "side",
                     "nutrition": {
                         "calories": 240,
+                        "protein": 10,
+                        "carbs": 7,
                         "totalFat": 18,
                         "satFat": 12,
                         "transFat": 1,
                         "cholesterol": 60,
                         "sodium": 490,
-                        "carbs": 7,
                         "fiber": 0,
-                        "sugars": 2,
-                        "protein": 10
+                        "sugars": 2
                     }
                 },
                 {
@@ -579,124 +580,122 @@
                     "servingType": "side",
                     "nutrition": {
                         "calories": 480,
+                        "protein": 20,
+                        "carbs": 14,
                         "totalFat": 37,
                         "satFat": 23,
                         "transFat": 1.5,
                         "cholesterol": 120,
                         "sodium": 980,
-                        "carbs": 14,
                         "fiber": 0,
-                        "sugars": 5,
-                        "protein": 20
+                        "sugars": 5
                     }
                 }
             ],
-            "entreeGroup": "chips-sides",
-            "defaultOrder": 14,
-            "image": ""
+            "defaultVariantId": "side-of-queso-blanco",
+            "defaultOrder": 14
         },
         {
             "id": "tortilla-on-the-side",
             "name": "Tortilla on the Side",
+            "image": "/restaurants/chipotle/menu/sides/tortilla.png",
             "categories": [
                 "Single Sides"
             ],
             "servingType": "side",
-            "image": "/restaurants/chipotle/menu/sides/tortilla.png",
+            "entreeGroup": "chips-sides",
             "nutrition": {
                 "calories": 320,
+                "protein": 8,
+                "carbs": 50,
                 "totalFat": 9,
                 "satFat": 0.5,
                 "transFat": 0,
                 "cholesterol": 0,
                 "sodium": 600,
-                "carbs": 50,
                 "fiber": 3,
-                "sugars": 0,
-                "protein": 8
+                "sugars": 0
             },
-            "entreeGroup": "chips-sides",
             "defaultOrder": 15
         },
         {
             "id": "kids-chips",
             "name": "Kid's Chips",
+            "image": "/restaurants/chipotle/menu/sides/chips.png",
             "categories": [
                 "Kids"
             ],
             "servingType": "side",
-            "image": "/restaurants/chipotle/menu/sides/chips.png",
+            "entreeGroup": "chips-sides",
             "nutrition": {
                 "calories": 140,
+                "protein": 2,
+                "carbs": 18,
                 "totalFat": 6,
                 "satFat": 1,
                 "transFat": 0,
                 "cholesterol": 0,
                 "sodium": 95,
-                "carbs": 18,
                 "fiber": 2,
-                "sugars": 0,
-                "protein": 2
+                "sugars": 0
             },
-            "entreeGroup": "chips-sides",
             "defaultOrder": 16
         },
         {
             "id": "kids-mandarins",
             "name": "Kid's Mandarins",
+            "image": "",
             "categories": [
                 "Kids"
             ],
             "servingType": "side",
+            "entreeGroup": "chips-sides",
             "nutrition": {
                 "calories": 35,
+                "protein": 1,
+                "carbs": 9,
                 "totalFat": 0,
                 "satFat": 0,
                 "transFat": 0,
                 "cholesterol": 0,
                 "sodium": 0,
-                "carbs": 9,
                 "fiber": 1,
-                "sugars": 7,
-                "protein": 1
+                "sugars": 7
             },
-            "entreeGroup": "chips-sides",
-            "defaultOrder": 17,
-            "image": ""
+            "defaultOrder": 17
         },
         {
             "id": "kids-blueberries",
             "name": "Kid's Blueberries",
+            "image": "",
             "categories": [
                 "Kids"
             ],
             "servingType": "side",
+            "entreeGroup": "chips-sides",
             "nutrition": {
                 "calories": 20,
+                "protein": 1,
+                "carbs": 5,
                 "totalFat": 0,
                 "satFat": 0,
                 "transFat": 0,
                 "cholesterol": 0,
                 "sodium": 0,
-                "carbs": 5,
                 "fiber": 0,
-                "sugars": 3,
-                "protein": 1
+                "sugars": 3
             },
-            "entreeGroup": "chips-sides",
-            "defaultOrder": 18,
-            "image": ""
+            "defaultOrder": 18
         },
         {
             "id": "high-protein-high-fiber-bowl",
             "name": "High Protein-High Fiber Bowl",
+            "image": "/restaurants/chipotle/menu/high-protein/high-protein-high-fiber-bowl.jpg",
             "categories": [
                 "Protein Meals"
             ],
             "servingType": "entree",
-            "image": "/restaurants/chipotle/menu/high-protein/high-protein-high-fiber-bowl.jpg",
             "entreeGroup": "high-protein-menu",
-            "defaultOrder": 8,
             "ingredients": [
                 "chicken",
                 "brown-rice:light",
@@ -705,36 +704,36 @@
                 "roasted-chili-corn-salsa",
                 "fajita-veggies",
                 "romaine-lettuce"
-            ]
+            ],
+            "defaultOrder": 8
         },
         {
             "id": "high-protein-low-calorie-bowl",
             "name": "High Protein-Low Calorie Bowl",
+            "image": "/restaurants/chipotle/menu/high-protein/high-protein-low-calorie-bowl.jpg",
             "categories": [
                 "Protein Meals"
             ],
             "servingType": "entree",
-            "image": "/restaurants/chipotle/menu/high-protein/high-protein-low-calorie-bowl.jpg",
             "entreeGroup": "high-protein-menu",
-            "defaultOrder": 9,
             "ingredients": [
                 "chicken",
                 "romaine-lettuce",
                 "fajita-veggies",
                 "fresh-tomato-salsa",
                 "guacamole"
-            ]
+            ],
+            "defaultOrder": 9
         },
         {
             "id": "double-high-protein-burrito",
             "name": "Double High Protein Burrito",
+            "image": "/restaurants/chipotle/menu/high-protein/double-high-protein-burrito.jpg",
             "categories": [
                 "Protein Meals"
             ],
             "servingType": "entree",
-            "image": "/restaurants/chipotle/menu/high-protein/double-high-protein-burrito.jpg",
             "entreeGroup": "high-protein-menu",
-            "defaultOrder": 10,
             "ingredients": [
                 "tortilla",
                 "chicken:extra",
@@ -742,18 +741,18 @@
                 "fresh-tomato-salsa",
                 "cheese",
                 "romaine-lettuce"
-            ]
+            ],
+            "defaultOrder": 10
         },
         {
             "id": "high-protein-taco",
             "name": "High Protein Taco",
+            "image": "/restaurants/chipotle/menu/high-protein/high-protein-taco.jpg",
             "categories": [
                 "Protein Meals"
             ],
             "servingType": "entree",
-            "image": "/restaurants/chipotle/menu/high-protein/high-protein-taco.jpg",
             "entreeGroup": "high-protein-menu",
-            "defaultOrder": 11,
             "ingredients": [
                 "soft-flour-tortilla",
                 "chicken:extra",
@@ -761,18 +760,18 @@
                 "fresh-tomato-salsa",
                 "cheese",
                 "romaine-lettuce"
-            ]
+            ],
+            "defaultOrder": 11
         },
         {
             "id": "double-high-protein-bowl",
             "name": "Double High Protein Bowl",
+            "image": "/restaurants/chipotle/menu/high-protein/double-high-protein-bowl.jpg",
             "categories": [
                 "Protein Meals"
             ],
             "servingType": "entree",
-            "image": "/restaurants/chipotle/menu/high-protein/double-high-protein-bowl.jpg",
             "entreeGroup": "high-protein-menu",
-            "defaultOrder": 7,
             "ingredients": [
                 "chicken:extra",
                 "white-rice:light",
@@ -781,103 +780,105 @@
                 "fajita-veggies",
                 "cheese",
                 "romaine-lettuce"
-            ]
+            ],
+            "defaultOrder": 7
         },
         {
             "id": "side-of-chicken-al-pastor-high-protein",
             "name": "Side of Chicken al Pastor",
-            "ingredientRef": "chicken-al-pastor",
-            "description": "28g Protein",
+            "image": "/restaurants/chipotle/menu/high-protein/chicken-al-pastor-cup.png",
             "categories": [
                 "Protein Cups"
             ],
             "servingType": "side",
-            "image": "/restaurants/chipotle/menu/high-protein/chicken-al-pastor-cup.png",
             "entreeGroup": "high-protein-menu",
-            "defaultOrder": 12
+            "ingredientRef": "chicken-al-pastor",
+            "defaultOrder": 12,
+            "description": "28g Protein"
         },
         {
             "id": "side-of-chicken-high-protein",
             "name": "Side of Chicken",
-            "ingredientRef": "chicken",
-            "description": "32g Protein",
+            "image": "/restaurants/chipotle/menu/high-protein/chicken-cup.png",
             "categories": [
                 "Protein Cups"
             ],
             "servingType": "side",
-            "image": "/restaurants/chipotle/menu/high-protein/chicken-cup.png",
             "entreeGroup": "high-protein-menu",
-            "defaultOrder": 13
+            "ingredientRef": "chicken",
+            "defaultOrder": 13,
+            "description": "32g Protein"
         },
         {
             "id": "side-of-steak-high-protein",
             "name": "Side of Steak",
-            "ingredientRef": "steak",
-            "description": "21g Protein",
+            "image": "/restaurants/chipotle/menu/high-protein/steak-cup.png",
             "categories": [
                 "Protein Cups"
             ],
             "servingType": "side",
-            "image": "/restaurants/chipotle/menu/high-protein/steak-cup.png",
             "entreeGroup": "high-protein-menu",
-            "defaultOrder": 14
+            "ingredientRef": "steak",
+            "defaultOrder": 14,
+            "description": "21g Protein"
         },
         {
             "id": "mexican-coca-cola",
             "name": "Mexican Coca-Cola",
+            "image": "/restaurants/chipotle/menu/drinks/mexican-coca-cola.png",
             "categories": [
                 "Drinks"
             ],
             "servingType": "drink",
-            "image": "/restaurants/chipotle/menu/drinks/mexican-coca-cola.png",
+            "entreeGroup": "drinks",
             "nutrition": {
                 "calories": 150,
+                "protein": 0,
+                "carbs": 39,
                 "totalFat": 0,
                 "satFat": 0,
                 "transFat": 0,
-                "polyunsaturatedFat": 0,
                 "cholesterol": 0,
                 "sodium": 85,
-                "carbs": 39,
                 "fiber": 0,
                 "sugars": 39,
-                "addedSugars": 39,
-                "protein": 0
+                "polyunsaturatedFat": 0,
+                "addedSugars": 39
             },
-            "source": "third party",
-            "entreeGroup": "drinks",
-            "defaultOrder": 15
+            "defaultOrder": 15,
+            "source": "third party"
         },
         {
             "id": "mexican-sprite",
             "name": "Mexican Sprite",
+            "image": "/restaurants/chipotle/menu/drinks/mexican-sprite.png",
             "categories": [
                 "Drinks"
             ],
             "servingType": "drink",
-            "image": "/restaurants/chipotle/menu/drinks/mexican-sprite.png",
+            "entreeGroup": "drinks",
             "nutrition": {
                 "calories": 140,
+                "protein": 0,
+                "carbs": 37,
                 "totalFat": 0,
                 "sodium": 95,
-                "carbs": 37,
                 "fiber": 0,
                 "sugars": 36,
-                "addedSugars": 36,
-                "protein": 0
+                "addedSugars": 36
             },
-            "source": "third party",
-            "entreeGroup": "drinks",
-            "defaultOrder": 16
+            "defaultOrder": 16,
+            "source": "third party"
         },
         {
             "id": "topo-chico-mineral-water",
             "name": "Topo Chico Mineral Water",
+            "image": "/restaurants/chipotle/menu/drinks/topo-chico-mineral-water.png",
             "categories": [
                 "Drinks"
             ],
             "servingType": "drink",
-            "image": "/restaurants/chipotle/menu/drinks/topo-chico-mineral-water.png",
+            "entreeGroup": "drinks",
             "nutrition": {
                 "calories": 0,
                 "protein": 0,
@@ -885,187 +886,187 @@
                 "totalFat": 0,
                 "sodium": 15
             },
-            "source": "third party",
-            "entreeGroup": "drinks",
-            "defaultOrder": 17
+            "defaultOrder": 17,
+            "source": "third party"
         },
         {
             "id": "coke-zero",
             "name": "Coke Zero",
+            "image": "/restaurants/chipotle/menu/drinks/coke-zero.png",
             "categories": [
                 "Drinks"
             ],
             "servingType": "drink",
-            "image": "/restaurants/chipotle/menu/drinks/coke-zero.png",
+            "entreeGroup": "drinks",
             "nutrition": {
                 "calories": 0,
+                "protein": 0,
+                "carbs": 0,
                 "totalFat": 0,
                 "sodium": 70,
-                "carbs": 0,
                 "fiber": 0,
                 "sugars": 0,
-                "addedSugars": 0,
-                "protein": 0
+                "addedSugars": 0
             },
-            "source": "third party",
-            "entreeGroup": "drinks",
-            "defaultOrder": 18
+            "defaultOrder": 18,
+            "source": "third party"
         },
         {
             "id": "poppi-strawberry-lemon",
             "name": "Poppi Strawberry Lemon",
+            "image": "/restaurants/chipotle/menu/drinks/poppi-strawberry-lemon.png",
             "categories": [
                 "Drinks"
             ],
             "servingType": "drink",
-            "image": "/restaurants/chipotle/menu/drinks/poppi-strawberry-lemon.png",
+            "entreeGroup": "drinks",
             "nutrition": {
                 "calories": 30,
+                "protein": 0,
+                "carbs": 9,
                 "totalFat": 0,
                 "sodium": 0,
-                "carbs": 9,
                 "fiber": 3,
                 "sugars": 5,
-                "addedSugars": 4,
-                "protein": 0
+                "addedSugars": 4
             },
-            "source": "third party",
-            "entreeGroup": "drinks",
-            "defaultOrder": 19
+            "defaultOrder": 19,
+            "source": "third party"
         },
         {
             "id": "poppi-orange",
             "name": "Poppi Orange",
+            "image": "/restaurants/chipotle/menu/drinks/poppi-orange.png",
             "categories": [
                 "Drinks"
             ],
             "servingType": "drink",
-            "image": "/restaurants/chipotle/menu/drinks/poppi-orange.png",
+            "entreeGroup": "drinks",
             "nutrition": {
                 "calories": 30,
+                "protein": 0,
+                "carbs": 9,
                 "totalFat": 0,
                 "sodium": 0,
-                "carbs": 9,
                 "fiber": 3,
                 "sugars": 5,
-                "addedSugars": 3,
-                "protein": 0
+                "addedSugars": 3
             },
-            "source": "third party",
-            "entreeGroup": "drinks",
-            "defaultOrder": 20
+            "defaultOrder": 20,
+            "source": "third party"
         },
         {
             "id": "grapefruit-izze",
             "name": "Grapefruit Izze",
+            "image": "/restaurants/chipotle/menu/drinks/grapefruit-izze.png",
             "categories": [
                 "Drinks"
             ],
             "servingType": "drink",
-            "image": "/restaurants/chipotle/menu/drinks/grapefruit-izze.png",
+            "entreeGroup": "drinks",
             "nutrition": {
                 "calories": 100,
+                "protein": 0,
+                "carbs": 22,
                 "totalFat": 0,
                 "sodium": 15,
-                "carbs": 22,
                 "fiber": 0,
                 "sugars": 21,
-                "addedSugars": 0,
-                "protein": 0
+                "addedSugars": 0
             },
-            "source": "third party",
-            "entreeGroup": "drinks",
-            "defaultOrder": 21
+            "defaultOrder": 21,
+            "source": "third party"
         },
         {
             "id": "blackberry-izze",
             "name": "Blackberry Izze",
+            "image": "/restaurants/chipotle/menu/drinks/blackberry-izze.png",
             "categories": [
                 "Drinks"
             ],
             "servingType": "drink",
-            "image": "/restaurants/chipotle/menu/drinks/blackberry-izze.png",
+            "entreeGroup": "drinks",
             "nutrition": {
                 "calories": 100,
+                "protein": 0,
+                "carbs": 22,
                 "totalFat": 0,
                 "sodium": 10,
-                "carbs": 22,
                 "fiber": 0,
                 "sugars": 21,
-                "addedSugars": 0,
-                "protein": 0
+                "addedSugars": 0
             },
-            "source": "third party",
-            "entreeGroup": "drinks",
-            "defaultOrder": 22
+            "defaultOrder": 22,
+            "source": "third party"
         },
         {
             "id": "apple-juice",
             "name": "Apple Juice",
+            "image": "/restaurants/chipotle/menu/drinks/apple-juice.png",
             "categories": [
                 "Drinks"
             ],
             "servingType": "drink",
-            "image": "/restaurants/chipotle/menu/drinks/apple-juice.png",
+            "entreeGroup": "drinks",
             "nutrition": {
                 "calories": 240,
+                "protein": 0,
+                "carbs": 59,
                 "totalFat": 0,
                 "satFat": 0,
                 "transFat": 0,
                 "cholesterol": 0,
                 "sodium": 25,
-                "carbs": 59,
                 "fiber": 0,
-                "sugars": 50,
-                "protein": 0
+                "sugars": 50
             },
-            "source": "third party",
-            "entreeGroup": "drinks",
-            "defaultOrder": 23
+            "defaultOrder": 23,
+            "source": "third party"
         },
         {
             "id": "open-water-still",
             "name": "Open Water Still",
+            "image": "/restaurants/chipotle/menu/drinks/open-still-water.png",
             "categories": [
                 "Drinks"
             ],
             "servingType": "drink",
-            "image": "/restaurants/chipotle/menu/drinks/open-still-water.png",
+            "entreeGroup": "drinks",
             "nutrition": {
                 "calories": 0,
+                "protein": 0,
+                "carbs": 0,
                 "totalFat": 0,
                 "sodium": 0,
-                "carbs": 0,
                 "fiber": 0,
                 "sugars": 0,
-                "addedSugars": 0,
-                "protein": 0
+                "addedSugars": 0
             },
-            "source": "third party",
-            "entreeGroup": "drinks",
-            "defaultOrder": 24
+            "defaultOrder": 24,
+            "source": "third party"
         },
         {
             "id": "barqs-root-beer-fountain",
             "name": "Barq's Root Beer",
+            "image": "/restaurants/chipotle/menu/drinks/fountain-drink.webp",
             "categories": [
                 "Fountain Drinks"
             ],
             "servingType": "drink",
+            "entreeGroup": "drinks",
             "nutrition": {
                 "calories": 280,
-                "caloriesFromFat": 0,
+                "protein": 0,
+                "carbs": 85,
                 "totalFat": 0,
                 "satFat": 0,
                 "transFat": 0,
                 "cholesterol": 0,
                 "sodium": 130,
-                "carbs": 85,
                 "fiber": 0,
                 "sugars": 85,
-                "protein": 0
+                "caloriesFromFat": 0
             },
-            "defaultVariantId": "barqs-root-beer-fountain-22-fl-oz",
             "variants": [
                 {
                     "id": "barqs-root-beer-fountain-22-fl-oz",
@@ -1073,16 +1074,16 @@
                     "servingType": "drink",
                     "nutrition": {
                         "calories": 280,
-                        "caloriesFromFat": 0,
+                        "protein": 0,
+                        "carbs": 85,
                         "totalFat": 0,
                         "satFat": 0,
                         "transFat": 0,
                         "cholesterol": 0,
                         "sodium": 130,
-                        "carbs": 85,
                         "fiber": 0,
                         "sugars": 85,
-                        "protein": 0
+                        "caloriesFromFat": 0
                     }
                 },
                 {
@@ -1091,44 +1092,44 @@
                     "servingType": "drink",
                     "nutrition": {
                         "calories": 430,
-                        "caloriesFromFat": 0,
+                        "protein": 0,
+                        "carbs": 120,
                         "totalFat": 0,
                         "satFat": 0,
                         "transFat": 0,
                         "cholesterol": 0,
                         "sodium": 180,
-                        "carbs": 120,
                         "fiber": 0,
                         "sugars": 120,
-                        "protein": 0
+                        "caloriesFromFat": 0
                     }
                 }
             ],
-            "entreeGroup": "drinks",
-            "defaultOrder": 25,
-            "image": "/restaurants/chipotle/menu/drinks/fountain-drink.webp"
+            "defaultVariantId": "barqs-root-beer-fountain-22-fl-oz",
+            "defaultOrder": 25
         },
         {
             "id": "coca-cola-classic-fountain",
             "name": "Coca-Cola Classic",
+            "image": "/restaurants/chipotle/menu/drinks/fountain-drink.webp",
             "categories": [
                 "Fountain Drinks"
             ],
             "servingType": "drink",
+            "entreeGroup": "drinks",
             "nutrition": {
                 "calories": 260,
-                "caloriesFromFat": 0,
+                "protein": 0,
+                "carbs": 70,
                 "totalFat": 0,
                 "satFat": 0,
                 "transFat": 0,
                 "cholesterol": 0,
                 "sodium": 85,
-                "carbs": 70,
                 "fiber": 0,
                 "sugars": 70,
-                "protein": 0
+                "caloriesFromFat": 0
             },
-            "defaultVariantId": "coca-cola-classic-fountain-22-fl-oz",
             "variants": [
                 {
                     "id": "coca-cola-classic-fountain-22-fl-oz",
@@ -1136,16 +1137,16 @@
                     "servingType": "drink",
                     "nutrition": {
                         "calories": 260,
-                        "caloriesFromFat": 0,
+                        "protein": 0,
+                        "carbs": 70,
                         "totalFat": 0,
                         "satFat": 0,
                         "transFat": 0,
                         "cholesterol": 0,
                         "sodium": 85,
-                        "carbs": 70,
                         "fiber": 0,
                         "sugars": 70,
-                        "protein": 0
+                        "caloriesFromFat": 0
                     }
                 },
                 {
@@ -1154,44 +1155,44 @@
                     "servingType": "drink",
                     "nutrition": {
                         "calories": 380,
-                        "caloriesFromFat": 0,
+                        "protein": 0,
+                        "carbs": 105,
                         "totalFat": 0,
                         "satFat": 0,
                         "transFat": 0,
                         "cholesterol": 0,
                         "sodium": 120,
-                        "carbs": 105,
                         "fiber": 0,
                         "sugars": 105,
-                        "protein": 0
+                        "caloriesFromFat": 0
                     }
                 }
             ],
-            "entreeGroup": "drinks",
-            "defaultOrder": 26,
-            "image": "/restaurants/chipotle/menu/drinks/fountain-drink.webp"
+            "defaultVariantId": "coca-cola-classic-fountain-22-fl-oz",
+            "defaultOrder": 26
         },
         {
             "id": "coca-cola-life-fountain",
             "name": "Coca Cola Life",
+            "image": "/restaurants/chipotle/menu/drinks/fountain-drink.webp",
             "categories": [
                 "Fountain Drinks"
             ],
             "servingType": "drink",
+            "entreeGroup": "drinks",
             "nutrition": {
                 "calories": 170,
-                "caloriesFromFat": 0,
+                "protein": 0,
+                "carbs": 44,
                 "totalFat": 0,
                 "satFat": 0,
                 "transFat": 0,
                 "cholesterol": 0,
                 "sodium": 70,
-                "carbs": 44,
                 "fiber": 0,
                 "sugars": 44,
-                "protein": 0
+                "caloriesFromFat": 0
             },
-            "defaultVariantId": "coca-cola-life-fountain-22-fl-oz",
             "variants": [
                 {
                     "id": "coca-cola-life-fountain-22-fl-oz",
@@ -1199,16 +1200,16 @@
                     "servingType": "drink",
                     "nutrition": {
                         "calories": 170,
-                        "caloriesFromFat": 0,
+                        "protein": 0,
+                        "carbs": 44,
                         "totalFat": 0,
                         "satFat": 0,
                         "transFat": 0,
                         "cholesterol": 0,
                         "sodium": 70,
-                        "carbs": 44,
                         "fiber": 0,
                         "sugars": 44,
-                        "protein": 0
+                        "caloriesFromFat": 0
                     }
                 },
                 {
@@ -1217,44 +1218,44 @@
                     "servingType": "drink",
                     "nutrition": {
                         "calories": 250,
-                        "caloriesFromFat": 0,
+                        "protein": 0,
+                        "carbs": 64,
                         "totalFat": 0,
                         "satFat": 0,
                         "transFat": 0,
                         "cholesterol": 0,
                         "sodium": 105,
-                        "carbs": 64,
                         "fiber": 0,
                         "sugars": 64,
-                        "protein": 0
+                        "caloriesFromFat": 0
                     }
                 }
             ],
-            "entreeGroup": "drinks",
-            "defaultOrder": 27,
-            "image": "/restaurants/chipotle/menu/drinks/fountain-drink.webp"
+            "defaultVariantId": "coca-cola-life-fountain-22-fl-oz",
+            "defaultOrder": 27
         },
         {
             "id": "coca-cola-zero-fountain",
             "name": "Coca-Cola Zero",
+            "image": "/restaurants/chipotle/menu/drinks/fountain-drink.webp",
             "categories": [
                 "Fountain Drinks"
             ],
             "servingType": "drink",
+            "entreeGroup": "drinks",
             "nutrition": {
                 "calories": 0,
-                "caloriesFromFat": 0,
+                "protein": 0,
+                "carbs": 0,
                 "totalFat": 0,
                 "satFat": 0,
                 "transFat": 0,
                 "cholesterol": 0,
                 "sodium": 75,
-                "carbs": 0,
                 "fiber": 0,
                 "sugars": 0,
-                "protein": 0
+                "caloriesFromFat": 0
             },
-            "defaultVariantId": "coca-cola-zero-fountain-22-fl-oz",
             "variants": [
                 {
                     "id": "coca-cola-zero-fountain-22-fl-oz",
@@ -1262,16 +1263,16 @@
                     "servingType": "drink",
                     "nutrition": {
                         "calories": 0,
-                        "caloriesFromFat": 0,
+                        "protein": 0,
+                        "carbs": 0,
                         "totalFat": 0,
                         "satFat": 0,
                         "transFat": 0,
                         "cholesterol": 0,
                         "sodium": 75,
-                        "carbs": 0,
                         "fiber": 0,
                         "sugars": 0,
-                        "protein": 0
+                        "caloriesFromFat": 0
                     }
                 },
                 {
@@ -1280,44 +1281,44 @@
                     "servingType": "drink",
                     "nutrition": {
                         "calories": 0,
-                        "caloriesFromFat": 0,
+                        "protein": 0,
+                        "carbs": 0,
                         "totalFat": 0,
                         "satFat": 0,
                         "transFat": 0,
                         "cholesterol": 0,
                         "sodium": 115,
-                        "carbs": 0,
                         "fiber": 0,
                         "sugars": 0,
-                        "protein": 0
+                        "caloriesFromFat": 0
                     }
                 }
             ],
-            "entreeGroup": "drinks",
-            "defaultOrder": 28,
-            "image": "/restaurants/chipotle/menu/drinks/fountain-drink.webp"
+            "defaultVariantId": "coca-cola-zero-fountain-22-fl-oz",
+            "defaultOrder": 28
         },
         {
             "id": "diet-coke-fountain",
             "name": "Diet Coke",
+            "image": "/restaurants/chipotle/menu/drinks/fountain-drink.webp",
             "categories": [
                 "Fountain Drinks"
             ],
             "servingType": "drink",
+            "entreeGroup": "drinks",
             "nutrition": {
                 "calories": 0,
-                "caloriesFromFat": 0,
+                "protein": 0,
+                "carbs": 0,
                 "totalFat": 0,
                 "satFat": 0,
                 "transFat": 0,
                 "cholesterol": 0,
                 "sodium": 75,
-                "carbs": 0,
                 "fiber": 0,
                 "sugars": 0,
-                "protein": 0
+                "caloriesFromFat": 0
             },
-            "defaultVariantId": "diet-coke-fountain-22-fl-oz",
             "variants": [
                 {
                     "id": "diet-coke-fountain-22-fl-oz",
@@ -1325,16 +1326,16 @@
                     "servingType": "drink",
                     "nutrition": {
                         "calories": 0,
-                        "caloriesFromFat": 0,
+                        "protein": 0,
+                        "carbs": 0,
                         "totalFat": 0,
                         "satFat": 0,
                         "transFat": 0,
                         "cholesterol": 0,
                         "sodium": 75,
-                        "carbs": 0,
                         "fiber": 0,
                         "sugars": 0,
-                        "protein": 0
+                        "caloriesFromFat": 0
                     }
                 },
                 {
@@ -1343,44 +1344,44 @@
                     "servingType": "drink",
                     "nutrition": {
                         "calories": 0,
-                        "caloriesFromFat": 0,
+                        "protein": 0,
+                        "carbs": 0,
                         "totalFat": 0,
                         "satFat": 0,
                         "transFat": 0,
                         "cholesterol": 0,
                         "sodium": 115,
-                        "carbs": 0,
                         "fiber": 0,
                         "sugars": 0,
-                        "protein": 0
+                        "caloriesFromFat": 0
                     }
                 }
             ],
-            "entreeGroup": "drinks",
-            "defaultOrder": 29,
-            "image": "/restaurants/chipotle/menu/drinks/fountain-drink.webp"
+            "defaultVariantId": "diet-coke-fountain-22-fl-oz",
+            "defaultOrder": 29
         },
         {
             "id": "diet-coke-caffeine-free-fountain",
             "name": "Diet Coke, Caffeine Free",
+            "image": "/restaurants/chipotle/menu/drinks/fountain-drink.webp",
             "categories": [
                 "Fountain Drinks"
             ],
             "servingType": "drink",
+            "entreeGroup": "drinks",
             "nutrition": {
                 "calories": 0,
-                "caloriesFromFat": 0,
+                "protein": 0,
+                "carbs": 0,
                 "totalFat": 0,
                 "satFat": 0,
                 "transFat": 0,
                 "cholesterol": 0,
                 "sodium": 90,
-                "carbs": 0,
                 "fiber": 0,
                 "sugars": 0,
-                "protein": 0
+                "caloriesFromFat": 0
             },
-            "defaultVariantId": "diet-coke-caffeine-free-fountain-22-fl-oz",
             "variants": [
                 {
                     "id": "diet-coke-caffeine-free-fountain-22-fl-oz",
@@ -1388,16 +1389,16 @@
                     "servingType": "drink",
                     "nutrition": {
                         "calories": 0,
-                        "caloriesFromFat": 0,
+                        "protein": 0,
+                        "carbs": 0,
                         "totalFat": 0,
                         "satFat": 0,
                         "transFat": 0,
                         "cholesterol": 0,
                         "sodium": 90,
-                        "carbs": 0,
                         "fiber": 0,
                         "sugars": 0,
-                        "protein": 0
+                        "caloriesFromFat": 0
                     }
                 },
                 {
@@ -1406,44 +1407,44 @@
                     "servingType": "drink",
                     "nutrition": {
                         "calories": 0,
-                        "caloriesFromFat": 0,
+                        "protein": 0,
+                        "carbs": 1,
                         "totalFat": 0,
                         "satFat": 0,
                         "transFat": 0,
                         "cholesterol": 0,
                         "sodium": 130,
-                        "carbs": 1,
                         "fiber": 0,
                         "sugars": 0,
-                        "protein": 0
+                        "caloriesFromFat": 0
                     }
                 }
             ],
-            "entreeGroup": "drinks",
-            "defaultOrder": 30,
-            "image": "/restaurants/chipotle/menu/drinks/fountain-drink.webp"
+            "defaultVariantId": "diet-coke-caffeine-free-fountain-22-fl-oz",
+            "defaultOrder": 30
         },
         {
             "id": "pibb-xtra-fountain",
             "name": "Pibb Xtra",
+            "image": "/restaurants/chipotle/menu/drinks/fountain-drink.webp",
             "categories": [
                 "Fountain Drinks"
             ],
             "servingType": "drink",
+            "entreeGroup": "drinks",
             "nutrition": {
                 "calories": 260,
-                "caloriesFromFat": 0,
+                "protein": 0,
+                "carbs": 70,
                 "totalFat": 0,
                 "satFat": 0,
                 "transFat": 0,
                 "cholesterol": 0,
                 "sodium": 75,
-                "carbs": 70,
                 "fiber": 0,
                 "sugars": 70,
-                "protein": 0
+                "caloriesFromFat": 0
             },
-            "defaultVariantId": "pibb-xtra-fountain-22-fl-oz",
             "variants": [
                 {
                     "id": "pibb-xtra-fountain-22-fl-oz",
@@ -1451,16 +1452,16 @@
                     "servingType": "drink",
                     "nutrition": {
                         "calories": 260,
-                        "caloriesFromFat": 0,
+                        "protein": 0,
+                        "carbs": 70,
                         "totalFat": 0,
                         "satFat": 0,
                         "transFat": 0,
                         "cholesterol": 0,
                         "sodium": 75,
-                        "carbs": 70,
                         "fiber": 0,
                         "sugars": 70,
-                        "protein": 0
+                        "caloriesFromFat": 0
                     }
                 },
                 {
@@ -1469,44 +1470,44 @@
                     "servingType": "drink",
                     "nutrition": {
                         "calories": 380,
-                        "caloriesFromFat": 0,
+                        "protein": 0,
+                        "carbs": 105,
                         "totalFat": 0,
                         "satFat": 0,
                         "transFat": 0,
                         "cholesterol": 0,
                         "sodium": 115,
-                        "carbs": 105,
                         "fiber": 0,
                         "sugars": 105,
-                        "protein": 0
+                        "caloriesFromFat": 0
                     }
                 }
             ],
-            "entreeGroup": "drinks",
-            "defaultOrder": 31,
-            "image": "/restaurants/chipotle/menu/drinks/fountain-drink.webp"
+            "defaultVariantId": "pibb-xtra-fountain-22-fl-oz",
+            "defaultOrder": 31
         },
         {
             "id": "sprite-fountain",
             "name": "Sprite",
+            "image": "/restaurants/chipotle/menu/drinks/fountain-drink.webp",
             "categories": [
                 "Fountain Drinks"
             ],
             "servingType": "drink",
+            "entreeGroup": "drinks",
             "nutrition": {
                 "calories": 260,
-                "caloriesFromFat": 0,
+                "protein": 0,
+                "carbs": 70,
                 "totalFat": 0,
                 "satFat": 0,
                 "transFat": 0,
                 "cholesterol": 0,
                 "sodium": 120,
-                "carbs": 70,
                 "fiber": 0,
                 "sugars": 70,
-                "protein": 0
+                "caloriesFromFat": 0
             },
-            "defaultVariantId": "sprite-fountain-22-fl-oz",
             "variants": [
                 {
                     "id": "sprite-fountain-22-fl-oz",
@@ -1514,16 +1515,16 @@
                     "servingType": "drink",
                     "nutrition": {
                         "calories": 260,
-                        "caloriesFromFat": 0,
+                        "protein": 0,
+                        "carbs": 70,
                         "totalFat": 0,
                         "satFat": 0,
                         "transFat": 0,
                         "cholesterol": 0,
                         "sodium": 120,
-                        "carbs": 70,
                         "fiber": 0,
                         "sugars": 70,
-                        "protein": 0
+                        "caloriesFromFat": 0
                     }
                 },
                 {
@@ -1532,44 +1533,44 @@
                     "servingType": "drink",
                     "nutrition": {
                         "calories": 380,
-                        "caloriesFromFat": 0,
+                        "protein": 0,
+                        "carbs": 105,
                         "totalFat": 0,
                         "satFat": 0,
                         "transFat": 0,
                         "cholesterol": 0,
                         "sodium": 180,
-                        "carbs": 105,
                         "fiber": 0,
                         "sugars": 105,
-                        "protein": 0
+                        "caloriesFromFat": 0
                     }
                 }
             ],
-            "entreeGroup": "drinks",
-            "defaultOrder": 32,
-            "image": "/restaurants/chipotle/menu/drinks/fountain-drink.webp"
+            "defaultVariantId": "sprite-fountain-22-fl-oz",
+            "defaultOrder": 32
         },
         {
             "id": "fanta-orange-fountain",
             "name": "Fanta Orange",
+            "image": "/restaurants/chipotle/menu/drinks/fountain-drink.webp",
             "categories": [
                 "Fountain Drinks"
             ],
             "servingType": "drink",
+            "entreeGroup": "drinks",
             "nutrition": {
                 "calories": 290,
-                "caloriesFromFat": 0,
+                "protein": 0,
+                "carbs": 80,
                 "totalFat": 0,
                 "satFat": 0,
                 "transFat": 0,
                 "cholesterol": 0,
                 "sodium": 80,
-                "carbs": 80,
                 "fiber": 0,
                 "sugars": 80,
-                "protein": 0
+                "caloriesFromFat": 0
             },
-            "defaultVariantId": "fanta-orange-fountain-22-fl-oz",
             "variants": [
                 {
                     "id": "fanta-orange-fountain-22-fl-oz",
@@ -1577,16 +1578,16 @@
                     "servingType": "drink",
                     "nutrition": {
                         "calories": 290,
-                        "caloriesFromFat": 0,
+                        "protein": 0,
+                        "carbs": 80,
                         "totalFat": 0,
                         "satFat": 0,
                         "transFat": 0,
                         "cholesterol": 0,
                         "sodium": 80,
-                        "carbs": 80,
                         "fiber": 0,
                         "sugars": 80,
-                        "protein": 0
+                        "caloriesFromFat": 0
                     }
                 },
                 {
@@ -1595,44 +1596,44 @@
                     "servingType": "drink",
                     "nutrition": {
                         "calories": 430,
-                        "caloriesFromFat": 0,
+                        "protein": 0,
+                        "carbs": 120,
                         "totalFat": 0,
                         "satFat": 0,
                         "transFat": 0,
                         "cholesterol": 0,
                         "sodium": 140,
-                        "carbs": 120,
                         "fiber": 0,
                         "sugars": 120,
-                        "protein": 0
+                        "caloriesFromFat": 0
                     }
                 }
             ],
-            "entreeGroup": "drinks",
-            "defaultOrder": 33,
-            "image": "/restaurants/chipotle/menu/drinks/fountain-drink.webp"
+            "defaultVariantId": "fanta-orange-fountain-22-fl-oz",
+            "defaultOrder": 33
         },
         {
             "id": "minute-maid-lemonade-fountain",
             "name": "Minute Maid Lemonade",
+            "image": "/restaurants/chipotle/menu/drinks/fountain-drink.webp",
             "categories": [
                 "Fountain Drinks"
             ],
             "servingType": "drink",
+            "entreeGroup": "drinks",
             "nutrition": {
                 "calories": 280,
-                "caloriesFromFat": 0,
+                "protein": 0,
+                "carbs": 75,
                 "totalFat": 0,
                 "satFat": 0,
                 "transFat": 0,
                 "cholesterol": 0,
                 "sodium": 95,
-                "carbs": 75,
                 "fiber": 0,
                 "sugars": 75,
-                "protein": 0
+                "caloriesFromFat": 0
             },
-            "defaultVariantId": "minute-maid-lemonade-fountain-22-fl-oz",
             "variants": [
                 {
                     "id": "minute-maid-lemonade-fountain-22-fl-oz",
@@ -1640,16 +1641,16 @@
                     "servingType": "drink",
                     "nutrition": {
                         "calories": 280,
-                        "caloriesFromFat": 0,
+                        "protein": 0,
+                        "carbs": 75,
                         "totalFat": 0,
                         "satFat": 0,
                         "transFat": 0,
                         "cholesterol": 0,
                         "sodium": 95,
-                        "carbs": 75,
                         "fiber": 0,
                         "sugars": 75,
-                        "protein": 0
+                        "caloriesFromFat": 0
                     }
                 },
                 {
@@ -1658,44 +1659,44 @@
                     "servingType": "drink",
                     "nutrition": {
                         "calories": 400,
-                        "caloriesFromFat": 0,
+                        "protein": 0,
+                        "carbs": 110,
                         "totalFat": 0,
                         "satFat": 0,
                         "transFat": 0,
                         "cholesterol": 0,
                         "sodium": 140,
-                        "carbs": 110,
                         "fiber": 0,
                         "sugars": 110,
-                        "protein": 0
+                        "caloriesFromFat": 0
                     }
                 }
             ],
-            "entreeGroup": "drinks",
-            "defaultOrder": 34,
-            "image": "/restaurants/chipotle/menu/drinks/fountain-drink.webp"
+            "defaultVariantId": "minute-maid-lemonade-fountain-22-fl-oz",
+            "defaultOrder": 34
         },
         {
             "id": "powerade-mountain-berry-blast-fountain",
             "name": "Powerade Mountain Berry Blast",
+            "image": "/restaurants/chipotle/menu/drinks/fountain-drink.webp",
             "categories": [
                 "Fountain Drinks"
             ],
             "servingType": "drink",
+            "entreeGroup": "drinks",
             "nutrition": {
                 "calories": 280,
-                "caloriesFromFat": 0,
+                "protein": 0,
+                "carbs": 75,
                 "totalFat": 0,
                 "satFat": 0,
                 "transFat": 0,
                 "cholesterol": 0,
                 "sodium": 95,
-                "carbs": 75,
                 "fiber": 0,
                 "sugars": 75,
-                "protein": 0
+                "caloriesFromFat": 0
             },
-            "defaultVariantId": "powerade-mountain-berry-blast-fountain-22-fl-oz",
             "variants": [
                 {
                     "id": "powerade-mountain-berry-blast-fountain-22-fl-oz",
@@ -1703,16 +1704,16 @@
                     "servingType": "drink",
                     "nutrition": {
                         "calories": 280,
-                        "caloriesFromFat": 0,
+                        "protein": 0,
+                        "carbs": 75,
                         "totalFat": 0,
                         "satFat": 0,
                         "transFat": 0,
                         "cholesterol": 0,
                         "sodium": 95,
-                        "carbs": 75,
                         "fiber": 0,
                         "sugars": 75,
-                        "protein": 0
+                        "caloriesFromFat": 0
                     }
                 },
                 {
@@ -1721,44 +1722,44 @@
                     "servingType": "drink",
                     "nutrition": {
                         "calories": 400,
-                        "caloriesFromFat": 0,
+                        "protein": 0,
+                        "carbs": 110,
                         "totalFat": 0,
                         "satFat": 0,
                         "transFat": 0,
                         "cholesterol": 0,
                         "sodium": 140,
-                        "carbs": 110,
                         "fiber": 0,
                         "sugars": 110,
-                        "protein": 0
+                        "caloriesFromFat": 0
                     }
                 }
             ],
-            "entreeGroup": "drinks",
-            "defaultOrder": 35,
-            "image": "/restaurants/chipotle/menu/drinks/fountain-drink.webp"
+            "defaultVariantId": "powerade-mountain-berry-blast-fountain-22-fl-oz",
+            "defaultOrder": 35
         },
         {
             "id": "mello-yello-fountain",
             "name": "Mello Yello",
+            "image": "/restaurants/chipotle/menu/drinks/fountain-drink.webp",
             "categories": [
                 "Fountain Drinks"
             ],
             "servingType": "drink",
+            "entreeGroup": "drinks",
             "nutrition": {
                 "calories": 290,
-                "caloriesFromFat": 0,
+                "protein": 0,
+                "carbs": 80,
                 "totalFat": 0,
                 "satFat": 0,
                 "transFat": 0,
                 "cholesterol": 0,
                 "sodium": 100,
-                "carbs": 80,
                 "fiber": 0,
                 "sugars": 100,
-                "protein": 0
+                "caloriesFromFat": 0
             },
-            "defaultVariantId": "mello-yello-fountain-22-fl-oz",
             "variants": [
                 {
                     "id": "mello-yello-fountain-22-fl-oz",
@@ -1766,16 +1767,16 @@
                     "servingType": "drink",
                     "nutrition": {
                         "calories": 290,
-                        "caloriesFromFat": 0,
+                        "protein": 0,
+                        "carbs": 80,
                         "totalFat": 0,
                         "satFat": 0,
                         "transFat": 0,
                         "cholesterol": 0,
                         "sodium": 100,
-                        "carbs": 80,
                         "fiber": 0,
                         "sugars": 100,
-                        "protein": 0
+                        "caloriesFromFat": 0
                     }
                 },
                 {
@@ -1784,44 +1785,44 @@
                     "servingType": "drink",
                     "nutrition": {
                         "calories": 420,
-                        "caloriesFromFat": 0,
+                        "protein": 0,
+                        "carbs": 116,
                         "totalFat": 0,
                         "satFat": 0,
                         "transFat": 0,
                         "cholesterol": 0,
                         "sodium": 140,
-                        "carbs": 116,
                         "fiber": 0,
                         "sugars": 140,
-                        "protein": 0
+                        "caloriesFromFat": 0
                     }
                 }
             ],
-            "entreeGroup": "drinks",
-            "defaultOrder": 36,
-            "image": "/restaurants/chipotle/menu/drinks/fountain-drink.webp"
+            "defaultVariantId": "mello-yello-fountain-22-fl-oz",
+            "defaultOrder": 36
         },
         {
             "id": "lemonade-blue-sky-fountain",
             "name": "Lemonade - Blue Sky",
+            "image": "/restaurants/chipotle/menu/drinks/fountain-drink.webp",
             "categories": [
                 "Fountain Drinks"
             ],
             "servingType": "drink",
+            "entreeGroup": "drinks",
             "nutrition": {
                 "calories": 300,
-                "caloriesFromFat": 0,
+                "protein": 0,
+                "carbs": 78,
                 "totalFat": 0,
                 "satFat": 0,
                 "transFat": 0,
                 "cholesterol": 0,
                 "sodium": 95,
-                "carbs": 78,
                 "fiber": 0,
                 "sugars": 74,
-                "protein": 0
+                "caloriesFromFat": 0
             },
-            "defaultVariantId": "lemonade-blue-sky-fountain-22-fl-oz",
             "variants": [
                 {
                     "id": "lemonade-blue-sky-fountain-22-fl-oz",
@@ -1829,16 +1830,16 @@
                     "servingType": "drink",
                     "nutrition": {
                         "calories": 300,
-                        "caloriesFromFat": 0,
+                        "protein": 0,
+                        "carbs": 78,
                         "totalFat": 0,
                         "satFat": 0,
                         "transFat": 0,
                         "cholesterol": 0,
                         "sodium": 95,
-                        "carbs": 78,
                         "fiber": 0,
                         "sugars": 74,
-                        "protein": 0
+                        "caloriesFromFat": 0
                     }
                 },
                 {
@@ -1847,44 +1848,44 @@
                     "servingType": "drink",
                     "nutrition": {
                         "calories": 440,
-                        "caloriesFromFat": 0,
+                        "protein": 0,
+                        "carbs": 113,
                         "totalFat": 0,
                         "satFat": 0,
                         "transFat": 0,
                         "cholesterol": 0,
                         "sodium": 135,
-                        "carbs": 113,
                         "fiber": 0,
                         "sugars": 108,
-                        "protein": 0
+                        "caloriesFromFat": 0
                     }
                 }
             ],
-            "entreeGroup": "drinks",
-            "defaultOrder": 37,
-            "image": "/restaurants/chipotle/menu/drinks/fountain-drink.webp"
+            "defaultVariantId": "lemonade-blue-sky-fountain-22-fl-oz",
+            "defaultOrder": 37
         },
         {
             "id": "mango-orange-blue-sky-fountain",
             "name": "Mango Orange - Blue Sky",
+            "image": "/restaurants/chipotle/menu/drinks/fountain-drink.webp",
             "categories": [
                 "Fountain Drinks"
             ],
             "servingType": "drink",
+            "entreeGroup": "drinks",
             "nutrition": {
                 "calories": 300,
-                "caloriesFromFat": 0,
+                "protein": 0,
+                "carbs": 75,
                 "totalFat": 0,
                 "satFat": 0,
                 "transFat": 0,
                 "cholesterol": 0,
                 "sodium": 80,
-                "carbs": 75,
                 "fiber": 0,
                 "sugars": 74,
-                "protein": 0
+                "caloriesFromFat": 0
             },
-            "defaultVariantId": "mango-orange-blue-sky-fountain-22-fl-oz",
             "variants": [
                 {
                     "id": "mango-orange-blue-sky-fountain-22-fl-oz",
@@ -1892,16 +1893,16 @@
                     "servingType": "drink",
                     "nutrition": {
                         "calories": 300,
-                        "caloriesFromFat": 0,
+                        "protein": 0,
+                        "carbs": 75,
                         "totalFat": 0,
                         "satFat": 0,
                         "transFat": 0,
                         "cholesterol": 0,
                         "sodium": 80,
-                        "carbs": 75,
                         "fiber": 0,
                         "sugars": 74,
-                        "protein": 0
+                        "caloriesFromFat": 0
                     }
                 },
                 {
@@ -1910,44 +1911,44 @@
                     "servingType": "drink",
                     "nutrition": {
                         "calories": 430,
-                        "caloriesFromFat": 0,
+                        "protein": 0,
+                        "carbs": 109,
                         "totalFat": 0,
                         "satFat": 0,
                         "transFat": 0,
                         "cholesterol": 0,
                         "sodium": 120,
-                        "carbs": 109,
                         "fiber": 0,
                         "sugars": 108,
-                        "protein": 0
+                        "caloriesFromFat": 0
                     }
                 }
             ],
-            "entreeGroup": "drinks",
-            "defaultOrder": 38,
-            "image": "/restaurants/chipotle/menu/drinks/fountain-drink.webp"
+            "defaultVariantId": "mango-orange-blue-sky-fountain-22-fl-oz",
+            "defaultOrder": 38
         },
         {
             "id": "maine-root-root-beer-fountain",
             "name": "Maine Root Root Beer",
+            "image": "/restaurants/chipotle/menu/drinks/fountain-drink.webp",
             "categories": [
                 "Fountain Drinks"
             ],
             "servingType": "drink",
+            "entreeGroup": "drinks",
             "nutrition": {
                 "calories": 170,
-                "caloriesFromFat": 0,
+                "protein": 0,
+                "carbs": 62,
                 "totalFat": 0,
                 "satFat": 0,
                 "transFat": 0,
                 "cholesterol": 0,
                 "sodium": 45,
-                "carbs": 62,
                 "fiber": 0,
                 "sugars": 62,
-                "protein": 0
+                "caloriesFromFat": 0
             },
-            "defaultVariantId": "maine-root-root-beer-fountain-22-fl-oz",
             "variants": [
                 {
                     "id": "maine-root-root-beer-fountain-22-fl-oz",
@@ -1955,16 +1956,16 @@
                     "servingType": "drink",
                     "nutrition": {
                         "calories": 170,
-                        "caloriesFromFat": 0,
+                        "protein": 0,
+                        "carbs": 62,
                         "totalFat": 0,
                         "satFat": 0,
                         "transFat": 0,
                         "cholesterol": 0,
                         "sodium": 45,
-                        "carbs": 62,
                         "fiber": 0,
                         "sugars": 62,
-                        "protein": 0
+                        "caloriesFromFat": 0
                     }
                 },
                 {
@@ -1973,44 +1974,44 @@
                     "servingType": "drink",
                     "nutrition": {
                         "calories": 240,
-                        "caloriesFromFat": 0,
+                        "protein": 0,
+                        "carbs": 90,
                         "totalFat": 0,
                         "satFat": 0,
                         "transFat": 0,
                         "cholesterol": 0,
                         "sodium": 65,
-                        "carbs": 90,
                         "fiber": 0,
                         "sugars": 90,
-                        "protein": 0
+                        "caloriesFromFat": 0
                     }
                 }
             ],
-            "entreeGroup": "drinks",
-            "defaultOrder": 39,
-            "image": "/restaurants/chipotle/menu/drinks/fountain-drink.webp"
+            "defaultVariantId": "maine-root-root-beer-fountain-22-fl-oz",
+            "defaultOrder": 39
         },
         {
             "id": "chipotle-iced-tea-fountain",
             "name": "Chipotle Iced Tea",
+            "image": "/restaurants/chipotle/menu/drinks/fountain-drink.webp",
             "categories": [
                 "Fountain Drinks"
             ],
             "servingType": "drink",
+            "entreeGroup": "drinks",
             "nutrition": {
                 "calories": 10,
-                "caloriesFromFat": 0,
+                "protein": 0,
+                "carbs": 3,
                 "totalFat": 0,
                 "satFat": 0,
                 "transFat": 0,
                 "cholesterol": 0,
                 "sodium": 0,
-                "carbs": 3,
                 "fiber": 0,
                 "sugars": 0,
-                "protein": 0
+                "caloriesFromFat": 0
             },
-            "defaultVariantId": "chipotle-iced-tea-fountain-22-fl-oz",
             "variants": [
                 {
                     "id": "chipotle-iced-tea-fountain-22-fl-oz",
@@ -2018,16 +2019,16 @@
                     "servingType": "drink",
                     "nutrition": {
                         "calories": 10,
-                        "caloriesFromFat": 0,
+                        "protein": 0,
+                        "carbs": 3,
                         "totalFat": 0,
                         "satFat": 0,
                         "transFat": 0,
                         "cholesterol": 0,
                         "sodium": 0,
-                        "carbs": 3,
                         "fiber": 0,
                         "sugars": 0,
-                        "protein": 0
+                        "caloriesFromFat": 0
                     }
                 },
                 {
@@ -2036,44 +2037,44 @@
                     "servingType": "drink",
                     "nutrition": {
                         "calories": 15,
-                        "caloriesFromFat": 0,
+                        "protein": 0,
+                        "carbs": 4,
                         "totalFat": 0,
                         "satFat": 0,
                         "transFat": 0,
                         "cholesterol": 0,
                         "sodium": 0,
-                        "carbs": 4,
                         "fiber": 0,
                         "sugars": 0,
-                        "protein": 0
+                        "caloriesFromFat": 0
                     }
                 }
             ],
-            "entreeGroup": "drinks",
-            "defaultOrder": 40,
-            "image": "/restaurants/chipotle/menu/drinks/fountain-drink.webp"
+            "defaultVariantId": "chipotle-iced-tea-fountain-22-fl-oz",
+            "defaultOrder": 40
         },
         {
             "id": "chipotle-sweet-iced-tea-fountain",
             "name": "Chipotle Sweet Iced Tea",
+            "image": "/restaurants/chipotle/menu/drinks/fountain-drink.webp",
             "categories": [
                 "Fountain Drinks"
             ],
             "servingType": "drink",
+            "entreeGroup": "drinks",
             "nutrition": {
                 "calories": 150,
-                "caloriesFromFat": 0,
+                "protein": 0,
+                "carbs": 45,
                 "totalFat": 0,
                 "satFat": 0,
                 "transFat": 0,
                 "cholesterol": 0,
                 "sodium": 0,
-                "carbs": 45,
                 "fiber": 0,
                 "sugars": 45,
-                "protein": 0
+                "caloriesFromFat": 0
             },
-            "defaultVariantId": "chipotle-sweet-iced-tea-fountain-22-fl-oz",
             "variants": [
                 {
                     "id": "chipotle-sweet-iced-tea-fountain-22-fl-oz",
@@ -2081,16 +2082,16 @@
                     "servingType": "drink",
                     "nutrition": {
                         "calories": 150,
-                        "caloriesFromFat": 0,
+                        "protein": 0,
+                        "carbs": 45,
                         "totalFat": 0,
                         "satFat": 0,
                         "transFat": 0,
                         "cholesterol": 0,
                         "sodium": 0,
-                        "carbs": 45,
                         "fiber": 0,
                         "sugars": 45,
-                        "protein": 0
+                        "caloriesFromFat": 0
                     }
                 },
                 {
@@ -2099,22 +2100,21 @@
                     "servingType": "drink",
                     "nutrition": {
                         "calories": 220,
-                        "caloriesFromFat": 0,
+                        "protein": 0,
+                        "carbs": 65,
                         "totalFat": 0,
                         "satFat": 0,
                         "transFat": 0,
                         "cholesterol": 0,
                         "sodium": 0,
-                        "carbs": 65,
                         "fiber": 0,
                         "sugars": 65,
-                        "protein": 0
+                        "caloriesFromFat": 0
                     }
                 }
             ],
-            "entreeGroup": "drinks",
-            "defaultOrder": 41,
-            "image": "/restaurants/chipotle/menu/drinks/fountain-drink.webp"
+            "defaultVariantId": "chipotle-sweet-iced-tea-fountain-22-fl-oz",
+            "defaultOrder": 41
         },
         {
             "id": "organic-watermelon-limeade",
@@ -2124,19 +2124,19 @@
                 "Tractor Beverages"
             ],
             "servingType": "drink",
+            "entreeGroup": "drinks",
             "nutrition": {
                 "calories": 230,
+                "protein": 0,
+                "carbs": 56,
                 "totalFat": 0,
                 "satFat": 0,
                 "transFat": 0,
                 "cholesterol": 0,
                 "sodium": 5,
-                "carbs": 56,
                 "fiber": 0,
-                "sugars": 50,
-                "protein": 0
+                "sugars": 50
             },
-            "defaultVariantId": "organic-watermelon-limeade-22-fl-oz",
             "variants": [
                 {
                     "id": "organic-watermelon-limeade-22-fl-oz",
@@ -2144,15 +2144,15 @@
                     "servingType": "drink",
                     "nutrition": {
                         "calories": 230,
+                        "protein": 0,
+                        "carbs": 56,
                         "totalFat": 0,
                         "satFat": 0,
                         "transFat": 0,
                         "cholesterol": 0,
                         "sodium": 5,
-                        "carbs": 56,
                         "fiber": 0,
-                        "sugars": 50,
-                        "protein": 0
+                        "sugars": 50
                     }
                 },
                 {
@@ -2161,19 +2161,19 @@
                     "servingType": "drink",
                     "nutrition": {
                         "calories": 330,
+                        "protein": 0,
+                        "carbs": 82,
                         "totalFat": 0,
                         "satFat": 0,
                         "transFat": 0,
                         "cholesterol": 0,
                         "sodium": 10,
-                        "carbs": 82,
                         "fiber": 0,
-                        "sugars": 72,
-                        "protein": 0
+                        "sugars": 72
                     }
                 }
             ],
-            "entreeGroup": "drinks",
+            "defaultVariantId": "organic-watermelon-limeade-22-fl-oz",
             "defaultOrder": 42
         },
         {
@@ -2184,19 +2184,19 @@
                 "Tractor Beverages"
             ],
             "servingType": "drink",
+            "entreeGroup": "drinks",
             "nutrition": {
                 "calories": 170,
+                "protein": 0,
+                "carbs": 43,
                 "totalFat": 0,
                 "satFat": 0,
                 "transFat": 0,
                 "cholesterol": 0,
                 "sodium": 10,
-                "carbs": 43,
                 "fiber": 0,
-                "sugars": 37,
-                "protein": 0
+                "sugars": 37
             },
-            "defaultVariantId": "organic-lemonade-22-fl-oz",
             "variants": [
                 {
                     "id": "organic-lemonade-22-fl-oz",
@@ -2204,15 +2204,15 @@
                     "servingType": "drink",
                     "nutrition": {
                         "calories": 170,
+                        "protein": 0,
+                        "carbs": 43,
                         "totalFat": 0,
                         "satFat": 0,
                         "transFat": 0,
                         "cholesterol": 0,
                         "sodium": 10,
-                        "carbs": 43,
                         "fiber": 0,
-                        "sugars": 37,
-                        "protein": 0
+                        "sugars": 37
                     }
                 },
                 {
@@ -2221,19 +2221,19 @@
                     "servingType": "drink",
                     "nutrition": {
                         "calories": 250,
+                        "protein": 0,
+                        "carbs": 62,
                         "totalFat": 0,
                         "satFat": 0,
                         "transFat": 0,
                         "cholesterol": 0,
                         "sodium": 15,
-                        "carbs": 62,
                         "fiber": 0,
-                        "sugars": 53,
-                        "protein": 0
+                        "sugars": 53
                     }
                 }
             ],
-            "entreeGroup": "drinks",
+            "defaultVariantId": "organic-lemonade-22-fl-oz",
             "defaultOrder": 43
         },
         {
@@ -2244,19 +2244,19 @@
                 "Tractor Beverages"
             ],
             "servingType": "drink",
+            "entreeGroup": "drinks",
             "nutrition": {
                 "calories": 190,
+                "protein": 0,
+                "carbs": 47,
                 "totalFat": 0,
                 "satFat": 0,
                 "transFat": 0,
                 "cholesterol": 0,
                 "sodium": 0,
-                "carbs": 47,
                 "fiber": 0,
-                "sugars": 47,
-                "protein": 0
+                "sugars": 47
             },
-            "defaultVariantId": "organic-mandarin-agua-fresca-22-fl-oz",
             "variants": [
                 {
                     "id": "organic-mandarin-agua-fresca-22-fl-oz",
@@ -2264,15 +2264,15 @@
                     "servingType": "drink",
                     "nutrition": {
                         "calories": 190,
+                        "protein": 0,
+                        "carbs": 47,
                         "totalFat": 0,
                         "satFat": 0,
                         "transFat": 0,
                         "cholesterol": 0,
                         "sodium": 0,
-                        "carbs": 47,
                         "fiber": 0,
-                        "sugars": 47,
-                        "protein": 0
+                        "sugars": 47
                     }
                 },
                 {
@@ -2281,19 +2281,19 @@
                     "servingType": "drink",
                     "nutrition": {
                         "calories": 280,
+                        "protein": 0,
+                        "carbs": 69,
                         "totalFat": 0,
                         "satFat": 0,
                         "transFat": 0,
                         "cholesterol": 0,
                         "sodium": 5,
-                        "carbs": 69,
                         "fiber": 0,
-                        "sugars": 69,
-                        "protein": 0
+                        "sugars": 69
                     }
                 }
             ],
-            "entreeGroup": "drinks",
+            "defaultVariantId": "organic-mandarin-agua-fresca-22-fl-oz",
             "defaultOrder": 44
         },
         {
@@ -2304,19 +2304,19 @@
                 "Tractor Beverages"
             ],
             "servingType": "drink",
+            "entreeGroup": "drinks",
             "nutrition": {
                 "calories": 200,
+                "protein": 0,
+                "carbs": 50,
                 "totalFat": 0,
                 "satFat": 0,
                 "transFat": 0,
                 "cholesterol": 0,
                 "sodium": 10,
-                "carbs": 50,
                 "fiber": 0,
-                "sugars": 49,
-                "protein": 0
+                "sugars": 49
             },
-            "defaultVariantId": "organic-berry-agua-fresca-22-fl-oz",
             "variants": [
                 {
                     "id": "organic-berry-agua-fresca-22-fl-oz",
@@ -2324,15 +2324,15 @@
                     "servingType": "drink",
                     "nutrition": {
                         "calories": 200,
+                        "protein": 0,
+                        "carbs": 50,
                         "totalFat": 0,
                         "satFat": 0,
                         "transFat": 0,
                         "cholesterol": 0,
                         "sodium": 10,
-                        "carbs": 50,
                         "fiber": 0,
-                        "sugars": 49,
-                        "protein": 0
+                        "sugars": 49
                     }
                 },
                 {
@@ -2341,95 +2341,95 @@
                     "servingType": "drink",
                     "nutrition": {
                         "calories": 290,
+                        "protein": 0,
+                        "carbs": 72,
                         "totalFat": 0,
                         "satFat": 0,
                         "transFat": 0,
                         "cholesterol": 0,
                         "sodium": 15,
-                        "carbs": 72,
                         "fiber": 0,
-                        "sugars": 72,
-                        "protein": 0
+                        "sugars": 72
                     }
                 }
             ],
-            "entreeGroup": "drinks",
+            "defaultVariantId": "organic-berry-agua-fresca-22-fl-oz",
             "defaultOrder": 45
         },
         {
             "id": "organic-milk-8-oz",
             "name": "Organic Milk 8 oz",
+            "image": "/restaurants/chipotle/menu/drinks/organic-milk.png",
             "categories": [
                 "Kids Drinks"
             ],
             "servingType": "drink",
-            "image": "/restaurants/chipotle/menu/drinks/organic-milk.png",
+            "entreeGroup": "drinks",
             "nutrition": {
                 "calories": 106,
+                "protein": 8,
+                "carbs": 12,
                 "totalFat": 2.5,
                 "satFat": 1.5,
                 "transFat": 0,
                 "cholesterol": 15,
                 "sodium": 125,
-                "carbs": 12,
                 "fiber": 0,
                 "sugars": 12,
-                "addedSugars": 0,
-                "protein": 8
+                "addedSugars": 0
             },
-            "source": "third party",
-            "entreeGroup": "drinks",
-            "defaultOrder": 46
+            "defaultOrder": 46,
+            "source": "third party"
         },
         {
             "id": "organic-chocolate-milk-8-oz",
             "name": "Organic Chocolate Milk 8 oz",
+            "image": "/restaurants/chipotle/menu/drinks/organic-chocolate-milk.png",
             "categories": [
                 "Kids Drinks"
             ],
             "servingType": "drink",
-            "image": "/restaurants/chipotle/menu/drinks/organic-chocolate-milk.png",
+            "entreeGroup": "drinks",
             "nutrition": {
                 "calories": 147,
+                "protein": 8,
+                "carbs": 22,
                 "totalFat": 2.5,
                 "satFat": 1.5,
                 "transFat": 0,
                 "cholesterol": 10,
                 "sodium": 200,
-                "carbs": 22,
                 "fiber": 0,
                 "sugars": 21,
-                "addedSugars": 10,
-                "protein": 8
+                "addedSugars": 10
             },
-            "source": "third party",
-            "entreeGroup": "drinks",
-            "defaultOrder": 47
+            "defaultOrder": 47,
+            "source": "third party"
         },
         {
             "id": "organic-apple-juice-6-75-oz",
             "name": "Organic Apple Juice 6.75 oz",
+            "image": "/restaurants/chipotle/menu/drinks/organic-apple-juice.png",
             "categories": [
                 "Kids Drinks"
             ],
             "servingType": "drink",
-            "image": "/restaurants/chipotle/menu/drinks/organic-apple-juice.png",
+            "entreeGroup": "drinks",
             "nutrition": {
                 "calories": 100,
+                "protein": 0,
+                "carbs": 24,
                 "totalFat": 0,
                 "satFat": 0,
                 "transFat": 0,
                 "cholesterol": 0,
                 "sodium": 5,
-                "carbs": 24,
                 "fiber": 0,
                 "sugars": 23,
-                "addedSugars": 0,
-                "protein": 0
+                "addedSugars": 0
             },
-            "source": "third party",
-            "entreeGroup": "drinks",
-            "defaultOrder": 48
+            "defaultOrder": 48,
+            "source": "third party"
         }
     ],
     "ingredients": [
@@ -2437,529 +2437,529 @@
             "id": "tortilla",
             "name": "Tortilla",
             "image": "/restaurants/chipotle/menu/sides/tortilla.png",
+            "categories": [
+                "Side"
+            ],
             "nutrition": {
                 "calories": 320,
+                "protein": 8,
+                "carbs": 50,
                 "totalFat": 9,
                 "satFat": 0.5,
                 "transFat": 0,
                 "cholesterol": 0,
                 "sodium": 600,
-                "carbs": 50,
                 "fiber": 3,
-                "sugars": 0,
-                "protein": 8
+                "sugars": 0
             },
-            "defaultOrder": 0,
-            "categories": [
-                "Side"
-            ],
-            "maxQuantity": 10
+            "maxQuantity": 10,
+            "defaultOrder": 0
         },
         {
             "id": "crispy-corn-tortilla",
             "name": "Crispy Corn Tortilla",
             "image": "/restaurants/chipotle/menu/sides/crispy-corn-tortilla.png",
+            "categories": [
+                "Side"
+            ],
             "nutrition": {
                 "calories": 70,
+                "protein": 1,
+                "carbs": 10,
                 "totalFat": 3,
                 "satFat": 0,
                 "transFat": 0,
                 "cholesterol": 0,
                 "sodium": 0,
-                "carbs": 10,
                 "fiber": 1,
-                "sugars": 0,
-                "protein": 1
+                "sugars": 0
             },
-            "defaultOrder": 1,
-            "categories": [
-                "Side"
-            ],
-            "maxQuantity": 10
+            "maxQuantity": 10,
+            "defaultOrder": 1
         },
         {
             "id": "soft-flour-tortilla",
             "name": "Soft Flour Tortilla",
             "image": "/restaurants/chipotle/menu/sides/soft-flour-tortilla.png",
+            "categories": [
+                "Side"
+            ],
             "nutrition": {
                 "calories": 80,
+                "protein": 2,
+                "carbs": 13,
                 "totalFat": 2.5,
                 "satFat": 0,
                 "transFat": 0,
                 "cholesterol": 0,
                 "sodium": 160,
-                "carbs": 13,
                 "fiber": 0,
-                "sugars": 0,
-                "protein": 2
+                "sugars": 0
             },
-            "defaultOrder": 2,
-            "categories": [
-                "Side"
-            ],
-            "maxQuantity": 10
+            "maxQuantity": 10,
+            "defaultOrder": 2
         },
         {
             "id": "romaine-lettuce",
             "name": "Romaine Lettuce",
-            "defaultOrder": 10,
             "image": "/restaurants/chipotle/ingredients/toppings/romaine-lettuce.png",
+            "categories": [
+                "Toppings"
+            ],
             "nutrition": {
                 "calories": 5,
+                "protein": 0,
+                "carbs": 1,
                 "totalFat": 0,
                 "satFat": 0,
                 "transFat": 0,
                 "cholesterol": 0,
                 "sodium": 0,
-                "carbs": 1,
                 "fiber": 1,
-                "sugars": 0,
-                "protein": 0
+                "sugars": 0
             },
-            "categories": [
-                "Toppings"
-            ],
-            "maxQuantity": 10
+            "maxQuantity": 10,
+            "defaultOrder": 10
         },
         {
             "id": "cheese",
             "name": "Cheese",
-            "defaultOrder": 9,
             "image": "/restaurants/chipotle/ingredients/toppings/cheese.png",
+            "categories": [
+                "Toppings"
+            ],
             "nutrition": {
                 "calories": 110,
+                "protein": 6,
+                "carbs": 1,
                 "totalFat": 8,
                 "satFat": 5,
                 "transFat": 0,
                 "cholesterol": 30,
                 "sodium": 190,
-                "carbs": 1,
                 "fiber": 0,
-                "sugars": 0,
-                "protein": 6
+                "sugars": 0
             },
-            "categories": [
-                "Toppings"
-            ],
-            "maxQuantity": 10
+            "maxQuantity": 10,
+            "defaultOrder": 9
         },
         {
             "id": "guacamole",
             "name": "Guacamole",
-            "defaultOrder": 2,
             "image": "/restaurants/chipotle/ingredients/toppings/gaucamole.png",
+            "categories": [
+                "Toppings"
+            ],
             "nutrition": {
                 "calories": 230,
+                "protein": 2,
+                "carbs": 8,
                 "totalFat": 22,
                 "satFat": 3.5,
                 "transFat": 0,
                 "cholesterol": 0,
                 "sodium": 370,
-                "carbs": 8,
                 "fiber": 6,
-                "sugars": 1,
-                "protein": 2
+                "sugars": 1
             },
-            "categories": [
-                "Toppings"
-            ],
-            "maxQuantity": 10
+            "maxQuantity": 10,
+            "defaultOrder": 2
         },
         {
             "id": "cilantro-lime-sauce",
             "name": "Cilantro Lime Sauce",
-            "description": "Served on the Side",
-            "defaultOrder": 1,
             "image": "/restaurants/chipotle/ingredients/toppings/cilantro-lime-sauce.png",
+            "categories": [
+                "Toppings"
+            ],
             "nutrition": {
                 "calories": 80,
                 "protein": 2,
                 "carbs": 3,
                 "totalFat": 6
             },
-            "categories": [
-                "Toppings"
-            ],
-            "maxQuantity": 10
+            "maxQuantity": 10,
+            "defaultOrder": 1,
+            "description": "Served on the Side"
         },
         {
             "id": "fresh-tomato-salsa",
             "name": "Fresh Tomato Salsa",
-            "description": "Mild",
-            "defaultOrder": 3,
             "image": "/restaurants/chipotle/ingredients/toppings/tomato-salsa.png",
+            "categories": [
+                "Toppings"
+            ],
             "nutrition": {
                 "calories": 25,
+                "protein": 0,
+                "carbs": 4,
                 "totalFat": 0,
                 "satFat": 0,
                 "transFat": 0,
                 "cholesterol": 0,
                 "sodium": 550,
-                "carbs": 4,
                 "fiber": 1,
-                "sugars": 1,
-                "protein": 0
+                "sugars": 1
             },
-            "categories": [
-                "Toppings"
-            ],
-            "maxQuantity": 10
+            "maxQuantity": 10,
+            "defaultOrder": 3,
+            "description": "Mild"
         },
         {
             "id": "roasted-chili-corn-salsa",
             "name": "Roasted Chili-Corn Salsa",
-            "description": "Medium",
-            "defaultOrder": 4,
             "image": "/restaurants/chipotle/ingredients/toppings/chili-corn-salsa.png",
+            "categories": [
+                "Toppings"
+            ],
             "nutrition": {
                 "calories": 80,
+                "protein": 3,
+                "carbs": 16,
                 "totalFat": 1.5,
                 "satFat": 0,
                 "transFat": 0,
                 "cholesterol": 0,
                 "sodium": 330,
-                "carbs": 16,
                 "fiber": 3,
-                "sugars": 4,
-                "protein": 3
+                "sugars": 4
             },
-            "categories": [
-                "Toppings"
-            ],
-            "maxQuantity": 10
+            "maxQuantity": 10,
+            "defaultOrder": 4,
+            "description": "Medium"
         },
         {
             "id": "tomatillo-green-chili-salsa",
             "name": "Tomatillo-Green Chili Salsa",
-            "description": "Medium",
-            "defaultOrder": 5,
             "image": "/restaurants/chipotle/ingredients/toppings/green-chili-salsa.png",
+            "categories": [
+                "Toppings"
+            ],
             "nutrition": {
                 "calories": 15,
+                "protein": 0,
+                "carbs": 4,
                 "totalFat": 0,
                 "satFat": 0,
                 "transFat": 0,
                 "cholesterol": 0,
                 "sodium": 260,
-                "carbs": 4,
                 "fiber": 0,
-                "sugars": 2,
-                "protein": 0
+                "sugars": 2
             },
-            "categories": [
-                "Toppings"
-            ],
-            "maxQuantity": 10
+            "maxQuantity": 10,
+            "defaultOrder": 5,
+            "description": "Medium"
         },
         {
             "id": "tomatillo-red-chili-salsa",
             "name": "Tomatillo-Red Chili Salsa",
-            "description": "Hot",
-            "defaultOrder": 6,
             "image": "/restaurants/chipotle/ingredients/toppings/red-chili-salsa.png",
+            "categories": [
+                "Toppings"
+            ],
             "nutrition": {
                 "calories": 30,
+                "protein": 0,
+                "carbs": 4,
                 "totalFat": 0,
                 "satFat": 0,
                 "transFat": 0,
                 "cholesterol": 0,
                 "sodium": 500,
-                "carbs": 4,
                 "fiber": 1,
-                "sugars": 0,
-                "protein": 0
+                "sugars": 0
             },
-            "categories": [
-                "Toppings"
-            ],
-            "maxQuantity": 10
+            "maxQuantity": 10,
+            "defaultOrder": 6,
+            "description": "Hot"
         },
         {
             "id": "sour-cream",
             "name": "Sour Cream",
-            "defaultOrder": 7,
             "image": "/restaurants/chipotle/ingredients/toppings/sour-cream.png",
+            "categories": [
+                "Toppings"
+            ],
             "nutrition": {
                 "calories": 110,
+                "protein": 2,
+                "carbs": 2,
                 "totalFat": 9,
                 "satFat": 7,
                 "transFat": 0,
                 "cholesterol": 40,
                 "sodium": 30,
-                "carbs": 2,
                 "fiber": 0,
-                "sugars": 2,
-                "protein": 2
+                "sugars": 2
             },
-            "categories": [
-                "Toppings"
-            ],
-            "maxQuantity": 10
+            "maxQuantity": 10,
+            "defaultOrder": 7
         },
         {
             "id": "fajita-veggies",
             "name": "Fajita Veggies",
-            "defaultOrder": 8,
             "image": "/restaurants/chipotle/ingredients/toppings/fajita-veggies.png",
+            "categories": [
+                "Toppings"
+            ],
             "nutrition": {
                 "calories": 20,
+                "protein": 1,
+                "carbs": 5,
                 "totalFat": 0,
                 "satFat": 0,
                 "transFat": 0,
                 "cholesterol": 0,
                 "sodium": 150,
-                "carbs": 5,
                 "fiber": 1,
-                "sugars": 2,
-                "protein": 1
+                "sugars": 2
             },
-            "categories": [
-                "Toppings"
-            ],
-            "maxQuantity": 10
+            "maxQuantity": 10,
+            "defaultOrder": 8
         },
         {
             "id": "queso-blanco",
             "name": "Queso Blanco",
-            "defaultOrder": 11,
             "image": "/restaurants/chipotle/ingredients/toppings/queso-blanco.png",
+            "categories": [
+                "Toppings"
+            ],
             "nutrition": {
                 "calories": 120,
+                "protein": 5,
+                "carbs": 4,
                 "totalFat": 9,
                 "satFat": 6,
                 "transFat": 0,
                 "cholesterol": 30,
                 "sodium": 250,
-                "carbs": 4,
                 "fiber": 0,
-                "sugars": 1,
-                "protein": 5
+                "sugars": 1
             },
-            "categories": [
-                "Toppings"
-            ],
-            "maxQuantity": 10
+            "maxQuantity": 10,
+            "defaultOrder": 11
         },
         {
             "id": "chicken-al-pastor",
             "name": "Chicken al Pastor",
-            "defaultOrder": 1,
             "image": "/restaurants/chipotle/ingredients/proteins/chicken-al-pastor.png",
+            "categories": [
+                "Proteins"
+            ],
             "nutrition": {
                 "calories": 200,
+                "protein": 23,
+                "carbs": 4,
                 "totalFat": 11,
                 "satFat": 2.5,
                 "transFat": 0,
                 "cholesterol": 110,
                 "sodium": 820,
-                "carbs": 4,
                 "fiber": 0,
-                "sugars": 2,
-                "protein": 23
+                "sugars": 2
             },
-            "categories": [
-                "Proteins"
-            ],
-            "maxQuantity": 1
+            "maxQuantity": 1,
+            "defaultOrder": 1
         },
         {
             "id": "chicken",
             "name": "Chicken",
-            "defaultOrder": 2,
             "image": "/restaurants/chipotle/ingredients/proteins/chicken.png",
+            "categories": [
+                "Proteins"
+            ],
             "nutrition": {
                 "calories": 180,
+                "protein": 32,
+                "carbs": 0,
                 "totalFat": 7,
                 "satFat": 3,
                 "transFat": 0,
                 "cholesterol": 125,
                 "sodium": 310,
-                "carbs": 0,
                 "fiber": 0,
-                "sugars": 0,
-                "protein": 32
+                "sugars": 0
             },
-            "categories": [
-                "Proteins"
-            ],
-            "maxQuantity": 1
+            "maxQuantity": 1,
+            "defaultOrder": 2
         },
         {
             "id": "steak",
             "name": "Steak",
-            "defaultOrder": 3,
             "image": "/restaurants/chipotle/ingredients/proteins/steak.png",
+            "categories": [
+                "Proteins"
+            ],
             "nutrition": {
                 "calories": 150,
+                "protein": 21,
+                "carbs": 1,
                 "totalFat": 6,
                 "satFat": 2.5,
                 "transFat": 0,
                 "cholesterol": 80,
                 "sodium": 330,
-                "carbs": 1,
                 "fiber": 1,
-                "sugars": 0,
-                "protein": 21
+                "sugars": 0
             },
-            "categories": [
-                "Proteins"
-            ],
-            "maxQuantity": 1
+            "maxQuantity": 1,
+            "defaultOrder": 3
         },
         {
             "id": "beef-barbacoa",
             "name": "Beef Barbacoa",
-            "defaultOrder": 4,
             "image": "/restaurants/chipotle/ingredients/proteins/beef-barbacoa.png",
+            "categories": [
+                "Proteins"
+            ],
             "nutrition": {
                 "calories": 170,
+                "protein": 24,
+                "carbs": 2,
                 "totalFat": 7,
                 "satFat": 2.5,
                 "transFat": 0,
                 "cholesterol": 65,
                 "sodium": 530,
-                "carbs": 2,
                 "fiber": 1,
-                "sugars": 0,
-                "protein": 24
+                "sugars": 0
             },
-            "categories": [
-                "Proteins"
-            ],
-            "maxQuantity": 1
+            "maxQuantity": 1,
+            "defaultOrder": 4
         },
         {
             "id": "carnitas",
             "name": "Carnitas",
-            "defaultOrder": 5,
             "image": "/restaurants/chipotle/ingredients/proteins/carnitas.png",
+            "categories": [
+                "Proteins"
+            ],
             "nutrition": {
                 "calories": 210,
+                "protein": 23,
+                "carbs": 0,
                 "totalFat": 12,
                 "satFat": 7,
                 "transFat": 0,
                 "cholesterol": 65,
                 "sodium": 450,
-                "carbs": 0,
                 "fiber": 0,
-                "sugars": 0,
-                "protein": 23
+                "sugars": 0
             },
-            "categories": [
-                "Proteins"
-            ],
-            "maxQuantity": 1
+            "maxQuantity": 1,
+            "defaultOrder": 5
         },
         {
             "id": "sofritas",
             "name": "Sofritas",
-            "description": "Plant-Based Protein",
-            "defaultOrder": 6,
             "image": "/restaurants/chipotle/ingredients/proteins/sofritas.png",
+            "categories": [
+                "Proteins"
+            ],
             "nutrition": {
                 "calories": 150,
+                "protein": 8,
+                "carbs": 9,
                 "totalFat": 10,
                 "satFat": 1.5,
                 "transFat": 0,
                 "cholesterol": 0,
                 "sodium": 560,
-                "carbs": 9,
                 "fiber": 3,
-                "sugars": 5,
-                "protein": 8
+                "sugars": 5
             },
-            "categories": [
-                "Proteins"
-            ],
-            "maxQuantity": 1
+            "maxQuantity": 1,
+            "defaultOrder": 6,
+            "description": "Plant-Based Protein"
         },
         {
             "id": "white-rice",
             "name": "White Rice",
-            "defaultOrder": 1,
             "image": "/restaurants/chipotle/ingredients/rice/white-rice.png",
+            "categories": [
+                "Rice"
+            ],
             "nutrition": {
                 "calories": 210,
+                "protein": 4,
+                "carbs": 40,
                 "totalFat": 4,
                 "satFat": 1,
                 "transFat": 0,
                 "cholesterol": 0,
                 "sodium": 350,
-                "carbs": 40,
                 "fiber": 1,
-                "sugars": 0,
-                "protein": 4
+                "sugars": 0
             },
-            "categories": [
-                "Rice"
-            ],
-            "maxQuantity": 1
+            "maxQuantity": 1,
+            "defaultOrder": 1
         },
         {
             "id": "brown-rice",
             "name": "Brown Rice",
-            "defaultOrder": 2,
             "image": "/restaurants/chipotle/ingredients/rice/brown-rice.png",
+            "categories": [
+                "Rice"
+            ],
             "nutrition": {
                 "calories": 210,
+                "protein": 4,
+                "carbs": 36,
                 "totalFat": 6,
                 "satFat": 0,
                 "transFat": 0,
                 "cholesterol": 0,
                 "sodium": 190,
-                "carbs": 36,
                 "fiber": 2,
-                "sugars": 0,
-                "protein": 4
+                "sugars": 0
             },
-            "categories": [
-                "Rice"
-            ],
-            "maxQuantity": 1
+            "maxQuantity": 1,
+            "defaultOrder": 2
         },
         {
             "id": "black-beans",
             "name": "Black Beans",
-            "defaultOrder": 1,
             "image": "/restaurants/chipotle/ingredients/beans/black-beans.png",
+            "categories": [
+                "Beans"
+            ],
             "nutrition": {
                 "calories": 130,
+                "protein": 8,
+                "carbs": 22,
                 "totalFat": 1.5,
                 "satFat": 0,
                 "transFat": 0,
                 "cholesterol": 0,
                 "sodium": 210,
-                "carbs": 22,
                 "fiber": 7,
-                "sugars": 2,
-                "protein": 8
+                "sugars": 2
             },
-            "categories": [
-                "Beans"
-            ],
-            "maxQuantity": 1
+            "maxQuantity": 1,
+            "defaultOrder": 1
         },
         {
             "id": "pinto-beans",
             "name": "Pinto Beans",
-            "defaultOrder": 2,
             "image": "/restaurants/chipotle/ingredients/beans/pinto-beans.png",
+            "categories": [
+                "Beans"
+            ],
             "nutrition": {
                 "calories": 130,
+                "protein": 8,
+                "carbs": 21,
                 "totalFat": 1.5,
                 "satFat": 0,
                 "transFat": 0,
                 "cholesterol": 0,
                 "sodium": 210,
-                "carbs": 21,
                 "fiber": 8,
-                "sugars": 1,
-                "protein": 8
+                "sugars": 1
             },
-            "categories": [
-                "Beans"
-            ],
-            "maxQuantity": 1
+            "maxQuantity": 1,
+            "defaultOrder": 2
         }
     ],
     "builderConfig": {
