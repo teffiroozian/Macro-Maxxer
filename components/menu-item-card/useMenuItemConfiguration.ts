@@ -1,5 +1,5 @@
 import { useMemo, useState } from "react";
-import type { AddonOption, AddonRef, MenuItem, RestaurantAddons } from "@/types/menu";
+import type { AddonOption, MenuItem, RestaurantAddons } from "@/types/menu";
 import type { ResolvedPanelIngredient } from "@/components/ItemDetailsPanel";
 import { getDefaultIngredientCounts } from "@/lib/menuItemCalculations";
 import {
@@ -24,7 +24,7 @@ export function useMenuItemConfiguration({
   initialCartCustomizations?: string[];
   resolvedIngredients: ResolvedPanelIngredient[];
 }) {
-  const [selectedAddons, setSelectedAddons] = useState<Partial<Record<AddonRef, AddonOption>>>(() =>
+  const [selectedAddons, setSelectedAddons] = useState<Partial<Record<string, AddonOption>>>(() =>
     mode === "cart" ? getSelectedAddonsFromLabel(item, addons, initialCartOptionsLabel) : {}
   );
   const [selectedSauceCounts, setSelectedSauceCounts] = useState<Record<string, number>>(() =>

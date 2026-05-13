@@ -1,10 +1,10 @@
-import type { AddonOption, AddonRef, MenuItem, RestaurantAddons } from "@/types/menu";
+import type { AddonOption, MenuItem, RestaurantAddons } from "@/types/menu";
 import { parseOptionLabelCounts, type OptionLabelCountMap } from "@/lib/cartOptionLabels";
 
-const sauceRef: AddonRef = "sauces";
+const sauceRef: string = "sauces";
 
 export function buildOptionLabelCounts(
-  selectedAddons: Partial<Record<AddonRef, AddonOption>>,
+  selectedAddons: Partial<Record<string, AddonOption>>,
   selectedSauceCounts: Record<string, number>
 ): OptionLabelCountMap {
   const counts: OptionLabelCountMap = {};
@@ -25,10 +25,10 @@ export function buildOptionLabelCounts(
 }
 
 export function getSelectedAddonsFromLabel(item: MenuItem, addons: RestaurantAddons | undefined, optionsLabel?: string) {
-  if (!optionsLabel) return {} as Partial<Record<AddonRef, AddonOption>>;
+  if (!optionsLabel) return {} as Partial<Record<string, AddonOption>>;
 
   const selectedCounts = parseOptionLabelCounts(optionsLabel);
-  const selectedMap: Partial<Record<AddonRef, AddonOption>> = {};
+  const selectedMap: Partial<Record<string, AddonOption>> = {};
 
   for (const ref of item.addonRefs ?? []) {
     if (ref === sauceRef) continue;

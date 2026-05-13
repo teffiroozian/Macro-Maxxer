@@ -1,4 +1,4 @@
-import type { AddonOption, AddonRef, RestaurantAddons } from "@/types/menu";
+import type { AddonOption, RestaurantAddons } from "@/types/menu";
 
 type RawAddonOption = {
   id?: string;
@@ -65,7 +65,7 @@ export function normalizeAddons(addons: unknown): RestaurantAddons {
   const entries = Object.entries(addons as Record<string, unknown>)
     .filter(([, options]) => Array.isArray(options))
     .map(([ref, options]) => [
-      ref as AddonRef,
+      ref as string,
       (options as RawAddonOption[]).map((option) => normalizeAddonOption(option)),
     ] as const);
 

@@ -13,7 +13,6 @@ import MenuSections from "@/components/MenuSections";
 import BuildSummaryDrawer from "@/components/restaurant-view/BuildSummaryDrawer";
 import type {
   AddonOption,
-  AddonRef,
   MacroDelta,
   MenuItem,
   Nutrition,
@@ -65,7 +64,7 @@ const emptyAddon: AddonOption = {
   image: "none",
 };
 
-const sauceRef: AddonRef = "sauces";
+const sauceRef: string = "sauces";
 const maxSauceSelections = 5;
 const sectionScrollOffset = 96;
 
@@ -147,7 +146,7 @@ export default function ItemRouteModal({
   );
   const [selectedVariantId, setSelectedVariantId] = useState(editingCartItem?.variantId ?? defaultVariantId);
   const [quantity, setQuantity] = useState(editingCartItem?.quantity ?? 1);
-  const [selectedAddons, setSelectedAddons] = useState<Partial<Record<AddonRef, AddonOption>>>(() =>
+  const [selectedAddons, setSelectedAddons] = useState<Partial<Record<string, AddonOption>>>(() =>
     getSelectedAddonsFromLabel(item, addons, editingCartItem?.optionsLabel)
   );
   const [selectedSauceCounts, setSelectedSauceCounts] = useState<Record<string, number>>(() =>
@@ -596,10 +595,10 @@ export default function ItemRouteModal({
     const nonEmptyTabs = ingredientTabs.filter((tab) => tab.ingredients.length > 0);
     return nonEmptyTabs.length > 1 || (nonEmptyTabs[0]?.ingredients.length ?? 0) > 0;
   }, [ingredientTabs]);
-  const addonNavigationRef = useMemo<AddonRef | null>(() => {
-    const itemAddonRefs = new Set(item.addonRefs ?? []);
-    if (itemAddonRefs.has("dressings") && (addons?.dressings?.length ?? 0) > 0) return "dressings";
-    if (itemAddonRefs.has("sauces") && (addons?.sauces?.length ?? 0) > 0) return "sauces";
+  const addonNavigationRef = useMemo<string | null>(() => {
+    const itemAddonGroups = new Set(item.addonRefs ?? []);
+    if (itemAddonGroups.has("dressings") && (addons?.dressings?.length ?? 0) > 0) return "dressings";
+    if (itemAddonGroups.has("sauces") && (addons?.sauces?.length ?? 0) > 0) return "sauces";
     return null;
   }, [addons, item.addonRefs]);
   const addonSectionLabel = addonNavigationRef

@@ -5,7 +5,6 @@ import { usePathname, useRouter } from "next/navigation";
 import { ChevronDown } from "lucide-react";
 import type {
   AddonOption,
-  AddonRef,
   IngredientItem,
   MacroDelta,
   MenuItem,
@@ -152,7 +151,7 @@ const emptyAddon: AddonOption = {
   image: "none",
 };
 
-const sauceRef: AddonRef = "sauces";
+const sauceRef: string = "sauces";
 const maxSauceSelections = 5;
 
 type CartConfigurationPayload = {
@@ -689,7 +688,7 @@ export default function MenuItemCard({
 
   const emitCartConfiguration = (
     nextVariantId: string,
-    nextAddons: Partial<Record<AddonRef, AddonOption>>,
+    nextAddons: Partial<Record<string, AddonOption>>,
     nextSauceCounts: Record<string, number>,
     nextSelectedIngredientCounts: Record<string, number> = ingredientCounts,
     nextComboType: "just-item" | "combo-meal" = comboType,

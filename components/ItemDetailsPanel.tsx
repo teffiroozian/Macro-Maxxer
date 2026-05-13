@@ -2,7 +2,6 @@ import { useState } from "react";
 import Image from "next/image";
 import type {
   AddonOption,
-  AddonRef,
   IngredientItem,
   ItemVariant,
   MacroDelta,
@@ -53,7 +52,7 @@ function formatPortionBadge(count: number) {
   return `${count.toFixed(1)}x`;
 }
 
-const addonSectionTitles: Record<AddonRef, string> = {
+const addonSectionTitles: Record<string, string> = {
   sauces: "Sauces",
   dressings: "Dressings",
   condiments: "Condiments",
@@ -171,8 +170,8 @@ export default function ItemDetailsPanel({
   ingredientItems?: IngredientItem[];
   menuItems?: MenuItem[];
   customizationRules?: RestaurantCustomizationRules;
-  selectedAddons?: Partial<Record<AddonRef, AddonOption>>;
-  onSelectAddon?: (ref: AddonRef, addon?: AddonOption) => void;
+  selectedAddons?: Partial<Record<string, AddonOption>>;
+  onSelectAddon?: (ref: string, addon?: AddonOption) => void;
   sauceSelectionCounts?: Partial<Record<string, number>>;
   onIncrementSauce?: (addon: AddonOption) => void;
   onDecrementSauce?: (addon: AddonOption) => void;
@@ -203,7 +202,7 @@ export default function ItemDetailsPanel({
   sidesSectionRef?: (element: HTMLElement | null) => void;
   drinksSectionRef?: (element: HTMLElement | null) => void;
   addonSectionRef?: (element: HTMLElement | null) => void;
-  addonSectionRefType?: AddonRef;
+  addonSectionRefType?: string;
   sectionNavItems?: Array<{ id: "ingredients" | "sides" | "drinks" | "sauces"; label: string; icon: LucideIcon }>;
   activeSectionId?: "ingredients" | "sides" | "drinks" | "sauces" | null;
   onSelectSection?: (sectionId: "ingredients" | "sides" | "drinks" | "sauces") => void;
@@ -262,7 +261,7 @@ export default function ItemDetailsPanel({
         addons: sortByCalories(list),
       };
     })
-    .filter((section): section is { ref: AddonRef; title: string; addons: AddonOption[] } =>
+    .filter((section): section is { ref: string; title: string; addons: AddonOption[] } =>
       section !== null
     );
   const selectedComboSide = comboSides.find((side) => (side.id ?? side.name) === selectedComboSideId);
@@ -275,7 +274,7 @@ export default function ItemDetailsPanel({
     (variant) =>
       (selectedComboDrinkVariantId ?? selectedComboDrink.defaultVariantId ?? selectedComboDrink.variants?.[0]?.id) === variant.id
   );
-  const selectedAddonItems = (Object.entries(selectedAddons ?? {}) as Array<[AddonRef, AddonOption | undefined]>)
+  const selectedAddonItems = (Object.entries(selectedAddons ?? {}) as Array<[string, AddonOption | undefined]>)
     .filter(([, addon]) => Boolean(addon && addon.name !== "None"))
     .map(([ref, addon]) => ({
       id: `${ref}-${addon?.name}`,
