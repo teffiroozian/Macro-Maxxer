@@ -69,22 +69,19 @@ export type RestaurantCustomizationRules = {
 };
 
 export type MenuItem = {
-  // required fields
   id: string;
   name: string;
   image: string;
-  // categories are used for grouping similar items together, 
-  // and can be used for filtering and search, but don't have a strict hierarchy or exclusivity requirement
+
   categories: string[];
   servingType?: string;
   entreeGroup?: string;
-  // nutrition facts
+
   nutrition: Nutrition;
-  // ingredients are used for building out the item customization experience, 
-  // and can be shared across multiple items to simplify management of shared ingredients
+
   ingredientRef?: string;
   ingredients?: string[];
-  // var
+  
   variants?: ItemVariant[];
   defaultVariantId?: string;
 
