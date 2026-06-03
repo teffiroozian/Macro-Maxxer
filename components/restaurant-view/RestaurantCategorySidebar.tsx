@@ -2,8 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { Circle, type LucideIcon, UtensilsCrossed, Soup, SquareStack, CupSoda, Check, PanelTopOpen } from "lucide-react";
-
-type RankedAllFilterKey = "main-entrees" | "breakfast" | "shareables" | "sides" | "drinks";
+import type { RankedAllFilterKey } from "@/lib/menuSections/filtering";
 
 type CategoryOption = { id: string; label: string };
 

@@ -6,16 +6,8 @@ import Image from "next/image";
 
 import { useFilterChipActions } from "./useFilterChipActions";
 import { SORT_OPTION_VALUES, type SortOption } from "@/lib/menuSections/sortOptions";
+import type { Filters } from "@/lib/menuSections/filtering";
 import MobileNavDrawer from "@/components/MobileNavDrawer";
-
-export type ViewOption = "menu" | "ingredients" | "ranking";
-export type { SortOption };
-export type Filters = {
-  proteinMin?: number;
-  caloriesMax?: number;
-  includeSidesDrinks?: boolean;
-  includeLargeShareables?: boolean;
-};
 import {
   SlidersHorizontal,
   ChevronDown,
@@ -28,6 +20,9 @@ import {
   ListOrdered,
   Menu,
 } from "lucide-react";
+
+export type ViewOption = "menu" | "ingredients" | "ranking";
+export type { Filters, SortOption };
 
 const PROTEIN_OPTIONS = [20, 30, 40, 50];
 

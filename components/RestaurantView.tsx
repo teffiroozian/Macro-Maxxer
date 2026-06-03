@@ -92,6 +92,11 @@ import {
   scaleNutritionValues,
 } from "@/lib/chipotleBuild";
 import { resolvePrimaryCategory } from "@/lib/ingredientTabs";
+import {
+  filterMenuItems,
+  getSearchTerms,
+  type RankedAllFilterKey,
+} from "@/lib/menuSections/filtering";
 
 const CATEGORY_ICONS: Record<string, LucideIcon> = {
   sandwiches: Sandwich,
@@ -254,7 +259,6 @@ export default function RestaurantView({
     viewMode === "ranking" ? RANKING_DEFAULT_SORT : SORT_OPTION_VALUES.DEFAULT_ORDER
   );
   const [filters, setFilters] = useState<Filters>({});
-  type RankedAllFilterKey = "main-entrees" | "breakfast" | "shareables" | "sides" | "drinks";
   const [rankedAllFilters, setRankedAllFilters] = useState<
     Record<RankedAllFilterKey, boolean>
   >({
@@ -656,112 +660,19 @@ export default function RestaurantView({
     };
   }, [sourceItems]);
 
-  const searchTerms = searchQuery
-    .trim()
-    .toLowerCase()
-    .split(/\s+/)
-    .filter(Boolean);
+  const searchTerms = useMemo(() => getSearchTerms(searchQuery), [searchQuery]);
 
-  const filteredItems = useMemo(() => {
-    const getRankedAllFilterKey = (
-      servingType: MenuItem["servingType"] | undefined
-    ): RankedAllFilterKey | null => {
-      switch (servingType) {
-        case "single":
-        case "combo":
-        case "kids":
-        case "entree":
-          return "main-entrees";
-        case "breakfast":
-          return "breakfast";
-        case "shareable":
-          return "shareables";
-        case "drink":
-          return "drinks";
-        case "side":
-          return "sides";
-        case "addon":
-        case "dessert":
-        case undefined:
-          return null;
-        default:
-          return null;
-      }
-    };
-
-    return sourceItems
-      .map((item) => {
-        if (effectiveViewMode !== "ranking") {
-          return item;
-        }
-
-        const selectedRankedKeys = new Set<RankedAllFilterKey>(
-          (Object.entries(rankedAllFilters) as [RankedAllFilterKey, boolean][])
-            .filter(([, isEnabled]) => isEnabled)
-            .map(([key]) => key)
-        );
-
-        const filteredVariants = item.variants?.filter((variant) => {
-          const variantKey = getRankedAllFilterKey(variant.servingType);
-          if (!variantKey) {
-            return false;
-          }
-
-          return selectedRankedKeys.has(variantKey);
-        });
-
-        const itemKey = getRankedAllFilterKey(item.servingType);
-        const itemKeyMatches = itemKey ? selectedRankedKeys.has(itemKey) : false;
-        const hasMatchingVariants = Boolean(filteredVariants && filteredVariants.length > 0);
-
-        if (!itemKeyMatches && !hasMatchingVariants) {
-          return null;
-        }
-
-        if (!item.variants || item.variants.length === 0) {
-          return item;
-        }
-
-        return {
-          ...item,
-          variants: hasMatchingVariants ? filteredVariants : [],
-        };
-      })
-      .filter((item): item is MenuItem => Boolean(item))
-      .filter((item) => {
-      const protein = item.nutrition.protein ?? 0;
-      const calories = item.nutrition.calories ?? 0;
-
-      if (filters.proteinMin && protein < filters.proteinMin) {
-        return false;
-      }
-      if (filters.caloriesMax && calories > filters.caloriesMax) {
-        return false;
-      }
-
-      if (!searchTerms.length) {
-        return true;
-      }
-
-      const itemCategories = item.categories?.length ? item.categories : ["Other"];
-
-      const categoryVariants = itemCategories.flatMap((rawCategory) => {
-        const category = rawCategory.toLowerCase();
-        const categoryLabel = getCategoryLabel(rawCategory).toLowerCase();
-        return [category, categoryLabel];
-      }).flatMap((value) => {
-        const trimmed = value.trim();
-        if (!trimmed) return [];
-        if (trimmed.endsWith("s")) {
-          return [trimmed, trimmed.slice(0, -1)];
-        }
-        return [trimmed, `${trimmed}s`];
-      });
-
-      const searchableText = [item.name.toLowerCase(), ...categoryVariants].join(" ");
-      return searchTerms.every((term) => searchableText.includes(term));
-    });
-  }, [effectiveViewMode, sourceItems, filters, searchTerms, rankedAllFilters]);
+  const filteredItems = useMemo(
+    () =>
+      filterMenuItems({
+        items: sourceItems,
+        filters,
+        searchTerms,
+        rankedAllFilters,
+        isRankingView: effectiveViewMode === "ranking",
+      }),
+    [effectiveViewMode, sourceItems, filters, searchTerms, rankedAllFilters]
+  );
 
   const visibleMenuItems = useMemo(() => {
     if (!isChipotleBuildPage || !selectedEntree) {
