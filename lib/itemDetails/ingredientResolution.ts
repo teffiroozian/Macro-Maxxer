@@ -6,7 +6,7 @@ import {
   resolveFoodCategoryRule,
   resolveIngredientCategoryRule,
   resolveIngredientTabMaxQuantity,
-  resolveItemCustomizationIngredientCategory,
+  resolveIngredientItemCategory,
   resolveIngredientTabs,
   resolveSingleSelectIngredientTabs,
   type IngredientSelectionMode,
@@ -218,9 +218,9 @@ export function resolvePanelIngredientTabs(
       menuItemMatch?.variants?.find((variant) => variant.id === selectedVariantId)?.nutrition ??
       (selectedParentVariantLabel
         ? menuItemMatch?.variants?.find(
-            (variant) =>
-              normalizeIngredientToken(variant.label) === normalizeIngredientToken(selectedParentVariantLabel)
-          )?.nutrition
+          (variant) =>
+            normalizeIngredientToken(variant.label) === normalizeIngredientToken(selectedParentVariantLabel)
+        )?.nutrition
         : undefined) ??
       menuItemMatch?.variants?.find((variant) => variant.id === menuItemMatch.defaultVariantId)?.nutrition ??
       menuItemMatch?.variants?.[0]?.nutrition;
@@ -270,7 +270,7 @@ export function resolvePanelIngredientTabs(
   }
 
   function getConfiguredIngredientIdsForTab(tabName: string) {
-    const itemLevelIngredientOptions = resolveItemCustomizationIngredientCategory(item, tabName)?.ingredients;
+    const itemLevelIngredientOptions = resolveIngredientItemCategory(item, tabName)?.ingredients;
 
     if (itemLevelIngredientOptions?.length) return itemLevelIngredientOptions;
 
@@ -286,19 +286,19 @@ export function resolvePanelIngredientTabs(
     const tabIngredients =
       tab === INCLUDED_INGREDIENT_TAB
         ? ingredientIds
-            .map((ingredientId, index) => ({ ingredient: getResolvedIngredient(ingredientId), index }))
-            .sort((left, right) => {
-              const priorityDifference =
-                includedIngredientPriority(left.ingredient) - includedIngredientPriority(right.ingredient);
+          .map((ingredientId, index) => ({ ingredient: getResolvedIngredient(ingredientId), index }))
+          .sort((left, right) => {
+            const priorityDifference =
+              includedIngredientPriority(left.ingredient) - includedIngredientPriority(right.ingredient);
 
-              return priorityDifference !== 0 ? priorityDifference : left.index - right.index;
-            })
-            .map(({ ingredient }) => ingredient)
+            return priorityDifference !== 0 ? priorityDifference : left.index - right.index;
+          })
+          .map(({ ingredient }) => ingredient)
         : configuredIngredientIds?.length
           ? configuredIngredientIds.map((ingredientId) => getResolvedIngredient(ingredientId))
           : ingredientItems
-              .filter((ingredient) => ingredientMatchesTab(ingredient, tab))
-              .map((ingredient) => getResolvedIngredient(ingredient.id ?? ingredient.name, ingredient));
+            .filter((ingredient) => ingredientMatchesTab(ingredient, tab))
+            .map((ingredient) => getResolvedIngredient(ingredient.id ?? ingredient.name, ingredient));
 
     const uniqueTabIngredients = tabIngredients.filter((ingredient, index) => {
       return tabIngredients.findIndex((candidate) => candidate.id === ingredient.id) === index;
@@ -310,27 +310,27 @@ export function resolvePanelIngredientTabs(
       tab === INCLUDED_INGREDIENT_TAB
         ? uniqueTabIngredients
         : uniqueTabIngredients.map((ingredient) => ({
-            ...ingredient,
-            tabLabel: tab,
-            maxQuantity: tabMaxQuantity,
-          }));
+          ...ingredient,
+          tabLabel: tab,
+          maxQuantity: tabMaxQuantity,
+        }));
     const hasDefaultIngredient = scopedTabIngredients.some((ingredient) => ingredient.defaultCount > 0);
     const ingredients =
       selectionMode === "single" && tabSupportsNoneOption(item, tab, customizationRules)
         ? [
-            {
-              id: `none-${normalizeIngredientToken(tab)}`,
-              label: "None",
-              icon: "✕",
-              tabLabel: tab,
-              maxQuantity: tabMaxQuantity,
-              nutrition: normalizeNutrition(),
-              calories: 0,
-              defaultCount: hasDefaultIngredient ? 0 : 1,
-              isNoneOption: true,
-            },
-            ...scopedTabIngredients,
-          ]
+          {
+            id: `none-${normalizeIngredientToken(tab)}`,
+            label: "None",
+            icon: "✕",
+            tabLabel: tab,
+            maxQuantity: tabMaxQuantity,
+            nutrition: normalizeNutrition(),
+            calories: 0,
+            defaultCount: hasDefaultIngredient ? 0 : 1,
+            isNoneOption: true,
+          },
+          ...scopedTabIngredients,
+        ]
         : scopedTabIngredients;
 
     return {

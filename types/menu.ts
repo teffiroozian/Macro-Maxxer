@@ -19,21 +19,25 @@ export type CoreMacros = Pick<
 >;
 
 // item variants allow for different versions of the same base item, 
-// such as different sizes or flavors, without needing to create entirely separate menu items for each variation
+// e.g. 8pc vs 10pc nuggets, small vs medium fries
 export type ItemVariant = {
   id: string;
   label: string;
   image?: string;
+  nutrition: Nutrition;
 
   categories: string[];
   servingType?: string;
 
-  nutrition: Nutrition;
-
-  isDefault?: boolean;
+  isDefault: boolean;
 };
 
-// addons are additional options that can be added to a menu item, such as dippping sauces and dressings
+// groups of addons that can be added to a menu item
+// e.g dipping sauces, dressings
+export type RestaurantAddons = Record<string, AddonOption[]>;
+
+// individual addon that can be added to a menu item
+// e.g. ketchup, ceaser dressing
 export type AddonOption = {
   id: string;
   name: string;
@@ -41,50 +45,60 @@ export type AddonOption = {
   nutrition: Nutrition;
 };
 
-// allows for defining groups of addons that can be easily referenced by menu items
-export type RestaurantAddons = Record<string, AddonOption[]>;
-
-// item-level customization categories, allowing specific items to opt into only the options they support
-export type ItemCustomizationIngredientCategory = {
+// ingredient item categories
+// e.g. Cheese (includes american cheese, pepper jack, swiss)
+export type IngredientItemCategory = {
   name: string;
-  ingredients?: string[];
-  allowNone?: boolean;
+  ingredients: string[];
+  // lets choose allow none or remove from item altogether
+  allowNone: boolean;
 };
 
+// can override the ingredients customizatin of an item
 export type ItemCustomizationOverride = {
+  // custom ingredient groups
+  ingredientCategories?: IngredientItemCategory[];
+  // disable customziation
   disabled?: boolean;
-  ingredientCategories?: ItemCustomizationIngredientCategory[];
 };
 
+// rules for what ingredient groups and item should show per item
 export type FoodCategoryRule = {
+  // categories groups for an item (e.g. Sandwich: cheese, buns, protein, toppings)
   ingredientCategories: string[];
+  // ingredient items of a category for an item (e.g. Salad: protein [nuggets, grilled fillet], )
   ingredientOptionsByCategory?: Partial<Record<string, string[]>>;
 };
 
+// custom rules for ingredients for food items
 export type IngredientCategoryRule = {
   maxQuantity?: number;
   allowNone?: boolean;
 };
 
+// restaurant customization rules
 export type RestaurantCustomizationRules = {
   foodCategories?: Record<string, FoodCategoryRule>;
   ingredientCategories?: Record<string, IngredientCategoryRule>;
 };
 
+// represents one menu item
 export type MenuItem = {
   id: string;
   name: string;
   image: string;
 
+  // a single item can have multiple categories
   categories: string[];
-  servingType?: string;
+  servingType: string;
+  // for build your own item
   entreeGroup?: string;
 
   nutrition: Nutrition;
 
   ingredientRef?: string;
   ingredients?: string[];
-  
+
   variants?: ItemVariant[];
   defaultVariantId?: string;
 

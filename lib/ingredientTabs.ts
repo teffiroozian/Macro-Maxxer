@@ -62,7 +62,7 @@ export function getIngredientTabDisplayLabel(tabName: string) {
   return tabName;
 }
 
-export function resolveItemCustomizationIngredientCategory(item: MenuItem, categoryName: string) {
+export function resolveIngredientItemCategory(item: MenuItem, categoryName: string) {
   const normalizedCategoryName = normalizeTabName(categoryName);
 
   return item.customization?.ingredientCategories?.find(
