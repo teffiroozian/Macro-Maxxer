@@ -6,7 +6,6 @@ import { ChevronDown } from "lucide-react";
 import type {
   AddonOption,
   IngredientItem,
-  CoreMacros,
   MenuItem,
   RestaurantAddons,
   RestaurantCustomizationRules,
@@ -14,7 +13,6 @@ import type {
 import ItemDetailsPanel, { resolvePanelIngredients } from "./ItemDetailsPanel";
 import VariantSelector from "./VariantSelector";
 import {
-  addonFat,
   formatCalories,
   formatDelta,
   formatMacro,
@@ -23,7 +21,6 @@ import {
   isChickfilaBreakfastItem,
   isHashBrowns,
   isWaffleFries,
-  menuItemFatWithFallback,
   normalizeCategory,
   sortComboSides,
   sumNutrition,
@@ -42,6 +39,12 @@ import {
 } from "@/lib/chipotleBuild/highProtein";
 import { parseIncludedIngredientEntry } from "@/lib/itemIngredients";
 import { normalizeNutrition } from "@/lib/nutrition";
+import {
+  calculateAddonTotals,
+  calculateComboNutritionTotals,
+  calculateIngredientCountTotals,
+  calculateMenuItemMacrosPerItem,
+} from "@/lib/menuItemCard/totals";
 
 function pad2(n: number) {
   return String(n).padStart(2, "0");
@@ -329,73 +332,15 @@ export default function MenuItemCard({
     return sauceOptions.flatMap((addon) => Array.from({ length: selectedSauceCounts[addon.name] ?? 0 }, () => addon));
   }, [addons, selectedSauceCounts]);
 
-  const addonTotals = useMemo(
-    () =>
-      [...Object.values(selectedAddons), ...selectedSauceOptions].reduce(
-        (sum, addon) => ({
-          calories: sum.calories + (addon?.nutrition.calories ?? 0),
-          protein: sum.protein + (addon?.nutrition.protein ?? 0),
-          carbs: sum.carbs + (addon?.nutrition.carbs ?? 0),
-          totalFat: sum.totalFat + addonFat(addon),
-        }),
-        { calories: 0, protein: 0, carbs: 0, totalFat: 0 }
-      ),
-    [selectedAddons, selectedSauceOptions]
-  );
-
   const addonNutritionTotals = useMemo(
-    () =>
-      [...Object.values(selectedAddons), ...selectedSauceOptions].reduce(
-        (sum, addon) => ({
-          calories: sum.calories + (addon?.nutrition.calories ?? 0),
-          protein: sum.protein + (addon?.nutrition.protein ?? 0),
-          carbs: sum.carbs + (addon?.nutrition.carbs ?? 0),
-          totalFat: sum.totalFat + addonFat(addon),
-          satFat: sum.satFat + (addon?.nutrition.satFat ?? 0),
-          transFat: sum.transFat + (addon?.nutrition.transFat ?? 0),
-          cholesterol: sum.cholesterol + (addon?.nutrition.cholesterol ?? 0),
-          sodium: sum.sodium + (addon?.nutrition.sodium ?? 0),
-          fiber: sum.fiber + (addon?.nutrition.fiber ?? 0),
-          sugars: sum.sugars + (addon?.nutrition.sugars ?? 0),
-        }),
-        {
-          calories: 0,
-          protein: 0,
-          carbs: 0,
-          totalFat: 0,
-          satFat: 0,
-          transFat: 0,
-          cholesterol: 0,
-          sodium: 0,
-          fiber: 0,
-          sugars: 0,
-        }
-      ),
+    () => calculateAddonTotals([...Object.values(selectedAddons), ...selectedSauceOptions]),
     [selectedAddons, selectedSauceOptions]
   );
+  const addonTotals = addonNutritionTotals;
 
   const ingredientCountTotals = useMemo(
-    () =>
-      Object.entries(ingredientCounts).reduce<CoreMacros>(
-        (sum, [ingredientId, count]) => {
-          const ingredient =
-            ingredientLookup.get(ingredientId) ??
-            ingredientLookup.get(ingredientId.toLowerCase());
-
-          if (!ingredient) return sum;
-          const countDelta = count - ingredient.defaultCount;
-          if (countDelta === 0) return sum;
-
-          return {
-            calories: sum.calories + (ingredient.nutrition.calories ?? 0) * countDelta,
-            protein: sum.protein + (ingredient.nutrition.protein ?? 0) * countDelta,
-            carbs: sum.carbs + (ingredient.nutrition.carbs ?? 0) * countDelta,
-            totalFat: sum.totalFat + (ingredient.nutrition.totalFat ?? 0) * countDelta,
-          };
-        },
-        { calories: 0, protein: 0, carbs: 0, totalFat: 0 }
-      ),
-    [ingredientCounts, ingredientLookup]
+    () => calculateIngredientCountTotals(ingredientCounts, resolvedIngredients),
+    [ingredientCounts, resolvedIngredients]
   );
 
   const isComboEligibleCategory = useMemo(() => {
@@ -463,20 +408,18 @@ export default function MenuItemCard({
     () => selectedComboDrink?.variants?.find((variant) => variant.id === selectedComboDrinkVariantId),
     [selectedComboDrink, selectedComboDrinkVariantId]
   );
-  const comboNutritionTotals = useMemo(() => {
-    if (!isComboEligibleCategory || comboType !== "combo-meal") {
-      return { calories: 0, protein: 0, carbs: 0, totalFat: 0 };
-    }
-
-    const drinkNutrition = selectedComboDrinkVariant?.nutrition ?? selectedComboDrink?.nutrition;
-    const sideNutrition = selectedComboSideVariant?.nutrition ?? selectedComboSide?.nutrition;
-    return {
-      calories: (drinkNutrition?.calories ?? 0) + (sideNutrition?.calories ?? 0),
-      protein: (drinkNutrition?.protein ?? 0) + (sideNutrition?.protein ?? 0),
-      carbs: (drinkNutrition?.carbs ?? 0) + (sideNutrition?.carbs ?? 0),
-      totalFat: (drinkNutrition?.totalFat ?? menuItemFatWithFallback(selectedComboDrink)) + (sideNutrition?.totalFat ?? menuItemFatWithFallback(selectedComboSide)),
-    };
-  }, [comboType, isComboEligibleCategory, selectedComboDrink, selectedComboDrinkVariant, selectedComboSide, selectedComboSideVariant]);
+  const comboNutritionTotals = useMemo(
+    () =>
+      calculateComboNutritionTotals({
+        isComboEligibleCategory,
+        comboType,
+        selectedComboDrink,
+        selectedComboDrinkVariant,
+        selectedComboSide,
+        selectedComboSideVariant,
+      }),
+    [comboType, isComboEligibleCategory, selectedComboDrink, selectedComboDrinkVariant, selectedComboSide, selectedComboSideVariant]
+  );
 
   const customizationTotals = useMemo(
     () => ({
@@ -709,34 +652,10 @@ export default function MenuItemCard({
       ...Object.values(nextAddons).filter((addon): addon is AddonOption => Boolean(addon && addon.name !== "None")),
       ...expandedSauces,
     ];
-    const addonTotalsForCart = activeAddons.reduce(
-      (sum, addon) => ({
-        calories: sum.calories + (addon.nutrition.calories ?? 0),
-        protein: sum.protein + (addon.nutrition.protein ?? 0),
-        carbs: sum.carbs + (addon.nutrition.carbs ?? 0),
-        totalFat: sum.totalFat + addonFat(addon),
-      }),
-      { calories: 0, protein: 0, carbs: 0, totalFat: 0 }
-    );
-
-    const ingredientCountTotalsForCart = Object.entries(nextSelectedIngredientCounts).reduce<CoreMacros>(
-      (sum, [ingredientId, count]) => {
-        const ingredient =
-          ingredientLookup.get(ingredientId) ??
-          ingredientLookup.get(ingredientId.toLowerCase());
-
-        if (!ingredient) return sum;
-        const countDelta = count - ingredient.defaultCount;
-        if (countDelta === 0) return sum;
-
-        return {
-          calories: sum.calories + (ingredient.nutrition.calories ?? 0) * countDelta,
-          protein: sum.protein + (ingredient.nutrition.protein ?? 0) * countDelta,
-          carbs: sum.carbs + (ingredient.nutrition.carbs ?? 0) * countDelta,
-          totalFat: sum.totalFat + (ingredient.nutrition.totalFat ?? 0) * countDelta,
-        };
-      },
-      { calories: 0, protein: 0, carbs: 0, totalFat: 0 }
+    const addonTotalsForCart = calculateAddonTotals(activeAddons);
+    const ingredientCountTotalsForCart = calculateIngredientCountTotals(
+      nextSelectedIngredientCounts,
+      resolvedIngredients
     );
 
     const nextOptionsLabel = formatOptionLabelCounts(buildOptionLabelCounts(nextAddons, nextSauceCounts));
@@ -756,19 +675,14 @@ export default function MenuItemCard({
               : undefined,
           ].filter((entry): entry is string => Boolean(entry))
         : [];
-    const comboMacros =
-      isComboEligibleCategory && nextComboType === "combo-meal"
-        ? {
-            calories: (nextComboDrinkVariant?.nutrition.calories ?? nextComboDrink?.nutrition.calories ?? 0)
-              + (nextComboSideVariant?.nutrition.calories ?? nextComboSide?.nutrition.calories ?? 0),
-            protein: (nextComboDrinkVariant?.nutrition.protein ?? nextComboDrink?.nutrition.protein ?? 0)
-              + (nextComboSideVariant?.nutrition.protein ?? nextComboSide?.nutrition.protein ?? 0),
-            carbs: (nextComboDrinkVariant?.nutrition.carbs ?? nextComboDrink?.nutrition.carbs ?? 0)
-              + (nextComboSideVariant?.nutrition.carbs ?? nextComboSide?.nutrition.carbs ?? 0),
-            totalFat: (nextComboDrinkVariant?.nutrition.totalFat ?? menuItemFatWithFallback(nextComboDrink))
-              + (nextComboSideVariant?.nutrition.totalFat ?? menuItemFatWithFallback(nextComboSide)),
-          }
-        : { calories: 0, protein: 0, carbs: 0, totalFat: 0 };
+    const comboMacros = calculateComboNutritionTotals({
+      isComboEligibleCategory,
+      comboType: nextComboType,
+      selectedComboDrink: nextComboDrink,
+      selectedComboDrinkVariant: nextComboDrinkVariant,
+      selectedComboSide: nextComboSide,
+      selectedComboSideVariant: nextComboSideVariant,
+    });
 
     const selectedIngredientCustomizationsForCart = resolvedIngredients
       .filter((ingredient) => {
@@ -795,12 +709,12 @@ export default function MenuItemCard({
       optionsLabel: nextOptionsLabel,
       customizations: nextCustomizations.length > 0 ? nextCustomizations : undefined,
       image: activeVariant?.image ?? item.image,
-      macrosPerItem: {
-        calories: (baseForCart.calories ?? 0) + addonTotalsForCart.calories + ingredientCountTotalsForCart.calories + comboMacros.calories,
-        protein: (baseForCart.protein ?? 0) + addonTotalsForCart.protein + ingredientCountTotalsForCart.protein + comboMacros.protein,
-        carbs: (baseForCart.carbs ?? 0) + addonTotalsForCart.carbs + ingredientCountTotalsForCart.carbs + comboMacros.carbs,
-        totalFat: (baseForCart.totalFat ?? 0) + addonTotalsForCart.totalFat + ingredientCountTotalsForCart.totalFat + comboMacros.totalFat,
-      },
+      macrosPerItem: calculateMenuItemMacrosPerItem({
+        baseNutrition: baseForCart,
+        addonTotals: addonTotalsForCart,
+        ingredientCountTotals: ingredientCountTotalsForCart,
+        comboNutritionTotals: comboMacros,
+      }),
     });
   };
 
@@ -855,12 +769,11 @@ export default function MenuItemCard({
         customizations,
         quantity: 1,
         buildConfiguration: highProteinBuildConfiguration,
-        macrosPerItem: {
-          calories: (baseForCart.calories ?? 0) + addonTotals.calories + ingredientCountTotals.calories,
-          protein: (baseForCart.protein ?? 0) + addonTotals.protein + ingredientCountTotals.protein,
-          carbs: (baseForCart.carbs ?? 0) + addonTotals.carbs + ingredientCountTotals.carbs,
-          totalFat: (baseForCart.totalFat ?? 0) + addonTotals.totalFat + ingredientCountTotals.totalFat,
-        },
+        macrosPerItem: calculateMenuItemMacrosPerItem({
+          baseNutrition: baseForCart,
+          addonTotals,
+          ingredientCountTotals,
+        }),
       });
     }
 
