@@ -64,7 +64,7 @@ function buildChipotleBuildYourOwnMenuItem(cartItem: CartItem, ingredientItems?:
         return {
           name: categoryName,
           ingredients: ingredientOptionsByCategory[categoryName],
-          ...(allowNone ? { allowNone: true } : {}),
+          allowNone,
         };
       }),
     },

@@ -1,10 +1,6 @@
-import { Geist } from "next/font/google";
+import ProfileGate from "@/components/profile/ProfileGate";
+import { ProfileProvider } from "@/components/profile/ProfileContext";
 import "./globals.css";
-
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
 
 export const metadata = {
   title: {
@@ -46,8 +42,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${geistSans.className} antialiased`}>
-        {children}
+      <body className="antialiased">
+        <ProfileProvider>
+          <ProfileGate>{children}</ProfileGate>
+        </ProfileProvider>
       </body>
     </html>
   );

@@ -3,7 +3,8 @@
 import { useMemo, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { Store, ChevronDown, ChevronRight, SlidersHorizontal, X } from "lucide-react";
+import { Store, ChevronDown, ChevronRight, SlidersHorizontal, UserRound, X } from "lucide-react";
+import { useProfile } from "@/components/profile/ProfileContext";
 import { getAllRestaurants, isRestaurantAvailable } from "@/lib/restaurants";
 
 type DrawerTab = "controls" | "restaurants";
@@ -31,6 +32,7 @@ export default function MobileNavDrawer({
 }) {
   const [activeTab, setActiveTab] = useState<DrawerTab>(defaultTab);
   const [isFeaturedOpen, setIsFeaturedOpen] = useState(true);
+  const { profile, switchProfile } = useProfile();
   const visibleRestaurants = getAllRestaurants();
 
   const featuredRestaurants = useMemo(
@@ -99,6 +101,25 @@ export default function MobileNavDrawer({
         </div>
 
         <div className="flex-1 overflow-y-auto px-4 py-4">
+          <div className="mb-4 rounded-2xl border border-slate-200 bg-slate-50 p-3">
+            <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">Active Profile</p>
+            <div className="mt-2 flex items-center justify-between gap-3">
+              <div className="inline-flex min-w-0 items-center gap-2">
+                <UserRound className="h-4 w-4 shrink-0 text-blue-600" strokeWidth={2.4} />
+                <span className="truncate text-sm font-semibold text-slate-900">{profile?.name ?? "No profile"}</span>
+              </div>
+              <button
+                type="button"
+                onClick={() => {
+                  switchProfile();
+                  onClose();
+                }}
+                className="shrink-0 rounded-full border border-slate-300 bg-white px-3 py-1.5 text-xs font-semibold text-slate-700 transition hover:border-slate-400 hover:text-slate-950"
+              >
+                Switch Profile
+              </button>
+            </div>
+          </div>
           {activeTab === "controls" && showControls ? (
             <div>{controlsContent}</div>
           ) : (
