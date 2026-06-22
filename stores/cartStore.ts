@@ -2,36 +2,24 @@
 
 import { useMemo, useSyncExternalStore } from "react";
 import type { ChipotleBuildConfiguration } from "@/lib/chipotleBuild";
+import type { Nutrition } from "@/types/menu";
 import type { CoreMacros } from "@/types/menu";
 
 export type CartMacros = CoreMacros;
-
-export type CartNutrition = {
-  calories: number;
-  totalFat: number;
-  satFat?: number;
-  transFat?: number;
-  cholesterol?: number;
-  sodium?: number;
-  carbs: number;
-  fiber?: number;
-  sugars?: number;
-  protein: number;
-};
 
 export type CartItem = {
   id: string;
   restaurantId: string;
   itemId: string;
   name: string;
-  image?: string;
+  image: string;
   variantId?: string;
   variantLabel?: string;
   optionsLabel?: string;
   customizations?: string[];
   quantity: number;
   macrosPerItem: CartMacros;
-  nutritionPerItem?: CartNutrition;
+  nutritionPerItem: Nutrition;
   buildConfiguration?: ChipotleBuildConfiguration;
 };
 
