@@ -8,23 +8,23 @@ import paneraMenu from "@/app/data/panera.json";
 import starbucksMenu from "@/app/data/starbucks.json";
 import subwayMenu from "@/app/data/subway.json";
 import { normalizeAddons } from "@/lib/addons";
-import { resolveMenuDataset } from "@/lib/menuResolver";
 import type {
   IngredientItem,
   MenuItem,
   RestaurantAddons,
   RestaurantCustomizationRules,
+  RestaurantMenu,
 } from "@/types/menu";
 
-const chickfilaData = resolveMenuDataset(chickfilaMenu);
-const chipotleData = resolveMenuDataset(chipotleMenu);
-const habitData = resolveMenuDataset(habitMenu);
-const mcdonaldsData = resolveMenuDataset(mcdonaldsMenu);
-const modData = resolveMenuDataset(modMenu);
-const pandaData = resolveMenuDataset(pandaMenu);
-const paneraData = resolveMenuDataset(paneraMenu);
-const starbucksData = resolveMenuDataset(starbucksMenu);
-const subwayData = resolveMenuDataset(subwayMenu);
+const chickfilaData = chickfilaMenu as unknown as RestaurantMenu;
+const chipotleData = chipotleMenu as unknown as RestaurantMenu;
+const habitData = habitMenu as unknown as RestaurantMenu;
+const mcdonaldsData = mcdonaldsMenu as unknown as RestaurantMenu;
+const modData = modMenu as unknown as RestaurantMenu;
+const pandaData = pandaMenu as unknown as RestaurantMenu;
+const paneraData = paneraMenu as unknown as RestaurantMenu;
+const starbucksData = starbucksMenu as unknown as RestaurantMenu;
+const subwayData = subwayMenu as unknown as RestaurantMenu;
 
 export const menuLookupByRestaurant: Record<string, MenuItem[]> = {
   chickfila: chickfilaData.items ?? [],

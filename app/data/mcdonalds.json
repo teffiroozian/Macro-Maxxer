@@ -12,10 +12,10 @@
             "nutrition": {
                 "calories": 740,
                 "protein": 48,
-                "carbs": 43
+                "carbs": 43,
+                "totalFat": 42
             },
-            "defaultOrder": 1,
-            "fat": 42
+            "defaultOrder": 1
         },
         {
             "id": "mcdonalds_bacon_quarter_pounder_w_cheese",
@@ -27,10 +27,10 @@
             "nutrition": {
                 "calories": 630,
                 "protein": 36,
-                "carbs": 43
+                "carbs": 43,
+                "totalFat": 35
             },
-            "defaultOrder": 2,
-            "fat": 35
+            "defaultOrder": 2
         },
         {
             "id": "mcdonalds_big_breakfast_w_hotcakes",
@@ -42,10 +42,10 @@
             "nutrition": {
                 "calories": 1340,
                 "protein": 36,
-                "carbs": 158
+                "carbs": 158,
+                "totalFat": 63
             },
-            "defaultOrder": 3,
-            "fat": 63
+            "defaultOrder": 3
         },
         {
             "id": "mcdonalds_steak_egg_cheese_bagel",
@@ -57,10 +57,10 @@
             "nutrition": {
                 "calories": 680,
                 "protein": 34,
-                "carbs": 57
+                "carbs": 57,
+                "totalFat": 35
             },
-            "defaultOrder": 4,
-            "fat": 35
+            "defaultOrder": 4
         },
         {
             "id": "mcdonalds_triple_cheeseburger",
@@ -72,10 +72,10 @@
             "nutrition": {
                 "calories": 530,
                 "protein": 32,
-                "carbs": 33
+                "carbs": 33,
+                "totalFat": 31
             },
-            "defaultOrder": 5,
-            "fat": 31
+            "defaultOrder": 5
         }
     ]
 }

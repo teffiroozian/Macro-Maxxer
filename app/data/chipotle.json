@@ -114,7 +114,13 @@
                 }
             ],
             "defaultVariantId": "side-of-guacamole",
-            "defaultOrder": 2
+            "defaultOrder": 2,
+            "nutrition": {
+                "calories": 230,
+                "protein": 2,
+                "carbs": 8,
+                "totalFat": 22
+            }
         },
         {
             "id": "chips-guacamole",
@@ -392,7 +398,13 @@
             ],
             "defaultVariantId": "side-of-cilantro-lime-sauce",
             "defaultOrder": 9,
-            "description": "Served on the Side"
+            "description": "Served on the Side",
+            "nutrition": {
+                "calories": 80,
+                "protein": 2,
+                "carbs": 3,
+                "totalFat": 6
+            }
         },
         {
             "id": "side-of-fresh-tomato-salsa",
@@ -430,7 +442,13 @@
             ],
             "defaultVariantId": "side-of-fresh-tomato-salsa",
             "defaultOrder": 10,
-            "description": "Mild"
+            "description": "Mild",
+            "nutrition": {
+                "calories": 25,
+                "protein": 0,
+                "carbs": 4,
+                "totalFat": 0
+            }
         },
         {
             "id": "side-of-tomatillo-red-chili-salsa",
@@ -468,7 +486,13 @@
             ],
             "defaultVariantId": "side-of-tomatillo-red-chili-salsa",
             "defaultOrder": 11,
-            "description": "Hot"
+            "description": "Hot",
+            "nutrition": {
+                "calories": 30,
+                "protein": 0,
+                "carbs": 4,
+                "totalFat": 0
+            }
         },
         {
             "id": "side-of-tomatillo-green-chili-salsa",
@@ -506,7 +530,13 @@
             ],
             "defaultVariantId": "side-of-tomatillo-green-chili-salsa",
             "defaultOrder": 12,
-            "description": "Medium"
+            "description": "Medium",
+            "nutrition": {
+                "calories": 15,
+                "protein": 0,
+                "carbs": 4,
+                "totalFat": 0
+            }
         },
         {
             "id": "side-of-roasted-chili-corn-salsa",
@@ -544,7 +574,13 @@
             ],
             "defaultVariantId": "side-of-roasted-chili-corn-salsa",
             "defaultOrder": 13,
-            "description": "Medium"
+            "description": "Medium",
+            "nutrition": {
+                "calories": 80,
+                "protein": 3,
+                "carbs": 16,
+                "totalFat": 1.5
+            }
         },
         {
             "id": "side-of-queso-blanco",
@@ -593,7 +629,13 @@
                 }
             ],
             "defaultVariantId": "side-of-queso-blanco",
-            "defaultOrder": 14
+            "defaultOrder": 14,
+            "nutrition": {
+                "calories": 120,
+                "protein": 5,
+                "carbs": 4,
+                "totalFat": 9
+            }
         },
         {
             "id": "tortilla-on-the-side",
@@ -705,7 +747,13 @@
                 "fajita-veggies",
                 "romaine-lettuce"
             ],
-            "defaultOrder": 8
+            "defaultOrder": 8,
+            "nutrition": {
+                "calories": 440,
+                "protein": 44,
+                "carbs": 48,
+                "totalFat": 10.0
+            }
         },
         {
             "id": "high-protein-low-calorie-bowl",
@@ -723,7 +771,13 @@
                 "fresh-tomato-salsa",
                 "guacamole"
             ],
-            "defaultOrder": 9
+            "defaultOrder": 9,
+            "nutrition": {
+                "calories": 460,
+                "protein": 35,
+                "carbs": 18,
+                "totalFat": 29
+            }
         },
         {
             "id": "double-high-protein-burrito",
@@ -742,7 +796,13 @@
                 "cheese",
                 "romaine-lettuce"
             ],
-            "defaultOrder": 10
+            "defaultOrder": 10,
+            "nutrition": {
+                "calories": 480,
+                "protein": 15,
+                "carbs": 61,
+                "totalFat": 17
+            }
         },
         {
             "id": "high-protein-taco",
@@ -761,7 +821,13 @@
                 "cheese",
                 "romaine-lettuce"
             ],
-            "defaultOrder": 11
+            "defaultOrder": 11,
+            "nutrition": {
+                "calories": 240,
+                "protein": 9,
+                "carbs": 24,
+                "totalFat": 10.5
+            }
         },
         {
             "id": "double-high-protein-bowl",
@@ -781,7 +847,13 @@
                 "cheese",
                 "romaine-lettuce"
             ],
-            "defaultOrder": 7
+            "defaultOrder": 7,
+            "nutrition": {
+                "calories": 290,
+                "protein": 15,
+                "carbs": 33,
+                "totalFat": 9.5
+            }
         },
         {
             "id": "side-of-chicken-al-pastor-high-protein",
@@ -794,7 +866,13 @@
             "entreeGroup": "high-protein-menu",
             "ingredientRef": "chicken-al-pastor",
             "defaultOrder": 12,
-            "description": "28g Protein"
+            "description": "28g Protein",
+            "nutrition": {
+                "calories": 200,
+                "protein": 23,
+                "carbs": 4,
+                "totalFat": 11
+            }
         },
         {
             "id": "side-of-chicken-high-protein",
@@ -807,7 +885,13 @@
             "entreeGroup": "high-protein-menu",
             "ingredientRef": "chicken",
             "defaultOrder": 13,
-            "description": "32g Protein"
+            "description": "32g Protein",
+            "nutrition": {
+                "calories": 180,
+                "protein": 32,
+                "carbs": 0,
+                "totalFat": 7
+            }
         },
         {
             "id": "side-of-steak-high-protein",
@@ -820,7 +904,13 @@
             "entreeGroup": "high-protein-menu",
             "ingredientRef": "steak",
             "defaultOrder": 14,
-            "description": "21g Protein"
+            "description": "21g Protein",
+            "nutrition": {
+                "calories": 150,
+                "protein": 21,
+                "carbs": 1,
+                "totalFat": 6
+            }
         },
         {
             "id": "mexican-coca-cola",

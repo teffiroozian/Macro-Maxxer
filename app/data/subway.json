@@ -12,10 +12,10 @@
             "nutrition": {
                 "calories": 1360,
                 "protein": 80,
-                "carbs": 92
+                "carbs": 92,
+                "totalFat": 74
             },
-            "defaultOrder": 1,
-            "fat": 74
+            "defaultOrder": 1
         },
         {
             "id": "subway_chicken_bacon_ranch",
@@ -27,10 +27,10 @@
             "nutrition": {
                 "calories": 1160,
                 "protein": 70,
-                "carbs": 88
+                "carbs": 88,
+                "totalFat": 58
             },
-            "defaultOrder": 2,
-            "fat": 58
+            "defaultOrder": 2
         },
         {
             "id": "subway_meatball_pepperoni",
@@ -42,10 +42,10 @@
             "nutrition": {
                 "calories": 1380,
                 "protein": 66,
-                "carbs": 112
+                "carbs": 112,
+                "totalFat": 76
             },
-            "defaultOrder": 3,
-            "fat": 76
+            "defaultOrder": 3
         },
         {
             "id": "subway_grilled_chicken",
@@ -57,10 +57,10 @@
             "nutrition": {
                 "calories": 1020,
                 "protein": 62,
-                "carbs": 86
+                "carbs": 86,
+                "totalFat": 48
             },
-            "defaultOrder": 4,
-            "fat": 48
+            "defaultOrder": 4
         },
         {
             "id": "subway_honey_mustard_bbq_chicken",
@@ -72,10 +72,10 @@
             "nutrition": {
                 "calories": 1020,
                 "protein": 62,
-                "carbs": 106
+                "carbs": 106,
+                "totalFat": 40
             },
-            "defaultOrder": 5,
-            "fat": 40
+            "defaultOrder": 5
         }
     ]
 }

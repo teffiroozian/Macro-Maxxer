@@ -12,10 +12,10 @@
             "nutrition": {
                 "calories": 1120,
                 "protein": 68,
-                "carbs": 88
+                "carbs": 88,
+                "totalFat": 55
             },
-            "defaultOrder": 1,
-            "fat": 55
+            "defaultOrder": 1
         },
         {
             "id": "panera_chicken_pesto_ciabatta_dipper",
@@ -27,10 +27,10 @@
             "nutrition": {
                 "calories": 930,
                 "protein": 63,
-                "carbs": 93
+                "carbs": 93,
+                "totalFat": 34
             },
-            "defaultOrder": 2,
-            "fat": 34
+            "defaultOrder": 2
         },
         {
             "id": "panera_toasted_italiano",
@@ -42,10 +42,10 @@
             "nutrition": {
                 "calories": 1280,
                 "protein": 60,
-                "carbs": 116
+                "carbs": 116,
+                "totalFat": 64
             },
-            "defaultOrder": 3,
-            "fat": 64
+            "defaultOrder": 3
         },
         {
             "id": "panera_spicy_fiesta_chicken",
@@ -57,10 +57,10 @@
             "nutrition": {
                 "calories": 850,
                 "protein": 54,
-                "carbs": 89
+                "carbs": 89,
+                "totalFat": 30
             },
-            "defaultOrder": 4,
-            "fat": 30
+            "defaultOrder": 4
         },
         {
             "id": "panera_chicken_bacon_rancher",
@@ -72,10 +72,10 @@
             "nutrition": {
                 "calories": 900,
                 "protein": 52,
-                "carbs": 74
+                "carbs": 74,
+                "totalFat": 45
             },
-            "defaultOrder": 5,
-            "fat": 45
+            "defaultOrder": 5
         }
     ]
 }

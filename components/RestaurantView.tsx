@@ -553,6 +553,8 @@ export default function RestaurantView({
           ? {
               id: quesadillaTripleCheeseVariantId,
               label: "",
+              categories: ingredient.categories,
+              isDefault: false,
               nutrition: scaleNutritionValues(ingredientBaseNutrition, 3),
             }
           : null;
@@ -570,14 +572,14 @@ export default function RestaurantView({
             typeof includedIngredientOrder === "number"
               ? includedIngredientOrder
               : (ingredient.defaultOrder ?? index),
-          variants: tripleCheeseVariant ? [...(variants ?? []), { ...tripleCheeseVariant, categories: ingredient.categories }] : variants,
+          variants: tripleCheeseVariant ? [...(variants ?? []), tripleCheeseVariant] : variants,
           defaultVariantId,
           hideVariantSelector:
             ingredient.hideVariantSelector || isQuesadillaCheeseIncludedIngredient,
           image: ingredient.image ?? "",
           categories: [displayCategory],
           servingType: "addon",
-          };
+        };
         return menuItem;
       });
 

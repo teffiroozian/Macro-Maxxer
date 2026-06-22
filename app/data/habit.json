@@ -12,10 +12,10 @@
             "nutrition": {
                 "calories": 870,
                 "protein": 53,
-                "carbs": 60
+                "carbs": 60,
+                "totalFat": 53
             },
-            "defaultOrder": 1,
-            "fat": 53
+            "defaultOrder": 1
         },
         {
             "id": "habit_santa_barbara_cobb",
@@ -27,10 +27,10 @@
             "nutrition": {
                 "calories": 820,
                 "protein": 50,
-                "carbs": 18
+                "carbs": 18,
+                "totalFat": 62
             },
-            "defaultOrder": 2,
-            "fat": 62
+            "defaultOrder": 2
         },
         {
             "id": "habit_santa_barbara_char",
@@ -42,10 +42,10 @@
             "nutrition": {
                 "calories": 1210,
                 "protein": 48,
-                "carbs": 48
+                "carbs": 48,
+                "totalFat": 93
             },
-            "defaultOrder": 3,
-            "fat": 93
+            "defaultOrder": 3
         },
         {
             "id": "habit_chicken_club_sandwich",
@@ -57,10 +57,10 @@
             "nutrition": {
                 "calories": 880,
                 "protein": 47,
-                "carbs": 43
+                "carbs": 43,
+                "totalFat": 59
             },
-            "defaultOrder": 4,
-            "fat": 59
+            "defaultOrder": 4
         },
         {
             "id": "habit_grilled_chicken_sandwich",
@@ -72,10 +72,10 @@
             "nutrition": {
                 "calories": 910,
                 "protein": 45,
-                "carbs": 59
+                "carbs": 59,
+                "totalFat": 57
             },
-            "defaultOrder": 5,
-            "fat": 57
+            "defaultOrder": 5
         }
     ]
 }
