@@ -4,6 +4,7 @@ import type {
   MenuItem,
 } from "@/types/menu";
 import type { ResolvedPanelIngredient } from "@/components/ItemDetailsPanel";
+import { getDefaultMenuItemNutrition } from "@/lib/nutrition";
 
 export function normalizeCategory(category: string) {
   return category.trim().toLowerCase();
@@ -89,7 +90,7 @@ export function addonFat(addon?: AddonOption) {
 }
 
 export function menuItemFat(item?: MenuItem) {
-  return item?.nutrition.totalFat ?? 0;
+  return item ? getDefaultMenuItemNutrition(item).totalFat : 0;
 }
 
 export function menuItemFatWithFallback(item?: MenuItem) {

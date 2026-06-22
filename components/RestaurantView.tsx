@@ -92,6 +92,7 @@ import {
   scaleNutritionValues,
 } from "@/lib/chipotleBuild";
 import { resolvePrimaryCategory } from "@/lib/ingredientTabs";
+import { getDefaultMenuItemNutrition } from "@/lib/nutrition";
 import {
   filterMenuItems,
   getSearchTerms,
@@ -646,7 +647,7 @@ export default function RestaurantView({
 
   const calorieBounds = useMemo(() => {
     const calories = sourceItems
-      .map((item) => item.nutrition.calories)
+      .map((item) => getDefaultMenuItemNutrition(item).calories)
       .filter((calories): calories is number => typeof calories === "number");
 
     if (!calories.length) {
