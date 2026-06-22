@@ -88,7 +88,7 @@
         },
         {
             "id": "crispy-nuggets",
-            "name": "Chick-fil-A® Nuggets",
+            "name": "Chick-fil-A\u00ae Nuggets",
             "image": "/restaurants/chickfila/menu/chicken/crispy-nuggets.webp",
             "categories": [
                 "Nuggets"
@@ -188,7 +188,7 @@
         },
         {
             "id": "chick_fil_a_deluxe_sandwich",
-            "name": "Chick-fil-A® Deluxe Sandwich",
+            "name": "Chick-fil-A\u00ae Deluxe Sandwich",
             "image": "/restaurants/chickfila/menu/sandwiches/deluxe-sandwich.webp",
             "categories": [
                 "Sandwich"
@@ -218,7 +218,7 @@
         },
         {
             "id": "chick_fil_a_cool_wrap",
-            "name": "Chick-fil-A® Cool Wrap",
+            "name": "Chick-fil-A\u00ae Cool Wrap",
             "image": "/restaurants/chickfila/menu/wraps/cool-wrap.webp",
             "categories": [
                 "Wrap"
@@ -274,7 +274,7 @@
         },
         {
             "id": "chick_fil_a_chick_n_strips",
-            "name": "Chick-fil-A Chick-n-Strips®",
+            "name": "Chick-fil-A Chick-n-Strips\u00ae",
             "image": "/restaurants/chickfila/menu/chicken/chicken-strips.webp",
             "categories": [
                 "Nuggets"
@@ -2242,7 +2242,7 @@
         },
         {
             "id": "sunjoy_1_2_sweet_tea_1_2_lemonade",
-            "name": "Sunjoy® (1/2 Sweet Tea, 1/2 Lemonade)",
+            "name": "Sunjoy\u00ae (1/2 Sweet Tea, 1/2 Lemonade)",
             "image": "/restaurants/chickfila/menu/drinks/sunjoy.webp",
             "categories": [
                 "Drinks"
@@ -2318,7 +2318,7 @@
         },
         {
             "id": "sunjoy_1_2_sweet_tea_1_2_diet_lemonade",
-            "name": "Sunjoy® (1/2 Sweet Tea, 1/2 Diet Lemonade)",
+            "name": "Sunjoy\u00ae (1/2 Sweet Tea, 1/2 Diet Lemonade)",
             "image": "/restaurants/chickfila/menu/drinks/sunjoy.webp",
             "categories": [
                 "Drinks"
@@ -2394,7 +2394,7 @@
         },
         {
             "id": "sunjoy_1_2_unsweet_tea_1_2_lemonade",
-            "name": "Sunjoy® (1/2 Unsweet Tea, 1/2 Lemonade)",
+            "name": "Sunjoy\u00ae (1/2 Unsweet Tea, 1/2 Lemonade)",
             "image": "/restaurants/chickfila/menu/drinks/sunjoy.webp",
             "categories": [
                 "Drinks"
@@ -2470,7 +2470,7 @@
         },
         {
             "id": "sunjoy_1_2_unsweet_tea_1_2_diet_lemonade",
-            "name": "Sunjoy® (1/2 Unsweet Tea, 1/2 Diet Lemonade)",
+            "name": "Sunjoy\u00ae (1/2 Unsweet Tea, 1/2 Diet Lemonade)",
             "image": "/restaurants/chickfila/menu/drinks/sunjoy.webp",
             "categories": [
                 "Drinks"
@@ -2605,7 +2605,7 @@
         },
         {
             "id": "coca_cola",
-            "name": "Coca-Cola®",
+            "name": "Coca-Cola\u00ae",
             "image": "/restaurants/chickfila/menu/drinks/coca-cola.webp",
             "categories": [
                 "Drinks"
@@ -2681,7 +2681,7 @@
         },
         {
             "id": "dasani_bottled_water",
-            "name": "DASANI® Bottled Water",
+            "name": "DASANI\u00ae Bottled Water",
             "image": "/restaurants/chickfila/menu/drinks/dasani-water.webp",
             "categories": [
                 "Drinks"
@@ -2703,7 +2703,7 @@
         },
         {
             "id": "honest_kids_apple_juice",
-            "name": "Honest Kids® Apple Juice",
+            "name": "Honest Kids\u00ae Apple Juice",
             "image": "/restaurants/chickfila/menu/drinks/apple-juice.webp",
             "categories": [
                 "Drinks"
@@ -2725,7 +2725,7 @@
         },
         {
             "id": "simply_orange",
-            "name": "Simply Orange®",
+            "name": "Simply Orange\u00ae",
             "image": "/restaurants/chickfila/menu/drinks/orange-juice.webp",
             "categories": [
                 "Drinks"
@@ -2791,7 +2791,7 @@
         },
         {
             "id": "dr_pepper",
-            "name": "Dr Pepper®",
+            "name": "Dr Pepper\u00ae",
             "image": "/restaurants/chickfila/menu/drinks/dr-pepper.webp",
             "categories": [
                 "Drinks"
@@ -3036,7 +3036,7 @@
         },
         {
             "id": "cfa-breakfast-filet",
-            "name": "Chick-fil-A® Breakfast Filet",
+            "name": "Chick-fil-A\u00ae Breakfast Filet",
             "image": "/restaurants/chickfila/ingredients/proteins/cfa-filet.webp",
             "categories": [
                 "Breakfast Proteins"
@@ -3124,7 +3124,7 @@
         },
         {
             "id": "cfa-filet",
-            "name": "Chick-fil-A® Filet",
+            "name": "Chick-fil-A\u00ae Filet",
             "image": "/restaurants/chickfila/ingredients/proteins/cfa-filet.webp",
             "categories": [
                 "Proteins"
@@ -3500,7 +3500,10 @@
                 "Salad Toppings"
             ],
             "nutrition": {
-                "calories": 15
+                "calories": 15,
+                "protein": 0,
+                "carbs": 0,
+                "totalFat": 0
             },
             "maxQuantity": 10,
             "defaultOrder": 8
@@ -3513,7 +3516,10 @@
                 "Salad Toppings"
             ],
             "nutrition": {
-                "calories": 10
+                "calories": 10,
+                "protein": 0,
+                "carbs": 0,
+                "totalFat": 0
             },
             "maxQuantity": 10,
             "defaultOrder": 9
@@ -3526,20 +3532,26 @@
                 "Salad Toppings"
             ],
             "nutrition": {
-                "calories": 45
+                "calories": 45,
+                "protein": 0,
+                "carbs": 0,
+                "totalFat": 0
             },
             "maxQuantity": 10,
             "defaultOrder": 10
         },
         {
             "id": "jalapenos",
-            "name": "Jalapeños",
+            "name": "Jalape\u00f1os",
             "image": "/restaurants/chickfila/ingredients/salad-toppings/jalapenos.png",
             "categories": [
                 "Salad Toppings"
             ],
             "nutrition": {
-                "calories": 5
+                "calories": 5,
+                "protein": 0,
+                "carbs": 0,
+                "totalFat": 0
             },
             "maxQuantity": 10,
             "defaultOrder": 11
@@ -3552,7 +3564,10 @@
                 "Salad Toppings"
             ],
             "nutrition": {
-                "calories": 5
+                "calories": 5,
+                "protein": 0,
+                "carbs": 0,
+                "totalFat": 0
             },
             "maxQuantity": 10,
             "defaultOrder": 4
@@ -3565,7 +3580,10 @@
                 "Salad Toppings"
             ],
             "nutrition": {
-                "calories": 15
+                "calories": 15,
+                "protein": 0,
+                "carbs": 0,
+                "totalFat": 0
             },
             "maxQuantity": 10,
             "defaultOrder": 5
@@ -3578,7 +3596,10 @@
                 "Salad Toppings"
             ],
             "nutrition": {
-                "calories": 5
+                "calories": 5,
+                "protein": 0,
+                "carbs": 0,
+                "totalFat": 0
             },
             "maxQuantity": 10,
             "defaultOrder": 6
@@ -3591,7 +3612,10 @@
                 "Salad Toppings"
             ],
             "nutrition": {
-                "calories": 35
+                "calories": 35,
+                "protein": 0,
+                "carbs": 0,
+                "totalFat": 0
             },
             "maxQuantity": 10,
             "defaultOrder": 1
@@ -3604,7 +3628,10 @@
                 "Salad Toppings"
             ],
             "nutrition": {
-                "calories": 20
+                "calories": 20,
+                "protein": 0,
+                "carbs": 0,
+                "totalFat": 0
             },
             "maxQuantity": 10,
             "defaultOrder": 2
@@ -3617,7 +3644,10 @@
                 "Treat Toppings"
             ],
             "nutrition": {
-                "calories": 15
+                "calories": 15,
+                "protein": 0,
+                "carbs": 0,
+                "totalFat": 0
             },
             "maxQuantity": 10,
             "defaultOrder": 5
@@ -3630,7 +3660,10 @@
                 "Breakfast Buns"
             ],
             "nutrition": {
-                "calories": 290
+                "calories": 290,
+                "protein": 0,
+                "carbs": 0,
+                "totalFat": 0
             },
             "maxQuantity": 10,
             "defaultOrder": 37
@@ -3643,7 +3676,10 @@
                 "Breakfast Buns"
             ],
             "nutrition": {
-                "calories": 140
+                "calories": 140,
+                "protein": 0,
+                "carbs": 0,
+                "totalFat": 0
             },
             "maxQuantity": 10,
             "defaultOrder": 38
@@ -3656,7 +3692,10 @@
                 "Eggs"
             ],
             "nutrition": {
-                "calories": 30
+                "calories": 30,
+                "protein": 0,
+                "carbs": 0,
+                "totalFat": 0
             },
             "maxQuantity": 10,
             "defaultOrder": 39
@@ -3669,7 +3708,10 @@
                 "Eggs"
             ],
             "nutrition": {
-                "calories": 60
+                "calories": 60,
+                "protein": 0,
+                "carbs": 0,
+                "totalFat": 0
             },
             "maxQuantity": 10,
             "defaultOrder": 40
@@ -3784,7 +3826,10 @@
                 "Sauces"
             ],
             "nutrition": {
-                "calories": 60
+                "calories": 60,
+                "protein": 0,
+                "carbs": 0,
+                "totalFat": 0
             },
             "maxQuantity": 2,
             "defaultOrder": 47,
@@ -3798,7 +3843,10 @@
                 "Proteins"
             ],
             "nutrition": {
-                "calories": 250
+                "calories": 250,
+                "protein": 0,
+                "carbs": 0,
+                "totalFat": 0
             },
             "maxQuantity": 1,
             "defaultOrder": 6,
@@ -3812,7 +3860,10 @@
                 "Proteins"
             ],
             "nutrition": {
-                "calories": 130
+                "calories": 130,
+                "protein": 0,
+                "carbs": 0,
+                "totalFat": 0
             },
             "maxQuantity": 1,
             "defaultOrder": 7,
@@ -3820,13 +3871,16 @@
         },
         {
             "id": "chick-n-strips",
-            "name": "Chick-fil-A Chick-n-Strips®",
+            "name": "Chick-fil-A Chick-n-Strips\u00ae",
             "image": "/restaurants/chickfila/menu/chicken/chicken-strips.webp",
             "categories": [
                 "Proteins"
             ],
             "nutrition": {
-                "calories": 310
+                "calories": 310,
+                "protein": 0,
+                "carbs": 0,
+                "totalFat": 0
             },
             "maxQuantity": 1,
             "defaultOrder": 8,
@@ -3840,7 +3894,10 @@
                 "Breakfast Sides"
             ],
             "nutrition": {
-                "calories": 270
+                "calories": 270,
+                "protein": 0,
+                "carbs": 0,
+                "totalFat": 0
             },
             "maxQuantity": 10,
             "defaultOrder": 51,

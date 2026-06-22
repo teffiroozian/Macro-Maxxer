@@ -1,6 +1,5 @@
 import restaurants from "@/app/data/index.json";
 import { normalizeAddons } from "@/lib/addons";
-import { resolveMenuDataset } from "@/lib/menuResolver";
 import type {
   IngredientItem,
   MenuItem,
@@ -50,7 +49,7 @@ export async function getRestaurantData(id: string): Promise<RestaurantData | nu
   if (!restaurant) return null;
 
   const menuModule = await import(`@/app/data/${restaurant.menuFile}`);
-  const menu = resolveMenuDataset(menuModule.default);
+  const menu = menuModule.default;
   const ingredients = menu.ingredients ?? [];
   const items = menu.items ?? [];
   return {

@@ -12,18 +12,6 @@
             ],
             "servingType": "side",
             "entreeGroup": "chips-sides",
-            "nutrition": {
-                "calories": 540,
-                "protein": 7,
-                "carbs": 73,
-                "totalFat": 25,
-                "satFat": 3.5,
-                "transFat": 0,
-                "cholesterol": 0,
-                "sodium": 390,
-                "fiber": 7,
-                "sugars": 1
-            },
             "ingredients": [
                 "chips"
             ],
@@ -125,18 +113,6 @@
             ],
             "servingType": "side",
             "entreeGroup": "chips-sides",
-            "nutrition": {
-                "calories": 770,
-                "protein": 9,
-                "carbs": 81,
-                "totalFat": 47,
-                "satFat": 7.5,
-                "transFat": 0,
-                "cholesterol": 0,
-                "sodium": 760,
-                "fiber": 13,
-                "sugars": 2
-            },
             "ingredients": [
                 "chips",
                 "guacamole"
@@ -301,18 +277,6 @@
             ],
             "servingType": "side",
             "entreeGroup": "chips-sides",
-            "nutrition": {
-                "calories": 780,
-                "protein": 17,
-                "carbs": 80,
-                "totalFat": 43,
-                "satFat": 15.5,
-                "transFat": 1,
-                "cholesterol": 60,
-                "sodium": 880,
-                "fiber": 7,
-                "sugars": 3
-            },
             "ingredients": [
                 "chips",
                 "queso-blanco"
@@ -705,7 +669,13 @@
                 "fajita-veggies",
                 "romaine-lettuce"
             ],
-            "defaultOrder": 8
+            "defaultOrder": 8,
+            "nutrition": {
+                "calories": 440,
+                "protein": 44,
+                "carbs": 48,
+                "totalFat": 10.0
+            }
         },
         {
             "id": "high-protein-low-calorie-bowl",
@@ -723,7 +693,13 @@
                 "fresh-tomato-salsa",
                 "guacamole"
             ],
-            "defaultOrder": 9
+            "defaultOrder": 9,
+            "nutrition": {
+                "calories": 460,
+                "protein": 35,
+                "carbs": 18,
+                "totalFat": 29
+            }
         },
         {
             "id": "double-high-protein-burrito",
@@ -742,7 +718,13 @@
                 "cheese",
                 "romaine-lettuce"
             ],
-            "defaultOrder": 10
+            "defaultOrder": 10,
+            "nutrition": {
+                "calories": 480,
+                "protein": 15,
+                "carbs": 61,
+                "totalFat": 17
+            }
         },
         {
             "id": "high-protein-taco",
@@ -761,7 +743,13 @@
                 "cheese",
                 "romaine-lettuce"
             ],
-            "defaultOrder": 11
+            "defaultOrder": 11,
+            "nutrition": {
+                "calories": 240,
+                "protein": 9,
+                "carbs": 24,
+                "totalFat": 10.5
+            }
         },
         {
             "id": "double-high-protein-bowl",
@@ -781,7 +769,13 @@
                 "cheese",
                 "romaine-lettuce"
             ],
-            "defaultOrder": 7
+            "defaultOrder": 7,
+            "nutrition": {
+                "calories": 290,
+                "protein": 15,
+                "carbs": 33,
+                "totalFat": 9.5
+            }
         },
         {
             "id": "side-of-chicken-al-pastor-high-protein",
@@ -794,7 +788,13 @@
             "entreeGroup": "high-protein-menu",
             "ingredientRef": "chicken-al-pastor",
             "defaultOrder": 12,
-            "description": "28g Protein"
+            "description": "28g Protein",
+            "nutrition": {
+                "calories": 200,
+                "protein": 23,
+                "carbs": 4,
+                "totalFat": 11
+            }
         },
         {
             "id": "side-of-chicken-high-protein",
@@ -807,7 +807,13 @@
             "entreeGroup": "high-protein-menu",
             "ingredientRef": "chicken",
             "defaultOrder": 13,
-            "description": "32g Protein"
+            "description": "32g Protein",
+            "nutrition": {
+                "calories": 180,
+                "protein": 32,
+                "carbs": 0,
+                "totalFat": 7
+            }
         },
         {
             "id": "side-of-steak-high-protein",
@@ -820,7 +826,13 @@
             "entreeGroup": "high-protein-menu",
             "ingredientRef": "steak",
             "defaultOrder": 14,
-            "description": "21g Protein"
+            "description": "21g Protein",
+            "nutrition": {
+                "calories": 150,
+                "protein": 21,
+                "carbs": 1,
+                "totalFat": 6
+            }
         },
         {
             "id": "mexican-coca-cola",
@@ -1054,19 +1066,6 @@
             ],
             "servingType": "drink",
             "entreeGroup": "drinks",
-            "nutrition": {
-                "calories": 280,
-                "protein": 0,
-                "carbs": 85,
-                "totalFat": 0,
-                "satFat": 0,
-                "transFat": 0,
-                "cholesterol": 0,
-                "sodium": 130,
-                "fiber": 0,
-                "sugars": 85,
-                "caloriesFromFat": 0
-            },
             "variants": [
                 {
                     "id": "barqs-root-beer-fountain-22-fl-oz",
@@ -1117,19 +1116,6 @@
             ],
             "servingType": "drink",
             "entreeGroup": "drinks",
-            "nutrition": {
-                "calories": 260,
-                "protein": 0,
-                "carbs": 70,
-                "totalFat": 0,
-                "satFat": 0,
-                "transFat": 0,
-                "cholesterol": 0,
-                "sodium": 85,
-                "fiber": 0,
-                "sugars": 70,
-                "caloriesFromFat": 0
-            },
             "variants": [
                 {
                     "id": "coca-cola-classic-fountain-22-fl-oz",
@@ -1180,19 +1166,6 @@
             ],
             "servingType": "drink",
             "entreeGroup": "drinks",
-            "nutrition": {
-                "calories": 170,
-                "protein": 0,
-                "carbs": 44,
-                "totalFat": 0,
-                "satFat": 0,
-                "transFat": 0,
-                "cholesterol": 0,
-                "sodium": 70,
-                "fiber": 0,
-                "sugars": 44,
-                "caloriesFromFat": 0
-            },
             "variants": [
                 {
                     "id": "coca-cola-life-fountain-22-fl-oz",
@@ -1243,19 +1216,6 @@
             ],
             "servingType": "drink",
             "entreeGroup": "drinks",
-            "nutrition": {
-                "calories": 0,
-                "protein": 0,
-                "carbs": 0,
-                "totalFat": 0,
-                "satFat": 0,
-                "transFat": 0,
-                "cholesterol": 0,
-                "sodium": 75,
-                "fiber": 0,
-                "sugars": 0,
-                "caloriesFromFat": 0
-            },
             "variants": [
                 {
                     "id": "coca-cola-zero-fountain-22-fl-oz",
@@ -1306,19 +1266,6 @@
             ],
             "servingType": "drink",
             "entreeGroup": "drinks",
-            "nutrition": {
-                "calories": 0,
-                "protein": 0,
-                "carbs": 0,
-                "totalFat": 0,
-                "satFat": 0,
-                "transFat": 0,
-                "cholesterol": 0,
-                "sodium": 75,
-                "fiber": 0,
-                "sugars": 0,
-                "caloriesFromFat": 0
-            },
             "variants": [
                 {
                     "id": "diet-coke-fountain-22-fl-oz",
@@ -1369,19 +1316,6 @@
             ],
             "servingType": "drink",
             "entreeGroup": "drinks",
-            "nutrition": {
-                "calories": 0,
-                "protein": 0,
-                "carbs": 0,
-                "totalFat": 0,
-                "satFat": 0,
-                "transFat": 0,
-                "cholesterol": 0,
-                "sodium": 90,
-                "fiber": 0,
-                "sugars": 0,
-                "caloriesFromFat": 0
-            },
             "variants": [
                 {
                     "id": "diet-coke-caffeine-free-fountain-22-fl-oz",
@@ -1432,19 +1366,6 @@
             ],
             "servingType": "drink",
             "entreeGroup": "drinks",
-            "nutrition": {
-                "calories": 260,
-                "protein": 0,
-                "carbs": 70,
-                "totalFat": 0,
-                "satFat": 0,
-                "transFat": 0,
-                "cholesterol": 0,
-                "sodium": 75,
-                "fiber": 0,
-                "sugars": 70,
-                "caloriesFromFat": 0
-            },
             "variants": [
                 {
                     "id": "pibb-xtra-fountain-22-fl-oz",
@@ -1495,19 +1416,6 @@
             ],
             "servingType": "drink",
             "entreeGroup": "drinks",
-            "nutrition": {
-                "calories": 260,
-                "protein": 0,
-                "carbs": 70,
-                "totalFat": 0,
-                "satFat": 0,
-                "transFat": 0,
-                "cholesterol": 0,
-                "sodium": 120,
-                "fiber": 0,
-                "sugars": 70,
-                "caloriesFromFat": 0
-            },
             "variants": [
                 {
                     "id": "sprite-fountain-22-fl-oz",
@@ -1558,19 +1466,6 @@
             ],
             "servingType": "drink",
             "entreeGroup": "drinks",
-            "nutrition": {
-                "calories": 290,
-                "protein": 0,
-                "carbs": 80,
-                "totalFat": 0,
-                "satFat": 0,
-                "transFat": 0,
-                "cholesterol": 0,
-                "sodium": 80,
-                "fiber": 0,
-                "sugars": 80,
-                "caloriesFromFat": 0
-            },
             "variants": [
                 {
                     "id": "fanta-orange-fountain-22-fl-oz",
@@ -1621,19 +1516,6 @@
             ],
             "servingType": "drink",
             "entreeGroup": "drinks",
-            "nutrition": {
-                "calories": 280,
-                "protein": 0,
-                "carbs": 75,
-                "totalFat": 0,
-                "satFat": 0,
-                "transFat": 0,
-                "cholesterol": 0,
-                "sodium": 95,
-                "fiber": 0,
-                "sugars": 75,
-                "caloriesFromFat": 0
-            },
             "variants": [
                 {
                     "id": "minute-maid-lemonade-fountain-22-fl-oz",
@@ -1684,19 +1566,6 @@
             ],
             "servingType": "drink",
             "entreeGroup": "drinks",
-            "nutrition": {
-                "calories": 280,
-                "protein": 0,
-                "carbs": 75,
-                "totalFat": 0,
-                "satFat": 0,
-                "transFat": 0,
-                "cholesterol": 0,
-                "sodium": 95,
-                "fiber": 0,
-                "sugars": 75,
-                "caloriesFromFat": 0
-            },
             "variants": [
                 {
                     "id": "powerade-mountain-berry-blast-fountain-22-fl-oz",
@@ -1747,19 +1616,6 @@
             ],
             "servingType": "drink",
             "entreeGroup": "drinks",
-            "nutrition": {
-                "calories": 290,
-                "protein": 0,
-                "carbs": 80,
-                "totalFat": 0,
-                "satFat": 0,
-                "transFat": 0,
-                "cholesterol": 0,
-                "sodium": 100,
-                "fiber": 0,
-                "sugars": 100,
-                "caloriesFromFat": 0
-            },
             "variants": [
                 {
                     "id": "mello-yello-fountain-22-fl-oz",
@@ -1810,19 +1666,6 @@
             ],
             "servingType": "drink",
             "entreeGroup": "drinks",
-            "nutrition": {
-                "calories": 300,
-                "protein": 0,
-                "carbs": 78,
-                "totalFat": 0,
-                "satFat": 0,
-                "transFat": 0,
-                "cholesterol": 0,
-                "sodium": 95,
-                "fiber": 0,
-                "sugars": 74,
-                "caloriesFromFat": 0
-            },
             "variants": [
                 {
                     "id": "lemonade-blue-sky-fountain-22-fl-oz",
@@ -1873,19 +1716,6 @@
             ],
             "servingType": "drink",
             "entreeGroup": "drinks",
-            "nutrition": {
-                "calories": 300,
-                "protein": 0,
-                "carbs": 75,
-                "totalFat": 0,
-                "satFat": 0,
-                "transFat": 0,
-                "cholesterol": 0,
-                "sodium": 80,
-                "fiber": 0,
-                "sugars": 74,
-                "caloriesFromFat": 0
-            },
             "variants": [
                 {
                     "id": "mango-orange-blue-sky-fountain-22-fl-oz",
@@ -1936,19 +1766,6 @@
             ],
             "servingType": "drink",
             "entreeGroup": "drinks",
-            "nutrition": {
-                "calories": 170,
-                "protein": 0,
-                "carbs": 62,
-                "totalFat": 0,
-                "satFat": 0,
-                "transFat": 0,
-                "cholesterol": 0,
-                "sodium": 45,
-                "fiber": 0,
-                "sugars": 62,
-                "caloriesFromFat": 0
-            },
             "variants": [
                 {
                     "id": "maine-root-root-beer-fountain-22-fl-oz",
@@ -1999,19 +1816,6 @@
             ],
             "servingType": "drink",
             "entreeGroup": "drinks",
-            "nutrition": {
-                "calories": 10,
-                "protein": 0,
-                "carbs": 3,
-                "totalFat": 0,
-                "satFat": 0,
-                "transFat": 0,
-                "cholesterol": 0,
-                "sodium": 0,
-                "fiber": 0,
-                "sugars": 0,
-                "caloriesFromFat": 0
-            },
             "variants": [
                 {
                     "id": "chipotle-iced-tea-fountain-22-fl-oz",
@@ -2062,19 +1866,6 @@
             ],
             "servingType": "drink",
             "entreeGroup": "drinks",
-            "nutrition": {
-                "calories": 150,
-                "protein": 0,
-                "carbs": 45,
-                "totalFat": 0,
-                "satFat": 0,
-                "transFat": 0,
-                "cholesterol": 0,
-                "sodium": 0,
-                "fiber": 0,
-                "sugars": 45,
-                "caloriesFromFat": 0
-            },
             "variants": [
                 {
                     "id": "chipotle-sweet-iced-tea-fountain-22-fl-oz",
@@ -2125,18 +1916,6 @@
             ],
             "servingType": "drink",
             "entreeGroup": "drinks",
-            "nutrition": {
-                "calories": 230,
-                "protein": 0,
-                "carbs": 56,
-                "totalFat": 0,
-                "satFat": 0,
-                "transFat": 0,
-                "cholesterol": 0,
-                "sodium": 5,
-                "fiber": 0,
-                "sugars": 50
-            },
             "variants": [
                 {
                     "id": "organic-watermelon-limeade-22-fl-oz",
@@ -2185,18 +1964,6 @@
             ],
             "servingType": "drink",
             "entreeGroup": "drinks",
-            "nutrition": {
-                "calories": 170,
-                "protein": 0,
-                "carbs": 43,
-                "totalFat": 0,
-                "satFat": 0,
-                "transFat": 0,
-                "cholesterol": 0,
-                "sodium": 10,
-                "fiber": 0,
-                "sugars": 37
-            },
             "variants": [
                 {
                     "id": "organic-lemonade-22-fl-oz",
@@ -2245,18 +2012,6 @@
             ],
             "servingType": "drink",
             "entreeGroup": "drinks",
-            "nutrition": {
-                "calories": 190,
-                "protein": 0,
-                "carbs": 47,
-                "totalFat": 0,
-                "satFat": 0,
-                "transFat": 0,
-                "cholesterol": 0,
-                "sodium": 0,
-                "fiber": 0,
-                "sugars": 47
-            },
             "variants": [
                 {
                     "id": "organic-mandarin-agua-fresca-22-fl-oz",
@@ -2305,18 +2060,6 @@
             ],
             "servingType": "drink",
             "entreeGroup": "drinks",
-            "nutrition": {
-                "calories": 200,
-                "protein": 0,
-                "carbs": 50,
-                "totalFat": 0,
-                "satFat": 0,
-                "transFat": 0,
-                "cholesterol": 0,
-                "sodium": 10,
-                "fiber": 0,
-                "sugars": 49
-            },
             "variants": [
                 {
                     "id": "organic-berry-agua-fresca-22-fl-oz",

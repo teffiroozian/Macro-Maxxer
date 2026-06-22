@@ -3,6 +3,7 @@ import {
   INGREDIENT_CATEGORY_PRIORITY_GROUPS,
 } from "@/app/data/menuCategoryConfig";
 import type { MenuItem } from "@/types/menu";
+import { getDefaultMenuItemNutrition } from "@/lib/nutrition";
 import {
   SORT_OPTION_VALUES,
   isDefaultOrderSort,
@@ -109,19 +110,7 @@ function proteinScore(item: MenuItem) {
 }
 
 function getSortNutrition(item: MenuItem) {
-  const variants = item.variants ?? [];
-  if (variants.length === 0) {
-    return item.nutrition;
-  }
-
-  const defaultVariant =
-    (item.defaultVariantId
-      ? variants.find((variant) => variant.id === item.defaultVariantId)
-      : undefined) ??
-    variants.find((variant) => variant.isDefault) ??
-    variants[0];
-
-  return defaultVariant?.nutrition ?? item.nutrition;
+  return getDefaultMenuItemNutrition(item);
 }
 
 function compareNumericWithMissingLast(

@@ -1,4 +1,5 @@
 import type { MenuItem } from "@/types/menu";
+import { getDefaultMenuItemNutrition } from "@/lib/nutrition";
 import { getCategoryLabel } from "@/lib/menuSections/sorting";
 
 export type Filters = {
@@ -41,8 +42,9 @@ export function getRankedAllFilterKey(
 }
 
 export function itemMatchesNutritionFilters(item: MenuItem, filters: Filters): boolean {
-  const protein = item.nutrition.protein ?? 0;
-  const calories = item.nutrition.calories ?? 0;
+  const nutrition = getDefaultMenuItemNutrition(item);
+  const protein = nutrition.protein ?? 0;
+  const calories = nutrition.calories ?? 0;
 
   if (filters.proteinMin && protein < filters.proteinMin) {
     return false;

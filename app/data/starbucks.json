@@ -12,10 +12,10 @@
             "nutrition": {
                 "calories": 250,
                 "protein": 36,
-                "carbs": 14
+                "carbs": 14,
+                "totalFat": 5
             },
-            "defaultOrder": 1,
-            "fat": 5
+            "defaultOrder": 1
         },
         {
             "id": "starbucks_iced_protein_matcha",
@@ -27,10 +27,10 @@
             "nutrition": {
                 "calories": 300,
                 "protein": 36,
-                "carbs": 29
+                "carbs": 29,
+                "totalFat": 5
             },
-            "defaultOrder": 2,
-            "fat": 5
+            "defaultOrder": 2
         },
         {
             "id": "starbucks_iced_sf_vanilla_protein_latte",
@@ -42,10 +42,10 @@
             "nutrition": {
                 "calories": 200,
                 "protein": 29,
-                "carbs": 12
+                "carbs": 12,
+                "totalFat": 4
             },
-            "defaultOrder": 3,
-            "fat": 4
+            "defaultOrder": 3
         },
         {
             "id": "starbucks_iced_vanilla_protein_latte",
@@ -57,10 +57,10 @@
             "nutrition": {
                 "calories": 270,
                 "protein": 29,
-                "carbs": 31
+                "carbs": 31,
+                "totalFat": 4
             },
-            "defaultOrder": 4,
-            "fat": 4
+            "defaultOrder": 4
         },
         {
             "id": "starbucks_sf_protein_matcha",
@@ -72,10 +72,10 @@
             "nutrition": {
                 "calories": 240,
                 "protein": 28,
-                "carbs": 18
+                "carbs": 18,
+                "totalFat": 7
             },
-            "defaultOrder": 5,
-            "fat": 7
+            "defaultOrder": 5
         }
     ]
 }

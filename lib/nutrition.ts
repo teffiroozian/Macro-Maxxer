@@ -1,4 +1,4 @@
-import type { Nutrition } from "@/types/menu";
+import type { MenuItem, Nutrition } from "@/types/menu";
 
 type OptionalNutritionKey = Exclude<keyof Nutrition, "calories" | "protein" | "carbs" | "totalFat">;
 
@@ -33,4 +33,16 @@ export function normalizeNutrition(nutrition?: Partial<Nutrition> | null): Nutri
   }
 
   return normalized;
+}
+
+export function getDefaultMenuItemNutrition(item: MenuItem): Nutrition {
+  const variants = item.variants ?? [];
+  const defaultVariant =
+    (item.defaultVariantId
+      ? variants.find((variant) => variant.id === item.defaultVariantId)
+      : undefined) ??
+    variants.find((variant) => variant.isDefault) ??
+    variants[0];
+
+  return defaultVariant?.nutrition ?? item.nutrition;
 }

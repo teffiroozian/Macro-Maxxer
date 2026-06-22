@@ -92,6 +92,7 @@ import {
   scaleNutritionValues,
 } from "@/lib/chipotleBuild";
 import { resolvePrimaryCategory } from "@/lib/ingredientTabs";
+import { getDefaultMenuItemNutrition } from "@/lib/nutrition";
 import {
   filterMenuItems,
   getSearchTerms,
@@ -553,6 +554,8 @@ export default function RestaurantView({
           ? {
               id: quesadillaTripleCheeseVariantId,
               label: "",
+              categories: ingredient.categories,
+              isDefault: false,
               nutrition: scaleNutritionValues(ingredientBaseNutrition, 3),
             }
           : null;
@@ -570,14 +573,14 @@ export default function RestaurantView({
             typeof includedIngredientOrder === "number"
               ? includedIngredientOrder
               : (ingredient.defaultOrder ?? index),
-          variants: tripleCheeseVariant ? [...(variants ?? []), { ...tripleCheeseVariant, categories: ingredient.categories }] : variants,
+          variants: tripleCheeseVariant ? [...(variants ?? []), tripleCheeseVariant] : variants,
           defaultVariantId,
           hideVariantSelector:
             ingredient.hideVariantSelector || isQuesadillaCheeseIncludedIngredient,
           image: ingredient.image ?? "",
           categories: [displayCategory],
           servingType: "addon",
-          };
+        };
         return menuItem;
       });
 
@@ -644,7 +647,7 @@ export default function RestaurantView({
 
   const calorieBounds = useMemo(() => {
     const calories = sourceItems
-      .map((item) => item.nutrition.calories)
+      .map((item) => getDefaultMenuItemNutrition(item).calories)
       .filter((calories): calories is number => typeof calories === "number");
 
     if (!calories.length) {

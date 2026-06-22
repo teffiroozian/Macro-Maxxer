@@ -12,10 +12,10 @@
             "nutrition": {
                 "calories": 860,
                 "protein": 50,
-                "carbs": 95
+                "carbs": 95,
+                "totalFat": 28
             },
-            "defaultOrder": 1,
-            "fat": 28
+            "defaultOrder": 1
         },
         {
             "id": "mod_cheesy_garlic_bread",
@@ -27,10 +27,10 @@
             "nutrition": {
                 "calories": 1340,
                 "protein": 50,
-                "carbs": 179
+                "carbs": 179,
+                "totalFat": 43
             },
-            "defaultOrder": 2,
-            "fat": 43
+            "defaultOrder": 2
         },
         {
             "id": "mod_caspian_mod",
@@ -42,10 +42,10 @@
             "nutrition": {
                 "calories": 970,
                 "protein": 49,
-                "carbs": 125
+                "carbs": 125,
+                "totalFat": 29
             },
-            "defaultOrder": 3,
-            "fat": 29
+            "defaultOrder": 3
         },
         {
             "id": "mod_mad_dog_mod",
@@ -57,10 +57,10 @@
             "nutrition": {
                 "calories": 980,
                 "protein": 49,
-                "carbs": 95
+                "carbs": 95,
+                "totalFat": 43
             },
-            "defaultOrder": 4,
-            "fat": 43
+            "defaultOrder": 4
         },
         {
             "id": "mod_jasper_mod",
@@ -72,10 +72,10 @@
             "nutrition": {
                 "calories": 790,
                 "protein": 41,
-                "carbs": 96
+                "carbs": 96,
+                "totalFat": 25
             },
-            "defaultOrder": 5,
-            "fat": 25
+            "defaultOrder": 5
         }
     ]
 }
