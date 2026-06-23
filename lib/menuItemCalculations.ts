@@ -1,8 +1,5 @@
 import { Drumstick, EggFried, Salad, Sandwich, Shell } from "lucide-react";
-import type {
-  AddonOption,
-  MenuItem,
-} from "@/types/menu";
+import type { AddonOption, MenuItem } from "@/types/menu";
 import type { ResolvedPanelIngredient } from "@/components/ItemDetailsPanel";
 import { getDefaultMenuItemNutrition } from "@/lib/nutrition";
 

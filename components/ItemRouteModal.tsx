@@ -11,15 +11,8 @@ import ItemDetailsPanel, {
 import MacroTotalsGrid from "@/components/MacroTotalsGrid";
 import MenuSections from "@/components/MenuSections";
 import BuildSummaryDrawer from "@/components/restaurant-view/BuildSummaryDrawer";
-import type {
-  AddonOption,
-  CoreMacros,
-  MenuItem,
-  Nutrition,
-  RestaurantAddons,
-  IngredientItem,
-  RestaurantCustomizationRules,
-} from "@/types/menu";
+import type { AddonOption, MenuItem, RestaurantAddons, IngredientItem, RestaurantCustomizationRules } from "@/types/menu";
+import type { CoreMacros, Nutrition } from "@/types/nutrition";
 import { useCart } from "@/stores/cartStore";
 import { parseComboCustomization } from "@/lib/menuItemCard/comboCustomizationParser";
 import {

@@ -1,4 +1,5 @@
-import type { MenuItem, Nutrition } from "@/types/menu";
+import type { MenuItem } from "@/types/menu";
+import type { Nutrition } from "@/types/nutrition";
 import { normalizeNutrition } from "@/lib/nutrition";
 import type {
   ChipotleEntreeSelection,

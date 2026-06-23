@@ -1,10 +1,4 @@
-import type {
-  FoodCategoryRule,
-  IngredientCategoryRule,
-  IngredientItem,
-  MenuItem,
-  RestaurantCustomizationRules,
-} from "@/types/menu";
+import type { FoodCategoryRule, IngredientCategoryRule, IngredientItem, MenuItem, RestaurantCustomizationRules } from "@/types/menu";
 
 export const INCLUDED_INGREDIENT_TAB = "Included";
 export type IngredientSelectionMode = "quantity" | "single";

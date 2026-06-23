@@ -1,22 +1,7 @@
-export type Nutrition = {
-  calories: number;
-  protein: number;
-  carbs: number;
-  totalFat: number;
-  // optional fields that are less common = harder to get consistent data for
-  satFat?: number;
-  transFat?: number;
-  cholesterol?: number;
-  sodium?: number;
-  fiber?: number;
-  sugars?: number;
-};
+import type { RestaurantBuilderConfig } from "@/types/builder";
+import type { Nutrition } from "@/types/nutrition";
 
-// Core macros are the most commonly used nutrition fields that are typically displayed prominently in the UI
-export type CoreMacros = Pick<
-  Nutrition,
-  "calories" | "protein" | "carbs" | "totalFat"
->;
+export type ServingType = "addon" | "breakfast" | "combo" | "dessert" | "drink" | "entree" | "kids" | "shareable" | "side" | "single";
 
 // item variants allow for different versions of the same base item, 
 // e.g. 8pc vs 10pc nuggets, small vs medium fries
@@ -27,7 +12,7 @@ export type ItemVariant = {
   nutrition: Nutrition;
 
   categories: string[];
-  servingType?: string;
+  servingType?: ServingType;
 
   isDefault: boolean;
 };
@@ -90,7 +75,7 @@ export type MenuItem = {
 
   // a single item can have multiple categories
   categories: string[];
-  servingType: string;
+  servingType: ServingType;
   // for build your own item
   entreeGroup?: string;
 
@@ -131,23 +116,6 @@ export type IngredientItem = {
   hideFromIngredientView?: boolean;
 };
 
-
-export type BuilderEntreeOption = {
-  id: string;
-  label: string;
-  image: string;
-  nutritionMultiplier?: number;
-  includedIngredientIds?: string[];
-  includedIngredientIdsByOption?: Record<string, string[]>;
-};
-
-export type RestaurantBuilderConfig = {
-  entreeOptions?: Record<string, BuilderEntreeOption>;
-  hiddenSectionsByEntree?: Record<string, string[]>;
-  categoryMaxSelections?: Record<string, number>;
-  selectedIngredientCategoryOrder?: string[];
-  selectedIngredientCategoryLabels?: Record<string, string>;
-};
 
 export type RestaurantMenu = {
   id: string;

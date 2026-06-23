@@ -8,13 +8,7 @@ import paneraMenu from "@/app/data/panera.json";
 import starbucksMenu from "@/app/data/starbucks.json";
 import subwayMenu from "@/app/data/subway.json";
 import { normalizeAddons } from "@/lib/addons";
-import type {
-  IngredientItem,
-  MenuItem,
-  RestaurantAddons,
-  RestaurantCustomizationRules,
-  RestaurantMenu,
-} from "@/types/menu";
+import type { IngredientItem, MenuItem, RestaurantAddons, RestaurantCustomizationRules, RestaurantMenu } from "@/types/menu";
 
 const chickfilaData = chickfilaMenu as unknown as RestaurantMenu;
 const chipotleData = chipotleMenu as unknown as RestaurantMenu;

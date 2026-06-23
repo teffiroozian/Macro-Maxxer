@@ -1,15 +1,7 @@
 import { useState } from "react";
 import Image from "next/image";
-import type {
-  AddonOption,
-  IngredientItem,
-  ItemVariant,
-  CoreMacros,
-  MenuItem,
-  Nutrition,
-  RestaurantAddons,
-  RestaurantCustomizationRules,
-} from "@/types/menu";
+import type { AddonOption, IngredientItem, ItemVariant, MenuItem, RestaurantAddons, RestaurantCustomizationRules } from "@/types/menu";
+import type { CoreMacros, Nutrition } from "@/types/nutrition";
 import { ChevronDown, ChevronRight, Pencil, type LucideIcon } from "lucide-react";
 import {
   INCLUDED_INGREDIENT_TAB,

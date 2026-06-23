@@ -1,4 +1,5 @@
-import type { MenuItem, Nutrition } from "@/types/menu";
+import type { MenuItem } from "@/types/menu";
+import type { Nutrition } from "@/types/nutrition";
 
 type OptionalNutritionKey = Exclude<keyof Nutrition, "calories" | "protein" | "carbs" | "totalFat">;
 

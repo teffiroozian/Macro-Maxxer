@@ -1,4 +1,4 @@
-import type { RestaurantBuilderConfig } from "@/types/menu";
+import type { RestaurantBuilderConfig } from "@/types/builder";
 
 export const CHIPOTLE_ENTREE_IDS = [
   "bowl",
