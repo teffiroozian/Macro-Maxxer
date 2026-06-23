@@ -68,7 +68,7 @@ import StickyMacroTotalsBar from "./StickyMacroTotalsBar";
 import MacroTotalsGrid from "@/components/MacroTotalsGrid";
 import { useCart } from "@/stores/cartStore";
 import { fromUniversalChipotleBuildConfiguration, toUniversalChipotleBuildConfiguration } from "@/lib/restaurantBuilders/chipotle/cartAdapter";
-import type { ChipotleBuildConfiguration } from "@/lib/chipotleBuild";
+import type { ChipotleBuildConfiguration } from "@/lib/restaurantBuilders/chipotle";
 import BuildSummaryDrawer from "./restaurant-view/BuildSummaryDrawer";
 import EntreeSelectionHero from "./restaurant-view/EntreeSelectionHero";
 import KidsMealSelector from "./restaurant-view/KidsMealSelector";
@@ -92,7 +92,7 @@ import {
   normalizeIngredientCategory,
   resolveIncludedIngredientIds,
   scaleNutritionValues,
-} from "@/lib/chipotleBuild";
+} from "@/lib/restaurantBuilders/chipotle";
 import { resolvePrimaryCategory } from "@/lib/ingredientTabs";
 import { getDefaultMenuItemNutrition } from "@/lib/nutrition";
 import {

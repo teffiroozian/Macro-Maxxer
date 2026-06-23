@@ -44,7 +44,7 @@ import {
 import {
   buildHighProteinBuildConfiguration,
   isChipotleHighProteinMenuItem,
-} from "@/lib/chipotleBuild/highProtein";
+} from "@/lib/restaurantBuilders/chipotle/highProtein";
 import {
   getProteinBadgeLabel,
   getProteinMultiplier,
@@ -52,9 +52,9 @@ import {
   normalizeIngredientCategory,
   type ProteinPortionMode,
   type SplitPortionMode,
-} from "@/lib/chipotleBuild";
+} from "@/lib/restaurantBuilders/chipotle";
 import { resolvePrimaryCategory } from "@/lib/ingredientTabs";
-import type { ChipotleBuildConfiguration } from "@/lib/chipotleBuild";
+import type { ChipotleBuildConfiguration } from "@/lib/restaurantBuilders/chipotle";
 import { fromUniversalChipotleBuildConfiguration, toUniversalChipotleBuildConfiguration } from "@/lib/restaurantBuilders/chipotle/cartAdapter";
 import { SORT_OPTION_VALUES } from "@/lib/menuSections/sortOptions";
 

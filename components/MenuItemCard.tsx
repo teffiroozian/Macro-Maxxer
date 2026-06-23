@@ -36,7 +36,7 @@ import { useMenuItemConfiguration } from "./menu-item-card/useMenuItemConfigurat
 import {
   buildHighProteinBuildConfiguration,
   isChipotleHighProteinMenuItem,
-} from "@/lib/chipotleBuild/highProtein";
+} from "@/lib/restaurantBuilders/chipotle/highProtein";
 import { toUniversalChipotleBuildConfiguration } from "@/lib/restaurantBuilders/chipotle/cartAdapter";
 import { parseIncludedIngredientEntry } from "@/lib/itemIngredients";
 import { normalizeNutrition } from "@/lib/nutrition";

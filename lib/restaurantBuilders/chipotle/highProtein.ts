@@ -2,7 +2,7 @@ import type {
   ChipotleBuildConfiguration,
   ChipotleEntreeId,
   ChipotleTacoShell,
-} from "@/lib/chipotleBuild";
+} from "@/lib/restaurantBuilders/chipotle";
 import type { IngredientItem, MenuItem } from "@/types/menu";
 import { parseIncludedIngredientEntry } from "@/lib/itemIngredients";
 
