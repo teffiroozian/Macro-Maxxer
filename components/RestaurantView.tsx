@@ -47,10 +47,8 @@ import type {
   RestaurantBuilderConfig,
   RestaurantCustomizationRules,
 } from "@/types/menu";
-import {
-  type Filters,
-  type ViewOption,
-} from "./ControlsRow";
+import type { ViewOption } from "./ControlsRow";
+import type { Filters } from "@/lib/menuSections/filterOptions";
 import {
   RANKING_DEFAULT_SORT,
   SORT_OPTION_VALUES,

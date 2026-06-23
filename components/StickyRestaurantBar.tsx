@@ -7,9 +7,9 @@ import Link from "next/link";
 import CartIconDropdown from "@/components/CartIconDropdown";
 import ControlsRow, {
   FilterChips,
-  type Filters,
   type ViewOption,
 } from "./ControlsRow";
+import type { Filters } from "@/lib/menuSections/filterOptions";
 import type { SortOption } from "@/lib/menuSections/sortOptions";
 import { Menu, Search } from "lucide-react";
 import MobileNavDrawer from "@/components/MobileNavDrawer";

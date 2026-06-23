@@ -1,13 +1,7 @@
 import type { MenuItem } from "@/types/menu";
 import { getDefaultMenuItemNutrition } from "@/lib/nutrition";
 import { getCategoryLabel } from "@/lib/menuSections/sorting";
-
-export type Filters = {
-  proteinMin?: number;
-  caloriesMax?: number;
-  includeSidesDrinks?: boolean;
-  includeLargeShareables?: boolean;
-};
+import type { Filters } from "@/lib/menuSections/filterOptions";
 
 export type RankedAllFilterKey = "main-entrees" | "breakfast" | "shareables" | "sides" | "drinks";
 

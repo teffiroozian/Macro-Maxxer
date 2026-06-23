@@ -6,7 +6,7 @@ import Image from "next/image";
 
 import { useFilterChipActions } from "./useFilterChipActions";
 import { SORT_OPTION_VALUES, type SortOption } from "@/lib/menuSections/sortOptions";
-import type { Filters } from "@/lib/menuSections/filtering";
+import type { Filters } from "@/lib/menuSections/filterOptions";
 import MobileNavDrawer from "@/components/MobileNavDrawer";
 import {
   SlidersHorizontal,
