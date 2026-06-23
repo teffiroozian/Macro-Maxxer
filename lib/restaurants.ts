@@ -1,33 +1,17 @@
 import restaurants from "@/app/data/index.json";
 import { normalizeAddons } from "@/lib/addons";
-import type {
-  IngredientItem,
-  MenuItem,
-  RestaurantAddons,
-  RestaurantBuilderConfig,
-  RestaurantCustomizationRules,
-} from "@/types/menu";
+import type { MenuItem, RestaurantAddons } from "@/types/menu";
+import type { RestaurantData, RestaurantIndexEntry } from "@/types/restaurant";
 
-export type RestaurantData = {
-  id: string;
-  name: string;
-  logo: string;
-  menuFile: string;
-  hasBuildYourOwn: boolean;
-  items: MenuItem[];
-  ingredients: IngredientItem[];
-  addons: RestaurantAddons;
-  customizationRules?: RestaurantCustomizationRules;
-  builderConfig?: RestaurantBuilderConfig;
-};
+const restaurantIndex = restaurants as RestaurantIndexEntry[];
 
 export const ACTIVE_RESTAURANT_IDS = ["chickfila", "chipotle"] as const;
 
-export function getAllRestaurants() {
-  return restaurants;
+export function getAllRestaurants(): RestaurantIndexEntry[] {
+  return restaurantIndex;
 }
 
-export function getVisibleRestaurants() {
+export function getVisibleRestaurants(): RestaurantIndexEntry[] {
   return getAllRestaurants();
 }
 
@@ -45,7 +29,7 @@ export function toItemSlug(item: MenuItem) {
 }
 
 export async function getRestaurantData(id: string): Promise<RestaurantData | null> {
-  const restaurant = restaurants.find((entry) => entry.id === id);
+  const restaurant = restaurantIndex.find((entry) => entry.id === id);
   if (!restaurant) return null;
 
   const menuModule = await import(`@/app/data/${restaurant.menuFile}`);
@@ -56,7 +40,9 @@ export async function getRestaurantData(id: string): Promise<RestaurantData | nu
     id: restaurant.id,
     name: restaurant.name,
     logo: restaurant.logo,
+    cover: restaurant.cover,
     menuFile: restaurant.menuFile,
+    isMacroFriendly: restaurant.isMacroFriendly,
     hasBuildYourOwn:
       menu.hasBuildYourOwn ?? (menu as { isBuildYourOwn?: boolean }).isBuildYourOwn ?? false,
     items,

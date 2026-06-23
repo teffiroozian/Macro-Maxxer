@@ -1,4 +1,5 @@
-import type { IngredientItem, MenuItem, Nutrition } from "@/types/menu";
+import type { IngredientItem, MenuItem } from "@/types/menu";
+import type { Nutrition } from "@/types/nutrition";
 
 type ParsedIngredientEntry = {
   ingredientId: string;

@@ -1,4 +1,4 @@
-import type { CoreMacros, Nutrition } from "@/types/menu";
+import type { CoreMacros, Nutrition } from "@/types/nutrition";
 
 export type CartMacros = CoreMacros;
 

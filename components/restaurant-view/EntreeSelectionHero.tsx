@@ -1,6 +1,6 @@
 import Image from "next/image";
 import { isChipotleEntreeId, type ChipotleEntreeId } from "@/lib/restaurantBuilders/chipotle";
-import type { BuilderEntreeOption } from "@/types/menu";
+import type { BuilderEntreeOption } from "@/types/builder";
 
 type Props = {
   entreeOptions: Record<string, BuilderEntreeOption>;

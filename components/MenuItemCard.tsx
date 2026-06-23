@@ -3,13 +3,7 @@
 import { useEffect, useId, useMemo, useRef, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { ChevronDown } from "lucide-react";
-import type {
-  AddonOption,
-  IngredientItem,
-  MenuItem,
-  RestaurantAddons,
-  RestaurantCustomizationRules,
-} from "@/types/menu";
+import type { AddonOption, IngredientItem, MenuItem, RestaurantAddons, RestaurantCustomizationRules } from "@/types/menu";
 import ItemDetailsPanel, { resolvePanelIngredients } from "./ItemDetailsPanel";
 import VariantSelector from "./VariantSelector";
 import {

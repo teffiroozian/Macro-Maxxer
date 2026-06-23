@@ -17,15 +17,8 @@ import {
 } from "@/lib/itemDetails/helpers";
 import { resolveIncludedIngredientDefaults } from "@/lib/itemIngredients";
 import { normalizeNutrition } from "@/lib/nutrition";
-import type {
-  AddonOption,
-  IngredientItem,
-  ItemVariant,
-  MenuItem,
-  Nutrition,
-  RestaurantAddons,
-  RestaurantCustomizationRules,
-} from "@/types/menu";
+import type { AddonOption, IngredientItem, ItemVariant, MenuItem, RestaurantAddons, RestaurantCustomizationRules } from "@/types/menu";
+import type { Nutrition } from "@/types/nutrition";
 
 /**
  * Resolves ingredient UI data from raw menu domain inputs.

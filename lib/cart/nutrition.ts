@@ -1,6 +1,7 @@
 import { parseOptionLabelCounts } from "@/lib/cartOptionLabels";
 import type { CartItem } from "@/types/cart";
-import type { AddonOption, MenuItem, Nutrition, RestaurantAddons } from "@/types/menu";
+import type { AddonOption, MenuItem, RestaurantAddons } from "@/types/menu";
+import type { Nutrition } from "@/types/nutrition";
 
 export type NutritionTotals = {
   calories: number;

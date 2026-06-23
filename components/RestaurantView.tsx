@@ -40,13 +40,8 @@ import {
   Waves,
 } from "lucide-react";
 import { useRestaurantSearch } from "@/components/RestaurantSearchContext";
-import type {
-  IngredientItem,
-  MenuItem,
-  RestaurantAddons,
-  RestaurantBuilderConfig,
-  RestaurantCustomizationRules,
-} from "@/types/menu";
+import type { IngredientItem, MenuItem, RestaurantAddons, RestaurantCustomizationRules } from "@/types/menu";
+import type { RestaurantBuilderConfig } from "@/types/builder";
 import type { ViewOption } from "./ControlsRow";
 import type { Filters } from "@/lib/menuSections/filterOptions";
 import {

@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import type { CoreMacros } from "@/types/menu";
+import type { CoreMacros } from "@/types/nutrition";
 
 type MacroDisplayConfig = {
   label: string;

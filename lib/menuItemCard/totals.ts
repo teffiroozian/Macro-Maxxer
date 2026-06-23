@@ -1,4 +1,5 @@
-import type { AddonOption, CoreMacros, ItemVariant, MenuItem, Nutrition } from "@/types/menu";
+import type { AddonOption, ItemVariant, MenuItem } from "@/types/menu";
+import type { CoreMacros, Nutrition } from "@/types/nutrition";
 import type { ResolvedPanelIngredient } from "@/components/ItemDetailsPanel";
 import { addonFat, menuItemFatWithFallback } from "@/lib/menuItemCalculations";
 
