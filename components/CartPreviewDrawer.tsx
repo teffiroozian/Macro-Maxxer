@@ -154,7 +154,7 @@ export default function CartPreviewDrawer() {
                         customizationsLineClamp={1}
                         actions={
                           <>
-                            {item.buildConfiguration ? (
+                            {item.selection.type === "build-your-own" ? (
                               <button
                                 type="button"
                                 onClick={() => {
