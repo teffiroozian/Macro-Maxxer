@@ -1,5 +1,5 @@
 import type { CartBuildConfiguration } from "@/types/cart";
-import type { ChipotleBuildConfiguration, ChipotleKidsMealId, ChipotleTacoCount, ChipotleTacoShell, ProteinPortionMode, SplitPortionMode } from "@/lib/chipotleBuild";
+import type { ChipotleBuildConfiguration, ChipotleKidsMealId, ChipotleTacoCount, ChipotleTacoShell, ProteinPortionMode, SplitPortionMode } from "@/lib/restaurantBuilders/chipotle";
 
 export function toUniversalChipotleBuildConfiguration(configuration: ChipotleBuildConfiguration): CartBuildConfiguration {
   return {

@@ -8,9 +8,9 @@ import type {
   ProteinPortionMode,
   SplitPortionMode,
   ChipotleBuilderConfig,
-} from "@/lib/chipotleBuild/types";
+} from "@/lib/restaurantBuilders/chipotle/types";
 
-export { isChipotleEntreeId } from "@/lib/chipotleBuild/types";
+export { isChipotleEntreeId } from "@/lib/restaurantBuilders/chipotle/types";
 
 export type {
   ChipotleBuildConfiguration,
@@ -23,7 +23,7 @@ export type {
   ProteinPortionMode,
   SplitPortionMode,
   ChipotleBuilderConfig,
-} from "@/lib/chipotleBuild/types";
+} from "@/lib/restaurantBuilders/chipotle/types";
 
 export function normalizeIngredientCategory(value: string | undefined) {
   return value?.trim().toLowerCase() ?? "";

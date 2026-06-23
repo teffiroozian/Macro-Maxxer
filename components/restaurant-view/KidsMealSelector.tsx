@@ -1,5 +1,5 @@
 import Image from "next/image";
-import type { ChipotleKidsMealId } from "@/lib/chipotleBuild";
+import type { ChipotleKidsMealId } from "@/lib/restaurantBuilders/chipotle";
 
 type Props = {
   selectedKidsMeal: ChipotleKidsMealId;

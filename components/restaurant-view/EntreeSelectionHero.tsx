@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { isChipotleEntreeId, type ChipotleEntreeId } from "@/lib/chipotleBuild";
+import { isChipotleEntreeId, type ChipotleEntreeId } from "@/lib/restaurantBuilders/chipotle";
 import type { BuilderEntreeOption } from "@/types/menu";
 
 type Props = {
