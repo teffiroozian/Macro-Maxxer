@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 
-import type { Filters } from "./ControlsRow";
+import type { Filters } from "@/lib/menuSections/filterOptions";
 
 type UseFilterChipActionsOptions = {
   filters: Filters;
