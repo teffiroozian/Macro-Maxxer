@@ -54,7 +54,8 @@ import {
   type SplitPortionMode,
 } from "@/lib/chipotleBuild";
 import { resolvePrimaryCategory } from "@/lib/ingredientTabs";
-import type { CartItem } from "@/stores/cartStore";
+import type { ChipotleBuildConfiguration } from "@/lib/chipotleBuild";
+import { fromUniversalChipotleBuildConfiguration, toUniversalChipotleBuildConfiguration } from "@/lib/restaurantBuilders/chipotle/cartAdapter";
 import { SORT_OPTION_VALUES } from "@/lib/menuSections/sortOptions";
 
 const emptyAddon: AddonOption = {
@@ -119,9 +120,11 @@ export default function ItemRouteModal({
     (item.ingredients?.length ?? 0) > 0;
   const canCustomizeViaBuildPage =
     isChipotlePrebuiltBuilderItem && Boolean(editingCartItem);
-  const chipotleBuildConfiguration = useMemo<NonNullable<CartItem["buildConfiguration"]>>(() => {
-    if (editingCartItem?.buildConfiguration) {
-      return editingCartItem.buildConfiguration;
+  const editingBuildConfiguration =
+    editingCartItem?.selection.type === "build-your-own" ? editingCartItem.selection.buildConfiguration : undefined;
+  const chipotleBuildConfiguration = useMemo<ChipotleBuildConfiguration>(() => {
+    if (editingBuildConfiguration) {
+      return fromUniversalChipotleBuildConfiguration(editingBuildConfiguration);
     }
 
     const highProteinConfiguration = buildHighProteinBuildConfiguration(item, ingredients);
@@ -139,7 +142,7 @@ export default function ItemRouteModal({
       selectedTacoCount: 1,
       selectedKidsMeal: "build-your-own",
     };
-  }, [editingCartItem?.buildConfiguration, ingredients, item]);
+  }, [editingBuildConfiguration, ingredients, item]);
   const parsedInitialComboCustomization = useMemo(
     () => parseComboCustomization(editingCartItem?.customizations),
     [editingCartItem?.customizations]
@@ -922,7 +925,7 @@ export default function ItemRouteModal({
 
   const handleSaveItem = () => {
     if (isChipotlePrebuiltBuilderItem) {
-      const nextBuildConfiguration: NonNullable<CartItem["buildConfiguration"]> = {
+      const nextBuildConfiguration: ChipotleBuildConfiguration = {
         ...chipotleBuildConfiguration,
         selectedIngredientItems: Object.fromEntries(
           Object.entries(selectedChipotleIngredientItems).map(([ingredientId, selectedIngredient]) => [
@@ -955,7 +958,13 @@ export default function ItemRouteModal({
           carbs: chipotleAdjustedTotals.carbs,
           totalFat: chipotleAdjustedTotals.totalFat,
         },
-        buildConfiguration: nextBuildConfiguration,
+        nutritionPerItem: {
+          calories: chipotleAdjustedTotals.calories,
+          protein: chipotleAdjustedTotals.protein,
+          carbs: chipotleAdjustedTotals.carbs,
+          totalFat: chipotleAdjustedTotals.totalFat,
+        },
+        selection: { type: "build-your-own" as const, buildConfiguration: toUniversalChipotleBuildConfiguration(nextBuildConfiguration), customizations: customizations.length ? customizations : undefined },
       };
 
       handleClose();
@@ -1001,11 +1010,18 @@ export default function ItemRouteModal({
         carbs: nutrition.carbs ?? 0,
         totalFat: nutrition.totalFat ?? 0,
       },
-      buildConfiguration:
-        editingCartItem?.buildConfiguration ??
-        (isChipotleHighProteinMenuItem(item, restaurantId)
-          ? buildHighProteinBuildConfiguration(item, ingredients)
-          : undefined),
+      nutritionPerItem: nutrition,
+      selection:
+        editingCartItem?.selection.type === "build-your-own"
+          ? editingCartItem.selection
+          : isChipotleHighProteinMenuItem(item, restaurantId)
+            ? (() => {
+                const buildConfiguration = buildHighProteinBuildConfiguration(item, ingredients);
+                return buildConfiguration
+                  ? { type: "build-your-own" as const, buildConfiguration: toUniversalChipotleBuildConfiguration(buildConfiguration), customizations }
+                  : { type: "standard" as const, variantId: selectedVariant?.id, optionsLabel: selectionDetailsLabel, customizations };
+              })()
+            : { type: "standard" as const, variantId: selectedVariant?.id, optionsLabel: selectionDetailsLabel, customizations },
     };
 
     handleClose();

@@ -1,6 +1,6 @@
 import Image from "next/image";
 import { ReactNode } from "react";
-import { CartItem } from "@/stores/cartStore";
+import type { CartItem } from "@/types/cart";
 
 type CartItemPreviewRowProps = {
   item: Pick<CartItem, "name" | "image" | "macrosPerItem" | "quantity">;

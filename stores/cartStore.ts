@@ -1,32 +1,8 @@
 "use client";
 
 import { useMemo, useSyncExternalStore } from "react";
-import type { ChipotleBuildConfiguration } from "@/lib/chipotleBuild";
-import type { Nutrition } from "@/types/menu";
-import type { CoreMacros } from "@/types/menu";
-
-export type CartMacros = CoreMacros;
-
-export type CartItem = {
-  id: string;
-  restaurantId: string;
-  itemId: string;
-  name: string;
-  image: string;
-  variantId?: string;
-  selectionDetailsLabel?: string;
-  customizations?: string[];
-  quantity: number;
-  macrosPerItem: CartMacros;
-  nutritionPerItem: Nutrition;
-  buildConfiguration?: ChipotleBuildConfiguration;
-};
-
-type CartState = {
-  items: CartItem[];
-  lastAddedItem: CartItem | null;
-  lastAddedAt: number | null;
-};
+import type { CartItem, CartMacros, CartState } from "@/types/cart";
+export type { CartItem, CartMacros, CartState } from "@/types/cart";
 
 const emptyTotals: CartMacros = {
   calories: 0,
@@ -67,10 +43,10 @@ const getSnapshot = () => cartState;
 const computeTotals = (items: CartItem[]): CartMacros => {
   return items.reduce(
     (acc, item) => {
-      acc.calories += item.macrosPerItem.calories * item.quantity;
-      acc.protein += item.macrosPerItem.protein * item.quantity;
-      acc.carbs += item.macrosPerItem.carbs * item.quantity;
-      acc.totalFat += item.macrosPerItem.totalFat * item.quantity;
+      acc.calories += (item.nutritionPerItem.calories ?? 0) * item.quantity;
+      acc.protein += (item.nutritionPerItem.protein ?? 0) * item.quantity;
+      acc.carbs += (item.nutritionPerItem.carbs ?? 0) * item.quantity;
+      acc.totalFat += (item.nutritionPerItem.totalFat ?? 0) * item.quantity;
 
       return acc;
     },

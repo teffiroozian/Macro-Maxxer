@@ -37,6 +37,7 @@ import {
   buildHighProteinBuildConfiguration,
   isChipotleHighProteinMenuItem,
 } from "@/lib/chipotleBuild/highProtein";
+import { toUniversalChipotleBuildConfiguration } from "@/lib/restaurantBuilders/chipotle/cartAdapter";
 import { parseIncludedIngredientEntry } from "@/lib/itemIngredients";
 import { normalizeNutrition } from "@/lib/nutrition";
 import {
@@ -765,7 +766,10 @@ export default function MenuItemCard({
         selectionDetailsLabel,
         customizations,
         quantity: 1,
-        buildConfiguration: highProteinBuildConfiguration,
+        selection: highProteinBuildConfiguration
+          ? { type: "build-your-own", buildConfiguration: toUniversalChipotleBuildConfiguration(highProteinBuildConfiguration), customizations }
+          : { type: "standard", variantId: selectedVariantForCart?.id, optionsLabel: selectionDetailsLabel, customizations },
+        nutritionPerItem: baseForCart,
         macrosPerItem: calculateMenuItemMacrosPerItem({
           baseNutrition: baseForCart,
           addonTotals,

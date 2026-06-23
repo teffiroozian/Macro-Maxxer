@@ -1,15 +1,22 @@
-import type { CartItem } from "@/stores/cartStore";
+import { fromUniversalChipotleBuildConfiguration } from "@/lib/restaurantBuilders/chipotle/cartAdapter";
+import type { CartItem } from "@/types/cart";
 import type { IngredientItem, MenuItem } from "@/types/menu";
 
 function toTitleCase(value: string) {
-  return value
-    .replace(/[-_]+/g, " ")
-    .trim()
-    .replace(/\b\w/g, (char) => char.toUpperCase());
+  return value.replace(/[-_]+/g, " ").trim().replace(/\b\w/g, (char) => char.toUpperCase());
 }
 
 function normalizeIngredientKey(value: string) {
   return value.trim().toLowerCase();
+}
+
+function getBuildConfiguration(cartItem: CartItem) {
+  return cartItem.selection.type === "build-your-own" ? cartItem.selection.buildConfiguration : null;
+}
+
+function getChipotleBuildConfiguration(cartItem: CartItem) {
+  const configuration = getBuildConfiguration(cartItem);
+  return configuration ? fromUniversalChipotleBuildConfiguration(configuration) : null;
 }
 
 function buildCartFallbackMenuItem(cartItem: CartItem): MenuItem {
@@ -31,19 +38,15 @@ function buildCartFallbackMenuItem(cartItem: CartItem): MenuItem {
 
 function buildChipotleBuildYourOwnMenuItem(cartItem: CartItem, ingredientItems?: IngredientItem[]): MenuItem {
   const ingredientCatalog = ingredientItems ?? [];
-  const selectedIngredientIds = Object.entries(cartItem.buildConfiguration?.selectedIngredientItems ?? {})
+  const configuration = getChipotleBuildConfiguration(cartItem);
+  const selectedIngredientIds = Object.entries(configuration?.selectedIngredientItems ?? {})
     .filter(([, selection]) => selection.quantity > 0)
     .map(([ingredientId]) => ingredientId);
 
   const ingredientOptionsByCategory = ingredientCatalog.reduce<Record<string, string[]>>((acc, ingredient) => {
     const ingredientId = ingredient.id ?? ingredient.name;
     const tabName = toTitleCase((ingredient.categories[0] ?? "Ingredients").trim());
-
-    if (!acc[tabName]) {
-      acc[tabName] = [];
-    }
-
-    acc[tabName].push(ingredientId);
+    acc[tabName] = [...(acc[tabName] ?? []), ingredientId];
     return acc;
   }, {});
 
@@ -56,44 +59,30 @@ function buildChipotleBuildYourOwnMenuItem(cartItem: CartItem, ingredientItems?:
     ...buildCartFallbackMenuItem(cartItem),
     ingredients: selectedIngredientIds,
     customization: {
-      ingredientCategories: categoryNames.map((categoryName) => {
-        const allowNone = singleSelectCategories.some(
+      ingredientCategories: categoryNames.map((categoryName) => ({
+        name: categoryName,
+        ingredients: ingredientOptionsByCategory[categoryName],
+        allowNone: singleSelectCategories.some(
           (candidate) => normalizeIngredientKey(candidate) === normalizeIngredientKey(categoryName)
-        );
-
-        return {
-          name: categoryName,
-          ingredients: ingredientOptionsByCategory[categoryName],
-          allowNone,
-        };
-      }),
+        ),
+      })),
     },
   };
 }
 
 export function getIncludedIngredientIdsForChipotleBuild(cartItem: CartItem) {
-  if (cartItem.restaurantId !== "chipotle" || !cartItem.buildConfiguration) {
+  if (cartItem.restaurantId !== "chipotle" || cartItem.selection.type !== "build-your-own") {
     return [] as string[];
   }
 
-  const configuration = cartItem.buildConfiguration;
+  const configuration = fromUniversalChipotleBuildConfiguration(cartItem.selection.buildConfiguration);
 
-  if (configuration.selectedEntree === "burrito") {
-    return ["tortilla"];
-  }
-
-  if (configuration.selectedEntree === "quesadilla") {
-    return ["tortilla", "cheese"];
-  }
-
-  if (configuration.selectedEntree === "salad") {
-    return ["romaine-lettuce"];
-  }
-
+  if (configuration.selectedEntree === "burrito") return ["tortilla"];
+  if (configuration.selectedEntree === "quesadilla") return ["tortilla", "cheese"];
+  if (configuration.selectedEntree === "salad") return ["romaine-lettuce"];
   if (configuration.selectedEntree === "tacos") {
     return [configuration.selectedTacoShell === "crispy" ? "crispy-corn-tortilla" : "soft-flour-tortilla"];
   }
-
   if (configuration.selectedEntree === "kids-meal" && configuration.selectedKidsMeal === "quesadilla") {
     return ["soft-flour-tortilla", "cheese"];
   }
@@ -102,7 +91,7 @@ export function getIncludedIngredientIdsForChipotleBuild(cartItem: CartItem) {
 }
 
 export function getBuildIngredientCountCustomizations(cartItem: CartItem, ingredientItems?: IngredientItem[]) {
-  if (cartItem.restaurantId !== "chipotle" || !cartItem.buildConfiguration?.selectedIngredientItems) {
+  if (cartItem.restaurantId !== "chipotle" || cartItem.selection.type !== "build-your-own") {
     return cartItem.customizations;
   }
 
@@ -112,7 +101,8 @@ export function getBuildIngredientCountCustomizations(cartItem: CartItem, ingred
     ingredientNameLookup.set(normalizeIngredientKey(ingredientId), ingredient.name);
   });
 
-  const labels = Object.entries(cartItem.buildConfiguration.selectedIngredientItems)
+  const configuration = fromUniversalChipotleBuildConfiguration(cartItem.selection.buildConfiguration);
+  const labels = Object.entries(configuration.selectedIngredientItems)
     .filter(([, selection]) => selection.quantity > 1)
     .map(([ingredientId, selection]) => {
       const ingredientLabel = ingredientNameLookup.get(normalizeIngredientKey(ingredientId)) ?? toTitleCase(ingredientId);
@@ -123,13 +113,9 @@ export function getBuildIngredientCountCustomizations(cartItem: CartItem, ingred
 }
 
 export function buildCartMenuItemFromState(cartItem: CartItem, sourceItem: MenuItem | null, ingredientItems?: IngredientItem[]) {
-  if (sourceItem) {
-    return sourceItem;
-  }
-
-  if (cartItem.restaurantId === "chipotle" && cartItem.buildConfiguration) {
+  if (sourceItem) return sourceItem;
+  if (cartItem.restaurantId === "chipotle" && cartItem.selection.type === "build-your-own") {
     return buildChipotleBuildYourOwnMenuItem(cartItem, ingredientItems);
   }
-
   return buildCartFallbackMenuItem(cartItem);
 }

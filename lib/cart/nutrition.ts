@@ -1,5 +1,5 @@
 import { parseOptionLabelCounts } from "@/lib/cartOptionLabels";
-import type { CartItem } from "@/stores/cartStore";
+import type { CartItem } from "@/types/cart";
 import type { AddonOption, MenuItem, Nutrition, RestaurantAddons } from "@/types/menu";
 
 export type NutritionTotals = {
@@ -62,10 +62,10 @@ export function buildCartNutritionTotals(
         { satFat: 0, transFat: 0, cholesterol: 0, sodium: 0, fiber: 0, sugars: 0 }
       );
 
-      sum.calories += cartItem.macrosPerItem.calories * cartItem.quantity;
-      sum.protein += cartItem.macrosPerItem.protein * cartItem.quantity;
-      sum.carbs += cartItem.macrosPerItem.carbs * cartItem.quantity;
-      sum.totalFat += cartItem.macrosPerItem.totalFat * cartItem.quantity;
+      sum.calories += (cartItem.nutritionPerItem.calories ?? 0) * cartItem.quantity;
+      sum.protein += (cartItem.nutritionPerItem.protein ?? 0) * cartItem.quantity;
+      sum.carbs += (cartItem.nutritionPerItem.carbs ?? 0) * cartItem.quantity;
+      sum.totalFat += (cartItem.nutritionPerItem.totalFat ?? 0) * cartItem.quantity;
       sum.satFat = addOptional(sum.satFat, (baseNutrition?.satFat ?? 0) + addonNutrition.satFat, cartItem.quantity);
       sum.transFat = addOptional(sum.transFat, (baseNutrition?.transFat ?? 0) + addonNutrition.transFat, cartItem.quantity);
       sum.cholesterol = addOptional(

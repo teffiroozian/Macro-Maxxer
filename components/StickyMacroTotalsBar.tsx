@@ -1,6 +1,6 @@
 "use client";
 
-import type { CartMacros } from "@/stores/cartStore";
+import type { CartMacros } from "@/types/cart";
 import MacroTotalsGrid from "@/components/MacroTotalsGrid";
 import type { LucideIcon } from "lucide-react";
 import { Bookmark, Camera } from "lucide-react";

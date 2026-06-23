@@ -66,7 +66,9 @@ import MenuSections from "./MenuSections";
 import StickyRestaurantBar from "./StickyRestaurantBar";
 import StickyMacroTotalsBar from "./StickyMacroTotalsBar";
 import MacroTotalsGrid from "@/components/MacroTotalsGrid";
-import { useCart, type CartItem } from "@/stores/cartStore";
+import { useCart } from "@/stores/cartStore";
+import { fromUniversalChipotleBuildConfiguration, toUniversalChipotleBuildConfiguration } from "@/lib/restaurantBuilders/chipotle/cartAdapter";
+import type { ChipotleBuildConfiguration } from "@/lib/chipotleBuild";
 import BuildSummaryDrawer from "./restaurant-view/BuildSummaryDrawer";
 import EntreeSelectionHero from "./restaurant-view/EntreeSelectionHero";
 import KidsMealSelector from "./restaurant-view/KidsMealSelector";
@@ -152,7 +154,7 @@ type EntreeKey = Exclude<EntreeSelection, null>;
 type KidsMealSelection = ChipotleKidsMealId;
 type TacoShellSelection = ChipotleTacoShell;
 type TacoCountSelection = ChipotleTacoCount;
-type BuildConfigurationSnapshot = NonNullable<CartItem["buildConfiguration"]>;
+type BuildConfigurationSnapshot = ChipotleBuildConfiguration;
 
 function titleCase(text: string) {
   return text
@@ -403,7 +405,7 @@ export default function RestaurantView({
         (item) =>
           item.id === editCartItemId &&
           item.restaurantId === restaurantId &&
-          item.buildConfiguration
+          item.selection.type === "build-your-own"
       ) ?? null
     );
   }, [cartItems, editCartItemId, isChipotleBuildPage, restaurantId]);
@@ -1538,7 +1540,7 @@ export default function RestaurantView({
         sugars: adjustedNutritionLabelTotals.sugars,
         protein: adjustedNutritionLabelTotals.protein,
       },
-      buildConfiguration: nextBuildConfiguration,
+      selection: { type: "build-your-own" as const, buildConfiguration: toUniversalChipotleBuildConfiguration(nextBuildConfiguration), customizations: nextCustomizations },
     };
 
     if (editingCartItem) {
@@ -1636,7 +1638,7 @@ export default function RestaurantView({
   ]);
 
   useEffect(() => {
-    if (!editingCartItem?.buildConfiguration) {
+    if (editingCartItem?.selection.type !== "build-your-own") {
       hydratedEditItemIdRef.current = null;
       editingBuildBaselineConfigRef.current = null;
       return;
@@ -1646,7 +1648,7 @@ export default function RestaurantView({
       return;
     }
 
-    const configuration = editingCartItem.buildConfiguration;
+    const configuration = fromUniversalChipotleBuildConfiguration(editingCartItem.selection.buildConfiguration);
     const configuredEntree = configuration.selectedEntree;
     const isHydrationContextReady =
       selectedEntree === configuredEntree &&

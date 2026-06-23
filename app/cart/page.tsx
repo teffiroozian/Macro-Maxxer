@@ -2,7 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { useMemo } from "react";
-import type { CartMacros } from "@/stores/cartStore";
+import type { CartMacros } from "@/types/cart";
 import MenuItemCard from "@/components/MenuItemCard";
 import StickyMacroTotalsBar from "@/components/StickyMacroTotalsBar";
 import CartNutritionSummary from "@/components/cart/CartNutritionSummary";
@@ -156,10 +156,10 @@ export default function CartPage() {
               const itemEditHref = sourceItem
                 ? `/restaurant/${cartItem.restaurantId}/items/${toItemSlug(sourceItem)}?editCartItem=${cartItem.id}&editOrigin=cart`
                 : undefined;
-              const buildEditHref =
-                cartItem.buildConfiguration
-                  ? `/restaurant/${cartItem.restaurantId}?view=ingredients&editCartItem=${cartItem.id}&editOrigin=cart`
-                  : undefined;
+              const isBuildYourOwnCartItem = cartItem.selection.type === "build-your-own";
+              const buildEditHref = isBuildYourOwnCartItem
+                ? `/restaurant/${cartItem.restaurantId}?view=ingredients&editCartItem=${cartItem.id}&editOrigin=cart`
+                : undefined;
 
               const initialIngredientCustomizations = getBuildIngredientCountCustomizations(
                 cartItem,
@@ -185,9 +185,9 @@ export default function CartPage() {
                   initialCartVariantId={cartItem.variantId}
                   initialCartSelectionDetailsLabel={cartItem.selectionDetailsLabel}
                   initialCartCustomizations={initialIngredientCustomizations}
-                  flattenIngredientListInDetails={Boolean(cartItem.buildConfiguration)}
+                  flattenIngredientListInDetails={isBuildYourOwnCartItem}
                   lockedIngredientIdsInDetails={includedIngredientIds}
-                  suppressRemovedIngredientCustomizationsInCart={Boolean(cartItem.buildConfiguration)}
+                  suppressRemovedIngredientCustomizationsInCart={isBuildYourOwnCartItem}
                   cartSummaryLine={summarizeItem(cartItem)}
                   onCartDecrement={() => updateQuantity(cartItem.id, cartItem.quantity - 1)}
                   onCartIncrement={() => updateQuantity(cartItem.id, cartItem.quantity + 1)}
@@ -207,6 +207,15 @@ export default function CartPage() {
                       selectionDetailsLabel: next.selectionDetailsLabel,
                       customizations: next.customizations,
                       macrosPerItem: next.macrosPerItem as CartMacros,
+                      nutritionPerItem: { ...cartItem.nutritionPerItem, ...next.macrosPerItem },
+                      selection: cartItem.selection.type === "standard"
+                        ? {
+                            ...cartItem.selection,
+                            variantId: next.variantId,
+                            optionsLabel: next.selectionDetailsLabel,
+                            customizations: next.customizations,
+                          }
+                        : cartItem.selection,
                     });
                   }}
                   onCartModify={
