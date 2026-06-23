@@ -14,11 +14,11 @@ import { toItemSlug } from "@/lib/restaurants";
 import { useCart } from "@/stores/cartStore";
 
 const getCustomizationDisplayList = (item: {
-  optionsLabel?: string;
+  selectionDetailsLabel?: string;
   customizations?: string[];
 }) => {
-  const addonSelections = item.optionsLabel
-    ? item.optionsLabel
+  const addonSelections = item.selectionDetailsLabel
+    ? item.selectionDetailsLabel
         .split(" + ")
         .map((label) => label.trim())
         .filter(Boolean)
@@ -149,8 +149,7 @@ export default function CartPreviewDrawer() {
                         item={item}
                         imageRenderer="next-image"
                         imageFallback="initial"
-                        variantStyle="separate"
-                        macroStyle="detailed"
+                                macroStyle="detailed"
                         customizationsText={addonsLabel}
                         customizationsLineClamp={1}
                         actions={

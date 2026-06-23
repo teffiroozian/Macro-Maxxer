@@ -24,10 +24,10 @@ export function buildOptionLabelCounts(
   return counts;
 }
 
-export function getSelectedAddonsFromLabel(item: MenuItem, addons: RestaurantAddons | undefined, optionsLabel?: string) {
-  if (!optionsLabel) return {} as Partial<Record<string, AddonOption>>;
+export function getSelectedAddonsFromLabel(item: MenuItem, addons: RestaurantAddons | undefined, selectionDetailsLabel?: string) {
+  if (!selectionDetailsLabel) return {} as Partial<Record<string, AddonOption>>;
 
-  const selectedCounts = parseOptionLabelCounts(optionsLabel);
+  const selectedCounts = parseOptionLabelCounts(selectionDetailsLabel);
   const selectedMap: Partial<Record<string, AddonOption>> = {};
 
   for (const ref of item.addonRefs ?? []) {
@@ -42,8 +42,8 @@ export function getSelectedAddonsFromLabel(item: MenuItem, addons: RestaurantAdd
   return selectedMap;
 }
 
-export function getSelectedSauceCountsFromLabel(item: MenuItem, addons: RestaurantAddons | undefined, optionsLabel?: string) {
-  const selectedCounts = parseOptionLabelCounts(optionsLabel);
+export function getSelectedSauceCountsFromLabel(item: MenuItem, addons: RestaurantAddons | undefined, selectionDetailsLabel?: string) {
+  const selectedCounts = parseOptionLabelCounts(selectionDetailsLabel);
   const sauceOptions = addons?.[sauceRef] ?? [];
 
   if (!(item.addonRefs ?? []).includes(sauceRef) || sauceOptions.length === 0) {

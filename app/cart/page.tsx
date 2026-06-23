@@ -37,8 +37,8 @@ function formatCartItemName(name: string, customizations?: string[]) {
   return /\bcombo\b/i.test(name) ? name : `${name} Combo`;
 }
 
-function summarizeItem(item: { optionsLabel?: string; customizations?: string[] }) {
-  const addonNames = new Set(Object.keys(parseOptionLabelCounts(item.optionsLabel)));
+function summarizeItem(item: { selectionDetailsLabel?: string; customizations?: string[] }) {
+  const addonNames = new Set(Object.keys(parseOptionLabelCounts(item.selectionDetailsLabel)));
   const dedupedCustomizations = (item.customizations ?? []).filter((label) => {
     const normalized = label.replace(/^\+\s*/, "").trim();
     return !addonNames.has(normalized);
@@ -72,7 +72,7 @@ function summarizeItem(item: { optionsLabel?: string; customizations?: string[] 
     ...sideCustomizations,
     ...drinkCustomizations,
     ...otherCustomizations,
-    item.optionsLabel,
+    item.selectionDetailsLabel,
   ].filter(Boolean);
 
   return segments.join(" • ");
@@ -183,7 +183,7 @@ export default function CartPage() {
                   cartQuantity={cartItem.quantity}
                   cartItemId={cartItem.id}
                   initialCartVariantId={cartItem.variantId}
-                  initialCartOptionsLabel={cartItem.optionsLabel}
+                  initialCartSelectionDetailsLabel={cartItem.selectionDetailsLabel}
                   initialCartCustomizations={initialIngredientCustomizations}
                   flattenIngredientListInDetails={Boolean(cartItem.buildConfiguration)}
                   lockedIngredientIdsInDetails={includedIngredientIds}
@@ -194,9 +194,8 @@ export default function CartPage() {
                   onCartConfigurationChange={(next) => {
                     const hasAnyChange =
                       cartItem.variantId !== next.variantId
-                      || cartItem.variantLabel !== next.variantLabel
                       || cartItem.image !== next.image
-                      || cartItem.optionsLabel !== next.optionsLabel
+                      || cartItem.selectionDetailsLabel !== next.selectionDetailsLabel
                       || !areStringArraysEqual(cartItem.customizations, next.customizations)
                       || !areMacrosEqual(cartItem.macrosPerItem, next.macrosPerItem as CartMacros);
 
@@ -204,9 +203,8 @@ export default function CartPage() {
 
                     updateItem(cartItem.id, {
                       variantId: next.variantId,
-                      variantLabel: next.variantLabel,
                       image: next.image,
-                      optionsLabel: next.optionsLabel,
+                      selectionDetailsLabel: next.selectionDetailsLabel,
                       customizations: next.customizations,
                       macrosPerItem: next.macrosPerItem as CartMacros,
                     });

@@ -147,10 +147,10 @@ export default function ItemRouteModal({
   const [selectedVariantId, setSelectedVariantId] = useState(editingCartItem?.variantId ?? defaultVariantId);
   const [quantity, setQuantity] = useState(editingCartItem?.quantity ?? 1);
   const [selectedAddons, setSelectedAddons] = useState<Partial<Record<string, AddonOption>>>(() =>
-    getSelectedAddonsFromLabel(item, addons, editingCartItem?.optionsLabel)
+    getSelectedAddonsFromLabel(item, addons, editingCartItem?.selectionDetailsLabel)
   );
   const [selectedSauceCounts, setSelectedSauceCounts] = useState<Record<string, number>>(() =>
-    getSelectedSauceCountsFromLabel(item, addons, editingCartItem?.optionsLabel)
+    getSelectedSauceCountsFromLabel(item, addons, editingCartItem?.selectionDetailsLabel)
   );
   const selectedVariant = variants?.find((variant) => variant.id === selectedVariantId);
   const selectedItemImage = selectedVariant?.image ?? item.image;
@@ -385,7 +385,7 @@ export default function ItemRouteModal({
     [ingredientCounts, ingredientLookup]
   );
 
-  const optionsLabel = useMemo(() => {
+  const selectionDetailsLabel = useMemo(() => {
     const dressingSegments = Object.values(selectedAddons)
       .filter((addon): addon is AddonOption => Boolean(addon && addon.name !== "None"))
       .map((addon) => addon.name);
@@ -992,8 +992,7 @@ export default function ItemRouteModal({
       name: item.name,
       image: selectedVariant?.image ?? item.image,
       variantId: selectedVariant?.id,
-      variantLabel: selectedVariant?.label,
-      optionsLabel,
+      selectionDetailsLabel,
       customizations: customizations.length > 0 ? customizations : undefined,
       quantity,
       macrosPerItem: {
