@@ -3,8 +3,7 @@ import { ReactNode } from "react";
 import { CartItem } from "@/stores/cartStore";
 
 type CartItemPreviewRowProps = {
-  item: Pick<CartItem, "name" | "image" | "variantLabel" | "macrosPerItem" | "quantity">;
-  variantStyle?: "inline" | "separate" | "hidden";
+  item: Pick<CartItem, "name" | "image" | "macrosPerItem" | "quantity">;
   macroStyle?: "compact" | "detailed";
   customizationsText?: string;
   customizationsLineClamp?: 1 | 2;
@@ -21,7 +20,6 @@ const macroLabelClassByStyle = {
 
 export default function CartItemPreviewRow({
   item,
-  variantStyle = "inline",
   macroStyle = "compact",
   customizationsText,
   customizationsLineClamp = 1,
@@ -31,7 +29,6 @@ export default function CartItemPreviewRow({
   className,
 }: CartItemPreviewRowProps) {
   const itemInitial = (item.name?.trim().charAt(0) || "+").toUpperCase();
-  const hasVariant = Boolean(item.variantLabel);
   const quantityMultiplier = Math.max(item.quantity ?? 1, 1);
   const displayCalories = item.macrosPerItem.calories * quantityMultiplier;
   const displayProtein = item.macrosPerItem.protein * quantityMultiplier;
@@ -72,17 +69,7 @@ export default function CartItemPreviewRow({
       <div className="min-w-0 flex-1">
         <p className="truncate text-base font-semibold leading-tight text-slate-900">
           <span>{item.name}</span>
-          {variantStyle === "inline" && hasVariant ? (
-            <>
-              <span className="mx-1.5">•</span>
-              <span>{item.variantLabel}</span>
-            </>
-          ) : null}
         </p>
-
-        {variantStyle === "separate" && hasVariant ? (
-          <p className="mt-1 text-xs text-slate-500">{item.variantLabel}</p>
-        ) : null}
 
         {macroStyle === "compact" ? (
           <div className="mt-1.5 flex flex-wrap items-center gap-x-3 gap-y-1 text-sm leading-none">

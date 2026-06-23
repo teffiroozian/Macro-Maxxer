@@ -14,8 +14,7 @@ export type CartItem = {
   name: string;
   image: string;
   variantId?: string;
-  variantLabel?: string;
-  optionsLabel?: string;
+  selectionDetailsLabel?: string;
   customizations?: string[];
   quantity: number;
   macrosPerItem: CartMacros;

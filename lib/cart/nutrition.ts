@@ -21,11 +21,11 @@ function addOptional(total: number | undefined, next: number | undefined, quanti
 }
 
 export function getSelectedAddonNutrition(
-  optionsLabel: string | undefined,
+  selectionDetailsLabel: string | undefined,
   sourceItem: MenuItem | undefined,
   restaurantAddons: RestaurantAddons | undefined
 ) {
-  const selectedAddonCounts = parseOptionLabelCounts(optionsLabel);
+  const selectedAddonCounts = parseOptionLabelCounts(selectionDetailsLabel);
 
   if (Object.keys(selectedAddonCounts).length === 0 || !sourceItem || !restaurantAddons) {
     return [] as AddonOption[];
@@ -45,7 +45,7 @@ export function buildCartNutritionTotals(
     (sum, cartItem) => {
       const sourceItem = menuLookupByRestaurant[cartItem.restaurantId]?.find((item) => (item.id ?? item.name) === cartItem.itemId);
       const restaurantAddons = addonsLookupByRestaurant[cartItem.restaurantId];
-      const selectedAddons = getSelectedAddonNutrition(cartItem.optionsLabel, sourceItem, restaurantAddons);
+      const selectedAddons = getSelectedAddonNutrition(cartItem.selectionDetailsLabel, sourceItem, restaurantAddons);
       const selectedVariant = sourceItem?.variants?.find((variant) => variant.id === cartItem.variantId);
       const baseNutrition: Nutrition | undefined =
         selectedVariant?.nutrition ?? sourceItem?.nutrition ?? cartItem.nutritionPerItem;

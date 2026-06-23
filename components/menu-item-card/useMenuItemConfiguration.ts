@@ -13,22 +13,22 @@ export function useMenuItemConfiguration({
   mode,
   item,
   addons,
-  initialCartOptionsLabel,
+  initialCartSelectionDetailsLabel,
   initialCartCustomizations,
   resolvedIngredients,
 }: {
   mode: "menu" | "cart";
   item: MenuItem;
   addons?: RestaurantAddons;
-  initialCartOptionsLabel?: string;
+  initialCartSelectionDetailsLabel?: string;
   initialCartCustomizations?: string[];
   resolvedIngredients: ResolvedPanelIngredient[];
 }) {
   const [selectedAddons, setSelectedAddons] = useState<Partial<Record<string, AddonOption>>>(() =>
-    mode === "cart" ? getSelectedAddonsFromLabel(item, addons, initialCartOptionsLabel) : {}
+    mode === "cart" ? getSelectedAddonsFromLabel(item, addons, initialCartSelectionDetailsLabel) : {}
   );
   const [selectedSauceCounts, setSelectedSauceCounts] = useState<Record<string, number>>(() =>
-    mode === "cart" ? getSelectedSauceCountsFromLabel(item, addons, initialCartOptionsLabel) : {}
+    mode === "cart" ? getSelectedSauceCountsFromLabel(item, addons, initialCartSelectionDetailsLabel) : {}
   );
 
   const parsedInitialComboCustomization = useMemo(

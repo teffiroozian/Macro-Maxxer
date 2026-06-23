@@ -1,9 +1,9 @@
 export type OptionLabelCountMap = Record<string, number>;
 
-export function parseOptionLabelCounts(optionsLabel?: string): OptionLabelCountMap {
+export function parseOptionLabelCounts(selectionDetailsLabel?: string): OptionLabelCountMap {
   const counts: OptionLabelCountMap = {};
 
-  for (const rawSegment of (optionsLabel ?? "").split("+")) {
+  for (const rawSegment of (selectionDetailsLabel ?? "").split("+")) {
     const segment = rawSegment.trim();
     if (!segment) continue;
 

@@ -5,7 +5,7 @@ type MatchingSignatureInput = {
   restaurantId: string;
   itemId: string;
   variantId?: string;
-  optionsLabel?: string;
+  selectionDetailsLabel?: string;
   customizations?: string[];
 };
 
@@ -19,7 +19,7 @@ export function useMenuItemCartAdapter() {
         item.restaurantId,
         item.itemId,
         item.variantId ?? "",
-        item.optionsLabel ?? "",
+        item.selectionDetailsLabel ?? "",
         (item.customizations ?? []).join("|"),
       ].join("::");
       index.set(key, item);
@@ -32,7 +32,7 @@ export function useMenuItemCartAdapter() {
       input.restaurantId,
       input.itemId,
       input.variantId ?? "",
-      input.optionsLabel ?? "",
+      input.selectionDetailsLabel ?? "",
       (input.customizations ?? []).join("|"),
     ].join("::");
 

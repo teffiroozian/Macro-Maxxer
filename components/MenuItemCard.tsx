@@ -159,9 +159,8 @@ const maxSauceSelections = 5;
 
 type CartConfigurationPayload = {
   variantId?: string;
-  variantLabel?: string;
   image?: string;
-  optionsLabel?: string;
+  selectionDetailsLabel?: string;
   customizations?: string[];
   macrosPerItem: {
     calories: number;
@@ -190,7 +189,7 @@ export default function MenuItemCard({
   cartSummaryLine,
   cartItemId,
   initialCartVariantId,
-  initialCartOptionsLabel,
+  initialCartSelectionDetailsLabel,
   initialCartCustomizations,
   onCartConfigurationChange,
   itemHref,
@@ -229,7 +228,7 @@ export default function MenuItemCard({
   cartSummaryLine?: string;
   cartItemId?: string;
   initialCartVariantId?: string;
-  initialCartOptionsLabel?: string;
+  initialCartSelectionDetailsLabel?: string;
   initialCartCustomizations?: string[];
   onCartConfigurationChange?: (next: CartConfigurationPayload) => void;
   itemHref?: string;
@@ -301,7 +300,7 @@ export default function MenuItemCard({
     mode,
     item,
     addons,
-      initialCartOptionsLabel,
+    initialCartSelectionDetailsLabel,
     initialCartCustomizations,
     resolvedIngredients,
   });
@@ -573,7 +572,7 @@ export default function MenuItemCard({
     });
   }, [addons, initialCartCustomizations, item.addonRefs, resolvedIngredients]);
 
-  const optionsLabel = useMemo(() => {
+  const selectionDetailsLabel = useMemo(() => {
     return formatOptionLabelCounts(buildOptionLabelCounts(selectedAddons, selectedSauceCounts));
   }, [selectedAddons, selectedSauceCounts]);
 
@@ -624,10 +623,10 @@ export default function MenuItemCard({
       restaurantId,
       itemId: item.id ?? item.name,
       variantId: selectedVariantForCart?.id,
-      optionsLabel,
+      selectionDetailsLabel,
       customizations,
     });
-  }, [customizations, getMatchingItem, isCartMode, item.id, item.name, optionsLabel, restaurantId, selectedVariantForCart?.id]);
+  }, [customizations, getMatchingItem, isCartMode, item.id, item.name, selectionDetailsLabel, restaurantId, selectedVariantForCart?.id]);
 
   const emitCartConfiguration = (
     nextVariantId: string,
@@ -658,7 +657,7 @@ export default function MenuItemCard({
       resolvedIngredients
     );
 
-    const nextOptionsLabel = formatOptionLabelCounts(buildOptionLabelCounts(nextAddons, nextSauceCounts));
+    const nextSelectionDetailsLabel = formatOptionLabelCounts(buildOptionLabelCounts(nextAddons, nextSauceCounts));
     const nextComboSide = comboSides.find((side) => (side.id ?? side.name) === nextComboSideId);
     const nextComboDrink = comboDrinks.find((drink) => (drink.id ?? drink.name) === nextComboDrinkId);
     const nextComboSideVariant = nextComboSide?.variants?.find((variant) => variant.id === nextComboSideVariantId);
@@ -705,8 +704,7 @@ export default function MenuItemCard({
 
     onCartConfigurationChange({
       variantId: activeVariant?.id,
-      variantLabel: activeVariant?.label,
-      optionsLabel: nextOptionsLabel,
+      selectionDetailsLabel: nextSelectionDetailsLabel,
       customizations: nextCustomizations.length > 0 ? nextCustomizations : undefined,
       image: activeVariant?.image ?? item.image,
       macrosPerItem: calculateMenuItemMacrosPerItem({
@@ -764,8 +762,7 @@ export default function MenuItemCard({
         name: item.name,
         image: selectedVariantForCart?.image ?? item.image,
         variantId: selectedVariantForCart?.id,
-        variantLabel: selectedVariantForCart?.label,
-        optionsLabel,
+        selectionDetailsLabel,
         customizations,
         quantity: 1,
         buildConfiguration: highProteinBuildConfiguration,

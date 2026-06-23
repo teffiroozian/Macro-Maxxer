@@ -90,7 +90,7 @@ export default function CartIconDropdown({
     </>
   );
 
-  const addonsLabel = lastAddedItem?.optionsLabel ?? "";
+  const addonsLabel = lastAddedItem?.selectionDetailsLabel ?? "";
   const handleOpenCart = () => {
     if (restaurantUi) {
       restaurantUi.openCart();
@@ -134,7 +134,6 @@ export default function CartIconDropdown({
                 item={lastAddedItem}
                 imageRenderer="native-img"
                 imageFallback="initial"
-                variantStyle="separate"
                 macroStyle="compact"
                 customizationsText={addonsLabel}
                 customizationsLineClamp={1}
