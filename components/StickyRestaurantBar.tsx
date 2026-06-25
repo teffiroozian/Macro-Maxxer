@@ -92,9 +92,10 @@ export default function StickyRestaurantBar({
 
   return (
     <div className="fixed left-0 right-0 top-0 z-[95]" data-sticky-nav="true">
+      <div className="pointer-events-none fixed inset-x-0 top-0 z-[100] h-[calc(env(safe-area-inset-top,0px)+4.75rem)] bg-white/95 shadow-sm backdrop-blur-xl lg:hidden" aria-hidden="true" />
       <div
-        className={`relative z-[110] mx-auto mt-1 flex w-[calc(100%-0.5rem)] max-w-6xl items-center border border-slate-200/70 bg-white shadow-[0_-3px_12px_rgba(15,23,42,0.12)] backdrop-blur sm:w-[calc(100%-1rem)] ${
-          hideSecondaryNav ? "rounded-2xl" : "rounded-2xl lg:rounded-b-none"
+        className={`relative z-[110] mx-auto mt-1 flex w-[calc(100%-0.5rem)] max-w-6xl items-center border-x-0 border-b border-t-0 border-slate-200/70 bg-white shadow-[0_-3px_12px_rgba(15,23,42,0.12)] backdrop-blur sm:w-[calc(100%-1rem)] lg:border ${
+          hideSecondaryNav ? "rounded-b-2xl lg:rounded-2xl" : "rounded-b-2xl lg:rounded-2xl lg:rounded-b-none"
         }`}
       >
         <div className="mx-auto flex w-full max-w-5xl items-center gap-2 px-3 py-2 sm:gap-3 sm:px-6">
