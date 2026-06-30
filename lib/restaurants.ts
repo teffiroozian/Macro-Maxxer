@@ -2,7 +2,7 @@
 
 import restaurants from "@/app/data/index.json";
 import { normalizeAddons } from "@/lib/addons";
-import type { MenuItem, RestaurantAddons } from "@/types/menu";
+import type { AddonOption, MenuItem, RestaurantAddons } from "@/types/menu";
 import type { RestaurantData, RestaurantIndexEntry } from "@/types/restaurant";
 
 // gives restaurant data the RestaurantIndexEntry shape
@@ -18,14 +18,23 @@ export function getVisibleRestaurants(): RestaurantIndexEntry[] {
 }
 
 
-// takes a menu item and turns it into a URL-safe slug
-export function toItemSlug(item: MenuItem) {
-  const raw = item.id ?? item.name;
-  return raw
+const ADDON_GROUP_LABELS: Record<string, string> = {
+  sauces: "Dipping Sauces",
+  dressings: "Dressings",
+  condiments: "Condiments",
+};
+
+function toSlug(value: string) {
+  return value
     .toLowerCase()
     .trim()
     .replace(/[^a-z0-9]+/g, "-")
     .replace(/(^-|-$)/g, "");
+}
+
+// takes a menu item and turns it into a URL-safe slug
+export function toItemSlug(item: MenuItem) {
+  return toSlug(item.id ?? item.name);
 }
 
 // recieves full usable restaurant page data from restaurant metadata, and
@@ -67,36 +76,29 @@ export function getItemBySlug(items: MenuItem[], slug: string) {
   return items.find((item) => toItemSlug(item) === slug);
 }
 
-export function buildAddonMenuItems(restaurantId: string, addons?: RestaurantAddons): MenuItem[] {
+function buildAddonMenuItem(
+  restaurantId: string,
+  addonRef: string,
+  option: AddonOption
+): MenuItem {
+  return {
+    id: toSlug(`${restaurantId}-${addonRef}-${option.name}`),
+    name: option.name,
+    image: option.image ?? "",
+    nutrition: option.nutrition,
+    categories: [ADDON_GROUP_LABELS[addonRef] ?? "Add-ons"],
+    servingType: "addon",
+    defaultOrder: 0,
+  };
+}
+
+export function buildAddonMenuItems(
+  restaurantId: string,
+  addons?: RestaurantAddons
+): MenuItem[] {
   if (!addons) return [];
 
-  const categoryByAddonGroup: Record<string, string> = {
-    sauces: "Dipping Sauces",
-    dressings: "Dressings",
-    condiments: "Condiments",
-  };
-
-  return (Object.entries(addons) as [string, NonNullable<RestaurantAddons[string]>][])
-    .flatMap(([addonRef, options]) =>
-      options.map((option) => ({
-        id: `${restaurantId}-${addonRef}-${option.name}`.toLowerCase().replace(/[^a-z0-9]+/g, "-"),
-        name: option.name,
-        defaultOrder: 0,
-        nutrition: {
-          calories: option.nutrition.calories,
-          protein: option.nutrition.protein,
-          carbs: option.nutrition.carbs,
-          totalFat: option.nutrition.totalFat ?? 0,
-          satFat: option.nutrition.satFat,
-          transFat: option.nutrition.transFat,
-          cholesterol: option.nutrition.cholesterol,
-          sodium: option.nutrition.sodium,
-          fiber: option.nutrition.fiber,
-          sugars: option.nutrition.sugars,
-        },
-        categories: [categoryByAddonGroup[addonRef]],
-        servingType: "addon",
-        image: option.image ?? "",
-      }))
-    );
+  return Object.entries(addons).flatMap(([addonRef, options]) =>
+    options.map((option) => buildAddonMenuItem(restaurantId, addonRef, option))
+  );
 }
