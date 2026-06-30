@@ -6,7 +6,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import GlobalMobileNav from "@/components/GlobalMobileNav";
 import DesktopNav from "@/components/DesktopNav";
-import { getAllRestaurants, isRestaurantAvailable } from "@/lib/restaurants";
+import { getAllRestaurants } from "@/lib/restaurants";
 
 const RECENT_RESTAURANTS_KEY = "recentlySearchedRestaurants";
 const restaurants = getAllRestaurants();
@@ -95,7 +95,7 @@ export default function Home() {
   const showSuggestions = isFocused && suggestions.length > 0;
 
   const handleSelect = (restaurant: (typeof restaurants)[number]) => {
-    if (!isRestaurantAvailable(restaurant.id)) {
+    if (restaurant.isComingSoon) {
       return;
     }
 
@@ -236,15 +236,15 @@ export default function Home() {
                         key={restaurant.id}
                         role="option"
                         aria-selected={activeIndex === index}
-                        aria-disabled={!isRestaurantAvailable(restaurant.id)}
+                        aria-disabled={Boolean(restaurant.isComingSoon)}
                         className={`flex items-center gap-3 px-4 py-2 text-sm transition ${
-                          isRestaurantAvailable(restaurant.id)
+                          !restaurant.isComingSoon
                             ? `cursor-pointer text-neutral-700 hover:bg-neutral-100 ${activeIndex === index ? "bg-neutral-100" : ""}`
                             : "cursor-default text-neutral-400"
                         }`}
                         onMouseDown={(event) => event.preventDefault()}
                         onClick={() => {
-                          if (isRestaurantAvailable(restaurant.id)) {
+                          if (!restaurant.isComingSoon) {
                             handleSelect(restaurant);
                           }
                         }}
@@ -261,7 +261,7 @@ export default function Home() {
                         <span className="font-semibold text-neutral-900">
                           {restaurant.name}
                         </span>
-                        {!isRestaurantAvailable(restaurant.id) ? (
+                        {restaurant.isComingSoon ? (
                           <span className="ml-auto rounded-full border border-neutral-300 px-2 py-0.5 text-[11px] font-semibold uppercase tracking-wide text-neutral-500">
                             Coming Soon
                           </span>
@@ -306,15 +306,15 @@ export default function Home() {
                           key={restaurant.id}
                           role="option"
                           aria-selected={activeIndex === absoluteIndex}
-                          aria-disabled={!isRestaurantAvailable(restaurant.id)}
+                          aria-disabled={Boolean(restaurant.isComingSoon)}
                           className={`flex items-center gap-3 px-4 py-2 text-sm transition ${
-                            isRestaurantAvailable(restaurant.id)
+                            !restaurant.isComingSoon
                               ? `cursor-pointer text-neutral-700 hover:bg-neutral-100 ${activeIndex === absoluteIndex ? "bg-neutral-100" : ""}`
                               : "cursor-default text-neutral-400"
                           }`}
                           onMouseDown={(event) => event.preventDefault()}
                           onClick={() => {
-                            if (isRestaurantAvailable(restaurant.id)) {
+                            if (!restaurant.isComingSoon) {
                               handleSelect(restaurant);
                             }
                           }}
@@ -331,7 +331,7 @@ export default function Home() {
                           <span className="font-semibold text-neutral-900">
                             {restaurant.name}
                           </span>
-                          {!isRestaurantAvailable(restaurant.id) ? (
+                          {restaurant.isComingSoon ? (
                             <span className="ml-auto rounded-full border border-neutral-300 px-2 py-0.5 text-[11px] font-semibold uppercase tracking-wide text-neutral-500">
                               Coming Soon
                             </span>
@@ -346,15 +346,15 @@ export default function Home() {
                       key={restaurant.id}
                       role="option"
                       aria-selected={activeIndex === index}
-                      aria-disabled={!isRestaurantAvailable(restaurant.id)}
+                      aria-disabled={Boolean(restaurant.isComingSoon)}
                       className={`flex items-center gap-3 px-4 py-2 text-sm transition ${
-                        isRestaurantAvailable(restaurant.id)
+                        !restaurant.isComingSoon
                           ? `cursor-pointer text-neutral-700 hover:bg-neutral-100 ${activeIndex === index ? "bg-neutral-100" : ""}`
                           : "cursor-default text-neutral-400"
                       }`}
                       onMouseDown={(event) => event.preventDefault()}
                       onClick={() => {
-                        if (isRestaurantAvailable(restaurant.id)) {
+                        if (!restaurant.isComingSoon) {
                           handleSelect(restaurant);
                         }
                       }}
@@ -371,7 +371,7 @@ export default function Home() {
                       <span className="font-semibold text-neutral-900">
                         {restaurant.name}
                       </span>
-                      {!isRestaurantAvailable(restaurant.id) ? (
+                      {restaurant.isComingSoon ? (
                         <span className="ml-auto rounded-full border border-neutral-300 px-2 py-0.5 text-[11px] font-semibold uppercase tracking-wide text-neutral-500">
                           Coming Soon
                         </span>
@@ -399,7 +399,7 @@ export default function Home() {
           {restaurants
             .filter((restaurant) => restaurant.isMacroFriendly)
             .map((restaurant) => {
-              const isAvailable = isRestaurantAvailable(restaurant.id);
+              const isAvailable = !restaurant.isComingSoon;
 
               if (isAvailable) {
                 return (
@@ -489,7 +489,7 @@ export default function Home() {
               </h3>
               <div className="space-y-2 ">
                 {items.map((restaurant) => (
-                  isRestaurantAvailable(restaurant.id) ? (
+                  !restaurant.isComingSoon ? (
                     <Link
                       key={restaurant.id}
                       href={`/restaurant/${restaurant.id}`}

@@ -4,7 +4,7 @@ import { useMemo, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { Store, ChevronDown, ChevronRight, SlidersHorizontal, X } from "lucide-react";
-import { getAllRestaurants, isRestaurantAvailable } from "@/lib/restaurants";
+import { getAllRestaurants } from "@/lib/restaurants";
 
 type DrawerTab = "controls" | "restaurants";
 
@@ -112,7 +112,7 @@ export default function MobileNavDrawer({
                 {isFeaturedOpen ? (
                   <div className="grid gap-1.5">
                     {featuredRestaurants.map((restaurant) =>
-                      isRestaurantAvailable(restaurant.id) ? (
+                      !restaurant.isComingSoon ? (
                         <Link key={restaurant.id} href={`/restaurant/${restaurant.id}`} onClick={onClose} className="inline-flex items-center justify-between rounded-xl border border-black/15 bg-white px-3 py-2.5 text-sm font-semibold text-black/85">
                           <span className="inline-flex min-w-0 items-center gap-2.5">
                             <span className="relative h-7 w-7 shrink-0 overflow-hidden rounded-md border border-black/10 bg-white">
