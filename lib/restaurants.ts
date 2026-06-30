@@ -1,12 +1,16 @@
+// DATA LOADER FILE
+
 import restaurants from "@/app/data/index.json";
 import { normalizeAddons } from "@/lib/addons";
 import type { MenuItem, RestaurantAddons } from "@/types/menu";
 import type { RestaurantData, RestaurantIndexEntry } from "@/types/restaurant";
 
+// gives restaurant data the RestaurantIndexEntry shape
 const restaurantIndex = restaurants as RestaurantIndexEntry[];
 
 export const ACTIVE_RESTAURANT_IDS = ["chickfila", "chipotle"] as const;
 
+// gives other files access to the restaurant list
 export function getAllRestaurants(): RestaurantIndexEntry[] {
   return restaurantIndex;
 }
