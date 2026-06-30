@@ -34,8 +34,11 @@ export async function getRestaurantData(id: string): Promise<RestaurantData | nu
 
   const menuModule = await import(`@/app/data/${restaurant.menuFile}`);
   const menu = menuModule.default;
-  const ingredients = menu.ingredients ?? [];
   const items = menu.items ?? [];
+  const ingredients = menu.ingredients ?? [];
+  const addons = normalizeAddons(menu.addons ?? {});
+  const hasBuildYourOwn = menu.hasBuildYourOwn ?? false;
+
   return {
     id: restaurant.id,
     name: restaurant.name,
@@ -43,11 +46,10 @@ export async function getRestaurantData(id: string): Promise<RestaurantData | nu
     cover: restaurant.cover,
     menuFile: restaurant.menuFile,
     isMacroFriendly: restaurant.isMacroFriendly,
-    hasBuildYourOwn:
-      menu.hasBuildYourOwn ?? (menu as { isBuildYourOwn?: boolean }).isBuildYourOwn ?? false,
+    hasBuildYourOwn,
     items,
     ingredients,
-    addons: normalizeAddons(menu.addons ?? {}),
+    addons,
     customizationRules: menu.customizationRules,
     builderConfig: menu.builderConfig,
   };
