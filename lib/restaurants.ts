@@ -17,7 +17,7 @@ export function getVisibleRestaurants(): RestaurantIndexEntry[] {
   return getAllRestaurants();
 }
 
-
+// object lookup for addon groups
 const ADDON_GROUP_LABELS: Record<string, string> = {
   sauces: "Dipping Sauces",
   dressings: "Dressings",
@@ -76,6 +76,7 @@ export function getItemBySlug(items: MenuItem[], slug: string) {
   return items.find((item) => toItemSlug(item) === slug);
 }
 
+// converts add-on into one MenuItem
 function buildAddonMenuItem(
   restaurantId: string,
   addonRef: string,
@@ -92,6 +93,7 @@ function buildAddonMenuItem(
   };
 }
 
+// handles the whole addon list
 export function buildAddonMenuItems(
   restaurantId: string,
   addons?: RestaurantAddons
