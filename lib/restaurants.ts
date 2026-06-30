@@ -8,8 +8,6 @@ import type { RestaurantData, RestaurantIndexEntry } from "@/types/restaurant";
 // gives restaurant data the RestaurantIndexEntry shape
 const restaurantIndex = restaurants as RestaurantIndexEntry[];
 
-export const ACTIVE_RESTAURANT_IDS = ["chickfila", "chipotle"] as const;
-
 // gives other files access to the restaurant list
 export function getAllRestaurants(): RestaurantIndexEntry[] {
   return restaurantIndex;
@@ -20,7 +18,8 @@ export function getVisibleRestaurants(): RestaurantIndexEntry[] {
 }
 
 export function isRestaurantAvailable(restaurantId: string) {
-  return ACTIVE_RESTAURANT_IDS.includes(restaurantId as (typeof ACTIVE_RESTAURANT_IDS)[number]);
+  const restaurant = restaurantIndex.find((entry) => entry.id === restaurantId);
+  return Boolean(restaurant && !restaurant.isComingSoon);
 }
 
 export function toItemSlug(item: MenuItem) {

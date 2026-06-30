@@ -8,6 +8,7 @@ export type RestaurantIndexEntry = {
   cover: string;
   menuFile: string;
   isMacroFriendly: boolean;
+  isComingSoon?: boolean;
 };
 
 export type RestaurantData = RestaurantIndexEntry & {
