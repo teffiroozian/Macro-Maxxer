@@ -1,5 +1,4 @@
 import Link from "next/link";
-import restaurants from "../../data/index.json";
 import RestaurantView from "@/components/RestaurantView";
 import RecentRestaurantTracker from "@/components/RecentRestaurantTracker";
 import ScrollToTopOnMount from "@/components/ScrollToTopOnMount";
@@ -17,14 +16,11 @@ export default async function RestaurantPage({
 }) {
     const { id } = await params;
 
-    // uses that id to find matching restaurant and info about it
-    // basic info like: name, logo
-    const restaurant = restaurants.find((r) => r.id === id);
-    // uses the same id to load full restaurant menu data
-    // full menu info: items, ingredients, addons
+    // uses that id to load restaurant details and full menu data
+    // info includes: id, name, logo, items, ingredients, addons
     const restaurantData = await getRestaurantData(id);
 
-    if (!restaurant || !restaurantData) {
+    if (!restaurantData) {
         return (
             <main style={{ maxWidth: 900, margin: "48px auto", padding: 16 }}>
                 <Link
@@ -42,14 +38,14 @@ export default async function RestaurantPage({
         <RestaurantSearchProvider>
             <RestaurantUiProvider>
                 <div className="w-full pt-16 sm:pt-20 lg:pt-40">
-                    <RecentRestaurantTracker restaurantId={restaurant.id} />
+                    <RecentRestaurantTracker restaurantId={restaurantData.id} />
                     <ScrollToTopOnMount />
 
                     <main className="mx-auto w-full max-w-6xl px-3 pb-12 sm:px-4 lg:px-6">
                         <RestaurantView
-                            restaurantId={restaurant.id}
-                            restaurantName={restaurant.name}
-                            restaurantLogo={restaurant.logo}
+                            restaurantId={restaurantData.id}
+                            restaurantName={restaurantData.name}
+                            restaurantLogo={restaurantData.logo}
                             hasBuildYourOwn={restaurantData.hasBuildYourOwn}
                             items={restaurantData.items}
                             ingredients={restaurantData.ingredients}
