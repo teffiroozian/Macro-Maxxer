@@ -17,11 +17,13 @@ export function getVisibleRestaurants(): RestaurantIndexEntry[] {
   return getAllRestaurants();
 }
 
+// check whether a restaurant is available for use in the app
 export function isRestaurantAvailable(restaurantId: string) {
   const restaurant = restaurantIndex.find((entry) => entry.id === restaurantId);
   return Boolean(restaurant && !restaurant.isComingSoon);
 }
 
+// takes a menu item and turns it into a URL-safe slug
 export function toItemSlug(item: MenuItem) {
   const raw = item.id ?? item.name;
   return raw
