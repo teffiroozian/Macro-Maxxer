@@ -17,9 +17,9 @@ export default async function RestaurantPage({
     const { id } = await params;
 
     // uses that id to load restaurant details and full menu data
-    // info includes: id, name, logo, items, ingredients, addons
     const restaurantData = await getRestaurantData(id);
 
+    // checks if the data exists for the url
     if (!restaurantData) {
         return (
             <main style={{ maxWidth: 900, margin: "48px auto", padding: 16 }}>
@@ -35,13 +35,17 @@ export default async function RestaurantPage({
     }
 
     return (
+        // shares search state
         <RestaurantSearchProvider>
+            {/* shares cart drawer ui state */}
             <RestaurantUiProvider>
                 <div className="w-full pt-16 sm:pt-20 lg:pt-40">
+                    {/* keeps track of recently visited restaurant */}
                     <RecentRestaurantTracker restaurantId={restaurantData.id} />
                     <ScrollToTopOnMount />
 
                     <main className="mx-auto w-full max-w-6xl px-3 pb-12 sm:px-4 lg:px-6">
+                        {/* all the data get passed into RestaurantView */}
                         <RestaurantView
                             restaurantId={restaurantData.id}
                             restaurantName={restaurantData.name}
