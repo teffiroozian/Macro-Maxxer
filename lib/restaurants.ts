@@ -28,21 +28,28 @@ export function toItemSlug(item: MenuItem) {
     .replace(/(^-|-$)/g, "");
 }
 
+// recieves full usable restaurant page data from restaurant metadata, and
+// returns one object that merges index.json + [restaurant].json files into one clean shape
 export async function getRestaurantData(id: string): Promise<RestaurantData | null> {
+  // searches in index json file for restaurant
   const restaurant = restaurantIndex.find((entry) => entry.id === id);
   if (!restaurant) return null;
 
+  // dynamically loads the one it needs based on the selected restaurant
   const menuModule = await import(`@/app/data/${restaurant.menuFile}`);
+  // pulls the real JSON data out of the imported file
   const menu = menuModule.default;
   const ingredients = menu.ingredients ?? [];
   const items = menu.items ?? [];
   return {
+    // restaurant index file data
     id: restaurant.id,
     name: restaurant.name,
     logo: restaurant.logo,
     cover: restaurant.cover,
     menuFile: restaurant.menuFile,
     isMacroFriendly: restaurant.isMacroFriendly,
+    // menu file data
     hasBuildYourOwn:
       menu.hasBuildYourOwn ?? (menu as { isBuildYourOwn?: boolean }).isBuildYourOwn ?? false,
     items,
@@ -53,6 +60,7 @@ export async function getRestaurantData(id: string): Promise<RestaurantData | nu
   };
 }
 
+// recieves item info from the url
 export function getItemBySlug(items: MenuItem[], slug: string) {
   return items.find((item) => toItemSlug(item) === slug);
 }
