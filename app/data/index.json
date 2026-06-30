@@ -21,7 +21,8 @@
     "logo": "/restaurants/panera/logo.jpeg",
     "cover": "/restaurants/panera/cover.jpeg",
     "menuFile": "panera.json",
-    "isMacroFriendly": true
+    "isMacroFriendly": true,
+    "isComingSoon": true
   },
   {
     "id": "mcdonalds",
@@ -29,7 +30,8 @@
     "logo": "/restaurants/mcdonalds/logo.png",
     "cover": "/restaurants/mcdonalds/cover.jpeg",
     "menuFile": "mcdonlads.json",
-    "isMacroFriendly": false
+    "isMacroFriendly": false,
+    "isComingSoon": true
   },
   {
     "id": "starbucks",
@@ -37,7 +39,8 @@
     "logo": "/restaurants/starbucks/logo.jpeg",
     "cover": "/restaurants/starbucks/cover.webp",
     "menuFile": "starbucks.json",
-    "isMacroFriendly": true
+    "isMacroFriendly": true,
+    "isComingSoon": true
   },
   {
     "id": "habit",
@@ -45,7 +48,8 @@
     "logo": "/restaurants/habitburger/logo.jpeg",
     "cover": "/restaurants/habitburger/cover.jpg",
     "menuFile": "habit.json",
-    "isMacroFriendly": true
+    "isMacroFriendly": true,
+    "isComingSoon": true
   },
   {
     "id": "panda",
@@ -53,7 +57,8 @@
     "logo": "/restaurants/pandaexpress/logo.jpeg",
     "cover": "/restaurants/pandaexpress/cover.jpg",
     "menuFile": "panda.json",
-    "isMacroFriendly": true
+    "isMacroFriendly": true,
+    "isComingSoon": true
   },
   {
     "id": "mod",
@@ -61,7 +66,8 @@
     "logo": "/restaurants/modpizza/logo.jpeg",
     "cover": "/restaurants/modpizza/cover.webp",
     "menuFile": "mod.json",
-    "isMacroFriendly": true
+    "isMacroFriendly": true,
+    "isComingSoon": true
   },
   {
     "id": "subway",
@@ -69,6 +75,7 @@
     "logo": "/restaurants/subway/logo.png",
     "cover": "/restaurants/subway/cover.jpg",
     "menuFile": "subway.json",
-    "isMacroFriendly": true
+    "isMacroFriendly": true,
+    "isComingSoon": true
   }
 ]
