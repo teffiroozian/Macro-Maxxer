@@ -1,7 +1,6 @@
 // DATA LOADER FILE
 
 import restaurants from "@/app/data/index.json";
-import { normalizeAddons } from "@/lib/addons";
 import type { AddonOption, MenuItem, RestaurantAddons } from "@/types/menu";
 import type { RestaurantData, RestaurantIndexEntry } from "@/types/restaurant";
 
@@ -13,10 +12,6 @@ export function getAllRestaurants(): RestaurantIndexEntry[] {
   return restaurantIndex;
 }
 
-export function getVisibleRestaurants(): RestaurantIndexEntry[] {
-  return getAllRestaurants();
-}
-
 // object lookup for addon groups
 const ADDON_GROUP_LABELS: Record<string, string> = {
   sauces: "Dipping Sauces",
@@ -24,6 +19,7 @@ const ADDON_GROUP_LABELS: Record<string, string> = {
   condiments: "Condiments",
 };
 
+// turns a string into a URL-safe slug 
 function toSlug(value: string) {
   return value
     .toLowerCase()
@@ -37,8 +33,7 @@ export function toItemSlug(item: MenuItem) {
   return toSlug(item.id ?? item.name);
 }
 
-// recieves full usable restaurant page data from restaurant metadata, and
-// returns one object that merges index.json + [restaurant].json files into one clean shape
+// takes the restaurant id from the URL and
 export async function getRestaurantData(id: string): Promise<RestaurantData | null> {
   // searches in index json file for restaurant
   const restaurant = restaurantIndex.find((entry) => entry.id === id);
@@ -46,13 +41,15 @@ export async function getRestaurantData(id: string): Promise<RestaurantData | nu
 
   // dynamically loads the one it needs based on the selected restaurant
   const menuModule = await import(`@/app/data/${restaurant.menuFile}`);
-  // pulls the real JSON data out of the imported file
   const menu = menuModule.default;
+
+  // pulling important pieces out of the menu
   const items = menu.items ?? [];
   const ingredients = menu.ingredients ?? [];
-  const addons = normalizeAddons(menu.addons ?? {});
+  const addons = menu.addons ?? {};
   const hasBuildYourOwn = menu.hasBuildYourOwn ?? false;
 
+  // return one clean restaurant object that merges index.json + [restaurant].json
   return {
     // restaurant index file data
     id: restaurant.id,
@@ -71,11 +68,12 @@ export async function getRestaurantData(id: string): Promise<RestaurantData | nu
   };
 }
 
-// recieves item info from the url
+// builds the search list for items and addons
 export function getRouteItems(restaurant: Pick<RestaurantData, "id" | "items" | "addons">) {
   return [...restaurant.items, ...buildAddonMenuItems(restaurant.id, restaurant.addons)];
 }
 
+// finds a menu item based on the URL slug from the list
 export function getItemBySlug(items: MenuItem[], slug: string) {
   return items.find((item) => toItemSlug(item) === slug);
 }
