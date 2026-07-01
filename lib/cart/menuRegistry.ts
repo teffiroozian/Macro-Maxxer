@@ -7,7 +7,7 @@ import pandaMenu from "@/app/data/panda.json";
 import paneraMenu from "@/app/data/panera.json";
 import starbucksMenu from "@/app/data/starbucks.json";
 import subwayMenu from "@/app/data/subway.json";
-import type { IngredientItem, MenuItem, RestaurantAddons, RestaurantCustomizationRules, RestaurantMenu } from "@/types/menu";
+import type { IngredientItem, MenuItem, RestaurantAddonGroups, RestaurantCustomizationRules, RestaurantMenu } from "@/types/menu";
 
 const chickfilaData = chickfilaMenu as unknown as RestaurantMenu;
 const chipotleData = chipotleMenu as unknown as RestaurantMenu;
@@ -31,16 +31,16 @@ export const menuLookupByRestaurant: Record<string, MenuItem[]> = {
   subway: subwayData.items ?? [],
 };
 
-export const addonsLookupByRestaurant: Record<string, RestaurantAddons> = {
-  chickfila: chickfilaData.addons ?? {},
-  chipotle: chipotleData.addons ?? {},
-  habit: habitData.addons ?? {},
-  mcdonalds: mcdonaldsData.addons ?? {},
-  mod: modData.addons ?? {},
-  panda: pandaData.addons ?? {},
-  panera: paneraData.addons ?? {},
-  starbucks: starbucksData.addons ?? {},
-  subway: subwayData.addons ?? {},
+export const addonGroupsLookupByRestaurant: Record<string, RestaurantAddonGroups> = {
+  chickfila: chickfilaData.addonGroups ?? {},
+  chipotle: chipotleData.addonGroups ?? {},
+  habit: habitData.addonGroups ?? {},
+  mcdonalds: mcdonaldsData.addonGroups ?? {},
+  mod: modData.addonGroups ?? {},
+  panda: pandaData.addonGroups ?? {},
+  panera: paneraData.addonGroups ?? {},
+  starbucks: starbucksData.addonGroups ?? {},
+  subway: subwayData.addonGroups ?? {},
 };
 
 export const ingredientLookupByRestaurant: Partial<Record<string, IngredientItem[]>> = {

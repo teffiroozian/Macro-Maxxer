@@ -3,7 +3,7 @@
 import { useEffect, useId, useMemo, useRef, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { ChevronDown } from "lucide-react";
-import type { AddonOption, IngredientItem, MenuItem, RestaurantAddons, RestaurantCustomizationRules } from "@/types/menu";
+import type { IngredientItem, MenuItem, ResolvedAddonGroups, RestaurantCustomizationRules } from "@/types/menu";
 import ItemDetailsPanel, { resolvePanelIngredients } from "./ItemDetailsPanel";
 import VariantSelector from "./VariantSelector";
 import {
@@ -142,11 +142,14 @@ function QuickVariantDropdown({
 
 
 
-const emptyAddon: AddonOption = {
+const emptyAddon: MenuItem = {
   id: "none",
   name: "None",
   nutrition: { calories: 0, protein: 0, carbs: 0, totalFat: 0 },
   image: "none",
+  categories: [],
+  servingType: "addon",
+  defaultOrder: 0,
 };
 
 const sauceRef: string = "sauces";
@@ -211,7 +214,7 @@ export default function MenuItemCard({
   item: MenuItem;
   rankIndex?: number;
   isTopRanked?: boolean;
-  addons?: RestaurantAddons;
+  addons?: ResolvedAddonGroups;
   ingredientItems?: IngredientItem[];
   menuItems?: MenuItem[];
   customizationRules?: RestaurantCustomizationRules;
@@ -625,7 +628,7 @@ export default function MenuItemCard({
 
   const emitCartConfiguration = (
     nextVariantId: string,
-    nextAddons: Partial<Record<string, AddonOption>>,
+    nextAddons: Partial<Record<string, MenuItem>>,
     nextSauceCounts: Record<string, number>,
     nextSelectedIngredientCounts: Record<string, number> = ingredientCounts,
     nextComboType: "just-item" | "combo-meal" = comboType,
@@ -643,7 +646,7 @@ export default function MenuItemCard({
       Array.from({ length: nextSauceCounts[addon.name] ?? 0 }, () => addon)
     );
     const activeAddons = [
-      ...Object.values(nextAddons).filter((addon): addon is AddonOption => Boolean(addon && addon.name !== "None")),
+      ...Object.values(nextAddons).filter((addon): addon is MenuItem => Boolean(addon && addon.name !== "None")),
       ...expandedSauces,
     ];
     const addonTotalsForCart = calculateAddonTotals(activeAddons);

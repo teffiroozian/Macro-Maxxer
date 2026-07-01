@@ -11,7 +11,7 @@ import ItemDetailsPanel, {
 import MacroTotalsGrid from "@/components/MacroTotalsGrid";
 import MenuSections from "@/components/MenuSections";
 import BuildSummaryDrawer from "@/components/restaurant-view/BuildSummaryDrawer";
-import type { AddonOption, MenuItem, RestaurantAddons, IngredientItem, RestaurantCustomizationRules } from "@/types/menu";
+import type { MenuItem, ResolvedAddonGroups, IngredientItem, RestaurantCustomizationRules } from "@/types/menu";
 import type { CoreMacros, Nutrition } from "@/types/nutrition";
 import { useCart } from "@/stores/cartStore";
 import { parseComboCustomization } from "@/lib/menuItemCard/comboCustomizationParser";
@@ -51,11 +51,14 @@ import type { ChipotleBuildConfiguration } from "@/lib/restaurantBuilders/chipot
 import { fromUniversalChipotleBuildConfiguration, toUniversalChipotleBuildConfiguration } from "@/lib/restaurantBuilders/chipotle/cartAdapter";
 import { SORT_OPTION_VALUES } from "@/lib/menuSections/sortOptions";
 
-const emptyAddon: AddonOption = {
+const emptyAddon: MenuItem = {
   id: "none",
   name: "None",
   nutrition: { calories: 0, protein: 0, carbs: 0, totalFat: 0 },
   image: "none",
+  categories: [],
+  servingType: "addon",
+  defaultOrder: 0,
 };
 
 const sauceRef: string = "sauces";
@@ -79,7 +82,7 @@ export default function ItemRouteModal({
   restaurantId: string;
   restaurantPath: string;
   item: MenuItem;
-  addons?: RestaurantAddons;
+  addons?: ResolvedAddonGroups;
   ingredients?: IngredientItem[];
   menuItems?: MenuItem[];
   customizationRules?: RestaurantCustomizationRules;
@@ -148,7 +151,7 @@ export default function ItemRouteModal({
   );
   const [selectedVariantId, setSelectedVariantId] = useState(editingCartItem?.variantId ?? defaultVariantId);
   const [quantity, setQuantity] = useState(editingCartItem?.quantity ?? 1);
-  const [selectedAddons, setSelectedAddons] = useState<Partial<Record<string, AddonOption>>>(() =>
+  const [selectedAddons, setSelectedAddons] = useState<Partial<Record<string, MenuItem>>>(() =>
     getSelectedAddonsFromLabel(item, addons, editingCartItem?.selectionDetailsLabel)
   );
   const [selectedSauceCounts, setSelectedSauceCounts] = useState<Record<string, number>>(() =>
@@ -389,7 +392,7 @@ export default function ItemRouteModal({
 
   const selectionDetailsLabel = useMemo(() => {
     const dressingSegments = Object.values(selectedAddons)
-      .filter((addon): addon is AddonOption => Boolean(addon && addon.name !== "None"))
+      .filter((addon): addon is MenuItem => Boolean(addon && addon.name !== "None"))
       .map((addon) => addon.name);
     const sauceSegments = Object.entries(selectedSauceCounts)
       .filter(([, count]) => count > 0)

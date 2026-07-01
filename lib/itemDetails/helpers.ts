@@ -1,4 +1,4 @@
-import type { AddonOption } from "@/types/menu";
+import type { MenuItem } from "@/types/menu";
 
 /**
  * Data-flow helper primitives used by Item Details resolution.
@@ -17,7 +17,7 @@ export function normalizeIngredientCategory(value: string) {
 
 export const toNumber = (value?: number) => value ?? 0;
 
-export function sortByCalories(addons: AddonOption[]) {
+export function sortByCalories(addons: MenuItem[]) {
   return [...addons].sort((a, b) => toNumber(a.nutrition.calories) - toNumber(b.nutrition.calories));
 }
 

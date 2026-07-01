@@ -17,18 +17,17 @@ export type ItemVariant = {
   isDefault: boolean;
 };
 
-// groups of addons that can be added to a menu item
-// e.g dipping sauces, dressings
-export type RestaurantAddons = Record<string, AddonOption[]>;
-
-// individual addon that can be added to a menu item
-// e.g. ketchup, ceaser dressing
-export type AddonOption = {
-  id: string;
-  name: string;
-  image: string;
-  nutrition: Nutrition;
+// group of menu-item IDs that can be added to a menu item
+// e.g. dipping sauces, dressings
+export type AddonGroup = {
+  label: string;
+  itemIds: string[];
+  maxSelections?: number;
+  maxPerItem?: number;
 };
+
+export type RestaurantAddonGroups = Record<string, AddonGroup>;
+export type ResolvedAddonGroups = Record<string, MenuItem[]>;
 
 // ingredient item categories
 // e.g. Cheese (includes american cheese, pepper jack, swiss)
@@ -88,6 +87,7 @@ export type MenuItem = {
   defaultVariantId?: string;
 
   addonRefs?: string[];
+  addonEligible?: boolean;
 
   customization?: ItemCustomizationOverride;
 
@@ -123,7 +123,7 @@ export type RestaurantMenu = {
   hasBuildYourOwn?: boolean;
   items: MenuItem[];
   ingredients?: IngredientItem[];
-  addons?: RestaurantAddons;
+  addonGroups?: RestaurantAddonGroups;
   customizationRules?: RestaurantCustomizationRules;
   builderConfig?: RestaurantBuilderConfig;
 };

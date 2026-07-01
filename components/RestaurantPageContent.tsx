@@ -4,6 +4,7 @@ import ScrollToTopOnMount from "@/components/ScrollToTopOnMount";
 import { RestaurantSearchProvider } from "@/components/RestaurantSearchContext";
 import { RestaurantUiProvider } from "@/components/RestaurantUiContext";
 import CartPreviewDrawer from "@/components/CartPreviewDrawer";
+import { resolveAddonMenuItems } from "@/lib/addonGroups";
 import type { RestaurantData } from "@/types/restaurant";
 
 export default function RestaurantPageContent({
@@ -11,6 +12,8 @@ export default function RestaurantPageContent({
 }: {
   restaurantData: RestaurantData;
 }) {
+  const addons = resolveAddonMenuItems(restaurantData.addonGroups, restaurantData.items);
+
   return (
     <RestaurantSearchProvider>
       <RestaurantUiProvider>
@@ -26,7 +29,7 @@ export default function RestaurantPageContent({
               hasBuildYourOwn={restaurantData.hasBuildYourOwn}
               items={restaurantData.items}
               ingredients={restaurantData.ingredients}
-              addons={restaurantData.addons}
+              addons={addons}
               customizationRules={restaurantData.customizationRules}
               builderConfig={restaurantData.builderConfig}
             />

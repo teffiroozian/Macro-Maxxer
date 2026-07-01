@@ -10,11 +10,12 @@ import MacroTotalsGrid from "@/components/MacroTotalsGrid";
 import CartItemPreviewRow from "@/components/CartItemPreviewRow";
 import ItemRouteModal from "@/components/ItemRouteModal";
 import {
-  addonsLookupByRestaurant,
+  addonGroupsLookupByRestaurant,
   customizationRulesLookupByRestaurant,
   ingredientLookupByRestaurant,
   menuLookupByRestaurant,
 } from "@/lib/cart/menuRegistry";
+import { resolveAddonMenuItems } from "@/lib/addonGroups";
 import { useCart } from "@/stores/cartStore";
 
 const getCustomizationDisplayList = (item: {
@@ -253,7 +254,7 @@ export default function CartPreviewDrawer() {
           restaurantPath={`/restaurant/${editingCartItem.restaurantId}`}
           item={editingSourceItem}
           menuItems={editingMenuItems}
-          addons={addonsLookupByRestaurant[editingCartItem.restaurantId]}
+          addons={resolveAddonMenuItems(addonGroupsLookupByRestaurant[editingCartItem.restaurantId], editingMenuItems)}
           ingredients={ingredientLookupByRestaurant[editingCartItem.restaurantId]}
           customizationRules={
             customizationRulesLookupByRestaurant[editingCartItem.restaurantId]

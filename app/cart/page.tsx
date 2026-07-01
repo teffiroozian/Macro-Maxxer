@@ -10,11 +10,12 @@ import GlobalMobileNav from "@/components/GlobalMobileNav";
 import DesktopNav from "@/components/DesktopNav";
 import { useCart } from "@/stores/cartStore";
 import {
-  addonsLookupByRestaurant,
+  addonGroupsLookupByRestaurant,
   customizationRulesLookupByRestaurant,
   ingredientLookupByRestaurant,
   menuLookupByRestaurant,
 } from "@/lib/cart/menuRegistry";
+import { resolveAddonMenuItems } from "@/lib/addonGroups";
 import { buildCartNutritionTotals } from "@/lib/cart/nutrition";
 import {
   buildCartMenuItemFromState,
@@ -93,7 +94,7 @@ export default function CartPage() {
   const router = useRouter();
 
   const nutritionTotals = useMemo(
-    () => buildCartNutritionTotals(items, menuLookupByRestaurant, addonsLookupByRestaurant),
+    () => buildCartNutritionTotals(items, menuLookupByRestaurant, addonGroupsLookupByRestaurant),
     [items]
   );
 
@@ -175,7 +176,7 @@ export default function CartPage() {
                   key={cartItem.id}
                   restaurantId={cartItem.restaurantId}
                   item={{ ...menuItem, name: displayName }}
-                  addons={addonsLookupByRestaurant[cartItem.restaurantId]}
+                  addons={resolveAddonMenuItems(addonGroupsLookupByRestaurant[cartItem.restaurantId], menuLookupByRestaurant[cartItem.restaurantId])}
                   ingredientItems={ingredientItemsForRestaurant}
                   menuItems={menuLookupByRestaurant[cartItem.restaurantId]}
                   customizationRules={customizationRulesLookupByRestaurant[cartItem.restaurantId]}

@@ -1,6 +1,6 @@
 "use client";
 
-import type { IngredientItem, MenuItem, RestaurantAddons, RestaurantCustomizationRules } from "@/types/menu";
+import type { IngredientItem, MenuItem, ResolvedAddonGroups, RestaurantCustomizationRules } from "@/types/menu";
 import type { SortOption } from "@/lib/menuSections/sortOptions";
 import MenuItemCard from "./MenuItemCard";
 import { toItemSlug } from "@/lib/restaurants";
@@ -92,7 +92,7 @@ export default function MenuSections({
   restaurantId: string;
   items: MenuItem[];
   sort: SortOption;
-  addons?: RestaurantAddons;
+  addons?: ResolvedAddonGroups;
   ingredients?: IngredientItem[];
   customizationRules?: RestaurantCustomizationRules;
   groupByCategory?: boolean;

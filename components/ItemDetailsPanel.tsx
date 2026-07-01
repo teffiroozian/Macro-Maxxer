@@ -1,6 +1,6 @@
 import { useState } from "react";
 import Image from "next/image";
-import type { AddonOption, IngredientItem, ItemVariant, MenuItem, RestaurantAddons, RestaurantCustomizationRules } from "@/types/menu";
+import type { IngredientItem, ItemVariant, MenuItem, ResolvedAddonGroups, RestaurantCustomizationRules } from "@/types/menu";
 import type { CoreMacros, Nutrition } from "@/types/nutrition";
 import { ChevronDown, ChevronRight, Pencil, type LucideIcon } from "lucide-react";
 import {
@@ -158,16 +158,16 @@ export default function ItemDetailsPanel({
   variants?: ItemVariant[] | null;
   selectedVariantId?: string;
   onSelectVariant?: (id: string) => void;
-  addons?: RestaurantAddons;
+  addons?: ResolvedAddonGroups;
   ingredientItems?: IngredientItem[];
   menuItems?: MenuItem[];
   customizationRules?: RestaurantCustomizationRules;
-  selectedAddons?: Partial<Record<string, AddonOption>>;
-  onSelectAddon?: (ref: string, addon?: AddonOption) => void;
+  selectedAddons?: Partial<Record<string, MenuItem>>;
+  onSelectAddon?: (ref: string, addon?: MenuItem) => void;
   sauceSelectionCounts?: Partial<Record<string, number>>;
-  onIncrementSauce?: (addon: AddonOption) => void;
-  onDecrementSauce?: (addon: AddonOption) => void;
-  onToggleSauce?: (addon: AddonOption) => void;
+  onIncrementSauce?: (addon: MenuItem) => void;
+  onDecrementSauce?: (addon: MenuItem) => void;
+  onToggleSauce?: (addon: MenuItem) => void;
   customizationTotals?: CoreMacros;
   showCustomizationDeltas?: boolean;
   displayMode?: "full" | "addonsOnly";
@@ -253,7 +253,7 @@ export default function ItemDetailsPanel({
         addons: sortByCalories(list),
       };
     })
-    .filter((section): section is { ref: string; title: string; addons: AddonOption[] } =>
+    .filter((section): section is { ref: string; title: string; addons: MenuItem[] } =>
       section !== null
     );
   const selectedComboSide = comboSides.find((side) => (side.id ?? side.name) === selectedComboSideId);
@@ -266,7 +266,7 @@ export default function ItemDetailsPanel({
     (variant) =>
       (selectedComboDrinkVariantId ?? selectedComboDrink.defaultVariantId ?? selectedComboDrink.variants?.[0]?.id) === variant.id
   );
-  const selectedAddonItems = (Object.entries(selectedAddons ?? {}) as Array<[string, AddonOption | undefined]>)
+  const selectedAddonItems = (Object.entries(selectedAddons ?? {}) as Array<[string, MenuItem | undefined]>)
     .filter(([, addon]) => Boolean(addon && addon.name !== "None"))
     .map(([ref, addon]) => ({
       id: `${ref}-${addon?.name}`,
