@@ -140,7 +140,7 @@ export default function MenuSections({
               ingredientItems={ingredients}
               menuItems={items}
               customizationRules={customizationRules}
-              itemHref={`/restaurant/${restaurantId}/${toItemSlug(item)}`}
+              itemHref={`/restaurant/${restaurantId}/items/${toItemSlug(item)}`}
               displayMode={
                 categoryMode === "ingredients" && hasBuildYourOwn
                   ? "ingredient-compact"
@@ -234,7 +234,7 @@ export default function MenuSections({
                 ingredientItems={ingredients}
                 menuItems={items}
                 customizationRules={customizationRules}
-                itemHref={`/restaurant/${restaurantId}/${toItemSlug(item)}`}
+                itemHref={`/restaurant/${restaurantId}/items/${toItemSlug(item)}`}
                 displayMode={
                   categoryMode === "ingredients" && hasBuildYourOwn
                     ? "ingredient-compact"
