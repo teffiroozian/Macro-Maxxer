@@ -1053,7 +1053,7 @@ export default function ItemRouteModal({
   };
 
   return (
-    <div className="fixed inset-0 z-[100] flex items-end justify-center px-6 py-4 sm:items-center sm:p-6" role="dialog" aria-modal="true" aria-label={item.name}>
+    <div className="fixed inset-0 z-[220] flex items-end justify-center px-6 py-4 sm:items-center sm:p-6" role="dialog" aria-modal="true" aria-label={item.name}>
       <button
         type="button"
         className="cursor-pointer absolute inset-0 border-0 bg-slate-900/66"
