@@ -12,10 +12,6 @@ export function getAllRestaurants(): RestaurantIndexEntry[] {
   return restaurantIndex;
 }
 
-export function getVisibleRestaurants(): RestaurantIndexEntry[] {
-  return getAllRestaurants();
-}
-
 // object lookup for addon groups
 const ADDON_GROUP_LABELS: Record<string, string> = {
   sauces: "Dipping Sauces",
