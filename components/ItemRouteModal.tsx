@@ -73,6 +73,8 @@ export default function ItemRouteModal({
   menuItems,
   customizationRules,
   closeBehavior = "back",
+  onClose,
+  editCartItemId: editCartItemIdProp,
 }: {
   restaurantId: string;
   restaurantPath: string;
@@ -81,11 +83,13 @@ export default function ItemRouteModal({
   ingredients?: IngredientItem[];
   menuItems?: MenuItem[];
   customizationRules?: RestaurantCustomizationRules;
-  closeBehavior?: "back" | "replace";
+  closeBehavior?: "back" | "replace" | "local";
+  onClose?: () => void;
+  editCartItemId?: string | null;
 }) {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const editCartItemId = searchParams.get("editCartItem");
+  const editCartItemId = editCartItemIdProp ?? searchParams.get("editCartItem");
   const variants = item.variants?.length ? item.variants : null;
   const defaultVariantId = useMemo(() => {
     if (!variants) return "";
@@ -911,6 +915,11 @@ export default function ItemRouteModal({
   };
 
   const handleClose = () => {
+    if (closeBehavior === "local") {
+      onClose?.();
+      return;
+    }
+
     if (closeBehavior === "back") {
       router.back();
       return;

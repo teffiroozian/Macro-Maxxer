@@ -3,14 +3,18 @@
 import Image from "next/image";
 import Link from "next/link";
 import { Pencil } from "lucide-react";
-import { useEffect, useMemo } from "react";
-import { useRouter } from "next/navigation";
+import { useEffect, useMemo, useState } from "react";
 import restaurants from "@/app/data/index.json";
 import { useRestaurantUi } from "@/components/RestaurantUiContext";
 import MacroTotalsGrid from "@/components/MacroTotalsGrid";
 import CartItemPreviewRow from "@/components/CartItemPreviewRow";
-import { menuLookupByRestaurant } from "@/lib/cart/menuRegistry";
-import { toItemSlug } from "@/lib/restaurants";
+import ItemRouteModal from "@/components/ItemRouteModal";
+import {
+  addonsLookupByRestaurant,
+  customizationRulesLookupByRestaurant,
+  ingredientLookupByRestaurant,
+  menuLookupByRestaurant,
+} from "@/lib/cart/menuRegistry";
 import { useCart } from "@/stores/cartStore";
 
 const getCustomizationDisplayList = (item: {
@@ -30,7 +34,22 @@ const getCustomizationDisplayList = (item: {
 export default function CartPreviewDrawer() {
   const { isCartOpen, closeCart } = useRestaurantUi();
   const { items, totals, updateQuantity, clearCart } = useCart();
-  const router = useRouter();
+  const [editingCartItemId, setEditingCartItemId] = useState<string | null>(null);
+
+  const editingCartItem = useMemo(
+    () => items.find((item) => item.id === editingCartItemId) ?? null,
+    [editingCartItemId, items]
+  );
+  const editingMenuItems = editingCartItem
+    ? menuLookupByRestaurant[editingCartItem.restaurantId] ?? []
+    : [];
+  const editingSourceItem = editingCartItem
+    ? editingMenuItems.find(
+        (menuItem) => (menuItem.id ?? menuItem.name) === editingCartItem.itemId
+      ) ?? null
+    : null;
+
+  const closeEditModal = () => setEditingCartItemId(null);
 
   const activeRestaurant = useMemo(() => {
     const activeRestaurantId = items[0]?.restaurantId;
@@ -137,9 +156,6 @@ export default function CartPreviewDrawer() {
                     menuLookupByRestaurant[item.restaurantId]?.find(
                       (menuItem) => (menuItem.id ?? menuItem.name) === item.itemId
                     ) ?? null;
-                  const itemEditHref = sourceItem
-                    ? `/restaurant/${item.restaurantId}/${toItemSlug(sourceItem)}?editCartItem=${item.id}`
-                    : null;
                   return (
                     <li
                       key={item.id}
@@ -154,26 +170,12 @@ export default function CartPreviewDrawer() {
                         customizationsLineClamp={1}
                         actions={
                           <>
-                            {item.selection.type === "build-your-own" ? (
+                            {item.selection.type !== "build-your-own" && sourceItem ? (
                               <button
                                 type="button"
                                 onClick={() => {
                                   closeCart();
-                                  router.push(
-                                    `/restaurant/${item.restaurantId}?view=ingredients&editCartItem=${item.id}`
-                                  );
-                                }}
-                                className="cursor-pointer inline-flex size-8 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-700 transition hover:bg-slate-100"
-                                aria-label={`Edit ${item.name}`}
-                              >
-                                <Pencil className="size-4" />
-                              </button>
-                            ) : itemEditHref ? (
-                              <button
-                                type="button"
-                                onClick={() => {
-                                  closeCart();
-                                  router.push(itemEditHref, { scroll: false });
+                                  setEditingCartItemId(item.id);
                                 }}
                                 className="cursor-pointer inline-flex size-8 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-700 transition hover:bg-slate-100"
                                 aria-label={`Customize ${item.name}`}
@@ -244,6 +246,23 @@ export default function CartPreviewDrawer() {
           </section>
         </div>
       </aside>
+
+      {editingCartItem && editingSourceItem ? (
+        <ItemRouteModal
+          restaurantId={editingCartItem.restaurantId}
+          restaurantPath={`/restaurant/${editingCartItem.restaurantId}`}
+          item={editingSourceItem}
+          menuItems={editingMenuItems}
+          addons={addonsLookupByRestaurant[editingCartItem.restaurantId]}
+          ingredients={ingredientLookupByRestaurant[editingCartItem.restaurantId]}
+          customizationRules={
+            customizationRulesLookupByRestaurant[editingCartItem.restaurantId]
+          }
+          closeBehavior="local"
+          editCartItemId={editingCartItem.id}
+          onClose={closeEditModal}
+        />
+      ) : null}
     </>
   );
 }
