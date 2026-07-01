@@ -72,6 +72,9 @@ export default function ItemRouteModal({
   ingredients,
   menuItems,
   customizationRules,
+  closeBehavior = "back",
+  onClose,
+  editCartItemId: editCartItemIdProp,
 }: {
   restaurantId: string;
   restaurantPath: string;
@@ -80,10 +83,13 @@ export default function ItemRouteModal({
   ingredients?: IngredientItem[];
   menuItems?: MenuItem[];
   customizationRules?: RestaurantCustomizationRules;
+  closeBehavior?: "back" | "replace" | "local";
+  onClose?: () => void;
+  editCartItemId?: string | null;
 }) {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const editCartItemId = searchParams.get("editCartItem");
+  const editCartItemId = editCartItemIdProp ?? searchParams.get("editCartItem");
   const variants = item.variants?.length ? item.variants : null;
   const defaultVariantId = useMemo(() => {
     if (!variants) return "";
@@ -909,10 +915,16 @@ export default function ItemRouteModal({
   };
 
   const handleClose = () => {
-    if (window.history.length > 1) {
+    if (closeBehavior === "local") {
+      onClose?.();
+      return;
+    }
+
+    if (closeBehavior === "back") {
       router.back();
       return;
     }
+
     router.replace(restaurantPath, { scroll: false });
   };
 
@@ -1041,7 +1053,7 @@ export default function ItemRouteModal({
   };
 
   return (
-    <div className="fixed inset-0 z-[100] flex items-end justify-center px-6 py-4 sm:items-center sm:p-6" role="dialog" aria-modal="true" aria-label={item.name}>
+    <div className="fixed inset-0 z-[220] flex items-end justify-center px-6 py-4 sm:items-center sm:p-6" role="dialog" aria-modal="true" aria-label={item.name}>
       <button
         type="button"
         className="cursor-pointer absolute inset-0 border-0 bg-slate-900/66"
