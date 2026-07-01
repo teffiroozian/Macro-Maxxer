@@ -1,6 +1,6 @@
 import { useState } from "react";
 import Image from "next/image";
-import type { AddonOption, IngredientItem, ItemVariant, MenuItem, RestaurantAddons, RestaurantCustomizationRules } from "@/types/menu";
+import type { IngredientItem, ItemVariant, MenuItem, ResolvedAddonGroups, RestaurantCustomizationRules } from "@/types/menu";
 import type { CoreMacros, Nutrition } from "@/types/nutrition";
 import { ChevronDown, ChevronRight, Pencil, type LucideIcon } from "lucide-react";
 import {
@@ -43,12 +43,6 @@ function formatPortionBadge(count: number) {
   if (Number.isInteger(count)) return `${count}x`;
   return `${count.toFixed(1)}x`;
 }
-
-const addonSectionTitles: Record<string, string> = {
-  sauces: "Sauces",
-  dressings: "Dressings",
-  condiments: "Condiments",
-};
 
 function isIconImage(icon: string) {
   return icon.startsWith("/") || icon.startsWith("http://") || icon.startsWith("https://");
@@ -158,16 +152,16 @@ export default function ItemDetailsPanel({
   variants?: ItemVariant[] | null;
   selectedVariantId?: string;
   onSelectVariant?: (id: string) => void;
-  addons?: RestaurantAddons;
+  addons?: ResolvedAddonGroups;
   ingredientItems?: IngredientItem[];
   menuItems?: MenuItem[];
   customizationRules?: RestaurantCustomizationRules;
-  selectedAddons?: Partial<Record<string, AddonOption>>;
-  onSelectAddon?: (ref: string, addon?: AddonOption) => void;
+  selectedAddons?: Partial<Record<string, MenuItem>>;
+  onSelectAddon?: (ref: string, addon?: MenuItem) => void;
   sauceSelectionCounts?: Partial<Record<string, number>>;
-  onIncrementSauce?: (addon: AddonOption) => void;
-  onDecrementSauce?: (addon: AddonOption) => void;
-  onToggleSauce?: (addon: AddonOption) => void;
+  onIncrementSauce?: (addon: MenuItem) => void;
+  onDecrementSauce?: (addon: MenuItem) => void;
+  onToggleSauce?: (addon: MenuItem) => void;
   customizationTotals?: CoreMacros;
   showCustomizationDeltas?: boolean;
   displayMode?: "full" | "addonsOnly";
@@ -243,19 +237,17 @@ export default function ItemDetailsPanel({
   const addonRefs = item.addonRefs ?? [];
   const [sectionOpenState, setSectionOpenState] = useState<Record<string, boolean>>({});
 
-  const availableAddonSections = addonRefs
-    .map((ref) => {
-      const list = addons?.[ref];
-      if (!list || list.length === 0) return null;
-      return {
-        ref,
-        title: addonSectionTitles[ref],
-        addons: sortByCalories(list),
-      };
-    })
-    .filter((section): section is { ref: string; title: string; addons: AddonOption[] } =>
-      section !== null
-    );
+  const availableAddonSections = addonRefs.flatMap((ref) => {
+    const group = addons?.[ref];
+    if (!group || group.items.length === 0) return [];
+    return [{
+      ref,
+      title: group.label,
+      addons: sortByCalories(group.items),
+      maxSelections: group.maxSelections,
+      maxPerItem: group.maxPerItem,
+    }];
+  });
   const selectedComboSide = comboSides.find((side) => (side.id ?? side.name) === selectedComboSideId);
   const selectedComboDrink = comboDrinks.find((drink) => (drink.id ?? drink.name) === selectedComboDrinkId);
   const selectedComboSideVariant = selectedComboSide?.variants?.find(
@@ -266,7 +258,7 @@ export default function ItemDetailsPanel({
     (variant) =>
       (selectedComboDrinkVariantId ?? selectedComboDrink.defaultVariantId ?? selectedComboDrink.variants?.[0]?.id) === variant.id
   );
-  const selectedAddonItems = (Object.entries(selectedAddons ?? {}) as Array<[string, AddonOption | undefined]>)
+  const selectedAddonItems = (Object.entries(selectedAddons ?? {}) as Array<[string, MenuItem | undefined]>)
     .filter(([, addon]) => Boolean(addon && addon.name !== "None"))
     .map(([ref, addon]) => ({
       id: `${ref}-${addon?.name}`,
@@ -279,7 +271,7 @@ export default function ItemDetailsPanel({
     .filter(([name, count]) => name !== "None" && (count ?? 0) > 0)
     .map(([name, count]) => {
       const sauceCount = count ?? 0;
-      const matchedSauce = addons?.sauces?.find((addon) => addon.name === name);
+      const matchedSauce = addons?.sauces?.items.find((addon) => addon.name === name);
       return {
         id: `sauce-${name}`,
         name,

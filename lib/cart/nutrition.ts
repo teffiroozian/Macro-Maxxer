@@ -1,6 +1,6 @@
 import { parseOptionLabelCounts } from "@/lib/cartOptionLabels";
 import type { CartItem } from "@/types/cart";
-import type { AddonOption, MenuItem, RestaurantAddons } from "@/types/menu";
+import type { MenuItem, RestaurantAddonGroups } from "@/types/menu";
 import type { Nutrition } from "@/types/nutrition";
 
 export type NutritionTotals = {
@@ -18,38 +18,39 @@ export type NutritionTotals = {
 
 function addOptional(total: number | undefined, next: number | undefined, quantity: number) {
   if (next === undefined) return total;
-  return (total ?? 0) + (next * quantity);
+  return (total ?? 0) + next * quantity;
 }
 
 export function getSelectedAddonNutrition(
   selectionDetailsLabel: string | undefined,
   sourceItem: MenuItem | undefined,
-  restaurantAddons: RestaurantAddons | undefined
+  restaurantAddonGroups: RestaurantAddonGroups | undefined,
+  restaurantItems: MenuItem[] | undefined
 ) {
   const selectedAddonCounts = parseOptionLabelCounts(selectionDetailsLabel);
+  if (Object.keys(selectedAddonCounts).length === 0 || !sourceItem || !restaurantAddonGroups) return [] as MenuItem[];
 
-  if (Object.keys(selectedAddonCounts).length === 0 || !sourceItem || !restaurantAddons) {
-    return [] as AddonOption[];
-  }
-
+  const itemLookup = new Map((restaurantItems ?? []).map((item) => [item.id, item]));
   return (sourceItem.addonRefs ?? [])
-    .flatMap((ref) => restaurantAddons[ref] ?? [])
+    .flatMap((ref) => restaurantAddonGroups[ref]?.itemIds ?? [])
+    .map((itemId) => itemLookup.get(itemId))
+    .filter((addon): addon is MenuItem => Boolean(addon?.addonEligible))
     .flatMap((addon) => Array.from({ length: selectedAddonCounts[addon.name] ?? 0 }, () => addon));
 }
 
 export function buildCartNutritionTotals(
   items: CartItem[],
   menuLookupByRestaurant: Record<string, MenuItem[]>,
-  addonsLookupByRestaurant: Record<string, RestaurantAddons>
+  addonGroupsLookupByRestaurant: Record<string, RestaurantAddonGroups>
 ): NutritionTotals {
   return items.reduce<NutritionTotals>(
     (sum, cartItem) => {
-      const sourceItem = menuLookupByRestaurant[cartItem.restaurantId]?.find((item) => (item.id ?? item.name) === cartItem.itemId);
-      const restaurantAddons = addonsLookupByRestaurant[cartItem.restaurantId];
-      const selectedAddons = getSelectedAddonNutrition(cartItem.selectionDetailsLabel, sourceItem, restaurantAddons);
+      const restaurantItems = menuLookupByRestaurant[cartItem.restaurantId] ?? [];
+      const sourceItem = restaurantItems.find((item) => (item.id ?? item.name) === cartItem.itemId);
+      const restaurantAddonGroups = addonGroupsLookupByRestaurant[cartItem.restaurantId];
+      const selectedAddons = getSelectedAddonNutrition(cartItem.selectionDetailsLabel, sourceItem, restaurantAddonGroups, restaurantItems);
       const selectedVariant = sourceItem?.variants?.find((variant) => variant.id === cartItem.variantId);
-      const baseNutrition: Nutrition | undefined =
-        selectedVariant?.nutrition ?? sourceItem?.nutrition ?? cartItem.nutritionPerItem;
+      const baseNutrition: Nutrition | undefined = selectedVariant?.nutrition ?? sourceItem?.nutrition ?? cartItem.nutritionPerItem;
 
       const addonNutrition = selectedAddons.reduce(
         (addonSum, addon) => ({
@@ -69,15 +70,10 @@ export function buildCartNutritionTotals(
       sum.totalFat += (cartItem.nutritionPerItem.totalFat ?? 0) * cartItem.quantity;
       sum.satFat = addOptional(sum.satFat, (baseNutrition?.satFat ?? 0) + addonNutrition.satFat, cartItem.quantity);
       sum.transFat = addOptional(sum.transFat, (baseNutrition?.transFat ?? 0) + addonNutrition.transFat, cartItem.quantity);
-      sum.cholesterol = addOptional(
-        sum.cholesterol,
-        (baseNutrition?.cholesterol ?? 0) + addonNutrition.cholesterol,
-        cartItem.quantity
-      );
+      sum.cholesterol = addOptional(sum.cholesterol, (baseNutrition?.cholesterol ?? 0) + addonNutrition.cholesterol, cartItem.quantity);
       sum.sodium = addOptional(sum.sodium, (baseNutrition?.sodium ?? 0) + addonNutrition.sodium, cartItem.quantity);
       sum.fiber = addOptional(sum.fiber, (baseNutrition?.fiber ?? 0) + addonNutrition.fiber, cartItem.quantity);
       sum.sugars = addOptional(sum.sugars, (baseNutrition?.sugars ?? 0) + addonNutrition.sugars, cartItem.quantity);
-
       return sum;
     },
     { calories: 0, protein: 0, carbs: 0, totalFat: 0 }

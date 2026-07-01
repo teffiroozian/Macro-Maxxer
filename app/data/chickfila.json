@@ -2895,6 +2895,521 @@
                 "sugars": 0
             },
             "defaultOrder": 66
+        },
+        {
+            "id": "barbeque_sauce",
+            "name": "Barbeque Sauce",
+            "image": "/restaurants/chickfila/menu/dipping-sauces/bbq.webp",
+            "categories": [
+                "Dipping Sauces"
+            ],
+            "servingType": "addon",
+            "addonEligible": true,
+            "nutrition": {
+                "calories": 45,
+                "protein": 0,
+                "carbs": 11,
+                "totalFat": 0,
+                "satFat": 0,
+                "transFat": 0,
+                "cholesterol": 0,
+                "sodium": 200,
+                "fiber": 0,
+                "sugars": 9
+            },
+            "defaultOrder": 100
+        },
+        {
+            "id": "chick_fil_a_sauce",
+            "name": "Chick-fil-A Sauce",
+            "image": "/restaurants/chickfila/menu/dipping-sauces/chick-fil-a.webp",
+            "categories": [
+                "Dipping Sauces"
+            ],
+            "servingType": "addon",
+            "addonEligible": true,
+            "nutrition": {
+                "calories": 140,
+                "protein": 0,
+                "carbs": 6,
+                "totalFat": 13,
+                "satFat": 2,
+                "transFat": 0,
+                "cholesterol": 10,
+                "sodium": 170,
+                "fiber": 0,
+                "sugars": 6
+            },
+            "defaultOrder": 101
+        },
+        {
+            "id": "garden_herb_ranch_sauce",
+            "name": "Garden Herb Ranch Sauce",
+            "image": "/restaurants/chickfila/menu/dipping-sauces/garden-herb-ranch.webp",
+            "categories": [
+                "Dipping Sauces"
+            ],
+            "servingType": "addon",
+            "addonEligible": true,
+            "nutrition": {
+                "calories": 100,
+                "protein": 0,
+                "carbs": 1,
+                "totalFat": 11,
+                "satFat": 2,
+                "transFat": 0,
+                "cholesterol": 10,
+                "sodium": 170,
+                "fiber": 0,
+                "sugars": 0
+            },
+            "defaultOrder": 102
+        },
+        {
+            "id": "honey_mustard_sauce",
+            "name": "Honey Mustard Sauce",
+            "image": "/restaurants/chickfila/menu/dipping-sauces/honey-mustard.webp",
+            "categories": [
+                "Dipping Sauces"
+            ],
+            "servingType": "addon",
+            "addonEligible": true,
+            "nutrition": {
+                "calories": 50,
+                "protein": 0,
+                "carbs": 11,
+                "totalFat": 0,
+                "satFat": 0,
+                "transFat": 0,
+                "cholesterol": 0,
+                "sodium": 160,
+                "fiber": 0,
+                "sugars": 10
+            },
+            "defaultOrder": 103
+        },
+        {
+            "id": "polynesian_sauce",
+            "name": "Polynesian Sauce",
+            "image": "/restaurants/chickfila/menu/dipping-sauces/polynesian.webp",
+            "categories": [
+                "Dipping Sauces"
+            ],
+            "servingType": "addon",
+            "addonEligible": true,
+            "nutrition": {
+                "calories": 110,
+                "protein": 0,
+                "carbs": 14,
+                "totalFat": 6,
+                "satFat": 1,
+                "transFat": 0,
+                "cholesterol": 0,
+                "sodium": 210,
+                "fiber": 0,
+                "sugars": 13
+            },
+            "defaultOrder": 104
+        },
+        {
+            "id": "sweet_and_spicy_sriracha_sauce",
+            "name": "Sweet & Spicy Sriracha Sauce",
+            "image": "/restaurants/chickfila/menu/dipping-sauces/sweet-spicy-sriracha.webp",
+            "categories": [
+                "Dipping Sauces"
+            ],
+            "servingType": "addon",
+            "addonEligible": true,
+            "nutrition": {
+                "calories": 45,
+                "protein": 0,
+                "carbs": 11,
+                "totalFat": 0,
+                "satFat": 0,
+                "transFat": 0,
+                "cholesterol": 0,
+                "sodium": 380,
+                "fiber": 0,
+                "sugars": 10
+            },
+            "defaultOrder": 105
+        },
+        {
+            "id": "zesty_buffalo_sauce",
+            "name": "Zesty Buffalo Sauce",
+            "image": "/restaurants/chickfila/menu/dipping-sauces/zesty-buffalo.webp",
+            "categories": [
+                "Dipping Sauces"
+            ],
+            "servingType": "addon",
+            "addonEligible": true,
+            "nutrition": {
+                "calories": 25,
+                "protein": 0,
+                "carbs": 1,
+                "totalFat": 2.5,
+                "satFat": 0,
+                "transFat": 0,
+                "cholesterol": 5,
+                "sodium": 570,
+                "fiber": 0,
+                "sugars": 0
+            },
+            "defaultOrder": 106
+        },
+        {
+            "id": "honey_roasted_bbq_sauce",
+            "name": "Honey Roasted BBQ Sauce",
+            "image": "/restaurants/chickfila/menu/dipping-sauces/honey_roasted_bbq.webp",
+            "categories": [
+                "Dipping Sauces"
+            ],
+            "servingType": "addon",
+            "addonEligible": true,
+            "nutrition": {
+                "calories": 60,
+                "protein": 0,
+                "carbs": 3,
+                "totalFat": 5,
+                "satFat": 1,
+                "transFat": 0,
+                "cholesterol": 5,
+                "sodium": 75,
+                "fiber": 0,
+                "sugars": 2
+            },
+            "defaultOrder": 107
+        },
+        {
+            "id": "avocado_lime_ranch_dressing",
+            "name": "Avocado Lime Ranch Dressing",
+            "image": "/restaurants/chickfila/menu/dressings/avocado_lime_ranch.webp",
+            "categories": [
+                "Dressings"
+            ],
+            "servingType": "addon",
+            "addonEligible": true,
+            "nutrition": {
+                "calories": 310,
+                "protein": 1,
+                "carbs": 3,
+                "totalFat": 32,
+                "satFat": 5,
+                "transFat": 0,
+                "cholesterol": 25,
+                "sodium": 520,
+                "fiber": 1,
+                "sugars": 2
+            },
+            "defaultOrder": 108
+        },
+        {
+            "id": "creamy_salsa_dressing",
+            "name": "Creamy Salsa Dressing",
+            "image": "/restaurants/chickfila/menu/dressings/creamy-salsa.webp",
+            "categories": [
+                "Dressings"
+            ],
+            "servingType": "addon",
+            "addonEligible": true,
+            "nutrition": {
+                "calories": 290,
+                "protein": 1,
+                "carbs": 2,
+                "totalFat": 31,
+                "satFat": 5,
+                "transFat": 0,
+                "cholesterol": 25,
+                "sodium": 630,
+                "fiber": 0,
+                "sugars": 1
+            },
+            "defaultOrder": 109
+        },
+        {
+            "id": "fat_free_honey_mustard_dressing",
+            "name": "Fat-Free Honey Mustard Dressing",
+            "image": "/restaurants/chickfila/menu/dressings/fat-free-honey-mustard.webp",
+            "categories": [
+                "Dressings"
+            ],
+            "servingType": "addon",
+            "addonEligible": true,
+            "nutrition": {
+                "calories": 90,
+                "protein": 0,
+                "carbs": 22,
+                "totalFat": 0,
+                "satFat": 0,
+                "transFat": 0,
+                "cholesterol": 0,
+                "sodium": 330,
+                "fiber": 1,
+                "sugars": 18
+            },
+            "defaultOrder": 110
+        },
+        {
+            "id": "garden_herb_ranch_dressing",
+            "name": "Garden Herb Ranch Dressing",
+            "image": "/restaurants/chickfila/menu/dressings/garden_herb_ranch.webp",
+            "categories": [
+                "Dressings"
+            ],
+            "servingType": "addon",
+            "addonEligible": true,
+            "nutrition": {
+                "calories": 280,
+                "protein": 1,
+                "carbs": 2,
+                "totalFat": 29,
+                "satFat": 5,
+                "transFat": 0,
+                "cholesterol": 25,
+                "sodium": 440,
+                "fiber": 0,
+                "sugars": 1
+            },
+            "defaultOrder": 111
+        },
+        {
+            "id": "light_balsamic_vinaigrette_dressing",
+            "name": "Light Balsamic Vinaigrette Dressing",
+            "image": "/restaurants/chickfila/menu/dressings/light-balsamic-vinaigrette.webp",
+            "categories": [
+                "Dressings"
+            ],
+            "servingType": "addon",
+            "addonEligible": true,
+            "nutrition": {
+                "calories": 80,
+                "protein": 0,
+                "carbs": 10,
+                "totalFat": 4,
+                "satFat": 0.5,
+                "transFat": 0,
+                "cholesterol": 0,
+                "sodium": 360,
+                "fiber": 0,
+                "sugars": 9
+            },
+            "defaultOrder": 112
+        },
+        {
+            "id": "light_italian_dressing",
+            "name": "Light Italian Dressing",
+            "image": "/restaurants/chickfila/menu/dressings/light_italian.webp",
+            "categories": [
+                "Dressings"
+            ],
+            "servingType": "addon",
+            "addonEligible": true,
+            "nutrition": {
+                "calories": 25,
+                "protein": 0,
+                "carbs": 3,
+                "totalFat": 1,
+                "satFat": 0,
+                "transFat": 0,
+                "cholesterol": 0,
+                "sodium": 470,
+                "fiber": 0,
+                "sugars": 2
+            },
+            "defaultOrder": 113
+        },
+        {
+            "id": "zesty_apple_cider_vinaigrette_dressing",
+            "name": "Zesty Apple Cider Vinaigrette Dressing",
+            "image": "/restaurants/chickfila/menu/dressings/zesty-apple-cider-vinaigrette.webp",
+            "categories": [
+                "Dressings"
+            ],
+            "servingType": "addon",
+            "addonEligible": true,
+            "nutrition": {
+                "calories": 230,
+                "protein": 0,
+                "carbs": 16,
+                "totalFat": 19,
+                "satFat": 3,
+                "transFat": 0,
+                "cholesterol": 0,
+                "sodium": 450,
+                "fiber": 0,
+                "sugars": 14
+            },
+            "defaultOrder": 114
+        },
+        {
+            "id": "ketchup",
+            "name": "Ketchup",
+            "image": "/restaurants/chickfila/menu/condiments/ketchup.webp",
+            "categories": [
+                "Condiments"
+            ],
+            "servingType": "addon",
+            "addonEligible": true,
+            "nutrition": {
+                "calories": 35,
+                "protein": 0,
+                "carbs": 0,
+                "totalFat": 0
+            },
+            "defaultOrder": 115
+        },
+        {
+            "id": "mayonnaise",
+            "name": "Mayonnaise",
+            "image": "/restaurants/chickfila/menu/condiments/mayo.webp",
+            "categories": [
+                "Condiments"
+            ],
+            "servingType": "addon",
+            "addonEligible": true,
+            "nutrition": {
+                "calories": 70,
+                "protein": 0,
+                "carbs": 0,
+                "totalFat": 0
+            },
+            "defaultOrder": 116
+        },
+        {
+            "id": "mustard",
+            "name": "Mustard",
+            "image": "/restaurants/chickfila/menu/condiments/mustard.webp",
+            "categories": [
+                "Condiments"
+            ],
+            "servingType": "addon",
+            "addonEligible": true,
+            "nutrition": {
+                "calories": 5,
+                "protein": 0,
+                "carbs": 0,
+                "totalFat": 0
+            },
+            "defaultOrder": 117
+        },
+        {
+            "id": "salsa",
+            "name": "Salsa",
+            "image": "/restaurants/chickfila/menu/condiments/salsa.webp",
+            "categories": [
+                "Condiments"
+            ],
+            "servingType": "addon",
+            "addonEligible": true,
+            "nutrition": {
+                "calories": 5,
+                "protein": 0,
+                "carbs": 0,
+                "totalFat": 0
+            },
+            "defaultOrder": 118
+        },
+        {
+            "id": "hot_sauce",
+            "name": "Hot Sauce",
+            "image": "/restaurants/chickfila/menu/condiments/hot-sauce.webp",
+            "categories": [
+                "Condiments"
+            ],
+            "servingType": "addon",
+            "addonEligible": true,
+            "nutrition": {
+                "calories": 0,
+                "protein": 0,
+                "carbs": 0,
+                "totalFat": 0
+            },
+            "defaultOrder": 119
+        },
+        {
+            "id": "honey",
+            "name": "Honey",
+            "image": "/restaurants/chickfila/menu/condiments/honey.webp",
+            "categories": [
+                "Condiments"
+            ],
+            "servingType": "addon",
+            "addonEligible": true,
+            "nutrition": {
+                "calories": 25,
+                "protein": 0,
+                "carbs": 0,
+                "totalFat": 0
+            },
+            "defaultOrder": 120
+        },
+        {
+            "id": "grape_jam",
+            "name": "Grape Jam",
+            "image": "/restaurants/chickfila/menu/condiments/grape-jam.webp",
+            "categories": [
+                "Condiments"
+            ],
+            "servingType": "addon",
+            "addonEligible": true,
+            "nutrition": {
+                "calories": 35,
+                "protein": 0,
+                "carbs": 0,
+                "totalFat": 0
+            },
+            "defaultOrder": 121
+        },
+        {
+            "id": "strawberry_jam",
+            "name": "Strawberry Jam",
+            "image": "/restaurants/chickfila/menu/condiments/strawberry-jam.webp",
+            "categories": [
+                "Condiments"
+            ],
+            "servingType": "addon",
+            "addonEligible": true,
+            "nutrition": {
+                "calories": 35,
+                "protein": 0,
+                "carbs": 0,
+                "totalFat": 0
+            },
+            "defaultOrder": 122
+        },
+        {
+            "id": "salt_packet",
+            "name": "Salt Packet",
+            "image": "/restaurants/chickfila/menu/condiments/salt-packet.webp",
+            "categories": [
+                "Condiments"
+            ],
+            "servingType": "addon",
+            "addonEligible": true,
+            "nutrition": {
+                "calories": 0,
+                "protein": 0,
+                "carbs": 0,
+                "totalFat": 0
+            },
+            "defaultOrder": 123
+        },
+        {
+            "id": "pepper",
+            "name": "Pepper",
+            "image": "/restaurants/chickfila/menu/condiments/pepper.webp",
+            "categories": [
+                "Condiments"
+            ],
+            "servingType": "addon",
+            "addonEligible": true,
+            "nutrition": {
+                "calories": 5,
+                "protein": 0,
+                "carbs": 0,
+                "totalFat": 0
+            },
+            "defaultOrder": 124
         }
     ],
     "ingredients": [
@@ -3904,379 +4419,6 @@
             "hideFromIngredientView": true
         }
     ],
-    "addons": {
-        "sauces": [
-            {
-                "id": "barbeque_sauce",
-                "name": "Barbeque Sauce",
-                "image": "/restaurants/chickfila/menu/dipping-sauces/bbq.webp",
-                "nutrition": {
-                    "calories": 45,
-                    "protein": 0,
-                    "carbs": 11,
-                    "totalFat": 0,
-                    "satFat": 0,
-                    "transFat": 0,
-                    "cholesterol": 0,
-                    "sodium": 200,
-                    "fiber": 0,
-                    "sugars": 9
-                }
-            },
-            {
-                "id": "chick_fil_a_sauce",
-                "name": "Chick-fil-A Sauce",
-                "image": "/restaurants/chickfila/menu/dipping-sauces/chick-fil-a.webp",
-                "nutrition": {
-                    "calories": 140,
-                    "protein": 0,
-                    "carbs": 6,
-                    "totalFat": 13,
-                    "satFat": 2,
-                    "transFat": 0,
-                    "cholesterol": 10,
-                    "sodium": 170,
-                    "fiber": 0,
-                    "sugars": 6
-                }
-            },
-            {
-                "id": "garden_herb_ranch_sauce",
-                "name": "Garden Herb Ranch Sauce",
-                "image": "/restaurants/chickfila/menu/dipping-sauces/garden-herb-ranch.webp",
-                "nutrition": {
-                    "calories": 100,
-                    "protein": 0,
-                    "carbs": 1,
-                    "totalFat": 11,
-                    "satFat": 2,
-                    "transFat": 0,
-                    "cholesterol": 10,
-                    "sodium": 170,
-                    "fiber": 0,
-                    "sugars": 0
-                }
-            },
-            {
-                "id": "honey_mustard_sauce",
-                "name": "Honey Mustard Sauce",
-                "image": "/restaurants/chickfila/menu/dipping-sauces/honey-mustard.webp",
-                "nutrition": {
-                    "calories": 50,
-                    "protein": 0,
-                    "carbs": 11,
-                    "totalFat": 0,
-                    "satFat": 0,
-                    "transFat": 0,
-                    "cholesterol": 0,
-                    "sodium": 160,
-                    "fiber": 0,
-                    "sugars": 10
-                }
-            },
-            {
-                "id": "polynesian_sauce",
-                "name": "Polynesian Sauce",
-                "image": "/restaurants/chickfila/menu/dipping-sauces/polynesian.webp",
-                "nutrition": {
-                    "calories": 110,
-                    "protein": 0,
-                    "carbs": 14,
-                    "totalFat": 6,
-                    "satFat": 1,
-                    "transFat": 0,
-                    "cholesterol": 0,
-                    "sodium": 210,
-                    "fiber": 0,
-                    "sugars": 13
-                }
-            },
-            {
-                "id": "sweet_and_spicy_sriracha_sauce",
-                "name": "Sweet & Spicy Sriracha Sauce",
-                "image": "/restaurants/chickfila/menu/dipping-sauces/sweet-spicy-sriracha.webp",
-                "nutrition": {
-                    "calories": 45,
-                    "protein": 0,
-                    "carbs": 11,
-                    "totalFat": 0,
-                    "satFat": 0,
-                    "transFat": 0,
-                    "cholesterol": 0,
-                    "sodium": 380,
-                    "fiber": 0,
-                    "sugars": 10
-                }
-            },
-            {
-                "id": "zesty_buffalo_sauce",
-                "name": "Zesty Buffalo Sauce",
-                "image": "/restaurants/chickfila/menu/dipping-sauces/zesty-buffalo.webp",
-                "nutrition": {
-                    "calories": 25,
-                    "protein": 0,
-                    "carbs": 1,
-                    "totalFat": 2.5,
-                    "satFat": 0,
-                    "transFat": 0,
-                    "cholesterol": 5,
-                    "sodium": 570,
-                    "fiber": 0,
-                    "sugars": 0
-                }
-            },
-            {
-                "id": "honey_roasted_bbq_sauce",
-                "name": "Honey Roasted BBQ Sauce",
-                "image": "/restaurants/chickfila/menu/dipping-sauces/honey_roasted_bbq.webp",
-                "nutrition": {
-                    "calories": 60,
-                    "protein": 0,
-                    "carbs": 3,
-                    "totalFat": 5,
-                    "satFat": 1,
-                    "transFat": 0,
-                    "cholesterol": 5,
-                    "sodium": 75,
-                    "fiber": 0,
-                    "sugars": 2
-                }
-            }
-        ],
-        "dressings": [
-            {
-                "id": "avocado_lime_ranch_dressing",
-                "name": "Avocado Lime Ranch Dressing",
-                "image": "/restaurants/chickfila/menu/dressings/avocado_lime_ranch.webp",
-                "nutrition": {
-                    "calories": 310,
-                    "protein": 1,
-                    "carbs": 3,
-                    "totalFat": 32,
-                    "satFat": 5,
-                    "transFat": 0,
-                    "cholesterol": 25,
-                    "sodium": 520,
-                    "fiber": 1,
-                    "sugars": 2
-                }
-            },
-            {
-                "id": "creamy_salsa_dressing",
-                "name": "Creamy Salsa Dressing",
-                "image": "/restaurants/chickfila/menu/dressings/creamy-salsa.webp",
-                "nutrition": {
-                    "calories": 290,
-                    "protein": 1,
-                    "carbs": 2,
-                    "totalFat": 31,
-                    "satFat": 5,
-                    "transFat": 0,
-                    "cholesterol": 25,
-                    "sodium": 630,
-                    "fiber": 0,
-                    "sugars": 1
-                }
-            },
-            {
-                "id": "fat_free_honey_mustard_dressing",
-                "name": "Fat-Free Honey Mustard Dressing",
-                "image": "/restaurants/chickfila/menu/dressings/fat-free-honey-mustard.webp",
-                "nutrition": {
-                    "calories": 90,
-                    "protein": 0,
-                    "carbs": 22,
-                    "totalFat": 0,
-                    "satFat": 0,
-                    "transFat": 0,
-                    "cholesterol": 0,
-                    "sodium": 330,
-                    "fiber": 1,
-                    "sugars": 18
-                }
-            },
-            {
-                "id": "garden_herb_ranch_dressing",
-                "name": "Garden Herb Ranch Dressing",
-                "image": "/restaurants/chickfila/menu/dressings/garden_herb_ranch.webp",
-                "nutrition": {
-                    "calories": 280,
-                    "protein": 1,
-                    "carbs": 2,
-                    "totalFat": 29,
-                    "satFat": 5,
-                    "transFat": 0,
-                    "cholesterol": 25,
-                    "sodium": 440,
-                    "fiber": 0,
-                    "sugars": 1
-                }
-            },
-            {
-                "id": "light_balsamic_vinaigrette_dressing",
-                "name": "Light Balsamic Vinaigrette Dressing",
-                "image": "/restaurants/chickfila/menu/dressings/light-balsamic-vinaigrette.webp",
-                "nutrition": {
-                    "calories": 80,
-                    "protein": 0,
-                    "carbs": 10,
-                    "totalFat": 4,
-                    "satFat": 0.5,
-                    "transFat": 0,
-                    "cholesterol": 0,
-                    "sodium": 360,
-                    "fiber": 0,
-                    "sugars": 9
-                }
-            },
-            {
-                "id": "light_italian_dressing",
-                "name": "Light Italian Dressing",
-                "image": "/restaurants/chickfila/menu/dressings/light_italian.webp",
-                "nutrition": {
-                    "calories": 25,
-                    "protein": 0,
-                    "carbs": 3,
-                    "totalFat": 1,
-                    "satFat": 0,
-                    "transFat": 0,
-                    "cholesterol": 0,
-                    "sodium": 470,
-                    "fiber": 0,
-                    "sugars": 2
-                }
-            },
-            {
-                "id": "zesty_apple_cider_vinaigrette_dressing",
-                "name": "Zesty Apple Cider Vinaigrette Dressing",
-                "image": "/restaurants/chickfila/menu/dressings/zesty-apple-cider-vinaigrette.webp",
-                "nutrition": {
-                    "calories": 230,
-                    "protein": 0,
-                    "carbs": 16,
-                    "totalFat": 19,
-                    "satFat": 3,
-                    "transFat": 0,
-                    "cholesterol": 0,
-                    "sodium": 450,
-                    "fiber": 0,
-                    "sugars": 14
-                }
-            }
-        ],
-        "condiments": [
-            {
-                "id": "ketchup",
-                "name": "Ketchup",
-                "image": "/restaurants/chickfila/menu/condiments/ketchup.webp",
-                "nutrition": {
-                    "calories": 35,
-                    "protein": 0,
-                    "carbs": 0,
-                    "totalFat": 0
-                }
-            },
-            {
-                "id": "mayonnaise",
-                "name": "Mayonnaise",
-                "image": "/restaurants/chickfila/menu/condiments/mayo.webp",
-                "nutrition": {
-                    "calories": 70,
-                    "protein": 0,
-                    "carbs": 0,
-                    "totalFat": 0
-                }
-            },
-            {
-                "id": "mustard",
-                "name": "Mustard",
-                "image": "/restaurants/chickfila/menu/condiments/mustard.webp",
-                "nutrition": {
-                    "calories": 5,
-                    "protein": 0,
-                    "carbs": 0,
-                    "totalFat": 0
-                }
-            },
-            {
-                "id": "salsa",
-                "name": "Salsa",
-                "image": "/restaurants/chickfila/menu/condiments/salsa.webp",
-                "nutrition": {
-                    "calories": 5,
-                    "protein": 0,
-                    "carbs": 0,
-                    "totalFat": 0
-                }
-            },
-            {
-                "id": "hot_sauce",
-                "name": "Hot Sauce",
-                "image": "/restaurants/chickfila/menu/condiments/hot-sauce.webp",
-                "nutrition": {
-                    "calories": 0,
-                    "protein": 0,
-                    "carbs": 0,
-                    "totalFat": 0
-                }
-            },
-            {
-                "id": "honey",
-                "name": "Honey",
-                "image": "/restaurants/chickfila/menu/condiments/honey.webp",
-                "nutrition": {
-                    "calories": 25,
-                    "protein": 0,
-                    "carbs": 0,
-                    "totalFat": 0
-                }
-            },
-            {
-                "id": "grape_jam",
-                "name": "Grape Jam",
-                "image": "/restaurants/chickfila/menu/condiments/grape-jam.webp",
-                "nutrition": {
-                    "calories": 35,
-                    "protein": 0,
-                    "carbs": 0,
-                    "totalFat": 0
-                }
-            },
-            {
-                "id": "strawberry_jam",
-                "name": "Strawberry Jam",
-                "image": "/restaurants/chickfila/menu/condiments/strawberry-jam.webp",
-                "nutrition": {
-                    "calories": 35,
-                    "protein": 0,
-                    "carbs": 0,
-                    "totalFat": 0
-                }
-            },
-            {
-                "id": "salt_packet",
-                "name": "Salt Packet",
-                "image": "/restaurants/chickfila/menu/condiments/salt-packet.webp",
-                "nutrition": {
-                    "calories": 0,
-                    "protein": 0,
-                    "carbs": 0,
-                    "totalFat": 0
-                }
-            },
-            {
-                "id": "pepper",
-                "name": "Pepper",
-                "image": "/restaurants/chickfila/menu/condiments/pepper.webp",
-                "nutrition": {
-                    "calories": 5,
-                    "protein": 0,
-                    "carbs": 0,
-                    "totalFat": 0
-                }
-            }
-        ]
-    },
     "customizationRules": {
         "foodCategories": {
             "Sandwich": {
@@ -4381,6 +4523,48 @@
             "Treat Toppings": {
                 "maxQuantity": 1
             }
+        }
+    },
+    "addonGroups": {
+        "sauces": {
+            "label": "Dipping Sauces",
+            "itemIds": [
+                "barbeque_sauce",
+                "chick_fil_a_sauce",
+                "garden_herb_ranch_sauce",
+                "honey_mustard_sauce",
+                "polynesian_sauce",
+                "sweet_and_spicy_sriracha_sauce",
+                "zesty_buffalo_sauce",
+                "honey_roasted_bbq_sauce"
+            ]
+        },
+        "dressings": {
+            "label": "Dressings",
+            "itemIds": [
+                "avocado_lime_ranch_dressing",
+                "creamy_salsa_dressing",
+                "fat_free_honey_mustard_dressing",
+                "garden_herb_ranch_dressing",
+                "light_balsamic_vinaigrette_dressing",
+                "light_italian_dressing",
+                "zesty_apple_cider_vinaigrette_dressing"
+            ]
+        },
+        "condiments": {
+            "label": "Condiments",
+            "itemIds": [
+                "ketchup",
+                "mayonnaise",
+                "mustard",
+                "salsa",
+                "hot_sauce",
+                "honey",
+                "grape_jam",
+                "strawberry_jam",
+                "salt_packet",
+                "pepper"
+            ]
         }
     }
 }

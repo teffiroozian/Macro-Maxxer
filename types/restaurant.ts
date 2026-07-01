@@ -1,5 +1,5 @@
 import type { RestaurantBuilderConfig } from "@/types/builder";
-import type { IngredientItem, MenuItem, RestaurantAddons, RestaurantCustomizationRules } from "@/types/menu";
+import type { IngredientItem, MenuItem, RestaurantAddonGroups, RestaurantCustomizationRules } from "@/types/menu";
 
 export type RestaurantIndexEntry = {
   id: string;
@@ -15,7 +15,7 @@ export type RestaurantData = RestaurantIndexEntry & {
   hasBuildYourOwn: boolean;
   items: MenuItem[];
   ingredients: IngredientItem[];
-  addons: RestaurantAddons;
+  addonGroups: RestaurantAddonGroups;
   customizationRules?: RestaurantCustomizationRules;
   builderConfig?: RestaurantBuilderConfig;
 };

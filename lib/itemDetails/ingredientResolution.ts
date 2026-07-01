@@ -17,7 +17,7 @@ import {
 } from "@/lib/itemDetails/helpers";
 import { resolveIncludedIngredientDefaults } from "@/lib/itemIngredients";
 import { normalizeNutrition } from "@/lib/nutrition";
-import type { AddonOption, IngredientItem, ItemVariant, MenuItem, RestaurantAddons, RestaurantCustomizationRules } from "@/types/menu";
+import type { IngredientItem, ItemVariant, MenuItem, ResolvedAddonGroups, RestaurantCustomizationRules } from "@/types/menu";
 import type { Nutrition } from "@/types/nutrition";
 
 /**
@@ -109,7 +109,7 @@ function tabSupportsNoneOption(
 export function resolvePanelIngredients(
   item: MenuItem,
   ingredientItems: IngredientItem[] = [],
-  addons?: RestaurantAddons,
+  addons?: ResolvedAddonGroups,
   menuItems: MenuItem[] = [],
   variants?: ItemVariant[] | null,
   selectedVariantId?: string,
@@ -149,7 +149,7 @@ export function resolvePanelIngredients(
 export function resolvePanelIngredientTabs(
   item: MenuItem,
   ingredientItems: IngredientItem[] = [],
-  addons?: RestaurantAddons,
+  addons?: ResolvedAddonGroups,
   menuItems: MenuItem[] = [],
   variants?: ItemVariant[] | null,
   selectedVariantId?: string,
@@ -163,7 +163,7 @@ export function resolvePanelIngredientTabs(
 
   const ingredientByIdLookup = new Map<string, IngredientItem>();
   const ingredientByNameLookup = new Map<string, IngredientItem>();
-  const addonLookup = new Map<string, AddonOption>();
+  const addonLookup = new Map<string, MenuItem>();
   const menuItemByIdLookup = new Map<string, MenuItem>();
   const menuItemByNameLookup = new Map<string, MenuItem>();
   const resolvedIngredientLookup = new Map<string, ResolvedPanelIngredient>();
@@ -174,7 +174,7 @@ export function resolvePanelIngredientTabs(
   });
 
   Object.values(addons ?? {}).forEach((addonGroup) => {
-    addonGroup?.forEach((addon) => {
+    addonGroup.items.forEach((addon) => {
       addonLookup.set(addon.name.toLowerCase(), addon);
     });
   });

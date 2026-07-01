@@ -40,7 +40,7 @@ import {
   Waves,
 } from "lucide-react";
 import { useRestaurantSearch } from "@/components/RestaurantSearchContext";
-import type { IngredientItem, MenuItem, RestaurantAddons, RestaurantCustomizationRules } from "@/types/menu";
+import type { IngredientItem, MenuItem, ResolvedAddonGroups, RestaurantCustomizationRules } from "@/types/menu";
 import type { RestaurantBuilderConfig } from "@/types/builder";
 import type { ViewOption } from "./ControlsRow";
 import type { Filters } from "@/lib/menuSections/filterOptions";
@@ -190,7 +190,7 @@ export default function RestaurantView({
   hasBuildYourOwn?: boolean;
   items: MenuItem[];
   ingredients?: IngredientItem[];
-  addons?: RestaurantAddons;
+  addons?: ResolvedAddonGroups;
   customizationRules?: RestaurantCustomizationRules;
   builderConfig?: RestaurantBuilderConfig;
 }) {
@@ -406,40 +406,6 @@ export default function RestaurantView({
   const hydratedEditItemIdRef = useRef<string | null>(null);
   const editingBuildBaselineConfigRef = useRef<BuildConfigurationSnapshot | null>(null);
 
-  const addonItems = useMemo<MenuItem[]>(() => {
-    if (!addons) return [];
-
-    const categoryByAddonGroup: Record<string, string> = {
-      sauces: "Dipping Sauces",
-      dressings: "Dressings",
-      condiments: "Condiments",
-    };
-
-    return (Object.entries(addons) as [string, NonNullable<RestaurantAddons[string]>][])
-      .flatMap(([addonRef, options]) =>
-        options.map((option) => ({
-          id: `${restaurantId}-${addonRef}-${option.name}`.toLowerCase().replace(/[^a-z0-9]+/g, "-"),
-          name: option.name,
-          defaultOrder: 0,
-          nutrition: {
-            calories: option.nutrition.calories,
-            protein: option.nutrition.protein,
-            carbs: option.nutrition.carbs,
-            totalFat: option.nutrition.totalFat,
-            satFat: option.nutrition.satFat,
-            transFat: option.nutrition.transFat,
-            cholesterol: option.nutrition.cholesterol,
-            sodium: option.nutrition.sodium,
-            fiber: option.nutrition.fiber,
-            sugars: option.nutrition.sugars,
-          },
-          categories: [categoryByAddonGroup[addonRef]],
-          servingType: "addon" as const,
-          image: option.image ?? "",
-          }))
-      );
-  }, [addons, restaurantId]);
-
   const ingredientMenuItems = useMemo<MenuItem[]>(() => {
     const normalizeIngredientCategories = (ingredient: IngredientItem) => {
       const normalizedCategories =
@@ -621,7 +587,7 @@ export default function RestaurantView({
   );
 
   const allItems = useMemo(() => {
-    const baseItems = [...items, ...addonItems];
+    const baseItems = items;
     if (isChipotleBuildPage && selectedEntree === "chips-sides") {
       return baseItems.filter(
         (item) =>
@@ -637,7 +603,7 @@ export default function RestaurantView({
       return baseItems.filter((item) => item.entreeGroup === selectedEntree);
     }
     return baseItems;
-  }, [addonItems, isChipotleBuildPage, items, selectedEntree]);
+  }, [isChipotleBuildPage, items, selectedEntree]);
   const sourceItems = effectiveViewMode === "ingredients" ? ingredientMenuItems : allItems;
 
   const calorieBounds = useMemo(() => {

@@ -1,4 +1,4 @@
-import type { AddonOption, ItemVariant, MenuItem } from "@/types/menu";
+import type { ItemVariant, MenuItem } from "@/types/menu";
 import type { CoreMacros, Nutrition } from "@/types/nutrition";
 import type { ResolvedPanelIngredient } from "@/components/ItemDetailsPanel";
 import { addonFat, menuItemFatWithFallback } from "@/lib/menuItemCalculations";
@@ -10,7 +10,7 @@ const zeroCoreMacros: CoreMacros = {
   totalFat: 0,
 };
 
-export function calculateAddonTotals(addons: Array<AddonOption | undefined | null>): Nutrition {
+export function calculateAddonTotals(addons: Array<MenuItem | undefined | null>): Nutrition {
   return addons.reduce<Nutrition>(
     (sum, addon) => ({
       calories: sum.calories + (addon?.nutrition.calories ?? 0),

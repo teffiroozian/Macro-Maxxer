@@ -1,5 +1,5 @@
 import { Drumstick, EggFried, Salad, Sandwich, Shell } from "lucide-react";
-import type { AddonOption, MenuItem } from "@/types/menu";
+import type { MenuItem } from "@/types/menu";
 import type { ResolvedPanelIngredient } from "@/components/ItemDetailsPanel";
 import { getDefaultMenuItemNutrition } from "@/lib/nutrition";
 
@@ -82,7 +82,7 @@ export function sumNutritionWithFallback(base?: number, delta = 0) {
   return (base ?? 0) + delta;
 }
 
-export function addonFat(addon?: AddonOption) {
+export function addonFat(addon?: MenuItem) {
   return addon?.nutrition.totalFat ?? 0;
 }
 
