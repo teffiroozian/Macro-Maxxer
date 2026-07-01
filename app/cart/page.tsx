@@ -154,7 +154,7 @@ export default function CartPage() {
               const sourceItem =
                 menuLookupByRestaurant[cartItem.restaurantId]?.find((item) => (item.id ?? item.name) === cartItem.itemId) ?? null;
               const itemEditHref = sourceItem
-                ? `/restaurant/${cartItem.restaurantId}/items/${toItemSlug(sourceItem)}?editCartItem=${cartItem.id}&editOrigin=cart`
+                ? `/restaurant/${cartItem.restaurantId}/${toItemSlug(sourceItem)}?editCartItem=${cartItem.id}&editOrigin=cart`
                 : undefined;
               const isBuildYourOwnCartItem = cartItem.selection.type === "build-your-own";
               const buildEditHref = isBuildYourOwnCartItem

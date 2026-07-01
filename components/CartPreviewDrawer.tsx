@@ -138,7 +138,7 @@ export default function CartPreviewDrawer() {
                       (menuItem) => (menuItem.id ?? menuItem.name) === item.itemId
                     ) ?? null;
                   const itemEditHref = sourceItem
-                    ? `/restaurant/${item.restaurantId}/items/${toItemSlug(sourceItem)}?editCartItem=${item.id}`
+                    ? `/restaurant/${item.restaurantId}/${toItemSlug(sourceItem)}?editCartItem=${item.id}`
                     : null;
                   return (
                     <li

@@ -72,6 +72,7 @@ export default function ItemRouteModal({
   ingredients,
   menuItems,
   customizationRules,
+  closeBehavior = "back",
 }: {
   restaurantId: string;
   restaurantPath: string;
@@ -80,6 +81,7 @@ export default function ItemRouteModal({
   ingredients?: IngredientItem[];
   menuItems?: MenuItem[];
   customizationRules?: RestaurantCustomizationRules;
+  closeBehavior?: "back" | "replace";
 }) {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -909,10 +911,11 @@ export default function ItemRouteModal({
   };
 
   const handleClose = () => {
-    if (window.history.length > 1) {
+    if (closeBehavior === "back") {
       router.back();
       return;
     }
+
     router.replace(restaurantPath, { scroll: false });
   };
 

@@ -1,8 +1,8 @@
 import { notFound } from "next/navigation";
 import ItemRouteModal from "@/components/ItemRouteModal";
-import { buildAddonMenuItems, getItemBySlug, getRestaurantData } from "@/lib/restaurants";
+import { getItemBySlug, getRestaurantData, getRouteItems } from "@/lib/restaurants";
 
-export default async function ItemPage({
+export default async function ItemModalPage({
   params,
 }: {
   params: Promise<{ id: string; itemSlug: string }>;
@@ -12,7 +12,7 @@ export default async function ItemPage({
 
   if (!restaurant) notFound();
 
-  const routeItems = [...restaurant.items, ...buildAddonMenuItems(restaurant.id, restaurant.addons)];
+  const routeItems = getRouteItems(restaurant);
   const item = getItemBySlug(routeItems, itemSlug);
   if (!item) notFound();
 
@@ -25,6 +25,7 @@ export default async function ItemPage({
       addons={restaurant.addons}
       ingredients={restaurant.ingredients}
       customizationRules={restaurant.customizationRules}
+      closeBehavior="back"
     />
   );
 }

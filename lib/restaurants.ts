@@ -72,6 +72,10 @@ export async function getRestaurantData(id: string): Promise<RestaurantData | nu
 }
 
 // recieves item info from the url
+export function getRouteItems(restaurant: Pick<RestaurantData, "id" | "items" | "addons">) {
+  return [...restaurant.items, ...buildAddonMenuItems(restaurant.id, restaurant.addons)];
+}
+
 export function getItemBySlug(items: MenuItem[], slug: string) {
   return items.find((item) => toItemSlug(item) === slug);
 }
