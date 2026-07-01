@@ -1,7 +1,6 @@
 // DATA LOADER FILE
 
 import restaurants from "@/app/data/index.json";
-import { normalizeAddons } from "@/lib/addons";
 import type { AddonOption, MenuItem, RestaurantAddons } from "@/types/menu";
 import type { RestaurantData, RestaurantIndexEntry } from "@/types/restaurant";
 
@@ -50,7 +49,7 @@ export async function getRestaurantData(id: string): Promise<RestaurantData | nu
   const menu = menuModule.default;
   const items = menu.items ?? [];
   const ingredients = menu.ingredients ?? [];
-  const addons = normalizeAddons(menu.addons ?? {});
+  const addons = (menu.addons ?? {}) as RestaurantAddons;
   const hasBuildYourOwn = menu.hasBuildYourOwn ?? false;
 
   return {

@@ -7,7 +7,6 @@ import pandaMenu from "@/app/data/panda.json";
 import paneraMenu from "@/app/data/panera.json";
 import starbucksMenu from "@/app/data/starbucks.json";
 import subwayMenu from "@/app/data/subway.json";
-import { normalizeAddons } from "@/lib/addons";
 import type { IngredientItem, MenuItem, RestaurantAddons, RestaurantCustomizationRules, RestaurantMenu } from "@/types/menu";
 
 const chickfilaData = chickfilaMenu as unknown as RestaurantMenu;
@@ -33,15 +32,15 @@ export const menuLookupByRestaurant: Record<string, MenuItem[]> = {
 };
 
 export const addonsLookupByRestaurant: Record<string, RestaurantAddons> = {
-  chickfila: normalizeAddons(chickfilaData.addons),
-  chipotle: normalizeAddons(chipotleData.addons),
-  habit: normalizeAddons(habitData.addons),
-  mcdonalds: normalizeAddons(mcdonaldsData.addons),
-  mod: normalizeAddons(modData.addons),
-  panda: normalizeAddons(pandaData.addons),
-  panera: normalizeAddons(paneraData.addons),
-  starbucks: normalizeAddons(starbucksData.addons),
-  subway: normalizeAddons(subwayData.addons),
+  chickfila: chickfilaData.addons ?? {},
+  chipotle: chipotleData.addons ?? {},
+  habit: habitData.addons ?? {},
+  mcdonalds: mcdonaldsData.addons ?? {},
+  mod: modData.addons ?? {},
+  panda: pandaData.addons ?? {},
+  panera: paneraData.addons ?? {},
+  starbucks: starbucksData.addons ?? {},
+  subway: subwayData.addons ?? {},
 };
 
 export const ingredientLookupByRestaurant: Partial<Record<string, IngredientItem[]>> = {
