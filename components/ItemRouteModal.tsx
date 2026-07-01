@@ -1495,7 +1495,7 @@ export default function ItemRouteModal({
             activeSectionId={activeSectionId}
             onSelectSection={scrollToSection}
             onCustomizeIngredients={
-              canCustomizeViaBuildPage
+              canCustomizeViaBuildPage && closeBehavior !== "local"
                 ? () => {
                     router.push(
                       `/restaurant/${restaurantId}?view=ingredients&editCartItem=${editingCartItem!.id}`,
