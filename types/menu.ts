@@ -27,7 +27,11 @@ export type AddonGroup = {
 };
 
 export type RestaurantAddonGroups = Record<string, AddonGroup>;
-export type ResolvedAddonGroups = Record<string, MenuItem[]>;
+export type ResolvedAddonGroup = AddonGroup & {
+  items: MenuItem[];
+};
+
+export type ResolvedAddonGroups = Record<string, ResolvedAddonGroup>;
 
 // ingredient item categories
 // e.g. Cheese (includes american cheese, pepper jack, swiss)

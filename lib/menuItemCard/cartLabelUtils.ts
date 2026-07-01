@@ -32,7 +32,7 @@ export function getSelectedAddonsFromLabel(item: MenuItem, addons: ResolvedAddon
 
   for (const ref of item.addonRefs ?? []) {
     if (ref === sauceRef) continue;
-    const options = addons?.[ref] ?? [];
+    const options = addons?.[ref]?.items ?? [];
     const matched = options.find((addon) => (selectedCounts[addon.name] ?? 0) > 0);
     if (matched) {
       selectedMap[ref] = matched;
@@ -44,7 +44,7 @@ export function getSelectedAddonsFromLabel(item: MenuItem, addons: ResolvedAddon
 
 export function getSelectedSauceCountsFromLabel(item: MenuItem, addons: ResolvedAddonGroups | undefined, selectionDetailsLabel?: string) {
   const selectedCounts = parseOptionLabelCounts(selectionDetailsLabel);
-  const sauceOptions = addons?.[sauceRef] ?? [];
+  const sauceOptions = addons?.[sauceRef]?.items ?? [];
 
   if (!(item.addonRefs ?? []).includes(sauceRef) || sauceOptions.length === 0) {
     return {} as Record<string, number>;

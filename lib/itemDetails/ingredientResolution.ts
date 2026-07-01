@@ -174,7 +174,7 @@ export function resolvePanelIngredientTabs(
   });
 
   Object.values(addons ?? {}).forEach((addonGroup) => {
-    addonGroup?.forEach((addon) => {
+    addonGroup.items.forEach((addon) => {
       addonLookup.set(addon.name.toLowerCase(), addon);
     });
   });

@@ -325,7 +325,7 @@ export default function MenuItemCard({
     }, {});
   }, [resolvedIngredients, selectedIngredientCounts]);
   const selectedSauceOptions = useMemo(() => {
-    const sauceOptions = addons?.[sauceRef] ?? [];
+    const sauceOptions = addons?.[sauceRef]?.items ?? [];
     return sauceOptions.flatMap((addon) => Array.from({ length: selectedSauceCounts[addon.name] ?? 0 }, () => addon));
   }, [addons, selectedSauceCounts]);
 
@@ -549,7 +549,7 @@ export default function MenuItemCard({
 
     const addonNames = new Set<string>();
     for (const ref of item.addonRefs ?? []) {
-      for (const addon of addons?.[ref] ?? []) {
+      for (const addon of addons?.[ref]?.items ?? []) {
         addonNames.add(addon.name);
       }
     }
@@ -641,7 +641,7 @@ export default function MenuItemCard({
 
     const activeVariant = variants?.find((variant) => variant.id === nextVariantId) ?? selectedVariantForCart;
     const baseForCart = activeVariant?.nutrition ?? item.nutrition;
-    const sauceOptions = addons?.[sauceRef] ?? [];
+    const sauceOptions = addons?.[sauceRef]?.items ?? [];
     const expandedSauces = sauceOptions.flatMap((addon) =>
       Array.from({ length: nextSauceCounts[addon.name] ?? 0 }, () => addon)
     );
@@ -1170,12 +1170,12 @@ export default function MenuItemCard({
                 ) : null}
 
                 {item.addonRefs?.includes("sauces") &&
-                (addons?.sauces?.length ?? 0) > 0 &&
-                addons?.sauces?.some((addon) => (selectedSauceCounts[addon.name] ?? 0) > 0) ? (
+                (addons?.sauces?.items.length ?? 0) > 0 &&
+                addons?.sauces?.items.some((addon) => (selectedSauceCounts[addon.name] ?? 0) > 0) ? (
                   <section>
-                    <p className="mb-2 px-1 text-[11px] font-semibold uppercase tracking-[0.14em] text-slate-600">Sauces</p>
+                    <p className="mb-2 px-1 text-[11px] font-semibold uppercase tracking-[0.14em] text-slate-600">{addons?.sauces?.label ?? "Sauces"}</p>
                     <div className="space-y-1.5">
-                      {addons?.sauces?.filter((addon) => addon.name !== "None" && (selectedSauceCounts[addon.name] ?? 0) > 0).map((addon) => {
+                      {addons?.sauces?.items.filter((addon) => addon.name !== "None" && (selectedSauceCounts[addon.name] ?? 0) > 0).map((addon) => {
                         const count = selectedSauceCounts[addon.name] ?? 0;
                         return (
                           <div
@@ -1245,7 +1245,7 @@ export default function MenuItemCard({
                 selectedAddons.dressings &&
                 selectedAddons.dressings.name !== "None" ? (
                   <section>
-                    <p className="mb-2 px-1 text-[11px] font-semibold uppercase tracking-[0.14em] text-slate-600">Dressings</p>
+                    <p className="mb-2 px-1 text-[11px] font-semibold uppercase tracking-[0.14em] text-slate-600">{addons?.dressings?.label ?? "Dressings"}</p>
                     <div className="space-y-1.5">
                       <div className="grid w-full grid-cols-[72px_minmax(0,1fr)] items-start gap-3 rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-left">
                         <div className="h-[72px] w-[72px] overflow-hidden rounded-lg border border-black/10 bg-white">

@@ -307,7 +307,7 @@ export default function ItemRouteModal({
 
 
   const selectedSauceOptions = useMemo(() => {
-    const sauceOptions = addons?.[sauceRef] ?? [];
+    const sauceOptions = addons?.[sauceRef]?.items ?? [];
     return sauceOptions.flatMap((addon) =>
       Array.from({ length: selectedSauceCounts[addon.name] ?? 0 }, () => addon)
     );
@@ -603,13 +603,11 @@ export default function ItemRouteModal({
   }, [ingredientTabs]);
   const addonNavigationRef = useMemo<string | null>(() => {
     const itemAddonGroups = new Set(item.addonRefs ?? []);
-    if (itemAddonGroups.has("dressings") && (addons?.dressings?.length ?? 0) > 0) return "dressings";
-    if (itemAddonGroups.has("sauces") && (addons?.sauces?.length ?? 0) > 0) return "sauces";
+    if (itemAddonGroups.has("dressings") && (addons?.dressings?.items.length ?? 0) > 0) return "dressings";
+    if (itemAddonGroups.has("sauces") && (addons?.sauces?.items.length ?? 0) > 0) return "sauces";
     return null;
   }, [addons, item.addonRefs]);
-  const addonSectionLabel = addonNavigationRef
-    ? addonNavigationRef.charAt(0).toUpperCase() + addonNavigationRef.slice(1)
-    : null;
+  const addonSectionLabel = addonNavigationRef ? addons?.[addonNavigationRef]?.label ?? null : null;
   const hasAddonSection = Boolean(addonNavigationRef);
   const hasComboSections = isComboEligibleCategory && comboType === "combo-meal";
   const visibleSections = useMemo(

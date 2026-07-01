@@ -44,12 +44,6 @@ function formatPortionBadge(count: number) {
   return `${count.toFixed(1)}x`;
 }
 
-const addonSectionTitles: Record<string, string> = {
-  sauces: "Sauces",
-  dressings: "Dressings",
-  condiments: "Condiments",
-};
-
 function isIconImage(icon: string) {
   return icon.startsWith("/") || icon.startsWith("http://") || icon.startsWith("https://");
 }
@@ -243,19 +237,17 @@ export default function ItemDetailsPanel({
   const addonRefs = item.addonRefs ?? [];
   const [sectionOpenState, setSectionOpenState] = useState<Record<string, boolean>>({});
 
-  const availableAddonSections = addonRefs
-    .map((ref) => {
-      const list = addons?.[ref];
-      if (!list || list.length === 0) return null;
-      return {
-        ref,
-        title: addonSectionTitles[ref],
-        addons: sortByCalories(list),
-      };
-    })
-    .filter((section): section is { ref: string; title: string; addons: MenuItem[] } =>
-      section !== null
-    );
+  const availableAddonSections = addonRefs.flatMap((ref) => {
+    const group = addons?.[ref];
+    if (!group || group.items.length === 0) return [];
+    return [{
+      ref,
+      title: group.label,
+      addons: sortByCalories(group.items),
+      maxSelections: group.maxSelections,
+      maxPerItem: group.maxPerItem,
+    }];
+  });
   const selectedComboSide = comboSides.find((side) => (side.id ?? side.name) === selectedComboSideId);
   const selectedComboDrink = comboDrinks.find((drink) => (drink.id ?? drink.name) === selectedComboDrinkId);
   const selectedComboSideVariant = selectedComboSide?.variants?.find(
@@ -279,7 +271,7 @@ export default function ItemDetailsPanel({
     .filter(([name, count]) => name !== "None" && (count ?? 0) > 0)
     .map(([name, count]) => {
       const sauceCount = count ?? 0;
-      const matchedSauce = addons?.sauces?.find((addon) => addon.name === name);
+      const matchedSauce = addons?.sauces?.items.find((addon) => addon.name === name);
       return {
         id: `sauce-${name}`,
         name,
