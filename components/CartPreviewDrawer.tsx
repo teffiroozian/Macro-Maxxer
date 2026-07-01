@@ -4,18 +4,15 @@ import Image from "next/image";
 import Link from "next/link";
 import { Pencil } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
+import type { MenuItem } from "@/types/menu";
+import type { RestaurantData } from "@/types/restaurant";
 import restaurants from "@/app/data/index.json";
 import { useRestaurantUi } from "@/components/RestaurantUiContext";
 import MacroTotalsGrid from "@/components/MacroTotalsGrid";
 import CartItemPreviewRow from "@/components/CartItemPreviewRow";
 import ItemRouteModal from "@/components/ItemRouteModal";
-import {
-  addonGroupsLookupByRestaurant,
-  customizationRulesLookupByRestaurant,
-  ingredientLookupByRestaurant,
-  menuLookupByRestaurant,
-} from "@/lib/cart/menuRegistry";
 import { resolveAddonMenuItems } from "@/lib/addonGroups";
+import { getRestaurantData } from "@/lib/restaurants";
 import { useCart } from "@/stores/cartStore";
 
 const getCustomizationDisplayList = (item: {
@@ -36,21 +33,38 @@ export default function CartPreviewDrawer() {
   const { isCartOpen, closeCart } = useRestaurantUi();
   const { items, totals, updateQuantity, clearCart } = useCart();
   const [editingCartItemId, setEditingCartItemId] = useState<string | null>(null);
+  const [editingRestaurant, setEditingRestaurant] = useState<RestaurantData | null>(null);
+  const [editingSourceItem, setEditingSourceItem] = useState<MenuItem | null>(null);
+  const [loadingEditItemId, setLoadingEditItemId] = useState<string | null>(null);
 
   const editingCartItem = useMemo(
     () => items.find((item) => item.id === editingCartItemId) ?? null,
     [editingCartItemId, items]
   );
-  const editingMenuItems = editingCartItem
-    ? menuLookupByRestaurant[editingCartItem.restaurantId] ?? []
-    : [];
-  const editingSourceItem = editingCartItem
-    ? editingMenuItems.find(
-        (menuItem) => (menuItem.id ?? menuItem.name) === editingCartItem.itemId
-      ) ?? null
-    : null;
 
-  const closeEditModal = () => setEditingCartItemId(null);
+  const closeEditModal = () => {
+    setEditingCartItemId(null);
+    setEditingRestaurant(null);
+    setEditingSourceItem(null);
+  };
+
+  const openEditModal = async (item: typeof items[number]) => {
+    setLoadingEditItemId(item.id);
+    try {
+      const restaurant = await getRestaurantData(item.restaurantId);
+      const sourceItem = restaurant?.items.find(
+        (menuItem) => (menuItem.id ?? menuItem.name) === item.itemId
+      ) ?? null;
+
+      if (restaurant && sourceItem) {
+        setEditingCartItemId(item.id);
+        setEditingRestaurant(restaurant);
+        setEditingSourceItem(sourceItem);
+      }
+    } finally {
+      setLoadingEditItemId(null);
+    }
+  };
 
   const activeRestaurant = useMemo(() => {
     const activeRestaurantId = items[0]?.restaurantId;
@@ -153,10 +167,6 @@ export default function CartPreviewDrawer() {
                   const customizationDisplayList =
                     getCustomizationDisplayList(item);
                   const addonsLabel = customizationDisplayList.join(" • ");
-                  const sourceItem =
-                    menuLookupByRestaurant[item.restaurantId]?.find(
-                      (menuItem) => (menuItem.id ?? menuItem.name) === item.itemId
-                    ) ?? null;
                   return (
                     <li
                       key={item.id}
@@ -171,12 +181,12 @@ export default function CartPreviewDrawer() {
                         customizationsLineClamp={1}
                         actions={
                           <>
-                            {item.selection.type !== "build-your-own" && sourceItem ? (
+                            {item.selection.type !== "build-your-own" ? (
                               <button
                                 type="button"
+                                disabled={loadingEditItemId === item.id}
                                 onClick={() => {
-                                  closeCart();
-                                  setEditingCartItemId(item.id);
+                                  openEditModal(item);
                                 }}
                                 className="cursor-pointer inline-flex size-8 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-700 transition hover:bg-slate-100"
                                 aria-label={`Customize ${item.name}`}
@@ -248,17 +258,15 @@ export default function CartPreviewDrawer() {
         </div>
       </aside>
 
-      {editingCartItem && editingSourceItem ? (
+      {editingCartItem && editingRestaurant && editingSourceItem ? (
         <ItemRouteModal
-          restaurantId={editingCartItem.restaurantId}
-          restaurantPath={`/restaurant/${editingCartItem.restaurantId}`}
+          restaurantId={editingRestaurant.id}
+          restaurantPath={`/restaurant/${editingRestaurant.id}`}
           item={editingSourceItem}
-          menuItems={editingMenuItems}
-          addons={resolveAddonMenuItems(addonGroupsLookupByRestaurant[editingCartItem.restaurantId], editingMenuItems)}
-          ingredients={ingredientLookupByRestaurant[editingCartItem.restaurantId]}
-          customizationRules={
-            customizationRulesLookupByRestaurant[editingCartItem.restaurantId]
-          }
+          menuItems={editingRestaurant.items}
+          addons={resolveAddonMenuItems(editingRestaurant.addonGroups, editingRestaurant.items)}
+          ingredients={editingRestaurant.ingredients}
+          customizationRules={editingRestaurant.customizationRules}
           closeBehavior="local"
           editCartItemId={editingCartItem.id}
           onClose={closeEditModal}

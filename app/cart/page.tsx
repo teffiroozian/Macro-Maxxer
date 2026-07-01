@@ -1,29 +1,20 @@
 "use client";
 
-import { useRouter } from "next/navigation";
-import { useMemo } from "react";
-import type { CartMacros } from "@/types/cart";
-import MenuItemCard from "@/components/MenuItemCard";
+import { useMemo, useState } from "react";
+import type { CartItem } from "@/types/cart";
+import type { MenuItem, RestaurantAddonGroups } from "@/types/menu";
+import type { RestaurantData } from "@/types/restaurant";
 import StickyMacroTotalsBar from "@/components/StickyMacroTotalsBar";
 import CartNutritionSummary from "@/components/cart/CartNutritionSummary";
 import GlobalMobileNav from "@/components/GlobalMobileNav";
 import DesktopNav from "@/components/DesktopNav";
+import CartItemPreviewRow from "@/components/CartItemPreviewRow";
+import ItemRouteModal from "@/components/ItemRouteModal";
 import { useCart } from "@/stores/cartStore";
-import {
-  addonGroupsLookupByRestaurant,
-  customizationRulesLookupByRestaurant,
-  ingredientLookupByRestaurant,
-  menuLookupByRestaurant,
-} from "@/lib/cart/menuRegistry";
 import { resolveAddonMenuItems } from "@/lib/addonGroups";
 import { buildCartNutritionTotals } from "@/lib/cart/nutrition";
-import {
-  buildCartMenuItemFromState,
-  getBuildIngredientCountCustomizations,
-  getIncludedIngredientIdsForChipotleBuild,
-} from "@/lib/cart/buildItemAdapters";
 import { parseOptionLabelCounts } from "@/lib/cartOptionLabels";
-import { toItemSlug } from "@/lib/restaurants";
+import { getRestaurantData } from "@/lib/restaurants";
 
 function isIngredientCustomizationLabel(label: string) {
   return /:\s*(Removed|(\d+)x|Remove|Extra)\s*$/i.test(label);
@@ -79,239 +70,149 @@ function summarizeItem(item: { selectionDetailsLabel?: string; customizations?: 
   return segments.join(" • ");
 }
 
-function areStringArraysEqual(a?: string[], b?: string[]) {
-  if (!a?.length && !b?.length) return true;
-  if (!a || !b || a.length !== b.length) return false;
-  return a.every((value, index) => value === b[index]);
-}
+type EditState = {
+  cartItemId: string;
+  restaurant: RestaurantData;
+  sourceItem: MenuItem;
+};
 
-function areMacrosEqual(a: CartMacros, b: CartMacros) {
-  return a.calories === b.calories && a.protein === b.protein && a.carbs === b.carbs && a.totalFat === b.totalFat;
+function getSourceItem(cartItem: CartItem, restaurant: RestaurantData) {
+  return restaurant.items.find((item) => (item.id ?? item.name) === cartItem.itemId) ?? null;
 }
 
 export default function CartPage() {
-  const { items, totals, updateQuantity, updateItem } = useCart();
-  const router = useRouter();
+  const { items, totals, updateQuantity } = useCart();
+  const [editState, setEditState] = useState<EditState | null>(null);
+  const [loadingEditItemId, setLoadingEditItemId] = useState<string | null>(null);
 
-  const nutritionTotals = useMemo(
-    () => buildCartNutritionTotals(items, menuLookupByRestaurant, addonGroupsLookupByRestaurant),
-    [items]
-  );
+  const nutritionTotals = useMemo(() => buildCartNutritionTotals(items), [items]);
+
+  const openEditModal = async (cartItem: CartItem) => {
+    setLoadingEditItemId(cartItem.id);
+    try {
+      const restaurant = await getRestaurantData(cartItem.restaurantId);
+      const sourceItem = restaurant ? getSourceItem(cartItem, restaurant) : null;
+      if (restaurant && sourceItem) {
+        setEditState({ cartItemId: cartItem.id, restaurant, sourceItem });
+      }
+    } finally {
+      setLoadingEditItemId(null);
+    }
+  };
 
   const macroTotalGrams = totals.protein + totals.carbs + totals.totalFat;
   const macroSegments = [
-    {
-      label: "Protein",
-      percent: macroTotalGrams > 0 ? (totals.protein / macroTotalGrams) * 100 : 0,
-      color: "bg-[#c2410c] text-white",
-    },
-    {
-      label: "Carbs",
-      percent: macroTotalGrams > 0 ? (totals.carbs / macroTotalGrams) * 100 : 0,
-      color: "bg-[#ca8a04] text-white",
-    },
-    {
-      label: "Fat",
-      percent: macroTotalGrams > 0 ? (totals.totalFat / macroTotalGrams) * 100 : 0,
-      color: "bg-[#2563eb] text-white",
-    },
+    { label: "Protein", percent: macroTotalGrams > 0 ? (totals.protein / macroTotalGrams) * 100 : 0, color: "bg-[#c2410c] text-white" },
+    { label: "Carbs", percent: macroTotalGrams > 0 ? (totals.carbs / macroTotalGrams) * 100 : 0, color: "bg-[#ca8a04] text-white" },
+    { label: "Fat", percent: macroTotalGrams > 0 ? (totals.totalFat / macroTotalGrams) * 100 : 0, color: "bg-[#2563eb] text-white" },
   ];
   const proteinPer100Calories = totals.calories > 0 ? Math.round((totals.protein / totals.calories) * 100) : 0;
   const formatMacroSegmentLabel = (label: string, percent: number) => {
     const roundedPercent = Math.round(percent);
-
-    if (percent >= 18) {
-      return `${label} ${roundedPercent}%`;
-    }
-
-    if (percent >= 10) {
-      return `${label.charAt(0)} ${roundedPercent}%`;
-    }
-
+    if (percent >= 18) return `${label} ${roundedPercent}%`;
+    if (percent >= 10) return `${label.charAt(0)} ${roundedPercent}%`;
     return `${roundedPercent}%`;
   };
 
   return (
     <>
-      <GlobalMobileNav
-        title="Cart"
-        showSearchButton={false}
-        showCartButton={false}
-      />
-      <div className="px-4 pt-4 sm:px-6">
-        <DesktopNav showSearchButton={false} showCartButton={false} />
-      </div>
+      <GlobalMobileNav title="Cart" showSearchButton={false} showCartButton={false} />
+      <div className="px-4 pt-4 sm:px-6"><DesktopNav showSearchButton={false} showCartButton={false} /></div>
       <main className="mx-auto flex min-h-screen w-full max-w-5xl flex-col gap-6 px-4 pb-10 pt-28 sm:px-6 lg:pt-10">
-      <section className="w-full space-y-3">
-        {items.length === 0 ? (
-          <div className="rounded-2xl border border-black/10 bg-white px-5 py-8 text-center shadow-sm">
-            <p className="text-lg font-medium text-neutral-900">Your cart is empty.</p>
-            <p className="mt-2 text-sm text-neutral-600">Add items from a restaurant to start meal finalization.</p>
-          </div>
-        ) : (
-          <ul className="grid gap-3">
-            {items.map((cartItem) => {
-              const ingredientItemsForRestaurant = ingredientLookupByRestaurant[cartItem.restaurantId];
-              const sourceItem =
-                menuLookupByRestaurant[cartItem.restaurantId]?.find((item) => (item.id ?? item.name) === cartItem.itemId) ?? null;
-              const itemEditHref = sourceItem
-                ? `/restaurant/${cartItem.restaurantId}/${toItemSlug(sourceItem)}?editCartItem=${cartItem.id}&editOrigin=cart`
-                : undefined;
-              const isBuildYourOwnCartItem = cartItem.selection.type === "build-your-own";
-              const buildEditHref = isBuildYourOwnCartItem
-                ? `/restaurant/${cartItem.restaurantId}?view=ingredients&editCartItem=${cartItem.id}&editOrigin=cart`
-                : undefined;
+        <section className="w-full space-y-3">
+          {items.length === 0 ? (
+            <div className="rounded-2xl border border-black/10 bg-white px-5 py-8 text-center shadow-sm">
+              <p className="text-lg font-medium text-neutral-900">Your cart is empty.</p>
+              <p className="mt-2 text-sm text-neutral-600">Add items from a restaurant to start meal finalization.</p>
+            </div>
+          ) : (
+            <ul className="grid gap-3">
+              {items.map((cartItem) => {
+                const detailLine = summarizeItem(cartItem);
+                const displayItem = { ...cartItem, name: formatCartItemName(cartItem.name, cartItem.customizations) };
+                const canCustomize = cartItem.selection.type !== "build-your-own";
+                return (
+                  <li key={cartItem.id} className="rounded-2xl border border-black/10 bg-white p-3 shadow-sm">
+                    <CartItemPreviewRow
+                      item={displayItem}
+                      imageRenderer="native-img"
+                      imageFallback="initial"
+                      macroStyle="detailed"
+                      customizationsText={detailLine}
+                      customizationsLineClamp={2}
+                      actions={
+                        <div className="flex items-center gap-2">
+                          {canCustomize ? (
+                            <button
+                              type="button"
+                              onClick={() => openEditModal(cartItem)}
+                              disabled={loadingEditItemId === cartItem.id}
+                              className="cursor-pointer rounded-full border border-slate-200 px-3 py-1.5 text-xs font-semibold text-slate-700 transition hover:bg-slate-100 disabled:cursor-wait disabled:opacity-60"
+                            >
+                              {loadingEditItemId === cartItem.id ? "Loading..." : "Customize"}
+                            </button>
+                          ) : null}
+                          <div className="inline-flex items-center rounded-full border border-slate-200 bg-slate-50 p-1">
+                            <button type="button" onClick={() => updateQuantity(cartItem.id, cartItem.quantity - 1)} className="cursor-pointer inline-flex size-7 items-center justify-center rounded-full text-sm font-semibold text-slate-700 transition hover:bg-white" aria-label={`Decrease quantity of ${cartItem.name}`}>-</button>
+                            <span className="min-w-8 text-center text-sm font-semibold text-slate-900">{cartItem.quantity}</span>
+                            <button type="button" onClick={() => updateQuantity(cartItem.id, cartItem.quantity + 1)} className="cursor-pointer inline-flex size-7 items-center justify-center rounded-full text-sm font-semibold text-slate-700 transition hover:bg-white" aria-label={`Increase quantity of ${cartItem.name}`}>+</button>
+                          </div>
+                        </div>
+                      }
+                    />
+                  </li>
+                );
+              })}
+            </ul>
+          )}
+        </section>
 
-              const initialIngredientCustomizations = getBuildIngredientCountCustomizations(
-                cartItem,
-                ingredientItemsForRestaurant
-              );
-              const includedIngredientIds = getIncludedIngredientIdsForChipotleBuild(cartItem);
-
-              const menuItem = buildCartMenuItemFromState(cartItem, sourceItem, ingredientItemsForRestaurant);
-              const displayName = formatCartItemName(menuItem.name, cartItem.customizations);
-
-              return (
-                <MenuItemCard
-                  key={cartItem.id}
-                  restaurantId={cartItem.restaurantId}
-                  item={{ ...menuItem, name: displayName }}
-                  addons={resolveAddonMenuItems(addonGroupsLookupByRestaurant[cartItem.restaurantId], menuLookupByRestaurant[cartItem.restaurantId])}
-                  ingredientItems={ingredientItemsForRestaurant}
-                  menuItems={menuLookupByRestaurant[cartItem.restaurantId]}
-                  customizationRules={customizationRulesLookupByRestaurant[cartItem.restaurantId]}
-                  mode="cart"
-                  cartQuantity={cartItem.quantity}
-                  cartItemId={cartItem.id}
-                  initialCartVariantId={cartItem.variantId}
-                  initialCartSelectionDetailsLabel={cartItem.selectionDetailsLabel}
-                  initialCartCustomizations={initialIngredientCustomizations}
-                  flattenIngredientListInDetails={isBuildYourOwnCartItem}
-                  lockedIngredientIdsInDetails={includedIngredientIds}
-                  suppressRemovedIngredientCustomizationsInCart={isBuildYourOwnCartItem}
-                  cartSummaryLine={summarizeItem(cartItem)}
-                  onCartDecrement={() => updateQuantity(cartItem.id, cartItem.quantity - 1)}
-                  onCartIncrement={() => updateQuantity(cartItem.id, cartItem.quantity + 1)}
-                  onCartConfigurationChange={(next) => {
-                    const hasAnyChange =
-                      cartItem.variantId !== next.variantId
-                      || cartItem.image !== next.image
-                      || cartItem.selectionDetailsLabel !== next.selectionDetailsLabel
-                      || !areStringArraysEqual(cartItem.customizations, next.customizations)
-                      || !areMacrosEqual(cartItem.macrosPerItem, next.macrosPerItem as CartMacros);
-
-                    if (!hasAnyChange) return;
-
-                    updateItem(cartItem.id, {
-                      variantId: next.variantId,
-                      image: next.image,
-                      selectionDetailsLabel: next.selectionDetailsLabel,
-                      customizations: next.customizations,
-                      macrosPerItem: next.macrosPerItem as CartMacros,
-                      nutritionPerItem: { ...cartItem.nutritionPerItem, ...next.macrosPerItem },
-                      selection: cartItem.selection.type === "standard"
-                        ? {
-                            ...cartItem.selection,
-                            variantId: next.variantId,
-                            optionsLabel: next.selectionDetailsLabel,
-                            customizations: next.customizations,
-                          }
-                        : cartItem.selection,
-                    });
-                  }}
-                  onCartModify={
-                    (buildEditHref ?? itemEditHref)
-                      ? () => {
-                          router.push(buildEditHref ?? itemEditHref!, { scroll: false });
-                        }
-                      : undefined
-                  }
-                />
-              );
-            })}
-          </ul>
-        )}
-      </section>
-
-      <section className="rounded-3xl border border-black/10 bg-white p-3 shadow-sm sm:p-4">
-        <div className="grid grid-cols-1 gap-4 rounded-3xl bg-[#e0e0e0] p-3 sm:p-4 lg:grid-cols-2">
-
+        <section className="rounded-3xl border border-black/10 bg-white p-3 shadow-sm sm:p-4">
+          <div className="grid grid-cols-1 gap-4 rounded-3xl bg-[#e0e0e0] p-3 sm:p-4 lg:grid-cols-2">
             <CartNutritionSummary nutritionTotals={nutritionTotals} />
-            
             <div className="flex min-h-0 flex-col rounded-3xl border border-black/10 bg-white p-4 sm:p-5">
               <h2 className="text-2xl font-bold text-neutral-900">Meal Breakdown</h2>
               <div className="mt-6 flex min-h-0 flex-1 flex-col justify-between gap-4">
                 <p className="text-md font-semibold uppercase tracking-wide text-neutral-500">Items</p>
-                {items.length === 0 ? (
-                  <p className="text-sm text-neutral-600">No meal items yet.</p>
-                ) : (
+                {items.length === 0 ? <p className="text-sm text-neutral-600">No meal items yet.</p> : (
                   <ul className="min-h-0 flex-1 space-y-2 overflow-y-auto max-h-[300px] bg-[#efefef] p-2 rounded-xl">
                     {items.map((item) => {
                       const detailLine = summarizeItem(item);
                       const displayName = formatCartItemName(item.name, item.customizations);
-
                       return (
-                        <li
-                          key={`${item.id}-breakdown`}
-                          className="flex items-center gap-3 rounded-xl border border-black/10 bg-neutral-50 px-3 py-2"
-                        >
+                        <li key={`${item.id}-breakdown`} className="flex items-center gap-3 rounded-xl border border-black/10 bg-neutral-50 px-3 py-2">
                           <div className="h-11 w-11 shrink-0 overflow-hidden rounded-lg border border-black/10 bg-white">
                             {/* eslint-disable-next-line @next/next/no-img-element */}
                             <img src={item.image} alt={item.name} className="h-full w-full object-contain p-1" />
                           </div>
-                          <div className="min-w-0">
-                            <p className="truncate text-sm font-medium text-neutral-900">
-                              {item.quantity}x {displayName}
-                            </p>
-                            {detailLine ? (
-                              <p className="truncate text-xs text-neutral-500">{detailLine}</p>
-                            ) : null}
-                          </div>
+                          <div className="min-w-0"><p className="truncate text-sm font-medium text-neutral-900">{item.quantity}x {displayName}</p>{detailLine ? <p className="truncate text-xs text-neutral-500">{detailLine}</p> : null}</div>
                         </li>
                       );
                     })}
                   </ul>
                 )}
-
-                <div className="space-y-2 pt-4">
-                  <p className="text-md font-semibold uppercase tracking-wide text-neutral-500">Protein Score</p>
-                  <div className="rounded-xl bg-[#efefef] px-3 py-2">
-                    <p className="mt-1 text-sm text-neutral-900">
-                      <span className="font-bold">{proteinPer100Calories}g</span> of protein in <span className="font-semibold">100 calories</span>
-                    </p>
-                  </div>
-                </div>
-                   <div className="space-y-2 pt-4">
-                    <p className="text-md font-semibold uppercase tracking-wide text-neutral-500">Macro Split</p>
-                    <div className="flex h-11 w-full gap-1 overflow-hidden rounded-xl border border-black/10 bg-neutral-100 p-1">
-                      {macroSegments.map((segment) => (
-                        <div
-                          key={segment.label}
-                          className={`flex min-w-0 items-center justify-center px-1 rounded-xl text-[11px] font-semibold text-neutral-900 ${segment.color}`}
-                          style={{ width: `${segment.percent}%` }}
-                        >
-                          {formatMacroSegmentLabel(segment.label, segment.percent)}
-                        </div>
-                      ))}
-                    </div>
-                  </div>
+                <div className="space-y-2 pt-4"><p className="text-md font-semibold uppercase tracking-wide text-neutral-500">Protein Score</p><div className="rounded-xl bg-[#efefef] px-3 py-2"><p className="mt-1 text-sm text-neutral-900"><span className="font-bold">{proteinPer100Calories}g</span> of protein in <span className="font-semibold">100 calories</span></p></div></div>
+                <div className="space-y-2 pt-4"><p className="text-md font-semibold uppercase tracking-wide text-neutral-500">Macro Split</p><div className="flex h-11 w-full gap-1 overflow-hidden rounded-xl border border-black/10 bg-neutral-100 p-1">{macroSegments.map((segment) => <div key={segment.label} className={`flex min-w-0 items-center justify-center px-1 rounded-xl text-[11px] font-semibold text-neutral-900 ${segment.color}`} style={{ width: `${segment.percent}%` }}>{formatMacroSegmentLabel(segment.label, segment.percent)}</div>)}</div></div>
               </div>
             </div>
-            <div className="col-span-1 lg:col-span-2">
-          <StickyMacroTotalsBar
-            totals={totals}
-            inline
-            layoutPreset="cart"
-            onSecondaryAction={() => window.alert("Save Meal coming soon")}
-            onPrimaryAction={() => window.alert("Generate Snapshot coming soon")}
-          />
-        </div>
-        </div>
-      
-
-        
-      </section>
+            <div className="col-span-1 lg:col-span-2"><StickyMacroTotalsBar totals={totals} inline layoutPreset="cart" onSecondaryAction={() => window.alert("Save Meal coming soon")} onPrimaryAction={() => window.alert("Generate Snapshot coming soon")} /></div>
+          </div>
+        </section>
       </main>
+      {editState ? (
+        <ItemRouteModal
+          restaurantId={editState.restaurant.id}
+          restaurantPath={`/restaurant/${editState.restaurant.id}`}
+          item={editState.sourceItem}
+          menuItems={editState.restaurant.items}
+          addons={resolveAddonMenuItems(editState.restaurant.addonGroups as RestaurantAddonGroups, editState.restaurant.items)}
+          ingredients={editState.restaurant.ingredients}
+          customizationRules={editState.restaurant.customizationRules}
+          closeBehavior="local"
+          editCartItemId={editState.cartItemId}
+          onClose={() => setEditState(null)}
+        />
+      ) : null}
     </>
   );
 }
