@@ -1,4 +1,4 @@
-import Link from "next/link";
+import { notFound } from "next/navigation";
 import RestaurantPageContent from "@/components/RestaurantPageContent";
 import { getRestaurantData } from "@/lib/restaurants";
 
@@ -16,17 +16,7 @@ export default async function RestaurantPage({
 
   // checks if the data exists for the url
   if (!restaurantData) {
-    return (
-      <main style={{ maxWidth: 900, margin: "48px auto", padding: 16 }}>
-        <Link
-          href="/"
-          style={{ textDecoration: "none", cursor: "pointer" }}
-        >
-          ← Back
-        </Link>
-        <h1 style={{ marginTop: 16 }}>Restaurant not found</h1>
-      </main>
-    );
+    notFound();
   }
 
   return <RestaurantPageContent restaurantData={restaurantData} />;
