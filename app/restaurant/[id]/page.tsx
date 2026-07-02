@@ -15,7 +15,7 @@ export default async function RestaurantPage({
   const restaurantData = await getRestaurantData(id);
 
   // checks if the data exists for the url
-  if (!restaurantData) {
+  if (!restaurantData || restaurantData.isComingSoon) {
     notFound();
   }
 

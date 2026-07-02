@@ -29,7 +29,7 @@
     "name": "McDonald's",
     "logo": "/restaurants/mcdonalds/logo.png",
     "cover": "/restaurants/mcdonalds/cover.jpeg",
-    "menuFile": "mcdonlads.json",
+    "menuFile": "mcdonalds.json",
     "isMacroFriendly": false,
     "isComingSoon": true
   },

@@ -6,13 +6,12 @@ import { Pencil } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 import type { MenuItem } from "@/types/menu";
 import type { RestaurantData } from "@/types/restaurant";
-import restaurants from "@/app/data/index.json";
 import { useRestaurantUi } from "@/components/RestaurantUiContext";
 import MacroTotalsGrid from "@/components/MacroTotalsGrid";
 import CartItemPreviewRow from "@/components/CartItemPreviewRow";
 import ItemRouteModal from "@/components/ItemRouteModal";
 import { resolveAddonMenuItems } from "@/lib/addonGroups";
-import { getRestaurantData } from "@/lib/restaurants";
+import { getAllRestaurants, getRestaurantData } from "@/lib/restaurants";
 import { useCart } from "@/stores/cartStore";
 
 const getCustomizationDisplayList = (item: {
@@ -67,6 +66,7 @@ export default function CartPreviewDrawer() {
   };
 
   const activeRestaurant = useMemo(() => {
+    const restaurants = getAllRestaurants();
     const activeRestaurantId = items[0]?.restaurantId;
 
     if (!activeRestaurantId) {
