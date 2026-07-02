@@ -45,6 +45,11 @@ export type BuildYourOwnCartSelection = {
 // cart selection can be either a standard or a build-your-own item
 export type CartSelection = StandardCartSelection | BuildYourOwnCartSelection;
 
+export type SelectedAddon = {
+  itemId: string;
+  quantity: number;
+};
+
 // one item that the user added to the cart
 export type CartItem = {
   id: string;
@@ -54,6 +59,7 @@ export type CartItem = {
   image: string;
   variantId?: string;
   selectionDetailsLabel?: string;
+  selectedAddons?: SelectedAddon[];
   customizations?: string[];
   quantity: number;
   macrosPerItem: CartMacros;

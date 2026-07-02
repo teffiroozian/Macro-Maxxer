@@ -16,8 +16,11 @@ import type { CoreMacros, Nutrition } from "@/types/nutrition";
 import { useCart } from "@/stores/cartStore";
 import { parseComboCustomization } from "@/lib/menuItemCard/comboCustomizationParser";
 import {
+  buildSelectedAddonData,
   getSelectedAddonsFromLabel,
+  getSelectedAddonsFromStructuredData,
   getSelectedSauceCountsFromLabel,
+  getSelectedSauceCountsFromStructuredData,
 } from "@/lib/menuItemCard/cartLabelUtils";
 import { getSelectedIngredientCountsFromCustomizations } from "@/lib/menuItemCard/ingredientCountCustomization";
 import {
@@ -152,10 +155,14 @@ export default function ItemRouteModal({
   const [selectedVariantId, setSelectedVariantId] = useState(editingCartItem?.variantId ?? defaultVariantId);
   const [quantity, setQuantity] = useState(editingCartItem?.quantity ?? 1);
   const [selectedAddons, setSelectedAddons] = useState<Partial<Record<string, MenuItem>>>(() =>
-    getSelectedAddonsFromLabel(item, addons, editingCartItem?.selectionDetailsLabel)
+    editingCartItem?.selectedAddons
+      ? getSelectedAddonsFromStructuredData(item, addons, editingCartItem.selectedAddons)
+      : getSelectedAddonsFromLabel(item, addons, editingCartItem?.selectionDetailsLabel)
   );
   const [selectedSauceCounts, setSelectedSauceCounts] = useState<Record<string, number>>(() =>
-    getSelectedSauceCountsFromLabel(item, addons, editingCartItem?.selectionDetailsLabel)
+    editingCartItem?.selectedAddons
+      ? getSelectedSauceCountsFromStructuredData(item, addons, editingCartItem.selectedAddons)
+      : getSelectedSauceCountsFromLabel(item, addons, editingCartItem?.selectionDetailsLabel)
   );
   const selectedVariant = variants?.find((variant) => variant.id === selectedVariantId);
   const selectedItemImage = selectedVariant?.image ?? item.image;
@@ -1008,6 +1015,7 @@ export default function ItemRouteModal({
       image: selectedVariant?.image ?? item.image,
       variantId: selectedVariant?.id,
       selectionDetailsLabel,
+      selectedAddons: buildSelectedAddonData(selectedAddons, selectedSauceCounts, addons),
       customizations: customizations.length > 0 ? customizations : undefined,
       quantity,
       macrosPerItem: {

@@ -3,6 +3,7 @@
 import { useEffect, useId, useMemo, useRef, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { ChevronDown } from "lucide-react";
+import type { SelectedAddon } from "@/types/cart";
 import type { IngredientItem, MenuItem, ResolvedAddonGroups, RestaurantCustomizationRules } from "@/types/menu";
 import ItemDetailsPanel, { resolvePanelIngredients } from "./ItemDetailsPanel";
 import VariantSelector from "./VariantSelector";
@@ -20,7 +21,7 @@ import {
   sumNutrition,
 } from "@/lib/menuItemCalculations";
 import { formatOptionLabelCounts } from "@/lib/cartOptionLabels";
-import { buildOptionLabelCounts } from "@/lib/menuItemCard/cartLabelUtils";
+import { buildOptionLabelCounts, buildSelectedAddonData } from "@/lib/menuItemCard/cartLabelUtils";
 import { formatIngredientCountCustomizationLabel } from "@/lib/menuItemCard/ingredientCountCustomization";
 import IngredientCompactCard from "./menu-item-card/IngredientCompactCard";
 import MenuCardActions from "./menu-item-card/MenuCardActions";
@@ -159,6 +160,7 @@ type CartConfigurationPayload = {
   variantId?: string;
   image?: string;
   selectionDetailsLabel?: string;
+  selectedAddons?: SelectedAddon[];
   customizations?: string[];
   macrosPerItem: {
     calories: number;
@@ -188,6 +190,7 @@ export default function MenuItemCard({
   cartItemId,
   initialCartVariantId,
   initialCartSelectionDetailsLabel,
+  initialCartSelectedAddons,
   initialCartCustomizations,
   onCartConfigurationChange,
   itemHref,
@@ -227,6 +230,7 @@ export default function MenuItemCard({
   cartItemId?: string;
   initialCartVariantId?: string;
   initialCartSelectionDetailsLabel?: string;
+  initialCartSelectedAddons?: SelectedAddon[];
   initialCartCustomizations?: string[];
   onCartConfigurationChange?: (next: CartConfigurationPayload) => void;
   itemHref?: string;
@@ -299,6 +303,7 @@ export default function MenuItemCard({
     item,
     addons,
     initialCartSelectionDetailsLabel,
+    initialCartSelectedAddons,
     initialCartCustomizations,
     resolvedIngredients,
   });
@@ -622,9 +627,10 @@ export default function MenuItemCard({
       itemId: item.id ?? item.name,
       variantId: selectedVariantForCart?.id,
       selectionDetailsLabel,
+      selectedAddons: buildSelectedAddonData(selectedAddons, selectedSauceCounts, addons),
       customizations,
     });
-  }, [customizations, getMatchingItem, isCartMode, item.id, item.name, selectionDetailsLabel, restaurantId, selectedVariantForCart?.id]);
+  }, [addons, customizations, getMatchingItem, isCartMode, item.id, item.name, selectedAddons, selectedSauceCounts, selectionDetailsLabel, restaurantId, selectedVariantForCart?.id]);
 
   const emitCartConfiguration = (
     nextVariantId: string,
@@ -703,6 +709,7 @@ export default function MenuItemCard({
     onCartConfigurationChange({
       variantId: activeVariant?.id,
       selectionDetailsLabel: nextSelectionDetailsLabel,
+      selectedAddons: buildSelectedAddonData(nextAddons, nextSauceCounts, addons),
       customizations: nextCustomizations.length > 0 ? nextCustomizations : undefined,
       image: activeVariant?.image ?? item.image,
       macrosPerItem: calculateMenuItemMacrosPerItem({
@@ -761,6 +768,7 @@ export default function MenuItemCard({
         image: selectedVariantForCart?.image ?? item.image,
         variantId: selectedVariantForCart?.id,
         selectionDetailsLabel,
+        selectedAddons: buildSelectedAddonData(selectedAddons, selectedSauceCounts, addons),
         customizations,
         quantity: 1,
         selection: highProteinBuildConfiguration

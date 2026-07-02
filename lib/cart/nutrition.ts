@@ -1,6 +1,5 @@
-import { parseOptionLabelCounts } from "@/lib/cartOptionLabels";
-import type { CartItem } from "@/types/cart";
-import type { MenuItem, RestaurantAddonGroups } from "@/types/menu";
+import type { CartItem, SelectedAddon } from "@/types/cart";
+import type { MenuItem } from "@/types/menu";
 import type { Nutrition } from "@/types/nutrition";
 
 // use Nutrtion shape to get NutritionTotals
@@ -14,20 +13,17 @@ function addOptional(total: number | undefined, next: number | undefined, quanti
 
 // converts addons of an item to regular menu item
 export function getSelectedAddonNutrition(
-  selectionDetailsLabel: string | undefined,
-  sourceItem: MenuItem | undefined,
-  restaurantAddonGroups: RestaurantAddonGroups | undefined,
+  selectedAddons: SelectedAddon[] | undefined,
   restaurantItems: MenuItem[] | undefined
 ) {
-  const selectedAddonCounts = parseOptionLabelCounts(selectionDetailsLabel);
-  if (Object.keys(selectedAddonCounts).length === 0 || !sourceItem || !restaurantAddonGroups) return [] as MenuItem[];
+  const itemLookup = new Map((restaurantItems ?? []).map((item) => [item.id ?? item.name, item]));
 
-  const itemLookup = new Map((restaurantItems ?? []).map((item) => [item.id, item]));
-  return (sourceItem.addonRefs ?? [])
-    .flatMap((ref) => restaurantAddonGroups[ref]?.itemIds ?? [])
-    .map((itemId) => itemLookup.get(itemId))
-    .filter((addon): addon is MenuItem => Boolean(addon?.addonEligible))
-    .flatMap((addon) => Array.from({ length: selectedAddonCounts[addon.name] ?? 0 }, () => addon));
+  return (selectedAddons ?? []).flatMap((selectedAddon) => {
+    const addon = itemLookup.get(selectedAddon.itemId);
+    if (!addon?.addonEligible || selectedAddon.quantity <= 0) return [];
+
+    return Array.from({ length: selectedAddon.quantity }, () => addon);
+  });
 }
 
 export function buildCartNutritionTotals(items: CartItem[]): NutritionTotals {

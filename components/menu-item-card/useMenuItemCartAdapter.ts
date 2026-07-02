@@ -1,11 +1,21 @@
 import { useMemo } from "react";
+import type { SelectedAddon } from "@/types/cart";
 import { useCart } from "@/stores/cartStore";
+
+function formatSelectedAddonSignature(selectedAddons?: SelectedAddon[]) {
+  return (selectedAddons ?? [])
+    .filter((addon) => addon.quantity > 0)
+    .map((addon) => `${addon.itemId}:${addon.quantity}`)
+    .sort()
+    .join("|");
+}
 
 type MatchingSignatureInput = {
   restaurantId: string;
   itemId: string;
   variantId?: string;
   selectionDetailsLabel?: string;
+  selectedAddons?: SelectedAddon[];
   customizations?: string[];
 };
 
@@ -19,7 +29,7 @@ export function useMenuItemCartAdapter() {
         item.restaurantId,
         item.itemId,
         item.variantId ?? "",
-        item.selectionDetailsLabel ?? "",
+        item.selectedAddons ? formatSelectedAddonSignature(item.selectedAddons) : item.selectionDetailsLabel ?? "",
         (item.customizations ?? []).join("|"),
       ].join("::");
       index.set(key, item);
@@ -32,7 +42,7 @@ export function useMenuItemCartAdapter() {
       input.restaurantId,
       input.itemId,
       input.variantId ?? "",
-      input.selectionDetailsLabel ?? "",
+      input.selectedAddons ? formatSelectedAddonSignature(input.selectedAddons) : input.selectionDetailsLabel ?? "",
       (input.customizations ?? []).join("|"),
     ].join("::");
 
