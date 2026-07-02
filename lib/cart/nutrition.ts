@@ -1,25 +1,18 @@
 import { parseOptionLabelCounts } from "@/lib/cartOptionLabels";
 import type { CartItem } from "@/types/cart";
 import type { MenuItem, RestaurantAddonGroups } from "@/types/menu";
+import type { Nutrition } from "@/types/nutrition";
 
-export type NutritionTotals = {
-  calories: number;
-  protein: number;
-  carbs: number;
-  totalFat: number;
-  satFat?: number;
-  transFat?: number;
-  cholesterol?: number;
-  sodium?: number;
-  fiber?: number;
-  sugars?: number;
-};
+// use Nutrtion shape to get NutritionTotals
+export type NutritionTotals = Nutrition;
 
+// helper for adding optional nutrition fields
 function addOptional(total: number | undefined, next: number | undefined, quantity: number) {
   if (next === undefined) return total;
   return (total ?? 0) + next * quantity;
 }
 
+// converts addons of an item to regular menu item
 export function getSelectedAddonNutrition(
   selectionDetailsLabel: string | undefined,
   sourceItem: MenuItem | undefined,

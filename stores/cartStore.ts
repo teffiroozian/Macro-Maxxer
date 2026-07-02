@@ -1,9 +1,12 @@
+// CENTRAL PLACE FOR CART INFO
+
 "use client";
 
 import { useMemo, useSyncExternalStore } from "react";
 import type { CartItem, CartMacros, CartState } from "@/types/cart";
 export type { CartItem, CartMacros, CartState } from "@/types/cart";
 
+// default macros when cart is empty
 const emptyTotals: CartMacros = {
   calories: 0,
   protein: 0,
@@ -17,19 +20,23 @@ let cartState: CartState = {
   lastAddedAt: null,
 };
 
+// store all components listening to cart changes
 const listeners = new Set<() => void>();
 
+// tells all those components change has been made to cart
 const notify = () => {
   for (const listener of listeners) {
     listener();
   }
 };
 
+// updates the cart when changes are made and calls notify
 const setCartState = (updater: (prev: CartState) => CartState) => {
   cartState = updater(cartState);
   notify();
 };
 
+// lets React components subscribe to the cart store
 const subscribe = (listener: () => void) => {
   listeners.add(listener);
 
@@ -38,8 +45,10 @@ const subscribe = (listener: () => void) => {
   };
 };
 
+// returns current cartState
 const getSnapshot = () => cartState;
 
+// calculates the cart totals
 const computeTotals = (items: CartItem[]): CartMacros => {
   return items.reduce(
     (acc, item) => {
@@ -54,14 +63,13 @@ const computeTotals = (items: CartItem[]): CartMacros => {
   );
 };
 
-export const cartSelectors = {
-  totals: (state: CartState) => computeTotals(state.items),
-};
-
+// add item
 const addItem = (item: CartItem) => {
   setCartState((prev) => {
+    // checks for existing items in the cart
     const existingIndex = prev.items.findIndex((cartItem) => cartItem.id === item.id);
 
+    // if it doesn't exist add as new item
     if (existingIndex === -1) {
       return {
         ...prev,
@@ -74,6 +82,7 @@ const addItem = (item: CartItem) => {
     const updatedItems = [...prev.items];
     const existingItem = updatedItems[existingIndex];
 
+    // if it exists increase the quantity
     updatedItems[existingIndex] = {
       ...existingItem,
       quantity: existingItem.quantity + item.quantity,
@@ -90,6 +99,7 @@ const addItem = (item: CartItem) => {
   });
 };
 
+// remove item 
 const removeItem = (id: string) => {
   setCartState((prev) => ({
     ...prev,
@@ -97,12 +107,13 @@ const removeItem = (id: string) => {
   }));
 };
 
+// update quantity
 const updateQuantity = (id: string, quantity: number) => {
   if (quantity <= 0) {
     removeItem(id);
     return;
   }
-
+  // if id matches, return a copy with new quantity
   setCartState((prev) => ({
     ...prev,
     items: prev.items.map((item) =>
@@ -116,8 +127,10 @@ const updateQuantity = (id: string, quantity: number) => {
   }));
 };
 
+// updates customziation to an item
 const updateItem = (
   id: string,
+  // don't touch id or restaurantId
   updates: Partial<Omit<CartItem, "id" | "restaurantId">>,
   options?: { markAsJustAdded?: boolean }
 ) => {
@@ -149,6 +162,7 @@ const updateItem = (
   });
 };
 
+// empties the cart
 const clearCart = () => {
   setCartState((prev) => ({
     ...prev,
@@ -156,10 +170,11 @@ const clearCart = () => {
   }));
 };
 
+// public api for the cart store for current cart data and functions to change cart
 export const useCart = () => {
   const state = useSyncExternalStore(subscribe, getSnapshot, getSnapshot);
 
-  const totals = useMemo(() => cartSelectors.totals(state), [state]);
+  const totals = useMemo(() => computeTotals(state.items), [state.items]);
 
   return {
     items: state.items,

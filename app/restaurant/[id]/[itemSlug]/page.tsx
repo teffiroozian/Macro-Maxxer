@@ -9,11 +9,14 @@ export default async function ItemPage({
 }: {
   params: Promise<{ id: string; itemSlug: string }>;
 }) {
+  // recieves two params, one for restaurant one for item
   const { id, itemSlug } = await params;
+  // loads full menu data
   const restaurant = await getRestaurantData(id);
 
   if (!restaurant) notFound();
 
+  // finds specific item
   const item = getItemBySlug(restaurant.items, itemSlug);
   if (!item) notFound();
 

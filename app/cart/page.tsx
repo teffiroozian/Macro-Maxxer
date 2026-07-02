@@ -85,6 +85,7 @@ export default function CartPage() {
   const [editState, setEditState] = useState<EditState | null>(null);
   const [loadingEditItemId, setLoadingEditItemId] = useState<string | null>(null);
 
+  // calculate total nutrition of the cart
   const nutritionTotals = useMemo(() => buildCartNutritionTotals(items), [items]);
 
   const openEditModal = async (cartItem: CartItem) => {
