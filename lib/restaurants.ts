@@ -51,6 +51,7 @@ export async function getRestaurantData(id: string): Promise<RestaurantData | nu
     cover: restaurant.cover,
     menuFile: restaurant.menuFile,
     isMacroFriendly: restaurant.isMacroFriendly,
+    isComingSoon: restaurant.isComingSoon,
     // menu file data
     hasBuildYourOwn,
     items,
