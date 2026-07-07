@@ -101,10 +101,16 @@ const addItem = (item: CartItem) => {
 
 // remove item 
 const removeItem = (id: string) => {
-  setCartState((prev) => ({
-    ...prev,
-    items: prev.items.filter((item) => item.id !== id),
-  }));
+  setCartState((prev) => {
+    const isRemovingLastAddedItem = prev.lastAddedItem?.id === id;
+
+    return {
+      ...prev,
+      items: prev.items.filter((item) => item.id !== id),
+      lastAddedItem: isRemovingLastAddedItem ? null : prev.lastAddedItem,
+      lastAddedAt: isRemovingLastAddedItem ? null : prev.lastAddedAt,
+    };
+  });
 };
 
 // update quantity
@@ -167,6 +173,8 @@ const clearCart = () => {
   setCartState((prev) => ({
     ...prev,
     items: [],
+    lastAddedItem: null,
+    lastAddedAt: null,
   }));
 };
 
