@@ -56,10 +56,9 @@
         },
         {
             "id": "side-of-guacamole",
-            "name": "Guacamole",
-            "image": "",
+            "name": "Side of Guacamole",
+            "image": "/restaurants/chipotle/ingredients/toppings/gaucamole.png",
             "categories": [
-                "Toppings",
                 "Single Sides"
             ],
             "servingType": "side",
@@ -322,8 +321,8 @@
         },
         {
             "id": "side-of-cilantro-lime-sauce",
-            "name": "Cilantro Lime Sauce",
-            "image": "",
+            "name": "Side of Cilantro Lime Sauce",
+            "image": "/restaurants/chipotle/ingredients/toppings/cilantro-lime-sauce.png",
             "categories": [
                 "Single Sides"
             ],
@@ -360,8 +359,8 @@
         },
         {
             "id": "side-of-fresh-tomato-salsa",
-            "name": "Fresh Tomato Salsa",
-            "image": "",
+            "name": "Side of Fresh Tomato Salsa",
+            "image": "/restaurants/chipotle/ingredients/toppings/tomato-salsa.png",
             "categories": [
                 "Single Sides"
             ],
@@ -398,8 +397,8 @@
         },
         {
             "id": "side-of-tomatillo-red-chili-salsa",
-            "name": "Tomatillo-Red Chili Salsa",
-            "image": "",
+            "name": "Side of Tomatillo-Red Chili Salsa",
+            "image": "/restaurants/chipotle/ingredients/toppings/red-chili-salsa.png",
             "categories": [
                 "Single Sides"
             ],
@@ -436,8 +435,8 @@
         },
         {
             "id": "side-of-tomatillo-green-chili-salsa",
-            "name": "Tomatillo-Green Chili Salsa",
-            "image": "",
+            "name": "Side of Tomatillo-Green Chili Salsa",
+            "image": "/restaurants/chipotle/ingredients/toppings/green-chili-salsa.png",
             "categories": [
                 "Single Sides"
             ],
@@ -474,8 +473,8 @@
         },
         {
             "id": "side-of-roasted-chili-corn-salsa",
-            "name": "Roasted Chili-Corn Salsa",
-            "image": "",
+            "name": "Side of Roasted Chili-Corn Salsa",
+            "image": "/restaurants/chipotle/ingredients/toppings/chili-corn-salsa.png",
             "categories": [
                 "Single Sides"
             ],
@@ -513,7 +512,7 @@
         {
             "id": "side-of-queso-blanco",
             "name": "Side of Queso Blanco",
-            "image": "",
+            "image": "/restaurants/chipotle/ingredients/toppings/queso-blanco.png",
             "categories": [
                 "Single Sides"
             ],
@@ -608,7 +607,7 @@
         {
             "id": "kids-mandarins",
             "name": "Kid's Mandarins",
-            "image": "",
+            "image": "/restaurants/chipotle/menu/sides/fruit.png",
             "categories": [
                 "Kids"
             ],
@@ -631,7 +630,7 @@
         {
             "id": "kids-blueberries",
             "name": "Kid's Blueberries",
-            "image": "",
+            "image": "/restaurants/chipotle/menu/sides/fruit.png",
             "categories": [
                 "Kids"
             ],
@@ -2770,11 +2769,6 @@
                 "image": "/restaurants/chipotle/entrees/drinks.png",
                 "id": "drinks"
             }
-        },
-        "hiddenSectionsByEntree": {
-            "chips-sides": [
-                "toppings"
-            ]
         },
         "categoryMaxSelections": {
             "proteins": 2,
