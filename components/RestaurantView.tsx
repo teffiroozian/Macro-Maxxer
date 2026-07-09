@@ -704,17 +704,10 @@ export default function RestaurantView({
 
     const allItems = useMemo(() => {
         const baseItems = items;
-        if (isChipotleBuildPage && selectedEntree === "chips-sides") {
-            return baseItems.filter(
-                (item) =>
-                    item.entreeGroup === "chips-sides" ||
-                    item.entreeGroup === "high-protein-menu",
-            );
-        }
-
         if (
             isChipotleBuildPage &&
-            (selectedEntree === "high-protein-menu" ||
+            (selectedEntree === "chips-sides" ||
+                selectedEntree === "high-protein-menu" ||
                 selectedEntree === "drinks")
         ) {
             return baseItems.filter(

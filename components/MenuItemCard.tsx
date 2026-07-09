@@ -33,7 +33,7 @@ import {
 } from "@/lib/restaurantBuilders/chipotle/highProtein";
 import { toUniversalChipotleBuildConfiguration } from "@/lib/restaurantBuilders/chipotle/cartAdapter";
 import { parseIncludedIngredientEntry } from "@/lib/itemIngredients";
-import { normalizeNutrition } from "@/lib/nutrition";
+import { normalizeNutrition, resolveMenuItemVariantNutrition } from "@/lib/nutrition";
 import {
   calculateAddonTotals,
   calculateComboNutritionTotals,
@@ -276,7 +276,7 @@ export default function MenuItemCard({
       : selectedVariantId;
   const selectedVariant = variants?.find((variant) => variant.id === effectiveSelectedVariantId);
   const selectedItemImage = selectedVariant?.image ?? item.image;
-  const baseNutrition = selectedVariant?.nutrition ?? item.nutrition;
+  const baseNutrition = resolveMenuItemVariantNutrition(item, selectedVariant);
 
 
   const resolvedIngredients = useMemo(
@@ -640,7 +640,7 @@ export default function MenuItemCard({
     if (!isCartMode || !onCartConfigurationChange || !cartItemId) return;
 
     const activeVariant = variants?.find((variant) => variant.id === nextVariantId) ?? selectedVariantForCart;
-    const baseForCart = activeVariant?.nutrition ?? item.nutrition;
+    const baseForCart = resolveMenuItemVariantNutrition(item, activeVariant);
     const sauceOptions = addons?.[sauceRef]?.items ?? [];
     const expandedSauces = sauceOptions.flatMap((addon) =>
       Array.from({ length: nextSauceCounts[addon.name] ?? 0 }, () => addon)
@@ -745,7 +745,7 @@ export default function MenuItemCard({
   const handleAddToCart = () => {
     if (isAddFeedbackVisible) return;
 
-    const baseForCart = selectedVariantForCart?.nutrition ?? item.nutrition;
+    const baseForCart = resolveMenuItemVariantNutrition(item, selectedVariantForCart);
     const highProteinBuildConfiguration = isChipotleHighProteinMenuItem(item, restaurantId)
       ? buildHighProteinBuildConfiguration(item, ingredientItems)
       : undefined;

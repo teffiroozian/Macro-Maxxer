@@ -10,6 +10,7 @@ export type ItemVariant = {
   label: string;
   image?: string;
   nutrition: Nutrition;
+  nutritionMultiplier?: number;
   categories: string[];
   servingType?: ServingType;
   // which variant should show as the default option in the menu
