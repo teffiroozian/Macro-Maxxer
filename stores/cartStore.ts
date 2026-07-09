@@ -3,16 +3,9 @@
 "use client";
 
 import { useMemo, useSyncExternalStore } from "react";
-import type { CartItem, CartMacros, CartState } from "@/types/cart";
+import { buildCartMacroTotals, hasPartialCartNutritionData } from "@/lib/cart/nutrition";
+import type { CartItem, CartState } from "@/types/cart";
 export type { CartItem, CartMacros, CartState } from "@/types/cart";
-
-// default macros when cart is empty
-const emptyTotals: CartMacros = {
-  calories: 0,
-  protein: 0,
-  carbs: 0,
-  totalFat: 0,
-};
 
 let cartState: CartState = {
   items: [],
@@ -48,20 +41,9 @@ const subscribe = (listener: () => void) => {
 // returns current cartState
 const getSnapshot = () => cartState;
 
-// calculates the cart totals
-const computeTotals = (items: CartItem[]): CartMacros => {
-  return items.reduce(
-    (acc, item) => {
-      acc.calories += (item.nutritionPerItem.calories ?? 0) * item.quantity;
-      acc.protein += (item.nutritionPerItem.protein ?? 0) * item.quantity;
-      acc.carbs += (item.nutritionPerItem.carbs ?? 0) * item.quantity;
-      acc.totalFat += (item.nutritionPerItem.totalFat ?? 0) * item.quantity;
-
-      return acc;
-    },
-    { ...emptyTotals },
-  );
-};
+// cart nutrition totals are calculated in lib/cart/nutrition.ts.
+const computeTotals = buildCartMacroTotals;
+const computeHasPartialNutritionData = hasPartialCartNutritionData;
 
 // add item
 const addItem = (item: CartItem) => {
@@ -175,10 +157,12 @@ export const useCart = () => {
   const state = useSyncExternalStore(subscribe, getSnapshot, getSnapshot);
 
   const totals = useMemo(() => computeTotals(state.items), [state.items]);
+  const hasPartialNutritionData = useMemo(() => computeHasPartialNutritionData(state.items), [state.items]);
 
   return {
     items: state.items,
     totals,
+    hasPartialNutritionData,
     lastAddedItem: state.lastAddedItem,
     lastAddedAt: state.lastAddedAt,
     addItem,
