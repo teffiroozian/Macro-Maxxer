@@ -20,6 +20,7 @@ import {
   sumNutrition,
 } from "@/lib/menuItemCalculations";
 import { formatOptionLabelCounts } from "@/lib/cartOptionLabels";
+import { customizationsFromLabels } from "@/lib/cart/customizationLabels";
 import { buildOptionLabelCounts } from "@/lib/menuItemCard/cartLabelUtils";
 import { formatIngredientCountCustomizationLabel } from "@/lib/menuItemCard/ingredientCountCustomization";
 import IngredientCompactCard from "./menu-item-card/IngredientCompactCard";
@@ -158,8 +159,7 @@ const maxSauceSelections = 5;
 type CartConfigurationPayload = {
   variantId?: string;
   image?: string;
-  selectionDetailsLabel?: string;
-  customizations?: string[];
+  customizations?: import("@/types/cart").CartCustomization[];
   macrosPerItem: {
     calories: number;
     protein: number;
@@ -621,8 +621,8 @@ export default function MenuItemCard({
       restaurantId,
       itemId: item.id ?? item.name,
       variantId: selectedVariantForCart?.id,
-      selectionDetailsLabel,
-      customizations,
+      optionSelections: selectionDetailsLabel ? selectionDetailsLabel.split(" + ").map((label) => ({ label })) : undefined,
+      customizations: customizationsFromLabels(customizations),
     });
   }, [customizations, getMatchingItem, isCartMode, item.id, item.name, selectionDetailsLabel, restaurantId, selectedVariantForCart?.id]);
 
@@ -655,7 +655,6 @@ export default function MenuItemCard({
       resolvedIngredients
     );
 
-    const nextSelectionDetailsLabel = formatOptionLabelCounts(buildOptionLabelCounts(nextAddons, nextSauceCounts));
     const nextComboSide = comboSides.find((side) => (side.id ?? side.name) === nextComboSideId);
     const nextComboDrink = comboDrinks.find((drink) => (drink.id ?? drink.name) === nextComboDrinkId);
     const nextComboSideVariant = nextComboSide?.variants?.find((variant) => variant.id === nextComboSideVariantId);
@@ -702,8 +701,7 @@ export default function MenuItemCard({
 
     onCartConfigurationChange({
       variantId: activeVariant?.id,
-      selectionDetailsLabel: nextSelectionDetailsLabel,
-      customizations: nextCustomizations.length > 0 ? nextCustomizations : undefined,
+      customizations: customizationsFromLabels(nextCustomizations),
       image: activeVariant?.image ?? item.image,
       macrosPerItem: calculateMenuItemMacrosPerItem({
         baseNutrition: baseForCart,
@@ -760,12 +758,11 @@ export default function MenuItemCard({
         name: item.name,
         image: selectedVariantForCart?.image ?? item.image,
         variantId: selectedVariantForCart?.id,
-        selectionDetailsLabel,
-        customizations,
+        customizations: customizationsFromLabels(customizations),
         quantity: 1,
         selection: highProteinBuildConfiguration
-          ? { type: "build-your-own", buildConfiguration: toUniversalChipotleBuildConfiguration(highProteinBuildConfiguration), customizations }
-          : { type: "standard", variantId: selectedVariantForCart?.id, optionsLabel: selectionDetailsLabel, customizations },
+          ? { type: "build-your-own", buildConfiguration: toUniversalChipotleBuildConfiguration(highProteinBuildConfiguration) }
+          : { type: "standard", variantId: selectedVariantForCart?.id, optionSelections: selectionDetailsLabel ? selectionDetailsLabel.split(" + ").map((label) => ({ label })) : undefined },
         nutritionPerItem: baseForCart,
         macrosPerItem: calculateMenuItemMacrosPerItem({
           baseNutrition: baseForCart,

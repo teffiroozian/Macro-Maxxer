@@ -5,8 +5,8 @@ type MatchingSignatureInput = {
   restaurantId: string;
   itemId: string;
   variantId?: string;
-  selectionDetailsLabel?: string;
-  customizations?: string[];
+  optionSelections?: { label: string; quantity?: number }[];
+  customizations?: import("@/types/cart").CartCustomization[];
 };
 
 export function useMenuItemCartAdapter() {
@@ -19,8 +19,8 @@ export function useMenuItemCartAdapter() {
         item.restaurantId,
         item.itemId,
         item.variantId ?? "",
-        item.selectionDetailsLabel ?? "",
-        (item.customizations ?? []).join("|"),
+        (item.selection.type === "standard" ? JSON.stringify(item.selection.optionSelections ?? []) : ""),
+        JSON.stringify(item.customizations ?? []),
       ].join("::");
       index.set(key, item);
     });
@@ -32,8 +32,8 @@ export function useMenuItemCartAdapter() {
       input.restaurantId,
       input.itemId,
       input.variantId ?? "",
-      input.selectionDetailsLabel ?? "",
-      (input.customizations ?? []).join("|"),
+      JSON.stringify(input.optionSelections ?? []),
+      JSON.stringify(input.customizations ?? []),
     ].join("::");
 
     return cartIndex.get(key);

@@ -13,61 +13,41 @@ import ItemRouteModal from "@/components/ItemRouteModal";
 import { useCart } from "@/stores/cartStore";
 import { resolveAddonMenuItems } from "@/lib/addonGroups";
 import { buildCartNutritionTotals } from "@/lib/cart/nutrition";
-import { parseOptionLabelCounts } from "@/lib/cartOptionLabels";
+import { getCustomizationLabels, getSelectionDetailsLabel } from "@/lib/cart/customizationLabels";
 import { getRestaurantData } from "@/lib/restaurants";
 
 function isIngredientCustomizationLabel(label: string) {
-  return /:\s*(Removed|(\d+)x|Remove|Extra)\s*$/i.test(label);
+  return /:\s*(Removed|(\d+)x|Remove|Extra|Light)\s*$/i.test(label);
 }
 
-function hasComboCustomization(customizations?: string[]) {
-  return (customizations ?? []).some((label) => /^(Combo Meal|Side:\s*|Drink:\s*)/i.test(label.trim()));
+function hasComboCustomization(item: CartItem) {
+  return (item.customizations ?? []).some((customization) => customization.kind === "combo");
 }
 
-function formatCartItemName(name: string, customizations?: string[]) {
-  if (!hasComboCustomization(customizations)) return name;
-  return /\bcombo\b/i.test(name) ? name : `${name} Combo`;
+function formatCartItemName(item: CartItem) {
+  if (!hasComboCustomization(item)) return item.name;
+  return /\bcombo\b/i.test(item.name) ? item.name : `${item.name} Combo`;
 }
 
-function summarizeItem(item: { selectionDetailsLabel?: string; customizations?: string[] }) {
-  const addonNames = new Set(Object.keys(parseOptionLabelCounts(item.selectionDetailsLabel)));
-  const dedupedCustomizations = (item.customizations ?? []).filter((label) => {
-    const normalized = label.replace(/^\+\s*/, "").trim();
-    return !addonNames.has(normalized);
-  });
+function summarizeItem(item: CartItem) {
+  const selectionDetailsLabel = getSelectionDetailsLabel(item.selection);
+  const customizationLabels = getCustomizationLabels(item.customizations);
 
   const ingredientCustomizations: string[] = [];
   const sideCustomizations: string[] = [];
   const drinkCustomizations: string[] = [];
   const otherCustomizations: string[] = [];
 
-  dedupedCustomizations.forEach((rawLabel) => {
+  customizationLabels.forEach((rawLabel) => {
     const label = rawLabel.trim();
     if (!label || /^Combo Meal$/i.test(label)) return;
-    if (/^Side:\s*/i.test(label)) {
-      sideCustomizations.push(label);
-      return;
-    }
-    if (/^Drink:\s*/i.test(label)) {
-      drinkCustomizations.push(label);
-      return;
-    }
-    if (isIngredientCustomizationLabel(label)) {
-      ingredientCustomizations.push(label);
-      return;
-    }
+    if (/^Side:\s*/i.test(label)) { sideCustomizations.push(label); return; }
+    if (/^Drink:\s*/i.test(label)) { drinkCustomizations.push(label); return; }
+    if (isIngredientCustomizationLabel(label)) { ingredientCustomizations.push(label); return; }
     otherCustomizations.push(label);
   });
 
-  const segments = [
-    ...ingredientCustomizations,
-    ...sideCustomizations,
-    ...drinkCustomizations,
-    ...otherCustomizations,
-    item.selectionDetailsLabel,
-  ].filter(Boolean);
-
-  return segments.join(" • ");
+  return [...ingredientCustomizations, ...sideCustomizations, ...drinkCustomizations, ...otherCustomizations, selectionDetailsLabel].filter(Boolean).join(" • ");
 }
 
 type EditState = {
@@ -130,7 +110,7 @@ export default function CartPage() {
             <ul className="grid gap-3">
               {items.map((cartItem) => {
                 const detailLine = summarizeItem(cartItem);
-                const displayItem = { ...cartItem, name: formatCartItemName(cartItem.name, cartItem.customizations) };
+                const displayItem = { ...cartItem, name: formatCartItemName(cartItem) };
                 const canCustomize = cartItem.selection.type !== "build-your-own";
                 return (
                   <li key={cartItem.id} className="rounded-2xl border border-black/10 bg-white p-3 shadow-sm">
@@ -179,7 +159,7 @@ export default function CartPage() {
                   <ul className="min-h-0 flex-1 space-y-2 overflow-y-auto max-h-[300px] bg-[#efefef] p-2 rounded-xl">
                     {items.map((item) => {
                       const detailLine = summarizeItem(item);
-                      const displayName = formatCartItemName(item.name, item.customizations);
+                      const displayName = formatCartItemName(item);
                       return (
                         <li key={`${item.id}-breakdown`} className="flex items-center gap-3 rounded-xl border border-black/10 bg-neutral-50 px-3 py-2">
                           <div className="h-11 w-11 shrink-0 overflow-hidden rounded-lg border border-black/10 bg-white">

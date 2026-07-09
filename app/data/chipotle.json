@@ -31,7 +31,11 @@
                         "sodium": 390,
                         "fiber": 7,
                         "sugars": 1
-                    }
+                    },
+                    "categories": [
+                        "Chips & Dips"
+                    ],
+                    "isDefault": true
                 },
                 {
                     "id": "large-chips",
@@ -48,7 +52,11 @@
                         "sodium": 590,
                         "fiber": 11,
                         "sugars": 2
-                    }
+                    },
+                    "categories": [
+                        "Chips & Dips"
+                    ],
+                    "isDefault": false
                 }
             ],
             "defaultVariantId": "chips",
@@ -80,7 +88,11 @@
                         "sodium": 370,
                         "fiber": 6,
                         "sugars": 1
-                    }
+                    },
+                    "categories": [
+                        "Single Sides"
+                    ],
+                    "isDefault": true
                 },
                 {
                     "id": "large-side-of-guacamole",
@@ -97,7 +109,11 @@
                         "sodium": 740,
                         "fiber": 12,
                         "sugars": 2
-                    }
+                    },
+                    "categories": [
+                        "Single Sides"
+                    ],
+                    "isDefault": false
                 }
             ],
             "defaultVariantId": "side-of-guacamole",
@@ -132,7 +148,11 @@
                         "sodium": 760,
                         "fiber": 13,
                         "sugars": 2
-                    }
+                    },
+                    "categories": [
+                        "Chips & Dips"
+                    ],
+                    "isDefault": true
                 },
                 {
                     "id": "large-chips-large-guacamole",
@@ -149,7 +169,11 @@
                         "sodium": 1330,
                         "fiber": 23,
                         "sugars": 4
-                    }
+                    },
+                    "categories": [
+                        "Chips & Dips"
+                    ],
+                    "isDefault": false
                 }
             ],
             "defaultVariantId": "chips-guacamole",
@@ -296,7 +320,11 @@
                         "sodium": 880,
                         "fiber": 7,
                         "sugars": 3
-                    }
+                    },
+                    "categories": [
+                        "Chips & Dips"
+                    ],
+                    "isDefault": true
                 },
                 {
                     "id": "large-chips-large-queso-blanco",
@@ -313,7 +341,11 @@
                         "sodium": 1570,
                         "fiber": 11,
                         "sugars": 7
-                    }
+                    },
+                    "categories": [
+                        "Chips & Dips"
+                    ],
+                    "isDefault": false
                 }
             ],
             "defaultVariantId": "chips-queso-blanco",
@@ -339,7 +371,11 @@
                         "protein": 2,
                         "carbs": 3,
                         "totalFat": 6
-                    }
+                    },
+                    "categories": [
+                        "Single Sides"
+                    ],
+                    "isDefault": true
                 },
                 {
                     "id": "large-side-of-cilantro-lime-sauce",
@@ -350,7 +386,11 @@
                         "protein": 8,
                         "carbs": 12,
                         "totalFat": 24
-                    }
+                    },
+                    "categories": [
+                        "Single Sides"
+                    ],
+                    "isDefault": false
                 }
             ],
             "defaultVariantId": "side-of-cilantro-lime-sauce",
@@ -377,7 +417,11 @@
                         "protein": 0,
                         "carbs": 4,
                         "totalFat": 0
-                    }
+                    },
+                    "categories": [
+                        "Single Sides"
+                    ],
+                    "isDefault": true
                 },
                 {
                     "id": "large-side-of-fresh-tomato-salsa",
@@ -386,7 +430,11 @@
                     "nutrition": {
                         "calories": 40
                     },
-                    "nutritionMultiplier": 1.6
+                    "nutritionMultiplier": 1.6,
+                    "categories": [
+                        "Single Sides"
+                    ],
+                    "isDefault": false
                 }
             ],
             "defaultVariantId": "side-of-fresh-tomato-salsa",
@@ -413,7 +461,11 @@
                         "protein": 0,
                         "carbs": 4,
                         "totalFat": 0
-                    }
+                    },
+                    "categories": [
+                        "Single Sides"
+                    ],
+                    "isDefault": true
                 },
                 {
                     "id": "large-side-of-tomatillo-red-chili-salsa",
@@ -422,7 +474,11 @@
                     "nutrition": {
                         "calories": 90
                     },
-                    "nutritionMultiplier": 3
+                    "nutritionMultiplier": 3,
+                    "categories": [
+                        "Single Sides"
+                    ],
+                    "isDefault": false
                 }
             ],
             "defaultVariantId": "side-of-tomatillo-red-chili-salsa",
@@ -449,7 +505,11 @@
                         "protein": 0,
                         "carbs": 4,
                         "totalFat": 0
-                    }
+                    },
+                    "categories": [
+                        "Single Sides"
+                    ],
+                    "isDefault": true
                 },
                 {
                     "id": "large-side-of-tomatillo-green-chili-salsa",
@@ -458,7 +518,11 @@
                     "nutrition": {
                         "calories": 45
                     },
-                    "nutritionMultiplier": 3
+                    "nutritionMultiplier": 3,
+                    "categories": [
+                        "Single Sides"
+                    ],
+                    "isDefault": false
                 }
             ],
             "defaultVariantId": "side-of-tomatillo-green-chili-salsa",
@@ -485,7 +549,11 @@
                         "protein": 3,
                         "carbs": 16,
                         "totalFat": 1.5
-                    }
+                    },
+                    "categories": [
+                        "Single Sides"
+                    ],
+                    "isDefault": true
                 },
                 {
                     "id": "large-side-of-roasted-chili-corn-salsa",
@@ -494,7 +562,11 @@
                     "nutrition": {
                         "calories": 120
                     },
-                    "nutritionMultiplier": 1.5
+                    "nutritionMultiplier": 1.5,
+                    "categories": [
+                        "Single Sides"
+                    ],
+                    "isDefault": false
                 }
             ],
             "defaultVariantId": "side-of-roasted-chili-corn-salsa",
@@ -527,7 +599,11 @@
                         "sodium": 490,
                         "fiber": 0,
                         "sugars": 2
-                    }
+                    },
+                    "categories": [
+                        "Single Sides"
+                    ],
+                    "isDefault": true
                 },
                 {
                     "id": "large-side-of-queso-blanco",
@@ -544,7 +620,11 @@
                         "sodium": 980,
                         "fiber": 0,
                         "sugars": 5
-                    }
+                    },
+                    "categories": [
+                        "Single Sides"
+                    ],
+                    "isDefault": false
                 }
             ],
             "defaultVariantId": "side-of-queso-blanco",
@@ -1074,7 +1154,11 @@
                         "fiber": 0,
                         "sugars": 85,
                         "caloriesFromFat": 0
-                    }
+                    },
+                    "categories": [
+                        "Fountain Drinks"
+                    ],
+                    "isDefault": true
                 },
                 {
                     "id": "barqs-root-beer-fountain-32-fl-oz",
@@ -1092,7 +1176,11 @@
                         "fiber": 0,
                         "sugars": 120,
                         "caloriesFromFat": 0
-                    }
+                    },
+                    "categories": [
+                        "Fountain Drinks"
+                    ],
+                    "isDefault": false
                 }
             ],
             "defaultVariantId": "barqs-root-beer-fountain-22-fl-oz",
@@ -1124,7 +1212,11 @@
                         "fiber": 0,
                         "sugars": 70,
                         "caloriesFromFat": 0
-                    }
+                    },
+                    "categories": [
+                        "Fountain Drinks"
+                    ],
+                    "isDefault": true
                 },
                 {
                     "id": "coca-cola-classic-fountain-32-fl-oz",
@@ -1142,7 +1234,11 @@
                         "fiber": 0,
                         "sugars": 105,
                         "caloriesFromFat": 0
-                    }
+                    },
+                    "categories": [
+                        "Fountain Drinks"
+                    ],
+                    "isDefault": false
                 }
             ],
             "defaultVariantId": "coca-cola-classic-fountain-22-fl-oz",
@@ -1174,7 +1270,11 @@
                         "fiber": 0,
                         "sugars": 44,
                         "caloriesFromFat": 0
-                    }
+                    },
+                    "categories": [
+                        "Fountain Drinks"
+                    ],
+                    "isDefault": true
                 },
                 {
                     "id": "coca-cola-life-fountain-32-fl-oz",
@@ -1192,7 +1292,11 @@
                         "fiber": 0,
                         "sugars": 64,
                         "caloriesFromFat": 0
-                    }
+                    },
+                    "categories": [
+                        "Fountain Drinks"
+                    ],
+                    "isDefault": false
                 }
             ],
             "defaultVariantId": "coca-cola-life-fountain-22-fl-oz",
@@ -1224,7 +1328,11 @@
                         "fiber": 0,
                         "sugars": 0,
                         "caloriesFromFat": 0
-                    }
+                    },
+                    "categories": [
+                        "Fountain Drinks"
+                    ],
+                    "isDefault": true
                 },
                 {
                     "id": "coca-cola-zero-fountain-32-fl-oz",
@@ -1242,7 +1350,11 @@
                         "fiber": 0,
                         "sugars": 0,
                         "caloriesFromFat": 0
-                    }
+                    },
+                    "categories": [
+                        "Fountain Drinks"
+                    ],
+                    "isDefault": false
                 }
             ],
             "defaultVariantId": "coca-cola-zero-fountain-22-fl-oz",
@@ -1274,7 +1386,11 @@
                         "fiber": 0,
                         "sugars": 0,
                         "caloriesFromFat": 0
-                    }
+                    },
+                    "categories": [
+                        "Fountain Drinks"
+                    ],
+                    "isDefault": true
                 },
                 {
                     "id": "diet-coke-fountain-32-fl-oz",
@@ -1292,7 +1408,11 @@
                         "fiber": 0,
                         "sugars": 0,
                         "caloriesFromFat": 0
-                    }
+                    },
+                    "categories": [
+                        "Fountain Drinks"
+                    ],
+                    "isDefault": false
                 }
             ],
             "defaultVariantId": "diet-coke-fountain-22-fl-oz",
@@ -1324,7 +1444,11 @@
                         "fiber": 0,
                         "sugars": 0,
                         "caloriesFromFat": 0
-                    }
+                    },
+                    "categories": [
+                        "Fountain Drinks"
+                    ],
+                    "isDefault": true
                 },
                 {
                     "id": "diet-coke-caffeine-free-fountain-32-fl-oz",
@@ -1342,7 +1466,11 @@
                         "fiber": 0,
                         "sugars": 0,
                         "caloriesFromFat": 0
-                    }
+                    },
+                    "categories": [
+                        "Fountain Drinks"
+                    ],
+                    "isDefault": false
                 }
             ],
             "defaultVariantId": "diet-coke-caffeine-free-fountain-22-fl-oz",
@@ -1374,7 +1502,11 @@
                         "fiber": 0,
                         "sugars": 70,
                         "caloriesFromFat": 0
-                    }
+                    },
+                    "categories": [
+                        "Fountain Drinks"
+                    ],
+                    "isDefault": true
                 },
                 {
                     "id": "pibb-xtra-fountain-32-fl-oz",
@@ -1392,7 +1524,11 @@
                         "fiber": 0,
                         "sugars": 105,
                         "caloriesFromFat": 0
-                    }
+                    },
+                    "categories": [
+                        "Fountain Drinks"
+                    ],
+                    "isDefault": false
                 }
             ],
             "defaultVariantId": "pibb-xtra-fountain-22-fl-oz",
@@ -1424,7 +1560,11 @@
                         "fiber": 0,
                         "sugars": 70,
                         "caloriesFromFat": 0
-                    }
+                    },
+                    "categories": [
+                        "Fountain Drinks"
+                    ],
+                    "isDefault": true
                 },
                 {
                     "id": "sprite-fountain-32-fl-oz",
@@ -1442,7 +1582,11 @@
                         "fiber": 0,
                         "sugars": 105,
                         "caloriesFromFat": 0
-                    }
+                    },
+                    "categories": [
+                        "Fountain Drinks"
+                    ],
+                    "isDefault": false
                 }
             ],
             "defaultVariantId": "sprite-fountain-22-fl-oz",
@@ -1474,7 +1618,11 @@
                         "fiber": 0,
                         "sugars": 80,
                         "caloriesFromFat": 0
-                    }
+                    },
+                    "categories": [
+                        "Fountain Drinks"
+                    ],
+                    "isDefault": true
                 },
                 {
                     "id": "fanta-orange-fountain-32-fl-oz",
@@ -1492,7 +1640,11 @@
                         "fiber": 0,
                         "sugars": 120,
                         "caloriesFromFat": 0
-                    }
+                    },
+                    "categories": [
+                        "Fountain Drinks"
+                    ],
+                    "isDefault": false
                 }
             ],
             "defaultVariantId": "fanta-orange-fountain-22-fl-oz",
@@ -1524,7 +1676,11 @@
                         "fiber": 0,
                         "sugars": 75,
                         "caloriesFromFat": 0
-                    }
+                    },
+                    "categories": [
+                        "Fountain Drinks"
+                    ],
+                    "isDefault": true
                 },
                 {
                     "id": "minute-maid-lemonade-fountain-32-fl-oz",
@@ -1542,7 +1698,11 @@
                         "fiber": 0,
                         "sugars": 110,
                         "caloriesFromFat": 0
-                    }
+                    },
+                    "categories": [
+                        "Fountain Drinks"
+                    ],
+                    "isDefault": false
                 }
             ],
             "defaultVariantId": "minute-maid-lemonade-fountain-22-fl-oz",
@@ -1574,7 +1734,11 @@
                         "fiber": 0,
                         "sugars": 75,
                         "caloriesFromFat": 0
-                    }
+                    },
+                    "categories": [
+                        "Fountain Drinks"
+                    ],
+                    "isDefault": true
                 },
                 {
                     "id": "powerade-mountain-berry-blast-fountain-32-fl-oz",
@@ -1592,7 +1756,11 @@
                         "fiber": 0,
                         "sugars": 110,
                         "caloriesFromFat": 0
-                    }
+                    },
+                    "categories": [
+                        "Fountain Drinks"
+                    ],
+                    "isDefault": false
                 }
             ],
             "defaultVariantId": "powerade-mountain-berry-blast-fountain-22-fl-oz",
@@ -1624,7 +1792,11 @@
                         "fiber": 0,
                         "sugars": 100,
                         "caloriesFromFat": 0
-                    }
+                    },
+                    "categories": [
+                        "Fountain Drinks"
+                    ],
+                    "isDefault": true
                 },
                 {
                     "id": "mello-yello-fountain-32-fl-oz",
@@ -1642,7 +1814,11 @@
                         "fiber": 0,
                         "sugars": 140,
                         "caloriesFromFat": 0
-                    }
+                    },
+                    "categories": [
+                        "Fountain Drinks"
+                    ],
+                    "isDefault": false
                 }
             ],
             "defaultVariantId": "mello-yello-fountain-22-fl-oz",
@@ -1674,7 +1850,11 @@
                         "fiber": 0,
                         "sugars": 74,
                         "caloriesFromFat": 0
-                    }
+                    },
+                    "categories": [
+                        "Fountain Drinks"
+                    ],
+                    "isDefault": true
                 },
                 {
                     "id": "lemonade-blue-sky-fountain-32-fl-oz",
@@ -1692,7 +1872,11 @@
                         "fiber": 0,
                         "sugars": 108,
                         "caloriesFromFat": 0
-                    }
+                    },
+                    "categories": [
+                        "Fountain Drinks"
+                    ],
+                    "isDefault": false
                 }
             ],
             "defaultVariantId": "lemonade-blue-sky-fountain-22-fl-oz",
@@ -1724,7 +1908,11 @@
                         "fiber": 0,
                         "sugars": 74,
                         "caloriesFromFat": 0
-                    }
+                    },
+                    "categories": [
+                        "Fountain Drinks"
+                    ],
+                    "isDefault": true
                 },
                 {
                     "id": "mango-orange-blue-sky-fountain-32-fl-oz",
@@ -1742,7 +1930,11 @@
                         "fiber": 0,
                         "sugars": 108,
                         "caloriesFromFat": 0
-                    }
+                    },
+                    "categories": [
+                        "Fountain Drinks"
+                    ],
+                    "isDefault": false
                 }
             ],
             "defaultVariantId": "mango-orange-blue-sky-fountain-22-fl-oz",
@@ -1774,7 +1966,11 @@
                         "fiber": 0,
                         "sugars": 62,
                         "caloriesFromFat": 0
-                    }
+                    },
+                    "categories": [
+                        "Fountain Drinks"
+                    ],
+                    "isDefault": true
                 },
                 {
                     "id": "maine-root-root-beer-fountain-32-fl-oz",
@@ -1792,7 +1988,11 @@
                         "fiber": 0,
                         "sugars": 90,
                         "caloriesFromFat": 0
-                    }
+                    },
+                    "categories": [
+                        "Fountain Drinks"
+                    ],
+                    "isDefault": false
                 }
             ],
             "defaultVariantId": "maine-root-root-beer-fountain-22-fl-oz",
@@ -1824,7 +2024,11 @@
                         "fiber": 0,
                         "sugars": 0,
                         "caloriesFromFat": 0
-                    }
+                    },
+                    "categories": [
+                        "Fountain Drinks"
+                    ],
+                    "isDefault": true
                 },
                 {
                     "id": "chipotle-iced-tea-fountain-32-fl-oz",
@@ -1842,7 +2046,11 @@
                         "fiber": 0,
                         "sugars": 0,
                         "caloriesFromFat": 0
-                    }
+                    },
+                    "categories": [
+                        "Fountain Drinks"
+                    ],
+                    "isDefault": false
                 }
             ],
             "defaultVariantId": "chipotle-iced-tea-fountain-22-fl-oz",
@@ -1874,7 +2082,11 @@
                         "fiber": 0,
                         "sugars": 45,
                         "caloriesFromFat": 0
-                    }
+                    },
+                    "categories": [
+                        "Fountain Drinks"
+                    ],
+                    "isDefault": true
                 },
                 {
                     "id": "chipotle-sweet-iced-tea-fountain-32-fl-oz",
@@ -1892,7 +2104,11 @@
                         "fiber": 0,
                         "sugars": 65,
                         "caloriesFromFat": 0
-                    }
+                    },
+                    "categories": [
+                        "Fountain Drinks"
+                    ],
+                    "isDefault": false
                 }
             ],
             "defaultVariantId": "chipotle-sweet-iced-tea-fountain-22-fl-oz",
@@ -1923,7 +2139,11 @@
                         "sodium": 5,
                         "fiber": 0,
                         "sugars": 50
-                    }
+                    },
+                    "categories": [
+                        "Tractor Beverages"
+                    ],
+                    "isDefault": true
                 },
                 {
                     "id": "organic-watermelon-limeade-32-fl-oz",
@@ -1940,7 +2160,11 @@
                         "sodium": 10,
                         "fiber": 0,
                         "sugars": 72
-                    }
+                    },
+                    "categories": [
+                        "Tractor Beverages"
+                    ],
+                    "isDefault": false
                 }
             ],
             "defaultVariantId": "organic-watermelon-limeade-22-fl-oz",
@@ -1971,7 +2195,11 @@
                         "sodium": 10,
                         "fiber": 0,
                         "sugars": 37
-                    }
+                    },
+                    "categories": [
+                        "Tractor Beverages"
+                    ],
+                    "isDefault": true
                 },
                 {
                     "id": "organic-lemonade-32-fl-oz",
@@ -1988,7 +2216,11 @@
                         "sodium": 15,
                         "fiber": 0,
                         "sugars": 53
-                    }
+                    },
+                    "categories": [
+                        "Tractor Beverages"
+                    ],
+                    "isDefault": false
                 }
             ],
             "defaultVariantId": "organic-lemonade-22-fl-oz",
@@ -2019,7 +2251,11 @@
                         "sodium": 0,
                         "fiber": 0,
                         "sugars": 47
-                    }
+                    },
+                    "categories": [
+                        "Tractor Beverages"
+                    ],
+                    "isDefault": true
                 },
                 {
                     "id": "organic-mandarin-agua-fresca-32-fl-oz",
@@ -2036,7 +2272,11 @@
                         "sodium": 5,
                         "fiber": 0,
                         "sugars": 69
-                    }
+                    },
+                    "categories": [
+                        "Tractor Beverages"
+                    ],
+                    "isDefault": false
                 }
             ],
             "defaultVariantId": "organic-mandarin-agua-fresca-22-fl-oz",
@@ -2067,7 +2307,11 @@
                         "sodium": 10,
                         "fiber": 0,
                         "sugars": 49
-                    }
+                    },
+                    "categories": [
+                        "Tractor Beverages"
+                    ],
+                    "isDefault": true
                 },
                 {
                     "id": "organic-berry-agua-fresca-32-fl-oz",
@@ -2084,7 +2328,11 @@
                         "sodium": 15,
                         "fiber": 0,
                         "sugars": 72
-                    }
+                    },
+                    "categories": [
+                        "Tractor Beverages"
+                    ],
+                    "isDefault": false
                 }
             ],
             "defaultVariantId": "organic-berry-agua-fresca-22-fl-oz",

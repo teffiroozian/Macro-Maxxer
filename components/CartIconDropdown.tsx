@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useCart } from "@/stores/cartStore";
+import { getSelectionDetailsLabel } from "@/lib/cart/customizationLabels";
 import { useOptionalRestaurantUi } from "@/components/RestaurantUiContext";
 import MacroTotalsGrid from "@/components/MacroTotalsGrid";
 import CartItemPreviewRow from "@/components/CartItemPreviewRow";
@@ -90,7 +91,7 @@ export default function CartIconDropdown({
     </>
   );
 
-  const addonsLabel = lastAddedItem?.selectionDetailsLabel ?? "";
+  const addonsLabel = lastAddedItem ? (getSelectionDetailsLabel(lastAddedItem.selection) ?? "") : "";
   const handleOpenCart = () => {
     if (restaurantUi) {
       restaurantUi.openCart();

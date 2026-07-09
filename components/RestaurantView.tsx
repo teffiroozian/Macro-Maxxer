@@ -108,6 +108,7 @@ import {
     getSearchTerms,
     type RankedAllFilterKey,
 } from "@/lib/menuSections/filtering";
+import { customizationsFromLabels } from "@/lib/cart/customizationLabels";
 
 const CATEGORY_ICONS: Record<string, LucideIcon> = {
     sandwiches: Sandwich,
@@ -1881,7 +1882,7 @@ export default function RestaurantView({
                     ? editingCartItem.name
                     : buildName,
             image: editingCartItem?.image ?? selectedBuildImageSrc,
-            customizations: nextCustomizations,
+            customizations: customizationsFromLabels(nextCustomizations),
             quantity: 1,
             macrosPerItem: adjustedSelectedIngredientTotals,
             nutritionPerItem: {
@@ -1901,7 +1902,6 @@ export default function RestaurantView({
                 buildConfiguration: toUniversalChipotleBuildConfiguration(
                     nextBuildConfiguration,
                 ),
-                customizations: nextCustomizations,
             },
         };
 
