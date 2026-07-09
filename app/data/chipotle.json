@@ -386,8 +386,14 @@
                     "nutrition": {
                         "calories": 40,
                         "protein": 0,
-                        "carbs": 0,
-                        "totalFat": 0
+                        "carbs": 6,
+                        "totalFat": 0,
+                        "satFat": 0,
+                        "transFat": 0,
+                        "cholesterol": 0,
+                        "sodium": 825,
+                        "fiber": 1.5,
+                        "sugars": 1.5
                     }
                 }
             ],
@@ -424,8 +430,14 @@
                     "nutrition": {
                         "calories": 90,
                         "protein": 0,
-                        "carbs": 0,
-                        "totalFat": 0
+                        "carbs": 12,
+                        "totalFat": 0,
+                        "satFat": 0,
+                        "transFat": 0,
+                        "cholesterol": 0,
+                        "sodium": 1500,
+                        "fiber": 3,
+                        "sugars": 0
                     }
                 }
             ],
@@ -462,8 +474,14 @@
                     "nutrition": {
                         "calories": 45,
                         "protein": 0,
-                        "carbs": 0,
-                        "totalFat": 0
+                        "carbs": 12,
+                        "totalFat": 0,
+                        "satFat": 0,
+                        "transFat": 0,
+                        "cholesterol": 0,
+                        "sodium": 780,
+                        "fiber": 0,
+                        "sugars": 6
                     }
                 }
             ],
@@ -499,9 +517,15 @@
                     "servingType": "side",
                     "nutrition": {
                         "calories": 120,
-                        "protein": 0,
-                        "carbs": 0,
-                        "totalFat": 0
+                        "protein": 4.5,
+                        "carbs": 24,
+                        "totalFat": 2.25,
+                        "satFat": 0,
+                        "transFat": 0,
+                        "cholesterol": 0,
+                        "sodium": 495,
+                        "fiber": 4.5,
+                        "sugars": 6
                     }
                 }
             ],
