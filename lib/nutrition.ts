@@ -139,7 +139,6 @@ export function getDefaultMenuItemNutrition(item: MenuItem): Nutrition {
     (item.defaultVariantId
       ? variants.find((variant) => variant.id === item.defaultVariantId)
       : undefined) ??
-    variants.find((variant) => variant.isDefault) ??
     variants[0];
 
   return resolveMenuItemVariantNutrition(item, defaultVariant);

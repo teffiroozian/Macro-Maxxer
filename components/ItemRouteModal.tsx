@@ -97,8 +97,7 @@ export default function ItemRouteModal({
     if (item.defaultVariantId && variants.some((variant) => variant.id === item.defaultVariantId)) {
       return item.defaultVariantId;
     }
-    const flaggedDefault = variants.find((variant) => variant.isDefault);
-    return flaggedDefault?.id ?? variants[0]?.id ?? "";
+    return variants[0]?.id ?? "";
   }, [item.defaultVariantId, variants]);
   const { addItem, updateItem, items } = useCart();
   const editingCartItem = useMemo(() => {
