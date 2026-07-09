@@ -1,6 +1,6 @@
 import {
-  CATEGORY_PRIORITY_GROUPS,
-  INGREDIENT_CATEGORY_PRIORITY_GROUPS,
+  INGREDIENT_SECTION_ORDER,
+  MENU_SECTION_ORDER,
 } from "@/app/data/menuCategoryConfig";
 import type { MenuItem } from "@/types/menu";
 import { getDefaultMenuItemNutrition } from "@/lib/nutrition";
@@ -43,57 +43,33 @@ export function categorySectionId(category: string) {
   return `menu-section-${normalizeCategory(category).replace(/[^a-z0-9]+/g, "-")}`;
 }
 
-function buildCategoryPriorityLookup(
-  categoryGroups: ReadonlyArray<{ aliases: readonly string[] }>
-) {
+function buildSectionPriorityLookup(sectionOrder: readonly string[]) {
   return new Map(
-    categoryGroups.flatMap((group, index) =>
-      group.aliases.map((alias) => [normalizeCategory(alias), index] as const)
-    )
+    sectionOrder.map((section, index) => [normalizeCategory(section), index] as const)
   );
 }
 
-function buildCategoryLabelLookup(
-  categoryGroups: ReadonlyArray<{ label: string; aliases: readonly string[] }>
-) {
-  return new Map(
-    categoryGroups.flatMap((group) =>
-      group.aliases.map((alias) => [normalizeCategory(alias), group.label] as const)
-    )
-  );
-}
-
-const menuCategoryPriorityLookup = buildCategoryPriorityLookup(
-  CATEGORY_PRIORITY_GROUPS
-);
-const ingredientCategoryPriorityLookup = buildCategoryPriorityLookup(
-  INGREDIENT_CATEGORY_PRIORITY_GROUPS
-);
-
-const menuCategoryLabelLookup = buildCategoryLabelLookup(CATEGORY_PRIORITY_GROUPS);
-const ingredientCategoryLabelLookup = buildCategoryLabelLookup(
-  INGREDIENT_CATEGORY_PRIORITY_GROUPS
+const menuSectionPriorityLookup = buildSectionPriorityLookup(MENU_SECTION_ORDER);
+const ingredientSectionPriorityLookup = buildSectionPriorityLookup(
+  INGREDIENT_SECTION_ORDER
 );
 
 function categoryPriority(category: string, mode: CategoryMode) {
   const lookup =
     mode === "ingredients"
-      ? ingredientCategoryPriorityLookup
-      : menuCategoryPriorityLookup;
+      ? ingredientSectionPriorityLookup
+      : menuSectionPriorityLookup;
   return lookup.get(category) ?? Number.POSITIVE_INFINITY;
-}
-
-function categoryHeading(category: string, mode: CategoryMode) {
-  const lookup =
-    mode === "ingredients" ? ingredientCategoryLabelLookup : menuCategoryLabelLookup;
-  return lookup.get(category) ?? titleCase(category);
 }
 
 function titleCase(text: string) {
   return text
-    .split(" ")
-    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-    .join(" ");
+    .split(/([\s&-]+)/)
+    .map((part) => {
+      if (/^[\s&-]+$/.test(part)) return part;
+      return part.charAt(0).toUpperCase() + part.slice(1);
+    })
+    .join("");
 }
 
 function proteinScore(item: MenuItem) {
@@ -211,6 +187,6 @@ export function getOrderedMenuSections(
   });
 }
 
-export function getCategoryLabel(category: string, mode: CategoryMode = "menu") {
-  return categoryHeading(category, mode);
+export function getCategoryLabel(category: string, _mode: CategoryMode = "menu") {
+  return titleCase(normalizeCategory(category));
 }

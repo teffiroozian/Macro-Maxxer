@@ -45,7 +45,7 @@ export function resolveJustItemLabel(item: MenuItem) {
   if (categories.some((category) => category.includes("sandwich"))) return "Sandwich Only";
   if (categories.some((category) => category.includes("salad"))) return "Salad Only";
   if (categories.some((category) => category.includes("wrap"))) return "Wrap Only";
-  if (categories.some((category) => category.includes("nugget") || category.includes("chicken"))) return "Chicken Only";
+  if (categories.some((category) => category.includes("chicken"))) return "Chicken Only";
   if (categories.some((category) => category.includes("breakfast"))) return "Breakfast Only";
   return "Item Only";
 }
@@ -55,7 +55,7 @@ export function resolveJustItemIcon(item: MenuItem) {
   if (categories.some((category) => category.includes("sandwich"))) return Sandwich;
   if (categories.some((category) => category.includes("salad"))) return Salad;
   if (categories.some((category) => category.includes("wrap"))) return Shell;
-  if (categories.some((category) => category.includes("nugget") || category.includes("chicken"))) return Drumstick;
+  if (categories.some((category) => category.includes("chicken"))) return Drumstick;
   if (categories.some((category) => category.includes("breakfast"))) return EggFried;
   return Sandwich;
 }
