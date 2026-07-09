@@ -244,7 +244,6 @@ export default function ItemDetailsPanel({
       ref,
       title: group.label,
       addons: sortByCalories(group.items),
-      maxSelections: group.maxSelections,
       maxPerItem: group.maxPerItem,
     }];
   });

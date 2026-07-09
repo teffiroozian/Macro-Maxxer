@@ -68,7 +68,7 @@ export function formatMultiplierLabel(multiplier: number) {
   return `${multiplier.toFixed(1)}x`;
 }
 
-export function getNutritionMultiplier(
+export function getportionMultiplier(
   baseNutrition: MenuItem["nutrition"],
   nextNutrition: MenuItem["nutrition"]
 ) {

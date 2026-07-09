@@ -10,19 +10,17 @@ export type ItemVariant = {
   label: string;
   image?: string;
   nutrition: Nutrition;
-
   categories: string[];
   servingType?: ServingType;
-
+  // which variant should show as the default option in the menu
   isDefault: boolean;
 };
 
-// group of menu-item IDs that can be added to a menu item
+// group of extra items that can be added to a menu item
 // e.g. dipping sauces, dressings
 export type AddonGroup = {
   label: string;
   itemIds: string[];
-  maxSelections?: number;
   maxPerItem?: number;
 };
 

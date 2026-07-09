@@ -1,6 +1,7 @@
 import type { RestaurantBuilderConfig } from "@/types/builder";
 import type { IngredientItem, MenuItem, RestaurantAddonGroups, RestaurantCustomizationRules } from "@/types/menu";
 
+// restaurant overall info
 export type RestaurantIndexEntry = {
   id: string;
   name: string;
@@ -11,6 +12,7 @@ export type RestaurantIndexEntry = {
   isComingSoon?: boolean;
 };
 
+// entire menu file for a restaurant
 export type RestaurantData = RestaurantIndexEntry & {
   hasBuildYourOwn: boolean;
   items: MenuItem[];
