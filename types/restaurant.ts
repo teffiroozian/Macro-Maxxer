@@ -12,10 +12,7 @@ export type RestaurantIndexEntry = {
   isComingSoon?: boolean;
 };
 
-// menu content owned by individual restaurant JSON files; identity/metadata live in app/data/index.json.
-export type RestaurantMenuContent = RestaurantMenu;
-
-// entire menu file for a restaurant, merged with index.json identity/metadata.
+// entire menu file for a restaurant
 export type RestaurantData = RestaurantIndexEntry & {
   hasBuildYourOwn: boolean;
   items: MenuItem[];

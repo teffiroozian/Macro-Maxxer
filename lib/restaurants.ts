@@ -2,7 +2,7 @@
 
 import restaurants from "@/app/data/index.json";
 import type { MenuItem } from "@/types/menu";
-import type { RestaurantData, RestaurantIndexEntry, RestaurantMenuContent } from "@/types/restaurant";
+import type { RestaurantData, RestaurantIndexEntry } from "@/types/restaurant";
 
 // gives restaurant data the RestaurantIndexEntry shape
 const restaurantIndex = restaurants as RestaurantIndexEntry[];
@@ -32,9 +32,11 @@ export async function getRestaurantData(id: string): Promise<RestaurantData | nu
   const restaurant = restaurantIndex.find((entry) => entry.id === id);
   if (!restaurant) return null;
 
-  // dynamically loads the one it needs based on the selected restaurant
+  // dynamically loads the menu content for the selected restaurant.
+  // app/data/index.json owns restaurant identity/metadata; individual menu JSON files own menu content only.
+  // The loader merges both sources into the full RestaurantData object consumed by the app.
   const menuModule = await import(`@/app/data/${restaurant.menuFile}`);
-  const menu = menuModule.default as RestaurantMenuContent;
+  const menu = menuModule.default;
 
   // pulling important pieces out of the menu
   const items = menu.items ?? [];
