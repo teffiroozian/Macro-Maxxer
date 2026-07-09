@@ -50,6 +50,7 @@ import { resolvePrimaryCategory } from "@/lib/ingredientTabs";
 import type { ChipotleBuildConfiguration } from "@/lib/restaurantBuilders/chipotle";
 import { fromUniversalChipotleBuildConfiguration, toUniversalChipotleBuildConfiguration } from "@/lib/restaurantBuilders/chipotle/cartAdapter";
 import { SORT_OPTION_VALUES } from "@/lib/menuSections/sortOptions";
+import { resolveMenuItemVariantNutrition } from "@/lib/nutrition";
 
 const emptyAddon: MenuItem = {
   id: "none",
@@ -159,7 +160,7 @@ export default function ItemRouteModal({
   );
   const selectedVariant = variants?.find((variant) => variant.id === selectedVariantId);
   const selectedItemImage = selectedVariant?.image ?? item.image;
-  const baseNutrition = selectedVariant?.nutrition ?? item.nutrition;
+  const baseNutrition = resolveMenuItemVariantNutrition(item, selectedVariant);
   const resolvedIngredients = useMemo(
     () => resolvePanelIngredients(item, ingredients, addons, menuItems ?? [], variants, selectedVariantId, customizationRules),
     [addons, customizationRules, ingredients, item, menuItems, selectedVariantId, variants]

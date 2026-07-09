@@ -57,7 +57,7 @@
         {
             "id": "side-of-guacamole",
             "name": "Side of Guacamole",
-            "image": "/restaurants/chipotle/ingredients/toppings/gaucamole.png",
+            "image": "/restaurants/chipotle/ingredients/toppings/guacamole.png",
             "categories": [
                 "Single Sides"
             ],
@@ -384,17 +384,9 @@
                     "label": "Large",
                     "servingType": "side",
                     "nutrition": {
-                        "calories": 40,
-                        "protein": 0,
-                        "carbs": 6,
-                        "totalFat": 0,
-                        "satFat": 0,
-                        "transFat": 0,
-                        "cholesterol": 0,
-                        "sodium": 825,
-                        "fiber": 1.5,
-                        "sugars": 1.5
-                    }
+                        "calories": 40
+                    },
+                    "nutritionMultiplier": 1.6
                 }
             ],
             "defaultVariantId": "side-of-fresh-tomato-salsa",
@@ -428,17 +420,9 @@
                     "label": "Large",
                     "servingType": "side",
                     "nutrition": {
-                        "calories": 90,
-                        "protein": 0,
-                        "carbs": 12,
-                        "totalFat": 0,
-                        "satFat": 0,
-                        "transFat": 0,
-                        "cholesterol": 0,
-                        "sodium": 1500,
-                        "fiber": 3,
-                        "sugars": 0
-                    }
+                        "calories": 90
+                    },
+                    "nutritionMultiplier": 3
                 }
             ],
             "defaultVariantId": "side-of-tomatillo-red-chili-salsa",
@@ -472,17 +456,9 @@
                     "label": "Large",
                     "servingType": "side",
                     "nutrition": {
-                        "calories": 45,
-                        "protein": 0,
-                        "carbs": 12,
-                        "totalFat": 0,
-                        "satFat": 0,
-                        "transFat": 0,
-                        "cholesterol": 0,
-                        "sodium": 780,
-                        "fiber": 0,
-                        "sugars": 6
-                    }
+                        "calories": 45
+                    },
+                    "nutritionMultiplier": 3
                 }
             ],
             "defaultVariantId": "side-of-tomatillo-green-chili-salsa",
@@ -516,17 +492,9 @@
                     "label": "Large",
                     "servingType": "side",
                     "nutrition": {
-                        "calories": 120,
-                        "protein": 4.5,
-                        "carbs": 24,
-                        "totalFat": 2.25,
-                        "satFat": 0,
-                        "transFat": 0,
-                        "cholesterol": 0,
-                        "sodium": 495,
-                        "fiber": 4.5,
-                        "sugars": 6
-                    }
+                        "calories": 120
+                    },
+                    "nutritionMultiplier": 1.5
                 }
             ],
             "defaultVariantId": "side-of-roasted-chili-corn-salsa",
@@ -2312,7 +2280,7 @@
         {
             "id": "guacamole",
             "name": "Guacamole",
-            "image": "/restaurants/chipotle/ingredients/toppings/gaucamole.png",
+            "image": "/restaurants/chipotle/ingredients/toppings/guacamole.png",
             "categories": [
                 "Toppings"
             ],
