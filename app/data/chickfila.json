@@ -91,7 +91,7 @@
             "name": "Chick-fil-A\u00ae Nuggets",
             "image": "/restaurants/chickfila/menu/chicken/crispy-nuggets.webp",
             "categories": [
-                "Nuggets"
+                "chicken"
             ],
             "servingType": "single",
             "nutrition": {
@@ -111,7 +111,7 @@
                     "id": "5pc",
                     "label": "5 ct",
                     "categories": [
-                        "Nuggets",
+                        "chicken",
                         "Kids"
                     ],
                     "servingType": "kids",
@@ -277,7 +277,7 @@
             "name": "Chick-fil-A Chick-n-Strips\u00ae",
             "image": "/restaurants/chickfila/menu/chicken/chicken-strips.webp",
             "categories": [
-                "Nuggets"
+                "chicken"
             ],
             "servingType": "single",
             "nutrition": {
@@ -297,7 +297,7 @@
                     "id": "2pc",
                     "label": "2 ct",
                     "categories": [
-                        "Nuggets",
+                        "chicken",
                         "Kids"
                     ],
                     "servingType": "kids",
@@ -437,7 +437,7 @@
             "name": "Grilled Nuggets",
             "image": "/restaurants/chickfila/menu/chicken/grilled-nuggets.webp",
             "categories": [
-                "Nuggets"
+                "chicken"
             ],
             "servingType": "single",
             "nutrition": {
@@ -451,7 +451,7 @@
                     "id": "5pc",
                     "label": "5 ct",
                     "categories": [
-                        "Nuggets",
+                        "chicken",
                         "Kids"
                     ],
                     "servingType": "kids",

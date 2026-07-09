@@ -342,7 +342,7 @@ export default function MenuItemCard({
 
   const isComboEligibleCategory = useMemo(() => {
     if (restaurantId !== "chickfila") return false;
-    const allowed = new Set(["sandwich", "nuggets", "chicken", "salad", "wrap", "breakfast"]);
+    const allowed = new Set(["sandwich", "chicken", "salad", "wrap", "breakfast"]);
     return item.categories.some((category) => allowed.has(normalizeCategory(category)));
   }, [item.categories, restaurantId]);
   const comboSides = useMemo(
