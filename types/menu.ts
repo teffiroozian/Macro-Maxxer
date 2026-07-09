@@ -69,6 +69,26 @@ export type RestaurantCustomizationRules = {
   ingredientCategories?: Record<string, IngredientCategoryRule>;
 };
 
+// Formal combo meal configuration for menu data.
+// Existing combo meals are still inferred from eligible entree categories plus selected side/drink customizations.
+// This optional shape documents a standalone combo relationship that data can adopt incrementally.
+export type ComboMealConfig = {
+  // entree/base item that anchors the combo, when the combo is stored as its own menu item
+  entreeItemId?: string;
+  // fixed item ids included in the combo in addition to the entree
+  includedItemIds?: string[];
+  // selectable side item ids
+  sideOptions?: string[];
+  // selectable drink item ids
+  drinkOptions?: string[];
+  // default selected side item id
+  defaultSideId?: string;
+  // default selected drink item id
+  defaultDrinkId?: string;
+  // item or variant ids that represent paid/free upgrades
+  upgradeOptions?: string[];
+};
+
 // represents one menu item
 export type MenuItem = {
   id: string;
@@ -78,6 +98,8 @@ export type MenuItem = {
   // a single item can have multiple categories
   categories: string[];
   servingType: ServingType;
+  // standalone combo configuration; optional for backwards compatibility with implicit combo handling
+  comboConfig?: ComboMealConfig;
   // for build your own item
   entreeGroup?: string;
 
