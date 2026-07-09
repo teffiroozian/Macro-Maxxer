@@ -142,11 +142,7 @@ const CATEGORY_ICONS: Record<string, LucideIcon> = {
 };
 
 
-type EntreeSelection = ChipotleEntreeSelection;
-type EntreeKey = Exclude<EntreeSelection, null>;
-type KidsMealSelection = ChipotleKidsMealId;
-type TacoShellSelection = ChipotleTacoShell;
-type TacoCountSelection = ChipotleTacoCount;
+type EntreeKey = Exclude<ChipotleEntreeSelection, null>;
 type BuildConfigurationSnapshot = ChipotleBuildConfiguration;
 
 function titleCase(text: string) {
@@ -287,15 +283,15 @@ export default function RestaurantView({
   >({ type: "none" });
   const entreeMenuRef = useRef<HTMLDivElement | null>(null);
   const requestedEntree = searchParams.get("entree");
-  const initialSelectedEntree: EntreeSelection =
+  const initialSelectedEntree: ChipotleEntreeSelection =
     isChipotleBuildPage && requestedEntree && isChipotleEntreeId(requestedEntree) && requestedEntree in entreeOptions
       ? requestedEntree
       : null;
-  const [selectedEntree, setSelectedEntree] = useState<EntreeSelection>(initialSelectedEntree);
+  const [selectedEntree, setSelectedEntree] = useState<ChipotleEntreeSelection>(initialSelectedEntree);
   const [isEntreeMenuOpen, setIsEntreeMenuOpen] = useState(false);
-  const [selectedTacoShell, setSelectedTacoShell] = useState<TacoShellSelection>("crispy");
-  const [selectedTacoCount, setSelectedTacoCount] = useState<TacoCountSelection>(3);
-  const [selectedKidsMeal, setSelectedKidsMeal] = useState<KidsMealSelection>("build-your-own");
+  const [selectedTacoShell, setSelectedTacoShell] = useState<ChipotleTacoShell>("crispy");
+  const [selectedTacoCount, setSelectedTacoCount] = useState<ChipotleTacoCount>(3);
+  const [selectedKidsMeal, setSelectedKidsMeal] = useState<ChipotleKidsMealId>("build-your-own");
   const isChipotleChipsSidesSelection = isChipotleBuildPage && selectedEntree === "chips-sides";
   const isChipotleHighProteinSelection =
     isChipotleBuildPage && selectedEntree === "high-protein-menu";
@@ -777,7 +773,7 @@ export default function RestaurantView({
     setSort(nextSort);
   };
 
-  const handleKidsMealSelection = (kidsMeal: KidsMealSelection) => {
+  const handleKidsMealSelection = (kidsMeal: ChipotleKidsMealId) => {
     setSelectedKidsMeal(kidsMeal);
     applyIncludedIngredientsNextFrame(
       kidsMeal === "quesadilla" ? kidsQuesadillaIncludedIngredientIds : [],
