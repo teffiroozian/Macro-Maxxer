@@ -3,7 +3,7 @@ import type { CoreMacros, Nutrition } from "@/types/nutrition";
 export type CartMacros = CoreMacros;
 
 // common portion values we expect
-export type CartBuildIngredientPortion = "light" | "normal" | "extra" | string;
+export type CartBuildIngredientPortion = "light" | "normal" | "extra";
 
 // one ingredient selected inside a build-your-own cart item
 export type CartBuildIngredient = {
