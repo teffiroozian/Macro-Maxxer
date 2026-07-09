@@ -202,8 +202,7 @@
                 "chips",
                 "fresh-tomato-salsa"
             ],
-            "defaultOrder": 4,
-            "description": "Mild"
+            "defaultOrder": 4
         },
         {
             "id": "chips-tomatillo-red-chili-salsa",
@@ -230,8 +229,7 @@
                 "chips",
                 "tomatillo-red-chili-salsa"
             ],
-            "defaultOrder": 5,
-            "description": "Hot"
+            "defaultOrder": 5
         },
         {
             "id": "chips-tomatillo-green-chili-salsa",
@@ -258,8 +256,7 @@
                 "chips",
                 "tomatillo-green-chili-salsa"
             ],
-            "defaultOrder": 6,
-            "description": "Medium"
+            "defaultOrder": 6
         },
         {
             "id": "chips-roasted-chili-corn-salsa",
@@ -286,8 +283,7 @@
                 "chips",
                 "roasted-chili-corn-salsa"
             ],
-            "defaultOrder": 7,
-            "description": "Medium"
+            "defaultOrder": 7
         },
         {
             "id": "chips-queso-blanco",
@@ -392,8 +388,7 @@
                 }
             ],
             "defaultVariantId": "side-of-cilantro-lime-sauce",
-            "defaultOrder": 9,
-            "description": "Served on the Side"
+            "defaultOrder": 9
         },
         {
             "id": "side-of-fresh-tomato-salsa",
@@ -436,8 +431,7 @@
                 }
             ],
             "defaultVariantId": "side-of-fresh-tomato-salsa",
-            "defaultOrder": 10,
-            "description": "Mild"
+            "defaultOrder": 10
         },
         {
             "id": "side-of-tomatillo-red-chili-salsa",
@@ -480,8 +474,7 @@
                 }
             ],
             "defaultVariantId": "side-of-tomatillo-red-chili-salsa",
-            "defaultOrder": 11,
-            "description": "Hot"
+            "defaultOrder": 11
         },
         {
             "id": "side-of-tomatillo-green-chili-salsa",
@@ -524,8 +517,7 @@
                 }
             ],
             "defaultVariantId": "side-of-tomatillo-green-chili-salsa",
-            "defaultOrder": 12,
-            "description": "Medium"
+            "defaultOrder": 12
         },
         {
             "id": "side-of-roasted-chili-corn-salsa",
@@ -568,8 +560,7 @@
                 }
             ],
             "defaultVariantId": "side-of-roasted-chili-corn-salsa",
-            "defaultOrder": 13,
-            "description": "Medium"
+            "defaultOrder": 13
         },
         {
             "id": "side-of-queso-blanco",
@@ -857,7 +848,6 @@
             "entreeGroup": "high-protein-menu",
             "ingredientRef": "chicken-al-pastor",
             "defaultOrder": 12,
-            "description": "28g Protein",
             "nutrition": {
                 "calories": 200,
                 "protein": 23,
@@ -876,7 +866,6 @@
             "entreeGroup": "high-protein-menu",
             "ingredientRef": "chicken",
             "defaultOrder": 13,
-            "description": "32g Protein",
             "nutrition": {
                 "calories": 180,
                 "protein": 32,
@@ -895,7 +884,6 @@
             "entreeGroup": "high-protein-menu",
             "ingredientRef": "steak",
             "defaultOrder": 14,
-            "description": "21g Protein",
             "nutrition": {
                 "calories": 150,
                 "protein": 21,
@@ -2559,8 +2547,7 @@
                 "totalFat": 6
             },
             "maxQuantity": 10,
-            "defaultOrder": 1,
-            "description": "Served on the Side"
+            "defaultOrder": 1
         },
         {
             "id": "fresh-tomato-salsa",
@@ -2582,8 +2569,7 @@
                 "sugars": 1
             },
             "maxQuantity": 10,
-            "defaultOrder": 3,
-            "description": "Mild"
+            "defaultOrder": 3
         },
         {
             "id": "roasted-chili-corn-salsa",
@@ -2605,8 +2591,7 @@
                 "sugars": 4
             },
             "maxQuantity": 10,
-            "defaultOrder": 4,
-            "description": "Medium"
+            "defaultOrder": 4
         },
         {
             "id": "tomatillo-green-chili-salsa",
@@ -2628,8 +2613,7 @@
                 "sugars": 2
             },
             "maxQuantity": 10,
-            "defaultOrder": 5,
-            "description": "Medium"
+            "defaultOrder": 5
         },
         {
             "id": "tomatillo-red-chili-salsa",
@@ -2651,8 +2635,7 @@
                 "sugars": 0
             },
             "maxQuantity": 10,
-            "defaultOrder": 6,
-            "description": "Hot"
+            "defaultOrder": 6
         },
         {
             "id": "sour-cream",
@@ -2850,8 +2833,7 @@
                 "sugars": 5
             },
             "maxQuantity": 1,
-            "defaultOrder": 6,
-            "description": "Plant-Based Protein"
+            "defaultOrder": 6
         },
         {
             "id": "white-rice",

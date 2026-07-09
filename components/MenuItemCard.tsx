@@ -12,11 +12,6 @@ import {
   formatMacro,
   getDefaultIngredientCounts,
   getDefaultVariantId,
-  isChickfilaBreakfastItem,
-  isHashBrowns,
-  isWaffleFries,
-  normalizeCategory,
-  sortComboSides,
   sumNutrition,
 } from "@/lib/menuItemCalculations";
 import { formatOptionLabelCounts } from "@/lib/cartOptionLabels";
@@ -41,6 +36,7 @@ import {
   calculateIngredientCountTotals,
   calculateMenuItemMacrosPerItem,
 } from "@/lib/menuItemCard/totals";
+import { resolveComboDrinkOptions, resolveComboMealConfig, resolveComboSideOptions } from "@/lib/comboMeals";
 
 function pad2(n: number) {
   return String(n).padStart(2, "0");
@@ -340,42 +336,26 @@ export default function MenuItemCard({
     [ingredientCounts, resolvedIngredients]
   );
 
-  const isComboEligibleCategory = useMemo(() => {
-    if (restaurantId !== "chickfila") return false;
-    const allowed = new Set(["sandwich", "chicken", "salad", "wrap", "breakfast"]);
-    return item.categories.some((category) => allowed.has(normalizeCategory(category)));
-  }, [item.categories, restaurantId]);
+  const comboConfig = useMemo(
+    () => resolveComboMealConfig(restaurantId, item, menuItems),
+    [item, menuItems, restaurantId]
+  );
+  const isComboEligibleCategory = Boolean(comboConfig);
   const comboSides = useMemo(
-    () => {
-      const breakfastComboItem = isChickfilaBreakfastItem(restaurantId, item);
-      const sides = (menuItems ?? []).filter((menuItem) => {
-        const normalizedCategories = menuItem.categories.map((category) => normalizeCategory(category));
-        if (!breakfastComboItem) {
-          return normalizedCategories.includes("side");
-        }
-
-        if (isWaffleFries(menuItem)) return false;
-        return normalizedCategories.includes("side") || isHashBrowns(menuItem);
-      });
-
-      return sortComboSides(sides, breakfastComboItem);
-    },
+    () => resolveComboSideOptions(restaurantId, item, menuItems),
     [item, menuItems, restaurantId]
   );
   const comboDrinks = useMemo(
-    () =>
-      (menuItems ?? []).filter((menuItem) =>
-        menuItem.categories.some((category) => normalizeCategory(category) === "drinks")
-      ),
-    [menuItems]
+    () => resolveComboDrinkOptions(restaurantId, item, menuItems),
+    [item, menuItems, restaurantId]
   );
   const [selectedComboSideId, setSelectedComboSideId] = useState<string | undefined>(() => {
     const matchedSide = comboSides.find((side) => side.name === parsedInitialComboCustomization.sideName);
-    return matchedSide ? (matchedSide.id ?? matchedSide.name) : undefined;
+    return matchedSide ? (matchedSide.id ?? matchedSide.name) : comboConfig?.defaultSideId;
   });
   const [selectedComboDrinkId, setSelectedComboDrinkId] = useState<string | undefined>(() => {
     const matchedDrink = comboDrinks.find((drink) => drink.name === parsedInitialComboCustomization.drinkName);
-    return matchedDrink ? (matchedDrink.id ?? matchedDrink.name) : undefined;
+    return matchedDrink ? (matchedDrink.id ?? matchedDrink.name) : comboConfig?.defaultDrinkId;
   });
   const [selectedComboSideVariantId, setSelectedComboSideVariantId] = useState<string | undefined>(() => {
     const matchedSide = comboSides.find((side) => side.name === parsedInitialComboCustomization.sideName);

@@ -12,11 +12,7 @@ export type RestaurantIndexEntry = {
   isComingSoon?: boolean;
 };
 
-// Individual restaurant JSON files contain menu content only.
-// app/data/index.json is the source of truth for identity/metadata, and the loader merges both shapes into RestaurantData.
-export type RestaurantMenuFile = RestaurantMenu;
-
-// full restaurant data consumed by pages/components after index metadata and menu content are merged
+// entire menu file for a restaurant
 export type RestaurantData = RestaurantIndexEntry & {
   hasBuildYourOwn: boolean;
   items: MenuItem[];
