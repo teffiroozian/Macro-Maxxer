@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { Pencil } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
+import type { CartItem } from "@/types/cart";
 import type { MenuItem } from "@/types/menu";
 import type { RestaurantData } from "@/types/restaurant";
 import { useRestaurantUi } from "@/components/RestaurantUiContext";
@@ -13,20 +14,12 @@ import ItemRouteModal from "@/components/ItemRouteModal";
 import { resolveAddonMenuItems } from "@/lib/addonGroups";
 import { getAllRestaurants, getRestaurantData } from "@/lib/restaurants";
 import { useCart } from "@/stores/cartStore";
+import { getCustomizationLabels, getSelectionDetailsLabel } from "@/lib/cart/customizationLabels";
 
-const getCustomizationDisplayList = (item: {
-  selectionDetailsLabel?: string;
-  customizations?: string[];
-}) => {
-  const addonSelections = item.selectionDetailsLabel
-    ? item.selectionDetailsLabel
-        .split(" + ")
-        .map((label) => label.trim())
-        .filter(Boolean)
-    : [];
-
-  return [...addonSelections, ...(item.customizations ?? [])];
-};
+const getCustomizationDisplayList = (item: CartItem) => [
+  ...(getSelectionDetailsLabel(item.selection)?.split(" + ").filter(Boolean) ?? []),
+  ...getCustomizationLabels(item.customizations),
+];
 
 export default function CartPreviewDrawer() {
   const { isCartOpen, closeCart } = useRestaurantUi();

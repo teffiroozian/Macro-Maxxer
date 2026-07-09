@@ -1,4 +1,5 @@
 import { fromUniversalChipotleBuildConfiguration } from "@/lib/restaurantBuilders/chipotle/cartAdapter";
+import { getCustomizationLabels } from "@/lib/cart/customizationLabels";
 import type { CartItem } from "@/types/cart";
 import type { IngredientItem, MenuItem } from "@/types/menu";
 
@@ -92,7 +93,7 @@ export function getIncludedIngredientIdsForChipotleBuild(cartItem: CartItem) {
 
 export function getBuildIngredientCountCustomizations(cartItem: CartItem, ingredientItems?: IngredientItem[]) {
   if (cartItem.restaurantId !== "chipotle" || cartItem.selection.type !== "build-your-own") {
-    return cartItem.customizations;
+    return getCustomizationLabels(cartItem.customizations);
   }
 
   const ingredientNameLookup = new Map<string, string>();

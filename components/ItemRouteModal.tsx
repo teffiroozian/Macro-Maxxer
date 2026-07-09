@@ -51,6 +51,7 @@ import type { ChipotleBuildConfiguration } from "@/lib/restaurantBuilders/chipot
 import { fromUniversalChipotleBuildConfiguration, toUniversalChipotleBuildConfiguration } from "@/lib/restaurantBuilders/chipotle/cartAdapter";
 import { SORT_OPTION_VALUES } from "@/lib/menuSections/sortOptions";
 import { resolveMenuItemVariantNutrition } from "@/lib/nutrition";
+import { customizationsFromLabels, getCustomizationLabels, getSelectionDetailsLabel } from "@/lib/cart/customizationLabels";
 
 const emptyAddon: MenuItem = {
   id: "none",
@@ -147,16 +148,16 @@ export default function ItemRouteModal({
     };
   }, [editingBuildConfiguration, ingredients, item]);
   const parsedInitialComboCustomization = useMemo(
-    () => parseComboCustomization(editingCartItem?.customizations),
+    () => parseComboCustomization(getCustomizationLabels(editingCartItem?.customizations)),
     [editingCartItem?.customizations]
   );
   const [selectedVariantId, setSelectedVariantId] = useState(editingCartItem?.variantId ?? defaultVariantId);
   const [quantity, setQuantity] = useState(editingCartItem?.quantity ?? 1);
   const [selectedAddons, setSelectedAddons] = useState<Partial<Record<string, MenuItem>>>(() =>
-    getSelectedAddonsFromLabel(item, addons, editingCartItem?.selectionDetailsLabel)
+    getSelectedAddonsFromLabel(item, addons, editingCartItem ? getSelectionDetailsLabel(editingCartItem.selection) : undefined)
   );
   const [selectedSauceCounts, setSelectedSauceCounts] = useState<Record<string, number>>(() =>
-    getSelectedSauceCountsFromLabel(item, addons, editingCartItem?.selectionDetailsLabel)
+    getSelectedSauceCountsFromLabel(item, addons, editingCartItem ? getSelectionDetailsLabel(editingCartItem.selection) : undefined)
   );
   const selectedVariant = variants?.find((variant) => variant.id === selectedVariantId);
   const selectedItemImage = selectedVariant?.image ?? item.image;
@@ -166,7 +167,7 @@ export default function ItemRouteModal({
     [addons, customizationRules, ingredients, item, menuItems, selectedVariantId, variants]
   );
   const [selectedIngredientCounts, setSelectedIngredientCounts] = useState<Record<string, number>>(() =>
-    getSelectedIngredientCountsFromCustomizations(resolvedIngredients, editingCartItem?.customizations)
+    getSelectedIngredientCountsFromCustomizations(resolvedIngredients, getCustomizationLabels(editingCartItem?.customizations))
   );
   const isChipotleTacoItem = (item.id ?? "").toLowerCase().includes("taco");
   const isChipotleBurritoItem = (item.id ?? "").toLowerCase().includes("burrito");
@@ -958,7 +959,7 @@ export default function ItemRouteModal({
         name: item.name,
         image: item.image,
         quantity,
-        customizations: customizations.length ? customizations : undefined,
+        customizations: customizationsFromLabels(customizations),
         macrosPerItem: {
           calories: chipotleAdjustedTotals.calories,
           protein: chipotleAdjustedTotals.protein,
@@ -971,7 +972,7 @@ export default function ItemRouteModal({
           carbs: chipotleAdjustedTotals.carbs,
           totalFat: chipotleAdjustedTotals.totalFat,
         },
-        selection: { type: "build-your-own" as const, buildConfiguration: toUniversalChipotleBuildConfiguration(nextBuildConfiguration), customizations: customizations.length ? customizations : undefined },
+        selection: { type: "build-your-own" as const, buildConfiguration: toUniversalChipotleBuildConfiguration(nextBuildConfiguration) },
       };
 
       handleClose();
@@ -1008,8 +1009,7 @@ export default function ItemRouteModal({
       name: item.name,
       image: selectedVariant?.image ?? item.image,
       variantId: selectedVariant?.id,
-      selectionDetailsLabel,
-      customizations: customizations.length > 0 ? customizations : undefined,
+      customizations: customizationsFromLabels(customizations),
       quantity,
       macrosPerItem: {
         calories: nutrition.calories ?? 0,
@@ -1025,10 +1025,10 @@ export default function ItemRouteModal({
             ? (() => {
                 const buildConfiguration = buildHighProteinBuildConfiguration(item, ingredients);
                 return buildConfiguration
-                  ? { type: "build-your-own" as const, buildConfiguration: toUniversalChipotleBuildConfiguration(buildConfiguration), customizations }
-                  : { type: "standard" as const, variantId: selectedVariant?.id, optionsLabel: selectionDetailsLabel, customizations };
+                  ? { type: "build-your-own" as const, buildConfiguration: toUniversalChipotleBuildConfiguration(buildConfiguration) }
+                  : { type: "standard" as const, variantId: selectedVariant?.id, optionSelections: selectionDetailsLabel ? selectionDetailsLabel.split(" + ").map((label) => ({ label })) : undefined };
               })()
-            : { type: "standard" as const, variantId: selectedVariant?.id, optionsLabel: selectionDetailsLabel, customizations },
+            : { type: "standard" as const, variantId: selectedVariant?.id, optionSelections: selectionDetailsLabel ? selectionDetailsLabel.split(" + ").map((label) => ({ label })) : undefined },
     };
 
     handleClose();

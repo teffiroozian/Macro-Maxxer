@@ -27,19 +27,42 @@ export type CartBuildConfiguration = {
 };
 
 // standard item selection
+export type CartSelectionOption = {
+  optionId?: string;
+  itemId?: string;
+  label: string;
+  quantity?: number;
+};
+
+export type CartCustomization = {
+  // Structured customization data is the cart source of truth. Generate labels for display instead of using strings for logic.
+  action: "add" | "remove" | "extra" | "light" | "swap";
+  kind?: "ingredient" | "combo";
+  ingredientId?: string;
+  ingredientLabel?: string;
+  fromIngredientId?: string;
+  fromIngredientLabel?: string;
+  toIngredientId?: string;
+  toIngredientLabel?: string;
+  quantity?: number;
+  comboRole?: "meal" | "side" | "drink";
+  itemId?: string;
+  itemLabel?: string;
+  variantId?: string;
+  variantLabel?: string;
+};
+
 export type StandardCartSelection = {
   type: "standard";
   variantId?: string;
   variantLabel?: string;
-  optionsLabel?: string;
-  customizations?: string[];
+  optionSelections?: CartSelectionOption[];
 };
 
 // build-your-own item selection
 export type BuildYourOwnCartSelection = {
   type: "build-your-own";
   buildConfiguration: CartBuildConfiguration;
-  customizations?: string[];
 };
 
 // cart selection can be either a standard or a build-your-own item
@@ -53,8 +76,7 @@ export type CartItem = {
   name: string;
   image: string;
   variantId?: string;
-  selectionDetailsLabel?: string;
-  customizations?: string[];
+  customizations?: CartCustomization[];
   quantity: number;
   macrosPerItem: CartMacros;
   nutritionPerItem: Nutrition;
