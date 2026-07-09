@@ -5,7 +5,7 @@ type MatchingSignatureInput = {
   restaurantId: string;
   itemId: string;
   variantId?: string;
-  optionSelections?: { label: string; quantity?: number }[];
+  optionSelections?: import("@/types/cart").CartSelectionOption[];
   customizations?: import("@/types/cart").CartCustomization[];
 };
 

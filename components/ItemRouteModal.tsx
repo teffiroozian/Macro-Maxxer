@@ -16,6 +16,7 @@ import type { CoreMacros, Nutrition } from "@/types/nutrition";
 import { useCart } from "@/stores/cartStore";
 import { parseComboCustomization } from "@/lib/menuItemCard/comboCustomizationParser";
 import {
+  buildStructuredOptionSelections,
   getSelectedAddonsFromLabel,
   getSelectedSauceCountsFromLabel,
 } from "@/lib/menuItemCard/cartLabelUtils";
@@ -387,17 +388,8 @@ export default function ItemRouteModal({
     [ingredientCounts, ingredientLookup]
   );
 
-  const selectionDetailsLabel = useMemo(() => {
-    const dressingSegments = Object.values(selectedAddons)
-      .filter((addon): addon is MenuItem => Boolean(addon && addon.name !== "None"))
-      .map((addon) => addon.name);
-    const sauceSegments = Object.entries(selectedSauceCounts)
-      .filter(([, count]) => count > 0)
-      .map(([name, count]) => (count === 1 ? name : `${name} x${count}`));
+  const optionSelections = useMemo(() => buildStructuredOptionSelections(selectedAddons, selectedSauceCounts, addons), [addons, selectedAddons, selectedSauceCounts]);
 
-    const segments = [...dressingSegments, ...sauceSegments];
-    return segments.length > 0 ? segments.join(" + ") : undefined;
-  }, [selectedAddons, selectedSauceCounts]);
 
   const selectedIngredientCustomizations = useMemo(
     () =>
@@ -1005,9 +997,9 @@ export default function ItemRouteModal({
                 const buildConfiguration = buildHighProteinBuildConfiguration(item, ingredients);
                 return buildConfiguration
                   ? { type: "build-your-own" as const, buildConfiguration: toUniversalChipotleBuildConfiguration(buildConfiguration) }
-                  : { type: "standard" as const, variantId: selectedVariant?.id, optionSelections: selectionDetailsLabel ? selectionDetailsLabel.split(" + ").map((label) => ({ label })) : undefined };
+                  : { type: "standard" as const, variantId: selectedVariant?.id, optionSelections };
               })()
-            : { type: "standard" as const, variantId: selectedVariant?.id, optionSelections: selectionDetailsLabel ? selectionDetailsLabel.split(" + ").map((label) => ({ label })) : undefined },
+            : { type: "standard" as const, variantId: selectedVariant?.id, optionSelections },
     };
 
     handleClose();
