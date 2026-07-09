@@ -17,8 +17,8 @@ import { useCart } from "@/stores/cartStore";
 import { parseComboCustomization } from "@/lib/menuItemCard/comboCustomizationParser";
 import {
   buildStructuredOptionSelections,
-  getSelectedAddonsFromLabel,
-  getSelectedSauceCountsFromLabel,
+  getSelectedAddonsFromSelection,
+  getSelectedSauceCountsFromSelection,
 } from "@/lib/menuItemCard/cartLabelUtils";
 import { getSelectedIngredientCountsFromCustomizations } from "@/lib/menuItemCard/ingredientCountCustomization";
 import {
@@ -47,8 +47,9 @@ import type { ChipotleBuildConfiguration } from "@/lib/restaurantBuilders/chipot
 import { fromUniversalChipotleBuildConfiguration, toUniversalChipotleBuildConfiguration } from "@/lib/restaurantBuilders/chipotle/cartAdapter";
 import { SORT_OPTION_VALUES } from "@/lib/menuSections/sortOptions";
 import { resolveMenuItemVariantNutrition } from "@/lib/nutrition";
-import { customizationsFromLabels, getCustomizationLabels, getSelectionDetailsLabel } from "@/lib/cart/customizationLabels";
+import { customizationsFromLabels, getCustomizationLabels } from "@/lib/cart/customizationLabels";
 import { resolveComboDrinkOptions, resolveComboMealConfig, resolveComboSideOptions } from "@/lib/comboMeals";
+import { getCartItemVariantId } from "@/lib/cart/itemAccessors";
 
 const emptyAddon: MenuItem = {
   id: "none",
@@ -147,13 +148,13 @@ export default function ItemRouteModal({
     () => parseComboCustomization(getCustomizationLabels(editingCartItem?.customizations)),
     [editingCartItem?.customizations]
   );
-  const [selectedVariantId, setSelectedVariantId] = useState(editingCartItem?.variantId ?? defaultVariantId);
+  const [selectedVariantId, setSelectedVariantId] = useState(editingCartItem ? getCartItemVariantId(editingCartItem) ?? defaultVariantId : defaultVariantId);
   const [quantity, setQuantity] = useState(editingCartItem?.quantity ?? 1);
   const [selectedAddons, setSelectedAddons] = useState<Partial<Record<string, MenuItem>>>(() =>
-    getSelectedAddonsFromLabel(item, addons, editingCartItem ? getSelectionDetailsLabel(editingCartItem.selection) : undefined)
+    getSelectedAddonsFromSelection(item, addons, editingCartItem?.selection)
   );
   const [selectedSauceCounts, setSelectedSauceCounts] = useState<Record<string, number>>(() =>
-    getSelectedSauceCountsFromLabel(item, addons, editingCartItem ? getSelectionDetailsLabel(editingCartItem.selection) : undefined)
+    getSelectedSauceCountsFromSelection(item, addons, editingCartItem?.selection)
   );
   const selectedVariant = variants?.find((variant) => variant.id === selectedVariantId);
   const selectedItemImage = selectedVariant?.image ?? item.image;

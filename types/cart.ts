@@ -75,9 +75,12 @@ export type CartItem = {
   itemId: string;
   name: string;
   image: string;
+  // Convenience mirror for legacy callers; standard item variant source of truth is selection.variantId.
   variantId?: string;
+  // Structured customization data. Keep top-level until combo/ingredient customization data is fully folded into selection.
   customizations?: CartCustomization[];
   quantity: number;
+  // Convenience/legacy macro subset. Prefer deriving core macros from nutritionPerItem for new reads.
   macrosPerItem: CartMacros;
   nutritionPerItem: Nutrition;
   selection: CartSelection;

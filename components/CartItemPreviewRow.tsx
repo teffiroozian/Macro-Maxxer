@@ -1,9 +1,10 @@
 import Image from "next/image";
 import { ReactNode } from "react";
+import { getCartItemCoreMacros } from "@/lib/cart/itemAccessors";
 import type { CartItem } from "@/types/cart";
 
 type CartItemPreviewRowProps = {
-  item: Pick<CartItem, "name" | "image" | "macrosPerItem" | "quantity">;
+  item: Pick<CartItem, "name" | "image" | "macrosPerItem" | "nutritionPerItem" | "quantity">;
   macroStyle?: "compact" | "detailed";
   customizationsText?: string;
   customizationsLineClamp?: 1 | 2;
@@ -30,10 +31,11 @@ export default function CartItemPreviewRow({
 }: CartItemPreviewRowProps) {
   const itemInitial = (item.name?.trim().charAt(0) || "+").toUpperCase();
   const quantityMultiplier = Math.max(item.quantity ?? 1, 1);
-  const displayCalories = item.macrosPerItem.calories * quantityMultiplier;
-  const displayProtein = item.macrosPerItem.protein * quantityMultiplier;
-  const displayCarbs = item.macrosPerItem.carbs * quantityMultiplier;
-  const displayFat = item.macrosPerItem.totalFat * quantityMultiplier;
+  const macrosPerItem = getCartItemCoreMacros(item);
+  const displayCalories = macrosPerItem.calories * quantityMultiplier;
+  const displayProtein = macrosPerItem.protein * quantityMultiplier;
+  const displayCarbs = macrosPerItem.carbs * quantityMultiplier;
+  const displayFat = macrosPerItem.totalFat * quantityMultiplier;
   const customizationClampClass =
     customizationsLineClamp === 2 ? "line-clamp-2" : "line-clamp-1";
 

@@ -1,4 +1,4 @@
-import type { CartSelectionOption } from "@/types/cart";
+import type { CartSelection, CartSelectionOption } from "@/types/cart";
 import type { MenuItem, ResolvedAddonGroups } from "@/types/menu";
 import { parseOptionLabelCounts, type OptionLabelCountMap } from "@/lib/cartOptionLabels";
 
@@ -46,6 +46,61 @@ export function buildStructuredOptionSelections(
     });
 
   return selections.length > 0 ? selections : undefined;
+}
+
+function getSelectedOptionQuantityByItemId(selection: CartSelection | undefined) {
+  const quantities = new Map<string, number>();
+  if (selection?.type !== "standard") return quantities;
+
+  for (const option of selection.optionSelections ?? []) {
+    if (!option.itemId) continue;
+    const quantity = option.quantity && option.quantity > 0 ? option.quantity : 1;
+    quantities.set(option.itemId, (quantities.get(option.itemId) ?? 0) + quantity);
+  }
+
+  return quantities;
+}
+
+export function getSelectedAddonsFromSelection(item: MenuItem, addons: ResolvedAddonGroups | undefined, selection: CartSelection | undefined) {
+  const selectedQuantities = getSelectedOptionQuantityByItemId(selection);
+  if (selectedQuantities.size === 0) {
+    return getSelectedAddonsFromLabel(item, addons, selection ? getSelectionLabelFallback(selection) : undefined);
+  }
+
+  const selectedMap: Partial<Record<string, MenuItem>> = {};
+  for (const ref of item.addonRefs ?? []) {
+    if (ref === sauceRef) continue;
+    const matched = (addons?.[ref]?.items ?? []).find((addon) => (selectedQuantities.get(addon.id) ?? 0) > 0);
+    if (matched) selectedMap[ref] = matched;
+  }
+
+  return selectedMap;
+}
+
+export function getSelectedSauceCountsFromSelection(item: MenuItem, addons: ResolvedAddonGroups | undefined, selection: CartSelection | undefined) {
+  const selectedQuantities = getSelectedOptionQuantityByItemId(selection);
+  if (selectedQuantities.size === 0) {
+    return getSelectedSauceCountsFromLabel(item, addons, selection ? getSelectionLabelFallback(selection) : undefined);
+  }
+
+  const sauceOptions = addons?.[sauceRef]?.items ?? [];
+  if (!(item.addonRefs ?? []).includes(sauceRef) || sauceOptions.length === 0) {
+    return {} as Record<string, number>;
+  }
+
+  return sauceOptions.reduce<Record<string, number>>((acc, addon) => {
+    const quantity = selectedQuantities.get(addon.id) ?? 0;
+    if (quantity > 0) acc[addon.name] = quantity;
+    return acc;
+  }, {});
+}
+
+function getSelectionLabelFallback(selection: CartSelection) {
+  if (selection.type !== "standard") return undefined;
+  const labels = (selection.optionSelections ?? []).map((option) =>
+    option.quantity && option.quantity > 1 ? `${option.label} x${option.quantity}` : option.label
+  );
+  return labels.length > 0 ? labels.join(" + ") : undefined;
 }
 
 export function getSelectedAddonsFromLabel(item: MenuItem, addons: ResolvedAddonGroups | undefined, selectionDetailsLabel?: string) {
