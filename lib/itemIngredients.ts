@@ -66,6 +66,13 @@ function getIngredientNutrition(
 
   const menuItemMatch = menuItemById.get(normalizedId);
   if (menuItemMatch?.nutrition) return menuItemMatch.nutrition;
+  const defaultVariant =
+    (menuItemMatch?.defaultVariantId
+      ? menuItemMatch.variants?.find((variant) => variant.id === menuItemMatch.defaultVariantId)
+      : undefined) ??
+    menuItemMatch?.variants?.find((variant) => variant.isDefault) ??
+    menuItemMatch?.variants?.[0];
+  if (defaultVariant?.nutrition) return defaultVariant.nutrition;
 
   if (menuItemMatch?.ingredientRef) {
     return ingredientById.get(menuItemMatch.ingredientRef.toLowerCase())?.nutrition;

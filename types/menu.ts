@@ -10,6 +10,8 @@ export type ItemVariant = {
   label: string;
   image?: string;
   nutrition: Nutrition;
+  ingredientRef?: string;
+  nutritionMultiplier?: number;
   categories: string[];
   servingType?: ServingType;
   // which variant should show as the default option in the menu
@@ -73,6 +75,7 @@ export type MenuItem = {
   id: string;
   name: string;
   image: string;
+  description?: string;
 
   // a single item can have multiple categories
   categories: string[];
@@ -83,6 +86,7 @@ export type MenuItem = {
   nutrition: Nutrition;
 
   ingredientRef?: string;
+  nutritionMultiplier?: number;
   ingredients?: string[];
 
   variants?: ItemVariant[];
@@ -103,6 +107,7 @@ export type IngredientItem = {
   id: string;
   name: string;
   image?: string;
+  description?: string;
 
   categories: string[];
 

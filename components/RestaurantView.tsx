@@ -706,9 +706,7 @@ export default function RestaurantView({
         const baseItems = items;
         if (isChipotleBuildPage && selectedEntree === "chips-sides") {
             return baseItems.filter(
-                (item) =>
-                    item.entreeGroup === "chips-sides" ||
-                    item.entreeGroup === "high-protein-menu",
+                (item) => item.entreeGroup === "chips-sides",
             );
         }
 

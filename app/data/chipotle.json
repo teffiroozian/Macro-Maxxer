@@ -56,53 +56,30 @@
         },
         {
             "id": "side-of-guacamole",
-            "name": "Guacamole",
-            "image": "",
+            "name": "Side of Guacamole",
+            "image": "/restaurants/chipotle/menu/sides/side-guacamole.png",
             "categories": [
-                "Toppings",
                 "Single Sides"
             ],
             "servingType": "side",
             "entreeGroup": "chips-sides",
             "ingredientRef": "guacamole",
-            "variants": [
-                {
-                    "id": "side-of-guacamole",
-                    "label": "Regular",
-                    "servingType": "side",
-                    "nutrition": {
-                        "calories": 230,
-                        "protein": 2,
-                        "carbs": 8,
-                        "totalFat": 22,
-                        "satFat": 3.5,
-                        "transFat": 0,
-                        "cholesterol": 0,
-                        "sodium": 370,
-                        "fiber": 6,
-                        "sugars": 1
-                    }
-                },
-                {
-                    "id": "large-side-of-guacamole",
-                    "label": "Large",
-                    "servingType": "side",
-                    "nutrition": {
-                        "calories": 460,
-                        "protein": 4,
-                        "carbs": 16,
-                        "totalFat": 44,
-                        "satFat": 7,
-                        "transFat": 0,
-                        "cholesterol": 0,
-                        "sodium": 740,
-                        "fiber": 12,
-                        "sugars": 2
-                    }
-                }
+            "defaultOrder": 2,
+            "description": "Served on the Side"
+        },
+        {
+            "id": "large-side-of-guacamole",
+            "name": "Large Side of Guacamole",
+            "image": "/restaurants/chipotle/menu/sides/side-guacamole.png",
+            "categories": [
+                "Single Sides"
             ],
-            "defaultVariantId": "side-of-guacamole",
-            "defaultOrder": 2
+            "servingType": "side",
+            "entreeGroup": "chips-sides",
+            "ingredientRef": "guacamole",
+            "defaultOrder": 3,
+            "description": "Served on the Side",
+            "nutritionMultiplier": 2
         },
         {
             "id": "chips-guacamole",
@@ -154,7 +131,7 @@
                 }
             ],
             "defaultVariantId": "chips-guacamole",
-            "defaultOrder": 3
+            "defaultOrder": 4
         },
         {
             "id": "chips-fresh-tomato-salsa",
@@ -165,23 +142,11 @@
             ],
             "servingType": "side",
             "entreeGroup": "chips-sides",
-            "nutrition": {
-                "calories": 565,
-                "protein": 7,
-                "carbs": 77,
-                "totalFat": 25,
-                "satFat": 3.5,
-                "transFat": 0,
-                "cholesterol": 0,
-                "sodium": 940,
-                "fiber": 8,
-                "sugars": 2
-            },
             "ingredients": [
                 "chips",
                 "fresh-tomato-salsa"
             ],
-            "defaultOrder": 4,
+            "defaultOrder": 5,
             "description": "Mild"
         },
         {
@@ -193,23 +158,11 @@
             ],
             "servingType": "side",
             "entreeGroup": "chips-sides",
-            "nutrition": {
-                "calories": 570,
-                "protein": 7,
-                "carbs": 77,
-                "totalFat": 25,
-                "satFat": 3.5,
-                "transFat": 0,
-                "cholesterol": 0,
-                "sodium": 890,
-                "fiber": 8,
-                "sugars": 1
-            },
             "ingredients": [
                 "chips",
                 "tomatillo-red-chili-salsa"
             ],
-            "defaultOrder": 5,
+            "defaultOrder": 6,
             "description": "Hot"
         },
         {
@@ -221,23 +174,11 @@
             ],
             "servingType": "side",
             "entreeGroup": "chips-sides",
-            "nutrition": {
-                "calories": 555,
-                "protein": 7,
-                "carbs": 77,
-                "totalFat": 25,
-                "satFat": 3.5,
-                "transFat": 0,
-                "cholesterol": 0,
-                "sodium": 650,
-                "fiber": 7,
-                "sugars": 3
-            },
             "ingredients": [
                 "chips",
                 "tomatillo-green-chili-salsa"
             ],
-            "defaultOrder": 6,
+            "defaultOrder": 7,
             "description": "Medium"
         },
         {
@@ -249,23 +190,11 @@
             ],
             "servingType": "side",
             "entreeGroup": "chips-sides",
-            "nutrition": {
-                "calories": 620,
-                "protein": 10,
-                "carbs": 89,
-                "totalFat": 26.5,
-                "satFat": 3.5,
-                "transFat": 0,
-                "cholesterol": 0,
-                "sodium": 720,
-                "fiber": 10,
-                "sugars": 5
-            },
             "ingredients": [
                 "chips",
                 "roasted-chili-corn-salsa"
             ],
-            "defaultOrder": 7,
+            "defaultOrder": 8,
             "description": "Medium"
         },
         {
@@ -318,246 +247,169 @@
                 }
             ],
             "defaultVariantId": "chips-queso-blanco",
-            "defaultOrder": 8
+            "defaultOrder": 9
         },
         {
             "id": "side-of-cilantro-lime-sauce",
-            "name": "Cilantro Lime Sauce",
-            "image": "",
+            "name": "Side of Cilantro Lime Sauce",
+            "image": "/restaurants/chipotle/menu/sides/side-cilantro-lime-sauce.png",
             "categories": [
                 "Single Sides"
             ],
             "servingType": "side",
             "entreeGroup": "chips-sides",
             "ingredientRef": "cilantro-lime-sauce",
-            "variants": [
-                {
-                    "id": "side-of-cilantro-lime-sauce",
-                    "label": "Regular",
-                    "servingType": "side",
-                    "nutrition": {
-                        "calories": 80,
-                        "protein": 2,
-                        "carbs": 3,
-                        "totalFat": 6
-                    }
-                },
-                {
-                    "id": "large-side-of-cilantro-lime-sauce",
-                    "label": "Large",
-                    "servingType": "side",
-                    "nutrition": {
-                        "calories": 320,
-                        "protein": 8,
-                        "carbs": 12,
-                        "totalFat": 24
-                    }
-                }
-            ],
-            "defaultVariantId": "side-of-cilantro-lime-sauce",
-            "defaultOrder": 9,
+            "defaultOrder": 10,
             "description": "Served on the Side"
         },
         {
+            "id": "large-side-of-cilantro-lime-sauce",
+            "name": "Large Side of Cilantro Lime Sauce",
+            "image": "/restaurants/chipotle/menu/sides/side-cilantro-lime-sauce.png",
+            "categories": [
+                "Single Sides"
+            ],
+            "servingType": "side",
+            "entreeGroup": "chips-sides",
+            "ingredientRef": "cilantro-lime-sauce",
+            "defaultOrder": 11,
+            "description": "Served on the Side",
+            "nutritionMultiplier": 4
+        },
+        {
             "id": "side-of-fresh-tomato-salsa",
-            "name": "Fresh Tomato Salsa",
-            "image": "",
+            "name": "Side of Fresh Tomato Salsa",
+            "image": "/restaurants/chipotle/menu/sides/side-tomato-salsa.png",
             "categories": [
                 "Single Sides"
             ],
             "servingType": "side",
             "entreeGroup": "chips-sides",
             "ingredientRef": "fresh-tomato-salsa",
-            "variants": [
-                {
-                    "id": "side-of-fresh-tomato-salsa",
-                    "label": "Regular",
-                    "servingType": "side",
-                    "nutrition": {
-                        "calories": 25,
-                        "protein": 0,
-                        "carbs": 4,
-                        "totalFat": 0
-                    }
-                },
-                {
-                    "id": "large-side-of-fresh-tomato-salsa",
-                    "label": "Large",
-                    "servingType": "side",
-                    "nutrition": {
-                        "calories": 40,
-                        "protein": 0,
-                        "carbs": 0,
-                        "totalFat": 0
-                    }
-                }
-            ],
-            "defaultVariantId": "side-of-fresh-tomato-salsa",
-            "defaultOrder": 10,
+            "defaultOrder": 12,
             "description": "Mild"
         },
         {
+            "id": "large-side-of-fresh-tomato-salsa",
+            "name": "Large Side of Fresh Tomato Salsa",
+            "image": "/restaurants/chipotle/menu/sides/side-tomato-salsa.png",
+            "categories": [
+                "Single Sides"
+            ],
+            "servingType": "side",
+            "entreeGroup": "chips-sides",
+            "ingredientRef": "fresh-tomato-salsa",
+            "defaultOrder": 13,
+            "description": "Mild",
+            "nutritionMultiplier": 1.6
+        },
+        {
             "id": "side-of-tomatillo-red-chili-salsa",
-            "name": "Tomatillo-Red Chili Salsa",
-            "image": "",
+            "name": "Side of Tomatillo-Red Chili Salsa",
+            "image": "/restaurants/chipotle/menu/sides/side-red-chili-salsa.png",
             "categories": [
                 "Single Sides"
             ],
             "servingType": "side",
             "entreeGroup": "chips-sides",
             "ingredientRef": "tomatillo-red-chili-salsa",
-            "variants": [
-                {
-                    "id": "side-of-tomatillo-red-chili-salsa",
-                    "label": "Regular",
-                    "servingType": "side",
-                    "nutrition": {
-                        "calories": 30,
-                        "protein": 0,
-                        "carbs": 4,
-                        "totalFat": 0
-                    }
-                },
-                {
-                    "id": "large-side-of-tomatillo-red-chili-salsa",
-                    "label": "Large",
-                    "servingType": "side",
-                    "nutrition": {
-                        "calories": 90,
-                        "protein": 0,
-                        "carbs": 0,
-                        "totalFat": 0
-                    }
-                }
-            ],
-            "defaultVariantId": "side-of-tomatillo-red-chili-salsa",
-            "defaultOrder": 11,
+            "defaultOrder": 14,
             "description": "Hot"
         },
         {
+            "id": "large-side-of-tomatillo-red-chili-salsa",
+            "name": "Large Side of Tomatillo-Red Chili Salsa",
+            "image": "/restaurants/chipotle/menu/sides/side-red-chili-salsa.png",
+            "categories": [
+                "Single Sides"
+            ],
+            "servingType": "side",
+            "entreeGroup": "chips-sides",
+            "ingredientRef": "tomatillo-red-chili-salsa",
+            "defaultOrder": 15,
+            "description": "Hot",
+            "nutritionMultiplier": 3
+        },
+        {
             "id": "side-of-tomatillo-green-chili-salsa",
-            "name": "Tomatillo-Green Chili Salsa",
-            "image": "",
+            "name": "Side of Tomatillo-Green Chili Salsa",
+            "image": "/restaurants/chipotle/menu/sides/side-green-chili-salsa.png",
             "categories": [
                 "Single Sides"
             ],
             "servingType": "side",
             "entreeGroup": "chips-sides",
             "ingredientRef": "tomatillo-green-chili-salsa",
-            "variants": [
-                {
-                    "id": "side-of-tomatillo-green-chili-salsa",
-                    "label": "Regular",
-                    "servingType": "side",
-                    "nutrition": {
-                        "calories": 15,
-                        "protein": 0,
-                        "carbs": 4,
-                        "totalFat": 0
-                    }
-                },
-                {
-                    "id": "large-side-of-tomatillo-green-chili-salsa",
-                    "label": "Large",
-                    "servingType": "side",
-                    "nutrition": {
-                        "calories": 45,
-                        "protein": 0,
-                        "carbs": 0,
-                        "totalFat": 0
-                    }
-                }
-            ],
-            "defaultVariantId": "side-of-tomatillo-green-chili-salsa",
-            "defaultOrder": 12,
+            "defaultOrder": 16,
             "description": "Medium"
         },
         {
+            "id": "large-side-of-tomatillo-green-chili-salsa",
+            "name": "Large Side of Tomatillo-Green Chili Salsa",
+            "image": "/restaurants/chipotle/menu/sides/side-green-chili-salsa.png",
+            "categories": [
+                "Single Sides"
+            ],
+            "servingType": "side",
+            "entreeGroup": "chips-sides",
+            "ingredientRef": "tomatillo-green-chili-salsa",
+            "defaultOrder": 17,
+            "description": "Medium",
+            "nutritionMultiplier": 3
+        },
+        {
             "id": "side-of-roasted-chili-corn-salsa",
-            "name": "Roasted Chili-Corn Salsa",
-            "image": "",
+            "name": "Side of Roasted Chili-Corn Salsa",
+            "image": "/restaurants/chipotle/menu/sides/side-chili-corn-salsa.png",
             "categories": [
                 "Single Sides"
             ],
             "servingType": "side",
             "entreeGroup": "chips-sides",
             "ingredientRef": "roasted-chili-corn-salsa",
-            "variants": [
-                {
-                    "id": "side-of-roasted-chili-corn-salsa",
-                    "label": "Regular",
-                    "servingType": "side",
-                    "nutrition": {
-                        "calories": 80,
-                        "protein": 3,
-                        "carbs": 16,
-                        "totalFat": 1.5
-                    }
-                },
-                {
-                    "id": "large-side-of-roasted-chili-corn-salsa",
-                    "label": "Large",
-                    "servingType": "side",
-                    "nutrition": {
-                        "calories": 120,
-                        "protein": 0,
-                        "carbs": 0,
-                        "totalFat": 0
-                    }
-                }
-            ],
-            "defaultVariantId": "side-of-roasted-chili-corn-salsa",
-            "defaultOrder": 13,
+            "defaultOrder": 18,
             "description": "Medium"
+        },
+        {
+            "id": "large-side-of-roasted-chili-corn-salsa",
+            "name": "Large Side of Roasted Chili-Corn Salsa",
+            "image": "/restaurants/chipotle/menu/sides/side-chili-corn-salsa.png",
+            "categories": [
+                "Single Sides"
+            ],
+            "servingType": "side",
+            "entreeGroup": "chips-sides",
+            "ingredientRef": "roasted-chili-corn-salsa",
+            "defaultOrder": 19,
+            "description": "Medium",
+            "nutritionMultiplier": 1.5
         },
         {
             "id": "side-of-queso-blanco",
             "name": "Side of Queso Blanco",
-            "image": "",
+            "image": "/restaurants/chipotle/menu/sides/side-queso-blanco.png",
             "categories": [
                 "Single Sides"
             ],
             "servingType": "side",
             "entreeGroup": "chips-sides",
             "ingredientRef": "queso-blanco",
-            "variants": [
-                {
-                    "id": "side-of-queso-blanco",
-                    "label": "Regular",
-                    "servingType": "side",
-                    "nutrition": {
-                        "calories": 240,
-                        "protein": 10,
-                        "carbs": 7,
-                        "totalFat": 18,
-                        "satFat": 12,
-                        "transFat": 1,
-                        "cholesterol": 60,
-                        "sodium": 490,
-                        "fiber": 0,
-                        "sugars": 2
-                    }
-                },
-                {
-                    "id": "large-side-of-queso-blanco",
-                    "label": "Large",
-                    "servingType": "side",
-                    "nutrition": {
-                        "calories": 480,
-                        "protein": 20,
-                        "carbs": 14,
-                        "totalFat": 37,
-                        "satFat": 23,
-                        "transFat": 1.5,
-                        "cholesterol": 120,
-                        "sodium": 980,
-                        "fiber": 0,
-                        "sugars": 5
-                    }
-                }
+            "defaultOrder": 20,
+            "description": "Served on the Side"
+        },
+        {
+            "id": "large-side-of-queso-blanco",
+            "name": "Large Side of Queso Blanco",
+            "image": "/restaurants/chipotle/menu/sides/side-queso-blanco.png",
+            "categories": [
+                "Single Sides"
             ],
-            "defaultVariantId": "side-of-queso-blanco",
-            "defaultOrder": 14
+            "servingType": "side",
+            "entreeGroup": "chips-sides",
+            "ingredientRef": "queso-blanco",
+            "defaultOrder": 21,
+            "description": "Served on the Side",
+            "nutritionMultiplier": 2
         },
         {
             "id": "tortilla-on-the-side",
@@ -580,7 +432,7 @@
                 "fiber": 3,
                 "sugars": 0
             },
-            "defaultOrder": 15
+            "defaultOrder": 22
         },
         {
             "id": "kids-chips",
@@ -603,7 +455,7 @@
                 "fiber": 2,
                 "sugars": 0
             },
-            "defaultOrder": 16
+            "defaultOrder": 23
         },
         {
             "id": "kids-mandarins",
@@ -626,7 +478,7 @@
                 "fiber": 1,
                 "sugars": 7
             },
-            "defaultOrder": 17
+            "defaultOrder": 24
         },
         {
             "id": "kids-blueberries",
@@ -649,7 +501,7 @@
                 "fiber": 0,
                 "sugars": 3
             },
-            "defaultOrder": 18
+            "defaultOrder": 25
         },
         {
             "id": "high-protein-high-fiber-bowl",
@@ -788,13 +640,7 @@
             "entreeGroup": "high-protein-menu",
             "ingredientRef": "chicken-al-pastor",
             "defaultOrder": 12,
-            "description": "28g Protein",
-            "nutrition": {
-                "calories": 200,
-                "protein": 23,
-                "carbs": 4,
-                "totalFat": 11
-            }
+            "description": "28g Protein"
         },
         {
             "id": "side-of-chicken-high-protein",
@@ -807,13 +653,7 @@
             "entreeGroup": "high-protein-menu",
             "ingredientRef": "chicken",
             "defaultOrder": 13,
-            "description": "32g Protein",
-            "nutrition": {
-                "calories": 180,
-                "protein": 32,
-                "carbs": 0,
-                "totalFat": 7
-            }
+            "description": "32g Protein"
         },
         {
             "id": "side-of-steak-high-protein",
@@ -826,13 +666,7 @@
             "entreeGroup": "high-protein-menu",
             "ingredientRef": "steak",
             "defaultOrder": 14,
-            "description": "21g Protein",
-            "nutrition": {
-                "calories": 150,
-                "protein": 21,
-                "carbs": 1,
-                "totalFat": 6
-            }
+            "description": "21g Protein"
         },
         {
             "id": "mexican-coca-cola",
