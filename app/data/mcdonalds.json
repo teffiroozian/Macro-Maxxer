@@ -1,6 +1,4 @@
 {
-    "id": "mcdonalds",
-    "name": "McDonald's",
     "items": [
         {
             "id": "mcdonalds_double_quarter_pounder_w_cheese",

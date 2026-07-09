@@ -1,6 +1,4 @@
 {
-    "id": "chipotle",
-    "name": "Chipotle",
     "hasBuildYourOwn": true,
     "items": [
         {

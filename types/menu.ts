@@ -142,8 +142,6 @@ export type IngredientItem = {
 
 
 export type RestaurantMenu = {
-  id: string;
-  name: string;
   hasBuildYourOwn?: boolean;
   items: MenuItem[];
   ingredients?: IngredientItem[];

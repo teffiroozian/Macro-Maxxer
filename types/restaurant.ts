@@ -1,5 +1,5 @@
 import type { RestaurantBuilderConfig } from "@/types/builder";
-import type { IngredientItem, MenuItem, RestaurantAddonGroups, RestaurantCustomizationRules } from "@/types/menu";
+import type { IngredientItem, MenuItem, RestaurantAddonGroups, RestaurantCustomizationRules, RestaurantMenu } from "@/types/menu";
 
 // restaurant overall info
 export type RestaurantIndexEntry = {
@@ -12,7 +12,10 @@ export type RestaurantIndexEntry = {
   isComingSoon?: boolean;
 };
 
-// entire menu file for a restaurant
+// menu content owned by individual restaurant JSON files; identity/metadata live in app/data/index.json.
+export type RestaurantMenuContent = RestaurantMenu;
+
+// entire menu file for a restaurant, merged with index.json identity/metadata.
 export type RestaurantData = RestaurantIndexEntry & {
   hasBuildYourOwn: boolean;
   items: MenuItem[];
