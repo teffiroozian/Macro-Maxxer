@@ -1,4 +1,3 @@
-import type { ComboMealConfig } from "@/types/menu";
 import type { CoreMacros, Nutrition } from "@/types/nutrition";
 
 export type CartMacros = CoreMacros;
@@ -37,8 +36,6 @@ export type CartSelectionOption = {
 
 export type CartCustomization = {
   // Structured customization data is the cart source of truth. Generate labels for display instead of using strings for logic.
-  // Combo customizations currently persist combo selection details using kind/comboRole/itemId/variantId fields.
-  // ComboMealConfig remains the menu-data shape that defines available combo relationships.
   action: "add" | "remove" | "extra" | "light" | "swap";
   kind?: "ingredient" | "combo";
   ingredientId?: string;
@@ -60,8 +57,6 @@ export type StandardCartSelection = {
   variantId?: string;
   variantLabel?: string;
   optionSelections?: CartSelectionOption[];
-  // Optional normalized combo definition for standard cart items when source menu data provides one.
-  comboConfig?: ComboMealConfig;
 };
 
 // build-your-own item selection
