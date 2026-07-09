@@ -101,8 +101,7 @@ export function getDefaultVariantId(item?: MenuItem) {
   if (item.defaultVariantId && variants.some((variant) => variant.id === item.defaultVariantId)) {
     return item.defaultVariantId;
   }
-  const flaggedDefault = variants.find((variant) => variant.isDefault);
-  return flaggedDefault?.id ?? variants[0]?.id;
+  return variants[0]?.id;
 }
 
 export function getDefaultIngredientCounts(resolvedIngredients: ResolvedPanelIngredient[]) {

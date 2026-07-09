@@ -622,7 +622,6 @@ export default function RestaurantView({
                           id: quesadillaTripleCheeseVariantId,
                           label: "",
                           categories: ingredient.categories,
-                          isDefault: false,
                           nutrition: scaleNutritionValues(
                               ingredientBaseNutrition,
                               3,

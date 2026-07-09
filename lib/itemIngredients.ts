@@ -1,29 +1,11 @@
 import type { IngredientItem, MenuItem } from "@/types/menu";
+import { addNutrition, normalizeNutrition } from "@/lib/nutrition";
 import type { Nutrition } from "@/types/nutrition";
 
 type ParsedIngredientEntry = {
   ingredientId: string;
   defaultCount: number;
 };
-
-type NutritionNumericKey = keyof Nutrition;
-
-const NUTRITION_KEYS: NutritionNumericKey[] = [
-  "calories",
-  "protein",
-  "carbs",
-  "totalFat",
-  "satFat",
-  "transFat",
-  "cholesterol",
-  "sodium",
-  "fiber",
-  "sugars",
-];
-
-function toNutritionNumber(value: unknown) {
-  return typeof value === "number" && Number.isFinite(value) ? value : 0;
-}
 
 function parseIngredientPortion(value: string | undefined) {
   const normalized = value?.trim().toLowerCase();
@@ -83,12 +65,7 @@ export function computeNutritionFromIncludedIngredients(options: {
   const defaultsById = resolveIncludedIngredientDefaults(ingredientEntries);
   if (defaultsById.size === 0) return undefined;
 
-  const totals: Nutrition = {
-    calories: 0,
-    protein: 0,
-    carbs: 0,
-    totalFat: 0,
-  };
+  let totals: Nutrition = normalizeNutrition();
   let resolvedCount = 0;
 
   defaultsById.forEach((count, normalizedId) => {
@@ -96,11 +73,7 @@ export function computeNutritionFromIncludedIngredients(options: {
     if (!nutrition) return;
     resolvedCount += 1;
 
-    NUTRITION_KEYS.forEach((key) => {
-      const current = totals[key];
-      const nextValue = toNutritionNumber(nutrition[key]) * count;
-      totals[key] = (current ?? 0) + nextValue;
-    });
+    totals = addNutrition(totals, nutrition, count);
 
   });
 

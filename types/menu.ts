@@ -13,8 +13,6 @@ export type ItemVariant = {
   nutritionMultiplier?: number;
   categories: string[];
   servingType?: ServingType;
-  // which variant should show as the default option in the menu
-  isDefault: boolean;
 };
 
 // group of extra items that can be added to a menu item
@@ -108,6 +106,7 @@ export type MenuItem = {
   ingredients?: string[];
 
   variants?: ItemVariant[];
+  // Source of truth for default variant selection; falls back to the first variant when missing or invalid.
   defaultVariantId?: string;
 
   addonRefs?: string[];
@@ -131,6 +130,7 @@ export type IngredientItem = {
   nutrition: Nutrition;
 
   variants?: ItemVariant[];
+  // Source of truth for default variant selection; falls back to the first variant when missing or invalid.
   defaultVariantId?: string;
 
   maxQuantity: number;
