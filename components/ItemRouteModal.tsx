@@ -12,7 +12,7 @@ import MacroTotalsGrid from "@/components/MacroTotalsGrid";
 import MenuSections from "@/components/MenuSections";
 import BuildSummaryDrawer from "@/components/restaurant-view/BuildSummaryDrawer";
 import type { MenuItem, ResolvedAddonGroups, IngredientItem, RestaurantCustomizationRules } from "@/types/menu";
-import type { CoreMacros, Nutrition } from "@/types/nutrition";
+import type { Nutrition } from "@/types/nutrition";
 import { useCart } from "@/stores/cartStore";
 import { parseComboCustomization } from "@/lib/menuItemCard/comboCustomizationParser";
 import {
@@ -22,13 +22,9 @@ import {
 } from "@/lib/menuItemCard/cartLabelUtils";
 import { getSelectedIngredientCountsFromCustomizations } from "@/lib/menuItemCard/ingredientCountCustomization";
 import {
-  addonFat,
-  getDefaultIngredientCounts,
   getDefaultVariantId,
-  menuItemFat,
   resolveJustItemIcon,
   resolveJustItemLabel,
-  sumNutritionWithFallback,
 } from "@/lib/menuItemCalculations";
 import {
   buildHighProteinBuildConfiguration,
@@ -47,6 +43,18 @@ import type { ChipotleBuildConfiguration } from "@/lib/restaurantBuilders/chipot
 import { fromUniversalChipotleBuildConfiguration, toUniversalChipotleBuildConfiguration } from "@/lib/restaurantBuilders/chipotle/cartAdapter";
 import { SORT_OPTION_VALUES } from "@/lib/menuSections/sortOptions";
 import { resolveMenuItemVariantNutrition } from "@/lib/nutrition";
+import {
+  buildComboCustomizationLabels,
+  buildIngredientCustomizationLabels,
+  buildStandardCartItemPayload,
+  calculateFullComboNutritionTotals,
+  calculateStandardItemNutrition,
+  resolveActiveAddons,
+  resolveSelectedSauceOptions,
+  resolveStandardComboSelection,
+  resolveStandardIngredientCounts,
+} from "@/lib/cart/standardItemConfiguration";
+import { calculateAddonTotals, calculateIngredientCountTotals } from "@/lib/menuItemCard/totals";
 import { customizationsFromLabels, getCustomizationLabels } from "@/lib/cart/customizationLabels";
 import { resolveComboDrinkOptions, resolveComboMealConfig, resolveComboSideOptions } from "@/lib/comboMeals";
 import { getCartItemVariantId } from "@/lib/cart/itemAccessors";
@@ -61,7 +69,6 @@ const emptyAddon: MenuItem = {
   defaultOrder: 0,
 };
 
-const sauceRef: string = "sauces";
 const maxSauceSelections = 5;
 const sectionScrollOffset = 96;
 
@@ -305,43 +312,15 @@ export default function ItemRouteModal({
   }, [item.id]);
 
 
-  const selectedSauceOptions = useMemo(() => {
-    const sauceOptions = addons?.[sauceRef]?.items ?? [];
-    return sauceOptions.flatMap((addon) =>
-      Array.from({ length: selectedSauceCounts[addon.name] ?? 0 }, () => addon)
-    );
-  }, [addons, selectedSauceCounts]);
-
-  const addonTotals = useMemo(
-    () =>
-      [...Object.values(selectedAddons), ...selectedSauceOptions].reduce(
-        (sum, addon) => ({
-          calories: sum.calories + (addon?.nutrition.calories ?? 0),
-          protein: sum.protein + (addon?.nutrition.protein ?? 0),
-          carbs: sum.carbs + (addon?.nutrition.carbs ?? 0),
-          totalFat: sum.totalFat + addonFat(addon),
-          satFat: sum.satFat + (addon?.nutrition.satFat ?? 0),
-          transFat: sum.transFat + (addon?.nutrition.transFat ?? 0),
-          cholesterol: sum.cholesterol + (addon?.nutrition.cholesterol ?? 0),
-          sodium: sum.sodium + (addon?.nutrition.sodium ?? 0),
-          fiber: sum.fiber + (addon?.nutrition.fiber ?? 0),
-          sugars: sum.sugars + (addon?.nutrition.sugars ?? 0),
-        }),
-        {
-          calories: 0,
-          protein: 0,
-          carbs: 0,
-          totalFat: 0,
-          satFat: 0,
-          transFat: 0,
-          cholesterol: 0,
-          sodium: 0,
-          fiber: 0,
-          sugars: 0,
-        }
-      ),
+  const selectedSauceOptions = useMemo(
+    () => resolveSelectedSauceOptions({ addons, selectedSauceCounts }),
+    [addons, selectedSauceCounts]
+  );
+  const activeAddons = useMemo(
+    () => resolveActiveAddons({ selectedAddons, selectedSauceOptions }),
     [selectedAddons, selectedSauceOptions]
   );
+  const addonTotals = useMemo(() => calculateAddonTotals(activeAddons), [activeAddons]);
 
   const ingredientLookup = useMemo(() => {
     const lookup = new Map<string, (typeof resolvedIngredients)[number]>();
@@ -355,51 +334,21 @@ export default function ItemRouteModal({
     return lookup;
   }, [resolvedIngredients]);
 
-  const ingredientCounts = useMemo(() => {
-    const defaults = getDefaultIngredientCounts(resolvedIngredients);
-    return Object.keys(defaults).reduce<Record<string, number>>((acc, ingredientId) => {
-      acc[ingredientId] = ingredientId in selectedIngredientCounts
-        ? selectedIngredientCounts[ingredientId]
-        : defaults[ingredientId];
-      return acc;
-    }, {});
-  }, [resolvedIngredients, selectedIngredientCounts]);
+  const ingredientCounts = useMemo(
+    () => resolveStandardIngredientCounts({ resolvedIngredients, selectedIngredientCounts }),
+    [resolvedIngredients, selectedIngredientCounts]
+  );
 
   const ingredientCountTotals = useMemo(
-    () =>
-      Object.entries(ingredientCounts).reduce<CoreMacros>(
-        (sum, [ingredientId, count]) => {
-          const ingredient =
-            ingredientLookup.get(ingredientId) ??
-            ingredientLookup.get(ingredientId.toLowerCase());
-
-          if (!ingredient) return sum;
-          const countDelta = count - ingredient.defaultCount;
-          if (countDelta === 0) return sum;
-
-          return {
-            calories: sum.calories + (ingredient.nutrition.calories ?? 0) * countDelta,
-            protein: sum.protein + (ingredient.nutrition.protein ?? 0) * countDelta,
-            carbs: sum.carbs + (ingredient.nutrition.carbs ?? 0) * countDelta,
-            totalFat: sum.totalFat + (ingredient.nutrition.totalFat ?? 0) * countDelta,
-          };
-        },
-        { calories: 0, protein: 0, carbs: 0, totalFat: 0 }
-      ),
-    [ingredientCounts, ingredientLookup]
+    () => calculateIngredientCountTotals(ingredientCounts, resolvedIngredients),
+    [ingredientCounts, resolvedIngredients]
   );
 
   const optionSelections = useMemo(() => buildStructuredOptionSelections(selectedAddons, selectedSauceCounts, addons), [addons, selectedAddons, selectedSauceCounts]);
 
 
   const selectedIngredientCustomizations = useMemo(
-    () =>
-      resolvedIngredients
-        .filter((ingredient) => !ingredient.isNoneOption && (ingredientCounts[ingredient.id] ?? ingredient.defaultCount) !== ingredient.defaultCount)
-        .flatMap((ingredient) => {
-          const ingredientCount = ingredientCounts[ingredient.id] ?? ingredient.defaultCount;
-          return [ingredientCount === 0 ? `${ingredient.label}: Removed` : `${ingredient.label}: ${ingredientCount}x`];
-        }),
+    () => buildIngredientCustomizationLabels({ resolvedIngredients, ingredientCounts }),
     [ingredientCounts, resolvedIngredients]
   );
   const comboConfig = useMemo(
@@ -439,124 +388,28 @@ export default function ItemRouteModal({
     ],
     [item]
   );
-  const selectedComboSide = useMemo(
-    () => comboSides.find((side) => (side.id ?? side.name) === selectedComboSideId),
-    [comboSides, selectedComboSideId]
+  const { selectedComboSide, selectedComboSideVariant, selectedComboDrink, selectedComboDrinkVariant } = useMemo(
+    () => resolveStandardComboSelection({
+      comboSides,
+      comboDrinks,
+      selectedComboSideId,
+      selectedComboDrinkId,
+      selectedComboSideVariantId,
+      selectedComboDrinkVariantId,
+    }),
+    [comboDrinks, comboSides, selectedComboDrinkId, selectedComboDrinkVariantId, selectedComboSideId, selectedComboSideVariantId]
   );
-  const selectedComboSideVariant = useMemo(
-    () => selectedComboSide?.variants?.find((variant) => variant.id === selectedComboSideVariantId),
-    [selectedComboSide, selectedComboSideVariantId]
-  );
-  const selectedComboDrink = useMemo(
-    () => comboDrinks.find((drink) => (drink.id ?? drink.name) === selectedComboDrinkId),
-    [comboDrinks, selectedComboDrinkId]
-  );
-  const selectedComboDrinkVariant = useMemo(
-    () => selectedComboDrink?.variants?.find((variant) => variant.id === selectedComboDrinkVariantId),
-    [selectedComboDrink, selectedComboDrinkVariantId]
-  );
-  const comboNutritionTotals = useMemo(() => {
-    if (!isComboEligibleCategory || comboType !== "combo-meal") {
-      return {
-        calories: 0,
-        protein: 0,
-        carbs: 0,
-        totalFat: 0,
-        satFat: 0,
-        transFat: 0,
-        cholesterol: 0,
-        sodium: 0,
-        fiber: 0,
-        sugars: 0,
-      };
-    }
-
-    return [selectedComboDrink].reduce(
-      (sum, comboItem) => ({
-        calories: sum.calories + ((selectedComboDrinkVariant?.nutrition.calories ?? comboItem?.nutrition.calories) ?? 0),
-        protein: sum.protein + ((selectedComboDrinkVariant?.nutrition.protein ?? comboItem?.nutrition.protein) ?? 0),
-        carbs: sum.carbs + ((selectedComboDrinkVariant?.nutrition.carbs ?? comboItem?.nutrition.carbs) ?? 0),
-        totalFat: sum.totalFat + (selectedComboDrinkVariant?.nutrition.totalFat ?? menuItemFat(comboItem)),
-        satFat: sum.satFat + ((selectedComboDrinkVariant?.nutrition.satFat ?? comboItem?.nutrition.satFat) ?? 0),
-        transFat: sum.transFat + ((selectedComboDrinkVariant?.nutrition.transFat ?? comboItem?.nutrition.transFat) ?? 0),
-        cholesterol: sum.cholesterol + ((selectedComboDrinkVariant?.nutrition.cholesterol ?? comboItem?.nutrition.cholesterol) ?? 0),
-        sodium: sum.sodium + ((selectedComboDrinkVariant?.nutrition.sodium ?? comboItem?.nutrition.sodium) ?? 0),
-        fiber: sum.fiber + ((selectedComboDrinkVariant?.nutrition.fiber ?? comboItem?.nutrition.fiber) ?? 0),
-        sugars: sum.sugars + ((selectedComboDrinkVariant?.nutrition.sugars ?? comboItem?.nutrition.sugars) ?? 0),
-      }),
-      {
-        calories: 0,
-        protein: 0,
-        carbs: 0,
-        totalFat: 0,
-        satFat: 0,
-        transFat: 0,
-        cholesterol: 0,
-        sodium: 0,
-        fiber: 0,
-        sugars: 0,
-      }
-    );
-  }, [comboType, isComboEligibleCategory, selectedComboDrink, selectedComboDrinkVariant]);
-
-  const comboSideNutritionTotals = useMemo(() => {
-    if (!selectedComboSide) {
-      return {
-        calories: 0,
-        protein: 0,
-        carbs: 0,
-        totalFat: 0,
-        satFat: 0,
-        transFat: 0,
-        cholesterol: 0,
-        sodium: 0,
-        fiber: 0,
-        sugars: 0,
-      };
-    }
-
-    const sideNutrition = selectedComboSideVariant?.nutrition ?? selectedComboSide.nutrition;
-    return {
-      calories: sideNutrition.calories ?? 0,
-      protein: sideNutrition.protein ?? 0,
-      carbs: sideNutrition.carbs ?? 0,
-      totalFat: sideNutrition.totalFat ?? 0,
-      satFat: sideNutrition.satFat ?? 0,
-      transFat: sideNutrition.transFat ?? 0,
-      cholesterol: sideNutrition.cholesterol ?? 0,
-      sodium: sideNutrition.sodium ?? 0,
-      fiber: sideNutrition.fiber ?? 0,
-      sugars: sideNutrition.sugars ?? 0,
-    };
-  }, [selectedComboSide, selectedComboSideVariant]);
   const activeComboNutritionTotals = useMemo(
     () =>
-      !isComboEligibleCategory || comboType !== "combo-meal"
-        ? {
-            calories: 0,
-            protein: 0,
-            carbs: 0,
-            totalFat: 0,
-            satFat: 0,
-            transFat: 0,
-            cholesterol: 0,
-            sodium: 0,
-            fiber: 0,
-            sugars: 0,
-          }
-        : {
-            calories: comboNutritionTotals.calories + comboSideNutritionTotals.calories,
-            protein: comboNutritionTotals.protein + comboSideNutritionTotals.protein,
-            carbs: comboNutritionTotals.carbs + comboSideNutritionTotals.carbs,
-            totalFat: comboNutritionTotals.totalFat + comboSideNutritionTotals.totalFat,
-            satFat: comboNutritionTotals.satFat + comboSideNutritionTotals.satFat,
-            transFat: comboNutritionTotals.transFat + comboSideNutritionTotals.transFat,
-            cholesterol: comboNutritionTotals.cholesterol + comboSideNutritionTotals.cholesterol,
-            sodium: comboNutritionTotals.sodium + comboSideNutritionTotals.sodium,
-            fiber: comboNutritionTotals.fiber + comboSideNutritionTotals.fiber,
-            sugars: comboNutritionTotals.sugars + comboSideNutritionTotals.sugars,
-          },
-    [comboNutritionTotals, comboSideNutritionTotals, comboType, isComboEligibleCategory]
+      calculateFullComboNutritionTotals({
+        isComboEligibleCategory,
+        comboType,
+        selectedComboDrink,
+        selectedComboDrinkVariant,
+        selectedComboSide,
+        selectedComboSideVariant,
+      }),
+    [comboType, isComboEligibleCategory, selectedComboDrink, selectedComboDrinkVariant, selectedComboSide, selectedComboSideVariant]
   );
   const ingredientTabs = useMemo(
     () =>
@@ -865,29 +718,16 @@ export default function ItemRouteModal({
     [customizationTotals]
   );
 
-  const satFat = sumNutritionWithFallback(baseNutrition.satFat, addonTotals.satFat + activeComboNutritionTotals.satFat);
-  const transFat = sumNutritionWithFallback(baseNutrition.transFat, addonTotals.transFat + activeComboNutritionTotals.transFat);
-  const cholesterol = sumNutritionWithFallback(
-    baseNutrition.cholesterol,
-    addonTotals.cholesterol + activeComboNutritionTotals.cholesterol
+  const nutrition: Nutrition = useMemo(
+    () =>
+      calculateStandardItemNutrition({
+        baseNutrition,
+        addonTotals,
+        ingredientCountTotals,
+        comboNutritionTotals: activeComboNutritionTotals,
+      }),
+    [activeComboNutritionTotals, addonTotals, baseNutrition, ingredientCountTotals]
   );
-  const sodium = sumNutritionWithFallback(baseNutrition.sodium, addonTotals.sodium + activeComboNutritionTotals.sodium);
-  const fiber = sumNutritionWithFallback(baseNutrition.fiber, addonTotals.fiber + activeComboNutritionTotals.fiber);
-  const sugars = sumNutritionWithFallback(baseNutrition.sugars, addonTotals.sugars + activeComboNutritionTotals.sugars);
-
-  const nutrition: Nutrition = {
-    ...baseNutrition,
-    calories: sumNutritionWithFallback(baseNutrition.calories, customizationTotals.calories) ?? 0,
-    protein: sumNutritionWithFallback(baseNutrition.protein, customizationTotals.protein) ?? 0,
-    carbs: sumNutritionWithFallback(baseNutrition.carbs, customizationTotals.carbs) ?? 0,
-    totalFat: sumNutritionWithFallback(baseNutrition.totalFat, customizationTotals.totalFat) ?? 0,
-    ...(satFat !== undefined ? { satFat } : {}),
-    ...(transFat !== undefined ? { transFat } : {}),
-    ...(cholesterol !== undefined ? { cholesterol } : {}),
-    ...(sodium !== undefined ? { sodium } : {}),
-    ...(fiber !== undefined ? { fiber } : {}),
-    ...(sugars !== undefined ? { sugars } : {}),
-  };
 
   const handleClose = () => {
     if (closeBehavior === "local") {
@@ -963,33 +803,26 @@ export default function ItemRouteModal({
       return;
     }
 
-    const comboCustomizations =
-      isComboEligibleCategory && comboType === "combo-meal"
-        ? [
-            "Combo Meal",
-            selectedComboSide
-              ? `Side: ${selectedComboSide.name}${selectedComboSideVariant ? ` (${selectedComboSideVariant.label})` : ""}`
-              : undefined,
-            selectedComboDrink
-              ? `Drink: ${selectedComboDrink.name}${selectedComboDrinkVariant ? ` (${selectedComboDrinkVariant.label})` : ""}`
-              : undefined,
-          ].filter((entry): entry is string => Boolean(entry))
-        : [];
+    const comboCustomizations = buildComboCustomizationLabels({
+      isComboEligibleCategory,
+      comboType,
+      selectedComboSide,
+      selectedComboSideVariant,
+      selectedComboDrink,
+      selectedComboDrinkVariant,
+    });
     const customizations = [...selectedIngredientCustomizations, ...comboCustomizations];
 
-    const nextCartItemPayload = {
-      name: item.name,
-      image: selectedVariant?.image ?? item.image,
-      variantId: selectedVariant?.id,
-      customizations: customizationsFromLabels(customizations),
+    const standardPayload = buildStandardCartItemPayload({
+      item,
+      selectedVariant,
       quantity,
-      macrosPerItem: {
-        calories: nutrition.calories ?? 0,
-        protein: nutrition.protein ?? 0,
-        carbs: nutrition.carbs ?? 0,
-        totalFat: nutrition.totalFat ?? 0,
-      },
+      customizations: customizationsFromLabels(customizations),
+      optionSelections,
       nutritionPerItem: nutrition,
+    });
+    const nextCartItemPayload = {
+      ...standardPayload,
       selection:
         editingCartItem?.selection.type === "build-your-own"
           ? editingCartItem.selection
@@ -998,9 +831,9 @@ export default function ItemRouteModal({
                 const buildConfiguration = buildHighProteinBuildConfiguration(item, ingredients);
                 return buildConfiguration
                   ? { type: "build-your-own" as const, buildConfiguration: toUniversalChipotleBuildConfiguration(buildConfiguration) }
-                  : { type: "standard" as const, variantId: selectedVariant?.id, optionSelections };
+                  : standardPayload.selection;
               })()
-            : { type: "standard" as const, variantId: selectedVariant?.id, optionSelections },
+            : standardPayload.selection,
     };
 
     handleClose();

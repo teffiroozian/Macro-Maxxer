@@ -10,13 +10,11 @@ import {
   formatCalories,
   formatDelta,
   formatMacro,
-  getDefaultIngredientCounts,
   getDefaultVariantId,
   sumNutrition,
 } from "@/lib/menuItemCalculations";
 import { customizationsFromLabels } from "@/lib/cart/customizationLabels";
 import { buildStructuredOptionSelections } from "@/lib/menuItemCard/cartLabelUtils";
-import { formatIngredientCountCustomizationLabel } from "@/lib/menuItemCard/ingredientCountCustomization";
 import IngredientCompactCard from "./menu-item-card/IngredientCompactCard";
 import MenuCardActions from "./menu-item-card/MenuCardActions";
 import CartCardActions from "./menu-item-card/CartCardActions";
@@ -28,7 +26,7 @@ import {
 } from "@/lib/restaurantBuilders/chipotle/highProtein";
 import { toUniversalChipotleBuildConfiguration } from "@/lib/restaurantBuilders/chipotle/cartAdapter";
 import { parseIncludedIngredientEntry } from "@/lib/itemIngredients";
-import { normalizeNutrition, resolveMenuItemVariantNutrition } from "@/lib/nutrition";
+
 import {
   calculateAddonTotals,
   calculateComboNutritionTotals,
@@ -36,6 +34,17 @@ import {
   calculateMenuItemMacrosPerItem,
 } from "@/lib/menuItemCard/totals";
 import { resolveComboDrinkOptions, resolveComboMealConfig, resolveComboSideOptions } from "@/lib/comboMeals";
+import {
+  buildComboCustomizationLabels,
+  buildIngredientCustomizationLabels,
+  calculateStandardItemNutrition,
+  resolveActiveAddons,
+  resolveSelectedSauceOptions,
+  resolveStandardComboSelection,
+  resolveStandardIngredientCounts,
+  resolveStandardItemVariant,
+} from "@/lib/cart/standardItemConfiguration";
+import { normalizeNutrition, resolveMenuItemVariantNutrition } from "@/lib/nutrition";
 
 function pad2(n: number) {
   return String(n).padStart(2, "0");
@@ -148,7 +157,6 @@ const emptyAddon: MenuItem = {
   defaultOrder: 0,
 };
 
-const sauceRef: string = "sauces";
 const maxSauceSelections = 5;
 
 type CartConfigurationPayload = {
@@ -309,24 +317,20 @@ export default function MenuItemCard({
     return lookup;
   }, [resolvedIngredients]);
 
-  const ingredientCounts = useMemo(() => {
-    const defaults = getDefaultIngredientCounts(resolvedIngredients);
-    return Object.keys(defaults).reduce<Record<string, number>>((acc, ingredientId) => {
-      acc[ingredientId] = ingredientId in selectedIngredientCounts
-        ? selectedIngredientCounts[ingredientId]
-        : defaults[ingredientId];
-      return acc;
-    }, {});
-  }, [resolvedIngredients, selectedIngredientCounts]);
-  const selectedSauceOptions = useMemo(() => {
-    const sauceOptions = addons?.[sauceRef]?.items ?? [];
-    return sauceOptions.flatMap((addon) => Array.from({ length: selectedSauceCounts[addon.name] ?? 0 }, () => addon));
-  }, [addons, selectedSauceCounts]);
+  const ingredientCounts = useMemo(
+    () => resolveStandardIngredientCounts({ resolvedIngredients, selectedIngredientCounts }),
+    [resolvedIngredients, selectedIngredientCounts]
+  );
+  const selectedSauceOptions = useMemo(
+    () => resolveSelectedSauceOptions({ addons, selectedSauceCounts }),
+    [addons, selectedSauceCounts]
+  );
 
-  const addonNutritionTotals = useMemo(
-    () => calculateAddonTotals([...Object.values(selectedAddons), ...selectedSauceOptions]),
+  const activeAddons = useMemo(
+    () => resolveActiveAddons({ selectedAddons, selectedSauceOptions }),
     [selectedAddons, selectedSauceOptions]
   );
+  const addonNutritionTotals = useMemo(() => calculateAddonTotals(activeAddons), [activeAddons]);
   const addonTotals = addonNutritionTotals;
 
   const ingredientCountTotals = useMemo(
@@ -367,21 +371,16 @@ export default function MenuItemCard({
     const matchedVariant = drinkVariants.find((variant) => variant.label === parsedInitialComboCustomization.drinkVariantLabel);
     return matchedVariant?.id ?? getDefaultVariantId(matchedDrink);
   });
-  const selectedComboSide = useMemo(
-    () => comboSides.find((side) => (side.id ?? side.name) === selectedComboSideId),
-    [comboSides, selectedComboSideId]
-  );
-  const selectedComboDrink = useMemo(
-    () => comboDrinks.find((drink) => (drink.id ?? drink.name) === selectedComboDrinkId),
-    [comboDrinks, selectedComboDrinkId]
-  );
-  const selectedComboSideVariant = useMemo(
-    () => selectedComboSide?.variants?.find((variant) => variant.id === selectedComboSideVariantId),
-    [selectedComboSide, selectedComboSideVariantId]
-  );
-  const selectedComboDrinkVariant = useMemo(
-    () => selectedComboDrink?.variants?.find((variant) => variant.id === selectedComboDrinkVariantId),
-    [selectedComboDrink, selectedComboDrinkVariantId]
+  const { selectedComboSide, selectedComboDrink, selectedComboSideVariant, selectedComboDrinkVariant } = useMemo(
+    () => resolveStandardComboSelection({
+      comboSides,
+      comboDrinks,
+      selectedComboSideId,
+      selectedComboDrinkId,
+      selectedComboSideVariantId,
+      selectedComboDrinkVariantId,
+    }),
+    [comboDrinks, comboSides, selectedComboDrinkId, selectedComboDrinkVariantId, selectedComboSideId, selectedComboSideVariantId]
   );
   const comboNutritionTotals = useMemo(
     () =>
@@ -412,16 +411,7 @@ export default function MenuItemCard({
       Object.values(selectedSauceCounts).some((count) => count > 0) ||
       resolvedIngredients.some((ingredient) => (ingredientCounts[ingredient.id] ?? ingredient.defaultCount) !== ingredient.defaultCount) ||
       (isComboEligibleCategory && comboType === "combo-meal" && Boolean(selectedComboSide || selectedComboDrink)),
-    [
-      comboType,
-      ingredientCounts,
-      isComboEligibleCategory,
-      resolvedIngredients,
-      selectedAddons,
-      selectedComboDrink,
-      selectedComboSide,
-        selectedSauceCounts,
-    ]
+    [comboType, ingredientCounts, isComboEligibleCategory, resolvedIngredients, selectedAddons, selectedComboDrink, selectedComboSide, selectedSauceCounts]
   );
 
   const hasActiveCustomization = useMemo(
@@ -437,24 +427,16 @@ export default function MenuItemCard({
     resetConfiguration();
   }
 
-  function addNutritionValue(baseValue?: number, deltaValue?: number) {
-    if (baseValue === undefined && deltaValue === undefined) return undefined;
-    return (baseValue ?? 0) + (deltaValue ?? 0);
-  }
-
-  const nutrition = normalizeNutrition({
-    ...baseNutrition,
-    calories: sumNutrition(baseNutrition.calories, addonNutritionTotals.calories + ingredientCountTotals.calories + comboNutritionTotals.calories),
-    protein: sumNutrition(baseNutrition.protein, addonNutritionTotals.protein + ingredientCountTotals.protein + comboNutritionTotals.protein),
-    carbs: sumNutrition(baseNutrition.carbs, addonNutritionTotals.carbs + ingredientCountTotals.carbs + comboNutritionTotals.carbs),
-    totalFat: sumNutrition(baseNutrition.totalFat, addonNutritionTotals.totalFat + ingredientCountTotals.totalFat + comboNutritionTotals.totalFat),
-    satFat: addNutritionValue(baseNutrition.satFat, addonNutritionTotals.satFat),
-    transFat: addNutritionValue(baseNutrition.transFat, addonNutritionTotals.transFat),
-    cholesterol: addNutritionValue(baseNutrition.cholesterol, addonNutritionTotals.cholesterol),
-    sodium: addNutritionValue(baseNutrition.sodium, addonNutritionTotals.sodium),
-    fiber: addNutritionValue(baseNutrition.fiber, addonNutritionTotals.fiber),
-    sugars: addNutritionValue(baseNutrition.sugars, addonNutritionTotals.sugars),
-  });
+  const nutrition = useMemo(
+    () =>
+      calculateStandardItemNutrition({
+        baseNutrition,
+        addonTotals: addonNutritionTotals,
+        ingredientCountTotals,
+        comboNutritionTotals,
+      }),
+    [addonNutritionTotals, baseNutrition, comboNutritionTotals, ingredientCountTotals]
+  );
 
   const calories = nutrition.calories;
   const protein = nutrition.protein;
@@ -552,43 +534,28 @@ export default function MenuItemCard({
 
 
   const customizations = useMemo(() => {
-    const ingredientCountLabels = resolvedIngredients
-      .filter((ingredient) => !ingredient.isNoneOption && (ingredientCounts[ingredient.id] ?? ingredient.defaultCount) !== ingredient.defaultCount)
-      .flatMap((ingredient) => {
-        const ingredientCount = ingredientCounts[ingredient.id] ?? ingredient.defaultCount;
-        if (suppressRemovedIngredientCustomizationsInCart && ingredientCount <= 0) {
-          return [];
-        }
-        return [formatIngredientCountCustomizationLabel(ingredient.label, ingredientCount)];
-      });
-
-    const comboLabels =
-      isComboEligibleCategory && comboType === "combo-meal"
-        ? [
-            "Combo Meal",
-            selectedComboSide
-              ? `Side: ${selectedComboSide.name}${selectedComboSideVariant ? ` (${selectedComboSideVariant.label})` : ""}`
-              : undefined,
-            selectedComboDrink
-              ? `Drink: ${selectedComboDrink.name}${selectedComboDrinkVariant ? ` (${selectedComboDrinkVariant.label})` : ""}`
-              : undefined,
-          ].filter((entry): entry is string => Boolean(entry))
-        : [];
-
-    const labels = [...ingredientCountLabels, ...comboLabels];
+    const labels = [
+      ...buildIngredientCustomizationLabels({
+        resolvedIngredients,
+        ingredientCounts,
+        suppressRemovedIngredientCustomizationsInCart,
+      }),
+      ...buildComboCustomizationLabels({
+        isComboEligibleCategory,
+        comboType,
+        selectedComboSide,
+        selectedComboSideVariant,
+        selectedComboDrink,
+        selectedComboDrinkVariant,
+      }),
+    ];
     return labels.length > 0 ? labels : undefined;
   }, [comboType, ingredientCounts, isComboEligibleCategory, resolvedIngredients, selectedComboDrink, selectedComboDrinkVariant, selectedComboSide, selectedComboSideVariant, suppressRemovedIngredientCustomizationsInCart]);
 
-  const selectedVariantForCart = useMemo(() => {
-    if (!variants || variants.length === 0) return undefined;
-    const bySelected = variants.find((variant) => variant.id === selectedVariantId);
-    if (bySelected) return bySelected;
-    if (defaultVariantId) {
-      const byDefault = variants.find((variant) => variant.id === defaultVariantId);
-      if (byDefault) return byDefault;
-    }
-    return variants[0];
-  }, [defaultVariantId, selectedVariantId, variants]);
+  const selectedVariantForCart = useMemo(
+    () => resolveStandardItemVariant({ variants, selectedVariantId, defaultVariantId }),
+    [defaultVariantId, selectedVariantId, variants]
+  );
 
 
   const matchingCartItem = useMemo(() => {
@@ -616,38 +583,34 @@ export default function MenuItemCard({
   ) => {
     if (!isCartMode || !onCartConfigurationChange || !cartItemId) return;
 
-    const activeVariant = variants?.find((variant) => variant.id === nextVariantId) ?? selectedVariantForCart;
+    const activeVariant = resolveStandardItemVariant({ variants, selectedVariantId: nextVariantId, defaultVariantId });
     const baseForCart = resolveMenuItemVariantNutrition(item, activeVariant);
-    const sauceOptions = addons?.[sauceRef]?.items ?? [];
-    const expandedSauces = sauceOptions.flatMap((addon) =>
-      Array.from({ length: nextSauceCounts[addon.name] ?? 0 }, () => addon)
-    );
-    const activeAddons = [
-      ...Object.values(nextAddons).filter((addon): addon is MenuItem => Boolean(addon && addon.name !== "None")),
-      ...expandedSauces,
-    ];
-    const addonTotalsForCart = calculateAddonTotals(activeAddons);
-    const ingredientCountTotalsForCart = calculateIngredientCountTotals(
-      nextSelectedIngredientCounts,
-      resolvedIngredients
-    );
+    const expandedSauces = resolveSelectedSauceOptions({ addons, selectedSauceCounts: nextSauceCounts });
+    const activeAddonsForCart = resolveActiveAddons({ selectedAddons: nextAddons, selectedSauceOptions: expandedSauces });
+    const addonTotalsForCart = calculateAddonTotals(activeAddonsForCart);
+    const ingredientCountTotalsForCart = calculateIngredientCountTotals(nextSelectedIngredientCounts, resolvedIngredients);
 
-    const nextComboSide = comboSides.find((side) => (side.id ?? side.name) === nextComboSideId);
-    const nextComboDrink = comboDrinks.find((drink) => (drink.id ?? drink.name) === nextComboDrinkId);
-    const nextComboSideVariant = nextComboSide?.variants?.find((variant) => variant.id === nextComboSideVariantId);
-    const nextComboDrinkVariant = nextComboDrink?.variants?.find((variant) => variant.id === nextComboDrinkVariantId);
-    const comboCustomizations =
-      isComboEligibleCategory && nextComboType === "combo-meal"
-        ? [
-            "Combo Meal",
-            nextComboSide
-              ? `Side: ${nextComboSide.name}${nextComboSideVariant ? ` (${nextComboSideVariant.label})` : ""}`
-              : undefined,
-            nextComboDrink
-              ? `Drink: ${nextComboDrink.name}${nextComboDrinkVariant ? ` (${nextComboDrinkVariant.label})` : ""}`
-              : undefined,
-          ].filter((entry): entry is string => Boolean(entry))
-        : [];
+    const {
+      selectedComboSide: nextComboSide,
+      selectedComboDrink: nextComboDrink,
+      selectedComboSideVariant: nextComboSideVariant,
+      selectedComboDrinkVariant: nextComboDrinkVariant,
+    } = resolveStandardComboSelection({
+      comboSides,
+      comboDrinks,
+      selectedComboSideId: nextComboSideId,
+      selectedComboDrinkId: nextComboDrinkId,
+      selectedComboSideVariantId: nextComboSideVariantId,
+      selectedComboDrinkVariantId: nextComboDrinkVariantId,
+    });
+    const comboCustomizations = buildComboCustomizationLabels({
+      isComboEligibleCategory,
+      comboType: nextComboType,
+      selectedComboDrink: nextComboDrink,
+      selectedComboDrinkVariant: nextComboDrinkVariant,
+      selectedComboSide: nextComboSide,
+      selectedComboSideVariant: nextComboSideVariant,
+    });
     const comboMacros = calculateComboNutritionTotals({
       isComboEligibleCategory,
       comboType: nextComboType,
@@ -657,19 +620,11 @@ export default function MenuItemCard({
       selectedComboSideVariant: nextComboSideVariant,
     });
 
-    const selectedIngredientCustomizationsForCart = resolvedIngredients
-      .filter((ingredient) => {
-        if (ingredient.isNoneOption) return false;
-        const ingredientCount = nextSelectedIngredientCounts[ingredient.id] ?? ingredient.defaultCount;
-        return ingredientCount !== ingredient.defaultCount;
-      })
-      .flatMap((ingredient) => {
-        const ingredientCount = nextSelectedIngredientCounts[ingredient.id] ?? ingredient.defaultCount;
-        if (suppressRemovedIngredientCustomizationsInCart && ingredientCount <= 0) {
-          return [];
-        }
-        return [formatIngredientCountCustomizationLabel(ingredient.label, ingredientCount)];
-      });
+    const selectedIngredientCustomizationsForCart = buildIngredientCustomizationLabels({
+      resolvedIngredients,
+      ingredientCounts: nextSelectedIngredientCounts,
+      suppressRemovedIngredientCustomizationsInCart,
+    });
     const nextCustomizations = [
       ...retainedCustomizations,
       ...selectedIngredientCustomizationsForCart,
