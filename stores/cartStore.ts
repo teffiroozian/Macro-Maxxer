@@ -9,7 +9,7 @@ export type { CartItem, CartMacros, CartState } from "@/types/cart";
 
 let cartState: CartState = {
   items: [],
-  lastAddedItem: null,
+  lastAddedItemId: null,
   lastAddedAt: null,
 };
 
@@ -56,7 +56,7 @@ const addItem = (item: CartItem) => {
       return {
         ...prev,
         items: [...prev.items, item],
-        lastAddedItem: item,
+        lastAddedItemId: item.id,
         lastAddedAt: Date.now(),
       };
     }
@@ -75,7 +75,7 @@ const addItem = (item: CartItem) => {
     return {
       ...prev,
       items: updatedItems,
-      lastAddedItem: updatedItem,
+      lastAddedItemId: updatedItem.id,
       lastAddedAt: Date.now(),
     };
   });
@@ -83,10 +83,16 @@ const addItem = (item: CartItem) => {
 
 // remove item 
 const removeItem = (id: string) => {
-  setCartState((prev) => ({
-    ...prev,
-    items: prev.items.filter((item) => item.id !== id),
-  }));
+  setCartState((prev) => {
+    const isRemovingLastAddedItem = prev.lastAddedItemId === id;
+
+    return {
+      ...prev,
+      items: prev.items.filter((item) => item.id !== id),
+      lastAddedItemId: isRemovingLastAddedItem ? null : prev.lastAddedItemId,
+      lastAddedAt: isRemovingLastAddedItem ? null : prev.lastAddedAt,
+    };
+  });
 };
 
 // update quantity
@@ -138,7 +144,7 @@ const updateItem = (
     return {
       ...prev,
       items,
-      lastAddedItem: options?.markAsJustAdded ? updatedItem : prev.lastAddedItem,
+      lastAddedItemId: options?.markAsJustAdded ? id : prev.lastAddedItemId,
       lastAddedAt: options?.markAsJustAdded ? Date.now() : prev.lastAddedAt,
     };
   });
@@ -149,6 +155,8 @@ const clearCart = () => {
   setCartState((prev) => ({
     ...prev,
     items: [],
+    lastAddedItemId: null,
+    lastAddedAt: null,
   }));
 };
 
@@ -158,12 +166,16 @@ export const useCart = () => {
 
   const totals = useMemo(() => computeTotals(state.items), [state.items]);
   const hasPartialNutritionData = useMemo(() => computeHasPartialNutritionData(state.items), [state.items]);
+  const lastAddedItem = useMemo(
+    () => state.items.find((item) => item.id === state.lastAddedItemId) ?? null,
+    [state.items, state.lastAddedItemId],
+  );
 
   return {
     items: state.items,
     totals,
     hasPartialNutritionData,
-    lastAddedItem: state.lastAddedItem,
+    lastAddedItem,
     lastAddedAt: state.lastAddedAt,
     addItem,
     removeItem,

@@ -89,6 +89,6 @@ export type CartItem = {
 // full state of the cart store
 export type CartState = {
   items: CartItem[];
-  lastAddedItem: CartItem | null;
+  lastAddedItemId: string | null;
   lastAddedAt: number | null;
 };
