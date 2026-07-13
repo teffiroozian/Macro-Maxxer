@@ -54,19 +54,7 @@ import type {
     RestaurantCustomizationRules,
 } from "@/types/menu";
 import type { RestaurantBuilderConfig } from "@/types/builder";
-import type { ViewOption } from "./ControlsRow";
-import type { Filters } from "@/lib/menuSections/filterOptions";
-import {
-    RANKING_DEFAULT_SORT,
-    SORT_OPTION_VALUES,
-    isDefaultOrderSort,
-    type SortOption,
-} from "@/lib/menuSections/sortOptions";
-import {
-    categorySectionId,
-    getCategoryLabel,
-    getOrderedMenuSections,
-} from "@/lib/menuSections/sorting";
+import { categorySectionId } from "@/lib/menuSections/sorting";
 import MenuSections from "./MenuSections";
 import StickyRestaurantBar from "./StickyRestaurantBar";
 import StickyMacroTotalsBar from "./StickyMacroTotalsBar";
@@ -78,14 +66,14 @@ import {
 } from "@/lib/restaurantBuilders/chipotle/cartAdapter";
 import type { ChipotleBuildConfiguration } from "@/lib/restaurantBuilders/chipotle";
 import BuildSummaryDrawer from "./restaurant-view/BuildSummaryDrawer";
+import { useChipotleBuilderState } from "./restaurant-view/useChipotleBuilderState";
+import { useRestaurantMenuControls } from "@/hooks/useRestaurantMenuControls";
 import EntreeSelectionHero from "./restaurant-view/EntreeSelectionHero";
 import KidsMealSelector from "./restaurant-view/KidsMealSelector";
 import RestaurantCategorySidebar from "./restaurant-view/RestaurantCategorySidebar";
 import {
     type ChipotleEntreeSelection,
     type ChipotleKidsMealId,
-    type ChipotleTacoCount,
-    type ChipotleTacoShell,
     type ChipotleBuilderConfig,
     type IncludedIngredientContext,
     type ProteinPortionMode,
@@ -102,12 +90,6 @@ import {
     scaleNutritionValues,
 } from "@/lib/restaurantBuilders/chipotle";
 import { resolvePrimaryCategory } from "@/lib/ingredientTabs";
-import { getDefaultMenuItemNutrition } from "@/lib/nutrition";
-import {
-    filterMenuItems,
-    getSearchTerms,
-    type RankedAllFilterKey,
-} from "@/lib/menuSections/filtering";
 import { customizationsFromLabels } from "@/lib/cart/customizationLabels";
 
 const CATEGORY_ICONS: Record<string, LucideIcon> = {
@@ -281,56 +263,14 @@ export default function RestaurantView({
     const searchParams = useSearchParams();
     const editOrigin = searchParams.get("editOrigin");
     const isEditingFromCart = editOrigin === "cart";
-    const requestedView = searchParams.get("view");
-    const defaultView: ViewOption = hasBuildYourOwn ? "ingredients" : "menu";
-    const viewMode: ViewOption =
-        requestedView === "ingredients"
-            ? "ingredients"
-            : requestedView === "ranking"
-              ? "ranking"
-              : defaultView;
-    const [sort, setSort] = useState<SortOption>(() =>
-        viewMode === "ranking"
-            ? RANKING_DEFAULT_SORT
-            : SORT_OPTION_VALUES.DEFAULT_ORDER,
-    );
-    const [filters, setFilters] = useState<Filters>({});
-    const [rankedAllFilters, setRankedAllFilters] = useState<
-        Record<RankedAllFilterKey, boolean>
-    >({
-        "main-entrees": true,
-        breakfast: false,
-        shareables: false,
-        sides: false,
-        drinks: false,
-    });
     const { searchOpen, searchQuery, setSearchQuery, openSearch, closeSearch } =
         useRestaurantSearch();
     const { addItem, items: cartItems, updateItem } = useCart();
-    const [selectedIngredientItems, setSelectedIngredientItems] = useState<
-        Record<string, { item: MenuItem; quantity: number }>
-    >({});
-    const [selectedIngredientVariantIds, setSelectedIngredientVariantIds] =
-        useState<Record<string, string>>({});
-    const [proteinPortionMode, setProteinPortionMode] =
-        useState<ProteinPortionMode>("normal");
-    const [splitPortionModeById, setSplitPortionModeById] = useState<
-        Record<string, SplitPortionMode>
-    >({});
     const [isBuildSummaryExpanded, setIsBuildSummaryExpanded] = useState(false);
     const buildStickyContainerRef = useRef<HTMLDivElement | null>(null);
     const buildCustomizationModalScrollRef = useRef<HTMLDivElement | null>(
         null,
     );
-    const appliedIncludedIngredientIdsRef = useRef<Set<string>>(new Set());
-    const pendingBuildCustomizationResetRef = useRef<
-        | { type: "none" }
-        | {
-              type: "included";
-              context: IncludedIngredientContext;
-          }
-        | { type: "empty" }
-    >({ type: "none" });
     const entreeMenuRef = useRef<HTMLDivElement | null>(null);
     const requestedEntree = searchParams.get("entree");
     const initialSelectedEntree: ChipotleEntreeSelection =
@@ -340,27 +280,33 @@ export default function RestaurantView({
         requestedEntree in entreeOptions
             ? requestedEntree
             : null;
-    const [selectedEntree, setSelectedEntree] =
-        useState<ChipotleEntreeSelection>(initialSelectedEntree);
+    const {
+        selectedIngredientItems,
+        setSelectedIngredientItems,
+        selectedIngredientVariantIds,
+        setSelectedIngredientVariantIds,
+        proteinPortionMode,
+        setProteinPortionMode,
+        splitPortionModeById,
+        setSplitPortionModeById,
+        selectedEntree,
+        setSelectedEntree,
+        selectedTacoShell,
+        setSelectedTacoShell,
+        selectedTacoCount,
+        setSelectedTacoCount,
+        selectedKidsMeal,
+        setSelectedKidsMeal,
+        appliedIncludedIngredientIdsRef,
+        pendingBuildCustomizationResetRef,
+        hydratedEditItemIdRef,
+        editingBuildBaselineConfigRef,
+        resetBuilderPortionAndVariantState,
+        queueIncludedIngredientReset,
+        queueEmptyBuilderReset,
+        clearPendingBuilderReset,
+    } = useChipotleBuilderState({ initialSelectedEntree });
     const [isEntreeMenuOpen, setIsEntreeMenuOpen] = useState(false);
-    const [selectedTacoShell, setSelectedTacoShell] =
-        useState<ChipotleTacoShell>("crispy");
-    const [selectedTacoCount, setSelectedTacoCount] =
-        useState<ChipotleTacoCount>(3);
-    const [selectedKidsMeal, setSelectedKidsMeal] =
-        useState<ChipotleKidsMealId>("build-your-own");
-    const isChipotleChipsSidesSelection =
-        isChipotleBuildPage && selectedEntree === "chips-sides";
-    const isChipotleHighProteinSelection =
-        isChipotleBuildPage && selectedEntree === "high-protein-menu";
-    const isChipotleDrinksSelection =
-        isChipotleBuildPage && selectedEntree === "drinks";
-    const effectiveViewMode: ViewOption =
-        isChipotleChipsSidesSelection ||
-        isChipotleHighProteinSelection ||
-        isChipotleDrinksSelection
-            ? "menu"
-            : viewMode;
     const selectedEntreeConfig = selectedEntree
         ? entreeOptions[selectedEntree]
         : null;
@@ -494,9 +440,6 @@ export default function RestaurantView({
         );
     }, [cartItems, editCartItemId, isChipotleBuildPage, restaurantId]);
     const isEditingBuild = Boolean(editingCartItem);
-    const hydratedEditItemIdRef = useRef<string | null>(null);
-    const editingBuildBaselineConfigRef =
-        useRef<BuildConfigurationSnapshot | null>(null);
 
     const ingredientMenuItems = useMemo<MenuItem[]>(() => {
         const normalizeIngredientCategories = (ingredient: IngredientItem) => {
@@ -702,119 +645,31 @@ export default function RestaurantView({
         [ingredientMenuItems],
     );
 
-    const allItems = useMemo(() => {
-        const baseItems = items;
-        if (
-            isChipotleBuildPage &&
-            (selectedEntree === "chips-sides" ||
-                selectedEntree === "high-protein-menu" ||
-                selectedEntree === "drinks")
-        ) {
-            return baseItems.filter(
-                (item) => item.entreeGroup === selectedEntree,
-            );
-        }
-        return baseItems;
-    }, [isChipotleBuildPage, items, selectedEntree]);
-    const sourceItems =
-        effectiveViewMode === "ingredients" ? ingredientMenuItems : allItems;
-
-    const calorieBounds = useMemo(() => {
-        const calories = sourceItems
-            .map((item) => getDefaultMenuItemNutrition(item).calories)
-            .filter(
-                (calories): calories is number => typeof calories === "number",
-            );
-
-        if (!calories.length) {
-            return { min: 0, max: 0 };
-        }
-
-        const minCal = Math.min(...calories);
-        const maxCal = Math.max(...calories);
-
-        return {
-            min: Math.floor(minCal / 50) * 50,
-            max: Math.ceil(maxCal / 50) * 50,
-        };
-    }, [sourceItems]);
-
-    const searchTerms = useMemo(
-        () => getSearchTerms(searchQuery),
-        [searchQuery],
-    );
-
-    const filteredItems = useMemo(
-        () =>
-            filterMenuItems({
-                items: sourceItems,
-                filters,
-                searchTerms,
-                rankedAllFilters,
-                isRankingView: effectiveViewMode === "ranking",
-            }),
-        [
-            effectiveViewMode,
-            sourceItems,
-            filters,
-            searchTerms,
-            rankedAllFilters,
-        ],
-    );
-
-    const visibleMenuItems = useMemo(() => {
-        if (!isChipotleBuildPage || !selectedEntree) {
-            return filteredItems;
-        }
-
-        const hiddenSections = new Set(
-            (
-                chipotleBuilderConfig?.hiddenSectionsByEntree?.[
-                    selectedEntree
-                ] ?? []
-            ).map((section) => section.trim().toLowerCase()),
-        );
-
-        if (hiddenSections.size === 0) {
-            return filteredItems;
-        }
-
-        return filteredItems
-            .map((item) => {
-                const nextCategories = (item.categories ?? []).filter(
-                    (category) =>
-                        !hiddenSections.has(category.trim().toLowerCase()),
-                );
-                const nextVariants = item.variants?.map((variant) => ({
-                    ...variant,
-                    categories: variant.categories?.filter(
-                        (category) =>
-                            !hiddenSections.has(category.trim().toLowerCase()),
-                    ),
-                }));
-
-                return {
-                    ...item,
-                    categories: nextCategories,
-                    variants: nextVariants,
-                };
-            })
-            .filter((item) => item.categories.length > 0);
-    }, [
-        filteredItems,
+    const {
+        sort,
+        filters,
+        handleFiltersChange,
+        rankedAllFilters,
+        effectiveViewMode,
+        calorieBounds,
+        visibleMenuItems,
+        orderedSections,
+        categoryOptions,
+        handleViewChange,
+        handleSortChange,
+        toggleRankedAllFilter,
+    } = useRestaurantMenuControls({
+        hasBuildYourOwn,
         isChipotleBuildPage,
         selectedEntree,
+        items,
+        ingredientMenuItems,
+        searchQuery,
         chipotleBuilderConfig,
-    ]);
-
-    const orderedSections = useMemo(
-        () =>
-            getOrderedMenuSections(
-                visibleMenuItems,
-                effectiveViewMode === "ranking" ? "menu" : effectiveViewMode,
-            ),
-        [effectiveViewMode, visibleMenuItems],
-    );
+        router,
+        pathname,
+        searchParams,
+    });
     const [activeCategory, setActiveCategory] = useState<string>(
         () => orderedSections[0] ?? "",
     );
@@ -822,20 +677,6 @@ export default function RestaurantView({
     const resolvedActiveCategory = orderedSections.includes(activeCategory)
         ? activeCategory
         : (orderedSections[0] ?? "");
-
-    const categoryOptions = useMemo(
-        () =>
-            orderedSections.map((section) => ({
-                id: section,
-                label: getCategoryLabel(
-                    section,
-                    effectiveViewMode === "ranking"
-                        ? "menu"
-                        : effectiveViewMode,
-                ),
-            })),
-        [effectiveViewMode, orderedSections],
-    );
 
     const handleCategorySelect = (categoryId: string) => {
         setActiveCategory(categoryId);
@@ -904,33 +745,6 @@ export default function RestaurantView({
             window.removeEventListener("resize", updateActiveCategoryOnScroll);
         };
     }, [activeCategory, effectiveViewMode, orderedSections]);
-
-    const handleViewChange = (nextView: ViewOption) => {
-        if (
-            (isChipotleChipsSidesSelection || isChipotleDrinksSelection) &&
-            nextView !== "menu"
-        ) {
-            return;
-        }
-
-        if (nextView === effectiveViewMode) {
-            return;
-        }
-
-        if (nextView === "ranking" && isDefaultOrderSort(sort)) {
-            setSort(RANKING_DEFAULT_SORT);
-        }
-
-        const nextParams = new URLSearchParams(searchParams.toString());
-        nextParams.set("view", nextView);
-        router.replace(`${pathname}?${nextParams.toString()}`, {
-            scroll: true,
-        });
-    };
-
-    const handleSortChange = (nextSort: SortOption) => {
-        setSort(nextSort);
-    };
 
     const handleKidsMealSelection = (kidsMeal: ChipotleKidsMealId) => {
         setSelectedKidsMeal(kidsMeal);
@@ -1718,6 +1532,8 @@ export default function RestaurantView({
             selectedEntree,
             selectedKidsMeal,
             quesadillaTripleCheeseVariantId,
+            setSelectedIngredientItems,
+            setSelectedIngredientVariantIds,
         ],
     );
 
@@ -1918,14 +1734,11 @@ export default function RestaurantView({
         hydratedEditItemIdRef.current = editingCartItem
             ? editingCartItem.id
             : null;
-        pendingBuildCustomizationResetRef.current = {
-            type: "included",
-            context: {
-                selectedEntree,
-                selectedKidsMeal,
-                selectedTacoShell,
-            },
-        };
+        queueIncludedIngredientReset({
+            selectedEntree,
+            selectedKidsMeal,
+            selectedTacoShell,
+        });
         const nextParams = new URLSearchParams(searchParams.toString());
         nextParams.delete("editCartItem");
         const nextQuery = nextParams.toString();
@@ -1936,7 +1749,7 @@ export default function RestaurantView({
 
     const handleCloseBuildCustomizationModal = useCallback(() => {
         editingBuildBaselineConfigRef.current = null;
-        pendingBuildCustomizationResetRef.current = { type: "empty" };
+        queueEmptyBuilderReset();
 
         if (isEditingFromCart) {
             router.replace("/cart", { scroll: false });
@@ -1949,7 +1762,14 @@ export default function RestaurantView({
         router.replace(nextQuery ? `${pathname}?${nextQuery}` : pathname, {
             scroll: false,
         });
-    }, [isEditingFromCart, pathname, router, searchParams]);
+    }, [
+        editingBuildBaselineConfigRef,
+        isEditingFromCart,
+        pathname,
+        queueEmptyBuilderReset,
+        router,
+        searchParams,
+    ]);
 
     useLayoutEffect(() => {
         if (!isChipotleBuildPage || !isEditingBuild) {
@@ -1973,13 +1793,11 @@ export default function RestaurantView({
 
         const resetTimer = window.setTimeout(() => {
             setIsBuildSummaryExpanded(false);
-            setProteinPortionMode("normal");
-            setSplitPortionModeById({});
-            setSelectedIngredientVariantIds({});
+            resetBuilderPortionAndVariantState();
 
             if (pendingReset.type === "empty") {
                 setSelectedIngredientItems({});
-                pendingBuildCustomizationResetRef.current = { type: "none" };
+                clearPendingBuilderReset();
                 return;
             }
 
@@ -2002,7 +1820,7 @@ export default function RestaurantView({
                 });
                 return applyIngredientPortionNutrition(resetSelections);
             });
-            pendingBuildCustomizationResetRef.current = { type: "none" };
+            clearPendingBuilderReset();
         }, 0);
 
         return () => {
@@ -2010,9 +1828,13 @@ export default function RestaurantView({
         };
     }, [
         applyIngredientPortionNutrition,
+        clearPendingBuilderReset,
         ingredientItemsById,
         isChipotleBuildPage,
         isEditingBuild,
+        pendingBuildCustomizationResetRef,
+        resetBuilderPortionAndVariantState,
+        setSelectedIngredientItems,
     ]);
 
     useEffect(() => {
@@ -2078,9 +1900,19 @@ export default function RestaurantView({
         buildSelectedItemsFromConfiguration,
         editingCartItem,
         selectedEntree,
+        editingBuildBaselineConfigRef,
+        hydratedEditItemIdRef,
         selectedKidsMeal,
         selectedTacoCount,
         selectedTacoShell,
+        setProteinPortionMode,
+        setSelectedEntree,
+        setSelectedIngredientItems,
+        setSelectedIngredientVariantIds,
+        setSelectedKidsMeal,
+        setSelectedTacoCount,
+        setSelectedTacoShell,
+        setSplitPortionModeById,
     ]);
 
     const adjustIngredientQuantity = (ingredientId: string, delta: 1 | -1) => {
@@ -2133,21 +1965,6 @@ export default function RestaurantView({
 
             next[ingredientId] = { ...existing, quantity: nextQuantity };
             return next;
-        });
-    };
-
-    const toggleRankedAllFilter = (key: RankedAllFilterKey) => {
-        setRankedAllFilters((previous) => {
-            const isCurrentlyChecked = previous[key];
-            const checkedCount = Object.values(previous).filter(Boolean).length;
-            if (isCurrentlyChecked && checkedCount === 1) {
-                return previous;
-            }
-
-            return {
-                ...previous,
-                [key]: !isCurrentlyChecked,
-            };
         });
     };
 
@@ -3204,7 +3021,7 @@ export default function RestaurantView({
                 sort={sort}
                 onSortChange={handleSortChange}
                 filters={filters}
-                onFiltersChange={setFilters}
+                onFiltersChange={handleFiltersChange}
                 searchOpen={searchOpen}
                 searchQuery={searchQuery}
                 setSearchQuery={setSearchQuery}
