@@ -1,11 +1,12 @@
 import { useMemo } from "react";
+import { getCartItemVariantId } from "@/lib/cart/itemAccessors";
 import { useCart } from "@/stores/cartStore";
 
 type MatchingSignatureInput = {
   restaurantId: string;
   itemId: string;
   variantId?: string;
-  optionSelections?: { label: string; quantity?: number }[];
+  optionSelections?: import("@/types/cart").CartSelectionOption[];
   customizations?: import("@/types/cart").CartCustomization[];
 };
 
@@ -18,7 +19,7 @@ export function useMenuItemCartAdapter() {
       const key = [
         item.restaurantId,
         item.itemId,
-        item.variantId ?? "",
+        getCartItemVariantId(item) ?? "",
         (item.selection.type === "standard" ? JSON.stringify(item.selection.optionSelections ?? []) : ""),
         JSON.stringify(item.customizations ?? []),
       ].join("::");

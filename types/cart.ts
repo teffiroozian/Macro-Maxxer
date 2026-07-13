@@ -3,7 +3,7 @@ import type { CoreMacros, Nutrition } from "@/types/nutrition";
 export type CartMacros = CoreMacros;
 
 // common portion values we expect
-export type CartBuildIngredientPortion = "light" | "normal" | "extra" | string;
+export type CartBuildIngredientPortion = "light" | "normal" | "extra";
 
 // one ingredient selected inside a build-your-own cart item
 export type CartBuildIngredient = {
@@ -75,9 +75,12 @@ export type CartItem = {
   itemId: string;
   name: string;
   image: string;
+  // Convenience mirror for legacy callers; standard item variant source of truth is selection.variantId.
   variantId?: string;
+  // Structured customization data. Keep top-level until combo/ingredient customization data is fully folded into selection.
   customizations?: CartCustomization[];
   quantity: number;
+  // Convenience/legacy macro subset. Prefer deriving core macros from nutritionPerItem for new reads.
   macrosPerItem: CartMacros;
   nutritionPerItem: Nutrition;
   selection: CartSelection;

@@ -1,5 +1,6 @@
 import { fromUniversalChipotleBuildConfiguration } from "@/lib/restaurantBuilders/chipotle/cartAdapter";
 import { getCustomizationLabels } from "@/lib/cart/customizationLabels";
+import { getCartItemCoreMacros } from "@/lib/cart/itemAccessors";
 import type { CartItem } from "@/types/cart";
 import type { IngredientItem, MenuItem } from "@/types/menu";
 
@@ -21,6 +22,8 @@ function getChipotleBuildConfiguration(cartItem: CartItem) {
 }
 
 function buildCartFallbackMenuItem(cartItem: CartItem): MenuItem {
+  const macros = getCartItemCoreMacros(cartItem);
+
   return {
     id: cartItem.itemId,
     name: cartItem.name,
@@ -29,10 +32,10 @@ function buildCartFallbackMenuItem(cartItem: CartItem): MenuItem {
     categories: ["Cart"],
     servingType: "single",
     nutrition: {
-      calories: cartItem.macrosPerItem.calories,
-      protein: cartItem.macrosPerItem.protein,
-      carbs: cartItem.macrosPerItem.carbs,
-      totalFat: cartItem.macrosPerItem.totalFat,
+      calories: macros.calories,
+      protein: macros.protein,
+      carbs: macros.carbs,
+      totalFat: macros.totalFat,
     },
   };
 }

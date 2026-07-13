@@ -16,8 +16,9 @@ import type { CoreMacros, Nutrition } from "@/types/nutrition";
 import { useCart } from "@/stores/cartStore";
 import { parseComboCustomization } from "@/lib/menuItemCard/comboCustomizationParser";
 import {
-  getSelectedAddonsFromLabel,
-  getSelectedSauceCountsFromLabel,
+  buildStructuredOptionSelections,
+  getSelectedAddonsFromSelection,
+  getSelectedSauceCountsFromSelection,
 } from "@/lib/menuItemCard/cartLabelUtils";
 import { getSelectedIngredientCountsFromCustomizations } from "@/lib/menuItemCard/ingredientCountCustomization";
 import {
@@ -46,8 +47,9 @@ import type { ChipotleBuildConfiguration } from "@/lib/restaurantBuilders/chipot
 import { fromUniversalChipotleBuildConfiguration, toUniversalChipotleBuildConfiguration } from "@/lib/restaurantBuilders/chipotle/cartAdapter";
 import { SORT_OPTION_VALUES } from "@/lib/menuSections/sortOptions";
 import { resolveMenuItemVariantNutrition } from "@/lib/nutrition";
-import { customizationsFromLabels, getCustomizationLabels, getSelectionDetailsLabel } from "@/lib/cart/customizationLabels";
+import { customizationsFromLabels, getCustomizationLabels } from "@/lib/cart/customizationLabels";
 import { resolveComboDrinkOptions, resolveComboMealConfig, resolveComboSideOptions } from "@/lib/comboMeals";
+import { getCartItemVariantId } from "@/lib/cart/itemAccessors";
 
 const emptyAddon: MenuItem = {
   id: "none",
@@ -146,13 +148,13 @@ export default function ItemRouteModal({
     () => parseComboCustomization(getCustomizationLabels(editingCartItem?.customizations)),
     [editingCartItem?.customizations]
   );
-  const [selectedVariantId, setSelectedVariantId] = useState(editingCartItem?.variantId ?? defaultVariantId);
+  const [selectedVariantId, setSelectedVariantId] = useState(editingCartItem ? getCartItemVariantId(editingCartItem) ?? defaultVariantId : defaultVariantId);
   const [quantity, setQuantity] = useState(editingCartItem?.quantity ?? 1);
   const [selectedAddons, setSelectedAddons] = useState<Partial<Record<string, MenuItem>>>(() =>
-    getSelectedAddonsFromLabel(item, addons, editingCartItem ? getSelectionDetailsLabel(editingCartItem.selection) : undefined)
+    getSelectedAddonsFromSelection(item, addons, editingCartItem?.selection)
   );
   const [selectedSauceCounts, setSelectedSauceCounts] = useState<Record<string, number>>(() =>
-    getSelectedSauceCountsFromLabel(item, addons, editingCartItem ? getSelectionDetailsLabel(editingCartItem.selection) : undefined)
+    getSelectedSauceCountsFromSelection(item, addons, editingCartItem?.selection)
   );
   const selectedVariant = variants?.find((variant) => variant.id === selectedVariantId);
   const selectedItemImage = selectedVariant?.image ?? item.image;
@@ -387,17 +389,8 @@ export default function ItemRouteModal({
     [ingredientCounts, ingredientLookup]
   );
 
-  const selectionDetailsLabel = useMemo(() => {
-    const dressingSegments = Object.values(selectedAddons)
-      .filter((addon): addon is MenuItem => Boolean(addon && addon.name !== "None"))
-      .map((addon) => addon.name);
-    const sauceSegments = Object.entries(selectedSauceCounts)
-      .filter(([, count]) => count > 0)
-      .map(([name, count]) => (count === 1 ? name : `${name} x${count}`));
+  const optionSelections = useMemo(() => buildStructuredOptionSelections(selectedAddons, selectedSauceCounts, addons), [addons, selectedAddons, selectedSauceCounts]);
 
-    const segments = [...dressingSegments, ...sauceSegments];
-    return segments.length > 0 ? segments.join(" + ") : undefined;
-  }, [selectedAddons, selectedSauceCounts]);
 
   const selectedIngredientCustomizations = useMemo(
     () =>
@@ -1005,9 +998,9 @@ export default function ItemRouteModal({
                 const buildConfiguration = buildHighProteinBuildConfiguration(item, ingredients);
                 return buildConfiguration
                   ? { type: "build-your-own" as const, buildConfiguration: toUniversalChipotleBuildConfiguration(buildConfiguration) }
-                  : { type: "standard" as const, variantId: selectedVariant?.id, optionSelections: selectionDetailsLabel ? selectionDetailsLabel.split(" + ").map((label) => ({ label })) : undefined };
+                  : { type: "standard" as const, variantId: selectedVariant?.id, optionSelections };
               })()
-            : { type: "standard" as const, variantId: selectedVariant?.id, optionSelections: selectionDetailsLabel ? selectionDetailsLabel.split(" + ").map((label) => ({ label })) : undefined },
+            : { type: "standard" as const, variantId: selectedVariant?.id, optionSelections },
     };
 
     handleClose();

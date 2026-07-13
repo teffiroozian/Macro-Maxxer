@@ -14,9 +14,8 @@ import {
   getDefaultVariantId,
   sumNutrition,
 } from "@/lib/menuItemCalculations";
-import { formatOptionLabelCounts } from "@/lib/cartOptionLabels";
 import { customizationsFromLabels } from "@/lib/cart/customizationLabels";
-import { buildOptionLabelCounts } from "@/lib/menuItemCard/cartLabelUtils";
+import { buildStructuredOptionSelections } from "@/lib/menuItemCard/cartLabelUtils";
 import { formatIngredientCountCustomizationLabel } from "@/lib/menuItemCard/ingredientCountCustomization";
 import IngredientCompactCard from "./menu-item-card/IngredientCompactCard";
 import MenuCardActions from "./menu-item-card/MenuCardActions";
@@ -549,9 +548,8 @@ export default function MenuItemCard({
     });
   }, [addons, initialCartCustomizations, item.addonRefs, resolvedIngredients]);
 
-  const selectionDetailsLabel = useMemo(() => {
-    return formatOptionLabelCounts(buildOptionLabelCounts(selectedAddons, selectedSauceCounts));
-  }, [selectedAddons, selectedSauceCounts]);
+  const optionSelections = useMemo(() => buildStructuredOptionSelections(selectedAddons, selectedSauceCounts, addons), [addons, selectedAddons, selectedSauceCounts]);
+
 
   const customizations = useMemo(() => {
     const ingredientCountLabels = resolvedIngredients
@@ -600,10 +598,10 @@ export default function MenuItemCard({
       restaurantId,
       itemId: item.id ?? item.name,
       variantId: selectedVariantForCart?.id,
-      optionSelections: selectionDetailsLabel ? selectionDetailsLabel.split(" + ").map((label) => ({ label })) : undefined,
+      optionSelections,
       customizations: customizationsFromLabels(customizations),
     });
-  }, [customizations, getMatchingItem, isCartMode, item.id, item.name, selectionDetailsLabel, restaurantId, selectedVariantForCart?.id]);
+  }, [customizations, getMatchingItem, isCartMode, item.id, item.name, optionSelections, restaurantId, selectedVariantForCart?.id]);
 
   const emitCartConfiguration = (
     nextVariantId: string,
@@ -741,8 +739,8 @@ export default function MenuItemCard({
         quantity: 1,
         selection: highProteinBuildConfiguration
           ? { type: "build-your-own", buildConfiguration: toUniversalChipotleBuildConfiguration(highProteinBuildConfiguration) }
-          : { type: "standard", variantId: selectedVariantForCart?.id, optionSelections: selectionDetailsLabel ? selectionDetailsLabel.split(" + ").map((label) => ({ label })) : undefined },
-        nutritionPerItem: baseForCart,
+          : { type: "standard", variantId: selectedVariantForCart?.id, optionSelections },
+        nutritionPerItem: nutrition,
         macrosPerItem: calculateMenuItemMacrosPerItem({
           baseNutrition: baseForCart,
           addonTotals,
