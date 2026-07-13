@@ -1,9 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
-import type { CartItem } from "@/types/cart";
-import type { MenuItem, RestaurantAddonGroups } from "@/types/menu";
-import type { RestaurantData } from "@/types/restaurant";
+import { useMemo } from "react";
 import StickyMacroTotalsBar from "@/components/StickyMacroTotalsBar";
 import CartNutritionSummary from "@/components/cart/CartNutritionSummary";
 import GlobalMobileNav from "@/components/GlobalMobileNav";
@@ -11,41 +8,16 @@ import DesktopNav from "@/components/DesktopNav";
 import CartItemPreviewRow from "@/components/CartItemPreviewRow";
 import ItemRouteModal from "@/components/ItemRouteModal";
 import { useCart } from "@/stores/cartStore";
-import { resolveAddonMenuItems } from "@/lib/addonGroups";
 import { buildCartNutritionTotals } from "@/lib/cart/nutrition";
 import { formatCartItemName, summarizeItem } from "@/lib/cart/displayLabels";
-import { getRestaurantData } from "@/lib/restaurants";
-
-type EditState = {
-  cartItemId: string;
-  restaurant: RestaurantData;
-  sourceItem: MenuItem;
-};
-
-function getSourceItem(cartItem: CartItem, restaurant: RestaurantData) {
-  return restaurant.items.find((item) => (item.id ?? item.name) === cartItem.itemId) ?? null;
-}
+import { useCartItemEditModal } from "@/hooks/useCartItemEditModal";
 
 export default function CartPage() {
   const { items, totals, updateQuantity } = useCart();
-  const [editState, setEditState] = useState<EditState | null>(null);
-  const [loadingEditItemId, setLoadingEditItemId] = useState<string | null>(null);
+  const { editState, loadingEditItemId, openEditModal, closeEditModal } = useCartItemEditModal();
 
   // calculate total nutrition of the cart
   const nutritionTotals = useMemo(() => buildCartNutritionTotals(items), [items]);
-
-  const openEditModal = async (cartItem: CartItem) => {
-    setLoadingEditItemId(cartItem.id);
-    try {
-      const restaurant = await getRestaurantData(cartItem.restaurantId);
-      const sourceItem = restaurant ? getSourceItem(cartItem, restaurant) : null;
-      if (restaurant && sourceItem) {
-        setEditState({ cartItemId: cartItem.id, restaurant, sourceItem });
-      }
-    } finally {
-      setLoadingEditItemId(null);
-    }
-  };
 
   const macroTotalGrams = totals.protein + totals.carbs + totals.totalFat;
   const macroSegments = [
@@ -152,12 +124,12 @@ export default function CartPage() {
           restaurantPath={`/restaurant/${editState.restaurant.id}`}
           item={editState.sourceItem}
           menuItems={editState.restaurant.items}
-          addons={resolveAddonMenuItems(editState.restaurant.addonGroups as RestaurantAddonGroups, editState.restaurant.items)}
+          addons={editState.addons}
           ingredients={editState.restaurant.ingredients}
           customizationRules={editState.restaurant.customizationRules}
           closeBehavior="local"
           editCartItemId={editState.cartItemId}
-          onClose={() => setEditState(null)}
+          onClose={closeEditModal}
         />
       ) : null}
     </>
