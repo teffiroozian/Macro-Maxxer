@@ -1,7 +1,6 @@
 import { notFound } from "next/navigation";
 import ItemRouteModal from "@/components/ItemRouteModal";
-import { resolveAddonMenuItems } from "@/lib/addonGroups";
-import { getItemBySlug, getRestaurantData } from "@/lib/restaurants";
+import { getRestaurantItemRouteData } from "@/lib/restaurantItemRouteData";
 
 export default async function ItemModalPage({
   params,
@@ -9,14 +8,11 @@ export default async function ItemModalPage({
   params: Promise<{ id: string; itemSlug: string }>;
 }) {
   const { id, itemSlug } = await params;
-  const restaurant = await getRestaurantData(id);
+  const routeData = await getRestaurantItemRouteData(id, itemSlug);
 
-  if (!restaurant) notFound();
+  if (!routeData) notFound();
 
-  const item = getItemBySlug(restaurant.items, itemSlug);
-  if (!item) notFound();
-
-  const addons = resolveAddonMenuItems(restaurant.addonGroups, restaurant.items);
+  const { restaurant, item, addons } = routeData;
 
   return (
     <ItemRouteModal

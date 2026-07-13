@@ -6,10 +6,10 @@ export default function RestaurantNotFound() {
       <Link href="/" style={{ textDecoration: "none", cursor: "pointer" }}>
         ← Back to homepage
       </Link>
-      <h1 style={{ marginTop: 16 }}>Restaurant not found</h1>
+      <h1 style={{ marginTop: 16 }}>Page not found</h1>
       <p style={{ color: "#555" }}>
-        We couldn&apos;t find that restaurant. Please choose another restaurant from
-        the homepage.
+        We couldn&apos;t find that restaurant or menu item. Return to the homepage
+        and try again.
       </p>
     </main>
   );

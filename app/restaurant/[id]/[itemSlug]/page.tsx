@@ -1,8 +1,7 @@
 import { notFound } from "next/navigation";
 import ItemRouteModal from "@/components/ItemRouteModal";
 import RestaurantPageContent from "@/components/RestaurantPageContent";
-import { resolveAddonMenuItems } from "@/lib/addonGroups";
-import { getItemBySlug, getRestaurantData } from "@/lib/restaurants";
+import { getRestaurantItemRouteData } from "@/lib/restaurantItemRouteData";
 
 export default async function ItemPage({
   params,
@@ -11,16 +10,11 @@ export default async function ItemPage({
 }) {
   // recieves two params, one for restaurant one for item
   const { id, itemSlug } = await params;
-  // loads full menu data
-  const restaurant = await getRestaurantData(id);
+  const routeData = await getRestaurantItemRouteData(id, itemSlug);
 
-  if (!restaurant) notFound();
+  if (!routeData) notFound();
 
-  // finds specific item
-  const item = getItemBySlug(restaurant.items, itemSlug);
-  if (!item) notFound();
-
-  const addons = resolveAddonMenuItems(restaurant.addonGroups, restaurant.items);
+  const { restaurant, item, addons } = routeData;
 
   return (
     <>
