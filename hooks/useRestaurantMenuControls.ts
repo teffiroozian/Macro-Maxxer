@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import type { ReadonlyURLSearchParams } from "next/navigation";
 import type { ViewOption } from "@/components/ControlsRow";
 import type { MenuItem } from "@/types/menu";
@@ -215,34 +215,49 @@ export function useRestaurantMenuControls({
         [effectiveViewMode, orderedSections],
     );
 
-    const handleViewChange = (nextView: ViewOption) => {
-        if (
-            (isChipotleChipsSidesSelection || isChipotleDrinksSelection) &&
-            nextView !== "menu"
-        ) {
-            return;
-        }
+    const handleViewChange = useCallback(
+        (nextView: ViewOption) => {
+            if (
+                (isChipotleChipsSidesSelection || isChipotleDrinksSelection) &&
+                nextView !== "menu"
+            ) {
+                return;
+            }
 
-        if (nextView === effectiveViewMode) {
-            return;
-        }
+            if (nextView === effectiveViewMode) {
+                return;
+            }
 
-        if (nextView === "ranking" && isDefaultOrderSort(sort)) {
-            setSort(RANKING_DEFAULT_SORT);
-        }
+            if (nextView === "ranking" && isDefaultOrderSort(sort)) {
+                setSort(RANKING_DEFAULT_SORT);
+            }
 
-        const nextParams = new URLSearchParams(searchParams.toString());
-        nextParams.set("view", nextView);
-        router.replace(`${pathname}?${nextParams.toString()}`, {
-            scroll: true,
-        });
-    };
+            const nextParams = new URLSearchParams(searchParams.toString());
+            nextParams.set("view", nextView);
+            router.replace(`${pathname}?${nextParams.toString()}`, {
+                scroll: true,
+            });
+        },
+        [
+            effectiveViewMode,
+            isChipotleChipsSidesSelection,
+            isChipotleDrinksSelection,
+            pathname,
+            router,
+            searchParams,
+            sort,
+        ],
+    );
 
-    const handleSortChange = (nextSort: SortOption) => {
+    const handleSortChange = useCallback((nextSort: SortOption) => {
         setSort(nextSort);
-    };
+    }, []);
 
-    const toggleRankedAllFilter = (key: RankedAllFilterKey) => {
+    const handleFiltersChange = useCallback((nextFilters: Filters) => {
+        setFilters(nextFilters);
+    }, []);
+
+    const toggleRankedAllFilter = useCallback((key: RankedAllFilterKey) => {
         setRankedAllFilters((previous) => {
             const isCurrentlyChecked = previous[key];
             const checkedCount = Object.values(previous).filter(Boolean).length;
@@ -255,12 +270,12 @@ export function useRestaurantMenuControls({
                 [key]: !isCurrentlyChecked,
             };
         });
-    };
+    }, []);
 
     return {
         sort,
         filters,
-        setFilters,
+        handleFiltersChange,
         rankedAllFilters,
         viewMode,
         effectiveViewMode,

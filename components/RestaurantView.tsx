@@ -648,7 +648,7 @@ export default function RestaurantView({
     const {
         sort,
         filters,
-        setFilters,
+        handleFiltersChange,
         rankedAllFilters,
         effectiveViewMode,
         calorieBounds,
@@ -3021,7 +3021,7 @@ export default function RestaurantView({
                 sort={sort}
                 onSortChange={handleSortChange}
                 filters={filters}
-                onFiltersChange={setFilters}
+                onFiltersChange={handleFiltersChange}
                 searchOpen={searchOpen}
                 searchQuery={searchQuery}
                 setSearchQuery={setSearchQuery}
