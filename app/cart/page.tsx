@@ -13,42 +13,8 @@ import ItemRouteModal from "@/components/ItemRouteModal";
 import { useCart } from "@/stores/cartStore";
 import { resolveAddonMenuItems } from "@/lib/addonGroups";
 import { buildCartNutritionTotals } from "@/lib/cart/nutrition";
-import { getCustomizationLabels, getSelectionDetailsLabel } from "@/lib/cart/customizationLabels";
+import { formatCartItemName, summarizeItem } from "@/lib/cart/displayLabels";
 import { getRestaurantData } from "@/lib/restaurants";
-
-function isIngredientCustomizationLabel(label: string) {
-  return /:\s*(Removed|(\d+)x|Remove|Extra|Light)\s*$/i.test(label);
-}
-
-function hasComboCustomization(item: CartItem) {
-  return (item.customizations ?? []).some((customization) => customization.kind === "combo");
-}
-
-function formatCartItemName(item: CartItem) {
-  if (!hasComboCustomization(item)) return item.name;
-  return /\bcombo\b/i.test(item.name) ? item.name : `${item.name} Combo`;
-}
-
-function summarizeItem(item: CartItem) {
-  const selectionDetailsLabel = getSelectionDetailsLabel(item.selection);
-  const customizationLabels = getCustomizationLabels(item.customizations);
-
-  const ingredientCustomizations: string[] = [];
-  const sideCustomizations: string[] = [];
-  const drinkCustomizations: string[] = [];
-  const otherCustomizations: string[] = [];
-
-  customizationLabels.forEach((rawLabel) => {
-    const label = rawLabel.trim();
-    if (!label || /^Combo Meal$/i.test(label)) return;
-    if (/^Side:\s*/i.test(label)) { sideCustomizations.push(label); return; }
-    if (/^Drink:\s*/i.test(label)) { drinkCustomizations.push(label); return; }
-    if (isIngredientCustomizationLabel(label)) { ingredientCustomizations.push(label); return; }
-    otherCustomizations.push(label);
-  });
-
-  return [...ingredientCustomizations, ...sideCustomizations, ...drinkCustomizations, ...otherCustomizations, selectionDetailsLabel].filter(Boolean).join(" • ");
-}
 
 type EditState = {
   cartItemId: string;
