@@ -3,7 +3,10 @@ import {
   MENU_SECTION_ORDER,
 } from "@/app/data/menuCategoryConfig";
 import type { MenuItem } from "@/types/menu";
-import { getDefaultMenuItemNutrition } from "@/lib/nutrition";
+import {
+  getDefaultMenuItemNutrition,
+  getProteinPer100Calories,
+} from "@/lib/nutrition";
 import {
   SORT_OPTION_VALUES,
   isDefaultOrderSort,
@@ -72,19 +75,6 @@ function titleCase(text: string) {
     .join("");
 }
 
-function proteinScore(item: MenuItem) {
-  const nutrition = getSortNutrition(item);
-  if (
-    nutrition.calories === undefined ||
-    nutrition.protein === undefined ||
-    nutrition.calories <= 0
-  ) {
-    return undefined;
-  }
-
-  return (nutrition.protein / nutrition.calories) * 100;
-}
-
 function getSortNutrition(item: MenuItem) {
   return getDefaultMenuItemNutrition(item);
 }
@@ -149,9 +139,16 @@ export function sortItems(
       )
     );
   } else if (sort === SORT_OPTION_VALUES.BEST_RATIO) {
-    sorted.sort((a, b) =>
-      compareNumericWithMissingLast(proteinScore(a), proteinScore(b), "desc")
-    );
+    sorted.sort((a, b) => {
+      const aNutrition = getSortNutrition(a);
+      const bNutrition = getSortNutrition(b);
+
+      return compareNumericWithMissingLast(
+        getProteinPer100Calories(aNutrition.protein, aNutrition.calories),
+        getProteinPer100Calories(bNutrition.protein, bNutrition.calories),
+        "desc"
+      );
+    });
   } else {
     sorted.sort((a, b) =>
       compareNumericWithMissingLast(
