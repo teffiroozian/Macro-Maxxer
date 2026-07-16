@@ -9,8 +9,6 @@ import {
   getDefaultVariantId,
   sumNutrition,
 } from "@/lib/menuItemCalculations";
-import { customizationsFromLabels } from "@/lib/cart/customizationLabels";
-import { buildStructuredOptionSelections } from "@/lib/menuItemCard/cartLabelUtils";
 import IngredientCompactCard from "./menu-item-card/IngredientCompactCard";
 import MenuItemCardHeader from "./menu-item-card/MenuItemCardHeader";
 import MenuItemMacroSummary from "./menu-item-card/MenuItemMacroSummary";
@@ -18,31 +16,12 @@ import MenuCardActions from "./menu-item-card/MenuCardActions";
 import CartCardActions from "./menu-item-card/CartCardActions";
 import { useMenuItemCartAdapter } from "./menu-item-card/useMenuItemCartAdapter";
 import { useMenuItemConfiguration } from "./menu-item-card/useMenuItemConfiguration";
-import {
-  buildHighProteinBuildConfiguration,
-  isChipotleHighProteinMenuItem,
-} from "@/lib/restaurantBuilders/chipotle/highProtein";
-import { toUniversalChipotleBuildConfiguration } from "@/lib/restaurantBuilders/chipotle/cartAdapter";
+import { isChipotleHighProteinMenuItem } from "@/lib/restaurantBuilders/chipotle/highProtein";
 import { parseIncludedIngredientEntry } from "@/lib/itemIngredients";
 
-import {
-  calculateAddonTotals,
-  calculateComboNutritionTotals,
-  calculateIngredientCountTotals,
-  calculateMenuItemMacrosPerItem,
-} from "@/lib/menuItemCard/totals";
 import { resolveComboDrinkOptions, resolveComboMealConfig, resolveComboSideOptions } from "@/lib/comboMeals";
-import {
-  buildComboCustomizationLabels,
-  buildIngredientCustomizationLabels,
-  calculateStandardItemNutrition,
-  resolveActiveAddons,
-  resolveSelectedSauceOptions,
-  resolveStandardComboSelection,
-  resolveStandardIngredientCounts,
-  resolveStandardItemVariant,
-} from "@/lib/cart/standardItemConfiguration";
-import { normalizeNutrition, resolveMenuItemVariantNutrition } from "@/lib/nutrition";
+import { normalizeNutrition } from "@/lib/nutrition";
+import { resolveFinalizedCartConfiguration, type CartConfigurationPayload } from "@/lib/menuItemCard/finalizedCartConfiguration";
 
 function pad2(n: number) {
   return String(n).padStart(2, "0");
@@ -157,20 +136,6 @@ const emptyAddon: MenuItem = {
 
 const maxSauceSelections = 5;
 
-type CartConfigurationPayload = {
-  variantId?: string;
-  image?: string;
-  customizations?: import("@/types/cart").CartCustomization[];
-  macrosPerItem: {
-    calories: number;
-    protein: number;
-    carbs: number;
-    totalFat: number;
-  };
-};
-
-
-
 export default function MenuItemCard({
   restaurantId,
   item,
@@ -276,8 +241,7 @@ export default function MenuItemCard({
       : selectedVariantId;
   const selectedVariant = variants?.find((variant) => variant.id === effectiveSelectedVariantId);
   const selectedItemImage = selectedVariant?.image ?? item.image;
-  const baseNutrition = resolveMenuItemVariantNutrition(item, selectedVariant);
-
+  const isCartMode = mode === "cart";
 
   const resolvedIngredients = useMemo(
     () => resolvePanelIngredients(item, ingredientItems, addons, menuItems ?? [], variants, selectedVariantId, customizationRules),
@@ -315,27 +279,6 @@ export default function MenuItemCard({
     return lookup;
   }, [resolvedIngredients]);
 
-  const ingredientCounts = useMemo(
-    () => resolveStandardIngredientCounts({ resolvedIngredients, selectedIngredientCounts }),
-    [resolvedIngredients, selectedIngredientCounts]
-  );
-  const selectedSauceOptions = useMemo(
-    () => resolveSelectedSauceOptions({ addons, selectedSauceCounts }),
-    [addons, selectedSauceCounts]
-  );
-
-  const activeAddons = useMemo(
-    () => resolveActiveAddons({ selectedAddons, selectedSauceOptions }),
-    [selectedAddons, selectedSauceOptions]
-  );
-  const addonNutritionTotals = useMemo(() => calculateAddonTotals(activeAddons), [activeAddons]);
-  const addonTotals = addonNutritionTotals;
-
-  const ingredientCountTotals = useMemo(
-    () => calculateIngredientCountTotals(ingredientCounts, resolvedIngredients),
-    [ingredientCounts, resolvedIngredients]
-  );
-
   const comboConfig = useMemo(
     () => resolveComboMealConfig(restaurantId, item, menuItems),
     [item, menuItems, restaurantId]
@@ -369,29 +312,76 @@ export default function MenuItemCard({
     const matchedVariant = drinkVariants.find((variant) => variant.label === parsedInitialComboCustomization.drinkVariantLabel);
     return matchedVariant?.id ?? getDefaultVariantId(matchedDrink);
   });
-  const { selectedComboSide, selectedComboDrink, selectedComboSideVariant, selectedComboDrinkVariant } = useMemo(
-    () => resolveStandardComboSelection({
+
+  const retainedCustomizations = useMemo(() => {
+    if (!initialCartCustomizations || initialCartCustomizations.length === 0) return [];
+
+    const addonNames = new Set<string>();
+    for (const ref of item.addonRefs ?? []) {
+      for (const addon of addons?.[ref]?.items ?? []) {
+        addonNames.add(addon.name);
+      }
+    }
+
+    const ingredientLabels = new Set(
+      resolvedIngredients
+        .filter((ingredient) => !ingredient.isNoneOption)
+        .map((ingredient) => ingredient.label.toLowerCase())
+    );
+
+    return initialCartCustomizations.filter((label) => {
+      const normalized = label.replace(/^\+\s*/, "").trim();
+      const ingredientMatch = normalized.match(/^(.*?):\s*(Removed|(\d+(?:\.\d+)?)x|Remove|Extra)$/i);
+      const isIngredientCustomization =
+        ingredientMatch ? ingredientLabels.has(ingredientMatch[1].trim().toLowerCase()) : false;
+
+      return !addonNames.has(normalized) && !isIngredientCustomization && normalized !== "Combo Meal" && !/^Side:\s*/i.test(normalized) && !/^Drink:\s*/i.test(normalized);
+    });
+  }, [addons, initialCartCustomizations, item.addonRefs, resolvedIngredients]);
+
+  const finalizedCartConfiguration = useMemo(
+    () => resolveFinalizedCartConfiguration({
+      restaurantId,
+      item,
+      variants,
+      selectedVariantId,
+      defaultVariantId,
+      resolvedIngredients,
+      selectedIngredientCounts,
+      selectedAddons,
+      selectedSauceCounts,
+      addons,
       comboSides,
       comboDrinks,
+      isComboEligibleCategory,
+      comboType,
       selectedComboSideId,
       selectedComboDrinkId,
       selectedComboSideVariantId,
       selectedComboDrinkVariantId,
+      suppressRemovedIngredientCustomizationsInCart,
+      retainedCustomizationLabels: isCartMode ? retainedCustomizations : [],
+      ingredientItems,
     }),
-    [comboDrinks, comboSides, selectedComboDrinkId, selectedComboDrinkVariantId, selectedComboSideId, selectedComboSideVariantId]
+    [addons, comboDrinks, comboSides, comboType, defaultVariantId, ingredientItems, isCartMode, isComboEligibleCategory, item, restaurantId, resolvedIngredients, retainedCustomizations, selectedAddons, selectedComboDrinkId, selectedComboDrinkVariantId, selectedComboSideId, selectedComboSideVariantId, selectedIngredientCounts, selectedSauceCounts, selectedVariantId, suppressRemovedIngredientCustomizationsInCart, variants]
   );
-  const comboNutritionTotals = useMemo(
-    () =>
-      calculateComboNutritionTotals({
-        isComboEligibleCategory,
-        comboType,
-        selectedComboDrink,
-        selectedComboDrinkVariant,
-        selectedComboSide,
-        selectedComboSideVariant,
-      }),
-    [comboType, isComboEligibleCategory, selectedComboDrink, selectedComboDrinkVariant, selectedComboSide, selectedComboSideVariant]
-  );
+
+  const {
+    selectedVariant: selectedVariantForCart,
+    baseNutrition,
+    ingredientCounts,
+    activeAddons,
+    addonTotals,
+    ingredientCountTotals,
+    comboNutritionTotals,
+    selectedComboSide,
+    selectedComboDrink,
+    selectedComboSideVariant,
+    selectedComboDrinkVariant,
+    customizations,
+    duplicateMatchingConfiguration,
+    nutritionPerItem: nutrition,
+  } = finalizedCartConfiguration;
 
   const customizationTotals = useMemo(
     () => ({
@@ -405,11 +395,11 @@ export default function MenuItemCard({
 
   const hasMods = useMemo(
     () =>
-      Object.values(selectedAddons).some((addon) => addon && addon.name !== "None") ||
+      activeAddons.length > 0 ||
       Object.values(selectedSauceCounts).some((count) => count > 0) ||
       resolvedIngredients.some((ingredient) => (ingredientCounts[ingredient.id] ?? ingredient.defaultCount) !== ingredient.defaultCount) ||
       (isComboEligibleCategory && comboType === "combo-meal" && Boolean(selectedComboSide || selectedComboDrink)),
-    [comboType, ingredientCounts, isComboEligibleCategory, resolvedIngredients, selectedAddons, selectedComboDrink, selectedComboSide, selectedSauceCounts]
+    [activeAddons.length, comboType, ingredientCounts, isComboEligibleCategory, resolvedIngredients, selectedComboDrink, selectedComboSide, selectedSauceCounts]
   );
 
   const hasActiveCustomization = useMemo(
@@ -425,17 +415,6 @@ export default function MenuItemCard({
     resetConfiguration();
   }
 
-  const nutrition = useMemo(
-    () =>
-      calculateStandardItemNutrition({
-        baseNutrition,
-        addonTotals: addonNutritionTotals,
-        ingredientCountTotals,
-        comboNutritionTotals,
-      }),
-    [addonNutritionTotals, baseNutrition, comboNutritionTotals, ingredientCountTotals]
-  );
-
   const calories = nutrition.calories;
   const protein = nutrition.protein;
   const carbs = nutrition.carbs;
@@ -446,22 +425,22 @@ export default function MenuItemCard({
         ...baseNutrition,
         calories: sumNutrition(
           baseNutrition.calories,
-          addonNutritionTotals.calories + ingredientCountTotals.calories
+          addonTotals.calories + ingredientCountTotals.calories
         ),
         protein: sumNutrition(
           baseNutrition.protein,
-          addonNutritionTotals.protein + ingredientCountTotals.protein
+          addonTotals.protein + ingredientCountTotals.protein
         ),
         carbs: sumNutrition(
           baseNutrition.carbs,
-          addonNutritionTotals.carbs + ingredientCountTotals.carbs
+          addonTotals.carbs + ingredientCountTotals.carbs
         ),
         totalFat: sumNutrition(
           baseNutrition.totalFat,
-          addonNutritionTotals.totalFat + ingredientCountTotals.totalFat
+          addonTotals.totalFat + ingredientCountTotals.totalFat
         ),
       }),
-    [addonNutritionTotals, baseNutrition, ingredientCountTotals]
+    [addonTotals, baseNutrition, ingredientCountTotals]
   );
   const quickMainName =
     comboType === "combo-meal"
@@ -469,7 +448,6 @@ export default function MenuItemCard({
       : item.name;
 
   const rankText = typeof rankIndex === "number" ? pad2(rankIndex + 1) : null;
-  const isCartMode = mode === "cart";
   const quantityMultiplier = isCartMode ? Math.max(cartQuantity, 1) : 1;
   const displayCalories = (calories ?? 0) * quantityMultiplier;
   const displayProtein = (protein ?? 0) * quantityMultiplier;
@@ -500,73 +478,15 @@ export default function MenuItemCard({
   }, [ingredientItems, item, restaurantId]);
   const isCartPage = pathname === "/cart";
   const useCartQuickEditPanel = isCartMode && isCartPage;
-
-
-  const retainedCustomizations = useMemo(() => {
-    if (!initialCartCustomizations || initialCartCustomizations.length === 0) return [];
-
-    const addonNames = new Set<string>();
-    for (const ref of item.addonRefs ?? []) {
-      for (const addon of addons?.[ref]?.items ?? []) {
-        addonNames.add(addon.name);
-      }
-    }
-
-    const ingredientLabels = new Set(
-      resolvedIngredients
-        .filter((ingredient) => !ingredient.isNoneOption)
-        .map((ingredient) => ingredient.label.toLowerCase())
-    );
-
-    return initialCartCustomizations.filter((label) => {
-      const normalized = label.replace(/^\+\s*/, "").trim();
-      const ingredientMatch = normalized.match(/^(.*?):\s*(Removed|(\d+(?:\.\d+)?)x|Remove|Extra)$/i);
-      const isIngredientCustomization =
-        ingredientMatch ? ingredientLabels.has(ingredientMatch[1].trim().toLowerCase()) : false;
-
-      return !addonNames.has(normalized) && !isIngredientCustomization && normalized !== "Combo Meal" && !/^Side:\s*/i.test(normalized) && !/^Drink:\s*/i.test(normalized);
-    });
-  }, [addons, initialCartCustomizations, item.addonRefs, resolvedIngredients]);
-
-  const optionSelections = useMemo(() => buildStructuredOptionSelections(selectedAddons, selectedSauceCounts, addons), [addons, selectedAddons, selectedSauceCounts]);
-
-
-  const customizations = useMemo(() => {
-    const labels = [
-      ...buildIngredientCustomizationLabels({
-        resolvedIngredients,
-        ingredientCounts,
-        suppressRemovedIngredientCustomizationsInCart,
-      }),
-      ...buildComboCustomizationLabels({
-        isComboEligibleCategory,
-        comboType,
-        selectedComboSide,
-        selectedComboSideVariant,
-        selectedComboDrink,
-        selectedComboDrinkVariant,
-      }),
-    ];
-    return labels.length > 0 ? labels : undefined;
-  }, [comboType, ingredientCounts, isComboEligibleCategory, resolvedIngredients, selectedComboDrink, selectedComboDrinkVariant, selectedComboSide, selectedComboSideVariant, suppressRemovedIngredientCustomizationsInCart]);
-
-  const selectedVariantForCart = useMemo(
-    () => resolveStandardItemVariant({ variants, selectedVariantId, defaultVariantId }),
-    [defaultVariantId, selectedVariantId, variants]
-  );
-
-
   const matchingCartItem = useMemo(() => {
     if (isCartMode) return undefined;
 
     return getMatchingItem({
       restaurantId,
       itemId: item.id ?? item.name,
-      variantId: selectedVariantForCart?.id,
-      optionSelections,
-      customizations: customizationsFromLabels(customizations),
+      ...duplicateMatchingConfiguration,
     });
-  }, [customizations, getMatchingItem, isCartMode, item.id, item.name, optionSelections, restaurantId, selectedVariantForCart?.id]);
+  }, [duplicateMatchingConfiguration, getMatchingItem, isCartMode, item.id, item.name, restaurantId]);
 
   const emitCartConfiguration = (
     nextVariantId: string,
@@ -581,65 +501,31 @@ export default function MenuItemCard({
   ) => {
     if (!isCartMode || !onCartConfigurationChange || !cartItemId) return;
 
-    const activeVariant = resolveStandardItemVariant({ variants, selectedVariantId: nextVariantId, defaultVariantId });
-    const baseForCart = resolveMenuItemVariantNutrition(item, activeVariant);
-    const expandedSauces = resolveSelectedSauceOptions({ addons, selectedSauceCounts: nextSauceCounts });
-    const activeAddonsForCart = resolveActiveAddons({ selectedAddons: nextAddons, selectedSauceOptions: expandedSauces });
-    const addonTotalsForCart = calculateAddonTotals(activeAddonsForCart);
-    const ingredientCountTotalsForCart = calculateIngredientCountTotals(nextSelectedIngredientCounts, resolvedIngredients);
-
-    const {
-      selectedComboSide: nextComboSide,
-      selectedComboDrink: nextComboDrink,
-      selectedComboSideVariant: nextComboSideVariant,
-      selectedComboDrinkVariant: nextComboDrinkVariant,
-    } = resolveStandardComboSelection({
+    const nextConfiguration = resolveFinalizedCartConfiguration({
+      restaurantId,
+      item,
+      variants,
+      selectedVariantId: nextVariantId,
+      defaultVariantId,
+      resolvedIngredients,
+      selectedIngredientCounts: nextSelectedIngredientCounts,
+      selectedAddons: nextAddons,
+      selectedSauceCounts: nextSauceCounts,
+      addons,
       comboSides,
       comboDrinks,
+      isComboEligibleCategory,
+      comboType: nextComboType,
       selectedComboSideId: nextComboSideId,
       selectedComboDrinkId: nextComboDrinkId,
       selectedComboSideVariantId: nextComboSideVariantId,
       selectedComboDrinkVariantId: nextComboDrinkVariantId,
-    });
-    const comboCustomizations = buildComboCustomizationLabels({
-      isComboEligibleCategory,
-      comboType: nextComboType,
-      selectedComboDrink: nextComboDrink,
-      selectedComboDrinkVariant: nextComboDrinkVariant,
-      selectedComboSide: nextComboSide,
-      selectedComboSideVariant: nextComboSideVariant,
-    });
-    const comboMacros = calculateComboNutritionTotals({
-      isComboEligibleCategory,
-      comboType: nextComboType,
-      selectedComboDrink: nextComboDrink,
-      selectedComboDrinkVariant: nextComboDrinkVariant,
-      selectedComboSide: nextComboSide,
-      selectedComboSideVariant: nextComboSideVariant,
-    });
-
-    const selectedIngredientCustomizationsForCart = buildIngredientCustomizationLabels({
-      resolvedIngredients,
-      ingredientCounts: nextSelectedIngredientCounts,
       suppressRemovedIngredientCustomizationsInCart,
+      retainedCustomizationLabels: retainedCustomizations,
+      ingredientItems,
     });
-    const nextCustomizations = [
-      ...retainedCustomizations,
-      ...selectedIngredientCustomizationsForCart,
-      ...comboCustomizations,
-    ];
 
-    onCartConfigurationChange({
-      variantId: activeVariant?.id,
-      customizations: customizationsFromLabels(nextCustomizations),
-      image: activeVariant?.image ?? item.image,
-      macrosPerItem: calculateMenuItemMacrosPerItem({
-        baseNutrition: baseForCart,
-        addonTotals: addonTotalsForCart,
-        ingredientCountTotals: ingredientCountTotalsForCart,
-        comboNutritionTotals: comboMacros,
-      }),
-    });
+    onCartConfigurationChange(nextConfiguration.cartConfigurationPayload);
   };
 
   useEffect(() => {
@@ -673,11 +559,6 @@ export default function MenuItemCard({
   const handleAddToCart = () => {
     if (isAddFeedbackVisible) return;
 
-    const baseForCart = resolveMenuItemVariantNutrition(item, selectedVariantForCart);
-    const highProteinBuildConfiguration = isChipotleHighProteinMenuItem(item, restaurantId)
-      ? buildHighProteinBuildConfiguration(item, ingredientItems)
-      : undefined;
-
     if (matchingCartItem) {
       updateQuantity(matchingCartItem.id, matchingCartItem.quantity + 1);
     } else {
@@ -688,17 +569,11 @@ export default function MenuItemCard({
         name: item.name,
         image: selectedVariantForCart?.image ?? item.image,
         variantId: selectedVariantForCart?.id,
-        customizations: customizationsFromLabels(customizations),
+        customizations,
         quantity: 1,
-        selection: highProteinBuildConfiguration
-          ? { type: "build-your-own", buildConfiguration: toUniversalChipotleBuildConfiguration(highProteinBuildConfiguration) }
-          : { type: "standard", variantId: selectedVariantForCart?.id, optionSelections },
+        selection: finalizedCartConfiguration.selection,
         nutritionPerItem: nutrition,
-        macrosPerItem: calculateMenuItemMacrosPerItem({
-          baseNutrition: baseForCart,
-          addonTotals,
-          ingredientCountTotals,
-        }),
+        macrosPerItem: finalizedCartConfiguration.macrosPerItem,
       });
     }
 
