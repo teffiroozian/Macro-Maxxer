@@ -48,6 +48,183 @@ function isIconImage(icon: string) {
   return icon.startsWith("/") || icon.startsWith("http://") || icon.startsWith("https://");
 }
 
+type DisplayIngredient = ResolvedPanelIngredient & {
+  displayCount: number;
+  isSelected: boolean;
+  shouldShowPortionBadge: boolean;
+  portionBadge?: string;
+  displayedCalories?: number;
+  linkedSingleSelectTab?: ResolvedIngredientTab;
+  shouldShowSingleSelectNavigator: boolean;
+  isSingleSelectTab: boolean;
+  canToggleIngredientFromCard: boolean;
+};
+
+type DisplayAddonSection = AvailableAddonSection & {
+  summaryDetail: string;
+  items: Array<{ addon: MenuItem; sauceCount: number; isSelected: boolean; calories: number }>;
+};
+
+function prepareAddonSections({
+  item,
+  addons,
+  selectedAddons,
+  sauceSelectionCounts,
+}: {
+  item: MenuItem;
+  addons?: ResolvedAddonGroups;
+  selectedAddons?: Partial<Record<string, MenuItem>>;
+  sauceSelectionCounts?: Partial<Record<string, number>>;
+}): DisplayAddonSection[] {
+  return (item.addonRefs ?? []).flatMap((ref) => {
+    const group = addons?.[ref];
+    if (!group || group.items.length === 0) return [];
+    const sortedAddons = sortByCalories(group.items);
+    const sauceSelections =
+      ref === "sauces"
+        ? sortedAddons.filter((addon) => addon.name !== "None" && (sauceSelectionCounts?.[addon.name] ?? 0) > 0)
+        : [];
+    const sauceSummaryCalories = sauceSelections.reduce(
+      (sum, addon) => sum + toNumber(addon.nutrition.calories) * (sauceSelectionCounts?.[addon.name] ?? 0),
+      0
+    );
+    const selectedAddon = selectedAddons?.[ref];
+    return [{
+      ref,
+      title: group.label,
+      addons: sortedAddons,
+      maxPerItem: group.maxPerItem,
+      summaryDetail:
+        ref === "sauces"
+          ? formatSummaryDetail(sauceSelections[0]?.name ?? "None", sauceSummaryCalories)
+          : formatSummaryDetail(selectedAddon?.name ?? "None", selectedAddon?.nutrition.calories ?? 0),
+      items: sortedAddons.map((addon) => {
+        const sauceCount = ref === "sauces" ? (sauceSelectionCounts?.[addon.name] ?? 0) : 0;
+        return {
+          addon,
+          sauceCount,
+          isSelected: ref === "sauces" ? sauceCount > 0 : selectedAddons?.[ref]?.name === addon.name,
+          calories: toNumber(addon.nutrition.calories),
+        };
+      }),
+    }];
+  });
+}
+
+function prepareDisplayIngredients({
+  ingredientTabs,
+  selectedIngredientTab,
+  selectedIngredientCounts,
+  flattenIngredientList,
+  isLockedIngredient,
+}: {
+  ingredientTabs: ResolvedIngredientTab[];
+  selectedIngredientTab?: ResolvedIngredientTab;
+  selectedIngredientCounts?: Partial<Record<string, number>>;
+  flattenIngredientList: boolean;
+  isLockedIngredient: (ingredientId: string) => boolean;
+}): DisplayIngredient[] {
+  const selectedCountFor = (ingredient: ResolvedPanelIngredient) =>
+    selectedIngredientCounts?.[ingredient.id] ?? ingredient.defaultCount;
+  const resolvedIngredients = (() => {
+    if (!selectedIngredientTab) return [];
+    if (flattenIngredientList) {
+      return selectedIngredientTab.ingredients
+        .filter((ingredient) => selectedCountFor(ingredient) > 0)
+        .sort((left, right) => {
+          const categoryPriority = (ingredient: ResolvedPanelIngredient) => {
+            if (isLockedIngredient(ingredient.id)) return 0;
+            const normalizedCategory = normalizeIngredientCategory(ingredient.ingredientItem?.categories?.[0] ?? "");
+            if (normalizedCategory === "proteins") return 1;
+            if (normalizedCategory === "rice") return 2;
+            if (normalizedCategory === "beans") return 3;
+            if (normalizedCategory === "toppings") return 4;
+            if (normalizedCategory === "side") return 5;
+            return 6;
+          };
+          const leftPriority = categoryPriority(left);
+          const rightPriority = categoryPriority(right);
+          if (leftPriority !== rightPriority) return leftPriority - rightPriority;
+          const leftOrder = left.ingredientItem?.defaultOrder ?? Number.POSITIVE_INFINITY;
+          const rightOrder = right.ingredientItem?.defaultOrder ?? Number.POSITIVE_INFINITY;
+          if (leftOrder !== rightOrder) return leftOrder - rightOrder;
+          return left.label.localeCompare(right.label);
+        });
+    }
+    if (selectedIngredientTab.label !== INCLUDED_INGREDIENT_TAB) return selectedIngredientTab.ingredients;
+
+    const includedIngredients: ResolvedPanelIngredient[] = [];
+    const includedIngredientIds = new Set<string>();
+    const seenSingleSelectTabs = new Set<string>();
+    selectedIngredientTab.ingredients.forEach((ingredient) => {
+      const linkedIngredientTab = ingredientTabs.find(
+        (tab) =>
+          tab.label !== INCLUDED_INGREDIENT_TAB &&
+          tab.ingredients.some((candidate) => candidate.id === ingredient.id)
+      );
+      const linkedIngredient = linkedIngredientTab?.ingredients.find((candidate) => candidate.id === ingredient.id);
+      const linkedSingleSelectTab = linkedIngredientTab?.selectionMode === "single" ? linkedIngredientTab : undefined;
+      if (!linkedSingleSelectTab) {
+        includedIngredients.push(linkedIngredient ?? ingredient);
+        includedIngredientIds.add(ingredient.id);
+        return;
+      }
+      if (seenSingleSelectTabs.has(linkedSingleSelectTab.label)) return;
+      seenSingleSelectTabs.add(linkedSingleSelectTab.label);
+      const selectedIngredient =
+        linkedSingleSelectTab.ingredients.find((candidate) => selectedCountFor(candidate) > 0) ?? ingredient;
+      if (selectedIngredient.isNoneOption) return;
+      const includedIngredient = { ...selectedIngredient, tabLabel: linkedSingleSelectTab.label };
+      includedIngredients.push(includedIngredient);
+      includedIngredientIds.add(includedIngredient.id);
+    });
+    ingredientTabs.forEach((tab) => {
+      if (tab.label === INCLUDED_INGREDIENT_TAB) return;
+      if (tab.selectionMode === "single") {
+        if (seenSingleSelectTabs.has(tab.label)) return;
+        const selectedIngredient = tab.ingredients.find((ingredient) => selectedCountFor(ingredient) > 0);
+        if (!selectedIngredient || selectedIngredient.isNoneOption || includedIngredientIds.has(selectedIngredient.id)) return;
+        seenSingleSelectTabs.add(tab.label);
+        includedIngredients.push({ ...selectedIngredient, tabLabel: tab.label });
+        includedIngredientIds.add(selectedIngredient.id);
+        return;
+      }
+      tab.ingredients.forEach((ingredient) => {
+        if (selectedCountFor(ingredient) <= 0 || includedIngredientIds.has(ingredient.id)) return;
+        includedIngredients.push(ingredient);
+        includedIngredientIds.add(ingredient.id);
+      });
+    });
+    return includedIngredients;
+  })();
+
+  return resolvedIngredients.map((ingredient) => {
+    const displayCount = selectedCountFor(ingredient);
+    const linkedSingleSelectTab = ingredient.tabLabel
+      ? ingredientTabs.find((tab) => tab.label === ingredient.tabLabel && tab.selectionMode === "single")
+      : undefined;
+    const shouldShowSingleSelectNavigator = selectedIngredientTab?.label === INCLUDED_INGREDIENT_TAB && Boolean(linkedSingleSelectTab);
+    return {
+      ...ingredient,
+      displayCount,
+      isSelected: displayCount > 0,
+      shouldShowPortionBadge: displayCount > 0 && displayCount !== 1,
+      portionBadge: displayCount > 0 && displayCount !== 1 ? formatPortionBadge(displayCount) : undefined,
+      displayedCalories:
+        ingredient.calories !== undefined
+          ? Math.round(ingredient.calories * (displayCount > 0 ? displayCount : 1))
+          : undefined,
+      linkedSingleSelectTab,
+      shouldShowSingleSelectNavigator,
+      isSingleSelectTab: selectedIngredientTab?.selectionMode === "single",
+      canToggleIngredientFromCard:
+        !isLockedIngredient(ingredient.id) &&
+        !shouldShowSingleSelectNavigator &&
+        typeof ingredient.maxQuantity === "number",
+    };
+  });
+}
+
 export function PortionSelector({
   variants,
   selectedVariantId,
@@ -112,9 +289,7 @@ type IngredientCustomizationSectionProps = {
   visibleIngredientTabs: ResolvedIngredientTab[];
   selectedIngredientTab: ResolvedIngredientTab;
   setActiveIngredientTab: Dispatch<SetStateAction<string>>;
-  displayIngredients: ResolvedPanelIngredient[];
-  selectedIngredientCounts?: Partial<Record<string, number>>;
-  ingredientTabs: ResolvedIngredientTab[];
+  displayIngredients: DisplayIngredient[];
   isLockedIngredient: (ingredientId: string) => boolean;
   navigateToSingleSelectTab: (ingredientId: string, linkedTab?: ResolvedIngredientTab) => void;
   onSelectSingleIngredient?: (ingredientId: string, ingredientIdsInTab: string[]) => void;
@@ -131,8 +306,6 @@ function IngredientCustomizationSection({
   selectedIngredientTab,
   setActiveIngredientTab,
   displayIngredients,
-  selectedIngredientCounts,
-  ingredientTabs,
   isLockedIngredient,
   navigateToSingleSelectTab,
   onSelectSingleIngredient,
@@ -180,27 +353,14 @@ function IngredientCustomizationSection({
           {displayIngredients.length > 0 ? (
             <ul className="grid list-none grid-cols-1 items-stretch gap-[10px] pl-0 sm:grid-cols-2">
               {displayIngredients.map((ingredient) => {
-                const ingredientCount = selectedIngredientCounts?.[ingredient.id] ?? ingredient.defaultCount;
-                const isSelected = ingredientCount > 0;
-                const shouldShowPortionBadge = ingredientCount > 0 && ingredientCount !== 1;
-                const displayCaloriesMultiplier = ingredientCount > 0 ? ingredientCount : 1;
-                const displayedCalories =
-                  ingredient.calories !== undefined
-                    ? Math.round(ingredient.calories * displayCaloriesMultiplier)
-                    : undefined;
-                const linkedSingleSelectTab =
-                  ingredient.tabLabel
-                    ? ingredientTabs.find(
-                        (tab) => tab.label === ingredient.tabLabel && tab.selectionMode === "single"
-                      )
-                    : undefined;
-                const shouldShowSingleSelectNavigator =
-                  selectedIngredientTab.label === INCLUDED_INGREDIENT_TAB && Boolean(linkedSingleSelectTab);
-                const isSingleSelectTab = selectedIngredientTab.selectionMode === "single";
-                const canToggleIngredientFromCard =
-                  !isLockedIngredient(ingredient.id) &&
-                  !shouldShowSingleSelectNavigator &&
-                  typeof ingredient.maxQuantity === "number";
+                const ingredientCount = ingredient.displayCount;
+                const isSelected = ingredient.isSelected;
+                const shouldShowPortionBadge = ingredient.shouldShowPortionBadge;
+                const displayedCalories = ingredient.displayedCalories;
+                const linkedSingleSelectTab = ingredient.linkedSingleSelectTab;
+                const shouldShowSingleSelectNavigator = ingredient.shouldShowSingleSelectNavigator;
+                const isSingleSelectTab = ingredient.isSingleSelectTab;
+                const canToggleIngredientFromCard = ingredient.canToggleIngredientFromCard;
                 const cardClasses = `box-border flex h-full w-full flex-row items-center gap-3 rounded-[10px] border border-[rgba(0,0,0,0.15)] bg-[#f9f9f9] px-3 py-2 ${
                   isSelected
                     ? isSingleSelectTab
@@ -229,7 +389,7 @@ function IngredientCustomizationSection({
                     <div className="flex min-w-0 flex-col items-start justify-center gap-[6px]">
                       {shouldShowPortionBadge ? (
                         <div className="inline-flex rounded-full bg-lime-500 px-2 py-0.5 text-xs font-bold text-black">
-                          {formatPortionBadge(ingredientCount)}
+                          {ingredient.portionBadge}
                         </div>
                       ) : null}
                       <div className="line-clamp-2 break-words text-left text-base font-bold leading-[1.2]">{ingredient.label}</div>
@@ -554,11 +714,9 @@ function ComboCustomizationSection({
 }
 
 type AddonCustomizationSectionProps = {
-  availableAddonSections: AvailableAddonSection[];
+  availableAddonSections: DisplayAddonSection[];
   sectionOpenState: Record<string, boolean>;
   setSectionOpenState: Dispatch<SetStateAction<Record<string, boolean>>>;
-  selectedAddons?: Partial<Record<string, MenuItem>>;
-  sauceSelectionCounts?: Partial<Record<string, number>>;
   addonSectionRefType?: string;
   addonSectionRef?: (element: HTMLElement | null) => void;
   onToggleSauce?: (addon: MenuItem) => void;
@@ -571,8 +729,6 @@ function AddonCustomizationSection({
   availableAddonSections,
   sectionOpenState,
   setSectionOpenState,
-  selectedAddons,
-  sauceSelectionCounts,
   addonSectionRefType,
   addonSectionRef,
   onToggleSauce,
@@ -586,19 +742,7 @@ function AddonCustomizationSection({
             {availableAddonSections.map((section) => {
               const sectionStateKey = `addon-${section.ref}`;
               const isSectionOpen = sectionOpenState[sectionStateKey] ?? true;
-              const selectedAddon = selectedAddons?.[section.ref];
-              const sauceSelections =
-                section.ref === "sauces"
-                  ? section.addons.filter((addon) => addon.name !== "None" && (sauceSelectionCounts?.[addon.name] ?? 0) > 0)
-                  : [];
-              const sauceSummaryCalories = sauceSelections.reduce(
-                (sum, addon) => sum + toNumber(addon.nutrition.calories) * (sauceSelectionCounts?.[addon.name] ?? 0),
-                0
-              );
-              const summaryDetail =
-                section.ref === "sauces"
-                  ? formatSummaryDetail(sauceSelections[0]?.name ?? "None", sauceSummaryCalories)
-                  : formatSummaryDetail(selectedAddon?.name ?? "None", selectedAddon?.nutrition.calories ?? 0);
+              const summaryDetail = section.summaryDetail;
               return (
                 <div
                   key={section.ref}
@@ -640,14 +784,7 @@ function AddonCustomizationSection({
                   </div>
                   {isSectionOpen ? (
                     <ul className="mt-4 grid list-none grid-cols-1 items-stretch gap-[10px] pl-0 sm:grid-cols-2">
-                      {section.addons.map((addon) => {
-                        const sauceCount = section.ref === "sauces" ? (sauceSelectionCounts?.[addon.name] ?? 0) : 0;
-                        const isSelected =
-                          section.ref === "sauces"
-                            ? sauceCount > 0
-                            : selectedAddons?.[section.ref]?.name === addon.name;
-
-                        return (
+                      {section.items.map(({ addon, sauceCount, isSelected, calories }) => (
                         <li key={`${section.ref}-${addon.name}`} className="flex">
                           <button
                             type="button"
@@ -672,7 +809,7 @@ function AddonCustomizationSection({
                             )}
                             <div className="flex min-w-0 flex-col items-start justify-center gap-[6px]">
                               <div className="line-clamp-2 break-words text-left text-base font-bold leading-[1.2]">{addon.name}</div>
-                              <div className="text-sm font-bold text-[rgba(0,0,0,0.5)]">+{toNumber(addon.nutrition.calories)} Cal</div>
+                              <div className="text-sm font-bold text-[rgba(0,0,0,0.5)]">+{calories} Cal</div>
                             </div>
                             {section.ref === "dressings" ? (
                               <span
@@ -745,8 +882,7 @@ function AddonCustomizationSection({
                             ) : null}
                           </button>
                         </li>
-                        );
-                      })}
+                      ))}
                     </ul>
                   ) : null}
                 </div>
@@ -893,19 +1029,9 @@ export default function ItemDetailsPanel({
       color: "bg-[#2563eb] text-white",
     },
   ];
-  const addonRefs = item.addonRefs ?? [];
   const [sectionOpenState, setSectionOpenState] = useState<Record<string, boolean>>({});
 
-  const availableAddonSections = addonRefs.flatMap((ref) => {
-    const group = addons?.[ref];
-    if (!group || group.items.length === 0) return [];
-    return [{
-      ref,
-      title: group.label,
-      addons: sortByCalories(group.items),
-      maxPerItem: group.maxPerItem,
-    }];
-  });
+  const availableAddonSections = prepareAddonSections({ item, addons, selectedAddons, sauceSelectionCounts });
   const selectedComboSide = comboSides.find((side) => (side.id ?? side.name) === selectedComboSideId);
   const selectedComboDrink = comboDrinks.find((drink) => (drink.id ?? drink.name) === selectedComboDrinkId);
   const selectedComboSideVariant = selectedComboSide?.variants?.find(
@@ -1025,117 +1151,13 @@ export default function ItemDetailsPanel({
     );
     setActiveIngredientTab(linkedTab.label);
   };
-  const displayIngredients = (() => {
-    if (!selectedIngredientTab) return [];
-    const selectedCountFor = (ingredient: ResolvedPanelIngredient) => {
-      return selectedIngredientCounts?.[ingredient.id] ?? ingredient.defaultCount;
-    };
-
-    if (flattenIngredientList) {
-      return selectedIngredientTab.ingredients
-        .filter((ingredient) => selectedCountFor(ingredient) > 0)
-        .sort((left, right) => {
-          const categoryPriority = (ingredient: ResolvedPanelIngredient) => {
-            if (isLockedIngredient(ingredient.id)) return 0;
-            const normalizedCategory = normalizeIngredientCategory(
-              ingredient.ingredientItem?.categories?.[0] ?? ""
-            );
-            if (normalizedCategory === "proteins") return 1;
-            if (normalizedCategory === "rice") return 2;
-            if (normalizedCategory === "beans") return 3;
-            if (normalizedCategory === "toppings") return 4;
-            if (normalizedCategory === "side") return 5;
-            return 6;
-          };
-
-          const leftPriority = categoryPriority(left);
-          const rightPriority = categoryPriority(right);
-          if (leftPriority !== rightPriority) return leftPriority - rightPriority;
-
-          const leftOrder = left.ingredientItem?.defaultOrder ?? Number.POSITIVE_INFINITY;
-          const rightOrder = right.ingredientItem?.defaultOrder ?? Number.POSITIVE_INFINITY;
-          if (leftOrder !== rightOrder) return leftOrder - rightOrder;
-
-          return left.label.localeCompare(right.label);
-        });
-    }
-    if (selectedIngredientTab.label !== INCLUDED_INGREDIENT_TAB) {
-      return selectedIngredientTab.ingredients;
-    }
-
-    const includedIngredients: ResolvedPanelIngredient[] = [];
-    const includedIngredientIds = new Set<string>();
-    const seenSingleSelectTabs = new Set<string>();
-
-    selectedIngredientTab.ingredients.forEach((ingredient) => {
-      const linkedIngredientTab = ingredientTabs.find(
-        (tab) =>
-          tab.label !== INCLUDED_INGREDIENT_TAB &&
-          tab.ingredients.some((candidate) => candidate.id === ingredient.id)
-      );
-      const linkedIngredient = linkedIngredientTab?.ingredients.find(
-        (candidate) => candidate.id === ingredient.id
-      );
-      const linkedSingleSelectTab = linkedIngredientTab?.selectionMode === "single" ? linkedIngredientTab : undefined;
-
-      if (!linkedSingleSelectTab) {
-        includedIngredients.push(linkedIngredient ?? ingredient);
-        includedIngredientIds.add(ingredient.id);
-        return;
-      }
-
-      if (seenSingleSelectTabs.has(linkedSingleSelectTab.label)) {
-        return;
-      }
-
-      seenSingleSelectTabs.add(linkedSingleSelectTab.label);
-
-      const selectedIngredient =
-        linkedSingleSelectTab.ingredients.find((candidate) => selectedCountFor(candidate) > 0) ?? ingredient;
-
-      if (selectedIngredient.isNoneOption) {
-        return;
-      }
-
-      const includedIngredient = { ...selectedIngredient, tabLabel: linkedSingleSelectTab.label };
-
-      includedIngredients.push(includedIngredient);
-      includedIngredientIds.add(includedIngredient.id);
-    });
-
-    ingredientTabs.forEach((tab) => {
-      if (tab.label === INCLUDED_INGREDIENT_TAB) {
-        return;
-      }
-
-      if (tab.selectionMode === "single") {
-        if (seenSingleSelectTabs.has(tab.label)) {
-          return;
-        }
-
-        const selectedIngredient = tab.ingredients.find((ingredient) => selectedCountFor(ingredient) > 0);
-        if (!selectedIngredient || selectedIngredient.isNoneOption || includedIngredientIds.has(selectedIngredient.id)) {
-          return;
-        }
-
-        seenSingleSelectTabs.add(tab.label);
-        includedIngredients.push({ ...selectedIngredient, tabLabel: tab.label });
-        includedIngredientIds.add(selectedIngredient.id);
-        return;
-      }
-
-      tab.ingredients.forEach((ingredient) => {
-        if (selectedCountFor(ingredient) <= 0 || includedIngredientIds.has(ingredient.id)) {
-          return;
-        }
-
-        includedIngredients.push(ingredient);
-        includedIngredientIds.add(ingredient.id);
-      });
-    });
-
-    return includedIngredients;
-  })();
+  const displayIngredients = prepareDisplayIngredients({
+    ingredientTabs,
+    selectedIngredientTab,
+    selectedIngredientCounts,
+    flattenIngredientList,
+    isLockedIngredient,
+  });
   const shouldShowIngredientSection = flattenIngredientList
     ? (flattenedIngredientTab?.ingredients.some((ingredient) => {
         const ingredientCount = selectedIngredientCounts?.[ingredient.id] ?? ingredient.defaultCount;
@@ -1187,8 +1209,6 @@ export default function ItemDetailsPanel({
           selectedIngredientTab={selectedIngredientTab}
           setActiveIngredientTab={setActiveIngredientTab}
           displayIngredients={displayIngredients}
-          selectedIngredientCounts={selectedIngredientCounts}
-          ingredientTabs={ingredientTabs}
           isLockedIngredient={isLockedIngredient}
           navigateToSingleSelectTab={navigateToSingleSelectTab}
           onSelectSingleIngredient={onSelectSingleIngredient}
@@ -1220,8 +1240,6 @@ export default function ItemDetailsPanel({
           availableAddonSections={availableAddonSections}
           sectionOpenState={sectionOpenState}
           setSectionOpenState={setSectionOpenState}
-          selectedAddons={selectedAddons}
-          sauceSelectionCounts={sauceSelectionCounts}
           addonSectionRefType={addonSectionRefType}
           addonSectionRef={addonSectionRef}
           onToggleSauce={onToggleSauce}
