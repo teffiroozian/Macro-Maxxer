@@ -10,7 +10,6 @@ import {
   calculateComboNutritionTotals,
   calculateFullComboNutritionTotals,
   calculateIngredientCountTotals,
-  calculateMenuItemMacrosPerItem,
 } from "@/lib/menuItemCard/totals";
 import { getDefaultIngredientCounts, sumNutritionWithFallback } from "@/lib/menuItemCalculations";
 import { normalizeNutrition, resolveMenuItemVariantNutrition } from "@/lib/nutrition";
@@ -183,7 +182,12 @@ export function buildStandardCartItemPayload({
     variantId: selectedVariant?.id,
     customizations,
     quantity,
-    macrosPerItem: calculateMenuItemMacrosPerItem({ baseNutrition: nutritionPerItem }),
+    macrosPerItem: {
+      calories: nutritionPerItem.calories ?? 0,
+      protein: nutritionPerItem.protein ?? 0,
+      carbs: nutritionPerItem.carbs ?? 0,
+      totalFat: nutritionPerItem.totalFat ?? 0,
+    },
     nutritionPerItem,
     selection: { type: "standard" as const, variantId: selectedVariant?.id, optionSelections } satisfies StandardCartSelection,
   };
@@ -259,6 +263,11 @@ export function resolveStandardItemConfiguration({
     customizations: customizationLabels.length > 0 ? customizationsFromLabels(customizationLabels) : undefined,
     optionSelections,
     nutrition,
-    macrosPerItem: calculateMenuItemMacrosPerItem({ baseNutrition, addonTotals, ingredientCountTotals, comboNutritionTotals }),
+    macrosPerItem: {
+      calories: nutrition.calories ?? 0,
+      protein: nutrition.protein ?? 0,
+      carbs: nutrition.carbs ?? 0,
+      totalFat: nutrition.totalFat ?? 0,
+    },
   };
 }
