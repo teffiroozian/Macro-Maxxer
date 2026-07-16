@@ -12,7 +12,6 @@ import MenuSections from "@/components/MenuSections";
 import BuildSummaryDrawer from "@/components/restaurant-view/BuildSummaryDrawer";
 import type { MenuItem, ResolvedAddonGroups, IngredientItem, RestaurantCustomizationRules } from "@/types/menu";
 import type { Nutrition } from "@/types/nutrition";
-import { useCart } from "@/stores/cartStore";
 import { buildStructuredOptionSelections } from "@/lib/menuItemCard/cartLabelUtils";
 import {
   getDefaultVariantId,
@@ -33,13 +32,11 @@ import {
 } from "@/lib/restaurantBuilders/chipotle";
 import { resolvePrimaryCategory } from "@/lib/ingredientTabs";
 import type { ChipotleBuildConfiguration } from "@/lib/restaurantBuilders/chipotle";
-import { fromUniversalChipotleBuildConfiguration, toUniversalChipotleBuildConfiguration } from "@/lib/restaurantBuilders/chipotle/cartAdapter";
+import { fromUniversalChipotleBuildConfiguration } from "@/lib/restaurantBuilders/chipotle/cartAdapter";
 import { SORT_OPTION_VALUES } from "@/lib/menuSections/sortOptions";
 import { resolveMenuItemVariantNutrition } from "@/lib/nutrition";
 import {
-  buildComboCustomizationLabels,
   buildIngredientCustomizationLabels,
-  buildStandardCartItemPayload,
   calculateStandardItemNutrition,
   resolveActiveAddons,
   resolveSelectedSauceOptions,
@@ -51,9 +48,10 @@ import {
   calculateFullComboNutritionTotals,
   calculateIngredientCountTotals,
 } from "@/lib/menuItemCard/totals";
-import { customizationsFromLabels } from "@/lib/cart/customizationLabels";
 import { resolveComboDrinkOptions, resolveComboMealConfig, resolveComboSideOptions } from "@/lib/comboMeals";
 import { useItemCustomizationState } from "@/components/item-route-modal/useItemCustomizationState";
+import { useItemCartSubmission } from "@/components/item-route-modal/useItemCartSubmission";
+import { useCart } from "@/stores/cartStore";
 
 const emptyAddon: MenuItem = {
   id: "none",
@@ -96,7 +94,7 @@ export default function ItemRouteModal({
   const router = useRouter();
   const searchParams = useSearchParams();
   const editCartItemId = editCartItemIdProp ?? searchParams.get("editCartItem");
-  const { addItem, updateItem, items } = useCart();
+  const { items } = useCart();
   const editingCartItem = useMemo(() => {
     if (!editCartItemId) return null;
 
@@ -158,7 +156,6 @@ export default function ItemRouteModal({
   const selectedVariant = variants?.find((variant) => variant.id === selectedVariantId);
   const selectedItemImage = selectedVariant?.image ?? item.image;
   const baseNutrition = resolveMenuItemVariantNutrition(item, selectedVariant);
-  const isCustomizeMode = Boolean(editingCartItem);
   const isChipotlePrebuiltBuilderItem =
     isChipotleHighProteinMenuItem(item, restaurantId) &&
     item.categories.some((category) => category.toLowerCase() !== "protein cups") &&
@@ -729,114 +726,40 @@ export default function ItemRouteModal({
     router.replace(restaurantPath, { scroll: false });
   };
 
-  const handleSaveItem = () => {
-    if (isChipotlePrebuiltBuilderItem) {
-      const nextBuildConfiguration: ChipotleBuildConfiguration = {
-        ...chipotleBuildConfiguration,
-        selectedIngredientItems: Object.fromEntries(
-          Object.entries(selectedChipotleIngredientItems).map(([ingredientId, selectedIngredient]) => [
-            ingredientId,
-            { quantity: selectedIngredient.quantity },
-          ])
-        ),
-        selectedIngredientVariantIds: selectedChipotleIngredientVariantIds,
-        proteinPortionMode: chipotleProteinPortionMode,
-        splitPortionModeById: chipotleSplitPortionModeById,
-        selectedTacoCount: selectedChipotleTacoCount,
-        selectedTacoShell: selectedChipotleTacoShellId === "soft-flour-tortilla" ? "soft" : "crispy",
-      };
-
-      const customizations = Object.entries(selectedChipotleIngredientItems).map(
-        ([ingredientId, selectedIngredient]) =>
-          `${selectedIngredient.item.name}: ${selectedIngredient.quantity}x${
-            chipotleIngredientPortionLabelById[ingredientId] ? ` (${chipotleIngredientPortionLabelById[ingredientId]})` : ""
-          }`
-      );
-
-      const payload = {
-        name: item.name,
-        image: item.image,
-        quantity,
-        customizations: customizationsFromLabels(customizations),
-        macrosPerItem: {
-          calories: chipotleAdjustedTotals.calories,
-          protein: chipotleAdjustedTotals.protein,
-          carbs: chipotleAdjustedTotals.carbs,
-          totalFat: chipotleAdjustedTotals.totalFat,
-        },
-        nutritionPerItem: {
-          calories: chipotleAdjustedTotals.calories,
-          protein: chipotleAdjustedTotals.protein,
-          carbs: chipotleAdjustedTotals.carbs,
-          totalFat: chipotleAdjustedTotals.totalFat,
-        },
-        selection: { type: "build-your-own" as const, buildConfiguration: toUniversalChipotleBuildConfiguration(nextBuildConfiguration) },
-      };
-
-      handleClose();
-      window.setTimeout(() => {
-        if (editingCartItem) {
-          updateItem(editingCartItem.id, payload);
-        } else {
-          addItem({
-            id: crypto.randomUUID(),
-            restaurantId,
-            itemId: item.id ?? item.name,
-            ...payload,
-          });
-        }
-      }, 0);
-      return;
-    }
-
-    const comboCustomizations = buildComboCustomizationLabels({
-      isComboEligibleCategory,
-      comboType,
-      selectedComboSide,
-      selectedComboSideVariant,
-      selectedComboDrink,
-      selectedComboDrinkVariant,
-    });
-    const customizations = [...selectedIngredientCustomizations, ...comboCustomizations];
-
-    const standardPayload = buildStandardCartItemPayload({
-      item,
+  const { isEditing: isCustomizeMode, submitButtonLabel, submitCartItem } = useItemCartSubmission({
+    restaurantId,
+    item,
+    ingredients,
+    quantity,
+    editingCartItem,
+    standard: {
       selectedVariant,
-      quantity,
-      customizations: customizationsFromLabels(customizations),
       optionSelections,
+      selectedIngredientCustomizations,
       nutritionPerItem: nutrition,
-    });
-    const nextCartItemPayload = {
-      ...standardPayload,
-      selection:
-        editingCartItem?.selection.type === "build-your-own"
-          ? editingCartItem.selection
-          : isChipotleHighProteinMenuItem(item, restaurantId)
-            ? (() => {
-                const buildConfiguration = buildHighProteinBuildConfiguration(item, ingredients);
-                return buildConfiguration
-                  ? { type: "build-your-own" as const, buildConfiguration: toUniversalChipotleBuildConfiguration(buildConfiguration) }
-                  : standardPayload.selection;
-              })()
-            : standardPayload.selection,
-    };
-
-    handleClose();
-    window.setTimeout(() => {
-      if (editingCartItem) {
-        updateItem(editingCartItem.id, nextCartItemPayload);
-        return;
-      }
-
-      addItem({
-        id: crypto.randomUUID(),
-        restaurantId,
-        itemId: item.id ?? item.name,
-        ...nextCartItemPayload,
-      });
-    }, 0);
-  };
+      combo: {
+        isComboEligibleCategory,
+        comboType,
+        selectedComboSide,
+        selectedComboSideVariant,
+        selectedComboDrink,
+        selectedComboDrinkVariant,
+      },
+    },
+    chipotle: {
+      isPrebuiltBuilderItem: isChipotlePrebuiltBuilderItem,
+      buildConfiguration: chipotleBuildConfiguration,
+      selectedIngredientItems: selectedChipotleIngredientItems,
+      selectedIngredientVariantIds: selectedChipotleIngredientVariantIds,
+      proteinPortionMode: chipotleProteinPortionMode,
+      splitPortionModeById: chipotleSplitPortionModeById,
+      selectedTacoCount: selectedChipotleTacoCount,
+      selectedTacoShellId: selectedChipotleTacoShellId,
+      ingredientPortionLabelById: chipotleIngredientPortionLabelById,
+      adjustedTotals: chipotleAdjustedTotals,
+    },
+    onAfterSubmit: handleClose,
+  });
   const handleDecrementQuantity = () => {
     setQuantity((prev) => Math.max(1, prev - 1));
   };
@@ -1347,9 +1270,9 @@ export default function ItemRouteModal({
             <button
               type="button"
               className="cursor-pointer h-12 flex-1 rounded-xl border border-black/20 bg-black/90 px-4 py-2.5 text-base font-bold text-white sm:px-6 lg:flex-none"
-              onClick={handleSaveItem}
+              onClick={submitCartItem}
             >
-              {isCustomizeMode ? "Update" : "Add to Cart"}
+              {submitButtonLabel}
             </button>
           </div>
         </div>
