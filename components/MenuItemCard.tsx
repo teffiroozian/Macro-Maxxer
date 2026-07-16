@@ -5,17 +5,15 @@ import { usePathname, useRouter } from "next/navigation";
 import { ChevronDown } from "lucide-react";
 import type { IngredientItem, MenuItem, ResolvedAddonGroups, RestaurantCustomizationRules } from "@/types/menu";
 import ItemDetailsPanel, { resolvePanelIngredients } from "./ItemDetailsPanel";
-import VariantSelector from "./VariantSelector";
 import {
-  formatCalories,
-  formatDelta,
-  formatMacro,
   getDefaultVariantId,
   sumNutrition,
 } from "@/lib/menuItemCalculations";
 import { customizationsFromLabels } from "@/lib/cart/customizationLabels";
 import { buildStructuredOptionSelections } from "@/lib/menuItemCard/cartLabelUtils";
 import IngredientCompactCard from "./menu-item-card/IngredientCompactCard";
+import MenuItemCardHeader from "./menu-item-card/MenuItemCardHeader";
+import MenuItemMacroSummary from "./menu-item-card/MenuItemMacroSummary";
 import MenuCardActions from "./menu-item-card/MenuCardActions";
 import CartCardActions from "./menu-item-card/CartCardActions";
 import { useMenuItemCartAdapter } from "./menu-item-card/useMenuItemCartAdapter";
@@ -805,131 +803,67 @@ export default function MenuItemCard({
         aria-expanded={open}
         aria-controls={`${id}-details`}
       >
-        <div className="w-full shrink-0 lg:mx-0 lg:w-auto">
-          {selectedItemImage ? (
-            <img
-              className={`block h-[200px] w-full rounded-[14px] bg-[#efefef] object-contain p-2 shadow-[0_0_5px_rgba(0,0,0,0.25)] lg:h-[210px] lg:w-[210px] ${
-                isCartMode ? "lg:object-contain lg:p-2" : "lg:object-cover lg:p-0"
-              }`}
-              src={selectedItemImage}
-              alt={item.name}
-            />
-          ) : (
-            <div className="h-[200px] w-full rounded-[14px] bg-[#efefef] lg:h-[210px] lg:w-[210px]" />
-          )}
-        </div>
-
-        <div className="flex min-w-0 flex-1 flex-col self-stretch py-1">
-          <div className="flex flex-col gap-2">
-            {rankText && (
-              <div>
-                <div className="inline-block border-b-[5px] border-b-yellow-500 px-1.5 text-xl font-bold">{rankText}</div>
-              </div>
+        <MenuItemCardHeader
+          item={item}
+          selectedItemImage={selectedItemImage}
+          isCartMode={isCartMode}
+          rankText={rankText}
+          displayCalories={displayCalories}
+          hasActiveCustomization={hasActiveCustomization}
+          customizationCaloriesDelta={customizationTotals.calories}
+          quantityMultiplier={quantityMultiplier}
+          variants={variants}
+          hasVariantDropdown={hasVariantDropdown}
+          variantSelectorDisabled={variantSelectorDisabled}
+          selectedVariantId={selectedVariantId}
+          selectedVariantLabel={selectedVariantForCart?.label}
+          onVariantChange={(nextVariantId) => {
+            if (variantSelectorDisabled) {
+              return;
+            }
+            setSelectedVariantId(nextVariantId);
+            emitCartConfiguration(nextVariantId, selectedAddons, selectedSauceCounts);
+          }}
+          cartSummaryLine={cartSummaryLine}
+          highProteinIngredientSummaryLine={highProteinIngredientSummaryLine}
+        >
+          <MenuItemMacroSummary
+            displayProtein={displayProtein}
+            displayCarbs={displayCarbs}
+            displayFat={displayFat}
+            proteinDelta={customizationTotals.protein}
+            carbsDelta={customizationTotals.carbs}
+            fatDelta={customizationTotals.totalFat}
+            quantityMultiplier={quantityMultiplier}
+            hasActiveCustomization={hasActiveCustomization}
+            actions={isCartMode ? (
+              <CartCardActions
+                itemName={item.name}
+                quantity={cartQuantity}
+                onModify={() => {
+                  if (onCartModify) {
+                    onCartModify();
+                    return;
+                  }
+                  setOpen(true);
+                }}
+                onIncrement={() => onCartIncrement?.()}
+                onDecrement={() => onCartDecrement?.()}
+              />
+            ) : (
+              <MenuCardActions
+                isAddFeedbackVisible={isAddFeedbackVisible}
+                onAddToCart={() => {
+                  if (itemHref && showDetailsButton) {
+                    router.push(itemHref, { scroll: false });
+                    return;
+                  }
+                  handleAddToCart();
+                }}
+              />
             )}
-            <div className="text-[26px] leading-[1.05] font-bold sm:text-[30px]">{item.name}</div>
-            <div className="flex items-center">
-              <div className="inline-flex items-baseline gap-2">
-                <div className="text-lg font-bold text-black/50">{formatCalories(displayCalories)} calories</div>
-                {hasActiveCustomization ? (
-                  <span className="text-sm font-bold text-green-600">{formatDelta(customizationTotals.calories * quantityMultiplier)}</span>
-                ) : null}
-              </div>
-              {variants && !item.hideVariantSelector ? (
-                <div
-                  className="inline-flex items-center"
-                  onClick={hasVariantDropdown ? (event) => event.stopPropagation() : undefined}
-                  onKeyDown={hasVariantDropdown ? (event) => event.stopPropagation() : undefined}
-                >
-                  <div className="mx-[10px] h-5 w-0.5 rounded-full bg-black/50" />
-                  {hasVariantDropdown ? (
-                    <VariantSelector
-                      variants={variants}
-                      selectedId={selectedVariantId}
-                      disabled={variantSelectorDisabled}
-                      onChange={(nextVariantId) => {
-                        if (variantSelectorDisabled) {
-                          return;
-                        }
-                        setSelectedVariantId(nextVariantId);
-                        emitCartConfiguration(nextVariantId, selectedAddons, selectedSauceCounts);
-                      }}
-                      ariaLabel={`${item.name} portion size`}
-                    />
-                  ) : (
-                    <span className="rounded-full bg-[#121212] px-4 py-0.5 text-base font-bold text-white">
-                      {selectedVariantForCart?.label ?? variants[0]?.label}
-                    </span>
-                  )}
-                </div>
-              ) : null}
-            </div>
-            {isCartMode && cartSummaryLine ? (
-              <p className="mt-0.5 truncate text-xs text-black/55">{cartSummaryLine}</p>
-            ) : null}
-            {!isCartMode && highProteinIngredientSummaryLine ? (
-              <p className="mt-0.5 truncate text-[13px] text-black/55">{highProteinIngredientSummaryLine}</p>
-            ) : null}
-          </div>
-
-          <div className="mt-4 flex flex-wrap items-end gap-x-10 gap-y-3 lg:mt-auto lg:gap-x-12">
-            <div className="flex flex-col items-center justify-start">
-              <div className="inline-flex items-baseline gap-1.5">
-                <div className="text-2xl font-bold text-[#c2410c]">{formatMacro(displayProtein)}</div>
-                {hasActiveCustomization ? (
-                  <span className="text-sm font-bold text-green-600">{formatDelta(customizationTotals.protein * quantityMultiplier)}</span>
-                ) : null}
-              </div>
-              <div className="text-[10px] font-bold">PROTEIN</div>
-            </div>
-            <div className="flex flex-col items-center justify-start">
-              <div className="inline-flex items-baseline gap-1.5">
-                <div className="text-2xl font-bold text-[#ca8a04]">{formatMacro(displayCarbs)}</div>
-                {hasActiveCustomization ? (
-                  <span className="text-sm font-bold text-green-600">{formatDelta(customizationTotals.carbs * quantityMultiplier)}</span>
-                ) : null}
-              </div>
-              <div className="text-[10px] font-bold">CARBS</div>
-            </div>
-            <div className="flex flex-col items-center justify-start">
-              <div className="inline-flex items-baseline gap-1.5">
-                <div className="text-2xl font-bold text-[#2563eb]">{formatMacro(displayFat)}</div>
-                {hasActiveCustomization ? (
-                  <span className="text-sm font-bold text-green-600">{formatDelta(customizationTotals.totalFat * quantityMultiplier)}</span>
-                ) : null}
-              </div>
-              <div className="text-[10px] font-bold">FAT</div>
-            </div>
-
-            <div className="ml-0 inline-flex w-full flex-row items-end justify-end gap-2 sm:ml-auto sm:w-auto">
-              {isCartMode ? (
-                <CartCardActions
-                  itemName={item.name}
-                  quantity={cartQuantity}
-                  onModify={() => {
-                    if (onCartModify) {
-                      onCartModify();
-                      return;
-                    }
-                    setOpen(true);
-                  }}
-                  onIncrement={() => onCartIncrement?.()}
-                  onDecrement={() => onCartDecrement?.()}
-                />
-              ) : (
-                <MenuCardActions
-                  isAddFeedbackVisible={isAddFeedbackVisible}
-                  onAddToCart={() => {
-                    if (itemHref && showDetailsButton) {
-                      router.push(itemHref, { scroll: false });
-                      return;
-                    }
-                    handleAddToCart();
-                  }}
-                />
-              )}
-            </div>
-          </div>
-        </div>
+          />
+        </MenuItemCardHeader>
 
         <div className="absolute right-3 top-3 hidden items-center gap-2 sm:right-[18px] sm:top-[18px] lg:inline-flex">
           {hasMods && !isCartMode ? (
