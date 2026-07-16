@@ -1,4 +1,5 @@
 import { Pencil } from "lucide-react";
+import QuantityStepper from "@/components/QuantityStepper";
 
 export default function CartCardActions({
   itemName,
@@ -23,11 +24,14 @@ export default function CartCardActions({
       >
         <Pencil className="h-5 w-5" />
       </button>
-      <div className="inline-flex items-center gap-2 rounded-xl border border-black/15 bg-white/90 px-2 py-1">
-        <button type="button" className="h-7 w-7 cursor-pointer rounded-lg border border-black/15 bg-white text-lg leading-none" onClick={(event) => { event.stopPropagation(); onDecrement(); }} aria-label={`Decrease quantity of ${itemName}`}>-</button>
-        <span className="min-w-6 text-center text-base font-bold">{quantity}</span>
-        <button type="button" className="h-7 w-7 cursor-pointer rounded-lg border border-black/15 bg-white text-lg leading-none" onClick={(event) => { event.stopPropagation(); onIncrement(); }} aria-label={`Increase quantity of ${itemName}`}>+</button>
-      </div>
+      <QuantityStepper
+        value={quantity}
+        onDecrement={(event) => { event.stopPropagation(); onDecrement(); }}
+        onIncrement={(event) => { event.stopPropagation(); onIncrement(); }}
+        decrementLabel={`Decrease quantity of ${itemName}`}
+        incrementLabel={`Increase quantity of ${itemName}`}
+        variant="cartCard"
+      />
     </div>
   );
 }
