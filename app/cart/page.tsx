@@ -4,6 +4,7 @@ import { useMemo } from "react";
 import StickyMacroTotalsBar from "@/components/StickyMacroTotalsBar";
 import CartNutritionSummary from "@/components/cart/CartNutritionSummary";
 import MacroSplitBar from "@/components/nutrition/MacroSplitBar";
+import QuantityStepper from "@/components/QuantityStepper";
 import GlobalMobileNav from "@/components/GlobalMobileNav";
 import DesktopNav from "@/components/DesktopNav";
 import CartItemPreviewRow from "@/components/CartItemPreviewRow";
@@ -61,11 +62,13 @@ export default function CartPage() {
                               {loadingEditItemId === cartItem.id ? "Loading..." : "Customize"}
                             </button>
                           ) : null}
-                          <div className="inline-flex items-center rounded-full border border-slate-200 bg-slate-50 p-1">
-                            <button type="button" onClick={() => updateQuantity(cartItem.id, cartItem.quantity - 1)} className="cursor-pointer inline-flex size-7 items-center justify-center rounded-full text-sm font-semibold text-slate-700 transition hover:bg-white" aria-label={`Decrease quantity of ${cartItem.name}`}>-</button>
-                            <span className="min-w-8 text-center text-sm font-semibold text-slate-900">{cartItem.quantity}</span>
-                            <button type="button" onClick={() => updateQuantity(cartItem.id, cartItem.quantity + 1)} className="cursor-pointer inline-flex size-7 items-center justify-center rounded-full text-sm font-semibold text-slate-700 transition hover:bg-white" aria-label={`Increase quantity of ${cartItem.name}`}>+</button>
-                          </div>
+                          <QuantityStepper
+                            value={cartItem.quantity}
+                            onDecrement={() => updateQuantity(cartItem.id, cartItem.quantity - 1)}
+                            onIncrement={() => updateQuantity(cartItem.id, cartItem.quantity + 1)}
+                            decrementLabel={`Decrease quantity of ${cartItem.name}`}
+                            incrementLabel={`Increase quantity of ${cartItem.name}`}
+                          />
                         </div>
                       }
                     />
