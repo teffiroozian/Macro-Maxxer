@@ -8,6 +8,7 @@ import QuantityStepper from "@/components/QuantityStepper";
 import GlobalMobileNav from "@/components/GlobalMobileNav";
 import DesktopNav from "@/components/DesktopNav";
 import CartItemPreviewRow from "@/components/CartItemPreviewRow";
+import EmptyStateCard from "@/components/EmptyStateCard";
 import ItemRouteModal from "@/components/ItemRouteModal";
 import { useCart } from "@/stores/cartStore";
 import { buildCartNutritionTotals } from "@/lib/cart/nutrition";
@@ -31,10 +32,10 @@ export default function CartPage() {
       <main className="mx-auto flex min-h-screen w-full max-w-5xl flex-col gap-6 px-4 pb-10 pt-28 sm:px-6 lg:pt-10">
         <section className="w-full space-y-3">
           {items.length === 0 ? (
-            <div className="rounded-2xl border border-black/10 bg-white px-5 py-8 text-center shadow-sm">
-              <p className="text-lg font-medium text-neutral-900">Your cart is empty.</p>
-              <p className="mt-2 text-sm text-neutral-600">Add items from a restaurant to start meal finalization.</p>
-            </div>
+            <EmptyStateCard
+              title="Your cart is empty."
+              description="Add items from a restaurant to start meal finalization."
+            />
           ) : (
             <ul className="grid gap-3">
               {items.map((cartItem) => {

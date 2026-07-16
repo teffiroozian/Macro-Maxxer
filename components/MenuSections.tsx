@@ -3,6 +3,7 @@
 import type { IngredientItem, MenuItem, ResolvedAddonGroups, RestaurantCustomizationRules } from "@/types/menu";
 import type { SortOption } from "@/lib/menuSections/sortOptions";
 import MenuItemCard from "./MenuItemCard";
+import EmptyStateCard from "./EmptyStateCard";
 import { toItemSlug } from "@/lib/restaurants";
 import {
   type CategoryMode,
@@ -23,9 +24,10 @@ function getSectionSort(_section: string, sort: SortOption): SortOption {
 
 function EmptyFilteredState() {
   return (
-    <div className="mt-8 border border-black/10 rounded-2xl px-4 py-[18px] text-black/70 font-medium">
-      No items match the selected options.
-    </div>
+    <EmptyStateCard
+      title="No items match the selected options."
+      className="mt-8 bg-transparent px-4 py-[18px] text-left shadow-none [&>p:first-child]:text-base [&>p:first-child]:font-medium [&>p:first-child]:text-black/70"
+    />
   );
 }
 
