@@ -6,7 +6,6 @@ import { CupSoda, Droplets, Salad, SquareStack, Utensils } from "lucide-react";
 import ItemDetailsPanel, {
   PortionSelector,
   resolvePanelIngredientTabs,
-  resolvePanelIngredients,
 } from "@/components/ItemDetailsPanel";
 import MacroTotalsGrid from "@/components/MacroTotalsGrid";
 import MenuSections from "@/components/MenuSections";
@@ -14,13 +13,7 @@ import BuildSummaryDrawer from "@/components/restaurant-view/BuildSummaryDrawer"
 import type { MenuItem, ResolvedAddonGroups, IngredientItem, RestaurantCustomizationRules } from "@/types/menu";
 import type { Nutrition } from "@/types/nutrition";
 import { useCart } from "@/stores/cartStore";
-import { parseComboCustomization } from "@/lib/menuItemCard/comboCustomizationParser";
-import {
-  buildStructuredOptionSelections,
-  getSelectedAddonsFromSelection,
-  getSelectedSauceCountsFromSelection,
-} from "@/lib/menuItemCard/cartLabelUtils";
-import { getSelectedIngredientCountsFromCustomizations } from "@/lib/menuItemCard/ingredientCountCustomization";
+import { buildStructuredOptionSelections } from "@/lib/menuItemCard/cartLabelUtils";
 import {
   getDefaultVariantId,
   resolveJustItemIcon,
@@ -58,9 +51,9 @@ import {
   calculateFullComboNutritionTotals,
   calculateIngredientCountTotals,
 } from "@/lib/menuItemCard/totals";
-import { customizationsFromLabels, getCustomizationLabels } from "@/lib/cart/customizationLabels";
+import { customizationsFromLabels } from "@/lib/cart/customizationLabels";
 import { resolveComboDrinkOptions, resolveComboMealConfig, resolveComboSideOptions } from "@/lib/comboMeals";
-import { getCartItemVariantId } from "@/lib/cart/itemAccessors";
+import { useItemCustomizationState } from "@/components/item-route-modal/useItemCustomizationState";
 
 const emptyAddon: MenuItem = {
   id: "none",
@@ -103,14 +96,6 @@ export default function ItemRouteModal({
   const router = useRouter();
   const searchParams = useSearchParams();
   const editCartItemId = editCartItemIdProp ?? searchParams.get("editCartItem");
-  const variants = item.variants?.length ? item.variants : null;
-  const defaultVariantId = useMemo(() => {
-    if (!variants) return "";
-    if (item.defaultVariantId && variants.some((variant) => variant.id === item.defaultVariantId)) {
-      return item.defaultVariantId;
-    }
-    return variants[0]?.id ?? "";
-  }, [item.defaultVariantId, variants]);
   const { addItem, updateItem, items } = useCart();
   const editingCartItem = useMemo(() => {
     if (!editCartItemId) return null;
@@ -124,6 +109,55 @@ export default function ItemRouteModal({
       ) ?? null
     );
   }, [editCartItemId, item.id, item.name, items, restaurantId]);
+  const comboConfig = useMemo(
+    () => resolveComboMealConfig(restaurantId, item, menuItems),
+    [item, menuItems, restaurantId]
+  );
+  const comboSides = useMemo(
+    () => resolveComboSideOptions(restaurantId, item, menuItems),
+    [item, menuItems, restaurantId]
+  );
+  const comboDrinks = useMemo(
+    () => resolveComboDrinkOptions(restaurantId, item, menuItems),
+    [item, menuItems, restaurantId]
+  );
+  const {
+    variants,
+    selectedVariantId,
+    setSelectedVariantId,
+    quantity,
+    setQuantity,
+    selectedAddons,
+    setSelectedAddons,
+    selectedSauceCounts,
+    setSelectedSauceCounts,
+    resolvedIngredients,
+    selectedIngredientCounts,
+    setSelectedIngredientCounts,
+    comboType,
+    setComboType,
+    selectedComboSideId,
+    setSelectedComboSideId,
+    selectedComboDrinkId,
+    setSelectedComboDrinkId,
+    selectedComboSideVariantId,
+    setSelectedComboSideVariantId,
+    selectedComboDrinkVariantId,
+    setSelectedComboDrinkVariantId,
+  } = useItemCustomizationState({
+    item,
+    addons,
+    ingredients,
+    menuItems,
+    customizationRules,
+    editingCartItem,
+    comboConfig,
+    comboSides,
+    comboDrinks,
+  });
+  const selectedVariant = variants?.find((variant) => variant.id === selectedVariantId);
+  const selectedItemImage = selectedVariant?.image ?? item.image;
+  const baseNutrition = resolveMenuItemVariantNutrition(item, selectedVariant);
   const isCustomizeMode = Boolean(editingCartItem);
   const isChipotlePrebuiltBuilderItem =
     isChipotleHighProteinMenuItem(item, restaurantId) &&
@@ -154,28 +188,6 @@ export default function ItemRouteModal({
       selectedKidsMeal: "build-your-own",
     };
   }, [editingBuildConfiguration, ingredients, item]);
-  const parsedInitialComboCustomization = useMemo(
-    () => parseComboCustomization(getCustomizationLabels(editingCartItem?.customizations)),
-    [editingCartItem?.customizations]
-  );
-  const [selectedVariantId, setSelectedVariantId] = useState(editingCartItem ? getCartItemVariantId(editingCartItem) ?? defaultVariantId : defaultVariantId);
-  const [quantity, setQuantity] = useState(editingCartItem?.quantity ?? 1);
-  const [selectedAddons, setSelectedAddons] = useState<Partial<Record<string, MenuItem>>>(() =>
-    getSelectedAddonsFromSelection(item, addons, editingCartItem?.selection)
-  );
-  const [selectedSauceCounts, setSelectedSauceCounts] = useState<Record<string, number>>(() =>
-    getSelectedSauceCountsFromSelection(item, addons, editingCartItem?.selection)
-  );
-  const selectedVariant = variants?.find((variant) => variant.id === selectedVariantId);
-  const selectedItemImage = selectedVariant?.image ?? item.image;
-  const baseNutrition = resolveMenuItemVariantNutrition(item, selectedVariant);
-  const resolvedIngredients = useMemo(
-    () => resolvePanelIngredients(item, ingredients, addons, menuItems ?? [], variants, selectedVariantId, customizationRules),
-    [addons, customizationRules, ingredients, item, menuItems, selectedVariantId, variants]
-  );
-  const [selectedIngredientCounts, setSelectedIngredientCounts] = useState<Record<string, number>>(() =>
-    getSelectedIngredientCountsFromCustomizations(resolvedIngredients, getCustomizationLabels(editingCartItem?.customizations))
-  );
   const isChipotleTacoItem = (item.id ?? "").toLowerCase().includes("taco");
   const isChipotleBurritoItem = (item.id ?? "").toLowerCase().includes("burrito");
   const chipotleIncludedIngredientIds = useMemo(() => {
@@ -354,36 +366,7 @@ export default function ItemRouteModal({
     () => buildIngredientCustomizationLabels({ resolvedIngredients, ingredientCounts }),
     [ingredientCounts, resolvedIngredients]
   );
-  const comboConfig = useMemo(
-    () => resolveComboMealConfig(restaurantId, item, menuItems),
-    [item, menuItems, restaurantId]
-  );
   const isComboEligibleCategory = Boolean(comboConfig);
-  const comboSides = useMemo(
-    () => resolveComboSideOptions(restaurantId, item, menuItems),
-    [item, menuItems, restaurantId]
-  );
-  const comboDrinks = useMemo(
-    () => resolveComboDrinkOptions(restaurantId, item, menuItems),
-    [item, menuItems, restaurantId]
-  );
-  const [comboType, setComboType] = useState<"just-item" | "combo-meal">(parsedInitialComboCustomization.comboType);
-  const [selectedComboSideId, setSelectedComboSideId] = useState<string | undefined>(() => {
-    const side = comboSides.find((option) => option.name === parsedInitialComboCustomization.sideName);
-    return side ? (side.id ?? side.name) : comboConfig?.defaultSideId;
-  });
-  const [selectedComboDrinkId, setSelectedComboDrinkId] = useState<string | undefined>(() => {
-    const drink = comboDrinks.find((option) => option.name === parsedInitialComboCustomization.drinkName);
-    return drink ? (drink.id ?? drink.name) : comboConfig?.defaultDrinkId;
-  });
-  const [selectedComboSideVariantId, setSelectedComboSideVariantId] = useState<string | undefined>(() => {
-    const side = comboSides.find((option) => option.name === parsedInitialComboCustomization.sideName);
-    return side?.variants?.find((variant) => variant.label === parsedInitialComboCustomization.sideVariantLabel)?.id;
-  });
-  const [selectedComboDrinkVariantId, setSelectedComboDrinkVariantId] = useState<string | undefined>(() => {
-    const drink = comboDrinks.find((option) => option.name === parsedInitialComboCustomization.drinkName);
-    return drink?.variants?.find((variant) => variant.label === parsedInitialComboCustomization.drinkVariantLabel)?.id;
-  });
   const comboTypeOptions = useMemo(
     () => [
       { id: "just-item" as const, label: resolveJustItemLabel(item), icon: resolveJustItemIcon(item) },
