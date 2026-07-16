@@ -8,6 +8,7 @@ import { formatIngredientCountCustomizationLabel } from "@/lib/menuItemCard/ingr
 import {
   calculateAddonTotals,
   calculateComboNutritionTotals,
+  calculateFullComboNutritionTotals,
   calculateIngredientCountTotals,
   calculateMenuItemMacrosPerItem,
 } from "@/lib/menuItemCard/totals";
@@ -17,19 +18,6 @@ import { normalizeNutrition, resolveMenuItemVariantNutrition } from "@/lib/nutri
 const sauceRef = "sauces";
 
 export type ComboType = "just-item" | "combo-meal";
-
-const zeroNutrition: Nutrition = {
-  calories: 0,
-  protein: 0,
-  carbs: 0,
-  totalFat: 0,
-  satFat: 0,
-  transFat: 0,
-  cholesterol: 0,
-  sodium: 0,
-  fiber: 0,
-  sugars: 0,
-};
 
 export function resolveStandardItemVariant({
   variants,
@@ -110,24 +98,6 @@ export function resolveStandardComboSelection({
     selectedComboDrink,
     selectedComboSideVariant: selectedComboSide?.variants?.find((variant) => variant.id === selectedComboSideVariantId),
     selectedComboDrinkVariant: selectedComboDrink?.variants?.find((variant) => variant.id === selectedComboDrinkVariantId),
-  };
-}
-
-export function calculateFullComboNutritionTotals(params: Parameters<typeof calculateComboNutritionTotals>[0]): Nutrition {
-  if (!params.isComboEligibleCategory || params.comboType !== "combo-meal") return { ...zeroNutrition };
-  const drinkNutrition = params.selectedComboDrinkVariant?.nutrition ?? params.selectedComboDrink?.nutrition;
-  const sideNutrition = params.selectedComboSideVariant?.nutrition ?? params.selectedComboSide?.nutrition;
-  return {
-    calories: (drinkNutrition?.calories ?? 0) + (sideNutrition?.calories ?? 0),
-    protein: (drinkNutrition?.protein ?? 0) + (sideNutrition?.protein ?? 0),
-    carbs: (drinkNutrition?.carbs ?? 0) + (sideNutrition?.carbs ?? 0),
-    totalFat: (drinkNutrition?.totalFat ?? 0) + (sideNutrition?.totalFat ?? 0),
-    satFat: (drinkNutrition?.satFat ?? 0) + (sideNutrition?.satFat ?? 0),
-    transFat: (drinkNutrition?.transFat ?? 0) + (sideNutrition?.transFat ?? 0),
-    cholesterol: (drinkNutrition?.cholesterol ?? 0) + (sideNutrition?.cholesterol ?? 0),
-    sodium: (drinkNutrition?.sodium ?? 0) + (sideNutrition?.sodium ?? 0),
-    fiber: (drinkNutrition?.fiber ?? 0) + (sideNutrition?.fiber ?? 0),
-    sugars: (drinkNutrition?.sugars ?? 0) + (sideNutrition?.sugars ?? 0),
   };
 }
 

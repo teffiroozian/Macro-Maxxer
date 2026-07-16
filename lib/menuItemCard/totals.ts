@@ -10,6 +10,19 @@ const zeroCoreMacros: CoreMacros = {
   totalFat: 0,
 };
 
+const zeroNutrition: Nutrition = {
+  calories: 0,
+  protein: 0,
+  carbs: 0,
+  totalFat: 0,
+  satFat: 0,
+  transFat: 0,
+  cholesterol: 0,
+  sodium: 0,
+  fiber: 0,
+  sugars: 0,
+};
+
 export function calculateAddonTotals(addons: Array<MenuItem | undefined | null>): Nutrition {
   return addons.reduce<Nutrition>(
     (sum, addon) => ({
@@ -82,20 +95,40 @@ export function calculateComboNutritionTotals({
   selectedComboSide?: MenuItem;
   selectedComboSideVariant?: ItemVariant;
 }): CoreMacros {
-  if (!isComboEligibleCategory || comboType !== "combo-meal") {
-    return { ...zeroCoreMacros };
-  }
+  const fullNutrition = calculateFullComboNutritionTotals({
+    isComboEligibleCategory,
+    comboType,
+    selectedComboDrink,
+    selectedComboDrinkVariant,
+    selectedComboSide,
+    selectedComboSideVariant,
+  });
 
-  const drinkNutrition = selectedComboDrinkVariant?.nutrition ?? selectedComboDrink?.nutrition;
-  const sideNutrition = selectedComboSideVariant?.nutrition ?? selectedComboSide?.nutrition;
+  return {
+    calories: fullNutrition.calories,
+    protein: fullNutrition.protein,
+    carbs: fullNutrition.carbs,
+    totalFat: fullNutrition.totalFat,
+  };
+}
 
+export function calculateFullComboNutritionTotals(params: Parameters<typeof calculateComboNutritionTotals>[0]): Nutrition {
+  if (!params.isComboEligibleCategory || params.comboType !== "combo-meal") return { ...zeroNutrition };
+  const drinkNutrition = params.selectedComboDrinkVariant?.nutrition ?? params.selectedComboDrink?.nutrition;
+  const sideNutrition = params.selectedComboSideVariant?.nutrition ?? params.selectedComboSide?.nutrition;
   return {
     calories: (drinkNutrition?.calories ?? 0) + (sideNutrition?.calories ?? 0),
     protein: (drinkNutrition?.protein ?? 0) + (sideNutrition?.protein ?? 0),
     carbs: (drinkNutrition?.carbs ?? 0) + (sideNutrition?.carbs ?? 0),
     totalFat:
-      (drinkNutrition?.totalFat ?? menuItemFatWithFallback(selectedComboDrink)) +
-      (sideNutrition?.totalFat ?? menuItemFatWithFallback(selectedComboSide)),
+      (drinkNutrition?.totalFat ?? menuItemFatWithFallback(params.selectedComboDrink)) +
+      (sideNutrition?.totalFat ?? menuItemFatWithFallback(params.selectedComboSide)),
+    satFat: (drinkNutrition?.satFat ?? 0) + (sideNutrition?.satFat ?? 0),
+    transFat: (drinkNutrition?.transFat ?? 0) + (sideNutrition?.transFat ?? 0),
+    cholesterol: (drinkNutrition?.cholesterol ?? 0) + (sideNutrition?.cholesterol ?? 0),
+    sodium: (drinkNutrition?.sodium ?? 0) + (sideNutrition?.sodium ?? 0),
+    fiber: (drinkNutrition?.fiber ?? 0) + (sideNutrition?.fiber ?? 0),
+    sugars: (drinkNutrition?.sugars ?? 0) + (sideNutrition?.sugars ?? 0),
   };
 }
 

@@ -47,14 +47,17 @@ import {
   buildComboCustomizationLabels,
   buildIngredientCustomizationLabels,
   buildStandardCartItemPayload,
-  calculateFullComboNutritionTotals,
   calculateStandardItemNutrition,
   resolveActiveAddons,
   resolveSelectedSauceOptions,
   resolveStandardComboSelection,
   resolveStandardIngredientCounts,
 } from "@/lib/cart/standardItemConfiguration";
-import { calculateAddonTotals, calculateIngredientCountTotals } from "@/lib/menuItemCard/totals";
+import {
+  calculateAddonTotals,
+  calculateFullComboNutritionTotals,
+  calculateIngredientCountTotals,
+} from "@/lib/menuItemCard/totals";
 import { customizationsFromLabels, getCustomizationLabels } from "@/lib/cart/customizationLabels";
 import { resolveComboDrinkOptions, resolveComboMealConfig, resolveComboSideOptions } from "@/lib/comboMeals";
 import { getCartItemVariantId } from "@/lib/cart/itemAccessors";
