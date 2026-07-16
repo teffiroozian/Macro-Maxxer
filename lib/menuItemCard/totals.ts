@@ -2,6 +2,7 @@ import type { ItemVariant, MenuItem } from "@/types/menu";
 import type { CoreMacros, Nutrition } from "@/types/nutrition";
 import type { ResolvedPanelIngredient } from "@/components/ItemDetailsPanel";
 import { addonFat, menuItemFatWithFallback } from "@/lib/menuItemCalculations";
+import { addNutrition, normalizeNutrition } from "@/lib/nutrition";
 
 const zeroCoreMacros: CoreMacros = {
   calories: 0,
@@ -116,20 +117,22 @@ export function calculateFullComboNutritionTotals(params: Parameters<typeof calc
   if (!params.isComboEligibleCategory || params.comboType !== "combo-meal") return { ...zeroNutrition };
   const drinkNutrition = params.selectedComboDrinkVariant?.nutrition ?? params.selectedComboDrink?.nutrition;
   const sideNutrition = params.selectedComboSideVariant?.nutrition ?? params.selectedComboSide?.nutrition;
-  return {
-    calories: (drinkNutrition?.calories ?? 0) + (sideNutrition?.calories ?? 0),
-    protein: (drinkNutrition?.protein ?? 0) + (sideNutrition?.protein ?? 0),
-    carbs: (drinkNutrition?.carbs ?? 0) + (sideNutrition?.carbs ?? 0),
-    totalFat:
-      (drinkNutrition?.totalFat ?? menuItemFatWithFallback(params.selectedComboDrink)) +
-      (sideNutrition?.totalFat ?? menuItemFatWithFallback(params.selectedComboSide)),
-    satFat: (drinkNutrition?.satFat ?? 0) + (sideNutrition?.satFat ?? 0),
-    transFat: (drinkNutrition?.transFat ?? 0) + (sideNutrition?.transFat ?? 0),
-    cholesterol: (drinkNutrition?.cholesterol ?? 0) + (sideNutrition?.cholesterol ?? 0),
-    sodium: (drinkNutrition?.sodium ?? 0) + (sideNutrition?.sodium ?? 0),
-    fiber: (drinkNutrition?.fiber ?? 0) + (sideNutrition?.fiber ?? 0),
-    sugars: (drinkNutrition?.sugars ?? 0) + (sideNutrition?.sugars ?? 0),
-  };
+  const normalizeComboItemNutrition = (
+    nutrition: Nutrition | undefined,
+    item: MenuItem | undefined,
+  ) =>
+    normalizeNutrition({
+      ...(nutrition ?? {}),
+      totalFat: nutrition?.totalFat ?? menuItemFatWithFallback(item),
+    });
+
+  return addNutrition(
+    addNutrition(
+      normalizeNutrition(zeroNutrition),
+      normalizeComboItemNutrition(drinkNutrition, params.selectedComboDrink),
+    ),
+    normalizeComboItemNutrition(sideNutrition, params.selectedComboSide),
+  );
 }
 
 export function calculateMenuItemMacrosPerItem({
