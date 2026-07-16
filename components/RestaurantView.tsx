@@ -70,6 +70,7 @@ import { useChipotleBuilderState } from "./restaurant-view/useChipotleBuilderSta
 import { useRestaurantMenuControls } from "@/hooks/useRestaurantMenuControls";
 import EntreeSelectionHero from "./restaurant-view/EntreeSelectionHero";
 import KidsMealSelector from "./restaurant-view/KidsMealSelector";
+import ChipotleBuilderSection from "./restaurant-view/ChipotleBuilderSection";
 import RestaurantCategorySidebar from "./restaurant-view/RestaurantCategorySidebar";
 import {
     type ChipotleEntreeSelection,
@@ -2891,191 +2892,392 @@ export default function RestaurantView({
 
                     <div className="min-w-0">
                         <div className="mx-auto w-full max-w-[900px]">
-                            {isChipotleBuildPage &&
-                            selectedEntree === "kids-meal" ? (
-                                <KidsMealSelector
+                            {isChipotleBuildPage ? (
+                                <ChipotleBuilderSection
+                                    showKidsMealSelector={
+                                        selectedEntree === "kids-meal"
+                                    }
                                     selectedKidsMeal={selectedKidsMeal}
                                     onSelectKidsMeal={handleKidsMealSelection}
-                                    options={kidsMealOptions}
-                                />
-                            ) : null}
-                            <MenuSections
-                                restaurantId={restaurantId}
-                                items={visibleMenuItems}
-                                sort={sort}
-                                addons={addons}
-                                ingredients={ingredients}
-                                customizationRules={customizationRules}
-                                groupByCategory={
-                                    effectiveViewMode !== "ranking"
-                                }
-                                categoryMode={
-                                    effectiveViewMode === "ranking"
-                                        ? "menu"
-                                        : effectiveViewMode
-                                }
-                                hasBuildYourOwn={hasBuildYourOwn}
-                                selectedIngredientIds={
-                                    selectedIngredientIdsForMenu
-                                }
-                                lockedIngredientIds={lockedIngredientIds}
-                                unavailableIngredientIds={
-                                    unavailableIngredientIds
-                                }
-                                unavailableIngredientReasonById={
-                                    unavailableIngredientReasonById
-                                }
-                                onIngredientSelectionChange={
-                                    handleIngredientSelectionChange
-                                }
-                                ingredientSelectionControlById={
-                                    selectedEntree === "tacos"
-                                        ? Object.fromEntries(
-                                              tacoShellIngredientIds.map(
-                                                  (ingredientId) => [
-                                                      ingredientId,
-                                                      "radio" as const,
-                                                  ],
-                                              ),
-                                          )
-                                        : undefined
-                                }
-                                ingredientRadioGroupNameById={
-                                    selectedEntree === "tacos"
-                                        ? Object.fromEntries(
-                                              tacoShellIngredientIds.map(
-                                                  (ingredientId) => [
-                                                      ingredientId,
-                                                      "chipotle-taco-shell",
-                                                  ],
-                                              ),
-                                          )
-                                        : undefined
-                                }
-                                ingredientVariantOptionsById={(() => {
-                                    const variantOptionsById =
-                                        Object.fromEntries(
-                                            visibleMenuItems
-                                                .filter(
-                                                    (item) =>
-                                                        item.id &&
-                                                        item.variants &&
-                                                        item.variants.length >
-                                                            1 &&
-                                                        !isProteinIngredientItem(
-                                                            item,
-                                                        ),
+                                    kidsMealOptions={kidsMealOptions}
+                                    menuSectionsProps={{
+                                        restaurantId,
+                                        items: visibleMenuItems,
+                                        sort,
+                                        addons,
+                                        ingredients,
+                                        customizationRules,
+                                        groupByCategory:
+                                            effectiveViewMode !== "ranking",
+                                        categoryMode:
+                                            effectiveViewMode === "ranking"
+                                                ? "menu"
+                                                : effectiveViewMode,
+                                        hasBuildYourOwn,
+                                        selectedIngredientIds:
+                                            selectedIngredientIdsForMenu,
+                                        lockedIngredientIds,
+                                        unavailableIngredientIds,
+                                        unavailableIngredientReasonById,
+                                        onIngredientSelectionChange:
+                                            handleIngredientSelectionChange,
+                                        ingredientSelectionControlById:
+                                            selectedEntree === "tacos"
+                                                ? Object.fromEntries(
+                                                      tacoShellIngredientIds.map(
+                                                          (ingredientId) => [
+                                                              ingredientId,
+                                                              "radio" as const,
+                                                          ],
+                                                      ),
+                                                  )
+                                                : undefined,
+                                        ingredientRadioGroupNameById:
+                                            selectedEntree === "tacos"
+                                                ? Object.fromEntries(
+                                                      tacoShellIngredientIds.map(
+                                                          (ingredientId) => [
+                                                              ingredientId,
+                                                              "chipotle-taco-shell",
+                                                          ],
+                                                      ),
+                                                  )
+                                                : undefined,
+                                        ingredientVariantOptionsById: (() => {
+                                            const variantOptionsById =
+                                                Object.fromEntries(
+                                                    visibleMenuItems
+                                                        .filter(
+                                                            (item) =>
+                                                                item.id &&
+                                                                item.variants &&
+                                                                item.variants
+                                                                    .length >
+                                                                    1 &&
+                                                                !isProteinIngredientItem(
+                                                                    item,
+                                                                ),
+                                                        )
+                                                        .map((item) => [
+                                                            item.id as string,
+                                                            item.variants!.map(
+                                                                (variant) => ({
+                                                                    id: variant.id,
+                                                                    label: variant.label,
+                                                                }),
+                                                            ),
+                                                        ]),
+                                                );
+
+                                            if (selectedEntree === "tacos") {
+                                                tacoShellIngredientIds.forEach(
+                                                    (ingredientId) => {
+                                                        variantOptionsById[
+                                                            ingredientId
+                                                        ] = [
+                                                            {
+                                                                id: "3",
+                                                                label: "3 Tacos",
+                                                            },
+                                                            {
+                                                                id: "1",
+                                                                label: "1 Taco",
+                                                            },
+                                                        ];
+                                                    },
+                                                );
+                                            }
+
+                                            return Object.keys(
+                                                variantOptionsById,
+                                            ).length > 0
+                                                ? variantOptionsById
+                                                : undefined;
+                                        })(),
+                                        selectedIngredientVariantIdById:
+                                            (() => {
+                                                const selectedById =
+                                                    Object.fromEntries(
+                                                        visibleMenuItems
+                                                            .filter(
+                                                                (item) =>
+                                                                    item.id &&
+                                                                    item.variants &&
+                                                                    item
+                                                                        .variants
+                                                                        .length >
+                                                                        1 &&
+                                                                    !isProteinIngredientItem(
+                                                                        item,
+                                                                    ),
+                                                            )
+                                                            .map((item) => [
+                                                                item.id as string,
+                                                                selectedIngredientVariantIds[
+                                                                    item.id as string
+                                                                ] ??
+                                                                    item.defaultVariantId ??
+                                                                    item.variants?.[0]
+                                                                        ?.id,
+                                                            ]),
+                                                    );
+
+                                                if (selectedEntree === "tacos") {
+                                                    tacoShellIngredientIds.forEach(
+                                                        (ingredientId) => {
+                                                            selectedById[
+                                                                ingredientId
+                                                            ] =
+                                                                String(
+                                                                    selectedTacoCount,
+                                                                );
+                                                        },
+                                                    );
+                                                }
+
+                                                return Object.keys(selectedById)
+                                                    .length > 0
+                                                    ? selectedById
+                                                    : undefined;
+                                            })(),
+                                        ingredientPortionBadgeById:
+                                            Object.keys(
+                                                ingredientPortionLabelById,
+                                            ).length > 0
+                                                ? ingredientPortionLabelById
+                                                : undefined,
+                                        ingredientPortionModeOptionsById: (() => {
+                                            const optionsById: Record<
+                                                string,
+                                                Array<{
+                                                    id: string;
+                                                    label: string;
+                                                    disabled?: boolean;
+                                                }>
+                                            > = Object.fromEntries(
+                                                visibleMenuItems
+                                                    .filter(
+                                                        (item) =>
+                                                            item.id &&
+                                                            isProteinIngredientItem(
+                                                                item,
+                                                            ),
+                                                    )
+                                                    .map((item) => [
+                                                        item.id as string,
+                                                        [
+                                                            {
+                                                                id: "normal",
+                                                                label: "Normal",
+                                                            },
+                                                            {
+                                                                id: "double",
+                                                                label: "Double",
+                                                            },
+                                                        ],
+                                                    ]),
+                                            );
+
+                                            (["rice", "beans"] as const).forEach(
+                                                (splitCategory) => {
+                                                    const selectedSplitCount =
+                                                        Object.values(
+                                                            selectedIngredientItems,
+                                                        ).filter(
+                                                            (
+                                                                selectedIngredient,
+                                                            ) =>
+                                                                normalizeIngredientCategory(
+                                                                    resolvePrimaryCategory(
+                                                                        selectedIngredient
+                                                                            .item
+                                                                            .categories,
+                                                                    ),
+                                                                ) ===
+                                                                splitCategory,
+                                                        ).length;
+                                                    const splitModeOptions =
+                                                        selectedSplitCount === 2
+                                                            ? [
+                                                                  {
+                                                                      id: "light",
+                                                                      label: "Light",
+                                                                      disabled: true,
+                                                                  },
+                                                                  {
+                                                                      id: "normal",
+                                                                      label: "Normal",
+                                                                      disabled: true,
+                                                                  },
+                                                                  {
+                                                                      id: "extra",
+                                                                      label: "Extra",
+                                                                      disabled: true,
+                                                                  },
+                                                              ]
+                                                            : [
+                                                                  {
+                                                                      id: "light",
+                                                                      label: "Light",
+                                                                  },
+                                                                  {
+                                                                      id: "normal",
+                                                                      label: "Normal",
+                                                                  },
+                                                                  {
+                                                                      id: "extra",
+                                                                      label: "Extra",
+                                                                  },
+                                                              ];
+                                                    visibleMenuItems
+                                                        .filter(
+                                                            (item) =>
+                                                                item.id &&
+                                                                normalizeIngredientCategory(
+                                                                    resolvePrimaryCategory(
+                                                                        item.categories,
+                                                                    ),
+                                                                ) ===
+                                                                    splitCategory,
+                                                        )
+                                                        .forEach((item) => {
+                                                            optionsById[
+                                                                item.id as string
+                                                            ] = splitModeOptions;
+                                                        });
+                                                },
+                                            );
+
+                                            return Object.keys(optionsById)
+                                                .length > 0
+                                                ? optionsById
+                                                : undefined;
+                                        })(),
+                                        selectedIngredientPortionModeIdById:
+                                            (() => {
+                                                const selectedModeById: Record<
+                                                    string,
+                                                    string
+                                                > = Object.fromEntries(
+                                                    visibleMenuItems
+                                                        .filter(
+                                                            (item) =>
+                                                                item.id &&
+                                                                isProteinIngredientItem(
+                                                                    item,
+                                                                ),
+                                                        )
+                                                        .map((item) => [
+                                                            item.id as string,
+                                                            proteinPortionMode,
+                                                        ]),
+                                                );
+                                                (["rice", "beans"] as const).forEach(
+                                                    (splitCategory) => {
+                                                        const selectedSplitIds =
+                                                            Object.entries(
+                                                                selectedIngredientItems,
+                                                            )
+                                                                .filter(
+                                                                    ([
+                                                                        ,
+                                                                        selectedIngredient,
+                                                                    ]) =>
+                                                                        normalizeIngredientCategory(
+                                                                            resolvePrimaryCategory(
+                                                                                selectedIngredient
+                                                                                    .item
+                                                                                    .categories,
+                                                                            ),
+                                                                        ) ===
+                                                                        splitCategory,
+                                                                )
+                                                                .map(
+                                                                    ([
+                                                                        ingredientId,
+                                                                    ]) =>
+                                                                        ingredientId,
+                                                                );
+                                                        const isSplitSelection =
+                                                            selectedSplitIds.length ===
+                                                            2;
+
+                                                        visibleMenuItems
+                                                            .filter(
+                                                                (item) =>
+                                                                    item.id &&
+                                                                    normalizeIngredientCategory(
+                                                                        resolvePrimaryCategory(
+                                                                            item.categories,
+                                                                        ),
+                                                                    ) ===
+                                                                        splitCategory,
+                                                            )
+                                                            .forEach((item) => {
+                                                                const itemId =
+                                                                    item.id as string;
+                                                                selectedModeById[
+                                                                    itemId
+                                                                ] = isSplitSelection
+                                                                    ? "normal"
+                                                                    : (splitPortionModeById[
+                                                                          itemId
+                                                                      ] ??
+                                                                      "normal");
+                                                            });
+                                                    },
+                                                );
+
+                                                return Object.keys(
+                                                    selectedModeById,
+                                                ).length > 0
+                                                    ? selectedModeById
+                                                    : undefined;
+                                            })(),
+                                        onIngredientPortionModeChange: (
+                                            item,
+                                            modeId,
+                                        ) => {
+                                            if (isProteinIngredientItem(item)) {
+                                                if (
+                                                    modeId !== "normal" &&
+                                                    modeId !== "double"
                                                 )
-                                                .map((item) => [
-                                                    item.id as string,
-                                                    item.variants!.map(
-                                                        (variant) => ({
-                                                            id: variant.id,
-                                                            label: variant.label,
-                                                        }),
-                                                    ),
-                                                ]),
-                                        );
+                                                    return;
+                                                setSelectedIngredientItems(
+                                                    (previous) =>
+                                                        applyIngredientPortionNutrition(
+                                                            previous,
+                                                            {
+                                                                proteinMode:
+                                                                    modeId,
+                                                            },
+                                                        ),
+                                                );
+                                                setProteinPortionMode(modeId);
+                                                return;
+                                            }
 
-                                    if (selectedEntree === "tacos") {
-                                        tacoShellIngredientIds.forEach(
-                                            (ingredientId) => {
-                                                variantOptionsById[
-                                                    ingredientId
-                                                ] = [
-                                                    {
-                                                        id: "3",
-                                                        label: "3 Tacos",
-                                                    },
-                                                    {
-                                                        id: "1",
-                                                        label: "1 Taco",
-                                                    },
-                                                ];
-                                            },
-                                        );
-                                    }
-
-                                    return Object.keys(variantOptionsById)
-                                        .length > 0
-                                        ? variantOptionsById
-                                        : undefined;
-                                })()}
-                                selectedIngredientVariantIdById={(() => {
-                                    const selectedById = Object.fromEntries(
-                                        visibleMenuItems
-                                            .filter(
-                                                (item) =>
-                                                    item.id &&
-                                                    item.variants &&
-                                                    item.variants.length > 1 &&
-                                                    !isProteinIngredientItem(
-                                                        item,
-                                                    ),
+                                            if (
+                                                !isSplitPortionIngredientItem(
+                                                    item,
+                                                ) ||
+                                                !item.id
                                             )
-                                            .map((item) => [
-                                                item.id as string,
-                                                selectedIngredientVariantIds[
-                                                    item.id as string
-                                                ] ??
-                                                    item.defaultVariantId ??
-                                                    item.variants?.[0]?.id,
-                                            ]),
-                                    );
-
-                                    if (selectedEntree === "tacos") {
-                                        tacoShellIngredientIds.forEach(
-                                            (ingredientId) => {
-                                                selectedById[ingredientId] =
-                                                    String(selectedTacoCount);
-                                            },
-                                        );
-                                    }
-
-                                    return Object.keys(selectedById).length > 0
-                                        ? selectedById
-                                        : undefined;
-                                })()}
-                                ingredientPortionBadgeById={
-                                    Object.keys(ingredientPortionLabelById)
-                                        .length > 0
-                                        ? ingredientPortionLabelById
-                                        : undefined
-                                }
-                                ingredientPortionModeOptionsById={(() => {
-                                    const optionsById: Record<
-                                        string,
-                                        Array<{
-                                            id: string;
-                                            label: string;
-                                            disabled?: boolean;
-                                        }>
-                                    > = Object.fromEntries(
-                                        visibleMenuItems
-                                            .filter(
-                                                (item) =>
-                                                    item.id &&
-                                                    isProteinIngredientItem(
-                                                        item,
-                                                    ),
+                                                return;
+                                            if (
+                                                modeId !== "light" &&
+                                                modeId !== "normal" &&
+                                                modeId !== "extra"
                                             )
-                                            .map((item) => [
-                                                item.id as string,
-                                                [
-                                                    {
-                                                        id: "normal",
-                                                        label: "Normal",
-                                                    },
-                                                    {
-                                                        id: "double",
-                                                        label: "Double",
-                                                    },
-                                                ],
-                                            ]),
-                                    );
+                                                return;
 
-                                    (["rice", "beans"] as const).forEach(
-                                        (splitCategory) => {
+                                            const splitCategory =
+                                                normalizeIngredientCategory(
+                                                    resolvePrimaryCategory(
+                                                        item.categories,
+                                                    ),
+                                                );
                                             const selectedSplitCount =
                                                 Object.values(
                                                     selectedIngredientItems,
@@ -3089,249 +3291,104 @@ export default function RestaurantView({
                                                             ),
                                                         ) === splitCategory,
                                                 ).length;
-                                            const splitModeOptions =
-                                                selectedSplitCount === 2
-                                                    ? [
-                                                          {
-                                                              id: "light",
-                                                              label: "Light",
-                                                              disabled: true,
-                                                          },
-                                                          {
-                                                              id: "normal",
-                                                              label: "Normal",
-                                                              disabled: true,
-                                                          },
-                                                          {
-                                                              id: "extra",
-                                                              label: "Extra",
-                                                              disabled: true,
-                                                          },
-                                                      ]
-                                                    : [
-                                                          {
-                                                              id: "light",
-                                                              label: "Light",
-                                                          },
-                                                          {
-                                                              id: "normal",
-                                                              label: "Normal",
-                                                          },
-                                                          {
-                                                              id: "extra",
-                                                              label: "Extra",
-                                                          },
-                                                      ];
-                                            visibleMenuItems
-                                                .filter(
-                                                    (item) =>
-                                                        item.id &&
-                                                        normalizeIngredientCategory(
-                                                            resolvePrimaryCategory(
-                                                                item.categories,
-                                                            ),
-                                                        ) === splitCategory,
-                                                )
-                                                .forEach((item) => {
-                                                    optionsById[
-                                                        item.id as string
-                                                    ] = splitModeOptions;
-                                                });
-                                        },
-                                    );
+                                            if (selectedSplitCount >= 2) return;
 
-                                    return Object.keys(optionsById).length > 0
-                                        ? optionsById
-                                        : undefined;
-                                })()}
-                                selectedIngredientPortionModeIdById={(() => {
-                                    const selectedModeById: Record<
-                                        string,
-                                        string
-                                    > = Object.fromEntries(
-                                        visibleMenuItems
-                                            .filter(
-                                                (item) =>
-                                                    item.id &&
-                                                    isProteinIngredientItem(
-                                                        item,
+                                            const nextSplitModesById: Record<
+                                                string,
+                                                SplitPortionMode
+                                            > = {
+                                                ...splitPortionModeById,
+                                                [item.id]: modeId,
+                                            };
+                                            setSplitPortionModeById(
+                                                nextSplitModesById,
+                                            );
+                                            setSelectedIngredientItems(
+                                                (previous) =>
+                                                    applyIngredientPortionNutrition(
+                                                        previous,
+                                                        {
+                                                            splitModesById:
+                                                                nextSplitModesById,
+                                                        },
                                                     ),
-                                            )
-                                            .map((item) => [
-                                                item.id as string,
-                                                proteinPortionMode,
-                                            ]),
-                                    );
-                                    (["rice", "beans"] as const).forEach(
-                                        (splitCategory) => {
-                                            const selectedSplitIds =
-                                                Object.entries(
-                                                    selectedIngredientItems,
-                                                )
-                                                    .filter(
-                                                        ([
-                                                            ,
-                                                            selectedIngredient,
-                                                        ]) =>
-                                                            normalizeIngredientCategory(
-                                                                resolvePrimaryCategory(
-                                                                    selectedIngredient
-                                                                        .item
-                                                                        .categories,
-                                                                ),
-                                                            ) === splitCategory,
-                                                    )
-                                                    .map(
-                                                        ([ingredientId]) =>
-                                                            ingredientId,
-                                                    );
-                                            const isSplitSelection =
-                                                selectedSplitIds.length === 2;
-
-                                            visibleMenuItems
-                                                .filter(
-                                                    (item) =>
-                                                        item.id &&
-                                                        normalizeIngredientCategory(
-                                                            resolvePrimaryCategory(
-                                                                item.categories,
-                                                            ),
-                                                        ) === splitCategory,
-                                                )
-                                                .forEach((item) => {
-                                                    const itemId =
-                                                        item.id as string;
-                                                    selectedModeById[itemId] =
-                                                        isSplitSelection
-                                                            ? "normal"
-                                                            : (splitPortionModeById[
-                                                                  itemId
-                                                              ] ?? "normal");
-                                                });
+                                            );
                                         },
-                                    );
+                                        onIngredientVariantChange: (
+                                            item,
+                                            variantId,
+                                        ) => {
+                                            if (
+                                                selectedEntree === "tacos" &&
+                                                item.id &&
+                                                tacoShellIngredientIds.includes(
+                                                    item.id,
+                                                )
+                                            ) {
+                                                setSelectedTacoCount(
+                                                    variantId === "1" ? 1 : 3,
+                                                );
+                                                return;
+                                            }
 
-                                    return Object.keys(selectedModeById)
-                                        .length > 0
-                                        ? selectedModeById
-                                        : undefined;
-                                })()}
-                                onIngredientPortionModeChange={(
-                                    item,
-                                    modeId,
-                                ) => {
-                                    if (isProteinIngredientItem(item)) {
-                                        if (
-                                            modeId !== "normal" &&
-                                            modeId !== "double"
-                                        )
-                                            return;
-                                        setSelectedIngredientItems((previous) =>
-                                            applyIngredientPortionNutrition(
-                                                previous,
-                                                { proteinMode: modeId },
-                                            ),
-                                        );
-                                        setProteinPortionMode(modeId);
-                                        return;
-                                    }
+                                            const itemId = item.id;
+                                            if (!itemId) return;
 
-                                    if (
-                                        !isSplitPortionIngredientItem(item) ||
-                                        !item.id
-                                    )
-                                        return;
-                                    if (
-                                        modeId !== "light" &&
-                                        modeId !== "normal" &&
-                                        modeId !== "extra"
-                                    )
-                                        return;
+                                            setSelectedIngredientVariantIds(
+                                                (prev) => ({
+                                                    ...prev,
+                                                    [itemId]: variantId,
+                                                }),
+                                            );
+                                            setSelectedIngredientItems((prev) => {
+                                                const selectedIngredient =
+                                                    prev[itemId];
+                                                if (!selectedIngredient)
+                                                    return prev;
 
-                                    const splitCategory =
-                                        normalizeIngredientCategory(
-                                            resolvePrimaryCategory(
-                                                item.categories,
-                                            ),
-                                        );
-                                    const selectedSplitCount = Object.values(
-                                        selectedIngredientItems,
-                                    ).filter(
-                                        (selectedIngredient) =>
-                                            normalizeIngredientCategory(
-                                                resolvePrimaryCategory(
+                                                const nextVariantNutrition =
+                                                    item.variants?.find(
+                                                        (variant) =>
+                                                            variant.id ===
+                                                            variantId,
+                                                    )?.nutrition ??
                                                     selectedIngredient.item
-                                                        .categories,
-                                                ),
-                                            ) === splitCategory,
-                                    ).length;
-                                    if (selectedSplitCount >= 2) return;
+                                                        .nutrition;
 
-                                    const nextSplitModesById: Record<
-                                        string,
-                                        SplitPortionMode
-                                    > = {
-                                        ...splitPortionModeById,
-                                        [item.id]: modeId,
-                                    };
-                                    setSplitPortionModeById(nextSplitModesById);
-                                    setSelectedIngredientItems((previous) =>
-                                        applyIngredientPortionNutrition(
-                                            previous,
-                                            {
-                                                splitModesById:
-                                                    nextSplitModesById,
-                                            },
-                                        ),
-                                    );
-                                }}
-                                onIngredientVariantChange={(
-                                    item,
-                                    variantId,
-                                ) => {
-                                    if (
-                                        selectedEntree === "tacos" &&
-                                        item.id &&
-                                        tacoShellIngredientIds.includes(item.id)
-                                    ) {
-                                        setSelectedTacoCount(
-                                            variantId === "1" ? 1 : 3,
-                                        );
-                                        return;
+                                                return {
+                                                    ...prev,
+                                                    [itemId]: {
+                                                        ...selectedIngredient,
+                                                        item: {
+                                                            ...selectedIngredient.item,
+                                                            nutrition:
+                                                                nextVariantNutrition,
+                                                        },
+                                                    },
+                                                };
+                                            });
+                                        },
+                                    }}
+                                />
+                            ) : (
+                                <MenuSections
+                                    restaurantId={restaurantId}
+                                    items={visibleMenuItems}
+                                    sort={sort}
+                                    addons={addons}
+                                    ingredients={ingredients}
+                                    customizationRules={customizationRules}
+                                    groupByCategory={
+                                        effectiveViewMode !== "ranking"
                                     }
-
-                                    const itemId = item.id;
-                                    if (!itemId) return;
-
-                                    setSelectedIngredientVariantIds((prev) => ({
-                                        ...prev,
-                                        [itemId]: variantId,
-                                    }));
-                                    setSelectedIngredientItems((prev) => {
-                                        const selectedIngredient = prev[itemId];
-                                        if (!selectedIngredient) return prev;
-
-                                        const nextVariantNutrition =
-                                            item.variants?.find(
-                                                (variant) =>
-                                                    variant.id === variantId,
-                                            )?.nutrition ??
-                                            selectedIngredient.item.nutrition;
-
-                                        return {
-                                            ...prev,
-                                            [itemId]: {
-                                                ...selectedIngredient,
-                                                item: {
-                                                    ...selectedIngredient.item,
-                                                    nutrition:
-                                                        nextVariantNutrition,
-                                                },
-                                            },
-                                        };
-                                    });
-                                }}
-                            />
+                                    categoryMode={
+                                        effectiveViewMode === "ranking"
+                                            ? "menu"
+                                            : effectiveViewMode
+                                    }
+                                    hasBuildYourOwn={hasBuildYourOwn}
+                                />
+                            )}
                         </div>
                     </div>
                 </div>
