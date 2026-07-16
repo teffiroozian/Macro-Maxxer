@@ -3,6 +3,7 @@
 import { useMemo } from "react";
 import StickyMacroTotalsBar from "@/components/StickyMacroTotalsBar";
 import CartNutritionSummary from "@/components/cart/CartNutritionSummary";
+import MacroSplitBar from "@/components/nutrition/MacroSplitBar";
 import GlobalMobileNav from "@/components/GlobalMobileNav";
 import DesktopNav from "@/components/DesktopNav";
 import CartItemPreviewRow from "@/components/CartItemPreviewRow";
@@ -20,19 +21,7 @@ export default function CartPage() {
   // calculate total nutrition of the cart
   const nutritionTotals = useMemo(() => buildCartNutritionTotals(items), [items]);
 
-  const macroTotalGrams = totals.protein + totals.carbs + totals.totalFat;
-  const macroSegments = [
-    { label: "Protein", percent: macroTotalGrams > 0 ? (totals.protein / macroTotalGrams) * 100 : 0, color: "bg-[#c2410c] text-white" },
-    { label: "Carbs", percent: macroTotalGrams > 0 ? (totals.carbs / macroTotalGrams) * 100 : 0, color: "bg-[#ca8a04] text-white" },
-    { label: "Fat", percent: macroTotalGrams > 0 ? (totals.totalFat / macroTotalGrams) * 100 : 0, color: "bg-[#2563eb] text-white" },
-  ];
   const proteinPer100Calories = getProteinPer100Calories(totals.protein, totals.calories);
-  const formatMacroSegmentLabel = (label: string, percent: number) => {
-    const roundedPercent = Math.round(percent);
-    if (percent >= 18) return `${label} ${roundedPercent}%`;
-    if (percent >= 10) return `${label.charAt(0)} ${roundedPercent}%`;
-    return `${roundedPercent}%`;
-  };
 
   return (
     <>
@@ -112,7 +101,7 @@ export default function CartPage() {
                   </ul>
                 )}
                 <div className="space-y-2 pt-4"><p className="text-md font-semibold uppercase tracking-wide text-neutral-500">Protein Score</p><div className="rounded-xl bg-[#efefef] px-3 py-2"><p className="mt-1 text-sm text-neutral-900"><span className="font-bold">{Math.round(proteinPer100Calories ?? 0)}g</span> of protein in <span className="font-semibold">100 calories</span></p></div></div>
-                <div className="space-y-2 pt-4"><p className="text-md font-semibold uppercase tracking-wide text-neutral-500">Macro Split</p><div className="flex h-11 w-full gap-1 overflow-hidden rounded-xl border border-black/10 bg-neutral-100 p-1">{macroSegments.map((segment) => <div key={segment.label} className={`flex min-w-0 items-center justify-center px-1 rounded-xl text-[11px] font-semibold text-neutral-900 ${segment.color}`} style={{ width: `${segment.percent}%` }}>{formatMacroSegmentLabel(segment.label, segment.percent)}</div>)}</div></div>
+                <div className="space-y-2 pt-4"><p className="text-md font-semibold uppercase tracking-wide text-neutral-500">Macro Split</p><MacroSplitBar protein={totals.protein} carbs={totals.carbs} totalFat={totals.totalFat} /></div>
               </div>
             </div>
             <div className="col-span-1 lg:col-span-2"><StickyMacroTotalsBar totals={totals} inline layoutPreset="cart" onSecondaryAction={() => window.alert("Save Meal coming soon")} onPrimaryAction={() => window.alert("Generate Snapshot coming soon")} /></div>
