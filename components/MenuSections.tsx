@@ -15,45 +15,10 @@ import {
   sortItems,
 } from "@/lib/menuSections/sorting";
 import { isSplitRankingSort } from "@/lib/menuSections/sortOptions";
+import { splitItemsByVariantForRanking } from "@/lib/menuSections/ranking";
 
 function getSectionSort(_section: string, sort: SortOption): SortOption {
   return sort;
-}
-
-function splitItemsByVariantForRanking(items: MenuItem[]) {
-  return items.flatMap((item) => {
-    const variants = item.variants ?? [];
-    if (variants.length <= 1) {
-      return [item];
-    }
-
-    const shareableVariants = variants.filter((variant) => variant.servingType === "shareable");
-    const splitVariants = variants.filter((variant) => variant.servingType !== "shareable");
-    if (splitVariants.length === 0 && shareableVariants.length === 0) {
-      return [item];
-    }
-
-    const splitItems = splitVariants.map((variant) => ({
-      ...item,
-      defaultVariantId: variant.id,
-      disableVariantSelector: true,
-      nutrition: variant.nutrition,
-    }));
-
-    if (shareableVariants.length === 0) {
-      return splitItems;
-    }
-
-    return [
-      ...splitItems,
-      {
-        ...item,
-        variants: shareableVariants,
-        defaultVariantId: shareableVariants[0]?.id,
-        nutrition: shareableVariants[0]?.nutrition ?? item.nutrition,
-      },
-    ];
-  });
 }
 
 function EmptyFilteredState() {

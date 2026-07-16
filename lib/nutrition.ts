@@ -33,6 +33,10 @@ function hasNutritionValue(nutrition: Partial<Nutrition> | undefined, key: keyof
   return nutrition ? Object.prototype.hasOwnProperty.call(nutrition, key) : false;
 }
 
+export function getProteinPer100Calories(protein: number, calories: number) {
+  return calories > 0 ? (protein / calories) * 100 : undefined;
+}
+
 export function addNutritionValues(baseValue?: number, deltaValue?: number) {
   if (baseValue === undefined && deltaValue === undefined) return undefined;
   return (baseValue ?? 0) + (deltaValue ?? 0);

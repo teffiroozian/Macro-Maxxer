@@ -31,11 +31,11 @@ export default function CartItemPreviewRow({
 }: CartItemPreviewRowProps) {
   const itemInitial = (item.name?.trim().charAt(0) || "+").toUpperCase();
   const quantityMultiplier = Math.max(item.quantity ?? 1, 1);
-  const macrosPerItem = getCartItemCoreMacros(item);
-  const displayCalories = macrosPerItem.calories * quantityMultiplier;
-  const displayProtein = macrosPerItem.protein * quantityMultiplier;
-  const displayCarbs = macrosPerItem.carbs * quantityMultiplier;
-  const displayFat = macrosPerItem.totalFat * quantityMultiplier;
+  const coreMacros = getCartItemCoreMacros(item);
+  const displayCalories = coreMacros.calories * quantityMultiplier;
+  const displayProtein = coreMacros.protein * quantityMultiplier;
+  const displayCarbs = coreMacros.carbs * quantityMultiplier;
+  const displayFat = coreMacros.totalFat * quantityMultiplier;
   const customizationClampClass =
     customizationsLineClamp === 2 ? "line-clamp-2" : "line-clamp-1";
 

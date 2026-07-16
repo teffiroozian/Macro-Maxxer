@@ -9,6 +9,7 @@ import CartItemPreviewRow from "@/components/CartItemPreviewRow";
 import ItemRouteModal from "@/components/ItemRouteModal";
 import { useCart } from "@/stores/cartStore";
 import { buildCartNutritionTotals } from "@/lib/cart/nutrition";
+import { getProteinPer100Calories } from "@/lib/nutrition";
 import { formatCartItemName, summarizeItem } from "@/lib/cart/displayLabels";
 import { useCartItemEditModal } from "@/hooks/useCartItemEditModal";
 
@@ -25,7 +26,7 @@ export default function CartPage() {
     { label: "Carbs", percent: macroTotalGrams > 0 ? (totals.carbs / macroTotalGrams) * 100 : 0, color: "bg-[#ca8a04] text-white" },
     { label: "Fat", percent: macroTotalGrams > 0 ? (totals.totalFat / macroTotalGrams) * 100 : 0, color: "bg-[#2563eb] text-white" },
   ];
-  const proteinPer100Calories = totals.calories > 0 ? Math.round((totals.protein / totals.calories) * 100) : 0;
+  const proteinPer100Calories = getProteinPer100Calories(totals.protein, totals.calories);
   const formatMacroSegmentLabel = (label: string, percent: number) => {
     const roundedPercent = Math.round(percent);
     if (percent >= 18) return `${label} ${roundedPercent}%`;
@@ -110,7 +111,7 @@ export default function CartPage() {
                     })}
                   </ul>
                 )}
-                <div className="space-y-2 pt-4"><p className="text-md font-semibold uppercase tracking-wide text-neutral-500">Protein Score</p><div className="rounded-xl bg-[#efefef] px-3 py-2"><p className="mt-1 text-sm text-neutral-900"><span className="font-bold">{proteinPer100Calories}g</span> of protein in <span className="font-semibold">100 calories</span></p></div></div>
+                <div className="space-y-2 pt-4"><p className="text-md font-semibold uppercase tracking-wide text-neutral-500">Protein Score</p><div className="rounded-xl bg-[#efefef] px-3 py-2"><p className="mt-1 text-sm text-neutral-900"><span className="font-bold">{Math.round(proteinPer100Calories ?? 0)}g</span> of protein in <span className="font-semibold">100 calories</span></p></div></div>
                 <div className="space-y-2 pt-4"><p className="text-md font-semibold uppercase tracking-wide text-neutral-500">Macro Split</p><div className="flex h-11 w-full gap-1 overflow-hidden rounded-xl border border-black/10 bg-neutral-100 p-1">{macroSegments.map((segment) => <div key={segment.label} className={`flex min-w-0 items-center justify-center px-1 rounded-xl text-[11px] font-semibold text-neutral-900 ${segment.color}`} style={{ width: `${segment.percent}%` }}>{formatMacroSegmentLabel(segment.label, segment.percent)}</div>)}</div></div>
               </div>
             </div>

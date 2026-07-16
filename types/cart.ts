@@ -80,7 +80,8 @@ export type CartItem = {
   // Structured customization data. Keep top-level until combo/ingredient customization data is fully folded into selection.
   customizations?: CartCustomization[];
   quantity: number;
-  // Convenience/legacy macro subset. Prefer deriving core macros from nutritionPerItem for new reads.
+  // Convenience/legacy fallback macro subset. nutritionPerItem is the source of truth;
+  // derive display macros through getCartItemCoreMacros for new reads.
   macrosPerItem: CartMacros;
   nutritionPerItem: Nutrition;
   selection: CartSelection;

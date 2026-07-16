@@ -2,12 +2,26 @@ import type { ItemVariant, MenuItem } from "@/types/menu";
 import type { CoreMacros, Nutrition } from "@/types/nutrition";
 import type { ResolvedPanelIngredient } from "@/components/ItemDetailsPanel";
 import { addonFat, menuItemFatWithFallback } from "@/lib/menuItemCalculations";
+import { addNutrition, normalizeNutrition } from "@/lib/nutrition";
 
 const zeroCoreMacros: CoreMacros = {
   calories: 0,
   protein: 0,
   carbs: 0,
   totalFat: 0,
+};
+
+const zeroNutrition: Nutrition = {
+  calories: 0,
+  protein: 0,
+  carbs: 0,
+  totalFat: 0,
+  satFat: 0,
+  transFat: 0,
+  cholesterol: 0,
+  sodium: 0,
+  fiber: 0,
+  sugars: 0,
 };
 
 export function calculateAddonTotals(addons: Array<MenuItem | undefined | null>): Nutrition {
@@ -82,21 +96,43 @@ export function calculateComboNutritionTotals({
   selectedComboSide?: MenuItem;
   selectedComboSideVariant?: ItemVariant;
 }): CoreMacros {
-  if (!isComboEligibleCategory || comboType !== "combo-meal") {
-    return { ...zeroCoreMacros };
-  }
-
-  const drinkNutrition = selectedComboDrinkVariant?.nutrition ?? selectedComboDrink?.nutrition;
-  const sideNutrition = selectedComboSideVariant?.nutrition ?? selectedComboSide?.nutrition;
+  const fullNutrition = calculateFullComboNutritionTotals({
+    isComboEligibleCategory,
+    comboType,
+    selectedComboDrink,
+    selectedComboDrinkVariant,
+    selectedComboSide,
+    selectedComboSideVariant,
+  });
 
   return {
-    calories: (drinkNutrition?.calories ?? 0) + (sideNutrition?.calories ?? 0),
-    protein: (drinkNutrition?.protein ?? 0) + (sideNutrition?.protein ?? 0),
-    carbs: (drinkNutrition?.carbs ?? 0) + (sideNutrition?.carbs ?? 0),
-    totalFat:
-      (drinkNutrition?.totalFat ?? menuItemFatWithFallback(selectedComboDrink)) +
-      (sideNutrition?.totalFat ?? menuItemFatWithFallback(selectedComboSide)),
+    calories: fullNutrition.calories,
+    protein: fullNutrition.protein,
+    carbs: fullNutrition.carbs,
+    totalFat: fullNutrition.totalFat,
   };
+}
+
+export function calculateFullComboNutritionTotals(params: Parameters<typeof calculateComboNutritionTotals>[0]): Nutrition {
+  if (!params.isComboEligibleCategory || params.comboType !== "combo-meal") return { ...zeroNutrition };
+  const drinkNutrition = params.selectedComboDrinkVariant?.nutrition ?? params.selectedComboDrink?.nutrition;
+  const sideNutrition = params.selectedComboSideVariant?.nutrition ?? params.selectedComboSide?.nutrition;
+  const normalizeComboItemNutrition = (
+    nutrition: Nutrition | undefined,
+    item: MenuItem | undefined,
+  ) =>
+    normalizeNutrition({
+      ...(nutrition ?? {}),
+      totalFat: nutrition?.totalFat ?? menuItemFatWithFallback(item),
+    });
+
+  return addNutrition(
+    addNutrition(
+      normalizeNutrition(zeroNutrition),
+      normalizeComboItemNutrition(drinkNutrition, params.selectedComboDrink),
+    ),
+    normalizeComboItemNutrition(sideNutrition, params.selectedComboSide),
+  );
 }
 
 export function calculateMenuItemMacrosPerItem({
