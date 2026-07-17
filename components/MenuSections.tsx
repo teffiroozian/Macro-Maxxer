@@ -107,27 +107,32 @@ export default function MenuSections({
               ingredientItems={ingredients}
               menuItems={items}
               customizationRules={customizationRules}
-              itemHref={`/restaurant/${restaurantId}/${toItemSlug(item)}`}
-              displayMode={
-                categoryMode === "ingredients" && hasBuildYourOwn
-                  ? "ingredient-compact"
-                  : "default"
-              }
-              isIngredientSelected={selectedIngredientIds?.has(item.id ?? "")}
-              isIngredientLocked={lockedIngredientIds?.has(item.id ?? "")}
-              isIngredientUnavailable={unavailableIngredientIds?.has(item.id ?? "")}
-              ingredientUnavailableReason={unavailableIngredientReasonById?.[item.id ?? ""]}
-              onIngredientSelectionChange={onIngredientSelectionChange}
-              ingredientSelectionControl={ingredientSelectionControlById?.[item.id ?? ""] ?? "checkbox"}
-              ingredientRadioGroupName={ingredientRadioGroupNameById?.[item.id ?? ""]}
-              ingredientVariantOptions={ingredientVariantOptionsById?.[item.id ?? ""]}
-              selectedIngredientVariantId={selectedIngredientVariantIdById?.[item.id ?? ""]}
-              ingredientPortionBadge={ingredientPortionBadgeById?.[item.id ?? ""]}
-              ingredientPortionModeOptions={ingredientPortionModeOptionsById?.[item.id ?? ""]}
-              selectedIngredientPortionModeId={selectedIngredientPortionModeIdById?.[item.id ?? ""]}
-              onIngredientPortionModeChange={(modeId) => onIngredientPortionModeChange?.(item, modeId)}
-              onIngredientVariantChange={(variantId) => onIngredientVariantChange?.(item, variantId)}
-              showDetailsButton={categoryMode !== "ingredients"}
+              menu={{
+                itemHref: `/restaurant/${restaurantId}/${toItemSlug(item)}`,
+              }}
+              ingredientSelection={{
+                displayMode:
+                  categoryMode === "ingredients" && hasBuildYourOwn
+                    ? "ingredient-compact"
+                    : "default",
+                isSelected: selectedIngredientIds?.has(item.id ?? ""),
+                isLocked: lockedIngredientIds?.has(item.id ?? ""),
+                isUnavailable: unavailableIngredientIds?.has(item.id ?? ""),
+                unavailableReason: unavailableIngredientReasonById?.[item.id ?? ""],
+                onSelectionChange: onIngredientSelectionChange,
+                selectionControl: ingredientSelectionControlById?.[item.id ?? ""] ?? "checkbox",
+                radioGroupName: ingredientRadioGroupNameById?.[item.id ?? ""],
+                variantOptions: ingredientVariantOptionsById?.[item.id ?? ""],
+                selectedVariantId: selectedIngredientVariantIdById?.[item.id ?? ""],
+                portionBadge: ingredientPortionBadgeById?.[item.id ?? ""],
+                portionModeOptions: ingredientPortionModeOptionsById?.[item.id ?? ""],
+                selectedPortionModeId: selectedIngredientPortionModeIdById?.[item.id ?? ""],
+                onPortionModeChange: (modeId) => onIngredientPortionModeChange?.(item, modeId),
+                onVariantChange: (variantId) => onIngredientVariantChange?.(item, variantId),
+              }}
+              detailPanel={{
+                showDetailsButton: categoryMode !== "ingredients",
+              }}
             />
           ))}
         </ul>
@@ -201,27 +206,32 @@ export default function MenuSections({
                 ingredientItems={ingredients}
                 menuItems={items}
                 customizationRules={customizationRules}
-                itemHref={`/restaurant/${restaurantId}/${toItemSlug(item)}`}
-                displayMode={
-                  categoryMode === "ingredients" && hasBuildYourOwn
-                    ? "ingredient-compact"
-                    : "default"
-                }
-                isIngredientSelected={selectedIngredientIds?.has(item.id ?? "")}
-                isIngredientLocked={lockedIngredientIds?.has(item.id ?? "")}
-                isIngredientUnavailable={unavailableIngredientIds?.has(item.id ?? "")}
-                ingredientUnavailableReason={unavailableIngredientReasonById?.[item.id ?? ""]}
-                onIngredientSelectionChange={onIngredientSelectionChange}
-                ingredientSelectionControl={ingredientSelectionControlById?.[item.id ?? ""] ?? "checkbox"}
-                ingredientRadioGroupName={ingredientRadioGroupNameById?.[item.id ?? ""]}
-                ingredientVariantOptions={ingredientVariantOptionsById?.[item.id ?? ""]}
-                selectedIngredientVariantId={selectedIngredientVariantIdById?.[item.id ?? ""]}
-                ingredientPortionBadge={ingredientPortionBadgeById?.[item.id ?? ""]}
-                ingredientPortionModeOptions={ingredientPortionModeOptionsById?.[item.id ?? ""]}
-                selectedIngredientPortionModeId={selectedIngredientPortionModeIdById?.[item.id ?? ""]}
-                onIngredientPortionModeChange={(modeId) => onIngredientPortionModeChange?.(item, modeId)}
-                onIngredientVariantChange={(variantId) => onIngredientVariantChange?.(item, variantId)}
-                showDetailsButton={categoryMode !== "ingredients"}
+                menu={{
+                  itemHref: `/restaurant/${restaurantId}/${toItemSlug(item)}`,
+                }}
+                ingredientSelection={{
+                  displayMode:
+                    categoryMode === "ingredients" && hasBuildYourOwn
+                      ? "ingredient-compact"
+                      : "default",
+                  isSelected: selectedIngredientIds?.has(item.id ?? ""),
+                  isLocked: lockedIngredientIds?.has(item.id ?? ""),
+                  isUnavailable: unavailableIngredientIds?.has(item.id ?? ""),
+                  unavailableReason: unavailableIngredientReasonById?.[item.id ?? ""],
+                  onSelectionChange: onIngredientSelectionChange,
+                  selectionControl: ingredientSelectionControlById?.[item.id ?? ""] ?? "checkbox",
+                  radioGroupName: ingredientRadioGroupNameById?.[item.id ?? ""],
+                  variantOptions: ingredientVariantOptionsById?.[item.id ?? ""],
+                  selectedVariantId: selectedIngredientVariantIdById?.[item.id ?? ""],
+                  portionBadge: ingredientPortionBadgeById?.[item.id ?? ""],
+                  portionModeOptions: ingredientPortionModeOptionsById?.[item.id ?? ""],
+                  selectedPortionModeId: selectedIngredientPortionModeIdById?.[item.id ?? ""],
+                  onPortionModeChange: (modeId) => onIngredientPortionModeChange?.(item, modeId),
+                  onVariantChange: (variantId) => onIngredientVariantChange?.(item, variantId),
+                }}
+                detailPanel={{
+                  showDetailsButton: categoryMode !== "ingredients",
+                }}
               />
             ))}
           </ul>
