@@ -2085,15 +2085,13 @@ export default function ChipotleRestaurantBuilderView({
                   groupByCategory
                   categoryMode="ingredients"
                   hasBuildYourOwn={hasBuildYourOwn}
-                  selectedIngredientIds={selectedIngredientIdsForMenu}
-                  lockedIngredientIds={lockedIngredientIds}
-                  unavailableIngredientIds={unavailableIngredientIds}
-                  unavailableIngredientReasonById={
-                    unavailableIngredientReasonById
-                  }
-                  onIngredientSelectionChange={handleIngredientSelectionChange}
-                  ingredientSelectionControlById={
-                    selectedEntree === "tacos"
+                  ingredientSelectionConfig={{
+                    selectedIds: selectedIngredientIdsForMenu,
+                    lockedIds: lockedIngredientIds,
+                    unavailableIds: unavailableIngredientIds,
+                    unavailableReasonById: unavailableIngredientReasonById,
+                    onSelectionChange: handleIngredientSelectionChange,
+                    selectionControlById: selectedEntree === "tacos"
                       ? Object.fromEntries(
                           tacoShellIngredientIds.map((ingredientId) => [
                             ingredientId,
@@ -2101,9 +2099,8 @@ export default function ChipotleRestaurantBuilderView({
                           ]),
                         )
                       : undefined
-                  }
-                  ingredientRadioGroupNameById={
-                    selectedEntree === "tacos"
+                    ,
+                    radioGroupNameById: selectedEntree === "tacos"
                       ? Object.fromEntries(
                           tacoShellIngredientIds.map((ingredientId) => [
                             ingredientId,
@@ -2111,8 +2108,8 @@ export default function ChipotleRestaurantBuilderView({
                           ]),
                         )
                       : undefined
-                  }
-                  ingredientVariantOptionsById={(() => {
+                    ,
+                    variantOptionsById: (() => {
                     const variantOptionsById = Object.fromEntries(
                       visibleMenuItems
                         .filter(
@@ -2149,8 +2146,8 @@ export default function ChipotleRestaurantBuilderView({
                     return Object.keys(variantOptionsById).length > 0
                       ? variantOptionsById
                       : undefined;
-                  })()}
-                  selectedIngredientVariantIdById={(() => {
+                  })(),
+                    selectedVariantIdById: (() => {
                     const selectedById = Object.fromEntries(
                       visibleMenuItems
                         .filter(
@@ -2177,13 +2174,11 @@ export default function ChipotleRestaurantBuilderView({
                     return Object.keys(selectedById).length > 0
                       ? selectedById
                       : undefined;
-                  })()}
-                  ingredientPortionBadgeById={
-                    Object.keys(ingredientPortionLabelById).length > 0
+                  })(),
+                    portionBadgeById: Object.keys(ingredientPortionLabelById).length > 0
                       ? ingredientPortionLabelById
-                      : undefined
-                  }
-                  ingredientPortionModeOptionsById={(() => {
+                      : undefined,
+                    portionModeOptionsById: (() => {
                     const optionsById: Record<
                       string,
                       Array<{
@@ -2271,8 +2266,8 @@ export default function ChipotleRestaurantBuilderView({
                     return Object.keys(optionsById).length > 0
                       ? optionsById
                       : undefined;
-                  })()}
-                  selectedIngredientPortionModeIdById={(() => {
+                  })(),
+                    selectedPortionModeIdById: (() => {
                     const selectedModeById: Record<string, string> =
                       Object.fromEntries(
                         visibleMenuItems
@@ -2318,8 +2313,8 @@ export default function ChipotleRestaurantBuilderView({
                     return Object.keys(selectedModeById).length > 0
                       ? selectedModeById
                       : undefined;
-                  })()}
-                  onIngredientPortionModeChange={(item, modeId) => {
+                  })(),
+                    onPortionModeChange: (item, modeId) => {
                     if (isProteinIngredientItem(item)) {
                       if (modeId !== "normal" && modeId !== "double") return;
                       setSelectedIngredientItems((previous) =>
@@ -2365,8 +2360,8 @@ export default function ChipotleRestaurantBuilderView({
                         splitModesById: nextSplitModesById,
                       }),
                     );
-                  }}
-                  onIngredientVariantChange={(item, variantId) => {
+                  },
+                    onVariantChange: (item, variantId) => {
                     if (
                       selectedEntree === "tacos" &&
                       item.id &&
@@ -2403,6 +2398,7 @@ export default function ChipotleRestaurantBuilderView({
                         },
                       };
                     });
+                  },
                   }}
                 />
               </div>
@@ -2628,13 +2624,13 @@ export default function ChipotleRestaurantBuilderView({
                         ? "menu"
                         : effectiveViewMode,
                     hasBuildYourOwn,
-                    selectedIngredientIds: selectedIngredientIdsForMenu,
-                    lockedIngredientIds,
-                    unavailableIngredientIds,
-                    unavailableIngredientReasonById,
-                    onIngredientSelectionChange:
-                      handleIngredientSelectionChange,
-                    ingredientSelectionControlById:
+                    ingredientSelectionConfig: {
+                      selectedIds: selectedIngredientIdsForMenu,
+                      lockedIds: lockedIngredientIds,
+                      unavailableIds: unavailableIngredientIds,
+                      unavailableReasonById: unavailableIngredientReasonById,
+                      onSelectionChange: handleIngredientSelectionChange,
+                      selectionControlById:
                       selectedEntree === "tacos"
                         ? Object.fromEntries(
                             tacoShellIngredientIds.map((ingredientId) => [
@@ -2643,7 +2639,7 @@ export default function ChipotleRestaurantBuilderView({
                             ]),
                           )
                         : undefined,
-                    ingredientRadioGroupNameById:
+                      radioGroupNameById:
                       selectedEntree === "tacos"
                         ? Object.fromEntries(
                             tacoShellIngredientIds.map((ingredientId) => [
@@ -2652,7 +2648,7 @@ export default function ChipotleRestaurantBuilderView({
                             ]),
                           )
                         : undefined,
-                    ingredientVariantOptionsById: (() => {
+                      variantOptionsById: (() => {
                       const variantOptionsById = Object.fromEntries(
                         visibleMenuItems
                           .filter(
@@ -2690,7 +2686,7 @@ export default function ChipotleRestaurantBuilderView({
                         ? variantOptionsById
                         : undefined;
                     })(),
-                    selectedIngredientVariantIdById: (() => {
+                      selectedVariantIdById: (() => {
                       const selectedById = Object.fromEntries(
                         visibleMenuItems
                           .filter(
@@ -2719,11 +2715,11 @@ export default function ChipotleRestaurantBuilderView({
                         ? selectedById
                         : undefined;
                     })(),
-                    ingredientPortionBadgeById:
+                      portionBadgeById:
                       Object.keys(ingredientPortionLabelById).length > 0
                         ? ingredientPortionLabelById
                         : undefined,
-                    ingredientPortionModeOptionsById: (() => {
+                      portionModeOptionsById: (() => {
                       const optionsById: Record<
                         string,
                         Array<{
@@ -2812,7 +2808,7 @@ export default function ChipotleRestaurantBuilderView({
                         ? optionsById
                         : undefined;
                     })(),
-                    selectedIngredientPortionModeIdById: (() => {
+                      selectedPortionModeIdById: (() => {
                       const selectedModeById: Record<string, string> =
                         Object.fromEntries(
                           visibleMenuItems
@@ -2860,7 +2856,7 @@ export default function ChipotleRestaurantBuilderView({
                         ? selectedModeById
                         : undefined;
                     })(),
-                    onIngredientPortionModeChange: (item, modeId) => {
+                      onPortionModeChange: (item, modeId) => {
                       if (isProteinIngredientItem(item)) {
                         if (modeId !== "normal" && modeId !== "double") return;
                         setSelectedIngredientItems((previous) =>
@@ -2910,7 +2906,7 @@ export default function ChipotleRestaurantBuilderView({
                         }),
                       );
                     },
-                    onIngredientVariantChange: (item, variantId) => {
+                      onVariantChange: (item, variantId) => {
                       if (
                         selectedEntree === "tacos" &&
                         item.id &&
@@ -2947,6 +2943,7 @@ export default function ChipotleRestaurantBuilderView({
                           },
                         };
                       });
+                    },
                     },
                   }}
                 />
