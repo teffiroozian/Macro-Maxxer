@@ -136,86 +136,110 @@ const emptyAddon: MenuItem = {
 
 const maxSauceSelections = 5;
 
-export default function MenuItemCard({
-  restaurantId,
-  item,
-  rankIndex,
-  isTopRanked,
-  addons,
-  ingredientItems,
-  menuItems,
-  customizationRules,
-  mode = "menu",
-  cartQuantity = 1,
-  onCartIncrement,
-  onCartDecrement,
-  onCartModify,
-  cartSummaryLine,
-  cartItemId,
-  initialCartVariantId,
-  initialCartSelectionDetailsLabel,
-  initialCartCustomizations,
-  onCartConfigurationChange,
-  itemHref,
-  displayMode = "default",
-  isIngredientSelected: controlledIngredientSelected,
-  isIngredientLocked = false,
-  isIngredientUnavailable = false,
-  ingredientUnavailableReason,
-  onIngredientSelectionChange,
-  ingredientSelectionControl = "checkbox",
-  ingredientVariantOptions,
-  selectedIngredientVariantId,
-  ingredientPortionBadge,
-  ingredientPortionModeOptions,
-  selectedIngredientPortionModeId,
-  onIngredientPortionModeChange,
-  onIngredientVariantChange,
-  flattenIngredientListInDetails = false,
-  lockedIngredientIdsInDetails,
-  suppressRemovedIngredientCustomizationsInCart = false,
-  showDetailsButton = true,
-}: {
+type MenuItemCardData = {
   restaurantId: string;
   item: MenuItem;
-  rankIndex?: number;
-  isTopRanked?: boolean;
   addons?: ResolvedAddonGroups;
   ingredientItems?: IngredientItem[];
   menuItems?: MenuItem[];
   customizationRules?: RestaurantCustomizationRules;
-  mode?: "menu" | "cart";
-  cartQuantity?: number;
-  onCartIncrement?: () => void;
-  onCartDecrement?: () => void;
-  onCartModify?: () => void;
-  cartSummaryLine?: string;
-  cartItemId?: string;
-  initialCartVariantId?: string;
-  initialCartSelectionDetailsLabel?: string;
-  initialCartCustomizations?: string[];
-  onCartConfigurationChange?: (next: CartConfigurationPayload) => void;
+};
+
+type MenuItemCardMenuBehavior = {
+  rankIndex?: number;
+  isTopRanked?: boolean;
   itemHref?: string;
+};
+
+type MenuItemCardCartBehavior = {
+  quantity?: number;
+  onIncrement?: () => void;
+  onDecrement?: () => void;
+  onModify?: () => void;
+  summaryLine?: string;
+  cartItemId?: string;
+  initialVariantId?: string;
+  initialSelectionDetailsLabel?: string;
+  initialCustomizations?: string[];
+  onConfigurationChange?: (next: CartConfigurationPayload) => void;
+  suppressRemovedIngredientCustomizations?: boolean;
+};
+
+type MenuItemCardIngredientSelection = {
   displayMode?: "default" | "ingredient-compact";
-  isIngredientSelected?: boolean;
-  isIngredientLocked?: boolean;
-  isIngredientUnavailable?: boolean;
-  ingredientUnavailableReason?: string;
-  onIngredientSelectionChange?: (item: MenuItem, selected: boolean) => void;
-  ingredientSelectionControl?: "checkbox" | "radio";
-  ingredientRadioGroupName?: string;
-  ingredientVariantOptions?: Array<{ id: string; label: string }>;
-  selectedIngredientVariantId?: string;
-  ingredientPortionBadge?: string;
-  ingredientPortionModeOptions?: Array<{ id: string; label: string; disabled?: boolean }>;
-  selectedIngredientPortionModeId?: string;
-  onIngredientPortionModeChange?: (modeId: string) => void;
-  onIngredientVariantChange?: (variantId: string) => void;
-  flattenIngredientListInDetails?: boolean;
-  lockedIngredientIdsInDetails?: string[];
-  suppressRemovedIngredientCustomizationsInCart?: boolean;
+  isSelected?: boolean;
+  isLocked?: boolean;
+  isUnavailable?: boolean;
+  unavailableReason?: string;
+  onSelectionChange?: (item: MenuItem, selected: boolean) => void;
+  selectionControl?: "checkbox" | "radio";
+  radioGroupName?: string;
+  variantOptions?: Array<{ id: string; label: string }>;
+  selectedVariantId?: string;
+  portionBadge?: string;
+  portionModeOptions?: Array<{ id: string; label: string; disabled?: boolean }>;
+  selectedPortionModeId?: string;
+  onPortionModeChange?: (modeId: string) => void;
+  onVariantChange?: (variantId: string) => void;
+};
+
+type MenuItemCardDetailPanelBehavior = {
+  flattenIngredientList?: boolean;
+  lockedIngredientIds?: string[];
   showDetailsButton?: boolean;
-}) {
+};
+
+type MenuItemCardProps = MenuItemCardData & {
+  menu?: MenuItemCardMenuBehavior;
+  cart?: MenuItemCardCartBehavior;
+  ingredientSelection?: MenuItemCardIngredientSelection;
+  detailPanel?: MenuItemCardDetailPanelBehavior;
+};
+
+export default function MenuItemCard({
+  restaurantId,
+  item,
+  addons,
+  ingredientItems,
+  menuItems,
+  customizationRules,
+  menu,
+  cart,
+  ingredientSelection,
+  detailPanel,
+}: MenuItemCardProps) {
+  const mode = cart ? "cart" : "menu";
+  const rankIndex = menu?.rankIndex;
+  const isTopRanked = menu?.isTopRanked;
+  const itemHref = menu?.itemHref;
+  const cartQuantity = cart?.quantity ?? 1;
+  const onCartIncrement = cart?.onIncrement;
+  const onCartDecrement = cart?.onDecrement;
+  const onCartModify = cart?.onModify;
+  const cartSummaryLine = cart?.summaryLine;
+  const cartItemId = cart?.cartItemId;
+  const initialCartVariantId = cart?.initialVariantId;
+  const initialCartSelectionDetailsLabel = cart?.initialSelectionDetailsLabel;
+  const initialCartCustomizations = cart?.initialCustomizations;
+  const onCartConfigurationChange = cart?.onConfigurationChange;
+  const suppressRemovedIngredientCustomizationsInCart = cart?.suppressRemovedIngredientCustomizations ?? false;
+  const displayMode = ingredientSelection?.displayMode ?? "default";
+  const controlledIngredientSelected = ingredientSelection?.isSelected;
+  const isIngredientLocked = ingredientSelection?.isLocked ?? false;
+  const isIngredientUnavailable = ingredientSelection?.isUnavailable ?? false;
+  const ingredientUnavailableReason = ingredientSelection?.unavailableReason;
+  const onIngredientSelectionChange = ingredientSelection?.onSelectionChange;
+  const ingredientSelectionControl = ingredientSelection?.selectionControl ?? "checkbox";
+  const ingredientVariantOptions = ingredientSelection?.variantOptions;
+  const selectedIngredientVariantId = ingredientSelection?.selectedVariantId;
+  const ingredientPortionBadge = ingredientSelection?.portionBadge;
+  const ingredientPortionModeOptions = ingredientSelection?.portionModeOptions;
+  const selectedIngredientPortionModeId = ingredientSelection?.selectedPortionModeId;
+  const onIngredientPortionModeChange = ingredientSelection?.onPortionModeChange;
+  const onIngredientVariantChange = ingredientSelection?.onVariantChange;
+  const flattenIngredientListInDetails = detailPanel?.flattenIngredientList ?? false;
+  const lockedIngredientIdsInDetails = detailPanel?.lockedIngredientIds;
+  const showDetailsButton = detailPanel?.showDetailsButton ?? true;
   const [open, setOpen] = useState(false);
   const router = useRouter();
   const pathname = usePathname();
