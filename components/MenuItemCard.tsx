@@ -12,6 +12,7 @@ import {
 import IngredientCompactCard from "./menu-item-card/IngredientCompactCard";
 import MenuItemCardHeader from "./menu-item-card/MenuItemCardHeader";
 import MenuItemMacroSummary from "./menu-item-card/MenuItemMacroSummary";
+import MacroStat from "./nutrition/MacroStat";
 import MenuCardActions from "./menu-item-card/MenuCardActions";
 import CartCardActions from "./menu-item-card/CartCardActions";
 import { useMenuItemCartAdapter } from "./menu-item-card/useMenuItemCartAdapter";
@@ -30,32 +31,6 @@ function pad2(n: number) {
 function toMacroNumber(value?: number) {
   if (typeof value !== "number" || Number.isNaN(value)) return 0;
   return Math.round(value);
-}
-
-function QuickMacro({
-  value,
-  label,
-  tone,
-}: {
-  value?: number;
-  label: string;
-  tone: "calories" | "protein" | "carbs" | "totalFat";
-}) {
-  const toneClass =
-    tone === "protein"
-      ? "text-[#c2410c]"
-      : tone === "carbs"
-        ? "text-[#ca8a04]"
-        : tone === "totalFat"
-          ? "text-[#2563eb]"
-          : "text-slate-700";
-
-  return (
-    <div className="flex min-w-0 flex-col items-center justify-center">
-      <span className={`text-sm leading-4 font-bold ${toneClass}`}>{toMacroNumber(value)}</span>
-      <span className="mt-1 text-[9px] font-bold uppercase tracking-[0.06em] text-slate-600">{label}</span>
-    </div>
-  );
 }
 
 function QuickVariantDropdown({
@@ -852,10 +827,10 @@ export default function MenuItemCard({
                         ) : null}
                       </div>
                       <div className="mt-2 flex flex-wrap items-end gap-x-3 gap-y-2">
-                        <QuickMacro value={mainItemOnlyNutrition.calories} label="Cal" tone="calories" />
-                        <QuickMacro value={mainItemOnlyNutrition.protein} label="Protein" tone="protein" />
-                        <QuickMacro value={mainItemOnlyNutrition.carbs} label="Carbs" tone="carbs" />
-                        <QuickMacro value={mainItemOnlyNutrition.totalFat} label="Fat" tone="totalFat" />
+                        <MacroStat value={toMacroNumber(mainItemOnlyNutrition.calories)} label="Cal" tone="calories" size="quick" />
+                        <MacroStat value={toMacroNumber(mainItemOnlyNutrition.protein)} label="Protein" tone="protein" size="quick" />
+                        <MacroStat value={toMacroNumber(mainItemOnlyNutrition.carbs)} label="Carbs" tone="carbs" size="quick" />
+                        <MacroStat value={toMacroNumber(mainItemOnlyNutrition.totalFat)} label="Fat" tone="totalFat" size="quick" />
                       </div>
                     </div>
                   </div>
@@ -886,10 +861,10 @@ export default function MenuItemCard({
                           ) : null}
                         </div>
                         <div className="mt-2 flex flex-wrap items-end gap-x-3 gap-y-2">
-                          <QuickMacro value={selectedComboSideVariant?.nutrition.calories ?? selectedComboSide.nutrition.calories} label="Cal" tone="calories" />
-                          <QuickMacro value={selectedComboSideVariant?.nutrition.protein ?? selectedComboSide.nutrition.protein} label="Protein" tone="protein" />
-                          <QuickMacro value={selectedComboSideVariant?.nutrition.carbs ?? selectedComboSide.nutrition.carbs} label="Carbs" tone="carbs" />
-                          <QuickMacro value={selectedComboSideVariant?.nutrition.totalFat ?? selectedComboSide.nutrition.totalFat} label="Fat" tone="totalFat" />
+                          <MacroStat value={toMacroNumber(selectedComboSideVariant?.nutrition.calories ?? selectedComboSide.nutrition.calories)} label="Cal" tone="calories" size="quick" />
+                          <MacroStat value={toMacroNumber(selectedComboSideVariant?.nutrition.protein ?? selectedComboSide.nutrition.protein)} label="Protein" tone="protein" size="quick" />
+                          <MacroStat value={toMacroNumber(selectedComboSideVariant?.nutrition.carbs ?? selectedComboSide.nutrition.carbs)} label="Carbs" tone="carbs" size="quick" />
+                          <MacroStat value={toMacroNumber(selectedComboSideVariant?.nutrition.totalFat ?? selectedComboSide.nutrition.totalFat)} label="Fat" tone="totalFat" size="quick" />
                         </div>
                       </div>
                     </div>
@@ -921,10 +896,10 @@ export default function MenuItemCard({
                           ) : null}
                         </div>
                         <div className="mt-2 flex flex-wrap items-end gap-x-3 gap-y-2">
-                          <QuickMacro value={selectedComboDrinkVariant?.nutrition.calories ?? selectedComboDrink.nutrition.calories} label="Cal" tone="calories" />
-                          <QuickMacro value={selectedComboDrinkVariant?.nutrition.protein ?? selectedComboDrink.nutrition.protein} label="Protein" tone="protein" />
-                          <QuickMacro value={selectedComboDrinkVariant?.nutrition.carbs ?? selectedComboDrink.nutrition.carbs} label="Carbs" tone="carbs" />
-                          <QuickMacro value={selectedComboDrinkVariant?.nutrition.totalFat ?? selectedComboDrink.nutrition.totalFat} label="Fat" tone="totalFat" />
+                          <MacroStat value={toMacroNumber(selectedComboDrinkVariant?.nutrition.calories ?? selectedComboDrink.nutrition.calories)} label="Cal" tone="calories" size="quick" />
+                          <MacroStat value={toMacroNumber(selectedComboDrinkVariant?.nutrition.protein ?? selectedComboDrink.nutrition.protein)} label="Protein" tone="protein" size="quick" />
+                          <MacroStat value={toMacroNumber(selectedComboDrinkVariant?.nutrition.carbs ?? selectedComboDrink.nutrition.carbs)} label="Carbs" tone="carbs" size="quick" />
+                          <MacroStat value={toMacroNumber(selectedComboDrinkVariant?.nutrition.totalFat ?? selectedComboDrink.nutrition.totalFat)} label="Fat" tone="totalFat" size="quick" />
                         </div>
                       </div>
                     </div>
@@ -990,10 +965,10 @@ export default function MenuItemCard({
                                 </button>
                               </div>
                               <div className="mt-2 flex flex-wrap items-end gap-x-3 gap-y-2">
-                                <QuickMacro value={addon.nutrition.calories * count} label="Cal" tone="calories" />
-                                <QuickMacro value={addon.nutrition.protein * count} label="Protein" tone="protein" />
-                                <QuickMacro value={addon.nutrition.carbs * count} label="Carbs" tone="carbs" />
-                                <QuickMacro value={addon.nutrition.totalFat * count} label="Fat" tone="totalFat" />
+                                <MacroStat value={toMacroNumber(addon.nutrition.calories * count)} label="Cal" tone="calories" size="quick" />
+                                <MacroStat value={toMacroNumber(addon.nutrition.protein * count)} label="Protein" tone="protein" size="quick" />
+                                <MacroStat value={toMacroNumber(addon.nutrition.carbs * count)} label="Carbs" tone="carbs" size="quick" />
+                                <MacroStat value={toMacroNumber(addon.nutrition.totalFat * count)} label="Fat" tone="totalFat" size="quick" />
                               </div>
                             </div>
                           </div>
@@ -1018,10 +993,10 @@ export default function MenuItemCard({
                         <div className="min-w-0">
                           <p className="truncate text-sm font-semibold text-slate-900">{selectedAddons.dressings.name}</p>
                           <div className="mt-2 flex flex-wrap items-end gap-x-3 gap-y-2">
-                            <QuickMacro value={selectedAddons.dressings.nutrition.calories} label="Cal" tone="calories" />
-                            <QuickMacro value={selectedAddons.dressings.nutrition.protein} label="Protein" tone="protein" />
-                            <QuickMacro value={selectedAddons.dressings.nutrition.carbs} label="Carbs" tone="carbs" />
-                            <QuickMacro value={selectedAddons.dressings.nutrition.totalFat} label="Fat" tone="totalFat" />
+                            <MacroStat value={toMacroNumber(selectedAddons.dressings.nutrition.calories)} label="Cal" tone="calories" size="quick" />
+                            <MacroStat value={toMacroNumber(selectedAddons.dressings.nutrition.protein)} label="Protein" tone="protein" size="quick" />
+                            <MacroStat value={toMacroNumber(selectedAddons.dressings.nutrition.carbs)} label="Carbs" tone="carbs" size="quick" />
+                            <MacroStat value={toMacroNumber(selectedAddons.dressings.nutrition.totalFat)} label="Fat" tone="totalFat" size="quick" />
                           </div>
                         </div>
                       </div>

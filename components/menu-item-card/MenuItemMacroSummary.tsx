@@ -1,29 +1,6 @@
 import type { ReactNode } from "react";
 import { formatDelta, formatMacro } from "@/lib/menuItemCalculations";
-
-function MacroBlock({
-  value,
-  delta,
-  label,
-  toneClass,
-  showDelta,
-}: {
-  value: number;
-  delta: number;
-  label: string;
-  toneClass: string;
-  showDelta: boolean;
-}) {
-  return (
-    <div className="flex flex-col items-center justify-start">
-      <div className="inline-flex items-baseline gap-1.5">
-        <div className={`text-2xl font-bold ${toneClass}`}>{formatMacro(value)}</div>
-        {showDelta ? <span className="text-sm font-bold text-green-600">{formatDelta(delta)}</span> : null}
-      </div>
-      <div className="text-[10px] font-bold">{label}</div>
-    </div>
-  );
-}
+import MacroStat from "@/components/nutrition/MacroStat";
 
 export default function MenuItemMacroSummary({
   displayProtein,
@@ -48,26 +25,26 @@ export default function MenuItemMacroSummary({
 }) {
   return (
     <div className="mt-4 flex flex-wrap items-end gap-x-10 gap-y-3 lg:mt-auto lg:gap-x-12">
-      <MacroBlock
-        value={displayProtein}
-        delta={proteinDelta * quantityMultiplier}
+      <MacroStat
+        value={formatMacro(displayProtein)}
+        delta={hasActiveCustomization ? formatDelta(proteinDelta * quantityMultiplier) : undefined}
         label="PROTEIN"
-        toneClass="text-[#c2410c]"
-        showDelta={hasActiveCustomization}
+        tone="protein"
+        size="summary"
       />
-      <MacroBlock
-        value={displayCarbs}
-        delta={carbsDelta * quantityMultiplier}
+      <MacroStat
+        value={formatMacro(displayCarbs)}
+        delta={hasActiveCustomization ? formatDelta(carbsDelta * quantityMultiplier) : undefined}
         label="CARBS"
-        toneClass="text-[#ca8a04]"
-        showDelta={hasActiveCustomization}
+        tone="carbs"
+        size="summary"
       />
-      <MacroBlock
-        value={displayFat}
-        delta={fatDelta * quantityMultiplier}
+      <MacroStat
+        value={formatMacro(displayFat)}
+        delta={hasActiveCustomization ? formatDelta(fatDelta * quantityMultiplier) : undefined}
         label="FAT"
-        toneClass="text-[#2563eb]"
-        showDelta={hasActiveCustomization}
+        tone="totalFat"
+        size="summary"
       />
 
       <div className="ml-0 inline-flex w-full flex-row items-end justify-end gap-2 sm:ml-auto sm:w-auto">
