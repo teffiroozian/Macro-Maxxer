@@ -14,6 +14,7 @@ import MenuItemCardHeader from "./menu-item-card/MenuItemCardHeader";
 import MenuItemMacroSummary from "./menu-item-card/MenuItemMacroSummary";
 import MacroStat from "./nutrition/MacroStat";
 import MenuCardActions from "./menu-item-card/MenuCardActions";
+import SurfaceCard from "@/components/ui/SurfaceCard";
 import CartCardActions from "./menu-item-card/CartCardActions";
 import { useMenuItemCartAdapter } from "./menu-item-card/useMenuItemCartAdapter";
 import { useMenuItemConfiguration } from "./menu-item-card/useMenuItemConfiguration";
@@ -646,12 +647,15 @@ export default function MenuItemCard({
 
 
   return (
-    <li
-      className={`list-none rounded-2xl bg-white shadow-[0_4px_12px_rgba(0,0,0,0.2)] ${
+    <SurfaceCard
+      as="li"
+      padding="none"
+      shadow="md"
+      className={`list-none ${
         open && useCartQuickEditPanel ? "overflow-visible" : "overflow-hidden"
       } ${
-        isTopRanked ? "border-[1.5px] border-black/80" : "border border-black/15"
-      }`}
+        isTopRanked ? "border-[1.5px] border-black/80" : "border-black/15"
+      } shadow-[0_4px_12px_rgba(0,0,0,0.2)]`}
     >
       <div
         role="button"
@@ -1197,6 +1201,6 @@ export default function MenuItemCard({
           )}
         </div>
       </div>
-    </li>
+    </SurfaceCard>
   );
 }

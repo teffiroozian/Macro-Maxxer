@@ -1,3 +1,4 @@
+import SurfaceCard from "@/components/ui/SurfaceCard";
 import { formatCalories, formatMacro } from "@/lib/menuItemCalculations";
 import type { MenuItem } from "@/types/menu";
 
@@ -41,11 +42,14 @@ export default function IngredientCompactCard({
   onCompactOptionSelect: (optionId: string) => void;
 }) {
   return (
-    <li
-      className={`list-none overflow-hidden rounded-2xl bg-white transition ${
+    <SurfaceCard
+      as="li"
+      padding="none"
+      shadow="md"
+      className={`list-none overflow-hidden transition ${
         ingredientSelectionState
           ? "border-2 border-lime-500 shadow-[0_4px_12px_rgba(132,204,22,0.25)]"
-          : "border border-black/15 shadow-[0_4px_12px_rgba(0,0,0,0.12)]"
+          : "border-black/15"
       }`}
     >
       <div
@@ -139,6 +143,6 @@ export default function IngredientCompactCard({
           ) : null}
         </div>
       </div>
-    </li>
+    </SurfaceCard>
   );
 }

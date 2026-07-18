@@ -2,6 +2,7 @@
 
 import type { CartMacros } from "@/types/cart";
 import MacroTotalsGrid from "@/components/MacroTotalsGrid";
+import AppButton from "@/components/ui/AppButton";
 import type { LucideIcon } from "lucide-react";
 import { Bookmark, Camera } from "lucide-react";
 import type { ReactNode } from "react";
@@ -127,14 +128,11 @@ export default function StickyMacroTotalsBar({
                 isCartLayout ? "w-full flex-col sm:w-auto" : "w-full shrink-0 flex-row md:w-auto"
               }`}
             >
-              <button
-                type="button"
+              <AppButton
+                variant="secondary"
+                size="lg"
                 onClick={onSecondaryAction}
-                className={`cursor-pointer inline-flex items-center justify-center gap-2 rounded-xl border-2 border-black/80 bg-transparent font-semibold text-[#1A1A1A] transition hover:bg-black/5 ${
-                  isCartLayout ? "h-[48px] px-6 text-base" : "h-11 px-6 text-base"
-                } ${
-                  isCartLayout ? "" : "flex-1 md:flex-none"
-                }`}
+                className={`${isCartLayout ? "h-[48px]" : "h-11"} ${isCartLayout ? "" : "flex-1 md:flex-none"}`}
               >
                 {detailsOpen && SecondaryActionExpandedIcon ? (
                   <SecondaryActionExpandedIcon className="h-4 w-4" strokeWidth={2.5} aria-hidden="true" />
@@ -142,19 +140,16 @@ export default function StickyMacroTotalsBar({
                   <SecondaryActionIcon className="h-4 w-4" strokeWidth={2.5} aria-hidden="true" />
                 )}
                 <span>{secondaryButtonText}</span>
-              </button>
-              <button
-                type="button"
+              </AppButton>
+              <AppButton
+                variant="primary"
+                size="lg"
                 onClick={onPrimaryAction}
-                className={`cursor-pointer inline-flex items-center justify-center gap-2 rounded-xl border border-black bg-black font-semibold text-white transition hover:bg-neutral-900 ${
-                  isCartLayout ? "h-[48px] px-6 text-base" : "h-11 px-6 text-base"
-                } ${
-                  isCartLayout ? "" : "flex-1 md:flex-none"
-                }`}
+                className={`${isCartLayout ? "h-[48px]" : "h-11"} ${isCartLayout ? "" : "flex-1 md:flex-none"}`}
               >
                 <PrimaryActionIcon className="h-4 w-4" strokeWidth={2.5} aria-hidden="true" />
                 <span>{primaryButtonText}</span>
-              </button>
+              </AppButton>
             </div>
           </div>
         </div>
