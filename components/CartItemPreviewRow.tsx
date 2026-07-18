@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { ReactNode } from "react";
 import { getCartItemCoreMacros } from "@/lib/cart/itemAccessors";
+import MacroStat from "@/components/nutrition/MacroStat";
 import type { CartItem } from "@/types/cart";
 
 type CartItemPreviewRowProps = {
@@ -14,10 +15,6 @@ type CartItemPreviewRowProps = {
   className?: string;
 };
 
-const macroLabelClassByStyle = {
-  compact: "text-slate-500",
-  detailed: "text-slate-500",
-} as const;
 
 export default function CartItemPreviewRow({
   item,
@@ -75,37 +72,17 @@ export default function CartItemPreviewRow({
 
         {macroStyle === "compact" ? (
           <div className="mt-1.5 flex flex-wrap items-center gap-x-3 gap-y-1 text-sm leading-none">
-            <p className={macroLabelClassByStyle[macroStyle]}>
-              Cal:<span className="ml-1 font-semibold text-slate-900">{displayCalories}</span>
-            </p>
-            <p className={macroLabelClassByStyle[macroStyle]}>
-              P:<span className="ml-1 font-semibold text-slate-900">{displayProtein}g</span>
-            </p>
-            <p className={macroLabelClassByStyle[macroStyle]}>
-              C:<span className="ml-1 font-semibold text-slate-900">{displayCarbs}g</span>
-            </p>
-            <p className={macroLabelClassByStyle[macroStyle]}>
-              F:<span className="ml-1 font-semibold text-slate-900">{displayFat}g</span>
-            </p>
+            <MacroStat label="Cal" value={displayCalories} tone="calories" size="cartCompact" />
+            <MacroStat label="P" value={displayProtein} unit="g" tone="protein" size="cartCompact" />
+            <MacroStat label="C" value={displayCarbs} unit="g" tone="carbs" size="cartCompact" />
+            <MacroStat label="F" value={displayFat} unit="g" tone="totalFat" size="cartCompact" />
           </div>
         ) : (
           <div className="mt-1.5 flex flex-wrap items-center gap-x-4 gap-y-1 text-sm leading-none">
-            <p className="whitespace-nowrap text-slate-500">
-              <span className="text-base font-semibold text-slate-900">{displayCalories}</span>
-              <span className="ml-1 text-xs">Cal</span>
-            </p>
-            <p className="whitespace-nowrap text-slate-500">
-              <span className="text-base font-semibold text-[#c2410c]">{displayProtein}g</span>
-              <span className="ml-1 text-xs">protein</span>
-            </p>
-            <p className="whitespace-nowrap text-slate-500">
-              <span className="text-base font-semibold text-[#ca8a04]">{displayCarbs}g</span>
-              <span className="ml-1 text-xs">carbs</span>
-            </p>
-            <p className="whitespace-nowrap text-slate-500">
-              <span className="text-base font-semibold text-[#2563eb]">{displayFat}g</span>
-              <span className="ml-1 text-xs">fat</span>
-            </p>
+            <MacroStat label="Cal" value={displayCalories} tone="calories" size="cartDetailed" />
+            <MacroStat label="protein" value={displayProtein} unit="g" tone="protein" size="cartDetailed" />
+            <MacroStat label="carbs" value={displayCarbs} unit="g" tone="carbs" size="cartDetailed" />
+            <MacroStat label="fat" value={displayFat} unit="g" tone="totalFat" size="cartDetailed" />
           </div>
         )}
 
