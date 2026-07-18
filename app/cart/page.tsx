@@ -2,6 +2,8 @@
 
 import { useMemo } from "react";
 import StickyMacroTotalsBar from "@/components/StickyMacroTotalsBar";
+import AppButton from "@/components/ui/AppButton";
+import SurfaceCard from "@/components/ui/SurfaceCard";
 import CartNutritionSummary from "@/components/cart/CartNutritionSummary";
 import MacroSplitBar from "@/components/nutrition/MacroSplitBar";
 import QuantityStepper from "@/components/QuantityStepper";
@@ -43,7 +45,7 @@ export default function CartPage() {
                 const displayItem = { ...cartItem, name: formatCartItemName(cartItem) };
                 const canCustomize = cartItem.selection.type !== "build-your-own";
                 return (
-                  <li key={cartItem.id} className="rounded-2xl border border-black/10 bg-white p-3 shadow-sm">
+                  <SurfaceCard as="li" key={cartItem.id} padding="compact">
                     <CartItemPreviewRow
                       item={displayItem}
                       imageRenderer="native-img"
@@ -54,14 +56,15 @@ export default function CartPage() {
                       actions={
                         <div className="flex items-center gap-2">
                           {canCustomize ? (
-                            <button
-                              type="button"
+                            <AppButton
+                              variant="pill"
+                              size="sm"
                               onClick={() => openEditModal(cartItem)}
                               disabled={loadingEditItemId === cartItem.id}
-                              className="cursor-pointer rounded-full border border-slate-200 px-3 py-1.5 text-xs font-semibold text-slate-700 transition hover:bg-slate-100 disabled:cursor-wait disabled:opacity-60"
+                              className="h-auto py-1.5 disabled:cursor-wait"
                             >
                               {loadingEditItemId === cartItem.id ? "Loading..." : "Customize"}
-                            </button>
+                            </AppButton>
                           ) : null}
                           <QuantityStepper
                             value={cartItem.quantity}
@@ -73,17 +76,17 @@ export default function CartPage() {
                         </div>
                       }
                     />
-                  </li>
+                  </SurfaceCard>
                 );
               })}
             </ul>
           )}
         </section>
 
-        <section className="rounded-3xl border border-black/10 bg-white p-3 shadow-sm sm:p-4">
+        <SurfaceCard as="section" padding="compact" radius="large" className="sm:p-4">
           <div className="grid grid-cols-1 gap-4 rounded-3xl bg-[#e0e0e0] p-3 sm:p-4 lg:grid-cols-2">
             <CartNutritionSummary nutritionTotals={nutritionTotals} />
-            <div className="flex min-h-0 flex-col rounded-3xl border border-black/10 bg-white p-4 sm:p-5">
+            <SurfaceCard padding="default" radius="large" className="flex min-h-0 flex-col sm:p-5">
               <h2 className="text-2xl font-bold text-neutral-900">Meal Breakdown</h2>
               <div className="mt-6 flex min-h-0 flex-1 flex-col justify-between gap-4">
                 <p className="text-md font-semibold uppercase tracking-wide text-neutral-500">Items</p>
@@ -107,10 +110,10 @@ export default function CartPage() {
                 <div className="space-y-2 pt-4"><p className="text-md font-semibold uppercase tracking-wide text-neutral-500">Protein Score</p><div className="rounded-xl bg-[#efefef] px-3 py-2"><p className="mt-1 text-sm text-neutral-900"><span className="font-bold">{Math.round(proteinPer100Calories ?? 0)}g</span> of protein in <span className="font-semibold">100 calories</span></p></div></div>
                 <div className="space-y-2 pt-4"><p className="text-md font-semibold uppercase tracking-wide text-neutral-500">Macro Split</p><MacroSplitBar protein={totals.protein} carbs={totals.carbs} totalFat={totals.totalFat} /></div>
               </div>
-            </div>
+            </SurfaceCard>
             <div className="col-span-1 lg:col-span-2"><StickyMacroTotalsBar totals={totals} inline layoutPreset="cart" onSecondaryAction={() => window.alert("Save Meal coming soon")} onPrimaryAction={() => window.alert("Generate Snapshot coming soon")} /></div>
           </div>
-        </section>
+        </SurfaceCard>
       </main>
       {editState ? (
         <ItemRouteModal

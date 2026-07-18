@@ -1,5 +1,7 @@
 import type { ReactNode } from "react";
 
+import SurfaceCard from "@/components/ui/SurfaceCard";
+
 type EmptyStateCardProps = {
   title: ReactNode;
   description?: ReactNode;
@@ -9,10 +11,10 @@ type EmptyStateCardProps = {
 
 export default function EmptyStateCard({ title, description, action, className = "" }: EmptyStateCardProps) {
   return (
-    <div className={`rounded-2xl border border-black/10 bg-white px-5 py-8 text-center shadow-sm ${className}`}>
+    <SurfaceCard padding="comfortable" className={`py-8 text-center ${className}`}>
       <p className="text-lg font-medium text-neutral-900">{title}</p>
       {description ? <p className="mt-2 text-sm text-neutral-600">{description}</p> : null}
       {action ? <div className="mt-4">{action}</div> : null}
-    </div>
+    </SurfaceCard>
   );
 }

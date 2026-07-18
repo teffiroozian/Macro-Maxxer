@@ -6,6 +6,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import GlobalMobileNav from "@/components/GlobalMobileNav";
 import DesktopNav from "@/components/DesktopNav";
+import SurfaceCard from "@/components/ui/SurfaceCard";
 import { getAllRestaurants } from "@/lib/restaurants";
 
 const RECENT_RESTAURANTS_KEY = "recentlySearchedRestaurants";
@@ -222,7 +223,7 @@ export default function Home() {
                 </button>
               )}
               {showSuggestions && (
-                <div className="absolute left-0 right-0 top-full z-10 mt-2 overflow-hidden rounded-2xl border border-black/10 bg-white shadow-lg">
+                <SurfaceCard padding="none" shadow="lg" className="absolute left-0 right-0 top-full z-10 mt-2 overflow-hidden">
                   <ul role="listbox" className="max-h-60 overflow-y-auto py-2">
                 {isEmptyFocusedState ? (
                   <>
@@ -380,7 +381,7 @@ export default function Home() {
                   ))
                 )}
                   </ul>
-                </div>
+                </SurfaceCard>
               )}
             </div>
           </section>
@@ -409,7 +410,7 @@ export default function Home() {
                     scroll
                     className="group cursor-pointer"
                   >
-                    <article className="overflow-hidden rounded-2xl border border-black/10 bg-white/70 shadow-sm transition group-hover:-translate-y-0.5 group-hover:shadow-md">
+                    <SurfaceCard as="article" padding="none" className="overflow-hidden bg-white/70 transition group-hover:-translate-y-0.5 group-hover:shadow-md">
                       <div className="relative h-44 w-full overflow-hidden">
                         <Image
                           src={restaurant.cover}
@@ -432,16 +433,19 @@ export default function Home() {
                           {restaurant.name}
                         </span>
                       </div>
-                    </article>
+                    </SurfaceCard>
                   </Link>
                 );
               }
 
               return (
-                <article
+                <SurfaceCard
+                  as="article"
                   key={restaurant.id}
                   aria-disabled="true"
-                  className="relative overflow-hidden rounded-2xl border border-black/10 bg-white/70 opacity-40"
+                  padding="none"
+                  shadow="none"
+                  className="relative overflow-hidden bg-white/70 opacity-40"
                 >
                   <div className="relative h-44 w-full overflow-hidden">
                     <Image
@@ -470,7 +474,7 @@ export default function Home() {
                       Coming Soon
                     </span>
                   </div>
-                </article>
+                </SurfaceCard>
               );
             })}
         </section>

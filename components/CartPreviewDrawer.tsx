@@ -8,6 +8,7 @@ import type { CartItem } from "@/types/cart";
 import { useRestaurantUi } from "@/components/RestaurantUiContext";
 import MacroTotalsGrid from "@/components/MacroTotalsGrid";
 import CartItemPreviewRow from "@/components/CartItemPreviewRow";
+import SurfaceCard from "@/components/ui/SurfaceCard";
 import ItemRouteModal from "@/components/ItemRouteModal";
 import { getAllRestaurants } from "@/lib/restaurants";
 import { useCart } from "@/stores/cartStore";
@@ -127,9 +128,11 @@ export default function CartPreviewDrawer() {
                     getCustomizationDisplayList(item);
                   const addonsLabel = customizationDisplayList.join(" • ");
                   return (
-                    <li
+                    <SurfaceCard
+                      as="li"
                       key={item.id}
-                      className="rounded-2xl border border-slate-200 bg-white px-3 py-3 shadow-sm"
+                      padding="compact"
+                      className="border-slate-200 px-3 py-3"
                     >
                       <CartItemPreviewRow
                         item={item}
@@ -181,7 +184,7 @@ export default function CartPreviewDrawer() {
                           </>
                         }
                       />
-                    </li>
+                    </SurfaceCard>
                   );
                 })}
               </ul>

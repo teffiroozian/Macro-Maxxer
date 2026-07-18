@@ -1,3 +1,5 @@
+import AppButton from "@/components/ui/AppButton";
+
 export default function MenuCardActions({
   isAddFeedbackVisible,
   onAddToCart,
@@ -7,14 +9,15 @@ export default function MenuCardActions({
 }) {
   return (
     <div className="ml-auto inline-flex flex-row items-end gap-2">
-      <button
-        type="button"
-        className={`cursor-pointer rounded-xl border px-[18px] py-2 text-base font-bold text-white transition ${isAddFeedbackVisible ? "border-green-700 bg-green-600 -translate-y-px" : "border-black/20 bg-black/90"} disabled:cursor-not-allowed`}
+      <AppButton
+        variant="primary"
+        size="lg"
+        className={`px-[18px] py-2 font-bold ${isAddFeedbackVisible ? "border-green-700 bg-green-600 -translate-y-px" : "border-black/20 bg-black/90"}`}
         disabled={isAddFeedbackVisible}
         onClick={(event) => { event.stopPropagation(); onAddToCart(); }}
       >
         {isAddFeedbackVisible ? "Added ✓" : "Add to Cart"}
-      </button>
+      </AppButton>
     </div>
   );
 }

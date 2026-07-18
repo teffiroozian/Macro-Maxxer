@@ -9,6 +9,7 @@ import { useOptionalRestaurantUi } from "@/components/RestaurantUiContext";
 import MacroTotalsGrid from "@/components/MacroTotalsGrid";
 import CartItemPreviewRow from "@/components/CartItemPreviewRow";
 import { ShoppingCart } from "lucide-react";
+import AppButton, { appButtonClassName } from "@/components/ui/AppButton";
 
 type CartIconDropdownProps = {
   buttonClassName: string;
@@ -102,8 +103,9 @@ export default function CartIconDropdown({
 
   return (
     <div ref={containerRef} className="relative">
-      <button
-        type="button"
+      <AppButton
+        variant="ghost"
+        size="md"
         onClick={() => {
           handleOpenCart();
           if (lastAddedAt !== null) {
@@ -115,7 +117,7 @@ export default function CartIconDropdown({
         aria-expanded={isOpen}
       >
         {countLabel}
-      </button>
+      </AppButton>
 
       <div
         aria-hidden={!isOpen}
@@ -155,18 +157,19 @@ export default function CartIconDropdown({
           <div className="my-3 h-px bg-slate-200" />
 
           <div className="mt-2 flex items-center gap-2">
-            <button
-              type="button"
+            <AppButton
+              variant="ghost"
+              size="md"
               onClick={() => {
                 handleOpenCart();
                 if (lastAddedAt !== null) {
                   setDismissedAddedAt(lastAddedAt);
                 }
               }}
-              className="cursor-pointer inline-flex h-10 flex-1 items-center justify-center rounded-lg border border-slate-300 bg-white px-3 text-sm font-medium text-slate-900 transition hover:bg-slate-50"
+              className="flex-1 font-medium"
             >
               View Cart
-            </button>
+            </AppButton>
             <Link
               href="/cart"
               onClick={() => {
@@ -174,7 +177,7 @@ export default function CartIconDropdown({
                   setDismissedAddedAt(lastAddedAt);
                 }
               }}
-              className="cursor-pointer inline-flex h-10 flex-1 items-center justify-center rounded-lg bg-slate-900 px-3 text-sm font-medium text-white transition hover:bg-slate-800"
+              className={appButtonClassName({ variant: "primary", size: "md", className: "flex-1 border-slate-900 bg-slate-900 font-medium hover:bg-slate-800" })}
             >
               View All Items
             </Link>

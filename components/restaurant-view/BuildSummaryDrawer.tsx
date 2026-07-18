@@ -2,6 +2,7 @@ import Image from "next/image";
 import { RotateCcw, Save } from "lucide-react";
 import type { MenuItem } from "@/types/menu";
 import NutritionLabelCard, { type NutritionLabelTotals } from "@/components/nutrition/NutritionLabelCard";
+import SurfaceCard from "@/components/ui/SurfaceCard";
 
 type SelectedEntry = [string, { item: MenuItem; quantity: number }];
 
@@ -60,7 +61,7 @@ export default function BuildSummaryDrawer({
       ) : null}
 
       <div className="grid items-stretch gap-4">
-        <section className="flex h-full min-h-0 flex-col rounded-3xl border border-black/10 bg-white p-5">
+        <SurfaceCard as="section" padding="comfortable" radius="large" shadow="none" className="flex h-full min-h-0 flex-col">
           <h3 className="text-2xl font-bold text-neutral-900">Selected Ingredients</h3>
           <p className="mt-2 text-sm font-semibold text-slate-600">{selectedBuildName} · {selectedIngredientCount} selected</p>
           <div className="mt-4 min-h-0 flex-1 rounded-xl bg-[#efefef] p-2">
@@ -70,7 +71,7 @@ export default function BuildSummaryDrawer({
                   <p className="px-1 text-[10px] font-semibold uppercase tracking-[0.06em] text-slate-500">{group.categoryLabel}</p>
                   <ul className="grid gap-2">
                     {group.entries.map(([ingredientId, selectedIngredient]) => (
-                      <li key={ingredientId} className="flex items-center justify-between rounded-xl border border-black/10 bg-white px-3 py-2">
+                      <SurfaceCard as="li" key={ingredientId} padding="none" radius="default" shadow="none" className="flex items-center justify-between rounded-xl px-3 py-2">
                         <div className="flex min-w-0 items-center gap-2">
                           <div className="h-8 w-8 shrink-0 overflow-hidden rounded-md border border-black/10 bg-neutral-100">
                             <Image src={selectedIngredient.item.image || restaurantLogo} alt={selectedIngredient.item.name} width={32} height={32} className="h-full w-full object-cover" />
@@ -100,14 +101,14 @@ export default function BuildSummaryDrawer({
                             +
                           </button>
                         </div>
-                      </li>
+                      </SurfaceCard>
                     ))}
                   </ul>
                 </div>
               ))}
             </div>
           </div>
-        </section>
+        </SurfaceCard>
 
         <NutritionLabelCard
           totals={adjustedNutritionLabelTotals}
