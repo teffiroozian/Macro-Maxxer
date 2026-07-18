@@ -131,26 +131,6 @@ export default function ControlsRow({
   const viewMenuRef = useRef<HTMLDivElement>(null);
   const sortMenuRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    const handlePointerDown = (event: MouseEvent) => {
-      const target = event.target as Node;
-
-      if (!viewMenuRef.current?.contains(target)) {
-        setIsViewOpen(false);
-      }
-
-      if (!sortMenuRef.current?.contains(target)) {
-        setIsSortOpen(false);
-      }
-    };
-
-    if (isViewOpen || isSortOpen) {
-      document.addEventListener("mousedown", handlePointerDown);
-    }
-
-    return () => document.removeEventListener("mousedown", handlePointerDown);
-  }, [isViewOpen, isSortOpen]);
-
   const currentViewOption = useMemo(
     () => VIEW_OPTIONS.find((option) => option.value === view) ?? VIEW_OPTIONS[0],
     [view]
@@ -440,6 +420,7 @@ export default function ControlsRow({
                 setIsViewOpen(false);
               }}
               onHover={setHoveredViewOption}
+              onClose={() => setIsViewOpen(false)}
             />
           )}
 
@@ -460,6 +441,7 @@ export default function ControlsRow({
                 setIsSortOpen(false);
               }}
               onHover={setHoveredSortOption}
+              onClose={() => setIsSortOpen(false)}
             />
 
             <button

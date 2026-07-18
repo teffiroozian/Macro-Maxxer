@@ -8,6 +8,7 @@ import { getSelectionDetailsLabel } from "@/lib/cart/customizationLabels";
 import { useOptionalRestaurantUi } from "@/components/RestaurantUiContext";
 import MacroTotalsGrid from "@/components/MacroTotalsGrid";
 import CartItemPreviewRow from "@/components/CartItemPreviewRow";
+import EmptyStateCard from "@/components/EmptyStateCard";
 import { ShoppingCart } from "lucide-react";
 import AppButton, { appButtonClassName } from "@/components/ui/AppButton";
 
@@ -142,7 +143,7 @@ export default function CartIconDropdown({
                 customizationsLineClamp={1}
               />
             ) : (
-              <p className="text-sm text-slate-600">Your cart is empty.</p>
+              <EmptyStateCard variant="compact" align="left" title="Your cart is empty." className="py-0" />
             )}
             </div>
           </div>

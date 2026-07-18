@@ -8,6 +8,7 @@ import type { CartItem } from "@/types/cart";
 import { useRestaurantUi } from "@/components/RestaurantUiContext";
 import MacroTotalsGrid from "@/components/MacroTotalsGrid";
 import CartItemPreviewRow from "@/components/CartItemPreviewRow";
+import EmptyStateCard from "@/components/EmptyStateCard";
 import SurfaceCard from "@/components/ui/SurfaceCard";
 import ItemRouteModal from "@/components/ItemRouteModal";
 import { getAllRestaurants } from "@/lib/restaurants";
@@ -120,7 +121,7 @@ export default function CartPreviewDrawer() {
             <div className="mt-2 border-t border-slate-200" />
 
             {items.length === 0 ? (
-              <p className="py-6 text-sm text-slate-600">Your cart is empty.</p>
+              <EmptyStateCard variant="compact" align="left" title="Your cart is empty." className="py-6" />
             ) : (
               <ul className="mt-3 space-y-3 pb-2">
                 {items.map((item) => {
