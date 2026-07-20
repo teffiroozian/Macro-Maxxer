@@ -10,6 +10,9 @@ import MacroTotalsGrid from "@/components/MacroTotalsGrid";
 import CartItemPreviewRow from "@/components/CartItemPreviewRow";
 import EmptyStateCard from "@/components/EmptyStateCard";
 import SurfaceCard from "@/components/ui/SurfaceCard";
+import AppButton, { appButtonClassName } from "@/components/ui/AppButton";
+import AppIconButton from "@/components/ui/AppIconButton";
+import QuantityStepper from "@/components/QuantityStepper";
 import ItemRouteModal from "@/components/ItemRouteModal";
 import { getAllRestaurants } from "@/lib/restaurants";
 import { useCart } from "@/stores/cartStore";
@@ -103,14 +106,9 @@ export default function CartPreviewDrawer() {
                   </p>
                 </div>
               </div>
-              <button
-                type="button"
-                onClick={closeCart}
-                className="cursor-pointer inline-flex size-8 shrink-0 items-center justify-center rounded-full border border-slate-200 text-sm text-slate-700 transition hover:bg-slate-100"
-                aria-label="Close cart panel"
-              >
+              <AppIconButton onClick={closeCart} aria-label="Close cart panel">
                 ✕
-              </button>
+              </AppIconButton>
             </div>
           </header>
 
@@ -145,43 +143,23 @@ export default function CartPreviewDrawer() {
                         actions={
                           <>
                             {item.selection.type !== "build-your-own" ? (
-                              <button
-                                type="button"
+                              <AppIconButton
                                 disabled={loadingEditItemId === item.id}
                                 onClick={() => {
                                   openEditModal(item);
                                 }}
-                                className="cursor-pointer inline-flex size-8 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-700 transition hover:bg-slate-100"
                                 aria-label={`Customize ${item.name}`}
                               >
                                 <Pencil className="size-4" />
-                              </button>
+                              </AppIconButton>
                             ) : null}
-                            <div className="inline-flex items-center rounded-full border border-slate-200 bg-slate-50 p-1">
-                              <button
-                                type="button"
-                                onClick={() =>
-                                  updateQuantity(item.id, item.quantity - 1)
-                                }
-                                className="cursor-pointer inline-flex size-7 items-center justify-center rounded-full text-sm font-semibold text-slate-700 transition hover:bg-white"
-                                aria-label={`Decrease quantity of ${item.name}`}
-                              >
-                                -
-                              </button>
-                              <span className="min-w-8 text-center text-sm font-semibold text-slate-900">
-                                {item.quantity}
-                              </span>
-                              <button
-                                type="button"
-                                onClick={() =>
-                                  updateQuantity(item.id, item.quantity + 1)
-                                }
-                                className="cursor-pointer inline-flex size-7 items-center justify-center rounded-full text-sm font-semibold text-slate-700 transition hover:bg-white"
-                                aria-label={`Increase quantity of ${item.name}`}
-                              >
-                                +
-                              </button>
-                            </div>
+                            <QuantityStepper
+                              value={item.quantity}
+                              onDecrement={() => updateQuantity(item.id, item.quantity - 1)}
+                              onIncrement={() => updateQuantity(item.id, item.quantity + 1)}
+                              decrementLabel={`Decrease quantity of ${item.name}`}
+                              incrementLabel={`Increase quantity of ${item.name}`}
+                            />
                           </>
                         }
                       />
@@ -201,18 +179,13 @@ export default function CartPreviewDrawer() {
             </div>
 
             <div className="mt-4 grid grid-cols-2 gap-2 border-t border-slate-200 pt-4">
-              <button
-                type="button"
-                onClick={clearCart}
-                disabled={items.length === 0}
-                className="cursor-pointer inline-flex items-center justify-center rounded-full border border-slate-300 px-3 py-2 text-sm font-medium text-slate-700 transition hover:bg-slate-100 disabled:cursor-not-allowed disabled:opacity-60"
-              >
+              <AppButton type="button" variant="ghost" size="md" onClick={clearCart} disabled={items.length === 0}>
                 Clear Cart
-              </button>
+              </AppButton>
               <Link
                 href="/cart"
                 onClick={closeCart}
-                className="cursor-pointer inline-flex items-center justify-center rounded-full border border-slate-900 bg-slate-900 px-3 py-2 text-sm font-medium text-white transition hover:bg-slate-800"
+                className={appButtonClassName({ variant: "primary", size: "md", className: "border-slate-900 bg-slate-900 font-medium hover:bg-slate-800" })}
               >
                 Open Full Cart
               </Link>

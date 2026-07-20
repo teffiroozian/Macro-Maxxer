@@ -8,6 +8,8 @@ import { useFilterChipActions } from "./useFilterChipActions";
 import { SORT_OPTION_VALUES, type SortOption } from "@/lib/menuSections/sortOptions";
 import type { Filters } from "@/lib/menuSections/filterOptions";
 import MobileNavDrawer from "@/components/MobileNavDrawer";
+import AppButton from "@/components/ui/AppButton";
+import FilterChip from "@/components/ui/FilterChip";
 import ViewSelector from "@/components/controls/ViewSelector";
 import SortSelector from "@/components/controls/SortSelector";
 import {
@@ -57,19 +59,19 @@ export function FilterChips({
   return (
     <div className={`${withMargin ? "mt-2.5" : "mt-0"} flex w-full flex-wrap justify-end gap-2`}>
       {filters.proteinMin ? (
-        <button type="button" onClick={onClearProtein} className="cursor-pointer rounded-full border border-black/20 bg-black/5 px-2.5 py-1 text-xs font-semibold">
+        <FilterChip onClick={onClearProtein} className="bg-black/5 px-2.5 py-1 text-xs">
           Protein {filters.proteinMin}g+ ✕
-        </button>
+        </FilterChip>
       ) : null}
       {filters.caloriesMax ? (
-        <button type="button" onClick={onClearCalories} className="cursor-pointer rounded-full border border-black/20 bg-black/5 px-2.5 py-1 text-xs font-semibold">
+        <FilterChip onClick={onClearCalories} className="bg-black/5 px-2.5 py-1 text-xs">
           Under {filters.caloriesMax} cal ✕
-        </button>
+        </FilterChip>
       ) : null}
       {(filters.proteinMin || filters.caloriesMax) ? (
-        <button type="button" onClick={onClearAll} className="cursor-pointer rounded-full border border-black/20 bg-white px-2.5 py-1 text-xs font-semibold">
+        <FilterChip onClick={onClearAll} className="px-2.5 py-1 text-xs">
           Clear All
-        </button>
+        </FilterChip>
       ) : null}
     </div>
   );
@@ -292,9 +294,9 @@ export default function ControlsRow({
                 {PROTEIN_OPTIONS.map((value) => {
                   const isActive = draftFilters.proteinMin === value;
                   return (
-                    <button key={value} type="button" onClick={() => setDraftFilters((prev) => ({ ...prev, proteinMin: isActive ? undefined : value }))} className={`rounded-full border px-3 py-1.5 text-sm font-semibold ${isActive ? "border-black/80 bg-black/85 text-white" : "border-black/20 bg-white text-black/80"}`}>
+                    <FilterChip key={value} active={isActive} onClick={() => setDraftFilters((prev) => ({ ...prev, proteinMin: isActive ? undefined : value }))}>
                       {value}g+
-                    </button>
+                    </FilterChip>
                   );
                 })}
               </div>
@@ -315,8 +317,8 @@ export default function ControlsRow({
 
   const controlsFooter = (
     <div className="grid grid-cols-2 gap-2">
-      <button type="button" onClick={handleResetFilters} className="rounded-full border border-black/20 bg-white px-4 py-2 text-sm font-semibold text-black/80">Cancel</button>
-      <button type="button" onClick={applyFilters} className="rounded-full border border-black/80 bg-black/85 px-4 py-2 text-sm font-bold text-white">Apply</button>
+      <AppButton variant="secondary" size="md" onClick={handleResetFilters}>Cancel</AppButton>
+      <AppButton size="md" onClick={applyFilters} className="border-black/80 bg-black/85 font-bold">Apply</AppButton>
     </div>
   );
 
@@ -345,9 +347,9 @@ export default function ControlsRow({
               {PROTEIN_OPTIONS.map((value) => {
                 const isActive = draftFilters.proteinMin === value;
                 return (
-                  <button key={value} type="button" onClick={() => setDraftFilters((prev) => ({ ...prev, proteinMin: value }))} className={`cursor-pointer rounded-full border border-black/20 px-3 py-1.5 font-semibold ${isActive ? "bg-black/85 text-white" : "bg-white text-black/80"}`}>
+                  <FilterChip key={value} active={isActive} onClick={() => setDraftFilters((prev) => ({ ...prev, proteinMin: value }))}>
                     {value}g+
-                  </button>
+                  </FilterChip>
                 );
               })}
             </div>
@@ -375,12 +377,12 @@ export default function ControlsRow({
           </div>
         </div>
         <div className="mt-5 flex flex-col-reverse gap-2 sm:flex-row sm:justify-end sm:gap-3">
-          <button type="button" onClick={handleResetFilters} className="cursor-pointer rounded-full border border-black/20 bg-white px-4 py-2 font-semibold text-black/80">
+          <AppButton variant="secondary" size="md" onClick={handleResetFilters}>
             Reset
-          </button>
-          <button type="button" onClick={applyFilters} className="cursor-pointer rounded-full border border-black/80 bg-black/85 px-4 py-2 font-bold text-white">
+          </AppButton>
+          <AppButton size="md" onClick={applyFilters} className="border-black/80 bg-black/85 font-bold">
             Apply
-          </button>
+          </AppButton>
         </div>
       </div>
     </div>
@@ -391,14 +393,10 @@ export default function ControlsRow({
       <div id={wrapperId} className="grid gap-2 overflow-visible">
         {showMobileTrigger ? (
           <div className="lg:hidden">
-            <button
-              type="button"
-              onClick={openMobileDrawer}
-              className="inline-flex items-center gap-2 rounded-full border border-black/20 bg-white px-[14px] py-[8px] text-sm font-semibold text-black/85"
-            >
+            <AppButton variant="secondary" size="md" onClick={openMobileDrawer} className="px-[14px] text-black/85">
               <Menu className="h-4 w-4" strokeWidth={2.5} />
               Controls
-            </button>
+            </AppButton>
           </div>
         ) : null}
 
@@ -444,14 +442,10 @@ export default function ControlsRow({
               onClose={() => setIsSortOpen(false)}
             />
 
-            <button
-              type="button"
-              onClick={openFilters}
-              className="cursor-pointer inline-flex items-center gap-2 whitespace-nowrap rounded-full border border-black/20 bg-white px-[14px] py-[8px] text-sm font-semibold text-black/80 shrink-0"
-            >
+            <AppButton variant="secondary" size="md" onClick={openFilters} className="shrink-0 whitespace-nowrap px-[14px] text-black/80">
               Filters
               <SlidersHorizontal className="h-4 w-4" strokeWidth={2.5} />
-            </button>
+            </AppButton>
           </div>
         </div>
 

@@ -13,6 +13,7 @@ import type { Filters } from "@/lib/menuSections/filterOptions";
 import type { SortOption } from "@/lib/menuSections/sortOptions";
 import { Menu, Search } from "lucide-react";
 import MobileNavDrawer from "@/components/MobileNavDrawer";
+import AppIconButton from "@/components/ui/AppIconButton";
 
 import { useFilterChipActions } from "./useFilterChipActions";
 
@@ -99,8 +100,7 @@ export default function StickyRestaurantBar({
       >
         <div className="mx-auto flex w-full max-w-5xl items-center gap-2 px-3 py-2 sm:gap-3 sm:px-6">
           <div className="flex min-w-0 flex-1 items-center gap-2 lg:hidden">
-            <button
-              type="button"
+            <AppIconButton
               onClick={() => {
                 if (hideSecondaryNav) {
                   setBrowseDrawerKey((prev) => prev + 1);
@@ -109,11 +109,11 @@ export default function StickyRestaurantBar({
                 }
                 openMobileControlsDrawer();
               }}
-              className="cursor-pointer inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-slate-300/80 bg-white text-slate-800"
+              className="size-9 border-slate-300/80 text-slate-800"
               aria-label="Open controls drawer"
             >
               <Menu className="h-4 w-4" strokeWidth={2.5} />
-            </button>
+            </AppIconButton>
             <Link
               href="/"
               className="inline-flex h-9 w-9 shrink-0 items-center justify-center overflow-hidden rounded-lg bg-white"
@@ -158,23 +158,13 @@ export default function StickyRestaurantBar({
             </div>
 
             {isSearchMode ? (
-              <button
-                type="button"
-                onClick={closeSearch}
-                className="cursor-pointer inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-slate-300/80 bg-white text-base text-slate-800"
-                aria-label="Close search"
-              >
+              <AppIconButton onClick={closeSearch} className="size-9 border-slate-300/80 text-base text-slate-800" aria-label="Close search">
                 ✕
-              </button>
+              </AppIconButton>
             ) : (
-                <button
-                  type="button"
-                  onClick={onOpenSearch}
-                  className="cursor-pointer inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-slate-300/80 bg-white text-base text-slate-800 transition hover:bg-slate-50"
-                  aria-label="Search menu items"
-                >
+                <AppIconButton onClick={onOpenSearch} className="size-9 border-slate-300/80 text-base text-slate-800" aria-label="Search menu items">
                 <Search className="h-4 w-4" strokeWidth={2.5}/>
-              </button>
+              </AppIconButton>
             )}
             <CartIconDropdown
               buttonClassName="cursor-pointer inline-flex h-9 min-w-9 shrink-0 items-center justify-center rounded-full border border-slate-300/80 bg-white px-2.5 text-base text-slate-800 transition hover:bg-slate-50"
