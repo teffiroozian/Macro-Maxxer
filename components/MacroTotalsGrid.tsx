@@ -1,47 +1,7 @@
 import type { ReactNode } from "react";
 import type { CoreMacros } from "@/types/nutrition";
 
-type MacroDisplayConfig = {
-  label: string;
-  unit?: string;
-  valueClassNameByVariant: Record<"default" | "bar", string>;
-};
-
-export const macroDisplayConfig: Record<keyof CoreMacros, MacroDisplayConfig> = {
-  calories: {
-    label: "Calories",
-    valueClassNameByVariant: {
-      default: "text-slate-900",
-      bar: "text-[#111318]",
-    },
-  },
-  protein: {
-    label: "Protein",
-    unit: "g",
-    valueClassNameByVariant: {
-      default: "text-[#c2410c]",
-      bar: "text-[#C75A1B]",
-    },
-  },
-  carbs: {
-    label: "Carbs",
-    unit: "g",
-    valueClassNameByVariant: {
-      default: "text-[#ca8a04]",
-      bar: "text-[#D0A700]",
-    },
-  },
-  totalFat: {
-    label: "Fat",
-    unit: "g",
-    valueClassNameByVariant: {
-      default: "text-[#2563eb]",
-      bar: "text-[#2563eb]",
-    },
-  },
-};
-
-const macroOrder: Array<keyof CoreMacros> = ["calories", "protein", "carbs", "totalFat"];
+import { macroDisplayConfig, macroOrder } from "@/components/nutrition/macroDisplay";
 
 type MacroTotalsGridProps = {
   macros: CoreMacros;

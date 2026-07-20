@@ -1,6 +1,7 @@
 import type { ReactNode } from "react";
 import { formatDelta, formatMacro } from "@/lib/menuItemCalculations";
 import MacroStat from "@/components/nutrition/MacroStat";
+import { macroDisplayConfig } from "@/components/nutrition/macroDisplay";
 
 export default function MenuItemMacroSummary({
   displayProtein,
@@ -28,21 +29,24 @@ export default function MenuItemMacroSummary({
       <MacroStat
         value={formatMacro(displayProtein)}
         delta={hasActiveCustomization ? formatDelta(proteinDelta * quantityMultiplier) : undefined}
-        label="PROTEIN"
+        label={macroDisplayConfig.protein.label.toUpperCase()}
+        unit={macroDisplayConfig.protein.unit}
         tone="protein"
         size="summary"
       />
       <MacroStat
         value={formatMacro(displayCarbs)}
         delta={hasActiveCustomization ? formatDelta(carbsDelta * quantityMultiplier) : undefined}
-        label="CARBS"
+        label={macroDisplayConfig.carbs.label.toUpperCase()}
+        unit={macroDisplayConfig.carbs.unit}
         tone="carbs"
         size="summary"
       />
       <MacroStat
         value={formatMacro(displayFat)}
         delta={hasActiveCustomization ? formatDelta(fatDelta * quantityMultiplier) : undefined}
-        label="FAT"
+        label={macroDisplayConfig.totalFat.label.toUpperCase()}
+        unit={macroDisplayConfig.totalFat.unit}
         tone="totalFat"
         size="summary"
       />

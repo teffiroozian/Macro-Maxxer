@@ -1,3 +1,6 @@
+import { gramMacroOrder, macroDisplayConfig } from "@/components/nutrition/macroDisplay";
+import type { MacroKey } from "@/components/nutrition/macroDisplay";
+
 type MacroSplitLabelMode = "auto" | "full" | "short" | "percent";
 
 type MacroSplitBarProps = {
@@ -6,12 +9,6 @@ type MacroSplitBarProps = {
   totalFat: number;
   labelMode?: MacroSplitLabelMode;
 };
-
-const MACRO_SEGMENT_STYLES = {
-  protein: "bg-[#c2410c] text-white",
-  carbs: "bg-[#ca8a04] text-white",
-  totalFat: "bg-[#2563eb] text-white",
-} as const;
 
 function formatMacroSegmentLabel(label: string, percent: number, labelMode: MacroSplitLabelMode = "auto") {
   const roundedPercent = Math.round(percent);
@@ -27,23 +24,12 @@ function formatMacroSegmentLabel(label: string, percent: number, labelMode: Macr
 
 export default function MacroSplitBar({ protein, carbs, totalFat, labelMode = "auto" }: MacroSplitBarProps) {
   const macroTotalGrams = protein + carbs + totalFat;
-  const macroSegments = [
-    {
-      label: "Protein",
-      percent: macroTotalGrams > 0 ? (protein / macroTotalGrams) * 100 : 0,
-      color: MACRO_SEGMENT_STYLES.protein,
-    },
-    {
-      label: "Carbs",
-      percent: macroTotalGrams > 0 ? (carbs / macroTotalGrams) * 100 : 0,
-      color: MACRO_SEGMENT_STYLES.carbs,
-    },
-    {
-      label: "Fat",
-      percent: macroTotalGrams > 0 ? (totalFat / macroTotalGrams) * 100 : 0,
-      color: MACRO_SEGMENT_STYLES.totalFat,
-    },
-  ];
+  const macroValues: Record<Exclude<MacroKey, "calories">, number> = { protein, carbs, totalFat };
+  const macroSegments = gramMacroOrder.map((macroKey) => ({
+    label: macroDisplayConfig[macroKey].label,
+    percent: macroTotalGrams > 0 ? (macroValues[macroKey] / macroTotalGrams) * 100 : 0,
+    color: macroDisplayConfig[macroKey].segmentClassName,
+  }));
 
   return (
     <div className="flex h-11 w-full gap-1 overflow-hidden rounded-xl border border-black/10 bg-neutral-100 p-1">
