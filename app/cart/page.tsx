@@ -86,14 +86,14 @@ export default function CartPage() {
         </section>
 
         <SurfaceCard as="section" padding="compact" radius="large" className="sm:p-4">
-          <div className="grid grid-cols-1 gap-4 rounded-3xl bg-[#e0e0e0] p-3 sm:p-4 lg:grid-cols-2">
+          <div className="grid grid-cols-1 gap-4 rounded-3xl bg-muted-panel p-3 sm:p-4 lg:grid-cols-2">
             <CartNutritionSummary nutritionTotals={nutritionTotals} />
             <SurfaceCard padding="default" radius="large" className="flex min-h-0 flex-col sm:p-5">
               <h2 className="text-2xl font-bold text-neutral-900">Meal Breakdown</h2>
               <div className="mt-6 flex min-h-0 flex-1 flex-col justify-between gap-4">
                 <p className="text-md font-semibold uppercase tracking-wide text-neutral-500">Items</p>
                 {items.length === 0 ? <p className="text-sm text-neutral-600">No meal items yet.</p> : (
-                  <ul className="min-h-0 flex-1 space-y-2 overflow-y-auto max-h-[300px] bg-[#efefef] p-2 rounded-xl">
+                  <ul className="min-h-0 flex-1 space-y-2 overflow-y-auto max-h-[300px] bg-image-placeholder p-2 rounded-xl">
                     {items.map((item) => {
                       const detailLine = summarizeItem(item);
                       const displayName = formatCartItemName(item);
@@ -109,7 +109,7 @@ export default function CartPage() {
                     })}
                   </ul>
                 )}
-                <div className="space-y-2 pt-4"><p className="text-md font-semibold uppercase tracking-wide text-neutral-500">Protein Score</p><div className="rounded-xl bg-[#efefef] px-3 py-2"><p className="mt-1 text-sm text-neutral-900"><span className="font-bold">{Math.round(proteinPer100Calories ?? 0)}g</span> of protein in <span className="font-semibold">100 calories</span></p></div></div>
+                <div className="space-y-2 pt-4"><p className="text-md font-semibold uppercase tracking-wide text-neutral-500">Protein Score</p><div className="rounded-xl bg-image-placeholder px-3 py-2"><p className="mt-1 text-sm text-neutral-900"><span className="font-bold">{Math.round(proteinPer100Calories ?? 0)}g</span> of protein in <span className="font-semibold">100 calories</span></p></div></div>
                 <div className="space-y-2 pt-4"><p className="text-md font-semibold uppercase tracking-wide text-neutral-500">Macro Split</p><MacroSplitBar protein={totals.protein} carbs={totals.carbs} totalFat={totals.totalFat} /></div>
               </div>
             </SurfaceCard>

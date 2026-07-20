@@ -16,6 +16,7 @@ import MacroStat from "./nutrition/MacroStat";
 import { macroDisplayConfig } from "@/components/nutrition/macroDisplay";
 import MenuCardActions from "./menu-item-card/MenuCardActions";
 import SurfaceCard from "@/components/ui/SurfaceCard";
+import SectionEyebrow from "@/components/ui/SectionEyebrow";
 import CartCardActions from "./menu-item-card/CartCardActions";
 import { useMenuItemCartAdapter } from "./menu-item-card/useMenuItemCartAdapter";
 import { useMenuItemConfiguration } from "./menu-item-card/useMenuItemConfiguration";
@@ -809,7 +810,7 @@ export default function MenuItemCard({
             <div className="rounded-2xl border border-black/10 bg-[#efefef] p-3">
               <div className="space-y-3">
                 <section>
-                  <p className="mb-2 px-1 text-[11px] font-semibold uppercase tracking-[0.14em] text-slate-600">Main</p>
+                  <SectionEyebrow className="mb-2 px-1 text-[11px]">Main</SectionEyebrow>
                   <div className="grid grid-cols-[72px_minmax(0,1fr)] items-start gap-3 rounded-xl border border-slate-200 bg-white px-3 py-2.5">
                     <div className="h-[72px] w-[72px] overflow-hidden rounded-lg border border-black/10 bg-white">
                       {selectedItemImage ? (
@@ -843,7 +844,7 @@ export default function MenuItemCard({
 
                 {comboType === "combo-meal" && selectedComboSide ? (
                   <section>
-                    <p className="mb-2 px-1 text-[11px] font-semibold uppercase tracking-[0.14em] text-slate-600">Side</p>
+                    <SectionEyebrow className="mb-2 px-1 text-[11px]">Side</SectionEyebrow>
                     <div className="grid grid-cols-[72px_minmax(0,1fr)] items-start gap-3 rounded-xl border border-slate-200 bg-white px-3 py-2.5">
                       <div className="h-[72px] w-[72px] overflow-hidden rounded-lg border border-black/10 bg-white">
                         {selectedComboSide.image ? (
@@ -878,7 +879,7 @@ export default function MenuItemCard({
 
                 {comboType === "combo-meal" && selectedComboDrink ? (
                   <section>
-                    <p className="mb-2 px-1 text-[11px] font-semibold uppercase tracking-[0.14em] text-slate-600">Drink</p>
+                    <SectionEyebrow className="mb-2 px-1 text-[11px]">Drink</SectionEyebrow>
                     <div className="grid grid-cols-[72px_minmax(0,1fr)] items-start gap-3 rounded-xl border border-slate-200 bg-white px-3 py-2.5">
                       <div className="h-[72px] w-[72px] overflow-hidden rounded-lg border border-black/10 bg-white">
                         {selectedComboDrink.image ? (
@@ -915,7 +916,7 @@ export default function MenuItemCard({
                 (addons?.sauces?.items.length ?? 0) > 0 &&
                 addons?.sauces?.items.some((addon) => (selectedSauceCounts[addon.name] ?? 0) > 0) ? (
                   <section>
-                    <p className="mb-2 px-1 text-[11px] font-semibold uppercase tracking-[0.14em] text-slate-600">{addons?.sauces?.label ?? "Sauces"}</p>
+                    <SectionEyebrow className="mb-2 px-1 text-[11px]">{addons?.sauces?.label ?? "Sauces"}</SectionEyebrow>
                     <div className="space-y-1.5">
                       {addons?.sauces?.items.filter((addon) => addon.name !== "None" && (selectedSauceCounts[addon.name] ?? 0) > 0).map((addon) => {
                         const count = selectedSauceCounts[addon.name] ?? 0;
@@ -987,7 +988,7 @@ export default function MenuItemCard({
                 selectedAddons.dressings &&
                 selectedAddons.dressings.name !== "None" ? (
                   <section>
-                    <p className="mb-2 px-1 text-[11px] font-semibold uppercase tracking-[0.14em] text-slate-600">{addons?.dressings?.label ?? "Dressings"}</p>
+                    <SectionEyebrow className="mb-2 px-1 text-[11px]">{addons?.dressings?.label ?? "Dressings"}</SectionEyebrow>
                     <div className="space-y-1.5">
                       <div className="grid w-full grid-cols-[72px_minmax(0,1fr)] items-start gap-3 rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-left">
                         <div className="h-[72px] w-[72px] overflow-hidden rounded-lg border border-black/10 bg-white">

@@ -45,14 +45,14 @@ export default function MenuItemCardHeader({
       <div className="w-full shrink-0 lg:mx-0 lg:w-auto">
         {selectedItemImage ? (
           <img
-            className={`block h-[200px] w-full rounded-[14px] bg-[#efefef] object-contain p-2 shadow-[0_0_5px_rgba(0,0,0,0.25)] lg:h-[210px] lg:w-[210px] ${
+            className={`block h-[200px] w-full rounded-[14px] bg-image-placeholder object-contain p-2 shadow-[0_0_5px_rgba(0,0,0,0.25)] lg:h-[210px] lg:w-[210px] ${
               isCartMode ? "lg:object-contain lg:p-2" : "lg:object-cover lg:p-0"
             }`}
             src={selectedItemImage}
             alt={item.name}
           />
         ) : (
-          <div className="h-[200px] w-full rounded-[14px] bg-[#efefef] lg:h-[210px] lg:w-[210px]" />
+          <div className="h-[200px] w-full rounded-[14px] bg-image-placeholder lg:h-[210px] lg:w-[210px]" />
         )}
       </div>
 
