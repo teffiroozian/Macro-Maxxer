@@ -1,3 +1,4 @@
+import SectionEyebrow from "@/components/ui/SectionEyebrow";
 import type { Nutrition } from "@/types/nutrition";
 
 export type NutritionLabelTotals = Nutrition;
@@ -68,7 +69,7 @@ export default function NutritionLabelCard({
         </h3>
       ) : null}
       {eyebrow ? (
-        <div className="mt-6 text-xs font-medium text-[rgba(0,0,0,0.55)]">{eyebrow}</div>
+        <SectionEyebrow as="div" className="mt-6 text-xs font-medium tracking-[0.06em] text-[rgba(0,0,0,0.55)]">{eyebrow}</SectionEyebrow>
       ) : null}
       <div className="mt-1 flex items-end justify-between">
         <div className="text-xl font-bold">Calories</div>

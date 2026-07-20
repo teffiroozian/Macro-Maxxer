@@ -3,6 +3,7 @@ import { RotateCcw, Save } from "lucide-react";
 import type { MenuItem } from "@/types/menu";
 import NutritionLabelCard, { type NutritionLabelTotals } from "@/components/nutrition/NutritionLabelCard";
 import SurfaceCard from "@/components/ui/SurfaceCard";
+import SectionEyebrow from "@/components/ui/SectionEyebrow";
 
 type SelectedEntry = [string, { item: MenuItem; quantity: number }];
 
@@ -68,7 +69,7 @@ export default function BuildSummaryDrawer({
             <div className="space-y-3">
               {groupedSelectedIngredientEntries.map((group) => (
                 <div key={group.categoryKey || "uncategorized"} className="space-y-1.5">
-                  <p className="px-1 text-[10px] font-semibold uppercase tracking-[0.06em] text-slate-500">{group.categoryLabel}</p>
+                  <SectionEyebrow className="px-1 text-[10px] tracking-[0.06em] text-slate-500">{group.categoryLabel}</SectionEyebrow>
                   <ul className="grid gap-2">
                     {group.entries.map(([ingredientId, selectedIngredient]) => (
                       <SurfaceCard as="li" key={ingredientId} padding="none" radius="default" shadow="none" className="flex items-center justify-between rounded-xl px-3 py-2">
