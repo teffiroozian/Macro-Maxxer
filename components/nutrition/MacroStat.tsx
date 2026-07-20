@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import { macroDisplayConfig } from "@/components/MacroTotalsGrid";
+import { macroDisplayConfig } from "@/components/nutrition/macroDisplay";
 import type { CoreMacros } from "@/types/nutrition";
 
 type MacroTone = keyof CoreMacros;

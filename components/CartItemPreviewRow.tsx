@@ -2,6 +2,7 @@ import Image from "next/image";
 import { ReactNode } from "react";
 import { getCartItemCoreMacros } from "@/lib/cart/itemAccessors";
 import MacroStat from "@/components/nutrition/MacroStat";
+import { macroDisplayConfig } from "@/components/nutrition/macroDisplay";
 import type { CartItem } from "@/types/cart";
 
 type CartItemPreviewRowProps = {
@@ -72,17 +73,17 @@ export default function CartItemPreviewRow({
 
         {macroStyle === "compact" ? (
           <div className="mt-1.5 flex flex-wrap items-center gap-x-3 gap-y-1 text-sm leading-none">
-            <MacroStat label="Cal" value={displayCalories} tone="calories" size="cartCompact" />
-            <MacroStat label="P" value={displayProtein} unit="g" tone="protein" size="cartCompact" />
-            <MacroStat label="C" value={displayCarbs} unit="g" tone="carbs" size="cartCompact" />
-            <MacroStat label="F" value={displayFat} unit="g" tone="totalFat" size="cartCompact" />
+            <MacroStat label={macroDisplayConfig.calories.shortLabel} value={displayCalories} tone="calories" size="cartCompact" />
+            <MacroStat label={macroDisplayConfig.protein.shortLabel} value={displayProtein} unit={macroDisplayConfig.protein.unit} tone="protein" size="cartCompact" />
+            <MacroStat label={macroDisplayConfig.carbs.shortLabel} value={displayCarbs} unit={macroDisplayConfig.carbs.unit} tone="carbs" size="cartCompact" />
+            <MacroStat label={macroDisplayConfig.totalFat.shortLabel} value={displayFat} unit={macroDisplayConfig.totalFat.unit} tone="totalFat" size="cartCompact" />
           </div>
         ) : (
           <div className="mt-1.5 flex flex-wrap items-center gap-x-4 gap-y-1 text-sm leading-none">
-            <MacroStat label="Cal" value={displayCalories} tone="calories" size="cartDetailed" />
-            <MacroStat label="protein" value={displayProtein} unit="g" tone="protein" size="cartDetailed" />
-            <MacroStat label="carbs" value={displayCarbs} unit="g" tone="carbs" size="cartDetailed" />
-            <MacroStat label="fat" value={displayFat} unit="g" tone="totalFat" size="cartDetailed" />
+            <MacroStat label={macroDisplayConfig.calories.shortLabel} value={displayCalories} tone="calories" size="cartDetailed" />
+            <MacroStat label={macroDisplayConfig.protein.label.toLowerCase()} value={displayProtein} unit={macroDisplayConfig.protein.unit} tone="protein" size="cartDetailed" />
+            <MacroStat label={macroDisplayConfig.carbs.label.toLowerCase()} value={displayCarbs} unit={macroDisplayConfig.carbs.unit} tone="carbs" size="cartDetailed" />
+            <MacroStat label={macroDisplayConfig.totalFat.label.toLowerCase()} value={displayFat} unit={macroDisplayConfig.totalFat.unit} tone="totalFat" size="cartDetailed" />
           </div>
         )}
 
