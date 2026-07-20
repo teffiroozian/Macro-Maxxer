@@ -1,5 +1,6 @@
 import { Pencil } from "lucide-react";
 import QuantityStepper from "@/components/QuantityStepper";
+import AppIconButton from "@/components/ui/AppIconButton";
 
 export default function CartCardActions({
   itemName,
@@ -16,14 +17,14 @@ export default function CartCardActions({
 }) {
   return (
     <div className="inline-flex items-center gap-2">
-      <button
-        type="button"
-        className="inline-flex h-10 w-10 cursor-pointer items-center justify-center rounded-full border border-black/15 bg-white text-slate-700 transition hover:bg-slate-100"
+      <AppIconButton
+        size="md"
         onClick={(event) => { event.stopPropagation(); onModify(); }}
         aria-label={`Modify ${itemName}`}
+        className="border-black/15"
       >
         <Pencil className="h-5 w-5" />
-      </button>
+      </AppIconButton>
       <QuantityStepper
         value={quantity}
         onDecrement={(event) => { event.stopPropagation(); onDecrement(); }}

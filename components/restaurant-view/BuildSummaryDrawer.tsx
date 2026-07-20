@@ -3,6 +3,8 @@ import { RotateCcw, Save } from "lucide-react";
 import type { MenuItem } from "@/types/menu";
 import NutritionLabelCard, { type NutritionLabelTotals } from "@/components/nutrition/NutritionLabelCard";
 import SurfaceCard from "@/components/ui/SurfaceCard";
+import AppButton from "@/components/ui/AppButton";
+import QuantityStepper from "@/components/QuantityStepper";
 import SectionEyebrow from "@/components/ui/SectionEyebrow";
 
 type SelectedEntry = [string, { item: MenuItem; quantity: number }];
@@ -42,22 +44,14 @@ export default function BuildSummaryDrawer({
     <div className="space-y-3">
       {!hideActionButtons ? (
         <div className="sticky top-0 z-20 -mx-1 flex flex-wrap items-center justify-end gap-2 bg-white/95 px-1 py-1 backdrop-blur-sm">
-          <button
-            type="button"
-            onClick={onResetOrder}
-            className="inline-flex cursor-pointer items-center gap-1.5 rounded-full border border-black/20 bg-white px-3 py-1 text-xs font-semibold text-slate-700 transition hover:bg-slate-50"
-          >
+          <AppButton variant="secondary" size="sm" onClick={onResetOrder} className="h-7 px-3 text-xs text-slate-700">
             <RotateCcw className="h-3.5 w-3.5" aria-hidden="true" />
             <span>Reset order</span>
-          </button>
-          <button
-            type="button"
-            onClick={onSaveOrder}
-            className="inline-flex cursor-pointer items-center gap-1.5 rounded-full border border-transparent bg-slate-900 px-3 py-1 text-xs font-semibold text-white transition hover:bg-slate-800"
-          >
+          </AppButton>
+          <AppButton size="sm" onClick={onSaveOrder} className="h-7 border-transparent bg-slate-900 px-3 text-xs hover:bg-slate-800">
             <Save className="h-3.5 w-3.5" aria-hidden="true" />
             <span>Save order</span>
-          </button>
+          </AppButton>
         </div>
       ) : null}
 
@@ -83,25 +77,16 @@ export default function BuildSummaryDrawer({
                             {ingredientPortionLabelById[ingredientId] ? ` · ${ingredientPortionLabelById[ingredientId]}` : ""}
                           </span>
                         </div>
-                        <div className="inline-flex items-center gap-2">
-                          <button
-                            type="button"
-                            onClick={() => onAdjustIngredientQuantity(ingredientId, -1)}
-                            disabled={lockedIngredientIds.has(ingredientId)}
-                            className="h-7 w-7 rounded-full border border-black/20 text-base font-bold text-slate-700 disabled:cursor-not-allowed disabled:opacity-40"
-                          >
-                            −
-                          </button>
-                          <span className="w-4 text-center text-sm font-semibold text-slate-900">{selectedIngredient.quantity}</span>
-                          <button
-                            type="button"
-                            onClick={() => onAdjustIngredientQuantity(ingredientId, 1)}
-                            disabled={lockedIngredientIds.has(ingredientId)}
-                            className="h-7 w-7 rounded-full border border-black/20 text-base font-bold text-slate-700 disabled:cursor-not-allowed disabled:opacity-40"
-                          >
-                            +
-                          </button>
-                        </div>
+                        <QuantityStepper
+                          value={selectedIngredient.quantity}
+                          onDecrement={() => onAdjustIngredientQuantity(ingredientId, -1)}
+                          onIncrement={() => onAdjustIngredientQuantity(ingredientId, 1)}
+                          decrementLabel={`Decrease ${selectedIngredient.item.name}`}
+                          incrementLabel={`Increase ${selectedIngredient.item.name}`}
+                          decrementDisabled={lockedIngredientIds.has(ingredientId)}
+                          incrementDisabled={lockedIngredientIds.has(ingredientId)}
+                          variant="small"
+                        />
                       </SurfaceCard>
                     ))}
                   </ul>
