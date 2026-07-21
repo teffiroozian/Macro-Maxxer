@@ -1,3 +1,4 @@
+import { forwardRef } from "react";
 import type { ButtonHTMLAttributes } from "react";
 
 export type AppButtonVariant = "primary" | "secondary" | "ghost" | "pill";
@@ -51,18 +52,24 @@ export function appButtonClassName({
     .join(" ");
 }
 
-export default function AppButton({
-  variant = "primary",
-  size = "md",
-  className,
-  type = "button",
-  ...props
-}: AppButtonProps) {
+const AppButton = forwardRef<HTMLButtonElement, AppButtonProps>(function AppButton(
+  {
+    variant = "primary",
+    size = "md",
+    className,
+    type = "button",
+    ...props
+  },
+  ref,
+) {
   return (
     <button
+      ref={ref}
       type={type}
       className={appButtonClassName({ variant, size, className })}
       {...props}
     />
   );
-}
+});
+
+export default AppButton;
