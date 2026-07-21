@@ -82,7 +82,7 @@ export default function StickyRestaurantBar({
     }
   }, [searchOpen]);
 
-  const { hasActiveFilters, clearProteinFilter, clearCaloriesFilter, resetFilters } = useFilterChipActions({
+  const { activeFilterCount, hasActiveFilters, clearProteinFilter, clearCaloriesFilter, resetFilters } = useFilterChipActions({
     filters,
     onFiltersChange,
   });
@@ -109,10 +109,15 @@ export default function StickyRestaurantBar({
                 }
                 openMobileControlsDrawer();
               }}
-              className="size-9 border-slate-300/80 text-slate-800"
+              className="relative size-9 border-slate-300/80 text-slate-800"
               aria-label="Open controls drawer"
             >
               <Menu className="h-4 w-4" strokeWidth={2.5} />
+              {!hideSecondaryNav && activeFilterCount > 0 ? (
+                <span className="absolute -right-1 -top-1 inline-flex min-h-4 min-w-4 items-center justify-center rounded-full bg-slate-900 px-1 text-[10px] font-bold leading-none text-white ring-2 ring-white">
+                  {activeFilterCount}
+                </span>
+              ) : null}
             </AppIconButton>
             <Link
               href="/"
