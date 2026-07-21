@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import StickyMacroTotalsBar from "@/components/StickyMacroTotalsBar";
 import AppButton from "@/components/ui/AppButton";
 import SurfaceCard from "@/components/ui/SurfaceCard";
@@ -17,10 +17,125 @@ import { buildCartNutritionTotals } from "@/lib/cart/nutrition";
 import { getProteinPer100Calories } from "@/lib/nutrition";
 import { formatCartItemName, summarizeItem } from "@/lib/cart/displayLabels";
 import { useCartItemEditModal } from "@/hooks/useCartItemEditModal";
+import { Pencil } from "lucide-react";
+import chickfilaMenu from "@/app/data/chickfila.json";
+import chipotleMenu from "@/app/data/chipotle.json";
+import habitMenu from "@/app/data/habit.json";
+import mcdonaldsMenu from "@/app/data/mcdonalds.json";
+import modMenu from "@/app/data/mod.json";
+import pandaMenu from "@/app/data/panda.json";
+import paneraMenu from "@/app/data/panera.json";
+import starbucksMenu from "@/app/data/starbucks.json";
+import subwayMenu from "@/app/data/subway.json";
+import MacroStat from "@/components/nutrition/MacroStat";
+import { macroDisplayConfig } from "@/components/nutrition/macroDisplay";
+import type { CartCustomization, CartItem } from "@/types/cart";
+import type { IngredientItem, MenuItem, RestaurantMenu } from "@/types/menu";
+
+const restaurantMenusById: Record<string, RestaurantMenu> = {
+  chickfila: chickfilaMenu as RestaurantMenu,
+  chipotle: chipotleMenu as RestaurantMenu,
+  habit: habitMenu as RestaurantMenu,
+  mcdonalds: mcdonaldsMenu as RestaurantMenu,
+  mod: modMenu as RestaurantMenu,
+  panda: pandaMenu as RestaurantMenu,
+  panera: paneraMenu as RestaurantMenu,
+  starbucks: starbucksMenu as RestaurantMenu,
+  subway: subwayMenu as RestaurantMenu,
+};
+
+type DetailMenuItem = MenuItem | IngredientItem;
+
+function findRestaurantItem(cartItem: CartItem, customization: CartCustomization): DetailMenuItem | null {
+  const restaurant = restaurantMenusById[cartItem.restaurantId];
+  const itemId = customization.itemId ?? customization.ingredientId ?? customization.toIngredientId ?? customization.fromIngredientId;
+  if (!restaurant || !itemId) return null;
+
+  return (
+    restaurant.items.find((item) => item.id === itemId) ??
+    restaurant.ingredients?.find((ingredient) => ingredient.id === itemId) ??
+    null
+  );
+}
+
+function getDetailTitle(customization: CartCustomization) {
+  if (customization.comboRole === "side") return "Side";
+  if (customization.comboRole === "drink") return "Drink";
+  if (customization.kind === "ingredient") return "Customization";
+  return "Selection";
+}
+
+function getDetailLabel(customization: CartCustomization) {
+  return customization.itemLabel ?? customization.ingredientLabel ?? customization.toIngredientLabel ?? customization.fromIngredientLabel ?? "Custom item";
+}
+
+function CartItemDetailCard({ detailItem, title, label }: { detailItem: DetailMenuItem | null; title: string; label: string }) {
+  const nutrition = detailItem?.nutrition;
+
+  return (
+    <div className="flex items-center gap-3 rounded-2xl border border-slate-200 bg-white px-3 py-2.5 shadow-[0_1px_4px_rgba(15,23,42,0.06)]">
+      <div className="h-12 w-12 shrink-0 overflow-hidden rounded-xl border border-slate-200 bg-slate-50">
+        {detailItem?.image ? (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img src={detailItem.image} alt={label} className="h-full w-full object-contain p-1" />
+        ) : (
+          <div className="flex h-full w-full items-center justify-center text-sm font-bold text-slate-500">{label.charAt(0)}</div>
+        )}
+      </div>
+      <div className="min-w-0 flex-1">
+        <p className="text-[10px] font-bold uppercase tracking-[0.12em] text-slate-500">{title}</p>
+        <p className="truncate text-sm font-semibold text-slate-900">{label}</p>
+        {nutrition ? (
+          <div className="mt-1 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs">
+            <MacroStat label={macroDisplayConfig.calories.shortLabel} value={nutrition.calories} tone="calories" size="cartCompact" />
+            <MacroStat label={macroDisplayConfig.protein.shortLabel} value={nutrition.protein} unit={macroDisplayConfig.protein.unit} tone="protein" size="cartCompact" />
+            <MacroStat label={macroDisplayConfig.carbs.shortLabel} value={nutrition.carbs} unit={macroDisplayConfig.carbs.unit} tone="carbs" size="cartCompact" />
+            <MacroStat label={macroDisplayConfig.totalFat.shortLabel} value={nutrition.totalFat} unit={macroDisplayConfig.totalFat.unit} tone="totalFat" size="cartCompact" />
+          </div>
+        ) : null}
+      </div>
+    </div>
+  );
+}
+
+function CartItemDetailsPanel({ cartItem, detailLine }: { cartItem: CartItem; detailLine: string }) {
+  const visibleCustomizations = (cartItem.customizations ?? []).filter((customization) => !(
+    customization.kind === "combo" && customization.comboRole === "meal"
+  ));
+  const fallbackLabels = detailLine ? detailLine.split(" • ").filter(Boolean) : [];
+
+  return (
+    <div className="mt-4 rounded-3xl border border-slate-200 bg-slate-50/80 p-3 shadow-inner">
+      <div className="mb-3 flex items-center justify-between gap-3 px-1">
+        <p className="text-sm font-bold text-slate-900">Item details</p>
+        <p className="text-xs font-semibold text-slate-500">Tap card to collapse</p>
+      </div>
+      <div className="grid gap-2 md:grid-cols-2">
+        {visibleCustomizations.length > 0 ? (
+          visibleCustomizations.map((customization, index) => (
+            <CartItemDetailCard
+              key={`${customization.comboRole ?? customization.action}-${customization.itemId ?? customization.ingredientId ?? index}`}
+              title={getDetailTitle(customization)}
+              label={getDetailLabel(customization)}
+              detailItem={findRestaurantItem(cartItem, customization)}
+            />
+          ))
+        ) : fallbackLabels.length > 0 ? (
+          fallbackLabels.map((label) => (
+            <CartItemDetailCard key={label} title="Selection" label={label} detailItem={null} />
+          ))
+        ) : (
+          <p className="rounded-2xl bg-white px-3 py-2 text-sm font-medium text-slate-600">No customizations selected.</p>
+        )}
+      </div>
+    </div>
+  );
+}
 
 export default function CartPage() {
   const { items, totals, updateQuantity } = useCart();
   const { editState, loadingEditItemId, openEditModal, closeEditModal } = useCartItemEditModal();
+  const [expandedItemId, setExpandedItemId] = useState<string | null>(null);
 
   // calculate total nutrition of the cart
   const nutritionTotals = useMemo(() => buildCartNutritionTotals(items), [items]);
@@ -47,7 +162,15 @@ export default function CartPage() {
                 const displayItem = { ...cartItem, name: formatCartItemName(cartItem) };
                 const canCustomize = cartItem.selection.type !== "build-your-own";
                 return (
-                  <SurfaceCard as="li" key={cartItem.id} padding="compact">
+                  <SurfaceCard as="li" key={cartItem.id} padding="default" className="transition hover:-translate-y-px hover:shadow-[0_6px_16px_rgba(15,23,42,0.08)]">
+                    <div
+                      role="button"
+                      tabIndex={0}
+                      className="w-full cursor-pointer text-left"
+                      onClick={() => setExpandedItemId((current) => (current === cartItem.id ? null : cartItem.id))}
+                      onKeyDown={(event) => { if (event.key === "Enter" || event.key === " ") setExpandedItemId((current) => (current === cartItem.id ? null : cartItem.id)); }}
+                      aria-expanded={expandedItemId === cartItem.id}
+                    >
                     <CartItemPreviewRow
                       item={displayItem}
                       imageRenderer="native-img"
@@ -56,16 +179,18 @@ export default function CartPage() {
                       customizationsText={detailLine}
                       customizationsLineClamp={2}
                       actions={
-                        <div className="flex items-center gap-2">
+                        <div className="flex items-center gap-2" onClick={(event) => event.stopPropagation()}>
                           {canCustomize ? (
                             <AppButton
                               variant="pill"
                               size="sm"
-                              onClick={() => openEditModal(cartItem)}
+                              aria-label={`Customize ${cartItem.name}`}
+                              title="Customize"
+                              onClick={(event) => { event.stopPropagation(); openEditModal(cartItem); }}
                               disabled={loadingEditItemId === cartItem.id}
-                              className="h-auto py-1.5 disabled:cursor-wait"
+                              className="h-10 w-10 px-0 py-0 disabled:cursor-wait"
                             >
-                              {loadingEditItemId === cartItem.id ? "Loading..." : "Customize"}
+                              {loadingEditItemId === cartItem.id ? <span className="text-[10px]">...</span> : <Pencil className="h-5 w-5" strokeWidth={2.5} />}
                             </AppButton>
                           ) : null}
                           <QuantityStepper
@@ -78,6 +203,8 @@ export default function CartPage() {
                         </div>
                       }
                     />
+                    </div>
+                    {expandedItemId === cartItem.id ? <CartItemDetailsPanel cartItem={cartItem} detailLine={detailLine} /> : null}
                   </SurfaceCard>
                 );
               })}

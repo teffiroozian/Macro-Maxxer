@@ -32,6 +32,18 @@ type SharedCategoryNavProps = Pick<
   categoryNavLabel: string;
 };
 
+function resolveCategoryIcon(categoryIcons: Record<string, LucideIcon>, label: string) {
+  const key = label.trim().toLowerCase();
+  const candidates = [
+    key,
+    key.endsWith("s") ? key.slice(0, -1) : `${key}s`,
+    key.replace(/ies$/, "y"),
+    key.replace(/y$/, "ies"),
+  ];
+
+  return candidates.map((candidate) => categoryIcons[candidate]).find(Boolean) ?? Circle;
+}
+
 type CategoryNavItemProps = {
   option: CategoryOption;
   isActive: boolean;
@@ -226,7 +238,7 @@ function MobileCategoryNav({
                   <nav aria-label={categoryNavLabel} className="flex min-w-0 items-center gap-2">
                     {categoryOptions.map((option) => {
                       const isActive = option.id === resolvedActiveCategory;
-                      const Icon = categoryIcons[option.label.toLowerCase()] ?? Circle;
+                      const Icon = resolveCategoryIcon(categoryIcons, option.label);
 
                       return (
                         <CategoryNavItem
@@ -327,7 +339,7 @@ function MobileCategoryMenu({
                 })
               : categoryOptions.map((option) => {
                   const isActive = option.id === resolvedActiveCategory;
-                  const Icon = categoryIcons[option.label.toLowerCase()] ?? Circle;
+                  const Icon = resolveCategoryIcon(categoryIcons, option.label);
 
                   return (
                     <CategoryNavItem
@@ -410,7 +422,7 @@ function DesktopCategorySidebar({
           <nav aria-label={categoryNavLabel} className="grid gap-4">
             {categoryOptions.map((option) => {
               const isActive = option.id === resolvedActiveCategory;
-              const Icon = categoryIcons[option.label.toLowerCase()] ?? Circle;
+              const Icon = resolveCategoryIcon(categoryIcons, option.label);
 
               return (
                 <CategoryNavItem

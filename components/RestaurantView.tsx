@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import type { LucideIcon } from "lucide-react";
 import {
@@ -50,6 +50,7 @@ import RestaurantCategorySidebar from "./restaurant-view/RestaurantCategorySideb
 import ChipotleRestaurantBuilderView from "./restaurant-view/ChipotleRestaurantBuilderView";
 
 const CATEGORY_ICONS: Record<string, LucideIcon> = {
+  sandwich: Sandwich,
   sandwiches: Sandwich,
   "sandwich toppings": LeafyGreen,
   toppings: LeafyGreen,
@@ -140,6 +141,25 @@ function StandardRestaurantView({
   const searchParams = useSearchParams();
   const { searchOpen, searchQuery, setSearchQuery, openSearch, closeSearch } =
     useRestaurantSearch();
+  const ingredientMenuItems = useMemo<MenuItem[]>(
+    () =>
+      ingredients
+        .filter((ingredient) => !ingredient.hideFromIngredientView)
+        .map((ingredient) => ({
+          id: ingredient.id,
+          name: ingredient.name,
+          image: ingredient.image ?? restaurantLogo,
+          categories: ingredient.categories,
+          servingType: "addon",
+          nutrition: ingredient.nutrition,
+          variants: ingredient.variants,
+          defaultVariantId: ingredient.defaultVariantId,
+          defaultOrder: ingredient.defaultOrder,
+          hideVariantSelector: ingredient.hideVariantSelector,
+          ingredientRef: ingredient.id,
+        })),
+    [ingredients, restaurantLogo],
+  );
   const {
     sort,
     filters,
@@ -158,7 +178,7 @@ function StandardRestaurantView({
     isChipotleBuildPage: false,
     selectedEntree: null,
     items,
-    ingredientMenuItems: [],
+    ingredientMenuItems,
     searchQuery,
     chipotleBuilderConfig: undefined,
     router,
