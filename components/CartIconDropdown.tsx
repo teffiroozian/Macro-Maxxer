@@ -17,6 +17,7 @@ type CartIconDropdownProps = {
 };
 
 const SCROLL_CLOSE_THRESHOLD = 90;
+const JUST_ADDED_POPOVER_MS = 7000;
 
 export default function CartIconDropdown({
   buttonClassName,
@@ -25,10 +26,20 @@ export default function CartIconDropdown({
   const restaurantUi = useOptionalRestaurantUi();
   const { items, totals, lastAddedItem, lastAddedAt } = useCart();
   const [dismissedAddedAt, setDismissedAddedAt] = useState<number | null>(null);
+  const [currentTime, setCurrentTime] = useState(() => Date.now());
   const containerRef = useRef<HTMLDivElement>(null);
   const openScrollYRef = useRef<number | null>(null);
-  const isOpen = lastAddedAt !== null && lastAddedAt !== dismissedAddedAt;
+  const isRecentJustAdded = lastAddedAt !== null && currentTime - lastAddedAt <= JUST_ADDED_POPOVER_MS;
+  const isOpen = isRecentJustAdded && lastAddedAt !== dismissedAddedAt;
 
+
+  useEffect(() => {
+    if (lastAddedAt === null) return;
+
+    const timeout = window.setTimeout(() => setCurrentTime(Date.now()), JUST_ADDED_POPOVER_MS + 50);
+
+    return () => window.clearTimeout(timeout);
+  }, [lastAddedAt]);
 
   const cartCount = useMemo(
     () => items.reduce((sum, item) => sum + item.quantity, 0),
@@ -82,7 +93,7 @@ export default function CartIconDropdown({
 
   const countLabel = (
     <>
-      <ShoppingCart className="h-4 w-4" strokeWidth={2.5} />
+      <ShoppingCart className="h-5 w-5" strokeWidth={2.5} />
       {cartCount > 0 ? (
         <span className="absolute -right-1 -top-1 inline-flex min-h-4 min-w-4 items-center justify-center rounded-full bg-slate-900 px-1 text-[10px] leading-none font-bold tabular-nums text-white">
           {cartCount}
