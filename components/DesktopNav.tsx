@@ -3,7 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { Search } from "lucide-react";
-import CartIconDropdown from "@/components/CartIconDropdown";
+import CartIconDropdown from "@/components/cart/CartIconDropdown";
 import DesktopRestaurantMenu from "@/components/DesktopRestaurantMenu";
 
 export default function DesktopNav({

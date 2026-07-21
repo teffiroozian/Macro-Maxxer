@@ -10,7 +10,7 @@ import MacroSplitBar from "@/components/nutrition/MacroSplitBar";
 import QuantityStepper from "@/components/QuantityStepper";
 import GlobalMobileNav from "@/components/GlobalMobileNav";
 import DesktopNav from "@/components/DesktopNav";
-import CartItemPreviewRow from "@/components/CartItemPreviewRow";
+import CartItemPreviewRow from "@/components/cart/CartItemPreviewRow";
 import EmptyStateCard from "@/components/EmptyStateCard";
 import ItemRouteModal from "@/components/ItemRouteModal";
 import { useCart } from "@/stores/cartStore";
