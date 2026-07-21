@@ -3,6 +3,9 @@
 import { useEffect, useRef, useState, type RefObject } from "react";
 import { Circle, type LucideIcon, UtensilsCrossed, Soup, SquareStack, CupSoda, Check, PanelTopOpen } from "lucide-react";
 import type { RankedAllFilterKey } from "@/lib/menuSections/filtering";
+import type { Filters } from "@/lib/menuSections/filterOptions";
+import { FilterChips } from "@/components/ControlsRow";
+import { useFilterChipActions } from "@/components/useFilterChipActions";
 
 type CategoryOption = { id: string; label: string };
 type RankingOption = { key: RankedAllFilterKey; label: string; iconKey: string };
@@ -15,6 +18,8 @@ type Props = {
   resolvedActiveCategory: string;
   onCategorySelect: (categoryId: string) => void;
   categoryIcons: Record<string, LucideIcon>;
+  filters: Filters;
+  onFiltersChange: (filters: Filters) => void;
 };
 
 type SharedCategoryNavProps = Pick<
@@ -26,6 +31,8 @@ type SharedCategoryNavProps = Pick<
   | "resolvedActiveCategory"
   | "onCategorySelect"
   | "categoryIcons"
+  | "filters"
+  | "onFiltersChange"
 > & {
   rankingOptions: RankingOption[];
   rankingFallbackIcons: Record<RankedAllFilterKey, LucideIcon>;
@@ -96,7 +103,7 @@ function CategoryNavItem({ option, isActive, Icon, onSelect, variant }: Category
     <button
       type="button"
       onClick={onSelect}
-      className={`cursor-pointer inline-flex shrink-0 items-center gap-2 whitespace-nowrap rounded-full border px-[14px] py-[8px] text-sm font-semibold transition-colors duration-100 ${
+      className={`cursor-pointer inline-flex shrink-0 items-center gap-2 whitespace-nowrap rounded-full border px-3 py-1.5 text-sm font-semibold transition-colors duration-100 ${
         isActive
           ? "border-black/20 bg-white text-slate-800 shadow-[0px_0_8px_rgba(0,0,0,0.2)]"
           : "border-black/20 bg-white text-slate-700 hover:bg-slate-50"
@@ -116,6 +123,8 @@ function MobileCategoryNav({
   resolvedActiveCategory,
   onCategorySelect,
   categoryIcons,
+  filters,
+  onFiltersChange,
   rankingOptions,
   rankingFallbackIcons,
   categoryNavLabel,
@@ -126,6 +135,10 @@ function MobileCategoryNav({
   const mobileCategoryScrollRef = useRef<HTMLDivElement | null>(null);
   const [showLeftScrollFade, setShowLeftScrollFade] = useState(false);
   const [showRightScrollFade, setShowRightScrollFade] = useState(false);
+  const { hasActiveFilters, clearProteinFilter, clearCaloriesFilter, resetFilters } = useFilterChipActions({
+    filters,
+    onFiltersChange,
+  });
 
   useEffect(() => {
     const syncMobileNavTop = () => {
@@ -189,7 +202,7 @@ function MobileCategoryNav({
     <>
       <div className="fixed left-0 right-0 z-[90] lg:hidden" style={{ top: mobileNavTop + 4 }} data-mobile-category-nav="true">
         <div className="relative mx-auto w-[calc(100%-0.5rem)] max-w-6xl overflow-visible rounded-2xl border border-slate-200/70 bg-white/95 shadow-[0_1px_4px_rgba(15,23,42,0.08)] backdrop-blur sm:w-[calc(100%-1rem)]">
-          <div className="mx-auto flex w-full max-w-5xl items-center gap-2 px-2 py-1 sm:px-4 sm:py-1">
+          <div className="mx-auto flex w-full max-w-5xl items-center gap-2 px-2 py-0.5 sm:px-4">
             <MobileCategoryMenu
               effectiveViewMode={effectiveViewMode}
               rankedAllFilters={rankedAllFilters}
@@ -205,7 +218,7 @@ function MobileCategoryNav({
               setIsOpen={setIsMobileCategoryMenuOpen}
             />
 
-            <div className="h-8 w-px shrink-0 bg-slate-300/80" aria-hidden="true" />
+            <div className="h-7 w-px shrink-0 bg-slate-300/80" aria-hidden="true" />
 
             <div className="relative min-w-0 flex-1">
               <div ref={mobileCategoryScrollRef} className="flex min-w-0 items-center gap-2 overflow-x-auto p-1">
@@ -221,7 +234,7 @@ function MobileCategoryNav({
                           type="button"
                           aria-pressed={isChecked}
                           onClick={() => toggleRankedAllFilter(option.key)}
-                          className={`cursor-pointer inline-flex shrink-0 items-center gap-2 whitespace-nowrap rounded-full border px-[14px] py-[8px] text-sm font-semibold transition-colors duration-100 ${
+                          className={`cursor-pointer inline-flex shrink-0 items-center gap-2 whitespace-nowrap rounded-full border px-3 py-1.5 text-sm font-semibold transition-colors duration-100 ${
                             isChecked
                               ? "border-black/20 bg-black/85 text-white shadow-[0px_0_8px_rgba(0,0,0,0.2)]"
                               : "border-black/20 bg-white text-slate-700 hover:bg-slate-50"
@@ -269,13 +282,26 @@ function MobileCategoryNav({
             </div>
           </div>
         </div>
+        {hasActiveFilters ? (
+          <div className="mx-auto mt-0.5 w-[calc(100%-0.5rem)] max-w-6xl rounded-2xl border border-slate-200/70 bg-white/95 backdrop-blur sm:w-[calc(100%-1rem)]">
+            <div className="mx-auto flex w-full max-w-5xl flex-wrap items-center gap-2 px-3 py-1 text-sm sm:flex-nowrap sm:px-6">
+              <FilterChips
+                filters={filters}
+                onClearProtein={clearProteinFilter}
+                onClearCalories={clearCaloriesFilter}
+                onClearAll={resetFilters}
+                withMargin={false}
+              />
+            </div>
+          </div>
+        ) : null}
       </div>
-      <div className="h-[76px] lg:hidden" aria-hidden="true" />
+      <div className={`${hasActiveFilters ? "h-[116px]" : "h-[64px]"} lg:hidden`} aria-hidden="true" />
     </>
   );
 }
 
-type MobileCategoryMenuProps = Omit<SharedCategoryNavProps, "categoryNavLabel"> & {
+type MobileCategoryMenuProps = Omit<SharedCategoryNavProps, "categoryNavLabel" | "filters" | "onFiltersChange"> & {
   menuRef: RefObject<HTMLDivElement | null>;
   isOpen: boolean;
   setIsOpen: (isOpen: boolean | ((previous: boolean) => boolean)) => void;
@@ -302,7 +328,7 @@ function MobileCategoryMenu({
         aria-haspopup="menu"
         aria-expanded={isOpen}
         onClick={() => setIsOpen((previous) => !previous)}
-        className="cursor-pointer inline-flex h-10 w-10 items-center justify-center rounded-full bg-transparent text-black/85 transition-colors duration-150 hover:bg-slate-900/5"
+        className="cursor-pointer inline-flex h-8 w-8 items-center justify-center rounded-full bg-transparent text-black/85 transition-colors duration-150 hover:bg-slate-900/5"
         aria-label="Open categories menu"
       >
         <PanelTopOpen className="h-4 w-4" strokeWidth={2.2} />

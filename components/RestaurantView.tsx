@@ -283,6 +283,8 @@ function StandardRestaurantView({
           resolvedActiveCategory={resolvedActiveCategory}
           onCategorySelect={handleCategorySelect}
           categoryIcons={CATEGORY_ICONS}
+          filters={filters}
+          onFiltersChange={handleFiltersChange}
         />
 
         <div className="min-w-0">

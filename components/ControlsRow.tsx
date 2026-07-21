@@ -33,7 +33,7 @@ const PROTEIN_OPTIONS = [20, 30, 40, 50];
 const VIEW_OPTIONS: Array<{ label: string; value: ViewOption; icon: typeof ClipboardList }> = [
   { label: "Menu", value: "menu", icon: ClipboardList },
   { label: "Ingredients", value: "ingredients", icon: Carrot },
-  { label: "Ranking", value: "ranking", icon: Award },
+  { label: "Top Picks", value: "ranking", icon: Award },
 ];
 
 const SORT_OPTIONS: Array<{ label: string; value: SortOption; icon: typeof Flame }> = [
@@ -454,7 +454,7 @@ export default function ControlsRow({
         </div>
 
         {hasActiveFilters && showChips ? (
-          <div className="hidden lg:block">
+          <div>
             <div className="h-px bg-slate-400/50" />
             <FilterChips filters={filters} onClearProtein={clearProteinFilter} onClearCalories={clearCaloriesFilter} onClearAll={resetFilters} withMargin={false} />
           </div>
