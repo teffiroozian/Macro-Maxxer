@@ -11,32 +11,49 @@ import CartItemPreviewRow from "@/components/CartItemPreviewRow";
 import EmptyStateCard from "@/components/EmptyStateCard";
 import { ShoppingCart } from "lucide-react";
 import AppButton, { appButtonClassName } from "@/components/ui/AppButton";
+import {
+  getRemainingLastAddedPreviewMs,
+  LAST_ADDED_PREVIEW_DURATION_MS,
+  shouldShowLastAddedPreview,
+} from "@/lib/cart/lastAddedPreview";
 
 type CartIconDropdownProps = {
   buttonClassName: string;
 };
 
 const SCROLL_CLOSE_THRESHOLD = 90;
-const JUST_ADDED_POPOVER_MS = 7000;
 
 export default function CartIconDropdown({
   buttonClassName,
 }: CartIconDropdownProps) {
   const router = useRouter();
   const restaurantUi = useOptionalRestaurantUi();
-  const { items, totals, lastAddedItem, lastAddedAt } = useCart();
-  const [dismissedAddedAt, setDismissedAddedAt] = useState<number | null>(null);
+  const {
+    items,
+    totals,
+    lastAddedItem,
+    lastAddedAt,
+    lastAddedEventId,
+    lastAddedPreviewDismissedEventId,
+    dismissLastAddedPreview,
+  } = useCart();
   const [currentTime, setCurrentTime] = useState(() => Date.now());
   const containerRef = useRef<HTMLDivElement>(null);
   const openScrollYRef = useRef<number | null>(null);
-  const isRecentJustAdded = lastAddedAt !== null && currentTime - lastAddedAt <= JUST_ADDED_POPOVER_MS;
-  const isOpen = isRecentJustAdded && lastAddedAt !== dismissedAddedAt;
+  const isOpen = shouldShowLastAddedPreview(
+    { lastAddedAt, lastAddedEventId, lastAddedPreviewDismissedEventId },
+    currentTime,
+    LAST_ADDED_PREVIEW_DURATION_MS,
+  );
 
 
   useEffect(() => {
     if (lastAddedAt === null) return;
 
-    const timeout = window.setTimeout(() => setCurrentTime(Date.now()), JUST_ADDED_POPOVER_MS + 50);
+    const timeout = window.setTimeout(
+      () => setCurrentTime(Date.now()),
+      getRemainingLastAddedPreviewMs(lastAddedAt, Date.now(), LAST_ADDED_PREVIEW_DURATION_MS) + 50,
+    );
 
     return () => window.clearTimeout(timeout);
   }, [lastAddedAt]);
@@ -51,9 +68,7 @@ export default function CartIconDropdown({
 
     const handlePointerDown = (event: MouseEvent) => {
       if (!containerRef.current?.contains(event.target as Node)) {
-        if (lastAddedAt !== null) {
-          setDismissedAddedAt(lastAddedAt);
-        }
+        dismissLastAddedPreview();
       }
     };
 
@@ -61,7 +76,18 @@ export default function CartIconDropdown({
     return () => {
       document.removeEventListener("mousedown", handlePointerDown);
     };
-  }, [isOpen, lastAddedAt]);
+  }, [dismissLastAddedPreview, isOpen]);
+
+  useEffect(() => {
+    if (!isOpen || lastAddedAt === null) return;
+
+    const timeout = window.setTimeout(
+      dismissLastAddedPreview,
+      getRemainingLastAddedPreviewMs(lastAddedAt, Date.now(), LAST_ADDED_PREVIEW_DURATION_MS),
+    );
+
+    return () => window.clearTimeout(timeout);
+  }, [dismissLastAddedPreview, isOpen, lastAddedAt]);
 
   useEffect(() => {
     if (!isOpen) {
@@ -78,9 +104,7 @@ export default function CartIconDropdown({
       }
 
       if (Math.abs(window.scrollY - openScrollYRef.current) > SCROLL_CLOSE_THRESHOLD) {
-        if (lastAddedAt !== null) {
-          setDismissedAddedAt(lastAddedAt);
-        }
+        dismissLastAddedPreview();
       }
     };
 
@@ -89,7 +113,7 @@ export default function CartIconDropdown({
     return () => {
       window.removeEventListener("scroll", handleScroll);
     };
-  }, [isOpen, lastAddedAt]);
+  }, [dismissLastAddedPreview, isOpen]);
 
   const countLabel = (
     <>
@@ -117,9 +141,7 @@ export default function CartIconDropdown({
         type="button"
         onClick={() => {
           handleOpenCart();
-          if (lastAddedAt !== null) {
-            setDismissedAddedAt(lastAddedAt);
-          }
+          dismissLastAddedPreview();
         }}
         className={buttonClassName}
         aria-label={cartCount > 0 ? `Cart (${cartCount})` : "Cart"}
@@ -171,9 +193,7 @@ export default function CartIconDropdown({
               size="md"
               onClick={() => {
                 handleOpenCart();
-                if (lastAddedAt !== null) {
-                  setDismissedAddedAt(lastAddedAt);
-                }
+                dismissLastAddedPreview();
               }}
               className="flex-1 font-medium"
             >
@@ -182,9 +202,7 @@ export default function CartIconDropdown({
             <Link
               href="/cart"
               onClick={() => {
-                if (lastAddedAt !== null) {
-                  setDismissedAddedAt(lastAddedAt);
-                }
+                dismissLastAddedPreview();
               }}
               className={appButtonClassName({ variant: "primary", size: "md", className: "flex-1 border-slate-900 bg-slate-900 font-medium hover:bg-slate-800" })}
             >

@@ -92,4 +92,6 @@ export type CartState = {
   items: CartItem[];
   lastAddedItemId: string | null;
   lastAddedAt: number | null;
+  lastAddedEventId: number | null;
+  lastAddedPreviewDismissedEventId: number | null;
 };
