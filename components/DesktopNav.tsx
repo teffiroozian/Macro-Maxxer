@@ -79,59 +79,61 @@ export default function DesktopNav({
           </button>
 
           {isRestaurantMenuOpen ? (
-            <div
-              id="desktop-restaurant-menu"
-              role="menu"
-              aria-label="Restaurants"
-              className="absolute left-0 top-full z-50 mt-2 w-[min(20rem,calc(100vw-2rem))] overflow-hidden rounded-2xl border border-black/10 bg-white py-2 shadow-[0_18px_40px_rgba(15,23,42,0.16)]"
-            >
-              <div className="px-3 pb-1 text-xs font-semibold uppercase tracking-wide text-neutral-500">Available Now</div>
-              <div className="grid gap-1 px-2">
-                {availableRestaurants.map((restaurant) => (
-                  <Link
-                    key={restaurant.id}
-                    href={`/restaurant/${restaurant.id}`}
-                    role="menuitem"
-                    onClick={() => setIsRestaurantMenuOpen(false)}
-                    className="group inline-flex items-center justify-between rounded-xl px-2 py-2.5 text-sm font-semibold text-neutral-900 transition hover:bg-neutral-100 focus:bg-neutral-100 focus:outline-none"
-                  >
-                    <span className="inline-flex min-w-0 items-center gap-2.5">
-                      <span className="relative h-8 w-8 shrink-0 overflow-hidden rounded-lg bg-neutral-50">
-                        <Image src={restaurant.logo} alt={`${restaurant.name} logo`} fill className="object-contain rounded-md" />
+            <div className="absolute left-0 top-full z-50 w-[min(20rem,calc(100vw-2rem))] pt-2">
+              <div
+                id="desktop-restaurant-menu"
+                role="menu"
+                aria-label="Restaurants"
+                className="overflow-hidden rounded-2xl border border-black/10 bg-white py-2 shadow-[0_18px_40px_rgba(15,23,42,0.16)]"
+              >
+                <div className="px-3 pb-1 text-xs font-semibold uppercase tracking-wide text-neutral-500">Available Now</div>
+                <div className="grid gap-1 px-2">
+                  {availableRestaurants.map((restaurant) => (
+                    <Link
+                      key={restaurant.id}
+                      href={`/restaurant/${restaurant.id}`}
+                      role="menuitem"
+                      onClick={() => setIsRestaurantMenuOpen(false)}
+                      className="group inline-flex items-center justify-between rounded-xl px-2 py-2.5 text-sm font-semibold text-neutral-900 transition hover:bg-neutral-100 focus:bg-neutral-100 focus:outline-none"
+                    >
+                      <span className="inline-flex min-w-0 items-center gap-2.5">
+                        <span className="relative h-8 w-8 shrink-0 overflow-hidden rounded-lg bg-neutral-50">
+                          <Image src={restaurant.logo} alt={`${restaurant.name} logo`} fill className="object-contain rounded-md" />
+                        </span>
+                        <span className="truncate">{restaurant.name}</span>
                       </span>
-                      <span className="truncate">{restaurant.name}</span>
-                    </span>
-                    <ChevronRight className="h-4 w-4 text-neutral-400 transition group-hover:text-neutral-600" strokeWidth={2.4} />
-                  </Link>
-                ))}
-              </div>
+                      <ChevronRight className="h-4 w-4 text-neutral-400 transition group-hover:text-neutral-600" strokeWidth={2.4} />
+                    </Link>
+                  ))}
+                </div>
 
-              {comingSoonRestaurants.length > 0 ? (
-                <>
-                  <div className="my-2 border-t border-black/10" />
-                  <div className="px-3 pb-1 text-xs font-semibold uppercase tracking-wide text-neutral-500">Coming Soon</div>
-                  <div className="grid gap-1 px-2">
-                    {comingSoonRestaurants.map((restaurant) => (
-                      <div
-                        key={restaurant.id}
-                        role="menuitem"
-                        aria-disabled="true"
-                        className="inline-flex cursor-default items-center justify-between rounded-xl px-2 py-2.5 text-sm font-semibold text-neutral-400"
-                      >
-                        <span className="inline-flex min-w-0 items-center gap-2.5">
-                          <span className="relative h-8 w-8 shrink-0 overflow-hidden rounded-lg bg-neutral-50 opacity-60">
-                            <Image src={restaurant.logo} alt={`${restaurant.name} logo`} fill className="object-contain rounded-md grayscale" />
+                {comingSoonRestaurants.length > 0 ? (
+                  <>
+                    <div className="my-2 border-t border-black/10" />
+                    <div className="px-3 pb-1 text-xs font-semibold uppercase tracking-wide text-neutral-500">Coming Soon</div>
+                    <div className="grid gap-1 px-2">
+                      {comingSoonRestaurants.map((restaurant) => (
+                        <div
+                          key={restaurant.id}
+                          role="menuitem"
+                          aria-disabled="true"
+                          className="inline-flex cursor-default items-center justify-between rounded-xl px-2 py-2.5 text-sm font-semibold text-neutral-400"
+                        >
+                          <span className="inline-flex min-w-0 items-center gap-2.5">
+                            <span className="relative h-8 w-8 shrink-0 overflow-hidden rounded-lg bg-neutral-50 opacity-60">
+                              <Image src={restaurant.logo} alt={`${restaurant.name} logo`} fill className="object-contain rounded-md grayscale" />
+                            </span>
+                            <span className="truncate">{restaurant.name}</span>
                           </span>
-                          <span className="truncate">{restaurant.name}</span>
-                        </span>
-                        <span className="ml-3 shrink-0 rounded-full border border-neutral-300 px-2 py-0.5 text-[11px] font-semibold uppercase tracking-wide text-neutral-500">
-                          Coming Soon
-                        </span>
-                      </div>
-                    ))}
-                  </div>
-                </>
-              ) : null}
+                          <span className="ml-3 shrink-0 rounded-full border border-neutral-300 px-2 py-0.5 text-[11px] font-semibold uppercase tracking-wide text-neutral-500">
+                            Coming Soon
+                          </span>
+                        </div>
+                      ))}
+                    </div>
+                  </>
+                ) : null}
+              </div>
             </div>
           ) : null}
         </div>
