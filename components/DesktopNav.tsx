@@ -60,16 +60,23 @@ export default function DesktopNav({
           </span>
         </Link>
 
-        <div ref={restaurantMenuRef} className="relative" onMouseEnter={() => setIsRestaurantMenuOpen(true)}>
+        <div
+          ref={restaurantMenuRef}
+          className="relative"
+          onMouseEnter={() => setIsRestaurantMenuOpen(true)}
+          onMouseLeave={() => setIsRestaurantMenuOpen(false)}
+        >
           <button
             type="button"
             aria-haspopup="menu"
             aria-expanded={isRestaurantMenuOpen}
             aria-controls="desktop-restaurant-menu"
             onClick={() => setIsRestaurantMenuOpen((prev) => !prev)}
-            className="inline-flex h-9 items-center gap-2 rounded-full border border-slate-300/80 bg-white px-3 text-sm font-semibold text-slate-800 transition hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-slate-300/70"
+            className="inline-flex h-9 items-center gap-2 rounded-full border border-slate-300 bg-white px-3 text-sm font-semibold text-slate-800 transition hover:border-slate-400 hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-slate-300/70"
           >
-            <Store className="h-4 w-4 text-slate-500" strokeWidth={2.4} />
+            <span className="inline-flex h-5 w-5 items-center justify-center rounded-full border border-slate-300 bg-slate-50 text-slate-500">
+              <Store className="h-3.5 w-3.5" strokeWidth={2.4} />
+            </span>
             Restaurants
             <ChevronDown className={`h-4 w-4 text-slate-500 transition-transform ${isRestaurantMenuOpen ? "rotate-180" : ""}`} strokeWidth={2.4} />
           </button>
