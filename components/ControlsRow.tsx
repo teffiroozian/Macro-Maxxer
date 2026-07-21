@@ -188,10 +188,20 @@ export default function ControlsRow({
     onFiltersChange,
   });
 
+  const closeFilters = () => {
+    setIsFiltersOpen(false);
+    setIsMobileDrawerOpen(false);
+  };
+
   const handleResetFilters = () => {
     setDraftFilters({ caloriesMax: defaultCaloriesMax });
     resetFilters();
   };
+
+  const hasDraftFilters = Boolean(
+    draftFilters.proteinMin ||
+      (draftFilters.caloriesMax !== undefined && draftFilters.caloriesMax !== defaultCaloriesMax)
+  );
 
   useEffect(() => {
     onMobileDrawerOpenReady?.(openMobileDrawer);
@@ -309,6 +319,15 @@ export default function ControlsRow({
                 <span>{calorieBounds.max}</span>
               </div>
             </div>
+            {hasDraftFilters ? (
+              <button
+                type="button"
+                onClick={handleResetFilters}
+                className="text-sm font-semibold text-black/55 underline-offset-4 transition hover:text-black/80 hover:underline"
+              >
+                Clear Filters
+              </button>
+            ) : null}
           </>
         ) : null}
       </section>
@@ -317,7 +336,7 @@ export default function ControlsRow({
 
   const controlsFooter = (
     <div className="grid grid-cols-2 gap-2">
-      <AppButton variant="secondary" size="md" onClick={handleResetFilters}>Cancel</AppButton>
+      <AppButton variant="secondary" size="md" onClick={closeFilters}>Cancel</AppButton>
       <AppButton size="md" onClick={applyFilters} className="border-black/80 bg-black/85 font-bold">Apply</AppButton>
     </div>
   );
