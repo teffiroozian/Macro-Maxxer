@@ -1,4 +1,5 @@
 import type { CoreMacros } from "@/types/nutrition";
+import { macroColorTokens } from "@/components/nutrition/macroColorTokens";
 
 export type MacroKey = keyof CoreMacros;
 export type MacroDisplayVariant = "default" | "bar";
@@ -16,40 +17,40 @@ export const macroDisplayConfig: Record<MacroKey, MacroDisplayConfig> = {
     label: "Calories",
     shortLabel: "Cal",
     valueClassNameByVariant: {
-      default: "text-slate-900",
-      bar: "text-[#111318]",
+      default: macroColorTokens.calories.valueClassName,
+      bar: macroColorTokens.calories.barValueClassName,
     },
-    segmentClassName: "bg-[#111318] text-white",
+    segmentClassName: macroColorTokens.calories.segmentClassName,
   },
   protein: {
     label: "Protein",
     shortLabel: "P",
     unit: "g",
     valueClassNameByVariant: {
-      default: "text-[#c2410c]",
-      bar: "text-[#C75A1B]",
+      default: macroColorTokens.protein.valueClassName,
+      bar: macroColorTokens.protein.barValueClassName,
     },
-    segmentClassName: "bg-[#c2410c] text-white",
+    segmentClassName: macroColorTokens.protein.segmentClassName,
   },
   carbs: {
     label: "Carbs",
     shortLabel: "C",
     unit: "g",
     valueClassNameByVariant: {
-      default: "text-[#ca8a04]",
-      bar: "text-[#D0A700]",
+      default: macroColorTokens.carbs.valueClassName,
+      bar: macroColorTokens.carbs.barValueClassName,
     },
-    segmentClassName: "bg-[#ca8a04] text-white",
+    segmentClassName: macroColorTokens.carbs.segmentClassName,
   },
   totalFat: {
     label: "Fat",
     shortLabel: "F",
     unit: "g",
     valueClassNameByVariant: {
-      default: "text-[#2563eb]",
-      bar: "text-[#2563eb]",
+      default: macroColorTokens.totalFat.valueClassName,
+      bar: macroColorTokens.totalFat.barValueClassName,
     },
-    segmentClassName: "bg-[#2563eb] text-white",
+    segmentClassName: macroColorTokens.totalFat.segmentClassName,
   },
 };
 
