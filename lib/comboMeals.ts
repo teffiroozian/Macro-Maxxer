@@ -1,12 +1,11 @@
 import type { ComboMealConfig, MenuItem } from "@/types/menu";
+import { compareByDefaultOrder, normalizeCategory } from "@/lib/menuItemCalculations";
 import {
-  compareByDefaultOrder,
   isChickfilaBreakfastItem,
   isHashBrowns,
   isWaffleFries,
-  normalizeCategory,
   sortComboSides,
-} from "@/lib/menuItemCalculations";
+} from "@/lib/restaurantRules/chickfila";
 
 function itemKey(item: MenuItem) {
   return item.id ?? item.name;
