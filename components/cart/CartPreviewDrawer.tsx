@@ -7,7 +7,7 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import type { CartItem } from "@/types/cart";
 import { useRestaurantUi } from "@/components/RestaurantUiContext";
 import MacroTotalsGrid from "@/components/MacroTotalsGrid";
-import CartItemPreviewRow from "@/components/CartItemPreviewRow";
+import CartItemPreviewRow from "@/components/cart/CartItemPreviewRow";
 import CartClearConfirmationDialog from "@/components/cart/CartClearConfirmationDialog";
 import EmptyStateCard from "@/components/EmptyStateCard";
 import SurfaceCard from "@/components/ui/SurfaceCard";

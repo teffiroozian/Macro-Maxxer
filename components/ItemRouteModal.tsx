@@ -13,11 +13,8 @@ import BuildSummaryDrawer from "@/components/restaurant-view/BuildSummaryDrawer"
 import type { MenuItem, ResolvedAddonGroups, IngredientItem, RestaurantCustomizationRules } from "@/types/menu";
 import type { Nutrition } from "@/types/nutrition";
 import { buildStructuredOptionSelections } from "@/lib/menuItemCard/cartLabelUtils";
-import {
-  getDefaultVariantId,
-  resolveJustItemIcon,
-  resolveJustItemLabel,
-} from "@/lib/menuItemCalculations";
+import { getDefaultVariantId } from "@/lib/menuItemCalculations";
+import { resolveJustItemIcon, resolveJustItemLabel } from "@/lib/restaurantRules/chickfila";
 import {
   buildHighProteinBuildConfiguration,
   isChipotleHighProteinMenuItem,

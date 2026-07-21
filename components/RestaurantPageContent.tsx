@@ -3,7 +3,7 @@ import RecentRestaurantTracker from "@/components/RecentRestaurantTracker";
 import ScrollToTopOnMount from "@/components/ScrollToTopOnMount";
 import { RestaurantSearchProvider } from "@/components/RestaurantSearchContext";
 import { RestaurantUiProvider } from "@/components/RestaurantUiContext";
-import CartPreviewDrawer from "@/components/CartPreviewDrawer";
+import CartPreviewDrawer from "@/components/cart/CartPreviewDrawer";
 import { resolveAddonMenuItems } from "@/lib/addonGroups";
 import type { RestaurantData } from "@/types/restaurant";
 

@@ -7,7 +7,7 @@ import { useCart } from "@/stores/cartStore";
 import { getSelectionDetailsLabel } from "@/lib/cart/customizationLabels";
 import { useOptionalRestaurantUi } from "@/components/RestaurantUiContext";
 import MacroTotalsGrid from "@/components/MacroTotalsGrid";
-import CartItemPreviewRow from "@/components/CartItemPreviewRow";
+import CartItemPreviewRow from "@/components/cart/CartItemPreviewRow";
 import EmptyStateCard from "@/components/EmptyStateCard";
 import { ShoppingCart } from "lucide-react";
 import AppButton, { appButtonClassName } from "@/components/ui/AppButton";
