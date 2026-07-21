@@ -133,7 +133,7 @@ function CartItemDetailsPanel({ cartItem, detailLine }: { cartItem: CartItem; de
 }
 
 export default function CartPage() {
-  const { items, totals, removeItem, updateQuantity } = useCart();
+  const { items, totals, updateQuantity } = useCart();
   const { editState, loadingEditItemId, openEditModal, closeEditModal } = useCartItemEditModal();
   const [expandedItemId, setExpandedItemId] = useState<string | null>(null);
 
@@ -191,22 +191,13 @@ export default function CartPage() {
                               {loadingEditItemId === cartItem.id ? <span className="text-[10px]">...</span> : <Pencil className="h-5 w-5" strokeWidth={2.5} />}
                             </AppButton>
                           ) : null}
-                          <AppButton
-                            variant="ghost"
-                            size="sm"
-                            aria-label={`Remove ${cartItem.name} from cart`}
-                            onClick={(event) => { event.stopPropagation(); removeItem(cartItem.id); }}
-                            className="text-red-700 hover:bg-red-50 active:bg-red-100"
-                          >
-                            <Trash2 className="h-4 w-4" />
-                            Remove
-                          </AppButton>
                           <QuantityStepper
                             value={cartItem.quantity}
-                            onDecrement={() => updateQuantity(cartItem.id, Math.max(1, cartItem.quantity - 1))}
+                            onDecrement={() => updateQuantity(cartItem.id, cartItem.quantity - 1)}
                             onIncrement={() => updateQuantity(cartItem.id, cartItem.quantity + 1)}
-                            decrementLabel={`Decrease quantity of ${cartItem.name}`}
+                            decrementLabel={cartItem.quantity === 1 ? `Remove ${cartItem.name} from cart` : `Decrease quantity of ${cartItem.name}`}
                             incrementLabel={`Increase quantity of ${cartItem.name}`}
+                            decrementContent={cartItem.quantity === 1 ? <Trash2 className="h-4 w-4" strokeWidth={2.5} /> : undefined}
                           />
                         </div>
                       }

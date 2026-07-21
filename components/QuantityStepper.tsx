@@ -8,6 +8,7 @@ type QuantityStepperProps = {
   onDecrement: MouseEventHandler<HTMLButtonElement>;
   incrementLabel: string;
   decrementLabel: string;
+  decrementContent?: ReactNode;
   incrementDisabled?: boolean;
   decrementDisabled?: boolean;
   variant?: QuantityStepperVariant;
@@ -47,6 +48,7 @@ export default function QuantityStepper({
   onDecrement,
   incrementLabel,
   decrementLabel,
+  decrementContent = "-",
   incrementDisabled = false,
   decrementDisabled = false,
   variant = "cart",
@@ -62,7 +64,7 @@ export default function QuantityStepper({
         className={styles.button}
         aria-label={decrementLabel}
       >
-        -
+        {decrementContent}
       </button>
       <span className={styles.value}>{value}</span>
       <button

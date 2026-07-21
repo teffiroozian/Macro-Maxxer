@@ -27,7 +27,7 @@ const getCustomizationDisplayList = (item: CartItem) => [
 
 export default function CartPreviewDrawer() {
   const { isCartOpen, closeCart } = useRestaurantUi();
-  const { items, totals, removeItem, updateQuantity, clearCart } = useCart();
+  const { items, totals, updateQuantity, clearCart } = useCart();
   const [isClearCartDialogOpen, setIsClearCartDialogOpen] = useState(false);
   const { editState, loadingEditItemId, openEditModal, closeEditModal } = useCartItemEditModal();
 
@@ -164,22 +164,13 @@ export default function CartPreviewDrawer() {
                                 <Pencil className="size-4" />
                               </AppIconButton>
                             ) : null}
-                            <AppButton
-                              variant="ghost"
-                              size="sm"
-                              onClick={() => removeItem(item.id)}
-                              aria-label={`Remove ${item.name} from cart`}
-                              className="text-red-700 hover:bg-red-50 active:bg-red-100"
-                            >
-                              <Trash2 className="size-4" />
-                              Remove
-                            </AppButton>
                             <QuantityStepper
                               value={item.quantity}
-                              onDecrement={() => updateQuantity(item.id, Math.max(1, item.quantity - 1))}
+                              onDecrement={() => updateQuantity(item.id, item.quantity - 1)}
                               onIncrement={() => updateQuantity(item.id, item.quantity + 1)}
-                              decrementLabel={`Decrease quantity of ${item.name}`}
+                              decrementLabel={item.quantity === 1 ? `Remove ${item.name} from cart` : `Decrease quantity of ${item.name}`}
                               incrementLabel={`Increase quantity of ${item.name}`}
+                              decrementContent={item.quantity === 1 ? <Trash2 className="size-4" strokeWidth={2.5} /> : undefined}
                             />
                           </>
                         }
