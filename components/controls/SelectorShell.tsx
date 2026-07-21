@@ -6,7 +6,6 @@ type SelectorShellOption<TValue extends string> = {
   label: string;
   value: TValue;
   icon: LucideIcon;
-  description?: string;
 };
 
 type SelectorShellProps<TValue extends string> = {
@@ -103,12 +102,7 @@ export default function SelectorShell<TValue extends string>({
                   }`}
                 >
                   <Icon className="h-4 w-4 shrink-0" strokeWidth={2.2} />
-                  <span>
-                    <span>{option.label}</span>
-                    {option.description ? (
-                      <span className="mt-0.5 block text-xs font-medium text-black/55">{option.description}</span>
-                    ) : null}
-                  </span>
+                  <span>{option.label}</span>
                 </button>
               );
             })}

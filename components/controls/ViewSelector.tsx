@@ -8,7 +8,6 @@ type ViewSelectorOption = {
   label: string;
   value: ViewOption;
   icon: LucideIcon;
-  description?: string;
 };
 
 type ViewSelectorProps = {

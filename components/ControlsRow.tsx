@@ -30,20 +30,10 @@ export type { Filters, SortOption };
 
 const PROTEIN_OPTIONS = [20, 30, 40, 50];
 
-const VIEW_OPTIONS: Array<{
-  label: string;
-  value: ViewOption;
-  icon: typeof ClipboardList;
-  description?: string;
-}> = [
+const VIEW_OPTIONS: Array<{ label: string; value: ViewOption; icon: typeof ClipboardList }> = [
   { label: "Menu", value: "menu", icon: ClipboardList },
   { label: "Ingredients", value: "ingredients", icon: Carrot },
-  {
-    label: "Top Picks",
-    value: "ranking",
-    icon: Award,
-    description: "Sorts items by macro-friendly criteria.",
-  },
+  { label: "Top Picks", value: "ranking", icon: Award },
 ];
 
 const SORT_OPTIONS: Array<{ label: string; value: SortOption; icon: typeof Flame }> = [
@@ -258,14 +248,7 @@ export default function ControlsRow({
                     setIsMobileDrawerOpen(false);
                   }} className={`inline-flex items-center gap-2.5 rounded-xl border px-3 py-2.5 text-left text-sm font-semibold transition ${isActive ? "border-black/80 bg-black/85 text-white" : "border-black/15 bg-white text-black/80"}`}>
                     <Icon className="h-4 w-4" strokeWidth={2.2} />
-                    <span className="flex-1">
-                      <span>{option.label}</span>
-                      {option.description ? (
-                        <span className={`mt-0.5 block text-xs font-medium ${isActive ? "text-white/80" : "text-black/55"}`}>
-                          {option.description}
-                        </span>
-                      ) : null}
-                    </span>
+                    <span className="flex-1">{option.label}</span>
                   </button>
                 );
               })}
