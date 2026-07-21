@@ -113,9 +113,8 @@ export default function CartIconDropdown({
 
   return (
     <div ref={containerRef} className="relative">
-      <AppButton
-        variant="ghost"
-        size="md"
+      <button
+        type="button"
         onClick={() => {
           handleOpenCart();
           if (lastAddedAt !== null) {
@@ -127,7 +126,7 @@ export default function CartIconDropdown({
         aria-expanded={isOpen}
       >
         {countLabel}
-      </AppButton>
+      </button>
 
       <div
         aria-hidden={!isOpen}
