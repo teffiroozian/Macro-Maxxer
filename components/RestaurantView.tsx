@@ -50,6 +50,7 @@ import RestaurantCategorySidebar from "./restaurant-view/RestaurantCategorySideb
 import ChipotleRestaurantBuilderView from "./restaurant-view/ChipotleRestaurantBuilderView";
 
 const CATEGORY_ICONS: Record<string, LucideIcon> = {
+  sandwich: Sandwich,
   sandwiches: Sandwich,
   "sandwich toppings": LeafyGreen,
   toppings: LeafyGreen,

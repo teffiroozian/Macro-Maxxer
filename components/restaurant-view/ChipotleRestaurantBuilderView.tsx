@@ -95,6 +95,7 @@ import { customizationsFromLabels } from "@/lib/cart/customizationLabels";
 import { buildChipotleIngredientMenuItems } from "@/lib/restaurantBuilders/chipotle/ingredientMenuItems";
 
 const CATEGORY_ICONS: Record<string, LucideIcon> = {
+  sandwich: Sandwich,
   sandwiches: Sandwich,
   "sandwich toppings": LeafyGreen,
   toppings: LeafyGreen,

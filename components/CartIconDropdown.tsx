@@ -117,7 +117,7 @@ export default function CartIconDropdown({
 
   const countLabel = (
     <>
-      <ShoppingCart className="h-5 w-5" strokeWidth={2.5} />
+      <ShoppingCart className="h-4 w-4" strokeWidth={2.5} />
       {cartCount > 0 ? (
         <span className="absolute -right-1 -top-1 inline-flex min-h-4 min-w-4 items-center justify-center rounded-full bg-slate-900 px-1 text-[10px] leading-none font-bold tabular-nums text-white">
           {cartCount}
