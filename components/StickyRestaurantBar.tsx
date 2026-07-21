@@ -5,6 +5,7 @@ import type { ReactNode } from "react";
 import { useCallback, useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import CartIconDropdown from "@/components/CartIconDropdown";
+import DesktopRestaurantMenu from "@/components/DesktopRestaurantMenu";
 import ControlsRow, {
   FilterChips,
   type ViewOption,
@@ -141,12 +142,7 @@ export default function StickyRestaurantBar({
                 />
               </span>
             </Link>
-            <Link
-              href="/#restaurant-search"
-              className="inline-flex h-9 items-center rounded-full bg-white px-3 text-sm font-semibold text-slate-800 transition hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-slate-300/70"
-            >
-              Restaurants
-            </Link>
+            <DesktopRestaurantMenu />
           </div>
 
           <div className="ml-auto flex min-w-0 items-center gap-1.5 sm:gap-2">
