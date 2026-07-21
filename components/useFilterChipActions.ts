@@ -8,10 +8,11 @@ type UseFilterChipActionsOptions = {
 };
 
 export function useFilterChipActions({ filters, onFiltersChange }: UseFilterChipActionsOptions) {
-  const hasActiveFilters = useMemo(
-    () => Boolean(filters.proteinMin || filters.caloriesMax),
+  const activeFilterCount = useMemo(
+    () => Number(Boolean(filters.proteinMin)) + Number(Boolean(filters.caloriesMax)),
     [filters.caloriesMax, filters.proteinMin]
   );
+  const hasActiveFilters = activeFilterCount > 0;
 
   const clearProteinFilter = () => {
     onFiltersChange({ ...filters, proteinMin: undefined });
@@ -26,6 +27,7 @@ export function useFilterChipActions({ filters, onFiltersChange }: UseFilterChip
   };
 
   return {
+    activeFilterCount,
     hasActiveFilters,
     clearProteinFilter,
     clearCaloriesFilter,
