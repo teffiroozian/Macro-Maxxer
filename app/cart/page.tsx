@@ -28,7 +28,6 @@ import paneraMenu from "@/app/data/panera.json";
 import starbucksMenu from "@/app/data/starbucks.json";
 import subwayMenu from "@/app/data/subway.json";
 import MacroStat from "@/components/nutrition/MacroStat";
-import { macroDisplayConfig } from "@/components/nutrition/macroDisplay";
 import type { CartCustomization, CartItem } from "@/types/cart";
 import type { IngredientItem, MenuItem, RestaurantMenu } from "@/types/menu";
 
@@ -87,10 +86,10 @@ function CartItemDetailCard({ detailItem, title, label }: { detailItem: DetailMe
         <p className="truncate text-sm font-semibold text-slate-900">{label}</p>
         {nutrition ? (
           <div className="mt-1 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs">
-            <MacroStat label={macroDisplayConfig.calories.shortLabel} value={nutrition.calories} tone="calories" size="cartCompact" />
-            <MacroStat label={macroDisplayConfig.protein.shortLabel} value={nutrition.protein} unit={macroDisplayConfig.protein.unit} tone="protein" size="cartCompact" />
-            <MacroStat label={macroDisplayConfig.carbs.shortLabel} value={nutrition.carbs} unit={macroDisplayConfig.carbs.unit} tone="carbs" size="cartCompact" />
-            <MacroStat label={macroDisplayConfig.totalFat.shortLabel} value={nutrition.totalFat} unit={macroDisplayConfig.totalFat.unit} tone="totalFat" size="cartCompact" />
+            <MacroStat macroKey="calories" labelVariant="shortLabel" value={nutrition.calories} size="cartCompact" />
+            <MacroStat macroKey="protein" labelVariant="shortLabel" value={nutrition.protein} size="cartCompact" />
+            <MacroStat macroKey="carbs" labelVariant="shortLabel" value={nutrition.carbs} size="cartCompact" />
+            <MacroStat macroKey="totalFat" labelVariant="shortLabel" value={nutrition.totalFat} size="cartCompact" />
           </div>
         ) : null}
       </div>

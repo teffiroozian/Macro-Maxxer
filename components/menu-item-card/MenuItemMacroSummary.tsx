@@ -1,7 +1,6 @@
 import type { ReactNode } from "react";
-import { formatDelta, formatMacro } from "@/lib/menuItemCalculations";
+import { formatDelta } from "@/lib/menuItemCalculations";
 import MacroStat from "@/components/nutrition/MacroStat";
-import { macroDisplayConfig } from "@/components/nutrition/macroDisplay";
 
 export default function MenuItemMacroSummary({
   displayProtein,
@@ -27,27 +26,24 @@ export default function MenuItemMacroSummary({
   return (
     <div className="mt-4 flex flex-wrap items-end gap-x-10 gap-y-3 lg:mt-auto lg:gap-x-12">
       <MacroStat
-        value={formatMacro(displayProtein)}
+        macroKey="protein"
+        value={displayProtein}
         delta={hasActiveCustomization ? formatDelta(proteinDelta * quantityMultiplier) : undefined}
-        label={macroDisplayConfig.protein.label.toUpperCase()}
-        unit={macroDisplayConfig.protein.unit}
-        tone="protein"
+        labelVariant="uppercase"
         size="summary"
       />
       <MacroStat
-        value={formatMacro(displayCarbs)}
+        macroKey="carbs"
+        value={displayCarbs}
         delta={hasActiveCustomization ? formatDelta(carbsDelta * quantityMultiplier) : undefined}
-        label={macroDisplayConfig.carbs.label.toUpperCase()}
-        unit={macroDisplayConfig.carbs.unit}
-        tone="carbs"
+        labelVariant="uppercase"
         size="summary"
       />
       <MacroStat
-        value={formatMacro(displayFat)}
+        macroKey="totalFat"
+        value={displayFat}
         delta={hasActiveCustomization ? formatDelta(fatDelta * quantityMultiplier) : undefined}
-        label={macroDisplayConfig.totalFat.label.toUpperCase()}
-        unit={macroDisplayConfig.totalFat.unit}
-        tone="totalFat"
+        labelVariant="uppercase"
         size="summary"
       />
 

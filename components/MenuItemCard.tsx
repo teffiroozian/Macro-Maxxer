@@ -13,7 +13,6 @@ import IngredientCompactCard from "./menu-item-card/IngredientCompactCard";
 import MenuItemCardHeader from "./menu-item-card/MenuItemCardHeader";
 import MenuItemMacroSummary from "./menu-item-card/MenuItemMacroSummary";
 import MacroStat from "./nutrition/MacroStat";
-import { macroDisplayConfig } from "@/components/nutrition/macroDisplay";
 import MenuCardActions from "./menu-item-card/MenuCardActions";
 import SurfaceCard from "@/components/ui/SurfaceCard";
 import SectionEyebrow from "@/components/ui/SectionEyebrow";
@@ -833,10 +832,10 @@ export default function MenuItemCard({
                         ) : null}
                       </div>
                       <div className="mt-2 flex flex-wrap items-end gap-x-3 gap-y-2">
-                        <MacroStat value={toMacroNumber(mainItemOnlyNutrition.calories)} label={macroDisplayConfig.calories.shortLabel} tone="calories" size="quick" />
-                        <MacroStat value={toMacroNumber(mainItemOnlyNutrition.protein)} label={macroDisplayConfig.protein.label} unit={macroDisplayConfig.protein.unit} tone="protein" size="quick" />
-                        <MacroStat value={toMacroNumber(mainItemOnlyNutrition.carbs)} label={macroDisplayConfig.carbs.label} unit={macroDisplayConfig.carbs.unit} tone="carbs" size="quick" />
-                        <MacroStat value={toMacroNumber(mainItemOnlyNutrition.totalFat)} label={macroDisplayConfig.totalFat.label} unit={macroDisplayConfig.totalFat.unit} tone="totalFat" size="quick" />
+                        <MacroStat value={toMacroNumber(mainItemOnlyNutrition.calories)} macroKey="calories" labelVariant="shortLabel" size="quick" />
+                        <MacroStat value={toMacroNumber(mainItemOnlyNutrition.protein)} macroKey="protein" size="quick" />
+                        <MacroStat value={toMacroNumber(mainItemOnlyNutrition.carbs)} macroKey="carbs" size="quick" />
+                        <MacroStat value={toMacroNumber(mainItemOnlyNutrition.totalFat)} macroKey="totalFat" size="quick" />
                       </div>
                     </div>
                   </div>
@@ -867,10 +866,10 @@ export default function MenuItemCard({
                           ) : null}
                         </div>
                         <div className="mt-2 flex flex-wrap items-end gap-x-3 gap-y-2">
-                          <MacroStat value={toMacroNumber(selectedComboSideVariant?.nutrition.calories ?? selectedComboSide.nutrition.calories)} label={macroDisplayConfig.calories.shortLabel} tone="calories" size="quick" />
-                          <MacroStat value={toMacroNumber(selectedComboSideVariant?.nutrition.protein ?? selectedComboSide.nutrition.protein)} label={macroDisplayConfig.protein.label} unit={macroDisplayConfig.protein.unit} tone="protein" size="quick" />
-                          <MacroStat value={toMacroNumber(selectedComboSideVariant?.nutrition.carbs ?? selectedComboSide.nutrition.carbs)} label={macroDisplayConfig.carbs.label} unit={macroDisplayConfig.carbs.unit} tone="carbs" size="quick" />
-                          <MacroStat value={toMacroNumber(selectedComboSideVariant?.nutrition.totalFat ?? selectedComboSide.nutrition.totalFat)} label={macroDisplayConfig.totalFat.label} unit={macroDisplayConfig.totalFat.unit} tone="totalFat" size="quick" />
+                          <MacroStat value={toMacroNumber(selectedComboSideVariant?.nutrition.calories ?? selectedComboSide.nutrition.calories)} macroKey="calories" labelVariant="shortLabel" size="quick" />
+                          <MacroStat value={toMacroNumber(selectedComboSideVariant?.nutrition.protein ?? selectedComboSide.nutrition.protein)} macroKey="protein" size="quick" />
+                          <MacroStat value={toMacroNumber(selectedComboSideVariant?.nutrition.carbs ?? selectedComboSide.nutrition.carbs)} macroKey="carbs" size="quick" />
+                          <MacroStat value={toMacroNumber(selectedComboSideVariant?.nutrition.totalFat ?? selectedComboSide.nutrition.totalFat)} macroKey="totalFat" size="quick" />
                         </div>
                       </div>
                     </div>
@@ -902,10 +901,10 @@ export default function MenuItemCard({
                           ) : null}
                         </div>
                         <div className="mt-2 flex flex-wrap items-end gap-x-3 gap-y-2">
-                          <MacroStat value={toMacroNumber(selectedComboDrinkVariant?.nutrition.calories ?? selectedComboDrink.nutrition.calories)} label={macroDisplayConfig.calories.shortLabel} tone="calories" size="quick" />
-                          <MacroStat value={toMacroNumber(selectedComboDrinkVariant?.nutrition.protein ?? selectedComboDrink.nutrition.protein)} label={macroDisplayConfig.protein.label} unit={macroDisplayConfig.protein.unit} tone="protein" size="quick" />
-                          <MacroStat value={toMacroNumber(selectedComboDrinkVariant?.nutrition.carbs ?? selectedComboDrink.nutrition.carbs)} label={macroDisplayConfig.carbs.label} unit={macroDisplayConfig.carbs.unit} tone="carbs" size="quick" />
-                          <MacroStat value={toMacroNumber(selectedComboDrinkVariant?.nutrition.totalFat ?? selectedComboDrink.nutrition.totalFat)} label={macroDisplayConfig.totalFat.label} unit={macroDisplayConfig.totalFat.unit} tone="totalFat" size="quick" />
+                          <MacroStat value={toMacroNumber(selectedComboDrinkVariant?.nutrition.calories ?? selectedComboDrink.nutrition.calories)} macroKey="calories" labelVariant="shortLabel" size="quick" />
+                          <MacroStat value={toMacroNumber(selectedComboDrinkVariant?.nutrition.protein ?? selectedComboDrink.nutrition.protein)} macroKey="protein" size="quick" />
+                          <MacroStat value={toMacroNumber(selectedComboDrinkVariant?.nutrition.carbs ?? selectedComboDrink.nutrition.carbs)} macroKey="carbs" size="quick" />
+                          <MacroStat value={toMacroNumber(selectedComboDrinkVariant?.nutrition.totalFat ?? selectedComboDrink.nutrition.totalFat)} macroKey="totalFat" size="quick" />
                         </div>
                       </div>
                     </div>
@@ -971,10 +970,10 @@ export default function MenuItemCard({
                                 </button>
                               </div>
                               <div className="mt-2 flex flex-wrap items-end gap-x-3 gap-y-2">
-                                <MacroStat value={toMacroNumber(addon.nutrition.calories * count)} label={macroDisplayConfig.calories.shortLabel} tone="calories" size="quick" />
-                                <MacroStat value={toMacroNumber(addon.nutrition.protein * count)} label={macroDisplayConfig.protein.label} unit={macroDisplayConfig.protein.unit} tone="protein" size="quick" />
-                                <MacroStat value={toMacroNumber(addon.nutrition.carbs * count)} label={macroDisplayConfig.carbs.label} unit={macroDisplayConfig.carbs.unit} tone="carbs" size="quick" />
-                                <MacroStat value={toMacroNumber(addon.nutrition.totalFat * count)} label={macroDisplayConfig.totalFat.label} unit={macroDisplayConfig.totalFat.unit} tone="totalFat" size="quick" />
+                                <MacroStat value={toMacroNumber(addon.nutrition.calories * count)} macroKey="calories" labelVariant="shortLabel" size="quick" />
+                                <MacroStat value={toMacroNumber(addon.nutrition.protein * count)} macroKey="protein" size="quick" />
+                                <MacroStat value={toMacroNumber(addon.nutrition.carbs * count)} macroKey="carbs" size="quick" />
+                                <MacroStat value={toMacroNumber(addon.nutrition.totalFat * count)} macroKey="totalFat" size="quick" />
                               </div>
                             </div>
                           </div>
@@ -999,10 +998,10 @@ export default function MenuItemCard({
                         <div className="min-w-0">
                           <p className="truncate text-sm font-semibold text-slate-900">{selectedAddons.dressings.name}</p>
                           <div className="mt-2 flex flex-wrap items-end gap-x-3 gap-y-2">
-                            <MacroStat value={toMacroNumber(selectedAddons.dressings.nutrition.calories)} label={macroDisplayConfig.calories.shortLabel} tone="calories" size="quick" />
-                            <MacroStat value={toMacroNumber(selectedAddons.dressings.nutrition.protein)} label={macroDisplayConfig.protein.label} unit={macroDisplayConfig.protein.unit} tone="protein" size="quick" />
-                            <MacroStat value={toMacroNumber(selectedAddons.dressings.nutrition.carbs)} label={macroDisplayConfig.carbs.label} unit={macroDisplayConfig.carbs.unit} tone="carbs" size="quick" />
-                            <MacroStat value={toMacroNumber(selectedAddons.dressings.nutrition.totalFat)} label={macroDisplayConfig.totalFat.label} unit={macroDisplayConfig.totalFat.unit} tone="totalFat" size="quick" />
+                            <MacroStat value={toMacroNumber(selectedAddons.dressings.nutrition.calories)} macroKey="calories" labelVariant="shortLabel" size="quick" />
+                            <MacroStat value={toMacroNumber(selectedAddons.dressings.nutrition.protein)} macroKey="protein" size="quick" />
+                            <MacroStat value={toMacroNumber(selectedAddons.dressings.nutrition.carbs)} macroKey="carbs" size="quick" />
+                            <MacroStat value={toMacroNumber(selectedAddons.dressings.nutrition.totalFat)} macroKey="totalFat" size="quick" />
                           </div>
                         </div>
                       </div>

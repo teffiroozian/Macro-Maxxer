@@ -1,5 +1,5 @@
 import SurfaceCard from "@/components/ui/SurfaceCard";
-import { formatCalories, formatMacro } from "@/lib/menuItemCalculations";
+import MacroStat from "@/components/nutrition/MacroStat";
 import type { MenuItem } from "@/types/menu";
 
 type CompactOption = { id: string; label: string; disabled?: boolean };
@@ -106,16 +106,10 @@ export default function IngredientCompactCard({
           </div>
 
           <div className="flex w-full items-center gap-4 text-center lg:w-auto lg:gap-6">
-            {[[calories, "black", "cal"], [protein, "#c2410c", "protein"], [carbs, "#ca8a04", "carbs"], [totalFat, "#2563eb", "fat"]].map(([value, color, label]) => (
-              <div key={String(label)} className="flex min-w-[44px] flex-col items-center gap-1 sm:min-w-[54px]">
-                <div className="text-lg leading-none font-bold sm:text-xl" style={{ color: String(color) }}>
-                  {label === "cal" ? formatCalories(value as number | undefined) : formatMacro(value as number | undefined)}
-                </div>
-                <div className={`font-semibold uppercase tracking-wide text-black/80 ${label === "protein" ? "text-[9px] sm:text-[10px]" : "text-[10px]"}`}>
-                  {label}
-                </div>
-              </div>
-            ))}
+            <MacroStat macroKey="calories" value={calories ?? Number.NaN} labelVariant="shortLabel" size="ingredientCompact" />
+            <MacroStat macroKey="protein" value={protein ?? Number.NaN} size="ingredientCompact" />
+            <MacroStat macroKey="carbs" value={carbs ?? Number.NaN} size="ingredientCompact" />
+            <MacroStat macroKey="totalFat" value={totalFat ?? Number.NaN} size="ingredientCompact" />
           </div>
 
           {activeCompactOptions && activeCompactOptions.length > 1 && ingredientSelectionState ? (
