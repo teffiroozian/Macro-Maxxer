@@ -130,7 +130,7 @@ export default function StickyRestaurantBar({
             </Link>
           </div>
 
-          <div className="hidden min-w-0 flex-1 items-center gap-2 lg:flex">
+          <div className="hidden min-w-0 flex-1 items-center gap-3 lg:flex">
             <Link href="/" className="inline-flex h-9 w-9 shrink-0 items-center justify-center overflow-hidden rounded-lg bg-white" aria-label="Go to homepage">
               <span className="relative h-7 w-7">
                 <Image
@@ -140,6 +140,12 @@ export default function StickyRestaurantBar({
                   className="object-contain rounded-md"
                 />
               </span>
+            </Link>
+            <Link
+              href="/#restaurant-search"
+              className="inline-flex h-9 items-center rounded-full bg-white px-3 text-sm font-semibold text-slate-800 transition hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-slate-300/70"
+            >
+              Restaurants
             </Link>
           </div>
 

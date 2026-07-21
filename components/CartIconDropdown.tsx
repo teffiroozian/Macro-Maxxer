@@ -143,7 +143,7 @@ export default function CartIconDropdown({
           handleOpenCart();
           dismissLastAddedPreview();
         }}
-        className={buttonClassName}
+        className={`${buttonClassName} cursor-pointer`}
         aria-label={cartCount > 0 ? `Cart (${cartCount})` : "Cart"}
         aria-expanded={isOpen}
       >

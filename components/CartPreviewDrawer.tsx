@@ -2,12 +2,13 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { Pencil } from "lucide-react";
-import { useEffect, useMemo } from "react";
+import { Pencil, Trash2 } from "lucide-react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import type { CartItem } from "@/types/cart";
 import { useRestaurantUi } from "@/components/RestaurantUiContext";
 import MacroTotalsGrid from "@/components/MacroTotalsGrid";
 import CartItemPreviewRow from "@/components/CartItemPreviewRow";
+import CartClearConfirmationDialog from "@/components/cart/CartClearConfirmationDialog";
 import EmptyStateCard from "@/components/EmptyStateCard";
 import SurfaceCard from "@/components/ui/SurfaceCard";
 import AppButton, { appButtonClassName } from "@/components/ui/AppButton";
@@ -26,8 +27,18 @@ const getCustomizationDisplayList = (item: CartItem) => [
 
 export default function CartPreviewDrawer() {
   const { isCartOpen, closeCart } = useRestaurantUi();
-  const { items, totals, updateQuantity, clearCart } = useCart();
+  const { items, totals, removeItem, updateQuantity, clearCart } = useCart();
+  const [isClearCartDialogOpen, setIsClearCartDialogOpen] = useState(false);
   const { editState, loadingEditItemId, openEditModal, closeEditModal } = useCartItemEditModal();
+
+  const closeClearCartDialog = useCallback(() => {
+    setIsClearCartDialogOpen(false);
+  }, []);
+
+  const confirmClearCart = useCallback(() => {
+    clearCart();
+    setIsClearCartDialogOpen(false);
+  }, [clearCart]);
 
   const activeRestaurant = useMemo(() => {
     const restaurants = getAllRestaurants();
@@ -45,7 +56,7 @@ export default function CartPreviewDrawer() {
 
   useEffect(() => {
     const onKeyDown = (event: KeyboardEvent) => {
-      if (event.key === "Escape") {
+      if (event.key === "Escape" && !isClearCartDialogOpen) {
         closeCart();
       }
     };
@@ -59,7 +70,7 @@ export default function CartPreviewDrawer() {
       document.removeEventListener("keydown", onKeyDown);
       document.body.style.overflow = "";
     };
-  }, [isCartOpen, closeCart]);
+  }, [isCartOpen, closeCart, isClearCartDialogOpen]);
 
   return (
     <>
@@ -153,9 +164,19 @@ export default function CartPreviewDrawer() {
                                 <Pencil className="size-4" />
                               </AppIconButton>
                             ) : null}
+                            <AppButton
+                              variant="ghost"
+                              size="sm"
+                              onClick={() => removeItem(item.id)}
+                              aria-label={`Remove ${item.name} from cart`}
+                              className="text-red-700 hover:bg-red-50 active:bg-red-100"
+                            >
+                              <Trash2 className="size-4" />
+                              Remove
+                            </AppButton>
                             <QuantityStepper
                               value={item.quantity}
-                              onDecrement={() => updateQuantity(item.id, item.quantity - 1)}
+                              onDecrement={() => updateQuantity(item.id, Math.max(1, item.quantity - 1))}
                               onIncrement={() => updateQuantity(item.id, item.quantity + 1)}
                               decrementLabel={`Decrease quantity of ${item.name}`}
                               incrementLabel={`Increase quantity of ${item.name}`}
@@ -179,7 +200,7 @@ export default function CartPreviewDrawer() {
             </div>
 
             <div className="mt-4 grid grid-cols-2 gap-2 border-t border-slate-200 pt-4">
-              <AppButton type="button" variant="ghost" size="md" onClick={clearCart} disabled={items.length === 0}>
+              <AppButton type="button" variant="ghost" size="md" onClick={() => setIsClearCartDialogOpen(true)} disabled={items.length === 0}>
                 Clear Cart
               </AppButton>
               <Link
@@ -193,6 +214,14 @@ export default function CartPreviewDrawer() {
           </section>
         </div>
       </aside>
+
+      {isClearCartDialogOpen ? (
+        <CartClearConfirmationDialog
+          itemCount={items.length}
+          onCancel={closeClearCartDialog}
+          onConfirm={confirmClearCart}
+        />
+      ) : null}
 
       {editState ? (
         <ItemRouteModal
