@@ -55,7 +55,7 @@ export default function StickyMacroTotalsBar({
     : `fixed left-0 right-0 ${
         isCartLayout
           ? "bottom-2 max-w-5xl px-2 sm:bottom-4 sm:px-6"
-          : `${detailsOpen && detailsContent ? "top-1 bottom-1" : "bottom-1"} max-w-6xl px-2`
+          : "bottom-1 max-w-6xl px-2"
       } mx-auto z-[120] transition-all duration-300 ease-out ${
         visible
           ? "pointer-events-none translate-y-0 opacity-100"
@@ -70,10 +70,10 @@ export default function StickyMacroTotalsBar({
           : "rounded-2xl border-slate-200/70 px-3 py-2 sm:px-4 sm:py-2.5"
       } border bg-white shadow-[0_10px_30px_rgba(0,0,0,0.24)] transition-all duration-300 ${
         visible ? "pointer-events-auto" : "pointer-events-none"
-      } ${detailsOpen && detailsContent ? "flex h-full flex-col" : ""}`;
+      } ${detailsOpen && detailsContent ? "flex max-h-[calc(100vh-0.5rem)] flex-col" : ""}`;
 
   const contentContainerClassName = `mx-auto w-full max-w-5xl ${
-    detailsContent ? "flex min-h-0 flex-1 flex-col-reverse" : ""
+    detailsContent ? "flex min-h-0 flex-1 flex-col" : ""
   }`;
 
   return (
@@ -83,7 +83,7 @@ export default function StickyMacroTotalsBar({
           {detailsContent ? (
             <div
               className={`min-h-0 overflow-hidden transition-[max-height,transform,margin] duration-300 ease-out ${
-                detailsOpen ? "mt-4 max-h-full translate-y-0 flex-1" : "mt-0 max-h-0 translate-y-3"
+                detailsOpen ? "mb-4 max-h-[calc(100vh-9rem)] translate-y-0" : "mb-0 max-h-0 translate-y-3"
               }`}
             >
               <div className="h-full overflow-y-auto overscroll-contain pr-1">

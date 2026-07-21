@@ -167,7 +167,7 @@ export default function StickyRestaurantBar({
               </AppIconButton>
             )}
             <CartIconDropdown
-              buttonClassName="cursor-pointer inline-flex h-9 min-w-9 shrink-0 items-center justify-center rounded-full border border-slate-300/80 bg-white px-2.5 text-base text-slate-800 transition hover:bg-slate-50"
+              buttonClassName="relative inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-slate-300/80 bg-white p-0 text-base text-slate-800 transition hover:bg-slate-50"
             />
           </div>
         </div>

@@ -24,7 +24,7 @@ export default function CartIconDropdown({
   const router = useRouter();
   const restaurantUi = useOptionalRestaurantUi();
   const { items, totals, lastAddedItem, lastAddedAt } = useCart();
-  const [dismissedAddedAt, setDismissedAddedAt] = useState<number | null>(() => lastAddedAt);
+  const [dismissedAddedAt, setDismissedAddedAt] = useState<number | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const openScrollYRef = useRef<number | null>(null);
   const isOpen = lastAddedAt !== null && lastAddedAt !== dismissedAddedAt;
@@ -84,10 +84,8 @@ export default function CartIconDropdown({
     <>
       <ShoppingCart className="h-4 w-4" strokeWidth={2.5} />
       {cartCount > 0 ? (
-        <span
-          className="ml-1 text-[13px] leading-none font-bold tabular-nums text-slate-900"
-        >
-          ({cartCount})
+        <span className="absolute -right-1 -top-1 inline-flex min-h-4 min-w-4 items-center justify-center rounded-full bg-slate-900 px-1 text-[10px] leading-none font-bold tabular-nums text-white">
+          {cartCount}
         </span>
       ) : null}
     </>
