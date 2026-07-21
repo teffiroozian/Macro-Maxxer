@@ -31,13 +31,16 @@ export default function MacroStat({
   delta,
 }: MacroStatProps) {
   const toneClass = macroDisplayConfig[tone].valueClassNameByVariant.default;
+  const displayValue = typeof value === "string" && unit && value.trim().toLowerCase().endsWith(unit.toLowerCase())
+    ? value.trim().slice(0, -unit.length)
+    : value;
 
   if (size === "summary") {
     return (
       <div className="flex flex-col items-center justify-start">
         <div className="inline-flex items-baseline gap-1.5">
           <div className={`${valueClassBySize[size]} ${toneClass}`}>
-            {value}
+            {displayValue}
             {unit ?? ""}
           </div>
           {delta ? <span className="text-sm font-bold text-green-600">{delta}</span> : null}
@@ -51,7 +54,7 @@ export default function MacroStat({
     return (
       <div className="flex min-w-0 flex-col items-center justify-center">
         <span className={`${valueClassBySize[size]} ${toneClass}`}>
-          {value}
+          {displayValue}
           {unit ?? ""}
         </span>
         <span className="mt-1 text-[9px] font-bold uppercase tracking-[0.06em] text-slate-600">
@@ -65,7 +68,7 @@ export default function MacroStat({
     return (
       <p className="text-slate-500">
         {label}:<span className={`ml-1 ${valueClassBySize[size]} ${toneClass}`}>
-          {value}
+          {displayValue}
           {unit ?? ""}
         </span>
       </p>
@@ -75,7 +78,7 @@ export default function MacroStat({
   return (
     <p className="whitespace-nowrap text-slate-500">
       <span className={`${valueClassBySize[size]} ${toneClass}`}>
-        {value}
+        {displayValue}
         {unit ?? ""}
       </span>
       <span className="ml-1 text-xs">{label}</span>

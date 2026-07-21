@@ -442,7 +442,7 @@ export default function ControlsRow({
               onClose={() => setIsSortOpen(false)}
             />
 
-            <AppButton variant="secondary" size="md" onClick={openFilters} className="shrink-0 whitespace-nowrap px-[14px] text-black/80">
+            <AppButton variant="secondary" size="md" onClick={openFilters} className="h-9 shrink-0 whitespace-nowrap rounded-full border-slate-300/80 px-[14px] text-black/80">
               Filters
               <SlidersHorizontal className="h-4 w-4" strokeWidth={2.5} />
             </AppButton>

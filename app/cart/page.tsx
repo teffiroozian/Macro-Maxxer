@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import StickyMacroTotalsBar from "@/components/StickyMacroTotalsBar";
 import AppButton from "@/components/ui/AppButton";
 import SurfaceCard from "@/components/ui/SurfaceCard";
@@ -17,10 +17,13 @@ import { buildCartNutritionTotals } from "@/lib/cart/nutrition";
 import { getProteinPer100Calories } from "@/lib/nutrition";
 import { formatCartItemName, summarizeItem } from "@/lib/cart/displayLabels";
 import { useCartItemEditModal } from "@/hooks/useCartItemEditModal";
+import { Pencil } from "lucide-react";
+import { getCustomizationLabels } from "@/lib/cart/customizationLabels";
 
 export default function CartPage() {
   const { items, totals, updateQuantity } = useCart();
   const { editState, loadingEditItemId, openEditModal, closeEditModal } = useCartItemEditModal();
+  const [expandedItemId, setExpandedItemId] = useState<string | null>(null);
 
   // calculate total nutrition of the cart
   const nutritionTotals = useMemo(() => buildCartNutritionTotals(items), [items]);
@@ -47,7 +50,15 @@ export default function CartPage() {
                 const displayItem = { ...cartItem, name: formatCartItemName(cartItem) };
                 const canCustomize = cartItem.selection.type !== "build-your-own";
                 return (
-                  <SurfaceCard as="li" key={cartItem.id} padding="compact">
+                  <SurfaceCard as="li" key={cartItem.id} padding="default" className="transition hover:-translate-y-0.5 hover:shadow-[0_12px_28px_rgba(15,23,42,0.12)]">
+                    <div
+                      role="button"
+                      tabIndex={0}
+                      className="w-full cursor-pointer text-left"
+                      onClick={() => setExpandedItemId((current) => (current === cartItem.id ? null : cartItem.id))}
+                      onKeyDown={(event) => { if (event.key === "Enter" || event.key === " ") setExpandedItemId((current) => (current === cartItem.id ? null : cartItem.id)); }}
+                      aria-expanded={expandedItemId === cartItem.id}
+                    >
                     <CartItemPreviewRow
                       item={displayItem}
                       imageRenderer="native-img"
@@ -56,16 +67,18 @@ export default function CartPage() {
                       customizationsText={detailLine}
                       customizationsLineClamp={2}
                       actions={
-                        <div className="flex items-center gap-2">
+                        <div className="flex items-center gap-2" onClick={(event) => event.stopPropagation()}>
                           {canCustomize ? (
                             <AppButton
                               variant="pill"
                               size="sm"
-                              onClick={() => openEditModal(cartItem)}
+                              aria-label={`Customize ${cartItem.name}`}
+                              title="Customize"
+                              onClick={(event) => { event.stopPropagation(); openEditModal(cartItem); }}
                               disabled={loadingEditItemId === cartItem.id}
-                              className="h-auto py-1.5 disabled:cursor-wait"
+                              className="h-9 w-9 px-0 py-0 disabled:cursor-wait"
                             >
-                              {loadingEditItemId === cartItem.id ? "Loading..." : "Customize"}
+                              {loadingEditItemId === cartItem.id ? <span className="text-[10px]">...</span> : <Pencil className="h-4 w-4" strokeWidth={2.5} />}
                             </AppButton>
                           ) : null}
                           <QuantityStepper
@@ -78,6 +91,17 @@ export default function CartPage() {
                         </div>
                       }
                     />
+                    </div>
+                    {expandedItemId === cartItem.id ? (
+                      <div className="mt-4 rounded-2xl border border-slate-200 bg-slate-50 p-4 text-sm text-slate-700">
+                        <p className="mb-2 font-bold text-slate-900">Details</p>
+                        <ul className="grid gap-1.5">
+                          {(getCustomizationLabels(cartItem.customizations).filter((label) => !/^Combo Meal$/i.test(label)).length ? getCustomizationLabels(cartItem.customizations).filter((label) => !/^Combo Meal$/i.test(label)) : detailLine ? detailLine.split(" • ") : ["No customizations selected."]).map((label) => (
+                            <li key={label} className="rounded-xl bg-white px-3 py-2 shadow-sm">{label}</li>
+                          ))}
+                        </ul>
+                      </div>
+                    ) : null}
                   </SurfaceCard>
                 );
               })}

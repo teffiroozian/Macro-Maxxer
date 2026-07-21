@@ -67,13 +67,13 @@ export default function StickyMacroTotalsBar({
     : `mx-auto w-full ${
         isCartLayout
           ? "rounded-[1.5rem] border-black/10 px-3 py-4 sm:rounded-[2.25rem] sm:px-6 sm:py-6"
-          : "rounded-2xl border-slate-200/70 px-4 py-3 sm:py-4"
+          : "rounded-2xl border-slate-200/70 px-3 py-2 sm:px-4 sm:py-2.5"
       } border bg-white shadow-[0_10px_30px_rgba(0,0,0,0.24)] transition-all duration-300 ${
         visible ? "pointer-events-auto" : "pointer-events-none"
       } ${detailsOpen && detailsContent ? "flex h-full flex-col" : ""}`;
 
   const contentContainerClassName = `mx-auto w-full max-w-5xl ${
-    detailsContent ? "flex min-h-0 flex-1 flex-col" : ""
+    detailsContent ? "flex min-h-0 flex-1 flex-col-reverse" : ""
   }`;
 
   return (
@@ -83,7 +83,7 @@ export default function StickyMacroTotalsBar({
           {detailsContent ? (
             <div
               className={`min-h-0 overflow-hidden transition-[max-height,transform,margin] duration-300 ease-out ${
-                detailsOpen ? "mb-4 max-h-full translate-y-0 flex-1" : "mb-0 max-h-0 translate-y-3"
+                detailsOpen ? "mt-4 max-h-full translate-y-0 flex-1" : "mt-0 max-h-0 translate-y-3"
               }`}
             >
               <div className="h-full overflow-y-auto overscroll-contain pr-1">
@@ -130,9 +130,9 @@ export default function StickyMacroTotalsBar({
             >
               <AppButton
                 variant="secondary"
-                size="lg"
+                size={isCartLayout ? "lg" : "sm"}
                 onClick={onSecondaryAction}
-                className={`${isCartLayout ? "h-[48px]" : "h-11"} ${isCartLayout ? "" : "flex-1 md:flex-none"}`}
+                className={`${isCartLayout ? "h-[48px]" : "h-9 px-3 text-sm"} ${isCartLayout ? "" : "flex-1 md:flex-none"}`}
               >
                 {detailsOpen && SecondaryActionExpandedIcon ? (
                   <SecondaryActionExpandedIcon className="h-4 w-4" strokeWidth={2.5} aria-hidden="true" />
@@ -143,9 +143,9 @@ export default function StickyMacroTotalsBar({
               </AppButton>
               <AppButton
                 variant="primary"
-                size="lg"
+                size={isCartLayout ? "lg" : "sm"}
                 onClick={onPrimaryAction}
-                className={`${isCartLayout ? "h-[48px]" : "h-11"} ${isCartLayout ? "" : "flex-1 md:flex-none"}`}
+                className={`${isCartLayout ? "h-[48px]" : "h-9 px-3 text-sm"} ${isCartLayout ? "" : "flex-1 md:flex-none"}`}
               >
                 <PrimaryActionIcon className="h-4 w-4" strokeWidth={2.5} aria-hidden="true" />
                 <span>{primaryButtonText}</span>

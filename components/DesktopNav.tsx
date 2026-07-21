@@ -31,7 +31,7 @@ export default function DesktopNav({
           </Link>
         ) : null}
         {showCartButton ? (
-          <CartIconDropdown buttonClassName="inline-flex h-9 min-w-9 items-center justify-center rounded-full border border-slate-300/80 bg-white px-2.5 text-slate-800" />
+          <CartIconDropdown buttonClassName="inline-flex h-9 min-w-9 items-center justify-center rounded-full border border-slate-300/80 bg-white px-0 text-slate-800" />
         ) : null}
       </div>
     </div>
