@@ -183,7 +183,7 @@ export default function ControlsRow({
     setIsMobileDrawerOpen(false);
   };
 
-  const { activeFilterCount, hasActiveFilters, clearProteinFilter, clearCaloriesFilter, resetFilters } = useFilterChipActions({
+  const { hasActiveFilters, clearProteinFilter, clearCaloriesFilter, resetFilters } = useFilterChipActions({
     filters,
     onFiltersChange,
   });
@@ -396,11 +396,6 @@ export default function ControlsRow({
             <AppButton variant="secondary" size="md" onClick={openMobileDrawer} className="px-[14px] text-black/85">
               <Menu className="h-4 w-4" strokeWidth={2.5} />
               Controls
-              {activeFilterCount > 0 ? (
-                <span className="ml-0.5 inline-flex min-h-5 min-w-5 items-center justify-center rounded-full bg-black/85 px-1.5 text-xs font-bold leading-none text-white">
-                  {activeFilterCount}
-                </span>
-              ) : null}
             </AppButton>
           </div>
         ) : null}
@@ -459,7 +454,7 @@ export default function ControlsRow({
         </div>
 
         {hasActiveFilters && showChips ? (
-          <div className="hidden lg:block">
+          <div>
             <div className="h-px bg-slate-400/50" />
             <FilterChips filters={filters} onClearProtein={clearProteinFilter} onClearCalories={clearCaloriesFilter} onClearAll={resetFilters} withMargin={false} />
           </div>
