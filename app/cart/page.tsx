@@ -149,10 +149,8 @@ export default function CartPage() {
         <section className="w-full space-y-3">
           {items.length === 0 ? (
             <EmptyStateCard
-              variant="compact"
               title="Your cart is empty."
               description="Add items from a restaurant to start meal finalization."
-              className="py-8"
             />
           ) : (
             <ul className="grid gap-3">

@@ -2,48 +2,83 @@ import type { ReactNode } from "react";
 
 import SurfaceCard from "@/components/ui/SurfaceCard";
 
-type EmptyStateCardVariant = "card" | "compact";
+type EmptyStateCardVariant = "default" | "compact" | "transparent";
 type EmptyStateCardAlign = "center" | "left";
 
 type EmptyStateCardProps = {
   title: ReactNode;
   description?: ReactNode;
   action?: ReactNode;
+  icon?: ReactNode;
   className?: string;
   variant?: EmptyStateCardVariant;
   align?: EmptyStateCardAlign;
 };
 
 const alignmentClassNames: Record<EmptyStateCardAlign, string> = {
-  center: "text-center",
-  left: "text-left",
+  center: "items-center text-center",
+  left: "items-start text-left",
+};
+
+const variantClassNames: Record<EmptyStateCardVariant, {
+  container: string;
+  icon: string;
+  title: string;
+  description: string;
+  action: string;
+}> = {
+  default: {
+    container: "gap-2 py-8",
+    icon: "mb-1 flex h-12 w-12 items-center justify-center rounded-full bg-slate-100 text-2xl text-slate-700",
+    title: "text-lg font-semibold text-neutral-900",
+    description: "max-w-md text-sm leading-6 text-neutral-600",
+    action: "mt-2",
+  },
+  compact: {
+    container: "gap-1.5 py-4",
+    icon: "mb-0.5 flex h-9 w-9 items-center justify-center rounded-full bg-slate-100 text-lg text-slate-700",
+    title: "text-sm font-medium text-black/70",
+    description: "text-sm leading-5 text-slate-600",
+    action: "mt-1.5",
+  },
+  transparent: {
+    container: "gap-1.5 px-4 py-[18px]",
+    icon: "mb-0.5 flex h-9 w-9 items-center justify-center rounded-full bg-slate-100 text-lg text-slate-700",
+    title: "text-sm font-medium text-black/70",
+    description: "text-sm leading-5 text-slate-600",
+    action: "mt-1.5",
+  },
 };
 
 export default function EmptyStateCard({
   title,
   description,
   action,
+  icon,
   className = "",
-  variant = "card",
+  variant = "default",
   align = "center",
 }: EmptyStateCardProps) {
-  const alignmentClassName = alignmentClassNames[align];
+  const classes = variantClassNames[variant];
+  const content = (
+    <>
+      {icon ? <div className={classes.icon}>{icon}</div> : null}
+      <p className={classes.title}>{title}</p>
+      {description ? <p className={classes.description}>{description}</p> : null}
+      {action ? <div className={classes.action}>{action}</div> : null}
+    </>
+  );
+  const contentClassName = ["flex flex-col", alignmentClassNames[align], classes.container, className]
+    .filter(Boolean)
+    .join(" ");
 
-  if (variant === "compact") {
-    return (
-      <div className={`py-4 ${alignmentClassName} ${className}`}>
-        <p className="text-sm font-medium text-black/70">{title}</p>
-        {description ? <p className="mt-1.5 text-sm text-slate-600">{description}</p> : null}
-        {action ? <div className="mt-3">{action}</div> : null}
-      </div>
-    );
+  if (variant === "transparent" || variant === "compact") {
+    return <div className={contentClassName}>{content}</div>;
   }
 
   return (
-    <SurfaceCard padding="comfortable" className={`py-8 ${alignmentClassName} ${className}`}>
-      <p className="text-lg font-medium text-neutral-900">{title}</p>
-      {description ? <p className="mt-2 text-sm text-neutral-600">{description}</p> : null}
-      {action ? <div className="mt-4">{action}</div> : null}
+    <SurfaceCard padding="comfortable" className={contentClassName}>
+      {content}
     </SurfaceCard>
   );
 }

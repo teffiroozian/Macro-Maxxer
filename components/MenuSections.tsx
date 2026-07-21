@@ -25,10 +25,10 @@ function getSectionSort(_section: string, sort: SortOption): SortOption {
 function EmptyFilteredState() {
   return (
     <EmptyStateCard
-      variant="compact"
+      variant="transparent"
       align="left"
       title="No items match the selected options."
-      className="mt-8 px-4 py-[18px]"
+      className="mt-8"
     />
   );
 }
