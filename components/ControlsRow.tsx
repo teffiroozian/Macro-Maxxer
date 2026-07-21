@@ -188,6 +188,11 @@ export default function ControlsRow({
     onFiltersChange,
   });
 
+  const closeFilters = () => {
+    setIsFiltersOpen(false);
+    setIsMobileDrawerOpen(false);
+  };
+
   const handleResetFilters = () => {
     setDraftFilters({ caloriesMax: defaultCaloriesMax });
     resetFilters();
@@ -317,7 +322,8 @@ export default function ControlsRow({
 
   const controlsFooter = (
     <div className="grid grid-cols-2 gap-2">
-      <AppButton variant="secondary" size="md" onClick={handleResetFilters}>Cancel</AppButton>
+      <AppButton variant="secondary" size="md" onClick={handleResetFilters} className="col-span-2">Clear Filters</AppButton>
+      <AppButton variant="secondary" size="md" onClick={closeFilters}>Cancel</AppButton>
       <AppButton size="md" onClick={applyFilters} className="border-black/80 bg-black/85 font-bold">Apply</AppButton>
     </div>
   );
