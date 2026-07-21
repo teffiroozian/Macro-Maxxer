@@ -31,6 +31,7 @@ import {
   resolvePanelIngredientTabs,
   resolvePanelIngredients,
 } from "@/lib/itemDetails/ingredientResolution";
+import SectionEyebrow from "@/components/ui/SectionEyebrow";
 
 export { resolvePanelIngredients, resolvePanelIngredientTabs };
 export type { ResolvedIngredientTab, ResolvedPanelIngredient };
@@ -1703,9 +1704,9 @@ export default function ItemDetailsPanel({
             ) : null}
 
             <div className="mt-4 space-y-2">
-              <p className="text-base font-semibold uppercase tracking-wide text-neutral-500">
+              <SectionEyebrow className="text-base text-neutral-500">
                 Items
-              </p>
+              </SectionEyebrow>
               <ul className="max-h-[320px] min-h-0 flex-1 space-y-2 overflow-y-auto rounded-xl bg-[#efefef] p-2">
                 {detailItems.map((detailItem) => (
                   <li
@@ -1736,9 +1737,9 @@ export default function ItemDetailsPanel({
             </div>
 
             <div className="space-y-2 pt-4">
-              <p className="text-base font-semibold uppercase tracking-wide text-neutral-500">
+              <SectionEyebrow className="text-base text-neutral-500">
                 Protein Score
-              </p>
+              </SectionEyebrow>
               <div className="rounded-xl bg-[#efefef] px-3 py-2">
                 <p className="mt-1 text-sm text-neutral-900">
                   {n.calories === undefined ||
@@ -1759,9 +1760,9 @@ export default function ItemDetailsPanel({
             </div>
 
             <div className="space-y-2 pt-4">
-              <p className="text-base font-semibold uppercase tracking-wide text-neutral-500">
+              <SectionEyebrow className="text-base text-neutral-500">
                 Macro Split
-              </p>
+              </SectionEyebrow>
               <div className="flex h-11 w-full gap-1 overflow-hidden rounded-xl border border-black/10 bg-neutral-100 p-1">
                 {macroSegments.map((segment) => {
                   const roundedPercent = Math.round(segment.percent);
