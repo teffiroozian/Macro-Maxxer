@@ -141,7 +141,7 @@ export type IngredientItem = {
 };
 
 
-// Menu JSON files contain restaurant menu content only; identity/metadata lives in app/data/index.json.
+// Menu JSON files contain restaurant menu content only; identity/metadata lives in data/restaurants/index.json.
 export type RestaurantMenu = {
   hasBuildYourOwn?: boolean;
   items: MenuItem[];

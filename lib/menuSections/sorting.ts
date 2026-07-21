@@ -1,7 +1,7 @@
 import {
   INGREDIENT_SECTION_ORDER,
   MENU_SECTION_ORDER,
-} from "@/app/data/menuCategoryConfig";
+} from "@/data/menuCategoryConfig";
 import type { MenuItem } from "@/types/menu";
 import {
   getDefaultMenuItemNutrition,
