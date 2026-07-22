@@ -2,10 +2,6 @@ import { useCallback, useMemo, useState } from "react";
 import type { ReadonlyURLSearchParams } from "next/navigation";
 import type { ViewOption } from "@/components/controls/types";
 import type { MenuItem } from "@/types/menu";
-import type {
-    ChipotleBuilderConfig,
-    ChipotleEntreeSelection,
-} from "@/lib/restaurantBuilders/chipotle";
 import type { Filters } from "@/lib/menuSections/filterOptions";
 import {
     filterMenuItems,
@@ -26,23 +22,21 @@ import {
 
 export function useRestaurantMenuControls({
     hasBuildYourOwn,
-    isChipotleBuildPage,
-    selectedEntree,
+    effectiveViewModeOverride,
+    isViewChangeAllowed,
     items,
     ingredientMenuItems,
     searchQuery,
-    chipotleBuilderConfig,
     router,
     pathname,
     searchParams,
 }: {
     hasBuildYourOwn: boolean;
-    isChipotleBuildPage: boolean;
-    selectedEntree: ChipotleEntreeSelection;
+    effectiveViewModeOverride?: ViewOption;
+    isViewChangeAllowed?: (nextView: ViewOption) => boolean;
     items: MenuItem[];
     ingredientMenuItems: MenuItem[];
     searchQuery: string;
-    chipotleBuilderConfig?: ChipotleBuilderConfig;
     router: {
         replace: (href: string, options?: { scroll?: boolean }) => void;
     };
@@ -73,33 +67,9 @@ export function useRestaurantMenuControls({
         drinks: false,
     });
 
-    const isChipotleChipsSidesSelection =
-        isChipotleBuildPage && selectedEntree === "chips-sides";
-    const isChipotleHighProteinSelection =
-        isChipotleBuildPage && selectedEntree === "high-protein-menu";
-    const isChipotleDrinksSelection =
-        isChipotleBuildPage && selectedEntree === "drinks";
-    const effectiveViewMode: ViewOption =
-        isChipotleChipsSidesSelection ||
-        isChipotleHighProteinSelection ||
-        isChipotleDrinksSelection
-            ? "menu"
-            : viewMode;
+    const effectiveViewMode: ViewOption = effectiveViewModeOverride ?? viewMode;
 
-    const allItems = useMemo(() => {
-        const baseItems = items;
-        if (
-            isChipotleBuildPage &&
-            (selectedEntree === "chips-sides" ||
-                selectedEntree === "high-protein-menu" ||
-                selectedEntree === "drinks")
-        ) {
-            return baseItems.filter(
-                (item) => item.entreeGroup === selectedEntree,
-            );
-        }
-        return baseItems;
-    }, [isChipotleBuildPage, items, selectedEntree]);
+    const allItems = items;
 
     const sourceItems =
         effectiveViewMode === "ingredients" ? ingredientMenuItems : allItems;
@@ -147,50 +117,7 @@ export function useRestaurantMenuControls({
         ],
     );
 
-    const visibleMenuItems = useMemo(() => {
-        if (!isChipotleBuildPage || !selectedEntree) {
-            return filteredItems;
-        }
-
-        const hiddenSections = new Set(
-            (
-                chipotleBuilderConfig?.hiddenSectionsByEntree?.[
-                    selectedEntree
-                ] ?? []
-            ).map((section) => section.trim().toLowerCase()),
-        );
-
-        if (hiddenSections.size === 0) {
-            return filteredItems;
-        }
-
-        return filteredItems
-            .map((item) => {
-                const nextCategories = (item.categories ?? []).filter(
-                    (category) =>
-                        !hiddenSections.has(category.trim().toLowerCase()),
-                );
-                const nextVariants = item.variants?.map((variant) => ({
-                    ...variant,
-                    categories: variant.categories?.filter(
-                        (category) =>
-                            !hiddenSections.has(category.trim().toLowerCase()),
-                    ),
-                }));
-
-                return {
-                    ...item,
-                    categories: nextCategories,
-                    variants: nextVariants,
-                };
-            })
-            .filter((item) => item.categories.length > 0);
-    }, [
-        filteredItems,
-        isChipotleBuildPage,
-        selectedEntree,
-        chipotleBuilderConfig,
-    ]);
+    const visibleMenuItems = filteredItems;
 
     const orderedSections = useMemo(
         () =>
@@ -217,10 +144,7 @@ export function useRestaurantMenuControls({
 
     const handleViewChange = useCallback(
         (nextView: ViewOption) => {
-            if (
-                (isChipotleChipsSidesSelection || isChipotleDrinksSelection) &&
-                nextView !== "menu"
-            ) {
+            if (isViewChangeAllowed && !isViewChangeAllowed(nextView)) {
                 return;
             }
 
@@ -240,8 +164,7 @@ export function useRestaurantMenuControls({
         },
         [
             effectiveViewMode,
-            isChipotleChipsSidesSelection,
-            isChipotleDrinksSelection,
+            isViewChangeAllowed,
             pathname,
             router,
             searchParams,
