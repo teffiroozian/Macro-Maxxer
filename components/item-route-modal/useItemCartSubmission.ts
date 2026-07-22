@@ -11,26 +11,10 @@ import {
   buildStandardCartItemPayload,
 } from "@/lib/cart/standardItemConfiguration";
 import {
-  buildHighProteinBuildConfiguration,
-  isChipotleHighProteinMenuItem,
-} from "@/lib/restaurantBuilders/chipotle/highProtein";
-import type { ChipotleBuildConfiguration } from "@/lib/restaurantBuilders/chipotle";
-import { toUniversalChipotleBuildConfiguration } from "@/lib/restaurantBuilders/chipotle/cartAdapter";
-
-type SelectedChipotleIngredientItems = Record<string, { item: MenuItem; quantity: number }>;
-
-type CartSubmissionChipotleState = {
-  isPrebuiltBuilderItem: boolean;
-  buildConfiguration: ChipotleBuildConfiguration;
-  selectedIngredientItems: SelectedChipotleIngredientItems;
-  selectedIngredientVariantIds: Record<string, string>;
-  proteinPortionMode: ChipotleBuildConfiguration["proteinPortionMode"];
-  splitPortionModeById: ChipotleBuildConfiguration["splitPortionModeById"];
-  selectedTacoCount: ChipotleBuildConfiguration["selectedTacoCount"];
-  selectedTacoShellId: string;
-  ingredientPortionLabelById: Record<string, string>;
-  adjustedTotals: Nutrition;
-};
+  createChipotleCartItemPayload,
+  resolveChipotleStandardItemSelection,
+  type ChipotleCartSubmissionState,
+} from "@/lib/restaurantBuilders/chipotle/cartAdapter";
 
 type CartSubmissionStandardState = {
   selectedVariant?: ItemVariant;
@@ -56,7 +40,7 @@ export function useItemCartSubmission({
   quantity: number;
   editingCartItem: CartItem | null;
   standard: CartSubmissionStandardState;
-  chipotle: CartSubmissionChipotleState;
+  chipotle: ChipotleCartSubmissionState;
   onAfterSubmit: () => void;
 }) {
   const { addItem, updateItem } = useCart();
@@ -65,52 +49,7 @@ export function useItemCartSubmission({
 
   const submitCartItem = useCallback(() => {
     if (chipotle.isPrebuiltBuilderItem) {
-      const nextBuildConfiguration: ChipotleBuildConfiguration = {
-        ...chipotle.buildConfiguration,
-        selectedIngredientItems: Object.fromEntries(
-          Object.entries(chipotle.selectedIngredientItems).map(([ingredientId, selectedIngredient]) => [
-            ingredientId,
-            { quantity: selectedIngredient.quantity },
-          ])
-        ),
-        selectedIngredientVariantIds: chipotle.selectedIngredientVariantIds,
-        proteinPortionMode: chipotle.proteinPortionMode,
-        splitPortionModeById: chipotle.splitPortionModeById,
-        selectedTacoCount: chipotle.selectedTacoCount,
-        selectedTacoShell: chipotle.selectedTacoShellId === "soft-flour-tortilla" ? "soft" : "crispy",
-      };
-
-      const customizationLabels = Object.entries(chipotle.selectedIngredientItems).map(
-        ([ingredientId, selectedIngredient]) =>
-          `${selectedIngredient.item.name}: ${selectedIngredient.quantity}x${
-            chipotle.ingredientPortionLabelById[ingredientId]
-              ? ` (${chipotle.ingredientPortionLabelById[ingredientId]})`
-              : ""
-          }`
-      );
-
-      const payload = {
-        name: item.name,
-        image: item.image,
-        quantity,
-        customizations: customizationsFromLabels(customizationLabels),
-        macrosPerItem: {
-          calories: chipotle.adjustedTotals.calories,
-          protein: chipotle.adjustedTotals.protein,
-          carbs: chipotle.adjustedTotals.carbs,
-          totalFat: chipotle.adjustedTotals.totalFat,
-        },
-        nutritionPerItem: {
-          calories: chipotle.adjustedTotals.calories,
-          protein: chipotle.adjustedTotals.protein,
-          carbs: chipotle.adjustedTotals.carbs,
-          totalFat: chipotle.adjustedTotals.totalFat,
-        },
-        selection: {
-          type: "build-your-own" as const,
-          buildConfiguration: toUniversalChipotleBuildConfiguration(nextBuildConfiguration),
-        },
-      };
+      const payload = createChipotleCartItemPayload({ item, quantity, chipotle });
 
       onAfterSubmit();
       window.setTimeout(() => {
@@ -141,20 +80,13 @@ export function useItemCartSubmission({
     });
     const nextCartItemPayload = {
       ...standardPayload,
-      selection:
-        editingCartItem?.selection.type === "build-your-own"
-          ? editingCartItem.selection
-          : isChipotleHighProteinMenuItem(item, restaurantId)
-            ? (() => {
-                const buildConfiguration = buildHighProteinBuildConfiguration(item, ingredients);
-                return buildConfiguration
-                  ? {
-                      type: "build-your-own" as const,
-                      buildConfiguration: toUniversalChipotleBuildConfiguration(buildConfiguration),
-                    }
-                  : standardPayload.selection;
-              })()
-            : standardPayload.selection,
+      selection: resolveChipotleStandardItemSelection({
+        item,
+        restaurantId,
+        ingredients,
+        fallbackSelection: standardPayload.selection,
+        editingSelection: editingCartItem?.selection,
+      }),
     };
 
     onAfterSubmit();
