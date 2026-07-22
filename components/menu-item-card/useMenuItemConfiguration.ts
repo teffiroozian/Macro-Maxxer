@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react";
 import type { MenuItem, ResolvedAddonGroups } from "@/types/menu";
-import type { ResolvedPanelIngredient } from "@/components/ItemDetailsPanel";
+import type { ResolvedPanelIngredient } from "@/lib/itemDetails/types";
 import { getDefaultIngredientCounts } from "@/lib/menuItemCalculations";
 import {
   getSelectedAddonsFromLabel,

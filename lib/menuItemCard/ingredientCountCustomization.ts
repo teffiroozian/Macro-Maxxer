@@ -1,5 +1,5 @@
 import { getDefaultIngredientCounts } from "@/lib/menuItemCalculations";
-import type { ResolvedPanelIngredient } from "@/components/ItemDetailsPanel";
+import type { ResolvedPanelIngredient } from "@/lib/itemDetails/types";
 
 export function formatIngredientCountCustomizationLabel(ingredientName: string, count: number) {
   return count === 0 ? `${ingredientName}: Removed` : `${ingredientName}: ${count}x`;

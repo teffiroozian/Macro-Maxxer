@@ -19,6 +19,7 @@ import { resolveIncludedIngredientDefaults } from "@/lib/itemIngredients";
 import { normalizeNutrition } from "@/lib/nutrition";
 import type { IngredientItem, ItemVariant, MenuItem, ResolvedAddonGroups, RestaurantCustomizationRules } from "@/types/menu";
 import type { Nutrition } from "@/types/nutrition";
+import type { ResolvedPanelIngredient } from "@/lib/itemDetails/types";
 
 /**
  * Resolves ingredient UI data from raw menu domain inputs.
@@ -30,19 +31,6 @@ import type { Nutrition } from "@/types/nutrition";
  * 3) Build per-tab ingredient lists (including single-select "None" behavior and max-quantity constraints).
  * 4) Merge tab aliases into display tabs consumed by ItemDetailsPanel.
  */
-export type ResolvedPanelIngredient = {
-  id: string;
-  label: string;
-  icon: string;
-  tabLabel?: string;
-  ingredientItem?: IngredientItem;
-  maxQuantity?: number;
-  nutrition: Nutrition;
-  calories?: number;
-  defaultCount: number;
-  isNoneOption?: boolean;
-};
-
 export type ResolvedIngredientTab = {
   id: string;
   label: string;

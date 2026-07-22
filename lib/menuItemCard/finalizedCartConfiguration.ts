@@ -1,7 +1,7 @@
 import type { CartCustomization, CartSelection, CartSelectionOption } from "@/types/cart";
 import type { IngredientItem, ItemVariant, MenuItem, ResolvedAddonGroups } from "@/types/menu";
 import type { CoreMacros, Nutrition } from "@/types/nutrition";
-import type { ResolvedPanelIngredient } from "@/components/ItemDetailsPanel";
+import type { ResolvedPanelIngredient } from "@/lib/itemDetails/types";
 import { customizationsFromLabels } from "@/lib/cart/customizationLabels";
 import {
   resolveStandardItemConfiguration,

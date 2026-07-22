@@ -27,14 +27,13 @@ import {
 } from "@/lib/itemDetails/helpers";
 import {
   type ResolvedIngredientTab,
-  type ResolvedPanelIngredient,
   resolvePanelIngredientTabs,
   resolvePanelIngredients,
 } from "@/lib/itemDetails/ingredientResolution";
+import type { ResolvedPanelIngredient } from "@/lib/itemDetails/types";
 import SectionEyebrow from "@/components/ui/SectionEyebrow";
 
 export { resolvePanelIngredients, resolvePanelIngredientTabs };
-export type { ResolvedIngredientTab, ResolvedPanelIngredient };
 
 function format(n?: number, suffix = "") {
   return n === undefined || n === null || Number.isNaN(n)
