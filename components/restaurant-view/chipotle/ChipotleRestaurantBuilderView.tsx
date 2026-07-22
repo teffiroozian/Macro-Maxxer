@@ -67,7 +67,8 @@ import {
 import type { ChipotleBuildConfiguration } from "@/lib/restaurantBuilders/chipotle";
 import BuildSummaryDrawer from "../BuildSummaryDrawer";
 import { useChipotleBuilderState } from "./useChipotleBuilderState";
-import { useRestaurantMenuControls } from "@/hooks/useRestaurantMenuControls";
+import { useRestaurantMenuControls } from "../useRestaurantMenuControls";
+import { useChipotleMenuControlAdjustments } from "./useChipotleMenuControlAdjustments";
 import EntreeSelectionHero from "./EntreeSelectionHero";
 import KidsMealSelector from "./KidsMealSelector";
 import ChipotleBuilderSection from "./ChipotleBuilderSection";
@@ -467,6 +468,12 @@ export default function ChipotleRestaurantBuilderView({
     [ingredientMenuItems],
   );
 
+  const chipotleMenuControlAdjustments = useChipotleMenuControlAdjustments({
+    selectedEntree,
+    items,
+    chipotleBuilderConfig,
+  });
+
   const {
     sort,
     filters,
@@ -474,24 +481,38 @@ export default function ChipotleRestaurantBuilderView({
     rankedAllFilters,
     effectiveViewMode,
     calorieBounds,
-    visibleMenuItems,
-    orderedSections,
-    categoryOptions,
+    visibleMenuItems: unadjustedVisibleMenuItems,
+    orderedSections: baseOrderedSections,
+    categoryOptions: baseCategoryOptions,
     handleViewChange,
     handleSortChange,
     toggleRankedAllFilter,
   } = useRestaurantMenuControls({
     hasBuildYourOwn,
-    isChipotleBuildPage,
-    selectedEntree,
-    items,
+    effectiveViewModeOverride:
+      chipotleMenuControlAdjustments.effectiveViewModeOverride,
+    isViewChangeAllowed: chipotleMenuControlAdjustments.isViewChangeAllowed,
+    items: chipotleMenuControlAdjustments.controlItems,
     ingredientMenuItems,
     searchQuery,
-    chipotleBuilderConfig,
     router,
     pathname,
     searchParams,
   });
+
+  const adjustedChipotleMenuControls = useChipotleMenuControlAdjustments({
+    selectedEntree,
+    items,
+    visibleMenuItems: unadjustedVisibleMenuItems,
+    effectiveViewMode,
+    chipotleBuilderConfig,
+  });
+  const visibleMenuItems =
+    adjustedChipotleMenuControls.visibleMenuItems ?? unadjustedVisibleMenuItems;
+  const orderedSections =
+    adjustedChipotleMenuControls.orderedSections ?? baseOrderedSections;
+  const categoryOptions =
+    adjustedChipotleMenuControls.categoryOptions ?? baseCategoryOptions;
   const [activeCategory, setActiveCategory] = useState<string>(
     () => orderedSections[0] ?? "",
   );

@@ -45,7 +45,7 @@ import type { RestaurantBuilderConfig } from "@/types/builder";
 import { categorySectionId } from "@/lib/menuSections/sorting";
 import MenuSections from "./MenuSections";
 import StickyRestaurantBar from "./StickyRestaurantBar";
-import { useRestaurantMenuControls } from "@/hooks/useRestaurantMenuControls";
+import { useRestaurantMenuControls } from "./restaurant-view/useRestaurantMenuControls";
 import RestaurantCategorySidebar from "./restaurant-view/RestaurantCategorySidebar";
 import ChipotleRestaurantBuilderView from "./restaurant-view/chipotle/ChipotleRestaurantBuilderView";
 
@@ -175,12 +175,9 @@ function StandardRestaurantView({
     toggleRankedAllFilter,
   } = useRestaurantMenuControls({
     hasBuildYourOwn,
-    isChipotleBuildPage: false,
-    selectedEntree: null,
     items,
     ingredientMenuItems,
     searchQuery,
-    chipotleBuilderConfig: undefined,
     router,
     pathname,
     searchParams,
