@@ -1,7 +1,7 @@
 import type { RefObject } from "react";
 import { type LucideIcon } from "lucide-react";
 
-import type { SortOption } from "@/components/ControlsRow";
+import type { SortOption } from "@/lib/menuSections/sortOptions";
 import SelectorShell from "@/components/controls/SelectorShell";
 
 type SortSelectorOption = {

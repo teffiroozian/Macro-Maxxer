@@ -1,6 +1,6 @@
 import { useCallback, useMemo, useState } from "react";
 import type { ReadonlyURLSearchParams } from "next/navigation";
-import type { ViewOption } from "@/components/ControlsRow";
+import type { ViewOption } from "@/components/controls/types";
 import type { MenuItem } from "@/types/menu";
 import type {
     ChipotleBuilderConfig,

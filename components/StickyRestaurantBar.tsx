@@ -6,10 +6,8 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import CartIconDropdown from "@/components/cart/CartIconDropdown";
 import DesktopRestaurantMenu from "@/components/DesktopRestaurantMenu";
-import ControlsRow, {
-  FilterChips,
-  type ViewOption,
-} from "./ControlsRow";
+import ControlsRow, { FilterChips } from "./ControlsRow";
+import type { ViewOption } from "@/components/controls/types";
 import type { Filters } from "@/lib/menuSections/filterOptions";
 import type { SortOption } from "@/lib/menuSections/sortOptions";
 import { Menu, Search } from "lucide-react";
