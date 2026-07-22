@@ -7,6 +7,7 @@ import Image from "next/image";
 import { useFilterChipActions } from "./useFilterChipActions";
 import { SORT_OPTION_VALUES, type SortOption } from "@/lib/menuSections/sortOptions";
 import type { Filters } from "@/lib/menuSections/filterOptions";
+import type { ViewOption } from "@/components/controls/types";
 import MobileNavDrawer from "@/components/MobileNavDrawer";
 import AppButton from "@/components/ui/AppButton";
 import FilterChip from "@/components/ui/FilterChip";
@@ -25,8 +26,6 @@ import {
   Menu,
 } from "lucide-react";
 
-export type ViewOption = "menu" | "ingredients" | "ranking";
-export type { Filters, SortOption };
 
 const PROTEIN_OPTIONS = [20, 30, 40, 50];
 

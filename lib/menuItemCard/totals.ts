@@ -1,6 +1,6 @@
 import type { ItemVariant, MenuItem } from "@/types/menu";
 import type { CoreMacros, Nutrition } from "@/types/nutrition";
-import type { ResolvedPanelIngredient } from "@/components/ItemDetailsPanel";
+import type { ResolvedPanelIngredient } from "@/lib/itemDetails/types";
 import { addonFat, menuItemFatWithFallback } from "@/lib/menuItemCalculations";
 import { addNutrition, normalizeNutrition } from "@/lib/nutrition";
 

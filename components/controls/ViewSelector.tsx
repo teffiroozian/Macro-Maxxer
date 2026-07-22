@@ -1,7 +1,7 @@
 import type { RefObject } from "react";
 import { type LucideIcon } from "lucide-react";
 
-import type { ViewOption } from "@/components/ControlsRow";
+import type { ViewOption } from "@/components/controls/types";
 import SelectorShell from "@/components/controls/SelectorShell";
 
 type ViewSelectorOption = {

@@ -1,5 +1,5 @@
 import type { MenuItem } from "@/types/menu";
-import type { ResolvedPanelIngredient } from "@/components/ItemDetailsPanel";
+import type { ResolvedPanelIngredient } from "@/lib/itemDetails/types";
 import { getDefaultMenuItemNutrition } from "@/lib/nutrition";
 
 export function normalizeCategory(category: string) {
