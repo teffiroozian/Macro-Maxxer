@@ -47,7 +47,7 @@ import MenuSections from "./MenuSections";
 import StickyRestaurantBar from "./StickyRestaurantBar";
 import { useRestaurantMenuControls } from "@/hooks/useRestaurantMenuControls";
 import RestaurantCategorySidebar from "./restaurant-view/RestaurantCategorySidebar";
-import ChipotleRestaurantBuilderView from "./restaurant-view/ChipotleRestaurantBuilderView";
+import ChipotleRestaurantBuilderView from "./restaurant-view/chipotle/ChipotleRestaurantBuilderView";
 
 const CATEGORY_ICONS: Record<string, LucideIcon> = {
   sandwich: Sandwich,
