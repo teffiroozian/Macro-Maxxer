@@ -46,8 +46,8 @@ import {
   calculateIngredientCountTotals,
 } from "@/lib/menuItemCard/totals";
 import { resolveComboDrinkOptions, resolveComboMealConfig, resolveComboSideOptions } from "@/lib/comboMeals";
-import { useItemCustomizationState } from "@/components/item-route-modal/useItemCustomizationState";
-import { useItemCartSubmission } from "@/components/item-route-modal/useItemCartSubmission";
+import { useItemCustomizationState } from "./useItemCustomizationState";
+import { useItemCartSubmission } from "./useItemCartSubmission";
 import { useCart } from "@/stores/cartStore";
 
 const emptyAddon: MenuItem = {

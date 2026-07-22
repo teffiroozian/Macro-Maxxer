@@ -1,5 +1,5 @@
 import { notFound } from "next/navigation";
-import ItemRouteModal from "@/components/ItemRouteModal";
+import ItemRouteModal from "@/components/item-route-modal/ItemRouteModal";
 import RestaurantPageContent from "@/components/RestaurantPageContent";
 import { getRestaurantItemRouteData } from "@/lib/restaurantItemRouteData";
 

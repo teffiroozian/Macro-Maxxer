@@ -55,9 +55,9 @@ import type {
 } from "@/types/menu";
 import type { RestaurantBuilderConfig } from "@/types/builder";
 import { categorySectionId } from "@/lib/menuSections/sorting";
-import MenuSections from "../MenuSections";
-import StickyRestaurantBar from "../StickyRestaurantBar";
-import StickyMacroTotalsBar from "../StickyMacroTotalsBar";
+import MenuSections from "../../MenuSections";
+import StickyRestaurantBar from "../../StickyRestaurantBar";
+import StickyMacroTotalsBar from "../../StickyMacroTotalsBar";
 import MacroTotalsGrid from "@/components/MacroTotalsGrid";
 import { useCart } from "@/stores/cartStore";
 import {
@@ -65,13 +65,13 @@ import {
   toUniversalChipotleBuildConfiguration,
 } from "@/lib/restaurantBuilders/chipotle/cartAdapter";
 import type { ChipotleBuildConfiguration } from "@/lib/restaurantBuilders/chipotle";
-import BuildSummaryDrawer from "./BuildSummaryDrawer";
+import BuildSummaryDrawer from "../BuildSummaryDrawer";
 import { useChipotleBuilderState } from "./useChipotleBuilderState";
 import { useRestaurantMenuControls } from "@/hooks/useRestaurantMenuControls";
 import EntreeSelectionHero from "./EntreeSelectionHero";
 import KidsMealSelector from "./KidsMealSelector";
 import ChipotleBuilderSection from "./ChipotleBuilderSection";
-import RestaurantCategorySidebar from "./RestaurantCategorySidebar";
+import RestaurantCategorySidebar from "../RestaurantCategorySidebar";
 import {
   type ChipotleEntreeSelection,
   type ChipotleKidsMealId,

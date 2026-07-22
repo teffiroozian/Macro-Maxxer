@@ -7,7 +7,7 @@ import CartNutritionSummary from "@/components/cart/CartNutritionSummary";
 import GlobalMobileNav from "@/components/GlobalMobileNav";
 import DesktopNav from "@/components/DesktopNav";
 import EmptyStateCard from "@/components/EmptyStateCard";
-import ItemRouteModal from "@/components/ItemRouteModal";
+import ItemRouteModal from "@/components/item-route-modal/ItemRouteModal";
 import CartItemsSection from "@/components/cart/CartItemsSection";
 import CartMealBreakdown from "@/components/cart/CartMealBreakdown";
 import { useCart } from "@/stores/cartStore";

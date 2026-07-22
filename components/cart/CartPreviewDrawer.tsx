@@ -14,7 +14,7 @@ import SurfaceCard from "@/components/ui/SurfaceCard";
 import AppButton, { appButtonClassName } from "@/components/ui/AppButton";
 import AppIconButton from "@/components/ui/AppIconButton";
 import QuantityStepper from "@/components/QuantityStepper";
-import ItemRouteModal from "@/components/ItemRouteModal";
+import ItemRouteModal from "@/components/item-route-modal/ItemRouteModal";
 import { getAllRestaurants } from "@/lib/restaurants";
 import { useCart } from "@/stores/cartStore";
 import { getCustomizationLabels, getSelectionDetailsLabel } from "@/lib/cart/customizationLabels";

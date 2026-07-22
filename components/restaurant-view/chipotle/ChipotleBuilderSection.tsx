@@ -2,7 +2,7 @@
 
 import type { ComponentProps } from "react";
 import type { ChipotleKidsMealId } from "@/lib/restaurantBuilders/chipotle";
-import MenuSections from "../MenuSections";
+import MenuSections from "../../MenuSections";
 import KidsMealSelector from "./KidsMealSelector";
 
 type KidsMealOption = ComponentProps<typeof KidsMealSelector>["options"][number];
