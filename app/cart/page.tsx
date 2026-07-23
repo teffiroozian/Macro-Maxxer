@@ -27,8 +27,8 @@ export default function CartPage() {
 
   return (
     <>
-      <GlobalMobileNav title="Cart" showSearchButton={false} showCartButton={false} />
-      <div className="px-4 pt-4 sm:px-6"><DesktopNav showSearchButton={false} showCartButton={false} /></div>
+      <GlobalMobileNav showCartButton={false} />
+      <div className="px-4 pt-4 sm:px-6"><DesktopNav showCartButton={false} /></div>
       <main className="mx-auto flex min-h-screen w-full max-w-5xl flex-col gap-6 px-4 pb-10 pt-28 sm:px-6 lg:pt-10">
         <section className="w-full space-y-3">
           {items.length === 0 ? (

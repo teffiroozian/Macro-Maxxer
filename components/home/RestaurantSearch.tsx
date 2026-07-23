@@ -5,11 +5,9 @@ import { useRouter } from "next/navigation";
 import SurfaceCard from "@/components/ui/SurfaceCard";
 import RestaurantResultRow from "@/components/global-search/RestaurantResultRow";
 import { searchRestaurants } from "@/lib/search/searchRestaurants";
+import { useRecentAndPopularRestaurants } from "@/lib/search/useRecentAndPopularRestaurants";
 import type { RestaurantIndexEntry } from "@/types/restaurant";
 
-const RECENT_RESTAURANTS_KEY = "recentlySearchedRestaurants";
-const MAX_RECENT_RESTAURANTS = 3;
-const MAX_POPULAR_RESTAURANTS = 10;
 const MAX_FILTERED_SUGGESTIONS = 10;
 
 type RestaurantSearchProps = {
@@ -21,42 +19,8 @@ export default function RestaurantSearch({ restaurants }: RestaurantSearchProps)
   const [query, setQuery] = useState("");
   const [activeIndex, setActiveIndex] = useState(-1);
   const [isFocused, setIsFocused] = useState(false);
-  const [recentRestaurantIds, setRecentRestaurantIds] = useState<string[]>(() => {
-    if (typeof window === "undefined") {
-      return [];
-    }
-
-    try {
-      const stored = window.localStorage.getItem(RECENT_RESTAURANTS_KEY);
-      const parsed = stored ? (JSON.parse(stored) as string[]) : [];
-      if (!Array.isArray(parsed)) {
-        return [];
-      }
-
-      return parsed.filter(Boolean).slice(0, MAX_RECENT_RESTAURANTS);
-    } catch {
-      return [];
-    }
-  });
-
-  const recentRestaurants = useMemo(
-    () =>
-      recentRestaurantIds
-        .map((id) => restaurants.find((restaurant) => restaurant.id === id))
-        .filter((restaurant): restaurant is RestaurantIndexEntry =>
-          Boolean(restaurant)
-        )
-        .slice(0, MAX_RECENT_RESTAURANTS),
-    [recentRestaurantIds, restaurants]
-  );
-
-  const popularRestaurants = useMemo(() => {
-    const recentIdSet = new Set(recentRestaurants.map((restaurant) => restaurant.id));
-
-    return restaurants
-      .filter((restaurant) => !recentIdSet.has(restaurant.id))
-      .slice(0, MAX_POPULAR_RESTAURANTS);
-  }, [recentRestaurants, restaurants]);
+  const { recentRestaurants, popularRestaurants, removeRecent } =
+    useRecentAndPopularRestaurants(restaurants);
 
   const filteredSuggestions = useMemo(
     () => searchRestaurants(restaurants, query).slice(0, MAX_FILTERED_SUGGESTIONS),
@@ -87,17 +51,7 @@ export default function RestaurantSearch({ restaurants }: RestaurantSearchProps)
   };
 
   const handleRemoveRecent = (restaurantId: string) => {
-    setRecentRestaurantIds((prev) => {
-      const next = prev.filter((id) => id !== restaurantId);
-
-      try {
-        window.localStorage.setItem(RECENT_RESTAURANTS_KEY, JSON.stringify(next));
-      } catch {
-        // Ignore localStorage write errors.
-      }
-
-      return next;
-    });
+    removeRecent(restaurantId);
     setActiveIndex(-1);
   };
 

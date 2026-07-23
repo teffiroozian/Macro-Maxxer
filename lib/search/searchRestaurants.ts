@@ -13,6 +13,8 @@ export function searchRestaurants(
     return [];
   }
 
-  const matches = restaurants.filter((restaurant) => matchesText(restaurant.name, terms));
+  const matches = restaurants.filter(
+    (restaurant) => !restaurant.isComingSoon && matchesText(restaurant.name, terms)
+  );
   return rankByName(matches, query, (restaurant) => restaurant.name);
 }

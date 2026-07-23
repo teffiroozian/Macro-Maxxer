@@ -1,9 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
-import GlobalMobileNav from "@/components/GlobalMobileNav";
-import DesktopNav from "@/components/DesktopNav";
 import SurfaceCard from "@/components/ui/SurfaceCard";
-import RestaurantSearch from "@/components/home/RestaurantSearch";
+import HeroSearchNav from "@/components/home/HeroSearchNav";
 import { getAllRestaurants } from "@/lib/restaurants";
 
 const restaurants = getAllRestaurants();
@@ -32,21 +30,7 @@ export default function Home() {
 
   return (
     <>
-      <section>
-        <GlobalMobileNav />
-        <div className="mx-auto max-w-5xl px-4 pt-4 sm:px-6">
-          <DesktopNav />
-        </div>
-        <div className="mx-auto flex max-w-5xl flex-col gap-12 px-4 p-24 sm:px-6">
-          <header className="mx-auto max-w-3xl text-center">
-            <h1 className="text-center text-4xl font-semibold leading-tight tracking-tight text-neutral-900">
-              Find High-Protein Fast Food Items in Seconds
-            </h1>
-          </header>
-
-          <RestaurantSearch restaurants={restaurants} />
-        </div>
-      </section>
+      <HeroSearchNav restaurants={restaurants} />
 
       <main className="mx-auto flex max-w-5xl flex-col gap-12 px-4 p-24 sm:px-6">
 
