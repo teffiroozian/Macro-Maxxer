@@ -28,11 +28,12 @@ export default function DesktopNav({
 
       <div className={`flex min-w-0 flex-1 items-center ${searchBarVariant === "compact" ? "justify-center" : ""}`}>
         {showSearchBar ? (
-          // 30rem matches DesktopSearchDropdown's panel min-width, so the
+          // 34rem matches DesktopSearchDropdown's panel min-width, so the
           // compact bar and the panel that opens beneath it are always
-          // exactly the same width.
+          // exactly the same width. Sized to comfortably fit larger
+          // thumbnails, full nutrition, and future Quick Add/variant rows.
           <DesktopSearchDropdown
-            className={searchBarVariant === "compact" ? "w-full max-w-[30rem]" : "w-full"}
+            className={searchBarVariant === "compact" ? "w-full max-w-[34rem]" : "w-full"}
           />
         ) : null}
       </div>

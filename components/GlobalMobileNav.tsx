@@ -30,7 +30,7 @@ export default function GlobalMobileNav({
               {showSearchButton ? (
                 <button
                   type="button"
-                  onClick={openSearch}
+                  onClick={() => openSearch()}
                   className="inline-flex h-9 w-9 cursor-pointer items-center justify-center rounded-full border border-slate-300/80 bg-white text-slate-800"
                   aria-label="Search"
                 >

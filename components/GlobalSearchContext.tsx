@@ -5,7 +5,7 @@ import { createContext, useContext, useMemo, useRef, useState, type ReactNode } 
 type GlobalSearchContextValue = {
   isOpen: boolean;
   query: string;
-  open: () => void;
+  open: (previouslyFocused?: HTMLElement | null) => void;
   close: () => void;
   setQuery: (value: string) => void;
 };
@@ -20,18 +20,52 @@ export function GlobalSearchProvider({ children }: { children: ReactNode }) {
   // already stolen focus away from whatever triggered the open.
   const previouslyFocusedElementRef = useRef<HTMLElement | null>(null);
 
-  const open = () => {
+  // Accepts an explicit previously-focused element (pass this when open() is
+  // called from the search input's own onFocus handler, via the native
+  // FocusEvent's relatedTarget). Callers that open search from a plain click
+  // (e.g. the mobile search icon button) can omit it — document.activeElement
+  // at click time is still correct there, since the target of that click
+  // isn't the search input itself.
+  //
+  // Without this distinction, calling open() from the input's onFocus would
+  // capture document.activeElement *after* the browser has already moved
+  // focus to that same input (per the FocusEvent spec, activeElement updates
+  // before the focus event fires) — close() would then call .focus() on the
+  // input itself, re-triggering onFocus -> open() and silently reopening the
+  // panel, which is what made outside clicks require two attempts to close.
+  const open = (previouslyFocused?: HTMLElement | null) => {
     previouslyFocusedElementRef.current =
-      typeof document !== "undefined" && document.activeElement instanceof HTMLElement
-        ? document.activeElement
-        : null;
+      previouslyFocused !== undefined
+        ? previouslyFocused
+        : typeof document !== "undefined" && document.activeElement instanceof HTMLElement
+          ? document.activeElement
+          : null;
     setIsOpen(true);
   };
 
   const close = () => {
     setIsOpen(false);
     setQuery("");
-    previouslyFocusedElementRef.current?.focus();
+
+    const target = previouslyFocusedElementRef.current;
+    target?.focus();
+
+    // Escape, and selecting a result (rows use onMouseDown preventDefault so
+    // clicking them never natively blurs the input), close() without the
+    // browser ever having blurred the search input itself. If the restore
+    // target above was null/non-focusable (e.g. <body>, which silently
+    // no-ops .focus()), the input would otherwise stay focused after close —
+    // harmless visually, but it means a later click on it won't refire the
+    // focus event that reopens the panel. Explicitly blur whatever's still
+    // focused whenever the restore didn't land, so the next click reopens.
+    if (
+      typeof document !== "undefined" &&
+      document.activeElement instanceof HTMLElement &&
+      document.activeElement !== target
+    ) {
+      document.activeElement.blur();
+    }
+
     previouslyFocusedElementRef.current = null;
   };
 

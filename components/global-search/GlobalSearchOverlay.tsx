@@ -1,10 +1,12 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import { Search } from "lucide-react";
 import AppIconButton from "@/components/ui/AppIconButton";
 import GlobalSearchPanel from "@/components/global-search/GlobalSearchPanel";
 import { useCloseOnEscape } from "@/components/global-search/useCloseOnEscape";
 import { useGlobalSearch } from "@/components/GlobalSearchContext";
+import { useGlobalSearchState } from "@/lib/search/useGlobalSearchState";
 
 // Mobile-only presentation of Global Search: a full-screen/bottom-sheet
 // takeover. Desktop uses DesktopSearchDropdown instead (anchored under the
@@ -12,6 +14,7 @@ import { useGlobalSearch } from "@/components/GlobalSearchContext";
 // `lg` (1024px), same convention used everywhere else in the app.
 export default function GlobalSearchOverlay() {
   const { isOpen, close } = useGlobalSearch();
+  const state = useGlobalSearchState();
   const dialogRef = useRef<HTMLDivElement>(null);
 
   useCloseOnEscape(isOpen, close);
@@ -60,8 +63,26 @@ export default function GlobalSearchOverlay() {
             ✕
           </AppIconButton>
         </div>
+
+        <div className="shrink-0 px-5 pt-4">
+          <div className="relative">
+            <input
+              type="text"
+              value={state.query}
+              onChange={(event) => state.handleInputChange(event.target.value)}
+              onKeyDown={state.handleInputKeyDown}
+              placeholder="Search restaurants, menu items..."
+              autoFocus
+              className="w-full rounded-2xl border border-black/10 bg-white py-3 pl-11 pr-4 text-base text-neutral-900 outline-none transition focus:border-black/30 focus:ring-4 focus:ring-black/5"
+            />
+            <span className="pointer-events-none absolute inset-y-0 left-4 flex items-center text-neutral-400">
+              <Search className="h-4 w-4" strokeWidth={2.5} />
+            </span>
+          </div>
+        </div>
+
         <div className="flex-1 overflow-y-auto">
-          <GlobalSearchPanel />
+          <GlobalSearchPanel {...state} />
         </div>
       </div>
     </div>
