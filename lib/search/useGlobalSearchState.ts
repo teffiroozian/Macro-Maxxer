@@ -29,15 +29,30 @@ export function useGlobalSearchState() {
   const [activeIndex, setActiveIndex] = useState(-1);
 
   const isCartPage = pathname === "/cart";
-  const [scope, setScope] = useState<SearchScope>(() => (isCartPage ? "menu-items" : "restaurants"));
+  // Matches /restaurant/[id], /restaurant/[id]/[itemSlug], and the
+  // intercepted item-modal route — all share the /restaurant/<id> prefix.
+  const currentRestaurantId = pathname?.match(/^\/restaurant\/([^/]+)/)?.[1] ?? null;
 
-  const [restaurantFilterId, setRestaurantFilterId] = useState<string | null>(() => {
+  const [scope, setScope] = useState<SearchScope>(() =>
+    isCartPage || currentRestaurantId ? "menu-items" : "restaurants"
+  );
+
+  // The restaurant this page is naturally scoped to (restaurant page, or a
+  // cart holding items from exactly one restaurant) — independent of
+  // restaurantFilterId so the current-restaurant/all-restaurants toggle can
+  // switch back and forth without losing track of it.
+  const naturalRestaurantId = useMemo(() => {
+    if (currentRestaurantId) {
+      return currentRestaurantId;
+    }
     if (!isCartPage) {
       return null;
     }
     const cartContext = getCartRestaurantContext(cartItems);
     return cartContext.scope === "single" ? cartContext.restaurantId : null;
-  });
+  }, [currentRestaurantId, isCartPage, cartItems]);
+
+  const [restaurantFilterId, setRestaurantFilterId] = useState<string | null>(() => naturalRestaurantId);
 
   const isEmptyQuery = !query.trim();
 
@@ -53,14 +68,27 @@ export function useGlobalSearchState() {
     restaurantFilterId,
   });
   const {
-    recentResults: recentMenuItems,
+    recentResults: recentMenuItemsAll,
     addRecent: addRecentMenuItem,
     removeRecent: removeRecentMenuItem,
   } = useRecentMenuItems(searchIndex);
+  // Recents respect the active restaurant scope, same as live search results
+  // (useMenuItemSearch's restaurantFilterId) — switching scope should never
+  // surface another restaurant's history.
+  const recentMenuItems = useMemo(
+    () =>
+      restaurantFilterId
+        ? recentMenuItemsAll.filter((result) => result.restaurant.id === restaurantFilterId)
+        : recentMenuItemsAll,
+    [recentMenuItemsAll, restaurantFilterId]
+  );
   const menuItemSuggestions = isEmptyQuery ? recentMenuItems : menuItemResults;
 
   const filteredRestaurantName = restaurantFilterId
     ? restaurants.find((restaurant) => restaurant.id === restaurantFilterId)?.name
+    : null;
+  const naturalRestaurant = naturalRestaurantId
+    ? restaurants.find((restaurant) => restaurant.id === naturalRestaurantId) ?? null
     : null;
 
   // ----- Shared selection handlers -----
@@ -152,7 +180,10 @@ export function useGlobalSearchState() {
     menuItemResults,
     recentMenuItems,
     removeRecentMenuItem,
+    restaurantFilterId,
     filteredRestaurantName,
+    naturalRestaurantId,
+    naturalRestaurant,
     setRestaurantFilterId,
     handleSelectRestaurant,
     handleSelectMenuItem,

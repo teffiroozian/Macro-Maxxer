@@ -53,43 +53,55 @@ export default function DesktopSearchDropdown({ className = "w-full" }: { classN
 
   return (
     <div ref={containerRef} className={`relative ${className}`}>
-      {/* z-index keeps the bar above the dimming backdrop below (z-228) —
-          without it, the bar has no explicit stacking level and paints
-          underneath the backdrop even though it comes first in the DOM,
-          so it (and the caret/text while typing) would visually dim along
-          with the rest of the page. */}
-      <div className="relative z-[229]">
-        <input
-          type="text"
-          value={state.query}
-          onChange={(event) => state.handleInputChange(event.target.value)}
-          onFocus={(event) => open(event.relatedTarget instanceof HTMLElement ? event.relatedTarget : null)}
-          onKeyDown={state.handleInputKeyDown}
-          placeholder="Search restaurants, menu items..."
-          aria-label="Search"
-          className="h-10 w-full cursor-text rounded-full border border-slate-300/80 bg-white pl-10 pr-4 text-sm text-slate-900 outline-none transition placeholder:text-slate-500 focus:border-slate-400"
-        />
-        <span className="pointer-events-none absolute inset-y-0 left-4 flex items-center text-slate-500">
-          <Search className="h-4 w-4" strokeWidth={2.5} />
-        </span>
-      </div>
-
-      {isOpen ? (
-        <>
-          <div
-            className="fixed inset-0 z-[228] bg-black/15"
-            onClick={close}
-            aria-hidden="true"
+      {/* Outer surface: always reserves the same small padding around the
+          input (so nothing shifts width on focus) but only paints its own
+          background/border/shadow while open, turning into a soft card that
+          the input and panel both sit inside — without literally fusing
+          into one box. z-229 keeps the whole thing (input included) above
+          the dimming backdrop below (z-228). */}
+      <div
+        className={`relative z-[229] p-2 transition-colors ${
+          isOpen ? "rounded-2xl border border-slate-200 bg-white shadow-[0_18px_40px_rgba(15,23,42,0.12)]" : ""
+        }`}
+      >
+        <div className="relative">
+          <input
+            type="text"
+            value={state.query}
+            onChange={(event) => state.handleInputChange(event.target.value)}
+            onFocus={(event) => open(event.relatedTarget instanceof HTMLElement ? event.relatedTarget : null)}
+            onKeyDown={state.handleInputKeyDown}
+            placeholder="Search restaurants, menu items..."
+            aria-label="Search"
+            className="h-10 w-full cursor-text rounded-full border border-slate-300/80 bg-white pl-10 pr-4 text-sm text-slate-900 outline-none transition placeholder:text-slate-500 focus:border-slate-400"
           />
+          <span className="pointer-events-none absolute inset-y-0 left-4 flex items-center text-slate-500">
+            <Search className="h-4 w-4" strokeWidth={2.5} />
+          </span>
+        </div>
+
+        {isOpen ? (
           <div
             role="dialog"
             aria-modal="true"
             aria-label="Search"
-            className="absolute inset-x-0 top-[calc(100%+0.55rem)] z-[229] overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-[0_18px_40px_rgba(15,23,42,0.18)]"
+            // Absolutely positioned (doesn't push the nav row taller) and
+            // sized off the outer surface's own padding box, so its edges
+            // line up with the input exactly — a separate rounded card with
+            // a small gap below, not a joined continuation of the input.
+            className="absolute inset-x-0 top-[calc(100%+0.5rem)] overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-[0_18px_40px_rgba(15,23,42,0.18)]"
           >
             <GlobalSearchPanel {...state} />
           </div>
-        </>
+        ) : null}
+      </div>
+
+      {isOpen ? (
+        <div
+          className="fixed inset-0 z-[228] bg-black/15"
+          onClick={close}
+          aria-hidden="true"
+        />
       ) : null}
     </div>
   );

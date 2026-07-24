@@ -53,7 +53,7 @@ export default function HeroSearchNav({ restaurants }: { restaurants: Restaurant
         <DesktopNav searchBarVariant="hidden" />
       </div>
 
-      <div ref={heroRef} className="mx-auto flex max-w-5xl flex-col gap-12 px-4 p-24 sm:px-6">
+      <div ref={heroRef} className="mx-auto flex max-w-5xl flex-col gap-8 px-4 p-24 sm:px-6">
         <header className="mx-auto max-w-3xl text-center">
           <h1 className="text-center text-4xl font-semibold leading-tight tracking-tight text-neutral-900">
             Find High-Protein Fast Food Items in Seconds

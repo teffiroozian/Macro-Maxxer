@@ -2,6 +2,7 @@
 
 import { useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
+import { Search, X } from "lucide-react";
 import SurfaceCard from "@/components/ui/SurfaceCard";
 import RestaurantResultRow from "@/components/global-search/RestaurantResultRow";
 import MenuItemResultRow from "@/components/global-search/MenuItemResultRow";
@@ -122,9 +123,11 @@ export default function RestaurantSearch({ restaurants }: RestaurantSearchProps)
     <section className="mx-auto w-full max-w-[34rem]">
       <div className="relative">
         {/* Tabs + input share one bordered/shadowed shell so they read as a
-            single search module rather than two stacked controls. */}
-        <div className="overflow-hidden rounded-2xl border border-black/10 bg-white shadow-[0_0_12px_rgba(0,0,0,0.15)]">
-          <div className="flex justify-center border-b border-black/5 pb-1.5 pt-2">
+            single search module rather than two stacked controls — same
+            border/shadow/icon language as the nav's DesktopSearchDropdown,
+            just scaled up (more padding, larger type) for hero prominence. */}
+        <div className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-[0_24px_60px_rgba(15,23,42,0.18)]">
+          <div className="flex justify-center border-b border-slate-100 py-2.5">
             <ScopeSwitcher scope={scope} onChange={handleScopeChange} showIcons className="px-2" />
           </div>
 
@@ -164,49 +167,19 @@ export default function RestaurantSearch({ restaurants }: RestaurantSearchProps)
                 }
               }}
               placeholder="Search restaurants, menu items..."
-              className="w-full border-0 bg-transparent py-3 pl-10 pr-10 text-base text-neutral-900 outline-none"
+              className="w-full border-0 bg-transparent py-4 pl-11 pr-10 text-base text-slate-900 outline-none placeholder:text-slate-500"
             />
-            <span className="pointer-events-none absolute inset-y-0 left-4 flex items-center text-neutral-400">
-              <svg
-                aria-hidden="true"
-                width="20"
-                height="20"
-                viewBox="0 0 24 24"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M11 19a8 8 0 1 1 0-16 8 8 0 0 1 0 16Zm10 2-4.35-4.35"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
+            <span className="pointer-events-none absolute inset-y-0 left-4 flex items-center text-slate-500">
+              <Search className="h-5 w-5" strokeWidth={2.5} />
             </span>
             {query && (
               <button
                 type="button"
                 onClick={handleClear}
-                className="cursor-pointer absolute inset-y-0 right-3 flex items-center rounded-full px-1 text-neutral-400 transition hover:text-neutral-600"
+                className="cursor-pointer absolute inset-y-0 right-3 flex items-center rounded-full px-1 text-slate-400 transition hover:text-slate-600"
                 aria-label="Clear search"
               >
-                <svg
-                  aria-hidden="true"
-                  width="20"
-                  height="20"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    d="m7 7 10 10M17 7 7 17"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                </svg>
+                <X className="h-5 w-5" strokeWidth={2} />
               </button>
             )}
           </div>

@@ -4,6 +4,7 @@ import RestaurantResultRow from "@/components/global-search/RestaurantResultRow"
 import MenuItemResultRow from "@/components/global-search/MenuItemResultRow";
 import BuilderIngredientResultRow from "@/components/global-search/BuilderIngredientResultRow";
 import ScopeSwitcher from "@/components/global-search/ScopeSwitcher";
+import RestaurantScopeControl from "@/components/global-search/RestaurantScopeControl";
 import type { useGlobalSearchState } from "@/lib/search/useGlobalSearchState";
 
 type GlobalSearchPanelProps = ReturnType<typeof useGlobalSearchState>;
@@ -31,7 +32,10 @@ export default function GlobalSearchPanel({
   menuItemResults,
   recentMenuItems,
   removeRecentMenuItem,
+  restaurantFilterId,
   filteredRestaurantName,
+  naturalRestaurantId,
+  naturalRestaurant,
   setRestaurantFilterId,
   handleSelectRestaurant,
   handleSelectMenuItem,
@@ -46,17 +50,14 @@ export default function GlobalSearchPanel({
         <ScopeSwitcher scope={scope} onChange={handleScopeChange} />
       </div>
 
-      {scope === "menu-items" && filteredRestaurantName ? (
-        <div className="flex items-center gap-2 px-5 pt-3 text-xs text-neutral-500">
-          <span>Searching {filteredRestaurantName}&rsquo;s menu</span>
-          <button
-            type="button"
-            onClick={() => setRestaurantFilterId(null)}
-            className="cursor-pointer font-semibold text-neutral-700 underline-offset-2 hover:underline"
-          >
-            Search all restaurants
-          </button>
-        </div>
+      {scope === "menu-items" && naturalRestaurantId && naturalRestaurant ? (
+        <RestaurantScopeControl
+          restaurant={naturalRestaurant}
+          isScoped={restaurantFilterId === naturalRestaurantId}
+          onToggle={() =>
+            setRestaurantFilterId(restaurantFilterId === naturalRestaurantId ? null : naturalRestaurantId)
+          }
+        />
       ) : null}
 
       {scope === "restaurants" ? (
@@ -155,6 +156,10 @@ export default function GlobalSearchPanel({
                   )
                 )}
               </>
+            ) : restaurantFilterId ? (
+              <li className="px-5 py-6 text-center text-sm text-neutral-500">
+                Search {filteredRestaurantName}&rsquo;s menu
+              </li>
             ) : (
               <li className="px-5 py-6 text-center text-sm text-neutral-500">Start typing to search menu items.</li>
             )

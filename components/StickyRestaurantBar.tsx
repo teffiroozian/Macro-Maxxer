@@ -6,6 +6,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import CartIconDropdown from "@/components/cart/CartIconDropdown";
 import DesktopRestaurantMenu from "@/components/DesktopRestaurantMenu";
+import DesktopSearchDropdown from "@/components/global-search/DesktopSearchDropdown";
 import ControlsRow, { FilterChips } from "./ControlsRow";
 import type { ViewOption } from "@/components/controls/types";
 import type { Filters } from "@/lib/menuSections/filterOptions";
@@ -13,6 +14,7 @@ import type { SortOption } from "@/lib/menuSections/sortOptions";
 import { Menu, Search } from "lucide-react";
 import MobileNavDrawer from "@/components/MobileNavDrawer";
 import AppIconButton from "@/components/ui/AppIconButton";
+import { useGlobalSearch } from "@/components/GlobalSearchContext";
 
 import { useFilterChipActions } from "./useFilterChipActions";
 
@@ -67,6 +69,7 @@ export default function StickyRestaurantBar({
   hideSecondaryNav = false,
 }: StickyRestaurantBarProps) {
   const searchInputRef = useRef<HTMLInputElement>(null);
+  const { open: openGlobalSearch } = useGlobalSearch();
   const isSearchMode = searchOpen || searchQuery.trim().length > 0;
   const [openMobileControlsDrawer, setOpenMobileControlsDrawer] = useState<() => void>(() => () => {});
   const [isBrowseDrawerOpen, setIsBrowseDrawerOpen] = useState(false);
@@ -93,7 +96,7 @@ export default function StickyRestaurantBar({
   return (
     <div className="fixed left-0 right-0 top-0 z-[95]" data-sticky-nav="true">
       <div
-        className={`relative z-[110] mx-auto mt-1 flex w-[calc(100%-0.5rem)] max-w-6xl items-center border border-slate-200/70 bg-white shadow-[0_-3px_12px_rgba(15,23,42,0.12)] backdrop-blur sm:w-[calc(100%-1rem)] ${
+        className={`relative z-[110] mx-auto mt-1 flex w-[calc(100%-0.5rem)] max-w-6xl items-center border border-slate-200/70 bg-white shadow-[0_-3px_12px_rgba(15,23,42,0.12)] sm:w-[calc(100%-1rem)] ${
           hideSecondaryNav ? "rounded-2xl" : "rounded-2xl lg:rounded-b-none"
         }`}
       >
@@ -141,28 +144,46 @@ export default function StickyRestaurantBar({
               </span>
             </Link>
             <DesktopRestaurantMenu />
+            {/* Global Search — restaurant pages don't render DesktopNav, so
+                this is the only place the desktop bar is mounted here.
+                Defaults to this restaurant's menu (Slice 3's restaurant-
+                context mechanism, generalized in useGlobalSearchState).
+                Distinct from "Filter this menu" below, which live-filters
+                the grid already on screen instead of searching/navigating. */}
+            <DesktopSearchDropdown className="max-w-[34rem] flex-1" />
           </div>
 
           <div className="ml-auto flex min-w-0 items-center gap-1.5 sm:gap-2">
+            {/* Global Search on mobile — desktop gets the dedicated bar
+                above instead. Mounted globally as a full-screen sheet
+                (GlobalSearchOverlay in app/layout.tsx), so this just opens it. */}
+            <AppIconButton
+              onClick={() => openGlobalSearch()}
+              className="size-9 border-slate-300/80 text-slate-800 lg:hidden"
+              aria-label="Search restaurants, menu items"
+            >
+              <Search className="h-4 w-4" strokeWidth={2.5} />
+            </AppIconButton>
+
             <div className={`overflow-hidden transition-all duration-300 ${isSearchMode ? "w-[min(46vw,16rem)] opacity-100 sm:w-[16rem]" : "w-0 opacity-0"}`}>
               <div className="relative">
                 <input
                   ref={searchInputRef}
                   value={searchQuery}
                   onChange={(event) => setSearchQuery(event.target.value)}
-                  placeholder="Search menu items"
-                  aria-label="Search menu items"
+                  placeholder="Filter this menu"
+                  aria-label="Filter this menu"
                   className="h-9 w-full rounded-full border border-slate-300/80 bg-white px-3 text-sm text-slate-900 outline-none"
                 />
               </div>
             </div>
 
             {isSearchMode ? (
-              <AppIconButton onClick={closeSearch} className="size-9 border-slate-300/80 text-base text-slate-800" aria-label="Close search">
+              <AppIconButton onClick={closeSearch} className="size-9 border-slate-300/80 text-base text-slate-800" aria-label="Close filter">
                 ✕
               </AppIconButton>
             ) : (
-                <AppIconButton onClick={onOpenSearch} className="size-9 border-slate-300/80 text-base text-slate-800" aria-label="Search menu items">
+                <AppIconButton onClick={onOpenSearch} className="size-9 border-slate-300/80 text-base text-slate-800" aria-label="Filter this menu">
                 <Search className="h-4 w-4" strokeWidth={2.5}/>
               </AppIconButton>
             )}
