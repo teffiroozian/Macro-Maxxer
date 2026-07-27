@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useCart } from "@/stores/cartStore";
 import { getSelectionDetailsLabel } from "@/lib/cart/customizationLabels";
@@ -27,6 +27,8 @@ export default function CartIconDropdown({
   buttonClassName,
 }: CartIconDropdownProps) {
   const router = useRouter();
+  const pathname = usePathname();
+  const isCurrentPage = pathname === "/cart";
   const restaurantUi = useOptionalRestaurantUi();
   const {
     items,
@@ -128,6 +130,10 @@ export default function CartIconDropdown({
 
   const addonsLabel = lastAddedItem ? (getSelectionDetailsLabel(lastAddedItem.selection) ?? "") : "";
   const handleOpenCart = () => {
+    // Already on the full cart page — nothing to navigate to or preview.
+    if (isCurrentPage) {
+      return;
+    }
     if (restaurantUi) {
       restaurantUi.openCart();
     } else {
@@ -145,6 +151,7 @@ export default function CartIconDropdown({
         }}
         className={`${buttonClassName} cursor-pointer`}
         aria-label={cartCount > 0 ? `Cart (${cartCount})` : "Cart"}
+        aria-current={isCurrentPage ? "page" : undefined}
         aria-expanded={isOpen}
       >
         {countLabel}

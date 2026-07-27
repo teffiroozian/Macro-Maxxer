@@ -41,7 +41,7 @@ export default function HeroSearchNav({ restaurants }: { restaurants: Restaurant
 
       {/* Sticky search nav: fixed, hidden while the hero search is visible. */}
       <div
-        className={`fixed inset-x-0 top-0 z-[95] px-4 pt-4 transition-all duration-200 sm:px-6 ${
+        className={`fixed inset-x-0 top-0 z-[95] px-4 pt-1 transition-all duration-200 sm:px-6 ${
           isHeroVisible ? "pointer-events-none -translate-y-2 opacity-0" : "opacity-100"
         }`}
       >
@@ -49,7 +49,7 @@ export default function HeroSearchNav({ restaurants }: { restaurants: Restaurant
       </div>
 
       {/* Static hero nav: logo + cart only, scrolls away naturally with the hero. */}
-      <div className="mx-auto max-w-5xl px-4 pt-4 sm:px-6">
+      <div className="mx-auto max-w-5xl px-4 pt-1 sm:px-6">
         <DesktopNav searchBarVariant="hidden" />
       </div>
 

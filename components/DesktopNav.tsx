@@ -3,6 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import CartIconDropdown from "@/components/cart/CartIconDropdown";
+import DesktopRestaurantMenu from "@/components/DesktopRestaurantMenu";
 import DesktopSearchDropdown from "@/components/global-search/DesktopSearchDropdown";
 
 export default function DesktopNav({
@@ -19,12 +20,17 @@ export default function DesktopNav({
   const showSearchBar = showSearchButton && searchBarVariant !== "hidden";
 
   return (
-    <div className="mx-auto hidden w-full max-w-6xl items-center gap-3 rounded-2xl border border-slate-200/70 bg-white px-6 py-3 shadow-[0_-3px_12px_rgba(15,23,42,0.08)] lg:flex">
+    <div className="mx-auto hidden w-full max-w-6xl items-center gap-3 rounded-2xl border border-slate-200/70 bg-white px-6 py-1.5 shadow-[0_-3px_12px_rgba(15,23,42,0.08)] lg:flex">
       <Link href="/" className="inline-flex h-9 w-9 shrink-0 items-center justify-center overflow-hidden rounded-lg bg-white" aria-label="Go to homepage">
         <span className="relative h-7 w-7">
           <Image src={logoSrc} alt="Macro Maxxer logo" fill className="object-contain rounded-md" />
         </span>
       </Link>
+
+      {/* Restaurant switcher — part of the global nav itself (Logo |
+          Restaurants | Search | Cart) so it's identical across every page,
+          not a restaurant-page-only secondary control. */}
+      <DesktopRestaurantMenu />
 
       <div className={`flex min-w-0 flex-1 items-center ${searchBarVariant === "compact" ? "justify-center" : ""}`}>
         {showSearchBar ? (

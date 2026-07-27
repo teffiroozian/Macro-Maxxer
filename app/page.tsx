@@ -2,6 +2,8 @@ import Image from "next/image";
 import Link from "next/link";
 import SurfaceCard from "@/components/ui/SurfaceCard";
 import HeroSearchNav from "@/components/home/HeroSearchNav";
+import { RestaurantUiProvider } from "@/components/RestaurantUiContext";
+import CartPreviewDrawer from "@/components/cart/CartPreviewDrawer";
 import { getAllRestaurants } from "@/lib/restaurants";
 
 const restaurants = getAllRestaurants();
@@ -29,7 +31,7 @@ export default function Home() {
   })();
 
   return (
-    <>
+    <RestaurantUiProvider>
       <HeroSearchNav restaurants={restaurants} />
 
       <main className="mx-auto flex max-w-5xl flex-col gap-12 px-4 p-24 sm:px-6">
@@ -187,6 +189,8 @@ export default function Home() {
         </div>
       </section>
       </main>
-    </>
+
+      <CartPreviewDrawer />
+    </RestaurantUiProvider>
   );
 }

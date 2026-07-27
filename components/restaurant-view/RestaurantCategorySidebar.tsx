@@ -142,13 +142,17 @@ function MobileCategoryNav({
 
   useEffect(() => {
     const syncMobileNavTop = () => {
-      const stickyNav = document.querySelector('[data-sticky-nav="true"]');
-      if (!(stickyNav instanceof HTMLElement)) {
-        setMobileNavTop(0);
-        return;
-      }
+      // Desktop and mobile now render as two separate `data-sticky-nav`
+      // elements, only one of which is actually visible at a given
+      // viewport width — the hidden one collapses to an all-zero rect, so
+      // Math.max across every match always picks the real, visible one.
+      const stickyNavs = document.querySelectorAll('[data-sticky-nav="true"]');
+      const bottom = Array.from(stickyNavs).reduce(
+        (max, nav) => (nav instanceof HTMLElement ? Math.max(max, nav.getBoundingClientRect().bottom) : max),
+        0,
+      );
 
-      setMobileNavTop(Math.max(0, Math.ceil(stickyNav.getBoundingClientRect().bottom)));
+      setMobileNavTop(Math.ceil(bottom));
     };
 
     syncMobileNavTop();

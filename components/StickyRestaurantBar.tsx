@@ -1,12 +1,10 @@
 "use client";
 
-import Image from "next/image";
 import type { ReactNode } from "react";
 import { useCallback, useEffect, useRef, useState } from "react";
-import Link from "next/link";
 import CartIconDropdown from "@/components/cart/CartIconDropdown";
-import DesktopRestaurantMenu from "@/components/DesktopRestaurantMenu";
-import DesktopSearchDropdown from "@/components/global-search/DesktopSearchDropdown";
+import DesktopNav from "@/components/DesktopNav";
+import GlobalMobileNav from "@/components/GlobalMobileNav";
 import ControlsRow, { FilterChips } from "./ControlsRow";
 import type { ViewOption } from "@/components/controls/types";
 import type { Filters } from "@/lib/menuSections/filterOptions";
@@ -14,7 +12,6 @@ import type { SortOption } from "@/lib/menuSections/sortOptions";
 import { Menu, Search } from "lucide-react";
 import MobileNavDrawer from "@/components/MobileNavDrawer";
 import AppIconButton from "@/components/ui/AppIconButton";
-import { useGlobalSearch } from "@/components/GlobalSearchContext";
 
 import { useFilterChipActions } from "./useFilterChipActions";
 
@@ -45,6 +42,10 @@ type StickyRestaurantBarProps = {
     onSelect: () => void;
   }>;
   hideViewSelector?: boolean;
+  // Hides just the view/sort/filter controls (ControlsRow) within the
+  // restaurant-specific row below the global nav — e.g. Chipotle's
+  // entrée-selection screen, before there's a menu to sort/filter yet. The
+  // restaurant-switcher row itself always stays visible.
   hideSecondaryNav?: boolean;
 };
 
@@ -69,7 +70,6 @@ export default function StickyRestaurantBar({
   hideSecondaryNav = false,
 }: StickyRestaurantBarProps) {
   const searchInputRef = useRef<HTMLInputElement>(null);
-  const { open: openGlobalSearch } = useGlobalSearch();
   const isSearchMode = searchOpen || searchQuery.trim().length > 0;
   const [openMobileControlsDrawer, setOpenMobileControlsDrawer] = useState<() => void>(() => () => {});
   const [isBrowseDrawerOpen, setIsBrowseDrawerOpen] = useState(false);
@@ -93,142 +93,78 @@ export default function StickyRestaurantBar({
     onCloseSearch();
   };
 
-  return (
-    <div className="fixed left-0 right-0 top-0 z-[95]" data-sticky-nav="true">
-      <div
-        className={`relative z-[110] mx-auto mt-1 flex w-[calc(100%-0.5rem)] max-w-6xl items-center border border-slate-200/70 bg-white shadow-[0_-3px_12px_rgba(15,23,42,0.12)] sm:w-[calc(100%-1rem)] ${
-          hideSecondaryNav ? "rounded-2xl" : "rounded-2xl lg:rounded-b-none"
-        }`}
-      >
-        <div className="mx-auto flex w-full max-w-5xl items-center gap-2 px-3 py-2 sm:gap-3 sm:px-6">
-          <div className="flex min-w-0 flex-1 items-center gap-2 lg:hidden">
-            <AppIconButton
-              onClick={() => {
-                if (hideSecondaryNav) {
-                  setBrowseDrawerKey((prev) => prev + 1);
-                  setIsBrowseDrawerOpen(true);
-                  return;
-                }
-                openMobileControlsDrawer();
-              }}
-              className="size-9 border-slate-300/80 text-slate-800"
-              aria-label="Open controls drawer"
-            >
-              <Menu className="h-4 w-4" strokeWidth={2.5} />
-            </AppIconButton>
-            <Link
-              href="/"
-              className="inline-flex h-9 w-9 shrink-0 items-center justify-center overflow-hidden rounded-lg bg-white"
-              aria-label="Go to homepage"
-            >
-              <span className="relative h-7 w-7">
-                <Image
-                  src="/logo.png"
-                  alt="Macro Maxxer logo"
-                  fill
-                  className="object-contain rounded-md"
-                />
-              </span>
-            </Link>
-          </div>
-
-          <div className="hidden min-w-0 flex-1 items-center gap-3 lg:flex">
-            <Link href="/" className="inline-flex h-9 w-9 shrink-0 items-center justify-center overflow-hidden rounded-lg bg-white" aria-label="Go to homepage">
-              <span className="relative h-7 w-7">
-                <Image
-                  src="/logo.png"
-                  alt="Macro Maxxer logo"
-                  fill
-                  className="object-contain rounded-md"
-                />
-              </span>
-            </Link>
-            <DesktopRestaurantMenu />
-            {/* Global Search — restaurant pages don't render DesktopNav, so
-                this is the only place the desktop bar is mounted here.
-                Defaults to this restaurant's menu (Slice 3's restaurant-
-                context mechanism, generalized in useGlobalSearchState).
-                Distinct from "Filter this menu" below, which live-filters
-                the grid already on screen instead of searching/navigating. */}
-            <DesktopSearchDropdown className="max-w-[34rem] flex-1" />
-          </div>
-
-          <div className="ml-auto flex min-w-0 items-center gap-1.5 sm:gap-2">
-            {/* Global Search on mobile — desktop gets the dedicated bar
-                above instead. Mounted globally as a full-screen sheet
-                (GlobalSearchOverlay in app/layout.tsx), so this just opens it. */}
-            <AppIconButton
-              onClick={() => openGlobalSearch()}
-              className="size-9 border-slate-300/80 text-slate-800 lg:hidden"
-              aria-label="Search restaurants, menu items"
-            >
-              <Search className="h-4 w-4" strokeWidth={2.5} />
-            </AppIconButton>
-
-            <div className={`overflow-hidden transition-all duration-300 ${isSearchMode ? "w-[min(46vw,16rem)] opacity-100 sm:w-[16rem]" : "w-0 opacity-0"}`}>
-              <div className="relative">
-                <input
-                  ref={searchInputRef}
-                  value={searchQuery}
-                  onChange={(event) => setSearchQuery(event.target.value)}
-                  placeholder="Filter this menu"
-                  aria-label="Filter this menu"
-                  className="h-9 w-full rounded-full border border-slate-300/80 bg-white px-3 text-sm text-slate-900 outline-none"
-                />
-              </div>
-            </div>
-
-            {isSearchMode ? (
-              <AppIconButton onClick={closeSearch} className="size-9 border-slate-300/80 text-base text-slate-800" aria-label="Close filter">
-                ✕
-              </AppIconButton>
-            ) : (
-                <AppIconButton onClick={onOpenSearch} className="size-9 border-slate-300/80 text-base text-slate-800" aria-label="Filter this menu">
-                <Search className="h-4 w-4" strokeWidth={2.5}/>
-              </AppIconButton>
-            )}
-            <CartIconDropdown
-              buttonClassName="relative inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-slate-300/80 bg-white p-0 text-base text-slate-800 transition hover:bg-slate-50"
-            />
-          </div>
+  const mobileFilterToggle = (
+    <>
+      <div className={`overflow-hidden transition-all duration-300 ${isSearchMode ? "w-[min(46vw,16rem)] opacity-100 sm:w-[16rem]" : "w-0 opacity-0"}`}>
+        <div className="relative">
+          <input
+            ref={searchInputRef}
+            value={searchQuery}
+            onChange={(event) => setSearchQuery(event.target.value)}
+            placeholder="Filter this menu"
+            aria-label="Filter this menu"
+            className="h-9 w-full rounded-full border border-slate-300/80 bg-white px-3 text-sm text-slate-900 outline-none"
+          />
         </div>
       </div>
 
-      {hideSecondaryNav ? null : (
-        <div
-          className="relative z-[100] mx-auto hidden w-[calc(100%-0.5rem)] max-w-6xl items-center rounded-b-2xl border border-slate-200/70 bg-white shadow-[0_3px_12px_rgba(15,23,42,0.12)] backdrop-blur sm:w-[calc(100%-1rem)] lg:flex"
-        >
-          <div className="mx-auto flex w-full max-w-5xl items-center gap-2 px-3 py-2 sm:gap-3 sm:px-6">
-            {secondaryNavLeading ? (
-              <div className="shrink-0">
-                {secondaryNavLeading}
-              </div>
-            ) : null}
-            <div className={`min-w-0 shrink-0 ${secondaryNavLeading ? "ml-auto" : "flex-1"}`}>
-              <ControlsRow
-                view={view}
-                onChange={onChange}
-                sort={sort}
-                onSortChange={onSortChange}
-                filters={filters}
-                onFiltersChange={onFiltersChange}
-                showChips={false}
-                calorieBounds={calorieBounds}
-                hideViewSelector={hideViewSelector}
-                showMobileTrigger={false}
-                onMobileDrawerOpenReady={handleMobileDrawerOpenReady}
-                mobileEntreeOptions={mobileEntreeOptions}
-                mobileDrawerHeaderTitle={restaurantName}
-                mobileDrawerHeaderLogoSrc={restaurantLogo}
-              />
-            </div>
-          </div>
-        </div>
+      {isSearchMode ? (
+        <AppIconButton onClick={closeSearch} className="size-9 border-slate-300/80 text-base text-slate-800" aria-label="Close filter">
+          ✕
+        </AppIconButton>
+      ) : (
+        <AppIconButton onClick={onOpenSearch} className="size-9 border-slate-300/80 text-base text-slate-800" aria-label="Filter this menu">
+          <Search className="h-4 w-4" strokeWidth={2.5} />
+        </AppIconButton>
       )}
+    </>
+  );
 
-      {hasActiveFilters && !hideSecondaryNav ? (
-        <div className="relative z-[100] mx-auto mt-0.5 hidden w-[calc(100%-0.5rem)] max-w-6xl rounded-2xl border border-slate-200/70 bg-white/95 backdrop-blur sm:w-[calc(100%-1rem)] lg:block">
-          <div className="mx-auto flex w-full max-w-5xl flex-wrap items-center gap-2 px-3 py-2 text-sm sm:flex-nowrap sm:px-6">
+  return (
+    <>
+      {/* Desktop nav — literally DesktopNav (same component/card as the
+          homepage/cart nav): Logo | Restaurants | Search | Cart. Search
+          defaults to this restaurant's menu (Slice 3's restaurant-context
+          mechanism, generalized in useGlobalSearchState). The restaurant
+          switcher now lives in this global nav (DesktopNav itself) so it's
+          identical everywhere — only page-specific controls (view/sort/
+          filters, Chipotle's entrée switcher) live in the secondary row
+          below, and that row disappears entirely when it would have
+          nothing else in it. */}
+      <div
+        className="fixed inset-x-0 top-0 z-[95] hidden px-4 pt-1 sm:px-6 lg:block"
+        data-sticky-nav="true"
+      >
+        <DesktopNav searchBarVariant="compact" />
+
+        {secondaryNavLeading || !hideSecondaryNav ? (
+          <div className="mx-auto mt-0.5 hidden w-full max-w-6xl items-center rounded-2xl border border-slate-200/70 bg-white px-6 py-2 shadow-[0_3px_12px_rgba(15,23,42,0.12)] lg:flex">
+            {secondaryNavLeading ? <div className="shrink-0">{secondaryNavLeading}</div> : null}
+            {hideSecondaryNav ? null : (
+              <div className={`min-w-0 shrink-0 ${secondaryNavLeading ? "ml-auto" : "flex-1"}`}>
+                <ControlsRow
+                  view={view}
+                  onChange={onChange}
+                  sort={sort}
+                  onSortChange={onSortChange}
+                  filters={filters}
+                  onFiltersChange={onFiltersChange}
+                  showChips={false}
+                  calorieBounds={calorieBounds}
+                  hideViewSelector={hideViewSelector}
+                  showMobileTrigger={false}
+                  onMobileDrawerOpenReady={handleMobileDrawerOpenReady}
+                  mobileEntreeOptions={mobileEntreeOptions}
+                  mobileDrawerHeaderTitle={restaurantName}
+                  mobileDrawerHeaderLogoSrc={restaurantLogo}
+                />
+              </div>
+            )}
+          </div>
+        ) : null}
+
+        {hasActiveFilters && !hideSecondaryNav ? (
+          <div className="mx-auto mt-0.5 hidden w-full max-w-6xl flex-wrap items-center gap-2 rounded-2xl border border-slate-200/70 bg-white/95 px-6 py-2 text-sm shadow-[0_3px_12px_rgba(15,23,42,0.12)] backdrop-blur lg:flex">
             <FilterChips
               filters={filters}
               onClearProtein={clearProteinFilter}
@@ -237,8 +173,38 @@ export default function StickyRestaurantBar({
               withMargin={false}
             />
           </div>
-        </div>
-      ) : null}
+        ) : null}
+      </div>
+
+      {/* Mobile nav — literally GlobalMobileNav (same component/card as the
+          homepage/cart mobile nav). Its own Global Search button covers the
+          nav-wide search; the hamburger and "Filter this menu" mini input
+          are restaurant-page-specific slots. */}
+      <GlobalMobileNav
+        markStickyNav
+        leadingButton={
+          <AppIconButton
+            onClick={() => {
+              if (hideSecondaryNav) {
+                setBrowseDrawerKey((prev) => prev + 1);
+                setIsBrowseDrawerOpen(true);
+                return;
+              }
+              openMobileControlsDrawer();
+            }}
+            className="size-9 border-slate-300/80 text-slate-800"
+            aria-label="Open controls drawer"
+          >
+            <Menu className="h-4 w-4" strokeWidth={2.5} />
+          </AppIconButton>
+        }
+        middleSlot={mobileFilterToggle}
+        cartSlot={
+          <CartIconDropdown
+            buttonClassName="relative inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-slate-300/80 bg-white p-0 text-base text-slate-800 transition hover:bg-slate-50"
+          />
+        }
+      />
 
       <MobileNavDrawer
         key={browseDrawerKey}
@@ -247,6 +213,6 @@ export default function StickyRestaurantBar({
         headerTitle={restaurantName}
         headerLogoSrc={restaurantLogo}
       />
-    </div>
+    </>
   );
 }

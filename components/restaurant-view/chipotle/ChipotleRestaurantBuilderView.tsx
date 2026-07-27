@@ -242,14 +242,19 @@ export default function ChipotleRestaurantBuilderView({
   const SECTION_HEADER_TOP_GAP = 24;
 
   const getStickyOffset = () => {
-    const stickyBar = document.querySelector('[data-sticky-nav="true"]');
+    // Desktop and mobile now render as two separate `data-sticky-nav`
+    // elements (DesktopNav's wrapper + GlobalMobileNav's own root), only
+    // one of which is actually visible at a given viewport width — the
+    // other is `display:none` and its rect collapses to all zeros, so
+    // Math.max across every match always picks the real, visible one.
+    const stickyBars = document.querySelectorAll('[data-sticky-nav="true"]');
     const mobileCategoryNav = document.querySelector(
       '[data-mobile-category-nav="true"]',
     );
-    const stickyBottom =
-      stickyBar instanceof HTMLElement
-        ? Math.max(0, stickyBar.getBoundingClientRect().bottom)
-        : 0;
+    const stickyBottom = Array.from(stickyBars).reduce(
+      (max, bar) => (bar instanceof HTMLElement ? Math.max(max, bar.getBoundingClientRect().bottom) : max),
+      0,
+    );
     const mobileCategoryBottom =
       mobileCategoryNav instanceof HTMLElement
         ? Math.max(0, mobileCategoryNav.getBoundingClientRect().bottom)

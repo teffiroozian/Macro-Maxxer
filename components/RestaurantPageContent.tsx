@@ -17,7 +17,7 @@ export default function RestaurantPageContent({
   return (
     <RestaurantSearchProvider>
       <RestaurantUiProvider>
-        <div className="w-full pt-16 sm:pt-20 lg:pt-40">
+        <div className="w-full pt-16 sm:pt-20 lg:pt-56">
           <RecentRestaurantTracker restaurantId={restaurantData.id} />
           <ScrollToTopOnMount />
 
