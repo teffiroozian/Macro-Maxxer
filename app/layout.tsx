@@ -1,6 +1,8 @@
 import { Geist } from "next/font/google";
 import { GlobalSearchProvider } from "@/components/GlobalSearchContext";
+import { GlobalItemPreviewProvider } from "@/components/GlobalItemPreviewContext";
 import GlobalSearchOverlay from "@/components/global-search/GlobalSearchOverlay";
+import GlobalItemPreviewModal from "@/components/GlobalItemPreviewModal";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -50,8 +52,11 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${geistSans.className} antialiased`}>
         <GlobalSearchProvider>
-          {children}
-          <GlobalSearchOverlay />
+          <GlobalItemPreviewProvider>
+            {children}
+            <GlobalSearchOverlay />
+            <GlobalItemPreviewModal />
+          </GlobalItemPreviewProvider>
         </GlobalSearchProvider>
       </body>
     </html>

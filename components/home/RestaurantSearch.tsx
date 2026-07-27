@@ -12,7 +12,7 @@ import { searchRestaurants } from "@/lib/search/searchRestaurants";
 import { useMenuItemSearch } from "@/lib/search/useMenuItemSearch";
 import { useRecentAndPopularRestaurants } from "@/lib/search/useRecentAndPopularRestaurants";
 import { useRecentMenuItems } from "@/lib/search/useRecentMenuItems";
-import { toItemSlug } from "@/lib/restaurants";
+import { useGlobalItemPreview } from "@/components/GlobalItemPreviewContext";
 import type { IngredientItem, MenuItem } from "@/types/menu";
 import type { RestaurantIndexEntry } from "@/types/restaurant";
 import type { SearchResult } from "@/types/search";
@@ -36,6 +36,7 @@ export default function RestaurantSearch({ restaurants }: RestaurantSearchProps)
   const [isFocused, setIsFocused] = useState(false);
   const { recentRestaurants, popularRestaurants, removeRecent } =
     useRecentAndPopularRestaurants(restaurants);
+  const { openPreview } = useGlobalItemPreview();
 
   const isEmptyQuery = !query.trim();
 
@@ -80,7 +81,11 @@ export default function RestaurantSearch({ restaurants }: RestaurantSearchProps)
     addRecentMenuItem({ kind: "menu-item", item, restaurant });
     setActiveIndex(-1);
     setIsFocused(false);
-    router.push(`/restaurant/${restaurant.id}/${toItemSlug(item)}`);
+    // The homepage is never the item's own restaurant page, so a route push
+    // here would always navigate the user away — open the existing item
+    // modal locally instead (same pattern as useGlobalSearchState's nav
+    // search), leaving the homepage untouched underneath.
+    void openPreview(restaurant.id, item);
   };
 
   const handleStartBuild = (
@@ -91,7 +96,7 @@ export default function RestaurantSearch({ restaurants }: RestaurantSearchProps)
     addRecentMenuItem({ kind: "builder-ingredient", ingredient, restaurant, categoryLabel });
     setActiveIndex(-1);
     setIsFocused(false);
-    router.push(`/restaurant/${restaurant.id}`);
+    router.push(`/restaurant/${restaurant.id}?view=ingredients`);
   };
 
   const handleSelect = (result: SearchResult) => {
