@@ -8,12 +8,34 @@ Completed:
 - Slice 3: Global menu-item search
 - Slice 4: Current-restaurant search
 - Slice 5: Global navigation consistency
+- Slice 6: Item-result behavior in every context
 
 Current:
-- Slice 6
+- Slice 7
 
 Pending:
-- Slices 7–10
+- Slices 8–10
+
+### Slice 6 decisions/deviations
+
+- Standard menu-item results now branch on whether the current page is the
+  item's own restaurant page: if so, the existing intercepted `@modal` route
+  is used (unchanged); otherwise the item modal opens locally (new
+  `GlobalItemPreviewContext`/`useItemPreviewModal`, mounted app-wide in
+  `app/layout.tsx`) with no navigation and no history entry, reusing
+  `ItemRouteModal`'s existing `closeBehavior="local"` mode (the same pattern
+  the cart page already used for editing existing cart items).
+- Discovered `components/home/RestaurantSearch.tsx` (the homepage hero
+  widget) was a second, independent copy of the select-item/select-ingredient
+  handlers rather than going through `useGlobalSearchState` — it had the same
+  bugs and needed the same fix, applied directly (not deduplicated into one
+  shared implementation — out of scope for this slice, flagged for Slice 10
+  cleanup).
+- `handleStartBuild` now explicitly pushes `?view=ingredients` instead of
+  relying on the restaurant page's implicit default-view behavior.
+- `ItemRouteModal`'s root z-index raised from `220` to `235` (Global Search's
+  overlay/dropdown sit at `228`–`230`; `CartClearConfirmationDialog` already
+  used `240`, so `235` avoids both).
 
 ---
 

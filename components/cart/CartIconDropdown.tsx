@@ -69,7 +69,18 @@ export default function CartIconDropdown({
     if (!isOpen) return;
 
     const handlePointerDown = (event: MouseEvent) => {
-      if (!containerRef.current?.contains(event.target as Node)) {
+      // The cart preview shares one global store, but this component itself
+      // is mounted more than once on most pages (e.g. the homepage's sticky
+      // + static nav, or a page's desktop + mobile nav) — CSS hides the
+      // inactive copy, but it's still mounted and listening. Checking only
+      // this instance's own containerRef would treat a click inside the
+      // *other* mounted copy as "outside" and dismiss the shared preview
+      // (and its pointer-events) out from under the click that's still in
+      // flight, swallowing it before the click event ever fires. Scoping
+      // the check to any cart-dropdown root via the shared marker fixes
+      // that without needing to know how many copies exist.
+      const inside = (event.target as HTMLElement)?.closest?.("[data-cart-icon-dropdown]");
+      if (!inside) {
         dismissLastAddedPreview();
       }
     };
@@ -142,7 +153,7 @@ export default function CartIconDropdown({
   };
 
   return (
-    <div ref={containerRef} className="relative">
+    <div ref={containerRef} data-cart-icon-dropdown className="relative">
       <button
         type="button"
         onClick={() => {
@@ -159,7 +170,7 @@ export default function CartIconDropdown({
 
       <div
         aria-hidden={!isOpen}
-        className={`absolute right-0 top-[calc(100%+0.55rem)] z-[130] w-[22rem] rounded-2xl border border-slate-200 bg-white p-4 text-slate-900 shadow-[0_18px_40px_rgba(15,23,42,0.18)] transition-all duration-200 ${
+        className={`absolute right-0 top-[calc(100%+0.55rem)] z-[231] w-[22rem] rounded-2xl border border-slate-200 bg-white p-4 text-slate-900 shadow-[0_18px_40px_rgba(15,23,42,0.18)] transition-all duration-200 ${
           isOpen
             ? "translate-y-0 opacity-100"
             : "pointer-events-none -translate-y-1 opacity-0"

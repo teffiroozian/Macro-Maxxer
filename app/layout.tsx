@@ -1,8 +1,10 @@
 import { Geist } from "next/font/google";
 import { GlobalSearchProvider } from "@/components/GlobalSearchContext";
 import { GlobalItemPreviewProvider } from "@/components/GlobalItemPreviewContext";
+import { CartAddConfirmationProvider } from "@/components/CartAddConfirmationContext";
 import GlobalSearchOverlay from "@/components/global-search/GlobalSearchOverlay";
 import GlobalItemPreviewModal from "@/components/GlobalItemPreviewModal";
+import CrossRestaurantCartDialog from "@/components/cart/CrossRestaurantCartDialog";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -53,9 +55,12 @@ export default function RootLayout({
       <body className={`${geistSans.className} antialiased`}>
         <GlobalSearchProvider>
           <GlobalItemPreviewProvider>
-            {children}
-            <GlobalSearchOverlay />
-            <GlobalItemPreviewModal />
+            <CartAddConfirmationProvider>
+              {children}
+              <GlobalSearchOverlay />
+              <GlobalItemPreviewModal />
+              <CrossRestaurantCartDialog />
+            </CartAddConfirmationProvider>
           </GlobalItemPreviewProvider>
         </GlobalSearchProvider>
       </body>

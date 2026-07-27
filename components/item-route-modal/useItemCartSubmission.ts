@@ -5,6 +5,7 @@ import type { IngredientItem, ItemVariant, MenuItem } from "@/types/menu";
 import type { Nutrition } from "@/types/nutrition";
 import type { CartItem, CartSelectionOption } from "@/types/cart";
 import { useCart } from "@/stores/cartStore";
+import { useCartAddConfirmation } from "@/components/CartAddConfirmationContext";
 import { customizationsFromLabels } from "@/lib/cart/customizationLabels";
 import {
   buildComboCustomizationLabels,
@@ -43,7 +44,8 @@ export function useItemCartSubmission({
   chipotle: ChipotleCartSubmissionState;
   onAfterSubmit: () => void;
 }) {
-  const { addItem, updateItem } = useCart();
+  const { updateItem } = useCart();
+  const { requestAddItem } = useCartAddConfirmation();
   const isEditing = Boolean(editingCartItem);
   const submitButtonLabel = isEditing ? "Update" : "Add to Cart";
 
@@ -58,7 +60,7 @@ export function useItemCartSubmission({
           return;
         }
 
-        addItem({
+        requestAddItem({
           id: crypto.randomUUID(),
           restaurantId,
           itemId: item.id ?? item.name,
@@ -96,7 +98,7 @@ export function useItemCartSubmission({
         return;
       }
 
-      addItem({
+      requestAddItem({
         id: crypto.randomUUID(),
         restaurantId,
         itemId: item.id ?? item.name,
@@ -104,7 +106,7 @@ export function useItemCartSubmission({
       });
     }, 0);
   }, [
-    addItem,
+    requestAddItem,
     chipotle,
     editingCartItem,
     ingredients,

@@ -60,6 +60,7 @@ import StickyRestaurantBar from "../../StickyRestaurantBar";
 import StickyMacroTotalsBar from "../../StickyMacroTotalsBar";
 import MacroTotalsGrid from "@/components/MacroTotalsGrid";
 import { useCart } from "@/stores/cartStore";
+import { useCartAddConfirmation } from "@/components/CartAddConfirmationContext";
 import {
   fromUniversalChipotleBuildConfiguration,
   toUniversalChipotleBuildConfiguration,
@@ -270,7 +271,8 @@ export default function ChipotleRestaurantBuilderView({
   const isEditingFromCart = editOrigin === "cart";
   const { searchOpen, searchQuery, setSearchQuery, openSearch, closeSearch } =
     useRestaurantSearch();
-  const { addItem, items: cartItems, updateItem } = useCart();
+  const { items: cartItems, updateItem } = useCart();
+  const { requestAddItem } = useCartAddConfirmation();
   const [isBuildSummaryExpanded, setIsBuildSummaryExpanded] = useState(false);
   const buildStickyContainerRef = useRef<HTMLDivElement | null>(null);
   const buildCustomizationModalScrollRef = useRef<HTMLDivElement | null>(null);
@@ -1478,29 +1480,35 @@ export default function ChipotleRestaurantBuilderView({
       },
     };
 
+    const finishAfterAdd = () => {
+      hydratedEditItemIdRef.current = editingCartItem ? editingCartItem.id : null;
+      queueIncludedIngredientReset({
+        selectedEntree,
+        selectedKidsMeal,
+        selectedTacoShell,
+      });
+      const nextParams = new URLSearchParams(searchParams.toString());
+      nextParams.delete("editCartItem");
+      const nextQuery = nextParams.toString();
+      router.replace(nextQuery ? `${pathname}?${nextQuery}` : pathname, {
+        scroll: false,
+      });
+    };
+
     if (editingCartItem) {
       updateItem(editingCartItem.id, nextItemPayload, {
         markAsJustAdded: true,
       });
+      finishAfterAdd();
     } else {
-      addItem({
-        id: crypto.randomUUID(),
-        ...nextItemPayload,
-      });
+      requestAddItem(
+        {
+          id: crypto.randomUUID(),
+          ...nextItemPayload,
+        },
+        finishAfterAdd
+      );
     }
-
-    hydratedEditItemIdRef.current = editingCartItem ? editingCartItem.id : null;
-    queueIncludedIngredientReset({
-      selectedEntree,
-      selectedKidsMeal,
-      selectedTacoShell,
-    });
-    const nextParams = new URLSearchParams(searchParams.toString());
-    nextParams.delete("editCartItem");
-    const nextQuery = nextParams.toString();
-    router.replace(nextQuery ? `${pathname}?${nextQuery}` : pathname, {
-      scroll: false,
-    });
   };
 
   const handleCloseBuildCustomizationModal = useCallback(() => {

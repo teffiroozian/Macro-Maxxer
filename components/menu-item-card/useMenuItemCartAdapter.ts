@@ -1,6 +1,7 @@
 import { useMemo } from "react";
 import { getCartItemVariantId } from "@/lib/cart/itemAccessors";
 import { useCart } from "@/stores/cartStore";
+import { useCartAddConfirmation } from "@/components/CartAddConfirmationContext";
 
 type MatchingSignatureInput = {
   restaurantId: string;
@@ -11,7 +12,8 @@ type MatchingSignatureInput = {
 };
 
 export function useMenuItemCartAdapter() {
-  const { items, addItem, updateQuantity } = useCart();
+  const { items, updateQuantity } = useCart();
+  const { requestAddItem } = useCartAddConfirmation();
 
   const cartIndex = useMemo(() => {
     const index = new Map<string, (typeof items)[number]>();
@@ -41,7 +43,7 @@ export function useMenuItemCartAdapter() {
   };
 
   return {
-    addItem,
+    requestAddItem,
     updateQuantity,
     getMatchingItem,
   };

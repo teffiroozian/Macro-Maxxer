@@ -235,7 +235,7 @@ export default function MenuItemCard({
   const [selectedVariantId, setSelectedVariantId] = useState(initialCartVariantId ?? defaultVariantId);
   const [isAddFeedbackVisible, setIsAddFeedbackVisible] = useState(false);
   const [isIngredientSelected, setIsIngredientSelected] = useState(controlledIngredientSelected ?? false);
-  const { addItem, updateQuantity, getMatchingItem } = useMenuItemCartAdapter();
+  const { requestAddItem, updateQuantity, getMatchingItem } = useMenuItemCartAdapter();
   const effectiveSelectedVariantId =
     displayMode === "ingredient-compact" && selectedIngredientVariantId
       ? selectedIngredientVariantId
@@ -562,23 +562,25 @@ export default function MenuItemCard({
 
     if (matchingCartItem) {
       updateQuantity(matchingCartItem.id, matchingCartItem.quantity + 1);
+      setIsAddFeedbackVisible(true);
     } else {
-      addItem({
-        id: crypto.randomUUID(),
-        restaurantId,
-        itemId: item.id ?? item.name,
-        name: item.name,
-        image: selectedVariantForCart?.image ?? item.image,
-        variantId: selectedVariantForCart?.id,
-        customizations,
-        quantity: 1,
-        selection: finalizedCartConfiguration.selection,
-        nutritionPerItem: nutrition,
-        macrosPerItem: finalizedCartConfiguration.macrosPerItem,
-      });
+      requestAddItem(
+        {
+          id: crypto.randomUUID(),
+          restaurantId,
+          itemId: item.id ?? item.name,
+          name: item.name,
+          image: selectedVariantForCart?.image ?? item.image,
+          variantId: selectedVariantForCart?.id,
+          customizations,
+          quantity: 1,
+          selection: finalizedCartConfiguration.selection,
+          nutritionPerItem: nutrition,
+          macrosPerItem: finalizedCartConfiguration.macrosPerItem,
+        },
+        () => setIsAddFeedbackVisible(true)
+      );
     }
-
-    setIsAddFeedbackVisible(true);
   };
 
   useEffect(() => {
