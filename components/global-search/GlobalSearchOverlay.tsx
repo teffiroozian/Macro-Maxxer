@@ -68,6 +68,7 @@ export default function GlobalSearchOverlay() {
           <div className="relative">
             <input
               type="text"
+              aria-label="Search"
               value={state.query}
               onChange={(event) => state.handleInputChange(event.target.value)}
               onKeyDown={state.handleInputKeyDown}

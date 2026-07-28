@@ -432,6 +432,7 @@ export default function ItemRouteModal({
   const [activeSectionId, setActiveSectionId] = useState<ModalSectionId | null>(visibleSections[0]?.id ?? null);
   const scrollContainerRef = useRef<HTMLDivElement | null>(null);
   const sectionElementRefs = useRef<Partial<Record<ModalSectionId, HTMLElement | null>>>({});
+  const closeButtonRef = useRef<HTMLButtonElement | null>(null);
 
   useEffect(() => {
     const container = scrollContainerRef.current;
@@ -723,6 +724,34 @@ export default function ItemRouteModal({
     router.replace(restaurantPath, { scroll: false });
   };
 
+  // Kept in a ref (rather than a useEffect dependency) so the mount-time
+  // focus-move-in/focus-restore-out effect below only ever runs once per
+  // modal open, instead of re-stealing focus back to the close button on
+  // every render as customization state changes.
+  const handleCloseRef = useRef(handleClose);
+  useEffect(() => {
+    handleCloseRef.current = handleClose;
+  });
+
+  useEffect(() => {
+    const previouslyFocusedElement = document.activeElement instanceof HTMLElement ? document.activeElement : null;
+    closeButtonRef.current?.focus();
+
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        event.stopPropagation();
+        handleCloseRef.current();
+      }
+    };
+
+    document.addEventListener("keydown", onKeyDown);
+
+    return () => {
+      document.removeEventListener("keydown", onKeyDown);
+      previouslyFocusedElement?.focus();
+    };
+  }, []);
+
   const { isEditing: isCustomizeMode, submitButtonLabel, submitCartItem } = useItemCartSubmission({
     restaurantId,
     item,
@@ -775,6 +804,7 @@ export default function ItemRouteModal({
       />
       <div className="item-route-modal-root relative h-[calc(100dvh-2rem)] w-full max-w-[1024px] overflow-hidden rounded-2xl bg-white px-3 pt-3 sm:h-[calc(100dvh-3rem)] sm:px-5 sm:pt-5 lg:px-6 lg:pt-6">
         <button
+          ref={closeButtonRef}
           type="button"
           className="cursor-pointer sticky top-0 ml-auto h-9 w-9 rounded-full border border-black/12 bg-white/95 text-2xl"
           onClick={handleClose}

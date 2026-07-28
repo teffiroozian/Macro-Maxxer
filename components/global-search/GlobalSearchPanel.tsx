@@ -190,6 +190,17 @@ export default function GlobalSearchPanel({
                 />
               )
             )
+          ) : restaurantFilterId ? (
+            <li className="px-5 py-6 text-center text-sm text-neutral-500">
+              <p>No results in {filteredRestaurantName}.</p>
+              <button
+                type="button"
+                onClick={() => setRestaurantFilterId(null)}
+                className="mt-2 cursor-pointer text-sm font-semibold text-neutral-700 underline-offset-2 hover:underline"
+              >
+                Search all restaurants
+              </button>
+            </li>
           ) : (
             <li className="px-5 py-6 text-center text-sm text-neutral-500">No menu items found.</li>
           )}

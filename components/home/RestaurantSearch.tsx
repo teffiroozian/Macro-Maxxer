@@ -10,10 +10,9 @@ import BuilderIngredientResultRow from "@/components/global-search/BuilderIngred
 import ScopeSwitcher, { type SearchScope } from "@/components/global-search/ScopeSwitcher";
 import { searchRestaurants } from "@/lib/search/searchRestaurants";
 import { useMenuItemSearch } from "@/lib/search/useMenuItemSearch";
+import { useMenuItemSelectionHandlers } from "@/lib/search/useMenuItemSelectionHandlers";
 import { useRecentAndPopularRestaurants } from "@/lib/search/useRecentAndPopularRestaurants";
 import { useRecentMenuItems } from "@/lib/search/useRecentMenuItems";
-import { useGlobalItemPreview } from "@/components/GlobalItemPreviewContext";
-import type { IngredientItem, MenuItem } from "@/types/menu";
 import type { RestaurantIndexEntry } from "@/types/restaurant";
 import type { SearchResult } from "@/types/search";
 
@@ -37,7 +36,6 @@ export default function RestaurantSearch({ restaurants }: RestaurantSearchProps)
   const widgetRef = useRef<HTMLElement>(null);
   const { recentRestaurants, popularRestaurants, removeRecent } =
     useRecentAndPopularRestaurants(restaurants);
-  const { openPreview } = useGlobalItemPreview();
 
   const isEmptyQuery = !query.trim();
 
@@ -78,27 +76,17 @@ export default function RestaurantSearch({ restaurants }: RestaurantSearchProps)
     router.push(`/restaurant/${restaurant.id}`, { scroll: true });
   };
 
-  const handleSelectMenuItem = (item: MenuItem, restaurant: RestaurantIndexEntry) => {
-    addRecentMenuItem({ kind: "menu-item", item, restaurant });
-    setActiveIndex(-1);
-    setIsFocused(false);
-    // The homepage is never the item's own restaurant page, so a route push
-    // here would always navigate the user away — open the existing item
-    // modal locally instead (same pattern as useGlobalSearchState's nav
-    // search), leaving the homepage untouched underneath.
-    void openPreview(restaurant.id, item);
-  };
-
-  const handleStartBuild = (
-    ingredient: IngredientItem,
-    restaurant: RestaurantIndexEntry,
-    categoryLabel: string
-  ) => {
-    addRecentMenuItem({ kind: "builder-ingredient", ingredient, restaurant, categoryLabel });
-    setActiveIndex(-1);
-    setIsFocused(false);
-    router.push(`/restaurant/${restaurant.id}?view=ingredients`);
-  };
+  const { handleSelectMenuItem, handleStartBuild } = useMenuItemSelectionHandlers({
+    addRecentMenuItem,
+    // The homepage is never a restaurant's own page, so a same-restaurant
+    // route push never applies here — every menu-item selection opens the
+    // existing item modal locally instead.
+    currentRestaurantId: null,
+    onAfterSelect: () => {
+      setActiveIndex(-1);
+      setIsFocused(false);
+    },
+  });
 
   const handleSelect = (result: SearchResult) => {
     if (result.kind === "restaurant") {
@@ -140,6 +128,7 @@ export default function RestaurantSearch({ restaurants }: RestaurantSearchProps)
           <div id="restaurant-search" className="relative">
             <input
               type="text"
+              aria-label="Search"
               value={query}
               onChange={(event) => {
                 setQuery(event.target.value);

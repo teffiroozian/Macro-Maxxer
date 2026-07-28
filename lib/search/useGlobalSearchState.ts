@@ -5,15 +5,14 @@ import { usePathname, useRouter } from "next/navigation";
 import type { KeyboardEvent } from "react";
 import { searchRestaurants } from "@/lib/search/searchRestaurants";
 import { useMenuItemSearch } from "@/lib/search/useMenuItemSearch";
+import { useMenuItemSelectionHandlers } from "@/lib/search/useMenuItemSelectionHandlers";
 import { useRecentMenuItems } from "@/lib/search/useRecentMenuItems";
 import { getCartRestaurantContext } from "@/lib/search/getCartRestaurantContext";
 import { useRecentAndPopularRestaurants } from "@/lib/search/useRecentAndPopularRestaurants";
 import { useGlobalSearch } from "@/components/GlobalSearchContext";
-import { useGlobalItemPreview } from "@/components/GlobalItemPreviewContext";
-import { getAllRestaurants, toItemSlug } from "@/lib/restaurants";
+import { getAllRestaurants } from "@/lib/restaurants";
 import { useCart } from "@/stores/cartStore";
 import type { SearchScope } from "@/components/global-search/ScopeSwitcher";
-import type { IngredientItem, MenuItem } from "@/types/menu";
 import type { RestaurantIndexEntry } from "@/types/restaurant";
 import type { SearchResult } from "@/types/search";
 
@@ -26,7 +25,6 @@ export function useGlobalSearchState() {
   const router = useRouter();
   const pathname = usePathname();
   const { query, setQuery, close } = useGlobalSearch();
-  const { openPreview } = useGlobalItemPreview();
   const { items: cartItems } = useCart();
   const [activeIndex, setActiveIndex] = useState(-1);
 
@@ -107,37 +105,11 @@ export function useGlobalSearchState() {
     router.push(`/restaurant/${restaurant.id}`);
   };
 
-  const handleSelectMenuItem = (item: MenuItem, restaurant: RestaurantIndexEntry) => {
-    addRecentMenuItem({ kind: "menu-item", item, restaurant });
-    close();
-
-    if (currentRestaurantId === restaurant.id) {
-      // Already on this restaurant's page (menu, an entree-selection/builder
-      // view, or another item's modal) — a same-restaurant push is a sibling
-      // navigation, so Next's intercepted @modal route engages and layers
-      // the item modal over the current page with proper router.back()
-      // support.
-      router.push(`/restaurant/${restaurant.id}/${toItemSlug(item)}`);
-      return;
-    }
-
-    // Any other context (home, nav on an unrelated page, another
-    // restaurant's page, cart, a different restaurant's builder) — pushing
-    // to the item route here would navigate the user away from where they
-    // started. Open the existing item modal locally instead, with no
-    // navigation and no history entry, so closing it leaves the user
-    // exactly where they were.
-    void openPreview(restaurant.id, item);
-  };
-
-  const handleStartBuild = (ingredient: IngredientItem, restaurant: RestaurantIndexEntry, categoryLabel: string) => {
-    addRecentMenuItem({ kind: "builder-ingredient", ingredient, restaurant, categoryLabel });
-    close();
-    // Explicitly request the ingredient/entree-selection view rather than
-    // relying on the restaurant page's default-view behavior for
-    // hasBuildYourOwn restaurants. Ingredient preselection stays deferred.
-    router.push(`/restaurant/${restaurant.id}?view=ingredients`);
-  };
+  const { handleSelectMenuItem, handleStartBuild } = useMenuItemSelectionHandlers({
+    addRecentMenuItem,
+    currentRestaurantId,
+    onAfterSelect: close,
+  });
 
   const handleSelect = (result: SearchResult) => {
     if (result.kind === "restaurant") {
