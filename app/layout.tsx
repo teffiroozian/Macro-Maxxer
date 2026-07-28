@@ -1,4 +1,4 @@
-import { Geist } from "next/font/google";
+import { Outfit, Unbounded } from "next/font/google";
 import { GlobalSearchProvider } from "@/components/GlobalSearchContext";
 import { GlobalItemPreviewProvider } from "@/components/GlobalItemPreviewContext";
 import { CartAddConfirmationProvider } from "@/components/CartAddConfirmationContext";
@@ -7,9 +7,31 @@ import GlobalItemPreviewModal from "@/components/GlobalItemPreviewModal";
 import CrossRestaurantCartDialog from "@/components/cart/CrossRestaurantCartDialog";
 import "./globals.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+// Central type system for the whole app (Slice 1 establishes this on the
+// homepage; other pages still fall back to Outfit as the base body font).
+//
+// - Outfit (`font-sans`, the default): paragraphs, nav, search input/tabs,
+//   eyebrows, badges/pills, buttons, links, and any dense or small-scale
+//   UI text. This is the default — most elements need no extra class.
+// - Unbounded (`font-heading`): major display moments only — the hero
+//   headline, section headings, and prominent restaurant/item names.
+//   Never apply it to dense UI, long-form copy, or small text (its
+//   letterforms stop reading cleanly below ~text-sm).
+//
+// `display: "swap"` on both — self-hosted by next/font (no runtime network
+// request), so the swap window is effectively immediate rather than a
+// visible fallback-font flash.
+const outfit = Outfit({
+  variable: "--font-outfit",
   subsets: ["latin"],
+  display: "swap",
+});
+
+const unbounded = Unbounded({
+  variable: "--font-unbounded",
+  subsets: ["latin"],
+  weight: ["500", "600", "700", "800"],
+  display: "swap",
 });
 
 export const metadata = {
@@ -52,7 +74,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${geistSans.className} antialiased`}>
+      <body className={`${outfit.className} ${unbounded.variable} antialiased`}>
         <GlobalSearchProvider>
           <GlobalItemPreviewProvider>
             <CartAddConfirmationProvider>

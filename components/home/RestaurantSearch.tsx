@@ -38,6 +38,7 @@ export default function RestaurantSearch({ restaurants }: RestaurantSearchProps)
     useRecentAndPopularRestaurants(restaurants);
 
   const isEmptyQuery = !query.trim();
+  const quickSearchRestaurants = restaurants.filter((restaurant) => !restaurant.isComingSoon);
 
   const filteredSuggestions = useMemo(
     () => searchRestaurants(restaurants, query).slice(0, MAX_FILTERED_SUGGESTIONS),
@@ -114,15 +115,22 @@ export default function RestaurantSearch({ restaurants }: RestaurantSearchProps)
   };
 
   return (
-    <section ref={widgetRef} className="mx-auto w-full max-w-[34rem]">
+    <section ref={widgetRef} className="mx-auto w-full max-w-2xl">
       <div className="relative">
         {/* Tabs + input share one bordered/shadowed shell so they read as a
             single search module rather than two stacked controls — same
             border/shadow/icon language as the nav's DesktopSearchDropdown,
-            just scaled up (more padding, larger type) for hero prominence. */}
-        <div className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-[0_24px_60px_rgba(15,23,42,0.18)]">
-          <div className="flex justify-center border-b border-slate-100 py-2.5">
-            <ScopeSwitcher scope={scope} onChange={handleScopeChange} showIcons className="px-2" />
+            just scaled up (more padding, larger type, deeper shadow) for
+            hero prominence. */}
+        <div className="overflow-hidden rounded-[28px] border border-slate-200/80 bg-white shadow-[0_30px_70px_-15px_rgba(15,23,42,0.28)] ring-1 ring-black/[0.02] transition-shadow duration-200 focus-within:border-accent/40 focus-within:ring-2 focus-within:ring-accent/40">
+          <div className="flex justify-center border-b border-slate-100 bg-slate-50/60 px-4 py-3">
+            <ScopeSwitcher
+              scope={scope}
+              onChange={handleScopeChange}
+              showIcons
+              variant="segmented"
+              className=""
+            />
           </div>
 
           <div id="restaurant-search" className="relative">
@@ -174,16 +182,18 @@ export default function RestaurantSearch({ restaurants }: RestaurantSearchProps)
                 }
               }}
               placeholder="Search restaurants, menu items..."
-              className="w-full border-0 bg-transparent py-4 pl-11 pr-10 text-base text-slate-900 outline-none placeholder:text-slate-500"
+              className="w-full border-0 bg-transparent py-5 pl-16 pr-12 text-base text-slate-900 outline-none placeholder:text-slate-400 sm:text-lg"
             />
-            <span className="pointer-events-none absolute inset-y-0 left-4 flex items-center text-slate-500">
-              <Search className="h-5 w-5" strokeWidth={2.5} />
+            <span className="pointer-events-none absolute inset-y-0 left-5 flex items-center">
+              <span className="flex h-9 w-9 items-center justify-center rounded-full bg-accent-soft text-accent-strong">
+                <Search className="h-4 w-4" strokeWidth={2.5} />
+              </span>
             </span>
             {query && (
               <button
                 type="button"
                 onClick={handleClear}
-                className="cursor-pointer absolute inset-y-0 right-3 flex items-center rounded-full px-1 text-slate-400 transition hover:text-slate-600"
+                className="cursor-pointer absolute inset-y-0 right-4 flex items-center rounded-full px-1 text-slate-400 transition hover:text-slate-600"
                 aria-label="Clear search"
               >
                 <X className="h-5 w-5" strokeWidth={2} />
@@ -311,6 +321,27 @@ export default function RestaurantSearch({ restaurants }: RestaurantSearchProps)
           </SurfaceCard>
         )}
       </div>
+
+      {/* Static helper row — outside the `.relative` wrapper above so it
+          never affects the dropdown's `top-full` anchoring. Quick-search
+          chips reuse the exact same handleSelectRestaurant used by every
+          result row; no new selection logic. */}
+      {quickSearchRestaurants.length > 0 && (
+        <div className="mt-4 flex flex-wrap items-center justify-center gap-2 text-sm">
+          <span className="text-slate-500">Try:</span>
+          {quickSearchRestaurants.map((restaurant) => (
+            <button
+              key={restaurant.id}
+              type="button"
+              onMouseDown={(event) => event.preventDefault()}
+              onClick={() => handleSelectRestaurant(restaurant)}
+              className="cursor-pointer rounded-full border border-slate-200 bg-white/70 px-3 py-1 font-semibold text-slate-700 shadow-sm transition hover:border-slate-300 hover:bg-white hover:text-slate-900"
+            >
+              {restaurant.name}
+            </button>
+          ))}
+        </div>
+      )}
     </section>
   );
 }

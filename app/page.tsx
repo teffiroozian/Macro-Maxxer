@@ -1,194 +1,103 @@
-import Image from "next/image";
-import Link from "next/link";
-import SurfaceCard from "@/components/ui/SurfaceCard";
 import HeroSearchNav from "@/components/home/HeroSearchNav";
+import HomeBackdrop from "@/components/home/HomeBackdrop";
+import FeaturedRestaurantCard from "@/components/home/FeaturedRestaurantCard";
+import RestaurantQuickLinkChip from "@/components/home/RestaurantQuickLinkChip";
+import ProductPreviewCard from "@/components/home/ProductPreviewCard";
+import SectionEyebrow from "@/components/ui/SectionEyebrow";
 import { RestaurantUiProvider } from "@/components/RestaurantUiContext";
 import CartPreviewDrawer from "@/components/cart/CartPreviewDrawer";
-import { getAllRestaurants } from "@/lib/restaurants";
+import { getAllRestaurants, getRestaurantData, toItemSlug } from "@/lib/restaurants";
 
 const restaurants = getAllRestaurants();
 
-export default function Home() {
-  const groupedRestaurants = (() => {
-    const normalizeName = (name: string) => name.replace(/^the\s+/i, "");
+// Slice 1 prototype: establishes the homepage's visual language with one
+// representative restaurant and one representative menu item rather than
+// the full Featured Restaurants (Slice 2) and Product Walkthrough (Slice 3)
+// sections. See docs/homepage-visual-refresh-plan.md.
+const liveRestaurants = restaurants.filter((restaurant) => !restaurant.isComingSoon);
+const spotlightRestaurant = liveRestaurants.find((restaurant) => restaurant.id === "chickfila") ?? liveRestaurants[0];
+const secondaryRestaurant = liveRestaurants.find((restaurant) => restaurant.id !== spotlightRestaurant?.id);
 
-    const sorted = [...restaurants].sort((a, b) =>
-      normalizeName(a.name).localeCompare(normalizeName(b.name))
-    );
-
-    const grouped = new Map<string, (typeof restaurants)[number][]>();
-
-    sorted.forEach((restaurant) => {
-      const cleanedName = normalizeName(restaurant.name);
-      const firstLetter = cleanedName.charAt(0).toUpperCase();
-
-      const existing = grouped.get(firstLetter) ?? [];
-      existing.push(restaurant);
-      grouped.set(firstLetter, existing);
-    });
-
-    return Array.from(grouped.entries()).sort(([a], [b]) => a.localeCompare(b));
-  })();
+export default async function Home() {
+  const previewRestaurant = await getRestaurantData("chipotle");
+  const previewItem = previewRestaurant?.items.find((item) => item.id === "high-protein-high-fiber-bowl");
 
   return (
     <RestaurantUiProvider>
-      <HeroSearchNav restaurants={restaurants} />
+      <div className="relative">
+        <HomeBackdrop />
 
-      <main className="mx-auto flex max-w-5xl flex-col gap-12 px-4 p-24 sm:px-6">
+        <HeroSearchNav restaurants={restaurants} />
 
-      <section id="macro-friendly-section" className="flex flex-col gap-8">
-        <div>
-          <h2 className="text-center text-3xl font-semibold text-neutral-900">
-            Macro Friendly Restaurants
-          </h2>
-        </div>
-        <section className="grid gap-4 sm:grid-cols-2">
-          {restaurants
-            .filter((restaurant) => restaurant.isMacroFriendly)
-            .map((restaurant) => {
-              const isAvailable = !restaurant.isComingSoon;
+        <main className="relative">
+          {spotlightRestaurant ? (
+            <section className="mx-auto max-w-6xl px-4 pb-16 pt-4 sm:px-6 sm:pb-32 lg:pb-36">
+              <div className="mx-auto max-w-xl text-center">
+                <SectionEyebrow className="text-xs sm:text-sm">Featured Restaurants</SectionEyebrow>
+                <h2 className="font-heading mt-3 text-3xl font-bold text-neutral-900 sm:text-4xl">
+                  Jump Straight to the Menu
+                </h2>
+                <p className="mt-3 text-base text-neutral-600">
+                  Every supported restaurant comes with a full menu, real nutrition data, and an order builder.
+                </p>
+                <span className="mt-4 inline-flex items-center gap-2 rounded-full border border-black/10 bg-white/70 px-3 py-1 text-xs font-semibold text-neutral-600">
+                  {/* "success" semantic role — an available/live status. */}
+                  <span className="relative flex h-2 w-2">
+                    <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-success opacity-75" />
+                    <span className="relative inline-flex h-2 w-2 rounded-full bg-success" />
+                  </span>
+                  {liveRestaurants.length} restaurants live now
+                </span>
+              </div>
 
-              if (isAvailable) {
-                return (
-                  <Link
-                    key={restaurant.id}
-                    href={`/restaurant/${restaurant.id}`}
-                    scroll
-                    className="group cursor-pointer"
-                  >
-                    <SurfaceCard as="article" padding="none" className="overflow-hidden bg-white/70 transition group-hover:-translate-y-0.5 group-hover:shadow-md">
-                      <div className="relative h-44 w-full overflow-hidden">
-                        <Image
-                          src={restaurant.cover}
-                          alt={`${restaurant.name} cover`}
-                          fill
-                          className="object-cover"
-                        />
-                      </div>
-                      <div className="flex items-center gap-3 border-t border-black/5 bg-white/80 px-4 py-3">
-                        <div className="flex h-9 w-9 items-center justify-center overflow-hidden rounded-xl">
-                          <Image
-                            src={restaurant.logo}
-                            alt={`${restaurant.name} logo`}
-                            width={36}
-                            height={36}
-                            className="object-contain"
-                          />
-                        </div>
-                        <span className="text-base font-semibold text-neutral-900">
-                          {restaurant.name}
-                        </span>
-                      </div>
-                    </SurfaceCard>
-                  </Link>
-                );
-              }
+              <div className="relative mx-auto mt-10 w-full max-w-3xl sm:mb-8">
+                <FeaturedRestaurantCard restaurant={spotlightRestaurant} />
 
-              return (
-                <SurfaceCard
-                  as="article"
-                  key={restaurant.id}
-                  aria-disabled="true"
-                  padding="none"
-                  shadow="none"
-                  className="relative overflow-hidden bg-white/70 opacity-40"
-                >
-                  <div className="relative h-44 w-full overflow-hidden">
-                    <Image
-                      src={restaurant.cover}
-                      alt={`${restaurant.name} cover`}
-                      fill
-                      className="object-cover"
+                {secondaryRestaurant ? (
+                  <div className="mt-4 flex justify-center sm:absolute sm:-bottom-7 sm:-right-6 sm:mt-0 sm:w-64 sm:justify-end">
+                    <RestaurantQuickLinkChip
+                      restaurant={secondaryRestaurant}
+                      className="w-full shadow-md sm:shadow-[0_16px_32px_rgba(15,23,42,0.14)]"
                     />
                   </div>
-                  <div className="flex items-center gap-3 border-t border-black/5 bg-white/80 px-4 py-3"> 
-                    <div className="flex h-9 w-9 items-center justify-center overflow-hidden rounded-xl">
-                      <Image
-                        src={restaurant.logo}
-                        alt={`${restaurant.name} logo`}
-                        width={36}
-                        height={36}
-                        className="object-contain"
-                      />
-                    </div>
-                    <span className="text-base font-semibold text-neutral-900">
-                      {restaurant.name}
-                    </span>
-                  </div>
-                  <div className="pointer-events-none absolute inset-0 flex items-center justify-center bg-black/30">
-                    <span className="rounded-full bg-white px-3 py-1 text-xs font-bold uppercase tracking-[0.12em] text-neutral-700">
-                      Coming Soon
-                    </span>
-                  </div>
-                </SurfaceCard>
-              );
-            })}
-        </section>
-      </section>
-
-      <section id="all-restaurants-section" className="mt-20 flex flex-col gap-4">
-        <div>
-          <h2 className="text-center text-3xl font-semibold text-neutral-900">All Restaurants</h2>
-        </div>
-
-        <div className="space-y-6">
-          {groupedRestaurants.map(([letter, items]) => (
-            <section key={letter} className="space-y-2">
-              <h3 className="text-sm font-semibold uppercase tracking-wide text-neutral-500">
-                {letter}
-              </h3>
-              <div className="space-y-2 ">
-                {items.map((restaurant) => (
-                  !restaurant.isComingSoon ? (
-                    <Link
-                      key={restaurant.id}
-                      href={`/restaurant/${restaurant.id}`}
-                      scroll
-                      className="cursor-pointer flex w-full items-center gap-3 rounded-xl border border-black/10 bg-white px-3 py-2 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md"
-                    >
-                      <span className="flex h-9 w-9 items-center justify-center overflow-hidden rounded-lg bg-neutral-50">
-                        <Image
-                          src={restaurant.logo}
-                          alt={`${restaurant.name} logo`}
-                          width={28}
-                          height={28}
-                          className="object-contain rounded-md"
-                        />
-                      </span>
-                      <span className="text-sm font-semibold text-neutral-900">
-                        {restaurant.name}
-                      </span>
-                    </Link>
-                  ) : (
-                    <div
-                      key={restaurant.id}
-                      aria-disabled="true"
-                      className="flex w-full items-center gap-3 rounded-xl border border-black/10 bg-white px-3 py-2 opacity-40"
-                    >
-                      <span className="flex h-9 w-9 items-center justify-center overflow-hidden rounded-lg bg-neutral-50">
-                        <Image
-                          src={restaurant.logo}
-                          alt={`${restaurant.name} logo`}
-                          width={28}
-                          height={28}
-                          className="object-contain rounded-md"
-                        />
-                      </span>
-                      <span className="text-sm font-semibold text-neutral-900">
-                        {restaurant.name}
-                      </span>
-                      <span className="ml-auto rounded-full border border-neutral-300 px-2 py-0.5 text-[11px] font-semibold uppercase tracking-wide text-neutral-500">
-                        Coming Soon
-                      </span>
-                    </div>
-                  )
-                ))}
+                ) : null}
               </div>
             </section>
-          ))}
-        </div>
-      </section>
-      </main>
+          ) : null}
+
+          {previewRestaurant && previewItem ? (
+            <section className="relative py-20 sm:py-24 lg:py-28">
+              <div
+                aria-hidden="true"
+                className="pointer-events-none absolute inset-y-0 left-1/2 -z-10 w-screen -translate-x-1/2 bg-gradient-to-b from-transparent via-neutral-50/80 to-transparent"
+              />
+
+              <div className="mx-auto max-w-6xl px-4 sm:px-6">
+                <div className="mx-auto max-w-xl text-center">
+                  <SectionEyebrow className="text-xs sm:text-sm">See It In Action</SectionEyebrow>
+                  <h2 className="font-heading mt-3 text-3xl font-bold text-neutral-900 sm:text-4xl">
+                    Real Menu Data, Real Macros
+                  </h2>
+                  <p className="mt-3 text-base text-neutral-600">
+                    Every item shows calories, protein, carbs, and fat up front — before you customize or add it to your order.
+                  </p>
+                </div>
+
+                <div className="mx-auto mt-10 w-full max-w-3xl">
+                  <ProductPreviewCard
+                    restaurantName={previewRestaurant.name}
+                    restaurantLogo={previewRestaurant.logo}
+                    itemName={previewItem.name}
+                    itemImage={previewItem.image}
+                    nutrition={previewItem.nutrition}
+                    href={`/restaurant/${previewRestaurant.id}/${toItemSlug(previewItem)}`}
+                  />
+                </div>
+              </div>
+            </section>
+          ) : null}
+        </main>
+      </div>
 
       <CartPreviewDrawer />
     </RestaurantUiProvider>

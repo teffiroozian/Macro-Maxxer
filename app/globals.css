@@ -7,6 +7,24 @@
     --surface-app-background: #efefef;
     --surface-muted-panel: #e0e0e0;
     --surface-image-placeholder: #efefef;
+
+    /* Global product accent — soft, restrained green. Neutral Macro Maxxer
+       emphasis (search focus, active controls, status dots, small
+       decorative accents). Never a per-restaurant brand color and never
+       forced into every component — see components/home/FeaturedRestaurantCard.tsx
+       for restaurant-brand colors, which stay local to that card. */
+    --product-accent: #059669;
+    --product-accent-strong: #047857;
+    --product-accent-soft: #ecfdf5;
+
+    /* Semantic roles — one color per meaning, reused (not redefined) by
+       every future success/info/warning/error usage. "success" currently
+       shares the product accent's hex on purpose: an "available"/"live"
+       state is a form of positive product emphasis, not a separate hue. */
+    --semantic-success: #059669;
+    --semantic-info: #2563eb;
+    --semantic-warning: #d97706;
+    --semantic-error: #dc2626;
 }
 
 @theme inline {
@@ -15,8 +33,20 @@
     --color-app-background: var(--surface-app-background);
     --color-muted-panel: var(--surface-muted-panel);
     --color-image-placeholder: var(--surface-image-placeholder);
-    --font-sans: var(--font-geist-sans);
-    --font-mono: var(--font-geist-mono);
+    --font-sans: var(--font-outfit);
+    --font-heading: var(--font-unbounded);
+
+    /* bg-accent / text-accent / border-accent, etc. Macro-specific colors
+       (protein/carbs/fat/calories) stay in components/nutrition/macroColorTokens.ts —
+       this is the general-purpose product token, not a macro token. */
+    --color-accent: var(--product-accent);
+    --color-accent-strong: var(--product-accent-strong);
+    --color-accent-soft: var(--product-accent-soft);
+
+    --color-success: var(--semantic-success);
+    --color-info: var(--semantic-info);
+    --color-warning: var(--semantic-warning);
+    --color-error: var(--semantic-error);
 }
 
 /* @media (prefers-color-scheme: dark) {
@@ -29,7 +59,6 @@
 body {
     background: var(--surface-app-background);
     color: var(--foreground);
-    font-family: Arial, Helvetica, sans-serif;
     overflow-x: hidden;
 }
 
