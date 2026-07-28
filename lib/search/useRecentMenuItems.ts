@@ -2,6 +2,7 @@
 
 import { useMemo, useState } from "react";
 import { resolveIngredientCategoryLabel, type ContentSearchResult } from "@/lib/search/searchAllContent";
+import { resolveQuickAddEligibility } from "@/lib/search/quickAddEligibility";
 import type { SearchIndexEntry } from "@/lib/search/searchIndex";
 
 const RECENT_MENU_ITEMS_KEY = "recentlySearchedMenuItems";
@@ -57,7 +58,12 @@ export function useRecentMenuItems(searchIndex: SearchIndexEntry[] | null) {
       if (ref.kind === "menu-item") {
         const item = entry.items.find((candidate) => candidate.id === ref.itemId);
         if (item) {
-          results.push({ kind: "menu-item", item, restaurant: entry.restaurant });
+          results.push({
+            kind: "menu-item",
+            item,
+            restaurant: entry.restaurant,
+            quickAdd: resolveQuickAddEligibility(item),
+          });
         }
       } else {
         const ingredient = entry.ingredients.find((candidate) => candidate.id === ref.ingredientId);

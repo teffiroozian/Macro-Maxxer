@@ -140,6 +140,7 @@ export default function GlobalSearchPanel({
                       isActive={activeIndex === index}
                       onSelect={handleSelectMenuItem}
                       onRemoveRecent={() => removeRecentMenuItem(result)}
+                      quickAdd={result.quickAdd}
                     />
                   ) : (
                     <BuilderIngredientResultRow
@@ -174,6 +175,7 @@ export default function GlobalSearchPanel({
                   restaurant={result.restaurant}
                   isActive={activeIndex === index}
                   onSelect={handleSelectMenuItem}
+                  quickAdd={result.quickAdd}
                 />
               ) : (
                 <BuilderIngredientResultRow

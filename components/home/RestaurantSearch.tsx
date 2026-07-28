@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Search, X } from "lucide-react";
 import SurfaceCard from "@/components/ui/SurfaceCard";
@@ -34,6 +34,7 @@ export default function RestaurantSearch({ restaurants }: RestaurantSearchProps)
   const [query, setQuery] = useState("");
   const [activeIndex, setActiveIndex] = useState(-1);
   const [isFocused, setIsFocused] = useState(false);
+  const widgetRef = useRef<HTMLElement>(null);
   const { recentRestaurants, popularRestaurants, removeRecent } =
     useRecentAndPopularRestaurants(restaurants);
   const { openPreview } = useGlobalItemPreview();
@@ -125,7 +126,7 @@ export default function RestaurantSearch({ restaurants }: RestaurantSearchProps)
   };
 
   return (
-    <section className="mx-auto w-full max-w-[34rem]">
+    <section ref={widgetRef} className="mx-auto w-full max-w-[34rem]">
       <div className="relative">
         {/* Tabs + input share one bordered/shadowed shell so they read as a
             single search module rather than two stacked controls — same
@@ -146,8 +147,20 @@ export default function RestaurantSearch({ restaurants }: RestaurantSearchProps)
               }}
               onFocus={() => setIsFocused(true)}
               onBlur={() => {
-                setIsFocused(false);
-                setActiveIndex(-1);
+                // Focus may be moving to something else inside this same
+                // widget — e.g. a Quick Add variant <select> or button in
+                // the results list below — rather than truly leaving it.
+                // Defer one tick and only actually close if the newly
+                // focused element ends up outside the widget entirely;
+                // otherwise this blur fires first and closes the dropdown
+                // out from under the very control the user just clicked.
+                window.setTimeout(() => {
+                  if (widgetRef.current?.contains(document.activeElement)) {
+                    return;
+                  }
+                  setIsFocused(false);
+                  setActiveIndex(-1);
+                }, 0);
               }}
               onKeyDown={(event) => {
                 if (!showSuggestions) {
@@ -254,6 +267,7 @@ export default function RestaurantSearch({ restaurants }: RestaurantSearchProps)
                           isActive={activeIndex === index}
                           onSelect={handleSelectMenuItem}
                           onRemoveRecent={() => removeRecentMenuItem(result)}
+                          quickAdd={result.quickAdd}
                         />
                       ) : (
                         <BuilderIngredientResultRow
@@ -286,6 +300,7 @@ export default function RestaurantSearch({ restaurants }: RestaurantSearchProps)
                       restaurant={result.restaurant}
                       isActive={activeIndex === index}
                       onSelect={handleSelectMenuItem}
+                      quickAdd={result.quickAdd}
                     />
                   ) : (
                     <BuilderIngredientResultRow

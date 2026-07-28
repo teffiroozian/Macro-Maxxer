@@ -1,4 +1,5 @@
 import { getSearchTerms, matchesText } from "@/lib/search/matchText";
+import { resolveQuickAddEligibility } from "@/lib/search/quickAddEligibility";
 import { NAME_RANK_TIER, getNameRankTier } from "@/lib/search/rankResults";
 import type { SearchIndexEntry } from "@/lib/search/searchIndex";
 import type { RestaurantBuilderConfig } from "@/types/builder";
@@ -76,7 +77,12 @@ export function searchAllContent(index: SearchIndexEntry[], query: string): Cont
       const tier = getTier(item.name, item.categories, query, terms, false);
       if (tier !== null) {
         scored.push({
-          result: { kind: "menu-item", item, restaurant: entry.restaurant },
+          result: {
+            kind: "menu-item",
+            item,
+            restaurant: entry.restaurant,
+            quickAdd: resolveQuickAddEligibility(item),
+          },
           tier,
           order: order++,
         });
