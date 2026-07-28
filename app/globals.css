@@ -62,6 +62,17 @@ body {
     overflow-x: hidden;
 }
 
+/* Hides the scrollbar on the homepage restaurant carousel track while
+   keeping it natively scrollable/draggable (touch + snap still work). */
+.hide-scrollbar {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+.hide-scrollbar::-webkit-scrollbar {
+    display: none;
+}
+
 @supports not (height: 100dvh) {
     .item-route-modal-root {
         height: calc(100vh - 1rem);
