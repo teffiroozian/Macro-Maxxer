@@ -7,6 +7,7 @@ import HomeSectionHeading from "@/components/home/HomeSectionHeading";
 import { RestaurantUiProvider } from "@/components/RestaurantUiContext";
 import CartPreviewDrawer from "@/components/cart/CartPreviewDrawer";
 import { getAllRestaurants, getRestaurantData, toItemSlug } from "@/lib/restaurants";
+import { parseIncludedIngredientEntry } from "@/lib/itemIngredients";
 
 const restaurants = getAllRestaurants();
 
@@ -34,6 +35,15 @@ const WALKTHROUGH_REVIEW_ITEMS = [
 export default async function Home() {
   const previewRestaurant = await getRestaurantData("chipotle");
   const previewItem = previewRestaurant?.items.find((item) => item.id === "high-protein-high-fiber-bowl");
+
+  const previewIngredientNames = (previewItem?.ingredients ?? [])
+    .map((entry) => parseIncludedIngredientEntry(entry)?.ingredientId)
+    .map((id) => previewRestaurant?.ingredients?.find((ingredient) => ingredient.id === id)?.name)
+    .filter((name): name is string => Boolean(name));
+  const previewItemDescription =
+    previewIngredientNames.length >= 3
+      ? `${previewIngredientNames.slice(0, 3).join(", ")} in a fiber-forward bowl.`
+      : undefined;
 
   const walkthroughFindItems = WALKTHROUGH_FIND_ITEM_IDS.map((id) =>
     previewRestaurant?.items.find((item) => item.id === id)
@@ -167,6 +177,7 @@ export default async function Home() {
                     restaurantLogo={previewRestaurant.logo}
                     itemName={previewItem.name}
                     itemImage={previewItem.image}
+                    itemDescription={previewItemDescription}
                     nutrition={previewItem.nutrition}
                     href={`/restaurant/${previewRestaurant.id}/${toItemSlug(previewItem)}`}
                   />

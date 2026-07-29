@@ -15,6 +15,7 @@ type ProductPreviewCardProps = {
   restaurantLogo: string;
   itemName: string;
   itemImage: string;
+  itemDescription?: string;
   nutrition: CoreMacros;
   href: string;
   tag?: string;
@@ -29,6 +30,7 @@ export default function ProductPreviewCard({
   restaurantLogo,
   itemName,
   itemImage,
+  itemDescription,
   nutrition,
   href,
   tag = "High-Protein Pick",
@@ -60,14 +62,21 @@ export default function ProductPreviewCard({
           </span>
         </div>
 
-        <div className="flex flex-col gap-6 p-6 sm:flex-row sm:items-center sm:gap-8 sm:p-8">
-          <div className="relative mx-auto h-40 w-40 shrink-0 overflow-hidden rounded-2xl border border-black/10 bg-neutral-50 sm:mx-0">
-            <Image src={itemImage} alt={itemName} fill className="object-cover" />
-            <MacroBadge
-              macroKey="protein"
-              value={nutrition.protein}
-              className="absolute right-2 top-2"
-            />
+        <div className="flex flex-col gap-6 p-6 sm:flex-row sm:items-start sm:gap-8 sm:p-8">
+          <div className="flex flex-col items-center gap-3 sm:shrink-0 sm:items-start">
+            <div className="flex items-center gap-2">
+              <RestaurantLogoBadge src={restaurantLogo} alt="" size="sm" ring={false} className="border border-black/10" />
+              <span className="text-sm font-medium text-neutral-500">{restaurantName}</span>
+            </div>
+
+            <div className="relative h-40 w-40 overflow-hidden rounded-2xl border border-black/10 bg-neutral-50">
+              <Image src={itemImage} alt={itemName} fill className="object-cover" />
+              <MacroBadge
+                macroKey="protein"
+                value={nutrition.protein}
+                className="absolute right-2 top-2"
+              />
+            </div>
           </div>
 
           <div className="flex min-w-0 flex-1 flex-col gap-4">
@@ -77,35 +86,31 @@ export default function ProductPreviewCard({
                   {tag}
                 </span>
               ) : null}
-              <div className="mt-2 flex items-center gap-2">
-                <RestaurantLogoBadge src={restaurantLogo} alt="" size="sm" ring={false} className="border border-black/10" />
-                <span className="text-sm font-medium text-neutral-500">{restaurantName}</span>
-              </div>
-              <h3 className="font-heading mt-1 text-2xl font-bold text-neutral-900">{itemName}</h3>
+              <h3 className="font-heading mt-2 text-2xl font-bold text-neutral-900">{itemName}</h3>
+              {itemDescription ? (
+                <p className="mt-1.5 text-sm leading-snug text-neutral-500">{itemDescription}</p>
+              ) : null}
             </div>
 
             <MacroSplitBar protein={nutrition.protein} carbs={nutrition.carbs} totalFat={nutrition.totalFat} />
 
-            <div className="flex flex-wrap items-end gap-x-6 gap-y-3 sm:gap-x-8">
+            <p className="inline-flex w-fit items-center gap-1.5 rounded-full bg-emerald-50 py-1 pl-1 pr-2.5 text-xs text-emerald-700">
+              <span className="flex h-4 w-4 shrink-0 items-center justify-center rounded-full bg-emerald-600">
+                <Zap className="h-2.5 w-2.5 text-emerald-50" strokeWidth={2.5} aria-hidden="true" />
+              </span>
+              <span className="font-bold">{proteinPer100Calories}g protein</span>
+              <span className="text-emerald-700/70">per 100 cal</span>
+            </p>
+
+            <div className="flex flex-wrap items-end gap-x-6 gap-y-4 sm:gap-x-8">
               <MacroStat macroKey="calories" value={nutrition.calories} labelVariant="uppercase" size="summary" />
               <MacroStat macroKey="protein" value={nutrition.protein} labelVariant="uppercase" size="summary" />
               <MacroStat macroKey="carbs" value={nutrition.carbs} labelVariant="uppercase" size="summary" />
               <MacroStat macroKey="totalFat" value={nutrition.totalFat} labelVariant="uppercase" size="summary" />
-            </div>
-
-            <div className="flex items-center gap-3 rounded-2xl border border-orange-100 bg-gradient-to-r from-orange-50 via-amber-50/70 to-transparent px-4 py-3">
-              <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[#c2410c] text-white shadow-[0_4px_12px_rgba(194,65,12,0.35)]">
-                <Zap className="h-4 w-4" strokeWidth={2.5} fill="currentColor" aria-hidden="true" />
+              <span className={appButtonClassName({ variant: "secondary", size: "sm", className: "ml-auto w-fit" })}>
+                View Full Nutrition
               </span>
-              <p className="text-sm leading-snug text-neutral-600">
-                <span className="text-base font-extrabold text-[#c2410c]">{proteinPer100Calories}g protein</span>
-                {" "}per 100 calories
-              </p>
             </div>
-
-            <span className={appButtonClassName({ variant: "secondary", size: "sm", className: "w-fit" })}>
-              View Full Nutrition
-            </span>
           </div>
         </div>
       </SurfaceCard>
