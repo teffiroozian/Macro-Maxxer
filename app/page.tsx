@@ -2,6 +2,7 @@ import HeroSearchNav from "@/components/home/HeroSearchNav";
 import HomeBackdrop from "@/components/home/HomeBackdrop";
 import RestaurantCarousel from "@/components/home/RestaurantCarousel";
 import ProductPreviewCard from "@/components/home/ProductPreviewCard";
+import ProductWalkthrough, { type WalkthroughReviewItem } from "@/components/home/ProductWalkthrough";
 import HomeSectionHeading from "@/components/home/HomeSectionHeading";
 import { RestaurantUiProvider } from "@/components/RestaurantUiContext";
 import CartPreviewDrawer from "@/components/cart/CartPreviewDrawer";
@@ -10,14 +11,86 @@ import { getAllRestaurants, getRestaurantData, toItemSlug } from "@/lib/restaura
 const restaurants = getAllRestaurants();
 
 // See docs/homepage-visual-refresh-plan.md. Slice 2 replaces the Slice 1
-// single-spotlight stand-in with the full Featured Restaurants carousel;
-// the Product Walkthrough (Slice 3) preview below is still the Slice 1
-// placeholder.
+// single-spotlight stand-in with the full Featured Restaurants carousel.
+// Slice 3 adds the Product Walkthrough between it and the "See It In
+// Action" preview below.
 const liveRestaurants = restaurants.filter((restaurant) => !restaurant.isComingSoon);
+
+// Real Chipotle menu/ingredient ids used to build the Slice 3 walkthrough
+// previews. Kept separate from the raw nutrition data (data/restaurants/chipotle.json)
+// so the curated selection is easy to find and change without touching menu data.
+const WALKTHROUGH_FIND_ITEM_IDS = [
+  "high-protein-high-fiber-bowl",
+  "high-protein-low-calorie-bowl",
+  "side-of-chicken-high-protein",
+];
+const WALKTHROUGH_BUILD_ITEM_ID = "high-protein-high-fiber-bowl";
+const WALKTHROUGH_ADDON_IDS = ["guacamole", "queso-blanco"];
+const WALKTHROUGH_REVIEW_ITEMS = [
+  { id: "high-protein-high-fiber-bowl", quantity: 1 },
+  { id: "side-of-chicken-high-protein", quantity: 1 },
+];
 
 export default async function Home() {
   const previewRestaurant = await getRestaurantData("chipotle");
   const previewItem = previewRestaurant?.items.find((item) => item.id === "high-protein-high-fiber-bowl");
+
+  const walkthroughFindItems = WALKTHROUGH_FIND_ITEM_IDS.map((id) =>
+    previewRestaurant?.items.find((item) => item.id === id)
+  )
+    .filter((item): item is NonNullable<typeof item> => Boolean(item))
+    .map((item) => ({
+      id: item.id,
+      name: item.name,
+      image: item.image,
+      category: item.categories[0] ?? "",
+      nutrition: item.nutrition,
+    }));
+
+  const walkthroughBuildItemSource = previewRestaurant?.items.find(
+    (item) => item.id === WALKTHROUGH_BUILD_ITEM_ID
+  );
+  const walkthroughBuildItem = walkthroughBuildItemSource
+    ? {
+        id: walkthroughBuildItemSource.id,
+        name: walkthroughBuildItemSource.name,
+        image: walkthroughBuildItemSource.image,
+        category: walkthroughBuildItemSource.categories[0] ?? "",
+        nutrition: walkthroughBuildItemSource.nutrition,
+      }
+    : null;
+
+  const walkthroughAddOns = WALKTHROUGH_ADDON_IDS.map((id) =>
+    previewRestaurant?.ingredients.find((ingredient) => ingredient.id === id)
+  )
+    .filter((ingredient): ingredient is NonNullable<typeof ingredient> => Boolean(ingredient?.nutrition))
+    .map((ingredient) => ({ id: ingredient.id, name: ingredient.name, nutrition: ingredient.nutrition }));
+
+  const walkthroughReviewItems: WalkthroughReviewItem[] = WALKTHROUGH_REVIEW_ITEMS.map(({ id, quantity }) => {
+    const item = previewRestaurant?.items.find((candidate) => candidate.id === id);
+    if (!item) return null;
+    return {
+      id: item.id,
+      name: item.name,
+      image: item.image,
+      category: item.categories[0] ?? "",
+      nutrition: item.nutrition,
+      quantity,
+    };
+  }).filter((item): item is WalkthroughReviewItem => Boolean(item));
+
+  const walkthroughCustomizeHref =
+    previewRestaurant && walkthroughBuildItemSource
+      ? `/restaurant/${previewRestaurant.id}/${toItemSlug(walkthroughBuildItemSource)}`
+      : null;
+
+  const canShowWalkthrough =
+    previewRestaurant &&
+    walkthroughFindItems.length === WALKTHROUGH_FIND_ITEM_IDS.length &&
+    walkthroughBuildItem &&
+    walkthroughCustomizeHref &&
+    walkthroughAddOns.length === WALKTHROUGH_ADDON_IDS.length &&
+    walkthroughReviewItems.length === WALKTHROUGH_REVIEW_ITEMS.length;
 
   return (
     <RestaurantUiProvider>
@@ -47,6 +120,29 @@ export default async function Home() {
 
               <div className="mx-auto mt-10 w-full max-w-4xl">
                 <RestaurantCarousel restaurants={liveRestaurants} />
+              </div>
+            </section>
+          ) : null}
+
+          {previewRestaurant && canShowWalkthrough && walkthroughBuildItem && walkthroughCustomizeHref ? (
+            <section className="mx-auto max-w-6xl px-4 py-16 sm:px-6 sm:py-20 lg:py-24">
+              <HomeSectionHeading
+                eyebrow="How It Works"
+                heading="Build an Order That Fits Your Goals"
+                description="Compare menus, customize your meal, and review the full macros before ordering."
+              />
+
+              <div className="mt-10">
+                <ProductWalkthrough
+                  restaurantName={previewRestaurant.name}
+                  findItems={walkthroughFindItems}
+                  buildItem={walkthroughBuildItem}
+                  addOns={walkthroughAddOns}
+                  reviewItems={walkthroughReviewItems}
+                  findHref={`/restaurant/${previewRestaurant.id}`}
+                  customizeHref={walkthroughCustomizeHref}
+                  reviewHref="/cart"
+                />
               </div>
             </section>
           ) : null}

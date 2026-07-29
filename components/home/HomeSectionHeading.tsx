@@ -28,14 +28,16 @@ export default function HomeSectionHeading({
   className = "",
 }: HomeSectionHeadingProps) {
   return (
-    <div className={`mx-auto max-w-2xl text-center ${className}`.trim()}>
+    <div className={`mx-auto max-w-3xl text-center ${className}`.trim()}>
       {eyebrowVariant === "pill" ? (
         <div className="flex justify-center">{eyebrow}</div>
       ) : (
         <SectionEyebrow className="text-xs sm:text-sm">{eyebrow}</SectionEyebrow>
       )}
-      <h2 className="font-heading mt-3 text-3xl font-bold text-neutral-900 sm:text-4xl">{heading}</h2>
-      {description ? <p className="mx-auto mt-3 max-w-xl text-base text-neutral-600">{description}</p> : null}
+      <h2 className="font-heading text-balance mt-3 text-3xl font-bold text-neutral-900 sm:text-4xl">{heading}</h2>
+      {description ? (
+        <p className="text-pretty mx-auto mt-3 max-w-2xl text-base text-neutral-600">{description}</p>
+      ) : null}
     </div>
   );
 }
