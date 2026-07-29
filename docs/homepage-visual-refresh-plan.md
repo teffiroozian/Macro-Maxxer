@@ -1,5 +1,25 @@
 # Homepage Visual Refresh — Implementation Plan
 
+## Current Progress
+
+- Slice 1: Homepage Visual Prototype — Completed
+- Slice 2: Featured Restaurants — Completed
+- Slice 3: Product Walkthrough — Next
+- Slice 4: Menu-Item Discovery — Planned
+- Slice 5: Responsive, Interaction, and Visual Polish — Planned
+- Slice 6: Accessibility and Final QA — Planned
+- Slice 7: Final Homepage UI Refinement — Planned
+
+"Completed" means the slice has been implemented and approved enough to move forward, not that it can never be touched again. Small cross-page improvements may still happen during the later polish slices (Slice 5 and Slice 7) if a whole-page issue is identified.
+
+## Source of Truth
+
+- This document is the source of truth for homepage visual-refresh scope and slice order.
+- Future implementation prompts — Claude, Codex, ChatGPT, or otherwise — should read this file before changing homepage code.
+- Completed slices (1 and 2) should not be reopened unless a later polish slice (5 or 7) specifically identifies a whole-page issue.
+- New decisions should be added to this file when they materially change the plan.
+- This document records intent and decisions, not implementation detail. Inspect the actual repository code before making assumptions — the repository is the source of truth for current code.
+
 ## Overview
 
 The Macro Maxxer homepage currently provides basic restaurant search and navigation, but it does not visually represent the quality or usefulness of the rest of the application.
@@ -20,28 +40,30 @@ Create a search-first homepage that:
 - remains efficient for returning users
 - scales as more restaurants and menu data are added
 
-## Visual Direction
+## Approved Visual Direction (Established in Slice 1)
 
-The homepage should combine:
+### Typography
 
-### Clean nutrition utility
+- Unbounded for major display headings
+- Outfit for body copy, navigation, labels, controls, and dense UI
 
-- clear and easy to scan
-- practical and trustworthy
-- focused on user actions
-- restrained rather than overly decorative
+### Color System
 
-### Modern macro product
+- soft green as the global Macro Maxxer accent
+- restaurant-specific brand colors are used only inside restaurant contexts (e.g. the Featured Restaurants cards), not globally
+- separate semantic colors exist for success, information, warning, and error — these are not reused for macro values
+- consistent macro-color roles are used for calories, protein, carbohydrates, and fat, applied the same way anywhere a macro value appears
 
-- stronger typography and contrast
-- visually interesting nutrition information
-- polished cards and interface previews
-- a clear Macro Maxxer identity
-- subtle depth, backgrounds, and motion
+### Visual Treatment
 
-The page should rely primarily on product visuals, restaurant branding, interface elements, and macro data.
+- subtle dotted texture and ambient green treatment in the hero
+- product-led visuals instead of heavy food-photography dependence
+- modern, clean, utility-first, macro-focused visual direction
+- strong card surfaces, restrained shadows, rounded corners, and subtle interaction feedback
 
-Food photography may be used selectively, but it should not dominate the design or make Macro Maxxer resemble a food-delivery application.
+The page should rely primarily on product visuals, restaurant branding, interface elements, and macro data. Food photography may be used selectively, but it should not dominate the design or make Macro Maxxer resemble a food-delivery application.
+
+The background system beyond the hero is still expected to receive another pass during the polishing slices (Slice 5 and Slice 7) — it is not considered finished yet.
 
 ## Current Proposed Page Structure
 
@@ -55,178 +77,115 @@ The navigation and homepage search functionality may already be handled by anoth
 
 ---
 
-# Slice 1: Homepage Visual Prototype
+# Slice 1: Homepage Visual Prototype — Completed
 
 ## Purpose
 
-Establish and validate the visual language for the homepage before building every section.
+Establish and validate the visual language for the homepage before building every section. This slice was used to establish the visual language rather than finish all homepage content.
 
-This slice should produce a representative visual prototype, not a completed homepage.
+## Final Decisions
 
-The goal is to answer:
+- the hero remains search-dominant; search is the strongest action in the hero
+- floating metric pills were added to the hero for:
+  - High Protein
+  - Low Calorie
+  - High Fiber
+- each pill uses:
+  - a small icon
+  - a bold black category label
+  - a category-colored macro value
+  - unchanged item and restaurant text
+- restaurant logo assets and wrappers were audited and corrected
+- the shared logo treatment now supports different brand-mark shapes without distortion
+- heading width was increased so major H2 headings can fit on one line where space allows
+- the typography system was finalized (Unbounded for display headings, Outfit for everything else)
+- initial color roles and shared visual tokens were established (global accent, semantic colors, macro-color roles)
+- button and arrow interactions were refined (hover/active feedback, cursor, focus states)
 
-> Does this visual direction feel appropriate for Macro Maxxer, and can it be reused across the entire homepage?
+## Constraints Observed
 
-## Scope
+- existing search functionality was preserved
+- not every remaining homepage section was built in this slice
+- restaurant-card metadata was not finalized solely to fill space
+- excessive gradients, shadows, animations, and decorative elements were avoided
+- the prototype stayed visually connected to the internal Macro Maxxer pages
+- the design looked intentional with only two supported restaurants
 
-Inspect the existing homepage and establish:
+## Status
 
-- page background treatment
-- maximum content width
-- typography hierarchy
-- heading and body-text scale
-- section spacing and vertical rhythm
-- card surface treatment
-- border and shadow approach
-- corner-radius system
-- button and link presentation
-- badge and label styles
-- macro-related accent treatment
-- basic hover and focus behavior
-
-Implement enough representative content to test the system:
-
-- the updated homepage foundation
-- the existing hero in its updated visual context
-- one representative restaurant card
-- one representative product-preview block
-- any shared styles or components required by those examples
-
-## Important Constraints
-
-- Preserve the existing search functionality.
-- Search must remain the strongest action in the hero.
-- Do not build every remaining homepage section yet.
-- Do not finalize questionable restaurant-card metadata solely to fill space.
-- Avoid excessive gradients, shadows, animations, or decorative elements.
-- The prototype must still feel connected to the internal Macro Maxxer pages.
-- The design must look intentional with only two supported restaurants.
-
-## Visual Review Checkpoint
-
-Before continuing to the next slice, review whether:
-
-- the homepage is noticeably more polished than before
-- the visual language feels appropriate for a real product
-- search remains visually dominant
-- the typography feels strong and cohesive
-- the page is visually interesting without being crowded
-- the cards and surfaces feel consistent
-- the macro focus is visible
-- the same design language can support the remaining sections
-- the hero and the content beneath it feel like one connected page
-- the page works visually with the current restaurant count
-
-Continue refining this slice until the overall direction is approved.
-
-Small spacing, shadow, or padding details may remain for final polish. Fundamental uncertainty about the typography, page style, layout, or overall direction should be resolved before proceeding.
-
-## Out of Scope
-
-- complete restaurant grid
-- complete product walkthrough
-- complete featured-menu-item section
-- final animations
-- full responsive polish
-- redesigning internal restaurant pages
-- changing search behavior
+Completed and approved. This slice established the shared visual language — typography, color roles, card and button treatment, hero pills, and logo handling — used by all subsequent slices. Do not reopen unless a later polish slice (5 or 7) identifies a whole-page issue.
 
 ---
 
-# Slice 2: Featured Restaurants
+# Slice 2: Featured Restaurants — Completed
 
 ## Purpose
 
 Create the primary browsing section beneath the hero so users can quickly open supported restaurants without using search.
 
-## Scope
+## Final Implementation
 
-Build a visually polished featured-restaurant section that:
+Section framing:
 
-- displays supported restaurants only
-- works intentionally with the current two-restaurant state
-- scales as more restaurants are added
-- uses equal-sized cards unless a stronger functional reason is discovered
-- provides clear navigation into each restaurant
-- follows the visual system established in Slice 1
+- a section-level live-count pill above the heading, using the original rounded white pill style with a green status dot
+- a wider H2 heading treatment
 
-## Section Naming
+Carousel behavior:
 
-Until real analytics exist, use an honest label such as:
+- one large, centered active restaurant card
+- partial neighboring-card previews on either side of the active card
+- no autoplay — content never changes without user action
+- arrow controls
+- horizontal touch dragging on mobile
+- scroll snapping so cards settle into the centered position
+- a centered indicator made of short horizontal lines, one per restaurant
+  - the active line is filled/darker
+  - inactive lines are very muted
+  - no restaurant names or logos appear in the indicator
 
-- Featured Restaurants
-- Explore Restaurants
-- Available Restaurants
+Card system:
 
-Do not label the section “Popular Restaurants” unless the ordering is based on real usage data.
+- one reusable card component driven by restaurant data
+- equal card dimensions
+- image panel on the left, content panel on the right
+- the restaurant logo overlaps the image/content divider, vertically aligned with the restaurant name
+- `FEATURED RESTAURANT` is restored inside the card, above the restaurant identity
+- a clear View Menu CTA
 
-In the future, analytics may rank restaurants using signals such as:
+## Rejected / Removed Approaches
 
-- restaurant-page visits
-- search frequency
-- menu-item engagement
-- repeat visits
-- recent increases in activity
+- a standard equal-card grid
+- a large active card with named selector buttons beneath it
+- timed/automatic rotation
+- a detached "Also Live" Chipotle card
+- selector cards beneath the carousel
 
-Analytics implementation is not part of this slice.
+## Current Restaurant Coverage
 
-## Restaurant Card Requirements
+The section currently supports Chick-fil-A and Chipotle. The card system and carousel should scale to additional restaurants without requiring a redesign.
 
-Each card should include:
+## Interaction Requirements
 
-- restaurant logo
-- restaurant name
-- clear clickable behavior
-- an obvious hover and keyboard-focus state
-- visual treatment appropriate to the restaurant brand
-- a layout that works consistently across different restaurant names and logos
+- arrows, dragging, snapping, and the indicator all stay synchronized
+- no content changes without user action
+- carousel controls are keyboard accessible
+- hover shadows must not be clipped by parent overflow
+- overflow is handled structurally rather than with excessive padding
+- arrow controls have a pointer cursor, hover/active feedback, and true vertical centering
 
-Restaurant cards do not need unnecessary facts simply to fill space.
+## Status
 
-The following types of metadata are currently unresolved and should not be introduced without a clear user benefit:
-
-- total number of menu items
-- highest-protein item
-- best protein score
-- generic claims about the restaurant
-- arbitrary descriptive tags
-
-It is acceptable for the first version of the card to rely on branding, composition, and interaction rather than secondary facts.
-
-## Current Restaurant State
-
-With only Chick-fil-A and Chipotle available:
-
-- use two intentional, well-balanced cards
-- do not add large disabled cards to fill the layout
-- do not give unavailable restaurants equal visual importance
-- ensure the section does not appear broken or unfinished
-
-As restaurants are added, the section should expand into a responsive grid without requiring a redesign.
-
-## Responsive Requirements
-
-- cards should remain readable and easy to tap on mobile
-- the layout should scale cleanly from two cards to a larger collection
-- card imagery and logos should not become distorted
-- spacing should remain consistent with the overall page system
-
-## Out of Scope
-
-- full restaurant directory
-- analytics implementation
-- advanced restaurant sorting
-- restaurant filtering
-- coming-soon card grid
-- redesigning restaurant detail pages
+Completed and approved. Do not reopen unless a later polish slice (5 or 7) identifies a whole-page issue.
 
 ---
 
-# Slice 3: Product Walkthrough
+# Slice 3: Product Walkthrough — Next
 
 ## Purpose
 
 Explain the complete Macro Maxxer experience through one connected product story rather than several unrelated marketing sections.
+
+This section must be built directly after Featured Restaurants and before the current menu-item/product-preview section.
 
 The walkthrough should help first-time users understand that Macro Maxxer supports more than simple restaurant browsing.
 
@@ -245,7 +204,7 @@ Show how users can explore a restaurant menu and identify useful options through
 - nutrition filters
 - other existing menu-discovery tools
 
-### 2. Customize and Combine
+### 2. Customize and Build
 
 Show how users can create an order by:
 
@@ -268,29 +227,19 @@ Show how users can add items to the cart and review:
 - selected customizations
 - the complete restaurant order
 
-## Possible Presentation
+## Presentation Approach
 
-The implementation may use one of these approaches:
+Default to an interactive tabbed showcase: selectable Find, Customize, and Review controls with one large visual area that updates based on the selected stage, plus concise supporting copy for each stage.
 
-### Option A: Interactive showcase
-
-- selectable Find, Customize, and Review controls
-- one large visual area that changes with the selected stage
-- concise supporting copy for each stage
-
-### Option B: Three-step layout
-
-- Find → Customize → Review
-- one product preview for each stage
-- desktop row and mobile stacked layout
-
-Choose the approach that best balances clarity, implementation complexity, accessibility, and visual impact.
-
-Do not add interactivity only for decoration. The simpler three-step layout is acceptable if it explains the product more clearly.
+Use a simpler static three-step layout (Find → Customize → Review, one product preview per stage, desktop row / mobile stacked) only if implementation review shows it is clearer, more accessible, or meaningfully simpler than the tabbed approach. Do not add interactivity only for decoration.
 
 ## Visual Requirements
 
-- use real Macro Maxxer UI where practical
+- use real Macro Maxxer UI, or simplified product-preview versions, based on:
+  - restaurant menu sorting and filtering
+  - builders, combos, or ingredient customization
+  - cart and total macro review
+- do not redesign the internal pages being previewed
 - avoid generic illustrations that do not reflect the actual application
 - keep copy concise
 - let product previews provide most of the explanation
@@ -319,13 +268,25 @@ Interactive controls must support:
 
 ---
 
-# Slice 4: Menu-Item Discovery
+# Slice 4: Menu-Item Discovery — Planned
 
 ## Purpose
 
 End the main homepage content with useful, real product data rather than another explanation section.
 
 This section should show visitors examples of what they can discover through Macro Maxxer.
+
+A temporary bottom preview exists on the homepage today as a placeholder. It does not lock in the final card design for this slice — the final design should be evaluated fresh against the requirements below.
+
+## Final Card Requirements
+
+The final homepage item cards should:
+
+- feel related to the real menu cards used elsewhere in the app
+- use the same macro order, terminology, and visual language as the real application
+- be simplified for homepage discovery rather than showing full item detail
+- avoid an unrelated four-block macro design if it does not match the real application's card language
+- link into the correct restaurant or item flow
 
 ## Possible Section Concepts
 
@@ -394,13 +355,26 @@ The section should handle:
 
 ---
 
-# Slice 5: Responsive and Interaction Polish
+# Slice 5: Responsive, Interaction, and Visual Polish — Planned
 
 ## Purpose
 
-Refine the completed homepage so it feels intentional across screen sizes and interaction methods.
+This is the dedicated whole-page polishing slice. It should refine the completed page rather than introduce major new product sections.
 
-This slice should improve the existing work rather than introduce major new sections or redesign the page again.
+## Scope
+
+- final section spacing and visual rhythm
+- background improvements across the complete page
+- subtle section banding
+- soft ambient gradients
+- selective dotted or grid textures
+- restrained decorative shapes
+- smoother section transitions
+- removal of awkward empty space
+- card, button, arrow, tab, indicator, hover, focus, and pressed-state consistency
+- desktop, tablet, and mobile refinements
+- motion and reduced-motion behavior
+- whole-page visual consistency
 
 ## Responsive Review
 
@@ -465,7 +439,7 @@ Verify that:
 
 ---
 
-# Slice 6: Accessibility and Final QA
+# Slice 6: Accessibility and Final QA — Planned
 
 ## Purpose
 
@@ -536,7 +510,7 @@ The homepage redesign is complete when:
 - search remains the clearest primary action
 - supported restaurants are easy to browse
 - the page clearly communicates the complete product journey
-- real menu-item data demonstrates the product’s value
+- real menu-item data demonstrates the product's value
 - the page feels modern, polished, and cohesive
 - the page does not feel like an oversized marketing site
 - the design works intentionally with two restaurants
@@ -545,6 +519,52 @@ The homepage redesign is complete when:
 - keyboard navigation works throughout
 - existing search and restaurant flows remain functional
 - there are no major visual, accessibility, or console issues
+
+---
+
+# Slice 7: Final Homepage UI Refinement — Planned
+
+## Purpose
+
+Perform one last design-focused review after every functional homepage section is complete and visible together.
+
+This slice exists because some UI decisions can only be judged accurately once the entire homepage is assembled.
+
+## Scope
+
+May include:
+
+- improving sections that still feel visually weak
+- refining section composition
+- adjusting background treatments
+- improving visual hierarchy
+- reducing repetition
+- replacing temporary visuals
+- refining copy where the layout exposes weaknesses
+- improving card balance and density
+- tightening typography details
+- improving transitions between sections
+- making the full page feel cohesive and intentionally art-directed
+- removing anything that feels overdesigned, underdesigned, or inconsistent
+
+## Constraints
+
+- do not add major new functionality
+- do not reopen completed product logic
+- do not redesign internal restaurant, builder, or cart pages
+- do not use the slice as an excuse for broad unrelated refactoring
+- prioritize visible homepage quality and cohesion
+
+## Completion Criteria
+
+- the homepage feels visually complete as one experience
+- no section looks like a temporary prototype
+- the visual language is consistent from hero to footer
+- backgrounds, spacing, cards, and interactions feel intentional
+- the page remains utility-first
+- search and restaurant access remain the strongest actions
+- the page is visually engaging without becoming cluttered
+- no regressions are introduced after the final refinement
 
 ---
 
@@ -595,6 +615,6 @@ For every slice:
 
 Minor design refinement is expected during each slice.
 
-However, do not repeatedly reinvent the homepage’s overall visual direction after Slice 1 is approved.
+However, do not repeatedly reinvent the homepage's overall visual direction after Slice 1 is approved.
 
-Later slices should extend the established system rather than introduce unrelated typography, spacing, colors, card treatments, or visual styles.
+Later slices should extend the established system rather than introduce unrelated typography, spacing, colors, card treatments, or visual styles. Whole-page visual changes belong in Slice 5 or Slice 7, not in ad-hoc changes during other slices.
