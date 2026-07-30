@@ -6,8 +6,9 @@ import type { RankedAllFilterKey } from "@/lib/menuSections/filtering";
 import type { Filters } from "@/lib/menuSections/filterOptions";
 import { FilterChips } from "@/components/ControlsRow";
 import { useFilterChipActions } from "@/components/useFilterChipActions";
+import SectionEyebrow from "@/components/ui/SectionEyebrow";
 
-type CategoryOption = { id: string; label: string };
+type CategoryOption = { id: string; label: string; count?: number };
 type RankingOption = { key: RankedAllFilterKey; label: string; iconKey: string };
 
 type Props = {
@@ -73,12 +74,21 @@ function CategoryNavItem({ option, isActive, Icon, onSelect, variant }: Category
         <button
           type="button"
           onClick={onSelect}
-          className={`cursor-pointer inline-flex items-center gap-3 rounded-full px-4 py-2 text-left text-base font-semibold transition-colors duration-50 ease-in ${
+          className={`cursor-pointer flex w-full items-center gap-3 rounded-full px-4 py-2 text-left text-base font-semibold transition-colors duration-50 ease-in ${
             isActive ? "shadow-[0px_0_8px_rgba(0,0,0,0.25)] bg-white text-slate-800" : "text-slate-700 hover:bg-slate-200"
           }`}
         >
-          <Icon className="h-4 w-4" strokeWidth={2.5} aria-hidden="true" />
-          <span>{option.label}</span>
+          <Icon className="h-4 w-4 shrink-0" strokeWidth={2.5} aria-hidden="true" />
+          <span className="min-w-0 flex-1 truncate">{option.label}</span>
+          {typeof option.count === "number" ? (
+            <span
+              className={`shrink-0 text-sm font-semibold tabular-nums ${
+                isActive ? "text-slate-500" : "text-slate-400"
+              }`}
+            >
+              {option.count}
+            </span>
+          ) : null}
         </button>
       </div>
     );
@@ -95,6 +105,9 @@ function CategoryNavItem({ option, isActive, Icon, onSelect, variant }: Category
       >
         <Icon className="h-4 w-4 shrink-0" strokeWidth={2.2} aria-hidden="true" />
         <span className="min-w-0 flex-1 truncate">{option.label}</span>
+        {typeof option.count === "number" ? (
+          <span className="shrink-0 text-xs font-semibold tabular-nums text-black/40">{option.count}</span>
+        ) : null}
       </button>
     );
   }
@@ -202,6 +215,12 @@ function MobileCategoryNav({
     };
   }, [effectiveViewMode, categoryOptions, rankedAllFilters]);
 
+  // No trailing spacer here: this strip is `position: fixed`, so it needs
+  // whatever renders right after it in flow to reserve matching space —
+  // that's now RestaurantIdentityHeader (always rendered above this
+  // component), which measures this exact `data-mobile-category-nav`
+  // element and clears it dynamically. Adding a second static spacer here
+  // on top of that would double-reserve the same space.
   return (
     <>
       <div className="fixed left-0 right-0 z-[90] lg:hidden" style={{ top: mobileNavTop + 4 }} data-mobile-category-nav="true">
@@ -300,7 +319,6 @@ function MobileCategoryNav({
           </div>
         ) : null}
       </div>
-      <div className={`${hasActiveFilters ? "h-[116px]" : "h-[64px]"} lg:hidden`} aria-hidden="true" />
     </>
   );
 }
@@ -406,9 +424,9 @@ function DesktopCategorySidebar({
 }: SharedCategoryNavProps) {
   return (
     <aside className="sticky top-[160px] hidden max-h-[calc(100vh-160px)] flex-col py-6 lg:flex">
-      <h3 className="mb-8 shrink-0 text-2xl font-bold text-slate-900">
+      <SectionEyebrow as="h3" className="mb-5 shrink-0 text-xs">
         {effectiveViewMode === "ranking" ? "Show" : effectiveViewMode === "ingredients" ? "Ingredients" : "Categories"}
-      </h3>
+      </SectionEyebrow>
 
       <div className="min-h-0 flex-1 overflow-y-auto px-2 py-2">
         {effectiveViewMode === "ranking" ? (

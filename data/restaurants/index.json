@@ -5,7 +5,10 @@
     "logo": "/restaurants/chickfila/brand/logo.png",
     "cover": "/restaurants/chickfila/brand/cover.jpeg",
     "menuFile": "chickfila.json",
-    "isMacroFriendly": true
+    "isMacroFriendly": true,
+    "description": "The full Chick-fil-A menu with real nutrition on every item and customization — see exactly what you're ordering before you order it.",
+    "nutritionSourceUrl": "https://www.chick-fil-a.com/nutrition-allergens",
+    "nutritionUpdatedAt": "2026-07-18"
   },
   {
     "id": "chipotle",
@@ -13,7 +16,10 @@
     "logo": "/restaurants/chipotle/brand/logo.jpeg",
     "cover": "/restaurants/chipotle/brand/cover.jpg",
     "menuFile": "chipotle.json",
-    "isMacroFriendly": true
+    "isMacroFriendly": true,
+    "description": "Build your own Chipotle order and see real nutrition update ingredient by ingredient, from entrée to extras.",
+    "nutritionSourceUrl": "https://www.chipotle.com/nutrition-calculator",
+    "nutritionUpdatedAt": "2026-07-18"
   },
   {
     "id": "panera",

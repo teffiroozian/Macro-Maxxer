@@ -2,6 +2,7 @@ import { useCallback, useMemo } from "react";
 import type { ViewOption } from "@/components/controls/types";
 import type { MenuItem } from "@/types/menu";
 import {
+  countItemsByCategory,
   getCategoryLabel,
   getOrderedMenuSections,
 } from "@/lib/menuSections/sorting";
@@ -102,9 +103,11 @@ export function useChipotleMenuControlAdjustments({
   }, [adjustedVisibleMenuItems, effectiveViewMode]);
 
   const adjustedCategoryOptions = useMemo(() => {
-    if (!adjustedOrderedSections || !effectiveViewMode) {
+    if (!adjustedOrderedSections || !effectiveViewMode || !adjustedVisibleMenuItems) {
       return undefined;
     }
+
+    const counts = countItemsByCategory(adjustedVisibleMenuItems);
 
     return adjustedOrderedSections.map((section) => ({
       id: section,
@@ -112,8 +115,9 @@ export function useChipotleMenuControlAdjustments({
         section,
         effectiveViewMode === "ranking" ? "menu" : effectiveViewMode,
       ),
+      count: counts[section] ?? 0,
     }));
-  }, [adjustedOrderedSections, effectiveViewMode]);
+  }, [adjustedOrderedSections, adjustedVisibleMenuItems, effectiveViewMode]);
 
   return {
     controlItems,

@@ -1,6 +1,6 @@
 import { createElement, type HTMLAttributes, type ReactNode } from "react";
 
-type SurfaceCardElement = "article" | "div" | "li" | "section";
+type SurfaceCardElement = "article" | "div" | "header" | "li" | "section";
 export type SurfaceCardPadding = "none" | "compact" | "default" | "comfortable";
 export type SurfaceCardRadius = "default" | "large";
 export type SurfaceCardShadow = "none" | "sm" | "md" | "lg";

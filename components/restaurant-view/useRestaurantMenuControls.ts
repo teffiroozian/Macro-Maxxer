@@ -16,6 +16,7 @@ import {
     type SortOption,
 } from "@/lib/menuSections/sortOptions";
 import {
+    countItemsByCategory,
     getCategoryLabel,
     getOrderedMenuSections,
 } from "@/lib/menuSections/sorting";
@@ -128,19 +129,18 @@ export function useRestaurantMenuControls({
         [effectiveViewMode, visibleMenuItems],
     );
 
-    const categoryOptions = useMemo(
-        () =>
-            orderedSections.map((section) => ({
-                id: section,
-                label: getCategoryLabel(
-                    section,
-                    effectiveViewMode === "ranking"
-                        ? "menu"
-                        : effectiveViewMode,
-                ),
-            })),
-        [effectiveViewMode, orderedSections],
-    );
+    const categoryOptions = useMemo(() => {
+        const counts = countItemsByCategory(visibleMenuItems);
+
+        return orderedSections.map((section) => ({
+            id: section,
+            label: getCategoryLabel(
+                section,
+                effectiveViewMode === "ranking" ? "menu" : effectiveViewMode,
+            ),
+            count: counts[section] ?? 0,
+        }));
+    }, [effectiveViewMode, orderedSections, visibleMenuItems]);
 
     const handleViewChange = useCallback(
         (nextView: ViewOption) => {

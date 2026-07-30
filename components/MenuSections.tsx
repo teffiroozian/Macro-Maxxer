@@ -193,7 +193,7 @@ export default function MenuSections({
           id={categorySectionId(section)}
           className="scroll-mt-0"
         >
-          <h2 className="my-5 text-3xl font-bold text-slate-900">
+          <h2 className="font-heading my-5 text-2xl font-bold text-neutral-900 sm:text-3xl">
             {getCategoryLabel(section, categoryMode)}
           </h2>
           <ul className="mt-3 p-0 grid gap-3">

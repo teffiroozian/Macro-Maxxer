@@ -24,6 +24,42 @@ export function getItemCategories(item: MenuItem) {
   return categories.map((category) => normalizeCategory(category));
 }
 
+// How many items belong to each category — used for the small count badge
+// on the category sidebar. Mirrors the grouping MenuSections actually
+// renders (item categories *and* variant-level category overrides, e.g. a
+// "Kids" section populated only via a kids-size variant on an otherwise
+// uncategorized-for-Kids item), so the count matches what a user sees when
+// they open that category rather than just the item's own `categories`.
+export function countItemsByCategory(items: MenuItem[]) {
+  const counts: Record<string, number> = {};
+
+  items.forEach((item) => {
+    const itemCategories = new Set(getItemCategories(item));
+    const categoryKeys = new Set(itemCategories);
+    item.variants?.forEach((variant) => {
+      variant.categories?.forEach((category) => {
+        categoryKeys.add(normalizeCategory(category));
+      });
+    });
+
+    categoryKeys.forEach((key) => {
+      if (!item.variants || item.variants.length === 0) {
+        if (itemCategories.has(key)) {
+          counts[key] = (counts[key] ?? 0) + 1;
+        }
+        return;
+      }
+
+      const visibleVariants = getVisibleVariants(item, key);
+      if (visibleVariants && visibleVariants.length > 0) {
+        counts[key] = (counts[key] ?? 0) + 1;
+      }
+    });
+  });
+
+  return counts;
+}
+
 export function getVisibleVariants(item: MenuItem, section: string) {
   if (!item.variants || item.variants.length === 0) {
     return item.variants;

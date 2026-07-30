@@ -10,6 +10,20 @@ export type RestaurantIndexEntry = {
   menuFile: string;
   isMacroFriendly: boolean;
   isComingSoon?: boolean;
+  // Short, functional supporting copy shown in the restaurant page header —
+  // not marketing copy, just what the page is and why the data is useful.
+  description?: string;
+  // Official nutrition page URL, shown as a linked credit in the restaurant
+  // page header so the numbers feel verifiable. Optional and added per
+  // restaurant as real URLs are confirmed.
+  nutritionSourceUrl?: string;
+  // ISO 8601 string for when the nutrition data was last updated — either a
+  // bare date ("2026-07-18") or, once a future nutrition import system can
+  // capture it, a full timestamp ("2026-07-18T14:32:00Z"). The "At" naming
+  // and ISO format are chosen so a real timestamp can replace a bare date
+  // later without a field/type change — display logic should still only
+  // show a time when one is actually present in the value.
+  nutritionUpdatedAt?: string;
 };
 
 // entire menu file for a restaurant
