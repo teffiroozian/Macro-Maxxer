@@ -185,7 +185,7 @@ export default function ProductWalkthrough({
       <div
         role="tablist"
         aria-label="Product walkthrough steps"
-        className="mx-auto flex w-fit max-w-full flex-wrap items-center justify-center gap-1 rounded-full border border-black/10 bg-white p-1.5 shadow-sm"
+        className="mx-auto flex w-fit max-w-full flex-wrap items-center justify-center gap-1 rounded-3xl border border-black/10 bg-white p-1.5 shadow-sm sm:rounded-full"
       >
         {STEPS.map((step, index) => {
           const isActive = index === activeIndex;
@@ -377,7 +377,7 @@ function FindComparePreview({ items }: { items: WalkthroughMenuItem[] }) {
             </div>
 
             <div className="min-w-0 flex-1">
-              <div className="flex items-center gap-2">
+              <div className="flex flex-wrap items-center gap-x-2 gap-y-0.5">
                 <p className="truncate text-sm font-semibold text-neutral-900">{item.name}</p>
                 {item.id === topProteinItemId ? (
                   <span className="inline-flex shrink-0 items-center gap-1 rounded-full border border-orange-100 bg-orange-50 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide text-[#c2410c]">

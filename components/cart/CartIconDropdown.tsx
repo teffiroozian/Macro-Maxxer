@@ -170,6 +170,7 @@ export default function CartIconDropdown({
 
       <div
         aria-hidden={!isOpen}
+        inert={!isOpen}
         className={`absolute right-0 top-[calc(100%+0.55rem)] z-[231] w-[22rem] rounded-2xl border border-slate-200 bg-white p-4 text-slate-900 shadow-[0_18px_40px_rgba(15,23,42,0.18)] transition-all duration-200 ${
           isOpen
             ? "translate-y-0 opacity-100"

@@ -146,8 +146,14 @@ export default function HeroSearchNav({ restaurants }: { restaurants: Restaurant
     <section className="relative">
       <GlobalMobileNav />
 
-      {/* Sticky search nav: fixed, hidden while the hero search is visible. */}
+      {/* Sticky search nav: fixed, hidden while the hero search is visible.
+          `inert` while hidden keeps its (otherwise invisible, duplicate)
+          logo/search/cart controls out of both the tab order and the
+          accessibility tree — without it, keyboard and screen-reader users
+          would hit three unclickable phantom stops before ever reaching the
+          real, visible hero nav below. */}
       <div
+        inert={isHeroVisible}
         className={`fixed inset-x-0 top-0 z-[95] px-4 pt-1 transition-all duration-200 sm:px-6 ${
           isHeroVisible ? "pointer-events-none -translate-y-2 opacity-0" : "opacity-100"
         }`}
