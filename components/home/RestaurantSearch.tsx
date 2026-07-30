@@ -38,7 +38,6 @@ export default function RestaurantSearch({ restaurants }: RestaurantSearchProps)
     useRecentAndPopularRestaurants(restaurants);
 
   const isEmptyQuery = !query.trim();
-  const quickSearchRestaurants = restaurants.filter((restaurant) => !restaurant.isComingSoon);
 
   const filteredSuggestions = useMemo(
     () => searchRestaurants(restaurants, query).slice(0, MAX_FILTERED_SUGGESTIONS),
@@ -115,7 +114,7 @@ export default function RestaurantSearch({ restaurants }: RestaurantSearchProps)
   };
 
   return (
-    <section ref={widgetRef} className="mx-auto w-full max-w-2xl">
+    <section ref={widgetRef} className="mx-auto w-full max-w-3xl">
       <div className="relative">
         {/* Tabs + input share one bordered/shadowed shell so they read as a
             single search module rather than two stacked controls — same
@@ -321,27 +320,6 @@ export default function RestaurantSearch({ restaurants }: RestaurantSearchProps)
           </SurfaceCard>
         )}
       </div>
-
-      {/* Static helper row — outside the `.relative` wrapper above so it
-          never affects the dropdown's `top-full` anchoring. Quick-search
-          chips reuse the exact same handleSelectRestaurant used by every
-          result row; no new selection logic. */}
-      {quickSearchRestaurants.length > 0 && (
-        <div className="mt-4 flex flex-wrap items-center justify-center gap-2 text-sm">
-          <span className="text-slate-500">Try:</span>
-          {quickSearchRestaurants.map((restaurant) => (
-            <button
-              key={restaurant.id}
-              type="button"
-              onMouseDown={(event) => event.preventDefault()}
-              onClick={() => handleSelectRestaurant(restaurant)}
-              className="cursor-pointer rounded-full border border-slate-200 bg-white/70 px-3 py-1 font-semibold text-slate-700 shadow-sm transition hover:border-slate-300 hover:bg-white hover:text-slate-900"
-            >
-              {restaurant.name}
-            </button>
-          ))}
-        </div>
-      )}
     </section>
   );
 }

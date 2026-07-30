@@ -97,6 +97,32 @@ body {
     }
 }
 
+/* Ambient float for the hero's four corner cards (Slice 5 final refinement).
+   Applied to an *inner* wrapper, never the positioned/rotated card element
+   itself — the card's own rotation is a static `transform` (Tailwind
+   `rotate-*`), and this animation also drives `transform`, so splitting them
+   across parent/child avoids one clobbering the other. Distance/duration/
+   delay are per-instance CSS custom properties (set inline per card) so
+   every card drifts on its own slightly-offset cycle rather than bouncing in
+   sync. Scoped to the no-preference query (not `motion-reduce:`) so
+   reduced-motion users get no animation at all, not a shorter one. */
+@media (prefers-reduced-motion: no-preference) {
+    .hero-float {
+        animation: hero-float var(--hero-float-duration, 6s) ease-in-out infinite;
+        animation-delay: var(--hero-float-delay, 0s);
+    }
+}
+
+@keyframes hero-float {
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(var(--hero-float-distance, -6px));
+    }
+}
+
 @supports not (height: 100dvh) {
     .item-route-modal-root {
         height: calc(100vh - 1rem);

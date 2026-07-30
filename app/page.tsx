@@ -2,8 +2,14 @@ import HeroSearchNav from "@/components/home/HeroSearchNav";
 import HomeBackdrop from "@/components/home/HomeBackdrop";
 import RestaurantCarousel from "@/components/home/RestaurantCarousel";
 import ProductPreviewCard from "@/components/home/ProductPreviewCard";
-import ProductWalkthrough, { type WalkthroughReviewItem } from "@/components/home/ProductWalkthrough";
+import ProductWalkthrough, {
+  type WalkthroughBuildItem,
+  type WalkthroughReviewItem,
+} from "@/components/home/ProductWalkthrough";
+import type { RestaurantData } from "@/types/restaurant";
 import HomeSectionHeading from "@/components/home/HomeSectionHeading";
+import HomeSectionContainer, { HOME_VISUAL_WIDTH_CLASS } from "@/components/home/HomeSectionContainer";
+import HomeFooter from "@/components/home/HomeFooter";
 import { RestaurantUiProvider } from "@/components/RestaurantUiContext";
 import CartPreviewDrawer from "@/components/cart/CartPreviewDrawer";
 import { getAllRestaurants, getRestaurantData, toItemSlug } from "@/lib/restaurants";
@@ -17,24 +23,70 @@ const restaurants = getAllRestaurants();
 // Action" preview below.
 const liveRestaurants = restaurants.filter((restaurant) => !restaurant.isComingSoon);
 
-// Real Chipotle menu/ingredient ids used to build the Slice 3 walkthrough
-// previews. Kept separate from the raw nutrition data (data/restaurants/chipotle.json)
-// so the curated selection is easy to find and change without touching menu data.
-const WALKTHROUGH_FIND_ITEM_IDS = [
-  "high-protein-high-fiber-bowl",
-  "high-protein-low-calorie-bowl",
-  "side-of-chicken-high-protein",
+// Real Chipotle menu/ingredient ids used to build the Slice 3 walkthrough's
+// Customize & Build / Review Your Order previews. Kept separate from the raw
+// nutrition data (data/restaurants/chipotle.json) so the curated selection
+// is easy to find and change without touching menu data.
+//
+// Two fully-customizable examples, each with its own real, distinct add-on
+// set — "extra chicken + fajita veggies" reads as a protein/veggie-forward
+// customization, distinct from the first item's "guac + queso" flavor-add
+// customization.
+const WALKTHROUGH_BUILD_ITEMS: Array<{ id: string; addOnIds: string[] }> = [
+  { id: "high-protein-high-fiber-bowl", addOnIds: ["guacamole", "queso-blanco"] },
+  { id: "high-protein-low-calorie-bowl", addOnIds: ["chicken", "fajita-veggies"] },
 ];
-const WALKTHROUGH_BUILD_ITEM_ID = "high-protein-high-fiber-bowl";
-const WALKTHROUGH_ADDON_IDS = ["guacamole", "queso-blanco"];
 const WALKTHROUGH_REVIEW_ITEMS = [
   { id: "high-protein-high-fiber-bowl", quantity: 1 },
   { id: "side-of-chicken-high-protein", quantity: 1 },
 ];
 
+// Builds one Customize & Build example: the real menu item plus its own
+// resolved add-ons (each add-on must resolve to real ingredient nutrition,
+// or the whole example is dropped via the `null` return below).
+function resolveWalkthroughBuildItem(
+  restaurant: RestaurantData | null,
+  spec: { id: string; addOnIds: string[] }
+): WalkthroughBuildItem | null {
+  const item = restaurant?.items.find((candidate) => candidate.id === spec.id);
+  if (!item) return null;
+
+  const addOns = spec.addOnIds
+    .map((addOnId) => restaurant?.ingredients.find((ingredient) => ingredient.id === addOnId))
+    .filter((ingredient): ingredient is NonNullable<typeof ingredient> => Boolean(ingredient?.nutrition))
+    .map((ingredient) => ({ id: ingredient.id, name: ingredient.name, nutrition: ingredient.nutrition }));
+  if (addOns.length !== spec.addOnIds.length) return null;
+
+  return {
+    id: item.id,
+    name: item.name,
+    image: item.image,
+    category: item.categories[0] ?? "",
+    nutrition: item.nutrition,
+    addOns,
+  };
+}
+
+// The Find & Compare step draws from Chick-fil-A instead — chosen so each of
+// its three ranking methods (highest protein, lowest calories, best protein
+// score) surfaces a different top item:
+// - Cool Wrap: highest protein (43g), but the highest calories of the three
+//   and the weakest protein score, so it never wins the other two rankings.
+// - Chick-n-Strips: best protein score (~9.4g protein per 100 cal), roughly
+//   in the middle on both raw calories and protein.
+// - Chicken Noodle Soup: lowest calories (190), but the lowest protein and
+//   weakest protein score, so it never wins the other two rankings either.
+const WALKTHROUGH_FIND_ITEM_IDS = [
+  "chick_fil_a_cool_wrap",
+  "chick_fil_a_chick_n_strips",
+  "chicken_noodle_soup",
+];
+
 export default async function Home() {
   const previewRestaurant = await getRestaurantData("chipotle");
+  const walkthroughFindRestaurant = await getRestaurantData("chickfila");
   const previewItem = previewRestaurant?.items.find((item) => item.id === "high-protein-high-fiber-bowl");
+  const footerRestaurantHref = liveRestaurants[0] ? `/restaurant/${liveRestaurants[0].id}` : "/";
 
   const previewIngredientNames = (previewItem?.ingredients ?? [])
     .map((entry) => parseIncludedIngredientEntry(entry)?.ingredientId)
@@ -46,7 +98,7 @@ export default async function Home() {
       : undefined;
 
   const walkthroughFindItems = WALKTHROUGH_FIND_ITEM_IDS.map((id) =>
-    previewRestaurant?.items.find((item) => item.id === id)
+    walkthroughFindRestaurant?.items.find((item) => item.id === id)
   )
     .filter((item): item is NonNullable<typeof item> => Boolean(item))
     .map((item) => ({
@@ -57,24 +109,16 @@ export default async function Home() {
       nutrition: item.nutrition,
     }));
 
+  // The first spec's real item (not just its constructed WalkthroughBuildItem)
+  // is still needed below for `toItemSlug`, which wants the raw MenuItem.
   const walkthroughBuildItemSource = previewRestaurant?.items.find(
-    (item) => item.id === WALKTHROUGH_BUILD_ITEM_ID
+    (item) => item.id === WALKTHROUGH_BUILD_ITEMS[0].id
   );
-  const walkthroughBuildItem = walkthroughBuildItemSource
-    ? {
-        id: walkthroughBuildItemSource.id,
-        name: walkthroughBuildItemSource.name,
-        image: walkthroughBuildItemSource.image,
-        category: walkthroughBuildItemSource.categories[0] ?? "",
-        nutrition: walkthroughBuildItemSource.nutrition,
-      }
-    : null;
-
-  const walkthroughAddOns = WALKTHROUGH_ADDON_IDS.map((id) =>
-    previewRestaurant?.ingredients.find((ingredient) => ingredient.id === id)
-  )
-    .filter((ingredient): ingredient is NonNullable<typeof ingredient> => Boolean(ingredient?.nutrition))
-    .map((ingredient) => ({ id: ingredient.id, name: ingredient.name, nutrition: ingredient.nutrition }));
+  const [walkthroughBuildItemA, walkthroughBuildItemB] = WALKTHROUGH_BUILD_ITEMS.map((spec) =>
+    resolveWalkthroughBuildItem(previewRestaurant, spec)
+  );
+  const walkthroughBuildItems: [WalkthroughBuildItem, WalkthroughBuildItem] | null =
+    walkthroughBuildItemA && walkthroughBuildItemB ? [walkthroughBuildItemA, walkthroughBuildItemB] : null;
 
   const walkthroughReviewItems: WalkthroughReviewItem[] = WALKTHROUGH_REVIEW_ITEMS.map(({ id, quantity }) => {
     const item = previewRestaurant?.items.find((candidate) => candidate.id === id);
@@ -96,10 +140,10 @@ export default async function Home() {
 
   const canShowWalkthrough =
     previewRestaurant &&
+    walkthroughFindRestaurant &&
     walkthroughFindItems.length === WALKTHROUGH_FIND_ITEM_IDS.length &&
-    walkthroughBuildItem &&
+    walkthroughBuildItems &&
     walkthroughCustomizeHref &&
-    walkthroughAddOns.length === WALKTHROUGH_ADDON_IDS.length &&
     walkthroughReviewItems.length === WALKTHROUGH_REVIEW_ITEMS.length;
 
   return (
@@ -111,7 +155,7 @@ export default async function Home() {
 
         <main className="relative">
           {liveRestaurants.length > 0 ? (
-            <section className="mx-auto max-w-6xl px-4 pb-16 pt-4 sm:px-6 sm:pb-32 lg:pb-36">
+            <HomeSectionContainer className="pb-16 pt-4 sm:pb-20 lg:pb-24">
               <HomeSectionHeading
                 eyebrowVariant="pill"
                 eyebrow={
@@ -128,50 +172,61 @@ export default async function Home() {
                 description="Every supported restaurant comes with a full menu, real nutrition data, and an order builder."
               />
 
-              <div className="mx-auto mt-10 w-full max-w-4xl">
+              <div className={`mx-auto mt-10 w-full ${HOME_VISUAL_WIDTH_CLASS}`}>
                 <RestaurantCarousel restaurants={liveRestaurants} />
               </div>
-            </section>
+            </HomeSectionContainer>
           ) : null}
 
-          {previewRestaurant && canShowWalkthrough && walkthroughBuildItem && walkthroughCustomizeHref ? (
-            <section className="mx-auto max-w-6xl px-4 py-16 sm:px-6 sm:py-20 lg:py-24">
-              <HomeSectionHeading
-                eyebrow="How It Works"
-                heading="Build an Order That Fits Your Goals"
-                description="Compare menus, customize your meal, and review the full macros before ordering."
+          {previewRestaurant && walkthroughFindRestaurant && canShowWalkthrough && walkthroughBuildItems && walkthroughCustomizeHref ? (
+            <div className="relative">
+              {/* Section-transition band: a soft green tint (distinct from
+                  Menu-Item Discovery's neutral band below) so the page reads
+                  as connected rather than every section repeating the exact
+                  same treatment. */}
+              <div
+                aria-hidden="true"
+                className="pointer-events-none absolute inset-y-0 left-1/2 -z-10 w-screen -translate-x-1/2 bg-gradient-to-b from-transparent via-emerald-100/80 to-transparent"
               />
 
-              <div className="mt-10">
-                <ProductWalkthrough
-                  restaurantName={previewRestaurant.name}
-                  findItems={walkthroughFindItems}
-                  buildItem={walkthroughBuildItem}
-                  addOns={walkthroughAddOns}
-                  reviewItems={walkthroughReviewItems}
-                  findHref={`/restaurant/${previewRestaurant.id}`}
-                  customizeHref={walkthroughCustomizeHref}
-                  reviewHref="/cart"
+              <HomeSectionContainer className="py-16 sm:py-20 lg:py-24">
+                <HomeSectionHeading
+                  eyebrow="How It Works"
+                  heading="Build an Order That Fits Your Goals"
+                  description="Compare menus, customize your meal, and review the full macros before ordering."
                 />
-              </div>
-            </section>
+
+                <div className="mt-10">
+                  <ProductWalkthrough
+                    restaurantName={previewRestaurant.name}
+                    findRestaurantName={walkthroughFindRestaurant.name}
+                    findItems={walkthroughFindItems}
+                    buildItems={walkthroughBuildItems}
+                    reviewItems={walkthroughReviewItems}
+                    findHref={`/restaurant/${walkthroughFindRestaurant.id}`}
+                    customizeHref={walkthroughCustomizeHref}
+                    reviewHref="/cart"
+                  />
+                </div>
+              </HomeSectionContainer>
+            </div>
           ) : null}
 
           {previewRestaurant && previewItem ? (
-            <section className="relative py-20 sm:py-24 lg:py-28">
+            <div className="relative">
               <div
                 aria-hidden="true"
                 className="pointer-events-none absolute inset-y-0 left-1/2 -z-10 w-screen -translate-x-1/2 bg-gradient-to-b from-transparent via-neutral-50/80 to-transparent"
               />
 
-              <div className="mx-auto max-w-6xl px-4 sm:px-6">
+              <HomeSectionContainer className="py-20 sm:py-24 lg:py-28">
                 <HomeSectionHeading
                   eyebrow="See It In Action"
                   heading="Real Menu Data, Real Macros"
                   description="Every item shows calories, protein, carbs, and fat up front — before you customize or add it to your order."
                 />
 
-                <div className="mx-auto mt-10 w-full max-w-3xl">
+                <div className={`mx-auto mt-10 w-full ${HOME_VISUAL_WIDTH_CLASS}`}>
                   <ProductPreviewCard
                     restaurantName={previewRestaurant.name}
                     restaurantLogo={previewRestaurant.logo}
@@ -182,10 +237,12 @@ export default async function Home() {
                     href={`/restaurant/${previewRestaurant.id}/${toItemSlug(previewItem)}`}
                   />
                 </div>
-              </div>
-            </section>
+              </HomeSectionContainer>
+            </div>
           ) : null}
         </main>
+
+        <HomeFooter primaryRestaurantHref={footerRestaurantHref} />
       </div>
 
       <CartPreviewDrawer />

@@ -26,13 +26,28 @@ export type WalkthroughAddOn = {
   nutrition: Nutrition;
 };
 
+// A build example is a full menu item plus its own set of customization
+// add-ons — each of the two Customize & Build examples carries its own list
+// so the two can offer genuinely different customization options rather
+// than sharing one.
+export type WalkthroughBuildItem = WalkthroughMenuItem & {
+  addOns: WalkthroughAddOn[];
+};
+
 export type WalkthroughReviewItem = WalkthroughMenuItem & { quantity: number };
 
 type ProductWalkthroughProps = {
+  // Restaurant behind the Customize & Build / Review steps' items.
   restaurantName: string;
+  // The Find & Compare step draws from a different restaurant (chosen so its
+  // three ranking methods each surface a different top item) — its own name
+  // keeps the device-chrome label accurate on that step specifically.
+  findRestaurantName: string;
   findItems: WalkthroughMenuItem[];
-  buildItem: WalkthroughMenuItem;
-  addOns: WalkthroughAddOn[];
+  // Exactly two fully-customizable examples, rendered through the same
+  // BuildItemCard so they're identical in structure/sizing — only their
+  // data (name, image, category, macros, add-ons) differs.
+  buildItems: [WalkthroughBuildItem, WalkthroughBuildItem];
   reviewItems: WalkthroughReviewItem[];
   // Real internal routes for each step's CTA — resolved by the page (which
   // already owns restaurant/item id lookups) rather than reconstructed here.
@@ -90,17 +105,23 @@ const TAB_INACTIVE_CLASS = "text-neutral-500 hover:bg-black/5 hover:text-neutral
 // rather than a screenshot or invented UI.
 export default function ProductWalkthrough({
   restaurantName,
+  findRestaurantName,
   findItems,
-  buildItem,
-  addOns,
+  buildItems,
   reviewItems,
   findHref,
   customizeHref,
   reviewHref,
 }: ProductWalkthroughProps) {
   const [activeIndex, setActiveIndex] = useState(0);
-  const [selectedAddOnIds, setSelectedAddOnIds] = useState<string[]>(
-    addOns.length > 0 ? [addOns[0].id] : []
+  // Keyed by build item id so the two Customize & Build examples toggle
+  // their add-ons completely independently. Each starts with its own first
+  // add-on selected, mirroring the previous single-item default.
+  const [selectedAddOnIdsByItem, setSelectedAddOnIdsByItem] = useState<Record<string, string[]>>(
+    () =>
+      Object.fromEntries(
+        buildItems.map((item) => [item.id, item.addOns.length > 0 ? [item.addOns[0].id] : []])
+      )
   );
   const tabRefs = useRef<(HTMLButtonElement | null)[]>([]);
 
@@ -128,16 +149,24 @@ export default function ProductWalkthrough({
     }
   };
 
-  const toggleAddOn = (id: string) => {
-    setSelectedAddOnIds((previous) =>
-      previous.includes(id) ? previous.filter((addOnId) => addOnId !== id) : [...previous, id]
-    );
+  const toggleAddOn = (itemId: string, addOnId: string) => {
+    setSelectedAddOnIdsByItem((previous) => {
+      const current = previous[itemId] ?? [];
+      const next = current.includes(addOnId)
+        ? current.filter((id) => id !== addOnId)
+        : [...current, addOnId];
+      return { ...previous, [itemId]: next };
+    });
   };
 
-  const selectedAddOns = addOns.filter((addOn) => selectedAddOnIds.includes(addOn.id));
-  const buildTotals = selectedAddOns.reduce(
-    (totals, addOn) => addNutrition(totals, addOn.nutrition),
-    normalizeNutrition(buildItem.nutrition)
+  const buildTotalsByItemId: Record<string, Nutrition> = Object.fromEntries(
+    buildItems.map((item) => {
+      const selectedIds = selectedAddOnIdsByItem[item.id] ?? [];
+      const totals = item.addOns
+        .filter((addOn) => selectedIds.includes(addOn.id))
+        .reduce((acc, addOn) => addNutrition(acc, addOn.nutrition), normalizeNutrition(item.nutrition));
+      return [item.id, totals];
+    })
   );
 
   const reviewTotals = reviewItems.reduce(
@@ -211,26 +240,34 @@ export default function ProductWalkthrough({
             <span className="h-2 w-2 rounded-full bg-neutral-300" />
             <span className="h-2 w-2 rounded-full bg-neutral-300" />
             <span className="ml-2 truncate text-xs font-medium text-neutral-400">
-              Macro Maxxer · {restaurantName} · {activeStep.tabLabel}
+              Macro Maxxer · {activeStep.key === "find" ? findRestaurantName : restaurantName} · {activeStep.tabLabel}
             </span>
           </div>
 
+          {/* `min-h` is shared across all three steps via this one wrapper
+              (only its children swap) — that's what keeps the card from
+              growing/shrinking as the user switches tabs. `min-h` (not a
+              fixed `h-*`) so any step's content can still grow past it — a
+              longer item name, an extra selected add-on — without ever
+              clipping. Value tuned to Find & Compare's natural content
+              height (the tallest of the three at desktop widths, ~328px
+              measured), with Customize & Build (~317px) and Review Your
+              Order (~292px) sized comfortably under it. */}
           <div
             key={activeStep.key}
             id={`walkthrough-panel-${activeStep.key}`}
             role="tabpanel"
             aria-labelledby={`walkthrough-tab-${activeStep.key}`}
             tabIndex={0}
-            className="walkthrough-panel-enter p-5 sm:p-7"
+            className="walkthrough-panel-enter min-h-[344px] p-5 sm:p-7"
           >
             {activeStep.key === "find" ? <FindComparePreview items={findItems} /> : null}
             {activeStep.key === "customize" ? (
               <CustomizeBuildPreview
-                item={buildItem}
-                addOns={addOns}
-                selectedAddOnIds={selectedAddOnIds}
+                items={buildItems}
+                selectedAddOnIdsByItem={selectedAddOnIdsByItem}
                 onToggleAddOn={toggleAddOn}
-                totals={buildTotals}
+                totalsByItemId={buildTotalsByItemId}
               />
             ) : null}
             {activeStep.key === "review" ? <ReviewOrderPreview items={reviewItems} totals={reviewTotals} /> : null}
@@ -363,31 +400,37 @@ function FindComparePreview({ items }: { items: WalkthroughMenuItem[] }) {
   );
 }
 
-function CustomizeBuildPreview({
+// One fully-customizable build example: image, category label, item name,
+// toggleable add-on chips, and a full 4-stat macro row. Rendered twice by
+// CustomizeBuildPreview below with different data — never duplicated as a
+// second, differently-styled component — so the two examples are always
+// identical in structure, sizing, and spacing. Sized deliberately compact
+// (smaller image, tighter spacing, "quick"-size macro stats — the same
+// stat size Find & Compare already uses) so two of these plus a divider fit
+// within the shared preview height without either card feeling cramped.
+function BuildItemCard({
   item,
-  addOns,
   selectedAddOnIds,
   onToggleAddOn,
   totals,
 }: {
-  item: WalkthroughMenuItem;
-  addOns: WalkthroughAddOn[];
+  item: WalkthroughBuildItem;
   selectedAddOnIds: string[];
-  onToggleAddOn: (id: string) => void;
+  onToggleAddOn: (addOnId: string) => void;
   totals: Nutrition;
 }) {
   return (
-    <div className="flex flex-col gap-5 sm:flex-row sm:items-start">
-      <div className="relative mx-auto h-28 w-28 shrink-0 overflow-hidden rounded-2xl border border-black/10 bg-neutral-50 sm:mx-0">
-        <Image src={item.image} alt={item.name} fill className="object-cover" sizes="112px" />
+    <div className="flex flex-col gap-3 sm:flex-row sm:items-start">
+      <div className="relative mx-auto h-20 w-20 shrink-0 overflow-hidden rounded-xl border border-black/10 bg-neutral-50 sm:mx-0">
+        <Image src={item.image} alt={item.name} fill className="object-cover" sizes="80px" />
       </div>
 
       <div className="min-w-0 flex-1">
-        <p className="text-xs font-semibold uppercase tracking-wide text-neutral-500">{item.category}</p>
-        <h4 className="font-heading text-lg font-bold text-neutral-900">{item.name}</h4>
+        <p className="text-[11px] font-semibold uppercase tracking-wide text-neutral-500">{item.category}</p>
+        <h4 className="font-heading text-base font-bold text-neutral-900">{item.name}</h4>
 
-        <div className="mt-3 flex flex-wrap gap-2">
-          {addOns.map((addOn) => {
+        <div className="mt-2 flex flex-wrap gap-1.5">
+          {item.addOns.map((addOn) => {
             const isSelected = selectedAddOnIds.includes(addOn.id);
             return (
               <button
@@ -395,16 +438,16 @@ function CustomizeBuildPreview({
                 type="button"
                 onClick={() => onToggleAddOn(addOn.id)}
                 aria-pressed={isSelected}
-                className={`inline-flex cursor-pointer items-center gap-1.5 rounded-full border px-3 py-1.5 text-sm font-semibold transition motion-reduce:transition-none focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-900 ${
+                className={`inline-flex cursor-pointer items-center gap-1 rounded-full border px-2.5 py-1 text-xs font-semibold transition motion-reduce:transition-none focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-900 ${
                   isSelected
                     ? "border-accent bg-accent-soft text-accent-strong"
                     : "border-black/15 bg-white text-neutral-600 hover:bg-black/5"
                 }`}
               >
                 {isSelected ? (
-                  <Check className="h-3.5 w-3.5" aria-hidden="true" />
+                  <Check className="h-3 w-3" aria-hidden="true" />
                 ) : (
-                  <Plus className="h-3.5 w-3.5" aria-hidden="true" />
+                  <Plus className="h-3 w-3" aria-hidden="true" />
                 )}
                 {addOn.name}
               </button>
@@ -412,13 +455,41 @@ function CustomizeBuildPreview({
           })}
         </div>
 
-        <div className="mt-4 flex flex-wrap items-end gap-x-8 gap-y-3">
-          <MacroStat macroKey="calories" value={totals.calories} size="summary" />
-          <MacroStat macroKey="protein" value={totals.protein} size="summary" />
-          <MacroStat macroKey="carbs" value={totals.carbs} size="summary" />
-          <MacroStat macroKey="totalFat" value={totals.totalFat} size="summary" />
+        <div className="mt-2.5 flex flex-wrap items-end gap-x-5 gap-y-1">
+          <MacroStat macroKey="calories" value={totals.calories} size="quick" />
+          <MacroStat macroKey="protein" value={totals.protein} size="quick" />
+          <MacroStat macroKey="carbs" value={totals.carbs} size="quick" />
+          <MacroStat macroKey="totalFat" value={totals.totalFat} size="quick" />
         </div>
       </div>
+    </div>
+  );
+}
+
+function CustomizeBuildPreview({
+  items,
+  selectedAddOnIdsByItem,
+  onToggleAddOn,
+  totalsByItemId,
+}: {
+  items: [WalkthroughBuildItem, WalkthroughBuildItem];
+  selectedAddOnIdsByItem: Record<string, string[]>;
+  onToggleAddOn: (itemId: string, addOnId: string) => void;
+  totalsByItemId: Record<string, Nutrition>;
+}) {
+  return (
+    <div>
+      {items.map((item, index) => (
+        <div key={item.id}>
+          {index > 0 ? <div className="my-3 h-px bg-black/10" /> : null}
+          <BuildItemCard
+            item={item}
+            selectedAddOnIds={selectedAddOnIdsByItem[item.id] ?? []}
+            onToggleAddOn={(addOnId) => onToggleAddOn(item.id, addOnId)}
+            totals={totalsByItemId[item.id] ?? normalizeNutrition(item.nutrition)}
+          />
+        </div>
+      ))}
     </div>
   );
 }
@@ -444,14 +515,25 @@ function ReviewOrderPreview({ items, totals }: { items: WalkthroughReviewItem[];
 
       <div className="mt-5 h-px bg-black/10" />
 
-      <div className="mt-4">
-        <p className="text-xs font-semibold uppercase tracking-wide text-neutral-500">Order Totals</p>
-        <div className="mt-2">
-          <MacroSplitBar protein={totals.protein} carbs={totals.carbs} totalFat={totals.totalFat} />
+      {/* Total Macros (left) and Order Totals (right) share one row instead
+          of stacking — an equal-width grid keeps the two balanced regardless
+          of which side's content is taller. */}
+      <div className="mt-4 grid gap-6 sm:grid-cols-2 sm:gap-8">
+        <div>
+          <p className="text-xs font-semibold uppercase tracking-wide text-neutral-500">Total Macros</p>
+          <div className="mt-2 flex flex-wrap items-end gap-x-6 gap-y-3">
+            <MacroStat macroKey="calories" value={totals.calories} labelVariant="uppercase" size="summary" />
+            <MacroStat macroKey="protein" value={totals.protein} labelVariant="uppercase" size="summary" />
+            <MacroStat macroKey="carbs" value={totals.carbs} labelVariant="uppercase" size="summary" />
+            <MacroStat macroKey="totalFat" value={totals.totalFat} labelVariant="uppercase" size="summary" />
+          </div>
         </div>
-        <div className="mt-3 flex items-center justify-between">
-          <span className="text-sm font-semibold text-neutral-600">Total Calories</span>
-          <span className="text-lg font-bold text-neutral-900">{totals.calories}</span>
+
+        <div>
+          <p className="text-xs font-semibold uppercase tracking-wide text-neutral-500">Order Totals</p>
+          <div className="mt-2">
+            <MacroSplitBar protein={totals.protein} carbs={totals.carbs} totalFat={totals.totalFat} />
+          </div>
         </div>
       </div>
     </div>

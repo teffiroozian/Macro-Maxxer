@@ -94,7 +94,14 @@ export default function ProductPreviewCard({
 
             <MacroSplitBar protein={nutrition.protein} carbs={nutrition.carbs} totalFat={nutrition.totalFat} />
 
-            <p className="inline-flex w-fit items-center gap-1.5 rounded-full bg-emerald-50 py-1 pl-1 pr-2.5 text-xs text-emerald-700">
+            {/* Deliberately asymmetric spacing: more room above (on top of
+                the column's own gap-4) so the protein score reads as its
+                own moment separate from the macro bar, then the stat row
+                below pulls in tight against it (negative margin, undoing
+                part of that same gap-4) rather than sitting equidistant
+                between the two — it's the stats' own supporting detail, not
+                a card centered between two neighbors. */}
+            <p className="mt-3 inline-flex w-fit items-center gap-1.5 rounded-full bg-emerald-50 py-1 pl-1 pr-2.5 text-xs text-emerald-700 sm:mt-4">
               <span className="flex h-4 w-4 shrink-0 items-center justify-center rounded-full bg-emerald-600">
                 <Zap className="h-2.5 w-2.5 text-emerald-50" strokeWidth={2.5} aria-hidden="true" />
               </span>
@@ -102,7 +109,7 @@ export default function ProductPreviewCard({
               <span className="text-emerald-700/70">per 100 cal</span>
             </p>
 
-            <div className="flex flex-wrap items-end gap-x-6 gap-y-4 sm:gap-x-8">
+            <div className="-mt-2 flex flex-wrap items-end gap-x-6 gap-y-4 sm:gap-x-8">
               <MacroStat macroKey="calories" value={nutrition.calories} labelVariant="uppercase" size="summary" />
               <MacroStat macroKey="protein" value={nutrition.protein} labelVariant="uppercase" size="summary" />
               <MacroStat macroKey="carbs" value={nutrition.carbs} labelVariant="uppercase" size="summary" />
