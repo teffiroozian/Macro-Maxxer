@@ -5,6 +5,9 @@ import Image from "next/image";
 import { Dumbbell, Flame, type LucideIcon } from "lucide-react";
 import DesktopNav from "@/components/DesktopNav";
 import GlobalMobileNav from "@/components/GlobalMobileNav";
+import GlobalMobileMenuButton from "@/components/GlobalMobileMenuButton";
+import CartIconDropdown from "@/components/cart/CartIconDropdown";
+import { appIconButtonClassName } from "@/components/ui/AppIconButton";
 import RestaurantSearch from "@/components/home/RestaurantSearch";
 import HeroRestaurantChips from "@/components/home/HeroRestaurantChips";
 import SectionEyebrow from "@/components/ui/SectionEyebrow";
@@ -144,7 +147,14 @@ export default function HeroSearchNav({ restaurants }: { restaurants: Restaurant
 
   return (
     <section className="relative">
-      <GlobalMobileNav />
+      <GlobalMobileNav
+        leadingButton={<GlobalMobileMenuButton />}
+        cartSlot={
+          <CartIconDropdown
+            buttonClassName={appIconButtonClassName({ variant: "nav", className: "relative size-9 shrink-0 text-base" })}
+          />
+        }
+      />
 
       {/* Sticky search nav: fixed, hidden while the hero search is visible.
           `inert` while hidden keeps its (otherwise invisible, duplicate)

@@ -34,7 +34,6 @@ import {
   UtensilsCrossed,
   Waves,
 } from "lucide-react";
-import { useRestaurantSearch } from "@/components/RestaurantSearchContext";
 import type {
   IngredientItem,
   MenuItem,
@@ -144,8 +143,6 @@ function StandardRestaurantView({
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
-  const { searchOpen, searchQuery, setSearchQuery, openSearch, closeSearch } =
-    useRestaurantSearch();
   const ingredientMenuItems = useMemo<MenuItem[]>(
     () =>
       ingredients
@@ -182,7 +179,7 @@ function StandardRestaurantView({
     hasBuildYourOwn,
     items,
     ingredientMenuItems,
-    searchQuery,
+    searchQuery: "",
     router,
     pathname,
     searchParams,
@@ -267,11 +264,6 @@ function StandardRestaurantView({
         onSortChange={handleSortChange}
         filters={filters}
         onFiltersChange={handleFiltersChange}
-        searchOpen={searchOpen}
-        searchQuery={searchQuery}
-        setSearchQuery={setSearchQuery}
-        onOpenSearch={openSearch}
-        onCloseSearch={closeSearch}
         calorieBounds={calorieBounds}
         hideViewSelector={hasBuildYourOwn}
       />

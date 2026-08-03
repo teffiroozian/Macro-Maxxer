@@ -24,6 +24,7 @@ import {
   Award,
   ListOrdered,
   Menu,
+  Check,
 } from "lucide-react";
 
 
@@ -89,6 +90,7 @@ export default function ControlsRow({
   hideViewSelector = false,
   showMobileTrigger = true,
   onMobileDrawerOpenReady,
+  onMobileDrawerOpenChange,
   mobileEntreeOptions,
   mobileDrawerHeaderTitle,
   mobileDrawerHeaderLogoSrc,
@@ -108,6 +110,10 @@ export default function ControlsRow({
   hideViewSelector?: boolean;
   showMobileTrigger?: boolean;
   onMobileDrawerOpenReady?: (openDrawer: () => void) => void;
+  // Lets a caller supplying its own hamburger trigger (StickyRestaurantBar)
+  // reflect this drawer's open/closed state on that button, since the
+  // drawer's own open state otherwise lives entirely inside this component.
+  onMobileDrawerOpenChange?: (isOpen: boolean) => void;
   mobileEntreeOptions?: Array<{
     key: string;
     label: string;
@@ -122,7 +128,6 @@ export default function ControlsRow({
   const [isViewOpen, setIsViewOpen] = useState(false);
   const [isSortOpen, setIsSortOpen] = useState(false);
   const [isMobileDrawerOpen, setIsMobileDrawerOpen] = useState(false);
-  const [mobileDrawerKey, setMobileDrawerKey] = useState(0);
   const [isViewSectionOpen, setIsViewSectionOpen] = useState(true);
   const [isSortSectionOpen, setIsSortSectionOpen] = useState(true);
   const [isFiltersSectionOpen, setIsFiltersSectionOpen] = useState(true);
@@ -167,7 +172,6 @@ export default function ControlsRow({
     setIsViewSectionOpen(true);
     setIsSortSectionOpen(true);
     setIsFiltersSectionOpen(true);
-    setMobileDrawerKey((prev) => prev + 1);
     setIsMobileDrawerOpen(true);
   }, [defaultCaloriesMax, filters]);
 
@@ -197,57 +201,64 @@ export default function ControlsRow({
     resetFilters();
   };
 
-  const hasDraftFilters = Boolean(
-    draftFilters.proteinMin ||
-      (draftFilters.caloriesMax !== undefined && draftFilters.caloriesMax !== defaultCaloriesMax)
-  );
+  const activeDraftFilterCount =
+    (draftFilters.proteinMin ? 1 : 0) +
+    (draftFilters.caloriesMax !== undefined && draftFilters.caloriesMax !== defaultCaloriesMax ? 1 : 0);
+  const hasDraftFilters = activeDraftFilterCount > 0;
 
   useEffect(() => {
     onMobileDrawerOpenReady?.(openMobileDrawer);
   }, [onMobileDrawerOpenReady, openMobileDrawer]);
 
+  useEffect(() => {
+    onMobileDrawerOpenChange?.(isMobileDrawerOpen);
+  }, [onMobileDrawerOpenChange, isMobileDrawerOpen]);
 
+  const sectionHeadingClassName = "text-xs font-semibold uppercase tracking-wide text-slate-400";
+  const chevronClassName = "h-3.5 w-3.5 text-slate-400 transition-transform";
+  const optionRowClassName = (isActive: boolean) =>
+    `flex items-center gap-2.5 rounded-lg px-3 py-2.5 text-left text-sm font-semibold transition-colors ${
+      isActive
+        ? "border border-accent/25 bg-accent-soft text-slate-900"
+        : "border border-transparent text-slate-700 hover:bg-slate-50 active:bg-slate-100"
+    }`;
 
   const controlsContent = (
-    <div className="space-y-4">
+    <div className="space-y-6">
       {mobileEntreeOptions?.length ? (
-        <>
-          <section className="space-y-2.5">
-            <h4 className="text-sm font-semibold uppercase tracking-wide text-black/50">Entree</h4>
-            <div className="max-h-[30vh] space-y-2 overflow-y-auto rounded-xl border border-black/10 bg-white p-2">
-              {mobileEntreeOptions.map((option) => (
-                <button
-                  key={option.key}
-                  type="button"
-                  onClick={() => {
-                    option.onSelect();
-                    setIsMobileDrawerOpen(false);
-                  }}
-                  className={`inline-flex w-full items-center gap-2.5 rounded-xl border px-3 py-2.5 text-left text-sm font-semibold ${
-                    option.selected ? "border-black/80 bg-black/85 text-white" : "border-black/15 bg-white text-black/80"
-                  }`}
-                >
-                  {option.image ? (
-                    <span className="relative h-6 w-6 shrink-0 overflow-hidden rounded-full border border-black/10 bg-white">
-                      <Image src={option.image} alt={option.label} fill className="object-cover" />
-                    </span>
-                  ) : null}
-                  <span>{option.label}</span>
-                </button>
-              ))}
-            </div>
-          </section>
-          <div className="h-px bg-black/10" />
-        </>
+        <section className="space-y-2">
+          <h4 className={sectionHeadingClassName}>Entree</h4>
+          <div className="max-h-[30vh] space-y-1 overflow-y-auto rounded-xl bg-slate-50 p-1.5">
+            {mobileEntreeOptions.map((option) => (
+              <button
+                key={option.key}
+                type="button"
+                onClick={() => {
+                  option.onSelect();
+                  setIsMobileDrawerOpen(false);
+                }}
+                className={`w-full ${optionRowClassName(Boolean(option.selected))}`}
+              >
+                {option.image ? (
+                  <span className="relative h-6 w-6 shrink-0 overflow-hidden rounded-full bg-white ring-1 ring-black/5">
+                    <Image src={option.image} alt={option.label} fill className="object-cover" />
+                  </span>
+                ) : null}
+                <span className="flex-1 truncate">{option.label}</span>
+                {option.selected ? <Check className="h-4 w-4 shrink-0 text-accent-strong" strokeWidth={2.5} /> : null}
+              </button>
+            ))}
+          </div>
+        </section>
       ) : null}
       {hideViewSelector ? null : (
-        <section className="space-y-2.5">
+        <section className="space-y-2">
           <button type="button" onClick={() => setIsViewSectionOpen((prev) => !prev)} className="flex w-full items-center justify-between text-left">
-            <h4 className="text-sm font-semibold uppercase tracking-wide text-black/50">View</h4>
-            <ChevronDown className={`h-4 w-4 text-black/60 transition-transform ${isViewSectionOpen ? "rotate-180" : ""}`} strokeWidth={2.5} />
+            <h4 className={sectionHeadingClassName}>View</h4>
+            <ChevronDown className={`${chevronClassName} ${isViewSectionOpen ? "rotate-180" : ""}`} strokeWidth={2.5} />
           </button>
           {isViewSectionOpen ? (
-            <div className="grid gap-2">
+            <div className="grid gap-1">
               {VIEW_OPTIONS.map((option) => {
                 const Icon = option.icon;
                 const isActive = option.value === view;
@@ -255,9 +266,10 @@ export default function ControlsRow({
                   <button key={option.value} type="button" onClick={() => {
                     onChange(option.value);
                     setIsMobileDrawerOpen(false);
-                  }} className={`inline-flex items-center gap-2.5 rounded-xl border px-3 py-2.5 text-left text-sm font-semibold transition ${isActive ? "border-black/80 bg-black/85 text-white" : "border-black/15 bg-white text-black/80"}`}>
-                    <Icon className="h-4 w-4" strokeWidth={2.2} />
+                  }} className={optionRowClassName(isActive)}>
+                    <Icon className={`h-4 w-4 shrink-0 ${isActive ? "text-accent-strong" : "text-slate-400"}`} strokeWidth={2.2} />
                     <span className="flex-1">{option.label}</span>
+                    {isActive ? <Check className="h-4 w-4 shrink-0 text-accent-strong" strokeWidth={2.5} /> : null}
                   </button>
                 );
               })}
@@ -265,14 +277,13 @@ export default function ControlsRow({
           ) : null}
         </section>
       )}
-      {hideViewSelector ? null : <div className="h-px bg-black/10" />}
-      <section className="space-y-2.5">
+      <section className="space-y-2">
         <button type="button" onClick={() => setIsSortSectionOpen((prev) => !prev)} className="flex w-full items-center justify-between text-left">
-          <h4 className="text-sm font-semibold uppercase tracking-wide text-black/50">Sort</h4>
-          <ChevronDown className={`h-4 w-4 text-black/60 transition-transform ${isSortSectionOpen ? "rotate-180" : ""}`} strokeWidth={2.5} />
+          <h4 className={sectionHeadingClassName}>Sort</h4>
+          <ChevronDown className={`${chevronClassName} ${isSortSectionOpen ? "rotate-180" : ""}`} strokeWidth={2.5} />
         </button>
         {isSortSectionOpen ? (
-          <div className="grid gap-2">
+          <div className="grid gap-1">
             {visibleSortOptions.map((option) => {
               const Icon = option.icon;
               const isActive = option.value === sort;
@@ -280,20 +291,27 @@ export default function ControlsRow({
                 <button key={option.value} type="button" onClick={() => {
                   onSortChange(option.value);
                   setIsMobileDrawerOpen(false);
-                }} className={`inline-flex items-center gap-2.5 rounded-xl border px-3 py-2.5 text-left text-sm font-semibold transition ${isActive ? "border-black/80 bg-black/85 text-white" : "border-black/15 bg-white text-black/80"}`}>
-                  <Icon className="h-4 w-4" strokeWidth={2.2} />
+                }} className={optionRowClassName(isActive)}>
+                  <Icon className={`h-4 w-4 shrink-0 ${isActive ? "text-accent-strong" : "text-slate-400"}`} strokeWidth={2.2} />
                   <span className="flex-1">{option.label}</span>
+                  {isActive ? <Check className="h-4 w-4 shrink-0 text-accent-strong" strokeWidth={2.5} /> : null}
                 </button>
               );
             })}
           </div>
         ) : null}
       </section>
-      <div className="h-px bg-black/10" />
       <section className="space-y-3">
         <button type="button" onClick={() => setIsFiltersSectionOpen((prev) => !prev)} className="flex w-full items-center justify-between text-left">
-          <h4 className="text-sm font-semibold uppercase tracking-wide text-black/50">Filters</h4>
-          <ChevronDown className={`h-4 w-4 text-black/60 transition-transform ${isFiltersSectionOpen ? "rotate-180" : ""}`} strokeWidth={2.5} />
+          <span className="inline-flex items-center gap-2">
+            <h4 className={sectionHeadingClassName}>Filters</h4>
+            {activeDraftFilterCount > 0 ? (
+              <span className="inline-flex h-4 min-w-4 items-center justify-center rounded-full bg-accent-soft px-1 text-[10px] font-bold text-accent-strong">
+                {activeDraftFilterCount}
+              </span>
+            ) : null}
+          </span>
+          <ChevronDown className={`${chevronClassName} ${isFiltersSectionOpen ? "rotate-180" : ""}`} strokeWidth={2.5} />
         </button>
         {isFiltersSectionOpen ? (
           <>
@@ -312,7 +330,15 @@ export default function ControlsRow({
             </div>
             <div>
               <div className="mb-2 text-sm font-semibold text-black/80">Calories max: {draftFilters.caloriesMax ?? defaultCaloriesMax}</div>
-              <input type="range" min={calorieBounds.min} max={calorieBounds.max} step={10} value={draftFilters.caloriesMax ?? defaultCaloriesMax} onChange={(event) => setDraftFilters((prev) => ({ ...prev, caloriesMax: Number(event.target.value) }))} className="w-full cursor-pointer" />
+              <input
+                type="range"
+                min={calorieBounds.min}
+                max={calorieBounds.max}
+                step={10}
+                value={draftFilters.caloriesMax ?? defaultCaloriesMax}
+                onChange={(event) => setDraftFilters((prev) => ({ ...prev, caloriesMax: Number(event.target.value) }))}
+                className="w-full cursor-pointer accent-accent hover:accent-accent-strong active:accent-accent-strong focus-visible:accent-accent-strong"
+              />
               <div className="mt-1 flex justify-between text-xs font-semibold text-black/60">
                 <span>{calorieBounds.min}</span>
                 <span>{calorieBounds.max}</span>
@@ -335,14 +361,30 @@ export default function ControlsRow({
 
   const controlsFooter = (
     <div className="grid grid-cols-2 gap-2">
-      <AppButton variant="secondary" size="md" onClick={closeFilters}>Cancel</AppButton>
-      <AppButton size="md" onClick={applyFilters} className="border-black/80 bg-black/85 font-bold">Apply</AppButton>
+      <AppButton
+        variant="secondary"
+        size="md"
+        onClick={closeFilters}
+        className="border-transparent! bg-transparent! text-slate-500! hover:bg-slate-100! active:bg-slate-200!"
+      >
+        Cancel
+      </AppButton>
+      <AppButton
+        size="md"
+        onClick={applyFilters}
+        // `!` forces these past AppButton's `primary` variant (solid
+        // black) — without it, Tailwind's build-order cascade can leave
+        // `bg-black` from the variant winning over `bg-accent` here even
+        // though this className is applied second.
+        className="border-accent! bg-accent! font-bold text-white! hover:bg-accent-strong! active:bg-accent-strong!"
+      >
+        {activeDraftFilterCount > 0 ? `Apply ${activeDraftFilterCount} filter${activeDraftFilterCount > 1 ? "s" : ""}` : "Apply"}
+      </AppButton>
     </div>
   );
 
   const mobileControlsDrawer = (
     <MobileNavDrawer
-      key={mobileDrawerKey}
       isOpen={isMobileDrawerOpen}
       onClose={() => setIsMobileDrawerOpen(false)}
       showControls

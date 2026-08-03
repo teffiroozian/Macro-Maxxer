@@ -55,10 +55,20 @@ export default function DesktopRestaurantMenu() {
         aria-expanded={isRestaurantMenuOpen}
         aria-controls="desktop-restaurant-menu"
         onClick={() => setIsRestaurantMenuOpen((prev) => !prev)}
-        className="inline-flex h-9 cursor-pointer items-center gap-2 rounded-full bg-white px-3 text-sm font-semibold text-slate-800 transition hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-slate-300/70"
+        // Label and chevron stay the same dark, neutral color in every
+        // state (rest, hover, open) — only the background shifts, via a
+        // muted gray fill, never a tinted text color. No permanent border —
+        // bg-transparent at rest, so it never reads as its own separately-
+        // chromed control next to the logo.
+        className={`inline-flex h-9 cursor-pointer items-center gap-1.5 rounded-full px-3 text-sm font-semibold text-slate-700 transition hover:bg-slate-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-900 ${
+          isRestaurantMenuOpen ? "bg-slate-100" : "bg-transparent"
+        }`}
       >
         Restaurants
-        <ChevronDown className={`h-4 w-4 text-slate-500 transition-transform ${isRestaurantMenuOpen ? "rotate-180" : ""}`} strokeWidth={2.4} />
+        <ChevronDown
+          className={`h-3.5 w-3.5 shrink-0 text-slate-700 transition-transform ${isRestaurantMenuOpen ? "rotate-180" : ""}`}
+          strokeWidth={2.4}
+        />
       </button>
 
       {isRestaurantMenuOpen ? (

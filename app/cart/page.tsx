@@ -5,6 +5,7 @@ import StickyMacroTotalsBar from "@/components/StickyMacroTotalsBar";
 import SurfaceCard from "@/components/ui/SurfaceCard";
 import CartNutritionSummary from "@/components/cart/CartNutritionSummary";
 import GlobalMobileNav from "@/components/GlobalMobileNav";
+import GlobalMobileMenuButton from "@/components/GlobalMobileMenuButton";
 import DesktopNav from "@/components/DesktopNav";
 import EmptyStateCard from "@/components/EmptyStateCard";
 import ItemRouteModal from "@/components/item-route-modal/ItemRouteModal";
@@ -27,7 +28,7 @@ export default function CartPage() {
 
   return (
     <>
-      <GlobalMobileNav />
+      <GlobalMobileNav leadingButton={<GlobalMobileMenuButton />} />
       <div className="px-4 pt-1 sm:px-6"><DesktopNav searchBarVariant="compact" /></div>
       <main className="mx-auto flex min-h-screen w-full max-w-5xl flex-col gap-6 px-4 pb-10 pt-28 sm:px-6 lg:pt-10">
         <section className="w-full space-y-3">

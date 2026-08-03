@@ -16,6 +16,7 @@ export default function GlobalSearchOverlay() {
   const { isOpen, close } = useGlobalSearch();
   const state = useGlobalSearchState();
   const dialogRef = useRef<HTMLDivElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
 
   useCloseOnEscape(isOpen, close);
 
@@ -38,9 +39,18 @@ export default function GlobalSearchOverlay() {
     };
   }, [isOpen]);
 
-  if (!isOpen) {
-    return null;
-  }
+  // Stays mounted at all times (only `isOpen` toggles the translate/opacity
+  // classes below) so the slide-up/slide-down transition can actually
+  // animate in both directions — unmounting on close (the previous
+  // `if (!isOpen) return null`) meant there was never a "closed" frame to
+  // animate from on open, so the sheet just appeared instantly. `autoFocus`
+  // only fires on mount, so with the component now staying mounted this
+  // effect takes over focusing the input each time it opens instead.
+  useEffect(() => {
+    if (isOpen) {
+      inputRef.current?.focus();
+    }
+  }, [isOpen]);
 
   return (
     <div
@@ -48,11 +58,17 @@ export default function GlobalSearchOverlay() {
       role="dialog"
       aria-modal="true"
       aria-label="Search"
-      className="fixed inset-0 z-[230] flex items-end justify-center bg-black/35 lg:hidden"
+      aria-hidden={!isOpen}
+      inert={!isOpen}
+      className={`fixed inset-0 z-[230] flex items-end justify-center bg-black/35 transition-opacity duration-300 lg:hidden ${
+        isOpen ? "opacity-100" : "pointer-events-none opacity-0"
+      }`}
       onClick={close}
     >
       <div
-        className="flex h-[85vh] w-full flex-col overflow-hidden rounded-t-[28px] bg-white shadow-[0_18px_50px_rgba(15,23,42,0.25)]"
+        className={`flex h-[85vh] w-full flex-col overflow-hidden rounded-t-[28px] bg-white shadow-[0_18px_50px_rgba(15,23,42,0.25)] transition-transform duration-300 ${
+          isOpen ? "translate-y-0" : "translate-y-full"
+        }`}
         onClick={(event) => event.stopPropagation()}
       >
         <div className="flex shrink-0 items-center justify-between border-b border-slate-200 px-5 py-4">
@@ -67,17 +83,17 @@ export default function GlobalSearchOverlay() {
         <div className="shrink-0 px-5 pt-4">
           <div className="relative">
             <input
+              ref={inputRef}
               type="text"
               aria-label="Search"
               value={state.query}
               onChange={(event) => state.handleInputChange(event.target.value)}
               onKeyDown={state.handleInputKeyDown}
               placeholder="Search restaurants, menu items..."
-              autoFocus
-              className="w-full rounded-2xl border border-black/10 bg-white py-3 pl-11 pr-4 text-base text-neutral-900 outline-none transition focus:border-black/30 focus:ring-4 focus:ring-black/5"
+              className="w-full rounded-2xl border border-black/10 bg-white py-3 pl-12 pr-4 text-base text-neutral-900 outline-none transition focus:border-accent focus:ring-4 focus:ring-accent/15"
             />
-            <span className="pointer-events-none absolute inset-y-0 left-4 flex items-center text-neutral-400">
-              <Search className="h-4 w-4" strokeWidth={2.5} />
+            <span className="pointer-events-none absolute inset-y-0 left-3 my-auto flex h-7 w-7 items-center justify-center rounded-full bg-accent-soft text-accent-strong">
+              <Search className="h-3.5 w-3.5" strokeWidth={2.5} />
             </span>
           </div>
         </div>

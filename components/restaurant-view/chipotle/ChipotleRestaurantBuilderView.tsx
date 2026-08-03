@@ -46,7 +46,6 @@ import {
   UtensilsCrossed,
   Waves,
 } from "lucide-react";
-import { useRestaurantSearch } from "@/components/RestaurantSearchContext";
 import type {
   IngredientItem,
   MenuItem,
@@ -269,8 +268,6 @@ export default function ChipotleRestaurantBuilderView({
   const searchParams = useSearchParams();
   const editOrigin = searchParams.get("editOrigin");
   const isEditingFromCart = editOrigin === "cart";
-  const { searchOpen, searchQuery, setSearchQuery, openSearch, closeSearch } =
-    useRestaurantSearch();
   const { items: cartItems, updateItem } = useCart();
   const { requestAddItem } = useCartAddConfirmation();
   const [isBuildSummaryExpanded, setIsBuildSummaryExpanded] = useState(false);
@@ -501,7 +498,7 @@ export default function ChipotleRestaurantBuilderView({
     isViewChangeAllowed: chipotleMenuControlAdjustments.isViewChangeAllowed,
     items: chipotleMenuControlAdjustments.controlItems,
     ingredientMenuItems,
-    searchQuery,
+    searchQuery: "",
     router,
     pathname,
     searchParams,
@@ -2607,11 +2604,6 @@ export default function ChipotleRestaurantBuilderView({
         onSortChange={handleSortChange}
         filters={filters}
         onFiltersChange={handleFiltersChange}
-        searchOpen={searchOpen}
-        searchQuery={searchQuery}
-        setSearchQuery={setSearchQuery}
-        onOpenSearch={openSearch}
-        onCloseSearch={closeSearch}
         calorieBounds={calorieBounds}
         secondaryNavLeading={entreeSelectionControl}
         mobileEntreeOptions={mobileEntreeOptions}

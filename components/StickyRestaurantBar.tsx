@@ -1,7 +1,7 @@
 "use client";
 
 import type { ReactNode } from "react";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useState } from "react";
 import CartIconDropdown from "@/components/cart/CartIconDropdown";
 import DesktopNav from "@/components/DesktopNav";
 import GlobalMobileNav from "@/components/GlobalMobileNav";
@@ -9,9 +9,9 @@ import ControlsRow, { FilterChips } from "./ControlsRow";
 import type { ViewOption } from "@/components/controls/types";
 import type { Filters } from "@/lib/menuSections/filterOptions";
 import type { SortOption } from "@/lib/menuSections/sortOptions";
-import { Menu, Search } from "lucide-react";
+import { Menu } from "lucide-react";
 import MobileNavDrawer from "@/components/MobileNavDrawer";
-import AppIconButton from "@/components/ui/AppIconButton";
+import AppIconButton, { appIconButtonClassName } from "@/components/ui/AppIconButton";
 
 import { useFilterChipActions } from "./useFilterChipActions";
 
@@ -24,11 +24,6 @@ type StickyRestaurantBarProps = {
   onSortChange: (sort: SortOption) => void;
   filters: Filters;
   onFiltersChange: (filters: Filters) => void;
-  searchOpen: boolean;
-  searchQuery: string;
-  setSearchQuery: (value: string) => void;
-  onOpenSearch: () => void;
-  onCloseSearch: () => void;
   calorieBounds: {
     min: number;
     max: number;
@@ -58,67 +53,23 @@ export default function StickyRestaurantBar({
   onSortChange,
   filters,
   onFiltersChange,
-  searchOpen,
-  searchQuery,
-  setSearchQuery,
-  onOpenSearch,
-  onCloseSearch,
   calorieBounds,
   secondaryNavLeading,
   mobileEntreeOptions,
   hideViewSelector = false,
   hideSecondaryNav = false,
 }: StickyRestaurantBarProps) {
-  const searchInputRef = useRef<HTMLInputElement>(null);
-  const isSearchMode = searchOpen || searchQuery.trim().length > 0;
   const [openMobileControlsDrawer, setOpenMobileControlsDrawer] = useState<() => void>(() => () => {});
   const [isBrowseDrawerOpen, setIsBrowseDrawerOpen] = useState(false);
-  const [browseDrawerKey, setBrowseDrawerKey] = useState(0);
+  const [isControlsDrawerOpen, setIsControlsDrawerOpen] = useState(false);
   const handleMobileDrawerOpenReady = useCallback((openDrawer: () => void) => {
     setOpenMobileControlsDrawer(() => openDrawer);
   }, []);
-
-  useEffect(() => {
-    if (searchOpen) {
-      searchInputRef.current?.focus();
-    }
-  }, [searchOpen]);
 
   const { hasActiveFilters, clearProteinFilter, clearCaloriesFilter, resetFilters } = useFilterChipActions({
     filters,
     onFiltersChange,
   });
-
-  const closeSearch = () => {
-    onCloseSearch();
-  };
-
-  const mobileFilterToggle = (
-    <>
-      <div className={`overflow-hidden transition-all duration-300 ${isSearchMode ? "w-[min(46vw,16rem)] opacity-100 sm:w-[16rem]" : "w-0 opacity-0"}`}>
-        <div className="relative">
-          <input
-            ref={searchInputRef}
-            value={searchQuery}
-            onChange={(event) => setSearchQuery(event.target.value)}
-            placeholder="Filter this menu"
-            aria-label="Filter this menu"
-            className="h-9 w-full rounded-full border border-slate-300/80 bg-white px-3 text-sm text-slate-900 outline-none"
-          />
-        </div>
-      </div>
-
-      {isSearchMode ? (
-        <AppIconButton onClick={closeSearch} className="size-9 border-slate-300/80 text-base text-slate-800" aria-label="Close filter">
-          ✕
-        </AppIconButton>
-      ) : (
-        <AppIconButton onClick={onOpenSearch} className="size-9 border-slate-300/80 text-base text-slate-800" aria-label="Filter this menu">
-          <Search className="h-4 w-4" strokeWidth={2.5} />
-        </AppIconButton>
-      )}
-    </>
-  );
 
   return (
     <>
@@ -154,6 +105,7 @@ export default function StickyRestaurantBar({
                   hideViewSelector={hideViewSelector}
                   showMobileTrigger={false}
                   onMobileDrawerOpenReady={handleMobileDrawerOpenReady}
+                  onMobileDrawerOpenChange={setIsControlsDrawerOpen}
                   mobileEntreeOptions={mobileEntreeOptions}
                   mobileDrawerHeaderTitle={restaurantName}
                   mobileDrawerHeaderLogoSrc={restaurantLogo}
@@ -177,37 +129,36 @@ export default function StickyRestaurantBar({
       </div>
 
       {/* Mobile nav — literally GlobalMobileNav (same component/card as the
-          homepage/cart mobile nav). Its own Global Search button covers the
-          nav-wide search; the hamburger and "Filter this menu" mini input
-          are restaurant-page-specific slots. */}
+          homepage/cart mobile nav), with the same shared Search button
+          (opens the global search pop-up, scoped to this restaurant) that
+          every other page uses — no restaurant-page-only search widget. */}
       <GlobalMobileNav
         markStickyNav
         leadingButton={
           <AppIconButton
             onClick={() => {
               if (hideSecondaryNav) {
-                setBrowseDrawerKey((prev) => prev + 1);
                 setIsBrowseDrawerOpen(true);
                 return;
               }
               openMobileControlsDrawer();
             }}
-            className="size-9 border-slate-300/80 text-slate-800"
+            variant="nav"
+            active={hideSecondaryNav ? isBrowseDrawerOpen : isControlsDrawerOpen}
+            className="size-9"
             aria-label="Open controls drawer"
           >
             <Menu className="h-4 w-4" strokeWidth={2.5} />
           </AppIconButton>
         }
-        middleSlot={mobileFilterToggle}
         cartSlot={
           <CartIconDropdown
-            buttonClassName="relative inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-slate-300/80 bg-white p-0 text-base text-slate-800 transition hover:bg-slate-50"
+            buttonClassName={appIconButtonClassName({ variant: "nav", className: "relative size-9 shrink-0 text-base" })}
           />
         }
       />
 
       <MobileNavDrawer
-        key={browseDrawerKey}
         isOpen={isBrowseDrawerOpen}
         onClose={() => setIsBrowseDrawerOpen(false)}
         headerTitle={restaurantName}

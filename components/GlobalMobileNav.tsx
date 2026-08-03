@@ -5,6 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { Search, ShoppingCart } from "lucide-react";
 import { useGlobalSearch } from "@/components/GlobalSearchContext";
+import AppIconButton, { appIconButtonClassName } from "@/components/ui/AppIconButton";
 
 export default function GlobalMobileNav({
   logoSrc = "/logo.png",
@@ -41,7 +42,7 @@ export default function GlobalMobileNav({
       data-global-nav="true"
       data-sticky-nav={markStickyNav ? "true" : undefined}
     >
-      <div className="relative z-[110] mx-auto mt-1 flex w-[calc(100%-0.5rem)] max-w-6xl items-center rounded-2xl border border-slate-200/70 bg-white shadow-[0_-3px_12px_rgba(15,23,42,0.12)] sm:w-[calc(100%-1rem)]">
+      <div className="relative z-[110] mx-auto mt-1 flex w-[calc(100%-0.5rem)] max-w-6xl items-center rounded-2xl border border-black/10 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.04),0_8px_20px_-6px_rgba(5,150,105,0.12)] sm:w-[calc(100%-1rem)]">
         <div className="mx-auto flex w-full max-w-5xl items-center gap-2 px-3 py-1.5 sm:gap-3 sm:px-6">
           {leadingButton}
           <Link href="/" className="inline-flex h-9 w-9 shrink-0 items-center justify-center overflow-hidden rounded-lg bg-white" aria-label="Go to homepage">
@@ -53,18 +54,17 @@ export default function GlobalMobileNav({
             <div className="ml-auto flex items-center gap-1.5 sm:gap-2">
               {middleSlot}
               {showSearchButton ? (
-                <button
-                  type="button"
-                  onClick={() => openSearch()}
-                  className="inline-flex h-9 w-9 cursor-pointer items-center justify-center rounded-full border border-slate-300/80 bg-white text-slate-800"
-                  aria-label="Search"
-                >
+                <AppIconButton onClick={() => openSearch()} variant="nav" className="size-9" aria-label="Search">
                   <Search className="h-4 w-4" strokeWidth={2.5} />
-                </button>
+                </AppIconButton>
               ) : null}
               {cartSlot ??
                 (showCartButton ? (
-                  <Link href="/cart" className="inline-flex h-9 min-w-9 items-center justify-center rounded-full border border-slate-300/80 bg-white px-2.5 text-slate-800" aria-label="Open cart">
+                  <Link
+                    href="/cart"
+                    className={appIconButtonClassName({ variant: "nav", className: "size-9 min-w-9" })}
+                    aria-label="Open cart"
+                  >
                     <ShoppingCart className="h-4 w-4" strokeWidth={2.5} />
                   </Link>
                 ) : null)}
