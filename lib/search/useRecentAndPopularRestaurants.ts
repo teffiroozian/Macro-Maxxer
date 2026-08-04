@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import type { RestaurantIndexEntry } from "@/types/restaurant";
 
 const RECENT_RESTAURANTS_KEY = "recentlySearchedRestaurants";
@@ -18,23 +18,28 @@ export function useRecentAndPopularRestaurants(allRestaurants: RestaurantIndexEn
     [allRestaurants]
   );
 
-  const [recentRestaurantIds, setRecentRestaurantIds] = useState<string[]>(() => {
-    if (typeof window === "undefined") {
-      return [];
-    }
+  // Starts empty on both server and client's first render so hydration
+  // matches; the real value (if any) is read from localStorage in the
+  // effect below, after mount. Until then, callers fall back to Popular
+  // Restaurants, same as someone with no recent history.
+  const [recentRestaurantIds, setRecentRestaurantIds] = useState<string[]>([]);
 
+  useEffect(() => {
     try {
       const stored = window.localStorage.getItem(RECENT_RESTAURANTS_KEY);
       const parsed = stored ? (JSON.parse(stored) as string[]) : [];
       if (!Array.isArray(parsed)) {
-        return [];
+        return;
       }
 
-      return parsed.filter(Boolean).slice(0, MAX_RECENT_RESTAURANTS);
+      const next = parsed.filter(Boolean).slice(0, MAX_RECENT_RESTAURANTS);
+      if (next.length > 0) {
+        setRecentRestaurantIds(next);
+      }
     } catch {
-      return [];
+      // Ignore localStorage read errors; state stays empty.
     }
-  });
+  }, []);
 
   const recentRestaurants = useMemo(
     () =>

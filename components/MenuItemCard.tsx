@@ -553,6 +553,22 @@ export default function MenuItemCard({
     selectedVariantId,
   ]);
 
+  const openItemDetails = () => {
+    if (shouldOpenModalOnCardClick && itemHref) {
+      router.push(itemHref, { scroll: false });
+      return;
+    }
+    setOpen(true);
+  };
+
+  const handleCardActivate = () => {
+    if (shouldOpenModalOnCardClick && itemHref) {
+      router.push(itemHref, { scroll: false });
+      return;
+    }
+    setOpen((v) => !v);
+  };
+
   const handleAddToCart = () => {
     if (isAddFeedbackVisible) return;
 
@@ -660,25 +676,17 @@ export default function MenuItemCard({
         role="button"
         tabIndex={0}
         className="group relative flex w-full cursor-pointer flex-col items-stretch gap-4 bg-transparent p-3 text-left focus-visible:outline-2 focus-visible:outline-blue-600 focus-visible:outline-offset-[-2px] sm:gap-6 sm:p-4 lg:flex-row"
-        onClick={() => {
-          if (shouldOpenModalOnCardClick && itemHref) {
-            router.push(itemHref, { scroll: false });
-            return;
-          }
-          setOpen((v) => !v);
-        }}
+        onClick={handleCardActivate}
         onKeyDown={(event) => {
           if (event.key === "Enter" || event.key === " ") {
             event.preventDefault();
-            if (shouldOpenModalOnCardClick && itemHref) {
-              router.push(itemHref, { scroll: false });
-              return;
-            }
-            setOpen((v) => !v);
+            handleCardActivate();
           }
         }}
-        aria-expanded={open}
-        aria-controls={`${id}-details`}
+        aria-haspopup={shouldOpenModalOnCardClick ? "dialog" : undefined}
+        aria-label={shouldOpenModalOnCardClick ? item.name : undefined}
+        aria-expanded={shouldOpenModalOnCardClick ? undefined : open}
+        aria-controls={shouldOpenModalOnCardClick ? undefined : `${id}-details`}
       >
         <MenuItemCardHeader
           item={item}
@@ -730,21 +738,17 @@ export default function MenuItemCard({
               />
             ) : (
               <MenuCardActions
+                itemName={item.name}
                 isAddFeedbackVisible={isAddFeedbackVisible}
-                onAddToCart={() => {
-                  if (itemHref && showDetailsButton) {
-                    router.push(itemHref, { scroll: false });
-                    return;
-                  }
-                  handleAddToCart();
-                }}
+                onQuickAdd={handleAddToCart}
+                onViewDetails={openItemDetails}
               />
             )}
           />
         </MenuItemCardHeader>
 
-        <div className="absolute right-3 top-3 hidden items-center gap-2 sm:right-[18px] sm:top-[18px] lg:inline-flex">
-          {hasMods && !isCartMode ? (
+        {hasMods && !isCartMode ? (
+          <div className="absolute right-3 top-3 hidden items-center gap-2 sm:right-[18px] sm:top-[18px] lg:inline-flex">
             <div
               role="button"
               tabIndex={0}
@@ -764,37 +768,8 @@ export default function MenuItemCard({
             >
               ↺
             </div>
-          ) : null}
-          <div
-            role="button"
-            tabIndex={0}
-            aria-label={shouldOpenModalOnCardClick ? `Open details for ${item.name}` : `Toggle addon options for ${item.name}`}
-            className={`text-[26px] leading-none font-medium text-black/75 transition duration-200 group-hover:text-black/95 ${
-              open ? "rotate-45" : ""
-            }`}
-            onClick={(event) => {
-              event.stopPropagation();
-              if (shouldOpenModalOnCardClick && itemHref) {
-                router.push(itemHref, { scroll: false });
-                return;
-              }
-              setOpen((v) => !v);
-            }}
-            onKeyDown={(event) => {
-              if (event.key === "Enter" || event.key === " ") {
-                event.preventDefault();
-                event.stopPropagation();
-                if (shouldOpenModalOnCardClick && itemHref) {
-                  router.push(itemHref, { scroll: false });
-                  return;
-                }
-                setOpen((v) => !v);
-              }
-            }}
-          >
-            +
           </div>
-        </div>
+        ) : null}
       </div>
 
       <div
