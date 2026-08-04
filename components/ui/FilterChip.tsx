@@ -17,7 +17,7 @@ export function filterChipClassName({
   return [
     baseClassName,
     active
-      ? "border-black/80 bg-black/85 text-white hover:bg-black"
+      ? "border-accent bg-accent text-white hover:bg-accent-strong active:bg-accent-strong focus-visible:outline-accent-strong"
       : "border-black/20 bg-white text-black/80 hover:bg-black/5",
     className,
   ]

@@ -16,11 +16,13 @@ export default function RestaurantPageContent({
 
   return (
     <RestaurantUiProvider>
-      {/* pt-40 (lg) matches DesktopCategorySidebar's own `sticky top-[160px]`
-          offset — both represent the same real thing (the fixed nav +
-          secondary-controls stack height), so the page no longer reserves
-          more top space than that stack actually needs. */}
-      <div className="relative w-full pt-16 sm:pt-20 lg:pt-40">
+      {/* This is deliberately just breathing room, not a nav-clearance
+          offset — RestaurantIdentityHeader measures the fixed nav stack's
+          real height itself (useStickyNavClearance) and reserves exactly
+          that via its own margin, so this padding only needs to add the
+          small visual gap between the stack and the identity card below
+          it. */}
+      <div className="relative w-full pt-6 sm:pt-8 lg:pt-10">
         <div
           aria-hidden="true"
           className="pointer-events-none absolute inset-x-0 top-0 -z-10 h-[380px] overflow-hidden sm:h-[460px] lg:h-[560px]"

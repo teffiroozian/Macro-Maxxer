@@ -5,8 +5,12 @@ import type { MenuItem } from "@/types/menu";
 import type { Filters } from "@/lib/menuSections/filterOptions";
 import {
     filterMenuItems,
+    getParentSelectionState,
+    getRankedChildCategories,
     getSearchTerms,
+    RANKED_ALL_FILTER_KEYS,
     type RankedAllFilterKey,
+    type RankedParentSelectionState,
 } from "@/lib/menuSections/filtering";
 import { getDefaultMenuItemNutrition } from "@/lib/nutrition";
 import {
@@ -58,15 +62,35 @@ export function useRestaurantMenuControls({
             : SORT_OPTION_VALUES.DEFAULT_ORDER,
     );
     const [filters, setFilters] = useState<Filters>({});
-    const [rankedAllFilters, setRankedAllFilters] = useState<
-        Record<RankedAllFilterKey, boolean>
-    >({
-        "main-entrees": true,
-        breakfast: false,
-        shareables: false,
-        sides: false,
-        drinks: false,
+
+    // The narrower categories available inside each broad Rankings parent
+    // bucket, derived from this restaurant's own items — never hard-coded —
+    // so the nested filter tree is correct for any restaurant's data shape.
+    const rankedChildOptions = useMemo(() => getRankedChildCategories(items), [items]);
+
+    // Per-parent set of *selected* child categories. An empty set means the
+    // whole parent bucket is off; a set containing every available child is
+    // equivalent to "fully selected" (same effect as the old boolean `true`).
+    const [rankedChildSelections, setRankedChildSelections] = useState<
+        Record<RankedAllFilterKey, Set<string>>
+    >(() => {
+        const initialOptions = getRankedChildCategories(items);
+        return {
+            "main-entrees": new Set(initialOptions["main-entrees"]),
+            breakfast: new Set<string>(),
+            shareables: new Set<string>(),
+            sides: new Set<string>(),
+            drinks: new Set<string>(),
+        };
     });
+
+    const rankedParentStates = useMemo(() => {
+        const result = {} as Record<RankedAllFilterKey, RankedParentSelectionState>;
+        RANKED_ALL_FILTER_KEYS.forEach((key) => {
+            result[key] = getParentSelectionState(rankedChildSelections[key], rankedChildOptions[key] ?? []);
+        });
+        return result;
+    }, [rankedChildOptions, rankedChildSelections]);
 
     const effectiveViewMode: ViewOption = effectiveViewModeOverride ?? viewMode;
 
@@ -106,7 +130,7 @@ export function useRestaurantMenuControls({
                 items: sourceItems,
                 filters,
                 searchTerms,
-                rankedAllFilters,
+                rankedChildSelections,
                 isRankingView: effectiveViewMode === "ranking",
             }),
         [
@@ -114,7 +138,7 @@ export function useRestaurantMenuControls({
             sourceItems,
             filters,
             searchTerms,
-            rankedAllFilters,
+            rankedChildSelections,
         ],
     );
 
@@ -180,18 +204,52 @@ export function useRestaurantMenuControls({
         setFilters(nextFilters);
     }, []);
 
-    const toggleRankedAllFilter = useCallback((key: RankedAllFilterKey) => {
-        setRankedAllFilters((previous) => {
-            const isCurrentlyChecked = previous[key];
-            const checkedCount = Object.values(previous).filter(Boolean).length;
-            if (isCurrentlyChecked && checkedCount === 1) {
+    // Parent-row click: acts as a convenient select-all/deselect-all for that
+    // parent's children. A partially-selected parent moves to fully selected
+    // first (the standard indeterminate-checkbox click convention) rather
+    // than to empty. Guards against every parent ending up empty at once, so
+    // Rankings never silently shows zero results from this toggle alone.
+    const toggleRankedAllFilter = useCallback(
+        (key: RankedAllFilterKey) => {
+            setRankedChildSelections((previous) => {
+                const available = rankedChildOptions[key] ?? [];
+                const isFullySelected = available.length > 0 && previous[key].size === available.length;
+                const nextSelectedForKey = isFullySelected ? new Set<string>() : new Set(available);
+
+                const wouldBeActiveParentCount = RANKED_ALL_FILTER_KEYS.filter((otherKey) =>
+                    otherKey === key ? nextSelectedForKey.size > 0 : previous[otherKey].size > 0
+                ).length;
+
+                if (wouldBeActiveParentCount === 0) {
+                    return previous;
+                }
+
+                return { ...previous, [key]: nextSelectedForKey };
+            });
+        },
+        [rankedChildOptions],
+    );
+
+    // Individual child toggle — same "never let every parent end up empty"
+    // guard as the parent-level toggle above.
+    const toggleRankedChildFilter = useCallback((key: RankedAllFilterKey, childCategory: string) => {
+        setRankedChildSelections((previous) => {
+            const nextSet = new Set(previous[key]);
+            if (nextSet.has(childCategory)) {
+                nextSet.delete(childCategory);
+            } else {
+                nextSet.add(childCategory);
+            }
+
+            const wouldBeActiveParentCount = RANKED_ALL_FILTER_KEYS.filter((otherKey) =>
+                otherKey === key ? nextSet.size > 0 : previous[otherKey].size > 0
+            ).length;
+
+            if (wouldBeActiveParentCount === 0) {
                 return previous;
             }
 
-            return {
-                ...previous,
-                [key]: !isCurrentlyChecked,
-            };
+            return { ...previous, [key]: nextSet };
         });
     }, []);
 
@@ -199,7 +257,9 @@ export function useRestaurantMenuControls({
         sort,
         filters,
         handleFiltersChange,
-        rankedAllFilters,
+        rankedChildOptions,
+        rankedChildSelections,
+        rankedParentStates,
         viewMode,
         effectiveViewMode,
         sourceItems,
@@ -212,5 +272,6 @@ export function useRestaurantMenuControls({
         handleViewChange,
         handleSortChange,
         toggleRankedAllFilter,
+        toggleRankedChildFilter,
     };
 }

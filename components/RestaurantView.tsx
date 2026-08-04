@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import type { LucideIcon } from "lucide-react";
 import {
@@ -166,15 +166,19 @@ function StandardRestaurantView({
     sort,
     filters,
     handleFiltersChange,
-    rankedAllFilters,
+    rankedChildOptions,
+    rankedChildSelections,
+    rankedParentStates,
     effectiveViewMode,
     calorieBounds,
+    sourceItems,
     visibleMenuItems,
     orderedSections,
     categoryOptions,
     handleViewChange,
     handleSortChange,
     toggleRankedAllFilter,
+    toggleRankedChildFilter,
   } = useRestaurantMenuControls({
     hasBuildYourOwn,
     items,
@@ -187,6 +191,17 @@ function StandardRestaurantView({
   const [activeCategory, setActiveCategory] = useState<string>(
     () => orderedSections[0] ?? "",
   );
+
+  // Lets the mobile active-filter row's "Edit filters" icon (rendered in
+  // RestaurantCategorySidebar, a sibling of StickyRestaurantBar) open the
+  // same controls drawer StickyRestaurantBar's own hamburger button uses —
+  // captured here once StickyRestaurantBar surfaces it, then handed down.
+  const [openMobileFiltersDrawer, setOpenMobileFiltersDrawer] = useState<() => void>(
+    () => () => {},
+  );
+  const handleEditFiltersDrawerReady = useCallback((openDrawer: () => void) => {
+    setOpenMobileFiltersDrawer(() => openDrawer);
+  }, []);
 
   const resolvedActiveCategory = orderedSections.includes(activeCategory)
     ? activeCategory
@@ -265,20 +280,28 @@ function StandardRestaurantView({
         filters={filters}
         onFiltersChange={handleFiltersChange}
         calorieBounds={calorieBounds}
+        sourceItems={sourceItems}
+        rankedChildSelections={rankedChildSelections}
+        isRankingView={effectiveViewMode === "ranking"}
         hideViewSelector={hasBuildYourOwn}
+        onEditFiltersDrawerReady={handleEditFiltersDrawerReady}
       />
 
       <div className="grid items-start gap-4 lg:gap-6 lg:[grid-template-columns:240px_minmax(0,1fr)]">
         <RestaurantCategorySidebar
           effectiveViewMode={effectiveViewMode}
-          rankedAllFilters={rankedAllFilters}
+          rankedChildOptions={rankedChildOptions}
+          rankedChildSelections={rankedChildSelections}
+          rankedParentStates={rankedParentStates}
           toggleRankedAllFilter={toggleRankedAllFilter}
+          toggleRankedChildFilter={toggleRankedChildFilter}
           categoryOptions={categoryOptions}
           resolvedActiveCategory={resolvedActiveCategory}
           onCategorySelect={handleCategorySelect}
           categoryIcons={CATEGORY_ICONS}
           filters={filters}
           onFiltersChange={handleFiltersChange}
+          onEditFilters={openMobileFiltersDrawer}
         />
 
         <div className="min-w-0">
@@ -295,6 +318,7 @@ function StandardRestaurantView({
                 effectiveViewMode === "ranking" ? "menu" : effectiveViewMode
               }
               hasBuildYourOwn={hasBuildYourOwn}
+              showRankBadges={effectiveViewMode === "ranking"}
             />
           </div>
         </div>

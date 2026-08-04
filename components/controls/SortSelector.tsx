@@ -44,6 +44,7 @@ export default function SortSelector({
       hoveredOption={hoveredOption}
       menuRef={menuRef}
       align="right"
+      valuePrefix="Sort by"
       onToggleOpen={onToggleOpen}
       onClose={onClose}
       onSelect={onSelect}

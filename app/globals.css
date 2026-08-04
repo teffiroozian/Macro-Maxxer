@@ -73,6 +73,64 @@ body {
     display: none;
 }
 
+/* Desktop filter modal's calorie slider — fully custom-rendered (rather than
+   relying on `accent-color`) because Safari/WebKit's native range thumb
+   applies its own hover chrome (glow/scale/shadow) that `accent-color` alone
+   cannot suppress. Resetting appearance and defining every state ourselves
+   guarantees hover renders identically to rest; only `:active` (dragging)
+   and `:focus-visible` (keyboard) get a deliberate treatment. Fill color is
+   supplied by the consumer via the --range-fill-percent custom property. */
+.calorie-range {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 100%;
+    height: 6px;
+    border-radius: 9999px;
+    cursor: pointer;
+    background: linear-gradient(
+        to right,
+        var(--product-accent) 0%,
+        var(--product-accent) var(--range-fill-percent, 0%),
+        #e2e8f0 var(--range-fill-percent, 0%),
+        #e2e8f0 100%
+    );
+}
+
+.calorie-range::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 16px;
+    height: 16px;
+    border-radius: 9999px;
+    border: none;
+    background: var(--product-accent);
+    cursor: pointer;
+}
+
+.calorie-range::-moz-range-thumb {
+    width: 16px;
+    height: 16px;
+    border-radius: 9999px;
+    border: none;
+    background: var(--product-accent);
+    cursor: pointer;
+}
+
+.calorie-range::-moz-range-track {
+    height: 6px;
+    background: transparent;
+}
+
+.calorie-range:active::-webkit-slider-thumb,
+.calorie-range:active::-moz-range-thumb {
+    background: var(--product-accent-strong);
+}
+
+.calorie-range:focus-visible {
+    outline: 2px solid var(--product-accent-strong);
+    outline-offset: 2px;
+}
+
 /* Restrained enter transition for the Product Walkthrough (Slice 3) step
    copy + preview panel: a small fade + vertical nudge that replays whenever
    React remounts the element (driven by a `key` change on step switch), no

@@ -271,6 +271,16 @@ export default function ChipotleRestaurantBuilderView({
   const { items: cartItems, updateItem } = useCart();
   const { requestAddItem } = useCartAddConfirmation();
   const [isBuildSummaryExpanded, setIsBuildSummaryExpanded] = useState(false);
+  // Lets the mobile active-filter row's "Edit filters" icon (rendered in
+  // RestaurantCategorySidebar, a sibling of StickyRestaurantBar) open the
+  // same controls drawer StickyRestaurantBar's own hamburger button uses —
+  // captured here once StickyRestaurantBar surfaces it, then handed down.
+  const [openMobileFiltersDrawer, setOpenMobileFiltersDrawer] = useState<() => void>(
+    () => () => {},
+  );
+  const handleEditFiltersDrawerReady = useCallback((openDrawer: () => void) => {
+    setOpenMobileFiltersDrawer(() => openDrawer);
+  }, []);
   const buildStickyContainerRef = useRef<HTMLDivElement | null>(null);
   const buildCustomizationModalScrollRef = useRef<HTMLDivElement | null>(null);
   const entreeMenuRef = useRef<HTMLDivElement | null>(null);
@@ -482,15 +492,19 @@ export default function ChipotleRestaurantBuilderView({
     sort,
     filters,
     handleFiltersChange,
-    rankedAllFilters,
+    rankedChildOptions,
+    rankedChildSelections,
+    rankedParentStates,
     effectiveViewMode,
     calorieBounds,
+    sourceItems,
     visibleMenuItems: unadjustedVisibleMenuItems,
     orderedSections: baseOrderedSections,
     categoryOptions: baseCategoryOptions,
     handleViewChange,
     handleSortChange,
     toggleRankedAllFilter,
+    toggleRankedChildFilter,
   } = useRestaurantMenuControls({
     hasBuildYourOwn,
     effectiveViewModeOverride:
@@ -2605,10 +2619,14 @@ export default function ChipotleRestaurantBuilderView({
         filters={filters}
         onFiltersChange={handleFiltersChange}
         calorieBounds={calorieBounds}
+        sourceItems={sourceItems}
+        rankedChildSelections={rankedChildSelections}
+        isRankingView={effectiveViewMode === "ranking"}
         secondaryNavLeading={entreeSelectionControl}
         mobileEntreeOptions={mobileEntreeOptions}
         hideViewSelector={hasBuildYourOwn}
         hideSecondaryNav={isChipotleBuildPage && selectedEntree === null}
+        onEditFiltersDrawerReady={handleEditFiltersDrawerReady}
       />
 
       {isChipotleBuildPage && selectedEntree === null ? (
@@ -2622,14 +2640,18 @@ export default function ChipotleRestaurantBuilderView({
         <div className="grid items-start gap-4 lg:gap-6 lg:[grid-template-columns:240px_minmax(0,1fr)]">
           <RestaurantCategorySidebar
             effectiveViewMode={effectiveViewMode}
-            rankedAllFilters={rankedAllFilters}
+            rankedChildOptions={rankedChildOptions}
+            rankedChildSelections={rankedChildSelections}
+            rankedParentStates={rankedParentStates}
             toggleRankedAllFilter={toggleRankedAllFilter}
+            toggleRankedChildFilter={toggleRankedChildFilter}
             categoryOptions={categoryOptions}
             resolvedActiveCategory={resolvedActiveCategory}
             onCategorySelect={handleCategorySelect}
             categoryIcons={CATEGORY_ICONS}
             filters={filters}
             onFiltersChange={handleFiltersChange}
+            onEditFilters={openMobileFiltersDrawer}
           />
 
           <div className="min-w-0">
@@ -2652,6 +2674,7 @@ export default function ChipotleRestaurantBuilderView({
                       effectiveViewMode === "ranking"
                         ? "menu"
                         : effectiveViewMode,
+                    showRankBadges: effectiveViewMode === "ranking",
                     hasBuildYourOwn,
                     ingredientSelectionConfig: {
                       selectedIds: selectedIngredientIdsForMenu,
@@ -2988,6 +3011,7 @@ export default function ChipotleRestaurantBuilderView({
                   categoryMode={
                     effectiveViewMode === "ranking" ? "menu" : effectiveViewMode
                   }
+                  showRankBadges={effectiveViewMode === "ranking"}
                   hasBuildYourOwn={hasBuildYourOwn}
                 />
               )}

@@ -1,11 +1,24 @@
 "use client";
 
 import { useEffect, useRef, useState, type RefObject } from "react";
-import { Circle, type LucideIcon, UtensilsCrossed, Soup, SquareStack, CupSoda, Check, PanelTopOpen } from "lucide-react";
-import type { RankedAllFilterKey } from "@/lib/menuSections/filtering";
+import {
+  Circle,
+  type LucideIcon,
+  UtensilsCrossed,
+  Soup,
+  SquareStack,
+  CupSoda,
+  Check,
+  Minus,
+  ChevronDown,
+  PanelTopOpen,
+} from "lucide-react";
+import type { RankedAllFilterKey, RankedParentSelectionState } from "@/lib/menuSections/filtering";
 import type { Filters } from "@/lib/menuSections/filterOptions";
+import { getCategoryLabel } from "@/lib/menuSections/sorting";
 import { FilterChips } from "@/components/ControlsRow";
 import { useFilterChipActions } from "@/components/useFilterChipActions";
+import { useStickyNavClearance } from "@/components/restaurant-view/useStickyNavClearance";
 import SectionEyebrow from "@/components/ui/SectionEyebrow";
 
 type CategoryOption = { id: string; label: string; count?: number };
@@ -13,27 +26,40 @@ type RankingOption = { key: RankedAllFilterKey; label: string; iconKey: string }
 
 type Props = {
   effectiveViewMode: "menu" | "ingredients" | "ranking";
-  rankedAllFilters: Record<RankedAllFilterKey, boolean>;
+  rankedChildOptions: Record<RankedAllFilterKey, string[]>;
+  rankedChildSelections: Record<RankedAllFilterKey, Set<string>>;
+  rankedParentStates: Record<RankedAllFilterKey, RankedParentSelectionState>;
   toggleRankedAllFilter: (key: RankedAllFilterKey) => void;
+  toggleRankedChildFilter: (key: RankedAllFilterKey, childCategory: string) => void;
   categoryOptions: CategoryOption[];
   resolvedActiveCategory: string;
   onCategorySelect: (categoryId: string) => void;
   categoryIcons: Record<string, LucideIcon>;
   filters: Filters;
   onFiltersChange: (filters: Filters) => void;
+  // Opens the mobile controls drawer scrolled to its Filters section — the
+  // desktop equivalent (reopening the filter modal) lives inside ControlsRow
+  // itself, since that's where the modal's own open state lives. Optional so
+  // callers that never wire it up (there are none today) just don't render
+  // the edit affordance rather than throwing.
+  onEditFilters?: () => void;
 };
 
 type SharedCategoryNavProps = Pick<
   Props,
   | "effectiveViewMode"
-  | "rankedAllFilters"
+  | "rankedChildOptions"
+  | "rankedChildSelections"
+  | "rankedParentStates"
   | "toggleRankedAllFilter"
+  | "toggleRankedChildFilter"
   | "categoryOptions"
   | "resolvedActiveCategory"
   | "onCategorySelect"
   | "categoryIcons"
   | "filters"
   | "onFiltersChange"
+  | "onEditFilters"
 > & {
   rankingOptions: RankingOption[];
   rankingFallbackIcons: Record<RankedAllFilterKey, LucideIcon>;
@@ -128,16 +154,215 @@ function CategoryNavItem({ option, isActive, Icon, onSelect, variant }: Category
   );
 }
 
+// Shared parent/child Rankings category tree — used by both the desktop
+// sidebar and the mobile "categories" dropdown so the two responsive
+// surfaces always render the exact same hierarchy and selection state
+// (lifted entirely from useRestaurantMenuControls; this component only
+// renders it). A parent with more than one distinct child category gets a
+// permanently-visible chevron beside its label that expands/collapses its
+// children — parents with zero or one child (nothing meaningful to narrow
+// down) stay a plain toggle row, same as before this feature existed.
+//
+// Interaction model: the row itself (icon, label, background, indicator) is
+// the selection target — clicking or activating it selects/deselects the
+// parent and all its children. The chevron is a separate nested `<button>`
+// with its own `stopPropagation()` so it only ever expands/collapses and
+// never changes selection. A real `<button>` can't contain another
+// `<button>`, so an expandable row's outer element is a `role="checkbox"`
+// `<div>` (keyboard-operable via a manual Enter/Space handler) instead of a
+// native button — a non-expandable row has nothing nested inside it, so it
+// stays a plain native `<button>`.
+//
+// `isActive` (fully OR partially selected) is the single source of truth
+// for every color on the row — background, icon, label, chevron. The exact
+// tri-state only decides which glyph (check vs. minus) appears, and that
+// glyph is only ever rendered while active, never shown-then-hidden with
+// opacity — so a row can't visually read as "checked" without also being
+// green.
+function RankingCategoryTree({
+  rankingOptions,
+  rankedChildOptions,
+  rankedChildSelections,
+  rankedParentStates,
+  toggleRankedAllFilter,
+  toggleRankedChildFilter,
+  categoryIcons,
+  rankingFallbackIcons,
+}: Pick<
+  SharedCategoryNavProps,
+  | "rankingOptions"
+  | "rankedChildOptions"
+  | "rankedChildSelections"
+  | "rankedParentStates"
+  | "toggleRankedAllFilter"
+  | "toggleRankedChildFilter"
+  | "categoryIcons"
+  | "rankingFallbackIcons"
+>) {
+  const [expandedParents, setExpandedParents] = useState<Set<RankedAllFilterKey>>(() => new Set());
+
+  return (
+    <div className="grid gap-4" role="group" aria-label="Ranking categories">
+      {rankingOptions.map((option) => {
+        const children = rankedChildOptions[option.key] ?? [];
+        const hasChildren = children.length > 1;
+        const state = rankedParentStates[option.key] ?? "none";
+        const isFull = state === "all";
+        const isPartial = state === "some";
+        const isActive = isFull || isPartial;
+        const isExpanded = expandedParents.has(option.key);
+        const Icon = categoryIcons[option.iconKey] ?? rankingFallbackIcons[option.key];
+        const childListId = `ranking-children-${option.key}`;
+
+        const toggleExpanded = () =>
+          setExpandedParents((previous) => {
+            const next = new Set(previous);
+            if (next.has(option.key)) {
+              next.delete(option.key);
+            } else {
+              next.add(option.key);
+            }
+            return next;
+          });
+
+        const rowClassName = `flex w-full cursor-pointer items-center gap-3 rounded-full px-4 py-2 text-left text-base font-semibold transition-colors duration-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 ${
+          isActive
+            ? "bg-accent-strong text-white hover:brightness-95 active:brightness-90 focus-visible:outline-white"
+            : "text-slate-700 hover:bg-slate-100 focus-visible:outline-accent-strong"
+        }`;
+
+        const indicator = isActive ? (
+          <span aria-hidden="true" className="inline-flex h-4 w-4 shrink-0 items-center justify-center text-white">
+            {isPartial ? <Minus className="h-4 w-4" strokeWidth={3} /> : <Check className="h-4 w-4" strokeWidth={3} />}
+          </span>
+        ) : null;
+
+        return (
+          <div key={option.key}>
+            {hasChildren ? (
+              <div
+                role="checkbox"
+                aria-checked={isFull ? "true" : isPartial ? "mixed" : "false"}
+                aria-label={option.label}
+                tabIndex={0}
+                onClick={() => toggleRankedAllFilter(option.key)}
+                onKeyDown={(event) => {
+                  if (event.target !== event.currentTarget) return;
+                  if (event.key === "Enter" || event.key === " ") {
+                    event.preventDefault();
+                    toggleRankedAllFilter(option.key);
+                  }
+                }}
+                className={rowClassName}
+              >
+                <Icon className={`h-4 w-4 shrink-0 ${isActive ? "text-white" : "text-slate-500"}`} strokeWidth={2.5} aria-hidden="true" />
+                <span className="flex min-w-0 flex-1 items-center gap-1.5">
+                  <span className="min-w-0 truncate">{option.label}</span>
+                  <button
+                    type="button"
+                    aria-expanded={isExpanded}
+                    aria-controls={childListId}
+                    aria-label={`${isExpanded ? "Collapse" : "Expand"} ${option.label}`}
+                    onClick={(event) => {
+                      event.stopPropagation();
+                      toggleExpanded();
+                    }}
+                    className={`inline-flex h-5 w-5 shrink-0 cursor-pointer items-center justify-center rounded transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 ${
+                      isActive
+                        ? "text-white/80 hover:bg-white/15 focus-visible:outline-white"
+                        : "text-slate-400 hover:bg-slate-200/70 focus-visible:outline-accent-strong"
+                    }`}
+                  >
+                    <ChevronDown
+                      className={`h-3.5 w-3.5 transition-transform duration-200 ${isExpanded ? "rotate-180" : ""}`}
+                      strokeWidth={2.5}
+                    />
+                  </button>
+                </span>
+                {indicator}
+              </div>
+            ) : (
+              <button
+                type="button"
+                role="checkbox"
+                aria-checked={isFull ? "true" : isPartial ? "mixed" : "false"}
+                onClick={() => toggleRankedAllFilter(option.key)}
+                className={rowClassName}
+              >
+                <Icon className={`h-4 w-4 shrink-0 ${isActive ? "text-white" : "text-slate-500"}`} strokeWidth={2.5} aria-hidden="true" />
+                <span className="min-w-0 flex-1 truncate">{option.label}</span>
+                {indicator}
+              </button>
+            )}
+
+            {hasChildren ? (
+              // `grid-rows-[0fr]` → `[1fr]` animates height without ever
+              // measuring it in JS, so expand/collapse can't cause a layout
+              // jump. Children stay mounted while collapsed (for the
+              // transition to have something to animate from/to) but are
+              // pulled out of the tab order and hidden from AT so a
+              // collapsed group is never silently keyboard-focusable.
+              <div
+                id={childListId}
+                className={`grid transition-all duration-200 ease-out ${
+                  isExpanded ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0"
+                }`}
+                aria-hidden={!isExpanded}
+              >
+                <div className="min-h-0 overflow-hidden">
+                  <div className="ml-6 mt-0.5 grid gap-0.5 py-0.5">
+                    {children.map((childCategory) => {
+                      const isChildSelected = rankedChildSelections[option.key]?.has(childCategory) ?? false;
+                      const ChildIcon = resolveCategoryIcon(categoryIcons, childCategory);
+
+                      return (
+                        <button
+                          key={childCategory}
+                          type="button"
+                          role="checkbox"
+                          aria-checked={isChildSelected}
+                          tabIndex={isExpanded ? 0 : -1}
+                          onClick={() => toggleRankedChildFilter(option.key, childCategory)}
+                          className={`flex w-full cursor-pointer items-center gap-2 rounded-lg py-1.5 pl-2.5 pr-2 text-left text-[13px] font-medium transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-strong ${
+                            isChildSelected ? "bg-accent-soft text-accent-strong" : "text-slate-600 hover:bg-slate-100"
+                          }`}
+                        >
+                          <ChildIcon
+                            className={`h-3.5 w-3.5 shrink-0 ${isChildSelected ? "text-accent-strong" : "text-slate-400"}`}
+                            strokeWidth={2.2}
+                          />
+                          <span className="min-w-0 flex-1 truncate">{getCategoryLabel(childCategory)}</span>
+                          {isChildSelected ? (
+                            <Check className="h-3.5 w-3.5 shrink-0 text-accent-strong" strokeWidth={3} />
+                          ) : null}
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+              </div>
+            ) : null}
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+
 function MobileCategoryNav({
   effectiveViewMode,
-  rankedAllFilters,
+  rankedChildOptions,
+  rankedChildSelections,
+  rankedParentStates,
   toggleRankedAllFilter,
+  toggleRankedChildFilter,
   categoryOptions,
   resolvedActiveCategory,
   onCategorySelect,
   categoryIcons,
   filters,
   onFiltersChange,
+  onEditFilters,
   rankingOptions,
   rankingFallbackIcons,
   categoryNavLabel,
@@ -188,9 +413,17 @@ function MobileCategoryNav({
       }
     };
 
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        setIsMobileCategoryMenuOpen(false);
+      }
+    };
+
     document.addEventListener("mousedown", handlePointerDown);
+    document.addEventListener("keydown", handleKeyDown);
     return () => {
       document.removeEventListener("mousedown", handlePointerDown);
+      document.removeEventListener("keydown", handleKeyDown);
     };
   }, [isMobileCategoryMenuOpen]);
 
@@ -213,7 +446,7 @@ function MobileCategoryNav({
       scrollElement.removeEventListener("scroll", syncScrollFadeVisibility);
       window.removeEventListener("resize", syncScrollFadeVisibility);
     };
-  }, [effectiveViewMode, categoryOptions, rankedAllFilters]);
+  }, [effectiveViewMode, categoryOptions, rankedParentStates]);
 
   // No trailing spacer here: this strip is `position: fixed`, so it needs
   // whatever renders right after it in flow to reserve matching space —
@@ -228,8 +461,11 @@ function MobileCategoryNav({
           <div className="mx-auto flex w-full max-w-5xl items-center gap-2 px-2 py-0.5 sm:px-4">
             <MobileCategoryMenu
               effectiveViewMode={effectiveViewMode}
-              rankedAllFilters={rankedAllFilters}
+              rankedChildOptions={rankedChildOptions}
+              rankedChildSelections={rankedChildSelections}
+              rankedParentStates={rankedParentStates}
               toggleRankedAllFilter={toggleRankedAllFilter}
+              toggleRankedChildFilter={toggleRankedChildFilter}
               categoryOptions={categoryOptions}
               resolvedActiveCategory={resolvedActiveCategory}
               onCategorySelect={onCategorySelect}
@@ -248,24 +484,28 @@ function MobileCategoryNav({
                 {effectiveViewMode === "ranking" ? (
                   <div className="flex min-w-0 items-center gap-2" role="group" aria-label={categoryNavLabel}>
                     {rankingOptions.map((option) => {
-                      const isChecked = rankedAllFilters[option.key];
+                      const state = rankedParentStates[option.key] ?? "none";
+                      const isFull = state === "all";
+                      const isPartial = state === "some";
                       const Icon = categoryIcons[option.iconKey] ?? rankingFallbackIcons[option.key];
 
                       return (
                         <button
                           key={option.key}
                           type="button"
-                          aria-pressed={isChecked}
+                          role="checkbox"
+                          aria-checked={isFull ? "true" : isPartial ? "mixed" : "false"}
                           onClick={() => toggleRankedAllFilter(option.key)}
                           className={`cursor-pointer inline-flex shrink-0 items-center gap-2 whitespace-nowrap rounded-full border px-3 py-1.5 text-sm font-semibold transition-colors duration-100 ${
-                            isChecked
-                              ? "border-black/20 bg-black/85 text-white shadow-[0px_0_8px_rgba(0,0,0,0.2)]"
+                            isFull || isPartial
+                              ? "border-transparent bg-accent-strong text-white shadow-[0px_0_8px_rgba(0,0,0,0.15)]"
                               : "border-black/20 bg-white text-slate-700 hover:bg-slate-50"
                           }`}
                         >
                           <Icon className="h-4 w-4" strokeWidth={2.4} />
                           <span>{option.label}</span>
-                          {isChecked ? <Check className="h-3.5 w-3.5" strokeWidth={3} /> : null}
+                          {isFull ? <Check className="h-3.5 w-3.5" strokeWidth={3} /> : null}
+                          {isPartial ? <Minus className="h-3.5 w-3.5" strokeWidth={3} /> : null}
                         </button>
                       );
                     })}
@@ -304,20 +544,31 @@ function MobileCategoryNav({
               />
             </div>
           </div>
+
+          {hasActiveFilters ? (
+            <>
+              {/* Divider lives in its own px-2/sm:px-4-padded wrapper (matching
+                  the category row's own content inset above) rather than
+                  carrying the border directly on the padded chips row below —
+                  a border on that row would sit at its border-box edge, past
+                  the padding, and read as wider than the actual content. */}
+              <div className="mx-auto w-full max-w-5xl px-2 sm:px-4">
+                <div className="border-t border-slate-200/70" aria-hidden="true" />
+              </div>
+              <div className="mx-auto w-full max-w-5xl px-2 py-1 text-sm sm:px-4">
+                <FilterChips
+                  filters={filters}
+                  onClearProtein={clearProteinFilter}
+                  onClearCalories={clearCaloriesFilter}
+                  onClearAll={resetFilters}
+                  onEditFilters={onEditFilters}
+                  withMargin={false}
+                  scrollable
+                />
+              </div>
+            </>
+          ) : null}
         </div>
-        {hasActiveFilters ? (
-          <div className="mx-auto mt-0.5 w-[calc(100%-0.5rem)] max-w-6xl rounded-2xl border border-slate-200/70 bg-white/95 backdrop-blur sm:w-[calc(100%-1rem)]">
-            <div className="mx-auto flex w-full max-w-5xl flex-wrap items-center gap-2 px-3 py-1 text-sm sm:flex-nowrap sm:px-6">
-              <FilterChips
-                filters={filters}
-                onClearProtein={clearProteinFilter}
-                onClearCalories={clearCaloriesFilter}
-                onClearAll={resetFilters}
-                withMargin={false}
-              />
-            </div>
-          </div>
-        ) : null}
       </div>
     </>
   );
@@ -331,8 +582,11 @@ type MobileCategoryMenuProps = Omit<SharedCategoryNavProps, "categoryNavLabel" |
 
 function MobileCategoryMenu({
   effectiveViewMode,
-  rankedAllFilters,
+  rankedChildOptions,
+  rankedChildSelections,
+  rankedParentStates,
   toggleRankedAllFilter,
+  toggleRankedChildFilter,
   categoryOptions,
   resolvedActiveCategory,
   onCategorySelect,
@@ -359,51 +613,41 @@ function MobileCategoryMenu({
       {isOpen ? (
         <div
           role="menu"
-          className="absolute left-0 top-[calc(100%+8px)] z-20 w-[min(220px,calc(100vw-2rem))] max-h-[70vh] overflow-y-auto rounded-[14px] border border-black/15 bg-white p-2 shadow-[0_12px_28px_rgba(0,0,0,0.12)]"
+          className="absolute left-0 top-[calc(100%+8px)] z-20 w-[min(240px,calc(100vw-2rem))] max-h-[70vh] overflow-y-auto rounded-[14px] border border-black/15 bg-white p-2 shadow-[0_12px_28px_rgba(0,0,0,0.12)]"
         >
-          <div className="grid gap-1">
-            {effectiveViewMode === "ranking"
-              ? rankingOptions.map((option) => {
-                  const isChecked = rankedAllFilters[option.key];
-                  const Icon = categoryIcons[option.iconKey] ?? rankingFallbackIcons[option.key];
+          {effectiveViewMode === "ranking" ? (
+            <RankingCategoryTree
+              rankingOptions={rankingOptions}
+              rankedChildOptions={rankedChildOptions}
+              rankedChildSelections={rankedChildSelections}
+              rankedParentStates={rankedParentStates}
+              toggleRankedAllFilter={toggleRankedAllFilter}
+              toggleRankedChildFilter={toggleRankedChildFilter}
+              categoryIcons={categoryIcons}
+              rankingFallbackIcons={rankingFallbackIcons}
+            />
+          ) : (
+            <div className="grid gap-1">
+              {categoryOptions.map((option) => {
+                const isActive = option.id === resolvedActiveCategory;
+                const Icon = resolveCategoryIcon(categoryIcons, option.label);
 
-                  return (
-                    <button
-                      key={option.key}
-                      type="button"
-                      aria-pressed={isChecked}
-                      onClick={() => {
-                        toggleRankedAllFilter(option.key);
-                      }}
-                      className={`cursor-pointer inline-flex items-center gap-2 rounded-[10px] border-none px-2.5 py-2 text-left font-semibold text-black/88 transition-colors duration-100 ${
-                        isChecked ? "bg-black/85 text-white" : "hover:bg-slate-900/5"
-                      }`}
-                    >
-                      <Icon className="h-4 w-4 shrink-0" strokeWidth={2.2} />
-                      <span className="min-w-0 flex-1 truncate">{option.label}</span>
-                      {isChecked ? <Check className="h-3.5 w-3.5 shrink-0" strokeWidth={3} /> : null}
-                    </button>
-                  );
-                })
-              : categoryOptions.map((option) => {
-                  const isActive = option.id === resolvedActiveCategory;
-                  const Icon = resolveCategoryIcon(categoryIcons, option.label);
-
-                  return (
-                    <CategoryNavItem
-                      key={option.id}
-                      option={option}
-                      isActive={isActive}
-                      Icon={Icon}
-                      onSelect={() => {
-                        onCategorySelect(option.id);
-                        setIsOpen(false);
-                      }}
-                      variant="mobile-menu"
-                    />
-                  );
-                })}
-          </div>
+                return (
+                  <CategoryNavItem
+                    key={option.id}
+                    option={option}
+                    isActive={isActive}
+                    Icon={Icon}
+                    onSelect={() => {
+                      onCategorySelect(option.id);
+                      setIsOpen(false);
+                    }}
+                    variant="mobile-menu"
+                  />
+                );
+              })}
+            </div>
+          )}
         </div>
       ) : null}
     </div>
@@ -412,8 +656,11 @@ function MobileCategoryMenu({
 
 function DesktopCategorySidebar({
   effectiveViewMode,
-  rankedAllFilters,
+  rankedChildOptions,
+  rankedChildSelections,
+  rankedParentStates,
   toggleRankedAllFilter,
+  toggleRankedChildFilter,
   categoryOptions,
   resolvedActiveCategory,
   onCategorySelect,
@@ -422,50 +669,34 @@ function DesktopCategorySidebar({
   rankingFallbackIcons,
   categoryNavLabel,
 }: SharedCategoryNavProps) {
+  // Falls back to the stack's usual resting height (matches the fixed nav +
+  // one-row secondary controls) until the real measurement lands just after
+  // mount, then tracks it live — so the sidebar never sticks underneath a
+  // taller stack once active-filter chips add a second row to it.
+  const measuredClearance = useStickyNavClearance();
+  const stickyTop = measuredClearance ?? 160;
+
   return (
-    <aside className="sticky top-[160px] hidden max-h-[calc(100vh-160px)] flex-col py-6 lg:flex">
+    <aside
+      className="sticky hidden flex-col py-6 lg:flex"
+      style={{ top: stickyTop, maxHeight: `calc(100vh - ${stickyTop}px)` }}
+    >
       <SectionEyebrow as="h3" className="mb-5 shrink-0 text-xs">
-        {effectiveViewMode === "ranking" ? "Show" : effectiveViewMode === "ingredients" ? "Ingredients" : "Categories"}
+        {effectiveViewMode === "ranking" ? "Categories" : effectiveViewMode === "ingredients" ? "Ingredients" : "Categories"}
       </SectionEyebrow>
 
       <div className="min-h-0 flex-1 overflow-y-auto px-2 py-2">
         {effectiveViewMode === "ranking" ? (
-          <div className="grid gap-4" role="group" aria-label="Ranking categories">
-            {rankingOptions.map((option) => {
-              const isChecked = rankedAllFilters[option.key];
-              const Icon = categoryIcons[option.iconKey] ?? rankingFallbackIcons[option.key];
-
-              return (
-                <button
-                  key={option.key}
-                  type="button"
-                  aria-pressed={isChecked}
-                  onClick={() => toggleRankedAllFilter(option.key)}
-                  className={`inline-flex w-full cursor-pointer items-center gap-3 rounded-full px-4 py-2 text-left text-base font-semibold transition-colors duration-100 ${
-                    isChecked ? "bg-white text-slate-800 shadow-[0px_0_8px_rgba(0,0,0,0.25)]" : "text-slate-700 hover:bg-slate-200"
-                  }`}
-                >
-                  <span
-                    className={`inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-full ${
-                      isChecked ? "bg-slate-100 text-slate-900" : "bg-slate-200/80 text-slate-700"
-                    }`}
-                    aria-hidden="true"
-                  >
-                    <Icon className="h-4 w-4" strokeWidth={2.4} />
-                  </span>
-                  <span>{option.label}</span>
-                  <span
-                    className={`ml-auto inline-flex h-5 w-5 shrink-0 items-center justify-center rounded border ${
-                      isChecked ? "border-black bg-black text-white" : "border-slate-400 bg-transparent text-transparent"
-                    }`}
-                    aria-hidden="true"
-                  >
-                    <Check className="h-3.5 w-3.5" strokeWidth={3} />
-                  </span>
-                </button>
-              );
-            })}
-          </div>
+          <RankingCategoryTree
+            rankingOptions={rankingOptions}
+            rankedChildOptions={rankedChildOptions}
+            rankedChildSelections={rankedChildSelections}
+            rankedParentStates={rankedParentStates}
+            toggleRankedAllFilter={toggleRankedAllFilter}
+            toggleRankedChildFilter={toggleRankedChildFilter}
+            categoryIcons={categoryIcons}
+            rankingFallbackIcons={rankingFallbackIcons}
+          />
         ) : (
           <nav aria-label={categoryNavLabel} className="grid gap-4">
             {categoryOptions.map((option) => {

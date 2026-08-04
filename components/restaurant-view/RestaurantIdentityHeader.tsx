@@ -1,9 +1,9 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import { CalendarCheck2, ExternalLink, Flag, UtensilsCrossed } from "lucide-react";
 import RestaurantLogoBadge from "@/components/ui/RestaurantLogoBadge";
 import SurfaceCard from "@/components/ui/SurfaceCard";
+import { useStickyNavClearance } from "@/components/restaurant-view/useStickyNavClearance";
 
 // Same real, functional destination HomeFooter links to for the repo — the
 // project has no issue-tracking backend of its own, so "report an error"
@@ -54,54 +54,16 @@ export default function RestaurantIdentityHeader({
 }: RestaurantIdentityHeaderProps) {
   const updatedAtLabel = formatUpdatedAt(nutritionUpdatedAt);
 
-  // The restaurant page's mobile category strip (RestaurantCategorySidebar's
-  // MobileCategoryNav) is `position: fixed`, floating below the main nav —
-  // its own layout reserves space for whatever comes *after* it, but this
-  // header renders *before* it in the grid, so it needs its own clearance.
-  // On desktop that strip is `display:none`, so its rect (and this offset)
-  // collapses to 0 and the header's position is unaffected. A builder flow
-  // (e.g. Chipotle before an entrée is picked) may not mount that strip
-  // until later, so this also watches the DOM for it appearing/disappearing
-  // rather than only checking once on mount.
-  const [mobileClearance, setMobileClearance] = useState(0);
-
-  useEffect(() => {
-    let observedNav: HTMLElement | null = null;
-    let resizeObserver: ResizeObserver | undefined;
-
-    const syncClearance = () => {
-      const mobileCategoryNav = document.querySelector('[data-mobile-category-nav="true"]');
-      const bottom =
-        mobileCategoryNav instanceof HTMLElement
-          ? Math.max(0, mobileCategoryNav.getBoundingClientRect().bottom)
-          : 0;
-      setMobileClearance((previous) => (previous === bottom ? previous : bottom));
-
-      if (mobileCategoryNav !== observedNav) {
-        resizeObserver?.disconnect();
-        observedNav = mobileCategoryNav instanceof HTMLElement ? mobileCategoryNav : null;
-        if (observedNav && typeof ResizeObserver !== "undefined") {
-          resizeObserver = new ResizeObserver(syncClearance);
-          resizeObserver.observe(observedNav);
-        }
-      }
-    };
-
-    syncClearance();
-    window.addEventListener("resize", syncClearance);
-
-    const mutationObserver = new MutationObserver(syncClearance);
-    mutationObserver.observe(document.body, { childList: true, subtree: true });
-
-    return () => {
-      window.removeEventListener("resize", syncClearance);
-      mutationObserver.disconnect();
-      resizeObserver?.disconnect();
-    };
-  }, []);
+  // The fixed nav stack above this header (global nav, secondary controls,
+  // and — on mobile — the floating category strip) reserves its own space
+  // via `position: fixed`, so this header needs its own clearance to sit
+  // below it rather than underneath it. That stack's height isn't constant
+  // — it grows a row when active-filter chips appear — so this is measured
+  // live rather than assumed, on every breakpoint.
+  const stickyClearance = useStickyNavClearance();
 
   return (
-    <div className="relative mb-8 lg:mb-10" style={{ marginTop: mobileClearance }}>
+    <div className="relative mb-8 lg:mb-10" style={{ marginTop: stickyClearance ?? 0 }}>
       {/* The broader ambient wash/glow lives one level up, in
           RestaurantPageContent — it covers the nav-to-header transition, so
           this card doesn't need its own separate glow layered on top. */}

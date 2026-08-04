@@ -2,12 +2,14 @@ import type { ReactNode } from "react";
 import type { ItemVariant, MenuItem } from "@/types/menu";
 import { formatCalories, formatDelta } from "@/lib/menuItemCalculations";
 import MenuItemVariantControls from "./MenuItemVariantControls";
+import RankBadge from "./RankBadge";
 
 export default function MenuItemCardHeader({
   item,
   selectedItemImage,
   isCartMode,
-  rankText,
+  rank,
+  isTopRanked,
   displayCalories,
   hasActiveCustomization,
   customizationCaloriesDelta,
@@ -25,7 +27,8 @@ export default function MenuItemCardHeader({
   item: MenuItem;
   selectedItemImage?: string;
   isCartMode: boolean;
-  rankText: string | null;
+  rank: number | null;
+  isTopRanked: boolean;
   displayCalories: number;
   hasActiveCustomization: boolean;
   customizationCaloriesDelta: number;
@@ -58,11 +61,7 @@ export default function MenuItemCardHeader({
 
       <div className="flex min-w-0 flex-1 flex-col self-stretch py-1">
         <div className="flex flex-col gap-2">
-        {rankText && (
-          <div>
-            <div className="inline-block border-b-[5px] border-b-yellow-500 px-1.5 text-xl font-bold">{rankText}</div>
-          </div>
-        )}
+        {rank !== null ? <RankBadge rank={rank} isTopRanked={isTopRanked} /> : null}
         <div className="text-[26px] leading-[1.05] font-bold sm:text-[30px]">{item.name}</div>
         <div className="flex items-center">
           <div className="inline-flex items-baseline gap-2">

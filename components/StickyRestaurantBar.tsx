@@ -5,15 +5,15 @@ import { useCallback, useState } from "react";
 import CartIconDropdown from "@/components/cart/CartIconDropdown";
 import DesktopNav from "@/components/DesktopNav";
 import GlobalMobileNav from "@/components/GlobalMobileNav";
-import ControlsRow, { FilterChips } from "./ControlsRow";
+import ControlsRow from "./ControlsRow";
 import type { ViewOption } from "@/components/controls/types";
 import type { Filters } from "@/lib/menuSections/filterOptions";
 import type { SortOption } from "@/lib/menuSections/sortOptions";
+import type { RankedAllFilterKey } from "@/lib/menuSections/filtering";
+import type { MenuItem } from "@/types/menu";
 import { Menu } from "lucide-react";
 import MobileNavDrawer from "@/components/MobileNavDrawer";
 import AppIconButton, { appIconButtonClassName } from "@/components/ui/AppIconButton";
-
-import { useFilterChipActions } from "./useFilterChipActions";
 
 type StickyRestaurantBarProps = {
   restaurantName: string;
@@ -28,6 +28,13 @@ type StickyRestaurantBarProps = {
     min: number;
     max: number;
   };
+  // The same view-eligible item collection (and ranking-category selection)
+  // useRestaurantMenuControls computes for the page — passed straight
+  // through to ControlsRow so its draft filter-count previews reuse the
+  // page's own filterMenuItems call rather than a parallel one.
+  sourceItems: MenuItem[];
+  rankedChildSelections: Record<RankedAllFilterKey, Set<string>>;
+  isRankingView: boolean;
   secondaryNavLeading?: ReactNode;
   mobileEntreeOptions?: Array<{
     key: string;
@@ -42,6 +49,11 @@ type StickyRestaurantBarProps = {
   // entrée-selection screen, before there's a menu to sort/filter yet. The
   // restaurant-switcher row itself always stays visible.
   hideSecondaryNav?: boolean;
+  // Surfaces a function that opens the mobile controls drawer scrolled
+  // straight to its Filters section — for a caller-rendered "Edit filters"
+  // control living outside this component (the active-filter row beneath
+  // the mobile category strip).
+  onEditFiltersDrawerReady?: (openEditFiltersDrawer: () => void) => void;
 };
 
 export default function StickyRestaurantBar({
@@ -54,10 +66,14 @@ export default function StickyRestaurantBar({
   filters,
   onFiltersChange,
   calorieBounds,
+  sourceItems,
+  rankedChildSelections,
+  isRankingView,
   secondaryNavLeading,
   mobileEntreeOptions,
   hideViewSelector = false,
   hideSecondaryNav = false,
+  onEditFiltersDrawerReady,
 }: StickyRestaurantBarProps) {
   const [openMobileControlsDrawer, setOpenMobileControlsDrawer] = useState<() => void>(() => () => {});
   const [isBrowseDrawerOpen, setIsBrowseDrawerOpen] = useState(false);
@@ -65,11 +81,6 @@ export default function StickyRestaurantBar({
   const handleMobileDrawerOpenReady = useCallback((openDrawer: () => void) => {
     setOpenMobileControlsDrawer(() => openDrawer);
   }, []);
-
-  const { hasActiveFilters, clearProteinFilter, clearCaloriesFilter, resetFilters } = useFilterChipActions({
-    filters,
-    onFiltersChange,
-  });
 
   return (
     <>
@@ -100,11 +111,14 @@ export default function StickyRestaurantBar({
                   onSortChange={onSortChange}
                   filters={filters}
                   onFiltersChange={onFiltersChange}
-                  showChips={false}
                   calorieBounds={calorieBounds}
+                  sourceItems={sourceItems}
+                  rankedChildSelections={rankedChildSelections}
+                  isRankingView={isRankingView}
                   hideViewSelector={hideViewSelector}
                   showMobileTrigger={false}
                   onMobileDrawerOpenReady={handleMobileDrawerOpenReady}
+                  onMobileFiltersDrawerOpenReady={onEditFiltersDrawerReady}
                   onMobileDrawerOpenChange={setIsControlsDrawerOpen}
                   mobileEntreeOptions={mobileEntreeOptions}
                   mobileDrawerHeaderTitle={restaurantName}
@@ -112,18 +126,6 @@ export default function StickyRestaurantBar({
                 />
               </div>
             )}
-          </div>
-        ) : null}
-
-        {hasActiveFilters && !hideSecondaryNav ? (
-          <div className="mx-auto mt-0.5 hidden w-full max-w-6xl flex-wrap items-center gap-2 rounded-2xl border border-slate-200/70 bg-white/95 px-6 py-2 text-sm shadow-[0_3px_12px_rgba(15,23,42,0.12)] backdrop-blur lg:flex">
-            <FilterChips
-              filters={filters}
-              onClearProtein={clearProteinFilter}
-              onClearCalories={clearCaloriesFilter}
-              onClearAll={resetFilters}
-              withMargin={false}
-            />
           </div>
         ) : null}
       </div>

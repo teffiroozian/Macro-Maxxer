@@ -26,10 +26,6 @@ import { resolveComboDrinkOptions, resolveComboMealConfig, resolveComboSideOptio
 import { normalizeNutrition } from "@/lib/nutrition";
 import { resolveFinalizedCartConfiguration, type CartConfigurationPayload } from "@/lib/menuItemCard/finalizedCartConfiguration";
 
-function pad2(n: number) {
-  return String(n).padStart(2, "0");
-}
-
 function toMacroNumber(value?: number) {
   if (typeof value !== "number" || Number.isNaN(value)) return 0;
   return Math.round(value);
@@ -448,7 +444,7 @@ export default function MenuItemCard({
       ? item.name.replace(/\s+combo\b/i, "").trim()
       : item.name;
 
-  const rankText = typeof rankIndex === "number" ? pad2(rankIndex + 1) : null;
+  const rank = typeof rankIndex === "number" ? rankIndex + 1 : null;
   const quantityMultiplier = isCartMode ? Math.max(cartQuantity, 1) : 1;
   const displayCalories = (calories ?? 0) * quantityMultiplier;
   const displayProtein = (protein ?? 0) * quantityMultiplier;
@@ -657,7 +653,7 @@ export default function MenuItemCard({
       className={`list-none ${
         open && useCartQuickEditPanel ? "overflow-visible" : "overflow-hidden"
       } ${
-        isTopRanked ? "border-[1.5px] border-black/80" : "border-black/15"
+        isTopRanked ? "border-[1.5px] border-accent/40" : "border-black/15"
       } shadow-[0_4px_12px_rgba(0,0,0,0.2)]`}
     >
       <div
@@ -688,7 +684,8 @@ export default function MenuItemCard({
           item={item}
           selectedItemImage={selectedItemImage}
           isCartMode={isCartMode}
-          rankText={rankText}
+          rank={rank}
+          isTopRanked={Boolean(isTopRanked)}
           displayCalories={displayCalories}
           hasActiveCustomization={hasActiveCustomization}
           customizationCaloriesDelta={customizationTotals.calories}

@@ -64,6 +64,10 @@ type MenuSectionsProps = {
   categoryMode?: CategoryMode;
   hasBuildYourOwn?: boolean;
   ingredientSelectionConfig?: MenuSectionsIngredientSelectionConfig;
+  // Rankings-only: shows a "#N" rank badge (current position after sorting
+  // and filtering) on each card. Never set from the Menu or Ingredients
+  // views, or from unrelated flat-list callers like ItemRouteModal.
+  showRankBadges?: boolean;
 };
 
 export default function MenuSections({
@@ -77,6 +81,7 @@ export default function MenuSections({
   categoryMode = "menu",
   hasBuildYourOwn = false,
   ingredientSelectionConfig,
+  showRankBadges = false,
 }: MenuSectionsProps) {
   const getIngredientSelection = (item: MenuItem) => {
     const itemId = item.id ?? "";
@@ -128,6 +133,7 @@ export default function MenuSections({
               customizationRules={customizationRules}
               menu={{
                 itemHref: `/restaurant/${restaurantId}/${toItemSlug(item)}`,
+                ...(showRankBadges ? { rankIndex: index, isTopRanked: index < 3 } : {}),
               }}
               ingredientSelection={getIngredientSelection(item)}
               detailPanel={{

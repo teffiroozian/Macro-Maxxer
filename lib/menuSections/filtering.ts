@@ -1,9 +1,33 @@
-import type { MenuItem } from "@/types/menu";
+import type { ItemVariant, MenuItem } from "@/types/menu";
 import { getDefaultMenuItemNutrition } from "@/lib/nutrition";
-import { getCategoryLabel } from "@/lib/menuSections/sorting";
+import { getCategoryLabel, getItemCategories, normalizeCategory } from "@/lib/menuSections/sorting";
 import type { Filters } from "@/lib/menuSections/filterOptions";
 
+// A variant that doesn't specify its own `categories` (e.g. a serving-size
+// or serving-type override like a 30-piece "shareable" nugget tray) belongs
+// to whatever categories its parent item belongs to — same fallback
+// `getVisibleVariants` (lib/menuSections/sorting.ts) already uses for the
+// Menu/Ingredients grouping, applied here too so a bucket like "shareables"
+// that only ever exists as a variant-level override isn't silently treated
+// as having zero real categories just because the variant itself is
+// category-less.
+function getVariantCategoriesForRanking(item: MenuItem, variant: ItemVariant): string[] {
+  return variant.categories && variant.categories.length > 0
+    ? variant.categories.map(normalizeCategory)
+    : getItemCategories(item);
+}
+
 export type RankedAllFilterKey = "main-entrees" | "breakfast" | "shareables" | "sides" | "drinks";
+
+export const RANKED_ALL_FILTER_KEYS: RankedAllFilterKey[] = [
+  "main-entrees",
+  "breakfast",
+  "shareables",
+  "sides",
+  "drinks",
+];
+
+export type RankedParentSelectionState = "all" | "some" | "none";
 
 export function getSearchTerms(query: string): string[] {
   return query.trim().toLowerCase().split(/\s+/).filter(Boolean);
@@ -35,6 +59,50 @@ export function getRankedAllFilterKey(
   }
 }
 
+// The narrower categories (e.g. "sandwich", "salad", "wrap") that exist
+// within each broad Rankings parent bucket, derived straight from this
+// restaurant's own item/variant data — never a hard-coded per-restaurant
+// list — so the nested filter tree is automatically correct for any
+// restaurant's menu shape.
+export function getRankedChildCategories(items: MenuItem[]): Record<RankedAllFilterKey, string[]> {
+  const buckets: Record<RankedAllFilterKey, Set<string>> = {
+    "main-entrees": new Set(),
+    breakfast: new Set(),
+    shareables: new Set(),
+    sides: new Set(),
+    drinks: new Set(),
+  };
+
+  items.forEach((item) => {
+    const itemKey = getRankedAllFilterKey(item.servingType);
+    if (itemKey) {
+      getItemCategories(item).forEach((category) => buckets[itemKey].add(category));
+    }
+
+    item.variants?.forEach((variant) => {
+      const variantKey = getRankedAllFilterKey(variant.servingType);
+      if (!variantKey) return;
+      getVariantCategoriesForRanking(item, variant).forEach((category) => buckets[variantKey].add(category));
+    });
+  });
+
+  return Object.fromEntries(
+    RANKED_ALL_FILTER_KEYS.map((key) => [key, [...buckets[key]].sort()])
+  ) as Record<RankedAllFilterKey, string[]>;
+}
+
+// Tri-state read of a parent's checkbox: every available child selected,
+// some, or none — shared by desktop, the mobile dropdown, and the mobile
+// chip strip so all three always agree on what "selected" means.
+export function getParentSelectionState(
+  selectedChildren: Set<string>,
+  availableChildren: string[]
+): RankedParentSelectionState {
+  if (selectedChildren.size === 0) return "none";
+  if (availableChildren.length > 0 && selectedChildren.size >= availableChildren.length) return "all";
+  return "some";
+}
+
 export function itemMatchesNutritionFilters(item: MenuItem, filters: Filters): boolean {
   const nutrition = getDefaultMenuItemNutrition(item);
   const protein = nutrition.protein ?? 0;
@@ -44,7 +112,11 @@ export function itemMatchesNutritionFilters(item: MenuItem, filters: Filters): b
     return false;
   }
 
-  if (filters.caloriesMax && calories > filters.caloriesMax) {
+  // `!== undefined` (not a truthy check) — a slider dragged to its own
+  // minimum can legitimately be 0, which is falsy but still a real filter
+  // value; a truthy check would silently stop filtering at that exact
+  // boundary instead of correctly excluding every item above it.
+  if (filters.caloriesMax !== undefined && calories > filters.caloriesMax) {
     return false;
   }
 
@@ -81,26 +153,18 @@ export function filterMenuItems({
   items,
   filters,
   searchTerms,
-  rankedAllFilters,
+  rankedChildSelections,
   isRankingView,
 }: {
   items: MenuItem[];
   filters: Filters;
   searchTerms: string[];
-  rankedAllFilters: Record<RankedAllFilterKey, boolean>;
+  rankedChildSelections: Record<RankedAllFilterKey, Set<string>>;
   isRankingView: boolean;
 }): MenuItem[] {
-  const selectedRankedKeys = isRankingView
-    ? new Set<RankedAllFilterKey>(
-        (Object.entries(rankedAllFilters) as [RankedAllFilterKey, boolean][])
-          .filter(([, isEnabled]) => isEnabled)
-          .map(([key]) => key)
-      )
-    : null;
-
   return items
     .map((item) => {
-      if (!selectedRankedKeys) {
+      if (!isRankingView) {
         return item;
       }
 
@@ -110,11 +174,22 @@ export function filterMenuItems({
           return false;
         }
 
-        return selectedRankedKeys.has(variantKey);
+        const selectedChildren = rankedChildSelections[variantKey];
+        if (!selectedChildren || selectedChildren.size === 0) {
+          return false;
+        }
+
+        const variantCategories = getVariantCategoriesForRanking(item, variant);
+        return variantCategories.some((category) => selectedChildren.has(category));
       });
 
       const itemKey = getRankedAllFilterKey(item.servingType);
-      const itemKeyMatches = itemKey ? selectedRankedKeys.has(itemKey) : false;
+      const itemSelectedChildren = itemKey ? rankedChildSelections[itemKey] : undefined;
+      const itemKeyMatches = Boolean(
+        itemSelectedChildren &&
+          itemSelectedChildren.size > 0 &&
+          getItemCategories(item).some((category) => itemSelectedChildren.has(category))
+      );
       const hasMatchingVariants = Boolean(filteredVariants && filteredVariants.length > 0);
 
       if (!itemKeyMatches && !hasMatchingVariants) {
