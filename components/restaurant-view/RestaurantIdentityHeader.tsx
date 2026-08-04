@@ -60,10 +60,14 @@ export default function RestaurantIdentityHeader({
   // below it rather than underneath it. That stack's height isn't constant
   // — it grows a row when active-filter chips appear — so this is measured
   // live rather than assumed, on every breakpoint.
+  // Falls back to the stack's usual resting height (same default
+  // DesktopCategorySidebar uses) until the real measurement lands just after
+  // mount — a `0` fallback would render this header underneath the fixed nav
+  // stack for that first frame, then jump down once measured.
   const stickyClearance = useStickyNavClearance();
 
   return (
-    <div className="relative mb-8 lg:mb-10" style={{ marginTop: stickyClearance ?? 0 }}>
+    <div className="relative mb-8 lg:mb-10" style={{ marginTop: stickyClearance ?? 160 }}>
       {/* The broader ambient wash/glow lives one level up, in
           RestaurantPageContent — it covers the nav-to-header transition, so
           this card doesn't need its own separate glow layered on top. */}

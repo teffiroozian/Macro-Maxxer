@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { Store, ChevronDown, ChevronRight, SlidersHorizontal, X } from "lucide-react";
@@ -34,6 +34,33 @@ export default function MobileNavDrawer({
   const [isFeaturedOpen, setIsFeaturedOpen] = useState(true);
   const [wasOpen, setWasOpen] = useState(isOpen);
   const visibleRestaurants = getAllRestaurants();
+  const panelRef = useRef<HTMLDivElement | null>(null);
+
+  // This drawer declares itself `role="dialog" aria-modal="true"` below, so
+  // it needs to behave like one: Escape closes it, opening moves focus into
+  // it (the close button — first focusable element in the panel), and
+  // closing restores focus to whatever triggered it. Matches the pattern
+  // already established for CartClearConfirmationDialog/ItemRouteModal.
+  useEffect(() => {
+    if (!isOpen) return;
+
+    const previouslyFocusedElement =
+      document.activeElement instanceof HTMLElement ? document.activeElement : null;
+    panelRef.current?.querySelector<HTMLButtonElement>("button")?.focus();
+
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        onClose();
+      }
+    };
+
+    document.addEventListener("keydown", onKeyDown);
+
+    return () => {
+      document.removeEventListener("keydown", onKeyDown);
+      previouslyFocusedElement?.focus();
+    };
+  }, [isOpen, onClose]);
 
   // This drawer stays mounted at all times (only `isOpen` toggles its
   // translate/opacity classes) so the CSS transition can actually animate
@@ -59,7 +86,16 @@ export default function MobileNavDrawer({
   );
 
   return (
-    <div className={`fixed inset-0 z-[210] lg:hidden ${isOpen ? "" : "pointer-events-none"}`} aria-modal="true" role="dialog">
+    <div
+      className={`fixed inset-0 z-[210] lg:hidden ${isOpen ? "" : "pointer-events-none"}`}
+      aria-modal="true"
+      role="dialog"
+      // Stays mounted at all times for the slide transition (see the
+      // wasOpen comment below) — `inert` keeps its off-screen content out of
+      // the tab order and hidden from assistive tech while closed, since
+      // `pointer-events-none` alone only blocks pointer interaction.
+      inert={!isOpen}
+    >
       <button
         type="button"
         onClick={onClose}
@@ -67,6 +103,7 @@ export default function MobileNavDrawer({
         className={`absolute inset-0 bg-black/35 transition-opacity duration-200 ${isOpen ? "opacity-100" : "opacity-0"}`}
       />
       <div
+        ref={panelRef}
         className={`absolute inset-y-0 left-0 flex w-[min(90vw,360px)] flex-col bg-white shadow-[0_18px_40px_rgba(0,0,0,0.24)] transition-transform duration-200 ${
           isOpen ? "translate-x-0" : "-translate-x-full"
         }`}

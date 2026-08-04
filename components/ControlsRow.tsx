@@ -92,15 +92,23 @@ export function FilterChips({
         }`}
       >
         {filters.proteinMin ? (
-          <FilterChip onClick={onClearProtein} className="shrink-0 bg-black/5 px-2.5 py-1 text-xs">
+          <FilterChip
+            onClick={onClearProtein}
+            aria-label={`Remove filter: protein ${filters.proteinMin}g+`}
+            className="shrink-0 bg-black/5 px-2.5 py-1 text-xs"
+          >
             <span>Protein {filters.proteinMin}g+</span>
-            <span className="ml-0.5 text-slate-500">✕</span>
+            <span className="ml-0.5 text-slate-500" aria-hidden="true">✕</span>
           </FilterChip>
         ) : null}
         {filters.caloriesMax ? (
-          <FilterChip onClick={onClearCalories} className="shrink-0 bg-black/5 px-2.5 py-1 text-xs">
+          <FilterChip
+            onClick={onClearCalories}
+            aria-label={`Remove filter: under ${filters.caloriesMax} calories`}
+            className="shrink-0 bg-black/5 px-2.5 py-1 text-xs"
+          >
             <span>Under {filters.caloriesMax} cal</span>
-            <span className="ml-0.5 text-slate-500">✕</span>
+            <span className="ml-0.5 text-slate-500" aria-hidden="true">✕</span>
           </FilterChip>
         ) : null}
         {(filters.proteinMin || filters.caloriesMax) ? (
@@ -195,6 +203,7 @@ export default function ControlsRow({
   const [hoveredSortOption, setHoveredSortOption] = useState<SortOption | null>(null);
   const sortMenuRef = useRef<HTMLDivElement>(null);
   const filtersSectionRef = useRef<HTMLDivElement>(null);
+  const filtersDialogResetButtonRef = useRef<HTMLButtonElement>(null);
 
   const visibleSortOptions = useMemo(
     () =>
@@ -263,6 +272,32 @@ export default function ControlsRow({
     setIsFiltersOpen(false);
     setIsMobileDrawerOpen(false);
   };
+
+  // The desktop filters dialog declares `role="dialog" aria-modal="true"` —
+  // Escape closes it, opening moves focus into it (Reset, its first
+  // focusable control), and closing restores focus to whatever opened it.
+  // Same pattern as CartClearConfirmationDialog/ItemRouteModal.
+  useEffect(() => {
+    if (!isFiltersOpen) return;
+
+    const previouslyFocusedElement =
+      document.activeElement instanceof HTMLElement ? document.activeElement : null;
+    filtersDialogResetButtonRef.current?.focus();
+
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        setIsFiltersOpen(false);
+        setIsMobileDrawerOpen(false);
+      }
+    };
+
+    document.addEventListener("keydown", onKeyDown);
+
+    return () => {
+      document.removeEventListener("keydown", onKeyDown);
+      previouslyFocusedElement?.focus();
+    };
+  }, [isFiltersOpen]);
 
   const handleResetFilters = () => {
     setDraftFilters({ caloriesMax: defaultCaloriesMax });
@@ -629,7 +664,7 @@ export default function ControlsRow({
           </div>
         </div>
         <div className="mt-5 flex flex-col-reverse gap-2 sm:flex-row sm:justify-end sm:gap-3">
-          <AppButton variant="secondary" size="md" onClick={handleResetFilters}>
+          <AppButton ref={filtersDialogResetButtonRef} variant="secondary" size="md" onClick={handleResetFilters}>
             Reset
           </AppButton>
           <AppButton
