@@ -1,5 +1,6 @@
 "use client";
 
+import { useMemo } from "react";
 import type { IngredientItem, MenuItem, ResolvedAddonGroups, RestaurantCustomizationRules } from "@/types/menu";
 import type { SortOption } from "@/lib/menuSections/sortOptions";
 import MenuItemCard from "./MenuItemCard";
@@ -17,6 +18,7 @@ import {
 } from "@/lib/menuSections/sorting";
 import { isSplitRankingSort } from "@/lib/menuSections/sortOptions";
 import { splitItemsByVariantForRanking } from "@/lib/menuSections/ranking";
+import { computeComparativeLabels, type ComparativeLabelKind } from "@/lib/menuSections/comparativeLabels";
 
 function getSectionSort(_section: string, sort: SortOption): SortOption {
   return sort;
@@ -83,6 +85,20 @@ export default function MenuSections({
   ingredientSelectionConfig,
   showRankBadges = false,
 }: MenuSectionsProps) {
+  // Computed once per rendered menu (not per card) and only for the plain
+  // Menu view — Rankings shows its own rank badge instead (never both, see
+  // MenuItemCardHeader), and ingredient/build-your-own views aren't "menu
+  // items" being compared against each other.
+  const comparativeLabels = useMemo<Map<string, ComparativeLabelKind>>(
+    () =>
+      categoryMode === "menu" && !showRankBadges
+        ? computeComparativeLabels(items)
+        : new Map(),
+    [items, categoryMode, showRankBadges]
+  );
+
+  const getComparativeLabel = (item: MenuItem) => comparativeLabels.get(item.id ?? item.name);
+
   const getIngredientSelection = (item: MenuItem) => {
     const itemId = item.id ?? "";
 
@@ -133,6 +149,7 @@ export default function MenuSections({
               customizationRules={customizationRules}
               menu={{
                 itemHref: `/restaurant/${restaurantId}/${toItemSlug(item)}`,
+                comparativeLabel: getComparativeLabel(item),
                 ...(showRankBadges ? { rankIndex: index, isTopRanked: index < 3 } : {}),
               }}
               ingredientSelection={getIngredientSelection(item)}
@@ -214,6 +231,7 @@ export default function MenuSections({
                 customizationRules={customizationRules}
                 menu={{
                   itemHref: `/restaurant/${restaurantId}/${toItemSlug(item)}`,
+                  comparativeLabel: getComparativeLabel(item),
                 }}
                 ingredientSelection={getIngredientSelection(item)}
                 detailPanel={{

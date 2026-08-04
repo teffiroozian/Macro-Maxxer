@@ -23,8 +23,9 @@ import { isChipotleHighProteinMenuItem } from "@/lib/restaurantBuilders/chipotle
 import { parseIncludedIngredientEntry } from "@/lib/itemIngredients";
 
 import { resolveComboDrinkOptions, resolveComboMealConfig, resolveComboSideOptions } from "@/lib/comboMeals";
-import { normalizeNutrition } from "@/lib/nutrition";
+import { getProteinPer100Calories, getProteinScoreTier, normalizeNutrition } from "@/lib/nutrition";
 import { resolveFinalizedCartConfiguration, type CartConfigurationPayload } from "@/lib/menuItemCard/finalizedCartConfiguration";
+import type { ComparativeLabelKind } from "@/lib/menuSections/comparativeLabels";
 
 function toMacroNumber(value?: number) {
   if (typeof value !== "number" || Number.isNaN(value)) return 0;
@@ -122,6 +123,7 @@ type MenuItemCardMenuBehavior = {
   rankIndex?: number;
   isTopRanked?: boolean;
   itemHref?: string;
+  comparativeLabel?: ComparativeLabelKind;
 };
 
 type MenuItemCardCartBehavior = {
@@ -185,6 +187,7 @@ export default function MenuItemCard({
   const rankIndex = menu?.rankIndex;
   const isTopRanked = menu?.isTopRanked;
   const itemHref = menu?.itemHref;
+  const comparativeLabel = menu?.comparativeLabel;
   const cartQuantity = cart?.quantity ?? 1;
   const onCartIncrement = cart?.onIncrement;
   const onCartDecrement = cart?.onDecrement;
@@ -219,8 +222,16 @@ export default function MenuItemCard({
   const id = useId();
   const shouldOpenModalOnCardClick = mode !== "cart" && Boolean(itemHref) && showDetailsButton;
   const variants = item.variants?.length ? item.variants : null;
-  const hasVariantDropdown = Boolean(variants && variants.length > 1 && !item.hideVariantSelector);
-  const variantSelectorDisabled = Boolean(item.disableVariantSelector);
+  // Rankings view (rankIndex is only ever set from the Rankings list, see
+  // MenuSections) still shows the variant pill for single-variant items —
+  // just disabled and chevron-less — instead of falling back to the plain
+  // size chip, so every ranked row reads with the same control.
+  const isSingleVariantInRankingView =
+    typeof rankIndex === "number" && Boolean(variants) && variants!.length === 1;
+  const hasVariantDropdown = Boolean(
+    variants && !item.hideVariantSelector && (variants.length > 1 || isSingleVariantInRankingView)
+  );
+  const variantSelectorDisabled = Boolean(item.disableVariantSelector) || isSingleVariantInRankingView;
   const defaultVariantId = useMemo(() => {
     if (!variants) return "";
     if (item.defaultVariantId && variants.some((variant) => variant.id === item.defaultVariantId)) {
@@ -416,6 +427,11 @@ export default function MenuItemCard({
   const protein = nutrition.protein;
   const carbs = nutrition.carbs;
   const totalFat = nutrition.totalFat;
+  const proteinScore = useMemo(
+    () => getProteinPer100Calories(protein ?? 0, calories ?? 0),
+    [protein, calories]
+  );
+  const proteinScoreTier = typeof proteinScore === "number" ? getProteinScoreTier(proteinScore) : undefined;
   const mainItemOnlyNutrition = useMemo(
     () =>
       normalizeNutrition({
@@ -665,17 +681,20 @@ export default function MenuItemCard({
     <SurfaceCard
       as="li"
       padding="none"
-      shadow="md"
-      className={`list-none ${
+      radius="large"
+      shadow="none"
+      className={`list-none transition-[translate,box-shadow,border-color] duration-[450ms] ease-out will-change-[translate] ${
         open && useCartQuickEditPanel ? "overflow-visible" : "overflow-hidden"
       } ${
-        isTopRanked ? "border-[1.5px] border-accent/40" : "border-black/15"
-      } shadow-[0_4px_12px_rgba(0,0,0,0.2)]`}
+        isTopRanked
+          ? "border-[1.5px] border-accent/40 shadow-[0_6px_20px_rgba(5,150,105,0.14)]"
+          : "border-black/10 shadow-[0_2px_10px_rgba(15,23,42,0.06)] hover:-translate-y-0.5 hover:border-black/15 hover:shadow-[0_14px_30px_rgba(15,23,42,0.12)]"
+      }`}
     >
       <div
         role="button"
         tabIndex={0}
-        className="group relative flex w-full cursor-pointer flex-col items-stretch gap-4 bg-transparent p-3 text-left focus-visible:outline-2 focus-visible:outline-blue-600 focus-visible:outline-offset-[-2px] sm:gap-6 sm:p-4 lg:flex-row"
+        className="group relative flex w-full cursor-pointer flex-col items-stretch gap-4 bg-transparent p-4 text-left focus-visible:outline-2 focus-visible:outline-blue-600 focus-visible:outline-offset-[-2px] sm:gap-6 sm:p-5 lg:flex-row"
         onClick={handleCardActivate}
         onKeyDown={(event) => {
           if (event.key === "Enter" || event.key === " ") {
@@ -693,11 +712,9 @@ export default function MenuItemCard({
           selectedItemImage={selectedItemImage}
           isCartMode={isCartMode}
           rank={rank}
-          isTopRanked={Boolean(isTopRanked)}
-          displayCalories={displayCalories}
-          hasActiveCustomization={hasActiveCustomization}
-          customizationCaloriesDelta={customizationTotals.calories}
-          quantityMultiplier={quantityMultiplier}
+          comparativeLabel={rank === null ? comparativeLabel : undefined}
+          proteinScore={proteinScore}
+          proteinScoreTier={proteinScoreTier}
           variants={variants}
           hasVariantDropdown={hasVariantDropdown}
           variantSelectorDisabled={variantSelectorDisabled}
@@ -714,9 +731,11 @@ export default function MenuItemCard({
           highProteinIngredientSummaryLine={highProteinIngredientSummaryLine}
         >
           <MenuItemMacroSummary
+            displayCalories={displayCalories}
             displayProtein={displayProtein}
             displayCarbs={displayCarbs}
             displayFat={displayFat}
+            caloriesDelta={customizationTotals.calories}
             proteinDelta={customizationTotals.protein}
             carbsDelta={customizationTotals.carbs}
             fatDelta={customizationTotals.totalFat}
@@ -748,7 +767,7 @@ export default function MenuItemCard({
         </MenuItemCardHeader>
 
         {hasMods && !isCartMode ? (
-          <div className="absolute right-3 top-3 hidden items-center gap-2 sm:right-[18px] sm:top-[18px] lg:inline-flex">
+          <div className="absolute right-4 top-4 hidden items-center gap-2 sm:right-5 sm:top-5 lg:inline-flex">
             <div
               role="button"
               tabIndex={0}
@@ -774,7 +793,7 @@ export default function MenuItemCard({
 
       <div
         id={`${id}-details`}
-        className={`rounded-b-2xl ${open && useCartQuickEditPanel ? "overflow-x-visible overflow-y-visible" : "overflow-hidden"} bg-white transition-[max-height] duration-300 ease-in-out ${
+        className={`rounded-b-3xl ${open && useCartQuickEditPanel ? "overflow-x-visible overflow-y-visible" : "overflow-hidden"} bg-white transition-[max-height] duration-300 ease-in-out ${
           open ? "max-h-[5000px]" : "max-h-0"
         }`}
       >

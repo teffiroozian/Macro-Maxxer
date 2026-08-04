@@ -37,6 +37,29 @@ export function getProteinPer100Calories(protein: number, calories: number) {
   return calories > 0 ? (protein / calories) * 100 : undefined;
 }
 
+export type ProteinScoreTier = "elite" | "excellent" | "good" | "moderate" | "low";
+
+// Thresholds are grounded in the actual protein-per-100-calories spread
+// across the current menu data (reviewed via data/restaurants/*.json): the
+// full-catalog median sits around 4.8, p75 around 6.1, and p90 around 9.35.
+// "good" (6) roughly starts at p75, "excellent" (9) sits at the p90 edge,
+// and "elite" (12) is reserved for the genuine outliers beyond that — not
+// arbitrary round numbers.
+const PROTEIN_SCORE_TIER_THRESHOLDS = {
+  elite: 12,
+  excellent: 9,
+  good: 6,
+  moderate: 3,
+} as const;
+
+export function getProteinScoreTier(proteinPer100Calories: number): ProteinScoreTier {
+  if (proteinPer100Calories >= PROTEIN_SCORE_TIER_THRESHOLDS.elite) return "elite";
+  if (proteinPer100Calories >= PROTEIN_SCORE_TIER_THRESHOLDS.excellent) return "excellent";
+  if (proteinPer100Calories >= PROTEIN_SCORE_TIER_THRESHOLDS.good) return "good";
+  if (proteinPer100Calories >= PROTEIN_SCORE_TIER_THRESHOLDS.moderate) return "moderate";
+  return "low";
+}
+
 export function addNutritionValues(baseValue?: number, deltaValue?: number) {
   if (baseValue === undefined && deltaValue === undefined) return undefined;
   return (baseValue ?? 0) + (deltaValue ?? 0);

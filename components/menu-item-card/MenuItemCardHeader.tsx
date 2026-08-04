@@ -1,19 +1,22 @@
 import type { ReactNode } from "react";
 import type { ItemVariant, MenuItem } from "@/types/menu";
-import { formatCalories, formatDelta } from "@/lib/menuItemCalculations";
+import type { ProteinScoreTier } from "@/lib/nutrition";
+import type { ComparativeLabelKind } from "@/lib/menuSections/comparativeLabels";
 import MenuItemVariantControls from "./MenuItemVariantControls";
+import MenuItemTitle from "./MenuItemTitle";
 import RankBadge from "./RankBadge";
+import ComparativeLabelBadge from "./ComparativeLabelBadge";
+import StatusLabelBadge from "./StatusLabelBadge";
+import ProteinScorePill from "./ProteinScorePill";
 
 export default function MenuItemCardHeader({
   item,
   selectedItemImage,
   isCartMode,
   rank,
-  isTopRanked,
-  displayCalories,
-  hasActiveCustomization,
-  customizationCaloriesDelta,
-  quantityMultiplier,
+  comparativeLabel,
+  proteinScore,
+  proteinScoreTier,
   variants,
   hasVariantDropdown,
   variantSelectorDisabled,
@@ -28,11 +31,9 @@ export default function MenuItemCardHeader({
   selectedItemImage?: string;
   isCartMode: boolean;
   rank: number | null;
-  isTopRanked: boolean;
-  displayCalories: number;
-  hasActiveCustomization: boolean;
-  customizationCaloriesDelta: number;
-  quantityMultiplier: number;
+  comparativeLabel?: ComparativeLabelKind;
+  proteinScore?: number;
+  proteinScoreTier?: ProteinScoreTier;
   variants: ItemVariant[] | null;
   hasVariantDropdown: boolean;
   variantSelectorDisabled: boolean;
@@ -43,44 +44,61 @@ export default function MenuItemCardHeader({
   highProteinIngredientSummaryLine?: string;
   children: ReactNode;
 }) {
+  const status = item.status;
+  const hasTopLabel = (rank === null && Boolean(comparativeLabel)) || Boolean(status);
+
   return (
     <>
-      <div className="w-full shrink-0 lg:mx-0 lg:w-auto">
+      <div className="relative w-full shrink-0 overflow-hidden rounded-2xl border border-black/[0.06] bg-image-placeholder lg:mx-0 lg:w-auto">
         {selectedItemImage ? (
           <img
-            className={`block h-[200px] w-full rounded-[14px] bg-image-placeholder object-contain p-2 shadow-[0_0_5px_rgba(0,0,0,0.25)] lg:h-[210px] lg:w-[210px] ${
-              isCartMode ? "lg:object-contain lg:p-2" : "lg:object-cover lg:p-0"
+            className={`block h-[190px] w-full object-contain p-3 lg:h-[184px] lg:w-[184px] ${
+              isCartMode ? "" : "lg:object-cover lg:p-0"
             }`}
             src={selectedItemImage}
             alt={item.name}
           />
         ) : (
-          <div className="h-[200px] w-full rounded-[14px] bg-image-placeholder lg:h-[210px] lg:w-[210px]" />
+          <div className="h-[190px] w-full lg:h-[184px] lg:w-[184px]" />
         )}
+        {!isCartMode && typeof proteinScore === "number" && proteinScoreTier ? (
+          <ProteinScorePill
+            scorePerHundredCalories={proteinScore}
+            tier={proteinScoreTier}
+            className="absolute bottom-2 left-2"
+          />
+        ) : null}
       </div>
 
-      <div className="flex min-w-0 flex-1 flex-col self-stretch py-1">
-        <div className="flex flex-col gap-2">
-        {rank !== null ? <RankBadge rank={rank} isTopRanked={isTopRanked} /> : null}
-        <div className="text-[26px] leading-[1.05] font-bold sm:text-[30px]">{item.name}</div>
-        <div className="flex items-center">
-          <div className="inline-flex items-baseline gap-2">
-            <div className="text-lg font-bold text-black/50">{formatCalories(displayCalories)} calories</div>
-            {hasActiveCustomization ? (
-              <span className="text-sm font-bold text-green-600">{formatDelta(customizationCaloriesDelta * quantityMultiplier)}</span>
+      <div className="flex min-w-0 flex-1 flex-col self-stretch py-0.5">
+        <div className="flex min-w-0 flex-col gap-2">
+        {hasTopLabel ? (
+          <div className="flex flex-wrap items-center gap-1.5">
+            {rank === null && comparativeLabel ? <ComparativeLabelBadge kind={comparativeLabel} /> : null}
+            {status ? <StatusLabelBadge status={status} /> : null}
+          </div>
+        ) : null}
+        <div className="flex min-w-0 items-start gap-2">
+          {rank !== null ? <RankBadge rank={rank} /> : null}
+          <div className="min-w-0 flex-1">
+            <MenuItemTitle
+              name={item.name}
+              className="font-heading text-[22px] leading-[1.15] font-bold tracking-tight text-neutral-900 sm:text-[26px]"
+            />
+            {variants && !item.hideVariantSelector ? (
+              <div className="mt-1">
+                <MenuItemVariantControls
+                  itemName={item.name}
+                  variants={variants}
+                  selectedVariantId={selectedVariantId}
+                  selectedVariantLabel={selectedVariantLabel}
+                  hasVariantDropdown={hasVariantDropdown}
+                  disabled={variantSelectorDisabled}
+                  onChange={onVariantChange}
+                />
+              </div>
             ) : null}
           </div>
-          {variants && !item.hideVariantSelector ? (
-            <MenuItemVariantControls
-              itemName={item.name}
-              variants={variants}
-              selectedVariantId={selectedVariantId}
-              selectedVariantLabel={selectedVariantLabel}
-              hasVariantDropdown={hasVariantDropdown}
-              disabled={variantSelectorDisabled}
-              onChange={onVariantChange}
-            />
-          ) : null}
         </div>
         {isCartMode && cartSummaryLine ? (
           <p className="mt-0.5 truncate text-xs text-black/55">{cartSummaryLine}</p>

@@ -2,7 +2,7 @@ import type { ReactNode } from "react";
 import { macroDisplayConfig } from "@/components/nutrition/macroDisplay";
 import type { MacroKey } from "@/components/nutrition/macroDisplay";
 
-type MacroStatSize = "summary" | "quick" | "cartCompact" | "cartDetailed" | "ingredientCompact";
+type MacroStatSize = "summary" | "card" | "quick" | "cartCompact" | "cartDetailed" | "ingredientCompact";
 type MacroStatLabel = "label" | "shortLabel" | "uppercase" | "lowercase";
 
 type MacroStatProps = {
@@ -15,6 +15,7 @@ type MacroStatProps = {
 
 const valueClassBySize: Record<MacroStatSize, string> = {
   summary: "text-2xl font-bold",
+  card: "text-[20px] font-bold sm:text-[22px]",
   quick: "text-sm leading-4 font-bold",
   cartCompact: "font-semibold",
   cartDetailed: "text-base font-semibold",
@@ -62,6 +63,18 @@ export default function MacroStat({
           {delta ? <span className="text-sm font-bold text-green-600">{delta}</span> : null}
         </div>
         <div className="text-[10px] font-bold">{label}</div>
+      </div>
+    );
+  }
+
+  if (size === "card") {
+    return (
+      <div className="flex flex-col items-center justify-start">
+        <div className="inline-flex items-baseline gap-1">
+          <div className={`${valueClassBySize[size]} ${toneClass}`}>{displayValue}</div>
+          {delta ? <span className="text-xs font-bold text-success">{delta}</span> : null}
+        </div>
+        <div className="text-[10px] font-bold tracking-wide text-slate-500">{label}</div>
       </div>
     );
   }

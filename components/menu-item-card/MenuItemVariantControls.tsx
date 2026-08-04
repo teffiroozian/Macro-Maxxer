@@ -24,7 +24,6 @@ export default function MenuItemVariantControls({
       onClick={hasVariantDropdown ? (event) => event.stopPropagation() : undefined}
       onKeyDown={hasVariantDropdown ? (event) => event.stopPropagation() : undefined}
     >
-      <div className="mx-[10px] h-5 w-0.5 rounded-full bg-black/50" />
       {hasVariantDropdown ? (
         <VariantSelector
           variants={variants}
@@ -32,9 +31,10 @@ export default function MenuItemVariantControls({
           disabled={disabled}
           onChange={onChange}
           ariaLabel={`${itemName} portion size`}
+          compact
         />
       ) : (
-        <span className="rounded-full bg-[#121212] px-4 py-0.5 text-base font-bold text-white">
+        <span className="rounded-full border border-neutral-300 bg-white px-3 py-0.5 text-xs font-semibold text-neutral-700">
           {selectedVariantLabel ?? variants[0]?.label}
         </span>
       )}

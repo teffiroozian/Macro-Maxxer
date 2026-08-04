@@ -3,6 +3,11 @@ import type { Nutrition } from "@/types/nutrition";
 
 export type ServingType = "addon" | "breakfast" | "combo" | "dessert" | "drink" | "entree" | "kids" | "shareable" | "side" | "single";
 
+// Editorial/merchandising status shown as a badge on the menu card. Distinct
+// from ComparativeLabelKind (lib/menuSections/comparativeLabels.ts), which is
+// computed from nutrition data rather than stored on the item.
+export type MenuItemStatus = "new" | "limited-time" | "seasonal" | "returning";
+
 // item variants allow for different versions of the same base item, 
 // e.g. 8pc vs 10pc nuggets, small vs medium fries
 export type ItemVariant = {
@@ -118,6 +123,8 @@ export type MenuItem = {
 
   hideVariantSelector?: boolean;
   disableVariantSelector?: boolean;
+
+  status?: MenuItemStatus;
 };
 
 export type IngredientItem = {
