@@ -1,6 +1,8 @@
 import type { ReactNode } from "react";
 import { formatDelta } from "@/lib/menuItemCalculations";
 import MacroStat from "@/components/nutrition/MacroStat";
+import ProteinScorePill from "./ProteinScorePill";
+import type { ProteinScoreTier } from "@/lib/nutrition";
 
 export default function MenuItemMacroSummary({
   displayCalories,
@@ -13,6 +15,8 @@ export default function MenuItemMacroSummary({
   fatDelta,
   quantityMultiplier,
   hasActiveCustomization,
+  proteinScore,
+  proteinScoreTier,
   actions,
 }: {
   displayCalories: number;
@@ -25,10 +29,15 @@ export default function MenuItemMacroSummary({
   fatDelta: number;
   quantityMultiplier: number;
   hasActiveCustomization: boolean;
+  proteinScore?: number;
+  proteinScoreTier?: ProteinScoreTier;
   actions: ReactNode;
 }) {
   return (
     <div className="mt-3 lg:mt-auto">
+      {typeof proteinScore === "number" && proteinScoreTier ? (
+        <ProteinScorePill scorePerHundredCalories={proteinScore} tier={proteinScoreTier} className="mb-2" />
+      ) : null}
       <div className="flex flex-wrap items-end gap-x-6 gap-y-3 border-t border-black/[0.06] pt-3 lg:gap-x-8">
         <MacroStat
           macroKey="calories"

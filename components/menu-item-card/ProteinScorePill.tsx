@@ -1,46 +1,43 @@
 import { Zap } from "lucide-react";
 import type { ProteinScoreTier } from "@/lib/nutrition";
 
-// Sits over the menu card's image, showing the derived protein-per-100-cal
-// score rather than the raw protein gram value already shown in the
-// nutrition row below. Same shape/spacing/shadow across every tier — only
-// the soft surface tint and accent shift. Exact 5-tier palette (never red);
-// border is the icon-circle color at low opacity so each tier still reads
-// as a single family without a separate color needing to be invented.
+// Sits in the content column, directly above the nutrition stat row. A soft
+// tinted chip (no border/shadow) keeps it grounded and on-brand with the
+// 5-tier system without competing with the bolder nutrition stats below it.
 const tierStyles: Record<
   ProteinScoreTier,
-  { pill: string; iconWrap: string; icon: string; value: string; supporting: string }
+  { chip: string; iconWrap: string; icon: string; value: string; supporting: string }
 > = {
   elite: {
-    pill: "border-[#047857]/20 bg-[#ECFDF3]",
+    chip: "bg-[#ECFDF3]",
     iconWrap: "bg-[#047857]",
     icon: "text-white",
     value: "text-[#047857]",
     supporting: "text-[#4B7F6B]",
   },
   excellent: {
-    pill: "border-[#4C84C4]/20 bg-[#EEF4FF]",
+    chip: "bg-[#EEF4FF]",
     iconWrap: "bg-[#4C84C4]",
     icon: "text-white",
     value: "text-[#2F5F85]",
     supporting: "text-[#6E88A3]",
   },
   good: {
-    pill: "border-[#D6A23D]/20 bg-[#FFF6E8]",
+    chip: "bg-[#FFF6E8]",
     iconWrap: "bg-[#D6A23D]",
     icon: "text-white",
     value: "text-[#B9851C]",
     supporting: "text-[#9D7E49]",
   },
   moderate: {
-    pill: "border-[#C2410C]/20 bg-[#FFF1EB]",
+    chip: "bg-[#FFF1EB]",
     iconWrap: "bg-[#C2410C]",
     icon: "text-white",
     value: "text-[#C2410C]",
     supporting: "text-[#9A5B47]",
   },
   low: {
-    pill: "border-[#64748B]/20 bg-[#F1F5F9]",
+    chip: "bg-[#F1F5F9]",
     iconWrap: "bg-[#64748B]",
     icon: "text-white",
     value: "text-[#475569]",
@@ -61,16 +58,16 @@ export default function ProteinScorePill({
   const roundedScore = Math.round(scorePerHundredCalories * 10) / 10;
 
   return (
-    <span
-      className={`inline-flex w-fit items-center gap-1 whitespace-nowrap rounded-full border py-0.5 pl-0.5 pr-2 text-[11px] leading-none shadow-sm ${styles.pill} ${className}`}
+    <div
+      className={`inline-flex w-fit items-center gap-1.5 whitespace-nowrap rounded-full py-1 pl-1 pr-2.5 text-[12px] leading-none ${styles.chip} ${className}`}
     >
-      <span className={`flex h-3.5 w-3.5 shrink-0 items-center justify-center rounded-full ${styles.iconWrap}`}>
-        <Zap className={`h-2 w-2 ${styles.icon}`} strokeWidth={2.5} aria-hidden="true" />
+      <span className={`flex h-4 w-4 shrink-0 items-center justify-center rounded-full ${styles.iconWrap}`}>
+        <Zap className={`h-2.5 w-2.5 ${styles.icon}`} strokeWidth={2.5} aria-hidden="true" />
       </span>
       <span>
         <span className={`font-bold ${styles.value}`}>{roundedScore}g protein</span>
-        <span className={styles.supporting}> / 100 cal</span>
+        <span className={`ml-0.5 ${styles.supporting}`}>/ 100 cal</span>
       </span>
-    </span>
+    </div>
   );
 }

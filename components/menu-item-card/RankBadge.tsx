@@ -1,7 +1,8 @@
-// Rankings-only position badge — "#1", "#2", etc, placed inline to the left
-// of the item title (see MenuItemCardHeader). Solid medal fills for the top
-// 3 (gold/silver/bronze, each a distinct hue so they stay legible at a
-// glance) fading to the existing pale neutral slate tint from #4 on.
+// Rankings-only position badge — "#1", "#2", etc, placed in the top-left
+// corner of the image panel (see MenuItemCardHeader). Solid medal fills for
+// the top 3 (gold/silver/bronze, each a distinct hue so they stay legible at
+// a glance) fading to the existing pale neutral slate tint from #4 on. Sized
+// as a compact overlay chip with a shadow so it stays legible over photos.
 function getRankTierClassName(rank: number) {
   if (rank === 1) return "bg-[#C89B2B] text-white";
   if (rank === 2) return "bg-[#7D8694] text-white";
@@ -13,7 +14,7 @@ export default function RankBadge({ rank }: { rank: number }) {
   return (
     <div
       aria-label={`Rank ${rank}`}
-      className={`inline-flex h-7 w-fit shrink-0 items-center rounded-full px-3 text-xs font-bold tabular-nums tracking-wide ${getRankTierClassName(rank)}`}
+      className={`inline-flex h-6 w-fit shrink-0 items-center rounded-full px-2.5 text-[11px] font-bold tabular-nums tracking-wide shadow-sm ${getRankTierClassName(rank)}`}
     >
       <span aria-hidden="true">#{rank}</span>
     </div>

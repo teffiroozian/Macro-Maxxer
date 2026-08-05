@@ -17,7 +17,7 @@ import {
   sortItems,
 } from "@/lib/menuSections/sorting";
 import { isSplitRankingSort } from "@/lib/menuSections/sortOptions";
-import { splitItemsByVariantForRanking } from "@/lib/menuSections/ranking";
+import { selectRankingRepresentativeItems } from "@/lib/menuSections/ranking";
 import { computeComparativeLabels, type ComparativeLabelKind } from "@/lib/menuSections/comparativeLabels";
 
 function getSectionSort(_section: string, sort: SortOption): SortOption {
@@ -127,7 +127,7 @@ export default function MenuSections({
   if (!groupByCategory) {
     const displayItems =
       categoryMode === "menu" && isSplitRankingSort(sort)
-        ? splitItemsByVariantForRanking(items)
+        ? selectRankingRepresentativeItems(items, sort)
         : items;
     const sortedItems = sortItems(displayItems, sort, categoryMode);
 

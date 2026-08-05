@@ -41,7 +41,7 @@ export default function VariantSelector({
 
   const showCompactChevron = compact && !disabled;
   const className = compact
-    ? `w-fit appearance-none rounded-full bg-[#121212] py-1 ${showCompactChevron ? "pr-8" : "pr-4"} pl-4 text-sm font-bold text-white [field-sizing:content] focus:outline focus:outline-1 focus:outline-white/30 focus:outline-offset-2 ${disabled ? "cursor-not-allowed" : "cursor-pointer"}`
+    ? `w-fit appearance-none rounded-full bg-[#121212] py-0.75 ${showCompactChevron ? "pr-7" : "pr-4"} pl-4 text-[13px] font-bold text-white [field-sizing:content] focus:outline focus:outline-1 focus:outline-white/30 focus:outline-offset-2 ${disabled ? "cursor-not-allowed" : "cursor-pointer"}`
     : darkClassName;
 
   return (

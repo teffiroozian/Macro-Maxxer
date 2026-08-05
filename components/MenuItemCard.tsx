@@ -713,8 +713,6 @@ export default function MenuItemCard({
           isCartMode={isCartMode}
           rank={rank}
           comparativeLabel={rank === null ? comparativeLabel : undefined}
-          proteinScore={proteinScore}
-          proteinScoreTier={proteinScoreTier}
           variants={variants}
           hasVariantDropdown={hasVariantDropdown}
           variantSelectorDisabled={variantSelectorDisabled}
@@ -741,6 +739,8 @@ export default function MenuItemCard({
             fatDelta={customizationTotals.totalFat}
             quantityMultiplier={quantityMultiplier}
             hasActiveCustomization={hasActiveCustomization}
+            proteinScore={!isCartMode ? proteinScore : undefined}
+            proteinScoreTier={!isCartMode ? proteinScoreTier : undefined}
             actions={isCartMode ? (
               <CartCardActions
                 itemName={item.name}
