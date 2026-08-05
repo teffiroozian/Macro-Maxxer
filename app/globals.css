@@ -183,12 +183,13 @@ body {
 
 @supports not (height: 100dvh) {
     .item-route-modal-root {
-        height: calc(100vh - 1rem);
+        height: 92vh;
     }
 
     @media (min-width: 640px) {
         .item-route-modal-root {
-            height: calc(100vh - 2rem);
+            height: auto;
+            max-height: 88vh;
         }
     }
 }

@@ -1,6 +1,7 @@
 import SurfaceCard from "@/components/ui/SurfaceCard";
 import MacroStat from "@/components/nutrition/MacroStat";
 import type { MenuItem } from "@/types/menu";
+import Image from "next/image";
 
 type CompactOption = { id: string; label: string; disabled?: boolean };
 
@@ -42,101 +43,139 @@ export default function IngredientCompactCard({
   onCompactOptionSelect: (optionId: string) => void;
 }) {
   return (
-    <SurfaceCard
-      as="li"
-      padding="none"
-      shadow="md"
-      className={`list-none overflow-hidden transition ${
-        ingredientSelectionState
-          ? "border-2 border-lime-500 shadow-[0_4px_12px_rgba(132,204,22,0.25)]"
-          : "border-black/15"
-      }`}
-    >
-      <div
-        role={ingredientSelectionControl}
-        aria-checked={ingredientSelectionState}
-        aria-label={`${isIngredientSelectionDisabled ? ingredientDisabledReason ?? "Unavailable" : "Select"} ${item.name}`}
-        tabIndex={isIngredientSelectionDisabled ? -1 : 0}
-        className={`flex items-center gap-3 px-4 py-3 lg:gap-4 ${isIngredientSelectionDisabled ? "cursor-not-allowed opacity-95" : "cursor-pointer"}`}
-        onClick={() => {
-          if (isIngredientSelectionDisabled) return;
-          const nextSelected =
-            ingredientSelectionControl === "radio" ? true : !ingredientSelectionState;
-          onSelectionChange(nextSelected);
-        }}
-        onKeyDown={(event) => {
-          if (isIngredientSelectionDisabled) return;
-          if (event.key !== "Enter" && event.key !== " ") return;
-          event.preventDefault();
-          const nextSelected =
-            ingredientSelectionControl === "radio" ? true : !ingredientSelectionState;
-          onSelectionChange(nextSelected);
-        }}
+      <SurfaceCard
+          as="li"
+          padding="none"
+          shadow="md"
+          className={`list-none overflow-hidden transition ${
+              ingredientSelectionState
+                  ? "border-2 border-lime-500 shadow-[0_4px_12px_rgba(132,204,22,0.25)]"
+                  : "border-black/15"
+          }`}
       >
-        <span
-          className={`flex h-6 w-6 items-center justify-center border text-sm font-bold transition ${
-            ingredientSelectionState
-              ? "border-lime-500 bg-lime-500 text-black"
-              : "border-black/40 bg-white text-transparent"
-          } ${ingredientSelectionControl === "radio" ? "rounded-full" : "rounded-md"}`}
-          aria-hidden="true"
-        >
-          {ingredientSelectionControl === "radio" ? "●" : "✓"}
-        </span>
+          <div
+              role={ingredientSelectionControl}
+              aria-checked={ingredientSelectionState}
+              aria-label={`${isIngredientSelectionDisabled ? (ingredientDisabledReason ?? "Unavailable") : "Select"} ${item.name}`}
+              tabIndex={isIngredientSelectionDisabled ? -1 : 0}
+              className={`flex items-center gap-3 px-4 py-3 lg:gap-4 ${isIngredientSelectionDisabled ? "cursor-not-allowed opacity-95" : "cursor-pointer"}`}
+              onClick={() => {
+                  if (isIngredientSelectionDisabled) return;
+                  const nextSelected =
+                      ingredientSelectionControl === "radio"
+                          ? true
+                          : !ingredientSelectionState;
+                  onSelectionChange(nextSelected);
+              }}
+              onKeyDown={(event) => {
+                  if (isIngredientSelectionDisabled) return;
+                  if (event.key !== "Enter" && event.key !== " ") return;
+                  event.preventDefault();
+                  const nextSelected =
+                      ingredientSelectionControl === "radio"
+                          ? true
+                          : !ingredientSelectionState;
+                  onSelectionChange(nextSelected);
+              }}
+          >
+              <span
+                  className={`flex h-6 w-6 items-center justify-center border text-sm font-bold transition ${
+                      ingredientSelectionState
+                          ? "border-lime-500 bg-lime-500 text-black"
+                          : "border-black/40 bg-white text-transparent"
+                  } ${ingredientSelectionControl === "radio" ? "rounded-full" : "rounded-md"}`}
+                  aria-hidden="true"
+              >
+                  {ingredientSelectionControl === "radio" ? "●" : "✓"}
+              </span>
 
-        {selectedItemImage ? (
-          <img className="h-20 w-20 shrink-0 rounded-xl bg-image-placeholder object-cover sm:h-24 sm:w-24" src={selectedItemImage} alt={item.name} />
-        ) : (
-          <div className="h-20 w-20 shrink-0 rounded-xl bg-image-placeholder sm:h-24 sm:w-24" />
-        )}
+              {selectedItemImage ? (
+                  <Image
+                      src={selectedItemImage}
+                      alt={item.name}
+                      width={96}
+                      height={96}
+                      className="h-20 w-20 shrink-0 rounded-xl bg-image-placeholder object-cover sm:h-24 sm:w-24"
+                  />
+              ) : (
+                  <div className="h-20 w-20 shrink-0 rounded-xl bg-image-placeholder sm:h-24 sm:w-24" />
+              )}
 
-        <div className="flex min-w-0 flex-1 flex-col gap-3">
-          <div className="flex min-w-0 items-start justify-between gap-2">
-            <div className="flex min-w-0 flex-1 flex-wrap items-center gap-2">
-              {ingredientPortionBadge ? (
-                <span className="inline-flex shrink-0 rounded-full bg-lime-500 px-2 py-0.5 text-xs font-bold text-black">{ingredientPortionBadge}</span>
-              ) : null}
-              <div className="min-w-0 flex-1 truncate text-lg font-semibold text-black sm:text-xl">{item.name}</div>
-            </div>
-            {isIngredientUnavailable && ingredientUnavailableReason ? (
-              <div className="inline-flex w-fit shrink-0 rounded-full border border-black/20 bg-black/5 px-2 py-0.5 text-[11px] font-semibold text-black/60">
-                {ingredientUnavailableReason}
+              <div className="flex min-w-0 flex-1 flex-col gap-3">
+                  <div className="flex min-w-0 items-start justify-between gap-2">
+                      <div className="flex min-w-0 flex-1 flex-wrap items-center gap-2">
+                          {ingredientPortionBadge ? (
+                              <span className="inline-flex shrink-0 rounded-full bg-lime-500 px-2 py-0.5 text-xs font-bold text-black">
+                                  {ingredientPortionBadge}
+                              </span>
+                          ) : null}
+                          <div className="min-w-0 flex-1 truncate text-lg font-semibold text-black sm:text-xl">
+                              {item.name}
+                          </div>
+                      </div>
+                      {isIngredientUnavailable &&
+                      ingredientUnavailableReason ? (
+                          <div className="inline-flex w-fit shrink-0 rounded-full border border-black/20 bg-black/5 px-2 py-0.5 text-[11px] font-semibold text-black/60">
+                              {ingredientUnavailableReason}
+                          </div>
+                      ) : null}
+                  </div>
+
+                  <div className="flex w-full items-center gap-4 text-center lg:w-auto lg:gap-6">
+                      <MacroStat
+                          macroKey="calories"
+                          value={calories ?? Number.NaN}
+                          labelVariant="shortLabel"
+                          size="ingredientCompact"
+                      />
+                      <MacroStat
+                          macroKey="protein"
+                          value={protein ?? Number.NaN}
+                          size="ingredientCompact"
+                      />
+                      <MacroStat
+                          macroKey="carbs"
+                          value={carbs ?? Number.NaN}
+                          size="ingredientCompact"
+                      />
+                      <MacroStat
+                          macroKey="totalFat"
+                          value={totalFat ?? Number.NaN}
+                          size="ingredientCompact"
+                      />
+                  </div>
+
+                  {activeCompactOptions &&
+                  activeCompactOptions.length > 1 &&
+                  ingredientSelectionState ? (
+                      <div className="flex flex-wrap gap-2 pt-0.5">
+                          {activeCompactOptions.map((variantOption) => (
+                              <button
+                                  key={variantOption.id}
+                                  type="button"
+                                  disabled={Boolean(variantOption.disabled)}
+                                  onClick={(event) => {
+                                      event.preventDefault();
+                                      event.stopPropagation();
+                                      if (!variantOption.disabled)
+                                          onCompactOptionSelect(
+                                              variantOption.id,
+                                          );
+                                  }}
+                                  className={`cursor-pointer rounded-full border px-3 py-1 text-xs font-semibold ${
+                                      selectedCompactOptionId ===
+                                      variantOption.id
+                                          ? "border-slate-900 bg-slate-900 text-white"
+                                          : "border-black/20 bg-white text-slate-700 hover:border-black/35"
+                                  } ${variantOption.disabled ? "cursor-not-allowed opacity-55 hover:border-black/20" : ""}`}
+                              >
+                                  {variantOption.label}
+                              </button>
+                          ))}
+                      </div>
+                  ) : null}
               </div>
-            ) : null}
           </div>
-
-          <div className="flex w-full items-center gap-4 text-center lg:w-auto lg:gap-6">
-            <MacroStat macroKey="calories" value={calories ?? Number.NaN} labelVariant="shortLabel" size="ingredientCompact" />
-            <MacroStat macroKey="protein" value={protein ?? Number.NaN} size="ingredientCompact" />
-            <MacroStat macroKey="carbs" value={carbs ?? Number.NaN} size="ingredientCompact" />
-            <MacroStat macroKey="totalFat" value={totalFat ?? Number.NaN} size="ingredientCompact" />
-          </div>
-
-          {activeCompactOptions && activeCompactOptions.length > 1 && ingredientSelectionState ? (
-            <div className="flex flex-wrap gap-2 pt-0.5">
-              {activeCompactOptions.map((variantOption) => (
-                <button
-                  key={variantOption.id}
-                  type="button"
-                  disabled={Boolean(variantOption.disabled)}
-                  onClick={(event) => {
-                    event.preventDefault();
-                    event.stopPropagation();
-                    if (!variantOption.disabled) onCompactOptionSelect(variantOption.id);
-                  }}
-                  className={`cursor-pointer rounded-full border px-3 py-1 text-xs font-semibold ${
-                    selectedCompactOptionId === variantOption.id
-                      ? "border-slate-900 bg-slate-900 text-white"
-                      : "border-black/20 bg-white text-slate-700 hover:border-black/35"
-                  } ${variantOption.disabled ? "cursor-not-allowed opacity-55 hover:border-black/20" : ""}`}
-                >
-                  {variantOption.label}
-                </button>
-              ))}
-            </div>
-          ) : null}
-        </div>
-      </div>
-    </SurfaceCard>
+      </SurfaceCard>
   );
 }

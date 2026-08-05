@@ -2,12 +2,13 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { CupSoda, Droplets, Salad, SquareStack, Utensils } from "lucide-react";
+import { CupSoda, Droplets, Salad, SquareStack, Utensils, X } from "lucide-react";
 import ItemDetailsPanel, {
   PortionSelector,
   resolvePanelIngredientTabs,
 } from "@/components/ItemDetailsPanel";
 import MacroTotalsGrid from "@/components/MacroTotalsGrid";
+import MacroStat from "@/components/nutrition/MacroStat";
 import MenuSections from "@/components/MenuSections";
 import BuildSummaryDrawer from "@/components/restaurant-view/BuildSummaryDrawer";
 import type { MenuItem, ResolvedAddonGroups, IngredientItem, RestaurantCustomizationRules } from "@/types/menu";
@@ -433,6 +434,28 @@ export default function ItemRouteModal({
   const scrollContainerRef = useRef<HTMLDivElement | null>(null);
   const sectionElementRefs = useRef<Partial<Record<ModalSectionId, HTMLElement | null>>>({});
   const closeButtonRef = useRef<HTMLButtonElement | null>(null);
+  const overviewSectionRef = useRef<HTMLElement | null>(null);
+  const [isOverviewCollapsed, setIsOverviewCollapsed] = useState(false);
+
+  useEffect(() => {
+    const container = scrollContainerRef.current;
+    const overviewSection = overviewSectionRef.current;
+    if (!container || !overviewSection) return;
+
+    // Measured against the modal's own scroll container (never window/null),
+    // since the modal can be centered mid-page with room to spare above and
+    // below it — window-relative measurement would trigger at the wrong
+    // moment or not at all depending on where the modal sits on the page.
+    const handleOverviewScroll = () => {
+      const containerTop = container.getBoundingClientRect().top;
+      const overviewBottom = overviewSection.getBoundingClientRect().bottom;
+      setIsOverviewCollapsed(overviewBottom <= containerTop);
+    };
+
+    handleOverviewScroll();
+    container.addEventListener("scroll", handleOverviewScroll, { passive: true });
+    return () => container.removeEventListener("scroll", handleOverviewScroll);
+  }, []);
 
   useEffect(() => {
     const container = scrollContainerRef.current;
@@ -795,481 +818,995 @@ export default function ItemRouteModal({
   };
 
   return (
-    <div className="fixed inset-0 z-[235] flex items-end justify-center px-6 py-4 sm:items-center sm:p-6" role="dialog" aria-modal="true" aria-label={item.name}>
-      <button
-        type="button"
-        className="cursor-pointer absolute inset-0 border-0 bg-slate-900/66"
-        onClick={handleClose}
-        aria-label="Close item modal"
-      />
-      <div className="item-route-modal-root relative h-[calc(100dvh-2rem)] w-full max-w-[1024px] overflow-hidden rounded-2xl bg-white px-3 pt-3 sm:h-[calc(100dvh-3rem)] sm:px-5 sm:pt-5 lg:px-6 lg:pt-6">
-        <button
-          ref={closeButtonRef}
-          type="button"
-          className="cursor-pointer sticky top-0 ml-auto h-9 w-9 rounded-full border border-black/12 bg-white/95 text-2xl"
-          onClick={handleClose}
-          aria-label="Close item modal"
-        >
-          ×
-        </button>
-
-        <div ref={scrollContainerRef} className="h-[calc(100%-52px-72px)] overflow-y-auto pb-24 pr-1 sm:h-[calc(100%-52px-56px)] sm:pr-2">
-        <div className="grid justify-items-center gap-16">
-          <div className="grid w-full justify-items-center gap-6">
-            {selectedItemImage ? (
-              <img className="mt-2 h-[220px] w-full rounded-[14px] bg-[#efefef] object-contain p-2 shadow-[0_0_5px_rgba(0,0,0,0.25)] sm:mt-3 sm:h-[300px]" src={selectedItemImage} alt={item.name} />
-            ) : null}
-            <h1 className="text-center text-2xl font-extrabold sm:text-[32px]">{item.name}</h1>
-          </div>
-
-          <div className="w-[min(720px,100%)] grid gap-7">
-            {variants && variants.length > 0 && !item.hideVariantSelector ? (
-              <div className="w-full">
-                <PortionSelector
-                  variants={variants}
-                  selectedVariantId={selectedVariantId}
-                  onSelectVariant={setSelectedVariantId}
-                  className="mt-0"
-                  layout="top"
-                />
-              </div>
-            ) : null}
-            {variants && variants.length > 0 && !item.hideVariantSelector && isComboEligibleCategory ? (
-              <div className="mx-auto h-px w-[min(520px,100%)] bg-black/12" />
-            ) : null}
-            {isComboEligibleCategory ? (
-              <div className="w-full">
-                <div className="mt-0 my-3 flex flex-col items-center justify-between gap-4">
-                  <div className="w-full text-center text-lg font-semibold text-[rgba(0,0,0,0.8)]">
-                    Combo Type
-                  </div>
-                  <div className="flex w-full flex-wrap justify-center gap-2">
-                    {comboTypeOptions.map((option) => {
-                      const isActive = comboType === option.id;
-                      const Icon = option.icon;
-                      const variantColorClasses = isActive
-                        ? "border-blue-500 bg-blue-50 text-neutral-900 shadow-[0_8px_20px_rgba(37,99,235,0.18)]"
-                        : "border-slate-200 bg-white text-slate-700 shadow-[0_2px_8px_rgba(15,23,42,0.06)] hover:border-slate-300 hover:bg-slate-50";
-                      const iconClasses = isActive
-                        ? "border-blue-500/60 bg-white text-blue-600"
-                        : "border-slate-300 bg-slate-50 text-slate-500";
-                      const labelClasses = isActive ? "text-slate-700" : "text-slate-500";
-
-                      return (
-                        <button
-                          key={option.id}
-                          type="button"
-                          className={`inline-flex w-[calc(50%-0.25rem)] min-w-[150px] cursor-pointer items-center justify-center gap-3 rounded-2xl border px-4 py-2.5 text-left transition-all duration-150 sm:min-w-[220px] sm:w-auto ${variantColorClasses}`}
-                          onClick={() => setComboType(option.id)}
-                        >
-                          <span className={`inline-flex h-9 w-9 items-center justify-center rounded-full border ${iconClasses}`}>
-                            <Icon size={16} strokeWidth={2.4} />
-                          </span>
-                          <span className={`text-xs font-bold uppercase tracking-[0.08em] ${labelClasses}`}>{option.label}</span>
-                        </button>
-                      );
-                    })}
-                  </div>
-                </div>
-              </div>
-            ) : null}
-          </div>
-
-          <div className="w-full">
-          {isChipotlePrebuiltBuilderItem ? (
-            <div className="grid gap-7">
-              {chipotleIncludedIngredientDisplayItems.length > 0 ? (
-                <div className="w-full rounded-3xl border border-black/10 bg-[#e0e0e0] p-4">
-                  <h2 className="my-5 text-3xl font-bold text-slate-900">Included Ingredient</h2>
-                  <MenuSections
-                    restaurantId={restaurantId}
-                    items={chipotleIncludedIngredientDisplayItems}
-                    sort={SORT_OPTION_VALUES.DEFAULT_ORDER}
-                    groupByCategory={false}
-                    categoryMode="ingredients"
-                    hasBuildYourOwn
-                    ingredientSelectionConfig={{
-                      selectedIds: new Set(Object.keys(selectedChipotleIngredientItems)),
-                      lockedIds: chipotleLockedIngredientIds,
-                      onSelectionChange: (nextItem, selected) =>
-                        setSelectedChipotleIngredientItems((prev) => {
-                          const ingredientId = nextItem.id ?? nextItem.name;
-                          if (chipotleLockedIngredientIds.has(ingredientId)) return prev;
-                          if (!selected && !isChipotleTacoItem) {
-                            const next = { ...prev };
-                            delete next[ingredientId];
-                            return next;
-                          }
-                          if (isChipotleTacoItem) {
-                            const next = { ...prev };
-                            if (next["crispy-corn-tortilla"]) delete next["crispy-corn-tortilla"];
-                            if (next["soft-flour-tortilla"]) delete next["soft-flour-tortilla"];
-                            next[ingredientId] = { item: nextItem, quantity: 1 };
-                            setSelectedChipotleTacoShellId(ingredientId);
-                            return next;
-                          }
-                          return { ...prev, [ingredientId]: { item: nextItem, quantity: 1 } };
-                        }),
-                      selectionControlById: isChipotleTacoItem
-                        ? { "crispy-corn-tortilla": "radio", "soft-flour-tortilla": "radio" }
-                        : undefined,
-                      radioGroupNameById: isChipotleTacoItem
-                        ? {
-                            "crispy-corn-tortilla": "chipotle-high-protein-taco-shell",
-                            "soft-flour-tortilla": "chipotle-high-protein-taco-shell",
-                          }
-                        : undefined,
-                      variantOptionsById: isChipotleTacoItem
-                        ? {
-                            "crispy-corn-tortilla": [{ id: "3", label: "3 Tacos" }, { id: "1", label: "1 Taco" }],
-                            "soft-flour-tortilla": [{ id: "3", label: "3 Tacos" }, { id: "1", label: "1 Taco" }],
-                          }
-                        : undefined,
-                      selectedVariantIdById: isChipotleTacoItem
-                        ? {
-                            "crispy-corn-tortilla": String(selectedChipotleTacoCount),
-                            "soft-flour-tortilla": String(selectedChipotleTacoCount),
-                          }
-                        : undefined,
-                      onVariantChange: (nextItem, variantId) => {
-                        if (!isChipotleTacoItem) return;
-                        const ingredientId = nextItem.id ?? nextItem.name;
-                        setSelectedChipotleTacoCount(variantId === "1" ? 1 : 3);
-                        setSelectedChipotleTacoShellId(ingredientId);
-                      },
-                    }}
-                  />
-                </div>
-              ) : null}
-              <div className="w-full rounded-3xl border border-black/10 bg-[#e0e0e0] p-4">
-                <MenuSections
-                  restaurantId={restaurantId}
-                  items={chipotleIngredientDisplayItems}
-                  sort={SORT_OPTION_VALUES.DEFAULT_ORDER}
-                  groupByCategory
-                  categoryMode="ingredients"
-                  hasBuildYourOwn
-                  ingredientSelectionConfig={{
-                    selectedIds: new Set(Object.keys(selectedChipotleIngredientItems)),
-                    lockedIds: chipotleLockedIngredientIds,
-                    onSelectionChange: (nextItem, selected) =>
-                      setSelectedChipotleIngredientItems((prev) => {
-                        const ingredientId = nextItem.id ?? nextItem.name;
-                        if (chipotleLockedIngredientIds.has(ingredientId)) return prev;
-                        if (!selected) {
-                          const next = { ...prev };
-                          delete next[ingredientId];
-                          return next;
-                        }
-                        return { ...prev, [ingredientId]: { item: nextItem, quantity: 1 } };
-                      }),
-                    portionBadgeById: chipotleIngredientPortionLabelById,
-                    portionModeOptionsById: Object.fromEntries(
-                      chipotleIngredientDisplayItems
-                        .filter((menuIngredientItem) => {
-                          const category = normalizeIngredientCategory(resolvePrimaryCategory(menuIngredientItem.categories));
-                          return category === "proteins" || category === "rice" || category === "beans";
-                        })
-                        .map((menuIngredientItem) => {
-                          const ingredientId = menuIngredientItem.id ?? menuIngredientItem.name;
-                          const category = normalizeIngredientCategory(resolvePrimaryCategory(menuIngredientItem.categories));
-                          return [
-                            ingredientId,
-                            category === "proteins"
-                              ? [{ id: "normal", label: "Normal" }, { id: "double", label: "Double" }]
-                              : [{ id: "light", label: "Light" }, { id: "normal", label: "Normal" }, { id: "extra", label: "Extra" }],
-                          ];
-                        })
-                    ),
-                    selectedPortionModeIdById: Object.fromEntries(
-                      chipotleIngredientDisplayItems.map((menuIngredientItem) => {
-                        const ingredientId = menuIngredientItem.id ?? menuIngredientItem.name;
-                        const category = normalizeIngredientCategory(resolvePrimaryCategory(menuIngredientItem.categories));
-                        const modeId =
-                          category === "proteins"
-                            ? chipotleProteinPortionMode
-                            : chipotleSplitPortionModeById[ingredientId] ?? "normal";
-                        return [ingredientId, modeId];
-                      })
-                    ),
-                    onPortionModeChange: (menuIngredientItem, modeId) => {
-                      const ingredientId = menuIngredientItem.id ?? menuIngredientItem.name;
-                      const category = normalizeIngredientCategory(resolvePrimaryCategory(menuIngredientItem.categories));
-                      if (category === "proteins" && (modeId === "normal" || modeId === "double")) {
-                        setChipotleProteinPortionMode(modeId);
-                      } else if (
-                        (category === "rice" || category === "beans") &&
-                        (modeId === "light" || modeId === "normal" || modeId === "extra")
-                      ) {
-                        setChipotleSplitPortionModeById((prev) => ({ ...prev, [ingredientId]: modeId }));
-                      }
-                    },
-                  }}
-                />
-              </div>
-
-              <div className="w-full rounded-3xl border border-black/10 bg-[#e0e0e0] p-4">
-                <BuildSummaryDrawer
-                  adjustedNutritionLabelTotals={{
-                    calories: chipotleAdjustedTotals.calories,
-                    totalFat: chipotleAdjustedTotals.totalFat,
-                    satFat: chipotleAdjustedTotals.satFat,
-                    transFat: chipotleAdjustedTotals.transFat,
-                    cholesterol: chipotleAdjustedTotals.cholesterol,
-                    sodium: chipotleAdjustedTotals.sodium,
-                    carbs: chipotleAdjustedTotals.carbs,
-                    fiber: chipotleAdjustedTotals.fiber,
-                    sugars: chipotleAdjustedTotals.sugars,
-                    protein: chipotleAdjustedTotals.protein,
-                  }}
-                  selectedBuildName={item.name}
-                  selectedIngredientCount={Object.values(selectedChipotleIngredientItems).reduce((sum, entry) => sum + entry.quantity, 0)}
-                  groupedSelectedIngredientEntries={chipotleGroupedSelectedIngredientEntries}
-                  ingredientPortionLabelById={chipotleIngredientPortionLabelById}
-                  lockedIngredientIds={chipotleLockedIngredientIds}
-                  restaurantLogo={item.image ?? ""}
-                  onResetOrder={() => {}}
-                  onSaveOrder={() => {}}
-                  onAdjustIngredientQuantity={(ingredientId, delta) =>
-                    setSelectedChipotleIngredientItems((prev) => {
-                      if (chipotleLockedIngredientIds.has(ingredientId)) return prev;
-                      const selectedIngredient = prev[ingredientId];
-                      if (!selectedIngredient) return prev;
-                      const nextQuantity = selectedIngredient.quantity + delta;
-                      if (nextQuantity <= 0) {
-                        const next = { ...prev };
-                        delete next[ingredientId];
-                        return next;
-                      }
-                      return {
-                        ...prev,
-                        [ingredientId]: { ...selectedIngredient, quantity: nextQuantity },
-                      };
-                    })
-                  }
-                  hideActionButtons
-                />
-              </div>
-            </div>
-          ) : (
-          <ItemDetailsPanel
-            item={item}
-            nutrition={nutrition}
-            quantityMultiplier={quantity}
-            variants={variants}
-            selectedVariantId={selectedVariantId}
-            onSelectVariant={setSelectedVariantId}
-            addons={addons}
-            ingredientItems={ingredients}
-            menuItems={menuItems}
-            customizationRules={customizationRules}
-            selectedAddons={selectedAddons}
-            onSelectAddon={(ref, addon) => setSelectedAddons((prev) => ({ ...prev, [ref]: addon ?? emptyAddon }))}
-            sauceSelectionCounts={selectedSauceCounts}
-            onIncrementSauce={(addon) => {
-              setSelectedSauceCounts((prev) => {
-                const currentTotal = Object.values(prev).reduce((sum, count) => sum + count, 0);
-                if (currentTotal >= maxSauceSelections) return prev;
-                return { ...prev, [addon.name]: (prev[addon.name] ?? 0) + 1 };
-              });
-            }}
-            onDecrementSauce={(addon) => {
-              setSelectedSauceCounts((prev) => {
-                const current = prev[addon.name] ?? 0;
-                if (current <= 0) return prev;
-                const next = { ...prev };
-                if (current === 1) delete next[addon.name];
-                else next[addon.name] = current - 1;
-                return next;
-              });
-            }}
-            onToggleSauce={(addon) => {
-              setSelectedSauceCounts((prev) => {
-                if (addon.name === "None") return {};
-                const current = prev[addon.name] ?? 0;
-                if (current > 0) {
-                  const next = { ...prev };
-                  delete next[addon.name];
-                  return next;
-                }
-                const currentTotal = Object.values(prev).reduce((sum, count) => sum + count, 0);
-                if (currentTotal >= maxSauceSelections) return prev;
-                return { ...prev, [addon.name]: 1 };
-              });
-            }}
-            customizationTotals={customizationTotals}
-            showCustomizationDeltas={hasActiveCustomization}
-            showVariantsInDetails={!item.hideVariantSelector}
-            selectedIngredientCounts={ingredientCounts}
-            onDecrementIngredient={(ingredientId) =>
-              setSelectedIngredientCounts((prev) => {
-                const current = ingredientCounts[ingredientId] ?? 0;
-                const nextCount = Math.max(0, current - 1);
-                if (nextCount === current) return prev;
-
-                return { ...prev, [ingredientId]: nextCount };
-              })
-            }
-            onIncrementIngredient={(ingredientId) =>
-              setSelectedIngredientCounts((prev) => {
-                const ingredient =
-                  ingredientLookup.get(ingredientId) ??
-                  ingredientLookup.get(ingredientId.toLowerCase());
-                const maxQuantity = ingredient?.maxQuantity;
-
-                if (typeof maxQuantity !== "number") return prev;
-
-                const current = ingredientCounts[ingredientId] ?? ingredient?.defaultCount ?? 0;
-                const nextCount = Math.min(maxQuantity, current + 1);
-                if (nextCount === current) return prev;
-
-                return { ...prev, [ingredientId]: nextCount };
-              })
-            }
-            onToggleIngredient={(ingredientId) =>
-              setSelectedIngredientCounts((prev) => {
-                const ingredient =
-                  ingredientLookup.get(ingredientId) ??
-                  ingredientLookup.get(ingredientId.toLowerCase());
-                const maxQuantity = ingredient?.maxQuantity;
-                if (typeof maxQuantity !== "number") return prev;
-
-                const current = prev[ingredientId] ?? ingredient?.defaultCount ?? 0;
-                const nextCount = current > 0 ? 0 : 1;
-                if (nextCount === current) return prev;
-
-                return { ...prev, [ingredientId]: nextCount };
-              })
-            }
-            onSelectSingleIngredient={(ingredientId, ingredientIdsInTab) =>
-              setSelectedIngredientCounts((prev) => {
-                const next = { ...prev };
-
-                ingredientIdsInTab.forEach((id) => {
-                  next[id] = id === ingredientId ? 1 : 0;
-                });
-
-                const hasChanged = ingredientIdsInTab.some(
-                  (id) => (ingredientCounts[id] ?? ingredientLookup.get(id)?.defaultCount ?? 0) !== next[id]
-                );
-                if (!hasChanged) return prev;
-
-                return next;
-              })
-            }
-            comboType={comboType}
-            comboSides={comboSides}
-            comboDrinks={comboDrinks}
-            selectedComboSideId={selectedComboSideId}
-            selectedComboDrinkId={selectedComboDrinkId}
-            onSelectComboSide={(sideId) => {
-              if (selectedComboSideId === sideId) {
-                setSelectedComboSideId(undefined);
-                setSelectedComboSideVariantId(undefined);
-                return;
-              }
-              const nextSide = comboSides.find((side) => (side.id ?? side.name) === sideId);
-              setSelectedComboSideId(sideId);
-              setSelectedComboSideVariantId(getDefaultVariantId(nextSide));
-            }}
-            onSelectComboDrink={(drinkId) => {
-              if (selectedComboDrinkId === drinkId) {
-                setSelectedComboDrinkId(undefined);
-                setSelectedComboDrinkVariantId(undefined);
-                return;
-              }
-              const nextDrink = comboDrinks.find((drink) => (drink.id ?? drink.name) === drinkId);
-              setSelectedComboDrinkId(drinkId);
-              setSelectedComboDrinkVariantId(getDefaultVariantId(nextDrink));
-            }}
-            selectedComboSideVariantId={selectedComboSideVariantId}
-            onSelectComboSideVariant={setSelectedComboSideVariantId}
-            selectedComboDrinkVariantId={selectedComboDrinkVariantId}
-            onSelectComboDrinkVariant={setSelectedComboDrinkVariantId}
-            ingredientsSectionRef={(element) => {
-              sectionElementRefs.current.ingredients = element;
-            }}
-            sidesSectionRef={(element) => {
-              sectionElementRefs.current.sides = element;
-            }}
-            drinksSectionRef={(element) => {
-              sectionElementRefs.current.drinks = element;
-            }}
-            addonSectionRef={(element) => {
-              sectionElementRefs.current.sauces = element;
-            }}
-            addonSectionRefType={addonNavigationRef ?? undefined}
-            sectionNavItems={visibleSections}
-            activeSectionId={activeSectionId}
-            onSelectSection={scrollToSection}
-            onCustomizeIngredients={
-              canCustomizeViaBuildPage && closeBehavior !== "local"
-                ? () => {
-                    router.push(
-                      `/restaurant/${restaurantId}?view=ingredients&editCartItem=${editingCartItem!.id}`,
-                      { scroll: false }
-                    );
-                  }
-                : undefined
-            }
-          />
-          )}
-          </div>
-        </div>
-        </div>
-
-        <div className="sticky bottom-0 -mx-3 z-30 flex h-fit flex-col gap-3 border-t border-black/10 bg-white p-3 shadow-[0_-4px_10px_rgba(0,0,0,0.08)] sm:-mx-5 sm:p-4 lg:-mx-6 lg:flex-row lg:items-center lg:justify-between">
-          <MacroTotalsGrid
-            macros={{
-              calories: Math.round((isChipotlePrebuiltBuilderItem ? chipotleAdjustedTotals.calories : (nutrition.calories ?? 0)) * quantity),
-              protein: Math.round((isChipotlePrebuiltBuilderItem ? chipotleAdjustedTotals.protein : (nutrition.protein ?? 0)) * quantity),
-              carbs: Math.round((isChipotlePrebuiltBuilderItem ? chipotleAdjustedTotals.carbs : (nutrition.carbs ?? 0)) * quantity),
-              totalFat: Math.round((isChipotlePrebuiltBuilderItem ? chipotleAdjustedTotals.totalFat : (nutrition.totalFat ?? 0)) * quantity),
-            }}
-            size="panel"
-            className="w-full justify-between gap-2 sm:gap-3 lg:!w-fit lg:justify-start"
-            itemClassName="px-2 py-0.5"
-            labelClassName="text-[#64748b]"
-          />
-          <div className="flex w-full flex-row items-center gap-2 lg:w-auto">
-            <div className="inline-flex h-12 flex-1 items-center justify-between rounded-xl border border-slate-200 bg-slate-50 p-1 lg:h-auto lg:w-[100px] lg:flex-none">
-              <button
-                type="button"
-                onClick={handleDecrementQuantity}
-                className="cursor-pointer inline-flex size-8 items-center justify-center rounded-lg text-base font-semibold text-slate-700 transition hover:bg-white"
-                aria-label={`Decrease quantity of ${item.name}`}
-              >
-                -
-              </button>
-              <span className="min-w-8 text-center text-sm font-semibold text-slate-900">{quantity}</span>
-              <button
-                type="button"
-                onClick={handleIncrementQuantity}
-                className="cursor-pointer inline-flex size-8 items-center justify-center rounded-lg text-base font-semibold text-slate-700 transition hover:bg-white"
-                aria-label={`Increase quantity of ${item.name}`}
-              >
-                +
-              </button>
-            </div>
-            {isCustomizeMode ? (
-              <button
-                type="button"
-                className="cursor-pointer h-12 rounded-xl border border-black/20 bg-white px-4 py-2.5 text-base font-bold text-black/80 sm:px-6"
-                onClick={handleClose}
-              >
-                Cancel
-              </button>
-            ) : null}
-            <button
+      <div
+          className="fixed inset-0 z-[235] flex items-end justify-center sm:items-center sm:p-6"
+          role="dialog"
+          aria-modal="true"
+          aria-label={item.name}
+      >
+          <button
               type="button"
-              className="cursor-pointer h-12 flex-1 rounded-xl border border-black/20 bg-black/90 px-4 py-2.5 text-base font-bold text-white sm:px-6 lg:flex-none"
-              onClick={submitCartItem}
-            >
-              {submitButtonLabel}
-            </button>
+              className="cursor-pointer absolute inset-0 border-0 bg-slate-900/60"
+              onClick={handleClose}
+              aria-label="Close item modal"
+          />
+          <div className="item-route-modal-root relative flex h-[92dvh] w-full flex-col overflow-hidden rounded-t-3xl bg-white shadow-[0_24px_70px_rgba(15,23,42,0.35)] sm:h-auto sm:max-h-[88vh] sm:w-full sm:max-w-[620px] sm:rounded-3xl md:max-w-[760px] lg:max-w-[940px]">
+              <div
+                  className={`absolute inset-x-0 top-0 z-20 flex items-center justify-between gap-3 border-b bg-white px-4 py-3 transition-all duration-200 ease-out sm:px-6 sm:py-4 lg:px-8 ${
+                      isOverviewCollapsed
+                          ? "translate-y-0 border-black/[0.06] opacity-100 shadow-[0_1px_2px_rgba(15,23,42,0.05)]"
+                          : "pointer-events-none -translate-y-1 border-transparent opacity-0"
+                  }`}
+              >
+                  <div className="flex min-w-0 flex-1 items-center gap-3">
+                      {selectedItemImage ? (
+                          <div className="h-10 w-10 shrink-0 overflow-hidden rounded-xl border border-black/[0.06] bg-image-placeholder">
+                              <img
+                                  className="h-full w-full object-contain p-1"
+                                  src={selectedItemImage}
+                                  alt=""
+                              />
+                          </div>
+                      ) : null}
+                      <p className="font-heading min-w-0 truncate text-lg font-medium leading-tight text-neutral-900">
+                          {item.name}
+                      </p>
+                  </div>
+                  <button
+                      type="button"
+                      tabIndex={isOverviewCollapsed ? 0 : -1}
+                      className="cursor-pointer inline-flex size-10 shrink-0 items-center justify-center rounded-full text-slate-400 transition hover:bg-slate-100 hover:text-slate-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-strong"
+                      onClick={handleClose}
+                      aria-label="Close item modal"
+                  >
+                      <X size={18} strokeWidth={2.25} />
+                  </button>
+              </div>
+
+              <div
+                  ref={scrollContainerRef}
+                  className="min-h-0 flex-1 overflow-y-auto overscroll-contain"
+              >
+                  <div className="px-4 pb-8 pt-5 sm:px-6 sm:pb-10 sm:pt-7 lg:px-8">
+                      <section
+                          ref={overviewSectionRef}
+                          className="relative flex items-center gap-5 sm:gap-6"
+                      >
+                          {selectedItemImage ? (
+                              <div className="h-24 w-24 shrink-0 overflow-hidden rounded-2xl border border-black/[0.06] bg-image-placeholder sm:h-32 sm:w-32 lg:h-36 lg:w-36">
+                                  <img
+                                      className="h-full w-full object-contain p-2.5"
+                                      src={selectedItemImage}
+                                      alt={item.name}
+                                  />
+                              </div>
+                          ) : null}
+                          <div className="min-w-0 flex-1 pr-12 sm:pr-14">
+                              <p className="text-[11px] font-semibold uppercase tracking-wide text-slate-400">
+                                  Base Nutrition
+                              </p>
+                              <h1 className="font-heading mt-1 truncate text-lg font-bold leading-tight text-neutral-900 sm:text-xl lg:text-2xl">
+                                  {item.name}
+                              </h1>
+                              <div className="mt-3 flex flex-wrap items-center gap-x-5 gap-y-2">
+                                  <MacroStat
+                                      macroKey="calories"
+                                      value={Math.round(baseNutrition.calories)}
+                                      size="quick"
+                                      labelVariant="uppercase"
+                                  />
+                                  <MacroStat
+                                      macroKey="protein"
+                                      value={Math.round(baseNutrition.protein)}
+                                      size="quick"
+                                      labelVariant="uppercase"
+                                  />
+                                  <MacroStat
+                                      macroKey="carbs"
+                                      value={Math.round(baseNutrition.carbs)}
+                                      size="quick"
+                                      labelVariant="uppercase"
+                                  />
+                                  <MacroStat
+                                      macroKey="totalFat"
+                                      value={Math.round(baseNutrition.totalFat)}
+                                      size="quick"
+                                      labelVariant="uppercase"
+                                  />
+                              </div>
+                          </div>
+                          <button
+                              ref={closeButtonRef}
+                              type="button"
+                              className="cursor-pointer absolute right-0 top-0 inline-flex size-10 shrink-0 items-center justify-center rounded-full text-slate-400 transition hover:bg-slate-100 hover:text-slate-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-strong"
+                              onClick={handleClose}
+                              aria-label="Close item modal"
+                          >
+                              <X size={18} strokeWidth={2.25} />
+                          </button>
+                      </section>
+
+                      <div className="my-5 h-px bg-black/[0.06] sm:my-6" />
+
+                      <div className="grid gap-5">
+                          {variants &&
+                          variants.length > 0 &&
+                          !item.hideVariantSelector ? (
+                              <div className="w-full">
+                                  <PortionSelector
+                                      variants={variants}
+                                      selectedVariantId={selectedVariantId}
+                                      onSelectVariant={setSelectedVariantId}
+                                      className="mt-0"
+                                      layout="top"
+                                  />
+                              </div>
+                          ) : null}
+                          {variants &&
+                          variants.length > 0 &&
+                          !item.hideVariantSelector &&
+                          isComboEligibleCategory ? (
+                              <div className="h-px w-full bg-black/[0.06]" />
+                          ) : null}
+                          {isComboEligibleCategory ? (
+                              <div className="w-full">
+                                  <div className="flex flex-col items-center justify-between gap-3">
+                                      <div className="w-full text-center text-lg font-semibold text-[rgba(0,0,0,0.8)]">
+                                          Combo Type
+                                      </div>
+                                      <div className="flex w-full flex-wrap justify-center gap-2">
+                                          {comboTypeOptions.map((option) => {
+                                              const isActive =
+                                                  comboType === option.id;
+                                              const Icon = option.icon;
+                                              const variantColorClasses =
+                                                  isActive
+                                                      ? "border-blue-500 bg-blue-50 text-neutral-900 shadow-[0_8px_20px_rgba(37,99,235,0.18)]"
+                                                      : "border-slate-200 bg-white text-slate-700 shadow-[0_2px_8px_rgba(15,23,42,0.06)] hover:border-slate-300 hover:bg-slate-50";
+                                              const iconClasses = isActive
+                                                  ? "border-blue-500/60 bg-white text-blue-600"
+                                                  : "border-slate-300 bg-slate-50 text-slate-500";
+                                              const labelClasses = isActive
+                                                  ? "text-slate-700"
+                                                  : "text-slate-500";
+
+                                              return (
+                                                  <button
+                                                      key={option.id}
+                                                      type="button"
+                                                      className={`inline-flex w-[calc(50%-0.25rem)] min-w-[150px] cursor-pointer items-center justify-center gap-3 rounded-2xl border px-4 py-2.5 text-left transition-all duration-150 sm:min-w-[220px] sm:w-auto ${variantColorClasses}`}
+                                                      onClick={() =>
+                                                          setComboType(
+                                                              option.id,
+                                                          )
+                                                      }
+                                                  >
+                                                      <span
+                                                          className={`inline-flex h-9 w-9 items-center justify-center rounded-full border ${iconClasses}`}
+                                                      >
+                                                          <Icon
+                                                              size={16}
+                                                              strokeWidth={2.4}
+                                                          />
+                                                      </span>
+                                                      <span
+                                                          className={`text-xs font-bold uppercase tracking-[0.08em] ${labelClasses}`}
+                                                      >
+                                                          {option.label}
+                                                      </span>
+                                                  </button>
+                                              );
+                                          })}
+                                      </div>
+                                  </div>
+                              </div>
+                          ) : null}
+                      </div>
+
+                      <div className="mt-6 w-full">
+                          {isChipotlePrebuiltBuilderItem ? (
+                              <div className="grid gap-7">
+                                  {chipotleIncludedIngredientDisplayItems.length >
+                                  0 ? (
+                                      <div className="w-full rounded-3xl border border-black/10 bg-[#e0e0e0] p-4">
+                                          <h2 className="my-5 text-3xl font-bold text-slate-900">
+                                              Included Ingredient
+                                          </h2>
+                                          <MenuSections
+                                              restaurantId={restaurantId}
+                                              items={
+                                                  chipotleIncludedIngredientDisplayItems
+                                              }
+                                              sort={
+                                                  SORT_OPTION_VALUES.DEFAULT_ORDER
+                                              }
+                                              groupByCategory={false}
+                                              categoryMode="ingredients"
+                                              hasBuildYourOwn
+                                              ingredientSelectionConfig={{
+                                                  selectedIds: new Set(
+                                                      Object.keys(
+                                                          selectedChipotleIngredientItems,
+                                                      ),
+                                                  ),
+                                                  lockedIds:
+                                                      chipotleLockedIngredientIds,
+                                                  onSelectionChange: (
+                                                      nextItem,
+                                                      selected,
+                                                  ) =>
+                                                      setSelectedChipotleIngredientItems(
+                                                          (prev) => {
+                                                              const ingredientId =
+                                                                  nextItem.id ??
+                                                                  nextItem.name;
+                                                              if (
+                                                                  chipotleLockedIngredientIds.has(
+                                                                      ingredientId,
+                                                                  )
+                                                              )
+                                                                  return prev;
+                                                              if (
+                                                                  !selected &&
+                                                                  !isChipotleTacoItem
+                                                              ) {
+                                                                  const next = {
+                                                                      ...prev,
+                                                                  };
+                                                                  delete next[
+                                                                      ingredientId
+                                                                  ];
+                                                                  return next;
+                                                              }
+                                                              if (
+                                                                  isChipotleTacoItem
+                                                              ) {
+                                                                  const next = {
+                                                                      ...prev,
+                                                                  };
+                                                                  if (
+                                                                      next[
+                                                                          "crispy-corn-tortilla"
+                                                                      ]
+                                                                  )
+                                                                      delete next[
+                                                                          "crispy-corn-tortilla"
+                                                                      ];
+                                                                  if (
+                                                                      next[
+                                                                          "soft-flour-tortilla"
+                                                                      ]
+                                                                  )
+                                                                      delete next[
+                                                                          "soft-flour-tortilla"
+                                                                      ];
+                                                                  next[
+                                                                      ingredientId
+                                                                  ] = {
+                                                                      item: nextItem,
+                                                                      quantity: 1,
+                                                                  };
+                                                                  setSelectedChipotleTacoShellId(
+                                                                      ingredientId,
+                                                                  );
+                                                                  return next;
+                                                              }
+                                                              return {
+                                                                  ...prev,
+                                                                  [ingredientId]:
+                                                                      {
+                                                                          item: nextItem,
+                                                                          quantity: 1,
+                                                                      },
+                                                              };
+                                                          },
+                                                      ),
+                                                  selectionControlById:
+                                                      isChipotleTacoItem
+                                                          ? {
+                                                                "crispy-corn-tortilla":
+                                                                    "radio",
+                                                                "soft-flour-tortilla":
+                                                                    "radio",
+                                                            }
+                                                          : undefined,
+                                                  radioGroupNameById:
+                                                      isChipotleTacoItem
+                                                          ? {
+                                                                "crispy-corn-tortilla":
+                                                                    "chipotle-high-protein-taco-shell",
+                                                                "soft-flour-tortilla":
+                                                                    "chipotle-high-protein-taco-shell",
+                                                            }
+                                                          : undefined,
+                                                  variantOptionsById:
+                                                      isChipotleTacoItem
+                                                          ? {
+                                                                "crispy-corn-tortilla":
+                                                                    [
+                                                                        {
+                                                                            id: "3",
+                                                                            label: "3 Tacos",
+                                                                        },
+                                                                        {
+                                                                            id: "1",
+                                                                            label: "1 Taco",
+                                                                        },
+                                                                    ],
+                                                                "soft-flour-tortilla":
+                                                                    [
+                                                                        {
+                                                                            id: "3",
+                                                                            label: "3 Tacos",
+                                                                        },
+                                                                        {
+                                                                            id: "1",
+                                                                            label: "1 Taco",
+                                                                        },
+                                                                    ],
+                                                            }
+                                                          : undefined,
+                                                  selectedVariantIdById:
+                                                      isChipotleTacoItem
+                                                          ? {
+                                                                "crispy-corn-tortilla":
+                                                                    String(
+                                                                        selectedChipotleTacoCount,
+                                                                    ),
+                                                                "soft-flour-tortilla":
+                                                                    String(
+                                                                        selectedChipotleTacoCount,
+                                                                    ),
+                                                            }
+                                                          : undefined,
+                                                  onVariantChange: (
+                                                      nextItem,
+                                                      variantId,
+                                                  ) => {
+                                                      if (!isChipotleTacoItem)
+                                                          return;
+                                                      const ingredientId =
+                                                          nextItem.id ??
+                                                          nextItem.name;
+                                                      setSelectedChipotleTacoCount(
+                                                          variantId === "1"
+                                                              ? 1
+                                                              : 3,
+                                                      );
+                                                      setSelectedChipotleTacoShellId(
+                                                          ingredientId,
+                                                      );
+                                                  },
+                                              }}
+                                          />
+                                      </div>
+                                  ) : null}
+                                  <div className="w-full rounded-3xl border border-black/10 bg-[#e0e0e0] p-4">
+                                      <MenuSections
+                                          restaurantId={restaurantId}
+                                          items={chipotleIngredientDisplayItems}
+                                          sort={
+                                              SORT_OPTION_VALUES.DEFAULT_ORDER
+                                          }
+                                          groupByCategory
+                                          categoryMode="ingredients"
+                                          hasBuildYourOwn
+                                          ingredientSelectionConfig={{
+                                              selectedIds: new Set(
+                                                  Object.keys(
+                                                      selectedChipotleIngredientItems,
+                                                  ),
+                                              ),
+                                              lockedIds:
+                                                  chipotleLockedIngredientIds,
+                                              onSelectionChange: (
+                                                  nextItem,
+                                                  selected,
+                                              ) =>
+                                                  setSelectedChipotleIngredientItems(
+                                                      (prev) => {
+                                                          const ingredientId =
+                                                              nextItem.id ??
+                                                              nextItem.name;
+                                                          if (
+                                                              chipotleLockedIngredientIds.has(
+                                                                  ingredientId,
+                                                              )
+                                                          )
+                                                              return prev;
+                                                          if (!selected) {
+                                                              const next = {
+                                                                  ...prev,
+                                                              };
+                                                              delete next[
+                                                                  ingredientId
+                                                              ];
+                                                              return next;
+                                                          }
+                                                          return {
+                                                              ...prev,
+                                                              [ingredientId]: {
+                                                                  item: nextItem,
+                                                                  quantity: 1,
+                                                              },
+                                                          };
+                                                      },
+                                                  ),
+                                              portionBadgeById:
+                                                  chipotleIngredientPortionLabelById,
+                                              portionModeOptionsById:
+                                                  Object.fromEntries(
+                                                      chipotleIngredientDisplayItems
+                                                          .filter(
+                                                              (
+                                                                  menuIngredientItem,
+                                                              ) => {
+                                                                  const category =
+                                                                      normalizeIngredientCategory(
+                                                                          resolvePrimaryCategory(
+                                                                              menuIngredientItem.categories,
+                                                                          ),
+                                                                      );
+                                                                  return (
+                                                                      category ===
+                                                                          "proteins" ||
+                                                                      category ===
+                                                                          "rice" ||
+                                                                      category ===
+                                                                          "beans"
+                                                                  );
+                                                              },
+                                                          )
+                                                          .map(
+                                                              (
+                                                                  menuIngredientItem,
+                                                              ) => {
+                                                                  const ingredientId =
+                                                                      menuIngredientItem.id ??
+                                                                      menuIngredientItem.name;
+                                                                  const category =
+                                                                      normalizeIngredientCategory(
+                                                                          resolvePrimaryCategory(
+                                                                              menuIngredientItem.categories,
+                                                                          ),
+                                                                      );
+                                                                  return [
+                                                                      ingredientId,
+                                                                      category ===
+                                                                      "proteins"
+                                                                          ? [
+                                                                                {
+                                                                                    id: "normal",
+                                                                                    label: "Normal",
+                                                                                },
+                                                                                {
+                                                                                    id: "double",
+                                                                                    label: "Double",
+                                                                                },
+                                                                            ]
+                                                                          : [
+                                                                                {
+                                                                                    id: "light",
+                                                                                    label: "Light",
+                                                                                },
+                                                                                {
+                                                                                    id: "normal",
+                                                                                    label: "Normal",
+                                                                                },
+                                                                                {
+                                                                                    id: "extra",
+                                                                                    label: "Extra",
+                                                                                },
+                                                                            ],
+                                                                  ];
+                                                              },
+                                                          ),
+                                                  ),
+                                              selectedPortionModeIdById:
+                                                  Object.fromEntries(
+                                                      chipotleIngredientDisplayItems.map(
+                                                          (
+                                                              menuIngredientItem,
+                                                          ) => {
+                                                              const ingredientId =
+                                                                  menuIngredientItem.id ??
+                                                                  menuIngredientItem.name;
+                                                              const category =
+                                                                  normalizeIngredientCategory(
+                                                                      resolvePrimaryCategory(
+                                                                          menuIngredientItem.categories,
+                                                                      ),
+                                                                  );
+                                                              const modeId =
+                                                                  category ===
+                                                                  "proteins"
+                                                                      ? chipotleProteinPortionMode
+                                                                      : (chipotleSplitPortionModeById[
+                                                                            ingredientId
+                                                                        ] ??
+                                                                        "normal");
+                                                              return [
+                                                                  ingredientId,
+                                                                  modeId,
+                                                              ];
+                                                          },
+                                                      ),
+                                                  ),
+                                              onPortionModeChange: (
+                                                  menuIngredientItem,
+                                                  modeId,
+                                              ) => {
+                                                  const ingredientId =
+                                                      menuIngredientItem.id ??
+                                                      menuIngredientItem.name;
+                                                  const category =
+                                                      normalizeIngredientCategory(
+                                                          resolvePrimaryCategory(
+                                                              menuIngredientItem.categories,
+                                                          ),
+                                                      );
+                                                  if (
+                                                      category === "proteins" &&
+                                                      (modeId === "normal" ||
+                                                          modeId === "double")
+                                                  ) {
+                                                      setChipotleProteinPortionMode(
+                                                          modeId,
+                                                      );
+                                                  } else if (
+                                                      (category === "rice" ||
+                                                          category ===
+                                                              "beans") &&
+                                                      (modeId === "light" ||
+                                                          modeId === "normal" ||
+                                                          modeId === "extra")
+                                                  ) {
+                                                      setChipotleSplitPortionModeById(
+                                                          (prev) => ({
+                                                              ...prev,
+                                                              [ingredientId]:
+                                                                  modeId,
+                                                          }),
+                                                      );
+                                                  }
+                                              },
+                                          }}
+                                      />
+                                  </div>
+
+                                  <div className="w-full rounded-3xl border border-black/10 bg-[#e0e0e0] p-4">
+                                      <BuildSummaryDrawer
+                                          adjustedNutritionLabelTotals={{
+                                              calories:
+                                                  chipotleAdjustedTotals.calories,
+                                              totalFat:
+                                                  chipotleAdjustedTotals.totalFat,
+                                              satFat: chipotleAdjustedTotals.satFat,
+                                              transFat:
+                                                  chipotleAdjustedTotals.transFat,
+                                              cholesterol:
+                                                  chipotleAdjustedTotals.cholesterol,
+                                              sodium: chipotleAdjustedTotals.sodium,
+                                              carbs: chipotleAdjustedTotals.carbs,
+                                              fiber: chipotleAdjustedTotals.fiber,
+                                              sugars: chipotleAdjustedTotals.sugars,
+                                              protein:
+                                                  chipotleAdjustedTotals.protein,
+                                          }}
+                                          selectedBuildName={item.name}
+                                          selectedIngredientCount={Object.values(
+                                              selectedChipotleIngredientItems,
+                                          ).reduce(
+                                              (sum, entry) =>
+                                                  sum + entry.quantity,
+                                              0,
+                                          )}
+                                          groupedSelectedIngredientEntries={
+                                              chipotleGroupedSelectedIngredientEntries
+                                          }
+                                          ingredientPortionLabelById={
+                                              chipotleIngredientPortionLabelById
+                                          }
+                                          lockedIngredientIds={
+                                              chipotleLockedIngredientIds
+                                          }
+                                          restaurantLogo={item.image ?? ""}
+                                          onResetOrder={() => {}}
+                                          onSaveOrder={() => {}}
+                                          onAdjustIngredientQuantity={(
+                                              ingredientId,
+                                              delta,
+                                          ) =>
+                                              setSelectedChipotleIngredientItems(
+                                                  (prev) => {
+                                                      if (
+                                                          chipotleLockedIngredientIds.has(
+                                                              ingredientId,
+                                                          )
+                                                      )
+                                                          return prev;
+                                                      const selectedIngredient =
+                                                          prev[ingredientId];
+                                                      if (!selectedIngredient)
+                                                          return prev;
+                                                      const nextQuantity =
+                                                          selectedIngredient.quantity +
+                                                          delta;
+                                                      if (nextQuantity <= 0) {
+                                                          const next = {
+                                                              ...prev,
+                                                          };
+                                                          delete next[
+                                                              ingredientId
+                                                          ];
+                                                          return next;
+                                                      }
+                                                      return {
+                                                          ...prev,
+                                                          [ingredientId]: {
+                                                              ...selectedIngredient,
+                                                              quantity:
+                                                                  nextQuantity,
+                                                          },
+                                                      };
+                                                  },
+                                              )
+                                          }
+                                          hideActionButtons
+                                      />
+                                  </div>
+                              </div>
+                          ) : (
+                              <ItemDetailsPanel
+                                  item={item}
+                                  nutrition={nutrition}
+                                  quantityMultiplier={quantity}
+                                  variants={variants}
+                                  selectedVariantId={selectedVariantId}
+                                  onSelectVariant={setSelectedVariantId}
+                                  addons={addons}
+                                  ingredientItems={ingredients}
+                                  menuItems={menuItems}
+                                  customizationRules={customizationRules}
+                                  selectedAddons={selectedAddons}
+                                  onSelectAddon={(ref, addon) =>
+                                      setSelectedAddons((prev) => ({
+                                          ...prev,
+                                          [ref]: addon ?? emptyAddon,
+                                      }))
+                                  }
+                                  sauceSelectionCounts={selectedSauceCounts}
+                                  onIncrementSauce={(addon) => {
+                                      setSelectedSauceCounts((prev) => {
+                                          const currentTotal = Object.values(
+                                              prev,
+                                          ).reduce(
+                                              (sum, count) => sum + count,
+                                              0,
+                                          );
+                                          if (
+                                              currentTotal >= maxSauceSelections
+                                          )
+                                              return prev;
+                                          return {
+                                              ...prev,
+                                              [addon.name]:
+                                                  (prev[addon.name] ?? 0) + 1,
+                                          };
+                                      });
+                                  }}
+                                  onDecrementSauce={(addon) => {
+                                      setSelectedSauceCounts((prev) => {
+                                          const current = prev[addon.name] ?? 0;
+                                          if (current <= 0) return prev;
+                                          const next = { ...prev };
+                                          if (current === 1)
+                                              delete next[addon.name];
+                                          else next[addon.name] = current - 1;
+                                          return next;
+                                      });
+                                  }}
+                                  onToggleSauce={(addon) => {
+                                      setSelectedSauceCounts((prev) => {
+                                          if (addon.name === "None") return {};
+                                          const current = prev[addon.name] ?? 0;
+                                          if (current > 0) {
+                                              const next = { ...prev };
+                                              delete next[addon.name];
+                                              return next;
+                                          }
+                                          const currentTotal = Object.values(
+                                              prev,
+                                          ).reduce(
+                                              (sum, count) => sum + count,
+                                              0,
+                                          );
+                                          if (
+                                              currentTotal >= maxSauceSelections
+                                          )
+                                              return prev;
+                                          return { ...prev, [addon.name]: 1 };
+                                      });
+                                  }}
+                                  customizationTotals={customizationTotals}
+                                  showCustomizationDeltas={
+                                      hasActiveCustomization
+                                  }
+                                  showVariantsInDetails={
+                                      !item.hideVariantSelector
+                                  }
+                                  selectedIngredientCounts={ingredientCounts}
+                                  onDecrementIngredient={(ingredientId) =>
+                                      setSelectedIngredientCounts((prev) => {
+                                          const current =
+                                              ingredientCounts[ingredientId] ??
+                                              0;
+                                          const nextCount = Math.max(
+                                              0,
+                                              current - 1,
+                                          );
+                                          if (nextCount === current)
+                                              return prev;
+
+                                          return {
+                                              ...prev,
+                                              [ingredientId]: nextCount,
+                                          };
+                                      })
+                                  }
+                                  onIncrementIngredient={(ingredientId) =>
+                                      setSelectedIngredientCounts((prev) => {
+                                          const ingredient =
+                                              ingredientLookup.get(
+                                                  ingredientId,
+                                              ) ??
+                                              ingredientLookup.get(
+                                                  ingredientId.toLowerCase(),
+                                              );
+                                          const maxQuantity =
+                                              ingredient?.maxQuantity;
+
+                                          if (typeof maxQuantity !== "number")
+                                              return prev;
+
+                                          const current =
+                                              ingredientCounts[ingredientId] ??
+                                              ingredient?.defaultCount ??
+                                              0;
+                                          const nextCount = Math.min(
+                                              maxQuantity,
+                                              current + 1,
+                                          );
+                                          if (nextCount === current)
+                                              return prev;
+
+                                          return {
+                                              ...prev,
+                                              [ingredientId]: nextCount,
+                                          };
+                                      })
+                                  }
+                                  onToggleIngredient={(ingredientId) =>
+                                      setSelectedIngredientCounts((prev) => {
+                                          const ingredient =
+                                              ingredientLookup.get(
+                                                  ingredientId,
+                                              ) ??
+                                              ingredientLookup.get(
+                                                  ingredientId.toLowerCase(),
+                                              );
+                                          const maxQuantity =
+                                              ingredient?.maxQuantity;
+                                          if (typeof maxQuantity !== "number")
+                                              return prev;
+
+                                          const current =
+                                              prev[ingredientId] ??
+                                              ingredient?.defaultCount ??
+                                              0;
+                                          const nextCount = current > 0 ? 0 : 1;
+                                          if (nextCount === current)
+                                              return prev;
+
+                                          return {
+                                              ...prev,
+                                              [ingredientId]: nextCount,
+                                          };
+                                      })
+                                  }
+                                  onSelectSingleIngredient={(
+                                      ingredientId,
+                                      ingredientIdsInTab,
+                                  ) =>
+                                      setSelectedIngredientCounts((prev) => {
+                                          const next = { ...prev };
+
+                                          ingredientIdsInTab.forEach((id) => {
+                                              next[id] =
+                                                  id === ingredientId ? 1 : 0;
+                                          });
+
+                                          const hasChanged =
+                                              ingredientIdsInTab.some(
+                                                  (id) =>
+                                                      (ingredientCounts[id] ??
+                                                          ingredientLookup.get(
+                                                              id,
+                                                          )?.defaultCount ??
+                                                          0) !== next[id],
+                                              );
+                                          if (!hasChanged) return prev;
+
+                                          return next;
+                                      })
+                                  }
+                                  comboType={comboType}
+                                  comboSides={comboSides}
+                                  comboDrinks={comboDrinks}
+                                  selectedComboSideId={selectedComboSideId}
+                                  selectedComboDrinkId={selectedComboDrinkId}
+                                  onSelectComboSide={(sideId) => {
+                                      if (selectedComboSideId === sideId) {
+                                          setSelectedComboSideId(undefined);
+                                          setSelectedComboSideVariantId(
+                                              undefined,
+                                          );
+                                          return;
+                                      }
+                                      const nextSide = comboSides.find(
+                                          (side) =>
+                                              (side.id ?? side.name) === sideId,
+                                      );
+                                      setSelectedComboSideId(sideId);
+                                      setSelectedComboSideVariantId(
+                                          getDefaultVariantId(nextSide),
+                                      );
+                                  }}
+                                  onSelectComboDrink={(drinkId) => {
+                                      if (selectedComboDrinkId === drinkId) {
+                                          setSelectedComboDrinkId(undefined);
+                                          setSelectedComboDrinkVariantId(
+                                              undefined,
+                                          );
+                                          return;
+                                      }
+                                      const nextDrink = comboDrinks.find(
+                                          (drink) =>
+                                              (drink.id ?? drink.name) ===
+                                              drinkId,
+                                      );
+                                      setSelectedComboDrinkId(drinkId);
+                                      setSelectedComboDrinkVariantId(
+                                          getDefaultVariantId(nextDrink),
+                                      );
+                                  }}
+                                  selectedComboSideVariantId={
+                                      selectedComboSideVariantId
+                                  }
+                                  onSelectComboSideVariant={
+                                      setSelectedComboSideVariantId
+                                  }
+                                  selectedComboDrinkVariantId={
+                                      selectedComboDrinkVariantId
+                                  }
+                                  onSelectComboDrinkVariant={
+                                      setSelectedComboDrinkVariantId
+                                  }
+                                  ingredientsSectionRef={(element) => {
+                                      sectionElementRefs.current.ingredients =
+                                          element;
+                                  }}
+                                  sidesSectionRef={(element) => {
+                                      sectionElementRefs.current.sides =
+                                          element;
+                                  }}
+                                  drinksSectionRef={(element) => {
+                                      sectionElementRefs.current.drinks =
+                                          element;
+                                  }}
+                                  addonSectionRef={(element) => {
+                                      sectionElementRefs.current.sauces =
+                                          element;
+                                  }}
+                                  addonSectionRefType={
+                                      addonNavigationRef ?? undefined
+                                  }
+                                  sectionNavItems={visibleSections}
+                                  activeSectionId={activeSectionId}
+                                  onSelectSection={scrollToSection}
+                                  onCustomizeIngredients={
+                                      canCustomizeViaBuildPage &&
+                                      closeBehavior !== "local"
+                                          ? () => {
+                                                router.push(
+                                                    `/restaurant/${restaurantId}?view=ingredients&editCartItem=${editingCartItem!.id}`,
+                                                    { scroll: false },
+                                                );
+                                            }
+                                          : undefined
+                                  }
+                              />
+                          )}
+                      </div>
+                  </div>
+              </div>
+
+              <div
+                  className="flex h-fit shrink-0 flex-col gap-3 border-t border-black/[0.06] bg-white px-4 pt-3 sm:px-6 sm:py-4 lg:flex-row lg:items-center lg:justify-between lg:px-8"
+                  style={{
+                      paddingBottom:
+                          "max(0.75rem, env(safe-area-inset-bottom))",
+                  }}
+              >
+                  <MacroTotalsGrid
+                      macros={{
+                          calories: Math.round(
+                              (isChipotlePrebuiltBuilderItem
+                                  ? chipotleAdjustedTotals.calories
+                                  : (nutrition.calories ?? 0)) * quantity,
+                          ),
+                          protein: Math.round(
+                              (isChipotlePrebuiltBuilderItem
+                                  ? chipotleAdjustedTotals.protein
+                                  : (nutrition.protein ?? 0)) * quantity,
+                          ),
+                          carbs: Math.round(
+                              (isChipotlePrebuiltBuilderItem
+                                  ? chipotleAdjustedTotals.carbs
+                                  : (nutrition.carbs ?? 0)) * quantity,
+                          ),
+                          totalFat: Math.round(
+                              (isChipotlePrebuiltBuilderItem
+                                  ? chipotleAdjustedTotals.totalFat
+                                  : (nutrition.totalFat ?? 0)) * quantity,
+                          ),
+                      }}
+                      size="panel"
+                      className="w-full justify-between gap-2 sm:gap-3 lg:!w-fit lg:justify-start"
+                      itemClassName="px-2 py-0.5"
+                      labelClassName="text-[#64748b]"
+                  />
+                  <div className="flex w-full flex-row items-center gap-2 lg:w-auto">
+                      <div className="inline-flex h-12 flex-1 items-center justify-between rounded-2xl border border-slate-200 bg-slate-100 p-1 lg:h-auto lg:w-[104px] lg:flex-none">
+                          <button
+                              type="button"
+                              onClick={handleDecrementQuantity}
+                              className="cursor-pointer inline-flex size-9 items-center justify-center rounded-xl text-base font-semibold text-slate-700 transition hover:bg-white"
+                              aria-label={`Decrease quantity of ${item.name}`}
+                          >
+                              -
+                          </button>
+                          <span className="min-w-8 text-center text-sm font-bold text-slate-900">
+                              {quantity}
+                          </span>
+                          <button
+                              type="button"
+                              onClick={handleIncrementQuantity}
+                              className="cursor-pointer inline-flex size-9 items-center justify-center rounded-xl text-base font-semibold text-slate-700 transition hover:bg-white"
+                              aria-label={`Increase quantity of ${item.name}`}
+                          >
+                              +
+                          </button>
+                      </div>
+                      {isCustomizeMode ? (
+                          <button
+                              type="button"
+                              className="cursor-pointer h-12 rounded-2xl border border-black/15 bg-white px-4 py-2.5 text-base font-bold text-black/80 transition hover:bg-slate-50 sm:px-6"
+                              onClick={handleClose}
+                          >
+                              Cancel
+                          </button>
+                      ) : null}
+                      <button
+                          type="button"
+                          className="cursor-pointer h-12 flex-1 rounded-2xl bg-neutral-900 px-4 py-2.5 text-base font-bold text-white transition hover:bg-neutral-800 sm:px-6 lg:flex-none"
+                          onClick={submitCartItem}
+                      >
+                          {submitButtonLabel}
+                      </button>
+                  </div>
+              </div>
           </div>
-        </div>
       </div>
-    </div>
   );
 }
