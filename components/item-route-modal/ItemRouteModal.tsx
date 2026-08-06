@@ -1092,7 +1092,7 @@ export default function ItemRouteModal({
 
                 <div
                     ref={scrollContainerRef}
-                    className="min-h-0 flex-1 overflow-y-auto overscroll-contain"
+                    className="min-h-0 flex-1 overflow-x-hidden overflow-y-auto overscroll-contain"
                 >
                     <div className="px-4 pb-8 pt-7 sm:px-6 sm:pb-10 sm:pt-9 lg:px-8 lg:pt-10">
                         <section

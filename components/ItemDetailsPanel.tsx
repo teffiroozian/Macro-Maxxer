@@ -1,4 +1,12 @@
-import { useId, useState, type Dispatch, type SetStateAction } from "react";
+import {
+  useCallback,
+  useEffect,
+  useId,
+  useRef,
+  useState,
+  type Dispatch,
+  type SetStateAction,
+} from "react";
 import Image from "next/image";
 import type {
   IngredientItem,
@@ -65,18 +73,52 @@ function InfoTooltip({
 }) {
   const [isOpen, setIsOpen] = useState(false);
   const tooltipId = useId();
+  const containerRef = useRef<HTMLSpanElement>(null);
+  const supportsHoverRef = useRef(false);
+
+  useEffect(() => {
+    supportsHoverRef.current = window.matchMedia(
+      "(hover: hover) and (pointer: fine)",
+    ).matches;
+  }, []);
+
+  useEffect(() => {
+    if (!isOpen) return;
+    const handlePointerDown = (event: PointerEvent) => {
+      if (
+        containerRef.current &&
+        !containerRef.current.contains(event.target as Node)
+      ) {
+        setIsOpen(false);
+      }
+    };
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setIsOpen(false);
+    };
+    document.addEventListener("pointerdown", handlePointerDown);
+    document.addEventListener("keydown", handleKeyDown);
+    return () => {
+      document.removeEventListener("pointerdown", handlePointerDown);
+      document.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [isOpen]);
 
   return (
-    <span className="relative inline-flex">
+    <span ref={containerRef} className="relative inline-flex">
       <button
         type="button"
         aria-label={label}
         aria-describedby={tooltipId}
-        onMouseEnter={() => setIsOpen(true)}
-        onMouseLeave={() => setIsOpen(false)}
+        aria-expanded={isOpen}
+        onMouseEnter={() => {
+          if (supportsHoverRef.current) setIsOpen(true);
+        }}
+        onMouseLeave={() => {
+          if (supportsHoverRef.current) setIsOpen(false);
+        }}
         onFocus={() => setIsOpen(true)}
         onBlur={() => setIsOpen(false)}
-        onClick={() => setIsOpen((prev) => !prev)}
+        onClick={() => setIsOpen(true)}
         className="inline-flex h-4 w-4 cursor-pointer items-center justify-center rounded-full text-[#16a34a] transition hover:text-[#128a3e] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-strong/50"
       >
         <Info className="h-3.5 w-3.5" aria-hidden="true" />
@@ -598,6 +640,78 @@ function QuantityStepper({
   );
 }
 
+function IngredientCategoryTabs({
+  visibleTabs,
+  selectedTab,
+  setActiveTab,
+}: {
+  visibleTabs: ResolvedIngredientTab[];
+  selectedTab: ResolvedIngredientTab;
+  setActiveTab: Dispatch<SetStateAction<string>>;
+}) {
+  const scrollRef = useRef<HTMLDivElement>(null);
+  const [canScrollLeft, setCanScrollLeft] = useState(false);
+  const [canScrollRight, setCanScrollRight] = useState(false);
+
+  const updateScrollState = useCallback(() => {
+    const el = scrollRef.current;
+    if (!el) return;
+    setCanScrollLeft(el.scrollLeft > 1);
+    setCanScrollRight(el.scrollLeft + el.clientWidth < el.scrollWidth - 1);
+  }, []);
+
+  useEffect(() => {
+    updateScrollState();
+    window.addEventListener("resize", updateScrollState);
+    return () => window.removeEventListener("resize", updateScrollState);
+  }, [updateScrollState, visibleTabs.length]);
+
+  return (
+    <div className="relative min-w-0 mb-3 border-b border-black/[0.06] pb-3">
+      <div
+        ref={scrollRef}
+        role="tablist"
+        aria-label="Ingredient categories"
+        onScroll={updateScrollState}
+        className="hide-scrollbar flex min-w-0 flex-nowrap gap-1 overflow-x-auto overscroll-x-contain"
+      >
+        {visibleTabs.map((tab) => {
+          const isActive = tab.label === selectedTab.label;
+
+          return (
+            <button
+              key={tab.id}
+              type="button"
+              role="tab"
+              aria-selected={isActive}
+              className={`shrink-0 cursor-pointer rounded-full px-3.5 py-1.5 text-sm font-semibold whitespace-nowrap transition-colors duration-150 ${
+                isActive
+                  ? "bg-accent-soft text-accent-strong"
+                  : "text-slate-500 hover:bg-slate-50 hover:text-slate-700"
+              }`}
+              onClick={() => setActiveTab(tab.label)}
+            >
+              {getIngredientTabDisplayLabel(tab.label)}
+            </button>
+          );
+        })}
+      </div>
+      <div
+        aria-hidden="true"
+        className={`pointer-events-none absolute top-0 bottom-3 left-0 w-8 bg-gradient-to-r from-white to-transparent transition-opacity duration-150 ${
+          canScrollLeft ? "opacity-100" : "opacity-0"
+        }`}
+      />
+      <div
+        aria-hidden="true"
+        className={`pointer-events-none absolute top-0 right-0 bottom-3 w-8 bg-gradient-to-l from-white to-transparent transition-opacity duration-150 ${
+          canScrollRight ? "opacity-100" : "opacity-0"
+        }`}
+      />
+    </div>
+  );
+}
+
 function IngredientCustomizationSection({
   config,
 }: IngredientCustomizationSectionProps) {
@@ -617,7 +731,7 @@ function IngredientCustomizationSection({
     onIncrement,
   } = config;
   return (
-    <section className="rounded-2xl border border-black/10 bg-white p-5 sm:p-6">
+    <section className="min-w-0 overflow-x-hidden rounded-2xl border border-black/10 bg-white p-5 sm:p-6">
       <div className="mb-5 flex items-start justify-between gap-3">
         <div>
           <h2 className="text-lg font-bold text-neutral-900 sm:text-xl">
@@ -639,32 +753,11 @@ function IngredientCustomizationSection({
         ) : null}
       </div>
       {!flattenList && visibleTabs.length > 1 ? (
-        <div
-          role="tablist"
-          aria-label="Ingredient categories"
-          className="mb-3 flex flex-wrap gap-1 border-b border-black/[0.06] pb-3"
-        >
-          {visibleTabs.map((tab) => {
-            const isActive = tab.label === selectedTab.label;
-
-            return (
-              <button
-                key={tab.id}
-                type="button"
-                role="tab"
-                aria-selected={isActive}
-                className={`cursor-pointer rounded-full px-3 py-1.5 text-xs font-semibold transition-colors duration-150 sm:text-sm ${
-                  isActive
-                    ? "bg-accent-soft text-accent-strong"
-                    : "text-slate-500 hover:bg-slate-50 hover:text-slate-700"
-                }`}
-                onClick={() => setActiveTab(tab.label)}
-              >
-                {getIngredientTabDisplayLabel(tab.label)}
-              </button>
-            );
-          })}
-        </div>
+        <IngredientCategoryTabs
+          visibleTabs={visibleTabs}
+          selectedTab={selectedTab}
+          setActiveTab={setActiveTab}
+        />
       ) : null}
       {displayIngredients.length > 0 ? (
         <ul className="flex list-none flex-col divide-y divide-black/[0.06] pl-0">
@@ -690,7 +783,7 @@ function IngredientCustomizationSection({
             const nameAndMeta = (
               <div className="min-w-0 flex-1">
                 <p
-                  className={`truncate text-sm font-semibold sm:text-base ${
+                  className={`line-clamp-2 break-words text-sm font-semibold sm:line-clamp-1 sm:truncate sm:text-base ${
                     isRemoved
                       ? "text-slate-400 line-through decoration-slate-300"
                       : "text-neutral-900"
@@ -915,7 +1008,7 @@ function ComboOptionRow({
         >
           <IngredientThumb icon={item.image ?? ""} />
           <div className="min-w-0 flex-1">
-            <p className="truncate text-sm font-semibold text-neutral-900 sm:text-base">
+            <p className="line-clamp-2 break-words text-sm font-semibold text-neutral-900 sm:line-clamp-1 sm:truncate sm:text-base">
               {item.name}
             </p>
             <p className="mt-0.5 text-xs text-slate-500">
@@ -1283,6 +1376,190 @@ function AddonCustomizationSection({ config }: AddonCustomizationSectionProps) {
   );
 }
 
+type MacroSegment = {
+  label: string;
+  shortLabel: string;
+  percent: number;
+  roundedPercent: number;
+  color: string;
+  inBarLabel: string;
+};
+
+type MacroTooltipTargetProps = {
+  segment: MacroSegment;
+  isOpen: boolean;
+  onOpen: () => void;
+  onClose: () => void;
+  onToggle: () => void;
+};
+
+function MacroSegmentBar({
+  segment,
+  isOpen,
+  onOpen,
+  onClose,
+  onToggle,
+}: MacroTooltipTargetProps) {
+  const tooltipId = useId();
+
+  return (
+    <div
+      className="relative min-w-0"
+      style={{ width: `${segment.percent}%` }}
+    >
+      <button
+        type="button"
+        aria-describedby={tooltipId}
+        aria-label={`${segment.label}: ${segment.roundedPercent}%`}
+        onMouseEnter={onOpen}
+        onMouseLeave={onClose}
+        onFocus={onOpen}
+        onBlur={onClose}
+        onClick={(event) => {
+          event.stopPropagation();
+          onToggle();
+        }}
+        className={`flex h-full w-full min-w-0 cursor-pointer items-center justify-center rounded-lg px-1 text-[11px] font-semibold whitespace-nowrap transition-shadow focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/80 focus-visible:ring-offset-1 ${segment.color}`}
+      >
+        {segment.inBarLabel}
+      </button>
+      <span
+        role="tooltip"
+        id={tooltipId}
+        className={`pointer-events-none absolute bottom-full left-1/2 z-20 mb-2 -translate-x-1/2 rounded-lg bg-neutral-900 px-2.5 py-1.5 text-[11px] leading-snug font-medium whitespace-nowrap text-white shadow-lg transition-opacity duration-150 ${
+          isOpen ? "opacity-100" : "opacity-0"
+        }`}
+      >
+        {segment.label} · {segment.roundedPercent}%
+      </span>
+    </div>
+  );
+}
+
+function MacroLegendInfo({ segments }: { segments: MacroSegment[] }) {
+  const [isOpen, setIsOpen] = useState(false);
+  const tooltipId = useId();
+  const containerRef = useRef<HTMLSpanElement>(null);
+  const supportsHoverRef = useRef(false);
+
+  useEffect(() => {
+    supportsHoverRef.current = window.matchMedia(
+      "(hover: hover) and (pointer: fine)",
+    ).matches;
+  }, []);
+
+  useEffect(() => {
+    if (!isOpen) return;
+    const handlePointerDown = (event: PointerEvent) => {
+      if (
+        containerRef.current &&
+        !containerRef.current.contains(event.target as Node)
+      ) {
+        setIsOpen(false);
+      }
+    };
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setIsOpen(false);
+    };
+    document.addEventListener("pointerdown", handlePointerDown);
+    document.addEventListener("keydown", handleKeyDown);
+    return () => {
+      document.removeEventListener("pointerdown", handlePointerDown);
+      document.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [isOpen]);
+
+  return (
+    <span ref={containerRef} className="relative inline-flex">
+      <button
+        type="button"
+        aria-label="Macro split breakdown"
+        aria-describedby={tooltipId}
+        aria-expanded={isOpen}
+        onMouseEnter={() => {
+          if (supportsHoverRef.current) setIsOpen(true);
+        }}
+        onMouseLeave={() => {
+          if (supportsHoverRef.current) setIsOpen(false);
+        }}
+        onFocus={() => setIsOpen(true)}
+        onBlur={() => setIsOpen(false)}
+        onClick={() => setIsOpen(true)}
+        className="inline-flex h-4 w-4 cursor-pointer items-center justify-center rounded-full text-[#16a34a] transition hover:text-[#128a3e] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-strong/50"
+      >
+        <Info className="h-3.5 w-3.5" aria-hidden="true" />
+      </button>
+      <div
+        role="tooltip"
+        id={tooltipId}
+        className={`pointer-events-none absolute top-full left-0 z-20 mt-2 w-36 rounded-lg bg-neutral-900 px-3 py-2 text-white shadow-lg transition-opacity duration-150 ${
+          isOpen ? "opacity-100" : "opacity-0"
+        }`}
+      >
+        <ul className="space-y-1">
+          {segments.map((segment) => (
+            <li
+              key={segment.label}
+              className="flex items-center justify-between gap-3 text-[11px] leading-snug font-medium"
+            >
+              <span className="flex items-center gap-1.5">
+                <span
+                  aria-hidden="true"
+                  className={`h-2 w-2 shrink-0 rounded-full ${segment.color}`}
+                />
+                {segment.label}
+              </span>
+              <span>{segment.roundedPercent}%</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </span>
+  );
+}
+
+function MacroSplitChart({ segments }: { segments: MacroSegment[] }) {
+  const [openLabel, setOpenLabel] = useState<string | null>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!openLabel) return;
+    const handlePointerDown = (event: PointerEvent) => {
+      if (
+        containerRef.current &&
+        !containerRef.current.contains(event.target as Node)
+      ) {
+        setOpenLabel(null);
+      }
+    };
+    document.addEventListener("pointerdown", handlePointerDown);
+    return () => document.removeEventListener("pointerdown", handlePointerDown);
+  }, [openLabel]);
+
+  return (
+    <div ref={containerRef} className="flex h-12 w-full gap-1.5 overflow-hidden rounded-xl border border-black/10 bg-neutral-100 p-1.5">
+      {segments.map((segment) => (
+        <MacroSegmentBar
+          key={segment.label}
+          segment={segment}
+          isOpen={openLabel === segment.label}
+          onOpen={() => setOpenLabel(segment.label)}
+          onClose={() =>
+            setOpenLabel((current) =>
+              current === segment.label ? null : current,
+            )
+          }
+          onToggle={() =>
+            setOpenLabel((current) =>
+              current === segment.label ? null : segment.label,
+            )
+          }
+        />
+      ))}
+    </div>
+  );
+}
+
 export default function ItemDetailsPanel({
   item,
   nutrition,
@@ -1426,9 +1703,6 @@ export default function ItemDetailsPanel({
 
     return { ...segment, roundedPercent, inBarLabel };
   });
-  const hasIllegibleMacroSegment = macroSegments.some(
-    (segment) => segment.inBarLabel === "",
-  );
   const [sectionOpenState, setSectionOpenState] = useState<
     Record<string, boolean>
   >({});
@@ -1825,7 +2099,7 @@ export default function ItemDetailsPanel({
 
           <section className="rounded-2xl border border-black/10 bg-white p-5">
             <h2 className="mb-4 text-2xl font-bold text-neutral-900">
-              Your order
+              Meal Details
             </h2>
 
             {variantConfig.showInDetails ? (
@@ -1890,39 +2164,13 @@ export default function ItemDetailsPanel({
             </div>
 
             <div className="mt-6 space-y-2 border-t border-black/[0.06] pt-6">
-              <SectionEyebrow className="text-base text-neutral-500">
-                Macro Split
-              </SectionEyebrow>
-              <div className="flex h-12 w-full gap-1.5 overflow-hidden rounded-xl border border-black/10 bg-neutral-100 p-1.5">
-                {macroSegments.map((segment) => (
-                  <div
-                    key={segment.label}
-                    className={`flex min-w-0 items-center justify-center rounded-lg px-1 text-[11px] font-semibold whitespace-nowrap ${segment.color}`}
-                    style={{ width: `${segment.percent}%` }}
-                  >
-                    {segment.inBarLabel}
-                  </div>
-                ))}
+              <div className="flex items-center gap-1.5">
+                <SectionEyebrow className="text-base text-neutral-500">
+                  Macro Split
+                </SectionEyebrow>
+                <MacroLegendInfo segments={macroSegments} />
               </div>
-              {hasIllegibleMacroSegment ? (
-                <div className="flex flex-wrap items-center gap-x-4 gap-y-1 pt-1">
-                  {macroSegments.map((segment) => (
-                    <div
-                      key={segment.label}
-                      className="flex items-center gap-1.5 text-xs text-slate-600"
-                    >
-                      <span
-                        aria-hidden="true"
-                        className={`h-2 w-2 shrink-0 rounded-full ${segment.color}`}
-                      />
-                      <span className="font-medium text-neutral-900">
-                        {segment.label}
-                      </span>
-                      <span>{segment.roundedPercent}%</span>
-                    </div>
-                  ))}
-                </div>
-              ) : null}
+              <MacroSplitChart segments={macroSegments} />
             </div>
           </section>
         </div>
