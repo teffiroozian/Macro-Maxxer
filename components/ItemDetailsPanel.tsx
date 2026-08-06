@@ -1075,7 +1075,7 @@ function IngredientCustomizationSection({
             return (
               <li key={ingredient.id} className="flex py-1">
                 <div
-                  className={`flex w-full items-center gap-3 rounded-xl border px-2 py-2 transition-colors sm:px-3 ${
+                  className={`flex w-full items-start gap-3 rounded-xl border px-2 py-2 transition-colors sm:items-center sm:px-3 ${
                     isActiveSelectedRow
                       ? "border-accent/30 bg-accent-soft hover:border-accent/50"
                       : "border-transparent"
@@ -1274,7 +1274,7 @@ function SauceOptionRow({
       <div
         role="button"
         tabIndex={0}
-        className={`flex w-full cursor-pointer items-center gap-3 rounded-xl border px-2 py-2 transition-colors sm:px-3 ${
+        className={`flex w-full cursor-pointer items-start gap-3 rounded-xl border px-2 py-2 transition-colors sm:items-center sm:px-3 ${
           isSelected
             ? "border-accent/30 bg-accent-soft hover:border-accent/50"
             : "border-transparent hover:bg-slate-50"
