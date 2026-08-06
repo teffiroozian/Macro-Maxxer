@@ -160,7 +160,7 @@ function MacroInlineSummary({
     <p
       className={`flex min-w-0 flex-wrap items-baseline gap-x-1.5 gap-y-0.5 text-xs ${className}`}
     >
-      <span className="font-normal text-slate-600">
+      <span className="font-medium text-slate-600">
         {calories !== undefined ? `${calories} Cal` : "— Cal"}
       </span>
       {gramMacroOrder.map((macroKey) => {
@@ -169,7 +169,7 @@ function MacroInlineSummary({
           <span key={macroKey} className="whitespace-nowrap">
             <span className="text-black">· </span>
             <span
-              className={`font-normal ${macroDisplayConfig[macroKey].valueClassNameByVariant.default}`}
+              className={`font-medium ${macroDisplayConfig[macroKey].valueClassNameByVariant.default}`}
             >
               {value !== undefined
                 ? `${value}g ${macroDisplayConfig[macroKey].shortLabel}`
@@ -688,6 +688,7 @@ function QuantityStepper({
   onIncrement,
   onDecrement,
   hideAddLabel = false,
+  compact = false,
 }: {
   count: number;
   maxQuantity: number;
@@ -696,6 +697,7 @@ function QuantityStepper({
   onIncrement?: () => void;
   onDecrement?: () => void;
   hideAddLabel?: boolean;
+  compact?: boolean;
 }) {
   return (
       <div
@@ -704,17 +706,27 @@ function QuantityStepper({
           onMouseDown={(event) => event.stopPropagation()}
       >
           {count > 0 ? (
-              <div className="inline-flex h-8 shrink-0 items-center gap-1 rounded-full border border-accent/25 bg-white p-1 shadow-sm">
+              <div
+                  className={`inline-flex shrink-0 items-center rounded-full border border-accent/25 bg-white shadow-sm ${
+                      compact ? "h-6 gap-0.5 p-0.5" : "h-8 gap-1 p-1"
+                  }`}
+              >
                   <button
                       type="button"
                       onClick={onDecrement}
                       aria-label={`Remove one ${label}`}
                       disabled={disabled}
-                      className="inline-flex h-6 w-6 cursor-pointer items-center justify-center rounded-full bg-accent-soft text-slate-600 shadow-sm transition hover:bg-slate-100 active:bg-slate-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-strong/50 disabled:cursor-not-allowed disabled:opacity-30"
+                      className={`inline-flex cursor-pointer items-center justify-center rounded-full bg-accent-soft text-slate-600 shadow-sm transition hover:bg-slate-100 active:bg-slate-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-strong/50 disabled:cursor-not-allowed disabled:opacity-30 ${
+                          compact ? "h-5 w-5" : "h-6 w-6"
+                      }`}
                   >
-                      <Minus size={12} strokeWidth={2.5} />
+                      <Minus size={compact ? 10 : 12} strokeWidth={2.5} />
                   </button>
-                  <span className="min-w-[1.25rem] text-center text-sm font-bold text-neutral-900">
+                  <span
+                      className={`min-w-[1.25rem] text-center font-bold text-neutral-900 ${
+                          compact ? "text-xs" : "text-sm"
+                      }`}
+                  >
                       {count}
                   </span>
                   <button
@@ -722,25 +734,42 @@ function QuantityStepper({
                       onClick={onIncrement}
                       aria-label={`Add one more ${label}`}
                       disabled={count >= maxQuantity}
-                      className="inline-flex h-6 w-6 cursor-pointer items-center justify-center rounded-full bg-accent-soft text-slate-600 shadow-sm transition hover:bg-slate-100 active:bg-slate-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-strong/50 disabled:cursor-not-allowed disabled:opacity-30"
+                      className={`inline-flex cursor-pointer items-center justify-center rounded-full bg-accent-soft text-slate-600 shadow-sm transition hover:bg-slate-100 active:bg-slate-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-strong/50 disabled:cursor-not-allowed disabled:opacity-30 ${
+                          compact ? "h-5 w-5" : "h-6 w-6"
+                      }`}
                   >
-                      <Plus size={12} strokeWidth={2.5} />
+                      <Plus size={compact ? 10 : 12} strokeWidth={2.5} />
                   </button>
               </div>
-          ) : (
+          ) : hideAddLabel ? (
               <button
                   type="button"
                   onClick={onIncrement}
                   aria-label={`Add ${label}`}
-                  className={
-                      hideAddLabel
-                          ? "inline-flex h-8 w-8 shrink-0 cursor-pointer items-center justify-center rounded-full border border-slate-200 text-slate-600 transition hover:border-accent-strong hover:text-accent-strong"
-                          : "inline-flex cursor-pointer items-center gap-1 rounded-full border border-slate-200 px-3 py-1.5 text-xs font-semibold text-slate-600 transition hover:border-accent-strong hover:text-accent-strong sm:text-sm"
-                  }
+                  className="inline-flex h-8 w-8 shrink-0 cursor-pointer items-center justify-center rounded-full border border-slate-200 text-slate-600 transition hover:border-accent-strong hover:text-accent-strong"
               >
-                  <Plus size={hideAddLabel ? 14 : 13} strokeWidth={2.5} />
-                  {hideAddLabel ? null : "Add"}
+                  <Plus size={14} strokeWidth={2.5} />
               </button>
+          ) : (
+              <>
+                  <button
+                      type="button"
+                      onClick={onIncrement}
+                      aria-label={`Add ${label}`}
+                      className="inline-flex h-7 w-7 shrink-0 cursor-pointer items-center justify-center rounded-full border border-slate-200 text-slate-600 transition hover:border-accent-strong hover:text-accent-strong sm:hidden"
+                  >
+                      <Plus size={13} strokeWidth={2.5} />
+                  </button>
+                  <button
+                      type="button"
+                      onClick={onIncrement}
+                      aria-label={`Add ${label}`}
+                      className="hidden cursor-pointer items-center gap-1 rounded-full border border-slate-200 px-3 py-1.5 text-xs font-semibold text-slate-600 transition hover:border-accent-strong hover:text-accent-strong sm:inline-flex sm:text-sm"
+                  >
+                      <Plus size={13} strokeWidth={2.5} />
+                      Add
+                  </button>
+              </>
           )}
       </div>
   );
@@ -837,7 +866,7 @@ function IngredientCustomizationSection({
     onIncrement,
   } = config;
   return (
-    <section className="min-w-0 overflow-x-hidden rounded-2xl border border-black/10 bg-white p-5 sm:p-6">
+    <section className="min-w-0 overflow-x-hidden rounded-2xl border border-black/10 bg-white p-4 sm:p-6">
       <div className="mb-5 flex items-start justify-between gap-3">
         <div>
           <h2 className="text-lg font-bold text-neutral-900 sm:text-xl">
@@ -921,6 +950,42 @@ function IngredientCustomizationSection({
                     ) : null}
                   </div>
                 ) : null}
+                {hasQuantityControl && ingredientCount > 0 && !isSingleSelectTab ? (
+                  <div
+                    className="mt-2 flex justify-end sm:hidden"
+                    onClick={(event) => event.stopPropagation()}
+                    onMouseDown={(event) => event.stopPropagation()}
+                  >
+                    <QuantityStepper
+                      count={ingredientCount}
+                      maxQuantity={ingredient.maxQuantity as number}
+                      disabled={isLocked(ingredient.id)}
+                      label={ingredient.label}
+                      onIncrement={() => onIncrement?.(ingredient.id)}
+                      onDecrement={() => onDecrement?.(ingredient.id)}
+                      compact
+                    />
+                  </div>
+                ) : null}
+                {shouldShowSingleSelectNavigator ? (
+                  <div className="mt-1.5 flex justify-end sm:hidden">
+                    <button
+                      type="button"
+                      aria-label={`${isRemoved ? "Restore" : "Change"} ${ingredient.label}`}
+                      onClick={(event) => {
+                        event.stopPropagation();
+                        navigateToSingleSelectTab(
+                          ingredient.id,
+                          linkedSingleSelectTab,
+                        );
+                      }}
+                      className="inline-flex cursor-pointer items-center gap-0.5 rounded-full py-1.5 pr-2 pl-0 text-xs font-semibold text-slate-500 transition hover:text-neutral-900"
+                    >
+                      {isRemoved ? "Add back" : "Change"}
+                      <ChevronRight size={14} />
+                    </button>
+                  </div>
+                ) : null}
               </div>
             );
 
@@ -977,20 +1042,28 @@ function IngredientCustomizationSection({
                         linkedSingleSelectTab,
                       );
                     }}
-                    className="inline-flex shrink-0 cursor-pointer items-center gap-0.5 rounded-full py-1.5 pr-2 pl-2.5 text-xs font-semibold text-slate-500 transition hover:bg-slate-100 hover:text-neutral-900 sm:text-sm"
+                    className="hidden shrink-0 cursor-pointer items-center gap-0.5 rounded-full py-1.5 pr-2 pl-2.5 text-xs font-semibold text-slate-500 transition hover:bg-slate-100 hover:text-neutral-900 sm:inline-flex sm:text-sm"
                   >
                     {isRemoved ? "Add back" : "Change"}
                     <ChevronRight size={14} />
                   </button>
                 ) : hasQuantityControl ? (
-                  <QuantityStepper
-                    count={ingredientCount}
-                    maxQuantity={ingredient.maxQuantity as number}
-                    disabled={isLocked(ingredient.id)}
-                    label={ingredient.label}
-                    onIncrement={() => onIncrement?.(ingredient.id)}
-                    onDecrement={() => onDecrement?.(ingredient.id)}
-                  />
+                  <div
+                    className={
+                      ingredientCount > 0
+                        ? "hidden shrink-0 sm:block"
+                        : "shrink-0"
+                    }
+                  >
+                    <QuantityStepper
+                      count={ingredientCount}
+                      maxQuantity={ingredient.maxQuantity as number}
+                      disabled={isLocked(ingredient.id)}
+                      label={ingredient.label}
+                      onIncrement={() => onIncrement?.(ingredient.id)}
+                      onDecrement={() => onDecrement?.(ingredient.id)}
+                    />
+                  </div>
                 ) : null}
               </>
             );
@@ -1225,16 +1298,39 @@ function SauceOptionRow({
             totalFat={addon.nutrition.totalFat}
             className="mt-0.5"
           />
+          {!isNoneOption && sauceCount > 0 ? (
+            <div
+              className="mt-2 flex justify-end sm:hidden"
+              onClick={(event) => event.stopPropagation()}
+              onMouseDown={(event) => event.stopPropagation()}
+            >
+              <QuantityStepper
+                count={sauceCount}
+                maxQuantity={Number.POSITIVE_INFINITY}
+                label={addon.name}
+                hideAddLabel
+                compact
+                onIncrement={() => onIncrementSauce?.(addon)}
+                onDecrement={() => onDecrementSauce?.(addon)}
+              />
+            </div>
+          ) : null}
         </div>
         {!isNoneOption ? (
-          <QuantityStepper
-            count={sauceCount}
-            maxQuantity={Number.POSITIVE_INFINITY}
-            label={addon.name}
-            hideAddLabel
-            onIncrement={() => onIncrementSauce?.(addon)}
-            onDecrement={() => onDecrementSauce?.(addon)}
-          />
+          <div
+            className={
+              sauceCount > 0 ? "hidden shrink-0 sm:block" : "shrink-0"
+            }
+          >
+            <QuantityStepper
+              count={sauceCount}
+              maxQuantity={Number.POSITIVE_INFINITY}
+              label={addon.name}
+              hideAddLabel
+              onIncrement={() => onIncrementSauce?.(addon)}
+              onDecrement={() => onDecrementSauce?.(addon)}
+            />
+          </div>
         ) : null}
       </div>
     </li>
@@ -1444,30 +1540,43 @@ function AddonCustomizationSection({ config }: AddonCustomizationSectionProps) {
     <section className="rounded-2xl border border-black/10 bg-white p-5 sm:p-6">
       <div className="grid gap-4">
         {sections.map((section) => {
+          const isAlwaysExpandedSection =
+            section.ref === "sauces" || section.ref === "dressings";
           const sectionStateKey = `addon-${section.ref}`;
-          const isSectionOpen = openState[sectionStateKey] ?? true;
+          const isSectionOpen = isAlwaysExpandedSection
+            ? true
+            : (openState[sectionStateKey] ?? true);
           const summaryDetail = section.summaryDetail;
           return (
             <div key={section.ref} className="min-w-0">
               <div
-                className="flex min-h-[44px] w-full cursor-pointer items-center justify-between gap-[10px] rounded-[10px] border-0 bg-transparent py-1 text-left"
-                role="button"
-                tabIndex={0}
-                onClick={() =>
-                  setOpenState((prev) => ({
-                    ...prev,
-                    [sectionStateKey]: !(prev[sectionStateKey] ?? true),
-                  }))
+                className={`flex min-h-[44px] w-full items-center justify-between gap-[10px] rounded-[10px] border-0 bg-transparent py-1 text-left ${
+                  isAlwaysExpandedSection ? "" : "cursor-pointer"
+                }`}
+                role={isAlwaysExpandedSection ? undefined : "button"}
+                tabIndex={isAlwaysExpandedSection ? undefined : 0}
+                onClick={
+                  isAlwaysExpandedSection
+                    ? undefined
+                    : () =>
+                        setOpenState((prev) => ({
+                          ...prev,
+                          [sectionStateKey]: !(prev[sectionStateKey] ?? true),
+                        }))
                 }
-                onKeyDown={(event) => {
-                  if (event.key === "Enter" || event.key === " ") {
-                    event.preventDefault();
-                    setOpenState((prev) => ({
-                      ...prev,
-                      [sectionStateKey]: !(prev[sectionStateKey] ?? true),
-                    }));
-                  }
-                }}
+                onKeyDown={
+                  isAlwaysExpandedSection
+                    ? undefined
+                    : (event) => {
+                        if (event.key === "Enter" || event.key === " ") {
+                          event.preventDefault();
+                          setOpenState((prev) => ({
+                            ...prev,
+                            [sectionStateKey]: !(prev[sectionStateKey] ?? true),
+                          }));
+                        }
+                      }
+                }
               >
                 <h3 className="m-0 text-lg font-bold text-neutral-900 sm:text-xl">
                   {section.title}
@@ -1478,14 +1587,16 @@ function AddonCustomizationSection({ config }: AddonCustomizationSectionProps) {
                     </span>
                   ) : null}
                 </h3>
-                <div className="inline-flex items-center gap-2">
-                  <span className="inline-flex h-7 w-7 cursor-inherit items-center justify-center bg-white">
-                    <ChevronDown
-                      size={24}
-                      className={`transition-transform ${isSectionOpen ? "rotate-180" : ""}`}
-                    />
-                  </span>
-                </div>
+                {isAlwaysExpandedSection ? null : (
+                  <div className="inline-flex items-center gap-2">
+                    <span className="inline-flex h-7 w-7 cursor-inherit items-center justify-center bg-white">
+                      <ChevronDown
+                        size={24}
+                        className={`transition-transform ${isSectionOpen ? "rotate-180" : ""}`}
+                      />
+                    </span>
+                  </div>
+                )}
               </div>
               {isSectionOpen ? (
                 section.ref === "sauces" ? (
@@ -2219,7 +2330,7 @@ export default function ItemDetailsPanel({
   return (
     <div className="grid gap-10">
       {hasBuildContent ? (
-        <div className="grid gap-4 rounded-3xl bg-app-background p-4 sm:p-5">
+        <div className="grid gap-3 rounded-3xl bg-app-background p-3 sm:gap-4 sm:p-5">
           {shouldShowIngredientSection && ingredientConfig ? (
             <IngredientCustomizationSection config={ingredientConfig} />
           ) : null}
