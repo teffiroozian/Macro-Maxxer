@@ -31,6 +31,7 @@ import {
 } from "@/lib/ingredientTabs";
 import { getProteinPer100Calories, getProteinScoreTier } from "@/lib/nutrition";
 import ProteinScorePill from "@/components/menu-item-card/ProteinScorePill";
+import { gramMacroOrder, macroDisplayConfig } from "@/components/nutrition/macroDisplay";
 import {
   normalizeIngredientCategory,
   normalizeIngredientToken,
@@ -136,6 +137,51 @@ function InfoTooltip({
   );
 }
 
+function MacroInlineSummary({
+  calories,
+  protein,
+  carbs,
+  totalFat,
+  className = "",
+}: {
+  calories?: number;
+  protein?: number;
+  carbs?: number;
+  totalFat?: number;
+  className?: string;
+}) {
+  const gramValues: Record<"protein" | "carbs" | "totalFat", number | undefined> = {
+    protein,
+    carbs,
+    totalFat,
+  };
+
+  return (
+    <p
+      className={`flex min-w-0 flex-wrap items-baseline gap-x-1.5 gap-y-0.5 text-xs ${className}`}
+    >
+      <span className="font-normal text-slate-600">
+        {calories !== undefined ? `${calories} Cal` : "— Cal"}
+      </span>
+      {gramMacroOrder.map((macroKey) => {
+        const value = gramValues[macroKey];
+        return (
+          <span key={macroKey} className="whitespace-nowrap">
+            <span className="text-black">· </span>
+            <span
+              className={`font-normal ${macroDisplayConfig[macroKey].valueClassNameByVariant.default}`}
+            >
+              {value !== undefined
+                ? `${value}g ${macroDisplayConfig[macroKey].shortLabel}`
+                : `—g ${macroDisplayConfig[macroKey].shortLabel}`}
+            </span>
+          </span>
+        );
+      })}
+    </p>
+  );
+}
+
 function isIconImage(icon: string) {
   return (
     icon.startsWith("/") ||
@@ -159,6 +205,9 @@ type DisplayIngredient = ResolvedPanelIngredient & {
   shouldShowPortionBadge: boolean;
   portionBadge?: string;
   displayedCalories?: number;
+  displayedProtein: number;
+  displayedCarbs: number;
+  displayedFat: number;
   linkedSingleSelectTab?: ResolvedIngredientTab;
   shouldShowSingleSelectNavigator: boolean;
   isSingleSelectTab: boolean;
@@ -412,6 +461,15 @@ function prepareDisplayIngredients({
               ingredient.calories * (displayCount > 0 ? displayCount : 1),
             )
           : undefined,
+      displayedProtein: Math.round(
+        ingredient.nutrition.protein * (displayCount > 0 ? displayCount : 1),
+      ),
+      displayedCarbs: Math.round(
+        ingredient.nutrition.carbs * (displayCount > 0 ? displayCount : 1),
+      ),
+      displayedFat: Math.round(
+        ingredient.nutrition.totalFat * (displayCount > 0 ? displayCount : 1),
+      ),
       linkedSingleSelectTab,
       shouldShowSingleSelectNavigator,
       isSingleSelectTab: selectedIngredientTab?.selectionMode === "single",
@@ -439,16 +497,45 @@ export function PortionSelector({
 }) {
   if (!variants || variants.length === 0) return null;
 
-  const isTopLayout = layout === "top";
-  const wrapperClasses = isTopLayout
-    ? `${className} my-3 flex flex-col items-center justify-between gap-4`
-    : `${className} space-y-2`;
+  if (layout === "top") {
+    return (
+      <div className={className}>
+        <p className="text-[11px] font-semibold uppercase tracking-wide text-slate-400">
+          Portion
+        </p>
+        <div
+          role="radiogroup"
+          aria-label="Portion"
+          className="mt-1.5 grid w-full auto-cols-fr grid-flow-col gap-1 rounded-full bg-slate-100 p-1"
+        >
+          {variants.map((variant) => {
+            const isActive = variant.id === selectedVariantId;
+
+            return (
+              <button
+                key={variant.id}
+                type="button"
+                role="radio"
+                aria-checked={isActive}
+                onClick={() => onSelectVariant?.(variant.id)}
+                className={`box-border flex h-9 min-w-0 cursor-pointer items-center justify-center whitespace-nowrap rounded-full border px-2 text-[13px] font-semibold transition-colors duration-150 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-strong sm:px-3 sm:text-sm ${
+                  isActive
+                    ? "border-transparent bg-accent-strong text-white/95 shadow-sm"
+                    : "border-transparent text-slate-500 hover:bg-white/70 active:bg-white"
+                }`}
+              >
+                {variant.label}
+              </button>
+            );
+          })}
+        </div>
+      </div>
+    );
+  }
 
   return (
-    <div className={wrapperClasses}>
-      <div
-        className={`${isTopLayout ? "w-full text-center text-lg font-semibold text-[rgba(0,0,0,0.8)]" : "text-base font-semibold uppercase tracking-wide text-neutral-500"}`}
-      >
+    <div className={`${className} space-y-2`}>
+      <div className="text-base font-semibold uppercase tracking-wide text-neutral-500">
         Portion
       </div>
       <div className="grid w-full grid-flow-col auto-cols-fr gap-2">
@@ -486,6 +573,19 @@ type VariantConfig = {
   selectedVariantId?: string;
   onSelectVariant?: (id: string) => void;
   showInDetails: boolean;
+};
+
+type MealDetailItem = {
+  id: string;
+  name: string;
+  quantity: number;
+  image?: string;
+  detail: string;
+  variantSelector?: {
+    variants: ItemVariant[];
+    selectedVariantId?: string;
+    onSelectVariant: (variantId: string) => void;
+  };
 };
 
 type IngredientConfig = {
@@ -587,6 +687,7 @@ function QuantityStepper({
   label,
   onIncrement,
   onDecrement,
+  hideAddLabel = false,
 }: {
   count: number;
   maxQuantity: number;
@@ -594,6 +695,7 @@ function QuantityStepper({
   label: string;
   onIncrement?: () => void;
   onDecrement?: () => void;
+  hideAddLabel?: boolean;
 }) {
   return (
       <div
@@ -630,10 +732,14 @@ function QuantityStepper({
                   type="button"
                   onClick={onIncrement}
                   aria-label={`Add ${label}`}
-                  className="inline-flex cursor-pointer items-center gap-1 rounded-full border border-slate-200 px-3 py-1.5 text-xs font-semibold text-slate-600 transition hover:border-accent-strong hover:text-accent-strong sm:text-sm"
+                  className={
+                      hideAddLabel
+                          ? "inline-flex h-8 w-8 shrink-0 cursor-pointer items-center justify-center rounded-full border border-slate-200 text-slate-600 transition hover:border-accent-strong hover:text-accent-strong"
+                          : "inline-flex cursor-pointer items-center gap-1 rounded-full border border-slate-200 px-3 py-1.5 text-xs font-semibold text-slate-600 transition hover:border-accent-strong hover:text-accent-strong sm:text-sm"
+                  }
               >
-                  <Plus size={13} strokeWidth={2.5} />
-                  Add
+                  <Plus size={hideAddLabel ? 14 : 13} strokeWidth={2.5} />
+                  {hideAddLabel ? null : "Add"}
               </button>
           )}
       </div>
@@ -791,25 +897,30 @@ function IngredientCustomizationSection({
                 >
                   {displayLabel}
                 </p>
-                <div className="mt-0.5 flex flex-wrap items-center gap-x-2 gap-y-0.5 text-xs">
-                  <span className={isRemoved ? "text-slate-300" : "text-slate-500"}>
-                    {displayedCalories !== undefined
-                      ? `${displayedCalories} Cal`
-                      : "— Cal"}
-                  </span>
-                  {ingredient.shouldShowPortionBadge && !hasQuantityControl ? (
-                    <span className="font-semibold text-slate-400">
-                      {ingredient.portionBadge}
-                    </span>
-                  ) : null}
-                  {includedStatus ? (
-                    <span
-                      className={`font-semibold ${includedStatusMeta[includedStatus].className}`}
-                    >
-                      {includedStatusMeta[includedStatus].label}
-                    </span>
-                  ) : null}
-                </div>
+                <MacroInlineSummary
+                  calories={displayedCalories}
+                  protein={ingredient.displayedProtein}
+                  carbs={ingredient.displayedCarbs}
+                  totalFat={ingredient.displayedFat}
+                  className={`mt-0.5 ${isRemoved ? "opacity-50" : ""}`}
+                />
+                {(ingredient.shouldShowPortionBadge && !hasQuantityControl) ||
+                includedStatus ? (
+                  <div className="mt-0.5 flex flex-wrap items-center gap-x-2 gap-y-0.5 text-xs">
+                    {ingredient.shouldShowPortionBadge && !hasQuantityControl ? (
+                      <span className="font-semibold text-slate-400">
+                        {ingredient.portionBadge}
+                      </span>
+                    ) : null}
+                    {includedStatus ? (
+                      <span
+                        className={`font-semibold ${includedStatusMeta[includedStatus].className}`}
+                      >
+                        {includedStatusMeta[includedStatus].label}
+                      </span>
+                    ) : null}
+                  </div>
+                ) : null}
               </div>
             );
 
@@ -990,7 +1101,11 @@ function ComboOptionRow({
             variant.id,
         )
       : undefined;
-  const calories = activeVariant?.nutrition.calories ?? item.nutrition.calories;
+  const activeNutrition = activeVariant?.nutrition ?? item.nutrition;
+  const calories = activeNutrition.calories;
+  const protein = activeNutrition.protein;
+  const carbs = activeNutrition.carbs;
+  const fat = activeNutrition.totalFat;
 
   return (
     <li className="flex py-1">
@@ -1011,9 +1126,13 @@ function ComboOptionRow({
             <p className="line-clamp-2 break-words text-sm font-semibold text-neutral-900 sm:line-clamp-1 sm:truncate sm:text-base">
               {item.name}
             </p>
-            <p className="mt-0.5 text-xs text-slate-500">
-              {calories !== undefined ? `${calories} Cal` : "— Cal"}
-            </p>
+            <MacroInlineSummary
+              calories={calories}
+              protein={protein}
+              carbs={carbs}
+              totalFat={fat}
+              className="mt-0.5"
+            />
           </div>
           <span
             aria-hidden="true"
@@ -1056,6 +1175,133 @@ function ComboOptionRow({
         ) : null}
       </div>
     </li>
+  );
+}
+
+function SauceOptionRow({
+  addon,
+  sauceCount,
+  isSelected,
+  calories,
+  onToggleSauce,
+  onIncrementSauce,
+  onDecrementSauce,
+}: {
+  addon: MenuItem;
+  sauceCount: number;
+  isSelected: boolean;
+  calories: number;
+  onToggleSauce?: (addon: MenuItem) => void;
+  onIncrementSauce?: (addon: MenuItem) => void;
+  onDecrementSauce?: (addon: MenuItem) => void;
+}) {
+  const isNoneOption = addon.name === "None";
+  return (
+    <li className="flex py-1">
+      <div
+        role="button"
+        tabIndex={0}
+        className={`flex w-full cursor-pointer items-center gap-3 rounded-xl border px-2 py-2 transition-colors sm:px-3 ${
+          isSelected
+            ? "border-accent/30 bg-accent-soft hover:border-accent/50"
+            : "border-transparent hover:bg-slate-50"
+        }`}
+        onClick={() => onToggleSauce?.(addon)}
+        onKeyDown={(event) => {
+          if (event.key !== "Enter" && event.key !== " ") return;
+          event.preventDefault();
+          onToggleSauce?.(addon);
+        }}
+      >
+        <IngredientThumb icon={addon.image} />
+        <div className="min-w-0 flex-1">
+          <p className="line-clamp-2 break-words text-sm font-semibold text-neutral-900 sm:line-clamp-1 sm:truncate sm:text-base">
+            {addon.name}
+          </p>
+          <MacroInlineSummary
+            calories={calories}
+            protein={addon.nutrition.protein}
+            carbs={addon.nutrition.carbs}
+            totalFat={addon.nutrition.totalFat}
+            className="mt-0.5"
+          />
+        </div>
+        {!isNoneOption ? (
+          <QuantityStepper
+            count={sauceCount}
+            maxQuantity={Number.POSITIVE_INFINITY}
+            label={addon.name}
+            hideAddLabel
+            onIncrement={() => onIncrementSauce?.(addon)}
+            onDecrement={() => onDecrementSauce?.(addon)}
+          />
+        ) : null}
+      </div>
+    </li>
+  );
+}
+
+function SauceOptionList({
+  items,
+  onToggleSauce,
+  onIncrementSauce,
+  onDecrementSauce,
+}: {
+  items: Array<{
+    addon: MenuItem;
+    sauceCount: number;
+    isSelected: boolean;
+    calories: number;
+  }>;
+  onToggleSauce?: (addon: MenuItem) => void;
+  onIncrementSauce?: (addon: MenuItem) => void;
+  onDecrementSauce?: (addon: MenuItem) => void;
+}) {
+  const columnBreak = Math.ceil(items.length / 2);
+  const columns = [items.slice(0, columnBreak), items.slice(columnBreak)];
+  const hasSecondColumn = columns[1].length > 0;
+
+  return (
+    <div
+      className="flex flex-col sm:grid sm:grid-cols-2 sm:gap-x-6"
+      style={
+        hasSecondColumn
+          ? { gridTemplateRows: `repeat(${columnBreak}, auto)` }
+          : undefined
+      }
+    >
+      {columns.map((columnItems, columnIndex) =>
+        columnItems.length > 0 ? (
+          <ul
+            key={columnIndex}
+            className={`flex list-none flex-col divide-y divide-black/[0.06] pl-0 ${
+              columnIndex === 1 ? "border-t border-black/[0.06] sm:border-t-0" : ""
+            }`}
+            style={
+              hasSecondColumn
+                ? {
+                    gridRow: `span ${columnBreak} / span ${columnBreak}`,
+                    gridTemplateRows: "subgrid",
+                  }
+                : undefined
+            }
+          >
+            {columnItems.map(({ addon, sauceCount, isSelected, calories }) => (
+              <SauceOptionRow
+                key={addon.id ?? addon.name}
+                addon={addon}
+                sauceCount={sauceCount}
+                isSelected={isSelected}
+                calories={calories}
+                onToggleSauce={onToggleSauce}
+                onIncrementSauce={onIncrementSauce}
+                onDecrementSauce={onDecrementSauce}
+              />
+            ))}
+          </ul>
+        ) : null,
+      )}
+    </div>
   );
 }
 
@@ -1242,18 +1488,50 @@ function AddonCustomizationSection({ config }: AddonCustomizationSectionProps) {
                 </div>
               </div>
               {isSectionOpen ? (
-                <ul className="mt-4 grid list-none grid-cols-1 items-stretch gap-[10px] pl-0 sm:grid-cols-2">
-                  {section.items.map(
-                    ({ addon, sauceCount, isSelected, calories }) => (
+                section.ref === "sauces" ? (
+                  <div className="mt-4">
+                    <SauceOptionList
+                      items={section.items}
+                      onToggleSauce={onToggleSauce}
+                      onIncrementSauce={onIncrementSauce}
+                      onDecrementSauce={onDecrementSauce}
+                    />
+                  </div>
+                ) : section.ref === "dressings" ? (
+                  <div className="mt-4">
+                    <ComboOptionList
+                      items={section.items.map(({ addon }) => addon)}
+                      selectedId={
+                        section.items.find((entry) => entry.isSelected)?.addon
+                          .id ??
+                        section.items.find((entry) => entry.isSelected)?.addon
+                          .name
+                      }
+                      onSelect={(itemId) => {
+                        const target = section.items.find(
+                          ({ addon }) => (addon.id ?? addon.name) === itemId,
+                        )?.addon;
+                        if (!target) return;
+                        const isCurrentlySelected = section.items.some(
+                          (entry) =>
+                            entry.isSelected &&
+                            (entry.addon.id ?? entry.addon.name) === itemId,
+                        );
+                        onSelectAddon?.(
+                          section.ref,
+                          isCurrentlySelected ? undefined : target,
+                        );
+                      }}
+                    />
+                  </div>
+                ) : (
+                  <ul className="mt-4 grid list-none grid-cols-1 items-stretch gap-[10px] pl-0 sm:grid-cols-2">
+                    {section.items.map(({ addon, isSelected, calories }) => (
                       <li key={`${section.ref}-${addon.name}`} className="flex">
                         <button
                           type="button"
                           className={`box-border flex h-full w-full cursor-pointer flex-row items-center gap-3 rounded-[10px] border border-[rgba(0,0,0,0.15)] bg-[#f9f9f9] px-3 py-2 ${isSelected ? "shadow-[inset_0_0_0_3px_#16a34a]" : ""}`}
                           onClick={() => {
-                            if (section.ref === "sauces") {
-                              onToggleSauce?.(addon);
-                              return;
-                            }
                             onSelectAddon?.(
                               section.ref,
                               isSelected ? undefined : addon,
@@ -1282,91 +1560,11 @@ function AddonCustomizationSection({ config }: AddonCustomizationSectionProps) {
                               +{calories} Cal
                             </div>
                           </div>
-                          {section.ref === "dressings" ? (
-                            <span
-                              aria-hidden="true"
-                              className={`ml-auto inline-flex h-6 w-6 shrink-0 items-center justify-center rounded-full border ${isSelected ? "border-[3px] border-[#16a34a]" : "border-2 border-[rgba(0,0,0,0.25)]"}`}
-                            >
-                              <span
-                                className={`h-2.5 w-2.5 rounded-full ${isSelected ? "bg-[#16a34a]" : "bg-transparent"}`}
-                              />
-                            </span>
-                          ) : null}
-                          {section.ref === "sauces" && addon.name !== "None" ? (
-                            <div
-                              className="ml-auto inline-flex items-center gap-[6px]"
-                              onClick={(event) => event.stopPropagation()}
-                              onMouseDown={(event) => event.stopPropagation()}
-                            >
-                              {sauceCount > 0 ? (
-                                <>
-                                  <span
-                                    role="button"
-                                    tabIndex={0}
-                                    className="inline-flex h-7 w-7 cursor-pointer items-center justify-center rounded-md border border-[rgba(0,0,0,0.35)] bg-white text-[18px] font-bold leading-none"
-                                    aria-label={`Remove one ${addon.name}`}
-                                    onClick={() => onDecrementSauce?.(addon)}
-                                    onKeyDown={(event) => {
-                                      if (
-                                        event.key === "Enter" ||
-                                        event.key === " "
-                                      ) {
-                                        event.preventDefault();
-                                        onDecrementSauce?.(addon);
-                                      }
-                                    }}
-                                  >
-                                    -
-                                  </span>
-                                  <span className="min-w-4 text-center text-base font-bold">
-                                    {sauceCount}
-                                  </span>
-                                  <span
-                                    role="button"
-                                    tabIndex={0}
-                                    className="inline-flex h-7 w-7 cursor-pointer items-center justify-center rounded-md border border-[rgba(0,0,0,0.35)] bg-white text-[18px] font-bold leading-none"
-                                    aria-label={`Add one more ${addon.name}`}
-                                    onClick={() => onIncrementSauce?.(addon)}
-                                    onKeyDown={(event) => {
-                                      if (
-                                        event.key === "Enter" ||
-                                        event.key === " "
-                                      ) {
-                                        event.preventDefault();
-                                        onIncrementSauce?.(addon);
-                                      }
-                                    }}
-                                  >
-                                    +
-                                  </span>
-                                </>
-                              ) : (
-                                <span
-                                  role="button"
-                                  tabIndex={0}
-                                  className="inline-flex h-7 w-7 cursor-pointer items-center justify-center rounded-md border border-[rgba(0,0,0,0.35)] bg-white text-[18px] font-bold leading-none"
-                                  aria-label={`Add ${addon.name}`}
-                                  onClick={() => onIncrementSauce?.(addon)}
-                                  onKeyDown={(event) => {
-                                    if (
-                                      event.key === "Enter" ||
-                                      event.key === " "
-                                    ) {
-                                      event.preventDefault();
-                                      onIncrementSauce?.(addon);
-                                    }
-                                  }}
-                                >
-                                  +
-                                </span>
-                              )}
-                            </div>
-                          ) : null}
                         </button>
                       </li>
-                    ),
-                  )}
-                </ul>
+                    ))}
+                  </ul>
+                )
               ) : null}
             </div>
           );
@@ -1385,53 +1583,17 @@ type MacroSegment = {
   inBarLabel: string;
 };
 
-type MacroTooltipTargetProps = {
-  segment: MacroSegment;
-  isOpen: boolean;
-  onOpen: () => void;
-  onClose: () => void;
-  onToggle: () => void;
-};
-
-function MacroSegmentBar({
-  segment,
-  isOpen,
-  onOpen,
-  onClose,
-  onToggle,
-}: MacroTooltipTargetProps) {
-  const tooltipId = useId();
-
+function MacroSegmentBar({ segment }: { segment: MacroSegment }) {
   return (
     <div
       className="relative min-w-0"
       style={{ width: `${segment.percent}%` }}
     >
-      <button
-        type="button"
-        aria-describedby={tooltipId}
-        aria-label={`${segment.label}: ${segment.roundedPercent}%`}
-        onMouseEnter={onOpen}
-        onMouseLeave={onClose}
-        onFocus={onOpen}
-        onBlur={onClose}
-        onClick={(event) => {
-          event.stopPropagation();
-          onToggle();
-        }}
-        className={`flex h-full w-full min-w-0 cursor-pointer items-center justify-center rounded-lg px-1 text-[11px] font-semibold whitespace-nowrap transition-shadow focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/80 focus-visible:ring-offset-1 ${segment.color}`}
+      <div
+        className={`flex h-full w-full min-w-0 items-center justify-center whitespace-nowrap rounded-lg px-1 text-[11px] font-semibold ${segment.color}`}
       >
         {segment.inBarLabel}
-      </button>
-      <span
-        role="tooltip"
-        id={tooltipId}
-        className={`pointer-events-none absolute bottom-full left-1/2 z-20 mb-2 -translate-x-1/2 rounded-lg bg-neutral-900 px-2.5 py-1.5 text-[11px] leading-snug font-medium whitespace-nowrap text-white shadow-lg transition-opacity duration-150 ${
-          isOpen ? "opacity-100" : "opacity-0"
-        }`}
-      >
-        {segment.label} · {segment.roundedPercent}%
-      </span>
+      </div>
     </div>
   );
 }
@@ -1519,43 +1681,118 @@ function MacroLegendInfo({ segments }: { segments: MacroSegment[] }) {
 }
 
 function MacroSplitChart({ segments }: { segments: MacroSegment[] }) {
-  const [openLabel, setOpenLabel] = useState<string | null>(null);
-  const containerRef = useRef<HTMLDivElement>(null);
+  return (
+    <div className="flex h-12 w-full gap-1.5 overflow-hidden rounded-xl border border-black/10 bg-neutral-100 p-1.5">
+      {segments.map((segment) => (
+        <MacroSegmentBar key={segment.label} segment={segment} />
+      ))}
+    </div>
+  );
+}
+
+function InlineVariantSelect({
+  variants,
+  selectedVariantId,
+  onSelectVariant,
+  label,
+}: {
+  variants: ItemVariant[];
+  selectedVariantId?: string;
+  onSelectVariant: (variantId: string) => void;
+  label: string;
+}) {
+  const activeVariantId = selectedVariantId ?? variants[0]?.id;
+  return (
+    <span
+      className="relative inline-flex shrink-0 items-center"
+      onClick={(event) => event.stopPropagation()}
+    >
+      <select
+        value={activeVariantId}
+        onChange={(event) => onSelectVariant(event.target.value)}
+        aria-label={`Change ${label} size`}
+        className="cursor-pointer appearance-none rounded-full border border-slate-200 bg-white py-1 pr-6 pl-2.5 text-xs font-semibold text-slate-600 transition hover:border-accent-strong hover:text-accent-strong focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-strong/50"
+      >
+        {variants.map((variant) => (
+          <option key={variant.id} value={variant.id}>
+            {variant.label}
+          </option>
+        ))}
+      </select>
+      <ChevronDown
+        size={12}
+        strokeWidth={2.5}
+        aria-hidden="true"
+        className="pointer-events-none absolute right-2 text-slate-400"
+      />
+    </span>
+  );
+}
+
+function MealDetailItemsList({ items }: { items: MealDetailItem[] }) {
+  const scrollRef = useRef<HTMLUListElement>(null);
+  const [canScrollDown, setCanScrollDown] = useState(false);
+
+  const updateScrollState = useCallback(() => {
+    const el = scrollRef.current;
+    if (!el) return;
+    setCanScrollDown(el.scrollTop + el.clientHeight < el.scrollHeight - 1);
+  }, []);
 
   useEffect(() => {
-    if (!openLabel) return;
-    const handlePointerDown = (event: PointerEvent) => {
-      if (
-        containerRef.current &&
-        !containerRef.current.contains(event.target as Node)
-      ) {
-        setOpenLabel(null);
-      }
-    };
-    document.addEventListener("pointerdown", handlePointerDown);
-    return () => document.removeEventListener("pointerdown", handlePointerDown);
-  }, [openLabel]);
+    updateScrollState();
+    window.addEventListener("resize", updateScrollState);
+    return () => window.removeEventListener("resize", updateScrollState);
+  }, [updateScrollState, items.length]);
 
   return (
-    <div ref={containerRef} className="flex h-12 w-full gap-1.5 overflow-hidden rounded-xl border border-black/10 bg-neutral-100 p-1.5">
-      {segments.map((segment) => (
-        <MacroSegmentBar
-          key={segment.label}
-          segment={segment}
-          isOpen={openLabel === segment.label}
-          onOpen={() => setOpenLabel(segment.label)}
-          onClose={() =>
-            setOpenLabel((current) =>
-              current === segment.label ? null : current,
-            )
-          }
-          onToggle={() =>
-            setOpenLabel((current) =>
-              current === segment.label ? null : segment.label,
-            )
-          }
-        />
-      ))}
+    <div className="relative">
+      <ul
+        ref={scrollRef}
+        onScroll={updateScrollState}
+        className="flex max-h-[240px] list-none flex-col divide-y divide-black/[0.06] overflow-y-auto pl-0 sm:max-h-[320px]"
+      >
+        {items.map((detailItem) => (
+          <li
+            key={detailItem.id}
+            className="flex items-center gap-3 py-2.5"
+          >
+            <div className="h-11 w-11 shrink-0 overflow-hidden rounded-lg border border-black/10 bg-white">
+              {detailItem.image && detailItem.image !== "none" ? (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img
+                  src={detailItem.image}
+                  alt={detailItem.name}
+                  className="h-full w-full object-contain p-1"
+                />
+              ) : null}
+            </div>
+            <p
+              className="min-w-0 flex-1 truncate text-sm font-medium text-neutral-900"
+              title={`${detailItem.quantity}x ${detailItem.name}`}
+            >
+              {detailItem.quantity}x {detailItem.name}
+            </p>
+            {detailItem.variantSelector ? (
+              <InlineVariantSelect
+                variants={detailItem.variantSelector.variants}
+                selectedVariantId={detailItem.variantSelector.selectedVariantId}
+                onSelectVariant={detailItem.variantSelector.onSelectVariant}
+                label={detailItem.name}
+              />
+            ) : null}
+            <span className="shrink-0 rounded-full bg-slate-100 px-2 py-0.5 text-[10px] font-semibold tracking-wide text-slate-500 uppercase">
+              {detailItem.detail}
+            </span>
+          </li>
+        ))}
+      </ul>
+      <div
+        aria-hidden="true"
+        className={`pointer-events-none absolute inset-x-0 bottom-0 h-8 rounded-b-xl bg-gradient-to-t from-white to-transparent transition-opacity duration-150 ${
+          canScrollDown ? "opacity-100" : "opacity-0"
+        }`}
+      />
     </div>
   );
 }
@@ -1760,26 +1997,57 @@ export default function ItemDetailsPanel({
         detail: "Sauce",
       };
     });
-  const detailItems = [
+  const mainVariantOptions = variants ?? [];
+  const hasSelectableMainVariant =
+    mainVariantOptions.length > 1 && typeof onSelectVariant === "function";
+  const sideVariantOptions = selectedComboSide?.variants ?? [];
+  const hasSelectableSideVariant =
+    sideVariantOptions.length > 1 &&
+    typeof onSelectComboSideVariant === "function";
+  const drinkVariantOptions = selectedComboDrink?.variants ?? [];
+  const hasSelectableDrinkVariant =
+    drinkVariantOptions.length > 1 &&
+    typeof onSelectComboDrinkVariant === "function";
+
+  const detailItems: MealDetailItem[] = [
     {
       id: `main-${item.id ?? item.name}`,
-      name: selectedMainVariant
-        ? `${item.name} (${selectedMainVariant.label})`
-        : item.name,
+      name:
+        !hasSelectableMainVariant && selectedMainVariant
+          ? `${item.name} (${selectedMainVariant.label})`
+          : item.name,
       quantity: 1,
       image: selectedMainItemImage,
       detail: "Main Item",
+      variantSelector: hasSelectableMainVariant
+        ? {
+            variants: mainVariantOptions,
+            selectedVariantId: selectedVariantId,
+            onSelectVariant: onSelectVariant!,
+          }
+        : undefined,
     },
     ...(comboType === "combo-meal" && selectedComboSide
       ? [
           {
             id: `combo-side-${selectedComboSide.id ?? selectedComboSide.name}`,
-            name: selectedComboSideVariant
-              ? `${selectedComboSide.name} (${selectedComboSideVariant.label})`
-              : selectedComboSide.name,
+            name:
+              !hasSelectableSideVariant && selectedComboSideVariant
+                ? `${selectedComboSide.name} (${selectedComboSideVariant.label})`
+                : selectedComboSide.name,
             quantity: 1,
             image: selectedComboSide.image,
             detail: "Side",
+            variantSelector: hasSelectableSideVariant
+              ? {
+                  variants: sideVariantOptions,
+                  selectedVariantId:
+                    selectedComboSideVariantId ??
+                    selectedComboSide.defaultVariantId ??
+                    sideVariantOptions[0]?.id,
+                  onSelectVariant: onSelectComboSideVariant!,
+                }
+              : undefined,
           },
         ]
       : []),
@@ -1787,12 +2055,23 @@ export default function ItemDetailsPanel({
       ? [
           {
             id: `combo-drink-${selectedComboDrink.id ?? selectedComboDrink.name}`,
-            name: selectedComboDrinkVariant
-              ? `${selectedComboDrink.name} (${selectedComboDrinkVariant.label})`
-              : selectedComboDrink.name,
+            name:
+              !hasSelectableDrinkVariant && selectedComboDrinkVariant
+                ? `${selectedComboDrink.name} (${selectedComboDrinkVariant.label})`
+                : selectedComboDrink.name,
             quantity: 1,
             image: selectedComboDrink.image,
             detail: "Drink",
+            variantSelector: hasSelectableDrinkVariant
+              ? {
+                  variants: drinkVariantOptions,
+                  selectedVariantId:
+                    selectedComboDrinkVariantId ??
+                    selectedComboDrink.defaultVariantId ??
+                    drinkVariantOptions[0]?.id,
+                  onSelectVariant: onSelectComboDrinkVariant!,
+                }
+              : undefined,
           },
         ]
       : []),
@@ -2119,34 +2398,7 @@ export default function ItemDetailsPanel({
               <SectionEyebrow className="text-base text-neutral-500">
                 Items
               </SectionEyebrow>
-              <ul className="flex max-h-[320px] list-none flex-col divide-y divide-black/[0.06] overflow-y-auto pl-0">
-                {detailItems.map((detailItem) => (
-                  <li
-                    key={detailItem.id}
-                    className="flex items-center gap-3 py-2.5"
-                  >
-                    <div className="h-11 w-11 shrink-0 overflow-hidden rounded-lg border border-black/10 bg-white">
-                      {detailItem.image && detailItem.image !== "none" ? (
-                        // eslint-disable-next-line @next/next/no-img-element
-                        <img
-                          src={detailItem.image}
-                          alt={detailItem.name}
-                          className="h-full w-full object-contain p-1"
-                        />
-                      ) : null}
-                    </div>
-                    <p
-                      className="min-w-0 flex-1 truncate text-sm font-medium text-neutral-900"
-                      title={`${detailItem.quantity}x ${detailItem.name}`}
-                    >
-                      {detailItem.quantity}x {detailItem.name}
-                    </p>
-                    <span className="shrink-0 rounded-full bg-slate-100 px-2 py-0.5 text-[10px] font-semibold tracking-wide text-slate-500 uppercase">
-                      {detailItem.detail}
-                    </span>
-                  </li>
-                ))}
-              </ul>
+              <MealDetailItemsList items={detailItems} />
             </div>
 
             <div className="mt-6 space-y-2 border-t border-black/[0.06] pt-6">

@@ -5,6 +5,8 @@ import { useRouter, useSearchParams } from "next/navigation";
 import Image from "next/image";
 import { Utensils, X } from "lucide-react";
 import ItemDetailsPanel, { PortionSelector } from "@/components/ItemDetailsPanel";
+import ComparativeLabelBadge from "@/components/menu-item-card/ComparativeLabelBadge";
+import { computeComparativeLabels } from "@/lib/menuSections/comparativeLabels";
 import MacroTotalsGrid from "@/components/MacroTotalsGrid";
 import MacroStat from "@/components/nutrition/MacroStat";
 import MenuSections from "@/components/MenuSections";
@@ -163,6 +165,15 @@ export default function ItemRouteModal({
         (variant) => variant.id === selectedVariantId,
     );
     const selectedItemImage = selectedVariant?.image ?? item.image;
+    const comparativeLabel = useMemo(
+        () =>
+            menuItems && menuItems.length > 0
+                ? computeComparativeLabels(menuItems).get(
+                      item.id ?? item.name,
+                  )
+                : undefined,
+        [menuItems, item],
+    );
     const baseNutrition = resolveMenuItemVariantNutrition(
         item,
         selectedVariant,
@@ -1108,6 +1119,13 @@ export default function ItemRouteModal({
                                         sizes="(min-width: 1024px) 208px, (min-width: 640px) 160px, 192px"
                                         className="object-contain p-1.5 sm:p-2.5 lg:p-3"
                                     />
+                                    {comparativeLabel ? (
+                                        <div className="absolute left-2 top-2 z-10">
+                                            <ComparativeLabelBadge
+                                                kind={comparativeLabel}
+                                            />
+                                        </div>
+                                    ) : null}
                                 </div>
                             ) : null}
                             <div className="item-overview-content">
@@ -1149,47 +1167,81 @@ export default function ItemRouteModal({
                                         labelVariant="uppercase"
                                     />
                                 </div>
-                                {isComboEligibleCategory ? (
-                                    <div className="item-overview-ordertype mt-8">
-                                        <p className="text-[11px] font-semibold uppercase tracking-wide text-slate-400">
-                                            Order Type
-                                        </p>
-                                        <div
-                                            role="radiogroup"
-                                            aria-label="Order type"
-                                            className="mt-1.5 grid w-full grid-cols-2 gap-1 rounded-full bg-slate-100 p-1 sm:inline-flex sm:w-fit"
-                                        >
-                                            {comboTypeOptions.map((option) => {
-                                                const isActive =
-                                                    comboType === option.id;
-                                                const Icon = option.icon;
+                                {(variants &&
+                                    variants.length > 0 &&
+                                    !item.hideVariantSelector) ||
+                                isComboEligibleCategory ? (
+                                    <div className="item-overview-options mt-8 flex flex-col gap-5 sm:flex-row sm:items-end sm:gap-4">
+                                        {variants &&
+                                        variants.length > 0 &&
+                                        !item.hideVariantSelector ? (
+                                            <PortionSelector
+                                                variants={variants}
+                                                selectedVariantId={
+                                                    selectedVariantId
+                                                }
+                                                onSelectVariant={
+                                                    setSelectedVariantId
+                                                }
+                                                layout="top"
+                                                className="min-w-0 sm:w-[55%]"
+                                            />
+                                        ) : null}
+                                        {isComboEligibleCategory ? (
+                                            <div className="min-w-0 sm:w-[45%]">
+                                                <p className="text-[11px] font-semibold uppercase tracking-wide text-slate-400">
+                                                    Order Type
+                                                </p>
+                                                <div
+                                                    role="radiogroup"
+                                                    aria-label="Order type"
+                                                    className="mt-1.5 grid w-full grid-cols-2 gap-1 rounded-full bg-slate-100 p-1"
+                                                >
+                                                    {comboTypeOptions.map(
+                                                        (option) => {
+                                                            const isActive =
+                                                                comboType ===
+                                                                option.id;
+                                                            const Icon =
+                                                                option.icon;
 
-                                                return (
-                                                    <button
-                                                        key={option.id}
-                                                        type="button"
-                                                        role="radio"
-                                                        aria-checked={isActive}
-                                                        onClick={() =>
-                                                            setComboType(
-                                                                option.id,
-                                                            )
-                                                        }
-                                                        className={`box-border flex h-9 min-w-0 cursor-pointer items-center justify-center gap-1 whitespace-nowrap rounded-full border px-2 text-[13px] font-semibold transition-colors duration-150 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-strong sm:gap-1.5 sm:px-3 sm:text-sm ${
-                                                            isActive
-                                                                ? "border-transparent bg-accent-strong text-white/95 shadow-sm"
-                                                                : "border-transparent text-slate-500 hover:bg-white/70 active:bg-white"
-                                                        }`}
-                                                    >
-                                                        <Icon
-                                                            className={`h-4 w-4 shrink-0 ${isActive ? "text-white/95" : "text-slate-400"}`}
-                                                            strokeWidth={2.3}
-                                                        />
-                                                        {option.label}
-                                                    </button>
-                                                );
-                                            })}
-                                        </div>
+                                                            return (
+                                                                <button
+                                                                    key={
+                                                                        option.id
+                                                                    }
+                                                                    type="button"
+                                                                    role="radio"
+                                                                    aria-checked={
+                                                                        isActive
+                                                                    }
+                                                                    onClick={() =>
+                                                                        setComboType(
+                                                                            option.id,
+                                                                        )
+                                                                    }
+                                                                    className={`box-border flex h-9 min-w-0 cursor-pointer items-center justify-center gap-1 whitespace-nowrap rounded-full border px-2 text-[13px] font-semibold transition-colors duration-150 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-strong sm:gap-1.5 sm:px-5 sm:text-sm ${
+                                                                        isActive
+                                                                            ? "border-transparent bg-accent-strong text-white/95 shadow-sm"
+                                                                            : "border-transparent text-slate-500 hover:bg-white/70 active:bg-white"
+                                                                    }`}
+                                                                >
+                                                                    <Icon
+                                                                        className={`h-4 w-4 shrink-0 ${isActive ? "text-white/95" : "text-slate-400"}`}
+                                                                        strokeWidth={
+                                                                            2.3
+                                                                        }
+                                                                    />
+                                                                    {
+                                                                        option.label
+                                                                    }
+                                                                </button>
+                                                            );
+                                                        },
+                                                    )}
+                                                </div>
+                                            </div>
+                                        ) : null}
                                     </div>
                                 ) : null}
                             </div>
@@ -1205,20 +1257,6 @@ export default function ItemRouteModal({
                         </section>
 
                         <div className="my-6 h-px bg-black/[0.06] sm:my-7" />
-
-                        {variants &&
-                        variants.length > 0 &&
-                        !item.hideVariantSelector ? (
-                            <div className="w-full">
-                                <PortionSelector
-                                    variants={variants}
-                                    selectedVariantId={selectedVariantId}
-                                    onSelectVariant={setSelectedVariantId}
-                                    className="mt-0"
-                                    layout="top"
-                                />
-                            </div>
-                        ) : null}
 
                         <div className="mt-6 w-full">
                             {isChipotlePrebuiltBuilderItem ? (
@@ -1761,9 +1799,7 @@ export default function ItemRouteModal({
                                     showCustomizationDeltas={
                                         hasActiveCustomization
                                     }
-                                    showVariantsInDetails={
-                                        !item.hideVariantSelector
-                                    }
+                                    showVariantsInDetails={false}
                                     selectedIngredientCounts={ingredientCounts}
                                     onDecrementIngredient={(ingredientId) =>
                                         setSelectedIngredientCounts((prev) => {

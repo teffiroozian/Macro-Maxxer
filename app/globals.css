@@ -195,12 +195,12 @@ body {
 }
 
 /* Item modal's product overview: a single vertical stack on mobile (image,
-   label, title, macros, order type) that reflows into an image-left /
-   content-right pair at sm+. The `content` wrapper is the trick that makes
-   this a reflow instead of two duplicated blocks — `display: contents` on
-   mobile dissolves its own box so label/title/macros/order-type become
-   direct grid items placeable via `grid-template-areas`, while at sm+ it
-   becomes a normal block and is itself the single "content" grid item
+   label, title, macros, portion/order-type options) that reflows into an
+   image-left / content-right pair at sm+. The `content` wrapper is the trick
+   that makes this a reflow instead of two duplicated blocks — `display:
+   contents` on mobile dissolves its own box so label/title/macros/options
+   become direct grid items placeable via `grid-template-areas`, while at sm+
+   it becomes a normal block and is itself the single "content" grid item
    (avoiding a multi-row-spanning image, which would otherwise inflate the
    auto-sized rows around it and throw off the hand-tuned vertical rhythm). */
 .item-overview-grid {
@@ -211,7 +211,7 @@ body {
         "label"
         "title"
         "macros"
-        "ordertype";
+        "options";
 }
 
 .item-overview-image {
@@ -231,8 +231,8 @@ body {
     grid-area: macros;
 }
 
-.item-overview-ordertype {
-    grid-area: ordertype;
+.item-overview-options {
+    grid-area: options;
 }
 
 .item-overview-content {
