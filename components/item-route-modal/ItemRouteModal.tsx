@@ -3,18 +3,8 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Image from "next/image";
-import {
-    CupSoda,
-    Droplets,
-    Salad,
-    SquareStack,
-    Utensils,
-    X,
-} from "lucide-react";
-import ItemDetailsPanel, {
-    PortionSelector,
-    resolvePanelIngredientTabs,
-} from "@/components/ItemDetailsPanel";
+import { Utensils, X } from "lucide-react";
+import ItemDetailsPanel, { PortionSelector } from "@/components/ItemDetailsPanel";
 import MacroTotalsGrid from "@/components/MacroTotalsGrid";
 import MacroStat from "@/components/nutrition/MacroStat";
 import MenuSections from "@/components/MenuSections";
@@ -82,9 +72,6 @@ const emptyAddon: MenuItem = {
 };
 
 const maxSauceSelections = 5;
-const sectionScrollOffset = 96;
-
-type ModalSectionId = "ingredients" | "sides" | "drinks" | "sauces";
 
 export default function ItemRouteModal({
     restaurantId,
@@ -522,105 +509,7 @@ export default function ItemRouteModal({
             selectedComboSideVariant,
         ],
     );
-    const ingredientTabs = useMemo(
-        () =>
-            resolvePanelIngredientTabs(
-                item,
-                ingredients,
-                addons,
-                menuItems,
-                variants,
-                selectedVariantId,
-                customizationRules,
-            ),
-        [
-            addons,
-            customizationRules,
-            ingredients,
-            item,
-            menuItems,
-            selectedVariantId,
-            variants,
-        ],
-    );
-    const hasIngredientSection = useMemo(() => {
-        const nonEmptyTabs = ingredientTabs.filter(
-            (tab) => tab.ingredients.length > 0,
-        );
-        return (
-            nonEmptyTabs.length > 1 ||
-            (nonEmptyTabs[0]?.ingredients.length ?? 0) > 0
-        );
-    }, [ingredientTabs]);
-    const addonNavigationRef = useMemo<string | null>(() => {
-        const itemAddonGroups = new Set(item.addonRefs ?? []);
-        if (
-            itemAddonGroups.has("dressings") &&
-            (addons?.dressings?.items.length ?? 0) > 0
-        )
-            return "dressings";
-        if (
-            itemAddonGroups.has("sauces") &&
-            (addons?.sauces?.items.length ?? 0) > 0
-        )
-            return "sauces";
-        return null;
-    }, [addons, item.addonRefs]);
-    const addonSectionLabel = addonNavigationRef
-        ? (addons?.[addonNavigationRef]?.label ?? null)
-        : null;
-    const hasAddonSection = Boolean(addonNavigationRef);
-    const hasComboSections =
-        isComboEligibleCategory && comboType === "combo-meal";
-    const visibleSections = useMemo(
-        () =>
-            [
-                hasIngredientSection
-                    ? {
-                          id: "ingredients" as const,
-                          label: "Ingredients",
-                          icon: Salad,
-                      }
-                    : null,
-                hasComboSections
-                    ? {
-                          id: "sides" as const,
-                          label: "Sides",
-                          icon: SquareStack,
-                      }
-                    : null,
-                hasComboSections
-                    ? { id: "drinks" as const, label: "Drinks", icon: CupSoda }
-                    : null,
-                hasAddonSection && addonSectionLabel
-                    ? {
-                          id: "sauces" as const,
-                          label: addonSectionLabel,
-                          icon: Droplets,
-                      }
-                    : null,
-            ].filter(
-                (
-                    section,
-                ): section is {
-                    id: ModalSectionId;
-                    label: string;
-                    icon: typeof Salad;
-                } => Boolean(section),
-            ),
-        [
-            addonSectionLabel,
-            hasAddonSection,
-            hasComboSections,
-            hasIngredientSection,
-        ],
-    );
-    const [activeSectionId, setActiveSectionId] =
-        useState<ModalSectionId | null>(visibleSections[0]?.id ?? null);
     const scrollContainerRef = useRef<HTMLDivElement | null>(null);
-    const sectionElementRefs = useRef<
-        Partial<Record<ModalSectionId, HTMLElement | null>>
-    >({});
     const closeButtonRef = useRef<HTMLButtonElement | null>(null);
     const overviewSectionRef = useRef<HTMLElement | null>(null);
     const [isOverviewCollapsed, setIsOverviewCollapsed] = useState(false);
@@ -648,49 +537,6 @@ export default function ItemRouteModal({
         return () =>
             container.removeEventListener("scroll", handleOverviewScroll);
     }, []);
-
-    useEffect(() => {
-        const container = scrollContainerRef.current;
-        if (!container || visibleSections.length === 0) return;
-
-        const handleScroll = () => {
-            const containerTop = container.getBoundingClientRect().top;
-            const threshold = containerTop + sectionScrollOffset + 12;
-
-            let nextActive = visibleSections[0]?.id ?? null;
-            visibleSections.forEach((section) => {
-                const sectionElement = sectionElementRefs.current[section.id];
-                if (!sectionElement) return;
-                if (sectionElement.getBoundingClientRect().top <= threshold) {
-                    nextActive = section.id;
-                }
-            });
-
-            setActiveSectionId(nextActive);
-        };
-
-        handleScroll();
-        container.addEventListener("scroll", handleScroll, { passive: true });
-        return () => container.removeEventListener("scroll", handleScroll);
-    }, [visibleSections]);
-
-    const scrollToSection = (sectionId: ModalSectionId) => {
-        const container = scrollContainerRef.current;
-        const sectionElement = sectionElementRefs.current[sectionId];
-        if (!container || !sectionElement) return;
-
-        const containerTop = container.getBoundingClientRect().top;
-        const sectionTop = sectionElement.getBoundingClientRect().top;
-        const nextScrollTop =
-            container.scrollTop +
-            (sectionTop - containerTop) -
-            sectionScrollOffset;
-
-        container.scrollTo({
-            top: Math.max(0, nextScrollTop),
-            behavior: "smooth",
-        });
-    };
 
     const chipotleTacoShellIdSet = useMemo(
         () => new Set(["crispy-corn-tortilla", "soft-flour-tortilla"]),
@@ -1211,10 +1057,10 @@ export default function ItemRouteModal({
             />
             <div className="item-route-modal-root relative flex h-[92dvh] w-full flex-col overflow-hidden rounded-t-3xl bg-white shadow-[0_24px_70px_rgba(15,23,42,0.35)] sm:h-auto sm:max-h-[88vh] sm:w-full sm:max-w-[620px] sm:rounded-3xl md:max-w-[760px] lg:max-w-[940px]">
                 <div
-                    className={`absolute inset-x-0 top-0 z-20 flex items-center justify-between gap-3 border-b bg-white px-4 py-3 transition-all duration-200 ease-out sm:px-6 sm:py-4 lg:px-8 ${
+                    className={`absolute inset-x-0 top-0 z-20 flex items-center justify-between gap-3 border-b bg-white px-4 py-3 transition-[opacity,transform,box-shadow,border-color] duration-300 ease-out sm:px-6 sm:py-4 lg:px-8 ${
                         isOverviewCollapsed
                             ? "translate-y-0 border-black/[0.06] opacity-100 shadow-[0_1px_2px_rgba(15,23,42,0.05)]"
-                            : "pointer-events-none -translate-y-1 border-transparent opacity-0"
+                            : "pointer-events-none -translate-y-2 border-transparent opacity-0"
                     }`}
                 >
                     <div className="flex min-w-0 flex-1 items-center gap-3">
@@ -1254,12 +1100,12 @@ export default function ItemRouteModal({
                             className="item-overview-grid relative sm:gap-x-7 lg:gap-x-8"
                         >
                             {selectedItemImage ? (
-                                <div className="item-overview-image relative aspect-square w-40 overflow-hidden rounded-3xl border border-black/[0.06] bg-image-placeholder sm:aspect-auto sm:h-40 sm:w-40 lg:h-52 lg:w-52">
+                                <div className="item-overview-image relative aspect-square w-48 overflow-hidden rounded-3xl border border-black/[0.06] bg-image-placeholder sm:aspect-auto sm:h-40 sm:w-40 lg:h-52 lg:w-52">
                                     <Image
                                         src={selectedItemImage}
                                         alt={item.name}
                                         fill
-                                        sizes="(min-width: 1024px) 208px, (min-width: 640px) 160px, 160px"
+                                        sizes="(min-width: 1024px) 208px, (min-width: 640px) 160px, 192px"
                                         className="object-contain p-1.5 sm:p-2.5 lg:p-3"
                                     />
                                 </div>
@@ -1268,7 +1114,7 @@ export default function ItemRouteModal({
                                 <p className="item-overview-label mt-4 min-w-0 pr-12 text-[11px] font-semibold uppercase tracking-wide text-slate-400 sm:mt-0 sm:pr-14">
                                     Base Nutrition
                                 </p>
-                                <h1 className="item-overview-title font-heading mt-1.5 min-w-0 pr-12 text-lg font-bold leading-tight tracking-tight text-neutral-900 sm:truncate sm:pr-14 sm:text-xl lg:text-2xl">
+                                <h1 className="item-overview-title font-heading mt-1.5 min-w-0 text-lg font-bold leading-tight tracking-tight text-neutral-900 sm:truncate sm:pr-14 sm:text-xl lg:text-2xl">
                                     {item.name}
                                 </h1>
                                 <div className="item-overview-macros mt-5 flex flex-nowrap items-center justify-between gap-x-2 sm:mt-3 sm:flex-wrap sm:justify-start sm:gap-x-5 sm:gap-y-2">
@@ -2033,13 +1879,6 @@ export default function ItemRouteModal({
                                     selectedComboSideId={selectedComboSideId}
                                     selectedComboDrinkId={selectedComboDrinkId}
                                     onSelectComboSide={(sideId) => {
-                                        if (selectedComboSideId === sideId) {
-                                            setSelectedComboSideId(undefined);
-                                            setSelectedComboSideVariantId(
-                                                undefined,
-                                            );
-                                            return;
-                                        }
                                         const nextSide = comboSides.find(
                                             (side) =>
                                                 (side.id ?? side.name) ===
@@ -2051,13 +1890,6 @@ export default function ItemRouteModal({
                                         );
                                     }}
                                     onSelectComboDrink={(drinkId) => {
-                                        if (selectedComboDrinkId === drinkId) {
-                                            setSelectedComboDrinkId(undefined);
-                                            setSelectedComboDrinkVariantId(
-                                                undefined,
-                                            );
-                                            return;
-                                        }
                                         const nextDrink = comboDrinks.find(
                                             (drink) =>
                                                 (drink.id ?? drink.name) ===
@@ -2080,28 +1912,6 @@ export default function ItemRouteModal({
                                     onSelectComboDrinkVariant={
                                         setSelectedComboDrinkVariantId
                                     }
-                                    ingredientsSectionRef={(element) => {
-                                        sectionElementRefs.current.ingredients =
-                                            element;
-                                    }}
-                                    sidesSectionRef={(element) => {
-                                        sectionElementRefs.current.sides =
-                                            element;
-                                    }}
-                                    drinksSectionRef={(element) => {
-                                        sectionElementRefs.current.drinks =
-                                            element;
-                                    }}
-                                    addonSectionRef={(element) => {
-                                        sectionElementRefs.current.sauces =
-                                            element;
-                                    }}
-                                    addonSectionRefType={
-                                        addonNavigationRef ?? undefined
-                                    }
-                                    sectionNavItems={visibleSections}
-                                    activeSectionId={activeSectionId}
-                                    onSelectSection={scrollToSection}
                                     onCustomizeIngredients={
                                         canCustomizeViaBuildPage &&
                                         closeBehavior !== "local"

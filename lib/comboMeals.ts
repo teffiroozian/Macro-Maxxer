@@ -1,4 +1,5 @@
 import type { ComboMealConfig, MenuItem } from "@/types/menu";
+import type { Nutrition } from "@/types/nutrition";
 import { compareByDefaultOrder, normalizeCategory } from "@/lib/menuItemCalculations";
 import {
   isChickfilaBreakfastItem,
@@ -6,6 +7,37 @@ import {
   isWaffleFries,
   sortComboSides,
 } from "@/lib/restaurantRules/chickfila";
+
+const zeroComboOptionNutrition: Nutrition = {
+  calories: 0,
+  protein: 0,
+  carbs: 0,
+  totalFat: 0,
+};
+
+// Explicit "none" options for combo side/drink selection. Represented as
+// real zero-nutrition MenuItems (rather than a special-cased sentinel) so
+// selecting them flows through the same nutrition/macro calculation and
+// cart-selection logic as any other combo option.
+export const NO_SIDE_OPTION: MenuItem = {
+  id: "no-side",
+  name: "No side",
+  image: "none",
+  categories: [],
+  servingType: "side",
+  nutrition: zeroComboOptionNutrition,
+  defaultOrder: -1,
+};
+
+export const NO_DRINK_OPTION: MenuItem = {
+  id: "no-drink",
+  name: "No drink",
+  image: "none",
+  categories: [],
+  servingType: "drink",
+  nutrition: zeroComboOptionNutrition,
+  defaultOrder: -1,
+};
 
 function itemKey(item: MenuItem) {
   return item.id ?? item.name;
@@ -71,7 +103,8 @@ export function resolveComboSideOptions(
   menuItems: MenuItem[] | undefined
 ) {
   const config = resolveComboMealConfig(restaurantId, item, menuItems);
-  return resolveConfiguredItems(config?.sideOptions, menuItems);
+  const options = resolveConfiguredItems(config?.sideOptions, menuItems);
+  return options.length > 0 ? [NO_SIDE_OPTION, ...options] : options;
 }
 
 export function resolveComboDrinkOptions(
@@ -80,5 +113,6 @@ export function resolveComboDrinkOptions(
   menuItems: MenuItem[] | undefined
 ) {
   const config = resolveComboMealConfig(restaurantId, item, menuItems);
-  return resolveConfiguredItems(config?.drinkOptions, menuItems);
+  const options = resolveConfiguredItems(config?.drinkOptions, menuItems);
+  return options.length > 0 ? [NO_DRINK_OPTION, ...options] : options;
 }

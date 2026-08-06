@@ -4,6 +4,11 @@ import type { ProteinScoreTier } from "@/lib/nutrition";
 // Sits in the content column, directly above the nutrition stat row. A soft
 // tinted chip (no border/shadow) keeps it grounded and on-brand with the
 // 5-tier system without competing with the bolder nutrition stats below it.
+//
+// Emphasis is intentionally asymmetric: a middling protein score isn't an
+// error state, so only Elite/Excellent get saturated, high-contrast
+// treatments. Good/Moderate/Low step down in saturation and contrast so a
+// below-average score reads as neutral information rather than a warning.
 const tierStyles: Record<
   ProteinScoreTier,
   { chip: string; iconWrap: string; icon: string; value: string; supporting: string }
@@ -23,25 +28,25 @@ const tierStyles: Record<
     supporting: "text-[#6E88A3]",
   },
   good: {
-    chip: "bg-[#FFF6E8]",
-    iconWrap: "bg-[#D6A23D]",
-    icon: "text-white",
-    value: "text-[#B9851C]",
-    supporting: "text-[#9D7E49]",
+    chip: "bg-[#FFFBEB]",
+    iconWrap: "bg-[#F3E8CE]",
+    icon: "text-[#B08A3E]",
+    value: "text-[#8A6D2F]",
+    supporting: "text-[#64748B]",
   },
   moderate: {
-    chip: "bg-[#FFF1EB]",
-    iconWrap: "bg-[#C2410C]",
-    icon: "text-white",
-    value: "text-[#C2410C]",
-    supporting: "text-[#9A5B47]",
+    chip: "bg-[#F1F5F9]",
+    iconWrap: "bg-[#E2E8F0]",
+    icon: "text-[#64748B]",
+    value: "text-[#334155]",
+    supporting: "text-[#7C8798]",
   },
   low: {
-    chip: "bg-[#F1F5F9]",
-    iconWrap: "bg-[#64748B]",
-    icon: "text-white",
-    value: "text-[#475569]",
-    supporting: "text-[#7C899A]",
+    chip: "bg-[#F8FAFC]",
+    iconWrap: "bg-[#EEF2F6]",
+    icon: "text-[#94A3B8]",
+    value: "text-[#64748B]",
+    supporting: "text-[#9AA5B1]",
   },
 };
 

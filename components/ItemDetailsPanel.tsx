@@ -1,4 +1,4 @@
-import { useState, type Dispatch, type SetStateAction } from "react";
+import { useId, useState, type Dispatch, type SetStateAction } from "react";
 import Image from "next/image";
 import type {
   IngredientItem,
@@ -11,13 +11,18 @@ import type { CoreMacros, Nutrition } from "@/types/nutrition";
 import {
   ChevronDown,
   ChevronRight,
+  Info,
+  Minus,
   Pencil,
-  type LucideIcon,
+  Plus,
+  X,
 } from "lucide-react";
 import {
   INCLUDED_INGREDIENT_TAB,
   getIngredientTabDisplayLabel,
 } from "@/lib/ingredientTabs";
+import { getProteinPer100Calories, getProteinScoreTier } from "@/lib/nutrition";
+import ProteinScorePill from "@/components/menu-item-card/ProteinScorePill";
 import {
   normalizeIngredientCategory,
   normalizeIngredientToken,
@@ -51,6 +56,44 @@ function formatPortionBadge(count: number) {
   return `${count.toFixed(1)}x`;
 }
 
+function InfoTooltip({
+  label,
+  description,
+}: {
+  label: string;
+  description: string;
+}) {
+  const [isOpen, setIsOpen] = useState(false);
+  const tooltipId = useId();
+
+  return (
+    <span className="relative inline-flex">
+      <button
+        type="button"
+        aria-label={label}
+        aria-describedby={tooltipId}
+        onMouseEnter={() => setIsOpen(true)}
+        onMouseLeave={() => setIsOpen(false)}
+        onFocus={() => setIsOpen(true)}
+        onBlur={() => setIsOpen(false)}
+        onClick={() => setIsOpen((prev) => !prev)}
+        className="inline-flex h-4 w-4 cursor-pointer items-center justify-center rounded-full text-[#16a34a] transition hover:text-[#128a3e] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-strong/50"
+      >
+        <Info className="h-3.5 w-3.5" aria-hidden="true" />
+      </button>
+      <span
+        role="tooltip"
+        id={tooltipId}
+        className={`pointer-events-none absolute top-full left-1/2 z-10 mt-2 w-56 -translate-x-1/2 rounded-lg bg-neutral-900 px-2.5 py-1.5 text-[11px] leading-snug font-medium text-white shadow-lg transition-opacity duration-150 ${
+          isOpen ? "opacity-100" : "opacity-0"
+        }`}
+      >
+        {description}
+      </span>
+    </span>
+  );
+}
+
 function isIconImage(icon: string) {
   return (
     icon.startsWith("/") ||
@@ -58,6 +101,15 @@ function isIconImage(icon: string) {
     icon.startsWith("https://")
   );
 }
+
+// Included-tab-only status describing how a row currently compares to the
+// item's default build: "included" (unchanged default), "customized"
+// (default ingredient with an adjusted quantity), "replaced" (a swappable
+// default, e.g. the bun, currently set to a different option), "removed"
+// (a default that's been zeroed out or swapped to "None"), or "added" (not
+// part of the default build, selected anyway). Undefined outside the
+// Included tab, where the concept doesn't apply.
+type IncludedStatus = "included" | "customized" | "replaced" | "removed" | "added";
 
 type DisplayIngredient = ResolvedPanelIngredient & {
   displayCount: number;
@@ -69,6 +121,7 @@ type DisplayIngredient = ResolvedPanelIngredient & {
   shouldShowSingleSelectNavigator: boolean;
   isSingleSelectTab: boolean;
   canToggleIngredientFromCard: boolean;
+  includedStatus?: IncludedStatus;
 };
 
 type DisplayAddonSection = AvailableAddonSection & {
@@ -194,7 +247,9 @@ function prepareDisplayIngredients({
     if (selectedIngredientTab.label !== INCLUDED_INGREDIENT_TAB)
       return selectedIngredientTab.ingredients;
 
-    const includedIngredients: ResolvedPanelIngredient[] = [];
+    const includedIngredients: Array<
+      ResolvedPanelIngredient & { forcedIncludedStatus?: IncludedStatus }
+    > = [];
     const includedIngredientIds = new Set<string>();
     const seenSingleSelectTabs = new Set<string>();
     selectedIngredientTab.ingredients.forEach((ingredient) => {
@@ -217,14 +272,27 @@ function prepareDisplayIngredients({
       }
       if (seenSingleSelectTabs.has(linkedSingleSelectTab.label)) return;
       seenSingleSelectTabs.add(linkedSingleSelectTab.label);
-      const selectedIngredient =
-        linkedSingleSelectTab.ingredients.find(
-          (candidate) => selectedCountFor(candidate) > 0,
-        ) ?? ingredient;
-      if (selectedIngredient.isNoneOption) return;
+      const selectedIngredient = linkedSingleSelectTab.ingredients.find(
+        (candidate) => selectedCountFor(candidate) > 0,
+      );
+      // Swapped away from every option in this tab (including the default)
+      // down to "None" — keep the original default visible rather than
+      // dropping the row, so the item's original build stays legible; its
+      // count naturally resolves to 0 below, which reads as "removed".
+      if (!selectedIngredient || selectedIngredient.isNoneOption) {
+        includedIngredients.push({
+          ...ingredient,
+          tabLabel: linkedSingleSelectTab.label,
+        });
+        includedIngredientIds.add(ingredient.id);
+        return;
+      }
       const includedIngredient = {
         ...selectedIngredient,
         tabLabel: linkedSingleSelectTab.label,
+        forcedIncludedStatus: (selectedIngredient.id !== ingredient.id
+          ? "replaced"
+          : undefined) as IncludedStatus | undefined,
       };
       includedIngredients.push(includedIngredient);
       includedIngredientIds.add(includedIngredient.id);
@@ -246,6 +314,7 @@ function prepareDisplayIngredients({
         includedIngredients.push({
           ...selectedIngredient,
           tabLabel: tab.label,
+          forcedIncludedStatus: "added",
         });
         includedIngredientIds.add(selectedIngredient.id);
         return;
@@ -256,12 +325,14 @@ function prepareDisplayIngredients({
           includedIngredientIds.has(ingredient.id)
         )
           return;
-        includedIngredients.push(ingredient);
+        includedIngredients.push({ ...ingredient, forcedIncludedStatus: "added" });
         includedIngredientIds.add(ingredient.id);
       });
     });
     return includedIngredients;
   })();
+
+  const isIncludedTab = selectedIngredientTab?.label === INCLUDED_INGREDIENT_TAB;
 
   return resolvedIngredients.map((ingredient) => {
     const displayCount = selectedCountFor(ingredient);
@@ -272,8 +343,18 @@ function prepareDisplayIngredients({
         )
       : undefined;
     const shouldShowSingleSelectNavigator =
-      selectedIngredientTab?.label === INCLUDED_INGREDIENT_TAB &&
-      Boolean(linkedSingleSelectTab);
+      isIncludedTab && Boolean(linkedSingleSelectTab);
+    const forcedIncludedStatus = (
+      ingredient as { forcedIncludedStatus?: IncludedStatus }
+    ).forcedIncludedStatus;
+    const includedStatus: IncludedStatus | undefined = isIncludedTab
+      ? (forcedIncludedStatus ??
+        (displayCount === 0
+          ? "removed"
+          : displayCount !== ingredient.defaultCount
+            ? "customized"
+            : "included"))
+      : undefined;
     return {
       ...ingredient,
       displayCount,
@@ -296,6 +377,7 @@ function prepareDisplayIngredients({
         !isLockedIngredient(ingredient.id) &&
         !shouldShowSingleSelectNavigator &&
         typeof ingredient.maxQuantity === "number",
+      includedStatus,
     };
   });
 }
@@ -357,14 +439,6 @@ type AvailableAddonSection = {
   maxPerItem?: number;
 };
 
-type SectionId = "ingredients" | "sides" | "drinks" | "sauces";
-
-type SectionNavConfig = {
-  items?: Array<{ id: SectionId; label: string; icon: LucideIcon }>;
-  activeSectionId?: SectionId | null;
-  onSelectSection?: (sectionId: SectionId) => void;
-};
-
 type VariantConfig = {
   variants?: ItemVariant[] | null;
   selectedVariantId?: string;
@@ -373,9 +447,9 @@ type VariantConfig = {
 };
 
 type IngredientConfig = {
-  sectionRef?: (element: HTMLElement | null) => void;
   onCustomize?: () => void;
   flattenList: boolean;
+  isIncludedTab: boolean;
   visibleTabs: ResolvedIngredientTab[];
   selectedTab: ResolvedIngredientTab;
   setActiveTab: Dispatch<SetStateAction<string>>;
@@ -395,13 +469,142 @@ type IngredientCustomizationSectionProps = {
   config: IngredientConfig;
 };
 
+const includedStatusMeta: Record<
+  IncludedStatus,
+  { label: string; className: string }
+> = {
+  included: { label: "Included", className: "text-slate-400" },
+  customized: {
+    label: "Customized",
+    className: "rounded-full bg-amber-50 px-2 py-0.5 text-amber-700",
+  },
+  replaced: {
+    label: "Replaced",
+    className: "rounded-full bg-amber-50 px-2 py-0.5 text-amber-700",
+  },
+  removed: {
+    label: "Removed",
+    className: "rounded-full bg-slate-100 px-2 py-0.5 text-slate-500",
+  },
+  added: {
+    label: "Added",
+    className: "rounded-full bg-accent-soft px-2 py-0.5 text-accent-strong",
+  },
+};
+
+// "Cheeses" -> "No Cheese", "Sauces" -> "No Sauce" — just enough
+// singularizing to read naturally for the common "-s" plural tab names in
+// use today; worst case it leaves a trailing "s", which still reads fine.
+function formatNoneOptionLabel(tabLabel: string) {
+  return `No ${tabLabel.replace(/s$/i, "")}`;
+}
+
+function IngredientThumb({
+  icon,
+  size = 48,
+}: {
+  icon: string;
+  size?: number;
+}) {
+  if (icon === "none") {
+    return (
+      <div
+        className="grid shrink-0 place-items-center rounded-xl bg-slate-50 text-slate-400"
+        style={{ width: size, height: size }}
+        aria-hidden="true"
+      >
+        <X size={Math.round(size * 0.4)} strokeWidth={2.5} />
+      </div>
+    );
+  }
+  if (isIconImage(icon)) {
+    return (
+      <div
+        className="relative shrink-0 overflow-hidden rounded-xl bg-slate-50"
+        style={{ width: size, height: size }}
+      >
+        <Image src={icon} alt="" fill sizes={`${size}px`} className="object-cover" />
+      </div>
+    );
+  }
+  return (
+    <div
+      className="grid shrink-0 place-items-center rounded-xl bg-slate-50 text-xl"
+      style={{ width: size, height: size }}
+      aria-hidden="true"
+    >
+      {icon}
+    </div>
+  );
+}
+
+function QuantityStepper({
+  count,
+  maxQuantity,
+  disabled,
+  label,
+  onIncrement,
+  onDecrement,
+}: {
+  count: number;
+  maxQuantity: number;
+  disabled?: boolean;
+  label: string;
+  onIncrement?: () => void;
+  onDecrement?: () => void;
+}) {
+  return (
+      <div
+          className="inline-flex shrink-0 items-center"
+          onClick={(event) => event.stopPropagation()}
+          onMouseDown={(event) => event.stopPropagation()}
+      >
+          {count > 0 ? (
+              <div className="inline-flex h-8 shrink-0 items-center gap-1 rounded-full border border-accent/25 bg-white p-1 shadow-sm">
+                  <button
+                      type="button"
+                      onClick={onDecrement}
+                      aria-label={`Remove one ${label}`}
+                      disabled={disabled}
+                      className="inline-flex h-6 w-6 cursor-pointer items-center justify-center rounded-full bg-accent-soft text-slate-600 shadow-sm transition hover:bg-slate-100 active:bg-slate-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-strong/50 disabled:cursor-not-allowed disabled:opacity-30"
+                  >
+                      <Minus size={12} strokeWidth={2.5} />
+                  </button>
+                  <span className="min-w-[1.25rem] text-center text-sm font-bold text-neutral-900">
+                      {count}
+                  </span>
+                  <button
+                      type="button"
+                      onClick={onIncrement}
+                      aria-label={`Add one more ${label}`}
+                      disabled={count >= maxQuantity}
+                      className="inline-flex h-6 w-6 cursor-pointer items-center justify-center rounded-full bg-accent-soft text-slate-600 shadow-sm transition hover:bg-slate-100 active:bg-slate-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-strong/50 disabled:cursor-not-allowed disabled:opacity-30"
+                  >
+                      <Plus size={12} strokeWidth={2.5} />
+                  </button>
+              </div>
+          ) : (
+              <button
+                  type="button"
+                  onClick={onIncrement}
+                  aria-label={`Add ${label}`}
+                  className="inline-flex cursor-pointer items-center gap-1 rounded-full border border-slate-200 px-3 py-1.5 text-xs font-semibold text-slate-600 transition hover:border-accent-strong hover:text-accent-strong sm:text-sm"
+              >
+                  <Plus size={13} strokeWidth={2.5} />
+                  Add
+              </button>
+          )}
+      </div>
+  );
+}
+
 function IngredientCustomizationSection({
   config,
 }: IngredientCustomizationSectionProps) {
   const {
-    sectionRef,
     onCustomize,
     flattenList,
+    isIncludedTab,
     visibleTabs,
     selectedTab,
     setActiveTab,
@@ -414,25 +617,33 @@ function IngredientCustomizationSection({
     onIncrement,
   } = config;
   return (
-    <section
-      ref={sectionRef}
-      className="col-span-2 rounded-[14px] border border-black/12 bg-white p-5"
-    >
-      <div className="mb-6 flex items-center justify-between gap-3">
-        <h2 className="text-2xl font-bold">Ingredients</h2>
+    <section className="rounded-2xl border border-black/10 bg-white p-5 sm:p-6">
+      <div className="mb-5 flex items-start justify-between gap-3">
+        <div>
+          <h2 className="text-lg font-bold text-neutral-900 sm:text-xl">
+            Customize ingredients
+          </h2>
+          <p className="mt-1 text-sm text-slate-500">
+            Add, remove, or swap ingredients.
+          </p>
+        </div>
         {onCustomize ? (
           <button
             type="button"
             onClick={onCustomize}
             aria-label="Customize ingredients"
-            className="cursor-pointer inline-flex h-9 w-9 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-700 transition hover:bg-slate-100"
+            className="cursor-pointer inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-700 transition hover:bg-slate-100"
           >
             <Pencil className="h-4 w-4" />
           </button>
         ) : null}
       </div>
       {!flattenList && visibleTabs.length > 1 ? (
-        <div className="mb-4 flex flex-wrap gap-2">
+        <div
+          role="tablist"
+          aria-label="Ingredient categories"
+          className="mb-3 flex flex-wrap gap-1 border-b border-black/[0.06] pb-3"
+        >
           {visibleTabs.map((tab) => {
             const isActive = tab.label === selectedTab.label;
 
@@ -440,10 +651,12 @@ function IngredientCustomizationSection({
               <button
                 key={tab.id}
                 type="button"
-                className={`cursor-pointer rounded-full border px-4 py-2 text-sm font-semibold transition ${
+                role="tab"
+                aria-selected={isActive}
+                className={`cursor-pointer rounded-full px-3 py-1.5 text-xs font-semibold transition-colors duration-150 sm:text-sm ${
                   isActive
-                    ? "border-black bg-black text-white"
-                    : "border-black/15 bg-[#f7f7f7] text-black/70"
+                    ? "bg-accent-soft text-accent-strong"
+                    : "text-slate-500 hover:bg-slate-50 hover:text-slate-700"
                 }`}
                 onClick={() => setActiveTab(tab.label)}
               >
@@ -454,11 +667,10 @@ function IngredientCustomizationSection({
         </div>
       ) : null}
       {displayIngredients.length > 0 ? (
-        <ul className="grid list-none grid-cols-1 items-stretch gap-[10px] pl-0 sm:grid-cols-2">
+        <ul className="flex list-none flex-col divide-y divide-black/[0.06] pl-0">
           {displayIngredients.map((ingredient) => {
             const ingredientCount = ingredient.displayCount;
             const isSelected = ingredient.isSelected;
-            const shouldShowPortionBadge = ingredient.shouldShowPortionBadge;
             const displayedCalories = ingredient.displayedCalories;
             const linkedSingleSelectTab = ingredient.linkedSingleSelectTab;
             const shouldShowSingleSelectNavigator =
@@ -466,55 +678,58 @@ function IngredientCustomizationSection({
             const isSingleSelectTab = ingredient.isSingleSelectTab;
             const canToggleIngredientFromCard =
               ingredient.canToggleIngredientFromCard;
-            const cardClasses = `box-border flex h-full w-full flex-row items-center gap-3 rounded-[10px] border border-[rgba(0,0,0,0.15)] bg-[#f9f9f9] px-3 py-2 ${
-              isSelected
-                ? isSingleSelectTab
-                  ? "shadow-[inset_0_0_0_3px_#16a34a]"
-                  : "shadow-[inset_0_0_0_1px_#000000]"
-                : ""
-            }`;
-            const ingredientContent = (
-              <>
-                <div
-                  className="grid h-[72px] w-[72px] min-w-[72px] place-items-center rounded-lg bg-cover bg-center"
-                  aria-hidden="true"
+            const includedStatus = ingredient.includedStatus;
+            const isRemoved = includedStatus === "removed";
+            const hasQuantityControl =
+              !shouldShowSingleSelectNavigator &&
+              typeof ingredient.maxQuantity === "number";
+            const displayLabel = ingredient.isNoneOption
+              ? formatNoneOptionLabel(selectedTab.label)
+              : ingredient.label;
+
+            const nameAndMeta = (
+              <div className="min-w-0 flex-1">
+                <p
+                  className={`truncate text-sm font-semibold sm:text-base ${
+                    isRemoved
+                      ? "text-slate-400 line-through decoration-slate-300"
+                      : "text-neutral-900"
+                  }`}
                 >
-                  {isIconImage(ingredient.icon) ? (
-                    <Image
-                      src={ingredient.icon}
-                      alt=""
-                      width={72}
-                      height={72}
-                      className="h-[72px] w-[72px] rounded-lg object-cover"
-                    />
-                  ) : (
-                    ingredient.icon
-                  )}
-                </div>
-                <div className="flex min-w-0 flex-col items-start justify-center gap-[6px]">
-                  {shouldShowPortionBadge ? (
-                    <div className="inline-flex rounded-full bg-lime-500 px-2 py-0.5 text-xs font-bold text-black">
-                      {ingredient.portionBadge}
-                    </div>
-                  ) : null}
-                  <div className="line-clamp-2 break-words text-left text-base font-bold leading-[1.2]">
-                    {ingredient.label}
-                  </div>
-                  <div className="text-sm font-bold text-[rgba(0,0,0,0.5)]">
+                  {displayLabel}
+                </p>
+                <div className="mt-0.5 flex flex-wrap items-center gap-x-2 gap-y-0.5 text-xs">
+                  <span className={isRemoved ? "text-slate-300" : "text-slate-500"}>
                     {displayedCalories !== undefined
                       ? `${displayedCalories} Cal`
                       : "— Cal"}
-                  </div>
+                  </span>
+                  {ingredient.shouldShowPortionBadge && !hasQuantityControl ? (
+                    <span className="font-semibold text-slate-400">
+                      {ingredient.portionBadge}
+                    </span>
+                  ) : null}
+                  {includedStatus ? (
+                    <span
+                      className={`font-semibold ${includedStatusMeta[includedStatus].className}`}
+                    >
+                      {includedStatusMeta[includedStatus].label}
+                    </span>
+                  ) : null}
                 </div>
-              </>
+              </div>
             );
 
-            return (
-              <li key={ingredient.id} className="flex">
-                {isSingleSelectTab ? (
+            if (isSingleSelectTab) {
+              return (
+                <li key={ingredient.id} className="flex py-1">
                   <button
                     type="button"
-                    className={`${cardClasses} cursor-pointer text-left`}
+                    className={`flex w-full cursor-pointer items-center gap-3 rounded-xl px-2 py-2.5 text-left transition-colors sm:px-3 ${
+                      isSelected
+                        ? "bg-accent-soft ring-1 ring-inset ring-accent/25 hover:ring-accent/45"
+                        : "hover:bg-slate-50"
+                    }`}
                     onClick={() =>
                       onSelectSingle?.(
                         ingredient.id,
@@ -524,135 +739,117 @@ function IngredientCustomizationSection({
                       )
                     }
                   >
-                    {ingredientContent}
+                    <IngredientThumb icon={ingredient.icon} />
+                    {nameAndMeta}
                     <span
                       aria-hidden="true"
-                      className={`ml-auto inline-flex h-6 w-6 shrink-0 items-center justify-center rounded-full border ${
+                      className={`inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-full border-2 ${
                         isSelected
-                          ? "border-[3px] border-[#16a34a]"
-                          : "border-2 border-[rgba(0,0,0,0.25)]"
+                          ? "border-accent-strong bg-accent-strong"
+                          : "border-slate-300 bg-white"
                       }`}
                     >
-                      <span
-                        className={`h-2.5 w-2.5 rounded-full ${isSelected ? "bg-[#16a34a]" : "bg-transparent"}`}
-                      />
+                      {isSelected ? (
+                        <span className="h-1.5 w-1.5 rounded-full bg-white" />
+                      ) : null}
                     </span>
                   </button>
-                ) : (
-                  <div
-                    className={`${cardClasses} ${canToggleIngredientFromCard || shouldShowSingleSelectNavigator ? "cursor-pointer text-left" : ""}`}
-                    role={
-                      canToggleIngredientFromCard ||
-                      shouldShowSingleSelectNavigator
-                        ? "button"
-                        : undefined
-                    }
-                    tabIndex={
-                      canToggleIngredientFromCard ||
-                      shouldShowSingleSelectNavigator
-                        ? 0
-                        : undefined
-                    }
-                    onClick={() => {
-                      if (shouldShowSingleSelectNavigator) {
-                        navigateToSingleSelectTab(
-                          ingredient.id,
-                          linkedSingleSelectTab,
-                        );
-                        return;
-                      }
+                </li>
+              );
+            }
 
-                      if (canToggleIngredientFromCard) {
-                        onToggle?.(ingredient.id);
-                      }
+            const rowContent = (
+              <>
+                <IngredientThumb icon={ingredient.icon} />
+                {nameAndMeta}
+                {shouldShowSingleSelectNavigator ? (
+                  <button
+                    type="button"
+                    aria-label={`${isRemoved ? "Restore" : "Change"} ${ingredient.label}`}
+                    onClick={(event) => {
+                      event.stopPropagation();
+                      navigateToSingleSelectTab(
+                        ingredient.id,
+                        linkedSingleSelectTab,
+                      );
                     }}
-                    onKeyDown={(event) => {
-                      if (event.key !== "Enter" && event.key !== " ") {
-                        return;
-                      }
-
-                      if (shouldShowSingleSelectNavigator) {
-                        event.preventDefault();
-                        navigateToSingleSelectTab(
-                          ingredient.id,
-                          linkedSingleSelectTab,
-                        );
-                        return;
-                      }
-
-                      if (canToggleIngredientFromCard) {
-                        event.preventDefault();
-                        onToggle?.(ingredient.id);
-                      }
-                    }}
+                    className="inline-flex shrink-0 cursor-pointer items-center gap-0.5 rounded-full py-1.5 pr-2 pl-2.5 text-xs font-semibold text-slate-500 transition hover:bg-slate-100 hover:text-neutral-900 sm:text-sm"
                   >
-                    {ingredientContent}
-                    {shouldShowSingleSelectNavigator ? (
-                      <button
-                        type="button"
-                        className="ml-auto inline-flex h-9 w-9 cursor-pointer items-center justify-center rounded-full border border-[rgba(0,0,0,0.2)] bg-white text-black/70 transition hover:bg-black hover:text-white"
-                        aria-label={`Customize ${linkedSingleSelectTab?.label ?? ingredient.label}`}
-                        onClick={() => {
-                          navigateToSingleSelectTab(
-                            ingredient.id,
-                            linkedSingleSelectTab,
-                          );
-                        }}
-                      >
-                        <ChevronRight size={18} />
-                      </button>
-                    ) : typeof ingredient.maxQuantity === "number" ? (
-                      <div
-                        className="ml-auto inline-flex items-center gap-[6px]"
-                        onClick={(event) => event.stopPropagation()}
-                        onMouseDown={(event) => event.stopPropagation()}
-                      >
-                        {ingredientCount > 0 ? (
-                          <>
-                            <button
-                              type="button"
-                              className="inline-flex h-7 w-7 cursor-pointer items-center justify-center rounded-md border border-[rgba(0,0,0,0.35)] bg-white text-[18px] font-bold leading-none disabled:cursor-not-allowed disabled:opacity-40"
-                              aria-label={`Remove one ${ingredient.label}`}
-                              onClick={() => onDecrement?.(ingredient.id)}
-                              disabled={isLocked(ingredient.id)}
-                            >
-                              -
-                            </button>
-                            <span className="min-w-4 text-center text-base font-bold">
-                              {ingredientCount}
-                            </span>
-                            <button
-                              type="button"
-                              className="inline-flex h-7 w-7 cursor-pointer items-center justify-center rounded-md border border-[rgba(0,0,0,0.35)] bg-white text-[18px] font-bold leading-none disabled:cursor-not-allowed disabled:opacity-40"
-                              aria-label={`Add one more ${ingredient.label}`}
-                              onClick={() => onIncrement?.(ingredient.id)}
-                              disabled={
-                                ingredientCount >= ingredient.maxQuantity
-                              }
-                            >
-                              +
-                            </button>
-                          </>
-                        ) : (
-                          <button
-                            type="button"
-                            className="inline-flex h-7 w-7 cursor-pointer items-center justify-center rounded-md border border-[rgba(0,0,0,0.35)] bg-white text-[18px] font-bold leading-none"
-                            aria-label={`Add ${ingredient.label}`}
-                            onClick={() => onIncrement?.(ingredient.id)}
-                          >
-                            +
-                          </button>
-                        )}
-                      </div>
-                    ) : null}
-                  </div>
-                )}
+                    {isRemoved ? "Add back" : "Change"}
+                    <ChevronRight size={14} />
+                  </button>
+                ) : hasQuantityControl ? (
+                  <QuantityStepper
+                    count={ingredientCount}
+                    maxQuantity={ingredient.maxQuantity as number}
+                    disabled={isLocked(ingredient.id)}
+                    label={ingredient.label}
+                    onIncrement={() => onIncrement?.(ingredient.id)}
+                    onDecrement={() => onDecrement?.(ingredient.id)}
+                  />
+                ) : null}
+              </>
+            );
+
+            const isRowInteractive =
+              shouldShowSingleSelectNavigator || canToggleIngredientFromCard;
+            const isActiveSelectedRow = isSelected && !isIncludedTab;
+
+            return (
+              <li key={ingredient.id} className="flex py-1">
+                <div
+                  className={`flex w-full items-center gap-3 rounded-xl border px-2 py-2 transition-colors sm:px-3 ${
+                    isActiveSelectedRow
+                      ? "border-accent/30 bg-accent-soft hover:border-accent/50"
+                      : "border-transparent"
+                  } ${
+                    isRowInteractive
+                      ? `cursor-pointer ${isActiveSelectedRow ? "" : "hover:bg-slate-50"}`
+                      : ""
+                  }`}
+                  role={isRowInteractive ? "button" : undefined}
+                  tabIndex={isRowInteractive ? 0 : undefined}
+                  onClick={() => {
+                    if (shouldShowSingleSelectNavigator) {
+                      navigateToSingleSelectTab(
+                        ingredient.id,
+                        linkedSingleSelectTab,
+                      );
+                      return;
+                    }
+
+                    if (canToggleIngredientFromCard) {
+                      onToggle?.(ingredient.id);
+                    }
+                  }}
+                  onKeyDown={(event) => {
+                    if (event.key !== "Enter" && event.key !== " ") {
+                      return;
+                    }
+
+                    if (shouldShowSingleSelectNavigator) {
+                      event.preventDefault();
+                      navigateToSingleSelectTab(
+                        ingredient.id,
+                        linkedSingleSelectTab,
+                      );
+                      return;
+                    }
+
+                    if (canToggleIngredientFromCard) {
+                      event.preventDefault();
+                      onToggle?.(ingredient.id);
+                    }
+                  }}
+                >
+                  {rowContent}
+                </div>
               </li>
             );
           })}
         </ul>
       ) : (
-        <div className="rounded-[10px] border border-dashed border-black/12 bg-[#f9f9f9] px-4 py-6 text-sm font-medium text-black/55">
+        <div className="rounded-xl border border-dashed border-black/10 bg-slate-50 px-4 py-6 text-sm font-medium text-slate-500">
           No ingredients available in this tab.
         </div>
       )}
@@ -661,8 +858,6 @@ function IngredientCustomizationSection({
 }
 
 type ComboConfig = {
-  sidesSectionRef?: (element: HTMLElement | null) => void;
-  drinksSectionRef?: (element: HTMLElement | null) => void;
   sides: MenuItem[];
   drinks: MenuItem[];
   selectedSideId?: string;
@@ -679,10 +874,162 @@ type ComboCustomizationSectionProps = {
   config: ComboConfig;
 };
 
+function ComboOptionRow({
+  item,
+  isSelected,
+  selectedVariantId,
+  onSelect,
+  onSelectVariant,
+}: {
+  item: MenuItem;
+  isSelected: boolean;
+  selectedVariantId?: string;
+  onSelect?: (itemId: string) => void;
+  onSelectVariant?: (variantId: string) => void;
+}) {
+  const itemId = item.id ?? item.name;
+  const variants = item.variants ?? [];
+  const activeVariant =
+    isSelected && variants.length > 0
+      ? variants.find(
+          (variant) =>
+            (selectedVariantId ?? item.defaultVariantId ?? variants[0]?.id) ===
+            variant.id,
+        )
+      : undefined;
+  const calories = activeVariant?.nutrition.calories ?? item.nutrition.calories;
+
+  return (
+    <li className="flex py-1">
+      <div
+        className={`flex w-full flex-1 flex-col rounded-xl transition-colors ${
+          isSelected ? "bg-accent-soft ring-1 ring-inset ring-accent/25" : ""
+        }`}
+      >
+        <button
+          type="button"
+          className={`flex w-full flex-1 cursor-pointer items-center gap-3 px-2 py-2.5 text-left transition-colors sm:px-3 ${
+            isSelected ? "" : "rounded-xl hover:bg-slate-50"
+          }`}
+          onClick={() => onSelect?.(itemId)}
+        >
+          <IngredientThumb icon={item.image ?? ""} />
+          <div className="min-w-0 flex-1">
+            <p className="truncate text-sm font-semibold text-neutral-900 sm:text-base">
+              {item.name}
+            </p>
+            <p className="mt-0.5 text-xs text-slate-500">
+              {calories !== undefined ? `${calories} Cal` : "— Cal"}
+            </p>
+          </div>
+          <span
+            aria-hidden="true"
+            className={`inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-full border-2 ${
+              isSelected
+                ? "border-accent-strong bg-accent-strong"
+                : "border-slate-300 bg-white"
+            }`}
+          >
+            {isSelected ? (
+              <span className="h-1.5 w-1.5 rounded-full bg-white" />
+            ) : null}
+          </span>
+        </button>
+        {isSelected && variants.length > 0 ? (
+          <div className="flex w-full flex-wrap gap-1.5 px-2 pb-2.5 pl-[52px] sm:px-3 sm:pl-[60px]">
+            {variants.map((variant) => {
+              const isVariantSelected =
+                (selectedVariantId ?? item.defaultVariantId ?? variants[0]?.id) ===
+                variant.id;
+              return (
+                <button
+                  key={`${itemId}-${variant.id}`}
+                  type="button"
+                  className={`cursor-pointer rounded-full border px-2.5 py-1 text-xs font-semibold transition-colors ${
+                    isVariantSelected
+                      ? "border-accent-strong bg-accent-strong text-white"
+                      : "border-slate-200 bg-white text-slate-600 hover:border-slate-300"
+                  }`}
+                  onClick={(event) => {
+                    event.stopPropagation();
+                    onSelectVariant?.(variant.id);
+                  }}
+                >
+                  {variant.label}
+                </button>
+              );
+            })}
+          </div>
+        ) : null}
+      </div>
+    </li>
+  );
+}
+
+function ComboOptionList({
+  items,
+  selectedId,
+  selectedVariantId,
+  onSelect,
+  onSelectVariant,
+}: {
+  items: MenuItem[];
+  selectedId?: string;
+  selectedVariantId?: string;
+  onSelect?: (itemId: string) => void;
+  onSelectVariant?: (variantId: string) => void;
+}) {
+  const columnBreak = Math.ceil(items.length / 2);
+  const columns = [items.slice(0, columnBreak), items.slice(columnBreak)];
+  const hasSecondColumn = columns[1].length > 0;
+
+  return (
+    <div
+      className="flex flex-col sm:grid sm:grid-cols-2 sm:gap-x-6"
+      style={
+        hasSecondColumn
+          ? { gridTemplateRows: `repeat(${columnBreak}, auto)` }
+          : undefined
+      }
+    >
+      {columns.map((columnItems, columnIndex) =>
+        columnItems.length > 0 ? (
+          <ul
+            key={columnIndex}
+            className={`flex list-none flex-col divide-y divide-black/[0.06] pl-0 ${
+              columnIndex === 1 ? "border-t border-black/[0.06] sm:border-t-0" : ""
+            }`}
+            style={
+              hasSecondColumn
+                ? {
+                    gridRow: `span ${columnBreak} / span ${columnBreak}`,
+                    gridTemplateRows: "subgrid",
+                  }
+                : undefined
+            }
+          >
+            {columnItems.map((item) => {
+              const itemId = item.id ?? item.name;
+              return (
+                <ComboOptionRow
+                  key={itemId}
+                  item={item}
+                  isSelected={selectedId === itemId}
+                  selectedVariantId={selectedVariantId}
+                  onSelect={onSelect}
+                  onSelectVariant={onSelectVariant}
+                />
+              );
+            })}
+          </ul>
+        ) : null,
+      )}
+    </div>
+  );
+}
+
 function ComboCustomizationSection({ config }: ComboCustomizationSectionProps) {
   const {
-    sidesSectionRef,
-    drinksSectionRef,
     sides,
     drinks,
     selectedSideId,
@@ -696,209 +1043,35 @@ function ComboCustomizationSection({ config }: ComboCustomizationSectionProps) {
   } = config;
   return (
     <>
-      <section
-        ref={sidesSectionRef}
-        className="col-span-2 rounded-[14px] border border-black/12 bg-white p-5"
-      >
-        <h2 className="mb-6 text-2xl font-bold">Sides</h2>
-        <ul className="grid list-none grid-cols-1 items-stretch gap-[10px] pl-0 sm:grid-cols-2">
-          {sides.map((side) => {
-            const sideId = side.id ?? side.name;
-            const isSelected = selectedSideId === sideId;
-            const sideVariants = side.variants ?? [];
-            const selectedSideVariant =
-              isSelected && sideVariants.length > 0
-                ? sideVariants.find(
-                    (variant) =>
-                      (selectedSideVariantId ??
-                        side.defaultVariantId ??
-                        sideVariants[0]?.id) === variant.id,
-                  )
-                : undefined;
-            const sideCalories =
-              selectedSideVariant?.nutrition.calories ??
-              side.nutrition.calories;
-            return (
-              <li key={sideId} className="flex">
-                <div
-                  className={`box-border flex h-full w-full cursor-pointer flex-col rounded-[10px] border border-[rgba(0,0,0,0.12)] bg-[#fcfcfc] px-3 py-2 text-left ${isSelected ? "shadow-[inset_0_0_0_2px_#16a34a]" : ""}`}
-                  role="button"
-                  tabIndex={0}
-                  onClick={() => onSelectSide?.(sideId)}
-                  onKeyDown={(event) => {
-                    if (event.key === "Enter" || event.key === " ") {
-                      event.preventDefault();
-                      onSelectSide?.(sideId);
-                    }
-                  }}
-                >
-                  <div className="flex flex-row items-center gap-3">
-                    <div className="grid h-[72px] w-[72px] min-w-[72px] place-items-center rounded-lg bg-cover bg-center">
-                      {side.image ? (
-                        <Image
-                          src={side.image}
-                          alt=""
-                          width={72}
-                          height={72}
-                          className="h-[72px] w-[72px] rounded-lg object-cover"
-                        />
-                      ) : null}
-                    </div>
-                    <div className="flex min-w-0 flex-col items-start justify-center gap-[6px]">
-                      <div className="line-clamp-2 break-words text-left text-base font-bold leading-[1.2]">
-                        {side.name}
-                      </div>
-                      <div className="text-sm font-bold text-[rgba(0,0,0,0.5)]">
-                        {sideCalories ?? "—"} Cal
-                      </div>
-                    </div>
-                    <span
-                      aria-hidden="true"
-                      className={`ml-auto inline-flex h-6 w-6 shrink-0 items-center justify-center rounded-full border ${
-                        isSelected
-                          ? "border-[3px] border-[#16a34a]"
-                          : "border-2 border-[rgba(0,0,0,0.2)]"
-                      }`}
-                    >
-                      <span
-                        className={`h-2.5 w-2.5 rounded-full ${isSelected ? "bg-[#16a34a]" : "bg-transparent"}`}
-                      />
-                    </span>
-                  </div>
-                  {isSelected && sideVariants.length > 0 ? (
-                    <div className="mt-1.5 flex w-full flex-wrap gap-1.5">
-                      {sideVariants.map((variant) => {
-                        const isVariantSelected =
-                          (selectedSideVariantId ??
-                            side.defaultVariantId ??
-                            sideVariants[0]?.id) === variant.id;
-                        return (
-                          <button
-                            key={`${sideId}-${variant.id}`}
-                            type="button"
-                            className={`cursor-pointer rounded-full border px-2.5 py-1 text-xs font-semibold ${
-                              isVariantSelected
-                                ? "border-black bg-black text-white"
-                                : "border-black/20 bg-white text-black/70"
-                            }`}
-                            onClick={(event) => {
-                              event.stopPropagation();
-                              onSelectSideVariant?.(variant.id);
-                            }}
-                          >
-                            {variant.label}
-                          </button>
-                        );
-                      })}
-                    </div>
-                  ) : null}
-                </div>
-              </li>
-            );
-          })}
-        </ul>
+      <section className="rounded-2xl border border-black/10 bg-white p-5 sm:p-6">
+        <div className="mb-5">
+          <h2 className="text-lg font-bold text-neutral-900 sm:text-xl">
+            Choose a side
+          </h2>
+          <p className="mt-1 text-sm text-slate-500">Select one option.</p>
+        </div>
+        <ComboOptionList
+          items={sides}
+          selectedId={selectedSideId}
+          selectedVariantId={selectedSideVariantId}
+          onSelect={onSelectSide}
+          onSelectVariant={onSelectSideVariant}
+        />
       </section>
-      <section
-        ref={drinksSectionRef}
-        className="col-span-2 rounded-[14px] border border-black/12 bg-white p-5"
-      >
-        <h2 className="mb-6 text-2xl font-bold">Drinks</h2>
-        <ul className="grid list-none grid-cols-1 items-stretch gap-[10px] pl-0 sm:grid-cols-2">
-          {drinks.map((drink) => {
-            const drinkId = drink.id ?? drink.name;
-            const isSelected = selectedDrinkId === drinkId;
-            const drinkVariants = drink.variants ?? [];
-            const selectedDrinkVariant =
-              isSelected && drinkVariants.length > 0
-                ? drinkVariants.find(
-                    (variant) =>
-                      (selectedDrinkVariantId ??
-                        drink.defaultVariantId ??
-                        drinkVariants[0]?.id) === variant.id,
-                  )
-                : undefined;
-            const drinkCalories =
-              selectedDrinkVariant?.nutrition.calories ??
-              drink.nutrition.calories;
-            return (
-              <li key={drinkId} className="flex">
-                <div
-                  className={`box-border flex h-full w-full cursor-pointer flex-col rounded-[10px] border border-[rgba(0,0,0,0.12)] bg-[#fcfcfc] px-3 py-2 text-left ${isSelected ? "shadow-[inset_0_0_0_2px_#16a34a]" : ""}`}
-                  role="button"
-                  tabIndex={0}
-                  onClick={() => onSelectDrink?.(drinkId)}
-                  onKeyDown={(event) => {
-                    if (event.key === "Enter" || event.key === " ") {
-                      event.preventDefault();
-                      onSelectDrink?.(drinkId);
-                    }
-                  }}
-                >
-                  <div className="flex flex-row items-center gap-3">
-                    <div className="grid h-[72px] w-[72px] min-w-[72px] place-items-center rounded-lg bg-cover bg-center">
-                      {drink.image ? (
-                        <Image
-                          src={drink.image}
-                          alt=""
-                          width={72}
-                          height={72}
-                          className="h-[72px] w-[72px] rounded-lg object-cover"
-                        />
-                      ) : null}
-                    </div>
-                    <div className="flex min-w-0 flex-col items-start justify-center gap-[6px]">
-                      <div className="line-clamp-2 break-words text-left text-base font-bold leading-[1.2]">
-                        {drink.name}
-                      </div>
-                      <div className="text-sm font-bold text-[rgba(0,0,0,0.5)]">
-                        {drinkCalories ?? "—"} Cal
-                      </div>
-                    </div>
-                    <span
-                      aria-hidden="true"
-                      className={`ml-auto inline-flex h-6 w-6 shrink-0 items-center justify-center rounded-full border ${
-                        isSelected
-                          ? "border-[3px] border-[#16a34a]"
-                          : "border-2 border-[rgba(0,0,0,0.2)]"
-                      }`}
-                    >
-                      <span
-                        className={`h-2.5 w-2.5 rounded-full ${isSelected ? "bg-[#16a34a]" : "bg-transparent"}`}
-                      />
-                    </span>
-                  </div>
-                  {isSelected && drinkVariants.length > 0 ? (
-                    <div className="mt-1.5 flex w-full flex-wrap gap-1.5">
-                      {drinkVariants.map((variant) => {
-                        const isVariantSelected =
-                          (selectedDrinkVariantId ??
-                            drink.defaultVariantId ??
-                            drinkVariants[0]?.id) === variant.id;
-                        return (
-                          <button
-                            key={`${drinkId}-${variant.id}`}
-                            type="button"
-                            className={`cursor-pointer rounded-full border px-2.5 py-1 text-xs font-semibold ${
-                              isVariantSelected
-                                ? "border-black bg-black text-white"
-                                : "border-black/20 bg-white text-black/70"
-                            }`}
-                            onClick={(event) => {
-                              event.stopPropagation();
-                              onSelectDrinkVariant?.(variant.id);
-                            }}
-                          >
-                            {variant.label}
-                          </button>
-                        );
-                      })}
-                    </div>
-                  ) : null}
-                </div>
-              </li>
-            );
-          })}
-        </ul>
+      <section className="rounded-2xl border border-black/10 bg-white p-5 sm:p-6">
+        <div className="mb-5">
+          <h2 className="text-lg font-bold text-neutral-900 sm:text-xl">
+            Choose a drink
+          </h2>
+          <p className="mt-1 text-sm text-slate-500">Select one option.</p>
+        </div>
+        <ComboOptionList
+          items={drinks}
+          selectedId={selectedDrinkId}
+          selectedVariantId={selectedDrinkVariantId}
+          onSelect={onSelectDrink}
+          onSelectVariant={onSelectDrinkVariant}
+        />
       </section>
     </>
   );
@@ -908,8 +1081,6 @@ type AddonConfig = {
   sections: DisplayAddonSection[];
   openState: Record<string, boolean>;
   setOpenState: Dispatch<SetStateAction<Record<string, boolean>>>;
-  sectionRefType?: string;
-  sectionRef?: (element: HTMLElement | null) => void;
   onToggleSauce?: (addon: MenuItem) => void;
   onSelectAddon?: (ref: string, addon?: MenuItem) => void;
   onDecrementSauce?: (addon: MenuItem) => void;
@@ -925,28 +1096,22 @@ function AddonCustomizationSection({ config }: AddonCustomizationSectionProps) {
     sections,
     openState,
     setOpenState,
-    sectionRefType,
-    sectionRef,
     onToggleSauce,
     onSelectAddon,
     onDecrementSauce,
     onIncrementSauce,
   } = config;
   return (
-    <section className="col-span-2 rounded-[18px] border border-[rgba(0,0,0,0.15)] bg-white px-[18px] py-[14px]">
-      <div className="grid gap-[14px]">
+    <section className="rounded-2xl border border-black/10 bg-white p-5 sm:p-6">
+      <div className="grid gap-4">
         {sections.map((section) => {
           const sectionStateKey = `addon-${section.ref}`;
           const isSectionOpen = openState[sectionStateKey] ?? true;
           const summaryDetail = section.summaryDetail;
           return (
-            <div
-              key={section.ref}
-              ref={section.ref === sectionRefType ? sectionRef : undefined}
-              className="min-w-0"
-            >
+            <div key={section.ref} className="min-w-0">
               <div
-                className="flex min-h-[52px] w-full cursor-pointer items-center justify-between gap-[10px] rounded-[10px] border-0 bg-transparent p-3 text-left"
+                className="flex min-h-[44px] w-full cursor-pointer items-center justify-between gap-[10px] rounded-[10px] border-0 bg-transparent py-1 text-left"
                 role="button"
                 tabIndex={0}
                 onClick={() =>
@@ -965,7 +1130,7 @@ function AddonCustomizationSection({ config }: AddonCustomizationSectionProps) {
                   }
                 }}
               >
-                <h3 className="m-0 text-2xl font-bold">
+                <h3 className="m-0 text-lg font-bold text-neutral-900 sm:text-xl">
                   {section.title}
                   {!isSectionOpen ? (
                     <span className="text-[18px] font-semibold text-[rgba(0,0,0,0.5)]">
@@ -1118,42 +1283,6 @@ function AddonCustomizationSection({ config }: AddonCustomizationSectionProps) {
   );
 }
 
-function SectionNavigation({ config }: { config: SectionNavConfig }) {
-  const { items, activeSectionId, onSelectSection } = config;
-
-  if (!items || items.length === 0) return null;
-
-  return (
-    <div className="col-span-2 sticky top-0 z-[5] w-full rounded-2xl border border-black/10 bg-white/95 px-1.5 py-1.5 md:px-2 md:py-1.5 shadow-[0_3px_10px_rgba(15,23,42,0.08)] backdrop-blur">
-      <div className="flex items-stretch gap-1.5 overflow-x-auto pb-1 md:gap-2">
-        {items.map((section) => {
-          const isActive = activeSectionId === section.id;
-          const Icon = section.icon;
-          return (
-            <button
-              key={section.id}
-              type="button"
-              className="cursor-pointer flex min-w-[96px] flex-none flex-col items-center gap-1 rounded-xl bg-white px-2 py-1.5 text-center md:min-w-[120px] md:px-3"
-              onClick={() => onSelectSection?.(section.id)}
-            >
-              <span
-                className={`inline-flex h-8 w-8 items-center justify-center rounded-full border text-[13px] ${isActive ? "border-blue-500 bg-blue-50 text-blue-600" : "border-slate-200 bg-slate-50 text-slate-500"}`}
-              >
-                <Icon size={15} />
-              </span>
-              <span
-                className={`text-[11px] font-semibold uppercase tracking-wide ${isActive ? "text-blue-600" : "text-slate-500"}`}
-              >
-                {section.label}
-              </span>
-            </button>
-          );
-        })}
-      </div>
-    </div>
-  );
-}
-
 export default function ItemDetailsPanel({
   item,
   nutrition,
@@ -1192,14 +1321,6 @@ export default function ItemDetailsPanel({
   onSelectComboSideVariant,
   selectedComboDrinkVariantId,
   onSelectComboDrinkVariant,
-  ingredientsSectionRef,
-  sidesSectionRef,
-  drinksSectionRef,
-  addonSectionRef,
-  addonSectionRefType,
-  sectionNavItems,
-  activeSectionId,
-  onSelectSection,
   onCustomizeIngredients,
   quantityMultiplier = 1,
 }: {
@@ -1243,14 +1364,6 @@ export default function ItemDetailsPanel({
   onSelectComboSideVariant?: (variantId: string) => void;
   selectedComboDrinkVariantId?: string;
   onSelectComboDrinkVariant?: (variantId: string) => void;
-  ingredientsSectionRef?: (element: HTMLElement | null) => void;
-  sidesSectionRef?: (element: HTMLElement | null) => void;
-  drinksSectionRef?: (element: HTMLElement | null) => void;
-  addonSectionRef?: (element: HTMLElement | null) => void;
-  addonSectionRefType?: string;
-  sectionNavItems?: SectionNavConfig["items"];
-  activeSectionId?: SectionId | null;
-  onSelectSection?: (sectionId: SectionId) => void;
   onCustomizeIngredients?: () => void;
   quantityMultiplier?: number;
 }) {
@@ -1280,23 +1393,42 @@ export default function ItemDetailsPanel({
   const carbsGrams = n.carbs ?? 0;
   const fatGrams = n.totalFat ?? 0;
   const macroTotalGrams = proteinGrams + carbsGrams + fatGrams;
+  const proteinScore = getProteinPer100Calories(proteinGrams, n.calories ?? 0);
+  const proteinScoreTier =
+    typeof proteinScore === "number" ? getProteinScoreTier(proteinScore) : undefined;
   const macroSegments = [
     {
       label: "Protein",
+      shortLabel: "P",
       percent: macroTotalGrams > 0 ? (proteinGrams / macroTotalGrams) * 100 : 0,
       color: "bg-[#c2410c] text-white",
     },
     {
       label: "Carbs",
+      shortLabel: "C",
       percent: macroTotalGrams > 0 ? (carbsGrams / macroTotalGrams) * 100 : 0,
       color: "bg-[#ca8a04] text-white",
     },
     {
       label: "Fat",
+      shortLabel: "F",
       percent: macroTotalGrams > 0 ? (fatGrams / macroTotalGrams) * 100 : 0,
       color: "bg-[#2563eb] text-white",
     },
-  ];
+  ].map((segment) => {
+    const roundedPercent = Math.round(segment.percent);
+    const inBarLabel =
+      segment.percent >= 20
+        ? `${segment.label} ${roundedPercent}%`
+        : segment.percent >= 12
+          ? `${segment.shortLabel} ${roundedPercent}%`
+          : "";
+
+    return { ...segment, roundedPercent, inBarLabel };
+  });
+  const hasIllegibleMacroSegment = macroSegments.some(
+    (segment) => segment.inBarLabel === "",
+  );
   const [sectionOpenState, setSectionOpenState] = useState<
     Record<string, boolean>
   >({});
@@ -1495,9 +1627,9 @@ export default function ItemDetailsPanel({
   };
   const ingredientConfig: IngredientConfig | undefined = selectedIngredientTab
     ? {
-        sectionRef: ingredientsSectionRef,
         onCustomize: onCustomizeIngredients,
         flattenList: flattenIngredientList,
+        isIncludedTab: selectedIngredientTab.label === INCLUDED_INGREDIENT_TAB,
         visibleTabs: visibleIngredientTabs,
         selectedTab: selectedIngredientTab,
         setActiveTab: setActiveIngredientTab,
@@ -1514,16 +1646,12 @@ export default function ItemDetailsPanel({
     sections: availableAddonSections,
     openState: sectionOpenState,
     setOpenState: setSectionOpenState,
-    sectionRefType: addonSectionRefType,
-    sectionRef: addonSectionRef,
     onToggleSauce,
     onSelectAddon,
     onDecrementSauce,
     onIncrementSauce,
   };
   const comboConfig: ComboConfig = {
-    sidesSectionRef,
-    drinksSectionRef,
     sides: comboSides,
     drinks: comboDrinks,
     selectedSideId: selectedComboSideId,
@@ -1535,17 +1663,10 @@ export default function ItemDetailsPanel({
     onSelectSideVariant: onSelectComboSideVariant,
     onSelectDrinkVariant: onSelectComboDrinkVariant,
   };
-  const sectionNavConfig: SectionNavConfig = {
-    items: sectionNavItems,
-    activeSectionId,
-    onSelectSection,
-  };
-
   return (
-    <div className="grid gap-16">
+    <div className="grid gap-10">
       {hasBuildContent ? (
-        <div className="grid grid-cols-2 gap-3 rounded-[18px] bg-[#e9e9e9] p-3">
-          <SectionNavigation config={sectionNavConfig} />
+        <div className="grid gap-4 rounded-3xl bg-app-background p-4 sm:p-5">
           {shouldShowIngredientSection && ingredientConfig ? (
             <IngredientCustomizationSection config={ingredientConfig} />
           ) : null}
@@ -1561,133 +1682,151 @@ export default function ItemDetailsPanel({
       ) : null}
 
       {shouldShowInfoSection ? (
-        <div className="grid grid-cols-1 gap-3 rounded-[18px] border border-black/8 bg-[#efefef] p-3 md:grid-cols-2">
-          <section className="rounded-[18px] border border-[rgba(0,0,0,0.15)] bg-white p-5">
-            <h2 className="mb-4 text-2xl font-bold">Nutrition Facts</h2>
+        <div className="grid grid-cols-1 gap-3 rounded-3xl border border-black/8 bg-app-background p-3 md:grid-cols-2">
+          <section className="rounded-2xl border border-black/10 bg-white p-5">
+            <h2 className="mb-4 text-2xl font-bold text-neutral-900">
+              Nutrition Facts
+            </h2>
 
-            <div className="text-xs font-medium text-[rgba(0,0,0,0.55)]">
-              Amount per serving
+            <div className="flex items-center gap-1.5 text-xs font-medium text-slate-500">
+              <span>Amount per serving</span>
+              {showCustomizationDeltas ? (
+                <InfoTooltip
+                  label="What do the green values mean?"
+                  description="Green values show the difference between your customized order and this item's base nutrition."
+                />
+              ) : null}
             </div>
 
             <div className="mt-1 flex items-end justify-between">
-              <h3 className="text-xl font-bold">Calories</h3>
-              <div className="inline-flex items-baseline gap-[6px]">
-                <div className="text-xl font-bold">
+              <h3 className="text-xl font-bold text-neutral-900">Calories</h3>
+              <div className="inline-flex items-baseline gap-1.5">
+                <div className="text-xl font-bold text-neutral-900">
                   {n.calories === undefined || Number.isNaN(n.calories)
                     ? "—"
                     : n.calories}
                 </div>
-                {showCustomizationDeltas ? (
-                  <span className="text-sm font-bold text-[#16a34a]">
+                {showCustomizationDeltas &&
+                activeCustomizationTotals.calories !== 0 ? (
+                  <span className="text-sm leading-none font-bold text-[#16a34a]">
                     {formatDelta(activeCustomizationTotals.calories)}
                   </span>
                 ) : null}
               </div>
             </div>
 
-            <div className="my-[12px] mb-2 h-[4px] rounded-[999px] bg-[rgba(0,0,0,0.75)]" />
+            <div className="my-3 h-[3px] rounded-full bg-neutral-900/80" />
 
-            <div className="flex items-baseline justify-between border-b border-[rgba(0,0,0,0.2)] py-[10px]">
-              <div className="text-lg font-semibold">Total Fat</div>
-              <div className="inline-flex items-baseline gap-[6px]">
-                <div className="text-lg font-semibold">
+            <div className="flex items-baseline justify-between border-b border-black/10 py-3">
+              <div className="text-base font-semibold text-neutral-900">
+                Total Fat
+              </div>
+              <div className="inline-flex items-baseline gap-1.5">
+                <div className="text-base font-semibold text-neutral-900">
                   {format(n.totalFat, "g")}
                 </div>
-                {showCustomizationDeltas ? (
-                  <span className="text-sm font-bold text-[#16a34a]">
+                {showCustomizationDeltas &&
+                activeCustomizationTotals.totalFat !== 0 ? (
+                  <span className="text-sm leading-none font-bold text-[#16a34a]">
                     {formatDelta(activeCustomizationTotals.totalFat, "g")}
                   </span>
                 ) : null}
               </div>
             </div>
 
-            <div className="flex items-baseline justify-between border-b border-[rgba(0,0,0,0.2)] py-[10px] pl-5">
-              <div className="text-base font-medium text-[rgba(0,0,0,0.8)]">
-                Sat Fat
-              </div>
-              <div className="text-base font-medium text-[rgba(0,0,0,0.8)]">
+            <div className="flex items-baseline justify-between border-b border-black/10 py-2.5 pl-5">
+              <div className="text-sm font-medium text-slate-500">Sat Fat</div>
+              <div className="text-sm font-medium text-slate-500">
                 {format(n.satFat, "g")}
               </div>
             </div>
 
-            <div className="flex items-baseline justify-between border-b border-[rgba(0,0,0,0.2)] py-[10px] pl-5">
-              <div className="text-base font-medium text-[rgba(0,0,0,0.8)]">
+            <div className="flex items-baseline justify-between border-b border-black/10 py-2.5 pl-5">
+              <div className="text-sm font-medium text-slate-500">
                 Trans Fat
               </div>
-              <div className="text-base font-medium text-[rgba(0,0,0,0.8)]">
+              <div className="text-sm font-medium text-slate-500">
                 {format(n.transFat, "g")}
               </div>
             </div>
 
-            <div className="flex items-baseline justify-between border-b border-[rgba(0,0,0,0.2)] py-[10px]">
-              <div className="text-lg font-semibold">Cholesterol</div>
-              <div className="text-lg font-semibold">
+            <div className="flex items-baseline justify-between border-b border-black/10 py-3">
+              <div className="text-base font-semibold text-neutral-900">
+                Cholesterol
+              </div>
+              <div className="text-base font-semibold text-neutral-900">
                 {format(n.cholesterol, "mg")}
               </div>
             </div>
 
-            <div className="flex items-baseline justify-between border-b border-[rgba(0,0,0,0.2)] py-[10px]">
-              <div className="text-lg font-semibold">Sodium</div>
-              <div className="text-lg font-semibold">
+            <div className="flex items-baseline justify-between border-b border-black/10 py-3">
+              <div className="text-base font-semibold text-neutral-900">
+                Sodium
+              </div>
+              <div className="text-base font-semibold text-neutral-900">
                 {format(n.sodium, "mg")}
               </div>
             </div>
 
-            <div className="flex items-baseline justify-between border-b border-[rgba(0,0,0,0.2)] py-[10px]">
-              <div className="text-lg font-semibold">Carbohydrates</div>
-              <div className="inline-flex items-baseline gap-[6px]">
-                <div className="text-lg font-semibold">
+            <div className="flex items-baseline justify-between border-b border-black/10 py-3">
+              <div className="text-base font-semibold text-neutral-900">
+                Carbohydrates
+              </div>
+              <div className="inline-flex items-baseline gap-1.5">
+                <div className="text-base font-semibold text-neutral-900">
                   {format(n.carbs, "g")}
                 </div>
-                {showCustomizationDeltas ? (
-                  <span className="text-sm font-bold text-[#16a34a]">
+                {showCustomizationDeltas &&
+                activeCustomizationTotals.carbs !== 0 ? (
+                  <span className="text-sm leading-none font-bold text-[#16a34a]">
                     {formatDelta(activeCustomizationTotals.carbs, "g")}
                   </span>
                 ) : null}
               </div>
             </div>
 
-            <div className="flex items-baseline justify-between border-b border-[rgba(0,0,0,0.2)] py-[10px] pl-5">
-              <div className="text-base font-medium text-[rgba(0,0,0,0.8)]">
-                Fiber
-              </div>
-              <div className="text-base font-medium text-[rgba(0,0,0,0.8)]">
+            <div className="flex items-baseline justify-between border-b border-black/10 py-2.5 pl-5">
+              <div className="text-sm font-medium text-slate-500">Fiber</div>
+              <div className="text-sm font-medium text-slate-500">
                 {format(n.fiber, "g")}
               </div>
             </div>
 
-            <div className="flex items-baseline justify-between border-b border-[rgba(0,0,0,0.2)] py-[10px] pl-5">
-              <div className="text-base font-medium text-[rgba(0,0,0,0.8)]">
-                Sugars
-              </div>
-              <div className="text-base font-medium text-[rgba(0,0,0,0.8)]">
+            <div className="flex items-baseline justify-between border-b border-black/10 py-2.5 pl-5">
+              <div className="text-sm font-medium text-slate-500">Sugars</div>
+              <div className="text-sm font-medium text-slate-500">
                 {format(n.sugars, "g")}
               </div>
             </div>
 
-            <div className="flex items-baseline justify-between border-b border-[rgba(0,0,0,0.2)] py-[10px]">
-              <div className="text-lg font-semibold">Protein</div>
-              <div className="inline-flex items-baseline gap-[6px]">
-                <div className="text-lg font-semibold">
+            <div className="flex items-baseline justify-between border-b border-black/10 py-3">
+              <div className="text-base font-semibold text-neutral-900">
+                Protein
+              </div>
+              <div className="inline-flex items-baseline gap-1.5">
+                <div className="text-base font-semibold text-neutral-900">
                   {format(n.protein, "g")}
                 </div>
-                {showCustomizationDeltas ? (
-                  <span className="text-sm font-bold text-[#16a34a]">
+                {showCustomizationDeltas &&
+                activeCustomizationTotals.protein !== 0 ? (
+                  <span className="text-sm leading-none font-bold text-[#16a34a]">
                     {formatDelta(activeCustomizationTotals.protein, "g")}
                   </span>
                 ) : null}
               </div>
             </div>
 
-            <div className="mt-3 text-xs font-medium leading-[1.05] text-[rgba(0,0,0,0.55)]">
+            <p className="mt-3 text-xs leading-snug text-slate-500">
               2,000 calories a day is used for general nutrition advice, but
               calorie needs vary. Values may vary by location, serving size, and
               customizations.
-            </div>
+            </p>
           </section>
 
-          <section className="rounded-2xl border border-[rgba(0,0,0,0.15)] bg-white p-5">
-            <h2 className="mb-4 text-2xl font-bold">Details</h2>
+          <section className="rounded-2xl border border-black/10 bg-white p-5">
+            <h2 className="mb-4 text-2xl font-bold text-neutral-900">
+              Your order
+            </h2>
 
             {variantConfig.showInDetails ? (
               <>
@@ -1698,19 +1837,19 @@ export default function ItemDetailsPanel({
                   layout="details"
                   className="mt-0"
                 />
-                <div className="mt-3 h-px bg-[rgba(0,0,0,0.2)]" />
+                <div className="mt-3 h-px bg-black/10" />
               </>
             ) : null}
 
-            <div className="mt-4 space-y-2">
+            <div className="mt-5 space-y-2">
               <SectionEyebrow className="text-base text-neutral-500">
                 Items
               </SectionEyebrow>
-              <ul className="max-h-[320px] min-h-0 flex-1 space-y-2 overflow-y-auto rounded-xl bg-[#efefef] p-2">
+              <ul className="flex max-h-[320px] list-none flex-col divide-y divide-black/[0.06] overflow-y-auto pl-0">
                 {detailItems.map((detailItem) => (
                   <li
                     key={detailItem.id}
-                    className="flex items-center gap-3 rounded-xl border border-black/10 bg-neutral-50 px-3 py-2"
+                    className="flex items-center gap-3 py-2.5"
                   >
                     <div className="h-11 w-11 shrink-0 overflow-hidden rounded-lg border border-black/10 bg-white">
                       {detailItem.image && detailItem.image !== "none" ? (
@@ -1722,73 +1861,68 @@ export default function ItemDetailsPanel({
                         />
                       ) : null}
                     </div>
-                    <div className="min-w-0">
-                      <p className="truncate text-sm font-medium text-neutral-900">
-                        {detailItem.quantity}x {detailItem.name}
-                      </p>
-                      <p className="truncate text-xs text-neutral-500">
-                        {detailItem.detail}
-                      </p>
-                    </div>
+                    <p
+                      className="min-w-0 flex-1 truncate text-sm font-medium text-neutral-900"
+                      title={`${detailItem.quantity}x ${detailItem.name}`}
+                    >
+                      {detailItem.quantity}x {detailItem.name}
+                    </p>
+                    <span className="shrink-0 rounded-full bg-slate-100 px-2 py-0.5 text-[10px] font-semibold tracking-wide text-slate-500 uppercase">
+                      {detailItem.detail}
+                    </span>
                   </li>
                 ))}
               </ul>
             </div>
 
-            <div className="space-y-2 pt-4">
+            <div className="mt-6 space-y-2 border-t border-black/[0.06] pt-6">
               <SectionEyebrow className="text-base text-neutral-500">
                 Protein Score
               </SectionEyebrow>
-              <div className="rounded-xl bg-[#efefef] px-3 py-2">
-                <p className="mt-1 text-sm text-neutral-900">
-                  {n.calories === undefined ||
-                  n.protein === undefined ||
-                  n.calories <= 0 ? (
-                    "—"
-                  ) : (
-                    <>
-                      <span className="font-bold">
-                        {Math.round((n.protein / n.calories) * 100)}g
-                      </span>{" "}
-                      of protein in{" "}
-                      <span className="font-semibold">100 calories</span>
-                    </>
-                  )}
-                </p>
-              </div>
+              {typeof proteinScore === "number" && proteinScoreTier ? (
+                <ProteinScorePill
+                  scorePerHundredCalories={proteinScore}
+                  tier={proteinScoreTier}
+                />
+              ) : (
+                <p className="text-sm text-neutral-500">—</p>
+              )}
             </div>
 
-            <div className="space-y-2 pt-4">
+            <div className="mt-6 space-y-2 border-t border-black/[0.06] pt-6">
               <SectionEyebrow className="text-base text-neutral-500">
                 Macro Split
               </SectionEyebrow>
-              <div className="flex h-11 w-full gap-1 overflow-hidden rounded-xl border border-black/10 bg-neutral-100 p-1">
-                {macroSegments.map((segment) => {
-                  const roundedPercent = Math.round(segment.percent);
-                  const shortLabel =
-                    segment.label === "Protein"
-                      ? "P"
-                      : segment.label === "Carbs"
-                        ? "C"
-                        : "F";
-                  const segmentLabel =
-                    segment.percent >= 18
-                      ? `${segment.label} ${roundedPercent}%`
-                      : segment.percent >= 10
-                        ? `${shortLabel} ${roundedPercent}%`
-                        : `${roundedPercent}%`;
-
-                  return (
+              <div className="flex h-12 w-full gap-1.5 overflow-hidden rounded-xl border border-black/10 bg-neutral-100 p-1.5">
+                {macroSegments.map((segment) => (
+                  <div
+                    key={segment.label}
+                    className={`flex min-w-0 items-center justify-center rounded-lg px-1 text-[11px] font-semibold whitespace-nowrap ${segment.color}`}
+                    style={{ width: `${segment.percent}%` }}
+                  >
+                    {segment.inBarLabel}
+                  </div>
+                ))}
+              </div>
+              {hasIllegibleMacroSegment ? (
+                <div className="flex flex-wrap items-center gap-x-4 gap-y-1 pt-1">
+                  {macroSegments.map((segment) => (
                     <div
                       key={segment.label}
-                      className={`flex min-w-0 items-center justify-center rounded-xl px-1 text-[11px] font-semibold whitespace-nowrap text-neutral-900 ${segment.color}`}
-                      style={{ width: `${segment.percent}%` }}
+                      className="flex items-center gap-1.5 text-xs text-slate-600"
                     >
-                      {segmentLabel}
+                      <span
+                        aria-hidden="true"
+                        className={`h-2 w-2 shrink-0 rounded-full ${segment.color}`}
+                      />
+                      <span className="font-medium text-neutral-900">
+                        {segment.label}
+                      </span>
+                      <span>{segment.roundedPercent}%</span>
                     </div>
-                  );
-                })}
-              </div>
+                  ))}
+                </div>
+              ) : null}
             </div>
           </section>
         </div>
