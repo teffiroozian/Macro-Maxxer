@@ -158,7 +158,7 @@ export function buildChipotleIngredientMenuItems({
         ? {
             id: quesadillaTripleCheeseVariantId,
             label: "",
-            categories: ingredient.categories,
+            categories: [displayCategory],
             nutrition: scaleNutritionValues(
               ingredientBaseNutrition,
               3,

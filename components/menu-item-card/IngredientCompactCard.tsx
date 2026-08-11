@@ -5,191 +5,205 @@ import Image from "next/image";
 
 type CompactOption = { id: string; label: string; disabled?: boolean };
 
-export default function IngredientCompactCard({
-  item,
-  selectedItemImage,
-  ingredientSelectionState,
-  isIngredientSelectionDisabled,
-  ingredientSelectionControl,
-  ingredientDisabledReason,
-  ingredientPortionBadge,
-  isIngredientUnavailable,
-  ingredientUnavailableReason,
-  activeCompactOptions,
-  selectedCompactOptionId,
-  calories,
-  protein,
-  carbs,
-  totalFat,
-  onSelectionChange,
-  onCompactOptionSelect,
+function PortionControlsRow({
+    options,
+    selectedOptionId,
+    onSelect,
 }: {
-  item: MenuItem;
-  selectedItemImage?: string;
-  ingredientSelectionState: boolean;
-  isIngredientSelectionDisabled: boolean;
-  ingredientSelectionControl: "checkbox" | "radio";
-  ingredientDisabledReason?: string;
-  ingredientPortionBadge?: string;
-  isIngredientUnavailable?: boolean;
-  ingredientUnavailableReason?: string;
-  activeCompactOptions?: CompactOption[];
-  selectedCompactOptionId?: string;
-  calories?: number;
-  protein?: number;
-  carbs?: number;
-  totalFat?: number;
-  onSelectionChange: (selected: boolean) => void;
-  onCompactOptionSelect: (optionId: string) => void;
+    options: CompactOption[];
+    selectedOptionId?: string;
+    onSelect: (optionId: string) => void;
 }) {
-  const showControls =
-      activeCompactOptions &&
-      activeCompactOptions.length > 1 &&
-      ingredientSelectionState;
+    return (
+        <div className="inline-flex w-fit items-center gap-0.5 rounded-full bg-black/5 p-0.5">
+            {options.map((variantOption) => (
+                <button
+                    key={variantOption.id}
+                    type="button"
+                    disabled={Boolean(variantOption.disabled)}
+                    onClick={(event) => {
+                        event.preventDefault();
+                        event.stopPropagation();
+                        if (!variantOption.disabled) onSelect(variantOption.id);
+                    }}
+                    className={`rounded-full px-2.5 py-1 text-[11px] font-semibold transition md:px-3.5 md:py-1.5 ${
+                        selectedOptionId === variantOption.id
+                            ? "bg-white text-black shadow-sm"
+                            : "cursor-pointer text-black/50 hover:text-black/70"
+                    } ${variantOption.disabled ? "cursor-not-allowed opacity-40" : ""}`}
+                >
+                    {variantOption.label}
+                </button>
+            ))}
+        </div>
+    );
+}
 
-  return (
-      <SurfaceCard
-          as="li"
-          padding="none"
-          shadow="none"
-          className={`list-none overflow-hidden transition duration-150 ${
-              ingredientSelectionState
-                  ? "border border-accent! bg-accent-soft/50 shadow-[0_1px_2px_rgba(0,0,0,0.04)]"
-                  : isIngredientSelectionDisabled
-                    ? "border border-black/8 bg-black/[0.015] opacity-70"
-                    : "border border-black/10 bg-white shadow-[0_1px_2px_rgba(0,0,0,0.04)] hover:-translate-y-px hover:border-black/15 hover:shadow-[0_2px_6px_rgba(0,0,0,0.05)]"
-          }`}
-      >
-          <div
-              role={ingredientSelectionControl}
-              aria-checked={ingredientSelectionState}
-              aria-label={`${isIngredientSelectionDisabled ? (ingredientDisabledReason ?? ingredientUnavailableReason ?? "Unavailable") : "Select"} ${item.name}`}
-              tabIndex={isIngredientSelectionDisabled ? -1 : 0}
-              className={`flex flex-wrap items-center gap-x-3 gap-y-2 rounded-2xl px-3 py-2.5 outline-none transition-shadow duration-100 sm:px-4 md:flex-nowrap md:gap-x-4 ${
-                  isIngredientSelectionDisabled ? "cursor-not-allowed" : "cursor-pointer"
-              } focus-visible:ring-2 focus-visible:ring-accent/50 focus-visible:ring-offset-2`}
-              onClick={() => {
-                  if (isIngredientSelectionDisabled) return;
-                  const nextSelected =
-                      ingredientSelectionControl === "radio"
-                          ? true
-                          : !ingredientSelectionState;
-                  onSelectionChange(nextSelected);
-              }}
-              onKeyDown={(event) => {
-                  if (isIngredientSelectionDisabled) return;
-                  if (event.key !== "Enter" && event.key !== " ") return;
-                  event.preventDefault();
-                  const nextSelected =
-                      ingredientSelectionControl === "radio"
-                          ? true
-                          : !ingredientSelectionState;
-                  onSelectionChange(nextSelected);
-              }}
-          >
-              <span
-                  className={`flex h-5 w-5 shrink-0 items-center justify-center border transition-colors ${
-                      ingredientSelectionState
-                          ? "border-accent bg-accent"
-                          : isIngredientSelectionDisabled
-                            ? "border-black/15 bg-black/5"
-                            : "border-black/30 bg-white"
-                  } ${ingredientSelectionControl === "radio" ? "rounded-full" : "rounded-md"}`}
-                  aria-hidden="true"
-              >
-                  {ingredientSelectionState && ingredientSelectionControl === "radio" ? (
-                      <span className="h-2 w-2 rounded-full bg-white" />
-                  ) : null}
-                  {ingredientSelectionState && ingredientSelectionControl === "checkbox" ? (
-                      <svg viewBox="0 0 16 16" fill="none" className="h-3 w-3">
-                          <path
-                              d="M3.5 8.5L6.5 11.5L12.5 4.5"
-                              stroke="white"
-                              strokeWidth="2"
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                          />
-                      </svg>
-                  ) : null}
-              </span>
+export default function IngredientCompactCard({
+    item,
+    selectedItemImage,
+    ingredientSelectionState,
+    isIngredientSelectionDisabled,
+    ingredientSelectionControl,
+    ingredientDisabledReason,
+    ingredientPortionBadge,
+    isIngredientUnavailable,
+    ingredientUnavailableReason,
+    activeCompactOptions,
+    selectedCompactOptionId,
+    calories,
+    protein,
+    carbs,
+    totalFat,
+    onSelectionChange,
+    onCompactOptionSelect,
+}: {
+    item: MenuItem;
+    selectedItemImage?: string;
+    ingredientSelectionState: boolean;
+    isIngredientSelectionDisabled: boolean;
+    ingredientSelectionControl: "checkbox" | "radio";
+    ingredientDisabledReason?: string;
+    ingredientPortionBadge?: string;
+    isIngredientUnavailable?: boolean;
+    ingredientUnavailableReason?: string;
+    activeCompactOptions?: CompactOption[];
+    selectedCompactOptionId?: string;
+    calories?: number;
+    protein?: number;
+    carbs?: number;
+    totalFat?: number;
+    onSelectionChange: (selected: boolean) => void;
+    onCompactOptionSelect: (optionId: string) => void;
+}) {
+    const showControls =
+        activeCompactOptions &&
+        activeCompactOptions.length > 1 &&
+        ingredientSelectionState;
 
-              {selectedItemImage ? (
-                  <Image
-                      src={selectedItemImage}
-                      alt={item.name}
-                      width={80}
-                      height={80}
-                      className="h-14 w-14 shrink-0 rounded-xl bg-image-placeholder object-cover ring-1 ring-black/5 sm:h-16 sm:w-16"
-                  />
-              ) : (
-                  <div className="h-14 w-14 shrink-0 rounded-xl bg-image-placeholder ring-1 ring-black/5 sm:h-16 sm:w-16" />
-              )}
+    return (
+        <SurfaceCard
+            as="li"
+            padding="none"
+            shadow="none"
+            className={`list-none overflow-hidden transition duration-150 ${
+                ingredientSelectionState
+                    ? "border-[1.5px] border-accent! bg-accent-soft/50 shadow-[0_1px_2px_rgba(0,0,0,0.04)]"
+                    : isIngredientSelectionDisabled
+                      ? "border border-black/8 bg-black/[0.015] opacity-70"
+                      : "border border-black/10 bg-white shadow-[0_1px_2px_rgba(0,0,0,0.04)] hover:-translate-y-px hover:border-black/15 hover:shadow-[0_2px_6px_rgba(0,0,0,0.05)]"
+            }`}
+        >
+            <div
+                role={ingredientSelectionControl}
+                aria-checked={ingredientSelectionState}
+                aria-label={`${isIngredientSelectionDisabled ? (ingredientDisabledReason ?? ingredientUnavailableReason ?? "Unavailable") : "Select"} ${item.name}`}
+                tabIndex={isIngredientSelectionDisabled ? -1 : 0}
+                className={`flex flex-col gap-2 rounded-2xl px-3 py-2.5 outline-none transition-shadow duration-100 sm:px-4 md:flex-row md:items-center md:gap-4 md:py-3 ${
+                    isIngredientSelectionDisabled ? "cursor-not-allowed" : "cursor-pointer"
+                } focus-visible:ring-2 focus-visible:ring-accent/50 focus-visible:ring-offset-2`}
+                onClick={() => {
+                    if (isIngredientSelectionDisabled) return;
+                    const nextSelected =
+                        ingredientSelectionControl === "radio"
+                            ? true
+                            : !ingredientSelectionState;
+                    onSelectionChange(nextSelected);
+                }}
+                onKeyDown={(event) => {
+                    if (isIngredientSelectionDisabled) return;
+                    if (event.key !== "Enter" && event.key !== " ") return;
+                    event.preventDefault();
+                    const nextSelected =
+                        ingredientSelectionControl === "radio"
+                            ? true
+                            : !ingredientSelectionState;
+                    onSelectionChange(nextSelected);
+                }}
+            >
+                {/* Image + name + controls — identical at every breakpoint.
+                    The whole role div above is already the click target, so
+                    there's no dedicated checkbox column; selection reads via
+                    the corner indicator on the image instead. */}
+                <div className="flex items-center gap-3 md:min-w-0 md:flex-1">
+                    <div className="relative shrink-0">
+                        {selectedItemImage ? (
+                            <Image
+                                src={selectedItemImage}
+                                alt={item.name}
+                                width={80}
+                                height={80}
+                                className="h-14 w-14 rounded-xl bg-image-placeholder object-cover ring-1 ring-black/5 sm:h-18 sm:w-18 md:h-20 md:w-20"
+                            />
+                        ) : (
+                            <div className="h-14 w-14 rounded-xl bg-image-placeholder ring-1 ring-black/5 sm:h-18 sm:w-18 md:h-20 md:w-20" />
+                        )}
+                        {ingredientSelectionState ? (
+                            <span
+                                className="absolute -bottom-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full border-2 border-white bg-accent"
+                                aria-hidden="true"
+                            >
+                                <svg viewBox="0 0 16 16" fill="none" className="h-2.5 w-2.5">
+                                    <path
+                                        d="M3.5 8.5L6.5 11.5L12.5 4.5"
+                                        stroke="white"
+                                        strokeWidth="2"
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                    />
+                                </svg>
+                            </span>
+                        ) : null}
+                    </div>
 
-              <div className="flex min-w-0 flex-1 flex-col gap-1.5">
-                  <div className="flex min-w-0 flex-wrap items-center gap-x-1.5 gap-y-0.5">
-                      <span className="min-w-0 truncate text-base font-semibold text-black sm:text-lg">
-                          {item.name}
-                      </span>
-                      {ingredientPortionBadge ? (
-                          <span className="shrink-0 rounded-md bg-black/5 px-1.5 py-0.5 text-[10px] font-semibold tracking-wide text-black/50">
-                              {ingredientPortionBadge}
-                          </span>
-                      ) : null}
-                  </div>
+                    <div className="flex min-w-0 flex-1 flex-col gap-1">
+                        <div className="flex min-w-0 items-center gap-1.5">
+                            <span className="font-heading min-w-0 shrink truncate text-lg font-semibold text-black md:text-xl">
+                                {item.name}
+                            </span>
+                            {ingredientPortionBadge ? (
+                                <span className="shrink-0 rounded-md bg-black/5 px-1.5 py-0.5 text-[10px] font-semibold tracking-wide text-black/50">
+                                    {ingredientPortionBadge}
+                                </span>
+                            ) : null}
+                        </div>
 
-                  {showControls ? (
-                      <div className="inline-flex w-fit items-center gap-0.5 rounded-full bg-black/5 p-0.5">
-                          {activeCompactOptions!.map((variantOption) => (
-                              <button
-                                  key={variantOption.id}
-                                  type="button"
-                                  disabled={Boolean(variantOption.disabled)}
-                                  onClick={(event) => {
-                                      event.preventDefault();
-                                      event.stopPropagation();
-                                      if (!variantOption.disabled)
-                                          onCompactOptionSelect(
-                                              variantOption.id,
-                                          );
-                                  }}
-                                  className={`rounded-full px-2.5 py-1 text-[11px] font-semibold transition ${
-                                      selectedCompactOptionId ===
-                                      variantOption.id
-                                          ? "bg-white text-black shadow-sm"
-                                          : "cursor-pointer text-black/50 hover:text-black/70"
-                                  } ${variantOption.disabled ? "cursor-not-allowed opacity-40" : ""}`}
-                              >
-                                  {variantOption.label}
-                              </button>
-                          ))}
-                      </div>
-                  ) : null}
-              </div>
+                        {showControls ? (
+                            <PortionControlsRow
+                                options={activeCompactOptions!}
+                                selectedOptionId={selectedCompactOptionId}
+                                onSelect={onCompactOptionSelect}
+                            />
+                        ) : null}
+                    </div>
+                </div>
 
-              <div className="flex w-full basis-full items-center justify-between gap-2 md:w-72 md:basis-auto md:border-l md:border-black/[0.06] md:pl-4">
-                  <MacroStat
-                      macroKey="calories"
-                      value={calories ?? Number.NaN}
-                      labelVariant="shortLabel"
-                      size="ingredientCompact"
-                  />
-                  <MacroStat
-                      macroKey="protein"
-                      value={protein ?? Number.NaN}
-                      size="ingredientCompact"
-                  />
-                  <MacroStat
-                      macroKey="carbs"
-                      value={carbs ?? Number.NaN}
-                      size="ingredientCompact"
-                  />
-                  <MacroStat
-                      macroKey="totalFat"
-                      value={totalFat ?? Number.NaN}
-                      size="ingredientCompact"
-                  />
-              </div>
-          </div>
-      </SurfaceCard>
-  );
+                {/* Mobile macro row — full width, underneath a divider. */}
+                <div className="flex flex-wrap items-end gap-x-5 gap-y-2 border-t border-black/[0.06] pt-2 md:hidden">
+                    <MacroStat
+                        macroKey="calories"
+                        value={calories ?? Number.NaN}
+                        labelVariant="shortLabel"
+                        size="card"
+                    />
+                    <MacroStat macroKey="protein" value={protein ?? Number.NaN} size="card" />
+                    <MacroStat macroKey="carbs" value={carbs ?? Number.NaN} size="card" />
+                    <MacroStat macroKey="totalFat" value={totalFat ?? Number.NaN} size="card" />
+                </div>
+
+                {/* Desktop macro column — inline to the right, no divider. */}
+                <div className="hidden items-center justify-between gap-2 border-l border-black/[0.06] pl-4 md:flex md:w-72 md:shrink-0">
+                    <MacroStat
+                        macroKey="calories"
+                        value={calories ?? Number.NaN}
+                        labelVariant="shortLabel"
+                        size="ingredientCompact"
+                    />
+                    <MacroStat macroKey="protein" value={protein ?? Number.NaN} size="ingredientCompact" />
+                    <MacroStat macroKey="carbs" value={carbs ?? Number.NaN} size="ingredientCompact" />
+                    <MacroStat macroKey="totalFat" value={totalFat ?? Number.NaN} size="ingredientCompact" />
+                </div>
+            </div>
+        </SurfaceCard>
+    );
 }

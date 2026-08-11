@@ -179,6 +179,13 @@ function isSplitPortionIngredientItem(item: Pick<MenuItem, "categories">) {
   return isRiceIngredientItem(item) || isBeanIngredientItem(item);
 }
 
+function isToppingIngredientItem(item: Pick<MenuItem, "categories">) {
+  return (
+    normalizeIngredientCategory(resolvePrimaryCategory(item.categories)) ===
+    "toppings"
+  );
+}
+
 export default function ChipotleRestaurantBuilderView({
   restaurantId,
   restaurantName,
@@ -396,6 +403,15 @@ export default function ChipotleRestaurantBuilderView({
         if (selectedSplitIds.length >= 2) {
           return 0.5;
         }
+        const portionMode = splitPortionModeById[ingredientId] ?? "normal";
+        return portionMode === "light"
+          ? 0.5
+          : portionMode === "extra"
+            ? getSplitExtraMultiplier()
+            : 1;
+      }
+
+      if (category === "toppings") {
         const portionMode = splitPortionModeById[ingredientId] ?? "normal";
         return portionMode === "light"
           ? 0.5
@@ -1009,6 +1025,31 @@ export default function ChipotleRestaurantBuilderView({
         };
       });
 
+      Object.entries(itemsById).forEach(([ingredientId, selectedIngredient]) => {
+        if (!isToppingIngredientItem(selectedIngredient.item)) return;
+
+        const baseIngredient = ingredientItemsById.get(ingredientId);
+        if (!baseIngredient) return;
+
+        const mode = portionModesById[ingredientId] ?? "normal";
+        const multiplier =
+          mode === "light"
+            ? 0.5
+            : mode === "extra"
+              ? getSplitExtraMultiplier()
+              : 1;
+        nextItems[ingredientId] = {
+          ...nextItems[ingredientId],
+          item: {
+            ...nextItems[ingredientId].item,
+            nutrition: scaleNutritionValues(
+              baseIngredient.nutrition,
+              multiplier,
+            ),
+          },
+        };
+      });
+
       return nextItems;
     },
     [ingredientItemsById, splitPortionModeById],
@@ -1068,6 +1109,7 @@ export default function ChipotleRestaurantBuilderView({
       resolvePrimaryCategory(item.categories),
     );
     const isSplitItem = isSplitPortionIngredientItem(item);
+    const isToppingItem = isToppingIngredientItem(item);
     const currentSelectedSplitIds = Object.entries(selectedIngredientItems)
       .filter(
         ([, selectedIngredient]) =>
@@ -1077,6 +1119,16 @@ export default function ChipotleRestaurantBuilderView({
       )
       .map(([ingredientId]) => ingredientId);
     const nextSplitPortionModes = (() => {
+      if (isToppingItem) {
+        const nextModes = { ...splitPortionModeById };
+        if (!selected) {
+          delete nextModes[itemId];
+          return nextModes;
+        }
+        nextModes[itemId] = nextModes[itemId] ?? "normal";
+        return nextModes;
+      }
+
       if (!isSplitItem) return { ...splitPortionModeById };
 
       const nextModes = { ...splitPortionModeById };
@@ -1153,7 +1205,7 @@ export default function ChipotleRestaurantBuilderView({
         splitModesById: nextSplitPortionModes,
       });
     });
-    if (isSplitItem) {
+    if (isSplitItem || isToppingItem) {
       setSplitPortionModeById(nextSplitPortionModes);
     }
 
@@ -1947,6 +1999,12 @@ export default function ChipotleRestaurantBuilderView({
           return;
         }
 
+        if (category === "toppings") {
+          const toppingPortionMode = splitPortionModeById[ingredientId] ?? "normal";
+          labelById[ingredientId] = getSplitPortionLabel(toppingPortionMode);
+          return;
+        }
+
         if (category !== "rice" && category !== "beans") {
           return;
         }
@@ -2334,6 +2392,17 @@ export default function ChipotleRestaurantBuilderView({
                         });
                     });
 
+                    const toppingModeOptions = [
+                      { id: "light", label: "Light" },
+                      { id: "normal", label: "Normal" },
+                      { id: "extra", label: "Extra" },
+                    ];
+                    visibleMenuItems
+                      .filter((item) => item.id && isToppingIngredientItem(item))
+                      .forEach((item) => {
+                        optionsById[item.id as string] = toppingModeOptions;
+                      });
+
                     return Object.keys(optionsById).length > 0
                       ? optionsById
                       : undefined;
@@ -2381,6 +2450,14 @@ export default function ChipotleRestaurantBuilderView({
                         });
                     });
 
+                    visibleMenuItems
+                      .filter((item) => item.id && isToppingIngredientItem(item))
+                      .forEach((item) => {
+                        const itemId = item.id as string;
+                        selectedModeById[itemId] =
+                          splitPortionModeById[itemId] ?? "normal";
+                      });
+
                     return Object.keys(selectedModeById).length > 0
                       ? selectedModeById
                       : undefined;
@@ -2394,6 +2471,28 @@ export default function ChipotleRestaurantBuilderView({
                         }),
                       );
                       setProteinPortionMode(modeId);
+                      return;
+                    }
+
+                    if (isToppingIngredientItem(item) && item.id) {
+                      if (
+                        modeId !== "light" &&
+                        modeId !== "normal" &&
+                        modeId !== "extra"
+                      )
+                        return;
+
+                      const nextToppingModesById: Record<string, SplitPortionMode> =
+                        {
+                          ...splitPortionModeById,
+                          [item.id]: modeId,
+                        };
+                      setSplitPortionModeById(nextToppingModesById);
+                      setSelectedIngredientItems((previous) =>
+                        applyIngredientPortionNutrition(previous, {
+                          splitModesById: nextToppingModesById,
+                        }),
+                      );
                       return;
                     }
 
@@ -2543,7 +2642,7 @@ export default function ChipotleRestaurantBuilderView({
         <button
           type="button"
           onClick={() => setIsEntreeMenuOpen((prev) => !prev)}
-          className="cursor-pointer inline-flex h-10 items-center gap-2 whitespace-nowrap rounded-full border border-black/20 bg-white px-4 font-bold text-black/90 transition-colors duration-150 hover:border-black/30 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-900"
+          className="cursor-pointer inline-flex h-10 items-center gap-2 whitespace-nowrap rounded-full border border-black/20 bg-white px-4 text-sm font-semibold text-black/90 transition-colors duration-150 hover:border-black/30 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-900"
           aria-haspopup="menu"
           aria-expanded={isEntreeMenuOpen}
         >
@@ -2892,6 +2991,17 @@ export default function ChipotleRestaurantBuilderView({
                           });
                       });
 
+                      const toppingModeOptions = [
+                        { id: "light", label: "Light" },
+                        { id: "normal", label: "Normal" },
+                        { id: "extra", label: "Extra" },
+                      ];
+                      visibleMenuItems
+                        .filter((item) => item.id && isToppingIngredientItem(item))
+                        .forEach((item) => {
+                          optionsById[item.id as string] = toppingModeOptions;
+                        });
+
                       return Object.keys(optionsById).length > 0
                         ? optionsById
                         : undefined;
@@ -2940,6 +3050,14 @@ export default function ChipotleRestaurantBuilderView({
                           });
                       });
 
+                      visibleMenuItems
+                        .filter((item) => item.id && isToppingIngredientItem(item))
+                        .forEach((item) => {
+                          const itemId = item.id as string;
+                          selectedModeById[itemId] =
+                            splitPortionModeById[itemId] ?? "normal";
+                        });
+
                       return Object.keys(selectedModeById).length > 0
                         ? selectedModeById
                         : undefined;
@@ -2953,6 +3071,28 @@ export default function ChipotleRestaurantBuilderView({
                           }),
                         );
                         setProteinPortionMode(modeId);
+                        return;
+                      }
+
+                      if (isToppingIngredientItem(item) && item.id) {
+                        if (
+                          modeId !== "light" &&
+                          modeId !== "normal" &&
+                          modeId !== "extra"
+                        )
+                          return;
+
+                        const nextToppingModesById: Record<string, SplitPortionMode> =
+                          {
+                            ...splitPortionModeById,
+                            [item.id]: modeId,
+                          };
+                        setSplitPortionModeById(nextToppingModesById);
+                        setSelectedIngredientItems((previous) =>
+                          applyIngredientPortionNutrition(previous, {
+                            splitModesById: nextToppingModesById,
+                          }),
+                        );
                         return;
                       }
 

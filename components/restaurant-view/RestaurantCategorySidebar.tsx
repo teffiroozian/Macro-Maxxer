@@ -110,8 +110,12 @@ function CategoryNavItem({ option, isActive, Icon, onSelect, variant }: Category
   const formattedCount = formatCategoryCount(option);
 
   if (variant === "desktop") {
+    // Sidebar-only shorthand — the page section heading for this category
+    // keeps using option.label ("Included Ingredient") unchanged.
+    const desktopLabel = option.label === "Included Ingredient" ? "Included" : option.label;
+
     return (
-      <div className="relative pl-3">
+      <div className="relative w-full max-w-full pl-3">
         {isActive ? (
           <span
             className="absolute left-0 top-1/2 h-7 w-1 -translate-y-1/2 rounded-full shadow-[0px_0_8px_rgba(0,0,0,0.25)] bg-white"
@@ -122,12 +126,12 @@ function CategoryNavItem({ option, isActive, Icon, onSelect, variant }: Category
         <button
           type="button"
           onClick={onSelect}
-          className={`cursor-pointer flex h-11 w-full items-center gap-3 rounded-full px-4 text-left text-base font-semibold transition-colors duration-50 ease-in focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-strong ${
+          className={`cursor-pointer flex h-11 w-full max-w-full items-center gap-3 rounded-full px-4 text-left text-base font-semibold transition-colors duration-50 ease-in focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-strong ${
             isActive ? "shadow-[0px_0_8px_rgba(0,0,0,0.25)] bg-white text-slate-800" : "text-slate-700 hover:bg-slate-200"
           }`}
         >
           <Icon className="h-4 w-4 shrink-0" strokeWidth={2.5} aria-hidden="true" />
-          <span className="min-w-0 flex-1 truncate">{option.label}</span>
+          <span className="min-w-0 max-w-full flex-1 truncate">{desktopLabel}</span>
           {formattedCount ? (
             <span
               className={`shrink-0 text-sm font-semibold tabular-nums ${
@@ -705,7 +709,7 @@ function DesktopCategorySidebar({
 
   return (
     <aside
-      className="sticky hidden flex-col py-4 lg:flex"
+      className="sticky hidden w-60 max-w-60 shrink-0 flex-col py-4 lg:flex"
       style={{ top: stickyTop, maxHeight: `calc(100vh - ${stickyTop}px)` }}
     >
       <SectionEyebrow as="h3" className="mb-3 shrink-0 text-xs">
