@@ -112,12 +112,20 @@ export function buildChipotleIngredientMenuItems({
           .toLowerCase()
           .replace(/[^a-z0-9]+/g, "-");
       const resolvedCategory = resolveIngredientCategory(ingredient);
+      // Tacos and Kid's Build Your Own both offer a crispy/soft choice
+      // rendered as included-ingredient radio cards — both options need to
+      // stay pinned to Included Ingredients regardless of which is
+      // currently selected (selectedIncludedIngredientIds only ever holds
+      // the selected one).
+      const isTacoShellChoiceContext =
+        selectedEntree === "tacos" ||
+        (selectedEntree === "kids-meal" && selectedKidsMeal === "build-your-own");
       const shouldPinToIncludedCategory =
         selectedIncludedIngredientIds.includes(ingredientId) ||
-        (selectedEntree === "tacos" &&
+        (isTacoShellChoiceContext &&
           tacoShellIngredientIds.includes(ingredientId));
       const displayCategory = shouldPinToIncludedCategory
-        ? "Included Ingredient"
+        ? "Included Ingredients"
         : resolvedCategory;
       const includedIngredientOrder =
         includedIngredientOrderById.get(ingredientId);
@@ -175,7 +183,7 @@ export function buildChipotleIngredientMenuItems({
         nutrition: ingredientBaseNutrition,
         defaultOrder:
           shouldPinToIncludedCategory &&
-          selectedEntree !== "tacos" &&
+          !isTacoShellChoiceContext &&
           typeof includedIngredientOrder === "number"
             ? includedIngredientOrder
             : (ingredient.defaultOrder ?? index),

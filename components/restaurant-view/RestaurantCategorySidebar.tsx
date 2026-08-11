@@ -111,8 +111,8 @@ function CategoryNavItem({ option, isActive, Icon, onSelect, variant }: Category
 
   if (variant === "desktop") {
     // Sidebar-only shorthand — the page section heading for this category
-    // keeps using option.label ("Included Ingredient") unchanged.
-    const desktopLabel = option.label === "Included Ingredient" ? "Included" : option.label;
+    // keeps using option.label ("Included Ingredients") unchanged.
+    const desktopLabel = option.label === "Included Ingredients" ? "Included" : option.label;
 
     return (
       <div className="relative w-full max-w-full pl-3">

@@ -26,6 +26,8 @@ export const MENU_SECTION_ORDER = [
 ] as const;
 
 export const INGREDIENT_SECTION_ORDER = [
+  "included ingredient",
+  "included ingredients",
   "ingredients",
   "buns",
   "breakfast buns",

@@ -76,6 +76,7 @@ import RestaurantCategorySidebar from "../RestaurantCategorySidebar";
 import {
   type ChipotleEntreeSelection,
   type ChipotleKidsMealId,
+  type ChipotleTacoShell,
   type ChipotleBuilderConfig,
   type IncludedIngredientContext,
   type ProteinPortionMode,
@@ -232,12 +233,6 @@ export default function ChipotleRestaurantBuilderView({
       new Set(
         chipotleBuilderConfig?.chipotle?.kidsBuildYourOwnDoubleSideIds ?? [],
       ),
-    [chipotleBuilderConfig],
-  );
-  const kidsQuesadillaIncludedIngredientIds = useMemo(
-    () =>
-      chipotleBuilderConfig?.chipotle?.kidsQuesadillaIncludedIngredientIds ??
-      [],
     [chipotleBuilderConfig],
   );
   const quesadillaTripleCheeseVariantId = useMemo(
@@ -649,10 +644,31 @@ export default function ChipotleRestaurantBuilderView({
   const handleKidsMealSelection = (kidsMeal: ChipotleKidsMealId) => {
     setSelectedKidsMeal(kidsMeal);
     applyIncludedIngredientsNextFrame(
-      kidsMeal === "quesadilla" ? kidsQuesadillaIncludedIngredientIds : [],
+      resolveIncludedIngredientIds({
+        selectedEntree: "kids-meal",
+        selectedKidsMeal: kidsMeal,
+        selectedTacoShell,
+        builderConfig: chipotleBuilderConfig,
+      }),
       {
         selectedEntree: "kids-meal",
         selectedKidsMeal: kidsMeal,
+      },
+    );
+  };
+
+  const handleKidsBuildYourOwnTortillaSelection = (tacoShell: ChipotleTacoShell) => {
+    setSelectedTacoShell(tacoShell);
+    applyIncludedIngredientsNextFrame(
+      resolveIncludedIngredientIds({
+        selectedEntree: "kids-meal",
+        selectedKidsMeal: "build-your-own",
+        selectedTacoShell: tacoShell,
+        builderConfig: chipotleBuilderConfig,
+      }),
+      {
+        selectedEntree: "kids-meal",
+        selectedKidsMeal: "build-your-own",
       },
     );
   };
@@ -903,11 +919,18 @@ export default function ChipotleRestaurantBuilderView({
     () => new Set<string>(selectedIncludedIngredientIds),
     [selectedIncludedIngredientIds],
   );
+  // Tacos and Kid's Build Your Own both offer a crispy/soft choice among
+  // their included ingredients, presented as radio-selectable included-
+  // ingredient cards — unlike genuinely fixed included ingredients (e.g.
+  // burrito tortilla, quesadilla cheese), which stay locked.
+  const isTacoShellSelectableEntree =
+    selectedEntree === "tacos" ||
+    (selectedEntree === "kids-meal" && selectedKidsMeal === "build-your-own");
   const lockedIngredientIds = useMemo(() => {
     if (selectedIncludedIngredientIds.length === 0) {
       return new Set<string>();
     }
-    if (selectedEntree === "tacos") {
+    if (isTacoShellSelectableEntree) {
       return new Set<string>(
         selectedIncludedIngredientIds.filter(
           (ingredientId) => !tacoShellIngredientIds.includes(ingredientId),
@@ -915,7 +938,11 @@ export default function ChipotleRestaurantBuilderView({
       );
     }
     return new Set<string>(selectedIncludedIngredientIds);
-  }, [selectedEntree, selectedIncludedIngredientIds, tacoShellIngredientIds]);
+  }, [
+    isTacoShellSelectableEntree,
+    selectedIncludedIngredientIds,
+    tacoShellIngredientIds,
+  ]);
   const applyProteinPortionNutrition = useCallback(
     (
       itemsById: Record<string, { item: MenuItem; quantity: number }>,
@@ -1091,16 +1118,25 @@ export default function ChipotleRestaurantBuilderView({
     const itemId = item.id;
     if (!itemId) return;
 
-    if (selectedEntree === "tacos" && tacoShellIngredientIds.includes(itemId)) {
+    if (tacoShellIngredientIds.includes(itemId)) {
       if (!selected) return;
       const nextTacoShell =
         itemId === "soft-flour-tortilla" ? "soft" : "crispy";
-      setSelectedTacoShell(nextTacoShell);
-      applyIncludedIngredientsNextFrame(
-        entreeOptions.tacos?.includedIngredientIdsByOption?.[nextTacoShell] ??
-          [],
-      );
-      return;
+
+      if (selectedEntree === "tacos") {
+        setSelectedTacoShell(nextTacoShell);
+        applyIncludedIngredientsNextFrame(
+          entreeOptions.tacos?.includedIngredientIdsByOption?.[
+            nextTacoShell
+          ] ?? [],
+        );
+        return;
+      }
+
+      if (selectedEntree === "kids-meal" && selectedKidsMeal === "build-your-own") {
+        handleKidsBuildYourOwnTortillaSelection(nextTacoShell);
+        return;
+      }
     }
 
     if (lockedIngredientIds.has(itemId)) return;
@@ -1283,7 +1319,7 @@ export default function ChipotleRestaurantBuilderView({
                 defaultVariantId: fallbackIngredient.defaultVariantId,
                 hideVariantSelector: fallbackIngredient.hideVariantSelector,
                 image: fallbackIngredient.image ?? "",
-                categories: ["Included Ingredient"],
+                categories: ["Included Ingredients"],
                 servingType: "addon" as const,
               } satisfies MenuItem;
             })();
@@ -1352,7 +1388,7 @@ export default function ChipotleRestaurantBuilderView({
                 defaultVariantId: fallbackIngredient.defaultVariantId,
                 hideVariantSelector: fallbackIngredient.hideVariantSelector,
                 image: fallbackIngredient.image ?? "",
-                categories: ["Included Ingredient"],
+                categories: ["Included Ingredients"],
                 servingType: "addon" as const,
               } satisfies MenuItem;
             })();
@@ -1980,6 +2016,18 @@ export default function ChipotleRestaurantBuilderView({
 
     Object.entries(selectedIngredientItems).forEach(
       ([ingredientId, selectedIngredient]) => {
+        if (
+          isQuesadillaCheeseSelection(ingredientId, {
+            selectedEntree,
+            selectedKidsMeal,
+          })
+        ) {
+          // Only the full Quesadilla entree triples the cheese portion —
+          // Kid's Quesadilla uses the regular single portion.
+          labelById[ingredientId] = selectedEntree === "quesadilla" ? "3x" : "1x";
+          return;
+        }
+
         if (isProteinIngredientItem(selectedIngredient.item)) {
           if (proteinBadgeLabel) {
             labelById[ingredientId] = proteinBadgeLabel;
@@ -2220,7 +2268,7 @@ export default function ChipotleRestaurantBuilderView({
                     unavailableIds: unavailableIngredientIds,
                     unavailableReasonById: unavailableIngredientReasonById,
                     onSelectionChange: handleIngredientSelectionChange,
-                    selectionControlById: selectedEntree === "tacos"
+                    selectionControlById: isTacoShellSelectableEntree
                       ? Object.fromEntries(
                           tacoShellIngredientIds.map((ingredientId) => [
                             ingredientId,
@@ -2229,7 +2277,7 @@ export default function ChipotleRestaurantBuilderView({
                         )
                       : undefined
                     ,
-                    radioGroupNameById: selectedEntree === "tacos"
+                    radioGroupNameById: isTacoShellSelectableEntree
                       ? Object.fromEntries(
                           tacoShellIngredientIds.map((ingredientId) => [
                             ingredientId,
@@ -2818,7 +2866,7 @@ export default function ChipotleRestaurantBuilderView({
                       unavailableReasonById: unavailableIngredientReasonById,
                       onSelectionChange: handleIngredientSelectionChange,
                       selectionControlById:
-                      selectedEntree === "tacos"
+                      isTacoShellSelectableEntree
                         ? Object.fromEntries(
                             tacoShellIngredientIds.map((ingredientId) => [
                               ingredientId,
@@ -2827,7 +2875,7 @@ export default function ChipotleRestaurantBuilderView({
                           )
                         : undefined,
                       radioGroupNameById:
-                      selectedEntree === "tacos"
+                      isTacoShellSelectableEntree
                         ? Object.fromEntries(
                             tacoShellIngredientIds.map((ingredientId) => [
                               ingredientId,

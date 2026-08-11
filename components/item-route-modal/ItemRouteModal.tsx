@@ -1265,7 +1265,7 @@ export default function ItemRouteModal({
                                     0 ? (
                                         <div className="w-full rounded-3xl border border-black/10 bg-[#e0e0e0] p-4">
                                             <h2 className="my-5 text-3xl font-bold text-slate-900">
-                                                Included Ingredient
+                                                Included Ingredients
                                             </h2>
                                             <MenuSections
                                                 restaurantId={restaurantId}

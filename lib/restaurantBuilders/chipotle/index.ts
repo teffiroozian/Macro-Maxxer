@@ -132,9 +132,17 @@ export function resolveIncludedIngredientIds(options: {
   }
 
   if (selectedEntree === "kids-meal") {
-    return selectedKidsMeal === "quesadilla"
-      ? [...(builderConfig.chipotle?.kidsQuesadillaIncludedIngredientIds ?? [])]
-      : [];
+    if (selectedKidsMeal === "quesadilla") {
+      return [...(builderConfig.chipotle?.kidsQuesadillaIncludedIngredientIds ?? [])];
+    }
+
+    // Kid's Build Your Own has its own crispy/soft tortilla choice,
+    // presented the same way Tacos presents its Included Ingredients shell
+    // choice — it reuses the same shell->ingredient-id mapping as Tacos so
+    // both flows stay in sync with a single config source.
+    return [
+      ...(builderConfig.entreeOptions.tacos?.includedIngredientIdsByOption?.[selectedTacoShell] ?? []),
+    ];
   }
 
   if (!selectedEntree) {

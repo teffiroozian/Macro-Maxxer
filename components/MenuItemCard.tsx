@@ -644,6 +644,7 @@ export default function MenuItemCard({
         selectedItemImage={selectedItemImage}
         ingredientSelectionState={ingredientSelectionState}
         isIngredientSelectionDisabled={isIngredientSelectionDisabled}
+        isIngredientLocked={isIngredientLocked}
         ingredientSelectionControl={ingredientSelectionControl}
         ingredientDisabledReason={ingredientDisabledReason}
         ingredientPortionBadge={ingredientPortionBadge}

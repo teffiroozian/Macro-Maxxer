@@ -2,6 +2,7 @@ import SurfaceCard from "@/components/ui/SurfaceCard";
 import MacroStat from "@/components/nutrition/MacroStat";
 import type { MenuItem } from "@/types/menu";
 import Image from "next/image";
+import { Lock } from "lucide-react";
 
 type CompactOption = { id: string; label: string; disabled?: boolean };
 
@@ -44,6 +45,7 @@ export default function IngredientCompactCard({
     selectedItemImage,
     ingredientSelectionState,
     isIngredientSelectionDisabled,
+    isIngredientLocked = false,
     ingredientSelectionControl,
     ingredientDisabledReason,
     ingredientPortionBadge,
@@ -62,6 +64,11 @@ export default function IngredientCompactCard({
     selectedItemImage?: string;
     ingredientSelectionState: boolean;
     isIngredientSelectionDisabled: boolean;
+    // Fixed/non-removable included ingredient — distinct from
+    // `isIngredientSelectionDisabled`, which also covers the temporary
+    // "category max reached" case. Locked items get a non-interactive
+    // treatment instead of the dimmed/disabled one.
+    isIngredientLocked?: boolean;
     ingredientSelectionControl: "checkbox" | "radio";
     ingredientDisabledReason?: string;
     ingredientPortionBadge?: string;
@@ -80,6 +87,7 @@ export default function IngredientCompactCard({
         activeCompactOptions &&
         activeCompactOptions.length > 1 &&
         ingredientSelectionState;
+    const isInteractive = !isIngredientLocked;
 
     return (
         <SurfaceCard
@@ -87,7 +95,7 @@ export default function IngredientCompactCard({
             padding="none"
             shadow="none"
             className={`list-none overflow-hidden transition duration-150 ${
-                ingredientSelectionState
+                isIngredientLocked || ingredientSelectionState
                     ? "border-[1.5px] border-accent! bg-accent-soft/50 shadow-[0_1px_2px_rgba(0,0,0,0.04)]"
                     : isIngredientSelectionDisabled
                       ? "border border-black/8 bg-black/[0.015] opacity-70"
@@ -95,15 +103,23 @@ export default function IngredientCompactCard({
             }`}
         >
             <div
-                role={ingredientSelectionControl}
-                aria-checked={ingredientSelectionState}
-                aria-label={`${isIngredientSelectionDisabled ? (ingredientDisabledReason ?? ingredientUnavailableReason ?? "Unavailable") : "Select"} ${item.name}`}
-                tabIndex={isIngredientSelectionDisabled ? -1 : 0}
+                role={isInteractive ? ingredientSelectionControl : undefined}
+                aria-checked={isInteractive ? ingredientSelectionState : undefined}
+                aria-label={
+                    isIngredientLocked
+                        ? `${ingredientDisabledReason ?? "Included"} ${item.name}`
+                        : `${isIngredientSelectionDisabled ? (ingredientUnavailableReason ?? "Unavailable") : "Select"} ${item.name}`
+                }
+                tabIndex={isInteractive && !isIngredientSelectionDisabled ? 0 : -1}
                 className={`flex flex-col gap-2 rounded-2xl px-3 py-2.5 outline-none transition-shadow duration-100 sm:px-4 md:flex-row md:items-center md:gap-4 md:py-3 ${
-                    isIngredientSelectionDisabled ? "cursor-not-allowed" : "cursor-pointer"
-                } focus-visible:ring-2 focus-visible:ring-accent/50 focus-visible:ring-offset-2`}
+                    isIngredientLocked
+                        ? "cursor-default"
+                        : isIngredientSelectionDisabled
+                          ? "cursor-not-allowed"
+                          : "cursor-pointer"
+                } ${isInteractive ? "focus-visible:ring-2 focus-visible:ring-accent/50 focus-visible:ring-offset-2" : ""}`}
                 onClick={() => {
-                    if (isIngredientSelectionDisabled) return;
+                    if (!isInteractive || isIngredientSelectionDisabled) return;
                     const nextSelected =
                         ingredientSelectionControl === "radio"
                             ? true
@@ -111,7 +127,7 @@ export default function IngredientCompactCard({
                     onSelectionChange(nextSelected);
                 }}
                 onKeyDown={(event) => {
-                    if (isIngredientSelectionDisabled) return;
+                    if (!isInteractive || isIngredientSelectionDisabled) return;
                     if (event.key !== "Enter" && event.key !== " ") return;
                     event.preventDefault();
                     const nextSelected =
@@ -138,7 +154,24 @@ export default function IngredientCompactCard({
                         ) : (
                             <div className="h-14 w-14 rounded-xl bg-image-placeholder ring-1 ring-black/5 sm:h-18 sm:w-18 md:h-20 md:w-20" />
                         )}
-                        {ingredientSelectionState ? (
+                        {isIngredientLocked ? (
+                            <span className="absolute -bottom-1 -right-1 flex items-center" aria-hidden="true">
+                                <span className="relative z-0 flex h-5 w-5 items-center justify-center rounded-full border-2 border-white bg-slate-400">
+                                    <Lock className="h-2.5 w-2.5 text-white" strokeWidth={2.5} />
+                                </span>
+                                <span className="relative z-10 -ml-1.5 flex h-5 w-5 items-center justify-center rounded-full border-2 border-white bg-accent">
+                                    <svg viewBox="0 0 16 16" fill="none" className="h-2.5 w-2.5">
+                                        <path
+                                            d="M3.5 8.5L6.5 11.5L12.5 4.5"
+                                            stroke="white"
+                                            strokeWidth="2"
+                                            strokeLinecap="round"
+                                            strokeLinejoin="round"
+                                        />
+                                    </svg>
+                                </span>
+                            </span>
+                        ) : ingredientSelectionState ? (
                             <span
                                 className="absolute -bottom-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full border-2 border-white bg-accent"
                                 aria-hidden="true"
