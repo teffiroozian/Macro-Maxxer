@@ -2673,7 +2673,7 @@ export default function ChipotleRestaurantBuilderView({
           />
         </div>
       ) : (
-        <div className="grid items-start gap-4 lg:gap-6 lg:[grid-template-columns:240px_minmax(0,1fr)]">
+        <div className="grid items-start gap-4 lg:gap-8 lg:[grid-template-columns:240px_minmax(0,1fr)]">
           <RestaurantCategorySidebar
             effectiveViewMode={effectiveViewMode}
             rankedChildOptions={rankedChildOptions}

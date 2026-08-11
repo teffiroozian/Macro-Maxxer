@@ -42,23 +42,32 @@ export default function IngredientCompactCard({
   onSelectionChange: (selected: boolean) => void;
   onCompactOptionSelect: (optionId: string) => void;
 }) {
+  const showControls =
+      activeCompactOptions &&
+      activeCompactOptions.length > 1 &&
+      ingredientSelectionState;
+
   return (
       <SurfaceCard
           as="li"
           padding="none"
-          shadow="md"
-          className={`list-none overflow-hidden transition ${
+          shadow="none"
+          className={`list-none overflow-hidden transition duration-150 ${
               ingredientSelectionState
-                  ? "border-2 border-lime-500 shadow-[0_4px_12px_rgba(132,204,22,0.25)]"
-                  : "border-black/15"
+                  ? "border border-accent! bg-accent-soft/50 shadow-[0_1px_2px_rgba(0,0,0,0.04)]"
+                  : isIngredientSelectionDisabled
+                    ? "border border-black/8 bg-black/[0.015] opacity-70"
+                    : "border border-black/10 bg-white shadow-[0_1px_2px_rgba(0,0,0,0.04)] hover:-translate-y-px hover:border-black/15 hover:shadow-[0_2px_6px_rgba(0,0,0,0.05)]"
           }`}
       >
           <div
               role={ingredientSelectionControl}
               aria-checked={ingredientSelectionState}
-              aria-label={`${isIngredientSelectionDisabled ? (ingredientDisabledReason ?? "Unavailable") : "Select"} ${item.name}`}
+              aria-label={`${isIngredientSelectionDisabled ? (ingredientDisabledReason ?? ingredientUnavailableReason ?? "Unavailable") : "Select"} ${item.name}`}
               tabIndex={isIngredientSelectionDisabled ? -1 : 0}
-              className={`flex items-center gap-3 px-4 py-3 lg:gap-4 ${isIngredientSelectionDisabled ? "cursor-not-allowed opacity-95" : "cursor-pointer"}`}
+              className={`flex flex-wrap items-center gap-x-3 gap-y-2 rounded-2xl px-3 py-2.5 outline-none transition-shadow duration-100 sm:px-4 md:flex-nowrap md:gap-x-4 ${
+                  isIngredientSelectionDisabled ? "cursor-not-allowed" : "cursor-pointer"
+              } focus-visible:ring-2 focus-visible:ring-accent/50 focus-visible:ring-offset-2`}
               onClick={() => {
                   if (isIngredientSelectionDisabled) return;
                   const nextSelected =
@@ -79,77 +88,58 @@ export default function IngredientCompactCard({
               }}
           >
               <span
-                  className={`flex h-6 w-6 items-center justify-center border text-sm font-bold transition ${
+                  className={`flex h-5 w-5 shrink-0 items-center justify-center border transition-colors ${
                       ingredientSelectionState
-                          ? "border-lime-500 bg-lime-500 text-black"
-                          : "border-black/40 bg-white text-transparent"
+                          ? "border-accent bg-accent"
+                          : isIngredientSelectionDisabled
+                            ? "border-black/15 bg-black/5"
+                            : "border-black/30 bg-white"
                   } ${ingredientSelectionControl === "radio" ? "rounded-full" : "rounded-md"}`}
                   aria-hidden="true"
               >
-                  {ingredientSelectionControl === "radio" ? "●" : "✓"}
+                  {ingredientSelectionState && ingredientSelectionControl === "radio" ? (
+                      <span className="h-2 w-2 rounded-full bg-white" />
+                  ) : null}
+                  {ingredientSelectionState && ingredientSelectionControl === "checkbox" ? (
+                      <svg viewBox="0 0 16 16" fill="none" className="h-3 w-3">
+                          <path
+                              d="M3.5 8.5L6.5 11.5L12.5 4.5"
+                              stroke="white"
+                              strokeWidth="2"
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                          />
+                      </svg>
+                  ) : null}
               </span>
 
               {selectedItemImage ? (
                   <Image
                       src={selectedItemImage}
                       alt={item.name}
-                      width={96}
-                      height={96}
-                      className="h-20 w-20 shrink-0 rounded-xl bg-image-placeholder object-cover sm:h-24 sm:w-24"
+                      width={80}
+                      height={80}
+                      className="h-14 w-14 shrink-0 rounded-xl bg-image-placeholder object-cover ring-1 ring-black/5 sm:h-16 sm:w-16"
                   />
               ) : (
-                  <div className="h-20 w-20 shrink-0 rounded-xl bg-image-placeholder sm:h-24 sm:w-24" />
+                  <div className="h-14 w-14 shrink-0 rounded-xl bg-image-placeholder ring-1 ring-black/5 sm:h-16 sm:w-16" />
               )}
 
-              <div className="flex min-w-0 flex-1 flex-col gap-3">
-                  <div className="flex min-w-0 items-start justify-between gap-2">
-                      <div className="flex min-w-0 flex-1 flex-wrap items-center gap-2">
-                          {ingredientPortionBadge ? (
-                              <span className="inline-flex shrink-0 rounded-full bg-lime-500 px-2 py-0.5 text-xs font-bold text-black">
-                                  {ingredientPortionBadge}
-                              </span>
-                          ) : null}
-                          <div className="min-w-0 flex-1 truncate text-lg font-semibold text-black sm:text-xl">
-                              {item.name}
-                          </div>
-                      </div>
-                      {isIngredientUnavailable &&
-                      ingredientUnavailableReason ? (
-                          <div className="inline-flex w-fit shrink-0 rounded-full border border-black/20 bg-black/5 px-2 py-0.5 text-[11px] font-semibold text-black/60">
-                              {ingredientUnavailableReason}
-                          </div>
+              <div className="flex min-w-0 flex-1 flex-col gap-1.5">
+                  <div className="flex min-w-0 flex-wrap items-center gap-x-1.5 gap-y-0.5">
+                      <span className="min-w-0 truncate text-base font-semibold text-black sm:text-lg">
+                          {item.name}
+                      </span>
+                      {ingredientPortionBadge ? (
+                          <span className="shrink-0 rounded-md bg-black/5 px-1.5 py-0.5 text-[10px] font-semibold tracking-wide text-black/50">
+                              {ingredientPortionBadge}
+                          </span>
                       ) : null}
                   </div>
 
-                  <div className="flex w-full items-center gap-4 text-center lg:w-auto lg:gap-6">
-                      <MacroStat
-                          macroKey="calories"
-                          value={calories ?? Number.NaN}
-                          labelVariant="shortLabel"
-                          size="ingredientCompact"
-                      />
-                      <MacroStat
-                          macroKey="protein"
-                          value={protein ?? Number.NaN}
-                          size="ingredientCompact"
-                      />
-                      <MacroStat
-                          macroKey="carbs"
-                          value={carbs ?? Number.NaN}
-                          size="ingredientCompact"
-                      />
-                      <MacroStat
-                          macroKey="totalFat"
-                          value={totalFat ?? Number.NaN}
-                          size="ingredientCompact"
-                      />
-                  </div>
-
-                  {activeCompactOptions &&
-                  activeCompactOptions.length > 1 &&
-                  ingredientSelectionState ? (
-                      <div className="flex flex-wrap gap-2 pt-0.5">
-                          {activeCompactOptions.map((variantOption) => (
+                  {showControls ? (
+                      <div className="inline-flex w-fit items-center gap-0.5 rounded-full bg-black/5 p-0.5">
+                          {activeCompactOptions!.map((variantOption) => (
                               <button
                                   key={variantOption.id}
                                   type="button"
@@ -162,18 +152,42 @@ export default function IngredientCompactCard({
                                               variantOption.id,
                                           );
                                   }}
-                                  className={`cursor-pointer rounded-full border px-3 py-1 text-xs font-semibold ${
+                                  className={`rounded-full px-2.5 py-1 text-[11px] font-semibold transition ${
                                       selectedCompactOptionId ===
                                       variantOption.id
-                                          ? "border-slate-900 bg-slate-900 text-white"
-                                          : "border-black/20 bg-white text-slate-700 hover:border-black/35"
-                                  } ${variantOption.disabled ? "cursor-not-allowed opacity-55 hover:border-black/20" : ""}`}
+                                          ? "bg-white text-black shadow-sm"
+                                          : "cursor-pointer text-black/50 hover:text-black/70"
+                                  } ${variantOption.disabled ? "cursor-not-allowed opacity-40" : ""}`}
                               >
                                   {variantOption.label}
                               </button>
                           ))}
                       </div>
                   ) : null}
+              </div>
+
+              <div className="flex w-full basis-full items-center justify-between gap-2 md:w-72 md:basis-auto md:border-l md:border-black/[0.06] md:pl-4">
+                  <MacroStat
+                      macroKey="calories"
+                      value={calories ?? Number.NaN}
+                      labelVariant="shortLabel"
+                      size="ingredientCompact"
+                  />
+                  <MacroStat
+                      macroKey="protein"
+                      value={protein ?? Number.NaN}
+                      size="ingredientCompact"
+                  />
+                  <MacroStat
+                      macroKey="carbs"
+                      value={carbs ?? Number.NaN}
+                      size="ingredientCompact"
+                  />
+                  <MacroStat
+                      macroKey="totalFat"
+                      value={totalFat ?? Number.NaN}
+                      size="ingredientCompact"
+                  />
               </div>
           </div>
       </SurfaceCard>
