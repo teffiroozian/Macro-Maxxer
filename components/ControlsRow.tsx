@@ -28,6 +28,7 @@ import {
   ListOrdered,
   Menu,
   Check,
+  ArrowLeft,
 } from "lucide-react";
 
 
@@ -411,7 +412,7 @@ export default function ControlsRow({
       {mobileEntreeOptions?.length ? (
         <section className="space-y-2">
           <h4 className={sectionHeadingClassName}>Entree</h4>
-          <div className="max-h-[30vh] space-y-1 overflow-y-auto rounded-xl bg-slate-50 p-1.5">
+          <div className="space-y-1 rounded-xl bg-slate-100 p-1.5">
             {mobileEntreeOptions.map((option) => (
               <button
                 key={option.key}
@@ -426,6 +427,8 @@ export default function ControlsRow({
                   <span className="relative h-6 w-6 shrink-0 overflow-hidden rounded-full bg-white ring-1 ring-black/5">
                     <Image src={option.image} alt={option.label} fill className="object-cover" />
                   </span>
+                ) : option.key === "choose-entree" ? (
+                  <ArrowLeft className="h-4 w-4 shrink-0" strokeWidth={2.5} />
                 ) : null}
                 <span className="flex-1 truncate">{option.label}</span>
                 {option.selected ? <Check className="h-4 w-4 shrink-0 text-white" strokeWidth={2.5} /> : null}

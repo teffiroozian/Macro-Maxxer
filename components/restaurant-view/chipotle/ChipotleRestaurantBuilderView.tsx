@@ -2590,21 +2590,29 @@ export default function ChipotleRestaurantBuilderView({
 
   const mobileEntreeOptions =
     isChipotleBuildPage && selectedEntree !== null
-      ? Object.entries(entreeOptions).flatMap(([entreeKey, entree]) => {
-          if (!isChipotleEntreeId(entreeKey)) {
-            return [];
-          }
+      ? [
+          {
+            key: "choose-entree",
+            label: "Choose entrée",
+            selected: false,
+            onSelect: () => setSelectedEntree(null),
+          },
+          ...Object.entries(entreeOptions).flatMap(([entreeKey, entree]) => {
+            if (!isChipotleEntreeId(entreeKey)) {
+              return [];
+            }
 
-          return [
-            {
-              key: entreeKey,
-              label: entree.label,
-              image: entree.image,
-              selected: entreeKey === selectedEntree,
-              onSelect: () => handleEntreeSelection(entreeKey),
-            },
-          ];
-        })
+            return [
+              {
+                key: entreeKey,
+                label: entree.label,
+                image: entree.image,
+                selected: entreeKey === selectedEntree,
+                onSelect: () => handleEntreeSelection(entreeKey),
+              },
+            ];
+          }),
+        ]
       : [];
 
   return (
