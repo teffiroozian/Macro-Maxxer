@@ -21,7 +21,16 @@ import { useFilterChipActions } from "@/components/useFilterChipActions";
 import { useStickyNavClearance } from "@/components/restaurant-view/useStickyNavClearance";
 import SectionEyebrow from "@/components/ui/SectionEyebrow";
 
-type CategoryOption = { id: string; label: string; count?: number };
+type CategoryOption = {
+  id: string;
+  label: string;
+  count?: number;
+  // How many of this category's items the user currently has selected —
+  // BYO-ingredient-builder-only (undefined everywhere else). When present
+  // and > 0, the sidebar shows "selected/total" instead of just the total;
+  // it is never a max-selection limit, just the available-item count.
+  selectedCount?: number;
+};
 type RankingOption = { key: RankedAllFilterKey; label: string; iconKey: string };
 
 type Props = {
@@ -66,6 +75,17 @@ type SharedCategoryNavProps = Pick<
   categoryNavLabel: string;
 };
 
+// "selected/total" once at least one item in the category is selected,
+// otherwise just the total available count — the denominator is always the
+// number of available items, never a max-selection cap.
+function formatCategoryCount(option: CategoryOption) {
+  if (typeof option.count !== "number") return null;
+  if (option.selectedCount && option.selectedCount > 0) {
+    return `${option.selectedCount}/${option.count}`;
+  }
+  return `${option.count}`;
+}
+
 function resolveCategoryIcon(categoryIcons: Record<string, LucideIcon>, label: string) {
   const key = label.trim().toLowerCase();
   const candidates = [
@@ -87,6 +107,8 @@ type CategoryNavItemProps = {
 };
 
 function CategoryNavItem({ option, isActive, Icon, onSelect, variant }: CategoryNavItemProps) {
+  const formattedCount = formatCategoryCount(option);
+
   if (variant === "desktop") {
     return (
       <div className="relative pl-3">
@@ -100,19 +122,19 @@ function CategoryNavItem({ option, isActive, Icon, onSelect, variant }: Category
         <button
           type="button"
           onClick={onSelect}
-          className={`cursor-pointer flex w-full items-center gap-3 rounded-full px-4 py-2 text-left text-base font-semibold transition-colors duration-50 ease-in ${
+          className={`cursor-pointer flex h-11 w-full items-center gap-3 rounded-full px-4 text-left text-base font-semibold transition-colors duration-50 ease-in focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-strong ${
             isActive ? "shadow-[0px_0_8px_rgba(0,0,0,0.25)] bg-white text-slate-800" : "text-slate-700 hover:bg-slate-200"
           }`}
         >
           <Icon className="h-4 w-4 shrink-0" strokeWidth={2.5} aria-hidden="true" />
           <span className="min-w-0 flex-1 truncate">{option.label}</span>
-          {typeof option.count === "number" ? (
+          {formattedCount ? (
             <span
               className={`shrink-0 text-sm font-semibold tabular-nums ${
                 isActive ? "text-slate-500" : "text-slate-400"
               }`}
             >
-              {option.count}
+              {formattedCount}
             </span>
           ) : null}
         </button>
@@ -125,14 +147,14 @@ function CategoryNavItem({ option, isActive, Icon, onSelect, variant }: Category
       <button
         type="button"
         onClick={onSelect}
-        className={`cursor-pointer inline-flex items-center gap-2 rounded-[10px] border-none px-2.5 py-2 text-left font-semibold text-black/88 transition-colors duration-100 ${
+        className={`cursor-pointer flex h-10 items-center gap-2 rounded-[10px] border-none px-2.5 text-left font-semibold text-black/88 transition-colors duration-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-strong ${
           isActive ? "bg-black/10" : "hover:bg-slate-900/5"
         }`}
       >
         <Icon className="h-4 w-4 shrink-0" strokeWidth={2.2} aria-hidden="true" />
         <span className="min-w-0 flex-1 truncate">{option.label}</span>
-        {typeof option.count === "number" ? (
-          <span className="shrink-0 text-xs font-semibold tabular-nums text-black/40">{option.count}</span>
+        {formattedCount ? (
+          <span className="shrink-0 text-xs font-semibold tabular-nums text-black/40">{formattedCount}</span>
         ) : null}
       </button>
     );
@@ -142,7 +164,7 @@ function CategoryNavItem({ option, isActive, Icon, onSelect, variant }: Category
     <button
       type="button"
       onClick={onSelect}
-      className={`cursor-pointer inline-flex shrink-0 items-center gap-2 whitespace-nowrap rounded-full border px-3 py-1.5 text-sm font-semibold transition-colors duration-100 ${
+      className={`cursor-pointer inline-flex h-9 shrink-0 items-center gap-2 whitespace-nowrap rounded-full border px-3 text-sm font-semibold transition-colors duration-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-strong ${
         isActive
           ? "border-black/20 bg-white text-slate-800 shadow-[0px_0_8px_rgba(0,0,0,0.2)]"
           : "border-black/20 bg-white text-slate-700 hover:bg-slate-50"
@@ -150,6 +172,11 @@ function CategoryNavItem({ option, isActive, Icon, onSelect, variant }: Category
     >
       <Icon className="h-4 w-4" strokeWidth={2.4} aria-hidden="true" />
       <span>{option.label}</span>
+      {formattedCount ? (
+        <span className={`shrink-0 text-xs font-semibold tabular-nums ${isActive ? "text-slate-500" : "text-slate-400"}`}>
+          {formattedCount}
+        </span>
+      ) : null}
     </button>
   );
 }
@@ -678,14 +705,14 @@ function DesktopCategorySidebar({
 
   return (
     <aside
-      className="sticky hidden flex-col py-6 lg:flex"
+      className="sticky hidden flex-col py-4 lg:flex"
       style={{ top: stickyTop, maxHeight: `calc(100vh - ${stickyTop}px)` }}
     >
-      <SectionEyebrow as="h3" className="mb-5 shrink-0 text-xs">
+      <SectionEyebrow as="h3" className="mb-3 shrink-0 text-xs">
         {effectiveViewMode === "ranking" ? "Categories" : effectiveViewMode === "ingredients" ? "Ingredients" : "Categories"}
       </SectionEyebrow>
 
-      <div className="min-h-0 flex-1 overflow-y-auto px-2 py-2">
+      <div className="min-h-0 flex-1 overflow-y-auto px-2 py-1">
         {effectiveViewMode === "ranking" ? (
           <RankingCategoryTree
             rankingOptions={rankingOptions}
@@ -698,7 +725,7 @@ function DesktopCategorySidebar({
             rankingFallbackIcons={rankingFallbackIcons}
           />
         ) : (
-          <nav aria-label={categoryNavLabel} className="grid gap-4">
+          <nav aria-label={categoryNavLabel} className="grid gap-1">
             {categoryOptions.map((option) => {
               const isActive = option.id === resolvedActiveCategory;
               const Icon = resolveCategoryIcon(categoryIcons, option.label);

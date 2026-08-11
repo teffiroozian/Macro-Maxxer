@@ -209,17 +209,17 @@ export default function MenuSections({
   }
 
   return (
-    <div className="grid gap-10">
+    <div className="grid gap-8">
       {sections.map((section) => (
         <section
           key={section}
           id={categorySectionId(section)}
           className="scroll-mt-0"
         >
-          <h2 className="font-heading my-5 text-2xl font-bold text-neutral-900 sm:text-3xl">
+          <h2 className="font-heading mb-3 text-2xl font-bold text-neutral-900 sm:text-3xl">
             {getCategoryLabel(section, categoryMode)}
           </h2>
-          <ul className="mt-3 p-0 grid gap-3">
+          <ul className="mt-0 p-0 grid gap-3">
             {(sortedGrouped[section] ?? []).map((item, index) => (
               <MenuItemCard
                 key={`${item.name}-${index}`}

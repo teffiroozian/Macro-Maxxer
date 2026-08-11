@@ -89,7 +89,7 @@ function getPanelClassName({
   return `mx-auto w-full ${
     isCartLayout
       ? "rounded-[1.5rem] border-black/10 px-3 py-4 sm:rounded-[2.25rem] sm:px-6 sm:py-6"
-      : "rounded-2xl border-slate-200/70 px-3 py-2 sm:px-4 sm:py-2.5"
+      : "rounded-2xl border-slate-200/70 px-3 py-1.5 sm:px-4 sm:py-2"
   } border bg-white shadow-[0_10px_30px_rgba(0,0,0,0.24)] transition-all duration-300 ${
     visible ? "pointer-events-auto" : "pointer-events-none"
   } ${detailsOpen && detailsContent ? "flex max-h-[calc(100vh-0.5rem)] flex-col" : ""}`;
@@ -162,7 +162,7 @@ function MacroSummarySection({ contextLine, isCartLayout, totals }: MacroSummary
             ? "mt-4 grid-cols-2 gap-x-4 gap-y-4 sm:grid-cols-4 sm:gap-x-6"
             : `mt-1 w-full grid-cols-4 gap-x-3 ${contextLine ? "sm:mt-2" : ""} md:w-fit`
         }`}
-        labelClassName={`${isCartLayout ? "text-[#1A1A1A]" : "text-[#1A1A1A] !text-[9px] sm:!text-[10px]"}`}
+        labelClassName={`${isCartLayout ? "text-[#1A1A1A]" : "text-[#1A1A1A] !mt-0.5 !text-[9px] sm:!text-[10px]"}`}
         valueClassName={isCartLayout ? "" : "!text-xl sm:!text-2xl lg:!text-xl"}
       />
     </section>
@@ -181,7 +181,7 @@ function ActionSection({
   SecondaryActionExpandedIcon,
 }: ActionSectionProps) {
   const buttonSize = isCartLayout ? "lg" : "sm";
-  const buttonClassName = `${isCartLayout ? "h-[48px]" : "h-9 px-3 text-sm"} ${
+  const buttonClassName = `${isCartLayout ? "h-[48px]" : "h-8 px-3 text-sm"} ${
     isCartLayout ? "" : "flex-1 md:flex-none"
   }`;
   const SecondaryIcon = detailsOpen && SecondaryActionExpandedIcon
@@ -190,7 +190,7 @@ function ActionSection({
 
   return (
     <div
-      className={`flex gap-2 sm:gap-2.5 ${
+      className={`flex ${isCartLayout ? "gap-2 sm:gap-2.5" : "gap-1.5 sm:gap-2"} ${
         isCartLayout ? "w-full flex-col sm:w-auto" : "w-full shrink-0 flex-row md:w-auto"
       }`}
     >
@@ -222,7 +222,7 @@ function StickyBarContent({ children, isCartLayout }: { children: ReactNode; isC
       className={`shrink-0 flex ${
         isCartLayout
           ? "flex-col gap-5 lg:flex-row lg:items-center lg:gap-8"
-          : "flex-col gap-3 md:flex-row md:items-center md:justify-between"
+          : "flex-col gap-2 md:flex-row md:items-center md:justify-between"
       }`}
     >
       {children}

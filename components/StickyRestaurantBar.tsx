@@ -100,7 +100,7 @@ export default function StickyRestaurantBar({
         <DesktopNav searchBarVariant="compact" />
 
         {secondaryNavLeading || !hideSecondaryNav ? (
-          <div className="mx-auto mt-0.5 hidden w-full max-w-6xl items-center rounded-2xl border border-slate-200/70 bg-white px-6 py-2 shadow-[0_3px_12px_rgba(15,23,42,0.12)] lg:flex">
+          <div className="mx-auto mt-0.5 hidden w-full max-w-6xl items-center rounded-2xl border border-slate-200/70 bg-white px-5 py-1.5 shadow-[0_3px_12px_rgba(15,23,42,0.12)] lg:flex">
             {secondaryNavLeading ? <div className="shrink-0">{secondaryNavLeading}</div> : null}
             {hideSecondaryNav ? null : (
               <div className={`min-w-0 shrink-0 ${secondaryNavLeading ? "ml-auto" : "flex-1"}`}>

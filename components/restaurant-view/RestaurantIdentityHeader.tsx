@@ -67,7 +67,7 @@ export default function RestaurantIdentityHeader({
   const stickyClearance = useStickyNavClearance();
 
   return (
-    <div className="relative mb-8 lg:mb-10" style={{ marginTop: stickyClearance ?? 160 }}>
+    <div className="relative mb-6 lg:mb-8" style={{ marginTop: stickyClearance ?? 160 }}>
       {/* The broader ambient wash/glow lives one level up, in
           RestaurantPageContent — it covers the nav-to-header transition, so
           this card doesn't need its own separate glow layered on top. */}

@@ -531,6 +531,31 @@ export default function ChipotleRestaurantBuilderView({
     adjustedChipotleMenuControls.orderedSections ?? baseOrderedSections;
   const categoryOptions =
     adjustedChipotleMenuControls.categoryOptions ?? baseCategoryOptions;
+
+  // Adds a per-category "selected" count (BYO ingredients view only) on top
+  // of the existing total-available count already in categoryOptions — the
+  // sidebar shows "selected/total" once at least one item in that category
+  // is selected, otherwise just the total. Never touches selection state,
+  // portion logic, or the counts themselves.
+  const categoryOptionsWithSelection = useMemo(() => {
+    if (effectiveViewMode !== "ingredients") {
+      return categoryOptions;
+    }
+
+    const selectedQuantityByCategory: Record<string, number> = {};
+    Object.values(selectedIngredientItems).forEach((selectedIngredient) => {
+      const category = normalizeIngredientCategory(
+        resolvePrimaryCategory(selectedIngredient.item.categories),
+      );
+      selectedQuantityByCategory[category] =
+        (selectedQuantityByCategory[category] ?? 0) + selectedIngredient.quantity;
+    });
+
+    return categoryOptions.map((option) => ({
+      ...option,
+      selectedCount: selectedQuantityByCategory[option.id] ?? 0,
+    }));
+  }, [categoryOptions, effectiveViewMode, selectedIngredientItems]);
   const [activeCategory, setActiveCategory] = useState<string>(
     () => orderedSections[0] ?? "",
   );
@@ -2512,15 +2537,17 @@ export default function ChipotleRestaurantBuilderView({
 
   const entreeSelectionControl =
     isChipotleBuildPage && selectedEntree !== null ? (
-      <div ref={entreeMenuRef} className="relative">
+      <div className="flex shrink-0 items-center gap-2.5">
+        <span className="shrink-0 text-sm font-medium text-slate-500">Entrée:</span>
+        <div ref={entreeMenuRef} className="relative">
         <button
           type="button"
           onClick={() => setIsEntreeMenuOpen((prev) => !prev)}
-          className="cursor-pointer inline-flex items-center gap-2 whitespace-nowrap rounded-full border border-black/20 bg-white px-[14px] py-[6px] font-semibold text-black/85"
+          className="cursor-pointer inline-flex h-10 items-center gap-2 whitespace-nowrap rounded-full border border-black/20 bg-white px-4 font-bold text-black/90 transition-colors duration-150 hover:border-black/30 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-900"
           aria-haspopup="menu"
           aria-expanded={isEntreeMenuOpen}
         >
-          <span className="relative h-5 w-5 shrink-0 overflow-hidden rounded-full border border-slate-200 bg-white">
+          <span className="relative h-6 w-6 shrink-0 overflow-hidden rounded-full border border-slate-200 bg-white">
             <Image
               src={entreeOptions[selectedEntree]?.image ?? ""}
               alt={entreeOptions[selectedEntree]?.label ?? selectedEntree}
@@ -2585,6 +2612,7 @@ export default function ChipotleRestaurantBuilderView({
             </div>
           </div>
         ) : null}
+        </div>
       </div>
     ) : null;
 
@@ -2653,7 +2681,7 @@ export default function ChipotleRestaurantBuilderView({
             rankedParentStates={rankedParentStates}
             toggleRankedAllFilter={toggleRankedAllFilter}
             toggleRankedChildFilter={toggleRankedChildFilter}
-            categoryOptions={categoryOptions}
+            categoryOptions={categoryOptionsWithSelection}
             resolvedActiveCategory={resolvedActiveCategory}
             onCategorySelect={handleCategorySelect}
             categoryIcons={CATEGORY_ICONS}
