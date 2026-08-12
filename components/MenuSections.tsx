@@ -53,6 +53,10 @@ export type MenuSectionsIngredientSelectionConfig = {
   onSelectionChange?: (item: MenuItem, selected: boolean) => void;
   onPortionModeChange?: (item: MenuItem, modeId: string) => void;
   onVariantChange?: (item: MenuItem, variantId: string) => void;
+  // Comparison-only rendering ("View All Ingredients"): every card is
+  // non-interactive and shows its category as a badge instead of relying on
+  // a per-category section heading (there isn't one in that flat view).
+  readOnly?: boolean;
 };
 
 type MenuSectionsProps = {
@@ -101,12 +105,17 @@ export default function MenuSections({
 
   const getIngredientSelection = (item: MenuItem) => {
     const itemId = item.id ?? "";
+    const isReadOnly = ingredientSelectionConfig?.readOnly ?? false;
 
     return {
       displayMode:
         categoryMode === "ingredients" && hasBuildYourOwn
           ? ("ingredient-compact" as const)
           : ("default" as const),
+      readOnly: isReadOnly,
+      categoryLabel: isReadOnly
+        ? getCategoryLabel(item.categories?.[0] ?? "", categoryMode)
+        : undefined,
       isSelected: ingredientSelectionConfig?.selectedIds?.has(itemId),
       isLocked: ingredientSelectionConfig?.lockedIds?.has(itemId),
       isUnavailable: ingredientSelectionConfig?.unavailableIds?.has(itemId),

@@ -27,7 +27,7 @@ function PortionControlsRow({
                         event.stopPropagation();
                         if (!variantOption.disabled) onSelect(variantOption.id);
                     }}
-                    className={`rounded-full px-2.5 py-1 text-[11px] font-semibold transition md:px-3.5 md:py-1.5 ${
+                    className={`rounded-full px-2.5 py-[3px] text-[11px] font-semibold transition md:px-3.5 md:py-[5px] ${
                         selectedOptionId === variantOption.id
                             ? "bg-white text-black shadow-sm"
                             : "cursor-pointer text-black/50 hover:text-black/70"
@@ -59,6 +59,12 @@ export default function IngredientCompactCard({
     totalFat,
     onSelectionChange,
     onCompactOptionSelect,
+    // Comparison-only rendering (the "View All Ingredients" state): no
+    // selection affordance, no click interaction — just the card's visual
+    // design plus a category badge, since there's no per-category section
+    // heading to convey that here.
+    readOnly = false,
+    categoryLabel,
 }: {
     item: MenuItem;
     selectedItemImage?: string;
@@ -82,12 +88,18 @@ export default function IngredientCompactCard({
     totalFat?: number;
     onSelectionChange: (selected: boolean) => void;
     onCompactOptionSelect: (optionId: string) => void;
+    readOnly?: boolean;
+    categoryLabel?: string;
 }) {
+    // In the build flow, portion/variant controls only matter once an
+    // ingredient is actually selected. Read-only comparison cards have no
+    // selection concept at all — the control should just show whenever
+    // there's more than one option to compare.
     const showControls =
         activeCompactOptions &&
         activeCompactOptions.length > 1 &&
-        ingredientSelectionState;
-    const isInteractive = !isIngredientLocked;
+        (ingredientSelectionState || readOnly);
+    const isInteractive = !isIngredientLocked && !readOnly;
 
     return (
         <SurfaceCard
@@ -99,20 +111,24 @@ export default function IngredientCompactCard({
                     ? "border-[1.5px] border-accent! bg-accent-soft/50 shadow-[0_1px_2px_rgba(0,0,0,0.04)]"
                     : isIngredientSelectionDisabled
                       ? "border border-black/8 bg-black/[0.015] opacity-70"
-                      : "border border-black/10 bg-white shadow-[0_1px_2px_rgba(0,0,0,0.04)] hover:-translate-y-px hover:border-black/15 hover:shadow-[0_2px_6px_rgba(0,0,0,0.05)]"
+                      : readOnly
+                        ? "border border-black/10 bg-white shadow-[0_1px_2px_rgba(0,0,0,0.04)]"
+                        : "border border-black/10 bg-white shadow-[0_1px_2px_rgba(0,0,0,0.04)] hover:-translate-y-px hover:border-black/15 hover:shadow-[0_2px_6px_rgba(0,0,0,0.05)]"
             }`}
         >
             <div
                 role={isInteractive ? ingredientSelectionControl : undefined}
                 aria-checked={isInteractive ? ingredientSelectionState : undefined}
                 aria-label={
-                    isIngredientLocked
-                        ? `${ingredientDisabledReason ?? "Included"} ${item.name}`
-                        : `${isIngredientSelectionDisabled ? (ingredientUnavailableReason ?? "Unavailable") : "Select"} ${item.name}`
+                    readOnly
+                        ? item.name
+                        : isIngredientLocked
+                          ? `${ingredientDisabledReason ?? "Included"} ${item.name}`
+                          : `${isIngredientSelectionDisabled ? (ingredientUnavailableReason ?? "Unavailable") : "Select"} ${item.name}`
                 }
                 tabIndex={isInteractive && !isIngredientSelectionDisabled ? 0 : -1}
                 className={`flex flex-col gap-2 rounded-2xl px-3 py-2.5 outline-none transition-shadow duration-100 sm:px-4 md:flex-row md:items-center md:gap-4 md:py-3 ${
-                    isIngredientLocked
+                    isIngredientLocked || readOnly
                         ? "cursor-default"
                         : isIngredientSelectionDisabled
                           ? "cursor-not-allowed"
@@ -154,7 +170,7 @@ export default function IngredientCompactCard({
                         ) : (
                             <div className="h-14 w-14 rounded-xl bg-image-placeholder ring-1 ring-black/5 sm:h-18 sm:w-18 md:h-20 md:w-20" />
                         )}
-                        {isIngredientLocked ? (
+                        {readOnly ? null : isIngredientLocked ? (
                             <span className="absolute -bottom-1 -right-1 flex items-center" aria-hidden="true">
                                 <span className="relative z-0 flex h-5 w-5 items-center justify-center rounded-full border-2 border-white bg-slate-400">
                                     <Lock className="h-2.5 w-2.5 text-white" strokeWidth={2.5} />
@@ -194,6 +210,11 @@ export default function IngredientCompactCard({
                             <span className="font-heading min-w-0 shrink truncate text-lg font-semibold text-black md:text-xl">
                                 {item.name}
                             </span>
+                            {categoryLabel ? (
+                                <span className="shrink-0 rounded-md bg-slate-100 px-1.5 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-slate-500">
+                                    {categoryLabel}
+                                </span>
+                            ) : null}
                             {ingredientPortionBadge ? (
                                 <span className="shrink-0 rounded-md bg-black/5 px-1.5 py-0.5 text-[10px] font-semibold tracking-wide text-black/50">
                                     {ingredientPortionBadge}

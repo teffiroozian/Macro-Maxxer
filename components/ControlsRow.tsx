@@ -29,6 +29,7 @@ import {
   Menu,
   Check,
   ArrowLeft,
+  LayoutGrid,
 } from "lucide-react";
 
 
@@ -190,6 +191,10 @@ export default function ControlsRow({
     image?: string;
     selected?: boolean;
     onSelect: () => void;
+    // Visually separates a trailing utility action (e.g. "View All
+    // Ingredients") from the real entrée options above it — not itself
+    // another entrée choice.
+    showDividerBefore?: boolean;
   }>;
   mobileDrawerHeaderTitle?: string;
   mobileDrawerHeaderLogoSrc?: string;
@@ -414,25 +419,31 @@ export default function ControlsRow({
           <h4 className={sectionHeadingClassName}>Entree</h4>
           <div className="space-y-1 rounded-xl bg-slate-100 p-1.5">
             {mobileEntreeOptions.map((option) => (
-              <button
-                key={option.key}
-                type="button"
-                onClick={() => {
-                  option.onSelect();
-                  setIsMobileDrawerOpen(false);
-                }}
-                className={`w-full ${optionRowClassName(Boolean(option.selected))}`}
-              >
-                {option.image ? (
-                  <span className="relative h-6 w-6 shrink-0 overflow-hidden rounded-full bg-white ring-1 ring-black/5">
-                    <Image src={option.image} alt={option.label} fill className="object-cover" />
-                  </span>
-                ) : option.key === "choose-entree" ? (
-                  <ArrowLeft className="h-4 w-4 shrink-0" strokeWidth={2.5} />
+              <div key={option.key}>
+                {option.showDividerBefore ? (
+                  <div className="my-1 border-t border-black/10" aria-hidden="true" />
                 ) : null}
-                <span className="flex-1 truncate">{option.label}</span>
-                {option.selected ? <Check className="h-4 w-4 shrink-0 text-white" strokeWidth={2.5} /> : null}
-              </button>
+                <button
+                  type="button"
+                  onClick={() => {
+                    option.onSelect();
+                    setIsMobileDrawerOpen(false);
+                  }}
+                  className={`w-full ${optionRowClassName(Boolean(option.selected))}`}
+                >
+                  {option.image ? (
+                    <span className="relative h-6 w-6 shrink-0 overflow-hidden rounded-full bg-white ring-1 ring-black/5">
+                      <Image src={option.image} alt={option.label} fill className="object-cover" />
+                    </span>
+                  ) : option.key === "choose-entree" ? (
+                    <ArrowLeft className="h-4 w-4 shrink-0" strokeWidth={2.5} />
+                  ) : option.key === "view-all-ingredients" ? (
+                    <LayoutGrid className="h-4 w-4 shrink-0" strokeWidth={2.5} />
+                  ) : null}
+                  <span className="flex-1 truncate">{option.label}</span>
+                  {option.selected ? <Check className="h-4 w-4 shrink-0 text-white" strokeWidth={2.5} /> : null}
+                </button>
+              </div>
             ))}
           </div>
         </section>

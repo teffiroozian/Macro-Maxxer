@@ -7,6 +7,46 @@ import {
   type ChipotleKidsMealId,
 } from "@/lib/restaurantBuilders/chipotle";
 
+// The full, entree-agnostic ingredient set used by the "View All
+// Ingredients" comparison state — every real ingredient (including things
+// like taco shells that the per-entree builder above only surfaces when
+// they're relevant to the currently selected entree) shown under its real
+// category, with base nutrition and no included/locked/portion-multiplier
+// logic, since this view is for browsing and comparing, not building.
+export function buildAllChipotleIngredientMenuItems({
+  restaurantId,
+  ingredients,
+}: {
+  restaurantId: string;
+  ingredients: IngredientItem[];
+}): MenuItem[] {
+  return ingredients
+    .filter((ingredient) => !ingredient.hideFromIngredientView)
+    .map((ingredient, index) => {
+      const ingredientId =
+        ingredient.id ??
+        `${restaurantId}-ingredient-${ingredient.name}-${index}`
+          .toLowerCase()
+          .replace(/[^a-z0-9]+/g, "-");
+      const categories =
+        ingredient.categories?.map((category) => category.trim()).filter(Boolean) ?? [];
+
+      const menuItem: MenuItem = {
+        id: ingredientId,
+        name: ingredient.name,
+        nutrition: scaleNutritionValues(ingredient.nutrition, 1),
+        defaultOrder: ingredient.defaultOrder ?? index,
+        variants: ingredient.variants,
+        defaultVariantId: ingredient.defaultVariantId,
+        hideVariantSelector: true,
+        image: ingredient.image ?? "",
+        categories: categories.length > 0 ? categories : ["Other"],
+        servingType: "addon",
+      };
+      return menuItem;
+    });
+}
+
 export type BuildChipotleIngredientMenuItemsOptions = {
   restaurantId: string;
   ingredients: IngredientItem[];

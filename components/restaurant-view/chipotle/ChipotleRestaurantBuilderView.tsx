@@ -12,6 +12,7 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import Image from "next/image";
 import type { LucideIcon } from "lucide-react";
 import {
+  ArrowLeft,
   Bean,
   Beef,
   CakeSlice,
@@ -27,6 +28,7 @@ import {
   Ham,
   IceCreamCone,
   SquareUser,
+  LayoutGrid,
   LeafyGreen,
   Pin,
   Salad,
@@ -94,7 +96,15 @@ import {
 } from "@/lib/restaurantBuilders/chipotle";
 import { resolvePrimaryCategory } from "@/lib/ingredientTabs";
 import { customizationsFromLabels } from "@/lib/cart/customizationLabels";
-import { buildChipotleIngredientMenuItems } from "@/lib/restaurantBuilders/chipotle/ingredientMenuItems";
+import {
+  buildAllChipotleIngredientMenuItems,
+  buildChipotleIngredientMenuItems,
+} from "@/lib/restaurantBuilders/chipotle/ingredientMenuItems";
+
+// Sentinel category id for the "View All Ingredients" sidebar filter's
+// unfiltered state — distinct from any real (normalized, lowercased)
+// ingredient category key so it can never collide with one.
+const ALL_INGREDIENTS_FILTER_ID = "__all__";
 
 const CATEGORY_ICONS: Record<string, LucideIcon> = {
   sandwich: Sandwich,
@@ -321,6 +331,15 @@ export default function ChipotleRestaurantBuilderView({
     clearPendingBuilderReset,
   } = useChipotleBuilderState({ initialSelectedEntree });
   const [isEntreeMenuOpen, setIsEntreeMenuOpen] = useState(false);
+  // "View All Ingredients" — a comparison state layered on top of whichever
+  // entrée is currently selected (selectedEntree is left untouched so
+  // exiting lands back on the same builder page). Independent of
+  // effectiveViewMode: it always renders as the "ingredients" view, just
+  // sourced from every ingredient instead of the current entrée's subset.
+  const [isViewingAllIngredients, setIsViewingAllIngredients] = useState(false);
+  const [activeAllIngredientsCategory, setActiveAllIngredientsCategory] = useState<string>(
+    ALL_INGREDIENTS_FILTER_ID,
+  );
   const selectedEntreeConfig = selectedEntree
     ? entreeOptions[selectedEntree]
     : null;
@@ -481,6 +500,41 @@ export default function ChipotleRestaurantBuilderView({
     tacoShellIngredientIds,
   ]);
 
+  const allIngredientMenuItems = useMemo<MenuItem[]>(
+    () => buildAllChipotleIngredientMenuItems({ restaurantId, ingredients }),
+    [restaurantId, ingredients],
+  );
+
+  // Which portion toggle (if any) each ingredient supports in the read-only
+  // comparison view — the same categories that support a portion mode in
+  // the actual builder (proteins get Normal/Double, rice/beans/toppings get
+  // Light/Normal/Extra). Everything else (e.g. tortillas/sides) is simply
+  // absent from this map, so its card renders with no portion control.
+  const allIngredientsPortionModeOptionsById = useMemo(() => {
+    const proteinPortionOptions = [
+      { id: "normal", label: "Normal" },
+      { id: "double", label: "Double" },
+    ];
+    const splitPortionOptions = [
+      { id: "light", label: "Light" },
+      { id: "normal", label: "Normal" },
+      { id: "extra", label: "Extra" },
+    ];
+
+    return allIngredientMenuItems.reduce<Record<string, Array<{ id: string; label: string }>>>(
+      (optionsById, item) => {
+        if (!item.id) return optionsById;
+        if (isProteinIngredientItem(item)) {
+          optionsById[item.id] = proteinPortionOptions;
+        } else if (isSplitPortionIngredientItem(item) || isToppingIngredientItem(item)) {
+          optionsById[item.id] = splitPortionOptions;
+        }
+        return optionsById;
+      },
+      {},
+    );
+  }, [allIngredientMenuItems]);
+
   const ingredientItemsById = useMemo(
     () =>
       new Map(
@@ -518,11 +572,12 @@ export default function ChipotleRestaurantBuilderView({
     toggleRankedChildFilter,
   } = useRestaurantMenuControls({
     hasBuildYourOwn,
-    effectiveViewModeOverride:
-      chipotleMenuControlAdjustments.effectiveViewModeOverride,
+    effectiveViewModeOverride: isViewingAllIngredients
+      ? "ingredients"
+      : chipotleMenuControlAdjustments.effectiveViewModeOverride,
     isViewChangeAllowed: chipotleMenuControlAdjustments.isViewChangeAllowed,
     items: chipotleMenuControlAdjustments.controlItems,
-    ingredientMenuItems,
+    ingredientMenuItems: isViewingAllIngredients ? allIngredientMenuItems : ingredientMenuItems,
     searchQuery: "",
     router,
     pathname,
@@ -536,12 +591,18 @@ export default function ChipotleRestaurantBuilderView({
     effectiveViewMode,
     chipotleBuilderConfig,
   });
-  const visibleMenuItems =
-    adjustedChipotleMenuControls.visibleMenuItems ?? unadjustedVisibleMenuItems;
-  const orderedSections =
-    adjustedChipotleMenuControls.orderedSections ?? baseOrderedSections;
-  const categoryOptions =
-    adjustedChipotleMenuControls.categoryOptions ?? baseCategoryOptions;
+  // While viewing the entree-agnostic "View All Ingredients" comparison
+  // set, entree-specific adjustments (hidden sections per entree, etc.)
+  // don't apply — selectedEntree may still hold a stale, unrelated value.
+  const visibleMenuItems = isViewingAllIngredients
+    ? unadjustedVisibleMenuItems
+    : (adjustedChipotleMenuControls.visibleMenuItems ?? unadjustedVisibleMenuItems);
+  const orderedSections = isViewingAllIngredients
+    ? baseOrderedSections
+    : (adjustedChipotleMenuControls.orderedSections ?? baseOrderedSections);
+  const categoryOptions = isViewingAllIngredients
+    ? baseCategoryOptions
+    : (adjustedChipotleMenuControls.categoryOptions ?? baseCategoryOptions);
 
   // Adds a per-category "selected" count (BYO ingredients view only) on top
   // of the existing total-available count already in categoryOptions — the
@@ -567,6 +628,28 @@ export default function ChipotleRestaurantBuilderView({
       selectedCount: selectedQuantityByCategory[option.id] ?? 0,
     }));
   }, [categoryOptions, effectiveViewMode, selectedIngredientItems]);
+  // "View All Ingredients" sidebar: an "All Ingredients" option prepended to
+  // the same real-category list (counts already nutrition-filtered, same as
+  // the normal ingredients sidebar), used as a category *filter* rather
+  // than a scroll target — there are no per-category sections in this flat
+  // comparison list to scroll to.
+  const allIngredientsSidebarCategoryOptions = useMemo(
+    () => [
+      { id: ALL_INGREDIENTS_FILTER_ID, label: "All Ingredients", count: visibleMenuItems.length },
+      ...categoryOptions,
+    ],
+    [categoryOptions, visibleMenuItems],
+  );
+  const allIngredientsDisplayItems = useMemo(() => {
+    if (activeAllIngredientsCategory === ALL_INGREDIENTS_FILTER_ID) {
+      return visibleMenuItems;
+    }
+    return visibleMenuItems.filter(
+      (item) =>
+        normalizeIngredientCategory(resolvePrimaryCategory(item.categories)) ===
+        activeAllIngredientsCategory,
+    );
+  }, [activeAllIngredientsCategory, visibleMenuItems]);
   const [activeCategory, setActiveCategory] = useState<string>(
     () => orderedSections[0] ?? "",
   );
@@ -576,6 +659,11 @@ export default function ChipotleRestaurantBuilderView({
     : (orderedSections[0] ?? "");
 
   const handleCategorySelect = (categoryId: string) => {
+    if (isViewingAllIngredients) {
+      setActiveAllIngredientsCategory(categoryId);
+      return;
+    }
+
     setActiveCategory(categoryId);
     const section = document.getElementById(categorySectionId(categoryId));
     if (!section) return;
@@ -591,7 +679,11 @@ export default function ChipotleRestaurantBuilderView({
   };
 
   useEffect(() => {
-    if (effectiveViewMode === "ranking" || orderedSections.length === 0) {
+    if (
+      effectiveViewMode === "ranking" ||
+      isViewingAllIngredients ||
+      orderedSections.length === 0
+    ) {
       return;
     }
 
@@ -639,7 +731,7 @@ export default function ChipotleRestaurantBuilderView({
       window.removeEventListener("scroll", updateActiveCategoryOnScroll);
       window.removeEventListener("resize", updateActiveCategoryOnScroll);
     };
-  }, [activeCategory, effectiveViewMode, orderedSections]);
+  }, [activeCategory, effectiveViewMode, isViewingAllIngredients, orderedSections]);
 
   const handleKidsMealSelection = (kidsMeal: ChipotleKidsMealId) => {
     setSelectedKidsMeal(kidsMeal);
@@ -910,6 +1002,7 @@ export default function ChipotleRestaurantBuilderView({
   const shouldShowBuildStickyBar =
     hasBuildYourOwn &&
     effectiveViewMode === "ingredients" &&
+    !isViewingAllIngredients &&
     (!isChipotleBuildPage ||
       (selectedEntree !== null &&
         selectedEntree !== "chips-sides" &&
@@ -1454,6 +1547,7 @@ export default function ChipotleRestaurantBuilderView({
   ]);
 
   const handleEntreeSelection = (entree: EntreeKey) => {
+    setIsViewingAllIngredients(false);
     const nextIncludedIngredientIds = resolveIncludedIngredientIds({
       selectedEntree: entree,
       selectedKidsMeal,
@@ -1475,6 +1569,19 @@ export default function ChipotleRestaurantBuilderView({
     nextParams.set("view", nextView);
     router.push(`${pathname}?${nextParams.toString()}`, { scroll: true });
     window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+  };
+
+  // Entered from the entrée dropdown or the ingredient-category sidebar's
+  // trailing nav item — a utility action, not another entrée, so it leaves
+  // selectedEntree untouched (exiting lands back on the same builder page).
+  const handleViewAllIngredientsSelection = () => {
+    setIsViewingAllIngredients(true);
+    setActiveAllIngredientsCategory(ALL_INGREDIENTS_FILTER_ID);
+    setIsEntreeMenuOpen(false);
+  };
+
+  const handleExitAllIngredients = () => {
+    setIsViewingAllIngredients(false);
   };
 
   useEffect(() => {
@@ -2683,7 +2790,7 @@ export default function ChipotleRestaurantBuilderView({
   }
 
   const entreeSelectionControl =
-    isChipotleBuildPage && selectedEntree !== null ? (
+    isChipotleBuildPage && (selectedEntree !== null || isViewingAllIngredients) ? (
       <div className="flex shrink-0 items-center gap-2.5">
         <span className="shrink-0 text-sm font-medium text-slate-500">Entrée:</span>
         <div ref={entreeMenuRef} className="relative">
@@ -2694,15 +2801,19 @@ export default function ChipotleRestaurantBuilderView({
           aria-haspopup="menu"
           aria-expanded={isEntreeMenuOpen}
         >
-          <span className="relative h-6 w-6 shrink-0 overflow-hidden rounded-full border border-slate-200 bg-white">
-            <Image
-              src={entreeOptions[selectedEntree]?.image ?? ""}
-              alt={entreeOptions[selectedEntree]?.label ?? selectedEntree}
-              fill
-              className="object-cover"
-            />
-          </span>
-          {entreeOptions[selectedEntree]?.label ?? selectedEntree}
+          {selectedEntree !== null ? (
+            <span className="relative h-6 w-6 shrink-0 overflow-hidden rounded-full border border-slate-200 bg-white">
+              <Image
+                src={entreeOptions[selectedEntree]?.image ?? ""}
+                alt={entreeOptions[selectedEntree]?.label ?? selectedEntree}
+                fill
+                className="object-cover"
+              />
+            </span>
+          ) : (
+            <LayoutGrid className="h-4 w-4 shrink-0 text-slate-500" strokeWidth={2.2} />
+          )}
+          {selectedEntree !== null ? (entreeOptions[selectedEntree]?.label ?? selectedEntree) : "View All Ingredients"}
           <ChevronDown className="h-4 w-4" strokeWidth={2.5} />
         </button>
 
@@ -2716,6 +2827,7 @@ export default function ChipotleRestaurantBuilderView({
                 type="button"
                 onClick={() => {
                   setSelectedEntree(null);
+                  setIsViewingAllIngredients(false);
                   setIsEntreeMenuOpen(false);
                 }}
                 className="cursor-pointer inline-flex items-center gap-2 rounded-[10px] px-2.5 py-2 text-left font-semibold text-black/88 transition-colors duration-100 hover:bg-slate-900/5"
@@ -2731,7 +2843,7 @@ export default function ChipotleRestaurantBuilderView({
                   return null;
                 }
 
-                const isActive = entreeKey === selectedEntree;
+                const isActive = entreeKey === selectedEntree && !isViewingAllIngredients;
                 return (
                   <button
                     key={entreeKey}
@@ -2756,6 +2868,19 @@ export default function ChipotleRestaurantBuilderView({
                   </button>
                 );
               })}
+              {/* Utility action, not another entrée — separated from the
+                  real options above by a divider. */}
+              <div className="my-1 border-t border-black/10" aria-hidden="true" />
+              <button
+                type="button"
+                onClick={handleViewAllIngredientsSelection}
+                className={`cursor-pointer inline-flex items-center gap-2 rounded-[10px] px-2.5 py-2 text-left font-semibold text-black/88 transition-colors duration-100 ${
+                  isViewingAllIngredients ? "bg-black/10" : "hover:bg-slate-900/5"
+                }`}
+              >
+                <LayoutGrid className="h-4 w-4 shrink-0" strokeWidth={2.2} />
+                <span>View All Ingredients</span>
+              </button>
             </div>
           </div>
         ) : null}
@@ -2764,13 +2889,16 @@ export default function ChipotleRestaurantBuilderView({
     ) : null;
 
   const mobileEntreeOptions =
-    isChipotleBuildPage && selectedEntree !== null
+    isChipotleBuildPage && (selectedEntree !== null || isViewingAllIngredients)
       ? [
           {
             key: "choose-entree",
             label: "Choose entrée",
             selected: false,
-            onSelect: () => setSelectedEntree(null),
+            onSelect: () => {
+              setSelectedEntree(null);
+              setIsViewingAllIngredients(false);
+            },
           },
           ...Object.entries(entreeOptions).flatMap(([entreeKey, entree]) => {
             if (!isChipotleEntreeId(entreeKey)) {
@@ -2782,11 +2910,18 @@ export default function ChipotleRestaurantBuilderView({
                 key: entreeKey,
                 label: entree.label,
                 image: entree.image,
-                selected: entreeKey === selectedEntree,
+                selected: entreeKey === selectedEntree && !isViewingAllIngredients,
                 onSelect: () => handleEntreeSelection(entreeKey),
               },
             ];
           }),
+          {
+            key: "view-all-ingredients",
+            label: "View All Ingredients",
+            selected: isViewingAllIngredients,
+            onSelect: handleViewAllIngredientsSelection,
+            showDividerBefore: true,
+          },
         ]
       : [];
 
@@ -2808,15 +2943,21 @@ export default function ChipotleRestaurantBuilderView({
         secondaryNavLeading={entreeSelectionControl}
         mobileEntreeOptions={mobileEntreeOptions}
         hideViewSelector={hasBuildYourOwn}
-        hideSecondaryNav={isChipotleBuildPage && selectedEntree === null}
+        // Only the pre-entrée-selection hero has nothing to sort/filter yet
+        // — every other state (per-entree ingredient categories, the chips/
+        // high protein/drinks pseudo-entrees, and View All Ingredients) has
+        // real items in view, so Sort/Filters stay visible there.
+        hideSecondaryNav={isChipotleBuildPage && selectedEntree === null && !isViewingAllIngredients}
         onEditFiltersDrawerReady={handleEditFiltersDrawerReady}
       />
 
-      {isChipotleBuildPage && selectedEntree === null ? (
+      {isChipotleBuildPage && selectedEntree === null && !isViewingAllIngredients ? (
         <div>
           <EntreeSelectionHero
             entreeOptions={entreeOptions}
             onSelectEntree={handleEntreeSelection}
+            onSelectViewAllIngredients={handleViewAllIngredientsSelection}
+            ingredientCount={allIngredientMenuItems.length}
           />
         </div>
       ) : (
@@ -2828,8 +2969,12 @@ export default function ChipotleRestaurantBuilderView({
             rankedParentStates={rankedParentStates}
             toggleRankedAllFilter={toggleRankedAllFilter}
             toggleRankedChildFilter={toggleRankedChildFilter}
-            categoryOptions={categoryOptionsWithSelection}
-            resolvedActiveCategory={resolvedActiveCategory}
+            categoryOptions={
+              isViewingAllIngredients ? allIngredientsSidebarCategoryOptions : categoryOptionsWithSelection
+            }
+            resolvedActiveCategory={
+              isViewingAllIngredients ? activeAllIngredientsCategory : resolvedActiveCategory
+            }
             onCategorySelect={handleCategorySelect}
             categoryIcons={CATEGORY_ICONS}
             filters={filters}
@@ -2839,7 +2984,41 @@ export default function ChipotleRestaurantBuilderView({
 
           <div className="min-w-0">
             <div className="mx-auto w-full max-w-[900px]">
-              {isChipotleBuildPage ? (
+              {isViewingAllIngredients ? (
+                <div>
+                  <div className="mb-5 flex flex-wrap items-start justify-between gap-3">
+                    <div>
+                      <h1 className="text-2xl font-bold text-slate-900 sm:text-3xl">All Ingredients</h1>
+                      <p className="mt-1 text-sm text-slate-500">
+                        Compare every {restaurantName} ingredient side by side, then head back to your build.
+                      </p>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={handleExitAllIngredients}
+                      className="inline-flex shrink-0 cursor-pointer items-center gap-1.5 rounded-full border border-black/15 bg-white px-3.5 py-2 text-sm font-semibold text-slate-700 transition hover:border-black/25 hover:bg-slate-50"
+                    >
+                      <ArrowLeft className="h-4 w-4" strokeWidth={2.5} />
+                      {selectedEntree === null ? "Back to entrées" : "Back to builder"}
+                    </button>
+                  </div>
+                  <MenuSections
+                    restaurantId={restaurantId}
+                    items={allIngredientsDisplayItems}
+                    sort={sort}
+                    addons={addons}
+                    ingredients={ingredients}
+                    customizationRules={customizationRules}
+                    groupByCategory={false}
+                    categoryMode="ingredients"
+                    hasBuildYourOwn={hasBuildYourOwn}
+                    ingredientSelectionConfig={{
+                      readOnly: true,
+                      portionModeOptionsById: allIngredientsPortionModeOptionsById,
+                    }}
+                  />
+                </div>
+              ) : isChipotleBuildPage ? (
                 <ChipotleBuilderSection
                   showKidsMealSelector={selectedEntree === "kids-meal"}
                   selectedKidsMeal={selectedKidsMeal}

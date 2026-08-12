@@ -27,6 +27,19 @@ import { getProteinPer100Calories, getProteinScoreTier, normalizeNutrition } fro
 import { resolveFinalizedCartConfiguration, type CartConfigurationPayload } from "@/lib/menuItemCard/finalizedCartConfiguration";
 import type { ComparativeLabelKind } from "@/lib/menuSections/comparativeLabels";
 
+// Same portion multipliers already used across the build-your-own portion
+// modes (light/normal/extra for rice, beans, toppings; normal/double for
+// proteins) — reused here for the read-only "View All Ingredients"
+// comparison card's own, uncontrolled portion toggle, never for the
+// controlled build flow (that flow always supplies its own already-scaled
+// nutrition and its own selected portion mode).
+const READ_ONLY_PORTION_MODE_MULTIPLIERS: Record<string, number> = {
+  light: 0.5,
+  normal: 1,
+  extra: 2,
+  double: 2,
+};
+
 function toMacroNumber(value?: number) {
   if (typeof value !== "number" || Number.isNaN(value)) return 0;
   return Math.round(value);
@@ -156,6 +169,11 @@ type MenuItemCardIngredientSelection = {
   selectedPortionModeId?: string;
   onPortionModeChange?: (modeId: string) => void;
   onVariantChange?: (variantId: string) => void;
+  // Comparison-only rendering ("View All Ingredients"): no click/selection
+  // interaction, plus a category badge next to the name since there's no
+  // per-category section heading in that flat view to convey it instead.
+  readOnly?: boolean;
+  categoryLabel?: string;
 };
 
 type MenuItemCardDetailPanelBehavior = {
@@ -213,6 +231,8 @@ export default function MenuItemCard({
   const selectedIngredientPortionModeId = ingredientSelection?.selectedPortionModeId;
   const onIngredientPortionModeChange = ingredientSelection?.onPortionModeChange;
   const onIngredientVariantChange = ingredientSelection?.onVariantChange;
+  const isIngredientReadOnly = ingredientSelection?.readOnly ?? false;
+  const ingredientCategoryLabel = ingredientSelection?.categoryLabel;
   const flattenIngredientListInDetails = detailPanel?.flattenIngredientList ?? false;
   const lockedIngredientIdsInDetails = detailPanel?.lockedIngredientIds;
   const showDetailsButton = detailPanel?.showDetailsButton ?? true;
@@ -242,6 +262,10 @@ export default function MenuItemCard({
   const [selectedVariantId, setSelectedVariantId] = useState(initialCartVariantId ?? defaultVariantId);
   const [isAddFeedbackVisible, setIsAddFeedbackVisible] = useState(false);
   const [isIngredientSelected, setIsIngredientSelected] = useState(controlledIngredientSelected ?? false);
+  // Local, per-card portion toggle for the read-only comparison card —
+  // never wired to any other card or to build state, so changing one
+  // ingredient's portion can never affect another's.
+  const [localPortionModeId, setLocalPortionModeId] = useState<string | undefined>(undefined);
   const { requestAddItem, updateQuantity, getMatchingItem } = useMenuItemCartAdapter();
   const effectiveSelectedVariantId =
     displayMode === "ingredient-compact" && selectedIngredientVariantId
@@ -634,9 +658,27 @@ export default function MenuItemCard({
       ingredientPortionModeOptions && ingredientPortionModeOptions.length > 0
         ? ingredientPortionModeOptions
         : ingredientVariantOptions;
+    // Read-only comparison cards never receive a controlled portion mode
+    // (selectedPortionModeIdById is a build-flow-only concern) — so
+    // "portion options exist, but nothing controls them" is exactly the
+    // read-only-with-portions case, handled with this card's own local
+    // state instead of the controlled build-flow wiring below.
+    const isLocalPortionMode =
+      isIngredientReadOnly && Boolean(ingredientPortionModeOptions?.length);
+    const effectiveLocalPortionModeId = isLocalPortionMode
+      ? (localPortionModeId ??
+        ingredientPortionModeOptions?.find((option) => option.id === "normal")?.id ??
+        ingredientPortionModeOptions?.[0]?.id)
+      : undefined;
     const selectedCompactOptionId = ingredientPortionModeOptions
-      ? selectedIngredientPortionModeId
+      ? isLocalPortionMode
+        ? effectiveLocalPortionModeId
+        : selectedIngredientPortionModeId
       : selectedIngredientVariantId;
+    const localPortionMultiplier =
+      isLocalPortionMode && effectiveLocalPortionModeId
+        ? (READ_ONLY_PORTION_MODE_MULTIPLIERS[effectiveLocalPortionModeId] ?? 1)
+        : 1;
 
     return (
       <IngredientCompactCard
@@ -652,11 +694,14 @@ export default function MenuItemCard({
         ingredientUnavailableReason={ingredientUnavailableReason}
         activeCompactOptions={activeCompactOptions}
         selectedCompactOptionId={selectedCompactOptionId}
-        calories={calories}
-        protein={protein}
-        carbs={carbs}
-        totalFat={totalFat}
+        calories={calories !== undefined ? Math.round(calories * localPortionMultiplier) : calories}
+        protein={protein !== undefined ? Math.round(protein * localPortionMultiplier) : protein}
+        carbs={carbs !== undefined ? Math.round(carbs * localPortionMultiplier) : carbs}
+        totalFat={totalFat !== undefined ? Math.round(totalFat * localPortionMultiplier) : totalFat}
+        readOnly={isIngredientReadOnly}
+        categoryLabel={ingredientCategoryLabel}
         onSelectionChange={(nextSelected) => {
+          if (isIngredientReadOnly) return;
           if (ingredientSelectionControl === "radio" && !nextSelected) {
             return;
           }
@@ -667,6 +712,10 @@ export default function MenuItemCard({
           onIngredientSelectionChange?.(item, nextSelected);
         }}
         onCompactOptionSelect={(optionId) => {
+          if (isLocalPortionMode) {
+            setLocalPortionModeId(optionId);
+            return;
+          }
           if (ingredientPortionModeOptions) {
             onIngredientPortionModeChange?.(optionId);
           } else {

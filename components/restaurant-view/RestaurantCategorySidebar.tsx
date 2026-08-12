@@ -703,9 +703,15 @@ function DesktopCategorySidebar({
   // Falls back to the stack's usual resting height (matches the fixed nav +
   // one-row secondary controls) until the real measurement lands just after
   // mount, then tracks it live — so the sidebar never sticks underneath a
-  // taller stack once active-filter chips add a second row to it.
+  // taller stack once active-filter chips add a second row to it. The extra
+  // gap on top of that measured clearance is deliberate breathing room so
+  // the sidebar's sticky resting position never reads as crowded against
+  // the nav bars above it — it only affects where the sidebar settles once
+  // scrolled, not its initial (in-flow) position alongside the main content
+  // column.
   const measuredClearance = useStickyNavClearance();
-  const stickyTop = measuredClearance ?? 160;
+  const STICKY_SIDEBAR_TOP_GAP = 24;
+  const stickyTop = (measuredClearance ?? 160) + STICKY_SIDEBAR_TOP_GAP;
 
   return (
     <aside
