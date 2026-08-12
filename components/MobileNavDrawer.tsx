@@ -3,9 +3,12 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { Store, ChevronDown, ChevronRight, SlidersHorizontal, X } from "lucide-react";
 import { getAllRestaurants } from "@/lib/restaurants";
 import AppIconButton from "@/components/ui/AppIconButton";
+import { useBuildInProgressGuard } from "@/components/BuildInProgressGuardContext";
+import { isPlainLeftClick } from "@/lib/isPlainLeftClick";
 
 type DrawerTab = "controls" | "restaurants";
 
@@ -35,6 +38,8 @@ export default function MobileNavDrawer({
   const [wasOpen, setWasOpen] = useState(isOpen);
   const visibleRestaurants = getAllRestaurants();
   const panelRef = useRef<HTMLDivElement | null>(null);
+  const router = useRouter();
+  const { guardNavigation } = useBuildInProgressGuard();
 
   // This drawer declares itself `role="dialog" aria-modal="true"` below, so
   // it needs to behave like one: Escape closes it, opening moves focus into
@@ -182,7 +187,13 @@ export default function MobileNavDrawer({
                         <Link
                           key={restaurant.id}
                           href={`/restaurant/${restaurant.id}`}
-                          onClick={onClose}
+                          onClick={(event) => {
+                            onClose();
+                            if (!isPlainLeftClick(event)) return;
+                            event.preventDefault();
+                            const href = `/restaurant/${restaurant.id}`;
+                            guardNavigation(() => router.push(href));
+                          }}
                           className="flex items-center justify-between gap-2 bg-white px-3 py-2.5 text-sm font-semibold text-slate-800 transition-colors hover:bg-slate-50 active:bg-slate-100"
                         >
                           <span className="inline-flex min-w-0 items-center gap-2.5">

@@ -2,10 +2,13 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import CartIconDropdown from "@/components/cart/CartIconDropdown";
 import DesktopRestaurantMenu from "@/components/DesktopRestaurantMenu";
 import DesktopSearchDropdown from "@/components/global-search/DesktopSearchDropdown";
 import { appIconButtonClassName } from "@/components/ui/AppIconButton";
+import { useBuildInProgressGuard } from "@/components/BuildInProgressGuardContext";
+import { isPlainLeftClick } from "@/lib/isPlainLeftClick";
 
 export default function DesktopNav({
   logoSrc = "/logo.png",
@@ -19,6 +22,8 @@ export default function DesktopNav({
   searchBarVariant?: "full" | "compact" | "hidden";
 }) {
   const showSearchBar = showSearchButton && searchBarVariant !== "hidden";
+  const router = useRouter();
+  const { guardNavigation } = useBuildInProgressGuard();
 
   return (
     // `lg:grid-cols-[1fr_auto_1fr]` (not a flex row with a centered flex-1
@@ -34,7 +39,16 @@ export default function DesktopNav({
       {/* Logo + Restaurants read as one group (tighter gap than the row's
           own column gap above) rather than two separately-spaced controls. */}
       <div className="flex min-w-0 items-center gap-2">
-        <Link href="/" className="inline-flex h-9 w-9 shrink-0 items-center justify-center overflow-hidden rounded-lg bg-white" aria-label="Go to homepage">
+        <Link
+          href="/"
+          onClick={(event) => {
+            if (!isPlainLeftClick(event)) return;
+            event.preventDefault();
+            guardNavigation(() => router.push("/"));
+          }}
+          className="inline-flex h-9 w-9 shrink-0 items-center justify-center overflow-hidden rounded-lg bg-white"
+          aria-label="Go to homepage"
+        >
           <span className="relative h-7 w-7">
             <Image src={logoSrc} alt="Macro Maxxer logo" fill className="object-contain rounded-md" />
           </span>

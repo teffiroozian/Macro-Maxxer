@@ -62,6 +62,7 @@ import StickyMacroTotalsBar from "../../StickyMacroTotalsBar";
 import MacroTotalsGrid from "@/components/MacroTotalsGrid";
 import { useCart } from "@/stores/cartStore";
 import { useCartAddConfirmation } from "@/components/CartAddConfirmationContext";
+import { useBuildInProgressGuard } from "@/components/BuildInProgressGuardContext";
 import {
   fromUniversalChipotleBuildConfiguration,
   toUniversalChipotleBuildConfiguration,
@@ -105,6 +106,23 @@ import {
 // unfiltered state — distinct from any real (normalized, lowercased)
 // ingredient category key so it can never collide with one.
 const ALL_INGREDIENTS_FILTER_ID = "__all__";
+
+function shallowRecordEqual<T>(a: Record<string, T>, b: Record<string, T>) {
+  const aKeys = Object.keys(a);
+  const bKeys = Object.keys(b);
+  if (aKeys.length !== bKeys.length) return false;
+  return aKeys.every((key) => a[key] === b[key]);
+}
+
+function haveEqualIngredientQuantities(
+  a: Record<string, { quantity: number }>,
+  b: Record<string, { quantity: number }>,
+) {
+  const aIds = Object.keys(a).filter((id) => a[id].quantity > 0);
+  const bIds = Object.keys(b).filter((id) => b[id].quantity > 0);
+  if (aIds.length !== bIds.length) return false;
+  return aIds.every((id) => a[id].quantity === b[id]?.quantity);
+}
 
 const CATEGORY_ICONS: Record<string, LucideIcon> = {
   sandwich: Sandwich,
@@ -282,6 +300,7 @@ export default function ChipotleRestaurantBuilderView({
   const isEditingFromCart = editOrigin === "cart";
   const { items: cartItems, updateItem } = useCart();
   const { requestAddItem } = useCartAddConfirmation();
+  const { guardNavigation, registerActiveBuild } = useBuildInProgressGuard();
   const [isBuildSummaryExpanded, setIsBuildSummaryExpanded] = useState(false);
   // Lets the mobile active-filter row's "Edit filters" icon (rendered in
   // RestaurantCategorySidebar, a sibling of StickyRestaurantBar) open the
@@ -733,7 +752,7 @@ export default function ChipotleRestaurantBuilderView({
     };
   }, [activeCategory, effectiveViewMode, isViewingAllIngredients, orderedSections]);
 
-  const handleKidsMealSelection = (kidsMeal: ChipotleKidsMealId) => {
+  const performKidsMealSelection = (kidsMeal: ChipotleKidsMealId) => {
     setSelectedKidsMeal(kidsMeal);
     applyIncludedIngredientsNextFrame(
       resolveIncludedIngredientIds({
@@ -747,6 +766,14 @@ export default function ChipotleRestaurantBuilderView({
         selectedKidsMeal: kidsMeal,
       },
     );
+  };
+
+  // Switching between Kid's Build Your Own and Kid's Quesadilla invalidates
+  // whatever ingredients were selected for the other type, so it goes
+  // through the same in-progress-build guard as switching entrees.
+  const handleKidsMealSelection = (kidsMeal: ChipotleKidsMealId) => {
+    if (kidsMeal === selectedKidsMeal) return;
+    guardNavigation(() => performKidsMealSelection(kidsMeal));
   };
 
   const handleKidsBuildYourOwnTortillaSelection = (tacoShell: ChipotleTacoShell) => {
@@ -1036,6 +1063,100 @@ export default function ChipotleRestaurantBuilderView({
     selectedIncludedIngredientIds,
     tacoShellIngredientIds,
   ]);
+
+  // Whether the current builder state actually differs from "nothing to
+  // lose yet" — either the entree's included-only defaults for a fresh
+  // build, or the snapshot taken when an existing cart item's edit began.
+  // Drives the in-progress-build navigation guard (Slice 8): navigation
+  // away from the builder should only be interrupted when this is true.
+  // Computed in an effect (not useMemo) because editingBuildBaselineConfigRef
+  // is a ref, and reading `.current` during render is disallowed here; the
+  // setState is deferred a tick (matching this file's other ref-driven
+  // effects) rather than called synchronously in the effect body.
+  const [isBuildInProgress, setIsBuildInProgress] = useState(false);
+  useEffect(() => {
+    const computeIsBuildInProgress = () => {
+      if (!isChipotleBuildPage || !selectedEntree) {
+        return false;
+      }
+
+      if (isEditingBuild) {
+        const baseline = editingBuildBaselineConfigRef.current;
+        return (
+          baseline !== null &&
+          (!haveEqualIngredientQuantities(
+            selectedIngredientItems,
+            baseline.selectedIngredientItems,
+          ) ||
+            !shallowRecordEqual(
+              selectedIngredientVariantIds,
+              baseline.selectedIngredientVariantIds,
+            ) ||
+            proteinPortionMode !== baseline.proteinPortionMode ||
+            !shallowRecordEqual(splitPortionModeById, baseline.splitPortionModeById) ||
+            selectedTacoShell !== baseline.selectedTacoShell ||
+            selectedTacoCount !== baseline.selectedTacoCount ||
+            selectedKidsMeal !== baseline.selectedKidsMeal)
+        );
+      }
+
+      const hasNonDefaultPortions =
+        proteinPortionMode !== "normal" ||
+        Object.values(splitPortionModeById).some((mode) => mode !== "normal") ||
+        Object.keys(selectedIngredientVariantIds).length > 0;
+
+      const hasNonDefaultTacoConfig =
+        selectedEntree === "tacos" &&
+        (selectedTacoCount !== 3 || selectedTacoShell !== "crispy");
+
+      const currentIngredientIds = new Set(
+        Object.entries(selectedIngredientItems)
+          .filter(
+            ([ingredientId, selectedIngredient]) =>
+              selectedIngredient.quantity > 0 &&
+              !tacoShellIngredientIds.includes(ingredientId),
+          )
+          .map(([ingredientId]) => ingredientId),
+      );
+      const hasIngredientDelta =
+        currentIngredientIds.size !== lockedIngredientIds.size ||
+        Array.from(currentIngredientIds).some(
+          (ingredientId) => !lockedIngredientIds.has(ingredientId),
+        );
+      const hasExtraQuantity = Object.values(selectedIngredientItems).some(
+        (selectedIngredient) => selectedIngredient.quantity > 1,
+      );
+
+      return (
+        hasIngredientDelta ||
+        hasExtraQuantity ||
+        hasNonDefaultPortions ||
+        hasNonDefaultTacoConfig
+      );
+    };
+
+    const nextValue = computeIsBuildInProgress();
+    const updateTimer = window.setTimeout(() => {
+      setIsBuildInProgress(nextValue);
+    }, 0);
+
+    return () => window.clearTimeout(updateTimer);
+  }, [
+    isChipotleBuildPage,
+    selectedEntree,
+    isEditingBuild,
+    editingBuildBaselineConfigRef,
+    selectedIngredientItems,
+    selectedIngredientVariantIds,
+    proteinPortionMode,
+    splitPortionModeById,
+    selectedTacoShell,
+    selectedTacoCount,
+    selectedKidsMeal,
+    tacoShellIngredientIds,
+    lockedIngredientIds,
+  ]);
+
   const applyProteinPortionNutrition = useCallback(
     (
       itemsById: Record<string, { item: MenuItem; quantity: number }>,
@@ -1546,7 +1667,7 @@ export default function ChipotleRestaurantBuilderView({
     selectedKidsMeal,
   ]);
 
-  const handleEntreeSelection = (entree: EntreeKey) => {
+  const performEntreeSelection = (entree: EntreeKey) => {
     setIsViewingAllIngredients(false);
     const nextIncludedIngredientIds = resolveIncludedIngredientIds({
       selectedEntree: entree,
@@ -1569,6 +1690,24 @@ export default function ChipotleRestaurantBuilderView({
     nextParams.set("view", nextView);
     router.push(`${pathname}?${nextParams.toString()}`, { scroll: true });
     window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+  };
+
+  // Switching entrees replaces the whole ingredient set, so a build that's
+  // already been customized needs to be confirmed first (Slice 8). Picking
+  // the very first entree from the empty hero is unaffected — isBuildInProgress
+  // is false until selectedEntree is set, so guardNavigation just proceeds.
+  const handleEntreeSelection = (entree: EntreeKey) => {
+    if (entree === selectedEntree) return;
+    guardNavigation(() => performEntreeSelection(entree));
+  };
+
+  // Returning to the entree chooser clears the current entree entirely —
+  // same discard risk as switching to a different entree.
+  const handleGoToEntreeChooser = () => {
+    guardNavigation(() => {
+      setSelectedEntree(null);
+      setIsViewingAllIngredients(false);
+    });
   };
 
   // Entered from the entrée dropdown or the ingredient-category sidebar's
@@ -1649,7 +1788,7 @@ export default function ChipotleRestaurantBuilderView({
     [applyIngredientPortionNutrition, ingredientItemsById],
   );
 
-  const handleAddBuildToCart = () => {
+  const handleAddBuildToCart = (onAfterAdd?: () => void) => {
     if (selectedIngredientCount === 0) return;
     const nextCustomizations = Object.entries(selectedIngredientItems).flatMap(
       ([ingredientId, { item, quantity }]) => {
@@ -1724,6 +1863,7 @@ export default function ChipotleRestaurantBuilderView({
       router.replace(nextQuery ? `${pathname}?${nextQuery}` : pathname, {
         scroll: false,
       });
+      onAfterAdd?.();
     };
 
     if (editingCartItem) {
@@ -2285,6 +2425,27 @@ export default function ChipotleRestaurantBuilderView({
     return () => document.removeEventListener("mousedown", handlePointerDown);
   }, [isEntreeMenuOpen]);
 
+  // Registers this builder as "the" active in-progress build so nav links
+  // and the entree/kids-meal switchers can gate navigation through
+  // guardNavigation (Slice 8). onAddToCart/onDiscard reuse the exact same
+  // handlers as the builder's own Add to Cart / Reset order actions, so
+  // "editing an existing cart item" vs. "building a fresh item" is handled
+  // consistently whether the user acts from the dialog or from the builder.
+  useEffect(() => {
+    if (!isChipotleBuildPage) {
+      registerActiveBuild(null);
+      return;
+    }
+
+    registerActiveBuild({
+      hasInProgressBuild: isBuildInProgress,
+      onAddToCart: (afterAdd) => handleAddBuildToCart(afterAdd),
+      onDiscard: handleResetSelectedIngredientOrder,
+    });
+
+    return () => registerActiveBuild(null);
+  });
+
   if (isChipotleBuildPage && isEditingBuild) {
     const editingBuildItem = editingCartItem;
     if (!editingBuildItem) {
@@ -2778,7 +2939,7 @@ export default function ChipotleRestaurantBuilderView({
               <button
                 type="button"
                 className="cursor-pointer rounded-xl border border-black/20 bg-black/90 px-4 py-2.5 text-base font-bold text-white sm:px-6"
-                onClick={handleAddBuildToCart}
+                onClick={() => handleAddBuildToCart()}
               >
                 Update
               </button>
@@ -2826,9 +2987,8 @@ export default function ChipotleRestaurantBuilderView({
               <button
                 type="button"
                 onClick={() => {
-                  setSelectedEntree(null);
-                  setIsViewingAllIngredients(false);
                   setIsEntreeMenuOpen(false);
+                  handleGoToEntreeChooser();
                 }}
                 className="cursor-pointer inline-flex items-center gap-2 rounded-[10px] px-2.5 py-2 text-left font-semibold text-black/88 transition-colors duration-100 hover:bg-slate-900/5"
               >
@@ -2895,10 +3055,7 @@ export default function ChipotleRestaurantBuilderView({
             key: "choose-entree",
             label: "Choose entrée",
             selected: false,
-            onSelect: () => {
-              setSelectedEntree(null);
-              setIsViewingAllIngredients(false);
-            },
+            onSelect: handleGoToEntreeChooser,
           },
           ...Object.entries(entreeOptions).flatMap(([entreeKey, entree]) => {
             if (!isChipotleEntreeId(entreeKey)) {
@@ -3455,7 +3612,7 @@ export default function ChipotleRestaurantBuilderView({
             onSecondaryAction={() =>
               setIsBuildSummaryExpanded((previous) => !previous)
             }
-            onPrimaryAction={handleAddBuildToCart}
+            onPrimaryAction={() => handleAddBuildToCart()}
           />
         </div>
       ) : null}

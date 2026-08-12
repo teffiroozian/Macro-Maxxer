@@ -3,9 +3,12 @@
 import type { ReactNode } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { Search, ShoppingCart } from "lucide-react";
 import { useGlobalSearch } from "@/components/GlobalSearchContext";
 import AppIconButton, { appIconButtonClassName } from "@/components/ui/AppIconButton";
+import { useBuildInProgressGuard } from "@/components/BuildInProgressGuardContext";
+import { isPlainLeftClick } from "@/lib/isPlainLeftClick";
 
 export default function GlobalMobileNav({
   logoSrc = "/logo.png",
@@ -34,6 +37,8 @@ export default function GlobalMobileNav({
   markStickyNav?: boolean;
 }) {
   const { open: openSearch } = useGlobalSearch();
+  const router = useRouter();
+  const { guardNavigation } = useBuildInProgressGuard();
   const showTrailingCluster = showSearchButton || showCartButton || Boolean(middleSlot) || Boolean(cartSlot);
 
   return (
@@ -50,7 +55,16 @@ export default function GlobalMobileNav({
             relative to this bar. */}
         <div className="mx-auto flex w-full max-w-5xl items-center gap-2 px-2 py-1.5 sm:gap-3 sm:px-4">
           {leadingButton}
-          <Link href="/" className="inline-flex h-9 w-9 shrink-0 items-center justify-center overflow-hidden rounded-lg bg-white" aria-label="Go to homepage">
+          <Link
+            href="/"
+            onClick={(event) => {
+              if (!isPlainLeftClick(event)) return;
+              event.preventDefault();
+              guardNavigation(() => router.push("/"));
+            }}
+            className="inline-flex h-9 w-9 shrink-0 items-center justify-center overflow-hidden rounded-lg bg-white"
+            aria-label="Go to homepage"
+          >
             <span className="relative h-7 w-7">
               <Image src={logoSrc} alt="Macro Maxxer logo" fill className="object-contain rounded-md" />
             </span>

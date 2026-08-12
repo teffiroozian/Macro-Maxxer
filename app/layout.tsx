@@ -2,9 +2,11 @@ import { Outfit, Unbounded } from "next/font/google";
 import { GlobalSearchProvider } from "@/components/GlobalSearchContext";
 import { GlobalItemPreviewProvider } from "@/components/GlobalItemPreviewContext";
 import { CartAddConfirmationProvider } from "@/components/CartAddConfirmationContext";
+import { BuildInProgressGuardProvider } from "@/components/BuildInProgressGuardContext";
 import GlobalSearchOverlay from "@/components/global-search/GlobalSearchOverlay";
 import GlobalItemPreviewModal from "@/components/GlobalItemPreviewModal";
 import CrossRestaurantCartDialog from "@/components/cart/CrossRestaurantCartDialog";
+import InProgressBuildDialog from "@/components/InProgressBuildDialog";
 import "./globals.css";
 
 // Central type system for the whole app (Slice 1 establishes this on the
@@ -78,10 +80,13 @@ export default function RootLayout({
         <GlobalSearchProvider>
           <GlobalItemPreviewProvider>
             <CartAddConfirmationProvider>
-              {children}
-              <GlobalSearchOverlay />
-              <GlobalItemPreviewModal />
-              <CrossRestaurantCartDialog />
+              <BuildInProgressGuardProvider>
+                {children}
+                <GlobalSearchOverlay />
+                <GlobalItemPreviewModal />
+                <CrossRestaurantCartDialog />
+                <InProgressBuildDialog />
+              </BuildInProgressGuardProvider>
             </CartAddConfirmationProvider>
           </GlobalItemPreviewProvider>
         </GlobalSearchProvider>
