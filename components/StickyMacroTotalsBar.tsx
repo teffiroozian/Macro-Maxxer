@@ -5,7 +5,9 @@ import MacroTotalsGrid from "@/components/MacroTotalsGrid";
 import AppButton from "@/components/ui/AppButton";
 import type { LucideIcon } from "lucide-react";
 import { Bookmark, Camera } from "lucide-react";
-import type { ReactNode } from "react";
+import { type ReactNode, useEffect, useRef, useState } from "react";
+
+const EXPANDED_PANEL_TRANSITION_MS = 200;
 
 type StickyMacroTotalsBarProps = {
   totals: CartMacros;
@@ -26,20 +28,6 @@ type StickyMacroTotalsBarProps = {
 };
 
 type StickyMacroTotalsLayout = NonNullable<StickyMacroTotalsBarProps["layoutPreset"]>;
-
-type PositionWrapperProps = {
-  children: ReactNode;
-  detailsContent?: ReactNode;
-  detailsOpen: boolean;
-  inline: boolean;
-  isCartLayout: boolean;
-  visible: boolean;
-};
-
-type ExpandedDetailsSectionProps = {
-  children?: ReactNode;
-  detailsOpen: boolean;
-};
 
 type MacroSummarySectionProps = {
   contextLine?: string;
@@ -76,12 +64,14 @@ function getWrapperClassName(inline: boolean, isCartLayout: boolean, visible: bo
 }
 
 function getPanelClassName({
-  detailsContent,
-  detailsOpen,
   inline,
   isCartLayout,
   visible,
-}: Omit<PositionWrapperProps, "children">) {
+}: {
+  inline: boolean;
+  isCartLayout: boolean;
+  visible: boolean;
+}) {
   if (inline) {
     return `w-full rounded-3xl border border-black/10 bg-white px-4 ${isCartLayout ? "py-4" : "py-3"}`;
   }
@@ -92,52 +82,7 @@ function getPanelClassName({
       : "rounded-2xl border-slate-200/70 px-3 py-1.5 sm:px-4 sm:py-2"
   } border bg-white shadow-[0_10px_30px_rgba(0,0,0,0.24)] transition-all duration-300 ${
     visible ? "pointer-events-auto" : "pointer-events-none"
-  } ${detailsOpen && detailsContent ? "flex max-h-[calc(100vh-0.5rem)] flex-col" : ""}`;
-}
-
-function PositionWrapper({
-  children,
-  detailsContent,
-  detailsOpen,
-  inline,
-  isCartLayout,
-  visible,
-}: PositionWrapperProps) {
-  const wrapperClassName = getWrapperClassName(inline, isCartLayout, visible);
-  const panelClassName = getPanelClassName({
-    detailsContent,
-    detailsOpen,
-    inline,
-    isCartLayout,
-    visible,
-  });
-  const contentContainerClassName = `mx-auto w-full max-w-5xl ${
-    detailsContent ? "flex min-h-0 flex-1 flex-col" : ""
   }`;
-
-  return (
-    <div className={wrapperClassName}>
-      <div className={panelClassName}>
-        <div className={contentContainerClassName}>{children}</div>
-      </div>
-    </div>
-  );
-}
-
-function ExpandedDetailsSection({ children, detailsOpen }: ExpandedDetailsSectionProps) {
-  if (!children) {
-    return null;
-  }
-
-  return (
-    <div
-      className={`min-h-0 overflow-hidden transition-[max-height,transform,margin] duration-300 ease-out ${
-        detailsOpen ? "mb-4 max-h-[calc(100vh-9rem)] translate-y-0" : "mb-0 max-h-0 translate-y-3"
-      }`}
-    >
-      <div className="h-full overflow-y-auto overscroll-contain pr-1">{children}</div>
-    </div>
-  );
 }
 
 function MacroSummarySection({ contextLine, isCartLayout, totals }: MacroSummarySectionProps) {
@@ -251,7 +196,9 @@ function getButtonText({
       ? detailsOpen && secondaryActionExpandedLabel
         ? secondaryActionExpandedLabel
         : secondaryActionLabel
-      : "View Build",
+      : detailsOpen
+        ? "Close Build"
+        : "View Build",
   };
 }
 
@@ -281,33 +228,127 @@ export default function StickyMacroTotalsBar({
     secondaryActionLabel,
   });
 
+  const wantsExpandedBuildPanel = !inline && !isCartLayout && detailsOpen && Boolean(detailsContent);
+
+  const [isExpandedPanelMounted, setIsExpandedPanelMounted] = useState(wantsExpandedBuildPanel);
+  const [isExpandedPanelEntered, setIsExpandedPanelEntered] = useState(false);
+  const [prevWantsExpandedBuildPanel, setPrevWantsExpandedBuildPanel] = useState(wantsExpandedBuildPanel);
+  const unmountTimeoutRef = useRef<number | null>(null);
+
+  // Adjusting state during render (not in an effect) for the mount/exit
+  // trigger itself — this is the React-endorsed pattern for state derived
+  // from a prop change comparison, and keeps the transition in sync with
+  // this render rather than one tick behind.
+  if (wantsExpandedBuildPanel !== prevWantsExpandedBuildPanel) {
+    setPrevWantsExpandedBuildPanel(wantsExpandedBuildPanel);
+    if (wantsExpandedBuildPanel) {
+      setIsExpandedPanelMounted(true);
+    } else {
+      setIsExpandedPanelEntered(false);
+    }
+  }
+
+  useEffect(() => {
+    if (!wantsExpandedBuildPanel) return;
+
+    if (unmountTimeoutRef.current !== null) {
+      window.clearTimeout(unmountTimeoutRef.current);
+      unmountTimeoutRef.current = null;
+    }
+    const frame = requestAnimationFrame(() => setIsExpandedPanelEntered(true));
+    return () => cancelAnimationFrame(frame);
+  }, [wantsExpandedBuildPanel]);
+
+  useEffect(() => {
+    if (wantsExpandedBuildPanel) return;
+
+    unmountTimeoutRef.current = window.setTimeout(() => {
+      setIsExpandedPanelMounted(false);
+    }, EXPANDED_PANEL_TRANSITION_MS);
+    return () => {
+      if (unmountTimeoutRef.current !== null) {
+        window.clearTimeout(unmountTimeoutRef.current);
+        unmountTimeoutRef.current = null;
+      }
+    };
+  }, [wantsExpandedBuildPanel]);
+
+  if (isExpandedPanelMounted && detailsContent) {
+    const isEntered = isExpandedPanelEntered && visible;
+
+    return (
+      <div
+        className={`fixed inset-0 z-[120] flex flex-col justify-end lg:items-center lg:justify-center lg:p-4 ${
+          isEntered ? "pointer-events-auto" : "pointer-events-none"
+        }`}
+        role="dialog"
+        aria-modal="true"
+        aria-label="Build summary"
+      >
+        <button
+          type="button"
+          className={`absolute inset-0 border-0 bg-slate-900/50 transition-opacity ease-out ${
+            isEntered ? "opacity-100" : "opacity-0"
+          }`}
+          style={{ transitionDuration: `${EXPANDED_PANEL_TRANSITION_MS}ms` }}
+          onClick={onSecondaryAction}
+          aria-label="Close build summary"
+        />
+        <div
+          className={`relative z-10 flex h-[94vh] max-h-[94vh] w-full flex-col overflow-hidden rounded-t-3xl border border-black/10 bg-white shadow-[0_10px_30px_rgba(0,0,0,0.24)] transition-[opacity,transform] ease-out lg:h-[92vh] lg:max-h-[92vh] lg:w-[80vw] lg:max-w-[1160px] lg:rounded-2xl ${
+            isEntered ? "translate-y-0 scale-100 opacity-100" : "translate-y-[10px] scale-[0.98] opacity-0"
+          }`}
+          style={{ transitionDuration: `${EXPANDED_PANEL_TRANSITION_MS}ms` }}
+        >
+          <div className="min-h-0 flex-1 overflow-hidden">{detailsContent}</div>
+          <div className="shrink-0 border-t border-slate-200/70 bg-white px-3 py-2 sm:px-4">
+            <StickyBarContent isCartLayout={false}>
+              <MacroSummarySection contextLine={contextLine} isCartLayout={false} totals={totals} />
+              <ActionSection
+                detailsOpen={detailsOpen}
+                isCartLayout={false}
+                onPrimaryAction={onPrimaryAction}
+                onSecondaryAction={onSecondaryAction}
+                primaryButtonText={primaryButtonText}
+                secondaryButtonText={secondaryButtonText}
+                PrimaryActionIcon={PrimaryActionIcon}
+                SecondaryActionIcon={SecondaryActionIcon}
+                SecondaryActionExpandedIcon={SecondaryActionExpandedIcon}
+              />
+            </StickyBarContent>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  const wrapperClassName = getWrapperClassName(inline, isCartLayout, visible);
+  const panelClassName = getPanelClassName({ inline, isCartLayout, visible });
+
   return (
-    <PositionWrapper
-      detailsContent={detailsContent}
-      detailsOpen={detailsOpen}
-      inline={inline}
-      isCartLayout={isCartLayout}
-      visible={visible}
-    >
-      <ExpandedDetailsSection detailsOpen={detailsOpen}>{detailsContent}</ExpandedDetailsSection>
-      <StickyBarContent isCartLayout={isCartLayout}>
-        <MacroSummarySection
-          contextLine={contextLine}
-          isCartLayout={isCartLayout}
-          totals={totals}
-        />
-        <ActionSection
-          detailsOpen={detailsOpen}
-          isCartLayout={isCartLayout}
-          onPrimaryAction={onPrimaryAction}
-          onSecondaryAction={onSecondaryAction}
-          primaryButtonText={primaryButtonText}
-          secondaryButtonText={secondaryButtonText}
-          PrimaryActionIcon={PrimaryActionIcon}
-          SecondaryActionIcon={SecondaryActionIcon}
-          SecondaryActionExpandedIcon={SecondaryActionExpandedIcon}
-        />
-      </StickyBarContent>
-    </PositionWrapper>
+    <div className={wrapperClassName}>
+      <div className={panelClassName}>
+        <div className="mx-auto w-full max-w-5xl">
+          <StickyBarContent isCartLayout={isCartLayout}>
+            <MacroSummarySection
+              contextLine={contextLine}
+              isCartLayout={isCartLayout}
+              totals={totals}
+            />
+            <ActionSection
+              detailsOpen={detailsOpen}
+              isCartLayout={isCartLayout}
+              onPrimaryAction={onPrimaryAction}
+              onSecondaryAction={onSecondaryAction}
+              primaryButtonText={primaryButtonText}
+              secondaryButtonText={secondaryButtonText}
+              PrimaryActionIcon={PrimaryActionIcon}
+              SecondaryActionIcon={SecondaryActionIcon}
+              SecondaryActionExpandedIcon={SecondaryActionExpandedIcon}
+            />
+          </StickyBarContent>
+        </div>
+      </div>
+    </div>
   );
 }

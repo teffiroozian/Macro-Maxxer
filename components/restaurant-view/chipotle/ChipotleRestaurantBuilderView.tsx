@@ -69,6 +69,7 @@ import {
 } from "@/lib/restaurantBuilders/chipotle/cartAdapter";
 import type { ChipotleBuildConfiguration } from "@/lib/restaurantBuilders/chipotle";
 import BuildSummaryDrawer from "../BuildSummaryDrawer";
+import type { CompactOption } from "@/components/menu-item-card/IngredientCompactCard";
 import { useChipotleBuilderState } from "./useChipotleBuilderState";
 import { useRestaurantMenuControls } from "../useRestaurantMenuControls";
 import { useChipotleMenuControlAdjustments } from "./useChipotleMenuControlAdjustments";
@@ -213,6 +214,69 @@ function isToppingIngredientItem(item: Pick<MenuItem, "categories">) {
     normalizeIngredientCategory(resolvePrimaryCategory(item.categories)) ===
     "toppings"
   );
+}
+
+// Same portion-mode option set + "which one is selected" logic driving the
+// ingredient cards' compact portion pills (protein Normal/Double, rice/beans
+// and toppings Light/Normal/Extra) — reused as-is by View Build's inline
+// portion control so both surfaces always agree.
+function getIngredientPortionModeOptions(
+  item: MenuItem,
+  ingredientId: string,
+  context: {
+    proteinPortionMode: ProteinPortionMode;
+    splitPortionModeById: Record<string, SplitPortionMode>;
+    selectedIngredientItems: Record<string, { item: MenuItem; quantity: number }>;
+  },
+): { options: CompactOption[]; selectedId: string } | null {
+  if (isProteinIngredientItem(item)) {
+    return {
+      options: [
+        { id: "normal", label: "Normal" },
+        { id: "double", label: "Double" },
+      ],
+      selectedId: context.proteinPortionMode,
+    };
+  }
+
+  if (isSplitPortionIngredientItem(item)) {
+    const category = normalizeIngredientCategory(
+      resolvePrimaryCategory(item.categories),
+    );
+    const selectedSplitCount = Object.values(
+      context.selectedIngredientItems,
+    ).filter(
+      (selectedIngredient) =>
+        normalizeIngredientCategory(
+          resolvePrimaryCategory(selectedIngredient.item.categories),
+        ) === category,
+    ).length;
+    const isSplitSelection = selectedSplitCount === 2;
+
+    return {
+      options: [
+        { id: "light", label: "Light", disabled: isSplitSelection },
+        { id: "normal", label: "Normal", disabled: isSplitSelection },
+        { id: "extra", label: "Extra", disabled: isSplitSelection },
+      ],
+      selectedId: isSplitSelection
+        ? "normal"
+        : (context.splitPortionModeById[ingredientId] ?? "normal"),
+    };
+  }
+
+  if (isToppingIngredientItem(item)) {
+    return {
+      options: [
+        { id: "light", label: "Light" },
+        { id: "normal", label: "Normal" },
+        { id: "extra", label: "Extra" },
+      ],
+      selectedId: context.splitPortionModeById[ingredientId] ?? "normal",
+    };
+  }
+
+  return null;
 }
 
 export default function ChipotleRestaurantBuilderView({
@@ -1805,12 +1869,12 @@ export default function ChipotleRestaurantBuilderView({
     const nextBuildConfiguration: BuildConfigurationSnapshot = {
       selectedEntree,
       selectedIngredientItems: Object.fromEntries(
-        Object.entries(selectedIngredientItems).map(
-          ([ingredientId, selectedIngredient]) => [
+        Object.entries(selectedIngredientItems)
+          .filter(([, selectedIngredient]) => selectedIngredient.quantity > 0)
+          .map(([ingredientId, selectedIngredient]) => [
             ingredientId,
             { quantity: selectedIngredient.quantity },
-          ],
-        ),
+          ]),
       ),
       selectedIngredientVariantIds,
       proteinPortionMode,
@@ -2049,7 +2113,11 @@ export default function ChipotleRestaurantBuilderView({
     setSplitPortionModeById,
   ]);
 
-  const adjustIngredientQuantity = (ingredientId: string, delta: 1 | -1) => {
+  const adjustIngredientQuantity = (
+    ingredientId: string,
+    delta: 1 | -1,
+    options: { keepAtZero?: boolean } = {},
+  ) => {
     if (lockedIngredientIds.has(ingredientId)) return;
 
     setSelectedIngredientItems((previous) => {
@@ -2087,17 +2155,139 @@ export default function ChipotleRestaurantBuilderView({
         0,
         Math.min(nextQuantityCap, existing.quantity + delta),
       );
-      const next = { ...previous };
 
-      if (nextQuantity === 0) {
+      if (nextQuantity === 0 && !options.keepAtZero) {
+        const next = { ...previous };
         delete next[ingredientId];
         return next;
       }
 
-      next[ingredientId] = { ...existing, quantity: nextQuantity };
-      return next;
+      return {
+        ...previous,
+        [ingredientId]: { ...existing, quantity: nextQuantity },
+      };
     });
   };
+
+  // View Build lets a user drop a selected ingredient to a temporary
+  // quantity-of-0 "pending removal" row (still visible, excluded from live
+  // macros via the quantity multiplier) so they can compare nutrition with
+  // and without it before committing. The row is only actually dropped from
+  // `selectedIngredientItems` once the panel closes (see
+  // `commitPendingIngredientRemovals`), regardless of which close path is
+  // used.
+  const adjustIngredientQuantityInBuildSummary = (
+    ingredientId: string,
+    delta: 1 | -1,
+  ) => adjustIngredientQuantity(ingredientId, delta, { keepAtZero: true });
+
+  const commitPendingIngredientRemovals = useCallback(() => {
+    setSelectedIngredientItems((previous) => {
+      const zeroedIds = Object.entries(previous)
+        .filter(([, selectedIngredient]) => selectedIngredient.quantity <= 0)
+        .map(([ingredientId]) => ingredientId);
+      if (zeroedIds.length === 0) return previous;
+
+      const next = { ...previous };
+      zeroedIds.forEach((ingredientId) => delete next[ingredientId]);
+      return next;
+    });
+  }, [setSelectedIngredientItems]);
+
+  const closeBuildSummary = useCallback(() => {
+    commitPendingIngredientRemovals();
+    setIsBuildSummaryExpanded(false);
+  }, [commitPendingIngredientRemovals]);
+
+  const handleBuildSummaryToggle = useCallback(() => {
+    setIsBuildSummaryExpanded((previous) => {
+      if (previous) {
+        commitPendingIngredientRemovals();
+      }
+      return !previous;
+    });
+  }, [commitPendingIngredientRemovals]);
+
+  // View Build's per-category "jump to this section" arrow: close the
+  // panel (committing any pending zero-quantity removals, same as any other
+  // close path) and scroll the main builder to that category, exactly like
+  // clicking it in the category sidebar.
+  const handleCategoryNavigate = useCallback(
+    (categoryKey: string) => {
+      closeBuildSummary();
+      handleCategorySelect(categoryKey);
+    },
+    [closeBuildSummary, handleCategorySelect],
+  );
+
+  // Shared by the ingredient list's portion pills and View Build's inline
+  // portion control — kept as a single implementation so both surfaces
+  // mutate the same state the same way.
+  const handlePortionModeChange = useCallback(
+    (item: MenuItem, modeId: string) => {
+      if (isProteinIngredientItem(item)) {
+        if (modeId !== "normal" && modeId !== "double") return;
+        setSelectedIngredientItems((previous) =>
+          applyIngredientPortionNutrition(previous, {
+            proteinMode: modeId,
+          }),
+        );
+        setProteinPortionMode(modeId);
+        return;
+      }
+
+      if (isToppingIngredientItem(item) && item.id) {
+        if (modeId !== "light" && modeId !== "normal" && modeId !== "extra")
+          return;
+
+        const nextToppingModesById: Record<string, SplitPortionMode> = {
+          ...splitPortionModeById,
+          [item.id]: modeId,
+        };
+        setSplitPortionModeById(nextToppingModesById);
+        setSelectedIngredientItems((previous) =>
+          applyIngredientPortionNutrition(previous, {
+            splitModesById: nextToppingModesById,
+          }),
+        );
+        return;
+      }
+
+      if (!isSplitPortionIngredientItem(item) || !item.id) return;
+      if (modeId !== "light" && modeId !== "normal" && modeId !== "extra")
+        return;
+
+      const splitCategory = normalizeIngredientCategory(
+        resolvePrimaryCategory(item.categories),
+      );
+      const selectedSplitCount = Object.values(selectedIngredientItems).filter(
+        (selectedIngredient) =>
+          normalizeIngredientCategory(
+            resolvePrimaryCategory(selectedIngredient.item.categories),
+          ) === splitCategory,
+      ).length;
+      if (selectedSplitCount >= 2) return;
+
+      const nextSplitModesById: Record<string, SplitPortionMode> = {
+        ...splitPortionModeById,
+        [item.id]: modeId,
+      };
+      setSplitPortionModeById(nextSplitModesById);
+      setSelectedIngredientItems((previous) =>
+        applyIngredientPortionNutrition(previous, {
+          splitModesById: nextSplitModesById,
+        }),
+      );
+    },
+    [
+      applyIngredientPortionNutrition,
+      selectedIngredientItems,
+      setProteinPortionMode,
+      setSelectedIngredientItems,
+      setSplitPortionModeById,
+      splitPortionModeById,
+    ],
+  );
 
   const handleResetSelectedIngredientOrder = () => {
     if (isEditingBuild && editingBuildBaselineConfigRef.current) {
@@ -2244,6 +2434,33 @@ export default function ChipotleRestaurantBuilderView({
     selectedIncludedIngredientIdSet,
     selectedIngredientEntries,
     chipotleBuilderConfig,
+  ]);
+  // Portion-mode options for View Build's inline control — only computed
+  // for ingredients actually selected (a small set), unlike the full-menu
+  // maps built for the ingredient list further below.
+  const buildSummaryPortionControlByIngredientId = useMemo(() => {
+    const controlById: Record<
+      string,
+      { options: CompactOption[]; selectedId: string }
+    > = {};
+
+    selectedIngredientEntries.forEach(([ingredientId, selectedIngredient]) => {
+      if (lockedIngredientIds.has(ingredientId)) return;
+      const control = getIngredientPortionModeOptions(
+        selectedIngredient.item,
+        ingredientId,
+        { proteinPortionMode, splitPortionModeById, selectedIngredientItems },
+      );
+      if (control) controlById[ingredientId] = control;
+    });
+
+    return controlById;
+  }, [
+    lockedIngredientIds,
+    proteinPortionMode,
+    selectedIngredientEntries,
+    selectedIngredientItems,
+    splitPortionModeById,
   ]);
   const selectedProteinCount = selectedProteinCountForPortioning;
   const proteinBadgeLabel =
@@ -2399,7 +2616,7 @@ export default function ChipotleRestaurantBuilderView({
         return;
       }
 
-      setIsBuildSummaryExpanded(false);
+      closeBuildSummary();
     };
 
     document.addEventListener("mousedown", handlePointerDown);
@@ -2409,7 +2626,7 @@ export default function ChipotleRestaurantBuilderView({
       document.removeEventListener("mousedown", handlePointerDown);
       document.removeEventListener("touchstart", handlePointerDown);
     };
-  }, [isBuildSummaryExpanded]);
+  }, [closeBuildSummary, isBuildSummaryExpanded]);
 
   useEffect(() => {
     if (!isEntreeMenuOpen) return;
@@ -2778,75 +2995,7 @@ export default function ChipotleRestaurantBuilderView({
                       ? selectedModeById
                       : undefined;
                   })(),
-                    onPortionModeChange: (item, modeId) => {
-                    if (isProteinIngredientItem(item)) {
-                      if (modeId !== "normal" && modeId !== "double") return;
-                      setSelectedIngredientItems((previous) =>
-                        applyIngredientPortionNutrition(previous, {
-                          proteinMode: modeId,
-                        }),
-                      );
-                      setProteinPortionMode(modeId);
-                      return;
-                    }
-
-                    if (isToppingIngredientItem(item) && item.id) {
-                      if (
-                        modeId !== "light" &&
-                        modeId !== "normal" &&
-                        modeId !== "extra"
-                      )
-                        return;
-
-                      const nextToppingModesById: Record<string, SplitPortionMode> =
-                        {
-                          ...splitPortionModeById,
-                          [item.id]: modeId,
-                        };
-                      setSplitPortionModeById(nextToppingModesById);
-                      setSelectedIngredientItems((previous) =>
-                        applyIngredientPortionNutrition(previous, {
-                          splitModesById: nextToppingModesById,
-                        }),
-                      );
-                      return;
-                    }
-
-                    if (!isSplitPortionIngredientItem(item) || !item.id) return;
-                    if (
-                      modeId !== "light" &&
-                      modeId !== "normal" &&
-                      modeId !== "extra"
-                    )
-                      return;
-
-                    const splitCategory = normalizeIngredientCategory(
-                      resolvePrimaryCategory(item.categories),
-                    );
-                    const selectedSplitCount = Object.values(
-                      selectedIngredientItems,
-                    ).filter(
-                      (selectedIngredient) =>
-                        normalizeIngredientCategory(
-                          resolvePrimaryCategory(
-                            selectedIngredient.item.categories,
-                          ),
-                        ) === splitCategory,
-                    ).length;
-                    if (selectedSplitCount >= 2) return;
-
-                    const nextSplitModesById: Record<string, SplitPortionMode> =
-                      {
-                        ...splitPortionModeById,
-                        [item.id]: modeId,
-                      };
-                    setSplitPortionModeById(nextSplitModesById);
-                    setSelectedIngredientItems((previous) =>
-                      applyIngredientPortionNutrition(previous, {
-                        splitModesById: nextSplitModesById,
-                      }),
-                    );
-                  },
+                    onPortionModeChange: handlePortionModeChange,
                     onVariantChange: (item, variantId) => {
                     if (
                       selectedEntree === "tacos" &&
@@ -3446,78 +3595,7 @@ export default function ChipotleRestaurantBuilderView({
                         ? selectedModeById
                         : undefined;
                     })(),
-                      onPortionModeChange: (item, modeId) => {
-                      if (isProteinIngredientItem(item)) {
-                        if (modeId !== "normal" && modeId !== "double") return;
-                        setSelectedIngredientItems((previous) =>
-                          applyIngredientPortionNutrition(previous, {
-                            proteinMode: modeId,
-                          }),
-                        );
-                        setProteinPortionMode(modeId);
-                        return;
-                      }
-
-                      if (isToppingIngredientItem(item) && item.id) {
-                        if (
-                          modeId !== "light" &&
-                          modeId !== "normal" &&
-                          modeId !== "extra"
-                        )
-                          return;
-
-                        const nextToppingModesById: Record<string, SplitPortionMode> =
-                          {
-                            ...splitPortionModeById,
-                            [item.id]: modeId,
-                          };
-                        setSplitPortionModeById(nextToppingModesById);
-                        setSelectedIngredientItems((previous) =>
-                          applyIngredientPortionNutrition(previous, {
-                            splitModesById: nextToppingModesById,
-                          }),
-                        );
-                        return;
-                      }
-
-                      if (!isSplitPortionIngredientItem(item) || !item.id)
-                        return;
-                      if (
-                        modeId !== "light" &&
-                        modeId !== "normal" &&
-                        modeId !== "extra"
-                      )
-                        return;
-
-                      const splitCategory = normalizeIngredientCategory(
-                        resolvePrimaryCategory(item.categories),
-                      );
-                      const selectedSplitCount = Object.values(
-                        selectedIngredientItems,
-                      ).filter(
-                        (selectedIngredient) =>
-                          normalizeIngredientCategory(
-                            resolvePrimaryCategory(
-                              selectedIngredient.item.categories,
-                            ),
-                          ) === splitCategory,
-                      ).length;
-                      if (selectedSplitCount >= 2) return;
-
-                      const nextSplitModesById: Record<
-                        string,
-                        SplitPortionMode
-                      > = {
-                        ...splitPortionModeById,
-                        [item.id]: modeId,
-                      };
-                      setSplitPortionModeById(nextSplitModesById);
-                      setSelectedIngredientItems((previous) =>
-                        applyIngredientPortionNutrition(previous, {
-                          splitModesById: nextSplitModesById,
-                        }),
-                      );
-                    },
+                      onPortionModeChange: handlePortionModeChange,
                       onVariantChange: (item, variantId) => {
                       if (
                         selectedEntree === "tacos" &&
@@ -3604,14 +3682,14 @@ export default function ChipotleRestaurantBuilderView({
                 ingredientPortionLabelById={ingredientPortionLabelById}
                 lockedIngredientIds={lockedIngredientIds}
                 restaurantLogo={restaurantLogo}
-                onResetOrder={handleResetSelectedIngredientOrder}
-                onSaveOrder={handleSaveSelectedIngredientOrder}
-                onAdjustIngredientQuantity={adjustIngredientQuantity}
+                onAdjustIngredientQuantity={adjustIngredientQuantityInBuildSummary}
+                portionControlByIngredientId={buildSummaryPortionControlByIngredientId}
+                onPortionModeChange={handlePortionModeChange}
+                onNavigateToCategory={handleCategoryNavigate}
+                variant="panel"
               />
             }
-            onSecondaryAction={() =>
-              setIsBuildSummaryExpanded((previous) => !previous)
-            }
+            onSecondaryAction={handleBuildSummaryToggle}
             onPrimaryAction={() => handleAddBuildToCart()}
           />
         </div>

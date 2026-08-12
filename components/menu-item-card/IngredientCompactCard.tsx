@@ -4,9 +4,9 @@ import type { MenuItem } from "@/types/menu";
 import Image from "next/image";
 import { Lock } from "lucide-react";
 
-type CompactOption = { id: string; label: string; disabled?: boolean };
+export type CompactOption = { id: string; label: string; disabled?: boolean };
 
-function PortionControlsRow({
+export function PortionControlsRow({
     options,
     selectedOptionId,
     onSelect,
