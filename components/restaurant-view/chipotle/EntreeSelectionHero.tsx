@@ -26,7 +26,7 @@ export default function EntreeSelectionHero({
       <p className="mt-3 text-center text-base text-slate-600 sm:text-lg">
         Start your build by selecting a base.
       </p>
-      <div className="mt-10 grid w-full grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      <div className="mt-8 grid w-full grid-cols-1 gap-4 sm:mt-10 sm:grid-cols-2 lg:grid-cols-3">
         {Object.entries(entreeOptions).map(([entreeKey, entree]) => {
           if (!isChipotleEntreeId(entreeKey)) {
             return null;

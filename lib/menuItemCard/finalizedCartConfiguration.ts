@@ -9,10 +9,12 @@ import {
 } from "@/lib/cart/standardItemConfiguration";
 import {
   buildHighProteinBuildConfiguration,
-  isChipotleHighProteinMenuItem,
+  isChipotleEditablePresetBuildItem,
+  isChipotleProteinCupItem,
 } from "@/lib/restaurantBuilders/chipotle/highProtein";
 import { toUniversalChipotleBuildConfiguration } from "@/lib/restaurantBuilders/chipotle/cartAdapter";
 import { calculateChipotleBuildNutrition } from "@/lib/restaurantBuilders/chipotle/nutrition";
+import { getNutritionDataQuality } from "@/lib/nutrition";
 
 export type CartConfigurationPayload = {
   variantId?: string;
@@ -98,7 +100,7 @@ export function resolveFinalizedCartConfiguration({
     suppressRemovedIngredientCustomizationsInCart,
   });
 
-  const highProteinBuildConfiguration = isChipotleHighProteinMenuItem(item, restaurantId)
+  const highProteinBuildConfiguration = isChipotleEditablePresetBuildItem(item, restaurantId)
     ? buildHighProteinBuildConfiguration(item, ingredientItems)
     : undefined;
   const selection: CartSelection = highProteinBuildConfiguration
@@ -113,10 +115,19 @@ export function resolveFinalizedCartConfiguration({
     ...standardConfiguration.customizationLabels,
   ];
   const customizations = customizationLabels.length > 0 ? customizationsFromLabels(customizationLabels) : undefined;
-  // Editable prebuilt/preset builds (e.g. High Protein menu items) are not
-  // trustworthy from the item's own hardcoded nutrition field — their real
-  // totals come from summing the actual configured ingredients, the same
-  // way the modal and cart do (see calculateChipotleBuildNutrition).
+  // Editable prebuilt/preset builds (e.g. High Protein Meal bowls/burritos)
+  // are not trustworthy from the item's own hardcoded nutrition field —
+  // their real totals come from summing the actual configured ingredients,
+  // the same way the modal and cart do (see calculateChipotleBuildNutrition).
+  // Protein Cups and standard items always use their own JSON nutrition.
+  if (process.env.NODE_ENV !== "production" && isChipotleProteinCupItem(item, restaurantId)) {
+    const quality = getNutritionDataQuality(item.nutrition);
+    if (quality.isPartial) {
+      console.warn(
+        `[nutrition] Protein Cup "${item.id ?? item.name}" is missing nutrition field(s): ${quality.missingCoreFields.join(", ")}. Falling back to 0 for those fields instead of calculating from ingredients.`
+      );
+    }
+  }
   const nutritionPerItem = highProteinBuildConfiguration
     ? calculateChipotleBuildNutrition(highProteinBuildConfiguration, ingredientItems ?? [])
     : standardConfiguration.nutrition;

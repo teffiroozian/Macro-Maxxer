@@ -71,7 +71,7 @@ function SelectedIngredientRow({
           <div className="h-8 w-8 shrink-0 overflow-hidden rounded-md border border-black/10 bg-neutral-100">
             <Image src={selectedIngredient.item.image || restaurantLogo} alt={selectedIngredient.item.name} width={32} height={32} className="h-full w-full object-cover" />
           </div>
-          <span className="truncate text-sm font-medium text-slate-900">
+          <span className="min-w-0 flex-1 truncate text-sm font-medium text-slate-900">
             {selectedIngredient.item.name}
             {selectedIngredient.quantity > 1 ? ` (x${selectedIngredient.quantity})` : ""}
             {portionLabel ? ` · ${portionLabel}` : ""}
@@ -203,7 +203,7 @@ export default function BuildSummaryDrawer({
             : "grid items-stretch gap-4 lg:grid-cols-2"
         }
       >
-        <div className={isPanel ? "order-2 lg:order-1 lg:h-full lg:min-h-0 lg:overflow-y-auto" : ""}>
+        <div className={isPanel ? "order-2 lg:order-1 lg:h-full lg:min-h-0 lg:overflow-y-auto" : "order-2 lg:order-1"}>
           <NutritionFactsPanel
             totals={adjustedNutritionLabelTotals}
             className={isPanel ? "py-4" : undefined}
@@ -215,7 +215,7 @@ export default function BuildSummaryDrawer({
           padding={isPanel ? "none" : "comfortable"}
           radius="large"
           shadow="none"
-          className={`flex flex-col ${isPanel ? "p-3 pb-0 sm:p-5 sm:pb-0 order-1 lg:order-2 lg:h-full lg:min-h-0 lg:overflow-y-auto" : "h-full min-h-0"}`}
+          className={`flex flex-col ${isPanel ? "p-3 pb-0 sm:p-5 sm:pb-0 order-1 lg:order-2 lg:h-full lg:min-h-0 lg:overflow-y-auto" : "order-1 h-full min-h-0 lg:order-2"}`}
         >
           <h3 className="text-2xl font-bold text-neutral-900">Selected Ingredients</h3>
           <p className="mt-2 text-sm font-semibold text-slate-600">{selectedBuildName} · {selectedIngredientCount} selected</p>

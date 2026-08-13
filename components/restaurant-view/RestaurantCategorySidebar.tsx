@@ -170,14 +170,14 @@ function CategoryNavItem({ option, isActive, Icon, onSelect, variant }: Category
       onClick={onSelect}
       className={`cursor-pointer inline-flex h-9 shrink-0 items-center gap-2 whitespace-nowrap rounded-full border px-3 text-sm font-semibold transition-colors duration-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-strong ${
         isActive
-          ? "border-black/20 bg-white text-slate-800 shadow-[0px_0_8px_rgba(0,0,0,0.2)]"
+          ? "border-transparent bg-accent-strong text-white shadow-[0px_0_8px_rgba(0,0,0,0.2)]"
           : "border-black/20 bg-white text-slate-700 hover:bg-slate-50"
       }`}
     >
       <Icon className="h-4 w-4" strokeWidth={2.4} aria-hidden="true" />
       <span>{option.label}</span>
       {formattedCount ? (
-        <span className={`shrink-0 text-xs font-semibold tabular-nums ${isActive ? "text-slate-500" : "text-slate-400"}`}>
+        <span className={`shrink-0 text-xs font-semibold tabular-nums ${isActive ? "text-white/75" : "text-slate-400"}`}>
           {formattedCount}
         </span>
       ) : null}
@@ -594,7 +594,6 @@ function MobileCategoryNav({
                   onClearAll={resetFilters}
                   onEditFilters={onEditFilters}
                   withMargin={false}
-                  scrollable
                 />
               </div>
             </>

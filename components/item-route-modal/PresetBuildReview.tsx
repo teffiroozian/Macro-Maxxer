@@ -105,7 +105,7 @@ function PresetIngredientCard({
                 </div>
                 <div className="min-w-0 flex-1">
                     <div className="flex items-baseline gap-1.5">
-                        <p className="truncate font-heading text-[15px] font-semibold text-neutral-900 sm:text-base">
+                        <p className="min-w-0 truncate font-heading text-[15px] font-semibold text-neutral-900 sm:text-base">
                             {name}
                         </p>
                         {portionLabel ? (

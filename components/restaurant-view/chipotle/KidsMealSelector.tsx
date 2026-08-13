@@ -14,11 +14,11 @@ type Props = {
 // a-track or a form-radio affordance.
 export default function KidsMealSelector({ selectedKidsMeal, onSelectKidsMeal, options }: Props) {
   return (
-    <section className="mb-6">
+    <section className="mb-4 sm:mb-6">
       <SectionEyebrow as="h2" className="mb-2 text-xs">
         Choose Your Kid&apos;s Meal
       </SectionEyebrow>
-      <div role="radiogroup" aria-label="Kid's Meal type" className="grid grid-cols-2 gap-2 sm:gap-3">
+      <div role="radiogroup" aria-label="Kid's Meal type" className="grid grid-cols-1 gap-2 sm:grid-cols-2 sm:gap-3">
         {options.map((option) => {
           const isActive = selectedKidsMeal === option.id;
           return (
@@ -38,7 +38,7 @@ export default function KidsMealSelector({ selectedKidsMeal, onSelectKidsMeal, o
                 <Image src={option.image} alt="" fill className="object-contain p-1" />
               </span>
               <span
-                className={`min-w-0 flex-1 truncate text-sm font-semibold sm:text-[15px] ${
+                className={`min-w-0 flex-1 text-sm font-semibold sm:truncate sm:text-[15px] ${
                   isActive ? "text-slate-900" : "text-slate-500"
                 }`}
               >

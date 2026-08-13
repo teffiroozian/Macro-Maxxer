@@ -82,9 +82,11 @@ function SelectedIngredientReviewRow({
 }
 
 // Mirrors the standard item modal's Meal Details list scroll/fade behavior
-// exactly (same max-height breakpoints, same bottom fade cue) so a long
-// build scrolls inside its own bounded area instead of pushing this card
-// past the Nutrition Facts card / modal viewport.
+// exactly (same sm:+ max-height, same bottom fade cue): at sm:+, where this
+// sits beside the Nutrition Facts card in a two-column layout, a long build
+// scrolls inside its own bounded area instead of pushing that pairing out of
+// sync. Below sm:, the two columns stack and this list grows to its natural
+// height instead, letting the modal itself be the only scroll container.
 function ScrollableIngredientList({
     entries,
     lockedIngredientIds,
@@ -124,7 +126,7 @@ function ScrollableIngredientList({
             <ul
                 ref={scrollRef}
                 onScroll={updateScrollState}
-                className="grid max-h-[240px] list-none gap-2 overflow-y-auto pl-0 sm:max-h-[320px]"
+                className="grid list-none gap-2 pl-0 sm:max-h-[320px] sm:overflow-y-auto"
             >
                 {entries.map(([ingredientId, selectedIngredient, category]) => {
                     const portionModeOptions =

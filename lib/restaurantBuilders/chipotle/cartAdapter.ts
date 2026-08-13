@@ -2,7 +2,7 @@ import type { CartBuildConfiguration, CartItem, CartSelection } from "@/types/ca
 import type { Nutrition } from "@/types/nutrition";
 import type { IngredientItem, MenuItem } from "@/types/menu";
 import { customizationsFromLabels } from "@/lib/cart/customizationLabels";
-import { buildHighProteinBuildConfiguration, isChipotleHighProteinMenuItem } from "@/lib/restaurantBuilders/chipotle/highProtein";
+import { buildHighProteinBuildConfiguration, isChipotleEditablePresetBuildItem } from "@/lib/restaurantBuilders/chipotle/highProtein";
 import type { ChipotleBuildConfiguration, ChipotleKidsMealId, ChipotleTacoCount, ChipotleTacoShell, ProteinPortionMode, SplitPortionMode } from "@/lib/restaurantBuilders/chipotle";
 
 export function toUniversalChipotleBuildConfiguration(configuration: ChipotleBuildConfiguration): CartBuildConfiguration {
@@ -141,7 +141,7 @@ export function resolveChipotleStandardItemSelection({
     return editingSelection;
   }
 
-  if (!isChipotleHighProteinMenuItem(item, restaurantId)) {
+  if (!isChipotleEditablePresetBuildItem(item, restaurantId)) {
     return fallbackSelection;
   }
 

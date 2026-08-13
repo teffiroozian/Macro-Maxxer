@@ -660,6 +660,21 @@ export default function ChipotleRestaurantBuilderView({
     [ingredientMenuItems],
   );
 
+  // A variant id that gets auto-assigned just because an ingredient is
+  // included by default (e.g. Quesadilla's triple-portion cheese, or any
+  // included ingredient that simply carries its own defaultVariantId) is a
+  // system-generated detail, not something the user chose — only a variant
+  // id that differs from this expected default reflects real customization.
+  const resolveDefaultIncludedVariantId = useCallback(
+    (ingredientId: string, context: IncludedIngredientContext) => {
+      if (isQuesadillaCheeseSelection(ingredientId, context)) {
+        return quesadillaTripleCheeseVariantId;
+      }
+      return ingredientItemsById.get(ingredientId)?.defaultVariantId;
+    },
+    [ingredientItemsById, quesadillaTripleCheeseVariantId],
+  );
+
   const chipotleMenuControlAdjustments = useChipotleMenuControlAdjustments({
     selectedEntree,
     items,
@@ -873,23 +888,59 @@ export default function ChipotleRestaurantBuilderView({
 
   const performKidsMealSelection = (kidsMeal: ChipotleKidsMealId) => {
     setSelectedKidsMeal(kidsMeal);
+    const nextIncludedIngredientIds = resolveIncludedIngredientIds({
+      selectedEntree: "kids-meal",
+      selectedKidsMeal: kidsMeal,
+      selectedTacoShell,
+      builderConfig: chipotleBuilderConfig,
+    });
+    const nextIncludedIngredientContext: IncludedIngredientContext = {
+      selectedEntree: "kids-meal",
+      selectedKidsMeal: kidsMeal,
+    };
     applyIncludedIngredientsNextFrame(
-      resolveIncludedIngredientIds({
-        selectedEntree: "kids-meal",
-        selectedKidsMeal: kidsMeal,
-        selectedTacoShell,
-        builderConfig: chipotleBuilderConfig,
-      }),
-      {
-        selectedEntree: "kids-meal",
-        selectedKidsMeal: kidsMeal,
-      },
+      nextIncludedIngredientIds,
+      nextIncludedIngredientContext,
     );
+
+    // Switching Kid's Meal type is a mode change, not a customization — it
+    // shouldn't itself count against the in-progress-build guard. When
+    // editing an existing cart item, re-point the baseline at the new
+    // type's default (included-only) configuration so the guard only fires
+    // again once the user actually customizes *this* type from here.
+    if (isEditingBuild) {
+      const defaultSelectedIngredientItems: Record<string, { quantity: number }> = {};
+      const defaultSelectedIngredientVariantIds: Record<string, string> = {};
+      nextIncludedIngredientIds.forEach((ingredientId) => {
+        defaultSelectedIngredientItems[ingredientId] = { quantity: 1 };
+        const defaultVariantId = resolveDefaultIncludedVariantId(
+          ingredientId,
+          nextIncludedIngredientContext,
+        );
+        if (defaultVariantId) {
+          defaultSelectedIngredientVariantIds[ingredientId] = defaultVariantId;
+        }
+      });
+
+      editingBuildBaselineConfigRef.current = {
+        selectedEntree,
+        selectedIngredientItems: defaultSelectedIngredientItems,
+        selectedIngredientVariantIds: defaultSelectedIngredientVariantIds,
+        proteinPortionMode: "normal",
+        splitPortionModeById: {},
+        selectedTacoShell,
+        selectedTacoCount,
+        selectedKidsMeal: kidsMeal,
+      };
+    }
   };
 
-  // Switching between Kid's Build Your Own and Kid's Quesadilla invalidates
-  // whatever ingredients were selected for the other type, so it goes
-  // through the same in-progress-build guard as switching entrees.
+  // Switching between Kid's Build Your Own and Kid's Quesadilla behaves like
+  // switching tabs/modes: isBuildInProgress only trips the guard when the
+  // *current* type has actually been manually customized beyond its own
+  // default/included ingredients (see performKidsMealSelection's baseline
+  // reset above and computeIsBuildInProgress below) — not merely because
+  // the two types' default ingredient sets differ from each other.
   const handleKidsMealSelection = (kidsMeal: ChipotleKidsMealId) => {
     if (kidsMeal === selectedKidsMeal) return;
     guardNavigation(() => performKidsMealSelection(kidsMeal));
@@ -1201,6 +1252,10 @@ export default function ChipotleRestaurantBuilderView({
 
       if (isEditingBuild) {
         const baseline = editingBuildBaselineConfigRef.current;
+        // selectedKidsMeal is intentionally not compared here: switching
+        // Kid's Meal type re-points the baseline itself at the new type's
+        // defaults (see performKidsMealSelection), so a mode switch alone
+        // never falls through to this diff as a false-positive customization.
         return (
           baseline !== null &&
           (!haveEqualIngredientQuantities(
@@ -1214,26 +1269,48 @@ export default function ChipotleRestaurantBuilderView({
             proteinPortionMode !== baseline.proteinPortionMode ||
             !shallowRecordEqual(splitPortionModeById, baseline.splitPortionModeById) ||
             selectedTacoShell !== baseline.selectedTacoShell ||
-            selectedTacoCount !== baseline.selectedTacoCount ||
-            selectedKidsMeal !== baseline.selectedKidsMeal)
+            selectedTacoCount !== baseline.selectedTacoCount)
         );
       }
 
+      const currentKidsMealContext: IncludedIngredientContext = {
+        selectedEntree,
+        selectedKidsMeal,
+      };
+      // A variant id that was only auto-assigned because an ingredient is
+      // currently included by default (e.g. Quesadilla's cheese) is not a
+      // manual choice — only a variant that differs from that expected
+      // default reflects real customization.
+      const hasNonDefaultVariantSelection = Object.entries(
+        selectedIngredientVariantIds,
+      ).some(
+        ([ingredientId, variantId]) =>
+          variantId !==
+          resolveDefaultIncludedVariantId(ingredientId, currentKidsMealContext),
+      );
       const hasNonDefaultPortions =
         proteinPortionMode !== "normal" ||
         Object.values(splitPortionModeById).some((mode) => mode !== "normal") ||
-        Object.keys(selectedIngredientVariantIds).length > 0;
+        hasNonDefaultVariantSelection;
 
       const hasNonDefaultTacoConfig =
         selectedEntree === "tacos" &&
         (selectedTacoCount !== 3 || selectedTacoShell !== "crispy");
 
+      // Only exclude taco-shell ingredient ids here when the current entree
+      // actually offers a crispy/soft shell choice (tacos, Kid's Build Your
+      // Own) — matching lockedIngredientIds' own condition below. Kid's
+      // Quesadilla's tortilla is a taco-shell id too (it reuses the shell
+      // ingredient list) but isn't selectable there, so excluding it
+      // unconditionally would permanently desync this count from
+      // lockedIngredientIds and misreport the build as customized.
       const currentIngredientIds = new Set(
         Object.entries(selectedIngredientItems)
           .filter(
             ([ingredientId, selectedIngredient]) =>
               selectedIngredient.quantity > 0 &&
-              !tacoShellIngredientIds.includes(ingredientId),
+              (!isTacoShellSelectableEntree ||
+                !tacoShellIngredientIds.includes(ingredientId)),
           )
           .map(([ingredientId]) => ingredientId),
       );
@@ -1274,6 +1351,8 @@ export default function ChipotleRestaurantBuilderView({
     selectedKidsMeal,
     tacoShellIngredientIds,
     lockedIngredientIds,
+    resolveDefaultIncludedVariantId,
+    isTacoShellSelectableEntree,
   ]);
 
   const applyProteinPortionNutrition = useCallback(

@@ -27,7 +27,7 @@ export function PortionControlsRow({
                         event.stopPropagation();
                         if (!variantOption.disabled) onSelect(variantOption.id);
                     }}
-                    className={`rounded-full px-2.5 py-[3px] text-[11px] font-semibold transition md:px-3.5 md:py-[5px] ${
+                    className={`inline-flex min-h-[30px] items-center justify-center rounded-full px-3  py-[1px] text-[11px] font-semibold transition md:min-h-0 md:px-3.5 md:py-[5px] ${
                         selectedOptionId === variantOption.id
                             ? "bg-white text-black shadow-sm"
                             : "cursor-pointer text-black/50 hover:text-black/70"
@@ -138,7 +138,7 @@ export default function IngredientCompactCard({
                         : isIngredientSelectionDisabled
                           ? "cursor-not-allowed"
                           : "cursor-pointer"
-                } ${isInteractive ? "focus-visible:ring-2 focus-visible:ring-accent/50 focus-visible:ring-offset-2" : ""}`}
+                } ${isInteractive ? "focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-accent/50" : ""}`}
                 onClick={() => {
                     if (!isInteractive || isIngredientSelectionDisabled) return;
                     const nextSelected =

@@ -29,7 +29,7 @@ import {
 } from "@/lib/restaurantRules/chickfila";
 import {
     buildHighProteinBuildConfiguration,
-    isChipotleHighProteinMenuItem,
+    isChipotleEditablePresetBuildItem,
 } from "@/lib/restaurantBuilders/chipotle/highProtein";
 import {
     getChipotlePortionModeOptions,
@@ -183,7 +183,7 @@ export default function ItemRouteModal({
     const selectedVariant = variants?.find(
         (variant) => variant.id === selectedVariantId,
     );
-    const selectedItemImage = selectedVariant?.image ?? item.image;
+    const selectedItemImage = selectedVariant?.image || item.image;
     const comparativeLabel = useMemo(
         () =>
             menuItems && menuItems.length > 0
@@ -197,12 +197,10 @@ export default function ItemRouteModal({
         item,
         selectedVariant,
     );
-    const isChipotlePrebuiltBuilderItem =
-        isChipotleHighProteinMenuItem(item, restaurantId) &&
-        item.categories.some(
-            (category) => category.toLowerCase() !== "protein cups",
-        ) &&
-        (item.ingredients?.length ?? 0) > 0;
+    const isChipotlePrebuiltBuilderItem = isChipotleEditablePresetBuildItem(
+        item,
+        restaurantId,
+    );
     const canCustomizeViaBuildPage =
         isChipotlePrebuiltBuilderItem && Boolean(editingCartItem);
     const editingBuildConfiguration =
@@ -1493,33 +1491,37 @@ export default function ItemRouteModal({
                                             }
                                         />
                                         <div className="grid grid-cols-1 gap-3 rounded-3xl border border-black/8 bg-app-background p-3 md:grid-cols-2">
-                                            <NutritionFactsPanel
-                                                totals={chipotleAdjustedTotals}
-                                            />
-                                            <SelectedIngredientsReviewCard
-                                                selectedBuildName={item.name}
-                                                groupedSelectedIngredientEntries={
-                                                    chipotleGroupedSelectedIngredientEntries
-                                                }
-                                                lockedIngredientIds={
-                                                    chipotleLockedIngredientIds
-                                                }
-                                                restaurantLogo={
-                                                    item.image ?? ""
-                                                }
-                                                adjustedTotals={
-                                                    chipotleAdjustedTotals
-                                                }
-                                                portionModeOptionsById={
-                                                    chipotleSelectedPortionModeOptionsById
-                                                }
-                                                selectedPortionModeIdById={
-                                                    chipotleSelectedPortionModeIdById
-                                                }
-                                                onPortionModeChange={
-                                                    handleChipotlePortionModeChange
-                                                }
-                                            />
+                                            <div className="order-2 md:order-1">
+                                                <NutritionFactsPanel
+                                                    totals={chipotleAdjustedTotals}
+                                                />
+                                            </div>
+                                            <div className="order-1 md:order-2">
+                                                <SelectedIngredientsReviewCard
+                                                    selectedBuildName={item.name}
+                                                    groupedSelectedIngredientEntries={
+                                                        chipotleGroupedSelectedIngredientEntries
+                                                    }
+                                                    lockedIngredientIds={
+                                                        chipotleLockedIngredientIds
+                                                    }
+                                                    restaurantLogo={
+                                                        item.image ?? ""
+                                                    }
+                                                    adjustedTotals={
+                                                        chipotleAdjustedTotals
+                                                    }
+                                                    portionModeOptionsById={
+                                                        chipotleSelectedPortionModeOptionsById
+                                                    }
+                                                    selectedPortionModeIdById={
+                                                        chipotleSelectedPortionModeIdById
+                                                    }
+                                                    onPortionModeChange={
+                                                        handleChipotlePortionModeChange
+                                                    }
+                                                />
+                                            </div>
                                         </div>
                                     </div>
                                 ) : (
@@ -2135,7 +2137,7 @@ export default function ItemRouteModal({
                         itemClassName="px-2 py-0.5"
                         labelClassName="text-[#64748b]"
                     />
-                    <div className="flex w-full flex-row flex-wrap items-center gap-2 lg:w-auto lg:flex-nowrap">
+                    <div className="flex w-full flex-row flex-nowrap items-center gap-1.5 sm:gap-2 lg:w-auto">
                         {isChipotlePrebuiltBuilderItem ? (
                             chipotlePresetStage === "customize" ? (
                                 <>
@@ -2156,22 +2158,22 @@ export default function ItemRouteModal({
                                 </>
                             ) : (
                                 <>
-                                    <div className="inline-flex h-10 shrink-0 items-center gap-1 rounded-full border border-black/15 bg-white px-1.5">
+                                    <div className="inline-flex h-10 shrink-0 items-center gap-0.5 rounded-full border border-black/15 bg-white px-1 sm:gap-1 sm:px-1.5">
                                         <button
                                             type="button"
                                             onClick={handleDecrementQuantity}
-                                            className="cursor-pointer inline-flex size-7 items-center justify-center rounded-full text-sm font-semibold text-slate-700 transition hover:bg-slate-100"
+                                            className="cursor-pointer inline-flex size-6 shrink-0 items-center justify-center rounded-full text-sm font-semibold text-slate-700 transition hover:bg-slate-100 sm:size-7"
                                             aria-label={`Decrease quantity of ${item.name}`}
                                         >
                                             -
                                         </button>
-                                        <span className="min-w-5 text-center text-sm font-bold text-slate-900">
+                                        <span className="min-w-4 text-center text-sm font-bold text-slate-900 sm:min-w-5">
                                             {quantity}
                                         </span>
                                         <button
                                             type="button"
                                             onClick={handleIncrementQuantity}
-                                            className="cursor-pointer inline-flex size-7 items-center justify-center rounded-full text-sm font-semibold text-slate-700 transition hover:bg-slate-100"
+                                            className="cursor-pointer inline-flex size-6 shrink-0 items-center justify-center rounded-full text-sm font-semibold text-slate-700 transition hover:bg-slate-100 sm:size-7"
                                             aria-label={`Increase quantity of ${item.name}`}
                                         >
                                             +
@@ -2187,7 +2189,7 @@ export default function ItemRouteModal({
                                     <PresetHeaderPillButton
                                         tone="solid"
                                         onClick={submitCartItem}
-                                        className="flex-1"
+                                        className="min-w-0 flex-1"
                                     >
                                         {submitButtonLabel}
                                     </PresetHeaderPillButton>

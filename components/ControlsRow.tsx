@@ -595,11 +595,14 @@ export default function ControlsRow({
         // `!` forces these past AppButton's `primary` variant (solid
         // black) — without it, Tailwind's build-order cascade can leave
         // `bg-black` from the variant winning over `bg-accent` here even
-        // though this className is applied second.
-        className="border-accent! bg-accent! font-bold text-white! hover:bg-accent-strong! active:bg-accent-strong! whitespace-nowrap"
+        // though this className is applied second. `min-w-0` lets the
+        // label span below actually shrink instead of forcing this 50%-wide
+        // grid cell wider than the drawer on narrow phones once the item
+        // count hits 3 digits.
+        className="border-accent! bg-accent! font-bold text-white! hover:bg-accent-strong! active:bg-accent-strong! min-w-0"
         aria-live="polite"
       >
-        {draftMatchLabel}
+        <span className="min-w-0 truncate">{draftMatchLabel}</span>
       </AppButton>
     </div>
   );

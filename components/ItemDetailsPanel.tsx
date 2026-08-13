@@ -1628,7 +1628,7 @@ function MealDetailItemsList({ items }: { items: MealDetailItem[] }) {
       <ul
         ref={scrollRef}
         onScroll={updateScrollState}
-        className="flex max-h-[240px] list-none flex-col divide-y divide-black/[0.06] overflow-y-auto pl-0 sm:max-h-[320px]"
+        className="flex list-none flex-col divide-y divide-black/[0.06] pl-0 sm:max-h-[320px] sm:overflow-y-auto"
       >
         {items.map((detailItem) => (
           <li

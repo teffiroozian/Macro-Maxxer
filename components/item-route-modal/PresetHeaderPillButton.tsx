@@ -28,7 +28,7 @@ export default function PresetHeaderPillButton({
             type="button"
             tabIndex={tabIndex}
             onClick={onClick}
-            className={`cursor-pointer inline-flex h-10 w-fit shrink-0 items-center gap-1.5 rounded-full px-4 text-sm font-semibold transition ${
+            className={`cursor-pointer inline-flex h-10 w-fit shrink-0 items-center gap-1 whitespace-nowrap rounded-full px-3 text-sm font-semibold transition sm:gap-1.5 sm:px-4 ${
                 tone === "solid"
                     ? "bg-neutral-900 text-white hover:bg-neutral-800"
                     : "border border-black/15 bg-white text-slate-600 hover:bg-slate-50 hover:text-slate-900"

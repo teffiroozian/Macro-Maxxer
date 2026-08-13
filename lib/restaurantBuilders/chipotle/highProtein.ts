@@ -24,6 +24,26 @@ export function isChipotleHighProteinMenuItem(item: MenuItem, restaurantId: stri
   return restaurantId === "chipotle" && item.entreeGroup === "high-protein-menu";
 }
 
+export function isChipotleProteinCupItem(item: MenuItem, restaurantId: string) {
+  return (
+    isChipotleHighProteinMenuItem(item, restaurantId) &&
+    item.categories.some((category) => category.toLowerCase() === "protein cups")
+  );
+}
+
+// Editable High Protein Meals (e.g. bowls/burritos/tacos) are built from a
+// configured ingredient list, so their real nutrition comes from summing
+// those ingredients. Protein Cups share the same entreeGroup but are single
+// pre-portioned items with their own authored nutrition in JSON and no
+// ingredients array to sum — they must never take the ingredient-based path.
+export function isChipotleEditablePresetBuildItem(item: MenuItem, restaurantId: string) {
+  return (
+    isChipotleHighProteinMenuItem(item, restaurantId) &&
+    !isChipotleProteinCupItem(item, restaurantId) &&
+    (item.ingredients?.length ?? 0) > 0
+  );
+}
+
 function getProteinIngredientIds(ingredientItems: IngredientItem[] = []) {
   return new Set(
     ingredientItems

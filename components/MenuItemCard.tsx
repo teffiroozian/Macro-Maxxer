@@ -19,7 +19,10 @@ import SectionEyebrow from "@/components/ui/SectionEyebrow";
 import CartCardActions from "./menu-item-card/CartCardActions";
 import { useMenuItemCartAdapter } from "./menu-item-card/useMenuItemCartAdapter";
 import { useMenuItemConfiguration } from "./menu-item-card/useMenuItemConfiguration";
-import { isChipotleHighProteinMenuItem } from "@/lib/restaurantBuilders/chipotle/highProtein";
+import {
+  isChipotleEditablePresetBuildItem,
+  isChipotleHighProteinMenuItem,
+} from "@/lib/restaurantBuilders/chipotle/highProtein";
 import { parseIncludedIngredientEntry } from "@/lib/itemIngredients";
 
 import { resolveComboDrinkOptions, resolveComboMealConfig, resolveComboSideOptions } from "@/lib/comboMeals";
@@ -490,13 +493,17 @@ export default function MenuItemCard({
       : item.name;
 
   const rank = typeof rankIndex === "number" ? rankIndex + 1 : null;
+  // Only High Protein Menu cards (editable meals and Protein Cups alike)
+  // get the full-cover crop — standard items (Chips & Sides, drinks, sauces,
+  // normal entrees, etc.) keep the normal contained image treatment.
+  const isHighProteinMenuCard = isChipotleHighProteinMenuItem(item, restaurantId);
   const quantityMultiplier = isCartMode ? Math.max(cartQuantity, 1) : 1;
   const displayCalories = (calories ?? 0) * quantityMultiplier;
   const displayProtein = (protein ?? 0) * quantityMultiplier;
   const displayCarbs = (carbs ?? 0) * quantityMultiplier;
   const displayFat = (totalFat ?? 0) * quantityMultiplier;
   const highProteinIngredientSummaryLine = useMemo(() => {
-    if (!isChipotleHighProteinMenuItem(item, restaurantId)) return undefined;
+    if (!isChipotleEditablePresetBuildItem(item, restaurantId)) return undefined;
     const ingredientLabelById = new Map(
       (ingredientItems ?? []).map((ingredient) => [
         (ingredient.id ?? ingredient.name).toLowerCase(),
@@ -769,6 +776,7 @@ export default function MenuItemCard({
           item={item}
           selectedItemImage={selectedItemImage}
           isCartMode={isCartMode}
+          isHighProteinMenuCard={isHighProteinMenuCard}
           rank={rank}
           comparativeLabel={rank === null ? comparativeLabel : undefined}
           variants={variants}
