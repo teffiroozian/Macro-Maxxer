@@ -42,6 +42,7 @@ import type {
 } from "@/types/menu";
 import type { RestaurantBuilderConfig } from "@/types/builder";
 import { categorySectionId } from "@/lib/menuSections/sorting";
+import { INGREDIENT_PROTEIN_OPTIONS } from "@/lib/menuSections/filterOptions";
 import MenuSections from "./MenuSections";
 import StickyRestaurantBar from "./StickyRestaurantBar";
 import { useRestaurantMenuControls } from "./restaurant-view/useRestaurantMenuControls";
@@ -283,6 +284,12 @@ function StandardRestaurantView({
         sourceItems={sourceItems}
         rankedChildSelections={rankedChildSelections}
         isRankingView={effectiveViewMode === "ranking"}
+        // Determined by what's actually being filtered (individual
+        // ingredients vs. complete menu items), not by whether this
+        // restaurant happens to be Build Your Own.
+        proteinOptions={
+          effectiveViewMode === "ingredients" ? INGREDIENT_PROTEIN_OPTIONS : undefined
+        }
         hideViewSelector={hasBuildYourOwn}
         onEditFiltersDrawerReady={handleEditFiltersDrawerReady}
       />

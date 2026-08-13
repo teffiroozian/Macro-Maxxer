@@ -1153,7 +1153,10 @@ export default function ItemRouteModal({
             return;
         }
 
-        router.replace(restaurantPath, { scroll: false });
+        const query = searchParams.toString();
+        router.replace(query ? `${restaurantPath}?${query}` : restaurantPath, {
+            scroll: false,
+        });
     };
 
     // Kept in a ref (rather than a useEffect dependency) so the mount-time

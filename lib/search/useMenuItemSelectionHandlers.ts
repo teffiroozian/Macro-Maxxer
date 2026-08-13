@@ -1,6 +1,6 @@
 "use client";
 
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useGlobalItemPreview } from "@/components/GlobalItemPreviewContext";
 import { toItemSlug } from "@/lib/restaurants";
 import type { ContentSearchResult } from "@/lib/search/searchAllContent";
@@ -24,6 +24,7 @@ export function useMenuItemSelectionHandlers({
   onAfterSelect: () => void;
 }) {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const { openPreview } = useGlobalItemPreview();
 
   const handleSelectMenuItem = (item: MenuItem, restaurant: RestaurantIndexEntry) => {
@@ -36,7 +37,9 @@ export function useMenuItemSelectionHandlers({
       // navigation, so Next's intercepted @modal route engages and layers
       // the item modal over the current page with proper router.back()
       // support.
-      router.push(`/restaurant/${restaurant.id}/${toItemSlug(item)}`);
+      const query = searchParams.toString();
+      const href = `/restaurant/${restaurant.id}/${toItemSlug(item)}`;
+      router.push(query ? `${href}?${query}` : href);
       return;
     }
 

@@ -98,10 +98,19 @@ import {
 } from "@/lib/restaurantBuilders/chipotle";
 import { resolvePrimaryCategory } from "@/lib/ingredientTabs";
 import { customizationsFromLabels } from "@/lib/cart/customizationLabels";
+import { INGREDIENT_PROTEIN_OPTIONS, MEAL_PROTEIN_OPTIONS } from "@/lib/menuSections/filterOptions";
 import {
   buildAllChipotleIngredientMenuItems,
   buildChipotleIngredientMenuItems,
 } from "@/lib/restaurantBuilders/chipotle/ingredientMenuItems";
+import {
+  buildAllIngredientsCategoryParams,
+  buildAllIngredientsEnterParams,
+  buildAllIngredientsExitParams,
+  buildEntreeSelectionParams,
+  buildGoToEntreeChooserParams,
+  parseChipotleBuilderNavState,
+} from "@/lib/restaurantBuilders/chipotle/builderNavigation";
 
 // Sentinel category id for the "View All Ingredients" sidebar filter's
 // unfiltered state — distinct from any real (normalized, lowercased)
@@ -213,6 +222,25 @@ function isToppingIngredientItem(item: Pick<MenuItem, "categories">) {
   return (
     normalizeIngredientCategory(resolvePrimaryCategory(item.categories)) ===
     "toppings"
+  );
+}
+
+// Shared by both the displayed "All Ingredients" list and its filter-chip
+// count previews, so a given category filter always narrows both the same
+// way — never the unfiltered set in one place and the category-scoped set
+// in the other.
+function filterByAllIngredientsCategory(
+  items: MenuItem[],
+  category: string,
+  allCategoriesFilterId: string,
+) {
+  if (category === allCategoriesFilterId) {
+    return items;
+  }
+  return items.filter(
+    (item) =>
+      normalizeIngredientCategory(resolvePrimaryCategory(item.categories)) ===
+      category,
   );
 }
 
@@ -379,14 +407,14 @@ export default function ChipotleRestaurantBuilderView({
   const buildStickyContainerRef = useRef<HTMLDivElement | null>(null);
   const buildCustomizationModalScrollRef = useRef<HTMLDivElement | null>(null);
   const entreeMenuRef = useRef<HTMLDivElement | null>(null);
-  const requestedEntree = searchParams.get("entree");
-  const initialSelectedEntree: ChipotleEntreeSelection =
-    isChipotleBuildPage &&
-    requestedEntree &&
-    isChipotleEntreeId(requestedEntree) &&
-    requestedEntree in entreeOptions
-      ? requestedEntree
-      : null;
+  const initialBuilderNavState = isChipotleBuildPage
+    ? parseChipotleBuilderNavState(searchParams, entreeOptions, ALL_INGREDIENTS_FILTER_ID)
+    : {
+        entree: null,
+        isViewingAllIngredients: false,
+        allIngredientsCategory: ALL_INGREDIENTS_FILTER_ID,
+      };
+  const initialSelectedEntree: ChipotleEntreeSelection = initialBuilderNavState.entree;
   const {
     selectedIngredientItems,
     setSelectedIngredientItems,
@@ -419,9 +447,11 @@ export default function ChipotleRestaurantBuilderView({
   // exiting lands back on the same builder page). Independent of
   // effectiveViewMode: it always renders as the "ingredients" view, just
   // sourced from every ingredient instead of the current entrée's subset.
-  const [isViewingAllIngredients, setIsViewingAllIngredients] = useState(false);
+  const [isViewingAllIngredients, setIsViewingAllIngredients] = useState(
+    initialBuilderNavState.isViewingAllIngredients,
+  );
   const [activeAllIngredientsCategory, setActiveAllIngredientsCategory] = useState<string>(
-    ALL_INGREDIENTS_FILTER_ID,
+    initialBuilderNavState.allIngredientsCategory,
   );
   const selectedEntreeConfig = selectedEntree
     ? entreeOptions[selectedEntree]
@@ -723,16 +753,30 @@ export default function ChipotleRestaurantBuilderView({
     ],
     [categoryOptions, visibleMenuItems],
   );
-  const allIngredientsDisplayItems = useMemo(() => {
-    if (activeAllIngredientsCategory === ALL_INGREDIENTS_FILTER_ID) {
-      return visibleMenuItems;
-    }
-    return visibleMenuItems.filter(
-      (item) =>
-        normalizeIngredientCategory(resolvePrimaryCategory(item.categories)) ===
+  const allIngredientsDisplayItems = useMemo(
+    () =>
+      filterByAllIngredientsCategory(
+        visibleMenuItems,
         activeAllIngredientsCategory,
-    );
-  }, [activeAllIngredientsCategory, visibleMenuItems]);
+        ALL_INGREDIENTS_FILTER_ID,
+      ),
+    [activeAllIngredientsCategory, visibleMenuItems],
+  );
+  // Same category narrowing as allIngredientsDisplayItems above, but sourced
+  // from the raw, not-yet-protein/calorie-filtered ingredient set — this is
+  // what feeds the Filters panel's per-threshold count previews, which need
+  // to apply their own candidate protein/calorie values on top of an
+  // unfiltered set (never one that's already been narrowed by whichever
+  // filter is currently applied).
+  const allIngredientsCategorySourceItems = useMemo(
+    () =>
+      filterByAllIngredientsCategory(
+        allIngredientMenuItems,
+        activeAllIngredientsCategory,
+        ALL_INGREDIENTS_FILTER_ID,
+      ),
+    [activeAllIngredientsCategory, allIngredientMenuItems],
+  );
   const [activeCategory, setActiveCategory] = useState<string>(
     () => orderedSections[0] ?? "",
   );
@@ -743,7 +787,18 @@ export default function ChipotleRestaurantBuilderView({
 
   const handleCategorySelect = (categoryId: string) => {
     if (isViewingAllIngredients) {
+      const current = new URLSearchParams(searchParams.toString());
+      const next = buildAllIngredientsCategoryParams(
+        current,
+        categoryId,
+        ALL_INGREDIENTS_FILTER_ID,
+      );
+
       setActiveAllIngredientsCategory(categoryId);
+
+      if (next.toString() !== current.toString()) {
+        router.replace(`${pathname}?${next.toString()}`, { scroll: false });
+      }
       return;
     }
 
@@ -1732,7 +1787,11 @@ export default function ChipotleRestaurantBuilderView({
   ]);
 
   const performEntreeSelection = (entree: EntreeKey) => {
+    const current = new URLSearchParams(searchParams.toString());
+    const next = buildEntreeSelectionParams(current, entree);
+
     setIsViewingAllIngredients(false);
+    setActiveAllIngredientsCategory(ALL_INGREDIENTS_FILTER_ID);
     const nextIncludedIngredientIds = resolveIncludedIngredientIds({
       selectedEntree: entree,
       selectedKidsMeal,
@@ -1744,15 +1803,9 @@ export default function ChipotleRestaurantBuilderView({
       selectedKidsMeal,
     });
 
-    const nextView =
-      entree === "chips-sides" ||
-      entree === "high-protein-menu" ||
-      entree === "drinks"
-        ? "menu"
-        : "ingredients";
-    const nextParams = new URLSearchParams(searchParams.toString());
-    nextParams.set("view", nextView);
-    router.push(`${pathname}?${nextParams.toString()}`, { scroll: true });
+    if (next.toString() !== current.toString()) {
+      router.push(`${pathname}?${next.toString()}`, { scroll: true });
+    }
     window.scrollTo({ top: 0, left: 0, behavior: "auto" });
   };
 
@@ -1767,45 +1820,87 @@ export default function ChipotleRestaurantBuilderView({
 
   // Returning to the entree chooser clears the current entree entirely —
   // same discard risk as switching to a different entree.
+  const performGoToEntreeChooser = () => {
+    const current = new URLSearchParams(searchParams.toString());
+    const next = buildGoToEntreeChooserParams(current);
+
+    setSelectedEntree(null);
+    setIsViewingAllIngredients(false);
+    setActiveAllIngredientsCategory(ALL_INGREDIENTS_FILTER_ID);
+
+    if (next.toString() !== current.toString()) {
+      router.push(`${pathname}?${next.toString()}`, { scroll: true });
+      window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+    }
+  };
   const handleGoToEntreeChooser = () => {
-    guardNavigation(() => {
-      setSelectedEntree(null);
-      setIsViewingAllIngredients(false);
-    });
+    guardNavigation(performGoToEntreeChooser);
   };
 
   // Entered from the entrée dropdown or the ingredient-category sidebar's
   // trailing nav item — a utility action, not another entrée, so it leaves
   // selectedEntree untouched (exiting lands back on the same builder page).
+  // Not guarded by the in-progress-build check: it never touches
+  // selectedIngredientItems/selectedEntree, so there's nothing to lose.
   const handleViewAllIngredientsSelection = () => {
+    const current = new URLSearchParams(searchParams.toString());
+    const next = buildAllIngredientsEnterParams(current);
+
     setIsViewingAllIngredients(true);
     setActiveAllIngredientsCategory(ALL_INGREDIENTS_FILTER_ID);
     setIsEntreeMenuOpen(false);
+
+    if (next.toString() !== current.toString()) {
+      router.push(`${pathname}?${next.toString()}`, { scroll: true });
+      window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+    }
   };
 
   const handleExitAllIngredients = () => {
+    const current = new URLSearchParams(searchParams.toString());
+    const next = buildAllIngredientsExitParams(current);
+
     setIsViewingAllIngredients(false);
+
+    if (next.toString() !== current.toString()) {
+      router.push(`${pathname}?${next.toString()}`, { scroll: true });
+    }
   };
 
+  // URL → state: the one place selectedEntree/isViewingAllIngredients/
+  // activeAllIngredientsCategory get reconciled with the address bar after
+  // mount, so browser Back/Forward (which change searchParams without any
+  // of the handlers above running) actually update the rendered page.
+  // Deliberately depends on searchParams only — not on the state values
+  // themselves — so it only re-runs on a real URL change (an in-app push
+  // resolving, or Back/Forward), never merely because local state changed a
+  // moment earlier. The functional setState forms make it a true no-op when
+  // the URL already agrees with state, avoiding a fight with the optimistic
+  // setSelectedEntree(...) calls above. Skipped while editing an existing
+  // cart item — that flow hydrates selectedEntree directly from the cart
+  // item's own build configuration, not from the URL (see the hydration
+  // effect below).
   useEffect(() => {
-    if (!isChipotleBuildPage) return;
+    if (!isChipotleBuildPage || isEditingBuild) return;
 
-    const currentParams = searchParams.toString();
-    const nextParams = new URLSearchParams(currentParams);
+    const parsed = parseChipotleBuilderNavState(
+      searchParams,
+      entreeOptions,
+      ALL_INGREDIENTS_FILTER_ID,
+    );
 
-    if (selectedEntree) {
-      nextParams.set("entree", selectedEntree);
-    } else {
-      nextParams.delete("entree");
-    }
+    const syncTimer = window.setTimeout(() => {
+      setSelectedEntree((prev) => (prev === parsed.entree ? prev : parsed.entree));
+      setIsViewingAllIngredients((prev) =>
+        prev === parsed.isViewingAllIngredients ? prev : parsed.isViewingAllIngredients,
+      );
+      setActiveAllIngredientsCategory((prev) =>
+        prev === parsed.allIngredientsCategory ? prev : parsed.allIngredientsCategory,
+      );
+    }, 0);
 
-    const nextQuery = nextParams.toString();
-    if (nextQuery === currentParams) return;
-
-    router.replace(nextQuery ? `${pathname}?${nextQuery}` : pathname, {
-      scroll: false,
-    });
-  }, [isChipotleBuildPage, pathname, router, searchParams, selectedEntree]);
+    return () => window.clearTimeout(syncTimer);
+  }, [isChipotleBuildPage, isEditingBuild, searchParams, entreeOptions, setSelectedEntree]);
 
   const buildSelectedItemsFromConfiguration = useCallback(
     (configuration: BuildConfigurationSnapshot) => {
@@ -3243,9 +3338,17 @@ export default function ChipotleRestaurantBuilderView({
         filters={filters}
         onFiltersChange={handleFiltersChange}
         calorieBounds={calorieBounds}
-        sourceItems={sourceItems}
+        sourceItems={isViewingAllIngredients ? allIngredientsCategorySourceItems : sourceItems}
         rankedChildSelections={rankedChildSelections}
         isRankingView={effectiveViewMode === "ranking"}
+        // Which item type is actually being filtered right now, not
+        // whether this is a Build Your Own restaurant — "ingredients"
+        // covers per-entree ingredient picking and All Ingredients;
+        // High Protein Menu / Chips & Sides / Drinks render as "menu"
+        // (complete, prebuilt items) and use the normal meal-level scale.
+        proteinOptions={
+          effectiveViewMode === "ingredients" ? INGREDIENT_PROTEIN_OPTIONS : MEAL_PROTEIN_OPTIONS
+        }
         secondaryNavLeading={entreeSelectionControl}
         mobileEntreeOptions={mobileEntreeOptions}
         hideViewSelector={hasBuildYourOwn}

@@ -6,7 +6,7 @@ import Image from "next/image";
 
 import { useFilterChipActions } from "./useFilterChipActions";
 import { SORT_OPTION_VALUES, type SortOption } from "@/lib/menuSections/sortOptions";
-import type { Filters } from "@/lib/menuSections/filterOptions";
+import { MEAL_PROTEIN_OPTIONS, type Filters } from "@/lib/menuSections/filterOptions";
 import type { ViewOption } from "@/components/controls/types";
 import { filterMenuItems, type RankedAllFilterKey } from "@/lib/menuSections/filtering";
 import type { MenuItem } from "@/types/menu";
@@ -32,8 +32,6 @@ import {
   LayoutGrid,
 } from "lucide-react";
 
-
-const PROTEIN_OPTIONS = [20, 30, 40, 50];
 
 const VIEW_OPTIONS: Array<{ label: string; value: ViewOption; icon: typeof ClipboardList }> = [
   { label: "Menu", value: "menu", icon: ClipboardList },
@@ -140,7 +138,7 @@ export default function ControlsRow({
   onSortChange,
   filters,
   onFiltersChange,
-  showChips = true,
+  proteinOptions = MEAL_PROTEIN_OPTIONS,
   wrapperId,
   calorieBounds,
   sourceItems,
@@ -161,7 +159,10 @@ export default function ControlsRow({
   onSortChange: (sort: SortOption) => void;
   filters: Filters;
   onFiltersChange: (filters: Filters) => void;
-  showChips?: boolean;
+  // Preset protein-minimum chip values — defaults to the meal-level scale.
+  // Callers filtering individual Build Your Own ingredients (which rarely
+  // clear the meal-level thresholds) pass INGREDIENT_PROTEIN_OPTIONS instead.
+  proteinOptions?: number[];
   wrapperId?: string;
   calorieBounds: {
     min: number;
@@ -171,6 +172,9 @@ export default function ControlsRow({
   // useRestaurantMenuControls already computes for the page itself — reused
   // here, via the same filterMenuItems function, to preview per-threshold
   // and live draft result counts instead of recomputing eligibility rules.
+  // Callers narrow this to whatever subset is currently on screen (e.g. a
+  // category-filtered "All Ingredients" view) so chip counts never reflect
+  // a broader set than what the user is actually looking at.
   sourceItems: MenuItem[];
   rankedChildSelections: Record<RankedAllFilterKey, Set<string>>;
   isRankingView: boolean;
@@ -265,7 +269,7 @@ export default function ControlsRow({
     setIsMobileDrawerOpen(false);
   };
 
-  const { hasActiveFilters, clearProteinFilter, clearCaloriesFilter, resetFilters } = useFilterChipActions({
+  const { hasActiveFilters, resetFilters } = useFilterChipActions({
     filters,
     onFiltersChange,
   });
@@ -348,11 +352,11 @@ export default function ControlsRow({
   // count is never chained through another's selection.
   const proteinOptionCounts = useMemo(() => {
     const counts = new Map<number, number>();
-    PROTEIN_OPTIONS.forEach((value) => {
+    proteinOptions.forEach((value) => {
       counts.set(value, countMatchingItems(value, draftCaloriesMax));
     });
     return counts;
-  }, [countMatchingItems, draftCaloriesMax]);
+  }, [countMatchingItems, draftCaloriesMax, proteinOptions]);
 
   // Live count for the full current draft combination — drives the primary
   // action's label ("Show N items"), not just the count of active filters.
@@ -523,7 +527,7 @@ export default function ControlsRow({
             <div>
               <div className="mb-2 text-sm font-semibold text-black/80">Protein minimum</div>
               <div className="flex flex-wrap gap-2">
-                {PROTEIN_OPTIONS.map((value) => {
+                {proteinOptions.map((value) => {
                   const isActive = draftFilters.proteinMin === value;
                   const { count, isDisabled, ariaLabel } = getProteinChipMeta(value, isActive);
                   return (
@@ -630,7 +634,7 @@ export default function ControlsRow({
           <div>
             <div className="mb-2 font-semibold">Protein minimum</div>
             <div className="flex flex-wrap gap-2">
-              {PROTEIN_OPTIONS.map((value) => {
+              {proteinOptions.map((value) => {
                 const isActive = draftFilters.proteinMin === value;
                 const { count, isDisabled, ariaLabel } = getProteinChipMeta(value, isActive);
                 return (
@@ -744,18 +748,6 @@ export default function ControlsRow({
             </button>
           </div>
         </div>
-
-        {hasActiveFilters && showChips ? (
-          <div className="border-t border-slate-200/70 pt-1.5">
-            <FilterChips
-              filters={filters}
-              onClearProtein={clearProteinFilter}
-              onClearCalories={clearCaloriesFilter}
-              onClearAll={resetFilters}
-              withMargin={false}
-            />
-          </div>
-        ) : null}
       </div>
 
       {filtersDialog ? (typeof document === "undefined" ? filtersDialog : createPortal(filtersDialog, document.body)) : null}

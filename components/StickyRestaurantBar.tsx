@@ -5,7 +5,8 @@ import { useCallback, useState } from "react";
 import CartIconDropdown from "@/components/cart/CartIconDropdown";
 import DesktopNav from "@/components/DesktopNav";
 import GlobalMobileNav from "@/components/GlobalMobileNav";
-import ControlsRow from "./ControlsRow";
+import ControlsRow, { FilterChips } from "./ControlsRow";
+import { useFilterChipActions } from "./useFilterChipActions";
 import type { ViewOption } from "@/components/controls/types";
 import type { Filters } from "@/lib/menuSections/filterOptions";
 import type { SortOption } from "@/lib/menuSections/sortOptions";
@@ -35,6 +36,9 @@ type StickyRestaurantBarProps = {
   sourceItems: MenuItem[];
   rankedChildSelections: Record<RankedAllFilterKey, Set<string>>;
   isRankingView: boolean;
+  // Preset protein-minimum chip values, passed straight through to
+  // ControlsRow — defaults to the meal-level scale there when omitted.
+  proteinOptions?: number[];
   secondaryNavLeading?: ReactNode;
   mobileEntreeOptions?: Array<{
     key: string;
@@ -69,6 +73,7 @@ export default function StickyRestaurantBar({
   sourceItems,
   rankedChildSelections,
   isRankingView,
+  proteinOptions,
   secondaryNavLeading,
   mobileEntreeOptions,
   hideViewSelector = false,
@@ -81,6 +86,15 @@ export default function StickyRestaurantBar({
   const handleMobileDrawerOpenReady = useCallback((openDrawer: () => void) => {
     setOpenMobileControlsDrawer(() => openDrawer);
   }, []);
+  // Desktop's dedicated active-filter row (below the controls row, full
+  // width — never sharing space with the entrée selector) reuses the exact
+  // same FilterChips component and clear/reset actions the mobile drawer's
+  // own chip row (RestaurantCategorySidebar) already uses, rather than a
+  // second hand-rolled chip UI.
+  const { hasActiveFilters, clearProteinFilter, clearCaloriesFilter, resetFilters } = useFilterChipActions({
+    filters,
+    onFiltersChange,
+  });
 
   return (
     <>
@@ -100,32 +114,58 @@ export default function StickyRestaurantBar({
         <DesktopNav searchBarVariant="compact" />
 
         {secondaryNavLeading || !hideSecondaryNav ? (
-          <div className="mx-auto mt-0.5 hidden w-full max-w-6xl items-center rounded-2xl border border-slate-200/70 bg-white px-5 py-1.5 shadow-[0_3px_12px_rgba(15,23,42,0.12)] lg:flex">
-            {secondaryNavLeading ? <div className="shrink-0">{secondaryNavLeading}</div> : null}
-            {hideSecondaryNav ? null : (
-              <div className={`min-w-0 shrink-0 ${secondaryNavLeading ? "ml-auto" : "flex-1"}`}>
-                <ControlsRow
-                  view={view}
-                  onChange={onChange}
-                  sort={sort}
-                  onSortChange={onSortChange}
+          <div className="mx-auto mt-0.5 hidden w-full max-w-6xl flex-col rounded-2xl border border-slate-200/70 bg-white px-5 shadow-[0_3px_12px_rgba(15,23,42,0.12)] lg:flex">
+            {/* Row 1: entrée selector (left) + view/sort/filters (right).
+                The entrée selector never shares height with the active-filter
+                row below — it's scoped to this row only. Horizontal padding
+                lives on the shared outer container (not this row) so the
+                divider below is inset by that same padding instead of
+                running edge-to-edge. */}
+            <div className="flex items-center py-1.5">
+              {secondaryNavLeading ? <div className="shrink-0">{secondaryNavLeading}</div> : null}
+              {hideSecondaryNav ? null : (
+                <div className={`min-w-0 shrink-0 ${secondaryNavLeading ? "ml-auto" : "flex-1"}`}>
+                  <ControlsRow
+                    view={view}
+                    onChange={onChange}
+                    sort={sort}
+                    onSortChange={onSortChange}
+                    filters={filters}
+                    onFiltersChange={onFiltersChange}
+                    proteinOptions={proteinOptions}
+                    calorieBounds={calorieBounds}
+                    sourceItems={sourceItems}
+                    rankedChildSelections={rankedChildSelections}
+                    isRankingView={isRankingView}
+                    hideViewSelector={hideViewSelector}
+                    showMobileTrigger={false}
+                    onMobileDrawerOpenReady={handleMobileDrawerOpenReady}
+                    onMobileFiltersDrawerOpenReady={onEditFiltersDrawerReady}
+                    onMobileDrawerOpenChange={setIsControlsDrawerOpen}
+                    mobileEntreeOptions={mobileEntreeOptions}
+                    mobileDrawerHeaderTitle={restaurantName}
+                    mobileDrawerHeaderLogoSrc={restaurantLogo}
+                  />
+                </div>
+              )}
+            </div>
+
+            {/* Row 2: active-filter chips + Clear All — dedicated row, only
+                present while a filter is actually applied. Its top border
+                sits inside the same px-5 the outer container already
+                applies, so the divider is inset to match the controls above
+                rather than running edge-to-edge. */}
+            {!hideSecondaryNav && hasActiveFilters ? (
+              <div className="border-t border-slate-200/70 pb-1.5 pt-1.5">
+                <FilterChips
                   filters={filters}
-                  onFiltersChange={onFiltersChange}
-                  calorieBounds={calorieBounds}
-                  sourceItems={sourceItems}
-                  rankedChildSelections={rankedChildSelections}
-                  isRankingView={isRankingView}
-                  hideViewSelector={hideViewSelector}
-                  showMobileTrigger={false}
-                  onMobileDrawerOpenReady={handleMobileDrawerOpenReady}
-                  onMobileFiltersDrawerOpenReady={onEditFiltersDrawerReady}
-                  onMobileDrawerOpenChange={setIsControlsDrawerOpen}
-                  mobileEntreeOptions={mobileEntreeOptions}
-                  mobileDrawerHeaderTitle={restaurantName}
-                  mobileDrawerHeaderLogoSrc={restaurantLogo}
+                  onClearProtein={clearProteinFilter}
+                  onClearCalories={clearCaloriesFilter}
+                  onClearAll={resetFilters}
+                  withMargin={false}
                 />
               </div>
-            )}
+            ) : null}
           </div>
         ) : null}
       </div>

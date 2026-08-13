@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useId, useMemo, useRef, useState } from "react";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { ChevronDown } from "lucide-react";
 import type { IngredientItem, MenuItem, ResolvedAddonGroups, RestaurantCustomizationRules } from "@/types/menu";
 import ItemDetailsPanel, { resolvePanelIngredients } from "./ItemDetailsPanel";
@@ -243,6 +243,7 @@ export default function MenuItemCard({
   const [open, setOpen] = useState(false);
   const router = useRouter();
   const pathname = usePathname();
+  const searchParams = useSearchParams();
   const id = useId();
   const shouldOpenModalOnCardClick = mode !== "cart" && Boolean(itemHref) && showDetailsButton;
   const variants = item.variants?.length ? item.variants : null;
@@ -599,7 +600,8 @@ export default function MenuItemCard({
 
   const openItemDetails = () => {
     if (shouldOpenModalOnCardClick && itemHref) {
-      router.push(itemHref, { scroll: false });
+      const query = searchParams.toString();
+      router.push(query ? `${itemHref}?${query}` : itemHref, { scroll: false });
       return;
     }
     setOpen(true);
@@ -607,7 +609,8 @@ export default function MenuItemCard({
 
   const handleCardActivate = () => {
     if (shouldOpenModalOnCardClick && itemHref) {
-      router.push(itemHref, { scroll: false });
+      const query = searchParams.toString();
+      router.push(query ? `${itemHref}?${query}` : itemHref, { scroll: false });
       return;
     }
     setOpen((v) => !v);
