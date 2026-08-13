@@ -12,6 +12,7 @@ import {
   isChipotleHighProteinMenuItem,
 } from "@/lib/restaurantBuilders/chipotle/highProtein";
 import { toUniversalChipotleBuildConfiguration } from "@/lib/restaurantBuilders/chipotle/cartAdapter";
+import { calculateChipotleBuildNutrition } from "@/lib/restaurantBuilders/chipotle/nutrition";
 
 export type CartConfigurationPayload = {
   variantId?: string;
@@ -112,7 +113,13 @@ export function resolveFinalizedCartConfiguration({
     ...standardConfiguration.customizationLabels,
   ];
   const customizations = customizationLabels.length > 0 ? customizationsFromLabels(customizationLabels) : undefined;
-  const nutritionPerItem = standardConfiguration.nutrition;
+  // Editable prebuilt/preset builds (e.g. High Protein menu items) are not
+  // trustworthy from the item's own hardcoded nutrition field — their real
+  // totals come from summing the actual configured ingredients, the same
+  // way the modal and cart do (see calculateChipotleBuildNutrition).
+  const nutritionPerItem = highProteinBuildConfiguration
+    ? calculateChipotleBuildNutrition(highProteinBuildConfiguration, ingredientItems ?? [])
+    : standardConfiguration.nutrition;
   const macrosPerItem = macrosFromNutrition(nutritionPerItem);
 
   return {

@@ -62,6 +62,14 @@ export function getProteinBadgeLabel(mode: ProteinPortionMode, selectedProteinCo
   return multiplier === 0.5 ? "1/2x" : `${multiplier}x`;
 }
 
+// The human-facing portion name for a protein's selected mode — the same
+// wording used by the portion picker in the customize experience (Normal /
+// Double), independent of the multiplier that mode resolves to for a given
+// number of selected proteins.
+export function getProteinPortionModeLabel(mode: ProteinPortionMode) {
+  return mode === "double" ? "Double" : "Normal";
+}
+
 export function formatMultiplierLabel(multiplier: number) {
   if (multiplier === 0.5) return "1/2x";
   if (Number.isInteger(multiplier)) return `${multiplier}x`;
@@ -97,6 +105,38 @@ export function getSplitExtraMultiplier() {
 export function getSplitPortionLabel(mode: SplitPortionMode) {
   const multiplier = mode === "light" ? 0.5 : mode === "extra" ? getSplitExtraMultiplier() : 1;
   return formatMultiplierLabel(multiplier);
+}
+
+// The human-facing portion name for a rice/beans mode — the same wording
+// used by the portion picker in the customize experience (Light / Normal /
+// Extra), rather than the numeric multiplier badge.
+export function getSplitPortionModeLabel(mode: SplitPortionMode) {
+  if (mode === "light") return "Light";
+  if (mode === "extra") return "Extra";
+  return "Normal";
+}
+
+export type ChipotlePortionModeOption = { id: string; label: string };
+
+const PROTEIN_PORTION_MODE_OPTIONS: ChipotlePortionModeOption[] = [
+  { id: "normal", label: "Normal" },
+  { id: "double", label: "Double" },
+];
+const SPLIT_PORTION_MODE_OPTIONS: ChipotlePortionModeOption[] = [
+  { id: "light", label: "Light" },
+  { id: "normal", label: "Normal" },
+  { id: "extra", label: "Extra" },
+];
+
+// The available portion options for a given (normalized) ingredient
+// category — undefined for categories with no portion-mode concept
+// (toppings, sides), which is how callers know not to show a picker at all.
+export function getChipotlePortionModeOptions(
+  category: string,
+): ChipotlePortionModeOption[] | undefined {
+  if (category === "proteins") return PROTEIN_PORTION_MODE_OPTIONS;
+  if (category === "rice" || category === "beans") return SPLIT_PORTION_MODE_OPTIONS;
+  return undefined;
 }
 
 export function getIngredientCategoryMaxSelections(options: {

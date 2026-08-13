@@ -74,6 +74,9 @@ type MenuSectionsProps = {
   // and filtering) on each card. Never set from the Menu or Ingredients
   // views, or from unrelated flat-list callers like ItemRouteModal.
   showRankBadges?: boolean;
+  // Optional per-item scroll-target id, used by the preset Overview cards'
+  // "jump to this ingredient in Customize" shortcut. Unused elsewhere.
+  getItemDomId?: (item: MenuItem) => string | undefined;
 };
 
 export default function MenuSections({
@@ -88,6 +91,7 @@ export default function MenuSections({
   hasBuildYourOwn = false,
   ingredientSelectionConfig,
   showRankBadges = false,
+  getItemDomId,
 }: MenuSectionsProps) {
   // Computed once per rendered menu (not per card) and only for the plain
   // Menu view — Rankings shows its own rank badge instead (never both, see
@@ -130,6 +134,7 @@ export default function MenuSections({
       selectedPortionModeId: ingredientSelectionConfig?.selectedPortionModeIdById?.[itemId],
       onPortionModeChange: (modeId: string) => ingredientSelectionConfig?.onPortionModeChange?.(item, modeId),
       onVariantChange: (variantId: string) => ingredientSelectionConfig?.onVariantChange?.(item, variantId),
+      domId: getItemDomId?.(item),
     };
   };
 

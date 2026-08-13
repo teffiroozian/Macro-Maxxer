@@ -42,6 +42,7 @@ export function PortionControlsRow({
 
 export default function IngredientCompactCard({
     item,
+    domId,
     selectedItemImage,
     ingredientSelectionState,
     isIngredientSelectionDisabled,
@@ -67,6 +68,9 @@ export default function IngredientCompactCard({
     categoryLabel,
 }: {
     item: MenuItem;
+    // Optional scroll target id for the card's root — used by the preset
+    // Overview cards' "jump to this ingredient in Customize" shortcut.
+    domId?: string;
     selectedItemImage?: string;
     ingredientSelectionState: boolean;
     isIngredientSelectionDisabled: boolean;
@@ -104,9 +108,10 @@ export default function IngredientCompactCard({
     return (
         <SurfaceCard
             as="li"
+            id={domId}
             padding="none"
             shadow="none"
-            className={`list-none overflow-hidden transition duration-150 ${
+            className={`list-none scroll-mt-6 overflow-hidden transition duration-150 ${
                 isIngredientLocked || ingredientSelectionState
                     ? "border-[1.5px] border-accent! bg-accent-soft/50 shadow-[0_1px_2px_rgba(0,0,0,0.04)]"
                     : isIngredientSelectionDisabled

@@ -181,6 +181,15 @@ body {
     }
 }
 
+/* Slice 10: preset review <-> customize transition inside the prebuilt-meal
+   modal. Same fade + vertical-nudge technique as .walkthrough-panel-enter,
+   replayed via a `key` change when the stage switches. */
+@media (prefers-reduced-motion: no-preference) {
+    .preset-stage-enter {
+        animation: walkthrough-panel-enter 220ms ease-out;
+    }
+}
+
 @supports not (height: 100dvh) {
     .item-route-modal-root {
         height: 92vh;

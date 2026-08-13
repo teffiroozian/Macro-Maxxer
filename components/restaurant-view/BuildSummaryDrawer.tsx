@@ -93,10 +93,10 @@ function SelectedIngredientRow({
 
   if (isLocked) {
     return (
-      <li className="flex items-center justify-between gap-3 rounded-xl border border-black/5 bg-slate-50 px-3 py-2.5">
+      <li className="flex items-center justify-between gap-3 rounded-xl border border-black/5 bg-slate-50 px-2.5 py-2 sm:px-3 sm:py-2.5">
         <div className="flex min-w-0 items-center gap-2.5">
-          <div className="h-9 w-9 shrink-0 overflow-hidden rounded-lg border border-black/10 bg-neutral-100 opacity-80">
-            <Image src={selectedIngredient.item.image || restaurantLogo} alt={selectedIngredient.item.name} width={36} height={36} className="h-full w-full object-cover" />
+          <div className="h-11 w-11 shrink-0 overflow-hidden rounded-lg border border-black/10 bg-neutral-100 opacity-80 sm:h-9 sm:w-9">
+            <Image src={selectedIngredient.item.image || restaurantLogo} alt={selectedIngredient.item.name} width={44} height={44} className="h-full w-full object-cover" />
           </div>
           <div className="min-w-0">
             <p className="truncate text-sm font-medium text-slate-600">{selectedIngredient.item.name}</p>
@@ -111,15 +111,33 @@ function SelectedIngredientRow({
     );
   }
 
+  // Same content everywhere, but the quantity stepper moves from inline
+  // (desktop/tablet) to its own right-aligned row underneath (mobile) —
+  // same technique ItemDetailsPanel's standard ingredient rows use, via two
+  // breakpoint-gated copies of the stepper rather than one repositioned
+  // element, so each layout stays simple instead of fighting flex-wrap.
+  const stepper = (
+    <QuantityStepper
+      value={selectedIngredient.quantity}
+      onDecrement={() => onAdjustIngredientQuantity(ingredientId, -1)}
+      onIncrement={() => onAdjustIngredientQuantity(ingredientId, 1)}
+      decrementLabel={`Decrease ${selectedIngredient.item.name}`}
+      incrementLabel={`Increase ${selectedIngredient.item.name}`}
+      decrementDisabled={selectedIngredient.quantity <= 0}
+      incrementDisabled={false}
+      variant="small"
+    />
+  );
+
   return (
     <li
-      className={`flex items-center justify-between gap-3 rounded-xl border border-black/10 bg-white px-3 py-2.5 transition-opacity duration-150 ${
+      className={`flex flex-col gap-2 rounded-xl border border-black/10 bg-white px-2.5 py-2 transition-opacity duration-150 sm:flex-row sm:items-center sm:justify-between sm:gap-3 sm:px-3 sm:py-2.5 ${
         isRemoved ? "opacity-60" : ""
       }`}
     >
       <div className="flex min-w-0 items-center gap-2.5">
-        <div className="h-9 w-9 shrink-0 overflow-hidden rounded-lg border border-black/10 bg-neutral-100">
-          <Image src={selectedIngredient.item.image || restaurantLogo} alt={selectedIngredient.item.name} width={36} height={36} className="h-full w-full object-cover" />
+        <div className="h-11 w-11 shrink-0 overflow-hidden rounded-lg border border-black/10 bg-neutral-100 sm:h-9 sm:w-9">
+          <Image src={selectedIngredient.item.image || restaurantLogo} alt={selectedIngredient.item.name} width={44} height={44} className="h-full w-full object-cover" />
         </div>
         <div className="min-w-0">
           <p className="truncate text-sm font-medium text-slate-900">{selectedIngredient.item.name}</p>
@@ -138,16 +156,8 @@ function SelectedIngredientRow({
           ) : null}
         </div>
       </div>
-      <QuantityStepper
-        value={selectedIngredient.quantity}
-        onDecrement={() => onAdjustIngredientQuantity(ingredientId, -1)}
-        onIncrement={() => onAdjustIngredientQuantity(ingredientId, 1)}
-        decrementLabel={`Decrease ${selectedIngredient.item.name}`}
-        incrementLabel={`Increase ${selectedIngredient.item.name}`}
-        decrementDisabled={selectedIngredient.quantity <= 0}
-        incrementDisabled={false}
-        variant="small"
-      />
+      <div className="flex w-full justify-end sm:hidden">{stepper}</div>
+      <div className="hidden shrink-0 sm:block">{stepper}</div>
     </li>
   );
 }
@@ -189,7 +199,7 @@ export default function BuildSummaryDrawer({
       <div
         className={
           isPanel
-            ? "grid min-h-0 flex-1 grid-cols-1 gap-4 overflow-y-auto p-4 pt-5 sm:p-5 lg:grid-cols-[2fr_3fr] lg:gap-6 lg:overflow-hidden"
+            ? "grid min-h-0 flex-1 grid-cols-1 gap-4 overflow-y-auto p-3 pt-4 sm:p-5 lg:grid-cols-[2fr_3fr] lg:gap-6 lg:overflow-hidden"
             : "grid items-stretch gap-4 lg:grid-cols-2"
         }
       >
@@ -202,10 +212,10 @@ export default function BuildSummaryDrawer({
 
         <SurfaceCard
           as="section"
-          padding="comfortable"
+          padding={isPanel ? "none" : "comfortable"}
           radius="large"
           shadow="none"
-          className={`flex flex-col ${isPanel ? "order-1 pb-0 lg:order-2 lg:h-full lg:min-h-0 lg:overflow-y-auto" : "h-full min-h-0"}`}
+          className={`flex flex-col ${isPanel ? "p-3 pb-0 sm:p-5 sm:pb-0 order-1 lg:order-2 lg:h-full lg:min-h-0 lg:overflow-y-auto" : "h-full min-h-0"}`}
         >
           <h3 className="text-2xl font-bold text-neutral-900">Selected Ingredients</h3>
           <p className="mt-2 text-sm font-semibold text-slate-600">{selectedBuildName} · {selectedIngredientCount} selected</p>

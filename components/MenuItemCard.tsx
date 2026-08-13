@@ -174,6 +174,9 @@ type MenuItemCardIngredientSelection = {
   // per-category section heading in that flat view to convey it instead.
   readOnly?: boolean;
   categoryLabel?: string;
+  // Optional scroll target id for the card's root element — used by the
+  // preset Overview cards' "jump to this ingredient in Customize" shortcut.
+  domId?: string;
 };
 
 type MenuItemCardDetailPanelBehavior = {
@@ -233,6 +236,7 @@ export default function MenuItemCard({
   const onIngredientVariantChange = ingredientSelection?.onVariantChange;
   const isIngredientReadOnly = ingredientSelection?.readOnly ?? false;
   const ingredientCategoryLabel = ingredientSelection?.categoryLabel;
+  const ingredientDomId = ingredientSelection?.domId;
   const flattenIngredientListInDetails = detailPanel?.flattenIngredientList ?? false;
   const lockedIngredientIdsInDetails = detailPanel?.lockedIngredientIds;
   const showDetailsButton = detailPanel?.showDetailsButton ?? true;
@@ -683,6 +687,7 @@ export default function MenuItemCard({
     return (
       <IngredientCompactCard
         item={item}
+        domId={ingredientDomId}
         selectedItemImage={selectedItemImage}
         ingredientSelectionState={ingredientSelectionState}
         isIngredientSelectionDisabled={isIngredientSelectionDisabled}
