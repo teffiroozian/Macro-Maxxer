@@ -17,6 +17,13 @@ type VariantSelectorProps = {
   // item title and comparative/status badges, without losing the
   // interactive, filled-pill look.
   compact?: boolean;
+  // Only affects the compact pill — tightens it further (text size, chevron
+  // size, horizontal padding) to match a small sibling Quick Add pill, e.g.
+  // in global search results. The plain `compact` scale stays as-is for
+  // contexts pairing this with a larger Quick Add control (the menu card
+  // grid), so this is opt-in per caller rather than changing `compact`
+  // globally.
+  dense?: boolean;
   // Only affects the non-compact pill — "sm" shortens it and reduces its
   // horizontal padding for contexts like the standard menu card where it
   // should read as secondary to the item name, without changing its
@@ -32,6 +39,7 @@ export default function VariantSelector({
   ariaLabel = "Select portion",
   disabled = false,
   compact = false,
+  dense = false,
   size = "default",
 }: VariantSelectorProps) {
   const darkClassName =
@@ -41,7 +49,9 @@ export default function VariantSelector({
 
   const showCompactChevron = compact && !disabled;
   const className = compact
-    ? `w-fit appearance-none rounded-full bg-[#121212] py-0.75 ${showCompactChevron ? "pr-7" : "pr-4"} pl-4 text-[13px] font-bold text-white [field-sizing:content] focus:outline focus:outline-1 focus:outline-white/30 focus:outline-offset-2 ${disabled ? "cursor-not-allowed" : "cursor-pointer"}`
+    ? `w-fit appearance-none rounded-full bg-[#121212] ${dense ? "py-1" : "py-0.75"} ${
+        dense ? (showCompactChevron ? "pr-6" : "pr-3") : showCompactChevron ? "pr-7" : "pr-4"
+      } ${dense ? "pl-3" : "pl-4"} ${dense ? "text-xs" : "text-[13px]"} font-bold text-white [field-sizing:content] focus:outline focus:outline-1 focus:outline-white/30 focus:outline-offset-2 ${disabled ? "cursor-not-allowed" : "cursor-pointer"}`
     : darkClassName;
 
   return (
@@ -62,7 +72,9 @@ export default function VariantSelector({
         </select>
         {showCompactChevron ? (
           <ChevronDown
-            className="pointer-events-none absolute right-2.5 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-white"
+            className={`pointer-events-none absolute top-1/2 -translate-y-1/2 text-white ${
+              dense ? "right-2 h-3 w-3" : "right-2.5 h-3.5 w-3.5"
+            }`}
             strokeWidth={3}
             aria-hidden="true"
           />

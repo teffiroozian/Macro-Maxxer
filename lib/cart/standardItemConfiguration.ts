@@ -135,6 +135,55 @@ export function buildComboCustomizationLabels({
     : [];
 }
 
+// Structured counterpart to buildComboCustomizationLabels: carries the
+// selected side/drink's real itemId/variantId straight through instead of
+// stringifying to a display label and re-parsing it later (customizationFromLabel).
+// That round-trip is lossy for any catalog item whose own name contains
+// parentheses (e.g. Chick-fil-A's "Sunjoy® (1/2 Sweet Tea, 1/2 Lemonade)"),
+// which silently breaks the cart Preview modal's image/nutrition resolution
+// (see resolveCartItemDetails) for exactly those items. Building the
+// customization directly from the already-resolved MenuItem/ItemVariant
+// keeps the id lookup reliable for every item, not just ones with
+// paren-free names.
+export function buildComboCustomizations({
+  isComboEligibleCategory,
+  comboType,
+  selectedComboSide,
+  selectedComboSideVariant,
+  selectedComboDrink,
+  selectedComboDrinkVariant,
+}: Parameters<typeof calculateComboNutritionTotals>[0]): CartCustomization[] {
+  if (!isComboEligibleCategory || comboType !== "combo-meal") return [];
+
+  const entries: CartCustomization[] = [{ action: "add", kind: "combo", comboRole: "meal" }];
+
+  if (selectedComboSide) {
+    entries.push({
+      action: "add",
+      kind: "combo",
+      comboRole: "side",
+      itemId: selectedComboSide.id,
+      itemLabel: selectedComboSide.name,
+      variantId: selectedComboSideVariant?.id,
+      variantLabel: selectedComboSideVariant?.label,
+    });
+  }
+
+  if (selectedComboDrink) {
+    entries.push({
+      action: "add",
+      kind: "combo",
+      comboRole: "drink",
+      itemId: selectedComboDrink.id,
+      itemLabel: selectedComboDrink.name,
+      variantId: selectedComboDrinkVariant?.id,
+      variantLabel: selectedComboDrinkVariant?.label,
+    });
+  }
+
+  return entries;
+}
+
 export function calculateStandardItemNutrition({
   baseNutrition,
   addonTotals,
@@ -245,6 +294,12 @@ export function resolveStandardItemConfiguration({
   const ingredientCustomizationLabels = buildIngredientCustomizationLabels({ resolvedIngredients, ingredientCounts, suppressRemovedIngredientCustomizationsInCart });
   const comboCustomizationLabels = buildComboCustomizationLabels({ isComboEligibleCategory, comboType, ...comboSelection });
   const customizationLabels = [...ingredientCustomizationLabels, ...comboCustomizationLabels];
+  // Combo customizations are built directly from the resolved side/drink
+  // MenuItem/ItemVariant (buildComboCustomizations) rather than round-tripped
+  // through comboCustomizationLabels + customizationFromLabel — see
+  // buildComboCustomizations for why that round-trip is lossy.
+  const comboCustomizations = buildComboCustomizations({ isComboEligibleCategory, comboType, ...comboSelection });
+  const customizations = [...(customizationsFromLabels(ingredientCustomizationLabels) ?? []), ...comboCustomizations];
   const optionSelections = buildStructuredOptionSelections(selectedAddons, selectedSauceCounts, addons);
 
   return {
@@ -260,7 +315,7 @@ export function resolveStandardItemConfiguration({
     ingredientCustomizationLabels,
     comboCustomizationLabels,
     customizationLabels,
-    customizations: customizationLabels.length > 0 ? customizationsFromLabels(customizationLabels) : undefined,
+    customizations: customizations.length > 0 ? customizations : undefined,
     optionSelections,
     nutrition,
     macrosPerItem: {

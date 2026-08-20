@@ -1,5 +1,6 @@
 "use client";
 
+import type { KeyboardEvent } from "react";
 import Image from "next/image";
 import {
     Bean,
@@ -30,7 +31,9 @@ const CATEGORY_GROUP_ICONS: Record<string, LucideIcon> = {
     other: Circle,
 };
 
-function IngredientMacroSummary({ nutrition }: { nutrition?: Nutrition }) {
+// Exported so other cart-item surfaces (e.g. the cart Preview modal) can
+// render the exact same compact macro row instead of a one-off variant.
+export function IngredientMacroSummary({ nutrition }: { nutrition?: Nutrition }) {
     if (!nutrition) return null;
 
     return (
@@ -54,7 +57,14 @@ function IngredientMacroSummary({ nutrition }: { nutrition?: Nutrition }) {
     );
 }
 
-function PresetIngredientCard({
+// Exported so the cart Preview modal can render its Side/Drink/Customization
+// cards as the exact same component family as this "Included in this Build"
+// grid, rather than a visually-similar but separately maintained variant.
+// portionLabel doubles as a generic small-muted-badge slot: a preset build's
+// portion size here, a customization's status ("Added"/"Removed"/etc.) there
+// — same treatment either way. onClick is optional so it can also render a
+// non-interactive row (e.g. a Build Your Own ingredient with no edit view).
+export function PresetIngredientCard({
     image,
     name,
     portionLabel,
@@ -71,8 +81,22 @@ function PresetIngredientCard({
     isLocked: boolean;
     diffStatus?: IngredientDiffStatus;
     nutrition?: Nutrition;
-    onClick: () => void;
+    onClick?: () => void;
 }) {
+    const interactiveProps = onClick
+        ? {
+              role: "button" as const,
+              tabIndex: 0,
+              "aria-label": `Edit ${name} in Customize`,
+              onClick,
+              onKeyDown: (event: KeyboardEvent) => {
+                  if (event.key !== "Enter" && event.key !== " ") return;
+                  event.preventDefault();
+                  onClick();
+              },
+          }
+        : {};
+
     return (
         <SurfaceCard
             as="li"
@@ -81,16 +105,8 @@ function PresetIngredientCard({
             className="list-none overflow-hidden border border-black/10 bg-white shadow-[0_1px_2px_rgba(0,0,0,0.04)] transition duration-150 hover:-translate-y-px hover:border-black/15 hover:shadow-[0_2px_6px_rgba(0,0,0,0.05)]"
         >
             <div
-                role="button"
-                tabIndex={0}
-                aria-label={`Edit ${name} in Customize`}
-                onClick={onClick}
-                onKeyDown={(event) => {
-                    if (event.key !== "Enter" && event.key !== " ") return;
-                    event.preventDefault();
-                    onClick();
-                }}
-                className="flex cursor-pointer items-center gap-3 p-3 outline-none transition-shadow duration-100 focus-visible:ring-2 focus-visible:ring-accent/50 focus-visible:ring-offset-2"
+                {...interactiveProps}
+                className={`flex items-center gap-3 p-3 outline-none transition-shadow duration-100 focus-visible:ring-2 focus-visible:ring-accent/50 focus-visible:ring-offset-2 ${onClick ? "cursor-pointer" : ""}`}
             >
                 <div className="relative h-14 w-14 shrink-0 overflow-hidden rounded-xl bg-image-placeholder ring-1 ring-black/5">
                     {image ? (
@@ -140,10 +156,12 @@ function PresetIngredientCard({
                         </div>
                     ) : null}
                 </div>
-                <ChevronRight
-                    className="h-4 w-4 shrink-0 text-slate-300"
-                    strokeWidth={2.25}
-                />
+                {onClick ? (
+                    <ChevronRight
+                        className="h-4 w-4 shrink-0 text-slate-300"
+                        strokeWidth={2.25}
+                    />
+                ) : null}
             </div>
         </SurfaceCard>
     );

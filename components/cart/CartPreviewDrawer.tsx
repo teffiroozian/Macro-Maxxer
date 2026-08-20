@@ -2,13 +2,13 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { Pencil, Trash2 } from "lucide-react";
+import { Pencil, ShoppingCart, Trash2 } from "lucide-react";
 import { useCallback, useEffect, useMemo, useState } from "react";
-import type { CartItem } from "@/types/cart";
 import { useRestaurantUi } from "@/components/RestaurantUiContext";
 import MacroTotalsGrid from "@/components/MacroTotalsGrid";
 import CartItemPreviewRow from "@/components/cart/CartItemPreviewRow";
 import CartClearConfirmationDialog from "@/components/cart/CartClearConfirmationDialog";
+import CartControlButton from "@/components/cart/CartControlButton";
 import EmptyStateCard from "@/components/EmptyStateCard";
 import SurfaceCard from "@/components/ui/SurfaceCard";
 import AppButton, { appButtonClassName } from "@/components/ui/AppButton";
@@ -17,19 +17,14 @@ import QuantityStepper from "@/components/QuantityStepper";
 import ItemRouteModal from "@/components/item-route-modal/ItemRouteModal";
 import { getAllRestaurants } from "@/lib/restaurants";
 import { useCart } from "@/stores/cartStore";
-import { getCustomizationLabels, getSelectionDetailsLabel } from "@/lib/cart/customizationLabels";
+import { buildCartItemSummaryGroups } from "@/lib/cart/displayLabels";
 import { useCartItemEditModal } from "@/hooks/useCartItemEditModal";
-
-const getCustomizationDisplayList = (item: CartItem) => [
-  ...(getSelectionDetailsLabel(item.selection)?.split(" + ").filter(Boolean) ?? []),
-  ...getCustomizationLabels(item.customizations),
-];
 
 export default function CartPreviewDrawer() {
   const { isCartOpen, closeCart } = useRestaurantUi();
   const { items, totals, updateQuantity, clearCart } = useCart();
   const [isClearCartDialogOpen, setIsClearCartDialogOpen] = useState(false);
-  const { editState, loadingEditItemId, openEditModal, closeEditModal } = useCartItemEditModal();
+  const { editState, loadingEditItemId, openModal, closeEditModal } = useCartItemEditModal();
 
   const closeClearCartDialog = useCallback(() => {
     setIsClearCartDialogOpen(false);
@@ -40,18 +35,20 @@ export default function CartPreviewDrawer() {
     setIsClearCartDialogOpen(false);
   }, [clearCart]);
 
-  const activeRestaurant = useMemo(() => {
-    const restaurants = getAllRestaurants();
-    const activeRestaurantId = items[0]?.restaurantId;
+  const cartHeaderInfo = useMemo(() => {
+    const restaurantIds = new Set(items.map((item) => item.restaurantId));
 
-    if (!activeRestaurantId) {
-      return null;
+    if (restaurantIds.size > 1) {
+      return { mode: "multi" as const, restaurantCount: restaurantIds.size };
     }
 
-    return (
-      restaurants.find((restaurant) => restaurant.id === activeRestaurantId) ??
-      null
-    );
+    const restaurants = getAllRestaurants();
+    const activeRestaurantId = items[0]?.restaurantId;
+    const restaurant = activeRestaurantId
+      ? restaurants.find((restaurant) => restaurant.id === activeRestaurantId) ?? null
+      : null;
+
+    return { mode: "single" as const, restaurant };
   }, [items]);
 
   useEffect(() => {
@@ -94,26 +91,32 @@ export default function CartPreviewDrawer() {
             <div className="flex items-start justify-between gap-3">
               <div className="flex min-w-0 items-center gap-3">
                 <div className="relative size-11 shrink-0 overflow-hidden rounded-xl border border-slate-200 bg-slate-100">
-                  {activeRestaurant?.logo ? (
+                  {cartHeaderInfo.mode === "single" && cartHeaderInfo.restaurant?.logo ? (
                     <Image
-                      src={activeRestaurant.logo}
-                      alt={activeRestaurant.name}
+                      src={cartHeaderInfo.restaurant.logo}
+                      alt={cartHeaderInfo.restaurant.name}
                       fill
                       className="object-cover"
                       sizes="44px"
                     />
-                  ) : (
+                  ) : cartHeaderInfo.mode === "single" ? (
                     <div className="flex h-full items-center justify-center text-sm font-semibold text-slate-600">
-                      {activeRestaurant?.name?.[0] ?? "C"}
+                      {cartHeaderInfo.restaurant?.name?.[0] ?? "C"}
+                    </div>
+                  ) : (
+                    <div className="flex h-full items-center justify-center text-slate-600">
+                      <ShoppingCart className="h-5 w-5" strokeWidth={2.5} />
                     </div>
                   )}
                 </div>
                 <div className="min-w-0">
                   <p className="truncate text-base font-semibold text-slate-900">
-                    {activeRestaurant?.name ?? "Your cart"}
+                    {cartHeaderInfo.mode === "single" ? cartHeaderInfo.restaurant?.name ?? "Your cart" : "Your Cart"}
                   </p>
                   <p className="text-sm text-slate-600">
-                    Items: {items.length}
+                    {cartHeaderInfo.mode === "single"
+                      ? `Items: ${items.length}`
+                      : `${items.length} ${items.length === 1 ? "item" : "items"} · ${cartHeaderInfo.restaurantCount} restaurants`}
                   </p>
                 </div>
               </div>
@@ -127,50 +130,57 @@ export default function CartPreviewDrawer() {
             <p className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-500">
               Items
             </p>
-            <div className="mt-2 border-t border-slate-200" />
 
             {items.length === 0 ? (
               <EmptyStateCard variant="compact" align="left" title="Your cart is empty." className="py-6" />
             ) : (
               <ul className="mt-3 space-y-3 pb-2">
                 {items.map((item) => {
-                  const customizationDisplayList =
-                    getCustomizationDisplayList(item);
-                  const addonsLabel = customizationDisplayList.join(" • ");
+                  const summaryGroups = buildCartItemSummaryGroups(item);
+                  const activatePreview = () => openModal(item, "preview");
                   return (
                     <SurfaceCard
                       as="li"
                       key={item.id}
                       padding="compact"
-                      className="border-slate-200 px-3 py-3"
+                      onClick={activatePreview}
+                      className="cursor-pointer border-slate-200 px-3 py-3 transition hover:border-slate-300 hover:shadow-[0_4px_14px_rgba(15,23,42,0.08)] focus-within:border-slate-300 focus-within:shadow-[0_4px_14px_rgba(15,23,42,0.08)]"
                     >
                       <CartItemPreviewRow
                         item={item}
                         imageRenderer="next-image"
                         imageFallback="initial"
-                                macroStyle="detailed"
-                        customizationsText={addonsLabel}
-                        customizationsLineClamp={1}
+                        macroStyle="detailed"
+                        customizationGroups={summaryGroups}
+                        onActivate={activatePreview}
+                        activateLabel={`Preview ${item.name}`}
                         actions={
                           <>
-                            {item.selection.type !== "build-your-own" ? (
-                              <AppIconButton
-                                disabled={loadingEditItemId === item.id}
-                                onClick={() => {
-                                  openEditModal(item);
-                                }}
-                                aria-label={`Customize ${item.name}`}
-                              >
-                                <Pencil className="size-4" />
-                              </AppIconButton>
-                            ) : null}
+                            <CartControlButton
+                              disabled={loadingEditItemId === item.id}
+                              onClick={(event) => {
+                                event.stopPropagation();
+                                openModal(item, "edit");
+                              }}
+                              aria-label={`Customize ${item.name}`}
+                              title="Customize"
+                            >
+                              <Pencil className="h-4 w-4" strokeWidth={2.5} />
+                            </CartControlButton>
                             <QuantityStepper
+                              variant="cartLine"
                               value={item.quantity}
-                              onDecrement={() => updateQuantity(item.id, item.quantity - 1)}
-                              onIncrement={() => updateQuantity(item.id, item.quantity + 1)}
+                              onDecrement={(event) => {
+                                event.stopPropagation();
+                                updateQuantity(item.id, item.quantity - 1);
+                              }}
+                              onIncrement={(event) => {
+                                event.stopPropagation();
+                                updateQuantity(item.id, item.quantity + 1);
+                              }}
                               decrementLabel={item.quantity === 1 ? `Remove ${item.name} from cart` : `Decrease quantity of ${item.name}`}
                               incrementLabel={`Increase quantity of ${item.name}`}
-                              decrementContent={item.quantity === 1 ? <Trash2 className="size-4" strokeWidth={2.5} /> : undefined}
+                              decrementContent={item.quantity === 1 ? <Trash2 className="h-4 w-4" strokeWidth={2.5} /> : undefined}
                             />
                           </>
                         }
@@ -225,6 +235,7 @@ export default function CartPreviewDrawer() {
           customizationRules={editState.restaurant.customizationRules}
           closeBehavior="local"
           editCartItemId={editState.cartItemId}
+          initialMode={editState.mode}
           onClose={closeEditModal}
         />
       ) : null}

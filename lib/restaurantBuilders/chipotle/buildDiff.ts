@@ -89,8 +89,8 @@ export function diffChipotleBuildConfigurations(
       : "";
 
     // Quantity is only a meaningful, directly-comparable value for
-    // categories without their own portion-mode concept (toppings, sides).
-    // For proteins/rice/beans, "how much" is expressed via portion mode
+    // categories without their own portion-mode concept (sides). For
+    // proteins/rice/beans/toppings, "how much" is expressed via portion mode
     // instead, and quantity is just an internal encoding detail that can
     // legitimately differ (0.5 vs. 1 + "light") between the raw preset and
     // the normalized live state without representing an actual edit.
@@ -99,7 +99,7 @@ export function diffChipotleBuildConfigurations(
       hasDifference =
         originalConfiguration.proteinPortionMode !==
         currentConfiguration.proteinPortionMode;
-    } else if (category === "rice" || category === "beans") {
+    } else if (category === "rice" || category === "beans" || category === "toppings") {
       hasDifference =
         resolveEffectiveSplitPortionMode(originalConfiguration, ingredientId) !==
         resolveEffectiveSplitPortionMode(currentConfiguration, ingredientId);

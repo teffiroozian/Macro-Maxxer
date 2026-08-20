@@ -8,7 +8,7 @@ import { useCart } from "@/stores/cartStore";
 import { useCartAddConfirmation } from "@/components/CartAddConfirmationContext";
 import { customizationsFromLabels } from "@/lib/cart/customizationLabels";
 import {
-  buildComboCustomizationLabels,
+  buildComboCustomizations,
   buildStandardCartItemPayload,
 } from "@/lib/cart/standardItemConfiguration";
 import {
@@ -22,7 +22,7 @@ type CartSubmissionStandardState = {
   optionSelections?: CartSelectionOption[];
   selectedIngredientCustomizations: string[];
   nutritionPerItem: Nutrition;
-  combo: Parameters<typeof buildComboCustomizationLabels>[0];
+  combo: Parameters<typeof buildComboCustomizations>[0];
 };
 
 export function useItemCartSubmission({
@@ -49,34 +49,43 @@ export function useItemCartSubmission({
   const isEditing = Boolean(editingCartItem);
   const submitButtonLabel = isEditing ? "Update" : "Add to Cart";
 
-  const submitCartItem = useCallback(() => {
+  // Shared by both submitCartItem (closes the modal) and saveChangesInPlace
+  // (keeps it open, for the Customize → Save Changes → updated Preview
+  // flow) — builds the right payload for whichever item type this is and
+  // writes it to the cart store, without any closing/navigation behavior of
+  // its own.
+  const commitCartItem = useCallback(() => {
     if (chipotle.isPrebuiltBuilderItem) {
       const payload = createChipotleCartItemPayload({ item, quantity, chipotle });
 
-      onAfterSubmit();
-      window.setTimeout(() => {
-        if (editingCartItem) {
-          updateItem(editingCartItem.id, payload);
-          return;
-        }
+      if (editingCartItem) {
+        updateItem(editingCartItem.id, payload);
+        return;
+      }
 
-        requestAddItem({
-          id: crypto.randomUUID(),
-          restaurantId,
-          itemId: item.id ?? item.name,
-          ...payload,
-        });
-      }, 0);
+      requestAddItem({
+        id: crypto.randomUUID(),
+        restaurantId,
+        itemId: item.id ?? item.name,
+        ...payload,
+      });
       return;
     }
 
-    const comboCustomizationLabels = buildComboCustomizationLabels(standard.combo);
-    const customizationLabels = [...standard.selectedIngredientCustomizations, ...comboCustomizationLabels];
+    // Combo side/drink customizations are built directly from the resolved
+    // MenuItem/ItemVariant (buildComboCustomizations) rather than round-tripped
+    // through a display label + customizationFromLabel — that round-trip
+    // loses the real itemId/variantId for any catalog item whose name
+    // contains parentheses (e.g. Chick-fil-A's Sunjoy drinks), which broke
+    // the cart Preview modal's image/nutrition resolution for those items.
+    const comboCustomizations = buildComboCustomizations(standard.combo);
+    const ingredientCustomizations = customizationsFromLabels(standard.selectedIngredientCustomizations) ?? [];
+    const customizations = [...ingredientCustomizations, ...comboCustomizations];
     const standardPayload = buildStandardCartItemPayload({
       item,
       selectedVariant: standard.selectedVariant,
       quantity,
-      customizations: customizationsFromLabels(customizationLabels),
+      customizations: customizations.length > 0 ? customizations : undefined,
       optionSelections: standard.optionSelections,
       nutritionPerItem: standard.nutritionPerItem,
     });
@@ -91,39 +100,52 @@ export function useItemCartSubmission({
       }),
     };
 
-    onAfterSubmit();
-    window.setTimeout(() => {
-      if (editingCartItem) {
-        updateItem(editingCartItem.id, nextCartItemPayload);
-        return;
-      }
+    if (editingCartItem) {
+      updateItem(editingCartItem.id, nextCartItemPayload);
+      return;
+    }
 
-      requestAddItem({
-        id: crypto.randomUUID(),
-        restaurantId,
-        itemId: item.id ?? item.name,
-        ...nextCartItemPayload,
-      });
-    }, 0);
+    requestAddItem({
+      id: crypto.randomUUID(),
+      restaurantId,
+      itemId: item.id ?? item.name,
+      ...nextCartItemPayload,
+    });
   }, [
     requestAddItem,
     chipotle,
     editingCartItem,
     ingredients,
     item,
-    onAfterSubmit,
     quantity,
     restaurantId,
     standard,
     updateItem,
   ]);
 
+  // Add-to-cart / Done-from-preview / preset-review path: closes the modal
+  // first (so a toast/confirmation isn't hidden behind it), then commits on
+  // the next tick.
+  const submitCartItem = useCallback(() => {
+    onAfterSubmit();
+    window.setTimeout(commitCartItem, 0);
+  }, [commitCartItem, onAfterSubmit]);
+
+  // Customize → Save Changes path for an item already in the cart: commits
+  // immediately and leaves the modal open — the caller is responsible for
+  // switching back to the Preview state so the just-saved item is what
+  // renders there.
+  const saveChangesInPlace = useCallback(() => {
+    commitCartItem();
+  }, [commitCartItem]);
+
   return useMemo(
     () => ({
       isEditing,
       submitButtonLabel,
       submitCartItem,
+      saveChangesInPlace,
     }),
-    [isEditing, submitButtonLabel, submitCartItem]
+    [isEditing, submitButtonLabel, submitCartItem, saveChangesInPlace]
   );
 }

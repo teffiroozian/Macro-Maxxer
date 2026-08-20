@@ -2,9 +2,11 @@ import type { IngredientItem } from "@/types/menu";
 import type { Nutrition } from "@/types/nutrition";
 import {
   getProteinMultiplier,
+  getSplitExtraMultiplier,
   normalizeIngredientCategory,
   scaleNutritionValues,
   type ChipotleBuildConfiguration,
+  type SplitPortionMode,
 } from "@/lib/restaurantBuilders/chipotle";
 import { resolvePrimaryCategory } from "@/lib/ingredientTabs";
 
@@ -25,6 +27,15 @@ const EMPTY_NUTRITION: Nutrition = {
   fiber: 0,
   sugars: 0,
 };
+
+// Direct light/normal/extra multiplier for a single ingredient's own mode —
+// used as-is for toppings, and as the rice/beans fallback once fewer than
+// two same-category ingredients are selected (see the auto-half rule below).
+function getSplitPortionMultiplier(mode: SplitPortionMode | undefined) {
+  if (mode === "light") return 0.5;
+  if (mode === "extra") return getSplitExtraMultiplier();
+  return 1;
+}
 
 function addNutrition(totals: Nutrition, addend: Nutrition): Nutrition {
   return {
@@ -106,6 +117,7 @@ function computeChipotleIngredientContributions(
       }
 
       const category = categoryById.get(ingredientId) ?? "";
+      const splitPortionMode = buildConfiguration.splitPortionModeById[ingredientId];
       const portionMultiplier =
         category === "proteins"
           ? getProteinMultiplier(
@@ -115,12 +127,13 @@ function computeChipotleIngredientContributions(
           : category === "rice" || category === "beans"
             ? selectedSplitIdsByCategory[category].length >= 2
               ? 0.5
-              : buildConfiguration.splitPortionModeById[ingredientId] === "light"
-                ? 0.5
-                : buildConfiguration.splitPortionModeById[ingredientId] === "extra"
-                  ? 2
-                  : 1
-            : 1;
+              : getSplitPortionMultiplier(splitPortionMode)
+            : category === "toppings"
+              // Toppings don't share the rice/beans "two selected -> auto
+              // half" rule — each topping's light/normal/extra is direct,
+              // independent of how many other toppings are selected.
+              ? getSplitPortionMultiplier(splitPortionMode)
+              : 1;
 
       const tacoMultiplier = isTacoBuild
         ? TACO_SHELL_INGREDIENT_IDS.has(ingredientId)

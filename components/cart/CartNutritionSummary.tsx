@@ -1,5 +1,5 @@
 import type { NutritionTotals } from "@/lib/cart/nutrition";
-import NutritionLabelCard from "@/components/nutrition/NutritionLabelCard";
+import NutritionFactsPanel from "@/components/nutrition/NutritionFactsPanel";
 
 type CartNutritionSummaryProps = {
   nutritionTotals: NutritionTotals;
@@ -7,10 +7,10 @@ type CartNutritionSummaryProps = {
 
 export default function CartNutritionSummary({ nutritionTotals }: CartNutritionSummaryProps) {
   return (
-    <NutritionLabelCard
+    <NutritionFactsPanel
       totals={nutritionTotals}
       title="Nutrition Summary"
-      footer="Aggregated nutrition totals for all items currently in your cart."
+      caption="Totals for every item in your cart"
     />
   );
 }

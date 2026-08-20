@@ -4,6 +4,7 @@ import { useEffect, useMemo, useState } from "react";
 import Image from "next/image";
 import { macroColorTokens } from "@/components/nutrition/macroColorTokens";
 import VariantSelector from "@/components/VariantSelector";
+import { useGlobalSearch } from "@/components/GlobalSearchContext";
 import { useMenuItemCartAdapter } from "@/components/menu-item-card/useMenuItemCartAdapter";
 import { buildStandardCartItemPayload } from "@/lib/cart/standardItemConfiguration";
 import { resolveMenuItemVariantNutrition } from "@/lib/nutrition";
@@ -51,6 +52,7 @@ export default function MenuItemResultRow({
 
   const [isAddFeedbackVisible, setIsAddFeedbackVisible] = useState(false);
   const { requestAddItem, updateQuantity, getMatchingItem } = useMenuItemCartAdapter();
+  const { close: closeSearch } = useGlobalSearch();
 
   useEffect(() => {
     if (!isAddFeedbackVisible) return;
@@ -77,8 +79,9 @@ export default function MenuItemResultRow({
     });
 
     if (matchingCartItem) {
-      updateQuantity(matchingCartItem.id, matchingCartItem.quantity + 1);
+      updateQuantity(matchingCartItem.id, matchingCartItem.quantity + 1, { markAsJustAdded: true });
       setIsAddFeedbackVisible(true);
+      closeSearch();
       return;
     }
 
@@ -89,6 +92,10 @@ export default function MenuItemResultRow({
       nutritionPerItem: nutrition,
     });
 
+    // requestAddItem only invokes this callback once the item is actually in
+    // the cart — a cross-restaurant conflict holds it in a confirmation
+    // dialog instead (see CartAddConfirmationContext), so the search stays
+    // open/unchanged until the add truly succeeds.
     requestAddItem(
       {
         id: crypto.randomUUID(),
@@ -96,7 +103,10 @@ export default function MenuItemResultRow({
         itemId: itemKey,
         ...payload,
       },
-      () => setIsAddFeedbackVisible(true)
+      () => {
+        setIsAddFeedbackVisible(true);
+        closeSearch();
+      }
     );
   };
 
@@ -144,17 +154,20 @@ export default function MenuItemResultRow({
                 onChange={setSelectedVariantId}
                 ariaLabel={`${item.name} portion size`}
                 compact
+                dense
               />
             ) : null}
             <button
               type="button"
               disabled={isAddFeedbackVisible}
               onClick={handleQuickAdd}
-              className={`shrink-0 cursor-pointer rounded-full px-3 py-1 text-xs font-bold text-white transition ${
-                isAddFeedbackVisible ? "bg-green-600" : "bg-black/90 hover:bg-black"
+              className={`shrink-0 cursor-pointer rounded-full px-3 py-1 text-xs font-bold transition ${
+                isAddFeedbackVisible
+                  ? "border border-success/50 bg-white text-neutral-900"
+                  : "bg-black/90 text-white hover:bg-black"
               }`}
             >
-              {isAddFeedbackVisible ? "Added ✓" : "Quick Add"}
+              {isAddFeedbackVisible ? "Added" : "Quick Add"}
             </button>
           </span>
         ) : null}

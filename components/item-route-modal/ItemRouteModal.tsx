@@ -3,17 +3,18 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Image from "next/image";
-import { ArrowLeft, SlidersHorizontal, Utensils, X } from "lucide-react";
-import ItemDetailsPanel, { PortionSelector } from "@/components/ItemDetailsPanel";
+import { Pencil, Utensils, X } from "lucide-react";
+import ItemDetailsPanel, { ITEM_DETAILS_SECTION_IDS, PortionSelector } from "@/components/ItemDetailsPanel";
 import PresetBuildReview from "@/components/item-route-modal/PresetBuildReview";
-import PresetHeaderPillButton from "@/components/item-route-modal/PresetHeaderPillButton";
+import CartItemPreviewContent from "@/components/item-route-modal/CartItemPreviewContent";
 import ComparativeLabelBadge from "@/components/menu-item-card/ComparativeLabelBadge";
 import { computeComparativeLabels } from "@/lib/menuSections/comparativeLabels";
-import MacroTotalsGrid from "@/components/MacroTotalsGrid";
 import MacroStat from "@/components/nutrition/MacroStat";
 import MenuSections from "@/components/MenuSections";
 import NutritionFactsPanel from "@/components/nutrition/NutritionFactsPanel";
 import SelectedIngredientsReviewCard from "@/components/item-route-modal/SelectedIngredientsReviewCard";
+import { NutritionDetailsGrid } from "@/components/item-route-modal/SelectionSummaryPanels";
+import ItemModalStickyFooter from "@/components/item-route-modal/ItemModalStickyFooter";
 import type {
     MenuItem,
     ResolvedAddonGroups,
@@ -46,6 +47,7 @@ import {
 import { resolvePrimaryCategory } from "@/lib/ingredientTabs";
 import type { ChipotleBuildConfiguration } from "@/lib/restaurantBuilders/chipotle";
 import { fromUniversalChipotleBuildConfiguration } from "@/lib/restaurantBuilders/chipotle/cartAdapter";
+import { getIncludedIngredientIdsForChipotleBuild } from "@/lib/cart/buildItemAdapters";
 import {
     calculateChipotleBuildNutrition,
     calculateChipotleIngredientNutritionById,
@@ -94,6 +96,44 @@ function chipotleIngredientDomId(ingredientId: string) {
     return `chipotle-ingredient-${ingredientId}`;
 }
 
+// Current-value shortcut for the Portion/Order Type segmented controls,
+// shown in the Preview/Overview state instead of the full editable
+// selector — same label treatment, and still shows only the current value
+// (never the alternatives, never the selector's green selected-state
+// look), but is a real button: clicking it jumps straight into Customize
+// mode, scrolled to that exact control, the same way clicking a Side/Drink/
+// Dressings/Dipping Sauces card does.
+// A read-only preview chip for a configuration value (Portion, Order Type,
+// ...) that opens the Customize flow when clicked — not an inline dropdown,
+// so it deliberately looks like an editable value (current value + a small
+// pencil icon) rather than a select control (no chevron).
+function PreviewControlShortcut({
+    label,
+    value,
+    onClick,
+}: {
+    label: string;
+    value: string;
+    onClick?: () => void;
+}) {
+    return (
+        <div className="min-w-0">
+            <p className="text-[11px] font-semibold uppercase tracking-wide text-slate-400">
+                {label}
+            </p>
+            <button
+                type="button"
+                onClick={onClick}
+                aria-label={`Edit ${label}`}
+                className="mt-1.5 inline-flex h-9 max-w-full cursor-pointer items-center gap-1.5 rounded-full border border-black/15 bg-slate-50 px-4 text-[13px] font-semibold text-slate-700 transition hover:border-black/25 hover:bg-slate-100 active:bg-slate-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-strong sm:text-sm"
+            >
+                <span className="truncate">{value}</span>
+                <Pencil className="h-3 w-3 shrink-0 text-slate-400" strokeWidth={2.5} />
+            </button>
+        </div>
+    );
+}
+
 export default function ItemRouteModal({
     restaurantId,
     restaurantPath,
@@ -105,6 +145,8 @@ export default function ItemRouteModal({
     closeBehavior = "back",
     onClose,
     editCartItemId: editCartItemIdProp,
+    initialScrollSectionId,
+    initialMode,
 }: {
     restaurantId: string;
     restaurantPath: string;
@@ -116,6 +158,17 @@ export default function ItemRouteModal({
     closeBehavior?: "back" | "replace" | "local";
     onClose?: () => void;
     editCartItemId?: string | null;
+    // Cart page "jump straight to this section" shortcut (Side/Drink arrow,
+    // Customizations arrow) — scrolls to the matching standard-item section
+    // once on mount. No effect on the Chipotle build-your-own path, which has
+    // its own scroll-to-ingredient mechanism (chipotleCustomizeScrollTargetId).
+    initialScrollSectionId?: keyof typeof ITEM_DETAILS_SECTION_IDS | null;
+    // Cart page's Preview-vs-Edit entry point: card body click opens the
+    // read-only Preview overview, the pencil button opens straight into the
+    // relevant edit view. Only meaningful when editCartItemId resolves to a
+    // real cart item — irrelevant to the "add a new item" flow other callers
+    // use, so it's optional and defaults to jumping straight to edit there.
+    initialMode?: "preview" | "edit";
 }) {
     const router = useRouter();
     const searchParams = useSearchParams();
@@ -203,6 +256,21 @@ export default function ItemRouteModal({
     );
     const canCustomizeViaBuildPage =
         isChipotlePrebuiltBuilderItem && Boolean(editingCartItem);
+    // Fully-custom Build Your Own cart items have no in-modal edit view (the
+    // ingredient-category builder lives on the full restaurant build page) —
+    // for these the cart Preview's only "Customize" action is a route out to
+    // that page, so the modal never enters an internal edit stage for them.
+    const isBuildYourOwnCartItem =
+        editingCartItem?.selection.type === "build-your-own";
+    // A from-scratch build (not one of the catalog High Protein presets) —
+    // these have no "original" to diff/reset against, but otherwise share
+    // every bit of the preset review/customize machinery below, since both
+    // are ultimately just selectedChipotleIngredientItems hydrated from a
+    // CartBuildConfiguration.
+    const isTrueBuildYourOwnCartItem =
+        isBuildYourOwnCartItem && !isChipotlePrebuiltBuilderItem;
+    const usesChipotleBuildReview =
+        isChipotlePrebuiltBuilderItem || isTrueBuildYourOwnCartItem;
     const editingBuildConfiguration =
         editingCartItem?.selection.type === "build-your-own"
             ? editingCartItem.selection.buildConfiguration
@@ -335,7 +403,7 @@ export default function ItemRouteModal({
                 );
                 const rawQuantity = selectedEntry.quantity;
 
-                if (category === "rice" || category === "beans") {
+                if (category === "rice" || category === "beans" || category === "toppings") {
                     if (!(ingredientId in nextSplitModesById)) {
                         nextSplitModesById[ingredientId] =
                             rawQuantity <= 0.5
@@ -431,16 +499,24 @@ export default function ItemRouteModal({
     const [selectedChipotleTacoShellId, setSelectedChipotleTacoShellId] =
         useState<string>(initialChipotleBuilderState.selectedTacoShellId);
     const chipotleLockedIngredientIds = useMemo(() => {
+        // Prefer the real entree from the cart item being edited (covers
+        // burrito/quesadilla/salad/tacos/kids-meal) over guessing from the
+        // catalog item id — for a from-scratch build that id is a synthetic
+        // stand-in (e.g. "chipotle-build") and never matches, so this is
+        // also just a more accurate source of truth for preset edits too.
+        if (editingCartItem?.selection.type === "build-your-own") {
+            return new Set(getIncludedIngredientIdsForChipotleBuild(editingCartItem));
+        }
         const isBurrito = (item.id ?? "").toLowerCase().includes("burrito");
-        if (!isBurrito) return new Set<string>();
-        return new Set(["tortilla"]);
-    }, [item.id]);
+        return isBurrito ? new Set(["tortilla"]) : new Set<string>();
+    }, [item.id, editingCartItem]);
     // Slice 10: prebuilt Chipotle items open on a read-only preset review by
     // default, with an explicit Customize action to reach the same
-    // ingredient-picker experience Build Your Own uses.
+    // ingredient-picker experience Build Your Own uses. The cart's pencil
+    // button (initialMode="edit") skips straight to Customize instead.
     const [chipotlePresetStage, setChipotlePresetStage] = useState<
         "review" | "customize"
-    >("review");
+    >(initialMode === "edit" ? "customize" : "review");
     // Customize edits a temporary draft: entering Customize snapshots
     // whatever build is currently live (the factory preset, or a build the
     // user already saved earlier), Cancel restores exactly that snapshot,
@@ -524,6 +600,81 @@ export default function ItemRouteModal({
         });
         return () => cancelAnimationFrame(frame);
     }, [chipotlePresetStage, chipotleCustomizeScrollTargetId]);
+
+    // Generic counterpart to chipotlePresetStage above, for every cart item
+    // that isn't a Chipotle editable preset (standard items, combos, fully
+    // custom Build Your Own) — the cart's Preview overview and its "jump
+    // into edit at this section" cards drive this instead.
+    const [cartPreviewStage, setCartPreviewStage] = useState<
+        "preview" | "edit"
+    >(initialMode === "edit" ? "edit" : "preview");
+    const [pendingPreviewScrollSectionId, setPendingPreviewScrollSectionId] =
+        useState<keyof typeof ITEM_DETAILS_SECTION_IDS | null>(null);
+    const handleOpenCartPreviewSection = useCallback(
+        (section: keyof typeof ITEM_DETAILS_SECTION_IDS) => {
+            setCartPreviewStage("edit");
+            setPendingPreviewScrollSectionId(section);
+        },
+        [],
+    );
+    const handleBackToCartPreviewOverview = useCallback(() => {
+        setCartPreviewStage("preview");
+    }, []);
+    // Preview state's Portion/Order Type shortcut buttons enter Customize.
+    // Portion still scrolls to its own control (same "enter Customize, scroll
+    // to this exact control" behavior as the Side/Drink/Dressings/Dipping
+    // Sauces cards). Order Type deliberately does not register a scroll
+    // target: the Order Type control sits directly above the Customize
+    // Ingredients section, so scrolling it to the top of the viewport was
+    // effectively scrolling the modal down toward Customize Ingredients —
+    // Order Type should just switch into Customize in place. Chipotle preset
+    // items never actually render these shortcuts (they have no variant/
+    // combo-type concept), but route through their own customize entry point
+    // for correctness if that ever changes.
+    const handleOpenOverviewControl = useCallback(
+        (section: "portion" | "orderType") => {
+            if (isChipotlePrebuiltBuilderItem) {
+                handleEnterChipotleCustomize();
+                return;
+            }
+            if (section === "orderType") {
+                setCartPreviewStage("edit");
+                return;
+            }
+            handleOpenCartPreviewSection(section);
+        },
+        [
+            isChipotlePrebuiltBuilderItem,
+            handleEnterChipotleCustomize,
+            handleOpenCartPreviewSection,
+        ],
+    );
+    useEffect(() => {
+        if (cartPreviewStage !== "edit" || !pendingPreviewScrollSectionId) {
+            return;
+        }
+        const targetId = ITEM_DETAILS_SECTION_IDS[pendingPreviewScrollSectionId];
+        const frame = requestAnimationFrame(() => {
+            document.getElementById(targetId)?.scrollIntoView({ behavior: "smooth", block: "start" });
+            setPendingPreviewScrollSectionId(null);
+        });
+        return () => cancelAnimationFrame(frame);
+    }, [cartPreviewStage, pendingPreviewScrollSectionId]);
+
+    // Standard (non-Chipotle) counterpart to the scroll-to-ingredient effect
+    // above — jumps the modal straight to its Side/Drink/Customize
+    // ingredients section once on mount, for the cart page's per-section
+    // "edit this part" shortcuts. Runs once (initialScrollSectionId is a
+    // prop, not state the cart page changes after open) since the modal
+    // itself fully remounts on every open.
+    useEffect(() => {
+        if (!initialScrollSectionId) return;
+        const targetId = ITEM_DETAILS_SECTION_IDS[initialScrollSectionId];
+        const frame = requestAnimationFrame(() => {
+            document.getElementById(targetId)?.scrollIntoView({ behavior: "smooth", block: "start" });
+        });
+        return () => cancelAnimationFrame(frame);
+    }, [initialScrollSectionId]);
 
     const selectedSauceOptions = useMemo(
         () => resolveSelectedSauceOptions({ addons, selectedSauceCounts }),
@@ -740,6 +891,17 @@ export default function ItemRouteModal({
                       ? 2
                       : 1;
             }
+            if (category === "toppings") {
+                // No auto-half sharing rule for toppings — each one's
+                // light/normal/extra is direct, unlike rice/beans.
+                const splitMode =
+                    chipotleSplitPortionModeById[ingredientId] ?? "normal";
+                return splitMode === "light"
+                    ? 0.5
+                    : splitMode === "extra"
+                      ? 2
+                      : 1;
+            }
             return 1;
         },
         [
@@ -859,6 +1021,10 @@ export default function ItemRouteModal({
                                   chipotleSplitPortionModeById[ingredientId] ??
                                       "normal",
                               );
+                } else if (category === "toppings") {
+                    acc[ingredientId] = getSplitPortionLabel(
+                        chipotleSplitPortionModeById[ingredientId] ?? "normal",
+                    );
                 }
                 return acc;
             }, {}),
@@ -892,6 +1058,9 @@ export default function ItemRouteModal({
                             ? "light"
                             : (chipotleSplitPortionModeById[ingredientId] ??
                               "normal");
+                } else if (category === "toppings") {
+                    acc[ingredientId] =
+                        chipotleSplitPortionModeById[ingredientId] ?? "normal";
                 }
                 return acc;
             }, {}),
@@ -931,7 +1100,7 @@ export default function ItemRouteModal({
     );
     // The available portion options (if any) for each currently selected
     // ingredient — powers the Selected Ingredients quick-edit dropdown.
-    // Ingredients with no entry here (toppings, sides) get no dropdown.
+    // Ingredients with no entry here (sides) get no dropdown.
     const chipotleSelectedPortionModeOptionsById = useMemo(() => {
         const optionsById: Record<string, ChipotlePortionModeOption[]> = {};
         Object.entries(selectedChipotleIngredientItems).forEach(
@@ -958,7 +1127,7 @@ export default function ItemRouteModal({
                 return;
             }
             if (
-                (category === "rice" || category === "beans") &&
+                (category === "rice" || category === "beans" || category === "toppings") &&
                 (modeId === "light" || modeId === "normal" || modeId === "extra")
             ) {
                 setChipotleSplitPortionModeById((prev) => ({
@@ -1050,7 +1219,10 @@ export default function ItemRouteModal({
             ingredients,
         ],
     );
-    const chipotleCustomizeButtonLabel = chipotleBuildDiff.isCustomized
+    // A from-scratch build has no factory preset to diff against, so it
+    // never shows a difference count / Reset to Original / Added-Modified
+    // badges — only a real editable preset does.
+    const chipotleCustomizeButtonLabel = isChipotlePrebuiltBuilderItem && chipotleBuildDiff.isCustomized
         ? `Customize (${chipotleBuildDiff.differenceCount})`
         : "Customize";
     const chipotleGroupedSelectedIngredientEntries = useMemo(() => {
@@ -1140,6 +1312,19 @@ export default function ItemRouteModal({
         ],
     );
 
+    // True whenever the modal is currently showing a read-only review body
+    // (PresetBuildReview / CartItemPreviewContent) rather than an editable
+    // customize form — mirrors the same branching used to pick the sticky
+    // footer's "preview" vs "customize" mode below, and drives whether the
+    // Portion/Order Type controls in the header render as editable
+    // segmented controls or as static read-only chips. A brand-new standard
+    // item (no editingCartItem, not a Chipotle preset) has no separate
+    // review stage at all — it opens straight into the editable form — so
+    // it falls through to `false` here.
+    const isOverviewPreviewState = usesChipotleBuildReview
+        ? chipotlePresetStage === "review"
+        : Boolean(editingCartItem) && cartPreviewStage === "preview";
+
     const handleClose = () => {
         if (closeBehavior === "local") {
             onClose?.();
@@ -1188,11 +1373,7 @@ export default function ItemRouteModal({
         };
     }, []);
 
-    const {
-        isEditing: isCustomizeMode,
-        submitButtonLabel,
-        submitCartItem,
-    } = useItemCartSubmission({
+    const { submitButtonLabel, submitCartItem, saveChangesInPlace } = useItemCartSubmission({
         restaurantId,
         item,
         ingredients,
@@ -1213,7 +1394,7 @@ export default function ItemRouteModal({
             },
         },
         chipotle: {
-            isPrebuiltBuilderItem: isChipotlePrebuiltBuilderItem,
+            isPrebuiltBuilderItem: usesChipotleBuildReview,
             buildConfiguration: chipotleBuildConfiguration,
             selectedIngredientItems: selectedChipotleIngredientItems,
             selectedIngredientVariantIds: selectedChipotleIngredientVariantIds,
@@ -1226,6 +1407,14 @@ export default function ItemRouteModal({
         },
         onAfterSubmit: handleClose,
     });
+    // Customize → Save Changes for an item already in the cart: commit the
+    // edit, then land back on the (now up-to-date) Preview state instead of
+    // closing — the modal stays open so the user can review what changed
+    // before dismissing it with Done.
+    const handleSaveCartItemChanges = useCallback(() => {
+        saveChangesInPlace();
+        setCartPreviewStage("preview");
+    }, [saveChangesInPlace]);
     const handleDecrementQuantity = () => {
         setQuantity((prev) => Math.max(1, prev - 1));
     };
@@ -1247,7 +1436,7 @@ export default function ItemRouteModal({
                 onClick={handleClose}
                 aria-label="Close item modal"
             />
-            <div className="item-route-modal-root relative flex h-[92dvh] w-full flex-col overflow-hidden rounded-t-3xl bg-white shadow-[0_24px_70px_rgba(15,23,42,0.35)] sm:h-auto sm:max-h-[88vh] sm:min-h-[78vh] sm:w-full sm:max-w-[620px] sm:rounded-3xl md:max-w-[760px] lg:max-w-[940px]">
+            <div className="item-route-modal-root relative flex h-[92dvh] w-full flex-col overflow-hidden rounded-t-3xl bg-white shadow-[0_24px_70px_rgba(15,23,42,0.35)] sm:h-auto sm:max-h-[88vh] sm:min-h-[78vh] sm:w-full sm:max-w-[660px] sm:rounded-3xl md:max-w-[800px] lg:max-w-[1000px]">
                 <div
                     className={`absolute inset-x-0 top-0 z-20 flex items-center justify-between gap-3 border-b bg-white px-4 py-3 transition-[opacity,transform,box-shadow,border-color] duration-300 ease-out sm:px-6 sm:py-4 lg:px-8 ${
                         isOverviewCollapsed
@@ -1324,7 +1513,7 @@ export default function ItemRouteModal({
                                 <h1 className="item-overview-title font-heading mt-1.5 min-w-0 text-lg font-bold leading-tight tracking-tight text-neutral-900 sm:truncate sm:pr-14 sm:text-xl lg:text-2xl">
                                     {item.name}
                                 </h1>
-                                <div className="item-overview-macros mt-5 flex flex-nowrap items-center justify-between gap-x-2 sm:mt-3 sm:flex-wrap sm:justify-start sm:gap-x-5 sm:gap-y-2">
+                                <div className="item-overview-macros mt-5 flex flex-wrap items-center justify-start gap-x-4 gap-y-2 sm:mt-3 sm:gap-x-5">
                                     <MacroStat
                                         macroKey="calories"
                                         value={Math.round(
@@ -1370,77 +1559,125 @@ export default function ItemRouteModal({
                                     variants.length > 0 &&
                                     !item.hideVariantSelector) ||
                                 isComboEligibleCategory ? (
-                                    <div className="item-overview-options mt-8 flex flex-col gap-5 sm:flex-row sm:items-end sm:gap-4">
-                                        {variants &&
-                                        variants.length > 0 &&
-                                        !item.hideVariantSelector ? (
-                                            <PortionSelector
-                                                variants={variants}
-                                                selectedVariantId={
-                                                    selectedVariantId
-                                                }
-                                                onSelectVariant={
-                                                    setSelectedVariantId
-                                                }
-                                                layout="top"
-                                                className="min-w-0 sm:w-[55%]"
-                                            />
-                                        ) : null}
-                                        {isComboEligibleCategory ? (
-                                            <div className="min-w-0 sm:w-[45%]">
-                                                <p className="text-[11px] font-semibold uppercase tracking-wide text-slate-400">
-                                                    Order Type
-                                                </p>
-                                                <div
-                                                    role="radiogroup"
-                                                    aria-label="Order type"
-                                                    className="mt-1.5 grid w-full grid-cols-2 gap-1 rounded-full bg-slate-100 p-1"
-                                                >
-                                                    {comboTypeOptions.map(
-                                                        (option) => {
-                                                            const isActive =
-                                                                comboType ===
-                                                                option.id;
-                                                            const Icon =
-                                                                option.icon;
+                                    <div className="item-overview-options mt-8 flex flex-col gap-5 lg:flex-row lg:items-end lg:gap-4">
+                                        {isOverviewPreviewState ? (
+                                            <>
+                                                {variants &&
+                                                variants.length > 0 &&
+                                                !item.hideVariantSelector &&
+                                                selectedVariant ? (
+                                                    <PreviewControlShortcut
+                                                        label="Portion"
+                                                        value={
+                                                            selectedVariant.label
+                                                        }
+                                                        onClick={() =>
+                                                            handleOpenOverviewControl(
+                                                                "portion",
+                                                            )
+                                                        }
+                                                    />
+                                                ) : null}
+                                                {isComboEligibleCategory ? (
+                                                    <PreviewControlShortcut
+                                                        label="Order Type"
+                                                        value={
+                                                            comboTypeOptions.find(
+                                                                (option) =>
+                                                                    option.id ===
+                                                                    comboType,
+                                                            )?.label ?? ""
+                                                        }
+                                                        onClick={() =>
+                                                            handleOpenOverviewControl(
+                                                                "orderType",
+                                                            )
+                                                        }
+                                                    />
+                                                ) : null}
+                                            </>
+                                        ) : (
+                                            <>
+                                                {variants &&
+                                                variants.length > 0 &&
+                                                !item.hideVariantSelector ? (
+                                                    <PortionSelector
+                                                        id={
+                                                            ITEM_DETAILS_SECTION_IDS.portion
+                                                        }
+                                                        variants={variants}
+                                                        selectedVariantId={
+                                                            selectedVariantId
+                                                        }
+                                                        onSelectVariant={
+                                                            setSelectedVariantId
+                                                        }
+                                                        layout="top"
+                                                        className="min-w-0 lg:w-[55%]"
+                                                    />
+                                                ) : null}
+                                                {isComboEligibleCategory ? (
+                                                    <div
+                                                        id={
+                                                            ITEM_DETAILS_SECTION_IDS.orderType
+                                                        }
+                                                        className="min-w-0 lg:w-[45%]"
+                                                    >
+                                                        <p className="text-[11px] font-semibold uppercase tracking-wide text-slate-400">
+                                                            Order Type
+                                                        </p>
+                                                        <div
+                                                            role="radiogroup"
+                                                            aria-label="Order type"
+                                                            className="mt-1.5 grid w-full grid-cols-2 gap-1 rounded-full bg-slate-100 p-1"
+                                                        >
+                                                            {comboTypeOptions.map(
+                                                                (option) => {
+                                                                    const isActive =
+                                                                        comboType ===
+                                                                        option.id;
+                                                                    const Icon =
+                                                                        option.icon;
 
-                                                            return (
-                                                                <button
-                                                                    key={
-                                                                        option.id
-                                                                    }
-                                                                    type="button"
-                                                                    role="radio"
-                                                                    aria-checked={
-                                                                        isActive
-                                                                    }
-                                                                    onClick={() =>
-                                                                        setComboType(
-                                                                            option.id,
-                                                                        )
-                                                                    }
-                                                                    className={`box-border flex h-9 min-w-0 cursor-pointer items-center justify-center gap-1 whitespace-nowrap rounded-full border px-2 text-[13px] font-semibold transition-colors duration-150 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-strong sm:gap-1.5 sm:px-5 sm:text-sm ${
-                                                                        isActive
-                                                                            ? "border-transparent bg-accent-strong text-white/95 shadow-sm"
-                                                                            : "border-transparent text-slate-500 hover:bg-white/70 active:bg-white"
-                                                                    }`}
-                                                                >
-                                                                    <Icon
-                                                                        className={`h-4 w-4 shrink-0 ${isActive ? "text-white/95" : "text-slate-400"}`}
-                                                                        strokeWidth={
-                                                                            2.3
-                                                                        }
-                                                                    />
-                                                                    {
-                                                                        option.label
-                                                                    }
-                                                                </button>
-                                                            );
-                                                        },
-                                                    )}
-                                                </div>
-                                            </div>
-                                        ) : null}
+                                                                    return (
+                                                                        <button
+                                                                            key={
+                                                                                option.id
+                                                                            }
+                                                                            type="button"
+                                                                            role="radio"
+                                                                            aria-checked={
+                                                                                isActive
+                                                                            }
+                                                                            onClick={() =>
+                                                                                setComboType(
+                                                                                    option.id,
+                                                                                )
+                                                                            }
+                                                                            className={`box-border flex h-9 min-w-0 cursor-pointer items-center justify-center gap-1 whitespace-nowrap rounded-full border px-2 text-[13px] font-semibold transition-colors duration-150 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-strong sm:gap-1.5 sm:px-5 sm:text-sm ${
+                                                                                isActive
+                                                                                    ? "border-transparent bg-accent-strong text-white/95 shadow-sm"
+                                                                                    : "border-transparent text-slate-500 hover:bg-white/70 active:bg-white"
+                                                                            }`}
+                                                                        >
+                                                                            <Icon
+                                                                                className={`h-4 w-4 shrink-0 ${isActive ? "text-white/95" : "text-slate-400"}`}
+                                                                                strokeWidth={
+                                                                                    2.3
+                                                                                }
+                                                                            />
+                                                                            {
+                                                                                option.label
+                                                                            }
+                                                                        </button>
+                                                                    );
+                                                                },
+                                                            )}
+                                                        </div>
+                                                    </div>
+                                                ) : null}
+                                            </>
+                                        )}
                                     </div>
                                 ) : null}
                             </div>
@@ -1458,7 +1695,7 @@ export default function ItemRouteModal({
                         <div className="my-6 h-px bg-black/[0.06] sm:my-7" />
 
                         <div className="mt-6 w-full">
-                            {isChipotlePrebuiltBuilderItem ? (
+                            {usesChipotleBuildReview ? (
                                 chipotlePresetStage === "review" ? (
                                     <div
                                         key="chipotle-preset-review"
@@ -1478,9 +1715,12 @@ export default function ItemRouteModal({
                                                 chipotleLockedIngredientIds
                                             }
                                             diffStatusById={
-                                                chipotleBuildDiff.statusById
+                                                isChipotlePrebuiltBuilderItem
+                                                    ? chipotleBuildDiff.statusById
+                                                    : {}
                                             }
                                             isCustomized={
+                                                isChipotlePrebuiltBuilderItem &&
                                                 chipotleBuildDiff.isCustomized
                                             }
                                             onResetToOriginal={
@@ -1490,13 +1730,13 @@ export default function ItemRouteModal({
                                                 handleCustomizeIngredientFromOverview
                                             }
                                         />
-                                        <div className="grid grid-cols-1 gap-3 rounded-3xl border border-black/8 bg-app-background p-3 md:grid-cols-2">
-                                            <div className="order-2 md:order-1">
+                                        <NutritionDetailsGrid
+                                            nutritionFacts={
                                                 <NutritionFactsPanel
                                                     totals={chipotleAdjustedTotals}
                                                 />
-                                            </div>
-                                            <div className="order-1 md:order-2">
+                                            }
+                                            details={
                                                 <SelectedIngredientsReviewCard
                                                     selectedBuildName={item.name}
                                                     groupedSelectedIngredientEntries={
@@ -1521,8 +1761,8 @@ export default function ItemRouteModal({
                                                         handleChipotlePortionModeChange
                                                     }
                                                 />
-                                            </div>
-                                        </div>
+                                            }
+                                        />
                                     </div>
                                 ) : (
                                 <div
@@ -1855,6 +2095,11 @@ export default function ItemRouteModal({
                                     </div>
                                 </div>
                                 )
+                            ) : editingCartItem && cartPreviewStage === "preview" ? (
+                                <CartItemPreviewContent
+                                    cartItem={editingCartItem}
+                                    onOpenSection={handleOpenCartPreviewSection}
+                                />
                             ) : (
                                 <ItemDetailsPanel
                                     item={item}
@@ -2102,142 +2347,102 @@ export default function ItemRouteModal({
                     </div>
                 </div>
 
-                <div
-                    className="flex h-fit shrink-0 flex-col gap-3 border-t border-black/[0.06] bg-white px-4 pt-3 sm:px-6 sm:py-4 lg:flex-row lg:items-center lg:justify-between lg:px-8"
-                    style={{
-                        paddingBottom:
-                            "max(0.75rem, env(safe-area-inset-bottom))",
+                <ItemModalStickyFooter
+                    macros={{
+                        calories: Math.round(
+                            (usesChipotleBuildReview
+                                ? chipotleAdjustedTotals.calories
+                                : (nutrition.calories ?? 0)) * quantity,
+                        ),
+                        protein: Math.round(
+                            (usesChipotleBuildReview
+                                ? chipotleAdjustedTotals.protein
+                                : (nutrition.protein ?? 0)) * quantity,
+                        ),
+                        carbs: Math.round(
+                            (usesChipotleBuildReview
+                                ? chipotleAdjustedTotals.carbs
+                                : (nutrition.carbs ?? 0)) * quantity,
+                        ),
+                        totalFat: Math.round(
+                            (usesChipotleBuildReview
+                                ? chipotleAdjustedTotals.totalFat
+                                : (nutrition.totalFat ?? 0)) * quantity,
+                        ),
                     }}
-                >
-                    <MacroTotalsGrid
-                        macros={{
-                            calories: Math.round(
-                                (isChipotlePrebuiltBuilderItem
-                                    ? chipotleAdjustedTotals.calories
-                                    : (nutrition.calories ?? 0)) * quantity,
-                            ),
-                            protein: Math.round(
-                                (isChipotlePrebuiltBuilderItem
-                                    ? chipotleAdjustedTotals.protein
-                                    : (nutrition.protein ?? 0)) * quantity,
-                            ),
-                            carbs: Math.round(
-                                (isChipotlePrebuiltBuilderItem
-                                    ? chipotleAdjustedTotals.carbs
-                                    : (nutrition.carbs ?? 0)) * quantity,
-                            ),
-                            totalFat: Math.round(
-                                (isChipotlePrebuiltBuilderItem
-                                    ? chipotleAdjustedTotals.totalFat
-                                    : (nutrition.totalFat ?? 0)) * quantity,
-                            ),
-                        }}
-                        size="panel"
-                        className="w-full justify-between gap-2 sm:gap-3 lg:!w-fit lg:justify-start"
-                        itemClassName="px-2 py-0.5"
-                        labelClassName="text-[#64748b]"
-                    />
-                    <div className="flex w-full flex-row flex-nowrap items-center gap-1.5 sm:gap-2 lg:w-auto">
-                        {isChipotlePrebuiltBuilderItem ? (
-                            chipotlePresetStage === "customize" ? (
-                                <>
-                                    <PresetHeaderPillButton
-                                        icon={ArrowLeft}
-                                        onClick={handleCancelChipotleCustomize}
-                                        className="shrink-0"
-                                    >
-                                        Back to Overview
-                                    </PresetHeaderPillButton>
-                                    <PresetHeaderPillButton
-                                        tone="solid"
-                                        onClick={handleSaveChipotleCustomize}
-                                        className="flex-1"
-                                    >
-                                        Save Changes
-                                    </PresetHeaderPillButton>
-                                </>
-                            ) : (
-                                <>
-                                    <div className="inline-flex h-10 shrink-0 items-center gap-0.5 rounded-full border border-black/15 bg-white px-1 sm:gap-1 sm:px-1.5">
-                                        <button
-                                            type="button"
-                                            onClick={handleDecrementQuantity}
-                                            className="cursor-pointer inline-flex size-6 shrink-0 items-center justify-center rounded-full text-sm font-semibold text-slate-700 transition hover:bg-slate-100 sm:size-7"
-                                            aria-label={`Decrease quantity of ${item.name}`}
-                                        >
-                                            -
-                                        </button>
-                                        <span className="min-w-4 text-center text-sm font-bold text-slate-900 sm:min-w-5">
-                                            {quantity}
-                                        </span>
-                                        <button
-                                            type="button"
-                                            onClick={handleIncrementQuantity}
-                                            className="cursor-pointer inline-flex size-6 shrink-0 items-center justify-center rounded-full text-sm font-semibold text-slate-700 transition hover:bg-slate-100 sm:size-7"
-                                            aria-label={`Increase quantity of ${item.name}`}
-                                        >
-                                            +
-                                        </button>
-                                    </div>
-                                    <PresetHeaderPillButton
-                                        icon={SlidersHorizontal}
-                                        onClick={handleEnterChipotleCustomize}
-                                        className="shrink-0"
-                                    >
-                                        {chipotleCustomizeButtonLabel}
-                                    </PresetHeaderPillButton>
-                                    <PresetHeaderPillButton
-                                        tone="solid"
-                                        onClick={submitCartItem}
-                                        className="min-w-0 flex-1"
-                                    >
-                                        {submitButtonLabel}
-                                    </PresetHeaderPillButton>
-                                </>
-                            )
-                        ) : (
-                            <>
-                                <div className="inline-flex h-12 flex-1 items-center justify-between rounded-2xl border border-slate-200 bg-slate-100 p-1 lg:h-auto lg:w-[104px] lg:flex-none">
-                                    <button
-                                        type="button"
-                                        onClick={handleDecrementQuantity}
-                                        className="cursor-pointer inline-flex size-9 items-center justify-center rounded-xl text-base font-semibold text-slate-700 transition hover:bg-white"
-                                        aria-label={`Decrease quantity of ${item.name}`}
-                                    >
-                                        -
-                                    </button>
-                                    <span className="min-w-8 text-center text-sm font-bold text-slate-900">
-                                        {quantity}
-                                    </span>
-                                    <button
-                                        type="button"
-                                        onClick={handleIncrementQuantity}
-                                        className="cursor-pointer inline-flex size-9 items-center justify-center rounded-xl text-base font-semibold text-slate-700 transition hover:bg-white"
-                                        aria-label={`Increase quantity of ${item.name}`}
-                                    >
-                                        +
-                                    </button>
-                                </div>
-                                {isCustomizeMode ? (
-                                    <button
-                                        type="button"
-                                        className="cursor-pointer h-12 rounded-2xl border border-black/15 bg-white px-4 py-2.5 text-base font-bold text-black/80 transition hover:bg-slate-50 sm:px-6"
-                                        onClick={handleClose}
-                                    >
-                                        Cancel
-                                    </button>
-                                ) : null}
-                                <button
-                                    type="button"
-                                    className="cursor-pointer h-12 flex-1 rounded-2xl bg-neutral-900 px-4 py-2.5 text-base font-bold text-white transition hover:bg-neutral-800 sm:px-6 lg:flex-none"
-                                    onClick={submitCartItem}
-                                >
-                                    {submitButtonLabel}
-                                </button>
-                            </>
-                        )}
-                    </div>
-                </div>
+                    state={
+                        usesChipotleBuildReview
+                            ? chipotlePresetStage === "customize"
+                                ? {
+                                      mode: "customize",
+                                      onBackToOverview:
+                                          handleCancelChipotleCustomize,
+                                      onSaveChanges:
+                                          handleSaveChipotleCustomize,
+                                  }
+                                : {
+                                      mode: "preview",
+                                      quantity,
+                                      itemName: item.name,
+                                      onIncrementQuantity:
+                                          handleIncrementQuantity,
+                                      onDecrementQuantity:
+                                          handleDecrementQuantity,
+                                      onCustomize:
+                                          handleEnterChipotleCustomize,
+                                      customizeLabel:
+                                          chipotleCustomizeButtonLabel,
+                                      // This stage is the Preview/Overview
+                                      // read-out, same as the standard cart
+                                      // item's Preview footer — when opened
+                                      // from the cart (editingCartItem set),
+                                      // "Update" wrongly implies an edit is
+                                      // being actively saved here, so it
+                                      // reads as "Done" instead, matching
+                                      // the standard item Preview button.
+                                      // Adding a brand-new item keeps its
+                                      // real "Add to Cart" label.
+                                      primaryLabel: editingCartItem
+                                          ? "Done"
+                                          : submitButtonLabel,
+                                      onPrimaryAction: submitCartItem,
+                                  }
+                            : editingCartItem && cartPreviewStage === "preview"
+                              ? {
+                                    mode: "preview",
+                                    quantity,
+                                    itemName: item.name,
+                                    onIncrementQuantity:
+                                        handleIncrementQuantity,
+                                    onDecrementQuantity:
+                                        handleDecrementQuantity,
+                                    onCustomize: () =>
+                                        setCartPreviewStage("edit"),
+                                    primaryLabel: "Done",
+                                    onPrimaryAction: handleClose,
+                                }
+                              : editingCartItem
+                                ? {
+                                      mode: "customize",
+                                      onBackToOverview:
+                                          handleBackToCartPreviewOverview,
+                                      onSaveChanges:
+                                          handleSaveCartItemChanges,
+                                      saveLabel: "Save Changes",
+                                  }
+                                : {
+                                      mode: "preview",
+                                      quantity,
+                                      itemName: item.name,
+                                      onIncrementQuantity:
+                                          handleIncrementQuantity,
+                                      onDecrementQuantity:
+                                          handleDecrementQuantity,
+                                      primaryLabel: submitButtonLabel,
+                                      onPrimaryAction: submitCartItem,
+                                  }
+                    }
+                />
             </div>
         </div>
     );

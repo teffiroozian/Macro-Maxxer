@@ -129,13 +129,13 @@ const SPLIT_PORTION_MODE_OPTIONS: ChipotlePortionModeOption[] = [
 ];
 
 // The available portion options for a given (normalized) ingredient
-// category — undefined for categories with no portion-mode concept
-// (toppings, sides), which is how callers know not to show a picker at all.
+// category — undefined for categories with no portion-mode concept (sides),
+// which is how callers know not to show a picker at all.
 export function getChipotlePortionModeOptions(
   category: string,
 ): ChipotlePortionModeOption[] | undefined {
   if (category === "proteins") return PROTEIN_PORTION_MODE_OPTIONS;
-  if (category === "rice" || category === "beans") return SPLIT_PORTION_MODE_OPTIONS;
+  if (category === "rice" || category === "beans" || category === "toppings") return SPLIT_PORTION_MODE_OPTIONS;
   return undefined;
 }
 

@@ -61,6 +61,7 @@ import StickyRestaurantBar from "../../StickyRestaurantBar";
 import StickyMacroTotalsBar from "../../StickyMacroTotalsBar";
 import MacroTotalsGrid from "@/components/MacroTotalsGrid";
 import { useCart } from "@/stores/cartStore";
+import { useLastAddedPreviewOpen } from "@/hooks/useLastAddedPreviewOpen";
 import { useCartAddConfirmation } from "@/components/CartAddConfirmationContext";
 import { useBuildInProgressGuard } from "@/components/BuildInProgressGuardContext";
 import {
@@ -97,7 +98,6 @@ import {
   scaleNutritionValues,
 } from "@/lib/restaurantBuilders/chipotle";
 import { resolvePrimaryCategory } from "@/lib/ingredientTabs";
-import { customizationsFromLabels } from "@/lib/cart/customizationLabels";
 import { INGREDIENT_PROTEIN_OPTIONS, MEAL_PROTEIN_OPTIONS } from "@/lib/menuSections/filterOptions";
 import {
   buildAllChipotleIngredientMenuItems,
@@ -393,6 +393,14 @@ export default function ChipotleRestaurantBuilderView({
   const { items: cartItems, updateItem } = useCart();
   const { requestAddItem } = useCartAddConfirmation();
   const { guardNavigation, registerActiveBuild } = useBuildInProgressGuard();
+  // The mobile "Just Added" bottom sheet (CartIconDropdown's sheet variant,
+  // mounted in the mobile nav) and this build page's own sticky footer both
+  // pin themselves to the bottom of the viewport — layering them with
+  // z-index alone still leaves the footer visually competing underneath the
+  // sheet's dim backdrop. Below `lg` only (the sheet's own breakpoint —
+  // desktop uses the popover presentation, which never overlaps the footer),
+  // fully hide the footer while the sheet is open instead.
+  const isJustAddedSheetOpen = useLastAddedPreviewOpen();
   const [isBuildSummaryExpanded, setIsBuildSummaryExpanded] = useState(false);
   // Lets the mobile active-filter row's "Edit filters" icon (rendered in
   // RestaurantCategorySidebar, a sibling of StickyRestaurantBar) open the
@@ -2028,18 +2036,6 @@ export default function ChipotleRestaurantBuilderView({
 
   const handleAddBuildToCart = (onAfterAdd?: () => void) => {
     if (selectedIngredientCount === 0) return;
-    const nextCustomizations = Object.entries(selectedIngredientItems).flatMap(
-      ([ingredientId, { item, quantity }]) => {
-        const portionLabel = ingredientPortionLabelById[ingredientId];
-        const ingredientNameWithPortion = portionLabel
-          ? `${item.name} (${portionLabel})`
-          : item.name;
-        return Array.from(
-          { length: quantity },
-          () => ingredientNameWithPortion,
-        );
-      },
-    );
     const nextBuildConfiguration: BuildConfigurationSnapshot = {
       selectedEntree,
       selectedIngredientItems: Object.fromEntries(
@@ -2065,7 +2061,6 @@ export default function ChipotleRestaurantBuilderView({
           ? editingCartItem.name
           : buildName,
       image: editingCartItem?.image ?? selectedBuildImageSrc,
-      customizations: customizationsFromLabels(nextCustomizations),
       quantity: 1,
       macrosPerItem: adjustedSelectedIngredientTotals,
       nutritionPerItem: {
@@ -3843,7 +3838,15 @@ export default function ChipotleRestaurantBuilderView({
         <div className="h-48" aria-hidden="true" />
       ) : null}
       {shouldShowBuildStickyBar ? (
-        <div ref={buildStickyContainerRef}>
+        // Below `lg`, the mobile "Just Added" bottom sheet takes over as the
+        // sole active bottom surface while it's open — fully hidden (not
+        // just layered under a lower z-index) so the two never visually or
+        // interactively collide. The bar itself stays mounted throughout, so
+        // its state (expanded build summary, totals, etc.) survives and it
+        // reappears exactly as it was once the sheet is dismissed. Desktop
+        // (`lg:` and up) uses the popover presentation instead, which never
+        // overlaps the footer, so it's left unaffected.
+        <div ref={buildStickyContainerRef} className={isJustAddedSheetOpen ? "hidden lg:block" : undefined}>
           <StickyMacroTotalsBar
             totals={adjustedSelectedIngredientTotals}
             secondaryActionLabel="View Selected"

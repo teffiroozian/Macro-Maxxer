@@ -28,8 +28,14 @@ export default function MacroTotalsGrid({
     value:
       size === "compact"
         ? "text-xl"
+        // One typography step down from the desktop/tablet size (2xl) on
+        // mobile only, so the cart drawer's totals stay prominent without
+        // overpowering the drawer on a narrow phone width — the panel size's
+        // only current caller (CartPreviewDrawer) is itself the responsive
+        // drawer used at every viewport, so this has to flex per-breakpoint
+        // rather than being a fixed size.
         : size === "panel"
-          ? "text-2xl"
+          ? "text-xl sm:text-2xl"
           : "text-2xl sm:text-3xl",
     label: size === "full" ? "mt-2 text-xs" : "mt-2 text-[10px]",
   };

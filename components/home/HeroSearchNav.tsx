@@ -151,6 +151,7 @@ export default function HeroSearchNav({ restaurants }: { restaurants: Restaurant
         leadingButton={<GlobalMobileMenuButton />}
         cartSlot={
           <CartIconDropdown
+            variant="sheet"
             buttonClassName={appIconButtonClassName({ variant: "nav", className: "relative size-9 shrink-0 text-base" })}
           />
         }

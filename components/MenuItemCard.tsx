@@ -627,7 +627,7 @@ export default function MenuItemCard({
     if (isAddFeedbackVisible) return;
 
     if (matchingCartItem) {
-      updateQuantity(matchingCartItem.id, matchingCartItem.quantity + 1);
+      updateQuantity(matchingCartItem.id, matchingCartItem.quantity + 1, { markAsJustAdded: true });
       setIsAddFeedbackVisible(true);
     } else {
       requestAddItem(

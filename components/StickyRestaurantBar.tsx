@@ -195,6 +195,7 @@ export default function StickyRestaurantBar({
         }
         cartSlot={
           <CartIconDropdown
+            variant="sheet"
             buttonClassName={appIconButtonClassName({ variant: "nav", className: "relative size-9 shrink-0 text-base" })}
           />
         }

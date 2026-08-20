@@ -114,7 +114,15 @@ export function resolveFinalizedCartConfiguration({
     ...retainedCustomizationLabels,
     ...standardConfiguration.customizationLabels,
   ];
-  const customizations = customizationLabels.length > 0 ? customizationsFromLabels(customizationLabels) : undefined;
+  // standardConfiguration.customizations already carries the combo
+  // side/drink selections as structured data (real itemId/variantId) rather
+  // than display labels — only retainedCustomizationLabels (arbitrary
+  // leftover labels with no structured source) need the label round-trip.
+  const combinedCustomizations = [
+    ...(customizationsFromLabels(retainedCustomizationLabels) ?? []),
+    ...(standardConfiguration.customizations ?? []),
+  ];
+  const customizations = combinedCustomizations.length > 0 ? combinedCustomizations : undefined;
   // Editable prebuilt/preset builds (e.g. High Protein Meal bowls/burritos)
   // are not trustworthy from the item's own hardcoded nutrition field —
   // their real totals come from summing the actual configured ingredients,

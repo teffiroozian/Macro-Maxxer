@@ -29,12 +29,17 @@ export default function MenuCardActions({
       <AppButton
         variant="primary"
         size="sm"
-        className={`px-5! text-sm! transition ${isAddFeedbackVisible ? "border-success bg-success" : ""}`}
+        // Lightweight confirmation, not a success badge: !important-suffixed
+        // overrides here since AppButton's "primary" variant hardcodes
+        // border-black/bg-black/text-white, and those need to reliably lose
+        // to this white/subtle-border/dark-text treatment regardless of
+        // Tailwind's generated class order.
+        className={`px-5! text-sm! transition ${isAddFeedbackVisible ? "border-success/50! bg-white! text-neutral-900!" : ""}`}
         disabled={isAddFeedbackVisible}
         aria-label={`Quick add ${itemName} to cart`}
         onClick={(event) => { event.stopPropagation(); onQuickAdd(); }}
       >
-        {isAddFeedbackVisible ? "Added ✓" : "Quick Add"}
+        {isAddFeedbackVisible ? "Added" : "Quick Add"}
       </AppButton>
     </div>
   );

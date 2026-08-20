@@ -260,3 +260,59 @@ body {
         grid-area: content;
     }
 }
+
+/* Macro Split bar (components/nutrition/MacroSplitChart.tsx): each segment's
+   in-bar label detail level is driven by the segment's own actual rendered
+   width via a container query, never by its macro percentage — the same
+   percentage can render wide or narrow depending on how many macros are
+   present and how wide the bar itself is in whatever screen it's used on, so
+   percentage alone can't tell you whether "Protein 45%" actually fits. Every
+   Macro Split usage in the app shares this one component/stylesheet, so this
+   is the single place this behavior needs to live. Thresholds are sized for
+   the longest realistic string per level (a 3-digit "100%" only occurs when
+   a single macro fills the whole bar, which is never width-constrained) with
+   generous margin for font-rendering variance; the `.truncate` class on each
+   label span is a defensive fallback so a threshold being a few pixels
+   optimistic ellipsizes instead of visibly overflowing.
+   Layered as ascending min-width rules (rather than min/max ranges) so a
+   wider container's rule simply overrides the narrower one before it. */
+.macro-segment {
+    container-type: inline-size;
+}
+
+/* min-width: 0 lets the visible one shrink below its own text's intrinsic
+   width as a flex item (the default is content-based, which would push past
+   the segment instead of letting `.truncate`'s overflow/ellipsis engage);
+   `display: block` rather than `inline` because `text-overflow: ellipsis`
+   (from Tailwind's `truncate`) has no effect on inline-level boxes. */
+.macro-segment-label-full,
+.macro-segment-label-medium,
+.macro-segment-label-percent {
+    display: none;
+    min-width: 0;
+}
+
+@container (min-width: 40px) {
+    .macro-segment-label-percent {
+        display: block;
+    }
+}
+
+@container (min-width: 60px) {
+    .macro-segment-label-medium {
+        display: block;
+    }
+    .macro-segment-label-percent {
+        display: none;
+    }
+}
+
+@container (min-width: 100px) {
+    .macro-segment-label-full {
+        display: block;
+    }
+    .macro-segment-label-medium {
+        display: none;
+    }
+}
+

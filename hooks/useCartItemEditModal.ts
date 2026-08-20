@@ -5,18 +5,18 @@ import type { CartItem } from "@/types/cart";
 import type { MenuItem, ResolvedAddonGroups } from "@/types/menu";
 import type { RestaurantData } from "@/types/restaurant";
 import { resolveAddonMenuItems } from "@/lib/addonGroups";
+import { buildCartMenuItemFromState } from "@/lib/cart/buildItemAdapters";
 import { getRestaurantData } from "@/lib/restaurants";
+
+export type CartItemModalMode = "preview" | "edit";
 
 export type CartItemEditState = {
   cartItemId: string;
   restaurant: RestaurantData;
   sourceItem: MenuItem;
   addons: ResolvedAddonGroups;
+  mode: CartItemModalMode;
 };
-
-function canCustomizeCartItem(cartItem: CartItem) {
-  return cartItem.selection.type !== "build-your-own";
-}
 
 function getSourceItem(cartItem: CartItem, restaurant: RestaurantData) {
   return restaurant.items.find((item) => (item.id ?? item.name) === cartItem.itemId) ?? null;
@@ -30,24 +30,21 @@ export function useCartItemEditModal() {
     setEditState(null);
   };
 
-  const openEditModal = async (cartItem: CartItem) => {
-    if (!canCustomizeCartItem(cartItem)) {
-      return;
-    }
-
+  const openModal = async (cartItem: CartItem, mode: CartItemModalMode) => {
     setLoadingEditItemId(cartItem.id);
     try {
       const restaurant = await getRestaurantData(cartItem.restaurantId);
-      const sourceItem = restaurant ? getSourceItem(cartItem, restaurant) : null;
+      if (!restaurant) return;
 
-      if (restaurant && sourceItem) {
-        setEditState({
-          cartItemId: cartItem.id,
-          restaurant,
-          sourceItem,
-          addons: resolveAddonMenuItems(restaurant.addonGroups, restaurant.items),
-        });
-      }
+      const sourceItem = buildCartMenuItemFromState(cartItem, getSourceItem(cartItem, restaurant), restaurant.ingredients);
+
+      setEditState({
+        cartItemId: cartItem.id,
+        restaurant,
+        sourceItem,
+        addons: resolveAddonMenuItems(restaurant.addonGroups, restaurant.items),
+        mode,
+      });
     } finally {
       setLoadingEditItemId(null);
     }
@@ -56,7 +53,7 @@ export function useCartItemEditModal() {
   return {
     editState,
     loadingEditItemId,
-    openEditModal,
+    openModal,
     closeEditModal,
   };
 }

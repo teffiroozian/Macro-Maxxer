@@ -9,7 +9,6 @@ export type MacroSegment = {
     percent: number;
     roundedPercent: number;
     color: string;
-    inBarLabel: string;
 };
 
 // Shared with the standard item modal's Macro Split section (ItemDetailsPanel)
@@ -45,19 +44,18 @@ export function buildMacroSegments({
             percent: macroTotalGrams > 0 ? (fat / macroTotalGrams) * 100 : 0,
             color: "bg-[#2563eb] text-white",
         },
-    ].map((segment) => {
-        const roundedPercent = Math.round(segment.percent);
-        const inBarLabel =
-            segment.percent >= 20
-                ? `${segment.label} ${roundedPercent}%`
-                : segment.percent >= 12
-                  ? `${segment.shortLabel} ${roundedPercent}%`
-                  : "";
-
-        return { ...segment, roundedPercent, inBarLabel };
-    });
+    ].map((segment) => ({ ...segment, roundedPercent: Math.round(segment.percent) }));
 }
 
+// Label detail level is picked purely by CSS container query (see the
+// `.macro-segment*` rules in app/globals.css) based on this segment's own
+// actual rendered width — never from segment.percent, since the same
+// percentage can be a wide or narrow bar depending on how many macros are
+// present and how wide the chart itself is on a given screen. All three
+// variants are always in the DOM; the stylesheet shows exactly one (or none,
+// once the segment is too narrow even for "25%"). The wrapper's aria-label
+// carries the full macro name + percentage regardless of which/whether a
+// visual variant is showing, so the accessible name never gets truncated.
 function MacroSegmentBar({ segment }: { segment: MacroSegment }) {
     return (
         <div
@@ -65,9 +63,18 @@ function MacroSegmentBar({ segment }: { segment: MacroSegment }) {
             style={{ width: `${segment.percent}%` }}
         >
             <div
-                className={`flex h-full w-full min-w-0 items-center justify-center whitespace-nowrap rounded-lg px-1 text-[11px] font-semibold ${segment.color}`}
+                className={`macro-segment flex h-full w-full min-w-0 items-center justify-center rounded-lg px-1 text-[11px] font-semibold ${segment.color}`}
+                aria-label={`${segment.label} ${segment.roundedPercent}%`}
             >
-                {segment.inBarLabel}
+                <span className="macro-segment-label-full truncate" aria-hidden="true">
+                    {segment.label} {segment.roundedPercent}%
+                </span>
+                <span className="macro-segment-label-medium truncate" aria-hidden="true">
+                    {segment.shortLabel} {segment.roundedPercent}%
+                </span>
+                <span className="macro-segment-label-percent truncate" aria-hidden="true">
+                    {segment.roundedPercent}%
+                </span>
             </div>
         </div>
     );
@@ -160,9 +167,18 @@ export default function MacroSplitChart({
 }: {
     segments: MacroSegment[];
 }) {
+    // Zero-percent macros are dropped from the bar itself (not just given no
+    // width) so they can't leave a visible sliver or eat into the flex gap
+    // between the real segments — a single remaining segment then renders as
+    // the only flex child, so it naturally fills the bar edge-to-edge with
+    // its own rounded corners intact instead of getting clipped by the
+    // container's overflow-hidden. Labels/tooltip still see every macro via
+    // the untouched `segments` prop.
+    const visibleSegments = segments.filter((segment) => segment.percent > 0);
+
     return (
         <div className="flex h-12 w-full gap-1.5 overflow-hidden rounded-xl border border-black/10 bg-neutral-100 p-1.5">
-            {segments.map((segment) => (
+            {visibleSegments.map((segment) => (
                 <MacroSegmentBar key={segment.label} segment={segment} />
             ))}
         </div>

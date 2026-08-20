@@ -27,8 +27,6 @@ import {
   INCLUDED_INGREDIENT_TAB,
   getIngredientTabDisplayLabel,
 } from "@/lib/ingredientTabs";
-import { getProteinPer100Calories, getProteinScoreTier } from "@/lib/nutrition";
-import ProteinScorePill from "@/components/menu-item-card/ProteinScorePill";
 import { gramMacroOrder, macroDisplayConfig } from "@/components/nutrition/macroDisplay";
 import {
   normalizeIngredientCategory,
@@ -44,14 +42,33 @@ import {
 } from "@/lib/itemDetails/ingredientResolution";
 import type { ResolvedPanelIngredient } from "@/lib/itemDetails/types";
 import SectionEyebrow from "@/components/ui/SectionEyebrow";
-import InlineVariantSelect from "@/components/ui/InlineVariantSelect";
 import NutritionFactsPanel from "@/components/nutrition/NutritionFactsPanel";
-import MacroSplitChart, {
-  buildMacroSegments,
-  MacroLegendInfo,
-} from "@/components/nutrition/MacroSplitChart";
+import {
+  NutritionDetailsGrid,
+  SelectionSummaryShell,
+} from "@/components/item-route-modal/SelectionSummaryPanels";
 
 export { resolvePanelIngredients, resolvePanelIngredientTabs };
+export { MacroInlineSummary };
+
+// DOM anchors for the cart page's "jump straight to this section" shortcuts
+// (see ItemRouteModal's initialScrollSectionId) — the only stable handles
+// onto these sections from outside this file, since none of them otherwise
+// expose an id/ref.
+export const ITEM_DETAILS_SECTION_IDS = {
+  ingredients: "item-details-ingredients-section",
+  side: "item-details-side-section",
+  drink: "item-details-drink-section",
+  sauces: "item-details-sauces-section",
+  dressings: "item-details-dressings-section",
+  // The Portion/Order Type controls actually live in ItemRouteModal's own
+  // persistent overview header (outside this file's rendered sections), but
+  // share this same scroll-target registry so the Preview state's shortcut
+  // buttons can reuse the identical handleOpenCartPreviewSection plumbing
+  // the other section cards already use.
+  portion: "item-details-portion-section",
+  orderType: "item-details-order-type-section",
+} as const;
 
 function formatPortionBadge(count: number) {
   if (count === 0.5) return "1/2x";
@@ -410,18 +427,23 @@ export function PortionSelector({
   onSelectVariant,
   className = "mt-4",
   layout = "details",
+  id,
 }: {
   variants?: ItemVariant[] | null;
   selectedVariantId?: string;
   onSelectVariant?: (id: string) => void;
   className?: string;
   layout?: "top" | "details";
+  // Scroll target for the Preview state's Portion shortcut button — only
+  // meaningful for the "top" layout (ItemRouteModal's overview header); the
+  // "details" layout's own Meal Details card has no equivalent shortcut.
+  id?: string;
 }) {
   if (!variants || variants.length === 0) return null;
 
   if (layout === "top") {
     return (
-      <div className={className}>
+      <div id={id} className={className}>
         <p className="text-[11px] font-semibold uppercase tracking-wide text-slate-400">
           Portion
         </p>
@@ -502,12 +524,12 @@ type MealDetailItem = {
   name: string;
   quantity: number;
   image?: string;
-  detail: string;
-  variantSelector?: {
-    variants: ItemVariant[];
-    selectedVariantId?: string;
-    onSelectVariant: (variantId: string) => void;
-  };
+  // Display-only — a meaningful size/portion variant label (e.g. "Medium",
+  // "Extra"), never a generic role name like "Main Item"/"Side"/"Drink".
+  // Meal Details is a read-only summary; changing a size/portion happens
+  // through the item's own selector (variantConfig) or the combo side/drink
+  // picker (ComboCustomizationSection), not from this list.
+  variantLabel?: string;
 };
 
 type IngredientConfig = {
@@ -788,7 +810,7 @@ function IngredientCustomizationSection({
     onIncrement,
   } = config;
   return (
-    <section className="min-w-0 overflow-x-hidden rounded-2xl border border-black/10 bg-white p-4 sm:p-6">
+    <section id={ITEM_DETAILS_SECTION_IDS.ingredients} className="min-w-0 overflow-x-hidden rounded-2xl border border-black/10 bg-white p-4 sm:p-6">
       <div className="mb-5 flex items-start justify-between gap-3">
         <div>
           <h2 className="text-lg font-bold text-neutral-900 sm:text-xl">
@@ -916,10 +938,10 @@ function IngredientCustomizationSection({
                 <li key={ingredient.id} className="flex py-1">
                   <button
                     type="button"
-                    className={`flex w-full cursor-pointer items-center gap-3 rounded-xl px-2 py-2.5 text-left transition-colors sm:px-3 ${
+                    className={`flex w-full cursor-pointer items-center gap-3 rounded-xl border px-2 py-2.5 text-left shadow-[0_1px_2px_rgba(0,0,0,0.04)] transition duration-150 sm:px-3 ${
                       isSelected
-                        ? "bg-accent-soft ring-1 ring-inset ring-accent/25 hover:ring-accent/45"
-                        : "hover:bg-slate-50"
+                        ? "border-[1.5px] border-accent bg-white"
+                        : "border-black/10 bg-white hover:-translate-y-px hover:border-black/15 hover:shadow-[0_2px_6px_rgba(0,0,0,0.05)]"
                     }`}
                     onClick={() =>
                       onSelectSingle?.(
@@ -934,14 +956,12 @@ function IngredientCustomizationSection({
                     {nameAndMeta}
                     <span
                       aria-hidden="true"
-                      className={`inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-full border-2 ${
-                        isSelected
-                          ? "border-accent-strong bg-accent-strong"
-                          : "border-slate-300 bg-white"
+                      className={`inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-full border-2 bg-white ${
+                        isSelected ? "border-accent-strong" : "border-slate-300"
                       }`}
                     >
                       {isSelected ? (
-                        <span className="h-1.5 w-1.5 rounded-full bg-white" />
+                        <span className="h-2.5 w-2.5 rounded-full bg-accent-strong" />
                       ) : null}
                     </span>
                   </button>
@@ -997,15 +1017,11 @@ function IngredientCustomizationSection({
             return (
               <li key={ingredient.id} className="flex py-1">
                 <div
-                  className={`flex w-full items-start gap-3 rounded-xl border px-2 py-2 transition-colors sm:items-center sm:px-3 ${
+                  className={`flex w-full items-start gap-3 rounded-xl border px-2 py-2 shadow-[0_1px_2px_rgba(0,0,0,0.04)] transition duration-150 sm:items-center sm:px-3 ${
                     isActiveSelectedRow
-                      ? "border-accent/30 bg-accent-soft hover:border-accent/50"
-                      : "border-transparent"
-                  } ${
-                    isRowInteractive
-                      ? `cursor-pointer ${isActiveSelectedRow ? "" : "hover:bg-slate-50"}`
-                      : ""
-                  }`}
+                      ? "border-[1.5px] border-accent bg-white"
+                      : `border-black/10 bg-white ${isRowInteractive ? "hover:-translate-y-px hover:border-black/15 hover:shadow-[0_2px_6px_rgba(0,0,0,0.05)]" : ""}`
+                  } ${isRowInteractive ? "cursor-pointer" : ""}`}
                   role={isRowInteractive ? "button" : undefined}
                   tabIndex={isRowInteractive ? 0 : undefined}
                   onClick={() => {
@@ -1105,15 +1121,15 @@ function ComboOptionRow({
   return (
     <li className="flex py-1">
       <div
-        className={`flex w-full flex-1 flex-col rounded-xl transition-colors ${
-          isSelected ? "bg-accent-soft ring-1 ring-inset ring-accent/25" : ""
+        className={`flex w-full flex-1 flex-col overflow-hidden rounded-xl border shadow-[0_1px_2px_rgba(0,0,0,0.04)] transition duration-150 ${
+          isSelected
+            ? "border-[1.5px] border-accent bg-white"
+            : "border-black/10 bg-white hover:-translate-y-px hover:border-black/15 hover:shadow-[0_2px_6px_rgba(0,0,0,0.05)]"
         }`}
       >
         <button
           type="button"
-          className={`flex w-full flex-1 cursor-pointer items-center gap-3 px-2 py-2.5 text-left transition-colors sm:px-3 ${
-            isSelected ? "" : "rounded-xl hover:bg-slate-50"
-          }`}
+          className="flex w-full flex-1 cursor-pointer items-center gap-3 px-2 py-2.5 text-left sm:px-3"
           onClick={() => onSelect?.(itemId)}
         >
           <IngredientThumb icon={item.image ?? ""} />
@@ -1131,41 +1147,41 @@ function ComboOptionRow({
           </div>
           <span
             aria-hidden="true"
-            className={`inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-full border-2 ${
-              isSelected
-                ? "border-accent-strong bg-accent-strong"
-                : "border-slate-300 bg-white"
+            className={`inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-full border-2 bg-white ${
+              isSelected ? "border-accent-strong" : "border-slate-300"
             }`}
           >
             {isSelected ? (
-              <span className="h-1.5 w-1.5 rounded-full bg-white" />
+              <span className="h-2.5 w-2.5 rounded-full bg-accent-strong" />
             ) : null}
           </span>
         </button>
         {isSelected && variants.length > 0 ? (
           <div className="flex w-full flex-wrap gap-1.5 px-2 pb-2.5 pl-[52px] sm:px-3 sm:pl-[60px]">
-            {variants.map((variant) => {
-              const isVariantSelected =
-                (selectedVariantId ?? item.defaultVariantId ?? variants[0]?.id) ===
-                variant.id;
-              return (
-                <button
-                  key={`${itemId}-${variant.id}`}
-                  type="button"
-                  className={`cursor-pointer rounded-full border px-2.5 py-1 text-xs font-semibold transition-colors ${
-                    isVariantSelected
-                      ? "border-accent-strong bg-accent-strong text-white"
-                      : "border-slate-200 bg-white text-slate-600 hover:border-slate-300"
-                  }`}
-                  onClick={(event) => {
-                    event.stopPropagation();
-                    onSelectVariant?.(variant.id);
-                  }}
-                >
-                  {variant.label}
-                </button>
-              );
-            })}
+            <div className="inline-flex w-fit items-center gap-0.5 rounded-full bg-black/5 p-0.5">
+              {variants.map((variant) => {
+                const isVariantSelected =
+                  (selectedVariantId ?? item.defaultVariantId ?? variants[0]?.id) ===
+                  variant.id;
+                return (
+                  <button
+                    key={`${itemId}-${variant.id}`}
+                    type="button"
+                    className={`inline-flex min-h-[30px] cursor-pointer items-center justify-center rounded-full px-3 py-[1px] text-[11px] font-semibold transition md:min-h-0 md:px-3.5 md:py-[5px] ${
+                      isVariantSelected
+                        ? "bg-white text-black shadow-sm"
+                        : "text-black/50 hover:text-black/70"
+                    }`}
+                    onClick={(event) => {
+                      event.stopPropagation();
+                      onSelectVariant?.(variant.id);
+                    }}
+                  >
+                    {variant.label}
+                  </button>
+                );
+              })}
+            </div>
           </div>
         ) : null}
       </div>
@@ -1196,10 +1212,10 @@ function SauceOptionRow({
       <div
         role="button"
         tabIndex={0}
-        className={`flex w-full cursor-pointer items-start gap-3 rounded-xl border px-2 py-2 transition-colors sm:items-center sm:px-3 ${
+        className={`flex w-full cursor-pointer items-start gap-3 rounded-xl border px-2 py-2 shadow-[0_1px_2px_rgba(0,0,0,0.04)] transition duration-150 sm:items-center sm:px-3 ${
           isSelected
-            ? "border-accent/30 bg-accent-soft hover:border-accent/50"
-            : "border-transparent hover:bg-slate-50"
+            ? "border-[1.5px] border-accent bg-white"
+            : "border-black/10 bg-white hover:-translate-y-px hover:border-black/15 hover:shadow-[0_2px_6px_rgba(0,0,0,0.05)]"
         }`}
         onClick={() => onToggleSauce?.(addon)}
         onKeyDown={(event) => {
@@ -1400,7 +1416,7 @@ function ComboCustomizationSection({ config }: ComboCustomizationSectionProps) {
   } = config;
   return (
     <>
-      <section className="rounded-2xl border border-black/10 bg-white p-5 sm:p-6">
+      <section id={ITEM_DETAILS_SECTION_IDS.side} className="rounded-2xl border border-black/10 bg-white p-5 sm:p-6">
         <div className="mb-5">
           <h2 className="text-lg font-bold text-neutral-900 sm:text-xl">
             Choose a side
@@ -1415,7 +1431,7 @@ function ComboCustomizationSection({ config }: ComboCustomizationSectionProps) {
           onSelectVariant={onSelectSideVariant}
         />
       </section>
-      <section className="rounded-2xl border border-black/10 bg-white p-5 sm:p-6">
+      <section id={ITEM_DETAILS_SECTION_IDS.drink} className="rounded-2xl border border-black/10 bg-white p-5 sm:p-6">
         <div className="mb-5">
           <h2 className="text-lg font-bold text-neutral-900 sm:text-xl">
             Choose a drink
@@ -1470,7 +1486,17 @@ function AddonCustomizationSection({ config }: AddonCustomizationSectionProps) {
             : (openState[sectionStateKey] ?? true);
           const summaryDetail = section.summaryDetail;
           return (
-            <div key={section.ref} className="min-w-0">
+            <div
+              key={section.ref}
+              className="min-w-0"
+              id={
+                section.ref === "sauces"
+                  ? ITEM_DETAILS_SECTION_IDS.sauces
+                  : section.ref === "dressings"
+                    ? ITEM_DETAILS_SECTION_IDS.dressings
+                    : undefined
+              }
+            >
               <div
                 className={`flex min-h-[44px] w-full items-center justify-between gap-[10px] rounded-[10px] border-0 bg-transparent py-1 text-left ${
                   isAlwaysExpandedSection ? "" : "cursor-pointer"
@@ -1563,7 +1589,11 @@ function AddonCustomizationSection({ config }: AddonCustomizationSectionProps) {
                       <li key={`${section.ref}-${addon.name}`} className="flex">
                         <button
                           type="button"
-                          className={`box-border flex h-full w-full cursor-pointer flex-row items-center gap-3 rounded-[10px] border border-[rgba(0,0,0,0.15)] bg-[#f9f9f9] px-3 py-2 ${isSelected ? "shadow-[inset_0_0_0_3px_#16a34a]" : ""}`}
+                          className={`box-border flex h-full w-full cursor-pointer flex-row items-center gap-3 rounded-[10px] border px-3 py-2 shadow-[0_1px_2px_rgba(0,0,0,0.04)] transition duration-150 ${
+                            isSelected
+                              ? "border-[1.5px] border-accent bg-white"
+                              : "border-black/10 bg-white hover:-translate-y-px hover:border-black/15 hover:shadow-[0_2px_6px_rgba(0,0,0,0.05)]"
+                          }`}
                           onClick={() => {
                             onSelectAddon?.(
                               section.ref,
@@ -1607,71 +1637,43 @@ function AddonCustomizationSection({ config }: AddonCustomizationSectionProps) {
   );
 }
 
+// Scroll/height handling for this list lives entirely in the shared
+// SelectionSummaryShell content wrapper this renders inside of (see
+// SelectionSummaryPanels.tsx) — it deliberately has no max-height/overflow
+// of its own, so there is exactly one scroll container per screen instead of
+// a local one nested inside the shared one.
 function MealDetailItemsList({ items }: { items: MealDetailItem[] }) {
-  const scrollRef = useRef<HTMLUListElement>(null);
-  const [canScrollDown, setCanScrollDown] = useState(false);
-
-  const updateScrollState = useCallback(() => {
-    const el = scrollRef.current;
-    if (!el) return;
-    setCanScrollDown(el.scrollTop + el.clientHeight < el.scrollHeight - 1);
-  }, []);
-
-  useEffect(() => {
-    updateScrollState();
-    window.addEventListener("resize", updateScrollState);
-    return () => window.removeEventListener("resize", updateScrollState);
-  }, [updateScrollState, items.length]);
-
   return (
-    <div className="relative">
-      <ul
-        ref={scrollRef}
-        onScroll={updateScrollState}
-        className="flex list-none flex-col divide-y divide-black/[0.06] pl-0 sm:max-h-[320px] sm:overflow-y-auto"
-      >
-        {items.map((detailItem) => (
-          <li
-            key={detailItem.id}
-            className="flex items-center gap-3 py-2.5"
-          >
-            <div className="h-11 w-11 shrink-0 overflow-hidden rounded-lg border border-black/10 bg-white">
-              {detailItem.image && detailItem.image !== "none" ? (
-                // eslint-disable-next-line @next/next/no-img-element
-                <img
-                  src={detailItem.image}
-                  alt={detailItem.name}
-                  className="h-full w-full object-contain p-1"
-                />
-              ) : null}
-            </div>
-            <p
-              className="min-w-0 flex-1 truncate text-sm font-medium text-neutral-900"
-              title={`${detailItem.quantity}x ${detailItem.name}`}
-            >
-              {detailItem.quantity}x {detailItem.name}
-            </p>
-            {detailItem.variantSelector ? (
-              <InlineVariantSelect
-                options={detailItem.variantSelector.variants}
-                selectedOptionId={detailItem.variantSelector.selectedVariantId}
-                onSelectOption={detailItem.variantSelector.onSelectVariant}
-                ariaLabel={`Change ${detailItem.name} size`}
+    <ul className="flex list-none flex-col divide-y divide-black/[0.06] pl-0">
+      {items.map((detailItem) => (
+        <li
+          key={detailItem.id}
+          className="flex items-center gap-3 py-2.5"
+        >
+          <div className="h-11 w-11 shrink-0 overflow-hidden rounded-lg border border-black/10 bg-white">
+            {detailItem.image && detailItem.image !== "none" ? (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img
+                src={detailItem.image}
+                alt={detailItem.name}
+                className="h-full w-full object-contain p-1"
               />
             ) : null}
+          </div>
+          <p
+            className="min-w-0 flex-1 truncate text-sm font-medium text-neutral-900"
+            title={`${detailItem.quantity}x ${detailItem.name}`}
+          >
+            {detailItem.quantity}x {detailItem.name}
+          </p>
+          {detailItem.variantLabel ? (
             <span className="shrink-0 rounded-full bg-slate-100 px-2 py-0.5 text-[10px] font-semibold tracking-wide text-slate-500 uppercase">
-              {detailItem.detail}
+              {detailItem.variantLabel}
             </span>
-          </li>
-        ))}
-      </ul>
-      <div
-        aria-hidden="true"
-        className={`pointer-events-none absolute inset-x-0 bottom-0 h-8 rounded-b-xl bg-gradient-to-t from-white to-transparent transition-opacity duration-150 ${
-          canScrollDown ? "opacity-100" : "opacity-0"
-        }`}
-      />
-    </div>
+          ) : null}
+        </li>
+      ))}
+    </ul>
   );
 }
 
@@ -1781,17 +1783,6 @@ export default function ItemDetailsPanel({
     (variant) => variant.id === selectedVariantId,
   );
   const selectedMainItemImage = selectedMainVariant?.image ?? item.image;
-  const proteinGrams = n.protein ?? 0;
-  const carbsGrams = n.carbs ?? 0;
-  const fatGrams = n.totalFat ?? 0;
-  const proteinScore = getProteinPer100Calories(proteinGrams, n.calories ?? 0);
-  const proteinScoreTier =
-    typeof proteinScore === "number" ? getProteinScoreTier(proteinScore) : undefined;
-  const macroSegments = buildMacroSegments({
-    protein: proteinGrams,
-    carbs: carbsGrams,
-    fat: fatGrams,
-  });
   const [sectionOpenState, setSectionOpenState] = useState<
     Record<string, boolean>
   >({});
@@ -1826,13 +1817,11 @@ export default function ItemDetailsPanel({
     >
   )
     .filter(([, addon]) => Boolean(addon && addon.name !== "None"))
-    .map(([ref, addon]) => ({
-      id: `${ref}-${addon?.name}`,
+    .map(([, addon]) => ({
+      id: `addon-${addon?.name}`,
       name: addon?.name ?? "",
       quantity: 1,
       image: addon?.image,
-      detail:
-        ref === "dressings" ? "Dressing" : ref === "sauces" ? "Sauce" : "Addon",
     }));
   const selectedSauceItems = Object.entries(sauceSelectionCounts ?? {})
     .filter(([name, count]) => name !== "None" && (count ?? 0) > 0)
@@ -1846,60 +1835,25 @@ export default function ItemDetailsPanel({
         name,
         quantity: sauceCount,
         image: matchedSauce?.image,
-        detail: "Sauce",
       };
     });
-  const mainVariantOptions = variants ?? [];
-  const hasSelectableMainVariant =
-    mainVariantOptions.length > 1 && typeof onSelectVariant === "function";
-  const sideVariantOptions = selectedComboSide?.variants ?? [];
-  const hasSelectableSideVariant =
-    sideVariantOptions.length > 1 &&
-    typeof onSelectComboSideVariant === "function";
-  const drinkVariantOptions = selectedComboDrink?.variants ?? [];
-  const hasSelectableDrinkVariant =
-    drinkVariantOptions.length > 1 &&
-    typeof onSelectComboDrinkVariant === "function";
 
   const detailItems: MealDetailItem[] = [
     {
       id: `main-${item.id ?? item.name}`,
-      name:
-        !hasSelectableMainVariant && selectedMainVariant
-          ? `${item.name} (${selectedMainVariant.label})`
-          : item.name,
+      name: item.name,
       quantity: 1,
       image: selectedMainItemImage,
-      detail: "Main Item",
-      variantSelector: hasSelectableMainVariant
-        ? {
-            variants: mainVariantOptions,
-            selectedVariantId: selectedVariantId,
-            onSelectVariant: onSelectVariant!,
-          }
-        : undefined,
+      variantLabel: selectedMainVariant?.label,
     },
     ...(comboType === "combo-meal" && selectedComboSide
       ? [
           {
             id: `combo-side-${selectedComboSide.id ?? selectedComboSide.name}`,
-            name:
-              !hasSelectableSideVariant && selectedComboSideVariant
-                ? `${selectedComboSide.name} (${selectedComboSideVariant.label})`
-                : selectedComboSide.name,
+            name: selectedComboSide.name,
             quantity: 1,
             image: selectedComboSide.image,
-            detail: "Side",
-            variantSelector: hasSelectableSideVariant
-              ? {
-                  variants: sideVariantOptions,
-                  selectedVariantId:
-                    selectedComboSideVariantId ??
-                    selectedComboSide.defaultVariantId ??
-                    sideVariantOptions[0]?.id,
-                  onSelectVariant: onSelectComboSideVariant!,
-                }
-              : undefined,
+            variantLabel: selectedComboSideVariant?.label,
           },
         ]
       : []),
@@ -1907,23 +1861,10 @@ export default function ItemDetailsPanel({
       ? [
           {
             id: `combo-drink-${selectedComboDrink.id ?? selectedComboDrink.name}`,
-            name:
-              !hasSelectableDrinkVariant && selectedComboDrinkVariant
-                ? `${selectedComboDrink.name} (${selectedComboDrinkVariant.label})`
-                : selectedComboDrink.name,
+            name: selectedComboDrink.name,
             quantity: 1,
             image: selectedComboDrink.image,
-            detail: "Drink",
-            variantSelector: hasSelectableDrinkVariant
-              ? {
-                  variants: drinkVariantOptions,
-                  selectedVariantId:
-                    selectedComboDrinkVariantId ??
-                    selectedComboDrink.defaultVariantId ??
-                    drinkVariantOptions[0]?.id,
-                  onSelectVariant: onSelectComboDrinkVariant!,
-                }
-              : undefined,
+            variantLabel: selectedComboDrinkVariant?.label,
           },
         ]
       : []),
@@ -2087,63 +2028,44 @@ export default function ItemDetailsPanel({
       ) : null}
 
       {shouldShowInfoSection ? (
-        <div className="grid grid-cols-1 gap-3 rounded-3xl border border-black/8 bg-app-background p-3 md:grid-cols-2">
-          <NutritionFactsPanel
-            totals={n}
-            showCustomizationDeltas={showCustomizationDeltas}
-            activeCustomizationTotals={activeCustomizationTotals}
-          />
+        <NutritionDetailsGrid
+          nutritionFacts={
+            <NutritionFactsPanel
+              totals={n}
+              showCustomizationDeltas={showCustomizationDeltas}
+              activeCustomizationTotals={activeCustomizationTotals}
+            />
+          }
+          details={
+            <SelectionSummaryShell
+              title="Meal Details"
+              totals={{
+                calories: n.calories ?? 0,
+                protein: n.protein ?? 0,
+                carbs: n.carbs ?? 0,
+                totalFat: n.totalFat ?? 0,
+              }}
+            >
+              {variantConfig.showInDetails ? (
+                <>
+                  <PortionSelector
+                    variants={variantConfig.variants}
+                    selectedVariantId={variantConfig.selectedVariantId}
+                    onSelectVariant={variantConfig.onSelectVariant}
+                    layout="details"
+                    className="mt-0"
+                  />
+                  <div className="mt-3 h-px bg-black/10" />
+                </>
+              ) : null}
 
-          <section className="rounded-2xl border border-black/10 bg-white p-5">
-            <h2 className="mb-4 text-2xl font-bold text-neutral-900">
-              Meal Details
-            </h2>
-
-            {variantConfig.showInDetails ? (
-              <>
-                <PortionSelector
-                  variants={variantConfig.variants}
-                  selectedVariantId={variantConfig.selectedVariantId}
-                  onSelectVariant={variantConfig.onSelectVariant}
-                  layout="details"
-                  className="mt-0"
-                />
-                <div className="mt-3 h-px bg-black/10" />
-              </>
-            ) : null}
-
-            <div className="mt-5 space-y-2">
               <SectionEyebrow className="text-base text-neutral-500">
                 Items
               </SectionEyebrow>
               <MealDetailItemsList items={detailItems} />
-            </div>
-
-            <div className="mt-6 space-y-2 border-t border-black/[0.06] pt-6">
-              <SectionEyebrow className="text-base text-neutral-500">
-                Protein Score
-              </SectionEyebrow>
-              {typeof proteinScore === "number" && proteinScoreTier ? (
-                <ProteinScorePill
-                  scorePerHundredCalories={proteinScore}
-                  tier={proteinScoreTier}
-                />
-              ) : (
-                <p className="text-sm text-neutral-500">—</p>
-              )}
-            </div>
-
-            <div className="mt-6 space-y-2 border-t border-black/[0.06] pt-6">
-              <div className="flex items-center gap-1.5">
-                <SectionEyebrow className="text-base text-neutral-500">
-                  Macro Split
-                </SectionEyebrow>
-                <MacroLegendInfo segments={macroSegments} />
-              </div>
-              <MacroSplitChart segments={macroSegments} />
-            </div>
-          </section>
-        </div>
+            </SelectionSummaryShell>
+          }
+        />
       ) : null}
     </div>
   );

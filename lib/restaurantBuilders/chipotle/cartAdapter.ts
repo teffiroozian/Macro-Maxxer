@@ -1,7 +1,6 @@
 import type { CartBuildConfiguration, CartItem, CartSelection } from "@/types/cart";
 import type { Nutrition } from "@/types/nutrition";
 import type { IngredientItem, MenuItem } from "@/types/menu";
-import { customizationsFromLabels } from "@/lib/cart/customizationLabels";
 import { buildHighProteinBuildConfiguration, isChipotleEditablePresetBuildItem } from "@/lib/restaurantBuilders/chipotle/highProtein";
 import type { ChipotleBuildConfiguration, ChipotleKidsMealId, ChipotleTacoCount, ChipotleTacoShell, ProteinPortionMode, SplitPortionMode } from "@/lib/restaurantBuilders/chipotle";
 
@@ -91,32 +90,23 @@ export function createChipotleCartItemPayload({
   quantity: number;
   chipotle: ChipotleCartSubmissionState;
 }): CartItemSubmissionPayload {
-  const customizationLabels = Object.entries(chipotle.selectedIngredientItems).map(
-    ([ingredientId, selectedIngredient]) =>
-      `${selectedIngredient.item.name}: ${selectedIngredient.quantity}x${
-        chipotle.ingredientPortionLabelById[ingredientId]
-          ? ` (${chipotle.ingredientPortionLabelById[ingredientId]})`
-          : ""
-      }`
-  );
-
   return {
     name: item.name,
     image: item.image,
     quantity,
-    customizations: customizationsFromLabels(customizationLabels),
     macrosPerItem: {
       calories: chipotle.adjustedTotals.calories,
       protein: chipotle.adjustedTotals.protein,
       carbs: chipotle.adjustedTotals.carbs,
       totalFat: chipotle.adjustedTotals.totalFat,
     },
-    nutritionPerItem: {
-      calories: chipotle.adjustedTotals.calories,
-      protein: chipotle.adjustedTotals.protein,
-      carbs: chipotle.adjustedTotals.carbs,
-      totalFat: chipotle.adjustedTotals.totalFat,
-    },
+    // adjustedTotals (calculateChipotleBuildNutrition) already aggregates
+    // every Nutrition field the ingredient catalog supports, not just the
+    // four core macros — pass it through whole so the cart's Nutrition
+    // Facts panel, Protein Score, and Macro Split all see the same complete
+    // object the modal itself computed, instead of silently truncating to
+    // calories/protein/carbs/fat here.
+    nutritionPerItem: chipotle.adjustedTotals,
     selection: {
       type: "build-your-own",
       buildConfiguration: createChipotleCartConfiguration(chipotle),
