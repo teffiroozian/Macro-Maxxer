@@ -104,23 +104,32 @@ const removeItem = (id: string) => {
 };
 
 // update quantity
-const updateQuantity = (id: string, quantity: number) => {
+const updateQuantity = (id: string, quantity: number, options?: { markAsJustAdded?: boolean }) => {
   if (quantity <= 0) {
     removeItem(id);
     return;
   }
-  // if id matches, return a copy with new quantity
-  setCartState((prev) => ({
-    ...prev,
-    items: prev.items.map((item) =>
-      item.id === id
-        ? {
-            ...item,
-            quantity,
-          }
-        : item,
-    ),
-  }));
+  setCartState((prev) => {
+    let matched = false;
+    // if id matches, return a copy with new quantity
+    const items = prev.items.map((item) => {
+      if (item.id !== id) return item;
+      matched = true;
+      return { ...item, quantity };
+    });
+
+    if (!matched) {
+      return { ...prev, items };
+    }
+
+    return {
+      ...prev,
+      items,
+      lastAddedItemId: options?.markAsJustAdded ? id : prev.lastAddedItemId,
+      lastAddedAt: options?.markAsJustAdded ? Date.now() : prev.lastAddedAt,
+      lastAddedEventId: options?.markAsJustAdded ? getNextLastAddedEventId(prev) : prev.lastAddedEventId,
+    };
+  });
 };
 
 // updates customziation to an item

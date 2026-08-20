@@ -163,7 +163,7 @@ export default function MenuItemResultRow({
               onClick={handleQuickAdd}
               className={`shrink-0 cursor-pointer rounded-full px-3 py-1 text-xs font-bold transition ${
                 isAddFeedbackVisible
-                  ? "border border-success/50 bg-white text-neutral-900"
+                  ? "bg-neutral-800 text-white opacity-70"
                   : "bg-black/90 text-white hover:bg-black"
               }`}
             >

@@ -8,9 +8,8 @@ import { getSelectionDetailsLabel } from "@/lib/cart/customizationLabels";
 import { useOptionalRestaurantUi } from "@/components/RestaurantUiContext";
 import MacroTotalsGrid from "@/components/MacroTotalsGrid";
 import CartItemPreviewRow from "@/components/cart/CartItemPreviewRow";
-import CartControlButton from "@/components/cart/CartControlButton";
 import EmptyStateCard from "@/components/EmptyStateCard";
-import { Pencil, ShoppingCart, X } from "lucide-react";
+import { ShoppingCart, X } from "lucide-react";
 import AppButton, { appButtonClassName } from "@/components/ui/AppButton";
 import AppIconButton from "@/components/ui/AppIconButton";
 import ItemRouteModal from "@/components/item-route-modal/ItemRouteModal";
@@ -48,7 +47,7 @@ export default function CartIconDropdown({
   const containerRef = useRef<HTMLDivElement>(null);
   const openScrollYRef = useRef<number | null>(null);
   const isOpen = useLastAddedPreviewOpen();
-  const { editState, loadingEditItemId, openModal, closeEditModal } = useCartItemEditModal();
+  const { editState, openModal, closeEditModal } = useCartItemEditModal();
 
   const cartCount = useMemo(
     () => items.reduce((sum, item) => sum + item.quantity, 0),
@@ -208,12 +207,6 @@ export default function CartIconDropdown({
     dismissLastAddedPreview();
   };
 
-  const activateLastAddedEdit = () => {
-    if (!lastAddedItem) return;
-    openModal(lastAddedItem, "edit");
-    dismissLastAddedPreview();
-  };
-
   // Shared between both presentations: item preview + total macros. Only the
   // surrounding chrome (header, close button, button row layout) differs.
   const itemAndTotalsContent = (
@@ -221,14 +214,10 @@ export default function CartIconDropdown({
       <div className="flex items-center gap-3">
         {lastAddedItem ? (
           // Same hierarchy as the cart drawer's own item cards: image + name,
-          // then macros, then the edit pencil below via CartItemPreviewRow's
-          // `actions` slot (rendered under the content column, right-aligned
-          // with the text rather than the image) — not beside the row. The
-          // outer div's onClick covers the whole card (image included) for
-          // Preview; onActivate keeps the text block keyboard-reachable
-          // without nesting a role="button" around the pencil's own real
-          // <button>; the pencil's own stopPropagation keeps it from also
-          // triggering Preview.
+          // then macros. The outer div's onClick covers the whole card
+          // (image included) for Preview; onActivate keeps the text block
+          // keyboard-reachable. No edit action here — customizing happens
+          // from the item preview this opens.
           <div className="w-full min-w-0 cursor-pointer" onClick={activateLastAddedPreview}>
             <CartItemPreviewRow
               item={lastAddedItem}
@@ -239,19 +228,6 @@ export default function CartIconDropdown({
               customizationsLineClamp={1}
               onActivate={activateLastAddedPreview}
               activateLabel={`Preview ${lastAddedItem.name}`}
-              actions={
-                <CartControlButton
-                  onClick={(event) => {
-                    event.stopPropagation();
-                    activateLastAddedEdit();
-                  }}
-                  aria-label={`Customize ${lastAddedItem.name}`}
-                  title="Customize"
-                  disabled={loadingEditItemId === lastAddedItem.id}
-                >
-                  <Pencil className="h-4 w-4" strokeWidth={2.5} />
-                </CartControlButton>
-              }
             />
           </div>
         ) : (
