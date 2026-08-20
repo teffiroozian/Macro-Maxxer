@@ -1,8 +1,8 @@
 "use client";
 
-import { useEffect, useRef, useState, type CSSProperties } from "react";
+import { Suspense, useEffect, useRef, useState, type CSSProperties } from "react";
 import Image from "next/image";
-import { Dumbbell, Flame, type LucideIcon } from "lucide-react";
+import { Dumbbell, Flame, Search, type LucideIcon } from "lucide-react";
 import DesktopNav from "@/components/DesktopNav";
 import GlobalMobileNav from "@/components/GlobalMobileNav";
 import GlobalMobileMenuButton from "@/components/GlobalMobileMenuButton";
@@ -113,6 +113,28 @@ function HeroItemPreviewCard({ image, itemName, restaurantName, calories, stando
         </div>
       </div>
     </div>
+  );
+}
+
+// Static stand-in for RestaurantSearch's closed-state shell (tabs row +
+// input row, no dropdown — matches its render before any query/focus state
+// exists) so the Suspense boundary below doesn't shift layout while
+// useSearchParams() bails to client rendering during prerender.
+function RestaurantSearchFallback() {
+  return (
+    <section aria-hidden="true" className="mx-auto w-full max-w-3xl">
+      <div className="overflow-hidden rounded-[28px] border border-slate-200/80 bg-white shadow-[0_30px_70px_-15px_rgba(15,23,42,0.28)] ring-1 ring-black/[0.02]">
+        <div className="flex justify-center border-b border-slate-100 bg-slate-50/60 px-4 py-3">
+          <div className="h-8 w-48 rounded-full bg-slate-100" />
+        </div>
+        <div className="flex items-center gap-3 px-5 py-5">
+          <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-accent-soft text-accent-strong">
+            <Search className="h-4 w-4" strokeWidth={2.5} />
+          </span>
+          <span className="text-base text-slate-400 sm:text-lg">Search restaurants, menu items...</span>
+        </div>
+      </div>
+    </section>
   );
 }
 
@@ -262,7 +284,9 @@ export default function HeroSearchNav({ restaurants }: { restaurants: Restaurant
             </header>
           </div>
 
-          <RestaurantSearch restaurants={restaurants} />
+          <Suspense fallback={<RestaurantSearchFallback />}>
+            <RestaurantSearch restaurants={restaurants} />
+          </Suspense>
 
           <div className="mx-auto flex flex-col items-center gap-4 text-center">
             <p className="max-w-md text-base text-neutral-600 sm:text-lg">

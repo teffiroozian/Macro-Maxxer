@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import { Outfit, Unbounded } from "next/font/google";
 import { GlobalSearchProvider } from "@/components/GlobalSearchContext";
 import { GlobalItemPreviewProvider } from "@/components/GlobalItemPreviewContext";
@@ -82,7 +83,9 @@ export default function RootLayout({
             <CartAddConfirmationProvider>
               <BuildInProgressGuardProvider>
                 {children}
-                <GlobalSearchOverlay />
+                <Suspense fallback={null}>
+                  <GlobalSearchOverlay />
+                </Suspense>
                 <GlobalItemPreviewModal />
                 <CrossRestaurantCartDialog />
                 <InProgressBuildDialog />

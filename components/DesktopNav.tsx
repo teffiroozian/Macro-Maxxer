@@ -1,14 +1,32 @@
 "use client";
 
+import { Suspense } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { Search } from "lucide-react";
 import CartIconDropdown from "@/components/cart/CartIconDropdown";
 import DesktopRestaurantMenu from "@/components/DesktopRestaurantMenu";
 import DesktopSearchDropdown from "@/components/global-search/DesktopSearchDropdown";
 import { appIconButtonClassName } from "@/components/ui/AppIconButton";
 import { useBuildInProgressGuard } from "@/components/BuildInProgressGuardContext";
 import { isPlainLeftClick } from "@/lib/isPlainLeftClick";
+
+// Static stand-in for DesktopSearchDropdown's always-visible input (same
+// height/shape/icon/placeholder) so the Suspense boundary below doesn't
+// shift layout while useSearchParams() bails to client rendering.
+function DesktopSearchDropdownFallback({ className = "w-full" }: { className?: string }) {
+  return (
+    <div aria-hidden="true" className={`relative ${className}`}>
+      <div className="relative flex h-10 w-full items-center gap-2 rounded-full border border-black/10 bg-white pl-10 pr-4 text-sm text-slate-500">
+        <span className="pointer-events-none absolute inset-y-0 left-2 my-auto flex h-6 w-6 items-center justify-center rounded-full bg-accent-soft text-accent-strong">
+          <Search className="h-3.5 w-3.5" strokeWidth={2.5} />
+        </span>
+        <span className="truncate pl-8">Search restaurants, menu items...</span>
+      </div>
+    </div>
+  );
+}
 
 export default function DesktopNav({
   logoSrc = "/logo.png",
@@ -71,9 +89,17 @@ export default function DesktopNav({
           // same width. Sized to comfortably fit larger thumbnails, full
           // nutrition, and future Quick Add/variant rows. `max-w-full`
           // keeps it from ever overflowing at the narrow end of `lg`.
-          <DesktopSearchDropdown
-            className={searchBarVariant === "compact" ? "w-[34rem] max-w-full" : "w-full"}
-          />
+          <Suspense
+            fallback={
+              <DesktopSearchDropdownFallback
+                className={searchBarVariant === "compact" ? "w-[34rem] max-w-full" : "w-full"}
+              />
+            }
+          >
+            <DesktopSearchDropdown
+              className={searchBarVariant === "compact" ? "w-[34rem] max-w-full" : "w-full"}
+            />
+          </Suspense>
         ) : null}
       </div>
 
