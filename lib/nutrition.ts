@@ -170,3 +170,20 @@ export function getDefaultMenuItemNutrition(item: MenuItem): Nutrition {
 
   return resolveMenuItemVariantNutrition(item, defaultVariant);
 }
+
+/**
+ * Resolves nutrition carried by a parent-item -> ingredient relationship.
+ * Variant context wins when present because a family item can select a
+ * different official modifier unit for each size/child item.
+ */
+export function resolveIngredientRelationshipNutrition(
+  item: MenuItem,
+  ingredientId: string,
+  variant?: ItemVariant,
+): Nutrition | undefined {
+  const relationship =
+    variant?.ingredientNutritionContexts?.[ingredientId] ??
+    item.ingredientNutritionContexts?.[ingredientId];
+
+  return relationship ? normalizeNutrition(relationship.nutrition) : undefined;
+}

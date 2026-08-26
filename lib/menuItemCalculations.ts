@@ -6,6 +6,18 @@ export function normalizeCategory(category: string) {
   return category.trim().toLowerCase();
 }
 
+// Structural/internal source records (organizational nodes, variant-container
+// parents, modifier-only pickers — see MenuItem.sourceOnly) are real data an
+// item relationship can still resolve by id, but never a standalone item a
+// user browses on their own. Every surface that builds a user-facing list of
+// "these are the items" (menu grid, search index, rankings) should filter
+// through this before rendering; anything resolving a specific id for an
+// internal relationship (combo side/drink options, ingredient lookups, cart
+// items) should keep using the unfiltered list.
+export function isStandaloneMenuItem(item: MenuItem) {
+  return item.sourceOnly !== true;
+}
+
 export function compareByDefaultOrder(left: MenuItem, right: MenuItem) {
   const leftOrder = left.defaultOrder ?? Number.POSITIVE_INFINITY;
   const rightOrder = right.defaultOrder ?? Number.POSITIVE_INFINITY;

@@ -16,7 +16,10 @@ import {
   normalizeIngredientToken,
 } from "@/lib/itemDetails/helpers";
 import { resolveIncludedIngredientDefaults } from "@/lib/itemIngredients";
-import { normalizeNutrition } from "@/lib/nutrition";
+import {
+  normalizeNutrition,
+  resolveIngredientRelationshipNutrition,
+} from "@/lib/nutrition";
 import type { IngredientItem, ItemVariant, MenuItem, ResolvedAddonGroups, RestaurantCustomizationRules } from "@/types/menu";
 import type { Nutrition } from "@/types/nutrition";
 import type { ResolvedPanelIngredient } from "@/lib/itemDetails/types";
@@ -82,16 +85,13 @@ function tabSupportsNoneOption(
   tabName: string,
   customizationRules?: RestaurantCustomizationRules
 ) {
-  const normalized = normalizeIngredientCategory(tabName);
-  const itemLevelCategory = item.customization?.ingredientCategories?.find(
-    (category) => normalizeIngredientCategory(category.name) === normalized
-  );
+  const itemLevelCategory = resolveIngredientItemCategory(item, tabName);
 
   if (itemLevelCategory) {
     return itemLevelCategory.allowNone === true;
   }
 
-  return resolveIngredientCategoryRule(tabName, customizationRules)?.allowNone === true;
+  return resolveIngredientCategoryRule(tabName, customizationRules, item)?.allowNone === true;
 }
 
 export function resolvePanelIngredients(
@@ -143,7 +143,10 @@ export function resolvePanelIngredientTabs(
   selectedVariantId?: string,
   customizationRules?: RestaurantCustomizationRules
 ): ResolvedIngredientTab[] {
-  const selectedParentVariantLabel = variants?.find((variant) => variant.id === selectedVariantId)?.label;
+  const selectedParentVariant = variants?.find(
+    (variant) => variant.id === selectedVariantId,
+  );
+  const selectedParentVariantLabel = selectedParentVariant?.label;
   const ingredientDefaultsById = resolveIncludedIngredientDefaults(item.ingredients);
   const ingredientIds = [...ingredientDefaultsById.keys()];
   const resolvedTabs = resolveIngredientTabs(item, customizationRules);
@@ -216,6 +219,11 @@ export function resolvePanelIngredientTabs(
     });
     const addonMatch = addonLookup.get(label.toLowerCase());
     const nutrition = normalizeNutrition(
+      resolveIngredientRelationshipNutrition(
+        item,
+        ingredientId,
+        selectedParentVariant,
+      ) ??
       matchedVariantNutrition ??
       menuItemNutrition ??
       match?.nutrition ??

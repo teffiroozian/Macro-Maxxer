@@ -7,7 +7,13 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "test": "node --test tests/*.test.mjs"
+    "test": "node --import tsx --test tests/*.test.mjs",
+    "collect:chick-fil-a": "tsx scripts/collect/chick-fil-a-nutrition.ts",
+    "collect:chick-fil-a-menu": "tsx scripts/collect/chick-fil-a-menu.ts",
+    "collect:chick-fil-a-ordering-nutrition": "tsx scripts/collect/chick-fil-a-ordering-nutrition.ts",
+    "import:chick-fil-a": "node --import tsx scripts/importers/chick-fil-a.ts",
+    "validate:chick-fil-a": "node --import tsx scripts/validate/chick-fil-a.ts",
+    "review:chick-fil-a": "node --import tsx scripts/review/chick-fil-a.ts"
   },
   "dependencies": {
     "lucide-react": "^0.577.0",
@@ -23,6 +29,7 @@
     "eslint": "^9",
     "eslint-config-next": "16.1.4",
     "tailwindcss": "^4.1.18",
+    "tsx": "^4.23.12",
     "typescript": "^5"
   }
 }

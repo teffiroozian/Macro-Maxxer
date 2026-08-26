@@ -62,6 +62,12 @@ export type MenuSectionsIngredientSelectionConfig = {
 type MenuSectionsProps = {
   restaurantId: string;
   items: MenuItem[];
+  // Full, unfiltered catalog for resolving combo side/drink options and
+  // ingredient lookups by id — distinct from `items` (the cards actually
+  // rendered here) so a structural/sourceOnly record can still be resolved
+  // as an internal relationship target without itself getting a standalone
+  // card. Defaults to `items` for callers with no such distinction.
+  allMenuItems?: MenuItem[];
   sort: SortOption;
   addons?: ResolvedAddonGroups;
   ingredients?: IngredientItem[];
@@ -82,6 +88,7 @@ type MenuSectionsProps = {
 export default function MenuSections({
   restaurantId,
   items,
+  allMenuItems,
   sort,
   addons,
   ingredients,
@@ -93,6 +100,8 @@ export default function MenuSections({
   showRankBadges = false,
   getItemDomId,
 }: MenuSectionsProps) {
+  const menuItemsForResolution = allMenuItems ?? items;
+
   // Computed once per rendered menu (not per card) and only for the plain
   // Menu view — Rankings shows its own rank badge instead (never both, see
   // MenuItemCardHeader), and ingredient/build-your-own views aren't "menu
@@ -159,7 +168,7 @@ export default function MenuSections({
               item={item}
               addons={addons}
               ingredientItems={ingredients}
-              menuItems={items}
+              menuItems={menuItemsForResolution}
               customizationRules={customizationRules}
               menu={{
                 itemHref: `/restaurant/${restaurantId}/${toItemSlug(item)}`,
@@ -241,7 +250,7 @@ export default function MenuSections({
                 item={item}
                 addons={addons}
                 ingredientItems={ingredients}
-                menuItems={items}
+                menuItems={menuItemsForResolution}
                 customizationRules={customizationRules}
                 menu={{
                   itemHref: `/restaurant/${restaurantId}/${toItemSlug(item)}`,

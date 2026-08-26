@@ -3,37 +3,7 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import type { LucideIcon } from "lucide-react";
-import {
-  Bean,
-  Beef,
-  CakeSlice,
-  CircleDashed,
-  CupSoda,
-  Egg,
-  EggFried,
-  Diamond,
-  Droplets,
-  Drumstick,
-  Ham,
-  IceCreamCone,
-  SquareUser,
-  LeafyGreen,
-  Pin,
-  Salad,
-  Sandwich,
-  Shell,
-  SquarePlus,
-  Sprout,
-  Soup,
-  Torus,
-  Tractor,
-  Triangle,
-  ToggleLeft,
-  Cylinder,
-  Utensils,
-  UtensilsCrossed,
-  Waves,
-} from "lucide-react";
+import { CATEGORY_ICONS } from "@/data/menuCategoryIcons";
 import type {
   IngredientItem,
   MenuItem,
@@ -48,54 +18,6 @@ import StickyRestaurantBar from "./StickyRestaurantBar";
 import { useRestaurantMenuControls } from "./restaurant-view/useRestaurantMenuControls";
 import RestaurantCategorySidebar from "./restaurant-view/RestaurantCategorySidebar";
 import ChipotleRestaurantBuilderView from "./restaurant-view/chipotle/ChipotleRestaurantBuilderView";
-
-const CATEGORY_ICONS: Record<string, LucideIcon> = {
-  sandwich: Sandwich,
-  sandwiches: Sandwich,
-  "sandwich toppings": LeafyGreen,
-  toppings: LeafyGreen,
-  chicken: Drumstick,
-  proteins: Drumstick,
-  rice: Sprout,
-  beans: Bean,
-  "included ingredient": Pin,
-  "included ingredients": Pin,
-  "breakfast protein": Drumstick,
-  condiments: Utensils,
-  "salad condiments": Utensils,
-  salads: Salad,
-  "salad toppings": Salad,
-  drinks: CupSoda,
-  "fountain drinks": CupSoda,
-  "tractor beverages": Tractor,
-  "kids drinks": SquareUser,
-  breakfast: EggFried,
-  "breakfast side": Torus,
-  "breakfast sides": Torus,
-  kids: SquareUser,
-  sides: SquarePlus,
-  side: CircleDashed,
-  desserts: CakeSlice,
-  wraps: Shell,
-  "wrap toppings": Waves,
-  burgers: Beef,
-  entrees: Utensils,
-  "bowls & plates": Soup,
-  buns: CircleDashed,
-  "breakfast buns": CircleDashed,
-  cheeses: Diamond,
-  eggs: Egg,
-  "soup toppings": Soup,
-  "parfait toppings": IceCreamCone,
-  "treat toppings": IceCreamCone,
-  dressings: Droplets,
-  "dipping sauces": ToggleLeft,
-  "chips & dips": Triangle,
-  "single sides": Cylinder,
-  "protein meals": UtensilsCrossed,
-  "protein cups": Ham,
-  treats: IceCreamCone,
-};
 
 const SECTION_HEADER_TOP_GAP = 24;
 
@@ -316,6 +238,13 @@ function StandardRestaurantView({
             <MenuSections
               restaurantId={restaurantId}
               items={visibleMenuItems}
+              // The full, unfiltered catalog (including structural/
+              // sourceOnly records) — needed so a combo item's own
+              // side/drink pickers and ingredient lookups can still resolve
+              // an internal relationship id even when that record isn't
+              // itself something a user browses as a standalone card. Falls
+              // back to `items` in MenuSections when omitted.
+              allMenuItems={items}
               sort={sort}
               addons={addons}
               ingredients={ingredients}

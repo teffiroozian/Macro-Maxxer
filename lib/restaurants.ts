@@ -35,7 +35,17 @@ export async function getRestaurantData(id: string): Promise<RestaurantData | nu
   // dynamically loads the menu content for the selected restaurant.
   // data/restaurants/index.json owns restaurant identity/metadata; individual menu JSON files own menu content only.
   // The loader merges both sources into the full RestaurantData object consumed by the app.
-  const menuModule = await import(`@/data/restaurants/${restaurant.menuFile}`);
+  //
+  // Chick-fil-A is temporarily special-cased: its menu content now comes
+  // from the generated dataset (data/generated/chick-fil-a/restaurant.json)
+  // rather than the old hand-authored data/restaurants/chickfila.json. The
+  // old file is kept in place as a fallback/reference until runtime QA on
+  // the generated data is complete — remove this branch once it's promoted
+  // and chickfila.json is retired.
+  const menuModule =
+    restaurant.id === "chickfila"
+      ? await import("@/data/generated/chick-fil-a/restaurant.json")
+      : await import(`@/data/restaurants/${restaurant.menuFile}`);
   const menu = menuModule.default;
 
   // pulling important pieces out of the menu

@@ -54,7 +54,10 @@ import {
 } from "@/lib/restaurantBuilders/chipotle/nutrition";
 import { diffChipotleBuildConfigurations } from "@/lib/restaurantBuilders/chipotle/buildDiff";
 import { SORT_OPTION_VALUES } from "@/lib/menuSections/sortOptions";
-import { resolveMenuItemVariantNutrition } from "@/lib/nutrition";
+import {
+    resolveIngredientRelationshipNutrition,
+    resolveMenuItemVariantNutrition,
+} from "@/lib/nutrition";
 import {
     buildIngredientCustomizationLabels,
     calculateStandardItemNutrition,
@@ -912,11 +915,19 @@ export default function ItemRouteModal({
             selectedChipotleIngredientItems,
         ],
     );
+    // Some generated ingredient records (e.g. Chick-fil-A "contextual
+    // modifier" ingredients like bacon crumbles or syrup pumps) carry no
+    // direct `nutrition` of their own — the real values live per-parent-item
+    // in `ingredientNutritionContexts` and are resolved by the caller before
+    // this is invoked (see resolveIngredientNutritionForDisplay below).
+    // Missing nutrition must never be silently treated as zero, so this
+    // returns undefined rather than crashing or fabricating values.
     const buildScaledNutrition = useCallback(
         (
-            nutrition: MenuItem["nutrition"],
+            nutrition: MenuItem["nutrition"] | undefined,
             multiplier: number,
-        ): MenuItem["nutrition"] => {
+        ): MenuItem["nutrition"] | undefined => {
+            if (!nutrition) return undefined;
             const scaleNumericField = (value: number | undefined) =>
                 value === undefined
                     ? undefined
@@ -936,64 +947,99 @@ export default function ItemRouteModal({
         },
         [],
     );
+    // Resolves the correct source nutrition for one ingredient before
+    // scaling: the parent item -> ingredient relationship (the official
+    // per-item modifier unit, e.g. "2 scoops of bacon on this item") wins
+    // when present, since that's how context-dependent generated records
+    // (Chick-fil-A modifiers) carry their real values; otherwise falls back
+    // to nutrition on the ingredient record itself. Returns undefined only
+    // when neither source has data — a genuine "no nutrition available"
+    // case, not an error.
+    const resolveIngredientNutritionForDisplay = useCallback(
+        (ingredientItem: MenuItem, ingredientId: string) =>
+            resolveIngredientRelationshipNutrition(
+                item,
+                ingredientId,
+                selectedVariant,
+            ) ?? ingredientItem.nutrition,
+        [item, selectedVariant],
+    );
     const chipotleIngredientDisplayItems = useMemo<MenuItem[]>(
         () =>
-            chipotleIngredientMenuItems.map((ingredientItem) => {
-                const ingredientId = (
-                    ingredientItem.id ?? ingredientItem.name
-                ).toLowerCase();
-                const category = normalizeIngredientCategory(
-                    resolvePrimaryCategory(ingredientItem.categories),
-                );
-                const multiplier =
-                    getChipotleIngredientMultiplier(ingredientId) *
-                    getChipotleSelectedIngredientPortionMultiplier(
-                        ingredientId,
-                        category,
+            chipotleIngredientMenuItems
+                .map((ingredientItem) => {
+                    const ingredientId = (
+                        ingredientItem.id ?? ingredientItem.name
+                    ).toLowerCase();
+                    const category = normalizeIngredientCategory(
+                        resolvePrimaryCategory(ingredientItem.categories),
                     );
-                const nutrition = buildScaledNutrition(
-                    ingredientItem.nutrition,
-                    multiplier,
-                );
-                return {
-                    ...ingredientItem,
-                    nutrition,
-                };
-            }),
+                    const multiplier =
+                        getChipotleIngredientMultiplier(ingredientId) *
+                        getChipotleSelectedIngredientPortionMultiplier(
+                            ingredientId,
+                            category,
+                        );
+                    const nutrition = buildScaledNutrition(
+                        resolveIngredientNutritionForDisplay(
+                            ingredientItem,
+                            ingredientId,
+                        ),
+                        multiplier,
+                    );
+                    // Genuinely no nutrition available anywhere for this
+                    // ingredient — omit it rather than crash or show fake 0s.
+                    if (!nutrition) return null;
+                    return {
+                        ...ingredientItem,
+                        nutrition,
+                    };
+                })
+                .filter((displayItem): displayItem is MenuItem => displayItem !== null),
         [
             chipotleIngredientMenuItems,
             buildScaledNutrition,
+            resolveIngredientNutritionForDisplay,
             getChipotleIngredientMultiplier,
             getChipotleSelectedIngredientPortionMultiplier,
         ],
     );
     const chipotleIncludedIngredientDisplayItems = useMemo<MenuItem[]>(
         () =>
-            chipotleIncludedIngredientMenuItems.map((ingredientItem) => {
-                const ingredientId = (
-                    ingredientItem.id ?? ingredientItem.name
-                ).toLowerCase();
-                const category = normalizeIngredientCategory(
-                    resolvePrimaryCategory(ingredientItem.categories),
-                );
-                const multiplier =
-                    getChipotleIngredientMultiplier(ingredientId) *
-                    getChipotleSelectedIngredientPortionMultiplier(
-                        ingredientId,
-                        category,
+            chipotleIncludedIngredientMenuItems
+                .map((ingredientItem) => {
+                    const ingredientId = (
+                        ingredientItem.id ?? ingredientItem.name
+                    ).toLowerCase();
+                    const category = normalizeIngredientCategory(
+                        resolvePrimaryCategory(ingredientItem.categories),
                     );
-                const nutrition = buildScaledNutrition(
-                    ingredientItem.nutrition,
-                    multiplier,
-                );
-                return {
-                    ...ingredientItem,
-                    nutrition,
-                };
-            }),
+                    const multiplier =
+                        getChipotleIngredientMultiplier(ingredientId) *
+                        getChipotleSelectedIngredientPortionMultiplier(
+                            ingredientId,
+                            category,
+                        );
+                    const nutrition = buildScaledNutrition(
+                        resolveIngredientNutritionForDisplay(
+                            ingredientItem,
+                            ingredientId,
+                        ),
+                        multiplier,
+                    );
+                    // Genuinely no nutrition available anywhere for this
+                    // ingredient — omit it rather than crash or show fake 0s.
+                    if (!nutrition) return null;
+                    return {
+                        ...ingredientItem,
+                        nutrition,
+                    };
+                })
+                .filter((displayItem): displayItem is MenuItem => displayItem !== null),
         [
             chipotleIncludedIngredientMenuItems,
             buildScaledNutrition,
+            resolveIngredientNutritionForDisplay,
             getChipotleIngredientMultiplier,
             getChipotleSelectedIngredientPortionMultiplier,
         ],
@@ -1567,7 +1613,10 @@ export default function ItemRouteModal({
                                                 !item.hideVariantSelector &&
                                                 selectedVariant ? (
                                                     <PreviewControlShortcut
-                                                        label="Portion"
+                                                        label={
+                                                            item.variantGroupLabel ??
+                                                            "Portion"
+                                                        }
                                                         value={
                                                             selectedVariant.label
                                                         }
@@ -1614,6 +1663,10 @@ export default function ItemRouteModal({
                                                         }
                                                         layout="top"
                                                         className="min-w-0 lg:w-[55%]"
+                                                        groupLabel={
+                                                            item.variantGroupLabel ??
+                                                            "Portion"
+                                                        }
                                                     />
                                                 ) : null}
                                                 {isComboEligibleCategory ? (
@@ -2181,7 +2234,18 @@ export default function ItemRouteModal({
                                     showCustomizationDeltas={
                                         hasActiveCustomization
                                     }
-                                    showVariantsInDetails={false}
+                                    // A component-choice group (e.g. "Cheese")
+                                    // has hideVariantSelector set, so it never
+                                    // renders as the hero-adjacent segmented
+                                    // control — it needs the in-panel Meal
+                                    // Details selector as its one visible
+                                    // place to choose. A real size/count
+                                    // variant keeps using only the
+                                    // hero-adjacent control (already rendered
+                                    // above), so this stays off for it.
+                                    showVariantsInDetails={
+                                        item.variantGroupKind === "component"
+                                    }
                                     selectedIngredientCounts={ingredientCounts}
                                     onDecrementIngredient={(ingredientId) =>
                                         setSelectedIngredientCounts((prev) => {

@@ -1,0 +1,270 @@
+{
+  "restaurant": "Chick-fil-A",
+  "validatedAt": "2026-08-26",
+  "inputs": {
+    "restaurant": "data/generated/chick-fil-a/restaurant.json",
+    "unresolved": "data/generated/chick-fil-a/unresolved.json"
+  },
+  "valid": true,
+  "summary": {
+    "records": 489,
+    "menuItems": 430,
+    "ingredients": 59,
+    "nutritionAttached": 428,
+    "mealContainers": 36,
+    "errors": 0,
+    "warnings": 6,
+    "humanReview": 57,
+    "errorTypes": {},
+    "warningTypes": {
+      "combo_entree_choice_metadata_only": 1,
+      "contextual_constraints_metadata_only": 1,
+      "nutrition_unavailable": 1,
+      "runtime_navigation_orphans": 1,
+      "source_identity_metadata_extension": 1,
+      "source_relationships_metadata_only": 1
+    }
+  },
+  "errors": [],
+  "warnings": [
+    {
+      "severity": "warning",
+      "check": "nutrition",
+      "code": "nutrition_unavailable",
+      "message": "61 records intentionally have no attached official nutrition and remain in human review.",
+      "affectedCount": 61,
+      "recordIds": [
+        "cfa-group-100100",
+        "cfa-group-100101",
+        "cfa-group-100102",
+        "cfa-group-100109",
+        "cfa-group-100113",
+        "cfa-group-100117",
+        "cfa-group-100123",
+        "cfa-group-100139",
+        "cfa-group-100152",
+        "cfa-group-100156",
+        "cfa-group-100157",
+        "cfa-group-100158",
+        "cfa-group-100160",
+        "cfa-group-100161",
+        "cfa-group-100162",
+        "cfa-group-100180",
+        "cfa-group-100220",
+        "cfa-group-100221",
+        "cfa-group-100222",
+        "cfa-group-100234",
+        "cfa-group-100242",
+        "cfa-group-100243",
+        "cfa-group-100251",
+        "cfa-group-100257",
+        "cfa-group-100264"
+      ]
+    },
+    {
+      "severity": "warning",
+      "check": "schema_limitations",
+      "code": "source_relationships_metadata_only",
+      "message": "474 Chick-fil-A source item groups are retained in metadata because the runtime schema cannot express the complete nested graph.",
+      "affectedCount": 474
+    },
+    {
+      "severity": "warning",
+      "check": "schema_limitations",
+      "code": "contextual_constraints_metadata_only",
+      "message": "433 source options retain contextual minimum/maximum information that is not fully first-class in the runtime schema.",
+      "affectedCount": 433
+    },
+    {
+      "severity": "warning",
+      "check": "schema_limitations",
+      "code": "combo_entree_choice_metadata_only",
+      "message": "9 meal containers cannot express a single runtime entrée reference; their source choices remain in sourceRelationships.",
+      "affectedCount": 9,
+      "recordIds": [
+        "cfa-group-100117",
+        "cfa-group-100139",
+        "cfa-group-100152",
+        "cfa-group-100242",
+        "cfa-group-100251",
+        "cfa-group-100264",
+        "cfa-group-100273",
+        "cfa-group-100278",
+        "cfa-group-100285"
+      ]
+    },
+    {
+      "severity": "warning",
+      "check": "schema_limitations",
+      "code": "source_identity_metadata_extension",
+      "message": "Chick-fil-A source IDs are retained in per-record metadata rather than first-class production schema fields.",
+      "affectedCount": 489,
+      "recordIds": [
+        "cfa-group-100100",
+        "cfa-group-100101",
+        "cfa-group-100102",
+        "cfa-group-100109",
+        "cfa-group-100113",
+        "cfa-group-100117",
+        "cfa-group-100123",
+        "cfa-group-100139",
+        "cfa-group-100152",
+        "cfa-group-100156",
+        "cfa-group-100157",
+        "cfa-group-100158",
+        "cfa-group-100160",
+        "cfa-group-100161",
+        "cfa-group-100162",
+        "cfa-item-1009734",
+        "cfa-item-1009736",
+        "cfa-item-1009735",
+        "cfa-item-1000085",
+        "cfa-item-1002843",
+        "cfa-group-100164",
+        "cfa-item-1005312",
+        "cfa-group-100168",
+        "cfa-group-100169",
+        "cfa-item-1002035"
+      ]
+    },
+    {
+      "severity": "warning",
+      "check": "categories",
+      "code": "runtime_navigation_orphans",
+      "message": "20 non-addon menu records are retained but are not reachable from category roots, variants, or runtime combo references.",
+      "affectedCount": 20,
+      "recordIds": [
+        "cfa-item-1005945",
+        "cfa-item-1005946",
+        "cfa-item-1005947",
+        "cfa-item-1006334",
+        "cfa-item-1008531",
+        "cfa-item-1007833",
+        "cfa-item-1005942",
+        "cfa-item-1005943",
+        "cfa-item-1005944",
+        "cfa-item-1006337",
+        "cfa-item-1008533",
+        "cfa-item-1007831",
+        "cfa-item-1008145",
+        "cfa-item-1008425",
+        "cfa-item-1000083",
+        "cfa-item-1004563",
+        "cfa-item-1000353",
+        "cfa-item-1000158",
+        "cfa-item-1002292",
+        "cfa-item-1001322"
+      ]
+    }
+  ],
+  "checks": {
+    "structure": {
+      "passed": true,
+      "errors": 0,
+      "warnings": 0,
+      "details": {
+        "menuItems": 430,
+        "ingredients": 59,
+        "totalRecords": 489,
+        "runtimeVisibleItems": 43,
+        "runtimeCustomizationItems": 0,
+        "runtimeDeferredItems": 0
+      }
+    },
+    "identity": {
+      "passed": true,
+      "errors": 0,
+      "warnings": 0,
+      "details": {
+        "uniqueLogicalIds": 489,
+        "uniqueSourceRecords": 489,
+        "uniqueRetailModifiedItemIds": 393,
+        "uniqueCategoryFacingItemGroupIds": 96
+      }
+    },
+    "categories": {
+      "passed": true,
+      "errors": 0,
+      "warnings": 1,
+      "details": {
+        "categoryRoots": 11,
+        "uniqueCategoryIds": 11,
+        "categoryFacingRecords": 142
+      }
+    },
+    "relationships": {
+      "passed": true,
+      "errors": 0,
+      "warnings": 0,
+      "details": {
+        "addonGroups": 208,
+        "addonItemReferences": 1096,
+        "ingredientReferences": 2092,
+        "contextualNutritionRelationships": 183,
+        "variantReferences": 224
+      }
+    },
+    "combos": {
+      "passed": true,
+      "errors": 0,
+      "warnings": 0,
+      "details": {
+        "mealContainers": 36,
+        "comboReferences": 4076,
+        "mealContainersWithoutSingleRuntimeEntree": 9,
+        "mealContainersWithNutrition": 0
+      }
+    },
+    "nutrition": {
+      "passed": true,
+      "errors": 0,
+      "warnings": 1,
+      "details": {
+        "attachedNutritionRecords": 428,
+        "attachedNutritionBySource": {
+          "standalone_nutrition": 312,
+          "ordering_system": 111
+        },
+        "contextualNutritionRecords": 5,
+        "unavailableNutritionRecords": 61,
+        "suspiciousZeroMacroRecords": 0
+      }
+    },
+    "unresolved": {
+      "passed": true,
+      "errors": 0,
+      "warnings": 0,
+      "details": {
+        "humanReviewRecords": 57,
+        "reasons": {
+          "entree_only_nutrition_for_meal_container": 4,
+          "no_nutrition_match": 53
+        },
+        "missingNutritionRecords": 61
+      }
+    },
+    "traceability": {
+      "passed": true,
+      "errors": 0,
+      "warnings": 0,
+      "details": {
+        "sourceItemGroups": 474,
+        "sourceOptions": 1946,
+        "contextualConstraintOptions": 433
+      }
+    },
+    "schema_limitations": {
+      "passed": true,
+      "errors": 0,
+      "warnings": 4,
+      "details": {
+        "sourceGroupsPreservedInMetadata": 474,
+        "contextualConstraintOptions": 433,
+        "contextualNutritionRecords": 5,
+        "contextualNutritionRelationships": 183,
+        "combosWithoutSingleRuntimeEntree": 9,
+        "sourceTracedRecords": 489
+      }
+    }
+  }
+}

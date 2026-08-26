@@ -428,7 +428,6 @@ export function PortionSelector({
   className = "mt-4",
   layout = "details",
   id,
-  groupLabel = "Portion",
 }: {
   variants?: ItemVariant[] | null;
   selectedVariantId?: string;
@@ -439,10 +438,6 @@ export function PortionSelector({
   // meaningful for the "top" layout (ItemRouteModal's overview header); the
   // "details" layout's own Meal Details card has no equivalent shortcut.
   id?: string;
-  // Overrides the "Portion" heading for variant groups that represent a
-  // named component choice (e.g. "Cheese") rather than a size/count/portion
-  // difference — see MenuItem.variantGroupLabel.
-  groupLabel?: string;
 }) {
   if (!variants || variants.length === 0) return null;
 
@@ -450,11 +445,11 @@ export function PortionSelector({
     return (
       <div id={id} className={className}>
         <p className="text-[11px] font-semibold uppercase tracking-wide text-slate-400">
-          {groupLabel}
+          Portion
         </p>
         <div
           role="radiogroup"
-          aria-label={groupLabel}
+          aria-label="Portion"
           className="mt-1.5 grid w-full auto-cols-fr grid-flow-col gap-1 rounded-full bg-slate-100 p-1"
         >
           {variants.map((variant) => {
@@ -485,7 +480,7 @@ export function PortionSelector({
   return (
     <div className={`${className} space-y-2`}>
       <div className="text-base font-semibold uppercase tracking-wide text-neutral-500">
-        {groupLabel}
+        Portion
       </div>
       <div className="grid w-full grid-flow-col auto-cols-fr gap-2">
         {variants.map((variant) => {
@@ -2059,7 +2054,6 @@ export default function ItemDetailsPanel({
                     onSelectVariant={variantConfig.onSelectVariant}
                     layout="details"
                     className="mt-0"
-                    groupLabel={item.variantGroupLabel ?? "Portion"}
                   />
                   <div className="mt-3 h-px bg-black/10" />
                 </>

@@ -1,0 +1,367 @@
+source_id,categories,name,serving_size,calories,total_fat,saturated_fat,trans_fat,cholesterol,sodium,total_carbohydrates,dietary_fiber,sugars,protein
+631,Breakfast,Spicy Chicken Biscuit,153,450,22,8,0,40,1570,44,3,5,19
+10147,Breakfast,Chick-fil-A Chick-n-Minis®,127,360,13,4,0,60,1060,41,2,8,20
+10149,Breakfast,4 ct Chick-fil-A Chick-n-Minis®,127,360,13,4,0,60,1060,41,2,8,20
+38480,Breakfast,10 ct Chick-fil-A Chick-n-Minis®,318,910,34,10,0,150,2640,103,6,19,49
+10150,Breakfast,Egg White Grill,172,300,8,4,0,65,990,29,1,2,27
+10152,Breakfast,Hash Brown Scramble Burrito,304,700,40,12,0.5,415,1770,51,3,2,34
+10154,Breakfast,Hash Brown Scramble Burrito w/ Nuggets,304,700,40,12,0.5,415,1770,51,3,2,34
+10155,Breakfast,Hash Brown Scramble Burrito w/  Sausage,283,720,47,16,0.5,395,1450,46,3,1,28
+10157,Breakfast,Hash Brown Scramble Burrito w/ Grilled Filet,301,650,36,12,0.5,420,1630,46,3,2,35
+10159,Breakfast,Hash Brown Scramble Burrito w/ Spicy Chicken,322,740,42,13,0.5,420,2020,53,4,2,37
+10160,Breakfast,Hash Brown Scramble Burrito w/ Bacon,271,680,42,14,0.5,395,1630,46,3,2,30
+10161,Breakfast,Hash Brown Scramble Burrito w/ No Meat,251,580,34,11,0.5,330,1200,47,5,1,22
+10162,Breakfast,Hash Brown Scramble Burrito w/ Nuggets - no hash browns,261,550,30,11,0.5,415,1530,38,2,2,33
+10163,Breakfast,Hash Brown Scramble Burrito w/ Sausage - no hash browns,240,570,37,14,0.5,395,1200,34,2,1,26
+10164,Breakfast,Hash Brown Scramble Burrito w/ Grilled Filet - no hash brown,258,500,26,10,0.5,420,1380,34,2,2,34
+10165,Breakfast,Hash Brown Scramble Burrito w/ Spicy Chicken - no hash browns,279,590,32,11,0.5,420,1770,40,2,2,36
+10166,Breakfast,Hash Brown Scramble Burrito w/ Bacon - no hash browns,228,540,32,13,0.5,395,1230,34,2,2,27
+10167,Breakfast,Hash Brown Scramble Burrito w/ No Meat - no hash browns,208,440,24,10,0.5,330,950,35,3,1,21
+10168,Breakfast,Hash Brown Scramble Bowl,233,470,30,9,0,415,1350,19,2,2,29
+10170,Breakfast,Hash Brown Scramble Bowl w/ Nuggets,233,470,30,9,0,415,1350,19,2,2,29
+10171,Breakfast,Hash Brown Scramble Bowl w/ Sausage,212,480,37,12,0,395,1020,15,2,1,23
+10173,Breakfast,Hash Brown Scramble Bowl w/ Grilled Filet,230,410,26,8,0,420,1200,15,2,2,30
+10174,Breakfast,Hash Brown Scramble Bowl w/ Spicy Chicken,251,500,32,9,0,420,1590,21,3,2,32
+10175,Breakfast,Hash Brown Scramble Bowl w/ Bacon,200,450,32,11,0,395,1060,15,2,2,23
+10176,Breakfast,Hash Brown Scramble Bowl w/ No Meat,180,350,24,8,0,330,770,16,3,1,17
+10177,Breakfast,Hash Brown Scramble Bowl w/ Nuggets - no hash browns,190,320,20,8,0,415,1100,7,0,2,28
+10179,Breakfast,Hash Brown Scramble Bowl w/ Sausage - no hash browns,169,340,27,11,0,395,780,2,0,1,21
+10180,Breakfast,Hash Brown Scramble Bowl w/ Grilled Filet - no hash browns,187,270,16,7,0,420,960,2,0,2,29
+10181,Breakfast,Hash Brown Scramble Bowl w/ Spicy Chicken - no hash browns,208,350,22,8,0,420,1340,9,1,2,31
+10182,Breakfast,Hash Brown Scramble Bowl w/ Bacon - no hash browns,158,300,22,10,0,395,810,2,0,2,22
+10183,Breakfast,Hash Brown Scramble Bowl w/ No Meat - no hash browns,137,200,14,6,0,330,530,3,2,1,16
+10184,Breakfast,"Chicken, Egg & Cheese Biscuit",211,550,28,12,0,215,1870,48,3,7,27
+10186,Breakfast,"Bacon, Egg & Cheese Biscuit",145,420,23,11,0,180,1220,38,2,4,15
+10188,Breakfast,"Sausage, Egg & Cheese Biscuit",192,620,42,18,0,205,1510,38,2,4,22
+10190,Breakfast,"Chicken, Egg & Cheese Muffin",187,410,18,6,0,215,1320,36,1,4,27
+10192,Breakfast,"Bacon, Egg & Cheese Muffin",126,300,13,6,0,180,780,28,1,2,16
+10194,Breakfast,"Sausage, Egg & Cheese Muffin",173,490,32,13,0,205,1000,29,1,1,23
+10196,Breakfast,Hash Browns,77,270,18,2.5,0,0,440,23,3,0,3
+10198,Breakfast,Small Hash Browns,77,270,18,2.5,0,0,440,23,3,0,3
+10199,Breakfast,Large Hash Browns,121,420,29,4,0,0,700,35,4,0,4
+10200,Breakfast | Sides,Berry Parfait,206,270,9,3.5,0,20,85,35,1,26,13
+10202,Breakfast | Sides,Berry Parfait w/ Cookie Crumbs,195,240,8,3.5,0,20,85,31,1,25,12
+10204,Breakfast | Sides,Berry Parfait w/ Granola,206,270,9,3.5,0,20,85,35,1,26,13
+10207,Breakfast | Sides,Fruit Cup,125,70,0,0,0,0,0,16,2,12,1
+10209,Breakfast | Sides,Small Fruit Cup,107,60,0,0,0,0,0,14,2,11,1
+10210,Breakfast | Sides,Medium Fruit Cup,125,70,0,0,0,0,0,16,2,12,1
+10211,Breakfast | Sides,Large Fruit Cup,215,120,0,0,0,0,0,28,4,21,1
+10212,Breakfast,Breakfast Breads,81,290,15,6,0,0,760,37,2,4,4
+10214,Breakfast,Buttery Biscuit,81,290,15,6,0,0,760,37,2,4,4
+10215,Breakfast,English Muffin,58,140,1,0,0,0,190,27,1,1,5
+10216,Breakfast,4 ct Mini Yeast Rolls,70,240,8,2.5,0,20,450,36,2,7,6
+39847,Breakfast,Chick-fil-A® Chicken Biscuit,153,460,23,8,0,45,1510,45,2,6,19
+600,Entrées,Spicy Deluxe Sandwich,259,540,26,8,0,85,1880,47,2,7,34
+10300,Entrées,Spicy Deluxe Sandwich w/ Pepper Jack,259,540,26,8,0,85,1880,47,2,7,34
+10301,Entrées,Spicy Deluxe Sandwich w/ American,252,510,23,6,0,80,1970,47,2,7,31
+10303,Entrées,Spicy Deluxe Sandwich w/ Colby Jack,259,540,26,8,0,85,1880,47,2,7,34
+10304,Entrées,Spicy Deluxe Sandwich w/ No Cheese,238,460,19,4,0,65,1730,46,2,7,28
+613,Entrées,Chick-fil-A Chick-n-Strips®,136,310,14,2.5,0,75,870,16,0,2,29
+10329,Entrées,2 ct Chick-fil-A Chick-n-Strips®,91,200,9,2,0,50,580,11,0,1,19
+10331,Entrées,3 ct Chick-fil-A Chick-n-Strips®,136,310,14,2.5,0,75,870,16,0,2,29
+10333,Entrées,4 ct Chick-fil-A Chick-n-Strips®,181,410,19,3.5,0,100,1150,22,0,2,39
+10220,Entrées,10 ct Chick-fil-A Chick-n-Strips®,452,1020,46,9,0,250,2870,54,0,6,96
+616,Entrées | Catering Entrées,Chick-fil-A® Nuggets,113,250,11,2.5,0,85,1210,11,0,1,27
+10318,Entrées | Catering Entrées,8 ct Chick-fil-A® Nuggets,113,250,11,2.5,0,85,1210,11,0,1,27
+10320,Entrées | Catering Entrées,12 ct Chick-fil-A® Nuggets,170,380,17,3.5,0,125,1820,16,0,1,40
+10271,Entrées,30 ct Chick-fil-A® Nuggets,425,950,43,9,0,315,4550,41,0,4,100
+10322,Entrées,Grilled Nuggets,95,130,3,0.5,0,85,440,1,0,1,25
+10324,Entrées,8 ct Grilled Nuggets,95,130,3,0.5,0,85,440,1,0,1,25
+10325,Entrées,12 ct Grilled Nuggets,142,200,4.5,1,0,130,660,2,0,1,38
+10275,Entrées,30 ct Grilled Nuggets,369,510,11,3,0,335,1710,4,1,3,98
+10290,Entrées,Chick-fil-A® Deluxe Sandwich,247,490,22,6,0,85,1700,43,1,7,32
+10292,Entrées,Chick-fil-A® Deluxe Sandwich w/ American,247,490,22,6,0,85,1700,43,1,7,32
+10293,Entrées,Chick-fil-A® Deluxe Sandwich w/ Colby Jack,254,510,24,8,0,90,1610,43,1,7,34
+10294,Entrées,Chick-fil-A® Deluxe Sandwich w/ Pepper Jack,254,520,24,8,0,90,1610,43,1,7,35
+10295,Entrées,Chick-fil-A® Deluxe Sandwich w/ No Cheese,233,430,18,3.5,0,70,1470,43,1,7,29
+10296,Entrées | Catering Entrées,Spicy Chicken Sandwich,188,450,19,4,0,65,1730,45,1,6,28
+10305,Entrées,Grilled Chicken Sandwich,206,390,11,2.5,0,75,765,45,3,11,28
+10307,Entrées,Chick-fil-A® Grilled Chicken Club Sandwich,237,520,22,8,0,105,1055,45,3,12,37
+10309,Entrées,Grilled Chicken Club w/ Colby Jack,237,520,22,8,0,105,1055,45,3,12,37
+10310,Entrées,Grilled Chicken Club w/ American,230,490,19,6,0,100,1145,45,3,12,34
+10312,Entrées,Grilled Chicken Club w/ Pepper Jack,237,520,22,8,0,105,1045,45,3,12,37
+10314,Entrées,Grilled Chicken Club w/ No Cheese,216,440,15,4,0,85,905,45,3,11,31
+10335,Entrées,Chick-fil-A Cool Wrap®,231,660,45,9,0,110,1420,32,14,5,43
+39841,Entrées | Catering Entrées,Chick-fil-A® Chicken Sandwich,183,420,18,3.5,0,70,1460,41,1,6,29
+47580,Entrées,Honey Pepper Pimento Sandwich w/ Chick-fil-A® Filet,232,600,30,9,0,100,1680,53,1,16,34
+47586,Entrées,Honey Pepper Pimento Sandwich w/ Spicy Filet,237,620,31,9,0,95,1950,56,2,16,33
+47588,Entrées,Honey Pepper Pimento Sandwich w/ Grilled Filet,201,450,20,7,0,100,940,42,1,15,30
+10455,Salads,Cobb Salad,411,830,60,13,0,225,2180,31,5,8,41
+10457,Salads,Cobb Salad w/ Nuggets,411,830,60,13,0,225,2180,31,5,8,41
+10460,Salads,Cobb Salad w/ Spicy Grilled Filet (Cold),369,600,45,10,0,205,1610,16,5,8,33
+10464,Salads,Cobb Salad w/ Grilled Nuggets,378,630,45,10,0,225,1330,16,5,8,39
+10467,Salads,Cobb Salad w/ Chick-fil-A Chick-n-Strips®,420,810,56,12,0,215,1750,31,5,9,43
+10470,Salads,Cobb Salad w/ Grilled Filet (Cold),369,610,44,10,0,210,1260,16,5,8,35
+10473,Salads,Cobb Salad w/ Grilled Filet (Warm),368,600,44,10,0,210,1260,16,5,8,35
+10476,Salads,Cobb Salad w/ No Chicken,284,500,42,9.5,0,140,890,15,5,7,14
+10478,Salads,Spicy Southwest Salad,424,680,49,10,0,100,1570,27,7,7,33
+10480,Salads,Spicy Southwest Salad w/ Spicy Grilled Filet (Cold),424,680,49,10,0,100,1570,27,7,7,33
+10484,Salads,Spicy Southwest Salad w/ Grilled Filet (Cold),424,680,48,9.5,0,110,1220,26,7,7,35
+10486,Salads,Spicy Southwest Salad w/ Nuggets,448,800,56,11,0,120,2050,35,7,7,39
+10488,Salads,Spicy Southwest Salad w/ Grilled Nuggets,434,700,49,10,0,125,1290,26,7,7,39
+10490,Salads,Spicy Southwest Salad w/ Chick-fil-A Chick-n-Strips®,475,880,60,12,0,115,1710,41,7,8,43
+10492,Salads,Spicy Southwest Salad w/ Grilled Filet (Warm),423,680,48,9.5,0,110,1220,26,7,7,35
+10494,Salads,Spicy Southwest Salad w/ No Chicken,339,570,47,9.5,0,35,850,25,7,6,14
+10496,Salads,Market Salad,326,550,31,6,0,80,1010,42,5,26,28
+10498,Salads,Market Salad w/ Grilled Filet (Cold),326,550,31,6,0,80,1010,42,5,26,28
+10501,Salads,Market Salad w/ Spicy Grilled Filet (Cold),326,540,31,6,0,70,1360,42,6,27,26
+10503,Salads,Market Salad w/ Chick-fil-A Chick-n-Strips®,377,750,43,8,0,85,1500,57,5,27,36
+10505,Salads,Market Salad w/ Nuggets,354,700,40,8,0,90,1850,51,5,27,34
+10507,Salads,Market Salad w/ Grilled Nuggets,335,570,32,6,0,95,1080,41,6,27,32
+10509,Salads,Market Salad w/ Grilled Filet (Warm),325,550,31,6,0,80,1010,42,5,26,28
+10511,Salads,Market Salad w/ No Chicken,241,440,29,5.5,0,10,640,40,5,26,7
+576,Sides,Kale Crunch Side,112,170,12,1.5,0,0,250,13,4,8,4
+581,Sides,Chick-fil-A Waffle Potato Fries®,125,420,24,4,0,0,240,45,5,1,5
+10338,Sides,Small Chick-fil-A Waffle Potato Fries®,96,320,19,3,0,0,190,35,4,1,4
+10223,Sides,Medium Chick-fil-A Waffle Potato Fries®,125,420,24,4,0,0,240,45,5,1,5
+10340,Sides,Large Chick-fil-A Waffle Potato Fries®,179,600,35,5,0,0,340,65,7,1,7
+10342,Sides,Mac & Cheese,227,450,29,16,0,70,1190,28,3,3,20
+10344,Sides,Small Mac & Cheese,136,270,17,10,0,40,710,17,2,2,12
+10225,Sides,Medium Mac & Cheese,227,450,29,16,0,70,1190,28,3,3,20
+10346,Sides,Chicken Noodle Soup,252,190,4.5,1,0,30,1290,27,2,2,11
+10233,Sides,Cup of Chicken Noodle Soup,252,190,4.5,1,0,30,1290,27,2,2,11
+10348,Sides,Bowl of Chicken Noodle Soup,476,320,8,2,0,60,2280,42,3,3,20
+10237,Sides,Side Salad,166,470,42,8,0,35,700,14,4,5,6
+34595,Sides,Chicken Tortilla Soup,265,280,7,2.5,0,50,1060,31,17,4,24
+10256,Sides,Original Flavor Waffle Potato Chips,43,220,13,3.5,0,0,250,25,2,0,3
+10351,Sides,Buddy Fruits® Apple Sauce,90,45,0,0,0,0,0,12,1,8,0
+32963,Sides,Chick-fil-A® Sauce Flavored Waffle Potato Chips,43,210,12,3,0,0,330,26,2,3,3
+10546,Kid's Meals (nutrition per entrée only),5 Ct Nuggets Kid's Meal,71,160,7,1.5,0,50,760,7,0,1,17
+10556,Kid's Meals (nutrition per entrée only),2 Ct Chick-n-Strips® Kid's Meal,91,200,9,2,0,50,580,11,0,1,19
+10558,Kid's Meals (nutrition per entrée only),5 Ct Grilled Nuggets Kid's Meal,59,80,2,0,0,55,270,1,0,0,16
+47598,Kid's Meals (nutrition per entrée only),Mac & Cheese Kid’s Meal,227,450,29,16,0,70,1190,28,3,3,20
+10076,Treats,Peach Frosted Lemonade,383,440,7,4.5,0,25,210,91,1,88,7
+10078,Treats,Peach Frosted Lemonade,383,440,7,4.5,0,25,210,91,1,88,7
+10079,Treats,Peach Frosted Lemonade w/ Diet Lemonade,383,440,7,4.5,0,25,210,91,1,88,7
+10513,Treats,Pineapple Dragonfruit Frosted Lemonade,375,360,7,4.5,0,25,150,70,0,63,7
+10101,Treats,Pineapple Dragonfruit Frosted Lemonade,375,360,7,4.5,0,25,150,70,0,63,7
+10102,Treats,Pineapple Dragonfruit Frosted Lemonade w/ Diet Lemonade,375,300,7,4.5,0,25,150,54,0,48,7
+10525,Treats,Chocolate Chunk Cookie,78,370,17,9,0,15,230,49,3,26,5
+10262,Treats,Chocolate Chunk Cookie,78,370,17,9,0,15,230,49,3,26,5
+10527,Treats,6 pack Chocolate Chunk Cookie,78,370,17,9,0,15,230,49,3,26,5
+10264,Treats,Chocolate Fudge Brownie,85,370,21,8,0,65,140,47,2,35,4
+10514,Treats,Frosted Lemonade,383,350,7,4.5,0,25,135,67,0,65,7
+10516,Treats,Frosted Lemonade,383,350,7,4.5,0,25,135,67,0,65,7
+10517,Treats,Frosted Lemonade w/ Diet Lemonade,383,280,7,4.5,0,25,140,50,0,48,7
+39783,Treats,Frosted Sodas,369,320,7,4.5,0,25,150,60,0,59,7
+39658,Treats,Frosted Dr Pepper®,369,320,7,4.5,0,25,150,60,0,59,7
+39660,Treats,Frosted Diet Dr Pepper®,369,260,7,4.5,0,25,150,45,0,44,7
+39661,Treats,Frosted Barq’s® Root Beer,369,320,7,4.5,0,25,160,61,0,60,7
+39663,Treats,Frosted Coke®,369,320,7,4.5,0,25,150,60,0,60,7
+39665,Treats,Frosted Diet Coke®,369,260,7,4.5,0,25,160,45,0,44,7
+39666,Treats,Frosted Coke® Zero Sugar,369,260,7,4.5,0,25,160,45,0,44,7
+39667,Treats,Frosted Caffeine Free Diet Coke®,369,260,7,4.5,0,25,160,45,0,44,7
+39668,Treats,Frosted Coca-Cola® Cherry,369,320,7,4.5,0,25,150,61,0,60,7
+39669,Treats,Frosted Hi-C® Fruit Punch,369,320,7,4.5,0,25,140,61,0,60,7
+39671,Treats,Frosted Hi-C® Orange,369,310,7,4.5,0,25,150,58,0,57,7
+39673,Treats,Frosted Sprite®,369,320,7,4.5,0,25,160,59,0,59,7
+39675,Treats,Frosted Caffeine Free Barq’s® Root Beer,369,320,7,4.5,0,25,160,62,0,61,7
+39676,Treats,Frosted Mello Yello®,369,320,7,4.5,0,25,160,62,0,61,7
+39678,Treats,Frosted Fanta® Orange,369,320,7,4.5,0,25,150,60,0,60,7
+39679,Treats,Frosted Fanta® Strawberry,369,320,7,4.5,0,25,170,61,0,61,7
+39682,Treats,Frosted Barq’s® Red Flash,369,320,7,4.5,0,25,150,61,0,60,7
+39683,Treats,Frosted Powerade® Mountain Berry Blast,369,290,7,4.5,0,25,180,53,0,52,7
+558,Treats,Peach Milkshake,412,600,18,11,0.5,70,360,101,1,98,11
+10519,Treats | Coffee,Frosted Coffee,374,260,7,4.5,0,25,140,45,0,44,7
+10529,Treats,Cookies & Cream Milkshake,409,630,25,15,1,85,430,91,1,84,13
+10531,Treats,Chocolate Milkshake,409,600,22,14,1,85,350,93,1,90,12
+10533,Treats,Strawberry Milkshake,409,560,18,11,0.5,70,370,92,1,87,10
+10535,Treats,Vanilla Milkshake,409,580,23,15,1,90,390,82,1,80,13
+10537,Treats,Chick-fil-A® Icedream® Cone,135,180,4,2.5,0,15,90,32,0,25,4
+10539,Treats,Chick-fil-A® Icedream® Cup,122,140,3.5,2.5,0,15,75,24,0,24,4
+39694,Treats,Dr Pepper® Float,369,320,7,4.5,0,25,150,60,0,59,7
+51477,Treats | Coffee,Caramel Frosted Coffee,406,370,10,6,0,40,190,63,0,60,7
+51479,Treats | Coffee,Mocha Frosted Coffee,400,330,7,4.5,0,25,150,61,1,59,7
+51481,Treats | Coffee,Vanilla Frosted Coffee,400,330,7,4.5,0,25,140,62,0,60,7
+10354,Drinks,Freshly-Brewed Sweetened Iced Tea,604,120,0,0,0,0,0,31,0,30,0
+10356,Drinks,Small Freshly-Brewed Sweetened Iced Tea,451,90,0,0,0,0,0,22,0,22,0
+10361,Drinks,Medium Freshly-Brewed Sweetened Iced Tea,604,120,0,0,0,0,0,31,0,30,0
+10362,Drinks,Large Freshly-Brewed Sweetened Iced Tea,893,170,0,0,0,0,0,44,0,44,0
+10363,Drinks,Freshly-Brewed Unsweetened Iced Tea,604,0,0,0,0,0,0,0,0,0,0
+10364,Drinks,Small Freshly-Brewed Unsweetened Iced Tea,451,0,0,0,0,0,0,0,0,0,0
+10365,Drinks,Medium Freshly-Brewed Unsweetened Iced Tea,604,0,0,0,0,0,0,0,0,0,0
+10366,Drinks,Large Freshly-Brewed Unsweetened Iced Tea,893,0,0,0,0,0,0,0,0,0,0
+10367,Drinks,Chick-fil-A® Lemonade,612,260,0,0,0,0,0,66,0,60,0
+10369,Drinks,Small Chick-fil-A® Lemonade,465,190,0,0,0,0,0,49,0,45,0
+10370,Drinks,Medium Chick-fil-A® Lemonade,612,260,0,0,0,0,0,66,0,60,0
+10371,Drinks,Large Chick-fil-A® Lemonade,916,380,0,0,0,0,0,98,1,90,1
+10372,Drinks,Chick-fil-A® Diet Lemonade,612,60,0,0,0,0,10,15,0,11,0
+10373,Drinks,Small Chick-fil-A® Diet Lemonade,465,40,0,0,0,0,10,12,0,8,0
+10374,Drinks,Medium Chick-fil-A® Diet Lemonade,612,60,0,0,0,0,10,15,0,11,0
+10375,Drinks,Large Chick-fil-A® Diet Lemonade,916,80,0,0,0,0,15,23,0,17,0
+10376,Drinks,"Sunjoy® (1/2 Sweet Tea, 1/2 Lemonade)",641,240,0,0,0,0,0,60,0,57,0
+10378,Drinks,"Small Sunjoy® (1/2 Sweet Tea, 1/2 Lemonade)",479,180,0,0,0,0,0,45,0,43,0
+10379,Drinks,"Medium Sunjoy® (1/2 Sweet Tea, 1/2 Lemonade)",641,240,0,0,0,0,0,60,0,57,0
+10380,Drinks,"Large Sunjoy® (1/2 Sweet Tea, 1/2 Lemonade)",944,350,0,0,0,0,0,91,0,85,0
+10381,Drinks,"Sunjoy® (1/2 Sweet Tea, 1/2 Diet Lemonade)",641,110,0,0,0,0,5,29,0,26,0
+10382,Drinks,"Small Sunjoy® (1/2 Sweet Tea, 1/2 Diet Lemonade)",479,80,0,0,0,0,5,20,0,18,0
+10383,Drinks,"Medium Sunjoy® (1/2 Sweet Tea, 1/2 Diet Lemonade)",641,110,0,0,0,0,5,29,0,26,0
+10384,Drinks,"Large Sunjoy® (1/2 Sweet Tea, 1/2 Diet Lemonade)",944,150,0,0,0,0,10,40,0,36,0
+10385,Drinks,"Sunjoy® (1/2 Unsweet Tea, 1/2 Lemonade)",641,160,0,0,0,0,0,41,0,38,0
+10386,Drinks,"Small Sunjoy® (1/2 Unsweet Tea, 1/2 Lemonade)",479,130,0,0,0,0,0,33,0,30,0
+10387,Drinks,"Medium Sunjoy® (1/2 Unsweet Tea, 1/2 Lemonade)",641,160,0,0,0,0,0,41,0,38,0
+10388,Drinks,"Large Sunjoy® (1/2 Unsweet Tea, 1/2 Lemonade)",944,260,0,0,0,0,0,66,0,60,0
+10389,Drinks,"Sunjoy® (1/2 Unsweet Tea, 1/2 Diet Lemonade)",641,35,0,0,0,0,5,10,0,7,0
+10390,Drinks,"Small Sunjoy® (1/2 Unsweet Tea, 1/2 Diet Lemonade)",479,30,0,0,0,0,5,8,0,6,0
+10391,Drinks,"Medium Sunjoy® (1/2 Unsweet Tea, 1/2 Diet Lemonade)",641,35,0,0,0,0,5,10,0,7,0
+10392,Drinks,"Large Sunjoy® (1/2 Unsweet Tea, 1/2 Diet Lemonade)",944,60,0,0,0,0,10,15,0,11,0
+10395,Drinks,Iced Coffee,661,200,4,3,0,15,115,34,0,34,7
+10404,Drinks,Coca-Cola®,584,170,0,0,0,0,45,46,0,46,0
+10406,Drinks,Small Coca-Cola®,451,130,0,0,0,0,35,35,0,35,0
+10407,Drinks,Medium Coca-Cola®,584,170,0,0,0,0,45,46,0,46,0
+10408,Drinks,Large Coca-Cola®,859,250,0,0,0,0,65,68,0,68,0
+10409,Drinks,Dr Pepper®,584,170,0,0,0,0,50,44,0,44,0
+10411,Drinks,Small Dr Pepper®,451,130,0,0,0,0,40,34,0,34,0
+10413,Drinks,Medium Dr Pepper®,584,170,0,0,0,0,50,44,0,44,0
+10414,Drinks,Large Dr Pepper®,859,250,0,0,0,0,75,64,0,64,0
+10430,Drinks,Gallon Beverages,340,190,0,0,0,0,0,49,0,45,0
+10432,Drinks | Catering Drinks,Gallon Pineapple Dragonfruit Lemonade,340,210,0,0,0,0,10,53,0,44,0
+10434,Drinks | Catering Drinks,"Gallon Pineapple Dragonfruit Sunjoy® (1/2 Sweet Tea, 1/2 Lemonade)",340,180,0,0,0,0,10,44,0,38,0
+10436,Drinks | Catering Drinks,Gallon Pineapple Dragonfruit Sweet Tea,340,150,0,0,0,0,10,37,0,33,0
+10438,Drinks | Catering Drinks,Gallon Chick-fil-A® Lemonade,340,190,0,0,0,0,0,49,0,45,0
+10440,Drinks | Catering Drinks,Gallon Chick-fil-A® Diet Lemonade,340,40,0,0,0,0,10,12,0,8,0
+10442,Drinks | Catering Drinks,"Gallon Chick-fil-A® Lemonade (1/2 Lemonade, 1/2 Diet Lemonade)",340,120,0,0,0,0,0,33,0,30,0
+10443,Drinks | Catering Drinks,Gallon Freshly-Brewed Iced Tea Sweetened,340,130,0,0,0,0,0,33,0,33,0
+10444,Drinks | Catering Drinks,Gallon Freshly-Brewed Iced Tea Unsweetened,340,0,0,0,0,0,0,0,0,0,0
+10446,Drinks | Catering Drinks,"Gallon Chick-fil-A® Iced Tea (1/2 Sweet Tea, 1/2 Unsweet Tea)",340,70,0,0,0,0,0,18,0,18,0
+10447,Drinks | Catering Drinks,"Gallon Sunjoy® (1/2 Sweet Tea, 1/2 Lemonade)",340,160,0,0,0,0,0,41,0,39,0
+10449,Drinks | Catering Drinks,"Gallon Sunjoy® (1/2 Sweet Tea, 1/2 Diet Lemonade)",340,90,0,0,0,0,0,23,0,21,0
+10450,Drinks | Catering Drinks,"Gallon Sunjoy® (1/2 Unsweet Tea, 1/2 Lemonade)",340,100,0,0,0,0,0,26,0,24,0
+10451,Drinks | Catering Drinks,"Gallon Sunjoy® (1/2 Unsweet Tea, 1/2 Diet Lemonade)",340,20,0,0,0,0,0,6,0,4,0
+10452,Drinks | Catering Drinks,Bag of Ice,28,0,0,0,0,0,0,0,0,0,0
+47592,Drinks | Catering Drinks,Gallon Pineapple Dragonfruit Diet Lemonade,340,70,0,0,0,0,20,16,0,8,0
+47593,Drinks | Catering Drinks,Gallon Pineapple Dragonfruit Unsweet Tea,340,25,0,0,0,0,10,5,0,0,0
+47594,Drinks | Catering Drinks,"Gallon Pineapple Dragonfruit Sunjoy® (1/2 Sweet Tea, 1/2 Diet Lemonade)",340,110,0,0,0,0,15,28,0,22,0
+47595,Drinks | Catering Drinks,"Gallon Pineapple Dragonfruit Sunjoy® (1/2 Unsweet Tea, 1/2 Lemonade)",340,110,0,0,0,0,10,27,0,20,0
+47596,Drinks | Catering Drinks,"Gallon Pineapple Dragonfruit Sunjoy® (1/2 Unsweet Tea, 1/2 Diet Lemonade)",340,45,0,0,0,0,15,10,0,4,0
+22194,Drinks | Catering Drinks,Seasonal Gallon Beverages,340,210,0,0,0,0,10,53,0,44,0
+10082,Drinks,"Pineapple Dragonfruit Sunjoy® (Sweet Tea, Lemonade)",662,240,0,0,0,0,15,59,0,50,0
+10088,Drinks,"Pineapple Dragonfruit Sunjoy® (Sweet Tea, Diet Lemonade)",662,140,0,0,0,0,20,34,0,25,0
+10089,Drinks,"Pineapple Dragonfruit Sunjoy® (Unsweet Tea, Lemonade)",662,160,0,0,0,0,15,39,0,30,0
+10090,Drinks,"Pineapple Dragonfruit Sunjoy® (Unsweet Tea, Diet Lemonade)",662,60,0,0,0,0,20,14,0,6,0
+10093,Drinks,Pineapple Dragonfruit Sweet Tea,662,150,0,0,0,0,15,37,0,31,0
+10094,Drinks,Pineapple Dragonfruit Unsweet Tea,662,35,0,0,0,0,15,7,0,0,0
+10095,Drinks,Pineapple Dragonfruit Lemonade,691,290,0,0,0,0,15,72,0,60,0
+10098,Drinks,Pineapple Dragonfruit Diet Lemonade,662,90,0,0,0,0,25,21,0,10,0
+10417,Drinks | Catering Drinks,DASANI® Bottled Water,479,0,0,0,0,0,0,0,0,0,0
+10419,Drinks | Catering Drinks,Honest Kids® Apple Juice,170,35,0,0,0,0,15,9,0,8,0
+10421,Drinks | Catering Drinks,Simply Orange®,326,160,0,0,0,0,10,34,0,30,2
+10423,Drinks | Catering Drinks,1% Chocolate Milk,198,140,2,1.5,0,10,160,23,0,21,7
+10425,Drinks | Catering Drinks,1% Milk,213,90,2,1.5,0,10,105,10,0,10,7
+47590,Drinks,Pineapple Dragonfruit & Sprite®,662,190,0,0,0,0,100,50,0,43,0
+51470,Coffee,Iced Coffee,672,260,9,6,0.5,35,190,38,0,34,8
+10403,Coffee,Vanilla Iced Coffee,661,210,4,3,0,15,115,35,0,33,7
+51472,Coffee,Caramel Iced Coffee,672,260,9,6,0.5,35,190,38,0,34,8
+51474,Coffee,Mocha Iced Coffee,661,200,4.5,3,0,15,125,34,1,31,8
+51476,Coffee,Iced Coffee,624,110,4,3,0,15,115,11,0,10,7
+10427,Coffee,Hot Coffee,340,0,0,0,0,0,10,0,0,0,0
+12414,Coffee,Frosted Coffee,374,260,7,4.5,0,25,140,45,0,44,7
+51458,Coffee,Cream Cold Brew,700,520,22,14,1,80,440,75,0,71,9
+51460,Coffee,Caramel Cream Cold Brew,700,520,22,14,1,80,440,75,0,71,9
+51464,Coffee,Mocha Cream Cold Brew,689,460,17,11,0.5,65,370,71,1,68,9
+51467,Coffee,Vanilla Cream Cold Brew,689,470,17,10,0.5,65,360,72,0,69,8
+51469,Coffee,Cream Cold Brew,652,370,17,10,0.5,65,360,48,0,47,8
+10570,Dipping Sauces,Barbeque Sauce,28,45,0,0,0,0,200,11,0,9,0
+10571,Dipping Sauces,Chick-fil-A® Sauce,28,140,13,2,0,10,170,6,0,6,0
+10572,Dipping Sauces,Garden Herb Ranch Sauce,21,100,11,2,0,10,170,1,0,0,0
+10573,Dipping Sauces,Honey Mustard Sauce,28,50,0,0,0,0,160,11,0,10,0
+10574,Dipping Sauces,Polynesian Sauce,28,110,6,1,0,0,210,14,0,13,0
+10575,Dipping Sauces,Sweet & Spicy Sriracha Sauce,28,45,0,0,0,0,380,11,0,10,0
+10576,Dipping Sauces,Zesty Buffalo Sauce,21,25,2.5,0,0,5,570,1,0,0,0
+10577,Dipping Sauces,Honey Roasted BBQ Sauce,12,60,5,1,0,5,75,3,0,2,0
+10578,Dressings,Avocado Lime Ranch Dressing,57,310,32,5,0,25,520,3,1,2,1
+10579,Dressings,Creamy Salsa Dressing,57,290,31,5,0,25,630,2,0,1,1
+10580,Dressings,Fat-Free Honey Mustard Dressing,57,90,0,0,0,0,330,22,1,18,0
+10581,Dressings,Garden Herb Ranch Dressing,57,280,29,5,0,25,440,2,0,1,1
+10582,Dressings,Light Balsamic Vinaigrette Dressing,57,80,4,0.5,0,0,360,10,0,9,0
+10583,Dressings,Light Italian Dressing,57,25,1,0,0,0,470,3,0,2,0
+10584,Dressings,Zesty Apple Cider Vinaigrette Dressing,56,230,19,3,0,0,450,16,0,14,0
+10591,Buns,Gluten Free Bun,79,180,3.5,0,0,0,400,37,2,7,3
+10592,Buns,Buttery White Bun,60,180,6,1,0,0,240,29,1,4,5
+10593,Buns,Multigrain Brioche Bun,71,210,4.5,1,0,0,310,38,3,7,7
+10281,Buns,White Bun (Unbuttered),54,150,1,0,0,0,240,28,1,4,5
+10603,Proteins,Grilled Breakfast Filet,50,60,1,0,0,40,420,0,0,0,13
+10605,Proteins,Chick-fil-A® Breakfast Filet,71,160,8,1.5,0,45,750,8,0,2,15
+10608,Proteins,Spicy Breakfast Filet,71,150,7,1.5,0,40,810,7,1,1,15
+10610,Proteins,Grilled Filet,84,110,2,0,0,70,370,1,0,1,21
+10611,Proteins,Spicy Filet,120,280,13,2.5,0,65,1390,16,1,2,23
+10613,Proteins,Chick-fil-A® Filet,115,250,12,2.5,0,70,1120,12,0,1,24
+10135,Proteins | Sandwich Toppings,Bacon,10,50,3.5,1.5,0,10,210,0,0,0,4
+10137,Proteins,Sausage,57,240,22,8,0,35,430,1,0,0,11
+10599,Salad Toppings,Roasted Nut Blend,10,70,6,0.5,0,0,0,2,1,1,1
+10205,Salad Toppings,Harvest Nut Granola,14,70,2,0,0,0,35,10,0,4,1
+10231,Salad Toppings,Seasoned Tortilla Strips,14,70,4,0,0,0,55,8,1,0,1
+10239,Salad Toppings,Blue Cheese Crumbles,9,30,2.5,1.5,0,10,110,0,0,0,2
+10254,Salad Toppings,Crispy Bell Peppers,14,80,6,0,0,0,75,6,0,0,1
+10482,Salad Toppings,Chili Lime Pepitas,14,80,7,1,0,0,50,2,1,0,4
+10125,Sandwich Toppings,American Cheese,14,50,4.5,2.5,0,15,230,1,0,0,3
+10127,Sandwich Toppings,Colby Jack Cheese,21,80,7,4,0,20,140,0,0,0,5
+10129,Sandwich Toppings,Pepper Jack Cheese,21,80,6,4,0,20,140,0,0,0,4
+10139,Sandwich Toppings,Tomato,30,5,0,0,0,0,0,1,0,1,0
+10288,Sandwich Toppings,Lettuce,20,5,0,0,0,0,5,1,0,0,0
+10235,Soup Toppings,Saltines,12,50,1,0,0,0,180,9,0,0,1
+10633,Trays,Grilled Chicken Bundle,224,460,19,8,0,105,1030,35,3,8,37
+10635,Trays,Chick-fil-A Nugget Trays,14,30,1.5,0,0,10,150,1,0,0,3
+10637,Trays,Small Chick-fil-A® Nuggets Tray,14,30,1.5,0,0,10,150,1,0,0,3
+10644,Trays,Medium Chick-fil-A®Nuggets Tray,14,30,1.5,0,0,10,150,1,0,0,3
+10646,Trays,Large Chick-fil-A® Nuggets Tray,14,30,1.5,0,0,10,150,1,0,0,3
+10647,Trays,Chilled Chick-fil-A® Nugget Trays,14,30,1.5,0,0,10,150,1,0,0,3
+10648,Trays,Small Chilled Chick-fil-A® Nuggets Tray,14,30,1.5,0,0,10,150,1,0,0,3
+10649,Trays,Medium Chilled Chick-fil-A® Nuggets Tray,14,30,1.5,0,0,10,150,1,0,0,3
+10650,Trays,Large Chilled Chick-fil-A® Nuggets Tray,14,30,1.5,0,0,10,150,1,0,0,3
+10651,Trays,Chick-n-Strips™ Trays,47,110,5,1,0,25,300,6,0,1,10
+10653,Trays,Small Chick-n-Strips™ Tray,47,110,5,1,0,25,300,6,0,1,10
+10655,Trays,Medium Chick-n-Strips™ Tray,47,110,5,1,0,25,300,6,0,1,10
+10657,Trays,Large Chick-n-Strips™ Tray,47,110,5,1,0,25,300,6,0,1,10
+10659,Trays,Chilled Chick-n-Strips® Trays,47,110,5,1,0,25,300,6,0,1,10
+10660,Trays,Small Chilled Chick-n-Strips® (Cooked & Chilled for Later) Tray,47,110,5,1,0,25,300,6,0,1,10
+10661,Trays,Medium Chilled Chick-n-Strips® (Cooked & Chilled for Later) Tray,47,110,5,1,0,25,300,6,0,1,10
+10662,Trays,Large Chilled Chick-n-Strips® (Cooked & Chilled for Later) Tray,47,110,5,1,0,25,300,6,0,1,10
+10663,Trays,Chilled Grilled Chicken Sub Sandwich Tray,115,220,6,2.5,0,45,490,25,2,4,18
+10665,Trays,Small Chilled Grilled Chicken Sub Sandwich Tray,115,220,6,2.5,0,45,490,25,2,4,18
+10666,Trays,Medium Chilled Grilled Chicken Sub Sandwich Tray,115,220,6,2.5,0,45,490,25,2,4,18
+10667,Trays,Large Chilled Grilled Chicken Sub Sandwich Tray,115,220,6,2.5,0,45,490,25,2,4,18
+10669,Trays,Spicy Chilled Grilled Chicken Sub Sandwich Tray,115,220,6,2.5,0,40,660,25,2,5,16
+10670,Trays,Small Spicy Chilled Grilled Chicken Sub Sandwich Tray,115,220,6,2.5,0,40,660,25,2,5,16
+10671,Trays,Medium Spicy Chilled Grilled Chicken Sub Sandwich Tray,115,220,6,2.5,0,40,660,25,2,5,16
+10672,Trays,Large Spicy Chilled Grilled Chicken Sub Sandwich Tray,115,220,6,2.5,0,40,660,25,2,5,16
+10674,Trays,Chick-fil-A® Cool Wrap Trays,116,480,39,7,0,70,970,18,7,3,22
+10676,Trays,Small Chick-fil-A® Cool Wrap Tray,116,480,39,7,0,70,970,18,7,3,22
+10685,Trays,Medium Chick-fil-A® Cool Wrap Tray,116,480,39,7,0,70,970,18,7,3,22
+10687,Trays,Large Chick-fil-A® Cool Wrap Tray,116,480,39,7,0,70,970,18,7,3,22
+10689,Trays,Southwest Veggie Wrap Trays,128,460,39,8,0,35,940,19,8,3,14
+10691,Trays,Small Southwest Veggie Wrap Tray,128,460,39,8,0,35,940,19,8,3,14
+10693,Trays,Medium Southwest Veggie Wrap Tray,128,460,39,8,0,35,940,19,8,3,14
+10694,Trays,Large Southwest Veggie Wrap Tray,128,460,39,8,0,35,940,19,8,3,14
+10696,Trays,Spicy Cool Wrap® Trays,116,480,39,7,0,65,1150,18,8,4,21
+10697,Trays,Small Spicy Cool Wrap® Tray,116,480,39,7,0,65,1150,18,8,4,21
+10699,Trays,Medium Spicy Cool Wrap® Tray,116,480,39,7,0,65,1150,18,8,4,21
+10701,Trays,Large Spicy Cool Wrap® Tray,116,480,39,7,0,65,1150,18,8,4,21
+10703,Trays,Fruit Tray,1446,780,0,0,0,0,0,182,29,134,8
+10705,Trays,Small Fruit Tray,1446,780,0,0,0,0,0,182,29,134,8
+10706,Trays,Large Fruit Tray,2948,1580,0,0,0,0,0,369,58,273,16
+10707,Trays,Mac & Cheese Tray,2482,4930,312,178,3.5,750,13030,308,31,36,221
+10709,Trays,Small Mac & Cheese Tray,2482,4930,312,178,3.5,750,13030,308,31,36,221
+10710,Trays,Large Mac & Cheese Tray,4964,9850,625,355,7,1500,26060,616,63,71,442
+10711,Trays,Garden Salad Tray,595,310,18,11,0.5,55,420,20,9,11,19
+10713,Trays,Small Garden Salad Tray,595,310,18,11,0.5,55,420,20,9,11,19
+10715,Trays,Large Garden Salad Tray,1191,630,36,23,1,110,850,41,17,21,38
+10717,Trays,Kale Crunch Side Tray,610,1160,87,9,0,0,1420,77,23,42,30
+10719,Trays,Small Kale Crunch Side Tray,610,1160,87,9,0,0,1420,77,23,42,30
+10721,Trays,Large Kale Crunch Side Tray,1332,2440,182,20,1,0,3080,166,49,92,63
+10722,Trays,Chocolate Chunk Cookie Tray,78,370,17,9,0,15,230,49,3,26,5
+10724,Trays,Small Chocolate Chunk Cookie Tray,78,370,17,9,0,15,230,49,3,26,5
+10725,Trays,Large Chocolate Chunk Cookie Tray,78,370,17,9,0,15,230,49,3,26,5
+10727,Trays,Chocolate Fudge Brownie Tray,43,190,10,4,0,35,70,23,1,18,2
+10729,Trays,Small Chocolate Fudge Brownie Tray,43,190,10,4,0,35,70,23,1,18,2
+10731,Trays,Large Chocolate Fudge Brownie Tray,43,190,10,4,0,35,70,23,1,18,2
+10733,Trays,Cookie & Brownie Tray,60,280,14,7,0,25,150,36,2,22,3
+10735,Trays,Small Chocolate Chunk Cookie and Chocolate Fudge Brownie Tray,60,280,14,7,0,25,150,36,2,22,3
+10736,Trays,Large Chocolate Chunk Cookie and Chocolate Fudge Brownie Tray,60,280,14,7,0,25,150,36,2,22,3
+10771,Catering Entrées,Chilled Grilled Chicken Sub Sandwich,230,500,17,6,0,95,1055,52,5,11,36
+10778,Catering Entrées,Spicy Chilled Grilled Chicken Sub Sandwich,230,500,17,6,0,90,1405,53,5,11,34
+10828,Catering Drinks,Bottled Sweet Tea,506,190,0,0,0,0,0,50,0,49,0
+10830,Catering Drinks,Bottled Unsweet Tea,486,0,0,0,0,0,0,0,0,0,0
+10832,Catering Drinks,Bottled Lemonade,520,280,0,0,0,0,10,73,0,69,0
+10834,Catering Drinks,Bottled Diet Lemonade,492,60,0,0,0,0,10,17,0,12,0
+10844,Catering Drinks,Catering Coffee,2722,0,0,0,0,0,80,0,0,0,0

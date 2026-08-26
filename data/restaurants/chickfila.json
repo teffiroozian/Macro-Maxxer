@@ -4345,8 +4345,7 @@
                 "totalFat": 0
             },
             "maxQuantity": 2,
-            "defaultOrder": 47,
-            "hideFromIngredientView": true
+            "defaultOrder": 47
         },
         {
             "id": "crispy-nuggets",
@@ -4362,8 +4361,7 @@
                 "totalFat": 0
             },
             "maxQuantity": 1,
-            "defaultOrder": 6,
-            "hideFromIngredientView": true
+            "defaultOrder": 6
         },
         {
             "id": "grilled-nuggets",
@@ -4379,8 +4377,7 @@
                 "totalFat": 0
             },
             "maxQuantity": 1,
-            "defaultOrder": 7,
-            "hideFromIngredientView": true
+            "defaultOrder": 7
         },
         {
             "id": "chick-n-strips",
@@ -4396,8 +4393,7 @@
                 "totalFat": 0
             },
             "maxQuantity": 1,
-            "defaultOrder": 8,
-            "hideFromIngredientView": true
+            "defaultOrder": 8
         },
         {
             "id": "hash-browns",
@@ -4413,8 +4409,7 @@
                 "totalFat": 0
             },
             "maxQuantity": 10,
-            "defaultOrder": 51,
-            "hideFromIngredientView": true
+            "defaultOrder": 51
         }
     ],
     "customizationRules": {

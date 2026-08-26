@@ -38,8 +38,34 @@ export function resolveFoodCategoryRule(
 
 export function resolveIngredientCategoryRule(
   categoryName: string,
-  customizationRules?: RestaurantCustomizationRules
+  customizationRules?: RestaurantCustomizationRules,
+  item?: MenuItem
 ): IngredientCategoryRule | undefined {
+  // Generated data can give an item-level category a stable internal `id`
+  // distinct from its display `name` (two different items can legitimately
+  // show the same clean tab name, e.g. "Bread Carriers", while each needing
+  // its own max-quantity/allowNone rule) — when present, that id is the real
+  // key into the restaurant-level rule map, not the display name. If more
+  // than one of the item's own categories share this display name (see
+  // resolveIngredientItemCategory), take the most permissive combination of
+  // their rules rather than an arbitrary one.
+  const matchingCategories = item ? findIngredientCategoriesByName(item, categoryName) : [];
+  const idRules = matchingCategories
+    .map((category) =>
+      category.id ? resolveRuleValueByCategoryKey(customizationRules?.ingredientCategories, category.id) : undefined
+    )
+    .filter((rule): rule is IngredientCategoryRule => Boolean(rule));
+
+  if (idRules.length > 0) {
+    const hasUnlimited = idRules.some((rule) => rule.maxQuantity === undefined);
+    return {
+      allowNone: idRules.some((rule) => rule.allowNone),
+      ...(hasUnlimited
+        ? {}
+        : { maxQuantity: Math.max(...idRules.map((rule) => rule.maxQuantity as number)) }),
+    };
+  }
+
   return resolveRuleValueByCategoryKey(customizationRules?.ingredientCategories, categoryName);
 }
 
@@ -56,12 +82,30 @@ export function getIngredientTabDisplayLabel(tabName: string) {
   return tabName;
 }
 
-export function resolveIngredientItemCategory(item: MenuItem, categoryName: string) {
+function findIngredientCategoriesByName(item: MenuItem, categoryName: string) {
   const normalizedCategoryName = normalizeTabName(categoryName);
 
-  return item.customization?.ingredientCategories?.find(
+  return (item.customization?.ingredientCategories ?? []).filter(
     (category) => normalizeTabName(category.name) === normalizedCategoryName
   );
+}
+
+// A display name can legitimately be shared by more than one of an item's
+// own categories (generated data disambiguates them internally via `id`,
+// not the name — see IngredientItemCategory). Merge their ingredient lists
+// instead of returning just the first match, so a real ingredient option
+// never silently disappears because another category happened to render
+// under the same tab name.
+export function resolveIngredientItemCategory(item: MenuItem, categoryName: string) {
+  const matches = findIngredientCategoriesByName(item, categoryName);
+  if (matches.length === 0) return undefined;
+  if (matches.length === 1) return matches[0];
+
+  return {
+    name: matches[0].name,
+    ingredients: Array.from(new Set(matches.flatMap((category) => category.ingredients))),
+    allowNone: matches.some((category) => category.allowNone),
+  };
 }
 
 export function resolveIngredientTabs(
@@ -101,7 +145,7 @@ export function resolveIngredientTabMaxQuantity(
     return undefined;
   }
 
-  return resolveIngredientCategoryRule(tabName, customizationRules)?.maxQuantity;
+  return resolveIngredientCategoryRule(tabName, customizationRules, item)?.maxQuantity;
 }
 
 export function resolveSingleSelectIngredientTabs(

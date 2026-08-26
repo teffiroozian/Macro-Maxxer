@@ -13,6 +13,7 @@ import {
     type RankedParentSelectionState,
 } from "@/lib/menuSections/filtering";
 import { getDefaultMenuItemNutrition } from "@/lib/nutrition";
+import { isStandaloneMenuItem } from "@/lib/menuItemCalculations";
 import {
     RANKING_DEFAULT_SORT,
     SORT_OPTION_VALUES,
@@ -63,10 +64,17 @@ export function useRestaurantMenuControls({
     );
     const [filters, setFilters] = useState<Filters>({});
 
+    // Structural/internal source records (see MenuItem.sourceOnly) are valid
+    // lookup targets for combo/ingredient relationships elsewhere, but never
+    // a standalone item a user browses, filters, or ranks on their own — so
+    // every browsable list this hook builds starts from this filtered set,
+    // not the raw `items` prop.
+    const standaloneItems = useMemo(() => items.filter(isStandaloneMenuItem), [items]);
+
     // The narrower categories available inside each broad Rankings parent
     // bucket, derived from this restaurant's own items — never hard-coded —
     // so the nested filter tree is correct for any restaurant's data shape.
-    const rankedChildOptions = useMemo(() => getRankedChildCategories(items), [items]);
+    const rankedChildOptions = useMemo(() => getRankedChildCategories(standaloneItems), [standaloneItems]);
 
     // Per-parent set of *selected* child categories. An empty set means the
     // whole parent bucket is off; a set containing every available child is
@@ -74,7 +82,7 @@ export function useRestaurantMenuControls({
     const [rankedChildSelections, setRankedChildSelections] = useState<
         Record<RankedAllFilterKey, Set<string>>
     >(() => {
-        const initialOptions = getRankedChildCategories(items);
+        const initialOptions = getRankedChildCategories(standaloneItems);
         return {
             "main-entrees": new Set(initialOptions["main-entrees"]),
             breakfast: new Set<string>(),
@@ -94,7 +102,7 @@ export function useRestaurantMenuControls({
 
     const effectiveViewMode: ViewOption = effectiveViewModeOverride ?? viewMode;
 
-    const allItems = items;
+    const allItems = standaloneItems;
 
     const sourceItems =
         effectiveViewMode === "ingredients" ? ingredientMenuItems : allItems;

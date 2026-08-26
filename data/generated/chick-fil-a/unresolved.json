@@ -1,0 +1,1717 @@
+{
+  "restaurant": "Chick-fil-A",
+  "sources": {
+    "menu": "data/raw/chick-fil-a/menu.json",
+    "nutrition": "data/raw/chick-fil-a/nutrition.csv",
+    "orderingNutrition": "data/raw/chick-fil-a/ordering-nutrition.json",
+    "verifiedMatchingAnalysis": "data/raw/chick-fil-a/match-analysis.json"
+  },
+  "generatedFrom": {
+    "menuRequestDate": "2026-08-24T07:59:30Z",
+    "menuPublishDate": "2026-08-24T08:00:06Z",
+    "menuHashCode": "206517041"
+  },
+  "policy": {
+    "order": [
+      "unique exact name",
+      "unique conservative normalized name",
+      "source-ID-keyed verified mapping",
+      "multiple exact/normalized candidates with identical serving size and nutrition",
+      "non-sellable variant container with nutrition attached only to distinct child variants",
+      "ordering-system retailModifiedItemId plus tag identity, including explicit DEFAULT modifiers",
+      "unresolved"
+    ],
+    "fuzzyMatching": false,
+    "duplicateNutritionNames": "Duplicate-name targets attach shared nutrition only when every candidate has the same serving size and identical nutrition; all candidate source IDs remain in provenance.",
+    "missingNutrition": "The restaurant artifact omits nutrition when neither official source resolves safely, and never copies historical production nutrition."
+  },
+  "summary": {
+    "logicalRecords": 489,
+    "nutritionRows": 366,
+    "orderingNutritionRows": 1222,
+    "exact_match": 280,
+    "normalized_match": 12,
+    "variant_rule_match": 15,
+    "multiple_identical_official_matches": 9,
+    "variant_container": 4,
+    "ambiguous": 0,
+    "no_match": 169,
+    "ordering_source_match": 111,
+    "contextual_ordering_source_match": 5,
+    "nutritionAttached": 428,
+    "unresolved": 57,
+    "unresolvedReasons": {
+      "no_nutrition_match": 53,
+      "entree_only_nutrition_for_meal_container": 4
+    }
+  },
+  "schemaLimitations": [
+    "Unresolved non-contextual leaf records still omit nutrition even though the production MenuItem and IngredientItem types require it.",
+    "The production schema cannot represent arbitrary nested source choice groups, contextual min/max rules, modifier pricing, or all source IDs directly.",
+    "The full source graph is retained in restaurant.json.sourceRelationships; the generated artifact must not replace production data while unresolved nutrition remains."
+  ],
+  "records": [
+    {
+      "menuRecordId": "itemGroupId:100100",
+      "standardizedRecordId": "cfa-group-100100",
+      "recordType": "main_menu",
+      "itemClass": "ITEM_GROUPING",
+      "names": [
+        "Chicken & Waffles Breakfast Sandwich w/ Chick-fil-A® Filet Meal"
+      ],
+      "categories": [
+        "Breakfast"
+      ],
+      "retailModifiedItemId": "1009750",
+      "itemGroupId": "100100",
+      "status": "unresolved",
+      "matchStatus": "no_match",
+      "rule": null,
+      "reason": "no_nutrition_match",
+      "details": "No unique exact, safe normalized, or source-ID-verified match exists. The ordering source represents this as a dynamic meal/container; no fixed nutrition payload is safe to attach.",
+      "candidateNutritionRows": [],
+      "candidateRowsHaveIdenticalNutrition": false,
+      "orderingCandidateNutritionRows": []
+    },
+    {
+      "menuRecordId": "itemGroupId:100101",
+      "standardizedRecordId": "cfa-group-100101",
+      "recordType": "main_menu",
+      "itemClass": "ITEM_GROUPING",
+      "names": [
+        "Chicken & Waffles Breakfast Sandwich w/ Spicy Filet Meal"
+      ],
+      "categories": [
+        "Breakfast"
+      ],
+      "retailModifiedItemId": "1009752",
+      "itemGroupId": "100101",
+      "status": "unresolved",
+      "matchStatus": "no_match",
+      "rule": null,
+      "reason": "no_nutrition_match",
+      "details": "No unique exact, safe normalized, or source-ID-verified match exists. The ordering source represents this as a dynamic meal/container; no fixed nutrition payload is safe to attach.",
+      "candidateNutritionRows": [],
+      "candidateRowsHaveIdenticalNutrition": false,
+      "orderingCandidateNutritionRows": []
+    },
+    {
+      "menuRecordId": "itemGroupId:100102",
+      "standardizedRecordId": "cfa-group-100102",
+      "recordType": "main_menu",
+      "itemClass": "ITEM_GROUPING",
+      "names": [
+        "Chicken & Waffles Breakfast Sandwich w/ Grilled Filet Meal"
+      ],
+      "categories": [
+        "Breakfast"
+      ],
+      "retailModifiedItemId": "1009751",
+      "itemGroupId": "100102",
+      "status": "unresolved",
+      "matchStatus": "no_match",
+      "rule": null,
+      "reason": "no_nutrition_match",
+      "details": "No unique exact, safe normalized, or source-ID-verified match exists. The ordering source represents this as a dynamic meal/container; no fixed nutrition payload is safe to attach.",
+      "candidateNutritionRows": [],
+      "candidateRowsHaveIdenticalNutrition": false,
+      "orderingCandidateNutritionRows": []
+    },
+    {
+      "menuRecordId": "itemGroupId:100109",
+      "standardizedRecordId": "cfa-group-100109",
+      "recordType": "main_menu",
+      "itemClass": "ITEM_GROUPING",
+      "names": [
+        "Chick-fil-A® Chicken Biscuit Meal"
+      ],
+      "categories": [
+        "Breakfast"
+      ],
+      "retailModifiedItemId": "1004738",
+      "itemGroupId": "100109",
+      "status": "unresolved",
+      "matchStatus": "no_match",
+      "rule": null,
+      "reason": "no_nutrition_match",
+      "details": "No unique exact, safe normalized, or source-ID-verified match exists. The ordering source represents this as a dynamic meal/container; no fixed nutrition payload is safe to attach.",
+      "candidateNutritionRows": [],
+      "candidateRowsHaveIdenticalNutrition": false,
+      "orderingCandidateNutritionRows": [
+        {
+          "sourceId": "retailModifiedItemId:1004738|tag:CFA_BISCUIT_MEAL",
+          "name": "Chick-fil-A® Chicken Biscuit Meal",
+          "servingSize": null,
+          "nutrition": {
+            "calories": 0,
+            "protein": 0,
+            "carbs": 0,
+            "totalFat": 0,
+            "satFat": 0,
+            "transFat": 0,
+            "cholesterol": 0,
+            "sodium": 0,
+            "fiber": 0,
+            "sugars": 0
+          }
+        }
+      ]
+    },
+    {
+      "menuRecordId": "itemGroupId:100113",
+      "standardizedRecordId": "cfa-group-100113",
+      "recordType": "main_menu",
+      "itemClass": "ITEM_GROUPING",
+      "names": [
+        "Spicy Chicken Biscuit Meal"
+      ],
+      "categories": [
+        "Breakfast"
+      ],
+      "retailModifiedItemId": "1004745",
+      "itemGroupId": "100113",
+      "status": "unresolved",
+      "matchStatus": "no_match",
+      "rule": null,
+      "reason": "no_nutrition_match",
+      "details": "No unique exact, safe normalized, or source-ID-verified match exists. The ordering source represents this as a dynamic meal/container; no fixed nutrition payload is safe to attach.",
+      "candidateNutritionRows": [],
+      "candidateRowsHaveIdenticalNutrition": false,
+      "orderingCandidateNutritionRows": [
+        {
+          "sourceId": "retailModifiedItemId:1004745|tag:SPICY_BISCUIT_MEAL",
+          "name": "Spicy Chicken Biscuit Meal",
+          "servingSize": null,
+          "nutrition": {
+            "calories": 0,
+            "protein": 0,
+            "carbs": 0,
+            "totalFat": 0,
+            "satFat": 0,
+            "transFat": 0,
+            "cholesterol": 0,
+            "sodium": 0,
+            "fiber": 0,
+            "sugars": 0
+          }
+        }
+      ]
+    },
+    {
+      "menuRecordId": "itemGroupId:100117",
+      "standardizedRecordId": "cfa-group-100117",
+      "recordType": "main_menu",
+      "itemClass": "ITEM_GROUPING",
+      "names": [
+        "Chick-fil-A Chick-n-Minis® Meal"
+      ],
+      "categories": [
+        "Breakfast"
+      ],
+      "retailModifiedItemId": null,
+      "itemGroupId": "100117",
+      "status": "unresolved",
+      "matchStatus": "no_match",
+      "rule": null,
+      "reason": "no_nutrition_match",
+      "details": "No unique exact, safe normalized, or source-ID-verified match exists. The ordering source represents this as a dynamic meal/container; no fixed nutrition payload is safe to attach.",
+      "candidateNutritionRows": [],
+      "candidateRowsHaveIdenticalNutrition": false,
+      "orderingCandidateNutritionRows": []
+    },
+    {
+      "menuRecordId": "itemGroupId:100123",
+      "standardizedRecordId": "cfa-group-100123",
+      "recordType": "main_menu",
+      "itemClass": "ITEM_GROUPING",
+      "names": [
+        "Egg White Grill Meal"
+      ],
+      "categories": [
+        "Breakfast"
+      ],
+      "retailModifiedItemId": "1005332",
+      "itemGroupId": "100123",
+      "status": "unresolved",
+      "matchStatus": "no_match",
+      "rule": null,
+      "reason": "no_nutrition_match",
+      "details": "No unique exact, safe normalized, or source-ID-verified match exists. The ordering source represents this as a dynamic meal/container; no fixed nutrition payload is safe to attach.",
+      "candidateNutritionRows": [],
+      "candidateRowsHaveIdenticalNutrition": false,
+      "orderingCandidateNutritionRows": [
+        {
+          "sourceId": "retailModifiedItemId:1005332|tag:EGG_WHITE_CHKN_MEAL",
+          "name": "Egg White Grill Meal",
+          "servingSize": null,
+          "nutrition": {
+            "calories": 0,
+            "protein": 0,
+            "carbs": 0,
+            "totalFat": 0,
+            "satFat": 0,
+            "transFat": 0,
+            "cholesterol": 0,
+            "sodium": 0,
+            "fiber": 0,
+            "sugars": 0
+          }
+        }
+      ]
+    },
+    {
+      "menuRecordId": "itemGroupId:100139",
+      "standardizedRecordId": "cfa-group-100139",
+      "recordType": "main_menu",
+      "itemClass": "ITEM_GROUPING",
+      "names": [
+        "Hash Brown Scramble Burrito Meal"
+      ],
+      "categories": [
+        "Breakfast"
+      ],
+      "retailModifiedItemId": null,
+      "itemGroupId": "100139",
+      "status": "unresolved",
+      "matchStatus": "no_match",
+      "rule": null,
+      "reason": "no_nutrition_match",
+      "details": "No unique exact, safe normalized, or source-ID-verified match exists. The ordering source represents this as a dynamic meal/container; no fixed nutrition payload is safe to attach.",
+      "candidateNutritionRows": [],
+      "candidateRowsHaveIdenticalNutrition": false,
+      "orderingCandidateNutritionRows": []
+    },
+    {
+      "menuRecordId": "itemGroupId:100152",
+      "standardizedRecordId": "cfa-group-100152",
+      "recordType": "main_menu",
+      "itemClass": "ITEM_GROUPING",
+      "names": [
+        "Hash Brown Scramble Bowl Meal"
+      ],
+      "categories": [
+        "Breakfast"
+      ],
+      "retailModifiedItemId": null,
+      "itemGroupId": "100152",
+      "status": "unresolved",
+      "matchStatus": "no_match",
+      "rule": null,
+      "reason": "no_nutrition_match",
+      "details": "No unique exact, safe normalized, or source-ID-verified match exists. The ordering source represents this as a dynamic meal/container; no fixed nutrition payload is safe to attach.",
+      "candidateNutritionRows": [],
+      "candidateRowsHaveIdenticalNutrition": false,
+      "orderingCandidateNutritionRows": []
+    },
+    {
+      "menuRecordId": "itemGroupId:100156",
+      "standardizedRecordId": "cfa-group-100156",
+      "recordType": "main_menu",
+      "itemClass": "ITEM_GROUPING",
+      "names": [
+        "Chicken, Egg & Cheese Biscuit Meal"
+      ],
+      "categories": [
+        "Breakfast"
+      ],
+      "retailModifiedItemId": "1004741",
+      "itemGroupId": "100156",
+      "status": "unresolved",
+      "matchStatus": "no_match",
+      "rule": null,
+      "reason": "no_nutrition_match",
+      "details": "No unique exact, safe normalized, or source-ID-verified match exists. The ordering source represents this as a dynamic meal/container; no fixed nutrition payload is safe to attach.",
+      "candidateNutritionRows": [],
+      "candidateRowsHaveIdenticalNutrition": false,
+      "orderingCandidateNutritionRows": []
+    },
+    {
+      "menuRecordId": "itemGroupId:100157",
+      "standardizedRecordId": "cfa-group-100157",
+      "recordType": "main_menu",
+      "itemClass": "ITEM_GROUPING",
+      "names": [
+        "Bacon, Egg, & Cheese Biscuit Meal"
+      ],
+      "categories": [
+        "Breakfast"
+      ],
+      "retailModifiedItemId": "1004739",
+      "itemGroupId": "100157",
+      "status": "unresolved",
+      "matchStatus": "no_match",
+      "rule": null,
+      "reason": "no_nutrition_match",
+      "details": "No unique exact, safe normalized, or source-ID-verified match exists. The ordering source represents this as a dynamic meal/container; no fixed nutrition payload is safe to attach.",
+      "candidateNutritionRows": [],
+      "candidateRowsHaveIdenticalNutrition": false,
+      "orderingCandidateNutritionRows": [
+        {
+          "sourceId": "retailModifiedItemId:1004739|tag:BISCUIT_BEC_MEAL",
+          "name": "Bacon, Egg, & Cheese Biscuit Meal",
+          "servingSize": null,
+          "nutrition": {
+            "calories": 0,
+            "protein": 0,
+            "carbs": 0,
+            "totalFat": 0,
+            "satFat": 0,
+            "transFat": 0,
+            "cholesterol": 0,
+            "sodium": 0,
+            "fiber": 0,
+            "sugars": 0
+          }
+        }
+      ]
+    },
+    {
+      "menuRecordId": "itemGroupId:100158",
+      "standardizedRecordId": "cfa-group-100158",
+      "recordType": "main_menu",
+      "itemClass": "ITEM_GROUPING",
+      "names": [
+        "Sausage, Egg, & Cheese Biscuit Meal"
+      ],
+      "categories": [
+        "Breakfast"
+      ],
+      "retailModifiedItemId": "1004742",
+      "itemGroupId": "100158",
+      "status": "unresolved",
+      "matchStatus": "no_match",
+      "rule": null,
+      "reason": "no_nutrition_match",
+      "details": "No unique exact, safe normalized, or source-ID-verified match exists. The ordering source represents this as a dynamic meal/container; no fixed nutrition payload is safe to attach.",
+      "candidateNutritionRows": [],
+      "candidateRowsHaveIdenticalNutrition": false,
+      "orderingCandidateNutritionRows": [
+        {
+          "sourceId": "retailModifiedItemId:1004742|tag:BISCUIT_SEC_MEAL",
+          "name": "Sausage, Egg, & Cheese Biscuit Meal",
+          "servingSize": null,
+          "nutrition": {
+            "calories": 0,
+            "protein": 0,
+            "carbs": 0,
+            "totalFat": 0,
+            "satFat": 0,
+            "transFat": 0,
+            "cholesterol": 0,
+            "sodium": 0,
+            "fiber": 0,
+            "sugars": 0
+          }
+        }
+      ]
+    },
+    {
+      "menuRecordId": "itemGroupId:100160",
+      "standardizedRecordId": "cfa-group-100160",
+      "recordType": "main_menu",
+      "itemClass": "ITEM_GROUPING",
+      "names": [
+        "Chicken, Egg, & Cheese Muffin Meal"
+      ],
+      "categories": [
+        "Breakfast"
+      ],
+      "retailModifiedItemId": "1004762",
+      "itemGroupId": "100160",
+      "status": "unresolved",
+      "matchStatus": "no_match",
+      "rule": null,
+      "reason": "no_nutrition_match",
+      "details": "No unique exact, safe normalized, or source-ID-verified match exists. The ordering source represents this as a dynamic meal/container; no fixed nutrition payload is safe to attach.",
+      "candidateNutritionRows": [],
+      "candidateRowsHaveIdenticalNutrition": false,
+      "orderingCandidateNutritionRows": []
+    },
+    {
+      "menuRecordId": "itemGroupId:100161",
+      "standardizedRecordId": "cfa-group-100161",
+      "recordType": "main_menu",
+      "itemClass": "ITEM_GROUPING",
+      "names": [
+        "Bacon, Egg, & Cheese Muffin Meal"
+      ],
+      "categories": [
+        "Breakfast"
+      ],
+      "retailModifiedItemId": "1004761",
+      "itemGroupId": "100161",
+      "status": "unresolved",
+      "matchStatus": "no_match",
+      "rule": null,
+      "reason": "no_nutrition_match",
+      "details": "No unique exact, safe normalized, or source-ID-verified match exists. The ordering source represents this as a dynamic meal/container; no fixed nutrition payload is safe to attach.",
+      "candidateNutritionRows": [],
+      "candidateRowsHaveIdenticalNutrition": false,
+      "orderingCandidateNutritionRows": [
+        {
+          "sourceId": "retailModifiedItemId:1004761|tag:MUFFIN_BEC_MEAL",
+          "name": "Bacon, Egg, & Cheese Muffin Meal",
+          "servingSize": null,
+          "nutrition": {
+            "calories": 0,
+            "protein": 0,
+            "carbs": 0,
+            "totalFat": 0,
+            "satFat": 0,
+            "transFat": 0,
+            "cholesterol": 0,
+            "sodium": 0,
+            "fiber": 0,
+            "sugars": 0
+          }
+        }
+      ]
+    },
+    {
+      "menuRecordId": "itemGroupId:100162",
+      "standardizedRecordId": "cfa-group-100162",
+      "recordType": "main_menu",
+      "itemClass": "ITEM_GROUPING",
+      "names": [
+        "Sausage, Egg, & Cheese Muffin Meal"
+      ],
+      "categories": [
+        "Breakfast"
+      ],
+      "retailModifiedItemId": "1004763",
+      "itemGroupId": "100162",
+      "status": "unresolved",
+      "matchStatus": "no_match",
+      "rule": null,
+      "reason": "no_nutrition_match",
+      "details": "No unique exact, safe normalized, or source-ID-verified match exists. The ordering source represents this as a dynamic meal/container; no fixed nutrition payload is safe to attach.",
+      "candidateNutritionRows": [],
+      "candidateRowsHaveIdenticalNutrition": false,
+      "orderingCandidateNutritionRows": [
+        {
+          "sourceId": "retailModifiedItemId:1004763|tag:MUFFIN_SEC_MEAL",
+          "name": "Sausage, Egg, & Cheese Muffin Meal",
+          "servingSize": null,
+          "nutrition": {
+            "calories": 0,
+            "protein": 0,
+            "carbs": 0,
+            "totalFat": 0,
+            "satFat": 0,
+            "transFat": 0,
+            "cholesterol": 0,
+            "sodium": 0,
+            "fiber": 0,
+            "sugars": 0
+          }
+        }
+      ]
+    },
+    {
+      "menuRecordId": "itemGroupId:100180",
+      "standardizedRecordId": "cfa-group-100180",
+      "recordType": "main_menu",
+      "itemClass": "ITEM_GROUPING",
+      "names": [
+        "Breakfast Proteins"
+      ],
+      "categories": [
+        "Breakfast"
+      ],
+      "retailModifiedItemId": null,
+      "itemGroupId": "100180",
+      "status": "unresolved",
+      "matchStatus": "no_match",
+      "rule": null,
+      "reason": "no_nutrition_match",
+      "details": "No unique exact, safe normalized, or source-ID-verified match exists. This structural menu record has no retailModifiedItemId for ordering-source identity.",
+      "candidateNutritionRows": [],
+      "candidateRowsHaveIdenticalNutrition": false,
+      "orderingCandidateNutritionRows": []
+    },
+    {
+      "menuRecordId": "itemGroupId:100220",
+      "standardizedRecordId": "cfa-group-100220",
+      "recordType": "main_menu",
+      "itemClass": "ITEM_GROUPING",
+      "names": [
+        "Chicken & Waffles Sandwich w/ Chick-fil-A® Filet Meal"
+      ],
+      "categories": [
+        "Meals"
+      ],
+      "retailModifiedItemId": "1009753",
+      "itemGroupId": "100220",
+      "status": "unresolved",
+      "matchStatus": "no_match",
+      "rule": null,
+      "reason": "no_nutrition_match",
+      "details": "No unique exact, safe normalized, or source-ID-verified match exists. The ordering source represents this as a dynamic meal/container; no fixed nutrition payload is safe to attach.",
+      "candidateNutritionRows": [],
+      "candidateRowsHaveIdenticalNutrition": false,
+      "orderingCandidateNutritionRows": []
+    },
+    {
+      "menuRecordId": "itemGroupId:100221",
+      "standardizedRecordId": "cfa-group-100221",
+      "recordType": "main_menu",
+      "itemClass": "ITEM_GROUPING",
+      "names": [
+        "Chicken & Waffles Sandwich w/ Spicy Filet Meal"
+      ],
+      "categories": [
+        "Meals"
+      ],
+      "retailModifiedItemId": "1009755",
+      "itemGroupId": "100221",
+      "status": "unresolved",
+      "matchStatus": "no_match",
+      "rule": null,
+      "reason": "no_nutrition_match",
+      "details": "No unique exact, safe normalized, or source-ID-verified match exists. The ordering source represents this as a dynamic meal/container; no fixed nutrition payload is safe to attach.",
+      "candidateNutritionRows": [],
+      "candidateRowsHaveIdenticalNutrition": false,
+      "orderingCandidateNutritionRows": []
+    },
+    {
+      "menuRecordId": "itemGroupId:100222",
+      "standardizedRecordId": "cfa-group-100222",
+      "recordType": "main_menu",
+      "itemClass": "ITEM_GROUPING",
+      "names": [
+        "Chicken & Waffles Sandwich w/ Grilled Filet Meal"
+      ],
+      "categories": [
+        "Meals"
+      ],
+      "retailModifiedItemId": "1009754",
+      "itemGroupId": "100222",
+      "status": "unresolved",
+      "matchStatus": "no_match",
+      "rule": null,
+      "reason": "no_nutrition_match",
+      "details": "No unique exact, safe normalized, or source-ID-verified match exists. The ordering source represents this as a dynamic meal/container; no fixed nutrition payload is safe to attach.",
+      "candidateNutritionRows": [],
+      "candidateRowsHaveIdenticalNutrition": false,
+      "orderingCandidateNutritionRows": []
+    },
+    {
+      "menuRecordId": "itemGroupId:100234",
+      "standardizedRecordId": "cfa-group-100234",
+      "recordType": "main_menu",
+      "itemClass": "ITEM_GROUPING",
+      "names": [
+        "Chick-fil-A® Sandwich Meal"
+      ],
+      "categories": [
+        "Meals"
+      ],
+      "retailModifiedItemId": "1005727",
+      "itemGroupId": "100234",
+      "status": "unresolved",
+      "matchStatus": "no_match",
+      "rule": null,
+      "reason": "no_nutrition_match",
+      "details": "No unique exact, safe normalized, or source-ID-verified match exists. The ordering source represents this as a dynamic meal/container; no fixed nutrition payload is safe to attach.",
+      "candidateNutritionRows": [],
+      "candidateRowsHaveIdenticalNutrition": false,
+      "orderingCandidateNutritionRows": [
+        {
+          "sourceId": "retailModifiedItemId:1005727|tag:CFA_SANDWICH_MEAL",
+          "name": "Chick-fil-A® Sandwich Meal",
+          "servingSize": null,
+          "nutrition": {
+            "calories": 0,
+            "protein": 0,
+            "carbs": 0,
+            "totalFat": 0,
+            "satFat": 0,
+            "transFat": 0,
+            "cholesterol": 0,
+            "sodium": 0,
+            "fiber": 0,
+            "sugars": 0
+          }
+        }
+      ]
+    },
+    {
+      "menuRecordId": "itemGroupId:100242",
+      "standardizedRecordId": "cfa-group-100242",
+      "recordType": "main_menu",
+      "itemClass": "ITEM_GROUPING",
+      "names": [
+        "Chick-fil-A® Deluxe Meal"
+      ],
+      "categories": [
+        "Meals"
+      ],
+      "retailModifiedItemId": null,
+      "itemGroupId": "100242",
+      "status": "unresolved",
+      "matchStatus": "no_match",
+      "rule": null,
+      "reason": "no_nutrition_match",
+      "details": "No unique exact, safe normalized, or source-ID-verified match exists. The ordering source represents this as a dynamic meal/container; no fixed nutrition payload is safe to attach.",
+      "candidateNutritionRows": [],
+      "candidateRowsHaveIdenticalNutrition": false,
+      "orderingCandidateNutritionRows": []
+    },
+    {
+      "menuRecordId": "itemGroupId:100243",
+      "standardizedRecordId": "cfa-group-100243",
+      "recordType": "main_menu",
+      "itemClass": "ITEM_GROUPING",
+      "names": [
+        "Chick-fil-A® Spicy Chicken Sandwich Meal"
+      ],
+      "categories": [
+        "Meals"
+      ],
+      "retailModifiedItemId": "1005706",
+      "itemGroupId": "100243",
+      "status": "unresolved",
+      "matchStatus": "no_match",
+      "rule": null,
+      "reason": "no_nutrition_match",
+      "details": "No unique exact, safe normalized, or source-ID-verified match exists. The ordering source represents this as a dynamic meal/container; no fixed nutrition payload is safe to attach.",
+      "candidateNutritionRows": [],
+      "candidateRowsHaveIdenticalNutrition": false,
+      "orderingCandidateNutritionRows": [
+        {
+          "sourceId": "retailModifiedItemId:1005706|tag:SPICY_MEAL",
+          "name": "Chick-fil-A® Spicy Chicken Sandwich Meal",
+          "servingSize": null,
+          "nutrition": {
+            "calories": 0,
+            "protein": 0,
+            "carbs": 0,
+            "totalFat": 0,
+            "satFat": 0,
+            "transFat": 0,
+            "cholesterol": 0,
+            "sodium": 0,
+            "fiber": 0,
+            "sugars": 0
+          }
+        }
+      ]
+    },
+    {
+      "menuRecordId": "itemGroupId:100251",
+      "standardizedRecordId": "cfa-group-100251",
+      "recordType": "main_menu",
+      "itemClass": "ITEM_GROUPING",
+      "names": [
+        "Spicy Chicken Sandwich Deluxe Meal"
+      ],
+      "categories": [
+        "Meals"
+      ],
+      "retailModifiedItemId": null,
+      "itemGroupId": "100251",
+      "status": "unresolved",
+      "matchStatus": "no_match",
+      "rule": null,
+      "reason": "no_nutrition_match",
+      "details": "No unique exact, safe normalized, or source-ID-verified match exists. The ordering source represents this as a dynamic meal/container; no fixed nutrition payload is safe to attach.",
+      "candidateNutritionRows": [],
+      "candidateRowsHaveIdenticalNutrition": false,
+      "orderingCandidateNutritionRows": []
+    },
+    {
+      "menuRecordId": "itemGroupId:100257",
+      "standardizedRecordId": "cfa-group-100257",
+      "recordType": "main_menu",
+      "itemClass": "ITEM_GROUPING",
+      "names": [
+        "Grilled Chicken Sandwich Meal"
+      ],
+      "categories": [
+        "Meals"
+      ],
+      "retailModifiedItemId": "1005717",
+      "itemGroupId": "100257",
+      "status": "unresolved",
+      "matchStatus": "no_match",
+      "rule": null,
+      "reason": "no_nutrition_match",
+      "details": "No unique exact, safe normalized, or source-ID-verified match exists. The ordering source represents this as a dynamic meal/container; no fixed nutrition payload is safe to attach.",
+      "candidateNutritionRows": [],
+      "candidateRowsHaveIdenticalNutrition": false,
+      "orderingCandidateNutritionRows": [
+        {
+          "sourceId": "retailModifiedItemId:1005717|tag:GRILLED_SANDWICH_MEAL",
+          "name": "Grilled Chicken Sandwich Meal",
+          "servingSize": null,
+          "nutrition": {
+            "calories": 0,
+            "protein": 0,
+            "carbs": 0,
+            "totalFat": 0,
+            "satFat": 0,
+            "transFat": 0,
+            "cholesterol": 0,
+            "sodium": 0,
+            "fiber": 0,
+            "sugars": 0
+          }
+        }
+      ]
+    },
+    {
+      "menuRecordId": "itemGroupId:100264",
+      "standardizedRecordId": "cfa-group-100264",
+      "recordType": "main_menu",
+      "itemClass": "ITEM_GROUPING",
+      "names": [
+        "Grilled Chicken Club Meal"
+      ],
+      "categories": [
+        "Meals"
+      ],
+      "retailModifiedItemId": null,
+      "itemGroupId": "100264",
+      "status": "unresolved",
+      "matchStatus": "no_match",
+      "rule": null,
+      "reason": "no_nutrition_match",
+      "details": "No unique exact, safe normalized, or source-ID-verified match exists. The ordering source represents this as a dynamic meal/container; no fixed nutrition payload is safe to attach.",
+      "candidateNutritionRows": [],
+      "candidateRowsHaveIdenticalNutrition": false,
+      "orderingCandidateNutritionRows": []
+    },
+    {
+      "menuRecordId": "itemGroupId:100273",
+      "standardizedRecordId": "cfa-group-100273",
+      "recordType": "main_menu",
+      "itemClass": "ITEM_GROUPING",
+      "names": [
+        "Chick-fil-A<sup>®</sup> Nuggets Meal"
+      ],
+      "categories": [
+        "Meals"
+      ],
+      "retailModifiedItemId": null,
+      "itemGroupId": "100273",
+      "status": "unresolved",
+      "matchStatus": "no_match",
+      "rule": null,
+      "reason": "no_nutrition_match",
+      "details": "No unique exact, safe normalized, or source-ID-verified match exists. The ordering source represents this as a dynamic meal/container; no fixed nutrition payload is safe to attach.",
+      "candidateNutritionRows": [],
+      "candidateRowsHaveIdenticalNutrition": false,
+      "orderingCandidateNutritionRows": []
+    },
+    {
+      "menuRecordId": "itemGroupId:100278",
+      "standardizedRecordId": "cfa-group-100278",
+      "recordType": "main_menu",
+      "itemClass": "ITEM_GROUPING",
+      "names": [
+        "Grilled Nuggets Meal"
+      ],
+      "categories": [
+        "Meals"
+      ],
+      "retailModifiedItemId": null,
+      "itemGroupId": "100278",
+      "status": "unresolved",
+      "matchStatus": "no_match",
+      "rule": null,
+      "reason": "no_nutrition_match",
+      "details": "No unique exact, safe normalized, or source-ID-verified match exists. The ordering source represents this as a dynamic meal/container; no fixed nutrition payload is safe to attach.",
+      "candidateNutritionRows": [],
+      "candidateRowsHaveIdenticalNutrition": false,
+      "orderingCandidateNutritionRows": []
+    },
+    {
+      "menuRecordId": "itemGroupId:100285",
+      "standardizedRecordId": "cfa-group-100285",
+      "recordType": "main_menu",
+      "itemClass": "ITEM_GROUPING",
+      "names": [
+        "Chick-n-Strips® Meal"
+      ],
+      "categories": [
+        "Meals"
+      ],
+      "retailModifiedItemId": null,
+      "itemGroupId": "100285",
+      "status": "unresolved",
+      "matchStatus": "no_match",
+      "rule": null,
+      "reason": "no_nutrition_match",
+      "details": "No unique exact, safe normalized, or source-ID-verified match exists. The ordering source represents this as a dynamic meal/container; no fixed nutrition payload is safe to attach.",
+      "candidateNutritionRows": [],
+      "candidateRowsHaveIdenticalNutrition": false,
+      "orderingCandidateNutritionRows": []
+    },
+    {
+      "menuRecordId": "itemGroupId:100289",
+      "standardizedRecordId": "cfa-group-100289",
+      "recordType": "main_menu",
+      "itemClass": "ITEM_GROUPING",
+      "names": [
+        "Chick-fil-A® Cool Wrap Meal"
+      ],
+      "categories": [
+        "Meals"
+      ],
+      "retailModifiedItemId": "1005723",
+      "itemGroupId": "100289",
+      "status": "unresolved",
+      "matchStatus": "no_match",
+      "rule": null,
+      "reason": "no_nutrition_match",
+      "details": "No unique exact, safe normalized, or source-ID-verified match exists. The ordering source represents this as a dynamic meal/container; no fixed nutrition payload is safe to attach.",
+      "candidateNutritionRows": [],
+      "candidateRowsHaveIdenticalNutrition": false,
+      "orderingCandidateNutritionRows": [
+        {
+          "sourceId": "retailModifiedItemId:1005723|tag:COOL_WRAP_MEAL",
+          "name": "Chick-fil-A Cool Wrap® Meal",
+          "servingSize": null,
+          "nutrition": {
+            "calories": 0,
+            "protein": 0,
+            "carbs": 0,
+            "totalFat": 0,
+            "satFat": 0,
+            "transFat": 0,
+            "cholesterol": 0,
+            "sodium": 0,
+            "fiber": 0,
+            "sugars": 0
+          }
+        }
+      ]
+    },
+    {
+      "menuRecordId": "itemGroupId:100292",
+      "standardizedRecordId": "cfa-group-100292",
+      "recordType": "main_menu",
+      "itemClass": "ITEM_GROUPING",
+      "names": [
+        "Southwest Veggie Wrap Meal"
+      ],
+      "categories": [
+        "Meals"
+      ],
+      "retailModifiedItemId": "1007367",
+      "itemGroupId": "100292",
+      "status": "unresolved",
+      "matchStatus": "no_match",
+      "rule": null,
+      "reason": "no_nutrition_match",
+      "details": "No unique exact, safe normalized, or source-ID-verified match exists. The ordering source represents this as a dynamic meal/container; no fixed nutrition payload is safe to attach.",
+      "candidateNutritionRows": [],
+      "candidateRowsHaveIdenticalNutrition": false,
+      "orderingCandidateNutritionRows": []
+    },
+    {
+      "menuRecordId": "itemGroupId:100336",
+      "standardizedRecordId": "cfa-group-100336",
+      "recordType": "main_menu",
+      "itemClass": "ITEM_GROUPING",
+      "names": [
+        "5 Ct Nuggets Kid's Meal"
+      ],
+      "categories": [
+        "Kid's Meals"
+      ],
+      "retailModifiedItemId": "1007118",
+      "itemGroupId": "100336",
+      "status": "unresolved",
+      "matchStatus": "exact_match",
+      "rule": "unique_exact_name",
+      "reason": "entree_only_nutrition_for_meal_container",
+      "details": "The matching row is explicitly scoped to entrée-only nutrition and cannot be attached to a meal container.",
+      "candidateNutritionRows": [
+        {
+          "sourceId": "10546",
+          "name": "5 Ct Nuggets Kid's Meal",
+          "categories": [
+            "Kid's Meals (nutrition per entrée only)"
+          ],
+          "servingSize": 71,
+          "nutrition": {
+            "calories": 160,
+            "protein": 17,
+            "carbs": 7,
+            "totalFat": 7,
+            "satFat": 1.5,
+            "transFat": 0,
+            "cholesterol": 50,
+            "sodium": 760,
+            "fiber": 0,
+            "sugars": 1
+          }
+        }
+      ],
+      "candidateRowsHaveIdenticalNutrition": false,
+      "orderingCandidateNutritionRows": [
+        {
+          "sourceId": "retailModifiedItemId:1007118|tag:KD_MEAL_NUG_5CT",
+          "name": "5 Ct Nuggets Kid's Meal",
+          "servingSize": "per Entree",
+          "nutrition": {
+            "calories": 160,
+            "protein": 17,
+            "carbs": 7,
+            "totalFat": 7,
+            "satFat": 1.5,
+            "transFat": 0,
+            "cholesterol": 50,
+            "sodium": 760,
+            "fiber": 0,
+            "sugars": 1
+          }
+        }
+      ]
+    },
+    {
+      "menuRecordId": "itemGroupId:100340",
+      "standardizedRecordId": "cfa-group-100340",
+      "recordType": "main_menu",
+      "itemClass": "ITEM_GROUPING",
+      "names": [
+        "2 Ct Chick-n-Strips® Kid's Meal"
+      ],
+      "categories": [
+        "Kid's Meals"
+      ],
+      "retailModifiedItemId": "1000351",
+      "itemGroupId": "100340",
+      "status": "unresolved",
+      "matchStatus": "exact_match",
+      "rule": "unique_exact_name",
+      "reason": "entree_only_nutrition_for_meal_container",
+      "details": "The matching row is explicitly scoped to entrée-only nutrition and cannot be attached to a meal container.",
+      "candidateNutritionRows": [
+        {
+          "sourceId": "10556",
+          "name": "2 Ct Chick-n-Strips® Kid's Meal",
+          "categories": [
+            "Kid's Meals (nutrition per entrée only)"
+          ],
+          "servingSize": 91,
+          "nutrition": {
+            "calories": 200,
+            "protein": 19,
+            "carbs": 11,
+            "totalFat": 9,
+            "satFat": 2,
+            "transFat": 0,
+            "cholesterol": 50,
+            "sodium": 580,
+            "fiber": 0,
+            "sugars": 1
+          }
+        }
+      ],
+      "candidateRowsHaveIdenticalNutrition": false,
+      "orderingCandidateNutritionRows": [
+        {
+          "sourceId": "retailModifiedItemId:1000351|tag:KD_MEAL_STRIPS_2",
+          "name": "2 Ct Chick-n-Strips® Kid's Meal",
+          "servingSize": "per Entree",
+          "nutrition": {
+            "calories": 200,
+            "protein": 19,
+            "carbs": 11,
+            "totalFat": 9,
+            "satFat": 2,
+            "transFat": 0,
+            "cholesterol": 50,
+            "sodium": 580,
+            "fiber": 0,
+            "sugars": 1
+          }
+        }
+      ]
+    },
+    {
+      "menuRecordId": "itemGroupId:100341",
+      "standardizedRecordId": "cfa-group-100341",
+      "recordType": "main_menu",
+      "itemClass": "ITEM_GROUPING",
+      "names": [
+        "5 Ct Grilled Nuggets Kid's Meal"
+      ],
+      "categories": [
+        "Kid's Meals"
+      ],
+      "retailModifiedItemId": "1007120",
+      "itemGroupId": "100341",
+      "status": "unresolved",
+      "matchStatus": "exact_match",
+      "rule": "unique_exact_name",
+      "reason": "entree_only_nutrition_for_meal_container",
+      "details": "The matching row is explicitly scoped to entrée-only nutrition and cannot be attached to a meal container.",
+      "candidateNutritionRows": [
+        {
+          "sourceId": "10558",
+          "name": "5 Ct Grilled Nuggets Kid's Meal",
+          "categories": [
+            "Kid's Meals (nutrition per entrée only)"
+          ],
+          "servingSize": 59,
+          "nutrition": {
+            "calories": 80,
+            "protein": 16,
+            "carbs": 1,
+            "totalFat": 2,
+            "satFat": 0,
+            "transFat": 0,
+            "cholesterol": 55,
+            "sodium": 270,
+            "fiber": 0,
+            "sugars": 0
+          }
+        }
+      ],
+      "candidateRowsHaveIdenticalNutrition": false,
+      "orderingCandidateNutritionRows": [
+        {
+          "sourceId": "retailModifiedItemId:1007120|tag:KD_MEAL_GRILLED_NUGGETS_5",
+          "name": "5 Ct Grilled Nuggets Kid's Meal",
+          "servingSize": "per Entree",
+          "nutrition": {
+            "calories": 80,
+            "protein": 16,
+            "carbs": 1,
+            "totalFat": 2,
+            "satFat": 0,
+            "transFat": 0,
+            "cholesterol": 55,
+            "sodium": 270,
+            "fiber": 0,
+            "sugars": 0
+          }
+        }
+      ]
+    },
+    {
+      "menuRecordId": "itemGroupId:100349",
+      "standardizedRecordId": "cfa-group-100349",
+      "recordType": "main_menu",
+      "itemClass": "ITEM_GROUPING",
+      "names": [
+        "Mac & Cheese Kid’s Meal"
+      ],
+      "categories": [
+        "Kid's Meals"
+      ],
+      "retailModifiedItemId": "1010183",
+      "itemGroupId": "100349",
+      "status": "unresolved",
+      "matchStatus": "exact_match",
+      "rule": "unique_exact_name",
+      "reason": "entree_only_nutrition_for_meal_container",
+      "details": "The matching row is explicitly scoped to entrée-only nutrition and cannot be attached to a meal container.",
+      "candidateNutritionRows": [
+        {
+          "sourceId": "47598",
+          "name": "Mac & Cheese Kid’s Meal",
+          "categories": [
+            "Kid's Meals (nutrition per entrée only)"
+          ],
+          "servingSize": 227,
+          "nutrition": {
+            "calories": 450,
+            "protein": 20,
+            "carbs": 28,
+            "totalFat": 29,
+            "satFat": 16,
+            "transFat": 0,
+            "cholesterol": 70,
+            "sodium": 1190,
+            "fiber": 3,
+            "sugars": 3
+          }
+        }
+      ],
+      "candidateRowsHaveIdenticalNutrition": false,
+      "orderingCandidateNutritionRows": [
+        {
+          "sourceId": "retailModifiedItemId:1010183|tag:KD_MEAL_MACCHEESE",
+          "name": "Mac & Cheese Kid’s Meal",
+          "servingSize": "per Entree",
+          "nutrition": {
+            "calories": 450,
+            "protein": 20,
+            "carbs": 28,
+            "totalFat": 29,
+            "satFat": 16,
+            "transFat": 0,
+            "cholesterol": 70,
+            "sodium": 1190,
+            "fiber": 3,
+            "sugars": 3
+          }
+        }
+      ]
+    },
+    {
+      "menuRecordId": "itemGroupId:100369",
+      "standardizedRecordId": "cfa-group-100369",
+      "recordType": "main_menu",
+      "itemClass": "ITEM_GROUPING",
+      "names": [
+        "Filets"
+      ],
+      "categories": [
+        "Entrées"
+      ],
+      "retailModifiedItemId": null,
+      "itemGroupId": "100369",
+      "status": "unresolved",
+      "matchStatus": "no_match",
+      "rule": null,
+      "reason": "no_nutrition_match",
+      "details": "No unique exact, safe normalized, or source-ID-verified match exists. This structural menu record has no retailModifiedItemId for ordering-source identity.",
+      "candidateNutritionRows": [],
+      "candidateRowsHaveIdenticalNutrition": false,
+      "orderingCandidateNutritionRows": []
+    },
+    {
+      "menuRecordId": "itemGroupId:100399",
+      "standardizedRecordId": "cfa-group-100399",
+      "recordType": "beverages",
+      "itemClass": "ITEM_GROUPING",
+      "names": [
+        "Pineapple Dragonfruit Sunjoy®"
+      ],
+      "categories": [
+        "Beverages"
+      ],
+      "retailModifiedItemId": null,
+      "itemGroupId": "100399",
+      "status": "unresolved",
+      "matchStatus": "no_match",
+      "rule": null,
+      "reason": "no_nutrition_match",
+      "details": "No unique exact, safe normalized, or source-ID-verified match exists. This structural menu record has no retailModifiedItemId for ordering-source identity.",
+      "candidateNutritionRows": [],
+      "candidateRowsHaveIdenticalNutrition": false,
+      "orderingCandidateNutritionRows": []
+    },
+    {
+      "menuRecordId": "itemGroupId:100400",
+      "standardizedRecordId": "cfa-group-100400",
+      "recordType": "beverages",
+      "itemClass": "ITEM_GROUPING",
+      "names": [
+        "Pineapple Dragonfruit Teas"
+      ],
+      "categories": [
+        "Beverages"
+      ],
+      "retailModifiedItemId": null,
+      "itemGroupId": "100400",
+      "status": "unresolved",
+      "matchStatus": "no_match",
+      "rule": null,
+      "reason": "no_nutrition_match",
+      "details": "No unique exact, safe normalized, or source-ID-verified match exists. This structural menu record has no retailModifiedItemId for ordering-source identity.",
+      "candidateNutritionRows": [],
+      "candidateRowsHaveIdenticalNutrition": false,
+      "orderingCandidateNutritionRows": []
+    },
+    {
+      "menuRecordId": "itemGroupId:100413",
+      "standardizedRecordId": "cfa-group-100413",
+      "recordType": "beverages",
+      "itemClass": "ITEM_GROUPING",
+      "names": [
+        "1/2 Sweet Tea 1/2 Unsweet Tea"
+      ],
+      "categories": [
+        "Beverages"
+      ],
+      "retailModifiedItemId": null,
+      "itemGroupId": "100413",
+      "status": "unresolved",
+      "matchStatus": "no_match",
+      "rule": null,
+      "reason": "no_nutrition_match",
+      "details": "No unique exact, safe normalized, or source-ID-verified match exists. This structural menu record has no retailModifiedItemId for ordering-source identity.",
+      "candidateNutritionRows": [],
+      "candidateRowsHaveIdenticalNutrition": false,
+      "orderingCandidateNutritionRows": []
+    },
+    {
+      "menuRecordId": "itemGroupId:100420",
+      "standardizedRecordId": "cfa-group-100420",
+      "recordType": "beverages",
+      "itemClass": "ITEM_GROUPING",
+      "names": [
+        "Diet Coke<sup>®</sup>"
+      ],
+      "categories": [
+        "Beverages"
+      ],
+      "retailModifiedItemId": null,
+      "itemGroupId": "100420",
+      "status": "unresolved",
+      "matchStatus": "no_match",
+      "rule": null,
+      "reason": "no_nutrition_match",
+      "details": "No unique exact, safe normalized, or source-ID-verified match exists. This structural menu record has no retailModifiedItemId for ordering-source identity.",
+      "candidateNutritionRows": [],
+      "candidateRowsHaveIdenticalNutrition": false,
+      "orderingCandidateNutritionRows": []
+    },
+    {
+      "menuRecordId": "itemGroupId:100421",
+      "standardizedRecordId": "cfa-group-100421",
+      "recordType": "beverages",
+      "itemClass": "ITEM_GROUPING",
+      "names": [
+        "Coke<sup>®</sup> Zero Sugar"
+      ],
+      "categories": [
+        "Beverages"
+      ],
+      "retailModifiedItemId": null,
+      "itemGroupId": "100421",
+      "status": "unresolved",
+      "matchStatus": "no_match",
+      "rule": null,
+      "reason": "no_nutrition_match",
+      "details": "No unique exact, safe normalized, or source-ID-verified match exists. This structural menu record has no retailModifiedItemId for ordering-source identity.",
+      "candidateNutritionRows": [],
+      "candidateRowsHaveIdenticalNutrition": false,
+      "orderingCandidateNutritionRows": []
+    },
+    {
+      "menuRecordId": "itemGroupId:100423",
+      "standardizedRecordId": "cfa-group-100423",
+      "recordType": "beverages",
+      "itemClass": "ITEM_GROUPING",
+      "names": [
+        "Coca-Cola<sup>®</sup> Cherry"
+      ],
+      "categories": [
+        "Beverages"
+      ],
+      "retailModifiedItemId": null,
+      "itemGroupId": "100423",
+      "status": "unresolved",
+      "matchStatus": "no_match",
+      "rule": null,
+      "reason": "no_nutrition_match",
+      "details": "No unique exact, safe normalized, or source-ID-verified match exists. This structural menu record has no retailModifiedItemId for ordering-source identity.",
+      "candidateNutritionRows": [],
+      "candidateRowsHaveIdenticalNutrition": false,
+      "orderingCandidateNutritionRows": []
+    },
+    {
+      "menuRecordId": "itemGroupId:100424",
+      "standardizedRecordId": "cfa-group-100424",
+      "recordType": "beverages",
+      "itemClass": "ITEM_GROUPING",
+      "names": [
+        "Sprite<sup>®</sup>"
+      ],
+      "categories": [
+        "Beverages"
+      ],
+      "retailModifiedItemId": null,
+      "itemGroupId": "100424",
+      "status": "unresolved",
+      "matchStatus": "no_match",
+      "rule": null,
+      "reason": "no_nutrition_match",
+      "details": "No unique exact, safe normalized, or source-ID-verified match exists. This structural menu record has no retailModifiedItemId for ordering-source identity.",
+      "candidateNutritionRows": [],
+      "candidateRowsHaveIdenticalNutrition": false,
+      "orderingCandidateNutritionRows": []
+    },
+    {
+      "menuRecordId": "itemGroupId:100426",
+      "standardizedRecordId": "cfa-group-100426",
+      "recordType": "beverages",
+      "itemClass": "ITEM_GROUPING",
+      "names": [
+        "Diet Dr Pepper<sup>®</sup>"
+      ],
+      "categories": [
+        "Beverages"
+      ],
+      "retailModifiedItemId": null,
+      "itemGroupId": "100426",
+      "status": "unresolved",
+      "matchStatus": "no_match",
+      "rule": null,
+      "reason": "no_nutrition_match",
+      "details": "No unique exact, safe normalized, or source-ID-verified match exists. This structural menu record has no retailModifiedItemId for ordering-source identity.",
+      "candidateNutritionRows": [],
+      "candidateRowsHaveIdenticalNutrition": false,
+      "orderingCandidateNutritionRows": []
+    },
+    {
+      "menuRecordId": "itemGroupId:100427",
+      "standardizedRecordId": "cfa-group-100427",
+      "recordType": "beverages",
+      "itemClass": "ITEM_GROUPING",
+      "names": [
+        "Barq's<sup>®</sup> Root Beer"
+      ],
+      "categories": [
+        "Beverages"
+      ],
+      "retailModifiedItemId": null,
+      "itemGroupId": "100427",
+      "status": "unresolved",
+      "matchStatus": "no_match",
+      "rule": null,
+      "reason": "no_nutrition_match",
+      "details": "No unique exact, safe normalized, or source-ID-verified match exists. This structural menu record has no retailModifiedItemId for ordering-source identity.",
+      "candidateNutritionRows": [],
+      "candidateRowsHaveIdenticalNutrition": false,
+      "orderingCandidateNutritionRows": []
+    },
+    {
+      "menuRecordId": "itemGroupId:100429",
+      "standardizedRecordId": "cfa-group-100429",
+      "recordType": "beverages",
+      "itemClass": "ITEM_GROUPING",
+      "names": [
+        "Hi-C<sup>®</sup> Fruit Punch"
+      ],
+      "categories": [
+        "Beverages"
+      ],
+      "retailModifiedItemId": null,
+      "itemGroupId": "100429",
+      "status": "unresolved",
+      "matchStatus": "no_match",
+      "rule": null,
+      "reason": "no_nutrition_match",
+      "details": "No unique exact, safe normalized, or source-ID-verified match exists. This structural menu record has no retailModifiedItemId for ordering-source identity.",
+      "candidateNutritionRows": [],
+      "candidateRowsHaveIdenticalNutrition": false,
+      "orderingCandidateNutritionRows": []
+    },
+    {
+      "menuRecordId": "itemGroupId:100435",
+      "standardizedRecordId": "cfa-group-100435",
+      "recordType": "beverages",
+      "itemClass": "ITEM_GROUPING",
+      "names": [
+        "POWERADE<sup>®</sup>"
+      ],
+      "categories": [
+        "Beverages"
+      ],
+      "retailModifiedItemId": null,
+      "itemGroupId": "100435",
+      "status": "unresolved",
+      "matchStatus": "no_match",
+      "rule": null,
+      "reason": "no_nutrition_match",
+      "details": "No unique exact, safe normalized, or source-ID-verified match exists. This structural menu record has no retailModifiedItemId for ordering-source identity.",
+      "candidateNutritionRows": [],
+      "candidateRowsHaveIdenticalNutrition": false,
+      "orderingCandidateNutritionRows": []
+    },
+    {
+      "menuRecordId": "itemGroupId:100438",
+      "standardizedRecordId": "cfa-group-100438",
+      "recordType": "beverages",
+      "itemClass": "ITEM_GROUPING",
+      "names": [
+        "Ice Products"
+      ],
+      "categories": [
+        "Beverages"
+      ],
+      "retailModifiedItemId": null,
+      "itemGroupId": "100438",
+      "status": "unresolved",
+      "matchStatus": "no_match",
+      "rule": null,
+      "reason": "no_nutrition_match",
+      "details": "No unique exact, safe normalized, or source-ID-verified match exists. This structural menu record has no retailModifiedItemId for ordering-source identity.",
+      "candidateNutritionRows": [],
+      "candidateRowsHaveIdenticalNutrition": false,
+      "orderingCandidateNutritionRows": []
+    },
+    {
+      "menuRecordId": "itemGroupId:100442",
+      "standardizedRecordId": "cfa-group-100442",
+      "recordType": "beverages",
+      "itemClass": "ITEM_GROUPING",
+      "names": [
+        "Floats"
+      ],
+      "categories": [
+        "Treats"
+      ],
+      "retailModifiedItemId": null,
+      "itemGroupId": "100442",
+      "status": "unresolved",
+      "matchStatus": "no_match",
+      "rule": null,
+      "reason": "no_nutrition_match",
+      "details": "No unique exact, safe normalized, or source-ID-verified match exists. This structural menu record has no retailModifiedItemId for ordering-source identity.",
+      "candidateNutritionRows": [],
+      "candidateRowsHaveIdenticalNutrition": false,
+      "orderingCandidateNutritionRows": []
+    },
+    {
+      "menuRecordId": "itemGroupId:100500",
+      "standardizedRecordId": "cfa-group-100500",
+      "recordType": "main_menu",
+      "itemClass": "ITEM_GROUPING",
+      "names": [
+        "Chick-fil-A® Nuggets Family Style Meal"
+      ],
+      "categories": [
+        "Family Style Meals"
+      ],
+      "retailModifiedItemId": "1009444",
+      "itemGroupId": "100500",
+      "status": "unresolved",
+      "matchStatus": "no_match",
+      "rule": null,
+      "reason": "no_nutrition_match",
+      "details": "No unique exact, safe normalized, or source-ID-verified match exists. The ordering source represents this as a dynamic meal/container; no fixed nutrition payload is safe to attach.",
+      "candidateNutritionRows": [],
+      "candidateRowsHaveIdenticalNutrition": false,
+      "orderingCandidateNutritionRows": []
+    },
+    {
+      "menuRecordId": "itemGroupId:100501",
+      "standardizedRecordId": "cfa-group-100501",
+      "recordType": "main_menu",
+      "itemClass": "ITEM_GROUPING",
+      "names": [
+        "Chick-fil-A Chick-n-Strips® Family Style Meal"
+      ],
+      "categories": [
+        "Family Style Meals"
+      ],
+      "retailModifiedItemId": "1009446",
+      "itemGroupId": "100501",
+      "status": "unresolved",
+      "matchStatus": "no_match",
+      "rule": null,
+      "reason": "no_nutrition_match",
+      "details": "No unique exact, safe normalized, or source-ID-verified match exists. The ordering source represents this as a dynamic meal/container; no fixed nutrition payload is safe to attach.",
+      "candidateNutritionRows": [],
+      "candidateRowsHaveIdenticalNutrition": false,
+      "orderingCandidateNutritionRows": []
+    },
+    {
+      "menuRecordId": "itemGroupId:100502",
+      "standardizedRecordId": "cfa-group-100502",
+      "recordType": "main_menu",
+      "itemClass": "ITEM_GROUPING",
+      "names": [
+        "Grilled Nuggets Family Style Meal"
+      ],
+      "categories": [
+        "Family Style Meals"
+      ],
+      "retailModifiedItemId": "1009445",
+      "itemGroupId": "100502",
+      "status": "unresolved",
+      "matchStatus": "no_match",
+      "rule": null,
+      "reason": "no_nutrition_match",
+      "details": "No unique exact, safe normalized, or source-ID-verified match exists. The ordering source represents this as a dynamic meal/container; no fixed nutrition payload is safe to attach.",
+      "candidateNutritionRows": [],
+      "candidateRowsHaveIdenticalNutrition": false,
+      "orderingCandidateNutritionRows": []
+    },
+    {
+      "menuRecordId": "retailModifiedItemId:1000025",
+      "standardizedRecordId": "cfa-modifier-1000025",
+      "recordType": "ingredients",
+      "itemClass": "MODIFIER",
+      "names": [
+        "Extra Ice"
+      ],
+      "categories": [
+        "Ingredients"
+      ],
+      "retailModifiedItemId": "1000025",
+      "itemGroupId": null,
+      "status": "unresolved",
+      "matchStatus": "no_match",
+      "rule": null,
+      "reason": "no_nutrition_match",
+      "details": "No unique exact, safe normalized, or source-ID-verified match exists. The ordering nutrition feed has no row matching this record's retailModifiedItemId and menu tag.",
+      "candidateNutritionRows": [],
+      "candidateRowsHaveIdenticalNutrition": false,
+      "orderingCandidateNutritionRows": []
+    },
+    {
+      "menuRecordId": "retailModifiedItemId:1000037",
+      "standardizedRecordId": "cfa-modifier-1000037",
+      "recordType": "ingredients",
+      "itemClass": "MODIFIER",
+      "names": [
+        "Lite Ice"
+      ],
+      "categories": [
+        "Ingredients"
+      ],
+      "retailModifiedItemId": "1000037",
+      "itemGroupId": null,
+      "status": "unresolved",
+      "matchStatus": "no_match",
+      "rule": null,
+      "reason": "no_nutrition_match",
+      "details": "No unique exact, safe normalized, or source-ID-verified match exists. The ordering nutrition feed has no row matching this record's retailModifiedItemId and menu tag.",
+      "candidateNutritionRows": [],
+      "candidateRowsHaveIdenticalNutrition": false,
+      "orderingCandidateNutritionRows": []
+    },
+    {
+      "menuRecordId": "retailModifiedItemId:1000057",
+      "standardizedRecordId": "cfa-modifier-1000057",
+      "recordType": "ingredients",
+      "itemClass": "MODIFIER",
+      "names": [
+        "No Ice"
+      ],
+      "categories": [
+        "Ingredients"
+      ],
+      "retailModifiedItemId": "1000057",
+      "itemGroupId": null,
+      "status": "unresolved",
+      "matchStatus": "no_match",
+      "rule": null,
+      "reason": "no_nutrition_match",
+      "details": "No unique exact, safe normalized, or source-ID-verified match exists. The ordering nutrition feed has no row matching this record's retailModifiedItemId and menu tag.",
+      "candidateNutritionRows": [],
+      "candidateRowsHaveIdenticalNutrition": false,
+      "orderingCandidateNutritionRows": []
+    },
+    {
+      "menuRecordId": "retailModifiedItemId:1000353",
+      "standardizedRecordId": "cfa-item-1000353",
+      "recordType": "main_menu",
+      "itemClass": "ITEM",
+      "names": [
+        "Prize (3 & under) - While supplies last"
+      ],
+      "categories": [
+        "Uncategorized"
+      ],
+      "retailModifiedItemId": "1000353",
+      "itemGroupId": null,
+      "status": "unresolved",
+      "matchStatus": "no_match",
+      "rule": null,
+      "reason": "no_nutrition_match",
+      "details": "No unique exact, safe normalized, or source-ID-verified match exists. The ordering menu explicitly hides nutrition for this record.",
+      "candidateNutritionRows": [],
+      "candidateRowsHaveIdenticalNutrition": false,
+      "orderingCandidateNutritionRows": [
+        {
+          "sourceId": "retailModifiedItemId:1000353|tag:SURPRISE_3UNDER",
+          "name": "Prize (3 & under) - While supplies last",
+          "servingSize": null,
+          "nutrition": {
+            "calories": 0,
+            "protein": 0,
+            "carbs": 0,
+            "totalFat": 0,
+            "satFat": 0,
+            "transFat": 0,
+            "cholesterol": 0,
+            "sodium": 0,
+            "fiber": 0,
+            "sugars": 0
+          }
+        }
+      ]
+    },
+    {
+      "menuRecordId": "retailModifiedItemId:1000158",
+      "standardizedRecordId": "cfa-item-1000158",
+      "recordType": "main_menu",
+      "itemClass": "ITEM",
+      "names": [
+        "Prize (4 & up) - While supplies last"
+      ],
+      "categories": [
+        "Uncategorized"
+      ],
+      "retailModifiedItemId": "1000158",
+      "itemGroupId": null,
+      "status": "unresolved",
+      "matchStatus": "no_match",
+      "rule": null,
+      "reason": "no_nutrition_match",
+      "details": "No unique exact, safe normalized, or source-ID-verified match exists. The ordering menu explicitly hides nutrition for this record.",
+      "candidateNutritionRows": [],
+      "candidateRowsHaveIdenticalNutrition": false,
+      "orderingCandidateNutritionRows": [
+        {
+          "sourceId": "retailModifiedItemId:1000158|tag:SURPRISE_4UP",
+          "name": "Prize (4 & up) - While supplies last",
+          "servingSize": null,
+          "nutrition": {
+            "calories": 0,
+            "protein": 0,
+            "carbs": 0,
+            "totalFat": 0,
+            "satFat": 0,
+            "transFat": 0,
+            "cholesterol": 0,
+            "sodium": 0,
+            "fiber": 0,
+            "sugars": 0
+          }
+        }
+      ]
+    },
+    {
+      "menuRecordId": "retailModifiedItemId:1002292",
+      "standardizedRecordId": "cfa-item-1002292",
+      "recordType": "main_menu",
+      "itemClass": "ITEM",
+      "names": [
+        "No Toy"
+      ],
+      "categories": [
+        "Uncategorized"
+      ],
+      "retailModifiedItemId": "1002292",
+      "itemGroupId": null,
+      "status": "unresolved",
+      "matchStatus": "no_match",
+      "rule": null,
+      "reason": "no_nutrition_match",
+      "details": "No unique exact, safe normalized, or source-ID-verified match exists. The ordering menu explicitly hides nutrition for this record.",
+      "candidateNutritionRows": [],
+      "candidateRowsHaveIdenticalNutrition": false,
+      "orderingCandidateNutritionRows": [
+        {
+          "sourceId": "retailModifiedItemId:1002292|tag:NO_TOY",
+          "name": "No Toy",
+          "servingSize": null,
+          "nutrition": {
+            "calories": 0,
+            "protein": 0,
+            "carbs": 0,
+            "totalFat": 0,
+            "satFat": 0,
+            "transFat": 0,
+            "cholesterol": 0,
+            "sodium": 0,
+            "fiber": 0,
+            "sugars": 0
+          }
+        }
+      ]
+    }
+  ]
+}

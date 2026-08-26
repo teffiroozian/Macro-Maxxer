@@ -1,4 +1,8 @@
-import chickfilaMenu from "@/data/restaurants/chickfila.json";
+// Chick-fil-A now resolves cart lookups against the generated dataset (see
+// lib/restaurants.ts for the matching getRestaurantData switch) rather than
+// the old hand-authored data/restaurants/chickfila.json, which stays in
+// place temporarily as a fallback/reference until runtime QA is complete.
+import chickfilaMenu from "@/data/generated/chick-fil-a/restaurant.json";
 import chipotleMenu from "@/data/restaurants/chipotle.json";
 import habitMenu from "@/data/restaurants/habit.json";
 import mcdonaldsMenu from "@/data/restaurants/mcdonalds.json";

@@ -1,4 +1,5 @@
 import { getAllRestaurants, getRestaurantData } from "@/lib/restaurants";
+import { isStandaloneMenuItem } from "@/lib/menuItemCalculations";
 import type { RestaurantBuilderConfig } from "@/types/builder";
 import type { IngredientItem, MenuItem } from "@/types/menu";
 import type { RestaurantIndexEntry } from "@/types/restaurant";
@@ -31,7 +32,10 @@ export function loadSearchIndex(): Promise<SearchIndexEntry[]> {
 
           return {
             restaurant,
-            items: data.items,
+            // Structural/internal source records (see MenuItem.sourceOnly)
+            // are real relationship targets, not standalone items — never
+            // surfaced as their own search result.
+            items: data.items.filter(isStandaloneMenuItem),
             ingredients: data.hasBuildYourOwn ? data.ingredients : [],
             builderConfig: data.builderConfig,
           };
