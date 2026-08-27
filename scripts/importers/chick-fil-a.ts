@@ -972,6 +972,12 @@ function standardId(record: LogicalRecord): string {
 }
 
 function imageFor(record: LogicalRecord): string {
+  if (sourceValues(record, "tag").includes("HOT_SAUCE")) {
+    for (const occurrence of record.occurrences) {
+      const image = stringValue(occurrence.entry.mobileImage);
+      if (image) return image;
+    }
+  }
   for (const field of [
     "desktopImage",
     "pdpImages",
@@ -1318,20 +1324,6 @@ function primaryBrowseCategoryFor(record: LogicalRecord): string {
   if (itemTypes.includes("CONDIMENTS")) {
     return "Condiments";
   }
-  // Chick-fil-A's current LTF "Chicken & Waffles" promotion is modeled as
-  // two separate record families — a breakfast-daypart version (officially
-  // listed under Breakfast) and a lunch/dinner version (officially listed
-  // under Entrées) — even though it reads as one product line. A narrow,
-  // deliberate exception (not a general Breakfast-classification change):
-  // the whole family renders under Sandwiches so it isn't visually split
-  // across two browse sections. See data/review/chick-fil-a/import-decisions.md.
-  if (
-    servingType === "breakfast" &&
-    sourceValues(record, "status").includes("LTF") &&
-    /chicken\s*&\s*waffles/i.test(name)
-  ) {
-    return "Sandwiches";
-  }
   if (servingType === "breakfast") {
     return "Breakfast";
   }
@@ -1353,6 +1345,30 @@ function primaryBrowseCategoryFor(record: LogicalRecord): string {
     return "Sandwiches";
   }
   return "Sides";
+}
+
+function informationalProteinFor(
+  record: LogicalRecord,
+): MenuItem["informationalIngredients"] | undefined {
+  const tags = new Set(sourceValues(record, "tag"));
+  const itemTypes = sourceValues(record, "itemType");
+  if (!itemTypes.some((itemType) => itemType.includes("ENTREE"))) return undefined;
+
+  const hasTag = (pattern: RegExp) => [...tags].some((tag) => pattern.test(tag));
+  if (hasTag(/GRILLED_(?:CHICKEN|FILET)|EGG_WHITE_GRILL/)) {
+    return [{ id: "cfa-modifier-1008156", label: "Grilled Chicken Filet" }];
+  }
+  if (hasTag(/SPICY_(?:CHICKEN|FILET|DELUXE)|BISCUIT_SPICY_CHICKEN/)) {
+    return [{ id: "cfa-modifier-1008155", label: "Spicy Chicken Filet" }];
+  }
+  if (
+    hasTag(
+      /SANDWICH_CFA_CHICKEN|CFA_DELUXE_SANDWICH|CHICK_WAFFLES_(?:CFA_FILET|SDWCH_LCH)|BISCUIT_CHICKEN/,
+    )
+  ) {
+    return [{ id: "cfa-modifier-1008154", label: "Chick-fil-A® Chicken Filet" }];
+  }
+  return undefined;
 }
 
 // A plain leaf ITEM (never wrapped in its own variant grouping) that is
@@ -2191,14 +2207,23 @@ async function main(): Promise<void> {
             return optionRecord ? [{ entry: option, record: optionRecord }] : [];
           },
         );
+        const groupingTag = stringValue(grouping.tag);
+        const supportsEntreeSauceCustomization =
+          primaryBrowseCategoryFor(record) === "Sandwiches";
+        const entreeSauceOptions = optionEntries.filter(({ entry }) =>
+          groupingTag === "INDIVIDUAL_SAUCES" &&
+          stringValue(entry.tag) === "HONEY_ROASTED_BBQ" &&
+          supportsEntreeSauceCustomization,
+        );
         const ingredientOptions = unique(
-          optionEntries
-            .filter(({ record: optionRecord }) => isIngredientRecord(optionRecord))
+          [...optionEntries.filter(({ record: optionRecord }) => isIngredientRecord(optionRecord)), ...entreeSauceOptions]
             .map(({ record: optionRecord }) => standardId(optionRecord)),
         );
+        const entreeSauceIds = new Set(entreeSauceOptions.map(({ record: optionRecord }) => standardId(optionRecord)));
         const addonOptions = unique(
           optionEntries
             .filter(({ record: optionRecord }) => !isIngredientRecord(optionRecord))
+            .filter(({ record: optionRecord }) => !entreeSauceIds.has(standardId(optionRecord)))
             .map(({ record: optionRecord }) => standardId(optionRecord)),
         );
         const label = sanitizeDisplayName(
@@ -2226,11 +2251,16 @@ async function main(): Promise<void> {
             ...(maximum !== undefined ? { maxQuantity: maximum } : {}),
             allowNone: minimum === undefined || minimum === 0,
           };
-          for (const { entry: optionEntry, record: optionRecord } of optionEntries.filter(
-            ({ record: candidate }) => isIngredientRecord(candidate),
-          )) {
+          const normalizedIngredientOptions = new Set(ingredientOptions);
+          const ingredientOptionEntries = optionEntries.filter(({ record: candidate }) =>
+            normalizedIngredientOptions.has(standardId(candidate)),
+          );
+          const hasExplicitIncludedOption = ingredientOptionEntries.some(
+            ({ entry }) => modifierSelectionRole(entry) === "included",
+          );
+          for (const { entry: optionEntry, record: optionRecord } of ingredientOptionEntries) {
             const id = standardId(optionRecord);
-            if (maximum !== undefined) {
+            if (maximum !== undefined && isIngredientRecord(optionRecord)) {
               observedIngredientMaximum.set(
                 id,
                 Math.max(observedIngredientMaximum.get(id) ?? 0, maximum),
@@ -2238,7 +2268,9 @@ async function main(): Promise<void> {
             }
             const groupDefaultTag = stringValue(grouping.defaultTag);
             const optionTag = stringValue(optionEntry.tag);
-            const contextualNutrition = contextualNutritionUnitForEntry(optionEntry);
+            const contextualNutrition = isIngredientRecord(optionRecord)
+              ? contextualNutritionUnitForEntry(optionEntry)
+              : undefined;
             if (contextualNutrition) {
               const existing = ingredientNutritionContexts[id];
               if (
@@ -2253,7 +2285,7 @@ async function main(): Promise<void> {
             }
             const isIncludedInThisContext =
               modifierSelectionRole(optionEntry) === "included" ||
-              (groupDefaultTag !== undefined && optionTag === groupDefaultTag);
+              (!hasExplicitIncludedOption && groupDefaultTag !== undefined && optionTag === groupDefaultTag);
             if (isIncludedInThisContext) {
               includedIngredients.add(id);
             }
@@ -2811,9 +2843,11 @@ async function main(): Promise<void> {
                   )
                     .map((category) => ({
                       ...category,
-                      ingredients: category.ingredients.filter(
-                        (id) => !componentChoice.matchedIngredientIds.has(id),
-                      ),
+                      ingredients: normalizeName(category.name) === "extra salad proteins"
+                        ? category.ingredients
+                        : category.ingredients.filter(
+                            (id) => !componentChoice.matchedIngredientIds.has(id),
+                          ),
                     }))
                     .filter((category) => category.ingredients.length > 0),
                 }
@@ -2821,6 +2855,52 @@ async function main(): Promise<void> {
           }
         : inheritedCustomization;
     const effectiveCustomization = customization ?? filteredCustomization;
+    const proteinExtraByVariantId = Object.fromEntries(
+      variants.flatMap((variant) => {
+        const retailId = variant.source.menu.retailModifiedItemId;
+        const childRecord = retailId ? recordByRetailId.get(retailId) : undefined;
+        if (!childRecord) return [];
+        const extraId = customizationFor(childRecord).customization?.ingredientCategories
+          ?.find((category) => normalizeName(category.name) === "extra salad proteins")
+          ?.ingredients[0];
+        return extraId ? [[variant.id, extraId]] : [];
+      }),
+    ) as Record<string, string>;
+    const proteinExtraIds = unique(Object.values(proteinExtraByVariantId));
+    const effectiveCustomizationWithProteinExtras =
+      effectiveCustomization && proteinExtraIds.length > 0
+        ? (() => {
+            const categories =
+              effectiveCustomization.customization?.ingredientCategories ?? [];
+            const existingExtraCategory = categories.find(
+              (category) =>
+                normalizeName(category.name) === "extra salad proteins",
+            );
+            return {
+              ...effectiveCustomization,
+              ingredients: unique([
+                ...effectiveCustomization.ingredients,
+                ...proteinExtraIds,
+              ]),
+              customization: {
+                ingredientCategories: [
+                  ...categories.filter(
+                    (category) =>
+                      normalizeName(category.name) !== "extra salad proteins",
+                  ),
+                  {
+                    name: existingExtraCategory?.name ?? "Extra Salad Proteins",
+                    id:
+                      existingExtraCategory?.id ??
+                      `Extra Salad Proteins [CFA ${record.itemGroupId ?? record.menuRecordId}]`,
+                    ingredients: proteinExtraIds,
+                    allowNone: true,
+                  },
+                ],
+              },
+            };
+          })()
+        : effectiveCustomization;
 
     // Role/visibility resolution (structural, not name-based):
     //  - A meal container (Meals / Kid's Meals / Family Style Meals) is kept
@@ -2896,19 +2976,25 @@ async function main(): Promise<void> {
             hideVariantSelector: true,
           }
         : {}),
-      ...(effectiveCustomization?.ingredients.length
-        ? { ingredients: effectiveCustomization.ingredients }
+      ...(effectiveCustomizationWithProteinExtras?.ingredients.length
+        ? { ingredients: effectiveCustomizationWithProteinExtras.ingredients }
         : {}),
-      ...(effectiveCustomization?.addonRefs.length
-        ? { addonRefs: effectiveCustomization.addonRefs }
+      ...(informationalProteinFor(record)
+        ? { informationalIngredients: informationalProteinFor(record) }
         : {}),
-      ...(effectiveCustomization?.customization
-        ? { customization: effectiveCustomization.customization }
+      ...(Object.keys(proteinExtraByVariantId).length > 0
+        ? { proteinExtraByVariantId }
         : {}),
-      ...(effectiveCustomization?.ingredientNutritionContexts
+      ...(effectiveCustomizationWithProteinExtras?.addonRefs.length
+        ? { addonRefs: effectiveCustomizationWithProteinExtras.addonRefs }
+        : {}),
+      ...(effectiveCustomizationWithProteinExtras?.customization
+        ? { customization: effectiveCustomizationWithProteinExtras.customization }
+        : {}),
+      ...(effectiveCustomizationWithProteinExtras?.ingredientNutritionContexts
         ? {
             ingredientNutritionContexts:
-              effectiveCustomization.ingredientNutritionContexts,
+              effectiveCustomizationWithProteinExtras.ingredientNutritionContexts,
           }
         : {}),
       ...(record.itemClass === "MODIFIER" ? { addonEligible: true } : {}),
@@ -2920,7 +3006,7 @@ async function main(): Promise<void> {
     });
   }
 
-  // Sauce and dressing modifiers are real user-facing portions even though
+  // Sauce, dressing, and condiment modifiers are real user-facing portions even though
   // they also remain reusable inside entree/salad customization. Promote
   // those taxonomy records to standalone browse products. Independently
   // sellable 8oz bottles remain their own browse records beside the dipping
@@ -2929,7 +3015,9 @@ async function main(): Promise<void> {
     const itemTypes = new Set(item.source.menu.itemTypes);
     const isBrowseableSauceOrDressing =
       item.source.menu.itemClass === "MODIFIER" &&
-      (itemTypes.has("SAUCES") || itemTypes.has("DRESSINGS")) &&
+      (itemTypes.has("SAUCES") ||
+        itemTypes.has("DRESSINGS") ||
+        itemTypes.has("CONDIMENTS")) &&
       item.nutrition !== undefined;
     if (!isBrowseableSauceOrDressing) continue;
     delete item.sourceOnly;
@@ -2999,12 +3087,20 @@ async function main(): Promise<void> {
   }
 
   // Post-pass: Chick-fil-A can publish the same real-world product through
-  // multiple category/group occurrences with different itemGroupIds. Merge
+  // multiple category/group occurrences with different itemGroupIds — e.g.
+  // the identical "Cream Cold Brew" listed once under a Coffee navigational
+  // grouping and again under Beverages, each with its own itemGroupId. Merge
   // browse identity only from strong official evidence: the parent source
-  // tag AND the complete set of child retailModifiedItemIds must match, as
-  // must Macro Maxxer's primary category. Display name alone is never a
-  // canonical identity key. Official category relationships remain intact
-  // on each retained source record.
+  // tag AND the complete set of child retailModifiedItemIds must match.
+  // Display name alone is never a canonical identity key, and the primary
+  // category is deliberately NOT part of the identity key — two occurrences
+  // of the same product are expected to differ by category (that's the
+  // whole reason Chick-fil-A lists it twice); requiring category equality
+  // here would make this dedup unable to catch exactly that case. The
+  // retained record keeps its own original primary browse category so the
+  // renderer cannot surface that one logical identity in multiple sections.
+  // Official category relationships remain intact in source metadata on the
+  // retained and source-only records.
   const visibleGroupsByCanonicalIdentity = new Map<string, GeneratedMenuItem[]>();
   for (const item of menuItems) {
     if (
@@ -3024,7 +3120,7 @@ async function main(): Promise<void> {
       )
       .sort();
     if (memberRetailIds.length !== item.variants.length) continue;
-    const key = `${[...item.source.menu.tags].sort().join(",")}|${memberRetailIds.join(",")}|${item.categories[0]}`;
+    const key = `${[...item.source.menu.tags].sort().join(",")}|${memberRetailIds.join(",")}`;
     visibleGroupsByCanonicalIdentity.set(key, [
       ...(visibleGroupsByCanonicalIdentity.get(key) ?? []),
       item,
@@ -3032,15 +3128,116 @@ async function main(): Promise<void> {
   }
   for (const group of visibleGroupsByCanonicalIdentity.values()) {
     if (group.length < 2) continue;
-    const primaryCategory = group[0].categories[0];
-    const preferred =
-      group.find((item) => item.source.menu.officialCategories.includes(primaryCategory)) ??
-      group[0];
-    for (const item of group) {
-      if (item === preferred) continue;
+    const [preferred, ...duplicates] = group;
+    for (const item of duplicates) {
       item.sourceOnly = true;
       item.source.menu.role = "structural";
     }
+  }
+
+  // Post-pass: emit a deferred meal-container record for every entree that
+  // structurally has one, not just the ones whose meal-container group
+  // happened to get its own top-level category listing (and therefore its
+  // own LogicalRecord going through the per-record generation above — see
+  // e.g. the Chicken & Waffles limited-time items). Chick-fil-A's raw menu
+  // graph (menu.itemGroups, indexed as groupById) is exhaustive — it also
+  // contains meal-container groups (e.g. "Chick-fil-A® Deluxe w/ American
+  // Meal") that are only ever referenced *nested* inside another structure,
+  // never listed as their own category entry, so no LogicalRecord/menuItem
+  // was ever created for them. Their entree/side/beverage roles are still
+  // fully resolvable with the exact same generic collectMealRoles used
+  // above; a group only needs to structurally look like a meal (exactly one
+  // entree role plus a side and/or beverage role) to qualify — no name
+  // matching, no reliance on an external "meal" tag/flag. The emitted record
+  // matches the exact shape/role ("deferred_meal_container", sourceOnly,
+  // servingType "combo") already used for the meal groups that DO get their
+  // own top-level listing, so it needs no special-casing anywhere else in
+  // the pipeline or at runtime.
+  const menuItemById = new Map(menuItems.map((item) => [item.id, item]));
+  // Each one pushed below has no corresponding LogicalRecord (that's exactly
+  // why it needed this post-pass — see comment below), so the top-level id
+  // count invariant a few hundred lines down needs to allow for exactly this
+  // many extra generated ids.
+  let syntheticMealContainerCount = 0;
+  const syntheticMealContainerIds: Array<{ id: string; groupId: string; name: string; categories: string[] }> = [];
+  const descriptiveGroupEntryById = new Map<string, RawMenuEntry>();
+  for (const entry of [
+    ...menu.categories.flatMap((category) => category.items),
+    ...menu.itemGroups.flatMap((group) => group.items),
+  ]) {
+    if (stringValue(entry.itemClass) !== "ITEM_GROUPING") continue;
+    const groupId = stringValue(entry.itemGroupId);
+    if (groupId && !descriptiveGroupEntryById.has(groupId)) {
+      descriptiveGroupEntryById.set(groupId, entry);
+    }
+  }
+  for (const groupId of groupById.keys()) {
+    if (recordByGroupId.has(groupId)) continue; // already promoted through the normal per-record path above
+    const roles = collectMealRoles(groupId);
+    if (roles.entree.length !== 1 || (roles.side.length === 0 && roles.beverage.length === 0)) {
+      continue;
+    }
+    const entreeItemId = roles.entree[0];
+    // The resolved entree id can itself be a variant child folded into a
+    // parent's `variants[]` (e.g. a cheese choice on the Deluxe Sandwich) —
+    // in that case the browsable card is the parent container, so the combo
+    // relationship should point at it instead. Side/drink options don't vary
+    // by cheese choice, so any one qualifying variant's meal data is correct
+    // for the whole family.
+    const directTarget = menuItemById.get(entreeItemId);
+    const target =
+      directTarget && !directTarget.sourceOnly
+        ? directTarget
+        : menuItems.find(
+            (item) => !item.sourceOnly && item.variants?.some((variant) => variant.id === entreeItemId),
+          );
+    if (!target) continue;
+    const alreadyLinked = menuItems.some((item) => item.comboConfig?.entreeItemId === target.id);
+    if (alreadyLinked) continue;
+    const descriptiveEntry = descriptiveGroupEntryById.get(groupId);
+    const rawName = (descriptiveEntry && stringValue(descriptiveEntry.name)) ?? `${target.name} Meal`;
+    const name = sanitizeDisplayName(rawName);
+    const tag = descriptiveEntry && stringValue(descriptiveEntry.tag);
+    const pin = descriptiveEntry && stringValue(descriptiveEntry.pin);
+    menuItems.push({
+      id: `cfa-mealgroup-${groupId}`,
+      name,
+      image: target.image,
+      categories: target.categories,
+      servingType: "combo",
+      sourceOnly: true,
+      defaultOrder: 5000,
+      comboConfig: {
+        entreeItemId: target.id,
+        ...(roles.side.length > 0 ? { sideOptions: roles.side } : {}),
+        ...(roles.beverage.length > 0 ? { drinkOptions: roles.beverage } : {}),
+      },
+      source: {
+        provider: "Chick-fil-A",
+        menu: {
+          recordId: `itemGroupId:${groupId}`,
+          itemClass: "ITEM_GROUPING",
+          itemGroupId: groupId,
+          referencedItemGroupIds: [groupId],
+          containingItemGroupIds: [],
+          names: [rawName],
+          tags: tag ? [tag] : [],
+          pins: pin ? [pin] : [],
+          itemTypes: ["MEALS_GROUP"],
+          sellable: true,
+          role: "deferred_meal_container",
+          identitySource: "menu",
+          officialCategories: target.categories,
+        },
+      },
+    });
+    syntheticMealContainerCount += 1;
+    syntheticMealContainerIds.push({
+      id: `cfa-mealgroup-${groupId}`,
+      groupId,
+      name: rawName,
+      categories: target.categories,
+    });
   }
 
   const ingredients: GeneratedIngredient[] = pendingIngredientRecords.map(
@@ -3208,13 +3405,39 @@ async function main(): Promise<void> {
     ];
   });
 
+  // Synthetic meal-container records (see the post-pass above) have no
+  // backing LogicalRecord, so they never went through nutrition matching —
+  // but they still correctly have no nutrition (they're a relationship
+  // container, not a sellable dish), so they need the same "reported as
+  // unresolved" treatment every other no-nutrition record gets.
+  const syntheticUnresolvedRecords = syntheticMealContainerIds.map(({ id, groupId, name, categories }) => ({
+    menuRecordId: `itemGroupId:${groupId}`,
+    standardizedRecordId: id,
+    recordType: "main_menu",
+    itemClass: "ITEM_GROUPING" as const,
+    names: [name],
+    categories,
+    retailModifiedItemId: null,
+    itemGroupId: groupId,
+    status: "unresolved" as const,
+    matchStatus: "no_match" as const,
+    rule: null,
+    reason: "no_nutrition_match",
+    details:
+      "The ordering source represents this as a dynamic meal/container; no fixed nutrition payload is safe to attach.",
+    candidateNutritionRows: [],
+    candidateRowsHaveIdenticalNutrition: false,
+    orderingCandidateNutritionRows: [],
+  }));
+
   const allTopLevelIds = [...menuItems.map((item) => item.id), ...ingredients.map((item) => item.id)];
   if (new Set(allTopLevelIds).size !== allTopLevelIds.length) {
     throw new Error("Generated output contains duplicate top-level logical IDs.");
   }
-  if (allTopLevelIds.length !== records.length) {
+  if (allTopLevelIds.length !== records.length + syntheticMealContainerCount) {
     throw new Error(
-      `Generated ${allTopLevelIds.length} logical records from ${records.length} source records.`,
+      `Generated ${allTopLevelIds.length} logical records from ${records.length} source records ` +
+        `(expected ${records.length} + ${syntheticMealContainerCount} synthetic meal containers).`,
     );
   }
   const menuItemIds = new Set(menuItems.map((item) => item.id));
@@ -3228,7 +3451,7 @@ async function main(): Promise<void> {
   }
   for (const item of menuItems) {
     for (const ingredientId of item.ingredients ?? []) {
-      if (!ingredientIds.has(ingredientId)) {
+      if (!ingredientIds.has(ingredientId) && !menuItemIds.has(ingredientId)) {
         throw new Error(`${item.id} references missing ingredient ${ingredientId}.`);
       }
     }
@@ -3281,10 +3504,11 @@ async function main(): Promise<void> {
   const nutritionResolved = nutritionAttached + contextualNutritionResolved;
   const orderingNutritionAttached = orderingMatches.size;
   const standaloneNutritionAttached = nutritionAttached - orderingNutritionAttached;
+  const allUnresolvedRecords = [...unresolvedRecords, ...syntheticUnresolvedRecords];
   const unresolvedReasons = Object.fromEntries(
-    unique(unresolvedRecords.map((record) => record.reason)).map((reason) => [
+    unique(allUnresolvedRecords.map((record) => record.reason)).map((reason) => [
       reason,
-      unresolvedRecords.filter((record) => record.reason === reason).length,
+      allUnresolvedRecords.filter((record) => record.reason === reason).length,
     ]),
   );
   const currentUserFacingRecords = records.filter(
@@ -3418,7 +3642,7 @@ async function main(): Promise<void> {
       },
       generatedFrom,
       logicalRecordCounts: {
-        total: records.length,
+        total: records.length + syntheticMealContainerCount,
         menuItems: menuItems.length,
         ingredients: ingredients.length,
       },
@@ -3428,7 +3652,7 @@ async function main(): Promise<void> {
         standaloneNutrition: standaloneNutritionAttached,
         orderingSystem: orderingNutritionAttached,
         contextualOrderingSystem: contextualNutritionResolved,
-        withheldOrUnmatched: records.length - nutritionResolved,
+        withheldOrUnmatched: records.length - nutritionResolved + syntheticMealContainerCount,
       },
       orderingNutritionFallback: {
         sourceRecords: orderingNutrition.items.length,
@@ -3482,14 +3706,14 @@ async function main(): Promise<void> {
         "The restaurant artifact omits nutrition when neither official source resolves safely, and never copies historical production nutrition.",
     },
     summary: {
-      logicalRecords: records.length,
+      logicalRecords: records.length + syntheticMealContainerCount,
       nutritionRows: nutritionRows.length,
       orderingNutritionRows: orderingNutrition.items.length,
       ...classification,
       ordering_source_match: orderingNutritionAttached,
       contextual_ordering_source_match: contextualNutritionResolved,
       nutritionAttached: nutritionResolved,
-      unresolved: unresolvedRecords.length,
+      unresolved: unresolvedRecords.length + syntheticUnresolvedRecords.length,
       unresolvedReasons,
     },
     schemaLimitations: [
@@ -3497,7 +3721,7 @@ async function main(): Promise<void> {
       "The production schema cannot represent arbitrary nested source choice groups, contextual min/max rules, modifier pricing, or all source IDs directly.",
       "The full source graph is retained in restaurant.json.sourceRelationships; the generated artifact must not replace production data while unresolved nutrition remains.",
     ],
-    records: unresolvedRecords,
+    records: [...unresolvedRecords, ...syntheticUnresolvedRecords],
   };
 
   await Promise.all([
@@ -3510,7 +3734,7 @@ async function main(): Promise<void> {
       {
         output: "data/generated/chick-fil-a/restaurant.json",
         unresolvedOutput: "data/generated/chick-fil-a/unresolved.json",
-        logicalRecords: records.length,
+        logicalRecords: records.length + syntheticMealContainerCount,
         menuItems: menuItems.length,
         ingredients: ingredients.length,
         nutritionRows: nutritionRows.length,
@@ -3519,7 +3743,7 @@ async function main(): Promise<void> {
         orderingSystemMatches: orderingNutritionAttached,
         contextualOrderingSystemMatches: contextualNutritionResolved,
         nutritionAttached: nutritionResolved,
-        unresolved: unresolvedRecords.length,
+        unresolved: unresolvedRecords.length + syntheticUnresolvedRecords.length,
       },
       null,
       2,

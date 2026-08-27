@@ -13,8 +13,7 @@ import {
 } from "@/lib/menuItemCard/totals";
 import { getDefaultIngredientCounts, sumNutritionWithFallback } from "@/lib/menuItemCalculations";
 import { normalizeNutrition, resolveMenuItemVariantNutrition } from "@/lib/nutrition";
-
-const sauceRef = "sauces";
+import { addonGroupUsesQuantitySelection } from "@/lib/addonGroups";
 
 export type ComboType = "just-item" | "combo-meal";
 
@@ -58,8 +57,23 @@ export function resolveSelectedSauceOptions({
   addons?: ResolvedAddonGroups;
   selectedSauceCounts: Record<string, number>;
 }): MenuItem[] {
-  const sauceOptions = addons?.[sauceRef]?.items ?? [];
-  return sauceOptions.flatMap((addon) => Array.from({ length: selectedSauceCounts[addon.name] ?? 0 }, () => addon));
+  // selectedSauceCounts holds every quantity-mode addon selection, not just
+  // one restaurant's literal "sauces" group (see addonGroupUsesQuantitySelection)
+  // — search every quantity-mode group so nutrition totals and cart items
+  // include selections like a salad's dressing or Chick-fil-A's tertiary
+  // sauce/condiment picks, not just Chipotle's own sauces.
+  const seen = new Set<string>();
+  const quantityOptions: MenuItem[] = [];
+  for (const [ref, group] of Object.entries(addons ?? {})) {
+    if (!addonGroupUsesQuantitySelection(ref)) continue;
+    for (const addon of group.items) {
+      const key = addon.id ?? addon.name;
+      if (seen.has(key)) continue;
+      seen.add(key);
+      quantityOptions.push(addon);
+    }
+  }
+  return quantityOptions.flatMap((addon) => Array.from({ length: selectedSauceCounts[addon.name] ?? 0 }, () => addon));
 }
 
 export function resolveActiveAddons({

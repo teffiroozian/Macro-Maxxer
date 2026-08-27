@@ -144,6 +144,15 @@ export type MenuItem = {
 
   ingredientRef?: string;
   ingredients?: string[];
+  // Default components that are part of the product's composition but are
+  // informational only in customization (for example, the fixed chicken
+  // filet in a sandwich). They appear in Included and contribute no delta
+  // unless the source later exposes a real editable relationship.
+  informationalIngredients?: Array<{
+    id: string;
+    label: string;
+  }>;
+  proteinExtraByVariantId?: Record<string, string>;
 
   variants?: ItemVariant[];
   // Source of truth for default variant selection; falls back to the first variant when missing or invalid.

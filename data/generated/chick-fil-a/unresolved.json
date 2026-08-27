@@ -26,7 +26,7 @@
     "missingNutrition": "The restaurant artifact omits nutrition when neither official source resolves safely, and never copies historical production nutrition."
   },
   "summary": {
-    "logicalRecords": 489,
+    "logicalRecords": 498,
     "nutritionRows": 366,
     "orderingNutritionRows": 1222,
     "exact_match": 280,
@@ -39,9 +39,9 @@
     "ordering_source_match": 111,
     "contextual_ordering_source_match": 5,
     "nutritionAttached": 428,
-    "unresolved": 57,
+    "unresolved": 66,
     "unresolvedReasons": {
-      "no_nutrition_match": 53,
+      "no_nutrition_match": 62,
       "entree_only_nutrition_for_meal_container": 4
     }
   },
@@ -1712,6 +1712,204 @@
           }
         }
       ]
+    },
+    {
+      "menuRecordId": "itemGroupId:100115",
+      "standardizedRecordId": "cfa-mealgroup-100115",
+      "recordType": "main_menu",
+      "itemClass": "ITEM_GROUPING",
+      "names": [
+        "Chick-fil-A Chick-n-Minis® 4 Ct Meal"
+      ],
+      "categories": [
+        "Breakfast"
+      ],
+      "retailModifiedItemId": null,
+      "itemGroupId": "100115",
+      "status": "unresolved",
+      "matchStatus": "no_match",
+      "rule": null,
+      "reason": "no_nutrition_match",
+      "details": "The ordering source represents this as a dynamic meal/container; no fixed nutrition payload is safe to attach.",
+      "candidateNutritionRows": [],
+      "candidateRowsHaveIdenticalNutrition": false,
+      "orderingCandidateNutritionRows": []
+    },
+    {
+      "menuRecordId": "itemGroupId:100127",
+      "standardizedRecordId": "cfa-mealgroup-100127",
+      "recordType": "main_menu",
+      "itemClass": "ITEM_GROUPING",
+      "names": [
+        "Hash Brown Scramble Burrito w/ Nuggets Meal"
+      ],
+      "categories": [
+        "Breakfast"
+      ],
+      "retailModifiedItemId": null,
+      "itemGroupId": "100127",
+      "status": "unresolved",
+      "matchStatus": "no_match",
+      "rule": null,
+      "reason": "no_nutrition_match",
+      "details": "The ordering source represents this as a dynamic meal/container; no fixed nutrition payload is safe to attach.",
+      "candidateNutritionRows": [],
+      "candidateRowsHaveIdenticalNutrition": false,
+      "orderingCandidateNutritionRows": []
+    },
+    {
+      "menuRecordId": "itemGroupId:100140",
+      "standardizedRecordId": "cfa-mealgroup-100140",
+      "recordType": "main_menu",
+      "itemClass": "ITEM_GROUPING",
+      "names": [
+        "Hash Brown Scramble Bowl w/ Nuggets Meal"
+      ],
+      "categories": [
+        "Breakfast"
+      ],
+      "retailModifiedItemId": null,
+      "itemGroupId": "100140",
+      "status": "unresolved",
+      "matchStatus": "no_match",
+      "rule": null,
+      "reason": "no_nutrition_match",
+      "details": "The ordering source represents this as a dynamic meal/container; no fixed nutrition payload is safe to attach.",
+      "candidateNutritionRows": [],
+      "candidateRowsHaveIdenticalNutrition": false,
+      "orderingCandidateNutritionRows": []
+    },
+    {
+      "menuRecordId": "itemGroupId:100237",
+      "standardizedRecordId": "cfa-mealgroup-100237",
+      "recordType": "main_menu",
+      "itemClass": "ITEM_GROUPING",
+      "names": [
+        "Chick-fil-A® Deluxe w/ American Meal"
+      ],
+      "categories": [
+        "Sandwiches"
+      ],
+      "retailModifiedItemId": null,
+      "itemGroupId": "100237",
+      "status": "unresolved",
+      "matchStatus": "no_match",
+      "rule": null,
+      "reason": "no_nutrition_match",
+      "details": "The ordering source represents this as a dynamic meal/container; no fixed nutrition payload is safe to attach.",
+      "candidateNutritionRows": [],
+      "candidateRowsHaveIdenticalNutrition": false,
+      "orderingCandidateNutritionRows": []
+    },
+    {
+      "menuRecordId": "itemGroupId:100244",
+      "standardizedRecordId": "cfa-mealgroup-100244",
+      "recordType": "main_menu",
+      "itemClass": "ITEM_GROUPING",
+      "names": [
+        "Spicy Deluxe w/ Pepper Jack Meal"
+      ],
+      "categories": [
+        "Sandwiches"
+      ],
+      "retailModifiedItemId": null,
+      "itemGroupId": "100244",
+      "status": "unresolved",
+      "matchStatus": "no_match",
+      "rule": null,
+      "reason": "no_nutrition_match",
+      "details": "The ordering source represents this as a dynamic meal/container; no fixed nutrition payload is safe to attach.",
+      "candidateNutritionRows": [],
+      "candidateRowsHaveIdenticalNutrition": false,
+      "orderingCandidateNutritionRows": []
+    },
+    {
+      "menuRecordId": "itemGroupId:100260",
+      "standardizedRecordId": "cfa-mealgroup-100260",
+      "recordType": "main_menu",
+      "itemClass": "ITEM_GROUPING",
+      "names": [
+        "Club w/ Colby Jack Meal"
+      ],
+      "categories": [
+        "Sandwiches"
+      ],
+      "retailModifiedItemId": null,
+      "itemGroupId": "100260",
+      "status": "unresolved",
+      "matchStatus": "no_match",
+      "rule": null,
+      "reason": "no_nutrition_match",
+      "details": "The ordering source represents this as a dynamic meal/container; no fixed nutrition payload is safe to attach.",
+      "candidateNutritionRows": [],
+      "candidateRowsHaveIdenticalNutrition": false,
+      "orderingCandidateNutritionRows": []
+    },
+    {
+      "menuRecordId": "itemGroupId:100267",
+      "standardizedRecordId": "cfa-mealgroup-100267",
+      "recordType": "main_menu",
+      "itemClass": "ITEM_GROUPING",
+      "names": [
+        "Chick-fil-A<sup>®</sup> Nuggets 8 Ct Meal"
+      ],
+      "categories": [
+        "Chicken"
+      ],
+      "retailModifiedItemId": null,
+      "itemGroupId": "100267",
+      "status": "unresolved",
+      "matchStatus": "no_match",
+      "rule": null,
+      "reason": "no_nutrition_match",
+      "details": "The ordering source represents this as a dynamic meal/container; no fixed nutrition payload is safe to attach.",
+      "candidateNutritionRows": [],
+      "candidateRowsHaveIdenticalNutrition": false,
+      "orderingCandidateNutritionRows": []
+    },
+    {
+      "menuRecordId": "itemGroupId:100274",
+      "standardizedRecordId": "cfa-mealgroup-100274",
+      "recordType": "main_menu",
+      "itemClass": "ITEM_GROUPING",
+      "names": [
+        "Grilled Nuggets 8 Ct Meal"
+      ],
+      "categories": [
+        "Chicken"
+      ],
+      "retailModifiedItemId": null,
+      "itemGroupId": "100274",
+      "status": "unresolved",
+      "matchStatus": "no_match",
+      "rule": null,
+      "reason": "no_nutrition_match",
+      "details": "The ordering source represents this as a dynamic meal/container; no fixed nutrition payload is safe to attach.",
+      "candidateNutritionRows": [],
+      "candidateRowsHaveIdenticalNutrition": false,
+      "orderingCandidateNutritionRows": []
+    },
+    {
+      "menuRecordId": "itemGroupId:100280",
+      "standardizedRecordId": "cfa-mealgroup-100280",
+      "recordType": "main_menu",
+      "itemClass": "ITEM_GROUPING",
+      "names": [
+        "Chick-fil-A Chick-n-Strips® 3 Ct Meal"
+      ],
+      "categories": [
+        "Chicken"
+      ],
+      "retailModifiedItemId": null,
+      "itemGroupId": "100280",
+      "status": "unresolved",
+      "matchStatus": "no_match",
+      "rule": null,
+      "reason": "no_nutrition_match",
+      "details": "The ordering source represents this as a dynamic meal/container; no fixed nutrition payload is safe to attach.",
+      "candidateNutritionRows": [],
+      "candidateRowsHaveIdenticalNutrition": false,
+      "orderingCandidateNutritionRows": []
     }
   ]
 }

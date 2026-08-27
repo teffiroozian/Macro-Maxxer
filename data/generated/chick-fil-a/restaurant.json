@@ -2553,7 +2553,7 @@
       "name": "Chicken & Waffles Breakfast Sandwich w/ Chick-fil-A® Filet",
       "image": "https://www.cfacdn.com/img/order/menu/Mobile/Entrees/Menu+Item/250804_CFA_CW-TEST_02_CW-Breakfast_CFA-filet_0152_WebOrdering_Desktop_800x800.png",
       "categories": [
-        "Sandwiches"
+        "Breakfast"
       ],
       "servingType": "breakfast",
       "defaultOrder": 15,
@@ -2573,6 +2573,12 @@
       "ingredients": [
         "cfa-modifier-1009747",
         "cfa-modifier-1000391"
+      ],
+      "informationalIngredients": [
+        {
+          "id": "cfa-modifier-1008154",
+          "label": "Chick-fil-A® Chicken Filet"
+        }
       ],
       "addonRefs": [
         "cfa-addon-group-100005-0-100001",
@@ -2671,7 +2677,7 @@
       "name": "Chicken & Waffles Breakfast Sandwich w/ Spicy Filet",
       "image": "https://www.cfacdn.com/img/order/menu/Mobile/Entrees/Menu+Item/250804_CFA_CW-TEST_03_CW-Breakfast_Spicy-filet_0247-B_WebOrdering_Desktop_800x800.png",
       "categories": [
-        "Sandwiches"
+        "Breakfast"
       ],
       "servingType": "breakfast",
       "defaultOrder": 16,
@@ -2691,6 +2697,12 @@
       "ingredients": [
         "cfa-modifier-1009747",
         "cfa-modifier-1000391"
+      ],
+      "informationalIngredients": [
+        {
+          "id": "cfa-modifier-1008155",
+          "label": "Spicy Chicken Filet"
+        }
       ],
       "addonRefs": [
         "cfa-addon-group-100005-0-100001",
@@ -2789,7 +2801,7 @@
       "name": "Chicken & Waffles Breakfast Sandwich w/ Grilled Filet",
       "image": "https://www.cfacdn.com/img/order/menu/Mobile/Entrees/Menu+Item/250804_CFA_CW-TEST_04_CW-Breakfast_GrilledCFA-filet_0294_WebOrdering_Desktop_800x800.png",
       "categories": [
-        "Sandwiches"
+        "Breakfast"
       ],
       "servingType": "breakfast",
       "defaultOrder": 17,
@@ -2809,6 +2821,12 @@
       "ingredients": [
         "cfa-modifier-1009747",
         "cfa-modifier-1000391"
+      ],
+      "informationalIngredients": [
+        {
+          "id": "cfa-modifier-1008156",
+          "label": "Grilled Chicken Filet"
+        }
       ],
       "addonRefs": [
         "cfa-addon-group-100005-0-100001",
@@ -2926,6 +2944,12 @@
       "ingredients": [
         "cfa-modifier-1007280"
       ],
+      "informationalIngredients": [
+        {
+          "id": "cfa-modifier-1008154",
+          "label": "Chick-fil-A® Chicken Filet"
+        }
+      ],
       "addonRefs": [
         "cfa-addon-group-100106-0-100103",
         "cfa-addon-group-100106-1-100002"
@@ -3028,6 +3052,12 @@
       },
       "ingredients": [
         "cfa-modifier-1007280"
+      ],
+      "informationalIngredients": [
+        {
+          "id": "cfa-modifier-1008155",
+          "label": "Spicy Chicken Filet"
+        }
       ],
       "addonRefs": [
         "cfa-addon-group-100106-0-100103",
@@ -3375,6 +3405,12 @@
         "cfa-modifier-1007279",
         "cfa-modifier-1000016",
         "cfa-modifier-1005314"
+      ],
+      "informationalIngredients": [
+        {
+          "id": "cfa-modifier-1008156",
+          "label": "Grilled Chicken Filet"
+        }
       ],
       "addonRefs": [
         "cfa-addon-group-100167-0-100103",
@@ -5524,7 +5560,7 @@
             "SIDES_GROUP"
           ],
           "sellable": false,
-          "role": "structural",
+          "role": "standalone_product",
           "identitySource": "menu",
           "officialCategories": [
             "Breakfast"
@@ -5544,8 +5580,7 @@
           "attached": true,
           "attachmentReason": "safe_match"
         }
-      },
-      "sourceOnly": true
+      }
     },
     {
       "id": "cfa-group-100173",
@@ -9417,6 +9452,12 @@
         "cfa-modifier-1009747",
         "cfa-modifier-1000391"
       ],
+      "informationalIngredients": [
+        {
+          "id": "cfa-modifier-1008154",
+          "label": "Chick-fil-A® Chicken Filet"
+        }
+      ],
       "addonRefs": [
         "cfa-addon-group-100350-0-100001",
         "cfa-addon-group-100350-1-100186",
@@ -9429,7 +9470,8 @@
             "name": "Individual Sauces",
             "id": "Individual Sauces [CFA 100350:0]",
             "ingredients": [
-              "cfa-modifier-1009747"
+              "cfa-modifier-1009747",
+              "cfa-addon-1001381"
             ],
             "allowNone": true
           },
@@ -9459,7 +9501,8 @@
             "name": "Individual Sauces",
             "id": "Individual Sauces [CFA 100188:0]",
             "ingredients": [
-              "cfa-modifier-1009747"
+              "cfa-modifier-1009747",
+              "cfa-addon-1001381"
             ],
             "allowNone": true
           },
@@ -9566,6 +9609,12 @@
         "cfa-modifier-1009747",
         "cfa-modifier-1000391"
       ],
+      "informationalIngredients": [
+        {
+          "id": "cfa-modifier-1008155",
+          "label": "Spicy Chicken Filet"
+        }
+      ],
       "addonRefs": [
         "cfa-addon-group-100350-0-100001",
         "cfa-addon-group-100350-1-100186",
@@ -9578,7 +9627,8 @@
             "name": "Individual Sauces",
             "id": "Individual Sauces [CFA 100350:0]",
             "ingredients": [
-              "cfa-modifier-1009747"
+              "cfa-modifier-1009747",
+              "cfa-addon-1001381"
             ],
             "allowNone": true
           },
@@ -9608,7 +9658,8 @@
             "name": "Individual Sauces",
             "id": "Individual Sauces [CFA 100188:0]",
             "ingredients": [
-              "cfa-modifier-1009747"
+              "cfa-modifier-1009747",
+              "cfa-addon-1001381"
             ],
             "allowNone": true
           },
@@ -9715,6 +9766,12 @@
         "cfa-modifier-1009747",
         "cfa-modifier-1000391"
       ],
+      "informationalIngredients": [
+        {
+          "id": "cfa-modifier-1008156",
+          "label": "Grilled Chicken Filet"
+        }
+      ],
       "addonRefs": [
         "cfa-addon-group-100350-0-100001",
         "cfa-addon-group-100350-1-100186",
@@ -9727,7 +9784,8 @@
             "name": "Individual Sauces",
             "id": "Individual Sauces [CFA 100350:0]",
             "ingredients": [
-              "cfa-modifier-1009747"
+              "cfa-modifier-1009747",
+              "cfa-addon-1001381"
             ],
             "allowNone": true
           },
@@ -9757,7 +9815,8 @@
             "name": "Individual Sauces",
             "id": "Individual Sauces [CFA 100188:0]",
             "ingredients": [
-              "cfa-modifier-1009747"
+              "cfa-modifier-1009747",
+              "cfa-addon-1001381"
             ],
             "allowNone": true
           },
@@ -9863,12 +9922,26 @@
         "cfa-modifier-1007242",
         "cfa-modifier-1000043"
       ],
+      "informationalIngredients": [
+        {
+          "id": "cfa-modifier-1008154",
+          "label": "Chick-fil-A® Chicken Filet"
+        }
+      ],
       "addonRefs": [
         "cfa-addon-group-100227-0-100103",
         "cfa-addon-group-100227-1-100186"
       ],
       "customization": {
         "ingredientCategories": [
+          {
+            "name": "Individual Sauces",
+            "id": "Individual Sauces [CFA 100227:0]",
+            "ingredients": [
+              "cfa-addon-1001381"
+            ],
+            "allowNone": true
+          },
           {
             "name": "Bread Carriers",
             "id": "Bread Carriers [CFA 100227:2]",
@@ -10260,12 +10333,26 @@
         "cfa-modifier-1000056",
         "cfa-modifier-1000005"
       ],
+      "informationalIngredients": [
+        {
+          "id": "cfa-modifier-1008154",
+          "label": "Chick-fil-A® Chicken Filet"
+        }
+      ],
       "addonRefs": [
         "cfa-addon-group-100236-0-100103",
         "cfa-addon-group-100236-1-100186"
       ],
       "customization": {
         "ingredientCategories": [
+          {
+            "name": "Individual Sauces",
+            "id": "Individual Sauces [CFA 100236:0]",
+            "ingredients": [
+              "cfa-addon-1001381"
+            ],
+            "allowNone": true
+          },
           {
             "name": "Bread Carriers",
             "id": "Bread Carriers [CFA 100236:2]",
@@ -10377,12 +10464,26 @@
         "cfa-modifier-1007242",
         "cfa-modifier-1000043"
       ],
+      "informationalIngredients": [
+        {
+          "id": "cfa-modifier-1008155",
+          "label": "Spicy Chicken Filet"
+        }
+      ],
       "addonRefs": [
         "cfa-addon-group-100227-0-100103",
         "cfa-addon-group-100227-1-100186"
       ],
       "customization": {
         "ingredientCategories": [
+          {
+            "name": "Individual Sauces",
+            "id": "Individual Sauces [CFA 100227:0]",
+            "ingredients": [
+              "cfa-addon-1001381"
+            ],
+            "allowNone": true
+          },
           {
             "name": "Bread Carriers",
             "id": "Bread Carriers [CFA 100227:2]",
@@ -10776,12 +10877,26 @@
         "cfa-modifier-1000056",
         "cfa-modifier-1000005"
       ],
+      "informationalIngredients": [
+        {
+          "id": "cfa-modifier-1008155",
+          "label": "Spicy Chicken Filet"
+        }
+      ],
       "addonRefs": [
         "cfa-addon-group-100236-0-100103",
         "cfa-addon-group-100236-1-100186"
       ],
       "customization": {
         "ingredientCategories": [
+          {
+            "name": "Individual Sauces",
+            "id": "Individual Sauces [CFA 100236:0]",
+            "ingredients": [
+              "cfa-addon-1001381"
+            ],
+            "allowNone": true
+          },
           {
             "name": "Bread Carriers",
             "id": "Bread Carriers [CFA 100236:2]",
@@ -10890,10 +11005,16 @@
         "sugars": 11
       },
       "ingredients": [
-        "cfa-modifier-1007242",
+        "cfa-addon-1001381",
         "cfa-modifier-1007243",
         "cfa-modifier-1000056",
         "cfa-modifier-1000005"
+      ],
+      "informationalIngredients": [
+        {
+          "id": "cfa-modifier-1008156",
+          "label": "Grilled Chicken Filet"
+        }
       ],
       "addonRefs": [
         "cfa-addon-group-100354-0-100252",
@@ -10903,6 +11024,14 @@
       ],
       "customization": {
         "ingredientCategories": [
+          {
+            "name": "Individual Sauces",
+            "id": "Individual Sauces [CFA 100354:0]",
+            "ingredients": [
+              "cfa-addon-1001381"
+            ],
+            "allowNone": true
+          },
           {
             "name": "Bread Carriers",
             "id": "Bread Carriers [CFA 100354:2]",
@@ -10935,6 +11064,14 @@
             "ingredients": [
               "cfa-modifier-1000056",
               "cfa-modifier-1000005"
+            ],
+            "allowNone": true
+          },
+          {
+            "name": "Individual Sauces",
+            "id": "Individual Sauces [CFA 100256:0]",
+            "ingredients": [
+              "cfa-addon-1001381"
             ],
             "allowNone": true
           },
@@ -11318,11 +11455,17 @@
       "variantGroupLabel": "Cheese",
       "hideVariantSelector": true,
       "ingredients": [
-        "cfa-modifier-1007242",
+        "cfa-addon-1001381",
         "cfa-modifier-1007243",
         "cfa-modifier-1000056",
         "cfa-modifier-1000005",
         "cfa-modifier-1000391"
+      ],
+      "informationalIngredients": [
+        {
+          "id": "cfa-modifier-1008156",
+          "label": "Grilled Chicken Filet"
+        }
       ],
       "addonRefs": [
         "cfa-addon-group-100259-0-100252",
@@ -11330,6 +11473,14 @@
       ],
       "customization": {
         "ingredientCategories": [
+          {
+            "name": "Individual Sauces",
+            "id": "Individual Sauces [CFA 100259:0]",
+            "ingredients": [
+              "cfa-addon-1001381"
+            ],
+            "allowNone": true
+          },
           {
             "name": "Bread Carriers",
             "id": "Bread Carriers [CFA 100259:2]",
@@ -12689,7 +12840,8 @@
             "name": "Individual Sauces",
             "id": "Individual Sauces [CFA 100364:0]",
             "ingredients": [
-              "cfa-modifier-1009747"
+              "cfa-modifier-1009747",
+              "cfa-addon-1001381"
             ],
             "allowNone": true
           }
@@ -13026,6 +13178,14 @@
       ],
       "customization": {
         "ingredientCategories": [
+          {
+            "name": "Individual Sauces",
+            "id": "Individual Sauces [CFA 100367:1]",
+            "ingredients": [
+              "cfa-addon-1001381"
+            ],
+            "allowNone": true
+          },
           {
             "name": "Add Pickles Mod",
             "id": "Add Pickles Mod [CFA 100367:2]",
@@ -14551,7 +14711,7 @@
             "SIDES_GROUP"
           ],
           "sellable": false,
-          "role": "standalone_product",
+          "role": "structural",
           "identitySource": "menu",
           "officialCategories": [
             "Sides"
@@ -14571,7 +14731,8 @@
           "attached": true,
           "attachmentReason": "safe_match"
         }
-      }
+      },
+      "sourceOnly": true
     },
     {
       "id": "cfa-item-1000224",
@@ -17991,7 +18152,7 @@
             "BEVERAGES_GROUP"
           ],
           "sellable": false,
-          "role": "standalone_product",
+          "role": "structural",
           "identitySource": "menu",
           "officialCategories": [
             "Beverages"
@@ -18005,7 +18166,8 @@
           ],
           "resolution": "nutrition_attached_to_child_variants"
         }
-      }
+      },
+      "sourceOnly": true
     },
     {
       "id": "cfa-group-100408",
@@ -18565,7 +18727,7 @@
             "BEVERAGES_GROUP"
           ],
           "sellable": false,
-          "role": "standalone_product",
+          "role": "structural",
           "identitySource": "menu",
           "officialCategories": [
             "Beverages"
@@ -18580,7 +18742,8 @@
           ],
           "resolution": "nutrition_attached_to_child_variants"
         }
-      }
+      },
+      "sourceOnly": true
     },
     {
       "id": "cfa-group-100409",
@@ -29280,7 +29443,7 @@
             "BEVERAGES_GROUP"
           ],
           "sellable": false,
-          "role": "standalone_product",
+          "role": "structural",
           "identitySource": "menu",
           "officialCategories": [
             "Treats"
@@ -29303,7 +29466,8 @@
           "attached": true,
           "attachmentReason": "safe_match"
         }
-      }
+      },
+      "sourceOnly": true
     },
     {
       "id": "cfa-group-100444",
@@ -31294,8 +31458,26 @@
         "cfa-modifier-1006538",
         "cfa-modifier-1004304",
         "cfa-modifier-1004303",
-        "cfa-modifier-1004302"
+        "cfa-modifier-1004302",
+        "cfa-modifier-1008149",
+        "cfa-modifier-1008150",
+        "cfa-modifier-1008151",
+        "cfa-modifier-1008152",
+        "cfa-modifier-1008153",
+        "cfa-modifier-1008154",
+        "cfa-modifier-1008155",
+        "cfa-modifier-1008156"
       ],
+      "proteinExtraByVariantId": {
+        "cfa-item-1004273": "cfa-modifier-1008149",
+        "cfa-item-1005540": "cfa-modifier-1008150",
+        "cfa-item-1004655": "cfa-modifier-1008151",
+        "cfa-item-1004268": "cfa-modifier-1008152",
+        "cfa-item-1004658": "cfa-modifier-1008153",
+        "cfa-item-1004270": "cfa-modifier-1008154",
+        "cfa-item-1004274": "cfa-modifier-1008155",
+        "cfa-item-1007235": "cfa-modifier-1008156"
+      },
       "addonRefs": [
         "cfa-addon-group-100448-1-100446",
         "cfa-addon-group-100448-2-100211",
@@ -31317,6 +31499,21 @@
               "cfa-modifier-1004303",
               "cfa-modifier-1004302",
               "cfa-modifier-1004301"
+            ],
+            "allowNone": true
+          },
+          {
+            "name": "Extra Salad Proteins",
+            "id": "Extra Salad Proteins [CFA 100448:4]",
+            "ingredients": [
+              "cfa-modifier-1008149",
+              "cfa-modifier-1008150",
+              "cfa-modifier-1008151",
+              "cfa-modifier-1008152",
+              "cfa-modifier-1008153",
+              "cfa-modifier-1008154",
+              "cfa-modifier-1008155",
+              "cfa-modifier-1008156"
             ],
             "allowNone": true
           }
@@ -32272,8 +32469,26 @@
       "ingredients": [
         "cfa-modifier-1006536",
         "cfa-modifier-1005545",
-        "cfa-modifier-1004302"
+        "cfa-modifier-1004302",
+        "cfa-modifier-1008150",
+        "cfa-modifier-1008153",
+        "cfa-modifier-1008149",
+        "cfa-modifier-1008151",
+        "cfa-modifier-1008152",
+        "cfa-modifier-1008154",
+        "cfa-modifier-1008155",
+        "cfa-modifier-1008156"
       ],
+      "proteinExtraByVariantId": {
+        "cfa-item-1005539": "cfa-modifier-1008150",
+        "cfa-item-1005534": "cfa-modifier-1008153",
+        "cfa-item-1005536": "cfa-modifier-1008149",
+        "cfa-item-1005535": "cfa-modifier-1008151",
+        "cfa-item-1005537": "cfa-modifier-1008152",
+        "cfa-item-1005533": "cfa-modifier-1008154",
+        "cfa-item-1005538": "cfa-modifier-1008155",
+        "cfa-item-1007236": "cfa-modifier-1008156"
+      },
       "addonRefs": [
         "cfa-addon-group-100470-1-100468",
         "cfa-addon-group-100470-2-100469",
@@ -32295,6 +32510,21 @@
               "cfa-modifier-1004303",
               "cfa-modifier-1004302",
               "cfa-modifier-1004301"
+            ],
+            "allowNone": true
+          },
+          {
+            "name": "Extra Salad Proteins",
+            "id": "Extra Salad Proteins [CFA 100470:4]",
+            "ingredients": [
+              "cfa-modifier-1008150",
+              "cfa-modifier-1008153",
+              "cfa-modifier-1008149",
+              "cfa-modifier-1008151",
+              "cfa-modifier-1008152",
+              "cfa-modifier-1008154",
+              "cfa-modifier-1008155",
+              "cfa-modifier-1008156"
             ],
             "allowNone": true
           }
@@ -33251,8 +33481,26 @@
         "cfa-modifier-1006539",
         "cfa-modifier-1006541",
         "cfa-modifier-1006540",
-        "cfa-modifier-1004301"
+        "cfa-modifier-1004301",
+        "cfa-modifier-1008153",
+        "cfa-modifier-1008150",
+        "cfa-modifier-1008152",
+        "cfa-modifier-1008149",
+        "cfa-modifier-1008151",
+        "cfa-modifier-1008154",
+        "cfa-modifier-1008155",
+        "cfa-modifier-1008156"
       ],
+      "proteinExtraByVariantId": {
+        "cfa-item-1004654": "cfa-modifier-1008153",
+        "cfa-item-1005542": "cfa-modifier-1008150",
+        "cfa-item-1004247": "cfa-modifier-1008152",
+        "cfa-item-1004245": "cfa-modifier-1008149",
+        "cfa-item-1004660": "cfa-modifier-1008151",
+        "cfa-item-1004242": "cfa-modifier-1008154",
+        "cfa-item-1004246": "cfa-modifier-1008155",
+        "cfa-item-1007234": "cfa-modifier-1008156"
+      },
       "addonRefs": [
         "cfa-addon-group-100483-1-100481",
         "cfa-addon-group-100483-2-100482",
@@ -33274,6 +33522,21 @@
               "cfa-modifier-1004303",
               "cfa-modifier-1004302",
               "cfa-modifier-1004301"
+            ],
+            "allowNone": true
+          },
+          {
+            "name": "Extra Salad Proteins",
+            "id": "Extra Salad Proteins [CFA 100483:4]",
+            "ingredients": [
+              "cfa-modifier-1008153",
+              "cfa-modifier-1008150",
+              "cfa-modifier-1008152",
+              "cfa-modifier-1008149",
+              "cfa-modifier-1008151",
+              "cfa-modifier-1008154",
+              "cfa-modifier-1008155",
+              "cfa-modifier-1008156"
             ],
             "allowNone": true
           }
@@ -33808,7 +34071,6 @@
         "sugars": 7
       },
       "addonEligible": true,
-      "sourceOnly": true,
       "source": {
         "provider": "Chick-fil-A",
         "menu": {
@@ -33840,7 +34102,7 @@
             "CONDIMENTS"
           ],
           "sellable": false,
-          "role": "modifier",
+          "role": "standalone_product",
           "identitySource": "menu",
           "officialCategories": [
             "Condiments"
@@ -34479,7 +34741,6 @@
         "sugars": 0
       },
       "addonEligible": true,
-      "sourceOnly": true,
       "source": {
         "provider": "Chick-fil-A",
         "menu": {
@@ -34513,7 +34774,7 @@
             "CONDIMENTS"
           ],
           "sellable": false,
-          "role": "modifier",
+          "role": "standalone_product",
           "identitySource": "menu",
           "officialCategories": [
             "Condiments"
@@ -34541,7 +34802,7 @@
     {
       "id": "cfa-addon-1000030",
       "name": "Hot Sauce",
-      "image": "https://www.cfacdn.com/img/order/menu/Mobile/Modifiers/Condiments/hot_sauce.png",
+      "image": "https://www.cfacdn.com/img/order/menu/Mobile/Modifiers/Condiments/280x280/HotSauce.webp",
       "categories": [
         "Condiments"
       ],
@@ -34560,7 +34821,6 @@
         "sugars": 0
       },
       "addonEligible": true,
-      "sourceOnly": true,
       "source": {
         "provider": "Chick-fil-A",
         "menu": {
@@ -34598,7 +34858,7 @@
             "CONDIMENTS"
           ],
           "sellable": false,
-          "role": "modifier",
+          "role": "standalone_product",
           "identitySource": "menu",
           "officialCategories": [
             "Condiments"
@@ -34645,7 +34905,6 @@
         "sugars": 7
       },
       "addonEligible": true,
-      "sourceOnly": true,
       "source": {
         "provider": "Chick-fil-A",
         "menu": {
@@ -34677,7 +34936,7 @@
             "CONDIMENTS"
           ],
           "sellable": false,
-          "role": "modifier",
+          "role": "standalone_product",
           "identitySource": "menu",
           "officialCategories": [
             "Condiments"
@@ -34724,7 +34983,6 @@
         "sugars": 8
       },
       "addonEligible": true,
-      "sourceOnly": true,
       "source": {
         "provider": "Chick-fil-A",
         "menu": {
@@ -34753,7 +35011,7 @@
             "CONDIMENTS"
           ],
           "sellable": false,
-          "role": "modifier",
+          "role": "standalone_product",
           "identitySource": "menu",
           "officialCategories": [
             "Condiments"
@@ -34800,7 +35058,6 @@
         "sugars": 8
       },
       "addonEligible": true,
-      "sourceOnly": true,
       "source": {
         "provider": "Chick-fil-A",
         "menu": {
@@ -34829,7 +35086,7 @@
             "CONDIMENTS"
           ],
           "sellable": false,
-          "role": "modifier",
+          "role": "standalone_product",
           "identitySource": "menu",
           "officialCategories": [
             "Condiments"
@@ -34876,7 +35133,6 @@
         "sugars": 0
       },
       "addonEligible": true,
-      "sourceOnly": true,
       "source": {
         "provider": "Chick-fil-A",
         "menu": {
@@ -34913,7 +35169,7 @@
             "CONDIMENTS"
           ],
           "sellable": false,
-          "role": "modifier",
+          "role": "standalone_product",
           "identitySource": "menu",
           "officialCategories": [
             "Condiments"
@@ -34960,7 +35216,6 @@
         "sugars": 0
       },
       "addonEligible": true,
-      "sourceOnly": true,
       "source": {
         "provider": "Chick-fil-A",
         "menu": {
@@ -34998,7 +35253,7 @@
             "CONDIMENTS"
           ],
           "sellable": false,
-          "role": "modifier",
+          "role": "standalone_product",
           "identitySource": "menu",
           "officialCategories": [
             "Condiments"
@@ -35197,7 +35452,6 @@
         "sugars": 4
       },
       "addonEligible": true,
-      "sourceOnly": true,
       "source": {
         "provider": "Chick-fil-A",
         "menu": {
@@ -35222,7 +35476,7 @@
             "CONDIMENTS"
           ],
           "sellable": false,
-          "role": "modifier",
+          "role": "standalone_product",
           "identitySource": "menu",
           "officialCategories": [
             "Condiments"
@@ -46499,7 +46753,6 @@
         "sugars": 1
       },
       "addonEligible": true,
-      "sourceOnly": true,
       "source": {
         "provider": "Chick-fil-A",
         "menu": {
@@ -46523,7 +46776,7 @@
             "CONDIMENTS"
           ],
           "sellable": false,
-          "role": "modifier",
+          "role": "standalone_product",
           "identitySource": "menu",
           "officialCategories": [
             "Condiments"
@@ -47803,6 +48056,12 @@
       },
       "ingredients": [
         "cfa-modifier-1004302"
+      ],
+      "informationalIngredients": [
+        {
+          "id": "cfa-modifier-1008156",
+          "label": "Grilled Chicken Filet"
+        }
       ],
       "addonRefs": [
         "cfa-addon-group-100126-0-100124",
@@ -49845,7 +50104,6 @@
         "sugars": 0
       },
       "addonEligible": true,
-      "sourceOnly": true,
       "source": {
         "provider": "Chick-fil-A",
         "menu": {
@@ -49870,7 +50128,7 @@
             "CONDIMENTS"
           ],
           "sellable": false,
-          "role": "modifier",
+          "role": "standalone_product",
           "identitySource": "menu",
           "officialCategories": [
             "Condiments"
@@ -49992,7 +50250,6 @@
         "sugars": 0
       },
       "addonEligible": true,
-      "sourceOnly": true,
       "source": {
         "provider": "Chick-fil-A",
         "menu": {
@@ -50016,7 +50273,7 @@
             "CONDIMENTS"
           ],
           "sellable": false,
-          "role": "modifier",
+          "role": "standalone_product",
           "identitySource": "menu",
           "officialCategories": [
             "Condiments"
@@ -50925,7 +51182,6 @@
         "sugars": 0
       },
       "addonEligible": true,
-      "sourceOnly": true,
       "source": {
         "provider": "Chick-fil-A",
         "menu": {
@@ -50950,7 +51206,7 @@
             "CONDIMENTS"
           ],
           "sellable": false,
-          "role": "modifier",
+          "role": "standalone_product",
           "identitySource": "menu",
           "officialCategories": [
             "Condiments"
@@ -51004,6 +51260,14 @@
       ],
       "customization": {
         "ingredientCategories": [
+          {
+            "name": "Individual Sauces",
+            "id": "Individual Sauces [CFA 100236:0]",
+            "ingredients": [
+              "cfa-addon-1001381"
+            ],
+            "allowNone": true
+          },
           {
             "name": "Bread Carriers",
             "id": "Bread Carriers [CFA 100236:2]",
@@ -51131,6 +51395,14 @@
       "customization": {
         "ingredientCategories": [
           {
+            "name": "Individual Sauces",
+            "id": "Individual Sauces [CFA 100236:0]",
+            "ingredients": [
+              "cfa-addon-1001381"
+            ],
+            "allowNone": true
+          },
+          {
             "name": "Bread Carriers",
             "id": "Bread Carriers [CFA 100236:2]",
             "ingredients": [
@@ -51256,6 +51528,14 @@
       ],
       "customization": {
         "ingredientCategories": [
+          {
+            "name": "Individual Sauces",
+            "id": "Individual Sauces [CFA 100236:0]",
+            "ingredients": [
+              "cfa-addon-1001381"
+            ],
+            "allowNone": true
+          },
           {
             "name": "Bread Carriers",
             "id": "Bread Carriers [CFA 100236:2]",
@@ -51383,6 +51663,14 @@
       "customization": {
         "ingredientCategories": [
           {
+            "name": "Individual Sauces",
+            "id": "Individual Sauces [CFA 100240:0]",
+            "ingredients": [
+              "cfa-addon-1001381"
+            ],
+            "allowNone": true
+          },
+          {
             "name": "Bread Carriers",
             "id": "Bread Carriers [CFA 100240:2]",
             "ingredients": [
@@ -51502,12 +51790,26 @@
         "cfa-modifier-1000056",
         "cfa-modifier-1000005"
       ],
+      "informationalIngredients": [
+        {
+          "id": "cfa-modifier-1008155",
+          "label": "Spicy Chicken Filet"
+        }
+      ],
       "addonRefs": [
         "cfa-addon-group-100236-0-100103",
         "cfa-addon-group-100236-1-100186"
       ],
       "customization": {
         "ingredientCategories": [
+          {
+            "name": "Individual Sauces",
+            "id": "Individual Sauces [CFA 100236:0]",
+            "ingredients": [
+              "cfa-addon-1001381"
+            ],
+            "allowNone": true
+          },
           {
             "name": "Bread Carriers",
             "id": "Bread Carriers [CFA 100236:2]",
@@ -51628,6 +51930,12 @@
         "cfa-modifier-1000056",
         "cfa-modifier-1000005"
       ],
+      "informationalIngredients": [
+        {
+          "id": "cfa-modifier-1008155",
+          "label": "Spicy Chicken Filet"
+        }
+      ],
       "addonRefs": [
         "cfa-addon-group-100236-0-100103",
         "cfa-addon-group-100236-1-100186",
@@ -51636,6 +51944,14 @@
       ],
       "customization": {
         "ingredientCategories": [
+          {
+            "name": "Individual Sauces",
+            "id": "Individual Sauces [CFA 100236:0]",
+            "ingredients": [
+              "cfa-addon-1001381"
+            ],
+            "allowNone": true
+          },
           {
             "name": "Bread Carriers",
             "id": "Bread Carriers [CFA 100236:2]",
@@ -51676,6 +51992,14 @@
             "id": "Add Pickles Mod [CFA 100236:5]",
             "ingredients": [
               "cfa-modifier-1000043"
+            ],
+            "allowNone": true
+          },
+          {
+            "name": "Individual Sauces",
+            "id": "Individual Sauces [CFA 100240:0]",
+            "ingredients": [
+              "cfa-addon-1001381"
             ],
             "allowNone": true
           },
@@ -51800,6 +52124,12 @@
         "cfa-modifier-1000056",
         "cfa-modifier-1000005"
       ],
+      "informationalIngredients": [
+        {
+          "id": "cfa-modifier-1008155",
+          "label": "Spicy Chicken Filet"
+        }
+      ],
       "addonRefs": [
         "cfa-addon-group-100247-0-100103",
         "cfa-addon-group-100247-1-100186",
@@ -51808,6 +52138,14 @@
       ],
       "customization": {
         "ingredientCategories": [
+          {
+            "name": "Individual Sauces",
+            "id": "Individual Sauces [CFA 100247:0]",
+            "ingredients": [
+              "cfa-addon-1001381"
+            ],
+            "allowNone": true
+          },
           {
             "name": "Bread Carriers",
             "id": "Bread Carriers [CFA 100247:2]",
@@ -51848,6 +52186,14 @@
             "id": "Add Pickles Mod [CFA 100247:5]",
             "ingredients": [
               "cfa-modifier-1000043"
+            ],
+            "allowNone": true
+          },
+          {
+            "name": "Individual Sauces",
+            "id": "Individual Sauces [CFA 100236:0]",
+            "ingredients": [
+              "cfa-addon-1001381"
             ],
             "allowNone": true
           },
@@ -51972,12 +52318,26 @@
         "cfa-modifier-1000056",
         "cfa-modifier-1000005"
       ],
+      "informationalIngredients": [
+        {
+          "id": "cfa-modifier-1008155",
+          "label": "Spicy Chicken Filet"
+        }
+      ],
       "addonRefs": [
         "cfa-addon-group-100249-0-100103",
         "cfa-addon-group-100249-1-100186"
       ],
       "customization": {
         "ingredientCategories": [
+          {
+            "name": "Individual Sauces",
+            "id": "Individual Sauces [CFA 100249:0]",
+            "ingredients": [
+              "cfa-addon-1001381"
+            ],
+            "allowNone": true
+          },
           {
             "name": "Bread Carriers",
             "id": "Bread Carriers [CFA 100249:2]",
@@ -52093,7 +52453,7 @@
         "sugars": 12
       },
       "ingredients": [
-        "cfa-modifier-1007242",
+        "cfa-addon-1001381",
         "cfa-modifier-1007243",
         "cfa-modifier-1000056",
         "cfa-modifier-1000005",
@@ -52105,6 +52465,14 @@
       ],
       "customization": {
         "ingredientCategories": [
+          {
+            "name": "Individual Sauces",
+            "id": "Individual Sauces [CFA 100259:0]",
+            "ingredients": [
+              "cfa-addon-1001381"
+            ],
+            "allowNone": true
+          },
           {
             "name": "Bread Carriers",
             "id": "Bread Carriers [CFA 100259:2]",
@@ -52213,7 +52581,7 @@
         "sugars": 12
       },
       "ingredients": [
-        "cfa-modifier-1007242",
+        "cfa-addon-1001381",
         "cfa-modifier-1007243",
         "cfa-modifier-1000056",
         "cfa-modifier-1000005",
@@ -52225,6 +52593,14 @@
       ],
       "customization": {
         "ingredientCategories": [
+          {
+            "name": "Individual Sauces",
+            "id": "Individual Sauces [CFA 100259:0]",
+            "ingredients": [
+              "cfa-addon-1001381"
+            ],
+            "allowNone": true
+          },
           {
             "name": "Bread Carriers",
             "id": "Bread Carriers [CFA 100259:2]",
@@ -52333,7 +52709,7 @@
         "sugars": 12
       },
       "ingredients": [
-        "cfa-modifier-1007242",
+        "cfa-addon-1001381",
         "cfa-modifier-1007243",
         "cfa-modifier-1000056",
         "cfa-modifier-1000005",
@@ -52345,6 +52721,14 @@
       ],
       "customization": {
         "ingredientCategories": [
+          {
+            "name": "Individual Sauces",
+            "id": "Individual Sauces [CFA 100259:0]",
+            "ingredients": [
+              "cfa-addon-1001381"
+            ],
+            "allowNone": true
+          },
           {
             "name": "Bread Carriers",
             "id": "Bread Carriers [CFA 100259:2]",
@@ -52453,7 +52837,7 @@
         "sugars": 11
       },
       "ingredients": [
-        "cfa-modifier-1007242",
+        "cfa-addon-1001381",
         "cfa-modifier-1007243",
         "cfa-modifier-1000056",
         "cfa-modifier-1000005",
@@ -52465,6 +52849,14 @@
       ],
       "customization": {
         "ingredientCategories": [
+          {
+            "name": "Individual Sauces",
+            "id": "Individual Sauces [CFA 100259:0]",
+            "ingredients": [
+              "cfa-addon-1001381"
+            ],
+            "allowNone": true
+          },
           {
             "name": "Bread Carriers",
             "id": "Bread Carriers [CFA 100259:2]",
@@ -56233,6 +56625,14 @@
       "customization": {
         "ingredientCategories": [
           {
+            "name": "Individual Sauces",
+            "id": "Individual Sauces [CFA 100367:1]",
+            "ingredients": [
+              "cfa-addon-1001381"
+            ],
+            "allowNone": true
+          },
+          {
             "name": "Add Pickles Mod",
             "id": "Add Pickles Mod [CFA 100367:2]",
             "ingredients": [
@@ -56323,12 +56723,26 @@
         "fiber": 0,
         "sugars": 1
       },
+      "informationalIngredients": [
+        {
+          "id": "cfa-modifier-1008156",
+          "label": "Grilled Chicken Filet"
+        }
+      ],
       "addonRefs": [
         "cfa-addon-group-100368-0-100186",
         "cfa-addon-group-100368-1-100103"
       ],
       "customization": {
         "ingredientCategories": [
+          {
+            "name": "Individual Sauces",
+            "id": "Individual Sauces [CFA 100368:1]",
+            "ingredients": [
+              "cfa-addon-1001381"
+            ],
+            "allowNone": true
+          },
           {
             "name": "Add Pickles Mod",
             "id": "Add Pickles Mod [CFA 100368:2]",
@@ -56420,12 +56834,26 @@
         "fiber": 1,
         "sugars": 2
       },
+      "informationalIngredients": [
+        {
+          "id": "cfa-modifier-1008155",
+          "label": "Spicy Chicken Filet"
+        }
+      ],
       "addonRefs": [
         "cfa-addon-group-100368-0-100186",
         "cfa-addon-group-100368-1-100103"
       ],
       "customization": {
         "ingredientCategories": [
+          {
+            "name": "Individual Sauces",
+            "id": "Individual Sauces [CFA 100368:1]",
+            "ingredients": [
+              "cfa-addon-1001381"
+            ],
+            "allowNone": true
+          },
           {
             "name": "Add Pickles Mod",
             "id": "Add Pickles Mod [CFA 100368:2]",
@@ -58496,6 +58924,12 @@
         "cfa-modifier-1004303",
         "cfa-modifier-1004302"
       ],
+      "informationalIngredients": [
+        {
+          "id": "cfa-modifier-1008156",
+          "label": "Grilled Chicken Filet"
+        }
+      ],
       "addonRefs": [
         "cfa-addon-group-100458-1-100446",
         "cfa-addon-group-100458-2-100449",
@@ -59174,7 +59608,6 @@
         "sugars": 0
       },
       "addonEligible": true,
-      "sourceOnly": true,
       "source": {
         "provider": "Chick-fil-A",
         "menu": {
@@ -59198,7 +59631,7 @@
             "CONDIMENTS"
           ],
           "sellable": false,
-          "role": "modifier",
+          "role": "standalone_product",
           "identitySource": "menu",
           "officialCategories": [
             "Condiments"
@@ -59241,7 +59674,6 @@
         "sugars": 0
       },
       "addonEligible": true,
-      "sourceOnly": true,
       "source": {
         "provider": "Chick-fil-A",
         "menu": {
@@ -59265,7 +59697,7 @@
             "CONDIMENTS"
           ],
           "sellable": false,
-          "role": "modifier",
+          "role": "standalone_product",
           "identitySource": "menu",
           "officialCategories": [
             "Condiments"
@@ -61781,6 +62213,1569 @@
           "orderingRetailModifiedItemId": "1004577",
           "orderingTag": "FRUIT_CUP_LARGE",
           "orderingDefaultModifierSourceIds": []
+        }
+      }
+    },
+    {
+      "id": "cfa-mealgroup-100115",
+      "name": "Chick-fil-A Chick-n-Minis® 4 Ct Meal",
+      "image": "https://www.cfacdn.com/img/order/COM/Menu_Refresh/Breakfast/Breakfast%20Desktop/_0000s_0014_%5BFeed%5D_0000s_0024_Breakfast_Chicken-Mini-4ct.png",
+      "categories": [
+        "Breakfast"
+      ],
+      "servingType": "combo",
+      "sourceOnly": true,
+      "defaultOrder": 5000,
+      "comboConfig": {
+        "entreeItemId": "cfa-group-100164",
+        "sideOptions": [
+          "cfa-item-1000225",
+          "cfa-item-1007828",
+          "cfa-item-1005726",
+          "cfa-item-1005725",
+          "cfa-item-1004576"
+        ],
+        "drinkOptions": [
+          "cfa-item-1009674",
+          "cfa-item-1009681",
+          "cfa-item-1010177",
+          "cfa-item-1009330",
+          "cfa-item-1009331",
+          "cfa-item-1009324",
+          "cfa-item-1009325",
+          "cfa-item-1009326",
+          "cfa-item-1009327",
+          "cfa-item-1009328",
+          "cfa-item-1009329",
+          "cfa-item-1009675",
+          "cfa-item-1009677",
+          "cfa-item-1004728",
+          "cfa-item-1010293",
+          "cfa-item-1009678",
+          "cfa-item-1009676",
+          "cfa-item-1007075",
+          "cfa-item-1009779",
+          "cfa-item-1010294",
+          "cfa-item-1009781",
+          "cfa-item-1009332",
+          "cfa-item-1009333",
+          "cfa-item-1005216",
+          "cfa-item-1005221",
+          "cfa-item-1009402",
+          "cfa-item-1009403",
+          "cfa-item-1009396",
+          "cfa-item-1009343",
+          "cfa-item-1009344",
+          "cfa-item-1009345",
+          "cfa-item-1009346",
+          "cfa-item-1009350",
+          "cfa-item-1009348",
+          "cfa-item-1009386",
+          "cfa-item-1009387",
+          "cfa-item-1009388",
+          "cfa-item-1009389",
+          "cfa-item-1009391",
+          "cfa-item-1009384",
+          "cfa-item-1009385",
+          "cfa-item-1009378",
+          "cfa-item-1009393",
+          "cfa-item-1009377",
+          "cfa-item-1000336",
+          "cfa-item-1000335",
+          "cfa-item-1000334",
+          "cfa-item-1000341",
+          "cfa-item-1000340",
+          "cfa-item-1000339",
+          "cfa-item-1000127",
+          "cfa-item-1000126",
+          "cfa-item-1000125",
+          "cfa-item-1000132",
+          "cfa-item-1000131",
+          "cfa-item-1000130",
+          "cfa-item-1004190",
+          "cfa-item-1004189",
+          "cfa-item-1004188",
+          "cfa-item-1004159",
+          "cfa-item-1004158",
+          "cfa-item-1004157",
+          "cfa-item-1004164",
+          "cfa-item-1004163",
+          "cfa-item-1004162",
+          "cfa-item-1004174",
+          "cfa-item-1004173",
+          "cfa-item-1004172",
+          "cfa-item-1004169",
+          "cfa-item-1004168",
+          "cfa-item-1004167",
+          "cfa-item-1000248",
+          "cfa-item-1000247",
+          "cfa-item-1000246",
+          "cfa-item-1000253",
+          "cfa-item-1000252",
+          "cfa-item-1000251",
+          "cfa-item-1001506",
+          "cfa-item-1001505",
+          "cfa-item-1001504",
+          "cfa-item-1000070",
+          "cfa-item-1000069",
+          "cfa-item-1000068",
+          "cfa-item-1000312",
+          "cfa-item-1000311",
+          "cfa-item-1000310",
+          "cfa-item-1000263",
+          "cfa-item-1000262",
+          "cfa-item-1000261",
+          "cfa-item-1000258",
+          "cfa-item-1000257",
+          "cfa-item-1000256",
+          "cfa-item-1000283",
+          "cfa-item-1000282",
+          "cfa-item-1000281",
+          "cfa-item-1000268",
+          "cfa-item-1000267",
+          "cfa-item-1000266",
+          "cfa-item-1000432",
+          "cfa-item-1000431",
+          "cfa-item-1000430",
+          "cfa-item-1000190",
+          "cfa-item-1003375",
+          "cfa-item-1005767",
+          "cfa-item-1010013",
+          "cfa-item-1010014",
+          "cfa-item-1010015",
+          "cfa-item-1010295",
+          "cfa-item-1004713",
+          "cfa-item-1002075",
+          "cfa-item-1002071",
+          "cfa-item-1002073",
+          "cfa-item-1002069",
+          "cfa-item-1001170",
+          "cfa-item-1001175",
+          "cfa-item-1001290"
+        ]
+      },
+      "source": {
+        "provider": "Chick-fil-A",
+        "menu": {
+          "recordId": "itemGroupId:100115",
+          "itemClass": "ITEM_GROUPING",
+          "itemGroupId": "100115",
+          "referencedItemGroupIds": [
+            "100115"
+          ],
+          "containingItemGroupIds": [],
+          "names": [
+            "Chick-fil-A Chick-n-Minis® 4 Ct Meal"
+          ],
+          "tags": [
+            "MINIS_4CT_MEAL"
+          ],
+          "pins": [
+            "300050"
+          ],
+          "itemTypes": [
+            "MEALS_GROUP"
+          ],
+          "sellable": true,
+          "role": "deferred_meal_container",
+          "identitySource": "menu",
+          "officialCategories": [
+            "Breakfast"
+          ]
+        }
+      }
+    },
+    {
+      "id": "cfa-mealgroup-100127",
+      "name": "Hash Brown Scramble Burrito w/ Nuggets Meal",
+      "image": "https://www.cfacdn.com/img/order/COM/Menu_Refresh/Breakfast/Breakfast%20Desktop/_0000s_0004_ChickenSausageBurrito-pdp_1797v2_2880px_resize2.png",
+      "categories": [
+        "Breakfast"
+      ],
+      "servingType": "combo",
+      "sourceOnly": true,
+      "defaultOrder": 5000,
+      "comboConfig": {
+        "entreeItemId": "cfa-group-100168",
+        "sideOptions": [
+          "cfa-item-1000225",
+          "cfa-item-1007828",
+          "cfa-item-1005726",
+          "cfa-item-1005725",
+          "cfa-item-1004576"
+        ],
+        "drinkOptions": [
+          "cfa-item-1009674",
+          "cfa-item-1009681",
+          "cfa-item-1010177",
+          "cfa-item-1009330",
+          "cfa-item-1009331",
+          "cfa-item-1009324",
+          "cfa-item-1009325",
+          "cfa-item-1009326",
+          "cfa-item-1009327",
+          "cfa-item-1009328",
+          "cfa-item-1009329",
+          "cfa-item-1009675",
+          "cfa-item-1009677",
+          "cfa-item-1004728",
+          "cfa-item-1010293",
+          "cfa-item-1009678",
+          "cfa-item-1009676",
+          "cfa-item-1007075",
+          "cfa-item-1009779",
+          "cfa-item-1010294",
+          "cfa-item-1009781",
+          "cfa-item-1009332",
+          "cfa-item-1009333",
+          "cfa-item-1005216",
+          "cfa-item-1005221",
+          "cfa-item-1009402",
+          "cfa-item-1009403",
+          "cfa-item-1009396",
+          "cfa-item-1009343",
+          "cfa-item-1009344",
+          "cfa-item-1009345",
+          "cfa-item-1009346",
+          "cfa-item-1009350",
+          "cfa-item-1009348",
+          "cfa-item-1009386",
+          "cfa-item-1009387",
+          "cfa-item-1009388",
+          "cfa-item-1009389",
+          "cfa-item-1009391",
+          "cfa-item-1009384",
+          "cfa-item-1009385",
+          "cfa-item-1009378",
+          "cfa-item-1009393",
+          "cfa-item-1009377",
+          "cfa-item-1000336",
+          "cfa-item-1000335",
+          "cfa-item-1000334",
+          "cfa-item-1000341",
+          "cfa-item-1000340",
+          "cfa-item-1000339",
+          "cfa-item-1000127",
+          "cfa-item-1000126",
+          "cfa-item-1000125",
+          "cfa-item-1000132",
+          "cfa-item-1000131",
+          "cfa-item-1000130",
+          "cfa-item-1004190",
+          "cfa-item-1004189",
+          "cfa-item-1004188",
+          "cfa-item-1004159",
+          "cfa-item-1004158",
+          "cfa-item-1004157",
+          "cfa-item-1004164",
+          "cfa-item-1004163",
+          "cfa-item-1004162",
+          "cfa-item-1004174",
+          "cfa-item-1004173",
+          "cfa-item-1004172",
+          "cfa-item-1004169",
+          "cfa-item-1004168",
+          "cfa-item-1004167",
+          "cfa-item-1000248",
+          "cfa-item-1000247",
+          "cfa-item-1000246",
+          "cfa-item-1000253",
+          "cfa-item-1000252",
+          "cfa-item-1000251",
+          "cfa-item-1001506",
+          "cfa-item-1001505",
+          "cfa-item-1001504",
+          "cfa-item-1000070",
+          "cfa-item-1000069",
+          "cfa-item-1000068",
+          "cfa-item-1000312",
+          "cfa-item-1000311",
+          "cfa-item-1000310",
+          "cfa-item-1000263",
+          "cfa-item-1000262",
+          "cfa-item-1000261",
+          "cfa-item-1000258",
+          "cfa-item-1000257",
+          "cfa-item-1000256",
+          "cfa-item-1000283",
+          "cfa-item-1000282",
+          "cfa-item-1000281",
+          "cfa-item-1000268",
+          "cfa-item-1000267",
+          "cfa-item-1000266",
+          "cfa-item-1000432",
+          "cfa-item-1000431",
+          "cfa-item-1000430",
+          "cfa-item-1000190",
+          "cfa-item-1003375",
+          "cfa-item-1005767",
+          "cfa-item-1010013",
+          "cfa-item-1010014",
+          "cfa-item-1010015",
+          "cfa-item-1010295",
+          "cfa-item-1004713",
+          "cfa-item-1002075",
+          "cfa-item-1002071",
+          "cfa-item-1002073",
+          "cfa-item-1002069",
+          "cfa-item-1001170",
+          "cfa-item-1001175",
+          "cfa-item-1001290"
+        ]
+      },
+      "source": {
+        "provider": "Chick-fil-A",
+        "menu": {
+          "recordId": "itemGroupId:100127",
+          "itemClass": "ITEM_GROUPING",
+          "itemGroupId": "100127",
+          "referencedItemGroupIds": [
+            "100127"
+          ],
+          "containingItemGroupIds": [],
+          "names": [
+            "Hash Brown Scramble Burrito w/ Nuggets Meal"
+          ],
+          "tags": [
+            "HBS_NUG_BURRITO_MEAL"
+          ],
+          "pins": [
+            "300080"
+          ],
+          "itemTypes": [
+            "MEALS_GROUP"
+          ],
+          "sellable": true,
+          "role": "deferred_meal_container",
+          "identitySource": "menu",
+          "officialCategories": [
+            "Breakfast"
+          ]
+        }
+      }
+    },
+    {
+      "id": "cfa-mealgroup-100140",
+      "name": "Hash Brown Scramble Bowl w/ Nuggets Meal",
+      "image": "https://www.cfacdn.com/img/order/COM/Menu_Refresh/Breakfast/Breakfast%20Desktop/_0000s_0005_ChickenHashbrownBreakfastBowl-pdp_Hearty-Breakfast-Bowl_resize2.png",
+      "categories": [
+        "Breakfast"
+      ],
+      "servingType": "combo",
+      "sourceOnly": true,
+      "defaultOrder": 5000,
+      "comboConfig": {
+        "entreeItemId": "cfa-group-100169",
+        "sideOptions": [
+          "cfa-item-1000225",
+          "cfa-item-1007828",
+          "cfa-item-1005726",
+          "cfa-item-1005725",
+          "cfa-item-1004576"
+        ],
+        "drinkOptions": [
+          "cfa-item-1009674",
+          "cfa-item-1009681",
+          "cfa-item-1010177",
+          "cfa-item-1009330",
+          "cfa-item-1009331",
+          "cfa-item-1009324",
+          "cfa-item-1009325",
+          "cfa-item-1009326",
+          "cfa-item-1009327",
+          "cfa-item-1009328",
+          "cfa-item-1009329",
+          "cfa-item-1009675",
+          "cfa-item-1009677",
+          "cfa-item-1004728",
+          "cfa-item-1010293",
+          "cfa-item-1009678",
+          "cfa-item-1009676",
+          "cfa-item-1007075",
+          "cfa-item-1009779",
+          "cfa-item-1010294",
+          "cfa-item-1009781",
+          "cfa-item-1009332",
+          "cfa-item-1009333",
+          "cfa-item-1005216",
+          "cfa-item-1005221",
+          "cfa-item-1009402",
+          "cfa-item-1009403",
+          "cfa-item-1009396",
+          "cfa-item-1009343",
+          "cfa-item-1009344",
+          "cfa-item-1009345",
+          "cfa-item-1009346",
+          "cfa-item-1009350",
+          "cfa-item-1009348",
+          "cfa-item-1009386",
+          "cfa-item-1009387",
+          "cfa-item-1009388",
+          "cfa-item-1009389",
+          "cfa-item-1009391",
+          "cfa-item-1009384",
+          "cfa-item-1009385",
+          "cfa-item-1009378",
+          "cfa-item-1009393",
+          "cfa-item-1009377",
+          "cfa-item-1000336",
+          "cfa-item-1000335",
+          "cfa-item-1000334",
+          "cfa-item-1000341",
+          "cfa-item-1000340",
+          "cfa-item-1000339",
+          "cfa-item-1000127",
+          "cfa-item-1000126",
+          "cfa-item-1000125",
+          "cfa-item-1000132",
+          "cfa-item-1000131",
+          "cfa-item-1000130",
+          "cfa-item-1004190",
+          "cfa-item-1004189",
+          "cfa-item-1004188",
+          "cfa-item-1004159",
+          "cfa-item-1004158",
+          "cfa-item-1004157",
+          "cfa-item-1004164",
+          "cfa-item-1004163",
+          "cfa-item-1004162",
+          "cfa-item-1004174",
+          "cfa-item-1004173",
+          "cfa-item-1004172",
+          "cfa-item-1004169",
+          "cfa-item-1004168",
+          "cfa-item-1004167",
+          "cfa-item-1000248",
+          "cfa-item-1000247",
+          "cfa-item-1000246",
+          "cfa-item-1000253",
+          "cfa-item-1000252",
+          "cfa-item-1000251",
+          "cfa-item-1001506",
+          "cfa-item-1001505",
+          "cfa-item-1001504",
+          "cfa-item-1000070",
+          "cfa-item-1000069",
+          "cfa-item-1000068",
+          "cfa-item-1000312",
+          "cfa-item-1000311",
+          "cfa-item-1000310",
+          "cfa-item-1000263",
+          "cfa-item-1000262",
+          "cfa-item-1000261",
+          "cfa-item-1000258",
+          "cfa-item-1000257",
+          "cfa-item-1000256",
+          "cfa-item-1000283",
+          "cfa-item-1000282",
+          "cfa-item-1000281",
+          "cfa-item-1000268",
+          "cfa-item-1000267",
+          "cfa-item-1000266",
+          "cfa-item-1000432",
+          "cfa-item-1000431",
+          "cfa-item-1000430",
+          "cfa-item-1000190",
+          "cfa-item-1003375",
+          "cfa-item-1005767",
+          "cfa-item-1010013",
+          "cfa-item-1010014",
+          "cfa-item-1010015",
+          "cfa-item-1010295",
+          "cfa-item-1004713",
+          "cfa-item-1002075",
+          "cfa-item-1002071",
+          "cfa-item-1002073",
+          "cfa-item-1002069",
+          "cfa-item-1001170",
+          "cfa-item-1001175",
+          "cfa-item-1001290"
+        ]
+      },
+      "source": {
+        "provider": "Chick-fil-A",
+        "menu": {
+          "recordId": "itemGroupId:100140",
+          "itemClass": "ITEM_GROUPING",
+          "itemGroupId": "100140",
+          "referencedItemGroupIds": [
+            "100140"
+          ],
+          "containingItemGroupIds": [],
+          "names": [
+            "Hash Brown Scramble Bowl w/ Nuggets Meal"
+          ],
+          "tags": [
+            "HBS_NUG_BOWL_MEAL"
+          ],
+          "pins": [
+            "300079"
+          ],
+          "itemTypes": [
+            "MEALS_GROUP"
+          ],
+          "sellable": true,
+          "role": "deferred_meal_container",
+          "identitySource": "menu",
+          "officialCategories": [
+            "Breakfast"
+          ]
+        }
+      }
+    },
+    {
+      "id": "cfa-mealgroup-100237",
+      "name": "Chick-fil-A® Deluxe w/ American Meal",
+      "image": "https://www.cfacdn.com/img/order/COM/Menu_Refresh/Entree/Entree%20Desktop/_0003s_0003_NEWStack6200001CFAPDPDeluxeSandwich1085png.png",
+      "categories": [
+        "Sandwiches"
+      ],
+      "servingType": "combo",
+      "sourceOnly": true,
+      "defaultOrder": 5000,
+      "comboConfig": {
+        "entreeItemId": "cfa-group-100351",
+        "sideOptions": [
+          "cfa-item-1000123",
+          "cfa-item-1000124",
+          "cfa-item-1004576",
+          "cfa-item-1006832",
+          "cfa-item-1000166",
+          "cfa-item-1000167",
+          "cfa-item-1006280",
+          "cfa-item-1006211",
+          "cfa-item-1004265",
+          "cfa-item-1005315",
+          "cfa-item-1005316",
+          "cfa-item-1000224"
+        ],
+        "drinkOptions": [
+          "cfa-item-1009674",
+          "cfa-item-1009681",
+          "cfa-item-1010177",
+          "cfa-item-1009330",
+          "cfa-item-1009331",
+          "cfa-item-1009324",
+          "cfa-item-1009325",
+          "cfa-item-1009326",
+          "cfa-item-1009327",
+          "cfa-item-1009328",
+          "cfa-item-1009329",
+          "cfa-item-1009675",
+          "cfa-item-1009677",
+          "cfa-item-1004728",
+          "cfa-item-1010293",
+          "cfa-item-1009678",
+          "cfa-item-1009676",
+          "cfa-item-1007075",
+          "cfa-item-1009779",
+          "cfa-item-1010294",
+          "cfa-item-1009781",
+          "cfa-item-1009332",
+          "cfa-item-1009333",
+          "cfa-item-1005216",
+          "cfa-item-1005221",
+          "cfa-item-1009402",
+          "cfa-item-1009403",
+          "cfa-item-1009396",
+          "cfa-item-1009343",
+          "cfa-item-1009344",
+          "cfa-item-1009345",
+          "cfa-item-1009346",
+          "cfa-item-1009350",
+          "cfa-item-1009348",
+          "cfa-item-1009386",
+          "cfa-item-1009387",
+          "cfa-item-1009388",
+          "cfa-item-1009389",
+          "cfa-item-1009391",
+          "cfa-item-1009384",
+          "cfa-item-1009385",
+          "cfa-item-1009378",
+          "cfa-item-1009393",
+          "cfa-item-1009377",
+          "cfa-item-1000336",
+          "cfa-item-1000335",
+          "cfa-item-1000334",
+          "cfa-item-1000341",
+          "cfa-item-1000340",
+          "cfa-item-1000339",
+          "cfa-item-1000127",
+          "cfa-item-1000126",
+          "cfa-item-1000125",
+          "cfa-item-1000132",
+          "cfa-item-1000131",
+          "cfa-item-1000130",
+          "cfa-item-1004190",
+          "cfa-item-1004189",
+          "cfa-item-1004188",
+          "cfa-item-1004159",
+          "cfa-item-1004158",
+          "cfa-item-1004157",
+          "cfa-item-1004164",
+          "cfa-item-1004163",
+          "cfa-item-1004162",
+          "cfa-item-1004174",
+          "cfa-item-1004173",
+          "cfa-item-1004172",
+          "cfa-item-1004169",
+          "cfa-item-1004168",
+          "cfa-item-1004167",
+          "cfa-item-1000248",
+          "cfa-item-1000247",
+          "cfa-item-1000246",
+          "cfa-item-1000253",
+          "cfa-item-1000252",
+          "cfa-item-1000251",
+          "cfa-item-1001506",
+          "cfa-item-1001505",
+          "cfa-item-1001504",
+          "cfa-item-1000070",
+          "cfa-item-1000069",
+          "cfa-item-1000068",
+          "cfa-item-1000312",
+          "cfa-item-1000311",
+          "cfa-item-1000310",
+          "cfa-item-1000263",
+          "cfa-item-1000262",
+          "cfa-item-1000261",
+          "cfa-item-1000258",
+          "cfa-item-1000257",
+          "cfa-item-1000256",
+          "cfa-item-1000283",
+          "cfa-item-1000282",
+          "cfa-item-1000281",
+          "cfa-item-1000268",
+          "cfa-item-1000267",
+          "cfa-item-1000266",
+          "cfa-item-1000432",
+          "cfa-item-1000431",
+          "cfa-item-1000430",
+          "cfa-item-1000190",
+          "cfa-item-1003375",
+          "cfa-item-1005767",
+          "cfa-item-1010013",
+          "cfa-item-1010014",
+          "cfa-item-1010015",
+          "cfa-item-1010295",
+          "cfa-item-1004713",
+          "cfa-item-1002075",
+          "cfa-item-1002071",
+          "cfa-item-1002073",
+          "cfa-item-1002069",
+          "cfa-item-1001175",
+          "cfa-item-1001170",
+          "cfa-item-1001290"
+        ]
+      },
+      "source": {
+        "provider": "Chick-fil-A",
+        "menu": {
+          "recordId": "itemGroupId:100237",
+          "itemClass": "ITEM_GROUPING",
+          "itemGroupId": "100237",
+          "referencedItemGroupIds": [
+            "100237"
+          ],
+          "containingItemGroupIds": [],
+          "names": [
+            "Chick-fil-A® Deluxe w/ American Meal"
+          ],
+          "tags": [
+            "DELUXE_AMERICAN_MEAL"
+          ],
+          "pins": [
+            "300219"
+          ],
+          "itemTypes": [
+            "MEALS_GROUP"
+          ],
+          "sellable": true,
+          "role": "deferred_meal_container",
+          "identitySource": "menu",
+          "officialCategories": [
+            "Sandwiches"
+          ]
+        }
+      }
+    },
+    {
+      "id": "cfa-mealgroup-100244",
+      "name": "Spicy Deluxe w/ Pepper Jack Meal",
+      "image": "https://www.cfacdn.com/img/order/COM/Menu_Refresh/Entree/Entree%20Desktop/_0003s_0012_%5BFeed%5D_0001s_0023_Entrees_Spicy-Deluxe-Sandwich.png",
+      "categories": [
+        "Sandwiches"
+      ],
+      "servingType": "combo",
+      "sourceOnly": true,
+      "defaultOrder": 5000,
+      "comboConfig": {
+        "entreeItemId": "cfa-group-100352",
+        "sideOptions": [
+          "cfa-item-1000123",
+          "cfa-item-1000124",
+          "cfa-item-1004576",
+          "cfa-item-1006832",
+          "cfa-item-1000166",
+          "cfa-item-1000167",
+          "cfa-item-1006280",
+          "cfa-item-1006211",
+          "cfa-item-1004265",
+          "cfa-item-1005315",
+          "cfa-item-1005316",
+          "cfa-item-1000224"
+        ],
+        "drinkOptions": [
+          "cfa-item-1009674",
+          "cfa-item-1009681",
+          "cfa-item-1010177",
+          "cfa-item-1009330",
+          "cfa-item-1009331",
+          "cfa-item-1009324",
+          "cfa-item-1009325",
+          "cfa-item-1009326",
+          "cfa-item-1009327",
+          "cfa-item-1009328",
+          "cfa-item-1009329",
+          "cfa-item-1009675",
+          "cfa-item-1009677",
+          "cfa-item-1004728",
+          "cfa-item-1010293",
+          "cfa-item-1009678",
+          "cfa-item-1009676",
+          "cfa-item-1007075",
+          "cfa-item-1009779",
+          "cfa-item-1010294",
+          "cfa-item-1009781",
+          "cfa-item-1009332",
+          "cfa-item-1009333",
+          "cfa-item-1005216",
+          "cfa-item-1005221",
+          "cfa-item-1009402",
+          "cfa-item-1009403",
+          "cfa-item-1009396",
+          "cfa-item-1009343",
+          "cfa-item-1009344",
+          "cfa-item-1009345",
+          "cfa-item-1009346",
+          "cfa-item-1009350",
+          "cfa-item-1009348",
+          "cfa-item-1009386",
+          "cfa-item-1009387",
+          "cfa-item-1009388",
+          "cfa-item-1009389",
+          "cfa-item-1009391",
+          "cfa-item-1009384",
+          "cfa-item-1009385",
+          "cfa-item-1009378",
+          "cfa-item-1009393",
+          "cfa-item-1009377",
+          "cfa-item-1000336",
+          "cfa-item-1000335",
+          "cfa-item-1000334",
+          "cfa-item-1000341",
+          "cfa-item-1000340",
+          "cfa-item-1000339",
+          "cfa-item-1000127",
+          "cfa-item-1000126",
+          "cfa-item-1000125",
+          "cfa-item-1000132",
+          "cfa-item-1000131",
+          "cfa-item-1000130",
+          "cfa-item-1004190",
+          "cfa-item-1004189",
+          "cfa-item-1004188",
+          "cfa-item-1004159",
+          "cfa-item-1004158",
+          "cfa-item-1004157",
+          "cfa-item-1004164",
+          "cfa-item-1004163",
+          "cfa-item-1004162",
+          "cfa-item-1004174",
+          "cfa-item-1004173",
+          "cfa-item-1004172",
+          "cfa-item-1004169",
+          "cfa-item-1004168",
+          "cfa-item-1004167",
+          "cfa-item-1000248",
+          "cfa-item-1000247",
+          "cfa-item-1000246",
+          "cfa-item-1000253",
+          "cfa-item-1000252",
+          "cfa-item-1000251",
+          "cfa-item-1001506",
+          "cfa-item-1001505",
+          "cfa-item-1001504",
+          "cfa-item-1000070",
+          "cfa-item-1000069",
+          "cfa-item-1000068",
+          "cfa-item-1000312",
+          "cfa-item-1000311",
+          "cfa-item-1000310",
+          "cfa-item-1000263",
+          "cfa-item-1000262",
+          "cfa-item-1000261",
+          "cfa-item-1000258",
+          "cfa-item-1000257",
+          "cfa-item-1000256",
+          "cfa-item-1000283",
+          "cfa-item-1000282",
+          "cfa-item-1000281",
+          "cfa-item-1000268",
+          "cfa-item-1000267",
+          "cfa-item-1000266",
+          "cfa-item-1000432",
+          "cfa-item-1000431",
+          "cfa-item-1000430",
+          "cfa-item-1000190",
+          "cfa-item-1003375",
+          "cfa-item-1005767",
+          "cfa-item-1010013",
+          "cfa-item-1010014",
+          "cfa-item-1010015",
+          "cfa-item-1010295",
+          "cfa-item-1004713",
+          "cfa-item-1002075",
+          "cfa-item-1002071",
+          "cfa-item-1002073",
+          "cfa-item-1002069",
+          "cfa-item-1001175",
+          "cfa-item-1001170",
+          "cfa-item-1001290"
+        ]
+      },
+      "source": {
+        "provider": "Chick-fil-A",
+        "menu": {
+          "recordId": "itemGroupId:100244",
+          "itemClass": "ITEM_GROUPING",
+          "itemGroupId": "100244",
+          "referencedItemGroupIds": [
+            "100244"
+          ],
+          "containingItemGroupIds": [],
+          "names": [
+            "Spicy Deluxe w/ Pepper Jack Meal"
+          ],
+          "tags": [
+            "SPICY_PJ_MEAL"
+          ],
+          "pins": [
+            "300224"
+          ],
+          "itemTypes": [
+            "MEALS_GROUP"
+          ],
+          "sellable": true,
+          "role": "deferred_meal_container",
+          "identitySource": "menu",
+          "officialCategories": [
+            "Sandwiches"
+          ]
+        }
+      }
+    },
+    {
+      "id": "cfa-mealgroup-100260",
+      "name": "Club w/ Colby Jack Meal",
+      "image": "https://www.cfacdn.com/img/order/menu/Online/Entrees/grilledClub_colbyJack_PDP_Desk.png",
+      "categories": [
+        "Sandwiches"
+      ],
+      "servingType": "combo",
+      "sourceOnly": true,
+      "defaultOrder": 5000,
+      "comboConfig": {
+        "entreeItemId": "cfa-group-100355",
+        "sideOptions": [
+          "cfa-item-1000123",
+          "cfa-item-1000124",
+          "cfa-item-1004576",
+          "cfa-item-1006832",
+          "cfa-item-1000166",
+          "cfa-item-1000167",
+          "cfa-item-1006280",
+          "cfa-item-1006211",
+          "cfa-item-1004265",
+          "cfa-item-1005315",
+          "cfa-item-1005316",
+          "cfa-item-1000224"
+        ],
+        "drinkOptions": [
+          "cfa-item-1009674",
+          "cfa-item-1009681",
+          "cfa-item-1010177",
+          "cfa-item-1009330",
+          "cfa-item-1009331",
+          "cfa-item-1009324",
+          "cfa-item-1009325",
+          "cfa-item-1009326",
+          "cfa-item-1009327",
+          "cfa-item-1009328",
+          "cfa-item-1009329",
+          "cfa-item-1009675",
+          "cfa-item-1009677",
+          "cfa-item-1004728",
+          "cfa-item-1010293",
+          "cfa-item-1009678",
+          "cfa-item-1009676",
+          "cfa-item-1007075",
+          "cfa-item-1009779",
+          "cfa-item-1010294",
+          "cfa-item-1009781",
+          "cfa-item-1009332",
+          "cfa-item-1009333",
+          "cfa-item-1005216",
+          "cfa-item-1005221",
+          "cfa-item-1009402",
+          "cfa-item-1009403",
+          "cfa-item-1009396",
+          "cfa-item-1009343",
+          "cfa-item-1009344",
+          "cfa-item-1009345",
+          "cfa-item-1009346",
+          "cfa-item-1009350",
+          "cfa-item-1009348",
+          "cfa-item-1009386",
+          "cfa-item-1009387",
+          "cfa-item-1009388",
+          "cfa-item-1009389",
+          "cfa-item-1009391",
+          "cfa-item-1009384",
+          "cfa-item-1009385",
+          "cfa-item-1009378",
+          "cfa-item-1009393",
+          "cfa-item-1009377",
+          "cfa-item-1000336",
+          "cfa-item-1000335",
+          "cfa-item-1000334",
+          "cfa-item-1000341",
+          "cfa-item-1000340",
+          "cfa-item-1000339",
+          "cfa-item-1000127",
+          "cfa-item-1000126",
+          "cfa-item-1000125",
+          "cfa-item-1000132",
+          "cfa-item-1000131",
+          "cfa-item-1000130",
+          "cfa-item-1004190",
+          "cfa-item-1004189",
+          "cfa-item-1004188",
+          "cfa-item-1004159",
+          "cfa-item-1004158",
+          "cfa-item-1004157",
+          "cfa-item-1004164",
+          "cfa-item-1004163",
+          "cfa-item-1004162",
+          "cfa-item-1004174",
+          "cfa-item-1004173",
+          "cfa-item-1004172",
+          "cfa-item-1004169",
+          "cfa-item-1004168",
+          "cfa-item-1004167",
+          "cfa-item-1000248",
+          "cfa-item-1000247",
+          "cfa-item-1000246",
+          "cfa-item-1000253",
+          "cfa-item-1000252",
+          "cfa-item-1000251",
+          "cfa-item-1001506",
+          "cfa-item-1001505",
+          "cfa-item-1001504",
+          "cfa-item-1000070",
+          "cfa-item-1000069",
+          "cfa-item-1000068",
+          "cfa-item-1000312",
+          "cfa-item-1000311",
+          "cfa-item-1000310",
+          "cfa-item-1000263",
+          "cfa-item-1000262",
+          "cfa-item-1000261",
+          "cfa-item-1000258",
+          "cfa-item-1000257",
+          "cfa-item-1000256",
+          "cfa-item-1000283",
+          "cfa-item-1000282",
+          "cfa-item-1000281",
+          "cfa-item-1000268",
+          "cfa-item-1000267",
+          "cfa-item-1000266",
+          "cfa-item-1000432",
+          "cfa-item-1000431",
+          "cfa-item-1000430",
+          "cfa-item-1000190",
+          "cfa-item-1003375",
+          "cfa-item-1005767",
+          "cfa-item-1010013",
+          "cfa-item-1010014",
+          "cfa-item-1010015",
+          "cfa-item-1010295",
+          "cfa-item-1004713",
+          "cfa-item-1002075",
+          "cfa-item-1002071",
+          "cfa-item-1002073",
+          "cfa-item-1002069",
+          "cfa-item-1001175",
+          "cfa-item-1001170",
+          "cfa-item-1001290"
+        ]
+      },
+      "source": {
+        "provider": "Chick-fil-A",
+        "menu": {
+          "recordId": "itemGroupId:100260",
+          "itemClass": "ITEM_GROUPING",
+          "itemGroupId": "100260",
+          "referencedItemGroupIds": [
+            "100260"
+          ],
+          "containingItemGroupIds": [],
+          "names": [
+            "Club w/ Colby Jack Meal"
+          ],
+          "tags": [
+            "CLUB_CJ_MEAL"
+          ],
+          "pins": [
+            "300246"
+          ],
+          "itemTypes": [
+            "MEALS_GROUP"
+          ],
+          "sellable": true,
+          "role": "deferred_meal_container",
+          "identitySource": "menu",
+          "officialCategories": [
+            "Sandwiches"
+          ]
+        }
+      }
+    },
+    {
+      "id": "cfa-mealgroup-100267",
+      "name": "Chick-fil-A® Nuggets 8 Ct Meal",
+      "image": "https://www.cfacdn.com/img/order/menu/Online/Entrees/nuggets_wSauce_PDP_Desk.png",
+      "categories": [
+        "Chicken"
+      ],
+      "servingType": "combo",
+      "sourceOnly": true,
+      "defaultOrder": 5000,
+      "comboConfig": {
+        "entreeItemId": "cfa-group-100357",
+        "sideOptions": [
+          "cfa-item-1000123",
+          "cfa-item-1000124",
+          "cfa-item-1004576",
+          "cfa-item-1006832",
+          "cfa-item-1000166",
+          "cfa-item-1000167",
+          "cfa-item-1006280",
+          "cfa-item-1006211",
+          "cfa-item-1004265",
+          "cfa-item-1005315",
+          "cfa-item-1005316",
+          "cfa-item-1000224"
+        ],
+        "drinkOptions": [
+          "cfa-item-1009674",
+          "cfa-item-1009681",
+          "cfa-item-1010177",
+          "cfa-item-1009330",
+          "cfa-item-1009331",
+          "cfa-item-1009324",
+          "cfa-item-1009325",
+          "cfa-item-1009326",
+          "cfa-item-1009327",
+          "cfa-item-1009328",
+          "cfa-item-1009329",
+          "cfa-item-1009675",
+          "cfa-item-1009677",
+          "cfa-item-1004728",
+          "cfa-item-1010293",
+          "cfa-item-1009678",
+          "cfa-item-1009676",
+          "cfa-item-1007075",
+          "cfa-item-1009779",
+          "cfa-item-1010294",
+          "cfa-item-1009781",
+          "cfa-item-1009332",
+          "cfa-item-1009333",
+          "cfa-item-1005216",
+          "cfa-item-1005221",
+          "cfa-item-1009402",
+          "cfa-item-1009403",
+          "cfa-item-1009396",
+          "cfa-item-1009343",
+          "cfa-item-1009344",
+          "cfa-item-1009345",
+          "cfa-item-1009346",
+          "cfa-item-1009350",
+          "cfa-item-1009348",
+          "cfa-item-1009386",
+          "cfa-item-1009387",
+          "cfa-item-1009388",
+          "cfa-item-1009389",
+          "cfa-item-1009391",
+          "cfa-item-1009384",
+          "cfa-item-1009385",
+          "cfa-item-1009378",
+          "cfa-item-1009393",
+          "cfa-item-1009377",
+          "cfa-item-1000336",
+          "cfa-item-1000335",
+          "cfa-item-1000334",
+          "cfa-item-1000341",
+          "cfa-item-1000340",
+          "cfa-item-1000339",
+          "cfa-item-1000127",
+          "cfa-item-1000126",
+          "cfa-item-1000125",
+          "cfa-item-1000132",
+          "cfa-item-1000131",
+          "cfa-item-1000130",
+          "cfa-item-1004190",
+          "cfa-item-1004189",
+          "cfa-item-1004188",
+          "cfa-item-1004159",
+          "cfa-item-1004158",
+          "cfa-item-1004157",
+          "cfa-item-1004164",
+          "cfa-item-1004163",
+          "cfa-item-1004162",
+          "cfa-item-1004174",
+          "cfa-item-1004173",
+          "cfa-item-1004172",
+          "cfa-item-1004169",
+          "cfa-item-1004168",
+          "cfa-item-1004167",
+          "cfa-item-1000248",
+          "cfa-item-1000247",
+          "cfa-item-1000246",
+          "cfa-item-1000253",
+          "cfa-item-1000252",
+          "cfa-item-1000251",
+          "cfa-item-1001506",
+          "cfa-item-1001505",
+          "cfa-item-1001504",
+          "cfa-item-1000070",
+          "cfa-item-1000069",
+          "cfa-item-1000068",
+          "cfa-item-1000312",
+          "cfa-item-1000311",
+          "cfa-item-1000310",
+          "cfa-item-1000263",
+          "cfa-item-1000262",
+          "cfa-item-1000261",
+          "cfa-item-1000258",
+          "cfa-item-1000257",
+          "cfa-item-1000256",
+          "cfa-item-1000283",
+          "cfa-item-1000282",
+          "cfa-item-1000281",
+          "cfa-item-1000268",
+          "cfa-item-1000267",
+          "cfa-item-1000266",
+          "cfa-item-1000432",
+          "cfa-item-1000431",
+          "cfa-item-1000430",
+          "cfa-item-1000190",
+          "cfa-item-1003375",
+          "cfa-item-1005767",
+          "cfa-item-1010013",
+          "cfa-item-1010014",
+          "cfa-item-1010015",
+          "cfa-item-1010295",
+          "cfa-item-1004713",
+          "cfa-item-1002075",
+          "cfa-item-1002071",
+          "cfa-item-1002073",
+          "cfa-item-1002069",
+          "cfa-item-1001175",
+          "cfa-item-1001170",
+          "cfa-item-1001290"
+        ]
+      },
+      "source": {
+        "provider": "Chick-fil-A",
+        "menu": {
+          "recordId": "itemGroupId:100267",
+          "itemClass": "ITEM_GROUPING",
+          "itemGroupId": "100267",
+          "referencedItemGroupIds": [
+            "100267"
+          ],
+          "containingItemGroupIds": [],
+          "names": [
+            "Chick-fil-A<sup>®</sup> Nuggets 8 Ct Meal"
+          ],
+          "tags": [
+            "NUGGETS_8CT_MEAL"
+          ],
+          "pins": [
+            "300211"
+          ],
+          "itemTypes": [
+            "MEALS_GROUP"
+          ],
+          "sellable": true,
+          "role": "deferred_meal_container",
+          "identitySource": "menu",
+          "officialCategories": [
+            "Chicken"
+          ]
+        }
+      }
+    },
+    {
+      "id": "cfa-mealgroup-100274",
+      "name": "Grilled Nuggets 8 Ct Meal",
+      "image": "https://www.cfacdn.com/img/order/menu/Online/Entrees/grilledNuggets_8ct_PDP_Desk.png",
+      "categories": [
+        "Chicken"
+      ],
+      "servingType": "combo",
+      "sourceOnly": true,
+      "defaultOrder": 5000,
+      "comboConfig": {
+        "entreeItemId": "cfa-group-100360",
+        "sideOptions": [
+          "cfa-item-1000123",
+          "cfa-item-1000124",
+          "cfa-item-1004576",
+          "cfa-item-1006832",
+          "cfa-item-1000166",
+          "cfa-item-1000167",
+          "cfa-item-1006280",
+          "cfa-item-1006211",
+          "cfa-item-1004265",
+          "cfa-item-1005315",
+          "cfa-item-1005316",
+          "cfa-item-1000224"
+        ],
+        "drinkOptions": [
+          "cfa-item-1009674",
+          "cfa-item-1009681",
+          "cfa-item-1010177",
+          "cfa-item-1009330",
+          "cfa-item-1009331",
+          "cfa-item-1009324",
+          "cfa-item-1009325",
+          "cfa-item-1009326",
+          "cfa-item-1009327",
+          "cfa-item-1009328",
+          "cfa-item-1009329",
+          "cfa-item-1009675",
+          "cfa-item-1009677",
+          "cfa-item-1004728",
+          "cfa-item-1010293",
+          "cfa-item-1009678",
+          "cfa-item-1009676",
+          "cfa-item-1007075",
+          "cfa-item-1009779",
+          "cfa-item-1010294",
+          "cfa-item-1009781",
+          "cfa-item-1009332",
+          "cfa-item-1009333",
+          "cfa-item-1005216",
+          "cfa-item-1005221",
+          "cfa-item-1009402",
+          "cfa-item-1009403",
+          "cfa-item-1009396",
+          "cfa-item-1009343",
+          "cfa-item-1009344",
+          "cfa-item-1009345",
+          "cfa-item-1009346",
+          "cfa-item-1009350",
+          "cfa-item-1009348",
+          "cfa-item-1009386",
+          "cfa-item-1009387",
+          "cfa-item-1009388",
+          "cfa-item-1009389",
+          "cfa-item-1009391",
+          "cfa-item-1009384",
+          "cfa-item-1009385",
+          "cfa-item-1009378",
+          "cfa-item-1009393",
+          "cfa-item-1009377",
+          "cfa-item-1000336",
+          "cfa-item-1000335",
+          "cfa-item-1000334",
+          "cfa-item-1000341",
+          "cfa-item-1000340",
+          "cfa-item-1000339",
+          "cfa-item-1000127",
+          "cfa-item-1000126",
+          "cfa-item-1000125",
+          "cfa-item-1000132",
+          "cfa-item-1000131",
+          "cfa-item-1000130",
+          "cfa-item-1004190",
+          "cfa-item-1004189",
+          "cfa-item-1004188",
+          "cfa-item-1004159",
+          "cfa-item-1004158",
+          "cfa-item-1004157",
+          "cfa-item-1004164",
+          "cfa-item-1004163",
+          "cfa-item-1004162",
+          "cfa-item-1004174",
+          "cfa-item-1004173",
+          "cfa-item-1004172",
+          "cfa-item-1004169",
+          "cfa-item-1004168",
+          "cfa-item-1004167",
+          "cfa-item-1000248",
+          "cfa-item-1000247",
+          "cfa-item-1000246",
+          "cfa-item-1000253",
+          "cfa-item-1000252",
+          "cfa-item-1000251",
+          "cfa-item-1001506",
+          "cfa-item-1001505",
+          "cfa-item-1001504",
+          "cfa-item-1000070",
+          "cfa-item-1000069",
+          "cfa-item-1000068",
+          "cfa-item-1000312",
+          "cfa-item-1000311",
+          "cfa-item-1000310",
+          "cfa-item-1000263",
+          "cfa-item-1000262",
+          "cfa-item-1000261",
+          "cfa-item-1000258",
+          "cfa-item-1000257",
+          "cfa-item-1000256",
+          "cfa-item-1000283",
+          "cfa-item-1000282",
+          "cfa-item-1000281",
+          "cfa-item-1000268",
+          "cfa-item-1000267",
+          "cfa-item-1000266",
+          "cfa-item-1000432",
+          "cfa-item-1000431",
+          "cfa-item-1000430",
+          "cfa-item-1000190",
+          "cfa-item-1003375",
+          "cfa-item-1005767",
+          "cfa-item-1010013",
+          "cfa-item-1010014",
+          "cfa-item-1010015",
+          "cfa-item-1010295",
+          "cfa-item-1004713",
+          "cfa-item-1002075",
+          "cfa-item-1002071",
+          "cfa-item-1002073",
+          "cfa-item-1002069",
+          "cfa-item-1001175",
+          "cfa-item-1001170",
+          "cfa-item-1001290"
+        ]
+      },
+      "source": {
+        "provider": "Chick-fil-A",
+        "menu": {
+          "recordId": "itemGroupId:100274",
+          "itemClass": "ITEM_GROUPING",
+          "itemGroupId": "100274",
+          "referencedItemGroupIds": [
+            "100274"
+          ],
+          "containingItemGroupIds": [],
+          "names": [
+            "Grilled Nuggets 8 Ct Meal"
+          ],
+          "tags": [
+            "NUGGETS_GRILLED_8CT_MEAL"
+          ],
+          "pins": [
+            "300251"
+          ],
+          "itemTypes": [
+            "MEALS_GROUP"
+          ],
+          "sellable": true,
+          "role": "deferred_meal_container",
+          "identitySource": "menu",
+          "officialCategories": [
+            "Chicken"
+          ]
+        }
+      }
+    },
+    {
+      "id": "cfa-mealgroup-100280",
+      "name": "Chick-fil-A Chick-n-Strips® 3 Ct Meal",
+      "image": "https://www.cfacdn.com/img/order/menu/Online/Entrees/strips_wSauce_PDP_Desk.png",
+      "categories": [
+        "Chicken"
+      ],
+      "servingType": "combo",
+      "sourceOnly": true,
+      "defaultOrder": 5000,
+      "comboConfig": {
+        "entreeItemId": "cfa-group-100361",
+        "sideOptions": [
+          "cfa-item-1000123",
+          "cfa-item-1000124",
+          "cfa-item-1004576",
+          "cfa-item-1006832",
+          "cfa-item-1000166",
+          "cfa-item-1000167",
+          "cfa-item-1006280",
+          "cfa-item-1006211",
+          "cfa-item-1004265",
+          "cfa-item-1005315",
+          "cfa-item-1005316",
+          "cfa-item-1000224"
+        ],
+        "drinkOptions": [
+          "cfa-item-1009674",
+          "cfa-item-1009681",
+          "cfa-item-1010177",
+          "cfa-item-1009330",
+          "cfa-item-1009331",
+          "cfa-item-1009324",
+          "cfa-item-1009325",
+          "cfa-item-1009326",
+          "cfa-item-1009327",
+          "cfa-item-1009328",
+          "cfa-item-1009329",
+          "cfa-item-1009675",
+          "cfa-item-1009677",
+          "cfa-item-1004728",
+          "cfa-item-1010293",
+          "cfa-item-1009678",
+          "cfa-item-1009676",
+          "cfa-item-1007075",
+          "cfa-item-1009779",
+          "cfa-item-1010294",
+          "cfa-item-1009781",
+          "cfa-item-1009332",
+          "cfa-item-1009333",
+          "cfa-item-1005216",
+          "cfa-item-1005221",
+          "cfa-item-1009402",
+          "cfa-item-1009403",
+          "cfa-item-1009396",
+          "cfa-item-1009343",
+          "cfa-item-1009344",
+          "cfa-item-1009345",
+          "cfa-item-1009346",
+          "cfa-item-1009350",
+          "cfa-item-1009348",
+          "cfa-item-1009386",
+          "cfa-item-1009387",
+          "cfa-item-1009388",
+          "cfa-item-1009389",
+          "cfa-item-1009391",
+          "cfa-item-1009384",
+          "cfa-item-1009385",
+          "cfa-item-1009378",
+          "cfa-item-1009393",
+          "cfa-item-1009377",
+          "cfa-item-1000336",
+          "cfa-item-1000335",
+          "cfa-item-1000334",
+          "cfa-item-1000341",
+          "cfa-item-1000340",
+          "cfa-item-1000339",
+          "cfa-item-1000127",
+          "cfa-item-1000126",
+          "cfa-item-1000125",
+          "cfa-item-1000132",
+          "cfa-item-1000131",
+          "cfa-item-1000130",
+          "cfa-item-1004190",
+          "cfa-item-1004189",
+          "cfa-item-1004188",
+          "cfa-item-1004159",
+          "cfa-item-1004158",
+          "cfa-item-1004157",
+          "cfa-item-1004164",
+          "cfa-item-1004163",
+          "cfa-item-1004162",
+          "cfa-item-1004174",
+          "cfa-item-1004173",
+          "cfa-item-1004172",
+          "cfa-item-1004169",
+          "cfa-item-1004168",
+          "cfa-item-1004167",
+          "cfa-item-1000248",
+          "cfa-item-1000247",
+          "cfa-item-1000246",
+          "cfa-item-1000253",
+          "cfa-item-1000252",
+          "cfa-item-1000251",
+          "cfa-item-1001506",
+          "cfa-item-1001505",
+          "cfa-item-1001504",
+          "cfa-item-1000070",
+          "cfa-item-1000069",
+          "cfa-item-1000068",
+          "cfa-item-1000312",
+          "cfa-item-1000311",
+          "cfa-item-1000310",
+          "cfa-item-1000263",
+          "cfa-item-1000262",
+          "cfa-item-1000261",
+          "cfa-item-1000258",
+          "cfa-item-1000257",
+          "cfa-item-1000256",
+          "cfa-item-1000283",
+          "cfa-item-1000282",
+          "cfa-item-1000281",
+          "cfa-item-1000268",
+          "cfa-item-1000267",
+          "cfa-item-1000266",
+          "cfa-item-1000432",
+          "cfa-item-1000431",
+          "cfa-item-1000430",
+          "cfa-item-1000190",
+          "cfa-item-1003375",
+          "cfa-item-1005767",
+          "cfa-item-1010013",
+          "cfa-item-1010014",
+          "cfa-item-1010015",
+          "cfa-item-1010295",
+          "cfa-item-1004713",
+          "cfa-item-1002075",
+          "cfa-item-1002071",
+          "cfa-item-1002073",
+          "cfa-item-1002069",
+          "cfa-item-1001175",
+          "cfa-item-1001170",
+          "cfa-item-1001290"
+        ]
+      },
+      "source": {
+        "provider": "Chick-fil-A",
+        "menu": {
+          "recordId": "itemGroupId:100280",
+          "itemClass": "ITEM_GROUPING",
+          "itemGroupId": "100280",
+          "referencedItemGroupIds": [
+            "100280"
+          ],
+          "containingItemGroupIds": [],
+          "names": [
+            "Chick-fil-A Chick-n-Strips® 3 Ct Meal"
+          ],
+          "tags": [
+            "STRIPS_3CT_MEAL"
+          ],
+          "pins": [
+            "300207"
+          ],
+          "itemTypes": [
+            "MEALS_GROUP"
+          ],
+          "sellable": true,
+          "role": "deferred_meal_container",
+          "identitySource": "menu",
+          "officialCategories": [
+            "Chicken"
+          ]
         }
       }
     }
@@ -66484,7 +68479,6 @@
         "cfa-addon-1000045",
         "cfa-addon-1000029",
         "cfa-addon-1000013",
-        "cfa-addon-1001381",
         "cfa-addon-1005749"
       ],
       "maxPerItem": 2
@@ -66510,7 +68504,6 @@
         "cfa-addon-1000045",
         "cfa-addon-1000029",
         "cfa-addon-1000013",
-        "cfa-addon-1001381",
         "cfa-addon-1005749"
       ],
       "maxPerItem": 2
@@ -66536,7 +68529,6 @@
         "cfa-addon-1000045",
         "cfa-addon-1000029",
         "cfa-addon-1000013",
-        "cfa-addon-1001381",
         "cfa-addon-1005749"
       ],
       "maxPerItem": 2
@@ -66562,7 +68554,6 @@
         "cfa-addon-1000045",
         "cfa-addon-1000029",
         "cfa-addon-1000013",
-        "cfa-addon-1001381",
         "cfa-addon-1005749"
       ],
       "maxPerItem": 2
@@ -66588,7 +68579,6 @@
         "cfa-addon-1000045",
         "cfa-addon-1000029",
         "cfa-addon-1000013",
-        "cfa-addon-1001381",
         "cfa-addon-1005749"
       ],
       "maxPerItem": 2
@@ -66614,7 +68604,6 @@
         "cfa-addon-1000045",
         "cfa-addon-1000029",
         "cfa-addon-1000013",
-        "cfa-addon-1001381",
         "cfa-addon-1005749"
       ],
       "maxPerItem": 2
@@ -66640,7 +68629,6 @@
         "cfa-addon-1000045",
         "cfa-addon-1000029",
         "cfa-addon-1000013",
-        "cfa-addon-1001381",
         "cfa-addon-1005749"
       ],
       "maxPerItem": 2
@@ -66666,7 +68654,6 @@
         "cfa-addon-1000045",
         "cfa-addon-1000029",
         "cfa-addon-1000013",
-        "cfa-addon-1001381",
         "cfa-addon-1005749"
       ],
       "maxPerItem": 2
@@ -66692,7 +68679,6 @@
         "cfa-addon-1000045",
         "cfa-addon-1000029",
         "cfa-addon-1000013",
-        "cfa-addon-1001381",
         "cfa-addon-1005749"
       ],
       "maxPerItem": 2
@@ -66718,7 +68704,6 @@
         "cfa-addon-1000045",
         "cfa-addon-1000029",
         "cfa-addon-1000013",
-        "cfa-addon-1001381",
         "cfa-addon-1005749"
       ],
       "maxPerItem": 2
@@ -67166,7 +69151,6 @@
         "cfa-addon-1000045",
         "cfa-addon-1000029",
         "cfa-addon-1000013",
-        "cfa-addon-1001381",
         "cfa-addon-1005749"
       ],
       "maxPerItem": 2
@@ -67203,7 +69187,6 @@
         "cfa-addon-1000010",
         "cfa-addon-1000045",
         "cfa-addon-1000013",
-        "cfa-addon-1001381",
         "cfa-addon-1005749"
       ],
       "maxPerItem": 2
@@ -67229,7 +69212,6 @@
         "cfa-addon-1000045",
         "cfa-addon-1000029",
         "cfa-addon-1000013",
-        "cfa-addon-1001381",
         "cfa-addon-1005749"
       ],
       "maxPerItem": 2
@@ -68546,6 +70528,10 @@
       "Sandwich Remove Modifiers [CFA 100188:3]": {
         "allowNone": true
       },
+      "Individual Sauces [CFA 100227:0]": {
+        "maxQuantity": 2,
+        "allowNone": true
+      },
       "Bread Carriers [CFA 100227:2]": {
         "maxQuantity": 1,
         "allowNone": false
@@ -68559,6 +70545,10 @@
       },
       "Add Pickles Mod [CFA 100227:5]": {
         "maxQuantity": 5,
+        "allowNone": true
+      },
+      "Individual Sauces [CFA 100236:0]": {
+        "maxQuantity": 2,
         "allowNone": true
       },
       "Bread Carriers [CFA 100236:2]": {
@@ -68576,6 +70566,10 @@
         "maxQuantity": 5,
         "allowNone": true
       },
+      "Individual Sauces [CFA 100240:0]": {
+        "maxQuantity": 2,
+        "allowNone": true
+      },
       "Bread Carriers [CFA 100240:2]": {
         "maxQuantity": 1,
         "allowNone": false
@@ -68589,6 +70583,10 @@
       },
       "Add Pickles Mod [CFA 100240:5]": {
         "maxQuantity": 5,
+        "allowNone": true
+      },
+      "Individual Sauces [CFA 100247:0]": {
+        "maxQuantity": 2,
         "allowNone": true
       },
       "Bread Carriers [CFA 100247:2]": {
@@ -68606,6 +70604,10 @@
         "maxQuantity": 5,
         "allowNone": true
       },
+      "Individual Sauces [CFA 100249:0]": {
+        "maxQuantity": 2,
+        "allowNone": true
+      },
       "Bread Carriers [CFA 100249:2]": {
         "maxQuantity": 1,
         "allowNone": false
@@ -68621,6 +70623,10 @@
         "maxQuantity": 5,
         "allowNone": true
       },
+      "Individual Sauces [CFA 100354:0]": {
+        "maxQuantity": 2,
+        "allowNone": true
+      },
       "Bread Carriers [CFA 100354:2]": {
         "maxQuantity": 1,
         "allowNone": false
@@ -68632,6 +70638,10 @@
       "Sandwich Remove Modifiers [CFA 100354:4]": {
         "allowNone": true
       },
+      "Individual Sauces [CFA 100256:0]": {
+        "maxQuantity": 2,
+        "allowNone": true
+      },
       "Bread Carriers [CFA 100256:2]": {
         "maxQuantity": 1,
         "allowNone": false
@@ -68641,6 +70651,10 @@
         "allowNone": true
       },
       "Sandwich Remove Modifiers [CFA 100256:4]": {
+        "allowNone": true
+      },
+      "Individual Sauces [CFA 100259:0]": {
+        "maxQuantity": 2,
         "allowNone": true
       },
       "Bread Carriers [CFA 100259:2]": {
@@ -68674,12 +70688,20 @@
         "maxQuantity": 2,
         "allowNone": true
       },
+      "Individual Sauces [CFA 100367:1]": {
+        "maxQuantity": 2,
+        "allowNone": true
+      },
       "Add Pickles Mod [CFA 100367:2]": {
         "maxQuantity": 2,
         "allowNone": true
       },
       "Sandwich Paid Modifiers [CFA 100367:3]": {
         "maxQuantity": 10,
+        "allowNone": true
+      },
+      "Individual Sauces [CFA 100368:1]": {
+        "maxQuantity": 2,
         "allowNone": true
       },
       "Add Pickles Mod [CFA 100368:2]": {
@@ -69492,8 +71514,8 @@
       "menuHashCode": "206517041"
     },
     "logicalRecordCounts": {
-      "total": 489,
-      "menuItems": 430,
+      "total": 498,
+      "menuItems": 439,
       "ingredients": 59
     },
     "nutritionMatches": {
@@ -69510,7 +71532,7 @@
       "standaloneNutrition": 312,
       "orderingSystem": 111,
       "contextualOrderingSystem": 5,
-      "withheldOrUnmatched": 61
+      "withheldOrUnmatched": 70
     },
     "orderingNutritionFallback": {
       "sourceRecords": 1222,
@@ -109665,7 +111687,7 @@
         "name": "Chicken & Waffles Breakfast Sandwich w/ Chick-fil-A® Filet",
         "exposure": "menu_item",
         "categories": [
-          "Sandwiches"
+          "Breakfast"
         ],
         "servingType": "breakfast",
         "rankingEligible": true,
@@ -109678,7 +111700,7 @@
         "name": "Chicken & Waffles Breakfast Sandwich w/ Spicy Filet",
         "exposure": "menu_item",
         "categories": [
-          "Sandwiches"
+          "Breakfast"
         ],
         "servingType": "breakfast",
         "rankingEligible": true,
@@ -109691,7 +111713,7 @@
         "name": "Chicken & Waffles Breakfast Sandwich w/ Grilled Filet",
         "exposure": "menu_item",
         "categories": [
-          "Sandwiches"
+          "Breakfast"
         ],
         "servingType": "breakfast",
         "rankingEligible": true,

@@ -46,9 +46,46 @@ function itemKey(item: MenuItem) {
 function resolveConfiguredItems(itemIds: string[] | undefined, menuItems: MenuItem[] | undefined) {
   if (!itemIds?.length || !menuItems?.length) return [];
   const itemById = new Map(menuItems.map((menuItem) => [menuItem.id, menuItem]));
+  const canonicalParentByVariantId = new Map<string, MenuItem>();
+  const canonicalParentBySourceIdentity = new Map<string, MenuItem | null>();
+  const registerSourceIdentity = (key: string, parent: MenuItem) => {
+    const existing = canonicalParentBySourceIdentity.get(key);
+    canonicalParentBySourceIdentity.set(
+      key,
+      existing && existing.id !== parent.id ? null : parent,
+    );
+  };
+  menuItems.forEach((menuItem) => {
+    if (menuItem.sourceOnly || !menuItem.variants?.length) return;
+    menuItem.variants.forEach((variant) => {
+      canonicalParentByVariantId.set(variant.id, menuItem);
+      variant.source?.menu.tags.forEach((tag) =>
+        registerSourceIdentity(`tag:${tag}`, menuItem),
+      );
+      variant.source?.menu.pins.forEach((pin) =>
+        registerSourceIdentity(`pin:${pin}`, menuItem),
+      );
+    });
+  });
+
+  const seen = new Set<string>();
   return itemIds.flatMap((itemId) => {
-    const item = itemById.get(itemId);
-    return item ? [item] : [];
+    const configuredItem = itemById.get(itemId);
+    const identityParent = configuredItem?.sourceOnly
+      ? configuredItem.source?.menu.tags
+          .map((tag) => canonicalParentBySourceIdentity.get(`tag:${tag}`))
+          .find((candidate): candidate is MenuItem => Boolean(candidate)) ??
+        configuredItem.source?.menu.pins
+          .map((pin) => canonicalParentBySourceIdentity.get(`pin:${pin}`))
+          .find((candidate): candidate is MenuItem => Boolean(candidate))
+      : undefined;
+    const item =
+      canonicalParentByVariantId.get(itemId) ?? identityParent ?? configuredItem;
+    if (!item) return [];
+    const key = item.id ?? item.name;
+    if (seen.has(key)) return [];
+    seen.add(key);
+    return [item];
   });
 }
 
@@ -85,12 +122,33 @@ function resolveLegacyChickfilaComboConfig(
   };
 }
 
+// Generated datasets can model a meal as its own bundle record (e.g. a
+// "cfa-group-*" combo item) that points back at the entree via
+// `comboConfig.entreeItemId`, rather than attaching `comboConfig` directly to
+// the entree itself. These bundle records are `sourceOnly` (excluded from
+// browsable listings, see MenuItem.sourceOnly) but still present in the
+// unfiltered `menuItems` passed around for relationship lookups, so this is a
+// safe, restaurant-agnostic way to recover the official relationship.
+function resolveLinkedComboConfig(item: MenuItem, menuItems: MenuItem[] | undefined) {
+  return menuItems?.find((menuItem) => menuItem.comboConfig?.entreeItemId === item.id)?.comboConfig;
+}
+
 export function resolveComboMealConfig(
   restaurantId: string,
   item: MenuItem,
   menuItems: MenuItem[] | undefined
 ): ComboMealConfig | undefined {
-  return item.comboConfig ?? resolveLegacyChickfilaComboConfig(restaurantId, item, menuItems);
+  const generatedConfig = item.comboConfig ?? resolveLinkedComboConfig(item, menuItems);
+  if (generatedConfig) return generatedConfig;
+
+  // Generated Chick-fil-A records must be eligible only when the official
+  // source graph links the entree to a meal container. Keep the legacy
+  // category fallback solely for the old hand-authored dataset.
+  if (restaurantId === "chickfila" && item.id.startsWith("cfa-")) {
+    return undefined;
+  }
+
+  return resolveLegacyChickfilaComboConfig(restaurantId, item, menuItems);
 }
 
 export function isComboMealEligible(restaurantId: string, item: MenuItem, menuItems: MenuItem[] | undefined) {

@@ -32,7 +32,6 @@ import {
   normalizeIngredientCategory,
   normalizeIngredientToken,
   sortByCalories,
-  formatSummaryDetail,
   toNumber,
 } from "@/lib/itemDetails/helpers";
 import {
@@ -41,6 +40,7 @@ import {
   resolvePanelIngredients,
 } from "@/lib/itemDetails/ingredientResolution";
 import type { ResolvedPanelIngredient } from "@/lib/itemDetails/types";
+import { addonGroupUsesQuantitySelection } from "@/lib/addonGroups";
 import SectionEyebrow from "@/components/ui/SectionEyebrow";
 import NutritionFactsPanel from "@/components/nutrition/NutritionFactsPanel";
 import {
@@ -151,11 +151,11 @@ type DisplayIngredient = ResolvedPanelIngredient & {
   shouldShowSingleSelectNavigator: boolean;
   isSingleSelectTab: boolean;
   canToggleIngredientFromCard: boolean;
+  isExtraSelected: boolean;
   includedStatus?: IncludedStatus;
 };
 
 type DisplayAddonSection = AvailableAddonSection & {
-  summaryDetail: string;
   items: Array<{
     addon: MenuItem;
     sauceCount: number;
@@ -175,58 +175,64 @@ function prepareAddonSections({
   selectedAddons?: Partial<Record<string, MenuItem>>;
   sauceSelectionCounts?: Partial<Record<string, number>>;
 }): DisplayAddonSection[] {
-  return (item.addonRefs ?? []).flatMap((ref) => {
+  const categories = new Set(item.categories.map(normalizeIngredientCategory));
+  const isSalad = categories.has("salad") || categories.has("salads");
+  const isChicken = categories.has("chicken");
+  const rawSections = (item.addonRefs ?? []).flatMap((ref) => {
     const group = addons?.[ref];
     if (!group || group.items.length === 0) return [];
     const sortedAddons = sortByCalories(group.items);
-    const sauceSelections =
-      ref === "sauces"
-        ? sortedAddons.filter(
-            (addon) =>
-              addon.name !== "None" &&
-              (sauceSelectionCounts?.[addon.name] ?? 0) > 0,
-          )
-        : [];
-    const sauceSummaryCalories = sauceSelections.reduce(
-      (sum, addon) =>
-        sum +
-        toNumber(addon.nutrition.calories) *
-          (sauceSelectionCounts?.[addon.name] ?? 0),
-      0,
-    );
-    const selectedAddon = selectedAddons?.[ref];
+    const isDressing = ref === "dressings" || /dressing/i.test(group.label);
+    const isDippingSauce = isChicken && /individual sauces|dipping sauces/i.test(group.label);
+    const tier: "primary" | "tertiary" =
+      ref === "sauces" || isDressing || isDippingSauce || isSalad ? "primary" : "tertiary";
+    const title = isDressing
+      ? "Dressings"
+      : isDippingSauce
+        ? "Dipping Sauces"
+        : isSalad
+          ? "Condiments"
+          : group.label;
+    const usesQuantitySelection = addonGroupUsesQuantitySelection(ref);
     return [
       {
         ref,
-        title: group.label,
+        tier,
+        usesQuantitySelection,
+        title,
         addons: sortedAddons,
         maxPerItem: group.maxPerItem,
-        summaryDetail:
-          ref === "sauces"
-            ? formatSummaryDetail(
-                sauceSelections[0]?.name ?? "None",
-                sauceSummaryCalories,
-              )
-            : formatSummaryDetail(
-                selectedAddon?.name ?? "None",
-                selectedAddon?.nutrition.calories ?? 0,
-              ),
         items: sortedAddons.map((addon) => {
-          const sauceCount =
-            ref === "sauces" ? (sauceSelectionCounts?.[addon.name] ?? 0) : 0;
+          const sauceCount = usesQuantitySelection ? (sauceSelectionCounts?.[addon.name] ?? 0) : 0;
           return {
             addon,
             sauceCount,
-            isSelected:
-              ref === "sauces"
-                ? sauceCount > 0
-                : selectedAddons?.[ref]?.name === addon.name,
+            isSelected: usesQuantitySelection
+              ? sauceCount > 0
+              : selectedAddons?.[ref]?.name === addon.name,
             calories: toNumber(addon.nutrition.calories),
           };
         }),
       },
     ];
   });
+
+  const merged = new Map<string, DisplayAddonSection>();
+  rawSections.forEach((section) => {
+    const key = `${section.tier}:${section.title}`;
+    const existing = merged.get(key);
+    if (!existing) {
+      merged.set(key, section);
+      return;
+    }
+    const items = [...existing.items];
+    section.items.forEach((entry) => {
+      const id = entry.addon.id ?? entry.addon.name;
+      if (!items.some((candidate) => (candidate.addon.id ?? candidate.addon.name) === id)) items.push(entry);
+    });
+    merged.set(key, { ...existing, addons: items.map((entry) => entry.addon), items });
+  });
+  return [...merged.values()];
 }
 
 function prepareDisplayIngredients({
@@ -329,6 +335,7 @@ function prepareDisplayIngredients({
     });
     ingredientTabs.forEach((tab) => {
       if (tab.label === INCLUDED_INGREDIENT_TAB) return;
+      if (tab.selectionTarget === "parent-variant") return;
       if (tab.selectionMode === "single") {
         if (seenSingleSelectTabs.has(tab.label)) return;
         const selectedIngredient = tab.ingredients.find(
@@ -413,9 +420,13 @@ function prepareDisplayIngredients({
       shouldShowSingleSelectNavigator,
       isSingleSelectTab: selectedIngredientTab?.selectionMode === "single",
       canToggleIngredientFromCard:
+        !ingredient.isReadOnly &&
         !isLockedIngredient(ingredient.id) &&
         !shouldShowSingleSelectNavigator &&
         typeof ingredient.maxQuantity === "number",
+      isExtraSelected: ingredient.extraOption
+        ? (selectedIngredientCounts?.[ingredient.extraOption.id] ?? 0) > 0
+        : false,
       includedStatus,
     };
   });
@@ -515,6 +526,19 @@ type AvailableAddonSection = {
   title: string;
   addons: MenuItem[];
   maxPerItem?: number;
+  // "primary" = a meaningful, curated choice that belongs in the main
+  // customization area (Chipotle's sauces/dressings groups, or any group
+  // whose own label identifies it as a dressing choice — e.g. a Chick-fil-A
+  // salad's dressing options, which arrive under an opaque source ID rather
+  // than the literal "dressings" key). Everything else — large individual
+  // sauce/condiment collections in particular — is "tertiary": lower-priority
+  // customization that belongs in a single collapsed-by-default section at
+  // the bottom, not competing visually with the main item customization.
+  tier: "primary" | "tertiary";
+  // Only Chipotle's literal "dressings" group is a true single pick
+  // (ComboOptionList); every other group — including this one if it's
+  // "primary" only because of its label — uses the quantity-stepper card.
+  usesQuantitySelection: boolean;
 };
 
 type VariantConfig = {
@@ -858,6 +882,7 @@ function IngredientCustomizationSection({
             const includedStatus = ingredient.includedStatus;
             const isRemoved = includedStatus === "removed";
             const hasQuantityControl =
+              !ingredient.isReadOnly &&
               !shouldShowSingleSelectNavigator &&
               typeof ingredient.maxQuantity === "number";
             const displayLabel = ingredient.isNoneOption
@@ -941,35 +966,71 @@ function IngredientCustomizationSection({
             if (isSingleSelectTab) {
               return (
                 <li key={ingredient.id} className="flex py-1">
-                  <button
-                    type="button"
-                    className={`flex w-full cursor-pointer items-center gap-3 rounded-xl border px-2 py-2.5 text-left shadow-[0_1px_2px_rgba(0,0,0,0.04)] transition duration-150 sm:px-3 ${
+                  <div
+                    className={`w-full rounded-xl border bg-white shadow-[0_1px_2px_rgba(0,0,0,0.04)] transition duration-150 ${
                       isSelected
-                        ? "border-[1.5px] border-accent bg-white"
-                        : "border-black/10 bg-white hover:-translate-y-px hover:border-black/15 hover:shadow-[0_2px_6px_rgba(0,0,0,0.05)]"
+                        ? "border-[1.5px] border-accent"
+                        : "border-black/10 hover:-translate-y-px hover:border-black/15 hover:shadow-[0_2px_6px_rgba(0,0,0,0.05)]"
                     }`}
-                    onClick={() =>
-                      onSelectSingle?.(
-                        ingredient.id,
-                        selectedTab.ingredients.map(
-                          (candidate) => candidate.id,
-                        ),
-                      )
-                    }
                   >
-                    <IngredientThumb icon={ingredient.icon} />
-                    {nameAndMeta}
-                    <span
-                      aria-hidden="true"
-                      className={`inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-full border-2 bg-white ${
-                        isSelected ? "border-accent-strong" : "border-slate-300"
-                      }`}
+                    <button
+                      type="button"
+                      className="flex w-full cursor-pointer items-center gap-3 px-2 py-2.5 text-left sm:px-3"
+                      onClick={() =>
+                        onSelectSingle?.(
+                          ingredient.id,
+                          selectedTab.ingredients.map(
+                            (candidate) => candidate.id,
+                          ),
+                        )
+                      }
                     >
-                      {isSelected ? (
-                        <span className="h-2.5 w-2.5 rounded-full bg-accent-strong" />
-                      ) : null}
-                    </span>
-                  </button>
+                      <IngredientThumb icon={ingredient.icon} />
+                      {nameAndMeta}
+                      <span
+                        aria-hidden="true"
+                        className={`inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-full border-2 bg-white ${
+                          isSelected ? "border-accent-strong" : "border-slate-300"
+                        }`}
+                      >
+                        {isSelected ? (
+                          <span className="h-2.5 w-2.5 rounded-full bg-accent-strong" />
+                        ) : null}
+                      </span>
+                    </button>
+                    {isSelected && ingredient.extraOption ? (
+                      <div
+                        role="radiogroup"
+                        aria-label={`${ingredient.label} portion`}
+                        className="mx-3 mb-3 grid grid-cols-2 rounded-full bg-slate-100 p-1"
+                      >
+                        {[
+                          { label: "Normal", extra: false },
+                          { label: ingredient.extraOption.label, extra: true },
+                        ].map((option) => {
+                          const isActive = ingredient.isExtraSelected === option.extra;
+                          return (
+                            <button
+                              key={option.label}
+                              type="button"
+                              role="radio"
+                              aria-checked={isActive}
+                              onClick={() => {
+                                if (!isActive) onToggle?.(ingredient.extraOption!.id);
+                              }}
+                              className={`cursor-pointer rounded-full px-3 py-1.5 text-xs font-semibold transition-colors ${
+                                isActive
+                                  ? "bg-white text-accent-strong shadow-sm"
+                                  : "text-slate-500 hover:text-slate-700"
+                              }`}
+                            >
+                              {option.label}
+                            </button>
+                          );
+                        })}
+                      </div>
+                    ) : null}
+                  </div>
                 </li>
               );
             }
@@ -1109,19 +1170,15 @@ function ComboOptionRow({
 }) {
   const itemId = item.id ?? item.name;
   const variants = item.variants ?? [];
-  const activeVariant =
-    isSelected && variants.length > 0
-      ? variants.find(
-          (variant) =>
-            (selectedVariantId ?? item.defaultVariantId ?? variants[0]?.id) ===
-            variant.id,
-        )
-      : undefined;
-  const activeNutrition = activeVariant?.nutrition ?? item.nutrition;
-  const calories = activeNutrition.calories;
-  const protein = activeNutrition.protein;
-  const carbs = activeNutrition.carbs;
-  const fat = activeNutrition.totalFat;
+  const selectedVariant = selectedVariantId
+    ? variants.find((variant) => variant.id === selectedVariantId)
+    : undefined;
+  const defaultVariant = item.defaultVariantId
+    ? variants.find((variant) => variant.id === item.defaultVariantId)
+    : undefined;
+  const activeVariant = selectedVariant ?? defaultVariant;
+  const activeNutrition =
+    activeVariant?.nutrition ?? (item.nutrition as Nutrition | undefined);
 
   return (
     <li className="flex py-1">
@@ -1142,13 +1199,15 @@ function ComboOptionRow({
             <p className="line-clamp-2 break-words text-sm font-semibold text-neutral-900 sm:line-clamp-1 sm:truncate sm:text-base">
               {item.name}
             </p>
-            <MacroInlineSummary
-              calories={calories}
-              protein={protein}
-              carbs={carbs}
-              totalFat={fat}
-              className="mt-0.5"
-            />
+            {activeNutrition ? (
+              <MacroInlineSummary
+                calories={activeNutrition.calories}
+                protein={activeNutrition.protein}
+                carbs={activeNutrition.carbs}
+                totalFat={activeNutrition.totalFat}
+                className="mt-0.5"
+              />
+            ) : null}
           </div>
           <span
             aria-hidden="true"
@@ -1479,17 +1538,30 @@ function AddonCustomizationSection({ config }: AddonCustomizationSectionProps) {
     onDecrementSauce,
     onIncrementSauce,
   } = config;
+  const primarySections = sections.filter((section) => section.tier === "primary");
+  // Large individual sauce/condiment collections (e.g. Chick-fil-A's dipping
+  // sauces + condiments) are real options but shouldn't compete visually
+  // with the item's main customization — they're merged into one
+  // collapsed-by-default "Extra sauces & condiments" section at the bottom,
+  // using the same compact card as the primary sauces section above.
+  const tertiarySections = sections.filter((section) => section.tier === "tertiary");
+  const tertiaryStateKey = "addon-extras";
+  const isTertiaryOpen = openState[tertiaryStateKey] ?? false;
+  // Source data can list the same addon under more than one group on the
+  // same item (e.g. a side's "Individual Sauces"/"Condiments" groups
+  // sometimes repeat verbatim across two different modifier contexts) — dedupe
+  // by identity so the merged section never shows the same card twice.
+  const tertiaryItems = tertiarySections
+    .flatMap((section) => section.items)
+    .filter(
+      (entry, index, all) =>
+        all.findIndex((candidate) => (candidate.addon.id ?? candidate.addon.name) === (entry.addon.id ?? entry.addon.name)) === index,
+    );
+
   return (
     <section className="rounded-2xl border border-black/10 bg-white p-5 sm:p-6">
       <div className="grid gap-4">
-        {sections.map((section) => {
-          const isAlwaysExpandedSection =
-            section.ref === "sauces" || section.ref === "dressings";
-          const sectionStateKey = `addon-${section.ref}`;
-          const isSectionOpen = isAlwaysExpandedSection
-            ? true
-            : (openState[sectionStateKey] ?? true);
-          const summaryDetail = section.summaryDetail;
+        {primarySections.map((section) => {
           return (
             <div
               key={section.ref}
@@ -1502,141 +1574,94 @@ function AddonCustomizationSection({ config }: AddonCustomizationSectionProps) {
                     : undefined
               }
             >
-              <div
-                className={`flex min-h-[44px] w-full items-center justify-between gap-[10px] rounded-[10px] border-0 bg-transparent py-1 text-left ${
-                  isAlwaysExpandedSection ? "" : "cursor-pointer"
-                }`}
-                role={isAlwaysExpandedSection ? undefined : "button"}
-                tabIndex={isAlwaysExpandedSection ? undefined : 0}
-                onClick={
-                  isAlwaysExpandedSection
-                    ? undefined
-                    : () =>
-                        setOpenState((prev) => ({
-                          ...prev,
-                          [sectionStateKey]: !(prev[sectionStateKey] ?? true),
-                        }))
-                }
-                onKeyDown={
-                  isAlwaysExpandedSection
-                    ? undefined
-                    : (event) => {
-                        if (event.key === "Enter" || event.key === " ") {
-                          event.preventDefault();
-                          setOpenState((prev) => ({
-                            ...prev,
-                            [sectionStateKey]: !(prev[sectionStateKey] ?? true),
-                          }));
-                        }
-                      }
-                }
-              >
+              <div className="flex min-h-[44px] w-full items-center justify-between gap-[10px] rounded-[10px] border-0 bg-transparent py-1 text-left">
                 <h3 className="m-0 text-lg font-bold text-neutral-900 sm:text-xl">
                   {section.title}
-                  {!isSectionOpen ? (
-                    <span className="text-[18px] font-semibold text-[rgba(0,0,0,0.5)]">
-                      {" "}
-                      {summaryDetail}
-                    </span>
-                  ) : null}
                 </h3>
-                {isAlwaysExpandedSection ? null : (
-                  <div className="inline-flex items-center gap-2">
-                    <span className="inline-flex h-7 w-7 cursor-inherit items-center justify-center bg-white">
-                      <ChevronDown
-                        size={24}
-                        className={`transition-transform ${isSectionOpen ? "rotate-180" : ""}`}
-                      />
-                    </span>
-                  </div>
+              </div>
+              <div className="mt-4">
+                {section.usesQuantitySelection ? (
+                  <SauceOptionList
+                    items={section.items}
+                    onToggleSauce={onToggleSauce}
+                    onIncrementSauce={onIncrementSauce}
+                    onDecrementSauce={onDecrementSauce}
+                  />
+                ) : (
+                  <ComboOptionList
+                    items={section.items.map(({ addon }) => addon)}
+                    selectedId={
+                      section.items.find((entry) => entry.isSelected)?.addon
+                        .id ??
+                      section.items.find((entry) => entry.isSelected)?.addon
+                        .name
+                    }
+                    onSelect={(itemId) => {
+                      const target = section.items.find(
+                        ({ addon }) => (addon.id ?? addon.name) === itemId,
+                      )?.addon;
+                      if (!target) return;
+                      const isCurrentlySelected = section.items.some(
+                        (entry) =>
+                          entry.isSelected &&
+                          (entry.addon.id ?? entry.addon.name) === itemId,
+                      );
+                      onSelectAddon?.(
+                        section.ref,
+                        isCurrentlySelected ? undefined : target,
+                      );
+                    }}
+                  />
                 )}
               </div>
-              {isSectionOpen ? (
-                section.ref === "sauces" ? (
-                  <div className="mt-4">
-                    <SauceOptionList
-                      items={section.items}
-                      onToggleSauce={onToggleSauce}
-                      onIncrementSauce={onIncrementSauce}
-                      onDecrementSauce={onDecrementSauce}
-                    />
-                  </div>
-                ) : section.ref === "dressings" ? (
-                  <div className="mt-4">
-                    <ComboOptionList
-                      items={section.items.map(({ addon }) => addon)}
-                      selectedId={
-                        section.items.find((entry) => entry.isSelected)?.addon
-                          .id ??
-                        section.items.find((entry) => entry.isSelected)?.addon
-                          .name
-                      }
-                      onSelect={(itemId) => {
-                        const target = section.items.find(
-                          ({ addon }) => (addon.id ?? addon.name) === itemId,
-                        )?.addon;
-                        if (!target) return;
-                        const isCurrentlySelected = section.items.some(
-                          (entry) =>
-                            entry.isSelected &&
-                            (entry.addon.id ?? entry.addon.name) === itemId,
-                        );
-                        onSelectAddon?.(
-                          section.ref,
-                          isCurrentlySelected ? undefined : target,
-                        );
-                      }}
-                    />
-                  </div>
-                ) : (
-                  <ul className="mt-4 grid list-none grid-cols-1 items-stretch gap-[10px] pl-0 sm:grid-cols-2">
-                    {section.items.map(({ addon, isSelected, calories }) => (
-                      <li key={`${section.ref}-${addon.name}`} className="flex">
-                        <button
-                          type="button"
-                          className={`box-border flex h-full w-full cursor-pointer flex-row items-center gap-3 rounded-[10px] border px-3 py-2 shadow-[0_1px_2px_rgba(0,0,0,0.04)] transition duration-150 ${
-                            isSelected
-                              ? "border-[1.5px] border-accent bg-white"
-                              : "border-black/10 bg-white hover:-translate-y-px hover:border-black/15 hover:shadow-[0_2px_6px_rgba(0,0,0,0.05)]"
-                          }`}
-                          onClick={() => {
-                            onSelectAddon?.(
-                              section.ref,
-                              isSelected ? undefined : addon,
-                            );
-                          }}
-                        >
-                          {addon.image === "none" ? (
-                            <div
-                              className={`grid h-[72px] w-[72px] min-w-[72px] place-items-center rounded-lg bg-cover bg-center text-[32px] font-bold text-black `}
-                            >
-                              ✕
-                            </div>
-                          ) : addon.image ? (
-                            <div
-                              className="grid h-[72px] w-[72px] min-w-[72px] place-items-center rounded-lg bg-cover bg-center text-[32px] font-bold text-black"
-                              style={{ backgroundImage: `url(${addon.image})` }}
-                            />
-                          ) : (
-                            <div className="grid h-[72px] w-[72px] min-w-[72px] place-items-center rounded-lg bg-cover bg-center text-[32px] font-bold text-black" />
-                          )}
-                          <div className="flex min-w-0 flex-col items-start justify-center gap-[6px]">
-                            <div className="line-clamp-2 break-words text-left text-base font-bold leading-[1.2]">
-                              {addon.name}
-                            </div>
-                            <div className="text-sm font-bold text-[rgba(0,0,0,0.5)]">
-                              +{calories} Cal
-                            </div>
-                          </div>
-                        </button>
-                      </li>
-                    ))}
-                  </ul>
-                )
-              ) : null}
             </div>
           );
         })}
+        {tertiaryItems.length > 0 ? (
+          <div className="min-w-0">
+            <div
+              className="flex min-h-[44px] w-full cursor-pointer items-center justify-between gap-[10px] rounded-[10px] border-0 bg-transparent py-1 text-left"
+              role="button"
+              tabIndex={0}
+              onClick={() =>
+                setOpenState((prev) => ({
+                  ...prev,
+                  [tertiaryStateKey]: !(prev[tertiaryStateKey] ?? false),
+                }))
+              }
+              onKeyDown={(event) => {
+                if (event.key !== "Enter" && event.key !== " ") return;
+                event.preventDefault();
+                setOpenState((prev) => ({
+                  ...prev,
+                  [tertiaryStateKey]: !(prev[tertiaryStateKey] ?? false),
+                }));
+              }}
+            >
+              <h3 className="m-0 text-sm font-medium text-slate-500 sm:text-base">
+                Extras
+              </h3>
+              <div className="inline-flex items-center gap-2">
+                <span className="inline-flex h-7 w-7 cursor-inherit items-center justify-center bg-white">
+                  <ChevronDown
+                    size={24}
+                    className={`transition-transform ${isTertiaryOpen ? "rotate-180" : ""}`}
+                  />
+                </span>
+              </div>
+            </div>
+            {isTertiaryOpen ? (
+              <div className="mt-4">
+                <SauceOptionList
+                  items={tertiaryItems}
+                  onToggleSauce={onToggleSauce}
+                  onIncrementSauce={onIncrementSauce}
+                  onDecrementSauce={onDecrementSauce}
+                />
+              </div>
+            ) : null}
+          </div>
+        ) : null}
       </div>
     </section>
   );
@@ -1816,33 +1841,12 @@ export default function ItemDetailsPanel({
         selectedComboDrink.defaultVariantId ??
         selectedComboDrink.variants?.[0]?.id) === variant.id,
   );
-  const selectedAddonItems = (
-    Object.entries(selectedAddons ?? {}) as Array<
-      [string, MenuItem | undefined]
-    >
-  )
-    .filter(([, addon]) => Boolean(addon && addon.name !== "None"))
-    .map(([, addon]) => ({
-      id: `addon-${addon?.name}`,
-      name: addon?.name ?? "",
-      quantity: 1,
-      image: addon?.image,
-    }));
-  const selectedSauceItems = Object.entries(sauceSelectionCounts ?? {})
-    .filter(([name, count]) => name !== "None" && (count ?? 0) > 0)
-    .map(([name, count]) => {
-      const sauceCount = count ?? 0;
-      const matchedSauce = addons?.sauces?.items.find(
-        (addon) => addon.name === name,
-      );
-      return {
-        id: `sauce-${name}`,
-        name,
-        quantity: sauceCount,
-        image: matchedSauce?.image,
-      };
-    });
-
+  // Meal Details represents meal-level components only (the entree itself,
+  // plus a combo's side/drink) — ingredient/addon-level picks (cheese,
+  // toppings, sauces, condiments, dressings) already factor into the
+  // entree's own nutrition and belong to its customization state, not a
+  // separate line here. See selectedAddons/sauceSelectionCounts, which this
+  // list deliberately does not read from.
   const detailItems: MealDetailItem[] = [
     {
       id: `main-${item.id ?? item.name}`,
@@ -1873,8 +1877,6 @@ export default function ItemDetailsPanel({
           },
         ]
       : []),
-    ...selectedAddonItems,
-    ...selectedSauceItems,
   ];
 
   const activeCustomizationTotals = {
@@ -1898,7 +1900,7 @@ export default function ItemDetailsPanel({
   );
   const isLockedIngredient = (ingredientId: string) =>
     normalizedLockedIngredientIds.has(normalizeIngredientToken(ingredientId));
-  const ingredientTabs = resolvePanelIngredientTabs(
+  const resolvedIngredientTabs = resolvePanelIngredientTabs(
     item,
     ingredientItems,
     addons,
@@ -1907,6 +1909,65 @@ export default function ItemDetailsPanel({
     selectedVariantId,
     customizationRules,
   );
+  const componentVariantTab: ResolvedIngredientTab | undefined =
+    item.variantGroupKind === "component" && variants?.length
+      ? {
+          id: normalizeIngredientToken(item.variantGroupLabel ?? "Cheeses"),
+          label: item.variantGroupLabel ?? "Cheeses",
+          selectionMode: "single",
+          selectionTarget: "parent-variant",
+          ingredients: variants.map((variant) => {
+            const extraIngredientIds = new Set(
+              Object.values(item.proteinExtraByVariantId ?? {}),
+            );
+            const normalizedLabel = normalizeIngredientToken(variant.label.replace(/^no\s+/i, ""));
+            const matchedIngredient = ingredientItems?.find(
+              (ingredient) =>
+                !extraIngredientIds.has(ingredient.id) &&
+                normalizeIngredientToken(ingredient.name).includes(normalizedLabel),
+            );
+            const extraIngredientId = item.proteinExtraByVariantId?.[variant.id];
+            const extraIngredient = extraIngredientId
+              ? ingredientItems?.find(
+                  (ingredient) => ingredient.id === extraIngredientId,
+                )
+              : undefined;
+            const isNone = /^no\s+/i.test(variant.label);
+            const variantNutrition = isNone
+              ? { calories: 0, protein: 0, carbs: 0, totalFat: 0 }
+              : (matchedIngredient?.nutrition ?? variant.nutrition);
+            return {
+              id: variant.id,
+              label: variant.label,
+              icon: matchedIngredient?.image ?? variant.image ?? item.image,
+              ingredientItem: matchedIngredient,
+              nutrition: variantNutrition,
+              calories: variantNutrition.calories,
+              defaultCount: variant.id === selectedVariantId ? 1 : 0,
+              maxQuantity: 1,
+              extraOption: extraIngredient
+                ? {
+                    id: extraIngredient.id,
+                    label: "Extra",
+                    nutrition: extraIngredient.nutrition,
+                  }
+                : undefined,
+            };
+          }),
+        }
+      : undefined;
+  const ingredientTabs = componentVariantTab
+    ? [
+        ...resolvedIngredientTabs.filter((tab) => tab.label !== componentVariantTab.label),
+        componentVariantTab,
+      ].sort((left, right) => {
+        const order = ["Included", "Buns", "Cheeses", "Protein", "Meat", "Toppings", "Sauces"];
+        const leftIndex = order.indexOf(left.label);
+        const rightIndex = order.indexOf(right.label);
+        return (leftIndex < 0 ? Number.POSITIVE_INFINITY : leftIndex) -
+          (rightIndex < 0 ? Number.POSITIVE_INFINITY : rightIndex);
+      })
+    : resolvedIngredientTabs;
   const [activeIngredientTab, setActiveIngredientTab] = useState(
     ingredientTabs[0]?.label ?? INCLUDED_INGREDIENT_TAB,
   );
@@ -1987,7 +2048,23 @@ export default function ItemDetailsPanel({
         displayIngredients,
         isLocked: isLockedIngredient,
         navigateToSingleSelectTab,
-        onSelectSingle: onSelectSingleIngredient,
+        onSelectSingle: (ingredientId, ingredientIdsInTab) => {
+          if (selectedIngredientTab.selectionTarget === "parent-variant") {
+            const selectedExtraId = selectedVariantId
+              ? item.proteinExtraByVariantId?.[selectedVariantId]
+              : undefined;
+            if (
+              ingredientId !== selectedVariantId &&
+              selectedExtraId &&
+              (selectedIngredientCounts?.[selectedExtraId] ?? 0) > 0
+            ) {
+              onToggleIngredient?.(selectedExtraId);
+            }
+            onSelectVariant?.(ingredientId);
+            return;
+          }
+          onSelectSingleIngredient?.(ingredientId, ingredientIdsInTab);
+        },
         onToggle: onToggleIngredient,
         onDecrement: onDecrementIngredient,
         onIncrement: onIncrementIngredient,
@@ -2051,7 +2128,7 @@ export default function ItemDetailsPanel({
                 totalFat: n.totalFat ?? 0,
               }}
             >
-              {variantConfig.showInDetails ? (
+              {variantConfig.showInDetails && item.variantGroupKind !== "component" ? (
                 <>
                   <PortionSelector
                     variants={variantConfig.variants}

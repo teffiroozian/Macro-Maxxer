@@ -69,8 +69,36 @@ export function resolveIngredientCategoryRule(
   return resolveRuleValueByCategoryKey(customizationRules?.ingredientCategories, categoryName);
 }
 
+// Aliases for raw source group names that map 1:1 onto Macro Maxxer's
+// standard customization vocabulary (currently sourced from Chick-fil-A's
+// generated modifier-group names — see scripts/importers/chick-fil-a.ts).
+// Keyed on the literal raw name rather than a restaurant check, since these
+// strings are unique to their source by construction.
+const TAB_NAME_ALIASES: Record<string, string> = {
+  "bread carriers": "Buns",
+  "breakfast bread carriers": "Buns",
+  "shredded cheese group": "Cheeses",
+  cheese: "Cheeses",
+  "sandwich remove modifiers": "Toppings",
+  "add pickles mod": "Toppings",
+  "breakfast removal": "Toppings",
+  "paid salad toppings": "Toppings",
+  "parfait fruit modifier": "Toppings",
+  "parfait modifiers": "Toppings",
+  "extra salad proteins": "Protein",
+  // A small, item-specific sauce/syrup selection (e.g. "Classic Syrup" on a
+  // breakfast sandwich) — distinct from the large individual sauce/condiment
+  // addon collections, which are handled separately as tertiary "Extra
+  // sauces & condiments" options (see ItemDetailsPanel's AddonCustomizationSection).
+  "individual sauces": "Sauces",
+};
+
 export function getIngredientTabDisplayLabel(tabName: string) {
   const normalized = normalizeTabName(tabName);
+  if (TAB_NAME_ALIASES[normalized]) {
+    return TAB_NAME_ALIASES[normalized];
+  }
+
   if (normalized.endsWith(" toppings") || normalized === "toppings") {
     return "Toppings";
   }

@@ -39,6 +39,7 @@ export type ResolvedIngredientTab = {
   label: string;
   selectionMode: IngredientSelectionMode;
   ingredients: ResolvedPanelIngredient[];
+  selectionTarget?: "parent-variant";
 };
 
 function hasMeaningfulNutrition(nutrition?: Nutrition) {
@@ -64,8 +65,9 @@ function includedIngredientPriority(ingredient: ResolvedPanelIngredient) {
   if (normalizedCategories.some((category) => category.includes("bun"))) return 0;
   if (normalizedCategories.some((category) => category.includes("cheese"))) return 1;
   if (normalizedCategories.some((category) => category === "eggs" || category === "egg")) return 2;
-  if (normalizedCategories.some((category) => category.includes("protein"))) return 3;
-  if (normalizedCategories.some((category) => category.includes("topping"))) return 4;
+  if (normalizedCategories.some((category) => category.includes("protein") || category.includes("meat"))) return 2;
+  if (ingredient.isReadOnly) return 2;
+  if (normalizedCategories.some((category) => category.includes("topping"))) return 3;
   if (
     normalizedCategories.some(
       (category) =>
@@ -74,7 +76,7 @@ function includedIngredientPriority(ingredient: ResolvedPanelIngredient) {
         category.includes("dressing")
     )
   ) {
-    return 5;
+    return 4;
   }
 
   return 6;
@@ -148,6 +150,12 @@ export function resolvePanelIngredientTabs(
   );
   const selectedParentVariantLabel = selectedParentVariant?.label;
   const ingredientDefaultsById = resolveIncludedIngredientDefaults(item.ingredients);
+  const informationalIngredientLabels = new Map(
+    (item.informationalIngredients ?? []).map((ingredient) => [ingredient.id.toLowerCase(), ingredient.label]),
+  );
+  item.informationalIngredients?.forEach((ingredient) => {
+    ingredientDefaultsById.set(ingredient.id.toLowerCase(), 1);
+  });
   const ingredientIds = [...ingredientDefaultsById.keys()];
   const resolvedTabs = resolveIngredientTabs(item, customizationRules);
   const singleSelectTabs = resolveSingleSelectIngredientTabs(item, customizationRules);
@@ -213,7 +221,7 @@ export function resolvePanelIngredientTabs(
         ? undefined
         : menuItemMatch?.nutrition;
 
-    const label = menuItemMatch?.name ?? match?.name ?? fallbackLabel;
+    const label = informationalIngredientLabels.get(normalizedId) ?? menuItemMatch?.name ?? match?.name ?? fallbackLabel;
     const ingredientTabLabel = resolvedTabs.find((tab) => {
       return tab !== INCLUDED_INGREDIENT_TAB && match ? ingredientMatchesTab(match, tab) : false;
     });
@@ -252,6 +260,7 @@ export function resolvePanelIngredientTabs(
       nutrition,
       calories: nutrition.calories,
       defaultCount: ingredientDefaultsById.get(normalizedId) ?? 0,
+      isReadOnly: informationalIngredientLabels.has(normalizedId),
     };
 
     resolvedIngredientLookup.set(normalizedId, resolvedIngredient);
@@ -330,8 +339,42 @@ export function resolvePanelIngredientTabs(
     };
   });
 
+  // Some raw source groups mix ingredients that belong under different
+  // standard tabs (e.g. Chick-fil-A's "Sandwich Paid Modifiers"/"Breakfast
+  // Sandwich Modifiers" bundle cheese swaps together with plain toppings
+  // like tomato/lettuce/bacon in one group). A name-based alias can only
+  // rename a whole tab, so split these specific groups by ingredient label
+  // before the display-label merge below folds them in with any other
+  // same-named tabs. Each half keeps its ingredients' already-resolved
+  // rule/nutrition data untouched — only which tab they land under changes.
+  const mixedCheeseAndToppingTabNames = new Set([
+    "sandwich paid modifiers",
+    "breakfast sandwich modifiers",
+  ]);
+  const splitIngredientTabs = resolvedIngredientTabs.flatMap((tab) => {
+    if (!mixedCheeseAndToppingTabNames.has(normalizeTabName(tab.label))) {
+      return [tab];
+    }
+
+    const cheeseIngredients: ResolvedPanelIngredient[] = tab.ingredients
+      .filter((ingredient) => /cheese/i.test(ingredient.label))
+      .map((ingredient) => ({ ...ingredient, tabLabel: "Cheeses" }));
+    const toppingIngredients: ResolvedPanelIngredient[] = tab.ingredients
+      .filter((ingredient) => !/cheese/i.test(ingredient.label))
+      .map((ingredient) => ({ ...ingredient, tabLabel: "Toppings" }));
+
+    return [
+      cheeseIngredients.length > 0
+        ? { ...tab, id: normalizeIngredientToken("Cheeses"), label: "Cheeses", ingredients: cheeseIngredients }
+        : undefined,
+      toppingIngredients.length > 0
+        ? { ...tab, id: normalizeIngredientToken("Toppings"), label: "Toppings", ingredients: toppingIngredients }
+        : undefined,
+    ].filter((entry): entry is ResolvedIngredientTab => Boolean(entry));
+  });
+
   const mergedTabs = new Map<string, ResolvedIngredientTab>();
-  resolvedIngredientTabs.forEach((tab) => {
+  splitIngredientTabs.forEach((tab) => {
     const displayLabel = getIngredientTabDisplayLabel(tab.label);
     const existingTab = mergedTabs.get(displayLabel);
 
@@ -361,5 +404,12 @@ export function resolvePanelIngredientTabs(
     });
   });
 
-  return [...mergedTabs.values()];
+  const tabOrder = new Map(
+    ["Included", "Buns", "Cheeses", "Protein", "Meat", "Toppings", "Sauces"].map((label, index) => [label, index]),
+  );
+  return [...mergedTabs.values()].sort(
+    (left, right) =>
+      (tabOrder.get(left.label) ?? Number.POSITIVE_INFINITY) -
+      (tabOrder.get(right.label) ?? Number.POSITIVE_INFINITY),
+  );
 }

@@ -1,7 +1,13 @@
 import type { CartSelection, CartSelectionOption } from "@/types/cart";
 import type { MenuItem, ResolvedAddonGroups } from "@/types/menu";
 import { parseOptionLabelCounts, type OptionLabelCountMap } from "@/lib/cartOptionLabels";
+import { addonGroupUsesQuantitySelection, findQuantitySelectionAddon } from "@/lib/addonGroups";
 
+// Persisted cart selections store every quantity-mode addon (not just one
+// restaurant's literal "sauces" group — see addonGroupUsesQuantitySelection)
+// under this one optionId, matching the single flat selectedSauceCounts
+// state they're all read from at runtime. Kept as the literal "sauces"
+// string for backward compatibility with already-persisted cart entries.
 const sauceRef: string = "sauces";
 
 export function buildOptionLabelCounts(
@@ -37,11 +43,10 @@ export function buildStructuredOptionSelections(
     selections.push({ optionId, itemId: addon.id, label: addon.name, quantity: 1 });
   });
 
-  const sauceOptions = addons?.[sauceRef]?.items ?? [];
   Object.entries(selectedSauceCounts)
     .filter(([, quantity]) => quantity > 0)
     .forEach(([name, quantity]) => {
-      const addon = sauceOptions.find((option) => option.name === name);
+      const addon = findQuantitySelectionAddon(addons, name);
       selections.push({ optionId: sauceRef, itemId: addon?.id ?? name, label: addon?.name ?? name, quantity });
     });
 
@@ -69,12 +74,27 @@ export function getSelectedAddonsFromSelection(item: MenuItem, addons: ResolvedA
 
   const selectedMap: Partial<Record<string, MenuItem>> = {};
   for (const ref of item.addonRefs ?? []) {
-    if (ref === sauceRef) continue;
+    if (addonGroupUsesQuantitySelection(ref)) continue;
     const matched = (addons?.[ref]?.items ?? []).find((addon) => (selectedQuantities.get(addon.id) ?? 0) > 0);
     if (matched) selectedMap[ref] = matched;
   }
 
   return selectedMap;
+}
+
+function resolveQuantitySelectionOptions(item: MenuItem, addons: ResolvedAddonGroups | undefined) {
+  const seen = new Set<string>();
+  const options: MenuItem[] = [];
+  for (const ref of item.addonRefs ?? []) {
+    if (!addonGroupUsesQuantitySelection(ref)) continue;
+    for (const addon of addons?.[ref]?.items ?? []) {
+      const key = addon.id ?? addon.name;
+      if (seen.has(key)) continue;
+      seen.add(key);
+      options.push(addon);
+    }
+  }
+  return options;
 }
 
 export function getSelectedSauceCountsFromSelection(item: MenuItem, addons: ResolvedAddonGroups | undefined, selection: CartSelection | undefined) {
@@ -83,12 +103,12 @@ export function getSelectedSauceCountsFromSelection(item: MenuItem, addons: Reso
     return getSelectedSauceCountsFromLabel(item, addons, selection ? getSelectionLabelFallback(selection) : undefined);
   }
 
-  const sauceOptions = addons?.[sauceRef]?.items ?? [];
-  if (!(item.addonRefs ?? []).includes(sauceRef) || sauceOptions.length === 0) {
+  const quantityOptions = resolveQuantitySelectionOptions(item, addons);
+  if (quantityOptions.length === 0) {
     return {} as Record<string, number>;
   }
 
-  return sauceOptions.reduce<Record<string, number>>((acc, addon) => {
+  return quantityOptions.reduce<Record<string, number>>((acc, addon) => {
     const quantity = selectedQuantities.get(addon.id) ?? 0;
     if (quantity > 0) acc[addon.name] = quantity;
     return acc;
@@ -110,7 +130,7 @@ export function getSelectedAddonsFromLabel(item: MenuItem, addons: ResolvedAddon
   const selectedMap: Partial<Record<string, MenuItem>> = {};
 
   for (const ref of item.addonRefs ?? []) {
-    if (ref === sauceRef) continue;
+    if (addonGroupUsesQuantitySelection(ref)) continue;
     const options = addons?.[ref]?.items ?? [];
     const matched = options.find((addon) => (selectedCounts[addon.name] ?? 0) > 0);
     if (matched) {
@@ -123,13 +143,13 @@ export function getSelectedAddonsFromLabel(item: MenuItem, addons: ResolvedAddon
 
 export function getSelectedSauceCountsFromLabel(item: MenuItem, addons: ResolvedAddonGroups | undefined, selectionDetailsLabel?: string) {
   const selectedCounts = parseOptionLabelCounts(selectionDetailsLabel);
-  const sauceOptions = addons?.[sauceRef]?.items ?? [];
+  const quantityOptions = resolveQuantitySelectionOptions(item, addons);
 
-  if (!(item.addonRefs ?? []).includes(sauceRef) || sauceOptions.length === 0) {
+  if (quantityOptions.length === 0) {
     return {} as Record<string, number>;
   }
 
-  return sauceOptions.reduce<Record<string, number>>((acc, addon) => {
+  return quantityOptions.reduce<Record<string, number>>((acc, addon) => {
     const quantity = selectedCounts[addon.name] ?? 0;
     if (quantity > 0) acc[addon.name] = quantity;
     return acc;

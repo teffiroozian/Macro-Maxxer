@@ -48,6 +48,11 @@ export function useItemCustomizationState({
     () => parseComboCustomization(getCustomizationLabels(editingCartItem?.customizations)),
     [editingCartItem?.customizations]
   );
+  const structuredComboSelections = useMemo(() => ({
+    meal: editingCartItem?.customizations?.find((entry) => entry.kind === "combo" && entry.comboRole === "meal"),
+    side: editingCartItem?.customizations?.find((entry) => entry.kind === "combo" && entry.comboRole === "side"),
+    drink: editingCartItem?.customizations?.find((entry) => entry.kind === "combo" && entry.comboRole === "drink"),
+  }), [editingCartItem?.customizations]);
 
   const [selectedVariantId, setSelectedVariantId] = useState(
     editingCartItem ? getCartItemVariantId(editingCartItem) ?? defaultVariantId : defaultVariantId
@@ -69,22 +74,36 @@ export function useItemCustomizationState({
     getSelectedIngredientCountsFromCustomizations(resolvedIngredients, getCustomizationLabels(editingCartItem?.customizations))
   );
 
-  const [comboType, setComboType] = useState<"just-item" | "combo-meal">(parsedInitialComboCustomization.comboType);
+  const [comboType, setComboType] = useState<"just-item" | "combo-meal">(
+    structuredComboSelections.meal ? "combo-meal" : parsedInitialComboCustomization.comboType,
+  );
   const [selectedComboSideId, setSelectedComboSideId] = useState<string | undefined>(() => {
-    const side = comboSides.find((option) => option.name === parsedInitialComboCustomization.sideName);
+    const side = comboSides.find((option) =>
+      option.id === structuredComboSelections.side?.itemId || option.name === parsedInitialComboCustomization.sideName
+    );
     return side ? (side.id ?? side.name) : comboConfig?.defaultSideId;
   });
   const [selectedComboDrinkId, setSelectedComboDrinkId] = useState<string | undefined>(() => {
-    const drink = comboDrinks.find((option) => option.name === parsedInitialComboCustomization.drinkName);
+    const drink = comboDrinks.find((option) =>
+      option.id === structuredComboSelections.drink?.itemId || option.name === parsedInitialComboCustomization.drinkName
+    );
     return drink ? (drink.id ?? drink.name) : comboConfig?.defaultDrinkId;
   });
   const [selectedComboSideVariantId, setSelectedComboSideVariantId] = useState<string | undefined>(() => {
-    const side = comboSides.find((option) => option.name === parsedInitialComboCustomization.sideName);
-    return side?.variants?.find((variant) => variant.label === parsedInitialComboCustomization.sideVariantLabel)?.id;
+    const side = comboSides.find((option) =>
+      option.id === structuredComboSelections.side?.itemId || option.name === parsedInitialComboCustomization.sideName
+    );
+    return side?.variants?.find((variant) =>
+      variant.id === structuredComboSelections.side?.variantId || variant.label === parsedInitialComboCustomization.sideVariantLabel
+    )?.id;
   });
   const [selectedComboDrinkVariantId, setSelectedComboDrinkVariantId] = useState<string | undefined>(() => {
-    const drink = comboDrinks.find((option) => option.name === parsedInitialComboCustomization.drinkName);
-    return drink?.variants?.find((variant) => variant.label === parsedInitialComboCustomization.drinkVariantLabel)?.id;
+    const drink = comboDrinks.find((option) =>
+      option.id === structuredComboSelections.drink?.itemId || option.name === parsedInitialComboCustomization.drinkName
+    );
+    return drink?.variants?.find((variant) =>
+      variant.id === structuredComboSelections.drink?.variantId || variant.label === parsedInitialComboCustomization.drinkVariantLabel
+    )?.id;
   });
 
   return {

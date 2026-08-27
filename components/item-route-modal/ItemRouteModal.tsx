@@ -8,6 +8,7 @@ import ItemDetailsPanel, { ITEM_DETAILS_SECTION_IDS, PortionSelector } from "@/c
 import PresetBuildReview from "@/components/item-route-modal/PresetBuildReview";
 import CartItemPreviewContent from "@/components/item-route-modal/CartItemPreviewContent";
 import ComparativeLabelBadge from "@/components/menu-item-card/ComparativeLabelBadge";
+import MenuItemTitle from "@/components/menu-item-card/MenuItemTitle";
 import { computeComparativeLabels } from "@/lib/menuSections/comparativeLabels";
 import MacroStat from "@/components/nutrition/MacroStat";
 import MenuSections from "@/components/MenuSections";
@@ -17,6 +18,7 @@ import { NutritionDetailsGrid } from "@/components/item-route-modal/SelectionSum
 import ItemModalStickyFooter from "@/components/item-route-modal/ItemModalStickyFooter";
 import type {
     MenuItem,
+    ResolvedAddonGroup,
     ResolvedAddonGroups,
     IngredientItem,
     RestaurantCustomizationRules,
@@ -45,6 +47,7 @@ import {
     type SplitPortionMode,
 } from "@/lib/restaurantBuilders/chipotle";
 import { resolvePrimaryCategory } from "@/lib/ingredientTabs";
+import { resolveAddonGroupForAddon } from "@/lib/addonGroups";
 import type { ChipotleBuildConfiguration } from "@/lib/restaurantBuilders/chipotle";
 import { fromUniversalChipotleBuildConfiguration } from "@/lib/restaurantBuilders/chipotle/cartAdapter";
 import { getIncludedIngredientIdsForChipotleBuild } from "@/lib/cart/buildItemAdapters";
@@ -91,6 +94,23 @@ const emptyAddon: MenuItem = {
 };
 
 const maxSauceSelections = 5;
+
+// Sums only the selections that belong to one addon group, so a group with
+// its own official `maxPerItem` (e.g. Chick-fil-A's individual sauces vs.
+// condiments) is capped independently rather than sharing one global total
+// with every other addon group on the item.
+function sumSauceSelectionsInGroup(
+    counts: Record<string, number>,
+    group: ResolvedAddonGroup | undefined,
+) {
+    if (!group) {
+        return Object.values(counts).reduce((sum, count) => sum + count, 0);
+    }
+    return group.items.reduce(
+        (sum, item) => sum + (counts[item.name] ?? 0),
+        0,
+    );
+}
 
 // Scroll-target id shared between the Overview "Included in this Build"
 // cards (which set it via getItemDomId below) and the Customize-state
@@ -1506,9 +1526,12 @@ export default function ItemRouteModal({
                                 />
                             </div>
                         ) : null}
-                        <p className="font-heading min-w-0 truncate text-lg font-medium leading-tight text-neutral-900">
-                            {item.name}
-                        </p>
+                        <div className="min-w-0 flex-1">
+                            <MenuItemTitle
+                                name={item.name}
+                                className="font-heading text-lg font-medium leading-tight text-neutral-900"
+                            />
+                        </div>
                     </div>
                     <button
                         type="button"
@@ -1552,12 +1575,15 @@ export default function ItemRouteModal({
                                     ) : null}
                                 </div>
                             ) : null}
-                            <div className="item-overview-content">
+                            <div className="item-overview-content min-w-0">
                                 <p className="item-overview-label mt-4 min-w-0 pr-12 text-[11px] font-semibold uppercase tracking-wide text-slate-400 sm:mt-0 sm:pr-14">
                                     Base Nutrition
                                 </p>
-                                <h1 className="item-overview-title font-heading mt-1.5 min-w-0 text-lg font-bold leading-tight tracking-tight text-neutral-900 sm:truncate sm:pr-14 sm:text-xl lg:text-2xl">
-                                    {item.name}
+                                <h1 className="item-overview-title mt-1.5 min-w-0 sm:pr-14">
+                                    <MenuItemTitle
+                                        name={item.name}
+                                        className="font-heading text-lg font-bold leading-tight tracking-tight text-neutral-900 sm:text-xl lg:text-2xl"
+                                    />
                                 </h1>
                                 <div className="item-overview-macros mt-5 flex flex-wrap items-center justify-start gap-x-4 gap-y-2 sm:mt-3 sm:gap-x-5">
                                     <MacroStat
@@ -2175,16 +2201,20 @@ export default function ItemRouteModal({
                                     sauceSelectionCounts={selectedSauceCounts}
                                     onIncrementSauce={(addon) => {
                                         setSelectedSauceCounts((prev) => {
-                                            const currentTotal = Object.values(
-                                                prev,
-                                            ).reduce(
-                                                (sum, count) => sum + count,
-                                                0,
-                                            );
-                                            if (
-                                                currentTotal >=
-                                                maxSauceSelections
-                                            )
+                                            const group =
+                                                resolveAddonGroupForAddon(
+                                                    addons,
+                                                    addon,
+                                                );
+                                            const groupTotal =
+                                                sumSauceSelectionsInGroup(
+                                                    prev,
+                                                    group,
+                                                );
+                                            const groupMax =
+                                                group?.maxPerItem ??
+                                                maxSauceSelections;
+                                            if (groupTotal >= groupMax)
                                                 return prev;
                                             return {
                                                 ...prev,
@@ -2216,16 +2246,20 @@ export default function ItemRouteModal({
                                                 delete next[addon.name];
                                                 return next;
                                             }
-                                            const currentTotal = Object.values(
-                                                prev,
-                                            ).reduce(
-                                                (sum, count) => sum + count,
-                                                0,
-                                            );
-                                            if (
-                                                currentTotal >=
-                                                maxSauceSelections
-                                            )
+                                            const group =
+                                                resolveAddonGroupForAddon(
+                                                    addons,
+                                                    addon,
+                                                );
+                                            const groupTotal =
+                                                sumSauceSelectionsInGroup(
+                                                    prev,
+                                                    group,
+                                                );
+                                            const groupMax =
+                                                group?.maxPerItem ??
+                                                maxSauceSelections;
+                                            if (groupTotal >= groupMax)
                                                 return prev;
                                             return { ...prev, [addon.name]: 1 };
                                         });

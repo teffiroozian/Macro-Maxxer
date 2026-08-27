@@ -214,6 +214,7 @@ body {
    auto-sized rows around it and throw off the hand-tuned vertical rhythm). */
 .item-overview-grid {
     display: grid;
+    min-width: 0;
     grid-template-columns: 1fr;
     grid-template-areas:
         "image"
@@ -257,6 +258,7 @@ body {
 
     .item-overview-content {
         display: block;
+        min-width: 0;
         grid-area: content;
     }
 }
@@ -315,4 +317,3 @@ body {
         display: none;
     }
 }
-

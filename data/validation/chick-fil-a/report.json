@@ -7,14 +7,14 @@
   },
   "valid": true,
   "summary": {
-    "records": 489,
-    "menuItems": 430,
+    "records": 498,
+    "menuItems": 439,
     "ingredients": 59,
     "nutritionAttached": 428,
-    "mealContainers": 36,
+    "mealContainers": 45,
     "errors": 0,
     "warnings": 6,
-    "humanReview": 57,
+    "humanReview": 66,
     "errorTypes": {},
     "warningTypes": {
       "combo_entree_choice_metadata_only": 1,
@@ -31,8 +31,8 @@
       "severity": "warning",
       "check": "nutrition",
       "code": "nutrition_unavailable",
-      "message": "61 records intentionally have no attached official nutrition and remain in human review.",
-      "affectedCount": 61,
+      "message": "70 records intentionally have no attached official nutrition and remain in human review.",
+      "affectedCount": 70,
       "recordIds": [
         "cfa-group-100100",
         "cfa-group-100101",
@@ -98,7 +98,7 @@
       "check": "schema_limitations",
       "code": "source_identity_metadata_extension",
       "message": "Chick-fil-A source IDs are retained in per-record metadata rather than first-class production schema fields.",
-      "affectedCount": 489,
+      "affectedCount": 498,
       "recordIds": [
         "cfa-group-100100",
         "cfa-group-100101",
@@ -131,8 +131,8 @@
       "severity": "warning",
       "check": "categories",
       "code": "runtime_navigation_orphans",
-      "message": "20 non-addon menu records are retained but are not reachable from category roots, variants, or runtime combo references.",
-      "affectedCount": 20,
+      "message": "29 non-addon menu records are retained but are not reachable from category roots, variants, or runtime combo references.",
+      "affectedCount": 29,
       "recordIds": [
         "cfa-item-1005945",
         "cfa-item-1005946",
@@ -153,7 +153,12 @@
         "cfa-item-1000353",
         "cfa-item-1000158",
         "cfa-item-1002292",
-        "cfa-item-1001322"
+        "cfa-item-1001322",
+        "cfa-mealgroup-100115",
+        "cfa-mealgroup-100127",
+        "cfa-mealgroup-100140",
+        "cfa-mealgroup-100237",
+        "cfa-mealgroup-100244"
       ]
     }
   ],
@@ -163,9 +168,9 @@
       "errors": 0,
       "warnings": 0,
       "details": {
-        "menuItems": 430,
+        "menuItems": 439,
         "ingredients": 59,
-        "totalRecords": 489,
+        "totalRecords": 498,
         "runtimeVisibleItems": 43,
         "runtimeCustomizationItems": 0,
         "runtimeDeferredItems": 0
@@ -176,10 +181,10 @@
       "errors": 0,
       "warnings": 0,
       "details": {
-        "uniqueLogicalIds": 489,
-        "uniqueSourceRecords": 489,
+        "uniqueLogicalIds": 498,
+        "uniqueSourceRecords": 498,
         "uniqueRetailModifiedItemIds": 393,
-        "uniqueCategoryFacingItemGroupIds": 96
+        "uniqueCategoryFacingItemGroupIds": 105
       }
     },
     "categories": {
@@ -209,8 +214,8 @@
       "errors": 0,
       "warnings": 0,
       "details": {
-        "mealContainers": 36,
-        "comboReferences": 4076,
+        "mealContainers": 45,
+        "comboReferences": 5216,
         "mealContainersWithoutSingleRuntimeEntree": 9,
         "mealContainersWithNutrition": 0
       }
@@ -226,7 +231,7 @@
           "ordering_system": 111
         },
         "contextualNutritionRecords": 5,
-        "unavailableNutritionRecords": 61,
+        "unavailableNutritionRecords": 70,
         "suspiciousZeroMacroRecords": 0
       }
     },
@@ -235,12 +240,12 @@
       "errors": 0,
       "warnings": 0,
       "details": {
-        "humanReviewRecords": 57,
+        "humanReviewRecords": 66,
         "reasons": {
           "entree_only_nutrition_for_meal_container": 4,
-          "no_nutrition_match": 53
+          "no_nutrition_match": 62
         },
-        "missingNutritionRecords": 61
+        "missingNutritionRecords": 70
       }
     },
     "traceability": {
@@ -263,7 +268,7 @@
         "contextualNutritionRecords": 5,
         "contextualNutritionRelationships": 183,
         "combosWithoutSingleRuntimeEntree": 9,
-        "sourceTracedRecords": 489
+        "sourceTracedRecords": 498
       }
     }
   }

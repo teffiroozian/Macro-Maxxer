@@ -12,4 +12,10 @@ export type ResolvedPanelIngredient = {
   calories?: number;
   defaultCount: number;
   isNoneOption?: boolean;
+  isReadOnly?: boolean;
+  extraOption?: {
+    id: string;
+    label: string;
+    nutrition: Nutrition;
+  };
 };
