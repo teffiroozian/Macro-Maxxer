@@ -1188,6 +1188,16 @@ function deriveVariantLabel(
   if (trustSizeAbbreviation && qtySizeAbbreviation) {
     return sanitizeDisplayName(formatQtySizeAbbreviation(qtySizeAbbreviation));
   }
+  const cleanParentName = sanitizeDisplayName(parentName);
+  const cleanChildName = sanitizeDisplayName(childName);
+  if (["Cream Cold Brew", "Iced Coffee", "Frosted Coffee"].includes(cleanParentName)) {
+    const escapedParent = cleanParentName.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    return cleanChildName.replace(new RegExp(`\\s*${escapedParent}$`, "i"), "").trim() || "Original";
+  }
+  if (/^Pineapple Dragonfruit Sunjoy/i.test(cleanParentName)) {
+    const composition = /\(([^)]+)\)/.exec(cleanChildName)?.[1];
+    if (composition) return composition.replace(/\s*,\s*/g, " + ");
+  }
   return sanitizeDisplayName(
     diffAcrossSiblingNames(siblingNames, childIndex) ??
       diffAgainstParentName(parentName, childName),
@@ -2208,8 +2218,20 @@ async function main(): Promise<void> {
           },
         );
         const groupingTag = stringValue(grouping.tag);
+        const belongsToOrphanedFamily = record.occurrences.some(
+          ({ containingItemGroupId }) => {
+            const container = containingItemGroupId
+              ? recordByGroupId.get(containingItemGroupId)
+              : undefined;
+            return container ? isOrphanedFamilyGrouping(container) : false;
+          },
+        );
         const supportsEntreeSauceCustomization =
-          primaryBrowseCategoryFor(record) === "Sandwiches";
+          primaryBrowseCategoryFor(record) === "Sandwiches" &&
+          !sourceValues(record, "status").includes("LTF") &&
+          !isOrphanedEntreeComponent(record) &&
+          !isOrphanedFamilyGrouping(record) &&
+          !belongsToOrphanedFamily;
         const entreeSauceOptions = optionEntries.filter(({ entry }) =>
           groupingTag === "INDIVIDUAL_SAUCES" &&
           stringValue(entry.tag) === "HONEY_ROASTED_BBQ" &&
@@ -2258,6 +2280,7 @@ async function main(): Promise<void> {
           const hasExplicitIncludedOption = ingredientOptionEntries.some(
             ({ entry }) => modifierSelectionRole(entry) === "included",
           );
+          const groupDefaultTag = stringValue(grouping.defaultTag);
           for (const { entry: optionEntry, record: optionRecord } of ingredientOptionEntries) {
             const id = standardId(optionRecord);
             if (maximum !== undefined && isIngredientRecord(optionRecord)) {
@@ -2266,7 +2289,6 @@ async function main(): Promise<void> {
                 Math.max(observedIngredientMaximum.get(id) ?? 0, maximum),
               );
             }
-            const groupDefaultTag = stringValue(grouping.defaultTag);
             const optionTag = stringValue(optionEntry.tag);
             const contextualNutrition = isIngredientRecord(optionRecord)
               ? contextualNutritionUnitForEntry(optionEntry)
@@ -2421,7 +2443,7 @@ async function main(): Promise<void> {
       orderingSourceUrl,
     );
     const contextualUnits = contextualNutritionUnits.get(record.menuRecordId);
-    const resolvedTrace = contextualUnits
+    const resolvedTrace: SourceTrace = contextualUnits
       ? {
           ...trace,
           nutritionResolution: {
@@ -2878,10 +2900,6 @@ async function main(): Promise<void> {
             );
             return {
               ...effectiveCustomization,
-              ingredients: unique([
-                ...effectiveCustomization.ingredients,
-                ...proteinExtraIds,
-              ]),
               customization: {
                 ingredientCategories: [
                   ...categories.filter(
@@ -3006,7 +3024,22 @@ async function main(): Promise<void> {
     });
   }
 
-  // Sauce, dressing, and condiment modifiers are real user-facing portions even though
+  const generalCondimentModifierIds = new Set(
+    records
+      .filter((record) => {
+        const modifierTypes = sourceValues(record, "modifierType");
+        return (
+          record.itemClass === "MODIFIER" &&
+          sourceValues(record, "itemType").includes("CONDIMENTS") &&
+          modifierTypes.length > 0 &&
+          modifierTypes.every((modifierType) => modifierType === "EXTRA")
+        );
+      })
+      .map(standardId),
+  );
+
+  // Sauce, dressing, and general packet-condiment modifiers are real
+  // user-facing portions even though
   // they also remain reusable inside entree/salad customization. Promote
   // those taxonomy records to standalone browse products. Independently
   // sellable 8oz bottles remain their own browse records beside the dipping
@@ -3017,7 +3050,7 @@ async function main(): Promise<void> {
       item.source.menu.itemClass === "MODIFIER" &&
       (itemTypes.has("SAUCES") ||
         itemTypes.has("DRESSINGS") ||
-        itemTypes.has("CONDIMENTS")) &&
+        generalCondimentModifierIds.has(item.id)) &&
       item.nutrition !== undefined;
     if (!isBrowseableSauceOrDressing) continue;
     delete item.sourceOnly;
@@ -3238,6 +3271,26 @@ async function main(): Promise<void> {
       name: rawName,
       categories: target.categories,
     });
+  }
+
+  const canonicalIngredientIds = new Set(
+    pendingIngredientRecords.map(standardId),
+  );
+  const ingredientTargetIds = new Set(
+    menuItems.flatMap((item) => [
+      ...(item.ingredients ?? []),
+      ...(item.customization?.ingredientCategories?.flatMap(
+        (category) => category.ingredients,
+      ) ?? []),
+    ]),
+  );
+  for (const item of menuItems) {
+    if (
+      ingredientTargetIds.has(item.id) &&
+      !canonicalIngredientIds.has(item.id)
+    ) {
+      item.ingredientEligible = true;
+    }
   }
 
   const ingredients: GeneratedIngredient[] = pendingIngredientRecords.map(

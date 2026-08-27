@@ -666,7 +666,9 @@ async function main(): Promise<void> {
           role === "standalone_product" &&
           sourceMenu.itemClass === "MODIFIER" &&
           itemTypes.some((itemType) =>
-            itemType === "SAUCES" || itemType === "DRESSINGS",
+            itemType === "SAUCES" ||
+            itemType === "DRESSINGS" ||
+            itemType === "CONDIMENTS",
           );
         const isDeferredOrVariantChild =
           role === "deferred_meal_container" ||
@@ -1557,6 +1559,9 @@ async function main(): Promise<void> {
   const combosWithoutRuntimeEntree = new Set<string>();
   const comboIds = new Set<string>();
   const selectedContextualNutritionUnits = new Set<string>();
+  const isValidIngredientTarget = (ingredientId: string): boolean =>
+    ingredientsById.has(ingredientId) ||
+    menuItemsById.get(ingredientId)?.value.ingredientEligible === true;
 
   const validateIngredientNutritionContexts = (
     value: unknown,
@@ -1636,7 +1641,7 @@ async function main(): Promise<void> {
       );
     }
     for (const ingredientId of ingredientIds) {
-      if (!ingredientsById.has(ingredientId)) {
+      if (!isValidIngredientTarget(ingredientId)) {
         addFinding(
           context,
           "error",
@@ -1750,7 +1755,7 @@ async function main(): Promise<void> {
           );
           ingredientReferenceCount += optionIds.length;
           for (const optionId of optionIds) {
-            if (!ingredientsById.has(optionId)) {
+            if (!isValidIngredientTarget(optionId)) {
               addFinding(
                 context,
                 "error",

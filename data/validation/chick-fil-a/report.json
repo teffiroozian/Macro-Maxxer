@@ -1,6 +1,6 @@
 {
   "restaurant": "Chick-fil-A",
-  "validatedAt": "2026-08-26",
+  "validatedAt": "2026-08-27",
   "inputs": {
     "restaurant": "data/generated/chick-fil-a/restaurant.json",
     "unresolved": "data/generated/chick-fil-a/unresolved.json"
@@ -203,8 +203,8 @@
       "warnings": 0,
       "details": {
         "addonGroups": 208,
-        "addonItemReferences": 1096,
-        "ingredientReferences": 2092,
+        "addonItemReferences": 1088,
+        "ingredientReferences": 2137,
         "contextualNutritionRelationships": 183,
         "variantReferences": 224
       }

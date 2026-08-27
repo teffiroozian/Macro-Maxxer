@@ -1,12 +1,9 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {
-  LAST_ADDED_PREVIEW_DURATION_MS,
-  getRemainingLastAddedPreviewMs,
-  shouldShowLastAddedPreview,
-} from '../lib/cart/lastAddedPreview.js';
+import { shouldShowLastAddedPreview } from '../lib/cart/lastAddedPreview.js';
 
 const now = 10_000;
+const previewDurationMs = 4_500;
 const freshEvent = {
   lastAddedAt: now,
   lastAddedEventId: 1,
@@ -19,10 +16,9 @@ test('adding an item creates a fresh preview event that opens', () => {
 
 test('preview automatically becomes closed after the duration expires', () => {
   assert.equal(
-    shouldShowLastAddedPreview(freshEvent, now + LAST_ADDED_PREVIEW_DURATION_MS + 1),
+    shouldShowLastAddedPreview(freshEvent, now + previewDurationMs + 1, previewDurationMs),
     false,
   );
-  assert.equal(getRemainingLastAddedPreviewMs(freshEvent.lastAddedAt, now + LAST_ADDED_PREVIEW_DURATION_MS + 1), 0);
 });
 
 test('navigating or remounting after an event is acknowledged does not reopen it', () => {

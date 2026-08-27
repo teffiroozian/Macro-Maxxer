@@ -61,14 +61,17 @@ function hasMeaningfulNutrition(nutrition?: Nutrition) {
 function includedIngredientPriority(ingredient: ResolvedPanelIngredient) {
   const categories = ingredient.ingredientItem?.categories ?? [];
   const normalizedCategories = categories.map((category) => normalizeIngredientCategory(category));
+  const normalizedRole = normalizeIngredientCategory(ingredient.tabLabel ?? "");
 
-  if (normalizedCategories.some((category) => category.includes("bun"))) return 0;
-  if (normalizedCategories.some((category) => category.includes("cheese"))) return 1;
+  if (/bun|bread carrier/.test(normalizedRole) || normalizedCategories.some((category) => /bun|bread carrier/.test(category))) return 0;
+  if (normalizedRole.includes("cheese") || normalizedCategories.some((category) => category.includes("cheese"))) return 1;
+  if (/protein|meat|egg/.test(normalizedRole)) return 2;
   if (normalizedCategories.some((category) => category === "eggs" || category === "egg")) return 2;
   if (normalizedCategories.some((category) => category.includes("protein") || category.includes("meat"))) return 2;
   if (ingredient.isReadOnly) return 2;
-  if (normalizedCategories.some((category) => category.includes("topping"))) return 3;
+  if (/topping|pickle|removal/.test(normalizedRole) || normalizedCategories.some((category) => category.includes("topping"))) return 3;
   if (
+    /sauce|condiment|dressing/.test(normalizedRole) ||
     normalizedCategories.some(
       (category) =>
         category.includes("sauce") ||

@@ -9470,8 +9470,7 @@
             "name": "Individual Sauces",
             "id": "Individual Sauces [CFA 100350:0]",
             "ingredients": [
-              "cfa-modifier-1009747",
-              "cfa-addon-1001381"
+              "cfa-modifier-1009747"
             ],
             "allowNone": true
           },
@@ -9501,8 +9500,7 @@
             "name": "Individual Sauces",
             "id": "Individual Sauces [CFA 100188:0]",
             "ingredients": [
-              "cfa-modifier-1009747",
-              "cfa-addon-1001381"
+              "cfa-modifier-1009747"
             ],
             "allowNone": true
           },
@@ -9627,8 +9625,7 @@
             "name": "Individual Sauces",
             "id": "Individual Sauces [CFA 100350:0]",
             "ingredients": [
-              "cfa-modifier-1009747",
-              "cfa-addon-1001381"
+              "cfa-modifier-1009747"
             ],
             "allowNone": true
           },
@@ -9658,8 +9655,7 @@
             "name": "Individual Sauces",
             "id": "Individual Sauces [CFA 100188:0]",
             "ingredients": [
-              "cfa-modifier-1009747",
-              "cfa-addon-1001381"
+              "cfa-modifier-1009747"
             ],
             "allowNone": true
           },
@@ -9784,8 +9780,7 @@
             "name": "Individual Sauces",
             "id": "Individual Sauces [CFA 100350:0]",
             "ingredients": [
-              "cfa-modifier-1009747",
-              "cfa-addon-1001381"
+              "cfa-modifier-1009747"
             ],
             "allowNone": true
           },
@@ -9815,8 +9810,7 @@
             "name": "Individual Sauces",
             "id": "Individual Sauces [CFA 100188:0]",
             "ingredients": [
-              "cfa-modifier-1009747",
-              "cfa-addon-1001381"
+              "cfa-modifier-1009747"
             ],
             "allowNone": true
           },
@@ -12840,8 +12834,7 @@
             "name": "Individual Sauces",
             "id": "Individual Sauces [CFA 100364:0]",
             "ingredients": [
-              "cfa-modifier-1009747",
-              "cfa-addon-1001381"
+              "cfa-modifier-1009747"
             ],
             "allowNone": true
           }
@@ -13178,14 +13171,6 @@
       ],
       "customization": {
         "ingredientCategories": [
-          {
-            "name": "Individual Sauces",
-            "id": "Individual Sauces [CFA 100367:1]",
-            "ingredients": [
-              "cfa-addon-1001381"
-            ],
-            "allowNone": true
-          },
           {
             "name": "Add Pickles Mod",
             "id": "Add Pickles Mod [CFA 100367:2]",
@@ -14879,7 +14864,7 @@
       "variants": [
         {
           "id": "cfa-item-1009676",
-          "label": "Caramel Cream Cold Brew",
+          "label": "Caramel",
           "image": "https://www.cfacdn.com/img/order/menu/Online/Drinks/CFA_Digital_Ordering_US_Cold_Brew_Caramel_Web_Menu_1200x1200.png",
           "categories": [
             "Coffee"
@@ -14949,7 +14934,7 @@
         },
         {
           "id": "cfa-item-1007075",
-          "label": "Mocha Cream Cold Brew",
+          "label": "Mocha",
           "image": "https://www.cfacdn.com/img/order/menu/Online/Drinks/CFA_Digital_Ordering_US_Cold_Brew_Mocha_Web_Menu_1200x1200.png",
           "categories": [
             "Coffee"
@@ -15046,7 +15031,7 @@
         },
         {
           "id": "cfa-item-1009779",
-          "label": "Vanilla Cream Cold Brew",
+          "label": "Vanilla",
           "image": "https://www.cfacdn.com/img/order/menu/Online/Drinks/CFA_Digital_Ordering_US_Cold_Brew_Vanilla_Web_Menu_1200x1200.png",
           "categories": [
             "Coffee"
@@ -15117,7 +15102,7 @@
         },
         {
           "id": "cfa-item-1010294",
-          "label": "Toasted Marshmallow Cream Cold Brew",
+          "label": "Toasted Marshmallow",
           "image": "https://www.cfacdn.com/img/order/menu/Mobile/Beverages/Menu+Item/Smores+and+Toasted+Marshmallow/ToastedMarshmallowColdBrew_PDPandDesktop_800x560.webp",
           "categories": [
             "Coffee"
@@ -15190,7 +15175,7 @@
         },
         {
           "id": "cfa-item-1009781",
-          "label": "Cream Cold Brew",
+          "label": "Original",
           "image": "https://www.cfacdn.com/img/order/menu/Online/Drinks/CFA_Digital_Ordering_US_Cold_Brew_Original_Web_Menu_1200x1200.png",
           "categories": [
             "Coffee"
@@ -15389,7 +15374,7 @@
       "variants": [
         {
           "id": "cfa-item-1009675",
-          "label": "Caramel Iced Coffee",
+          "label": "Caramel",
           "image": "https://www.cfacdn.com/img/order/menu/Online/Drinks/CFA_Digital_Ordering_US_Iced_Coffee_Caramel_Web_Menu_1200x1200.png",
           "categories": [
             "Coffee"
@@ -15460,7 +15445,7 @@
         },
         {
           "id": "cfa-item-1009677",
-          "label": "Mocha Iced Coffee",
+          "label": "Mocha",
           "image": "https://www.cfacdn.com/img/order/menu/Online/Drinks/CFA_Digital_Ordering_US_Iced_Coffee_Mocha_Web_Menu_1200x1200.png",
           "categories": [
             "Coffee"
@@ -15558,7 +15543,7 @@
         },
         {
           "id": "cfa-item-1004728",
-          "label": "Vanilla Iced Coffee",
+          "label": "Vanilla",
           "image": "https://www.cfacdn.com/img/order/menu/Online/Drinks/CFA_Digital_Ordering_US_Iced_Coffee_Vanilla_Web_Menu_1200x1200.png",
           "categories": [
             "Coffee"
@@ -15629,7 +15614,7 @@
         },
         {
           "id": "cfa-item-1010293",
-          "label": "Toasted Marshmallow Iced Coffee",
+          "label": "Toasted Marshmallow",
           "image": "https://www.cfacdn.com/img/order/menu/Mobile/Beverages/Menu+Item/Smores+and+Toasted+Marshmallow/ToastedMarshmallowIcedCoffee_PDPandDesktop_800x560.webp",
           "categories": [
             "Coffee"
@@ -15704,7 +15689,7 @@
         },
         {
           "id": "cfa-item-1009678",
-          "label": "Iced Coffee",
+          "label": "Original",
           "image": "https://www.cfacdn.com/img/order/menu/Online/Drinks/CFA_Digital_Ordering_US_Iced_Coffee_Original_Web_Menu_1200x1200.png",
           "categories": [
             "Coffee"
@@ -16344,7 +16329,7 @@
       "variants": [
         {
           "id": "cfa-item-1010013",
-          "label": "Caramel Frosted Coffee",
+          "label": "Caramel",
           "image": "https://www.cfacdn.com/img/order/menu/Online/Drinks/CFA_Digital_Ordering_US_Frosted_Coffee_Caramel_Web_Menu_1200x1200.png",
           "categories": [
             "Coffee"
@@ -16443,7 +16428,7 @@
         },
         {
           "id": "cfa-item-1010014",
-          "label": "Mocha Frosted Coffee",
+          "label": "Mocha",
           "image": "https://www.cfacdn.com/img/order/menu/Online/Drinks/CFA_Digital_Ordering_US_Frosted_Coffee_Mocha_Web_Menu_1200x1200.png",
           "categories": [
             "Coffee"
@@ -16542,7 +16527,7 @@
         },
         {
           "id": "cfa-item-1010015",
-          "label": "Vanilla Frosted Coffee",
+          "label": "Vanilla",
           "image": "https://www.cfacdn.com/img/order/menu/Online/Drinks/CFA_Digital_Ordering_US_Frosted_Coffee_Vanilla_Web_Menu_1200x1200.png",
           "categories": [
             "Coffee"
@@ -16641,7 +16626,7 @@
         },
         {
           "id": "cfa-item-1005767",
-          "label": "Frosted Coffee",
+          "label": "Original",
           "image": "https://www.cfacdn.com/img/order/menu/Online/Sides%26treats/CFA_Digital_Menu_US_Frosted_Coffee_iOS_Android_Web-Ordering_2x_800x560.webp",
           "categories": [
             "Coffee"
@@ -17148,7 +17133,7 @@
       "variants": [
         {
           "id": "cfa-item-1009324",
-          "label": "(Sweet Tea,",
+          "label": "Sweet Tea + Lemonade",
           "image": "https://www.cfacdn.com/img/order/menu/Mobile/Beverages/Parent/CFA_Spring2025_PineappleDragonfruitSunjoy_800x800.png",
           "categories": [
             "Beverages"
@@ -17216,7 +17201,7 @@
         },
         {
           "id": "cfa-item-1009325",
-          "label": "(Sweet Tea, Diet",
+          "label": "Sweet Tea + Diet Lemonade",
           "image": "https://www.cfacdn.com/img/order/menu/Mobile/Beverages/Parent/CFA_Spring2025_PineappleDragonfruitSunjoy_800x800.png",
           "categories": [
             "Beverages"
@@ -17284,7 +17269,7 @@
         },
         {
           "id": "cfa-item-1009326",
-          "label": "(Unsweet Tea,",
+          "label": "Unsweet Tea + Lemonade",
           "image": "https://www.cfacdn.com/img/order/menu/Mobile/Beverages/Parent/CFA_Spring2025_PineappleDragonfruitSunjoy_800x800.png",
           "categories": [
             "Beverages"
@@ -17352,7 +17337,7 @@
         },
         {
           "id": "cfa-item-1009327",
-          "label": "(Unsweet Tea, Diet",
+          "label": "Unsweet Tea + Diet Lemonade",
           "image": "https://www.cfacdn.com/img/order/menu/Mobile/Beverages/Parent/CFA_Spring2025_PineappleDragonfruitSunjoy_800x800.png",
           "categories": [
             "Beverages"
@@ -17670,7 +17655,7 @@
       "variants": [
         {
           "id": "cfa-item-1009676",
-          "label": "Caramel Cream Cold Brew",
+          "label": "Caramel",
           "image": "https://www.cfacdn.com/img/order/menu/Online/Drinks/CFA_Digital_Ordering_US_Cold_Brew_Caramel_Web_Menu_1200x1200.png",
           "categories": [
             "Beverages"
@@ -17740,7 +17725,7 @@
         },
         {
           "id": "cfa-item-1007075",
-          "label": "Mocha Cream Cold Brew",
+          "label": "Mocha",
           "image": "https://www.cfacdn.com/img/order/menu/Online/Drinks/CFA_Digital_Ordering_US_Cold_Brew_Mocha_Web_Menu_1200x1200.png",
           "categories": [
             "Beverages"
@@ -17837,7 +17822,7 @@
         },
         {
           "id": "cfa-item-1009779",
-          "label": "Vanilla Cream Cold Brew",
+          "label": "Vanilla",
           "image": "https://www.cfacdn.com/img/order/menu/Online/Drinks/CFA_Digital_Ordering_US_Cold_Brew_Vanilla_Web_Menu_1200x1200.png",
           "categories": [
             "Beverages"
@@ -17908,7 +17893,7 @@
         },
         {
           "id": "cfa-item-1010294",
-          "label": "Toasted Marshmallow Cream Cold Brew",
+          "label": "Toasted Marshmallow",
           "image": "https://www.cfacdn.com/img/order/menu/Mobile/Beverages/Menu+Item/Smores+and+Toasted+Marshmallow/ToastedMarshmallowColdBrew_PDPandDesktop_800x560.webp",
           "categories": [
             "Beverages"
@@ -17981,7 +17966,7 @@
         },
         {
           "id": "cfa-item-1009781",
-          "label": "Cream Cold Brew",
+          "label": "Original",
           "image": "https://www.cfacdn.com/img/order/menu/Online/Drinks/CFA_Digital_Ordering_US_Cold_Brew_Original_Web_Menu_1200x1200.png",
           "categories": [
             "Beverages"
@@ -18181,7 +18166,7 @@
       "variants": [
         {
           "id": "cfa-item-1009675",
-          "label": "Caramel Iced Coffee",
+          "label": "Caramel",
           "image": "https://www.cfacdn.com/img/order/menu/Online/Drinks/CFA_Digital_Ordering_US_Iced_Coffee_Caramel_Web_Menu_1200x1200.png",
           "categories": [
             "Beverages"
@@ -18252,7 +18237,7 @@
         },
         {
           "id": "cfa-item-1009677",
-          "label": "Mocha Iced Coffee",
+          "label": "Mocha",
           "image": "https://www.cfacdn.com/img/order/menu/Online/Drinks/CFA_Digital_Ordering_US_Iced_Coffee_Mocha_Web_Menu_1200x1200.png",
           "categories": [
             "Beverages"
@@ -18350,7 +18335,7 @@
         },
         {
           "id": "cfa-item-1004728",
-          "label": "Vanilla Iced Coffee",
+          "label": "Vanilla",
           "image": "https://www.cfacdn.com/img/order/menu/Online/Drinks/CFA_Digital_Ordering_US_Iced_Coffee_Vanilla_Web_Menu_1200x1200.png",
           "categories": [
             "Beverages"
@@ -18421,7 +18406,7 @@
         },
         {
           "id": "cfa-item-1010293",
-          "label": "Toasted Marshmallow Iced Coffee",
+          "label": "Toasted Marshmallow",
           "image": "https://www.cfacdn.com/img/order/menu/Mobile/Beverages/Menu+Item/Smores+and+Toasted+Marshmallow/ToastedMarshmallowIcedCoffee_PDPandDesktop_800x560.webp",
           "categories": [
             "Beverages"
@@ -18496,7 +18481,7 @@
         },
         {
           "id": "cfa-item-1009678",
-          "label": "Iced Coffee",
+          "label": "Original",
           "image": "https://www.cfacdn.com/img/order/menu/Online/Drinks/CFA_Digital_Ordering_US_Iced_Coffee_Original_Web_Menu_1200x1200.png",
           "categories": [
             "Beverages"
@@ -28982,7 +28967,7 @@
       "variants": [
         {
           "id": "cfa-item-1010013",
-          "label": "Caramel Frosted Coffee",
+          "label": "Caramel",
           "image": "https://www.cfacdn.com/img/order/menu/Online/Drinks/CFA_Digital_Ordering_US_Frosted_Coffee_Caramel_Web_Menu_1200x1200.png",
           "categories": [
             "Treats"
@@ -29081,7 +29066,7 @@
         },
         {
           "id": "cfa-item-1010014",
-          "label": "Mocha Frosted Coffee",
+          "label": "Mocha",
           "image": "https://www.cfacdn.com/img/order/menu/Online/Drinks/CFA_Digital_Ordering_US_Frosted_Coffee_Mocha_Web_Menu_1200x1200.png",
           "categories": [
             "Treats"
@@ -29180,7 +29165,7 @@
         },
         {
           "id": "cfa-item-1010015",
-          "label": "Vanilla Frosted Coffee",
+          "label": "Vanilla",
           "image": "https://www.cfacdn.com/img/order/menu/Online/Drinks/CFA_Digital_Ordering_US_Frosted_Coffee_Vanilla_Web_Menu_1200x1200.png",
           "categories": [
             "Treats"
@@ -29279,7 +29264,7 @@
         },
         {
           "id": "cfa-item-1005767",
-          "label": "Frosted Coffee",
+          "label": "Original",
           "image": "https://www.cfacdn.com/img/order/menu/Online/Sides%26treats/CFA_Digital_Menu_US_Frosted_Coffee_iOS_Android_Web-Ordering_2x_800x560.webp",
           "categories": [
             "Treats"
@@ -31458,15 +31443,7 @@
         "cfa-modifier-1006538",
         "cfa-modifier-1004304",
         "cfa-modifier-1004303",
-        "cfa-modifier-1004302",
-        "cfa-modifier-1008149",
-        "cfa-modifier-1008150",
-        "cfa-modifier-1008151",
-        "cfa-modifier-1008152",
-        "cfa-modifier-1008153",
-        "cfa-modifier-1008154",
-        "cfa-modifier-1008155",
-        "cfa-modifier-1008156"
+        "cfa-modifier-1004302"
       ],
       "proteinExtraByVariantId": {
         "cfa-item-1004273": "cfa-modifier-1008149",
@@ -32469,15 +32446,7 @@
       "ingredients": [
         "cfa-modifier-1006536",
         "cfa-modifier-1005545",
-        "cfa-modifier-1004302",
-        "cfa-modifier-1008150",
-        "cfa-modifier-1008153",
-        "cfa-modifier-1008149",
-        "cfa-modifier-1008151",
-        "cfa-modifier-1008152",
-        "cfa-modifier-1008154",
-        "cfa-modifier-1008155",
-        "cfa-modifier-1008156"
+        "cfa-modifier-1004302"
       ],
       "proteinExtraByVariantId": {
         "cfa-item-1005539": "cfa-modifier-1008150",
@@ -33481,15 +33450,7 @@
         "cfa-modifier-1006539",
         "cfa-modifier-1006541",
         "cfa-modifier-1006540",
-        "cfa-modifier-1004301",
-        "cfa-modifier-1008153",
-        "cfa-modifier-1008150",
-        "cfa-modifier-1008152",
-        "cfa-modifier-1008149",
-        "cfa-modifier-1008151",
-        "cfa-modifier-1008154",
-        "cfa-modifier-1008155",
-        "cfa-modifier-1008156"
+        "cfa-modifier-1004301"
       ],
       "proteinExtraByVariantId": {
         "cfa-item-1004654": "cfa-modifier-1008153",
@@ -34643,7 +34604,8 @@
           "attached": true,
           "attachmentReason": "safe_match"
         }
-      }
+      },
+      "ingredientEligible": true
     },
     {
       "id": "cfa-addon-1005749",
@@ -35452,6 +35414,7 @@
         "sugars": 4
       },
       "addonEligible": true,
+      "sourceOnly": true,
       "source": {
         "provider": "Chick-fil-A",
         "menu": {
@@ -35476,7 +35439,7 @@
             "CONDIMENTS"
           ],
           "sellable": false,
-          "role": "standalone_product",
+          "role": "modifier",
           "identitySource": "menu",
           "officialCategories": [
             "Condiments"
@@ -46753,6 +46716,7 @@
         "sugars": 1
       },
       "addonEligible": true,
+      "sourceOnly": true,
       "source": {
         "provider": "Chick-fil-A",
         "menu": {
@@ -46776,7 +46740,7 @@
             "CONDIMENTS"
           ],
           "sellable": false,
-          "role": "standalone_product",
+          "role": "modifier",
           "identitySource": "menu",
           "officialCategories": [
             "Condiments"
@@ -50104,6 +50068,7 @@
         "sugars": 0
       },
       "addonEligible": true,
+      "sourceOnly": true,
       "source": {
         "provider": "Chick-fil-A",
         "menu": {
@@ -50128,7 +50093,7 @@
             "CONDIMENTS"
           ],
           "sellable": false,
-          "role": "standalone_product",
+          "role": "modifier",
           "identitySource": "menu",
           "officialCategories": [
             "Condiments"
@@ -50250,6 +50215,7 @@
         "sugars": 0
       },
       "addonEligible": true,
+      "sourceOnly": true,
       "source": {
         "provider": "Chick-fil-A",
         "menu": {
@@ -50273,7 +50239,7 @@
             "CONDIMENTS"
           ],
           "sellable": false,
-          "role": "standalone_product",
+          "role": "modifier",
           "identitySource": "menu",
           "officialCategories": [
             "Condiments"
@@ -51182,6 +51148,7 @@
         "sugars": 0
       },
       "addonEligible": true,
+      "sourceOnly": true,
       "source": {
         "provider": "Chick-fil-A",
         "menu": {
@@ -51206,7 +51173,7 @@
             "CONDIMENTS"
           ],
           "sellable": false,
-          "role": "standalone_product",
+          "role": "modifier",
           "identitySource": "menu",
           "officialCategories": [
             "Condiments"
@@ -56625,14 +56592,6 @@
       "customization": {
         "ingredientCategories": [
           {
-            "name": "Individual Sauces",
-            "id": "Individual Sauces [CFA 100367:1]",
-            "ingredients": [
-              "cfa-addon-1001381"
-            ],
-            "allowNone": true
-          },
-          {
             "name": "Add Pickles Mod",
             "id": "Add Pickles Mod [CFA 100367:2]",
             "ingredients": [
@@ -56736,14 +56695,6 @@
       "customization": {
         "ingredientCategories": [
           {
-            "name": "Individual Sauces",
-            "id": "Individual Sauces [CFA 100368:1]",
-            "ingredients": [
-              "cfa-addon-1001381"
-            ],
-            "allowNone": true
-          },
-          {
             "name": "Add Pickles Mod",
             "id": "Add Pickles Mod [CFA 100368:2]",
             "ingredients": [
@@ -56846,14 +56797,6 @@
       ],
       "customization": {
         "ingredientCategories": [
-          {
-            "name": "Individual Sauces",
-            "id": "Individual Sauces [CFA 100368:1]",
-            "ingredients": [
-              "cfa-addon-1001381"
-            ],
-            "allowNone": true
-          },
           {
             "name": "Add Pickles Mod",
             "id": "Add Pickles Mod [CFA 100368:2]",
@@ -59608,6 +59551,7 @@
         "sugars": 0
       },
       "addonEligible": true,
+      "sourceOnly": true,
       "source": {
         "provider": "Chick-fil-A",
         "menu": {
@@ -59631,7 +59575,7 @@
             "CONDIMENTS"
           ],
           "sellable": false,
-          "role": "standalone_product",
+          "role": "modifier",
           "identitySource": "menu",
           "officialCategories": [
             "Condiments"
@@ -59674,6 +59618,7 @@
         "sugars": 0
       },
       "addonEligible": true,
+      "sourceOnly": true,
       "source": {
         "provider": "Chick-fil-A",
         "menu": {
@@ -59697,7 +59642,7 @@
             "CONDIMENTS"
           ],
           "sellable": false,
-          "role": "standalone_product",
+          "role": "modifier",
           "identitySource": "menu",
           "officialCategories": [
             "Condiments"
@@ -68479,6 +68424,7 @@
         "cfa-addon-1000045",
         "cfa-addon-1000029",
         "cfa-addon-1000013",
+        "cfa-addon-1001381",
         "cfa-addon-1005749"
       ],
       "maxPerItem": 2
@@ -68504,6 +68450,7 @@
         "cfa-addon-1000045",
         "cfa-addon-1000029",
         "cfa-addon-1000013",
+        "cfa-addon-1001381",
         "cfa-addon-1005749"
       ],
       "maxPerItem": 2
@@ -69151,6 +69098,7 @@
         "cfa-addon-1000045",
         "cfa-addon-1000029",
         "cfa-addon-1000013",
+        "cfa-addon-1001381",
         "cfa-addon-1005749"
       ],
       "maxPerItem": 2
@@ -69187,6 +69135,7 @@
         "cfa-addon-1000010",
         "cfa-addon-1000045",
         "cfa-addon-1000013",
+        "cfa-addon-1001381",
         "cfa-addon-1005749"
       ],
       "maxPerItem": 2
@@ -69212,6 +69161,7 @@
         "cfa-addon-1000045",
         "cfa-addon-1000029",
         "cfa-addon-1000013",
+        "cfa-addon-1001381",
         "cfa-addon-1005749"
       ],
       "maxPerItem": 2
@@ -70688,20 +70638,12 @@
         "maxQuantity": 2,
         "allowNone": true
       },
-      "Individual Sauces [CFA 100367:1]": {
-        "maxQuantity": 2,
-        "allowNone": true
-      },
       "Add Pickles Mod [CFA 100367:2]": {
         "maxQuantity": 2,
         "allowNone": true
       },
       "Sandwich Paid Modifiers [CFA 100367:3]": {
         "maxQuantity": 10,
-        "allowNone": true
-      },
-      "Individual Sauces [CFA 100368:1]": {
-        "maxQuantity": 2,
         "allowNone": true
       },
       "Add Pickles Mod [CFA 100368:2]": {

@@ -32,6 +32,13 @@ export type IngredientNutritionContexts = Record<
   IngredientRelationshipNutrition
 >;
 
+export type MenuSourceIdentity = {
+  menu: {
+    tags: string[];
+    pins: string[];
+  };
+};
+
 // item variants allow for different versions of the same base item, 
 // e.g. 8pc vs 10pc nuggets, small vs medium fries
 export type ItemVariant = {
@@ -42,6 +49,7 @@ export type ItemVariant = {
   nutritionMultiplier?: number;
   categories: string[];
   servingType?: ServingType;
+  source?: MenuSourceIdentity;
   // Parent-variant -> ingredient nutrition selected by an official source tag.
   ingredientNutritionContexts?: IngredientNutritionContexts;
 };
@@ -141,6 +149,7 @@ export type MenuItem = {
   entreeGroup?: string;
 
   nutrition: Nutrition;
+  source?: MenuSourceIdentity;
 
   ingredientRef?: string;
   ingredients?: string[];
@@ -166,6 +175,10 @@ export type MenuItem = {
 
   addonRefs?: string[];
   addonEligible?: boolean;
+  // A canonical menu/addon record that is also intentionally referenced by
+  // ingredient customization state. This avoids duplicating one official
+  // source record across the menu-item and ingredient collections.
+  ingredientEligible?: boolean;
 
   customization?: ItemCustomizationOverride;
 

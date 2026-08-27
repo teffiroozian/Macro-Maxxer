@@ -3,7 +3,7 @@
 import { useEffect, useId, useMemo, useRef, useState } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { ChevronDown } from "lucide-react";
-import type { IngredientItem, MenuItem, ResolvedAddonGroups, RestaurantCustomizationRules } from "@/types/menu";
+import type { IngredientItem, ItemVariant, MenuItem, ResolvedAddonGroups, RestaurantCustomizationRules } from "@/types/menu";
 import ItemDetailsPanel, { resolvePanelIngredients } from "./ItemDetailsPanel";
 import {
   getDefaultVariantId,
@@ -342,13 +342,13 @@ export default function MenuItemCard({
   });
   const [selectedComboSideVariantId, setSelectedComboSideVariantId] = useState<string | undefined>(() => {
     const matchedSide = comboSides.find((side) => side.name === parsedInitialComboCustomization.sideName);
-    const sideVariants = matchedSide?.variants ?? [];
+    const sideVariants: ItemVariant[] = matchedSide?.variants ?? [];
     const matchedVariant = sideVariants.find((variant) => variant.label === parsedInitialComboCustomization.sideVariantLabel);
     return matchedVariant?.id ?? getDefaultVariantId(matchedSide);
   });
   const [selectedComboDrinkVariantId, setSelectedComboDrinkVariantId] = useState<string | undefined>(() => {
     const matchedDrink = comboDrinks.find((drink) => drink.name === parsedInitialComboCustomization.drinkName);
-    const drinkVariants = matchedDrink?.variants ?? [];
+    const drinkVariants: ItemVariant[] = matchedDrink?.variants ?? [];
     const matchedVariant = drinkVariants.find((variant) => variant.label === parsedInitialComboCustomization.drinkVariantLabel);
     return matchedVariant?.id ?? getDefaultVariantId(matchedDrink);
   });

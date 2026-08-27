@@ -335,7 +335,24 @@ function prepareDisplayIngredients({
     });
     ingredientTabs.forEach((tab) => {
       if (tab.label === INCLUDED_INGREDIENT_TAB) return;
-      if (tab.selectionTarget === "parent-variant") return;
+      if (tab.selectionTarget === "parent-variant") {
+        if (tab.label !== "Cheeses") return;
+        const selectedIngredient = tab.ingredients.find(
+          (ingredient) => selectedCountFor(ingredient) > 0,
+        );
+        if (
+          !selectedIngredient ||
+          selectedIngredient.isNoneOption ||
+          includedIngredientIds.has(selectedIngredient.id)
+        ) return;
+        includedIngredients.push({
+          ...selectedIngredient,
+          tabLabel: tab.label,
+          forcedIncludedStatus: "included",
+        });
+        includedIngredientIds.add(selectedIngredient.id);
+        return;
+      }
       if (tab.selectionMode === "single") {
         if (seenSingleSelectTabs.has(tab.label)) return;
         const selectedIngredient = tab.ingredients.find(
@@ -539,13 +556,6 @@ type AvailableAddonSection = {
   // (ComboOptionList); every other group — including this one if it's
   // "primary" only because of its label — uses the quantity-stepper card.
   usesQuantitySelection: boolean;
-};
-
-type VariantConfig = {
-  variants?: ItemVariant[] | null;
-  selectedVariantId?: string;
-  onSelectVariant?: (id: string) => void;
-  showInDetails: boolean;
 };
 
 type MealDetailItem = {
@@ -1000,34 +1010,38 @@ function IngredientCustomizationSection({
                     </button>
                     {isSelected && ingredient.extraOption ? (
                       <div
-                        role="radiogroup"
-                        aria-label={`${ingredient.label} portion`}
-                        className="mx-3 mb-3 grid grid-cols-2 rounded-full bg-slate-100 p-1"
+                        className="flex w-full flex-wrap gap-1.5 px-2 pb-2.5 pl-[52px] sm:px-3 sm:pl-[60px]"
                       >
-                        {[
-                          { label: "Normal", extra: false },
-                          { label: ingredient.extraOption.label, extra: true },
-                        ].map((option) => {
-                          const isActive = ingredient.isExtraSelected === option.extra;
-                          return (
-                            <button
-                              key={option.label}
-                              type="button"
-                              role="radio"
-                              aria-checked={isActive}
-                              onClick={() => {
-                                if (!isActive) onToggle?.(ingredient.extraOption!.id);
-                              }}
-                              className={`cursor-pointer rounded-full px-3 py-1.5 text-xs font-semibold transition-colors ${
-                                isActive
-                                  ? "bg-white text-accent-strong shadow-sm"
-                                  : "text-slate-500 hover:text-slate-700"
-                              }`}
-                            >
-                              {option.label}
-                            </button>
-                          );
-                        })}
+                        <div
+                          role="radiogroup"
+                          aria-label={`${ingredient.label} portion`}
+                          className="inline-flex w-fit items-center gap-0.5 rounded-full bg-black/5 p-0.5"
+                        >
+                          {[
+                            { label: "Normal", extra: false },
+                            { label: ingredient.extraOption.label, extra: true },
+                          ].map((option) => {
+                            const isActive = ingredient.isExtraSelected === option.extra;
+                            return (
+                              <button
+                                key={option.label}
+                                type="button"
+                                role="radio"
+                                aria-checked={isActive}
+                                onClick={() => {
+                                  if (!isActive) onToggle?.(ingredient.extraOption!.id);
+                                }}
+                                className={`inline-flex min-h-[30px] cursor-pointer items-center justify-center rounded-full px-3 py-[1px] text-[11px] font-semibold transition md:min-h-0 md:px-3.5 md:py-[5px] ${
+                                  isActive
+                                    ? "bg-white text-black shadow-sm"
+                                    : "text-black/50 hover:text-black/70"
+                                }`}
+                              >
+                                {option.label}
+                              </button>
+                            );
+                          })}
+                        </div>
                       </div>
                     ) : null}
                   </div>
@@ -1250,6 +1264,47 @@ function ComboOptionRow({
         ) : null}
       </div>
     </li>
+  );
+}
+
+export function ProductOptionsSection({
+  item,
+  variants,
+  selectedVariantId,
+  onSelectVariant,
+}: {
+  item: MenuItem;
+  variants: ItemVariant[];
+  selectedVariantId?: string;
+  onSelectVariant?: (variantId: string) => void;
+}) {
+  const activeVariantId =
+    selectedVariantId ?? item.defaultVariantId ?? variants[0]?.id;
+
+  return (
+    <section
+      id={ITEM_DETAILS_SECTION_IDS.portion}
+    >
+      <h2 className="text-lg font-bold text-neutral-900 sm:text-xl">Options</h2>
+      <ul className="mt-4 grid list-none grid-cols-1 gap-3 pl-0 md:grid-cols-3">
+        {variants.map((variant, index) => (
+          <ComboOptionRow
+            key={variant.id}
+            item={{
+              id: variant.id,
+              name: variant.label,
+              image: variant.image ?? item.image,
+              categories: item.categories,
+              servingType: item.servingType,
+              nutrition: variant.nutrition ?? item.nutrition,
+              defaultOrder: index,
+            }}
+            isSelected={variant.id === activeVariantId}
+            onSelect={onSelectVariant}
+          />
+        ))}
+      </ul>
+    </section>
   );
 }
 
@@ -1638,7 +1693,7 @@ function AddonCustomizationSection({ config }: AddonCustomizationSectionProps) {
                 }));
               }}
             >
-              <h3 className="m-0 text-sm font-medium text-slate-500 sm:text-base">
+              <h3 className="m-0 text-sm font-semibold text-slate-500 sm:text-base">
                 Extras
               </h3>
               <div className="inline-flex items-center gap-2">
@@ -1726,7 +1781,6 @@ export default function ItemDetailsPanel({
   customizationTotals,
   showCustomizationDeltas,
   displayMode = "full",
-  showVariantsInDetails = true,
   selectedIngredientCounts,
   onIncrementIngredient,
   onDecrementIngredient,
@@ -1911,12 +1965,18 @@ export default function ItemDetailsPanel({
   );
   const componentVariantTab: ResolvedIngredientTab | undefined =
     item.variantGroupKind === "component" && variants?.length
-      ? {
-          id: normalizeIngredientToken(item.variantGroupLabel ?? "Cheeses"),
-          label: item.variantGroupLabel ?? "Cheeses",
-          selectionMode: "single",
-          selectionTarget: "parent-variant",
-          ingredients: variants.map((variant) => {
+      ? (() => {
+          const componentLabel = getIngredientTabDisplayLabel(
+            item.variantGroupLabel ?? "Cheeses",
+          );
+          const activeComponentVariantId =
+            selectedVariantId ?? item.defaultVariantId ?? variants[0]?.id;
+          return {
+            id: normalizeIngredientToken(componentLabel),
+            label: componentLabel,
+            selectionMode: "single" as const,
+            selectionTarget: "parent-variant" as const,
+            ingredients: variants.map((variant) => {
             const extraIngredientIds = new Set(
               Object.values(item.proteinExtraByVariantId ?? {}),
             );
@@ -1943,7 +2003,7 @@ export default function ItemDetailsPanel({
               ingredientItem: matchedIngredient,
               nutrition: variantNutrition,
               calories: variantNutrition.calories,
-              defaultCount: variant.id === selectedVariantId ? 1 : 0,
+              defaultCount: variant.id === activeComponentVariantId ? 1 : 0,
               maxQuantity: 1,
               extraOption: extraIngredient
                 ? {
@@ -1953,8 +2013,9 @@ export default function ItemDetailsPanel({
                   }
                 : undefined,
             };
-          }),
-        }
+            }),
+          };
+        })()
       : undefined;
   const ingredientTabs = componentVariantTab
     ? [
@@ -1975,7 +2036,7 @@ export default function ItemDetailsPanel({
     (tab) => tab.ingredients.length > 0,
   );
   const visibleIngredientTabs = availableIngredientTabs;
-  const flattenedIngredientTab = flattenIngredientList
+  const flattenedIngredientTab: ResolvedIngredientTab | undefined = flattenIngredientList
     ? {
         id: "all-ingredients",
         label: "Ingredients",
@@ -2031,12 +2092,6 @@ export default function ItemDetailsPanel({
     availableAddonSections.length > 0;
   const shouldShowInfoSection = displayMode === "full";
 
-  const variantConfig: VariantConfig = {
-    variants,
-    selectedVariantId,
-    onSelectVariant,
-    showInDetails: showVariantsInDetails,
-  };
   const ingredientConfig: IngredientConfig | undefined = selectedIngredientTab
     ? {
         onCustomize: onCustomizeIngredients,
@@ -2128,20 +2183,6 @@ export default function ItemDetailsPanel({
                 totalFat: n.totalFat ?? 0,
               }}
             >
-              {variantConfig.showInDetails && item.variantGroupKind !== "component" ? (
-                <>
-                  <PortionSelector
-                    variants={variantConfig.variants}
-                    selectedVariantId={variantConfig.selectedVariantId}
-                    onSelectVariant={variantConfig.onSelectVariant}
-                    layout="details"
-                    className="mt-0"
-                    groupLabel={item.variantGroupLabel ?? "Portion"}
-                  />
-                  <div className="mt-3 h-px bg-black/10" />
-                </>
-              ) : null}
-
               <SectionEyebrow className="text-base text-neutral-500">
                 Items
               </SectionEyebrow>

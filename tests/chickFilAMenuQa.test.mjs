@@ -341,11 +341,39 @@ test("a cheese choice keeps its SKU and exact nutrition through cart/edit resolu
   });
 });
 
-test("limited Chicken & Waffles sandwiches use Sandwiches as their sole browse category", () => {
+test("limited Chicken & Waffles items keep their breakfast and sandwich browse categories", () => {
   const waffles = visibleItems.filter((item) => /Chicken & Waffles/i.test(item.name));
   assert.equal(waffles.length, 6);
   assert.ok(waffles.every((item) => item.status === "limited-time"));
-  assert.ok(waffles.every((item) => JSON.stringify(item.categories) === '["Sandwiches"]'));
+  assert.deepEqual(
+    waffles.map((item) => ({ name: item.name, categories: item.categories })),
+    [
+      {
+        name: "Chicken & Waffles Breakfast Sandwich w/ Chick-fil-A® Filet",
+        categories: ["Breakfast"],
+      },
+      {
+        name: "Chicken & Waffles Breakfast Sandwich w/ Spicy Filet",
+        categories: ["Breakfast"],
+      },
+      {
+        name: "Chicken & Waffles Breakfast Sandwich w/ Grilled Filet",
+        categories: ["Breakfast"],
+      },
+      {
+        name: "Chicken & Waffles Sandwich w/ Chick-fil-A® Filet",
+        categories: ["Sandwiches"],
+      },
+      {
+        name: "Chicken & Waffles Sandwich w/ Spicy Filet",
+        categories: ["Sandwiches"],
+      },
+      {
+        name: "Chicken & Waffles Sandwich w/ Grilled Filet",
+        categories: ["Sandwiches"],
+      },
+    ],
+  );
   assert.ok(
     waffles.some((item) => item.source.menu.officialCategories.includes("Breakfast")),
     "Breakfast provenance should remain intact",
@@ -374,9 +402,9 @@ test("Sides preserve official order, dedupe Berry Parfait, and append Hash Brown
     "Mac & Cheese",
     "Chicken Noodle Soup",
     "Kale Crunch Side",
-    "Berry Parfait",
     "Original Flavor Waffle Potato Chips",
     "Buddy Fruits® Apple Sauce",
+    "Berry Parfait",
     "Hash Browns",
   ]);
   assert.equal(sides.filter((name) => name === "Berry Parfait").length, 1);
@@ -393,16 +421,17 @@ test("Bag of Ice and its mixed Gallon Beverages container stay off user surfaces
 
 test("category counts match visible generated menu items", () => {
   assert.deepEqual(countItemsByCategory(visibleItems), {
-    sandwiches: 12,
-    breakfast: 12,
+    breakfast: 15,
     sides: 10,
+    sandwiches: 9,
     chicken: 3,
     wraps: 2,
     coffee: 5,
-    treats: 15,
-    beverages: 30,
+    treats: 14,
+    beverages: 28,
     salads: 3,
     sauces: 12,
+    condiments: 8,
     dressings: 7,
   });
 });

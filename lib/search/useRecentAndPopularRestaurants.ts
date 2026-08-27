@@ -25,20 +25,24 @@ export function useRecentAndPopularRestaurants(allRestaurants: RestaurantIndexEn
   const [recentRestaurantIds, setRecentRestaurantIds] = useState<string[]>([]);
 
   useEffect(() => {
-    try {
-      const stored = window.localStorage.getItem(RECENT_RESTAURANTS_KEY);
-      const parsed = stored ? (JSON.parse(stored) as string[]) : [];
-      if (!Array.isArray(parsed)) {
-        return;
-      }
+    const timeout = window.setTimeout(() => {
+      try {
+        const stored = window.localStorage.getItem(RECENT_RESTAURANTS_KEY);
+        const parsed = stored ? (JSON.parse(stored) as string[]) : [];
+        if (!Array.isArray(parsed)) {
+          return;
+        }
 
-      const next = parsed.filter(Boolean).slice(0, MAX_RECENT_RESTAURANTS);
-      if (next.length > 0) {
-        setRecentRestaurantIds(next);
+        const next = parsed.filter(Boolean).slice(0, MAX_RECENT_RESTAURANTS);
+        if (next.length > 0) {
+          setRecentRestaurantIds(next);
+        }
+      } catch {
+        // Ignore localStorage read errors; state stays empty.
       }
-    } catch {
-      // Ignore localStorage read errors; state stays empty.
-    }
+    }, 0);
+
+    return () => window.clearTimeout(timeout);
   }, []);
 
   const recentRestaurants = useMemo(
