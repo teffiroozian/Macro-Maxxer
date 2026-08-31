@@ -1,0 +1,16 @@
+{
+  "restaurant": "Chipotle",
+  "sourceType": "official-menu-metadata-api",
+  "source": "https://services.chipotle.com/menu-metadata/v1/menu-metadata?channel=web&region=US",
+  "channel": "web",
+  "region": "US",
+  "retrieved": "2026-08-28T00:39:47.432Z",
+  "collectorScript": "scripts/collect/chipotle-calculator-menu.ts",
+  "itemCount": 408,
+  "groupCount": 18,
+  "notes": [
+    "Fetched alongside the compressed online-menu payload because Chipotle's nutrition-calculator frontend uses both endpoints together, but kept as its own untouched raw source file (different endpoint, different response shape).",
+    "Per-item \"nutrition\" arrays observed here only contain \"Calories\" and \"Portion\" entries — no fat/protein/carbohydrate/sodium/fiber/sugar fields were found.",
+    "This data has NOT yet been reconciled against calculator-menu.json or the official nutrition PDF source."
+  ]
+}

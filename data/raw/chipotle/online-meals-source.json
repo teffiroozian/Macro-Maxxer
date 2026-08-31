@@ -1,0 +1,27 @@
+{
+  "restaurant": "Chipotle",
+  "sourceType": "official-onlinemeals-api",
+  "source": "https://services.chipotle.com/menuinnovation/v1/restaurants/469/onlinemeals?channelId=web",
+  "restaurantId": "469",
+  "channelId": "web",
+  "retrieved": "2026-08-31T17:34:54.060Z",
+  "collectorScript": "scripts/collect/chipotle-online-meals.ts",
+  "mealCount": 21,
+  "mealCountsByType": {
+    "BuildYourOwn": 4,
+    "HighProtein": 11,
+    "Influencer": 6
+  },
+  "distinctCmgItemIdCount": 44,
+  "subscriptionKeyDiscovery": {
+    "method": "Discovered dynamically at collection time from the <meta property=\"servicesconfig\" data-host=\"...\" data-appkey=\"...\"/> tag on the nutrition-calculator page, rather than hardcoded, since Chipotle controls and may rotate this value.",
+    "discoveredFromPage": "https://www.chipotle.com/nutrition-calculator",
+    "discoveredHost": "https://services.chipotle.com"
+  },
+  "notes": [
+    "This endpoint is restaurant-specific (restaurant 469), matching the restaurant used for calculator-menu.json and menu-metadata.json.",
+    "As of collection time, the mealType values present were: BuildYourOwn, HighProtein, Influencer. No entries were observed with an explicit \"FamilyMeal\"-style mealType; the response instead mixes Build-Your-Own, High Protein, and Influencer-branded preconfigured meals. This is reported as-is, not corrected or filtered.",
+    "Each meal's \"entree\" and, where present, \"sides\"/\"drinks\" arrays reference component items by the same \"CMG-*\" itemId scheme used in calculator-menu.json and menu-metadata.json.",
+    "This file is the fully untouched source JSON array from the onlinemeals endpoint: no fields renamed, no records removed or deduplicated, no reconciliation against the other Chipotle raw sources, and no mapping to Macro Maxxer's schema."
+  ]
+}

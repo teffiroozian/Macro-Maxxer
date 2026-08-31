@@ -1,0 +1,52 @@
+{
+  "restaurant": "Chipotle",
+  "sourceType": "official-nutrition-pdf",
+  "source": "https://www.chipotle.com/content/dam/chipotle/menu/nutrition/US-Nutrition-Facts-Paper-Menu-3-2025.pdf",
+  "localPdfPath": "data/raw/chipotle/nutrition-paper-menu.pdf",
+  "generatedJsonPath": "data/raw/chipotle/nutrition.json",
+  "pdfFilename": "US-Nutrition-Facts-Paper-Menu-3-2025.pdf",
+  "retrieved": "2026-08-27",
+  "pageCount": 3,
+  "tablePages": [
+    2,
+    3
+  ],
+  "documentVersionMarkersByPage": {
+    "2": "OCT-2024-US-CK",
+    "3": "OCT-2024-US-PPS"
+  },
+  "extractionScript": "scripts/collect/chipotle-nutrition.ts",
+  "recordCount": 194,
+  "recordCountsBySection": {
+    "page2_adult": 71,
+    "page2_kids": 28,
+    "page3_adult": 67,
+    "page3_kids": 28
+  },
+  "notes": [
+    "The source URL filename contains \"3-2025\" (US-Nutrition-Facts-Paper-Menu-3-2025.pdf), suggesting a March 2025 publication or update.",
+    "The PDF footer on page 2 reads \"OCT-2024-US-CK\" and on page 3 reads \"OCT-2024-US-PPS\", suggesting an October 2024 print/version marker. Both date markers are preserved here as-is; neither is treated as authoritative over the other.",
+    "Page 1 is the descriptive front-of-menu page (marketing copy with partial calorie call-outs) and does not contain the full structured nutrition table (missing fat/sodium/fiber/etc. columns), so it was excluded from structured extraction.",
+    "Pages 2 and 3 each contain a full nutrition-facts table pair (adult section, then a kids Menu section). The non-drink items are duplicated verbatim across both pages; the drink lineup differs because page 2 lists Coca-Cola-family beverages (variant marker OCT-2024-US-CK) and page 3 lists Pepsi-family beverages (variant marker OCT-2024-US-PPS). Both pages were extracted in full and are NOT deduplicated against each other, so records may appear once per page they were printed on; each record carries its own `page` and `documentVariant` fields so downstream consumers can decide how to reconcile them.",
+    "Multi-size drink rows (e.g. a 22 fl oz and 32 fl oz row for the same product) print the product name only once, on the first size's row. The extractor carries the name forward onto subsequent portion-only rows (continuedFromPreviousRow: true) so no product name is lost or misattributed.",
+    "\"< 1\" / \"<1\" style source strings are preserved verbatim in each value cell's `raw` field; `value` is left null in that case rather than guessing a number.",
+    "One value cell in the source PDF (page 3, adult section, \"Chipotle Iced Tea\", 22 fl oz, calories column) contains the literal text \"10w\" rather than a clean number, almost certainly a font/kerning artifact in Chipotle's PDF. It is preserved verbatim in `raw`; `value` is best-effort parsed as 10 from the leading digits, and the cell is flagged in `uncleanValues` below.",
+    "This is a raw, faithful extraction of the source PDF's nutrition tables only. No mapping to Macro Maxxer's product/ingredient/build schema, no reconciliation against the ordering menu or nutrition calculator, and no classification of items (protein/ingredient/build/etc.) has been performed at this stage."
+  ],
+  "limitations": {
+    "unparsedRowCount": 0,
+    "unparsedRows": [],
+    "uncleanValueCount": 1,
+    "uncleanValues": [
+      {
+        "page": 3,
+        "section": "adult",
+        "name": "Chipotle Iced Tea",
+        "field": "calories",
+        "raw": "10w",
+        "parsedValue": 10
+      }
+    ],
+    "missingCoreRecords": []
+  }
+}

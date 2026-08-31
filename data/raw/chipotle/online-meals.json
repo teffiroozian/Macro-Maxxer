@@ -1,0 +1,2456 @@
+[
+  {
+    "mealId": "e4200067-da42-490c-81f1-37d26ddd9722",
+    "mealName": "Build-Your-Own Chicken",
+    "mealType": "BuildYourOwn",
+    "description": "Chicken, White Rice, Black Beans, Cheese, Romaine Lettuce, Fresh Tomato Salsa, Tomatillo-Red Chili Salsa, Sour Cream, Guacamole, 1 Large Chips, and 10 Soft Flour Tortillas.",
+    "mealPrice": 52,
+    "mealDeliveryPrice": 68,
+    "marketingCopy": "BuildYourOwn",
+    "gradient": "#627A3F",
+    "sortOrder": 1,
+    "calories": "520 - 1220",
+    "loyaltyCampaign": "",
+    "mealTags": [],
+    "dietaryTags": [
+      "Serves 4-6 people"
+    ],
+    "primaryImages": [
+      {
+        "imageCategory": "WEB",
+        "imageUrl": "https://chipotlestrg-cdn.chipotle.com/assets/menuinnovation/pcms/e4200067-da42-490c-81f1-37d26ddd9722/2025_Chicken_Build_Web_1080x720.png"
+      },
+      {
+        "imageCategory": "IOS",
+        "imageUrl": "https://chipotlestrg-cdn.chipotle.com/assets/menuinnovation/pcms/e4200067-da42-490c-81f1-37d26ddd9722/2025_Chicken_Build_App_ios_810x540.png"
+      },
+      {
+        "imageCategory": "ANDROID",
+        "imageUrl": "https://chipotlestrg-cdn.chipotle.com/assets/menuinnovation/pcms/e4200067-da42-490c-81f1-37d26ddd9722/2025_Chicken_Build_App_android_1005x582.png"
+      }
+    ],
+    "secondaryImages": [],
+    "entree": {
+      "entreeName": "Build-Your-Own Chicken",
+      "itemId": "CMG-5374",
+      "itemName": "Build-Your-Own Chicken",
+      "quantity": 1,
+      "calories": "calories",
+      "unitPrice": 52,
+      "unitDeliveryPrice": 68,
+      "isItemAvailable": true,
+      "contents": [
+        {
+          "itemId": "CMG-5375",
+          "itemName": "White Rice",
+          "quantity": 1,
+          "calories": "calories",
+          "unitPrice": 0,
+          "unitDeliveryPrice": 0,
+          "customizationId": 0,
+          "customizationName": "",
+          "isItemAvailable": true
+        },
+        {
+          "itemId": "CMG-5376",
+          "itemName": "Black Beans",
+          "quantity": 1,
+          "calories": "calories",
+          "unitPrice": 0,
+          "unitDeliveryPrice": 0,
+          "customizationId": 0,
+          "customizationName": "",
+          "isItemAvailable": true
+        },
+        {
+          "itemId": "CMG-5378",
+          "itemName": "Cheese",
+          "quantity": 1,
+          "calories": "calories",
+          "unitPrice": 0,
+          "unitDeliveryPrice": 0,
+          "customizationId": 0,
+          "customizationName": "",
+          "isItemAvailable": true
+        },
+        {
+          "itemId": "CMG-5377",
+          "itemName": "Romaine Lettuce",
+          "quantity": 1,
+          "calories": "calories",
+          "unitPrice": 0,
+          "unitDeliveryPrice": 0,
+          "customizationId": 0,
+          "customizationName": "",
+          "isItemAvailable": true
+        },
+        {
+          "itemId": "CMG-5380",
+          "itemName": "Large Chips",
+          "quantity": 1,
+          "calories": "calories",
+          "unitPrice": 0,
+          "unitDeliveryPrice": 0,
+          "customizationId": 0,
+          "customizationName": "",
+          "isItemAvailable": true
+        },
+        {
+          "itemId": "CMG-5381",
+          "itemName": "Large Sour Cream",
+          "quantity": 1,
+          "calories": "calories",
+          "unitPrice": 0,
+          "unitDeliveryPrice": 0,
+          "customizationId": 0,
+          "customizationName": "",
+          "isItemAvailable": true
+        },
+        {
+          "itemId": "CMG-5379",
+          "itemName": "Soft Flour Tortillas (10)",
+          "quantity": 1,
+          "calories": "calories",
+          "unitPrice": 0,
+          "unitDeliveryPrice": 0,
+          "customizationId": 0,
+          "customizationName": "",
+          "isItemAvailable": true
+        },
+        {
+          "itemId": "CMG-5383",
+          "itemName": "Large Fresh Tomato Salsa",
+          "quantity": 1,
+          "calories": "calories",
+          "unitPrice": 0,
+          "unitDeliveryPrice": 0,
+          "customizationId": 0,
+          "customizationName": "",
+          "isItemAvailable": true
+        },
+        {
+          "itemId": "CMG-5382",
+          "itemName": "Large Guacamole",
+          "quantity": 1,
+          "calories": "calories",
+          "unitPrice": 0,
+          "unitDeliveryPrice": 0,
+          "customizationId": 0,
+          "customizationName": "",
+          "isItemAvailable": true
+        },
+        {
+          "itemId": "CMG-5396",
+          "itemName": "Large Tomatillo-Red Chili Salsa",
+          "quantity": 1,
+          "calories": "calories",
+          "unitPrice": 0,
+          "unitDeliveryPrice": 0,
+          "customizationId": 0,
+          "customizationName": "",
+          "isItemAvailable": true
+        }
+      ]
+    },
+    "sides": [],
+    "drinks": []
+  },
+  {
+    "mealId": "653abfb2-3b20-4b17-8638-d6a20b2c340c",
+    "mealName": "Josh Hart's High Protein Burrito",
+    "mealType": "HighProtein",
+    "description": "Burrito with White Rice, Double Adobo Chicken, Black Beans, Fresh Tomato Salsa, Roasted Chili-Corn Salsa, Sour Cream, and Cheese",
+    "mealPrice": 13.4,
+    "mealDeliveryPrice": 17.4,
+    "marketingCopy": "Burrito with White Rice, Double Adobo Chicken, Black Beans, Fresh Tomato Salsa, Roasted Chili-Corn Salsa, Sour Cream, and Cheese",
+    "gradient": "",
+    "sortOrder": 1,
+    "calories": "1345",
+    "loyaltyCampaign": "",
+    "mealTags": [],
+    "dietaryTags": [
+      "95g Protein"
+    ],
+    "primaryImages": [
+      {
+        "imageCategory": "ANDROID",
+        "imageUrl": "https://miinternal-cdn.chipotle.com/assets/menuinnovation/pcms/653abfb2-3b20-4b17-8638-d6a20b2c340c/a4c72a53-3b4a-4081-848f-3bd4a4bc1de0.jpg"
+      },
+      {
+        "imageCategory": "IOS",
+        "imageUrl": "https://miinternal-cdn.chipotle.com/assets/menuinnovation/pcms/653abfb2-3b20-4b17-8638-d6a20b2c340c/a5a17074-0187-4190-9a06-67ab6c683d96.jpg"
+      },
+      {
+        "imageCategory": "WEB",
+        "imageUrl": "https://miinternal-cdn.chipotle.com/assets/menuinnovation/pcms/653abfb2-3b20-4b17-8638-d6a20b2c340c/50325e21-d8d5-4fd9-a167-638c8bf129c0.jpg"
+      }
+    ],
+    "secondaryImages": [],
+    "entree": {
+      "entreeName": "Josh Hart's High Protein Burrito",
+      "itemId": "CMG-1",
+      "itemName": "Chicken Burrito",
+      "quantity": 1,
+      "calories": "1345",
+      "unitPrice": 9.5,
+      "unitDeliveryPrice": 12.35,
+      "isItemAvailable": true,
+      "contents": [
+        {
+          "itemId": "CMG-5051",
+          "itemName": "Black Beans",
+          "quantity": 1,
+          "calories": "",
+          "unitPrice": 0,
+          "unitDeliveryPrice": 0,
+          "customizationId": 0,
+          "customizationName": "",
+          "isItemAvailable": true
+        },
+        {
+          "itemId": "CMG-5201",
+          "itemName": "Fresh Tomato Salsa",
+          "quantity": 1,
+          "calories": "",
+          "unitPrice": 0,
+          "unitDeliveryPrice": 0,
+          "customizationId": 0,
+          "customizationName": "",
+          "isItemAvailable": true
+        },
+        {
+          "itemId": "CMG-5202",
+          "itemName": "Roasted Chili-Corn Salsa",
+          "quantity": 1,
+          "calories": "",
+          "unitPrice": 0,
+          "unitDeliveryPrice": 0,
+          "customizationId": 0,
+          "customizationName": "",
+          "isItemAvailable": true
+        },
+        {
+          "itemId": "CMG-5251",
+          "itemName": "Sour Cream",
+          "quantity": 1,
+          "calories": "",
+          "unitPrice": 0,
+          "unitDeliveryPrice": 0,
+          "customizationId": 0,
+          "customizationName": "",
+          "isItemAvailable": true
+        },
+        {
+          "itemId": "CMG-5252",
+          "itemName": "Cheese",
+          "quantity": 1,
+          "calories": "",
+          "unitPrice": 0,
+          "unitDeliveryPrice": 0,
+          "customizationId": 0,
+          "customizationName": "",
+          "isItemAvailable": true
+        },
+        {
+          "itemId": "CMG-1101",
+          "itemName": "Extra Chicken",
+          "quantity": 1,
+          "calories": "",
+          "unitPrice": 3.9,
+          "unitDeliveryPrice": 5.05,
+          "customizationId": 0,
+          "customizationName": "",
+          "isItemAvailable": true
+        },
+        {
+          "itemId": "CMG-5001",
+          "itemName": "White Rice",
+          "quantity": 1,
+          "calories": "",
+          "unitPrice": 0,
+          "unitDeliveryPrice": 0,
+          "customizationId": 0,
+          "customizationName": "",
+          "isItemAvailable": true
+        }
+      ]
+    },
+    "sides": [],
+    "drinks": []
+  },
+  {
+    "mealId": "3916248a-68fd-4c0f-87e9-38d794e50d7e",
+    "mealName": "Bardi Bowl with Chili Lime Chips",
+    "mealType": "Influencer",
+    "description": "",
+    "mealPrice": 16.6,
+    "mealDeliveryPrice": 21.6,
+    "marketingCopy": "",
+    "gradient": "",
+    "sortOrder": 1,
+    "calories": "1550",
+    "loyaltyCampaign": "",
+    "mealTags": [
+      {
+        "type": "rewards",
+        "value": "Exclusive"
+      }
+    ],
+    "dietaryTags": [
+      "Bowl with White Rice, Adobo Chicken, Fresh Tomato Salsa, Tomatillo-Green Chili Salsa, Sour Cream, Cheese, Guacamole, Queso, and a side of Chili Lime Chips"
+    ],
+    "primaryImages": [
+      {
+        "imageCategory": "ANDROID",
+        "imageUrl": "https://miinternal-cdn.chipotle.com/assets/menuinnovation/pcms/3916248a-68fd-4c0f-87e9-38d794e50d7e/efec751f-97cf-4b2f-8de5-502c54ffd15b.jpg"
+      },
+      {
+        "imageCategory": "IOS",
+        "imageUrl": "https://miinternal-cdn.chipotle.com/assets/menuinnovation/pcms/3916248a-68fd-4c0f-87e9-38d794e50d7e/fe39d3e8-e943-4951-9f4a-0580624df5e3.jpg"
+      },
+      {
+        "imageCategory": "WEB",
+        "imageUrl": "https://miinternal-cdn.chipotle.com/assets/menuinnovation/pcms/3916248a-68fd-4c0f-87e9-38d794e50d7e/79cd3ae5-9808-460d-910e-f2199e2bd314.jpg"
+      }
+    ],
+    "secondaryImages": [],
+    "entree": {
+      "entreeName": "Bardi Bowl with Chili Lime Chips",
+      "itemId": "CMG-101",
+      "itemName": "Chicken Bowl",
+      "quantity": 1,
+      "calories": "1550",
+      "unitPrice": 9.5,
+      "unitDeliveryPrice": 12.35,
+      "isItemAvailable": true,
+      "contents": [
+        {
+          "itemId": "CMG-5001",
+          "itemName": "White Rice",
+          "quantity": 1,
+          "calories": "",
+          "unitPrice": 0,
+          "unitDeliveryPrice": 0,
+          "customizationId": 0,
+          "customizationName": "",
+          "isItemAvailable": true
+        },
+        {
+          "itemId": "CMG-5201",
+          "itemName": "Fresh Tomato Salsa",
+          "quantity": 1,
+          "calories": "",
+          "unitPrice": 0,
+          "unitDeliveryPrice": 0,
+          "customizationId": 0,
+          "customizationName": "",
+          "isItemAvailable": true
+        },
+        {
+          "itemId": "CMG-5203",
+          "itemName": "Tomatillo-Green Chili Salsa",
+          "quantity": 1,
+          "calories": "",
+          "unitPrice": 0,
+          "unitDeliveryPrice": 0,
+          "customizationId": 0,
+          "customizationName": "",
+          "isItemAvailable": true
+        },
+        {
+          "itemId": "CMG-5251",
+          "itemName": "Sour Cream",
+          "quantity": 1,
+          "calories": "",
+          "unitPrice": 0,
+          "unitDeliveryPrice": 0,
+          "customizationId": 0,
+          "customizationName": "",
+          "isItemAvailable": true
+        },
+        {
+          "itemId": "CMG-5252",
+          "itemName": "Cheese",
+          "quantity": 1,
+          "calories": "",
+          "unitPrice": 0,
+          "unitDeliveryPrice": 0,
+          "customizationId": 0,
+          "customizationName": "",
+          "isItemAvailable": true
+        },
+        {
+          "itemId": "CMG-1001",
+          "itemName": "Guacamole",
+          "quantity": 1,
+          "calories": "",
+          "unitPrice": 2.95,
+          "unitDeliveryPrice": 3.85,
+          "customizationId": 0,
+          "customizationName": "",
+          "isItemAvailable": true
+        },
+        {
+          "itemId": "CMG-1029",
+          "itemName": "Queso Blanco",
+          "quantity": 1,
+          "calories": "",
+          "unitPrice": 1.7,
+          "unitDeliveryPrice": 2.2,
+          "customizationId": 0,
+          "customizationName": "",
+          "isItemAvailable": true
+        },
+        {
+          "itemId": "CMG-5053",
+          "itemName": "No Beans",
+          "quantity": 1,
+          "calories": "",
+          "unitPrice": 0,
+          "unitDeliveryPrice": 0,
+          "customizationId": 0,
+          "customizationName": "",
+          "isItemAvailable": true
+        }
+      ]
+    },
+    "sides": [
+      {
+        "sideName": "",
+        "itemId": "CMG-5362",
+        "itemName": "Chili Lime Chips",
+        "quantity": 1,
+        "calories": "",
+        "unitPrice": 2.45,
+        "unitDeliveryPrice": 3.2,
+        "isItemAvailable": true
+      }
+    ],
+    "drinks": []
+  },
+  {
+    "mealId": "152806dc-2504-4a51-8db2-498d705d8bb9",
+    "mealName": "Build-Your-Own Steak",
+    "mealType": "BuildYourOwn",
+    "description": "Steak, White Rice, Black Beans, Cheese, Romaine Lettuce, Fresh Tomato Salsa, Tomatillo-Red Chili Salsa, Sour Cream, Guacamole, 1 Large Chips, and 10 Soft Flour Tortillas.",
+    "mealPrice": 63,
+    "mealDeliveryPrice": 82,
+    "marketingCopy": "BuildYourOwn",
+    "gradient": "#627A3F",
+    "sortOrder": 2,
+    "calories": "490 - 1190",
+    "loyaltyCampaign": "",
+    "mealTags": [],
+    "dietaryTags": [
+      "Serves 4-6 people"
+    ],
+    "primaryImages": [
+      {
+        "imageCategory": "WEB",
+        "imageUrl": "https://chipotlestrg-cdn.chipotle.com/assets/menuinnovation/pcms/152806dc-2504-4a51-8db2-498d705d8bb9/2025_Steak_Build_Web_1080x720.png"
+      },
+      {
+        "imageCategory": "IOS",
+        "imageUrl": "https://chipotlestrg-cdn.chipotle.com/assets/menuinnovation/pcms/152806dc-2504-4a51-8db2-498d705d8bb9/2025_Steak_Build_App_ios_810x540.png"
+      },
+      {
+        "imageCategory": "ANDROID",
+        "imageUrl": "https://chipotlestrg-cdn.chipotle.com/assets/menuinnovation/pcms/152806dc-2504-4a51-8db2-498d705d8bb9/2025_Steak_Build_App_android_1005x582.png"
+      }
+    ],
+    "secondaryImages": [],
+    "entree": {
+      "entreeName": "Build-Your-Own Steak",
+      "itemId": "CMG-5384",
+      "itemName": "Build-Your-Own Steak",
+      "quantity": 1,
+      "calories": "calories",
+      "unitPrice": 63,
+      "unitDeliveryPrice": 82,
+      "isItemAvailable": true,
+      "contents": [
+        {
+          "itemId": "CMG-5375",
+          "itemName": "White Rice",
+          "quantity": 1,
+          "calories": "calories",
+          "unitPrice": 0,
+          "unitDeliveryPrice": 0,
+          "customizationId": 0,
+          "customizationName": "",
+          "isItemAvailable": true
+        },
+        {
+          "itemId": "CMG-5376",
+          "itemName": "Black Beans",
+          "quantity": 1,
+          "calories": "calories",
+          "unitPrice": 0,
+          "unitDeliveryPrice": 0,
+          "customizationId": 0,
+          "customizationName": "",
+          "isItemAvailable": true
+        },
+        {
+          "itemId": "CMG-5378",
+          "itemName": "Cheese",
+          "quantity": 1,
+          "calories": "calories",
+          "unitPrice": 0,
+          "unitDeliveryPrice": 0,
+          "customizationId": 0,
+          "customizationName": "",
+          "isItemAvailable": true
+        },
+        {
+          "itemId": "CMG-5377",
+          "itemName": "Romaine Lettuce",
+          "quantity": 1,
+          "calories": "calories",
+          "unitPrice": 0,
+          "unitDeliveryPrice": 0,
+          "customizationId": 0,
+          "customizationName": "",
+          "isItemAvailable": true
+        },
+        {
+          "itemId": "CMG-5380",
+          "itemName": "Large Chips",
+          "quantity": 1,
+          "calories": "calories",
+          "unitPrice": 0,
+          "unitDeliveryPrice": 0,
+          "customizationId": 0,
+          "customizationName": "",
+          "isItemAvailable": true
+        },
+        {
+          "itemId": "CMG-5381",
+          "itemName": "Large Sour Cream",
+          "quantity": 1,
+          "calories": "calories",
+          "unitPrice": 0,
+          "unitDeliveryPrice": 0,
+          "customizationId": 0,
+          "customizationName": "",
+          "isItemAvailable": true
+        },
+        {
+          "itemId": "CMG-5379",
+          "itemName": "Soft Flour Tortillas (10)",
+          "quantity": 1,
+          "calories": "calories",
+          "unitPrice": 0,
+          "unitDeliveryPrice": 0,
+          "customizationId": 0,
+          "customizationName": "",
+          "isItemAvailable": true
+        },
+        {
+          "itemId": "CMG-5383",
+          "itemName": "Large Fresh Tomato Salsa",
+          "quantity": 1,
+          "calories": "calories",
+          "unitPrice": 0,
+          "unitDeliveryPrice": 0,
+          "customizationId": 0,
+          "customizationName": "",
+          "isItemAvailable": true
+        },
+        {
+          "itemId": "CMG-5382",
+          "itemName": "Large Guacamole",
+          "quantity": 1,
+          "calories": "calories",
+          "unitPrice": 0,
+          "unitDeliveryPrice": 0,
+          "customizationId": 0,
+          "customizationName": "",
+          "isItemAvailable": true
+        },
+        {
+          "itemId": "CMG-5396",
+          "itemName": "Large Tomatillo-Red Chili Salsa",
+          "quantity": 1,
+          "calories": "calories",
+          "unitPrice": 0,
+          "unitDeliveryPrice": 0,
+          "customizationId": 0,
+          "customizationName": "",
+          "isItemAvailable": true
+        }
+      ]
+    },
+    "sides": [],
+    "drinks": []
+  },
+  {
+    "mealId": "2b15ccfe-9059-4e25-9c84-67b5f46c18c9",
+    "mealName": "Mikal Bridges High Protein Bowl",
+    "mealType": "HighProtein",
+    "description": "Bowl with White Rice, Double Adobo Chicken, Tomatillo-Green Chili Salsa, Roasted Chili-Corn Salsa, and Lettuce",
+    "mealPrice": 13.4,
+    "mealDeliveryPrice": 17.4,
+    "marketingCopy": "Bowl with White Rice, Double Adobo Chicken, Tomatillo-Green Chili Salsa, Roasted Chili-Corn Salsa, and Lettuce",
+    "gradient": "",
+    "sortOrder": 2,
+    "calories": "670",
+    "loyaltyCampaign": "",
+    "mealTags": [],
+    "dietaryTags": [
+      "70g Protein"
+    ],
+    "primaryImages": [
+      {
+        "imageCategory": "ANDROID",
+        "imageUrl": "https://miinternal-cdn.chipotle.com/assets/menuinnovation/pcms/2b15ccfe-9059-4e25-9c84-67b5f46c18c9/9e54cec7-4745-43c6-8985-02dce5d57745.jpg"
+      },
+      {
+        "imageCategory": "IOS",
+        "imageUrl": "https://miinternal-cdn.chipotle.com/assets/menuinnovation/pcms/2b15ccfe-9059-4e25-9c84-67b5f46c18c9/401312eb-d2a8-4f1b-a325-04e3bba480f1.jpg"
+      },
+      {
+        "imageCategory": "WEB",
+        "imageUrl": "https://miinternal-cdn.chipotle.com/assets/menuinnovation/pcms/2b15ccfe-9059-4e25-9c84-67b5f46c18c9/194a8944-e374-4e5c-bad1-9edb871de002.jpg"
+      }
+    ],
+    "secondaryImages": [],
+    "entree": {
+      "entreeName": "Mikal Bridges High Protein Bowl",
+      "itemId": "CMG-101",
+      "itemName": "Chicken Bowl",
+      "quantity": 1,
+      "calories": "670",
+      "unitPrice": 9.5,
+      "unitDeliveryPrice": 12.35,
+      "isItemAvailable": true,
+      "contents": [
+        {
+          "itemId": "CMG-5001",
+          "itemName": "White Rice",
+          "quantity": 1,
+          "calories": "",
+          "unitPrice": 0,
+          "unitDeliveryPrice": 0,
+          "customizationId": 0,
+          "customizationName": "",
+          "isItemAvailable": true
+        },
+        {
+          "itemId": "CMG-5053",
+          "itemName": "No Beans",
+          "quantity": 1,
+          "calories": "",
+          "unitPrice": 0,
+          "unitDeliveryPrice": 0,
+          "customizationId": 0,
+          "customizationName": "",
+          "isItemAvailable": true
+        },
+        {
+          "itemId": "CMG-1101",
+          "itemName": "Extra Chicken",
+          "quantity": 1,
+          "calories": "",
+          "unitPrice": 3.9,
+          "unitDeliveryPrice": 5.05,
+          "customizationId": 0,
+          "customizationName": "",
+          "isItemAvailable": true
+        },
+        {
+          "itemId": "CMG-5203",
+          "itemName": "Tomatillo-Green Chili Salsa",
+          "quantity": 1,
+          "calories": "",
+          "unitPrice": 0,
+          "unitDeliveryPrice": 0,
+          "customizationId": 0,
+          "customizationName": "",
+          "isItemAvailable": true
+        },
+        {
+          "itemId": "CMG-5202",
+          "itemName": "Roasted Chili-Corn Salsa",
+          "quantity": 1,
+          "calories": "",
+          "unitPrice": 0,
+          "unitDeliveryPrice": 0,
+          "customizationId": 0,
+          "customizationName": "",
+          "isItemAvailable": true
+        },
+        {
+          "itemId": "CMG-5351",
+          "itemName": "Romaine Lettuce",
+          "quantity": 1,
+          "calories": "",
+          "unitPrice": 0,
+          "unitDeliveryPrice": 0,
+          "customizationId": 0,
+          "customizationName": "",
+          "isItemAvailable": true
+        }
+      ]
+    },
+    "sides": [],
+    "drinks": []
+  },
+  {
+    "mealId": "02774ed8-f878-4dc2-b6cd-5e86977b4907",
+    "mealName": "The Salish Matter Meal",
+    "mealType": "Influencer",
+    "description": "Kid’s Cheese Quesadilla with White Rice, Black Beans, Guac, Kid’s Chips, and Chocolate Milk",
+    "mealPrice": 5.2,
+    "mealDeliveryPrice": 6.75,
+    "marketingCopy": "",
+    "gradient": "",
+    "sortOrder": 2,
+    "calories": "880",
+    "loyaltyCampaign": "",
+    "mealTags": [],
+    "dietaryTags": [],
+    "primaryImages": [
+      {
+        "imageCategory": "ANDROID",
+        "imageUrl": "https://miinternal-cdn.chipotle.com/assets/menuinnovation/pcms/02774ed8-f878-4dc2-b6cd-5e86977b4907/7561c832-7c93-4bc2-b0bb-96a659697271.jpg"
+      },
+      {
+        "imageCategory": "IOS",
+        "imageUrl": "https://miinternal-cdn.chipotle.com/assets/menuinnovation/pcms/02774ed8-f878-4dc2-b6cd-5e86977b4907/7e63177c-9ef7-46e6-af42-4d8b1d850e9c.jpg"
+      },
+      {
+        "imageCategory": "WEB",
+        "imageUrl": "https://miinternal-cdn.chipotle.com/assets/menuinnovation/pcms/02774ed8-f878-4dc2-b6cd-5e86977b4907/7363a28f-6159-4c96-abd1-a8a6035dec62.jpg"
+      }
+    ],
+    "secondaryImages": [],
+    "entree": {
+      "entreeName": "The Salish Matter Meal",
+      "itemId": "CMG-3107",
+      "itemName": "Guacamole Kids Quesadilla",
+      "quantity": 1,
+      "calories": "880",
+      "unitPrice": 5.2,
+      "unitDeliveryPrice": 6.75,
+      "isItemAvailable": true,
+      "contents": [
+        {
+          "itemId": "CMG-5001",
+          "itemName": "White Rice",
+          "quantity": 1,
+          "calories": "",
+          "unitPrice": 0,
+          "unitDeliveryPrice": 0,
+          "customizationId": 0,
+          "customizationName": "",
+          "isItemAvailable": true
+        },
+        {
+          "itemId": "CMG-5051",
+          "itemName": "Black Beans",
+          "quantity": 1,
+          "calories": "",
+          "unitPrice": 0,
+          "unitDeliveryPrice": 0,
+          "customizationId": 0,
+          "customizationName": "",
+          "isItemAvailable": true
+        },
+        {
+          "itemId": "CMG-1401",
+          "itemName": "Kid's Chips",
+          "quantity": 1,
+          "calories": "",
+          "unitPrice": 0,
+          "unitDeliveryPrice": 0,
+          "customizationId": 0,
+          "customizationName": "",
+          "isItemAvailable": true
+        },
+        {
+          "itemId": "CMG-5553",
+          "itemName": "Organic Chocolate Milk",
+          "quantity": 1,
+          "calories": "",
+          "unitPrice": 0,
+          "unitDeliveryPrice": 0,
+          "customizationId": 0,
+          "customizationName": "",
+          "isItemAvailable": true
+        },
+        {
+          "itemId": "CMG-5401",
+          "itemName": "Soft Flour Tortilla",
+          "quantity": 1,
+          "calories": "",
+          "unitPrice": 0,
+          "unitDeliveryPrice": 0,
+          "customizationId": 0,
+          "customizationName": "",
+          "isItemAvailable": true
+        }
+      ]
+    },
+    "sides": [],
+    "drinks": []
+  },
+  {
+    "mealId": "1cc081cb-4180-4257-a827-79a4064bc0e8",
+    "mealName": "Build-Your-Own Sofritas",
+    "mealType": "BuildYourOwn",
+    "description": "Sofritas, White Rice, Black Beans, Cheese, Romaine Lettuce, Fresh Tomato Salsa, Tomatillo-Red Chili Salsa, Sour Cream, and Guacamole, 1 Large Chips, and 10 Soft Flour Tortillas.",
+    "mealPrice": 52,
+    "mealDeliveryPrice": 68,
+    "marketingCopy": "BuildYourOwn",
+    "gradient": "#627A3F",
+    "sortOrder": 3,
+    "calories": "490 - 1190",
+    "loyaltyCampaign": "",
+    "mealTags": [],
+    "dietaryTags": [
+      "Serves 4-6 people"
+    ],
+    "primaryImages": [
+      {
+        "imageCategory": "WEB",
+        "imageUrl": "https://chipotlestrg-cdn.chipotle.com/assets/menuinnovation/pcms/1cc081cb-4180-4257-a827-79a4064bc0e8/2025_Sofritas_Build_Web_1080x720.png"
+      },
+      {
+        "imageCategory": "IOS",
+        "imageUrl": "https://chipotlestrg-cdn.chipotle.com/assets/menuinnovation/pcms/1cc081cb-4180-4257-a827-79a4064bc0e8/2025_Sofritas_Build_App_ios_810x540.png"
+      },
+      {
+        "imageCategory": "ANDROID",
+        "imageUrl": "https://chipotlestrg-cdn.chipotle.com/assets/menuinnovation/pcms/1cc081cb-4180-4257-a827-79a4064bc0e8/2025_Sofritas_Build_App_android_1005x582.png"
+      }
+    ],
+    "secondaryImages": [],
+    "entree": {
+      "entreeName": "Build-Your-Own Sofritas",
+      "itemId": "CMG-5385",
+      "itemName": "Build-Your-Own Sofritas",
+      "quantity": 1,
+      "calories": "calories",
+      "unitPrice": 52,
+      "unitDeliveryPrice": 68,
+      "isItemAvailable": true,
+      "contents": [
+        {
+          "itemId": "CMG-5375",
+          "itemName": "White Rice",
+          "quantity": 1,
+          "calories": "calories",
+          "unitPrice": 0,
+          "unitDeliveryPrice": 0,
+          "customizationId": 0,
+          "customizationName": "",
+          "isItemAvailable": true
+        },
+        {
+          "itemId": "CMG-5376",
+          "itemName": "Black Beans",
+          "quantity": 1,
+          "calories": "calories",
+          "unitPrice": 0,
+          "unitDeliveryPrice": 0,
+          "customizationId": 0,
+          "customizationName": "",
+          "isItemAvailable": true
+        },
+        {
+          "itemId": "CMG-5378",
+          "itemName": "Cheese",
+          "quantity": 1,
+          "calories": "calories",
+          "unitPrice": 0,
+          "unitDeliveryPrice": 0,
+          "customizationId": 0,
+          "customizationName": "",
+          "isItemAvailable": true
+        },
+        {
+          "itemId": "CMG-5377",
+          "itemName": "Romaine Lettuce",
+          "quantity": 1,
+          "calories": "calories",
+          "unitPrice": 0,
+          "unitDeliveryPrice": 0,
+          "customizationId": 0,
+          "customizationName": "",
+          "isItemAvailable": true
+        },
+        {
+          "itemId": "CMG-5380",
+          "itemName": "Large Chips",
+          "quantity": 1,
+          "calories": "calories",
+          "unitPrice": 0,
+          "unitDeliveryPrice": 0,
+          "customizationId": 0,
+          "customizationName": "",
+          "isItemAvailable": true
+        },
+        {
+          "itemId": "CMG-5381",
+          "itemName": "Large Sour Cream",
+          "quantity": 1,
+          "calories": "calories",
+          "unitPrice": 0,
+          "unitDeliveryPrice": 0,
+          "customizationId": 0,
+          "customizationName": "",
+          "isItemAvailable": true
+        },
+        {
+          "itemId": "CMG-5379",
+          "itemName": "Soft Flour Tortillas (10)",
+          "quantity": 1,
+          "calories": "calories",
+          "unitPrice": 0,
+          "unitDeliveryPrice": 0,
+          "customizationId": 0,
+          "customizationName": "",
+          "isItemAvailable": true
+        },
+        {
+          "itemId": "CMG-5383",
+          "itemName": "Large Fresh Tomato Salsa",
+          "quantity": 1,
+          "calories": "calories",
+          "unitPrice": 0,
+          "unitDeliveryPrice": 0,
+          "customizationId": 0,
+          "customizationName": "",
+          "isItemAvailable": true
+        },
+        {
+          "itemId": "CMG-5382",
+          "itemName": "Large Guacamole",
+          "quantity": 1,
+          "calories": "calories",
+          "unitPrice": 0,
+          "unitDeliveryPrice": 0,
+          "customizationId": 0,
+          "customizationName": "",
+          "isItemAvailable": true
+        },
+        {
+          "itemId": "CMG-5396",
+          "itemName": "Large Tomatillo-Red Chili Salsa",
+          "quantity": 1,
+          "calories": "calories",
+          "unitPrice": 0,
+          "unitDeliveryPrice": 0,
+          "customizationId": 0,
+          "customizationName": "",
+          "isItemAvailable": true
+        }
+      ]
+    },
+    "sides": [],
+    "drinks": []
+  },
+  {
+    "mealId": "ec59f2f3-0c3f-4082-82af-ca58727f3e9f",
+    "mealName": "Josh Hart's High Protein Burrito",
+    "mealType": "Influencer",
+    "description": "Burrito with White Rice, double Adobo Chicken, Black Beans, Fresh Tomato Salsa, Roasted Chili-Corn Salsa, Sour Cream, and Cheese",
+    "mealPrice": 13.4,
+    "mealDeliveryPrice": 17.4,
+    "marketingCopy": "Burrito with White Rice, double Adobo Chicken, Black Beans, Fresh Tomato Salsa, Roasted Chili-Corn Salsa, Sour Cream, and Cheese",
+    "gradient": "",
+    "sortOrder": 3,
+    "calories": "1345",
+    "loyaltyCampaign": "",
+    "mealTags": [],
+    "dietaryTags": [
+      "95g Protein"
+    ],
+    "primaryImages": [
+      {
+        "imageCategory": "ANDROID",
+        "imageUrl": "https://miinternal-cdn.chipotle.com/assets/menuinnovation/pcms/ec59f2f3-0c3f-4082-82af-ca58727f3e9f/8b07d54a-363d-475c-b4d2-e515a20a72df.jpg"
+      },
+      {
+        "imageCategory": "IOS",
+        "imageUrl": "https://miinternal-cdn.chipotle.com/assets/menuinnovation/pcms/ec59f2f3-0c3f-4082-82af-ca58727f3e9f/46e5e7ba-6002-49dc-816e-253ea265e33f.jpg"
+      },
+      {
+        "imageCategory": "WEB",
+        "imageUrl": "https://miinternal-cdn.chipotle.com/assets/menuinnovation/pcms/ec59f2f3-0c3f-4082-82af-ca58727f3e9f/56cdb1e0-b6e0-4020-88f6-cd2ddb1693e5.jpg"
+      }
+    ],
+    "secondaryImages": [],
+    "entree": {
+      "entreeName": "Josh Hart's High Protein Burrito",
+      "itemId": "CMG-1",
+      "itemName": "Chicken Burrito",
+      "quantity": 1,
+      "calories": "1345",
+      "unitPrice": 9.5,
+      "unitDeliveryPrice": 12.35,
+      "isItemAvailable": true,
+      "contents": [
+        {
+          "itemId": "CMG-5001",
+          "itemName": "White Rice",
+          "quantity": 1,
+          "calories": "",
+          "unitPrice": 0,
+          "unitDeliveryPrice": 0,
+          "customizationId": 0,
+          "customizationName": "",
+          "isItemAvailable": true
+        },
+        {
+          "itemId": "CMG-5051",
+          "itemName": "Black Beans",
+          "quantity": 1,
+          "calories": "",
+          "unitPrice": 0,
+          "unitDeliveryPrice": 0,
+          "customizationId": 0,
+          "customizationName": "",
+          "isItemAvailable": true
+        },
+        {
+          "itemId": "CMG-5201",
+          "itemName": "Fresh Tomato Salsa",
+          "quantity": 1,
+          "calories": "",
+          "unitPrice": 0,
+          "unitDeliveryPrice": 0,
+          "customizationId": 0,
+          "customizationName": "",
+          "isItemAvailable": true
+        },
+        {
+          "itemId": "CMG-5202",
+          "itemName": "Roasted Chili-Corn Salsa",
+          "quantity": 1,
+          "calories": "",
+          "unitPrice": 0,
+          "unitDeliveryPrice": 0,
+          "customizationId": 0,
+          "customizationName": "",
+          "isItemAvailable": true
+        },
+        {
+          "itemId": "CMG-5251",
+          "itemName": "Sour Cream",
+          "quantity": 1,
+          "calories": "",
+          "unitPrice": 0,
+          "unitDeliveryPrice": 0,
+          "customizationId": 0,
+          "customizationName": "",
+          "isItemAvailable": true
+        },
+        {
+          "itemId": "CMG-5252",
+          "itemName": "Cheese",
+          "quantity": 1,
+          "calories": "",
+          "unitPrice": 0,
+          "unitDeliveryPrice": 0,
+          "customizationId": 0,
+          "customizationName": "",
+          "isItemAvailable": true
+        },
+        {
+          "itemId": "CMG-1101",
+          "itemName": "Extra Chicken",
+          "quantity": 1,
+          "calories": "",
+          "unitPrice": 3.9,
+          "unitDeliveryPrice": 5.05,
+          "customizationId": 0,
+          "customizationName": "",
+          "isItemAvailable": true
+        }
+      ]
+    },
+    "sides": [],
+    "drinks": []
+  },
+  {
+    "mealId": "f4929790-1d6c-4297-a5bd-acdc7f8b67c6",
+    "mealName": "Tara Davis-Woodhall High Protein Bowl",
+    "mealType": "HighProtein",
+    "description": "Bowl with White Rice, Double Adobo Chicken, Pinto Beans, Tomatillo-Red Chili Salsa, light Fresh Tomato Salsa, light Roasted Chili-Corn Salsa, Lettuce, and Guacamole",
+    "mealPrice": 16.35,
+    "mealDeliveryPrice": 21.25,
+    "marketingCopy": "",
+    "gradient": "",
+    "sortOrder": 3,
+    "calories": "1018",
+    "loyaltyCampaign": "",
+    "mealTags": [],
+    "dietaryTags": [
+      "80g Protein"
+    ],
+    "primaryImages": [
+      {
+        "imageCategory": "ANDROID",
+        "imageUrl": "https://miinternal-cdn.chipotle.com/assets/menuinnovation/pcms/f4929790-1d6c-4297-a5bd-acdc7f8b67c6/62aa27d9-829c-497a-ad2c-41abeb9bab84.jpg"
+      },
+      {
+        "imageCategory": "IOS",
+        "imageUrl": "https://miinternal-cdn.chipotle.com/assets/menuinnovation/pcms/f4929790-1d6c-4297-a5bd-acdc7f8b67c6/8013d575-3e55-4513-b792-aaa054b87ff2.jpg"
+      },
+      {
+        "imageCategory": "WEB",
+        "imageUrl": "https://miinternal-cdn.chipotle.com/assets/menuinnovation/pcms/f4929790-1d6c-4297-a5bd-acdc7f8b67c6/b03fd625-75e9-419b-b2fb-4de31e89b68a.jpg"
+      }
+    ],
+    "secondaryImages": [],
+    "entree": {
+      "entreeName": "Tara Davis-Woodhall High Protein Bowl",
+      "itemId": "CMG-101",
+      "itemName": "Chicken Bowl",
+      "quantity": 1,
+      "calories": "1018",
+      "unitPrice": 9.5,
+      "unitDeliveryPrice": 12.35,
+      "isItemAvailable": true,
+      "contents": [
+        {
+          "itemId": "CMG-1101",
+          "itemName": "Extra Chicken",
+          "quantity": 1,
+          "calories": "",
+          "unitPrice": 3.9,
+          "unitDeliveryPrice": 5.05,
+          "customizationId": 0,
+          "customizationName": "",
+          "isItemAvailable": true
+        },
+        {
+          "itemId": "CMG-5052",
+          "itemName": "Pinto Beans",
+          "quantity": 1,
+          "calories": "",
+          "unitPrice": 0,
+          "unitDeliveryPrice": 0,
+          "customizationId": 0,
+          "customizationName": "",
+          "isItemAvailable": true
+        },
+        {
+          "itemId": "CMG-5204",
+          "itemName": "Tomatillo-Red Chili Salsa",
+          "quantity": 1,
+          "calories": "",
+          "unitPrice": 0,
+          "unitDeliveryPrice": 0,
+          "customizationId": 0,
+          "customizationName": "",
+          "isItemAvailable": true
+        },
+        {
+          "itemId": "CMG-5201",
+          "itemName": "Fresh Tomato Salsa",
+          "quantity": 1,
+          "calories": "",
+          "unitPrice": 0,
+          "unitDeliveryPrice": 0,
+          "customizationId": 1,
+          "customizationName": "Light",
+          "isItemAvailable": true
+        },
+        {
+          "itemId": "CMG-5202",
+          "itemName": "Roasted Chili-Corn Salsa",
+          "quantity": 1,
+          "calories": "",
+          "unitPrice": 0,
+          "unitDeliveryPrice": 0,
+          "customizationId": 0,
+          "customizationName": "",
+          "isItemAvailable": true
+        },
+        {
+          "itemId": "CMG-5351",
+          "itemName": "Romaine Lettuce",
+          "quantity": 1,
+          "calories": "",
+          "unitPrice": 0,
+          "unitDeliveryPrice": 0,
+          "customizationId": 0,
+          "customizationName": "",
+          "isItemAvailable": true
+        },
+        {
+          "itemId": "CMG-1001",
+          "itemName": "Guacamole",
+          "quantity": 1,
+          "calories": "",
+          "unitPrice": 2.95,
+          "unitDeliveryPrice": 3.85,
+          "customizationId": 0,
+          "customizationName": "",
+          "isItemAvailable": true
+        },
+        {
+          "itemId": "CMG-5001",
+          "itemName": "White Rice",
+          "quantity": 1,
+          "calories": "",
+          "unitPrice": 0,
+          "unitDeliveryPrice": 0,
+          "customizationId": 0,
+          "customizationName": "",
+          "isItemAvailable": true
+        }
+      ]
+    },
+    "sides": [],
+    "drinks": []
+  },
+  {
+    "mealId": "8cf8f280-5a7a-421a-98fc-13dc60ebc0e1",
+    "mealName": "2 Large Chips & 3 Large Sides",
+    "mealType": "BuildYourOwn",
+    "description": "2 Large Chips, Large Queso Blanco, Large Guacamole, and Fresh Tomato Salsa",
+    "mealPrice": 18.75,
+    "mealDeliveryPrice": 24.4,
+    "marketingCopy": "BuildYourOwn",
+    "gradient": "#627A3F",
+    "sortOrder": 4,
+    "calories": "430 - 440",
+    "loyaltyCampaign": "",
+    "mealTags": [],
+    "dietaryTags": [
+      "Serves 4-6 people"
+    ],
+    "primaryImages": [
+      {
+        "imageCategory": "WEB",
+        "imageUrl": "https://chipotlestrg-cdn.chipotle.com/assets/menuinnovation/pcms/8cf8f280-5a7a-421a-98fc-13dc60ebc0e1/2025_Chips_Build_Web_1080x720.png"
+      },
+      {
+        "imageCategory": "IOS",
+        "imageUrl": "https://chipotlestrg-cdn.chipotle.com/assets/menuinnovation/pcms/8cf8f280-5a7a-421a-98fc-13dc60ebc0e1/2025_ChipsSides_Build_App_ios_810x540.png"
+      },
+      {
+        "imageCategory": "ANDROID",
+        "imageUrl": "https://chipotlestrg-cdn.chipotle.com/assets/menuinnovation/pcms/8cf8f280-5a7a-421a-98fc-13dc60ebc0e1/2025_ChipsSides_Build_App_android_1005x582.png"
+      }
+    ],
+    "secondaryImages": [],
+    "entree": {
+      "entreeName": "2 Large Chips & 3 Large Sides",
+      "itemId": "CMG-5390",
+      "itemName": "2 Large Chips & 3 Large Sides",
+      "quantity": 1,
+      "calories": "calories",
+      "unitPrice": 18.75,
+      "unitDeliveryPrice": 24.4,
+      "isItemAvailable": true,
+      "contents": [
+        {
+          "itemId": "CMG-5383",
+          "itemName": "Large Fresh Tomato Salsa",
+          "quantity": 1,
+          "calories": "calories",
+          "unitPrice": 0,
+          "unitDeliveryPrice": 0,
+          "customizationId": 0,
+          "customizationName": "",
+          "isItemAvailable": true
+        },
+        {
+          "itemId": "CMG-5382",
+          "itemName": "Large Guacamole",
+          "quantity": 1,
+          "calories": "calories",
+          "unitPrice": 0,
+          "unitDeliveryPrice": 0,
+          "customizationId": 0,
+          "customizationName": "",
+          "isItemAvailable": true
+        },
+        {
+          "itemId": "CMG-5397",
+          "itemName": "Large Queso Blanco",
+          "quantity": 1,
+          "calories": "calories",
+          "unitPrice": 0,
+          "unitDeliveryPrice": 0,
+          "customizationId": 0,
+          "customizationName": "",
+          "isItemAvailable": true
+        }
+      ]
+    },
+    "sides": [],
+    "drinks": []
+  },
+  {
+    "mealId": "8aebe083-fb22-4113-973c-cb22ca4f2c19",
+    "mealName": "Tara Davis-Woodhall High Protein Bowl",
+    "mealType": "Influencer",
+    "description": "Bowl with White Rice, double Adobo Chicken, Pinto Beans, Tomatillo-Red Chili Salsa, light Fresh Tomato Salsa, light Roasted Chili-Corn Salsa, Lettuce, and Guacamole",
+    "mealPrice": 16.35,
+    "mealDeliveryPrice": 21.25,
+    "marketingCopy": "Bowl with White Rice, double Adobo Chicken, Pinto Beans, Tomatillo-Red Chili Salsa, light Fresh Tomato Salsa, light Roasted Chili-Corn Salsa, Lettuce, and Guacamole",
+    "gradient": "",
+    "sortOrder": 4,
+    "calories": "1018",
+    "loyaltyCampaign": "",
+    "mealTags": [],
+    "dietaryTags": [
+      "80g Protein"
+    ],
+    "primaryImages": [
+      {
+        "imageCategory": "ANDROID",
+        "imageUrl": "https://miinternal-cdn.chipotle.com/assets/menuinnovation/pcms/8aebe083-fb22-4113-973c-cb22ca4f2c19/736e937a-f922-4767-b100-a39f7424316d.jpg"
+      },
+      {
+        "imageCategory": "IOS",
+        "imageUrl": "https://miinternal-cdn.chipotle.com/assets/menuinnovation/pcms/8aebe083-fb22-4113-973c-cb22ca4f2c19/578d874a-4d06-4ded-9b72-d6177023968e.jpg"
+      },
+      {
+        "imageCategory": "WEB",
+        "imageUrl": "https://miinternal-cdn.chipotle.com/assets/menuinnovation/pcms/8aebe083-fb22-4113-973c-cb22ca4f2c19/d43371ea-b7f5-4296-ab53-ebe4e0904104.jpg"
+      }
+    ],
+    "secondaryImages": [],
+    "entree": {
+      "entreeName": "Tara Davis-Woodhall High Protein Bowl",
+      "itemId": "CMG-101",
+      "itemName": "Chicken Bowl",
+      "quantity": 1,
+      "calories": "1018",
+      "unitPrice": 9.5,
+      "unitDeliveryPrice": 12.35,
+      "isItemAvailable": true,
+      "contents": [
+        {
+          "itemId": "CMG-5001",
+          "itemName": "White Rice",
+          "quantity": 1,
+          "calories": "",
+          "unitPrice": 0,
+          "unitDeliveryPrice": 0,
+          "customizationId": 0,
+          "customizationName": "",
+          "isItemAvailable": true
+        },
+        {
+          "itemId": "CMG-1101",
+          "itemName": "Extra Chicken",
+          "quantity": 1,
+          "calories": "",
+          "unitPrice": 3.9,
+          "unitDeliveryPrice": 5.05,
+          "customizationId": 0,
+          "customizationName": "",
+          "isItemAvailable": true
+        },
+        {
+          "itemId": "CMG-5052",
+          "itemName": "Pinto Beans",
+          "quantity": 1,
+          "calories": "",
+          "unitPrice": 0,
+          "unitDeliveryPrice": 0,
+          "customizationId": 0,
+          "customizationName": "",
+          "isItemAvailable": true
+        },
+        {
+          "itemId": "CMG-5204",
+          "itemName": "Tomatillo-Red Chili Salsa",
+          "quantity": 1,
+          "calories": "",
+          "unitPrice": 0,
+          "unitDeliveryPrice": 0,
+          "customizationId": 0,
+          "customizationName": "",
+          "isItemAvailable": true
+        },
+        {
+          "itemId": "CMG-5201",
+          "itemName": "Fresh Tomato Salsa",
+          "quantity": 1,
+          "calories": "",
+          "unitPrice": 0,
+          "unitDeliveryPrice": 0,
+          "customizationId": 1,
+          "customizationName": "Light",
+          "isItemAvailable": true
+        },
+        {
+          "itemId": "CMG-5202",
+          "itemName": "Roasted Chili-Corn Salsa",
+          "quantity": 1,
+          "calories": "",
+          "unitPrice": 0,
+          "unitDeliveryPrice": 0,
+          "customizationId": 1,
+          "customizationName": "Light",
+          "isItemAvailable": true
+        },
+        {
+          "itemId": "CMG-5351",
+          "itemName": "Romaine Lettuce",
+          "quantity": 1,
+          "calories": "",
+          "unitPrice": 0,
+          "unitDeliveryPrice": 0,
+          "customizationId": 0,
+          "customizationName": "",
+          "isItemAvailable": true
+        },
+        {
+          "itemId": "CMG-1001",
+          "itemName": "Guacamole",
+          "quantity": 1,
+          "calories": "",
+          "unitPrice": 2.95,
+          "unitDeliveryPrice": 3.85,
+          "customizationId": 0,
+          "customizationName": "",
+          "isItemAvailable": true
+        }
+      ]
+    },
+    "sides": [],
+    "drinks": []
+  },
+  {
+    "mealId": "e1d03f68-0189-499b-8c55-403b7058acdd",
+    "mealName": "Hunter Woodhall's High Protein Bowl",
+    "mealType": "HighProtein",
+    "description": "Bowl with White Rice, Double Adobo Chicken, Black Beans, Tomatillo-Red Chili Salsa, light Fresh Tomato Salsa, light Roasted Chili-Corn Salsa, Lettuce, and Guacamole",
+    "mealPrice": 16.35,
+    "mealDeliveryPrice": 21.25,
+    "marketingCopy": "",
+    "gradient": "",
+    "sortOrder": 5,
+    "calories": "1018",
+    "loyaltyCampaign": "",
+    "mealTags": [],
+    "dietaryTags": [
+      "80g Protein"
+    ],
+    "primaryImages": [
+      {
+        "imageCategory": "ANDROID",
+        "imageUrl": "https://miinternal-cdn.chipotle.com/assets/menuinnovation/pcms/e1d03f68-0189-499b-8c55-403b7058acdd/2d13e82c-b330-4226-871b-a5f8473ed4b9.jpg"
+      },
+      {
+        "imageCategory": "IOS",
+        "imageUrl": "https://miinternal-cdn.chipotle.com/assets/menuinnovation/pcms/e1d03f68-0189-499b-8c55-403b7058acdd/dcd36210-3b42-401b-a0c0-426b7366c825.jpg"
+      },
+      {
+        "imageCategory": "WEB",
+        "imageUrl": "https://miinternal-cdn.chipotle.com/assets/menuinnovation/pcms/e1d03f68-0189-499b-8c55-403b7058acdd/637dbe58-62a6-4d1d-8103-a646fe445e19.jpg"
+      }
+    ],
+    "secondaryImages": [],
+    "entree": {
+      "entreeName": "Hunter Woodhall's High Protein Bowl",
+      "itemId": "CMG-101",
+      "itemName": "Chicken Bowl",
+      "quantity": 1,
+      "calories": "1018",
+      "unitPrice": 9.5,
+      "unitDeliveryPrice": 12.35,
+      "isItemAvailable": true,
+      "contents": [
+        {
+          "itemId": "CMG-5001",
+          "itemName": "White Rice",
+          "quantity": 1,
+          "calories": "",
+          "unitPrice": 0,
+          "unitDeliveryPrice": 0,
+          "customizationId": 0,
+          "customizationName": "",
+          "isItemAvailable": true
+        },
+        {
+          "itemId": "CMG-1101",
+          "itemName": "Extra Chicken",
+          "quantity": 1,
+          "calories": "",
+          "unitPrice": 3.9,
+          "unitDeliveryPrice": 5.05,
+          "customizationId": 0,
+          "customizationName": "",
+          "isItemAvailable": true
+        },
+        {
+          "itemId": "CMG-5051",
+          "itemName": "Black Beans",
+          "quantity": 1,
+          "calories": "",
+          "unitPrice": 0,
+          "unitDeliveryPrice": 0,
+          "customizationId": 0,
+          "customizationName": "",
+          "isItemAvailable": true
+        },
+        {
+          "itemId": "CMG-5204",
+          "itemName": "Tomatillo-Red Chili Salsa",
+          "quantity": 1,
+          "calories": "",
+          "unitPrice": 0,
+          "unitDeliveryPrice": 0,
+          "customizationId": 0,
+          "customizationName": "",
+          "isItemAvailable": true
+        },
+        {
+          "itemId": "CMG-5201",
+          "itemName": "Fresh Tomato Salsa",
+          "quantity": 1,
+          "calories": "",
+          "unitPrice": 0,
+          "unitDeliveryPrice": 0,
+          "customizationId": 1,
+          "customizationName": "Light",
+          "isItemAvailable": true
+        },
+        {
+          "itemId": "CMG-5202",
+          "itemName": "Roasted Chili-Corn Salsa",
+          "quantity": 1,
+          "calories": "",
+          "unitPrice": 0,
+          "unitDeliveryPrice": 0,
+          "customizationId": 1,
+          "customizationName": "Light",
+          "isItemAvailable": true
+        },
+        {
+          "itemId": "CMG-5351",
+          "itemName": "Romaine Lettuce",
+          "quantity": 1,
+          "calories": "",
+          "unitPrice": 0,
+          "unitDeliveryPrice": 0,
+          "customizationId": 0,
+          "customizationName": "",
+          "isItemAvailable": true
+        },
+        {
+          "itemId": "CMG-1001",
+          "itemName": "Guacamole",
+          "quantity": 1,
+          "calories": "",
+          "unitPrice": 2.95,
+          "unitDeliveryPrice": 3.85,
+          "customizationId": 0,
+          "customizationName": "",
+          "isItemAvailable": true
+        }
+      ]
+    },
+    "sides": [],
+    "drinks": []
+  },
+  {
+    "mealId": "57a2be3f-63ee-49c0-9de2-3162ad80c22c",
+    "mealName": "Hunter Woodhall's High Protein Bowl",
+    "mealType": "Influencer",
+    "description": "Bowl with White Rice, double Adobo Chicken, Black Beans, Tomatillo-Red Chili Salsa, light Fresh Tomato Salsa, light Roasted Chili-Corn Salsa, Lettuce, and Guacamole",
+    "mealPrice": 16.35,
+    "mealDeliveryPrice": 21.25,
+    "marketingCopy": "Bowl with White Rice, double Adobo Chicken, Black Beans, Tomatillo-Red Chili Salsa, light Fresh Tomato Salsa, light Roasted Chili-Corn Salsa, Lettuce, and Guacamole",
+    "gradient": "",
+    "sortOrder": 5,
+    "calories": "1018",
+    "loyaltyCampaign": "",
+    "mealTags": [],
+    "dietaryTags": [
+      "80g Protein"
+    ],
+    "primaryImages": [
+      {
+        "imageCategory": "ANDROID",
+        "imageUrl": "https://miinternal-cdn.chipotle.com/assets/menuinnovation/pcms/57a2be3f-63ee-49c0-9de2-3162ad80c22c/139867c1-8392-492b-88dd-85488b917d41.jpg"
+      },
+      {
+        "imageCategory": "IOS",
+        "imageUrl": "https://miinternal-cdn.chipotle.com/assets/menuinnovation/pcms/57a2be3f-63ee-49c0-9de2-3162ad80c22c/bed63287-7224-49a0-9de1-f99aa2cf9f75.jpg"
+      },
+      {
+        "imageCategory": "WEB",
+        "imageUrl": "https://miinternal-cdn.chipotle.com/assets/menuinnovation/pcms/57a2be3f-63ee-49c0-9de2-3162ad80c22c/45034dd9-d65f-44f5-b7f7-8f795e671666.jpg"
+      }
+    ],
+    "secondaryImages": [],
+    "entree": {
+      "entreeName": "Hunter Woodhall's High Protein Bowl",
+      "itemId": "CMG-101",
+      "itemName": "Chicken Bowl",
+      "quantity": 1,
+      "calories": "1018",
+      "unitPrice": 9.5,
+      "unitDeliveryPrice": 12.35,
+      "isItemAvailable": true,
+      "contents": [
+        {
+          "itemId": "CMG-5001",
+          "itemName": "White Rice",
+          "quantity": 1,
+          "calories": "",
+          "unitPrice": 0,
+          "unitDeliveryPrice": 0,
+          "customizationId": 0,
+          "customizationName": "",
+          "isItemAvailable": true
+        },
+        {
+          "itemId": "CMG-1101",
+          "itemName": "Extra Chicken",
+          "quantity": 1,
+          "calories": "",
+          "unitPrice": 3.9,
+          "unitDeliveryPrice": 5.05,
+          "customizationId": 0,
+          "customizationName": "",
+          "isItemAvailable": true
+        },
+        {
+          "itemId": "CMG-5051",
+          "itemName": "Black Beans",
+          "quantity": 1,
+          "calories": "",
+          "unitPrice": 0,
+          "unitDeliveryPrice": 0,
+          "customizationId": 0,
+          "customizationName": "",
+          "isItemAvailable": true
+        },
+        {
+          "itemId": "CMG-5204",
+          "itemName": "Tomatillo-Red Chili Salsa",
+          "quantity": 1,
+          "calories": "",
+          "unitPrice": 0,
+          "unitDeliveryPrice": 0,
+          "customizationId": 0,
+          "customizationName": "",
+          "isItemAvailable": true
+        },
+        {
+          "itemId": "CMG-5201",
+          "itemName": "Fresh Tomato Salsa",
+          "quantity": 1,
+          "calories": "",
+          "unitPrice": 0,
+          "unitDeliveryPrice": 0,
+          "customizationId": 1,
+          "customizationName": "Light",
+          "isItemAvailable": true
+        },
+        {
+          "itemId": "CMG-5202",
+          "itemName": "Roasted Chili-Corn Salsa",
+          "quantity": 1,
+          "calories": "",
+          "unitPrice": 0,
+          "unitDeliveryPrice": 0,
+          "customizationId": 1,
+          "customizationName": "Light",
+          "isItemAvailable": true
+        },
+        {
+          "itemId": "CMG-5351",
+          "itemName": "Romaine Lettuce",
+          "quantity": 1,
+          "calories": "",
+          "unitPrice": 0,
+          "unitDeliveryPrice": 0,
+          "customizationId": 0,
+          "customizationName": "",
+          "isItemAvailable": true
+        },
+        {
+          "itemId": "CMG-1001",
+          "itemName": "Guacamole",
+          "quantity": 1,
+          "calories": "",
+          "unitPrice": 2.95,
+          "unitDeliveryPrice": 3.85,
+          "customizationId": 0,
+          "customizationName": "",
+          "isItemAvailable": true
+        }
+      ]
+    },
+    "sides": [],
+    "drinks": []
+  },
+  {
+    "mealId": "f3038bca-5c62-4900-b33a-717650d03467",
+    "mealName": "Mikal Bridges High Protein Bowl",
+    "mealType": "Influencer",
+    "description": "Bowl with White Rice, double Adobo Chicken, Tomatillo-Green Chili Salsa, Roasted Chili-Corn Salsa, and Lettuce",
+    "mealPrice": 13.4,
+    "mealDeliveryPrice": 17.4,
+    "marketingCopy": "Bowl with White Rice, double Adobo Chicken, Tomatillo-Green Chili Salsa, Roasted Chili-Corn Salsa, and Lettuce",
+    "gradient": "",
+    "sortOrder": 5,
+    "calories": "670",
+    "loyaltyCampaign": "",
+    "mealTags": [],
+    "dietaryTags": [
+      "71g Protein"
+    ],
+    "primaryImages": [
+      {
+        "imageCategory": "ANDROID",
+        "imageUrl": "https://miinternal-cdn.chipotle.com/assets/menuinnovation/pcms/f3038bca-5c62-4900-b33a-717650d03467/9e725972-6afe-460d-bd0a-d10ce67c1c72.jpg"
+      },
+      {
+        "imageCategory": "IOS",
+        "imageUrl": "https://miinternal-cdn.chipotle.com/assets/menuinnovation/pcms/f3038bca-5c62-4900-b33a-717650d03467/40de9988-85e8-4947-824f-02792175825c.jpg"
+      },
+      {
+        "imageCategory": "WEB",
+        "imageUrl": "https://miinternal-cdn.chipotle.com/assets/menuinnovation/pcms/f3038bca-5c62-4900-b33a-717650d03467/d67a7ba7-e2fc-45ad-adf7-399e0582f32c.jpg"
+      }
+    ],
+    "secondaryImages": [],
+    "entree": {
+      "entreeName": "Mikal Bridges High Protein Bowl",
+      "itemId": "CMG-101",
+      "itemName": "Chicken Bowl",
+      "quantity": 1,
+      "calories": "670",
+      "unitPrice": 9.5,
+      "unitDeliveryPrice": 12.35,
+      "isItemAvailable": true,
+      "contents": [
+        {
+          "itemId": "CMG-5001",
+          "itemName": "White Rice",
+          "quantity": 1,
+          "calories": "",
+          "unitPrice": 0,
+          "unitDeliveryPrice": 0,
+          "customizationId": 0,
+          "customizationName": "",
+          "isItemAvailable": true
+        },
+        {
+          "itemId": "CMG-1101",
+          "itemName": "Extra Chicken",
+          "quantity": 1,
+          "calories": "",
+          "unitPrice": 3.9,
+          "unitDeliveryPrice": 5.05,
+          "customizationId": 0,
+          "customizationName": "",
+          "isItemAvailable": true
+        },
+        {
+          "itemId": "CMG-5203",
+          "itemName": "Tomatillo-Green Chili Salsa",
+          "quantity": 1,
+          "calories": "",
+          "unitPrice": 0,
+          "unitDeliveryPrice": 0,
+          "customizationId": 0,
+          "customizationName": "",
+          "isItemAvailable": true
+        },
+        {
+          "itemId": "CMG-5202",
+          "itemName": "Roasted Chili-Corn Salsa",
+          "quantity": 1,
+          "calories": "",
+          "unitPrice": 0,
+          "unitDeliveryPrice": 0,
+          "customizationId": 0,
+          "customizationName": "",
+          "isItemAvailable": true
+        },
+        {
+          "itemId": "CMG-5351",
+          "itemName": "Romaine Lettuce",
+          "quantity": 1,
+          "calories": "",
+          "unitPrice": 0,
+          "unitDeliveryPrice": 0,
+          "customizationId": 0,
+          "customizationName": "",
+          "isItemAvailable": true
+        },
+        {
+          "itemId": "CMG-5053",
+          "itemName": "No Beans",
+          "quantity": 1,
+          "calories": "",
+          "unitPrice": 0,
+          "unitDeliveryPrice": 0,
+          "customizationId": 0,
+          "customizationName": "",
+          "isItemAvailable": true
+        }
+      ]
+    },
+    "sides": [],
+    "drinks": []
+  },
+  {
+    "mealId": "56ab2f6e-747d-46f9-9cf6-9ebc2855d86d",
+    "mealName": "Double High Protein Bowl",
+    "mealType": "HighProtein",
+    "description": "Double Adobo Chicken, Light White Rice, Black Beans, Fajita Veggies, Fresh Tomato Salsa, Monterey Jack Cheese, Extra Shredded Romaine Lettuce",
+    "mealPrice": 13.4,
+    "mealDeliveryPrice": 17.4,
+    "marketingCopy": "",
+    "gradient": "",
+    "sortOrder": 7,
+    "calories": "760",
+    "loyaltyCampaign": "",
+    "mealTags": [],
+    "dietaryTags": [
+      "81g Protein"
+    ],
+    "primaryImages": [
+      {
+        "imageCategory": "ANDROID",
+        "imageUrl": "https://miinternal-cdn.chipotle.com/assets/menuinnovation/pcms/56ab2f6e-747d-46f9-9cf6-9ebc2855d86d/24558ab1-b93e-4d38-ae5b-6da398f0bdc5.jpg"
+      },
+      {
+        "imageCategory": "IOS",
+        "imageUrl": "https://miinternal-cdn.chipotle.com/assets/menuinnovation/pcms/56ab2f6e-747d-46f9-9cf6-9ebc2855d86d/da8b9b47-3656-4d52-aa0b-57231da6f143.jpg"
+      },
+      {
+        "imageCategory": "WEB",
+        "imageUrl": "https://miinternal-cdn.chipotle.com/assets/menuinnovation/pcms/56ab2f6e-747d-46f9-9cf6-9ebc2855d86d/9632ff52-852c-407c-a976-ea36915d16ac.jpg"
+      }
+    ],
+    "secondaryImages": [],
+    "entree": {
+      "entreeName": "Double High Protein Bowl",
+      "itemId": "CMG-101",
+      "itemName": "Chicken Bowl",
+      "quantity": 1,
+      "calories": "760",
+      "unitPrice": 9.5,
+      "unitDeliveryPrice": 12.35,
+      "isItemAvailable": true,
+      "contents": [
+        {
+          "itemId": "CMG-1101",
+          "itemName": "Extra Chicken",
+          "quantity": 1,
+          "calories": "",
+          "unitPrice": 3.9,
+          "unitDeliveryPrice": 5.05,
+          "customizationId": 0,
+          "customizationName": "",
+          "isItemAvailable": true
+        },
+        {
+          "itemId": "CMG-5001",
+          "itemName": "White Rice",
+          "quantity": 1,
+          "calories": "",
+          "unitPrice": 0,
+          "unitDeliveryPrice": 0,
+          "customizationId": 1,
+          "customizationName": "Light",
+          "isItemAvailable": true
+        },
+        {
+          "itemId": "CMG-5051",
+          "itemName": "Black Beans",
+          "quantity": 1,
+          "calories": "",
+          "unitPrice": 0,
+          "unitDeliveryPrice": 0,
+          "customizationId": 0,
+          "customizationName": "",
+          "isItemAvailable": true
+        },
+        {
+          "itemId": "CMG-5101",
+          "itemName": "Fajita Veggies",
+          "quantity": 1,
+          "calories": "",
+          "unitPrice": 0,
+          "unitDeliveryPrice": 0,
+          "customizationId": 0,
+          "customizationName": "",
+          "isItemAvailable": true
+        },
+        {
+          "itemId": "CMG-5201",
+          "itemName": "Fresh Tomato Salsa",
+          "quantity": 1,
+          "calories": "",
+          "unitPrice": 0,
+          "unitDeliveryPrice": 0,
+          "customizationId": 0,
+          "customizationName": "",
+          "isItemAvailable": true
+        },
+        {
+          "itemId": "CMG-5252",
+          "itemName": "Cheese",
+          "quantity": 1,
+          "calories": "",
+          "unitPrice": 0,
+          "unitDeliveryPrice": 0,
+          "customizationId": 0,
+          "customizationName": "",
+          "isItemAvailable": true
+        },
+        {
+          "itemId": "CMG-5351",
+          "itemName": "Romaine Lettuce",
+          "quantity": 1,
+          "calories": "",
+          "unitPrice": 0,
+          "unitDeliveryPrice": 0,
+          "customizationId": 2,
+          "customizationName": "Extra",
+          "isItemAvailable": true
+        }
+      ]
+    },
+    "sides": [],
+    "drinks": []
+  },
+  {
+    "mealId": "6ba21999-f6b8-4a83-803a-bf68ef319c5e",
+    "mealName": "High Protein-High Fiber Bowl",
+    "mealType": "HighProtein",
+    "description": "Adobo Chicken, Light Brown Rice, Black Beans, Fajita Veggies, Corn Salsa, Fresh Tomato Salsa, and Lettuce",
+    "mealPrice": 9.5,
+    "mealDeliveryPrice": 12.35,
+    "marketingCopy": "Adobo Chicken, Light Brown Rice, Black Beans, Fajita Veggies, Corn Salsa, Fresh Tomato Salsa, and Lettuce",
+    "gradient": "",
+    "sortOrder": 7,
+    "calories": "540",
+    "loyaltyCampaign": "",
+    "mealTags": [],
+    "dietaryTags": [
+      "46g Protein | 14g Fiber | GLP-1 Friendly"
+    ],
+    "primaryImages": [
+      {
+        "imageCategory": "ANDROID",
+        "imageUrl": "https://miinternal-cdn.chipotle.com/assets/menuinnovation/pcms/6ba21999-f6b8-4a83-803a-bf68ef319c5e/1792fdcd-b7d3-41f5-a372-2dd044f6902f.jpg"
+      },
+      {
+        "imageCategory": "IOS",
+        "imageUrl": "https://miinternal-cdn.chipotle.com/assets/menuinnovation/pcms/6ba21999-f6b8-4a83-803a-bf68ef319c5e/cea1ce90-e15f-4ee9-823f-b0b4f41adb73.jpg"
+      },
+      {
+        "imageCategory": "WEB",
+        "imageUrl": "https://miinternal-cdn.chipotle.com/assets/menuinnovation/pcms/6ba21999-f6b8-4a83-803a-bf68ef319c5e/de55cda5-b30a-46c3-ab4f-9573f36b2052.jpg"
+      }
+    ],
+    "secondaryImages": [],
+    "entree": {
+      "entreeName": "High Protein-High Fiber Bowl",
+      "itemId": "CMG-101",
+      "itemName": "Chicken Bowl",
+      "quantity": 1,
+      "calories": "540",
+      "unitPrice": 9.5,
+      "unitDeliveryPrice": 12.35,
+      "isItemAvailable": true,
+      "contents": [
+        {
+          "itemId": "CMG-5002",
+          "itemName": "Brown Rice",
+          "quantity": 1,
+          "calories": "",
+          "unitPrice": 0,
+          "unitDeliveryPrice": 0,
+          "customizationId": 1,
+          "customizationName": "Light",
+          "isItemAvailable": true
+        },
+        {
+          "itemId": "CMG-5101",
+          "itemName": "Fajita Veggies",
+          "quantity": 1,
+          "calories": "",
+          "unitPrice": 0,
+          "unitDeliveryPrice": 0,
+          "customizationId": 0,
+          "customizationName": "",
+          "isItemAvailable": true
+        },
+        {
+          "itemId": "CMG-5202",
+          "itemName": "Roasted Chili-Corn Salsa",
+          "quantity": 1,
+          "calories": "",
+          "unitPrice": 0,
+          "unitDeliveryPrice": 0,
+          "customizationId": 0,
+          "customizationName": "",
+          "isItemAvailable": true
+        },
+        {
+          "itemId": "CMG-5201",
+          "itemName": "Fresh Tomato Salsa",
+          "quantity": 1,
+          "calories": "",
+          "unitPrice": 0,
+          "unitDeliveryPrice": 0,
+          "customizationId": 0,
+          "customizationName": "",
+          "isItemAvailable": true
+        },
+        {
+          "itemId": "CMG-5051",
+          "itemName": "Black Beans",
+          "quantity": 1,
+          "calories": "",
+          "unitPrice": 0,
+          "unitDeliveryPrice": 0,
+          "customizationId": 0,
+          "customizationName": "",
+          "isItemAvailable": true
+        },
+        {
+          "itemId": "CMG-5351",
+          "itemName": "Romaine Lettuce",
+          "quantity": 1,
+          "calories": "",
+          "unitPrice": 0,
+          "unitDeliveryPrice": 0,
+          "customizationId": 0,
+          "customizationName": "",
+          "isItemAvailable": true
+        }
+      ]
+    },
+    "sides": [],
+    "drinks": []
+  },
+  {
+    "mealId": "2991ff70-3dfb-47af-84e0-cbe547e5395f",
+    "mealName": "High Protein Taco",
+    "mealType": "HighProtein",
+    "description": "Soft Flour Tortilla, Adobo Chicken, Fajita Veggies, Fresh Tomato Salsa, Monterey Jack Cheese, and Lettuce",
+    "mealPrice": 3.5,
+    "mealDeliveryPrice": 4.55,
+    "marketingCopy": "Soft Flour Tortilla, Adobo Chicken, Fajita Veggies, Fresh Tomato Salsa, Monterey Jack Cheese, and Lettuce",
+    "gradient": "",
+    "sortOrder": 7,
+    "calories": "190",
+    "loyaltyCampaign": "",
+    "mealTags": [],
+    "dietaryTags": [
+      "15g Protein"
+    ],
+    "primaryImages": [
+      {
+        "imageCategory": "ANDROID",
+        "imageUrl": "https://miinternal-cdn.chipotle.com/assets/menuinnovation/pcms/2991ff70-3dfb-47af-84e0-cbe547e5395f/2b730ae0-7fba-4fdc-842c-f2af9d4e3a5c.jpg"
+      },
+      {
+        "imageCategory": "IOS",
+        "imageUrl": "https://miinternal-cdn.chipotle.com/assets/menuinnovation/pcms/2991ff70-3dfb-47af-84e0-cbe547e5395f/62c83c17-1ab7-41b3-85bf-047ec9aa9a0b.jpg"
+      },
+      {
+        "imageCategory": "WEB",
+        "imageUrl": "https://miinternal-cdn.chipotle.com/assets/menuinnovation/pcms/2991ff70-3dfb-47af-84e0-cbe547e5395f/da217cc8-49a0-49d1-8449-5f61ee28a66f.jpg"
+      }
+    ],
+    "secondaryImages": [],
+    "entree": {
+      "entreeName": "High Protein Taco",
+      "itemId": "CMG-1201",
+      "itemName": "Chicken Taco",
+      "quantity": 1,
+      "calories": "190",
+      "unitPrice": 3.5,
+      "unitDeliveryPrice": 4.55,
+      "isItemAvailable": true,
+      "contents": [
+        {
+          "itemId": "CMG-5501",
+          "itemName": "Soft Flour Tortilla",
+          "quantity": 1,
+          "calories": "",
+          "unitPrice": 0,
+          "unitDeliveryPrice": 0,
+          "customizationId": 0,
+          "customizationName": "",
+          "isItemAvailable": true
+        },
+        {
+          "itemId": "CMG-5101",
+          "itemName": "Fajita Veggies",
+          "quantity": 1,
+          "calories": "",
+          "unitPrice": 0,
+          "unitDeliveryPrice": 0,
+          "customizationId": 0,
+          "customizationName": "",
+          "isItemAvailable": true
+        },
+        {
+          "itemId": "CMG-5201",
+          "itemName": "Fresh Tomato Salsa",
+          "quantity": 1,
+          "calories": "",
+          "unitPrice": 0,
+          "unitDeliveryPrice": 0,
+          "customizationId": 0,
+          "customizationName": "",
+          "isItemAvailable": true
+        },
+        {
+          "itemId": "CMG-5252",
+          "itemName": "Cheese",
+          "quantity": 1,
+          "calories": "",
+          "unitPrice": 0,
+          "unitDeliveryPrice": 0,
+          "customizationId": 0,
+          "customizationName": "",
+          "isItemAvailable": true
+        },
+        {
+          "itemId": "CMG-5351",
+          "itemName": "Romaine Lettuce",
+          "quantity": 1,
+          "calories": "",
+          "unitPrice": 0,
+          "unitDeliveryPrice": 0,
+          "customizationId": 0,
+          "customizationName": "",
+          "isItemAvailable": true
+        }
+      ]
+    },
+    "sides": [],
+    "drinks": []
+  },
+  {
+    "mealId": "a768473c-b6a7-47eb-b1f8-b5765e1ab3e6",
+    "mealName": "High Protein Cup - Chicken",
+    "mealType": "HighProtein",
+    "description": "A side of freshly grilled Adobo Chicken packed with 32g of real protein—it’s the perfect snack or extra side of protein to add to your order",
+    "mealPrice": 3.9,
+    "mealDeliveryPrice": 5.05,
+    "marketingCopy": "A side of freshly grilled Adobo Chicken packed with 32g of real protein—it’s the perfect snack or extra side of protein to add to your order",
+    "gradient": "",
+    "sortOrder": 7,
+    "calories": "180",
+    "loyaltyCampaign": "",
+    "mealTags": [],
+    "dietaryTags": [
+      "32g Protein"
+    ],
+    "primaryImages": [
+      {
+        "imageCategory": "ANDROID",
+        "imageUrl": "https://miinternal-cdn.chipotle.com/assets/menuinnovation/pcms/a768473c-b6a7-47eb-b1f8-b5765e1ab3e6/5b6cbc4f-4cae-4046-b3de-2b5ac696b081.jpg"
+      },
+      {
+        "imageCategory": "IOS",
+        "imageUrl": "https://miinternal-cdn.chipotle.com/assets/menuinnovation/pcms/a768473c-b6a7-47eb-b1f8-b5765e1ab3e6/1d5c7b1c-7b70-452a-b99a-82ae840247c3.jpg"
+      },
+      {
+        "imageCategory": "WEB",
+        "imageUrl": "https://miinternal-cdn.chipotle.com/assets/menuinnovation/pcms/a768473c-b6a7-47eb-b1f8-b5765e1ab3e6/dd258884-df98-4875-95c8-dca5fee512ed.jpg"
+      }
+    ],
+    "secondaryImages": [],
+    "entree": null,
+    "sides": [
+      {
+        "sideName": "HIGH PROTEIN CUP CHICKEN",
+        "itemId": "CMG-1125",
+        "itemName": "Side of Chicken",
+        "quantity": 1,
+        "calories": "",
+        "unitPrice": 3.9,
+        "unitDeliveryPrice": 5.05,
+        "isItemAvailable": true
+      }
+    ],
+    "drinks": []
+  },
+  {
+    "mealId": "e744e8b4-d7e6-489c-a2c4-6364f1d4d60f",
+    "mealName": "High Protein Cup - Steak",
+    "mealType": "HighProtein",
+    "description": "A side of freshly grilled Steak packed with 21g of real protein—it’s the perfect snack or extra side of protein to add to your order",
+    "mealPrice": 5.9,
+    "mealDeliveryPrice": 7.65,
+    "marketingCopy": "A side of freshly grilled Steak packed with 21g of real protein—it’s the perfect snack or extra side of protein to add to your order",
+    "gradient": "",
+    "sortOrder": 7,
+    "calories": "150",
+    "loyaltyCampaign": "",
+    "mealTags": [],
+    "dietaryTags": [
+      "21g Protein"
+    ],
+    "primaryImages": [
+      {
+        "imageCategory": "ANDROID",
+        "imageUrl": "https://miinternal-cdn.chipotle.com/assets/menuinnovation/pcms/e744e8b4-d7e6-489c-a2c4-6364f1d4d60f/fd8f44a3-1ff0-45b2-8394-68d095c98c4c.jpg"
+      },
+      {
+        "imageCategory": "IOS",
+        "imageUrl": "https://miinternal-cdn.chipotle.com/assets/menuinnovation/pcms/e744e8b4-d7e6-489c-a2c4-6364f1d4d60f/9ebd4515-012f-4f1d-b893-5347e9b2edeb.jpg"
+      },
+      {
+        "imageCategory": "WEB",
+        "imageUrl": "https://miinternal-cdn.chipotle.com/assets/menuinnovation/pcms/e744e8b4-d7e6-489c-a2c4-6364f1d4d60f/b611a339-a916-4182-b7b8-e27d71cefa7c.jpg"
+      }
+    ],
+    "secondaryImages": [],
+    "entree": null,
+    "sides": [
+      {
+        "sideName": "HIGH PROTEIN CUP STEAK",
+        "itemId": "CMG-1126",
+        "itemName": "Side of Steak",
+        "quantity": 1,
+        "calories": "",
+        "unitPrice": 5.9,
+        "unitDeliveryPrice": 7.65,
+        "isItemAvailable": true
+      }
+    ],
+    "drinks": []
+  },
+  {
+    "mealId": "be88e387-62ed-4271-877c-7216b6485387",
+    "mealName": "High Protein - Low Calorie Bowl",
+    "mealType": "HighProtein",
+    "description": "Adobo Chicken, Supergreens Lettuce Mix, Fajita Veggies, Fresh Tomato Salsa, and Guacamole",
+    "mealPrice": 12.45,
+    "mealDeliveryPrice": 16.2,
+    "marketingCopy": "Adobo Chicken, Supergreens Lettuce Mix, Fajita Veggies, Fresh Tomato Salsa, and Guacamole",
+    "gradient": "",
+    "sortOrder": 7,
+    "calories": "470",
+    "loyaltyCampaign": "",
+    "mealTags": [],
+    "dietaryTags": [
+      "36g Protein | GLP-1 Friendly"
+    ],
+    "primaryImages": [
+      {
+        "imageCategory": "ANDROID",
+        "imageUrl": "https://miinternal-cdn.chipotle.com/assets/menuinnovation/pcms/be88e387-62ed-4271-877c-7216b6485387/a46ce634-e949-4e19-b89a-e226c4f1df0b.jpg"
+      },
+      {
+        "imageCategory": "IOS",
+        "imageUrl": "https://miinternal-cdn.chipotle.com/assets/menuinnovation/pcms/be88e387-62ed-4271-877c-7216b6485387/f64bd321-dfdb-4885-b8d3-d1005f45e0fa.jpg"
+      },
+      {
+        "imageCategory": "WEB",
+        "imageUrl": "https://miinternal-cdn.chipotle.com/assets/menuinnovation/pcms/be88e387-62ed-4271-877c-7216b6485387/9fc6a0b1-a5d0-4422-80d2-5481198886fe.jpg"
+      }
+    ],
+    "secondaryImages": [],
+    "entree": {
+      "entreeName": "High Protein - Low Calorie Bowl",
+      "itemId": "CMG-301",
+      "itemName": "Chicken Salad",
+      "quantity": 1,
+      "calories": "470",
+      "unitPrice": 9.5,
+      "unitDeliveryPrice": 12.35,
+      "isItemAvailable": true,
+      "contents": [
+        {
+          "itemId": "CMG-5101",
+          "itemName": "Fajita Veggies",
+          "quantity": 1,
+          "calories": "",
+          "unitPrice": 0,
+          "unitDeliveryPrice": 0,
+          "customizationId": 0,
+          "customizationName": "",
+          "isItemAvailable": true
+        },
+        {
+          "itemId": "CMG-5201",
+          "itemName": "Fresh Tomato Salsa",
+          "quantity": 1,
+          "calories": "",
+          "unitPrice": 0,
+          "unitDeliveryPrice": 0,
+          "customizationId": 0,
+          "customizationName": "",
+          "isItemAvailable": true
+        },
+        {
+          "itemId": "CMG-1001",
+          "itemName": "Guacamole",
+          "quantity": 1,
+          "calories": "",
+          "unitPrice": 2.95,
+          "unitDeliveryPrice": 3.85,
+          "customizationId": 0,
+          "customizationName": "",
+          "isItemAvailable": true
+        },
+        {
+          "itemId": "CMG-5053",
+          "itemName": "No Beans",
+          "quantity": 1,
+          "calories": "",
+          "unitPrice": 0,
+          "unitDeliveryPrice": 0,
+          "customizationId": 0,
+          "customizationName": "",
+          "isItemAvailable": true
+        },
+        {
+          "itemId": "CMG-5003",
+          "itemName": "No Rice",
+          "quantity": 1,
+          "calories": "",
+          "unitPrice": 0,
+          "unitDeliveryPrice": 0,
+          "customizationId": 0,
+          "customizationName": "",
+          "isItemAvailable": true
+        }
+      ]
+    },
+    "sides": [],
+    "drinks": []
+  },
+  {
+    "mealId": "1a3697bb-88c5-4f2e-a061-85ac3cfa0a28",
+    "mealName": "Double High Protein Burrito",
+    "mealType": "HighProtein",
+    "description": "Double Adobo Chicken, Fajita Veggies, Fresh Tomato Salsa, Monterey Jack Cheese, and Lettuce",
+    "mealPrice": 13.4,
+    "mealDeliveryPrice": 17.4,
+    "marketingCopy": "Double Adobo Chicken, Fajita Veggies, Fresh Tomato Salsa, Monterey Jack Cheese, and Lettuce",
+    "gradient": "",
+    "sortOrder": 7,
+    "calories": "840",
+    "loyaltyCampaign": "",
+    "mealTags": [],
+    "dietaryTags": [
+      "79g Protein"
+    ],
+    "primaryImages": [
+      {
+        "imageCategory": "ANDROID",
+        "imageUrl": "https://miinternal-cdn.chipotle.com/assets/menuinnovation/pcms/1a3697bb-88c5-4f2e-a061-85ac3cfa0a28/1bd06059-2449-49b9-96ea-6c7f0f36eab8.jpg"
+      },
+      {
+        "imageCategory": "IOS",
+        "imageUrl": "https://miinternal-cdn.chipotle.com/assets/menuinnovation/pcms/1a3697bb-88c5-4f2e-a061-85ac3cfa0a28/2cd3817c-b5f9-4363-a14c-cc0e0dd508a1.jpg"
+      },
+      {
+        "imageCategory": "WEB",
+        "imageUrl": "https://miinternal-cdn.chipotle.com/assets/menuinnovation/pcms/1a3697bb-88c5-4f2e-a061-85ac3cfa0a28/ed224dc0-57ca-4789-a2b8-f721539d800d.jpg"
+      }
+    ],
+    "secondaryImages": [],
+    "entree": {
+      "entreeName": "Double High Protein Burrito",
+      "itemId": "CMG-1",
+      "itemName": "Chicken Burrito",
+      "quantity": 1,
+      "calories": "840",
+      "unitPrice": 9.5,
+      "unitDeliveryPrice": 12.35,
+      "isItemAvailable": true,
+      "contents": [
+        {
+          "itemId": "CMG-1101",
+          "itemName": "Extra Chicken",
+          "quantity": 1,
+          "calories": "",
+          "unitPrice": 3.9,
+          "unitDeliveryPrice": 5.05,
+          "customizationId": 0,
+          "customizationName": "",
+          "isItemAvailable": true
+        },
+        {
+          "itemId": "CMG-5101",
+          "itemName": "Fajita Veggies",
+          "quantity": 1,
+          "calories": "",
+          "unitPrice": 0,
+          "unitDeliveryPrice": 0,
+          "customizationId": 0,
+          "customizationName": "",
+          "isItemAvailable": true
+        },
+        {
+          "itemId": "CMG-5201",
+          "itemName": "Fresh Tomato Salsa",
+          "quantity": 1,
+          "calories": "",
+          "unitPrice": 0,
+          "unitDeliveryPrice": 0,
+          "customizationId": 0,
+          "customizationName": "",
+          "isItemAvailable": true
+        },
+        {
+          "itemId": "CMG-5252",
+          "itemName": "Cheese",
+          "quantity": 1,
+          "calories": "",
+          "unitPrice": 0,
+          "unitDeliveryPrice": 0,
+          "customizationId": 0,
+          "customizationName": "",
+          "isItemAvailable": true
+        },
+        {
+          "itemId": "CMG-5351",
+          "itemName": "Romaine Lettuce",
+          "quantity": 1,
+          "calories": "",
+          "unitPrice": 0,
+          "unitDeliveryPrice": 0,
+          "customizationId": 0,
+          "customizationName": "",
+          "isItemAvailable": true
+        },
+        {
+          "itemId": "CMG-5053",
+          "itemName": "No Beans",
+          "quantity": 1,
+          "calories": "",
+          "unitPrice": 0,
+          "unitDeliveryPrice": 0,
+          "customizationId": 0,
+          "customizationName": "",
+          "isItemAvailable": true
+        },
+        {
+          "itemId": "CMG-5003",
+          "itemName": "No Rice",
+          "quantity": 1,
+          "calories": "",
+          "unitPrice": 0,
+          "unitDeliveryPrice": 0,
+          "customizationId": 0,
+          "customizationName": "",
+          "isItemAvailable": true
+        }
+      ]
+    },
+    "sides": [],
+    "drinks": []
+  }
+]
