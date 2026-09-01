@@ -5,7 +5,7 @@
   "restaurantId": "469",
   "channelId": "web",
   "includeUnavailableItems": true,
-  "retrieved": "2026-08-28T00:39:47.275Z",
+  "retrieved": "2026-08-31T23:40:20.515Z",
   "collectorScript": "scripts/collect/chipotle-calculator-menu.ts",
   "compressedResponseFieldsUsed": [
     "compressedMenu",
@@ -16,19 +16,19 @@
     "library": "lz4js (npm)",
     "libraryVersion": "0.2.0",
     "exportUsed": "decompressBlock(src, dst, sIndex, sLength, dIndex)",
-    "decompressedMenuSizeReported": 752876,
-    "bytesWrittenByDecompressor": 752876,
+    "decompressedMenuSizeReported": 754819,
+    "bytesWrittenByDecompressor": 754819,
     "sizeMatch": true
   },
   "parsedJsonSummary": {
     "restaurantId": 469,
     "recordCountsByCategory": {
       "entrees": 65,
-      "sides": 31,
+      "sides": 41,
       "drinks": 21,
       "nonFoodItems": 3
     },
-    "totalRecords": 120
+    "totalRecords": 130
   },
   "subscriptionKeyDiscovery": {
     "method": "Discovered dynamically at collection time from the <meta property=\"servicesconfig\" data-host=\"...\" data-appkey=\"...\"/> tag on the nutrition-calculator page, rather than hardcoded, since Chipotle controls and may rotate this value.",

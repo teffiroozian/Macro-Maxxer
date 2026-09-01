@@ -1,0 +1,165 @@
+{
+  "restaurant": "Chipotle",
+  "restaurantId": 469,
+  "sources": {
+    "calculatorMenu": "data/raw/chipotle/calculator-menu.json",
+    "menuMetadata": "data/raw/chipotle/menu-metadata.json",
+    "menuMetadataNutrition": "data/raw/chipotle/menu-metadata-nutrition.json",
+    "nutrition": "data/raw/chipotle/nutrition.json",
+    "onlineMeals": "data/raw/chipotle/online-meals.json"
+  },
+  "policy": {
+    "order": [
+      "current live full-nutrition record when complete and internally sane",
+      "official PDF exact/alias name + section match",
+      "portion-disambiguated PDF match (multiple sizes for one name)",
+      "documented approved composition/scaling/manual-verification resolution",
+      "unresolved"
+    ],
+    "fuzzyMatching": false,
+    "missingNutrition": "Incomplete, zeroed, zero-portion, or internally conflicting live panels are rejected. When no sane live panel, official PDF row, or approved explicit composition/scaling rule applies, full macro nutrition is omitted rather than partially filled or guessed."
+  },
+  "summary": {
+    "logicalRecords": 149,
+    "unresolved": 13,
+    "unresolvedByReason": {
+      "unsupported_preconfigured_meal": 13
+    }
+  },
+  "schemaLimitations": [
+    "IngredientCategoryRule gained an optional minQuantity field for this import (e.g. Quesadilla's DipContentGroup requires 1-3 dips); the rest of the enforcement UX for a required-selection category is not built here since runtime wiring is out of scope for this pass.",
+    "The generic ItemVariant/IngredientItem schema has no first-class 'same ingredient, different container-context nutrition' relationship (Chick-fil-A's IngredientRelationshipNutrition type is itself shaped around Chick-fil-A's specific retailModifiedItemId/tag ordering-source fields) — modeled here instead as separate generated ingredient records per (protein, format context), which stays faithful to the distinct source ids/nutrition Chipotle actually publishes per context."
+  ],
+  "records": [
+    {
+      "standardizedRecordId": "chipotle-cmg-5418",
+      "name": "Build-Your-Own Pollo Asado",
+      "recordType": "catering_entree",
+      "sourceItemIds": [
+        "CMG-5418"
+      ],
+      "reason": "unsupported_preconfigured_meal",
+      "details": "Build-Your-Own Pollo Asado (BYOProtein) uses the catering/large-format ingredient namespace (CMG-537x/539x-style ids), which this first-pass importer deliberately does not model to avoid conflating it with the individual-order ingredient namespace (see data/review/chipotle/source-analysis.md §10.C). Preserved here as unresolved rather than imported."
+    },
+    {
+      "standardizedRecordId": "chipotle-cmg-5384",
+      "name": "Build-Your-Own Steak",
+      "recordType": "catering_entree",
+      "sourceItemIds": [
+        "CMG-5384"
+      ],
+      "reason": "unsupported_preconfigured_meal",
+      "details": "Build-Your-Own Steak (BYOProtein) uses the catering/large-format ingredient namespace (CMG-537x/539x-style ids), which this first-pass importer deliberately does not model to avoid conflating it with the individual-order ingredient namespace (see data/review/chipotle/source-analysis.md §10.C). Preserved here as unresolved rather than imported."
+    },
+    {
+      "standardizedRecordId": "chipotle-cmg-5387",
+      "name": "Build-Your-Own Carnitas",
+      "recordType": "catering_entree",
+      "sourceItemIds": [
+        "CMG-5387"
+      ],
+      "reason": "unsupported_preconfigured_meal",
+      "details": "Build-Your-Own Carnitas (BYOProtein) uses the catering/large-format ingredient namespace (CMG-537x/539x-style ids), which this first-pass importer deliberately does not model to avoid conflating it with the individual-order ingredient namespace (see data/review/chipotle/source-analysis.md §10.C). Preserved here as unresolved rather than imported."
+    },
+    {
+      "standardizedRecordId": "chipotle-cmg-5385",
+      "name": "Build-Your-Own Sofritas",
+      "recordType": "catering_entree",
+      "sourceItemIds": [
+        "CMG-5385"
+      ],
+      "reason": "unsupported_preconfigured_meal",
+      "details": "Build-Your-Own Sofritas (BYOProtein) uses the catering/large-format ingredient namespace (CMG-537x/539x-style ids), which this first-pass importer deliberately does not model to avoid conflating it with the individual-order ingredient namespace (see data/review/chipotle/source-analysis.md §10.C). Preserved here as unresolved rather than imported."
+    },
+    {
+      "standardizedRecordId": "chipotle-cmg-5386",
+      "name": "Build-Your-Own Beef Barbacoa",
+      "recordType": "catering_entree",
+      "sourceItemIds": [
+        "CMG-5386"
+      ],
+      "reason": "unsupported_preconfigured_meal",
+      "details": "Build-Your-Own Beef Barbacoa (BYOProtein) uses the catering/large-format ingredient namespace (CMG-537x/539x-style ids), which this first-pass importer deliberately does not model to avoid conflating it with the individual-order ingredient namespace (see data/review/chipotle/source-analysis.md §10.C). Preserved here as unresolved rather than imported."
+    },
+    {
+      "standardizedRecordId": "chipotle-cmg-5374",
+      "name": "Build-Your-Own Chicken",
+      "recordType": "catering_entree",
+      "sourceItemIds": [
+        "CMG-5374"
+      ],
+      "reason": "unsupported_preconfigured_meal",
+      "details": "Build-Your-Own Chicken (BYOProtein) uses the catering/large-format ingredient namespace (CMG-537x/539x-style ids), which this first-pass importer deliberately does not model to avoid conflating it with the individual-order ingredient namespace (see data/review/chipotle/source-analysis.md §10.C). Preserved here as unresolved rather than imported."
+    },
+    {
+      "standardizedRecordId": "chipotle-cmg-5390",
+      "name": "2 Large Chips & 3 Large Sides",
+      "recordType": "catering_entree",
+      "sourceItemIds": [
+        "CMG-5390"
+      ],
+      "reason": "unsupported_preconfigured_meal",
+      "details": "2 Large Chips & 3 Large Sides (BYOChips) uses the catering/large-format ingredient namespace (CMG-537x/539x-style ids), which this first-pass importer deliberately does not model to avoid conflating it with the individual-order ingredient namespace (see data/review/chipotle/source-analysis.md §10.C). Preserved here as unresolved rather than imported."
+    },
+    {
+      "standardizedRecordId": "chipotle-meal-e4200067-da42-490c-81f1-37d26ddd9722",
+      "name": "Build-Your-Own Chicken",
+      "recordType": "preconfigured_meal",
+      "sourceItemIds": [
+        "e4200067-da42-490c-81f1-37d26ddd9722"
+      ],
+      "reason": "unsupported_preconfigured_meal",
+      "details": "\"Build-Your-Own Chicken\" (mealType BuildYourOwn) uses the catering/BuildYourOwn ingredient namespace, deliberately excluded from this first pass (see source-analysis.md §10.C)."
+    },
+    {
+      "standardizedRecordId": "chipotle-meal-152806dc-2504-4a51-8db2-498d705d8bb9",
+      "name": "Build-Your-Own Steak",
+      "recordType": "preconfigured_meal",
+      "sourceItemIds": [
+        "152806dc-2504-4a51-8db2-498d705d8bb9"
+      ],
+      "reason": "unsupported_preconfigured_meal",
+      "details": "\"Build-Your-Own Steak\" (mealType BuildYourOwn) uses the catering/BuildYourOwn ingredient namespace, deliberately excluded from this first pass (see source-analysis.md §10.C)."
+    },
+    {
+      "standardizedRecordId": "chipotle-meal-1cc081cb-4180-4257-a827-79a4064bc0e8",
+      "name": "Build-Your-Own Sofritas",
+      "recordType": "preconfigured_meal",
+      "sourceItemIds": [
+        "1cc081cb-4180-4257-a827-79a4064bc0e8"
+      ],
+      "reason": "unsupported_preconfigured_meal",
+      "details": "\"Build-Your-Own Sofritas\" (mealType BuildYourOwn) uses the catering/BuildYourOwn ingredient namespace, deliberately excluded from this first pass (see source-analysis.md §10.C)."
+    },
+    {
+      "standardizedRecordId": "chipotle-meal-8cf8f280-5a7a-421a-98fc-13dc60ebc0e1",
+      "name": "2 Large Chips & 3 Large Sides",
+      "recordType": "preconfigured_meal",
+      "sourceItemIds": [
+        "8cf8f280-5a7a-421a-98fc-13dc60ebc0e1"
+      ],
+      "reason": "unsupported_preconfigured_meal",
+      "details": "\"2 Large Chips & 3 Large Sides\" (mealType BuildYourOwn) uses the catering/BuildYourOwn ingredient namespace, deliberately excluded from this first pass (see source-analysis.md §10.C)."
+    },
+    {
+      "standardizedRecordId": "chipotle-meal-a768473c-b6a7-47eb-b1f8-b5765e1ab3e6",
+      "name": "High Protein Cup - Chicken",
+      "recordType": "preconfigured_meal",
+      "sourceItemIds": [
+        "a768473c-b6a7-47eb-b1f8-b5765e1ab3e6"
+      ],
+      "reason": "unsupported_preconfigured_meal",
+      "details": "\"High Protein Cup - Chicken\" is an entree:null meal (its entire product is a single sides[] entry) — not modeled by this first-pass importer."
+    },
+    {
+      "standardizedRecordId": "chipotle-meal-e744e8b4-d7e6-489c-a2c4-6364f1d4d60f",
+      "name": "High Protein Cup - Steak",
+      "recordType": "preconfigured_meal",
+      "sourceItemIds": [
+        "e744e8b4-d7e6-489c-a2c4-6364f1d4d60f"
+      ],
+      "reason": "unsupported_preconfigured_meal",
+      "details": "\"High Protein Cup - Steak\" is an entree:null meal (its entire product is a single sides[] entry) — not modeled by this first-pass importer."
+    }
+  ]
+}

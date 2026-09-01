@@ -7,8 +7,9 @@ analysis, `unnamed-metadata-analysis.md` / `unnamed-metadata-analysis.json`
 for the unnamed-id follow-up, and `build-gaps-analysis.md` /
 `build-gaps-analysis.json` for the Salad/Quesadilla/taco-tortilla follow-up.
 Those documents are the evidence; this document is what we decided to do
-about it. No importer logic has been implemented yet — these are decisions
-to guide that work when it starts, not code.
+about it. The importer records these decisions in generated-output
+provenance so manually verified relationships remain distinguishable from
+relationships explicitly present in captured structured sources.
 
 ---
 
@@ -146,27 +147,26 @@ record, `CMG-5401`, 80cal/1oz.) The official PDF has no adult
 "Flour Tortilla (quesadilla)" row either, so both sides of a potential join
 were simultaneously absent from the captured sources.
 
-Manual verification against Chipotle's live ordering/calculator UI (outside
-the captured raw sources) confirmed the adult Quesadilla's implicit base
-composition:
-- 1 quesadilla tortilla
-- 3 standard cheese portions
+Manual verification against Chipotle's official live nutrition calculator
+UI (outside the captured raw sources) confirmed the adult Quesadilla's
+implicit base composition:
+- 1 adult tortilla = 320cal, 9g fat, 8g protein, 50g carbs
+- 3 standard cheese portions = 330cal, 24g fat, 18g protein, 3g carbs
+
+The resulting Cheese Quesadilla base is 650cal, 33g fat, 26g protein, and
+53g carbs before any selected protein, side, or addon is included.
 
 **Decision:**
 - Represent the adult Quesadilla's implicit base composition as:
-  **1 × quesadilla tortilla nutrition + 3 × standard cheese nutrition.**
+  **1 × adult tortilla nutrition + 3 × standard cheese nutrition.**
 - Treat this as base/container nutrition, applied before adding the
   selected protein, sides, or optional addons (Queso Blanco `CMG-4134`,
   Guacamole `CMG-1001`/`CMG-5301`, Cilantro Lime Sauce `CMG-5414`).
 - "Standard cheese nutrition" refers to the same `CMG-5252` Cheese record
-  (110cal/1oz) already used on Burrito/Bowl/Salad/Taco. "Quesadilla tortilla
-  nutrition" has no adult-context source value anywhere in the captured raw
-  data; the only quesadilla-tortilla-specific nutrition value that exists in
-  any source is the kids-context `CMG-5401` record (80cal/1oz, itself a
-  high-confidence match to the PDF's kids-only "Flour Tortilla (quesadilla)"
-  row) — this is the natural candidate to source that per-unit value from,
-  but which exact value to use is left for the importer implementation to
-  confirm, not asserted as final here.
+  (110cal/1oz) already used on Burrito/Bowl/Salad/Taco. The tortilla uses the
+  verified adult-tortilla nutrition recorded in §6 below. It must **not** use
+  the kids-context `CMG-5401` record (80cal/1oz), which is reserved for the
+  Kids Quesadilla base described in §7.
 - Preserve, in whatever the importer eventually encodes, that this 1
   tortilla + 3 cheese relationship was **manually verified against the
   official live Chipotle UI**, not directly encoded as separate CMG child
@@ -211,6 +211,140 @@ The official PDF provides authoritative per-tortilla nutrition:
   off of for the tortilla choice) — only the *nutrition calculation* uses
   actual taco count × official PDF per-unit nutrition instead of the CMG
   metadata value.
+
+**Status: RESOLVED**
+
+---
+
+## 6. Adult tortilla and Burrito base
+
+**Finding:**
+Manual verification against Chipotle's official live nutrition calculator
+confirms that the adult tortilla used by adult Burritos and adult
+Quesadillas has the following nutrition:
+- 320 calories
+- 9g fat
+- 8g protein
+- 50g carbs
+
+The official PDF's `Flour Tortilla (burrito)` row independently supplies the
+same nutrition values. The captured structured menu does not expose the
+included Burrito tortilla as a separate child CMG record; `CMG-4026` is an
+additional Double Wrap tortilla, not the identity of the included base.
+
+**Decision:**
+- Automatically include one verified adult tortilla as every adult
+  Burrito's implicit required base.
+- Use the same adult-tortilla nutrition for the tortilla component of every
+  adult Quesadilla.
+- Do **not** invent a CMG id for the implicit adult tortilla.
+- Do **not** use Kids Quesadilla tortilla `CMG-5401` (80cal) for an adult
+  Quesadilla.
+- Preserve the provenance distinction: the numeric nutrition is backed by
+  the official PDF adult-tortilla row, while its required inclusion in both
+  adult Burritos and adult Quesadillas was manually verified in Chipotle's
+  official live nutrition calculator UI.
+
+**Status: RESOLVED**
+
+---
+
+## 7. Kids Quesadilla base
+
+**Finding:**
+Manual verification against Chipotle's official live nutrition calculator
+confirms that the included Kids Quesadilla base is:
+- 1 × Soft Flour Tortilla (`CMG-5401`) = 80 calories
+- 1 × standard Cheese portion = 110 calories
+
+The resulting base is 190 calories, 11g fat, 8g protein, and 14g carbs.
+Selected protein/veggie filling, sides, and drink are added separately.
+
+**Decision:**
+- Represent the Kids Quesadilla base as exactly **1 × kids soft flour
+  tortilla + 1 × standard cheese portion**.
+- Preserve `CMG-5401` as the kids-tortilla source identity.
+- Do **not** apply the adult Quesadilla's 3× cheese rule to Kids
+  Quesadillas.
+- Treat `Cheese Only` as the no-additional-filling form of this included
+  base, rather than adding a second cheese portion.
+- Preserve that the included tortilla-and-cheese relationship was manually
+  verified against Chipotle's official live nutrition calculator UI; the
+  kids tortilla and cheese nutrition values themselves are backed by their
+  captured official records/PDF matches.
+
+**Status: RESOLVED**
+
+---
+
+## 8. Half Pollo Asado (`CMG-5609`)
+
+**Finding:**
+`CMG-5609` is explicitly linked to standard Pollo Asado as a `HalfPortion`,
+but it has no nutrition row in either metadata endpoint. The surrounding
+direct official records strongly validate linear portioning: standard Pollo
+Asado is 180cal/4oz, Kids Pollo Asado is 90cal/2oz, and single-Taco Pollo
+Asado is 60cal/1.3oz.
+
+**Decision:**
+- Derive `CMG-5609` as exactly **0.5 × the standard 4oz Pollo Asado full
+  nutrition panel**; expected calories are 90.
+- Preserve `CMG-5609` and its explicit `HalfPortion` relationship as the
+  ordering/source identity.
+- Record that nutrition is derived from the official standard Pollo Asado
+  panel plus the explicit half relationship, not from a direct `CMG-5609`
+  nutrition record.
+- This is a record-specific Pollo Asado decision and does not authorize
+  blind scaling for other LTO proteins.
+
+**Status: RESOLVED**
+
+---
+
+## 9. Side of Cilantro Lime Sauce (`CMG-5413`)
+
+**Finding:**
+`CMG-5413` identifies a 4oz/160cal side, but its live macro fields incorrectly
+repeat the sane 2oz panel. Equivalent official record `CMG-5414` is also
+4oz/160cal and supplies the internally sane full panel: 4g protein, 6g
+carbohydrates, 12g total fat, 9g saturated fat, 0g trans fat, 600mg sodium,
+2g fiber, and 4g sugar.
+
+**Decision:**
+- Keep `CMG-5413` as its own source/order identity.
+- Use the sane official `CMG-5414` 4oz full nutrition panel for `CMG-5413`.
+- Record the equivalent official source identity and the rejection of
+  `CMG-5413`'s internally inconsistent panel in generated provenance.
+- Do not infer any value from the broken `CMG-5413` macro fields.
+
+**Status: RESOLVED**
+
+---
+
+## 10. Kids 16oz fountain container (`CMG-5551`)
+
+**Finding:**
+`CMG-5551` is a generic Kids 16fl-oz Soda/Iced Tea ordering container. Its
+220cal live panel has zero carbohydrates/sugar and is a placeholder, not
+valid flavor nutrition. As with the adult fountain containers, Chipotle
+publishes flavor-specific official nutrition without flavor-specific CMG
+ordering ids.
+
+**Decision:**
+- Model `CMG-5551` as one generic ordering/container identity with separate
+  user-facing flavor variants; do not invent flavor-specific CMG ids.
+- For each flavor, prefer its valid official 22fl-oz PDF row and scale the
+  full available nutrition vector by **16/22**. If no valid 22fl-oz row
+  exists, a valid equivalent 32fl-oz row may be scaled by **16/32**.
+- Scale calories, protein, carbohydrates, total fat, saturated fat, trans
+  fat, sodium, fiber, sugar, and cholesterol only when cholesterol is
+  present in the source row. Never derive unavailable cholesterol.
+- Each variant's provenance must retain `CMG-5551` as its generic ordering
+  parent and record the flavor row, source size, and scaling factor.
+- Never use `CMG-5551`'s placeholder 220cal/zero-carbohydrate live panel as
+  flavor nutrition. If a candidate flavor has no valid official 22oz or
+  32oz row, leave only that flavor unresolved rather than rejecting the
+  entire 16oz container.
 
 **Status: RESOLVED**
 

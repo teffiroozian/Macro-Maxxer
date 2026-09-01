@@ -19,6 +19,8 @@ const COMPRESSED_MENU_URL = new URL(
 // fetched and saved separately below to preserve source boundaries.
 const MENU_METADATA_URL =
   "https://services.chipotle.com/menu-metadata/v1/menu-metadata?channel=web&region=US";
+const MENU_METADATA_NUTRITION_URL =
+  "https://services.chipotle.com/menu-metadata/v1/menu-metadata/nutrition?channel=web&region=US";
 
 const CALCULATOR_MENU_OUTPUT_PATH = resolve(
   "data/raw/chipotle/calculator-menu.json",
@@ -31,6 +33,12 @@ const MENU_METADATA_OUTPUT_PATH = resolve(
 );
 const MENU_METADATA_SOURCE_PATH = resolve(
   "data/raw/chipotle/menu-metadata-source.json",
+);
+const MENU_METADATA_NUTRITION_OUTPUT_PATH = resolve(
+  "data/raw/chipotle/menu-metadata-nutrition.json",
+);
+const MENU_METADATA_NUTRITION_SOURCE_PATH = resolve(
+  "data/raw/chipotle/menu-metadata-nutrition-source.json",
 );
 
 // Chipotle's Azure API Management gateway requires a subscription key on
@@ -400,6 +408,62 @@ async function main(): Promise<void> {
   );
   console.log("Saved to data/raw/chipotle/menu-metadata.json");
   console.log("Saved to data/raw/chipotle/menu-metadata-source.json");
+
+  // The calculator's full-nutrition companion uses the same item-id
+  // namespace and response envelope as menu-metadata, but includes detailed
+  // nutrient values. Preserve it as a separate untouched raw source rather
+  // than merging it with the Calories+Portion response above.
+  const nutritionMetadata = await fetchJson(
+    MENU_METADATA_NUTRITION_URL,
+    "Chipotle full menu-metadata nutrition",
+    requestHeaders,
+  );
+  validateMenuMetadataShape(nutritionMetadata);
+
+  await writeAtomically(
+    MENU_METADATA_NUTRITION_OUTPUT_PATH,
+    `${JSON.stringify(nutritionMetadata, null, 2)}\n`,
+  );
+
+  const nutritionMetadataSource = {
+    restaurant: RESTAURANT,
+    sourceType: "official-menu-metadata-full-nutrition-api",
+    source: MENU_METADATA_NUTRITION_URL,
+    channel: CHANNEL_ID,
+    region: "US",
+    retrieved: getTimestamp(),
+    collectorScript: "scripts/collect/chipotle-calculator-menu.ts",
+    itemCount: Object.keys(nutritionMetadata.items as JsonObject).length,
+    groupCount: (nutritionMetadata.groups as unknown[]).length,
+    nutritionDetailSectionCount: Array.isArray(
+      nutritionMetadata.nutritionDetailSections,
+    )
+      ? nutritionMetadata.nutritionDetailSections.length
+      : null,
+    subscriptionKeyDiscovery: {
+      method:
+        'Discovered dynamically at collection time from the <meta property="servicesconfig" data-host="..." data-appkey="..."/> tag on the nutrition-calculator page rather than hardcoded.',
+      discoveredFromPage: CALCULATOR_PAGE_URL,
+      discoveredHost: servicesConfig.host,
+    },
+    notes: [
+      "Saved as an untouched raw response from Chipotle's live full-nutrition endpoint; no fields were renamed, records filtered, or values reconciled against other sources.",
+      "This source is kept separate from menu-metadata.json because the endpoints have different nutrition detail despite sharing the same CMG item-id namespace and response envelope.",
+    ],
+  };
+
+  await writeAtomically(
+    MENU_METADATA_NUTRITION_SOURCE_PATH,
+    `${JSON.stringify(nutritionMetadataSource, null, 2)}\n`,
+  );
+
+  console.log(
+    `Collected Chipotle full menu-metadata nutrition (${nutritionMetadataSource.itemCount} items, ${nutritionMetadataSource.groupCount} groups).`,
+  );
+  console.log("Saved to data/raw/chipotle/menu-metadata-nutrition.json");
+  console.log(
+    "Saved to data/raw/chipotle/menu-metadata-nutrition-source.json",
+  );
 }
 
 main().catch((error: unknown) => {

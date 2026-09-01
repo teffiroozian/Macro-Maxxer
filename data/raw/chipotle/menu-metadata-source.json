@@ -4,7 +4,7 @@
   "source": "https://services.chipotle.com/menu-metadata/v1/menu-metadata?channel=web&region=US",
   "channel": "web",
   "region": "US",
-  "retrieved": "2026-08-28T00:39:47.432Z",
+  "retrieved": "2026-08-31T23:40:20.673Z",
   "collectorScript": "scripts/collect/chipotle-calculator-menu.ts",
   "itemCount": 408,
   "groupCount": 18,

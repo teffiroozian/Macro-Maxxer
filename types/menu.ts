@@ -124,6 +124,10 @@ export type FoodCategoryRule = {
 
 // custom rules for ingredients for food items
 export type IngredientCategoryRule = {
+  // Minimum number of selections required from this category (e.g. a
+  // build-your-own format that requires at least one dip/side choice).
+  // Omit for categories with no minimum.
+  minQuantity?: number;
   maxQuantity?: number;
   allowNone?: boolean;
 };

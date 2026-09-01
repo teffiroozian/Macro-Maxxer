@@ -16,7 +16,9 @@
     "collect:chipotle-menu-rules": "tsx scripts/collect/chipotle-menu-rules.ts",
     "collect:chipotle-online-meals": "tsx scripts/collect/chipotle-online-meals.ts",
     "import:chick-fil-a": "node --import tsx scripts/importers/chick-fil-a.ts",
+    "import:chipotle": "node --import tsx scripts/importers/chipotle.ts",
     "validate:chick-fil-a": "node --import tsx scripts/validate/chick-fil-a.ts",
+    "validate:chipotle": "node --import tsx scripts/validate/chipotle.ts",
     "review:chick-fil-a": "node --import tsx scripts/review/chick-fil-a.ts"
   },
   "dependencies": {

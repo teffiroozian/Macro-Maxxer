@@ -1,6 +1,6 @@
 {
   "restaurant": "Chick-fil-A",
-  "validatedAt": "2026-08-27",
+  "validatedAt": "2026-08-31",
   "inputs": {
     "restaurant": "data/generated/chick-fil-a/restaurant.json",
     "unresolved": "data/generated/chick-fil-a/unresolved.json"
