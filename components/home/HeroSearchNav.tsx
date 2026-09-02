@@ -1,7 +1,7 @@
 "use client";
 
 import { Suspense, useEffect, useRef, useState, type CSSProperties } from "react";
-import Image from "next/image";
+import Image from "@/components/ui/AppImage";
 import { Dumbbell, Flame, Search, type LucideIcon } from "lucide-react";
 import DesktopNav from "@/components/DesktopNav";
 import GlobalMobileNav from "@/components/GlobalMobileNav";

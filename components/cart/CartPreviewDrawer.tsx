@@ -1,6 +1,6 @@
 "use client";
 
-import Image from "next/image";
+import Image from "@/components/ui/AppImage";
 import Link from "next/link";
 import { Pencil, ShoppingCart, Trash2 } from "lucide-react";
 import { useCallback, useEffect, useMemo, useState } from "react";

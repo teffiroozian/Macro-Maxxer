@@ -11,6 +11,14 @@ about it. The importer records these decisions in generated-output
 provenance so manually verified relationships remain distinguishable from
 relationships explicitly present in captured structured sources.
 
+This document covers decisions about **producing** `data/generated/chipotle/
+restaurant.json` from raw Chipotle sources — i.e. source/data truth. Once
+that generated data exists, a separate layer of decisions governs how
+Macro Maxxer's runtime presents and builds on top of it (browse taxonomy,
+navigation, image enrichment, legacy-ID compatibility, presentation-only
+grouping/labeling, etc.) — those are recorded in `runtime-decisions.md`, not
+here, to keep the two concerns from blurring together.
+
 ---
 
 ## 1. Unnamed menu-metadata ids
@@ -199,20 +207,26 @@ The official PDF provides authoritative per-tortilla nutrition:
 - Crispy Corn Tortilla: 70 calories, 1 ea (adult)
 
 **Decision:**
-- Use the official PDF per-unit tortilla nutrition for composed taco
-  nutrition, not the `CMG-5501`/`CMG-5503` metadata calorie values.
-- **Single Taco = 1 × selected tortilla's official PDF nutrition.**
-- **Tacos (3) = 3 × selected tortilla's official PDF nutrition.**
-- Do **not** use the ambiguous `CMG-5501`/`CMG-5503` metadata calorie values
-  as the final quantity-aware nutrition calculation — they remain
-  unreconciled with the PDF and must not be trusted for per-unit math.
-- Preserve `CMG-5501`/`CMG-5503` as the ordering/source identities (they are
-  what the customer actually selects and what the cart/build logic must key
-  off of for the tortilla choice) — only the *nutrition calculation* uses
-  actual taco count × official PDF per-unit nutrition instead of the CMG
-  metadata value.
+- Treat each official build context as its own authoritative panel; do not
+  calculate one context by multiplying or dividing another context's rounded
+  displayed values.
+- Adult Taco (1): Soft Flour `83/2/13/3`, Crispy Corn `67/1/10/3`
+  (calories/protein/carbs/fat).
+- Adult Tacos (3): Soft Flour `250/7/40/8`, Crispy Corn `200/3/29/9`.
+- Kids Build Your Own (2 tortillas per selectable serving): Soft Flour
+  `170/5/27/5`, Crispy Corn `130/2/19/6`. Runtime quantity remains `1` because
+  each source record already represents both tortillas.
+- Kids Quesadilla continues to use the direct `CMG-5401` one-tortilla panel.
+- Preserve each generated context record's existing CMG ordering/source
+  identity and provenance.
 
-**Status: RESOLVED**
+**Status: RESOLVED** (generated data unchanged since — see runtime note below)
+
+**Runtime note:** The generated `CMG-5401` record itself is untouched, but
+the live Kids Quesadilla builder no longer *selects* it as the included
+tortilla — see `runtime-decisions.md` §21 ("Kids Quesadilla flour tortilla
+uses the 1-Taco 83-cal context"). This is a presentation/runtime override,
+not a revision of the finding above.
 
 ---
 
@@ -273,7 +287,14 @@ Selected protein/veggie filling, sides, and drink are added separately.
   kids tortilla and cheese nutrition values themselves are backed by their
   captured official records/PDF matches.
 
-**Status: RESOLVED**
+**Status: RESOLVED** (generated data unchanged since — see runtime note below)
+
+**Runtime note:** The 1×cheese-not-3×cheese rule and the `CMG-5401` figures
+above remain accurate as generated-data facts. The live builder's *included
+tortilla selection* was later overridden for accuracy — see
+`runtime-decisions.md` §20 ("Kids Quesadilla cheese stays 1× standard, never
+the adult 3× rule") and §21 ("Kids Quesadilla flour tortilla uses the 1-Taco
+83-cal context").
 
 ---
 
@@ -345,6 +366,78 @@ ordering ids.
   flavor nutrition. If a candidate flavor has no valid official 22oz or
   32oz row, leave only that flavor unresolved rather than rejecting the
   entire 16oz container.
+
+**Status: RESOLVED**
+
+---
+
+## 11. Structural Veggie hidden from protein/ingredient selection
+
+**Finding:**
+"Veggie" is Chipotle's explicit no-protein entree choice. Its own direct
+entree-identity nutrition is a 0oz/0cal placeholder — the real calories a
+Veggie order carries come from its default guacamole/fajita-vegetable
+content components, not from a "Veggie protein" serving. Exposing that
+0cal/0g placeholder as a normal selectable protein card (alongside Chicken,
+Steak, etc., each with real per-serving macros) would misrepresent it as a
+zero-calorie protein rather than what it actually is: the absence of a meat
+protein.
+
+**Decision:**
+- Import the Veggie protein identity (standard context plus its Taco/Tacos
+  (3) contexts) as real generated ingredient records, preserving the CMG
+  source/provenance the same as every other protein.
+- Mark each Veggie context record `hideFromIngredientView: true` so it is
+  excluded from ingredient-selection surfaces (the per-entree ingredient
+  builder and any full-catalog ingredient listing) while remaining a valid,
+  queryable generated record.
+- Do not delete or omit the Veggie records — this is a display flag on
+  otherwise-authoritative generated data, not a data-availability decision.
+
+**Type:** Source/data truth (encoded directly on the generated ingredient
+records, not a runtime-only overlay).
+
+**Implements:** `scripts/importers/chipotle.ts` (`hideFromIngredientView:
+proteinName === "Veggie" ? true : undefined`, applied at both the standard
+and Taco/Tacos(3) context sites) — the resulting flag is generated data
+(`data/generated/chipotle/restaurant.json`) and is honored generically by
+every runtime ingredient-listing code path (nothing Chipotle-specific reads
+this flag at runtime).
+
+**Status: RESOLVED**
+
+---
+
+## 12. Official ingredient/content ordering preserved from Chipotle's live source
+
+**Finding:**
+Chipotle's own live ordering system (`calculator-menu.json` /
+`menu-metadata.json`) exposes an explicit sort order for entrees, tortillas,
+and other content groups (e.g. `TortillaContentGroup`'s own order, each
+entree's `menu-metadata.json` sort position). This is Chipotle's own
+customer-facing ordering, not an artifact of collection order.
+
+**Decision:**
+- Derive each generated record's `defaultOrder` from Chipotle's own official
+  live ordering source for that record's content group, rather than
+  collection/appearance order in the raw capture or an arbitrary import-time
+  assignment.
+- Preserve this per-group official order faithfully; do not renumber or
+  re-sort groups relative to each other beyond what the source itself
+  encodes.
+
+**Type:** Source/data truth (encoded as the generated `defaultOrder` field).
+
+**Exception/context:** This is the *official* order baked into generated
+data. Macro Maxxer's runtime layer separately applies a small number of its
+own presentation-only order overrides on top of this (e.g. pinning Queso
+Blanco last among toppings) — those are runtime decisions, not a revision of
+the official order; see `runtime-decisions.md` §15.
+
+**Implements:** `scripts/importers/chipotle.ts` (`officialOrder` /
+`officialTortillaOrder` / `officialContentSortOrder` /
+`officialEntreeSortOrder` helpers, applied wherever a generated record's
+`defaultOrder` is set).
 
 **Status: RESOLVED**
 

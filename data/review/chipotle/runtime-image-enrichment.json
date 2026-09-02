@@ -1,0 +1,2265 @@
+{
+  "version": 1,
+  "generatedAt": "2026-09-01",
+  "status": "prepared_not_wired",
+  "purpose": "Runtime-ready official-image enrichment keyed by generated Chipotle record id. This file does not modify raw data, generated menu data, or runtime wiring.",
+  "inputs": {
+    "generatedMenu": {
+      "path": "data/generated/chipotle/restaurant.json",
+      "sha256": "9dda8078ecc4948cacbab44c2c9879c019c5515479a6c14724e59ab5fb0d2c65"
+    },
+    "menuMetadata": {
+      "path": "data/raw/chipotle/menu-metadata.json",
+      "sha256": "cd5d4de9fa3736bb8086279501e3fd136017c354ed3d99867cfc1cbf673d19a7",
+      "sourceEndpoint": "https://services.chipotle.com/menu-metadata/v1/menu-metadata?channel=web&region=US",
+      "retrieved": "2026-08-31T23:40:20.673Z"
+    },
+    "onlineMeals": {
+      "path": "data/raw/chipotle/online-meals.json",
+      "sha256": "6eacb81a8ff2ce5af983c0e1816cda645c9d5999e7f84090e526095d06f5dbec",
+      "sourceEndpoint": "https://services.chipotle.com/menuinnovation/v1/restaurants/469/onlinemeals?channelId=web",
+      "retrieved": "2026-08-31T17:34:54.060Z"
+    }
+  },
+  "policy": {
+    "priority": [
+      "menu-metadata group thumbnail for generated build containers",
+      "online-meals WEB primary image for generated preconfigured meals",
+      "menu-metadata item thumbnail matched by generated source CMG id"
+    ],
+    "restrictions": [
+      "Only HTTPS URLs on official Chipotle hosts are accepted.",
+      "Homepage/root placeholders and URLs without an image extension are rejected.",
+      "Current generated source IDs drive matching; names are never used for item-image matching.",
+      "Variants inherit their parent record image unless a future official source provides a distinct variant image."
+    ],
+    "officialHosts": [
+      "chipotlestrg-cdn.chipotle.com",
+      "miinternal-cdn.chipotle.com",
+      "www.chipotle.com"
+    ]
+  },
+  "coverage": {
+    "generatedTopLevelRecords": 149,
+    "mappedTopLevelRecords": 146,
+    "unmappedTopLevelRecords": 3,
+    "generatedItems": 77,
+    "mappedItems": 74,
+    "generatedIngredients": 72,
+    "mappedIngredients": 72,
+    "generatedVariantsInheritingParentImage": 88,
+    "byMethod": {
+      "menu_metadata_group_thumbnail": 8,
+      "menu_metadata_item_thumbnail": 127,
+      "online_meal_web_primary": 11
+    },
+    "byHost": {
+      "miinternal-cdn.chipotle.com": 11,
+      "www.chipotle.com": 135
+    }
+  },
+  "records": {
+    "chipotle-burrito": {
+      "name": "Burrito",
+      "recordType": "item",
+      "image": "https://www.chipotle.com/content/dam/chipotle/menu/meal-types/burrito/web-desktop/burrito.png",
+      "method": "menu_metadata_group_thumbnail",
+      "sourceFile": "data/raw/chipotle/menu-metadata.json",
+      "sourceEndpoint": "https://services.chipotle.com/menu-metadata/v1/menu-metadata?channel=web&region=US",
+      "sourceRecordId": "a062f745-2dac-4d39-9437-27f4d047502c",
+      "sourceField": "groups[].thumbnailImageUrl",
+      "generatedSourceIds": [
+        "CMG-2",
+        "CMG-1",
+        "CMG-3",
+        "CMG-6",
+        "CMG-4",
+        "CMG-5",
+        "CMG-11"
+      ],
+      "alternateOfficialImages": []
+    },
+    "chipotle-bowl": {
+      "name": "Bowl",
+      "recordType": "item",
+      "image": "https://www.chipotle.com/content/dam/chipotle/menu/meal-types/burrito-bowl/web-desktop/order.png",
+      "method": "menu_metadata_group_thumbnail",
+      "sourceFile": "data/raw/chipotle/menu-metadata.json",
+      "sourceEndpoint": "https://services.chipotle.com/menu-metadata/v1/menu-metadata?channel=web&region=US",
+      "sourceRecordId": "3faaa10d-8a04-48a7-9fe4-732c82346a54",
+      "sourceField": "groups[].thumbnailImageUrl",
+      "generatedSourceIds": [
+        "CMG-102",
+        "CMG-101",
+        "CMG-103",
+        "CMG-106",
+        "CMG-104",
+        "CMG-105",
+        "CMG-113"
+      ],
+      "alternateOfficialImages": []
+    },
+    "chipotle-salad": {
+      "name": "Salad",
+      "recordType": "item",
+      "image": "https://www.chipotle.com/content/dam/chipotle/menu/meal-types/salad/web-desktop/order.png",
+      "method": "menu_metadata_group_thumbnail",
+      "sourceFile": "data/raw/chipotle/menu-metadata.json",
+      "sourceEndpoint": "https://services.chipotle.com/menu-metadata/v1/menu-metadata?channel=web&region=US",
+      "sourceRecordId": "65c7280d-8e14-46d1-b9f8-78280e9fdf93",
+      "sourceField": "groups[].thumbnailImageUrl",
+      "generatedSourceIds": [
+        "CMG-302",
+        "CMG-305",
+        "CMG-306",
+        "CMG-303",
+        "CMG-301",
+        "CMG-304",
+        "CMG-311"
+      ],
+      "alternateOfficialImages": []
+    },
+    "chipotle-quesadilla": {
+      "name": "Quesadilla",
+      "recordType": "item",
+      "image": "https://www.chipotle.com/content/dam/chipotle/menu/meal-types/quesadilla/web-desktop/quesadilla.png",
+      "method": "menu_metadata_group_thumbnail",
+      "sourceFile": "data/raw/chipotle/menu-metadata.json",
+      "sourceEndpoint": "https://services.chipotle.com/menu-metadata/v1/menu-metadata?channel=web&region=US",
+      "sourceRecordId": "8cd47f3e-41a6-406e-ac8e-ec9e0b011a2d",
+      "sourceField": "groups[].thumbnailImageUrl",
+      "generatedSourceIds": [
+        "CMG-403",
+        "CMG-404",
+        "CMG-405",
+        "CMG-401",
+        "CMG-407",
+        "CMG-402",
+        "CMG-412"
+      ],
+      "alternateOfficialImages": []
+    },
+    "chipotle-taco": {
+      "name": "Taco",
+      "recordType": "item",
+      "image": "https://www.chipotle.com/content/dam/chipotle/menu/meal-types/tacos/soft-taco/web-desktop/order1.png",
+      "method": "menu_metadata_group_thumbnail",
+      "sourceFile": "data/raw/chipotle/menu-metadata.json",
+      "sourceEndpoint": "https://services.chipotle.com/menu-metadata/v1/menu-metadata?channel=web&region=US",
+      "sourceRecordId": "149b50b0-9028-4b95-8505-48732f372eef",
+      "sourceField": "groups[].thumbnailImageUrl",
+      "generatedSourceIds": [
+        "CMG-1202",
+        "CMG-1204",
+        "CMG-1201",
+        "CMG-1203",
+        "CMG-1206",
+        "CMG-1205",
+        "CMG-1212"
+      ],
+      "alternateOfficialImages": []
+    },
+    "chipotle-tacos-3": {
+      "name": "Tacos (3)",
+      "recordType": "item",
+      "image": "https://www.chipotle.com/content/dam/chipotle/menu/meal-types/tacos/soft-taco/web-desktop/three-tacos.png",
+      "method": "menu_metadata_group_thumbnail",
+      "sourceFile": "data/raw/chipotle/menu-metadata.json",
+      "sourceEndpoint": "https://services.chipotle.com/menu-metadata/v1/menu-metadata?channel=web&region=US",
+      "sourceRecordId": "3c005b71-58a4-44b4-addc-8588ed9bbdb7",
+      "sourceField": "groups[].thumbnailImageUrl",
+      "generatedSourceIds": [
+        "CMG-202",
+        "CMG-201",
+        "CMG-203",
+        "CMG-206",
+        "CMG-204",
+        "CMG-205",
+        "CMG-211"
+      ],
+      "alternateOfficialImages": []
+    },
+    "chipotle-kids-build-your-own": {
+      "name": "Kids Build Your Own",
+      "recordType": "item",
+      "image": "https://www.chipotle.com/content/dam/chipotle/menu/meal-types/kids-meal/web-mobile/order.png",
+      "method": "menu_metadata_group_thumbnail",
+      "sourceFile": "data/raw/chipotle/menu-metadata.json",
+      "sourceEndpoint": "https://services.chipotle.com/menu-metadata/v1/menu-metadata?channel=web&region=US",
+      "sourceRecordId": "8820f3bb-1eae-4bd6-8150-1a44849bf6b0",
+      "sourceField": "groups[].thumbnailImageUrl",
+      "generatedSourceIds": [
+        "CMG-3007",
+        "CMG-3002",
+        "CMG-3003",
+        "CMG-3004",
+        "CMG-3005",
+        "CMG-3006",
+        "CMG-3013",
+        "CMG-3011"
+      ],
+      "alternateOfficialImages": []
+    },
+    "chipotle-kids-quesadilla": {
+      "name": "Kids Quesadilla",
+      "recordType": "item",
+      "image": "https://www.chipotle.com/content/dam/chipotle/menu/meal-types/kids-meal/kids-quesadilla/web-desktop/order.png",
+      "method": "menu_metadata_group_thumbnail",
+      "sourceFile": "data/raw/chipotle/menu-metadata.json",
+      "sourceEndpoint": "https://services.chipotle.com/menu-metadata/v1/menu-metadata?channel=web&region=US",
+      "sourceRecordId": "091948ee-eac4-40b6-8378-7e83b9fd9c8c",
+      "sourceField": "groups[].thumbnailImageUrl",
+      "generatedSourceIds": [
+        "CMG-3101",
+        "CMG-3102",
+        "CMG-3103",
+        "CMG-3104",
+        "CMG-3105",
+        "CMG-3106",
+        "CMG-3111",
+        "CMG-3107"
+      ],
+      "alternateOfficialImages": []
+    },
+    "chipotle-cmg-1007": {
+      "name": "Chips & Tomatillo-Red Chili Salsa",
+      "recordType": "item",
+      "image": "https://www.chipotle.com/content/dam/chipotle/menu/menu-items/cmg-1007-chips-tomatillo-red-chili-salsa/web-desktop/order.png",
+      "method": "menu_metadata_item_thumbnail",
+      "sourceFile": "data/raw/chipotle/menu-metadata.json",
+      "sourceEndpoint": "https://services.chipotle.com/menu-metadata/v1/menu-metadata?channel=web&region=US",
+      "sourceRecordId": "CMG-1007",
+      "sourceField": "items.CMG-1007.thumbnailUrl",
+      "generatedSourceIds": [
+        "CMG-1007"
+      ],
+      "alternateOfficialImages": []
+    },
+    "chipotle-cmg-1006": {
+      "name": "Chips & Tomatillo-Green Chili Salsa",
+      "recordType": "item",
+      "image": "https://www.chipotle.com/content/dam/chipotle/menu/menu-items/cmg-1006-chips-and-tomatillo-green-chili-salsa/web-desktop/order.png",
+      "method": "menu_metadata_item_thumbnail",
+      "sourceFile": "data/raw/chipotle/menu-metadata.json",
+      "sourceEndpoint": "https://services.chipotle.com/menu-metadata/v1/menu-metadata?channel=web&region=US",
+      "sourceRecordId": "CMG-1006",
+      "sourceField": "items.CMG-1006.thumbnailUrl",
+      "generatedSourceIds": [
+        "CMG-1006"
+      ],
+      "alternateOfficialImages": []
+    },
+    "chipotle-cmg-1008": {
+      "name": "Chips & Roasted Chili-Corn Salsa",
+      "recordType": "item",
+      "image": "https://www.chipotle.com/content/dam/chipotle/menu/menu-items/cmg-1008-chips-roasted-chili-corn-salsa/web-desktop/order.png",
+      "method": "menu_metadata_item_thumbnail",
+      "sourceFile": "data/raw/chipotle/menu-metadata.json",
+      "sourceEndpoint": "https://services.chipotle.com/menu-metadata/v1/menu-metadata?channel=web&region=US",
+      "sourceRecordId": "CMG-1008",
+      "sourceField": "items.CMG-1008.thumbnailUrl",
+      "generatedSourceIds": [
+        "CMG-1008"
+      ],
+      "alternateOfficialImages": []
+    },
+    "chipotle-cmg-5370": {
+      "name": "Chili Lime Chips & Tomatillo-Green Chili Salsa",
+      "recordType": "item",
+      "image": "https://www.chipotle.com/content/dam/chipotle/menu/menu-items/cmg-5370-chili-lime-chips-tomatillo-green-chili-salsa/web-desktop/order.png",
+      "method": "menu_metadata_item_thumbnail",
+      "sourceFile": "data/raw/chipotle/menu-metadata.json",
+      "sourceEndpoint": "https://services.chipotle.com/menu-metadata/v1/menu-metadata?channel=web&region=US",
+      "sourceRecordId": "CMG-5370",
+      "sourceField": "items.CMG-5370.thumbnailUrl",
+      "generatedSourceIds": [
+        "CMG-5370"
+      ],
+      "alternateOfficialImages": []
+    },
+    "chipotle-cmg-5371": {
+      "name": "Chili Lime Chips & Tomatillo-Red Chili Salsa",
+      "recordType": "item",
+      "image": "https://www.chipotle.com/content/dam/chipotle/menu/menu-items/cmg-5371-chili-lime-chips-tomatillo-red-chili-salsa/web-desktop/order.png",
+      "method": "menu_metadata_item_thumbnail",
+      "sourceFile": "data/raw/chipotle/menu-metadata.json",
+      "sourceEndpoint": "https://services.chipotle.com/menu-metadata/v1/menu-metadata?channel=web&region=US",
+      "sourceRecordId": "CMG-5371",
+      "sourceField": "items.CMG-5371.thumbnailUrl",
+      "generatedSourceIds": [
+        "CMG-5371"
+      ],
+      "alternateOfficialImages": []
+    },
+    "chipotle-cmg-5372": {
+      "name": "Chili Lime Chips & Roasted Chili-Corn Salsa",
+      "recordType": "item",
+      "image": "https://www.chipotle.com/content/dam/chipotle/menu/menu-items/cmg-5372-chili-lime-chips-roasted-chili-corn-salsa/web-desktop/order.png",
+      "method": "menu_metadata_item_thumbnail",
+      "sourceFile": "data/raw/chipotle/menu-metadata.json",
+      "sourceEndpoint": "https://services.chipotle.com/menu-metadata/v1/menu-metadata?channel=web&region=US",
+      "sourceRecordId": "CMG-5372",
+      "sourceField": "items.CMG-5372.thumbnailUrl",
+      "generatedSourceIds": [
+        "CMG-5372"
+      ],
+      "alternateOfficialImages": []
+    },
+    "chipotle-cmg-5369": {
+      "name": "Chili Lime Chips & Fresh Tomato Salsa",
+      "recordType": "item",
+      "image": "https://www.chipotle.com/content/dam/chipotle/menu/menu-items/cmg-5369-chili-lime-chips-fresh-tomato-salsa/web-desktop/order.png",
+      "method": "menu_metadata_item_thumbnail",
+      "sourceFile": "data/raw/chipotle/menu-metadata.json",
+      "sourceEndpoint": "https://services.chipotle.com/menu-metadata/v1/menu-metadata?channel=web&region=US",
+      "sourceRecordId": "CMG-5369",
+      "sourceField": "items.CMG-5369.thumbnailUrl",
+      "generatedSourceIds": [
+        "CMG-5369"
+      ],
+      "alternateOfficialImages": []
+    },
+    "chipotle-cmg-1005": {
+      "name": "Chips & Fresh Tomato Salsa",
+      "recordType": "item",
+      "image": "https://www.chipotle.com/content/dam/chipotle/menu/menu-items/cmg-1005-chips-and-salsa/web-desktop/order.png",
+      "method": "menu_metadata_item_thumbnail",
+      "sourceFile": "data/raw/chipotle/menu-metadata.json",
+      "sourceEndpoint": "https://services.chipotle.com/menu-metadata/v1/menu-metadata?channel=web&region=US",
+      "sourceRecordId": "CMG-1005",
+      "sourceField": "items.CMG-1005.thumbnailUrl",
+      "generatedSourceIds": [
+        "CMG-1005"
+      ],
+      "alternateOfficialImages": []
+    },
+    "chipotle-cmg-1002": {
+      "name": "Chips",
+      "recordType": "item",
+      "image": "https://www.chipotle.com/content/dam/chipotle/menu/menu-items/cmg-1002-chips/web-desktop/chips.png",
+      "method": "menu_metadata_item_thumbnail",
+      "sourceFile": "data/raw/chipotle/menu-metadata.json",
+      "sourceEndpoint": "https://services.chipotle.com/menu-metadata/v1/menu-metadata?channel=web&region=US",
+      "sourceRecordId": "CMG-1002",
+      "sourceField": "items.CMG-1002.thumbnailUrl",
+      "generatedSourceIds": [
+        "CMG-1002"
+      ],
+      "alternateOfficialImages": []
+    },
+    "chipotle-cmg-1016": {
+      "name": "Large Chips",
+      "recordType": "item",
+      "image": "https://www.chipotle.com/content/dam/chipotle/menu/menu-items/CMG-1016-Side-Large-Chips/web-desktop/order.png",
+      "method": "menu_metadata_item_thumbnail",
+      "sourceFile": "data/raw/chipotle/menu-metadata.json",
+      "sourceEndpoint": "https://services.chipotle.com/menu-metadata/v1/menu-metadata?channel=web&region=US",
+      "sourceRecordId": "CMG-1016",
+      "sourceField": "items.CMG-1016.thumbnailUrl",
+      "generatedSourceIds": [
+        "CMG-1016"
+      ],
+      "alternateOfficialImages": []
+    },
+    "chipotle-cmg-5363": {
+      "name": "Large Chili Lime Chips",
+      "recordType": "item",
+      "image": "https://www.chipotle.com/content/dam/chipotle/menu/menu-items/cmg-5363-large-chili-lime-chips/web-desktop/order.png",
+      "method": "menu_metadata_item_thumbnail",
+      "sourceFile": "data/raw/chipotle/menu-metadata.json",
+      "sourceEndpoint": "https://services.chipotle.com/menu-metadata/v1/menu-metadata?channel=web&region=US",
+      "sourceRecordId": "CMG-5363",
+      "sourceField": "items.CMG-5363.thumbnailUrl",
+      "generatedSourceIds": [
+        "CMG-5363"
+      ],
+      "alternateOfficialImages": []
+    },
+    "chipotle-cmg-5362": {
+      "name": "Chili Lime Chips",
+      "recordType": "item",
+      "image": "https://www.chipotle.com/content/dam/chipotle/menu/menu-items/cmg-5362-chili-lime-chips/web-desktop/order.png",
+      "method": "menu_metadata_item_thumbnail",
+      "sourceFile": "data/raw/chipotle/menu-metadata.json",
+      "sourceEndpoint": "https://services.chipotle.com/menu-metadata/v1/menu-metadata?channel=web&region=US",
+      "sourceRecordId": "CMG-5362",
+      "sourceField": "items.CMG-5362.thumbnailUrl",
+      "generatedSourceIds": [
+        "CMG-5362"
+      ],
+      "alternateOfficialImages": []
+    },
+    "chipotle-cmg-4025": {
+      "name": "Tortilla on the Side",
+      "recordType": "item",
+      "image": "https://www.chipotle.com/content/dam/chipotle/menu/menu-items/cmg-5501-flour-tortilla-burrito-size/web-desktop/order.png",
+      "method": "menu_metadata_item_thumbnail",
+      "sourceFile": "data/raw/chipotle/menu-metadata.json",
+      "sourceEndpoint": "https://services.chipotle.com/menu-metadata/v1/menu-metadata?channel=web&region=US",
+      "sourceRecordId": "CMG-4025",
+      "sourceField": "items.CMG-4025.thumbnailUrl",
+      "generatedSourceIds": [
+        "CMG-4025"
+      ],
+      "alternateOfficialImages": []
+    },
+    "chipotle-cmg-1031": {
+      "name": "Large Side of Queso Blanco",
+      "recordType": "item",
+      "image": "https://www.chipotle.com/content/dam/chipotle/menu/menu-items/cmg-1031-large-side-of-queso-blanco/web-desktop/order.png",
+      "method": "menu_metadata_item_thumbnail",
+      "sourceFile": "data/raw/chipotle/menu-metadata.json",
+      "sourceEndpoint": "https://services.chipotle.com/menu-metadata/v1/menu-metadata?channel=web&region=US",
+      "sourceRecordId": "CMG-1031",
+      "sourceField": "items.CMG-1031.thumbnailUrl",
+      "generatedSourceIds": [
+        "CMG-1031",
+        "CMG-1052"
+      ],
+      "alternateOfficialImages": []
+    },
+    "chipotle-cmg-1030": {
+      "name": "Side of Queso Blanco",
+      "recordType": "item",
+      "image": "https://www.chipotle.com/content/dam/chipotle/menu/menu-items/cmg-1029-queso-blanco/web-desktop/order.png",
+      "method": "menu_metadata_item_thumbnail",
+      "sourceFile": "data/raw/chipotle/menu-metadata.json",
+      "sourceEndpoint": "https://services.chipotle.com/menu-metadata/v1/menu-metadata?channel=web&region=US",
+      "sourceRecordId": "CMG-1030",
+      "sourceField": "items.CMG-1030.thumbnailUrl",
+      "generatedSourceIds": [
+        "CMG-1030"
+      ],
+      "alternateOfficialImages": []
+    },
+    "chipotle-cmg-1025": {
+      "name": "Large Side of Guacamole",
+      "recordType": "item",
+      "image": "https://www.chipotle.com/content/dam/chipotle/menu/menu-items/cmg-1025-large-side-of-guac/web-desktop/order.png",
+      "method": "menu_metadata_item_thumbnail",
+      "sourceFile": "data/raw/chipotle/menu-metadata.json",
+      "sourceEndpoint": "https://services.chipotle.com/menu-metadata/v1/menu-metadata?channel=web&region=US",
+      "sourceRecordId": "CMG-1025",
+      "sourceField": "items.CMG-1025.thumbnailUrl",
+      "generatedSourceIds": [
+        "CMG-1025",
+        "CMG-1051"
+      ],
+      "alternateOfficialImages": []
+    },
+    "chipotle-cmg-1009": {
+      "name": "Side of Guacamole",
+      "recordType": "item",
+      "image": "https://www.chipotle.com/content/dam/chipotle/menu/menu-items/cmg-1009-guacamole/web-desktop/order.png",
+      "method": "menu_metadata_item_thumbnail",
+      "sourceFile": "data/raw/chipotle/menu-metadata.json",
+      "sourceEndpoint": "https://services.chipotle.com/menu-metadata/v1/menu-metadata?channel=web&region=US",
+      "sourceRecordId": "CMG-1009",
+      "sourceField": "items.CMG-1009.thumbnailUrl",
+      "generatedSourceIds": [
+        "CMG-1009"
+      ],
+      "alternateOfficialImages": []
+    },
+    "chipotle-cmg-5400": {
+      "name": "Large Tomatillo-Green Chili Salsa",
+      "recordType": "item",
+      "image": "https://www.chipotle.com/content/dam/chipotle/menu/menu-items/cmg-5203-tomatillo-green-chili-salsa/web-desktop/order.png",
+      "method": "menu_metadata_item_thumbnail",
+      "sourceFile": "data/raw/chipotle/menu-metadata.json",
+      "sourceEndpoint": "https://services.chipotle.com/menu-metadata/v1/menu-metadata?channel=web&region=US",
+      "sourceRecordId": "CMG-5400",
+      "sourceField": "items.CMG-5400.thumbnailUrl",
+      "generatedSourceIds": [
+        "CMG-5400",
+        "CMG-1049"
+      ],
+      "alternateOfficialImages": []
+    },
+    "chipotle-cmg-5398": {
+      "name": "Large Fresh Tomato Salsa",
+      "recordType": "item",
+      "image": "https://www.chipotle.com/content/dam/chipotle/menu/menu-items/cmg-5201-fresh-tomato-salsa/web-desktop/order.png",
+      "method": "menu_metadata_item_thumbnail",
+      "sourceFile": "data/raw/chipotle/menu-metadata.json",
+      "sourceEndpoint": "https://services.chipotle.com/menu-metadata/v1/menu-metadata?channel=web&region=US",
+      "sourceRecordId": "CMG-1047",
+      "sourceField": "items.CMG-1047.thumbnailUrl",
+      "generatedSourceIds": [
+        "CMG-1047",
+        "CMG-5398"
+      ],
+      "alternateOfficialImages": []
+    },
+    "chipotle-cmg-5399": {
+      "name": "Large Roasted Chili-Corn Salsa",
+      "recordType": "item",
+      "image": "https://www.chipotle.com/content/dam/chipotle/menu/menu-items/cmg-5202-roasted-chili-corn-salsa/web-desktop/order.png",
+      "method": "menu_metadata_item_thumbnail",
+      "sourceFile": "data/raw/chipotle/menu-metadata.json",
+      "sourceEndpoint": "https://services.chipotle.com/menu-metadata/v1/menu-metadata?channel=web&region=US",
+      "sourceRecordId": "CMG-1048",
+      "sourceField": "items.CMG-1048.thumbnailUrl",
+      "generatedSourceIds": [
+        "CMG-1048",
+        "CMG-5399"
+      ],
+      "alternateOfficialImages": []
+    },
+    "chipotle-cmg-5416": {
+      "name": "Large Side of Cilantro Lime Sauce",
+      "recordType": "item",
+      "image": "https://www.chipotle.com/content/dam/chipotle/menu/menu-items/cmg-5412-cilantro-lime-sauce/web-desktop/order.png",
+      "method": "menu_metadata_item_thumbnail",
+      "sourceFile": "data/raw/chipotle/menu-metadata.json",
+      "sourceEndpoint": "https://services.chipotle.com/menu-metadata/v1/menu-metadata?channel=web&region=US",
+      "sourceRecordId": "CMG-5416",
+      "sourceField": "items.CMG-5416.thumbnailUrl",
+      "generatedSourceIds": [
+        "CMG-5416",
+        "CMG-5415"
+      ],
+      "alternateOfficialImages": []
+    },
+    "chipotle-cmg-5413": {
+      "name": "Side of Cilantro Lime Sauce",
+      "recordType": "item",
+      "image": "https://www.chipotle.com/content/dam/chipotle/menu/menu-items/cmg-5413-side-of-cilantro-lime-sauce/web-desktop/order.png",
+      "method": "menu_metadata_item_thumbnail",
+      "sourceFile": "data/raw/chipotle/menu-metadata.json",
+      "sourceEndpoint": "https://services.chipotle.com/menu-metadata/v1/menu-metadata?channel=web&region=US",
+      "sourceRecordId": "CMG-5413",
+      "sourceField": "items.CMG-5413.thumbnailUrl",
+      "generatedSourceIds": [
+        "CMG-5413"
+      ],
+      "alternateOfficialImages": []
+    },
+    "chipotle-cmg-1141": {
+      "name": "Side of Pollo Asado",
+      "recordType": "item",
+      "image": "https://www.chipotle.com/content/dam/chipotle/menu/menu-items/cmg-1141-side-of-pollo-asado/web-desktop/order.png",
+      "method": "menu_metadata_item_thumbnail",
+      "sourceFile": "data/raw/chipotle/menu-metadata.json",
+      "sourceEndpoint": "https://services.chipotle.com/menu-metadata/v1/menu-metadata?channel=web&region=US",
+      "sourceRecordId": "CMG-1141",
+      "sourceField": "items.CMG-1141.thumbnailUrl",
+      "generatedSourceIds": [
+        "CMG-1141"
+      ],
+      "alternateOfficialImages": []
+    },
+    "chipotle-cmg-1032": {
+      "name": "Chips & Queso Blanco",
+      "recordType": "item",
+      "image": "https://www.chipotle.com/content/dam/chipotle/menu/menu-items/cmg-1032-queso-blanco/web-desktop/order.png",
+      "method": "menu_metadata_item_thumbnail",
+      "sourceFile": "data/raw/chipotle/menu-metadata.json",
+      "sourceEndpoint": "https://services.chipotle.com/menu-metadata/v1/menu-metadata?channel=web&region=US",
+      "sourceRecordId": "CMG-1032",
+      "sourceField": "items.CMG-1032.thumbnailUrl",
+      "generatedSourceIds": [
+        "CMG-1032"
+      ],
+      "alternateOfficialImages": []
+    },
+    "chipotle-cmg-1033": {
+      "name": "Large Chips & Large Queso Blanco",
+      "recordType": "item",
+      "image": "https://www.chipotle.com/content/dam/chipotle/menu/menu-items/cmg-1033-large-chips-large-queso-blanco/web-desktop/order.png",
+      "method": "menu_metadata_item_thumbnail",
+      "sourceFile": "data/raw/chipotle/menu-metadata.json",
+      "sourceEndpoint": "https://services.chipotle.com/menu-metadata/v1/menu-metadata?channel=web&region=US",
+      "sourceRecordId": "CMG-1033",
+      "sourceField": "items.CMG-1033.thumbnailUrl",
+      "generatedSourceIds": [
+        "CMG-1033"
+      ],
+      "alternateOfficialImages": []
+    },
+    "chipotle-cmg-5365": {
+      "name": "Chili Lime Chips & Queso Blanco",
+      "recordType": "item",
+      "image": "https://www.chipotle.com/content/dam/chipotle/menu/menu-items/cmg-5365-chili-lime-chips-queso/web-desktop/order.png",
+      "method": "menu_metadata_item_thumbnail",
+      "sourceFile": "data/raw/chipotle/menu-metadata.json",
+      "sourceEndpoint": "https://services.chipotle.com/menu-metadata/v1/menu-metadata?channel=web&region=US",
+      "sourceRecordId": "CMG-5365",
+      "sourceField": "items.CMG-5365.thumbnailUrl",
+      "generatedSourceIds": [
+        "CMG-5365"
+      ],
+      "alternateOfficialImages": []
+    },
+    "chipotle-cmg-1015": {
+      "name": "Large Chips & Large Guacamole",
+      "recordType": "item",
+      "image": "https://www.chipotle.com/content/dam/chipotle/menu/menu-items/cmg-1015-large-chips---large-guacamole/web-desktop/order.png",
+      "method": "menu_metadata_item_thumbnail",
+      "sourceFile": "data/raw/chipotle/menu-metadata.json",
+      "sourceEndpoint": "https://services.chipotle.com/menu-metadata/v1/menu-metadata?channel=web&region=US",
+      "sourceRecordId": "CMG-1015",
+      "sourceField": "items.CMG-1015.thumbnailUrl",
+      "generatedSourceIds": [
+        "CMG-1015"
+      ],
+      "alternateOfficialImages": []
+    },
+    "chipotle-cmg-5364": {
+      "name": "Chili Lime Chips & Guacamole",
+      "recordType": "item",
+      "image": "https://www.chipotle.com/content/dam/chipotle/menu/menu-items/cmg-5364-chili-lime-chips-guacamole/web-desktop/order.png",
+      "method": "menu_metadata_item_thumbnail",
+      "sourceFile": "data/raw/chipotle/menu-metadata.json",
+      "sourceEndpoint": "https://services.chipotle.com/menu-metadata/v1/menu-metadata?channel=web&region=US",
+      "sourceRecordId": "CMG-5364",
+      "sourceField": "items.CMG-5364.thumbnailUrl",
+      "generatedSourceIds": [
+        "CMG-5364"
+      ],
+      "alternateOfficialImages": []
+    },
+    "chipotle-cmg-1003": {
+      "name": "Chips & Guacamole",
+      "recordType": "item",
+      "image": "https://www.chipotle.com/content/dam/chipotle/menu/menu-items/cmg-1003-chips-and-guac/web-desktop/order.png",
+      "method": "menu_metadata_item_thumbnail",
+      "sourceFile": "data/raw/chipotle/menu-metadata.json",
+      "sourceEndpoint": "https://services.chipotle.com/menu-metadata/v1/menu-metadata?channel=web&region=US",
+      "sourceRecordId": "CMG-1003",
+      "sourceField": "items.CMG-1003.thumbnailUrl",
+      "generatedSourceIds": [
+        "CMG-1003"
+      ],
+      "alternateOfficialImages": []
+    },
+    "chipotle-cmg-1125": {
+      "name": "Side of Chicken",
+      "recordType": "item",
+      "image": "https://www.chipotle.com/content/dam/chipotle/menu/menu-items/cmg-1125-side-of-chicken/web-desktop/order.png",
+      "method": "menu_metadata_item_thumbnail",
+      "sourceFile": "data/raw/chipotle/menu-metadata.json",
+      "sourceEndpoint": "https://services.chipotle.com/menu-metadata/v1/menu-metadata?channel=web&region=US",
+      "sourceRecordId": "CMG-1125",
+      "sourceField": "items.CMG-1125.thumbnailUrl",
+      "generatedSourceIds": [
+        "CMG-1125"
+      ],
+      "alternateOfficialImages": []
+    },
+    "chipotle-cmg-1126": {
+      "name": "Side of Steak",
+      "recordType": "item",
+      "image": "https://www.chipotle.com/content/dam/chipotle/menu/menu-items/cmg-1126-side-of-steak/web-desktop/order.png",
+      "method": "menu_metadata_item_thumbnail",
+      "sourceFile": "data/raw/chipotle/menu-metadata.json",
+      "sourceEndpoint": "https://services.chipotle.com/menu-metadata/v1/menu-metadata?channel=web&region=US",
+      "sourceRecordId": "CMG-1126",
+      "sourceField": "items.CMG-1126.thumbnailUrl",
+      "generatedSourceIds": [
+        "CMG-1126"
+      ],
+      "alternateOfficialImages": []
+    },
+    "chipotle-cmg-5366": {
+      "name": "Large Chili Lime Chips & Guacamole",
+      "recordType": "item",
+      "image": "https://www.chipotle.com/content/dam/chipotle/menu/menu-items/cmg-5366-large-chili-lime-chips-guacamole/web-desktop/order.png",
+      "method": "menu_metadata_item_thumbnail",
+      "sourceFile": "data/raw/chipotle/menu-metadata.json",
+      "sourceEndpoint": "https://services.chipotle.com/menu-metadata/v1/menu-metadata?channel=web&region=US",
+      "sourceRecordId": "CMG-5366",
+      "sourceField": "items.CMG-5366.thumbnailUrl",
+      "generatedSourceIds": [
+        "CMG-5366"
+      ],
+      "alternateOfficialImages": []
+    },
+    "chipotle-cmg-5367": {
+      "name": "Large Chili Lime Chips & Queso Blanco",
+      "recordType": "item",
+      "image": "https://www.chipotle.com/content/dam/chipotle/menu/menu-items/cmg-5367-large-chili-lime-chips-queso-blanco/web-desktop/order.png",
+      "method": "menu_metadata_item_thumbnail",
+      "sourceFile": "data/raw/chipotle/menu-metadata.json",
+      "sourceEndpoint": "https://services.chipotle.com/menu-metadata/v1/menu-metadata?channel=web&region=US",
+      "sourceRecordId": "CMG-5367",
+      "sourceField": "items.CMG-5367.thumbnailUrl",
+      "generatedSourceIds": [
+        "CMG-5367"
+      ],
+      "alternateOfficialImages": []
+    },
+    "chipotle-cmg-5500": {
+      "name": "Large Tomatillo-Red Chili Salsa",
+      "recordType": "item",
+      "image": "https://www.chipotle.com/content/dam/chipotle/menu/menu-items/cmg-5204-tomatillo-red-chili-salsa/web-desktop/order.png",
+      "method": "menu_metadata_item_thumbnail",
+      "sourceFile": "data/raw/chipotle/menu-metadata.json",
+      "sourceEndpoint": "https://services.chipotle.com/menu-metadata/v1/menu-metadata?channel=web&region=US",
+      "sourceRecordId": "CMG-1050",
+      "sourceField": "items.CMG-1050.thumbnailUrl",
+      "generatedSourceIds": [
+        "CMG-1050",
+        "CMG-5500"
+      ],
+      "alternateOfficialImages": []
+    },
+    "chipotle-fountain-22-fl-oz": {
+      "name": "Fountain Drink (22 fl oz)",
+      "recordType": "item",
+      "image": "https://www.chipotle.com/content/dam/chipotle/menu/menu-items/CMG-1019-Small-Drink/web-desktop/order.png",
+      "method": "menu_metadata_item_thumbnail",
+      "sourceFile": "data/raw/chipotle/menu-metadata.json",
+      "sourceEndpoint": "https://services.chipotle.com/menu-metadata/v1/menu-metadata?channel=web&region=US",
+      "sourceRecordId": "CMG-2001",
+      "sourceField": "items.CMG-2001.thumbnailUrl",
+      "generatedSourceIds": [
+        "CMG-2001"
+      ],
+      "alternateOfficialImages": []
+    },
+    "chipotle-fountain-32-fl-oz": {
+      "name": "Fountain Drink (32 fl oz)",
+      "recordType": "item",
+      "image": "https://www.chipotle.com/content/dam/chipotle/menu/menu-items/CMG-1019-Small-Drink/web-desktop/order.png",
+      "method": "menu_metadata_item_thumbnail",
+      "sourceFile": "data/raw/chipotle/menu-metadata.json",
+      "sourceEndpoint": "https://services.chipotle.com/menu-metadata/v1/menu-metadata?channel=web&region=US",
+      "sourceRecordId": "CMG-2002",
+      "sourceField": "items.CMG-2002.thumbnailUrl",
+      "generatedSourceIds": [
+        "CMG-2002"
+      ],
+      "alternateOfficialImages": []
+    },
+    "chipotle-cmg-2878": {
+      "name": "Open Water Still",
+      "recordType": "item",
+      "image": "https://www.chipotle.com/content/dam/chipotle/menu/menu-items/cmg-2878-order-water-still/web-desktop/order.png",
+      "method": "menu_metadata_item_thumbnail",
+      "sourceFile": "data/raw/chipotle/menu-metadata.json",
+      "sourceEndpoint": "https://services.chipotle.com/menu-metadata/v1/menu-metadata?channel=web&region=US",
+      "sourceRecordId": "CMG-2878",
+      "sourceField": "items.CMG-2878.thumbnailUrl",
+      "generatedSourceIds": [
+        "CMG-2878"
+      ],
+      "alternateOfficialImages": []
+    },
+    "chipotle-cmg-2849": {
+      "name": "Coke Zero",
+      "recordType": "item",
+      "image": "https://www.chipotle.com/content/dam/chipotle/menu/menu-items/cmg-2849-coke-zero/web-desktop/order.png",
+      "method": "menu_metadata_item_thumbnail",
+      "sourceFile": "data/raw/chipotle/menu-metadata.json",
+      "sourceEndpoint": "https://services.chipotle.com/menu-metadata/v1/menu-metadata?channel=web&region=US",
+      "sourceRecordId": "CMG-2849",
+      "sourceField": "items.CMG-2849.thumbnailUrl",
+      "generatedSourceIds": [
+        "CMG-2849"
+      ],
+      "alternateOfficialImages": []
+    },
+    "chipotle-cmg-2101": {
+      "name": "Apple Juice",
+      "recordType": "item",
+      "image": "https://www.chipotle.com/content/dam/chipotle/menu/menu-items/cmg-2101-nantuckets-nectar-pressed-apple-juice/web-desktop/order.png",
+      "method": "menu_metadata_item_thumbnail",
+      "sourceFile": "data/raw/chipotle/menu-metadata.json",
+      "sourceEndpoint": "https://services.chipotle.com/menu-metadata/v1/menu-metadata?channel=web&region=US",
+      "sourceRecordId": "CMG-2101",
+      "sourceField": "items.CMG-2101.thumbnailUrl",
+      "generatedSourceIds": [
+        "CMG-2101"
+      ],
+      "alternateOfficialImages": []
+    },
+    "chipotle-cmg-2838": {
+      "name": "Tractor Organic Lemonade",
+      "recordType": "item",
+      "image": "https://www.chipotle.com/content/dam/chipotle/menu/menu-items/cmg-2838-tractor-organic-lemonade/web-desktop/order.png",
+      "method": "menu_metadata_item_thumbnail",
+      "sourceFile": "data/raw/chipotle/menu-metadata.json",
+      "sourceEndpoint": "https://services.chipotle.com/menu-metadata/v1/menu-metadata?channel=web&region=US",
+      "sourceRecordId": "CMG-2838",
+      "sourceField": "items.CMG-2838.thumbnailUrl",
+      "generatedSourceIds": [
+        "CMG-2838"
+      ],
+      "alternateOfficialImages": []
+    },
+    "chipotle-cmg-2013": {
+      "name": "32 fl oz Tractor Organic Mandarin Agua Fresca",
+      "recordType": "item",
+      "image": "https://www.chipotle.com/content/dam/chipotle/menu/menu-items/cmg-ftn-mandarin-agua-fresca/web-desktop/order.png",
+      "method": "menu_metadata_item_thumbnail",
+      "sourceFile": "data/raw/chipotle/menu-metadata.json",
+      "sourceEndpoint": "https://services.chipotle.com/menu-metadata/v1/menu-metadata?channel=web&region=US",
+      "sourceRecordId": "CMG-2013",
+      "sourceField": "items.CMG-2013.thumbnailUrl",
+      "generatedSourceIds": [
+        "CMG-2013"
+      ],
+      "alternateOfficialImages": []
+    },
+    "chipotle-cmg-2018": {
+      "name": "32 fl oz Tractor Organic Berry Agua Fresca",
+      "recordType": "item",
+      "image": "https://www.chipotle.com/content/dam/chipotle/menu/menu-items/cmg-ftn-berry-agua-fresca/web-desktop/order.png",
+      "method": "menu_metadata_item_thumbnail",
+      "sourceFile": "data/raw/chipotle/menu-metadata.json",
+      "sourceEndpoint": "https://services.chipotle.com/menu-metadata/v1/menu-metadata?channel=web&region=US",
+      "sourceRecordId": "CMG-2018",
+      "sourceField": "items.CMG-2018.thumbnailUrl",
+      "generatedSourceIds": [
+        "CMG-2018"
+      ],
+      "alternateOfficialImages": []
+    },
+    "chipotle-cmg-2017": {
+      "name": "22 fl oz Tractor Organic Berry Agua Fresca",
+      "recordType": "item",
+      "image": "https://www.chipotle.com/content/dam/chipotle/menu/menu-items/cmg-ftn-berry-agua-fresca/web-desktop/order.png",
+      "method": "menu_metadata_item_thumbnail",
+      "sourceFile": "data/raw/chipotle/menu-metadata.json",
+      "sourceEndpoint": "https://services.chipotle.com/menu-metadata/v1/menu-metadata?channel=web&region=US",
+      "sourceRecordId": "CMG-2017",
+      "sourceField": "items.CMG-2017.thumbnailUrl",
+      "generatedSourceIds": [
+        "CMG-2017"
+      ],
+      "alternateOfficialImages": []
+    },
+    "chipotle-cmg-2012": {
+      "name": "22 fl oz Tractor Organic Mandarin Agua Fresca",
+      "recordType": "item",
+      "image": "https://www.chipotle.com/content/dam/chipotle/menu/menu-items/cmg-ftn-mandarin-agua-fresca/web-desktop/order.png",
+      "method": "menu_metadata_item_thumbnail",
+      "sourceFile": "data/raw/chipotle/menu-metadata.json",
+      "sourceEndpoint": "https://services.chipotle.com/menu-metadata/v1/menu-metadata?channel=web&region=US",
+      "sourceRecordId": "CMG-2012",
+      "sourceField": "items.CMG-2012.thumbnailUrl",
+      "generatedSourceIds": [
+        "CMG-2012"
+      ],
+      "alternateOfficialImages": []
+    },
+    "chipotle-cmg-2010": {
+      "name": "22 fl oz Tractor Organic Lemonade",
+      "recordType": "item",
+      "image": "https://www.chipotle.com/content/dam/chipotle/menu/menu-items/cmg-ftn-organic-lemonade/web-desktop/order.png",
+      "method": "menu_metadata_item_thumbnail",
+      "sourceFile": "data/raw/chipotle/menu-metadata.json",
+      "sourceEndpoint": "https://services.chipotle.com/menu-metadata/v1/menu-metadata?channel=web&region=US",
+      "sourceRecordId": "CMG-2010",
+      "sourceField": "items.CMG-2010.thumbnailUrl",
+      "generatedSourceIds": [
+        "CMG-2010"
+      ],
+      "alternateOfficialImages": []
+    },
+    "chipotle-cmg-2011": {
+      "name": "32 fl oz Tractor Organic Lemonade",
+      "recordType": "item",
+      "image": "https://www.chipotle.com/content/dam/chipotle/menu/menu-items/cmg-ftn-organic-lemonade/web-desktop/order.png",
+      "method": "menu_metadata_item_thumbnail",
+      "sourceFile": "data/raw/chipotle/menu-metadata.json",
+      "sourceEndpoint": "https://services.chipotle.com/menu-metadata/v1/menu-metadata?channel=web&region=US",
+      "sourceRecordId": "CMG-2011",
+      "sourceField": "items.CMG-2011.thumbnailUrl",
+      "generatedSourceIds": [
+        "CMG-2011"
+      ],
+      "alternateOfficialImages": []
+    },
+    "chipotle-cmg-2020": {
+      "name": "32 fl oz Tractor Organic Watermelon Limeade",
+      "recordType": "item",
+      "image": "https://www.chipotle.com/content/dam/chipotle/menu/menu-items/cmg-ftn-watermelon-limeade/web-desktop/order.png",
+      "method": "menu_metadata_item_thumbnail",
+      "sourceFile": "data/raw/chipotle/menu-metadata.json",
+      "sourceEndpoint": "https://services.chipotle.com/menu-metadata/v1/menu-metadata?channel=web&region=US",
+      "sourceRecordId": "CMG-2020",
+      "sourceField": "items.CMG-2020.thumbnailUrl",
+      "generatedSourceIds": [
+        "CMG-2020"
+      ],
+      "alternateOfficialImages": []
+    },
+    "chipotle-cmg-2019": {
+      "name": "22 fl oz Tractor Organic Watermelon Limeade",
+      "recordType": "item",
+      "image": "https://www.chipotle.com/content/dam/chipotle/menu/menu-items/cmg-ftn-watermelon-limeade/web-desktop/order.png",
+      "method": "menu_metadata_item_thumbnail",
+      "sourceFile": "data/raw/chipotle/menu-metadata.json",
+      "sourceEndpoint": "https://services.chipotle.com/menu-metadata/v1/menu-metadata?channel=web&region=US",
+      "sourceRecordId": "CMG-2019",
+      "sourceField": "items.CMG-2019.thumbnailUrl",
+      "generatedSourceIds": [
+        "CMG-2019"
+      ],
+      "alternateOfficialImages": []
+    },
+    "chipotle-cmg-2810": {
+      "name": "Mexican Coca-Cola",
+      "recordType": "item",
+      "image": "https://www.chipotle.com/content/dam/chipotle/menu/menu-items/cmg-2810-mexican-coca-cola/web-desktop/order.png",
+      "method": "menu_metadata_item_thumbnail",
+      "sourceFile": "data/raw/chipotle/menu-metadata.json",
+      "sourceEndpoint": "https://services.chipotle.com/menu-metadata/v1/menu-metadata?channel=web&region=US",
+      "sourceRecordId": "CMG-2810",
+      "sourceField": "items.CMG-2810.thumbnailUrl",
+      "generatedSourceIds": [
+        "CMG-2810"
+      ],
+      "alternateOfficialImages": []
+    },
+    "chipotle-cmg-2839": {
+      "name": "Mexican Sprite",
+      "recordType": "item",
+      "image": "https://www.chipotle.com/content/dam/chipotle/menu/menu-items/cmg-2839-mexican-sprite/web-desktop/order.png",
+      "method": "menu_metadata_item_thumbnail",
+      "sourceFile": "data/raw/chipotle/menu-metadata.json",
+      "sourceEndpoint": "https://services.chipotle.com/menu-metadata/v1/menu-metadata?channel=web&region=US",
+      "sourceRecordId": "CMG-2839",
+      "sourceField": "items.CMG-2839.thumbnailUrl",
+      "generatedSourceIds": [
+        "CMG-2839"
+      ],
+      "alternateOfficialImages": []
+    },
+    "chipotle-cmg-2022": {
+      "name": "Jarritos Guava",
+      "recordType": "item",
+      "image": "https://www.chipotle.com/content/dam/chipotle/menu/menu-items/cmg-2022-jarritos-guava/web-desktop/order.png",
+      "method": "menu_metadata_item_thumbnail",
+      "sourceFile": "data/raw/chipotle/menu-metadata.json",
+      "sourceEndpoint": "https://services.chipotle.com/menu-metadata/v1/menu-metadata?channel=web&region=US",
+      "sourceRecordId": "CMG-2022",
+      "sourceField": "items.CMG-2022.thumbnailUrl",
+      "generatedSourceIds": [
+        "CMG-2022"
+      ],
+      "alternateOfficialImages": []
+    },
+    "chipotle-cmg-2021": {
+      "name": "Jarritos Mango",
+      "recordType": "item",
+      "image": "https://www.chipotle.com/content/dam/chipotle/menu/menu-items/cmg-2021-jarritos-mango/web-desktop/order.png",
+      "method": "menu_metadata_item_thumbnail",
+      "sourceFile": "data/raw/chipotle/menu-metadata.json",
+      "sourceEndpoint": "https://services.chipotle.com/menu-metadata/v1/menu-metadata?channel=web&region=US",
+      "sourceRecordId": "CMG-2021",
+      "sourceField": "items.CMG-2021.thumbnailUrl",
+      "generatedSourceIds": [
+        "CMG-2021"
+      ],
+      "alternateOfficialImages": []
+    },
+    "chipotle-cmg-2805": {
+      "name": "San Pellegrino Sparkling",
+      "recordType": "item",
+      "image": "https://www.chipotle.com/content/dam/chipotle/menu/menu-items/cmg-2805-san-pellegrino-sparkling-water/web-desktop/order.png",
+      "method": "menu_metadata_item_thumbnail",
+      "sourceFile": "data/raw/chipotle/menu-metadata.json",
+      "sourceEndpoint": "https://services.chipotle.com/menu-metadata/v1/menu-metadata?channel=web&region=US",
+      "sourceRecordId": "CMG-2805",
+      "sourceField": "items.CMG-2805.thumbnailUrl",
+      "generatedSourceIds": [
+        "CMG-2805"
+      ],
+      "alternateOfficialImages": []
+    },
+    "chipotle-cmg-2883": {
+      "name": "Poppi Orange",
+      "recordType": "item",
+      "image": "https://www.chipotle.com/content/dam/chipotle/menu/menu-items/cmg-2883-poppi-orange/web-desktop/order.png",
+      "method": "menu_metadata_item_thumbnail",
+      "sourceFile": "data/raw/chipotle/menu-metadata.json",
+      "sourceEndpoint": "https://services.chipotle.com/menu-metadata/v1/menu-metadata?channel=web&region=US",
+      "sourceRecordId": "CMG-2883",
+      "sourceField": "items.CMG-2883.thumbnailUrl",
+      "generatedSourceIds": [
+        "CMG-2883"
+      ],
+      "alternateOfficialImages": []
+    },
+    "chipotle-cmg-2884": {
+      "name": "Poppi Strawberry Lemon",
+      "recordType": "item",
+      "image": "https://www.chipotle.com/content/dam/chipotle/menu/menu-items/cmg-2884-poppi-strawberry-lemon/web-desktop/order.png",
+      "method": "menu_metadata_item_thumbnail",
+      "sourceFile": "data/raw/chipotle/menu-metadata.json",
+      "sourceEndpoint": "https://services.chipotle.com/menu-metadata/v1/menu-metadata?channel=web&region=US",
+      "sourceRecordId": "CMG-2884",
+      "sourceField": "items.CMG-2884.thumbnailUrl",
+      "generatedSourceIds": [
+        "CMG-2884"
+      ],
+      "alternateOfficialImages": []
+    },
+    "chipotle-meal-653abfb2-3b20-4b17-8638-d6a20b2c340c": {
+      "name": "Josh Hart's High Protein Burrito",
+      "recordType": "item",
+      "image": "https://miinternal-cdn.chipotle.com/assets/menuinnovation/pcms/653abfb2-3b20-4b17-8638-d6a20b2c340c/50325e21-d8d5-4fd9-a167-638c8bf129c0.jpg",
+      "method": "online_meal_web_primary",
+      "sourceFile": "data/raw/chipotle/online-meals.json",
+      "sourceEndpoint": "https://services.chipotle.com/menuinnovation/v1/restaurants/469/onlinemeals?channelId=web",
+      "sourceRecordId": "653abfb2-3b20-4b17-8638-d6a20b2c340c",
+      "sourceField": "primaryImages[imageCategory=WEB].imageUrl",
+      "generatedSourceIds": [
+        "653abfb2-3b20-4b17-8638-d6a20b2c340c",
+        "ec59f2f3-0c3f-4082-82af-ca58727f3e9f"
+      ],
+      "alternateOfficialImages": [
+        "https://miinternal-cdn.chipotle.com/assets/menuinnovation/pcms/653abfb2-3b20-4b17-8638-d6a20b2c340c/a4c72a53-3b4a-4081-848f-3bd4a4bc1de0.jpg",
+        "https://miinternal-cdn.chipotle.com/assets/menuinnovation/pcms/653abfb2-3b20-4b17-8638-d6a20b2c340c/a5a17074-0187-4190-9a06-67ab6c683d96.jpg",
+        "https://miinternal-cdn.chipotle.com/assets/menuinnovation/pcms/ec59f2f3-0c3f-4082-82af-ca58727f3e9f/8b07d54a-363d-475c-b4d2-e515a20a72df.jpg",
+        "https://miinternal-cdn.chipotle.com/assets/menuinnovation/pcms/ec59f2f3-0c3f-4082-82af-ca58727f3e9f/46e5e7ba-6002-49dc-816e-253ea265e33f.jpg",
+        "https://miinternal-cdn.chipotle.com/assets/menuinnovation/pcms/ec59f2f3-0c3f-4082-82af-ca58727f3e9f/56cdb1e0-b6e0-4020-88f6-cd2ddb1693e5.jpg"
+      ]
+    },
+    "chipotle-meal-3916248a-68fd-4c0f-87e9-38d794e50d7e": {
+      "name": "Bardi Bowl with Chili Lime Chips",
+      "recordType": "item",
+      "image": "https://miinternal-cdn.chipotle.com/assets/menuinnovation/pcms/3916248a-68fd-4c0f-87e9-38d794e50d7e/79cd3ae5-9808-460d-910e-f2199e2bd314.jpg",
+      "method": "online_meal_web_primary",
+      "sourceFile": "data/raw/chipotle/online-meals.json",
+      "sourceEndpoint": "https://services.chipotle.com/menuinnovation/v1/restaurants/469/onlinemeals?channelId=web",
+      "sourceRecordId": "3916248a-68fd-4c0f-87e9-38d794e50d7e",
+      "sourceField": "primaryImages[imageCategory=WEB].imageUrl",
+      "generatedSourceIds": [
+        "3916248a-68fd-4c0f-87e9-38d794e50d7e"
+      ],
+      "alternateOfficialImages": [
+        "https://miinternal-cdn.chipotle.com/assets/menuinnovation/pcms/3916248a-68fd-4c0f-87e9-38d794e50d7e/efec751f-97cf-4b2f-8de5-502c54ffd15b.jpg",
+        "https://miinternal-cdn.chipotle.com/assets/menuinnovation/pcms/3916248a-68fd-4c0f-87e9-38d794e50d7e/fe39d3e8-e943-4951-9f4a-0580624df5e3.jpg"
+      ]
+    },
+    "chipotle-meal-2b15ccfe-9059-4e25-9c84-67b5f46c18c9": {
+      "name": "Mikal Bridges High Protein Bowl",
+      "recordType": "item",
+      "image": "https://miinternal-cdn.chipotle.com/assets/menuinnovation/pcms/2b15ccfe-9059-4e25-9c84-67b5f46c18c9/194a8944-e374-4e5c-bad1-9edb871de002.jpg",
+      "method": "online_meal_web_primary",
+      "sourceFile": "data/raw/chipotle/online-meals.json",
+      "sourceEndpoint": "https://services.chipotle.com/menuinnovation/v1/restaurants/469/onlinemeals?channelId=web",
+      "sourceRecordId": "2b15ccfe-9059-4e25-9c84-67b5f46c18c9",
+      "sourceField": "primaryImages[imageCategory=WEB].imageUrl",
+      "generatedSourceIds": [
+        "2b15ccfe-9059-4e25-9c84-67b5f46c18c9",
+        "f3038bca-5c62-4900-b33a-717650d03467"
+      ],
+      "alternateOfficialImages": [
+        "https://miinternal-cdn.chipotle.com/assets/menuinnovation/pcms/2b15ccfe-9059-4e25-9c84-67b5f46c18c9/9e54cec7-4745-43c6-8985-02dce5d57745.jpg",
+        "https://miinternal-cdn.chipotle.com/assets/menuinnovation/pcms/2b15ccfe-9059-4e25-9c84-67b5f46c18c9/401312eb-d2a8-4f1b-a325-04e3bba480f1.jpg",
+        "https://miinternal-cdn.chipotle.com/assets/menuinnovation/pcms/f3038bca-5c62-4900-b33a-717650d03467/9e725972-6afe-460d-bd0a-d10ce67c1c72.jpg",
+        "https://miinternal-cdn.chipotle.com/assets/menuinnovation/pcms/f3038bca-5c62-4900-b33a-717650d03467/40de9988-85e8-4947-824f-02792175825c.jpg",
+        "https://miinternal-cdn.chipotle.com/assets/menuinnovation/pcms/f3038bca-5c62-4900-b33a-717650d03467/d67a7ba7-e2fc-45ad-adf7-399e0582f32c.jpg"
+      ]
+    },
+    "chipotle-meal-02774ed8-f878-4dc2-b6cd-5e86977b4907": {
+      "name": "The Salish Matter Meal",
+      "recordType": "item",
+      "image": "https://miinternal-cdn.chipotle.com/assets/menuinnovation/pcms/02774ed8-f878-4dc2-b6cd-5e86977b4907/7363a28f-6159-4c96-abd1-a8a6035dec62.jpg",
+      "method": "online_meal_web_primary",
+      "sourceFile": "data/raw/chipotle/online-meals.json",
+      "sourceEndpoint": "https://services.chipotle.com/menuinnovation/v1/restaurants/469/onlinemeals?channelId=web",
+      "sourceRecordId": "02774ed8-f878-4dc2-b6cd-5e86977b4907",
+      "sourceField": "primaryImages[imageCategory=WEB].imageUrl",
+      "generatedSourceIds": [
+        "02774ed8-f878-4dc2-b6cd-5e86977b4907"
+      ],
+      "alternateOfficialImages": [
+        "https://miinternal-cdn.chipotle.com/assets/menuinnovation/pcms/02774ed8-f878-4dc2-b6cd-5e86977b4907/7561c832-7c93-4bc2-b0bb-96a659697271.jpg",
+        "https://miinternal-cdn.chipotle.com/assets/menuinnovation/pcms/02774ed8-f878-4dc2-b6cd-5e86977b4907/7e63177c-9ef7-46e6-af42-4d8b1d850e9c.jpg"
+      ]
+    },
+    "chipotle-meal-f4929790-1d6c-4297-a5bd-acdc7f8b67c6": {
+      "name": "Tara Davis-Woodhall High Protein Bowl",
+      "recordType": "item",
+      "image": "https://miinternal-cdn.chipotle.com/assets/menuinnovation/pcms/f4929790-1d6c-4297-a5bd-acdc7f8b67c6/b03fd625-75e9-419b-b2fb-4de31e89b68a.jpg",
+      "method": "online_meal_web_primary",
+      "sourceFile": "data/raw/chipotle/online-meals.json",
+      "sourceEndpoint": "https://services.chipotle.com/menuinnovation/v1/restaurants/469/onlinemeals?channelId=web",
+      "sourceRecordId": "f4929790-1d6c-4297-a5bd-acdc7f8b67c6",
+      "sourceField": "primaryImages[imageCategory=WEB].imageUrl",
+      "generatedSourceIds": [
+        "f4929790-1d6c-4297-a5bd-acdc7f8b67c6",
+        "8aebe083-fb22-4113-973c-cb22ca4f2c19"
+      ],
+      "alternateOfficialImages": [
+        "https://miinternal-cdn.chipotle.com/assets/menuinnovation/pcms/f4929790-1d6c-4297-a5bd-acdc7f8b67c6/62aa27d9-829c-497a-ad2c-41abeb9bab84.jpg",
+        "https://miinternal-cdn.chipotle.com/assets/menuinnovation/pcms/f4929790-1d6c-4297-a5bd-acdc7f8b67c6/8013d575-3e55-4513-b792-aaa054b87ff2.jpg",
+        "https://miinternal-cdn.chipotle.com/assets/menuinnovation/pcms/8aebe083-fb22-4113-973c-cb22ca4f2c19/736e937a-f922-4767-b100-a39f7424316d.jpg",
+        "https://miinternal-cdn.chipotle.com/assets/menuinnovation/pcms/8aebe083-fb22-4113-973c-cb22ca4f2c19/578d874a-4d06-4ded-9b72-d6177023968e.jpg",
+        "https://miinternal-cdn.chipotle.com/assets/menuinnovation/pcms/8aebe083-fb22-4113-973c-cb22ca4f2c19/d43371ea-b7f5-4296-ab53-ebe4e0904104.jpg"
+      ]
+    },
+    "chipotle-meal-e1d03f68-0189-499b-8c55-403b7058acdd": {
+      "name": "Hunter Woodhall's High Protein Bowl",
+      "recordType": "item",
+      "image": "https://miinternal-cdn.chipotle.com/assets/menuinnovation/pcms/e1d03f68-0189-499b-8c55-403b7058acdd/637dbe58-62a6-4d1d-8103-a646fe445e19.jpg",
+      "method": "online_meal_web_primary",
+      "sourceFile": "data/raw/chipotle/online-meals.json",
+      "sourceEndpoint": "https://services.chipotle.com/menuinnovation/v1/restaurants/469/onlinemeals?channelId=web",
+      "sourceRecordId": "e1d03f68-0189-499b-8c55-403b7058acdd",
+      "sourceField": "primaryImages[imageCategory=WEB].imageUrl",
+      "generatedSourceIds": [
+        "e1d03f68-0189-499b-8c55-403b7058acdd",
+        "57a2be3f-63ee-49c0-9de2-3162ad80c22c"
+      ],
+      "alternateOfficialImages": [
+        "https://miinternal-cdn.chipotle.com/assets/menuinnovation/pcms/e1d03f68-0189-499b-8c55-403b7058acdd/2d13e82c-b330-4226-871b-a5f8473ed4b9.jpg",
+        "https://miinternal-cdn.chipotle.com/assets/menuinnovation/pcms/e1d03f68-0189-499b-8c55-403b7058acdd/dcd36210-3b42-401b-a0c0-426b7366c825.jpg",
+        "https://miinternal-cdn.chipotle.com/assets/menuinnovation/pcms/57a2be3f-63ee-49c0-9de2-3162ad80c22c/139867c1-8392-492b-88dd-85488b917d41.jpg",
+        "https://miinternal-cdn.chipotle.com/assets/menuinnovation/pcms/57a2be3f-63ee-49c0-9de2-3162ad80c22c/bed63287-7224-49a0-9de1-f99aa2cf9f75.jpg",
+        "https://miinternal-cdn.chipotle.com/assets/menuinnovation/pcms/57a2be3f-63ee-49c0-9de2-3162ad80c22c/45034dd9-d65f-44f5-b7f7-8f795e671666.jpg"
+      ]
+    },
+    "chipotle-meal-56ab2f6e-747d-46f9-9cf6-9ebc2855d86d": {
+      "name": "Double High Protein Bowl",
+      "recordType": "item",
+      "image": "https://miinternal-cdn.chipotle.com/assets/menuinnovation/pcms/56ab2f6e-747d-46f9-9cf6-9ebc2855d86d/9632ff52-852c-407c-a976-ea36915d16ac.jpg",
+      "method": "online_meal_web_primary",
+      "sourceFile": "data/raw/chipotle/online-meals.json",
+      "sourceEndpoint": "https://services.chipotle.com/menuinnovation/v1/restaurants/469/onlinemeals?channelId=web",
+      "sourceRecordId": "56ab2f6e-747d-46f9-9cf6-9ebc2855d86d",
+      "sourceField": "primaryImages[imageCategory=WEB].imageUrl",
+      "generatedSourceIds": [
+        "56ab2f6e-747d-46f9-9cf6-9ebc2855d86d"
+      ],
+      "alternateOfficialImages": [
+        "https://miinternal-cdn.chipotle.com/assets/menuinnovation/pcms/56ab2f6e-747d-46f9-9cf6-9ebc2855d86d/24558ab1-b93e-4d38-ae5b-6da398f0bdc5.jpg",
+        "https://miinternal-cdn.chipotle.com/assets/menuinnovation/pcms/56ab2f6e-747d-46f9-9cf6-9ebc2855d86d/da8b9b47-3656-4d52-aa0b-57231da6f143.jpg"
+      ]
+    },
+    "chipotle-meal-6ba21999-f6b8-4a83-803a-bf68ef319c5e": {
+      "name": "High Protein-High Fiber Bowl",
+      "recordType": "item",
+      "image": "https://miinternal-cdn.chipotle.com/assets/menuinnovation/pcms/6ba21999-f6b8-4a83-803a-bf68ef319c5e/de55cda5-b30a-46c3-ab4f-9573f36b2052.jpg",
+      "method": "online_meal_web_primary",
+      "sourceFile": "data/raw/chipotle/online-meals.json",
+      "sourceEndpoint": "https://services.chipotle.com/menuinnovation/v1/restaurants/469/onlinemeals?channelId=web",
+      "sourceRecordId": "6ba21999-f6b8-4a83-803a-bf68ef319c5e",
+      "sourceField": "primaryImages[imageCategory=WEB].imageUrl",
+      "generatedSourceIds": [
+        "6ba21999-f6b8-4a83-803a-bf68ef319c5e"
+      ],
+      "alternateOfficialImages": [
+        "https://miinternal-cdn.chipotle.com/assets/menuinnovation/pcms/6ba21999-f6b8-4a83-803a-bf68ef319c5e/1792fdcd-b7d3-41f5-a372-2dd044f6902f.jpg",
+        "https://miinternal-cdn.chipotle.com/assets/menuinnovation/pcms/6ba21999-f6b8-4a83-803a-bf68ef319c5e/cea1ce90-e15f-4ee9-823f-b0b4f41adb73.jpg"
+      ]
+    },
+    "chipotle-meal-2991ff70-3dfb-47af-84e0-cbe547e5395f": {
+      "name": "High Protein Taco",
+      "recordType": "item",
+      "image": "https://miinternal-cdn.chipotle.com/assets/menuinnovation/pcms/2991ff70-3dfb-47af-84e0-cbe547e5395f/da217cc8-49a0-49d1-8449-5f61ee28a66f.jpg",
+      "method": "online_meal_web_primary",
+      "sourceFile": "data/raw/chipotle/online-meals.json",
+      "sourceEndpoint": "https://services.chipotle.com/menuinnovation/v1/restaurants/469/onlinemeals?channelId=web",
+      "sourceRecordId": "2991ff70-3dfb-47af-84e0-cbe547e5395f",
+      "sourceField": "primaryImages[imageCategory=WEB].imageUrl",
+      "generatedSourceIds": [
+        "2991ff70-3dfb-47af-84e0-cbe547e5395f"
+      ],
+      "alternateOfficialImages": [
+        "https://miinternal-cdn.chipotle.com/assets/menuinnovation/pcms/2991ff70-3dfb-47af-84e0-cbe547e5395f/2b730ae0-7fba-4fdc-842c-f2af9d4e3a5c.jpg",
+        "https://miinternal-cdn.chipotle.com/assets/menuinnovation/pcms/2991ff70-3dfb-47af-84e0-cbe547e5395f/62c83c17-1ab7-41b3-85bf-047ec9aa9a0b.jpg"
+      ]
+    },
+    "chipotle-meal-be88e387-62ed-4271-877c-7216b6485387": {
+      "name": "High Protein - Low Calorie Bowl",
+      "recordType": "item",
+      "image": "https://miinternal-cdn.chipotle.com/assets/menuinnovation/pcms/be88e387-62ed-4271-877c-7216b6485387/9fc6a0b1-a5d0-4422-80d2-5481198886fe.jpg",
+      "method": "online_meal_web_primary",
+      "sourceFile": "data/raw/chipotle/online-meals.json",
+      "sourceEndpoint": "https://services.chipotle.com/menuinnovation/v1/restaurants/469/onlinemeals?channelId=web",
+      "sourceRecordId": "be88e387-62ed-4271-877c-7216b6485387",
+      "sourceField": "primaryImages[imageCategory=WEB].imageUrl",
+      "generatedSourceIds": [
+        "be88e387-62ed-4271-877c-7216b6485387"
+      ],
+      "alternateOfficialImages": [
+        "https://miinternal-cdn.chipotle.com/assets/menuinnovation/pcms/be88e387-62ed-4271-877c-7216b6485387/a46ce634-e949-4e19-b89a-e226c4f1df0b.jpg",
+        "https://miinternal-cdn.chipotle.com/assets/menuinnovation/pcms/be88e387-62ed-4271-877c-7216b6485387/f64bd321-dfdb-4885-b8d3-d1005f45e0fa.jpg"
+      ]
+    },
+    "chipotle-meal-1a3697bb-88c5-4f2e-a061-85ac3cfa0a28": {
+      "name": "Double High Protein Burrito",
+      "recordType": "item",
+      "image": "https://miinternal-cdn.chipotle.com/assets/menuinnovation/pcms/1a3697bb-88c5-4f2e-a061-85ac3cfa0a28/ed224dc0-57ca-4789-a2b8-f721539d800d.jpg",
+      "method": "online_meal_web_primary",
+      "sourceFile": "data/raw/chipotle/online-meals.json",
+      "sourceEndpoint": "https://services.chipotle.com/menuinnovation/v1/restaurants/469/onlinemeals?channelId=web",
+      "sourceRecordId": "1a3697bb-88c5-4f2e-a061-85ac3cfa0a28",
+      "sourceField": "primaryImages[imageCategory=WEB].imageUrl",
+      "generatedSourceIds": [
+        "1a3697bb-88c5-4f2e-a061-85ac3cfa0a28"
+      ],
+      "alternateOfficialImages": [
+        "https://miinternal-cdn.chipotle.com/assets/menuinnovation/pcms/1a3697bb-88c5-4f2e-a061-85ac3cfa0a28/1bd06059-2449-49b9-96ea-6c7f0f36eab8.jpg",
+        "https://miinternal-cdn.chipotle.com/assets/menuinnovation/pcms/1a3697bb-88c5-4f2e-a061-85ac3cfa0a28/2cd3817c-b5f9-4363-a14c-cc0e0dd508a1.jpg"
+      ]
+    },
+    "chipotle-cmg-4026": {
+      "name": "Double Wrap with Tortilla",
+      "recordType": "ingredient",
+      "image": "https://www.chipotle.com/content/dam/chipotle/menu/menu-items/cmg-5501-flour-tortilla-burrito-size/web-desktop/order.png",
+      "method": "menu_metadata_item_thumbnail",
+      "sourceFile": "data/raw/chipotle/menu-metadata.json",
+      "sourceEndpoint": "https://services.chipotle.com/menu-metadata/v1/menu-metadata?channel=web&region=US",
+      "sourceRecordId": "CMG-4026",
+      "sourceField": "items.CMG-4026.thumbnailUrl",
+      "generatedSourceIds": [
+        "CMG-4026"
+      ],
+      "alternateOfficialImages": []
+    },
+    "chipotle-cmg-5051": {
+      "name": "Black Beans",
+      "recordType": "ingredient",
+      "image": "https://www.chipotle.com/content/dam/chipotle/menu/menu-items/cmg-5051--black-beans/web-desktop/order.png",
+      "method": "menu_metadata_item_thumbnail",
+      "sourceFile": "data/raw/chipotle/menu-metadata.json",
+      "sourceEndpoint": "https://services.chipotle.com/menu-metadata/v1/menu-metadata?channel=web&region=US",
+      "sourceRecordId": "CMG-5051",
+      "sourceField": "items.CMG-5051.thumbnailUrl",
+      "generatedSourceIds": [
+        "CMG-5051"
+      ],
+      "alternateOfficialImages": []
+    },
+    "chipotle-cmg-5052": {
+      "name": "Pinto Beans",
+      "recordType": "ingredient",
+      "image": "https://www.chipotle.com/content/dam/chipotle/menu/menu-items/cmg-5052-pinto-beans/web-desktop/order.png",
+      "method": "menu_metadata_item_thumbnail",
+      "sourceFile": "data/raw/chipotle/menu-metadata.json",
+      "sourceEndpoint": "https://services.chipotle.com/menu-metadata/v1/menu-metadata?channel=web&region=US",
+      "sourceRecordId": "CMG-5052",
+      "sourceField": "items.CMG-5052.thumbnailUrl",
+      "generatedSourceIds": [
+        "CMG-5052"
+      ],
+      "alternateOfficialImages": []
+    },
+    "chipotle-cmg-5203": {
+      "name": "Tomatillo-Green Chili Salsa",
+      "recordType": "ingredient",
+      "image": "https://www.chipotle.com/content/dam/chipotle/menu/menu-items/cmg-5203-tomatillo-green-chili-salsa/web-desktop/order.png",
+      "method": "menu_metadata_item_thumbnail",
+      "sourceFile": "data/raw/chipotle/menu-metadata.json",
+      "sourceEndpoint": "https://services.chipotle.com/menu-metadata/v1/menu-metadata?channel=web&region=US",
+      "sourceRecordId": "CMG-5203",
+      "sourceField": "items.CMG-5203.thumbnailUrl",
+      "generatedSourceIds": [
+        "CMG-5203"
+      ],
+      "alternateOfficialImages": []
+    },
+    "chipotle-cmg-5204": {
+      "name": "Tomatillo-Red Chili Salsa",
+      "recordType": "ingredient",
+      "image": "https://www.chipotle.com/content/dam/chipotle/menu/menu-items/cmg-5204-tomatillo-red-chili-salsa/web-desktop/order.png",
+      "method": "menu_metadata_item_thumbnail",
+      "sourceFile": "data/raw/chipotle/menu-metadata.json",
+      "sourceEndpoint": "https://services.chipotle.com/menu-metadata/v1/menu-metadata?channel=web&region=US",
+      "sourceRecordId": "CMG-5204",
+      "sourceField": "items.CMG-5204.thumbnailUrl",
+      "generatedSourceIds": [
+        "CMG-5204"
+      ],
+      "alternateOfficialImages": []
+    },
+    "chipotle-cmg-5251": {
+      "name": "Sour Cream",
+      "recordType": "ingredient",
+      "image": "https://www.chipotle.com/content/dam/chipotle/menu/menu-items/cmg-5251-sour-cream/web-desktop/order.png",
+      "method": "menu_metadata_item_thumbnail",
+      "sourceFile": "data/raw/chipotle/menu-metadata.json",
+      "sourceEndpoint": "https://services.chipotle.com/menu-metadata/v1/menu-metadata?channel=web&region=US",
+      "sourceRecordId": "CMG-5251",
+      "sourceField": "items.CMG-5251.thumbnailUrl",
+      "generatedSourceIds": [
+        "CMG-5251"
+      ],
+      "alternateOfficialImages": []
+    },
+    "chipotle-cmg-5252": {
+      "name": "Cheese",
+      "recordType": "ingredient",
+      "image": "https://www.chipotle.com/content/dam/chipotle/menu/menu-items/cmg-5252-monterey-jack-cheese/web-desktop/order.png",
+      "method": "menu_metadata_item_thumbnail",
+      "sourceFile": "data/raw/chipotle/menu-metadata.json",
+      "sourceEndpoint": "https://services.chipotle.com/menu-metadata/v1/menu-metadata?channel=web&region=US",
+      "sourceRecordId": "CMG-5252",
+      "sourceField": "items.CMG-5252.thumbnailUrl",
+      "generatedSourceIds": [
+        "CMG-5252"
+      ],
+      "alternateOfficialImages": []
+    },
+    "chipotle-cmg-1029": {
+      "name": "Queso Blanco",
+      "recordType": "ingredient",
+      "image": "https://www.chipotle.com/content/dam/chipotle/menu/menu-items/cmg-1031-large-side-of-queso-blanco/web-desktop/order.png",
+      "method": "menu_metadata_item_thumbnail",
+      "sourceFile": "data/raw/chipotle/menu-metadata.json",
+      "sourceEndpoint": "https://services.chipotle.com/menu-metadata/v1/menu-metadata?channel=web&region=US",
+      "sourceRecordId": "CMG-1029",
+      "sourceField": "items.CMG-1029.thumbnailUrl",
+      "generatedSourceIds": [
+        "CMG-1029"
+      ],
+      "alternateOfficialImages": []
+    },
+    "chipotle-cmg-5201": {
+      "name": "Fresh Tomato Salsa",
+      "recordType": "ingredient",
+      "image": "https://www.chipotle.com/content/dam/chipotle/menu/menu-items/cmg-5201-fresh-tomato-salsa/web-desktop/order.png",
+      "method": "menu_metadata_item_thumbnail",
+      "sourceFile": "data/raw/chipotle/menu-metadata.json",
+      "sourceEndpoint": "https://services.chipotle.com/menu-metadata/v1/menu-metadata?channel=web&region=US",
+      "sourceRecordId": "CMG-5201",
+      "sourceField": "items.CMG-5201.thumbnailUrl",
+      "generatedSourceIds": [
+        "CMG-5201"
+      ],
+      "alternateOfficialImages": []
+    },
+    "chipotle-cmg-5351": {
+      "name": "Romaine Lettuce",
+      "recordType": "ingredient",
+      "image": "https://www.chipotle.com/content/dam/chipotle/menu/menu-items/cmg-5351-romaine-lettuce/web-desktop/order.png",
+      "method": "menu_metadata_item_thumbnail",
+      "sourceFile": "data/raw/chipotle/menu-metadata.json",
+      "sourceEndpoint": "https://services.chipotle.com/menu-metadata/v1/menu-metadata?channel=web&region=US",
+      "sourceRecordId": "CMG-5351",
+      "sourceField": "items.CMG-5351.thumbnailUrl",
+      "generatedSourceIds": [
+        "CMG-5351"
+      ],
+      "alternateOfficialImages": []
+    },
+    "chipotle-cmg-5101": {
+      "name": "Fajita Veggies",
+      "recordType": "ingredient",
+      "image": "https://www.chipotle.com/content/dam/chipotle/menu/menu-items/cmg-5101-fajita-veggies/web-desktop/order.png",
+      "method": "menu_metadata_item_thumbnail",
+      "sourceFile": "data/raw/chipotle/menu-metadata.json",
+      "sourceEndpoint": "https://services.chipotle.com/menu-metadata/v1/menu-metadata?channel=web&region=US",
+      "sourceRecordId": "CMG-5101",
+      "sourceField": "items.CMG-5101.thumbnailUrl",
+      "generatedSourceIds": [
+        "CMG-5101"
+      ],
+      "alternateOfficialImages": []
+    },
+    "chipotle-cmg-5202": {
+      "name": "Roasted Chili-Corn Salsa",
+      "recordType": "ingredient",
+      "image": "https://www.chipotle.com/content/dam/chipotle/menu/menu-items/cmg-5202-roasted-chili-corn-salsa/web-desktop/order.png",
+      "method": "menu_metadata_item_thumbnail",
+      "sourceFile": "data/raw/chipotle/menu-metadata.json",
+      "sourceEndpoint": "https://services.chipotle.com/menu-metadata/v1/menu-metadata?channel=web&region=US",
+      "sourceRecordId": "CMG-5202",
+      "sourceField": "items.CMG-5202.thumbnailUrl",
+      "generatedSourceIds": [
+        "CMG-5202"
+      ],
+      "alternateOfficialImages": []
+    },
+    "chipotle-cmg-5412": {
+      "name": "Cilantro Lime Sauce",
+      "recordType": "ingredient",
+      "image": "https://www.chipotle.com/content/dam/chipotle/menu/menu-items/cmg-5412-cilantro-lime-sauce/web-desktop/order.png",
+      "method": "menu_metadata_item_thumbnail",
+      "sourceFile": "data/raw/chipotle/menu-metadata.json",
+      "sourceEndpoint": "https://services.chipotle.com/menu-metadata/v1/menu-metadata?channel=web&region=US",
+      "sourceRecordId": "CMG-5412",
+      "sourceField": "items.CMG-5412.thumbnailUrl",
+      "generatedSourceIds": [
+        "CMG-5412"
+      ],
+      "alternateOfficialImages": []
+    },
+    "chipotle-cmg-1001": {
+      "name": "Guacamole",
+      "recordType": "ingredient",
+      "image": "https://www.chipotle.com/content/dam/chipotle/menu/menu-items/cmg-1025-large-side-of-guac/web-desktop/order.png",
+      "method": "menu_metadata_item_thumbnail",
+      "sourceFile": "data/raw/chipotle/menu-metadata.json",
+      "sourceEndpoint": "https://services.chipotle.com/menu-metadata/v1/menu-metadata?channel=web&region=US",
+      "sourceRecordId": "CMG-1001",
+      "sourceField": "items.CMG-1001.thumbnailUrl",
+      "generatedSourceIds": [
+        "CMG-1001"
+      ],
+      "alternateOfficialImages": []
+    },
+    "chipotle-cmg-5301": {
+      "name": "Guacamole",
+      "recordType": "ingredient",
+      "image": "https://www.chipotle.com/content/dam/chipotle/menu/menu-items/cmg-1025-large-side-of-guac/web-desktop/order.png",
+      "method": "menu_metadata_item_thumbnail",
+      "sourceFile": "data/raw/chipotle/menu-metadata.json",
+      "sourceEndpoint": "https://services.chipotle.com/menu-metadata/v1/menu-metadata?channel=web&region=US",
+      "sourceRecordId": "CMG-5301",
+      "sourceField": "items.CMG-5301.thumbnailUrl",
+      "generatedSourceIds": [
+        "CMG-5301"
+      ],
+      "alternateOfficialImages": []
+    },
+    "chipotle-cmg-5353": {
+      "name": "Chipotle-Honey Vinaigrette",
+      "recordType": "ingredient",
+      "image": "https://www.chipotle.com/content/dam/chipotle/menu/menu-items/cmg-5353--chipotle-honey-vinaigrette/web-desktop/order.png",
+      "method": "menu_metadata_item_thumbnail",
+      "sourceFile": "data/raw/chipotle/menu-metadata.json",
+      "sourceEndpoint": "https://services.chipotle.com/menu-metadata/v1/menu-metadata?channel=web&region=US",
+      "sourceRecordId": "CMG-5353",
+      "sourceField": "items.CMG-5353.thumbnailUrl",
+      "generatedSourceIds": [
+        "CMG-5353"
+      ],
+      "alternateOfficialImages": []
+    },
+    "chipotle-cmg-5001": {
+      "name": "White Rice",
+      "recordType": "ingredient",
+      "image": "https://www.chipotle.com/content/dam/chipotle/menu/menu-items/cmg-5001-white-rice/web-desktop/order.png",
+      "method": "menu_metadata_item_thumbnail",
+      "sourceFile": "data/raw/chipotle/menu-metadata.json",
+      "sourceEndpoint": "https://services.chipotle.com/menu-metadata/v1/menu-metadata?channel=web&region=US",
+      "sourceRecordId": "CMG-5001",
+      "sourceField": "items.CMG-5001.thumbnailUrl",
+      "generatedSourceIds": [
+        "CMG-5001"
+      ],
+      "alternateOfficialImages": []
+    },
+    "chipotle-cmg-5354": {
+      "name": "Chipotle-Honey Vinaigrette",
+      "recordType": "ingredient",
+      "image": "https://www.chipotle.com/content/dam/chipotle/menu/menu-items/cmg-5353--chipotle-honey-vinaigrette/web-desktop/order.png",
+      "method": "menu_metadata_item_thumbnail",
+      "sourceFile": "data/raw/chipotle/menu-metadata.json",
+      "sourceEndpoint": "https://services.chipotle.com/menu-metadata/v1/menu-metadata?channel=web&region=US",
+      "sourceRecordId": "CMG-5354",
+      "sourceField": "items.CMG-5354.thumbnailUrl",
+      "generatedSourceIds": [
+        "CMG-5354"
+      ],
+      "alternateOfficialImages": []
+    },
+    "chipotle-cmg-5002": {
+      "name": "Brown Rice",
+      "recordType": "ingredient",
+      "image": "https://www.chipotle.com/content/dam/chipotle/menu/menu-items/cmg-5002-brown-rice/web-desktop/order.png",
+      "method": "menu_metadata_item_thumbnail",
+      "sourceFile": "data/raw/chipotle/menu-metadata.json",
+      "sourceEndpoint": "https://services.chipotle.com/menu-metadata/v1/menu-metadata?channel=web&region=US",
+      "sourceRecordId": "CMG-5002",
+      "sourceField": "items.CMG-5002.thumbnailUrl",
+      "generatedSourceIds": [
+        "CMG-5002"
+      ],
+      "alternateOfficialImages": []
+    },
+    "chipotle-cmg-5414": {
+      "name": "Cilantro Lime Sauce",
+      "recordType": "ingredient",
+      "image": "https://www.chipotle.com/content/dam/chipotle/menu/menu-items/cmg-5412-cilantro-lime-sauce/web-desktop/order.png",
+      "method": "menu_metadata_item_thumbnail",
+      "sourceFile": "data/raw/chipotle/menu-metadata.json",
+      "sourceEndpoint": "https://services.chipotle.com/menu-metadata/v1/menu-metadata?channel=web&region=US",
+      "sourceRecordId": "CMG-5414",
+      "sourceField": "items.CMG-5414.thumbnailUrl",
+      "generatedSourceIds": [
+        "CMG-5414"
+      ],
+      "alternateOfficialImages": []
+    },
+    "chipotle-cmg-1034": {
+      "name": "Queso Blanco",
+      "recordType": "ingredient",
+      "image": "https://www.chipotle.com/content/dam/chipotle/menu/menu-items/cmg-1031-large-side-of-queso-blanco/web-desktop/order.png",
+      "method": "menu_metadata_item_thumbnail",
+      "sourceFile": "data/raw/chipotle/menu-metadata.json",
+      "sourceEndpoint": "https://services.chipotle.com/menu-metadata/v1/menu-metadata?channel=web&region=US",
+      "sourceRecordId": "CMG-1034",
+      "sourceField": "items.CMG-1034.thumbnailUrl",
+      "generatedSourceIds": [
+        "CMG-1034"
+      ],
+      "alternateOfficialImages": []
+    },
+    "chipotle-cmg-1207": {
+      "name": "Guacamole",
+      "recordType": "ingredient",
+      "image": "https://www.chipotle.com/content/dam/chipotle/menu/menu-items/cmg-1025-large-side-of-guac/web-desktop/order.png",
+      "method": "menu_metadata_item_thumbnail",
+      "sourceFile": "data/raw/chipotle/menu-metadata.json",
+      "sourceEndpoint": "https://services.chipotle.com/menu-metadata/v1/menu-metadata?channel=web&region=US",
+      "sourceRecordId": "CMG-1207",
+      "sourceField": "items.CMG-1207.thumbnailUrl",
+      "generatedSourceIds": [
+        "CMG-1207"
+      ],
+      "alternateOfficialImages": []
+    },
+    "chipotle-cmg-4134": {
+      "name": "Queso Blanco",
+      "recordType": "ingredient",
+      "image": "https://www.chipotle.com/content/dam/chipotle/menu/menu-items/cmg-1031-large-side-of-queso-blanco/web-desktop/order.png",
+      "method": "menu_metadata_item_thumbnail",
+      "sourceFile": "data/raw/chipotle/menu-metadata.json",
+      "sourceEndpoint": "https://services.chipotle.com/menu-metadata/v1/menu-metadata?channel=web&region=US",
+      "sourceRecordId": "CMG-4134",
+      "sourceField": "items.CMG-4134.thumbnailUrl",
+      "generatedSourceIds": [
+        "CMG-4134"
+      ],
+      "alternateOfficialImages": []
+    },
+    "chipotle-cmg-1402": {
+      "name": "Kid's Fruit",
+      "recordType": "ingredient",
+      "image": "https://www.chipotle.com/content/dam/chipotle/menu/menu-items/cmg-1402-kids-fruit/web-desktop/order.png",
+      "method": "menu_metadata_item_thumbnail",
+      "sourceFile": "data/raw/chipotle/menu-metadata.json",
+      "sourceEndpoint": "https://services.chipotle.com/menu-metadata/v1/menu-metadata?channel=web&region=US",
+      "sourceRecordId": "CMG-1402",
+      "sourceField": "items.CMG-1402.thumbnailUrl",
+      "generatedSourceIds": [
+        "CMG-1402"
+      ],
+      "alternateOfficialImages": []
+    },
+    "chipotle-cmg-1401": {
+      "name": "Kid's Chips",
+      "recordType": "ingredient",
+      "image": "https://www.chipotle.com/content/dam/chipotle/menu/menu-items/cmg-1002-chips/web-desktop/chips.png",
+      "method": "menu_metadata_item_thumbnail",
+      "sourceFile": "data/raw/chipotle/menu-metadata.json",
+      "sourceEndpoint": "https://services.chipotle.com/menu-metadata/v1/menu-metadata?channel=web&region=US",
+      "sourceRecordId": "CMG-1401",
+      "sourceField": "items.CMG-1401.thumbnailUrl",
+      "generatedSourceIds": [
+        "CMG-1401"
+      ],
+      "alternateOfficialImages": []
+    },
+    "chipotle-cmg-5553": {
+      "name": "Organic Chocolate Milk",
+      "recordType": "ingredient",
+      "image": "https://www.chipotle.com/content/dam/chipotle/menu/menu-items/cmg-5553-organic-chocolate-milk/web-desktop/order.png",
+      "method": "menu_metadata_item_thumbnail",
+      "sourceFile": "data/raw/chipotle/menu-metadata.json",
+      "sourceEndpoint": "https://services.chipotle.com/menu-metadata/v1/menu-metadata?channel=web&region=US",
+      "sourceRecordId": "CMG-5553",
+      "sourceField": "items.CMG-5553.thumbnailUrl",
+      "generatedSourceIds": [
+        "CMG-5553"
+      ],
+      "alternateOfficialImages": []
+    },
+    "chipotle-cmg-5552": {
+      "name": "Organic Apple Juice",
+      "recordType": "ingredient",
+      "image": "https://www.chipotle.com/content/dam/chipotle/menu/menu-items/cmg-5552-kids-organic-apple-juice/web-desktop/order.png",
+      "method": "menu_metadata_item_thumbnail",
+      "sourceFile": "data/raw/chipotle/menu-metadata.json",
+      "sourceEndpoint": "https://services.chipotle.com/menu-metadata/v1/menu-metadata?channel=web&region=US",
+      "sourceRecordId": "CMG-5552",
+      "sourceField": "items.CMG-5552.thumbnailUrl",
+      "generatedSourceIds": [
+        "CMG-5552"
+      ],
+      "alternateOfficialImages": []
+    },
+    "chipotle-cmg-5551": {
+      "name": "16 fl oz Soda/Iced Tea",
+      "recordType": "ingredient",
+      "image": "https://www.chipotle.com/content/dam/chipotle/menu/menu-items/CMG-1019-Small-Drink/web-desktop/order.png",
+      "method": "menu_metadata_item_thumbnail",
+      "sourceFile": "data/raw/chipotle/menu-metadata.json",
+      "sourceEndpoint": "https://services.chipotle.com/menu-metadata/v1/menu-metadata?channel=web&region=US",
+      "sourceRecordId": "CMG-5551",
+      "sourceField": "items.CMG-5551.thumbnailUrl",
+      "generatedSourceIds": [
+        "CMG-5551"
+      ],
+      "alternateOfficialImages": []
+    },
+    "chipotle-cmg-5554": {
+      "name": "Organic Milk",
+      "recordType": "ingredient",
+      "image": "https://www.chipotle.com/content/dam/chipotle/menu/menu-items/cmg-5554-organic-milk/web-desktop/order.png",
+      "method": "menu_metadata_item_thumbnail",
+      "sourceFile": "data/raw/chipotle/menu-metadata.json",
+      "sourceEndpoint": "https://services.chipotle.com/menu-metadata/v1/menu-metadata?channel=web&region=US",
+      "sourceRecordId": "CMG-5554",
+      "sourceField": "items.CMG-5554.thumbnailUrl",
+      "generatedSourceIds": [
+        "CMG-5554"
+      ],
+      "alternateOfficialImages": []
+    },
+    "chipotle-tortilla-soft-flour-taco": {
+      "name": "Soft Flour Tortilla",
+      "recordType": "ingredient",
+      "image": "https://www.chipotle.com/content/dam/chipotle/menu/menu-items/cmg-5401-flour-tortilla-taco-size/web-desktop/order.png",
+      "method": "menu_metadata_item_thumbnail",
+      "sourceFile": "data/raw/chipotle/menu-metadata.json",
+      "sourceEndpoint": "https://services.chipotle.com/menu-metadata/v1/menu-metadata?channel=web&region=US",
+      "sourceRecordId": "CMG-5501",
+      "sourceField": "items.CMG-5501.thumbnailUrl",
+      "generatedSourceIds": [
+        "CMG-5501"
+      ],
+      "alternateOfficialImages": []
+    },
+    "chipotle-tortilla-soft-flour-tacos-3": {
+      "name": "Soft Flour Tortilla",
+      "recordType": "ingredient",
+      "image": "https://www.chipotle.com/content/dam/chipotle/menu/menu-items/cmg-5401-flour-tortilla-taco-size/web-desktop/order.png",
+      "method": "menu_metadata_item_thumbnail",
+      "sourceFile": "data/raw/chipotle/menu-metadata.json",
+      "sourceEndpoint": "https://services.chipotle.com/menu-metadata/v1/menu-metadata?channel=web&region=US",
+      "sourceRecordId": "CMG-5501",
+      "sourceField": "items.CMG-5501.thumbnailUrl",
+      "generatedSourceIds": [
+        "CMG-5501"
+      ],
+      "alternateOfficialImages": []
+    },
+    "chipotle-tortilla-crispy-corn-taco": {
+      "name": "Crispy Corn Tortilla",
+      "recordType": "ingredient",
+      "image": "https://www.chipotle.com/content/dam/chipotle/menu/menu-items/cmg-5503-crispy-corn-tortilla/web-desktop/order.png",
+      "method": "menu_metadata_item_thumbnail",
+      "sourceFile": "data/raw/chipotle/menu-metadata.json",
+      "sourceEndpoint": "https://services.chipotle.com/menu-metadata/v1/menu-metadata?channel=web&region=US",
+      "sourceRecordId": "CMG-5503",
+      "sourceField": "items.CMG-5503.thumbnailUrl",
+      "generatedSourceIds": [
+        "CMG-5503"
+      ],
+      "alternateOfficialImages": []
+    },
+    "chipotle-tortilla-crispy-corn-tacos-3": {
+      "name": "Crispy Corn Tortilla",
+      "recordType": "ingredient",
+      "image": "https://www.chipotle.com/content/dam/chipotle/menu/menu-items/cmg-5503-crispy-corn-tortilla/web-desktop/order.png",
+      "method": "menu_metadata_item_thumbnail",
+      "sourceFile": "data/raw/chipotle/menu-metadata.json",
+      "sourceEndpoint": "https://services.chipotle.com/menu-metadata/v1/menu-metadata?channel=web&region=US",
+      "sourceRecordId": "CMG-5503",
+      "sourceField": "items.CMG-5503.thumbnailUrl",
+      "generatedSourceIds": [
+        "CMG-5503"
+      ],
+      "alternateOfficialImages": []
+    },
+    "chipotle-cmg-5403": {
+      "name": "2 Crispy Corn Tortillas",
+      "recordType": "ingredient",
+      "image": "https://www.chipotle.com/content/dam/chipotle/menu/menu-items/cmg-5503-crispy-corn-tortilla/web-desktop/order.png",
+      "method": "menu_metadata_item_thumbnail",
+      "sourceFile": "data/raw/chipotle/menu-metadata.json",
+      "sourceEndpoint": "https://services.chipotle.com/menu-metadata/v1/menu-metadata?channel=web&region=US",
+      "sourceRecordId": "CMG-5403",
+      "sourceField": "items.CMG-5403.thumbnailUrl",
+      "generatedSourceIds": [
+        "CMG-5403"
+      ],
+      "alternateOfficialImages": []
+    },
+    "chipotle-cmg-5404": {
+      "name": "2 Soft Flour Tortillas",
+      "recordType": "ingredient",
+      "image": "https://www.chipotle.com/content/dam/chipotle/menu/menu-items/cmg-5401-flour-tortilla-taco-size/web-desktop/order.png",
+      "method": "menu_metadata_item_thumbnail",
+      "sourceFile": "data/raw/chipotle/menu-metadata.json",
+      "sourceEndpoint": "https://services.chipotle.com/menu-metadata/v1/menu-metadata?channel=web&region=US",
+      "sourceRecordId": "CMG-5404",
+      "sourceField": "items.CMG-5404.thumbnailUrl",
+      "generatedSourceIds": [
+        "CMG-5404"
+      ],
+      "alternateOfficialImages": []
+    },
+    "chipotle-cmg-5401": {
+      "name": "Soft Flour Tortilla",
+      "recordType": "ingredient",
+      "image": "https://www.chipotle.com/content/dam/chipotle/menu/menu-items/cmg-5401-flour-tortilla-taco-size/web-desktop/order.png",
+      "method": "menu_metadata_item_thumbnail",
+      "sourceFile": "data/raw/chipotle/menu-metadata.json",
+      "sourceEndpoint": "https://services.chipotle.com/menu-metadata/v1/menu-metadata?channel=web&region=US",
+      "sourceRecordId": "CMG-5401",
+      "sourceField": "items.CMG-5401.thumbnailUrl",
+      "generatedSourceIds": [
+        "CMG-5401"
+      ],
+      "alternateOfficialImages": []
+    },
+    "chipotle-protein-steak": {
+      "name": "Steak",
+      "recordType": "ingredient",
+      "image": "https://www.chipotle.com/content/dam/chipotle/menu/menu-items/cmg-6602-steak/web-desktop/order.png",
+      "method": "menu_metadata_item_thumbnail",
+      "sourceFile": "data/raw/chipotle/menu-metadata.json",
+      "sourceEndpoint": "https://services.chipotle.com/menu-metadata/v1/menu-metadata?channel=web&region=US",
+      "sourceRecordId": "CMG-2",
+      "sourceField": "items.CMG-2.thumbnailUrl",
+      "generatedSourceIds": [
+        "CMG-2",
+        "CMG-102",
+        "CMG-302",
+        "CMG-402"
+      ],
+      "alternateOfficialImages": []
+    },
+    "chipotle-protein-steak-taco": {
+      "name": "Steak",
+      "recordType": "ingredient",
+      "image": "https://www.chipotle.com/content/dam/chipotle/menu/menu-items/cmg-6602-steak/web-desktop/order.png",
+      "method": "menu_metadata_item_thumbnail",
+      "sourceFile": "data/raw/chipotle/menu-metadata.json",
+      "sourceEndpoint": "https://services.chipotle.com/menu-metadata/v1/menu-metadata?channel=web&region=US",
+      "sourceRecordId": "CMG-1202",
+      "sourceField": "items.CMG-1202.thumbnailUrl",
+      "generatedSourceIds": [
+        "CMG-1202"
+      ],
+      "alternateOfficialImages": []
+    },
+    "chipotle-protein-steak-tacos-3": {
+      "name": "Steak",
+      "recordType": "ingredient",
+      "image": "https://www.chipotle.com/content/dam/chipotle/menu/menu-items/cmg-6602-steak/web-desktop/order.png",
+      "method": "menu_metadata_item_thumbnail",
+      "sourceFile": "data/raw/chipotle/menu-metadata.json",
+      "sourceEndpoint": "https://services.chipotle.com/menu-metadata/v1/menu-metadata?channel=web&region=US",
+      "sourceRecordId": "CMG-202",
+      "sourceField": "items.CMG-202.thumbnailUrl",
+      "generatedSourceIds": [
+        "CMG-202"
+      ],
+      "alternateOfficialImages": []
+    },
+    "chipotle-protein-steak-kids-byo": {
+      "name": "Steak",
+      "recordType": "ingredient",
+      "image": "https://www.chipotle.com/content/dam/chipotle/menu/menu-items/cmg-6602-steak/web-desktop/order.png",
+      "method": "menu_metadata_item_thumbnail",
+      "sourceFile": "data/raw/chipotle/menu-metadata.json",
+      "sourceEndpoint": "https://services.chipotle.com/menu-metadata/v1/menu-metadata?channel=web&region=US",
+      "sourceRecordId": "CMG-3003",
+      "sourceField": "items.CMG-3003.thumbnailUrl",
+      "generatedSourceIds": [
+        "CMG-3003"
+      ],
+      "alternateOfficialImages": []
+    },
+    "chipotle-protein-steak-kids-quesadilla": {
+      "name": "Steak",
+      "recordType": "ingredient",
+      "image": "https://www.chipotle.com/content/dam/chipotle/menu/menu-items/cmg-6602-steak/web-desktop/order.png",
+      "method": "menu_metadata_item_thumbnail",
+      "sourceFile": "data/raw/chipotle/menu-metadata.json",
+      "sourceEndpoint": "https://services.chipotle.com/menu-metadata/v1/menu-metadata?channel=web&region=US",
+      "sourceRecordId": "CMG-3103",
+      "sourceField": "items.CMG-3103.thumbnailUrl",
+      "generatedSourceIds": [
+        "CMG-3103"
+      ],
+      "alternateOfficialImages": []
+    },
+    "chipotle-protein-chicken": {
+      "name": "Chicken",
+      "recordType": "ingredient",
+      "image": "https://www.chipotle.com/content/dam/chipotle/menu/menu-items/cmg-6601-chicken/web-desktop/order.png",
+      "method": "menu_metadata_item_thumbnail",
+      "sourceFile": "data/raw/chipotle/menu-metadata.json",
+      "sourceEndpoint": "https://services.chipotle.com/menu-metadata/v1/menu-metadata?channel=web&region=US",
+      "sourceRecordId": "CMG-1",
+      "sourceField": "items.CMG-1.thumbnailUrl",
+      "generatedSourceIds": [
+        "CMG-1",
+        "CMG-101",
+        "CMG-301",
+        "CMG-401"
+      ],
+      "alternateOfficialImages": []
+    },
+    "chipotle-protein-chicken-taco": {
+      "name": "Chicken",
+      "recordType": "ingredient",
+      "image": "https://www.chipotle.com/content/dam/chipotle/menu/menu-items/cmg-6601-chicken/web-desktop/order.png",
+      "method": "menu_metadata_item_thumbnail",
+      "sourceFile": "data/raw/chipotle/menu-metadata.json",
+      "sourceEndpoint": "https://services.chipotle.com/menu-metadata/v1/menu-metadata?channel=web&region=US",
+      "sourceRecordId": "CMG-1201",
+      "sourceField": "items.CMG-1201.thumbnailUrl",
+      "generatedSourceIds": [
+        "CMG-1201"
+      ],
+      "alternateOfficialImages": []
+    },
+    "chipotle-protein-chicken-tacos-3": {
+      "name": "Chicken",
+      "recordType": "ingredient",
+      "image": "https://www.chipotle.com/content/dam/chipotle/menu/menu-items/cmg-6601-chicken/web-desktop/order.png",
+      "method": "menu_metadata_item_thumbnail",
+      "sourceFile": "data/raw/chipotle/menu-metadata.json",
+      "sourceEndpoint": "https://services.chipotle.com/menu-metadata/v1/menu-metadata?channel=web&region=US",
+      "sourceRecordId": "CMG-201",
+      "sourceField": "items.CMG-201.thumbnailUrl",
+      "generatedSourceIds": [
+        "CMG-201"
+      ],
+      "alternateOfficialImages": []
+    },
+    "chipotle-protein-chicken-kids-byo": {
+      "name": "Chicken",
+      "recordType": "ingredient",
+      "image": "https://www.chipotle.com/content/dam/chipotle/menu/menu-items/cmg-6601-chicken/web-desktop/order.png",
+      "method": "menu_metadata_item_thumbnail",
+      "sourceFile": "data/raw/chipotle/menu-metadata.json",
+      "sourceEndpoint": "https://services.chipotle.com/menu-metadata/v1/menu-metadata?channel=web&region=US",
+      "sourceRecordId": "CMG-3002",
+      "sourceField": "items.CMG-3002.thumbnailUrl",
+      "generatedSourceIds": [
+        "CMG-3002"
+      ],
+      "alternateOfficialImages": []
+    },
+    "chipotle-protein-chicken-kids-quesadilla": {
+      "name": "Chicken",
+      "recordType": "ingredient",
+      "image": "https://www.chipotle.com/content/dam/chipotle/menu/menu-items/cmg-6601-chicken/web-desktop/order.png",
+      "method": "menu_metadata_item_thumbnail",
+      "sourceFile": "data/raw/chipotle/menu-metadata.json",
+      "sourceEndpoint": "https://services.chipotle.com/menu-metadata/v1/menu-metadata?channel=web&region=US",
+      "sourceRecordId": "CMG-3102",
+      "sourceField": "items.CMG-3102.thumbnailUrl",
+      "generatedSourceIds": [
+        "CMG-3102"
+      ],
+      "alternateOfficialImages": []
+    },
+    "chipotle-protein-carnitas": {
+      "name": "Carnitas",
+      "recordType": "ingredient",
+      "image": "https://www.chipotle.com/content/dam/chipotle/menu/menu-items/cmg-6603-carnitas/web-desktop/order.png",
+      "method": "menu_metadata_item_thumbnail",
+      "sourceFile": "data/raw/chipotle/menu-metadata.json",
+      "sourceEndpoint": "https://services.chipotle.com/menu-metadata/v1/menu-metadata?channel=web&region=US",
+      "sourceRecordId": "CMG-3",
+      "sourceField": "items.CMG-3.thumbnailUrl",
+      "generatedSourceIds": [
+        "CMG-3",
+        "CMG-103",
+        "CMG-303",
+        "CMG-403"
+      ],
+      "alternateOfficialImages": []
+    },
+    "chipotle-protein-carnitas-taco": {
+      "name": "Carnitas",
+      "recordType": "ingredient",
+      "image": "https://www.chipotle.com/content/dam/chipotle/menu/menu-items/cmg-6603-carnitas/web-desktop/order.png",
+      "method": "menu_metadata_item_thumbnail",
+      "sourceFile": "data/raw/chipotle/menu-metadata.json",
+      "sourceEndpoint": "https://services.chipotle.com/menu-metadata/v1/menu-metadata?channel=web&region=US",
+      "sourceRecordId": "CMG-1203",
+      "sourceField": "items.CMG-1203.thumbnailUrl",
+      "generatedSourceIds": [
+        "CMG-1203"
+      ],
+      "alternateOfficialImages": []
+    },
+    "chipotle-protein-carnitas-tacos-3": {
+      "name": "Carnitas",
+      "recordType": "ingredient",
+      "image": "https://www.chipotle.com/content/dam/chipotle/menu/menu-items/cmg-6603-carnitas/web-desktop/order.png",
+      "method": "menu_metadata_item_thumbnail",
+      "sourceFile": "data/raw/chipotle/menu-metadata.json",
+      "sourceEndpoint": "https://services.chipotle.com/menu-metadata/v1/menu-metadata?channel=web&region=US",
+      "sourceRecordId": "CMG-203",
+      "sourceField": "items.CMG-203.thumbnailUrl",
+      "generatedSourceIds": [
+        "CMG-203"
+      ],
+      "alternateOfficialImages": []
+    },
+    "chipotle-protein-carnitas-kids-byo": {
+      "name": "Carnitas",
+      "recordType": "ingredient",
+      "image": "https://www.chipotle.com/content/dam/chipotle/menu/menu-items/cmg-6603-carnitas/web-desktop/order.png",
+      "method": "menu_metadata_item_thumbnail",
+      "sourceFile": "data/raw/chipotle/menu-metadata.json",
+      "sourceEndpoint": "https://services.chipotle.com/menu-metadata/v1/menu-metadata?channel=web&region=US",
+      "sourceRecordId": "CMG-3004",
+      "sourceField": "items.CMG-3004.thumbnailUrl",
+      "generatedSourceIds": [
+        "CMG-3004"
+      ],
+      "alternateOfficialImages": []
+    },
+    "chipotle-protein-carnitas-kids-quesadilla": {
+      "name": "Carnitas",
+      "recordType": "ingredient",
+      "image": "https://www.chipotle.com/content/dam/chipotle/menu/menu-items/cmg-6603-carnitas/web-desktop/order.png",
+      "method": "menu_metadata_item_thumbnail",
+      "sourceFile": "data/raw/chipotle/menu-metadata.json",
+      "sourceEndpoint": "https://services.chipotle.com/menu-metadata/v1/menu-metadata?channel=web&region=US",
+      "sourceRecordId": "CMG-3104",
+      "sourceField": "items.CMG-3104.thumbnailUrl",
+      "generatedSourceIds": [
+        "CMG-3104"
+      ],
+      "alternateOfficialImages": []
+    },
+    "chipotle-protein-veggie": {
+      "name": "Veggie",
+      "recordType": "ingredient",
+      "image": "https://www.chipotle.com/content/dam/chipotle/menu/menu-items/cmg-1025-large-side-of-guac/web-desktop/order.png",
+      "method": "menu_metadata_item_thumbnail",
+      "sourceFile": "data/raw/chipotle/menu-metadata.json",
+      "sourceEndpoint": "https://services.chipotle.com/menu-metadata/v1/menu-metadata?channel=web&region=US",
+      "sourceRecordId": "CMG-6",
+      "sourceField": "items.CMG-6.thumbnailUrl",
+      "generatedSourceIds": [
+        "CMG-6",
+        "CMG-106",
+        "CMG-306"
+      ],
+      "alternateOfficialImages": []
+    },
+    "chipotle-protein-veggie-taco": {
+      "name": "Veggie",
+      "recordType": "ingredient",
+      "image": "https://www.chipotle.com/content/dam/chipotle/menu/menu-items/cmg-1025-large-side-of-guac/web-desktop/order.png",
+      "method": "menu_metadata_item_thumbnail",
+      "sourceFile": "data/raw/chipotle/menu-metadata.json",
+      "sourceEndpoint": "https://services.chipotle.com/menu-metadata/v1/menu-metadata?channel=web&region=US",
+      "sourceRecordId": "CMG-1206",
+      "sourceField": "items.CMG-1206.thumbnailUrl",
+      "generatedSourceIds": [
+        "CMG-1206"
+      ],
+      "alternateOfficialImages": []
+    },
+    "chipotle-protein-veggie-tacos-3": {
+      "name": "Veggie",
+      "recordType": "ingredient",
+      "image": "https://www.chipotle.com/content/dam/chipotle/menu/menu-items/cmg-1025-large-side-of-guac/web-desktop/order.png",
+      "method": "menu_metadata_item_thumbnail",
+      "sourceFile": "data/raw/chipotle/menu-metadata.json",
+      "sourceEndpoint": "https://services.chipotle.com/menu-metadata/v1/menu-metadata?channel=web&region=US",
+      "sourceRecordId": "CMG-206",
+      "sourceField": "items.CMG-206.thumbnailUrl",
+      "generatedSourceIds": [
+        "CMG-206"
+      ],
+      "alternateOfficialImages": []
+    },
+    "chipotle-protein-beef-barbacoa": {
+      "name": "Beef Barbacoa",
+      "recordType": "ingredient",
+      "image": "https://www.chipotle.com/content/dam/chipotle/menu/menu-items/cmg-6604-barbacoa/web-desktop/order.png",
+      "method": "menu_metadata_item_thumbnail",
+      "sourceFile": "data/raw/chipotle/menu-metadata.json",
+      "sourceEndpoint": "https://services.chipotle.com/menu-metadata/v1/menu-metadata?channel=web&region=US",
+      "sourceRecordId": "CMG-4",
+      "sourceField": "items.CMG-4.thumbnailUrl",
+      "generatedSourceIds": [
+        "CMG-4",
+        "CMG-104",
+        "CMG-304",
+        "CMG-404"
+      ],
+      "alternateOfficialImages": []
+    },
+    "chipotle-protein-beef-barbacoa-taco": {
+      "name": "Beef Barbacoa",
+      "recordType": "ingredient",
+      "image": "https://www.chipotle.com/content/dam/chipotle/menu/menu-items/cmg-6604-barbacoa/web-desktop/order.png",
+      "method": "menu_metadata_item_thumbnail",
+      "sourceFile": "data/raw/chipotle/menu-metadata.json",
+      "sourceEndpoint": "https://services.chipotle.com/menu-metadata/v1/menu-metadata?channel=web&region=US",
+      "sourceRecordId": "CMG-1204",
+      "sourceField": "items.CMG-1204.thumbnailUrl",
+      "generatedSourceIds": [
+        "CMG-1204"
+      ],
+      "alternateOfficialImages": []
+    },
+    "chipotle-protein-beef-barbacoa-tacos-3": {
+      "name": "Beef Barbacoa",
+      "recordType": "ingredient",
+      "image": "https://www.chipotle.com/content/dam/chipotle/menu/menu-items/cmg-6604-barbacoa/web-desktop/order.png",
+      "method": "menu_metadata_item_thumbnail",
+      "sourceFile": "data/raw/chipotle/menu-metadata.json",
+      "sourceEndpoint": "https://services.chipotle.com/menu-metadata/v1/menu-metadata?channel=web&region=US",
+      "sourceRecordId": "CMG-204",
+      "sourceField": "items.CMG-204.thumbnailUrl",
+      "generatedSourceIds": [
+        "CMG-204"
+      ],
+      "alternateOfficialImages": []
+    },
+    "chipotle-protein-beef-barbacoa-kids-byo": {
+      "name": "Beef Barbacoa",
+      "recordType": "ingredient",
+      "image": "https://www.chipotle.com/content/dam/chipotle/menu/menu-items/cmg-6604-barbacoa/web-desktop/order.png",
+      "method": "menu_metadata_item_thumbnail",
+      "sourceFile": "data/raw/chipotle/menu-metadata.json",
+      "sourceEndpoint": "https://services.chipotle.com/menu-metadata/v1/menu-metadata?channel=web&region=US",
+      "sourceRecordId": "CMG-3005",
+      "sourceField": "items.CMG-3005.thumbnailUrl",
+      "generatedSourceIds": [
+        "CMG-3005"
+      ],
+      "alternateOfficialImages": []
+    },
+    "chipotle-protein-beef-barbacoa-kids-quesadilla": {
+      "name": "Beef Barbacoa",
+      "recordType": "ingredient",
+      "image": "https://www.chipotle.com/content/dam/chipotle/menu/menu-items/cmg-6604-barbacoa/web-desktop/order.png",
+      "method": "menu_metadata_item_thumbnail",
+      "sourceFile": "data/raw/chipotle/menu-metadata.json",
+      "sourceEndpoint": "https://services.chipotle.com/menu-metadata/v1/menu-metadata?channel=web&region=US",
+      "sourceRecordId": "CMG-3105",
+      "sourceField": "items.CMG-3105.thumbnailUrl",
+      "generatedSourceIds": [
+        "CMG-3105"
+      ],
+      "alternateOfficialImages": []
+    },
+    "chipotle-protein-sofritas": {
+      "name": "Sofritas",
+      "recordType": "ingredient",
+      "image": "https://www.chipotle.com/content/dam/chipotle/menu/menu-items/cmg-6605-sofritas/web-desktop/order.png",
+      "method": "menu_metadata_item_thumbnail",
+      "sourceFile": "data/raw/chipotle/menu-metadata.json",
+      "sourceEndpoint": "https://services.chipotle.com/menu-metadata/v1/menu-metadata?channel=web&region=US",
+      "sourceRecordId": "CMG-5",
+      "sourceField": "items.CMG-5.thumbnailUrl",
+      "generatedSourceIds": [
+        "CMG-5",
+        "CMG-105",
+        "CMG-305",
+        "CMG-405"
+      ],
+      "alternateOfficialImages": []
+    },
+    "chipotle-protein-sofritas-taco": {
+      "name": "Sofritas",
+      "recordType": "ingredient",
+      "image": "https://www.chipotle.com/content/dam/chipotle/menu/menu-items/cmg-6605-sofritas/web-desktop/order.png",
+      "method": "menu_metadata_item_thumbnail",
+      "sourceFile": "data/raw/chipotle/menu-metadata.json",
+      "sourceEndpoint": "https://services.chipotle.com/menu-metadata/v1/menu-metadata?channel=web&region=US",
+      "sourceRecordId": "CMG-1205",
+      "sourceField": "items.CMG-1205.thumbnailUrl",
+      "generatedSourceIds": [
+        "CMG-1205"
+      ],
+      "alternateOfficialImages": []
+    },
+    "chipotle-protein-sofritas-tacos-3": {
+      "name": "Sofritas",
+      "recordType": "ingredient",
+      "image": "https://www.chipotle.com/content/dam/chipotle/menu/menu-items/cmg-6605-sofritas/web-desktop/order.png",
+      "method": "menu_metadata_item_thumbnail",
+      "sourceFile": "data/raw/chipotle/menu-metadata.json",
+      "sourceEndpoint": "https://services.chipotle.com/menu-metadata/v1/menu-metadata?channel=web&region=US",
+      "sourceRecordId": "CMG-205",
+      "sourceField": "items.CMG-205.thumbnailUrl",
+      "generatedSourceIds": [
+        "CMG-205"
+      ],
+      "alternateOfficialImages": []
+    },
+    "chipotle-protein-sofritas-kids-byo": {
+      "name": "Sofritas",
+      "recordType": "ingredient",
+      "image": "https://www.chipotle.com/content/dam/chipotle/menu/menu-items/cmg-6605-sofritas/web-desktop/order.png",
+      "method": "menu_metadata_item_thumbnail",
+      "sourceFile": "data/raw/chipotle/menu-metadata.json",
+      "sourceEndpoint": "https://services.chipotle.com/menu-metadata/v1/menu-metadata?channel=web&region=US",
+      "sourceRecordId": "CMG-3006",
+      "sourceField": "items.CMG-3006.thumbnailUrl",
+      "generatedSourceIds": [
+        "CMG-3006"
+      ],
+      "alternateOfficialImages": []
+    },
+    "chipotle-protein-sofritas-kids-quesadilla": {
+      "name": "Sofritas",
+      "recordType": "ingredient",
+      "image": "https://www.chipotle.com/content/dam/chipotle/menu/menu-items/cmg-6605-sofritas/web-desktop/order.png",
+      "method": "menu_metadata_item_thumbnail",
+      "sourceFile": "data/raw/chipotle/menu-metadata.json",
+      "sourceEndpoint": "https://services.chipotle.com/menu-metadata/v1/menu-metadata?channel=web&region=US",
+      "sourceRecordId": "CMG-3106",
+      "sourceField": "items.CMG-3106.thumbnailUrl",
+      "generatedSourceIds": [
+        "CMG-3106"
+      ],
+      "alternateOfficialImages": []
+    },
+    "chipotle-protein-pollo-asado": {
+      "name": "Pollo Asado",
+      "recordType": "ingredient",
+      "image": "https://www.chipotle.com/content/dam/chipotle/menu/menu-items/cmg-5163-pollo-asado/web-desktop/order.png",
+      "method": "menu_metadata_item_thumbnail",
+      "sourceFile": "data/raw/chipotle/menu-metadata.json",
+      "sourceEndpoint": "https://services.chipotle.com/menu-metadata/v1/menu-metadata?channel=web&region=US",
+      "sourceRecordId": "CMG-11",
+      "sourceField": "items.CMG-11.thumbnailUrl",
+      "generatedSourceIds": [
+        "CMG-11",
+        "CMG-113",
+        "CMG-311",
+        "CMG-412"
+      ],
+      "alternateOfficialImages": []
+    },
+    "chipotle-protein-pollo-asado-taco": {
+      "name": "Pollo Asado",
+      "recordType": "ingredient",
+      "image": "https://www.chipotle.com/content/dam/chipotle/menu/menu-items/cmg-5163-pollo-asado/web-desktop/order.png",
+      "method": "menu_metadata_item_thumbnail",
+      "sourceFile": "data/raw/chipotle/menu-metadata.json",
+      "sourceEndpoint": "https://services.chipotle.com/menu-metadata/v1/menu-metadata?channel=web&region=US",
+      "sourceRecordId": "CMG-1212",
+      "sourceField": "items.CMG-1212.thumbnailUrl",
+      "generatedSourceIds": [
+        "CMG-1212"
+      ],
+      "alternateOfficialImages": []
+    },
+    "chipotle-protein-pollo-asado-tacos-3": {
+      "name": "Pollo Asado",
+      "recordType": "ingredient",
+      "image": "https://www.chipotle.com/content/dam/chipotle/menu/menu-items/cmg-5163-pollo-asado/web-desktop/order.png",
+      "method": "menu_metadata_item_thumbnail",
+      "sourceFile": "data/raw/chipotle/menu-metadata.json",
+      "sourceEndpoint": "https://services.chipotle.com/menu-metadata/v1/menu-metadata?channel=web&region=US",
+      "sourceRecordId": "CMG-211",
+      "sourceField": "items.CMG-211.thumbnailUrl",
+      "generatedSourceIds": [
+        "CMG-211"
+      ],
+      "alternateOfficialImages": []
+    },
+    "chipotle-protein-pollo-asado-kids-byo": {
+      "name": "Pollo Asado",
+      "recordType": "ingredient",
+      "image": "https://www.chipotle.com/content/dam/chipotle/menu/menu-items/cmg-5163-pollo-asado/web-desktop/order.png",
+      "method": "menu_metadata_item_thumbnail",
+      "sourceFile": "data/raw/chipotle/menu-metadata.json",
+      "sourceEndpoint": "https://services.chipotle.com/menu-metadata/v1/menu-metadata?channel=web&region=US",
+      "sourceRecordId": "CMG-3013",
+      "sourceField": "items.CMG-3013.thumbnailUrl",
+      "generatedSourceIds": [
+        "CMG-3013"
+      ],
+      "alternateOfficialImages": []
+    },
+    "chipotle-protein-pollo-asado-kids-quesadilla": {
+      "name": "Pollo Asado",
+      "recordType": "ingredient",
+      "image": "https://www.chipotle.com/content/dam/chipotle/menu/menu-items/cmg-5163-pollo-asado/web-desktop/order.png",
+      "method": "menu_metadata_item_thumbnail",
+      "sourceFile": "data/raw/chipotle/menu-metadata.json",
+      "sourceEndpoint": "https://services.chipotle.com/menu-metadata/v1/menu-metadata?channel=web&region=US",
+      "sourceRecordId": "CMG-3111",
+      "sourceField": "items.CMG-3111.thumbnailUrl",
+      "generatedSourceIds": [
+        "CMG-3111"
+      ],
+      "alternateOfficialImages": []
+    },
+    "chipotle-protein-guacamole-kids-byo": {
+      "name": "Guacamole",
+      "recordType": "ingredient",
+      "image": "https://www.chipotle.com/content/dam/chipotle/menu/menu-items/cmg-1025-large-side-of-guac/web-desktop/order.png",
+      "method": "menu_metadata_item_thumbnail",
+      "sourceFile": "data/raw/chipotle/menu-metadata.json",
+      "sourceEndpoint": "https://services.chipotle.com/menu-metadata/v1/menu-metadata?channel=web&region=US",
+      "sourceRecordId": "CMG-3007",
+      "sourceField": "items.CMG-3007.thumbnailUrl",
+      "generatedSourceIds": [
+        "CMG-3007"
+      ],
+      "alternateOfficialImages": []
+    },
+    "chipotle-protein-guacamole-kids-quesadilla": {
+      "name": "Guacamole",
+      "recordType": "ingredient",
+      "image": "https://www.chipotle.com/content/dam/chipotle/menu/menu-items/cmg-1025-large-side-of-guac/web-desktop/order.png",
+      "method": "menu_metadata_item_thumbnail",
+      "sourceFile": "data/raw/chipotle/menu-metadata.json",
+      "sourceEndpoint": "https://services.chipotle.com/menu-metadata/v1/menu-metadata?channel=web&region=US",
+      "sourceRecordId": "CMG-3107",
+      "sourceField": "items.CMG-3107.thumbnailUrl",
+      "generatedSourceIds": [
+        "CMG-3107"
+      ],
+      "alternateOfficialImages": []
+    },
+    "chipotle-protein-queso-blanco-kids-byo": {
+      "name": "Queso Blanco",
+      "recordType": "ingredient",
+      "image": "https://www.chipotle.com/content/dam/chipotle/menu/menu-items/cmg-1031-large-side-of-queso-blanco/web-desktop/order.png",
+      "method": "menu_metadata_item_thumbnail",
+      "sourceFile": "data/raw/chipotle/menu-metadata.json",
+      "sourceEndpoint": "https://services.chipotle.com/menu-metadata/v1/menu-metadata?channel=web&region=US",
+      "sourceRecordId": "CMG-3011",
+      "sourceField": "items.CMG-3011.thumbnailUrl",
+      "generatedSourceIds": [
+        "CMG-3011"
+      ],
+      "alternateOfficialImages": []
+    }
+  },
+  "unmapped": [
+    {
+      "id": "chipotle-cmg-6112",
+      "name": "Serving Utensils",
+      "recordType": "item",
+      "generatedSourceIds": [
+        "CMG-6112"
+      ],
+      "sourceOnly": true,
+      "reason": "No official image exists for this non-browseable structural/non-food record."
+    },
+    {
+      "id": "chipotle-cmg-6110",
+      "name": "Napkins & Utensils",
+      "recordType": "item",
+      "generatedSourceIds": [
+        "CMG-6110"
+      ],
+      "sourceOnly": true,
+      "reason": "No official image exists for this non-browseable structural/non-food record."
+    },
+    {
+      "id": "chipotle-cmg-6111",
+      "name": "6 Serving Bowls",
+      "recordType": "item",
+      "generatedSourceIds": [
+        "CMG-6111"
+      ],
+      "sourceOnly": true,
+      "reason": "No official image exists for this non-browseable structural/non-food record."
+    }
+  ]
+}

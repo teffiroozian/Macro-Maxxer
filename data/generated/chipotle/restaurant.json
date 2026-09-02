@@ -406,11 +406,12 @@
       ],
       "servingType": "entree",
       "nutrition": {
-        "calories": 140,
+        "calories": 143,
         "protein": 12.7,
         "carbs": 13,
-        "totalFat": 4.8,
+        "totalFat": 5.3,
         "satFat": 1,
+        "transFat": 0,
         "sodium": 263.3,
         "fiber": 0,
         "sugars": 0
@@ -507,13 +508,14 @@
       ],
       "servingType": "entree",
       "nutrition": {
-        "calories": 420,
-        "protein": 38,
-        "carbs": 39,
-        "totalFat": 14.5,
-        "satFat": 3,
+        "calories": 430,
+        "protein": 39,
+        "carbs": 40,
+        "totalFat": 15,
+        "satFat": 3.5,
+        "transFat": 0,
         "sodium": 790,
-        "fiber": 0,
+        "fiber": 2,
         "sugars": 0
       },
       "ingredients": [
@@ -5116,16 +5118,26 @@
       ],
       "servingType": "combo",
       "nutrition": {
-        "calories": 1525,
-        "protein": 127,
+        "calories": 1345,
+        "protein": 95,
         "carbs": 135,
-        "totalFat": 54,
-        "satFat": 22,
-        "cholesterol": 445,
-        "sodium": 3190,
+        "totalFat": 47,
+        "satFat": 19,
+        "cholesterol": 320,
+        "sodium": 2880,
         "fiber": 15,
         "sugars": 9
       },
+      "ingredients": [
+        "chipotle-protein-chicken:extra",
+        "chipotle-cmg-4026-burrito-base",
+        "chipotle-cmg-5051",
+        "chipotle-cmg-5201",
+        "chipotle-cmg-5202",
+        "chipotle-cmg-5251",
+        "chipotle-cmg-5252",
+        "chipotle-cmg-5001"
+      ],
       "defaultOrder": 0,
       "source": {
         "provider": "Chipotle",
@@ -5137,7 +5149,8 @@
           ],
           "itemType": "HighProtein",
           "itemCategory": "OnlineMeal",
-          "role": "preconfigured_meal"
+          "role": "preconfigured_meal",
+          "buildBaseItemId": "chipotle-burrito"
         },
         "nutrition": {
           "method": "composed_from_components",
@@ -5164,6 +5177,17 @@
         "fiber": 15,
         "sugars": 10
       },
+      "ingredients": [
+        "chipotle-protein-chicken",
+        "chipotle-cmg-5001",
+        "chipotle-cmg-5201",
+        "chipotle-cmg-5203",
+        "chipotle-cmg-5251",
+        "chipotle-cmg-5252",
+        "chipotle-cmg-1001",
+        "chipotle-cmg-1029",
+        "chipotle-cmg-5362"
+      ],
       "defaultOrder": 0,
       "source": {
         "provider": "Chipotle",
@@ -5174,11 +5198,12 @@
           ],
           "itemType": "Influencer",
           "itemCategory": "OnlineMeal",
-          "role": "preconfigured_meal"
+          "role": "preconfigured_meal",
+          "buildBaseItemId": "chipotle-bowl"
         },
         "nutrition": {
           "method": "composed_from_components",
-          "note": "Composed from base entree (CMG-101) + 8 entree content item(s) + 1 side(s) + 0 drink(s), each scaled by its own source quantity. The source's free-text calories field (\"1550\") is preserved as provenance only, not used as the computed value."
+          "note": "Resolved base entree CMG-101 into generated build chipotle-bowl and composed its 9 generated ingredient component(s), preserving source portion variants and quantities. The source's free-text calories field (\"1550\") is preserved as provenance only, not used as the computed value."
         }
       }
     },
@@ -5191,16 +5216,24 @@
       ],
       "servingType": "combo",
       "nutrition": {
-        "calories": 850,
-        "protein": 103,
+        "calories": 670,
+        "protein": 71,
         "carbs": 61,
-        "totalFat": 26.5,
-        "satFat": 9.5,
+        "totalFat": 19.5,
+        "satFat": 6.5,
         "transFat": 0,
-        "sodium": 1870,
+        "cholesterol": 250,
+        "sodium": 1560,
         "fiber": 5,
         "sugars": 6
       },
+      "ingredients": [
+        "chipotle-protein-chicken:extra",
+        "chipotle-cmg-5001",
+        "chipotle-cmg-5203",
+        "chipotle-cmg-5202",
+        "chipotle-cmg-5351"
+      ],
       "defaultOrder": 0,
       "source": {
         "provider": "Chipotle",
@@ -5212,7 +5245,8 @@
           ],
           "itemType": "HighProtein",
           "itemCategory": "OnlineMeal",
-          "role": "preconfigured_meal"
+          "role": "preconfigured_meal",
+          "buildBaseItemId": "chipotle-bowl"
         },
         "nutrition": {
           "method": "composed_from_components",
@@ -5229,14 +5263,25 @@
       ],
       "servingType": "combo",
       "nutrition": {
-        "calories": 1000,
-        "protein": 48,
-        "carbs": 131,
-        "totalFat": 30.5,
+        "calories": 940,
+        "protein": 32,
+        "carbs": 121,
+        "totalFat": 36,
         "satFat": 10,
-        "sodium": 1535,
+        "transFat": 0,
+        "sodium": 1415,
+        "fiber": 14.5,
         "sugars": 24
       },
+      "ingredients": [
+        "chipotle-protein-guacamole-kids-quesadilla",
+        "chipotle-cmg-5401",
+        "chipotle-cmg-5252",
+        "chipotle-cmg-5001",
+        "chipotle-cmg-5051",
+        "chipotle-cmg-1401",
+        "chipotle-cmg-5553"
+      ],
       "defaultOrder": 0,
       "source": {
         "provider": "Chipotle",
@@ -5247,11 +5292,12 @@
           ],
           "itemType": "Influencer",
           "itemCategory": "OnlineMeal",
-          "role": "preconfigured_meal"
+          "role": "preconfigured_meal",
+          "buildBaseItemId": "chipotle-kids-quesadilla"
         },
         "nutrition": {
           "method": "composed_from_components",
-          "note": "Composed from base entree (CMG-3107) + 5 entree content item(s) + 0 side(s) + 0 drink(s), each scaled by its own source quantity. The source's free-text calories field (\"880\") is preserved as provenance only, not used as the computed value."
+          "note": "Resolved base entree CMG-3107 into generated build chipotle-kids-quesadilla and composed its 7 generated ingredient component(s), preserving source portion variants and quantities. The source's free-text calories field (\"880\") is preserved as provenance only, not used as the computed value."
         }
       }
     },
@@ -5264,17 +5310,27 @@
       ],
       "servingType": "combo",
       "nutrition": {
-        "calories": 1250,
-        "protein": 113,
-        "carbs": 94,
-        "totalFat": 50,
-        "satFat": 13,
+        "calories": 1057.5,
+        "protein": 81,
+        "carbs": 92,
+        "totalFat": 43,
+        "satFat": 10,
         "transFat": 0,
-        "cholesterol": 375,
-        "sodium": 3240,
-        "fiber": 21,
-        "sugars": 7
+        "cholesterol": 250,
+        "sodium": 2655,
+        "fiber": 20.5,
+        "sugars": 6.5
       },
+      "ingredients": [
+        "chipotle-protein-chicken:extra",
+        "chipotle-cmg-5052",
+        "chipotle-cmg-5204",
+        "chipotle-cmg-5201:light",
+        "chipotle-cmg-5202",
+        "chipotle-cmg-5351",
+        "chipotle-cmg-1001",
+        "chipotle-cmg-5001"
+      ],
       "defaultOrder": 0,
       "source": {
         "provider": "Chipotle",
@@ -5286,7 +5342,8 @@
           ],
           "itemType": "HighProtein",
           "itemCategory": "OnlineMeal",
-          "role": "preconfigured_meal"
+          "role": "preconfigured_meal",
+          "buildBaseItemId": "chipotle-bowl"
         },
         "nutrition": {
           "method": "composed_from_components",
@@ -5303,17 +5360,27 @@
       ],
       "servingType": "combo",
       "nutrition": {
-        "calories": 1250,
-        "protein": 113,
-        "carbs": 95,
-        "totalFat": 50,
-        "satFat": 13,
+        "calories": 1017.5,
+        "protein": 79.5,
+        "carbs": 85,
+        "totalFat": 42.25,
+        "satFat": 10,
         "transFat": 0,
-        "cholesterol": 375,
-        "sodium": 3240,
-        "fiber": 20,
-        "sugars": 8
+        "cholesterol": 250,
+        "sodium": 2490,
+        "fiber": 18,
+        "sugars": 5.5
       },
+      "ingredients": [
+        "chipotle-protein-chicken:extra",
+        "chipotle-cmg-5001",
+        "chipotle-cmg-5051",
+        "chipotle-cmg-5204",
+        "chipotle-cmg-5201:light",
+        "chipotle-cmg-5202:light",
+        "chipotle-cmg-5351",
+        "chipotle-cmg-1001"
+      ],
       "defaultOrder": 0,
       "source": {
         "provider": "Chipotle",
@@ -5325,7 +5392,8 @@
           ],
           "itemType": "HighProtein",
           "itemCategory": "OnlineMeal",
-          "role": "preconfigured_meal"
+          "role": "preconfigured_meal",
+          "buildBaseItemId": "chipotle-bowl"
         },
         "nutrition": {
           "method": "composed_from_components",
@@ -5342,17 +5410,26 @@
       ],
       "servingType": "combo",
       "nutrition": {
-        "calories": 1040,
-        "protein": 115,
-        "carbs": 73,
-        "totalFat": 34.5,
-        "satFat": 14.5,
+        "calories": 760,
+        "protein": 81,
+        "carbs": 54,
+        "totalFat": 25.5,
+        "satFat": 11.25,
         "transFat": 0,
-        "cholesterol": 405,
-        "sodium": 2380,
-        "fiber": 11,
+        "cholesterol": 280,
+        "sodium": 1895,
+        "fiber": 11.5,
         "sugars": 5
       },
+      "ingredients": [
+        "chipotle-protein-chicken:extra",
+        "chipotle-cmg-5001:light",
+        "chipotle-cmg-5051",
+        "chipotle-cmg-5101",
+        "chipotle-cmg-5201",
+        "chipotle-cmg-5252",
+        "chipotle-cmg-5351:extra"
+      ],
       "defaultOrder": 0,
       "source": {
         "provider": "Chipotle",
@@ -5363,11 +5440,12 @@
           ],
           "itemType": "HighProtein",
           "itemCategory": "OnlineMeal",
-          "role": "preconfigured_meal"
+          "role": "preconfigured_meal",
+          "buildBaseItemId": "chipotle-bowl"
         },
         "nutrition": {
           "method": "composed_from_components",
-          "note": "Composed from base entree (CMG-101) + 7 entree content item(s) + 0 side(s) + 0 drink(s), each scaled by its own source quantity. The source's free-text calories field (\"760\") is preserved as provenance only, not used as the computed value."
+          "note": "Resolved base entree CMG-101 into generated build chipotle-bowl and composed its 7 generated ingredient component(s), preserving source portion variants and quantities. The source's free-text calories field (\"760\") is preserved as provenance only, not used as the computed value."
         }
       }
     },
@@ -5380,17 +5458,26 @@
       ],
       "servingType": "combo",
       "nutrition": {
-        "calories": 650,
-        "protein": 48,
-        "carbs": 84,
-        "totalFat": 16,
-        "satFat": 4,
+        "calories": 545,
+        "protein": 46,
+        "carbs": 66,
+        "totalFat": 13,
+        "satFat": 3.5,
         "transFat": 0,
         "cholesterol": 125,
-        "sodium": 1740,
-        "fiber": 15,
+        "sodium": 1645,
+        "fiber": 14,
         "sugars": 9
       },
+      "ingredients": [
+        "chipotle-protein-chicken",
+        "chipotle-cmg-5002:light",
+        "chipotle-cmg-5101",
+        "chipotle-cmg-5202",
+        "chipotle-cmg-5201",
+        "chipotle-cmg-5051",
+        "chipotle-cmg-5351"
+      ],
       "defaultOrder": 0,
       "source": {
         "provider": "Chipotle",
@@ -5401,11 +5488,12 @@
           ],
           "itemType": "HighProtein",
           "itemCategory": "OnlineMeal",
-          "role": "preconfigured_meal"
+          "role": "preconfigured_meal",
+          "buildBaseItemId": "chipotle-bowl"
         },
         "nutrition": {
           "method": "composed_from_components",
-          "note": "Composed from base entree (CMG-101) + 6 entree content item(s) + 0 side(s) + 0 drink(s), each scaled by its own source quantity. The source's free-text calories field (\"540\") is preserved as provenance only, not used as the computed value."
+          "note": "Resolved base entree CMG-101 into generated build chipotle-bowl and composed its 7 generated ingredient component(s), preserving source portion variants and quantities. The source's free-text calories field (\"540\") is preserved as provenance only, not used as the computed value."
         }
       }
     },
@@ -5418,15 +5506,24 @@
       ],
       "servingType": "combo",
       "nutrition": {
-        "calories": 380,
-        "protein": 21.7,
-        "carbs": 37,
-        "totalFat": 15.3,
-        "satFat": 6,
-        "sodium": 1313.3,
-        "fiber": 3,
-        "sugars": 3
+        "calories": 196.334,
+        "protein": 15.033,
+        "carbs": 16.666,
+        "totalFat": 7.967,
+        "satFat": 2.667,
+        "transFat": 0,
+        "sodium": 559.966,
+        "fiber": 0.999,
+        "sugars": 1
       },
+      "ingredients": [
+        "chipotle-protein-chicken-taco",
+        "chipotle-tortilla-soft-flour-taco",
+        "chipotle-cmg-5101",
+        "chipotle-cmg-5201",
+        "chipotle-cmg-5252",
+        "chipotle-cmg-5351"
+      ],
       "defaultOrder": 0,
       "source": {
         "provider": "Chipotle",
@@ -5437,11 +5534,12 @@
           ],
           "itemType": "HighProtein",
           "itemCategory": "OnlineMeal",
-          "role": "preconfigured_meal"
+          "role": "preconfigured_meal",
+          "buildBaseItemId": "chipotle-taco"
         },
         "nutrition": {
           "method": "composed_from_components",
-          "note": "Composed from base entree (CMG-1201) + 5 entree content item(s) + 0 side(s) + 0 drink(s), each scaled by its own source quantity. The source's free-text calories field (\"190\") is preserved as provenance only, not used as the computed value."
+          "note": "Resolved base entree CMG-1201 into generated build chipotle-taco and composed its 6 generated ingredient component(s), preserving source portion variants and quantities. The source's free-text calories field (\"190\") is preserved as provenance only, not used as the computed value."
         }
       }
     },
@@ -5454,15 +5552,22 @@
       ],
       "servingType": "combo",
       "nutrition": {
-        "calories": 690,
-        "protein": 37,
-        "carbs": 38,
-        "totalFat": 45,
-        "satFat": 9,
-        "sodium": 2245,
-        "fiber": 11,
-        "sugars": 17
+        "calories": 470,
+        "protein": 36,
+        "carbs": 20,
+        "totalFat": 29,
+        "satFat": 6.5,
+        "sodium": 1395,
+        "fiber": 10,
+        "sugars": 5
       },
+      "ingredients": [
+        "chipotle-protein-chicken",
+        "chipotle-salad-supergreens-base",
+        "chipotle-cmg-5101",
+        "chipotle-cmg-5201",
+        "chipotle-cmg-1001"
+      ],
       "defaultOrder": 0,
       "source": {
         "provider": "Chipotle",
@@ -5473,11 +5578,12 @@
           ],
           "itemType": "HighProtein",
           "itemCategory": "OnlineMeal",
-          "role": "preconfigured_meal"
+          "role": "preconfigured_meal",
+          "buildBaseItemId": "chipotle-salad"
         },
         "nutrition": {
           "method": "composed_from_components",
-          "note": "Composed from base entree (CMG-301) + 5 entree content item(s) + 0 side(s) + 0 drink(s), each scaled by its own source quantity. The source's free-text calories field (\"470\") is preserved as provenance only, not used as the computed value."
+          "note": "Resolved base entree CMG-301 into generated build chipotle-salad and composed its 5 generated ingredient component(s), preserving source portion variants and quantities. The source's free-text calories field (\"470\") is preserved as provenance only, not used as the computed value."
         }
       }
     },
@@ -5490,15 +5596,24 @@
       ],
       "servingType": "combo",
       "nutrition": {
-        "calories": 1020,
-        "protein": 111,
+        "calories": 840,
+        "protein": 79,
         "carbs": 61,
-        "totalFat": 38,
-        "satFat": 14.5,
-        "sodium": 2420,
+        "totalFat": 31,
+        "satFat": 11.5,
+        "cholesterol": 280,
+        "sodium": 2110,
         "fiber": 6,
         "sugars": 3
       },
+      "ingredients": [
+        "chipotle-protein-chicken:extra",
+        "chipotle-cmg-4026-burrito-base",
+        "chipotle-cmg-5101",
+        "chipotle-cmg-5201",
+        "chipotle-cmg-5252",
+        "chipotle-cmg-5351"
+      ],
       "defaultOrder": 0,
       "source": {
         "provider": "Chipotle",
@@ -5509,11 +5624,12 @@
           ],
           "itemType": "HighProtein",
           "itemCategory": "OnlineMeal",
-          "role": "preconfigured_meal"
+          "role": "preconfigured_meal",
+          "buildBaseItemId": "chipotle-burrito"
         },
         "nutrition": {
           "method": "composed_from_components",
-          "note": "Composed from base entree (CMG-1) + 7 entree content item(s) + 0 side(s) + 0 drink(s), each scaled by its own source quantity. The source's free-text calories field (\"840\") is preserved as provenance only, not used as the computed value."
+          "note": "Resolved base entree CMG-1 into generated build chipotle-burrito and composed its 6 generated ingredient component(s), preserving source portion variants and quantities. The source's free-text calories field (\"840\") is preserved as provenance only, not used as the computed value."
         }
       }
     }
@@ -5537,7 +5653,7 @@
         "sugars": 0
       },
       "maxQuantity": 1,
-      "defaultOrder": 0,
+      "defaultOrder": 1,
       "source": {
         "provider": "Chipotle",
         "restaurantId": 469,
@@ -5581,7 +5697,7 @@
         "cholesterol": 0
       },
       "maxQuantity": 1,
-      "defaultOrder": 0,
+      "defaultOrder": 1,
       "source": {
         "provider": "Chipotle",
         "restaurantId": 469,
@@ -5625,7 +5741,7 @@
         "cholesterol": 0
       },
       "maxQuantity": 1,
-      "defaultOrder": 0,
+      "defaultOrder": 2,
       "source": {
         "provider": "Chipotle",
         "restaurantId": 469,
@@ -5669,7 +5785,7 @@
         "cholesterol": 0
       },
       "maxQuantity": 1,
-      "defaultOrder": 0,
+      "defaultOrder": 7,
       "source": {
         "provider": "Chipotle",
         "restaurantId": 469,
@@ -5713,7 +5829,7 @@
         "cholesterol": 0
       },
       "maxQuantity": 1,
-      "defaultOrder": 0,
+      "defaultOrder": 8,
       "source": {
         "provider": "Chipotle",
         "restaurantId": 469,
@@ -5757,7 +5873,7 @@
         "cholesterol": 40
       },
       "maxQuantity": 1,
-      "defaultOrder": 0,
+      "defaultOrder": 9,
       "source": {
         "provider": "Chipotle",
         "restaurantId": 469,
@@ -5801,7 +5917,7 @@
         "cholesterol": 30
       },
       "maxQuantity": 1,
-      "defaultOrder": 0,
+      "defaultOrder": 11,
       "source": {
         "provider": "Chipotle",
         "restaurantId": 469,
@@ -5845,7 +5961,7 @@
         "cholesterol": 30
       },
       "maxQuantity": 1,
-      "defaultOrder": 0,
+      "defaultOrder": 2,
       "source": {
         "provider": "Chipotle",
         "restaurantId": 469,
@@ -5889,7 +6005,7 @@
         "cholesterol": 0
       },
       "maxQuantity": 1,
-      "defaultOrder": 0,
+      "defaultOrder": 4,
       "source": {
         "provider": "Chipotle",
         "restaurantId": 469,
@@ -5933,7 +6049,7 @@
         "cholesterol": 0
       },
       "maxQuantity": 1,
-      "defaultOrder": 0,
+      "defaultOrder": 12,
       "source": {
         "provider": "Chipotle",
         "restaurantId": 469,
@@ -5977,7 +6093,7 @@
         "cholesterol": 0
       },
       "maxQuantity": 1,
-      "defaultOrder": 0,
+      "defaultOrder": 10,
       "source": {
         "provider": "Chipotle",
         "restaurantId": 469,
@@ -6021,7 +6137,7 @@
         "cholesterol": 0
       },
       "maxQuantity": 1,
-      "defaultOrder": 0,
+      "defaultOrder": 5,
       "source": {
         "provider": "Chipotle",
         "restaurantId": 469,
@@ -6064,7 +6180,7 @@
         "sugars": 2
       },
       "maxQuantity": 1,
-      "defaultOrder": 0,
+      "defaultOrder": 1,
       "source": {
         "provider": "Chipotle",
         "restaurantId": 469,
@@ -6108,7 +6224,7 @@
         "cholesterol": 0
       },
       "maxQuantity": 1,
-      "defaultOrder": 0,
+      "defaultOrder": 3,
       "source": {
         "provider": "Chipotle",
         "restaurantId": 469,
@@ -6152,7 +6268,7 @@
         "cholesterol": 0
       },
       "maxQuantity": 1,
-      "defaultOrder": 0,
+      "defaultOrder": 6,
       "source": {
         "provider": "Chipotle",
         "restaurantId": 469,
@@ -6196,7 +6312,7 @@
         "cholesterol": 0
       },
       "maxQuantity": 1,
-      "defaultOrder": 0,
+      "defaultOrder": 6,
       "source": {
         "provider": "Chipotle",
         "restaurantId": 469,
@@ -6240,7 +6356,7 @@
         "cholesterol": 0
       },
       "maxQuantity": 1,
-      "defaultOrder": 0,
+      "defaultOrder": 1,
       "source": {
         "provider": "Chipotle",
         "restaurantId": 469,
@@ -6284,7 +6400,7 @@
         "cholesterol": 0
       },
       "maxQuantity": 1,
-      "defaultOrder": 0,
+      "defaultOrder": 11,
       "source": {
         "provider": "Chipotle",
         "restaurantId": 469,
@@ -6328,7 +6444,7 @@
         "cholesterol": 0
       },
       "maxQuantity": 1,
-      "defaultOrder": 0,
+      "defaultOrder": 2,
       "source": {
         "provider": "Chipotle",
         "restaurantId": 469,
@@ -6371,7 +6487,7 @@
         "sugars": 4
       },
       "maxQuantity": 1,
-      "defaultOrder": 0,
+      "defaultOrder": 1,
       "source": {
         "provider": "Chipotle",
         "restaurantId": 469,
@@ -6415,7 +6531,7 @@
         "cholesterol": 30
       },
       "maxQuantity": 1,
-      "defaultOrder": 0,
+      "defaultOrder": 9,
       "source": {
         "provider": "Chipotle",
         "restaurantId": 469,
@@ -6459,7 +6575,7 @@
         "cholesterol": 0
       },
       "maxQuantity": 1,
-      "defaultOrder": 0,
+      "defaultOrder": 8,
       "source": {
         "provider": "Chipotle",
         "restaurantId": 469,
@@ -6503,7 +6619,7 @@
         "cholesterol": 60
       },
       "maxQuantity": 1,
-      "defaultOrder": 0,
+      "defaultOrder": 7,
       "source": {
         "provider": "Chipotle",
         "restaurantId": 469,
@@ -6532,7 +6648,7 @@
       "id": "chipotle-cmg-1402",
       "name": "Kid's Fruit",
       "categories": [
-        "Toppings"
+        "Kids Side"
       ],
       "nutrition": {
         "calories": 35,
@@ -6546,7 +6662,7 @@
         "sugars": 7
       },
       "maxQuantity": 1,
-      "defaultOrder": 0,
+      "defaultOrder": 3,
       "source": {
         "provider": "Chipotle",
         "restaurantId": 469,
@@ -6575,7 +6691,7 @@
       "id": "chipotle-cmg-1401",
       "name": "Kid's Chips",
       "categories": [
-        "Toppings"
+        "Kids Side"
       ],
       "nutrition": {
         "calories": 140,
@@ -6589,7 +6705,7 @@
         "sugars": 0
       },
       "maxQuantity": 1,
-      "defaultOrder": 0,
+      "defaultOrder": 1,
       "source": {
         "provider": "Chipotle",
         "restaurantId": 469,
@@ -6618,7 +6734,7 @@
       "id": "chipotle-cmg-5553",
       "name": "Organic Chocolate Milk",
       "categories": [
-        "Toppings"
+        "Kids Drink"
       ],
       "nutrition": {
         "calories": 160,
@@ -6632,7 +6748,7 @@
         "sugars": 22
       },
       "maxQuantity": 1,
-      "defaultOrder": 0,
+      "defaultOrder": 1,
       "source": {
         "provider": "Chipotle",
         "restaurantId": 469,
@@ -6661,7 +6777,7 @@
       "id": "chipotle-cmg-5552",
       "name": "Organic Apple Juice",
       "categories": [
-        "Toppings"
+        "Kids Drink"
       ],
       "nutrition": {
         "calories": 100,
@@ -6675,7 +6791,7 @@
         "sugars": 22
       },
       "maxQuantity": 1,
-      "defaultOrder": 0,
+      "defaultOrder": 6,
       "source": {
         "provider": "Chipotle",
         "restaurantId": 469,
@@ -7676,7 +7792,7 @@
       ],
       "defaultVariantId": "chipotle-fountain-16-fl-oz-coca-cola-classic",
       "maxQuantity": 1,
-      "defaultOrder": 0,
+      "defaultOrder": 3,
       "source": {
         "provider": "Chipotle",
         "restaurantId": 469,
@@ -7703,7 +7819,7 @@
       "id": "chipotle-cmg-5554",
       "name": "Organic Milk",
       "categories": [
-        "Toppings"
+        "Kids Drink"
       ],
       "nutrition": {
         "calories": 110,
@@ -7717,7 +7833,7 @@
         "sugars": 12
       },
       "maxQuantity": 1,
-      "defaultOrder": 0,
+      "defaultOrder": 2,
       "source": {
         "provider": "Chipotle",
         "restaurantId": 469,
@@ -7749,17 +7865,19 @@
         "Tortillas"
       ],
       "nutrition": {
-        "calories": 80,
+        "calories": 83,
         "protein": 2,
         "carbs": 13,
-        "totalFat": 2.5,
+        "totalFat": 3,
         "satFat": 0,
+        "transFat": 0,
+        "cholesterol": 0,
         "sodium": 160,
         "fiber": 0,
         "sugars": 0
       },
       "maxQuantity": 1,
-      "defaultOrder": 0,
+      "defaultOrder": 2,
       "source": {
         "provider": "Chipotle",
         "restaurantId": 469,
@@ -7772,10 +7890,10 @@
           "role": "selectable_component"
         },
         "nutrition": {
-          "method": "pdf_per_unit_override",
+          "method": "manual_verification",
           "pdfName": "Soft Flour Tortilla",
           "pdfSection": "adult",
-          "note": "Single Taco = 1 x official PDF per-unit tortilla nutrition, per import-decisions.md §5 — CMG-5501's own ambiguous metadata calories are not used."
+          "note": "Single Taco uses its explicit official one-tortilla context nutrition. CMG-5501 remains the source/selection identity; no value is derived from the three-tortilla context."
         }
       }
     },
@@ -7786,17 +7904,18 @@
         "Tortillas"
       ],
       "nutrition": {
-        "calories": 240,
-        "protein": 6,
-        "carbs": 39,
-        "totalFat": 7.5,
-        "satFat": 0,
+        "calories": 250,
+        "protein": 7,
+        "carbs": 40,
+        "totalFat": 8,
+        "satFat": 0.5,
+        "transFat": 0,
         "sodium": 480,
-        "fiber": 0,
+        "fiber": 2,
         "sugars": 0
       },
       "maxQuantity": 1,
-      "defaultOrder": 0,
+      "defaultOrder": 2,
       "source": {
         "provider": "Chipotle",
         "restaurantId": 469,
@@ -7809,10 +7928,15 @@
           "role": "selectable_component"
         },
         "nutrition": {
-          "method": "pdf_per_unit_override",
+          "method": "live_full_nutrition",
+          "liveItemId": "CMG-5501",
+          "livePortion": "3oz",
+          "liveValidation": "accepted",
+          "metadataCalories": 250,
+          "metadataPortion": "3oz",
           "pdfName": "Soft Flour Tortilla",
           "pdfSection": "adult",
-          "note": "Tacos(3) = 3 x official PDF per-unit tortilla nutrition, per import-decisions.md §5 — CMG-5501's own ambiguous metadata calories are not used."
+          "note": "Tacos(3) uses CMG-5501's explicit official three-tortilla context nutrition. No value is calculated from the single-tortilla context."
         }
       }
     },
@@ -7823,17 +7947,19 @@
         "Tortillas"
       ],
       "nutrition": {
-        "calories": 70,
+        "calories": 67,
         "protein": 1,
         "carbs": 10,
         "totalFat": 3,
         "satFat": 0,
+        "transFat": 0,
+        "cholesterol": 0,
         "sodium": 0,
         "fiber": 1,
         "sugars": 0
       },
       "maxQuantity": 1,
-      "defaultOrder": 0,
+      "defaultOrder": 1,
       "source": {
         "provider": "Chipotle",
         "restaurantId": 469,
@@ -7846,10 +7972,10 @@
           "role": "selectable_component"
         },
         "nutrition": {
-          "method": "pdf_per_unit_override",
+          "method": "manual_verification",
           "pdfName": "Crispy Corn Tortilla",
           "pdfSection": "adult",
-          "note": "Single Taco = 1 x official PDF per-unit tortilla nutrition, per import-decisions.md §5 — CMG-5503's own ambiguous metadata calories are not used."
+          "note": "Single Taco uses its explicit official one-tortilla context nutrition. CMG-5503 remains the source/selection identity; no value is derived from the three-tortilla context."
         }
       }
     },
@@ -7860,17 +7986,18 @@
         "Tortillas"
       ],
       "nutrition": {
-        "calories": 210,
+        "calories": 200,
         "protein": 3,
-        "carbs": 30,
+        "carbs": 29,
         "totalFat": 9,
-        "satFat": 0,
+        "satFat": 1,
+        "transFat": 0,
         "sodium": 0,
         "fiber": 3,
         "sugars": 0
       },
       "maxQuantity": 1,
-      "defaultOrder": 0,
+      "defaultOrder": 1,
       "source": {
         "provider": "Chipotle",
         "restaurantId": 469,
@@ -7883,10 +8010,15 @@
           "role": "selectable_component"
         },
         "nutrition": {
-          "method": "pdf_per_unit_override",
+          "method": "live_full_nutrition",
+          "liveItemId": "CMG-5503",
+          "livePortion": "1.5oz",
+          "liveValidation": "accepted",
+          "metadataCalories": 200,
+          "metadataPortion": "1.5oz",
           "pdfName": "Crispy Corn Tortilla",
           "pdfSection": "adult",
-          "note": "Tacos(3) = 3 x official PDF per-unit tortilla nutrition, per import-decisions.md §5 — CMG-5503's own ambiguous metadata calories are not used."
+          "note": "Tacos(3) uses CMG-5503's explicit official three-tortilla context nutrition. No value is calculated from the single-tortilla context."
         }
       }
     },
@@ -7897,18 +8029,19 @@
         "Tortillas"
       ],
       "nutrition": {
-        "calories": 140,
+        "calories": 130,
         "protein": 2,
-        "carbs": 18,
+        "carbs": 19,
         "totalFat": 6,
-        "satFat": 0,
+        "satFat": 1,
         "transFat": 0,
+        "cholesterol": 0,
         "sodium": 0,
         "fiber": 2,
         "sugars": 0
       },
       "maxQuantity": 1,
-      "defaultOrder": 0,
+      "defaultOrder": 4,
       "source": {
         "provider": "Chipotle",
         "restaurantId": 469,
@@ -7921,15 +8054,11 @@
           "role": "selectable_component"
         },
         "nutrition": {
-          "method": "live_full_nutrition",
+          "method": "pdf_portion_disambiguated",
+          "pdfName": "Crispy Corn Tortilla",
+          "pdfSection": "kids",
           "liveItemId": "CMG-5403",
-          "livePortion": "1oz",
-          "liveValidation": "accepted",
-          "pdfName": null,
-          "pdfSection": null,
-          "metadataCalories": 140,
-          "metadataPortion": "1oz",
-          "note": "Current live full nutrition is authoritative; cholesterol remains unavailable because the live endpoint omits it and no confident corresponding PDF row exists."
+          "note": "2 Crispy Corn Tortillas is one selectable Kids Build Your Own serving containing two tortillas. Its direct official kids 2 ea panel is used as-is and must not be multiplied again at runtime."
         }
       }
     },
@@ -7946,12 +8075,13 @@
         "totalFat": 5,
         "satFat": 0,
         "transFat": 0,
+        "cholesterol": 0,
         "sodium": 320,
         "fiber": 1,
         "sugars": 0
       },
       "maxQuantity": 1,
-      "defaultOrder": 0,
+      "defaultOrder": 3,
       "source": {
         "provider": "Chipotle",
         "restaurantId": 469,
@@ -7964,15 +8094,11 @@
           "role": "selectable_component"
         },
         "nutrition": {
-          "method": "live_full_nutrition",
+          "method": "pdf_portion_disambiguated",
+          "pdfName": "Flour Tortilla (taco)",
+          "pdfSection": "kids",
           "liveItemId": "CMG-5404",
-          "livePortion": "2oz",
-          "liveValidation": "accepted",
-          "pdfName": null,
-          "pdfSection": null,
-          "metadataCalories": 170,
-          "metadataPortion": "2oz",
-          "note": "Current live full nutrition is authoritative; cholesterol remains unavailable because the live endpoint omits it and no confident corresponding PDF row exists."
+          "note": "2 Soft Flour Tortillas is one selectable Kids Build Your Own serving containing two tortillas. Its direct official kids 2 ea panel is used as-is and must not be multiplied again at runtime."
         }
       }
     },
@@ -7994,7 +8120,7 @@
         "sugars": 0
       },
       "maxQuantity": 1,
-      "defaultOrder": 0,
+      "defaultOrder": 5,
       "source": {
         "provider": "Chipotle",
         "restaurantId": 469,
@@ -8016,6 +8142,87 @@
           "metadataCalories": 80,
           "metadataPortion": "1oz",
           "note": "Current live full nutrition is authoritative; cholesterol remains unavailable because the live endpoint omits it and no confident corresponding PDF row exists."
+        }
+      }
+    },
+    {
+      "id": "chipotle-cmg-4026-burrito-base",
+      "name": "Tortilla",
+      "categories": [
+        "Included Ingredients"
+      ],
+      "nutrition": {
+        "calories": 320,
+        "protein": 8,
+        "carbs": 50,
+        "totalFat": 9,
+        "satFat": 0.5,
+        "cholesterol": 0,
+        "sodium": 600,
+        "fiber": 3,
+        "sugars": 0
+      },
+      "maxQuantity": 1,
+      "defaultOrder": 0,
+      "source": {
+        "provider": "Chipotle",
+        "restaurantId": 469,
+        "menu": {
+          "itemIds": [
+            "CMG-4026"
+          ],
+          "itemType": "IncludedBase",
+          "itemCategory": "Burrito",
+          "role": "selectable_component"
+        },
+        "nutrition": {
+          "method": "approved_equivalent_official_record",
+          "pdfName": "Flour Tortilla (burrito)",
+          "pdfSection": "adult",
+          "note": "The numeric nutrition is sourced from the official PDF's adult Flour Tortilla (burrito) row (320cal/1ea). Its required inclusion in adult Burritos and use as the adult Quesadilla tortilla were manually verified against Chipotle's official live nutrition calculator UI; no included-base CMG id exists or is invented (import-decisions.md §6)."
+        }
+      }
+    },
+    {
+      "id": "chipotle-salad-supergreens-base",
+      "name": "Supergreens Salad Mix",
+      "categories": [
+        "Included Ingredients"
+      ],
+      "nutrition": {
+        "calories": 15,
+        "protein": 1,
+        "carbs": 3,
+        "totalFat": 0,
+        "satFat": 0,
+        "sodium": 15,
+        "fiber": 2,
+        "sugars": 1
+      },
+      "maxQuantity": 1,
+      "defaultOrder": 0,
+      "source": {
+        "provider": "Chipotle",
+        "restaurantId": 469,
+        "menu": {
+          "itemIds": [
+            "CMG-302",
+            "CMG-305",
+            "CMG-306",
+            "CMG-303",
+            "CMG-301",
+            "CMG-304",
+            "CMG-311"
+          ],
+          "itemType": "IncludedBase",
+          "itemCategory": "Salad",
+          "role": "selectable_component"
+        },
+        "nutrition": {
+          "method": "pdf_exact_name",
+          "pdfName": "Supergreens Salad Mix",
+          "pdfSection": "adult",
+          "note": "No CMG id exists for the Salad greens/base in any captured source (calculator-menu.json, menu-rules.json, menu-metadata.json, online-meals.json) — confirmed absent, not merely unfound. Sourced directly from the official PDF row (3oz/15cal) per import-decisions.md §3."
         }
       }
     },
@@ -8145,7 +8352,7 @@
       ],
       "defaultVariantId": "chipotle-protein-steak-normal",
       "maxQuantity": 1,
-      "defaultOrder": 0,
+      "defaultOrder": 10,
       "source": {
         "provider": "Chipotle",
         "restaurantId": 469,
@@ -8191,7 +8398,7 @@
         "sugars": 0
       },
       "maxQuantity": 1,
-      "defaultOrder": 0,
+      "defaultOrder": 10,
       "source": {
         "provider": "Chipotle",
         "restaurantId": 469,
@@ -8235,7 +8442,7 @@
         "cholesterol": 80
       },
       "maxQuantity": 1,
-      "defaultOrder": 0,
+      "defaultOrder": 10,
       "source": {
         "provider": "Chipotle",
         "restaurantId": 469,
@@ -8279,7 +8486,7 @@
         "cholesterol": 40
       },
       "maxQuantity": 1,
-      "defaultOrder": 0,
+      "defaultOrder": 10,
       "source": {
         "provider": "Chipotle",
         "restaurantId": 469,
@@ -8323,7 +8530,7 @@
         "cholesterol": 40
       },
       "maxQuantity": 1,
-      "defaultOrder": 0,
+      "defaultOrder": 10,
       "source": {
         "provider": "Chipotle",
         "restaurantId": 469,
@@ -8474,7 +8681,7 @@
       ],
       "defaultVariantId": "chipotle-protein-chicken-normal",
       "maxQuantity": 1,
-      "defaultOrder": 0,
+      "defaultOrder": 7,
       "source": {
         "provider": "Chipotle",
         "restaurantId": 469,
@@ -8520,7 +8727,7 @@
         "sugars": 0
       },
       "maxQuantity": 1,
-      "defaultOrder": 0,
+      "defaultOrder": 7,
       "source": {
         "provider": "Chipotle",
         "restaurantId": 469,
@@ -8564,7 +8771,7 @@
         "cholesterol": 125
       },
       "maxQuantity": 1,
-      "defaultOrder": 0,
+      "defaultOrder": 7,
       "source": {
         "provider": "Chipotle",
         "restaurantId": 469,
@@ -8608,7 +8815,7 @@
         "cholesterol": 65
       },
       "maxQuantity": 1,
-      "defaultOrder": 0,
+      "defaultOrder": 7,
       "source": {
         "provider": "Chipotle",
         "restaurantId": 469,
@@ -8652,7 +8859,7 @@
         "cholesterol": 65
       },
       "maxQuantity": 1,
-      "defaultOrder": 0,
+      "defaultOrder": 7,
       "source": {
         "provider": "Chipotle",
         "restaurantId": 469,
@@ -8803,7 +9010,7 @@
       ],
       "defaultVariantId": "chipotle-protein-carnitas-normal",
       "maxQuantity": 1,
-      "defaultOrder": 0,
+      "defaultOrder": 12,
       "source": {
         "provider": "Chipotle",
         "restaurantId": 469,
@@ -8849,7 +9056,7 @@
         "sugars": 0
       },
       "maxQuantity": 1,
-      "defaultOrder": 0,
+      "defaultOrder": 12,
       "source": {
         "provider": "Chipotle",
         "restaurantId": 469,
@@ -8893,7 +9100,7 @@
         "cholesterol": 65
       },
       "maxQuantity": 1,
-      "defaultOrder": 0,
+      "defaultOrder": 12,
       "source": {
         "provider": "Chipotle",
         "restaurantId": 469,
@@ -8937,7 +9144,7 @@
         "cholesterol": 30
       },
       "maxQuantity": 1,
-      "defaultOrder": 0,
+      "defaultOrder": 12,
       "source": {
         "provider": "Chipotle",
         "restaurantId": 469,
@@ -8981,7 +9188,7 @@
         "cholesterol": 30
       },
       "maxQuantity": 1,
-      "defaultOrder": 0,
+      "defaultOrder": 12,
       "source": {
         "provider": "Chipotle",
         "restaurantId": 469,
@@ -9050,7 +9257,8 @@
       ],
       "defaultVariantId": "chipotle-protein-veggie-normal",
       "maxQuantity": 1,
-      "defaultOrder": 0,
+      "defaultOrder": 15,
+      "hideFromIngredientView": true,
       "source": {
         "provider": "Chipotle",
         "restaurantId": 469,
@@ -9090,7 +9298,8 @@
         "sugars": 0
       },
       "maxQuantity": 1,
-      "defaultOrder": 0,
+      "defaultOrder": 15,
+      "hideFromIngredientView": true,
       "source": {
         "provider": "Chipotle",
         "restaurantId": 469,
@@ -9128,7 +9337,8 @@
         "sugars": 0
       },
       "maxQuantity": 1,
-      "defaultOrder": 0,
+      "defaultOrder": 15,
+      "hideFromIngredientView": true,
       "source": {
         "provider": "Chipotle",
         "restaurantId": 469,
@@ -9274,7 +9484,7 @@
       ],
       "defaultVariantId": "chipotle-protein-beef-barbacoa-normal",
       "maxQuantity": 1,
-      "defaultOrder": 0,
+      "defaultOrder": 11,
       "source": {
         "provider": "Chipotle",
         "restaurantId": 469,
@@ -9320,7 +9530,7 @@
         "sugars": 0
       },
       "maxQuantity": 1,
-      "defaultOrder": 0,
+      "defaultOrder": 11,
       "source": {
         "provider": "Chipotle",
         "restaurantId": 469,
@@ -9364,7 +9574,7 @@
         "cholesterol": 65
       },
       "maxQuantity": 1,
-      "defaultOrder": 0,
+      "defaultOrder": 11,
       "source": {
         "provider": "Chipotle",
         "restaurantId": 469,
@@ -9408,7 +9618,7 @@
         "cholesterol": 30
       },
       "maxQuantity": 1,
-      "defaultOrder": 0,
+      "defaultOrder": 11,
       "source": {
         "provider": "Chipotle",
         "restaurantId": 469,
@@ -9452,7 +9662,7 @@
         "cholesterol": 30
       },
       "maxQuantity": 1,
-      "defaultOrder": 0,
+      "defaultOrder": 11,
       "source": {
         "provider": "Chipotle",
         "restaurantId": 469,
@@ -9603,7 +9813,7 @@
       ],
       "defaultVariantId": "chipotle-protein-sofritas-normal",
       "maxQuantity": 1,
-      "defaultOrder": 0,
+      "defaultOrder": 14,
       "source": {
         "provider": "Chipotle",
         "restaurantId": 469,
@@ -9649,7 +9859,7 @@
         "sugars": 1.7
       },
       "maxQuantity": 1,
-      "defaultOrder": 0,
+      "defaultOrder": 14,
       "source": {
         "provider": "Chipotle",
         "restaurantId": 469,
@@ -9693,7 +9903,7 @@
         "cholesterol": 0
       },
       "maxQuantity": 1,
-      "defaultOrder": 0,
+      "defaultOrder": 14,
       "source": {
         "provider": "Chipotle",
         "restaurantId": 469,
@@ -9737,7 +9947,7 @@
         "cholesterol": 0
       },
       "maxQuantity": 1,
-      "defaultOrder": 0,
+      "defaultOrder": 14,
       "source": {
         "provider": "Chipotle",
         "restaurantId": 469,
@@ -9781,7 +9991,7 @@
         "cholesterol": 0
       },
       "maxQuantity": 1,
-      "defaultOrder": 0,
+      "defaultOrder": 16,
       "source": {
         "provider": "Chipotle",
         "restaurantId": 469,
@@ -9931,7 +10141,7 @@
       ],
       "defaultVariantId": "chipotle-protein-pollo-asado-normal",
       "maxQuantity": 1,
-      "defaultOrder": 0,
+      "defaultOrder": 6,
       "source": {
         "provider": "Chipotle",
         "restaurantId": 469,
@@ -9977,7 +10187,7 @@
         "sugars": 0
       },
       "maxQuantity": 1,
-      "defaultOrder": 0,
+      "defaultOrder": 6,
       "source": {
         "provider": "Chipotle",
         "restaurantId": 469,
@@ -10020,7 +10230,7 @@
         "sugars": 1
       },
       "maxQuantity": 1,
-      "defaultOrder": 0,
+      "defaultOrder": 6,
       "source": {
         "provider": "Chipotle",
         "restaurantId": 469,
@@ -10063,7 +10273,7 @@
         "sugars": 1
       },
       "maxQuantity": 1,
-      "defaultOrder": 0,
+      "defaultOrder": 6,
       "source": {
         "provider": "Chipotle",
         "restaurantId": 469,
@@ -10106,7 +10316,7 @@
         "sugars": 1
       },
       "maxQuantity": 1,
-      "defaultOrder": 0,
+      "defaultOrder": 6,
       "source": {
         "provider": "Chipotle",
         "restaurantId": 469,
@@ -10150,7 +10360,7 @@
         "cholesterol": 0
       },
       "maxQuantity": 1,
-      "defaultOrder": 0,
+      "defaultOrder": 17,
       "source": {
         "provider": "Chipotle",
         "restaurantId": 469,
@@ -10194,7 +10404,7 @@
         "cholesterol": 0
       },
       "maxQuantity": 1,
-      "defaultOrder": 0,
+      "defaultOrder": 14,
       "source": {
         "provider": "Chipotle",
         "restaurantId": 469,
@@ -10238,7 +10448,7 @@
         "cholesterol": 30
       },
       "maxQuantity": 1,
-      "defaultOrder": 0,
+      "defaultOrder": 16,
       "source": {
         "provider": "Chipotle",
         "restaurantId": 469,
@@ -10531,16 +10741,16 @@
     },
     "note": "menu-rules.json was deliberately not read by this importer: source-analysis.md §4 confirms calculator-menu.json already carries identical build-rule fields (maxContents, contentGroups, defaultContent, etc.) for every id in its own restaurant-scoped universe, and menu-rules.json/menu-metadata.json are template/national-catalog sources that must never expand restaurant-469 availability beyond calculator-menu.json (import-decisions.md §1).",
     "logicalRecordCounts": {
-      "total": 149,
+      "total": 151,
       "menuItems": 77,
-      "ingredients": 72,
+      "ingredients": 74,
       "buildContainers": 8,
-      "selectableComponents": 72,
+      "selectableComponents": 74,
       "standaloneSidesAndDrinks": 55,
       "preconfiguredMeals": 11
     },
     "nutritionAttachment": {
-      "withFullNutrition": 149,
+      "withFullNutrition": 151,
       "unresolved": 13,
       "unresolvedByReason": {
         "unsupported_preconfigured_meal": 13

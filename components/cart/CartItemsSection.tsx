@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import Image from "next/image";
+import Image from "@/components/ui/AppImage";
 import CartItemCard from "@/components/cart/CartItemCard";
 import { formatCartItemName } from "@/lib/cart/displayLabels";
 import { getAllRestaurants } from "@/lib/restaurants";

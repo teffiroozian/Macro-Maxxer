@@ -400,9 +400,10 @@ function validateReferences(
   for (const entry of entriesById.values()) {
     if (entry.kind !== "menuItem") continue;
     const direct = entry.value.ingredients === undefined ? [] : requireStringArray(entry.value.ingredients, `${entry.path}.ingredients`, context, "relationships");
-    for (const id of direct) {
+    for (const ingredientEntry of direct) {
+      const id = ingredientEntry.split(":", 1)[0];
       references += 1;
-      if (!ingredientIds.has(id)) addFinding(context, "error", "relationships", "broken_ingredient_reference", `${entry.id} references missing ingredient ${id}.`, { recordIds: [entry.id, id] });
+      if (!entriesById.has(id)) addFinding(context, "error", "relationships", "broken_ingredient_reference", `${entry.id} references missing composition record ${id}.`, { recordIds: [entry.id, id] });
     }
     const customization = isObject(entry.value.customization) ? entry.value.customization : undefined;
     for (const category of objectArray(customization?.ingredientCategories) ?? []) {
@@ -532,8 +533,8 @@ function validateSpecialCases(
     "chipotle-salad": { calories: 415, protein: 34, carbs: 21, totalFat: 23, satFat: 5.5, sodium: 1175, fiber: 3, sugars: 13 },
     "chipotle-quesadilla": { calories: 830, protein: 58, carbs: 53, totalFat: 40, satFat: 18.5, cholesterol: 215, sodium: 1480, fiber: 3, sugars: 0 },
     "chipotle-kids-quesadilla": { calories: 280, protein: 23, carbs: 14, totalFat: 13.5, satFat: 6.5, cholesterol: 95, sodium: 500, sugars: 0 },
-    "chipotle-taco": { calories: 140, protein: 12.7, carbs: 13, totalFat: 4.8, satFat: 1, sodium: 263.3, fiber: 0, sugars: 0 },
-    "chipotle-tacos-3": { calories: 420, protein: 38, carbs: 39, totalFat: 14.5, satFat: 3, sodium: 790, fiber: 0, sugars: 0 },
+    "chipotle-taco": { calories: 143, protein: 12.7, carbs: 13, totalFat: 5.3, satFat: 1, transFat: 0, sodium: 263.3, fiber: 0, sugars: 0 },
+    "chipotle-tacos-3": { calories: 430, protein: 39, carbs: 40, totalFat: 15, satFat: 3.5, transFat: 0, sodium: 790, fiber: 2, sugars: 0 },
   };
   for (const [id, panel] of Object.entries(expected)) if (!nutritionMatches(nutrition(id), panel)) addFinding(context, "error", "special_cases", "approved_container_nutrition_mismatch", `${id} no longer matches its approved default/base composition.`, { recordIds: [id] });
   const coreNames = ["chicken", "steak", "carnitas", "beef-barbacoa", "sofritas"];
@@ -653,7 +654,7 @@ function validateKids(
   context: ReturnType<typeof createValidationContext<CheckName>>,
 ): void {
   const liveItems = isObject(liveFile.items) ? liveFile.items : {};
-  const sourceIds = ["CMG-3002", "CMG-3003", "CMG-3004", "CMG-3005", "CMG-3006", "CMG-3013", "CMG-3102", "CMG-3103", "CMG-3104", "CMG-3105", "CMG-3111", "CMG-5401", "CMG-5403", "CMG-5404", "CMG-1401", "CMG-1402", "CMG-5552", "CMG-5553", "CMG-5554"];
+  const sourceIds = ["CMG-3002", "CMG-3003", "CMG-3004", "CMG-3005", "CMG-3006", "CMG-3013", "CMG-3102", "CMG-3103", "CMG-3104", "CMG-3105", "CMG-3111", "CMG-5401", "CMG-1401", "CMG-1402", "CMG-5552", "CMG-5553", "CMG-5554"];
   const allEntries = [...entriesById.values()];
   let matched = 0;
   for (const sourceId of sourceIds) {
@@ -666,9 +667,25 @@ function validateKids(
     if (!entry || !live || !generated || !nutritionContainsExpected(generated, live)) addFinding(context, "error", "kids", "kids_direct_nutrition_mismatch", `${sourceId} does not preserve its kids-specific direct live nutrition.`, { recordIds: [sourceId] });
     else matched += 1;
   }
+  const kidsByoTortillas: Record<string, JsonObject> = {
+    "CMG-5403": { calories: 130, protein: 2, carbs: 19, totalFat: 6 },
+    "CMG-5404": { calories: 170, protein: 5, carbs: 27, totalFat: 5 },
+  };
+  for (const [sourceId, expected] of Object.entries(kidsByoTortillas)) {
+    const entry = allEntries.find((candidate) => {
+      const ids = stringArray(menuTraceFor(candidate.value)?.itemIds) ?? [];
+      return candidate.kind === "ingredient" && ids.length === 1 && ids[0] === sourceId;
+    });
+    const generated = entry && nutritionFor(entry.value);
+    if (!entry || !nutritionContainsExpected(generated, expected)) {
+      addFinding(context, "error", "kids", "kids_context_nutrition_mismatch", `${sourceId} does not preserve its authoritative two-tortilla Kids BYO panel.`, { recordIds: [sourceId] });
+    } else {
+      matched += 1;
+    }
+  }
   const kidsFountain = entriesById.get("chipotle-cmg-5551");
   if (!kidsFountain || variantsFor(kidsFountain.value).length === 0) addFinding(context, "error", "kids", "kids_fountain_variants_missing", "Kids 16oz fountain container has no flavors.", { recordIds: ["CMG-5551"] });
-  setCheckDetails(context, "kids", { directKidsSourceRecords: sourceIds.length, matchedDirectKidsRecords: matched, kidsFountainVariants: variantsFor(kidsFountain?.value ?? {}).length });
+  setCheckDetails(context, "kids", { directKidsSourceRecords: sourceIds.length + Object.keys(kidsByoTortillas).length, matchedDirectKidsRecords: matched, kidsFountainVariants: variantsFor(kidsFountain?.value ?? {}).length });
 }
 
 function validateVisibility(

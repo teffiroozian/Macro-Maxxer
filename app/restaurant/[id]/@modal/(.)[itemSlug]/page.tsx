@@ -12,7 +12,7 @@ export default async function ItemModalPage({
 
   if (!routeData) notFound();
 
-  const { restaurant, item, addons } = routeData;
+  const { restaurant, item, addons, initialVariantId } = routeData;
 
   return (
     <ItemRouteModal
@@ -24,6 +24,7 @@ export default async function ItemModalPage({
       ingredients={restaurant.ingredients}
       customizationRules={restaurant.customizationRules}
       closeBehavior="back"
+      initialVariantId={initialVariantId}
     />
   );
 }

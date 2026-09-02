@@ -32,11 +32,40 @@ export type IngredientNutritionContexts = Record<
   IngredientRelationshipNutrition
 >;
 
+export type SourceProvenanceValue =
+  | string
+  | number
+  | boolean
+  | null
+  | SourceProvenanceValue[]
+  | { [key: string]: SourceProvenanceValue | undefined };
+
+export type GeneratedMenuSourceIdentity = {
+  provider: string;
+  restaurantId?: string | number;
+  menu: {
+    itemIds?: string[];
+    itemType?: string;
+    itemCategory?: string;
+    role?: string;
+    [key: string]: SourceProvenanceValue | undefined;
+  };
+  nutrition?: {
+    method?: string;
+    [key: string]: SourceProvenanceValue | undefined;
+  };
+  [key: string]: SourceProvenanceValue | undefined;
+};
+
 export type MenuSourceIdentity = {
   menu: {
     tags: string[];
     pins: string[];
   };
+  // Generated restaurants retain their complete source trace here. Keeping
+  // this separate from the stable runtime menu identity means consumers
+  // that only need tags/pins remain restaurant-agnostic.
+  generated?: GeneratedMenuSourceIdentity;
 };
 
 // item variants allow for different versions of the same base item, 
@@ -50,6 +79,11 @@ export type ItemVariant = {
   categories: string[];
   servingType?: ServingType;
   source?: MenuSourceIdentity;
+  // Presentation-only variant families can span several generated source
+  // records. The selected variant remains the generated variant/record id,
+  // while this points at the canonical generated parent record persisted in
+  // carts and used for strict catalog lookup.
+  canonicalItemId?: string;
   // Parent-variant -> ingredient nutrition selected by an official source tag.
   ingredientNutritionContexts?: IngredientNutritionContexts;
 };
@@ -205,29 +239,44 @@ export type MenuItem = {
   sourceOnly?: boolean;
 };
 
-export type IngredientItem = {
+export type IngredientItemBase = {
   id: string;
   name: string;
   image?: string;
 
   categories: string[];
 
-  nutrition: Nutrition;
-
   // Every currently referenced official unit for a context-dependent visible
   // ingredient. A parent relationship selects one of these by source tag.
   contextualNutritionUnits?: IngredientRelationshipNutrition[];
 
-  variants?: ItemVariant[];
-  // Source of truth for default variant selection; falls back to the first variant when missing or invalid.
-  defaultVariantId?: string;
-
   maxQuantity: number;
   defaultOrder: number;
+
+  source?: MenuSourceIdentity;
 
   hideVariantSelector?: boolean;
   hideFromIngredientView?: boolean;
 };
+
+export type DirectNutritionIngredientItem = IngredientItemBase & {
+  nutrition: Nutrition;
+  variants?: ItemVariant[];
+  // Source of truth for default variant selection; falls back to the first variant when missing or invalid.
+  defaultVariantId?: string;
+};
+
+export type VariantContainerIngredientItem = IngredientItemBase & {
+  // Generated variant containers deliberately do not duplicate a selected
+  // variant's nutrition onto their parent record.
+  nutrition?: undefined;
+  variants: [ItemVariant, ...ItemVariant[]];
+  defaultVariantId: string;
+};
+
+export type IngredientItem =
+  | DirectNutritionIngredientItem
+  | VariantContainerIngredientItem;
 
 
 // Menu JSON files contain restaurant menu content only; identity/metadata lives in data/restaurants/index.json.

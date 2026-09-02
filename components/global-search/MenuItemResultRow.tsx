@@ -1,8 +1,9 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import Image from "next/image";
+import Image from "@/components/ui/AppImage";
 import { macroColorTokens } from "@/components/nutrition/macroColorTokens";
+import { formatMacroDisplayNumber } from "@/components/nutrition/macroDisplay";
 import VariantSelector from "@/components/VariantSelector";
 import { useGlobalSearch } from "@/components/GlobalSearchContext";
 import { useMenuItemCartAdapter } from "@/components/menu-item-card/useMenuItemCartAdapter";
@@ -62,10 +63,10 @@ export default function MenuItemResultRow({
   }, [isAddFeedbackVisible]);
 
   const macroSegments = [
-    { key: "calories", text: `${nutrition.calories} cal`, className: macroColorTokens.calories.valueClassName },
-    { key: "protein", text: `${nutrition.protein}g P`, className: macroColorTokens.protein.valueClassName },
-    { key: "carbs", text: `${nutrition.carbs}g C`, className: macroColorTokens.carbs.valueClassName },
-    { key: "totalFat", text: `${nutrition.totalFat}g F`, className: macroColorTokens.totalFat.valueClassName },
+    { key: "calories", text: `${formatMacroDisplayNumber(nutrition.calories)} cal`, className: macroColorTokens.calories.valueClassName },
+    { key: "protein", text: `${formatMacroDisplayNumber(nutrition.protein)}g P`, className: macroColorTokens.protein.valueClassName },
+    { key: "carbs", text: `${formatMacroDisplayNumber(nutrition.carbs)}g C`, className: macroColorTokens.carbs.valueClassName },
+    { key: "totalFat", text: `${formatMacroDisplayNumber(nutrition.totalFat)}g F`, className: macroColorTokens.totalFat.valueClassName },
   ];
 
   const handleQuickAdd = () => {

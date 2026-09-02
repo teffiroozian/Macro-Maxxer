@@ -1,4 +1,5 @@
 import { Zap } from "lucide-react";
+import { formatProteinScoreDisplay } from "@/components/nutrition/macroDisplay";
 import type { ProteinScoreTier } from "@/lib/nutrition";
 
 // Sits in the content column, directly above the nutrition stat row. A soft
@@ -60,7 +61,7 @@ export default function ProteinScorePill({
   className?: string;
 }) {
   const styles = tierStyles[tier];
-  const roundedScore = Math.round(scorePerHundredCalories * 10) / 10;
+  const displayScore = formatProteinScoreDisplay(scorePerHundredCalories);
 
   return (
     <div
@@ -70,7 +71,7 @@ export default function ProteinScorePill({
         <Zap className={`h-2.5 w-2.5 ${styles.icon}`} strokeWidth={2.5} aria-hidden="true" />
       </span>
       <span>
-        <span className={`font-bold ${styles.value}`}>{roundedScore}g protein</span>
+        <span className={`font-bold ${styles.value}`}>{displayScore}g protein</span>
         <span className={`ml-0.5 ${styles.supporting}`}>/ 100 cal</span>
       </span>
     </div>

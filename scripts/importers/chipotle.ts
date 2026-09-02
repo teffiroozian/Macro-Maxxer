@@ -17,10 +17,11 @@ import {
   CHIPOTLE_ADULT_TORTILLA_IMPLICIT_BASE,
   CHIPOTLE_ADULT_QUESADILLA_IMPLICIT_BASE,
   CHIPOTLE_KIDS_QUESADILLA_IMPLICIT_BASE,
+  CHIPOTLE_KIDS_BYO_TORTILLA_NUTRITION_BY_ITEM_ID,
   CHIPOTLE_PDF_KNOWN_UNMATCHED_NAMES,
   CHIPOTLE_PDF_NAME_ALIASES,
   CHIPOTLE_SALAD_IMPLICIT_BASE,
-  CHIPOTLE_TACO_TORTILLA_PDF_PER_UNIT,
+  CHIPOTLE_TACO_TORTILLA_NUTRITION_BY_CONTEXT,
 } from "./chipotle-nutrition-mappings";
 
 const CALCULATOR_MENU_PATH = resolve("data/raw/chipotle/calculator-menu.json");
@@ -95,7 +96,17 @@ type RawMetadataItem = {
   groupName?: string;
   nutrition: RawMetadataNutritionField[];
 };
-type RawMenuMetadata = { items: Record<string, RawMetadataItem> };
+type RawMenuMetadataGroupItem = { menuItemId: string; sortOrder: number };
+type RawMenuMetadataGroup = { menuItemType?: string; items?: RawMenuMetadataGroupItem[] };
+type RawMenuMetadataItemSection = { name: string; items?: RawMenuMetadataGroupItem[] };
+type RawMenuMetadata = {
+  items: Record<string, RawMetadataItem>;
+  groups?: RawMenuMetadataGroup[];
+  // Keyed by content-group name (e.g. "RiceContentGroup", "Toppings",
+  // "PremiumContentGroup") — each section is the live calculator/ordering
+  // UI's own official display order for every selectable item within it.
+  itemSections?: Record<string, RawMenuMetadataItemSection>;
+};
 
 type RawLiveNutrition = {
   tcal: number;
@@ -133,7 +144,13 @@ type RawNutritionRecord = {
 };
 type RawNutritionFile = { restaurant: string; records: RawNutritionRecord[] };
 
-type RawOnlineMealContent = { itemId: string; itemName: string; quantity: number };
+type RawOnlineMealContent = {
+  itemId: string;
+  itemName: string;
+  quantity: number;
+  customizationId?: number;
+  customizationName?: string | null;
+};
 type RawOnlineMealEntree = {
   itemId: string;
   itemName: string;
@@ -177,6 +194,7 @@ type SourceTrace = {
     itemType: string | null;
     itemCategory: string | null;
     contentGroupName?: string | null;
+    buildBaseItemId?: string;
     role:
       | "standalone_product"
       | "build_container"
@@ -209,7 +227,7 @@ type GeneratedMenuItem = Omit<MenuItem, "nutrition" | "variants" | "source"> & {
   source: SourceTrace;
 };
 
-type GeneratedIngredient = Omit<IngredientItem, "nutrition" | "variants"> & {
+type GeneratedIngredient = Omit<IngredientItem, "nutrition" | "variants" | "source"> & {
   nutrition?: Nutrition;
   variants?: GeneratedVariant[];
   source: SourceTrace;
@@ -538,6 +556,77 @@ async function main(): Promise<void> {
 
   const pdfIndex = buildPdfIndex(nutritionFile);
   const restaurantId = calculatorMenu.restaurantId;
+
+  // menu-metadata.json's per-meal-type groups (Bowl, Burrito, Tacos, ...)
+  // each list their preconfigured entree ids with an official sortOrder —
+  // this is the current live Chipotle UI's own display order (verified
+  // against chipotle.com: Pollo Asado, Chicken, Steak, Beef Barbacoa,
+  // Carnitas, Sofritas, then Veggie/Guacamole/Queso Blanco/Cheese Only).
+  // Every entree id appears in exactly one group, so a flat search across
+  // all groups resolves the official order for any protein/context entree.
+  const officialSortOrderByEntreeId = new Map<string, number>();
+  for (const group of menuMetadata.groups ?? []) {
+    for (const item of group.items ?? []) {
+      officialSortOrderByEntreeId.set(item.menuItemId, item.sortOrder);
+    }
+  }
+  function officialEntreeSortOrder(itemId: string): number | undefined {
+    return officialSortOrderByEntreeId.get(itemId);
+  }
+
+  // menu-metadata.json's top-level itemSections is the live calculator's
+  // own per-content-group display order (e.g. section "Toppings" put
+  // Cilantro Lime Sauce, then Guacamole, then Fresh Tomato Salsa, Roasted
+  // Chili-Corn, Tomatillo-Green, Tomatillo-Red, ... — verified directly
+  // against chipotle.com; the raw per-entree `contents` array order that
+  // was previously used for this does NOT reliably match it). Every raw
+  // content record already carries its own contentGroupName identifying
+  // which section it belongs to for that occurrence — a small number of
+  // itemTypes (adult "Toppings", the Burrito "Double Wrap" Option) have an
+  // empty contentGroupName in the source, where the itemType name itself is
+  // the matching section key (both "Toppings" and "Option" exist as
+  // sections). Using the content's own group name/type is what keeps this
+  // correct automatically as future menu refreshes/LTOs change section
+  // contents, rather than hardcoding a fixed id-to-order table.
+  const itemSectionOrderByKey = new Map<string, Map<string, number>>();
+  for (const [sectionKey, section] of Object.entries(menuMetadata.itemSections ?? {})) {
+    const byItemId = new Map<string, number>();
+    for (const item of section.items ?? []) {
+      byItemId.set(item.menuItemId, item.sortOrder);
+    }
+    itemSectionOrderByKey.set(sectionKey, byItemId);
+  }
+  // menuMetadata.itemSections' own "Toppings" section order has been
+  // manually checked against the live chipotle.com ordering UI twice now
+  // and found wrong both times (it does not match the actual rendered
+  // topping order) — this explicit list is the verified-correct one and
+  // takes priority over the itemSections-derived value for exactly these
+  // shared topping ids, wherever they appear (Bowl/Burrito/Salad/Tacos/
+  // Kids-BYO all resolve the same underlying generated ingredient record,
+  // so one override here is reflected everywhere the ingredient is shown).
+  // Rice/Beans/Tortillas and all other sections still use the itemSections
+  // lookup below, which has not been reported wrong.
+  const VERIFIED_TOPPING_ORDER_BY_ITEM_ID: Record<string, number> = {
+    "CMG-5412": 1, // Cilantro Lime Sauce
+    "CMG-1029": 2, // Queso Blanco
+    "CMG-1001": 3, // Guacamole
+    "CMG-5201": 4, // Fresh Tomato Salsa
+    "CMG-5202": 5, // Roasted Chili-Corn Salsa
+    "CMG-5353": 6, // Chipotle-Honey Vinaigrette
+    "CMG-5203": 7, // Tomatillo-Green Chili Salsa
+    "CMG-5204": 8, // Tomatillo-Red Chili Salsa
+    "CMG-5251": 9, // Sour Cream
+    "CMG-5101": 10, // Fajita Veggies
+    "CMG-5252": 11, // Cheese
+    "CMG-5351": 12, // Romaine Lettuce
+  };
+  function officialContentSortOrder(content: RawContent): number | undefined {
+    const verifiedOrder = VERIFIED_TOPPING_ORDER_BY_ITEM_ID[content.itemId];
+    if (verifiedOrder !== undefined) return verifiedOrder;
+    const sectionKey = content.contentGroupName || content.itemType;
+    return itemSectionOrderByKey.get(sectionKey)?.get(content.itemId);
+  }
+
   const unresolved: UnresolvedRecord[] = [];
   const generatedItems: GeneratedMenuItem[] = [];
   const generatedIngredients: GeneratedIngredient[] = [];
@@ -892,13 +981,16 @@ async function main(): Promise<void> {
 
   for (const [itemType, ids] of contentIdsByType) {
     if (itemType === "Tortillas") continue; // handled specially below (taco-tortilla PDF override + kids/adult context)
-    for (const itemId of ids) {
+    // Falls back to first-occurrence position only if a content id is ever
+    // missing from menuMetadata.itemSections (shouldn't happen in practice).
+    for (const [orderWithinType, itemId] of [...ids].entries()) {
       const content = rawContentById.get(itemId);
       if (!content) continue;
       if (isNullSelection(itemId, content.itemName)) continue;
       const id = `chipotle-${slugify(itemId)}`;
       if (generatedIngredientIds.has(id)) continue;
       generatedIngredientIds.add(id);
+      const officialOrder = officialContentSortOrder(content) ?? orderWithinType;
       if (itemId === "CMG-5551") {
         const { variants } = buildKidsFountainVariants(itemId);
         generatedIngredients.push({
@@ -909,7 +1001,7 @@ async function main(): Promise<void> {
           variants,
           defaultVariantId: variants[0]?.id,
           maxQuantity: 1,
-          defaultOrder: 0,
+          defaultOrder: officialOrder,
           source: {
             provider: "Chipotle",
             restaurantId,
@@ -927,7 +1019,12 @@ async function main(): Promise<void> {
         });
         continue;
       }
-      const category = categoryForIngredientName(content.itemName);
+      const category =
+        content.itemType === "Side"
+          ? "Kids Side"
+          : content.itemType === "Beverage"
+            ? "Kids Drink"
+            : categoryForIngredientName(content.itemName);
       const { nutrition, trace } = ingredientNutrition(itemId, content.itemName, "adult", id);
       generatedIngredients.push({
         id,
@@ -935,7 +1032,7 @@ async function main(): Promise<void> {
         categories: [category],
         nutrition,
         maxQuantity: 1,
-        defaultOrder: 0,
+        defaultOrder: officialOrder,
         source: {
           provider: "Chipotle",
           restaurantId,
@@ -951,12 +1048,10 @@ async function main(): Promise<void> {
   }
 
   // ------------------------------------------------------------------------
-  // Taco tortillas — per import-decisions.md §5, nutrition uses the official
-  // PDF per-unit value x actual taco count instead of CMG-5501/CMG-5503's own
-  // ambiguous metadata calorie values. CMG-5501/CMG-5503 remain the ordering
-  // identities; two generated ingredient records exist (single vs trio) since
-  // their composed nutrition genuinely differs (never merged, per the "do not
-  // merge records whose nutrition differs materially" rule).
+  // Taco tortillas have distinct official single- and three-tortilla panels.
+  // CMG-5501/CMG-5503 remain the ordering identities in both contexts, while
+  // each generated context record carries its own direct nutrition rather
+  // than multiplying rounded values from the other context.
   // ------------------------------------------------------------------------
 
   type TortillaKey = "soft_flour" | "crispy_corn";
@@ -966,27 +1061,34 @@ async function main(): Promise<void> {
     return `chipotle-tortilla-${key === "soft_flour" ? "soft-flour" : "crispy-corn"}-${contextSuffix}`;
   }
 
-  for (const [key, def] of Object.entries(CHIPOTLE_TACO_TORTILLA_PDF_PER_UNIT) as Array<
-    [TortillaKey, (typeof CHIPOTLE_TACO_TORTILLA_PDF_PER_UNIT)[TortillaKey]]
-  >) {
+  for (const [tortillaOrder, [key, def]] of (
+    Object.entries(CHIPOTLE_TACO_TORTILLA_NUTRITION_BY_CONTEXT) as Array<
+      [TortillaKey, (typeof CHIPOTLE_TACO_TORTILLA_NUTRITION_BY_CONTEXT)[TortillaKey]]
+    >
+  ).entries()) {
+    // TortillaContentGroup's own official order (menu-metadata.json) puts
+    // Crispy Corn before Soft Flour for the adult Taco context.
+    const tortillaContent = rawContentById.get(def.sourceItemId);
+    const officialTortillaOrder =
+      (tortillaContent ? officialContentSortOrder(tortillaContent) : undefined) ?? tortillaOrder;
     const singleId = tortillaIngredientId(key, "taco");
     const trioId = tortillaIngredientId(key, "tacos-3");
     generatedIngredients.push({
       id: singleId,
       name: sanitizeDisplayName(def.label),
       categories: ["Tortillas"],
-      nutrition: def.nutrition,
+      nutrition: def.single,
       maxQuantity: 1,
-      defaultOrder: 0,
+      defaultOrder: officialTortillaOrder,
       source: {
         provider: "Chipotle",
         restaurantId,
         menu: { itemIds: [def.sourceItemId], itemType: "Tortillas", itemCategory: "Content", role: "selectable_component" },
         nutrition: {
-          method: "pdf_per_unit_override",
+          method: "manual_verification",
           pdfName: def.label,
           pdfSection: "adult",
-          note: `Single Taco = 1 x official PDF per-unit tortilla nutrition, per import-decisions.md §5 — ${def.sourceItemId}'s own ambiguous metadata calories are not used.`,
+          note: `Single Taco uses its explicit official one-tortilla context nutrition. ${def.sourceItemId} remains the source/selection identity; no value is derived from the three-tortilla context.`,
         },
       },
     });
@@ -994,48 +1096,132 @@ async function main(): Promise<void> {
       id: trioId,
       name: sanitizeDisplayName(def.label),
       categories: ["Tortillas"],
-      nutrition: scaleNutrition(def.nutrition, 3),
+      nutrition: def.trio,
       maxQuantity: 1,
-      defaultOrder: 0,
+      defaultOrder: officialTortillaOrder,
       source: {
         provider: "Chipotle",
         restaurantId,
         menu: { itemIds: [def.sourceItemId], itemType: "Tortillas", itemCategory: "Content", role: "selectable_component" },
         nutrition: {
-          method: "pdf_per_unit_override",
+          method: "live_full_nutrition",
+          liveItemId: def.sourceItemId,
+          livePortion: def.trioPortion,
+          liveValidation: "accepted",
+          metadataCalories: def.trio.calories,
+          metadataPortion: def.trioPortion,
           pdfName: def.label,
           pdfSection: "adult",
-          note: `Tacos(3) = 3 x official PDF per-unit tortilla nutrition, per import-decisions.md §5 — ${def.sourceItemId}'s own ambiguous metadata calories are not used.`,
+          note: `Tacos(3) uses ${def.sourceItemId}'s explicit official three-tortilla context nutrition. No value is calculated from the single-tortilla context.`,
         },
       },
     });
   }
 
-  // Kids-BYO tortillas (CMG-5403/5404) and Kids-Quesadilla tortilla
-  // (CMG-5401) have their own unambiguous metadata values that already match
-  // the PDF's kids-section rows exactly (source-analysis.md §6) — used as-is.
+  // Kids-BYO tortillas (CMG-5403/5404) use the official kids 2 ea panels,
+  // while Kids-Quesadilla tortilla (CMG-5401) keeps its direct captured 1oz
+  // panel. Each generated record is already one complete selectable serving.
+  // Their official order also comes from TortillaContentGroup, where
+  // Kids-BYO's own pair is Soft then Crispy — genuinely different from the
+  // adult Taco pair above, preserved since each context has its own ids.
   for (const kidsTortillaId of ["CMG-5403", "CMG-5404", "CMG-5401"]) {
     if (!rawContentById.has(kidsTortillaId)) continue;
     const content = rawContentById.get(kidsTortillaId)!;
     const id = ingredientIdFor(kidsTortillaId);
     if (generatedIngredientIds.has(id)) continue;
     generatedIngredientIds.add(id);
-    const { nutrition, trace } = ingredientNutrition(kidsTortillaId, content.itemName, "kids", id);
+    const kidsByoNutrition =
+      CHIPOTLE_KIDS_BYO_TORTILLA_NUTRITION_BY_ITEM_ID[kidsTortillaId];
+    const resolved = kidsByoNutrition
+      ? {
+          nutrition: kidsByoNutrition.nutrition,
+          trace: {
+            method: "pdf_portion_disambiguated" as const,
+            pdfName: kidsByoNutrition.pdfName,
+            pdfSection: "kids" as const,
+            liveItemId: kidsTortillaId,
+            note: `${content.itemName} is one selectable Kids Build Your Own serving containing two tortillas. Its direct official kids 2 ea panel is used as-is and must not be multiplied again at runtime.`,
+          },
+        }
+      : ingredientNutrition(kidsTortillaId, content.itemName, "kids", id);
     generatedIngredients.push({
       id,
       name: sanitizeDisplayName(content.itemName),
       categories: ["Tortillas"],
-      nutrition,
+      nutrition: resolved.nutrition,
       maxQuantity: 1,
-      defaultOrder: 0,
+      defaultOrder: officialContentSortOrder(content) ?? 0,
       source: {
         provider: "Chipotle",
         restaurantId,
         menu: { itemIds: [kidsTortillaId], itemType: "Tortillas", itemCategory: "Content", role: "selectable_component" },
-        nutrition: trace,
+        nutrition: resolved.trace,
       },
     });
   }
+
+  // The source graph has two required format bases with official nutrition
+  // but no dedicated CMG child identity: an adult Burrito's tortilla and a
+  // Salad's Supergreens mix. They were already used when composing the
+  // generated container totals; emitting them as generated ingredient
+  // records also makes that composition addressable by presets and the
+  // runtime builder. These are format-level records, not hand-authored
+  // per-meal ingredient lists.
+  const burritoBaseTortillaId = "chipotle-cmg-4026-burrito-base";
+  generatedIngredientIds.add(burritoBaseTortillaId);
+  generatedIngredients.push({
+    id: burritoBaseTortillaId,
+    name: "Tortilla",
+    categories: ["Included Ingredients"],
+    nutrition: CHIPOTLE_ADULT_TORTILLA_IMPLICIT_BASE.nutrition,
+    maxQuantity: 1,
+    defaultOrder: 0,
+    source: {
+      provider: "Chipotle",
+      restaurantId,
+      menu: {
+        itemIds: ["CMG-4026"],
+        itemType: "IncludedBase",
+        itemCategory: "Burrito",
+        role: "selectable_component",
+      },
+      nutrition: {
+        method: "approved_equivalent_official_record",
+        pdfName: CHIPOTLE_ADULT_TORTILLA_IMPLICIT_BASE.pdfName,
+        pdfSection: "adult",
+        note: CHIPOTLE_ADULT_TORTILLA_IMPLICIT_BASE.note,
+      },
+    },
+  });
+
+  const saladSupergreensBaseId = "chipotle-salad-supergreens-base";
+  generatedIngredientIds.add(saladSupergreensBaseId);
+  generatedIngredients.push({
+    id: saladSupergreensBaseId,
+    name: CHIPOTLE_SALAD_IMPLICIT_BASE.label,
+    categories: ["Included Ingredients"],
+    nutrition: CHIPOTLE_SALAD_IMPLICIT_BASE.nutrition,
+    maxQuantity: 1,
+    defaultOrder: 0,
+    source: {
+      provider: "Chipotle",
+      restaurantId,
+      menu: {
+        itemIds: activeEntrees
+          .filter((entree) => entree.itemType === "Salad")
+          .map((entree) => entree.itemId),
+        itemType: "IncludedBase",
+        itemCategory: "Salad",
+        role: "selectable_component",
+      },
+      nutrition: {
+        method: "pdf_exact_name",
+        pdfName: CHIPOTLE_SALAD_IMPLICIT_BASE.pdfName,
+        pdfSection: "adult",
+        note: CHIPOTLE_SALAD_IMPLICIT_BASE.note,
+      },
+    },
+  });
 
   // ------------------------------------------------------------------------
   // Protein registry: canonical per-protein ingredient with Half/Normal/Extra
@@ -1242,7 +1428,17 @@ async function main(): Promise<void> {
         variants: variants as ItemVariant[] as unknown as GeneratedVariant[],
         defaultVariantId: `chipotle-protein-${proteinSlug}-normal`,
         maxQuantity: 1,
-        defaultOrder: 0,
+        // Standard context always resolves via the Burrito entree (the
+        // first "standard"-format entree for every protein, per the raw
+        // source's own entree ordering) — its official menu-metadata.json
+        // group sortOrder is the live Chipotle UI's actual protein order.
+        defaultOrder: officialEntreeSortOrder(primary.itemId) ?? 0,
+        // Veggie is a structural no-protein identity (0cal/0g placeholder;
+        // its real default nutrition lives on guac/fajita-veggie toppings,
+        // see proteinNutrition above) — kept for source fidelity/provenance
+        // but never a real selectable protein, so it's hidden from every
+        // ingredient-facing UI surface without removing the record itself.
+        hideFromIngredientView: proteinName === "Veggie" ? true : undefined,
         source: {
           provider: "Chipotle",
           restaurantId,
@@ -1281,7 +1477,15 @@ async function main(): Promise<void> {
         categories: ["Proteins"],
         nutrition,
         maxQuantity: 1,
-        defaultOrder: 0,
+        // Each context (taco, tacos-3, kids-byo, kids-quesadilla) has its
+        // own official group in menu-metadata.json with its own sortOrder —
+        // e.g. Kids-Quesadilla places Guacamole before Sofritas while
+        // Kids-BYO places it after, a genuine context-specific difference
+        // preserved here since each context already has its own protein id.
+        defaultOrder: officialEntreeSortOrder(entree.itemId) ?? 0,
+        // See the standard-context Veggie note above — same structural
+        // no-protein identity, hidden from ingredient UI in every context.
+        hideFromIngredientView: proteinName === "Veggie" ? true : undefined,
         source: {
           provider: "Chipotle",
           restaurantId,
@@ -1852,21 +2056,109 @@ async function main(): Promise<void> {
   // Online meals (preconfigured/curated builds)
   // ------------------------------------------------------------------------
 
-  function findComponentNutrition(itemId: string): Nutrition | undefined {
-    const tortillaKey = TORTILLA_KEY_BY_ITEM_ID[itemId];
-    if (tortillaKey) return CHIPOTLE_TACO_TORTILLA_PDF_PER_UNIT[tortillaKey].nutrition;
-    const nullContent = rawContentById.get(itemId);
-    if (nullContent && isNullSelection(itemId, nullContent.itemName)) {
-      return { calories: 0, protein: 0, carbs: 0, totalFat: 0, satFat: 0, transFat: 0, sodium: 0, fiber: 0, sugars: 0 };
+  function generatedBuildBaseItemId(entree: RawEntree): string | undefined {
+    if (entree.itemType === "Burrito") return "chipotle-burrito";
+    if (entree.itemType === "Bowl") return "chipotle-bowl";
+    if (entree.itemType === "Salad") return "chipotle-salad";
+    if (entree.itemType === "Quesadilla") return "chipotle-quesadilla";
+    if (entree.itemType === "KidsBYO") return "chipotle-kids-build-your-own";
+    if (entree.itemType === "KidsQuesadilla") return "chipotle-kids-quesadilla";
+    if (entree.itemType === "Tacos") {
+      return formatGroupFor(entree) === "taco-trio"
+        ? "chipotle-tacos-3"
+        : "chipotle-taco";
     }
-    const id = ingredientIdFor(itemId);
+    return undefined;
+  }
+
+  function effectiveGeneratedIngredientNutrition(
+    ingredient: GeneratedIngredient,
+  ): Nutrition | undefined {
     return (
-      generatedIngredients.find((ingredient) => ingredient.id === id)?.nutrition ??
-      generatedIngredients
-        .flatMap((ingredient) => ingredient.variants ?? [])
-        .find((variant) => variant.source?.menu.itemIds.includes(itemId))?.nutrition ??
-      generatedItems.find((item) => item.source.menu.itemIds.includes(itemId))?.nutrition
+      ingredient.nutrition ??
+      ingredient.variants?.find(
+        (variant) => variant.id === ingredient.defaultVariantId,
+      )?.nutrition ??
+      ingredient.variants?.[0]?.nutrition
     );
+  }
+
+  function portionSuffix(value: string | null | undefined): "light" | "extra" | undefined {
+    const normalized = value?.trim().toLowerCase();
+    return normalized === "light" || normalized === "extra"
+      ? normalized
+      : undefined;
+  }
+
+  type ResolvedMealComponent = {
+    id: string;
+    entry: string;
+    nutrition: Nutrition;
+  };
+
+  function resolvedMealIngredient(
+    itemId: string,
+    customizationName: string | null | undefined,
+    entreeContext: ProteinContext,
+  ): ResolvedMealComponent | undefined {
+    const tortillaKey = TORTILLA_KEY_BY_ITEM_ID[itemId];
+    if (tortillaKey) {
+      const suffix = entreeContext === "taco-trio" ? "tacos-3" : "taco";
+      const id = tortillaIngredientId(tortillaKey, suffix);
+      const ingredient = generatedIngredients.find((candidate) => candidate.id === id);
+      const nutrition = ingredient && effectiveGeneratedIngredientNutrition(ingredient);
+      return nutrition ? { id, entry: id, nutrition } : undefined;
+    }
+
+    // Half/Extra protein source identities are variants on the generated
+    // context-specific protein parent. A preset selects that one parent at
+    // the corresponding portion; it must not add a second protein record on
+    // top of the base entree's normal protein.
+    for (const ingredient of generatedIngredients) {
+      if (!ingredient.categories.some((category) => category === "Proteins")) continue;
+      const variant = ingredient.variants?.find((candidate) =>
+        candidate.source?.menu.itemIds.includes(itemId),
+      );
+      if (!variant?.nutrition) continue;
+      const portion = variant.label.trim().toLowerCase();
+      if (portion !== "half" && portion !== "extra") continue;
+      return {
+        id: ingredient.id,
+        entry: `${ingredient.id}:${portion === "half" ? "light" : "extra"}`,
+        nutrition: variant.nutrition,
+      };
+    }
+
+    const ingredient = generatedIngredients.find((candidate) =>
+      candidate.source.menu.itemIds.includes(itemId),
+    );
+    if (ingredient) {
+      const baseNutrition = effectiveGeneratedIngredientNutrition(ingredient);
+      if (!baseNutrition) return undefined;
+      const portion = portionSuffix(customizationName);
+      const multiplier = portion === "light" ? 0.5 : portion === "extra" ? 2 : 1;
+      return {
+        id: ingredient.id,
+        entry: portion ? `${ingredient.id}:${portion}` : ingredient.id,
+        nutrition: scaleNutrition(baseNutrition, multiplier),
+      };
+    }
+
+    // A curated meal can include a separately purchasable side. Keep the
+    // canonical generated item identity here; the runtime adapter projects
+    // any such referenced record into the ingredient catalog without
+    // copying its nutrition or provenance.
+    const item = generatedItems.find((candidate) =>
+      candidate.source.menu.itemIds.includes(itemId),
+    );
+    if (!item?.nutrition) return undefined;
+    const portion = portionSuffix(customizationName);
+    const multiplier = portion === "light" ? 0.5 : portion === "extra" ? 2 : 1;
+    return {
+      id: item.id,
+      entry: portion ? `${item.id}:${portion}` : item.id,
+      nutrition: scaleNutrition(item.nutrition, multiplier),
+    };
   }
 
   function mealSignature(meal: RawOnlineMeal): string {
@@ -1902,37 +2194,116 @@ async function main(): Promise<void> {
       });
       continue;
     }
-    const baseNutrition =
-      generatedItems.find((item) => item.source.menu.itemIds.includes(primary.entree!.itemId))?.nutrition ??
-      findComponentNutrition(primary.entree.itemId);
-    const mealComponents = [...primary.entree.contents, ...primary.sides, ...primary.drinks];
-    const componentNutritions = mealComponents.map((content) => ({
-      content,
-      nutrition: findComponentNutrition(content.itemId),
-    }));
-    const missing = componentNutritions.filter((entry) => entry.nutrition === undefined);
-    if (missing.length > 0 || !baseNutrition) {
+    const sourceEntree = activeEntrees.find(
+      (entree) => entree.itemId === primary.entree!.itemId,
+    );
+    const entreeContext = sourceEntree && formatGroupFor(sourceEntree);
+    const buildBaseItemId = sourceEntree
+      ? generatedBuildBaseItemId(sourceEntree)
+      : undefined;
+    if (!sourceEntree || !entreeContext || entreeContext === "catering" || !buildBaseItemId) {
       pushUnresolved({
         standardizedRecordId: id,
         name: primary.mealName,
         recordType: "preconfigured_meal",
         sourceItemIds: group.map((meal) => meal.mealId),
-        reason: "missing_full_nutrition",
-        details: `"${primary.mealName}" could not be fully composed: ${!baseNutrition ? `base entree ${primary.entree.itemId} has no resolved nutrition` : `component(s) ${missing.map((entry) => entry.content.itemId).join(", ")} have no resolved nutrition`}.`,
+        reason: "ambiguous_context",
+        details: `"${primary.mealName}" uses base entree ${primary.entree.itemId}, which could not be mapped to a supported generated builder context.`,
       });
       continue;
     }
-    const composed = addNutrition(
-      baseNutrition,
-      ...componentNutritions.map((entry) => scaleNutrition(entry.nutrition as Nutrition, entry.content.quantity)),
-    );
+
+    const resolvedById = new Map<string, ResolvedMealComponent>();
+    const addResolved = (component: ResolvedMealComponent) => {
+      resolvedById.set(component.id, component);
+    };
+
+    const baseProteinId = sourceEntree.primaryFillingName
+      ? proteinIngredientIdByContext.get(
+          `${slugify(sourceEntree.primaryFillingName)}|${entreeContext}`,
+        )
+      : undefined;
+    if (baseProteinId) {
+      const protein = generatedIngredients.find(
+        (ingredient) => ingredient.id === baseProteinId,
+      );
+      const nutrition = protein && effectiveGeneratedIngredientNutrition(protein);
+      if (nutrition) addResolved({ id: baseProteinId, entry: baseProteinId, nutrition });
+    }
+
+    // Format-level included bases come from the same verified mappings used
+    // by the generated build containers. Explicit source contents overwrite
+    // these by id below, so the Kids Quesadilla tortilla is never duplicated.
+    const includedBaseIds =
+      sourceEntree.itemType === "Burrito"
+        ? [burritoBaseTortillaId]
+        : sourceEntree.itemType === "Salad"
+          ? [saladSupergreensBaseId]
+          : sourceEntree.itemType === "KidsQuesadilla"
+            ? [ingredientIdFor("CMG-5401"), ingredientIdFor("CMG-5252")]
+            : [];
+    for (const baseId of includedBaseIds) {
+      const ingredient = generatedIngredients.find((candidate) => candidate.id === baseId);
+      const nutrition = ingredient && effectiveGeneratedIngredientNutrition(ingredient);
+      if (nutrition) addResolved({ id: baseId, entry: baseId, nutrition });
+    }
+
+    const rawComponents = [
+      ...primary.entree.contents,
+      ...primary.sides,
+      ...primary.drinks,
+    ];
+    const missing: RawOnlineMealContent[] = [];
+    for (const content of rawComponents) {
+      const nullContent = rawContentById.get(content.itemId);
+      if (nullContent && isNullSelection(content.itemId, nullContent.itemName)) continue;
+      const resolved = resolvedMealIngredient(
+        content.itemId,
+        "customizationName" in content &&
+          typeof content.customizationName === "string"
+          ? content.customizationName
+          : undefined,
+        entreeContext,
+      );
+      if (!resolved) {
+        missing.push(content);
+        continue;
+      }
+      const tacoContextMultiplier =
+        entreeContext === "taco-single" &&
+        !resolved.id.toLowerCase().endsWith("-taco")
+          ? 1 / 3
+          : 1;
+      addResolved({
+        ...resolved,
+        nutrition: scaleNutrition(
+          resolved.nutrition,
+          content.quantity * tacoContextMultiplier,
+        ),
+      });
+    }
+    if (missing.length > 0 || resolvedById.size === 0) {
+      pushUnresolved({
+        standardizedRecordId: id,
+        name: primary.mealName,
+        recordType: "preconfigured_meal",
+        sourceItemIds: group.map((meal) => meal.mealId),
+        reason: "missing_required_relationship",
+        details: `"${primary.mealName}" could not map component identity/identities ${missing.map((entry) => entry.itemId).join(", ")} into the generated ${buildBaseItemId} ingredient context.`,
+      });
+      continue;
+    }
+
+    const resolvedComponents = [...resolvedById.values()];
+    const composed = addNutrition(...resolvedComponents.map((entry) => entry.nutrition));
     generatedItems.push({
       id,
       name: primary.mealName,
       image: "none",
       categories: ["Preconfigured Meals"],
       servingType: "combo",
-      nutrition: composed ?? baseNutrition,
+      nutrition: composed,
+      ingredients: resolvedComponents.map((component) => component.entry),
       defaultOrder: 0,
       source: {
         provider: "Chipotle",
@@ -1942,13 +2313,14 @@ async function main(): Promise<void> {
           itemType: primary.mealType,
           itemCategory: "OnlineMeal",
           role: "preconfigured_meal",
+          buildBaseItemId,
         },
         nutrition: {
           method: "composed_from_components",
           note:
             group.length > 1
               ? `${group.length} online-meals.json records share this exact composition/price (mealIds: ${group.map((meal) => meal.mealId).join(", ")}) tagged under different mealTypes; canonicalized to one generated record rather than importing duplicates.`
-              : `Composed from base entree (${primary.entree.itemId}) + ${primary.entree.contents.length} entree content item(s) + ${primary.sides.length} side(s) + ${primary.drinks.length} drink(s), each scaled by its own source quantity. The source's free-text calories field ("${primary.calories}") is preserved as provenance only, not used as the computed value.`,
+              : `Resolved base entree ${primary.entree.itemId} into generated build ${buildBaseItemId} and composed its ${resolvedComponents.length} generated ingredient component(s), preserving source portion variants and quantities. The source's free-text calories field ("${primary.calories}") is preserved as provenance only, not used as the computed value.`,
         },
       },
     });
@@ -1968,7 +2340,8 @@ async function main(): Promise<void> {
   const knownIds = new Set(allIds);
   const referenceErrors: string[] = [];
   for (const item of generatedItems) {
-    for (const ingredientId of item.ingredients ?? []) {
+    for (const ingredientEntry of item.ingredients ?? []) {
+      const ingredientId = ingredientEntry.split(":", 1)[0];
       if (!knownIds.has(ingredientId)) referenceErrors.push(`${item.id}.ingredients references missing id ${ingredientId}`);
     }
     for (const category of item.customization?.ingredientCategories ?? []) {

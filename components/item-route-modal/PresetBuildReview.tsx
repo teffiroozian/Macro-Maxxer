@@ -1,7 +1,7 @@
 "use client";
 
 import type { KeyboardEvent } from "react";
-import Image from "next/image";
+import Image from "@/components/ui/AppImage";
 import {
     Bean,
     ChevronRight,
@@ -23,6 +23,7 @@ type SelectedEntry = [string, { item: MenuItem; quantity: number }];
 type IngredientDiffStatus = "added" | "modified";
 
 const CATEGORY_GROUP_ICONS: Record<string, LucideIcon> = {
+    "included ingredients": Lock,
     proteins: Drumstick,
     rice: Sprout,
     beans: Bean,

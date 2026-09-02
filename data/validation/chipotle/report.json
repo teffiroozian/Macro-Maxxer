@@ -1,6 +1,6 @@
 {
   "restaurant": "Chipotle",
-  "validatedAt": "2026-08-31",
+  "validatedAt": "2026-09-01",
   "inputs": {
     "restaurant": "data/generated/chipotle/restaurant.json",
     "unresolved": "data/generated/chipotle/unresolved.json",
@@ -12,9 +12,9 @@
   },
   "valid": true,
   "summary": {
-    "records": 149,
+    "records": 151,
     "menuItems": 77,
-    "ingredients": 72,
+    "ingredients": 74,
     "variants": 88,
     "nutritionCoveragePercent": 100,
     "provenanceCoveragePercent": 100,
@@ -39,10 +39,10 @@
       "info": 0,
       "details": {
         "menuItems": 77,
-        "ingredients": 72,
-        "totalRecords": 149,
+        "ingredients": 74,
+        "totalRecords": 151,
         "variants": 88,
-        "uniqueLogicalIds": 149
+        "uniqueLogicalIds": 151
       }
     },
     "active_menu": {
@@ -64,10 +64,10 @@
       "warnings": 0,
       "info": 0,
       "details": {
-        "coveredRecords": 149,
-        "totalRecords": 149,
+        "coveredRecords": 151,
+        "totalRecords": 151,
         "coveragePercent": 100,
-        "nutritionUnits": 229
+        "nutritionUnits": 231
       }
     },
     "provenance": {
@@ -76,8 +76,8 @@
       "warnings": 0,
       "info": 0,
       "details": {
-        "nutritionUnits": 229,
-        "tracedNutritionUnits": 229,
+        "nutritionUnits": 231,
+        "tracedNutritionUnits": 231,
         "coveragePercent": 100
       }
     },
@@ -87,7 +87,7 @@
       "warnings": 0,
       "info": 0,
       "details": {
-        "ingredientReferences": 193,
+        "ingredientReferences": 269,
         "builderEntreeOptions": 8
       }
     },

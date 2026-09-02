@@ -1,4 +1,4 @@
-import Image from "next/image";
+import Image from "@/components/ui/AppImage";
 import type { ChipotleKidsMealId } from "@/lib/restaurantBuilders/chipotle";
 import SectionEyebrow from "@/components/ui/SectionEyebrow";
 

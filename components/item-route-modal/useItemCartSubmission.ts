@@ -89,8 +89,11 @@ export function useItemCartSubmission({
       optionSelections: standard.optionSelections,
       nutritionPerItem: standard.nutritionPerItem,
     });
+    const canonicalItemId =
+      standard.selectedVariant?.canonicalItemId ?? item.id ?? item.name;
     const nextCartItemPayload = {
       ...standardPayload,
+      itemId: canonicalItemId,
       selection: resolveChipotleStandardItemSelection({
         item,
         restaurantId,
@@ -108,7 +111,6 @@ export function useItemCartSubmission({
     requestAddItem({
       id: crypto.randomUUID(),
       restaurantId,
-      itemId: item.id ?? item.name,
       ...nextCartItemPayload,
     });
   }, [

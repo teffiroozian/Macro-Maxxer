@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState, type CSSProperties } from "react";
 import { createPortal } from "react-dom";
-import Image from "next/image";
+import Image from "@/components/ui/AppImage";
 
 import { useFilterChipActions } from "./useFilterChipActions";
 import { SORT_OPTION_VALUES, type SortOption } from "@/lib/menuSections/sortOptions";

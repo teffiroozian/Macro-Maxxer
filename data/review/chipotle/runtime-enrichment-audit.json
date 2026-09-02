@@ -1,0 +1,535 @@
+{
+  "auditVersion": 1,
+  "auditDate": "2026-08-31",
+  "scope": "Read-only comparison of the hand-built Chipotle runtime menu and the validated generated Chipotle menu. No runtime or dataset mutation was performed.",
+  "inputs": {
+    "old": {
+      "path": "data/restaurants/chipotle.json",
+      "sha256": "da07be0e807924f6e4ae8367de5d6b24ab6f913ef4560f6d0b5591c510d58957"
+    },
+    "generated": {
+      "path": "data/generated/chipotle/restaurant.json",
+      "sha256": "9dda8078ecc4948cacbab44c2c9879c019c5515479a6c14724e59ab5fb0d2c65"
+    },
+    "runtimeTypes": [
+      "types/menu.ts",
+      "types/restaurant.ts",
+      "types/builder.ts",
+      "lib/restaurantBuilders/chipotle/types.ts"
+    ],
+    "runtimeConsumers": [
+      "lib/restaurants.ts",
+      "lib/cart/cartItemLookup.ts",
+      "lib/restaurantBuilders/chipotle/index.ts",
+      "lib/restaurantBuilders/chipotle/highProtein.ts",
+      "lib/restaurantBuilders/chipotle/ingredientMenuItems.ts",
+      "components/restaurant-view/chipotle/ChipotleRestaurantBuilderView.tsx",
+      "components/restaurant-view/chipotle/useChipotleMenuControlAdjustments.ts",
+      "app/page.tsx"
+    ],
+    "chickFilAPrecedent": [
+      "data/review/chick-fil-a/comparison.json",
+      "data/review/chick-fil-a/comparison.md",
+      "data/review/chick-fil-a/migration-readiness.md",
+      "scripts/review/chick-fil-a.ts",
+      "lib/restaurants.ts",
+      "lib/cart/cartItemLookup.ts"
+    ]
+  },
+  "authorityPolicy": {
+    "generatedIsAuthoritativeFor": [
+      "current menu membership and availability",
+      "source identities",
+      "nutrition and portions",
+      "variants where the source models a variant",
+      "build and ingredient relationships",
+      "customization constraints",
+      "Pollo Asado and Chili Lime Chips state",
+      "source-derived rules"
+    ],
+    "oldIsEvidenceOnlyFor": [
+      "Macro Maxxer presentation",
+      "local curated images",
+      "browse taxonomy and relative display order",
+      "navigation labels and navigation artwork",
+      "legacy runtime behavior and identifiers"
+    ]
+  },
+  "counts": {
+    "old": {
+      "items": 60,
+      "ingredients": 24,
+      "topLevelRecords": 84,
+      "variants": 62,
+      "nutritionPanels": 115,
+      "localImageAssignments": 84,
+      "recordsWithEntreeGroup": 60,
+      "recordsWithSource": 13
+    },
+    "generated": {
+      "items": 77,
+      "ingredients": 72,
+      "topLevelRecords": 149,
+      "variants": 88,
+      "nutritionPanels": 229,
+      "recordsWithSource": 149,
+      "itemsWithImagePlaceholder": 77,
+      "ingredientsWithoutImage": 72,
+      "sourceOnlyItems": 3
+    },
+    "mapping": {
+      "highConfidenceOldTopLevelRecords": 72,
+      "highConfidenceOldVariants": 54,
+      "oldRecordsWithoutHighConfidenceCurrentCounterpart": 12,
+      "definitivelyObsoleteOldRecords": 9,
+      "oldRecordsNeedingHumanDecision": 3,
+      "uniqueGeneratedRecordsReachedByHighConfidenceMappings": 104,
+      "generatedRecordsWithNoOldCounterpart": 45
+    }
+  },
+  "fieldAudit": [
+    {
+      "classification": "KEEP GENERATED",
+      "fields": [
+        "id",
+        "source",
+        "nutrition",
+        "servingType",
+        "variants",
+        "defaultVariantId",
+        "maxQuantity",
+        "ingredients",
+        "ingredientRef replacement relationships",
+        "customization",
+        "sourceOnly",
+        "builderConfig relationship IDs",
+        "current names when source naming differs"
+      ],
+      "reason": "These fields encode current official identity, menu state, nutrition, portioning, or relationships. The generated importer and validator own them.",
+      "oldDataToDiscard": {
+        "topLevelNutritionPanels": 53,
+        "variantNutritionPanels": 62,
+        "totalNutritionPanels": 115,
+        "oldSourceObjects": 13,
+        "oldItemIngredientLists": 12,
+        "oldIngredientRefs": 10
+      }
+    },
+    {
+      "classification": "PRESERVE OLD ENRICHMENT",
+      "fields": [
+        "image",
+        "categories as a Macro Maxxer browse overlay",
+        "defaultOrder as relative presentation order",
+        "entreeGroup as a legacy navigation/view grouping",
+        "builderConfig.selectedIngredientCategoryOrder",
+        "builderConfig.selectedIngredientCategoryLabels",
+        "builder navigation labels and local images"
+      ],
+      "reason": "These are presentation decisions not recoverable from official nutrition/menu sources. They should be applied through an enrichment/runtime adapter keyed by generated IDs, never by copying old nutrition or relationships.",
+      "limits": [
+        "Only 72 old records have high-confidence logical mappings.",
+        "One old record may enrich several generated context-specific records.",
+        "Absolute defaultOrder values cannot be copied blindly because the generated menu has 45 genuinely new records.",
+        "Old category and entreeGroup values need reconciliation with generated source categories and the current runtime navigation model."
+      ]
+    },
+    {
+      "classification": "OBSOLETE OLD DATA",
+      "fields": [
+        "all hand-entered nutrition",
+        "all old source identity objects",
+        "old source-derived ingredient/component links",
+        "old portion/variant grouping where current sources model separate products",
+        "old availability",
+        "old product IDs as canonical IDs"
+      ],
+      "reason": "The generated dataset is authoritative and current. Retaining these fields would reintroduce stale products, stale portions, or unsupported identities."
+    },
+    {
+      "classification": "NEEDS HUMAN DECISION",
+      "fields": [
+        "whether old detailed browse categories should fully replace or merely supplement generated categories",
+        "whether regular/large side products should remain separate generated cards or be re-presented as old-style variants",
+        "how the old nine-choice Chipotle navigation maps onto the eight generated build containers plus menu groups",
+        "whether the shared old fruit image is appropriate for the current generic Kid's Fruit record",
+        "whether legacy carts and old item URLs should be migrated or allowed to expire",
+        "image policy for the 45 generated records with no old counterpart"
+      ],
+      "reason": "These choices alter visible product organization, routing, or persistence behavior and are not safe to infer from official source data."
+    }
+  ],
+  "absentOldEnrichmentFields": [
+    "shortName",
+    "searchAliases",
+    "keywords",
+    "description",
+    "featured",
+    "default flag",
+    "browseVisibility",
+    "rankingEligibility",
+    "customSlug",
+    "status badge",
+    "custom UI labels at item level"
+  ],
+  "highConfidenceMappingGroups": [
+    {
+      "group": "sides and kids side",
+      "oldRecordCount": 16,
+      "mappings": [
+        {"old": "chips", "new": ["chipotle-cmg-1002", "chipotle-cmg-1016"]},
+        {"old": "side-of-guacamole", "new": ["chipotle-cmg-1009", "chipotle-cmg-1025"]},
+        {"old": "chips-guacamole", "new": ["chipotle-cmg-1003", "chipotle-cmg-1015"]},
+        {"old": "chips-fresh-tomato-salsa", "new": ["chipotle-cmg-1005"]},
+        {"old": "chips-tomatillo-red-chili-salsa", "new": ["chipotle-cmg-1007"]},
+        {"old": "chips-tomatillo-green-chili-salsa", "new": ["chipotle-cmg-1006"]},
+        {"old": "chips-roasted-chili-corn-salsa", "new": ["chipotle-cmg-1008"]},
+        {"old": "chips-queso-blanco", "new": ["chipotle-cmg-1032", "chipotle-cmg-1033"]},
+        {"old": "side-of-cilantro-lime-sauce", "new": ["chipotle-cmg-5413", "chipotle-cmg-5416"]},
+        {"old": "side-of-fresh-tomato-salsa", "new": ["chipotle-cmg-5201", "chipotle-cmg-5398"]},
+        {"old": "side-of-tomatillo-red-chili-salsa", "new": ["chipotle-cmg-5204", "chipotle-cmg-5500"]},
+        {"old": "side-of-tomatillo-green-chili-salsa", "new": ["chipotle-cmg-5203", "chipotle-cmg-5400"]},
+        {"old": "side-of-roasted-chili-corn-salsa", "new": ["chipotle-cmg-5202", "chipotle-cmg-5399"]},
+        {"old": "side-of-queso-blanco", "new": ["chipotle-cmg-1030", "chipotle-cmg-1031"]},
+        {"old": "tortilla-on-the-side", "new": ["chipotle-cmg-4025"]},
+        {"old": "kids-chips", "new": ["chipotle-cmg-1401"]}
+      ],
+      "preserve": ["local image", "old browse family", "relative order"],
+      "keepGenerated": ["separate source identities", "nutrition", "portion", "membership"]
+    },
+    {
+      "group": "preconfigured high-protein meals",
+      "oldRecordCount": 5,
+      "mappings": [
+        {"old": "double-high-protein-bowl", "new": ["chipotle-meal-56ab2f6e-747d-46f9-9cf6-9ebc2855d86d"]},
+        {"old": "high-protein-high-fiber-bowl", "new": ["chipotle-meal-6ba21999-f6b8-4a83-803a-bf68ef319c5e"]},
+        {"old": "high-protein-low-calorie-bowl", "new": ["chipotle-meal-be88e387-62ed-4271-877c-7216b6485387"]},
+        {"old": "double-high-protein-burrito", "new": ["chipotle-meal-1a3697bb-88c5-4f2e-a061-85ac3cfa0a28"]},
+        {"old": "high-protein-taco", "new": ["chipotle-meal-2991ff70-3dfb-47af-84e0-cbe547e5395f"]}
+      ],
+      "preserve": ["local image", "Protein Meals browse placement", "relative order"],
+      "keepGenerated": ["meal ID", "name punctuation", "nutrition", "entree/components"]
+    },
+    {
+      "group": "protein cups still sold as sides",
+      "oldRecordCount": 2,
+      "mappings": [
+        {"old": "side-of-chicken-high-protein", "new": ["chipotle-cmg-1125"]},
+        {"old": "side-of-steak-high-protein", "new": ["chipotle-cmg-1126"]}
+      ],
+      "preserve": ["local image", "Protein Cups browse placement", "relative order"],
+      "keepGenerated": ["source identity", "nutrition", "portion"]
+    },
+    {
+      "group": "packaged and RTD beverages",
+      "oldRecordCount": 7,
+      "mappings": [
+        {"old": "mexican-coca-cola", "new": ["chipotle-cmg-2810"]},
+        {"old": "mexican-sprite", "new": ["chipotle-cmg-2839"]},
+        {"old": "coke-zero", "new": ["chipotle-cmg-2849"]},
+        {"old": "poppi-strawberry-lemon", "new": ["chipotle-cmg-2884"]},
+        {"old": "poppi-orange", "new": ["chipotle-cmg-2883"]},
+        {"old": "apple-juice", "new": ["chipotle-cmg-2101"]},
+        {"old": "open-water-still", "new": ["chipotle-cmg-2878"]}
+      ],
+      "preserve": ["local image", "Drinks browse placement", "relative order"],
+      "keepGenerated": ["current name", "source identity", "nutrition", "portion"]
+    },
+    {
+      "group": "fountain flavors represented under generated size containers",
+      "oldRecordCount": 13,
+      "oldRecords": [
+        "barqs-root-beer-fountain",
+        "coca-cola-classic-fountain",
+        "coca-cola-life-fountain",
+        "coca-cola-zero-fountain",
+        "diet-coke-fountain",
+        "diet-coke-caffeine-free-fountain",
+        "pibb-xtra-fountain",
+        "sprite-fountain",
+        "fanta-orange-fountain",
+        "powerade-mountain-berry-blast-fountain",
+        "mello-yello-fountain",
+        "chipotle-iced-tea-fountain",
+        "chipotle-sweet-iced-tea-fountain"
+      ],
+      "newContainerRecords": [
+        "chipotle-fountain-22-fl-oz",
+        "chipotle-fountain-32-fl-oz"
+      ],
+      "matchUnit": "old flavor record to same-label variants in both generated size containers",
+      "preserve": ["shared local fountain image", "Fountain Drinks browse label"],
+      "keepGenerated": ["size-container model", "variant IDs", "flavor nutrition", "source identity"]
+    },
+    {
+      "group": "Tractor fountain beverages",
+      "oldRecordCount": 4,
+      "mappings": [
+        {"old": "organic-watermelon-limeade", "new": ["chipotle-cmg-2019", "chipotle-cmg-2020"]},
+        {"old": "organic-lemonade", "new": ["chipotle-cmg-2010", "chipotle-cmg-2011"]},
+        {"old": "organic-mandarin-agua-fresca", "new": ["chipotle-cmg-2012", "chipotle-cmg-2013"]},
+        {"old": "organic-berry-agua-fresca", "new": ["chipotle-cmg-2017", "chipotle-cmg-2018"]}
+      ],
+      "preserve": ["flavor-specific local image", "Tractor Beverages browse placement", "relative order"],
+      "keepGenerated": ["separate size records", "nutrition", "source identity"]
+    },
+    {
+      "group": "kids packaged drinks",
+      "oldRecordCount": 3,
+      "mappings": [
+        {"old": "organic-milk-8-oz", "new": ["chipotle-cmg-5554"]},
+        {"old": "organic-chocolate-milk-8-oz", "new": ["chipotle-cmg-5553"]},
+        {"old": "organic-apple-juice-6-75-oz", "new": ["chipotle-cmg-5552"]}
+      ],
+      "preserve": ["local image", "Kids Drinks browse placement", "relative order"],
+      "keepGenerated": ["name", "source identity", "nutrition", "kids-meal relationship"]
+    },
+    {
+      "group": "tortilla context families",
+      "oldRecordCount": 2,
+      "mappings": [
+        {"old": "crispy-corn-tortilla", "new": ["chipotle-tortilla-crispy-corn-taco", "chipotle-tortilla-crispy-corn-tacos-3", "chipotle-cmg-5403"]},
+        {"old": "soft-flour-tortilla", "new": ["chipotle-tortilla-soft-flour-taco", "chipotle-tortilla-soft-flour-tacos-3", "chipotle-cmg-5404", "chipotle-cmg-5401"]}
+      ],
+      "preserve": ["local image", "user-facing category label where useful"],
+      "keepGenerated": ["context-specific identities", "nutrition", "quantities", "relationships"]
+    },
+    {
+      "group": "topping and component ingredient families",
+      "oldRecordCount": 11,
+      "mappings": [
+        {"old": "romaine-lettuce", "new": ["chipotle-cmg-5351"]},
+        {"old": "cheese", "new": ["chipotle-cmg-5252"]},
+        {"old": "guacamole", "new": ["chipotle-cmg-1001", "chipotle-cmg-5301", "chipotle-cmg-1207", "chipotle-protein-guacamole-kids-byo", "chipotle-protein-guacamole-kids-quesadilla"]},
+        {"old": "cilantro-lime-sauce", "new": ["chipotle-cmg-5412", "chipotle-cmg-5414"]},
+        {"old": "fresh-tomato-salsa", "new": ["chipotle-cmg-5201"]},
+        {"old": "roasted-chili-corn-salsa", "new": ["chipotle-cmg-5202"]},
+        {"old": "tomatillo-green-chili-salsa", "new": ["chipotle-cmg-5203"]},
+        {"old": "tomatillo-red-chili-salsa", "new": ["chipotle-cmg-5204"]},
+        {"old": "sour-cream", "new": ["chipotle-cmg-5251"]},
+        {"old": "fajita-veggies", "new": ["chipotle-cmg-5101"]},
+        {"old": "queso-blanco", "new": ["chipotle-cmg-1029", "chipotle-cmg-1034", "chipotle-cmg-4134", "chipotle-protein-queso-blanco-kids-byo"]}
+      ],
+      "preserve": ["local image", "friendly ingredient category placement"],
+      "keepGenerated": ["context-specific identities", "nutrition", "portion", "relationships"]
+    },
+    {
+      "group": "current protein ingredient families",
+      "oldRecordCount": 5,
+      "mappings": [
+        {"old": "steak", "new": ["chipotle-protein-steak", "chipotle-protein-steak-taco", "chipotle-protein-steak-tacos-3", "chipotle-protein-steak-kids-byo", "chipotle-protein-steak-kids-quesadilla"]},
+        {"old": "chicken", "new": ["chipotle-protein-chicken", "chipotle-protein-chicken-taco", "chipotle-protein-chicken-tacos-3", "chipotle-protein-chicken-kids-byo", "chipotle-protein-chicken-kids-quesadilla"]},
+        {"old": "carnitas", "new": ["chipotle-protein-carnitas", "chipotle-protein-carnitas-taco", "chipotle-protein-carnitas-tacos-3", "chipotle-protein-carnitas-kids-byo", "chipotle-protein-carnitas-kids-quesadilla"]},
+        {"old": "beef-barbacoa", "new": ["chipotle-protein-beef-barbacoa", "chipotle-protein-beef-barbacoa-taco", "chipotle-protein-beef-barbacoa-tacos-3", "chipotle-protein-beef-barbacoa-kids-byo", "chipotle-protein-beef-barbacoa-kids-quesadilla"]},
+        {"old": "sofritas", "new": ["chipotle-protein-sofritas", "chipotle-protein-sofritas-taco", "chipotle-protein-sofritas-tacos-3", "chipotle-protein-sofritas-kids-byo", "chipotle-protein-sofritas-kids-quesadilla"]}
+      ],
+      "preserve": ["protein image", "Proteins display category"],
+      "keepGenerated": ["all context-specific IDs", "normal/half/extra variants", "nutrition", "relationships"]
+    },
+    {
+      "group": "rice and beans",
+      "oldRecordCount": 4,
+      "mappings": [
+        {"old": "white-rice", "new": ["chipotle-cmg-5001"]},
+        {"old": "brown-rice", "new": ["chipotle-cmg-5002"]},
+        {"old": "black-beans", "new": ["chipotle-cmg-5051"]},
+        {"old": "pinto-beans", "new": ["chipotle-cmg-5052"]}
+      ],
+      "preserve": ["local image", "Rice/Beans display category", "relative order"],
+      "keepGenerated": ["source IDs", "nutrition", "relationship limits"]
+    }
+  ],
+  "oldRecordsWithoutHighConfidenceCurrentCounterpart": {
+    "obsolete": [
+      {"oldId": "side-of-chicken-al-pastor-high-protein", "name": "Side of Chicken al Pastor", "recordType": "item", "reason": "Chicken al Pastor is not in the current generated restaurant-469 menu."},
+      {"oldId": "chicken-al-pastor", "name": "Chicken al Pastor", "recordType": "ingredient", "reason": "Chicken al Pastor is not in the current generated restaurant-469 menu."},
+      {"oldId": "topo-chico-mineral-water", "name": "Topo Chico Mineral Water", "recordType": "item", "reason": "No current Topo Chico record; San Pellegrino is a different product and must not inherit its identity or nutrition."},
+      {"oldId": "grapefruit-izze", "name": "Grapefruit Izze", "recordType": "item", "reason": "No current generated counterpart."},
+      {"oldId": "blackberry-izze", "name": "Blackberry Izze", "recordType": "item", "reason": "No current generated counterpart."},
+      {"oldId": "minute-maid-lemonade-fountain", "name": "Minute Maid Lemonade", "recordType": "item", "reason": "Neither current generated fountain size container includes this flavor."},
+      {"oldId": "lemonade-blue-sky-fountain", "name": "Lemonade - Blue Sky", "recordType": "item", "reason": "Neither current generated fountain size container includes this flavor."},
+      {"oldId": "mango-orange-blue-sky-fountain", "name": "Mango Orange - Blue Sky", "recordType": "item", "reason": "Neither current generated fountain size container includes this flavor."},
+      {"oldId": "maine-root-root-beer-fountain", "name": "Maine Root Root Beer", "recordType": "item", "reason": "Neither current generated fountain size container includes this flavor."}
+    ],
+    "needsHumanDecision": [
+      {"oldId": "kids-mandarins", "name": "Kid's Mandarins", "candidateNewIds": ["chipotle-cmg-1402"], "reason": "The current source exposes one generic Kid's Fruit identity, not a mandarin-specific product. The old generic fruit artwork may be reusable, but the old product name/identity is not."},
+      {"oldId": "kids-blueberries", "name": "Kid's Blueberries", "candidateNewIds": ["chipotle-cmg-1402"], "reason": "The current source exposes one generic Kid's Fruit identity, not a blueberry-specific product. The old generic fruit artwork may be reusable, but the old product name/identity is not."},
+      {"oldId": "tortilla", "name": "Tortilla", "candidateNewIds": ["chipotle-cmg-4026", "chipotle-cmg-4025"], "reason": "The old generic 320-calorie build ingredient is not identity-equivalent to current CMG-4026 Double Wrap with Tortilla or the separate CMG-4025 side. Preserve the shared tortilla artwork only after choosing the intended UI target; discard the old nutrition and relationship."}
+    ]
+  },
+  "unmappedOldEnrichment": {
+    "recordAssignments": [
+      "side-of-chicken-al-pastor-high-protein",
+      "chicken-al-pastor",
+      "topo-chico-mineral-water",
+      "grapefruit-izze",
+      "blackberry-izze",
+      "minute-maid-lemonade-fountain",
+      "lemonade-blue-sky-fountain",
+      "mango-orange-blue-sky-fountain",
+      "maine-root-root-beer-fountain"
+    ],
+    "count": 9,
+    "note": "These old record-specific category/order/image assignments have no current product target. Some asset files are visually shared with surviving records, but that does not make the obsolete product assignments current. The two fruit assignments and generic tortilla assignment are tracked as human decisions rather than unmapped."
+  },
+  "generatedRecordsWithNoOldCounterpart": {
+    "count": 45,
+    "groups": [
+      {
+        "group": "source build containers",
+        "count": 8,
+        "ids": ["chipotle-burrito", "chipotle-bowl", "chipotle-salad", "chipotle-quesadilla", "chipotle-taco", "chipotle-tacos-3", "chipotle-kids-build-your-own", "chipotle-kids-quesadilla"]
+      },
+      {
+        "group": "Chili Lime Chips products",
+        "count": 10,
+        "ids": ["chipotle-cmg-5370", "chipotle-cmg-5371", "chipotle-cmg-5372", "chipotle-cmg-5369", "chipotle-cmg-5363", "chipotle-cmg-5362", "chipotle-cmg-5365", "chipotle-cmg-5364", "chipotle-cmg-5366", "chipotle-cmg-5367"]
+      },
+      {
+        "group": "Pollo Asado side",
+        "count": 1,
+        "ids": ["chipotle-cmg-1141"]
+      },
+      {
+        "group": "current beverages",
+        "count": 4,
+        "ids": ["chipotle-cmg-2838", "chipotle-cmg-2022", "chipotle-cmg-2021", "chipotle-cmg-2805"],
+        "names": ["Tractor Organic Lemonade", "Jarritos Guava", "Jarritos Mango", "San Pellegrino Sparkling"]
+      },
+      {
+        "group": "source-only non-food records",
+        "count": 3,
+        "ids": ["chipotle-cmg-6112", "chipotle-cmg-6110", "chipotle-cmg-6111"]
+      },
+      {
+        "group": "current influencer/cross-listed meals",
+        "count": 6,
+        "ids": ["chipotle-meal-653abfb2-3b20-4b17-8638-d6a20b2c340c", "chipotle-meal-3916248a-68fd-4c0f-87e9-38d794e50d7e", "chipotle-meal-2b15ccfe-9059-4e25-9c84-67b5f46c18c9", "chipotle-meal-02774ed8-f878-4dc2-b6cd-5e86977b4907", "chipotle-meal-f4929790-1d6c-4297-a5bd-acdc7f8b67c6", "chipotle-meal-e1d03f68-0189-499b-8c55-403b7058acdd"]
+      },
+      {
+        "group": "new ingredient/context records",
+        "count": 13,
+        "ids": ["chipotle-cmg-4026", "chipotle-cmg-5353", "chipotle-cmg-5354", "chipotle-cmg-1402", "chipotle-cmg-5551", "chipotle-protein-veggie", "chipotle-protein-veggie-taco", "chipotle-protein-veggie-tacos-3", "chipotle-protein-pollo-asado", "chipotle-protein-pollo-asado-taco", "chipotle-protein-pollo-asado-tacos-3", "chipotle-protein-pollo-asado-kids-byo", "chipotle-protein-pollo-asado-kids-quesadilla"]
+      }
+    ]
+  },
+  "runtimeSchemaAndBehaviorGaps": [
+    {
+      "severity": "blocker",
+      "gap": "Chipotle navigation key mismatch",
+      "evidence": "CHIPOTLE_ENTREE_IDS expects bowl, burrito, quesadilla, salad, tacos, high-protein-menu, kids-meal, chips-sides, and drinks. Generated builderConfig exposes burrito, bowl, salad, quesadilla, taco, tacos-3, kids-build-your-own, and kids-quesadilla.",
+      "impact": "Generated taco and kids keys are rejected by URL/state parsing, while high-protein-menu, kids-meal, chips-sides, drinks, and tacos are not present as generated config keys.",
+      "resolution": "Add a runtime/enrichment adapter that preserves the old user-facing navigation model while pointing each choice at generated IDs and source relationships. Do not rewrite generated source identities."
+    },
+    {
+      "severity": "blocker",
+      "gap": "Missing Chipotle-specific builder presentation metadata",
+      "evidence": "Generated builderConfig has entreeOptions and categoryMaxSelections only; the old config also has selectedIngredientCategoryOrder, selectedIngredientCategoryLabels, and chipotle-specific kids/taco/special-variant metadata.",
+      "impact": "Kids selector options are empty, taco shell and special kids behavior lose their configured IDs, and ingredient tabs lose curated labels/order.",
+      "resolution": "Preserve presentation fields and re-key every relationship-bearing value to generated IDs. Generated relationships remain authoritative."
+    },
+    {
+      "severity": "blocker",
+      "gap": "No entreeGroup values in generated items",
+      "evidence": "The old file assigns entreeGroup to all 60 items; the generated file assigns none. Current menu-mode filtering and high-protein editability use entreeGroup.",
+      "impact": "chips-sides, drinks, and high-protein-menu views filter to empty lists; generated preset meals are not recognized by isChipotleEditablePresetBuildItem.",
+      "resolution": "Layer a runtime grouping map over generated IDs or replace legacy entreeGroup checks with generated category/source-role logic."
+    },
+    {
+      "severity": "blocker",
+      "gap": "Runtime and cart imports still point to old Chipotle data",
+      "evidence": "lib/restaurants.ts dynamically loads data/restaurants/chipotle.json and lib/cart/cartItemLookup.ts statically imports it.",
+      "impact": "A partial switch would make page and cart resolution disagree.",
+      "resolution": "When promotion is approved, switch both lookup paths atomically, following the Chick-fil-A precedent."
+    },
+    {
+      "severity": "blocker",
+      "gap": "Legacy IDs, URLs, and persisted carts",
+      "evidence": "Runtime slugs derive from item.id; generated IDs differ for every mapped product, and cart main-item resolution is strict by ID.",
+      "impact": "Existing Chipotle item URLs and persisted carts will stop resolving without redirects/migration. Name fallback does not cover the main cart item.",
+      "resolution": "Choose and implement an old-to-generated ID redirect/cart migration policy using this audit's mapping groups."
+    },
+    {
+      "severity": "blocker",
+      "gap": "Homepage Chipotle editorial IDs are old-format",
+      "evidence": "app/page.tsx references high-protein-high-fiber-bowl, high-protein-low-calorie-bowl, guacamole, queso-blanco, chicken, and fajita-veggies.",
+      "impact": "Homepage walkthrough/preview content will fail to resolve after promotion.",
+      "resolution": "Re-key the editorial selections to generated IDs and verify the intended component contexts."
+    },
+    {
+      "severity": "blocker",
+      "gap": "Generated provenance source shape is not represented by the current runtime source type",
+      "evidence": "MenuItem.source is typed as MenuSourceIdentity with menu.tags and menu.pins, while generated Chipotle records carry provider, restaurantId, menu.itemIds/itemType/itemCategory/role, and nutrition provenance.",
+      "impact": "Importing the generated JSON without an explicit compatible type boundary can fail TypeScript structural checks or encourage an unsafe broad cast that hides real schema differences.",
+      "resolution": "Define a source-provenance union/shared generated-source type or strip provenance only at a typed runtime adapter boundary; do not mutate the generated records."
+    },
+    {
+      "severity": "blocker",
+      "gap": "Eight generated variant-container ingredients omit base nutrition required by IngredientItem",
+      "evidence": "CMG-5551 and the seven standard protein-family parents carry valid variants/defaultVariantId but no top-level nutrition. IngredientItem.nutrition is required, and buildAllChipotleIngredientMenuItems/buildChipotleIngredientMenuItems call scaleNutritionValues on ingredient.nutrition before resolving a default variant.",
+      "impact": "The current Chipotle ingredient adapter can throw or normalize an invalid undefined base when it encounters these records, even though their variants are nutritionally complete.",
+      "resolution": "Teach the runtime adapter to resolve default-variant nutrition for variant-container ingredients, and widen the data-facing type accordingly. Do not fabricate or copy base nutrition into generated JSON."
+    },
+    {
+      "severity": "high",
+      "gap": "Generated images are placeholders",
+      "evidence": "All 77 generated items use image=none and all 72 generated ingredients omit image; multiple runtime surfaces pass image values directly to next/image.",
+      "impact": "A direct swap would produce missing imagery and can pass the literal string none to image rendering paths that do not uniformly guard it.",
+      "resolution": "Apply mapped local images before promotion and define fallbacks/assets for the 45 new-only records."
+    },
+    {
+      "severity": "high",
+      "gap": "Browse taxonomy and ordering regression",
+      "evidence": "Old items use Chips & Dips, Single Sides, Protein Meals, Protein Cups, Fountain Drinks, Tractor Beverages, Kids Drinks, and Drinks. Generated items mostly collapse to Sides, Beverages, Preconfigured Meals, and entree-format categories.",
+      "impact": "The menu remains data-valid but materially changes browse organization and default order.",
+      "resolution": "Choose an overlay taxonomy and place the 45 new-only records within it."
+    }
+  ],
+  "chickFilAPrecedentFindings": [
+    "Keep registry metadata in data/restaurants/index.json separate from menu generation.",
+    "Treat generated source data as canonical and migrate only explicit production enrichment.",
+    "Switch the page loader and cart lookup together.",
+    "Re-key hard-coded editorial IDs.",
+    "Keep the old file in place temporarily as fallback/reference.",
+    "Use sourceOnly filtering for structural records; Chipotle already has three such records and the shared runtime helper supports it."
+  ],
+  "productDecisions": [
+    {
+      "id": "browse-taxonomy",
+      "question": "Preserve the old detailed Chipotle browse sections as the primary UI taxonomy, or use the generated coarse categories and retain old labels only as secondary grouping?",
+      "recommendation": "Preserve the detailed old taxonomy as an overlay for high-confidence mapped records, then explicitly place new-only records."
+    },
+    {
+      "id": "side-card-grouping",
+      "question": "Should generated regular/large sides remain separate source-identity cards, or should the UI regroup them as variants while retaining generated IDs underneath?",
+      "recommendation": "Keep generated records separate for the first promotion; regroup only through an explicit presentation model later."
+    },
+    {
+      "id": "builder-navigation",
+      "question": "Should the UI keep the old nine-choice chooser with grouped Kids/Tacos/menu sections, or expose the eight generated build containers directly?",
+      "recommendation": "Keep the familiar old chooser and adapt it to generated build IDs; it also preserves Chips & Sides, Drinks, and High Protein entry points."
+    },
+    {
+      "id": "kids-fruit",
+      "question": "May the old shared fruit artwork be used for the source-generic Kid's Fruit record?",
+      "recommendation": "Yes for the image only; do not preserve the Mandarins or Blueberries names/identities."
+    },
+    {
+      "id": "legacy-id-policy",
+      "question": "Should old Chipotle URLs and persisted carts be migrated, redirected, or allowed to expire?",
+      "recommendation": "Redirect old item routes and migrate persisted cart IDs where mappings are one-to-one; invalidate ambiguous/obsolete records with a clear message."
+    },
+    {
+      "id": "new-only-images",
+      "question": "Use restaurant-logo placeholders at launch or curate images before promotion for 45 new-only generated records?",
+      "recommendation": "Require at least category-safe fallbacks before promotion; prioritize the eight build containers, Pollo Asado, Chili Lime Chips, and six current preset meals."
+    }
+  ],
+  "readiness": {
+    "generatedDataAuthoritativeAndValidated": true,
+    "safeAsDirectRuntimeDropIn": false,
+    "readyAfterSimpleFieldOverlayOnly": false,
+    "readyAfterEnrichmentAndRuntimeAdapter": true,
+    "assessment": "The generated dataset is ready to be the canonical Chipotle data source, but promotion should wait for a generated-ID enrichment layer plus navigation, entreeGroup, cart/URL, homepage-ID, and image compatibility work. No nutrition or current-menu data issue blocks promotion."
+  }
+}

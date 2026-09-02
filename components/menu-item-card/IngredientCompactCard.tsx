@@ -1,7 +1,7 @@
 import SurfaceCard from "@/components/ui/SurfaceCard";
 import MacroStat from "@/components/nutrition/MacroStat";
 import type { MenuItem } from "@/types/menu";
-import Image from "next/image";
+import Image from "@/components/ui/AppImage";
 import { Lock } from "lucide-react";
 
 export type CompactOption = { id: string; label: string; disabled?: boolean };

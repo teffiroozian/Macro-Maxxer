@@ -1,0 +1,502 @@
+{
+  "version": 1,
+  "finalizedAt": "2026-09-01",
+  "status": "approved_ready_for_runtime_blockers",
+  "scope": "Planning/configuration only. Generated Chipotle remains unwired and no runtime, raw-source, generated-menu, cart, loader, Next.js, or public-asset change is authorized by this plan.",
+  "inputs": [
+    "data/review/chipotle/runtime-enrichment-audit.md",
+    "data/review/chipotle/runtime-enrichment-audit.json",
+    "data/review/chipotle/runtime-image-enrichment.json",
+    "scripts/review/chipotle-images.ts"
+  ],
+  "authority": {
+    "generatedOwns": [
+      "canonical runtime IDs",
+      "current menu membership",
+      "source identities",
+      "nutrition and portions",
+      "build and ingredient relationships",
+      "availability and source-only state"
+    ],
+    "enrichmentOwns": [
+      "primary browse taxonomy",
+      "relative presentation order",
+      "presentation-only variant families",
+      "legacy navigation labels and grouping",
+      "legacy ID redirect/migration rules",
+      "official remote image lookup"
+    ],
+    "prohibitions": [
+      "Never copy old nutrition, source IDs, portions, or relationships into generated records.",
+      "Never merge or delete generated records to construct a presentation family.",
+      "Never retain an old ID as a canonical item identity.",
+      "Never copy remote images into public assets.",
+      "Never hand-edit image URLs into data/generated/chipotle/restaurant.json."
+    ]
+  },
+  "decisionStatus": {
+    "approvedProductDecisions": 8,
+    "remainingProductDecisions": [],
+    "allEnrichmentDecisionsResolved": true,
+    "readyToProceedToRuntimeBlockers": true
+  },
+  "obsoleteOldRecords": {
+    "policy": "invalidate_gracefully",
+    "migrate": false,
+    "ids": [
+      "side-of-chicken-al-pastor-high-protein",
+      "chicken-al-pastor",
+      "topo-chico-mineral-water",
+      "grapefruit-izze",
+      "blackberry-izze",
+      "minute-maid-lemonade-fountain",
+      "lemonade-blue-sky-fountain",
+      "mango-orange-blue-sky-fountain",
+      "maine-root-root-beer-fountain"
+    ]
+  },
+  "browseTaxonomy": {
+    "mode": "old_macro_maxxer_taxonomy_overlay",
+    "sourceCategoryPolicy": "Generated categories remain unchanged underneath and remain available for relationship logic and diagnostics.",
+    "primaryOrder": [
+      "Chips & Dips",
+      "Single Sides",
+      "Protein Meals",
+      "Protein Cups",
+      "Drinks",
+      "Fountain Drinks",
+      "Tractor Beverages",
+      "Kids Drinks",
+      "Kids"
+    ],
+    "categories": [
+      {
+        "label": "Chips & Dips",
+        "legacyCategory": "Chips & Dips",
+        "generatedRecordIds": [
+          "chipotle-cmg-1002",
+          "chipotle-cmg-1016",
+          "chipotle-cmg-1003",
+          "chipotle-cmg-1015",
+          "chipotle-cmg-1005",
+          "chipotle-cmg-1007",
+          "chipotle-cmg-1006",
+          "chipotle-cmg-1008",
+          "chipotle-cmg-1032",
+          "chipotle-cmg-1033",
+          "chipotle-cmg-5362",
+          "chipotle-cmg-5363",
+          "chipotle-cmg-5364",
+          "chipotle-cmg-5366",
+          "chipotle-cmg-5365",
+          "chipotle-cmg-5367",
+          "chipotle-cmg-5369",
+          "chipotle-cmg-5370",
+          "chipotle-cmg-5371",
+          "chipotle-cmg-5372"
+        ],
+        "newPlacementRule": "All current Chili Lime Chips products belong here. Presentation families collapse applicable regular/large pairs without changing generated identities."
+      },
+      {
+        "label": "Single Sides",
+        "legacyCategory": "Single Sides",
+        "generatedRecordIds": [
+          "chipotle-cmg-1009",
+          "chipotle-cmg-1025",
+          "chipotle-cmg-5413",
+          "chipotle-cmg-5416",
+          "chipotle-cmg-5201",
+          "chipotle-cmg-5398",
+          "chipotle-cmg-5204",
+          "chipotle-cmg-5500",
+          "chipotle-cmg-5203",
+          "chipotle-cmg-5400",
+          "chipotle-cmg-5202",
+          "chipotle-cmg-5399",
+          "chipotle-cmg-1030",
+          "chipotle-cmg-1031",
+          "chipotle-cmg-4025"
+        ],
+        "crossCollectionPolicy": "CMG-5201, CMG-5202, CMG-5203, and CMG-5204 remain generated ingredients/selectable components. A presentation family may expose them only where the generated relationship permits that component; it must not promote them to unconditional standalone menu membership."
+      },
+      {
+        "label": "Protein Meals",
+        "legacyCategory": "Protein Meals",
+        "generatedRecordIds": [
+          "chipotle-meal-653abfb2-3b20-4b17-8638-d6a20b2c340c",
+          "chipotle-meal-3916248a-68fd-4c0f-87e9-38d794e50d7e",
+          "chipotle-meal-2b15ccfe-9059-4e25-9c84-67b5f46c18c9",
+          "chipotle-meal-02774ed8-f878-4dc2-b6cd-5e86977b4907",
+          "chipotle-meal-f4929790-1d6c-4297-a5bd-acdc7f8b67c6",
+          "chipotle-meal-e1d03f68-0189-499b-8c55-403b7058acdd",
+          "chipotle-meal-56ab2f6e-747d-46f9-9cf6-9ebc2855d86d",
+          "chipotle-meal-6ba21999-f6b8-4a83-803a-bf68ef319c5e",
+          "chipotle-meal-be88e387-62ed-4271-877c-7216b6485387",
+          "chipotle-meal-1a3697bb-88c5-4f2e-a061-85ac3cfa0a28",
+          "chipotle-meal-2991ff70-3dfb-47af-84e0-cbe547e5395f"
+        ],
+        "newPlacementRule": "All supported current Influencer and HighProtein generated meals belong here."
+      },
+      {
+        "label": "Protein Cups",
+        "legacyCategory": "Protein Cups",
+        "generatedRecordIds": [
+          "chipotle-cmg-1125",
+          "chipotle-cmg-1126",
+          "chipotle-cmg-1141"
+        ],
+        "newPlacementRule": "Side of Pollo Asado joins the surviving Chicken and Steak protein cups. Chicken al Pastor is not migrated."
+      },
+      {
+        "label": "Drinks",
+        "legacyCategory": "Drinks",
+        "generatedRecordIds": [
+          "chipotle-cmg-2810",
+          "chipotle-cmg-2839",
+          "chipotle-cmg-2849",
+          "chipotle-cmg-2884",
+          "chipotle-cmg-2883",
+          "chipotle-cmg-2101",
+          "chipotle-cmg-2878",
+          "chipotle-cmg-2838",
+          "chipotle-cmg-2022",
+          "chipotle-cmg-2021",
+          "chipotle-cmg-2805"
+        ],
+        "newPlacementRule": "Current Tractor RTD, Jarritos, and San Pellegrino records join the surviving packaged/RTD drinks."
+      },
+      {
+        "label": "Fountain Drinks",
+        "legacyCategory": "Fountain Drinks",
+        "generatedRecordIds": [
+          "chipotle-fountain-22-fl-oz",
+          "chipotle-fountain-32-fl-oz"
+        ],
+        "presentationFamilyIds": [
+          "fountain-coca-cola-classic",
+          "fountain-diet-coke",
+          "fountain-diet-coke-caffeine-free",
+          "fountain-coca-cola-zero",
+          "fountain-coca-cola-life",
+          "fountain-sprite",
+          "fountain-fanta-orange",
+          "fountain-dr-pepper",
+          "fountain-diet-dr-pepper",
+          "fountain-mountain-dew",
+          "fountain-diet-mountain-dew",
+          "fountain-mello-yello",
+          "fountain-pibb-xtra",
+          "fountain-barq-s-root-beer",
+          "fountain-mug-root-beer",
+          "fountain-pepsi",
+          "fountain-diet-pepsi",
+          "fountain-sierra-mist",
+          "fountain-crush-orange",
+          "fountain-powerade-mountain-berry-blast",
+          "fountain-chipotle-iced-tea",
+          "fountain-chipotle-sweet-iced-tea",
+          "fountain-lipton-raspberry-brisk-iced-tea"
+        ],
+        "newPlacementRule": "Render one card per flavor with 22 fl oz and 32 fl oz options. The generated size parents and nested flavor variant IDs remain canonical."
+      },
+      {
+        "label": "Tractor Beverages",
+        "legacyCategory": "Tractor Beverages",
+        "generatedRecordIds": [
+          "chipotle-cmg-2019",
+          "chipotle-cmg-2020",
+          "chipotle-cmg-2010",
+          "chipotle-cmg-2011",
+          "chipotle-cmg-2012",
+          "chipotle-cmg-2013",
+          "chipotle-cmg-2017",
+          "chipotle-cmg-2018"
+        ],
+        "newPlacementRule": "Render one flavor card with 22 fl oz and 32 fl oz generated-record options. The 12 fl oz Tractor RTD remains in Drinks."
+      },
+      {
+        "label": "Kids Drinks",
+        "legacyCategory": "Kids Drinks",
+        "generatedRecordIds": [
+          "chipotle-cmg-5554",
+          "chipotle-cmg-5553",
+          "chipotle-cmg-5552",
+          "chipotle-cmg-5551"
+        ],
+        "newPlacementRule": "CMG-5551 remains the Kids 16 fl oz container with generated flavor variants and is not promoted to the adult Fountain Drinks size choices."
+      },
+      {
+        "label": "Kids",
+        "legacyCategory": "Kids",
+        "generatedRecordIds": [
+          "chipotle-cmg-1401",
+          "chipotle-cmg-1402"
+        ],
+        "newPlacementRule": "Use one current Kid's Fruit identity. Old Mandarins and Blueberries identities disappear."
+      }
+    ],
+    "ingredientPresentation": {
+      "order": [
+        "Included Ingredients",
+        "Proteins",
+        "Rice",
+        "Beans",
+        "Toppings",
+        "Side"
+      ],
+      "labelRules": {
+        "Proteins": ["Proteins"],
+        "Rice": ["Rice"],
+        "Beans": ["Beans"],
+        "Toppings": ["Salsas", "Sour Cream", "Cheese", "Queso", "Fajita Veggies", "Lettuce", "Sauces", "Guacamole", "Dressing"],
+        "Side": ["Tortillas", "Beverages", "Toppings"]
+      },
+      "relationshipPolicy": "Generated per-entree customization categories and ingredient IDs decide actual eligibility. These labels only combine source categories for presentation."
+    }
+  },
+  "relativeDisplayOrder": {
+    "policy": "Preserve old relative order among surviving mapped records within each old browse category; insert new-only current records deterministically without changing that relative order.",
+    "tieBreakers": [
+      "explicit presentation-family order in this plan",
+      "official online-meal sortOrder for new preconfigured meals",
+      "generated source order where available",
+      "sanitized display name"
+    ],
+    "categorySpecificRules": {
+      "Chips & Dips": "Keep legacy traditional Chips, Chips & Guacamole, salsa combinations, and Chips & Queso order. Insert Chili Lime families immediately after their traditional counterparts; put Chili Lime salsa combinations after the traditional salsa block.",
+      "Single Sides": "Keep Guacamole, Cilantro Lime Sauce, Fresh Tomato, Red, Green, Corn, Queso, Tortilla order.",
+      "Protein Meals": "Show new official sortOrder 1-5 featured meals first, then preserve Double High Protein Bowl, High Protein-High Fiber Bowl, High Protein-Low Calorie Bowl, Double High Protein Burrito, High Protein Taco relative order.",
+      "Protein Cups": "Chicken, Steak, then current Pollo Asado.",
+      "Drinks": "Preserve the surviving old packaged-drink order, then append current new-only RTD records in official/generated order.",
+      "Fountain Drinks": "Preserve the 13 surviving old flavor positions, then append the 10 current new flavors in generated variant order.",
+      "Tractor Beverages": "Watermelon Limeade, Lemonade, Mandarin Agua Fresca, Berry Agua Fresca.",
+      "Kids Drinks": "Organic Milk, Organic Chocolate Milk, Organic Apple Juice, then 16 fl oz Soda/Iced Tea.",
+      "Kids": "Kid's Chips, then Kid's Fruit."
+    }
+  },
+  "presentationVariantFamilies": {
+    "policy": "A family is a UI card only. Selecting a variant commits the exact generated parent/variant identity; no generated records are merged, deleted, or re-keyed.",
+    "sideFamilies": [
+      {"id": "chips", "label": "Chips", "legacyParentId": "chips", "variants": [{"label": "Regular", "recordId": "chipotle-cmg-1002", "legacyVariantId": "chips"}, {"label": "Large", "recordId": "chipotle-cmg-1016", "legacyVariantId": "large-chips"}]},
+      {"id": "side-guacamole", "label": "Side of Guacamole", "legacyParentId": "side-of-guacamole", "variants": [{"label": "Regular", "recordId": "chipotle-cmg-1009", "legacyVariantId": "side-of-guacamole"}, {"label": "Large", "recordId": "chipotle-cmg-1025", "legacyVariantId": "large-side-of-guacamole"}]},
+      {"id": "chips-guacamole", "label": "Chips & Guacamole", "legacyParentId": "chips-guacamole", "variants": [{"label": "Regular", "recordId": "chipotle-cmg-1003", "legacyVariantId": "chips-guacamole"}, {"label": "Large", "recordId": "chipotle-cmg-1015", "legacyVariantId": "large-chips-large-guacamole"}]},
+      {"id": "chips-queso", "label": "Chips & Queso Blanco", "legacyParentId": "chips-queso-blanco", "variants": [{"label": "Regular", "recordId": "chipotle-cmg-1032", "legacyVariantId": "chips-queso-blanco"}, {"label": "Large", "recordId": "chipotle-cmg-1033", "legacyVariantId": "large-chips-large-queso-blanco"}]},
+      {"id": "side-cilantro-lime-sauce", "label": "Side of Cilantro Lime Sauce", "legacyParentId": "side-of-cilantro-lime-sauce", "variants": [{"label": "Regular", "recordId": "chipotle-cmg-5413", "legacyVariantId": "side-of-cilantro-lime-sauce"}, {"label": "Large", "recordId": "chipotle-cmg-5416", "legacyVariantId": "large-side-of-cilantro-lime-sauce"}]},
+      {"id": "side-fresh-tomato-salsa", "label": "Side of Fresh Tomato Salsa", "legacyParentId": "side-of-fresh-tomato-salsa", "variants": [{"label": "Regular", "recordId": "chipotle-cmg-5201", "recordType": "ingredient", "legacyVariantId": "side-of-fresh-tomato-salsa"}, {"label": "Large", "recordId": "chipotle-cmg-5398", "legacyVariantId": "large-side-of-fresh-tomato-salsa"}], "contextRestricted": true},
+      {"id": "side-tomatillo-red-chili-salsa", "label": "Side of Tomatillo-Red Chili Salsa", "legacyParentId": "side-of-tomatillo-red-chili-salsa", "variants": [{"label": "Regular", "recordId": "chipotle-cmg-5204", "recordType": "ingredient", "legacyVariantId": "side-of-tomatillo-red-chili-salsa"}, {"label": "Large", "recordId": "chipotle-cmg-5500", "legacyVariantId": "large-side-of-tomatillo-red-chili-salsa"}], "contextRestricted": true},
+      {"id": "side-tomatillo-green-chili-salsa", "label": "Side of Tomatillo-Green Chili Salsa", "legacyParentId": "side-of-tomatillo-green-chili-salsa", "variants": [{"label": "Regular", "recordId": "chipotle-cmg-5203", "recordType": "ingredient", "legacyVariantId": "side-of-tomatillo-green-chili-salsa"}, {"label": "Large", "recordId": "chipotle-cmg-5400", "legacyVariantId": "large-side-of-tomatillo-green-chili-salsa"}], "contextRestricted": true},
+      {"id": "side-roasted-chili-corn-salsa", "label": "Side of Roasted Chili-Corn Salsa", "legacyParentId": "side-of-roasted-chili-corn-salsa", "variants": [{"label": "Regular", "recordId": "chipotle-cmg-5202", "recordType": "ingredient", "legacyVariantId": "side-of-roasted-chili-corn-salsa"}, {"label": "Large", "recordId": "chipotle-cmg-5399", "legacyVariantId": "large-side-of-roasted-chili-corn-salsa"}], "contextRestricted": true},
+      {"id": "side-queso", "label": "Side of Queso Blanco", "legacyParentId": "side-of-queso-blanco", "variants": [{"label": "Regular", "recordId": "chipotle-cmg-1030", "legacyVariantId": "side-of-queso-blanco"}, {"label": "Large", "recordId": "chipotle-cmg-1031", "legacyVariantId": "large-side-of-queso-blanco"}]},
+      {"id": "chili-lime-chips", "label": "Chili Lime Chips", "variants": [{"label": "Regular", "recordId": "chipotle-cmg-5362"}, {"label": "Large", "recordId": "chipotle-cmg-5363"}]},
+      {"id": "chili-lime-chips-guacamole", "label": "Chili Lime Chips & Guacamole", "variants": [{"label": "Regular", "recordId": "chipotle-cmg-5364"}, {"label": "Large", "recordId": "chipotle-cmg-5366"}]},
+      {"id": "chili-lime-chips-queso", "label": "Chili Lime Chips & Queso Blanco", "variants": [{"label": "Regular", "recordId": "chipotle-cmg-5365"}, {"label": "Large", "recordId": "chipotle-cmg-5367"}]}
+    ],
+    "tractorFamilies": [
+      {"id": "tractor-watermelon-limeade", "label": "Organic Watermelon Limeade", "legacyParentId": "organic-watermelon-limeade", "variants": [{"label": "22 fl oz", "recordId": "chipotle-cmg-2019", "legacyVariantId": "organic-watermelon-limeade-22-fl-oz"}, {"label": "32 fl oz", "recordId": "chipotle-cmg-2020", "legacyVariantId": "organic-watermelon-limeade-32-fl-oz"}]},
+      {"id": "tractor-lemonade", "label": "Organic Lemonade", "legacyParentId": "organic-lemonade", "variants": [{"label": "22 fl oz", "recordId": "chipotle-cmg-2010", "legacyVariantId": "organic-lemonade-22-fl-oz"}, {"label": "32 fl oz", "recordId": "chipotle-cmg-2011", "legacyVariantId": "organic-lemonade-32-fl-oz"}]},
+      {"id": "tractor-mandarin-agua-fresca", "label": "Organic Mandarin Agua Fresca", "legacyParentId": "organic-mandarin-agua-fresca", "variants": [{"label": "22 fl oz", "recordId": "chipotle-cmg-2012", "legacyVariantId": "organic-mandarin-agua-fresca-22-fl-oz"}, {"label": "32 fl oz", "recordId": "chipotle-cmg-2013", "legacyVariantId": "organic-mandarin-agua-fresca-32-fl-oz"}]},
+      {"id": "tractor-berry-agua-fresca", "label": "Organic Berry Agua Fresca", "legacyParentId": "organic-berry-agua-fresca", "variants": [{"label": "22 fl oz", "recordId": "chipotle-cmg-2017", "legacyVariantId": "organic-berry-agua-fresca-22-fl-oz"}, {"label": "32 fl oz", "recordId": "chipotle-cmg-2018", "legacyVariantId": "organic-berry-agua-fresca-32-fl-oz"}]}
+    ],
+    "fountainFamilies": [
+      {"id": "fountain-coca-cola-classic", "label": "Coca-Cola Classic", "slug": "coca-cola-classic", "legacyParentId": "coca-cola-classic-fountain"},
+      {"id": "fountain-diet-coke", "label": "Diet Coke", "slug": "diet-coke", "legacyParentId": "diet-coke-fountain"},
+      {"id": "fountain-diet-coke-caffeine-free", "label": "Diet Coke, Caffeine Free", "slug": "diet-coke-caffeine-free", "legacyParentId": "diet-coke-caffeine-free-fountain"},
+      {"id": "fountain-coca-cola-zero", "label": "Coca-Cola Zero", "slug": "coca-cola-zero", "legacyParentId": "coca-cola-zero-fountain"},
+      {"id": "fountain-coca-cola-life", "label": "Coca Cola Life", "slug": "coca-cola-life", "legacyParentId": "coca-cola-life-fountain"},
+      {"id": "fountain-sprite", "label": "Sprite", "slug": "sprite", "legacyParentId": "sprite-fountain"},
+      {"id": "fountain-fanta-orange", "label": "Fanta Orange", "slug": "fanta-orange", "legacyParentId": "fanta-orange-fountain"},
+      {"id": "fountain-dr-pepper", "label": "Dr. Pepper", "slug": "dr-pepper"},
+      {"id": "fountain-diet-dr-pepper", "label": "Diet Dr. Pepper", "slug": "diet-dr-pepper"},
+      {"id": "fountain-mountain-dew", "label": "Mountain Dew", "slug": "mountain-dew"},
+      {"id": "fountain-diet-mountain-dew", "label": "Diet Mountain Dew", "slug": "diet-mountain-dew"},
+      {"id": "fountain-mello-yello", "label": "Mello Yello", "slug": "mello-yello", "legacyParentId": "mello-yello-fountain"},
+      {"id": "fountain-pibb-xtra", "label": "Pibb Xtra", "slug": "pibb-xtra", "legacyParentId": "pibb-xtra-fountain"},
+      {"id": "fountain-barq-s-root-beer", "label": "Barq's Root Beer", "slug": "barq-s-root-beer", "legacyParentId": "barqs-root-beer-fountain"},
+      {"id": "fountain-mug-root-beer", "label": "Mug Root Beer", "slug": "mug-root-beer"},
+      {"id": "fountain-pepsi", "label": "Pepsi", "slug": "pepsi"},
+      {"id": "fountain-diet-pepsi", "label": "Diet Pepsi", "slug": "diet-pepsi"},
+      {"id": "fountain-sierra-mist", "label": "Sierra Mist", "slug": "sierra-mist"},
+      {"id": "fountain-crush-orange", "label": "Crush Orange", "slug": "crush-orange"},
+      {"id": "fountain-powerade-mountain-berry-blast", "label": "Powerade Mountain Berry Blast", "slug": "powerade-mountain-berry-blast", "legacyParentId": "powerade-mountain-berry-blast-fountain"},
+      {"id": "fountain-chipotle-iced-tea", "label": "Chipotle Iced Tea", "slug": "chipotle-iced-tea", "legacyParentId": "chipotle-iced-tea-fountain"},
+      {"id": "fountain-chipotle-sweet-iced-tea", "label": "Chipotle Sweet Iced Tea", "slug": "chipotle-sweet-iced-tea", "legacyParentId": "chipotle-sweet-iced-tea-fountain"},
+      {"id": "fountain-lipton-raspberry-brisk-iced-tea", "label": "Lipton Raspberry Brisk Iced Tea", "slug": "lipton-raspberry-brisk-iced-tea"}
+    ],
+    "fountainVariantTemplate": {
+      "adult22": {"parentRecordId": "chipotle-fountain-22-fl-oz", "variantIdTemplate": "chipotle-fountain-22-fl-oz-{slug}"},
+      "adult32": {"parentRecordId": "chipotle-fountain-32-fl-oz", "variantIdTemplate": "chipotle-fountain-32-fl-oz-{slug}"},
+      "kids16": {"parentRecordId": "chipotle-cmg-5551", "variantIdTemplate": "chipotle-fountain-16-fl-oz-{slug}", "visibilityContext": "kids_meal_only"}
+    },
+    "counts": {
+      "sideFamilies": 13,
+      "tractorFamilies": 4,
+      "fountainFlavorFamilies": 23,
+      "totalFamilies": 40
+    }
+  },
+  "navigation": {
+    "mode": "preserve_legacy_user_facing_navigation",
+    "order": ["bowl", "burrito", "quesadilla", "salad", "tacos", "high-protein-menu", "kids-meal", "chips-sides", "drinks"],
+    "entries": {
+      "bowl": {"label": "Bowl", "targetType": "build", "generatedTargets": ["chipotle-bowl"]},
+      "burrito": {"label": "Burrito", "targetType": "build", "generatedTargets": ["chipotle-burrito"]},
+      "quesadilla": {"label": "Quesadilla", "targetType": "build", "generatedTargets": ["chipotle-quesadilla"]},
+      "salad": {"label": "Salad", "targetType": "build", "generatedTargets": ["chipotle-salad"]},
+      "tacos": {"label": "Tacos", "targetType": "build_choice", "generatedTargets": ["chipotle-taco", "chipotle-tacos-3"], "defaultTarget": "chipotle-tacos-3"},
+      "high-protein-menu": {"label": "High Protein Menu", "targetType": "browse_groups", "browseCategories": ["Protein Meals", "Protein Cups"]},
+      "kids-meal": {"label": "Kid's Meal", "targetType": "build_choice", "generatedTargets": ["chipotle-kids-build-your-own", "chipotle-kids-quesadilla"], "defaultTarget": "chipotle-kids-build-your-own"},
+      "chips-sides": {"label": "Chips & Sides", "targetType": "browse_groups", "browseCategories": ["Chips & Dips", "Single Sides"]},
+      "drinks": {"label": "Drinks", "targetType": "browse_groups", "browseCategories": ["Drinks", "Fountain Drinks", "Tractor Beverages", "Kids Drinks"]}
+    },
+    "identityPolicy": "Legacy navigation keys are presentation/router state only. Generated record IDs remain the selected build or menu identity."
+  },
+  "kidsFruit": {
+    "canonicalGeneratedId": "chipotle-cmg-1402",
+    "canonicalName": "Kid's Fruit",
+    "officialImageAvailable": true,
+    "officialImage": "https://www.chipotle.com/content/dam/chipotle/menu/menu-items/cmg-1402-kids-fruit/web-desktop/order.png",
+    "officialImageSource": "data/review/chipotle/runtime-image-enrichment.json#records.chipotle-cmg-1402",
+    "fallbackImage": "/restaurants/chipotle/menu/sides/fruit.png",
+    "fallbackOnly": true,
+    "discardOldNamesAndIds": ["kids-mandarins", "kids-blueberries"],
+    "legacyMigration": "Do not silently convert persisted old fruit selections. Invalidate them gracefully and offer Kid's Fruit as the current replacement."
+  },
+  "legacyIdMigration": {
+    "canonicalPolicy": "Generated IDs are canonical. Legacy IDs exist only in redirect/cart migration lookup tables.",
+    "oneToOne": {
+      "chips-fresh-tomato-salsa": "chipotle-cmg-1005",
+      "chips-tomatillo-red-chili-salsa": "chipotle-cmg-1007",
+      "chips-tomatillo-green-chili-salsa": "chipotle-cmg-1006",
+      "chips-roasted-chili-corn-salsa": "chipotle-cmg-1008",
+      "tortilla-on-the-side": "chipotle-cmg-4025",
+      "kids-chips": "chipotle-cmg-1401",
+      "double-high-protein-bowl": "chipotle-meal-56ab2f6e-747d-46f9-9cf6-9ebc2855d86d",
+      "high-protein-high-fiber-bowl": "chipotle-meal-6ba21999-f6b8-4a83-803a-bf68ef319c5e",
+      "high-protein-low-calorie-bowl": "chipotle-meal-be88e387-62ed-4271-877c-7216b6485387",
+      "double-high-protein-burrito": "chipotle-meal-1a3697bb-88c5-4f2e-a061-85ac3cfa0a28",
+      "high-protein-taco": "chipotle-meal-2991ff70-3dfb-47af-84e0-cbe547e5395f",
+      "side-of-chicken-high-protein": "chipotle-cmg-1125",
+      "side-of-steak-high-protein": "chipotle-cmg-1126",
+      "mexican-coca-cola": "chipotle-cmg-2810",
+      "mexican-sprite": "chipotle-cmg-2839",
+      "coke-zero": "chipotle-cmg-2849",
+      "poppi-strawberry-lemon": "chipotle-cmg-2884",
+      "poppi-orange": "chipotle-cmg-2883",
+      "apple-juice": "chipotle-cmg-2101",
+      "open-water-still": "chipotle-cmg-2878",
+      "organic-milk-8-oz": "chipotle-cmg-5554",
+      "organic-chocolate-milk-8-oz": "chipotle-cmg-5553",
+      "organic-apple-juice-6-75-oz": "chipotle-cmg-5552",
+      "romaine-lettuce": "chipotle-cmg-5351",
+      "cheese": "chipotle-cmg-5252",
+      "fresh-tomato-salsa": "chipotle-cmg-5201",
+      "roasted-chili-corn-salsa": "chipotle-cmg-5202",
+      "tomatillo-green-chili-salsa": "chipotle-cmg-5203",
+      "tomatillo-red-chili-salsa": "chipotle-cmg-5204",
+      "sour-cream": "chipotle-cmg-5251",
+      "fajita-veggies": "chipotle-cmg-5101",
+      "white-rice": "chipotle-cmg-5001",
+      "brown-rice": "chipotle-cmg-5002",
+      "black-beans": "chipotle-cmg-5051",
+      "pinto-beans": "chipotle-cmg-5052"
+    },
+    "presentationFamilyRule": "Legacy parents and size variants listed in presentationVariantFamilies resolve to the exact selected generated record/variant. A parent URL defaults to the Regular or 22 fl oz generated option; cart migration uses the saved legacy variant when present.",
+    "contextualRules": [
+      {
+        "legacyIds": ["chicken", "steak", "carnitas", "beef-barbacoa", "sofritas"],
+        "contexts": {
+          "adult_standard": "chipotle-protein-{legacy-id}",
+          "single_taco": "chipotle-protein-{legacy-id}-taco",
+          "tacos_3": "chipotle-protein-{legacy-id}-tacos-3",
+          "kids_byo": "chipotle-protein-{legacy-id}-kids-byo",
+          "kids_quesadilla": "chipotle-protein-{legacy-id}-kids-quesadilla"
+        },
+        "failurePolicy": "If the persisted build context is absent or invalid, do not choose a protein context silently."
+      },
+      {
+        "legacyIds": ["crispy-corn-tortilla", "soft-flour-tortilla"],
+        "rule": "Resolve by generated build target and taco count/kids context. Do not map the old generic tortilla ID through this rule.",
+        "failurePolicy": "Invalidate when the required build context is unavailable."
+      },
+      {
+        "legacyIds": ["guacamole", "queso-blanco", "cilantro-lime-sauce"],
+        "rule": "Resolve through the selected generated build container's customization relationship; never select the first same-name generated record globally.",
+        "failurePolicy": "Invalidate when no exact generated relationship exists."
+      }
+    ],
+    "explicitlyNotSilentlyMigrated": [
+      "kids-mandarins",
+      "kids-blueberries",
+      "tortilla"
+    ],
+    "obsoleteInvalidations": [
+      "side-of-chicken-al-pastor-high-protein",
+      "chicken-al-pastor",
+      "topo-chico-mineral-water",
+      "grapefruit-izze",
+      "blackberry-izze",
+      "minute-maid-lemonade-fountain",
+      "lemonade-blue-sky-fountain",
+      "mango-orange-blue-sky-fountain",
+      "maine-root-root-beer-fountain"
+    ],
+    "gracefulInvalidationBehavior": "Remove or reject the stale selection, explain that it is no longer on the current menu, and return the user to the relevant current browse/build context. Never substitute an unrelated product."
+  },
+  "imageEnrichment": {
+    "source": "data/review/chipotle/runtime-image-enrichment.json",
+    "generator": "scripts/review/chipotle-images.ts",
+    "status": "approved",
+    "coverage": {
+      "generatedRecords": 149,
+      "mappedRecords": 146,
+      "mappedMenuItems": "74/77",
+      "mappedIngredients": "72/72",
+      "variantsInheritParent": 88
+    },
+    "applicationRules": [
+      "Lookup by generated record ID.",
+      "Use the official remote URL from the mapping; do not write it into generated restaurant JSON by hand.",
+      "A presentation family defaults to the selected/default generated member's image.",
+      "Context records may share official family imagery when the mapping already resolves them to the same URL.",
+      "Nested variants inherit the mapped parent image unless a future official mapping supplies a distinct image.",
+      "Use existing old local artwork only as an explicit fallback, never ahead of an available official mapping."
+    ],
+    "officialHosts": [
+      "www.chipotle.com",
+      "miinternal-cdn.chipotle.com"
+    ],
+    "nextJsRemoteImageRequirements": {
+      "implementationStatus": "identified_not_implemented",
+      "remotePatterns": [
+        {
+          "protocol": "https",
+          "hostname": "www.chipotle.com",
+          "pathname": "/content/dam/chipotle/menu/**"
+        },
+        {
+          "protocol": "https",
+          "hostname": "miinternal-cdn.chipotle.com",
+          "pathname": "/assets/menuinnovation/**"
+        }
+      ],
+      "note": "Add these to next.config.ts images.remotePatterns during runtime compatibility work. Do not allowlist chipotlestrg-cdn.chipotle.com unless a future active enrichment record actually uses it."
+    },
+    "recordsRequiringNoImage": [
+      {"id": "chipotle-cmg-6110", "name": "Napkins & Utensils", "reason": "source-only non-food"},
+      {"id": "chipotle-cmg-6111", "name": "6 Serving Bowls", "reason": "source-only non-food"},
+      {"id": "chipotle-cmg-6112", "name": "Serving Utensils", "reason": "source-only non-food"}
+    ]
+  },
+  "runtimeBlockersForNextPhase": [
+    "Implement a typed enrichment adapter that applies this taxonomy, order, family, navigation, legacy-ID, and image configuration without mutating generated JSON.",
+    "Reconcile legacy navigation keys with generated build IDs and browse groups.",
+    "Resolve default-variant nutrition for the eight generated variant-container ingredients before existing Chipotle builders scale nutrition.",
+    "Add a compatible generated source-provenance type boundary.",
+    "Replace legacy entreeGroup checks with enrichment/group lookups or generated source-role logic.",
+    "Switch page and cart loaders atomically only after compatibility behavior is ready.",
+    "Implement route redirects and persisted-cart migration/invalidation.",
+    "Re-key homepage Chipotle editorial IDs.",
+    "Add the two Next.js remote image patterns and verify all image surfaces handle remote URLs and source-only records."
+  ],
+  "finalAssessment": "All enrichment and product decisions are resolved. The team can proceed to runtime compatibility blockers without another product-decision round, while keeping runtime wiring deferred until that work is implemented and verified."
+}

@@ -1,5 +1,8 @@
 import type { ReactNode } from "react";
-import { macroDisplayConfig } from "@/components/nutrition/macroDisplay";
+import {
+  formatMacroDisplayNumber,
+  macroDisplayConfig,
+} from "@/components/nutrition/macroDisplay";
 import type { MacroKey } from "@/components/nutrition/macroDisplay";
 
 type MacroStatSize = "summary" | "card" | "quick" | "cartCompact" | "cartDetailed" | "ingredientCompact";
@@ -35,8 +38,7 @@ function formatMacroValue(macroKey: MacroKey, value: number | string) {
   const unit = macroDisplayConfig[macroKey].unit ?? "";
 
   if (typeof value === "number") {
-    if (Number.isNaN(value)) return macroKey === "calories" ? "—" : `—${unit}`;
-    return `${value}${unit}`;
+    return `${formatMacroDisplayNumber(value)}${unit}`;
   }
 
   const trimmedValue = value.trim();

@@ -74,13 +74,31 @@ function buildChipotleBuildYourOwnMenuItem(cartItem: CartItem, ingredientItems?:
   };
 }
 
-export function getIncludedIngredientIdsForChipotleBuild(cartItem: CartItem) {
+export function getIncludedIngredientIdsForChipotleBuild(
+  cartItem: CartItem,
+  ingredientItems: IngredientItem[] = [],
+) {
   if (cartItem.restaurantId !== "chipotle" || cartItem.selection.type !== "build-your-own") {
     return [] as string[];
   }
 
   const configuration = fromUniversalChipotleBuildConfiguration(cartItem.selection.buildConfiguration);
+  const selectedIds = new Set(
+    Object.entries(configuration.selectedIngredientItems)
+      .filter(([, selection]) => selection.quantity > 0)
+      .map(([ingredientId]) => ingredientId),
+  );
+  const generatedIncludedIds = ingredientItems
+    .filter((ingredient) => selectedIds.has(ingredient.id ?? ingredient.name))
+    .filter((ingredient) =>
+      ingredient.categories.some(
+        (category) => normalizeIngredientKey(category) === "included ingredients",
+      ),
+    )
+    .map((ingredient) => ingredient.id ?? ingredient.name);
+  if (generatedIncludedIds.length > 0) return generatedIncludedIds;
 
+  // Compatibility fallback for persisted carts from the hand-authored menu.
   if (configuration.selectedEntree === "burrito") return ["tortilla"];
   if (configuration.selectedEntree === "quesadilla") return ["tortilla", "cheese"];
   if (configuration.selectedEntree === "salad") return ["romaine-lettuce"];

@@ -20,7 +20,7 @@
     "missingNutrition": "Incomplete, zeroed, zero-portion, or internally conflicting live panels are rejected. When no sane live panel, official PDF row, or approved explicit composition/scaling rule applies, full macro nutrition is omitted rather than partially filled or guessed."
   },
   "summary": {
-    "logicalRecords": 149,
+    "logicalRecords": 151,
     "unresolved": 13,
     "unresolvedByReason": {
       "unsupported_preconfigured_meal": 13

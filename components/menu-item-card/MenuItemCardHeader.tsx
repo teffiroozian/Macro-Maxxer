@@ -6,6 +6,7 @@ import MenuItemTitle from "./MenuItemTitle";
 import RankBadge from "./RankBadge";
 import ComparativeLabelBadge from "./ComparativeLabelBadge";
 import StatusLabelBadge from "./StatusLabelBadge";
+import { CHIPOTLE_PRESET_MEAL_IMAGE_CLASSNAME } from "@/lib/restaurantBuilders/chipotle/highProtein";
 
 export default function MenuItemCardHeader({
   item,
@@ -49,7 +50,9 @@ export default function MenuItemCardHeader({
         {selectedItemImage ? (
           <img
             className={`block h-[190px] w-full lg:h-[184px] lg:w-[184px] ${
-              isHighProteinMenuCard && !isCartMode ? "object-cover" : "object-contain p-3"
+              isHighProteinMenuCard && !isCartMode
+                ? CHIPOTLE_PRESET_MEAL_IMAGE_CLASSNAME
+                : "object-contain p-3"
             }`}
             src={selectedItemImage}
             alt={item.name}

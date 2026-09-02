@@ -146,25 +146,50 @@ export const CHIPOTLE_KIDS_QUESADILLA_IMPLICIT_BASE: {
     "Manual verification against Chipotle's official live nutrition calculator UI confirmed the Kids Quesadilla included base is 1 kids soft flour tortilla (CMG-5401, 80cal) + exactly 1 standard cheese portion (CMG-5252, 110cal) = 190cal, 11g fat, 8g protein, 14g carbs. Selected filling/sides/drink are added separately; the adult 3x-cheese rule does not apply (import-decisions.md §7).",
 };
 
-// --- import-decisions.md §5: taco tortilla per-unit nutrition ---
-// CMG-5501 (Soft Flour Tortilla) / CMG-5503 (Crispy Corn Tortilla) are
-// structurally ambiguous for single vs trio quantity (build-gaps-analysis.md
-// Part C — identical unitCount:1 in both contexts, no reconciling multiplier
-// field anywhere in the source). Decision: use the official PDF's per-unit
-// tortilla nutrition instead of CMG-5501/CMG-5503's own ambiguous metadata
-// calorie values. Single Taco = 1x; Tacos(3) = 3x. CMG-5501/CMG-5503 remain
-// the ordering/selection identities only.
-export const CHIPOTLE_TACO_TORTILLA_PDF_PER_UNIT: Readonly<
-  Record<string, { label: string; sourceItemId: string; nutrition: Nutrition }>
+// Taco tortilla records are authoritative per build context. In particular,
+// the official 3-tortilla panels are not exact multiples of the official
+// single-tortilla panels, so neither context may be calculated from the
+// rounded values of the other.
+export const CHIPOTLE_TACO_TORTILLA_NUTRITION_BY_CONTEXT: Readonly<
+  Record<
+    string,
+    {
+      label: string;
+      sourceItemId: string;
+      single: Nutrition;
+      trio: Nutrition;
+      trioPortion: string;
+    }
+  >
 > = {
   soft_flour: {
     label: "Soft Flour Tortilla",
     sourceItemId: "CMG-5501",
-    nutrition: { calories: 80, protein: 2, carbs: 13, totalFat: 2.5, satFat: 0, sodium: 160, fiber: 0, sugars: 0 },
+    single: { calories: 83, protein: 2, carbs: 13, totalFat: 3, satFat: 0, transFat: 0, cholesterol: 0, sodium: 160, fiber: 0, sugars: 0 },
+    trio: { calories: 250, protein: 7, carbs: 40, totalFat: 8, satFat: 0.5, transFat: 0, sodium: 480, fiber: 2, sugars: 0 },
+    trioPortion: "3oz",
   },
   crispy_corn: {
     label: "Crispy Corn Tortilla",
     sourceItemId: "CMG-5503",
-    nutrition: { calories: 70, protein: 1, carbs: 10, totalFat: 3, satFat: 0, sodium: 0, fiber: 1, sugars: 0 },
+    single: { calories: 67, protein: 1, carbs: 10, totalFat: 3, satFat: 0, transFat: 0, cholesterol: 0, sodium: 0, fiber: 1, sugars: 0 },
+    trio: { calories: 200, protein: 3, carbs: 29, totalFat: 9, satFat: 1, transFat: 0, sodium: 0, fiber: 3, sugars: 0 },
+    trioPortion: "1.5oz",
+  },
+};
+
+// Each Kids BYO record is one selectable serving that already contains two
+// tortillas. These direct official kids panels must not be doubled again at
+// runtime.
+export const CHIPOTLE_KIDS_BYO_TORTILLA_NUTRITION_BY_ITEM_ID: Readonly<
+  Record<string, { pdfName: string; nutrition: Nutrition }>
+> = {
+  "CMG-5403": {
+    pdfName: "Crispy Corn Tortilla",
+    nutrition: { calories: 130, protein: 2, carbs: 19, totalFat: 6, satFat: 1, transFat: 0, cholesterol: 0, sodium: 0, fiber: 2, sugars: 0 },
+  },
+  "CMG-5404": {
+    pdfName: "Flour Tortilla (taco)",
+    nutrition: { calories: 170, protein: 5, carbs: 27, totalFat: 5, satFat: 0, transFat: 0, cholesterol: 0, sodium: 320, fiber: 1, sugars: 0 },
   },
 };

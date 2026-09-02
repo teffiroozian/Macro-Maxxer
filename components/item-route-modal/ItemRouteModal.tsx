@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import Image from "next/image";
+import Image from "@/components/ui/AppImage";
 import { Pencil, Utensils, X } from "lucide-react";
 import ItemDetailsPanel, {
     ITEM_DETAILS_SECTION_IDS,
@@ -36,6 +36,8 @@ import {
 import {
     buildHighProteinBuildConfiguration,
     isChipotleEditablePresetBuildItem,
+    isChipotleHighProteinPresetMealArtwork,
+    CHIPOTLE_PRESET_MEAL_IMAGE_CLASSNAME,
 } from "@/lib/restaurantBuilders/chipotle/highProtein";
 import {
     getChipotlePortionModeOptions,
@@ -50,6 +52,7 @@ import {
     type SplitPortionMode,
 } from "@/lib/restaurantBuilders/chipotle";
 import { resolvePrimaryCategory } from "@/lib/ingredientTabs";
+import { resolveEffectiveIngredientNutrition } from "@/lib/ingredientNutrition";
 import { resolveAddonGroupForAddon } from "@/lib/addonGroups";
 import type { ChipotleBuildConfiguration } from "@/lib/restaurantBuilders/chipotle";
 import { fromUniversalChipotleBuildConfiguration } from "@/lib/restaurantBuilders/chipotle/cartAdapter";
@@ -173,6 +176,7 @@ export default function ItemRouteModal({
     editCartItemId: editCartItemIdProp,
     initialScrollSectionId,
     initialMode,
+    initialVariantId,
 }: {
     restaurantId: string;
     restaurantPath: string;
@@ -195,6 +199,9 @@ export default function ItemRouteModal({
     // real cart item — irrelevant to the "add a new item" flow other callers
     // use, so it's optional and defaults to jumping straight to edit there.
     initialMode?: "preview" | "edit";
+    // Used only by safe legacy item-route resolution when an old logical
+    // family encoded its size/flavor as a variant identity.
+    initialVariantId?: string;
 }) {
     const router = useRouter();
     const searchParams = useSearchParams();
@@ -258,6 +265,7 @@ export default function ItemRouteModal({
         comboConfig,
         comboSides,
         comboDrinks,
+        initialVariantId,
     });
     const selectedVariant = variants?.find(
         (variant) => variant.id === selectedVariantId,
@@ -277,6 +285,14 @@ export default function ItemRouteModal({
         selectedVariant,
     );
     const isChipotlePrebuiltBuilderItem = isChipotleEditablePresetBuildItem(
+        item,
+        restaurantId,
+    );
+    // Narrower than isChipotlePrebuiltBuilderItem above (which gates
+    // editability, not imagery): this is only about which items carry the
+    // wide 3:2 editorial preset-meal photography, so it also matches the
+    // "Preconfigured Meals" cards that have no editable ingredient list.
+    const isChipotlePresetMealArtwork = isChipotleHighProteinPresetMealArtwork(
         item,
         restaurantId,
     );
@@ -337,16 +353,8 @@ export default function ItemRouteModal({
             () => buildHighProteinBuildConfiguration(item, ingredients),
             [item, ingredients],
         );
-    const isChipotleTacoItem = (item.id ?? "").toLowerCase().includes("taco");
-    const isChipotleBurritoItem = (item.id ?? "")
-        .toLowerCase()
-        .includes("burrito");
-    const chipotleIncludedIngredientIds = useMemo(() => {
-        if (isChipotleBurritoItem) return new Set(["tortilla"]);
-        if (isChipotleTacoItem)
-            return new Set(["crispy-corn-tortilla", "soft-flour-tortilla"]);
-        return new Set<string>();
-    }, [isChipotleBurritoItem, isChipotleTacoItem]);
+    const isChipotleTacoItem =
+        chipotleBuildConfiguration.selectedEntree === "tacos";
     const chipotleAllIngredientMenuItems = useMemo<MenuItem[]>(
         () =>
             (ingredients ?? [])
@@ -360,18 +368,72 @@ export default function ItemRouteModal({
                         ingredientId === "soft-flour-tortilla";
                     return !isTacoOnlySide || isChipotleTacoItem;
                 })
-                .map((ingredient) => ({
-                    id: ingredient.id ?? ingredient.name,
-                    name: ingredient.name,
-                    image: ingredient.image ?? "",
-                    defaultOrder: ingredient.defaultOrder ?? 0,
-                    nutrition: ingredient.nutrition,
-                    categories: ingredient.categories,
-                    servingType: "addon",
-                    variants: ingredient.variants,
-                    defaultVariantId: ingredient.defaultVariantId,
-                })),
+                .flatMap((ingredient) => {
+                    const nutrition = resolveEffectiveIngredientNutrition(ingredient);
+                    if (!nutrition) return [];
+                    return [{
+                        id: ingredient.id ?? ingredient.name,
+                        name: ingredient.name,
+                        image: ingredient.image ?? "",
+                        defaultOrder: ingredient.defaultOrder ?? 0,
+                        nutrition,
+                        categories: ingredient.categories,
+                        servingType: "addon" as const,
+                        variants: ingredient.variants,
+                        defaultVariantId: ingredient.defaultVariantId,
+                    }];
+                }),
         [ingredients, isChipotleTacoItem],
+    );
+    const chipotleIngredientById = useMemo(
+        () =>
+            new Map(
+                chipotleAllIngredientMenuItems.map((ingredientItem) => [
+                    ingredientItem.id ?? ingredientItem.name,
+                    ingredientItem,
+                ]),
+            ),
+        [chipotleAllIngredientMenuItems],
+    );
+    const chipotleIncludedIngredientIds = useMemo(
+        () => {
+            const includedIds = new Set(
+                Object.keys(
+                    chipotleBuildConfiguration.selectedIngredientItems ?? {},
+                ).filter((ingredientId) => {
+                    const ingredient = chipotleIngredientById.get(ingredientId);
+                    return (
+                        ingredient &&
+                        normalizeIngredientCategory(
+                            resolvePrimaryCategory(ingredient.categories),
+                        ) === "included ingredients"
+                    );
+                }),
+            );
+            if (isChipotleTacoItem) {
+                const contextSuffix =
+                    chipotleBuildConfiguration.selectedTacoCount === 3
+                        ? "-tacos-3"
+                        : "-taco";
+                chipotleAllIngredientMenuItems.forEach((ingredient) => {
+                    const ingredientId = ingredient.id ?? ingredient.name;
+                    if (
+                        ingredientId.toLowerCase().includes("tortilla") &&
+                        ingredientId.toLowerCase().endsWith(contextSuffix)
+                    ) {
+                        includedIds.add(ingredientId);
+                    }
+                });
+            }
+            return includedIds;
+        },
+        [
+            chipotleAllIngredientMenuItems,
+            chipotleBuildConfiguration.selectedIngredientItems,
+            chipotleBuildConfiguration.selectedTacoCount,
+            chipotleIngredientById,
+            isChipotleTacoItem,
+        ],
     );
     const chipotleIngredientMenuItems = useMemo(
         () =>
@@ -393,16 +455,6 @@ export default function ItemRouteModal({
                 ),
             ),
         [chipotleAllIngredientMenuItems, chipotleIncludedIngredientIds],
-    );
-    const chipotleIngredientById = useMemo(
-        () =>
-            new Map(
-                chipotleAllIngredientMenuItems.map((ingredientItem) => [
-                    ingredientItem.id ?? ingredientItem.name,
-                    ingredientItem,
-                ]),
-            ),
-        [chipotleAllIngredientMenuItems],
     );
     // Shared derivation from a ChipotleBuildConfiguration to the modal's
     // live selection-state shape — used both to seed initial state (from
@@ -451,36 +503,11 @@ export default function ItemRouteModal({
                 };
             });
 
-            const isBurrito = (item.id ?? "")
-                .toLowerCase()
-                .includes("burrito");
-            if (isBurrito && !nextSelectedItems.tortilla) {
-                const tortilla = chipotleIngredientById.get("tortilla");
-                if (tortilla) {
-                    nextSelectedItems.tortilla = {
-                        item: tortilla,
-                        quantity: 1,
-                    };
-                }
-            }
-            if (isChipotleTacoItem) {
-                const tacoShellId =
-                    buildConfiguration?.selectedTacoShell === "soft"
-                        ? "soft-flour-tortilla"
-                        : "crispy-corn-tortilla";
-                const tacoShell = chipotleIngredientById.get(tacoShellId);
-                if (tacoShell) {
-                    nextSelectedItems[tacoShellId] = {
-                        item: tacoShell,
-                        quantity: 1,
-                    };
-                }
-                const alternateShellId =
-                    tacoShellId === "soft-flour-tortilla"
-                        ? "crispy-corn-tortilla"
-                        : "soft-flour-tortilla";
-                delete nextSelectedItems[alternateShellId];
-            }
+            const selectedTacoShellId = Object.keys(nextSelectedItems).find(
+                (ingredientId) =>
+                    ingredientId.toLowerCase().includes("tortilla") &&
+                    ingredientId.toLowerCase().includes("taco"),
+            );
 
             return {
                 selectedItems: nextSelectedItems,
@@ -493,13 +520,10 @@ export default function ItemRouteModal({
                 1
                     ? 1
                     : 3) as 1 | 3,
-                selectedTacoShellId:
-                    buildConfiguration?.selectedTacoShell === "soft"
-                        ? "soft-flour-tortilla"
-                        : "crispy-corn-tortilla",
+                selectedTacoShellId: selectedTacoShellId ?? "",
             };
         },
-        [chipotleIngredientById, isChipotleTacoItem, item.id],
+        [chipotleIngredientById],
     );
     const initialChipotleBuilderState = useMemo(
         () => deriveChipotleSelectionState(chipotleBuildConfiguration),
@@ -531,11 +555,15 @@ export default function ItemRouteModal({
         // stand-in (e.g. "chipotle-build") and never matches, so this is
         // also just a more accurate source of truth for preset edits too.
         if (editingCartItem?.selection.type === "build-your-own") {
-            return new Set(getIncludedIngredientIdsForChipotleBuild(editingCartItem));
+            return new Set(
+                getIncludedIngredientIdsForChipotleBuild(
+                    editingCartItem,
+                    ingredients,
+                ),
+            );
         }
-        const isBurrito = (item.id ?? "").toLowerCase().includes("burrito");
-        return isBurrito ? new Set(["tortilla"]) : new Set<string>();
-    }, [item.id, editingCartItem]);
+        return new Set(chipotleIncludedIngredientIds);
+    }, [chipotleIncludedIngredientIds, editingCartItem, ingredients]);
     // Slice 10: prebuilt Chipotle items open on a read-only preset review by
     // default, with an explicit Customize action to reach the same
     // ingredient-picker experience Build Your Own uses. The cart's pencil
@@ -848,8 +876,17 @@ export default function ItemRouteModal({
     }, []);
 
     const chipotleTacoShellIdSet = useMemo(
-        () => new Set(["crispy-corn-tortilla", "soft-flour-tortilla"]),
-        [],
+        () =>
+            new Set(
+                (ingredients ?? [])
+                    .map((ingredient) => ingredient.id ?? ingredient.name)
+                    .filter(
+                        (ingredientId) =>
+                            ingredientId.toLowerCase().includes("tortilla") &&
+                            ingredientId.toLowerCase().includes("taco"),
+                    ),
+            ),
+        [ingredients],
     );
     const chipotleSelectedProteinCount = useMemo(
         () =>
@@ -886,6 +923,14 @@ export default function ItemRouteModal({
     const getChipotleIngredientMultiplier = useCallback(
         (ingredientId: string) => {
             if (!isChipotleTacoItem) return 1;
+            if (
+                ingredientId.toLowerCase().endsWith("-taco")
+            ) {
+                return selectedChipotleTacoCount;
+            }
+            if (ingredientId.toLowerCase().endsWith("-tacos-3")) {
+                return selectedChipotleTacoCount / 3;
+            }
             return chipotleTacoShellIdSet.has(ingredientId)
                 ? selectedChipotleTacoCount
                 : selectedChipotleTacoCount / 3;
@@ -1214,7 +1259,7 @@ export default function ItemRouteModal({
     // build's macros agrees on the same numbers.
     const chipotleBuildConfigurationForTotals = useMemo<ChipotleBuildConfiguration>(
         () => ({
-            selectedEntree: null,
+            selectedEntree: chipotleBuildConfiguration.selectedEntree,
             selectedIngredientItems: Object.fromEntries(
                 Object.entries(selectedChipotleIngredientItems).map(
                     ([ingredientId, selectedIngredient]) => [
@@ -1227,14 +1272,16 @@ export default function ItemRouteModal({
             proteinPortionMode: chipotleProteinPortionMode,
             splitPortionModeById: chipotleSplitPortionModeById,
             selectedTacoShell:
-                selectedChipotleTacoShellId === "soft-flour-tortilla"
+                selectedChipotleTacoShellId.toLowerCase().includes("soft-flour")
                     ? "soft"
                     : "crispy",
             selectedTacoCount: selectedChipotleTacoCount,
-            selectedKidsMeal: "build-your-own",
+            selectedKidsMeal: chipotleBuildConfiguration.selectedKidsMeal,
         }),
         [
             chipotleProteinPortionMode,
+            chipotleBuildConfiguration.selectedEntree,
+            chipotleBuildConfiguration.selectedKidsMeal,
             chipotleSplitPortionModeById,
             selectedChipotleIngredientItems,
             selectedChipotleIngredientVariantIds,
@@ -1296,6 +1343,7 @@ export default function ItemRouteModal({
         : "Customize";
     const chipotleGroupedSelectedIngredientEntries = useMemo(() => {
         const categoryOrder = [
+            "included ingredients",
             "proteins",
             "rice",
             "beans",
@@ -1304,6 +1352,7 @@ export default function ItemRouteModal({
             "other",
         ];
         const categoryLabels: Record<string, string> = {
+            "included ingredients": "Included / Base",
             proteins: "Protein",
             rice: "Rice",
             beans: "Beans",
@@ -1522,8 +1571,8 @@ export default function ItemRouteModal({
                                     fill
                                     sizes="40px"
                                     className={
-                                        isChipotlePrebuiltBuilderItem
-                                            ? "object-cover"
+                                        isChipotlePresetMealArtwork
+                                            ? CHIPOTLE_PRESET_MEAL_IMAGE_CLASSNAME
                                             : "object-contain p-1"
                                     }
                                 />
@@ -1557,15 +1606,26 @@ export default function ItemRouteModal({
                             className="item-overview-grid relative sm:gap-x-7 lg:gap-x-8"
                         >
                             {selectedItemImage ? (
-                                <div className="item-overview-image relative aspect-square w-48 overflow-hidden rounded-3xl border border-black/[0.06] bg-image-placeholder sm:aspect-auto sm:h-40 sm:w-40 lg:h-52 lg:w-52">
+                                <div
+                                    className={`item-overview-image relative overflow-hidden rounded-3xl border border-black/[0.06] bg-image-placeholder sm:aspect-auto sm:h-40 sm:w-40 lg:h-52 lg:w-52 ${
+                                        // Mobile-only: the wide 3:2 editorial
+                                        // artwork gets a slightly wider (not
+                                        // square) box so less of it has to be
+                                        // cropped away. Desktop/tablet sizes
+                                        // above are untouched for every item.
+                                        isChipotlePresetMealArtwork
+                                            ? "h-48 w-56"
+                                            : "aspect-square w-48"
+                                    }`}
+                                >
                                     <Image
                                         src={selectedItemImage}
                                         alt={item.name}
                                         fill
-                                        sizes="(min-width: 1024px) 208px, (min-width: 640px) 160px, 192px"
+                                        sizes="(min-width: 1024px) 208px, (min-width: 640px) 160px, 224px"
                                         className={
-                                            isChipotlePrebuiltBuilderItem
-                                                ? "object-cover"
+                                            isChipotlePresetMealArtwork
+                                                ? CHIPOTLE_PRESET_MEAL_IMAGE_CLASSNAME
                                                 : "object-contain p-1.5 sm:p-2.5 lg:p-3"
                                         }
                                     />
@@ -1893,22 +1953,12 @@ export default function ItemRouteModal({
                                                                         {
                                                                             ...prev,
                                                                         };
-                                                                    if (
-                                                                        next[
-                                                                            "crispy-corn-tortilla"
-                                                                        ]
-                                                                    )
-                                                                        delete next[
-                                                                            "crispy-corn-tortilla"
-                                                                        ];
-                                                                    if (
-                                                                        next[
-                                                                            "soft-flour-tortilla"
-                                                                        ]
-                                                                    )
-                                                                        delete next[
-                                                                            "soft-flour-tortilla"
-                                                                        ];
+                                                                    chipotleTacoShellIdSet.forEach(
+                                                                        (tacoShellId) =>
+                                                                            delete next[
+                                                                                tacoShellId
+                                                                            ],
+                                                                    );
                                                                     next[
                                                                         ingredientId
                                                                     ] = {
@@ -1932,61 +1982,58 @@ export default function ItemRouteModal({
                                                         ),
                                                     selectionControlById:
                                                         isChipotleTacoItem
-                                                            ? {
-                                                                  "crispy-corn-tortilla":
-                                                                      "radio",
-                                                                  "soft-flour-tortilla":
-                                                                      "radio",
-                                                              }
+                                                            ? Object.fromEntries(
+                                                                  [...chipotleTacoShellIdSet].map(
+                                                                      (ingredientId) => [
+                                                                          ingredientId,
+                                                                          "radio" as const,
+                                                                      ],
+                                                                  ),
+                                                              )
                                                             : undefined,
                                                     radioGroupNameById:
                                                         isChipotleTacoItem
-                                                            ? {
-                                                                  "crispy-corn-tortilla":
-                                                                      "chipotle-high-protein-taco-shell",
-                                                                  "soft-flour-tortilla":
-                                                                      "chipotle-high-protein-taco-shell",
-                                                              }
+                                                            ? Object.fromEntries(
+                                                                  [...chipotleTacoShellIdSet].map(
+                                                                      (ingredientId) => [
+                                                                          ingredientId,
+                                                                          "chipotle-high-protein-taco-shell",
+                                                                      ],
+                                                                  ),
+                                                              )
                                                             : undefined,
                                                     variantOptionsById:
                                                         isChipotleTacoItem
-                                                            ? {
-                                                                  "crispy-corn-tortilla":
-                                                                      [
-                                                                          {
-                                                                              id: "3",
-                                                                              label: "3 Tacos",
-                                                                          },
-                                                                          {
-                                                                              id: "1",
-                                                                              label: "1 Taco",
-                                                                          },
+                                                            ? Object.fromEntries(
+                                                                  [...chipotleTacoShellIdSet].map(
+                                                                      (ingredientId) => [
+                                                                          ingredientId,
+                                                                          [
+                                                                              {
+                                                                                  id: "3",
+                                                                                  label: "3 Tacos",
+                                                                              },
+                                                                              {
+                                                                                  id: "1",
+                                                                                  label: "1 Taco",
+                                                                              },
+                                                                          ],
                                                                       ],
-                                                                  "soft-flour-tortilla":
-                                                                      [
-                                                                          {
-                                                                              id: "3",
-                                                                              label: "3 Tacos",
-                                                                          },
-                                                                          {
-                                                                              id: "1",
-                                                                              label: "1 Taco",
-                                                                          },
-                                                                      ],
-                                                              }
+                                                                  ),
+                                                              )
                                                             : undefined,
                                                     selectedVariantIdById:
                                                         isChipotleTacoItem
-                                                            ? {
-                                                                  "crispy-corn-tortilla":
-                                                                      String(
-                                                                          selectedChipotleTacoCount,
-                                                                      ),
-                                                                  "soft-flour-tortilla":
-                                                                      String(
-                                                                          selectedChipotleTacoCount,
-                                                                      ),
-                                                              }
+                                                            ? Object.fromEntries(
+                                                                  [...chipotleTacoShellIdSet].map(
+                                                                      (ingredientId) => [
+                                                                          ingredientId,
+                                                                          String(
+                                                                              selectedChipotleTacoCount,
+                                                                          ),
+                                                                      ],
+                                                                  ),
+                                                              )
                                                             : undefined,
                                                     onVariantChange: (
                                                         nextItem,
@@ -2149,6 +2196,7 @@ export default function ItemRouteModal({
                                     item={item}
                                     nutrition={nutrition}
                                     quantityMultiplier={quantity}
+                                    isMainItemPresetMealArtwork={isChipotlePresetMealArtwork}
                                     variants={variants}
                                     selectedVariantId={selectedVariantId}
                                     onSelectVariant={setSelectedVariantId}

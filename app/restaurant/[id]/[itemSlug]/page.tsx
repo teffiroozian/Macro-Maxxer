@@ -14,7 +14,7 @@ export default async function ItemPage({
 
   if (!routeData) notFound();
 
-  const { restaurant, item, addons } = routeData;
+  const { restaurant, item, addons, initialVariantId } = routeData;
 
   return (
     <>
@@ -28,6 +28,7 @@ export default async function ItemPage({
         ingredients={restaurant.ingredients}
         customizationRules={restaurant.customizationRules}
         closeBehavior="replace"
+        initialVariantId={initialVariantId}
       />
     </>
   );

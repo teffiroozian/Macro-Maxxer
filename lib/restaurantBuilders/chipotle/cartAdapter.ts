@@ -1,6 +1,10 @@
 import type { CartBuildConfiguration, CartItem, CartSelection } from "@/types/cart";
 import type { Nutrition } from "@/types/nutrition";
 import type { IngredientItem, MenuItem } from "@/types/menu";
+import {
+  resolveChipotleLegacyId,
+  type ChipotleLegacyBuildTargetId,
+} from "@/lib/restaurantBuilders/chipotle/legacyCompatibility";
 import { buildHighProteinBuildConfiguration, isChipotleEditablePresetBuildItem } from "@/lib/restaurantBuilders/chipotle/highProtein";
 import type { ChipotleBuildConfiguration, ChipotleKidsMealId, ChipotleTacoCount, ChipotleTacoShell, ProteinPortionMode, SplitPortionMode } from "@/lib/restaurantBuilders/chipotle";
 
@@ -24,13 +28,44 @@ export function toUniversalChipotleBuildConfiguration(configuration: ChipotleBui
 
 export function fromUniversalChipotleBuildConfiguration(configuration: CartBuildConfiguration): ChipotleBuildConfiguration {
   const options = configuration.options ?? {};
+  const selectedTacoCount =
+    (options.selectedTacoCount as ChipotleTacoCount | undefined) ?? 3;
+  const selectedKidsMeal =
+    (options.selectedKidsMeal as ChipotleKidsMealId | undefined) ??
+    "build-your-own";
+  const buildTargetId: ChipotleLegacyBuildTargetId =
+    configuration.baseItemId === "burrito"
+      ? "chipotle-burrito"
+      : configuration.baseItemId === "salad"
+        ? "chipotle-salad"
+        : configuration.baseItemId === "quesadilla"
+          ? "chipotle-quesadilla"
+          : configuration.baseItemId === "tacos"
+            ? selectedTacoCount === 1
+              ? "chipotle-taco"
+              : "chipotle-tacos-3"
+            : configuration.baseItemId === "kids-meal"
+              ? selectedKidsMeal === "quesadilla"
+                ? "chipotle-kids-quesadilla"
+                : "chipotle-kids-build-your-own"
+              : "chipotle-bowl";
+  const migratedIngredients = configuration.ingredients.flatMap((ingredient) => {
+    const resolution = resolveChipotleLegacyId(ingredient.id, { buildTargetId });
+    if (resolution.status === "obsolete" || resolution.status === "ambiguous") {
+      return [];
+    }
+    return [{
+      ...ingredient,
+      id: resolution.status === "resolved" ? resolution.recordId : ingredient.id,
+    }];
+  });
   return {
     selectedEntree: (configuration.baseItemId ?? null) as ChipotleBuildConfiguration["selectedEntree"],
     selectedIngredientItems: Object.fromEntries(
-      configuration.ingredients.map((ingredient) => [ingredient.id, { quantity: ingredient.quantity }])
+      migratedIngredients.map((ingredient) => [ingredient.id, { quantity: ingredient.quantity }])
     ),
     selectedIngredientVariantIds: Object.fromEntries(
-      configuration.ingredients
+      migratedIngredients
         .filter((ingredient) => Boolean(ingredient.variantId))
         .map((ingredient) => [ingredient.id, ingredient.variantId as string])
     ),
@@ -41,8 +76,8 @@ export function fromUniversalChipotleBuildConfiguration(configuration: CartBuild
         .map((ingredient) => [ingredient.id, ingredient.portion as SplitPortionMode])
     ),
     selectedTacoShell: (options.selectedTacoShell as ChipotleTacoShell | undefined) ?? "crispy",
-    selectedTacoCount: (options.selectedTacoCount as ChipotleTacoCount | undefined) ?? 3,
-    selectedKidsMeal: (options.selectedKidsMeal as ChipotleKidsMealId | undefined) ?? "build-your-own",
+    selectedTacoCount,
+    selectedKidsMeal,
   };
 }
 
@@ -77,7 +112,7 @@ export function createChipotleCartConfiguration(chipotle: ChipotleCartSubmission
     proteinPortionMode: chipotle.proteinPortionMode,
     splitPortionModeById: chipotle.splitPortionModeById,
     selectedTacoCount: chipotle.selectedTacoCount,
-    selectedTacoShell: chipotle.selectedTacoShellId === "soft-flour-tortilla" ? "soft" : "crispy",
+    selectedTacoShell: chipotle.selectedTacoShellId.includes("soft") ? "soft" : "crispy",
   });
 }
 

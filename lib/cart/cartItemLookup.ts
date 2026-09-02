@@ -3,7 +3,13 @@
 // the old hand-authored data/restaurants/chickfila.json, which stays in
 // place temporarily as a fallback/reference until runtime QA is complete.
 import chickfilaMenu from "@/data/generated/chick-fil-a/restaurant.json";
-import chipotleMenu from "@/data/restaurants/chipotle.json";
+import { CHIPOTLE_GENERATED_RUNTIME_MENU } from "@/lib/restaurantBuilders/chipotle/generatedRuntimeAdapter";
+import { resolveChipotleIngredientDisplayName } from "@/lib/restaurantBuilders/chipotle/ingredientMenuItems";
+import type { ChipotleBuilderConfig, ChipotleEntreeSelection } from "@/lib/restaurantBuilders/chipotle/types";
+import {
+  resolveChipotleLegacyCartIngredientId,
+  resolveChipotleLegacyCartMainItem,
+} from "@/lib/restaurantBuilders/chipotle/legacyCompatibility";
 import habitMenu from "@/data/restaurants/habit.json";
 import mcdonaldsMenu from "@/data/restaurants/mcdonalds.json";
 import modMenu from "@/data/restaurants/mod.json";
@@ -26,7 +32,7 @@ export type ResolvedCartItemDetail = {
 
 const restaurantMenusById: Record<string, RestaurantMenu> = {
   chickfila: chickfilaMenu as RestaurantMenu,
-  chipotle: chipotleMenu as RestaurantMenu,
+  chipotle: CHIPOTLE_GENERATED_RUNTIME_MENU,
   habit: habitMenu as RestaurantMenu,
   mcdonalds: mcdonaldsMenu as RestaurantMenu,
   mod: modMenu as RestaurantMenu,
@@ -50,6 +56,20 @@ export function findCartMenuItem(restaurant: RestaurantMenu, itemId: string): Ca
     restaurant.ingredients?.find((ingredient) => ingredient.id === itemId) ??
     null
   );
+}
+
+function resolveChipotleCartCatalogId(
+  cartItem: CartItem,
+  itemId: string,
+  role: "main" | "ingredient" = "ingredient",
+) {
+  if (cartItem.restaurantId !== "chipotle") return itemId;
+  const mainResolution = resolveChipotleLegacyCartMainItem(cartItem);
+  const resolution =
+    role === "main"
+      ? mainResolution
+      : resolveChipotleLegacyCartIngredientId(itemId, mainResolution);
+  return resolution.status === "resolved" ? resolution.recordId : undefined;
 }
 
 function normalizeMenuLabel(value: string) {
@@ -77,6 +97,9 @@ export function findCartMenuItemByLabel(restaurant: RestaurantMenu, label?: stri
 export function resolveCartItemDetails(cartItem: CartItem, customization: CartCustomization): ResolvedCartItemDetail {
   const restaurant = getCartRestaurantMenu(cartItem.restaurantId);
   const itemId = getCartCustomizationItemId(customization);
+  const resolvedItemId = itemId
+    ? resolveChipotleCartCatalogId(cartItem, itemId)
+    : undefined;
   const fallbackLabel = customization.itemLabel ?? customization.ingredientLabel ?? customization.toIngredientLabel;
   // A combo side/drink's saved label splits "Name" from "(Variant)" at the
   // first parenthesis (see customizationFromLabel), which incorrectly
@@ -87,7 +110,9 @@ export function resolveCartItemDetails(cartItem: CartItem, customization: CartCu
   const fallbackLabelWithVariant =
     fallbackLabel && customization.variantLabel ? `${fallbackLabel} (${customization.variantLabel})` : undefined;
   const item =
-    (restaurant && itemId ? findCartMenuItem(restaurant, itemId) : null) ??
+    (restaurant && resolvedItemId
+      ? findCartMenuItem(restaurant, resolvedItemId)
+      : null) ??
     (restaurant ? findCartMenuItemByLabel(restaurant, fallbackLabel) : null) ??
     (restaurant ? findCartMenuItemByLabel(restaurant, fallbackLabelWithVariant) : null);
   const variant =
@@ -227,13 +252,40 @@ export function resolveCartItemCustomizationCards(cartItem: CartItem): ResolvedC
         });
       });
   } else {
+    // The build's own selection never stores a snapshot label (see
+    // toUniversalChipotleBuildConfiguration), so this always re-derives the
+    // name from the live catalog — for Chipotle that must go through the
+    // same context-specific labeling the builder view uses (e.g.
+    // chipotle-cmg-4026 reads "Double Wrap with Tortilla" only for a
+    // Burrito, "Tortilla" everywhere else including here for any other
+    // build), or the raw generated name would leak into every context.
+    const chipotleEntree =
+      cartItem.restaurantId === "chipotle"
+        ? ((cartItem.selection.buildConfiguration.baseItemId ?? null) as ChipotleEntreeSelection)
+        : undefined;
     cartItem.selection.buildConfiguration.ingredients
       .filter((ingredient) => ingredient.quantity > 0)
       .forEach((ingredient) => {
-        const item = restaurant ? findCartMenuItem(restaurant, ingredient.id) : null;
+        const resolvedIngredientId = resolveChipotleCartCatalogId(
+          cartItem,
+          ingredient.id,
+        );
+        const item =
+          restaurant && resolvedIngredientId
+            ? findCartMenuItem(restaurant, resolvedIngredientId)
+            : null;
+        const itemName =
+          item &&
+          cartItem.restaurantId === "chipotle"
+            ? resolveChipotleIngredientDisplayName(
+                item,
+                restaurant?.builderConfig as ChipotleBuilderConfig | undefined,
+                chipotleEntree,
+              )
+            : item?.name;
         cards.push({
           id: `build-${ingredient.id}`,
-          name: ingredient.label ?? item?.name ?? "Ingredient",
+          name: ingredient.label ?? itemName ?? "Ingredient",
           qualifierLabel: ingredient.quantity > 1 ? `×${ingredient.quantity}` : undefined,
           sign: "add",
           image: item?.image,
@@ -286,12 +338,31 @@ export function resolveCartItemMainItem(cartItem: CartItem): ResolvedCartItemMai
   if (cartItem.selection.type !== "standard") return null;
   const restaurant = getCartRestaurantMenu(cartItem.restaurantId);
   if (!restaurant) return null;
-  const item = findCartMenuItem(restaurant, cartItem.itemId);
+  const mainResolution =
+    cartItem.restaurantId === "chipotle"
+      ? resolveChipotleLegacyCartMainItem(cartItem)
+      : null;
+  if (mainResolution && mainResolution.status !== "resolved") return null;
+  const resolvedItemId =
+    mainResolution?.status === "resolved"
+      ? mainResolution.recordId
+      : cartItem.itemId;
+  const item = findCartMenuItem(restaurant, resolvedItemId);
   if (!item) return null;
 
-  const { variantId, variantLabel } = cartItem.selection;
+  const { variantLabel } = cartItem.selection;
+  const variantId =
+    mainResolution?.status === "resolved" && mainResolution.variantId
+      ? mainResolution.variantId
+      : cartItem.selection.variantId;
   const variant =
     (variantId ? item.variants?.find((candidate) => candidate.id === variantId) : undefined) ??
+    (mainResolution?.status === "resolved"
+      ? item.variants?.find(
+          (candidate) =>
+            candidate.canonicalItemId === mainResolution.recordId,
+        )
+      : undefined) ??
     (variantLabel ? item.variants?.find((candidate) => candidate.label === variantLabel) : undefined);
 
   return {
