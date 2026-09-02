@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo } from "react";
+import { useEffect, useMemo, useRef } from "react";
 import SectionEyebrow from "@/components/ui/SectionEyebrow";
 import CartNutritionSummary from "@/components/cart/CartNutritionSummary";
 import GlobalMobileNav from "@/components/GlobalMobileNav";
@@ -12,8 +12,9 @@ import CartItemsSection from "@/components/cart/CartItemsSection";
 import CartMealBreakdown from "@/components/cart/CartMealBreakdown";
 import { NutritionDetailsGrid } from "@/components/item-route-modal/SelectionSummaryPanels";
 import { useCart } from "@/stores/cartStore";
-import { buildCartNutritionTotals } from "@/lib/cart/nutrition";
+import { buildCartNutritionTotals, getCartViewAnalytics } from "@/lib/cart/nutrition";
 import { useCartItemEditModal } from "@/hooks/useCartItemEditModal";
+import { trackCartView } from "@/lib/analytics";
 
 export default function CartPage() {
   const { items, totals, updateQuantity } = useCart();
@@ -23,6 +24,16 @@ export default function CartPage() {
   const nutritionTotals = useMemo(() => buildCartNutritionTotals(items), [items]);
 
   const itemCount = items.reduce((sum, item) => sum + item.quantity, 0);
+
+  // Navigating to this route is itself the "genuine view" — fire once per
+  // mount (i.e. once per navigation here), never again for this same visit
+  // as items/totals update from cart edits made while on the page.
+  const hasTrackedViewRef = useRef(false);
+  useEffect(() => {
+    if (hasTrackedViewRef.current) return;
+    hasTrackedViewRef.current = true;
+    trackCartView(getCartViewAnalytics(items));
+  }, [items]);
 
   return (
     <>

@@ -110,3 +110,22 @@ export function trackAddToCart({
     quantity,
   });
 }
+
+export function trackCartView({
+  itemCount,
+  restaurantCount,
+  totalCalories,
+  totalProtein,
+}: {
+  itemCount: number;
+  restaurantCount: number;
+  totalCalories: number;
+  totalProtein: number;
+}) {
+  sendGaEvent("cart_view", {
+    item_count: itemCount,
+    restaurant_count: restaurantCount,
+    total_calories: totalCalories,
+    total_protein: totalProtein,
+  });
+}

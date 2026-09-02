@@ -61,3 +61,20 @@ export function buildCartMacroTotals(items: CartItem[]) {
 export function hasPartialCartNutritionData(items: CartItem[]) {
   return items.some((item) => getNutritionDataQuality(item.nutritionPerItem).isPartial);
 }
+
+// Builds the cart_view analytics payload from the cart's current items —
+// the same "sum by quantity" item-count and "unique restaurantId" count
+// conventions already used by CartIconDropdown/app/cart/page.tsx and
+// CartPreviewDrawer/getCartRestaurantContext respectively, plus the shared
+// buildCartMacroTotals nutrition source of truth (never a separate
+// calculation). Naturally yields all zeros for an empty cart.
+export function getCartViewAnalytics(items: CartItem[]) {
+  const totals = buildCartMacroTotals(items);
+
+  return {
+    itemCount: items.reduce((sum, item) => sum + item.quantity, 0),
+    restaurantCount: new Set(items.map((item) => item.restaurantId)).size,
+    totalCalories: totals.calories,
+    totalProtein: totals.protein,
+  };
+}

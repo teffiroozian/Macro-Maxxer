@@ -3,7 +3,7 @@
 import Image from "@/components/ui/AppImage";
 import Link from "next/link";
 import { Pencil, ShoppingCart, Trash2 } from "lucide-react";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useRestaurantUi } from "@/components/RestaurantUiContext";
 import MacroTotalsGrid from "@/components/MacroTotalsGrid";
 import CartItemPreviewRow from "@/components/cart/CartItemPreviewRow";
@@ -18,13 +18,30 @@ import ItemRouteModal from "@/components/item-route-modal/ItemRouteModal";
 import { getAllRestaurants } from "@/lib/restaurants";
 import { useCart } from "@/stores/cartStore";
 import { buildCartItemSummaryGroups } from "@/lib/cart/displayLabels";
+import { getCartViewAnalytics } from "@/lib/cart/nutrition";
 import { useCartItemEditModal } from "@/hooks/useCartItemEditModal";
+import { trackCartView } from "@/lib/analytics";
 
 export default function CartPreviewDrawer() {
   const { isCartOpen, closeCart } = useRestaurantUi();
   const { items, totals, updateQuantity, clearCart } = useCart();
   const [isClearCartDialogOpen, setIsClearCartDialogOpen] = useState(false);
   const { editState, loadingEditItemId, openModal, closeEditModal } = useCartItemEditModal();
+
+  // Fires once per genuine open (the isCartOpen false -> true transition),
+  // not on every re-render while the drawer stays open (e.g. a quantity
+  // change updates `items`, re-running this effect, but the ref guard skips
+  // it). Resetting the guard on close means the next real open fires fresh.
+  const hasTrackedOpenRef = useRef(false);
+  useEffect(() => {
+    if (!isCartOpen) {
+      hasTrackedOpenRef.current = false;
+      return;
+    }
+    if (hasTrackedOpenRef.current) return;
+    hasTrackedOpenRef.current = true;
+    trackCartView(getCartViewAnalytics(items));
+  }, [isCartOpen, items]);
 
   const closeClearCartDialog = useCallback(() => {
     setIsClearCartDialogOpen(false);
