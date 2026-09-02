@@ -26,3 +26,25 @@ export function trackRestaurantView({
     restaurant_name: restaurantName,
   });
 }
+
+export function trackMenuItemView({
+  restaurantId,
+  restaurantName,
+  itemId,
+  itemName,
+  category,
+}: {
+  restaurantId: string;
+  restaurantName: string;
+  itemId: string;
+  itemName: string;
+  category?: string;
+}) {
+  sendGaEvent("menu_item_view", {
+    restaurant_id: restaurantId,
+    restaurant_name: restaurantName,
+    item_id: itemId,
+    item_name: itemName,
+    category,
+  });
+}

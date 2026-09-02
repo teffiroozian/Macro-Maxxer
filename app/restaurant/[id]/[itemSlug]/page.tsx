@@ -21,6 +21,7 @@ export default async function ItemPage({
       <RestaurantPageContent restaurantData={restaurant} />
       <ItemRouteModal
         restaurantId={restaurant.id}
+        restaurantName={restaurant.name}
         restaurantPath={`/restaurant/${restaurant.id}`}
         item={item}
         menuItems={restaurant.items}

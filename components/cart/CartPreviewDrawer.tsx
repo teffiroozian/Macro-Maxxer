@@ -227,6 +227,7 @@ export default function CartPreviewDrawer() {
       {editState ? (
         <ItemRouteModal
           restaurantId={editState.restaurant.id}
+          restaurantName={editState.restaurant.name}
           restaurantPath={`/restaurant/${editState.restaurant.id}`}
           item={editState.sourceItem}
           menuItems={editState.restaurant.items}

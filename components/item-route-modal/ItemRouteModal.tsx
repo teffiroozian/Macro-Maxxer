@@ -52,6 +52,7 @@ import {
     type SplitPortionMode,
 } from "@/lib/restaurantBuilders/chipotle";
 import { resolvePrimaryCategory } from "@/lib/ingredientTabs";
+import { trackMenuItemView } from "@/lib/analytics";
 import { resolveEffectiveIngredientNutrition } from "@/lib/ingredientNutrition";
 import { resolveAddonGroupForAddon } from "@/lib/addonGroups";
 import type { ChipotleBuildConfiguration } from "@/lib/restaurantBuilders/chipotle";
@@ -165,6 +166,7 @@ function PreviewControlShortcut({
 
 export default function ItemRouteModal({
     restaurantId,
+    restaurantName,
     restaurantPath,
     item,
     addons,
@@ -179,6 +181,7 @@ export default function ItemRouteModal({
     initialVariantId,
 }: {
     restaurantId: string;
+    restaurantName: string;
     restaurantPath: string;
     item: MenuItem;
     addons?: ResolvedAddonGroups;
@@ -220,6 +223,20 @@ export default function ItemRouteModal({
             ) ?? null
         );
     }, [editCartItemId, item.id, item.name, items, restaurantId]);
+
+    useEffect(() => {
+        trackMenuItemView({
+            restaurantId,
+            restaurantName,
+            itemId: item.id ?? item.name,
+            itemName: item.name,
+            category: resolvePrimaryCategory(item.categories),
+        });
+        // Fires once per distinct item shown in this modal/route — deps are
+        // limited to the item's identity so customization state changes
+        // (variant/addon/ingredient selections) don't refire it.
+    }, [restaurantId, restaurantName, item.id, item.name, item.categories]);
+
     const comboConfig = useMemo(
         () => resolveComboMealConfig(restaurantId, item, menuItems),
         [item, menuItems, restaurantId],

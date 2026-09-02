@@ -15,6 +15,7 @@ export default function GlobalItemPreviewModal() {
   return (
     <ItemRouteModal
       restaurantId={restaurant.id}
+      restaurantName={restaurant.name}
       restaurantPath={`/restaurant/${restaurant.id}`}
       item={item}
       menuItems={restaurant.items}
