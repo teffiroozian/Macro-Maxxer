@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Search, X } from "lucide-react";
 import SurfaceCard from "@/components/ui/SurfaceCard";
@@ -13,10 +13,16 @@ import { useMenuItemSearch } from "@/lib/search/useMenuItemSearch";
 import { useMenuItemSelectionHandlers } from "@/lib/search/useMenuItemSelectionHandlers";
 import { useRecentAndPopularRestaurants } from "@/lib/search/useRecentAndPopularRestaurants";
 import { useRecentMenuItems } from "@/lib/search/useRecentMenuItems";
+import { useDebouncedValue } from "@/hooks/useDebouncedValue";
+import { trackSearch, type SearchContext } from "@/lib/analytics";
 import type { RestaurantIndexEntry } from "@/types/restaurant";
 import type { SearchResult } from "@/types/search";
 
 const MAX_FILTERED_SUGGESTIONS = 10;
+// Same settle window as the nav's useGlobalSearchState, kept independent of
+// useMenuItemSearch's own shorter (150ms) debounce, which exists for result
+// rendering rather than for gating analytics.
+const SEARCH_ANALYTICS_DEBOUNCE_MS = 500;
 
 type RestaurantSearchProps = {
   restaurants: RestaurantIndexEntry[];
@@ -57,6 +63,35 @@ export default function RestaurantSearch({ restaurants }: RestaurantSearchProps)
   } = useRecentMenuItems(searchIndex);
 
   const menuItemSuggestions = isEmptyQuery ? recentMenuItems : menuItemResults;
+
+  // This widget is a single, always-one-instance component (unlike the nav's
+  // shared useGlobalSearchState, which two mounted surfaces call at once), so
+  // a plain ref is enough to dedupe repeated fires for the same settled
+  // query/results combination — no module-level state needed here.
+  const analyticsQuery = useDebouncedValue(query, SEARCH_ANALYTICS_DEBOUNCE_MS);
+  const lastTrackedSearchSignatureRef = useRef<string | null>(null);
+
+  useEffect(() => {
+    const term = analyticsQuery.trim();
+    if (!term) {
+      lastTrackedSearchSignatureRef.current = null;
+      return;
+    }
+
+    // The hero search is never scoped to a single restaurant (currentRestaurantId
+    // is always null for its menu-item selection handler), so results here are
+    // always either "restaurants" or "global_menu_items" — never "restaurant_menu".
+    const resultsCount = scope === "restaurants" ? filteredSuggestions.length : menuItemResults.length;
+    const searchContext: SearchContext = scope === "restaurants" ? "restaurants" : "global_menu_items";
+
+    const signature = `${searchContext}|${term.toLowerCase()}|${resultsCount}`;
+    if (lastTrackedSearchSignatureRef.current === signature) {
+      return;
+    }
+    lastTrackedSearchSignatureRef.current = signature;
+
+    trackSearch({ searchTerm: term, resultsCount, searchContext });
+  }, [analyticsQuery, scope, filteredSuggestions.length, menuItemResults.length]);
 
   const suggestions: SearchResult[] =
     scope === "restaurants"

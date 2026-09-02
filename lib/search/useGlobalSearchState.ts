@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import type { KeyboardEvent } from "react";
 import { searchRestaurants } from "@/lib/search/searchRestaurants";
@@ -12,9 +12,25 @@ import { useRecentAndPopularRestaurants } from "@/lib/search/useRecentAndPopular
 import { useGlobalSearch } from "@/components/GlobalSearchContext";
 import { getAllRestaurants } from "@/lib/restaurants";
 import { useCart } from "@/stores/cartStore";
+import { useDebouncedValue } from "@/hooks/useDebouncedValue";
+import { trackSearch, type SearchContext } from "@/lib/analytics";
 import type { SearchScope } from "@/components/global-search/ScopeSwitcher";
 import type { RestaurantIndexEntry } from "@/types/restaurant";
 import type { SearchResult } from "@/types/search";
+
+// How long a query must sit unchanged before it counts as a settled,
+// trackable search (independent of useMenuItemSearch's own 150ms debounce,
+// which exists to keep result rendering responsive, not to gate analytics).
+const SEARCH_ANALYTICS_DEBOUNCE_MS = 500;
+
+// DesktopSearchDropdown and GlobalSearchOverlay both stay mounted at all
+// times and each call this hook independently, so a settled query is
+// computed twice per keystroke pause — once per surface. This module-level
+// signature (shared by both call sites, since they share one module
+// instance) makes sure the resulting `search` event only fires once. It
+// resets to null whenever the query empties out (e.g. on close()), so
+// reopening and re-running the same search still fires a fresh event.
+let lastTrackedSearchSignature: string | null = null;
 
 // All the state and selection logic behind the nav's Global Search — shared
 // by the desktop search bar (DesktopSearchDropdown) and the mobile sheet
@@ -83,6 +99,35 @@ export function useGlobalSearchState() {
     [recentMenuItemsAll, restaurantFilterId]
   );
   const menuItemSuggestions = isEmptyQuery ? recentMenuItems : menuItemResults;
+
+  // Fires one `search` GA4 event per meaningfully settled query, instead of
+  // per keystroke: analyticsQuery only changes once `query` has sat still
+  // for SEARCH_ANALYTICS_DEBOUNCE_MS. By the time it settles, `query` itself
+  // has already been stable that whole time, so the live restaurantResults/
+  // menuItemResults (both derived from `query`, the latter via its own
+  // shorter debounce) are already correct for this exact term.
+  const analyticsQuery = useDebouncedValue(query, SEARCH_ANALYTICS_DEBOUNCE_MS);
+
+  useEffect(() => {
+    const term = analyticsQuery.trim();
+    if (!term) {
+      lastTrackedSearchSignature = null;
+      return;
+    }
+
+    const resultsCount = scope === "restaurants" ? restaurantResults.length : menuItemResults.length;
+    const searchContext: SearchContext =
+      scope === "restaurants" ? "restaurants" : restaurantFilterId ? "restaurant_menu" : "global_menu_items";
+    const restaurantId = scope === "menu-items" ? (restaurantFilterId ?? undefined) : undefined;
+
+    const signature = `${searchContext}|${restaurantId ?? ""}|${term.toLowerCase()}|${resultsCount}`;
+    if (lastTrackedSearchSignature === signature) {
+      return;
+    }
+    lastTrackedSearchSignature = signature;
+
+    trackSearch({ searchTerm: term, resultsCount, searchContext, restaurantId });
+  }, [analyticsQuery, scope, restaurantFilterId, restaurantResults.length, menuItemResults.length]);
 
   const filteredRestaurantName = restaurantFilterId
     ? restaurants.find((restaurant) => restaurant.id === restaurantFilterId)?.name
