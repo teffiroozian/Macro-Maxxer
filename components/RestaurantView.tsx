@@ -13,6 +13,7 @@ import type {
 import type { RestaurantBuilderConfig } from "@/types/builder";
 import { categorySectionId } from "@/lib/menuSections/sorting";
 import { INGREDIENT_PROTEIN_OPTIONS } from "@/lib/menuSections/filterOptions";
+import { resolveEffectiveIngredientNutrition } from "@/lib/ingredientNutrition";
 import MenuSections from "./MenuSections";
 import StickyRestaurantBar from "./StickyRestaurantBar";
 import { useRestaurantMenuControls } from "./restaurant-view/useRestaurantMenuControls";
@@ -70,19 +71,23 @@ function StandardRestaurantView({
     () =>
       ingredients
         .filter((ingredient) => !ingredient.hideFromIngredientView)
-        .map((ingredient) => ({
-          id: ingredient.id,
-          name: ingredient.name,
-          image: ingredient.image ?? restaurantLogo,
-          categories: ingredient.categories,
-          servingType: "addon",
-          nutrition: ingredient.nutrition,
-          variants: ingredient.variants,
-          defaultVariantId: ingredient.defaultVariantId,
-          defaultOrder: ingredient.defaultOrder,
-          hideVariantSelector: ingredient.hideVariantSelector,
-          ingredientRef: ingredient.id,
-        })),
+        .flatMap((ingredient) => {
+          const nutrition = resolveEffectiveIngredientNutrition(ingredient);
+          if (!nutrition) return [];
+          return [{
+            id: ingredient.id,
+            name: ingredient.name,
+            image: ingredient.image ?? restaurantLogo,
+            categories: ingredient.categories,
+            servingType: "addon" as const,
+            nutrition,
+            variants: ingredient.variants,
+            defaultVariantId: ingredient.defaultVariantId,
+            defaultOrder: ingredient.defaultOrder,
+            hideVariantSelector: ingredient.hideVariantSelector,
+            ingredientRef: ingredient.id,
+          }];
+        }),
     [ingredients, restaurantLogo],
   );
   const {

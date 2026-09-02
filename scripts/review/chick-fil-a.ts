@@ -1,5 +1,8 @@
-import { mkdir, readFile, readdir, rename, unlink, writeFile } from "node:fs/promises";
-import { dirname, resolve } from "node:path";
+import { readFile, readdir } from "node:fs/promises";
+import { resolve } from "node:path";
+
+import { normalizeName } from "../lib/normalize-name";
+import { writeAtomically } from "../lib/write-atomically";
 
 const PRODUCTION_MENU_PATH = resolve("data/restaurants/chickfila.json");
 const RESTAURANT_INDEX_PATH = resolve("data/restaurants/index.json");
@@ -128,18 +131,6 @@ function unique<T>(values: Iterable<T>): T[] {
   return [...new Set(values)];
 }
 
-function normalizeName(value: string): string {
-  return value
-    .normalize("NFKC")
-    .replace(/<\/?sup\b[^>]*>/gi, "")
-    .replace(/[®™℠]/g, "")
-    .replace(/[’‘‛`´]/g, "'")
-    .toLocaleLowerCase("en-US")
-    .replace(/[^\p{L}\p{N}]+/gu, " ")
-    .trim()
-    .replace(/\s+/g, " ");
-}
-
 function sorted(values: Iterable<string>): string[] {
   return unique(values).sort((left, right) => left.localeCompare(right));
 }
@@ -179,18 +170,6 @@ function getLocalDate(): string {
 
 async function readJson(path: string): Promise<unknown> {
   return JSON.parse(await readFile(path, "utf8")) as unknown;
-}
-
-async function writeAtomically(path: string, contents: string): Promise<void> {
-  const temporaryPath = `${path}.${process.pid}.tmp`;
-  await mkdir(dirname(path), { recursive: true });
-  try {
-    await writeFile(temporaryPath, contents, "utf8");
-    await rename(temporaryPath, path);
-  } catch (error) {
-    await unlink(temporaryPath).catch(() => undefined);
-    throw error;
-  }
 }
 
 function generatedAliases(value: JsonObject): string[] {

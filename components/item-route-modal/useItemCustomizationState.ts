@@ -22,6 +22,7 @@ type UseItemCustomizationStateParams = {
   comboConfig?: ComboMealConfig;
   comboSides: MenuItem[];
   comboDrinks: MenuItem[];
+  initialVariantId?: string;
 };
 
 export function useItemCustomizationState({
@@ -34,6 +35,7 @@ export function useItemCustomizationState({
   comboConfig,
   comboSides,
   comboDrinks,
+  initialVariantId,
 }: UseItemCustomizationStateParams) {
   const variants = item.variants?.length ? item.variants : null;
   const defaultVariantId = useMemo(() => {
@@ -55,7 +57,11 @@ export function useItemCustomizationState({
   }), [editingCartItem?.customizations]);
 
   const [selectedVariantId, setSelectedVariantId] = useState(
-    editingCartItem ? getCartItemVariantId(editingCartItem) ?? defaultVariantId : defaultVariantId
+    editingCartItem
+      ? getCartItemVariantId(editingCartItem) ?? defaultVariantId
+      : variants?.some((variant) => variant.id === initialVariantId)
+        ? initialVariantId ?? defaultVariantId
+        : defaultVariantId
   );
   const [quantity, setQuantity] = useState(editingCartItem?.quantity ?? 1);
   const [selectedAddons, setSelectedAddons] = useState<Partial<Record<string, MenuItem>>>(() =>

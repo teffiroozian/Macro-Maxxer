@@ -1,4 +1,4 @@
-import Image from "next/image";
+import Image from "@/components/ui/AppImage";
 import { ReactNode } from "react";
 import { getCartItemCoreMacros } from "@/lib/cart/itemAccessors";
 import MacroStat from "@/components/nutrition/MacroStat";

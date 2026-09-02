@@ -1,7 +1,8 @@
-import { mkdir, readFile, rename, unlink, writeFile } from "node:fs/promises";
-import { dirname, resolve } from "node:path";
+import { readFile } from "node:fs/promises";
+import { resolve } from "node:path";
 
 import { sanitizeDisplayName } from "../lib/display-name";
+import { writeAtomically } from "../lib/write-atomically";
 
 const RESTAURANT_PATH = resolve("data/generated/chick-fil-a/restaurant.json");
 const UNRESOLVED_PATH = resolve("data/generated/chick-fil-a/unresolved.json");
@@ -393,18 +394,6 @@ function nutritionSignature(candidate: JsonObject): string {
 
 function numberSummary(value: unknown): number | undefined {
   return typeof value === "number" && Number.isFinite(value) ? value : undefined;
-}
-
-async function writeAtomically(path: string, contents: string): Promise<void> {
-  const temporaryPath = `${path}.${process.pid}.tmp`;
-  await mkdir(dirname(path), { recursive: true });
-  try {
-    await writeFile(temporaryPath, contents, "utf8");
-    await rename(temporaryPath, path);
-  } catch (error) {
-    await unlink(temporaryPath).catch(() => undefined);
-    throw error;
-  }
 }
 
 async function main(): Promise<void> {

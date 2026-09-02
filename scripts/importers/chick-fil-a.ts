@@ -1,5 +1,5 @@
-import { mkdir, readFile, rename, unlink, writeFile } from "node:fs/promises";
-import { dirname, resolve } from "node:path";
+import { readFile } from "node:fs/promises";
+import { resolve } from "node:path";
 
 import type {
   ComboMealConfig,
@@ -13,6 +13,8 @@ import type {
 } from "../../types/menu";
 import type { Nutrition } from "../../types/nutrition";
 import { sanitizeDisplayName } from "../lib/display-name";
+import { normalizeName } from "../lib/normalize-name";
+import { writeAtomically } from "../lib/write-atomically";
 import { VERIFIED_NUTRITION_MAPPINGS } from "./chick-fil-a-nutrition-mappings";
 
 const MENU_PATH = resolve("data/raw/chick-fil-a/menu.json");
@@ -481,18 +483,6 @@ function readNutritionRows(text: string): NutritionRow[] {
 // read `namesFor(record)[0]` directly for display purposes.
 function displayNameFor(record: LogicalRecord): string {
   return sanitizeDisplayName(namesFor(record)[0] ?? standardId(record));
-}
-
-function normalizeName(value: string): string {
-  return value
-    .normalize("NFKC")
-    .replace(/<\/?sup\b[^>]*>/gi, "")
-    .replace(/[®™℠]/g, "")
-    .replace(/[’‘‛`´]/g, "'")
-    .toLocaleLowerCase("en-US")
-    .replace(/[^\p{L}\p{N}]+/gu, " ")
-    .trim()
-    .replace(/\s+/g, " ");
 }
 
 function nutritionPayloadSignature(row: NutritionRow): string {
@@ -1594,18 +1584,6 @@ function buildSourceTrace(
         }
       : {}),
   };
-}
-
-async function writeAtomically(path: string, contents: string): Promise<void> {
-  const temporaryPath = `${path}.${process.pid}.tmp`;
-  await mkdir(dirname(path), { recursive: true });
-  try {
-    await writeFile(temporaryPath, contents, "utf8");
-    await rename(temporaryPath, path);
-  } catch (error) {
-    await unlink(temporaryPath).catch(() => undefined);
-    throw error;
-  }
 }
 
 async function main(): Promise<void> {

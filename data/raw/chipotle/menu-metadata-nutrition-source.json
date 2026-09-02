@@ -1,0 +1,21 @@
+{
+  "restaurant": "Chipotle",
+  "sourceType": "official-menu-metadata-full-nutrition-api",
+  "source": "https://services.chipotle.com/menu-metadata/v1/menu-metadata/nutrition?channel=web&region=US",
+  "channel": "web",
+  "region": "US",
+  "retrieved": "2026-08-31T23:40:20.861Z",
+  "collectorScript": "scripts/collect/chipotle-calculator-menu.ts",
+  "itemCount": 408,
+  "groupCount": 18,
+  "nutritionDetailSectionCount": 6,
+  "subscriptionKeyDiscovery": {
+    "method": "Discovered dynamically at collection time from the <meta property=\"servicesconfig\" data-host=\"...\" data-appkey=\"...\"/> tag on the nutrition-calculator page rather than hardcoded.",
+    "discoveredFromPage": "https://www.chipotle.com/nutrition-calculator",
+    "discoveredHost": "https://services.chipotle.com"
+  },
+  "notes": [
+    "Saved as an untouched raw response from Chipotle's live full-nutrition endpoint; no fields were renamed, records filtered, or values reconciled against other sources.",
+    "This source is kept separate from menu-metadata.json because the endpoints have different nutrition detail despite sharing the same CMG item-id namespace and response envelope."
+  ]
+}

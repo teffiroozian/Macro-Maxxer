@@ -52,12 +52,42 @@ export type IncludedIngredientContext = {
 
 export type ChipotleSpecificBuilderConfig = {
   tacoShellIngredientIds?: string[];
+  tacoShellIngredientIdsByCount?: Partial<
+    Record<
+      ChipotleTacoCount,
+      Partial<Record<ChipotleTacoShell, string[]>>
+    >
+  >;
+  kidsBuildYourOwnTortillaIdsByOption?: Partial<
+    Record<ChipotleTacoShell, string[]>
+  >;
   kidsQuesadillaIncludedIngredientIds?: string[];
-  kidsBuildYourOwnDoubleSideIds?: string[];
   kidsMealOptions?: Array<{ id: ChipotleKidsMealId; label: string; image: string }>;
   specialVariantIds?: {
     quesadillaTripleCheese?: string;
   };
+  ingredientIdsByEntree?: Partial<
+    Record<ChipotleEntreeId | "kids-build-your-own" | "kids-quesadilla", string[]>
+  >;
+  // Ingredient ids that start selected and pinned to "Included Ingredients"
+  // (via an entreeOption's includedIngredientIds) but, unlike a true
+  // required included ingredient, the user can uncheck and re-check them
+  // like any other topping — e.g. Salad's Chipotle-Honey Vinaigrette:
+  // selected by default, no lock icon, removable/re-addable, still shown
+  // under Included Ingredients either way. Distinct from
+  // tacoShellIngredientIds, which is a locked *choice* among alternatives
+  // (exactly one always selected), not a single ingredient that can be
+  // removed entirely.
+  includedRemovableIngredientIds?: string[];
+  tortillaSideIngredientId?: string;
+  cheeseIngredientId?: string;
+  // The tortillaSideIngredientId record's generated name ("Double Wrap with
+  // Tortilla") only describes what selecting it means for a Burrito (an
+  // extra tortilla on top of the burrito's own wrap). Elsewhere it's just
+  // the base tortilla component, so the generic label is the default and
+  // only the Burrito's optional-extra context overrides it.
+  tortillaSideGenericLabel?: string;
+  tortillaSideLabelByEntree?: Partial<Record<ChipotleEntreeId, string>>;
 };
 
 export type ChipotleBuilderConfig = RestaurantBuilderConfig & {

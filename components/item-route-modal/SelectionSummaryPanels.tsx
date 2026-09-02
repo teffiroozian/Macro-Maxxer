@@ -1,7 +1,7 @@
 "use client";
 
 import type { ReactNode } from "react";
-import Image from "next/image";
+import Image from "@/components/ui/AppImage";
 import SectionEyebrow from "@/components/ui/SectionEyebrow";
 import SurfaceCard from "@/components/ui/SurfaceCard";
 import ProteinScorePill from "@/components/menu-item-card/ProteinScorePill";

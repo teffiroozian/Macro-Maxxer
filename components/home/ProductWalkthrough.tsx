@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef, useState, type KeyboardEvent } from "react";
-import Image from "next/image";
+import Image from "@/components/ui/AppImage";
 import Link from "next/link";
 import { ArrowRight, Check, Flame, Leaf, Plus, Scale, type LucideIcon } from "lucide-react";
 import SurfaceCard from "@/components/ui/SurfaceCard";

@@ -2,6 +2,8 @@ import type { CartCustomization, CartItem, CartSelectionOption } from "@/types/c
 import { getCustomizationLabel, getCustomizationLabels, getSelectionDetailsLabel } from "@/lib/cart/customizationLabels";
 import { findCartMenuItem, getCartRestaurantMenu } from "@/lib/cart/cartItemLookup";
 import { getSplitPortionModeLabel } from "@/lib/restaurantBuilders/chipotle";
+import { resolveChipotleIngredientDisplayName } from "@/lib/restaurantBuilders/chipotle/ingredientMenuItems";
+import type { ChipotleBuilderConfig, ChipotleEntreeSelection } from "@/lib/restaurantBuilders/chipotle/types";
 
 export function isIngredientCustomizationLabel(label: string) {
   return /:\s*(Removed|(\d+)x|Remove|Extra|Light)\s*$/i.test(label);
@@ -104,11 +106,28 @@ export function buildCartItemSummaryGroups(item: CartItem): CartSummaryGroup[] {
     // (e.g. chipotle/cartAdapter.ts), so the real name has to be looked up
     // from the restaurant's catalog by id.
     const restaurant = getCartRestaurantMenu(item.restaurantId);
+    // Chipotle's tortilla-side ingredient shares one generated record across
+    // contexts with very different meanings ("Double Wrap with Tortilla" is
+    // only correct as the Burrito's optional extra) — resolve the same
+    // context-specific label the builder view and cart cards use instead of
+    // the raw catalog name leaking into this summary line too.
+    const chipotleEntree =
+      item.restaurantId === "chipotle"
+        ? ((item.selection.buildConfiguration.baseItemId ?? null) as ChipotleEntreeSelection)
+        : undefined;
     const ingredientLabels = item.selection.buildConfiguration.ingredients
       .filter((ingredient) => ingredient.quantity > 0)
       .map((ingredient) => {
         const catalogItem = restaurant ? findCartMenuItem(restaurant, ingredient.id) : null;
-        const name = ingredient.label ?? catalogItem?.name ?? "Ingredient";
+        const catalogName =
+          catalogItem && item.restaurantId === "chipotle"
+            ? resolveChipotleIngredientDisplayName(
+                catalogItem,
+                restaurant?.builderConfig as ChipotleBuilderConfig | undefined,
+                chipotleEntree,
+              )
+            : catalogItem?.name;
+        const name = ingredient.label ?? catalogName ?? "Ingredient";
         const qualifier =
           ingredient.portion && ingredient.portion !== "normal" ? ` (${getSplitPortionModeLabel(ingredient.portion)})` : "";
         return ingredient.quantity === 1 ? `${name}${qualifier}` : `${name}${qualifier}: ${ingredient.quantity}x`;

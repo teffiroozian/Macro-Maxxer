@@ -1,0 +1,47 @@
+{
+  "restaurant": "Chipotle",
+  "sourceType": "official-onlinemenu-compressed-api",
+  "source": "https://services.chipotle.com/menuinnovation/v1/restaurants/469/onlinemenu/compressed?channelId=web&includeUnavailableItems=true",
+  "restaurantId": "469",
+  "channelId": "web",
+  "includeUnavailableItems": true,
+  "retrieved": "2026-08-31T23:40:20.515Z",
+  "collectorScript": "scripts/collect/chipotle-calculator-menu.ts",
+  "compressedResponseFieldsUsed": [
+    "compressedMenu",
+    "decompressedMenuSize"
+  ],
+  "decompression": {
+    "method": "LZ4 raw block decompression (no frame/header bytes), reproducing Chipotle's own frontend flow: base64-decode compressedMenu, allocate a Uint8Array of decompressedMenuSize, then decompressBlock(compressed, decompressed, 0, compressed.length, 0).",
+    "library": "lz4js (npm)",
+    "libraryVersion": "0.2.0",
+    "exportUsed": "decompressBlock(src, dst, sIndex, sLength, dIndex)",
+    "decompressedMenuSizeReported": 754819,
+    "bytesWrittenByDecompressor": 754819,
+    "sizeMatch": true
+  },
+  "parsedJsonSummary": {
+    "restaurantId": 469,
+    "recordCountsByCategory": {
+      "entrees": 65,
+      "sides": 41,
+      "drinks": 21,
+      "nonFoodItems": 3
+    },
+    "totalRecords": 130
+  },
+  "subscriptionKeyDiscovery": {
+    "method": "Discovered dynamically at collection time from the <meta property=\"servicesconfig\" data-host=\"...\" data-appkey=\"...\"/> tag on the nutrition-calculator page, rather than hardcoded, since Chipotle controls and may rotate this value.",
+    "discoveredFromPage": "https://www.chipotle.com/nutrition-calculator",
+    "discoveredHost": "https://services.chipotle.com"
+  },
+  "notes": [
+    "This endpoint was discovered via Chipotle's official nutrition-calculator frontend (https://www.chipotle.com/nutrition-calculator), which loads this restaurant's compressed online menu and decompresses it client-side to power the calculator UI.",
+    "This data has NOT yet been reconciled against the official nutrition PDF source (data/raw/chipotle/nutrition-paper-menu.pdf / nutrition.json) or against the menu-metadata endpoint recorded below.",
+    "The decompressed onlinemenu payload (calculator-menu.json) contains ZERO nutrition fields of any kind: no calories, fat, protein, carbohydrates, sodium, fiber, or sugar were found anywhere in it. It is purely menu/ordering structure: item IDs (e.g. \"CMG-2\"), display names, pricing, customizations, and content groups.",
+    "A related official endpoint, https://services.chipotle.com/menu-metadata/v1/menu-metadata?channel=web&region=US, is used by the same calculator and DOES include a \"nutrition\" array per item, but that array only ever contains \"Calories\" and \"Portion\" entries in this response; no fat/protein/carbohydrate/sodium/fiber/sugar fields were found there either. Full macros do not appear to be available from either of these two endpoints.",
+    "The menu-metadata endpoint's \"items\" dictionary is keyed by the same \"CMG-*\" item IDs used as \"itemId\" in this onlinemenu payload (e.g. \"CMG-2\" identifies Steak in both). This is an observation only — no reconciliation, joining, or normalization has been performed at this stage.",
+    "Saved separately for source-boundary reasons (different endpoint, different response shape, not merged): data/raw/chipotle/menu-metadata.json and data/raw/chipotle/menu-metadata-source.json.",
+    "This file (calculator-menu.json) is the fully decompressed, unmodified source JSON: no fields renamed, no records removed or deduplicated, no mapping to Macro Maxxer's schema."
+  ]
+}

@@ -11,13 +11,21 @@
     "collect:chick-fil-a": "tsx scripts/collect/chick-fil-a-nutrition.ts",
     "collect:chick-fil-a-menu": "tsx scripts/collect/chick-fil-a-menu.ts",
     "collect:chick-fil-a-ordering-nutrition": "tsx scripts/collect/chick-fil-a-ordering-nutrition.ts",
+    "collect:chipotle-nutrition": "tsx scripts/collect/chipotle-nutrition.ts",
+    "collect:chipotle-calculator-menu": "tsx scripts/collect/chipotle-calculator-menu.ts",
+    "collect:chipotle-menu-rules": "tsx scripts/collect/chipotle-menu-rules.ts",
+    "collect:chipotle-online-meals": "tsx scripts/collect/chipotle-online-meals.ts",
     "import:chick-fil-a": "node --import tsx scripts/importers/chick-fil-a.ts",
+    "import:chipotle": "node --import tsx scripts/importers/chipotle.ts",
     "validate:chick-fil-a": "node --import tsx scripts/validate/chick-fil-a.ts",
+    "validate:chipotle": "node --import tsx scripts/validate/chipotle.ts",
     "review:chick-fil-a": "node --import tsx scripts/review/chick-fil-a.ts"
   },
   "dependencies": {
     "lucide-react": "^0.577.0",
+    "lz4js": "^0.2.0",
     "next": "16.1.4",
+    "pdfjs-dist": "^6.2.108",
     "react": "19.2.3",
     "react-dom": "19.2.3"
   },

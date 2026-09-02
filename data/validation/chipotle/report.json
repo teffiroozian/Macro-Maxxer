@@ -1,0 +1,348 @@
+{
+  "restaurant": "Chipotle",
+  "validatedAt": "2026-09-01",
+  "inputs": {
+    "restaurant": "data/generated/chipotle/restaurant.json",
+    "unresolved": "data/generated/chipotle/unresolved.json",
+    "calculatorMenu": "data/raw/chipotle/calculator-menu.json",
+    "liveNutrition": "data/raw/chipotle/menu-metadata-nutrition.json",
+    "pdfNutrition": "data/raw/chipotle/nutrition.json",
+    "onlineMeals": "data/raw/chipotle/online-meals.json",
+    "decisions": "data/review/chipotle/import-decisions.md"
+  },
+  "valid": true,
+  "summary": {
+    "records": 151,
+    "menuItems": 77,
+    "ingredients": 74,
+    "variants": 88,
+    "nutritionCoveragePercent": 100,
+    "provenanceCoveragePercent": 100,
+    "errors": 0,
+    "warnings": 13,
+    "informational": 2,
+    "humanReviewRecommendations": 2,
+    "errorTypes": {},
+    "warningTypes": {
+      "expected_deferred_unresolved": 13
+    },
+    "informationalTypes": {
+      "fountain_portfolio_not_enumerated_by_ordering_source": 1,
+      "derived_fountain_rounding_review": 1
+    }
+  },
+  "checks": {
+    "structure": {
+      "passed": true,
+      "errors": 0,
+      "warnings": 0,
+      "info": 0,
+      "details": {
+        "menuItems": 77,
+        "ingredients": 74,
+        "totalRecords": 151,
+        "variants": 88,
+        "uniqueLogicalIds": 151
+      }
+    },
+    "active_menu": {
+      "passed": true,
+      "errors": 0,
+      "warnings": 0,
+      "info": 0,
+      "details": {
+        "calculatorSourceIds": 202,
+        "onlineMealIds": 21,
+        "generatedSourceIds": 184,
+        "polloConsumerContexts": 11,
+        "missingPolloContexts": []
+      }
+    },
+    "nutrition": {
+      "passed": true,
+      "errors": 0,
+      "warnings": 0,
+      "info": 0,
+      "details": {
+        "coveredRecords": 151,
+        "totalRecords": 151,
+        "coveragePercent": 100,
+        "nutritionUnits": 231
+      }
+    },
+    "provenance": {
+      "passed": true,
+      "errors": 0,
+      "warnings": 0,
+      "info": 0,
+      "details": {
+        "nutritionUnits": 231,
+        "tracedNutritionUnits": 231,
+        "coveragePercent": 100
+      }
+    },
+    "relationships": {
+      "passed": true,
+      "errors": 0,
+      "warnings": 0,
+      "info": 0,
+      "details": {
+        "ingredientReferences": 269,
+        "builderEntreeOptions": 8
+      }
+    },
+    "build_containers": {
+      "passed": true,
+      "errors": 0,
+      "warnings": 0,
+      "info": 0,
+      "details": {
+        "expected": 8,
+        "validated": 8
+      }
+    },
+    "special_cases": {
+      "passed": true,
+      "errors": 0,
+      "warnings": 0,
+      "info": 0,
+      "details": {
+        "approvedContainerCompositions": 6,
+        "coreScaledProteinFamilies": 5,
+        "halfPollo": "validated",
+        "extraPollo": "direct_live_validated",
+        "cilantroLime5413": "equivalent_official_validated",
+        "veggie": "structural_validated"
+      }
+    },
+    "fountain_drinks": {
+      "passed": true,
+      "errors": 0,
+      "warnings": 0,
+      "info": 2,
+      "details": {
+        "containers": 3,
+        "flavorVariants": 69,
+        "kids16ozVariants": 23,
+        "unresolvedFlavors": 0
+      }
+    },
+    "sides_combinations": {
+      "passed": true,
+      "errors": 0,
+      "warnings": 0,
+      "info": 0,
+      "details": {
+        "chipsDipCombinations": 8,
+        "directChiliLimeChips": 2
+      }
+    },
+    "duplicate_identities": {
+      "passed": true,
+      "errors": 0,
+      "warnings": 0,
+      "info": 0,
+      "details": {
+        "duplicateSourceGroups": 7,
+        "largeSalsaGroups": 4
+      }
+    },
+    "kids": {
+      "passed": true,
+      "errors": 0,
+      "warnings": 0,
+      "info": 0,
+      "details": {
+        "directKidsSourceRecords": 19,
+        "matchedDirectKidsRecords": 19,
+        "kidsFountainVariants": 23
+      }
+    },
+    "visibility": {
+      "passed": true,
+      "errors": 0,
+      "warnings": 0,
+      "info": 0,
+      "details": {
+        "structuralSourceOnlyRecords": 3,
+        "standaloneProducts": 55
+      }
+    },
+    "unresolved": {
+      "passed": true,
+      "errors": 0,
+      "warnings": 13,
+      "info": 0,
+      "details": {
+        "total": 13,
+        "reasons": {
+          "unsupported_preconfigured_meal": 13
+        },
+        "deferredCategories": {
+          "cateringCalculator": 7,
+          "onlineBuildYourOwn": 4,
+          "proteinCups": 2
+        },
+        "actionable": 0
+      }
+    },
+    "cross_record_sanity": {
+      "passed": true,
+      "errors": 0,
+      "warnings": 0,
+      "info": 0,
+      "details": {}
+    }
+  },
+  "errors": [],
+  "warnings": [
+    {
+      "severity": "warning",
+      "check": "unresolved",
+      "code": "expected_deferred_unresolved",
+      "message": "Build-Your-Own Pollo Asado is intentionally deferred and does not block consumer-menu validation.",
+      "recordIds": [
+        "chipotle-cmg-5418",
+        "CMG-5418"
+      ]
+    },
+    {
+      "severity": "warning",
+      "check": "unresolved",
+      "code": "expected_deferred_unresolved",
+      "message": "Build-Your-Own Steak is intentionally deferred and does not block consumer-menu validation.",
+      "recordIds": [
+        "chipotle-cmg-5384",
+        "CMG-5384"
+      ]
+    },
+    {
+      "severity": "warning",
+      "check": "unresolved",
+      "code": "expected_deferred_unresolved",
+      "message": "Build-Your-Own Carnitas is intentionally deferred and does not block consumer-menu validation.",
+      "recordIds": [
+        "chipotle-cmg-5387",
+        "CMG-5387"
+      ]
+    },
+    {
+      "severity": "warning",
+      "check": "unresolved",
+      "code": "expected_deferred_unresolved",
+      "message": "Build-Your-Own Sofritas is intentionally deferred and does not block consumer-menu validation.",
+      "recordIds": [
+        "chipotle-cmg-5385",
+        "CMG-5385"
+      ]
+    },
+    {
+      "severity": "warning",
+      "check": "unresolved",
+      "code": "expected_deferred_unresolved",
+      "message": "Build-Your-Own Beef Barbacoa is intentionally deferred and does not block consumer-menu validation.",
+      "recordIds": [
+        "chipotle-cmg-5386",
+        "CMG-5386"
+      ]
+    },
+    {
+      "severity": "warning",
+      "check": "unresolved",
+      "code": "expected_deferred_unresolved",
+      "message": "Build-Your-Own Chicken is intentionally deferred and does not block consumer-menu validation.",
+      "recordIds": [
+        "chipotle-cmg-5374",
+        "CMG-5374"
+      ]
+    },
+    {
+      "severity": "warning",
+      "check": "unresolved",
+      "code": "expected_deferred_unresolved",
+      "message": "2 Large Chips & 3 Large Sides is intentionally deferred and does not block consumer-menu validation.",
+      "recordIds": [
+        "chipotle-cmg-5390",
+        "CMG-5390"
+      ]
+    },
+    {
+      "severity": "warning",
+      "check": "unresolved",
+      "code": "expected_deferred_unresolved",
+      "message": "Build-Your-Own Chicken is intentionally deferred and does not block consumer-menu validation.",
+      "recordIds": [
+        "chipotle-meal-e4200067-da42-490c-81f1-37d26ddd9722",
+        "e4200067-da42-490c-81f1-37d26ddd9722"
+      ]
+    },
+    {
+      "severity": "warning",
+      "check": "unresolved",
+      "code": "expected_deferred_unresolved",
+      "message": "Build-Your-Own Steak is intentionally deferred and does not block consumer-menu validation.",
+      "recordIds": [
+        "chipotle-meal-152806dc-2504-4a51-8db2-498d705d8bb9",
+        "152806dc-2504-4a51-8db2-498d705d8bb9"
+      ]
+    },
+    {
+      "severity": "warning",
+      "check": "unresolved",
+      "code": "expected_deferred_unresolved",
+      "message": "Build-Your-Own Sofritas is intentionally deferred and does not block consumer-menu validation.",
+      "recordIds": [
+        "chipotle-meal-1cc081cb-4180-4257-a827-79a4064bc0e8",
+        "1cc081cb-4180-4257-a827-79a4064bc0e8"
+      ]
+    },
+    {
+      "severity": "warning",
+      "check": "unresolved",
+      "code": "expected_deferred_unresolved",
+      "message": "2 Large Chips & 3 Large Sides is intentionally deferred and does not block consumer-menu validation.",
+      "recordIds": [
+        "chipotle-meal-8cf8f280-5a7a-421a-98fc-13dc60ebc0e1",
+        "8cf8f280-5a7a-421a-98fc-13dc60ebc0e1"
+      ]
+    },
+    {
+      "severity": "warning",
+      "check": "unresolved",
+      "code": "expected_deferred_unresolved",
+      "message": "High Protein Cup - Chicken is intentionally deferred and does not block consumer-menu validation.",
+      "recordIds": [
+        "chipotle-meal-a768473c-b6a7-47eb-b1f8-b5765e1ab3e6",
+        "a768473c-b6a7-47eb-b1f8-b5765e1ab3e6"
+      ]
+    },
+    {
+      "severity": "warning",
+      "check": "unresolved",
+      "code": "expected_deferred_unresolved",
+      "message": "High Protein Cup - Steak is intentionally deferred and does not block consumer-menu validation.",
+      "recordIds": [
+        "chipotle-meal-e744e8b4-d7e6-489c-a2c4-6364f1d4d60f",
+        "e744e8b4-d7e6-489c-a2c4-6364f1d4d60f"
+      ]
+    }
+  ],
+  "informational": [
+    {
+      "severity": "info",
+      "check": "fountain_drinks",
+      "code": "fountain_portfolio_not_enumerated_by_ordering_source",
+      "message": "The generic fountain ordering records do not enumerate dispenser flavors; generated variants intentionally cover every approved official PDF candidate, including both beverage portfolios."
+    },
+    {
+      "severity": "info",
+      "check": "fountain_drinks",
+      "code": "derived_fountain_rounding_review",
+      "message": "Kids 16oz flavor nutrition preserves exact proportional scaling to three decimals. Confirm the eventual UI display-rounding policy before runtime promotion."
+    }
+  ],
+  "humanReviewRecommendations": [
+    "The generic fountain ordering records do not enumerate dispenser flavors; generated variants intentionally cover every approved official PDF candidate, including both beverage portfolios.",
+    "Kids 16oz flavor nutrition preserves exact proportional scaling to three decimals. Confirm the eventual UI display-rounding policy before runtime promotion."
+  ]
+}

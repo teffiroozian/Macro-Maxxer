@@ -1,0 +1,4202 @@
+{
+  "analysisType": "unnamed-menu-metadata-id-resolution",
+  "analysisDate": "2026-08-31",
+  "parentAnalysis": "data/review/chipotle/source-analysis.json (section 2, menuMetadataOnlyIds.unresolvedNoNameInAnyRawField)",
+  "scope": "Resolves, as far as raw source evidence allows, the 99 menu-metadata.json item ids that had no name field in calculator-menu.json, menu-rules.json, or online-meals.json. Analysis only; no importer built; no raw files modified.",
+  "methodology": [
+    "Recomputed the 99-id list from scratch by intersecting menu-metadata.json's 408 items against calculator-menu.json's 192 ids and menu-rules.json's 328 ids (name index built from both), then excluding ids resolvable via menu-metadata.itemGroups[...].defaultItemId. Result matched the prior source-analysis.json finding exactly (99 ids).",
+    "For every id, collected every menu-metadata field: nutrition (Calories+Portion), thumbnailUrl, dietaryTags, tags (promo/tagline/rewards), customizations, groupName, showCustomizationNameWhenSelected/showCustomizationPrice/isRewardsExclusive.",
+    "Cross-referenced menu-metadata.itemSections (31 named sections) and menu-metadata.groups (18 display groups) for any entry whose items[].menuItemId equals the target id.",
+    "Deep-searched calculator-menu.json, menu-rules.json, and online-meals.json for the literal id string anywhere in the JSON tree (not just as a top-level/nested itemId) — zero hits for any of the 99 in any of the three files, confirming they are genuinely absent from the restaurant-469 and national-rules ordering graphs, not just unresolved by name.",
+    "Additionally computed exact thumbnailUrl string matches between each unresolved id and every ALREADY-named menu-metadata item (from calculator-menu/menu-rules) — an id sharing a pixel-identical product photo with a known, named item is treated as strong corroborating evidence of real-world identity, distinct from and stronger than a thumbnail-filename guess alone."
+  ],
+  "classificationCriteria": {
+    "confidently_identified": "At least one of: (a) exact thumbnailUrl match to an already-named item, (b) menu-metadata.itemGroups displayName reachable via the record's own groupName field, (c) a 'tagline' marketing-copy tag combined with a non-generic thumbnail filename that together describe a specific product.",
+    "likely_identified": "A non-generic, specific thumbnail filename slug exists (e.g. cmg-6606-chorizo) but no tagline/groupName/exact-photo-match corroborates it — the image filename is the only evidence, and image filenames are not an authoritative structured name field.",
+    "completely_unknown": "Thumbnail URL is the generic https://www.chipotle.com/ placeholder (not a real product image) and no itemSections/groups/tagline reference exists either. No name was invented for these."
+  },
+  "summary": {
+    "totalUnresolvedIds": 99,
+    "confidentlyIdentified": 52,
+    "likelyIdentifiedNotAuthoritative": 42,
+    "completelyUnknown": 5,
+    "inRestaurant469CalculatorMenu": 0,
+    "note": "All 99 ids are, by construction, absent from calculator-menu.json (restaurant 469's active sellable menu). The deep-search step additionally confirmed zero of them appear anywhere in menu-rules.json or online-meals.json either — they exist ONLY in the national menu-metadata.json catalog."
+  },
+  "families": [
+    {
+      "key": "chorizo",
+      "label": "Chorizo (LTO/regional protein)",
+      "ids": [
+        "CMG-7",
+        "CMG-107",
+        "CMG-207",
+        "CMG-307",
+        "CMG-406",
+        "CMG-1105",
+        "CMG-1208",
+        "CMG-3008",
+        "CMG-3108",
+        "CMG-5606"
+      ],
+      "count": 10,
+      "classificationBreakdown": {
+        "likely_identified": 10
+      }
+    },
+    {
+      "key": "carneAsada",
+      "label": "Carne Asada (LTO/regional protein)",
+      "ids": [
+        "CMG-8",
+        "CMG-108",
+        "CMG-208",
+        "CMG-308",
+        "CMG-409",
+        "CMG-1107",
+        "CMG-1121",
+        "CMG-1130",
+        "CMG-1209",
+        "CMG-3010",
+        "CMG-3109",
+        "CMG-5388",
+        "CMG-5607"
+      ],
+      "count": 13,
+      "classificationBreakdown": {
+        "confidently_identified": 11,
+        "likely_identified": 2
+      }
+    },
+    {
+      "key": "pbChorizo",
+      "label": "Plant-Based (PB) Chorizo (LTO/regional protein)",
+      "ids": [
+        "CMG-12",
+        "CMG-114",
+        "CMG-212",
+        "CMG-312",
+        "CMG-413",
+        "CMG-1213",
+        "CMG-3014",
+        "CMG-3112"
+      ],
+      "count": 8,
+      "classificationBreakdown": {
+        "confidently_identified": 8
+      }
+    },
+    {
+      "key": "garlicSteak",
+      "label": "Garlic Steak (LTO/regional protein)",
+      "ids": [
+        "CMG-13",
+        "CMG-115",
+        "CMG-213",
+        "CMG-313",
+        "CMG-422",
+        "CMG-1214",
+        "CMG-3015",
+        "CMG-3113"
+      ],
+      "count": 8,
+      "classificationBreakdown": {
+        "likely_identified": 8
+      }
+    },
+    {
+      "key": "chickenAlPastor",
+      "label": "Chicken al Pastor (LTO/regional protein)",
+      "ids": [
+        "CMG-14",
+        "CMG-116",
+        "CMG-214",
+        "CMG-314",
+        "CMG-425",
+        "CMG-1123",
+        "CMG-1132",
+        "CMG-1215",
+        "CMG-3016",
+        "CMG-3114",
+        "CMG-5407"
+      ],
+      "count": 11,
+      "classificationBreakdown": {
+        "confidently_identified": 11
+      }
+    },
+    {
+      "key": "smokedBrisketExtras",
+      "label": "Smoked Brisket — extra/side/BYO variants (core family partly known; these variants were unresolved)",
+      "ids": [
+        "CMG-1124",
+        "CMG-1133",
+        "CMG-5408"
+      ],
+      "count": 3,
+      "classificationBreakdown": {
+        "confidently_identified": 3
+      }
+    },
+    {
+      "key": "cauliflowerRice",
+      "label": "Cauliflower Rice (confirmed via itemGroups)",
+      "ids": [
+        "CMG-1039",
+        "CMG-1041",
+        "CMG-1406"
+      ],
+      "count": 3,
+      "classificationBreakdown": {
+        "confidently_identified": 3
+      }
+    },
+    {
+      "key": "grilledStreetCorn",
+      "label": "Grilled Street Corn (side/topping/combo family)",
+      "ids": [
+        "CMG-1407",
+        "CMG-1408",
+        "CMG-1409",
+        "CMG-1410",
+        "CMG-1411",
+        "CMG-1412",
+        "CMG-1413",
+        "CMG-1414"
+      ],
+      "count": 8,
+      "classificationBreakdown": {
+        "likely_identified": 7,
+        "confidently_identified": 1
+      }
+    },
+    {
+      "key": "izze",
+      "label": "Izze sparkling juice drinks",
+      "ids": [
+        "CMG-2051",
+        "CMG-2052",
+        "CMG-2054"
+      ],
+      "count": 3,
+      "classificationBreakdown": {
+        "likely_identified": 3
+      }
+    },
+    {
+      "key": "dashWater",
+      "label": "Dash Water flavored waters",
+      "ids": [
+        "CMG-2381",
+        "CMG-2382",
+        "CMG-2383"
+      ],
+      "count": 3,
+      "classificationBreakdown": {
+        "likely_identified": 3
+      }
+    },
+    {
+      "key": "charitea",
+      "label": "Charitea bottled teas",
+      "ids": [
+        "CMG-2385",
+        "CMG-2398",
+        "CMG-2400"
+      ],
+      "count": 3,
+      "classificationBreakdown": {
+        "likely_identified": 3
+      }
+    },
+    {
+      "key": "otherNewDrinks",
+      "label": "Other new specialty drinks",
+      "ids": [
+        "CMG-2877",
+        "CMG-2879",
+        "CMG-2880",
+        "CMG-2881"
+      ],
+      "count": 4,
+      "classificationBreakdown": {
+        "likely_identified": 4
+      }
+    },
+    {
+      "key": "toppingsSauces",
+      "label": "Toppings / sauces",
+      "ids": [
+        "CMG-3001",
+        "CMG-4122",
+        "CMG-5355",
+        "CMG-5358",
+        "CMG-5410",
+        "CMG-5411"
+      ],
+      "count": 6,
+      "classificationBreakdown": {
+        "confidently_identified": 6
+      }
+    },
+    {
+      "key": "grains",
+      "label": "Rice/grains alternative",
+      "ids": [
+        "CMG-5004"
+      ],
+      "count": 1,
+      "classificationBreakdown": {
+        "confidently_identified": 1
+      }
+    },
+    {
+      "key": "desserts",
+      "label": "Desserts",
+      "ids": [
+        "CMG-9004",
+        "CMG-9005",
+        "CMG-9006"
+      ],
+      "count": 3,
+      "classificationBreakdown": {
+        "confidently_identified": 1,
+        "likely_identified": 2
+      }
+    },
+    {
+      "key": "fajitaVeggiesDup",
+      "label": "Fajita Veggies contextual duplicate",
+      "ids": [
+        "CMG-408"
+      ],
+      "count": 1,
+      "classificationBreakdown": {
+        "confidently_identified": 1
+      }
+    },
+    {
+      "key": "coreProteinDuplicates",
+      "label": "Duplicate identity records for already-known core proteins",
+      "ids": [
+        "CMG-5151",
+        "CMG-5152",
+        "CMG-5153",
+        "CMG-5154",
+        "CMG-5155"
+      ],
+      "count": 5,
+      "classificationBreakdown": {
+        "confidently_identified": 5
+      }
+    },
+    {
+      "key": "chipsDuplicate",
+      "label": "Duplicate identity record for already-known Chili Lime Chips",
+      "ids": [
+        "CMG-5373"
+      ],
+      "count": 1,
+      "classificationBreakdown": {
+        "confidently_identified": 1
+      }
+    },
+    {
+      "key": "unknown",
+      "label": "Completely unknown (no usable evidence)",
+      "ids": [
+        "CMG-2055",
+        "CMG-2056",
+        "CMG-2057",
+        "CMG-2301",
+        "CMG-2302"
+      ],
+      "count": 5,
+      "classificationBreakdown": {
+        "completely_unknown": 5
+      }
+    }
+  ],
+  "perId": {
+    "CMG-7": {
+      "id": "CMG-7",
+      "classification": "likely_identified",
+      "family": "chorizo",
+      "inCalculatorMenu469": false,
+      "evidenceSummary": "Thumbnail filename slug only, no corroborating text field",
+      "metaFields": {
+        "calories": "300",
+        "portion": "4oz",
+        "thumbnailUrl": "https://www.chipotle.com/content/dam/chipotle/menu/menu-items/cmg-6606-chorizo/web-desktop/order.png",
+        "thumbnailSlug": "cmg-6606-chorizo",
+        "dietaryTags": [
+          "pale",
+          "keto",
+          "sulp"
+        ],
+        "tags": [],
+        "groupName": null,
+        "customizations": []
+      },
+      "itemSectionsReferencing": [],
+      "groupsReferencing": [
+        {
+          "group": "Burrito",
+          "menuItemType": "Burrito",
+          "sortOrder": 13
+        }
+      ],
+      "exactThumbnailMatchToKnownItems": []
+    },
+    "CMG-8": {
+      "id": "CMG-8",
+      "classification": "confidently_identified",
+      "family": "carneAsada",
+      "inCalculatorMenu469": false,
+      "evidenceSummary": "Thumbnail slug + tagline text: \"Our Most Tender Steak\"",
+      "metaFields": {
+        "calories": "250",
+        "portion": "4oz",
+        "thumbnailUrl": "https://www.chipotle.com/content/dam/chipotle/menu/menu-items/cmg-6608-carne-asada/web-desktop/order.png",
+        "thumbnailSlug": "cmg-6608-carne-asada",
+        "dietaryTags": [
+          "pale",
+          "keto"
+        ],
+        "tags": [
+          {
+            "type": "promo",
+            "value": "limited time"
+          },
+          {
+            "type": "tagline",
+            "value": "Our Most Tender Steak"
+          }
+        ],
+        "groupName": null,
+        "customizations": []
+      },
+      "itemSectionsReferencing": [],
+      "groupsReferencing": [
+        {
+          "group": "Burrito",
+          "menuItemType": "Burrito",
+          "sortOrder": 2
+        }
+      ],
+      "exactThumbnailMatchToKnownItems": []
+    },
+    "CMG-12": {
+      "id": "CMG-12",
+      "classification": "confidently_identified",
+      "family": "pbChorizo",
+      "inCalculatorMenu469": false,
+      "evidenceSummary": "Thumbnail slug + tagline text: \"16g of Pea Protein\"",
+      "metaFields": {
+        "calories": "220",
+        "portion": "4oz",
+        "thumbnailUrl": "https://www.chipotle.com/content/dam/chipotle/menu/menu-items/cmg-5164-pb-chorizo/web-desktop/order.png",
+        "thumbnailSlug": "cmg-5164-pb-chorizo",
+        "dietaryTags": [
+          "vege",
+          "vega",
+          "pale",
+          "keto",
+          "sulp"
+        ],
+        "tags": [
+          {
+            "type": "promo",
+            "value": "NEW"
+          },
+          {
+            "type": "tagline",
+            "value": "16g of Pea Protein"
+          }
+        ],
+        "groupName": null,
+        "customizations": []
+      },
+      "itemSectionsReferencing": [],
+      "groupsReferencing": [
+        {
+          "group": "Burrito",
+          "menuItemType": "Burrito",
+          "sortOrder": 9
+        }
+      ],
+      "exactThumbnailMatchToKnownItems": []
+    },
+    "CMG-13": {
+      "id": "CMG-13",
+      "classification": "likely_identified",
+      "family": "garlicSteak",
+      "inCalculatorMenu469": false,
+      "evidenceSummary": "Thumbnail filename slug only, no corroborating text field",
+      "metaFields": {
+        "calories": "250",
+        "portion": "4oz",
+        "thumbnailUrl": "https://www.chipotle.com/content/dam/chipotle/menu/menu-items/cmg-5165--garlic-steak/web-desktop/order.png",
+        "thumbnailSlug": "cmg-5165--garlic-steak",
+        "dietaryTags": [
+          "pale",
+          "keto"
+        ],
+        "tags": [
+          {
+            "type": "promo",
+            "value": "new"
+          }
+        ],
+        "groupName": null,
+        "customizations": []
+      },
+      "itemSectionsReferencing": [],
+      "groupsReferencing": [
+        {
+          "group": "Burrito",
+          "menuItemType": "Burrito",
+          "sortOrder": 8
+        }
+      ],
+      "exactThumbnailMatchToKnownItems": []
+    },
+    "CMG-14": {
+      "id": "CMG-14",
+      "classification": "confidently_identified",
+      "family": "chickenAlPastor",
+      "inCalculatorMenu469": false,
+      "evidenceSummary": "Thumbnail slug + tagline text: \"Where Fire Meets Flavor\"",
+      "metaFields": {
+        "calories": "200",
+        "portion": "4oz",
+        "thumbnailUrl": "https://www.chipotle.com/content/dam/chipotle/menu/menu-items/CMG-5166-Chicken-al-Pastor/web-desktop/order.png",
+        "thumbnailSlug": "CMG-5166-Chicken-al-Pastor",
+        "dietaryTags": [
+          "pale",
+          "sulp"
+        ],
+        "tags": [
+          {
+            "type": "tagline",
+            "value": "Where Fire Meets Flavor"
+          },
+          {
+            "type": "promo",
+            "value": "limited time"
+          }
+        ],
+        "groupName": null,
+        "customizations": []
+      },
+      "itemSectionsReferencing": [],
+      "groupsReferencing": [
+        {
+          "group": "Burrito",
+          "menuItemType": "Burrito",
+          "sortOrder": 3
+        }
+      ],
+      "exactThumbnailMatchToKnownItems": []
+    },
+    "CMG-107": {
+      "id": "CMG-107",
+      "classification": "likely_identified",
+      "family": "chorizo",
+      "inCalculatorMenu469": false,
+      "evidenceSummary": "Thumbnail filename slug only, no corroborating text field",
+      "metaFields": {
+        "calories": "300",
+        "portion": "4oz",
+        "thumbnailUrl": "https://www.chipotle.com/content/dam/chipotle/menu/menu-items/cmg-6606-chorizo/web-desktop/order.png",
+        "thumbnailSlug": "cmg-6606-chorizo",
+        "dietaryTags": [
+          "pale",
+          "keto",
+          "sulp"
+        ],
+        "tags": [],
+        "groupName": null,
+        "customizations": []
+      },
+      "itemSectionsReferencing": [],
+      "groupsReferencing": [
+        {
+          "group": "Burrito Bowl",
+          "menuItemType": "Bowl",
+          "sortOrder": 13
+        }
+      ],
+      "exactThumbnailMatchToKnownItems": []
+    },
+    "CMG-108": {
+      "id": "CMG-108",
+      "classification": "confidently_identified",
+      "family": "carneAsada",
+      "inCalculatorMenu469": false,
+      "evidenceSummary": "Thumbnail slug + tagline text: \"Our Most Tender Steak\"",
+      "metaFields": {
+        "calories": "250",
+        "portion": "4oz",
+        "thumbnailUrl": "https://www.chipotle.com/content/dam/chipotle/menu/menu-items/cmg-6608-carne-asada/web-desktop/order.png",
+        "thumbnailSlug": "cmg-6608-carne-asada",
+        "dietaryTags": [
+          "pale",
+          "keto"
+        ],
+        "tags": [
+          {
+            "type": "promo",
+            "value": "limited time"
+          },
+          {
+            "type": "tagline",
+            "value": "Our Most Tender Steak"
+          }
+        ],
+        "groupName": null,
+        "customizations": []
+      },
+      "itemSectionsReferencing": [],
+      "groupsReferencing": [
+        {
+          "group": "Burrito Bowl",
+          "menuItemType": "Bowl",
+          "sortOrder": 2
+        }
+      ],
+      "exactThumbnailMatchToKnownItems": []
+    },
+    "CMG-114": {
+      "id": "CMG-114",
+      "classification": "confidently_identified",
+      "family": "pbChorizo",
+      "inCalculatorMenu469": false,
+      "evidenceSummary": "Thumbnail slug + tagline text: \"16g of Pea Protein\"",
+      "metaFields": {
+        "calories": "220",
+        "portion": "4oz",
+        "thumbnailUrl": "https://www.chipotle.com/content/dam/chipotle/menu/menu-items/cmg-5164-pb-chorizo/web-desktop/order.png",
+        "thumbnailSlug": "cmg-5164-pb-chorizo",
+        "dietaryTags": [
+          "vege",
+          "vega",
+          "pale",
+          "keto",
+          "sulp"
+        ],
+        "tags": [
+          {
+            "type": "promo",
+            "value": "NEW"
+          },
+          {
+            "type": "tagline",
+            "value": "16g of Pea Protein"
+          }
+        ],
+        "groupName": null,
+        "customizations": []
+      },
+      "itemSectionsReferencing": [],
+      "groupsReferencing": [
+        {
+          "group": "Burrito Bowl",
+          "menuItemType": "Bowl",
+          "sortOrder": 9
+        }
+      ],
+      "exactThumbnailMatchToKnownItems": []
+    },
+    "CMG-115": {
+      "id": "CMG-115",
+      "classification": "likely_identified",
+      "family": "garlicSteak",
+      "inCalculatorMenu469": false,
+      "evidenceSummary": "Thumbnail filename slug only, no corroborating text field",
+      "metaFields": {
+        "calories": "250",
+        "portion": "4oz",
+        "thumbnailUrl": "https://www.chipotle.com/content/dam/chipotle/menu/menu-items/cmg-5165--garlic-steak/web-desktop/order.png",
+        "thumbnailSlug": "cmg-5165--garlic-steak",
+        "dietaryTags": [
+          "pale",
+          "keto"
+        ],
+        "tags": [
+          {
+            "type": "promo",
+            "value": "new"
+          }
+        ],
+        "groupName": null,
+        "customizations": []
+      },
+      "itemSectionsReferencing": [],
+      "groupsReferencing": [
+        {
+          "group": "Burrito Bowl",
+          "menuItemType": "Bowl",
+          "sortOrder": 8
+        }
+      ],
+      "exactThumbnailMatchToKnownItems": []
+    },
+    "CMG-116": {
+      "id": "CMG-116",
+      "classification": "confidently_identified",
+      "family": "chickenAlPastor",
+      "inCalculatorMenu469": false,
+      "evidenceSummary": "Thumbnail slug + tagline text: \"Where Fire Meets Flavor\"",
+      "metaFields": {
+        "calories": "200",
+        "portion": "4oz",
+        "thumbnailUrl": "https://www.chipotle.com/content/dam/chipotle/menu/menu-items/CMG-5166-Chicken-al-Pastor/web-desktop/order.png",
+        "thumbnailSlug": "CMG-5166-Chicken-al-Pastor",
+        "dietaryTags": [
+          "pale",
+          "sulp"
+        ],
+        "tags": [
+          {
+            "type": "tagline",
+            "value": "Where Fire Meets Flavor"
+          },
+          {
+            "type": "promo",
+            "value": "limited time"
+          }
+        ],
+        "groupName": null,
+        "customizations": []
+      },
+      "itemSectionsReferencing": [],
+      "groupsReferencing": [
+        {
+          "group": "Burrito Bowl",
+          "menuItemType": "Bowl",
+          "sortOrder": 3
+        }
+      ],
+      "exactThumbnailMatchToKnownItems": []
+    },
+    "CMG-207": {
+      "id": "CMG-207",
+      "classification": "likely_identified",
+      "family": "chorizo",
+      "inCalculatorMenu469": false,
+      "evidenceSummary": "Thumbnail filename slug only, no corroborating text field",
+      "metaFields": {
+        "calories": "300",
+        "portion": "4oz",
+        "thumbnailUrl": "https://www.chipotle.com/content/dam/chipotle/menu/menu-items/cmg-6606-chorizo/web-desktop/order.png",
+        "thumbnailSlug": "cmg-6606-chorizo",
+        "dietaryTags": [
+          "pale",
+          "keto",
+          "sulp"
+        ],
+        "tags": [],
+        "groupName": null,
+        "customizations": []
+      },
+      "itemSectionsReferencing": [],
+      "groupsReferencing": [
+        {
+          "group": "Three Tacos",
+          "menuItemType": "Tacos",
+          "sortOrder": 13
+        }
+      ],
+      "exactThumbnailMatchToKnownItems": []
+    },
+    "CMG-208": {
+      "id": "CMG-208",
+      "classification": "confidently_identified",
+      "family": "carneAsada",
+      "inCalculatorMenu469": false,
+      "evidenceSummary": "Thumbnail slug + tagline text: \"Our Most Tender Steak\"",
+      "metaFields": {
+        "calories": "250",
+        "portion": "4oz",
+        "thumbnailUrl": "https://www.chipotle.com/content/dam/chipotle/menu/menu-items/cmg-6608-carne-asada/web-desktop/order.png",
+        "thumbnailSlug": "cmg-6608-carne-asada",
+        "dietaryTags": [
+          "pale",
+          "keto"
+        ],
+        "tags": [
+          {
+            "type": "promo",
+            "value": "limited time"
+          },
+          {
+            "type": "tagline",
+            "value": "Our Most Tender Steak"
+          }
+        ],
+        "groupName": null,
+        "customizations": []
+      },
+      "itemSectionsReferencing": [],
+      "groupsReferencing": [
+        {
+          "group": "Three Tacos",
+          "menuItemType": "Tacos",
+          "sortOrder": 2
+        }
+      ],
+      "exactThumbnailMatchToKnownItems": []
+    },
+    "CMG-212": {
+      "id": "CMG-212",
+      "classification": "confidently_identified",
+      "family": "pbChorizo",
+      "inCalculatorMenu469": false,
+      "evidenceSummary": "Thumbnail slug + tagline text: \"16g of Pea Protein\"",
+      "metaFields": {
+        "calories": "220",
+        "portion": "4oz",
+        "thumbnailUrl": "https://www.chipotle.com/content/dam/chipotle/menu/menu-items/cmg-5164-pb-chorizo/web-desktop/order.png",
+        "thumbnailSlug": "cmg-5164-pb-chorizo",
+        "dietaryTags": [
+          "vege",
+          "vega",
+          "pale",
+          "keto",
+          "sulp"
+        ],
+        "tags": [
+          {
+            "type": "promo",
+            "value": "NEW"
+          },
+          {
+            "type": "tagline",
+            "value": "16g of Pea Protein"
+          }
+        ],
+        "groupName": null,
+        "customizations": []
+      },
+      "itemSectionsReferencing": [],
+      "groupsReferencing": [
+        {
+          "group": "Three Tacos",
+          "menuItemType": "Tacos",
+          "sortOrder": 9
+        }
+      ],
+      "exactThumbnailMatchToKnownItems": []
+    },
+    "CMG-213": {
+      "id": "CMG-213",
+      "classification": "likely_identified",
+      "family": "garlicSteak",
+      "inCalculatorMenu469": false,
+      "evidenceSummary": "Thumbnail filename slug only, no corroborating text field",
+      "metaFields": {
+        "calories": "250",
+        "portion": "4oz",
+        "thumbnailUrl": "https://www.chipotle.com/content/dam/chipotle/menu/menu-items/cmg-5165--garlic-steak/web-desktop/order.png",
+        "thumbnailSlug": "cmg-5165--garlic-steak",
+        "dietaryTags": [
+          "pale",
+          "keto"
+        ],
+        "tags": [
+          {
+            "type": "promo",
+            "value": "new"
+          }
+        ],
+        "groupName": null,
+        "customizations": []
+      },
+      "itemSectionsReferencing": [],
+      "groupsReferencing": [
+        {
+          "group": "Three Tacos",
+          "menuItemType": "Tacos",
+          "sortOrder": 8
+        }
+      ],
+      "exactThumbnailMatchToKnownItems": []
+    },
+    "CMG-214": {
+      "id": "CMG-214",
+      "classification": "confidently_identified",
+      "family": "chickenAlPastor",
+      "inCalculatorMenu469": false,
+      "evidenceSummary": "Thumbnail slug + tagline text: \"Where Fire Meets Flavor\"",
+      "metaFields": {
+        "calories": "200",
+        "portion": "4oz",
+        "thumbnailUrl": "https://www.chipotle.com/content/dam/chipotle/menu/menu-items/CMG-5166-Chicken-al-Pastor/web-desktop/order.png",
+        "thumbnailSlug": "CMG-5166-Chicken-al-Pastor",
+        "dietaryTags": [
+          "pale",
+          "sulp"
+        ],
+        "tags": [
+          {
+            "type": "tagline",
+            "value": "Where Fire Meets Flavor"
+          },
+          {
+            "type": "promo",
+            "value": "limited time"
+          }
+        ],
+        "groupName": null,
+        "customizations": []
+      },
+      "itemSectionsReferencing": [],
+      "groupsReferencing": [
+        {
+          "group": "Three Tacos",
+          "menuItemType": "Tacos",
+          "sortOrder": 3
+        }
+      ],
+      "exactThumbnailMatchToKnownItems": []
+    },
+    "CMG-307": {
+      "id": "CMG-307",
+      "classification": "likely_identified",
+      "family": "chorizo",
+      "inCalculatorMenu469": false,
+      "evidenceSummary": "Thumbnail filename slug only, no corroborating text field",
+      "metaFields": {
+        "calories": "300",
+        "portion": "4oz",
+        "thumbnailUrl": "https://www.chipotle.com/content/dam/chipotle/menu/menu-items/cmg-6606-chorizo/web-desktop/order.png",
+        "thumbnailSlug": "cmg-6606-chorizo",
+        "dietaryTags": [
+          "pale",
+          "keto",
+          "sulp"
+        ],
+        "tags": [],
+        "groupName": null,
+        "customizations": []
+      },
+      "itemSectionsReferencing": [],
+      "groupsReferencing": [
+        {
+          "group": "Salad",
+          "menuItemType": "Salad",
+          "sortOrder": 13
+        }
+      ],
+      "exactThumbnailMatchToKnownItems": []
+    },
+    "CMG-308": {
+      "id": "CMG-308",
+      "classification": "confidently_identified",
+      "family": "carneAsada",
+      "inCalculatorMenu469": false,
+      "evidenceSummary": "Thumbnail slug + tagline text: \"Our Most Tender Steak\"",
+      "metaFields": {
+        "calories": "250",
+        "portion": "4oz",
+        "thumbnailUrl": "https://www.chipotle.com/content/dam/chipotle/menu/menu-items/cmg-6608-carne-asada/web-desktop/order.png",
+        "thumbnailSlug": "cmg-6608-carne-asada",
+        "dietaryTags": [
+          "pale",
+          "keto"
+        ],
+        "tags": [
+          {
+            "type": "promo",
+            "value": "limited time"
+          },
+          {
+            "type": "tagline",
+            "value": "Our Most Tender Steak"
+          }
+        ],
+        "groupName": null,
+        "customizations": []
+      },
+      "itemSectionsReferencing": [],
+      "groupsReferencing": [
+        {
+          "group": "Salad",
+          "menuItemType": "Salad",
+          "sortOrder": 2
+        }
+      ],
+      "exactThumbnailMatchToKnownItems": []
+    },
+    "CMG-312": {
+      "id": "CMG-312",
+      "classification": "confidently_identified",
+      "family": "pbChorizo",
+      "inCalculatorMenu469": false,
+      "evidenceSummary": "Thumbnail slug + tagline text: \"16g of Pea Protein\"",
+      "metaFields": {
+        "calories": "220",
+        "portion": "4oz",
+        "thumbnailUrl": "https://www.chipotle.com/content/dam/chipotle/menu/menu-items/cmg-5164-pb-chorizo/web-desktop/order.png",
+        "thumbnailSlug": "cmg-5164-pb-chorizo",
+        "dietaryTags": [
+          "vege",
+          "vega",
+          "pale",
+          "keto",
+          "sulp"
+        ],
+        "tags": [
+          {
+            "type": "promo",
+            "value": "NEW"
+          },
+          {
+            "type": "tagline",
+            "value": "16g of Pea Protein"
+          }
+        ],
+        "groupName": null,
+        "customizations": []
+      },
+      "itemSectionsReferencing": [],
+      "groupsReferencing": [
+        {
+          "group": "Salad",
+          "menuItemType": "Salad",
+          "sortOrder": 9
+        }
+      ],
+      "exactThumbnailMatchToKnownItems": []
+    },
+    "CMG-313": {
+      "id": "CMG-313",
+      "classification": "likely_identified",
+      "family": "garlicSteak",
+      "inCalculatorMenu469": false,
+      "evidenceSummary": "Thumbnail filename slug only, no corroborating text field",
+      "metaFields": {
+        "calories": "250",
+        "portion": "4oz",
+        "thumbnailUrl": "https://www.chipotle.com/content/dam/chipotle/menu/menu-items/cmg-5165--garlic-steak/web-desktop/order.png",
+        "thumbnailSlug": "cmg-5165--garlic-steak",
+        "dietaryTags": [
+          "pale",
+          "keto"
+        ],
+        "tags": [
+          {
+            "type": "promo",
+            "value": "new"
+          }
+        ],
+        "groupName": null,
+        "customizations": []
+      },
+      "itemSectionsReferencing": [],
+      "groupsReferencing": [
+        {
+          "group": "Salad",
+          "menuItemType": "Salad",
+          "sortOrder": 8
+        }
+      ],
+      "exactThumbnailMatchToKnownItems": []
+    },
+    "CMG-314": {
+      "id": "CMG-314",
+      "classification": "confidently_identified",
+      "family": "chickenAlPastor",
+      "inCalculatorMenu469": false,
+      "evidenceSummary": "Thumbnail slug + tagline text: \"Where Fire Meets Flavor\"",
+      "metaFields": {
+        "calories": "200",
+        "portion": "4oz",
+        "thumbnailUrl": "https://www.chipotle.com/content/dam/chipotle/menu/menu-items/CMG-5166-Chicken-al-Pastor/web-desktop/order.png",
+        "thumbnailSlug": "CMG-5166-Chicken-al-Pastor",
+        "dietaryTags": [
+          "pale",
+          "sulp"
+        ],
+        "tags": [
+          {
+            "type": "tagline",
+            "value": "Where Fire Meets Flavor"
+          },
+          {
+            "type": "promo",
+            "value": "limited time"
+          }
+        ],
+        "groupName": null,
+        "customizations": []
+      },
+      "itemSectionsReferencing": [],
+      "groupsReferencing": [
+        {
+          "group": "Salad",
+          "menuItemType": "Salad",
+          "sortOrder": 3
+        }
+      ],
+      "exactThumbnailMatchToKnownItems": []
+    },
+    "CMG-406": {
+      "id": "CMG-406",
+      "classification": "likely_identified",
+      "family": "chorizo",
+      "inCalculatorMenu469": false,
+      "evidenceSummary": "Thumbnail filename slug only, no corroborating text field",
+      "metaFields": {
+        "calories": "300",
+        "portion": "4oz",
+        "thumbnailUrl": "https://www.chipotle.com/content/dam/chipotle/menu/menu-items/cmg-6606-chorizo/web-desktop/order.png",
+        "thumbnailSlug": "cmg-6606-chorizo",
+        "dietaryTags": [
+          "pale",
+          "keto",
+          "sulp"
+        ],
+        "tags": [],
+        "groupName": null,
+        "customizations": []
+      },
+      "itemSectionsReferencing": [],
+      "groupsReferencing": [
+        {
+          "group": "Quesadilla",
+          "menuItemType": "Quesadilla",
+          "sortOrder": 14
+        }
+      ],
+      "exactThumbnailMatchToKnownItems": []
+    },
+    "CMG-408": {
+      "id": "CMG-408",
+      "classification": "confidently_identified",
+      "family": "fajitaVeggiesDup",
+      "inCalculatorMenu469": false,
+      "evidenceSummary": "Exact thumbnailUrl match to already-named item(s): Fajita Veggies",
+      "metaFields": {
+        "calories": "20",
+        "portion": "2.5oz",
+        "thumbnailUrl": "https://www.chipotle.com/content/dam/chipotle/menu/menu-items/cmg-5101-fajita-veggies/web-desktop/order.png",
+        "thumbnailSlug": "cmg-5101-fajita-veggies",
+        "dietaryTags": [
+          "vege",
+          "vega",
+          "pale",
+          "keto"
+        ],
+        "tags": [
+          {
+            "type": "tagline",
+            "value": "Includes Guacamole"
+          }
+        ],
+        "groupName": null,
+        "customizations": []
+      },
+      "itemSectionsReferencing": [],
+      "groupsReferencing": [],
+      "exactThumbnailMatchToKnownItems": [
+        {
+          "id": "CMG-5101",
+          "name": "Fajita Veggies"
+        }
+      ]
+    },
+    "CMG-409": {
+      "id": "CMG-409",
+      "classification": "confidently_identified",
+      "family": "carneAsada",
+      "inCalculatorMenu469": false,
+      "evidenceSummary": "Thumbnail slug + tagline text: \"Our Most Tender Steak\"",
+      "metaFields": {
+        "calories": "250",
+        "portion": "4oz",
+        "thumbnailUrl": "https://www.chipotle.com/content/dam/chipotle/menu/menu-items/cmg-6608-carne-asada/web-desktop/order.png",
+        "thumbnailSlug": "cmg-6608-carne-asada",
+        "dietaryTags": [
+          "pale",
+          "keto"
+        ],
+        "tags": [
+          {
+            "type": "promo",
+            "value": "limited Time"
+          },
+          {
+            "type": "tagline",
+            "value": "Our Most Tender Steak"
+          }
+        ],
+        "groupName": null,
+        "customizations": []
+      },
+      "itemSectionsReferencing": [],
+      "groupsReferencing": [
+        {
+          "group": "Quesadilla",
+          "menuItemType": "Quesadilla",
+          "sortOrder": 2
+        }
+      ],
+      "exactThumbnailMatchToKnownItems": []
+    },
+    "CMG-413": {
+      "id": "CMG-413",
+      "classification": "confidently_identified",
+      "family": "pbChorizo",
+      "inCalculatorMenu469": false,
+      "evidenceSummary": "Thumbnail slug + tagline text: \"16g of Pea Protein\"",
+      "metaFields": {
+        "calories": "220",
+        "portion": "4oz",
+        "thumbnailUrl": "https://www.chipotle.com/content/dam/chipotle/menu/menu-items/cmg-5164-pb-chorizo/web-desktop/order.png",
+        "thumbnailSlug": "cmg-5164-pb-chorizo",
+        "dietaryTags": [
+          "vege",
+          "vega",
+          "pale",
+          "keto",
+          "sulp"
+        ],
+        "tags": [
+          {
+            "type": "promo",
+            "value": "NEW"
+          },
+          {
+            "type": "tagline",
+            "value": "16g of Pea Protein"
+          }
+        ],
+        "groupName": null,
+        "customizations": []
+      },
+      "itemSectionsReferencing": [],
+      "groupsReferencing": [
+        {
+          "group": "Quesadilla",
+          "menuItemType": "Quesadilla",
+          "sortOrder": 10
+        }
+      ],
+      "exactThumbnailMatchToKnownItems": []
+    },
+    "CMG-422": {
+      "id": "CMG-422",
+      "classification": "likely_identified",
+      "family": "garlicSteak",
+      "inCalculatorMenu469": false,
+      "evidenceSummary": "Thumbnail filename slug only, no corroborating text field",
+      "metaFields": {
+        "calories": "250",
+        "portion": "4oz",
+        "thumbnailUrl": "https://www.chipotle.com/content/dam/chipotle/menu/menu-items/cmg-5165--garlic-steak/web-desktop/order.png",
+        "thumbnailSlug": "cmg-5165--garlic-steak",
+        "dietaryTags": [
+          "pale",
+          "keto"
+        ],
+        "tags": [
+          {
+            "type": "promo",
+            "value": "new"
+          }
+        ],
+        "groupName": null,
+        "customizations": []
+      },
+      "itemSectionsReferencing": [],
+      "groupsReferencing": [
+        {
+          "group": "Quesadilla",
+          "menuItemType": "Quesadilla",
+          "sortOrder": 8
+        }
+      ],
+      "exactThumbnailMatchToKnownItems": []
+    },
+    "CMG-425": {
+      "id": "CMG-425",
+      "classification": "confidently_identified",
+      "family": "chickenAlPastor",
+      "inCalculatorMenu469": false,
+      "evidenceSummary": "Thumbnail slug + tagline text: \"Where Fire Meets Flavor\"",
+      "metaFields": {
+        "calories": "200",
+        "portion": "4oz",
+        "thumbnailUrl": "https://www.chipotle.com/content/dam/chipotle/menu/menu-items/CMG-5166-Chicken-al-Pastor/web-desktop/order.png",
+        "thumbnailSlug": "CMG-5166-Chicken-al-Pastor",
+        "dietaryTags": [
+          "pale",
+          "sulp"
+        ],
+        "tags": [
+          {
+            "type": "tagline",
+            "value": "Where Fire Meets Flavor"
+          },
+          {
+            "type": "promo",
+            "value": "limited time"
+          }
+        ],
+        "groupName": null,
+        "customizations": []
+      },
+      "itemSectionsReferencing": [],
+      "groupsReferencing": [
+        {
+          "group": "Quesadilla",
+          "menuItemType": "Quesadilla",
+          "sortOrder": 3
+        }
+      ],
+      "exactThumbnailMatchToKnownItems": []
+    },
+    "CMG-1039": {
+      "id": "CMG-1039",
+      "classification": "confidently_identified",
+      "family": "cauliflowerRice",
+      "inCalculatorMenu469": false,
+      "evidenceSummary": "menu-metadata itemGroups displayName via groupName field: CauliRiceEntree",
+      "metaFields": {
+        "calories": "60",
+        "portion": "4oz",
+        "thumbnailUrl": "https://www.chipotle.com/content/dam/chipotle/menu/menu-items/cmg-1036-cauliflower-rice/web-desktop/order.png",
+        "thumbnailSlug": "cmg-1036-cauliflower-rice",
+        "dietaryTags": [
+          "vege",
+          "vega",
+          "pale",
+          "keto"
+        ],
+        "tags": [
+          {
+            "type": "promo",
+            "value": "nchide"
+          },
+          {
+            "type": "promo",
+            "value": "new"
+          }
+        ],
+        "groupName": "CauliRiceEntree",
+        "customizations": []
+      },
+      "itemSectionsReferencing": [
+        {
+          "section": "RiceContentGroup",
+          "alias": "Rice",
+          "sortOrder": 4
+        }
+      ],
+      "groupsReferencing": [],
+      "exactThumbnailMatchToKnownItems": []
+    },
+    "CMG-1041": {
+      "id": "CMG-1041",
+      "classification": "confidently_identified",
+      "family": "cauliflowerRice",
+      "inCalculatorMenu469": false,
+      "evidenceSummary": "menu-metadata itemGroups displayName via groupName field: CauliRiceSingleTaco",
+      "metaFields": {
+        "calories": "20",
+        "portion": "1.3oz",
+        "thumbnailUrl": "https://www.chipotle.com/content/dam/chipotle/menu/menu-items/cmg-1036-cauliflower-rice/web-desktop/order.png",
+        "thumbnailSlug": "cmg-1036-cauliflower-rice",
+        "dietaryTags": [
+          "vege",
+          "vega",
+          "pale",
+          "keto"
+        ],
+        "tags": [
+          {
+            "type": "promo",
+            "value": "nchide"
+          },
+          {
+            "type": "promo",
+            "value": "new"
+          }
+        ],
+        "groupName": "CauliRiceSingleTaco",
+        "customizations": []
+      },
+      "itemSectionsReferencing": [
+        {
+          "section": "RiceContentGroup",
+          "alias": "Rice",
+          "sortOrder": 6
+        }
+      ],
+      "groupsReferencing": [],
+      "exactThumbnailMatchToKnownItems": []
+    },
+    "CMG-1105": {
+      "id": "CMG-1105",
+      "classification": "likely_identified",
+      "family": "chorizo",
+      "inCalculatorMenu469": false,
+      "evidenceSummary": "Thumbnail filename slug only, no corroborating text field",
+      "metaFields": {
+        "calories": "600",
+        "portion": "0oz",
+        "thumbnailUrl": "https://www.chipotle.com/content/dam/chipotle/menu/menu-items/cmg-6606-chorizo/web-desktop/order.png",
+        "thumbnailSlug": "cmg-6606-chorizo",
+        "dietaryTags": [
+          "pale",
+          "keto",
+          "sulp"
+        ],
+        "tags": [],
+        "groupName": null,
+        "customizations": []
+      },
+      "itemSectionsReferencing": [],
+      "groupsReferencing": [],
+      "exactThumbnailMatchToKnownItems": []
+    },
+    "CMG-1107": {
+      "id": "CMG-1107",
+      "classification": "likely_identified",
+      "family": "carneAsada",
+      "inCalculatorMenu469": false,
+      "evidenceSummary": "Thumbnail filename slug only, no corroborating text field",
+      "metaFields": {
+        "calories": "500",
+        "portion": "0oz",
+        "thumbnailUrl": "https://www.chipotle.com/content/dam/chipotle/menu/menu-items/cmg-6608-carne-asada/web-desktop/order.png",
+        "thumbnailSlug": "cmg-6608-carne-asada",
+        "dietaryTags": [
+          "pale",
+          "keto"
+        ],
+        "tags": [
+          {
+            "type": "promo",
+            "value": "limited time"
+          }
+        ],
+        "groupName": null,
+        "customizations": []
+      },
+      "itemSectionsReferencing": [],
+      "groupsReferencing": [],
+      "exactThumbnailMatchToKnownItems": []
+    },
+    "CMG-1121": {
+      "id": "CMG-1121",
+      "classification": "confidently_identified",
+      "family": "carneAsada",
+      "inCalculatorMenu469": false,
+      "evidenceSummary": "Thumbnail slug + tagline text: \"Serves 2\"",
+      "metaFields": {
+        "calories": "570",
+        "portion": "8oz",
+        "thumbnailUrl": "https://www.chipotle.com/content/dam/chipotle/menu/menu-items/cmg-6608-carne-asada/web-desktop/order.png",
+        "thumbnailSlug": "cmg-6608-carne-asada",
+        "dietaryTags": [
+          "pale",
+          "keto"
+        ],
+        "tags": [
+          {
+            "type": "tagline",
+            "value": "Serves 2"
+          }
+        ],
+        "groupName": null,
+        "customizations": []
+      },
+      "itemSectionsReferencing": [
+        {
+          "section": "BYOExtraProteinContentGroup",
+          "alias": "Extra Protein | Up to One",
+          "sortOrder": 4
+        }
+      ],
+      "groupsReferencing": [],
+      "exactThumbnailMatchToKnownItems": []
+    },
+    "CMG-1123": {
+      "id": "CMG-1123",
+      "classification": "confidently_identified",
+      "family": "chickenAlPastor",
+      "inCalculatorMenu469": false,
+      "evidenceSummary": "Thumbnail slug + tagline text: \"Serves 2\"",
+      "metaFields": {
+        "calories": "410",
+        "portion": "8oz",
+        "thumbnailUrl": "https://www.chipotle.com/content/dam/chipotle/menu/menu-items/CMG-5166-Chicken-al-Pastor/web-desktop/order.png",
+        "thumbnailSlug": "CMG-5166-Chicken-al-Pastor",
+        "dietaryTags": [
+          "pale",
+          "wh30",
+          "sulp"
+        ],
+        "tags": [
+          {
+            "type": "tagline",
+            "value": "Serves 2"
+          },
+          {
+            "type": "promo",
+            "value": "nchide"
+          },
+          {
+            "type": "promo",
+            "value": "limited time"
+          }
+        ],
+        "groupName": null,
+        "customizations": []
+      },
+      "itemSectionsReferencing": [
+        {
+          "section": "BYOExtraProteinContentGroup",
+          "alias": "Extra Protein | Up to One",
+          "sortOrder": 3
+        }
+      ],
+      "groupsReferencing": [],
+      "exactThumbnailMatchToKnownItems": []
+    },
+    "CMG-1124": {
+      "id": "CMG-1124",
+      "classification": "confidently_identified",
+      "family": "smokedBrisketExtras",
+      "inCalculatorMenu469": false,
+      "evidenceSummary": "Exact thumbnailUrl match to already-named item(s): Smoked Brisket Burrito, Extra Smoked Brisket, Smoked Brisket Bowl, Smoked Brisket Taco, Smoked Brisket Tacos (3), Smoked Brisket Kids Build Your Own, Smoked Brisket Salad, Smoked Brisket Kids Quesadilla, Smoked Brisket Quesadilla, Half Smoked Brisket",
+      "metaFields": {
+        "calories": "720",
+        "portion": "8oz",
+        "thumbnailUrl": "https://www.chipotle.com/content/dam/chipotle/menu/menu-items/cmg-112-brisket/web-desktop/order.png",
+        "thumbnailSlug": "cmg-112-brisket",
+        "dietaryTags": [
+          "pale",
+          "keto"
+        ],
+        "tags": [
+          {
+            "type": "promo",
+            "value": "limited time"
+          },
+          {
+            "type": "tagline",
+            "value": "Serves 2"
+          },
+          {
+            "type": "promo",
+            "value": "nchide"
+          }
+        ],
+        "groupName": null,
+        "customizations": []
+      },
+      "itemSectionsReferencing": [
+        {
+          "section": "BYOExtraProteinContentGroup",
+          "alias": "Extra Protein | Up to One",
+          "sortOrder": 5
+        }
+      ],
+      "groupsReferencing": [],
+      "exactThumbnailMatchToKnownItems": [
+        {
+          "id": "CMG-10",
+          "name": "Smoked Brisket Burrito"
+        },
+        {
+          "id": "CMG-1109",
+          "name": "Extra Smoked Brisket"
+        },
+        {
+          "id": "CMG-112",
+          "name": "Smoked Brisket Bowl"
+        },
+        {
+          "id": "CMG-1211",
+          "name": "Smoked Brisket Taco"
+        },
+        {
+          "id": "CMG-210",
+          "name": "Smoked Brisket Tacos (3)"
+        },
+        {
+          "id": "CMG-3012",
+          "name": "Smoked Brisket Kids Build Your Own"
+        },
+        {
+          "id": "CMG-310",
+          "name": "Smoked Brisket Salad"
+        },
+        {
+          "id": "CMG-3110",
+          "name": "Smoked Brisket Kids Quesadilla"
+        },
+        {
+          "id": "CMG-410",
+          "name": "Smoked Brisket Quesadilla"
+        },
+        {
+          "id": "CMG-5608",
+          "name": "Half Smoked Brisket"
+        }
+      ]
+    },
+    "CMG-1130": {
+      "id": "CMG-1130",
+      "classification": "confidently_identified",
+      "family": "carneAsada",
+      "inCalculatorMenu469": false,
+      "evidenceSummary": "Thumbnail slug + tagline text: \"29g Protein\"",
+      "metaFields": {
+        "calories": "250",
+        "portion": "4oz",
+        "thumbnailUrl": "https://www.chipotle.com/content/dam/chipotle/menu/menu-items/cmg-1130-side-of-carne-asada/web-desktop/order.png",
+        "thumbnailSlug": "cmg-1130-side-of-carne-asada",
+        "dietaryTags": [
+          "pale",
+          "keto"
+        ],
+        "tags": [
+          {
+            "type": "tagline",
+            "value": "29g Protein"
+          }
+        ],
+        "groupName": null,
+        "customizations": []
+      },
+      "itemSectionsReferencing": [
+        {
+          "section": "ExtraProteinSideContentGroup",
+          "alias": "High Protein Cups",
+          "sortOrder": 4
+        }
+      ],
+      "groupsReferencing": [
+        {
+          "group": "Chips & Sides",
+          "sortOrder": 51
+        }
+      ],
+      "exactThumbnailMatchToKnownItems": []
+    },
+    "CMG-1132": {
+      "id": "CMG-1132",
+      "classification": "confidently_identified",
+      "family": "chickenAlPastor",
+      "inCalculatorMenu469": false,
+      "evidenceSummary": "Thumbnail slug + tagline text: \"28g Protein\"",
+      "metaFields": {
+        "calories": "250",
+        "portion": "5oz",
+        "thumbnailUrl": "https://www.chipotle.com/content/dam/chipotle/menu/menu-items/cmg-1132-side-of-chicken-al-pastor/web-desktop/order.png",
+        "thumbnailSlug": "cmg-1132-side-of-chicken-al-pastor",
+        "dietaryTags": [
+          "pale",
+          "keto"
+        ],
+        "tags": [
+          {
+            "type": "tagline",
+            "value": "28g Protein"
+          },
+          {
+            "type": "promo",
+            "value": "limited time"
+          }
+        ],
+        "groupName": null,
+        "customizations": []
+      },
+      "itemSectionsReferencing": [
+        {
+          "section": "ExtraProteinSideContentGroup",
+          "alias": "High Protein Cups",
+          "sortOrder": 5
+        }
+      ],
+      "groupsReferencing": [
+        {
+          "group": "Chips & Sides",
+          "sortOrder": 52
+        }
+      ],
+      "exactThumbnailMatchToKnownItems": []
+    },
+    "CMG-1133": {
+      "id": "CMG-1133",
+      "classification": "confidently_identified",
+      "family": "smokedBrisketExtras",
+      "inCalculatorMenu469": false,
+      "evidenceSummary": "Thumbnail slug + tagline text: \"22g Protein\"",
+      "metaFields": {
+        "calories": "360",
+        "portion": "4oz",
+        "thumbnailUrl": "https://www.chipotle.com/content/dam/chipotle/menu/menu-items/cmg-1133-side-of-smoked-brisket/web-desktop/order.png",
+        "thumbnailSlug": "cmg-1133-side-of-smoked-brisket",
+        "dietaryTags": [
+          "pale",
+          "keto"
+        ],
+        "tags": [
+          {
+            "type": "tagline",
+            "value": "22g Protein"
+          }
+        ],
+        "groupName": null,
+        "customizations": []
+      },
+      "itemSectionsReferencing": [
+        {
+          "section": "ExtraProteinSideContentGroup",
+          "alias": "High Protein Cups",
+          "sortOrder": 6
+        }
+      ],
+      "groupsReferencing": [
+        {
+          "group": "Chips & Sides",
+          "sortOrder": 54
+        }
+      ],
+      "exactThumbnailMatchToKnownItems": []
+    },
+    "CMG-1208": {
+      "id": "CMG-1208",
+      "classification": "likely_identified",
+      "family": "chorizo",
+      "inCalculatorMenu469": false,
+      "evidenceSummary": "Thumbnail filename slug only, no corroborating text field",
+      "metaFields": {
+        "calories": "300",
+        "portion": "4oz",
+        "thumbnailUrl": "https://www.chipotle.com/content/dam/chipotle/menu/menu-items/cmg-6606-chorizo/web-desktop/order.png",
+        "thumbnailSlug": "cmg-6606-chorizo",
+        "dietaryTags": [
+          "pale",
+          "keto",
+          "sulp"
+        ],
+        "tags": [],
+        "groupName": null,
+        "customizations": []
+      },
+      "itemSectionsReferencing": [],
+      "groupsReferencing": [
+        {
+          "group": "One Taco",
+          "menuItemType": "Tacos",
+          "sortOrder": 13
+        }
+      ],
+      "exactThumbnailMatchToKnownItems": []
+    },
+    "CMG-1209": {
+      "id": "CMG-1209",
+      "classification": "confidently_identified",
+      "family": "carneAsada",
+      "inCalculatorMenu469": false,
+      "evidenceSummary": "Thumbnail slug + tagline text: \"Our Most Tender Steak\"",
+      "metaFields": {
+        "calories": "83",
+        "portion": "4oz",
+        "thumbnailUrl": "https://www.chipotle.com/content/dam/chipotle/menu/menu-items/cmg-6608-carne-asada/web-desktop/order.png",
+        "thumbnailSlug": "cmg-6608-carne-asada",
+        "dietaryTags": [
+          "pale",
+          "keto"
+        ],
+        "tags": [
+          {
+            "type": "promo",
+            "value": "limited time"
+          },
+          {
+            "type": "tagline",
+            "value": "Our Most Tender Steak"
+          }
+        ],
+        "groupName": null,
+        "customizations": []
+      },
+      "itemSectionsReferencing": [],
+      "groupsReferencing": [
+        {
+          "group": "One Taco",
+          "menuItemType": "Tacos",
+          "sortOrder": 2
+        }
+      ],
+      "exactThumbnailMatchToKnownItems": []
+    },
+    "CMG-1213": {
+      "id": "CMG-1213",
+      "classification": "confidently_identified",
+      "family": "pbChorizo",
+      "inCalculatorMenu469": false,
+      "evidenceSummary": "Thumbnail slug + tagline text: \"16g of Pea Protein\"",
+      "metaFields": {
+        "calories": "73",
+        "portion": "4oz",
+        "thumbnailUrl": "https://www.chipotle.com/content/dam/chipotle/menu/menu-items/cmg-5164-pb-chorizo/web-desktop/order.png",
+        "thumbnailSlug": "cmg-5164-pb-chorizo",
+        "dietaryTags": [
+          "vege",
+          "vega",
+          "pale",
+          "keto",
+          "sulp"
+        ],
+        "tags": [
+          {
+            "type": "promo",
+            "value": "NEW"
+          },
+          {
+            "type": "tagline",
+            "value": "16g of Pea Protein"
+          }
+        ],
+        "groupName": null,
+        "customizations": []
+      },
+      "itemSectionsReferencing": [],
+      "groupsReferencing": [
+        {
+          "group": "One Taco",
+          "menuItemType": "Tacos",
+          "sortOrder": 9
+        }
+      ],
+      "exactThumbnailMatchToKnownItems": []
+    },
+    "CMG-1214": {
+      "id": "CMG-1214",
+      "classification": "likely_identified",
+      "family": "garlicSteak",
+      "inCalculatorMenu469": false,
+      "evidenceSummary": "Thumbnail filename slug only, no corroborating text field",
+      "metaFields": {
+        "calories": "80",
+        "portion": "1.3oz",
+        "thumbnailUrl": "https://www.chipotle.com/content/dam/chipotle/menu/menu-items/cmg-5165--garlic-steak/web-desktop/order.png",
+        "thumbnailSlug": "cmg-5165--garlic-steak",
+        "dietaryTags": [
+          "pale",
+          "keto"
+        ],
+        "tags": [
+          {
+            "type": "promo",
+            "value": "new"
+          }
+        ],
+        "groupName": null,
+        "customizations": []
+      },
+      "itemSectionsReferencing": [],
+      "groupsReferencing": [
+        {
+          "group": "One Taco",
+          "menuItemType": "Tacos",
+          "sortOrder": 8
+        }
+      ],
+      "exactThumbnailMatchToKnownItems": []
+    },
+    "CMG-1215": {
+      "id": "CMG-1215",
+      "classification": "confidently_identified",
+      "family": "chickenAlPastor",
+      "inCalculatorMenu469": false,
+      "evidenceSummary": "Thumbnail slug + tagline text: \"Where Fire Meets Flavor\"",
+      "metaFields": {
+        "calories": "70",
+        "portion": "1.3oz",
+        "thumbnailUrl": "https://www.chipotle.com/content/dam/chipotle/menu/menu-items/CMG-5166-Chicken-al-Pastor/web-desktop/order.png",
+        "thumbnailSlug": "CMG-5166-Chicken-al-Pastor",
+        "dietaryTags": [
+          "pale",
+          "sulp"
+        ],
+        "tags": [
+          {
+            "type": "tagline",
+            "value": "Where Fire Meets Flavor"
+          },
+          {
+            "type": "promo",
+            "value": "limited time"
+          }
+        ],
+        "groupName": null,
+        "customizations": []
+      },
+      "itemSectionsReferencing": [],
+      "groupsReferencing": [
+        {
+          "group": "One Taco",
+          "menuItemType": "Tacos",
+          "sortOrder": 3
+        }
+      ],
+      "exactThumbnailMatchToKnownItems": []
+    },
+    "CMG-1406": {
+      "id": "CMG-1406",
+      "classification": "confidently_identified",
+      "family": "cauliflowerRice",
+      "inCalculatorMenu469": false,
+      "evidenceSummary": "menu-metadata itemGroups displayName via groupName field: CauliRiceKids",
+      "metaFields": {
+        "calories": "30",
+        "portion": "2oz",
+        "thumbnailUrl": "https://www.chipotle.com/content/dam/chipotle/menu/menu-items/cmg-1036-cauliflower-rice/web-desktop/order.png",
+        "thumbnailSlug": "cmg-1036-cauliflower-rice",
+        "dietaryTags": [
+          "vege",
+          "vega",
+          "pale",
+          "keto"
+        ],
+        "tags": [
+          {
+            "type": "promo",
+            "value": "nchide"
+          },
+          {
+            "type": "promo",
+            "value": "new"
+          }
+        ],
+        "groupName": "CauliRiceKids",
+        "customizations": []
+      },
+      "itemSectionsReferencing": [
+        {
+          "section": "OptionContentGroup",
+          "alias": "Toppings",
+          "sortOrder": 4
+        },
+        {
+          "section": "RiceContentGroup",
+          "alias": "Rice",
+          "sortOrder": 8
+        },
+        {
+          "section": "ToppingsContentGroup",
+          "alias": "Included Toppings",
+          "sortOrder": 4
+        }
+      ],
+      "groupsReferencing": [],
+      "exactThumbnailMatchToKnownItems": []
+    },
+    "CMG-1407": {
+      "id": "CMG-1407",
+      "classification": "likely_identified",
+      "family": "grilledStreetCorn",
+      "inCalculatorMenu469": false,
+      "evidenceSummary": "Thumbnail filename slug only, no corroborating text field",
+      "metaFields": {
+        "calories": "190",
+        "portion": "4oz",
+        "thumbnailUrl": "https://www.chipotle.com/content/dam/chipotle/menu/menu-items/cmg-1413-large-side-of-grilled-street-corn/web-desktop/order.png",
+        "thumbnailSlug": "cmg-1413-large-side-of-grilled-street-corn",
+        "dietaryTags": [],
+        "tags": [
+          {
+            "type": "promo",
+            "value": "nchide"
+          },
+          {
+            "type": "promo",
+            "value": "new"
+          }
+        ],
+        "groupName": null,
+        "customizations": []
+      },
+      "itemSectionsReferencing": [
+        {
+          "section": "AddonContentGroup",
+          "alias": "Add-Ons | Always On The Side",
+          "sortOrder": 3
+        },
+        {
+          "section": "PremiumContentGroup",
+          "alias": "Add-Ons",
+          "sortOrder": 3
+        },
+        {
+          "section": "Toppings",
+          "alias": "Top Things Off",
+          "sortOrder": 3
+        }
+      ],
+      "groupsReferencing": [],
+      "exactThumbnailMatchToKnownItems": []
+    },
+    "CMG-1408": {
+      "id": "CMG-1408",
+      "classification": "likely_identified",
+      "family": "grilledStreetCorn",
+      "inCalculatorMenu469": false,
+      "evidenceSummary": "Thumbnail filename slug only, no corroborating text field",
+      "metaFields": {
+        "calories": "95",
+        "portion": "2oz",
+        "thumbnailUrl": "https://www.chipotle.com/content/dam/chipotle/menu/menu-items/cmg-1407-grilled-street-corn/web-desktop/order.png",
+        "thumbnailSlug": "cmg-1407-grilled-street-corn",
+        "dietaryTags": [],
+        "tags": [
+          {
+            "type": "promo",
+            "value": "nchide"
+          },
+          {
+            "type": "promo",
+            "value": "new"
+          }
+        ],
+        "groupName": null,
+        "customizations": []
+      },
+      "itemSectionsReferencing": [
+        {
+          "section": "PremiumContentGroup",
+          "alias": "Add-Ons",
+          "sortOrder": 4
+        }
+      ],
+      "groupsReferencing": [],
+      "exactThumbnailMatchToKnownItems": []
+    },
+    "CMG-1409": {
+      "id": "CMG-1409",
+      "classification": "likely_identified",
+      "family": "grilledStreetCorn",
+      "inCalculatorMenu469": false,
+      "evidenceSummary": "Thumbnail filename slug only, no corroborating text field",
+      "metaFields": {
+        "calories": "95",
+        "portion": "2oz",
+        "thumbnailUrl": "https://www.chipotle.com/content/dam/chipotle/menu/menu-items/cmg-1413-large-side-of-grilled-street-corn/web-desktop/order.png",
+        "thumbnailSlug": "cmg-1413-large-side-of-grilled-street-corn",
+        "dietaryTags": [],
+        "tags": [
+          {
+            "type": "promo",
+            "value": "nchide"
+          },
+          {
+            "type": "promo",
+            "value": "new"
+          }
+        ],
+        "groupName": null,
+        "customizations": []
+      },
+      "itemSectionsReferencing": [
+        {
+          "section": "OptionContentGroup",
+          "alias": "Toppings",
+          "sortOrder": 8
+        }
+      ],
+      "groupsReferencing": [
+        {
+          "group": "Kid's Build Your Own",
+          "menuItemType": "KidsBYO",
+          "sortOrder": 15
+        }
+      ],
+      "exactThumbnailMatchToKnownItems": []
+    },
+    "CMG-1410": {
+      "id": "CMG-1410",
+      "classification": "likely_identified",
+      "family": "grilledStreetCorn",
+      "inCalculatorMenu469": false,
+      "evidenceSummary": "Thumbnail filename slug only, no corroborating text field",
+      "metaFields": {
+        "calories": "190",
+        "portion": "4oz",
+        "thumbnailUrl": "https://www.chipotle.com/content/dam/chipotle/menu/menu-items/cmg-1407-grilled-street-corn/web-desktop/order.png",
+        "thumbnailSlug": "cmg-1407-grilled-street-corn",
+        "dietaryTags": [],
+        "tags": [
+          {
+            "type": "promo",
+            "value": "nchide"
+          },
+          {
+            "type": "promo",
+            "value": "new"
+          }
+        ],
+        "groupName": null,
+        "customizations": []
+      },
+      "itemSectionsReferencing": [
+        {
+          "section": "SingleSidesContentGroup",
+          "alias": "Single Sides",
+          "sortOrder": 4
+        }
+      ],
+      "groupsReferencing": [
+        {
+          "group": "Chips & Sides",
+          "sortOrder": 37
+        }
+      ],
+      "exactThumbnailMatchToKnownItems": []
+    },
+    "CMG-1411": {
+      "id": "CMG-1411",
+      "classification": "likely_identified",
+      "family": "grilledStreetCorn",
+      "inCalculatorMenu469": false,
+      "evidenceSummary": "Thumbnail filename slug only, no corroborating text field",
+      "metaFields": {
+        "calories": "730",
+        "portion": "4oz",
+        "thumbnailUrl": "https://www.chipotle.com/content/dam/chipotle/menu/menu-items/cmg-1411-chips-and-grilled-street-corn/web-desktop/order.png",
+        "thumbnailSlug": "cmg-1411-chips-and-grilled-street-corn",
+        "dietaryTags": [],
+        "tags": [
+          {
+            "type": "promo",
+            "value": "nchide"
+          },
+          {
+            "type": "promo",
+            "value": "new"
+          }
+        ],
+        "groupName": null,
+        "customizations": []
+      },
+      "itemSectionsReferencing": [
+        {
+          "section": "ChipsSidesContentGroup",
+          "alias": "Chips & Dips",
+          "sortOrder": 3
+        }
+      ],
+      "groupsReferencing": [
+        {
+          "group": "Chips & Sides",
+          "sortOrder": 38
+        }
+      ],
+      "exactThumbnailMatchToKnownItems": []
+    },
+    "CMG-1412": {
+      "id": "CMG-1412",
+      "classification": "confidently_identified",
+      "family": "grilledStreetCorn",
+      "inCalculatorMenu469": false,
+      "evidenceSummary": "Thumbnail slug + tagline text: \"Served on the side\"",
+      "metaFields": {
+        "calories": "95",
+        "portion": "2oz",
+        "thumbnailUrl": "https://www.chipotle.com/content/dam/chipotle/menu/menu-items/cmg-1413-large-side-of-grilled-street-corn/web-desktop/order.png",
+        "thumbnailSlug": "cmg-1413-large-side-of-grilled-street-corn",
+        "dietaryTags": [],
+        "tags": [
+          {
+            "type": "promo",
+            "value": "nchide"
+          },
+          {
+            "type": "promo",
+            "value": "new"
+          },
+          {
+            "type": "tagline",
+            "value": "Served on the side"
+          }
+        ],
+        "groupName": null,
+        "customizations": []
+      },
+      "itemSectionsReferencing": [],
+      "groupsReferencing": [
+        {
+          "group": "Kid's Quesadilla",
+          "menuItemType": "KidsQuesadilla",
+          "sortOrder": 15
+        }
+      ],
+      "exactThumbnailMatchToKnownItems": []
+    },
+    "CMG-1413": {
+      "id": "CMG-1413",
+      "classification": "likely_identified",
+      "family": "grilledStreetCorn",
+      "inCalculatorMenu469": false,
+      "evidenceSummary": "Thumbnail filename slug only, no corroborating text field",
+      "metaFields": {
+        "calories": "380",
+        "portion": "8oz",
+        "thumbnailUrl": "https://www.chipotle.com/content/dam/chipotle/menu/menu-items/cmg-1413-large-side-of-grilled-street-corn/web-desktop/order.png",
+        "thumbnailSlug": "cmg-1413-large-side-of-grilled-street-corn",
+        "dietaryTags": [],
+        "tags": [
+          {
+            "type": "promo",
+            "value": "nchide"
+          },
+          {
+            "type": "promo",
+            "value": "new"
+          }
+        ],
+        "groupName": null,
+        "customizations": []
+      },
+      "itemSectionsReferencing": [
+        {
+          "section": "SingleSidesContentGroup",
+          "alias": "Single Sides",
+          "sortOrder": 5
+        }
+      ],
+      "groupsReferencing": [
+        {
+          "group": "Chips & Sides",
+          "sortOrder": 39
+        }
+      ],
+      "exactThumbnailMatchToKnownItems": []
+    },
+    "CMG-1414": {
+      "id": "CMG-1414",
+      "classification": "likely_identified",
+      "family": "grilledStreetCorn",
+      "inCalculatorMenu469": false,
+      "evidenceSummary": "Thumbnail filename slug only, no corroborating text field",
+      "metaFields": {
+        "calories": "1190",
+        "portion": "8oz",
+        "thumbnailUrl": "https://www.chipotle.com/content/dam/chipotle/menu/menu-items/cmg-1414-large-chips-large-grilled-street-corn/web-desktop/order.png",
+        "thumbnailSlug": "cmg-1414-large-chips-large-grilled-street-corn",
+        "dietaryTags": [],
+        "tags": [
+          {
+            "type": "promo",
+            "value": "nchide"
+          },
+          {
+            "type": "promo",
+            "value": "new"
+          }
+        ],
+        "groupName": null,
+        "customizations": []
+      },
+      "itemSectionsReferencing": [
+        {
+          "section": "ChipsSidesContentGroup",
+          "alias": "Chips & Dips",
+          "sortOrder": 4
+        }
+      ],
+      "groupsReferencing": [
+        {
+          "group": "Chips & Sides",
+          "sortOrder": 40
+        }
+      ],
+      "exactThumbnailMatchToKnownItems": []
+    },
+    "CMG-2051": {
+      "id": "CMG-2051",
+      "classification": "likely_identified",
+      "family": "izze",
+      "inCalculatorMenu469": false,
+      "evidenceSummary": "Thumbnail filename slug only, no corroborating text field",
+      "metaFields": {
+        "calories": "170",
+        "portion": "16fl oz",
+        "thumbnailUrl": "https://www.chipotle.com/content/dam/chipotle/menu/menu-items/cmg-2051-blackberry-izze/web-desktop/order.png",
+        "thumbnailSlug": "cmg-2051-blackberry-izze",
+        "dietaryTags": [
+          "vege",
+          "vega"
+        ],
+        "tags": [],
+        "groupName": null,
+        "customizations": []
+      },
+      "itemSectionsReferencing": [
+        {
+          "section": "AllDrinkContentGroup",
+          "alias": "Drinks",
+          "sortOrder": 28
+        }
+      ],
+      "groupsReferencing": [
+        {
+          "group": "Drinks",
+          "sortOrder": 28
+        }
+      ],
+      "exactThumbnailMatchToKnownItems": []
+    },
+    "CMG-2052": {
+      "id": "CMG-2052",
+      "classification": "likely_identified",
+      "family": "izze",
+      "inCalculatorMenu469": false,
+      "evidenceSummary": "Thumbnail filename slug only, no corroborating text field",
+      "metaFields": {
+        "calories": "160",
+        "portion": "16fl oz",
+        "thumbnailUrl": "https://www.chipotle.com/content/dam/chipotle/menu/menu-items/cmg-2052-grapefruit-izze/web-desktop/order.png",
+        "thumbnailSlug": "cmg-2052-grapefruit-izze",
+        "dietaryTags": [
+          "vege",
+          "vega"
+        ],
+        "tags": [],
+        "groupName": null,
+        "customizations": []
+      },
+      "itemSectionsReferencing": [
+        {
+          "section": "AllDrinkContentGroup",
+          "alias": "Drinks",
+          "sortOrder": 27
+        }
+      ],
+      "groupsReferencing": [
+        {
+          "group": "Drinks",
+          "sortOrder": 27
+        }
+      ],
+      "exactThumbnailMatchToKnownItems": []
+    },
+    "CMG-2054": {
+      "id": "CMG-2054",
+      "classification": "likely_identified",
+      "family": "izze",
+      "inCalculatorMenu469": false,
+      "evidenceSummary": "Thumbnail filename slug only, no corroborating text field",
+      "metaFields": {
+        "calories": "160",
+        "portion": "8fl oz",
+        "thumbnailUrl": "https://www.chipotle.com/content/dam/chipotle/menu/menu-items/cmg-2054-clementine-izze/web-desktop/order.png",
+        "thumbnailSlug": "cmg-2054-clementine-izze",
+        "dietaryTags": [
+          "vege",
+          "vega"
+        ],
+        "tags": [],
+        "groupName": null,
+        "customizations": []
+      },
+      "itemSectionsReferencing": [
+        {
+          "section": "AllDrinkContentGroup",
+          "alias": "Drinks",
+          "sortOrder": 40
+        }
+      ],
+      "groupsReferencing": [
+        {
+          "group": "Drinks",
+          "sortOrder": 40
+        }
+      ],
+      "exactThumbnailMatchToKnownItems": []
+    },
+    "CMG-2055": {
+      "id": "CMG-2055",
+      "classification": "completely_unknown",
+      "family": "unknown",
+      "inCalculatorMenu469": false,
+      "evidenceSummary": "Generic/placeholder thumbnail, no section/group/tagline evidence",
+      "metaFields": {
+        "calories": "170",
+        "portion": "16fl oz",
+        "thumbnailUrl": "https://www.chipotle.com/",
+        "thumbnailSlug": "https://www.chipotle.com/",
+        "dietaryTags": [],
+        "tags": [],
+        "groupName": null,
+        "customizations": []
+      },
+      "itemSectionsReferencing": [],
+      "groupsReferencing": [],
+      "exactThumbnailMatchToKnownItems": []
+    },
+    "CMG-2056": {
+      "id": "CMG-2056",
+      "classification": "completely_unknown",
+      "family": "unknown",
+      "inCalculatorMenu469": false,
+      "evidenceSummary": "Generic/placeholder thumbnail, no section/group/tagline evidence",
+      "metaFields": {
+        "calories": "160",
+        "portion": "16fl oz",
+        "thumbnailUrl": "https://www.chipotle.com/",
+        "thumbnailSlug": "https://www.chipotle.com/",
+        "dietaryTags": [],
+        "tags": [],
+        "groupName": null,
+        "customizations": []
+      },
+      "itemSectionsReferencing": [],
+      "groupsReferencing": [],
+      "exactThumbnailMatchToKnownItems": []
+    },
+    "CMG-2057": {
+      "id": "CMG-2057",
+      "classification": "completely_unknown",
+      "family": "unknown",
+      "inCalculatorMenu469": false,
+      "evidenceSummary": "Generic/placeholder thumbnail, no section/group/tagline evidence",
+      "metaFields": {
+        "calories": "160",
+        "portion": "16fl oz",
+        "thumbnailUrl": "https://www.chipotle.com/",
+        "thumbnailSlug": "https://www.chipotle.com/",
+        "dietaryTags": [],
+        "tags": [],
+        "groupName": null,
+        "customizations": []
+      },
+      "itemSectionsReferencing": [],
+      "groupsReferencing": [],
+      "exactThumbnailMatchToKnownItems": []
+    },
+    "CMG-2301": {
+      "id": "CMG-2301",
+      "classification": "completely_unknown",
+      "family": "unknown",
+      "inCalculatorMenu469": false,
+      "evidenceSummary": "Generic/placeholder thumbnail, no section/group/tagline evidence",
+      "metaFields": {
+        "calories": "230",
+        "portion": "4oz",
+        "thumbnailUrl": "https://www.chipotle.com/",
+        "thumbnailSlug": "https://www.chipotle.com/",
+        "dietaryTags": [],
+        "tags": [],
+        "groupName": null,
+        "customizations": []
+      },
+      "itemSectionsReferencing": [],
+      "groupsReferencing": [],
+      "exactThumbnailMatchToKnownItems": []
+    },
+    "CMG-2302": {
+      "id": "CMG-2302",
+      "classification": "completely_unknown",
+      "family": "unknown",
+      "inCalculatorMenu469": false,
+      "evidenceSummary": "Generic/placeholder thumbnail, no section/group/tagline evidence",
+      "metaFields": {
+        "calories": "240",
+        "portion": "4oz",
+        "thumbnailUrl": "https://www.chipotle.com/",
+        "thumbnailSlug": "https://www.chipotle.com/",
+        "dietaryTags": [],
+        "tags": [],
+        "groupName": null,
+        "customizations": []
+      },
+      "itemSectionsReferencing": [],
+      "groupsReferencing": [],
+      "exactThumbnailMatchToKnownItems": []
+    },
+    "CMG-2381": {
+      "id": "CMG-2381",
+      "classification": "likely_identified",
+      "family": "dashWater",
+      "inCalculatorMenu469": false,
+      "evidenceSummary": "Thumbnail filename slug only, no corroborating text field",
+      "metaFields": {
+        "calories": "0",
+        "portion": "0oz",
+        "thumbnailUrl": "https://www.chipotle.com/content/dam/chipotle/menu/menu-items/cmg-2381-dash-water-lemon/web-desktop/order.png",
+        "thumbnailSlug": "cmg-2381-dash-water-lemon",
+        "dietaryTags": [],
+        "tags": [],
+        "groupName": null,
+        "customizations": []
+      },
+      "itemSectionsReferencing": [
+        {
+          "section": "AllDrinkContentGroup",
+          "alias": "Drinks",
+          "sortOrder": 59
+        }
+      ],
+      "groupsReferencing": [
+        {
+          "group": "Drinks",
+          "sortOrder": 59
+        }
+      ],
+      "exactThumbnailMatchToKnownItems": []
+    },
+    "CMG-2382": {
+      "id": "CMG-2382",
+      "classification": "likely_identified",
+      "family": "dashWater",
+      "inCalculatorMenu469": false,
+      "evidenceSummary": "Thumbnail filename slug only, no corroborating text field",
+      "metaFields": {
+        "calories": "0",
+        "portion": "0oz",
+        "thumbnailUrl": "https://www.chipotle.com/content/dam/chipotle/menu/menu-items/cmg-2382-dash-water-peach/web-desktop/order.png",
+        "thumbnailSlug": "cmg-2382-dash-water-peach",
+        "dietaryTags": [],
+        "tags": [],
+        "groupName": null,
+        "customizations": []
+      },
+      "itemSectionsReferencing": [
+        {
+          "section": "AllDrinkContentGroup",
+          "alias": "Drinks",
+          "sortOrder": 60
+        }
+      ],
+      "groupsReferencing": [
+        {
+          "group": "Drinks",
+          "sortOrder": 60
+        }
+      ],
+      "exactThumbnailMatchToKnownItems": []
+    },
+    "CMG-2383": {
+      "id": "CMG-2383",
+      "classification": "likely_identified",
+      "family": "dashWater",
+      "inCalculatorMenu469": false,
+      "evidenceSummary": "Thumbnail filename slug only, no corroborating text field",
+      "metaFields": {
+        "calories": "0",
+        "portion": "0oz",
+        "thumbnailUrl": "https://www.chipotle.com/content/dam/chipotle/menu/menu-items/cmg-2383-dash-water-raspberry/web-desktop/order.png",
+        "thumbnailSlug": "cmg-2383-dash-water-raspberry",
+        "dietaryTags": [],
+        "tags": [],
+        "groupName": null,
+        "customizations": []
+      },
+      "itemSectionsReferencing": [
+        {
+          "section": "AllDrinkContentGroup",
+          "alias": "Drinks",
+          "sortOrder": 61
+        }
+      ],
+      "groupsReferencing": [
+        {
+          "group": "Drinks",
+          "sortOrder": 61
+        }
+      ],
+      "exactThumbnailMatchToKnownItems": []
+    },
+    "CMG-2385": {
+      "id": "CMG-2385",
+      "classification": "likely_identified",
+      "family": "charitea",
+      "inCalculatorMenu469": false,
+      "evidenceSummary": "Thumbnail filename slug only, no corroborating text field",
+      "metaFields": {
+        "calories": "0",
+        "portion": "0oz",
+        "thumbnailUrl": "https://www.chipotle.com/content/dam/chipotle/menu/menu-items/cmg-2385-charitea-black/web-desktop/order.png",
+        "thumbnailSlug": "cmg-2385-charitea-black",
+        "dietaryTags": [],
+        "tags": [],
+        "groupName": null,
+        "customizations": []
+      },
+      "itemSectionsReferencing": [
+        {
+          "section": "AllDrinkContentGroup",
+          "alias": "Drinks",
+          "sortOrder": 67
+        }
+      ],
+      "groupsReferencing": [
+        {
+          "group": "Drinks",
+          "sortOrder": 67
+        }
+      ],
+      "exactThumbnailMatchToKnownItems": []
+    },
+    "CMG-2398": {
+      "id": "CMG-2398",
+      "classification": "likely_identified",
+      "family": "charitea",
+      "inCalculatorMenu469": false,
+      "evidenceSummary": "Thumbnail filename slug only, no corroborating text field",
+      "metaFields": {
+        "calories": "0",
+        "portion": "0oz",
+        "thumbnailUrl": "https://www.chipotle.com/content/dam/chipotle/menu/menu-items/cmg-2398-charitea-red/web-desktop/order.png",
+        "thumbnailSlug": "cmg-2398-charitea-red",
+        "dietaryTags": [],
+        "tags": [],
+        "groupName": null,
+        "customizations": []
+      },
+      "itemSectionsReferencing": [
+        {
+          "section": "AllDrinkContentGroup",
+          "alias": "Drinks",
+          "sortOrder": 68
+        }
+      ],
+      "groupsReferencing": [
+        {
+          "group": "Drinks",
+          "sortOrder": 68
+        }
+      ],
+      "exactThumbnailMatchToKnownItems": []
+    },
+    "CMG-2400": {
+      "id": "CMG-2400",
+      "classification": "likely_identified",
+      "family": "charitea",
+      "inCalculatorMenu469": false,
+      "evidenceSummary": "Thumbnail filename slug only, no corroborating text field",
+      "metaFields": {
+        "calories": "0",
+        "portion": "0oz",
+        "thumbnailUrl": "https://www.chipotle.com/content/dam/chipotle/menu/menu-items/cmg-2400-charitea-mate/web-desktop/order.png",
+        "thumbnailSlug": "cmg-2400-charitea-mate",
+        "dietaryTags": [],
+        "tags": [],
+        "groupName": null,
+        "customizations": []
+      },
+      "itemSectionsReferencing": [
+        {
+          "section": "AllDrinkContentGroup",
+          "alias": "Drinks",
+          "sortOrder": 69
+        }
+      ],
+      "groupsReferencing": [
+        {
+          "group": "Drinks",
+          "sortOrder": 69
+        }
+      ],
+      "exactThumbnailMatchToKnownItems": []
+    },
+    "CMG-2877": {
+      "id": "CMG-2877",
+      "classification": "likely_identified",
+      "family": "otherNewDrinks",
+      "inCalculatorMenu469": false,
+      "evidenceSummary": "Thumbnail filename slug only, no corroborating text field",
+      "metaFields": {
+        "calories": "10",
+        "portion": "0oz",
+        "thumbnailUrl": "https://www.chipotle.com/content/dam/chipotle/menu/menu-items/cmg-2877-lemon-perfect-original/web-desktop/order.png",
+        "thumbnailSlug": "cmg-2877-lemon-perfect-original",
+        "dietaryTags": [],
+        "tags": [
+          {
+            "type": "promo",
+            "value": "new"
+          },
+          {
+            "type": "promo",
+            "value": "nchide"
+          }
+        ],
+        "groupName": null,
+        "customizations": []
+      },
+      "itemSectionsReferencing": [
+        {
+          "section": "AllDrinkContentGroup",
+          "alias": "Drinks",
+          "sortOrder": 29
+        }
+      ],
+      "groupsReferencing": [
+        {
+          "group": "Drinks",
+          "sortOrder": 29
+        }
+      ],
+      "exactThumbnailMatchToKnownItems": []
+    },
+    "CMG-2879": {
+      "id": "CMG-2879",
+      "classification": "likely_identified",
+      "family": "otherNewDrinks",
+      "inCalculatorMenu469": false,
+      "evidenceSummary": "Thumbnail filename slug only, no corroborating text field",
+      "metaFields": {
+        "calories": "0",
+        "portion": "0oz",
+        "thumbnailUrl": "https://www.chipotle.com/content/dam/chipotle/menu/menu-items/cmg-2879-open-water-sparkling/web-desktop/order.png",
+        "thumbnailSlug": "cmg-2879-open-water-sparkling",
+        "dietaryTags": [],
+        "tags": [
+          {
+            "type": "promo",
+            "value": "new"
+          },
+          {
+            "type": "promo",
+            "value": "nchide"
+          }
+        ],
+        "groupName": null,
+        "customizations": []
+      },
+      "itemSectionsReferencing": [
+        {
+          "section": "AllDrinkContentGroup",
+          "alias": "Drinks",
+          "sortOrder": 36
+        }
+      ],
+      "groupsReferencing": [
+        {
+          "group": "Drinks",
+          "sortOrder": 33
+        }
+      ],
+      "exactThumbnailMatchToKnownItems": []
+    },
+    "CMG-2880": {
+      "id": "CMG-2880",
+      "classification": "likely_identified",
+      "family": "otherNewDrinks",
+      "inCalculatorMenu469": false,
+      "evidenceSummary": "Thumbnail filename slug only, no corroborating text field",
+      "metaFields": {
+        "calories": "35",
+        "portion": "0oz",
+        "thumbnailUrl": "https://www.chipotle.com/content/dam/chipotle/menu/menu-items/cmg-2880-tepache-grapefruit-lime/web-desktop/order.png",
+        "thumbnailSlug": "cmg-2880-tepache-grapefruit-lime",
+        "dietaryTags": [],
+        "tags": [
+          {
+            "type": "promo",
+            "value": "new"
+          },
+          {
+            "type": "promo",
+            "value": "nchide"
+          }
+        ],
+        "groupName": null,
+        "customizations": []
+      },
+      "itemSectionsReferencing": [
+        {
+          "section": "AllDrinkContentGroup",
+          "alias": "Drinks",
+          "sortOrder": 23
+        }
+      ],
+      "groupsReferencing": [
+        {
+          "group": "Drinks",
+          "sortOrder": 23
+        }
+      ],
+      "exactThumbnailMatchToKnownItems": []
+    },
+    "CMG-2881": {
+      "id": "CMG-2881",
+      "classification": "likely_identified",
+      "family": "otherNewDrinks",
+      "inCalculatorMenu469": false,
+      "evidenceSummary": "Thumbnail filename slug only, no corroborating text field",
+      "metaFields": {
+        "calories": "50",
+        "portion": "0oz",
+        "thumbnailUrl": "https://www.chipotle.com/content/dam/chipotle/menu/menu-items/cmg-2881-tepache-tropical/web-desktop/order.png",
+        "thumbnailSlug": "cmg-2881-tepache-tropical",
+        "dietaryTags": [],
+        "tags": [
+          {
+            "type": "promo",
+            "value": "new"
+          },
+          {
+            "type": "promo",
+            "value": "nchide"
+          }
+        ],
+        "groupName": null,
+        "customizations": []
+      },
+      "itemSectionsReferencing": [
+        {
+          "section": "AllDrinkContentGroup",
+          "alias": "Drinks",
+          "sortOrder": 24
+        }
+      ],
+      "groupsReferencing": [
+        {
+          "group": "Drinks",
+          "sortOrder": 24
+        }
+      ],
+      "exactThumbnailMatchToKnownItems": []
+    },
+    "CMG-3001": {
+      "id": "CMG-3001",
+      "classification": "confidently_identified",
+      "family": "toppingsSauces",
+      "inCalculatorMenu469": false,
+      "evidenceSummary": "Exact thumbnailUrl match to already-named item(s): Cheese Only Kids Quesadilla, Cheese Only Quesadilla, Cheese, Cheese",
+      "metaFields": {
+        "calories": "110",
+        "portion": "2oz",
+        "thumbnailUrl": "https://www.chipotle.com/content/dam/chipotle/menu/menu-items/cmg-5252-monterey-jack-cheese/web-desktop/order.png",
+        "thumbnailSlug": "cmg-5252-monterey-jack-cheese",
+        "dietaryTags": [
+          "vege",
+          "keto",
+          "dair"
+        ],
+        "tags": [],
+        "groupName": null,
+        "customizations": []
+      },
+      "itemSectionsReferencing": [],
+      "groupsReferencing": [],
+      "exactThumbnailMatchToKnownItems": [
+        {
+          "id": "CMG-3101",
+          "name": "Cheese Only Kids Quesadilla"
+        },
+        {
+          "id": "CMG-407",
+          "name": "Cheese Only Quesadilla"
+        },
+        {
+          "id": "CMG-5252",
+          "name": "Cheese"
+        },
+        {
+          "id": "CMG-5378",
+          "name": "Cheese"
+        }
+      ]
+    },
+    "CMG-3008": {
+      "id": "CMG-3008",
+      "classification": "likely_identified",
+      "family": "chorizo",
+      "inCalculatorMenu469": false,
+      "evidenceSummary": "Thumbnail filename slug only, no corroborating text field",
+      "metaFields": {
+        "calories": "150",
+        "portion": "2oz",
+        "thumbnailUrl": "https://www.chipotle.com/content/dam/chipotle/menu/menu-items/cmg-6606-chorizo/web-desktop/order.png",
+        "thumbnailSlug": "cmg-6606-chorizo",
+        "dietaryTags": [
+          "pale",
+          "keto",
+          "sulp"
+        ],
+        "tags": [],
+        "groupName": null,
+        "customizations": []
+      },
+      "itemSectionsReferencing": [],
+      "groupsReferencing": [
+        {
+          "group": "Kid's Build Your Own",
+          "menuItemType": "KidsBYO",
+          "sortOrder": 13
+        }
+      ],
+      "exactThumbnailMatchToKnownItems": []
+    },
+    "CMG-3010": {
+      "id": "CMG-3010",
+      "classification": "confidently_identified",
+      "family": "carneAsada",
+      "inCalculatorMenu469": false,
+      "evidenceSummary": "Thumbnail slug + tagline text: \"Our Most Tender Steak\"",
+      "metaFields": {
+        "calories": "130",
+        "portion": "2oz",
+        "thumbnailUrl": "https://www.chipotle.com/content/dam/chipotle/menu/menu-items/cmg-6608-carne-asada/web-desktop/order.png",
+        "thumbnailSlug": "cmg-6608-carne-asada",
+        "dietaryTags": [
+          "pale",
+          "keto"
+        ],
+        "tags": [
+          {
+            "type": "promo",
+            "value": "limited time"
+          },
+          {
+            "type": "tagline",
+            "value": "Our Most Tender Steak"
+          }
+        ],
+        "groupName": null,
+        "customizations": []
+      },
+      "itemSectionsReferencing": [],
+      "groupsReferencing": [
+        {
+          "group": "Kid's Build Your Own",
+          "menuItemType": "KidsBYO",
+          "sortOrder": 2
+        }
+      ],
+      "exactThumbnailMatchToKnownItems": []
+    },
+    "CMG-3014": {
+      "id": "CMG-3014",
+      "classification": "confidently_identified",
+      "family": "pbChorizo",
+      "inCalculatorMenu469": false,
+      "evidenceSummary": "Thumbnail slug + tagline text: \"16g of Pea Protein\"",
+      "metaFields": {
+        "calories": "110",
+        "portion": "2oz",
+        "thumbnailUrl": "https://www.chipotle.com/content/dam/chipotle/menu/menu-items/cmg-5164-pb-chorizo/web-desktop/order.png",
+        "thumbnailSlug": "cmg-5164-pb-chorizo",
+        "dietaryTags": [
+          "vege",
+          "vega",
+          "pale",
+          "keto",
+          "sulp"
+        ],
+        "tags": [
+          {
+            "type": "promo",
+            "value": "NEW"
+          },
+          {
+            "type": "tagline",
+            "value": "16g of Pea Protein"
+          }
+        ],
+        "groupName": null,
+        "customizations": []
+      },
+      "itemSectionsReferencing": [],
+      "groupsReferencing": [
+        {
+          "group": "Kid's Build Your Own",
+          "menuItemType": "KidsBYO",
+          "sortOrder": 9
+        }
+      ],
+      "exactThumbnailMatchToKnownItems": []
+    },
+    "CMG-3015": {
+      "id": "CMG-3015",
+      "classification": "likely_identified",
+      "family": "garlicSteak",
+      "inCalculatorMenu469": false,
+      "evidenceSummary": "Thumbnail filename slug only, no corroborating text field",
+      "metaFields": {
+        "calories": "120",
+        "portion": "2oz",
+        "thumbnailUrl": "https://www.chipotle.com/content/dam/chipotle/menu/menu-items/cmg-5165--garlic-steak/web-desktop/order.png",
+        "thumbnailSlug": "cmg-5165--garlic-steak",
+        "dietaryTags": [
+          "pale",
+          "keto"
+        ],
+        "tags": [
+          {
+            "type": "promo",
+            "value": "new"
+          }
+        ],
+        "groupName": null,
+        "customizations": []
+      },
+      "itemSectionsReferencing": [],
+      "groupsReferencing": [
+        {
+          "group": "Kid's Build Your Own",
+          "menuItemType": "KidsBYO",
+          "sortOrder": 8
+        }
+      ],
+      "exactThumbnailMatchToKnownItems": []
+    },
+    "CMG-3016": {
+      "id": "CMG-3016",
+      "classification": "confidently_identified",
+      "family": "chickenAlPastor",
+      "inCalculatorMenu469": false,
+      "evidenceSummary": "Thumbnail slug + tagline text: \"Where Fire Meets Flavor\"",
+      "metaFields": {
+        "calories": "100",
+        "portion": "2oz",
+        "thumbnailUrl": "https://www.chipotle.com/content/dam/chipotle/menu/menu-items/CMG-5166-Chicken-al-Pastor/web-desktop/order.png",
+        "thumbnailSlug": "CMG-5166-Chicken-al-Pastor",
+        "dietaryTags": [
+          "pale",
+          "sulp"
+        ],
+        "tags": [
+          {
+            "type": "tagline",
+            "value": "Where Fire Meets Flavor"
+          },
+          {
+            "type": "promo",
+            "value": "limited time"
+          }
+        ],
+        "groupName": null,
+        "customizations": []
+      },
+      "itemSectionsReferencing": [],
+      "groupsReferencing": [
+        {
+          "group": "Kid's Build Your Own",
+          "menuItemType": "KidsBYO",
+          "sortOrder": 3
+        }
+      ],
+      "exactThumbnailMatchToKnownItems": []
+    },
+    "CMG-3108": {
+      "id": "CMG-3108",
+      "classification": "likely_identified",
+      "family": "chorizo",
+      "inCalculatorMenu469": false,
+      "evidenceSummary": "Thumbnail filename slug only, no corroborating text field",
+      "metaFields": {
+        "calories": "40",
+        "portion": "0.5oz",
+        "thumbnailUrl": "https://www.chipotle.com/content/dam/chipotle/menu/menu-items/cmg-6606-chorizo/web-desktop/order.png",
+        "thumbnailSlug": "cmg-6606-chorizo",
+        "dietaryTags": [
+          "pale",
+          "keto",
+          "sulp"
+        ],
+        "tags": [],
+        "groupName": null,
+        "customizations": []
+      },
+      "itemSectionsReferencing": [],
+      "groupsReferencing": [
+        {
+          "group": "Kid's Quesadilla",
+          "menuItemType": "KidsQuesadilla",
+          "sortOrder": 13
+        }
+      ],
+      "exactThumbnailMatchToKnownItems": []
+    },
+    "CMG-3109": {
+      "id": "CMG-3109",
+      "classification": "confidently_identified",
+      "family": "carneAsada",
+      "inCalculatorMenu469": false,
+      "evidenceSummary": "Thumbnail slug + tagline text: \"Our Most Tender Steak\"",
+      "metaFields": {
+        "calories": "30",
+        "portion": "0.5oz",
+        "thumbnailUrl": "https://www.chipotle.com/content/dam/chipotle/menu/menu-items/cmg-6608-carne-asada/web-desktop/order.png",
+        "thumbnailSlug": "cmg-6608-carne-asada",
+        "dietaryTags": [
+          "pale",
+          "keto"
+        ],
+        "tags": [
+          {
+            "type": "promo",
+            "value": "limited time"
+          },
+          {
+            "type": "tagline",
+            "value": "Our Most Tender Steak"
+          }
+        ],
+        "groupName": null,
+        "customizations": []
+      },
+      "itemSectionsReferencing": [],
+      "groupsReferencing": [
+        {
+          "group": "Kid's Quesadilla",
+          "menuItemType": "KidsQuesadilla",
+          "sortOrder": 2
+        }
+      ],
+      "exactThumbnailMatchToKnownItems": []
+    },
+    "CMG-3112": {
+      "id": "CMG-3112",
+      "classification": "confidently_identified",
+      "family": "pbChorizo",
+      "inCalculatorMenu469": false,
+      "evidenceSummary": "Thumbnail slug + tagline text: \"16g of Pea Protein\"",
+      "metaFields": {
+        "calories": "110",
+        "portion": "2oz",
+        "thumbnailUrl": "https://www.chipotle.com/content/dam/chipotle/menu/menu-items/cmg-5164-pb-chorizo/web-desktop/order.png",
+        "thumbnailSlug": "cmg-5164-pb-chorizo",
+        "dietaryTags": [
+          "vege",
+          "vega",
+          "pale",
+          "keto",
+          "sulp"
+        ],
+        "tags": [
+          {
+            "type": "promo",
+            "value": "NEW"
+          },
+          {
+            "type": "tagline",
+            "value": "16g of Pea Protein"
+          }
+        ],
+        "groupName": null,
+        "customizations": []
+      },
+      "itemSectionsReferencing": [],
+      "groupsReferencing": [
+        {
+          "group": "Kid's Quesadilla",
+          "menuItemType": "KidsQuesadilla",
+          "sortOrder": 9
+        }
+      ],
+      "exactThumbnailMatchToKnownItems": []
+    },
+    "CMG-3113": {
+      "id": "CMG-3113",
+      "classification": "likely_identified",
+      "family": "garlicSteak",
+      "inCalculatorMenu469": false,
+      "evidenceSummary": "Thumbnail filename slug only, no corroborating text field",
+      "metaFields": {
+        "calories": "120",
+        "portion": "2oz",
+        "thumbnailUrl": "https://www.chipotle.com/content/dam/chipotle/menu/menu-items/cmg-5165--garlic-steak/web-desktop/order.png",
+        "thumbnailSlug": "cmg-5165--garlic-steak",
+        "dietaryTags": [
+          "pale",
+          "keto"
+        ],
+        "tags": [
+          {
+            "type": "promo",
+            "value": "new"
+          }
+        ],
+        "groupName": null,
+        "customizations": []
+      },
+      "itemSectionsReferencing": [],
+      "groupsReferencing": [
+        {
+          "group": "Kid's Quesadilla",
+          "menuItemType": "KidsQuesadilla",
+          "sortOrder": 8
+        }
+      ],
+      "exactThumbnailMatchToKnownItems": []
+    },
+    "CMG-3114": {
+      "id": "CMG-3114",
+      "classification": "confidently_identified",
+      "family": "chickenAlPastor",
+      "inCalculatorMenu469": false,
+      "evidenceSummary": "Thumbnail slug + tagline text: \"Where Fire Meets Flavor\"",
+      "metaFields": {
+        "calories": "100",
+        "portion": "2oz",
+        "thumbnailUrl": "https://www.chipotle.com/content/dam/chipotle/menu/menu-items/CMG-5166-Chicken-al-Pastor/web-desktop/order.png",
+        "thumbnailSlug": "CMG-5166-Chicken-al-Pastor",
+        "dietaryTags": [
+          "pale",
+          "sulp"
+        ],
+        "tags": [
+          {
+            "type": "tagline",
+            "value": "Where Fire Meets Flavor"
+          },
+          {
+            "type": "promo",
+            "value": "limited time"
+          }
+        ],
+        "groupName": null,
+        "customizations": []
+      },
+      "itemSectionsReferencing": [],
+      "groupsReferencing": [
+        {
+          "group": "Kid's Quesadilla",
+          "menuItemType": "KidsQuesadilla",
+          "sortOrder": 3
+        }
+      ],
+      "exactThumbnailMatchToKnownItems": []
+    },
+    "CMG-4122": {
+      "id": "CMG-4122",
+      "classification": "confidently_identified",
+      "family": "toppingsSauces",
+      "inCalculatorMenu469": false,
+      "evidenceSummary": "Exact thumbnailUrl match to already-named item(s): Side of Queso Blanco",
+      "metaFields": {
+        "calories": "120",
+        "portion": "2oz",
+        "thumbnailUrl": "https://www.chipotle.com/content/dam/chipotle/menu/menu-items/cmg-1029-queso-blanco/web-desktop/order.png",
+        "thumbnailSlug": "cmg-1029-queso-blanco",
+        "dietaryTags": [
+          "vege",
+          "dair"
+        ],
+        "tags": [],
+        "groupName": null,
+        "customizations": []
+      },
+      "itemSectionsReferencing": [],
+      "groupsReferencing": [],
+      "exactThumbnailMatchToKnownItems": [
+        {
+          "id": "CMG-1030",
+          "name": "Side of Queso Blanco"
+        }
+      ]
+    },
+    "CMG-5004": {
+      "id": "CMG-5004",
+      "classification": "confidently_identified",
+      "family": "grains",
+      "inCalculatorMenu469": false,
+      "evidenceSummary": "Thumbnail slug + tagline text: \"Brown Rice | Quinoa | Oats\"",
+      "metaFields": {
+        "calories": "200",
+        "portion": "4oz",
+        "thumbnailUrl": "https://www.chipotle.com/content/dam/chipotle/menu/menu-items/cmg-5004-supergrains/web-desktop/order.png",
+        "thumbnailSlug": "cmg-5004-supergrains",
+        "dietaryTags": [
+          "vege",
+          "vega"
+        ],
+        "tags": [
+          {
+            "type": "promo",
+            "value": "new"
+          },
+          {
+            "type": "tagline",
+            "value": "Brown Rice | Quinoa | Oats"
+          }
+        ],
+        "groupName": null,
+        "customizations": [
+          {
+            "customizationId": 4,
+            "sortOrder": 2,
+            "isHidden": true
+          }
+        ]
+      },
+      "itemSectionsReferencing": [
+        {
+          "section": "DipContentGroup",
+          "alias": "included sides",
+          "sortOrder": 8
+        },
+        {
+          "section": "OptionContentGroup",
+          "alias": "Toppings",
+          "sortOrder": 5
+        },
+        {
+          "section": "RiceContentGroup",
+          "alias": "Rice",
+          "sortOrder": 9
+        },
+        {
+          "section": "ToppingsContentGroup",
+          "alias": "Included Toppings",
+          "sortOrder": 5
+        }
+      ],
+      "groupsReferencing": [],
+      "exactThumbnailMatchToKnownItems": []
+    },
+    "CMG-5151": {
+      "id": "CMG-5151",
+      "classification": "confidently_identified",
+      "family": "coreProteinDuplicates",
+      "inCalculatorMenu469": false,
+      "evidenceSummary": "Exact thumbnailUrl match to already-named item(s): Chicken Burrito, Chicken Bowl, Extra Chicken, Chicken Taco, Chicken Tacos (3), Chicken Kids Build Your Own, Chicken Salad, Chicken Kids Quesadilla, Chicken Quesadilla, Half Chicken, Build-Your-Own Chicken, Extra Chicken",
+      "metaFields": {
+        "calories": "180",
+        "portion": "4oz",
+        "thumbnailUrl": "https://www.chipotle.com/content/dam/chipotle/menu/menu-items/cmg-6601-chicken/web-desktop/order.png",
+        "thumbnailSlug": "cmg-6601-chicken",
+        "dietaryTags": [
+          "pale",
+          "keto"
+        ],
+        "tags": [],
+        "groupName": null,
+        "customizations": []
+      },
+      "itemSectionsReferencing": [],
+      "groupsReferencing": [],
+      "exactThumbnailMatchToKnownItems": [
+        {
+          "id": "CMG-1",
+          "name": "Chicken Burrito"
+        },
+        {
+          "id": "CMG-101",
+          "name": "Chicken Bowl"
+        },
+        {
+          "id": "CMG-1101",
+          "name": "Extra Chicken"
+        },
+        {
+          "id": "CMG-1201",
+          "name": "Chicken Taco"
+        },
+        {
+          "id": "CMG-201",
+          "name": "Chicken Tacos (3)"
+        },
+        {
+          "id": "CMG-3002",
+          "name": "Chicken Kids Build Your Own"
+        },
+        {
+          "id": "CMG-301",
+          "name": "Chicken Salad"
+        },
+        {
+          "id": "CMG-3102",
+          "name": "Chicken Kids Quesadilla"
+        },
+        {
+          "id": "CMG-401",
+          "name": "Chicken Quesadilla"
+        },
+        {
+          "id": "CMG-5601",
+          "name": "Half Chicken"
+        },
+        {
+          "id": "CMG-5374",
+          "name": "Build-Your-Own Chicken"
+        },
+        {
+          "id": "CMG-1116",
+          "name": "Extra Chicken"
+        }
+      ]
+    },
+    "CMG-5152": {
+      "id": "CMG-5152",
+      "classification": "confidently_identified",
+      "family": "coreProteinDuplicates",
+      "inCalculatorMenu469": false,
+      "evidenceSummary": "Exact thumbnailUrl match to already-named item(s): Steak Bowl, Extra Steak, Steak Taco, Steak Burrito, Steak Tacos (3), Steak Kids Build Your Own, Steak Salad, Steak Kids Quesadilla, Steak Quesadilla, Half Steak, Build-Your-Own Steak, Extra Steak",
+      "metaFields": {
+        "calories": "150",
+        "portion": "4oz",
+        "thumbnailUrl": "https://www.chipotle.com/content/dam/chipotle/menu/menu-items/cmg-6602-steak/web-desktop/order.png",
+        "thumbnailSlug": "cmg-6602-steak",
+        "dietaryTags": [
+          "pale",
+          "keto"
+        ],
+        "tags": [],
+        "groupName": null,
+        "customizations": []
+      },
+      "itemSectionsReferencing": [],
+      "groupsReferencing": [],
+      "exactThumbnailMatchToKnownItems": [
+        {
+          "id": "CMG-102",
+          "name": "Steak Bowl"
+        },
+        {
+          "id": "CMG-1102",
+          "name": "Extra Steak"
+        },
+        {
+          "id": "CMG-1202",
+          "name": "Steak Taco"
+        },
+        {
+          "id": "CMG-2",
+          "name": "Steak Burrito"
+        },
+        {
+          "id": "CMG-202",
+          "name": "Steak Tacos (3)"
+        },
+        {
+          "id": "CMG-3003",
+          "name": "Steak Kids Build Your Own"
+        },
+        {
+          "id": "CMG-302",
+          "name": "Steak Salad"
+        },
+        {
+          "id": "CMG-3103",
+          "name": "Steak Kids Quesadilla"
+        },
+        {
+          "id": "CMG-402",
+          "name": "Steak Quesadilla"
+        },
+        {
+          "id": "CMG-5602",
+          "name": "Half Steak"
+        },
+        {
+          "id": "CMG-5384",
+          "name": "Build-Your-Own Steak"
+        },
+        {
+          "id": "CMG-1117",
+          "name": "Extra Steak"
+        }
+      ]
+    },
+    "CMG-5153": {
+      "id": "CMG-5153",
+      "classification": "confidently_identified",
+      "family": "coreProteinDuplicates",
+      "inCalculatorMenu469": false,
+      "evidenceSummary": "Exact thumbnailUrl match to already-named item(s): Carnitas Bowl, Extra Carnitas, Carnitas Taco, Carnitas Tacos (3), Carnitas Burrito, Carnitas Kids Build Your Own, Carnitas Salad, Carnitas Kids Quesadilla, Carnitas Quesadilla, Half Carnitas, Build-Your-Own Carnitas, Extra Carnitas",
+      "metaFields": {
+        "calories": "210",
+        "portion": "4oz",
+        "thumbnailUrl": "https://www.chipotle.com/content/dam/chipotle/menu/menu-items/cmg-6603-carnitas/web-desktop/order.png",
+        "thumbnailSlug": "cmg-6603-carnitas",
+        "dietaryTags": [
+          "pale",
+          "keto"
+        ],
+        "tags": [],
+        "groupName": null,
+        "customizations": []
+      },
+      "itemSectionsReferencing": [],
+      "groupsReferencing": [],
+      "exactThumbnailMatchToKnownItems": [
+        {
+          "id": "CMG-103",
+          "name": "Carnitas Bowl"
+        },
+        {
+          "id": "CMG-1103",
+          "name": "Extra Carnitas"
+        },
+        {
+          "id": "CMG-1203",
+          "name": "Carnitas Taco"
+        },
+        {
+          "id": "CMG-203",
+          "name": "Carnitas Tacos (3)"
+        },
+        {
+          "id": "CMG-3",
+          "name": "Carnitas Burrito"
+        },
+        {
+          "id": "CMG-3004",
+          "name": "Carnitas Kids Build Your Own"
+        },
+        {
+          "id": "CMG-303",
+          "name": "Carnitas Salad"
+        },
+        {
+          "id": "CMG-3104",
+          "name": "Carnitas Kids Quesadilla"
+        },
+        {
+          "id": "CMG-403",
+          "name": "Carnitas Quesadilla"
+        },
+        {
+          "id": "CMG-5603",
+          "name": "Half Carnitas"
+        },
+        {
+          "id": "CMG-5387",
+          "name": "Build-Your-Own Carnitas"
+        },
+        {
+          "id": "CMG-1119",
+          "name": "Extra Carnitas"
+        }
+      ]
+    },
+    "CMG-5154": {
+      "id": "CMG-5154",
+      "classification": "confidently_identified",
+      "family": "coreProteinDuplicates",
+      "inCalculatorMenu469": false,
+      "evidenceSummary": "Exact thumbnailUrl match to already-named item(s): Beef Barbacoa Bowl, Extra Beef Barbacoa, Beef Barbacoa Taco, Beef Barbacoa Tacos (3), Beef Barbacoa Kids Build Your Own, Beef Barbacoa Salad, Beef Barbacoa Kids Quesadilla, Beef Barbacoa Burrito, Beef Barbacoa Quesadilla, Half Beef Barbacoa, Build-Your-Own Beef Barbacoa, Extra Beef Barbacoa",
+      "metaFields": {
+        "calories": "170",
+        "portion": "4oz",
+        "thumbnailUrl": "https://www.chipotle.com/content/dam/chipotle/menu/menu-items/cmg-6604-barbacoa/web-desktop/order.png",
+        "thumbnailSlug": "cmg-6604-barbacoa",
+        "dietaryTags": [
+          "pale",
+          "keto"
+        ],
+        "tags": [],
+        "groupName": null,
+        "customizations": []
+      },
+      "itemSectionsReferencing": [],
+      "groupsReferencing": [],
+      "exactThumbnailMatchToKnownItems": [
+        {
+          "id": "CMG-104",
+          "name": "Beef Barbacoa Bowl"
+        },
+        {
+          "id": "CMG-1104",
+          "name": "Extra Beef Barbacoa"
+        },
+        {
+          "id": "CMG-1204",
+          "name": "Beef Barbacoa Taco"
+        },
+        {
+          "id": "CMG-204",
+          "name": "Beef Barbacoa Tacos (3)"
+        },
+        {
+          "id": "CMG-3005",
+          "name": "Beef Barbacoa Kids Build Your Own"
+        },
+        {
+          "id": "CMG-304",
+          "name": "Beef Barbacoa Salad"
+        },
+        {
+          "id": "CMG-3105",
+          "name": "Beef Barbacoa Kids Quesadilla"
+        },
+        {
+          "id": "CMG-4",
+          "name": "Beef Barbacoa Burrito"
+        },
+        {
+          "id": "CMG-404",
+          "name": "Beef Barbacoa Quesadilla"
+        },
+        {
+          "id": "CMG-5604",
+          "name": "Half Beef Barbacoa"
+        },
+        {
+          "id": "CMG-5386",
+          "name": "Build-Your-Own Beef Barbacoa"
+        },
+        {
+          "id": "CMG-1118",
+          "name": "Extra Beef Barbacoa"
+        }
+      ]
+    },
+    "CMG-5155": {
+      "id": "CMG-5155",
+      "classification": "confidently_identified",
+      "family": "coreProteinDuplicates",
+      "inCalculatorMenu469": false,
+      "evidenceSummary": "Exact thumbnailUrl match to already-named item(s): Sofritas Bowl, Extra Sofritas, Sofritas Taco, Sofritas Tacos (3), Sofritas Kids Build Your Own, Sofritas Salad, Sofritas Kids Quesadilla, Sofritas Quesadilla, Sofritas Burrito, Half Sofritas, Build-Your-Own Sofritas, Extra Sofritas",
+      "metaFields": {
+        "calories": "150",
+        "portion": "4oz",
+        "thumbnailUrl": "https://www.chipotle.com/content/dam/chipotle/menu/menu-items/cmg-6605-sofritas/web-desktop/order.png",
+        "thumbnailSlug": "cmg-6605-sofritas",
+        "dietaryTags": [
+          "vege",
+          "vega",
+          "soy",
+          "sulp"
+        ],
+        "tags": [
+          {
+            "type": "tagline",
+            "value": "Plant-Based Protein"
+          }
+        ],
+        "groupName": null,
+        "customizations": []
+      },
+      "itemSectionsReferencing": [],
+      "groupsReferencing": [],
+      "exactThumbnailMatchToKnownItems": [
+        {
+          "id": "CMG-105",
+          "name": "Sofritas Bowl"
+        },
+        {
+          "id": "CMG-1106",
+          "name": "Extra Sofritas"
+        },
+        {
+          "id": "CMG-1205",
+          "name": "Sofritas Taco"
+        },
+        {
+          "id": "CMG-205",
+          "name": "Sofritas Tacos (3)"
+        },
+        {
+          "id": "CMG-3006",
+          "name": "Sofritas Kids Build Your Own"
+        },
+        {
+          "id": "CMG-305",
+          "name": "Sofritas Salad"
+        },
+        {
+          "id": "CMG-3106",
+          "name": "Sofritas Kids Quesadilla"
+        },
+        {
+          "id": "CMG-405",
+          "name": "Sofritas Quesadilla"
+        },
+        {
+          "id": "CMG-5",
+          "name": "Sofritas Burrito"
+        },
+        {
+          "id": "CMG-5605",
+          "name": "Half Sofritas"
+        },
+        {
+          "id": "CMG-5385",
+          "name": "Build-Your-Own Sofritas"
+        },
+        {
+          "id": "CMG-1120",
+          "name": "Extra Sofritas"
+        }
+      ]
+    },
+    "CMG-5355": {
+      "id": "CMG-5355",
+      "classification": "confidently_identified",
+      "family": "toppingsSauces",
+      "inCalculatorMenu469": false,
+      "evidenceSummary": "Thumbnail slug + tagline text: \"Served on the Side\"",
+      "metaFields": {
+        "calories": "110",
+        "portion": "2oz",
+        "thumbnailUrl": "https://www.chipotle.com/content/dam/chipotle/menu/menu-items/cmg-5355-adobo-ranch/web-desktop/order.png",
+        "thumbnailSlug": "cmg-5355-adobo-ranch",
+        "dietaryTags": [
+          "vege",
+          "keto",
+          "dair"
+        ],
+        "tags": [
+          {
+            "type": "promo",
+            "value": "new"
+          },
+          {
+            "type": "tagline",
+            "value": "Served on the Side"
+          }
+        ],
+        "groupName": null,
+        "customizations": []
+      },
+      "itemSectionsReferencing": [
+        {
+          "section": "AddonContentGroup",
+          "alias": "Add-Ons | Always On The Side",
+          "sortOrder": 4
+        },
+        {
+          "section": "PremiumContentGroup",
+          "alias": "Add-Ons",
+          "sortOrder": 5
+        },
+        {
+          "section": "Toppings",
+          "alias": "Top Things Off",
+          "sortOrder": 5
+        }
+      ],
+      "groupsReferencing": [],
+      "exactThumbnailMatchToKnownItems": []
+    },
+    "CMG-5358": {
+      "id": "CMG-5358",
+      "classification": "confidently_identified",
+      "family": "toppingsSauces",
+      "inCalculatorMenu469": false,
+      "evidenceSummary": "Thumbnail slug + tagline text: \"Made Fresh Daily\"",
+      "metaFields": {
+        "calories": "110",
+        "portion": "2oz",
+        "thumbnailUrl": "https://www.chipotle.com/content/dam/chipotle/menu/menu-items/cmg-5358-adobo-ranch/web-desktop/order.png",
+        "thumbnailSlug": "cmg-5358-adobo-ranch",
+        "dietaryTags": [
+          "vege",
+          "keto",
+          "dair"
+        ],
+        "tags": [
+          {
+            "type": "promo",
+            "value": "new"
+          },
+          {
+            "type": "tagline",
+            "value": "Made Fresh Daily"
+          }
+        ],
+        "groupName": null,
+        "customizations": []
+      },
+      "itemSectionsReferencing": [
+        {
+          "section": "SingleSidesContentGroup",
+          "alias": "Single Sides",
+          "sortOrder": 6
+        }
+      ],
+      "groupsReferencing": [
+        {
+          "group": "Chips & Sides",
+          "sortOrder": 41
+        }
+      ],
+      "exactThumbnailMatchToKnownItems": []
+    },
+    "CMG-5373": {
+      "id": "CMG-5373",
+      "classification": "confidently_identified",
+      "family": "chipsDuplicate",
+      "inCalculatorMenu469": false,
+      "evidenceSummary": "Exact thumbnailUrl match to already-named item(s): Chili Lime Chips",
+      "metaFields": {
+        "calories": "140",
+        "portion": "1oz",
+        "thumbnailUrl": "https://www.chipotle.com/content/dam/chipotle/menu/menu-items/cmg-5362-chili-lime-chips/web-desktop/order.png",
+        "thumbnailSlug": "cmg-5362-chili-lime-chips",
+        "dietaryTags": [
+          "vege",
+          "vega"
+        ],
+        "tags": [
+          {
+            "type": "rewards",
+            "value": "Rewards Exclusive"
+          },
+          {
+            "type": "promo",
+            "value": "NEW"
+          },
+          {
+            "type": "promo",
+            "value": "nchide"
+          }
+        ],
+        "groupName": null,
+        "customizations": []
+      },
+      "itemSectionsReferencing": [
+        {
+          "section": "SideContentGroup",
+          "alias": "Included Sides",
+          "sortOrder": 2
+        }
+      ],
+      "groupsReferencing": [
+        {
+          "group": "Chips & Sides",
+          "sortOrder": 10
+        }
+      ],
+      "exactThumbnailMatchToKnownItems": [
+        {
+          "id": "CMG-5362",
+          "name": "Chili Lime Chips"
+        }
+      ]
+    },
+    "CMG-5388": {
+      "id": "CMG-5388",
+      "classification": "likely_identified",
+      "family": "carneAsada",
+      "inCalculatorMenu469": false,
+      "evidenceSummary": "Thumbnail filename slug only, no corroborating text field",
+      "metaFields": {
+        "calories": "1700",
+        "portion": "24oz",
+        "thumbnailUrl": "https://www.chipotle.com/content/dam/chipotle/menu/menu-items/cmg-6608-carne-asada/web-desktop/order.png",
+        "thumbnailSlug": "cmg-6608-carne-asada",
+        "dietaryTags": [
+          "pale",
+          "keto"
+        ],
+        "tags": [
+          {
+            "type": "promo",
+            "value": "limited time"
+          }
+        ],
+        "groupName": null,
+        "customizations": []
+      },
+      "itemSectionsReferencing": [],
+      "groupsReferencing": [
+        {
+          "group": "Build-Your-Own",
+          "menuItemType": "BYOProtein",
+          "sortOrder": 3
+        }
+      ],
+      "exactThumbnailMatchToKnownItems": []
+    },
+    "CMG-5407": {
+      "id": "CMG-5407",
+      "classification": "confidently_identified",
+      "family": "chickenAlPastor",
+      "inCalculatorMenu469": false,
+      "evidenceSummary": "Thumbnail slug + tagline text: \"Where Fire Meets Flavor\"",
+      "metaFields": {
+        "calories": "1020",
+        "portion": "20oz",
+        "thumbnailUrl": "https://www.chipotle.com/content/dam/chipotle/menu/menu-items/CMG-5166-Chicken-al-Pastor/web-desktop/order.png",
+        "thumbnailSlug": "CMG-5166-Chicken-al-Pastor",
+        "dietaryTags": [
+          "pale",
+          "wh30",
+          "sulp"
+        ],
+        "tags": [
+          {
+            "type": "promo",
+            "value": "nchide"
+          },
+          {
+            "type": "tagline",
+            "value": "Where Fire Meets Flavor"
+          },
+          {
+            "type": "promo",
+            "value": "limited time"
+          }
+        ],
+        "groupName": null,
+        "customizations": []
+      },
+      "itemSectionsReferencing": [],
+      "groupsReferencing": [
+        {
+          "group": "Build-Your-Own",
+          "menuItemType": "BYOProtein",
+          "sortOrder": 2
+        }
+      ],
+      "exactThumbnailMatchToKnownItems": []
+    },
+    "CMG-5408": {
+      "id": "CMG-5408",
+      "classification": "confidently_identified",
+      "family": "smokedBrisketExtras",
+      "inCalculatorMenu469": false,
+      "evidenceSummary": "Exact thumbnailUrl match to already-named item(s): Smoked Brisket Burrito, Extra Smoked Brisket, Smoked Brisket Bowl, Smoked Brisket Taco, Smoked Brisket Tacos (3), Smoked Brisket Kids Build Your Own, Smoked Brisket Salad, Smoked Brisket Kids Quesadilla, Smoked Brisket Quesadilla, Half Smoked Brisket",
+      "metaFields": {
+        "calories": "2170",
+        "portion": "24oz",
+        "thumbnailUrl": "https://www.chipotle.com/content/dam/chipotle/menu/menu-items/cmg-112-brisket/web-desktop/order.png",
+        "thumbnailSlug": "cmg-112-brisket",
+        "dietaryTags": [
+          "pale",
+          "keto"
+        ],
+        "tags": [
+          {
+            "type": "promo",
+            "value": "limited time"
+          },
+          {
+            "type": "promo",
+            "value": "nchide"
+          }
+        ],
+        "groupName": null,
+        "customizations": []
+      },
+      "itemSectionsReferencing": [],
+      "groupsReferencing": [
+        {
+          "group": "Build-Your-Own",
+          "menuItemType": "BYOProtein",
+          "sortOrder": 4
+        }
+      ],
+      "exactThumbnailMatchToKnownItems": [
+        {
+          "id": "CMG-10",
+          "name": "Smoked Brisket Burrito"
+        },
+        {
+          "id": "CMG-1109",
+          "name": "Extra Smoked Brisket"
+        },
+        {
+          "id": "CMG-112",
+          "name": "Smoked Brisket Bowl"
+        },
+        {
+          "id": "CMG-1211",
+          "name": "Smoked Brisket Taco"
+        },
+        {
+          "id": "CMG-210",
+          "name": "Smoked Brisket Tacos (3)"
+        },
+        {
+          "id": "CMG-3012",
+          "name": "Smoked Brisket Kids Build Your Own"
+        },
+        {
+          "id": "CMG-310",
+          "name": "Smoked Brisket Salad"
+        },
+        {
+          "id": "CMG-3110",
+          "name": "Smoked Brisket Kids Quesadilla"
+        },
+        {
+          "id": "CMG-410",
+          "name": "Smoked Brisket Quesadilla"
+        },
+        {
+          "id": "CMG-5608",
+          "name": "Half Smoked Brisket"
+        }
+      ]
+    },
+    "CMG-5410": {
+      "id": "CMG-5410",
+      "classification": "confidently_identified",
+      "family": "toppingsSauces",
+      "inCalculatorMenu469": false,
+      "evidenceSummary": "Thumbnail slug + tagline text: \"Served on the Side\"",
+      "metaFields": {
+        "calories": "190",
+        "portion": "2fl oz",
+        "thumbnailUrl": "https://www.chipotle.com/content/dam/chipotle/menu/menu-items/cmg-5410-red-chimichurri/web-desktop/order.png",
+        "thumbnailSlug": "cmg-5410-red-chimichurri",
+        "dietaryTags": [
+          "vege",
+          "vega",
+          "sulp"
+        ],
+        "tags": [
+          {
+            "type": "tagline",
+            "value": "Served on the Side"
+          },
+          {
+            "type": "promo",
+            "value": "NEW"
+          }
+        ],
+        "groupName": null,
+        "customizations": []
+      },
+      "itemSectionsReferencing": [
+        {
+          "section": "AddonContentGroup",
+          "alias": "Add-Ons | Always On The Side",
+          "sortOrder": 2
+        },
+        {
+          "section": "PremiumContentGroup",
+          "alias": "Add-Ons",
+          "sortOrder": 2
+        },
+        {
+          "section": "Toppings",
+          "alias": "Top Things Off",
+          "sortOrder": 2
+        }
+      ],
+      "groupsReferencing": [],
+      "exactThumbnailMatchToKnownItems": []
+    },
+    "CMG-5411": {
+      "id": "CMG-5411",
+      "classification": "confidently_identified",
+      "family": "toppingsSauces",
+      "inCalculatorMenu469": false,
+      "evidenceSummary": "Thumbnail slug + tagline text: \"Made Daily\"",
+      "metaFields": {
+        "calories": "190",
+        "portion": "2fl oz",
+        "thumbnailUrl": "https://www.chipotle.com/content/dam/chipotle/menu/menu-items/cmg-5411-red-chimichurri/web-desktop/order.png",
+        "thumbnailSlug": "cmg-5411-red-chimichurri",
+        "dietaryTags": [
+          "vege",
+          "vega",
+          "sulp"
+        ],
+        "tags": [
+          {
+            "type": "tagline",
+            "value": "Made Daily"
+          },
+          {
+            "type": "promo",
+            "value": "NEW"
+          }
+        ],
+        "groupName": null,
+        "customizations": []
+      },
+      "itemSectionsReferencing": [
+        {
+          "section": "SingleSidesContentGroup",
+          "alias": "Single Sides",
+          "sortOrder": 3
+        }
+      ],
+      "groupsReferencing": [
+        {
+          "group": "Chips & Sides",
+          "sortOrder": 42
+        }
+      ],
+      "exactThumbnailMatchToKnownItems": []
+    },
+    "CMG-5606": {
+      "id": "CMG-5606",
+      "classification": "likely_identified",
+      "family": "chorizo",
+      "inCalculatorMenu469": false,
+      "evidenceSummary": "Thumbnail filename slug only, no corroborating text field",
+      "metaFields": {
+        "calories": "150",
+        "portion": "0oz",
+        "thumbnailUrl": "https://www.chipotle.com/content/dam/chipotle/menu/menu-items/cmg-6606-chorizo/web-desktop/order.png",
+        "thumbnailSlug": "cmg-6606-chorizo",
+        "dietaryTags": [
+          "pale",
+          "keto",
+          "sulp"
+        ],
+        "tags": [],
+        "groupName": null,
+        "customizations": []
+      },
+      "itemSectionsReferencing": [],
+      "groupsReferencing": [],
+      "exactThumbnailMatchToKnownItems": []
+    },
+    "CMG-5607": {
+      "id": "CMG-5607",
+      "classification": "confidently_identified",
+      "family": "carneAsada",
+      "inCalculatorMenu469": false,
+      "evidenceSummary": "Thumbnail slug + tagline text: \"Our Most Tender Steak\"",
+      "metaFields": {
+        "calories": "125",
+        "portion": "0oz",
+        "thumbnailUrl": "https://www.chipotle.com/content/dam/chipotle/menu/menu-items/cmg-6608-carne-asada/web-desktop/order.png",
+        "thumbnailSlug": "cmg-6608-carne-asada",
+        "dietaryTags": [
+          "pale",
+          "keto"
+        ],
+        "tags": [
+          {
+            "type": "promo",
+            "value": "limited time"
+          },
+          {
+            "type": "tagline",
+            "value": "Our Most Tender Steak"
+          }
+        ],
+        "groupName": null,
+        "customizations": []
+      },
+      "itemSectionsReferencing": [],
+      "groupsReferencing": [],
+      "exactThumbnailMatchToKnownItems": []
+    },
+    "CMG-9004": {
+      "id": "CMG-9004",
+      "classification": "confidently_identified",
+      "family": "desserts",
+      "inCalculatorMenu469": false,
+      "evidenceSummary": "Thumbnail slug + tagline text: \"Vegan | 3 Per Order\"",
+      "metaFields": {
+        "calories": "320",
+        "portion": "4oz",
+        "thumbnailUrl": "https://www.chipotle.com/content/dam/chipotle/menu/menu-items/cmg-9004-churros/web-desktop/order.png",
+        "thumbnailSlug": "cmg-9004-churros",
+        "dietaryTags": [
+          "vege",
+          "vega",
+          "glut"
+        ],
+        "tags": [
+          {
+            "type": "promo",
+            "value": "NEW"
+          },
+          {
+            "type": "tagline",
+            "value": "Vegan | 3 Per Order"
+          }
+        ],
+        "groupName": null,
+        "customizations": []
+      },
+      "itemSectionsReferencing": [
+        {
+          "section": "Dessert",
+          "alias": "Desserts",
+          "sortOrder": 1
+        }
+      ],
+      "groupsReferencing": [
+        {
+          "group": "Chips & Sides",
+          "sortOrder": 34
+        }
+      ],
+      "exactThumbnailMatchToKnownItems": []
+    },
+    "CMG-9005": {
+      "id": "CMG-9005",
+      "classification": "likely_identified",
+      "family": "desserts",
+      "inCalculatorMenu469": false,
+      "evidenceSummary": "Thumbnail filename slug only, no corroborating text field",
+      "metaFields": {
+        "calories": "350",
+        "portion": "4oz",
+        "thumbnailUrl": "https://www.chipotle.com/content/dam/chipotle/menu/menu-items/cmg-9005-chocolate-crema/web-desktop/order.png",
+        "thumbnailSlug": "cmg-9005-chocolate-crema",
+        "dietaryTags": [
+          "dair",
+          "soy"
+        ],
+        "tags": [
+          {
+            "type": "promo",
+            "value": "new"
+          }
+        ],
+        "groupName": null,
+        "customizations": []
+      },
+      "itemSectionsReferencing": [
+        {
+          "section": "Dessert",
+          "alias": "Desserts",
+          "sortOrder": 3
+        }
+      ],
+      "groupsReferencing": [
+        {
+          "group": "Chips & Sides",
+          "sortOrder": 35
+        }
+      ],
+      "exactThumbnailMatchToKnownItems": []
+    },
+    "CMG-9006": {
+      "id": "CMG-9006",
+      "classification": "likely_identified",
+      "family": "desserts",
+      "inCalculatorMenu469": false,
+      "evidenceSummary": "Thumbnail filename slug only, no corroborating text field",
+      "metaFields": {
+        "calories": "420",
+        "portion": "4oz",
+        "thumbnailUrl": "https://www.chipotle.com/content/dam/chipotle/menu/menu-items/cmg-9006-caramel-crema/web-desktop/order.png",
+        "thumbnailSlug": "cmg-9006-caramel-crema",
+        "dietaryTags": [
+          "dair"
+        ],
+        "tags": [
+          {
+            "type": "promo",
+            "value": "new"
+          }
+        ],
+        "groupName": null,
+        "customizations": []
+      },
+      "itemSectionsReferencing": [
+        {
+          "section": "Dessert",
+          "alias": "Desserts",
+          "sortOrder": 2
+        }
+      ],
+      "groupsReferencing": [
+        {
+          "group": "Chips & Sides",
+          "sortOrder": 36
+        }
+      ],
+      "exactThumbnailMatchToKnownItems": []
+    }
+  }
+}

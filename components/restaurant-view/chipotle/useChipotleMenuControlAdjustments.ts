@@ -10,6 +10,7 @@ import type {
   ChipotleBuilderConfig,
   ChipotleEntreeSelection,
 } from "@/lib/restaurantBuilders/chipotle";
+import { chipotlePresentationGroupForCompatibleId } from "@/data/restaurants/chipotle-generated-presentation";
 
 const MENU_VIEW_ENTREE_SELECTIONS = new Set<ChipotleEntreeSelection>([
   "chips-sides",
@@ -46,7 +47,10 @@ export function useChipotleMenuControlAdjustments({
       return items;
     }
 
-    return items.filter((item) => item.entreeGroup === selectedEntree);
+    return items.filter(
+      (item) =>
+        chipotlePresentationGroupForCompatibleId(item.id) === selectedEntree,
+    );
   }, [usesMenuView, items, selectedEntree]);
 
   const isViewChangeAllowed = useCallback(

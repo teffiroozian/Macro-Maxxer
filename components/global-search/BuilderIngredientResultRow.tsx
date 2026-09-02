@@ -1,6 +1,7 @@
-import Image from "next/image";
+import Image from "@/components/ui/AppImage";
 import type { IngredientItem } from "@/types/menu";
 import type { RestaurantIndexEntry } from "@/types/restaurant";
+import { resolveEffectiveIngredientNutrition } from "@/lib/ingredientNutrition";
 
 type BuilderIngredientResultRowProps = {
   ingredient: IngredientItem;
@@ -24,6 +25,7 @@ export default function BuilderIngredientResultRow({
   onSelect,
   onRemoveRecent,
 }: BuilderIngredientResultRowProps) {
+  const effectiveNutrition = resolveEffectiveIngredientNutrition(ingredient);
   return (
     <li
       role="option"
@@ -42,7 +44,7 @@ export default function BuilderIngredientResultRow({
       <span className="min-w-0 flex-1">
         <span className="block truncate font-semibold text-neutral-900">{ingredient.name}</span>
         <span className="block truncate text-xs text-neutral-500">
-          {restaurant.name} · {categoryLabel} · {ingredient.nutrition.calories} cal
+          {restaurant.name} · {categoryLabel} · {effectiveNutrition?.calories ?? 0} cal
         </span>
       </span>
       <span className="ml-auto shrink-0 rounded-full bg-amber-100 px-2 py-0.5 text-[11px] font-semibold uppercase tracking-wide text-amber-700">

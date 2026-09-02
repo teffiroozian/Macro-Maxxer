@@ -4,6 +4,7 @@ import { normalizeNutrition } from "@/lib/nutrition";
 import type {
   ChipotleEntreeSelection,
   ChipotleKidsMealId,
+  ChipotleTacoCount,
   ChipotleTacoShell,
   IncludedIngredientContext,
   ProteinPortionMode,
@@ -36,18 +37,21 @@ export function scaleNutritionValues(
 ): Nutrition {
   if (multiplier === 1) return normalizeNutrition(nutrition);
 
+  const scale = (value: number) =>
+    Math.round(value * multiplier * 1000) / 1000;
+
   return normalizeNutrition({
     ...nutrition,
-    calories: Math.round(nutrition.calories * multiplier),
-    protein: Math.round(nutrition.protein * multiplier),
-    carbs: Math.round(nutrition.carbs * multiplier),
-    totalFat: Math.round(nutrition.totalFat * multiplier),
-    satFat: nutrition.satFat === undefined ? undefined : Math.round(nutrition.satFat * multiplier),
-    transFat: nutrition.transFat === undefined ? undefined : Math.round(nutrition.transFat * multiplier),
-    cholesterol: nutrition.cholesterol === undefined ? undefined : Math.round(nutrition.cholesterol * multiplier),
-    sodium: nutrition.sodium === undefined ? undefined : Math.round(nutrition.sodium * multiplier),
-    fiber: nutrition.fiber === undefined ? undefined : Math.round(nutrition.fiber * multiplier),
-    sugars: nutrition.sugars === undefined ? undefined : Math.round(nutrition.sugars * multiplier),
+    calories: scale(nutrition.calories),
+    protein: scale(nutrition.protein),
+    carbs: scale(nutrition.carbs),
+    totalFat: scale(nutrition.totalFat),
+    satFat: nutrition.satFat === undefined ? undefined : scale(nutrition.satFat),
+    transFat: nutrition.transFat === undefined ? undefined : scale(nutrition.transFat),
+    cholesterol: nutrition.cholesterol === undefined ? undefined : scale(nutrition.cholesterol),
+    sodium: nutrition.sodium === undefined ? undefined : scale(nutrition.sodium),
+    fiber: nutrition.fiber === undefined ? undefined : scale(nutrition.fiber),
+    sugars: nutrition.sugars === undefined ? undefined : scale(nutrition.sugars),
   });
 }
 
@@ -154,9 +158,50 @@ export function getIngredientCategoryMaxSelections(options: {
 
 export function isQuesadillaCheeseSelection(ingredientId: string, context: IncludedIngredientContext) {
   return (
-    ingredientId === "cheese" &&
+    (ingredientId === "cheese" || ingredientId === "chipotle-cmg-5252") &&
     (context.selectedEntree === "quesadilla" ||
       (context.selectedEntree === "kids-meal" && context.selectedKidsMeal === "quesadilla"))
+  );
+}
+
+export function isAdultQuesadillaTripleCheeseSelection(
+  ingredientId: string,
+  context: IncludedIngredientContext,
+) {
+  return (
+    (ingredientId === "cheese" || ingredientId === "chipotle-cmg-5252") &&
+    context.selectedEntree === "quesadilla"
+  );
+}
+
+export function resolveLockedIncludedIngredientIds(options: {
+  selectedIncludedIngredientIds: string[];
+  includedRemovableIngredientIds?: string[];
+  tacoShellIngredientIds?: string[];
+  context: IncludedIngredientContext;
+}) {
+  const {
+    selectedIncludedIngredientIds,
+    includedRemovableIngredientIds = [],
+    tacoShellIngredientIds = [],
+    context,
+  } = options;
+  const unlockedIncludedIds = new Set(includedRemovableIngredientIds);
+  const isTacoShellSelectableEntree =
+    context.selectedEntree === "tacos" ||
+    (context.selectedEntree === "kids-meal" &&
+      context.selectedKidsMeal === "build-your-own");
+
+  if (isTacoShellSelectableEntree) {
+    tacoShellIngredientIds.forEach((ingredientId) =>
+      unlockedIncludedIds.add(ingredientId),
+    );
+  }
+
+  return new Set(
+    selectedIncludedIngredientIds.filter(
+      (ingredientId) => !unlockedIncludedIds.has(ingredientId),
+    ),
   );
 }
 
@@ -164,9 +209,16 @@ export function resolveIncludedIngredientIds(options: {
   selectedEntree: ChipotleEntreeSelection;
   selectedKidsMeal: ChipotleKidsMealId;
   selectedTacoShell?: ChipotleTacoShell;
+  selectedTacoCount?: ChipotleTacoCount;
   builderConfig?: ChipotleBuilderConfig;
 }) {
-  const { selectedEntree, selectedKidsMeal, selectedTacoShell = "crispy", builderConfig } = options;
+  const {
+    selectedEntree,
+    selectedKidsMeal,
+    selectedTacoShell = "crispy",
+    selectedTacoCount = 3,
+    builderConfig,
+  } = options;
   if (!builderConfig?.entreeOptions) {
     return [];
   }
@@ -176,12 +228,17 @@ export function resolveIncludedIngredientIds(options: {
       return [...(builderConfig.chipotle?.kidsQuesadillaIncludedIngredientIds ?? [])];
     }
 
-    // Kid's Build Your Own has its own crispy/soft tortilla choice,
-    // presented the same way Tacos presents its Included Ingredients shell
-    // choice — it reuses the same shell->ingredient-id mapping as Tacos so
-    // both flows stay in sync with a single config source.
+    // Kid's Build Your Own has its own crispy/soft two-tortilla source
+    // records, presented through the same Included Ingredients choice UI as
+    // adult Tacos but resolved from a separate context mapping.
     return [
-      ...(builderConfig.entreeOptions.tacos?.includedIngredientIdsByOption?.[selectedTacoShell] ?? []),
+      ...(builderConfig.chipotle?.kidsBuildYourOwnTortillaIdsByOption?.[
+        selectedTacoShell
+      ] ??
+        builderConfig.entreeOptions.tacos?.includedIngredientIdsByOption?.[
+          selectedTacoShell
+        ] ??
+        []),
     ];
   }
 
@@ -192,11 +249,41 @@ export function resolveIncludedIngredientIds(options: {
   const entreeConfig = builderConfig.entreeOptions[selectedEntree];
   if (!entreeConfig) return [];
 
+  if (selectedEntree === "tacos") {
+    const contextualShellIds =
+      builderConfig.chipotle?.tacoShellIngredientIdsByCount?.[
+        selectedTacoCount
+      ]?.[selectedTacoShell];
+    if (contextualShellIds) return [...contextualShellIds];
+  }
+
   return (
     entreeConfig.includedIngredientIdsByOption?.[selectedTacoShell] ??
     entreeConfig.includedIngredientIds ??
     []
   );
+}
+
+// Which shell (crispy/soft) a clicked taco-shell ingredient id represents.
+// Can't be sniffed from the id string itself: adult ids are descriptive
+// (chipotle-tortilla-soft-flour-taco) but Kid's Build Your Own uses plain
+// CMG numeric ids (chipotle-cmg-5403/5404) that don't contain "crispy" or
+// "soft" at all — a substring check on those always resolves to the same
+// shell no matter which card was actually clicked. This looks the id up
+// against the known soft-shell id sets instead.
+export function resolveChipotleTacoShellForIngredientId(
+  ingredientId: string,
+  builderConfig?: ChipotleBuilderConfig,
+): ChipotleTacoShell {
+  const kidsSoftTortillaIds =
+    builderConfig?.chipotle?.kidsBuildYourOwnTortillaIdsByOption?.soft ?? [];
+  const adultSoftTortillaIds = Object.values(
+    builderConfig?.chipotle?.tacoShellIngredientIdsByCount ?? {},
+  ).flatMap((idsByShell) => idsByShell?.soft ?? []);
+  return kidsSoftTortillaIds.includes(ingredientId) ||
+    adultSoftTortillaIds.includes(ingredientId)
+    ? "soft"
+    : "crispy";
 }
 
 export function getAllKnownIncludedIngredientIds(builderConfig?: ChipotleBuilderConfig) {

@@ -6,7 +6,7 @@ import {
   type Dispatch,
   type SetStateAction,
 } from "react";
-import Image from "next/image";
+import Image from "@/components/ui/AppImage";
 import type {
   IngredientItem,
   ItemVariant,
@@ -41,6 +41,8 @@ import {
 } from "@/lib/itemDetails/ingredientResolution";
 import type { ResolvedPanelIngredient } from "@/lib/itemDetails/types";
 import { addonGroupUsesQuantitySelection } from "@/lib/addonGroups";
+import { resolveEffectiveIngredientNutrition } from "@/lib/ingredientNutrition";
+import { CHIPOTLE_PRESET_MEAL_IMAGE_CLASSNAME } from "@/lib/restaurantBuilders/chipotle/highProtein";
 import SectionEyebrow from "@/components/ui/SectionEyebrow";
 import NutritionFactsPanel from "@/components/nutrition/NutritionFactsPanel";
 import {
@@ -569,6 +571,12 @@ type MealDetailItem = {
   // through the item's own selector (variantConfig) or the combo side/drink
   // picker (ComboCustomizationSection), not from this list.
   variantLabel?: string;
+  // Chipotle High Protein preset meals only (see isMainItemPresetMealArtwork
+  // below) — this row's image is wide 3:2 editorial photography rather than
+  // this component's normal near-square product shots, so it needs its own
+  // object-fit/position treatment instead of the generic contain-with-padding
+  // crop every other row uses.
+  isPresetMealArtwork?: boolean;
 };
 
 type IngredientConfig = {
@@ -1741,7 +1749,11 @@ function MealDetailItemsList({ items }: { items: MealDetailItem[] }) {
               <img
                 src={detailItem.image}
                 alt={detailItem.name}
-                className="h-full w-full object-contain p-1"
+                className={`h-full w-full ${
+                  detailItem.isPresetMealArtwork
+                    ? CHIPOTLE_PRESET_MEAL_IMAGE_CLASSNAME
+                    : "object-contain p-1"
+                }`}
               />
             ) : null}
           </div>
@@ -1801,6 +1813,7 @@ export default function ItemDetailsPanel({
   onSelectComboDrinkVariant,
   onCustomizeIngredients,
   quantityMultiplier = 1,
+  isMainItemPresetMealArtwork = false,
 }: {
   item: MenuItem;
   nutrition: Nutrition;
@@ -1844,6 +1857,8 @@ export default function ItemDetailsPanel({
   onSelectComboDrinkVariant?: (variantId: string) => void;
   onCustomizeIngredients?: () => void;
   quantityMultiplier?: number;
+  // Chipotle High Protein preset meals only — see MealDetailItem above.
+  isMainItemPresetMealArtwork?: boolean;
 }) {
   const safeQuantityMultiplier = Math.max(quantityMultiplier ?? 1, 1);
   const scaleNutritionValue = (value?: number) =>
@@ -1908,6 +1923,7 @@ export default function ItemDetailsPanel({
       quantity: 1,
       image: selectedMainItemImage,
       variantLabel: selectedMainVariant?.label,
+      isPresetMealArtwork: isMainItemPresetMealArtwork,
     },
     ...(comboType === "combo-meal" && selectedComboSide
       ? [
@@ -1995,7 +2011,9 @@ export default function ItemDetailsPanel({
             const isNone = /^no\s+/i.test(variant.label);
             const variantNutrition = isNone
               ? { calories: 0, protein: 0, carbs: 0, totalFat: 0 }
-              : (matchedIngredient?.nutrition ?? variant.nutrition);
+              : (matchedIngredient
+                  ? resolveEffectiveIngredientNutrition(matchedIngredient)
+                  : undefined) ?? variant.nutrition;
             return {
               id: variant.id,
               label: variant.label,
@@ -2009,7 +2027,9 @@ export default function ItemDetailsPanel({
                 ? {
                     id: extraIngredient.id,
                     label: "Extra",
-                    nutrition: extraIngredient.nutrition,
+                    nutrition:
+                      resolveEffectiveIngredientNutrition(extraIngredient) ??
+                      variant.nutrition,
                   }
                 : undefined,
             };

@@ -1,4 +1,4 @@
-import Image from "next/image";
+import Image from "@/components/ui/AppImage";
 import { ArrowRight, Lock, RotateCcw, Save } from "lucide-react";
 import type { MenuItem } from "@/types/menu";
 import NutritionFactsPanel, {

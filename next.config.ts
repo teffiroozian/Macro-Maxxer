@@ -10,6 +10,14 @@ const nextConfig: NextConfig = {
         protocol: "https",
         hostname: "www.cfacdn.com",
       },
+      {
+        protocol: "https",
+        hostname: "www.chipotle.com",
+      },
+      {
+        protocol: "https",
+        hostname: "miinternal-cdn.chipotle.com",
+      },
     ],
   },
 };

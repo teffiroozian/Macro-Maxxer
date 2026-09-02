@@ -1,4 +1,4 @@
-import Image from "next/image";
+import Image from "@/components/ui/AppImage";
 import { LayoutGrid } from "lucide-react";
 import { isChipotleEntreeId, type ChipotleEntreeId } from "@/lib/restaurantBuilders/chipotle";
 import type { BuilderEntreeOption } from "@/types/builder";

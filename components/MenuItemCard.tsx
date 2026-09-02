@@ -274,13 +274,26 @@ export default function MenuItemCard({
   // never wired to any other card or to build state, so changing one
   // ingredient's portion can never affect another's.
   const [localPortionModeId, setLocalPortionModeId] = useState<string | undefined>(undefined);
+  // Same idea as localPortionModeId above, but for a read-only card whose
+  // "variants" are actually distinct context nutrition records (e.g. View
+  // All Ingredients' consolidated Tortilla cards: 1 Taco / 3 Tacos / Kids)
+  // rather than a fixed portion multiplier — selecting one must swap in
+  // that variant's own real macros, not scale the base nutrition.
+  const [localVariantId, setLocalVariantId] = useState<string | undefined>(undefined);
   const { requestAddItem, updateQuantity, getMatchingItem } = useMenuItemCartAdapter();
-  const effectiveSelectedVariantId =
-    displayMode === "ingredient-compact" && selectedIngredientVariantId
+  const isLocalVariantMode =
+    isIngredientReadOnly &&
+    !(ingredientPortionModeOptions && ingredientPortionModeOptions.length > 0) &&
+    Boolean(ingredientVariantOptions?.length) &&
+    Boolean(variants?.length);
+  const effectiveSelectedVariantId = isLocalVariantMode
+    ? (localVariantId ?? defaultVariantId)
+    : displayMode === "ingredient-compact" && selectedIngredientVariantId
       ? selectedIngredientVariantId
       : selectedVariantId;
   const selectedVariant = variants?.find((variant) => variant.id === effectiveSelectedVariantId);
   const selectedItemImage = selectedVariant?.image ?? item.image;
+  const localVariantNutrition = isLocalVariantMode ? selectedVariant?.nutrition : undefined;
   const isCartMode = mode === "cart";
 
   const resolvedIngredients = useMemo(
@@ -688,11 +701,17 @@ export default function MenuItemCard({
       ? isLocalPortionMode
         ? effectiveLocalPortionModeId
         : selectedIngredientPortionModeId
-      : selectedIngredientVariantId;
+      : isLocalVariantMode
+        ? effectiveSelectedVariantId
+        : selectedIngredientVariantId;
     const localPortionMultiplier =
       isLocalPortionMode && effectiveLocalPortionModeId
         ? (READ_ONLY_PORTION_MODE_MULTIPLIERS[effectiveLocalPortionModeId] ?? 1)
         : 1;
+    const displayCalories = localVariantNutrition?.calories ?? calories;
+    const displayProtein = localVariantNutrition?.protein ?? protein;
+    const displayCarbs = localVariantNutrition?.carbs ?? carbs;
+    const displayTotalFat = localVariantNutrition?.totalFat ?? totalFat;
 
     return (
       <IngredientCompactCard
@@ -709,10 +728,10 @@ export default function MenuItemCard({
         ingredientUnavailableReason={ingredientUnavailableReason}
         activeCompactOptions={activeCompactOptions}
         selectedCompactOptionId={selectedCompactOptionId}
-        calories={calories !== undefined ? Math.round(calories * localPortionMultiplier) : calories}
-        protein={protein !== undefined ? Math.round(protein * localPortionMultiplier) : protein}
-        carbs={carbs !== undefined ? Math.round(carbs * localPortionMultiplier) : carbs}
-        totalFat={totalFat !== undefined ? Math.round(totalFat * localPortionMultiplier) : totalFat}
+        calories={displayCalories !== undefined ? Math.round(displayCalories * localPortionMultiplier) : displayCalories}
+        protein={displayProtein !== undefined ? Math.round(displayProtein * localPortionMultiplier) : displayProtein}
+        carbs={displayCarbs !== undefined ? Math.round(displayCarbs * localPortionMultiplier) : displayCarbs}
+        totalFat={displayTotalFat !== undefined ? Math.round(displayTotalFat * localPortionMultiplier) : displayTotalFat}
         readOnly={isIngredientReadOnly}
         categoryLabel={ingredientCategoryLabel}
         onSelectionChange={(nextSelected) => {
@@ -729,6 +748,10 @@ export default function MenuItemCard({
         onCompactOptionSelect={(optionId) => {
           if (isLocalPortionMode) {
             setLocalPortionModeId(optionId);
+            return;
+          }
+          if (isLocalVariantMode) {
+            setLocalVariantId(optionId);
             return;
           }
           if (ingredientPortionModeOptions) {

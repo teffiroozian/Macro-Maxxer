@@ -9,7 +9,7 @@ import {
   useState,
 } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import Image from "next/image";
+import Image from "@/components/ui/AppImage";
 import type { LucideIcon } from "lucide-react";
 import {
   ArrowLeft,
@@ -55,6 +55,7 @@ import type {
   RestaurantCustomizationRules,
 } from "@/types/menu";
 import type { RestaurantBuilderConfig } from "@/types/builder";
+import { resolveEffectiveIngredientNutrition } from "@/lib/ingredientNutrition";
 import { categorySectionId } from "@/lib/menuSections/sorting";
 import MenuSections from "../../MenuSections";
 import StickyRestaurantBar from "../../StickyRestaurantBar";
@@ -91,10 +92,13 @@ import {
   getProteinMultiplier,
   getSplitExtraMultiplier,
   getSplitPortionLabel,
+  isAdultQuesadillaTripleCheeseSelection,
   isChipotleEntreeId,
   isQuesadillaCheeseSelection,
   normalizeIngredientCategory,
+  resolveChipotleTacoShellForIngredientId,
   resolveIncludedIngredientIds,
+  resolveLockedIncludedIngredientIds,
   scaleNutritionValues,
 } from "@/lib/restaurantBuilders/chipotle";
 import { resolvePrimaryCategory } from "@/lib/ingredientTabs";
@@ -145,6 +149,10 @@ const CATEGORY_ICONS: Record<string, LucideIcon> = {
   beans: Bean,
   "included ingredient": Pin,
   "included ingredients": Pin,
+  // View All Ingredients' "Base" category (its renamed Included Ingredients
+  // group — see buildAllChipotleIngredientMenuItems) keeps the same pin
+  // icon used for Included Ingredients elsewhere.
+  base: Pin,
   "breakfast protein": Drumstick,
   condiments: Utensils,
   "salad condiments": Utensils,
@@ -348,11 +356,8 @@ export default function ChipotleRestaurantBuilderView({
     () => chipotleBuilderConfig?.chipotle?.tacoShellIngredientIds ?? [],
     [chipotleBuilderConfig],
   );
-  const kidsBuildYourOwnDoubleSideIds = useMemo(
-    () =>
-      new Set(
-        chipotleBuilderConfig?.chipotle?.kidsBuildYourOwnDoubleSideIds ?? [],
-      ),
+  const includedRemovableIngredientIds = useMemo(
+    () => chipotleBuilderConfig?.chipotle?.includedRemovableIngredientIds ?? [],
     [chipotleBuilderConfig],
   );
   const quesadillaTripleCheeseVariantId = useMemo(
@@ -392,7 +397,13 @@ export default function ChipotleRestaurantBuilderView({
   const isEditingFromCart = editOrigin === "cart";
   const { items: cartItems, updateItem } = useCart();
   const { requestAddItem } = useCartAddConfirmation();
-  const { guardNavigation, registerActiveBuild } = useBuildInProgressGuard();
+  // Registering the active build still lets app-wide navigation (leaving
+  // the page entirely, e.g. the global nav) warn about an in-progress
+  // build — only Chipotle's own within-page entree/Kids-meal switching no
+  // longer routes through guardNavigation (see performEntreeSelection /
+  // performKidsMealSelection below), so this page never shows that
+  // confirmation modal just for switching build types.
+  const { registerActiveBuild } = useBuildInProgressGuard();
   // The mobile "Just Added" bottom sheet (CartIconDropdown's sheet variant,
   // mounted in the mobile nav) and this build page's own sticky footer both
   // pin themselves to the bottom of the viewport — layering them with
@@ -483,14 +494,13 @@ export default function ChipotleRestaurantBuilderView({
       return (
         ingredientDisplayMultiplier *
         (tacoShellIngredientIds.includes(ingredientId)
-          ? selectedTacoCount
+          ? 1
           : tacoSharedIngredientMultiplier)
       );
     },
     [
       ingredientDisplayMultiplier,
       selectedEntree,
-      selectedTacoCount,
       tacoSharedIngredientMultiplier,
       tacoShellIngredientIds,
     ],
@@ -571,10 +581,12 @@ export default function ChipotleRestaurantBuilderView({
         selectedEntree,
         selectedKidsMeal,
         selectedTacoShell,
+        selectedTacoCount,
         builderConfig: chipotleBuilderConfig,
       }),
     [
       selectedEntree,
+      selectedTacoCount,
       selectedKidsMeal,
       selectedTacoShell,
       chipotleBuilderConfig,
@@ -602,6 +614,7 @@ export default function ChipotleRestaurantBuilderView({
       restaurantId,
       ingredients,
       selectedEntree,
+      selectedTacoCount,
       selectedKidsMeal,
       selectedIncludedIngredientIds,
       tacoShellIngredientIds,
@@ -616,21 +629,36 @@ export default function ChipotleRestaurantBuilderView({
     ingredients,
     restaurantId,
     selectedEntree,
+    selectedTacoCount,
     selectedKidsMeal,
     selectedIncludedIngredientIds,
     tacoShellIngredientIds,
   ]);
 
   const allIngredientMenuItems = useMemo<MenuItem[]>(
-    () => buildAllChipotleIngredientMenuItems({ restaurantId, ingredients }),
-    [restaurantId, ingredients],
+    () =>
+      buildAllChipotleIngredientMenuItems({
+        restaurantId,
+        ingredients,
+        builderConfig: chipotleBuilderConfig,
+      }),
+    [restaurantId, ingredients, chipotleBuilderConfig],
   );
 
   // Which portion toggle (if any) each ingredient supports in the read-only
   // comparison view — the same categories that support a portion mode in
   // the actual builder (proteins get Normal/Double, rice/beans/toppings get
-  // Light/Normal/Extra). Everything else (e.g. tortillas/sides) is simply
-  // absent from this map, so its card renders with no portion control.
+  // Light/Normal/Extra). Proteins deliberately carry no `variants` on this
+  // page (see buildAllChipotleIngredientMenuItems) so this toggle is the
+  // only portion control for them, matching the normal builder's own
+  // Normal/Double presentation instead of exposing Half/Extra/Taco/Kids
+  // context variants here. A small number of Toppings (Queso Blanco,
+  // Cilantro Lime Sauce) carry real context variants instead (their own
+  // Quesadilla/Tacos addon uses genuinely different official nutrition) —
+  // those are likewise skipped here so the variant switcher isn't doubled
+  // up with this generic multiplier toggle. Everything else (e.g.
+  // tortillas/sides) is simply absent from this map, so its card renders
+  // with no portion control.
   const allIngredientsPortionModeOptionsById = useMemo(() => {
     const proteinPortionOptions = [
       { id: "normal", label: "Normal" },
@@ -644,12 +672,30 @@ export default function ChipotleRestaurantBuilderView({
 
     return allIngredientMenuItems.reduce<Record<string, Array<{ id: string; label: string }>>>(
       (optionsById, item) => {
-        if (!item.id) return optionsById;
+        if (!item.id || item.variants?.length) return optionsById;
         if (isProteinIngredientItem(item)) {
           optionsById[item.id] = proteinPortionOptions;
         } else if (isSplitPortionIngredientItem(item) || isToppingIngredientItem(item)) {
           optionsById[item.id] = splitPortionOptions;
         }
+        return optionsById;
+      },
+      {},
+    );
+  }, [allIngredientMenuItems]);
+
+  // Read-only variant options (e.g. the consolidated Tortilla cards' 1
+  // Taco / 3 Tacos / Kids context switcher) for the comparison view — the
+  // card itself owns the selected option locally (see MenuItemCard's
+  // isLocalVariantMode), this only needs to publish which options exist.
+  const allIngredientsVariantOptionsById = useMemo(() => {
+    return allIngredientMenuItems.reduce<Record<string, Array<{ id: string; label: string }>>>(
+      (optionsById, item) => {
+        if (!item.id || !item.variants?.length) return optionsById;
+        optionsById[item.id] = item.variants.map((variant) => ({
+          id: variant.id,
+          label: variant.label,
+        }));
         return optionsById;
       },
       {},
@@ -675,7 +721,7 @@ export default function ChipotleRestaurantBuilderView({
   // id that differs from this expected default reflects real customization.
   const resolveDefaultIncludedVariantId = useCallback(
     (ingredientId: string, context: IncludedIngredientContext) => {
-      if (isQuesadillaCheeseSelection(ingredientId, context)) {
+      if (isAdultQuesadillaTripleCheeseSelection(ingredientId, context)) {
         return quesadillaTripleCheeseVariantId;
       }
       return ingredientItemsById.get(ingredientId)?.defaultVariantId;
@@ -900,12 +946,35 @@ export default function ChipotleRestaurantBuilderView({
       selectedEntree: "kids-meal",
       selectedKidsMeal: kidsMeal,
       selectedTacoShell,
+      selectedTacoCount,
       builderConfig: chipotleBuilderConfig,
     });
     const nextIncludedIngredientContext: IncludedIngredientContext = {
       selectedEntree: "kids-meal",
       selectedKidsMeal: kidsMeal,
     };
+    // Same "drop only what's incompatible" behavior as
+    // performEntreeSelection above — Kid's BYO and Kid's Quesadilla don't
+    // share every ingredient (e.g. BYO's taco shells aren't valid on
+    // Quesadilla), so a selection that only made sense under the previous
+    // Kid's Meal type shouldn't silently persist into the new one.
+    const nextEligibleIngredientIds = new Set(
+      buildChipotleIngredientMenuItems({
+        restaurantId,
+        ingredients,
+        selectedEntree: "kids-meal",
+        selectedTacoCount,
+        selectedKidsMeal: kidsMeal,
+        selectedIncludedIngredientIds: nextIncludedIngredientIds,
+        tacoShellIngredientIds,
+        getIngredientPortionMultiplier: getIngredientportionMultiplier,
+        getSelectedIngredientPortionMultiplier,
+        builderConfig: chipotleBuilderConfig,
+      })
+        .map((item) => item.id)
+        .filter((id): id is string => Boolean(id)),
+    );
+    pruneIncompatibleIngredientSelections(nextEligibleIngredientIds);
     applyIncludedIngredientsNextFrame(
       nextIncludedIngredientIds,
       nextIncludedIngredientContext,
@@ -943,15 +1012,13 @@ export default function ChipotleRestaurantBuilderView({
     }
   };
 
-  // Switching between Kid's Build Your Own and Kid's Quesadilla behaves like
-  // switching tabs/modes: isBuildInProgress only trips the guard when the
-  // *current* type has actually been manually customized beyond its own
-  // default/included ingredients (see performKidsMealSelection's baseline
-  // reset above and computeIsBuildInProgress below) — not merely because
-  // the two types' default ingredient sets differ from each other.
+  // Switching between Kid's Build Your Own and Kid's Quesadilla happens
+  // immediately, same as entree switching above — no confirmation modal.
+  // performKidsMealSelection already drops whatever selection doesn't
+  // carry over to the new type.
   const handleKidsMealSelection = (kidsMeal: ChipotleKidsMealId) => {
     if (kidsMeal === selectedKidsMeal) return;
-    guardNavigation(() => performKidsMealSelection(kidsMeal));
+    performKidsMealSelection(kidsMeal);
   };
 
   const handleKidsBuildYourOwnTortillaSelection = (tacoShell: ChipotleTacoShell) => {
@@ -1132,16 +1199,15 @@ export default function ChipotleRestaurantBuilderView({
     tacoShellIngredientIds.forEach((ingredientId) =>
       selectedIds.delete(ingredientId),
     );
-    selectedIds.add(
-      selectedTacoShell === "soft"
-        ? "soft-flour-tortilla"
-        : "crispy-corn-tortilla",
+    const selectedShellId = selectedIncludedIngredientIds.find(
+      (ingredientId) => tacoShellIngredientIds.includes(ingredientId),
     );
+    if (selectedShellId) selectedIds.add(selectedShellId);
     return selectedIds;
   }, [
     selectedEntree,
     selectedIngredientItems,
-    selectedTacoShell,
+      selectedIncludedIngredientIds,
     tacoShellIngredientIds,
   ]);
   const selectedBuildProteinNames = useMemo(
@@ -1220,25 +1286,26 @@ export default function ChipotleRestaurantBuilderView({
   // Tacos and Kid's Build Your Own both offer a crispy/soft choice among
   // their included ingredients, presented as radio-selectable included-
   // ingredient cards — unlike genuinely fixed included ingredients (e.g.
-  // burrito tortilla, quesadilla cheese), which stay locked.
+  // burrito tortilla, quesadilla cheese), which stay locked. Separately,
+  // includedRemovableIngredientIds (e.g. Salad's vinaigrette) names
+  // individual included ingredients that start selected but are plain
+  // removable/re-addable toppings, not a locked choice among alternatives —
+  // both are excluded from the locked set, for different reasons.
   const isTacoShellSelectableEntree =
     selectedEntree === "tacos" ||
     (selectedEntree === "kids-meal" && selectedKidsMeal === "build-your-own");
   const lockedIngredientIds = useMemo(() => {
-    if (selectedIncludedIngredientIds.length === 0) {
-      return new Set<string>();
-    }
-    if (isTacoShellSelectableEntree) {
-      return new Set<string>(
-        selectedIncludedIngredientIds.filter(
-          (ingredientId) => !tacoShellIngredientIds.includes(ingredientId),
-        ),
-      );
-    }
-    return new Set<string>(selectedIncludedIngredientIds);
+    return resolveLockedIncludedIngredientIds({
+      selectedIncludedIngredientIds,
+      includedRemovableIngredientIds,
+      tacoShellIngredientIds,
+      context: { selectedEntree, selectedKidsMeal },
+    });
   }, [
-    isTacoShellSelectableEntree,
+    includedRemovableIngredientIds,
+    selectedEntree,
     selectedIncludedIngredientIds,
+    selectedKidsMeal,
     tacoShellIngredientIds,
   ]);
 
@@ -1540,8 +1607,10 @@ export default function ChipotleRestaurantBuilderView({
 
     if (tacoShellIngredientIds.includes(itemId)) {
       if (!selected) return;
-      const nextTacoShell =
-        itemId === "soft-flour-tortilla" ? "soft" : "crispy";
+      const nextTacoShell = resolveChipotleTacoShellForIngredientId(
+        itemId,
+        chipotleBuilderConfig,
+      );
 
       if (selectedEntree === "tacos") {
         setSelectedTacoShell(nextTacoShell);
@@ -1718,9 +1787,12 @@ export default function ChipotleRestaurantBuilderView({
               if (!fallbackIngredient) {
                 return null;
               }
+              const effectiveNutrition =
+                resolveEffectiveIngredientNutrition(fallbackIngredient);
+              if (!effectiveNutrition) return null;
 
               const fallbackNutrition = scaleNutritionValues(
-                fallbackIngredient.nutrition,
+                effectiveNutrition,
                 getIngredientportionMultiplier(includedIngredientId),
               );
 
@@ -1747,7 +1819,7 @@ export default function ChipotleRestaurantBuilderView({
             return;
           }
 
-          const useTripleCheese = isQuesadillaCheeseSelection(
+          const useTripleCheese = isAdultQuesadillaTripleCheeseSelection(
             includedIngredientId,
             context,
           );
@@ -1789,13 +1861,16 @@ export default function ChipotleRestaurantBuilderView({
               if (!fallbackIngredient) {
                 return null;
               }
+              const effectiveNutrition =
+                resolveEffectiveIngredientNutrition(fallbackIngredient);
+              if (!effectiveNutrition) return null;
 
               return {
                 id: includedIngredientId,
                 name: fallbackIngredient.name,
                 defaultOrder: fallbackIngredient.defaultOrder ?? 0,
                 nutrition: scaleNutritionValues(
-                  fallbackIngredient.nutrition,
+                  effectiveNutrition,
                   getIngredientportionMultiplier(includedIngredientId),
                 ),
                 variants: fallbackIngredient.variants?.map((variant) => ({
@@ -1816,7 +1891,12 @@ export default function ChipotleRestaurantBuilderView({
             return;
           }
 
-          if (isQuesadillaCheeseSelection(includedIngredientId, context)) {
+          if (
+            isAdultQuesadillaTripleCheeseSelection(
+              includedIngredientId,
+              context,
+            )
+          ) {
             next[includedIngredientId] = quesadillaTripleCheeseVariantId;
             return;
           }
@@ -1857,8 +1937,29 @@ export default function ChipotleRestaurantBuilderView({
     [applyIncludedIngredients],
   );
 
+  // applyIncludedIngredients resets EVERY previously-applied included
+  // ingredient (including one the user has since removed, like Salad's
+  // included-but-removable vinaigrette) back to its default quantity — it's
+  // meant to run exactly once per genuine entree/kids-meal transition, not
+  // be safely re-invocable with the same target set. But several of this
+  // effect's own dependencies (applyIncludedIngredientsNextFrame,
+  // selectedIncludedIngredientIds) are freshly recreated on unrelated
+  // re-renders — e.g. every ingredient toggle re-renders the component,
+  // which can hand this effect new-but-equal references — so without a
+  // value-based guard it would refire on every such render and silently
+  // undo the user's own selection a moment after they made it. Comparing
+  // the actual resolved included-ingredient set (not just entree/kids-meal)
+  // guards against that while still resetting correctly on every real
+  // transition, whatever caused selectedIncludedIngredientIds to change.
+  const appliedIncludedIngredientsContextKeyRef = useRef<string | null>(null);
   useEffect(() => {
     if (!isChipotleBuildPage || isEditingBuild) return;
+
+    const contextKey = `${selectedEntree ?? "none"}|${selectedKidsMeal}|${selectedIncludedIngredientIds.join(",")}`;
+    if (appliedIncludedIngredientsContextKeyRef.current === contextKey) {
+      return;
+    }
+    appliedIncludedIngredientsContextKeyRef.current = contextKey;
 
     applyIncludedIngredientsNextFrame(selectedIncludedIngredientIds, {
       selectedEntree,
@@ -1873,6 +1974,42 @@ export default function ChipotleRestaurantBuilderView({
     selectedKidsMeal,
   ]);
 
+  // Switching entrees keeps every currently-selected ingredient that's
+  // still valid for the target entree (Chipotle's ingredient catalog IDs
+  // are shared across entree types), and drops only the ones that aren't —
+  // e.g. Bowl's optional Side Tortilla or Salad's Romaine when switching to
+  // Burrito. Computed via buildChipotleIngredientMenuItems (the exact same
+  // eligibility logic the target entree's own ingredient tab would use)
+  // rather than duplicating that filter here, so this can never drift out
+  // of sync with what the target entree actually allows.
+  const pruneIncompatibleIngredientSelections = (
+    nextEligibleIngredientIds: Set<string>,
+  ) => {
+    setSelectedIngredientItems((previous) => {
+      const next: typeof previous = {};
+      let changed = false;
+      Object.entries(previous).forEach(([ingredientId, entry]) => {
+        if (nextEligibleIngredientIds.has(ingredientId)) {
+          next[ingredientId] = entry;
+        } else {
+          changed = true;
+        }
+      });
+      return changed ? next : previous;
+    });
+    setSelectedIngredientVariantIds((previous) => {
+      const next = { ...previous };
+      let changed = false;
+      Object.keys(previous).forEach((ingredientId) => {
+        if (!nextEligibleIngredientIds.has(ingredientId)) {
+          delete next[ingredientId];
+          changed = true;
+        }
+      });
+      return changed ? next : previous;
+    });
+  };
+
   const performEntreeSelection = (entree: EntreeKey) => {
     const current = new URLSearchParams(searchParams.toString());
     const next = buildEntreeSelectionParams(current, entree);
@@ -1883,7 +2020,26 @@ export default function ChipotleRestaurantBuilderView({
       selectedEntree: entree,
       selectedKidsMeal,
       selectedTacoShell,
+      selectedTacoCount,
+      builderConfig: chipotleBuilderConfig,
     });
+    const nextEligibleIngredientIds = new Set(
+      buildChipotleIngredientMenuItems({
+        restaurantId,
+        ingredients,
+        selectedEntree: entree,
+        selectedTacoCount,
+        selectedKidsMeal,
+        selectedIncludedIngredientIds: nextIncludedIngredientIds,
+        tacoShellIngredientIds,
+        getIngredientPortionMultiplier: getIngredientportionMultiplier,
+        getSelectedIngredientPortionMultiplier,
+        builderConfig: chipotleBuilderConfig,
+      })
+        .map((item) => item.id)
+        .filter((id): id is string => Boolean(id)),
+    );
+    pruneIncompatibleIngredientSelections(nextEligibleIngredientIds);
     setSelectedEntree(entree);
     applyIncludedIngredientsNextFrame(nextIncludedIngredientIds, {
       selectedEntree: entree,
@@ -1896,17 +2052,19 @@ export default function ChipotleRestaurantBuilderView({
     window.scrollTo({ top: 0, left: 0, behavior: "auto" });
   };
 
-  // Switching entrees replaces the whole ingredient set, so a build that's
-  // already been customized needs to be confirmed first (Slice 8). Picking
-  // the very first entree from the empty hero is unaffected — isBuildInProgress
-  // is false until selectedEntree is set, so guardNavigation just proceeds.
+  // Switching entrees happens immediately — no confirmation modal. Any
+  // selection incompatible with the new entree is dropped by
+  // performEntreeSelection above rather than silently carried over, so
+  // there's nothing left to "lose" that would justify a confirmation step.
   const handleEntreeSelection = (entree: EntreeKey) => {
     if (entree === selectedEntree) return;
-    guardNavigation(() => performEntreeSelection(entree));
+    performEntreeSelection(entree);
   };
 
-  // Returning to the entree chooser clears the current entree entirely —
-  // same discard risk as switching to a different entree.
+  // Returning to the entree chooser clears the current entree selection —
+  // same "no confirmation needed" reasoning as switching directly to
+  // another entree above (nothing incompatible survives either way once a
+  // new entree is subsequently chosen).
   const performGoToEntreeChooser = () => {
     const current = new URLSearchParams(searchParams.toString());
     const next = buildGoToEntreeChooserParams(current);
@@ -1921,7 +2079,7 @@ export default function ChipotleRestaurantBuilderView({
     }
   };
   const handleGoToEntreeChooser = () => {
-    guardNavigation(performGoToEntreeChooser);
+    performGoToEntreeChooser();
   };
 
   // Entered from the entrée dropdown or the ingredient-category sidebar's
@@ -2169,9 +2327,11 @@ export default function ChipotleRestaurantBuilderView({
         return;
       }
 
-      const nextIncludedIngredientIds = resolveIncludedIngredientIds(
-        pendingReset.context,
-      );
+      const nextIncludedIngredientIds = resolveIncludedIngredientIds({
+        ...pendingReset.context,
+        selectedTacoCount,
+        builderConfig: chipotleBuilderConfig,
+      });
       setSelectedIngredientItems(() => {
         const resetSelections: Record<
           string,
@@ -2195,12 +2355,14 @@ export default function ChipotleRestaurantBuilderView({
     };
   }, [
     applyIngredientPortionNutrition,
+    chipotleBuilderConfig,
     clearPendingBuilderReset,
     ingredientItemsById,
     isChipotleBuildPage,
     isEditingBuild,
     pendingBuildCustomizationResetRef,
     resetBuilderPortionAndVariantState,
+    selectedTacoCount,
     setSelectedIngredientItems,
   ]);
 
@@ -2637,15 +2799,7 @@ export default function ChipotleRestaurantBuilderView({
       ? getProteinBadgeLabel(proteinPortionMode, selectedProteinCount)
       : undefined;
   const ingredientPortionLabelById = (() => {
-    const labelById: Record<string, string> =
-      selectedEntree === "kids-meal" && selectedKidsMeal === "build-your-own"
-        ? Object.fromEntries(
-            Array.from(kidsBuildYourOwnDoubleSideIds).map((ingredientId) => [
-              ingredientId,
-              "2x",
-            ]),
-          )
-        : {};
+    const labelById: Record<string, string> = {};
 
     Object.entries(selectedIngredientItems).forEach(
       ([ingredientId, selectedIngredient]) => {
@@ -2671,15 +2825,6 @@ export default function ChipotleRestaurantBuilderView({
         const category = normalizeIngredientCategory(
           resolvePrimaryCategory(selectedIngredient.item.categories),
         );
-        const shouldUseKidsBuildYourOwnDoubleLabel =
-          selectedEntree === "kids-meal" &&
-          selectedKidsMeal === "build-your-own" &&
-          kidsBuildYourOwnDoubleSideIds.has(ingredientId);
-        if (shouldUseKidsBuildYourOwnDoubleLabel) {
-          labelById[ingredientId] = "2x";
-          return;
-        }
-
         if (category === "toppings") {
           const toppingPortionMode = splitPortionModeById[ingredientId] ?? "normal";
           labelById[ingredientId] = getSplitPortionLabel(toppingPortionMode);
@@ -3280,7 +3425,13 @@ export default function ChipotleRestaurantBuilderView({
           aria-haspopup="menu"
           aria-expanded={isEntreeMenuOpen}
         >
-          {selectedEntree !== null ? (
+          {/* isViewingAllIngredients always wins here even when
+              selectedEntree still holds whatever entree was last active in
+              the builder (e.g. the user got here via "View All Ingredients"
+              from a Bowl build) — this control must read as its own
+              neutral context, never as if the list were still scoped to
+              that entree. */}
+          {!isViewingAllIngredients && selectedEntree !== null ? (
             <span className="relative h-6 w-6 shrink-0 overflow-hidden rounded-full border border-slate-200 bg-white">
               <Image
                 src={entreeOptions[selectedEntree]?.image ?? ""}
@@ -3292,7 +3443,9 @@ export default function ChipotleRestaurantBuilderView({
           ) : (
             <LayoutGrid className="h-4 w-4 shrink-0 text-slate-500" strokeWidth={2.2} />
           )}
-          {selectedEntree !== null ? (entreeOptions[selectedEntree]?.label ?? selectedEntree) : "View All Ingredients"}
+          {!isViewingAllIngredients && selectedEntree !== null
+            ? (entreeOptions[selectedEntree]?.label ?? selectedEntree)
+            : "View All Ingredients"}
           <ChevronDown className="h-4 w-4" strokeWidth={2.5} />
         </button>
 
@@ -3498,6 +3651,7 @@ export default function ChipotleRestaurantBuilderView({
                     ingredientSelectionConfig={{
                       readOnly: true,
                       portionModeOptionsById: allIngredientsPortionModeOptionsById,
+                      variantOptionsById: allIngredientsVariantOptionsById,
                     }}
                   />
                 </div>

@@ -45,6 +45,10 @@ export const MENU_SECTION_ORDER = [
 ] as const;
 
 export const INGREDIENT_SECTION_ORDER = [
+  // Chipotle's View All Ingredients "Base" category (its renamed Included
+  // Ingredients group — see buildAllChipotleIngredientMenuItems) sorts
+  // first, directly under the "All Ingredients" filter chip itself.
+  "base",
   "included ingredient",
   "included ingredients",
   "ingredients",

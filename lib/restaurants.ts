@@ -36,7 +36,12 @@ export async function getRestaurantData(id: string): Promise<RestaurantData | nu
   // data/restaurants/index.json owns restaurant identity/metadata; individual menu JSON files own menu content only.
   // The loader merges both sources into the full RestaurantData object consumed by the app.
   //
-  // Chick-fil-A is temporarily special-cased: its menu content now comes
+  // Chick-fil-A and Chipotle are promoted from their generated datasets.
+  // Chipotle passes through its runtime/presentation adapter so generated
+  // provenance and canonical ids remain intact while the existing UI gets
+  // its curated browse/navigation shape. The old hand-authored JSON remains
+  // in the repository as a temporary reference, but is no longer loaded.
+  // Chick-fil-A's menu content comes
   // from the generated dataset (data/generated/chick-fil-a/restaurant.json)
   // rather than the old hand-authored data/restaurants/chickfila.json. The
   // old file is kept in place as a fallback/reference until runtime QA on
@@ -45,8 +50,15 @@ export async function getRestaurantData(id: string): Promise<RestaurantData | nu
   const menuModule =
     restaurant.id === "chickfila"
       ? await import("@/data/generated/chick-fil-a/restaurant.json")
+      : restaurant.id === "chipotle"
+        ? await import(
+            "@/lib/restaurantBuilders/chipotle/generatedRuntimeAdapter"
+          )
       : await import(`@/data/restaurants/${restaurant.menuFile}`);
-  const menu = menuModule.default;
+  const menu =
+    restaurant.id === "chipotle"
+      ? menuModule.CHIPOTLE_GENERATED_RUNTIME_MENU
+      : menuModule.default;
 
   // pulling important pieces out of the menu
   const items = menu.items ?? [];

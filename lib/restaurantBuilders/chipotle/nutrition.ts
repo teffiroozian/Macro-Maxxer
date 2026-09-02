@@ -1,5 +1,6 @@
 import type { IngredientItem } from "@/types/menu";
 import type { Nutrition } from "@/types/nutrition";
+import { resolveEffectiveIngredientNutrition } from "@/lib/ingredientNutrition";
 import {
   getProteinMultiplier,
   getSplitExtraMultiplier,
@@ -10,10 +11,19 @@ import {
 } from "@/lib/restaurantBuilders/chipotle";
 import { resolvePrimaryCategory } from "@/lib/ingredientTabs";
 
-const TACO_SHELL_INGREDIENT_IDS = new Set([
-  "crispy-corn-tortilla",
-  "soft-flour-tortilla",
-]);
+function isTacoShellIngredientId(ingredientId: string) {
+  return ingredientId.toLowerCase().includes("tortilla");
+}
+
+function contextualTacoMultiplier(
+  ingredientId: string,
+) {
+  const normalized = ingredientId.toLowerCase();
+  if (normalized.endsWith("-taco") || normalized.endsWith("-tacos-3")) {
+    return 1;
+  }
+  return undefined;
+}
 
 const EMPTY_NUTRITION: Nutrition = {
   calories: 0,
@@ -74,9 +84,7 @@ function computeChipotleIngredientContributions(
     buildConfiguration.selectedIngredientItems ?? {},
   ).filter(([, entry]) => entry.quantity > 0);
 
-  const isTacoBuild = selectedEntries.some(([ingredientId]) =>
-    TACO_SHELL_INGREDIENT_IDS.has(ingredientId),
-  );
+  const isTacoBuild = buildConfiguration.selectedEntree === "tacos";
   const selectedTacoCount = buildConfiguration.selectedTacoCount ?? 1;
 
   const categoryById = new Map<string, string>();
@@ -135,14 +143,31 @@ function computeChipotleIngredientContributions(
               ? getSplitPortionMultiplier(splitPortionMode)
               : 1;
 
+      const contextualMultiplier = contextualTacoMultiplier(
+        ingredientId,
+      );
       const tacoMultiplier = isTacoBuild
-        ? TACO_SHELL_INGREDIENT_IDS.has(ingredientId)
-          ? selectedTacoCount
-          : selectedTacoCount / 3
+        ? contextualMultiplier ??
+          (isTacoShellIngredientId(ingredientId)
+            ? selectedTacoCount
+            : selectedTacoCount / 3)
         : 1;
 
+      const effectiveNutrition = resolveEffectiveIngredientNutrition(
+        ingredient,
+        buildConfiguration.selectedIngredientVariantIds[ingredientId],
+      );
+      if (!effectiveNutrition) {
+        if (process.env.NODE_ENV !== "production") {
+          console.warn(
+            `[${warningSourceName}] Ingredient "${ingredientId}" has no effective nutrition — skipping it rather than scaling an undefined value.`,
+          );
+        }
+        return contributions;
+      }
+
       const multiplier = portionMultiplier * selectedEntry.quantity * tacoMultiplier;
-      const scaled = scaleNutritionValues(ingredient.nutrition, multiplier);
+      const scaled = scaleNutritionValues(effectiveNutrition, multiplier);
 
       contributions.push([ingredientId, scaled]);
       return contributions;

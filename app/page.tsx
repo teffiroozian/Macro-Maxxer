@@ -14,6 +14,11 @@ import { RestaurantUiProvider } from "@/components/RestaurantUiContext";
 import CartPreviewDrawer from "@/components/cart/CartPreviewDrawer";
 import { getAllRestaurants, getRestaurantData, toItemSlug } from "@/lib/restaurants";
 import { parseIncludedIngredientEntry } from "@/lib/itemIngredients";
+import { resolveEffectiveIngredientNutrition } from "@/lib/ingredientNutrition";
+import {
+  CHIPOTLE_HOMEPAGE_EDITORIAL,
+  type ChipotleHomepageRecordRef,
+} from "@/data/restaurants/chipotle-homepage-editorial";
 
 const restaurants = getAllRestaurants();
 
@@ -32,30 +37,36 @@ const liveRestaurants = restaurants.filter((restaurant) => !restaurant.isComingS
 // set — "extra chicken + fajita veggies" reads as a protein/veggie-forward
 // customization, distinct from the first item's "guac + queso" flavor-add
 // customization.
-const WALKTHROUGH_BUILD_ITEMS: Array<{ id: string; addOnIds: string[] }> = [
-  { id: "high-protein-high-fiber-bowl", addOnIds: ["guacamole", "queso-blanco"] },
-  { id: "high-protein-low-calorie-bowl", addOnIds: ["chicken", "fajita-veggies"] },
-];
-const WALKTHROUGH_REVIEW_ITEMS = [
-  { id: "high-protein-high-fiber-bowl", quantity: 1 },
-  { id: "side-of-chicken-high-protein", quantity: 1 },
-];
+function findEditorialRecord<T extends { id: string }>(
+  records: readonly T[] | undefined,
+  ref: ChipotleHomepageRecordRef,
+) {
+  return records?.find(
+    (record) =>
+      record.id === ref.id || record.id === ref.legacyRuntimeId,
+  );
+}
 
 // Builds one Customize & Build example: the real menu item plus its own
 // resolved add-ons (each add-on must resolve to real ingredient nutrition,
 // or the whole example is dropped via the `null` return below).
 function resolveWalkthroughBuildItem(
   restaurant: RestaurantData | null,
-  spec: { id: string; addOnIds: string[] }
+  spec: (typeof CHIPOTLE_HOMEPAGE_EDITORIAL.buildItems)[number]
 ): WalkthroughBuildItem | null {
-  const item = restaurant?.items.find((candidate) => candidate.id === spec.id);
+  const item = findEditorialRecord(restaurant?.items, spec.item);
   if (!item) return null;
 
-  const addOns = spec.addOnIds
-    .map((addOnId) => restaurant?.ingredients.find((ingredient) => ingredient.id === addOnId))
-    .filter((ingredient): ingredient is NonNullable<typeof ingredient> => Boolean(ingredient?.nutrition))
-    .map((ingredient) => ({ id: ingredient.id, name: ingredient.name, nutrition: ingredient.nutrition }));
-  if (addOns.length !== spec.addOnIds.length) return null;
+  const addOns = spec.addOns
+    .map((addOnRef) => findEditorialRecord(restaurant?.ingredients, addOnRef))
+    .flatMap((ingredient) => {
+      if (!ingredient) return [];
+      const nutrition = resolveEffectiveIngredientNutrition(ingredient);
+      return nutrition
+        ? [{ id: ingredient.id, name: ingredient.name, nutrition }]
+        : [];
+    });
+  if (addOns.length !== spec.addOns.length) return null;
 
   return {
     id: item.id,
@@ -91,7 +102,10 @@ const WALKTHROUGH_FIND_ITEM_IDS = [
 export default async function Home() {
   const previewRestaurant = await getRestaurantData("chipotle");
   const walkthroughFindRestaurant = await getRestaurantData("chickfila");
-  const previewItem = previewRestaurant?.items.find((item) => item.id === "high-protein-high-fiber-bowl");
+  const previewItem = findEditorialRecord(
+    previewRestaurant?.items,
+    CHIPOTLE_HOMEPAGE_EDITORIAL.previewItem,
+  );
   const footerRestaurantHref = liveRestaurants[0] ? `/restaurant/${liveRestaurants[0].id}` : "/";
 
   const previewIngredientNames = (previewItem?.ingredients ?? [])
@@ -118,26 +132,29 @@ export default async function Home() {
   // The first spec's real item (not just its constructed WalkthroughBuildItem)
   // is still needed below for `toItemSlug`, which wants the raw MenuItem.
   const walkthroughBuildItemSource = previewRestaurant?.items.find(
-    (item) => item.id === WALKTHROUGH_BUILD_ITEMS[0].id
+    (item) =>
+      item.id === CHIPOTLE_HOMEPAGE_EDITORIAL.buildItems[0].item.id ||
+      item.id ===
+        CHIPOTLE_HOMEPAGE_EDITORIAL.buildItems[0].item.legacyRuntimeId,
   );
-  const [walkthroughBuildItemA, walkthroughBuildItemB] = WALKTHROUGH_BUILD_ITEMS.map((spec) =>
+  const [walkthroughBuildItemA, walkthroughBuildItemB] = CHIPOTLE_HOMEPAGE_EDITORIAL.buildItems.map((spec) =>
     resolveWalkthroughBuildItem(previewRestaurant, spec)
   );
   const walkthroughBuildItems: [WalkthroughBuildItem, WalkthroughBuildItem] | null =
     walkthroughBuildItemA && walkthroughBuildItemB ? [walkthroughBuildItemA, walkthroughBuildItemB] : null;
 
-  const walkthroughReviewItems: WalkthroughReviewItem[] = WALKTHROUGH_REVIEW_ITEMS.map(({ id, quantity }) => {
-    const item = previewRestaurant?.items.find((candidate) => candidate.id === id);
-    if (!item) return null;
-    return {
+  const walkthroughReviewItems: WalkthroughReviewItem[] = CHIPOTLE_HOMEPAGE_EDITORIAL.reviewItems.flatMap(({ item: itemRef, quantity }) => {
+    const item = findEditorialRecord(previewRestaurant?.items, itemRef);
+    if (!item) return [];
+    return [{
       id: item.id,
       name: item.name,
       image: item.image,
       category: item.categories[0] ?? "",
       nutrition: item.nutrition,
       quantity,
-    };
-  }).filter((item): item is WalkthroughReviewItem => Boolean(item));
+    }];
+  });
 
   const walkthroughCustomizeHref =
     previewRestaurant && walkthroughBuildItemSource
@@ -150,7 +167,8 @@ export default async function Home() {
     walkthroughFindItems.length === WALKTHROUGH_FIND_ITEM_IDS.length &&
     walkthroughBuildItems &&
     walkthroughCustomizeHref &&
-    walkthroughReviewItems.length === WALKTHROUGH_REVIEW_ITEMS.length;
+    walkthroughReviewItems.length ===
+      CHIPOTLE_HOMEPAGE_EDITORIAL.reviewItems.length;
 
   return (
     <RestaurantUiProvider>

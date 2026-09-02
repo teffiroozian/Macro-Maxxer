@@ -1,0 +1,520 @@
+{
+  "restaurant": "Chipotle",
+  "analysisType": "source-relationship-analysis",
+  "analysisDate": "2026-08-31",
+  "scope": "Analysis only. No importer, no restaurant.json, no unresolved.json, no normalization. Raw files under data/raw/chipotle/ were not modified.",
+  "sourcesAnalyzed": [
+    "data/raw/chipotle/nutrition.json",
+    "data/raw/chipotle/nutrition-source.json",
+    "data/raw/chipotle/nutrition-paper-menu.pdf",
+    "data/raw/chipotle/calculator-menu.json",
+    "data/raw/chipotle/calculator-menu-source.json",
+    "data/raw/chipotle/menu-metadata.json",
+    "data/raw/chipotle/menu-metadata-source.json",
+    "data/raw/chipotle/menu-rules.json",
+    "data/raw/chipotle/menu-rules-source.json",
+    "data/raw/chipotle/online-meals.json",
+    "data/raw/chipotle/online-meals-source.json"
+  ],
+
+  "1_sourceInventory": {
+    "calculator-menu.json": {
+      "endpoint": "menuinnovation/v1/restaurants/469/onlinemenu/compressed",
+      "scope": "restaurant-specific (restaurant 469, channel=web, LZ4-decompressed)",
+      "keyIdentifiers": ["itemId (CMG-*)", "posId"],
+      "topLevelRecordCounts": { "entrees": 65, "sides": 31, "drinks": 21, "nonFoodItems": 3, "total": 120 },
+      "distinctNestedContentItemIds": 72,
+      "totalDistinctIdsInFile": 192,
+      "contains": {
+        "menuStructure": true,
+        "buildContainersAndContents": true,
+        "pricing": true,
+        "customizationRules": "per-item maxContents/maxExtras/maxHalfs etc. (restaurant-scoped values)",
+        "contentGroups": true,
+        "nutrition": false,
+        "availability": "isItemAvailable per item",
+        "portions": false,
+        "bundles": false,
+        "dietaryTags": false,
+        "thumbnails": false
+      },
+      "uniqueContribution": "The only source with restaurant-469-specific pricing (unitPrice/unitDeliveryPrice) and the authoritative 'what is actually sellable at this restaurant right now' item universe. isItemAvailable flags observed here are restaurant-specific, unlike menu-rules' isUniversal/availability which is national-template-level."
+    },
+    "menu-metadata.json": {
+      "endpoint": "menu-metadata/v1/menu-metadata?channel=web&region=US",
+      "scope": "national (region=US, channel=web) — not restricted to restaurant 469",
+      "keyIdentifiers": ["items{} keyed by CMG-* id", "groups[].id (uuid)", "itemGroups{} keyed by logical group key"],
+      "recordCounts": { "items": 408, "groups": 18, "itemSections": 31, "itemGroups": "keyed object, contains logical-concept groupings such as CauliRiceEntree/FountainSoda/TractorLemonade", "dietaryTagGroups": 3 },
+      "contains": {
+        "menuStructure": "group/itemSection membership and sort order only, no build contents",
+        "nutrition": "partial: Calories + Portion only, per item id",
+        "rules": false,
+        "pricing": false,
+        "availability": false,
+        "portions": "Portion value+unit, paired with Calories",
+        "bundles": false,
+        "dietaryTags": true,
+        "thumbnails": true,
+        "customizationMetadata": "showCustomizationNameWhenSelected / showCustomizationPrice flags; per-item customizations[] (empty on every sampled item)"
+      },
+      "uniqueContribution": "The only source with Calories+Portion nutrition attached directly to CMG ids, and the only source with dietaryTags (vege/vega/pale/keto/glut/dair/soy/sulp) and thumbnailUrl. Items{} has NO name field — names must be sourced from calculator-menu.json or menu-rules.json. Item universe is a national superset: 408 items vs. calculator-menu's 192, including proteins/sides/drinks never offered at restaurant 469 (see section 2)."
+    },
+    "menu-rules.json": {
+      "endpoint": "menuinnovation/v1/universalmenus/menurules?country=US",
+      "scope": "country-level (US), NOT restaurant-specific — a universal build-rule template",
+      "keyIdentifiers": ["itemId (CMG-*)"],
+      "topLevelRecordCounts": { "entrees": 102, "sides": 50, "drinks": 84, "nonFoodItems": 3, "total": 239 },
+      "distinctNestedContentItemIds": 89,
+      "totalDistinctIdsInFile": 328,
+      "contains": {
+        "menuStructure": true,
+        "buildContainersAndContents": true,
+        "pricing": "present but zeroed out (unitPrice=0, unitDeliveryPrice=0 on every sampled record — not meaningful pricing, this is a rules feed not an ordering feed)",
+        "customizationRules": "maxContents, maxCustomizations, maxOnTheSideCustomizations, maxExtras, maxHalfs, maxExtrasPlusHalfs, contentGroups, minQuantity/maxQuantity, defaultContent, pricingReferenceItemId",
+        "contentGroups": true,
+        "nutrition": false,
+        "availability": "isItemAvailable (national-template flag, true even for items never sold at restaurant 469) and isUniversal",
+        "portions": false,
+        "bundles": false
+      },
+      "uniqueContribution": "Same shape as calculator-menu.json but is the SUPERSET rule template: every id in calculator-menu.json (192/192) also exists here, plus 136 more (LTO/regional proteins, half/extra variants, and content items restaurant 469 does not currently sell). This is the only source that reliably carries the build-limit fields (maxHalfs, maxExtras, etc.) alongside content structure."
+    },
+    "online-meals.json": {
+      "endpoint": "menuinnovation/v1/restaurants/469/onlinemeals?channelId=web",
+      "scope": "restaurant-specific (restaurant 469)",
+      "keyIdentifiers": ["mealId (uuid)", "entree.itemId / sides[].itemId / drinks[].itemId (CMG-*)"],
+      "recordCounts": { "meals": 21, "distinctCmgIdsReferenced": 44, "mealCountsByType": { "BuildYourOwn": 4, "HighProtein": 11, "Influencer": 6 } },
+      "contains": {
+        "menuStructure": "references into calculator-menu/menu-rules item ids, does not define new build rules",
+        "nutrition": "free-text calories field only (single value or 'min - max' range string, not the structured per-nutrient shape used elsewhere)",
+        "pricing": "mealPrice / mealDeliveryPrice (flat bundle price, not necessarily sum of components)",
+        "availability": false,
+        "portions": false,
+        "bundles": true,
+        "quantities": "component-level quantity field (usually 1)",
+        "mealTypes": ["BuildYourOwn", "HighProtein", "Influencer"],
+        "images": true,
+        "marketingCopy": true
+      },
+      "uniqueContribution": "The only source describing preconfigured/curated meals (catering bundles, celebrity/influencer builds, high-protein presets) as named, priced, described products distinct from a-la-carte ordering. Some meals ('High Protein Cup - Chicken/Steak') have entree:null and carry their whole product as a single 'side' entry — a structural pattern not seen anywhere else."
+    },
+    "nutrition.json": {
+      "source": "US-Nutrition-Facts-Paper-Menu-3-2025.pdf (official printed nutrition menu), pages 2-3 structured-extracted",
+      "scope": "national (does not reference restaurant 469 or any CMG id)",
+      "keyIdentifiers": ["name (free text, NOT CMG ids)", "section (adult/kids)", "page"],
+      "recordCounts": { "total": 194, "distinctNames": 72, "page2_adult": 71, "page2_kids": 28, "page3_adult": 67, "page3_kids": 28 },
+      "contains": {
+        "menuStructure": false,
+        "nutrition": "full 11-field nutrition panel (calories, caloriesFromFat, totalFat, saturatedFat, transFat, cholesterol, sodium, carbohydrates, dietaryFiber, sugar, protein)",
+        "pricing": false,
+        "availability": false,
+        "portions": "portion cell (amount+unit) per record",
+        "bundles": false,
+        "adultVsKids": true
+      },
+      "uniqueContribution": "The ONLY source with full macro nutrition (fat/sodium/fiber/sugar/protein) — calculator-menu.json and menu-metadata.json together only ever carry Calories+Portion. Has zero CMG ids and zero structural linkage to the other four sources; joins must be inferred from name/calories/portion (see section 6). Pages 2 and 3 duplicate all non-drink rows verbatim (two document variants, OCT-2024-US-CK on page 2 vs OCT-2024-US-PPS on page 3) and differ only in which drink family is listed (Coca-Cola family vs Pepsi family)."
+    }
+  },
+
+  "2_idRelationships": {
+    "totalUniqueIdsBySource": {
+      "calculator-menu": 192,
+      "menu-rules": 328,
+      "menu-metadata": 408,
+      "online-meals": 44
+    },
+    "overlapCounts": [
+      { "pair": "calculator-menu vs menu-rules", "overlap": 192, "onlyInFirst": 0, "onlyInSecond": 136, "note": "menu-rules is a strict superset of calculator-menu at the id level: every id calculator-menu uses also exists in menu-rules with matching rule fields (see section 4)." },
+      { "pair": "calculator-menu vs menu-metadata", "overlap": 189, "onlyInFirst": 3, "onlyInSecond": 219, "note": "The 3 calculator-menu-only ids are the nonFoodItems (Serving Utensils, Napkins & Utensils, 6 Serving Bowls) — expected, they carry no nutrition and menu-metadata has no reason to know them." },
+      { "pair": "menu-metadata vs menu-rules", "overlap": 306, "onlyInFirst": 102, "onlyInSecond": 22, "note": "menu-rules-only ids (22) are largely half/extra-portion and content records for restaurant-469-scoped variants that never made it into the national metadata catalog; menu-metadata-only ids (102) are drinks/desserts/proteins with no build-rule record at all (see below)." },
+      { "pair": "online-meals vs calculator-menu", "overlap": 43, "onlyInFirst": 1, "onlyInSecond": 149, "note": "The one online-meals id not in calculator-menu is CMG-5362 'Chili Lime Chips' — present in menu-rules and menu-metadata, referenced by the 'Bardi Bowl with Chili Lime Chips' influencer meal, but absent from restaurant 469's actual sellable calculator-menu.json. Flagged as a gap in section 9." },
+      { "pair": "online-meals vs menu-metadata", "overlap": 44, "onlyInFirst": 0, "onlyInSecond": 364, "note": "Every id online-meals references has metadata nutrition available." },
+      { "pair": "online-meals vs menu-rules", "overlap": 44, "onlyInFirst": 0, "onlyInSecond": 284, "note": "Every id online-meals references has a menu-rules build-rule record." }
+    ],
+    "menuMetadataOnlyIds": {
+      "total": 219,
+      "resolvableViaMenuRulesNames": 117,
+      "resolvableViaItemGroupsDefaultItemId": 3,
+      "unresolvedNoNameInAnyRawField": 99,
+      "note": "The 99 fully unresolved ids have no name field in any of the four structured JSON sources. A name can only be guessed from the thumbnailUrl image-filename slug (e.g. cmg-6606-chorizo, cmg-5165-garlic-steak, CMG-5166-Chicken-al-Pastor, cmg-1036-cauliflower-rice, cmg-1407-grilled-street-corn, cmg-9004-churros, cmg-5410-red-chimichurri, cmg-2051-blackberry-izze), which is not an authoritative structured field and must not be treated as a source of truth. These represent LTO/regional/future/discontinued items (chorizo, carne asada, garlic steak, chicken al pastor, cauliflower rice, grilled street corn, desserts (churros/chocolate crema/caramel crema), adobo ranch, red chimichurri, and various specialty drinks/waters) that exist in the national catalog but are absent from both restaurant 469's calculator-menu and the US menu-rules ruleset.",
+      "categoriesFoundViaRulesNames": [
+        "Additional whole proteins not sold at restaurant 469: Smoked Brisket (CMG-10/107/108/112/1105/1107/1109/1208/1209/3008/3010/3108/3109/etc.), Pollo Asado (CMG-11/...), Chicken Tinga (CMG-16/...), Crispy Chicken (CMG-17/...) — each with a full Burrito/Bowl/Salad/Tacos/Quesadilla/KidsBYO/KidsQuesadilla/Half/Extra/Side family paralleling the 6 core proteins",
+        "Chili Lime Chips family (plain, large, +guac, +queso, +4 salsas)",
+        "Grilled Street Corn family (side, large side, +chips)",
+        "Cauliflower Rice (entree/single-taco/kids portion variants)",
+        "Additional bottled/canned drinks: Corona Extra, several Bottled Water SKUs, Izze flavors, Kiju teas, Lipton Pure Leaf, Moonshine tea, Nantucket juices, San Pellegrino flavors, Spindrift, Starbucks Cold Brew, Topo Chico, additional Tractor Organic flavors, Honest Tea"
+      ]
+    },
+    "duplicateReusedIds": {
+      "description": "Multiple cases where the same real-world ingredient is represented by more than one CMG id depending on ordering context.",
+      "examples": [
+        { "concept": "Guacamole (topping)", "ids": ["CMG-1001", "CMG-5301"], "detail": "CMG-1001 is the standard optional add-on topping (18 parent entrees, priced $2.95); CMG-5301 is the same 230cal/4oz product but used specifically as the Veggie Burrito/Bowl/Taco family's defaultContent:true (auto-included, no separate charge in that context)." },
+        { "concept": "Queso Blanco (topping/addon)", "ids": ["CMG-1029", "CMG-1034", "CMG-4134"], "detail": "CMG-1029 (Toppings, 120cal/2oz) is used on burrito/bowl/salad. CMG-1034 (Addon, 120cal/2oz) is used on tacos. CMG-4134 (Addon, 240cal/4oz — double portion) is used on quesadillas. Same ingredient, three ids, and the quesadilla variant is NOT nutritionally identical to the other two." },
+        { "concept": "Chicken/Steak/Carnitas/Beef Barbacoa/Sofritas/Chipotle Honey Chicken protein identity", "ids": ["CMG-1/CMG-2/CMG-3/CMG-4/CMG-5/CMG-15 (entree+protein canonical id)"], "detail": "The Burrito-format entree itemId IS the canonical protein pricing-reference id used by every HalfPortion/ExtraPortion pricingReferenceItemId across all entree types. See the entree/protein-identity finding in section 3." },
+        { "concept": "Rice/Beans/Toppings duplicated into a catering (BYOProtein) namespace", "ids": ["CMG-5001/CMG-5375 (White Rice)", "CMG-5051/CMG-5376 (Black Beans)", "CMG-5002/CMG-5391 (Brown Rice)", "CMG-5052/CMG-5392 (Pinto Beans)"], "detail": "The catering-size BuildYourOwn entrees (CMG-5374 etc., 24oz/$52+, serves 4-6) reuse the SAME ingredient names but assign entirely separate CMG ids from the individual-order versions, even though they are the same named ingredient." }
+      ]
+    },
+    "sameItemAcrossMultipleBuildContexts": {
+      "description": "Content itemIds recur verbatim across many parent entrees, confirming they are shared ingredient records, not per-entree copies.",
+      "examples": [
+        { "id": "CMG-5051", "name": "Black Beans", "parentCount": 43 },
+        { "id": "CMG-5203", "name": "Tomatillo-Green Chili Salsa", "parentCount": 42 },
+        { "id": "CMG-5101", "name": "Fajita Veggies", "parentCount": 42 },
+        { "id": "CMG-1001", "name": "Guacamole", "parentCount": 18 }
+      ]
+    },
+    "pricingReferenceItemIdLinkage": {
+      "description": "HalfPortion and ExtraPortion content records always carry pricingReferenceItemId pointing at the base protein's own canonical itemId (which equals that protein's Burrito-entree itemId).",
+      "confirmedPairs": [
+        { "protein": "Chicken", "baseId": "CMG-1", "halfId": "CMG-5601 (Half Chicken)", "extraId": "CMG-1101 (Extra Chicken)" },
+        { "protein": "Steak", "baseId": "CMG-2", "halfId": "CMG-5602 (Half Steak)", "extraId": "CMG-1102 (Extra Steak)" },
+        { "protein": "Carnitas", "baseId": "CMG-3", "halfId": "CMG-5603 (Half Carnitas)", "extraId": "CMG-1103 (Extra Carnitas)" },
+        { "protein": "Beef Barbacoa", "baseId": "CMG-4", "halfId": "CMG-5604 (Half Beef Barbacoa)", "extraId": "CMG-1104 (Extra Beef Barbacoa)" },
+        { "protein": "Sofritas", "baseId": "CMG-5", "halfId": "CMG-5605 (Half Sofritas)", "extraId": "CMG-1106 (Extra Sofritas)" },
+        { "protein": "Chipotle Honey Chicken", "baseId": "CMG-15", "halfId": "CMG-5614 (Half 1/2 Chipotle Honey Chicken)", "extraId": "CMG-1115 (Extra Chipotle Honey Chicken)" }
+      ],
+      "note": "Veggie (fajita veggies as the 'protein' choice) and Cheese Only (quesadilla) have no HalfPortion/ExtraPortion records — there is no 'extra veggie' or 'half veggie' concept in the source; only the 6 named animal/sofritas/chicken-variant proteins get Half/Extra treatment. menu-rules additionally defines Half/Extra records for the 4 LTO proteins (Brisket, Pollo Asado, Chicken Tinga, Crispy Chicken) not sold at restaurant 469."
+    }
+  },
+
+  "3_calculatorMenuVsMenuMetadata": {
+    "exactIdMatchCoverage": "189/192 (98.4%) of calculator-menu ids resolve to a menu-metadata record. The 3 unmatched are nonFoodItems (no nutrition applicable).",
+    "criticalStructuralFinding": {
+      "summary": "menu-metadata's nutrition for an ENTREE id (e.g. CMG-1 'Chicken Burrito') is NOT the nutrition of the composed meal. It is the nutrition of ONLY that entree's primary protein serving.",
+      "evidence": [
+        "CMG-1 (Chicken Burrito, calculator-menu itemName) → menu-metadata nutrition = 180cal / 4oz, which is exactly the PDF's adult 'Chicken' 4oz/180cal row — i.e. the protein alone, not a ~700+ calorie composed burrito.",
+        "CMG-1201 (Chicken Taco, single) → 60cal, a smaller protein portion than the burrito/bowl's 4oz because the taco format uses less filling per unit.",
+        "CMG-1216 (Chipotle Honey Chicken Taco, single) → 70cal / 1.3oz, an explicit fractional-ounce portion, confirming portion size is genuinely container-specific, not a fixed constant reused everywhere.",
+        "CMG-6 (Veggie Burrito) and CMG-407 (Cheese Only Quesadilla) → 0cal, because there is no discrete 'protein' ingredient tied to those entree ids; their real caloric content comes entirely from their contents (fajita veggies, rice, beans, cheese, etc.), which are separately-keyed content items."
+      ],
+      "implication": "Full composed-meal nutrition for any Chipotle entree must be assembled by summing the entree's own protein-portion nutrition PLUS the nutrition of every selected content item (rice/beans/toppings/tortilla), each looked up independently in menu-metadata. calculator-menu.json's 'contents' array defines what CAN be summed; it does not define what IS selected by default (see defaultContent note in section 4). This is the single most important structural fact for the importer."
+    },
+    "namesComparison": "menu-metadata carries no name field of its own; names were cross-referenced via calculator-menu.json/menu-rules.json id-keyed name indexes built for this analysis. No name conflicts were found for any id present in both sources.",
+    "caloriesPortionComparison": {
+      "coreProteinsExactMatchToPdf": [
+        { "name": "Chicken", "id": "CMG-1", "metadata": "180cal/4oz", "pdfAdult": "180cal/4oz", "pdfKids": "90cal/2oz", "metadataKidsId": "CMG-3002", "metadataKids": "90cal/2oz" },
+        { "name": "Steak", "id": "CMG-2", "metadata": "150cal/4oz", "pdfAdult": "150cal/4oz" },
+        { "name": "Carnitas", "id": "CMG-3", "metadata": "210cal/4oz", "pdfAdult": "210cal/4oz" },
+        { "name": "Beef Barbacoa (PDF: 'Barbacoa')", "id": "CMG-4", "metadata": "170cal/4oz", "pdfAdult": "170cal/4oz" },
+        { "name": "Sofritas", "id": "CMG-5", "metadata": "150cal/4oz", "pdfAdult": "150cal/4oz" }
+      ],
+      "suspiciousConflicts": [
+        { "item": "Fresh Tomato Salsa", "metadataId": "CMG-5201", "metadataPortion": "25cal/3.5oz", "pdfPortion": "25cal/4oz", "detail": "Calories match exactly; portion weight disagrees (3.5oz vs 4oz) between menu-metadata and the PDF for the same named item." },
+        { "item": "Roasted Chili-Corn Salsa", "metadataId": "CMG-5202", "metadataPortion": "80cal/3.5oz", "pdfPortion": "80cal/4oz", "detail": "Same pattern as Fresh Tomato Salsa." },
+        { "item": "Soft Flour Tortilla (taco-context id)", "metadataId": "CMG-5501", "metadataPortion": "250cal/3oz", "pdfClosestMatch": "'Flour Tortilla (taco)' 80cal/1ea", "detail": "No PDF row matches 250cal directly. CMG-5501 appears inside the 'Tacos (3)' trio entrees (3 tortillas), suggesting the metadata record may represent a 3-tortilla aggregate mislabeled with an 'oz' unit rather than 'ea' — unresolved, not assumed." }
+      ],
+      "missingMetadata": "None observed for any calculator-menu content/entree id except the 3 nonFoodItems."
+    },
+    "sameItemIdMultipleContexts": "See section 2 duplicateReusedIds and sameItemAcrossMultipleBuildContexts — the same nutrition-bearing id (e.g. CMG-5051 Black Beans) is legitimately reused unchanged across 43 different parent entrees, which is expected and not a conflict. Genuine multi-id duplication (different ids, same real ingredient) is the Guacamole/Queso Blanco case above.",
+    "thumbnailsAndDietaryTags": "Present on effectively every menu-metadata item sampled; dietaryTags use a small controlled vocabulary (vege, vega, pale, keto, glut, dair, soy, sulp) defined in meta.dietaryTagGroups. No conflicts observed between dietaryTags and known ingredient composition (e.g. Sofritas correctly tagged vege/vega/soy, dairy toppings correctly tagged dair)."
+  },
+
+  "4_calculatorMenuVsMenuRules": {
+    "itemsExistingInBoth": "192/192 (100%) of calculator-menu ids exist in menu-rules with matching itemType/itemName.",
+    "ruleFieldsAlignment": {
+      "result": "Exact match for every sampled shared id (CMG-2 Steak Burrito, CMG-6 Veggie Burrito, CMG-101 Chicken Bowl) across maxContents, maxCustomizations, maxOnTheSideCustomizations, maxExtras, maxHalfs, maxExtrasPlusHalfs.",
+      "conclusion": "menu-rules functions as the authoritative build-rule template; calculator-menu's per-restaurant record for the same id carries the identical rule values. The importer can source these limit fields from either file for ids present in both, but should prefer menu-rules as canonical since it is the superset and the ids restaurant 469 has locally may lag or diverge for newly-added items."
+    },
+    "restaurantSpecificVsNational": {
+      "pricing": "calculator-menu has real, non-zero unitPrice/unitDeliveryPrice; menu-rules has unitPrice=0/unitDeliveryPrice=0 on every sampled record — menu-rules pricing fields are not usable for actual pricing.",
+      "isUniversal": "menu-rules marks content items isUniversal:true where calculator-menu marks the same items isUniversal:false for the identical id — the flag's meaning appears to flip contextually between 'universal across the national catalog' (rules) and a restaurant-specific field that is simply not populated true in the compressed onlinemenu payload. Meaning not fully resolved; flagged in section 9.",
+      "availability": "isItemAvailable is true for LTO items in menu-rules that are absent entirely from calculator-menu (e.g. Smoked Brisket family) — rules-level availability does not imply restaurant-469 availability."
+    },
+    "contentGroupsAlignment": "Exact match on all 3 sampled entrees (CMG-2, CMG-6, CMG-101): identical contentGroupName/minQuantity/maxQuantity arrays (e.g. RiceContentGroup min1/max1, BeansContentGroup min1/max1).",
+    "contentsSetRelationship": {
+      "result": "calculator-menu's contents array is always a strict subset of menu-rules' contents array for the same entree id (e.g. Steak Burrito: 29 items in calculator-menu vs 39 in menu-rules; Veggie Burrito: 18 vs 19).",
+      "extraItemsInRules": "The extra items in menu-rules are consistently the LTO-protein Half/Extra/ExtraProtein records (Chicken Tinga, Crispy Chicken, Smoked Brisket, Pollo Asado) plus a national-only 'CMG-1010 Queso' topping record not present in restaurant 469's actual topping set.",
+      "neverReversed": "No case was found where calculator-menu contained a content id absent from menu-rules — confirms rules is the superset/template and calculator-menu is a restaurant-scoped projection of it."
+    },
+    "defaultContent": {
+      "representation": "boolean defaultContent field on each content record.",
+      "observed": "False for essentially every rice/beans/topping/half/extra record sampled (customer must actively choose). Exception: Veggie Burrito/Bowl/Taco family sets defaultContent:true on CMG-5301 (Guacamole), matching in both calculator-menu and menu-rules — Veggie entrees auto-include a no-charge guac by default, unlike every other protein.",
+      "importerImplication": "defaultContent is the only reliable signal for 'what's actually in the box if the customer changes nothing' and must be honored per-entree rather than assumed uniform."
+    },
+    "arrayOrderAndBuildSequencing": {
+      "finding": "Array order of the 'contents' list does NOT match between calculator-menu and menu-rules for the same entree, even after filtering menu-rules down to only the ids calculator-menu also has (verified on CMG-2 Steak Burrito: the two orderings are permutations of the same 29 ids, not the same sequence).",
+      "conclusion": "Content array order is presentation/UI order within a single source and must not be treated as a cross-source-comparable build sequence, nor assumed stable. contentGroupName and itemType are the reliable groupers; ordinal position is not."
+    }
+  },
+
+  "5_onlineMealsVsNormalMenu": {
+    "distinctCmgIdsReferenced": 44,
+    "referencedIdExistenceCheck": {
+      "inCalculatorMenu": "43/44 (only CMG-5362 'Chili Lime Chips' missing — present in menu-rules/menu-metadata but not sold at restaurant 469)",
+      "inMenuRules": "44/44",
+      "inMenuMetadata": "44/44"
+    },
+    "mealCompositionStructure": {
+      "topLevelFields": ["mealId (uuid)", "mealName", "mealType", "description", "mealPrice", "mealDeliveryPrice", "calories (free text)", "entree (object or null)", "sides (array)", "drinks (array)", "dietaryTags (free text array)", "mealTags"],
+      "entreeShape": "entree.itemId/itemName plus a nested contents[] array of {itemId, itemName, quantity, unitPrice, ...} — same CMG id vocabulary as calculator-menu, but each content entry additionally carries its own quantity and price deltas rather than referencing calculator-menu's contentGroup/customization objects.",
+      "caloriesFieldFormat": "Inconsistent shape across meals: a single numeric string ('1550'), or a range string ('520 - 1220') for BuildYourOwn catering bundles that serve a range of guests/customizations. This is NOT the structured per-nutrient shape found in nutrition.json or menu-metadata and cannot be parsed as a single scalar without a range-handling rule."
+    },
+    "quantities": "Component-level quantity field present on every entree/side/drink content entry (observed always 1 in sampled meals, but the field exists and should not be assumed constant).",
+    "availability": "isItemAvailable present per component, no restaurant-level availability flag on the meal itself.",
+    "mealTypesObserved": ["BuildYourOwn (4)", "HighProtein (11)", "Influencer (6)"],
+    "structuralVariants": {
+      "standardMeal": "entree object populated, sides/drinks arrays may be empty or populated (e.g. 'Bardi Bowl with Chili Lime Chips': entree=Chicken Bowl + 1 side=Chili Lime Chips).",
+      "cateringBundle": "BuildYourOwn entrees use a completely separate catering-scale CMG id namespace (CMG-537x/539x, 24oz portions, $52+, 'Serves 4-6 people' dietaryTags) distinct from individual-order ingredient ids.",
+      "entreeLessMeal": "'High Protein Cup - Chicken' and 'High Protein Cup - Steak' have entree:null and represent their entire product as a single sides[] entry (a standalone protein-only side, not a build container) — a structural pattern that does not occur anywhere else in the five sources."
+    },
+    "crossListedDuplicates": {
+      "finding": "4 distinct meal records (Josh Hart's High Protein Burrito, Mikal Bridges High Protein Bowl, Tara Davis-Woodhall High Protein Bowl, Hunter Woodhall's High Protein Bowl) each appear TWICE with different mealId values — once under mealType HighProtein and once under mealType Influencer — same composition, same price, same calories.",
+      "conflict": "'Mikal Bridges High Protein Bowl' reports '70g Protein' in its HighProtein-typed dietaryTags but '71g Protein' in its Influencer-typed duplicate — a 1g inconsistency between the two records for the same underlying build.",
+      "importerImplication": "mealType is not a mutually-exclusive partition; the same logical meal can be merchandised under multiple banners with independently-authored (and occasionally inconsistent) marketing metadata."
+    },
+    "classification": "These are preconfigured/curated builds (a named product wrapping a specific selection of existing sellable content ids at a specific price), not standalone base menu items and not a new ingredient vocabulary. The importer will need to decide whether to expose them as their own browse products, as 'starting points' that map onto existing entree+customization combinations, or purely as marketing/merchandising metadata layered on existing products — not decided here."
+  },
+
+  "6_pdfNutritionVsLiveItems": {
+    "methodologyNote": "nutrition.json carries no CMG ids. All matches below were established using name text, normalized name, calories, portion, and adult/kids context, cross-checked against menu-metadata's Calories+Portion pair for the corresponding CMG id.",
+    "classifications": {
+      "exactOrHighConfidence": [
+        { "pdfName": "Chicken", "liveMatch": "CMG-1 (and every Chicken entree/content variant)", "evidence": "180cal/4oz identical adult; 90cal/2oz identical kids (CMG-3002)." },
+        { "pdfName": "Steak", "liveMatch": "CMG-2", "evidence": "150cal/4oz identical." },
+        { "pdfName": "Carnitas", "liveMatch": "CMG-3", "evidence": "210cal/4oz identical." },
+        { "pdfName": "Sofritas", "liveMatch": "CMG-5", "evidence": "150cal/4oz identical." },
+        { "pdfName": "Black Beans", "liveMatch": "CMG-5051", "evidence": "130cal/4oz identical." },
+        { "pdfName": "Pinto Beans", "liveMatch": "CMG-5052", "evidence": "130cal/4oz identical." },
+        { "pdfName": "Cheese", "liveMatch": "CMG-5252", "evidence": "110cal/1oz identical." },
+        { "pdfName": "Sour Cream", "liveMatch": "CMG-5251", "evidence": "110cal/2oz identical." },
+        { "pdfName": "Guacamole (topping/side)", "liveMatch": "CMG-1001 / CMG-1009", "evidence": "230cal/4oz identical for both the topping and small-side ids." },
+        { "pdfName": "Guacamole (large)", "liveMatch": "CMG-1025 / CMG-1051", "evidence": "460cal/8oz identical." },
+        { "pdfName": "Queso Blanco (entreé)", "liveMatch": "CMG-1029", "evidence": "120cal/2oz identical (PDF's own spelling 'entreé' preserved verbatim, it is a typo in the source PDF)." },
+        { "pdfName": "Queso Blanco (side)", "liveMatch": "CMG-1030", "evidence": "240cal/4oz identical." },
+        { "pdfName": "Queso Blanco (large)", "liveMatch": "CMG-1031 / CMG-1052", "evidence": "480cal/8oz identical." },
+        { "pdfName": "Chips (regular)", "liveMatch": "CMG-1002", "evidence": "540cal/4oz identical." },
+        { "pdfName": "Chips (large)", "liveMatch": "CMG-1016", "evidence": "810cal/6oz identical." },
+        { "pdfName": "Flour Tortilla (burrito)", "liveMatch": "CMG-4026 pricing context / burrito build", "evidence": "320cal matches the 'Double Wrap with Tortilla' burrito Option record's 320cal value exactly, though portion unit differs (1oz vs 1ea, see ambiguous list)." },
+        { "pdfName": "Chipotle-Honey Vinaigrette", "liveMatch": "CMG-5353 / CMG-5354", "evidence": "220cal/2oz identical." }
+      ],
+      "normalizedNameHighConfidence": [
+        { "pdfName": "Barbacoa", "liveName": "Beef Barbacoa", "liveMatch": "CMG-4", "evidence": "170cal/4oz identical; PDF drops 'Beef' from the label but no other barbacoa item exists to conflict." },
+        { "pdfName": "Cilantro-Lime White Rice", "liveName": "White Rice", "liveMatch": "CMG-5001", "evidence": "210cal/4oz identical; live sources omit the 'Cilantro-Lime' qualifier universally even though the PDF and Chipotle's public branding call it Cilantro-Lime White Rice." },
+        { "pdfName": "Cilantro-Lime Brown Rice", "liveName": "Brown Rice", "liveMatch": "CMG-5002", "evidence": "210cal/4oz identical, same naming gap as White Rice." },
+        { "pdfName": "Fajita Vegetables", "liveName": "Fajita Veggies", "liveMatch": "CMG-5101", "evidence": "20cal/2oz identical (adult); 'Vegetables' vs 'Veggies' shortening." },
+        { "pdfName": "Romaine Lettuce (tacos)", "liveName": "Romaine Lettuce", "liveMatch": "CMG-5351", "evidence": "5cal/1oz identical; PDF qualifier '(tacos)' does not appear live, and the same nutrition value is reused for Romaine on burrito/bowl/salad in menu-metadata (no separate non-taco PDF row exists, see ambiguous list)." }
+      ],
+      "portionOrContextAssisted": [
+        { "pdfName": "Fresh Tomato Salsa", "liveMatch": "CMG-5201", "evidence": "25cal matches exactly; portion 4oz(PDF) vs 3.5oz(metadata) disagrees. Calories agreement plus unique name makes the match itself high-confidence; the portion value itself is a genuine conflict (see section 9)." },
+        { "pdfName": "Roasted Chili-Corn Salsa", "liveMatch": "CMG-5202", "evidence": "Same pattern: 80cal matches, portion 4oz(PDF) vs 3.5oz(metadata) disagrees." },
+        { "pdfName": "Tomatillo-Green/Red Chili Salsa", "liveMatch": "CMG-5203 / CMG-5204", "evidence": "Calories match exactly (15/30); unit differs, PDF states '2 fl oz' (liquid measure) vs metadata '2oz' (weight) for the same value — numerically consistent, unit semantics unresolved." },
+        { "pdfName": "Chicken (kids)", "liveMatch": "CMG-3002 Chicken Kids Build Your Own", "evidence": "90cal/2oz identical; confirms the kids PDF section maps to the kids-entree's own canonical nutrition, following the same protein-only-nutrition-on-the-entree-id pattern documented in section 3." }
+      ],
+      "ambiguous": [
+        { "pdfName": "Flour Tortilla (taco)", "issue": "80cal/1ea (PDF) does not match CMG-5501 'Soft Flour Tortilla' metadata value of 250cal/3oz. CMG-5501 is used inside the 3-taco trio entrees; 250cal/3oz may represent a 3-tortilla aggregate with an oz label rather than 80cal x 3=240cal (close but not exact), or may be an unrelated/different-size tortilla product. Not resolved." },
+        { "pdfName": "Flour Tortilla (quesadilla)", "issue": "PDF gives 80cal/1ea (kids section only — no adult 'Flour Tortilla (quesadilla)' row exists at all). The live quesadilla entrees' own tortilla content id was not isolated/verified in this pass; flagged as needing a dedicated content-item lookup." },
+        { "pdfName": "Crispy Corn Tortilla", "issue": "PDF: 70cal/1ea (adult), 130cal/2ea (kids). Live CMG-5503 'Crispy Corn Tortilla' metadata value was not captured with full confidence in this pass and should be re-verified before import; treat as ambiguous rather than assumed matching by name alone." },
+        { "pdfName": "Supergreens Salad Mix", "issue": "15cal/3oz in PDF, appears only on salads; the corresponding live CMG id for the salad greens base was not isolated during this pass (salad entree contents were not individually enumerated the way burrito contents were). Needs dedicated verification." },
+        { "pdfName": "Any Fountain Soda/Iced Tea flavor (Coca-Cola Classic, Diet Coke, Sprite, Fanta Orange, Mello Yello, Pibb Xtra, Barq's Root Beer, Minute Maid Lemonade, Powerade Mountain Berry Blast, Mug Root Beer, Dr. Pepper, Mountain Dew, Crush Orange, Sierra Mist, Lipton Raspberry Brisk Iced Tea, Chipotle Iced/Sweet Iced Tea, Pepsi family)", "issue": "calculator-menu.json only has generic 'CMG-2001: 22 fl oz Soda/Iced Tea' and 'CMG-2002: 32 fl oz Soda/Iced Tea' fountain-cup records with a flat placeholder nutrition value (250cal/22floz in menu-metadata, no per-flavor branching, and customizations[] is empty on that record). There is no CMG id, id-joinable field, or customization-option list connecting a specific fountain flavor to a specific CMG id. These PDF rows cannot be automatically joined to any live record; a specific-flavor selection is fundamentally unrepresented in the live sources for this restaurant's fountain machine." }
+      ],
+      "noLiveMatch": [
+        { "pdfItem": "None of the 6 core proteins, beans, rice, salsas, or standard toppings lack a live match.", "note": "No core PDF row was found with zero plausible live counterpart; all 'no match' cases are the fountain-drink-flavor case above, which is a many-PDF-rows-to-one-generic-live-record situation rather than a true absence." }
+      ],
+      "liveWithNoPdfNutritionMatch": [
+        { "liveItem": "Chipotle Honey Chicken", "ids": "CMG-15 (entree family), CMG-1115 (extra), CMG-5614 (half), CMG-3017/CMG-3116 (kids)", "evidence": "No 'Chipotle Honey Chicken' row exists anywhere in nutrition.json's 72 distinct names. This appears to be a menu item introduced after the PDF's OCT-2024/MAR-2025 print date, or intentionally excluded from the printed nutrition chart." },
+        { "liveItem": "All 4 LTO proteins present in menu-rules but absent from calculator-menu (Smoked Brisket, Pollo Asado, Chicken Tinga, Crispy Chicken)", "evidence": "Also absent from nutrition.json entirely — consistent with them being unavailable at restaurant 469 and/or not yet on the printed nutrition chart." },
+        { "liveItem": "The 99 unresolved menu-metadata-only ids from section 2 (chorizo, carne asada, garlic steak, chicken al pastor, cauliflower rice, grilled street corn, churros/chocolate crema/caramel crema desserts, adobo ranch, red chimichurri, and various specialty drinks)", "evidence": "None appear in nutrition.json's name list." },
+        { "liveItem": "Bottled/canned specialty drinks sold at restaurant 469 (Open Water Still, Mexican Coca-Cola, Mexican Sprite, Jarritos Guava/Mango, San Pellegrino Sparkling, Poppi Orange/Strawberry Lemon, Tractor Organic agua frescas/lemonades/watermelon limeade)", "evidence": "None of these calculator-menu.json drink display names have an exact-string match in nutrition.json's 72 names; the PDF's drink section is oriented around fountain-flavor and a narrower branded lineup (Barq's, Coca-Cola family, Pibb Xtra, Sprite, Fanta, Minute Maid, Powerade, Mello Yello, Blue Sky brand, Maine Root, Chipotle-branded teas, Tractor Berry/Watermelon/Lemonade/Mandarin only, Pepsi family, Mug, Lipton, Dr Pepper, Crush, Sobe) that only partially overlaps restaurant 469's actual bottled/canned lineup. Zero of the 21 calculator-menu drink itemNames string-match a nutrition.json name exactly (see section 1 sample check); every drink join would need brand/flavor-level manual mapping, which was explicitly out of scope for this pass." }
+      ]
+    }
+  },
+
+  "7_portionRelationships": {
+    "halfExtraHavingExplicitSourceRecords": {
+      "finding": "Half/Extra portions are NOT purely inferred by the importer scaling a base value — menu-metadata carries its own explicit Calories value for each Half/Extra content id.",
+      "evidence": [
+        { "id": "CMG-5601 Half Chicken", "metadataCalories": 90, "baseChicken": 180, "ratio": "exactly half" },
+        { "id": "CMG-5602 Half Steak", "metadataCalories": 75, "baseSteak": 150, "ratio": "exactly half" },
+        { "id": "CMG-5603 Half Carnitas", "metadataCalories": 105, "baseCarnitas": 210, "ratio": "exactly half" },
+        { "id": "CMG-1101 Extra Chicken", "metadataCalories": 360, "baseChicken": 180, "ratio": "exactly double (base + 1 full extra serving)" },
+        { "id": "CMG-1102 Extra Steak", "metadataCalories": 300, "baseSteak": 150, "ratio": "exactly double" }
+      ],
+      "portionFieldCaveat": "The Portion value on these same Half/Extra records reads '0' + unit (e.g. '0oz') in menu-metadata, which is almost certainly a placeholder/non-populated field rather than a true zero portion — the calories field is populated and trustworthy, the paired portion field is not, for this record type specifically. The catering-context equivalent (CMG-1116 Extra Chicken under BuildYourOwn) DOES carry a real portion value (360cal/8oz), confirming the '0oz' pattern is specific to the individual-order Half/Extra records rather than universal.",
+      "crossValidation": "Because the observed ratios are exactly 0.5x and 2.0x of the base protein calories in every sampled case, mathematical inference would have produced the same numbers here — but this analysis treats that as a coincidental confirmation, not a license to infer values that are not explicitly present, per the task's instruction not to create nutrition values by inference."
+    },
+    "kidsPortionsVsAdultPortions": {
+      "finding": "Kids entree records (KidsBYO family) carry their own distinct, explicitly-sourced nutrition rather than a fraction of the adult entree.",
+      "evidence": "CMG-3002 Chicken Kids Build Your Own = 90cal/2oz, matching the PDF's kids-section 'Chicken' row (90cal/2oz) exactly — both are half the adult 4oz/180cal serving by weight, but both numbers come from an explicit source record (menu-metadata entree id and PDF kids table row respectively), not from the importer halving the adult value.",
+      "additionalKidsStructure": "Kids-only content types exist that have no adult equivalent id: Beverage (No Drink/Organic Chocolate Milk/Organic Apple Juice/16 fl oz Soda-Iced Tea/Organic Milk, 5 options, present identically across all 16 KidsBYO+KidsQuesadilla entrees) and Side (Kid's Fruit CMG-1402/Kid's Chips CMG-1401/No Included Sides CMG-5556)."
+    },
+    "sideVsEntreePortions": {
+      "finding": "The same named topping can have 2–3 different standalone 'side' portion sizes (regular/large) as separate top-level sides[] records, distinct from its topping-portion id used inside an entree's contents.",
+      "examples": ["Side of Guacamole (CMG-1009, 230cal/4oz) vs Large Side of Guacamole (CMG-1025/CMG-1051, 460cal/8oz) vs the in-entree Guacamole topping (CMG-1001, also 230cal/4oz — same size as the small side, different id/context)", "Side of Queso Blanco (CMG-1030, 240cal/4oz) vs Large Side of Queso Blanco (CMG-1031/CMG-1052, 480cal/8oz) vs in-entree Queso Blanco topping (CMG-1029, 120cal/2oz — HALF the size of the small side)."]
+    },
+    "exceptionsWhereScalingWouldBeUnsafe": [
+      "Queso Blanco: the in-entree topping portion (CMG-1029, 2oz) is NOT half of the 'Side of Queso Blanco' portion in the naive sense expected from Half/Extra naming — it is a genuinely different, smaller default topping scoop compared to an ordered side, and the quesadilla-context Queso addon (CMG-4134, 4oz) is double the standard topping portion again. Three different real portions for one named ingredient; none should be derived from another by fixed ratio.",
+      "Chicken Taco protein portion (CMG-1201, 60cal for the base id used in a single taco) is not a clean fraction of the Burrito/Bowl 180cal/4oz serving, nor of the Tacos(3)-trio id (CMG-201, 180cal — which IS exactly 3x the single taco's 60cal, but the single-taco portion itself does not share the 4oz burrito/bowl base unit at all).",
+      "Fresh/Roasted salsa portion units disagree between sources (3.5oz metadata vs 4oz PDF) at identical calories — scaling from either 'portion' value would propagate an unresolved unit conflict into any per-gram/per-oz derived macro estimate."
+    ]
+  },
+
+  "8_structuralVsSellableRecords": {
+    "entreeBuildContainers": {
+      "description": "Top-level entrees[] records that define a customizable build via contentGroups + contents (Rice/Beans/Toppings/Half/Extra/Tortilla choices).",
+      "itemTypesObserved": ["Burrito", "Bowl", "Salad", "Quesadilla", "Tacos (single, e.g. CMG-1201)", "Tacos (trio, e.g. CMG-201, itemName suffixed '(3)')", "KidsBYO", "KidsQuesadilla"]
+    },
+    "selectableIngredientsModifiers": {
+      "description": "Content records nested inside an entree's contents[] that the customer chooses among; itemType marks the sub-category.",
+      "itemTypesObserved": ["Rice", "Beans", "Toppings", "Tortillas", "Addon", "Option (e.g. 'Double Wrap with Tortilla')", "Optional", "Included", "Premium", "Salsa", "Beverage (kids only)", "Side (kids only)"]
+    },
+    "halfExtraPortionRecords": {
+      "description": "Content records that modify a protein quantity rather than add a new ingredient.",
+      "itemTypesObserved": ["HalfPortion", "ExtraPortion", "ExtraProtein (catering-context equivalent of ExtraPortion, used only inside BYOProtein entrees)"]
+    },
+    "standaloneSides": {
+      "description": "Top-level sides[] records with no contents/contentGroups — flat sellable items.",
+      "itemTypesObserved": ["ChipsSalsa", "Chips", "Tortilla", "Queso", "Guac", "GreenSalsa", "TomatoSalsa", "CornSalsa", "RedSalsa", "CilantroLime", "ChipsQueso", "ChipsGuac", "SideChicken", "SideSteak", "SideHoneyChicken"]
+    },
+    "standaloneDrinks": {
+      "description": "Top-level drinks[] records, flat, no contents.",
+      "itemTypesObserved": ["Soda (generic fountain cup)", "Coke", "MexCoke", "MexSprite", "Tractor", "Jarritos", "Nantucket", "OpenWater", "SanPellegrino", "Poppi"]
+    },
+    "kidsItems": {
+      "description": "Both a distinct entree itemType family (KidsBYO/KidsQuesadilla) and kid-only content itemTypes (Beverage, Side) that only ever appear nested inside those two entree families.",
+      "itemTypesObserved": ["KidsBYO", "KidsQuesadilla", "Beverage (kids)", "Side (kids, e.g. Kid's Fruit/Kid's Chips)"]
+    },
+    "preconfiguredMeals": {
+      "description": "online-meals.json records only — not part of the calculator-menu/menu-rules item-type vocabulary at all; a wrapper layer referencing existing ids at a bundle price.",
+      "variants": ["BuildYourOwn (catering bundle, separate 24oz+ ingredient id namespace)", "HighProtein (curated single-serve build, often adds an ExtraPortion/ExtraProtein by default)", "Influencer (celebrity-branded curated build, sometimes identical in composition to a HighProtein-typed record under a different mealId)", "Entree-less standalone side meal ('High Protein Cup')"]
+    },
+    "structuralContentGroupOnlyRecords": {
+      "description": "contentGroups entries (e.g. RiceContentGroup, BeansContentGroup) are grouping labels attached to an entree, not sellable items themselves — they carry no itemId/itemName/price and exist purely to express 'exactly one Rice choice required, exactly one Beans choice required.'",
+      "alsoSeenInMetadata": "menu-metadata.itemSections (31 named sections, e.g. AddonContentGroup, AllDrinkContentGroup, RiceContentGroup, ChipsSidesContentGroup) and itemGroups (logical concept groupings like FountainSoda/CauliRiceEntree/TractorLemonade with a displayName + defaultItemId + calorie range) are the metadata-side equivalent of this same structural-only concept."
+    },
+    "pricingReferenceRecords": {
+      "description": "Any content record carrying a non-null pricingReferenceItemId is priced/portioned relative to another record rather than being an independent priced entity — exclusively HalfPortion and ExtraPortion records in the data inspected."
+    },
+    "nonFoodRecords": {
+      "description": "nonFoodItems[] — Serving Utensils, Napkins & Utensils, 6 Serving Bowls. 3 records, zero nutrition applicability, only relevant to catering/BuildYourOwn order composition, not to any per-item nutrition calculation.",
+      "count": 3
+    }
+  },
+
+  "9_conflictsGapsAmbiguities": {
+    "missingSourceRelationships": [
+      "nutrition.json carries zero CMG ids and zero explicit linkage to any of the other four sources — every PDF-to-live join in section 6 is inferential (name/calorie/portion), not a structural guarantee.",
+      "menu-metadata.items has no itemName field; every name used to interpret a menu-metadata record in this analysis was borrowed from calculator-menu.json or menu-rules.json. 99 menu-metadata ids have no name in either of those files (section 2)."
+    ],
+    "conflictingNamesOrLabels": [
+      "PDF 'Barbacoa' vs live 'Beef Barbacoa' (same product, dropped adjective).",
+      "PDF 'Cilantro-Lime White Rice'/'Cilantro-Lime Brown Rice' vs live 'White Rice'/'Brown Rice' (live sources drop the 'Cilantro-Lime' qualifier everywhere it was checked, even though it is part of Chipotle's own public product name)."
+    ],
+    "conflictingCaloriesOrPortions": [
+      "Fresh Tomato Salsa and Roasted Chili-Corn Salsa: identical calories (25 / 80) but disagreeing portion weight (menu-metadata 3.5oz vs PDF 4oz) for the same named product.",
+      "Salsa portion units: PDF states Tomatillo salsas in 'fl oz', menu-metadata states the same items in 'oz' — numerically equal values, unresolved unit-type conflict (liquid volume vs weight) that matters if any downstream math treats oz and fl oz as interchangeable.",
+      "'Mikal Bridges High Protein Bowl' online-meal duplicate: 70g Protein (HighProtein-typed record) vs 71g Protein (Influencer-typed record) for what is otherwise an identical build/price/calories entry."
+    ],
+    "unmatchedPdfRows": [
+      "Flour Tortilla (taco) 80cal/1ea has no exact live counterpart (closest candidate CMG-5501 is 250cal/3oz, ambiguous, see section 6).",
+      "Fountain-flavor rows (Coca-Cola Classic, Diet Coke, Sprite, Fanta Orange, Mello Yello, Pibb Xtra, Barq's Root Beer, Minute Maid Lemonade, Powerade, Mug Root Beer, Dr. Pepper, Mountain Dew, Crush Orange, Sierra Mist, Lipton Raspberry Brisk Iced Tea, Pepsi family, Chipotle Iced/Sweet Iced Tea) have no joinable CMG id — the live source only has a generic flat-value fountain-cup record."
+    ],
+    "liveMenuItemsMissingFullPdfNutrition": [
+      "Chipotle Honey Chicken (all forms: entree, half, extra, kids) — no PDF row at all, apparent LTO/post-print addition.",
+      "Bottled/canned drinks sold at restaurant 469 (Mexican Coke/Sprite, Jarritos, San Pellegrino, Poppi, Open Water, Tractor lineup) — no exact-name PDF match found.",
+      "The 4 LTO proteins present in menu-rules but not calculator-menu (Brisket, Pollo Asado, Chicken Tinga, Crispy Chicken) — also absent from the PDF, consistent with being unavailable at this restaurant/print date.",
+      "The 99 unresolved menu-metadata-only ids (chorizo, carne asada, garlic steak, chicken al pastor, cauliflower rice, grilled street corn, desserts, adobo ranch, chimichurri, assorted drinks) — no PDF nutrition and, for most, no confirmed name."
+    ],
+    "ltoOrSeasonalItems": [
+      "Chipotle Honey Chicken (sold at restaurant 469, in calculator-menu, but absent from the printed PDF — likely newer than the PDF's Oct-2024/Mar-2025 print).",
+      "Smoked Brisket / Pollo Asado / Chicken Tinga / Crispy Chicken (in menu-rules and menu-metadata thumbnails, isItemAvailable:true at the rules/template level, but absent from restaurant 469's actual calculator-menu — either not-yet-launched, regionally piloted, or discontinued at this specific restaurant; the raw data alone cannot distinguish which).",
+      "Chili Lime Chips family, Grilled Street Corn family, Cauliflower Rice family — same pattern (present in rules/metadata, absent from calculator-menu-469).",
+      "menu-metadata.itemGroups carries explicit LTO-shaped 'group with a defaultItemId and a displayName' records for CauliRiceEntree/CauliRiceSingleTaco/CauliRiceKids that further corroborate a cauliflower-rice rollout was catalogued nationally without reaching restaurant 469."
+    ],
+    "locationSpecificItems": [
+      "Nothing in the five sources directly names a second restaurant/location for comparison; scope inference (restaurant 469 = calculator-menu/online-meals vs national = menu-rules/menu-metadata/PDF) is the only location-scoping signal available. Whether the 219 menu-metadata-only / 136 menu-rules-only ids are absent from restaurant 469 for regional, format (drive-thru/Chipotlane), or purely temporal (not-yet-launched/discontinued) reasons cannot be determined from these sources alone."
+    ],
+    "duplicatedRecords": [
+      "nutrition.json duplicates all non-drink rows verbatim across page 2 and page 3 (documented in the source's own collection metadata) — 194 raw records represent 72 distinct logical items, not 194.",
+      "4 online-meals records are genuine content duplicates under two different mealId/mealType pairs (section 5)."
+    ],
+    "ambiguousVariants": [
+      "isUniversal flag semantics differ in apparent meaning between calculator-menu (mostly false) and menu-rules (mostly true) for the identical id — not confidently resolved in this pass.",
+      "CMG-5362 Chili Lime Chips is referenced by an online meal but does not exist in calculator-menu-469 — unclear whether this is a stale online-meals record, a restaurant-469 catalog gap, or a channel-specific (app-only?) availability distinction."
+    ],
+    "unclearFieldMeanings": [
+      "menu-metadata's 'Portion':'0' + unit on individual-order Half/Extra content records (section 7) — appears to be an unpopulated placeholder rather than a real zero, but this is inferred, not confirmed by any source documentation.",
+      "online-meals' calories field mixing single-value and range-string ('520 - 1220') formats with no field indicating which shape to expect ahead of parsing.",
+      "menu-rules' unitPrice=0/unitDeliveryPrice=0 convention — confirmed non-meaningful for pricing, but not explicitly documented as such anywhere in the raw payload itself (inferred from cross-comparison with calculator-menu)."
+    ]
+  },
+
+  "10_importerRecommendations": {
+    "A_reusableFromChickFilA": [
+      "Preserve raw source data unchanged; fix importer/classification logic and regenerate rather than hand-editing generated output.",
+      "Distinguish a source SKU from a logical browse product — directly applicable to Chipotle's Half/Extra/catering-namespace ingredient duplicates (section 2) and the Burrito/Bowl/Salad/Tacos/Quesadilla per-protein entree family.",
+      "Never guess or approximate nutrition when official source identity is ambiguous — directly applicable to the fountain-drink-flavor non-join and the Flour-Tortilla(taco)/CMG-5501 mismatch in section 6; leave for human review rather than force a match.",
+      "Use an official secondary nutrition source only when the match to a specific record is unambiguous — the PDF is Chipotle's secondary/full-macro source relative to menu-metadata's Calories+Portion-only primary; the same unambiguous-match-only discipline applies to the exact/normalized-name tiers in section 6, and should exclude the ambiguous tier from any automatic join.",
+      "Keep internal structural records out of user-facing browse/search via one consistent visibility flag — directly applicable to contentGroups-only records, nonFoodItems, and pricing-reference-only Half/Extra content records.",
+      "Preserve source identity (ids, category membership, nutrition source, image) even when Macro Maxxer changes presentation — applicable given Chipotle's multiple ids-per-real-ingredient pattern (Guacamole/Queso Blanco), where provenance must stay traceable to which specific CMG id supplied which nutrition value.",
+      "Generated files are reproducible importer output, not a place for manual edits."
+    ],
+    "B_newGenericRulesChipotleReveals": [
+      "Build-container nutrition is compositional by design, not a fixed per-item value: an entree's own nutrition record represents only its primary-protein component, and full meal nutrition requires summing the entree's protein-portion value with the nutrition of every other selected content id. This is structurally different from a restaurant where each menu item has one fixed nutrition payload, and any future build-your-own-style restaurant should expect the same pattern.",
+      "A national/universal rules-and-metadata layer can be a strict superset of what a specific restaurant actually sells; id existence in the 'complete' catalog does not imply local availability, and the importer needs a restaurant-scoped source (here, calculator-menu.json) as the sole authority on what to actually expose.",
+      "Portion/Half/Extra relationships may have explicit source-provided nutrition values rather than requiring the importer to compute them via scaling — prefer the explicit record, and only fall back to scaling (clearly flagged as derived) when no explicit record exists.",
+      "The same real-world ingredient can legitimately carry more than one source id when its portion size or defaultContent behavior differs by ordering context (e.g. Queso Blanco topping vs quesadilla-addon vs side); a generic 'merge duplicate ids by name' rule would be unsafe here and needs a portion/price/defaultContent equality check first.",
+      "Preconfigured/curated meal records (online-meals-style) can be a thin metadata layer over otherwise-normal build-container + customization records rather than a new nutrition-bearing item type; the importer needs a policy for whether these become their own browse products or remain pure merchandising overlays, and for meals with no entree at all (single standalone side as the entire product).",
+      "A generic nutrition source (PDF-style) with no foreign-key linkage to the ordering system requires an explicit match-confidence tiering (exact / normalized-name / portion-assisted / ambiguous / no-match) rather than a single boolean-matched flag, and ambiguous matches must remain unresolved rather than silently forced."
+    ],
+    "C_chipotleSpecificAdapterLogic": [
+      "A lookup step that resolves an entree's full nutrition as protein-portion-nutrition (from the entree's own CMG id) plus the nutrition of whichever content ids are actually selected, rather than treating the entree id's own menu-metadata nutrition as the finished product.",
+      "A defaultContent-aware baseline: for entrees with a defaultContent:true content record (currently only the Veggie family's Guacamole), the 'as-ordered-with-no-changes' nutrition must include that item; every other family has no default toppings and should not silently include any.",
+      "A restaurant-469-availability filter that intersects menu-rules'/menu-metadata's broader catalog down to calculator-menu.json's actual id set before considering anything sellable/importable, given menu-rules is ~1.7x and menu-metadata is ~2.1x calculator-menu's id count.",
+      "A name-resolution fallback chain specific to this source family: calculator-menu.json name → menu-rules.json name → (name unresolved, exclude or flag) for any menu-metadata id lacking a direct name, since menu-metadata.items itself never carries a name field.",
+      "Explicit handling for the fountain-drink generic-cup records (CMG-2001/CMG-2002): these cannot be resolved to a specific PDF nutrition row automatically and need either a manual flavor-mapping table, an 'unknown flavor, use category-average' fallback, or exclusion from precise-nutrition claims — a decision to make later, not now.",
+      "A catering/BuildYourOwn-namespace awareness so that CMG-537x/539x-style 'per group' ingredient ids are not conflated with their individual-order counterparts (CMG-500x/505x) despite sharing the same display name.",
+      "Cross-listed online-meal deduplication (mealName+entree/sides/drinks composition equality) before deciding whether to import both mealType-tagged copies of what is otherwise the same underlying build, given the confirmed 70g/71g protein-label inconsistency example."
+    ]
+  },
+
+  "11_unresolvedFindings": [
+    "The true meaning/intended-consumer of the isUniversal flag divergence between calculator-menu (false) and menu-rules (true) for identical ids.",
+    "Whether the 219 menu-metadata-only / 136 menu-rules-only ids absent from restaurant 469 are regional, format-specific, not-yet-launched, or discontinued — cannot be determined from these sources alone.",
+    "The exact composition represented by CMG-5501 'Soft Flour Tortilla' (250cal/3oz) relative to the PDF's per-tortilla rows. RESOLVED, see followUpResolutions below.",
+    "Whether CMG-5362 Chili Lime Chips' presence in an online meal despite absence from calculator-menu-469 reflects stale data, a genuine catalog gap, or a channel-specific availability rule.",
+    "The live CMG id(s) for Supergreens Salad Mix and for the quesadilla-context flour tortilla were not isolated in this pass and need dedicated content-array inspection of the Salad and Quesadilla entree families before import. RESOLVED, see followUpResolutions below.",
+    "Whether 'Portion':'0'+unit on individual-order Half/Extra menu-metadata records is a true value or an unpopulated placeholder.",
+    "Full resolution of all 99 unnamed menu-metadata-only ids beyond the thumbnail-filename hint (a non-authoritative signal). RESOLVED, see followUpResolutions below."
+  ],
+
+  "followUpResolutions": {
+    "note": "Added after this analysis was originally written. This block does not alter, delete, or supersede any finding above — the findings above remain the unedited evidentiary record of what was originally observed. Decisions made in response to these findings are recorded in full in data/review/chipotle/import-decisions.md; this block is only a pointer from each resolved finding to where its resolution lives.",
+    "resolved": [
+      {
+        "topic": "99 unnamed menu-metadata-only ids (section 2 menuMetadataOnlyIds.unresolvedNoNameInAnyRawField; section 9; section 11)",
+        "dedicatedFollowUpAnalysis": "data/review/chipotle/unnamed-metadata-analysis.md and .json",
+        "decisionRecordedIn": "data/review/chipotle/import-decisions.md §1",
+        "status": "RESOLVED"
+      },
+      {
+        "topic": "Fountain drink flavors have no joinable CMG id (section 6 ambiguous; section 9; section 10.C)",
+        "decisionRecordedIn": "data/review/chipotle/import-decisions.md §2",
+        "status": "RESOLVED"
+      },
+      {
+        "topic": "Supergreens Salad Mix live CMG id not isolated (section 6 ambiguous; section 11)",
+        "dedicatedFollowUpAnalysis": "data/review/chipotle/build-gaps-analysis.md Part A and .json partA_salad",
+        "decisionRecordedIn": "data/review/chipotle/import-decisions.md §3",
+        "status": "RESOLVED"
+      },
+      {
+        "topic": "Quesadilla-context tortilla (and cheese) live CMG id not isolated (section 6 ambiguous; section 11)",
+        "dedicatedFollowUpAnalysis": "data/review/chipotle/build-gaps-analysis.md Part B and .json partB_quesadilla",
+        "decisionRecordedIn": "data/review/chipotle/import-decisions.md §4",
+        "status": "RESOLVED"
+      },
+      {
+        "topic": "CMG-5501/CMG-5503 taco tortilla nutrition ambiguity vs PDF per-tortilla rows (section 3; section 6 ambiguous; section 9 unmatched PDF rows; section 11)",
+        "dedicatedFollowUpAnalysis": "data/review/chipotle/build-gaps-analysis.md Part C and .json partC_tacoTortilla",
+        "decisionRecordedIn": "data/review/chipotle/import-decisions.md §5",
+        "status": "RESOLVED"
+      }
+    ],
+    "stillOpen": [
+      "The isUniversal flag divergence between calculator-menu and menu-rules for identical ids.",
+      "Whether the 219 menu-metadata-only / 136 menu-rules-only ids absent from restaurant 469 are regional, format-specific, not-yet-launched, or discontinued.",
+      "Whether CMG-5362 Chili Lime Chips' presence in an online meal despite absence from calculator-menu-469 reflects stale data, a genuine catalog gap, or a channel-specific availability rule.",
+      "Whether 'Portion':'0'+unit on individual-order Half/Extra menu-metadata records is a true value or an unpopulated placeholder."
+    ]
+  }
+}
