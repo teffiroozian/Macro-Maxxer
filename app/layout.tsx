@@ -1,3 +1,5 @@
+import { Analytics } from "@vercel/analytics/next";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Suspense } from "react";
 import { Outfit, Unbounded } from "next/font/google";
 import { GlobalSearchProvider } from "@/components/GlobalSearchContext";
@@ -25,75 +27,79 @@ import "./globals.css";
 // request), so the swap window is effectively immediate rather than a
 // visible fallback-font flash.
 const outfit = Outfit({
-  variable: "--font-outfit",
-  subsets: ["latin"],
-  display: "swap",
+    variable: "--font-outfit",
+    subsets: ["latin"],
+    display: "swap",
 });
 
 const unbounded = Unbounded({
-  variable: "--font-unbounded",
-  subsets: ["latin"],
-  weight: ["500", "600", "700", "800"],
-  display: "swap",
+    variable: "--font-unbounded",
+    subsets: ["latin"],
+    weight: ["500", "600", "700", "800"],
+    display: "swap",
 });
 
 export const metadata = {
-  title: {
-    default: "Macro Maxxer",
-    template: "%s | Macro Maxxer",
-  },
-  description:
-    "Track your fast food order macros and see your total macros before you order it. The app makes it super easy for you to find high protein items, spot hidden calories, and choose meals that actually fit your goals.",
-
-  openGraph: {
-    title: "Macro Maxxer",
+    title: {
+        default: "Macro Maxxer",
+        template: "%s | Macro Maxxer",
+    },
     description:
-      "Track your fast food order macros and see your total macros before you order it. Find high protein,low calorie items, and choose meals that fit your goals.",
-    url: "https://your-vercel-url.vercel.app",
-    siteName: "Macro Maxxer",
-    images: [
-      {
-        url: "/og-image.png",
-        width: 1200,
-        height: 630,
-      },
-    ],
-    type: "website",
-  },
-  icons: {
-    icon: [
-      { url: "/favicon.ico" },
-      { url: "/logo.png", type: "image/png" },
-    ],
-    shortcut: "/favicon.ico",
-    apple: "/logo.png",
-  },
+        "Track your fast food order macros and see your total macros before you order it. The app makes it super easy for you to find high protein items, spot hidden calories, and choose meals that actually fit your goals.",
+
+    openGraph: {
+        title: "Macro Maxxer",
+        description:
+            "Track your fast food order macros and see your total macros before you order it. Find high protein,low calorie items, and choose meals that fit your goals.",
+        url: "https://your-vercel-url.vercel.app",
+        siteName: "Macro Maxxer",
+        images: [
+            {
+                url: "/og-image.png",
+                width: 1200,
+                height: 630,
+            },
+        ],
+        type: "website",
+    },
+    icons: {
+        icon: [
+            { url: "/favicon.ico" },
+            { url: "/logo.png", type: "image/png" },
+        ],
+        shortcut: "/favicon.ico",
+        apple: "/logo.png",
+    },
 };
 
 export default function RootLayout({
-  children,
+    children,
 }: Readonly<{
-  children: React.ReactNode;
+    children: React.ReactNode;
 }>) {
-  return (
-    <html lang="en">
-      <body className={`${outfit.className} ${unbounded.variable} antialiased`}>
-        <GlobalSearchProvider>
-          <GlobalItemPreviewProvider>
-            <CartAddConfirmationProvider>
-              <BuildInProgressGuardProvider>
-                {children}
-                <Suspense fallback={null}>
-                  <GlobalSearchOverlay />
-                </Suspense>
-                <GlobalItemPreviewModal />
-                <CrossRestaurantCartDialog />
-                <InProgressBuildDialog />
-              </BuildInProgressGuardProvider>
-            </CartAddConfirmationProvider>
-          </GlobalItemPreviewProvider>
-        </GlobalSearchProvider>
-      </body>
-    </html>
-  );
+    return (
+        <html lang="en">
+            <body
+                className={`${outfit.className} ${unbounded.variable} antialiased`}
+            >
+                <GlobalSearchProvider>
+                    <GlobalItemPreviewProvider>
+                        <CartAddConfirmationProvider>
+                            <BuildInProgressGuardProvider>
+                                {children}
+                                <Suspense fallback={null}>
+                                    <GlobalSearchOverlay />
+                                </Suspense>
+                                <GlobalItemPreviewModal />
+                                <CrossRestaurantCartDialog />
+                                <InProgressBuildDialog />
+                            </BuildInProgressGuardProvider>
+                        </CartAddConfirmationProvider>
+                    </GlobalItemPreviewProvider>
+                </GlobalSearchProvider>
+                <Analytics />
+                <SpeedInsights />
+            </body>
+        </html>
+    );
 }
