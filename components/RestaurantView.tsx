@@ -14,6 +14,7 @@ import type { RestaurantBuilderConfig } from "@/types/builder";
 import { categorySectionId } from "@/lib/menuSections/sorting";
 import { INGREDIENT_PROTEIN_OPTIONS } from "@/lib/menuSections/filterOptions";
 import { resolveEffectiveIngredientNutrition } from "@/lib/ingredientNutrition";
+import { trackRestaurantView } from "@/lib/analytics";
 import MenuSections from "./MenuSections";
 import StickyRestaurantBar from "./StickyRestaurantBar";
 import { useRestaurantMenuControls } from "./restaurant-view/useRestaurantMenuControls";
@@ -279,6 +280,12 @@ export default function RestaurantView(props: {
   customizationRules?: RestaurantCustomizationRules;
   builderConfig?: RestaurantBuilderConfig;
 }) {
+  const { restaurantId, restaurantName } = props;
+
+  useEffect(() => {
+    trackRestaurantView({ restaurantId, restaurantName });
+  }, [restaurantId, restaurantName]);
+
   const isChipotleBuildPage =
     props.hasBuildYourOwn === true && props.restaurantId === "chipotle";
 
