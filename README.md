@@ -4,7 +4,7 @@ A fast food macro tracking app that lets users find high-protein, low calorie me
 
 ## 🌍 Live Demo
 
-https://macromaxxer.vercel.app/
+https://www.macromaxxer.com/
 
 ## 🧠 The Problem
 
