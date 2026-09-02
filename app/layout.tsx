@@ -41,6 +41,8 @@ const unbounded = Unbounded({
 });
 
 export const metadata = {
+    metadataBase: new URL("https://www.macromaxxer.com"),
+
     title: {
         default: "Macro Maxxer",
         template: "%s | Macro Maxxer",
@@ -52,7 +54,7 @@ export const metadata = {
         title: "Macro Maxxer",
         description:
             "Track your fast food order macros and see your total macros before you order it. Find high protein,low calorie items, and choose meals that fit your goals.",
-        url: "https://your-vercel-url.vercel.app",
+        url: "https://www.macromaxxer.com",
         siteName: "Macro Maxxer",
         images: [
             {
