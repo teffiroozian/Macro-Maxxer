@@ -18,6 +18,8 @@ import SurfaceCard from "@/components/ui/SurfaceCard";
 import SectionEyebrow from "@/components/ui/SectionEyebrow";
 import CartCardActions from "./menu-item-card/CartCardActions";
 import { useMenuItemCartAdapter } from "./menu-item-card/useMenuItemCartAdapter";
+import { trackAddToCart } from "@/lib/analytics";
+import { getCartItemAddToCartAnalytics } from "@/lib/cart/itemAccessors";
 import { useMenuItemConfiguration } from "./menu-item-card/useMenuItemConfiguration";
 import {
   isChipotleEditablePresetBuildItem,
@@ -641,6 +643,11 @@ export default function MenuItemCard({
 
     if (matchingCartItem) {
       updateQuantity(matchingCartItem.id, matchingCartItem.quantity + 1, { markAsJustAdded: true });
+      // This "Add" click merges into an already-present identical cart line
+      // (same item/variant/customization) instead of creating a new one —
+      // still a genuine add-to-cart action, so track it with quantity 1 (the
+      // delta this click actually added), not the line's resulting total.
+      trackAddToCart(getCartItemAddToCartAnalytics(matchingCartItem, 1));
       setIsAddFeedbackVisible(true);
     } else {
       requestAddItem(

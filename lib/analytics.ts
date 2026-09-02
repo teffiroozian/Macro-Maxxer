@@ -75,3 +75,38 @@ export function trackSearch({
     search_context: searchContext,
   });
 }
+
+// "standard": a regular menu item (selection.type === "standard").
+// "builder": a Chipotle-style build-your-own item (selection.type === "build-your-own").
+export type CartItemAnalyticsType = "standard" | "builder";
+
+export function trackAddToCart({
+  restaurantId,
+  restaurantName,
+  itemId,
+  itemName,
+  itemType,
+  calories,
+  protein,
+  quantity,
+}: {
+  restaurantId: string;
+  restaurantName: string;
+  itemId: string;
+  itemName: string;
+  itemType: CartItemAnalyticsType;
+  calories: number;
+  protein: number;
+  quantity: number;
+}) {
+  sendGaEvent("add_to_cart", {
+    restaurant_id: restaurantId,
+    restaurant_name: restaurantName,
+    item_id: itemId,
+    item_name: itemName,
+    item_type: itemType,
+    calories,
+    protein,
+    quantity,
+  });
+}

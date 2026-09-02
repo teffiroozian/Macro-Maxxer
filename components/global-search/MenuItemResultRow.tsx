@@ -7,6 +7,8 @@ import { formatMacroDisplayNumber } from "@/components/nutrition/macroDisplay";
 import VariantSelector from "@/components/VariantSelector";
 import { useGlobalSearch } from "@/components/GlobalSearchContext";
 import { useMenuItemCartAdapter } from "@/components/menu-item-card/useMenuItemCartAdapter";
+import { trackAddToCart } from "@/lib/analytics";
+import { getCartItemAddToCartAnalytics } from "@/lib/cart/itemAccessors";
 import { buildStandardCartItemPayload } from "@/lib/cart/standardItemConfiguration";
 import { resolveMenuItemVariantNutrition } from "@/lib/nutrition";
 import type { QuickAddEligibility } from "@/lib/search/quickAddEligibility";
@@ -81,6 +83,10 @@ export default function MenuItemResultRow({
 
     if (matchingCartItem) {
       updateQuantity(matchingCartItem.id, matchingCartItem.quantity + 1, { markAsJustAdded: true });
+      // Same "merges into an existing identical line" case as MenuItemCard's
+      // Quick Add — still a genuine add, tracked with quantity 1 (this
+      // click's delta), not the line's resulting total.
+      trackAddToCart(getCartItemAddToCartAnalytics(matchingCartItem, 1));
       setIsAddFeedbackVisible(true);
       closeSearch();
       return;

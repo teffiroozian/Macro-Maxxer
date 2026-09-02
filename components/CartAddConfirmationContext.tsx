@@ -2,6 +2,8 @@
 
 import { createContext, useContext, useState, type ReactNode } from "react";
 import { useCart } from "@/stores/cartStore";
+import { trackAddToCart } from "@/lib/analytics";
+import { getCartItemAddToCartAnalytics } from "@/lib/cart/itemAccessors";
 import type { CartItem } from "@/types/cart";
 
 type PendingConflict = {
@@ -29,6 +31,16 @@ export function CartAddConfirmationProvider({ children }: { children: ReactNode 
   const { items, addItem, clearCart } = useCart();
   const [pendingConflict, setPendingConflict] = useState<PendingConflict | null>(null);
 
+  // Every successful add that reaches the cart store funnels through here,
+  // so this is the single place the add_to_cart GA4 event fires — one event
+  // per genuine add, regardless of which UI surface (card, modal, builder,
+  // search quick add) or which of the three addItem() call sites below
+  // triggered it.
+  const addItemAndTrack = (item: CartItem) => {
+    addItem(item);
+    trackAddToCart(getCartItemAddToCartAnalytics(item, item.quantity));
+  };
+
   const requestAddItem = (item: CartItem, onAdded?: () => void) => {
     // Compare against every restaurant already represented in the cart
     // (not just the first item) so an already-mixed cart from a prior "Add
@@ -37,7 +49,7 @@ export function CartAddConfirmationProvider({ children }: { children: ReactNode 
     const hasConflict = items.length > 0 && !items.some((cartItem) => cartItem.restaurantId === item.restaurantId);
 
     if (!hasConflict) {
-      addItem(item);
+      addItemAndTrack(item);
       onAdded?.();
       return;
     }
@@ -51,7 +63,7 @@ export function CartAddConfirmationProvider({ children }: { children: ReactNode 
 
   const confirmAddAnyway = () => {
     if (!pendingConflict) return;
-    addItem(pendingConflict.item);
+    addItemAndTrack(pendingConflict.item);
     pendingConflict.onAdded?.();
     setPendingConflict(null);
   };
@@ -59,7 +71,7 @@ export function CartAddConfirmationProvider({ children }: { children: ReactNode 
   const confirmReplaceCart = () => {
     if (!pendingConflict) return;
     clearCart();
-    addItem(pendingConflict.item);
+    addItemAndTrack(pendingConflict.item);
     pendingConflict.onAdded?.();
     setPendingConflict(null);
   };
