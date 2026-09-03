@@ -74,6 +74,7 @@ export default function MenuItemCardHeader({
         <div className="min-w-0">
           <MenuItemTitle
             name={item.name}
+            as={isCartMode ? "div" : "h3"}
             className="font-heading text-[22px] leading-[1.15] font-bold tracking-tight text-neutral-900 sm:text-[26px]"
           />
           {variants && !item.hideVariantSelector ? (

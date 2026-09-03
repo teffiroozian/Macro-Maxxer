@@ -65,6 +65,7 @@ export default function SelectedIngredientsReviewCard({
                             image={selectedIngredient.item.image}
                             fallbackImage={restaurantLogo}
                             name={name}
+                            imageAlt={selectedIngredient.item.name}
                             accessory={
                                 portionModeOptions && portionModeOptions.length > 0 ? (
                                     <InlineVariantSelect

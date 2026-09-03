@@ -1659,12 +1659,11 @@ export default function ItemRouteModal({
                                 <p className="item-overview-label mt-4 min-w-0 pr-12 text-[11px] font-semibold uppercase tracking-wide text-slate-400 sm:mt-0 sm:pr-14">
                                     Base Nutrition
                                 </p>
-                                <h1 className="item-overview-title mt-1.5 min-w-0 sm:pr-14">
-                                    <MenuItemTitle
-                                        name={item.name}
-                                        className="font-heading text-lg font-bold leading-tight tracking-tight text-neutral-900 sm:text-xl lg:text-2xl"
-                                    />
-                                </h1>
+                                <MenuItemTitle
+                                    as="h2"
+                                    name={item.name}
+                                    className="item-overview-title mt-1.5 min-w-0 font-heading text-lg font-bold leading-tight tracking-tight text-neutral-900 sm:pr-14 sm:text-xl lg:text-2xl"
+                                />
                                 <div className="item-overview-macros mt-5 flex flex-wrap items-center justify-start gap-x-4 gap-y-2 sm:mt-3 sm:gap-x-5">
                                     <MacroStat
                                         macroKey="calories"

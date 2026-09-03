@@ -173,7 +173,7 @@ export default function MobileNavDrawer({
               {browseTopContent ? <div>{browseTopContent}</div> : null}
               <section className="space-y-2">
                 <button type="button" onClick={() => setIsFeaturedOpen((prev) => !prev)} className="flex w-full items-center justify-between text-left">
-                  <h4 className="text-xs font-semibold uppercase tracking-wide text-slate-400">Featured Restaurants</h4>
+                  <p className="text-xs font-semibold uppercase tracking-wide text-slate-400">Featured Restaurants</p>
                   <ChevronDown className={`h-3.5 w-3.5 text-slate-400 transition-transform ${isFeaturedOpen ? "rotate-180" : ""}`} strokeWidth={2.5} />
                 </button>
                 {isFeaturedOpen ? (

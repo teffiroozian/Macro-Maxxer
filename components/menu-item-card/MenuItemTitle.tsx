@@ -11,8 +11,16 @@ const HOVER_SCROLL_DURATION_MS = 1600;
 // pause so the full name stays reachable without permanently wrapping the
 // card to two lines. Below `lg`, falls back to the previous two-line clamp
 // since there's no hover to trigger the reveal on touch devices anyway.
-export default function MenuItemTitle({ name, className = "" }: { name: string; className?: string }) {
-  const containerRef = useRef<HTMLDivElement | null>(null);
+export default function MenuItemTitle({
+  name,
+  className = "",
+  as: Tag = "div",
+}: {
+  name: string;
+  className?: string;
+  as?: "div" | "h2" | "h3";
+}) {
+  const containerRef = useRef<HTMLSpanElement | null>(null);
   const textRef = useRef<HTMLSpanElement | null>(null);
   const [isOverflowing, setIsOverflowing] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
@@ -68,13 +76,13 @@ export default function MenuItemTitle({ name, className = "" }: { name: string; 
   };
 
   return (
-    <>
-      <div className={`line-clamp-2 lg:hidden ${className}`}>{name}</div>
-      <div
+    <Tag className={className}>
+      <span className="line-clamp-2 lg:hidden">{name}</span>
+      <span
         ref={containerRef}
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
-        className={`relative hidden w-full overflow-hidden whitespace-nowrap lg:block ${className}`}
+        className="relative hidden w-full overflow-hidden whitespace-nowrap lg:block"
       >
         <span
           ref={textRef}
@@ -94,7 +102,7 @@ export default function MenuItemTitle({ name, className = "" }: { name: string; 
             }`}
           />
         ) : null}
-      </div>
-    </>
+      </span>
+    </Tag>
   );
 }

@@ -1,5 +1,6 @@
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
+import type { Metadata } from "next";
 import { Suspense } from "react";
 import { GoogleAnalytics } from "@next/third-parties/google";
 import { Outfit, Unbounded } from "next/font/google";
@@ -40,20 +41,20 @@ const unbounded = Unbounded({
     display: "swap",
 });
 
-export const metadata = {
+export const metadata: Metadata = {
     metadataBase: new URL("https://www.macromaxxer.com"),
 
     title: {
-        default: "Macro Maxxer",
+        default: "Fast Food Nutrition & Macro Tracker | Macro Maxxer",
         template: "%s | Macro Maxxer",
     },
     description:
-        "Track your fast food order macros and see your total macros before you order it. The app makes it super easy for you to find high protein items, spot hidden calories, and choose meals that actually fit your goals.",
+        "Compare fast food nutrition, track calories and macros, customize meals, and find high-protein options that fit your goals.",
 
     openGraph: {
-        title: "Macro Maxxer",
+        title: "Fast Food Nutrition & Macro Tracker | Macro Maxxer",
         description:
-            "Track your fast food order macros and see your total macros before you order it. Find high protein,low calorie items, and choose meals that fit your goals.",
+            "Compare fast food nutrition, track calories and macros, customize meals, and find high-protein options that fit your goals.",
         url: "https://www.macromaxxer.com",
         siteName: "Macro Maxxer",
         images: [

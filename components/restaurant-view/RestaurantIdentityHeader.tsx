@@ -90,7 +90,7 @@ export default function RestaurantIdentityHeader({
 
             <div className="min-w-0">
               <h1 className="font-heading text-3xl font-bold leading-tight text-neutral-900 sm:text-4xl">
-                {name}
+                {name} Nutrition
               </h1>
               {description ? (
                 <p className="mt-1.5 max-w-2xl text-sm text-neutral-600 sm:text-base">{description}</p>

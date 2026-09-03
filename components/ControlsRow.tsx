@@ -420,7 +420,7 @@ export default function ControlsRow({
     <div className="space-y-6">
       {mobileEntreeOptions?.length ? (
         <section className="space-y-2">
-          <h4 className={sectionHeadingClassName}>Entree</h4>
+          <p className={sectionHeadingClassName}>Entree</p>
           <div className="space-y-1 rounded-xl bg-slate-100 p-1.5">
             {mobileEntreeOptions.map((option) => (
               <div key={option.key}>
@@ -456,7 +456,7 @@ export default function ControlsRow({
         <>
           <section className="space-y-2">
             <button type="button" onClick={() => setIsViewSectionOpen((prev) => !prev)} className="flex w-full items-center justify-between text-left">
-              <h4 className={sectionHeadingClassName}>View</h4>
+              <span className={sectionHeadingClassName}>View</span>
               <ChevronDown className={`${chevronClassName} ${isViewSectionOpen ? "rotate-180" : ""}`} strokeWidth={2.5} />
             </button>
             {isViewSectionOpen ? (
@@ -483,7 +483,7 @@ export default function ControlsRow({
       )}
       <section className="space-y-2">
         <button type="button" onClick={() => setIsSortSectionOpen((prev) => !prev)} className="flex w-full items-center justify-between text-left">
-          <h4 className={sectionHeadingClassName}>Sort</h4>
+          <span className={sectionHeadingClassName}>Sort</span>
           <ChevronDown className={`${chevronClassName} ${isSortSectionOpen ? "rotate-180" : ""}`} strokeWidth={2.5} />
         </button>
         {isSortSectionOpen ? (
@@ -509,7 +509,7 @@ export default function ControlsRow({
       <section ref={filtersSectionRef} className="space-y-3">
         <button type="button" onClick={() => setIsFiltersSectionOpen((prev) => !prev)} className="flex w-full items-center justify-between text-left">
           <span className="inline-flex items-center gap-2">
-            <h4 className={sectionHeadingClassName}>Filters</h4>
+            <span className={sectionHeadingClassName}>Filters</span>
             {/* Live draft count — updates immediately as protein/calories
                 change in this panel, before Apply. The closed trigger's
                 badge (appliedActiveFilterCount) is a separate derivation

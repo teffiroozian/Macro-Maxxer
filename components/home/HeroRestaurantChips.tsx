@@ -1,7 +1,5 @@
-"use client";
-
 import Image from "next/image";
-import { useRouter } from "next/navigation";
+import Link from "next/link";
 import type { RestaurantIndexEntry } from "@/types/restaurant";
 
 type HeroRestaurantChipsProps = {
@@ -14,7 +12,6 @@ type HeroRestaurantChipsProps = {
 // restaurant — the same destination RestaurantSearch's own result rows use —
 // so this never becomes a second, divergent selection path.
 export default function HeroRestaurantChips({ restaurants }: HeroRestaurantChipsProps) {
-  const router = useRouter();
   const quickSearchRestaurants = restaurants.filter((restaurant) => !restaurant.isComingSoon);
 
   if (quickSearchRestaurants.length === 0) {
@@ -25,10 +22,10 @@ export default function HeroRestaurantChips({ restaurants }: HeroRestaurantChips
     <div className="flex flex-wrap items-center justify-center gap-2 text-sm">
       <span className="text-slate-500">Try:</span>
       {quickSearchRestaurants.map((restaurant) => (
-        <button
+        <Link
           key={restaurant.id}
-          type="button"
-          onClick={() => router.push(`/restaurant/${restaurant.id}`, { scroll: true })}
+          href={`/restaurant/${restaurant.id}`}
+          scroll
           className="inline-flex cursor-pointer items-center gap-1.5 rounded-full border border-slate-200 bg-white/70 py-1 pl-1 pr-3 font-semibold text-slate-700 shadow-sm transition hover:border-slate-300 hover:bg-white hover:text-slate-900"
         >
           {/* Fixed at 16px so it never grows the chip's own line-height
@@ -38,7 +35,7 @@ export default function HeroRestaurantChips({ restaurants }: HeroRestaurantChips
             <Image src={restaurant.logo} alt="" fill sizes="16px" className="object-cover" />
           </span>
           {restaurant.name}
-        </button>
+        </Link>
       ))}
     </div>
   );

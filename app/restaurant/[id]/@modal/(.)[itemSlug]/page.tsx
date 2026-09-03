@@ -1,6 +1,14 @@
+import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import ItemRouteModal from "@/components/item-route-modal/ItemRouteModal";
 import { getRestaurantItemRouteData } from "@/lib/restaurantItemRouteData";
+
+export const metadata: Metadata = {
+  robots: {
+    index: false,
+    follow: true,
+  },
+};
 
 export default async function ItemModalPage({
   params,

@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import HeroSearchNav from "@/components/home/HeroSearchNav";
 import HomeBackdrop from "@/components/home/HomeBackdrop";
 import RestaurantCarousel from "@/components/home/RestaurantCarousel";
@@ -21,6 +22,12 @@ import {
 } from "@/data/restaurants/chipotle-homepage-editorial";
 
 const restaurants = getAllRestaurants();
+
+export const metadata: Metadata = {
+  alternates: {
+    canonical: "/",
+  },
+};
 
 // See docs/homepage-visual-refresh-plan.md. Slice 2 replaces the Slice 1
 // single-spotlight stand-in with the full Featured Restaurants carousel.

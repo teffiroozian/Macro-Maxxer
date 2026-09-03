@@ -3012,9 +3012,9 @@ export default function ChipotleRestaurantBuilderView({
           >
             <div className="grid justify-items-center gap-8">
               <div className="grid justify-items-center gap-5">
-                <h1 className="text-center text-2xl font-extrabold sm:text-[32px]">
+                <h2 className="text-center text-2xl font-extrabold sm:text-[32px]">
                   {editingBuildItem.name}
-                </h1>
+                </h2>
                 <img
                   className="h-[220px] w-[220px] rounded-[14px] bg-[#efefef] object-contain p-2 shadow-[0_0_5px_rgba(0,0,0,0.25)] sm:h-[300px] sm:w-[300px]"
                   src={editingBuildItem.image}
@@ -3624,7 +3624,7 @@ export default function ChipotleRestaurantBuilderView({
                 <div>
                   <div className="mb-5 flex flex-wrap items-start justify-between gap-3">
                     <div>
-                      <h1 className="text-2xl font-bold text-slate-900 sm:text-3xl">All Ingredients</h1>
+                      <h2 className="text-2xl font-bold text-slate-900 sm:text-3xl">All Ingredients</h2>
                       <p className="mt-1 text-sm text-slate-500">
                         Compare every {restaurantName} ingredient side by side, then head back to your build.
                       </p>

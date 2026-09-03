@@ -62,12 +62,14 @@ export function SelectionSummaryRow({
   image,
   fallbackImage,
   name,
+  imageAlt,
   badge,
   accessory,
 }: {
   image?: string;
   fallbackImage?: string;
   name: string;
+  imageAlt?: string;
   badge?: string;
   accessory?: ReactNode;
 }) {
@@ -75,7 +77,7 @@ export function SelectionSummaryRow({
     <SurfaceCard as="li" padding="none" radius="default" shadow="none" className="flex items-center gap-2 rounded-xl px-3 py-2">
       <div className="h-8 w-8 shrink-0 overflow-hidden rounded-md border border-black/10 bg-neutral-100">
         {image || fallbackImage ? (
-          <Image src={image || fallbackImage || ""} alt={name} width={32} height={32} className="h-full w-full object-cover" />
+          <Image src={image || fallbackImage || ""} alt={image ? imageAlt ?? name : ""} width={32} height={32} className="h-full w-full object-cover" />
         ) : null}
       </div>
       <span className="min-w-0 flex-1 truncate text-sm font-medium text-slate-900">{name}</span>

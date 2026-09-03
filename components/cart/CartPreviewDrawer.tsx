@@ -111,7 +111,7 @@ export default function CartPreviewDrawer() {
                   {cartHeaderInfo.mode === "single" && cartHeaderInfo.restaurant?.logo ? (
                     <Image
                       src={cartHeaderInfo.restaurant.logo}
-                      alt={cartHeaderInfo.restaurant.name}
+                      alt={`${cartHeaderInfo.restaurant.name} logo`}
                       fill
                       className="object-cover"
                       sizes="44px"

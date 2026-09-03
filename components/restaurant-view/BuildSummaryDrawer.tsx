@@ -69,7 +69,7 @@ function SelectedIngredientRow({
       <SurfaceCard as="li" padding="none" radius="default" shadow="none" className="flex items-center justify-between rounded-xl px-3 py-2">
         <div className="flex min-w-0 items-center gap-2">
           <div className="h-8 w-8 shrink-0 overflow-hidden rounded-md border border-black/10 bg-neutral-100">
-            <Image src={selectedIngredient.item.image || restaurantLogo} alt={selectedIngredient.item.name} width={32} height={32} className="h-full w-full object-cover" />
+            <Image src={selectedIngredient.item.image || restaurantLogo} alt={selectedIngredient.item.image ? selectedIngredient.item.name : ""} width={32} height={32} className="h-full w-full object-cover" />
           </div>
           <span className="min-w-0 flex-1 truncate text-sm font-medium text-slate-900">
             {selectedIngredient.item.name}
@@ -96,7 +96,7 @@ function SelectedIngredientRow({
       <li className="flex items-center justify-between gap-3 rounded-xl border border-black/5 bg-slate-50 px-2.5 py-2 sm:px-3 sm:py-2.5">
         <div className="flex min-w-0 items-center gap-2.5">
           <div className="h-11 w-11 shrink-0 overflow-hidden rounded-lg border border-black/10 bg-neutral-100 opacity-80 sm:h-9 sm:w-9">
-            <Image src={selectedIngredient.item.image || restaurantLogo} alt={selectedIngredient.item.name} width={44} height={44} className="h-full w-full object-cover" />
+            <Image src={selectedIngredient.item.image || restaurantLogo} alt={selectedIngredient.item.image ? selectedIngredient.item.name : ""} width={44} height={44} className="h-full w-full object-cover" />
           </div>
           <div className="min-w-0">
             <p className="truncate text-sm font-medium text-slate-600">{selectedIngredient.item.name}</p>
@@ -137,7 +137,7 @@ function SelectedIngredientRow({
     >
       <div className="flex min-w-0 items-center gap-2.5">
         <div className="h-11 w-11 shrink-0 overflow-hidden rounded-lg border border-black/10 bg-neutral-100 sm:h-9 sm:w-9">
-          <Image src={selectedIngredient.item.image || restaurantLogo} alt={selectedIngredient.item.name} width={44} height={44} className="h-full w-full object-cover" />
+          <Image src={selectedIngredient.item.image || restaurantLogo} alt={selectedIngredient.item.image ? selectedIngredient.item.name : ""} width={44} height={44} className="h-full w-full object-cover" />
         </div>
         <div className="min-w-0">
           <p className="truncate text-sm font-medium text-slate-900">{selectedIngredient.item.name}</p>
