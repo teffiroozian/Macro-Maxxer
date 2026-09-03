@@ -12,6 +12,7 @@ import GlobalSearchOverlay from "@/components/global-search/GlobalSearchOverlay"
 import GlobalItemPreviewModal from "@/components/GlobalItemPreviewModal";
 import CrossRestaurantCartDialog from "@/components/cart/CrossRestaurantCartDialog";
 import InProgressBuildDialog from "@/components/InProgressBuildDialog";
+import { SITE_DESCRIPTION, SITE_NAME, SITE_URL } from "@/lib/site";
 import "./globals.css";
 
 // Central type system for the whole app (Slice 1 establishes this on the
@@ -42,21 +43,19 @@ const unbounded = Unbounded({
 });
 
 export const metadata: Metadata = {
-    metadataBase: new URL("https://www.macromaxxer.com"),
+    metadataBase: new URL(SITE_URL),
 
     title: {
-        default: "Fast Food Nutrition & Macro Tracker | Macro Maxxer",
-        template: "%s | Macro Maxxer",
+        default: `Fast Food Nutrition & Macro Tracker | ${SITE_NAME}`,
+        template: `%s | ${SITE_NAME}`,
     },
-    description:
-        "Compare fast food nutrition, track calories and macros, customize meals, and find high-protein options that fit your goals.",
+    description: SITE_DESCRIPTION,
 
     openGraph: {
-        title: "Fast Food Nutrition & Macro Tracker | Macro Maxxer",
-        description:
-            "Compare fast food nutrition, track calories and macros, customize meals, and find high-protein options that fit your goals.",
-        url: "https://www.macromaxxer.com",
-        siteName: "Macro Maxxer",
+        title: `Fast Food Nutrition & Macro Tracker | ${SITE_NAME}`,
+        description: SITE_DESCRIPTION,
+        url: SITE_URL,
+        siteName: SITE_NAME,
         images: [
             {
                 url: "/og-image.png",

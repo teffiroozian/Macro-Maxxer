@@ -17,11 +17,33 @@ import { getAllRestaurants, getRestaurantData, toItemSlug } from "@/lib/restaura
 import { parseIncludedIngredientEntry } from "@/lib/itemIngredients";
 import { resolveEffectiveIngredientNutrition } from "@/lib/ingredientNutrition";
 import {
+  SITE_DESCRIPTION,
+  SITE_LOGO_URL,
+  SITE_NAME,
+  SITE_URL,
+} from "@/lib/site";
+import {
   CHIPOTLE_HOMEPAGE_EDITORIAL,
   type ChipotleHomepageRecordRef,
 } from "@/data/restaurants/chipotle-homepage-editorial";
 
 const restaurants = getAllRestaurants();
+
+const webApplicationStructuredData = {
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  name: SITE_NAME,
+  url: SITE_URL,
+  description: SITE_DESCRIPTION,
+  applicationCategory: "HealthApplication",
+  operatingSystem: "Web",
+  image: SITE_LOGO_URL,
+  offers: {
+    "@type": "Offer",
+    price: "0",
+    priceCurrency: "USD",
+  },
+};
 
 export const metadata: Metadata = {
   alternates: {
@@ -179,6 +201,15 @@ export default async function Home() {
 
   return (
     <RestaurantUiProvider>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(webApplicationStructuredData).replace(
+            /</g,
+            "\\u003c",
+          ),
+        }}
+      />
       <div className="relative">
         <HomeBackdrop />
 
