@@ -7,10 +7,15 @@ export default function sitemap(): MetadataRoute.Sitemap {
     .filter((restaurant) => !restaurant.isComingSoon)
     .map((restaurant) => ({
       url: `${SITE_URL}/restaurant/${restaurant.id}`,
-      ...(restaurant.nutritionUpdatedAt
-        ? { lastModified: restaurant.nutritionUpdatedAt }
+      ...(restaurant.lastUpdated
+        ? { lastModified: restaurant.lastUpdated }
         : {}),
     }));
 
-  return [{ url: SITE_URL }, ...restaurantPages];
+  return [
+    { url: SITE_URL },
+    { url: `${SITE_URL}/privacy` },
+    { url: `${SITE_URL}/terms` },
+    ...restaurantPages,
+  ];
 }

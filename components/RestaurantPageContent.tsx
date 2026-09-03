@@ -41,7 +41,7 @@ export default function RestaurantPageContent({
             description={restaurantData.description}
             itemCount={restaurantData.items.length}
             nutritionSourceUrl={restaurantData.nutritionSourceUrl}
-            nutritionUpdatedAt={restaurantData.nutritionUpdatedAt}
+            lastUpdated={restaurantData.lastUpdated}
           />
           <RestaurantView
             restaurantId={restaurantData.id}

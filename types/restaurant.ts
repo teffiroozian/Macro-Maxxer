@@ -19,11 +19,11 @@ export type RestaurantIndexEntry = {
   nutritionSourceUrl?: string;
   // ISO 8601 string for when the nutrition data was last updated — either a
   // bare date ("2026-07-18") or, once a future nutrition import system can
-  // capture it, a full timestamp ("2026-07-18T14:32:00Z"). The "At" naming
-  // and ISO format are chosen so a real timestamp can replace a bare date
-  // later without a field/type change — display logic should still only
-  // show a time when one is actually present in the value.
-  nutritionUpdatedAt?: string;
+  // capture it, a full timestamp ("2026-07-18T14:32:00Z"). The ISO format
+  // allows a real timestamp to replace a bare date later without a field/type
+  // change — display logic should still only show a time when one is actually
+  // present in the value.
+  lastUpdated?: string;
 };
 
 // entire menu file for a restaurant

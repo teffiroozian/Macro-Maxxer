@@ -10,7 +10,7 @@ import { useStickyNavClearance } from "@/components/restaurant-view/useStickyNav
 // opens a pre-filled GitHub issue rather than a fake/dead affordance.
 const REPORT_ISSUE_URL = "https://github.com/teffiroozian/Macro-Maxxer/issues/new";
 
-function formatUpdatedAt(value?: string) {
+function formatLastUpdated(value?: string) {
   if (!value) return null;
   const date = new Date(value);
   if (Number.isNaN(date.getTime())) return null;
@@ -37,7 +37,7 @@ type RestaurantIdentityHeaderProps = {
   description?: string;
   itemCount: number;
   nutritionSourceUrl?: string;
-  nutritionUpdatedAt?: string;
+  lastUpdated?: string;
 };
 
 // Shared identity/trust header for every restaurant page — rendered once in
@@ -50,9 +50,9 @@ export default function RestaurantIdentityHeader({
   description,
   itemCount,
   nutritionSourceUrl,
-  nutritionUpdatedAt,
+  lastUpdated,
 }: RestaurantIdentityHeaderProps) {
-  const updatedAtLabel = formatUpdatedAt(nutritionUpdatedAt);
+  const updatedAtLabel = formatLastUpdated(lastUpdated);
 
   // The fixed nav stack above this header (global nav, secondary controls,
   // and — on mobile — the floating category strip) reserves its own space

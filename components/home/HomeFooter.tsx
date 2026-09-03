@@ -19,9 +19,9 @@ type HomeFooterProps = {
 // not a plain link grid — an upper product-led panel (brand, one-line pitch,
 // one CTA, a small macro-color "signature" visual built from the same
 // per-macro color tokens used everywhere else in the app) plus a minimal
-// lower row (copyright + the one real external destination — the repo).
-// Only real destinations are linked; About/Contact/Feedback pages don't
-// exist yet, so they're intentionally left out rather than invented.
+// lower row (copyright + legal links + the one real external destination —
+// the repo). Only real destinations are linked; About/Contact/Feedback pages
+// don't exist yet, so they're intentionally left out rather than invented.
 export default function HomeFooter({ primaryRestaurantHref }: HomeFooterProps) {
   return (
     <footer className="relative mt-8 overflow-hidden border-t border-black/5 bg-gradient-to-b from-transparent via-emerald-50/30 to-emerald-50/60">
@@ -83,15 +83,29 @@ export default function HomeFooter({ primaryRestaurantHref }: HomeFooterProps) {
 
         <div className="mx-auto mt-6 flex w-full max-w-4xl flex-col items-center justify-between gap-3 text-xs text-neutral-500 sm:flex-row">
           <p>© {new Date().getFullYear()} Macro Maxxer</p>
-          <a
-            href={REPOSITORY_URL}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-1.5 font-semibold text-neutral-600 transition hover:text-neutral-900 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-900"
-          >
-            <Github className="h-3.5 w-3.5" aria-hidden="true" />
-            View on GitHub
-          </a>
+          <div className="flex items-center gap-4">
+            <Link
+              href="/privacy"
+              className="font-medium text-neutral-500 transition hover:text-neutral-900 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-900"
+            >
+              Privacy
+            </Link>
+            <Link
+              href="/terms"
+              className="font-medium text-neutral-500 transition hover:text-neutral-900 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-900"
+            >
+              Terms
+            </Link>
+            <a
+              href={REPOSITORY_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1.5 font-semibold text-neutral-600 transition hover:text-neutral-900 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-900"
+            >
+              <Github className="h-3.5 w-3.5" aria-hidden="true" />
+              View on GitHub
+            </a>
+          </div>
         </div>
       </HomeSectionContainer>
     </footer>

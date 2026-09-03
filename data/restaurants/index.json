@@ -8,7 +8,7 @@
     "isMacroFriendly": true,
     "description": "The full Chick-fil-A menu with real nutrition on every item and customization — see exactly what you're ordering before you order it.",
     "nutritionSourceUrl": "https://www.chick-fil-a.com/nutrition-allergens",
-    "nutritionUpdatedAt": "2026-07-18"
+    "lastUpdated": "2026-08-27"
   },
   {
     "id": "chipotle",
@@ -19,7 +19,7 @@
     "isMacroFriendly": true,
     "description": "Build your own Chipotle order and see real nutrition update ingredient by ingredient, from entrée to extras.",
     "nutritionSourceUrl": "https://www.chipotle.com/nutrition-calculator",
-    "nutritionUpdatedAt": "2026-07-18"
+    "lastUpdated": "2026-08-31"
   },
   {
     "id": "panera",
