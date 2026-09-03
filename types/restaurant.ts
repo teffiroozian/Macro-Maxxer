@@ -17,6 +17,10 @@ export type RestaurantIndexEntry = {
   // page header so the numbers feel verifiable. Optional and added per
   // restaurant as real URLs are confirmed.
   nutritionSourceUrl?: string;
+  // Short source note shown near the bottom of restaurant pages. This text
+  // should only describe a source as official when the active data pipeline
+  // actually uses first-party restaurant information.
+  nutritionSourceAttribution?: string;
   // ISO 8601 string for when the nutrition data was last updated — either a
   // bare date ("2026-07-18") or, once a future nutrition import system can
   // capture it, a full timestamp ("2026-07-18T14:32:00Z"). The ISO format

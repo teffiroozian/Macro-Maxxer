@@ -9,7 +9,7 @@ type RestaurantLayoutProps = {
 
 export async function generateMetadata({
   params,
-}: Pick<RestaurantLayoutProps, "params">): Promise<Metadata> {
+}: RestaurantLayoutProps): Promise<Metadata> {
   const { id } = await params;
   const restaurant = await getRestaurantData(id);
 

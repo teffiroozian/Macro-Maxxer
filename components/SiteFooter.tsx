@@ -8,21 +8,9 @@ import { macroDisplayConfig, macroOrder } from "@/components/nutrition/macroDisp
 
 const REPOSITORY_URL = "https://github.com/teffiroozian/Macro-Maxxer";
 
-type HomeFooterProps = {
-  // Real, currently-live restaurant route — computed by the page from the
-  // same restaurant data every other section uses, so this CTA never points
-  // at a restaurant that isn't actually available yet.
-  primaryRestaurantHref: string;
-};
-
-// Compact, two-part homepage footer (Slice 5 final refinement). Deliberately
-// not a plain link grid — an upper product-led panel (brand, one-line pitch,
-// one CTA, a small macro-color "signature" visual built from the same
-// per-macro color tokens used everywhere else in the app) plus a minimal
-// lower row (copyright + legal links + the one real external destination —
-// the repo). Only real destinations are linked; About/Contact/Feedback pages
-// don't exist yet, so they're intentionally left out rather than invented.
-export default function HomeFooter({ primaryRestaurantHref }: HomeFooterProps) {
+// Shared site footer, preserving the homepage footer's original product-led
+// panel, macro-color signature, legal links, and external repository link.
+export default function SiteFooter() {
   return (
     <footer className="relative mt-8 overflow-hidden border-t border-black/5 bg-gradient-to-b from-transparent via-emerald-50/30 to-emerald-50/60">
       <div
@@ -44,11 +32,6 @@ export default function HomeFooter({ primaryRestaurantHref }: HomeFooterProps) {
               </p>
 
               <Link
-                // Points at the homepage hero (search-first entry point) for
-                // now, rather than a single specific restaurant's page —
-                // `primaryRestaurantHref` stays wired through as a prop so
-                // this can point at a real restaurant again later without
-                // re-plumbing.
                 href="/"
                 className={appButtonClassName({ variant: "primary", size: "sm", className: "group mt-5 w-fit" })}
               >
@@ -60,10 +43,6 @@ export default function HomeFooter({ primaryRestaurantHref }: HomeFooterProps) {
               </Link>
             </div>
 
-            {/* Subtle supporting visual: the same per-macro color roles used
-                on every macro value across the app (calories/protein/carbs/
-                fat), shown as a compact signature rather than restating any
-                specific item's numbers. */}
             <div aria-hidden="true" className="rounded-2xl border border-black/10 bg-neutral-50/70 p-4 sm:p-5">
               <p className="text-[11px] font-semibold uppercase tracking-wide text-neutral-500">Every Item, Broken Down</p>
               <div className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-2">
@@ -81,7 +60,11 @@ export default function HomeFooter({ primaryRestaurantHref }: HomeFooterProps) {
           </div>
         </SurfaceCard>
 
-        <div className="mx-auto mt-6 flex w-full max-w-4xl flex-col items-center justify-between gap-3 text-xs text-neutral-500 sm:flex-row">
+        <p className="mx-auto mt-6 w-full max-w-4xl text-center text-xs leading-5 text-neutral-500">
+          Nutrition information may vary by location, preparation, portion size, substitutions, or restaurant updates.
+        </p>
+
+        <div className="mx-auto mt-3 flex w-full max-w-4xl flex-col items-center justify-between gap-3 text-xs text-neutral-500 sm:flex-row">
           <p>© {new Date().getFullYear()} Macro Maxxer</p>
           <div className="flex items-center gap-4">
             <Link

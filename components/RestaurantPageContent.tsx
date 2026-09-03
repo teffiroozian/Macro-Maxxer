@@ -54,6 +54,11 @@ export default function RestaurantPageContent({
             customizationRules={restaurantData.customizationRules}
             builderConfig={restaurantData.builderConfig}
           />
+          {restaurantData.nutritionSourceAttribution ? (
+            <p className="mx-auto mt-12 max-w-3xl border-t border-black/5 pt-5 text-center text-xs leading-5 text-neutral-500 sm:mt-14">
+              {restaurantData.nutritionSourceAttribution}
+            </p>
+          ) : null}
         </main>
       </div>
       <CartPreviewDrawer />

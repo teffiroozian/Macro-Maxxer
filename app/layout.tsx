@@ -12,6 +12,7 @@ import GlobalSearchOverlay from "@/components/global-search/GlobalSearchOverlay"
 import GlobalItemPreviewModal from "@/components/GlobalItemPreviewModal";
 import CrossRestaurantCartDialog from "@/components/cart/CrossRestaurantCartDialog";
 import InProgressBuildDialog from "@/components/InProgressBuildDialog";
+import SiteFooter from "@/components/SiteFooter";
 import { SITE_DESCRIPTION, SITE_NAME, SITE_URL } from "@/lib/site";
 import "./globals.css";
 
@@ -90,6 +91,7 @@ export default function RootLayout({
                         <CartAddConfirmationProvider>
                             <BuildInProgressGuardProvider>
                                 {children}
+                                <SiteFooter />
                                 <Suspense fallback={null}>
                                     <GlobalSearchOverlay />
                                 </Suspense>

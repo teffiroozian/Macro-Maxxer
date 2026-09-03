@@ -5,7 +5,7 @@ import RestaurantLogoBadge from "@/components/ui/RestaurantLogoBadge";
 import SurfaceCard from "@/components/ui/SurfaceCard";
 import { useStickyNavClearance } from "@/components/restaurant-view/useStickyNavClearance";
 
-// Same real, functional destination HomeFooter links to for the repo — the
+// Same real, functional destination SiteFooter links to for the repo — the
 // project has no issue-tracking backend of its own, so "report an error"
 // opens a pre-filled GitHub issue rather than a fake/dead affordance.
 const REPORT_ISSUE_URL = "https://github.com/teffiroozian/Macro-Maxxer/issues/new";

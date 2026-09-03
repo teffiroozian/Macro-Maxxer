@@ -10,7 +10,6 @@ import ProductWalkthrough, {
 import type { RestaurantData } from "@/types/restaurant";
 import HomeSectionHeading from "@/components/home/HomeSectionHeading";
 import HomeSectionContainer, { HOME_VISUAL_WIDTH_CLASS } from "@/components/home/HomeSectionContainer";
-import HomeFooter from "@/components/home/HomeFooter";
 import { RestaurantUiProvider } from "@/components/RestaurantUiContext";
 import CartPreviewDrawer from "@/components/cart/CartPreviewDrawer";
 import { getAllRestaurants, getRestaurantData, toItemSlug } from "@/lib/restaurants";
@@ -135,7 +134,6 @@ export default async function Home() {
     previewRestaurant?.items,
     CHIPOTLE_HOMEPAGE_EDITORIAL.previewItem,
   );
-  const footerRestaurantHref = liveRestaurants[0] ? `/restaurant/${liveRestaurants[0].id}` : "/";
 
   const previewIngredientNames = (previewItem?.ingredients ?? [])
     .map((entry) => parseIncludedIngredientEntry(entry)?.ingredientId)
@@ -303,8 +301,6 @@ export default async function Home() {
             </div>
           ) : null}
         </main>
-
-        <HomeFooter primaryRestaurantHref={footerRestaurantHref} />
       </div>
 
       <CartPreviewDrawer />

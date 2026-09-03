@@ -78,6 +78,7 @@ export async function getRestaurantData(id: string): Promise<RestaurantData | nu
     isComingSoon: restaurant.isComingSoon,
     description: restaurant.description,
     nutritionSourceUrl: restaurant.nutritionSourceUrl,
+    nutritionSourceAttribution: restaurant.nutritionSourceAttribution,
     lastUpdated: restaurant.lastUpdated,
     // menu file data
     hasBuildYourOwn,

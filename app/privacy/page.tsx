@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import HomeBackdrop from "@/components/home/HomeBackdrop";
-import HomeFooter from "@/components/home/HomeFooter";
 import HomeSectionContainer from "@/components/home/HomeSectionContainer";
 import SurfaceCard from "@/components/ui/SurfaceCard";
 
@@ -153,8 +152,6 @@ export default function PrivacyPage() {
           </div>
         </HomeSectionContainer>
       </main>
-
-      <HomeFooter primaryRestaurantHref="/" />
     </div>
   );
 }
