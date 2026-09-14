@@ -1,7 +1,7 @@
 """Validate and summarize the consolidated national Starbucks snapshot."""
 import json, pathlib
 ROOT=pathlib.Path(__file__).resolve().parents[2]
-CATALOG=ROOT/'data/raw/starbucks/menu.json'
+CATALOG=ROOT/'data/restaurants/starbucks/raw/menu.json'
 def nutrition(n):
     found={}
     def walk(v):

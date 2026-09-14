@@ -42,14 +42,14 @@ export async function getRestaurantData(id: string): Promise<RestaurantData | nu
   // its curated browse/navigation shape. The old hand-authored JSON remains
   // in the repository as a temporary reference, but is no longer loaded.
   // Chick-fil-A's menu content comes
-  // from the generated dataset (data/generated/chick-fil-a/restaurant.json)
+  // from the generated dataset (data/restaurants/chick-fil-a/generated/restaurant.json)
   // rather than the old hand-authored data/restaurants/chickfila.json. The
   // old file is kept in place as a fallback/reference until runtime QA on
   // the generated data is complete — remove this branch once it's promoted
   // and chickfila.json is retired.
   const menuModule =
     restaurant.id === "chickfila"
-      ? await import("@/data/generated/chick-fil-a/restaurant.json")
+      ? await import("@/data/restaurants/chick-fil-a/generated/restaurant.json")
       : restaurant.id === "chipotle"
         ? await import(
             "@/lib/restaurantBuilders/chipotle/generatedRuntimeAdapter"

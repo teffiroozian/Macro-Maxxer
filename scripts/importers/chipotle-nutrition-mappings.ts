@@ -1,9 +1,9 @@
 import type { Nutrition } from "../../types/nutrition";
 
 /**
- * Curated exceptions verified in data/review/chipotle/source-analysis.md,
- * data/review/chipotle/build-gaps-analysis.md, and
- * data/review/chipotle/import-decisions.md.
+ * Curated exceptions verified in data/restaurants/chipotle/review/source-analysis.md,
+ * data/restaurants/chipotle/review/build-gaps-analysis.md, and
+ * data/restaurants/chipotle/review/import-decisions.md.
  *
  * These are deliberately not generic name rewrites the importer could derive
  * on its own — each entry documents a specific, human-verified conclusion

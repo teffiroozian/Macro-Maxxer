@@ -9,9 +9,9 @@ type PdfJsModule = typeof import("pdfjs-dist/legacy/build/pdf.mjs");
 const RESTAURANT = "Chipotle";
 const SOURCE_URL =
   "https://www.chipotle.com/content/dam/chipotle/menu/nutrition/US-Nutrition-Facts-Paper-Menu-3-2025.pdf";
-const PDF_PATH = resolve("data/raw/chipotle/nutrition-paper-menu.pdf");
-const OUTPUT_PATH = resolve("data/raw/chipotle/nutrition.json");
-const SOURCE_METADATA_PATH = resolve("data/raw/chipotle/nutrition-source.json");
+const PDF_PATH = resolve("data/restaurants/chipotle/raw/nutrition-paper-menu.pdf");
+const OUTPUT_PATH = resolve("data/restaurants/chipotle/raw/nutrition.json");
+const SOURCE_METADATA_PATH = resolve("data/restaurants/chipotle/raw/nutrition-source.json");
 
 // Nutrition table pages only. Page 1 is the descriptive front-of-menu page
 // (calorie call-outs mixed into marketing copy) and does not carry the full
@@ -474,8 +474,8 @@ async function main(): Promise<void> {
     restaurant: RESTAURANT,
     sourceType: "official-nutrition-pdf",
     source: SOURCE_URL,
-    localPdfPath: "data/raw/chipotle/nutrition-paper-menu.pdf",
-    generatedJsonPath: "data/raw/chipotle/nutrition.json",
+    localPdfPath: "data/restaurants/chipotle/raw/nutrition-paper-menu.pdf",
+    generatedJsonPath: "data/restaurants/chipotle/raw/nutrition.json",
     pdfFilename: "US-Nutrition-Facts-Paper-Menu-3-2025.pdf",
     retrieved: getLocalDate(),
     pageCount: doc.numPages,
@@ -528,8 +528,8 @@ async function main(): Promise<void> {
       `WARNING: ${uncleanValues.length} value cell(s) had non-clean source text (see nutrition-source.json limitations.uncleanValues).`,
     );
   }
-  console.log("Saved to data/raw/chipotle/nutrition.json");
-  console.log("Saved to data/raw/chipotle/nutrition-source.json");
+  console.log("Saved to data/restaurants/chipotle/raw/nutrition.json");
+  console.log("Saved to data/restaurants/chipotle/raw/nutrition-source.json");
 }
 
 main().catch((error: unknown) => {

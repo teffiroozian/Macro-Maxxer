@@ -13,7 +13,7 @@ import urllib.error
 import urllib.request
 
 ROOT = pathlib.Path(__file__).resolve().parents[2]
-OUT = ROOT / 'data/raw/starbucks/menu.json'
+OUT = ROOT / 'data/restaurants/starbucks/raw/menu.json'
 DELAY_SECONDS = 10
 
 def now():

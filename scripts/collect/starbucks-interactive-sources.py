@@ -11,7 +11,7 @@ import urllib.parse
 import urllib.request
 
 ROOT = pathlib.Path(__file__).resolve().parents[2]
-AREA = ROOT / 'data/research/starbucks/captures/interactive'
+AREA = ROOT / 'data/restaurants/starbucks/research/captures/interactive'
 PLAN = AREA / 'capture-plan.json'
 
 def main():

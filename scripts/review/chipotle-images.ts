@@ -4,12 +4,12 @@ import { resolve } from "node:path";
 
 import { writeAtomically } from "../lib/write-atomically";
 
-const GENERATED_MENU_PATH = resolve("data/generated/chipotle/restaurant.json");
-const MENU_METADATA_PATH = resolve("data/raw/chipotle/menu-metadata.json");
-const MENU_METADATA_SOURCE_PATH = resolve("data/raw/chipotle/menu-metadata-source.json");
-const ONLINE_MEALS_PATH = resolve("data/raw/chipotle/online-meals.json");
-const ONLINE_MEALS_SOURCE_PATH = resolve("data/raw/chipotle/online-meals-source.json");
-const OUTPUT_PATH = resolve("data/review/chipotle/runtime-image-enrichment.json");
+const GENERATED_MENU_PATH = resolve("data/restaurants/chipotle/generated/restaurant.json");
+const MENU_METADATA_PATH = resolve("data/restaurants/chipotle/raw/menu-metadata.json");
+const MENU_METADATA_SOURCE_PATH = resolve("data/restaurants/chipotle/raw/menu-metadata-source.json");
+const ONLINE_MEALS_PATH = resolve("data/restaurants/chipotle/raw/online-meals.json");
+const ONLINE_MEALS_SOURCE_PATH = resolve("data/restaurants/chipotle/raw/online-meals-source.json");
+const OUTPUT_PATH = resolve("data/restaurants/chipotle/review/runtime-image-enrichment.json");
 
 type GeneratedRecord = {
   id: string;
@@ -150,7 +150,7 @@ async function main(): Promise<void> {
     return {
       image: group.thumbnailImageUrl,
       method: "menu_metadata_group_thumbnail",
-      sourceFile: "data/raw/chipotle/menu-metadata.json",
+      sourceFile: "data/restaurants/chipotle/raw/menu-metadata.json",
       sourceEndpoint: metadataSource.source,
       sourceRecordId: group.id,
       sourceField: "groups[].thumbnailImageUrl",
@@ -169,7 +169,7 @@ async function main(): Promise<void> {
         return {
           image: webImage.imageUrl,
           method: "online_meal_web_primary",
-          sourceFile: "data/raw/chipotle/online-meals.json",
+          sourceFile: "data/restaurants/chipotle/raw/online-meals.json",
           sourceEndpoint: onlineMealsSource.source,
           sourceRecordId: meal.mealId,
           sourceField: "primaryImages[imageCategory=WEB].imageUrl",
@@ -187,7 +187,7 @@ async function main(): Promise<void> {
         {
           image,
           method: "menu_metadata_item_thumbnail" as const,
-          sourceFile: "data/raw/chipotle/menu-metadata.json",
+          sourceFile: "data/restaurants/chipotle/raw/menu-metadata.json",
           sourceEndpoint: metadataSource.source,
           sourceRecordId: sourceId,
           sourceField: `items.${sourceId}.thumbnailUrl`,
@@ -305,17 +305,17 @@ async function main(): Promise<void> {
       "Runtime-ready official-image enrichment keyed by generated Chipotle record id. This file does not modify raw data, generated menu data, or runtime wiring.",
     inputs: {
       generatedMenu: {
-        path: "data/generated/chipotle/restaurant.json",
+        path: "data/restaurants/chipotle/generated/restaurant.json",
         sha256: await sha256(GENERATED_MENU_PATH),
       },
       menuMetadata: {
-        path: "data/raw/chipotle/menu-metadata.json",
+        path: "data/restaurants/chipotle/raw/menu-metadata.json",
         sha256: await sha256(MENU_METADATA_PATH),
         sourceEndpoint: metadataSource.source,
         retrieved: metadataSource.retrieved ?? null,
       },
       onlineMeals: {
-        path: "data/raw/chipotle/online-meals.json",
+        path: "data/restaurants/chipotle/raw/online-meals.json",
         sha256: await sha256(ONLINE_MEALS_PATH),
         sourceEndpoint: onlineMealsSource.source,
         retrieved: onlineMealsSource.retrieved ?? null,

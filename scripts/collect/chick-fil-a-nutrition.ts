@@ -2,8 +2,8 @@ import { mkdir, rename, unlink, writeFile } from "node:fs/promises";
 import { dirname, resolve } from "node:path";
 
 const SOURCE_URL = "https://www.chick-fil-a.com/nutrition-allergens";
-const OUTPUT_PATH = resolve("data/raw/chick-fil-a/nutrition.csv");
-const SOURCE_METADATA_PATH = resolve("data/raw/chick-fil-a/source.json");
+const OUTPUT_PATH = resolve("data/restaurants/chick-fil-a/raw/nutrition.csv");
+const SOURCE_METADATA_PATH = resolve("data/restaurants/chick-fil-a/raw/source.json");
 const INTERACTIVITY_STATE_ID =
   "wp-script-module-data-@wordpress/interactivity";
 
@@ -325,7 +325,7 @@ async function main(): Promise<void> {
   );
 
   console.log(`Collected ${records.length} Chick-fil-A nutrition records.`);
-  console.log("Saved to data/raw/chick-fil-a/nutrition.csv");
+  console.log("Saved to data/restaurants/chick-fil-a/raw/nutrition.csv");
 }
 
 main().catch((error: unknown) => {

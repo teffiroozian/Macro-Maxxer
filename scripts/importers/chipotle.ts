@@ -24,16 +24,16 @@ import {
   CHIPOTLE_TACO_TORTILLA_NUTRITION_BY_CONTEXT,
 } from "./chipotle-nutrition-mappings";
 
-const CALCULATOR_MENU_PATH = resolve("data/raw/chipotle/calculator-menu.json");
-const MENU_METADATA_PATH = resolve("data/raw/chipotle/menu-metadata.json");
-const MENU_METADATA_NUTRITION_PATH = resolve("data/raw/chipotle/menu-metadata-nutrition.json");
-const NUTRITION_PATH = resolve("data/raw/chipotle/nutrition.json");
-const ONLINE_MEALS_PATH = resolve("data/raw/chipotle/online-meals.json");
-const OUTPUT_PATH = resolve("data/generated/chipotle/restaurant.json");
-const UNRESOLVED_PATH = resolve("data/generated/chipotle/unresolved.json");
+const CALCULATOR_MENU_PATH = resolve("data/restaurants/chipotle/raw/calculator-menu.json");
+const MENU_METADATA_PATH = resolve("data/restaurants/chipotle/raw/menu-metadata.json");
+const MENU_METADATA_NUTRITION_PATH = resolve("data/restaurants/chipotle/raw/menu-metadata-nutrition.json");
+const NUTRITION_PATH = resolve("data/restaurants/chipotle/raw/nutrition.json");
+const ONLINE_MEALS_PATH = resolve("data/restaurants/chipotle/raw/online-meals.json");
+const OUTPUT_PATH = resolve("data/restaurants/chipotle/generated/restaurant.json");
+const UNRESOLVED_PATH = resolve("data/restaurants/chipotle/generated/unresolved.json");
 
 // --------------------------------------------------------------------------
-// Raw source shapes (data/raw/chipotle/*.json)
+// Raw source shapes (data/restaurants/chipotle/raw/*.json)
 // --------------------------------------------------------------------------
 
 type RawContent = {
@@ -954,7 +954,7 @@ async function main(): Promise<void> {
       sourceItemIds: [entree.itemId],
       reason: "unsupported_preconfigured_meal",
       details:
-        `${entree.itemName} (${entree.itemType}) uses the catering/large-format ingredient namespace (CMG-537x/539x-style ids), which this first-pass importer deliberately does not model to avoid conflating it with the individual-order ingredient namespace (see data/review/chipotle/source-analysis.md §10.C). Preserved here as unresolved rather than imported.`,
+        `${entree.itemName} (${entree.itemType}) uses the catering/large-format ingredient namespace (CMG-537x/539x-style ids), which this first-pass importer deliberately does not model to avoid conflating it with the individual-order ingredient namespace (see data/restaurants/chipotle/review/source-analysis.md §10.C). Preserved here as unresolved rather than imported.`,
     });
   }
 
@@ -2391,11 +2391,11 @@ async function main(): Promise<void> {
       restaurant: "Chipotle",
       restaurantId,
       sources: {
-        calculatorMenu: "data/raw/chipotle/calculator-menu.json",
-        menuMetadata: "data/raw/chipotle/menu-metadata.json",
-        menuMetadataNutrition: "data/raw/chipotle/menu-metadata-nutrition.json",
-        nutrition: "data/raw/chipotle/nutrition.json",
-        onlineMeals: "data/raw/chipotle/online-meals.json",
+        calculatorMenu: "data/restaurants/chipotle/raw/calculator-menu.json",
+        menuMetadata: "data/restaurants/chipotle/raw/menu-metadata.json",
+        menuMetadataNutrition: "data/restaurants/chipotle/raw/menu-metadata-nutrition.json",
+        nutrition: "data/restaurants/chipotle/raw/nutrition.json",
+        onlineMeals: "data/restaurants/chipotle/raw/online-meals.json",
       },
       note:
         "menu-rules.json was deliberately not read by this importer: source-analysis.md §4 confirms calculator-menu.json already carries identical build-rule fields (maxContents, contentGroups, defaultContent, etc.) for every id in its own restaurant-scoped universe, and menu-rules.json/menu-metadata.json are template/national-catalog sources that must never expand restaurant-469 availability beyond calculator-menu.json (import-decisions.md §1).",
@@ -2420,7 +2420,7 @@ async function main(): Promise<void> {
     },
     runtimeIntegration: {
       status: "prepared_not_promoted",
-      note: "This generated dataset is NOT wired into data/restaurants/chipotle.json or the runtime app. See data/generated/chipotle/unresolved.json for review items before any runtime integration is considered.",
+      note: "This generated dataset is NOT wired into data/restaurants/chipotle.json or the runtime app. See data/restaurants/chipotle/generated/unresolved.json for review items before any runtime integration is considered.",
     },
   };
 
@@ -2460,8 +2460,8 @@ async function main(): Promise<void> {
   console.log(
     JSON.stringify(
       {
-        output: "data/generated/chipotle/restaurant.json",
-        unresolvedOutput: "data/generated/chipotle/unresolved.json",
+        output: "data/restaurants/chipotle/generated/restaurant.json",
+        unresolvedOutput: "data/restaurants/chipotle/generated/unresolved.json",
         menuItems: generatedItems.length,
         ingredients: generatedIngredients.length,
         unresolved: unresolved.length,

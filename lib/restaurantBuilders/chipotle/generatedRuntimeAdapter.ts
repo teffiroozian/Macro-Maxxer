@@ -1,4 +1,4 @@
-import generatedChipotle from "@/data/generated/chipotle/restaurant.json";
+import generatedChipotle from "@/data/restaurants/chipotle/generated/restaurant.json";
 import {
   CHIPOTLE_BROWSE_TAXONOMY,
   CHIPOTLE_NAVIGATION_CATEGORY_IMAGE,

@@ -1,4 +1,4 @@
-import enrichmentPlan from "@/data/review/chipotle/enrichment-plan.json";
+import enrichmentPlan from "@/data/restaurants/chipotle/review/enrichment-plan.json";
 
 /**
  * Compatibility data only. Nothing in this module performs a redirect or

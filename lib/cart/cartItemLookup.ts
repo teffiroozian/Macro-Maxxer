@@ -2,7 +2,7 @@
 // lib/restaurants.ts for the matching getRestaurantData switch) rather than
 // the old hand-authored data/restaurants/chickfila.json, which stays in
 // place temporarily as a fallback/reference until runtime QA is complete.
-import chickfilaMenu from "@/data/generated/chick-fil-a/restaurant.json";
+import chickfilaMenu from "@/data/restaurants/chick-fil-a/generated/restaurant.json";
 import { CHIPOTLE_GENERATED_RUNTIME_MENU } from "@/lib/restaurantBuilders/chipotle/generatedRuntimeAdapter";
 import { resolveChipotleIngredientDisplayName } from "@/lib/restaurantBuilders/chipotle/ingredientMenuItems";
 import type { ChipotleBuilderConfig, ChipotleEntreeSelection } from "@/lib/restaurantBuilders/chipotle/types";

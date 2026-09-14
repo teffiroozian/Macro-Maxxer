@@ -3,7 +3,7 @@ import { test } from "node:test";
 import { createElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 
-import generatedChipotle from "../data/generated/chipotle/restaurant.json" with { type: "json" };
+import generatedChipotle from "../data/restaurants/chipotle/generated/restaurant.json" with { type: "json" };
 import MenuItemMacroSummary from "../components/menu-item-card/MenuItemMacroSummary.tsx";
 import {
   formatMacroDisplayNumber,

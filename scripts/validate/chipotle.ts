@@ -20,14 +20,14 @@ import {
   type JsonObject,
 } from "./shared";
 
-const RESTAURANT_PATH = resolve("data/generated/chipotle/restaurant.json");
-const UNRESOLVED_PATH = resolve("data/generated/chipotle/unresolved.json");
-const CALCULATOR_PATH = resolve("data/raw/chipotle/calculator-menu.json");
-const LIVE_NUTRITION_PATH = resolve("data/raw/chipotle/menu-metadata-nutrition.json");
-const PDF_NUTRITION_PATH = resolve("data/raw/chipotle/nutrition.json");
-const ONLINE_MEALS_PATH = resolve("data/raw/chipotle/online-meals.json");
-const DECISIONS_PATH = resolve("data/review/chipotle/import-decisions.md");
-const REPORT_PATH = resolve("data/validation/chipotle/report.json");
+const RESTAURANT_PATH = resolve("data/restaurants/chipotle/generated/restaurant.json");
+const UNRESOLVED_PATH = resolve("data/restaurants/chipotle/generated/unresolved.json");
+const CALCULATOR_PATH = resolve("data/restaurants/chipotle/raw/calculator-menu.json");
+const LIVE_NUTRITION_PATH = resolve("data/restaurants/chipotle/raw/menu-metadata-nutrition.json");
+const PDF_NUTRITION_PATH = resolve("data/restaurants/chipotle/raw/nutrition.json");
+const ONLINE_MEALS_PATH = resolve("data/restaurants/chipotle/raw/online-meals.json");
+const DECISIONS_PATH = resolve("data/restaurants/chipotle/review/import-decisions.md");
+const REPORT_PATH = resolve("data/restaurants/chipotle/validation/report.json");
 
 const CHECK_NAMES = [
   "structure",
@@ -312,13 +312,13 @@ async function main(): Promise<void> {
     restaurant: "Chipotle",
     validatedAt: localDate(),
     inputs: {
-      restaurant: "data/generated/chipotle/restaurant.json",
-      unresolved: "data/generated/chipotle/unresolved.json",
-      calculatorMenu: "data/raw/chipotle/calculator-menu.json",
-      liveNutrition: "data/raw/chipotle/menu-metadata-nutrition.json",
-      pdfNutrition: "data/raw/chipotle/nutrition.json",
-      onlineMeals: "data/raw/chipotle/online-meals.json",
-      decisions: "data/review/chipotle/import-decisions.md",
+      restaurant: "data/restaurants/chipotle/generated/restaurant.json",
+      unresolved: "data/restaurants/chipotle/generated/unresolved.json",
+      calculatorMenu: "data/restaurants/chipotle/raw/calculator-menu.json",
+      liveNutrition: "data/restaurants/chipotle/raw/menu-metadata-nutrition.json",
+      pdfNutrition: "data/restaurants/chipotle/raw/nutrition.json",
+      onlineMeals: "data/restaurants/chipotle/raw/online-meals.json",
+      decisions: "data/restaurants/chipotle/review/import-decisions.md",
     },
     valid: context.errors.length === 0,
     summary: {
@@ -343,7 +343,7 @@ async function main(): Promise<void> {
     humanReviewRecommendations: context.info.map((finding) => finding.message),
   };
   await writeAtomically(REPORT_PATH, `${JSON.stringify(report, null, 2)}\n`);
-  console.log(JSON.stringify({ report: "data/validation/chipotle/report.json", valid: report.valid, summary: report.summary }, null, 2));
+  console.log(JSON.stringify({ report: "data/restaurants/chipotle/validation/report.json", valid: report.valid, summary: report.summary }, null, 2));
   if (!report.valid) process.exitCode = 1;
 
   function validateGeneratedNutrition(
