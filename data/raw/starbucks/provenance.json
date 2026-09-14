@@ -1,0 +1,222 @@
+{
+  "schemaVersion": 1,
+  "restaurant": "Starbucks",
+  "generatedFrom": "data/research/starbucks/source-inventory.json",
+  "authoritativeSources": [
+    {
+      "restaurant": "Starbucks",
+      "sourceType": "official-nutrition-allergen-pdf",
+      "source": "https://starbucks.ie/sites/starbucks-ie-pwa/files/2026-09/Autumn%2026%20Food%20Allergen.pdf",
+      "region": "ireland",
+      "retrieved": "2026-09-09T18:43:42.194817+00:00",
+      "discoveredFrom": "https://www.starbucks.ie/nutrition",
+      "finalUrl": "https://www.starbucks.ie/sites/starbucks-ie-pwa/files/2026-09/Autumn%2026%20Food%20Allergen.pdf",
+      "httpStatus": 200,
+      "contentType": "application/pdf",
+      "lastModified": "Wed, 02 Sep 2026 16:19:49 GMT",
+      "localPath": "data/raw/starbucks/ireland/Autumn-26-Food-Allergen.pdf",
+      "bytes": 230016,
+      "sha256": "19fefa1f638c40a187af8db8de5d33fff6b9bd04417202db9d427caccb04afc1",
+      "pageCount": 3,
+      "documentMetadata": {
+        "/Title": "",
+        "/Author": "Alex Sonnabend",
+        "/Subject": "",
+        "/Keywords": "",
+        "/CreationDate": "D:20260902171158+01'00'",
+        "/ModDate": "D:20260902171158+01'00'",
+        "/Producer": "Microsoft® Excel® for Microsoft 365",
+        "/Creator": "Microsoft® Excel® for Microsoft 365"
+      },
+      "visibleDateMarkers": [
+        "UPDATED 020926"
+      ],
+      "authoritativeScope": "Official Starbucks regional source only; never substitute non-US data for the US menu.",
+      "contains": "Food allergen matrix",
+      "nutritionImportSufficiency": "Allergen companion only; no nutrient values",
+      "freshness": "Currently linked autumn edition; PDF metadata and HTTP Last-Modified 2026-09-02",
+      "visiblePublishUpdateDate": [
+        "UPDATED 020926"
+      ],
+      "provenanceFile": "ireland/Autumn-26-Food-Allergen-source.json"
+    },
+    {
+      "restaurant": "Starbucks",
+      "sourceType": "official-nutrition-allergen-pdf",
+      "source": "https://starbucks.ie/sites/starbucks-ie-pwa/files/2026-09/Autumn%2026%20Food%20Nutritional.pdf",
+      "region": "ireland",
+      "retrieved": "2026-09-09T18:43:42.165215+00:00",
+      "discoveredFrom": "https://www.starbucks.ie/nutrition",
+      "finalUrl": "https://www.starbucks.ie/sites/starbucks-ie-pwa/files/2026-09/Autumn%2026%20Food%20Nutritional.pdf",
+      "httpStatus": 200,
+      "contentType": "application/pdf",
+      "lastModified": "Wed, 02 Sep 2026 16:20:26 GMT",
+      "localPath": "data/raw/starbucks/ireland/Autumn-26-Food-Nutritional.pdf",
+      "bytes": 233138,
+      "sha256": "a2ca7375c15036d0aa8b6f29062136b820b1f4a90db17c36aec5a79b742cb2fe",
+      "pageCount": 3,
+      "documentMetadata": {
+        "/Title": "",
+        "/Author": "Alex Sonnabend",
+        "/Subject": "",
+        "/Keywords": "",
+        "/CreationDate": "D:20260902170951+01'00'",
+        "/ModDate": "D:20260902170951+01'00'",
+        "/Producer": "Microsoft® Excel® for Microsoft 365",
+        "/Creator": "Microsoft® Excel® for Microsoft 365"
+      },
+      "visibleDateMarkers": [
+        "UPDATED 020926"
+      ],
+      "authoritativeScope": "Official Starbucks regional source only; never substitute non-US data for the US menu.",
+      "contains": "Food nutrition tables; serving sizes and macronutrients",
+      "nutritionImportSufficiency": "Useful for Ireland/Northern Ireland only; not US",
+      "freshness": "Currently linked autumn edition; PDF metadata and HTTP Last-Modified 2026-09-02",
+      "visiblePublishUpdateDate": [
+        "UPDATED 020926"
+      ],
+      "provenanceFile": "ireland/Autumn-26-Food-Nutritional-source.json"
+    },
+    {
+      "restaurant": "Starbucks",
+      "sourceType": "official-nutrition-allergen-pdf",
+      "source": "https://starbucks.ie/sites/starbucks-ie-pwa/files/2026-09/Autumn%20FY27%20-%20Bev%20Allergen%20.pdf",
+      "region": "ireland",
+      "retrieved": "2026-09-09T18:43:41.922655+00:00",
+      "discoveredFrom": "https://www.starbucks.ie/nutrition",
+      "finalUrl": "https://www.starbucks.ie/sites/starbucks-ie-pwa/files/2026-09/Autumn%20FY27%20-%20Bev%20Allergen%20.pdf",
+      "httpStatus": 200,
+      "contentType": "application/pdf",
+      "lastModified": "Wed, 02 Sep 2026 16:20:49 GMT",
+      "localPath": "data/raw/starbucks/ireland/autumn-fy27-beverage-allergens.pdf",
+      "bytes": 269861,
+      "sha256": "0a9c2d5b16de88aaeca8b9775266240e2d405a0a9996aaf391b1acdfd503424b",
+      "pageCount": 12,
+      "documentMetadata": {
+        "/Title": "Autumn FY27 - Nutrition & Allergen (Double Shot Markets)",
+        "/Author": "PPK",
+        "/Subject": "",
+        "/Keywords": "",
+        "/CreationDate": "D:20260902171320+01'00'",
+        "/ModDate": "D:20260902171320+01'00'",
+        "/Producer": "Microsoft® Excel® for Microsoft 365",
+        "/Creator": "Microsoft® Excel® for Microsoft 365"
+      },
+      "visibleDateMarkers": [],
+      "authoritativeScope": "Official Starbucks regional source only; never substitute non-US data for the US menu.",
+      "contains": "Beverage allergen matrix",
+      "nutritionImportSufficiency": "Allergen companion only; no nutrient values",
+      "freshness": "Currently linked autumn edition; PDF metadata and HTTP Last-Modified 2026-09-02",
+      "visiblePublishUpdateDate": null,
+      "provenanceFile": "ireland/autumn-fy27-beverage-allergens-source.json"
+    },
+    {
+      "restaurant": "Starbucks",
+      "sourceType": "official-nutrition-allergen-pdf",
+      "source": "https://starbucks.ie/sites/starbucks-ie-pwa/files/2026-09/Autumn%20FY27%20-%20bev%20Nutrition%20.pdf",
+      "region": "ireland",
+      "retrieved": "2026-09-09T18:43:41.869760+00:00",
+      "discoveredFrom": "https://www.starbucks.ie/nutrition",
+      "finalUrl": "https://www.starbucks.ie/sites/starbucks-ie-pwa/files/2026-09/Autumn%20FY27%20-%20bev%20Nutrition%20.pdf",
+      "httpStatus": 200,
+      "contentType": "application/pdf",
+      "lastModified": "Wed, 02 Sep 2026 16:21:16 GMT",
+      "localPath": "data/raw/starbucks/ireland/autumn-fy27-beverage-nutrition.pdf",
+      "bytes": 435775,
+      "sha256": "eae963a30b918d4f4a24c546b349a60819d6736aaae8312a7b062b3751de2d82",
+      "pageCount": 39,
+      "documentMetadata": {
+        "/Title": "Autumn FY27 - Nutrition & Allergen (Double Shot Markets)",
+        "/Author": "PPK",
+        "/Subject": "",
+        "/Keywords": "",
+        "/CreationDate": "D:20260902171459+01'00'",
+        "/ModDate": "D:20260902171459+01'00'",
+        "/Producer": "Microsoft® Excel® for Microsoft 365",
+        "/Creator": "Microsoft® Excel® for Microsoft 365"
+      },
+      "visibleDateMarkers": [],
+      "authoritativeScope": "Official Starbucks regional source only; never substitute non-US data for the US menu.",
+      "contains": "Beverage nutrition tables; serving sizes and macronutrients",
+      "nutritionImportSufficiency": "Useful for Ireland/Northern Ireland only; not US",
+      "freshness": "Currently linked autumn edition; PDF metadata and HTTP Last-Modified 2026-09-02",
+      "visiblePublishUpdateDate": null,
+      "provenanceFile": "ireland/autumn-fy27-beverage-nutrition-source.json"
+    },
+    {
+      "restaurant": "Starbucks",
+      "sourceType": "official-nutrition-allergen-pdf",
+      "source": "https://www.starbucks.co.uk/sites/starbucks-uk-pwa/files/2026-08/AUT%2026_UK_AllergenBook_CORE_FOOD_v03-2.pdf",
+      "region": "uk",
+      "retrieved": "2026-09-09T18:43:41.198414+00:00",
+      "discoveredFrom": "https://www.starbucks.co.uk/nutrition-allergens",
+      "finalUrl": "https://www.starbucks.co.uk/sites/starbucks-uk-pwa/files/2026-08/AUT%2026_UK_AllergenBook_CORE_FOOD_v03-2.pdf",
+      "httpStatus": 200,
+      "contentType": "application/pdf",
+      "lastModified": "Fri, 28 Aug 2026 10:07:19 GMT",
+      "localPath": "data/raw/starbucks/uk/AUT-26_UK_AllergenBook_CORE_FOOD_v03-2.pdf",
+      "bytes": 2116480,
+      "sha256": "ec3a5c581bc82a49bf0f01926531140a53e2db4fb5b0f0b4fc34ab129881ab3e",
+      "pageCount": 20,
+      "documentMetadata": {
+        "/CreationDate": "D:20260828092421+01'00'",
+        "/Creator": "Adobe InDesign 21.5 (Macintosh)",
+        "/ModDate": "D:20260828110109+01'00'",
+        "/Producer": "Adobe PDF Library 18.0",
+        "/Trapped": "/False"
+      },
+      "visibleDateMarkers": [
+        "Version: 17/08/26"
+      ],
+      "authoritativeScope": "Official Starbucks regional source only; never substitute non-US data for the US menu.",
+      "contains": "Food and bottled beverages: nutrition, ingredients and allergens",
+      "nutritionImportSufficiency": "Useful tabular source for UK only; not sufficient for US import",
+      "freshness": "Currently linked; autumn v03 preferred over autumn v02 and summer editions",
+      "visiblePublishUpdateDate": [
+        "Version: 17/08/26"
+      ],
+      "provenanceFile": "uk/AUT-26_UK_AllergenBook_CORE_FOOD_v03-2-source.json"
+    },
+    {
+      "restaurant": "Starbucks",
+      "sourceType": "official-nutrition-allergen-pdf",
+      "source": "https://www.starbucks.co.uk/sites/starbucks-uk-pwa/files/2026-09/AUT_26_UK_AllergenBook_CORE_BEVERAGE_v03.pdf",
+      "region": "uk",
+      "retrieved": "2026-09-09T18:43:41.197964+00:00",
+      "discoveredFrom": "https://www.starbucks.co.uk/nutrition-allergens",
+      "finalUrl": "https://www.starbucks.co.uk/sites/starbucks-uk-pwa/files/2026-09/AUT_26_UK_AllergenBook_CORE_BEVERAGE_v03.pdf",
+      "httpStatus": 200,
+      "contentType": "application/pdf",
+      "lastModified": "Wed, 09 Sep 2026 13:00:08 GMT",
+      "localPath": "data/raw/starbucks/uk/AUT_26_UK_AllergenBook_CORE_BEVERAGE_v03.pdf",
+      "bytes": 4723259,
+      "sha256": "a160ba76d962157da0b140a85ec75f698dfa3e26ac702778e9f04d66c0e1a3be",
+      "pageCount": 79,
+      "documentMetadata": {
+        "/CreationDate": "D:20260909091554+01'00'",
+        "/Creator": "Adobe InDesign 21.5 (Macintosh)",
+        "/ModDate": "D:20260909092734+01'00'",
+        "/Producer": "Adobe PDF Library 18.0",
+        "/Trapped": "/False"
+      },
+      "visibleDateMarkers": [
+        "Version: 09/09/26"
+      ],
+      "authoritativeScope": "Official Starbucks regional source only; never substitute non-US data for the US menu.",
+      "contains": "Beverages: nutrition, sizes, milk alternatives, allergens and selected additions",
+      "nutritionImportSufficiency": "Useful tabular source for UK only; not sufficient for US import",
+      "freshness": "Currently linked; autumn v03 preferred over autumn v02 and summer editions",
+      "visiblePublishUpdateDate": [
+        "Version: 09/09/26"
+      ],
+      "provenanceFile": "uk/AUT_26_UK_AllergenBook_CORE_BEVERAGE_v03-source.json"
+    }
+  ],
+  "usMenuSnapshot": {
+    "localPath": "data/raw/starbucks/menu.json",
+    "sha256": "b22be2914e139bfe93d38f039fd04829f7775bf130f01856db078e09be2276cf",
+    "region": "US",
+    "sourceType": "official-ordering-api-snapshot",
+    "note": "Endpoint and retrieval timestamps are embedded in menu.json."
+  }
+}

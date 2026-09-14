@@ -1,0 +1,1549 @@
+[
+  {
+    "file": "data/raw/starbucks/interactive/calculator-coverage/8902.js",
+    "sha256": "bbba283ad1f7523de1f344661734d2f993073c06c5b09b43d914839c54ad1d3d",
+    "bytes": 33550,
+    "matches": [
+      {
+        "pattern": "nutri\\w*",
+        "offset": 4889,
+        "match": "nutrition",
+        "context": "42723),N=o(55184),k=o(69239),M=o(76318);const z=(e,t)=>{const o={Grande:!0,Short:!0,Tall:!0,Venti:!0,Trenta:!0},r=e?.sizes,a=1===r?.length?r[0]:r?.find(e=>e.default),i=r?.map(e=>e.name),d=r?.map(e=>e.sizeCode),s=r?.map(e=>e.sku),n=r?.map(({nutrition:e})=>e?.servingSize?.displayValue),u=r?.find(e=>e.name===t),l=u||a,c=r?.indexOf(l),m=()=>{const t=e?.formCode?.toLowerCase();let o=null;switch(t){case\"hot\":o=\"hot\";break;case\"whole-bean\":o=\"whole-bean\";break;case\"iced\":o=e?.name?.toLowerCase()?.includes(\"frappuccino\")?\"frapp\":\"cold\"}return o},p=\"whole-bean\"===m(),g=d?.find(e=>!o[e]);return{hasUnsupportedIco"
+      },
+      {
+        "pattern": "nutri\\w*",
+        "offset": 24409,
+        "match": "nutritionBadge",
+        "context": "\"add\",name:\"Protein-boosted Milk\",sku:\"11182677\"},topLevelCategoryNumber:239}]}},\"XJ\",0,r,\"qM\",0,{2122164:[{id:\"reduced-calories\",headingText:{Short:\"Make it Lighter\",Tall:\"Make it Lighter\",Grande:\"Make it Lighter\",Venti:\"Make it Lighter\"},nutritionBadge:{Short:\"-60 calories, -5g sugar\",Tall:\"-90 calories, -10g sugar\",Grande:\"-90 calories, -9g sugar\",Venti:\"-110 calories, -18g sugar\"},description:\"Reduce calories and sugar with a swap to nonfat milk and less syrup.\"},{id:\"protein-boost\",headingText:{Short:\"Boost the Protein\",Tall:\"Boost the Protein\",Grande:\"Boost the Protein\",Venti:\"Boost the Protein\"},nutr"
+      },
+      {
+        "pattern": "nutri\\w*",
+        "offset": 24779,
+        "match": "nutritionBadge",
+        "context": "ies, -18g sugar\"},description:\"Reduce calories and sugar with a swap to nonfat milk and less syrup.\"},{id:\"protein-boost\",headingText:{Short:\"Boost the Protein\",Tall:\"Boost the Protein\",Grande:\"Boost the Protein\",Venti:\"Boost the Protein\"},nutritionBadge:{Short:\"+8g protein\",Tall:\"+14g protein\",Grande:\"+15g protein\",Venti:\"+14g protein\"},description:\"Power up your favorite drink with protein-boosted milk.\"}],413:[{id:\"reduced-calories\",headingText:{Short:\"Make it Lighter\",Tall:\"Make it Lighter\",Grande:\"Make it Lighter\",Venti:\"Make it Lighter\"},nutritionBadge:{Short:\"-40 calories, -4g sugar\",Tall:\"-50 calori"
+      },
+      {
+        "pattern": "nutri\\w*",
+        "offset": 25089,
+        "match": "nutritionBadge",
+        "context": "rotein\",Venti:\"+14g protein\"},description:\"Power up your favorite drink with protein-boosted milk.\"}],413:[{id:\"reduced-calories\",headingText:{Short:\"Make it Lighter\",Tall:\"Make it Lighter\",Grande:\"Make it Lighter\",Venti:\"Make it Lighter\"},nutritionBadge:{Short:\"-40 calories, -4g sugar\",Tall:\"-50 calories, -7g sugar\",Grande:\"-60 calories, -7g sugar\",Venti:\"-100 calories, -14g sugar\"},description:\"Reduce calories and sugar with a swap to nonfat milk and sugar-free vanilla syrup.\"},{id:\"protein-boost\",headingText:{Short:\"Boost the Protein\",Tall:\"Boost the Protein\",Grande:\"Boost the Protein\",Venti:\"Boost the P"
+      },
+      {
+        "pattern": "nutri\\w*",
+        "offset": 25472,
+        "match": "nutritionBadge",
+        "context": "r\"},description:\"Reduce calories and sugar with a swap to nonfat milk and sugar-free vanilla syrup.\"},{id:\"protein-boost\",headingText:{Short:\"Boost the Protein\",Tall:\"Boost the Protein\",Grande:\"Boost the Protein\",Venti:\"Boost the Protein\"},nutritionBadge:{Short:\"+8g protein\",Tall:\"+14g protein\",Grande:\"+15g protein\",Venti:\"+15g protein\"},description:\"Power up your favorite drink with protein-boosted milk.\"}],420:[{id:\"reduced-calories\",headingText:{Short:\"Make it Lighter\",Tall:\"Make it Lighter\",Grande:\"Make it Lighter\",Venti:\"Make it Lighter\"},nutritionBadge:{Short:\"-110 calories, -8g sugar\",Tall:\"-170 calo"
+      },
+      {
+        "pattern": "nutri\\w*",
+        "offset": 25782,
+        "match": "nutritionBadge",
+        "context": "rotein\",Venti:\"+15g protein\"},description:\"Power up your favorite drink with protein-boosted milk.\"}],420:[{id:\"reduced-calories\",headingText:{Short:\"Make it Lighter\",Tall:\"Make it Lighter\",Grande:\"Make it Lighter\",Venti:\"Make it Lighter\"},nutritionBadge:{Short:\"-110 calories, -8g sugar\",Tall:\"-170 calories, -16g sugar\",Grande:\"-190 calories, -16g sugar\",Venti:\"-210 calories, -15g sugar\"},description:\"Reduce calories and sugar with a swap to nonfat milk and less sauce.\"},{id:\"protein-boost\",headingText:{Short:\"Boost the Protein\",Tall:\"Boost the Protein\",Grande:\"Boost the Protein\",Venti:\"Boost the Protein\"},"
+      },
+      {
+        "pattern": "nutri\\w*",
+        "offset": 26156,
+        "match": "nutritionBadge",
+        "context": "ies, -15g sugar\"},description:\"Reduce calories and sugar with a swap to nonfat milk and less sauce.\"},{id:\"protein-boost\",headingText:{Short:\"Boost the Protein\",Tall:\"Boost the Protein\",Grande:\"Boost the Protein\",Venti:\"Boost the Protein\"},nutritionBadge:{Short:\"+10g protein\",Tall:\"+15g protein\",Grande:\"+17g protein\",Venti:\"+15g protein\"},description:\"Power up your favorite drink with protein-boosted milk.\"}],468:[{id:\"reduced-calories\",headingText:{Short:\"Make it Lighter\",Tall:\"Make it Lighter\",Grande:\"Make it Lighter\",Venti:\"Make it Lighter\"},nutritionBadge:{Short:\"-40 calories, -4g sugar\",Tall:\"-90 calor"
+      },
+      {
+        "pattern": "nutri\\w*",
+        "offset": 26467,
+        "match": "nutritionBadge",
+        "context": "rotein\",Venti:\"+15g protein\"},description:\"Power up your favorite drink with protein-boosted milk.\"}],468:[{id:\"reduced-calories\",headingText:{Short:\"Make it Lighter\",Tall:\"Make it Lighter\",Grande:\"Make it Lighter\",Venti:\"Make it Lighter\"},nutritionBadge:{Short:\"-40 calories, -4g sugar\",Tall:\"-90 calories, -9g sugar\",Grande:\"-110 calories, -14g sugar\",Venti:\"-140 calories, -19g sugar\"},description:\"Reduce calories and sugar with a swap to nonfat milk and sugar-free vanilla syrup.\"},{id:\"protein-boost\",headingText:{Short:\"Boost the Protein\",Tall:\"Boost the Protein\",Grande:\"Boost the Protein\",Venti:\"Boost the"
+      },
+      {
+        "pattern": "nutri\\w*",
+        "offset": 26852,
+        "match": "nutritionBadge",
+        "context": "r\"},description:\"Reduce calories and sugar with a swap to nonfat milk and sugar-free vanilla syrup.\"},{id:\"protein-boost\",headingText:{Short:\"Boost the Protein\",Tall:\"Boost the Protein\",Grande:\"Boost the Protein\",Venti:\"Boost the Protein\"},nutritionBadge:{Short:\"+9g protein\",Tall:\"+14g protein\",Grande:\"+17g protein\",Venti:\"+17g protein\"},description:\"Power up your favorite drink with protein-boosted milk.\"}],424:[{id:\"reduced-calories\",headingText:{Tall:\"Make it Lighter\",Grande:\"Make it Lighter\",Venti:\"Make it Lighter\"},nutritionBadge:{Tall:\"-80 calories, -1g sugar\",Grande:\"-130 calories, -1g sugar\",Venti:\""
+      },
+      {
+        "pattern": "nutri\\w*",
+        "offset": 27138,
+        "match": "nutritionBadge",
+        "context": " protein\",Grande:\"+17g protein\",Venti:\"+17g protein\"},description:\"Power up your favorite drink with protein-boosted milk.\"}],424:[{id:\"reduced-calories\",headingText:{Tall:\"Make it Lighter\",Grande:\"Make it Lighter\",Venti:\"Make it Lighter\"},nutritionBadge:{Tall:\"-80 calories, -1g sugar\",Grande:\"-130 calories, -1g sugar\",Venti:\"-130 calories\"},description:{Tall:\"Reduce calories and sugar with a swap to almondmilk and less syrup.\",Grande:\"Reduce calories and sugar with a swap to almondmilk and less syrup.\",Venti:\"Reduce calories with a swap to almondmilk and less syrup.\"}},{id:\"protein-boost\",headingText:{Tall"
+      },
+      {
+        "pattern": "nutri\\w*",
+        "offset": 27587,
+        "match": "nutritionBadge",
+        "context": "lories and sugar with a swap to almondmilk and less syrup.\",Venti:\"Reduce calories with a swap to almondmilk and less syrup.\"}},{id:\"protein-boost\",headingText:{Tall:\"Boost the Protein\",Grande:\"Boost the Protein\",Venti:\"Boost the Protein\"},nutritionBadge:{Tall:\"+10g protein\",Grande:\"+15g protein\",Venti:\"+19g protein\"},description:\"Power up your favorite drink with protein-boosted milk.\"}]},\"vt\",0,[\"424/iced\",\"420/hot\",\"2122164/hot\",\"468/hot\",\"413/hot\"]])},55184(e,t,o){const r=(0,o(38401).YK)({maximumItems:{id:\"ordering.maximumItems\",defaultMessage:\"There's a {limit} item max for a single order.\"},addProduct"
+      },
+      {
+        "pattern": "nutri\\w*",
+        "offset": 28643,
+        "match": "nutritional",
+        "context": "age:\"Menu\"},removeProductFromFavoritesAria:{id:\"ordering.removeFromFavoritesButton\",defaultMessage:\"Remove {productName} from favorites.\"},menuDescription:{id:\"ordering.menu.metaDescription\",defaultMessage:\"Check out Starbucks menu and get nutritional information about each menu item.\"},subcategoryDefault:{id:\"ordering.subcategoryDefault\",defaultMessage:\"All\"},previousTitle:{id:\"ordering.previousTitle\",defaultMessage:\"Previous\"},favoritesTitle:{id:\"ordering.favoritesTitle\",defaultMessage:\"Favorites\"},featuredTitle:{id:\"ordering.featuredTitle\",defaultMessage:\"Featured\"},itemsLabel:{id:\"ordering.itemsLabel"
+      },
+      {
+        "pattern": "calori\\w*",
+        "offset": 20063,
+        "match": "calories",
+        "context": "tails:t,time:d()}))}catch{return null}}])},76318(e,t,o){const r=e=>e.filter(e=>!e?.deselected);o.d(t,[\"E\",0,({selectedOptions:e,setState:t})=>{t(t=>({...t,selectedOptions:r(e)}))},\"L\",0,r])},69239(e,t,o){const r={2122164:new Map([[\"reduced-calories\",[\"109917\",\"109840\"]],[\"protein-boost\",[\"11182677\"]]]),413:new Map([[\"reduced-calories\",[\"109840\",\"523887\",\"135800\"]],[\"protein-boost\",[\"11182677\"]]]),420:new Map([[\"reduced-calories\",[\"109893\",\"109840\",\"446057\"]],[\"protein-boost\",[\"11182677\"]]]),468:new Map([[\"reduced-calories\",[\"109840\",\"180950\",\"135800\"]],[\"protein-boost\",[\"11182677\"]]]),424:new Map([[\"r"
+      },
+      {
+        "pattern": "calori\\w*",
+        "offset": 20150,
+        "match": "calories",
+        "context": "lected);o.d(t,[\"E\",0,({selectedOptions:e,setState:t})=>{t(t=>({...t,selectedOptions:r(e)}))},\"L\",0,r])},69239(e,t,o){const r={2122164:new Map([[\"reduced-calories\",[\"109917\",\"109840\"]],[\"protein-boost\",[\"11182677\"]]]),413:new Map([[\"reduced-calories\",[\"109840\",\"523887\",\"135800\"]],[\"protein-boost\",[\"11182677\"]]]),420:new Map([[\"reduced-calories\",[\"109893\",\"109840\",\"446057\"]],[\"protein-boost\",[\"11182677\"]]]),468:new Map([[\"reduced-calories\",[\"109840\",\"180950\",\"135800\"]],[\"protein-boost\",[\"11182677\"]]]),424:new Map([[\"reduced-calories\",[\"109893\",\"154162\",\"180594\"]],[\"protein-boost\",[\"11182677\"]]])};o.d(t,"
+      },
+      {
+        "pattern": "calori\\w*",
+        "offset": 20246,
+        "match": "calories",
+        "context": ",0,r])},69239(e,t,o){const r={2122164:new Map([[\"reduced-calories\",[\"109917\",\"109840\"]],[\"protein-boost\",[\"11182677\"]]]),413:new Map([[\"reduced-calories\",[\"109840\",\"523887\",\"135800\"]],[\"protein-boost\",[\"11182677\"]]]),420:new Map([[\"reduced-calories\",[\"109893\",\"109840\",\"446057\"]],[\"protein-boost\",[\"11182677\"]]]),468:new Map([[\"reduced-calories\",[\"109840\",\"180950\",\"135800\"]],[\"protein-boost\",[\"11182677\"]]]),424:new Map([[\"reduced-calories\",[\"109893\",\"154162\",\"180594\"]],[\"protein-boost\",[\"11182677\"]]])};o.d(t,[\"TC\",0,{2122164:{\"reduced-calories\":[{optionProductNumber:111,categoryKeypath:[249,486],formCod"
+      },
+      {
+        "pattern": "calori\\w*",
+        "offset": 20342,
+        "match": "calories",
+        "context": "n-boost\",[\"11182677\"]]]),413:new Map([[\"reduced-calories\",[\"109840\",\"523887\",\"135800\"]],[\"protein-boost\",[\"11182677\"]]]),420:new Map([[\"reduced-calories\",[\"109893\",\"109840\",\"446057\"]],[\"protein-boost\",[\"11182677\"]]]),468:new Map([[\"reduced-calories\",[\"109840\",\"180950\",\"135800\"]],[\"protein-boost\",[\"11182677\"]]]),424:new Map([[\"reduced-calories\",[\"109893\",\"154162\",\"180594\"]],[\"protein-boost\",[\"11182677\"]]])};o.d(t,[\"TC\",0,{2122164:{\"reduced-calories\":[{optionProductNumber:111,categoryKeypath:[249,486],formCode:\"qty\",size:{sizeCode:\"add\",name:\"Vanilla Syrup\",sku:\"109917\"},topLevelCategoryNumber:249,value"
+      },
+      {
+        "pattern": "calori\\w*",
+        "offset": 20438,
+        "match": "calories",
+        "context": "n-boost\",[\"11182677\"]]]),420:new Map([[\"reduced-calories\",[\"109893\",\"109840\",\"446057\"]],[\"protein-boost\",[\"11182677\"]]]),468:new Map([[\"reduced-calories\",[\"109840\",\"180950\",\"135800\"]],[\"protein-boost\",[\"11182677\"]]]),424:new Map([[\"reduced-calories\",[\"109893\",\"154162\",\"180594\"]],[\"protein-boost\",[\"11182677\"]]])};o.d(t,[\"TC\",0,{2122164:{\"reduced-calories\":[{optionProductNumber:111,categoryKeypath:[249,486],formCode:\"qty\",size:{sizeCode:\"add\",name:\"Vanilla Syrup\",sku:\"109917\"},topLevelCategoryNumber:249,values:{Short:1,Tall:1,Grande:2,Venti:3}},{topLevelCategoryNumber:239,categoryKeypath:[239,484],exclu"
+      },
+      {
+        "pattern": "calori\\w*",
+        "offset": 20545,
+        "match": "calories",
+        "context": "11182677\"]]]),468:new Map([[\"reduced-calories\",[\"109840\",\"180950\",\"135800\"]],[\"protein-boost\",[\"11182677\"]]]),424:new Map([[\"reduced-calories\",[\"109893\",\"154162\",\"180594\"]],[\"protein-boost\",[\"11182677\"]]])};o.d(t,[\"TC\",0,{2122164:{\"reduced-calories\":[{optionProductNumber:111,categoryKeypath:[249,486],formCode:\"qty\",size:{sizeCode:\"add\",name:\"Vanilla Syrup\",sku:\"109917\"},topLevelCategoryNumber:249,values:{Short:1,Tall:1,Grande:2,Venti:3}},{topLevelCategoryNumber:239,categoryKeypath:[239,484],exclusiveCategoryNum:484,optionProductNumber:61,formCode:\"one\",size:{sizeCode:\"add\",name:\"Nonfat Milk\",sku:\"1098"
+      },
+      {
+        "pattern": "calori\\w*",
+        "offset": 21139,
+        "match": "calories",
+        "context": "ilk\",sku:\"109840\"}}],\"protein-boost\":[{optionProductNumber:28507,categoryKeypath:[239,484],exclusiveCategoryNum:484,formCode:\"one\",size:{sizeCode:\"add\",name:\"Protein-boosted Milk\",sku:\"11182677\"},topLevelCategoryNumber:239}]},413:{\"reduced-calories\":[{topLevelCategoryNumber:239,categoryKeypath:[239,484],exclusiveCategoryNum:484,optionProductNumber:61,formCode:\"one\",size:{sizeCode:\"add\",name:\"Nonfat Milk\",sku:\"109840\"}},{optionProductNumber:111,categoryKeypath:[249,486],topLevelCategoryNumber:249,formCode:\"qty\",size:{sizeCode:\"no\",name:\"No Vanilla Syrup\",sku:\"523887\"},values:{Short:0,Tall:0,Grande:0,Ve"
+      },
+      {
+        "pattern": "calori\\w*",
+        "offset": 21937,
+        "match": "calories",
+        "context": ",Grande:3,Venti:4}}],\"protein-boost\":[{optionProductNumber:28507,categoryKeypath:[239,484],exclusiveCategoryNum:484,formCode:\"one\",size:{sizeCode:\"add\",name:\"Protein-boosted Milk\",sku:\"11182677\"},topLevelCategoryNumber:239}]},420:{\"reduced-calories\":[{categoryKeypath:[252,253],optionProductNumber:125,formCode:\"modifier\",size:{sizeCode:\"no\",name:\"No Whipped Cream\",sku:\"109893\"},topLevelCategoryNumber:252},{topLevelCategoryNumber:239,categoryKeypath:[239,484],exclusiveCategoryNum:484,optionProductNumber:61,formCode:\"one\",size:{sizeCode:\"add\",name:\"Nonfat Milk\",sku:\"109840\"}},{categoryKeypath:[249,250],o"
+      },
+      {
+        "pattern": "calori\\w*",
+        "offset": 22713,
+        "match": "calories",
+        "context": ",Grande:2,Venti:3}}],\"protein-boost\":[{optionProductNumber:28507,categoryKeypath:[239,484],exclusiveCategoryNum:484,formCode:\"one\",size:{sizeCode:\"add\",name:\"Protein-boosted Milk\",sku:\"11182677\"},topLevelCategoryNumber:239}]},468:{\"reduced-calories\":[{topLevelCategoryNumber:239,categoryKeypath:[239,484],exclusiveCategoryNum:484,optionProductNumber:61,formCode:\"one\",size:{sizeCode:\"add\",name:\"Nonfat Milk\",sku:\"109840\"}},{categoryKeypath:[689,688],optionProductNumber:94,topLevelCategoryNumber:689,formCode:\"qty\",size:{sizeCode:\"no\",name:\"No Classic Syrup\",sku:\"180950\"},values:{Short:0,Tall:0,Grande:0,Ven"
+      },
+      {
+        "pattern": "calori\\w*",
+        "offset": 23510,
+        "match": "calories",
+        "context": ",Grande:3,Venti:4}}],\"protein-boost\":[{optionProductNumber:28507,categoryKeypath:[239,484],exclusiveCategoryNum:484,formCode:\"one\",size:{sizeCode:\"add\",name:\"Protein-boosted Milk\",sku:\"11182677\"},topLevelCategoryNumber:239}]},424:{\"reduced-calories\":[{categoryKeypath:[252,253],optionProductNumber:125,formCode:\"modifier\",size:{sizeCode:\"no\",name:\"No Whipped Cream\",sku:\"109893\"},topLevelCategoryNumber:252},{categoryKeypath:[239,484],optionProductNumber:2121965,formCode:\"one\",exclusiveCategoryNum:484,size:{sizeCode:\"add\",name:\"Almond Beverage\",sku:\"11068713\"},topLevelCategoryNumber:239},{categoryKeypath:"
+      },
+      {
+        "pattern": "calori\\w*",
+        "offset": 24289,
+        "match": "calories",
+        "context": "ein-boost\":[{optionProductNumber:28507,categoryKeypath:[239,484],exclusiveCategoryNum:484,formCode:\"one\",size:{sizeCode:\"add\",name:\"Protein-boosted Milk\",sku:\"11182677\"},topLevelCategoryNumber:239}]}},\"XJ\",0,r,\"qM\",0,{2122164:[{id:\"reduced-calories\",headingText:{Short:\"Make it Lighter\",Tall:\"Make it Lighter\",Grande:\"Make it Lighter\",Venti:\"Make it Lighter\"},nutritionBadge:{Short:\"-60 calories, -5g sugar\",Tall:\"-90 calories, -10g sugar\",Grande:\"-90 calories, -9g sugar\",Venti:\"-110 calories, -18g sugar\"},description:\"Reduce calories and sugar with a swap to nonfat milk and less syrup.\"},{id:\"protein-boo"
+      },
+      {
+        "pattern": "calori\\w*",
+        "offset": 24436,
+        "match": "calories",
+        "context": " Milk\",sku:\"11182677\"},topLevelCategoryNumber:239}]}},\"XJ\",0,r,\"qM\",0,{2122164:[{id:\"reduced-calories\",headingText:{Short:\"Make it Lighter\",Tall:\"Make it Lighter\",Grande:\"Make it Lighter\",Venti:\"Make it Lighter\"},nutritionBadge:{Short:\"-60 calories, -5g sugar\",Tall:\"-90 calories, -10g sugar\",Grande:\"-90 calories, -9g sugar\",Venti:\"-110 calories, -18g sugar\"},description:\"Reduce calories and sugar with a swap to nonfat milk and less syrup.\"},{id:\"protein-boost\",headingText:{Short:\"Boost the Protein\",Tall:\"Boost the Protein\",Grande:\"Boost the Protein\",Venti:\"Boost the Protein\"},nutritionBadge:{Short:\"+8"
+      },
+      {
+        "pattern": "calori\\w*",
+        "offset": 24467,
+        "match": "calories",
+        "context": "CategoryNumber:239}]}},\"XJ\",0,r,\"qM\",0,{2122164:[{id:\"reduced-calories\",headingText:{Short:\"Make it Lighter\",Tall:\"Make it Lighter\",Grande:\"Make it Lighter\",Venti:\"Make it Lighter\"},nutritionBadge:{Short:\"-60 calories, -5g sugar\",Tall:\"-90 calories, -10g sugar\",Grande:\"-90 calories, -9g sugar\",Venti:\"-110 calories, -18g sugar\"},description:\"Reduce calories and sugar with a swap to nonfat milk and less syrup.\"},{id:\"protein-boost\",headingText:{Short:\"Boost the Protein\",Tall:\"Boost the Protein\",Grande:\"Boost the Protein\",Venti:\"Boost the Protein\"},nutritionBadge:{Short:\"+8g protein\",Tall:\"+14g protein\","
+      },
+      {
+        "pattern": "calori\\w*",
+        "offset": 24501,
+        "match": "calories",
+        "context": "M\",0,{2122164:[{id:\"reduced-calories\",headingText:{Short:\"Make it Lighter\",Tall:\"Make it Lighter\",Grande:\"Make it Lighter\",Venti:\"Make it Lighter\"},nutritionBadge:{Short:\"-60 calories, -5g sugar\",Tall:\"-90 calories, -10g sugar\",Grande:\"-90 calories, -9g sugar\",Venti:\"-110 calories, -18g sugar\"},description:\"Reduce calories and sugar with a swap to nonfat milk and less syrup.\"},{id:\"protein-boost\",headingText:{Short:\"Boost the Protein\",Tall:\"Boost the Protein\",Grande:\"Boost the Protein\",Venti:\"Boost the Protein\"},nutritionBadge:{Short:\"+8g protein\",Tall:\"+14g protein\",Grande:\"+15g protein\",Venti:\"+14g "
+      },
+      {
+        "pattern": "calori\\w*",
+        "offset": 24534,
+        "match": "calories",
+        "context": "ies\",headingText:{Short:\"Make it Lighter\",Tall:\"Make it Lighter\",Grande:\"Make it Lighter\",Venti:\"Make it Lighter\"},nutritionBadge:{Short:\"-60 calories, -5g sugar\",Tall:\"-90 calories, -10g sugar\",Grande:\"-90 calories, -9g sugar\",Venti:\"-110 calories, -18g sugar\"},description:\"Reduce calories and sugar with a swap to nonfat milk and less syrup.\"},{id:\"protein-boost\",headingText:{Short:\"Boost the Protein\",Tall:\"Boost the Protein\",Grande:\"Boost the Protein\",Venti:\"Boost the Protein\"},nutritionBadge:{Short:\"+8g protein\",Tall:\"+14g protein\",Grande:\"+15g protein\",Venti:\"+14g protein\"},description:\"Power up y"
+      },
+      {
+        "pattern": "calori\\w*",
+        "offset": 24577,
+        "match": "calories",
+        "context": "all:\"Make it Lighter\",Grande:\"Make it Lighter\",Venti:\"Make it Lighter\"},nutritionBadge:{Short:\"-60 calories, -5g sugar\",Tall:\"-90 calories, -10g sugar\",Grande:\"-90 calories, -9g sugar\",Venti:\"-110 calories, -18g sugar\"},description:\"Reduce calories and sugar with a swap to nonfat milk and less syrup.\"},{id:\"protein-boost\",headingText:{Short:\"Boost the Protein\",Tall:\"Boost the Protein\",Grande:\"Boost the Protein\",Venti:\"Boost the Protein\"},nutritionBadge:{Short:\"+8g protein\",Tall:\"+14g protein\",Grande:\"+15g protein\",Venti:\"+14g protein\"},description:\"Power up your favorite drink with protein-boosted mil"
+      },
+      {
+        "pattern": "calori\\w*",
+        "offset": 24969,
+        "match": "calories",
+        "context": "de:\"Boost the Protein\",Venti:\"Boost the Protein\"},nutritionBadge:{Short:\"+8g protein\",Tall:\"+14g protein\",Grande:\"+15g protein\",Venti:\"+14g protein\"},description:\"Power up your favorite drink with protein-boosted milk.\"}],413:[{id:\"reduced-calories\",headingText:{Short:\"Make it Lighter\",Tall:\"Make it Lighter\",Grande:\"Make it Lighter\",Venti:\"Make it Lighter\"},nutritionBadge:{Short:\"-40 calories, -4g sugar\",Tall:\"-50 calories, -7g sugar\",Grande:\"-60 calories, -7g sugar\",Venti:\"-100 calories, -14g sugar\"},description:\"Reduce calories and sugar with a swap to nonfat milk and sugar-free vanilla syrup.\"},{id"
+      },
+      {
+        "pattern": "calori\\w*",
+        "offset": 25116,
+        "match": "calories",
+        "context": "\"},description:\"Power up your favorite drink with protein-boosted milk.\"}],413:[{id:\"reduced-calories\",headingText:{Short:\"Make it Lighter\",Tall:\"Make it Lighter\",Grande:\"Make it Lighter\",Venti:\"Make it Lighter\"},nutritionBadge:{Short:\"-40 calories, -4g sugar\",Tall:\"-50 calories, -7g sugar\",Grande:\"-60 calories, -7g sugar\",Venti:\"-100 calories, -14g sugar\"},description:\"Reduce calories and sugar with a swap to nonfat milk and sugar-free vanilla syrup.\"},{id:\"protein-boost\",headingText:{Short:\"Boost the Protein\",Tall:\"Boost the Protein\",Grande:\"Boost the Protein\",Venti:\"Boost the Protein\"},nutritionBad"
+      },
+      {
+        "pattern": "calori\\w*",
+        "offset": 25147,
+        "match": "calories",
+        "context": "avorite drink with protein-boosted milk.\"}],413:[{id:\"reduced-calories\",headingText:{Short:\"Make it Lighter\",Tall:\"Make it Lighter\",Grande:\"Make it Lighter\",Venti:\"Make it Lighter\"},nutritionBadge:{Short:\"-40 calories, -4g sugar\",Tall:\"-50 calories, -7g sugar\",Grande:\"-60 calories, -7g sugar\",Venti:\"-100 calories, -14g sugar\"},description:\"Reduce calories and sugar with a swap to nonfat milk and sugar-free vanilla syrup.\"},{id:\"protein-boost\",headingText:{Short:\"Boost the Protein\",Tall:\"Boost the Protein\",Grande:\"Boost the Protein\",Venti:\"Boost the Protein\"},nutritionBadge:{Short:\"+8g protein\",Tall:\"+"
+      },
+      {
+        "pattern": "calori\\w*",
+        "offset": 25180,
+        "match": "calories",
+        "context": "d milk.\"}],413:[{id:\"reduced-calories\",headingText:{Short:\"Make it Lighter\",Tall:\"Make it Lighter\",Grande:\"Make it Lighter\",Venti:\"Make it Lighter\"},nutritionBadge:{Short:\"-40 calories, -4g sugar\",Tall:\"-50 calories, -7g sugar\",Grande:\"-60 calories, -7g sugar\",Venti:\"-100 calories, -14g sugar\"},description:\"Reduce calories and sugar with a swap to nonfat milk and sugar-free vanilla syrup.\"},{id:\"protein-boost\",headingText:{Short:\"Boost the Protein\",Tall:\"Boost the Protein\",Grande:\"Boost the Protein\",Venti:\"Boost the Protein\"},nutritionBadge:{Short:\"+8g protein\",Tall:\"+14g protein\",Grande:\"+15g protein"
+      },
+      {
+        "pattern": "calori\\w*",
+        "offset": 25213,
+        "match": "calories",
+        "context": "ries\",headingText:{Short:\"Make it Lighter\",Tall:\"Make it Lighter\",Grande:\"Make it Lighter\",Venti:\"Make it Lighter\"},nutritionBadge:{Short:\"-40 calories, -4g sugar\",Tall:\"-50 calories, -7g sugar\",Grande:\"-60 calories, -7g sugar\",Venti:\"-100 calories, -14g sugar\"},description:\"Reduce calories and sugar with a swap to nonfat milk and sugar-free vanilla syrup.\"},{id:\"protein-boost\",headingText:{Short:\"Boost the Protein\",Tall:\"Boost the Protein\",Grande:\"Boost the Protein\",Venti:\"Boost the Protein\"},nutritionBadge:{Short:\"+8g protein\",Tall:\"+14g protein\",Grande:\"+15g protein\",Venti:\"+15g protein\"},descripti"
+      },
+      {
+        "pattern": "calori\\w*",
+        "offset": 25256,
+        "match": "calories",
+        "context": "Tall:\"Make it Lighter\",Grande:\"Make it Lighter\",Venti:\"Make it Lighter\"},nutritionBadge:{Short:\"-40 calories, -4g sugar\",Tall:\"-50 calories, -7g sugar\",Grande:\"-60 calories, -7g sugar\",Venti:\"-100 calories, -14g sugar\"},description:\"Reduce calories and sugar with a swap to nonfat milk and sugar-free vanilla syrup.\"},{id:\"protein-boost\",headingText:{Short:\"Boost the Protein\",Tall:\"Boost the Protein\",Grande:\"Boost the Protein\",Venti:\"Boost the Protein\"},nutritionBadge:{Short:\"+8g protein\",Tall:\"+14g protein\",Grande:\"+15g protein\",Venti:\"+15g protein\"},description:\"Power up your favorite drink with prote"
+      },
+      {
+        "pattern": "calori\\w*",
+        "offset": 25662,
+        "match": "calories",
+        "context": "de:\"Boost the Protein\",Venti:\"Boost the Protein\"},nutritionBadge:{Short:\"+8g protein\",Tall:\"+14g protein\",Grande:\"+15g protein\",Venti:\"+15g protein\"},description:\"Power up your favorite drink with protein-boosted milk.\"}],420:[{id:\"reduced-calories\",headingText:{Short:\"Make it Lighter\",Tall:\"Make it Lighter\",Grande:\"Make it Lighter\",Venti:\"Make it Lighter\"},nutritionBadge:{Short:\"-110 calories, -8g sugar\",Tall:\"-170 calories, -16g sugar\",Grande:\"-190 calories, -16g sugar\",Venti:\"-210 calories, -15g sugar\"},description:\"Reduce calories and sugar with a swap to nonfat milk and less sauce.\"},{id:\"protein"
+      },
+      {
+        "pattern": "calori\\w*",
+        "offset": 25810,
+        "match": "calories",
+        "context": "},description:\"Power up your favorite drink with protein-boosted milk.\"}],420:[{id:\"reduced-calories\",headingText:{Short:\"Make it Lighter\",Tall:\"Make it Lighter\",Grande:\"Make it Lighter\",Venti:\"Make it Lighter\"},nutritionBadge:{Short:\"-110 calories, -8g sugar\",Tall:\"-170 calories, -16g sugar\",Grande:\"-190 calories, -16g sugar\",Venti:\"-210 calories, -15g sugar\"},description:\"Reduce calories and sugar with a swap to nonfat milk and less sauce.\"},{id:\"protein-boost\",headingText:{Short:\"Boost the Protein\",Tall:\"Boost the Protein\",Grande:\"Boost the Protein\",Venti:\"Boost the Protein\"},nutritionBadge:{Short:"
+      },
+      {
+        "pattern": "calori\\w*",
+        "offset": 25842,
+        "match": "calories",
+        "context": "orite drink with protein-boosted milk.\"}],420:[{id:\"reduced-calories\",headingText:{Short:\"Make it Lighter\",Tall:\"Make it Lighter\",Grande:\"Make it Lighter\",Venti:\"Make it Lighter\"},nutritionBadge:{Short:\"-110 calories, -8g sugar\",Tall:\"-170 calories, -16g sugar\",Grande:\"-190 calories, -16g sugar\",Venti:\"-210 calories, -15g sugar\"},description:\"Reduce calories and sugar with a swap to nonfat milk and less sauce.\"},{id:\"protein-boost\",headingText:{Short:\"Boost the Protein\",Tall:\"Boost the Protein\",Grande:\"Boost the Protein\",Venti:\"Boost the Protein\"},nutritionBadge:{Short:\"+10g protein\",Tall:\"+15g protei"
+      },
+      {
+        "pattern": "calori\\w*",
+        "offset": 25877,
+        "match": "calories",
+        "context": "lk.\"}],420:[{id:\"reduced-calories\",headingText:{Short:\"Make it Lighter\",Tall:\"Make it Lighter\",Grande:\"Make it Lighter\",Venti:\"Make it Lighter\"},nutritionBadge:{Short:\"-110 calories, -8g sugar\",Tall:\"-170 calories, -16g sugar\",Grande:\"-190 calories, -16g sugar\",Venti:\"-210 calories, -15g sugar\"},description:\"Reduce calories and sugar with a swap to nonfat milk and less sauce.\"},{id:\"protein-boost\",headingText:{Short:\"Boost the Protein\",Tall:\"Boost the Protein\",Grande:\"Boost the Protein\",Venti:\"Boost the Protein\"},nutritionBadge:{Short:\"+10g protein\",Tall:\"+15g protein\",Grande:\"+17g protein\",Venti:\"+15"
+      },
+      {
+        "pattern": "calori\\w*",
+        "offset": 25911,
+        "match": "calories",
+        "context": ",headingText:{Short:\"Make it Lighter\",Tall:\"Make it Lighter\",Grande:\"Make it Lighter\",Venti:\"Make it Lighter\"},nutritionBadge:{Short:\"-110 calories, -8g sugar\",Tall:\"-170 calories, -16g sugar\",Grande:\"-190 calories, -16g sugar\",Venti:\"-210 calories, -15g sugar\"},description:\"Reduce calories and sugar with a swap to nonfat milk and less sauce.\"},{id:\"protein-boost\",headingText:{Short:\"Boost the Protein\",Tall:\"Boost the Protein\",Grande:\"Boost the Protein\",Venti:\"Boost the Protein\"},nutritionBadge:{Short:\"+10g protein\",Tall:\"+15g protein\",Grande:\"+17g protein\",Venti:\"+15g protein\"},description:\"Power up "
+      },
+      {
+        "pattern": "calori\\w*",
+        "offset": 25954,
+        "match": "calories",
+        "context": "\"Make it Lighter\",Grande:\"Make it Lighter\",Venti:\"Make it Lighter\"},nutritionBadge:{Short:\"-110 calories, -8g sugar\",Tall:\"-170 calories, -16g sugar\",Grande:\"-190 calories, -16g sugar\",Venti:\"-210 calories, -15g sugar\"},description:\"Reduce calories and sugar with a swap to nonfat milk and less sauce.\"},{id:\"protein-boost\",headingText:{Short:\"Boost the Protein\",Tall:\"Boost the Protein\",Grande:\"Boost the Protein\",Venti:\"Boost the Protein\"},nutritionBadge:{Short:\"+10g protein\",Tall:\"+15g protein\",Grande:\"+17g protein\",Venti:\"+15g protein\"},description:\"Power up your favorite drink with protein-boosted mi"
+      },
+      {
+        "pattern": "calori\\w*",
+        "offset": 26347,
+        "match": "calories",
+        "context": "e:\"Boost the Protein\",Venti:\"Boost the Protein\"},nutritionBadge:{Short:\"+10g protein\",Tall:\"+15g protein\",Grande:\"+17g protein\",Venti:\"+15g protein\"},description:\"Power up your favorite drink with protein-boosted milk.\"}],468:[{id:\"reduced-calories\",headingText:{Short:\"Make it Lighter\",Tall:\"Make it Lighter\",Grande:\"Make it Lighter\",Venti:\"Make it Lighter\"},nutritionBadge:{Short:\"-40 calories, -4g sugar\",Tall:\"-90 calories, -9g sugar\",Grande:\"-110 calories, -14g sugar\",Venti:\"-140 calories, -19g sugar\"},description:\"Reduce calories and sugar with a swap to nonfat milk and sugar-free vanilla syrup.\"},{"
+      },
+      {
+        "pattern": "calori\\w*",
+        "offset": 26494,
+        "match": "calories",
+        "context": "\"},description:\"Power up your favorite drink with protein-boosted milk.\"}],468:[{id:\"reduced-calories\",headingText:{Short:\"Make it Lighter\",Tall:\"Make it Lighter\",Grande:\"Make it Lighter\",Venti:\"Make it Lighter\"},nutritionBadge:{Short:\"-40 calories, -4g sugar\",Tall:\"-90 calories, -9g sugar\",Grande:\"-110 calories, -14g sugar\",Venti:\"-140 calories, -19g sugar\"},description:\"Reduce calories and sugar with a swap to nonfat milk and sugar-free vanilla syrup.\"},{id:\"protein-boost\",headingText:{Short:\"Boost the Protein\",Tall:\"Boost the Protein\",Grande:\"Boost the Protein\",Venti:\"Boost the Protein\"},nutritionB"
+      },
+      {
+        "pattern": "calori\\w*",
+        "offset": 26525,
+        "match": "calories",
+        "context": "avorite drink with protein-boosted milk.\"}],468:[{id:\"reduced-calories\",headingText:{Short:\"Make it Lighter\",Tall:\"Make it Lighter\",Grande:\"Make it Lighter\",Venti:\"Make it Lighter\"},nutritionBadge:{Short:\"-40 calories, -4g sugar\",Tall:\"-90 calories, -9g sugar\",Grande:\"-110 calories, -14g sugar\",Venti:\"-140 calories, -19g sugar\"},description:\"Reduce calories and sugar with a swap to nonfat milk and sugar-free vanilla syrup.\"},{id:\"protein-boost\",headingText:{Short:\"Boost the Protein\",Tall:\"Boost the Protein\",Grande:\"Boost the Protein\",Venti:\"Boost the Protein\"},nutritionBadge:{Short:\"+9g protein\",Tall:"
+      },
+      {
+        "pattern": "calori\\w*",
+        "offset": 26559,
+        "match": "calories",
+        "context": " milk.\"}],468:[{id:\"reduced-calories\",headingText:{Short:\"Make it Lighter\",Tall:\"Make it Lighter\",Grande:\"Make it Lighter\",Venti:\"Make it Lighter\"},nutritionBadge:{Short:\"-40 calories, -4g sugar\",Tall:\"-90 calories, -9g sugar\",Grande:\"-110 calories, -14g sugar\",Venti:\"-140 calories, -19g sugar\"},description:\"Reduce calories and sugar with a swap to nonfat milk and sugar-free vanilla syrup.\"},{id:\"protein-boost\",headingText:{Short:\"Boost the Protein\",Tall:\"Boost the Protein\",Grande:\"Boost the Protein\",Venti:\"Boost the Protein\"},nutritionBadge:{Short:\"+9g protein\",Tall:\"+14g protein\",Grande:\"+17g protei"
+      },
+      {
+        "pattern": "calori\\w*",
+        "offset": 26593,
+        "match": "calories",
+        "context": "es\",headingText:{Short:\"Make it Lighter\",Tall:\"Make it Lighter\",Grande:\"Make it Lighter\",Venti:\"Make it Lighter\"},nutritionBadge:{Short:\"-40 calories, -4g sugar\",Tall:\"-90 calories, -9g sugar\",Grande:\"-110 calories, -14g sugar\",Venti:\"-140 calories, -19g sugar\"},description:\"Reduce calories and sugar with a swap to nonfat milk and sugar-free vanilla syrup.\"},{id:\"protein-boost\",headingText:{Short:\"Boost the Protein\",Tall:\"Boost the Protein\",Grande:\"Boost the Protein\",Venti:\"Boost the Protein\"},nutritionBadge:{Short:\"+9g protein\",Tall:\"+14g protein\",Grande:\"+17g protein\",Venti:\"+17g protein\"},descripti"
+      },
+      {
+        "pattern": "calori\\w*",
+        "offset": 26636,
+        "match": "calories",
+        "context": "ll:\"Make it Lighter\",Grande:\"Make it Lighter\",Venti:\"Make it Lighter\"},nutritionBadge:{Short:\"-40 calories, -4g sugar\",Tall:\"-90 calories, -9g sugar\",Grande:\"-110 calories, -14g sugar\",Venti:\"-140 calories, -19g sugar\"},description:\"Reduce calories and sugar with a swap to nonfat milk and sugar-free vanilla syrup.\"},{id:\"protein-boost\",headingText:{Short:\"Boost the Protein\",Tall:\"Boost the Protein\",Grande:\"Boost the Protein\",Venti:\"Boost the Protein\"},nutritionBadge:{Short:\"+9g protein\",Tall:\"+14g protein\",Grande:\"+17g protein\",Venti:\"+17g protein\"},description:\"Power up your favorite drink with prote"
+      },
+      {
+        "pattern": "calori\\w*",
+        "offset": 27042,
+        "match": "calories",
+        "context": "de:\"Boost the Protein\",Venti:\"Boost the Protein\"},nutritionBadge:{Short:\"+9g protein\",Tall:\"+14g protein\",Grande:\"+17g protein\",Venti:\"+17g protein\"},description:\"Power up your favorite drink with protein-boosted milk.\"}],424:[{id:\"reduced-calories\",headingText:{Tall:\"Make it Lighter\",Grande:\"Make it Lighter\",Venti:\"Make it Lighter\"},nutritionBadge:{Tall:\"-80 calories, -1g sugar\",Grande:\"-130 calories, -1g sugar\",Venti:\"-130 calories\"},description:{Tall:\"Reduce calories and sugar with a swap to almondmilk and less syrup.\",Grande:\"Reduce calories and sugar with a swap to almondmilk and less syrup.\",Ven"
+      },
+      {
+        "pattern": "calori\\w*",
+        "offset": 27164,
+        "match": "calories",
+        "context": "tein\",Venti:\"+17g protein\"},description:\"Power up your favorite drink with protein-boosted milk.\"}],424:[{id:\"reduced-calories\",headingText:{Tall:\"Make it Lighter\",Grande:\"Make it Lighter\",Venti:\"Make it Lighter\"},nutritionBadge:{Tall:\"-80 calories, -1g sugar\",Grande:\"-130 calories, -1g sugar\",Venti:\"-130 calories\"},description:{Tall:\"Reduce calories and sugar with a swap to almondmilk and less syrup.\",Grande:\"Reduce calories and sugar with a swap to almondmilk and less syrup.\",Venti:\"Reduce calories with a swap to almondmilk and less syrup.\"}},{id:\"protein-boost\",headingText:{Tall:\"Boost the Protein\""
+      },
+      {
+        "pattern": "calori\\w*",
+        "offset": 27198,
+        "match": "calories",
+        "context": "ption:\"Power up your favorite drink with protein-boosted milk.\"}],424:[{id:\"reduced-calories\",headingText:{Tall:\"Make it Lighter\",Grande:\"Make it Lighter\",Venti:\"Make it Lighter\"},nutritionBadge:{Tall:\"-80 calories, -1g sugar\",Grande:\"-130 calories, -1g sugar\",Venti:\"-130 calories\"},description:{Tall:\"Reduce calories and sugar with a swap to almondmilk and less syrup.\",Grande:\"Reduce calories and sugar with a swap to almondmilk and less syrup.\",Venti:\"Reduce calories with a swap to almondmilk and less syrup.\"}},{id:\"protein-boost\",headingText:{Tall:\"Boost the Protein\",Grande:\"Boost the Protein\",Venti:"
+      },
+      {
+        "pattern": "calori\\w*",
+        "offset": 27231,
+        "match": "calories",
+        "context": "nk with protein-boosted milk.\"}],424:[{id:\"reduced-calories\",headingText:{Tall:\"Make it Lighter\",Grande:\"Make it Lighter\",Venti:\"Make it Lighter\"},nutritionBadge:{Tall:\"-80 calories, -1g sugar\",Grande:\"-130 calories, -1g sugar\",Venti:\"-130 calories\"},description:{Tall:\"Reduce calories and sugar with a swap to almondmilk and less syrup.\",Grande:\"Reduce calories and sugar with a swap to almondmilk and less syrup.\",Venti:\"Reduce calories with a swap to almondmilk and less syrup.\"}},{id:\"protein-boost\",headingText:{Tall:\"Boost the Protein\",Grande:\"Boost the Protein\",Venti:\"Boost the Protein\"},nutritionBad"
+      },
+      {
+        "pattern": "calori\\w*",
+        "offset": 27268,
+        "match": "calories",
+        "context": "[{id:\"reduced-calories\",headingText:{Tall:\"Make it Lighter\",Grande:\"Make it Lighter\",Venti:\"Make it Lighter\"},nutritionBadge:{Tall:\"-80 calories, -1g sugar\",Grande:\"-130 calories, -1g sugar\",Venti:\"-130 calories\"},description:{Tall:\"Reduce calories and sugar with a swap to almondmilk and less syrup.\",Grande:\"Reduce calories and sugar with a swap to almondmilk and less syrup.\",Venti:\"Reduce calories with a swap to almondmilk and less syrup.\"}},{id:\"protein-boost\",headingText:{Tall:\"Boost the Protein\",Grande:\"Boost the Protein\",Venti:\"Boost the Protein\"},nutritionBadge:{Tall:\"+10g protein\",Grande:\"+15g "
+      },
+      {
+        "pattern": "calori\\w*",
+        "offset": 27345,
+        "match": "calories",
+        "context": "ighter\",Venti:\"Make it Lighter\"},nutritionBadge:{Tall:\"-80 calories, -1g sugar\",Grande:\"-130 calories, -1g sugar\",Venti:\"-130 calories\"},description:{Tall:\"Reduce calories and sugar with a swap to almondmilk and less syrup.\",Grande:\"Reduce calories and sugar with a swap to almondmilk and less syrup.\",Venti:\"Reduce calories with a swap to almondmilk and less syrup.\"}},{id:\"protein-boost\",headingText:{Tall:\"Boost the Protein\",Grande:\"Boost the Protein\",Venti:\"Boost the Protein\"},nutritionBadge:{Tall:\"+10g protein\",Grande:\"+15g protein\",Venti:\"+19g protein\"},description:\"Power up your favorite drink with"
+      },
+      {
+        "pattern": "calori\\w*",
+        "offset": 27421,
+        "match": "calories",
+        "context": "ar\",Grande:\"-130 calories, -1g sugar\",Venti:\"-130 calories\"},description:{Tall:\"Reduce calories and sugar with a swap to almondmilk and less syrup.\",Grande:\"Reduce calories and sugar with a swap to almondmilk and less syrup.\",Venti:\"Reduce calories with a swap to almondmilk and less syrup.\"}},{id:\"protein-boost\",headingText:{Tall:\"Boost the Protein\",Grande:\"Boost the Protein\",Venti:\"Boost the Protein\"},nutritionBadge:{Tall:\"+10g protein\",Grande:\"+15g protein\",Venti:\"+19g protein\"},description:\"Power up your favorite drink with protein-boosted milk.\"}]},\"vt\",0,[\"424/iced\",\"420/hot\",\"2122164/hot\",\"468/h"
+      }
+    ]
+  },
+  {
+    "file": "data/raw/starbucks/interactive/customization-2123113/coreApp.js",
+    "sha256": "7d1bee62999c298b0bbaa0230d9edc0b6cdf56837ae394d20c662d38dbb8c3c6",
+    "bytes": 510425,
+    "matches": [
+      {
+        "pattern": "nutri\\w*",
+        "offset": 110797,
+        "match": "Nutrition",
+        "context": "cer:Xn}=(0,Pr.A)({startAction:Nn._O}),eo=(e=Qn,a)=>(e=Xn(e,a),a.type===Nn.VA?Qn:e);t.dn(eo);const ao=(0,Rt.HY)({cart:jn,favorites:Pn,notification:On,order:Dn,orderPickupTime:Jn,preOrderEstimate:Zn,previousOrders:Hn,productDetails:Fn,productNutrition:eo,rewardPrograms:Gn,selectedPayment:$n,selectedReloadSourceId:Vn,selectedStore:Yn,similarItems:Wn,variables:qn});var to=t(91397),ro=t(96006);const so=[{selector:to.q,actionCreator:ro.G}];var no=t(49774),oo=t(94864),io=t(38164),lo=t(27858),co=t(72597);const uo=()=>{const e=(()=>{const e=\"SbuxInMapSrc\",a=(0,io.A)(e),t=a?.split(\"|\"),r={originationSource:(e=>{"
+      },
+      {
+        "pattern": "nutri\\w*",
+        "offset": 123816,
+        "match": "nutrition",
+        "context": "n(t.bind(t,34009))),hideGlobalFooter:!0,applyMiddleware:[fi]},\"/menu/product/:productNumber/:formCode\":{fullPageComponent:Mi,showGlobalNavMobileBottomShadow:!0,crustComponent:vi,applyMiddleware:[yi]},\"/menu/product/:productNumber/:formCode/nutrition\":{fullPageComponent:Mi,showGlobalNavMobileBottomShadow:!0,crustComponent:vi,applyMiddleware:[yi]},\"/menu/:menu/:category/:subcategory\":{fullPageComponent:bi,crustComponent:vi,applyMiddleware:[yi]},\"/menu/:menu/:category\":{fullPageComponent:bi,crustComponent:vi,applyMiddleware:[yi]},\"/menu\":{fullPageComponent:bi,crustComponent:vi,applyMiddleware:[yi,xi]},\"/m"
+      },
+      {
+        "pattern": "nutri\\w*",
+        "offset": 486583,
+        "match": "NutritionAttributes",
+        "context": "t i=Object.fromEntries(Object.entries(a).map(([e,a])=>[e,a?.value??a?.displayValue]));i={...i,protein:i.protein<10?`(${i.protein})`:i.protein};const d=o.map(e=>i[e]).join(\"|\");return{inputAttributes:{menu_product_id:t,modifier_id:s||n},baseNutritionAttributes:d}},D=({successData:e,input:a,baseNutrition:t})=>{const{inputAttributes:s,baseNutritionAttributes:n}=B(a,t);let i=Object.fromEntries(Object.entries(e).map(([e,a])=>[e,Number(a?.value)]));i={...i,protein:i.protein<10?`(${i.protein})`:i.protein};const d={...s,base_nutrients:n,calculated_nutrients:o.map(e=>i[e]).join(\"|\")};(0,r.sx)(\"MOP_PRODUCT_NUTRITION_CTA_C"
+      },
+      {
+        "pattern": "nutri\\w*",
+        "offset": 486637,
+        "match": "Nutrition",
+        "context": "[e,a?.value??a?.displayValue]));i={...i,protein:i.protein<10?`(${i.protein})`:i.protein};const d=o.map(e=>i[e]).join(\"|\");return{inputAttributes:{menu_product_id:t,modifier_id:s||n},baseNutritionAttributes:d}},D=({successData:e,input:a,baseNutrition:t})=>{const{inputAttributes:s,baseNutritionAttributes:n}=B(a,t);let i=Object.fromEntries(Object.entries(e).map(([e,a])=>[e,Number(a?.value)]));i={...i,protein:i.protein<10?`(${i.protein})`:i.protein};const d={...s,base_nutrients:n,calculated_nutrients:o.map(e=>i[e]).join(\"|\")};(0,r.sx)(\"MOP_PRODUCT_NUTRITION_CTA_CLICK\",d)},U=({input:e,baseNutrition:a})=>{co"
+      },
+      {
+        "pattern": "nutri\\w*",
+        "offset": 486681,
+        "match": "NutritionAttributes",
+        "context": "ein:i.protein<10?`(${i.protein})`:i.protein};const d=o.map(e=>i[e]).join(\"|\");return{inputAttributes:{menu_product_id:t,modifier_id:s||n},baseNutritionAttributes:d}},D=({successData:e,input:a,baseNutrition:t})=>{const{inputAttributes:s,baseNutritionAttributes:n}=B(a,t);let i=Object.fromEntries(Object.entries(e).map(([e,a])=>[e,Number(a?.value)]));i={...i,protein:i.protein<10?`(${i.protein})`:i.protein};const d={...s,base_nutrients:n,calculated_nutrients:o.map(e=>i[e]).join(\"|\")};(0,r.sx)(\"MOP_PRODUCT_NUTRITION_CTA_CLICK\",d)},U=({input:e,baseNutrition:a})=>{const{inputAttributes:t,baseNutritionAttributes:s}=B(e,a"
+      },
+      {
+        "pattern": "nutri\\w*",
+        "offset": 486866,
+        "match": "nutrients",
+        "context": "nput:a,baseNutrition:t})=>{const{inputAttributes:s,baseNutritionAttributes:n}=B(a,t);let i=Object.fromEntries(Object.entries(e).map(([e,a])=>[e,Number(a?.value)]));i={...i,protein:i.protein<10?`(${i.protein})`:i.protein};const d={...s,base_nutrients:n,calculated_nutrients:o.map(e=>i[e]).join(\"|\")};(0,r.sx)(\"MOP_PRODUCT_NUTRITION_CTA_CLICK\",d)},U=({input:e,baseNutrition:a})=>{const{inputAttributes:t,baseNutritionAttributes:s}=B(e,a),n={...t,base_nutrients:s,calculated_nutrients:\"ERROR\"};(0,r.sx)(\"MOP_PRODUCT_NUTRITION_CTA_CLICK\",n)}},48653(e,a,t){var r=t(88208);const{FETCH_ORDER_PRICING:s,FETCH_ORDER_PR"
+      },
+      {
+        "pattern": "nutri\\w*",
+        "offset": 486889,
+        "match": "nutrients",
+        "context": ")=>{const{inputAttributes:s,baseNutritionAttributes:n}=B(a,t);let i=Object.fromEntries(Object.entries(e).map(([e,a])=>[e,Number(a?.value)]));i={...i,protein:i.protein<10?`(${i.protein})`:i.protein};const d={...s,base_nutrients:n,calculated_nutrients:o.map(e=>i[e]).join(\"|\")};(0,r.sx)(\"MOP_PRODUCT_NUTRITION_CTA_CLICK\",d)},U=({input:e,baseNutrition:a})=>{const{inputAttributes:t,baseNutritionAttributes:s}=B(e,a),n={...t,base_nutrients:s,calculated_nutrients:\"ERROR\"};(0,r.sx)(\"MOP_PRODUCT_NUTRITION_CTA_CLICK\",n)}},48653(e,a,t){var r=t(88208);const{FETCH_ORDER_PRICING:s,FETCH_ORDER_PRICING_SUCCESS:n,FETCH_O"
+      },
+      {
+        "pattern": "nutri\\w*",
+        "offset": 486947,
+        "match": "NUTRITION_CTA_CLICK",
+        "context": ",t);let i=Object.fromEntries(Object.entries(e).map(([e,a])=>[e,Number(a?.value)]));i={...i,protein:i.protein<10?`(${i.protein})`:i.protein};const d={...s,base_nutrients:n,calculated_nutrients:o.map(e=>i[e]).join(\"|\")};(0,r.sx)(\"MOP_PRODUCT_NUTRITION_CTA_CLICK\",d)},U=({input:e,baseNutrition:a})=>{const{inputAttributes:t,baseNutritionAttributes:s}=B(e,a),n={...t,base_nutrients:s,calculated_nutrients:\"ERROR\"};(0,r.sx)(\"MOP_PRODUCT_NUTRITION_CTA_CLICK\",n)}},48653(e,a,t){var r=t(88208);const{FETCH_ORDER_PRICING:s,FETCH_ORDER_PRICING_SUCCESS:n,FETCH_ORDER_PRICING_ERROR:o,FETCH_FAVORITE_PRODUCTS:i,FETCH_FAVORITE_PRODUC"
+      },
+      {
+        "pattern": "nutri\\w*",
+        "offset": 486988,
+        "match": "Nutrition",
+        "context": "es(e).map(([e,a])=>[e,Number(a?.value)]));i={...i,protein:i.protein<10?`(${i.protein})`:i.protein};const d={...s,base_nutrients:n,calculated_nutrients:o.map(e=>i[e]).join(\"|\")};(0,r.sx)(\"MOP_PRODUCT_NUTRITION_CTA_CLICK\",d)},U=({input:e,baseNutrition:a})=>{const{inputAttributes:t,baseNutritionAttributes:s}=B(e,a),n={...t,base_nutrients:s,calculated_nutrients:\"ERROR\"};(0,r.sx)(\"MOP_PRODUCT_NUTRITION_CTA_CLICK\",n)}},48653(e,a,t){var r=t(88208);const{FETCH_ORDER_PRICING:s,FETCH_ORDER_PRICING_SUCCESS:n,FETCH_ORDER_PRICING_ERROR:o,FETCH_FAVORITE_PRODUCTS:i,FETCH_FAVORITE_PRODUCTS_SUCCESS:d,FETCH_FAVORITE_PRO"
+      },
+      {
+        "pattern": "nutri\\w*",
+        "offset": 487032,
+        "match": "NutritionAttributes",
+        "context": "{...i,protein:i.protein<10?`(${i.protein})`:i.protein};const d={...s,base_nutrients:n,calculated_nutrients:o.map(e=>i[e]).join(\"|\")};(0,r.sx)(\"MOP_PRODUCT_NUTRITION_CTA_CLICK\",d)},U=({input:e,baseNutrition:a})=>{const{inputAttributes:t,baseNutritionAttributes:s}=B(e,a),n={...t,base_nutrients:s,calculated_nutrients:\"ERROR\"};(0,r.sx)(\"MOP_PRODUCT_NUTRITION_CTA_CLICK\",n)}},48653(e,a,t){var r=t(88208);const{FETCH_ORDER_PRICING:s,FETCH_ORDER_PRICING_SUCCESS:n,FETCH_ORDER_PRICING_ERROR:o,FETCH_FAVORITE_PRODUCTS:i,FETCH_FAVORITE_PRODUCTS_SUCCESS:d,FETCH_FAVORITE_PRODUCTS_ERROR:l,SAVE_FAVORITE_PRODUCT:c,SAVE_FAVORITE_PR"
+      },
+      {
+        "pattern": "nutri\\w*",
+        "offset": 487075,
+        "match": "nutrients",
+        "context": ":i.protein};const d={...s,base_nutrients:n,calculated_nutrients:o.map(e=>i[e]).join(\"|\")};(0,r.sx)(\"MOP_PRODUCT_NUTRITION_CTA_CLICK\",d)},U=({input:e,baseNutrition:a})=>{const{inputAttributes:t,baseNutritionAttributes:s}=B(e,a),n={...t,base_nutrients:s,calculated_nutrients:\"ERROR\"};(0,r.sx)(\"MOP_PRODUCT_NUTRITION_CTA_CLICK\",n)}},48653(e,a,t){var r=t(88208);const{FETCH_ORDER_PRICING:s,FETCH_ORDER_PRICING_SUCCESS:n,FETCH_ORDER_PRICING_ERROR:o,FETCH_FAVORITE_PRODUCTS:i,FETCH_FAVORITE_PRODUCTS_SUCCESS:d,FETCH_FAVORITE_PRODUCTS_ERROR:l,SAVE_FAVORITE_PRODUCT:c,SAVE_FAVORITE_PRODUCT_SUCCESS:u,SAVE_FAVORITE_PRO"
+      },
+      {
+        "pattern": "nutri\\w*",
+        "offset": 487098,
+        "match": "nutrients",
+        "context": ".s,base_nutrients:n,calculated_nutrients:o.map(e=>i[e]).join(\"|\")};(0,r.sx)(\"MOP_PRODUCT_NUTRITION_CTA_CLICK\",d)},U=({input:e,baseNutrition:a})=>{const{inputAttributes:t,baseNutritionAttributes:s}=B(e,a),n={...t,base_nutrients:s,calculated_nutrients:\"ERROR\"};(0,r.sx)(\"MOP_PRODUCT_NUTRITION_CTA_CLICK\",n)}},48653(e,a,t){var r=t(88208);const{FETCH_ORDER_PRICING:s,FETCH_ORDER_PRICING_SUCCESS:n,FETCH_ORDER_PRICING_ERROR:o,FETCH_FAVORITE_PRODUCTS:i,FETCH_FAVORITE_PRODUCTS_SUCCESS:d,FETCH_FAVORITE_PRODUCTS_ERROR:l,SAVE_FAVORITE_PRODUCT:c,SAVE_FAVORITE_PRODUCT_SUCCESS:u,SAVE_FAVORITE_PRODUCT_ERROR:m,REMOVE_FAV"
+      },
+      {
+        "pattern": "nutri\\w*",
+        "offset": 487139,
+        "match": "NUTRITION_CTA_CLICK",
+        "context": "o.map(e=>i[e]).join(\"|\")};(0,r.sx)(\"MOP_PRODUCT_NUTRITION_CTA_CLICK\",d)},U=({input:e,baseNutrition:a})=>{const{inputAttributes:t,baseNutritionAttributes:s}=B(e,a),n={...t,base_nutrients:s,calculated_nutrients:\"ERROR\"};(0,r.sx)(\"MOP_PRODUCT_NUTRITION_CTA_CLICK\",n)}},48653(e,a,t){var r=t(88208);const{FETCH_ORDER_PRICING:s,FETCH_ORDER_PRICING_SUCCESS:n,FETCH_ORDER_PRICING_ERROR:o,FETCH_FAVORITE_PRODUCTS:i,FETCH_FAVORITE_PRODUCTS_SUCCESS:d,FETCH_FAVORITE_PRODUCTS_ERROR:l,SAVE_FAVORITE_PRODUCT:c,SAVE_FAVORITE_PRODUCT_SUCCESS:u,SAVE_FAVORITE_PRODUCT_ERROR:m,REMOVE_FAVORITE_PRODUCT:C,REMOVE_FAVORITE_PRODUCT_SUCCESS:p,R"
+      },
+      {
+        "pattern": "nutri\\w*",
+        "offset": 488100,
+        "match": "NUTRITION",
+        "context": "TE_SUCCESS:E,GET_PRE_ORDER_PICKUP_ESTIMATE_ERROR:N,GET_ORDER_PICKUP_TIME:T,GET_ORDER_PICKUP_TIME_SUCCESS:_,GET_ORDER_PICKUP_TIME_ERROR:j,FETCH_STORE_TIME_SLOTS:R,FETCH_STORE_TIME_SLOTS_SUCCESS:I,FETCH_STORE_TIME_SLOTS_ERROR:k,FETCH_PRODUCT_NUTRITION:P,FETCH_PRODUCT_NUTRITION_SUCCESS:O,FETCH_PRODUCT_NUTRITION_ERROR:L}=(0,r.A)([\"SUBMIT_ORDER\",\"SUBMIT_ORDER_GUEST\",\"FETCH_ORDER_PRICING\",\"FETCH_FAVORITE_PRODUCTS\",\"SAVE_FAVORITE_PRODUCT\",\"REMOVE_FAVORITE_PRODUCT\",\"FETCH_PREVIOUS_ORDERS\",\"FETCH_PRODUCT_DETAILS\",\"FETCH_SIMILAR_ITEMS\",\"GET_PRE_ORDER_PICKUP_ESTIMATE\",\"GET_ORDER_PICKUP_TIME\",\"FETCH_STORE_TIME_SLO"
+      },
+      {
+        "pattern": "nutri\\w*",
+        "offset": 488126,
+        "match": "NUTRITION_SUCCESS",
+        "context": "_PICKUP_ESTIMATE_ERROR:N,GET_ORDER_PICKUP_TIME:T,GET_ORDER_PICKUP_TIME_SUCCESS:_,GET_ORDER_PICKUP_TIME_ERROR:j,FETCH_STORE_TIME_SLOTS:R,FETCH_STORE_TIME_SLOTS_SUCCESS:I,FETCH_STORE_TIME_SLOTS_ERROR:k,FETCH_PRODUCT_NUTRITION:P,FETCH_PRODUCT_NUTRITION_SUCCESS:O,FETCH_PRODUCT_NUTRITION_ERROR:L}=(0,r.A)([\"SUBMIT_ORDER\",\"SUBMIT_ORDER_GUEST\",\"FETCH_ORDER_PRICING\",\"FETCH_FAVORITE_PRODUCTS\",\"SAVE_FAVORITE_PRODUCT\",\"REMOVE_FAVORITE_PRODUCT\",\"FETCH_PREVIOUS_ORDERS\",\"FETCH_PRODUCT_DETAILS\",\"FETCH_SIMILAR_ITEMS\",\"GET_PRE_ORDER_PICKUP_ESTIMATE\",\"GET_ORDER_PICKUP_TIME\",\"FETCH_STORE_TIME_SLOTS\",\"FETCH_PRODUCT_NUTRITION\"]);t."
+      },
+      {
+        "pattern": "nutri\\w*",
+        "offset": 488160,
+        "match": "NUTRITION_ERROR",
+        "context": "_PICKUP_TIME:T,GET_ORDER_PICKUP_TIME_SUCCESS:_,GET_ORDER_PICKUP_TIME_ERROR:j,FETCH_STORE_TIME_SLOTS:R,FETCH_STORE_TIME_SLOTS_SUCCESS:I,FETCH_STORE_TIME_SLOTS_ERROR:k,FETCH_PRODUCT_NUTRITION:P,FETCH_PRODUCT_NUTRITION_SUCCESS:O,FETCH_PRODUCT_NUTRITION_ERROR:L}=(0,r.A)([\"SUBMIT_ORDER\",\"SUBMIT_ORDER_GUEST\",\"FETCH_ORDER_PRICING\",\"FETCH_FAVORITE_PRODUCTS\",\"SAVE_FAVORITE_PRODUCT\",\"REMOVE_FAVORITE_PRODUCT\",\"FETCH_PREVIOUS_ORDERS\",\"FETCH_PRODUCT_DETAILS\",\"FETCH_SIMILAR_ITEMS\",\"GET_PRE_ORDER_PICKUP_ESTIMATE\",\"GET_ORDER_PICKUP_TIME\",\"FETCH_STORE_TIME_SLOTS\",\"FETCH_PRODUCT_NUTRITION\"]);t.d(a,[\"$G\",0,\"SET_LOCATION_BY_NUM"
+      },
+      {
+        "pattern": "nutri\\w*",
+        "offset": 488488,
+        "match": "NUTRITION",
+        "context": "ETCH_FAVORITE_PRODUCTS\",\"SAVE_FAVORITE_PRODUCT\",\"REMOVE_FAVORITE_PRODUCT\",\"FETCH_PREVIOUS_ORDERS\",\"FETCH_PRODUCT_DETAILS\",\"FETCH_SIMILAR_ITEMS\",\"GET_PRE_ORDER_PICKUP_ESTIMATE\",\"GET_ORDER_PICKUP_TIME\",\"FETCH_STORE_TIME_SLOTS\",\"FETCH_PRODUCT_NUTRITION\"]);t.d(a,[\"$G\",0,\"SET_LOCATION_BY_NUMBER\",\"$t\",0,c,\"Ai\",0,\"CLEAR_TIME_SLOT_ERROR\",\"C2\",0,l,\"E5\",0,\"SET_ORDER_METHOD\",\"FJ\",0,\"ADD_PRODUCT_TO_CART\",\"H8\",0,\"SUBMIT_ORDER_GCO_TIME_SLOT_UNAVAILABLE_ERROR\",\"HQ\",0,T,\"Im\",0,C,\"JF\",0,\"CLEAR_CURRENT_CART\",\"Jf\",0,N,\"KG\",0,\"CLEAR_ORDER_STATUS\",\"Kp\",0,\"CLEAR_CART_AVAILABLE_REWARDS\",\"NI\",0,u,\"Nw\",0,\"UPDATE_ORDER_DELIVERY"
+      },
+      {
+        "pattern": "nutri\\w*",
+        "offset": 489045,
+        "match": "NUTRITION",
+        "context": "ABLE_REWARDS\",\"NI\",0,u,\"Nw\",0,\"UPDATE_ORDER_DELIVERY_TYPE\",\"PF\",0,d,\"Pf\",0,L,\"Pl\",0,\"ADD_OOS_RECOMMENDATION_TO_CART\",\"QZ\",0,o,\"Qg\",0,S,\"Qy\",0,E,\"RE\",0,n,\"RV\",0,\"CLEAR_GCO_TIME_SLOT_UNAVAILABLE_ERROR\",\"Sc\",0,k,\"TW\",0,v,\"VA\",0,\"CLEAR_PRODUCT_NUTRITION\",\"VR\",0,h,\"Vs\",0,I,\"WP\",0,b,\"XZ\",0,\"SET_SCHEDULED_ORDERING_MOCK_STATE\",\"YO\",0,j,\"Yu\",0,\"GUEST_ORDER_TOTAL_AMOUNT\",\"Yx\",0,\"CLEAR_ORDER_PRICING\",\"ZT\",0,g,\"_O\",0,P,\"az\",0,\"SELECT_PICKUP_OPTION\",\"b1\",0,R,\"bS\",0,_,\"e$\",0,y,\"f7\",0,\"PRE_ORDER_PICKUP_ESTIMATE\",\"fy\",0,M,\"gO\",0,\"UPDATE_AVAILABILITY\",\"l$\",0,\"AVAILABILITY_CORRECT\",\"lb\",0,\"INVALIDATE_MOST_RECENT_ORDER\","
+      },
+      {
+        "pattern": "calori\\w*",
+        "offset": 482365,
+        "match": "calories",
+        "context": "=>v,kB:()=>h,Q1:()=>b,hE:()=>M,mx:()=>p,ci:()=>C,aX:()=>w,Hk:()=>E,S8:()=>g,_1:()=>f,Gf:()=>A,Sp:()=>c,QM:()=>L,aK:()=>N,yn:()=>k,uc:()=>j,mK:()=>m,w9:()=>R,qw:()=>U,p8:()=>D,q0:()=>O,wZ:()=>P});var r=t(21695),s=t(93712);const n=\"null\",o=[\"calories\",\"sugars\",\"fat\",\"protein\"],i=({selectedOptions:e=[],productName:a,productSize:t,productSku:r,pathname:s,screenName:o,productQty:i})=>{const d=[],l=i?{new_product_quantity:i}:{};for(const a of e){const{sku:e}=a?.product?.form?.sizes?.[0]||a||{};e&&d.push(e)}return{name:a||n,menu_product_id:r||n,product_add_source:s,size_code:t||n,product_is_modified:(e?.leng"
+      },
+      {
+        "pattern": "calori\\w*",
+        "offset": 492402,
+        "match": "CaloriesFromFat",
+        "context": ")},42723(e,a,t){var r=t(25508);const s=e=>e.config,n=(0,r.Mz)(s,e=>e?.maximumItemAmount),o=(0,r.Mz)(s,e=>e?.maximumModifierAmount),i=(0,r.Mz)(s,e=>e?.defaultSvcLoadOption),d=(0,r.Mz)(s,e=>e?.showStandaloneAndPwaMenu),l=(0,r.Mz)(s,e=>e?.showCaloriesFromFat),c=(0,r.Mz)(s,e=>e?.showOutOfStockSimilarItemsCta),u=(0,r.Mz)(s,e=>e?.showPdpQuickMod);t.d(a,[\"ML\",0,u,\"Wf\",0,n,\"eO\",0,i,\"fl\",0,o,\"mn\",0,s,\"pS\",0,c,\"wc\",0,d,\"yt\",0,l])},52898(e,a,t){var r=t(25508),s=t(72597),n=t(8123),o=t(30679),i=t(19784),d=t(3863),l=t(79607),c=t(49774),u=t(90857),m=t(24058);const C=(0,r.Mz)(e=>e.ordering,e=>e?.favorites),p=(0,r.Mz)(d.Xi,i"
+      }
+    ]
+  },
+  {
+    "file": "data/raw/starbucks/interactive/customization-2123113/ordering-crust.js",
+    "sha256": "299908417783e509060ff7bcfd641c77cdd22816dcc6f16afe49ad76e9eafc2b",
+    "bytes": 10127,
+    "matches": [
+      {
+        "pattern": "nutri\\w*",
+        "offset": 6530,
+        "match": "nutritional",
+        "context": "age:\"Menu\"},removeProductFromFavoritesAria:{id:\"ordering.removeFromFavoritesButton\",defaultMessage:\"Remove {productName} from favorites.\"},menuDescription:{id:\"ordering.menu.metaDescription\",defaultMessage:\"Check out Starbucks menu and get nutritional information about each menu item.\"},subcategoryDefault:{id:\"ordering.subcategoryDefault\",defaultMessage:\"All\"},previousTitle:{id:\"ordering.previousTitle\",defaultMessage:\"Previous\"},favoritesTitle:{id:\"ordering.favoritesTitle\",defaultMessage:\"Favorites\"},featuredTitle:{id:\"ordering.featuredTitle\",defaultMessage:\"Featured\"},itemsLabel:{id:\"ordering.itemsLabel"
+      }
+    ]
+  },
+  {
+    "file": "data/raw/starbucks/interactive/customization-2123113/ordering-pdp.js",
+    "sha256": "2fef1d8d9211a174a25120582c3baed09d6683ec0bd91c208cefe9705366ce03",
+    "bytes": 56642,
+    "matches": [
+      {
+        "pattern": "nutri\\w*",
+        "offset": 5031,
+        "match": "NutritionPage",
+        "context": "Intersection:!0,children:({elementRef:e})=>(0,s.jsx)(d.$n,{className:\"mt3 ml5\",onClick:m,ref:e,children:(0,s.jsx)(n.sA,{...k.A.similarItemsCta})})})]})},$=\"column___E5yKt\",w=\"columnLeft___URdz6\",B=\"columnRight___V2tpA\",V=({className:e=\"\",isNutritionPage:t=!1,leftColumn:a=null,leftColumnClassName:r=\"\",rightColumn:i=null,rightColumnClassName:o=\"\"})=>(0,s.jsxs)(\"div\",{className:`lg-flex ${e}`,children:[(0,s.jsx)(\"div\",{className:`flex-grow ${$} ${t?`order-2 ${B}`:String(w)} ${r}`,children:a}),(0,s.jsx)(\"div\",{className:`flex-grow ${$} ${t?`order-1 ${w}`:String(B)} ${o}`,children:i})]}),R=(0,n.YK)({sizeLabel:{"
+      },
+      {
+        "pattern": "nutri\\w*",
+        "offset": 8909,
+        "match": "nutritionBadge",
+        "context": ".sizeOptionsTitle})}),o&&(0,s.jsx)(H,{}),i&&(0,s.jsx)(Q,{})]})};var Y=a(69239),G=a(32694),Z=a(10097),J=a(48653);const X=()=>({type:J.VA});var ee=a(96989);const te=\"selectedBorder___wP2Tq\",ae=\"headerText___VhWcA\",se=\"fadedText___lCuEF\",re=({nutritionBadge:e})=>(0,s.jsx)(\"div\",{className:`proteinBadge___ZlTTA ${ae} text-xxs text-semibold py1 px2 whiteSpace-noWrap`,\"data-e2e\":\"nutrition-badge\",children:e}),ie=(0,n.YK)({apply:{id:\"ordering.quickMod.apply\",defaultMessage:\"Apply\"},modApplied:{id:\"ordering.quickMod.modApplied\",defaultMessage:\"Mod applied\"},applyA11yLabel:{id:\"ordering.quickMod.applyA11yLabel\",defa"
+      },
+      {
+        "pattern": "nutri\\w*",
+        "offset": 9046,
+        "match": "nutrition",
+        "context": ";var ee=a(96989);const te=\"selectedBorder___wP2Tq\",ae=\"headerText___VhWcA\",se=\"fadedText___lCuEF\",re=({nutritionBadge:e})=>(0,s.jsx)(\"div\",{className:`proteinBadge___ZlTTA ${ae} text-xxs text-semibold py1 px2 whiteSpace-noWrap`,\"data-e2e\":\"nutrition-badge\",children:e}),ie=(0,n.YK)({apply:{id:\"ordering.quickMod.apply\",defaultMessage:\"Apply\"},modApplied:{id:\"ordering.quickMod.modApplied\",defaultMessage:\"Mod applied\"},applyA11yLabel:{id:\"ordering.quickMod.applyA11yLabel\",defaultMessage:\"Apply {modName}\"},resetMod:{id:\"ordering.quickMod.reset\",defaultMessage:\"Reset\"},sectionHeader:{id:\"ordering.quickMod.se"
+      },
+      {
+        "pattern": "nutri\\w*",
+        "offset": 9478,
+        "match": "nutritionBadge",
+        "context": "l:{id:\"ordering.quickMod.applyA11yLabel\",defaultMessage:\"Apply {modName}\"},resetMod:{id:\"ordering.quickMod.reset\",defaultMessage:\"Reset\"},sectionHeader:{id:\"ordering.quickMod.sectionHeader\",defaultMessage:\"Quick Mods\"}}),oe=({headingText:e,nutritionBadge:t,description:a,isApplied:r,onApply:i,onReset:o})=>(0,s.jsx)(\"div\",{className:K()(\"mt2 cardComponent___nVT3k\",{[te]:r}),children:(0,s.jsxs)(\"div\",{className:\"innerContent___WCl4H\",children:[(0,s.jsx)(d.DZ,{className:K()(`text-bold text-sm ${ae}`,{pb2:t}),tagName:\"h3\",children:e}),t&&(0,s.jsx)(re,{nutritionBadge:t}),(0,s.jsx)(\"p\",{className:`${se} py2 text-x"
+      },
+      {
+        "pattern": "nutri\\w*",
+        "offset": 9791,
+        "match": "nutritionBadge",
+        "context": "x)(\"div\",{className:K()(\"mt2 cardComponent___nVT3k\",{[te]:r}),children:(0,s.jsxs)(\"div\",{className:\"innerContent___WCl4H\",children:[(0,s.jsx)(d.DZ,{className:K()(`text-bold text-sm ${ae}`,{pb2:t}),tagName:\"h3\",children:e}),t&&(0,s.jsx)(re,{nutritionBadge:t}),(0,s.jsx)(\"p\",{className:`${se} py2 text-xs`,children:a}),(0,s.jsx)(\"div\",{className:\"position-relative quickModStateButtonsContainer___JE0pL\",children:(0,s.jsx)(d.yU,{animation:\"fade\",children:r?(0,s.jsx)(\"div\",{className:\"position-absolute width-100\",children:(0,s.jsxs)(\"div\",{className:\"flex justify-between items-center\",children:[(0,s.jsxs)(\"div\",{c"
+      },
+      {
+        "pattern": "nutri\\w*",
+        "offset": 12178,
+        "match": "nutritionBadge",
+        "context": "erButtons:!1,showPaginator:!0,slideItemClassName:\"carouselSlideItem___f3Kyn mx1\",sliderClassName:\"carouselSlider___dkqzd width-100\",slidesPerPage:1,children:u.map(e=>(0,s.jsx)(\"div\",{children:(0,s.jsx)(oe,{headingText:e.headingText[p.name],nutritionBadge:e.nutritionBadge[p.name],description:\"object\"==typeof e.description?e.description[p.name]:e.description,isApplied:t===e.id,onApply:()=>x(e),onReset:()=>b(e)})},e.id))}):(0,s.jsx)(\"div\",{className:\"mainContainerStack___So4h2 items-center\",children:u.map(e=>(0,s.jsx)(\"div\",{children:(0,s.jsx)(oe,{headingText:e.headingText[p.name],nutritionBadge:e.nutritionBad"
+      },
+      {
+        "pattern": "nutri\\w*",
+        "offset": 12195,
+        "match": "nutritionBadge",
+        "context": "Paginator:!0,slideItemClassName:\"carouselSlideItem___f3Kyn mx1\",sliderClassName:\"carouselSlider___dkqzd width-100\",slidesPerPage:1,children:u.map(e=>(0,s.jsx)(\"div\",{children:(0,s.jsx)(oe,{headingText:e.headingText[p.name],nutritionBadge:e.nutritionBadge[p.name],description:\"object\"==typeof e.description?e.description[p.name]:e.description,isApplied:t===e.id,onApply:()=>x(e),onReset:()=>b(e)})},e.id))}):(0,s.jsx)(\"div\",{className:\"mainContainerStack___So4h2 items-center\",children:u.map(e=>(0,s.jsx)(\"div\",{children:(0,s.jsx)(oe,{headingText:e.headingText[p.name],nutritionBadge:e.nutritionBadge[p.name],descri"
+      },
+      {
+        "pattern": "nutri\\w*",
+        "offset": 12523,
+        "match": "nutritionBadge",
+        "context": "e.description,isApplied:t===e.id,onApply:()=>x(e),onReset:()=>b(e)})},e.id))}):(0,s.jsx)(\"div\",{className:\"mainContainerStack___So4h2 items-center\",children:u.map(e=>(0,s.jsx)(\"div\",{children:(0,s.jsx)(oe,{headingText:e.headingText[p.name],nutritionBadge:e.nutritionBadge[p.name],description:\"object\"==typeof e.description?e.description[p.name]:e.description,isApplied:t===e.id,onApply:()=>x(e),onReset:()=>b(e)})},e.id))})]})};var de=a(22730),ce=a(43166),ue=a(76318);const me=(0,n.YK)({resetRecipe:{id:\"ordering.pdp.resetRecipe\",defaultMessage:\"Reset to standard recipe\"}}),pe=({onResetRecipeRef:e})=>{const{forma"
+      },
+      {
+        "pattern": "nutri\\w*",
+        "offset": 12540,
+        "match": "nutritionBadge",
+        "context": "pplied:t===e.id,onApply:()=>x(e),onReset:()=>b(e)})},e.id))}):(0,s.jsx)(\"div\",{className:\"mainContainerStack___So4h2 items-center\",children:u.map(e=>(0,s.jsx)(\"div\",{children:(0,s.jsx)(oe,{headingText:e.headingText[p.name],nutritionBadge:e.nutritionBadge[p.name],description:\"object\"==typeof e.description?e.description[p.name]:e.description,isApplied:t===e.id,onApply:()=>x(e),onReset:()=>b(e)})},e.id))})]})};var de=a(22730),ce=a(43166),ue=a(76318);const me=(0,n.YK)({resetRecipe:{id:\"ordering.pdp.resetRecipe\",defaultMessage:\"Reset to standard recipe\"}}),pe=({onResetRecipeRef:e})=>{const{formatMessage:t}=(0,n."
+      },
+      {
+        "pattern": "nutri\\w*",
+        "offset": 30324,
+        "match": "nutrition",
+        "context": "ns\"},backToContent:{id:\"ordering.shared.backToContent\",defaultMessage:\"Back to content\"},caffeineDisclaimer:{id:\"ordering.menu.caffeine.disclaimer\",defaultMessage:\"** Caffeine is an approximate value.\"},disclaimerHeading:{id:\"ordering.menu.nutrition.disclaimerHeading\",defaultMessage:\"Nutrition disclaimers\"},generalNutritionDisclaimer:{id:\"ordering.menu.nutrition.disclaimer\",defaultMessage:\"Nutrition information is calculated based on our standard recipes. Because our products may be customized, exact information may vary.\"},dailyValuesDisclaimer:{id:\"ordering.menu.dailyValues.disclaimer\",defaultMessage"
+      },
+      {
+        "pattern": "nutri\\w*",
+        "offset": 30369,
+        "match": "Nutrition",
+        "context": "oContent\",defaultMessage:\"Back to content\"},caffeineDisclaimer:{id:\"ordering.menu.caffeine.disclaimer\",defaultMessage:\"** Caffeine is an approximate value.\"},disclaimerHeading:{id:\"ordering.menu.nutrition.disclaimerHeading\",defaultMessage:\"Nutrition disclaimers\"},generalNutritionDisclaimer:{id:\"ordering.menu.nutrition.disclaimer\",defaultMessage:\"Nutrition information is calculated based on our standard recipes. Because our products may be customized, exact information may vary.\"},dailyValuesDisclaimer:{id:\"ordering.menu.dailyValues.disclaimer\",defaultMessage:\"2,000 calories a day is used for general nu"
+      },
+      {
+        "pattern": "nutri\\w*",
+        "offset": 30400,
+        "match": "NutritionDisclaimer",
+        "context": "to content\"},caffeineDisclaimer:{id:\"ordering.menu.caffeine.disclaimer\",defaultMessage:\"** Caffeine is an approximate value.\"},disclaimerHeading:{id:\"ordering.menu.nutrition.disclaimerHeading\",defaultMessage:\"Nutrition disclaimers\"},generalNutritionDisclaimer:{id:\"ordering.menu.nutrition.disclaimer\",defaultMessage:\"Nutrition information is calculated based on our standard recipes. Because our products may be customized, exact information may vary.\"},dailyValuesDisclaimer:{id:\"ordering.menu.dailyValues.disclaimer\",defaultMessage:\"2,000 calories a day is used for general nutrition advice, but calorie needs vary.\"}"
+      },
+      {
+        "pattern": "nutri\\w*",
+        "offset": 30439,
+        "match": "nutrition",
+        "context": "dering.menu.caffeine.disclaimer\",defaultMessage:\"** Caffeine is an approximate value.\"},disclaimerHeading:{id:\"ordering.menu.nutrition.disclaimerHeading\",defaultMessage:\"Nutrition disclaimers\"},generalNutritionDisclaimer:{id:\"ordering.menu.nutrition.disclaimer\",defaultMessage:\"Nutrition information is calculated based on our standard recipes. Because our products may be customized, exact information may vary.\"},dailyValuesDisclaimer:{id:\"ordering.menu.dailyValues.disclaimer\",defaultMessage:\"2,000 calories a day is used for general nutrition advice, but calorie needs vary.\"},ingredientsTitle:{id:\"orderi"
+      },
+      {
+        "pattern": "nutri\\w*",
+        "offset": 30477,
+        "match": "Nutrition",
+        "context": "ltMessage:\"** Caffeine is an approximate value.\"},disclaimerHeading:{id:\"ordering.menu.nutrition.disclaimerHeading\",defaultMessage:\"Nutrition disclaimers\"},generalNutritionDisclaimer:{id:\"ordering.menu.nutrition.disclaimer\",defaultMessage:\"Nutrition information is calculated based on our standard recipes. Because our products may be customized, exact information may vary.\"},dailyValuesDisclaimer:{id:\"ordering.menu.dailyValues.disclaimer\",defaultMessage:\"2,000 calories a day is used for general nutrition advice, but calorie needs vary.\"},ingredientsTitle:{id:\"ordering.ingredients.title\",defaultMessage:\""
+      },
+      {
+        "pattern": "nutri\\w*",
+        "offset": 30736,
+        "match": "nutrition",
+        "context": "on is calculated based on our standard recipes. Because our products may be customized, exact information may vary.\"},dailyValuesDisclaimer:{id:\"ordering.menu.dailyValues.disclaimer\",defaultMessage:\"2,000 calories a day is used for general nutrition advice, but calorie needs vary.\"},ingredientsTitle:{id:\"ordering.ingredients.title\",defaultMessage:\"Ingredients\"},nutritionTitle:{id:\"ordering.menu.nutrition.title\",defaultMessage:\"Nutrition\"},nutritionNotAvailable:{id:\"ordering.menu.nutrition.notAvailable\",defaultMessage:\"See ingredient statement or package for allergens\"},beveragesPdfBlurb:{id:\"ordering.m"
+      },
+      {
+        "pattern": "nutri\\w*",
+        "offset": 30860,
+        "match": "nutritionTitle",
+        "context": "aluesDisclaimer:{id:\"ordering.menu.dailyValues.disclaimer\",defaultMessage:\"2,000 calories a day is used for general nutrition advice, but calorie needs vary.\"},ingredientsTitle:{id:\"ordering.ingredients.title\",defaultMessage:\"Ingredients\"},nutritionTitle:{id:\"ordering.menu.nutrition.title\",defaultMessage:\"Nutrition\"},nutritionNotAvailable:{id:\"ordering.menu.nutrition.notAvailable\",defaultMessage:\"See ingredient statement or package for allergens\"},beveragesPdfBlurb:{id:\"ordering.menu.nutrition.beveragesPdfBlurb\",defaultMessage:\"This guide doesn\u2019t just tell you about the caffeine content; it contains nutriti"
+      },
+      {
+        "pattern": "nutri\\w*",
+        "offset": 30894,
+        "match": "nutrition",
+        "context": ".dailyValues.disclaimer\",defaultMessage:\"2,000 calories a day is used for general nutrition advice, but calorie needs vary.\"},ingredientsTitle:{id:\"ordering.ingredients.title\",defaultMessage:\"Ingredients\"},nutritionTitle:{id:\"ordering.menu.nutrition.title\",defaultMessage:\"Nutrition\"},nutritionNotAvailable:{id:\"ordering.menu.nutrition.notAvailable\",defaultMessage:\"See ingredient statement or package for allergens\"},beveragesPdfBlurb:{id:\"ordering.menu.nutrition.beveragesPdfBlurb\",defaultMessage:\"This guide doesn\u2019t just tell you about the caffeine content; it contains nutritional information on many of o"
+      },
+      {
+        "pattern": "nutri\\w*",
+        "offset": 30927,
+        "match": "Nutrition",
+        "context": "essage:\"2,000 calories a day is used for general nutrition advice, but calorie needs vary.\"},ingredientsTitle:{id:\"ordering.ingredients.title\",defaultMessage:\"Ingredients\"},nutritionTitle:{id:\"ordering.menu.nutrition.title\",defaultMessage:\"Nutrition\"},nutritionNotAvailable:{id:\"ordering.menu.nutrition.notAvailable\",defaultMessage:\"See ingredient statement or package for allergens\"},beveragesPdfBlurb:{id:\"ordering.menu.nutrition.beveragesPdfBlurb\",defaultMessage:\"This guide doesn\u2019t just tell you about the caffeine content; it contains nutritional information on many of our classic beverages you enjoy at"
+      },
+      {
+        "pattern": "nutri\\w*",
+        "offset": 30939,
+        "match": "nutritionNotAvailable",
+        "context": "0 calories a day is used for general nutrition advice, but calorie needs vary.\"},ingredientsTitle:{id:\"ordering.ingredients.title\",defaultMessage:\"Ingredients\"},nutritionTitle:{id:\"ordering.menu.nutrition.title\",defaultMessage:\"Nutrition\"},nutritionNotAvailable:{id:\"ordering.menu.nutrition.notAvailable\",defaultMessage:\"See ingredient statement or package for allergens\"},beveragesPdfBlurb:{id:\"ordering.menu.nutrition.beveragesPdfBlurb\",defaultMessage:\"This guide doesn\u2019t just tell you about the caffeine content; it contains nutritional information on many of our classic beverages you enjoy at Starbucks. But we\u2019ve in"
+      },
+      {
+        "pattern": "nutri\\w*",
+        "offset": 30980,
+        "match": "nutrition",
+        "context": "ition advice, but calorie needs vary.\"},ingredientsTitle:{id:\"ordering.ingredients.title\",defaultMessage:\"Ingredients\"},nutritionTitle:{id:\"ordering.menu.nutrition.title\",defaultMessage:\"Nutrition\"},nutritionNotAvailable:{id:\"ordering.menu.nutrition.notAvailable\",defaultMessage:\"See ingredient statement or package for allergens\"},beveragesPdfBlurb:{id:\"ordering.menu.nutrition.beveragesPdfBlurb\",defaultMessage:\"This guide doesn\u2019t just tell you about the caffeine content; it contains nutritional information on many of our classic beverages you enjoy at Starbucks. But we\u2019ve included the caffeine info as w"
+      },
+      {
+        "pattern": "nutri\\w*",
+        "offset": 31109,
+        "match": "nutrition",
+        "context": "Title:{id:\"ordering.menu.nutrition.title\",defaultMessage:\"Nutrition\"},nutritionNotAvailable:{id:\"ordering.menu.nutrition.notAvailable\",defaultMessage:\"See ingredient statement or package for allergens\"},beveragesPdfBlurb:{id:\"ordering.menu.nutrition.beveragesPdfBlurb\",defaultMessage:\"This guide doesn\u2019t just tell you about the caffeine content; it contains nutritional information on many of our classic beverages you enjoy at Starbucks. But we\u2019ve included the caffeine info as well, in case you were wondering.\"},foodPdfBlurb:{id:\"ordering.menu.nutrition.foodPdfBlurb\",defaultMessage:\"This guide contains nu"
+      },
+      {
+        "pattern": "nutri\\w*",
+        "offset": 31227,
+        "match": "nutritional",
+        "context": "on.notAvailable\",defaultMessage:\"See ingredient statement or package for allergens\"},beveragesPdfBlurb:{id:\"ordering.menu.nutrition.beveragesPdfBlurb\",defaultMessage:\"This guide doesn\u2019t just tell you about the caffeine content; it contains nutritional information on many of our classic beverages you enjoy at Starbucks. But we\u2019ve included the caffeine info as well, in case you were wondering.\"},foodPdfBlurb:{id:\"ordering.menu.nutrition.foodPdfBlurb\",defaultMessage:\"This guide contains nutritional information \u2013 including protein, sugar, and carbohydrate content \u2013 for many of the fresh food products availab"
+      },
+      {
+        "pattern": "nutri\\w*",
+        "offset": 31416,
+        "match": "nutrition",
+        "context": "t tell you about the caffeine content; it contains nutritional information on many of our classic beverages you enjoy at Starbucks. But we\u2019ve included the caffeine info as well, in case you were wondering.\"},foodPdfBlurb:{id:\"ordering.menu.nutrition.foodPdfBlurb\",defaultMessage:\"This guide contains nutritional information \u2013 including protein, sugar, and carbohydrate content \u2013 for many of the fresh food products available in Starbucks caf\u00e9s in the UK and Ireland.\"}}),Ge=()=>{const e=(0,h.H)().sizeInfo?.selectedSize?.allergens??{};return(0,s.jsxs)(\"div\",{\"data-e2e\":\"allergensSection\",children:[(0,s.jsx)("
+      },
+      {
+        "pattern": "nutri\\w*",
+        "offset": 31476,
+        "match": "nutritional",
+        "context": "al information on many of our classic beverages you enjoy at Starbucks. But we\u2019ve included the caffeine info as well, in case you were wondering.\"},foodPdfBlurb:{id:\"ordering.menu.nutrition.foodPdfBlurb\",defaultMessage:\"This guide contains nutritional information \u2013 including protein, sugar, and carbohydrate content \u2013 for many of the fresh food products available in Starbucks caf\u00e9s in the UK and Ireland.\"}}),Ge=()=>{const e=(0,h.H)().sizeInfo?.selectedSize?.allergens??{};return(0,s.jsxs)(\"div\",{\"data-e2e\":\"allergensSection\",children:[(0,s.jsx)(d.DZ,{bottomBorder:!0,className:\"mb3 text-semibold\",size:\"md\","
+      },
+      {
+        "pattern": "nutri\\w*",
+        "offset": 32045,
+        "match": "nutritionNotAvailable",
+        "context": "0,className:\"mb3 text-semibold\",size:\"md\",tagName:\"h2\",children:(0,s.jsx)(n.sA,{...Ye.allergensTitle})}),e.shouldDisplay&&e.text?(0,s.jsx)(\"p\",{className:\"my1\",children:e.text}):(0,s.jsx)(\"p\",{className:\"my1\",children:(0,s.jsx)(n.sA,{...Ye.nutritionNotAvailable})}),(0,s.jsx)(\"div\",{className:\"color-textBlackSoft mt1 pt3\",children:(0,s.jsx)(n.sA,{...Ye.allergenDisclaimer})})]})},Ze=(e,t,a)=>t?e:(0,s.jsx)(\"span\",{className:\"text-bold\",children:e},a),Je=()=>{const e=(0,h.H)().sizeInfo?.selectedSize?.ingredients??[],t=(e=>{const t=[],a=(e,s,r)=>{if(t.push(Ze(s&&!e?.name?.startsWith(\".\")?`, ${e.name}`:e.name,r,s)),e.ch"
+      },
+      {
+        "pattern": "nutri\\w*",
+        "offset": 32906,
+        "match": "nutritionNotAvailable",
+        "context": "ingredientsSection\",children:[(0,s.jsx)(d.DZ,{bottomBorder:!0,className:\"mb3 text-semibold\",size:\"md\",tagName:\"h2\",children:(0,s.jsx)(n.sA,{...Ye.ingredientsTitle})}),(0,s.jsx)(\"p\",{className:\"my1\",children:e.length?t:(0,s.jsx)(n.sA,{...Ye.nutritionNotAvailable})})]})},Xe=\"offset___GF0NP\",et=\"target___hkBdl\",tt=({caffeineDisclaimerId:e,caffeineElementId:t,caffeineRangeMax:a,caffeineRangeMaxUnits:r,className:i,disclaimerTitleId:o,displayValue:n,isCaffeine:l})=>l?(0,s.jsx)(\"p\",{className:`inline ${Xe} ${et}`,id:t,children:(0,s.jsxs)(\"span\",{className:i,children:[n,a&&` - ${a} ${r}`,(0,s.jsx)(\"a\",{\"aria-labelledby\":o"
+      },
+      {
+        "pattern": "nutri\\w*",
+        "offset": 34549,
+        "match": "nutrition",
+        "context": "ax:x,caffeineRangeMaxUnits:h,className:p,disclaimerTitleId:a,displayValue:c,isCaffeine:f})]}),(0,s.jsx)(\"span\",{className:g,children:u})]}),m?m.map(e=>(0,s.jsx)(at,{fact:e,isSubfact:!0},e.id)):null]})},l)},st=at,rt=\"disclaimerTitleId\",it=({nutrition:e,nutritionHeadingId:t,showCaloriesFromFat:a})=>{const{formatMessage:i}=(0,n.tz)(),{calories:o,caloriesFromFat:l,additionalFacts:d}=e,c=\"caffeineDisclaimer\",u=\"caffeineElement\",m=(0,r.useMemo)(()=>d.some(e=>\"Caffeine\"===e?.displayName||\"Caf\u00e9ine\"===e?.displayName),[d]),p=d.map((e,t)=>(0,s.jsx)(st,{caffeineDisclaimerId:c,caffeineElementId:u,disclaimerTitleId:"
+      },
+      {
+        "pattern": "nutri\\w*",
+        "offset": 34561,
+        "match": "nutritionHeadingId",
+        "context": "eRangeMaxUnits:h,className:p,disclaimerTitleId:a,displayValue:c,isCaffeine:f})]}),(0,s.jsx)(\"span\",{className:g,children:u})]}),m?m.map(e=>(0,s.jsx)(at,{fact:e,isSubfact:!0},e.id)):null]})},l)},st=at,rt=\"disclaimerTitleId\",it=({nutrition:e,nutritionHeadingId:t,showCaloriesFromFat:a})=>{const{formatMessage:i}=(0,n.tz)(),{calories:o,caloriesFromFat:l,additionalFacts:d}=e,c=\"caffeineDisclaimer\",u=\"caffeineElement\",m=(0,r.useMemo)(()=>d.some(e=>\"Caffeine\"===e?.displayName||\"Caf\u00e9ine\"===e?.displayName),[d]),p=d.map((e,t)=>(0,s.jsx)(st,{caffeineDisclaimerId:c,caffeineElementId:u,disclaimerTitleId:rt,fact:e},e?.id??t))"
+      },
+      {
+        "pattern": "nutri\\w*",
+        "offset": 35008,
+        "match": "nutritionTable",
+        "context": "affeine\"===e?.displayName||\"Caf\u00e9ine\"===e?.displayName),[d]),p=d.map((e,t)=>(0,s.jsx)(st,{caffeineDisclaimerId:c,caffeineElementId:u,disclaimerTitleId:rt,fact:e},e?.id??t)),g=a?\"ul\":\"span\",f=a?\"li\":\"span\";return(0,s.jsxs)(\"div\",{\"data-e2e\":\"nutritionTable\",children:[(0,s.jsxs)(\"ul\",{children:[(0,s.jsx)(\"li\",{className:\"calories___HqGcu yPadding___YXplK hasBorder___mCRuR\",children:(0,s.jsxs)(g,{className:\"flex justify-between\",children:[(0,s.jsxs)(f,{className:\"text-semibold\",children:[(0,s.jsx)(\"span\",{className:\"pr1\",children:o.displayName}),(0,s.jsx)(\"span\",{children:o.displayValue})]}),a&&(0,s.jsxs)(\"li\","
+      },
+      {
+        "pattern": "nutri\\w*",
+        "offset": 36045,
+        "match": "NutritionDisclaimer",
+        "context": "${Xe} ${et}`,id:c,children:[i(Ye.caffeineDisclaimer),(0,s.jsx)(\"a\",{\"aria-describedby\":t,\"aria-label\":i(Ye.backToContent),className:\"text-noUnderline\",href:`#${u}`,children:\"\u21a9\"})]}):null,(0,s.jsx)(\"li\",{className:\"mt3\",children:i(Ye.generalNutritionDisclaimer)})]})]})},ot=\"nutritionHeadingId\",nt=(0,o.Ng)(e=>({showCaloriesFromFat:(0,C.yt)(e)}))(({className:e,showCaloriesFromFat:t})=>{const{sizeInfo:a}=(0,h.H)(),{selectedSize:r}=a,{nutrition:i}=r||{};return(0,s.jsxs)(\"div\",{className:`pb5 ${e||\"\"}`,\"data-e2e\":\"nutritionSection\",children:[(0,s.jsx)(d.DZ,{bottomBorder:!0,className:\"mb3 text-semibold\",id:ot,size:\"md\""
+      },
+      {
+        "pattern": "nutri\\w*",
+        "offset": 36079,
+        "match": "nutritionHeadingId",
+        "context": "affeineDisclaimer),(0,s.jsx)(\"a\",{\"aria-describedby\":t,\"aria-label\":i(Ye.backToContent),className:\"text-noUnderline\",href:`#${u}`,children:\"\u21a9\"})]}):null,(0,s.jsx)(\"li\",{className:\"mt3\",children:i(Ye.generalNutritionDisclaimer)})]})]})},ot=\"nutritionHeadingId\",nt=(0,o.Ng)(e=>({showCaloriesFromFat:(0,C.yt)(e)}))(({className:e,showCaloriesFromFat:t})=>{const{sizeInfo:a}=(0,h.H)(),{selectedSize:r}=a,{nutrition:i}=r||{};return(0,s.jsxs)(\"div\",{className:`pb5 ${e||\"\"}`,\"data-e2e\":\"nutritionSection\",children:[(0,s.jsx)(d.DZ,{bottomBorder:!0,className:\"mb3 text-semibold\",id:ot,size:\"md\",tagName:\"h2\",children:(0,s.jsx)("
+      },
+      {
+        "pattern": "nutri\\w*",
+        "offset": 36239,
+        "match": "nutrition",
+        "context": "x)(\"li\",{className:\"mt3\",children:i(Ye.generalNutritionDisclaimer)})]})]})},ot=\"nutritionHeadingId\",nt=(0,o.Ng)(e=>({showCaloriesFromFat:(0,C.yt)(e)}))(({className:e,showCaloriesFromFat:t})=>{const{sizeInfo:a}=(0,h.H)(),{selectedSize:r}=a,{nutrition:i}=r||{};return(0,s.jsxs)(\"div\",{className:`pb5 ${e||\"\"}`,\"data-e2e\":\"nutritionSection\",children:[(0,s.jsx)(d.DZ,{bottomBorder:!0,className:\"mb3 text-semibold\",id:ot,size:\"md\",tagName:\"h2\",children:(0,s.jsx)(n.sA,{...Ye.nutritionTitle})}),i?(0,s.jsx)(it,{nutrition:i,nutritionHeadingId:ot,showCaloriesFromFat:t}):(0,s.jsx)(n.sA,{...Ye.nutritionNotAvailable})]"
+      },
+      {
+        "pattern": "nutri\\w*",
+        "offset": 36319,
+        "match": "nutritionSection",
+        "context": "nutritionHeadingId\",nt=(0,o.Ng)(e=>({showCaloriesFromFat:(0,C.yt)(e)}))(({className:e,showCaloriesFromFat:t})=>{const{sizeInfo:a}=(0,h.H)(),{selectedSize:r}=a,{nutrition:i}=r||{};return(0,s.jsxs)(\"div\",{className:`pb5 ${e||\"\"}`,\"data-e2e\":\"nutritionSection\",children:[(0,s.jsx)(d.DZ,{bottomBorder:!0,className:\"mb3 text-semibold\",id:ot,size:\"md\",tagName:\"h2\",children:(0,s.jsx)(n.sA,{...Ye.nutritionTitle})}),i?(0,s.jsx)(it,{nutrition:i,nutritionHeadingId:ot,showCaloriesFromFat:t}):(0,s.jsx)(n.sA,{...Ye.nutritionNotAvailable})]})});var lt=a(54497);const dt=()=>{const{product:{name:e,productType:t}}=(0,h.H)(),a=(0"
+      },
+      {
+        "pattern": "nutri\\w*",
+        "offset": 36469,
+        "match": "nutritionTitle",
+        "context": "ize:r}=a,{nutrition:i}=r||{};return(0,s.jsxs)(\"div\",{className:`pb5 ${e||\"\"}`,\"data-e2e\":\"nutritionSection\",children:[(0,s.jsx)(d.DZ,{bottomBorder:!0,className:\"mb3 text-semibold\",id:ot,size:\"md\",tagName:\"h2\",children:(0,s.jsx)(n.sA,{...Ye.nutritionTitle})}),i?(0,s.jsx)(it,{nutrition:i,nutritionHeadingId:ot,showCaloriesFromFat:t}):(0,s.jsx)(n.sA,{...Ye.nutritionNotAvailable})]})});var lt=a(54497);const dt=()=>{const{product:{name:e,productType:t}}=(0,h.H)(),a=(0,l.zy)(),o=a?.pathname?.split(\"/nutrition\")?.[0],c=(0,n.tz)(),u=(0,s.jsx)(nt,{}),m=\"coffees\"!==t&&(0,s.jsxs)(r.Fragment,{children:[(0,s.jsx)(Je,{}),"
+      },
+      {
+        "pattern": "nutri\\w*",
+        "offset": 36504,
+        "match": "nutrition",
+        "context": "(0,s.jsxs)(\"div\",{className:`pb5 ${e||\"\"}`,\"data-e2e\":\"nutritionSection\",children:[(0,s.jsx)(d.DZ,{bottomBorder:!0,className:\"mb3 text-semibold\",id:ot,size:\"md\",tagName:\"h2\",children:(0,s.jsx)(n.sA,{...Ye.nutritionTitle})}),i?(0,s.jsx)(it,{nutrition:i,nutritionHeadingId:ot,showCaloriesFromFat:t}):(0,s.jsx)(n.sA,{...Ye.nutritionNotAvailable})]})});var lt=a(54497);const dt=()=>{const{product:{name:e,productType:t}}=(0,h.H)(),a=(0,l.zy)(),o=a?.pathname?.split(\"/nutrition\")?.[0],c=(0,n.tz)(),u=(0,s.jsx)(nt,{}),m=\"coffees\"!==t&&(0,s.jsxs)(r.Fragment,{children:[(0,s.jsx)(Je,{}),(0,s.jsx)(Ge,{})]});return(0,s"
+      },
+      {
+        "pattern": "nutri\\w*",
+        "offset": 36516,
+        "match": "nutritionHeadingId",
+        "context": "div\",{className:`pb5 ${e||\"\"}`,\"data-e2e\":\"nutritionSection\",children:[(0,s.jsx)(d.DZ,{bottomBorder:!0,className:\"mb3 text-semibold\",id:ot,size:\"md\",tagName:\"h2\",children:(0,s.jsx)(n.sA,{...Ye.nutritionTitle})}),i?(0,s.jsx)(it,{nutrition:i,nutritionHeadingId:ot,showCaloriesFromFat:t}):(0,s.jsx)(n.sA,{...Ye.nutritionNotAvailable})]})});var lt=a(54497);const dt=()=>{const{product:{name:e,productType:t}}=(0,h.H)(),a=(0,l.zy)(),o=a?.pathname?.split(\"/nutrition\")?.[0],c=(0,n.tz)(),u=(0,s.jsx)(nt,{}),m=\"coffees\"!==t&&(0,s.jsxs)(r.Fragment,{children:[(0,s.jsx)(Je,{}),(0,s.jsx)(Ge,{})]});return(0,s.jsxs)(r.Fragment,{ch"
+      },
+      {
+        "pattern": "nutri\\w*",
+        "offset": 36584,
+        "match": "nutritionNotAvailable",
+        "context": "n:[(0,s.jsx)(d.DZ,{bottomBorder:!0,className:\"mb3 text-semibold\",id:ot,size:\"md\",tagName:\"h2\",children:(0,s.jsx)(n.sA,{...Ye.nutritionTitle})}),i?(0,s.jsx)(it,{nutrition:i,nutritionHeadingId:ot,showCaloriesFromFat:t}):(0,s.jsx)(n.sA,{...Ye.nutritionNotAvailable})]})});var lt=a(54497);const dt=()=>{const{product:{name:e,productType:t}}=(0,h.H)(),a=(0,l.zy)(),o=a?.pathname?.split(\"/nutrition\")?.[0],c=(0,n.tz)(),u=(0,s.jsx)(nt,{}),m=\"coffees\"!==t&&(0,s.jsxs)(r.Fragment,{children:[(0,s.jsx)(Je,{}),(0,s.jsx)(Ge,{})]});return(0,s.jsxs)(r.Fragment,{children:[(0,s.jsx)(i.A,{children:`${e}: ${c.formatMessage(Ye.nutritionTi"
+      },
+      {
+        "pattern": "nutri\\w*",
+        "offset": 36727,
+        "match": "nutrition",
+        "context": ",i?(0,s.jsx)(it,{nutrition:i,nutritionHeadingId:ot,showCaloriesFromFat:t}):(0,s.jsx)(n.sA,{...Ye.nutritionNotAvailable})]})});var lt=a(54497);const dt=()=>{const{product:{name:e,productType:t}}=(0,h.H)(),a=(0,l.zy)(),o=a?.pathname?.split(\"/nutrition\")?.[0],c=(0,n.tz)(),u=(0,s.jsx)(nt,{}),m=\"coffees\"!==t&&(0,s.jsxs)(r.Fragment,{children:[(0,s.jsx)(Je,{}),(0,s.jsx)(Ge,{})]});return(0,s.jsxs)(r.Fragment,{children:[(0,s.jsx)(i.A,{children:`${e}: ${c.formatMessage(Ye.nutritionTitle)}`}),(0,s.jsxs)(qe.N_,{className:\"block mb5 text-noUnderline text-semibold \",\"data-e2e\":\"backLink\",to:o,children:[(0,s.jsx)(d.I"
+      },
+      {
+        "pattern": "nutri\\w*",
+        "offset": 36954,
+        "match": "nutritionTitle",
+        "context": "ame?.split(\"/nutrition\")?.[0],c=(0,n.tz)(),u=(0,s.jsx)(nt,{}),m=\"coffees\"!==t&&(0,s.jsxs)(r.Fragment,{children:[(0,s.jsx)(Je,{}),(0,s.jsx)(Ge,{})]});return(0,s.jsxs)(r.Fragment,{children:[(0,s.jsx)(i.A,{children:`${e}: ${c.formatMessage(Ye.nutritionTitle)}`}),(0,s.jsxs)(qe.N_,{className:\"block mb5 text-noUnderline text-semibold \",\"data-e2e\":\"backLink\",to:o,children:[(0,s.jsx)(d.In,{className:\"pr1\",path:de.A,size:\"24px\"}),(0,s.jsx)(n.sA,{...lt.G.back})]}),(0,s.jsx)(V,{isNutritionPage:!0,leftColumn:u,rightColumn:m})]})};var ct=a(55059),ut=a(88573),mt=a(19784);const pt=(0,n.YK)({caloriesDisclaimer:{id:\"orderin"
+      },
+      {
+        "pattern": "nutri\\w*",
+        "offset": 37188,
+        "match": "NutritionPage",
+        "context": "ge(Ye.nutritionTitle)}`}),(0,s.jsxs)(qe.N_,{className:\"block mb5 text-noUnderline text-semibold \",\"data-e2e\":\"backLink\",to:o,children:[(0,s.jsx)(d.In,{className:\"pr1\",path:de.A,size:\"24px\"}),(0,s.jsx)(n.sA,{...lt.G.back})]}),(0,s.jsx)(V,{isNutritionPage:!0,leftColumn:u,rightColumn:m})]})};var ct=a(55059),ut=a(88573),mt=a(19784);const pt=(0,n.YK)({caloriesDisclaimer:{id:\"ordering.productDetailsHeader.caloriesDisclaimer\",defaultMessage:\"Nutrition information is based on standard recipes and does not reflect customizations\"},caloriesDisclaimerAriaLabel:{id:\"ordering.productDetailsHeader.caloriesDisclaimerAria"
+      },
+      {
+        "pattern": "nutri\\w*",
+        "offset": 37387,
+        "match": "Nutrition",
+        "context": ")(n.sA,{...lt.G.back})]}),(0,s.jsx)(V,{isNutritionPage:!0,leftColumn:u,rightColumn:m})]})};var ct=a(55059),ut=a(88573),mt=a(19784);const pt=(0,n.YK)({caloriesDisclaimer:{id:\"ordering.productDetailsHeader.caloriesDisclaimer\",defaultMessage:\"Nutrition information is based on standard recipes and does not reflect customizations\"},caloriesDisclaimerAriaLabel:{id:\"ordering.productDetailsHeader.caloriesDisclaimerAriaLabel\",defaultMessage:\"See calories disclaimer\"}});var gt=a(93517);const ft=({innerClassName:e,iconClassName:t})=>{const{formatMessage:a}=(0,n.tz)();return(0,s.jsx)(\"span\",{className:\"position-re"
+      },
+      {
+        "pattern": "nutri\\w*",
+        "offset": 38294,
+        "match": "nutrition",
+        "context": "rAriaLabel),className:`color-textWhiteSoft ${t??\"\"}`,path:gt.A,size:\"16px\"})})})})},xt=\"auxiliaryProductInfoFont___dnBJo\",ht=({productNameClass:e})=>{const{isCustomizing:t,sizeInfo:a={}}=(0,h.H)(),{selectedSize:i,selectedSizeName:n}=a||{},{nutrition:l}=i||{},d=(0,o.d4)(mt.AU),c=Boolean(d?.pathname?.includes(\"/nutrition\")),u=l?.servingSize?.displayValue,m=l?.calories?.displayValue,p=l?.calories?.displayName,g=(t||c)&&n&&u,f=(m||!m)&&p,x=n?.trim()===u?.trim()?n:`${n} ${u}`,b=e;return(0,s.jsxs)(r.Fragment,{children:[g&&(0,s.jsx)(\"div\",{className:`flex items-center color-textWhiteSoft mt2 ${xt}`,children:("
+      },
+      {
+        "pattern": "nutri\\w*",
+        "offset": 38365,
+        "match": "nutrition",
+        "context": "px\"})})})})},xt=\"auxiliaryProductInfoFont___dnBJo\",ht=({productNameClass:e})=>{const{isCustomizing:t,sizeInfo:a={}}=(0,h.H)(),{selectedSize:i,selectedSizeName:n}=a||{},{nutrition:l}=i||{},d=(0,o.d4)(mt.AU),c=Boolean(d?.pathname?.includes(\"/nutrition\")),u=l?.servingSize?.displayValue,m=l?.calories?.displayValue,p=l?.calories?.displayName,g=(t||c)&&n&&u,f=(m||!m)&&p,x=n?.trim()===u?.trim()?n:`${n} ${u}`,b=e;return(0,s.jsxs)(r.Fragment,{children:[g&&(0,s.jsx)(\"div\",{className:`flex items-center color-textWhiteSoft mt2 ${xt}`,children:(0,s.jsx)(\"span\",{children:x})}),(0,s.jsx)(\"div\",{className:`flex items-"
+      },
+      {
+        "pattern": "nutri\\w*",
+        "offset": 40793,
+        "match": "Nutrition",
+        "context": "duct?.description;return e?(0,s.jsx)(\"p\",{className:\"respectTextLineBreaks___qTxzH color-textWhiteSoft text-xxs\",\"data-e2e\":\"productDescription\",children:e}):null};var zt=a(54630),At=a(46996);const St=(0,a(25508).Mz)(e=>e?.ordering?.productNutrition,e=>({...e,error:Boolean(e?.lastError)&&e?.error,data:e?.data?.nutritionValues??null}));var kt=a(52129),Mt=a(48301),Ot=a(62315);const It=(e,t)=>(0,Mt.A)(e,e=>e.id===t),Lt=e=>null!=e,Pt=(e,t)=>(0,At.A)(e.categoryKeypath,t.categoryKeypath),Ft=e=>{const t=e?.calories,a=It(e?.additionalFacts,\"totalFat\"),s=It(e?.additionalFacts,\"totalCarbs\"),r=It(s?.subfacts,\"sug"
+      },
+      {
+        "pattern": "nutri\\w*",
+        "offset": 40865,
+        "match": "nutritionValues",
+        "context": "ks___qTxzH color-textWhiteSoft text-xxs\",\"data-e2e\":\"productDescription\",children:e}):null};var zt=a(54630),At=a(46996);const St=(0,a(25508).Mz)(e=>e?.ordering?.productNutrition,e=>({...e,error:Boolean(e?.lastError)&&e?.error,data:e?.data?.nutritionValues??null}));var kt=a(52129),Mt=a(48301),Ot=a(62315);const It=(e,t)=>(0,Mt.A)(e,e=>e.id===t),Lt=e=>null!=e,Pt=(e,t)=>(0,At.A)(e.categoryKeypath,t.categoryKeypath),Ft=e=>{const t=e?.calories,a=It(e?.additionalFacts,\"totalFat\"),s=It(e?.additionalFacts,\"totalCarbs\"),r=It(s?.subfacts,\"sugars\"),i=It(e?.additionalFacts,\"protein\"),[o,n,l]=[a,r,i].map(e=>(0,Ot.A)(e,[\"v"
+      },
+      {
+        "pattern": "nutri\\w*",
+        "offset": 41672,
+        "match": "NutritionLink",
+        "context": "e.sizes?.find(e=>e.default)?.sku;return s===t?null:\"qty\"===e.formCode?a.find(t=>\"qty\"===t.formCode&&Pt(t,e)&&\"no\"===t.size.sizeCode)?s:null:s},$t=e=>\"qty\"===e.formCode&&e.value>0?e.value:1;var wt=a(12318),Bt=a(56760);const Vt=(0,n.YK)({fullNutritionLink:{defaultMessage:\"Full nutrition & ingredients list\",id:\"ordering.pdp.nutritionLink\"},nutritionSummary:{id:\"ordering.pdp.nutritionSummary\",defaultMessage:\"{caloriesValue} calories, {sugarValue} sugar, {fatValue} fat\"},nutritionSummaryWithProtein:{id:\"ordering.pdp.nutritionSummaryWithProtein\",defaultMessage:\"{caloriesValue} calories, {sugarValue} sugar, {fatV"
+      },
+      {
+        "pattern": "nutri\\w*",
+        "offset": 41708,
+        "match": "nutrition",
+        "context": "urn s===t?null:\"qty\"===e.formCode?a.find(t=>\"qty\"===t.formCode&&Pt(t,e)&&\"no\"===t.size.sizeCode)?s:null:s},$t=e=>\"qty\"===e.formCode&&e.value>0?e.value:1;var wt=a(12318),Bt=a(56760);const Vt=(0,n.YK)({fullNutritionLink:{defaultMessage:\"Full nutrition & ingredients list\",id:\"ordering.pdp.nutritionLink\"},nutritionSummary:{id:\"ordering.pdp.nutritionSummary\",defaultMessage:\"{caloriesValue} calories, {sugarValue} sugar, {fatValue} fat\"},nutritionSummaryWithProtein:{id:\"ordering.pdp.nutritionSummaryWithProtein\",defaultMessage:\"{caloriesValue} calories, {sugarValue} sugar, {fatValue} fat, {proteinValue} protei"
+      },
+      {
+        "pattern": "nutri\\w*",
+        "offset": 41755,
+        "match": "nutritionLink",
+        "context": "y\"===t.formCode&&Pt(t,e)&&\"no\"===t.size.sizeCode)?s:null:s},$t=e=>\"qty\"===e.formCode&&e.value>0?e.value:1;var wt=a(12318),Bt=a(56760);const Vt=(0,n.YK)({fullNutritionLink:{defaultMessage:\"Full nutrition & ingredients list\",id:\"ordering.pdp.nutritionLink\"},nutritionSummary:{id:\"ordering.pdp.nutritionSummary\",defaultMessage:\"{caloriesValue} calories, {sugarValue} sugar, {fatValue} fat\"},nutritionSummaryWithProtein:{id:\"ordering.pdp.nutritionSummaryWithProtein\",defaultMessage:\"{caloriesValue} calories, {sugarValue} sugar, {fatValue} fat, {proteinValue} protein\"},summaryLabel:{id:\"ordering.pdp.summaryLabel\",de"
+      },
+      {
+        "pattern": "nutri\\w*",
+        "offset": 41771,
+        "match": "nutritionSummary",
+        "context": "&Pt(t,e)&&\"no\"===t.size.sizeCode)?s:null:s},$t=e=>\"qty\"===e.formCode&&e.value>0?e.value:1;var wt=a(12318),Bt=a(56760);const Vt=(0,n.YK)({fullNutritionLink:{defaultMessage:\"Full nutrition & ingredients list\",id:\"ordering.pdp.nutritionLink\"},nutritionSummary:{id:\"ordering.pdp.nutritionSummary\",defaultMessage:\"{caloriesValue} calories, {sugarValue} sugar, {fatValue} fat\"},nutritionSummaryWithProtein:{id:\"ordering.pdp.nutritionSummaryWithProtein\",defaultMessage:\"{caloriesValue} calories, {sugarValue} sugar, {fatValue} fat, {proteinValue} protein\"},summaryLabel:{id:\"ordering.pdp.summaryLabel\",defaultMessage:\"Produ"
+      },
+      {
+        "pattern": "nutri\\w*",
+        "offset": 41806,
+        "match": "nutritionSummary",
+        "context": ":null:s},$t=e=>\"qty\"===e.formCode&&e.value>0?e.value:1;var wt=a(12318),Bt=a(56760);const Vt=(0,n.YK)({fullNutritionLink:{defaultMessage:\"Full nutrition & ingredients list\",id:\"ordering.pdp.nutritionLink\"},nutritionSummary:{id:\"ordering.pdp.nutritionSummary\",defaultMessage:\"{caloriesValue} calories, {sugarValue} sugar, {fatValue} fat\"},nutritionSummaryWithProtein:{id:\"ordering.pdp.nutritionSummaryWithProtein\",defaultMessage:\"{caloriesValue} calories, {sugarValue} sugar, {fatValue} fat, {proteinValue} protein\"},summaryLabel:{id:\"ordering.pdp.summaryLabel\",defaultMessage:\"Product summary\"},caloriesValue:{id:\"ord"
+      },
+      {
+        "pattern": "nutri\\w*",
+        "offset": 41903,
+        "match": "nutritionSummaryWithProtein",
+        "context": "YK)({fullNutritionLink:{defaultMessage:\"Full nutrition & ingredients list\",id:\"ordering.pdp.nutritionLink\"},nutritionSummary:{id:\"ordering.pdp.nutritionSummary\",defaultMessage:\"{caloriesValue} calories, {sugarValue} sugar, {fatValue} fat\"},nutritionSummaryWithProtein:{id:\"ordering.pdp.nutritionSummaryWithProtein\",defaultMessage:\"{caloriesValue} calories, {sugarValue} sugar, {fatValue} fat, {proteinValue} protein\"},summaryLabel:{id:\"ordering.pdp.summaryLabel\",defaultMessage:\"Product summary\"},caloriesValue:{id:\"ordering.pdp.caloriesValue\",defaultMessage:\"Calories\"},sugarValue:{id:\"ordering.pdp.sugarValue\",defaultMessage:"
+      },
+      {
+        "pattern": "nutri\\w*",
+        "offset": 41949,
+        "match": "nutritionSummaryWithProtein",
+        "context": "utrition & ingredients list\",id:\"ordering.pdp.nutritionLink\"},nutritionSummary:{id:\"ordering.pdp.nutritionSummary\",defaultMessage:\"{caloriesValue} calories, {sugarValue} sugar, {fatValue} fat\"},nutritionSummaryWithProtein:{id:\"ordering.pdp.nutritionSummaryWithProtein\",defaultMessage:\"{caloriesValue} calories, {sugarValue} sugar, {fatValue} fat, {proteinValue} protein\"},summaryLabel:{id:\"ordering.pdp.summaryLabel\",defaultMessage:\"Product summary\"},caloriesValue:{id:\"ordering.pdp.caloriesValue\",defaultMessage:\"Calories\"},sugarValue:{id:\"ordering.pdp.sugarValue\",defaultMessage:\"Sugar\"},fatValue:{id:\"ordering.pdp.fatValue\","
+      },
+      {
+        "pattern": "nutri\\w*",
+        "offset": 42449,
+        "match": "Nutrition",
+        "context": "faultMessage:\"Calories\"},sugarValue:{id:\"ordering.pdp.sugarValue\",defaultMessage:\"Sugar\"},fatValue:{id:\"ordering.pdp.fatValue\",defaultMessage:\"Fat\"},proteinValue:{id:\"ordering.pdp.proteinValue\",defaultMessage:\"Protein\"},customizationAffectsNutrition:{id:\"ordering.pdp.customizationAffectsNutrition\",defaultMessage:\"Your customizations will affect your beverage's nutrition\"},loadingNutrients:{id:\"ordering.pdp.loadingNutrients\",defaultMessage:\"Loading nutrients...\"},nutritionUpdated:{id:\"ordering.pdp.nutritionUpdated\",defaultMessage:\"Nutrition updated\"},nutritionNotUpdated:{id:\"ordering.pdp.nutritionNotUpd"
+      },
+      {
+        "pattern": "nutri\\w*",
+        "offset": 42497,
+        "match": "Nutrition",
+        "context": "g.pdp.sugarValue\",defaultMessage:\"Sugar\"},fatValue:{id:\"ordering.pdp.fatValue\",defaultMessage:\"Fat\"},proteinValue:{id:\"ordering.pdp.proteinValue\",defaultMessage:\"Protein\"},customizationAffectsNutrition:{id:\"ordering.pdp.customizationAffectsNutrition\",defaultMessage:\"Your customizations will affect your beverage's nutrition\"},loadingNutrients:{id:\"ordering.pdp.loadingNutrients\",defaultMessage:\"Loading nutrients...\"},nutritionUpdated:{id:\"ordering.pdp.nutritionUpdated\",defaultMessage:\"Nutrition updated\"},nutritionNotUpdated:{id:\"ordering.pdp.nutritionNotUpdated\",defaultMessage:\"We\u2019re testing this feature"
+      },
+      {
+        "pattern": "nutri\\w*",
+        "offset": 42572,
+        "match": "nutrition",
+        "context": "ue\",defaultMessage:\"Fat\"},proteinValue:{id:\"ordering.pdp.proteinValue\",defaultMessage:\"Protein\"},customizationAffectsNutrition:{id:\"ordering.pdp.customizationAffectsNutrition\",defaultMessage:\"Your customizations will affect your beverage's nutrition\"},loadingNutrients:{id:\"ordering.pdp.loadingNutrients\",defaultMessage:\"Loading nutrients...\"},nutritionUpdated:{id:\"ordering.pdp.nutritionUpdated\",defaultMessage:\"Nutrition updated\"},nutritionNotUpdated:{id:\"ordering.pdp.nutritionNotUpdated\",defaultMessage:\"We\u2019re testing this feature\u2014updated nutrition unavailable at this time.\"},updateCTA:{id:\"ordering.pdp."
+      },
+      {
+        "pattern": "nutri\\w*",
+        "offset": 42591,
+        "match": "Nutrients",
+        "context": "\"Fat\"},proteinValue:{id:\"ordering.pdp.proteinValue\",defaultMessage:\"Protein\"},customizationAffectsNutrition:{id:\"ordering.pdp.customizationAffectsNutrition\",defaultMessage:\"Your customizations will affect your beverage's nutrition\"},loadingNutrients:{id:\"ordering.pdp.loadingNutrients\",defaultMessage:\"Loading nutrients...\"},nutritionUpdated:{id:\"ordering.pdp.nutritionUpdated\",defaultMessage:\"Nutrition updated\"},nutritionNotUpdated:{id:\"ordering.pdp.nutritionNotUpdated\",defaultMessage:\"We\u2019re testing this feature\u2014updated nutrition unavailable at this time.\"},updateCTA:{id:\"ordering.pdp.updateCTA\",defaultM"
+      },
+      {
+        "pattern": "nutri\\w*",
+        "offset": 42626,
+        "match": "Nutrients",
+        "context": "dp.proteinValue\",defaultMessage:\"Protein\"},customizationAffectsNutrition:{id:\"ordering.pdp.customizationAffectsNutrition\",defaultMessage:\"Your customizations will affect your beverage's nutrition\"},loadingNutrients:{id:\"ordering.pdp.loadingNutrients\",defaultMessage:\"Loading nutrients...\"},nutritionUpdated:{id:\"ordering.pdp.nutritionUpdated\",defaultMessage:\"Nutrition updated\"},nutritionNotUpdated:{id:\"ordering.pdp.nutritionNotUpdated\",defaultMessage:\"We\u2019re testing this feature\u2014updated nutrition unavailable at this time.\"},updateCTA:{id:\"ordering.pdp.updateCTA\",defaultMessage:\"Update\"}}),Rt={caloriesIcon"
+      },
+      {
+        "pattern": "nutri\\w*",
+        "offset": 42661,
+        "match": "nutrients",
+        "context": "otein\"},customizationAffectsNutrition:{id:\"ordering.pdp.customizationAffectsNutrition\",defaultMessage:\"Your customizations will affect your beverage's nutrition\"},loadingNutrients:{id:\"ordering.pdp.loadingNutrients\",defaultMessage:\"Loading nutrients...\"},nutritionUpdated:{id:\"ordering.pdp.nutritionUpdated\",defaultMessage:\"Nutrition updated\"},nutritionNotUpdated:{id:\"ordering.pdp.nutritionNotUpdated\",defaultMessage:\"We\u2019re testing this feature\u2014updated nutrition unavailable at this time.\"},updateCTA:{id:\"ordering.pdp.updateCTA\",defaultMessage:\"Update\"}}),Rt={caloriesIconWrapper:\"caloriesIconWrapper___b6Uj"
+      },
+      {
+        "pattern": "nutri\\w*",
+        "offset": 42676,
+        "match": "nutritionUpdated",
+        "context": "zationAffectsNutrition:{id:\"ordering.pdp.customizationAffectsNutrition\",defaultMessage:\"Your customizations will affect your beverage's nutrition\"},loadingNutrients:{id:\"ordering.pdp.loadingNutrients\",defaultMessage:\"Loading nutrients...\"},nutritionUpdated:{id:\"ordering.pdp.nutritionUpdated\",defaultMessage:\"Nutrition updated\"},nutritionNotUpdated:{id:\"ordering.pdp.nutritionNotUpdated\",defaultMessage:\"We\u2019re testing this feature\u2014updated nutrition unavailable at this time.\"},updateCTA:{id:\"ordering.pdp.updateCTA\",defaultMessage:\"Update\"}}),Rt={caloriesIconWrapper:\"caloriesIconWrapper___b6Ujz\",updateButton:\"updat"
+      },
+      {
+        "pattern": "nutri\\w*",
+        "offset": 42711,
+        "match": "nutritionUpdated",
+        "context": "g.pdp.customizationAffectsNutrition\",defaultMessage:\"Your customizations will affect your beverage's nutrition\"},loadingNutrients:{id:\"ordering.pdp.loadingNutrients\",defaultMessage:\"Loading nutrients...\"},nutritionUpdated:{id:\"ordering.pdp.nutritionUpdated\",defaultMessage:\"Nutrition updated\"},nutritionNotUpdated:{id:\"ordering.pdp.nutritionNotUpdated\",defaultMessage:\"We\u2019re testing this feature\u2014updated nutrition unavailable at this time.\"},updateCTA:{id:\"ordering.pdp.updateCTA\",defaultMessage:\"Update\"}}),Rt={caloriesIconWrapper:\"caloriesIconWrapper___b6Ujz\",updateButton:\"updateButton___rO3cI\",yellowTextColor:\"y"
+      },
+      {
+        "pattern": "nutri\\w*",
+        "offset": 42745,
+        "match": "Nutrition",
+        "context": "n\",defaultMessage:\"Your customizations will affect your beverage's nutrition\"},loadingNutrients:{id:\"ordering.pdp.loadingNutrients\",defaultMessage:\"Loading nutrients...\"},nutritionUpdated:{id:\"ordering.pdp.nutritionUpdated\",defaultMessage:\"Nutrition updated\"},nutritionNotUpdated:{id:\"ordering.pdp.nutritionNotUpdated\",defaultMessage:\"We\u2019re testing this feature\u2014updated nutrition unavailable at this time.\"},updateCTA:{id:\"ordering.pdp.updateCTA\",defaultMessage:\"Update\"}}),Rt={caloriesIconWrapper:\"caloriesIconWrapper___b6Ujz\",updateButton:\"updateButton___rO3cI\",yellowTextColor:\"yellowTextColor___cMgJq\",yel"
+      },
+      {
+        "pattern": "nutri\\w*",
+        "offset": 42765,
+        "match": "nutritionNotUpdated",
+        "context": "our customizations will affect your beverage's nutrition\"},loadingNutrients:{id:\"ordering.pdp.loadingNutrients\",defaultMessage:\"Loading nutrients...\"},nutritionUpdated:{id:\"ordering.pdp.nutritionUpdated\",defaultMessage:\"Nutrition updated\"},nutritionNotUpdated:{id:\"ordering.pdp.nutritionNotUpdated\",defaultMessage:\"We\u2019re testing this feature\u2014updated nutrition unavailable at this time.\"},updateCTA:{id:\"ordering.pdp.updateCTA\",defaultMessage:\"Update\"}}),Rt={caloriesIconWrapper:\"caloriesIconWrapper___b6Ujz\",updateButton:\"updateButton___rO3cI\",yellowTextColor:\"yellowTextColor___cMgJq\",yellowIconColor:\"yellowIconColor_"
+      },
+      {
+        "pattern": "nutri\\w*",
+        "offset": 42803,
+        "match": "nutritionNotUpdated",
+        "context": "verage's nutrition\"},loadingNutrients:{id:\"ordering.pdp.loadingNutrients\",defaultMessage:\"Loading nutrients...\"},nutritionUpdated:{id:\"ordering.pdp.nutritionUpdated\",defaultMessage:\"Nutrition updated\"},nutritionNotUpdated:{id:\"ordering.pdp.nutritionNotUpdated\",defaultMessage:\"We\u2019re testing this feature\u2014updated nutrition unavailable at this time.\"},updateCTA:{id:\"ordering.pdp.updateCTA\",defaultMessage:\"Update\"}}),Rt={caloriesIconWrapper:\"caloriesIconWrapper___b6Ujz\",updateButton:\"updateButton___rO3cI\",yellowTextColor:\"yellowTextColor___cMgJq\",yellowIconColor:\"yellowIconColor___o3L2H\",greenAccentTextColor:\"greenAc"
+      },
+      {
+        "pattern": "nutri\\w*",
+        "offset": 42875,
+        "match": "nutrition",
+        "context": "\",defaultMessage:\"Loading nutrients...\"},nutritionUpdated:{id:\"ordering.pdp.nutritionUpdated\",defaultMessage:\"Nutrition updated\"},nutritionNotUpdated:{id:\"ordering.pdp.nutritionNotUpdated\",defaultMessage:\"We\u2019re testing this feature\u2014updated nutrition unavailable at this time.\"},updateCTA:{id:\"ordering.pdp.updateCTA\",defaultMessage:\"Update\"}}),Rt={caloriesIconWrapper:\"caloriesIconWrapper___b6Ujz\",updateButton:\"updateButton___rO3cI\",yellowTextColor:\"yellowTextColor___cMgJq\",yellowIconColor:\"yellowIconColor___o3L2H\",greenAccentTextColor:\"greenAccentTextColor___ekbqn\",nutritionSummary:\"nutritionSummary___Xm"
+      },
+      {
+        "pattern": "nutri\\w*",
+        "offset": 43205,
+        "match": "nutritionSummary",
+        "context": "e:\"Update\"}}),Rt={caloriesIconWrapper:\"caloriesIconWrapper___b6Ujz\",updateButton:\"updateButton___rO3cI\",yellowTextColor:\"yellowTextColor___cMgJq\",yellowIconColor:\"yellowIconColor___o3L2H\",greenAccentTextColor:\"greenAccentTextColor___ekbqn\",nutritionSummary:\"nutritionSummary___XmSLG\",nutritionValuesEnlarged:\"nutritionValuesEnlarged___kNTbf\",nutritionValuesDefault:\"nutritionValuesDefault___FvhzC\",nutritionSummaryLarge:\"nutritionSummaryLarge___SG0tY\",caloriesIconWrapperNextToFat:\"caloriesIconWrapperNextToFat___mfXN7\",nutritionUpdatedPending:\"nutritionUpdatedPending___SedNn\",nutritionUpdated:\"nutritionUpdated___t"
+      },
+      {
+        "pattern": "nutri\\w*",
+        "offset": 43223,
+        "match": "nutritionSummary___XmSLG",
+        "context": "caloriesIconWrapper:\"caloriesIconWrapper___b6Ujz\",updateButton:\"updateButton___rO3cI\",yellowTextColor:\"yellowTextColor___cMgJq\",yellowIconColor:\"yellowIconColor___o3L2H\",greenAccentTextColor:\"greenAccentTextColor___ekbqn\",nutritionSummary:\"nutritionSummary___XmSLG\",nutritionValuesEnlarged:\"nutritionValuesEnlarged___kNTbf\",nutritionValuesDefault:\"nutritionValuesDefault___FvhzC\",nutritionSummaryLarge:\"nutritionSummaryLarge___SG0tY\",caloriesIconWrapperNextToFat:\"caloriesIconWrapperNextToFat___mfXN7\",nutritionUpdatedPending:\"nutritionUpdatedPending___SedNn\",nutritionUpdated:\"nutritionUpdated___tJkWJ\",nutritionUpdatedSlid"
+      },
+      {
+        "pattern": "nutri\\w*",
+        "offset": 43249,
+        "match": "nutritionValuesEnlarged",
+        "context": "iesIconWrapper___b6Ujz\",updateButton:\"updateButton___rO3cI\",yellowTextColor:\"yellowTextColor___cMgJq\",yellowIconColor:\"yellowIconColor___o3L2H\",greenAccentTextColor:\"greenAccentTextColor___ekbqn\",nutritionSummary:\"nutritionSummary___XmSLG\",nutritionValuesEnlarged:\"nutritionValuesEnlarged___kNTbf\",nutritionValuesDefault:\"nutritionValuesDefault___FvhzC\",nutritionSummaryLarge:\"nutritionSummaryLarge___SG0tY\",caloriesIconWrapperNextToFat:\"caloriesIconWrapperNextToFat___mfXN7\",nutritionUpdatedPending:\"nutritionUpdatedPending___SedNn\",nutritionUpdated:\"nutritionUpdated___tJkWJ\",nutritionUpdatedSlideUp:\"nutritionUpdatedSlid"
+      },
+      {
+        "pattern": "nutri\\w*",
+        "offset": 43274,
+        "match": "nutritionValuesEnlarged___kNTbf",
+        "context": "pdateButton:\"updateButton___rO3cI\",yellowTextColor:\"yellowTextColor___cMgJq\",yellowIconColor:\"yellowIconColor___o3L2H\",greenAccentTextColor:\"greenAccentTextColor___ekbqn\",nutritionSummary:\"nutritionSummary___XmSLG\",nutritionValuesEnlarged:\"nutritionValuesEnlarged___kNTbf\",nutritionValuesDefault:\"nutritionValuesDefault___FvhzC\",nutritionSummaryLarge:\"nutritionSummaryLarge___SG0tY\",caloriesIconWrapperNextToFat:\"caloriesIconWrapperNextToFat___mfXN7\",nutritionUpdatedPending:\"nutritionUpdatedPending___SedNn\",nutritionUpdated:\"nutritionUpdated___tJkWJ\",nutritionUpdatedSlideUp:\"nutritionUpdatedSlideUp___wSSZi\"},Dt=({onUpdateTrigge"
+      },
+      {
+        "pattern": "nutri\\w*",
+        "offset": 43307,
+        "match": "nutritionValuesDefault",
+        "context": "\",yellowTextColor:\"yellowTextColor___cMgJq\",yellowIconColor:\"yellowIconColor___o3L2H\",greenAccentTextColor:\"greenAccentTextColor___ekbqn\",nutritionSummary:\"nutritionSummary___XmSLG\",nutritionValuesEnlarged:\"nutritionValuesEnlarged___kNTbf\",nutritionValuesDefault:\"nutritionValuesDefault___FvhzC\",nutritionSummaryLarge:\"nutritionSummaryLarge___SG0tY\",caloriesIconWrapperNextToFat:\"caloriesIconWrapperNextToFat___mfXN7\",nutritionUpdatedPending:\"nutritionUpdatedPending___SedNn\",nutritionUpdated:\"nutritionUpdated___tJkWJ\",nutritionUpdatedSlideUp:\"nutritionUpdatedSlideUp___wSSZi\"},Dt=({onUpdateTriggered:e,isLoading:t,isPost"
+      },
+      {
+        "pattern": "nutri\\w*",
+        "offset": 43331,
+        "match": "nutritionValuesDefault___FvhzC",
+        "context": "wTextColor___cMgJq\",yellowIconColor:\"yellowIconColor___o3L2H\",greenAccentTextColor:\"greenAccentTextColor___ekbqn\",nutritionSummary:\"nutritionSummary___XmSLG\",nutritionValuesEnlarged:\"nutritionValuesEnlarged___kNTbf\",nutritionValuesDefault:\"nutritionValuesDefault___FvhzC\",nutritionSummaryLarge:\"nutritionSummaryLarge___SG0tY\",caloriesIconWrapperNextToFat:\"caloriesIconWrapperNextToFat___mfXN7\",nutritionUpdatedPending:\"nutritionUpdatedPending___SedNn\",nutritionUpdated:\"nutritionUpdated___tJkWJ\",nutritionUpdatedSlideUp:\"nutritionUpdatedSlideUp___wSSZi\"},Dt=({onUpdateTriggered:e,isLoading:t,isPostUpdate:a,shouldUpdate:i,error:o,"
+      },
+      {
+        "pattern": "nutri\\w*",
+        "offset": 43363,
+        "match": "nutritionSummaryLarge",
+        "context": "lor:\"yellowIconColor___o3L2H\",greenAccentTextColor:\"greenAccentTextColor___ekbqn\",nutritionSummary:\"nutritionSummary___XmSLG\",nutritionValuesEnlarged:\"nutritionValuesEnlarged___kNTbf\",nutritionValuesDefault:\"nutritionValuesDefault___FvhzC\",nutritionSummaryLarge:\"nutritionSummaryLarge___SG0tY\",caloriesIconWrapperNextToFat:\"caloriesIconWrapperNextToFat___mfXN7\",nutritionUpdatedPending:\"nutritionUpdatedPending___SedNn\",nutritionUpdated:\"nutritionUpdated___tJkWJ\",nutritionUpdatedSlideUp:\"nutritionUpdatedSlideUp___wSSZi\"},Dt=({onUpdateTriggered:e,isLoading:t,isPostUpdate:a,shouldUpdate:i,error:o,enlargedKeys:l,updatedN"
+      },
+      {
+        "pattern": "nutri\\w*",
+        "offset": 43386,
+        "match": "nutritionSummaryLarge___SG0tY",
+        "context": "o3L2H\",greenAccentTextColor:\"greenAccentTextColor___ekbqn\",nutritionSummary:\"nutritionSummary___XmSLG\",nutritionValuesEnlarged:\"nutritionValuesEnlarged___kNTbf\",nutritionValuesDefault:\"nutritionValuesDefault___FvhzC\",nutritionSummaryLarge:\"nutritionSummaryLarge___SG0tY\",caloriesIconWrapperNextToFat:\"caloriesIconWrapperNextToFat___mfXN7\",nutritionUpdatedPending:\"nutritionUpdatedPending___SedNn\",nutritionUpdated:\"nutritionUpdated___tJkWJ\",nutritionUpdatedSlideUp:\"nutritionUpdatedSlideUp___wSSZi\"},Dt=({onUpdateTriggered:e,isLoading:t,isPostUpdate:a,shouldUpdate:i,error:o,enlargedKeys:l,updatedNutritionSummary:c})=>{const[u,m"
+      },
+      {
+        "pattern": "nutri\\w*",
+        "offset": 43485,
+        "match": "nutritionUpdatedPending",
+        "context": "LG\",nutritionValuesEnlarged:\"nutritionValuesEnlarged___kNTbf\",nutritionValuesDefault:\"nutritionValuesDefault___FvhzC\",nutritionSummaryLarge:\"nutritionSummaryLarge___SG0tY\",caloriesIconWrapperNextToFat:\"caloriesIconWrapperNextToFat___mfXN7\",nutritionUpdatedPending:\"nutritionUpdatedPending___SedNn\",nutritionUpdated:\"nutritionUpdated___tJkWJ\",nutritionUpdatedSlideUp:\"nutritionUpdatedSlideUp___wSSZi\"},Dt=({onUpdateTriggered:e,isLoading:t,isPostUpdate:a,shouldUpdate:i,error:o,enlargedKeys:l,updatedNutritionSummary:c})=>{const[u,m]=(0,r.useState)(-1),p=(0,r.useRef)(0),g=(0,r.useRef)(null),f=(0,r.useRef)(!1),x=(0,r.useRef)"
+      },
+      {
+        "pattern": "nutri\\w*",
+        "offset": 43510,
+        "match": "nutritionUpdatedPending___SedNn",
+        "context": "ed:\"nutritionValuesEnlarged___kNTbf\",nutritionValuesDefault:\"nutritionValuesDefault___FvhzC\",nutritionSummaryLarge:\"nutritionSummaryLarge___SG0tY\",caloriesIconWrapperNextToFat:\"caloriesIconWrapperNextToFat___mfXN7\",nutritionUpdatedPending:\"nutritionUpdatedPending___SedNn\",nutritionUpdated:\"nutritionUpdated___tJkWJ\",nutritionUpdatedSlideUp:\"nutritionUpdatedSlideUp___wSSZi\"},Dt=({onUpdateTriggered:e,isLoading:t,isPostUpdate:a,shouldUpdate:i,error:o,enlargedKeys:l,updatedNutritionSummary:c})=>{const[u,m]=(0,r.useState)(-1),p=(0,r.useRef)(0),g=(0,r.useRef)(null),f=(0,r.useRef)(!1),x=(0,r.useRef)(null),h=(0,r.useId)(),b=Object.k"
+      },
+      {
+        "pattern": "nutri\\w*",
+        "offset": 43543,
+        "match": "nutritionUpdated",
+        "context": "bf\",nutritionValuesDefault:\"nutritionValuesDefault___FvhzC\",nutritionSummaryLarge:\"nutritionSummaryLarge___SG0tY\",caloriesIconWrapperNextToFat:\"caloriesIconWrapperNextToFat___mfXN7\",nutritionUpdatedPending:\"nutritionUpdatedPending___SedNn\",nutritionUpdated:\"nutritionUpdated___tJkWJ\",nutritionUpdatedSlideUp:\"nutritionUpdatedSlideUp___wSSZi\"},Dt=({onUpdateTriggered:e,isLoading:t,isPostUpdate:a,shouldUpdate:i,error:o,enlargedKeys:l,updatedNutritionSummary:c})=>{const[u,m]=(0,r.useState)(-1),p=(0,r.useRef)(0),g=(0,r.useRef)(null),f=(0,r.useRef)(!1),x=(0,r.useRef)(null),h=(0,r.useId)(),b=Object.keys(l).length>0,N="
+      },
+      {
+        "pattern": "nutri\\w*",
+        "offset": 43561,
+        "match": "nutritionUpdated___tJkWJ",
+        "context": "sDefault:\"nutritionValuesDefault___FvhzC\",nutritionSummaryLarge:\"nutritionSummaryLarge___SG0tY\",caloriesIconWrapperNextToFat:\"caloriesIconWrapperNextToFat___mfXN7\",nutritionUpdatedPending:\"nutritionUpdatedPending___SedNn\",nutritionUpdated:\"nutritionUpdated___tJkWJ\",nutritionUpdatedSlideUp:\"nutritionUpdatedSlideUp___wSSZi\"},Dt=({onUpdateTriggered:e,isLoading:t,isPostUpdate:a,shouldUpdate:i,error:o,enlargedKeys:l,updatedNutritionSummary:c})=>{const[u,m]=(0,r.useState)(-1),p=(0,r.useRef)(0),g=(0,r.useRef)(null),f=(0,r.useRef)(!1),x=(0,r.useRef)(null),h=(0,r.useId)(),b=Object.keys(l).length>0,N=a&&!i&&!t&&!o,y=u===p.curr"
+      },
+      {
+        "pattern": "nutri\\w*",
+        "offset": 43587,
+        "match": "nutritionUpdatedSlideUp",
+        "context": "efault___FvhzC\",nutritionSummaryLarge:\"nutritionSummaryLarge___SG0tY\",caloriesIconWrapperNextToFat:\"caloriesIconWrapperNextToFat___mfXN7\",nutritionUpdatedPending:\"nutritionUpdatedPending___SedNn\",nutritionUpdated:\"nutritionUpdated___tJkWJ\",nutritionUpdatedSlideUp:\"nutritionUpdatedSlideUp___wSSZi\"},Dt=({onUpdateTriggered:e,isLoading:t,isPostUpdate:a,shouldUpdate:i,error:o,enlargedKeys:l,updatedNutritionSummary:c})=>{const[u,m]=(0,r.useState)(-1),p=(0,r.useRef)(0),g=(0,r.useRef)(null),f=(0,r.useRef)(!1),x=(0,r.useRef)(null),h=(0,r.useId)(),b=Object.keys(l).length>0,N=a&&!i&&!t&&!o,y=u===p.current&&N;return(0,r.useEffe"
+      },
+      {
+        "pattern": "nutri\\w*",
+        "offset": 43612,
+        "match": "nutritionUpdatedSlideUp___wSSZi",
+        "context": "SummaryLarge:\"nutritionSummaryLarge___SG0tY\",caloriesIconWrapperNextToFat:\"caloriesIconWrapperNextToFat___mfXN7\",nutritionUpdatedPending:\"nutritionUpdatedPending___SedNn\",nutritionUpdated:\"nutritionUpdated___tJkWJ\",nutritionUpdatedSlideUp:\"nutritionUpdatedSlideUp___wSSZi\"},Dt=({onUpdateTriggered:e,isLoading:t,isPostUpdate:a,shouldUpdate:i,error:o,enlargedKeys:l,updatedNutritionSummary:c})=>{const[u,m]=(0,r.useState)(-1),p=(0,r.useRef)(0),g=(0,r.useRef)(null),f=(0,r.useRef)(!1),x=(0,r.useRef)(null),h=(0,r.useId)(),b=Object.keys(l).length>0,N=a&&!i&&!t&&!o,y=u===p.current&&N;return(0,r.useEffect)(()=>{if(!N)return p.current++"
+      },
+      {
+        "pattern": "nutri\\w*",
+        "offset": 43743,
+        "match": "NutritionSummary",
+        "context": "nding:\"nutritionUpdatedPending___SedNn\",nutritionUpdated:\"nutritionUpdated___tJkWJ\",nutritionUpdatedSlideUp:\"nutritionUpdatedSlideUp___wSSZi\"},Dt=({onUpdateTriggered:e,isLoading:t,isPostUpdate:a,shouldUpdate:i,error:o,enlargedKeys:l,updatedNutritionSummary:c})=>{const[u,m]=(0,r.useState)(-1),p=(0,r.useRef)(0),g=(0,r.useRef)(null),f=(0,r.useRef)(!1),x=(0,r.useRef)(null),h=(0,r.useId)(),b=Object.keys(l).length>0,N=a&&!i&&!t&&!o,y=u===p.current&&N;return(0,r.useEffect)(()=>{if(!N)return p.current++,f.current=!1,void clearTimeout(g.current);const e=p.current;return b?(f.current=!0,clearTimeout(g.current)):f.curre"
+      },
+      {
+        "pattern": "nutri\\w*",
+        "offset": 44509,
+        "match": "Nutrients",
+        "context": "ut(g.current)},[N,b]),(0,s.jsxs)(s.Fragment,{children:[(0,s.jsxs)(\"div\",{\"aria-live\":\"polite\",role:\"status\",tabIndex:-1,ref:x,children:[t?(0,s.jsx)(\"div\",{className:`pt4 pb2 ${Rt.greenAccentTextColor}`,children:(0,s.jsx)(n.sA,{...Vt.loadingNutrients})}):N&&(0,s.jsxs)(\"div\",{className:`${Rt.greenAccentTextColor} ${y?Rt.nutritionUpdated:Rt.nutritionUpdatedPending}`,\"data-e2e\":\"nutrition-updated\",children:[(0,s.jsx)(d.In,{className:\"mr2\",path:ee.A,size:\"16px\"}),(0,s.jsx)(n.sA,{...Vt.nutritionUpdated}),c&&(0,s.jsx)(\"span\",{className:\"hiddenVisually\",children:c})]}),o&&!i&&!t&&(0,s.jsxs)(\"div\",{className:\"p"
+      },
+      {
+        "pattern": "nutri\\w*",
+        "offset": 44589,
+        "match": "nutritionUpdated",
+        "context": "ive\":\"polite\",role:\"status\",tabIndex:-1,ref:x,children:[t?(0,s.jsx)(\"div\",{className:`pt4 pb2 ${Rt.greenAccentTextColor}`,children:(0,s.jsx)(n.sA,{...Vt.loadingNutrients})}):N&&(0,s.jsxs)(\"div\",{className:`${Rt.greenAccentTextColor} ${y?Rt.nutritionUpdated:Rt.nutritionUpdatedPending}`,\"data-e2e\":\"nutrition-updated\",children:[(0,s.jsx)(d.In,{className:\"mr2\",path:ee.A,size:\"16px\"}),(0,s.jsx)(n.sA,{...Vt.nutritionUpdated}),c&&(0,s.jsx)(\"span\",{className:\"hiddenVisually\",children:c})]}),o&&!i&&!t&&(0,s.jsxs)(\"div\",{className:\"pt4 pb2\",\"data-e2e\":\"nutrition-not-updated\",children:[(0,s.jsx)(\"span\",{className:Rt.yel"
+      },
+      {
+        "pattern": "nutri\\w*",
+        "offset": 44609,
+        "match": "nutritionUpdatedPending",
+        "context": "status\",tabIndex:-1,ref:x,children:[t?(0,s.jsx)(\"div\",{className:`pt4 pb2 ${Rt.greenAccentTextColor}`,children:(0,s.jsx)(n.sA,{...Vt.loadingNutrients})}):N&&(0,s.jsxs)(\"div\",{className:`${Rt.greenAccentTextColor} ${y?Rt.nutritionUpdated:Rt.nutritionUpdatedPending}`,\"data-e2e\":\"nutrition-updated\",children:[(0,s.jsx)(d.In,{className:\"mr2\",path:ee.A,size:\"16px\"}),(0,s.jsx)(n.sA,{...Vt.nutritionUpdated}),c&&(0,s.jsx)(\"span\",{className:\"hiddenVisually\",children:c})]}),o&&!i&&!t&&(0,s.jsxs)(\"div\",{className:\"pt4 pb2\",\"data-e2e\":\"nutrition-not-updated\",children:[(0,s.jsx)(\"span\",{className:Rt.yellowIconColor,children:(0,s."
+      },
+      {
+        "pattern": "nutri\\w*",
+        "offset": 44647,
+        "match": "nutrition",
+        "context": "(0,s.jsx)(\"div\",{className:`pt4 pb2 ${Rt.greenAccentTextColor}`,children:(0,s.jsx)(n.sA,{...Vt.loadingNutrients})}):N&&(0,s.jsxs)(\"div\",{className:`${Rt.greenAccentTextColor} ${y?Rt.nutritionUpdated:Rt.nutritionUpdatedPending}`,\"data-e2e\":\"nutrition-updated\",children:[(0,s.jsx)(d.In,{className:\"mr2\",path:ee.A,size:\"16px\"}),(0,s.jsx)(n.sA,{...Vt.nutritionUpdated}),c&&(0,s.jsx)(\"span\",{className:\"hiddenVisually\",children:c})]}),o&&!i&&!t&&(0,s.jsxs)(\"div\",{className:\"pt4 pb2\",\"data-e2e\":\"nutrition-not-updated\",children:[(0,s.jsx)(\"span\",{className:Rt.yellowIconColor,children:(0,s.jsx)(d.In,{className:\"mr"
+      },
+      {
+        "pattern": "nutri\\w*",
+        "offset": 44754,
+        "match": "nutritionUpdated",
+        "context": "ents})}):N&&(0,s.jsxs)(\"div\",{className:`${Rt.greenAccentTextColor} ${y?Rt.nutritionUpdated:Rt.nutritionUpdatedPending}`,\"data-e2e\":\"nutrition-updated\",children:[(0,s.jsx)(d.In,{className:\"mr2\",path:ee.A,size:\"16px\"}),(0,s.jsx)(n.sA,{...Vt.nutritionUpdated}),c&&(0,s.jsx)(\"span\",{className:\"hiddenVisually\",children:c})]}),o&&!i&&!t&&(0,s.jsxs)(\"div\",{className:\"pt4 pb2\",\"data-e2e\":\"nutrition-not-updated\",children:[(0,s.jsx)(\"span\",{className:Rt.yellowIconColor,children:(0,s.jsx)(d.In,{className:\"mr2\",path:wt.A,size:\"18px\"})}),(0,s.jsx)(\"span\",{className:Rt.yellowTextColor,children:(0,s.jsx)(n.sA,{...Vt.nutriti"
+      },
+      {
+        "pattern": "nutri\\w*",
+        "offset": 44898,
+        "match": "nutrition",
+        "context": "pdated\",children:[(0,s.jsx)(d.In,{className:\"mr2\",path:ee.A,size:\"16px\"}),(0,s.jsx)(n.sA,{...Vt.nutritionUpdated}),c&&(0,s.jsx)(\"span\",{className:\"hiddenVisually\",children:c})]}),o&&!i&&!t&&(0,s.jsxs)(\"div\",{className:\"pt4 pb2\",\"data-e2e\":\"nutrition-not-updated\",children:[(0,s.jsx)(\"span\",{className:Rt.yellowIconColor,children:(0,s.jsx)(d.In,{className:\"mr2\",path:wt.A,size:\"18px\"})}),(0,s.jsx)(\"span\",{className:Rt.yellowTextColor,children:(0,s.jsx)(n.sA,{...Vt.nutritionNotUpdated})})]})]}),!t&&i&&(0,s.jsxs)(\"div\",{className:\"pt3 flex flex-row text-xxs\",\"data-e2e\":\"update-component\",children:[(0,s.jsx)("
+      },
+      {
+        "pattern": "nutri\\w*",
+        "offset": 45123,
+        "match": "nutritionNotUpdated",
+        "context": "2\",\"data-e2e\":\"nutrition-not-updated\",children:[(0,s.jsx)(\"span\",{className:Rt.yellowIconColor,children:(0,s.jsx)(d.In,{className:\"mr2\",path:wt.A,size:\"18px\"})}),(0,s.jsx)(\"span\",{className:Rt.yellowTextColor,children:(0,s.jsx)(n.sA,{...Vt.nutritionNotUpdated})})]})]}),!t&&i&&(0,s.jsxs)(\"div\",{className:\"pt3 flex flex-row text-xxs\",\"data-e2e\":\"update-component\",children:[(0,s.jsx)(\"div\",{children:(0,s.jsx)(d.$n,{className:Rt.updateButton,color:\"white\",\"aria-describedby\":h,onClick:()=>{x.current?.focus(),e()},visualStyle:\"positive\",children:(0,s.jsxs)(\"span\",{className:\"color-greenStarbucks\",children:[(0,s.jsx)(d"
+      },
+      {
+        "pattern": "nutri\\w*",
+        "offset": 45665,
+        "match": "Nutrition",
+        "context": "ren:(0,s.jsxs)(\"span\",{className:\"color-greenStarbucks\",children:[(0,s.jsx)(d.In,{className:\"pb1\",path:Bt.A}),(0,s.jsx)(n.sA,{...Vt.updateCTA})]})})}),(0,s.jsx)(\"div\",{className:\"pl3\",id:h,children:(0,s.jsx)(n.sA,{...Vt.customizationAffectsNutrition})})]})]})},Ht=[\"406/hot\",\"407/hot\",\"408/hot\",\"413/hot\"],Ut=()=>{const[e,t]=(0,r.useState)({}),a=(0,r.useRef)(null),{formatMessage:i}=(0,n.tz)(),l=(0,r.useRef)(null),c=(0,r.useRef)(null),{isDynamicNutritionEnabled:u}=(0,zt.A)(),{sizeInfo:m,product:p,selectedOptions:g}=(0,h.H)(),f=m?.selectedSize?.nutrition,{productNumber:x,formCode:b}=p,N=(0,S.A)({productNum"
+      },
+      {
+        "pattern": "nutri\\w*",
+        "offset": 45871,
+        "match": "NutritionEnabled",
+        "context": ")(n.sA,{...Vt.customizationAffectsNutrition})})]})]})},Ht=[\"406/hot\",\"407/hot\",\"408/hot\",\"413/hot\"],Ut=()=>{const[e,t]=(0,r.useState)({}),a=(0,r.useRef)(null),{formatMessage:i}=(0,n.tz)(),l=(0,r.useRef)(null),c=(0,r.useRef)(null),{isDynamicNutritionEnabled:u}=(0,zt.A)(),{sizeInfo:m,product:p,selectedOptions:g}=(0,h.H)(),f=m?.selectedSize?.nutrition,{productNumber:x,formCode:b}=p,N=(0,S.A)({productNumber:x,formCode:b}),y=u&&Ht.includes(N),{nutritionData:j,nutritionError:v,isNutritionLoading:_,hasFetchedAtLeastOnce:C,shouldShowUpdateButton:A,shouldShowPostUpdateState:k,onUpdateNutrition:M}=(()=>{const{data:e,er"
+      },
+      {
+        "pattern": "nutri\\w*",
+        "offset": 45972,
+        "match": "nutrition",
+        "context": "t=()=>{const[e,t]=(0,r.useState)({}),a=(0,r.useRef)(null),{formatMessage:i}=(0,n.tz)(),l=(0,r.useRef)(null),c=(0,r.useRef)(null),{isDynamicNutritionEnabled:u}=(0,zt.A)(),{sizeInfo:m,product:p,selectedOptions:g}=(0,h.H)(),f=m?.selectedSize?.nutrition,{productNumber:x,formCode:b}=p,N=(0,S.A)({productNumber:x,formCode:b}),y=u&&Ht.includes(N),{nutritionData:j,nutritionError:v,isNutritionLoading:_,hasFetchedAtLeastOnce:C,shouldShowUpdateButton:A,shouldShowPostUpdateState:k,onUpdateNutrition:M}=(()=>{const{data:e,error:t,loading:a,lastFetch:s,lastError:i}=(0,o.d4)(St),{product:n,sizeInfo:l,selectedOptions:d}"
+      },
+      {
+        "pattern": "nutri\\w*",
+        "offset": 46074,
+        "match": "nutritionData",
+        "context": "null),c=(0,r.useRef)(null),{isDynamicNutritionEnabled:u}=(0,zt.A)(),{sizeInfo:m,product:p,selectedOptions:g}=(0,h.H)(),f=m?.selectedSize?.nutrition,{productNumber:x,formCode:b}=p,N=(0,S.A)({productNumber:x,formCode:b}),y=u&&Ht.includes(N),{nutritionData:j,nutritionError:v,isNutritionLoading:_,hasFetchedAtLeastOnce:C,shouldShowUpdateButton:A,shouldShowPostUpdateState:k,onUpdateNutrition:M}=(()=>{const{data:e,error:t,loading:a,lastFetch:s,lastError:i}=(0,o.d4)(St),{product:n,sizeInfo:l,selectedOptions:d}=(0,h.H)(),c=(0,o.wA)(),[u,m]=(0,r.useState)(d),p=(0,r.useMemo)(()=>l?.selectedSize?.recipe?.default??[],["
+      },
+      {
+        "pattern": "nutri\\w*",
+        "offset": 46090,
+        "match": "nutritionError",
+        "context": "Ref)(null),{isDynamicNutritionEnabled:u}=(0,zt.A)(),{sizeInfo:m,product:p,selectedOptions:g}=(0,h.H)(),f=m?.selectedSize?.nutrition,{productNumber:x,formCode:b}=p,N=(0,S.A)({productNumber:x,formCode:b}),y=u&&Ht.includes(N),{nutritionData:j,nutritionError:v,isNutritionLoading:_,hasFetchedAtLeastOnce:C,shouldShowUpdateButton:A,shouldShowPostUpdateState:k,onUpdateNutrition:M}=(()=>{const{data:e,error:t,loading:a,lastFetch:s,lastError:i}=(0,o.d4)(St),{product:n,sizeInfo:l,selectedOptions:d}=(0,h.H)(),c=(0,o.wA)(),[u,m]=(0,r.useState)(d),p=(0,r.useMemo)(()=>l?.selectedSize?.recipe?.default??[],[l]),g=Boolean(s||"
+      },
+      {
+        "pattern": "nutri\\w*",
+        "offset": 46109,
+        "match": "NutritionLoading",
+        "context": "icNutritionEnabled:u}=(0,zt.A)(),{sizeInfo:m,product:p,selectedOptions:g}=(0,h.H)(),f=m?.selectedSize?.nutrition,{productNumber:x,formCode:b}=p,N=(0,S.A)({productNumber:x,formCode:b}),y=u&&Ht.includes(N),{nutritionData:j,nutritionError:v,isNutritionLoading:_,hasFetchedAtLeastOnce:C,shouldShowUpdateButton:A,shouldShowPostUpdateState:k,onUpdateNutrition:M}=(()=>{const{data:e,error:t,loading:a,lastFetch:s,lastError:i}=(0,o.d4)(St),{product:n,sizeInfo:l,selectedOptions:d}=(0,h.H)(),c=(0,o.wA)(),[u,m]=(0,r.useState)(d),p=(0,r.useMemo)(()=>l?.selectedSize?.recipe?.default??[],[l]),g=Boolean(s||i),f=d?.length&&!g||B"
+      },
+      {
+        "pattern": "nutri\\w*",
+        "offset": 46213,
+        "match": "Nutrition",
+        "context": "utrition,{productNumber:x,formCode:b}=p,N=(0,S.A)({productNumber:x,formCode:b}),y=u&&Ht.includes(N),{nutritionData:j,nutritionError:v,isNutritionLoading:_,hasFetchedAtLeastOnce:C,shouldShowUpdateButton:A,shouldShowPostUpdateState:k,onUpdateNutrition:M}=(()=>{const{data:e,error:t,loading:a,lastFetch:s,lastError:i}=(0,o.d4)(St),{product:n,sizeInfo:l,selectedOptions:d}=(0,h.H)(),c=(0,o.wA)(),[u,m]=(0,r.useState)(d),p=(0,r.useMemo)(()=>l?.selectedSize?.recipe?.default??[],[l]),g=Boolean(s||i),f=d?.length&&!g||Boolean(d?.length)&&!(0,At.A)(u,d)&&!a,x=g,b=(0,r.useMemo)(()=>(0,kt.Je)(p,n.optionsByProductNumbe"
+      },
+      {
+        "pattern": "nutri\\w*",
+        "offset": 47423,
+        "match": "nutritionData",
+        "context": "n{sku:e.size.sku,quantity:$t(e),replacedSku:Tt({currentRecipeModifierForSelectedOption:t,defaultSku:e.size.sku,selectedOptions:d})}}),[d,y]);return(0,r.useEffect)(()=>{0===d.length&&e&&c(X())},[d,c,e]),(0,r.useEffect)(()=>()=>{c(X())},[]),{nutritionData:e,nutritionError:t,isNutritionLoading:a,hasFetchedAtLeastOnce:g,shouldShowUpdateButton:f,shouldShowPostUpdateState:x,buildModifiers:j,onUpdateNutrition:()=>{const{productNumber:e,formCode:t,defaultSize:a}=n,s=l?.selectedSize?.sku,r=s||a?.sku,i=j();c((({productNumber:e,formCode:t,baseProductSku:a,modifiersList:s,trackingAttributes:r})=>(i,o,{apiFetch:n})=>(i"
+      },
+      {
+        "pattern": "nutri\\w*",
+        "offset": 47439,
+        "match": "nutritionError",
+        "context": ",quantity:$t(e),replacedSku:Tt({currentRecipeModifierForSelectedOption:t,defaultSku:e.size.sku,selectedOptions:d})}}),[d,y]);return(0,r.useEffect)(()=>{0===d.length&&e&&c(X())},[d,c,e]),(0,r.useEffect)(()=>()=>{c(X())},[]),{nutritionData:e,nutritionError:t,isNutritionLoading:a,hasFetchedAtLeastOnce:g,shouldShowUpdateButton:f,shouldShowPostUpdateState:x,buildModifiers:j,onUpdateNutrition:()=>{const{productNumber:e,formCode:t,defaultSize:a}=n,s=l?.selectedSize?.sku,r=s||a?.sku,i=j();c((({productNumber:e,formCode:t,baseProductSku:a,modifiersList:s,trackingAttributes:r})=>(i,o,{apiFetch:n})=>(i({type:J._O}),n(`"
+      },
+      {
+        "pattern": "nutri\\w*",
+        "offset": 47458,
+        "match": "NutritionLoading",
+        "context": "lacedSku:Tt({currentRecipeModifierForSelectedOption:t,defaultSku:e.size.sku,selectedOptions:d})}}),[d,y]);return(0,r.useEffect)(()=>{0===d.length&&e&&c(X())},[d,c,e]),(0,r.useEffect)(()=>()=>{c(X())},[]),{nutritionData:e,nutritionError:t,isNutritionLoading:a,hasFetchedAtLeastOnce:g,shouldShowUpdateButton:f,shouldShowPostUpdateState:x,buildModifiers:j,onUpdateNutrition:()=>{const{productNumber:e,formCode:t,defaultSize:a}=n,s=l?.selectedSize?.sku,r=s||a?.sku,i=j();c((({productNumber:e,formCode:t,baseProductSku:a,modifiersList:s,trackingAttributes:r})=>(i,o,{apiFetch:n})=>(i({type:J._O}),n(`/apiproxy/v1/ordering"
+      },
+      {
+        "pattern": "nutri\\w*",
+        "offset": 47579,
+        "match": "Nutrition",
+        "context": "ffect)(()=>{0===d.length&&e&&c(X())},[d,c,e]),(0,r.useEffect)(()=>()=>{c(X())},[]),{nutritionData:e,nutritionError:t,isNutritionLoading:a,hasFetchedAtLeastOnce:g,shouldShowUpdateButton:f,shouldShowPostUpdateState:x,buildModifiers:j,onUpdateNutrition:()=>{const{productNumber:e,formCode:t,defaultSize:a}=n,s=l?.selectedSize?.sku,r=s||a?.sku,i=j();c((({productNumber:e,formCode:t,baseProductSku:a,modifiersList:s,trackingAttributes:r})=>(i,o,{apiFetch:n})=>(i({type:J._O}),n(`/apiproxy/v1/ordering/${e}/${t}/nutrition/calculate`,{method:\"POST\",body:{sku:a,modifiers:s}}).then(e=>{(0,Z.A)(()=>i({type:J.qg,payloa"
+      },
+      {
+        "pattern": "nutri\\w*",
+        "offset": 47845,
+        "match": "nutrition",
+        "context": "ctNumber:e,formCode:t,defaultSize:a}=n,s=l?.selectedSize?.sku,r=s||a?.sku,i=j();c((({productNumber:e,formCode:t,baseProductSku:a,modifiersList:s,trackingAttributes:r})=>(i,o,{apiFetch:n})=>(i({type:J._O}),n(`/apiproxy/v1/ordering/${e}/${t}/nutrition/calculate`,{method:\"POST\",body:{sku:a,modifiers:s}}).then(e=>{(0,Z.A)(()=>i({type:J.qg,payload:e}),()=>(0,z.p8)({successData:e.nutritionValues,input:{baseProductSku:a,modifiersList:s},baseNutrition:r?.baseNutrition}))}).catch(e=>{(0,Z.A)(()=>i({type:J.Pf,error:e}),()=>(0,z.qw)({input:{baseProductSku:a,modifiersList:s},baseNutrition:r?.baseNutrition}))})))({"
+      },
+      {
+        "pattern": "nutri\\w*",
+        "offset": 47982,
+        "match": "nutritionValues",
+        "context": "sList:s,trackingAttributes:r})=>(i,o,{apiFetch:n})=>(i({type:J._O}),n(`/apiproxy/v1/ordering/${e}/${t}/nutrition/calculate`,{method:\"POST\",body:{sku:a,modifiers:s}}).then(e=>{(0,Z.A)(()=>i({type:J.qg,payload:e}),()=>(0,z.p8)({successData:e.nutritionValues,input:{baseProductSku:a,modifiersList:s},baseNutrition:r?.baseNutrition}))}).catch(e=>{(0,Z.A)(()=>i({type:J.Pf,error:e}),()=>(0,z.qw)({input:{baseProductSku:a,modifiersList:s},baseNutrition:r?.baseNutrition}))})))({productNumber:e,formCode:t?.toLowerCase(),baseProductSku:r,modifiersList:i,trackingAttributes:{baseNutrition:Ft(l?.selectedSize?.nutrition)}}))"
+      },
+      {
+        "pattern": "nutri\\w*",
+        "offset": 48043,
+        "match": "Nutrition",
+        "context": "J._O}),n(`/apiproxy/v1/ordering/${e}/${t}/nutrition/calculate`,{method:\"POST\",body:{sku:a,modifiers:s}}).then(e=>{(0,Z.A)(()=>i({type:J.qg,payload:e}),()=>(0,z.p8)({successData:e.nutritionValues,input:{baseProductSku:a,modifiersList:s},baseNutrition:r?.baseNutrition}))}).catch(e=>{(0,Z.A)(()=>i({type:J.Pf,error:e}),()=>(0,z.qw)({input:{baseProductSku:a,modifiersList:s},baseNutrition:r?.baseNutrition}))})))({productNumber:e,formCode:t?.toLowerCase(),baseProductSku:r,modifiersList:i,trackingAttributes:{baseNutrition:Ft(l?.selectedSize?.nutrition)}})),m(d.map(e=>({...e})))}}})(),O=(0,r.useMemo)(()=>{if(!j"
+      },
+      {
+        "pattern": "nutri\\w*",
+        "offset": 48060,
+        "match": "Nutrition",
+        "context": "xy/v1/ordering/${e}/${t}/nutrition/calculate`,{method:\"POST\",body:{sku:a,modifiers:s}}).then(e=>{(0,Z.A)(()=>i({type:J.qg,payload:e}),()=>(0,z.p8)({successData:e.nutritionValues,input:{baseProductSku:a,modifiersList:s},baseNutrition:r?.baseNutrition}))}).catch(e=>{(0,Z.A)(()=>i({type:J.Pf,error:e}),()=>(0,z.qw)({input:{baseProductSku:a,modifiersList:s},baseNutrition:r?.baseNutrition}))})))({productNumber:e,formCode:t?.toLowerCase(),baseProductSku:r,modifiersList:i,trackingAttributes:{baseNutrition:Ft(l?.selectedSize?.nutrition)}})),m(d.map(e=>({...e})))}}})(),O=(0,r.useMemo)(()=>{if(!j){const{fat:e,sug"
+      },
+      {
+        "pattern": "nutri\\w*",
+        "offset": 48179,
+        "match": "Nutrition",
+        "context": "qg,payload:e}),()=>(0,z.p8)({successData:e.nutritionValues,input:{baseProductSku:a,modifiersList:s},baseNutrition:r?.baseNutrition}))}).catch(e=>{(0,Z.A)(()=>i({type:J.Pf,error:e}),()=>(0,z.qw)({input:{baseProductSku:a,modifiersList:s},baseNutrition:r?.baseNutrition}))})))({productNumber:e,formCode:t?.toLowerCase(),baseProductSku:r,modifiersList:i,trackingAttributes:{baseNutrition:Ft(l?.selectedSize?.nutrition)}})),m(d.map(e=>({...e})))}}})(),O=(0,r.useMemo)(()=>{if(!j){const{fat:e,sugars:t,protein:a,calories:s}=Ft(f);return{fat:e,sugars:t,protein:a,calories:{...s,value:s?.displayValue,unitOfMeasure:\"\""
+      },
+      {
+        "pattern": "nutri\\w*",
+        "offset": 48196,
+        "match": "Nutrition",
+        "context": "=>(0,z.p8)({successData:e.nutritionValues,input:{baseProductSku:a,modifiersList:s},baseNutrition:r?.baseNutrition}))}).catch(e=>{(0,Z.A)(()=>i({type:J.Pf,error:e}),()=>(0,z.qw)({input:{baseProductSku:a,modifiersList:s},baseNutrition:r?.baseNutrition}))})))({productNumber:e,formCode:t?.toLowerCase(),baseProductSku:r,modifiersList:i,trackingAttributes:{baseNutrition:Ft(l?.selectedSize?.nutrition)}})),m(d.map(e=>({...e})))}}})(),O=(0,r.useMemo)(()=>{if(!j){const{fat:e,sugars:t,protein:a,calories:s}=Ft(f);return{fat:e,sugars:t,protein:a,calories:{...s,value:s?.displayValue,unitOfMeasure:\"\"}}}return{fat:j?."
+      },
+      {
+        "pattern": "nutri\\w*",
+        "offset": 48313,
+        "match": "Nutrition",
+        "context": ").catch(e=>{(0,Z.A)(()=>i({type:J.Pf,error:e}),()=>(0,z.qw)({input:{baseProductSku:a,modifiersList:s},baseNutrition:r?.baseNutrition}))})))({productNumber:e,formCode:t?.toLowerCase(),baseProductSku:r,modifiersList:i,trackingAttributes:{baseNutrition:Ft(l?.selectedSize?.nutrition)}})),m(d.map(e=>({...e})))}}})(),O=(0,r.useMemo)(()=>{if(!j){const{fat:e,sugars:t,protein:a,calories:s}=Ft(f);return{fat:e,sugars:t,protein:a,calories:{...s,value:s?.displayValue,unitOfMeasure:\"\"}}}return{fat:j?.fat,sugars:j?.sugars,protein:j?.protein,calories:{...j?.calories,unitOfMeasure:\"\"}}},[j,f]);(0,r.useEffect)(()=>()=>{"
+      },
+      {
+        "pattern": "nutri\\w*",
+        "offset": 48343,
+        "match": "nutrition",
+        "context": "e:J.Pf,error:e}),()=>(0,z.qw)({input:{baseProductSku:a,modifiersList:s},baseNutrition:r?.baseNutrition}))})))({productNumber:e,formCode:t?.toLowerCase(),baseProductSku:r,modifiersList:i,trackingAttributes:{baseNutrition:Ft(l?.selectedSize?.nutrition)}})),m(d.map(e=>({...e})))}}})(),O=(0,r.useMemo)(()=>{if(!j){const{fat:e,sugars:t,protein:a,calories:s}=Ft(f);return{fat:e,sugars:t,protein:a,calories:{...s,value:s?.displayValue,unitOfMeasure:\"\"}}}return{fat:j?.fat,sugars:j?.sugars,protein:j?.protein,calories:{...j?.calories,unitOfMeasure:\"\"}}},[j,f]);(0,r.useEffect)(()=>()=>{clearTimeout(l.current),clearT"
+      },
+      {
+        "pattern": "nutri\\w*",
+        "offset": 49752,
+        "match": "nutritionSummaryWithProtein",
+        "context": "=>{if(!t||!Lt(t?.value))return;const{unitOfMeasure:a,value:s}=t;return{[e]:`${s}${a}`}})(e,t)).reduce((e,t)=>({...e,...t}),{});if(!Lt(O.calories?.value)||!Lt(O.sugars?.value)||!Lt(O.fat?.value))return null;const T=O?.protein.value>=10,$=T?\"nutritionSummaryWithProtein\":\"nutritionSummary\",w=T?{caloriesValue:I,fatValue:L,sugarValue:P,proteinValue:F}:{caloriesValue:I,fatValue:L,sugarValue:P},B=T?[\"caloriesValue\",\"sugarValue\",\"fatValue\",\"proteinValue\"]:[\"caloriesValue\",\"sugarValue\",\"fatValue\"],V=T?[I,P,L,F]:[I,P,L],R=K()(\"px2\",{\"justify-around\":T,\"justify-between px6\":!T});return(0,s.jsx)(\"div\",{className:K()(\"color-textWhit"
+      },
+      {
+        "pattern": "nutri\\w*",
+        "offset": 49782,
+        "match": "nutritionSummary",
+        "context": ";const{unitOfMeasure:a,value:s}=t;return{[e]:`${s}${a}`}})(e,t)).reduce((e,t)=>({...e,...t}),{});if(!Lt(O.calories?.value)||!Lt(O.sugars?.value)||!Lt(O.fat?.value))return null;const T=O?.protein.value>=10,$=T?\"nutritionSummaryWithProtein\":\"nutritionSummary\",w=T?{caloriesValue:I,fatValue:L,sugarValue:P,proteinValue:F}:{caloriesValue:I,fatValue:L,sugarValue:P},B=T?[\"caloriesValue\",\"sugarValue\",\"fatValue\",\"proteinValue\"]:[\"caloriesValue\",\"sugarValue\",\"fatValue\"],V=T?[I,P,L,F]:[I,P,L],R=K()(\"px2\",{\"justify-around\":T,\"justify-between px6\":!T});return(0,s.jsx)(\"div\",{className:K()(\"color-textWhite pt3\"),\"data-e2e\":"
+      },
+      {
+        "pattern": "nutri\\w*",
+        "offset": 50159,
+        "match": "nutrition",
+        "context": "lue\",\"sugarValue\",\"fatValue\",\"proteinValue\"]:[\"caloriesValue\",\"sugarValue\",\"fatValue\"],V=T?[I,P,L,F]:[I,P,L],R=K()(\"px2\",{\"justify-around\":T,\"justify-between px6\":!T});return(0,s.jsx)(\"div\",{className:K()(\"color-textWhite pt3\"),\"data-e2e\":\"nutrition-summary\",children:(0,s.jsxs)(\"span\",{className:\"text-xxs\",children:[(0,s.jsx)(d.jO,{className:\"pb3\",visualStyle:\"negative\"}),(0,s.jsx)(\"div\",{className:K()(`flex flex-row ${R}`),children:V.map((t,a)=>{const i=T?\"proteinValue\"===B[a]:\"fatValue\"===B[a];return(0,s.jsx)(r.Fragment,{children:(0,s.jsxs)(\"span\",{className:\"flex flex-column items-center\",\"data-e2e\""
+      },
+      {
+        "pattern": "nutri\\w*",
+        "offset": 50530,
+        "match": "nutrition",
+        "context": "\"}),(0,s.jsx)(\"div\",{className:K()(`flex flex-row ${R}`),children:V.map((t,a)=>{const i=T?\"proteinValue\"===B[a]:\"fatValue\"===B[a];return(0,s.jsx)(r.Fragment,{children:(0,s.jsxs)(\"span\",{className:\"flex flex-column items-center\",\"data-e2e\":`nutrition-${B[a]}`,children:[(0,s.jsxs)(\"span\",{className:\"flex items-center\",children:[(0,s.jsx)(n.sA,{...Vt[B[a]]}),i&&(0,s.jsx)(ft,{innerClassName:Rt.caloriesIconWrapperNextToFat})]}),(0,s.jsx)(\"span\",{className:K()(\"text-semibold flex\",{[`${Rt.nutritionValuesEnlarged} text-md`]:e[B[a]],[Rt.nutritionValues]:!e[B[a]],\"text-xxs\":!e[B[a]]}),children:t})]})},`nutritio"
+      },
+      {
+        "pattern": "nutri\\w*",
+        "offset": 50778,
+        "match": "nutritionValuesEnlarged",
+        "context": "n-${B[a]}`,children:[(0,s.jsxs)(\"span\",{className:\"flex items-center\",children:[(0,s.jsx)(n.sA,{...Vt[B[a]]}),i&&(0,s.jsx)(ft,{innerClassName:Rt.caloriesIconWrapperNextToFat})]}),(0,s.jsx)(\"span\",{className:K()(\"text-semibold flex\",{[`${Rt.nutritionValuesEnlarged} text-md`]:e[B[a]],[Rt.nutritionValues]:!e[B[a]],\"text-xxs\":!e[B[a]]}),children:t})]})},`nutrition-${B[a]}`)})}),y&&(0,s.jsx)(Dt,{onUpdateTriggered:M,shouldUpdate:A,isPostUpdate:k,error:v,isLoading:_,enlargedKeys:e,updatedNutritionSummary:i(Vt[$],w)})]})})};var Kt=a(66531);const Wt=()=>{const{product:e}=(0,h.H)(),{pathname:t}=(0,o.d4)(mt.AU)||{},a=Boolean(t"
+      },
+      {
+        "pattern": "nutri\\w*",
+        "offset": 50825,
+        "match": "nutritionValues",
+        "context": "me:\"flex items-center\",children:[(0,s.jsx)(n.sA,{...Vt[B[a]]}),i&&(0,s.jsx)(ft,{innerClassName:Rt.caloriesIconWrapperNextToFat})]}),(0,s.jsx)(\"span\",{className:K()(\"text-semibold flex\",{[`${Rt.nutritionValuesEnlarged} text-md`]:e[B[a]],[Rt.nutritionValues]:!e[B[a]],\"text-xxs\":!e[B[a]]}),children:t})]})},`nutrition-${B[a]}`)})}),y&&(0,s.jsx)(Dt,{onUpdateTriggered:M,shouldUpdate:A,isPostUpdate:k,error:v,isLoading:_,enlargedKeys:e,updatedNutritionSummary:i(Vt[$],w)})]})})};var Kt=a(66531);const Wt=()=>{const{product:e}=(0,h.H)(),{pathname:t}=(0,o.d4)(mt.AU)||{},a=Boolean(t?.includes(\"/nutrition\"));return e?.err"
+      },
+      {
+        "pattern": "nutri\\w*",
+        "offset": 50891,
+        "match": "nutrition",
+        "context": "(0,s.jsx)(ft,{innerClassName:Rt.caloriesIconWrapperNextToFat})]}),(0,s.jsx)(\"span\",{className:K()(\"text-semibold flex\",{[`${Rt.nutritionValuesEnlarged} text-md`]:e[B[a]],[Rt.nutritionValues]:!e[B[a]],\"text-xxs\":!e[B[a]]}),children:t})]})},`nutrition-${B[a]}`)})}),y&&(0,s.jsx)(Dt,{onUpdateTriggered:M,shouldUpdate:A,isPostUpdate:k,error:v,isLoading:_,enlargedKeys:e,updatedNutritionSummary:i(Vt[$],w)})]})})};var Kt=a(66531);const Wt=()=>{const{product:e}=(0,h.H)(),{pathname:t}=(0,o.d4)(mt.AU)||{},a=Boolean(t?.includes(\"/nutrition\"));return e?.error?null:!a&&t?(0,s.jsx)(qe.N_,{className:\"sb-button sb-butto"
+      },
+      {
+        "pattern": "nutri\\w*",
+        "offset": 51024,
+        "match": "NutritionSummary",
+        "context": "ionValuesEnlarged} text-md`]:e[B[a]],[Rt.nutritionValues]:!e[B[a]],\"text-xxs\":!e[B[a]]}),children:t})]})},`nutrition-${B[a]}`)})}),y&&(0,s.jsx)(Dt,{onUpdateTriggered:M,shouldUpdate:A,isPostUpdate:k,error:v,isLoading:_,enlargedKeys:e,updatedNutritionSummary:i(Vt[$],w)})]})})};var Kt=a(66531);const Wt=()=>{const{product:e}=(0,h.H)(),{pathname:t}=(0,o.d4)(mt.AU)||{},a=Boolean(t?.includes(\"/nutrition\"));return e?.error?null:!a&&t?(0,s.jsx)(qe.N_,{className:\"sb-button sb-button--default sb-button--white mt3\",\"data-e2e\":\"fullNutritionLink\",to:`${t}/nutrition`,children:(0,s.jsx)(n.sA,{...Vt.fullNutritionLink})}):nul"
+      },
+      {
+        "pattern": "nutri\\w*",
+        "offset": 51174,
+        "match": "nutrition",
+        "context": "UpdateTriggered:M,shouldUpdate:A,isPostUpdate:k,error:v,isLoading:_,enlargedKeys:e,updatedNutritionSummary:i(Vt[$],w)})]})})};var Kt=a(66531);const Wt=()=>{const{product:e}=(0,h.H)(),{pathname:t}=(0,o.d4)(mt.AU)||{},a=Boolean(t?.includes(\"/nutrition\"));return e?.error?null:!a&&t?(0,s.jsx)(qe.N_,{className:\"sb-button sb-button--default sb-button--white mt3\",\"data-e2e\":\"fullNutritionLink\",to:`${t}/nutrition`,children:(0,s.jsx)(n.sA,{...Vt.fullNutritionLink})}):null},Et=()=>{const{formatMessage:e}=(0,n.tz)(),t=(0,h.H)().product?.starCost,a=(0,s.jsxs)(r.Fragment,{children:[Boolean(t)&&(0,s.jsx)(Kt.A,{class"
+      },
+      {
+        "pattern": "nutri\\w*",
+        "offset": 51309,
+        "match": "NutritionLink",
+        "context": "66531);const Wt=()=>{const{product:e}=(0,h.H)(),{pathname:t}=(0,o.d4)(mt.AU)||{},a=Boolean(t?.includes(\"/nutrition\"));return e?.error?null:!a&&t?(0,s.jsx)(qe.N_,{className:\"sb-button sb-button--default sb-button--white mt3\",\"data-e2e\":\"fullNutritionLink\",to:`${t}/nutrition`,children:(0,s.jsx)(n.sA,{...Vt.fullNutritionLink})}):null},Et=()=>{const{formatMessage:e}=(0,n.tz)(),t=(0,h.H)().product?.starCost,a=(0,s.jsxs)(r.Fragment,{children:[Boolean(t)&&(0,s.jsx)(Kt.A,{className:K()(\"starCost___OtofZ\",\"inline-block px2 mb3 color-gold text-xxs\"),starCost:t}),(0,s.jsx)(Ct,{}),(0,s.jsx)(Ut,{}),(0,s.jsx)(Wt,{})]});"
+      },
+      {
+        "pattern": "nutri\\w*",
+        "offset": 51333,
+        "match": "nutrition",
+        "context": "st{product:e}=(0,h.H)(),{pathname:t}=(0,o.d4)(mt.AU)||{},a=Boolean(t?.includes(\"/nutrition\"));return e?.error?null:!a&&t?(0,s.jsx)(qe.N_,{className:\"sb-button sb-button--default sb-button--white mt3\",\"data-e2e\":\"fullNutritionLink\",to:`${t}/nutrition`,children:(0,s.jsx)(n.sA,{...Vt.fullNutritionLink})}):null},Et=()=>{const{formatMessage:e}=(0,n.tz)(),t=(0,h.H)().product?.starCost,a=(0,s.jsxs)(r.Fragment,{children:[Boolean(t)&&(0,s.jsx)(Kt.A,{className:K()(\"starCost___OtofZ\",\"inline-block px2 mb3 color-gold text-xxs\"),starCost:t}),(0,s.jsx)(Ct,{}),(0,s.jsx)(Ut,{}),(0,s.jsx)(Wt,{})]});return(0,s.jsx)(d.d3"
+      },
+      {
+        "pattern": "nutri\\w*",
+        "offset": 51379,
+        "match": "NutritionLink",
+        "context": "mt.AU)||{},a=Boolean(t?.includes(\"/nutrition\"));return e?.error?null:!a&&t?(0,s.jsx)(qe.N_,{className:\"sb-button sb-button--default sb-button--white mt3\",\"data-e2e\":\"fullNutritionLink\",to:`${t}/nutrition`,children:(0,s.jsx)(n.sA,{...Vt.fullNutritionLink})}):null},Et=()=>{const{formatMessage:e}=(0,n.tz)(),t=(0,h.H)().product?.starCost,a=(0,s.jsxs)(r.Fragment,{children:[Boolean(t)&&(0,s.jsx)(Kt.A,{className:K()(\"starCost___OtofZ\",\"inline-block px2 mb3 color-gold text-xxs\"),starCost:t}),(0,s.jsx)(Ct,{}),(0,s.jsx)(Ut,{}),(0,s.jsx)(Wt,{})]});return(0,s.jsx)(d.d3,{className:\"bg-houseGreen py5 mt9\",children:(0,s."
+      },
+      {
+        "pattern": "nutri\\w*",
+        "offset": 52893,
+        "match": "nutrition",
+        "context": "hildren:[(0,s.jsx)(l.BV,{location:c,children:(0,s.jsxs)(l.qh,{path:\"/menu/product\",children:[(0,s.jsx)(l.qh,{element:(0,s.jsx)(Qe,{}),path:\":productNumber/:formCode\"}),(0,s.jsx)(l.qh,{element:(0,s.jsx)(dt,{}),path:\":productNumber/:formCode/nutrition\"})]})}),(0,s.jsx)(y,{})]})}),(0,s.jsx)(Et,{})]})]}):(0,s.jsxs)(r.Fragment,{children:[(0,s.jsx)(_t,{}),(0,s.jsx)(\"p\",{className:\"pt5 pl5\",\"data-e2e\":\"invalid-product-message\",children:e(qt.A.emptyProduct)})]})]})}},65162(e,t,a){a.d(t,{A:()=>b});var s=a(74848),r=a(71468),i=a(38401),o=a(13673),n=a(32779),l=a(9703),d=a(28989),c=a(84220),u=a(25508),m=a(19784),p="
+      },
+      {
+        "pattern": "calori\\w*",
+        "offset": 30701,
+        "match": "calories",
+        "context": "defaultMessage:\"Nutrition information is calculated based on our standard recipes. Because our products may be customized, exact information may vary.\"},dailyValuesDisclaimer:{id:\"ordering.menu.dailyValues.disclaimer\",defaultMessage:\"2,000 calories a day is used for general nutrition advice, but calorie needs vary.\"},ingredientsTitle:{id:\"ordering.ingredients.title\",defaultMessage:\"Ingredients\"},nutritionTitle:{id:\"ordering.menu.nutrition.title\",defaultMessage:\"Nutrition\"},nutritionNotAvailable:{id:\"ordering.menu.nutrition.notAvailable\",defaultMessage:\"See ingredient statement or package for allergens"
+      },
+      {
+        "pattern": "calori\\w*",
+        "offset": 30758,
+        "match": "calorie",
+        "context": " on our standard recipes. Because our products may be customized, exact information may vary.\"},dailyValuesDisclaimer:{id:\"ordering.menu.dailyValues.disclaimer\",defaultMessage:\"2,000 calories a day is used for general nutrition advice, but calorie needs vary.\"},ingredientsTitle:{id:\"ordering.ingredients.title\",defaultMessage:\"Ingredients\"},nutritionTitle:{id:\"ordering.menu.nutrition.title\",defaultMessage:\"Nutrition\"},nutritionNotAvailable:{id:\"ordering.menu.nutrition.notAvailable\",defaultMessage:\"See ingredient statement or package for allergens\"},beveragesPdfBlurb:{id:\"ordering.menu.nutrition.bevera"
+      },
+      {
+        "pattern": "calori\\w*",
+        "offset": 34586,
+        "match": "CaloriesFromFat",
+        "context": "e:p,disclaimerTitleId:a,displayValue:c,isCaffeine:f})]}),(0,s.jsx)(\"span\",{className:g,children:u})]}),m?m.map(e=>(0,s.jsx)(at,{fact:e,isSubfact:!0},e.id)):null]})},l)},st=at,rt=\"disclaimerTitleId\",it=({nutrition:e,nutritionHeadingId:t,showCaloriesFromFat:a})=>{const{formatMessage:i}=(0,n.tz)(),{calories:o,caloriesFromFat:l,additionalFacts:d}=e,c=\"caffeineDisclaimer\",u=\"caffeineElement\",m=(0,r.useMemo)(()=>d.some(e=>\"Caffeine\"===e?.displayName||\"Caf\u00e9ine\"===e?.displayName),[d]),p=d.map((e,t)=>(0,s.jsx)(st,{caffeineDisclaimerId:c,caffeineElementId:u,disclaimerTitleId:rt,fact:e},e?.id??t)),g=a?\"ul\":\"span\",f=a?\""
+      },
+      {
+        "pattern": "calori\\w*",
+        "offset": 34643,
+        "match": "calories",
+        "context": "(0,s.jsx)(\"span\",{className:g,children:u})]}),m?m.map(e=>(0,s.jsx)(at,{fact:e,isSubfact:!0},e.id)):null]})},l)},st=at,rt=\"disclaimerTitleId\",it=({nutrition:e,nutritionHeadingId:t,showCaloriesFromFat:a})=>{const{formatMessage:i}=(0,n.tz)(),{calories:o,caloriesFromFat:l,additionalFacts:d}=e,c=\"caffeineDisclaimer\",u=\"caffeineElement\",m=(0,r.useMemo)(()=>d.some(e=>\"Caffeine\"===e?.displayName||\"Caf\u00e9ine\"===e?.displayName),[d]),p=d.map((e,t)=>(0,s.jsx)(st,{caffeineDisclaimerId:c,caffeineElementId:u,disclaimerTitleId:rt,fact:e},e?.id??t)),g=a?\"ul\":\"span\",f=a?\"li\":\"span\";return(0,s.jsxs)(\"div\",{\"data-e2e\":\"nut"
+      },
+      {
+        "pattern": "calori\\w*",
+        "offset": 34654,
+        "match": "caloriesFromFat",
+        "context": "span\",{className:g,children:u})]}),m?m.map(e=>(0,s.jsx)(at,{fact:e,isSubfact:!0},e.id)):null]})},l)},st=at,rt=\"disclaimerTitleId\",it=({nutrition:e,nutritionHeadingId:t,showCaloriesFromFat:a})=>{const{formatMessage:i}=(0,n.tz)(),{calories:o,caloriesFromFat:l,additionalFacts:d}=e,c=\"caffeineDisclaimer\",u=\"caffeineElement\",m=(0,r.useMemo)(()=>d.some(e=>\"Caffeine\"===e?.displayName||\"Caf\u00e9ine\"===e?.displayName),[d]),p=d.map((e,t)=>(0,s.jsx)(st,{caffeineDisclaimerId:c,caffeineElementId:u,disclaimerTitleId:rt,fact:e},e?.id??t)),g=a?\"ul\":\"span\",f=a?\"li\":\"span\";return(0,s.jsxs)(\"div\",{\"data-e2e\":\"nutritionTable\",child"
+      },
+      {
+        "pattern": "calori\\w*",
+        "offset": 35088,
+        "match": "calories___HqGcu",
+        "context": "jsx)(st,{caffeineDisclaimerId:c,caffeineElementId:u,disclaimerTitleId:rt,fact:e},e?.id??t)),g=a?\"ul\":\"span\",f=a?\"li\":\"span\";return(0,s.jsxs)(\"div\",{\"data-e2e\":\"nutritionTable\",children:[(0,s.jsxs)(\"ul\",{children:[(0,s.jsx)(\"li\",{className:\"calories___HqGcu yPadding___YXplK hasBorder___mCRuR\",children:(0,s.jsxs)(g,{className:\"flex justify-between\",children:[(0,s.jsxs)(f,{className:\"text-semibold\",children:[(0,s.jsx)(\"span\",{className:\"pr1\",children:o.displayName}),(0,s.jsx)(\"span\",{children:o.displayValue})]}),a&&(0,s.jsxs)(\"li\",{className:\"text-semibold pl2 whiteSpace-noWrap\",children:[(0,s.jsx)(\"span\",{class"
+      },
+      {
+        "pattern": "calori\\w*",
+        "offset": 36120,
+        "match": "CaloriesFromFat",
+        "context": "escribedby\":t,\"aria-label\":i(Ye.backToContent),className:\"text-noUnderline\",href:`#${u}`,children:\"\u21a9\"})]}):null,(0,s.jsx)(\"li\",{className:\"mt3\",children:i(Ye.generalNutritionDisclaimer)})]})]})},ot=\"nutritionHeadingId\",nt=(0,o.Ng)(e=>({showCaloriesFromFat:(0,C.yt)(e)}))(({className:e,showCaloriesFromFat:t})=>{const{sizeInfo:a}=(0,h.H)(),{selectedSize:r}=a,{nutrition:i}=r||{};return(0,s.jsxs)(\"div\",{className:`pb5 ${e||\"\"}`,\"data-e2e\":\"nutritionSection\",children:[(0,s.jsx)(d.DZ,{bottomBorder:!0,className:\"mb3 text-semibold\",id:ot,size:\"md\",tagName:\"h2\",children:(0,s.jsx)(n.sA,{...Ye.nutritionTitle})}),i?(0,s."
+      },
+      {
+        "pattern": "calori\\w*",
+        "offset": 36169,
+        "match": "CaloriesFromFat",
+        "context": "assName:\"text-noUnderline\",href:`#${u}`,children:\"\u21a9\"})]}):null,(0,s.jsx)(\"li\",{className:\"mt3\",children:i(Ye.generalNutritionDisclaimer)})]})]})},ot=\"nutritionHeadingId\",nt=(0,o.Ng)(e=>({showCaloriesFromFat:(0,C.yt)(e)}))(({className:e,showCaloriesFromFat:t})=>{const{sizeInfo:a}=(0,h.H)(),{selectedSize:r}=a,{nutrition:i}=r||{};return(0,s.jsxs)(\"div\",{className:`pb5 ${e||\"\"}`,\"data-e2e\":\"nutritionSection\",children:[(0,s.jsx)(d.DZ,{bottomBorder:!0,className:\"mb3 text-semibold\",id:ot,size:\"md\",tagName:\"h2\",children:(0,s.jsx)(n.sA,{...Ye.nutritionTitle})}),i?(0,s.jsx)(it,{nutrition:i,nutritionHeadingId:ot,showCa"
+      },
+      {
+        "pattern": "calori\\w*",
+        "offset": 36542,
+        "match": "CaloriesFromFat",
+        "context": "\"\"}`,\"data-e2e\":\"nutritionSection\",children:[(0,s.jsx)(d.DZ,{bottomBorder:!0,className:\"mb3 text-semibold\",id:ot,size:\"md\",tagName:\"h2\",children:(0,s.jsx)(n.sA,{...Ye.nutritionTitle})}),i?(0,s.jsx)(it,{nutrition:i,nutritionHeadingId:ot,showCaloriesFromFat:t}):(0,s.jsx)(n.sA,{...Ye.nutritionNotAvailable})]})});var lt=a(54497);const dt=()=>{const{product:{name:e,productType:t}}=(0,h.H)(),a=(0,l.zy)(),o=a?.pathname?.split(\"/nutrition\")?.[0],c=(0,n.tz)(),u=(0,s.jsx)(nt,{}),m=\"coffees\"!==t&&(0,s.jsxs)(r.Fragment,{children:[(0,s.jsx)(Je,{}),(0,s.jsx)(Ge,{})]});return(0,s.jsxs)(r.Fragment,{children:[(0,s.jsx)(i.A,{"
+      },
+      {
+        "pattern": "calori\\w*",
+        "offset": 37297,
+        "match": "caloriesDisclaimer",
+        "context": "\"backLink\",to:o,children:[(0,s.jsx)(d.In,{className:\"pr1\",path:de.A,size:\"24px\"}),(0,s.jsx)(n.sA,{...lt.G.back})]}),(0,s.jsx)(V,{isNutritionPage:!0,leftColumn:u,rightColumn:m})]})};var ct=a(55059),ut=a(88573),mt=a(19784);const pt=(0,n.YK)({caloriesDisclaimer:{id:\"ordering.productDetailsHeader.caloriesDisclaimer\",defaultMessage:\"Nutrition information is based on standard recipes and does not reflect customizations\"},caloriesDisclaimerAriaLabel:{id:\"ordering.productDetailsHeader.caloriesDisclaimerAriaLabel\",defaultMessage:\"See calories disclaimer\"}});var gt=a(93517);const ft=({innerClassName:e,iconClassName:t})=>"
+      },
+      {
+        "pattern": "calori\\w*",
+        "offset": 37351,
+        "match": "caloriesDisclaimer",
+        "context": "r1\",path:de.A,size:\"24px\"}),(0,s.jsx)(n.sA,{...lt.G.back})]}),(0,s.jsx)(V,{isNutritionPage:!0,leftColumn:u,rightColumn:m})]})};var ct=a(55059),ut=a(88573),mt=a(19784);const pt=(0,n.YK)({caloriesDisclaimer:{id:\"ordering.productDetailsHeader.caloriesDisclaimer\",defaultMessage:\"Nutrition information is based on standard recipes and does not reflect customizations\"},caloriesDisclaimerAriaLabel:{id:\"ordering.productDetailsHeader.caloriesDisclaimerAriaLabel\",defaultMessage:\"See calories disclaimer\"}});var gt=a(93517);const ft=({innerClassName:e,iconClassName:t})=>{const{formatMessage:a}=(0,n.tz)();return(0,s.jsx)(\"sp"
+      },
+      {
+        "pattern": "calori\\w*",
+        "offset": 37476,
+        "match": "caloriesDisclaimerAriaLabel",
+        "context": "};var ct=a(55059),ut=a(88573),mt=a(19784);const pt=(0,n.YK)({caloriesDisclaimer:{id:\"ordering.productDetailsHeader.caloriesDisclaimer\",defaultMessage:\"Nutrition information is based on standard recipes and does not reflect customizations\"},caloriesDisclaimerAriaLabel:{id:\"ordering.productDetailsHeader.caloriesDisclaimerAriaLabel\",defaultMessage:\"See calories disclaimer\"}});var gt=a(93517);const ft=({innerClassName:e,iconClassName:t})=>{const{formatMessage:a}=(0,n.tz)();return(0,s.jsx)(\"span\",{className:\"position-relative\",\"data-e2e\":\"calories-disclaimer-tooltip\",children:(0,s.jsx)(\"span\",{className:K()(\"position-absolut"
+      },
+      {
+        "pattern": "calori\\w*",
+        "offset": 37539,
+        "match": "caloriesDisclaimerAriaLabel",
+        "context": "loriesDisclaimer:{id:\"ordering.productDetailsHeader.caloriesDisclaimer\",defaultMessage:\"Nutrition information is based on standard recipes and does not reflect customizations\"},caloriesDisclaimerAriaLabel:{id:\"ordering.productDetailsHeader.caloriesDisclaimerAriaLabel\",defaultMessage:\"See calories disclaimer\"}});var gt=a(93517);const ft=({innerClassName:e,iconClassName:t})=>{const{formatMessage:a}=(0,n.tz)();return(0,s.jsx)(\"span\",{className:\"position-relative\",\"data-e2e\":\"calories-disclaimer-tooltip\",children:(0,s.jsx)(\"span\",{className:K()(\"position-absolute\",e),children:(0,s.jsx)(d.m_,{bodyText:a(pt.caloriesDisclaimer"
+      },
+      {
+        "pattern": "calori\\w*",
+        "offset": 37588,
+        "match": "calories",
+        "context": "er.caloriesDisclaimer\",defaultMessage:\"Nutrition information is based on standard recipes and does not reflect customizations\"},caloriesDisclaimerAriaLabel:{id:\"ordering.productDetailsHeader.caloriesDisclaimerAriaLabel\",defaultMessage:\"See calories disclaimer\"}});var gt=a(93517);const ft=({innerClassName:e,iconClassName:t})=>{const{formatMessage:a}=(0,n.tz)();return(0,s.jsx)(\"span\",{className:\"position-relative\",\"data-e2e\":\"calories-disclaimer-tooltip\",children:(0,s.jsx)(\"span\",{className:K()(\"position-absolute\",e),children:(0,s.jsx)(d.m_,{bodyText:a(pt.caloriesDisclaimer),closeButtonAriaLabel:a(lt.G."
+      },
+      {
+        "pattern": "calori\\w*",
+        "offset": 37776,
+        "match": "calories",
+        "context": "er.caloriesDisclaimerAriaLabel\",defaultMessage:\"See calories disclaimer\"}});var gt=a(93517);const ft=({innerClassName:e,iconClassName:t})=>{const{formatMessage:a}=(0,n.tz)();return(0,s.jsx)(\"span\",{className:\"position-relative\",\"data-e2e\":\"calories-disclaimer-tooltip\",children:(0,s.jsx)(\"span\",{className:K()(\"position-absolute\",e),children:(0,s.jsx)(d.m_,{bodyText:a(pt.caloriesDisclaimer),closeButtonAriaLabel:a(lt.G.closeLabel),tooltipClassName:\"text-left\",children:(0,s.jsx)(d.K0,{ariaLabel:a(pt.caloriesDisclaimerAriaLabel),className:`color-textWhiteSoft ${t??\"\"}`,path:gt.A,size:\"16px\"})})})})},xt=\"au"
+      },
+      {
+        "pattern": "calori\\w*",
+        "offset": 37908,
+        "match": "caloriesDisclaimer",
+        "context": "e:t})=>{const{formatMessage:a}=(0,n.tz)();return(0,s.jsx)(\"span\",{className:\"position-relative\",\"data-e2e\":\"calories-disclaimer-tooltip\",children:(0,s.jsx)(\"span\",{className:K()(\"position-absolute\",e),children:(0,s.jsx)(d.m_,{bodyText:a(pt.caloriesDisclaimer),closeButtonAriaLabel:a(lt.G.closeLabel),tooltipClassName:\"text-left\",children:(0,s.jsx)(d.K0,{ariaLabel:a(pt.caloriesDisclaimerAriaLabel),className:`color-textWhiteSoft ${t??\"\"}`,path:gt.A,size:\"16px\"})})})})},xt=\"auxiliaryProductInfoFont___dnBJo\",ht=({productNameClass:e})=>{const{isCustomizing:t,sizeInfo:a={}}=(0,h.H)(),{selectedSize:i,selectedSizeName:n}"
+      },
+      {
+        "pattern": "calori\\w*",
+        "offset": 38037,
+        "match": "caloriesDisclaimerAriaLabel",
+        "context": "ooltip\",children:(0,s.jsx)(\"span\",{className:K()(\"position-absolute\",e),children:(0,s.jsx)(d.m_,{bodyText:a(pt.caloriesDisclaimer),closeButtonAriaLabel:a(lt.G.closeLabel),tooltipClassName:\"text-left\",children:(0,s.jsx)(d.K0,{ariaLabel:a(pt.caloriesDisclaimerAriaLabel),className:`color-textWhiteSoft ${t??\"\"}`,path:gt.A,size:\"16px\"})})})})},xt=\"auxiliaryProductInfoFont___dnBJo\",ht=({productNameClass:e})=>{const{isCustomizing:t,sizeInfo:a={}}=(0,h.H)(),{selectedSize:i,selectedSizeName:n}=a||{},{nutrition:l}=i||{},d=(0,o.d4)(mt.AU),c=Boolean(d?.pathname?.includes(\"/nutrition\")),u=l?.servingSize?.displayValue,m=l?.calories?."
+      },
+      {
+        "pattern": "calori\\w*",
+        "offset": 38414,
+        "match": "calories",
+        "context": "\",ht=({productNameClass:e})=>{const{isCustomizing:t,sizeInfo:a={}}=(0,h.H)(),{selectedSize:i,selectedSizeName:n}=a||{},{nutrition:l}=i||{},d=(0,o.d4)(mt.AU),c=Boolean(d?.pathname?.includes(\"/nutrition\")),u=l?.servingSize?.displayValue,m=l?.calories?.displayValue,p=l?.calories?.displayName,g=(t||c)&&n&&u,f=(m||!m)&&p,x=n?.trim()===u?.trim()?n:`${n} ${u}`,b=e;return(0,s.jsxs)(r.Fragment,{children:[g&&(0,s.jsx)(\"div\",{className:`flex items-center color-textWhiteSoft mt2 ${xt}`,children:(0,s.jsx)(\"span\",{children:x})}),(0,s.jsx)(\"div\",{className:`flex items-center color-textWhite mt2 text-bold ${xt} ${b}`"
+      },
+      {
+        "pattern": "calori\\w*",
+        "offset": 38442,
+        "match": "calories",
+        "context": ">{const{isCustomizing:t,sizeInfo:a={}}=(0,h.H)(),{selectedSize:i,selectedSizeName:n}=a||{},{nutrition:l}=i||{},d=(0,o.d4)(mt.AU),c=Boolean(d?.pathname?.includes(\"/nutrition\")),u=l?.servingSize?.displayValue,m=l?.calories?.displayValue,p=l?.calories?.displayName,g=(t||c)&&n&&u,f=(m||!m)&&p,x=n?.trim()===u?.trim()?n:`${n} ${u}`,b=e;return(0,s.jsxs)(r.Fragment,{children:[g&&(0,s.jsx)(\"div\",{className:`flex items-center color-textWhiteSoft mt2 ${xt}`,children:(0,s.jsx)(\"span\",{children:x})}),(0,s.jsx)(\"div\",{className:`flex items-center color-textWhite mt2 text-bold ${xt} ${b}`,children:f&&(0,s.jsxs)(r.Fr"
+      },
+      {
+        "pattern": "calori\\w*",
+        "offset": 38858,
+        "match": "calories",
+        "context": "ter color-textWhiteSoft mt2 ${xt}`,children:(0,s.jsx)(\"span\",{children:x})}),(0,s.jsx)(\"div\",{className:`flex items-center color-textWhite mt2 text-bold ${xt} ${b}`,children:f&&(0,s.jsxs)(r.Fragment,{children:[(0,s.jsx)(\"span\",{\"data-e2e\":\"calories\",children:m}),(0,s.jsx)(\"span\",{className:\"pl1\",children:p.toLowerCase()}),(0,s.jsx)(ft,{innerClassName:\"text-normal caloriesIconWrapper___DL47o\"})]})})]})};var bt=a(57144);const Nt={\"1by1_wide_topcrop_630\":\"180,360,1440,1440&wid=630&hei=630&qlt=85\",\"1by1_medium_630\":\"351,351,1098,1098&wid=630&hei=630&qlt=85\"},yt=(0,o.Ng)(e=>({imagesUrl:(0,bt.xJ)(e)}),null)"
+      },
+      {
+        "pattern": "calori\\w*",
+        "offset": 38984,
+        "match": "caloriesIconWrapper___DL47o",
+        "context": "or-textWhite mt2 text-bold ${xt} ${b}`,children:f&&(0,s.jsxs)(r.Fragment,{children:[(0,s.jsx)(\"span\",{\"data-e2e\":\"calories\",children:m}),(0,s.jsx)(\"span\",{className:\"pl1\",children:p.toLowerCase()}),(0,s.jsx)(ft,{innerClassName:\"text-normal caloriesIconWrapper___DL47o\"})]})})]})};var bt=a(57144);const Nt={\"1by1_wide_topcrop_630\":\"180,360,1440,1440&wid=630&hei=630&qlt=85\",\"1by1_medium_630\":\"351,351,1098,1098&wid=630&hei=630&qlt=85\"},yt=(0,o.Ng)(e=>({imagesUrl:(0,bt.xJ)(e)}),null)(({imagesUrl:e})=>{const{product:t}=(0,h.H)();return(0,s.jsx)(d.$N,{alt:\"\",includeFallback:{enabled:!0,wrapperClassName:String(\"imageMask___DxgNU"
+      },
+      {
+        "pattern": "calori\\w*",
+        "offset": 39968,
+        "match": "CaloriesFont",
+        "context": "1_wide_topcrop_630\"),t})(t);return`${e}?impolicy=${a}&crop=${Nt[a]}`})(),wrapInFlex:{enabled:!0,flexEmbedWrapperClassName:\"imageBlock___R_fJZ mx-auto\"}})}),jt=()=>(0,s.jsx)(yt,{}),vt=({product:e})=>{const t=(0,o.d4)(ct.mn)?.pdpMatchTitleAndCaloriesFont,a=t?\"productNameSmall___G3jqj\":\"productName___NApyx\";return(0,s.jsxs)(r.Fragment,{children:[(0,s.jsx)(ut.A,{className:`text-bold color-textWhite ${a}`,\"data-e2e\":\"product-name\",children:e?.name||\"\"}),(0,s.jsx)(ht,{productNameClass:a})]})},_t=()=>{const{product:e}=(0,h.H)();return(0,s.jsx)(d.d3,{className:String(\"headerContainer___LIfnq\"),children:(0,s.jsx)("
+      },
+      {
+        "pattern": "calori\\w*",
+        "offset": 41058,
+        "match": "calories",
+        "context": ":Boolean(e?.lastError)&&e?.error,data:e?.data?.nutritionValues??null}));var kt=a(52129),Mt=a(48301),Ot=a(62315);const It=(e,t)=>(0,Mt.A)(e,e=>e.id===t),Lt=e=>null!=e,Pt=(e,t)=>(0,At.A)(e.categoryKeypath,t.categoryKeypath),Ft=e=>{const t=e?.calories,a=It(e?.additionalFacts,\"totalFat\"),s=It(e?.additionalFacts,\"totalCarbs\"),r=It(s?.subfacts,\"sugars\"),i=It(e?.additionalFacts,\"protein\"),[o,n,l]=[a,r,i].map(e=>(0,Ot.A)(e,[\"value\",\"unitOfMeasure\",\"displayValue\"]));return{fat:o,sugars:n,protein:l,calories:t}},Tt=({currentRecipeModifierForSelectedOption:e,defaultSku:t,selectedOptions:a})=>{if(!e)return null;co"
+      },
+      {
+        "pattern": "calori\\w*",
+        "offset": 41312,
+        "match": "calories",
+        "context": "e?.additionalFacts,\"totalFat\"),s=It(e?.additionalFacts,\"totalCarbs\"),r=It(s?.subfacts,\"sugars\"),i=It(e?.additionalFacts,\"protein\"),[o,n,l]=[a,r,i].map(e=>(0,Ot.A)(e,[\"value\",\"unitOfMeasure\",\"displayValue\"]));return{fat:o,sugars:n,protein:l,calories:t}},Tt=({currentRecipeModifierForSelectedOption:e,defaultSku:t,selectedOptions:a})=>{if(!e)return null;const s=e.sizes?.find(e=>e.default)?.sku;return s===t?null:\"qty\"===e.formCode?a.find(t=>\"qty\"===t.formCode&&Pt(t,e)&&\"no\"===t.size.sizeCode)?s:null:s},$t=e=>\"qty\"===e.formCode&&e.value>0?e.value:1;var wt=a(12318),Bt=a(56760);const Vt=(0,n.YK)({fullNutritio"
+      },
+      {
+        "pattern": "calori\\w*",
+        "offset": 41841,
+        "match": "caloriesValue",
+        "context": "e.value>0?e.value:1;var wt=a(12318),Bt=a(56760);const Vt=(0,n.YK)({fullNutritionLink:{defaultMessage:\"Full nutrition & ingredients list\",id:\"ordering.pdp.nutritionLink\"},nutritionSummary:{id:\"ordering.pdp.nutritionSummary\",defaultMessage:\"{caloriesValue} calories, {sugarValue} sugar, {fatValue} fat\"},nutritionSummaryWithProtein:{id:\"ordering.pdp.nutritionSummaryWithProtein\",defaultMessage:\"{caloriesValue} calories, {sugarValue} sugar, {fatValue} fat, {proteinValue} protein\"},summaryLabel:{id:\"ordering.pdp.summaryLabel\",defaultMessage:\"Product summary\"},caloriesValue:{id:\"ordering.pdp.caloriesValue\",default"
+      },
+      {
+        "pattern": "calori\\w*",
+        "offset": 41856,
+        "match": "calories",
+        "context": "ue:1;var wt=a(12318),Bt=a(56760);const Vt=(0,n.YK)({fullNutritionLink:{defaultMessage:\"Full nutrition & ingredients list\",id:\"ordering.pdp.nutritionLink\"},nutritionSummary:{id:\"ordering.pdp.nutritionSummary\",defaultMessage:\"{caloriesValue} calories, {sugarValue} sugar, {fatValue} fat\"},nutritionSummaryWithProtein:{id:\"ordering.pdp.nutritionSummaryWithProtein\",defaultMessage:\"{caloriesValue} calories, {sugarValue} sugar, {fatValue} fat, {proteinValue} protein\"},summaryLabel:{id:\"ordering.pdp.summaryLabel\",defaultMessage:\"Product summary\"},caloriesValue:{id:\"ordering.pdp.caloriesValue\",defaultMessage:\"C"
+      },
+      {
+        "pattern": "calori\\w*",
+        "offset": 41995,
+        "match": "caloriesValue",
+        "context": "nutritionLink\"},nutritionSummary:{id:\"ordering.pdp.nutritionSummary\",defaultMessage:\"{caloriesValue} calories, {sugarValue} sugar, {fatValue} fat\"},nutritionSummaryWithProtein:{id:\"ordering.pdp.nutritionSummaryWithProtein\",defaultMessage:\"{caloriesValue} calories, {sugarValue} sugar, {fatValue} fat, {proteinValue} protein\"},summaryLabel:{id:\"ordering.pdp.summaryLabel\",defaultMessage:\"Product summary\"},caloriesValue:{id:\"ordering.pdp.caloriesValue\",defaultMessage:\"Calories\"},sugarValue:{id:\"ordering.pdp.sugarValue\",defaultMessage:\"Sugar\"},fatValue:{id:\"ordering.pdp.fatValue\",defaultMessage:\"Fat\"},proteinVal"
+      },
+      {
+        "pattern": "calori\\w*",
+        "offset": 42010,
+        "match": "calories",
+        "context": ",nutritionSummary:{id:\"ordering.pdp.nutritionSummary\",defaultMessage:\"{caloriesValue} calories, {sugarValue} sugar, {fatValue} fat\"},nutritionSummaryWithProtein:{id:\"ordering.pdp.nutritionSummaryWithProtein\",defaultMessage:\"{caloriesValue} calories, {sugarValue} sugar, {fatValue} fat, {proteinValue} protein\"},summaryLabel:{id:\"ordering.pdp.summaryLabel\",defaultMessage:\"Product summary\"},caloriesValue:{id:\"ordering.pdp.caloriesValue\",defaultMessage:\"Calories\"},sugarValue:{id:\"ordering.pdp.sugarValue\",defaultMessage:\"Sugar\"},fatValue:{id:\"ordering.pdp.fatValue\",defaultMessage:\"Fat\"},proteinValue:{id:\"or"
+      },
+      {
+        "pattern": "calori\\w*",
+        "offset": 42160,
+        "match": "caloriesValue",
+        "context": "ithProtein:{id:\"ordering.pdp.nutritionSummaryWithProtein\",defaultMessage:\"{caloriesValue} calories, {sugarValue} sugar, {fatValue} fat, {proteinValue} protein\"},summaryLabel:{id:\"ordering.pdp.summaryLabel\",defaultMessage:\"Product summary\"},caloriesValue:{id:\"ordering.pdp.caloriesValue\",defaultMessage:\"Calories\"},sugarValue:{id:\"ordering.pdp.sugarValue\",defaultMessage:\"Sugar\"},fatValue:{id:\"ordering.pdp.fatValue\",defaultMessage:\"Fat\"},proteinValue:{id:\"ordering.pdp.proteinValue\",defaultMessage:\"Protein\"},customizationAffectsNutrition:{id:\"ordering.pdp.customizationAffectsNutrition\",defaultMessage:\"Your cust"
+      },
+      {
+        "pattern": "calori\\w*",
+        "offset": 42192,
+        "match": "caloriesValue",
+        "context": "ritionSummaryWithProtein\",defaultMessage:\"{caloriesValue} calories, {sugarValue} sugar, {fatValue} fat, {proteinValue} protein\"},summaryLabel:{id:\"ordering.pdp.summaryLabel\",defaultMessage:\"Product summary\"},caloriesValue:{id:\"ordering.pdp.caloriesValue\",defaultMessage:\"Calories\"},sugarValue:{id:\"ordering.pdp.sugarValue\",defaultMessage:\"Sugar\"},fatValue:{id:\"ordering.pdp.fatValue\",defaultMessage:\"Fat\"},proteinValue:{id:\"ordering.pdp.proteinValue\",defaultMessage:\"Protein\"},customizationAffectsNutrition:{id:\"ordering.pdp.customizationAffectsNutrition\",defaultMessage:\"Your customizations will affect your beve"
+      },
+      {
+        "pattern": "calori\\w*",
+        "offset": 42223,
+        "match": "Calories",
+        "context": "ltMessage:\"{caloriesValue} calories, {sugarValue} sugar, {fatValue} fat, {proteinValue} protein\"},summaryLabel:{id:\"ordering.pdp.summaryLabel\",defaultMessage:\"Product summary\"},caloriesValue:{id:\"ordering.pdp.caloriesValue\",defaultMessage:\"Calories\"},sugarValue:{id:\"ordering.pdp.sugarValue\",defaultMessage:\"Sugar\"},fatValue:{id:\"ordering.pdp.fatValue\",defaultMessage:\"Fat\"},proteinValue:{id:\"ordering.pdp.proteinValue\",defaultMessage:\"Protein\"},customizationAffectsNutrition:{id:\"ordering.pdp.customizationAffectsNutrition\",defaultMessage:\"Your customizations will affect your beverage's nutrition\"},loading"
+      },
+      {
+        "pattern": "calori\\w*",
+        "offset": 42983,
+        "match": "caloriesIconWrapper",
+        "context": ":\"Nutrition updated\"},nutritionNotUpdated:{id:\"ordering.pdp.nutritionNotUpdated\",defaultMessage:\"We\u2019re testing this feature\u2014updated nutrition unavailable at this time.\"},updateCTA:{id:\"ordering.pdp.updateCTA\",defaultMessage:\"Update\"}}),Rt={caloriesIconWrapper:\"caloriesIconWrapper___b6Ujz\",updateButton:\"updateButton___rO3cI\",yellowTextColor:\"yellowTextColor___cMgJq\",yellowIconColor:\"yellowIconColor___o3L2H\",greenAccentTextColor:\"greenAccentTextColor___ekbqn\",nutritionSummary:\"nutritionSummary___XmSLG\",nutritionValuesEnlarged:\"nutritionValuesEnlarged___kNTbf\",nutritionValuesDefault:\"nutritionValuesDefault___FvhzC\""
+      },
+      {
+        "pattern": "calori\\w*",
+        "offset": 43004,
+        "match": "caloriesIconWrapper___b6Ujz",
+        "context": ",nutritionNotUpdated:{id:\"ordering.pdp.nutritionNotUpdated\",defaultMessage:\"We\u2019re testing this feature\u2014updated nutrition unavailable at this time.\"},updateCTA:{id:\"ordering.pdp.updateCTA\",defaultMessage:\"Update\"}}),Rt={caloriesIconWrapper:\"caloriesIconWrapper___b6Ujz\",updateButton:\"updateButton___rO3cI\",yellowTextColor:\"yellowTextColor___cMgJq\",yellowIconColor:\"yellowIconColor___o3L2H\",greenAccentTextColor:\"greenAccentTextColor___ekbqn\",nutritionSummary:\"nutritionSummary___XmSLG\",nutritionValuesEnlarged:\"nutritionValuesEnlarged___kNTbf\",nutritionValuesDefault:\"nutritionValuesDefault___FvhzC\",nutritionSummaryLarge:\"nutri"
+      },
+      {
+        "pattern": "calori\\w*",
+        "offset": 43417,
+        "match": "caloriesIconWrapperNextToFat",
+        "context": "eenAccentTextColor___ekbqn\",nutritionSummary:\"nutritionSummary___XmSLG\",nutritionValuesEnlarged:\"nutritionValuesEnlarged___kNTbf\",nutritionValuesDefault:\"nutritionValuesDefault___FvhzC\",nutritionSummaryLarge:\"nutritionSummaryLarge___SG0tY\",caloriesIconWrapperNextToFat:\"caloriesIconWrapperNextToFat___mfXN7\",nutritionUpdatedPending:\"nutritionUpdatedPending___SedNn\",nutritionUpdated:\"nutritionUpdated___tJkWJ\",nutritionUpdatedSlideUp:\"nutritionUpdatedSlideUp___wSSZi\"},Dt=({onUpdateTriggered:e,isLoading:t,isPostUpdate:a,shouldUpdate:i,error:o,enlargedKeys:l,updatedNutritionSummary:c})=>{const[u,m]=(0,r.useState)(-1),p=(0,r.us"
+      },
+      {
+        "pattern": "calori\\w*",
+        "offset": 43447,
+        "match": "caloriesIconWrapperNextToFat___mfXN7",
+        "context": "tritionSummary:\"nutritionSummary___XmSLG\",nutritionValuesEnlarged:\"nutritionValuesEnlarged___kNTbf\",nutritionValuesDefault:\"nutritionValuesDefault___FvhzC\",nutritionSummaryLarge:\"nutritionSummaryLarge___SG0tY\",caloriesIconWrapperNextToFat:\"caloriesIconWrapperNextToFat___mfXN7\",nutritionUpdatedPending:\"nutritionUpdatedPending___SedNn\",nutritionUpdated:\"nutritionUpdated___tJkWJ\",nutritionUpdatedSlideUp:\"nutritionUpdatedSlideUp___wSSZi\"},Dt=({onUpdateTriggered:e,isLoading:t,isPostUpdate:a,shouldUpdate:i,error:o,enlargedKeys:l,updatedNutritionSummary:c})=>{const[u,m]=(0,r.useState)(-1),p=(0,r.useRef)(0),g=(0,r.useRef)(null),f=(0,r.u"
+      },
+      {
+        "pattern": "calori\\w*",
+        "offset": 48445,
+        "match": "calories",
+        "context": "}))})))({productNumber:e,formCode:t?.toLowerCase(),baseProductSku:r,modifiersList:i,trackingAttributes:{baseNutrition:Ft(l?.selectedSize?.nutrition)}})),m(d.map(e=>({...e})))}}})(),O=(0,r.useMemo)(()=>{if(!j){const{fat:e,sugars:t,protein:a,calories:s}=Ft(f);return{fat:e,sugars:t,protein:a,calories:{...s,value:s?.displayValue,unitOfMeasure:\"\"}}}return{fat:j?.fat,sugars:j?.sugars,protein:j?.protein,calories:{...j?.calories,unitOfMeasure:\"\"}}},[j,f]);(0,r.useEffect)(()=>()=>{clearTimeout(l.current),clearTimeout(c.current)},[]),(0,r.useEffect)(()=>{0===g?.length&&(a.current=null)},[g]),(0,r.useEffect)(()="
+      },
+      {
+        "pattern": "calori\\w*",
+        "offset": 48495,
+        "match": "calories",
+        "context": ",baseProductSku:r,modifiersList:i,trackingAttributes:{baseNutrition:Ft(l?.selectedSize?.nutrition)}})),m(d.map(e=>({...e})))}}})(),O=(0,r.useMemo)(()=>{if(!j){const{fat:e,sugars:t,protein:a,calories:s}=Ft(f);return{fat:e,sugars:t,protein:a,calories:{...s,value:s?.displayValue,unitOfMeasure:\"\"}}}return{fat:j?.fat,sugars:j?.sugars,protein:j?.protein,calories:{...j?.calories,unitOfMeasure:\"\"}}},[j,f]);(0,r.useEffect)(()=>()=>{clearTimeout(l.current),clearTimeout(c.current)},[]),(0,r.useEffect)(()=>{0===g?.length&&(a.current=null)},[g]),(0,r.useEffect)(()=>{if(null===a.current&&f){const{fat:e,sugars:t,pro"
+      },
+      {
+        "pattern": "calori\\w*",
+        "offset": 48605,
+        "match": "calories",
+        "context": "(e=>({...e})))}}})(),O=(0,r.useMemo)(()=>{if(!j){const{fat:e,sugars:t,protein:a,calories:s}=Ft(f);return{fat:e,sugars:t,protein:a,calories:{...s,value:s?.displayValue,unitOfMeasure:\"\"}}}return{fat:j?.fat,sugars:j?.sugars,protein:j?.protein,calories:{...j?.calories,unitOfMeasure:\"\"}}},[j,f]);(0,r.useEffect)(()=>()=>{clearTimeout(l.current),clearTimeout(c.current)},[]),(0,r.useEffect)(()=>{0===g?.length&&(a.current=null)},[g]),(0,r.useEffect)(()=>{if(null===a.current&&f){const{fat:e,sugars:t,protein:s,calories:r}=Ft(f);a.current={caloriesValue:`${r?.displayValue}`,sugarValue:`${t?.value}`,fatValue:`${e?"
+      },
+      {
+        "pattern": "calori\\w*",
+        "offset": 48621,
+        "match": "calories",
+        "context": "})(),O=(0,r.useMemo)(()=>{if(!j){const{fat:e,sugars:t,protein:a,calories:s}=Ft(f);return{fat:e,sugars:t,protein:a,calories:{...s,value:s?.displayValue,unitOfMeasure:\"\"}}}return{fat:j?.fat,sugars:j?.sugars,protein:j?.protein,calories:{...j?.calories,unitOfMeasure:\"\"}}},[j,f]);(0,r.useEffect)(()=>()=>{clearTimeout(l.current),clearTimeout(c.current)},[]),(0,r.useEffect)(()=>{0===g?.length&&(a.current=null)},[g]),(0,r.useEffect)(()=>{if(null===a.current&&f){const{fat:e,sugars:t,protein:s,calories:r}=Ft(f);a.current={caloriesValue:`${r?.displayValue}`,sugarValue:`${t?.value}`,fatValue:`${e?.value}`,protein"
+      },
+      {
+        "pattern": "calori\\w*",
+        "offset": 48870,
+        "match": "calories",
+        "context": "unitOfMeasure:\"\"}}},[j,f]);(0,r.useEffect)(()=>()=>{clearTimeout(l.current),clearTimeout(c.current)},[]),(0,r.useEffect)(()=>{0===g?.length&&(a.current=null)},[g]),(0,r.useEffect)(()=>{if(null===a.current&&f){const{fat:e,sugars:t,protein:s,calories:r}=Ft(f);a.current={caloriesValue:`${r?.displayValue}`,sugarValue:`${t?.value}`,fatValue:`${e?.value}`,proteinValue:`${s?.value}`}}},[f,g]),(0,r.useEffect)(()=>{if(!j||v||!C)return;clearTimeout(l.current),clearTimeout(c.current);const e={caloriesValue:j.calories?.value,sugarValue:j.sugars?.value,fatValue:j.fat?.value,proteinValue:j.protein?.value},s=a.curre"
+      },
+      {
+        "pattern": "calori\\w*",
+        "offset": 48899,
+        "match": "caloriesValue",
+        "context": ",r.useEffect)(()=>()=>{clearTimeout(l.current),clearTimeout(c.current)},[]),(0,r.useEffect)(()=>{0===g?.length&&(a.current=null)},[g]),(0,r.useEffect)(()=>{if(null===a.current&&f){const{fat:e,sugars:t,protein:s,calories:r}=Ft(f);a.current={caloriesValue:`${r?.displayValue}`,sugarValue:`${t?.value}`,fatValue:`${e?.value}`,proteinValue:`${s?.value}`}}},[f,g]),(0,r.useEffect)(()=>{if(!j||v||!C)return;clearTimeout(l.current),clearTimeout(c.current);const e={caloriesValue:j.calories?.value,sugarValue:j.sugars?.value,fatValue:j.fat?.value,proteinValue:j.protein?.value},s=a.current,r=s?Object.fromEntries(Object.e"
+      },
+      {
+        "pattern": "calori\\w*",
+        "offset": 49117,
+        "match": "caloriesValue",
+        "context": "s:r}=Ft(f);a.current={caloriesValue:`${r?.displayValue}`,sugarValue:`${t?.value}`,fatValue:`${e?.value}`,proteinValue:`${s?.value}`}}},[f,g]),(0,r.useEffect)(()=>{if(!j||v||!C)return;clearTimeout(l.current),clearTimeout(c.current);const e={caloriesValue:j.calories?.value,sugarValue:j.sugars?.value,fatValue:j.fat?.value,proteinValue:j.protein?.value},s=a.current,r=s?Object.fromEntries(Object.entries(e).filter(([e,t])=>s[e]!==t)):{};Object.keys(r).length>0&&(l.current=setTimeout(()=>{t(r),c.current=setTimeout(()=>t({}),3e3)},0)),a.current=e},[j,v,C]);const{calories:I,fat:L,sugars:P,protein:F}=Object.entries("
+      },
+      {
+        "pattern": "calori\\w*",
+        "offset": 49133,
+        "match": "calories",
+        "context": "rent={caloriesValue:`${r?.displayValue}`,sugarValue:`${t?.value}`,fatValue:`${e?.value}`,proteinValue:`${s?.value}`}}},[f,g]),(0,r.useEffect)(()=>{if(!j||v||!C)return;clearTimeout(l.current),clearTimeout(c.current);const e={caloriesValue:j.calories?.value,sugarValue:j.sugars?.value,fatValue:j.fat?.value,proteinValue:j.protein?.value},s=a.current,r=s?Object.fromEntries(Object.entries(e).filter(([e,t])=>s[e]!==t)):{};Object.keys(r).length>0&&(l.current=setTimeout(()=>{t(r),c.current=setTimeout(()=>t({}),3e3)},0)),a.current=e},[j,v,C]);const{calories:I,fat:L,sugars:P,protein:F}=Object.entries(O).map(([e,"
+      },
+      {
+        "pattern": "calori\\w*",
+        "offset": 49438,
+        "match": "calories",
+        "context": "proteinValue:j.protein?.value},s=a.current,r=s?Object.fromEntries(Object.entries(e).filter(([e,t])=>s[e]!==t)):{};Object.keys(r).length>0&&(l.current=setTimeout(()=>{t(r),c.current=setTimeout(()=>t({}),3e3)},0)),a.current=e},[j,v,C]);const{calories:I,fat:L,sugars:P,protein:F}=Object.entries(O).map(([e,t])=>((e,t)=>{if(!t||!Lt(t?.value))return;const{unitOfMeasure:a,value:s}=t;return{[e]:`${s}${a}`}})(e,t)).reduce((e,t)=>({...e,...t}),{});if(!Lt(O.calories?.value)||!Lt(O.sugars?.value)||!Lt(O.fat?.value))return null;const T=O?.protein.value>=10,$=T?\"nutritionSummaryWithProtein\":\"nutritionSummary\",w=T?{c"
+      },
+      {
+        "pattern": "calori\\w*",
+        "offset": 49648,
+        "match": "calories",
+        "context": "),a.current=e},[j,v,C]);const{calories:I,fat:L,sugars:P,protein:F}=Object.entries(O).map(([e,t])=>((e,t)=>{if(!t||!Lt(t?.value))return;const{unitOfMeasure:a,value:s}=t;return{[e]:`${s}${a}`}})(e,t)).reduce((e,t)=>({...e,...t}),{});if(!Lt(O.calories?.value)||!Lt(O.sugars?.value)||!Lt(O.fat?.value))return null;const T=O?.protein.value>=10,$=T?\"nutritionSummaryWithProtein\":\"nutritionSummary\",w=T?{caloriesValue:I,fatValue:L,sugarValue:P,proteinValue:F}:{caloriesValue:I,fatValue:L,sugarValue:P},B=T?[\"caloriesValue\",\"sugarValue\",\"fatValue\",\"proteinValue\"]:[\"caloriesValue\",\"sugarValue\",\"fatValue\"],V=T?[I,P,L"
+      },
+      {
+        "pattern": "calori\\w*",
+        "offset": 49805,
+        "match": "caloriesValue",
+        "context": "value:s}=t;return{[e]:`${s}${a}`}})(e,t)).reduce((e,t)=>({...e,...t}),{});if(!Lt(O.calories?.value)||!Lt(O.sugars?.value)||!Lt(O.fat?.value))return null;const T=O?.protein.value>=10,$=T?\"nutritionSummaryWithProtein\":\"nutritionSummary\",w=T?{caloriesValue:I,fatValue:L,sugarValue:P,proteinValue:F}:{caloriesValue:I,fatValue:L,sugarValue:P},B=T?[\"caloriesValue\",\"sugarValue\",\"fatValue\",\"proteinValue\"]:[\"caloriesValue\",\"sugarValue\",\"fatValue\"],V=T?[I,P,L,F]:[I,P,L],R=K()(\"px2\",{\"justify-around\":T,\"justify-between px6\":!T});return(0,s.jsx)(\"div\",{className:K()(\"color-textWhite pt3\"),\"data-e2e\":\"nutrition-summary\","
+      },
+      {
+        "pattern": "calori\\w*",
+        "offset": 49862,
+        "match": "caloriesValue",
+        "context": "{...e,...t}),{});if(!Lt(O.calories?.value)||!Lt(O.sugars?.value)||!Lt(O.fat?.value))return null;const T=O?.protein.value>=10,$=T?\"nutritionSummaryWithProtein\":\"nutritionSummary\",w=T?{caloriesValue:I,fatValue:L,sugarValue:P,proteinValue:F}:{caloriesValue:I,fatValue:L,sugarValue:P},B=T?[\"caloriesValue\",\"sugarValue\",\"fatValue\",\"proteinValue\"]:[\"caloriesValue\",\"sugarValue\",\"fatValue\"],V=T?[I,P,L,F]:[I,P,L],R=K()(\"px2\",{\"justify-around\":T,\"justify-between px6\":!T});return(0,s.jsx)(\"div\",{className:K()(\"color-textWhite pt3\"),\"data-e2e\":\"nutrition-summary\",children:(0,s.jsxs)(\"span\",{className:\"text-xxs\",children"
+      },
+      {
+        "pattern": "calori\\w*",
+        "offset": 49909,
+        "match": "caloriesValue",
+        "context": "(O.sugars?.value)||!Lt(O.fat?.value))return null;const T=O?.protein.value>=10,$=T?\"nutritionSummaryWithProtein\":\"nutritionSummary\",w=T?{caloriesValue:I,fatValue:L,sugarValue:P,proteinValue:F}:{caloriesValue:I,fatValue:L,sugarValue:P},B=T?[\"caloriesValue\",\"sugarValue\",\"fatValue\",\"proteinValue\"]:[\"caloriesValue\",\"sugarValue\",\"fatValue\"],V=T?[I,P,L,F]:[I,P,L],R=K()(\"px2\",{\"justify-around\":T,\"justify-between px6\":!T});return(0,s.jsx)(\"div\",{className:K()(\"color-textWhite pt3\"),\"data-e2e\":\"nutrition-summary\",children:(0,s.jsxs)(\"span\",{className:\"text-xxs\",children:[(0,s.jsx)(d.jO,{className:\"pb3\",visualStyle:\""
+      },
+      {
+        "pattern": "calori\\w*",
+        "offset": 49966,
+        "match": "caloriesValue",
+        "context": "O?.protein.value>=10,$=T?\"nutritionSummaryWithProtein\":\"nutritionSummary\",w=T?{caloriesValue:I,fatValue:L,sugarValue:P,proteinValue:F}:{caloriesValue:I,fatValue:L,sugarValue:P},B=T?[\"caloriesValue\",\"sugarValue\",\"fatValue\",\"proteinValue\"]:[\"caloriesValue\",\"sugarValue\",\"fatValue\"],V=T?[I,P,L,F]:[I,P,L],R=K()(\"px2\",{\"justify-around\":T,\"justify-between px6\":!T});return(0,s.jsx)(\"div\",{className:K()(\"color-textWhite pt3\"),\"data-e2e\":\"nutrition-summary\",children:(0,s.jsxs)(\"span\",{className:\"text-xxs\",children:[(0,s.jsx)(d.jO,{className:\"pb3\",visualStyle:\"negative\"}),(0,s.jsx)(\"div\",{className:K()(`flex flex-row"
+      },
+      {
+        "pattern": "calori\\w*",
+        "offset": 50683,
+        "match": "caloriesIconWrapperNextToFat",
+        "context": "ent,{children:(0,s.jsxs)(\"span\",{className:\"flex flex-column items-center\",\"data-e2e\":`nutrition-${B[a]}`,children:[(0,s.jsxs)(\"span\",{className:\"flex items-center\",children:[(0,s.jsx)(n.sA,{...Vt[B[a]]}),i&&(0,s.jsx)(ft,{innerClassName:Rt.caloriesIconWrapperNextToFat})]}),(0,s.jsx)(\"span\",{className:K()(\"text-semibold flex\",{[`${Rt.nutritionValuesEnlarged} text-md`]:e[B[a]],[Rt.nutritionValues]:!e[B[a]],\"text-xxs\":!e[B[a]]}),children:t})]})},`nutrition-${B[a]}`)})}),y&&(0,s.jsx)(Dt,{onUpdateTriggered:M,shouldUpdate:A,isPostUpdate:k,error:v,isLoading:_,enlargedKeys:e,updatedNutritionSummary:i(Vt[$],w)})]})})};var Kt=a(66"
+      },
+      {
+        "pattern": "carbohydrat\\w*",
+        "offset": 31532,
+        "match": "carbohydrate",
+        "context": "y at Starbucks. But we\u2019ve included the caffeine info as well, in case you were wondering.\"},foodPdfBlurb:{id:\"ordering.menu.nutrition.foodPdfBlurb\",defaultMessage:\"This guide contains nutritional information \u2013 including protein, sugar, and carbohydrate content \u2013 for many of the fresh food products available in Starbucks caf\u00e9s in the UK and Ireland.\"}}),Ge=()=>{const e=(0,h.H)().sizeInfo?.selectedSize?.allergens??{};return(0,s.jsxs)(\"div\",{\"data-e2e\":\"allergensSection\",children:[(0,s.jsx)(d.DZ,{bottomBorder:!0,className:\"mb3 text-semibold\",size:\"md\",tagName:\"h2\",children:(0,s.jsx)(n.sA,{...Ye.allergensTitl"
+      },
+      {
+        "pattern": "totalCarbs",
+        "offset": 41128,
+        "match": "totalCarbs",
+        "context": ");var kt=a(52129),Mt=a(48301),Ot=a(62315);const It=(e,t)=>(0,Mt.A)(e,e=>e.id===t),Lt=e=>null!=e,Pt=(e,t)=>(0,At.A)(e.categoryKeypath,t.categoryKeypath),Ft=e=>{const t=e?.calories,a=It(e?.additionalFacts,\"totalFat\"),s=It(e?.additionalFacts,\"totalCarbs\"),r=It(s?.subfacts,\"sugars\"),i=It(e?.additionalFacts,\"protein\"),[o,n,l]=[a,r,i].map(e=>(0,Ot.A)(e,[\"value\",\"unitOfMeasure\",\"displayValue\"]));return{fat:o,sugars:n,protein:l,calories:t}},Tt=({currentRecipeModifierForSelectedOption:e,defaultSku:t,selectedOptions:a})=>{if(!e)return null;const s=e.sizes?.find(e=>e.default)?.sku;return s===t?null:\"qty\"===e.formC"
+      },
+      {
+        "pattern": "(?:nutrition|nutrient)[_ -]?(?:service|lookup|table|modifier|ingredient)",
+        "offset": 35008,
+        "match": "nutritionTable",
+        "context": "affeine\"===e?.displayName||\"Caf\u00e9ine\"===e?.displayName),[d]),p=d.map((e,t)=>(0,s.jsx)(st,{caffeineDisclaimerId:c,caffeineElementId:u,disclaimerTitleId:rt,fact:e},e?.id??t)),g=a?\"ul\":\"span\",f=a?\"li\":\"span\";return(0,s.jsxs)(\"div\",{\"data-e2e\":\"nutritionTable\",children:[(0,s.jsxs)(\"ul\",{children:[(0,s.jsx)(\"li\",{className:\"calories___HqGcu yPadding___YXplK hasBorder___mCRuR\",children:(0,s.jsxs)(g,{className:\"flex justify-between\",children:[(0,s.jsxs)(f,{className:\"text-semibold\",children:[(0,s.jsx)(\"span\",{className:\"pr1\",children:o.displayName}),(0,s.jsx)(\"span\",{children:o.displayValue})]}),a&&(0,s.jsxs)(\"li\","
+      },
+      {
+        "pattern": "nutrition/calculate",
+        "offset": 47845,
+        "match": "nutrition/calculate",
+        "context": "ctNumber:e,formCode:t,defaultSize:a}=n,s=l?.selectedSize?.sku,r=s||a?.sku,i=j();c((({productNumber:e,formCode:t,baseProductSku:a,modifiersList:s,trackingAttributes:r})=>(i,o,{apiFetch:n})=>(i({type:J._O}),n(`/apiproxy/v1/ordering/${e}/${t}/nutrition/calculate`,{method:\"POST\",body:{sku:a,modifiers:s}}).then(e=>{(0,Z.A)(()=>i({type:J.qg,payload:e}),()=>(0,z.p8)({successData:e.nutritionValues,input:{baseProductSku:a,modifiersList:s},baseNutrition:r?.baseNutrition}))}).catch(e=>{(0,Z.A)(()=>i({type:J.Pf,error:e}),()=>(0,z.qw)({input:{baseProductSku:a,modifiersList:s},baseNutrition:r?.baseNutrition}))})))({productNum"
+      }
+    ]
+  },
+  {
+    "file": "data/raw/starbucks/interactive/customization-2123113/shared.js",
+    "sha256": "311c19f03a0e29824f27bca7b02802994a85f0be362e25d4810d2994a3779ec4",
+    "bytes": 268313,
+    "matches": [
+      {
+        "pattern": "nutri\\w*",
+        "offset": 197218,
+        "match": "NUTRITION_CALCULATOR",
+        "context": "y_mop_outage\",NEXT_GEN_LOYALTY:\"next_gen_loyalty\",EMERGENCY_SPF_OUTAGE:\"emergency_spf_outage\",AGENTIC_ORDERING_DEEP_LINKING:\"agentic_ordering_deep_linking\",PDP_QUICK_MOD:\"pdp_quick_build\",FEATURED_COLLECTIONS:\"featured_collections\",DYNAMIC_NUTRITION_CALCULATOR:\"dynamic_nutrition_calculator\",CIAM_V2_PASSWORDLESS:\"ciam_v2_passwordless\",PDH_MENU_V1:\"pdh_menu_v1\",PAZE_INTEGRATION:\"paze_integration\",PAYMENT_INSTRUMENT_CONTRACT_CHANGE:\"payment_instrument_contract_change\"},\"R\",0,{QUICK_MOD_ON:\"on\",FC_VARIANT_A:\"variant_a\",FC_VARIANT_B:\"variant_b\",DYNAMIC_NUTRITION_ON:\"on\"}])},61403(e,a,t){const r=(0,t(38401).YK)({orderP"
+      },
+      {
+        "pattern": "nutri\\w*",
+        "offset": 197248,
+        "match": "nutrition_calculator",
+        "context": ":\"next_gen_loyalty\",EMERGENCY_SPF_OUTAGE:\"emergency_spf_outage\",AGENTIC_ORDERING_DEEP_LINKING:\"agentic_ordering_deep_linking\",PDP_QUICK_MOD:\"pdp_quick_build\",FEATURED_COLLECTIONS:\"featured_collections\",DYNAMIC_NUTRITION_CALCULATOR:\"dynamic_nutrition_calculator\",CIAM_V2_PASSWORDLESS:\"ciam_v2_passwordless\",PDH_MENU_V1:\"pdh_menu_v1\",PAZE_INTEGRATION:\"paze_integration\",PAYMENT_INSTRUMENT_CONTRACT_CHANGE:\"payment_instrument_contract_change\"},\"R\",0,{QUICK_MOD_ON:\"on\",FC_VARIANT_A:\"variant_a\",FC_VARIANT_B:\"variant_b\",DYNAMIC_NUTRITION_ON:\"on\"}])},61403(e,a,t){const r=(0,t(38401).YK)({orderPickupCardHeader:{id:\"shared.or"
+      },
+      {
+        "pattern": "nutri\\w*",
+        "offset": 197532,
+        "match": "NUTRITION_ON",
+        "context": "ciam_v2_passwordless\",PDH_MENU_V1:\"pdh_menu_v1\",PAZE_INTEGRATION:\"paze_integration\",PAYMENT_INSTRUMENT_CONTRACT_CHANGE:\"payment_instrument_contract_change\"},\"R\",0,{QUICK_MOD_ON:\"on\",FC_VARIANT_A:\"variant_a\",FC_VARIANT_B:\"variant_b\",DYNAMIC_NUTRITION_ON:\"on\"}])},61403(e,a,t){const r=(0,t(38401).YK)({orderPickupCardHeader:{id:\"shared.orderPickupCardHeader\",defaultMessage:\"Order in progress\"},orderPickupCardSubHeader:{id:\"shared.orderPickupCardSubHeader\",defaultMessage:\"Estimated pickup is at {pickupTime}\"},orderPickupTimeLoading:{id:\"shared.orderPickupCard.pickupTimeLoading\",defaultMessage:\"Getting your ord"
+      },
+      {
+        "pattern": "nutri\\w*",
+        "offset": 204436,
+        "match": "NUTRITION_CALCULATOR",
+        "context": "a?.creditDebitGuestCheckoutEnabled;return(0,r.useEffect)(()=>{n.A||t||e({type:o.Iv})},[]),{isCreditDebitGuestCheckoutEnabled:t}}])},54630(e,a,t){var r=t(50573),s=t(62794);t.d(a,[\"A\",0,()=>{const{decision:e,isLoading:a}=(0,r.ov)(s.G.DYNAMIC_NUTRITION_CALCULATOR);return{isDynamicNutritionEnabled:!0==!a&&!0===e?.enabled&&e?.variationKey===s.R.DYNAMIC_NUTRITION_ON}}])},21204(e,a,t){var r=t(96540),s=t(57413);const{variables:n}=s.t_;t.d(a,[\"A\",0,(e=n.colorNeutralCool)=>{(0,r.useEffect)(()=>(document.body.style.backgroundColor=e,()=>{document.body.style.backgroundColor=\"\"}),[e])}])},52034(e,a,t){var r=t(50573),s=t(62794"
+      },
+      {
+        "pattern": "nutri\\w*",
+        "offset": 204474,
+        "match": "NutritionEnabled",
+        "context": "urn(0,r.useEffect)(()=>{n.A||t||e({type:o.Iv})},[]),{isCreditDebitGuestCheckoutEnabled:t}}])},54630(e,a,t){var r=t(50573),s=t(62794);t.d(a,[\"A\",0,()=>{const{decision:e,isLoading:a}=(0,r.ov)(s.G.DYNAMIC_NUTRITION_CALCULATOR);return{isDynamicNutritionEnabled:!0==!a&&!0===e?.enabled&&e?.variationKey===s.R.DYNAMIC_NUTRITION_ON}}])},21204(e,a,t){var r=t(96540),s=t(57413);const{variables:n}=s.t_;t.d(a,[\"A\",0,(e=n.colorNeutralCool)=>{(0,r.useEffect)(()=>(document.body.style.backgroundColor=e,()=>{document.body.style.backgroundColor=\"\"}),[e])}])},52034(e,a,t){var r=t(50573),s=t(62794);t.d(a,[\"A\",0,()=>{const{decision"
+      },
+      {
+        "pattern": "nutri\\w*",
+        "offset": 204546,
+        "match": "NUTRITION_ON",
+        "context": "heckoutEnabled:t}}])},54630(e,a,t){var r=t(50573),s=t(62794);t.d(a,[\"A\",0,()=>{const{decision:e,isLoading:a}=(0,r.ov)(s.G.DYNAMIC_NUTRITION_CALCULATOR);return{isDynamicNutritionEnabled:!0==!a&&!0===e?.enabled&&e?.variationKey===s.R.DYNAMIC_NUTRITION_ON}}])},21204(e,a,t){var r=t(96540),s=t(57413);const{variables:n}=s.t_;t.d(a,[\"A\",0,(e=n.colorNeutralCool)=>{(0,r.useEffect)(()=>(document.body.style.backgroundColor=e,()=>{document.body.style.backgroundColor=\"\"}),[e])}])},52034(e,a,t){var r=t(50573),s=t(62794);t.d(a,[\"A\",0,()=>{const{decision:e,isLoading:a}=(0,r.ov)(s.G.FEATURED_COLLECTIONS),t=!a&&!0===e?.ena"
+      }
+    ]
+  }
+]

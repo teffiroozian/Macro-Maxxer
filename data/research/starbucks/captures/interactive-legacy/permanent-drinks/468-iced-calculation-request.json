@@ -1,0 +1,10 @@
+{
+  "sku": "195173",
+  "modifiers": [
+    {
+      "sku": "109917",
+      "quantity": 2,
+      "replacedSku": null
+    }
+  ]
+}

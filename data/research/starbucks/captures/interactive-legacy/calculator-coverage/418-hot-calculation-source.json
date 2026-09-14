@@ -1,0 +1,18 @@
+{
+  "source": "https://www.starbucks.com/apiproxy/v1/ordering/418/hot/nutrition/calculate",
+  "method": "POST",
+  "retrieved": "2026-09-09T22:21:32.604124+00:00",
+  "status": 500,
+  "contentType": "application/json; charset=UTF-8",
+  "requestHeaders": {
+    "Accept": "application/json",
+    "Content-Type": "application/json"
+  },
+  "authentication": "None; no cookies or tokens",
+  "region": "US",
+  "bytes": 127,
+  "sha256": "557ef7589e7fd9207ee1d679247e9bf30c8c4fa6af07a359443d8b297a1f762d",
+  "localPath": "data/raw/starbucks/interactive/calculator-coverage/418-hot-calculation.json",
+  "requestFile": "data/raw/starbucks/interactive/calculator-coverage/418-hot-calculation-request.json",
+  "requestSha256": "4086fd98b52f137d9497817a8ede2594c2008d20c0ad97056c011441d22744c1"
+}

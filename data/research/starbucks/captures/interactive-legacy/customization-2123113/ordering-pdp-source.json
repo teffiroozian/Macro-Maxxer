@@ -1,0 +1,13 @@
+{
+  "restaurant": "Starbucks",
+  "region": "US",
+  "source": "https://www.starbucks.com/app-assets/ordering-pdp.14f0b974e01033af8802.chunk.js",
+  "requestMethod": "GET",
+  "retrieved": "2026-09-09T22:00:11.648897+00:00",
+  "contentType": "text/javascript; charset=utf-8",
+  "bytes": 56642,
+  "sha256": "2fef1d8d9211a174a25120582c3baed09d6683ec0bd91c208cefe9705366ce03",
+  "localPath": "data/raw/starbucks/interactive/customization-2123113/ordering-pdp.js",
+  "discovery": "Resource URL observed in user Chrome tab 785992054 on product 2123113/iced",
+  "captureMethod": "Credential-free HTTP replay, not original browser response capture"
+}

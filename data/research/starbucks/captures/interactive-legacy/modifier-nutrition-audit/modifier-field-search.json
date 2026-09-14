@@ -1,0 +1,62 @@
+[
+  {
+    "file": "data/raw/starbucks/interactive/permanent-drinks/2121255-iced-product.json",
+    "modifierNutrientKeyPaths": [],
+    "defaultOptionNutrientKeyPaths": []
+  },
+  {
+    "file": "data/raw/starbucks/interactive/permanent-drinks/2121859-iced-product.json",
+    "modifierNutrientKeyPaths": [],
+    "defaultOptionNutrientKeyPaths": []
+  },
+  {
+    "file": "data/raw/starbucks/interactive/permanent-drinks/407-hot-product.json",
+    "modifierNutrientKeyPaths": [],
+    "defaultOptionNutrientKeyPaths": []
+  },
+  {
+    "file": "data/raw/starbucks/interactive/permanent-drinks/407-iced-product.json",
+    "modifierNutrientKeyPaths": [],
+    "defaultOptionNutrientKeyPaths": []
+  },
+  {
+    "file": "data/raw/starbucks/interactive/permanent-drinks/408-hot-product.json",
+    "modifierNutrientKeyPaths": [],
+    "defaultOptionNutrientKeyPaths": []
+  },
+  {
+    "file": "data/raw/starbucks/interactive/permanent-drinks/413-hot-product.json",
+    "modifierNutrientKeyPaths": [],
+    "defaultOptionNutrientKeyPaths": []
+  },
+  {
+    "file": "data/raw/starbucks/interactive/permanent-drinks/413-iced-product.json",
+    "modifierNutrientKeyPaths": [],
+    "defaultOptionNutrientKeyPaths": []
+  },
+  {
+    "file": "data/raw/starbucks/interactive/permanent-drinks/466-hot-product.json",
+    "modifierNutrientKeyPaths": [],
+    "defaultOptionNutrientKeyPaths": []
+  },
+  {
+    "file": "data/raw/starbucks/interactive/permanent-drinks/466-iced-product.json",
+    "modifierNutrientKeyPaths": [],
+    "defaultOptionNutrientKeyPaths": []
+  },
+  {
+    "file": "data/raw/starbucks/interactive/permanent-drinks/468-hot-product.json",
+    "modifierNutrientKeyPaths": [],
+    "defaultOptionNutrientKeyPaths": []
+  },
+  {
+    "file": "data/raw/starbucks/interactive/permanent-drinks/468-iced-product.json",
+    "modifierNutrientKeyPaths": [],
+    "defaultOptionNutrientKeyPaths": []
+  },
+  {
+    "file": "data/raw/starbucks/interactive/permanent-drinks/483-iced-product.json",
+    "modifierNutrientKeyPaths": [],
+    "defaultOptionNutrientKeyPaths": []
+  }
+]

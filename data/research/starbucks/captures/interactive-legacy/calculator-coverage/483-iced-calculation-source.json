@@ -1,0 +1,18 @@
+{
+  "source": "https://www.starbucks.com/apiproxy/v1/ordering/483/iced/nutrition/calculate",
+  "method": "POST",
+  "retrieved": "2026-09-09T22:21:34.622270+00:00",
+  "status": 500,
+  "contentType": "application/json; charset=UTF-8",
+  "requestHeaders": {
+    "Accept": "application/json",
+    "Content-Type": "application/json"
+  },
+  "authentication": "None; no cookies or tokens",
+  "region": "US",
+  "bytes": 127,
+  "sha256": "557ef7589e7fd9207ee1d679247e9bf30c8c4fa6af07a359443d8b297a1f762d",
+  "localPath": "data/raw/starbucks/interactive/calculator-coverage/483-iced-calculation.json",
+  "requestFile": "data/raw/starbucks/interactive/calculator-coverage/483-iced-calculation-request.json",
+  "requestSha256": "27ed08e23fe2057c715e030b69a37f75797eb1385b2c68b729c9f47b43c1d8cd"
+}

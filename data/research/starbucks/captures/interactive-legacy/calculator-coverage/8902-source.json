@@ -1,0 +1,9 @@
+{
+  "source": "https://www.starbucks.com/app-assets/8902.ee5bf84788e0e8c33486.chunk.js",
+  "retrieved": "2026-09-09T22:22:20.195898+00:00",
+  "discovery": "Script URL observed on live Starbucks product page during prior focused pass",
+  "bytes": 33550,
+  "sha256": "bbba283ad1f7523de1f344661734d2f993073c06c5b09b43d914839c54ad1d3d",
+  "method": "GET",
+  "localPath": "data/raw/starbucks/interactive/calculator-coverage/8902.js"
+}

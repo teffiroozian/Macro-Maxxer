@@ -1,0 +1,9 @@
+{
+  "source": "https://www.starbucks.com/apiproxy/v1/ordering/407/hot",
+  "requestMethod": "GET",
+  "retrieved": "2026-09-09T22:08:25.919654+00:00",
+  "contentType": "application/json; charset=utf-8",
+  "sha256": "5984e888665b483c3f1ec7c249e3b3f0ce7ddd5d77fe2d77e27a6e0591736739",
+  "bytes": 101314,
+  "authentication": "None"
+}

@@ -1,0 +1,52 @@
+[
+  {
+    "url": "https://www.starbucks.com/apiproxy/v1/ordering/menu",
+    "file": "menu/national-menu.json",
+    "discovery": "Observed in in-app browser resource inventory after loading US public /menu, without selected store or sign-in"
+  },
+  {
+    "url": "https://www.starbucks.com/apiproxy/v1/ordering/418/hot",
+    "file": "products/418-hot.json",
+    "discovery": "Observed after clicking Pumpkin Spice Latte in Hot Coffee & Espresso category, no store selected"
+  },
+  {
+    "url": "https://www.starbucks.com/apiproxy/v1/ordering/418/iced?storeNumber=101",
+    "file": "products/418-iced-store-101.json",
+    "store": {
+      "storeNumber": "101",
+      "name": "Columbia Center - 4th & Cherry",
+      "city": "Seattle, WA"
+    },
+    "discovery": "Observed after reload of iced PSL page in selected-store pickup flow"
+  },
+  {
+    "url": "https://www.starbucks.com/apiproxy/v1/ordering/menu?storeNumber=101&ownershipTypeCode=CO&timeZone=GMT-07%3A00%20America%2FLos_Angeles",
+    "file": "menu/store-101-menu.json",
+    "store": {
+      "storeNumber": "101",
+      "name": "Columbia Center - 4th & Cherry",
+      "city": "Seattle, WA"
+    },
+    "discovery": "Observed after reload of iced PSL page with Columbia Center selected"
+  },
+  {
+    "url": "https://www.starbucks.com/apiproxy/v1/ordering/371/single?storeNumber=101",
+    "file": "products/371-single-store-101.json",
+    "store": {
+      "storeNumber": "101",
+      "name": "Columbia Center - 4th & Cherry",
+      "city": "Seattle, WA"
+    },
+    "discovery": "Observed on wrap page in selected-store ordering; full nutrition and food customization inspected"
+  },
+  {
+    "url": "https://www.starbucks.com/apiproxy/v1/ordering/1033/single?storeNumber=101",
+    "file": "products/1033-single-store-101.json",
+    "store": {
+      "storeNumber": "101",
+      "name": "Columbia Center - 4th & Cherry",
+      "city": "Seattle, WA"
+    },
+    "discovery": "Observed after opening Butter Croissant from Bakery; warming selector visible"
+  }
+]

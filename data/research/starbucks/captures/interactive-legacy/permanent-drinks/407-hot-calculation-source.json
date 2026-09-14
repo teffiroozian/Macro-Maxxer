@@ -1,0 +1,17 @@
+{
+  "source": "https://www.starbucks.com/apiproxy/v1/ordering/407/hot/nutrition/calculate",
+  "requestMethod": "POST",
+  "retrieved": "2026-09-09T22:27:06.469319+00:00",
+  "httpStatus": 200,
+  "contentType": "application/json; charset=UTF-8",
+  "requestHeaders": {
+    "Accept": "application/json",
+    "Content-Type": "application/json"
+  },
+  "authentication": "None; no cookies or tokens",
+  "region": "US",
+  "bytes": 292,
+  "sha256": "76301821415c478e1399e0639d58823ca7568bca10f306e30fba1bb3d1e3036a",
+  "localPath": "data/raw/starbucks/interactive/permanent-drinks/407-hot-calculation.json",
+  "requestFile": "data/raw/starbucks/interactive/permanent-drinks/407-hot-calculation-request.json"
+}
