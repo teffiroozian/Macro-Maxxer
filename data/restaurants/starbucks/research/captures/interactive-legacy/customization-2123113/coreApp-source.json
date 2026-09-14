@@ -1,8 +1,0 @@
-{
-  "source": "https://www.starbucks.com/app-assets/coreApp.a8224c5f2f5b1b17f932.js",
-  "region": "US",
-  "retrieved": "2026-09-09T22:02:39.903801+00:00",
-  "bytes": 510425,
-  "sha256": "7d1bee62999c298b0bbaa0230d9edc0b6cdf56837ae394d20c662d38dbb8c3c6",
-  "captureMethod": "Observed script URL, credential-free GET replay; customization config inspection only"
-}
