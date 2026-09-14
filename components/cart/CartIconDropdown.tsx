@@ -4,7 +4,7 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useCart } from "@/stores/cartStore";
-import { getSelectionDetailsLabel } from "@/lib/cart/customizationLabels";
+import { buildCartItemSummaryGroups } from "@/lib/cart/displayLabels";
 import { useOptionalRestaurantUi } from "@/components/RestaurantUiContext";
 import MacroTotalsGrid from "@/components/MacroTotalsGrid";
 import CartItemPreviewRow from "@/components/cart/CartItemPreviewRow";
@@ -177,7 +177,13 @@ export default function CartIconDropdown({
     </>
   );
 
-  const addonsLabel = lastAddedItem ? (getSelectionDetailsLabel(lastAddedItem.selection) ?? "") : "";
+  // Same canonical group data the cart drawer and full cart item card use
+  // (buildCartItemSummaryGroups), so the "Just Added" preview never shows a
+  // different customization label than the rest of the cart for this item.
+  const addonsGroups = useMemo(
+    () => (lastAddedItem ? buildCartItemSummaryGroups(lastAddedItem) : []),
+    [lastAddedItem],
+  );
   const handleOpenCart = () => {
     // Already on the full cart page — nothing to navigate to or preview.
     if (isCurrentPage) {
@@ -201,9 +207,24 @@ export default function CartIconDropdown({
   // ingredient selections are all preserved as-is. Dismissing the popover
   // here mirrors View Cart/View All Items: once the full modal is up, the
   // small popover behind it has nothing left to do.
+  //
+  // On a restaurant page this dropdown is mounted inside the sticky nav's own
+  // fixed/z-index stack (StickyRestaurantBar), so this component's own
+  // ItemRouteModal instance would render trapped inside that stacking
+  // context and lose to the page's sticky build bar despite its higher
+  // z-index. restaurantUi.openItemPreview opens the same shared modal
+  // CartPreviewDrawer uses, rendered outside that stacking context, so this
+  // path stacks identically to opening the item from the side cart. Only
+  // fall back to this component's own local modal (below) where no
+  // RestaurantUiContext exists (e.g. the cart page's own nav, or the
+  // homepage), where there's no competing sticky bar to begin with.
   const activateLastAddedPreview = () => {
     if (!lastAddedItem) return;
-    openModal(lastAddedItem, "preview");
+    if (restaurantUi) {
+      restaurantUi.openItemPreview(lastAddedItem);
+    } else {
+      openModal(lastAddedItem, "preview");
+    }
     dismissLastAddedPreview();
   };
 
@@ -224,7 +245,7 @@ export default function CartIconDropdown({
               imageRenderer="native-img"
               imageFallback="initial"
               macroStyle="compact"
-              customizationsText={addonsLabel}
+              customizationGroups={addonsGroups}
               customizationsLineClamp={1}
               onActivate={activateLastAddedPreview}
               activateLabel={`Preview ${lastAddedItem.name}`}

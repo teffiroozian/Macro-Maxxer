@@ -10,18 +10,29 @@ const MAX_RECENT_MENU_ITEMS = 5;
 
 type RecentMenuItemRef =
   | { kind: "menu-item"; restaurantId: string; itemId: string }
-  | { kind: "builder-ingredient"; restaurantId: string; ingredientId: string };
+  | { kind: "builder-ingredient"; restaurantId: string; ingredientId: string }
+  | { kind: "builder-entree"; restaurantId: string; entreeId: string };
 
 function refKey(ref: RecentMenuItemRef): string {
-  return ref.kind === "menu-item"
-    ? `menu-item:${ref.restaurantId}:${ref.itemId}`
-    : `builder-ingredient:${ref.restaurantId}:${ref.ingredientId}`;
+  switch (ref.kind) {
+    case "menu-item":
+      return `menu-item:${ref.restaurantId}:${ref.itemId}`;
+    case "builder-ingredient":
+      return `builder-ingredient:${ref.restaurantId}:${ref.ingredientId}`;
+    case "builder-entree":
+      return `builder-entree:${ref.restaurantId}:${ref.entreeId}`;
+  }
 }
 
 function toRef(result: ContentSearchResult): RecentMenuItemRef {
-  return result.kind === "menu-item"
-    ? { kind: "menu-item", restaurantId: result.restaurant.id, itemId: result.item.id }
-    : { kind: "builder-ingredient", restaurantId: result.restaurant.id, ingredientId: result.ingredient.id };
+  switch (result.kind) {
+    case "menu-item":
+      return { kind: "menu-item", restaurantId: result.restaurant.id, itemId: result.item.id };
+    case "builder-ingredient":
+      return { kind: "builder-ingredient", restaurantId: result.restaurant.id, ingredientId: result.ingredient.id };
+    case "builder-entree":
+      return { kind: "builder-entree", restaurantId: result.restaurant.id, entreeId: result.entreeId };
+  }
 }
 
 // Shared by GlobalSearchPanel (nav) and the homepage hero search — mirrors
@@ -65,7 +76,7 @@ export function useRecentMenuItems(searchIndex: SearchIndexEntry[] | null) {
             quickAdd: resolveQuickAddEligibility(item),
           });
         }
-      } else {
+      } else if (ref.kind === "builder-ingredient") {
         const ingredient = entry.ingredients.find((candidate) => candidate.id === ref.ingredientId);
         if (ingredient) {
           results.push({
@@ -73,6 +84,16 @@ export function useRecentMenuItems(searchIndex: SearchIndexEntry[] | null) {
             ingredient,
             restaurant: entry.restaurant,
             categoryLabel: resolveIngredientCategoryLabel(ingredient, entry.builderConfig),
+          });
+        }
+      } else {
+        const candidate = entry.entreeBuilders.find((candidate) => candidate.entreeId === ref.entreeId);
+        if (candidate) {
+          results.push({
+            kind: "builder-entree",
+            entreeId: candidate.entreeId,
+            entreeOption: candidate.option,
+            restaurant: entry.restaurant,
           });
         }
       }

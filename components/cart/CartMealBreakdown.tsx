@@ -10,8 +10,11 @@ type CartMealBreakdownProps = {
 
 export default function CartMealBreakdown({ items, totals }: CartMealBreakdownProps) {
   return (
-    <SelectionSummaryShell title="Meal Breakdown" totals={totals}>
-      <SectionEyebrow className="text-sm text-neutral-500">Items</SectionEyebrow>
+    <SelectionSummaryShell
+      title="Meal Breakdown"
+      totals={totals}
+      beforeList={<SectionEyebrow className="text-sm text-neutral-500">Items</SectionEyebrow>}
+    >
       {items.length === 0 ? (
         <p className="text-sm text-neutral-600">No meal items yet.</p>
       ) : (

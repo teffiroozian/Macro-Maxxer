@@ -55,6 +55,7 @@ import type {
   RestaurantCustomizationRules,
 } from "@/types/menu";
 import type { RestaurantBuilderConfig } from "@/types/builder";
+import type { Nutrition } from "@/types/nutrition";
 import { resolveEffectiveIngredientNutrition } from "@/lib/ingredientNutrition";
 import { categorySectionId } from "@/lib/menuSections/sorting";
 import MenuSections from "../../MenuSections";
@@ -64,7 +65,6 @@ import MacroTotalsGrid from "@/components/MacroTotalsGrid";
 import { useCart } from "@/stores/cartStore";
 import { useLastAddedPreviewOpen } from "@/hooks/useLastAddedPreviewOpen";
 import { useCartAddConfirmation } from "@/components/CartAddConfirmationContext";
-import { useBuildInProgressGuard } from "@/components/BuildInProgressGuardContext";
 import {
   fromUniversalChipotleBuildConfiguration,
   toUniversalChipotleBuildConfiguration,
@@ -120,23 +120,6 @@ import {
 // unfiltered state — distinct from any real (normalized, lowercased)
 // ingredient category key so it can never collide with one.
 const ALL_INGREDIENTS_FILTER_ID = "__all__";
-
-function shallowRecordEqual<T>(a: Record<string, T>, b: Record<string, T>) {
-  const aKeys = Object.keys(a);
-  const bKeys = Object.keys(b);
-  if (aKeys.length !== bKeys.length) return false;
-  return aKeys.every((key) => a[key] === b[key]);
-}
-
-function haveEqualIngredientQuantities(
-  a: Record<string, { quantity: number }>,
-  b: Record<string, { quantity: number }>,
-) {
-  const aIds = Object.keys(a).filter((id) => a[id].quantity > 0);
-  const bIds = Object.keys(b).filter((id) => b[id].quantity > 0);
-  if (aIds.length !== bIds.length) return false;
-  return aIds.every((id) => a[id].quantity === b[id]?.quantity);
-}
 
 const CATEGORY_ICONS: Record<string, LucideIcon> = {
   sandwich: Sandwich,
@@ -397,13 +380,6 @@ export default function ChipotleRestaurantBuilderView({
   const isEditingFromCart = editOrigin === "cart";
   const { items: cartItems, updateItem } = useCart();
   const { requestAddItem } = useCartAddConfirmation();
-  // Registering the active build still lets app-wide navigation (leaving
-  // the page entirely, e.g. the global nav) warn about an in-progress
-  // build — only Chipotle's own within-page entree/Kids-meal switching no
-  // longer routes through guardNavigation (see performEntreeSelection /
-  // performKidsMealSelection below), so this page never shows that
-  // confirmation modal just for switching build types.
-  const { registerActiveBuild } = useBuildInProgressGuard();
   // The mobile "Just Added" bottom sheet (CartIconDropdown's sheet variant,
   // mounted in the mobile nav) and this build page's own sticky footer both
   // pin themselves to the bottom of the viewport — layering them with
@@ -413,6 +389,15 @@ export default function ChipotleRestaurantBuilderView({
   // fully hide the footer while the sheet is open instead.
   const isJustAddedSheetOpen = useLastAddedPreviewOpen();
   const [isBuildSummaryExpanded, setIsBuildSummaryExpanded] = useState(false);
+  // View Build's per-ingredient "eye" toggle — which ingredients are
+  // temporarily excluded from the comparison totals shown inside the panel
+  // and in the sticky footer below it. Lives here (not local to
+  // BuildSummaryDrawer) because the footer's own totals, rendered by
+  // StickyMacroTotalsBar outside BuildSummaryDrawer entirely, need it too.
+  // Reset alongside pending-removal commits (see
+  // `commitPendingIngredientRemovals`) so it never survives a close.
+  const [viewBuildExcludedIngredientIds, setViewBuildExcludedIngredientIds] =
+    useState<Set<string>>(() => new Set());
   // Lets the mobile active-filter row's "Edit filters" icon (rendered in
   // RestaurantCategorySidebar, a sibling of StickyRestaurantBar) open the
   // same controls drawer StickyRestaurantBar's own hamburger button uses —
@@ -1186,6 +1171,81 @@ export default function ChipotleRestaurantBuilderView({
     servingMultiplier,
   ]);
 
+  // View Build's per-ingredient "eye" toggle needs to know exactly how much
+  // each selected ingredient contributes to `adjustedNutritionLabelTotals`
+  // so it can subtract just that ingredient back out for its own comparison
+  // display — mirrors `selectedNutritionLabelTotals`'s resolution (base
+  // ingredient → selected variant → nutrition) and the same
+  // serving-multiplier scaling/rounding `adjustedNutritionLabelTotals` uses,
+  // just kept per-ingredient instead of summed.
+  const ingredientNutritionContributionById = useMemo(() => {
+    const contributionById: Record<string, Nutrition> = {};
+
+    Object.entries(selectedIngredientItems).forEach(
+      ([ingredientId, selectedIngredient]) => {
+        const baseIngredient =
+          ingredientItemsById.get(ingredientId) ?? selectedIngredient.item;
+        const selectedVariantId =
+          selectedIngredientVariantIds[ingredientId] ??
+          baseIngredient.defaultVariantId;
+        const selectedVariant = baseIngredient.variants?.find(
+          (variant) => variant.id === selectedVariantId,
+        );
+        const nutrition = selectedVariant?.nutrition ?? baseIngredient.nutrition;
+        const { quantity } = selectedIngredient;
+        const scale = quantity * servingMultiplier;
+
+        contributionById[ingredientId] = {
+          calories: Math.round((nutrition.calories ?? 0) * scale),
+          totalFat: Math.round((nutrition.totalFat ?? 0) * scale),
+          satFat: Math.round((nutrition.satFat ?? 0) * scale),
+          transFat: Math.round((nutrition.transFat ?? 0) * scale),
+          cholesterol: Math.round((nutrition.cholesterol ?? 0) * scale),
+          sodium: Math.round((nutrition.sodium ?? 0) * scale),
+          carbs: Math.round((nutrition.carbs ?? 0) * scale),
+          fiber: Math.round((nutrition.fiber ?? 0) * scale),
+          sugars: Math.round((nutrition.sugars ?? 0) * scale),
+          protein: Math.round((nutrition.protein ?? 0) * scale),
+        };
+      },
+    );
+
+    return contributionById;
+  }, [
+    ingredientItemsById,
+    selectedIngredientItems,
+    selectedIngredientVariantIds,
+    servingMultiplier,
+  ]);
+
+  // The sticky bar's footer (rendered by StickyMacroTotalsBar, outside
+  // BuildSummaryDrawer) needs to reflect the same eye-excluded ingredients
+  // as the panel's own Nutrition Facts/Macro Split — otherwise the two
+  // totals visible in the same modal would disagree. Subtracts each
+  // excluded ingredient's contribution the same way BuildSummaryDrawer's
+  // own display totals do; falls back to the real totals whenever nothing
+  // is excluded (the default, and always true once the panel is closed).
+  const viewBuildDisplayTotals = useMemo(() => {
+    if (viewBuildExcludedIngredientIds.size === 0) {
+      return adjustedSelectedIngredientTotals;
+    }
+
+    const next = { ...adjustedSelectedIngredientTotals };
+    viewBuildExcludedIngredientIds.forEach((ingredientId) => {
+      const contribution = ingredientNutritionContributionById[ingredientId];
+      if (!contribution) return;
+      next.calories = Math.max(0, next.calories - (contribution.calories ?? 0));
+      next.protein = Math.max(0, next.protein - (contribution.protein ?? 0));
+      next.carbs = Math.max(0, next.carbs - (contribution.carbs ?? 0));
+      next.totalFat = Math.max(0, next.totalFat - (contribution.totalFat ?? 0));
+    });
+    return next;
+  }, [
+    adjustedSelectedIngredientTotals,
+    ingredientNutritionContributionById,
+    viewBuildExcludedIngredientIds,
+  ]);
+
   const selectedIngredientCount = Object.values(selectedIngredientItems).reduce(
     (acc, selectedIngredient) => acc + selectedIngredient.quantity,
     0,
@@ -1307,127 +1367,6 @@ export default function ChipotleRestaurantBuilderView({
     selectedIncludedIngredientIds,
     selectedKidsMeal,
     tacoShellIngredientIds,
-  ]);
-
-  // Whether the current builder state actually differs from "nothing to
-  // lose yet" — either the entree's included-only defaults for a fresh
-  // build, or the snapshot taken when an existing cart item's edit began.
-  // Drives the in-progress-build navigation guard (Slice 8): navigation
-  // away from the builder should only be interrupted when this is true.
-  // Computed in an effect (not useMemo) because editingBuildBaselineConfigRef
-  // is a ref, and reading `.current` during render is disallowed here; the
-  // setState is deferred a tick (matching this file's other ref-driven
-  // effects) rather than called synchronously in the effect body.
-  const [isBuildInProgress, setIsBuildInProgress] = useState(false);
-  useEffect(() => {
-    const computeIsBuildInProgress = () => {
-      if (!isChipotleBuildPage || !selectedEntree) {
-        return false;
-      }
-
-      if (isEditingBuild) {
-        const baseline = editingBuildBaselineConfigRef.current;
-        // selectedKidsMeal is intentionally not compared here: switching
-        // Kid's Meal type re-points the baseline itself at the new type's
-        // defaults (see performKidsMealSelection), so a mode switch alone
-        // never falls through to this diff as a false-positive customization.
-        return (
-          baseline !== null &&
-          (!haveEqualIngredientQuantities(
-            selectedIngredientItems,
-            baseline.selectedIngredientItems,
-          ) ||
-            !shallowRecordEqual(
-              selectedIngredientVariantIds,
-              baseline.selectedIngredientVariantIds,
-            ) ||
-            proteinPortionMode !== baseline.proteinPortionMode ||
-            !shallowRecordEqual(splitPortionModeById, baseline.splitPortionModeById) ||
-            selectedTacoShell !== baseline.selectedTacoShell ||
-            selectedTacoCount !== baseline.selectedTacoCount)
-        );
-      }
-
-      const currentKidsMealContext: IncludedIngredientContext = {
-        selectedEntree,
-        selectedKidsMeal,
-      };
-      // A variant id that was only auto-assigned because an ingredient is
-      // currently included by default (e.g. Quesadilla's cheese) is not a
-      // manual choice — only a variant that differs from that expected
-      // default reflects real customization.
-      const hasNonDefaultVariantSelection = Object.entries(
-        selectedIngredientVariantIds,
-      ).some(
-        ([ingredientId, variantId]) =>
-          variantId !==
-          resolveDefaultIncludedVariantId(ingredientId, currentKidsMealContext),
-      );
-      const hasNonDefaultPortions =
-        proteinPortionMode !== "normal" ||
-        Object.values(splitPortionModeById).some((mode) => mode !== "normal") ||
-        hasNonDefaultVariantSelection;
-
-      const hasNonDefaultTacoConfig =
-        selectedEntree === "tacos" &&
-        (selectedTacoCount !== 3 || selectedTacoShell !== "crispy");
-
-      // Only exclude taco-shell ingredient ids here when the current entree
-      // actually offers a crispy/soft shell choice (tacos, Kid's Build Your
-      // Own) — matching lockedIngredientIds' own condition below. Kid's
-      // Quesadilla's tortilla is a taco-shell id too (it reuses the shell
-      // ingredient list) but isn't selectable there, so excluding it
-      // unconditionally would permanently desync this count from
-      // lockedIngredientIds and misreport the build as customized.
-      const currentIngredientIds = new Set(
-        Object.entries(selectedIngredientItems)
-          .filter(
-            ([ingredientId, selectedIngredient]) =>
-              selectedIngredient.quantity > 0 &&
-              (!isTacoShellSelectableEntree ||
-                !tacoShellIngredientIds.includes(ingredientId)),
-          )
-          .map(([ingredientId]) => ingredientId),
-      );
-      const hasIngredientDelta =
-        currentIngredientIds.size !== lockedIngredientIds.size ||
-        Array.from(currentIngredientIds).some(
-          (ingredientId) => !lockedIngredientIds.has(ingredientId),
-        );
-      const hasExtraQuantity = Object.values(selectedIngredientItems).some(
-        (selectedIngredient) => selectedIngredient.quantity > 1,
-      );
-
-      return (
-        hasIngredientDelta ||
-        hasExtraQuantity ||
-        hasNonDefaultPortions ||
-        hasNonDefaultTacoConfig
-      );
-    };
-
-    const nextValue = computeIsBuildInProgress();
-    const updateTimer = window.setTimeout(() => {
-      setIsBuildInProgress(nextValue);
-    }, 0);
-
-    return () => window.clearTimeout(updateTimer);
-  }, [
-    isChipotleBuildPage,
-    selectedEntree,
-    isEditingBuild,
-    editingBuildBaselineConfigRef,
-    selectedIngredientItems,
-    selectedIngredientVariantIds,
-    proteinPortionMode,
-    splitPortionModeById,
-    selectedTacoShell,
-    selectedTacoCount,
-    selectedKidsMeal,
-    tacoShellIngredientIds,
-    lockedIngredientIds,
-    resolveDefaultIncludedVariantId,
-    isTacoShellSelectableEntree,
   ]);
 
   const applyProteinPortionNutrition = useCallback(
@@ -2523,7 +2462,41 @@ export default function ChipotleRestaurantBuilderView({
       zeroedIds.forEach((ingredientId) => delete next[ingredientId]);
       return next;
     });
+    // The eye toggle's exclusions are "for comparison" only while the panel
+    // is open — clear them every time it closes so reopening starts fresh.
+    setViewBuildExcludedIngredientIds(new Set());
   }, [setSelectedIngredientItems]);
+
+  const handleToggleExcludeIngredientInBuildSummary = useCallback(
+    (ingredientId: string) => {
+      setViewBuildExcludedIngredientIds((previous) => {
+        const next = new Set(previous);
+        if (next.has(ingredientId)) {
+          next.delete(ingredientId);
+        } else {
+          next.add(ingredientId);
+        }
+        return next;
+      });
+    },
+    [],
+  );
+
+  // Not wrapped in useCallback: `handleIngredientSelectionChange` itself is
+  // a plain function redefined every render (see its own exhaustive-deps
+  // warning below), so memoizing this on top of it wouldn't actually be
+  // stable — and the React Compiler flags exactly that mismatch as an error.
+  const handleRemoveIngredientFromBuildSummary = (item: MenuItem) => {
+    handleIngredientSelectionChange(item, false);
+    if (item.id) {
+      setViewBuildExcludedIngredientIds((previous) => {
+        if (!previous.has(item.id)) return previous;
+        const next = new Set(previous);
+        next.delete(item.id);
+        return next;
+      });
+    }
+  };
 
   const closeBuildSummary = useCallback(() => {
     commitPendingIngredientRemovals();
@@ -2956,27 +2929,6 @@ export default function ChipotleRestaurantBuilderView({
     return () => document.removeEventListener("mousedown", handlePointerDown);
   }, [isEntreeMenuOpen]);
 
-  // Registers this builder as "the" active in-progress build so nav links
-  // and the entree/kids-meal switchers can gate navigation through
-  // guardNavigation (Slice 8). onAddToCart/onDiscard reuse the exact same
-  // handlers as the builder's own Add to Cart / Reset order actions, so
-  // "editing an existing cart item" vs. "building a fresh item" is handled
-  // consistently whether the user acts from the dialog or from the builder.
-  useEffect(() => {
-    if (!isChipotleBuildPage) {
-      registerActiveBuild(null);
-      return;
-    }
-
-    registerActiveBuild({
-      hasInProgressBuild: isBuildInProgress,
-      onAddToCart: (afterAdd) => handleAddBuildToCart(afterAdd),
-      onDiscard: handleResetSelectedIngredientOrder,
-    });
-
-    return () => registerActiveBuild(null);
-  });
-
   if (isChipotleBuildPage && isEditingBuild) {
     const editingBuildItem = editingCartItem;
     if (!editingBuildItem) {
@@ -3356,6 +3308,7 @@ export default function ChipotleRestaurantBuilderView({
                 <BuildSummaryDrawer
                   adjustedNutritionLabelTotals={adjustedNutritionLabelTotals}
                   selectedBuildName={editingBuildItem.name}
+                  selectedEntreeLabel={selectedBuildEntreeLabel}
                   selectedIngredientCount={selectedIngredientCount}
                   groupedSelectedIngredientEntries={
                     groupedSelectedIngredientEntries
@@ -4002,7 +3955,7 @@ export default function ChipotleRestaurantBuilderView({
         // overlaps the footer, so it's left unaffected.
         <div ref={buildStickyContainerRef} className={isJustAddedSheetOpen ? "hidden lg:block" : undefined}>
           <StickyMacroTotalsBar
-            totals={adjustedSelectedIngredientTotals}
+            totals={viewBuildDisplayTotals}
             secondaryActionLabel="View Selected"
             secondaryActionExpandedLabel="View Selected"
             primaryActionLabel={isEditingBuild ? "Save & Add" : "Add to Cart"}
@@ -4014,6 +3967,7 @@ export default function ChipotleRestaurantBuilderView({
               <BuildSummaryDrawer
                 adjustedNutritionLabelTotals={adjustedNutritionLabelTotals}
                 selectedBuildName={selectedBuildName}
+                selectedEntreeLabel={selectedBuildEntreeLabel}
                 selectedIngredientCount={selectedIngredientCount}
                 groupedSelectedIngredientEntries={
                   groupedSelectedIngredientEntries
@@ -4025,6 +3979,10 @@ export default function ChipotleRestaurantBuilderView({
                 portionControlByIngredientId={buildSummaryPortionControlByIngredientId}
                 onPortionModeChange={handlePortionModeChange}
                 onNavigateToCategory={handleCategoryNavigate}
+                ingredientNutritionContributionById={ingredientNutritionContributionById}
+                excludedIngredientIds={viewBuildExcludedIngredientIds}
+                onToggleExcludeIngredient={handleToggleExcludeIngredientInBuildSummary}
+                onRemoveIngredient={handleRemoveIngredientFromBuildSummary}
                 variant="panel"
               />
             }

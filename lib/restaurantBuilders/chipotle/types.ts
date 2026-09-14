@@ -88,6 +88,10 @@ export type ChipotleSpecificBuilderConfig = {
   // only the Burrito's optional-extra context overrides it.
   tortillaSideGenericLabel?: string;
   tortillaSideLabelByEntree?: Partial<Record<ChipotleEntreeId, string>>;
+  // Overrides the tortillaSideIngredientId record's presentation category
+  // for a specific entree — e.g. Burrito shows it under "Side" instead of
+  // the default "Toppings" every other entree uses.
+  tortillaSideCategoryByEntree?: Partial<Record<ChipotleEntreeId, string>>;
 };
 
 export type ChipotleBuilderConfig = RestaurantBuilderConfig & {

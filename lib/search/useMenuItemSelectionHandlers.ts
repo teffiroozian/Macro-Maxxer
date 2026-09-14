@@ -4,6 +4,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useGlobalItemPreview } from "@/components/GlobalItemPreviewContext";
 import { toItemSlug } from "@/lib/restaurants";
 import type { ContentSearchResult } from "@/lib/search/searchAllContent";
+import type { BuilderEntreeOption } from "@/types/builder";
 import type { IngredientItem, MenuItem } from "@/types/menu";
 import type { RestaurantIndexEntry } from "@/types/restaurant";
 
@@ -61,5 +62,21 @@ export function useMenuItemSelectionHandlers({
     router.push(`/restaurant/${restaurant.id}?view=ingredients`);
   };
 
-  return { handleSelectMenuItem, handleStartBuild };
+  const handleStartEntreeBuild = (
+    entreeId: string,
+    entreeOption: BuilderEntreeOption,
+    restaurant: RestaurantIndexEntry
+  ) => {
+    addRecentMenuItem({ kind: "builder-entree", entreeId, entreeOption, restaurant });
+    onAfterSelect();
+    // Only build-container entree options (Bowl/Burrito/Quesadilla/Salad/
+    // Tacos/Kid's Meal — see resolveBuildEntreeOptions) reach this handler,
+    // and all of them default to the ingredients view, so it's safe to
+    // request it directly rather than importing Chipotle's own
+    // resolveDefaultViewForEntree into this restaurant-agnostic module.
+    const params = new URLSearchParams({ entree: entreeId, view: "ingredients" });
+    router.push(`/restaurant/${restaurant.id}?${params.toString()}`);
+  };
+
+  return { handleSelectMenuItem, handleStartBuild, handleStartEntreeBuild };
 }

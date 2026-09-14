@@ -7,17 +7,19 @@ import SurfaceCard from "@/components/ui/SurfaceCard";
 import ProteinScorePill from "@/components/menu-item-card/ProteinScorePill";
 import MacroSplitChart, { buildMacroSegments, MacroLegendInfo } from "@/components/nutrition/MacroSplitChart";
 import { getProteinPer100Calories, getProteinScoreTier } from "@/lib/nutrition";
+import { PairedPanelHeightProvider, PairedPanelSource, usePairedPanelHeight } from "@/components/PairedPanelHeight";
 
 // The gray two-panel wrapper (Nutrition Facts + a selection summary) — the
 // single shared layout for every "Nutrition Facts + details card" pairing in
 // the app (standard/combo/Build Your Own preview and customize screens, the
 // cart item preview, the preset Build Your Own review, and the cart page's
-// Nutrition & Meal Details section). Relies on the grid's default
-// align-items:stretch so the right card always matches Nutrition Facts'
-// height at md+; below md the two cards stack into separate single-item rows
-// and this has no effect, so each card is free to grow to its own natural
-// height. Use NutritionDetailsGrid below rather than wiring this className
-// up by hand, so every screen gets the same breakpoint and order behavior.
+// Nutrition & Meal Details section). At md+, PairedPanelHeightProvider
+// measures the Nutrition Facts side and SelectionSummaryShell applies that
+// as an explicit height (see PairedPanelHeight.tsx for why plain grid
+// stretch isn't enough); below md the two cards stack into separate
+// single-item rows and each is free to grow to its own natural height. Use
+// NutritionDetailsGrid below rather than wiring this className up by hand,
+// so every screen gets the same breakpoint, order, and height behavior.
 export const SUMMARY_PANELS_GRID_CLASSNAME =
   "grid grid-cols-1 gap-3 rounded-3xl border border-black/8 bg-app-background p-3 md:grid-cols-2";
 
@@ -36,22 +38,22 @@ export function NutritionDetailsGrid({
   className?: string;
 }) {
   return (
-    <div className={`${SUMMARY_PANELS_GRID_CLASSNAME} ${className}`.trim()}>
-      <div className="order-2 md:order-1">{nutritionFacts}</div>
-      <div className="order-1 min-w-0 md:order-2">{details}</div>
-    </div>
+    <PairedPanelHeightProvider>
+      <div className={`${SUMMARY_PANELS_GRID_CLASSNAME} ${className}`.trim()}>
+        <PairedPanelSource className="order-2 md:order-1">{nutritionFacts}</PairedPanelSource>
+        <div className="order-1 min-w-0 md:order-2">{details}</div>
+      </div>
+    </PairedPanelHeightProvider>
   );
 }
 
-// md:h-full stretches to the grid row's height (set by whichever card is
-// taller, almost always Nutrition Facts); md:min-h-0 lets this item actually
-// shrink below its own content's intrinsic height so the list region below
-// can be the thing that scrolls, instead of this card just growing past
-// Nutrition Facts' height to fit a long list. Both are scoped to md+ so
-// mobile (a single stacked column) gets no height constraint at all — see
-// the content wrapper below for the matching min-h-0/overflow-y-auto half of
-// this pattern.
-const SHELL_ROOT_CLASSNAME = "flex flex-col rounded-2xl border border-black/10 bg-white p-5 md:h-full md:min-h-0";
+// No height utility here — the root's height is set inline (see render
+// below) from usePairedPanelHeight() once measured at md+, since that's the
+// one thing that reliably caps this card at Nutrition Facts' rendered height
+// (a percentage/stretch height doesn't — see PairedPanelHeight.tsx).
+// md:overflow-hidden is a backstop so nothing can visually spill past that
+// height even if the internal flex math is ever off by a pixel.
+const SHELL_ROOT_CLASSNAME = "flex flex-col rounded-2xl border border-black/10 bg-white p-5 md:overflow-hidden";
 
 // Same compact row already established for the Build Your Own order summary
 // — a 32px image, a name, and either a tiny muted badge (a size/qualifier —
@@ -109,39 +111,62 @@ export type SummaryMacroTotals = {
 // list, then Protein Score and Macro Split below it — reused by every
 // details card in the app (Selected Items, Selected Ingredients, Meal
 // Breakdown, Meal Details) so they all share the same layout, height, and
-// scroll behavior instead of each screen reimplementing it. At md+ the
-// content region (subtitle + children) is the only part that flexes/scrolls
-// — via min-h-0 + overflow-y-auto, with no flex-grow — so a short list keeps
-// its natural height (no forced stretch, no empty gap before Protein Score)
-// while a list taller than the available space (bounded by Nutrition Facts'
-// height once this shell is stretched to match it — see SHELL_ROOT_CLASSNAME)
-// scrolls internally instead of growing the whole card past it. Protein
-// Score and Macro Split are shrink-0 so they always stay visible below the
-// list. Below md there's no stretched height to bound against, so the
-// content region is unconstrained and grows naturally with the page.
+// scroll behavior instead of each screen reimplementing it. At md+ (inside a
+// NutritionDetailsGrid, which supplies the measured height via
+// usePairedPanelHeight — see PairedPanelHeight.tsx), the root's height is
+// pinned to Nutrition Facts' real rendered height; title/subtitle and
+// Protein Score/Macro Split are shrink-0 so they always stay visible, and
+// only the list region between them (flex-1 + min-h-0 + overflow-y-auto) can
+// scroll — it can never make the card itself taller. A short list still just
+// keeps its natural height with no forced stretch. Below md (or outside any
+// provider) the measured height is null, so the card is unconstrained and
+// grows naturally with the page. The scroll region itself gets a flat,
+// solid bg-app-background surface + inset padding + soft radius (same muted
+// tone used elsewhere for "list sits inside a card" framing) purely so it
+// reads as a distinct scrollable area — individual rows stay white via
+// SelectionSummaryRow/SurfaceCard. Deliberately a plain background-color,
+// not a gradient/fade utility (background-attachment tricks etc.) — those
+// clobber the flat color with a `background` shorthand, which read as an
+// uneven gradient instead of a uniform surface.
 export function SelectionSummaryShell({
   title,
   subtitle,
   totals,
+  beforeList,
   children,
 }: {
   title: string;
   subtitle?: string;
   totals: SummaryMacroTotals;
+  // Rendered above the scroll region (after title/subtitle, same shrink-0
+  // treatment) — for a label like "Items" that should read as part of the
+  // card's fixed header, not sit inside the gray scrollable surface.
+  beforeList?: ReactNode;
   children: ReactNode;
 }) {
+  const pairedHeight = usePairedPanelHeight();
   const proteinScore = getProteinPer100Calories(totals.protein, totals.calories);
   const proteinScoreTier = typeof proteinScore === "number" ? getProteinScoreTier(proteinScore) : undefined;
   const macroSegments = buildMacroSegments({ protein: totals.protein, carbs: totals.carbs, fat: totals.totalFat });
 
   return (
-    <section className={SHELL_ROOT_CLASSNAME}>
+    <section
+      className={SHELL_ROOT_CLASSNAME}
+      style={pairedHeight !== null ? { height: pairedHeight } : undefined}
+    >
       <h2 className="shrink-0 text-2xl font-bold text-neutral-900">{title}</h2>
 
-      <div className="mt-5 flex flex-col gap-2 md:min-h-0 md:overflow-y-auto">
-        {subtitle ? (
-          <p className="shrink-0 truncate text-sm font-medium normal-case tracking-normal text-slate-500">{subtitle}</p>
-        ) : null}
+      {subtitle ? (
+        <p className="mt-5 shrink-0 truncate text-sm font-medium normal-case tracking-normal text-slate-500">{subtitle}</p>
+      ) : null}
+
+      {beforeList ? (
+        <div className={`shrink-0 ${subtitle ? "mt-2" : "mt-5"}`}>{beforeList}</div>
+      ) : null}
+
+      <div
+        className={`flex-1 md:min-h-0 md:overflow-y-auto md:rounded-xl md:bg-app-background md:p-2 ${subtitle || beforeList ? "mt-2" : "mt-5"}`}
+      >
         {children}
       </div>
 

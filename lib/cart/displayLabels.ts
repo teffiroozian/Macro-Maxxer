@@ -1,13 +1,9 @@
 import type { CartCustomization, CartItem, CartSelectionOption } from "@/types/cart";
-import { getCustomizationLabel, getCustomizationLabels, getSelectionDetailsLabel } from "@/lib/cart/customizationLabels";
+import { getCustomizationLabel } from "@/lib/cart/customizationLabels";
 import { findCartMenuItem, getCartRestaurantMenu } from "@/lib/cart/cartItemLookup";
 import { getSplitPortionModeLabel } from "@/lib/restaurantBuilders/chipotle";
 import { resolveChipotleIngredientDisplayName } from "@/lib/restaurantBuilders/chipotle/ingredientMenuItems";
 import type { ChipotleBuilderConfig, ChipotleEntreeSelection } from "@/lib/restaurantBuilders/chipotle/types";
-
-export function isIngredientCustomizationLabel(label: string) {
-  return /:\s*(Removed|(\d+)x|Remove|Extra|Light)\s*$/i.test(label);
-}
 
 export function hasComboCustomization(item: CartItem) {
   return (item.customizations ?? []).some((customization) => customization.kind === "combo");
@@ -16,27 +12,6 @@ export function hasComboCustomization(item: CartItem) {
 export function formatCartItemName(item: CartItem) {
   if (!hasComboCustomization(item)) return item.name;
   return /\bcombo\b/i.test(item.name) ? item.name : `${item.name} Combo`;
-}
-
-export function summarizeItem(item: CartItem) {
-  const selectionDetailsLabel = getSelectionDetailsLabel(item.selection);
-  const customizationLabels = getCustomizationLabels(item.customizations);
-
-  const ingredientCustomizations: string[] = [];
-  const sideCustomizations: string[] = [];
-  const drinkCustomizations: string[] = [];
-  const otherCustomizations: string[] = [];
-
-  customizationLabels.forEach((rawLabel) => {
-    const label = rawLabel.trim();
-    if (!label || /^Combo Meal$/i.test(label)) return;
-    if (/^Side:\s*/i.test(label)) { sideCustomizations.push(label); return; }
-    if (/^Drink:\s*/i.test(label)) { drinkCustomizations.push(label); return; }
-    if (isIngredientCustomizationLabel(label)) { ingredientCustomizations.push(label); return; }
-    otherCustomizations.push(label);
-  });
-
-  return [...ingredientCustomizations, ...sideCustomizations, ...drinkCustomizations, ...otherCustomizations, selectionDetailsLabel].filter(Boolean).join(" • ");
 }
 
 export type CartSummaryGroupKind = "mainItem" | "side" | "drink" | "sauce" | "dressing" | "customization";
@@ -138,6 +113,17 @@ export function buildCartItemSummaryGroups(item: CartItem): CartSummaryGroup[] {
   }
 
   return [...sideGroups, ...drinkGroups, ...dressingGroups, ...sauceGroups, ...customizationGroups];
+}
+
+// Condensed single-line version of buildCartItemSummaryGroups' groups, for
+// surfaces (Meal Breakdown) that render a plain text subtitle instead of the
+// icon-tagged CartCustomizationSummary row — same canonical group data, just
+// joined instead of rendered with icons, so it never drifts from what the
+// cart drawer/card show for the same item.
+export function summarizeItem(item: CartItem) {
+  return buildCartItemSummaryGroups(item)
+    .map((group) => group.label)
+    .join(" • ");
 }
 
 export type CartCustomizationDelta = {

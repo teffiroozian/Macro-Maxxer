@@ -257,6 +257,17 @@ export type IngredientItemBase = {
 
   hideVariantSelector?: boolean;
   hideFromIngredientView?: boolean;
+
+  // Id of the logical ingredient this record represents, when it isn't its
+  // own id — e.g. a per-entree-context duplicate (Chipotle generates a
+  // separate "Chicken" record per Bowl/Taco/Kids context so the builder can
+  // pick the nutrition-correct one) still resolving to one shared identity.
+  // Defaults to this record's own id when absent. Entree-agnostic surfaces
+  // that list ingredients without builder context (search results) should
+  // dedupe by this id so one logical ingredient never appears more than
+  // once; per-entree builder surfaces should keep using the raw list, since
+  // they rely on the context-specific records existing.
+  canonicalIngredientId?: string;
 };
 
 export type DirectNutritionIngredientItem = IngredientItemBase & {

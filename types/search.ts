@@ -1,4 +1,5 @@
 import type { QuickAddEligibility } from "@/lib/search/quickAddEligibility";
+import type { BuilderEntreeOption } from "@/types/builder";
 import type { IngredientItem, MenuItem } from "@/types/menu";
 import type { RestaurantIndexEntry } from "@/types/restaurant";
 
@@ -21,4 +22,14 @@ export type SearchResult =
       ingredient: IngredientItem;
       restaurant: RestaurantIndexEntry;
       categoryLabel: string;
+    }
+  | {
+      // A build-your-own entree/build flow (e.g. Chipotle's Bowl, Burrito,
+      // Quesadilla) rather than a single purchasable product — see
+      // resolveBuildEntreeOptions in lib/search/searchIndex.ts for which
+      // entree options qualify.
+      kind: "builder-entree";
+      entreeId: string;
+      entreeOption: BuilderEntreeOption;
+      restaurant: RestaurantIndexEntry;
     };

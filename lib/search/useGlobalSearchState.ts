@@ -150,7 +150,7 @@ export function useGlobalSearchState() {
     router.push(`/restaurant/${restaurant.id}`);
   };
 
-  const { handleSelectMenuItem, handleStartBuild } = useMenuItemSelectionHandlers({
+  const { handleSelectMenuItem, handleStartBuild, handleStartEntreeBuild } = useMenuItemSelectionHandlers({
     addRecentMenuItem,
     currentRestaurantId,
     onAfterSelect: close,
@@ -161,6 +161,8 @@ export function useGlobalSearchState() {
       handleSelectRestaurant(result.restaurant);
     } else if (result.kind === "menu-item") {
       handleSelectMenuItem(result.item, result.restaurant);
+    } else if (result.kind === "builder-entree") {
+      handleStartEntreeBuild(result.entreeId, result.entreeOption, result.restaurant);
     } else {
       handleStartBuild(result.ingredient, result.restaurant, result.categoryLabel);
     }
@@ -227,6 +229,7 @@ export function useGlobalSearchState() {
     handleSelectRestaurant,
     handleSelectMenuItem,
     handleStartBuild,
+    handleStartEntreeBuild,
     handleViewAllRestaurants,
   };
 }

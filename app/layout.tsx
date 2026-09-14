@@ -1,17 +1,15 @@
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Suspense } from "react";
 import { GoogleAnalytics } from "@next/third-parties/google";
 import { Outfit, Unbounded } from "next/font/google";
 import { GlobalSearchProvider } from "@/components/GlobalSearchContext";
 import { GlobalItemPreviewProvider } from "@/components/GlobalItemPreviewContext";
 import { CartAddConfirmationProvider } from "@/components/CartAddConfirmationContext";
-import { BuildInProgressGuardProvider } from "@/components/BuildInProgressGuardContext";
 import GlobalSearchOverlay from "@/components/global-search/GlobalSearchOverlay";
 import GlobalItemPreviewModal from "@/components/GlobalItemPreviewModal";
 import CrossRestaurantCartDialog from "@/components/cart/CrossRestaurantCartDialog";
-import InProgressBuildDialog from "@/components/InProgressBuildDialog";
 import SiteFooter from "@/components/SiteFooter";
 import { SITE_DESCRIPTION, SITE_NAME, SITE_URL } from "@/lib/site";
 import "./globals.css";
@@ -77,6 +75,15 @@ export const metadata: Metadata = {
     },
 };
 
+// `viewport-fit=cover` lets fixed bottom bars read real
+// `env(safe-area-inset-bottom)` values on iPhone (Safari + the
+// Add-to-Home-Screen PWA) instead of it resolving to 0.
+export const viewport: Viewport = {
+    width: "device-width",
+    initialScale: 1,
+    viewportFit: "cover",
+};
+
 export default function RootLayout({
     children,
 }: Readonly<{
@@ -90,16 +97,13 @@ export default function RootLayout({
                 <GlobalSearchProvider>
                     <GlobalItemPreviewProvider>
                         <CartAddConfirmationProvider>
-                            <BuildInProgressGuardProvider>
-                                {children}
-                                <SiteFooter />
-                                <Suspense fallback={null}>
-                                    <GlobalSearchOverlay />
-                                </Suspense>
-                                <GlobalItemPreviewModal />
-                                <CrossRestaurantCartDialog />
-                                <InProgressBuildDialog />
-                            </BuildInProgressGuardProvider>
+                            {children}
+                            <SiteFooter />
+                            <Suspense fallback={null}>
+                                <GlobalSearchOverlay />
+                            </Suspense>
+                            <GlobalItemPreviewModal />
+                            <CrossRestaurantCartDialog />
                         </CartAddConfirmationProvider>
                     </GlobalItemPreviewProvider>
                 </GlobalSearchProvider>

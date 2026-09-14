@@ -12,6 +12,7 @@ import type {
   ChipotleTacoCount,
   ChipotleTacoShell,
 } from "@/lib/restaurantBuilders/chipotle/types";
+import { getChipotleCanonicalIngredientId } from "@/lib/restaurantBuilders/chipotle/canonicalIngredients";
 import type {
   GeneratedMenuSourceIdentity,
   IngredientItem,
@@ -213,6 +214,7 @@ function adaptIngredient(
       ingredient.defaultOrder,
     source: adaptSource(ingredient.source),
     hideFromIngredientView: ingredient.hideFromIngredientView,
+    canonicalIngredientId: getChipotleCanonicalIngredientId(ingredient.id),
   };
   const variants = ingredient.variants?.map(adaptVariant);
 
@@ -674,14 +676,20 @@ function buildGeneratedChipotleBuilderConfig(
       },
       tortillaSideIngredientId: "chipotle-cmg-4026",
       cheeseIngredientId: "chipotle-cmg-5252",
-      // "Double Wrap with Tortilla" is chipotle-cmg-4026's real generated
-      // name, but that phrase only describes the Burrito's optional extra
-      // tortilla. Quesadilla includes the same generated record as its
+      // chipotle-cmg-4026's real generated name is "Double Wrap with
+      // Tortilla", but that phrase only describes the Burrito's optional
+      // extra tortilla. Quesadilla includes the same generated record as its
       // plain included tortilla base, so it (and any future context) gets
-      // the generic label; only Burrito overrides to the specific one.
+      // the generic label; only Burrito overrides to its own label.
       tortillaSideGenericLabel: "Tortilla",
       tortillaSideLabelByEntree: {
-        burrito: "Double Wrap with Tortilla",
+        burrito: "Extra Tortilla",
+      },
+      // Burrito surfaces this as its own Side option (like Bowl's separate
+      // Side Tortilla) instead of under Toppings, which is the default for
+      // every other entree that includes this ingredient (e.g. Quesadilla).
+      tortillaSideCategoryByEntree: {
+        burrito: "Side",
       },
       // Salad's Chipotle-Honey Vinaigrette: included/selected by default,
       // but not a required lock like Romaine Lettuce above it — the user

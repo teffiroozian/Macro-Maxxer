@@ -7,6 +7,7 @@ import SurfaceCard from "@/components/ui/SurfaceCard";
 import RestaurantResultRow from "@/components/global-search/RestaurantResultRow";
 import MenuItemResultRow from "@/components/global-search/MenuItemResultRow";
 import BuilderIngredientResultRow from "@/components/global-search/BuilderIngredientResultRow";
+import BuilderEntreeResultRow from "@/components/global-search/BuilderEntreeResultRow";
 import ScopeSwitcher, { type SearchScope } from "@/components/global-search/ScopeSwitcher";
 import { searchRestaurants } from "@/lib/search/searchRestaurants";
 import { useMenuItemSearch } from "@/lib/search/useMenuItemSearch";
@@ -111,7 +112,7 @@ export default function RestaurantSearch({ restaurants }: RestaurantSearchProps)
     router.push(`/restaurant/${restaurant.id}`, { scroll: true });
   };
 
-  const { handleSelectMenuItem, handleStartBuild } = useMenuItemSelectionHandlers({
+  const { handleSelectMenuItem, handleStartBuild, handleStartEntreeBuild } = useMenuItemSelectionHandlers({
     addRecentMenuItem,
     // The homepage is never a restaurant's own page, so a same-restaurant
     // route push never applies here — every menu-item selection opens the
@@ -128,6 +129,8 @@ export default function RestaurantSearch({ restaurants }: RestaurantSearchProps)
       handleSelectRestaurant(result.restaurant);
     } else if (result.kind === "menu-item") {
       handleSelectMenuItem(result.item, result.restaurant);
+    } else if (result.kind === "builder-entree") {
+      handleStartEntreeBuild(result.entreeId, result.entreeOption, result.restaurant);
     } else {
       handleStartBuild(result.ingredient, result.restaurant, result.categoryLabel);
     }
@@ -302,6 +305,16 @@ export default function RestaurantSearch({ restaurants }: RestaurantSearchProps)
                           onRemoveRecent={() => removeRecentMenuItem(result)}
                           quickAdd={result.quickAdd}
                         />
+                      ) : result.kind === "builder-entree" ? (
+                        <BuilderEntreeResultRow
+                          key={`recent-entree-${result.restaurant.id}-${result.entreeId}`}
+                          entreeId={result.entreeId}
+                          entreeOption={result.entreeOption}
+                          restaurant={result.restaurant}
+                          isActive={activeIndex === index}
+                          onSelect={handleStartEntreeBuild}
+                          onRemoveRecent={() => removeRecentMenuItem(result)}
+                        />
                       ) : (
                         <BuilderIngredientResultRow
                           key={`recent-ingredient-${result.restaurant.id}-${result.ingredient.id}`}
@@ -334,6 +347,15 @@ export default function RestaurantSearch({ restaurants }: RestaurantSearchProps)
                       isActive={activeIndex === index}
                       onSelect={handleSelectMenuItem}
                       quickAdd={result.quickAdd}
+                    />
+                  ) : result.kind === "builder-entree" ? (
+                    <BuilderEntreeResultRow
+                      key={`entree-${result.restaurant.id}-${result.entreeId}`}
+                      entreeId={result.entreeId}
+                      entreeOption={result.entreeOption}
+                      restaurant={result.restaurant}
+                      isActive={activeIndex === index}
+                      onSelect={handleStartEntreeBuild}
                     />
                   ) : (
                     <BuilderIngredientResultRow

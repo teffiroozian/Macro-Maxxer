@@ -3,6 +3,7 @@
 import RestaurantResultRow from "@/components/global-search/RestaurantResultRow";
 import MenuItemResultRow from "@/components/global-search/MenuItemResultRow";
 import BuilderIngredientResultRow from "@/components/global-search/BuilderIngredientResultRow";
+import BuilderEntreeResultRow from "@/components/global-search/BuilderEntreeResultRow";
 import ScopeSwitcher from "@/components/global-search/ScopeSwitcher";
 import RestaurantScopeControl from "@/components/global-search/RestaurantScopeControl";
 import type { useGlobalSearchState } from "@/lib/search/useGlobalSearchState";
@@ -10,7 +11,8 @@ import type { useGlobalSearchState } from "@/lib/search/useGlobalSearchState";
 type GlobalSearchPanelProps = ReturnType<typeof useGlobalSearchState>;
 
 // Restaurants + Menu Items (standard items and Chipotle-only build-your-own
-// ingredients, ranked per the finalized 6-tier rule) share this one panel.
+// entree/build options, ranked per searchAllContent's tier rule) share this
+// one panel.
 // Cart page defaults Menu Items to the cart's own restaurant when
 // unambiguous (plan §4j); homepage/elsewhere search all restaurants.
 //
@@ -40,6 +42,7 @@ export default function GlobalSearchPanel({
   handleSelectRestaurant,
   handleSelectMenuItem,
   handleStartBuild,
+  handleStartEntreeBuild,
   handleViewAllRestaurants,
 }: GlobalSearchPanelProps) {
   const menuItemSuggestions = isEmptyQuery ? recentMenuItems : menuItemResults;
@@ -142,6 +145,16 @@ export default function GlobalSearchPanel({
                       onRemoveRecent={() => removeRecentMenuItem(result)}
                       quickAdd={result.quickAdd}
                     />
+                  ) : result.kind === "builder-entree" ? (
+                    <BuilderEntreeResultRow
+                      key={`recent-entree-${result.restaurant.id}-${result.entreeId}`}
+                      entreeId={result.entreeId}
+                      entreeOption={result.entreeOption}
+                      restaurant={result.restaurant}
+                      isActive={activeIndex === index}
+                      onSelect={handleStartEntreeBuild}
+                      onRemoveRecent={() => removeRecentMenuItem(result)}
+                    />
                   ) : (
                     <BuilderIngredientResultRow
                       key={`recent-ingredient-${result.restaurant.id}-${result.ingredient.id}`}
@@ -176,6 +189,15 @@ export default function GlobalSearchPanel({
                   isActive={activeIndex === index}
                   onSelect={handleSelectMenuItem}
                   quickAdd={result.quickAdd}
+                />
+              ) : result.kind === "builder-entree" ? (
+                <BuilderEntreeResultRow
+                  key={`entree-${result.restaurant.id}-${result.entreeId}`}
+                  entreeId={result.entreeId}
+                  entreeOption={result.entreeOption}
+                  restaurant={result.restaurant}
+                  isActive={activeIndex === index}
+                  onSelect={handleStartEntreeBuild}
                 />
               ) : (
                 <BuilderIngredientResultRow

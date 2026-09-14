@@ -1,6 +1,7 @@
 "use client";
 
-import { useEffect, useId, useRef, useState } from "react";
+import { useEffect, useId, useLayoutEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import { Info } from "lucide-react";
 
 export type MacroSegment = {
@@ -80,13 +81,23 @@ function MacroSegmentBar({ segment }: { segment: MacroSegment }) {
     );
 }
 
+// Tooltip width is fixed (`w-36` below) so the viewport-edge clamp in
+// `updatePosition` can reason about it before the portaled node has ever
+// been measured.
+const TOOLTIP_WIDTH_PX = 144;
+const VIEWPORT_EDGE_PADDING_PX = 8;
+
 export function MacroLegendInfo({ segments }: { segments: MacroSegment[] }) {
     const [isOpen, setIsOpen] = useState(false);
+    const [isMounted, setIsMounted] = useState(false);
+    const [position, setPosition] = useState({ top: -9999, left: -9999 });
     const tooltipId = useId();
     const containerRef = useRef<HTMLSpanElement>(null);
+    const tooltipRef = useRef<HTMLDivElement>(null);
     const supportsHoverRef = useRef(false);
 
     useEffect(() => {
+        setIsMounted(true);
         supportsHoverRef.current = window.matchMedia(
             "(hover: hover) and (pointer: fine)",
         ).matches;
@@ -113,6 +124,83 @@ export function MacroLegendInfo({ segments }: { segments: MacroSegment[] }) {
         };
     }, [isOpen]);
 
+    // The tooltip used to be an absolutely-positioned child of the trigger,
+    // which put it inside the surrounding card's own stacking context and
+    // clipping box — any `overflow-hidden` ancestor (the Selected
+    // Ingredients card in the View Build modal) cut it off, and no z-index
+    // could fix that since overflow clipping wins regardless of stacking
+    // order. Portaling it to `document.body` and positioning it with
+    // `position: fixed` from the trigger's real viewport coordinates
+    // sidesteps both problems: it can't be clipped by an ancestor it's no
+    // longer inside, and a high z-index (see className below) reliably puts
+    // it above the modal itself. Recomputed on open/scroll/resize so it
+    // tracks the trigger; flips above the icon when there isn't enough room
+    // below, and clamps horizontally so it never runs off-screen.
+    useLayoutEffect(() => {
+        if (!isOpen) return;
+
+        const trigger = containerRef.current;
+        if (!trigger) return;
+
+        const updatePosition = () => {
+            const triggerRect = trigger.getBoundingClientRect();
+            const tooltipHeight = tooltipRef.current?.getBoundingClientRect().height ?? 0;
+
+            const left = Math.min(
+                Math.max(triggerRect.left, VIEWPORT_EDGE_PADDING_PX),
+                window.innerWidth - TOOLTIP_WIDTH_PX - VIEWPORT_EDGE_PADDING_PX,
+            );
+
+            const spaceBelow = window.innerHeight - triggerRect.bottom;
+            const opensAbove =
+                spaceBelow < tooltipHeight + VIEWPORT_EDGE_PADDING_PX + 8 &&
+                triggerRect.top > tooltipHeight + VIEWPORT_EDGE_PADDING_PX + 8;
+            const top = opensAbove
+                ? triggerRect.top - tooltipHeight - 8
+                : triggerRect.bottom + 8;
+
+            setPosition({ top, left });
+        };
+
+        updatePosition();
+        window.addEventListener("scroll", updatePosition, true);
+        window.addEventListener("resize", updatePosition);
+        return () => {
+            window.removeEventListener("scroll", updatePosition, true);
+            window.removeEventListener("resize", updatePosition);
+        };
+    }, [isOpen]);
+
+    const tooltip = (
+        <div
+            ref={tooltipRef}
+            role="tooltip"
+            id={tooltipId}
+            style={{ top: position.top, left: position.left }}
+            className={`pointer-events-none fixed z-[250] w-36 rounded-lg bg-neutral-900 px-3 py-2 text-white shadow-lg transition-opacity duration-150 ${
+                isOpen ? "opacity-100" : "opacity-0"
+            }`}
+        >
+            <ul className="space-y-1">
+                {segments.map((segment) => (
+                    <li
+                        key={segment.label}
+                        className="flex items-center justify-between gap-3 text-[11px] leading-snug font-medium"
+                    >
+                        <span className="flex items-center gap-1.5">
+                            <span
+                                aria-hidden="true"
+                                className={`h-2 w-2 shrink-0 rounded-full ${segment.color}`}
+                            />
+                            {segment.label}
+                        </span>
+                        <span>{segment.roundedPercent}%</span>
+                    </li>
+                ))}
+            </ul>
+        </div>
+    );
+
     return (
         <span ref={containerRef} className="relative inline-flex">
             <button
@@ -133,31 +221,7 @@ export function MacroLegendInfo({ segments }: { segments: MacroSegment[] }) {
             >
                 <Info className="h-3.5 w-3.5" aria-hidden="true" />
             </button>
-            <div
-                role="tooltip"
-                id={tooltipId}
-                className={`pointer-events-none absolute top-full left-0 z-20 mt-2 w-36 rounded-lg bg-neutral-900 px-3 py-2 text-white shadow-lg transition-opacity duration-150 ${
-                    isOpen ? "opacity-100" : "opacity-0"
-                }`}
-            >
-                <ul className="space-y-1">
-                    {segments.map((segment) => (
-                        <li
-                            key={segment.label}
-                            className="flex items-center justify-between gap-3 text-[11px] leading-snug font-medium"
-                        >
-                            <span className="flex items-center gap-1.5">
-                                <span
-                                    aria-hidden="true"
-                                    className={`h-2 w-2 shrink-0 rounded-full ${segment.color}`}
-                                />
-                                {segment.label}
-                            </span>
-                            <span>{segment.roundedPercent}%</span>
-                        </li>
-                    ))}
-                </ul>
-            </div>
+            {isMounted ? createPortal(tooltip, document.body) : null}
         </span>
     );
 }

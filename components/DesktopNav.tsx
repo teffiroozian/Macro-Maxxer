@@ -3,14 +3,11 @@
 import { Suspense } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { Search } from "lucide-react";
 import CartIconDropdown from "@/components/cart/CartIconDropdown";
 import DesktopRestaurantMenu from "@/components/DesktopRestaurantMenu";
 import DesktopSearchDropdown from "@/components/global-search/DesktopSearchDropdown";
 import { appIconButtonClassName } from "@/components/ui/AppIconButton";
-import { useBuildInProgressGuard } from "@/components/BuildInProgressGuardContext";
-import { isPlainLeftClick } from "@/lib/isPlainLeftClick";
 
 // Static stand-in for DesktopSearchDropdown's always-visible input (same
 // height/shape/icon/placeholder) so the Suspense boundary below doesn't
@@ -40,8 +37,6 @@ export default function DesktopNav({
   searchBarVariant?: "full" | "compact" | "hidden";
 }) {
   const showSearchBar = showSearchButton && searchBarVariant !== "hidden";
-  const router = useRouter();
-  const { guardNavigation } = useBuildInProgressGuard();
 
   return (
     // `lg:grid-cols-[1fr_auto_1fr]` (not a flex row with a centered flex-1
@@ -59,11 +54,6 @@ export default function DesktopNav({
       <div className="flex min-w-0 items-center gap-2">
         <Link
           href="/"
-          onClick={(event) => {
-            if (!isPlainLeftClick(event)) return;
-            event.preventDefault();
-            guardNavigation(() => router.push("/"));
-          }}
           className="inline-flex h-9 w-9 shrink-0 items-center justify-center overflow-hidden rounded-lg bg-white"
           aria-label="Go to homepage"
         >

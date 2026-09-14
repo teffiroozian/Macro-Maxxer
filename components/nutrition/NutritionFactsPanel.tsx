@@ -86,6 +86,8 @@ function NutritionFactsInfoTooltip({
   );
 }
 
+export type NutritionFactsPanelVariant = "default" | "compact";
+
 export type NutritionFactsPanelProps = {
   totals: Nutrition;
   title?: string;
@@ -93,6 +95,55 @@ export type NutritionFactsPanelProps = {
   showCustomizationDeltas?: boolean;
   activeCustomizationTotals?: CoreMacros;
   className?: string;
+  // "compact" keeps the same data, nutrient order, and visual identity as
+  // "default" — it only tightens outer padding, row padding, and the
+  // heading/divider/disclaimer spacing so the full label can fit somewhere
+  // shorter than the default was designed for (the View Build modal's
+  // Nutrition Facts column). Row/heading font sizes are untouched: the
+  // spacing reduction alone is enough, and shrinking type on top of it would
+  // cost readability without buying back any real height. Every usage that
+  // doesn't pass this prop renders exactly as before.
+  variant?: NutritionFactsPanelVariant;
+};
+
+// The heading and Calories row stay full-size in both variants (they're
+// what makes this still read as "Nutrition Facts" rather than a generic
+// stat block); "compact" saves its height from spacing plus a one-step font
+// reduction on the repeated nutrient rows specifically, since those are the
+// rows that repeat 9x and dominate the total height.
+const variantSpacing: Record<
+  NutritionFactsPanelVariant,
+  {
+    sectionPadding: string;
+    headingMargin: string;
+    divider: string;
+    bigRow: string;
+    bigRowText: string;
+    subRow: string;
+    subRowText: string;
+    disclaimer: string;
+  }
+> = {
+  default: {
+    sectionPadding: "p-5",
+    headingMargin: "mb-4",
+    divider: "my-3 h-[3px]",
+    bigRow: "py-3",
+    bigRowText: "text-base",
+    subRow: "py-2.5 pl-5",
+    subRowText: "text-sm",
+    disclaimer: "mt-3",
+  },
+  compact: {
+    sectionPadding: "p-4",
+    headingMargin: "mb-2",
+    divider: "my-1.5 h-[2px]",
+    bigRow: "py-1.5",
+    bigRowText: "text-sm",
+    subRow: "py-1 pl-5",
+    subRowText: "text-xs",
+    disclaimer: "mt-2",
+  },
 };
 
 export default function NutritionFactsPanel({
@@ -102,10 +153,13 @@ export default function NutritionFactsPanel({
   showCustomizationDeltas = false,
   activeCustomizationTotals,
   className = "",
+  variant = "default",
 }: NutritionFactsPanelProps) {
+  const spacing = variantSpacing[variant];
+
   return (
-    <section className={`rounded-2xl border border-black/10 bg-white p-5 ${className}`.trim()}>
-      <h2 className="mb-4 text-2xl font-bold text-neutral-900">{title}</h2>
+    <section className={`rounded-2xl border border-black/10 bg-white ${spacing.sectionPadding} ${className}`.trim()}>
+      <h2 className={`${spacing.headingMargin} text-2xl font-bold text-neutral-900`}>{title}</h2>
 
       <div className="flex items-center gap-1.5 text-xs font-medium text-slate-500">
         <span>{caption}</span>
@@ -135,14 +189,14 @@ export default function NutritionFactsPanel({
         </div>
       </div>
 
-      <div className="my-3 h-[3px] rounded-full bg-neutral-900/80" />
+      <div className={`${spacing.divider} rounded-full bg-neutral-900/80`} />
 
-      <div className="flex items-baseline justify-between border-b border-black/10 py-3">
-        <div className="text-base font-semibold text-neutral-900">
+      <div className={`flex items-baseline justify-between border-b border-black/10 ${spacing.bigRow}`}>
+        <div className={`${spacing.bigRowText} font-semibold text-neutral-900`}>
           Total Fat
         </div>
         <div className="inline-flex items-baseline gap-1.5">
-          <div className="text-base font-semibold text-neutral-900">
+          <div className={`${spacing.bigRowText} font-semibold text-neutral-900`}>
             {format(n.totalFat, "g")}
           </div>
           {showCustomizationDeltas &&
@@ -155,44 +209,44 @@ export default function NutritionFactsPanel({
         </div>
       </div>
 
-      <div className="flex items-baseline justify-between border-b border-black/10 py-2.5 pl-5">
-        <div className="text-sm font-medium text-slate-500">Sat Fat</div>
-        <div className="text-sm font-medium text-slate-500">
+      <div className={`flex items-baseline justify-between border-b border-black/10 ${spacing.subRow}`}>
+        <div className={`${spacing.subRowText} font-medium text-slate-500`}>Sat Fat</div>
+        <div className={`${spacing.subRowText} font-medium text-slate-500`}>
           {format(n.satFat, "g")}
         </div>
       </div>
 
-      <div className="flex items-baseline justify-between border-b border-black/10 py-2.5 pl-5">
-        <div className="text-sm font-medium text-slate-500">Trans Fat</div>
-        <div className="text-sm font-medium text-slate-500">
+      <div className={`flex items-baseline justify-between border-b border-black/10 ${spacing.subRow}`}>
+        <div className={`${spacing.subRowText} font-medium text-slate-500`}>Trans Fat</div>
+        <div className={`${spacing.subRowText} font-medium text-slate-500`}>
           {format(n.transFat, "g")}
         </div>
       </div>
 
-      <div className="flex items-baseline justify-between border-b border-black/10 py-3">
-        <div className="text-base font-semibold text-neutral-900">
+      <div className={`flex items-baseline justify-between border-b border-black/10 ${spacing.bigRow}`}>
+        <div className={`${spacing.bigRowText} font-semibold text-neutral-900`}>
           Cholesterol
         </div>
-        <div className="text-base font-semibold text-neutral-900">
+        <div className={`${spacing.bigRowText} font-semibold text-neutral-900`}>
           {format(n.cholesterol, "mg")}
         </div>
       </div>
 
-      <div className="flex items-baseline justify-between border-b border-black/10 py-3">
-        <div className="text-base font-semibold text-neutral-900">
+      <div className={`flex items-baseline justify-between border-b border-black/10 ${spacing.bigRow}`}>
+        <div className={`${spacing.bigRowText} font-semibold text-neutral-900`}>
           Sodium
         </div>
-        <div className="text-base font-semibold text-neutral-900">
+        <div className={`${spacing.bigRowText} font-semibold text-neutral-900`}>
           {format(n.sodium, "mg")}
         </div>
       </div>
 
-      <div className="flex items-baseline justify-between border-b border-black/10 py-3">
-        <div className="text-base font-semibold text-neutral-900">
+      <div className={`flex items-baseline justify-between border-b border-black/10 ${spacing.bigRow}`}>
+        <div className={`${spacing.bigRowText} font-semibold text-neutral-900`}>
           Carbohydrates
         </div>
         <div className="inline-flex items-baseline gap-1.5">
-          <div className="text-base font-semibold text-neutral-900">
+          <div className={`${spacing.bigRowText} font-semibold text-neutral-900`}>
             {format(n.carbs, "g")}
           </div>
           {showCustomizationDeltas &&
@@ -205,26 +259,26 @@ export default function NutritionFactsPanel({
         </div>
       </div>
 
-      <div className="flex items-baseline justify-between border-b border-black/10 py-2.5 pl-5">
-        <div className="text-sm font-medium text-slate-500">Fiber</div>
-        <div className="text-sm font-medium text-slate-500">
+      <div className={`flex items-baseline justify-between border-b border-black/10 ${spacing.subRow}`}>
+        <div className={`${spacing.subRowText} font-medium text-slate-500`}>Fiber</div>
+        <div className={`${spacing.subRowText} font-medium text-slate-500`}>
           {format(n.fiber, "g")}
         </div>
       </div>
 
-      <div className="flex items-baseline justify-between border-b border-black/10 py-2.5 pl-5">
-        <div className="text-sm font-medium text-slate-500">Sugars</div>
-        <div className="text-sm font-medium text-slate-500">
+      <div className={`flex items-baseline justify-between border-b border-black/10 ${spacing.subRow}`}>
+        <div className={`${spacing.subRowText} font-medium text-slate-500`}>Sugars</div>
+        <div className={`${spacing.subRowText} font-medium text-slate-500`}>
           {format(n.sugars, "g")}
         </div>
       </div>
 
-      <div className="flex items-baseline justify-between border-b border-black/10 py-3">
-        <div className="text-base font-semibold text-neutral-900">
+      <div className={`flex items-baseline justify-between border-b border-black/10 ${spacing.bigRow}`}>
+        <div className={`${spacing.bigRowText} font-semibold text-neutral-900`}>
           Protein
         </div>
         <div className="inline-flex items-baseline gap-1.5">
-          <div className="text-base font-semibold text-neutral-900">
+          <div className={`${spacing.bigRowText} font-semibold text-neutral-900`}>
             {format(n.protein, "g")}
           </div>
           {showCustomizationDeltas &&
@@ -237,7 +291,7 @@ export default function NutritionFactsPanel({
         </div>
       </div>
 
-      <p className="mt-3 text-xs leading-snug text-slate-500">
+      <p className={`${spacing.disclaimer} text-xs leading-snug text-slate-500`}>
         2,000 calories a day is used for general nutrition advice, but
         calorie needs vary. Values may vary by location, serving size, and
         customizations.

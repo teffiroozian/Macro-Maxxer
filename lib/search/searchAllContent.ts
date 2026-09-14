@@ -6,44 +6,59 @@ import type { RestaurantBuilderConfig } from "@/types/builder";
 import type { IngredientItem } from "@/types/menu";
 import type { SearchResult } from "@/types/search";
 
-// searchAllContent only ever produces menu-item/builder-ingredient results —
+// searchAllContent only ever produces menu-item/builder-entree results (see
+// below — builder-ingredient is a separate, recent-history-only kind) —
 // narrowing the return type (instead of the full SearchResult union) lets
 // callers discriminate on `kind` without "restaurant" muddying the union.
 export type ContentSearchResult = Exclude<SearchResult, { kind: "restaurant" }>;
 
-// Finalized 6-tier ranking (plan §4a) for the combined menu-item +
-// builder-ingredient result list:
-//   1. Exact standard-item name matches
-//   2. Exact builder-ingredient name matches
-//   3. Standard items whose names start with the query
-//   4. Standard items whose names contain the query
-//   5. Builder ingredients whose names start with or contain the query
-//   6. Weak/category-only matches (either kind)
+// Ranking for the combined menu-item + BYO-entree/build result list: every
+// regular menu item match (at any relevance level) outranks every BYO
+// entree/build match — a group boundary, not a per-tier interleave — so an
+// exact entree name match (e.g. "Burrito") never jumps ahead of a merely
+// partial item match. Within each group, relevance still ranks results:
+//   1. Exact regular menu item matches
+//   2. Partial (starts-with or contains) regular menu item matches
+//   3. Weak/category-only regular menu item matches
+//   4. Exact BYO entree/build matches
+//   5. Partial BYO entree/build matches
+// BYO entree/build results (e.g. Chipotle's Bowl/Burrito/Quesadilla) have no
+// category text of their own to fall back on, so they only ever match by
+// name — never via the weak tier.
 const TIER = {
   ITEM_EXACT: 0,
-  INGREDIENT_EXACT: 1,
-  ITEM_STARTS_WITH: 2,
-  ITEM_CONTAINS: 3,
-  INGREDIENT_STARTS_OR_CONTAINS: 4,
-  WEAK: 5,
+  ITEM_PARTIAL: 1,
+  ITEM_WEAK: 2,
+  ENTREE_EXACT: 3,
+  ENTREE_PARTIAL: 4,
 } as const;
 
-function getTier(name: string, categories: string[], query: string, terms: string[], isIngredient: boolean): number | null {
+function getItemTier(name: string, categories: string[], query: string, terms: string[]): number | null {
   const nameTier = getNameRankTier(name, query);
 
   if (nameTier === NAME_RANK_TIER.EXACT) {
-    return isIngredient ? TIER.INGREDIENT_EXACT : TIER.ITEM_EXACT;
+    return TIER.ITEM_EXACT;
   }
-  if (nameTier === NAME_RANK_TIER.STARTS_WITH) {
-    return isIngredient ? TIER.INGREDIENT_STARTS_OR_CONTAINS : TIER.ITEM_STARTS_WITH;
-  }
-  if (nameTier === NAME_RANK_TIER.CONTAINS) {
-    return isIngredient ? TIER.INGREDIENT_STARTS_OR_CONTAINS : TIER.ITEM_CONTAINS;
+  if (nameTier === NAME_RANK_TIER.STARTS_WITH || nameTier === NAME_RANK_TIER.CONTAINS) {
+    return TIER.ITEM_PARTIAL;
   }
 
   // Name didn't match at all — fall back to a weak category-text match.
   if (matchesText(categories.join(" "), terms)) {
-    return TIER.WEAK;
+    return TIER.ITEM_WEAK;
+  }
+
+  return null;
+}
+
+function getEntreeTier(label: string, query: string): number | null {
+  const nameTier = getNameRankTier(label, query);
+
+  if (nameTier === NAME_RANK_TIER.EXACT) {
+    return TIER.ENTREE_EXACT;
+  }
+  if (nameTier === NAME_RANK_TIER.STARTS_WITH || nameTier === NAME_RANK_TIER.CONTAINS) {
+    return TIER.ENTREE_PARTIAL;
   }
 
   return null;
@@ -60,9 +75,14 @@ export function resolveIngredientCategoryLabel(ingredient: IngredientItem, build
   return match ? match[1] : rawCategory;
 }
 
-// Searches menu items + build-your-own ingredients across every entry in the
+// Searches menu items + BYO entree/build options across every entry in the
 // given index (already restaurant-filtered by the caller, e.g. to a single
-// cart restaurant), ranked per the 6-tier rule above.
+// cart restaurant), ranked per the tiers above. Individual build-your-own
+// ingredients/modifiers (e.g. Chipotle's standalone "Chicken" record) are
+// intentionally excluded from these results — they aren't menu items a user
+// would search for on their own — while BYO entree/build results themselves
+// (e.g. Chipotle's Bowl/Burrito/Quesadilla builders) are included, sourced
+// from `entry.entreeBuilders` rather than `entry.items`.
 export function searchAllContent(index: SearchIndexEntry[], query: string): ContentSearchResult[] {
   const terms = getSearchTerms(query);
   if (!terms.length) {
@@ -74,7 +94,7 @@ export function searchAllContent(index: SearchIndexEntry[], query: string): Cont
 
   for (const entry of index) {
     for (const item of entry.items) {
-      const tier = getTier(item.name, item.categories, query, terms, false);
+      const tier = getItemTier(item.name, item.categories, query, terms);
       if (tier !== null) {
         scored.push({
           result: {
@@ -89,15 +109,15 @@ export function searchAllContent(index: SearchIndexEntry[], query: string): Cont
       }
     }
 
-    for (const ingredient of entry.ingredients) {
-      const tier = getTier(ingredient.name, ingredient.categories, query, terms, true);
+    for (const candidate of entry.entreeBuilders) {
+      const tier = getEntreeTier(candidate.option.label, query);
       if (tier !== null) {
         scored.push({
           result: {
-            kind: "builder-ingredient",
-            ingredient,
+            kind: "builder-entree",
+            entreeId: candidate.entreeId,
+            entreeOption: candidate.option,
             restaurant: entry.restaurant,
-            categoryLabel: resolveIngredientCategoryLabel(ingredient, entry.builderConfig),
           },
           tier,
           order: order++,

@@ -3,12 +3,9 @@
 import type { ReactNode } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { Search, ShoppingCart } from "lucide-react";
 import { useGlobalSearch } from "@/components/GlobalSearchContext";
 import AppIconButton, { appIconButtonClassName } from "@/components/ui/AppIconButton";
-import { useBuildInProgressGuard } from "@/components/BuildInProgressGuardContext";
-import { isPlainLeftClick } from "@/lib/isPlainLeftClick";
 
 export default function GlobalMobileNav({
   logoSrc = "/logo.svg",
@@ -37,8 +34,6 @@ export default function GlobalMobileNav({
   markStickyNav?: boolean;
 }) {
   const { open: openSearch } = useGlobalSearch();
-  const router = useRouter();
-  const { guardNavigation } = useBuildInProgressGuard();
   const showTrailingCluster = showSearchButton || showCartButton || Boolean(middleSlot) || Boolean(cartSlot);
 
   return (
@@ -57,11 +52,6 @@ export default function GlobalMobileNav({
           {leadingButton}
           <Link
             href="/"
-            onClick={(event) => {
-              if (!isPlainLeftClick(event)) return;
-              event.preventDefault();
-              guardNavigation(() => router.push("/"));
-            }}
             className="inline-flex h-9 w-9 shrink-0 items-center justify-center overflow-hidden rounded-lg bg-white"
             aria-label="Go to homepage"
           >

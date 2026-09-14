@@ -14,11 +14,13 @@ export default function InlineVariantSelect({
     selectedOptionId,
     onSelectOption,
     ariaLabel,
+    disabled = false,
 }: {
     options: InlineVariantSelectOption[];
     selectedOptionId?: string;
     onSelectOption: (optionId: string) => void;
     ariaLabel: string;
+    disabled?: boolean;
 }) {
     const activeOptionId = selectedOptionId ?? options[0]?.id;
     return (
@@ -30,7 +32,8 @@ export default function InlineVariantSelect({
                 value={activeOptionId}
                 onChange={(event) => onSelectOption(event.target.value)}
                 aria-label={ariaLabel}
-                className="cursor-pointer appearance-none rounded-full border border-slate-200 bg-white py-1 pr-6 pl-2.5 text-xs font-semibold text-slate-600 transition hover:border-accent-strong hover:text-accent-strong focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-strong/50"
+                disabled={disabled}
+                className="cursor-pointer appearance-none rounded-full border border-slate-200 bg-white py-1 pr-6 pl-2.5 text-xs font-semibold text-slate-600 transition hover:border-accent-strong hover:text-accent-strong focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-strong/50 disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:border-slate-200 disabled:hover:text-slate-600"
             >
                 {options.map((option) => (
                     <option key={option.id} value={option.id}>
