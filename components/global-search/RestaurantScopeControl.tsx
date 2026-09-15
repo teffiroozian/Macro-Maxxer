@@ -1,5 +1,6 @@
 import Image from "next/image";
 import type { RestaurantIndexEntry } from "@/types/restaurant";
+import { getRestaurantLogoShapeClassName } from "@/lib/restaurantPresentation";
 
 type RestaurantScopeControlProps = {
   restaurant: RestaurantIndexEntry;
@@ -16,7 +17,7 @@ export default function RestaurantScopeControl({ restaurant, isScoped, onToggle 
     <div className="mt-3 flex flex-wrap items-center justify-between gap-x-2 gap-y-1 border-t border-neutral-100 px-5 py-2.5 text-xs text-neutral-500">
       <span className="flex min-w-0 items-center gap-2">
         {isScoped ? (
-          <span className="flex h-5 w-5 shrink-0 items-center justify-center overflow-hidden rounded-md bg-neutral-50">
+          <span className={`flex h-5 w-5 shrink-0 items-center justify-center overflow-hidden bg-neutral-50 ${getRestaurantLogoShapeClassName(restaurant.id)}`}>
             <Image src={restaurant.logo} alt="" width={14} height={14} className="object-contain" />
           </span>
         ) : null}

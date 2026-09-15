@@ -9,8 +9,10 @@ import MacroBadge from "@/components/ui/MacroBadge";
 import { appButtonClassName } from "@/components/ui/AppButton";
 import { getProteinPer100Calories } from "@/lib/nutrition";
 import type { CoreMacros } from "@/types/nutrition";
+import { getRestaurantImagePresentation } from "@/lib/restaurantPresentation";
 
 type ProductPreviewCardProps = {
+  restaurantId: string;
   restaurantName: string;
   restaurantLogo: string;
   itemName: string;
@@ -26,6 +28,7 @@ type ProductPreviewCardProps = {
 // a light "device chrome" so it reads as a real product view rather than a
 // pasted-in mockup.
 export default function ProductPreviewCard({
+  restaurantId,
   restaurantName,
   restaurantLogo,
   itemName,
@@ -35,6 +38,7 @@ export default function ProductPreviewCard({
   href,
   tag = "High-Protein Pick",
 }: ProductPreviewCardProps) {
+  const imagePresentation = getRestaurantImagePresentation(restaurantId);
   const proteinPer100Calories = Math.round(
     getProteinPer100Calories(nutrition.protein, nutrition.calories) ?? 0
   );
@@ -65,12 +69,24 @@ export default function ProductPreviewCard({
         <div className="flex flex-col gap-6 p-6 sm:flex-row sm:items-start sm:gap-8 sm:p-8">
           <div className="flex flex-col items-center gap-3 sm:shrink-0 sm:items-start">
             <div className="flex items-center gap-2">
-              <RestaurantLogoBadge src={restaurantLogo} alt="" size="sm" ring={false} className="border border-black/10" />
+              <RestaurantLogoBadge
+                src={restaurantLogo}
+                alt=""
+                size="sm"
+                shape={imagePresentation.headerLogoShape}
+                ring={false}
+                className="border border-black/10"
+              />
               <span className="text-sm font-medium text-neutral-500">{restaurantName}</span>
             </div>
 
             <div className="relative h-40 w-40 overflow-hidden rounded-2xl border border-black/10 bg-neutral-50">
-              <Image src={itemImage} alt={itemName} fill className="object-cover" />
+              <Image
+                src={itemImage}
+                alt={itemName}
+                fill
+                className={imagePresentation.itemDetailImageClassName ?? "object-cover"}
+              />
               <MacroBadge
                 macroKey="protein"
                 value={nutrition.protein}

@@ -89,6 +89,7 @@ import {
 import { useItemCustomizationState } from "./useItemCustomizationState";
 import { useItemCartSubmission } from "./useItemCartSubmission";
 import { useCart } from "@/stores/cartStore";
+import { getRestaurantImagePresentation } from "@/lib/restaurantPresentation";
 
 const emptyAddon: MenuItem = {
     id: "none",
@@ -313,6 +314,7 @@ export default function ItemRouteModal({
         item,
         restaurantId,
     );
+    const imagePresentation = getRestaurantImagePresentation(restaurantId);
     const canCustomizeViaBuildPage =
         isChipotlePrebuiltBuilderItem && Boolean(editingCartItem);
     // Fully-custom Build Your Own cart items have no in-modal edit view (the
@@ -1590,7 +1592,7 @@ export default function ItemRouteModal({
                                     className={
                                         isChipotlePresetMealArtwork
                                             ? CHIPOTLE_PRESET_MEAL_IMAGE_CLASSNAME
-                                            : "object-contain p-1"
+                                            : (imagePresentation.itemThumbnailImageClassName ?? "object-contain p-1")
                                     }
                                 />
                             </div>
@@ -1643,7 +1645,7 @@ export default function ItemRouteModal({
                                         className={
                                             isChipotlePresetMealArtwork
                                                 ? CHIPOTLE_PRESET_MEAL_IMAGE_CLASSNAME
-                                                : "object-contain p-1.5 sm:p-2.5 lg:p-3"
+                                                : (imagePresentation.itemDetailImageClassName ?? "object-contain p-1.5 sm:p-2.5 lg:p-3")
                                         }
                                     />
                                     {comparativeLabel ? (
@@ -2213,6 +2215,17 @@ export default function ItemRouteModal({
                                     nutrition={nutrition}
                                     quantityMultiplier={quantity}
                                     isMainItemPresetMealArtwork={isChipotlePresetMealArtwork}
+                                    standardRecipeNotice={
+                                        restaurantId === "starbucks"
+                                            ? {
+                                                  title: "Standard recipe only",
+                                                  body: "Customization nutrition isn’t currently available for Starbucks. Nutrition reflects the standard recipe.",
+                                              }
+                                            : undefined
+                                    }
+                                    mealDetailImageClassName={
+                                        imagePresentation.itemThumbnailImageClassName
+                                    }
                                     variants={variants}
                                     selectedVariantId={selectedVariantId}
                                     onSelectVariant={setSelectedVariantId}

@@ -4,6 +4,7 @@
 // place temporarily as a fallback/reference until runtime QA is complete.
 import chickfilaMenu from "@/data/restaurants/chick-fil-a/generated/restaurant.json";
 import { CHIPOTLE_GENERATED_RUNTIME_MENU } from "@/lib/restaurantBuilders/chipotle/generatedRuntimeAdapter";
+import { STARBUCKS_GENERATED_RUNTIME_MENU } from "@/lib/restaurantBuilders/starbucks/generatedRuntimeAdapter";
 import { resolveChipotleIngredientDisplayName } from "@/lib/restaurantBuilders/chipotle/ingredientMenuItems";
 import type { ChipotleBuilderConfig, ChipotleEntreeSelection } from "@/lib/restaurantBuilders/chipotle/types";
 import {
@@ -15,7 +16,6 @@ import mcdonaldsMenu from "@/data/restaurants/mcdonalds.json";
 import modMenu from "@/data/restaurants/mod.json";
 import pandaMenu from "@/data/restaurants/panda.json";
 import paneraMenu from "@/data/restaurants/panera.json";
-import starbucksMenu from "@/data/restaurants/starbucks.json";
 import subwayMenu from "@/data/restaurants/subway.json";
 import type { CartCustomization, CartItem, CartSelectionOption } from "@/types/cart";
 import type { IngredientItem, ItemVariant, MenuItem, RestaurantMenu } from "@/types/menu";
@@ -38,7 +38,7 @@ const restaurantMenusById: Record<string, RestaurantMenu> = {
   mod: modMenu as RestaurantMenu,
   panda: pandaMenu as RestaurantMenu,
   panera: paneraMenu as RestaurantMenu,
-  starbucks: starbucksMenu as RestaurantMenu,
+  starbucks: STARBUCKS_GENERATED_RUNTIME_MENU,
   subway: subwayMenu as RestaurantMenu,
 };
 

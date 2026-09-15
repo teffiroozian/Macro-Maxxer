@@ -45,10 +45,13 @@
     "id": "starbucks",
     "name": "Starbucks",
     "logo": "/restaurants/starbucks/logo.jpeg",
-    "cover": "/restaurants/starbucks/cover.webp",
+    "cover": "/restaurants/starbucks/Orange-Cream-Trio.jpeg",
     "menuFile": "starbucks.json",
     "isMacroFriendly": true,
-    "isComingSoon": true
+    "description": "Browse the standard Starbucks menu and compare official nutrition by size. Nutrition reflects each drink or food item’s standard recipe; customizations are not included.",
+    "nutritionSourceUrl": "https://www.starbucks.com/menu",
+    "nutritionSourceAttribution": "Nutrition data comes from official Starbucks US ordering information and reflects standard recipes only. In-store customizations can change nutrition.",
+    "lastUpdated": "2026-09-11"
   },
   {
     "id": "habit",

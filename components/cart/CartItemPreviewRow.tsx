@@ -5,9 +5,11 @@ import MacroStat from "@/components/nutrition/MacroStat";
 import CartCustomizationSummary from "@/components/cart/CartCustomizationSummary";
 import type { CartSummaryGroup } from "@/lib/cart/displayLabels";
 import type { CartItem } from "@/types/cart";
+import { getRestaurantImagePresentation } from "@/lib/restaurantPresentation";
 
 type CartItemPreviewRowProps = {
-  item: Pick<CartItem, "name" | "image" | "macrosPerItem" | "nutritionPerItem" | "quantity">;
+  item: Pick<CartItem, "name" | "image" | "macrosPerItem" | "nutritionPerItem" | "quantity"> &
+    Partial<Pick<CartItem, "restaurantId">>;
   macroStyle?: "compact" | "detailed";
   // Icon-tagged groups (compact CartCustomizationSummary) take precedence
   // over plain customizationsText when both are supplied.
@@ -44,6 +46,9 @@ export default function CartItemPreviewRow({
   activateLabel,
 }: CartItemPreviewRowProps) {
   const itemInitial = (item.name?.trim().charAt(0) || "+").toUpperCase();
+  const imageClassName =
+    getRestaurantImagePresentation(item.restaurantId ?? "").itemThumbnailImageClassName ??
+    "object-contain p-1";
   const quantityMultiplier = Math.max(item.quantity ?? 1, 1);
   const coreMacros = getCartItemCoreMacros(item);
   const displayCalories = coreMacros.calories * quantityMultiplier;
@@ -117,7 +122,7 @@ export default function CartItemPreviewRow({
               src={item.image}
               alt={item.name}
               fill
-              className="h-full w-full object-contain p-1"
+              className={`h-full w-full ${imageClassName}`}
               sizes="56px"
             />
           ) : (
@@ -125,7 +130,7 @@ export default function CartItemPreviewRow({
             <img
               src={item.image}
               alt={item.name}
-              className="h-full w-full object-contain p-1"
+              className={`h-full w-full ${imageClassName}`}
             />
           )
         ) : imageFallback === "placeholder" ? (

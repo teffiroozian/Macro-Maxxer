@@ -21,6 +21,10 @@ const nextConfig: NextConfig = {
         protocol: "https",
         hostname: "miinternal-cdn.chipotle.com",
       },
+      {
+        protocol: "https",
+        hostname: "cloudassets.starbucks.com",
+      },
     ],
   },
 };

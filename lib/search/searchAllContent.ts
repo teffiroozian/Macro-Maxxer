@@ -1,4 +1,4 @@
-import { getSearchTerms, matchesText } from "@/lib/search/matchText";
+import { getSearchTerms, matchesOrderedTerms, matchesText } from "@/lib/search/matchText";
 import { resolveQuickAddEligibility } from "@/lib/search/quickAddEligibility";
 import { NAME_RANK_TIER, getNameRankTier } from "@/lib/search/rankResults";
 import type { SearchIndexEntry } from "@/lib/search/searchIndex";
@@ -24,8 +24,10 @@ const TIER = {
   INGREDIENT_EXACT: 1,
   ITEM_STARTS_WITH: 2,
   ITEM_CONTAINS: 3,
-  INGREDIENT_STARTS_OR_CONTAINS: 4,
-  WEAK: 5,
+  ITEM_ORDERED_TERMS: 4,
+  INGREDIENT_STARTS_OR_CONTAINS: 5,
+  INGREDIENT_ORDERED_TERMS: 6,
+  WEAK: 7,
 } as const;
 
 function getTier(name: string, categories: string[], query: string, terms: string[], isIngredient: boolean): number | null {
@@ -39,6 +41,10 @@ function getTier(name: string, categories: string[], query: string, terms: strin
   }
   if (nameTier === NAME_RANK_TIER.CONTAINS) {
     return isIngredient ? TIER.INGREDIENT_STARTS_OR_CONTAINS : TIER.ITEM_CONTAINS;
+  }
+
+  if (matchesOrderedTerms(name, terms)) {
+    return isIngredient ? TIER.INGREDIENT_ORDERED_TERMS : TIER.ITEM_ORDERED_TERMS;
   }
 
   // Name didn't match at all — fall back to a weak category-text match.

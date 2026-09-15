@@ -48,6 +48,7 @@ type StickyRestaurantBarProps = {
     onSelect: () => void;
   }>;
   hideViewSelector?: boolean;
+  hideIngredientsView?: boolean;
   // Hides just the view/sort/filter controls (ControlsRow) within the
   // restaurant-specific row below the global nav — e.g. Chipotle's
   // entrée-selection screen, before there's a menu to sort/filter yet. The
@@ -77,6 +78,7 @@ export default function StickyRestaurantBar({
   secondaryNavLeading,
   mobileEntreeOptions,
   hideViewSelector = false,
+  hideIngredientsView = false,
   hideSecondaryNav = false,
   onEditFiltersDrawerReady,
 }: StickyRestaurantBarProps) {
@@ -138,6 +140,7 @@ export default function StickyRestaurantBar({
                     rankedChildSelections={rankedChildSelections}
                     isRankingView={isRankingView}
                     hideViewSelector={hideViewSelector}
+                    hideIngredientsView={hideIngredientsView}
                     showMobileTrigger={false}
                     onMobileDrawerOpenReady={handleMobileDrawerOpenReady}
                     onMobileFiltersDrawerOpenReady={onEditFiltersDrawerReady}

@@ -1,5 +1,6 @@
 import Image from "next/image";
 import type { RestaurantIndexEntry } from "@/types/restaurant";
+import { getRestaurantLogoShapeClassName } from "@/lib/restaurantPresentation";
 
 type RestaurantResultRowProps = {
   restaurant: RestaurantIndexEntry;
@@ -35,7 +36,9 @@ export default function RestaurantResultRow({
         }
       }}
     >
-      <span className="flex h-8 w-8 items-center justify-center overflow-hidden rounded-lg bg-neutral-50">
+      <span className={`flex h-8 w-8 items-center justify-center overflow-hidden bg-neutral-50 ${
+        getRestaurantLogoShapeClassName(restaurant.id)
+      }`}>
         <Image
           src={restaurant.logo}
           alt=""

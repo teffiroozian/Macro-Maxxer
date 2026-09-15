@@ -14,6 +14,7 @@
 export const RESTAURANT_BRAND_COLORS: Record<string, string> = {
   chickfila: "#E51636",
   chipotle: "#A81612",
+  starbucks: "#00754A",
 };
 
 export const DEFAULT_BRAND_ACCENT = "#111318";

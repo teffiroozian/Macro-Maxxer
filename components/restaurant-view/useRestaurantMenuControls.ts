@@ -22,11 +22,13 @@ import {
 } from "@/lib/menuSections/sortOptions";
 import {
     countItemsByCategory,
+    applyRestaurantMenuSectionOrder,
     getCategoryLabel,
     getOrderedMenuSections,
 } from "@/lib/menuSections/sorting";
 
 export function useRestaurantMenuControls({
+    restaurantId,
     hasBuildYourOwn,
     effectiveViewModeOverride,
     isViewChangeAllowed,
@@ -37,6 +39,7 @@ export function useRestaurantMenuControls({
     pathname,
     searchParams,
 }: {
+    restaurantId: string;
     hasBuildYourOwn: boolean;
     effectiveViewModeOverride?: ViewOption;
     isViewChangeAllowed?: (nextView: ViewOption) => boolean;
@@ -50,9 +53,10 @@ export function useRestaurantMenuControls({
     searchParams: ReadonlyURLSearchParams;
 }) {
     const requestedView = searchParams.get("view");
-    const defaultView: ViewOption = hasBuildYourOwn ? "ingredients" : "menu";
+    const supportsIngredientsView = restaurantId !== "starbucks";
+    const defaultView: ViewOption = hasBuildYourOwn && supportsIngredientsView ? "ingredients" : "menu";
     const viewMode: ViewOption =
-        requestedView === "ingredients"
+        requestedView === "ingredients" && supportsIngredientsView
             ? "ingredients"
             : requestedView === "ranking"
               ? "ranking"
@@ -154,11 +158,14 @@ export function useRestaurantMenuControls({
 
     const orderedSections = useMemo(
         () =>
-            getOrderedMenuSections(
-                visibleMenuItems,
-                effectiveViewMode === "ranking" ? "menu" : effectiveViewMode,
+            applyRestaurantMenuSectionOrder(
+                getOrderedMenuSections(
+                    visibleMenuItems,
+                    effectiveViewMode === "ranking" ? "menu" : effectiveViewMode,
+                ),
+                restaurantId,
             ),
-        [effectiveViewMode, visibleMenuItems],
+        [effectiveViewMode, restaurantId, visibleMenuItems],
     );
 
     const categoryOptions = useMemo(() => {
@@ -176,6 +183,10 @@ export function useRestaurantMenuControls({
 
     const handleViewChange = useCallback(
         (nextView: ViewOption) => {
+            if (nextView === "ingredients" && !supportsIngredientsView) {
+                return;
+            }
+
             if (isViewChangeAllowed && !isViewChangeAllowed(nextView)) {
                 return;
             }
@@ -201,6 +212,7 @@ export function useRestaurantMenuControls({
             router,
             searchParams,
             sort,
+            supportsIngredientsView,
         ],
     );
 

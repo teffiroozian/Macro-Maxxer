@@ -1,0 +1,214 @@
+{
+  "restaurant": "Starbucks",
+  "region": "US",
+  "source": "data/restaurants/starbucks/raw/menu.json",
+  "policy": "Sizes without complete official US standard nutrition are omitted; nutrition is never inferred or calculated. Non-food merchandise is filtered before nutrition resolution.",
+  "summary": {
+    "catalogProductForms": 282,
+    "importedItems": 260,
+    "unresolved": 21,
+    "filteredNonFoodMerchandise": 1
+  },
+  "records": [
+    {
+      "productNumber": 2124816,
+      "formCode": "Whole-Bean",
+      "sku": "11168404",
+      "productName": "Starbucks® Sunsera Blend",
+      "sizeName": "1lb",
+      "reason": "missing_standard_nutrition",
+      "details": "The official US ordering response does not publish a standard nutrition panel for this size."
+    },
+    {
+      "productNumber": 2123755,
+      "formCode": "Whole-Bean",
+      "sku": "11144386",
+      "productName": "Starbucks® Green Apron Blend™",
+      "sizeName": "1lb",
+      "reason": "missing_standard_nutrition",
+      "details": "The official US ordering response does not publish a standard nutrition panel for this size."
+    },
+    {
+      "productNumber": 860,
+      "formCode": "Whole-Bean",
+      "sku": "11130046",
+      "productName": "Veranda Blend®",
+      "sizeName": "1lb",
+      "reason": "missing_standard_nutrition",
+      "details": "The official US ordering response does not publish a standard nutrition panel for this size."
+    },
+    {
+      "productNumber": 2122186,
+      "formCode": "Whole-Bean",
+      "sku": "11130045",
+      "productName": "Starbucks® Blonde Espresso Roast",
+      "sizeName": "1lb",
+      "reason": "missing_standard_nutrition",
+      "details": "The official US ordering response does not publish a standard nutrition panel for this size."
+    },
+    {
+      "productNumber": 2123124,
+      "formCode": "Whole-Bean",
+      "sku": "11104434",
+      "productName": "Starbucks Siren’s Blend™",
+      "sizeName": "1lb",
+      "reason": "missing_standard_nutrition",
+      "details": "The official US ordering response does not publish a standard nutrition panel for this size."
+    },
+    {
+      "productNumber": 3,
+      "formCode": "Whole-Bean",
+      "sku": "11130106",
+      "productName": "Guatemala Antigua",
+      "sizeName": "1lb",
+      "reason": "missing_standard_nutrition",
+      "details": "The official US ordering response does not publish a standard nutrition panel for this size."
+    },
+    {
+      "productNumber": 24,
+      "formCode": "Whole-Bean",
+      "sku": "11130114",
+      "productName": "Pike Place® Roast",
+      "sizeName": "1lb",
+      "reason": "missing_standard_nutrition",
+      "details": "The official US ordering response does not publish a standard nutrition panel for this size."
+    },
+    {
+      "productNumber": 25,
+      "formCode": "Whole-Bean",
+      "sku": "11135844",
+      "productName": "Decaf Pike Place® Roast",
+      "sizeName": "1lb",
+      "reason": "missing_standard_nutrition",
+      "details": "The official US ordering response does not publish a standard nutrition panel for this size."
+    },
+    {
+      "productNumber": 290,
+      "formCode": "Whole-Bean",
+      "sku": "11130107",
+      "productName": "Organic Yukon Blend®",
+      "sizeName": "1lb",
+      "reason": "missing_standard_nutrition",
+      "details": "The official US ordering response does not publish a standard nutrition panel for this size."
+    },
+    {
+      "productNumber": 22157,
+      "formCode": "Whole-Bean",
+      "sku": "11133510",
+      "productName": "Starbucks 1971 Roast™",
+      "sizeName": "1lb",
+      "reason": "missing_standard_nutrition",
+      "details": "The official US ordering response does not publish a standard nutrition panel for this size."
+    },
+    {
+      "productNumber": 15,
+      "formCode": "Whole-Bean",
+      "sku": "11130115",
+      "productName": "Caffè Verona®",
+      "sizeName": "1lb",
+      "reason": "missing_standard_nutrition",
+      "details": "The official US ordering response does not publish a standard nutrition panel for this size."
+    },
+    {
+      "productNumber": 20,
+      "formCode": "Whole-Bean",
+      "sku": "11028472",
+      "productName": "Espresso Roast",
+      "sizeName": "1lb",
+      "reason": "missing_standard_nutrition",
+      "details": "The official US ordering response does not publish a standard nutrition panel for this size."
+    },
+    {
+      "productNumber": 23,
+      "formCode": "Whole-Bean",
+      "sku": "11130113",
+      "productName": "Italian Roast",
+      "sizeName": "1lb",
+      "reason": "missing_standard_nutrition",
+      "details": "The official US ordering response does not publish a standard nutrition panel for this size."
+    },
+    {
+      "productNumber": 10,
+      "formCode": "Whole-Bean",
+      "sku": "11130111",
+      "productName": "Komodo Dragon Blend®",
+      "sizeName": "1lb",
+      "reason": "missing_standard_nutrition",
+      "details": "The official US ordering response does not publish a standard nutrition panel for this size."
+    },
+    {
+      "productNumber": 8,
+      "formCode": "Whole-Bean",
+      "sku": "11130110",
+      "productName": "Sumatra",
+      "sizeName": "1lb",
+      "reason": "missing_standard_nutrition",
+      "details": "The official US ordering response does not publish a standard nutrition panel for this size."
+    },
+    {
+      "productNumber": 581,
+      "formCode": "Whole-Bean",
+      "sku": "11130109",
+      "productName": "Decaf Sumatra",
+      "sizeName": "1lb",
+      "reason": "missing_standard_nutrition",
+      "details": "The official US ordering response does not publish a standard nutrition panel for this size."
+    },
+    {
+      "productNumber": 810,
+      "formCode": "VIA",
+      "sku": "11057246",
+      "productName": "Starbucks VIA® Instant Sweetened Iced Coffee",
+      "sizeName": "5 count",
+      "reason": "missing_standard_nutrition",
+      "details": "The official US ordering response does not publish a standard nutrition panel for this size."
+    },
+    {
+      "productNumber": 860,
+      "formCode": "VIA",
+      "sku": "11026073",
+      "productName": "Starbucks VIA® Instant Veranda Blend®",
+      "sizeName": "Veranda Blend® VIA® Instant 12 count",
+      "reason": "missing_standard_nutrition",
+      "details": "The official US ordering response does not publish a standard nutrition panel for this size."
+    },
+    {
+      "productNumber": 24,
+      "formCode": "VIA",
+      "sku": "11022748",
+      "productName": "Starbucks VIA® Instant Pike Place® Roast",
+      "sizeName": "12 count",
+      "reason": "missing_standard_nutrition",
+      "details": "The official US ordering response does not publish a standard nutrition panel for this size."
+    },
+    {
+      "productNumber": 23,
+      "formCode": "VIA",
+      "sku": "11009768",
+      "productName": "Starbucks VIA® Instant Italian Roast",
+      "sizeName": "12 count",
+      "reason": "missing_standard_nutrition",
+      "details": "The official US ordering response does not publish a standard nutrition panel for this size."
+    },
+    {
+      "productNumber": 868,
+      "formCode": "VIA",
+      "sku": "11009771",
+      "productName": "Starbucks VIA® Instant Decaf Italian Roast",
+      "sizeName": "12 count",
+      "reason": "missing_standard_nutrition",
+      "details": "The official US ordering response does not publish a standard nutrition panel for this size."
+    }
+  ],
+  "filteredRecords": [
+    {
+      "productNumber": 2121746,
+      "formCode": "Single",
+      "sku": "11061285",
+      "productName": "Small Shopping Bag",
+      "sizeName": "1 Serving",
+      "reason": "non_food_merchandise",
+      "details": "Official catalog shopping-bag merchandise is not an edible menu item and is excluded before nutrition resolution."
+    }
+  ]
+}

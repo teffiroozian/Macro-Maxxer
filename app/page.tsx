@@ -288,6 +288,7 @@ export default async function Home() {
 
                 <div className={`mx-auto mt-10 w-full ${HOME_VISUAL_WIDTH_CLASS}`}>
                   <ProductPreviewCard
+                    restaurantId={previewRestaurant.id}
                     restaurantName={previewRestaurant.name}
                     restaurantLogo={previewRestaurant.logo}
                     itemName={previewItem.name}

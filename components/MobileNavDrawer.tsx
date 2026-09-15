@@ -9,6 +9,7 @@ import { getAllRestaurants } from "@/lib/restaurants";
 import AppIconButton from "@/components/ui/AppIconButton";
 import { useBuildInProgressGuard } from "@/components/BuildInProgressGuardContext";
 import { isPlainLeftClick } from "@/lib/isPlainLeftClick";
+import { getRestaurantLogoShapeClassName } from "@/lib/restaurantPresentation";
 
 type DrawerTab = "controls" | "restaurants";
 
@@ -197,7 +198,7 @@ export default function MobileNavDrawer({
                           className="flex items-center justify-between gap-2 bg-white px-3 py-2.5 text-sm font-semibold text-slate-800 transition-colors hover:bg-slate-50 active:bg-slate-100"
                         >
                           <span className="inline-flex min-w-0 items-center gap-2.5">
-                            <span className="relative h-8 w-8 shrink-0 overflow-hidden rounded-lg bg-white ring-1 ring-black/5">
+                            <span className={`relative h-8 w-8 shrink-0 overflow-hidden bg-white ring-1 ring-black/5 ${getRestaurantLogoShapeClassName(restaurant.id)}`}>
                               <Image src={restaurant.logo} alt={`${restaurant.name} logo`} fill className="object-cover" />
                             </span>
                             <span className="truncate">{restaurant.name}</span>
@@ -211,7 +212,7 @@ export default function MobileNavDrawer({
                           className="flex items-center justify-between gap-2 bg-white px-3 py-2.5 text-sm font-semibold text-slate-400"
                         >
                           <span className="inline-flex min-w-0 items-center gap-2.5">
-                            <span className="relative h-8 w-8 shrink-0 overflow-hidden rounded-lg bg-white opacity-50 ring-1 ring-black/5">
+                            <span className={`relative h-8 w-8 shrink-0 overflow-hidden bg-white opacity-50 ring-1 ring-black/5 ${getRestaurantLogoShapeClassName(restaurant.id)}`}>
                               <Image src={restaurant.logo} alt={`${restaurant.name} logo`} fill className="object-cover grayscale" />
                             </span>
                             <span className="truncate">{restaurant.name}</span>

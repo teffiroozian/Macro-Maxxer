@@ -21,6 +21,7 @@ import { buildCartItemSummaryGroups } from "@/lib/cart/displayLabels";
 import { getCartViewAnalytics } from "@/lib/cart/nutrition";
 import { useCartItemEditModal } from "@/hooks/useCartItemEditModal";
 import { trackCartView } from "@/lib/analytics";
+import { getRestaurantLogoShapeClassName } from "@/lib/restaurantPresentation";
 
 export default function CartPreviewDrawer() {
   const { isCartOpen, closeCart } = useRestaurantUi();
@@ -107,7 +108,11 @@ export default function CartPreviewDrawer() {
           <header className="border-b border-slate-200 px-5 py-4">
             <div className="flex items-start justify-between gap-3">
               <div className="flex min-w-0 items-center gap-3">
-                <div className="relative size-11 shrink-0 overflow-hidden rounded-xl border border-slate-200 bg-slate-100">
+                <div className={`relative size-11 shrink-0 overflow-hidden border border-slate-200 bg-slate-100 ${
+                  cartHeaderInfo.mode === "single" && cartHeaderInfo.restaurant
+                    ? getRestaurantLogoShapeClassName(cartHeaderInfo.restaurant.id)
+                    : "rounded-xl"
+                }`}>
                   {cartHeaderInfo.mode === "single" && cartHeaderInfo.restaurant?.logo ? (
                     <Image
                       src={cartHeaderInfo.restaurant.logo}

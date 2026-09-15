@@ -12,6 +12,7 @@ import CartCustomizationSummary from "@/components/cart/CartCustomizationSummary
 import { buildCartItemSummaryGroups } from "@/lib/cart/displayLabels";
 import { getCartItemCoreMacros } from "@/lib/cart/itemAccessors";
 import type { CartItem } from "@/types/cart";
+import { getRestaurantImagePresentation } from "@/lib/restaurantPresentation";
 
 // Re-exported for CartItemPreviewContent's section headings, which import it
 // from here — CartCustomizationSummary is the single source of truth.
@@ -37,6 +38,9 @@ export default function CartItemCard({
   onDecrement,
 }: CartItemCardProps) {
   const quantityMultiplier = Math.max(cartItem.quantity, 1);
+  const imageClassName =
+    getRestaurantImagePresentation(cartItem.restaurantId).itemThumbnailImageClassName ??
+    "object-contain p-3";
   const coreMacros = getCartItemCoreMacros(cartItem);
   const displayCalories = coreMacros.calories * quantityMultiplier;
   const displayProtein = coreMacros.protein * quantityMultiplier;
@@ -88,7 +92,7 @@ export default function CartItemCard({
             <img
               src={cartItem.image}
               alt={displayName}
-              className="block h-[190px] w-full object-contain p-3 lg:h-[184px] lg:w-[184px]"
+              className={`block h-[190px] w-full lg:h-[184px] lg:w-[184px] ${imageClassName}`}
             />
           ) : (
             <div className="h-[190px] w-full lg:h-[184px] lg:w-[184px]" />

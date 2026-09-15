@@ -1735,7 +1735,13 @@ function AddonCustomizationSection({ config }: AddonCustomizationSectionProps) {
 // SelectionSummaryPanels.tsx) — it deliberately has no max-height/overflow
 // of its own, so there is exactly one scroll container per screen instead of
 // a local one nested inside the shared one.
-function MealDetailItemsList({ items }: { items: MealDetailItem[] }) {
+function MealDetailItemsList({
+  items,
+  imageClassName,
+}: {
+  items: MealDetailItem[];
+  imageClassName?: string;
+}) {
   return (
     <ul className="flex list-none flex-col divide-y divide-black/[0.06] pl-0">
       {items.map((detailItem) => (
@@ -1752,7 +1758,7 @@ function MealDetailItemsList({ items }: { items: MealDetailItem[] }) {
                 className={`h-full w-full ${
                   detailItem.isPresetMealArtwork
                     ? CHIPOTLE_PRESET_MEAL_IMAGE_CLASSNAME
-                    : "object-contain p-1"
+                    : (imageClassName ?? "object-contain p-1")
                 }`}
               />
             ) : null}
@@ -1814,6 +1820,8 @@ export default function ItemDetailsPanel({
   onCustomizeIngredients,
   quantityMultiplier = 1,
   isMainItemPresetMealArtwork = false,
+  standardRecipeNotice,
+  mealDetailImageClassName,
 }: {
   item: MenuItem;
   nutrition: Nutrition;
@@ -1859,6 +1867,11 @@ export default function ItemDetailsPanel({
   quantityMultiplier?: number;
   // Chipotle High Protein preset meals only — see MealDetailItem above.
   isMainItemPresetMealArtwork?: boolean;
+  standardRecipeNotice?: {
+    title: string;
+    body: string;
+  };
+  mealDetailImageClassName?: string;
 }) {
   const safeQuantityMultiplier = Math.max(quantityMultiplier ?? 1, 1);
   const scaleNutritionValue = (value?: number) =>
@@ -2184,6 +2197,17 @@ export default function ItemDetailsPanel({
         </div>
       ) : null}
 
+      {shouldShowInfoSection && standardRecipeNotice ? (
+        <section className="rounded-2xl border border-slate-200/70 bg-slate-50/70 px-4 py-3 sm:px-5">
+          <h2 className="text-sm font-semibold text-slate-700">
+            {standardRecipeNotice.title}
+          </h2>
+          <p className="mt-1 text-sm leading-5 text-slate-500">
+            {standardRecipeNotice.body}
+          </p>
+        </section>
+      ) : null}
+
       {shouldShowInfoSection ? (
         <NutritionDetailsGrid
           nutritionFacts={
@@ -2206,7 +2230,10 @@ export default function ItemDetailsPanel({
               <SectionEyebrow className="text-base text-neutral-500">
                 Items
               </SectionEyebrow>
-              <MealDetailItemsList items={detailItems} />
+              <MealDetailItemsList
+                items={detailItems}
+                imageClassName={mealDetailImageClassName}
+              />
             </SelectionSummaryShell>
           }
         />

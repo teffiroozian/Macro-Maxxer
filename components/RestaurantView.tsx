@@ -3,7 +3,10 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import type { LucideIcon } from "lucide-react";
-import { CATEGORY_ICONS } from "@/data/menuCategoryIcons";
+import {
+  CATEGORY_ICONS,
+  STARBUCKS_CATEGORY_ICON_OVERRIDES,
+} from "@/data/menuCategoryIcons";
 import type {
   IngredientItem,
   MenuItem,
@@ -68,6 +71,13 @@ function StandardRestaurantView({
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
+  const categoryIcons = useMemo(
+    () =>
+      restaurantId === "starbucks"
+        ? { ...CATEGORY_ICONS, ...STARBUCKS_CATEGORY_ICON_OVERRIDES }
+        : CATEGORY_ICONS,
+    [restaurantId],
+  );
   const ingredientMenuItems = useMemo<MenuItem[]>(
     () =>
       ingredients
@@ -109,6 +119,7 @@ function StandardRestaurantView({
     toggleRankedAllFilter,
     toggleRankedChildFilter,
   } = useRestaurantMenuControls({
+    restaurantId,
     hasBuildYourOwn,
     items,
     ingredientMenuItems,
@@ -219,6 +230,7 @@ function StandardRestaurantView({
           effectiveViewMode === "ingredients" ? INGREDIENT_PROTEIN_OPTIONS : undefined
         }
         hideViewSelector={hasBuildYourOwn}
+        hideIngredientsView={restaurantId === "starbucks"}
         onEditFiltersDrawerReady={handleEditFiltersDrawerReady}
       />
 
@@ -233,7 +245,7 @@ function StandardRestaurantView({
           categoryOptions={categoryOptions}
           resolvedActiveCategory={resolvedActiveCategory}
           onCategorySelect={handleCategorySelect}
-          categoryIcons={CATEGORY_ICONS}
+          categoryIcons={categoryIcons}
           filters={filters}
           onFiltersChange={handleFiltersChange}
           onEditFilters={openMobileFiltersDrawer}
