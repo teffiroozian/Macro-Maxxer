@@ -2,6 +2,7 @@ import type { ItemVariant, MenuItem } from "@/types/menu";
 import { getDefaultMenuItemNutrition } from "@/lib/nutrition";
 import { getCategoryLabel, getItemCategories, normalizeCategory } from "@/lib/menuSections/sorting";
 import type { Filters } from "@/lib/menuSections/filterOptions";
+import { normalizeSearchText, squashSearchText } from "@/lib/search/normalizeSearchText";
 
 // A variant that doesn't specify its own `categories` (e.g. a serving-size
 // or serving-type override like a 30-piece "shareable" nugget tray) belongs
@@ -30,7 +31,7 @@ export const RANKED_ALL_FILTER_KEYS: RankedAllFilterKey[] = [
 export type RankedParentSelectionState = "all" | "some" | "none";
 
 export function getSearchTerms(query: string): string[] {
-  return query.trim().toLowerCase().split(/\s+/).filter(Boolean);
+  return normalizeSearchText(query).split(" ").filter(Boolean);
 }
 
 export function getRankedAllFilterKey(
@@ -145,8 +146,9 @@ export function itemMatchesSearch(item: MenuItem, searchTerms: string[]): boolea
       return [trimmed, `${trimmed}s`];
     });
 
-  const searchableText = [item.name.toLowerCase(), ...categoryVariants].join(" ");
-  return searchTerms.every((term) => searchableText.includes(term));
+  const searchableText = normalizeSearchText([item.name, ...categoryVariants].join(" "));
+  const squashedText = squashSearchText(searchableText);
+  return searchTerms.every((term) => searchableText.includes(term) || squashedText.includes(term));
 }
 
 export function filterMenuItems({

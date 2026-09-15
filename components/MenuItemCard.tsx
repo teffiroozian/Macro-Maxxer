@@ -837,6 +837,8 @@ export default function MenuItemCard({
             hasActiveCustomization={hasActiveCustomization}
             proteinScore={!isCartMode ? proteinScore : undefined}
             proteinScoreTier={!isCartMode ? proteinScoreTier : undefined}
+            itemName={item.name}
+            itemImage={selectedItemImage}
             actions={isCartMode ? (
               <CartCardActions
                 itemName={item.name}

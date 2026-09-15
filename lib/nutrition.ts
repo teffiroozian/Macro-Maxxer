@@ -60,6 +60,33 @@ export function getProteinScoreTier(proteinPer100Calories: number): ProteinScore
   return "low";
 }
 
+// Shared "Where it lands" tier scale for the Protein Score detail sheet —
+// same five tiers/thresholds as getProteinScoreTier above, walkable in
+// order for rendering a labeled scale. Elite has no real upper bound, so it
+// carries a visual-only ceiling (see ELITE_VISUAL_CEILING) purely for
+// positioning a value marker inside that segment; it never clamps or
+// affects the displayed score itself.
+export const PROTEIN_SCORE_TIER_ORDER: ProteinScoreTier[] = [
+  "low",
+  "moderate",
+  "good",
+  "excellent",
+  "elite",
+];
+
+export const ELITE_VISUAL_CEILING = 18;
+
+export const PROTEIN_SCORE_TIER_SCALE: Record<
+  ProteinScoreTier,
+  { label: string; tickLabel: string; min: number; max: number | null }
+> = {
+  low: { label: "Low", tickLabel: "0", min: 0, max: PROTEIN_SCORE_TIER_THRESHOLDS.moderate },
+  moderate: { label: "Moderate", tickLabel: "3", min: PROTEIN_SCORE_TIER_THRESHOLDS.moderate, max: PROTEIN_SCORE_TIER_THRESHOLDS.good },
+  good: { label: "Good", tickLabel: "6", min: PROTEIN_SCORE_TIER_THRESHOLDS.good, max: PROTEIN_SCORE_TIER_THRESHOLDS.excellent },
+  excellent: { label: "Excellent", tickLabel: "9", min: PROTEIN_SCORE_TIER_THRESHOLDS.excellent, max: PROTEIN_SCORE_TIER_THRESHOLDS.elite },
+  elite: { label: "Elite", tickLabel: "12+", min: PROTEIN_SCORE_TIER_THRESHOLDS.elite, max: null },
+};
+
 export function addNutritionValues(baseValue?: number, deltaValue?: number) {
   if (baseValue === undefined && deltaValue === undefined) return undefined;
   return (baseValue ?? 0) + (deltaValue ?? 0);

@@ -1,6 +1,10 @@
+"use client";
+
+import { useState } from "react";
 import { Zap } from "lucide-react";
 import { formatProteinScoreDisplay } from "@/components/nutrition/macroDisplay";
 import type { ProteinScoreTier } from "@/lib/nutrition";
+import ProteinScoreDetails, { type ProteinScoreDetailItem } from "@/components/nutrition/ProteinScoreDetails";
 
 // Sits in the content column, directly above the nutrition stat row. A soft
 // tinted chip (no border/shadow) keeps it grounded and on-brand with the
@@ -55,17 +59,34 @@ export default function ProteinScorePill({
   scorePerHundredCalories,
   tier,
   className = "",
+  itemName,
+  itemImage,
+  items,
+  protein,
+  calories,
 }: {
   scorePerHundredCalories: number;
   tier: ProteinScoreTier;
   className?: string;
+  itemName?: string;
+  itemImage?: string;
+  items?: ProteinScoreDetailItem[];
+  protein?: number;
+  calories?: number;
 }) {
+  const [isOpen, setIsOpen] = useState(false);
   const styles = tierStyles[tier];
   const displayScore = formatProteinScoreDisplay(scorePerHundredCalories);
 
   return (
-    <div
-      className={`inline-flex w-fit items-center gap-1.5 whitespace-nowrap rounded-full py-1 pl-1 pr-2.5 text-[12px] leading-none ${styles.chip} ${className}`}
+    <>
+    <button
+      type="button"
+      className={`inline-flex w-fit cursor-pointer items-center gap-1.5 whitespace-nowrap rounded-full py-1 pl-1 pr-2.5 text-[12px] leading-none transition hover:brightness-95 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-600 ${styles.chip} ${className}`}
+      onClick={(event) => { event.stopPropagation(); setIsOpen(true); }}
+      onKeyDown={(event) => event.stopPropagation()}
+      aria-haspopup="dialog"
+      aria-label={`View Protein Score details${itemName ? ` for ${itemName}` : ""}`}
     >
       <span className={`flex h-4 w-4 shrink-0 items-center justify-center rounded-full ${styles.iconWrap}`}>
         <Zap className={`h-2.5 w-2.5 ${styles.icon}`} strokeWidth={2.5} aria-hidden="true" />
@@ -74,6 +95,8 @@ export default function ProteinScorePill({
         <span className={`font-bold ${styles.value}`}>{displayScore}g protein</span>
         <span className={`ml-0.5 ${styles.supporting}`}>/ 100 cal</span>
       </span>
-    </div>
+    </button>
+    {isOpen ? <ProteinScoreDetails open onClose={() => setIsOpen(false)} score={scorePerHundredCalories} protein={protein} calories={calories} name={itemName} image={itemImage} items={items} /> : null}
+    </>
   );
 }

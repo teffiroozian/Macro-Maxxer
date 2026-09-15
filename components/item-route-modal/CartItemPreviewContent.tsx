@@ -411,6 +411,29 @@ export default function CartItemPreviewContent({
               carbs: cartItem.nutritionPerItem.carbs,
               totalFat: cartItem.nutritionPerItem.totalFat,
             }}
+            proteinScoreItems={[
+              ...(mainItem?.nutrition ? [{
+                id: "protein-main-item",
+                name: mainItem.name,
+                image: mainItem.image,
+                calories: mainItem.nutrition.calories,
+                protein: mainItem.nutrition.protein,
+              }] : []),
+              ...(sideSelection?.nutrition ? [{
+                id: "protein-side-item",
+                name: sideSelection.name,
+                image: sideSelection.image,
+                calories: sideSelection.nutrition.calories,
+                protein: sideSelection.nutrition.protein,
+              }] : []),
+              ...(drinkSelection?.nutrition ? [{
+                id: "protein-drink-item",
+                name: drinkSelection.name,
+                image: drinkSelection.image,
+                calories: drinkSelection.nutrition.calories,
+                protein: drinkSelection.nutrition.protein,
+              }] : []),
+            ]}
           >
             {totalSelectedCount > 0 ? (
               <SelectionScrollList>

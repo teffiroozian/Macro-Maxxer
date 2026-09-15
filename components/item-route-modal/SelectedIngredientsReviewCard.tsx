@@ -52,6 +52,13 @@ export default function SelectedIngredientsReviewCard({
             title="Selected Ingredients"
             subtitle={`${selectedBuildName} · ${selectedIngredientCount} selected`}
             totals={adjustedTotals}
+            proteinScoreItems={flatEntries.map(([ingredientId, selectedIngredient]) => ({
+                id: ingredientId,
+                name: selectedIngredient.item.name,
+                image: selectedIngredient.item.image,
+                calories: selectedIngredient.item.nutrition.calories,
+                protein: selectedIngredient.item.nutrition.protein,
+            }))}
         >
             <SelectionScrollList>
                 {flatEntries.map(([ingredientId, selectedIngredient, category]) => {

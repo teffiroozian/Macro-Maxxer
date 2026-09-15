@@ -5,6 +5,7 @@ import Image from "@/components/ui/AppImage";
 import SectionEyebrow from "@/components/ui/SectionEyebrow";
 import SurfaceCard from "@/components/ui/SurfaceCard";
 import ProteinScorePill from "@/components/menu-item-card/ProteinScorePill";
+import type { ProteinScoreDetailItem } from "@/components/nutrition/ProteinScoreDetails";
 import MacroSplitChart, { buildMacroSegments, MacroLegendInfo } from "@/components/nutrition/MacroSplitChart";
 import { getProteinPer100Calories, getProteinScoreTier } from "@/lib/nutrition";
 import { PairedPanelHeightProvider, PairedPanelSource, usePairedPanelHeight } from "@/components/PairedPanelHeight";
@@ -133,6 +134,7 @@ export function SelectionSummaryShell({
   subtitle,
   totals,
   beforeList,
+  proteinScoreItems,
   children,
 }: {
   title: string;
@@ -142,6 +144,7 @@ export function SelectionSummaryShell({
   // treatment) — for a label like "Items" that should read as part of the
   // card's fixed header, not sit inside the gray scrollable surface.
   beforeList?: ReactNode;
+  proteinScoreItems?: ProteinScoreDetailItem[];
   children: ReactNode;
 }) {
   const pairedHeight = usePairedPanelHeight();
@@ -173,7 +176,14 @@ export function SelectionSummaryShell({
       <div className="mt-6 shrink-0 space-y-2 border-t border-black/[0.06] pt-6">
         <SectionEyebrow className="text-base text-neutral-500">Protein Score</SectionEyebrow>
         {typeof proteinScore === "number" && proteinScoreTier ? (
-          <ProteinScorePill scorePerHundredCalories={proteinScore} tier={proteinScoreTier} />
+          <ProteinScorePill
+            scorePerHundredCalories={proteinScore}
+            tier={proteinScoreTier}
+            itemName={title}
+            items={proteinScoreItems}
+            protein={totals.protein}
+            calories={totals.calories}
+          />
         ) : (
           <p className="text-sm text-neutral-500">—</p>
         )}

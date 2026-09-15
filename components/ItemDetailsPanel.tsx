@@ -565,6 +565,8 @@ type MealDetailItem = {
   name: string;
   quantity: number;
   image?: string;
+  calories: number;
+  protein: number;
   // Display-only — a meaningful size/portion variant label (e.g. "Medium",
   // "Extra"), never a generic role name like "Main Item"/"Side"/"Drink".
   // Meal Details is a read-only summary; changing a size/portion happens
@@ -1922,6 +1924,8 @@ export default function ItemDetailsPanel({
       name: item.name,
       quantity: 1,
       image: selectedMainItemImage,
+      calories: (n.calories ?? 0) - (selectedComboSideVariant?.nutrition?.calories ?? selectedComboSide?.nutrition.calories ?? 0) - (selectedComboDrinkVariant?.nutrition?.calories ?? selectedComboDrink?.nutrition.calories ?? 0),
+      protein: (n.protein ?? 0) - (selectedComboSideVariant?.nutrition?.protein ?? selectedComboSide?.nutrition.protein ?? 0) - (selectedComboDrinkVariant?.nutrition?.protein ?? selectedComboDrink?.nutrition.protein ?? 0),
       variantLabel: selectedMainVariant?.label,
       isPresetMealArtwork: isMainItemPresetMealArtwork,
     },
@@ -1932,6 +1936,8 @@ export default function ItemDetailsPanel({
             name: selectedComboSide.name,
             quantity: 1,
             image: selectedComboSide.image,
+            calories: selectedComboSideVariant?.nutrition?.calories ?? selectedComboSide.nutrition.calories,
+            protein: selectedComboSideVariant?.nutrition?.protein ?? selectedComboSide.nutrition.protein,
             variantLabel: selectedComboSideVariant?.label,
           },
         ]
@@ -1943,6 +1949,8 @@ export default function ItemDetailsPanel({
             name: selectedComboDrink.name,
             quantity: 1,
             image: selectedComboDrink.image,
+            calories: selectedComboDrinkVariant?.nutrition?.calories ?? selectedComboDrink.nutrition.calories,
+            protein: selectedComboDrinkVariant?.nutrition?.protein ?? selectedComboDrink.nutrition.protein,
             variantLabel: selectedComboDrinkVariant?.label,
           },
         ]
@@ -2202,6 +2210,13 @@ export default function ItemDetailsPanel({
                 carbs: n.carbs ?? 0,
                 totalFat: n.totalFat ?? 0,
               }}
+              proteinScoreItems={detailItems.map((detailItem) => ({
+                id: detailItem.id,
+                name: detailItem.name,
+                image: detailItem.image,
+                calories: detailItem.calories,
+                protein: detailItem.protein,
+              }))}
             >
               <SectionEyebrow className="text-base text-neutral-500">
                 Items

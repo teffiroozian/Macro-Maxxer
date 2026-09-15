@@ -13,6 +13,13 @@ export default function CartMealBreakdown({ items, totals }: CartMealBreakdownPr
     <SelectionSummaryShell
       title="Meal Breakdown"
       totals={totals}
+      proteinScoreItems={items.map((item) => ({
+        id: item.id,
+        name: formatCartItemName(item),
+        image: item.image,
+        calories: item.nutritionPerItem.calories,
+        protein: item.nutritionPerItem.protein,
+      }))}
       beforeList={<SectionEyebrow className="text-sm text-neutral-500">Items</SectionEyebrow>}
     >
       {items.length === 0 ? (

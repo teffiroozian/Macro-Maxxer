@@ -17,6 +17,8 @@ export default function MenuItemMacroSummary({
   hasActiveCustomization,
   proteinScore,
   proteinScoreTier,
+  itemName,
+  itemImage,
   actions,
 }: {
   displayCalories: number;
@@ -31,12 +33,14 @@ export default function MenuItemMacroSummary({
   hasActiveCustomization: boolean;
   proteinScore?: number;
   proteinScoreTier?: ProteinScoreTier;
+  itemName?: string;
+  itemImage?: string;
   actions: ReactNode;
 }) {
   return (
     <div className="mt-3 lg:mt-auto">
       {typeof proteinScore === "number" && proteinScoreTier ? (
-        <ProteinScorePill scorePerHundredCalories={proteinScore} tier={proteinScoreTier} className="mb-2" />
+        <ProteinScorePill scorePerHundredCalories={proteinScore} tier={proteinScoreTier} protein={displayProtein} calories={displayCalories} itemName={itemName} itemImage={itemImage} className="mb-2" />
       ) : null}
       <div className="flex flex-wrap items-end gap-x-6 gap-y-3 border-t border-black/[0.06] pt-3 lg:gap-x-8">
         <MacroStat

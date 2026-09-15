@@ -2,6 +2,8 @@
 
 import { useEffect, useMemo, useRef } from "react";
 import SectionEyebrow from "@/components/ui/SectionEyebrow";
+import SurfaceCard from "@/components/ui/SurfaceCard";
+import MacroStat from "@/components/nutrition/MacroStat";
 import CartNutritionSummary from "@/components/cart/CartNutritionSummary";
 import GlobalMobileNav from "@/components/GlobalMobileNav";
 import GlobalMobileMenuButton from "@/components/GlobalMobileMenuButton";
@@ -40,14 +42,43 @@ export default function CartPage() {
       <GlobalMobileNav leadingButton={<GlobalMobileMenuButton />} />
       <div className="px-4 pt-1 sm:px-6"><DesktopNav searchBarVariant="compact" /></div>
       <main className="mx-auto flex min-h-screen w-full max-w-5xl flex-col gap-8 px-4 pb-16 pt-28 sm:px-6 lg:gap-10 lg:pb-20 lg:pt-10">
-        <header className="flex flex-wrap items-baseline justify-between gap-2">
-          <h1 className="font-heading text-3xl font-bold leading-tight text-neutral-900 sm:text-4xl">
-            Your Cart
-          </h1>
+        <header className="flex flex-col gap-5 lg:flex-row lg:items-center lg:justify-between lg:gap-24">
+          <div className="flex flex-col gap-3 lg:shrink-0">
+            <h1 className="font-heading text-3xl font-bold leading-tight text-neutral-900 sm:text-4xl">
+              Your Cart
+            </h1>
+            {items.length > 0 ? (
+              <span className="inline-flex w-fit items-center rounded-full bg-emerald-50 px-3 py-1 text-xs font-semibold text-emerald-700">
+                {itemCount} item{itemCount === 1 ? "" : "s"}
+              </span>
+            ) : null}
+          </div>
+
           {items.length > 0 ? (
-            <p className="text-sm font-medium text-neutral-500">
-              {itemCount} item{itemCount === 1 ? "" : "s"}
-            </p>
+            <SurfaceCard
+              radius="large"
+              shadow="sm"
+              padding="none"
+              className="w-full overflow-hidden lg:flex-1"
+            >
+              <div className="flex items-stretch">
+                <div className="flex flex-1 justify-center px-2 py-3.5 sm:px-4 sm:py-4 lg:px-5">
+                  <MacroStat macroKey="calories" value={nutritionTotals.calories} labelVariant="uppercase" size="cartHeaderTotal" />
+                </div>
+                <div className="my-auto h-9 w-px bg-black/[0.08] sm:h-11" aria-hidden="true" />
+                <div className="flex flex-1 justify-center px-2 py-3.5 sm:px-4 sm:py-4 lg:px-5">
+                  <MacroStat macroKey="protein" value={nutritionTotals.protein} labelVariant="uppercase" size="cartHeaderTotal" />
+                </div>
+                <div className="my-auto h-9 w-px bg-black/[0.08] sm:h-11" aria-hidden="true" />
+                <div className="flex flex-1 justify-center px-2 py-3.5 sm:px-4 sm:py-4 lg:px-5">
+                  <MacroStat macroKey="carbs" value={nutritionTotals.carbs} labelVariant="uppercase" size="cartHeaderTotal" />
+                </div>
+                <div className="my-auto h-9 w-px bg-black/[0.08] sm:h-11" aria-hidden="true" />
+                <div className="flex flex-1 justify-center px-2 py-3.5 sm:px-4 sm:py-4 lg:px-5">
+                  <MacroStat macroKey="totalFat" value={nutritionTotals.totalFat} labelVariant="uppercase" size="cartHeaderTotal" />
+                </div>
+              </div>
+            </SurfaceCard>
           ) : null}
         </header>
 

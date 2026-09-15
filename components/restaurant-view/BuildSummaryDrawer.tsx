@@ -600,7 +600,7 @@ export default function BuildSummaryDrawer({
           <SurfaceCard as="section" padding="compact" radius="large" shadow="none">
             <ViewBuildStatBlock eyebrow="Protein Score">
               {typeof proteinScore === "number" && proteinScoreTier ? (
-                <ProteinScorePill scorePerHundredCalories={proteinScore} tier={proteinScoreTier} />
+                <ProteinScorePill scorePerHundredCalories={proteinScore} tier={proteinScoreTier} protein={displayNutritionLabelTotals.protein} calories={displayNutritionLabelTotals.calories} itemName={selectedBuildName} />
               ) : (
                 <p className="text-sm text-neutral-500">—</p>
               )}
@@ -657,7 +657,7 @@ export default function BuildSummaryDrawer({
             <div className="mt-3 flex shrink-0 items-start gap-5 border-t border-black/[0.06] pt-3">
               <ViewBuildStatBlock eyebrow="Protein Score" className="shrink-0">
                 {typeof proteinScore === "number" && proteinScoreTier ? (
-                  <ProteinScorePill scorePerHundredCalories={proteinScore} tier={proteinScoreTier} />
+                  <ProteinScorePill scorePerHundredCalories={proteinScore} tier={proteinScoreTier} protein={displayNutritionLabelTotals.protein} calories={displayNutritionLabelTotals.calories} itemName={selectedBuildName} />
                 ) : (
                   <p className="text-sm text-neutral-500">—</p>
                 )}
