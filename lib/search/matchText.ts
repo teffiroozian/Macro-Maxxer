@@ -16,3 +16,24 @@ export function matchesText(text: string, terms: string[]): boolean {
   const squashed = squashSearchText(normalized);
   return terms.every((term) => normalized.includes(term) || squashed.includes(term));
 }
+
+// Matches query terms as an ordered subsequence of the normalized text.
+// Terms may have arbitrary text between them, but cannot appear out of order.
+export function matchesOrderedTerms(text: string, terms: string[]): boolean {
+  if (!terms.length) {
+    return true;
+  }
+
+  const normalized = text.toLowerCase();
+  let cursor = 0;
+
+  for (const term of terms) {
+    const matchIndex = normalized.indexOf(term, cursor);
+    if (matchIndex === -1) {
+      return false;
+    }
+    cursor = matchIndex + term.length;
+  }
+
+  return true;
+}

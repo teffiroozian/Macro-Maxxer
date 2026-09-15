@@ -4,6 +4,7 @@ import { CalendarCheck2, ExternalLink, Flag, UtensilsCrossed } from "lucide-reac
 import RestaurantLogoBadge from "@/components/ui/RestaurantLogoBadge";
 import SurfaceCard from "@/components/ui/SurfaceCard";
 import { useStickyNavClearance } from "@/components/restaurant-view/useStickyNavClearance";
+import { getRestaurantImagePresentation } from "@/lib/restaurantPresentation";
 
 // Same real, functional destination SiteFooter links to for the repo — the
 // project has no issue-tracking backend of its own, so "report an error"
@@ -32,6 +33,7 @@ function formatLastUpdated(value?: string) {
 }
 
 type RestaurantIdentityHeaderProps = {
+  restaurantId: string;
   name: string;
   logo: string;
   description?: string;
@@ -45,6 +47,7 @@ type RestaurantIdentityHeaderProps = {
 // standard menu flow and builder flows (e.g. Chipotle, including its
 // pre-entrée-selection state) without either needing to render it itself.
 export default function RestaurantIdentityHeader({
+  restaurantId,
   name,
   logo,
   description,
@@ -53,6 +56,7 @@ export default function RestaurantIdentityHeader({
   lastUpdated,
 }: RestaurantIdentityHeaderProps) {
   const updatedAtLabel = formatLastUpdated(lastUpdated);
+  const imagePresentation = getRestaurantImagePresentation(restaurantId);
 
   // The fixed nav stack above this header (global nav, secondary controls,
   // and — on mobile — the floating category strip) reserves its own space
@@ -86,7 +90,13 @@ export default function RestaurantIdentityHeader({
               breathe instead of wrapping into short lines beside a
               competing right-hand column. */}
           <div className="flex items-start gap-3.5">
-            <RestaurantLogoBadge src={logo} alt={`${name} logo`} size="md" className="shrink-0" />
+            <RestaurantLogoBadge
+              src={logo}
+              alt={`${name} logo`}
+              size="md"
+              shape={imagePresentation.headerLogoShape}
+              className="shrink-0"
+            />
 
             <div className="min-w-0">
               <h1 className="font-heading text-3xl font-bold leading-tight text-neutral-900 sm:text-4xl">

@@ -1,0 +1,41 @@
+{
+  "restaurant": "Chipotle",
+  "sourceType": "official-universal-menurules-api",
+  "source": "https://services.chipotle.com/menuinnovation/v1/universalmenus/menurules?country=US",
+  "country": "US",
+  "retrieved": "2026-08-31T17:34:53.457Z",
+  "collectorScript": "scripts/collect/chipotle-menu-rules.ts",
+  "recordCountsByCategory": {
+    "entrees": 102,
+    "sides": 50,
+    "drinks": 84,
+    "nonFoodItems": 3
+  },
+  "totalRecords": 239,
+  "sampleItemRuleFieldCheck": {
+    "sampleItemId": "CMG-6",
+    "sampleItemName": "Veggie Burrito",
+    "expectedFields": [
+      "maxContents",
+      "maxCustomizations",
+      "maxOnTheSideCustomizations",
+      "maxExtras",
+      "maxHalfs",
+      "maxExtrasPlusHalfs",
+      "contentGroups"
+    ],
+    "missingFields": []
+  },
+  "subscriptionKeyDiscovery": {
+    "method": "Discovered dynamically at collection time from the <meta property=\"servicesconfig\" data-host=\"...\" data-appkey=\"...\"/> tag on the nutrition-calculator page, rather than hardcoded, since Chipotle controls and may rotate this value.",
+    "discoveredFromPage": "https://www.chipotle.com/nutrition-calculator",
+    "discoveredHost": "https://services.chipotle.com"
+  },
+  "notes": [
+    "This endpoint is country-level (country=US), not restaurant-specific, unlike the compressed onlinemenu endpoint used for calculator-menu.json (restaurant 469).",
+    "The top-level shape (\"entrees\"/\"sides\"/\"drinks\"/\"nonFoodItems\") matches calculator-menu.json's shape, but per-item content here additionally carries build/customization rule fields (maxContents, maxCustomizations, maxOnTheSideCustomizations, maxExtras, maxHalfs, maxExtrasPlusHalfs, contentGroups, minQuantity/maxQuantity, defaultContent, pricingReferenceItemId) that were not the focus of the calculator-menu collection.",
+    "Kids-specific items and content groups (e.g. items named \"... Kids Build Your Own\", \"... Kids Quesadilla\") are present among these arrays, not in a separate kids-only section.",
+    "HalfPortion/ExtraPortion relationships (e.g. items named with \"Half\" pairing to a full-size item via pricingReferenceItemId) were observed among entrees during investigation.",
+    "This file is the fully untouched source JSON from the menurules endpoint: no fields renamed, no records removed or deduplicated, no reconciliation against calculator-menu.json or menu-metadata.json, and no mapping to Macro Maxxer's schema."
+  ]
+}

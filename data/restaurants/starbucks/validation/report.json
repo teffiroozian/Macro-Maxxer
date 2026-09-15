@@ -1,0 +1,136 @@
+{
+  "restaurant": "Starbucks",
+  "generatedAt": "2026-09-14",
+  "valid": true,
+  "summary": {
+    "errors": 0,
+    "warnings": 0,
+    "info": 0,
+    "errorTypes": {},
+    "warningTypes": {}
+  },
+  "checks": {
+    "structure": {
+      "passed": true,
+      "errors": 0,
+      "warnings": 0,
+      "info": 0,
+      "details": {
+        "rawResponses": 282,
+        "items": 260,
+        "unresolved": 21,
+        "filtered": 1
+      }
+    },
+    "coverage": {
+      "passed": true,
+      "errors": 0,
+      "warnings": 0,
+      "info": 0,
+      "details": {
+        "rawProductForms": 282,
+        "imported": 260,
+        "unresolved": 21,
+        "filtered": 1,
+        "reconciled": true
+      }
+    },
+    "identity": {
+      "passed": true,
+      "errors": 0,
+      "warnings": 0,
+      "info": 0,
+      "details": {
+        "uniqueItemIds": 260,
+        "uniqueVariantIds": 684
+      }
+    },
+    "categories": {
+      "passed": true,
+      "errors": 0,
+      "warnings": 0,
+      "info": 0,
+      "details": {
+        "itemsWithOnePrimaryCategory": 260
+      }
+    },
+    "defaults": {
+      "passed": true,
+      "errors": 0,
+      "warnings": 0,
+      "info": 0,
+      "details": {
+        "items": 260,
+        "validDefaults": 260
+      }
+    },
+    "nutrition": {
+      "passed": true,
+      "errors": 0,
+      "warnings": 0,
+      "info": 0,
+      "details": {
+        "itemPanels": 260,
+        "variantPanels": 684,
+        "requiredSupportedFields": [
+          "calories",
+          "protein",
+          "carbs",
+          "totalFat",
+          "satFat",
+          "transFat",
+          "cholesterol",
+          "sodium",
+          "fiber",
+          "sugars"
+        ]
+      }
+    },
+    "sku_sizes": {
+      "passed": true,
+      "errors": 0,
+      "warnings": 0,
+      "info": 0,
+      "details": {
+        "variants": 684,
+        "uniqueSkus": 684
+      }
+    },
+    "provenance": {
+      "passed": true,
+      "errors": 0,
+      "warnings": 0,
+      "info": 0,
+      "details": {
+        "checkedRecords": 944
+      }
+    },
+    "unresolved": {
+      "passed": true,
+      "errors": 0,
+      "warnings": 0,
+      "info": 0,
+      "details": {
+        "total": 21,
+        "byForm": {
+          "Whole-Bean": 16,
+          "VIA": 5
+        }
+      }
+    },
+    "filtered": {
+      "passed": true,
+      "errors": 0,
+      "warnings": 0,
+      "info": 0,
+      "details": {
+        "filteredRecords": 1,
+        "shoppingBagFiltered": true,
+        "shoppingBagUnresolved": 0
+      }
+    }
+  },
+  "errors": [],
+  "warnings": [],
+  "info": []
+}

@@ -31,6 +31,7 @@ import { resolveComboDrinkOptions, resolveComboMealConfig, resolveComboSideOptio
 import { getProteinPer100Calories, getProteinScoreTier, normalizeNutrition } from "@/lib/nutrition";
 import { resolveFinalizedCartConfiguration, type CartConfigurationPayload } from "@/lib/menuItemCard/finalizedCartConfiguration";
 import type { ComparativeLabelKind } from "@/lib/menuSections/comparativeLabels";
+import { getRestaurantImagePresentation } from "@/lib/restaurantPresentation";
 
 // Same portion multipliers already used across the build-your-own portion
 // modes (light/normal/extra for rice, beans, toppings; normal/double for
@@ -512,6 +513,7 @@ export default function MenuItemCard({
   // get the full-cover crop — standard items (Chips & Sides, drinks, sauces,
   // normal entrees, etc.) keep the normal contained image treatment.
   const isHighProteinMenuCard = isChipotleHighProteinMenuItem(item, restaurantId);
+  const imagePresentation = getRestaurantImagePresentation(restaurantId);
   const quantityMultiplier = isCartMode ? Math.max(cartQuantity, 1) : 1;
   const displayCalories = (calories ?? 0) * quantityMultiplier;
   const displayProtein = (protein ?? 0) * quantityMultiplier;
@@ -807,6 +809,7 @@ export default function MenuItemCard({
           selectedItemImage={selectedItemImage}
           isCartMode={isCartMode}
           isHighProteinMenuCard={isHighProteinMenuCard}
+          itemImageClassName={imagePresentation.menuCardImageClassName}
           rank={rank}
           comparativeLabel={rank === null ? comparativeLabel : undefined}
           variants={variants}

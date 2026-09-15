@@ -1,4 +1,4 @@
-import { getSearchTerms, matchesText } from "@/lib/search/matchText";
+import { getSearchTerms, matchesOrderedTerms, matchesText } from "@/lib/search/matchText";
 import { resolveQuickAddEligibility } from "@/lib/search/quickAddEligibility";
 import {
   NAME_RANK_TIER,
@@ -31,7 +31,7 @@ const GROUP = {
 const NAME_RANK = {
   EXACT: 0,
   PARTIAL: 1, // starts-with or contains
-  TOKEN: 2, // every query word present, just not as one contiguous phrase
+  TOKEN: 2, // query words appear in order, just not as one contiguous phrase
   WEAK: 3, // name didn't match at all; category text did (items only)
 } as const;
 
@@ -59,7 +59,7 @@ function getItemMatch(
     nameRank = NAME_RANK.EXACT;
   } else if (nameTier === NAME_RANK_TIER.STARTS_WITH || nameTier === NAME_RANK_TIER.CONTAINS) {
     nameRank = NAME_RANK.PARTIAL;
-  } else if (nameTier === NAME_RANK_TIER.TOKEN_MATCH) {
+  } else if (nameTier === NAME_RANK_TIER.TOKEN_MATCH && matchesOrderedTerms(name, terms)) {
     nameRank = NAME_RANK.TOKEN;
   } else if (matchesText(categories.join(" "), terms)) {
     // Name didn't match at all — fall back to a weak category-text match.
@@ -75,7 +75,7 @@ function getItemMatch(
   };
 }
 
-function getEntreeMatch(label: string, query: string): ItemMatch | null {
+function getEntreeMatch(label: string, query: string, terms: string[]): ItemMatch | null {
   const nameTier = getNameRankTier(label, query);
 
   let nameRank: number;
@@ -83,7 +83,7 @@ function getEntreeMatch(label: string, query: string): ItemMatch | null {
     nameRank = NAME_RANK.EXACT;
   } else if (nameTier === NAME_RANK_TIER.STARTS_WITH || nameTier === NAME_RANK_TIER.CONTAINS) {
     nameRank = NAME_RANK.PARTIAL;
-  } else if (nameTier === NAME_RANK_TIER.TOKEN_MATCH) {
+  } else if (nameTier === NAME_RANK_TIER.TOKEN_MATCH && matchesOrderedTerms(label, terms)) {
     nameRank = NAME_RANK.TOKEN;
   } else {
     return null;
@@ -149,8 +149,8 @@ export function searchAllContent(index: SearchIndexEntry[], query: string): Cont
       }
     }
 
-    for (const candidate of entry.entreeBuilders) {
-      const match = getEntreeMatch(candidate.option.label, query);
+    for (const candidate of entry.entreeBuilders ?? []) {
+      const match = getEntreeMatch(candidate.option.label, query, terms);
       if (match) {
         scored.push({
           result: {

@@ -10,10 +10,10 @@ const ORDER_API_URL = "https://order.api.my.chick-fil-a.com/";
 const SOURCE_PATH = `orders/locations/2.0/${LOCATION_ID}/menu/client/nutrition?language=${LANGUAGE}`;
 const SOURCE_URL = new URL(SOURCE_PATH, ORDER_API_URL).toString();
 const OUTPUT_PATH = resolve(
-  "data/raw/chick-fil-a/ordering-nutrition.json",
+  "data/restaurants/chick-fil-a/raw/ordering-nutrition.json",
 );
 const SOURCE_METADATA_PATH = resolve(
-  "data/raw/chick-fil-a/ordering-nutrition-source.json",
+  "data/restaurants/chick-fil-a/raw/ordering-nutrition-source.json",
 );
 
 type JsonObject = Record<string, unknown>;
@@ -218,7 +218,7 @@ async function main(): Promise<void> {
   console.log(
     `Collected ${items.length} Chick-fil-A ordering nutrition records for location ${LOCATION_ID}.`,
   );
-  console.log("Saved to data/raw/chick-fil-a/ordering-nutrition.json");
+  console.log("Saved to data/restaurants/chick-fil-a/raw/ordering-nutrition.json");
 }
 
 main().catch((error: unknown) => {

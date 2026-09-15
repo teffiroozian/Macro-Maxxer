@@ -6,13 +6,13 @@ import { resolveIngredientRelationshipNutrition } from "../lib/nutrition.ts";
 
 const restaurant = JSON.parse(
   await readFile(
-    new URL("../data/generated/chick-fil-a/restaurant.json", import.meta.url),
+    new URL("../data/restaurants/chick-fil-a/generated/restaurant.json", import.meta.url),
     "utf8",
   ),
 );
 const unresolved = JSON.parse(
   await readFile(
-    new URL("../data/generated/chick-fil-a/unresolved.json", import.meta.url),
+    new URL("../data/restaurants/chick-fil-a/generated/unresolved.json", import.meta.url),
     "utf8",
   ),
 );

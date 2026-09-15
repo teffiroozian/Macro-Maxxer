@@ -98,6 +98,28 @@ function resolveCategoryIcon(categoryIcons: Record<string, LucideIcon>, label: s
   return candidates.map((candidate) => categoryIcons[candidate]).find(Boolean) ?? Circle;
 }
 
+function TruncatedCategoryLabel({ label, className }: { label: string; className: string }) {
+  const labelRef = useRef<HTMLSpanElement>(null);
+  const [isTruncated, setIsTruncated] = useState(false);
+
+  useEffect(() => {
+    const element = labelRef.current;
+    if (!element) return;
+
+    const update = () => setIsTruncated(element.scrollWidth > element.clientWidth);
+    update();
+    const observer = new ResizeObserver(update);
+    observer.observe(element);
+    return () => observer.disconnect();
+  }, [label]);
+
+  return (
+    <span ref={labelRef} className={className} title={isTruncated ? label : undefined}>
+      {label}
+    </span>
+  );
+}
+
 type CategoryNavItemProps = {
   option: CategoryOption;
   isActive: boolean;
@@ -115,7 +137,7 @@ function CategoryNavItem({ option, isActive, Icon, onSelect, variant }: Category
     const desktopLabel = option.label === "Included Ingredients" ? "Included" : option.label;
 
     return (
-      <div className="relative w-full max-w-full pl-3">
+      <div className="relative box-border min-w-0 w-full max-w-full pl-3">
         {isActive ? (
           <span
             className="absolute left-0 top-1/2 h-7 w-1 -translate-y-1/2 rounded-full shadow-[0px_0_8px_rgba(0,0,0,0.25)] bg-white"
@@ -126,12 +148,12 @@ function CategoryNavItem({ option, isActive, Icon, onSelect, variant }: Category
         <button
           type="button"
           onClick={onSelect}
-          className={`cursor-pointer flex h-11 w-full max-w-full items-center gap-3 rounded-full px-4 text-left text-base font-semibold transition-colors duration-50 ease-in focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-strong ${
+          className={`cursor-pointer box-border flex h-11 min-w-0 w-full max-w-full items-center gap-3 rounded-full px-4 text-left text-base font-semibold transition-colors duration-50 ease-in focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-strong ${
             isActive ? "shadow-[0px_0_8px_rgba(0,0,0,0.25)] bg-white text-slate-800" : "text-slate-700 hover:bg-slate-200"
           }`}
         >
           <Icon className="h-4 w-4 shrink-0" strokeWidth={2.5} aria-hidden="true" />
-          <span className="min-w-0 max-w-full flex-1 truncate">{desktopLabel}</span>
+          <TruncatedCategoryLabel label={desktopLabel} className="min-w-0 max-w-full flex-1 truncate whitespace-nowrap" />
           {formattedCount ? (
             <span
               className={`shrink-0 text-sm font-semibold tabular-nums ${
@@ -156,7 +178,7 @@ function CategoryNavItem({ option, isActive, Icon, onSelect, variant }: Category
         }`}
       >
         <Icon className="h-4 w-4 shrink-0" strokeWidth={2.2} aria-hidden="true" />
-        <span className="min-w-0 flex-1 truncate">{option.label}</span>
+        <TruncatedCategoryLabel label={option.label} className="min-w-0 flex-1 truncate whitespace-nowrap" />
         {formattedCount ? (
           <span className="shrink-0 text-xs font-semibold tabular-nums text-black/40">{formattedCount}</span>
         ) : null}
@@ -721,7 +743,7 @@ function DesktopCategorySidebar({
         {effectiveViewMode === "ranking" ? "Categories" : effectiveViewMode === "ingredients" ? "Ingredients" : "Categories"}
       </SectionEyebrow>
 
-      <div className="min-h-0 flex-1 overflow-y-auto px-2 py-1">
+      <div className="min-h-0 min-w-0 flex-1 overflow-x-hidden overflow-y-auto px-2 py-1">
         {effectiveViewMode === "ranking" ? (
           <RankingCategoryTree
             rankingOptions={rankingOptions}
@@ -734,7 +756,7 @@ function DesktopCategorySidebar({
             rankingFallbackIcons={rankingFallbackIcons}
           />
         ) : (
-          <nav aria-label={categoryNavLabel} className="grid gap-1">
+          <nav aria-label={categoryNavLabel} className="grid min-w-0 max-w-full gap-1 overflow-visible">
             {categoryOptions.map((option) => {
               const isActive = option.id === resolvedActiveCategory;
               const Icon = resolveCategoryIcon(categoryIcons, option.label);

@@ -4,6 +4,7 @@ import CartItemCard from "@/components/cart/CartItemCard";
 import { formatCartItemName } from "@/lib/cart/displayLabels";
 import { getAllRestaurants } from "@/lib/restaurants";
 import type { CartItem } from "@/types/cart";
+import { getRestaurantLogoShapeClassName } from "@/lib/restaurantPresentation";
 
 type CartItemsSectionProps = {
   items: CartItem[];
@@ -58,7 +59,9 @@ export default function CartItemsSection({
             className={groupIndex > 0 ? "border-t border-black/10 pt-6" : ""}
           >
             <div className="mb-3 flex items-center gap-2 px-1">
-              <span className="relative flex h-6 w-6 shrink-0 items-center justify-center overflow-hidden rounded-md bg-neutral-50">
+              <span className={`relative flex h-6 w-6 shrink-0 items-center justify-center overflow-hidden bg-neutral-50 ${
+                getRestaurantLogoShapeClassName(restaurantId)
+              }`}>
                 {restaurant?.logo ? (
                   <Image src={restaurant.logo} alt="" fill sizes="24px" className="object-cover" />
                 ) : null}

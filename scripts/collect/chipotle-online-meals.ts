@@ -12,9 +12,9 @@ const ONLINE_MEALS_URL = new URL(
   SERVICES_BASE_URL,
 ).toString();
 
-const ONLINE_MEALS_OUTPUT_PATH = resolve("data/raw/chipotle/online-meals.json");
+const ONLINE_MEALS_OUTPUT_PATH = resolve("data/restaurants/chipotle/raw/online-meals.json");
 const ONLINE_MEALS_SOURCE_PATH = resolve(
-  "data/raw/chipotle/online-meals-source.json",
+  "data/restaurants/chipotle/raw/online-meals-source.json",
 );
 
 // Chipotle's Azure API Management gateway requires a subscription key on
@@ -248,8 +248,8 @@ async function main(): Promise<void> {
   );
   console.log("Meal counts by type:", mealTypeCounts);
   console.log(`Distinct CMG item IDs referenced: ${cmgItemIds.size}`);
-  console.log("Saved to data/raw/chipotle/online-meals.json");
-  console.log("Saved to data/raw/chipotle/online-meals-source.json");
+  console.log("Saved to data/restaurants/chipotle/raw/online-meals.json");
+  console.log("Saved to data/restaurants/chipotle/raw/online-meals-source.json");
 }
 
 main().catch((error: unknown) => {

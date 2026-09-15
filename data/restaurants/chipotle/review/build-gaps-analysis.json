@@ -1,0 +1,254 @@
+{
+  "analysisType": "targeted-follow-up-salad-quesadilla-taco-tortilla",
+  "analysisDate": "2026-08-31",
+  "parentAnalysis": "data/review/chipotle/source-analysis.json (sections 6 and 11 flagged these as needing dedicated follow-up)",
+  "scope": "Analysis only. No importer built, no raw file modified, no browser used. Resolves as much as the raw sources allow for Salad base/greens, Quesadilla tortilla/cheese, and the CMG-5501 taco-tortilla single-vs-trio relationship.",
+
+  "partA_salad": {
+    "entreeCount": 7,
+    "entreeIds": ["CMG-301 Chicken Salad", "CMG-302 Steak Salad", "CMG-303 Carnitas Salad", "CMG-304 Beef Barbacoa Salad", "CMG-305 Sofritas Salad", "CMG-306 Veggie Salad", "CMG-315 Chipotle Honey Chicken Salad"],
+    "contentGroups": "Identical across all 7: RiceContentGroup (min1/max1), BeansContentGroup (min1/max1) — same as Burrito/Bowl, despite salads not visibly needing rice/beans in casual understanding; reported as-is, not second-guessed.",
+    "contentsStructureIdentical": "All 7 Salad entrees share the exact same content-item set (Extra x6 protein swaps, Beans x3, 10 Toppings, Half x5-6 protein swaps, Rice x3) with only the default-selected items differing by entree.",
+    "fullContentsEnumeration_exampleSteakSalad_CMG302": [
+      { "itemId": "CMG-1101", "itemName": "Extra Chicken", "itemType": "ExtraPortion", "contentGroupName": "", "defaultContent": false, "pricingReferenceItemId": "CMG-301" },
+      { "itemId": "CMG-1102", "itemName": "Extra Steak", "itemType": "ExtraPortion", "contentGroupName": "", "defaultContent": false, "pricingReferenceItemId": "CMG-302" },
+      { "itemId": "CMG-1103", "itemName": "Extra Carnitas", "itemType": "ExtraPortion", "contentGroupName": "", "defaultContent": false, "pricingReferenceItemId": "CMG-303" },
+      { "itemId": "CMG-1104", "itemName": "Extra Beef Barbacoa", "itemType": "ExtraPortion", "contentGroupName": "", "defaultContent": false, "pricingReferenceItemId": "CMG-304" },
+      { "itemId": "CMG-1106", "itemName": "Extra Sofritas", "itemType": "ExtraPortion", "contentGroupName": "", "defaultContent": false, "pricingReferenceItemId": "CMG-305" },
+      { "itemId": "CMG-1115", "itemName": "Extra Chipotle Honey Chicken", "itemType": "ExtraPortion", "contentGroupName": "", "defaultContent": false, "pricingReferenceItemId": "CMG-315" },
+      { "itemId": "CMG-5051", "itemName": "Black Beans", "itemType": "Beans", "contentGroupName": "BeansContentGroup", "defaultContent": false, "pricingReferenceItemId": null },
+      { "itemId": "CMG-5052", "itemName": "Pinto Beans", "itemType": "Beans", "contentGroupName": "BeansContentGroup", "defaultContent": false, "pricingReferenceItemId": null },
+      { "itemId": "CMG-5053", "itemName": "No Beans", "itemType": "Beans", "contentGroupName": "BeansContentGroup", "defaultContent": false, "pricingReferenceItemId": null },
+      { "itemId": "CMG-5203", "itemName": "Tomatillo-Green Chili Salsa", "itemType": "Toppings", "contentGroupName": "", "defaultContent": false, "pricingReferenceItemId": null },
+      { "itemId": "CMG-5204", "itemName": "Tomatillo-Red Chili Salsa", "itemType": "Toppings", "contentGroupName": "", "defaultContent": false, "pricingReferenceItemId": null },
+      { "itemId": "CMG-5251", "itemName": "Sour Cream", "itemType": "Toppings", "contentGroupName": "", "defaultContent": false, "pricingReferenceItemId": null },
+      { "itemId": "CMG-5353", "itemName": "Chipotle-Honey Vinaigrette", "itemType": "Toppings", "contentGroupName": "", "defaultContent": true, "pricingReferenceItemId": null, "nutrition": "220cal/2oz" },
+      { "itemId": "CMG-5252", "itemName": "Cheese", "itemType": "Toppings", "contentGroupName": "", "defaultContent": false, "pricingReferenceItemId": null },
+      { "itemId": "CMG-1029", "itemName": "Queso Blanco", "itemType": "Toppings", "contentGroupName": "", "defaultContent": false, "pricingReferenceItemId": null },
+      { "itemId": "CMG-5201", "itemName": "Fresh Tomato Salsa", "itemType": "Toppings", "contentGroupName": "", "defaultContent": false, "pricingReferenceItemId": null },
+      { "itemId": "CMG-5101", "itemName": "Fajita Veggies", "itemType": "Toppings", "contentGroupName": "", "defaultContent": false, "pricingReferenceItemId": null },
+      { "itemId": "CMG-5202", "itemName": "Roasted Chili-Corn Salsa", "itemType": "Toppings", "contentGroupName": "", "defaultContent": false, "pricingReferenceItemId": null },
+      { "itemId": "CMG-5412", "itemName": "Cilantro Lime Sauce", "itemType": "Toppings", "contentGroupName": "", "defaultContent": false, "pricingReferenceItemId": null },
+      { "itemId": "CMG-1001", "itemName": "Guacamole", "itemType": "Toppings", "contentGroupName": "", "defaultContent": false, "pricingReferenceItemId": null },
+      { "itemId": "CMG-5601", "itemName": "Half Chicken", "itemType": "HalfPortion", "contentGroupName": "", "defaultContent": false, "pricingReferenceItemId": "CMG-301" },
+      { "itemId": "CMG-5603", "itemName": "Half Carnitas", "itemType": "HalfPortion", "contentGroupName": "", "defaultContent": false, "pricingReferenceItemId": "CMG-303" },
+      { "itemId": "CMG-5604", "itemName": "Half Beef Barbacoa", "itemType": "HalfPortion", "contentGroupName": "", "defaultContent": false, "pricingReferenceItemId": "CMG-304" },
+      { "itemId": "CMG-5614", "itemName": "Half 1/2 Chipotle Honey Chicken", "itemType": "HalfPortion", "contentGroupName": "", "defaultContent": false, "pricingReferenceItemId": "CMG-315" },
+      { "itemId": "CMG-5001", "itemName": "White Rice", "itemType": "Rice", "contentGroupName": "RiceContentGroup", "defaultContent": false, "pricingReferenceItemId": null },
+      { "itemId": "CMG-5002", "itemName": "Brown Rice", "itemType": "Rice", "contentGroupName": "RiceContentGroup", "defaultContent": false, "pricingReferenceItemId": null },
+      { "itemId": "CMG-5003", "itemName": "No Rice", "itemType": "Rice", "contentGroupName": "RiceContentGroup", "defaultContent": false, "pricingReferenceItemId": null }
+    ],
+    "veggieSaladException_CMG306": "Veggie Salad has no Extra/Half protein records (consistent with the parent analysis: Veggie has no half/extra concept). Its Guacamole is CMG-5301 with defaultContent:true (the Veggie-family no-charge default guac, per the parent analysis's Guacamole-duplicate finding) IN ADDITION to CMG-5353 Vinaigrette also being defaultContent:true — Veggie Salad is the only salad with two default-included toppings.",
+    "supergreensSaladMix": {
+      "cmgIdFound": null,
+      "searchedIn": ["calculator-menu.json (all 7 Salad entrees' full contents trees)", "menu-rules.json (all 11 Salad entrees, national superset)", "menu-metadata.json (408 items, plus full-text search)", "online-meals.json (full-text search)"],
+      "result": "NO CMG id exists anywhere across any of the 4 structured sources for the salad greens/base. It is not a Toppings/Rice/Beans/Side record, not an Addon, not a HalfPortion — it simply does not appear as a selectable or reference content item in any Salad entree's contents array in either calculator-menu.json or the national menu-rules.json superset.",
+      "onlyTextualEvidence": [
+        "menu-metadata.json's groups[] array — the 'Salad' display group's marketing `description` field: \"Your choice of meat or sofritas served with our fresh supergreens lettuce blend made of Romaine, Baby Kale, and Baby Spinach. Add beans, queso blanco, salsa, guacamole, sour cream or cheese and top it off with our sig[nature]...\" — pure marketing copy, not a structured/id-bearing field.",
+        "online-meals.json's 'High Protein - Low Calorie Bowl' meal (entree.itemId: CMG-301 Chicken Salad) — its free-text `description`/`marketingCopy` fields say \"Adobo Chicken, Supergreens Lettuce Mix, Fajita Veggies, Fresh Tomato Salsa, and Guacamole,\" but the meal's own STRUCTURED `entree.contents[]` array only lists CMG-5101 (Fajita Veggies), CMG-5201 (Fresh Tomato Salsa), CMG-1001 (Guacamole), CMG-5053 (No Beans), CMG-5003 (No Rice) — no CMG id for the lettuce/greens mix appears in the structured array despite it being named in the free text."
+      ],
+      "entreeOwnNutritionCheck": {
+        "finding": "CMG-301 Chicken Salad's own menu-metadata nutrition is 180cal/4oz — numerically IDENTICAL to CMG-1 Chicken Burrito and CMG-101 Chicken Bowl (the protein-only value established in the parent source-analysis, section 3). This confirms the Supergreens base's calories are NOT folded into the Salad entree's own id-level nutrition either.",
+        "allSaladEntreeNutrition": {
+          "CMG-301": "180cal/4oz", "CMG-302": "150cal/4oz", "CMG-303": "210cal/4oz", "CMG-304": "170cal/4oz", "CMG-305": "150cal/4oz", "CMG-306": "0cal/2.5oz", "CMG-315": "210cal/4oz"
+        }
+      },
+      "pdfRow": { "name": "Supergreens Salad Mix", "portion": "3 oz", "calories": 15, "section": "adult" },
+      "matchClassification": "AMBIGUOUS — cannot be joined to any live CMG id because no live CMG id for this component exists in any of the four structured sources. Not a naming ambiguity (the PDF name is unambiguous and even echoed near-verbatim in menu-metadata's own marketing description) but a structural absence: there is nothing to join it TO. Its 15cal/3oz contribution is real but currently untracked by any orderable id — a Salad's true total nutrition is under-counted by this amount if computed purely from summed content-item nutrition, and this must not be papered over by inventing a synthetic id or silently adding 15cal to every salad."
+    },
+    "vinaigrette": {
+      "cmgId": "CMG-5353",
+      "nutrition": "220cal/2oz",
+      "defaultContent": true,
+      "note": "defaultContent:true on all 7 Salad entrees (Salad is the only entree family where a dressing is auto-included by default). Exact match to PDF 'Chipotle-Honey Vinaigrette' 220cal/2fl oz — CONFIRMED (unit label fl oz vs oz, numerically identical, already established in the parent analysis).",
+      "quesadillaDuplicateId": "CMG-5354, same 220cal/2oz value, used in Quesadilla's DipContentGroup context — same product, alternate id by ordering context, consistent with the parent analysis's established multi-id-per-ingredient pattern."
+    },
+    "saladSpecificToppingsOrPortionVariants": "None found. Every topping/rice/beans/half/extra content item used on a Salad is the exact same CMG id used identically on Burrito/Bowl (already-known ids, e.g. CMG-5051 Black Beans, CMG-1001 Guacamole). No salad-exclusive portion variant of any topping exists.",
+    "classification": "CONFIRMED that no live Supergreens Salad Mix CMG id exists (a definitive negative result, not an unresolved search). The PDF row itself is correctly and unambiguously named, but is AMBIGUOUS/UNJOINABLE for import purposes — there is no live record to attach it to."
+  },
+
+  "partB_quesadilla": {
+    "entreeCount": 7,
+    "entreeIds": ["CMG-401 Chicken Quesadilla", "CMG-402 Steak Quesadilla", "CMG-403 Carnitas Quesadilla", "CMG-404 Beef Barbacoa Quesadilla", "CMG-405 Sofritas Quesadilla", "CMG-407 Cheese Only Quesadilla", "CMG-428 Chipotle Honey Chicken Quesadilla"],
+    "contentGroups": "Identical across all 7 (adult) Quesadillas: DipContentGroup (min1/max3), FillingsContentGroup (min0/max999), AddonContentGroup (min0/max999). No RiceContentGroup/BeansContentGroup/TortillaContentGroup at the entree-contentGroups level — a structurally different shape from Burrito/Bowl/Salad/Taco.",
+    "fullContentsEnumeration_exampleChickenQuesadilla_CMG401": [
+      { "itemId": "CMG-5051", "itemName": "Black Beans", "itemType": "Toppings", "contentGroupName": "DipContentGroup", "role": "dip, not filling" },
+      { "itemId": "CMG-5203", "itemName": "Tomatillo-Green Chili Salsa", "itemType": "Toppings", "contentGroupName": "DipContentGroup" },
+      { "itemId": "CMG-5204", "itemName": "Tomatillo-Red Chili Salsa", "itemType": "Toppings", "contentGroupName": "DipContentGroup" },
+      { "itemId": "CMG-5251", "itemName": "Sour Cream", "itemType": "Toppings", "contentGroupName": "DipContentGroup" },
+      { "itemId": "CMG-5001", "itemName": "White Rice", "itemType": "Toppings", "contentGroupName": "DipContentGroup", "note": "Rice offered only as a DIP-group side item here, not a required build component like on Burrito/Bowl/Salad" },
+      { "itemId": "CMG-5354", "itemName": "Chipotle-Honey Vinaigrette", "itemType": "Toppings", "contentGroupName": "DipContentGroup", "nutrition": "220cal/2oz", "note": "Same product as Salad's CMG-5353, alternate id" },
+      { "itemId": "CMG-5201", "itemName": "Fresh Tomato Salsa", "itemType": "Toppings", "contentGroupName": "DipContentGroup" },
+      { "itemId": "CMG-5052", "itemName": "Pinto Beans", "itemType": "Toppings", "contentGroupName": "DipContentGroup" },
+      { "itemId": "CMG-5101", "itemName": "Fajita Veggies", "itemType": "Toppings", "contentGroupName": "FillingsContentGroup", "note": "The only 'filling' addition ever offered — no other filling ingredient exists in this group" },
+      { "itemId": "CMG-5002", "itemName": "Brown Rice", "itemType": "Toppings", "contentGroupName": "DipContentGroup" },
+      { "itemId": "CMG-5202", "itemName": "Roasted Chili-Corn Salsa", "itemType": "Toppings", "contentGroupName": "DipContentGroup" },
+      { "itemId": "CMG-5556", "itemName": "No Included Sides", "itemType": "Toppings", "contentGroupName": "DipContentGroup" },
+      { "itemId": "CMG-5602", "itemName": "Half Steak", "itemType": "HalfPortion", "pricingReferenceItemId": "CMG-402" },
+      { "itemId": "CMG-5605", "itemName": "Half Sofritas", "itemType": "HalfPortion", "pricingReferenceItemId": "CMG-405" },
+      { "itemId": "CMG-5603", "itemName": "Half Carnitas", "itemType": "HalfPortion", "pricingReferenceItemId": "CMG-403" },
+      { "itemId": "CMG-5604", "itemName": "Half Beef Barbacoa", "itemType": "HalfPortion", "pricingReferenceItemId": "CMG-404" },
+      { "itemId": "CMG-5614", "itemName": "Half 1/2 Chipotle Honey Chicken", "itemType": "HalfPortion", "pricingReferenceItemId": "CMG-428" },
+      { "itemId": "CMG-4134", "itemName": "Queso Blanco", "itemType": "Addon", "contentGroupName": "AddonContentGroup", "unitPrice": 2.95, "nutrition": "240cal/4oz" },
+      { "itemId": "CMG-5414", "itemName": "Cilantro Lime Sauce", "itemType": "Addon", "contentGroupName": "AddonContentGroup", "unitPrice": 1.5 },
+      { "itemId": "CMG-1001", "itemName": "Guacamole", "itemType": "Addon", "contentGroupName": "AddonContentGroup", "unitPrice": 2.95, "nutrition": "230cal/4oz" }
+    ],
+    "cheeseOnlyQuesadillaException_CMG407": "No HalfPortion records (no protein to swap). Its Guacamole addon is CMG-5301 with defaultContent:true, unitPrice 0 (the Veggie-family/no-protein default-included guac pattern, same as Veggie Burrito/Bowl/Salad).",
+    "tortillaRecordInAdultQuesadilla": {
+      "found": false,
+      "evidence": "None of the 7 adult Quesadilla entrees' contents arrays (in either calculator-menu.json or menu-rules.json) contain any itemType:'Tortillas' record, and none of their contentGroups arrays declare a TortillaContentGroup at all.",
+      "contrastWithKidsQuesadilla": "The 8 KidsQuesadilla entrees (e.g. CMG-3101 Cheese Only Kids Quesadilla) DO declare a TortillaContentGroup and DO include an explicit tortilla content record: CMG-5401 'Soft Flour Tortilla', defaultContent:true, nutrition 80cal/1oz.",
+      "conclusion": "The adult quesadilla tortilla is not separately tracked by any CMG id anywhere. This mirrors the Salad greens-base gap in Part A: a fixed/baked-in structural component of an adult entree with no discrete id, name, or nutrition record of its own."
+    },
+    "cheeseRecordInAdultQuesadilla": {
+      "found": false,
+      "evidence": "No itemType:'Cheese'/'Toppings' record named 'Cheese' appears anywhere in any of the 7 adult Quesadilla entrees' contents (Cheese/CMG-5252 is a Burrito/Bowl/Salad/Taco topping only, never offered/required on a Quesadilla build). Cheese is presumably baked into the Quesadilla's identity by definition (a quesadilla is fundamentally cheese-in-a-tortilla) rather than exposed as a customization.",
+      "conclusion": "Like the tortilla, the quesadilla's cheese component has no separate CMG id or nutrition record anywhere in the four sources."
+    },
+    "quesadillaEntreeOwnNutrition": {
+      "CMG-401": "180cal/4oz (Chicken)", "CMG-402": "150cal/4oz (Steak)", "CMG-403": "210cal/4oz (Carnitas)", "CMG-404": "170cal/4oz (Beef Barbacoa)", "CMG-405": "150cal/4oz (Sofritas)", "CMG-407": "0cal/0oz (Cheese Only — no protein)", "CMG-428": "210cal/4oz (Chipotle Honey Chicken)",
+      "conclusion": "Same protein-only-nutrition pattern established in the parent analysis. Cheese and tortilla contribute zero calories to these numbers — their nutrition is entirely unaccounted for by any structured record for the adult Quesadilla format, exactly as with Salad's greens base."
+    },
+    "queso_CMG4134_context": {
+      "id": "CMG-4134",
+      "itemName": "Queso Blanco",
+      "itemType": "Addon",
+      "nutrition": "240cal/4oz",
+      "comparisonToOtherQuesoIds": {
+        "CMG-1029 (Toppings, Burrito/Bowl/Salad)": "120cal/2oz",
+        "CMG-1034 (Addon, Taco)": "120cal/2oz",
+        "CMG-4134 (Addon, Quesadilla)": "240cal/4oz — exactly double both of the above"
+      },
+      "pdfMatch": {
+        "matchedRow": "Queso Blanco (side)", "pdfPortion": "4 oz", "pdfCalories": 240,
+        "result": "EXACT match. CMG-4134's 240cal/4oz is identical to the PDF's 'Queso Blanco (side)' row, NOT the 'Queso Blanco (entreé)' row (120cal/2oz) that CMG-1029/CMG-1034 match. This confirms the quesadilla addon uses a side-size Queso portion, not a topping-size portion — consistent with it being a $2.95 optional addon rather than a free customization."
+      },
+      "classification": "CONFIRMED"
+    },
+    "quesadillaTortillaMatch": {
+      "adultContext": "AMBIGUOUS/UNJOINABLE — no CMG id exists at all (see tortillaRecordInAdultQuesadilla above); there is no PDF adult 'Flour Tortilla (quesadilla)' row either, so both sides of a potential join are simultaneously absent. This is a symmetric gap, not a naming mismatch.",
+      "kidsContext": {
+        "cmgId": "CMG-5401", "nutrition": "80cal/1oz",
+        "pdfRow": { "name": "Flour Tortilla (quesadilla)", "section": "kids", "portion": "1 ea", "calories": 80 },
+        "result": "Calories match exactly (80 = 80). Portion unit differs (1oz live vs 1ea PDF) but this is the same unit-label pattern already flagged in the parent analysis for other tortilla/count-based items, not a numeric conflict.",
+        "classification": "HIGH-CONFIDENCE (kids-context only)"
+      }
+    }
+  },
+
+  "partC_tacoTortilla": {
+    "targetId": "CMG-5501",
+    "itemName": "Soft Flour Tortilla",
+    "itemType": "Tortillas",
+    "metadataNutrition": "250cal/3oz",
+    "everyParentContextUsingCMG5501": {
+      "method": "Full deep search of calculator-menu.json and menu-rules.json contents trees for itemId 'CMG-5501'.",
+      "parentsInCalculatorMenu469": [
+        "CMG-1201 Chicken Taco (single)", "CMG-1202 Steak Taco (single)", "CMG-1203 Carnitas Taco (single)", "CMG-1204 Beef Barbacoa Taco (single)", "CMG-1205 Sofritas Taco (single)", "CMG-1206 Veggie Taco (single)", "CMG-1216 Chipotle Honey Chicken Taco (single)",
+        "CMG-201 Chicken Tacos (3)", "CMG-202 Steak Tacos (3)", "CMG-203 Carnitas Tacos (3)", "CMG-204 Beef Barbacoa Tacos (3)", "CMG-205 Sofritas Tacos (3)", "CMG-206 Veggie Tacos (3)", "CMG-215 Chipotle Honey Chicken Tacos (3)"
+      ],
+      "totalParentCount": 14,
+      "note": "CMG-5501 (and its sibling CMG-5503 Crispy Corn Tortilla) is used identically across ALL single-taco AND all Tacos(3)-trio entrees — every one of the 14 Taco-format entrees in calculator-menu.json offers the exact same two tortilla choices with the exact same record."
+    },
+    "singleVsTrioStructuralComparison": {
+      "exampleUsed": "CMG-1202 Steak Taco (single) vs CMG-202 Steak Tacos (3) (trio)",
+      "topLevelEntreeFields": {
+        "CMG-1202": { "unitCount": 1, "maxQuantity": 1, "unitPrice": 4.60 },
+        "CMG-202": { "unitCount": 1, "maxQuantity": 1, "unitPrice": 11.50 }
+      },
+      "tortillaContentGroupDeclaration": {
+        "CMG-1202": { "contentGroupName": "TortillaContentGroup", "minQuantity": 1, "maxQuantity": 1 },
+        "CMG-202": { "contentGroupName": "TortillaContentGroup", "minQuantity": 1, "maxQuantity": 1 },
+        "result": "IDENTICAL — both declare exactly one tortilla choice required, min1/max1, despite the trio physically containing 3 tacos."
+      },
+      "cmg5501RecordItself": {
+        "CMG-1202": { "unitCount": 1, "defaultContent": false, "contentGroupName": "TortillaContentGroup" },
+        "CMG-202": { "unitCount": 1, "defaultContent": false, "contentGroupName": "TortillaContentGroup" },
+        "result": "IDENTICAL record, identical unitCount:1, in both calculator-menu.json and menu-rules.json. No quantity, multiplier, or count field distinguishes the trio's tortilla need from the single taco's."
+      },
+      "conclusion": "There is no structured quantity field anywhere in the source data that scales CMG-5501 (or CMG-5503) by 3 for the Tacos(3) format. The '3' multiplier exists only in the entree container's own distinct itemId/itemName/price (CMG-202 vs CMG-1202) — never in the nested tortilla content record itself."
+    },
+    "doesSingleTacoUseADifferentTortillaId": {
+      "result": "NO. CMG-5501 and CMG-5503 are the exact same two ids used by both the single-taco and the Tacos(3) formats, across all 7 proteins. No separate 'single-serving' tortilla id exists."
+    },
+    "allRelatedTortillaIds": [
+      { "id": "CMG-5501", "itemName": "Soft Flour Tortilla", "context": "Taco (single + trio), all 7 proteins", "nutrition": "250cal/3oz" },
+      { "id": "CMG-5503", "itemName": "Crispy Corn Tortilla", "context": "Taco (single + trio), all 7 proteins", "nutrition": "200cal/1.5oz" },
+      { "id": "CMG-5401", "itemName": "Soft Flour Tortilla", "context": "Kids Quesadilla (8 entrees), defaultContent:true", "nutrition": "80cal/1oz" },
+      { "id": "CMG-5403", "itemName": "2 Crispy Corn Tortillas", "context": "KidsBYO (8 entrees)", "nutrition": "140cal/1oz" },
+      { "id": "CMG-5404", "itemName": "2 Soft Flour Tortillas", "context": "KidsBYO (8 entrees)", "nutrition": "170cal/2oz" },
+      { "id": "CMG-4026", "itemName": "Double Wrap with Tortilla", "context": "Burrito extra-tortilla Option (adult, all 7 proteins)", "nutrition": "320cal/1oz" }
+    ],
+    "pdfTortillaRows": [
+      { "name": "Flour Tortilla (burrito)", "section": "adult", "portion": "1 ea", "calories": 320 },
+      { "name": "Flour Tortilla (taco)", "section": "adult", "portion": "1 ea", "calories": 80 },
+      { "name": "Flour Tortilla (taco)", "section": "kids", "portion": "2 ea", "calories": 170 },
+      { "name": "Crispy Corn Tortilla", "section": "adult", "portion": "1 ea", "calories": 70 },
+      { "name": "Crispy Corn Tortilla", "section": "kids", "portion": "2 ea", "calories": 130 },
+      { "name": "Flour Tortilla (quesadilla)", "section": "kids", "portion": "1 ea", "calories": 80 }
+    ],
+    "reconciliationAttempts": {
+      "cmg5501_vs_pdfAdultFlourTortillaTaco": {
+        "pdfValue": "80cal/1ea (per single tortilla)",
+        "liveValue": "250cal/3oz (CMG-5501)",
+        "naiveTripledPdfValue": "80 x 3 = 240cal",
+        "gap": "240 vs 250 = 10cal / ~4% discrepancy — NOT an exact multiple",
+        "additionalProblem": "Even if the 10cal gap were tolerated as rounding, CMG-5501 is used with the SAME unitCount:1 for the SINGLE taco (which needs only 1 tortilla, ~80cal by the PDF) as for the TRIO (which needs 3, ~240cal by the PDF). A single fixed 250cal/3oz value cannot simultaneously be correct for both a 1-tortilla and a 3-tortilla serving without an explicit multiplier field, and no such field exists anywhere in the source.",
+        "alternativeHypotheses_notConfirmed": [
+          "CMG-5501's 250cal/3oz might represent a 3-tortilla aggregate with a rounding/measurement difference from the PDF's per-tortilla 80cal figure (different scale/vendor lot), used uniformly (and arguably incorrectly, or at least imprecisely) for the single-taco case too.",
+          "CMG-5501's 250cal/3oz might be an entirely different tortilla product/size (e.g. a larger burrito-style flour tortilla reused for tacos) unrelated to the PDF's specific 'Flour Tortilla (taco)' figure — closer in scale to the PDF's 'Flour Tortilla (burrito)' 320cal/1ea in category (large flour tortilla) but still not an exact or derivable match.",
+          "None of these hypotheses is confirmed by any source field; both remain speculative."
+        ]
+      },
+      "cmg5503_vs_pdfAdultCrispyCornTortilla": {
+        "pdfValue": "70cal/1ea",
+        "liveValue": "200cal/1.5oz (CMG-5503)",
+        "naiveTripledPdfValue": "70 x 3 = 210cal",
+        "gap": "210 vs 200 = 10cal / ~5% discrepancy, same pattern as the flour tortilla case",
+        "sameUnitCountIssue": "Identical unitCount:1 problem as CMG-5501 — same fixed value used for both single and trio taco formats."
+      },
+      "kidsTortillaRowsAsAPartialSanityCheck": {
+        "CMG-5404 vs PDF Flour Tortilla (taco, kids, 2ea/170cal)": "EXACT match on calories (170=170) and count (2). This is the ONE case in the whole tortilla family where a live record's calories cleanly equal a PDF row's calories at a matching count — and it confirms the PDF's per-tortilla figures ARE reliable and are consistently reused (2x80=160, close to but not exactly 170 either — even this 'clean' match has a 10cal gap from a strict 2x multiple, suggesting Chipotle's own kids 2-tortilla figure isn't a strict double of the adult 1-tortilla figure). This weakens, rather than supports, any assumption that CMG-5501/CMG-5503 could be reconciled by a simple 3x multiplication rule.",
+        "CMG-5403 vs PDF Crispy Corn Tortilla (kids, 2ea/130cal)": "140 vs 130 — a similar ~8% gap, same pattern."
+      }
+    },
+    "finalClassification": {
+      "cmg5501_to_pdfFlourTortillaTaco": "AMBIGUOUS",
+      "cmg5503_to_pdfCrispyCornTortilla": "AMBIGUOUS",
+      "reasoning": "No arithmetic relationship (simple multiplication or otherwise) reconciles the live 250cal/3oz and 200cal/1.5oz values with the PDF's 80cal/1ea and 70cal/1ea per-tortilla values without guessing. The presence of an identical, non-scaling unitCount:1 in both the single-taco and 3-taco contexts additionally rules out a naive 'this must be the 3-tortilla total' interpretation, since the same value cannot correctly serve both a 1-tortilla and a 3-tortilla order. This finding is a *strengthening* of the parent source-analysis's original 'ambiguous' classification — it is not a new resolution, but the underlying evidence is now exhaustively documented rather than merely observed once (250cal/3oz) without structural confirmation.",
+      "confirmed_negativeFindings": [
+        "CONFIRMED: no distinct id exists for a single taco's tortilla vs a Tacos(3) trio's tortilla — same id, same unitCount, in both calculator-menu.json and the national menu-rules.json superset.",
+        "CONFIRMED: no quantity-multiplier field of any kind exists anywhere in the taco entree structure that would scale a content item's nutrition by 3 for the trio format."
+      ]
+    }
+  },
+
+  "crossCuttingObservation": {
+    "structuralPattern": "Salad's greens base and adult Quesadilla's tortilla+cheese share the exact same structural gap: a physically-real, PDF-documented component that is baked into the entree's identity/price with no discrete CMG id, no contentGroup entry, and no nutrition record anywhere in calculator-menu.json, menu-rules.json, menu-metadata.json, or online-meals.json. This is now a confirmed third instance of the pattern (Veggie Burrito/Bowl's fajita-veggies-as-protein was the first; these are the second and third), suggesting it may be a general Chipotle data-modeling convention: components considered 'inherent to the format' (a salad's greens, a quesadilla's tortilla-and-cheese) are excluded from the customization/nutrition-calculator graph entirely, unlike components considered 'optional/build choices' (rice, beans, toppings, protein swaps), which are always exposed.",
+    "importerImplication": "Any importer computing full composed-meal nutrition for Salad or adult Quesadilla entrees will systematically undercount by the untracked base component's real calories (15cal for Supergreens per the PDF; an unknown amount for quesadilla tortilla+cheese, since even the PDF has no adult quesadilla-tortilla row to estimate from). This should be surfaced to a human reviewer as a known, structural undercount rather than resolved by invented values."
+  },
+
+  "followUpResolutions": {
+    "note": "Added after this analysis was originally written. Does not alter, delete, or supersede any finding above — every AMBIGUOUS/CONFIRMED/HIGH-CONFIDENCE classification and every piece of reasoning in partA_salad, partB_quesadilla, and partC_tacoTortilla remains exactly as originally recorded. Decisions made in response to these findings are recorded in full in data/review/chipotle/import-decisions.md; this block is only a pointer from each resolved finding to where its resolution lives.",
+    "resolved": [
+      {
+        "topic": "Supergreens Salad Mix has no live CMG id (partA_salad.supergreensSaladMix, matchClassification: AMBIGUOUS/UNJOINABLE)",
+        "decision": "Treat as an implicit required base component of every Salad entree, sourced from the PDF row (15cal/3oz), no invented CMG id.",
+        "decisionRecordedIn": "data/review/chipotle/import-decisions.md §3",
+        "status": "RESOLVED"
+      },
+      {
+        "topic": "Adult Quesadilla tortilla and cheese have no live CMG id, and no adult PDF row exists either (partB_quesadilla.tortillaRecordInAdultQuesadilla, quesadillaTortillaMatch.adultContext: AMBIGUOUS/UNJOINABLE)",
+        "decision": "Manually verified against Chipotle's live ordering UI: adult Quesadilla base = 1 quesadilla tortilla + 3 standard (CMG-5252) cheese portions. Represent as base/container nutrition applied before selected protein/addons. No invented CMG ids; the manual-UI-verification provenance is preserved rather than presented as a direct CMG child record.",
+        "decisionRecordedIn": "data/review/chipotle/import-decisions.md §4",
+        "status": "RESOLVED"
+      },
+      {
+        "topic": "CMG-5501/CMG-5503 taco tortilla metadata nutrition cannot be reconciled with PDF per-tortilla values, and no quantity field distinguishes single-taco from Tacos(3) (partC_tacoTortilla.finalClassification: AMBIGUOUS for both ids)",
+        "decision": "Abandon the CMG-5501/CMG-5503 metadata calorie values for nutrition purposes. Use official PDF per-unit tortilla nutrition (80cal flour / 70cal crispy corn, 1 ea) x actual taco count instead: Single Taco = 1x, Tacos(3) = 3x. CMG-5501/CMG-5503 are preserved as ordering/selection identities only, not as the nutrition source.",
+        "decisionRecordedIn": "data/review/chipotle/import-decisions.md §5",
+        "status": "RESOLVED"
+      }
+    ]
+  }
+}

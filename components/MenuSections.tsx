@@ -8,6 +8,7 @@ import EmptyStateCard from "./EmptyStateCard";
 import { toItemSlug } from "@/lib/restaurants";
 import {
   type CategoryMode,
+  applyRestaurantMenuSectionOrder,
   categorySectionId,
   getCategoryLabel,
   getItemCategories,
@@ -225,7 +226,10 @@ export default function MenuSections({
     ])
   );
 
-  const sections = getOrderedMenuSections(items, categoryMode);
+  const sections = applyRestaurantMenuSectionOrder(
+    getOrderedMenuSections(items, categoryMode),
+    restaurantId,
+  );
 
   if (!sections.length) {
     return <EmptyFilteredState />;

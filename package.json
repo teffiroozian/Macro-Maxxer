@@ -19,6 +19,7 @@
     "import:chipotle": "node --import tsx scripts/importers/chipotle.ts",
     "validate:chick-fil-a": "node --import tsx scripts/validate/chick-fil-a.ts",
     "validate:chipotle": "node --import tsx scripts/validate/chipotle.ts",
+    "validate:starbucks": "node --import tsx scripts/validate/starbucks.ts",
     "review:chick-fil-a": "node --import tsx scripts/review/chick-fil-a.ts"
   },
   "dependencies": {

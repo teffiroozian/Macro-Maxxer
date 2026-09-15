@@ -115,7 +115,7 @@ function resolveWalkthroughBuildItem(
 //   in the middle on both raw calories and protein.
 // - Chicken Noodle Soup: lowest calories (190), but the lowest protein and
 //   weakest protein score, so it never wins the other two rankings either.
-// IDs are from the generated Chick-fil-A dataset (data/generated/chick-fil-a/restaurant.json),
+// IDs are from the generated Chick-fil-A dataset (data/restaurants/chick-fil-a/generated/restaurant.json),
 // matched by exact nutrition identity, not the old production dataset's IDs:
 // cfa-item-1004641 = Chick-fil-A Cool Wrap®; cfa-group-100361 = Chick-fil-A
 // Chick-n-Strips® (variant container, defaults to the 3 ct variant, same as
@@ -288,6 +288,7 @@ export default async function Home() {
 
                 <div className={`mx-auto mt-10 w-full ${HOME_VISUAL_WIDTH_CLASS}`}>
                   <ProductPreviewCard
+                    restaurantId={previewRestaurant.id}
                     restaurantName={previewRestaurant.name}
                     restaurantLogo={previewRestaurant.logo}
                     itemName={previewItem.name}

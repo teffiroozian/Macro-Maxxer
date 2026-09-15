@@ -1,6 +1,6 @@
-import generatedChipotle from "@/data/generated/chipotle/restaurant.json";
-import enrichmentPlan from "@/data/review/chipotle/enrichment-plan.json";
-import imageEnrichment from "@/data/review/chipotle/runtime-image-enrichment.json";
+import generatedChipotle from "@/data/restaurants/chipotle/generated/restaurant.json";
+import enrichmentPlan from "@/data/restaurants/chipotle/review/enrichment-plan.json";
+import imageEnrichment from "@/data/restaurants/chipotle/review/runtime-image-enrichment.json";
 
 export const CHIPOTLE_PRESENTATION_FALLBACK_IMAGE =
   "/restaurants/chipotle/brand/logo.jpeg";

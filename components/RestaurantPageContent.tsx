@@ -36,6 +36,7 @@ export default function RestaurantPageContent({
 
         <main className="mx-auto w-full max-w-6xl px-3 pb-12 sm:px-4 lg:px-6">
           <RestaurantIdentityHeader
+            restaurantId={restaurantData.id}
             name={restaurantData.name}
             logo={restaurantData.logo}
             description={restaurantData.description}

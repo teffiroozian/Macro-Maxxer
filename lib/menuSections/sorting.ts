@@ -220,6 +220,37 @@ export function getOrderedMenuSections(
   });
 }
 
+const STARBUCKS_MENU_SECTION_ORDER = [
+  "protein drinks",
+  "hot coffee & espresso",
+  "cold coffee & espresso",
+  "frappuccino",
+  "tea & chai",
+  "matcha",
+  "refreshers",
+  "other drinks",
+  "breakfast",
+  "bakery & treats",
+  "lunch",
+  "snacks",
+] as const;
+
+export function applyRestaurantMenuSectionOrder(
+  sections: string[],
+  restaurantId: string,
+): string[] {
+  if (restaurantId !== "starbucks") return sections;
+  const priority = new Map<string, number>(
+    STARBUCKS_MENU_SECTION_ORDER.map((section, index) => [section, index]),
+  );
+  return [...sections].sort(
+    (left, right) =>
+      (priority.get(normalizeCategory(left)) ?? Number.POSITIVE_INFINITY) -
+        (priority.get(normalizeCategory(right)) ?? Number.POSITIVE_INFINITY) ||
+      left.localeCompare(right),
+  );
+}
+
 export function getCategoryLabel(category: string, _mode: CategoryMode = "menu") {
   return titleCase(normalizeCategory(category));
 }

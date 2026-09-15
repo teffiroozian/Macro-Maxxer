@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
 
-import generatedChipotle from "../data/generated/chipotle/restaurant.json" with { type: "json" };
+import generatedChipotle from "../data/restaurants/chipotle/generated/restaurant.json" with { type: "json" };
 import {
   CHIPOTLE_GENERATED_RUNTIME_MENU,
 } from "../lib/restaurantBuilders/chipotle/generatedRuntimeAdapter.ts";
@@ -155,9 +155,9 @@ test("chipotle-cmg-5354 still exists untouched in generated/runtime data (not de
   assert.ok(runtime, "runtime ingredient must still exist");
 });
 
-// --- Fix 2: Burrito's optional Double Wrap with Tortilla --------------------
+// --- Fix 2: Burrito's optional Extra Tortilla -------------------------------
 
-test("Burrito shows Double Wrap with Tortilla, unselected by default, separate from the locked included tortilla", () => {
+test("Burrito shows Extra Tortilla, unselected by default, separate from the locked included tortilla", () => {
   const { includedIds, items } = burritoMenuItems();
 
   // Only the real included tortilla is included/locked by default.
@@ -182,8 +182,8 @@ test("Burrito shows Double Wrap with Tortilla, unselected by default, separate f
   });
 
   const doubleWrap = items.find((item) => item.id === "chipotle-cmg-4026");
-  assert.ok(doubleWrap, "expected the optional Double Wrap with Tortilla add-on");
-  assert.equal(doubleWrap.name, "Double Wrap with Tortilla");
+  assert.ok(doubleWrap, "expected the optional Extra Tortilla add-on");
+  assert.equal(doubleWrap.name, "Extra Tortilla");
   assert.deepEqual(coreNutrition(doubleWrap.nutrition), {
     calories: 320,
     protein: 8,
@@ -194,7 +194,7 @@ test("Burrito shows Double Wrap with Tortilla, unselected by default, separate f
   assert.equal(includedIds.includes("chipotle-cmg-4026"), false);
 });
 
-test("Selecting Double Wrap with Tortilla adds exactly one extra tortilla serving to Burrito macros", () => {
+test("Selecting Extra Tortilla adds exactly one extra tortilla serving to Burrito macros", () => {
   const baseConfiguration = {
     selectedEntree: "burrito",
     selectedIngredientItems: {
@@ -227,7 +227,7 @@ test("Selecting Double Wrap with Tortilla adds exactly one extra tortilla servin
   });
 });
 
-test("Double Wrap with Tortilla round-trips correctly through the cart adapter", () => {
+test("Extra Tortilla round-trips correctly through the cart adapter", () => {
   const configuration = {
     selectedEntree: "burrito",
     selectedIngredientItems: {
@@ -246,7 +246,7 @@ test("Double Wrap with Tortilla round-trips correctly through the cart adapter",
   const doubleWrapEntry = universalConfiguration.ingredients.find(
     ({ id }) => id === "chipotle-cmg-4026",
   );
-  assert.ok(doubleWrapEntry, "expected Double Wrap with Tortilla in the cart payload");
+  assert.ok(doubleWrapEntry, "expected Extra Tortilla in the cart payload");
   assert.equal(doubleWrapEntry.quantity, 1);
 
   assert.deepEqual(

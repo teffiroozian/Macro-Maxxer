@@ -59,10 +59,10 @@ export default function FeaturedRestaurantCard({ restaurant, className = "" }: F
                 fixed card-level offset) keeps it vertically aligned with
                 the restaurant name regardless of description length. */}
             <div className="relative flex items-center gap-3 sm:-ml-12 sm:pl-12">
-              <RestaurantLogoBadge src={restaurant.logo} alt={`${restaurant.name} logo`} size="sm" className="sm:hidden" />
+              <RestaurantLogoBadge src={restaurant.logo} alt={`${restaurant.name} logo`} size="sm" shape="circle" className="sm:hidden" />
               <h3 className="font-heading text-2xl font-bold text-neutral-900 sm:text-3xl lg:text-4xl">{restaurant.name}</h3>
               <div className="absolute left-0 top-1/2 z-10 hidden -translate-x-1/2 -translate-y-1/2 sm:block">
-                <RestaurantLogoBadge src={restaurant.logo} alt={`${restaurant.name} logo`} size="md" />
+                <RestaurantLogoBadge src={restaurant.logo} alt={`${restaurant.name} logo`} size="md" shape="circle" />
               </div>
             </div>
 

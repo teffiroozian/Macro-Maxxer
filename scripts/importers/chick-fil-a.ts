@@ -17,17 +17,17 @@ import { normalizeName } from "../lib/normalize-name";
 import { writeAtomically } from "../lib/write-atomically";
 import { VERIFIED_NUTRITION_MAPPINGS } from "./chick-fil-a-nutrition-mappings";
 
-const MENU_PATH = resolve("data/raw/chick-fil-a/menu.json");
-const NUTRITION_PATH = resolve("data/raw/chick-fil-a/nutrition.csv");
+const MENU_PATH = resolve("data/restaurants/chick-fil-a/raw/menu.json");
+const NUTRITION_PATH = resolve("data/restaurants/chick-fil-a/raw/nutrition.csv");
 const ORDERING_NUTRITION_PATH = resolve(
-  "data/raw/chick-fil-a/ordering-nutrition.json",
+  "data/restaurants/chick-fil-a/raw/ordering-nutrition.json",
 );
 const ORDERING_NUTRITION_SOURCE_PATH = resolve(
-  "data/raw/chick-fil-a/ordering-nutrition-source.json",
+  "data/restaurants/chick-fil-a/raw/ordering-nutrition-source.json",
 );
-const ANALYSIS_PATH = resolve("data/raw/chick-fil-a/match-analysis.json");
-const OUTPUT_PATH = resolve("data/generated/chick-fil-a/restaurant.json");
-const UNRESOLVED_PATH = resolve("data/generated/chick-fil-a/unresolved.json");
+const ANALYSIS_PATH = resolve("data/restaurants/chick-fil-a/raw/match-analysis.json");
+const OUTPUT_PATH = resolve("data/restaurants/chick-fil-a/generated/restaurant.json");
+const UNRESOLVED_PATH = resolve("data/restaurants/chick-fil-a/generated/unresolved.json");
 
 type RawValue = string | number | boolean | null | undefined;
 
@@ -3666,10 +3666,10 @@ async function main(): Promise<void> {
     importMetadata: {
       restaurant: "Chick-fil-A",
       sources: {
-        menu: "data/raw/chick-fil-a/menu.json",
-        nutrition: "data/raw/chick-fil-a/nutrition.csv",
-        orderingNutrition: "data/raw/chick-fil-a/ordering-nutrition.json",
-        verifiedMatchingAnalysis: "data/raw/chick-fil-a/match-analysis.json",
+        menu: "data/restaurants/chick-fil-a/raw/menu.json",
+        nutrition: "data/restaurants/chick-fil-a/raw/nutrition.csv",
+        orderingNutrition: "data/restaurants/chick-fil-a/raw/ordering-nutrition.json",
+        verifiedMatchingAnalysis: "data/restaurants/chick-fil-a/raw/match-analysis.json",
       },
       generatedFrom,
       logicalRecordCounts: {
@@ -3763,8 +3763,8 @@ async function main(): Promise<void> {
   console.log(
     JSON.stringify(
       {
-        output: "data/generated/chick-fil-a/restaurant.json",
-        unresolvedOutput: "data/generated/chick-fil-a/unresolved.json",
+        output: "data/restaurants/chick-fil-a/generated/restaurant.json",
+        unresolvedOutput: "data/restaurants/chick-fil-a/generated/unresolved.json",
         logicalRecords: records.length + syntheticMealContainerCount,
         menuItems: menuItems.length,
         ingredients: ingredients.length,

@@ -7,9 +7,9 @@ const ORDER_TYPE = "pickup";
 const SOURCE_URL = `https://order.api.my.chick-fil-a.com/menu/v1/3.2/${LOCATION_ID}?type=${ORDER_TYPE}`;
 const ORDER_APP_URL = "https://order.chick-fil-a.com/";
 const PROFILE_API_URL = "https://profile.api.my.chick-fil-a.com/";
-const OUTPUT_PATH = resolve("data/raw/chick-fil-a/menu.json");
+const OUTPUT_PATH = resolve("data/restaurants/chick-fil-a/raw/menu.json");
 const SOURCE_METADATA_PATH = resolve(
-  "data/raw/chick-fil-a/menu-source.json",
+  "data/restaurants/chick-fil-a/raw/menu-source.json",
 );
 
 type JsonObject = Record<string, unknown>;
@@ -233,7 +233,7 @@ async function main(): Promise<void> {
   console.log(
     `Collected Chick-fil-A menu data for location ${LOCATION_ID}.`,
   );
-  console.log("Saved to data/raw/chick-fil-a/menu.json");
+  console.log("Saved to data/restaurants/chick-fil-a/raw/menu.json");
 }
 
 main().catch((error: unknown) => {

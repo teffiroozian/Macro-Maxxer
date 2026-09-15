@@ -2,6 +2,7 @@ import SectionEyebrow from "@/components/ui/SectionEyebrow";
 import { SelectionSummaryShell } from "@/components/item-route-modal/SelectionSummaryPanels";
 import { formatCartItemName, summarizeItem } from "@/lib/cart/displayLabels";
 import type { CartItem, CartMacros } from "@/types/cart";
+import { getRestaurantImagePresentation } from "@/lib/restaurantPresentation";
 
 type CartMealBreakdownProps = {
   items: CartItem[];
@@ -27,6 +28,9 @@ export default function CartMealBreakdown({ items, totals }: CartMealBreakdownPr
       ) : (
         <ul className="grid list-none gap-2 pl-0">
           {items.map((item) => {
+            const imageClassName =
+              getRestaurantImagePresentation(item.restaurantId).itemThumbnailImageClassName ??
+              "object-contain p-1";
             const detailLine = summarizeItem(item);
             const displayName = formatCartItemName(item);
             return (
@@ -36,7 +40,7 @@ export default function CartMealBreakdown({ items, totals }: CartMealBreakdownPr
               >
                 <div className="h-10 w-10 shrink-0 overflow-hidden rounded-lg border border-black/10 bg-neutral-50">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src={item.image} alt={item.name} className="h-full w-full object-contain p-1" />
+                  <img src={item.image} alt={item.name} className={`h-full w-full ${imageClassName}`} />
                 </div>
                 <div className="min-w-0 flex-1">
                   <p className="truncate text-sm font-medium text-slate-900">{displayName}</p>

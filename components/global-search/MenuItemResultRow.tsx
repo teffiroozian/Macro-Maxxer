@@ -14,6 +14,8 @@ import { resolveMenuItemVariantNutrition } from "@/lib/nutrition";
 import type { QuickAddEligibility } from "@/lib/search/quickAddEligibility";
 import type { MenuItem } from "@/types/menu";
 import type { RestaurantIndexEntry } from "@/types/restaurant";
+import { getRestaurantImagePresentation } from "@/lib/restaurantPresentation";
+import { getMenuItemSearchResultName } from "@/lib/search/resultLabels";
 
 type MenuItemResultRowProps = {
   item: MenuItem;
@@ -38,6 +40,9 @@ export default function MenuItemResultRow({
   quickAdd,
 }: MenuItemResultRowProps) {
   const variants = item.variants?.length ? item.variants : null;
+  const imageClassName =
+    getRestaurantImagePresentation(restaurant.id).itemThumbnailImageClassName ??
+    "object-contain rounded-md";
   const canPickVariant = Boolean(quickAdd?.eligible && quickAdd.hasVariantChoice && variants);
 
   const defaultVariantId = useMemo(() => {
@@ -52,6 +57,12 @@ export default function MenuItemResultRow({
   const selectedVariant = variants?.find((variant) => variant.id === selectedVariantId) ?? variants?.[0];
 
   const nutrition = resolveMenuItemVariantNutrition(item, selectedVariant);
+  const resultName = getMenuItemSearchResultName({
+    itemName: item.name,
+    restaurantId: restaurant.id,
+    variantLabel: selectedVariant?.label,
+    showVariant: canPickVariant,
+  });
 
   const [isAddFeedbackVisible, setIsAddFeedbackVisible] = useState(false);
   const { requestAddItem, updateQuantity, getMatchingItem } = useMenuItemCartAdapter();
@@ -128,12 +139,11 @@ export default function MenuItemResultRow({
       onClick={() => onSelect(item, restaurant)}
     >
       <span className="flex h-12 w-12 shrink-0 items-center justify-center overflow-hidden rounded-lg bg-neutral-50">
-        <Image src={selectedVariant?.image ?? item.image} alt="" width={36} height={36} className="object-contain rounded-md" />
+        <Image src={selectedVariant?.image ?? item.image} alt="" width={36} height={36} className={imageClassName} />
       </span>
       <span className="min-w-0 flex-1">
         <span className="block truncate font-semibold text-neutral-900">
-          {item.name}
-          {canPickVariant && selectedVariant ? ` (${selectedVariant.label})` : ""}
+          {resultName}
         </span>
         {/* Below `lg`, restaurant name and macros stack; at `lg`+ they share
             one row (name left, macros right) since there's more width. */}

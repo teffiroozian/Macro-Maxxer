@@ -103,7 +103,7 @@ export function PresetIngredientCard({
             as="li"
             padding="none"
             shadow="none"
-            className="list-none overflow-hidden border border-black/10 bg-white shadow-[0_1px_2px_rgba(0,0,0,0.04)] transition duration-150 hover:-translate-y-px hover:border-black/15 hover:shadow-[0_2px_6px_rgba(0,0,0,0.05)]"
+            className="min-w-0 max-w-full list-none overflow-hidden border border-black/10 bg-white shadow-[0_1px_2px_rgba(0,0,0,0.04)] transition duration-150 hover:-translate-y-px hover:border-black/15 hover:shadow-[0_2px_6px_rgba(0,0,0,0.05)]"
         >
             <div
                 {...interactiveProps}
@@ -121,8 +121,8 @@ export function PresetIngredientCard({
                     ) : null}
                 </div>
                 <div className="min-w-0 flex-1">
-                    <div className="flex items-baseline gap-1.5">
-                        <p className="min-w-0 truncate font-heading text-[15px] font-semibold text-neutral-900 sm:text-base">
+                    <div className="flex min-w-0 items-baseline gap-1.5">
+                        <p className="min-w-0 flex-1 truncate font-heading text-[15px] font-semibold text-neutral-900 sm:text-base">
                             {name}
                         </p>
                         {portionLabel ? (

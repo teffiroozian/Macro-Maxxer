@@ -7,7 +7,7 @@ const nextConfig: NextConfig = {
   images: {
     remotePatterns: [
       // Official Chick-fil-A ordering-menu CDN — the generated Chick-fil-A
-      // dataset (data/generated/chick-fil-a/restaurant.json) points every
+      // dataset (data/restaurants/chick-fil-a/generated/restaurant.json) points every
       // item/ingredient image at this host instead of a local asset.
       {
         protocol: "https",
@@ -20,6 +20,10 @@ const nextConfig: NextConfig = {
       {
         protocol: "https",
         hostname: "miinternal-cdn.chipotle.com",
+      },
+      {
+        protocol: "https",
+        hostname: "cloudassets.starbucks.com",
       },
     ],
   },

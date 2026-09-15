@@ -11,9 +11,9 @@ const MENU_RULES_URL = new URL(
   SERVICES_BASE_URL,
 ).toString();
 
-const MENU_RULES_OUTPUT_PATH = resolve("data/raw/chipotle/menu-rules.json");
+const MENU_RULES_OUTPUT_PATH = resolve("data/restaurants/chipotle/raw/menu-rules.json");
 const MENU_RULES_SOURCE_PATH = resolve(
-  "data/raw/chipotle/menu-rules-source.json",
+  "data/restaurants/chipotle/raw/menu-rules-source.json",
 );
 
 // Chipotle's Azure API Management gateway requires a subscription key on
@@ -245,8 +245,8 @@ async function main(): Promise<void> {
       `WARNING: sample item is missing expected rule field(s): ${missingRuleFieldsOnSample.join(", ")}`,
     );
   }
-  console.log("Saved to data/raw/chipotle/menu-rules.json");
-  console.log("Saved to data/raw/chipotle/menu-rules-source.json");
+  console.log("Saved to data/restaurants/chipotle/raw/menu-rules.json");
+  console.log("Saved to data/restaurants/chipotle/raw/menu-rules-source.json");
 }
 
 main().catch((error: unknown) => {

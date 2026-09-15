@@ -23,22 +23,22 @@ const MENU_METADATA_NUTRITION_URL =
   "https://services.chipotle.com/menu-metadata/v1/menu-metadata/nutrition?channel=web&region=US";
 
 const CALCULATOR_MENU_OUTPUT_PATH = resolve(
-  "data/raw/chipotle/calculator-menu.json",
+  "data/restaurants/chipotle/raw/calculator-menu.json",
 );
 const CALCULATOR_MENU_SOURCE_PATH = resolve(
-  "data/raw/chipotle/calculator-menu-source.json",
+  "data/restaurants/chipotle/raw/calculator-menu-source.json",
 );
 const MENU_METADATA_OUTPUT_PATH = resolve(
-  "data/raw/chipotle/menu-metadata.json",
+  "data/restaurants/chipotle/raw/menu-metadata.json",
 );
 const MENU_METADATA_SOURCE_PATH = resolve(
-  "data/raw/chipotle/menu-metadata-source.json",
+  "data/restaurants/chipotle/raw/menu-metadata-source.json",
 );
 const MENU_METADATA_NUTRITION_OUTPUT_PATH = resolve(
-  "data/raw/chipotle/menu-metadata-nutrition.json",
+  "data/restaurants/chipotle/raw/menu-metadata-nutrition.json",
 );
 const MENU_METADATA_NUTRITION_SOURCE_PATH = resolve(
-  "data/raw/chipotle/menu-metadata-nutrition-source.json",
+  "data/restaurants/chipotle/raw/menu-metadata-nutrition-source.json",
 );
 
 // Chipotle's Azure API Management gateway requires a subscription key on
@@ -343,11 +343,11 @@ async function main(): Promise<void> {
     },
     notes: [
       "This endpoint was discovered via Chipotle's official nutrition-calculator frontend (https://www.chipotle.com/nutrition-calculator), which loads this restaurant's compressed online menu and decompresses it client-side to power the calculator UI.",
-      "This data has NOT yet been reconciled against the official nutrition PDF source (data/raw/chipotle/nutrition-paper-menu.pdf / nutrition.json) or against the menu-metadata endpoint recorded below.",
+      "This data has NOT yet been reconciled against the official nutrition PDF source (data/restaurants/chipotle/raw/nutrition-paper-menu.pdf / nutrition.json) or against the menu-metadata endpoint recorded below.",
       "The decompressed onlinemenu payload (calculator-menu.json) contains ZERO nutrition fields of any kind: no calories, fat, protein, carbohydrates, sodium, fiber, or sugar were found anywhere in it. It is purely menu/ordering structure: item IDs (e.g. \"CMG-2\"), display names, pricing, customizations, and content groups.",
       `A related official endpoint, ${MENU_METADATA_URL}, is used by the same calculator and DOES include a "nutrition" array per item, but that array only ever contains "Calories" and "Portion" entries in this response; no fat/protein/carbohydrate/sodium/fiber/sugar fields were found there either. Full macros do not appear to be available from either of these two endpoints.`,
       "The menu-metadata endpoint's \"items\" dictionary is keyed by the same \"CMG-*\" item IDs used as \"itemId\" in this onlinemenu payload (e.g. \"CMG-2\" identifies Steak in both). This is an observation only — no reconciliation, joining, or normalization has been performed at this stage.",
-      "Saved separately for source-boundary reasons (different endpoint, different response shape, not merged): data/raw/chipotle/menu-metadata.json and data/raw/chipotle/menu-metadata-source.json.",
+      "Saved separately for source-boundary reasons (different endpoint, different response shape, not merged): data/restaurants/chipotle/raw/menu-metadata.json and data/restaurants/chipotle/raw/menu-metadata-source.json.",
       "This file (calculator-menu.json) is the fully decompressed, unmodified source JSON: no fields renamed, no records removed or deduplicated, no mapping to Macro Maxxer's schema.",
     ],
   };
@@ -364,8 +364,8 @@ async function main(): Promise<void> {
     `Decompression size check: reported=${compressedResponse.decompressedMenuSize}, actual=${bytesWritten}, match=${bytesWritten === compressedResponse.decompressedMenuSize}.`,
   );
   console.log("Record counts:", recordCounts);
-  console.log("Saved to data/raw/chipotle/calculator-menu.json");
-  console.log("Saved to data/raw/chipotle/calculator-menu-source.json");
+  console.log("Saved to data/restaurants/chipotle/raw/calculator-menu.json");
+  console.log("Saved to data/restaurants/chipotle/raw/calculator-menu-source.json");
 
   // Fetch and save the companion menu-metadata endpoint as its own,
   // untouched raw source (not merged into calculator-menu.json).
@@ -406,8 +406,8 @@ async function main(): Promise<void> {
   console.log(
     `Collected Chipotle menu-metadata (${menuMetadataMetadata.itemCount} items, ${menuMetadataMetadata.groupCount} groups).`,
   );
-  console.log("Saved to data/raw/chipotle/menu-metadata.json");
-  console.log("Saved to data/raw/chipotle/menu-metadata-source.json");
+  console.log("Saved to data/restaurants/chipotle/raw/menu-metadata.json");
+  console.log("Saved to data/restaurants/chipotle/raw/menu-metadata-source.json");
 
   // The calculator's full-nutrition companion uses the same item-id
   // namespace and response envelope as menu-metadata, but includes detailed
@@ -460,9 +460,9 @@ async function main(): Promise<void> {
   console.log(
     `Collected Chipotle full menu-metadata nutrition (${nutritionMetadataSource.itemCount} items, ${nutritionMetadataSource.groupCount} groups).`,
   );
-  console.log("Saved to data/raw/chipotle/menu-metadata-nutrition.json");
+  console.log("Saved to data/restaurants/chipotle/raw/menu-metadata-nutrition.json");
   console.log(
-    "Saved to data/raw/chipotle/menu-metadata-nutrition-source.json",
+    "Saved to data/restaurants/chipotle/raw/menu-metadata-nutrition-source.json",
   );
 }
 

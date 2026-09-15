@@ -145,6 +145,7 @@ export default function ControlsRow({
   rankedChildSelections,
   isRankingView,
   hideViewSelector = false,
+  hideIngredientsView = false,
   showMobileTrigger = true,
   onMobileDrawerOpenReady,
   onMobileFiltersDrawerOpenReady,
@@ -179,6 +180,7 @@ export default function ControlsRow({
   rankedChildSelections: Record<RankedAllFilterKey, Set<string>>;
   isRankingView: boolean;
   hideViewSelector?: boolean;
+  hideIngredientsView?: boolean;
   showMobileTrigger?: boolean;
   onMobileDrawerOpenReady?: (openDrawer: () => void) => void;
   // Same drawer, but scrolled straight to the Filters section once open —
@@ -461,7 +463,9 @@ export default function ControlsRow({
             </button>
             {isViewSectionOpen ? (
               <div className="grid gap-1">
-                {VIEW_OPTIONS.map((option) => {
+                {VIEW_OPTIONS.filter(
+                  (option) => !hideIngredientsView || option.value !== "ingredients",
+                ).map((option) => {
                   const Icon = option.icon;
                   const isActive = option.value === view;
                   return (
@@ -715,7 +719,15 @@ export default function ControlsRow({
         ) : null}
 
         <div className="hidden min-w-0 flex-nowrap items-center gap-2.5 lg:flex">
-          {hideViewSelector ? null : <ViewTabs options={VIEW_OPTIONS} value={view} onSelect={onChange} />}
+          {hideViewSelector ? null : (
+            <ViewTabs
+              options={VIEW_OPTIONS.filter(
+                (option) => !hideIngredientsView || option.value !== "ingredients",
+              )}
+              value={view}
+              onSelect={onChange}
+            />
+          )}
 
           <div className="ml-auto flex shrink-0 items-center justify-end gap-2">
             <SortSelector

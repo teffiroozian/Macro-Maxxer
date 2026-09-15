@@ -1,0 +1,10 @@
+{
+  "restaurant": "Chick-fil-A",
+  "sourceType": "official-ordering-api",
+  "source": "https://order.api.my.chick-fil-a.com/menu/v1/3.2/04094?type=pickup",
+  "locationId": "04094",
+  "orderType": "pickup",
+  "retrieved": "2026-08-24",
+  "categoryCount": 11,
+  "itemGroupCount": 474
+}

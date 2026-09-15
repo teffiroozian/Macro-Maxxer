@@ -6,12 +6,12 @@ import { writeAtomically } from "../lib/write-atomically";
 
 const PRODUCTION_MENU_PATH = resolve("data/restaurants/chickfila.json");
 const RESTAURANT_INDEX_PATH = resolve("data/restaurants/index.json");
-const GENERATED_MENU_PATH = resolve("data/generated/chick-fil-a/restaurant.json");
-const UNRESOLVED_PATH = resolve("data/generated/chick-fil-a/unresolved.json");
+const GENERATED_MENU_PATH = resolve("data/restaurants/chick-fil-a/generated/restaurant.json");
+const UNRESOLVED_PATH = resolve("data/restaurants/chick-fil-a/generated/unresolved.json");
 const ASSET_ROOT = resolve("public/restaurants/chickfila");
-const JSON_OUTPUT_PATH = resolve("data/review/chick-fil-a/comparison.json");
-const MARKDOWN_OUTPUT_PATH = resolve("data/review/chick-fil-a/comparison.md");
-const MANUAL_REVIEW_PATH = resolve("data/review/chick-fil-a/manual-review.md");
+const JSON_OUTPUT_PATH = resolve("data/restaurants/chick-fil-a/review/comparison.json");
+const MARKDOWN_OUTPUT_PATH = resolve("data/restaurants/chick-fil-a/review/comparison.md");
+const MANUAL_REVIEW_PATH = resolve("data/restaurants/chick-fil-a/review/manual-review.md");
 
 type JsonObject = Record<string, unknown>;
 type RecordKind = "menu_item" | "ingredient";
@@ -1484,8 +1484,8 @@ async function main(): Promise<void> {
     inputs: {
       productionMenu: "data/restaurants/chickfila.json",
       productionIndex: "data/restaurants/index.json",
-      generatedMenu: "data/generated/chick-fil-a/restaurant.json",
-      unresolved: "data/generated/chick-fil-a/unresolved.json",
+      generatedMenu: "data/restaurants/chick-fil-a/generated/restaurant.json",
+      unresolved: "data/restaurants/chick-fil-a/generated/unresolved.json",
     },
     readOnly: true,
     alignmentPolicy: {
@@ -1935,9 +1935,9 @@ async function main(): Promise<void> {
       `Unresolved with production evidence: ${report.summary.unresolvedWithProductionEvidence}`,
       "",
       "Reports:",
-      "data/review/chick-fil-a/comparison.json",
-      "data/review/chick-fil-a/comparison.md",
-      "data/review/chick-fil-a/manual-review.md",
+      "data/restaurants/chick-fil-a/review/comparison.json",
+      "data/restaurants/chick-fil-a/review/comparison.md",
+      "data/restaurants/chick-fil-a/review/manual-review.md",
     ].join("\n"),
   );
 }

@@ -4,9 +4,9 @@ import { resolve } from "node:path";
 import { sanitizeDisplayName } from "../lib/display-name";
 import { writeAtomically } from "../lib/write-atomically";
 
-const RESTAURANT_PATH = resolve("data/generated/chick-fil-a/restaurant.json");
-const UNRESOLVED_PATH = resolve("data/generated/chick-fil-a/unresolved.json");
-const REPORT_PATH = resolve("data/validation/chick-fil-a/report.json");
+const RESTAURANT_PATH = resolve("data/restaurants/chick-fil-a/generated/restaurant.json");
+const UNRESOLVED_PATH = resolve("data/restaurants/chick-fil-a/generated/unresolved.json");
+const REPORT_PATH = resolve("data/restaurants/chick-fil-a/validation/report.json");
 
 const VALID_SERVING_TYPES = new Set([
   "addon",
@@ -2641,8 +2641,8 @@ async function main(): Promise<void> {
     restaurant: "Chick-fil-A",
     validatedAt: localDate(),
     inputs: {
-      restaurant: "data/generated/chick-fil-a/restaurant.json",
-      unresolved: "data/generated/chick-fil-a/unresolved.json",
+      restaurant: "data/restaurants/chick-fil-a/generated/restaurant.json",
+      unresolved: "data/restaurants/chick-fil-a/generated/unresolved.json",
     },
     valid: context.errors.length === 0,
     summary: {
@@ -2673,7 +2673,7 @@ async function main(): Promise<void> {
       `Human review items: ${unresolvedByStandardId.size}`,
       "",
       "Report:",
-      "data/validation/chick-fil-a/report.json",
+      "data/restaurants/chick-fil-a/validation/report.json",
     ].join("\n"),
   );
 

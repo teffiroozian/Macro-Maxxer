@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
 
-import generatedChipotle from "../data/generated/chipotle/restaurant.json" with { type: "json" };
+import generatedChipotle from "../data/restaurants/chipotle/generated/restaurant.json" with { type: "json" };
 import {
   CHIPOTLE_BROWSE_TAXONOMY,
   CHIPOTLE_GENERATED_PRESENTATION_CONFIG,

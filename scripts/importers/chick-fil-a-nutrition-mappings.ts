@@ -10,7 +10,7 @@ export type VerifiedNutritionMapping = {
 };
 
 /**
- * Source-ID-keyed exceptions verified in data/raw/chick-fil-a/match-analysis.json.
+ * Source-ID-keyed exceptions verified in data/restaurants/chick-fil-a/raw/match-analysis.json.
  *
  * These are deliberately not generic name rewrites. A newly published menu item
  * must be reviewed and added by source ID rather than inheriting one of these

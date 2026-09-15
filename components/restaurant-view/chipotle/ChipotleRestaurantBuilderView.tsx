@@ -738,6 +738,7 @@ export default function ChipotleRestaurantBuilderView({
     toggleRankedAllFilter,
     toggleRankedChildFilter,
   } = useRestaurantMenuControls({
+    restaurantId,
     hasBuildYourOwn,
     effectiveViewModeOverride: isViewingAllIngredients
       ? "ingredients"

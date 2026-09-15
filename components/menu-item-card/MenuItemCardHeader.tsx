@@ -13,6 +13,7 @@ export default function MenuItemCardHeader({
   selectedItemImage,
   isCartMode,
   isHighProteinMenuCard = false,
+  itemImageClassName,
   rank,
   comparativeLabel,
   variants,
@@ -29,6 +30,7 @@ export default function MenuItemCardHeader({
   selectedItemImage?: string;
   isCartMode: boolean;
   isHighProteinMenuCard?: boolean;
+  itemImageClassName?: string;
   rank: number | null;
   comparativeLabel?: ComparativeLabelKind;
   variants: ItemVariant[] | null;
@@ -52,7 +54,7 @@ export default function MenuItemCardHeader({
             className={`block h-[190px] w-full lg:h-[184px] lg:w-[184px] ${
               isHighProteinMenuCard && !isCartMode
                 ? CHIPOTLE_PRESET_MEAL_IMAGE_CLASSNAME
-                : "object-contain p-3"
+                : (itemImageClassName ?? "object-contain p-3")
             }`}
             src={selectedItemImage}
             alt={item.name}
