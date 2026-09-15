@@ -7,9 +7,11 @@ import { Outfit, Unbounded } from "next/font/google";
 import { GlobalSearchProvider } from "@/components/GlobalSearchContext";
 import { GlobalItemPreviewProvider } from "@/components/GlobalItemPreviewContext";
 import { CartAddConfirmationProvider } from "@/components/CartAddConfirmationContext";
+import { BuildInProgressGuardProvider } from "@/components/BuildInProgressGuardContext";
 import GlobalSearchOverlay from "@/components/global-search/GlobalSearchOverlay";
 import GlobalItemPreviewModal from "@/components/GlobalItemPreviewModal";
 import CrossRestaurantCartDialog from "@/components/cart/CrossRestaurantCartDialog";
+import InProgressBuildDialog from "@/components/InProgressBuildDialog";
 import SiteFooter from "@/components/SiteFooter";
 import { SITE_DESCRIPTION, SITE_NAME, SITE_URL } from "@/lib/site";
 import "./globals.css";
@@ -97,13 +99,16 @@ export default function RootLayout({
                 <GlobalSearchProvider>
                     <GlobalItemPreviewProvider>
                         <CartAddConfirmationProvider>
-                            {children}
-                            <SiteFooter />
-                            <Suspense fallback={null}>
-                                <GlobalSearchOverlay />
-                            </Suspense>
-                            <GlobalItemPreviewModal />
-                            <CrossRestaurantCartDialog />
+                            <BuildInProgressGuardProvider>
+                                {children}
+                                <SiteFooter />
+                                <Suspense fallback={null}>
+                                    <GlobalSearchOverlay />
+                                </Suspense>
+                                <GlobalItemPreviewModal />
+                                <CrossRestaurantCartDialog />
+                                <InProgressBuildDialog />
+                            </BuildInProgressGuardProvider>
                         </CartAddConfirmationProvider>
                     </GlobalItemPreviewProvider>
                 </GlobalSearchProvider>
