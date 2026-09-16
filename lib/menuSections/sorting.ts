@@ -12,6 +12,7 @@ import {
   isDefaultOrderSort,
   type SortOption,
 } from "@/lib/menuSections/sortOptions";
+import { MCDONALDS_MENU_SECTION_ORDER } from "@/lib/restaurantBuilders/mcdonalds/generatedRuntimeAdapter";
 
 export type CategoryMode = "menu" | "ingredients";
 
@@ -239,10 +240,13 @@ export function applyRestaurantMenuSectionOrder(
   sections: string[],
   restaurantId: string,
 ): string[] {
-  if (restaurantId !== "starbucks") return sections;
-  const priority = new Map<string, number>(
-    STARBUCKS_MENU_SECTION_ORDER.map((section, index) => [section, index]),
-  );
+  const restaurantOrder = restaurantId === "starbucks"
+    ? STARBUCKS_MENU_SECTION_ORDER
+    : restaurantId === "mcdonalds"
+      ? MCDONALDS_MENU_SECTION_ORDER
+      : undefined;
+  if (!restaurantOrder) return sections;
+  const priority = new Map<string, number>(restaurantOrder.map((section, index) => [section, index]));
   return [...sections].sort(
     (left, right) =>
       (priority.get(normalizeCategory(left)) ?? Number.POSITIVE_INFINITY) -
@@ -252,5 +256,10 @@ export function applyRestaurantMenuSectionOrder(
 }
 
 export function getCategoryLabel(category: string, _mode: CategoryMode = "menu") {
-  return titleCase(normalizeCategory(category));
+  const normalized = normalizeCategory(category);
+  const labelOverrides: Record<string, string> = {
+    "mccafé": "McCafé",
+    "mcnuggets & strips": "McNuggets & Strips",
+  };
+  return labelOverrides[normalized] ?? titleCase(normalized);
 }

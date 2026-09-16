@@ -17,8 +17,10 @@
     "collect:chipotle-online-meals": "tsx scripts/collect/chipotle-online-meals.ts",
     "import:chick-fil-a": "node --import tsx scripts/importers/chick-fil-a.ts",
     "import:chipotle": "node --import tsx scripts/importers/chipotle.ts",
+    "import:mcdonalds": "node --import tsx scripts/importers/mcdonalds.ts",
     "validate:chick-fil-a": "node --import tsx scripts/validate/chick-fil-a.ts",
     "validate:chipotle": "node --import tsx scripts/validate/chipotle.ts",
+    "validate:mcdonalds": "node --import tsx scripts/validate/mcdonalds.ts",
     "validate:starbucks": "node --import tsx scripts/validate/starbucks.ts",
     "review:chick-fil-a": "node --import tsx scripts/review/chick-fil-a.ts"
   },

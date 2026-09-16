@@ -1,0 +1,565 @@
+{
+  "capturedAt": "2026-09-16T17:23:01.711Z",
+  "fullMenu": "https://www.mcdonalds.com/us/en-us/full-menu.html",
+  "categoryPages": [
+    "https://www.mcdonalds.com/us/en-us/full-menu/spicy-mcnuggets.html",
+    "https://www.mcdonalds.com/us/en-us/full-menu/extra-value-meals-menu.html",
+    "https://www.mcdonalds.com/us/en-us/full-menu/mcvalue-menu.html",
+    "https://www.mcdonalds.com/us/en-us/full-menu/breakfast.html",
+    "https://www.mcdonalds.com/us/en-us/full-menu/burgers.html",
+    "https://www.mcdonalds.com/us/en-us/full-menu/chicken-and-fish-sandwiches.html",
+    "https://www.mcdonalds.com/us/en-us/full-menu/mcnuggets-and-mccrispy-strips.html",
+    "https://www.mcdonalds.com/us/en-us/full-menu/snack-wrap.html",
+    "https://www.mcdonalds.com/us/en-us/full-menu/fries-sides.html",
+    "https://www.mcdonalds.com/us/en-us/full-menu/happy-meal.html",
+    "https://www.mcdonalds.com/us/en-us/full-menu/sweets-treats.html",
+    "https://www.mcdonalds.com/us/en-us/full-menu/mccafe-coffees.html",
+    "https://www.mcdonalds.com/us/en-us/full-menu/drinks.html",
+    "https://www.mcdonalds.com/us/en-us/full-menu/sauces-and-condiments.html"
+  ],
+  "itemListEndpoint": "https://www.mcdonalds.com/dnaapp/itemList?country=US&language=en&showLiveData=true&nutrient_req=N&item={itemIds}",
+  "itemDetailsEndpoint": "https://www.mcdonalds.com/dnaapp/itemDetails?country=US&language=en&showLiveData=true&item={itemId}",
+  "transport": {
+    "directAttemptedFirst": true,
+    "fallback": "https://r.jina.ai/",
+    "note": "The fallback wraps official responses. The wrapper is removed; JSON payloads are not normalized or reshaped."
+  },
+  "itemListDiscovery": {
+    "strategy": "adaptive 50-ID batches beginning at 200000; stop after 10 consecutive empty batches",
+    "batches": [
+      {
+        "start": 200000,
+        "end": 200049,
+        "count": 13
+      },
+      {
+        "start": 200050,
+        "end": 200099,
+        "count": 21
+      },
+      {
+        "start": 200100,
+        "end": 200149,
+        "count": 15
+      },
+      {
+        "start": 200150,
+        "end": 200199,
+        "count": 14
+      },
+      {
+        "start": 200200,
+        "end": 200249,
+        "count": 11
+      },
+      {
+        "start": 200250,
+        "end": 200299,
+        "count": 8
+      },
+      {
+        "start": 200300,
+        "end": 200349,
+        "count": 27
+      },
+      {
+        "start": 200350,
+        "end": 200399,
+        "count": 14
+      },
+      {
+        "start": 200400,
+        "end": 200449,
+        "count": 19
+      },
+      {
+        "start": 200450,
+        "end": 200499,
+        "count": 22
+      },
+      {
+        "start": 200500,
+        "end": 200549,
+        "count": 11
+      },
+      {
+        "start": 200550,
+        "end": 200599,
+        "count": 19
+      },
+      {
+        "start": 200600,
+        "end": 200649,
+        "count": 38
+      },
+      {
+        "start": 200650,
+        "end": 200699,
+        "count": 30
+      },
+      {
+        "start": 200700,
+        "end": 200749,
+        "count": 27
+      },
+      {
+        "start": 200750,
+        "end": 200799,
+        "count": 5
+      },
+      {
+        "start": 200800,
+        "end": 200849,
+        "count": 16
+      },
+      {
+        "start": 200850,
+        "end": 200899,
+        "count": 11
+      },
+      {
+        "start": 200900,
+        "end": 200949,
+        "count": 19
+      },
+      {
+        "start": 200950,
+        "end": 200999,
+        "count": 11
+      },
+      {
+        "start": 201000,
+        "end": 201049,
+        "count": 24
+      },
+      {
+        "start": 201050,
+        "end": 201099,
+        "count": 20
+      },
+      {
+        "start": 201100,
+        "end": 201149,
+        "count": 16
+      },
+      {
+        "start": 201150,
+        "end": 201199,
+        "count": 17
+      },
+      {
+        "start": 201200,
+        "end": 201249,
+        "count": 18
+      },
+      {
+        "start": 201250,
+        "end": 201299,
+        "count": 15
+      },
+      {
+        "start": 201300,
+        "end": 201349,
+        "count": 18
+      },
+      {
+        "start": 201350,
+        "end": 201399,
+        "count": 24
+      },
+      {
+        "start": 201400,
+        "end": 201449,
+        "count": 24
+      },
+      {
+        "start": 201450,
+        "end": 201499,
+        "count": 11
+      },
+      {
+        "start": 201500,
+        "end": 201549,
+        "count": 21
+      },
+      {
+        "start": 201550,
+        "end": 201599,
+        "count": 19
+      },
+      {
+        "start": 201600,
+        "end": 201649,
+        "count": 14
+      },
+      {
+        "start": 201650,
+        "end": 201699,
+        "count": 16
+      },
+      {
+        "start": 201700,
+        "end": 201749,
+        "count": 15
+      },
+      {
+        "start": 201750,
+        "end": 201799,
+        "count": 0
+      },
+      {
+        "start": 201800,
+        "end": 201849,
+        "count": 6
+      },
+      {
+        "start": 201850,
+        "end": 201899,
+        "count": 14
+      },
+      {
+        "start": 201900,
+        "end": 201949,
+        "count": 11
+      },
+      {
+        "start": 201950,
+        "end": 201999,
+        "count": 21
+      },
+      {
+        "start": 202000,
+        "end": 202049,
+        "count": 5
+      },
+      {
+        "start": 202050,
+        "end": 202099,
+        "count": 13
+      },
+      {
+        "start": 202100,
+        "end": 202149,
+        "count": 24
+      },
+      {
+        "start": 202150,
+        "end": 202199,
+        "count": 4
+      },
+      {
+        "start": 202200,
+        "end": 202249,
+        "count": 13
+      },
+      {
+        "start": 202250,
+        "end": 202299,
+        "count": 10
+      },
+      {
+        "start": 202300,
+        "end": 202349,
+        "count": 2
+      },
+      {
+        "start": 202350,
+        "end": 202399,
+        "count": 25
+      },
+      {
+        "start": 202400,
+        "end": 202449,
+        "count": 11
+      },
+      {
+        "start": 202450,
+        "end": 202499,
+        "count": 3
+      },
+      {
+        "start": 202500,
+        "end": 202549,
+        "count": 1
+      },
+      {
+        "start": 202550,
+        "end": 202599,
+        "count": 2
+      },
+      {
+        "start": 202600,
+        "end": 202649,
+        "count": 1
+      },
+      {
+        "start": 202650,
+        "end": 202699,
+        "count": 22
+      },
+      {
+        "start": 202700,
+        "end": 202749,
+        "count": 7
+      },
+      {
+        "start": 202750,
+        "end": 202799,
+        "count": 7
+      },
+      {
+        "start": 202800,
+        "end": 202849,
+        "count": 21
+      },
+      {
+        "start": 202850,
+        "end": 202899,
+        "count": 16
+      },
+      {
+        "start": 202900,
+        "end": 202949,
+        "count": 22
+      },
+      {
+        "start": 202950,
+        "end": 202999,
+        "count": 29
+      },
+      {
+        "start": 203000,
+        "end": 203049,
+        "count": 32
+      },
+      {
+        "start": 203050,
+        "end": 203099,
+        "count": 30
+      },
+      {
+        "start": 203100,
+        "end": 203149,
+        "count": 8
+      },
+      {
+        "start": 203150,
+        "end": 203199,
+        "count": 7
+      },
+      {
+        "start": 203200,
+        "end": 203249,
+        "count": 11
+      },
+      {
+        "start": 203250,
+        "end": 203299,
+        "count": 11
+      },
+      {
+        "start": 203300,
+        "end": 203349,
+        "count": 0
+      },
+      {
+        "start": 203350,
+        "end": 203399,
+        "count": 15
+      },
+      {
+        "start": 203400,
+        "end": 203449,
+        "count": 18
+      },
+      {
+        "start": 203450,
+        "end": 203499,
+        "count": 13
+      },
+      {
+        "start": 203500,
+        "end": 203549,
+        "count": 20
+      },
+      {
+        "start": 203550,
+        "end": 203599,
+        "count": 18
+      },
+      {
+        "start": 203600,
+        "end": 203649,
+        "count": 16
+      },
+      {
+        "start": 203650,
+        "end": 203699,
+        "count": 14
+      },
+      {
+        "start": 203700,
+        "end": 203749,
+        "count": 14
+      },
+      {
+        "start": 203750,
+        "end": 203799,
+        "count": 9
+      },
+      {
+        "start": 203800,
+        "end": 203849,
+        "count": 34
+      },
+      {
+        "start": 203850,
+        "end": 203899,
+        "count": 36
+      },
+      {
+        "start": 203900,
+        "end": 203949,
+        "count": 42
+      },
+      {
+        "start": 203950,
+        "end": 203999,
+        "count": 36
+      },
+      {
+        "start": 204000,
+        "end": 204049,
+        "count": 21
+      },
+      {
+        "start": 204050,
+        "end": 204099,
+        "count": 37
+      },
+      {
+        "start": 204100,
+        "end": 204149,
+        "count": 39
+      },
+      {
+        "start": 204150,
+        "end": 204199,
+        "count": 41
+      },
+      {
+        "start": 204200,
+        "end": 204249,
+        "count": 43
+      },
+      {
+        "start": 204250,
+        "end": 204299,
+        "count": 32
+      },
+      {
+        "start": 204300,
+        "end": 204349,
+        "count": 44
+      },
+      {
+        "start": 204350,
+        "end": 204399,
+        "count": 46
+      },
+      {
+        "start": 204400,
+        "end": 204449,
+        "count": 48
+      },
+      {
+        "start": 204450,
+        "end": 204499,
+        "count": 48
+      },
+      {
+        "start": 204500,
+        "end": 204549,
+        "count": 50
+      },
+      {
+        "start": 204550,
+        "end": 204599,
+        "count": 45
+      },
+      {
+        "start": 204600,
+        "end": 204649,
+        "count": 44
+      },
+      {
+        "start": 204650,
+        "end": 204699,
+        "count": 31
+      },
+      {
+        "start": 204700,
+        "end": 204749,
+        "count": 21
+      },
+      {
+        "start": 204750,
+        "end": 204799,
+        "count": 0
+      },
+      {
+        "start": 204800,
+        "end": 204849,
+        "count": 0
+      },
+      {
+        "start": 204850,
+        "end": 204899,
+        "count": 0
+      },
+      {
+        "start": 204900,
+        "end": 204949,
+        "count": 0
+      },
+      {
+        "start": 204950,
+        "end": 204999,
+        "count": 0
+      },
+      {
+        "start": 205000,
+        "end": 205049,
+        "count": 0
+      },
+      {
+        "start": 205050,
+        "end": 205099,
+        "count": 0
+      },
+      {
+        "start": 205100,
+        "end": 205149,
+        "count": 0
+      },
+      {
+        "start": 205150,
+        "end": 205199,
+        "count": 0
+      },
+      {
+        "start": 205200,
+        "end": 205249,
+        "count": 0
+      }
+    ],
+    "catalogRecordCount": 1887
+  },
+  "manualReconciliations": [
+    {
+      "productUrl": "https://www.mcdonalds.com/us/en-us/product/mocha-latte-small.html",
+      "itemId": 202961,
+      "reason": "Manual exception: candidate 202961 matches the current public 290-calorie product and complete recipe; candidate 200679 is marked Core but conflicts on nutrition and components."
+    }
+  ]
+}

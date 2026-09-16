@@ -3,7 +3,7 @@ import enrichmentPlan from "@/data/restaurants/chipotle/review/enrichment-plan.j
 import imageEnrichment from "@/data/restaurants/chipotle/review/runtime-image-enrichment.json";
 
 export const CHIPOTLE_PRESENTATION_FALLBACK_IMAGE =
-  "/restaurants/chipotle/brand/logo.jpeg";
+  "/restaurants/chipotle/brand/logo.svg";
 
 export type ChipotleBrowseCategory =
   | "Chips & Dips"

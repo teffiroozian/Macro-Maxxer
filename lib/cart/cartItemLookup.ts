@@ -12,7 +12,7 @@ import {
   resolveChipotleLegacyCartMainItem,
 } from "@/lib/restaurantBuilders/chipotle/legacyCompatibility";
 import habitMenu from "@/data/restaurants/habit.json";
-import mcdonaldsMenu from "@/data/restaurants/mcdonalds.json";
+import { MCDONALDS_GENERATED_RUNTIME_MENU } from "@/lib/restaurantBuilders/mcdonalds/generatedRuntimeAdapter";
 import modMenu from "@/data/restaurants/mod.json";
 import pandaMenu from "@/data/restaurants/panda.json";
 import paneraMenu from "@/data/restaurants/panera.json";
@@ -34,7 +34,7 @@ const restaurantMenusById: Record<string, RestaurantMenu> = {
   chickfila: chickfilaMenu as RestaurantMenu,
   chipotle: CHIPOTLE_GENERATED_RUNTIME_MENU,
   habit: habitMenu as RestaurantMenu,
-  mcdonalds: mcdonaldsMenu as RestaurantMenu,
+  mcdonalds: MCDONALDS_GENERATED_RUNTIME_MENU,
   mod: modMenu as RestaurantMenu,
   panda: pandaMenu as RestaurantMenu,
   panera: paneraMenu as RestaurantMenu,

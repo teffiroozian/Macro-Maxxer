@@ -25,6 +25,10 @@ const nextConfig: NextConfig = {
         protocol: "https",
         hostname: "cloudassets.starbucks.com",
       },
+      {
+        protocol: "https",
+        hostname: "s7d1.scene7.com",
+      },
     ],
   },
 };
