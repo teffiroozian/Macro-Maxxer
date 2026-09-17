@@ -3,6 +3,7 @@ import { formatDelta } from "@/lib/menuItemCalculations";
 import MacroStat from "@/components/nutrition/MacroStat";
 import ProteinScorePill from "./ProteinScorePill";
 import type { ProteinScoreTier } from "@/lib/nutrition";
+import type { ItemImagePresentation } from "@/types/menu";
 
 export default function MenuItemMacroSummary({
   displayCalories,
@@ -19,6 +20,9 @@ export default function MenuItemMacroSummary({
   proteinScoreTier,
   itemName,
   itemImage,
+  itemImagePresentation,
+  imageClassName,
+  imageBackgroundColor,
   actions,
 }: {
   displayCalories: number;
@@ -35,12 +39,30 @@ export default function MenuItemMacroSummary({
   proteinScoreTier?: ProteinScoreTier;
   itemName?: string;
   itemImage?: string;
+  // Item-level override for `itemImage`, plus the restaurant-level
+  // fallbacks — forwarded to the Protein Score pill/modal so its thumbnail
+  // matches how the same image renders on this card (see
+  // lib/itemImagePresentation.ts).
+  itemImagePresentation?: ItemImagePresentation;
+  imageClassName?: string;
+  imageBackgroundColor?: string;
   actions: ReactNode;
 }) {
   return (
     <div className="mt-3 lg:mt-auto">
       {typeof proteinScore === "number" && proteinScoreTier ? (
-        <ProteinScorePill scorePerHundredCalories={proteinScore} tier={proteinScoreTier} protein={displayProtein} calories={displayCalories} itemName={itemName} itemImage={itemImage} className="mb-2" />
+        <ProteinScorePill
+          scorePerHundredCalories={proteinScore}
+          tier={proteinScoreTier}
+          protein={displayProtein}
+          calories={displayCalories}
+          itemName={itemName}
+          itemImage={itemImage}
+          itemImagePresentation={itemImagePresentation}
+          imageClassName={imageClassName}
+          imageBackgroundColor={imageBackgroundColor}
+          className="mb-2"
+        />
       ) : null}
       <div className="flex flex-wrap items-end gap-x-6 gap-y-3 border-t border-black/[0.06] pt-3 lg:gap-x-8">
         <MacroStat

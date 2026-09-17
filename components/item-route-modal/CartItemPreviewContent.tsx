@@ -3,10 +3,12 @@ import type { ReactNode } from "react";
 import { Minus, Plus } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import { PresetIngredientCard } from "@/components/item-route-modal/PresetBuildReview";
+import SectionEyebrow from "@/components/ui/SectionEyebrow";
 import {
+  MEAL_DETAILS_SECTION_LABEL_CLASSNAME,
+  MealDetailItemRow,
   NutritionDetailsGrid,
   SelectionScrollList,
-  SelectionSummaryRow,
   SelectionSummaryShell,
 } from "@/components/item-route-modal/SelectionSummaryPanels";
 import NutritionFactsPanel from "@/components/nutrition/NutritionFactsPanel";
@@ -21,6 +23,7 @@ import {
   type ResolvedCartItemCard,
 } from "@/lib/cart/cartItemLookup";
 import type { CartItem } from "@/types/cart";
+import type { ItemImagePresentation } from "@/types/menu";
 import type { CoreMacros } from "@/types/nutrition";
 
 type PreviewEditSection = "side" | "drink" | "ingredients" | "sauces" | "dressings";
@@ -259,17 +262,24 @@ export default function CartItemPreviewContent({
   // standard/combo item's own ingredient customizations are nested under
   // its Main Item row instead (see NestedCustomizationSummaryRow below).
   const peerSummaryRows = useMemo(() => {
-    const rows: Array<{ id: string; name: string; image?: string; badge?: string }> = [];
-    if (sideSelection) rows.push({ id: "summary-side", name: sideSelection.name, image: sideSelection.image, badge: sideSelection.variantLabel });
-    if (drinkSelection) rows.push({ id: "summary-drink", name: drinkSelection.name, image: drinkSelection.image, badge: drinkSelection.variantLabel });
-    dressingCards.forEach((card) => rows.push({ id: `summary-${card.id}`, name: card.name, image: card.image, badge: card.qualifierLabel }));
-    sauceCards.forEach((card) => rows.push({ id: `summary-${card.id}`, name: card.name, image: card.image, badge: card.qualifierLabel }));
+    const rows: Array<{ id: string; name: string; image?: string; imagePresentation?: ItemImagePresentation; badge?: string }> = [];
+    if (sideSelection)
+      rows.push({ id: "summary-side", name: sideSelection.name, image: sideSelection.image, imagePresentation: sideSelection.imagePresentation, badge: sideSelection.variantLabel });
+    if (drinkSelection)
+      rows.push({ id: "summary-drink", name: drinkSelection.name, image: drinkSelection.image, imagePresentation: drinkSelection.imagePresentation, badge: drinkSelection.variantLabel });
+    dressingCards.forEach((card) =>
+      rows.push({ id: `summary-${card.id}`, name: card.name, image: card.image, imagePresentation: card.imagePresentation, badge: card.qualifierLabel }),
+    );
+    sauceCards.forEach((card) =>
+      rows.push({ id: `summary-${card.id}`, name: card.name, image: card.image, imagePresentation: card.imagePresentation, badge: card.qualifierLabel }),
+    );
     if (!mainItem) {
       customizationCards.forEach((card) =>
         rows.push({
           id: `summary-${card.id}`,
           name: card.name,
           image: card.image,
+          imagePresentation: card.imagePresentation,
           badge: card.qualifierLabel ?? (card.sign === "remove" ? "Removed" : "Added"),
         }),
       );
@@ -403,8 +413,7 @@ export default function CartItemPreviewContent({
         nutritionFacts={<NutritionFactsPanel totals={cartItem.nutritionPerItem} />}
         details={
           <SelectionSummaryShell
-            title="Selected Items"
-            subtitle={`${cartItem.name} · ${totalSelectedCount} selected`}
+            title="Meal Details"
             totals={{
               calories: cartItem.nutritionPerItem.calories,
               protein: cartItem.nutritionPerItem.protein,
@@ -416,28 +425,46 @@ export default function CartItemPreviewContent({
                 id: "protein-main-item",
                 name: mainItem.name,
                 image: mainItem.image,
+                imagePresentation: mainItem.imagePresentation,
                 calories: mainItem.nutrition.calories,
                 protein: mainItem.nutrition.protein,
+                carbs: mainItem.nutrition.carbs,
+                totalFat: mainItem.nutrition.totalFat,
               }] : []),
               ...(sideSelection?.nutrition ? [{
                 id: "protein-side-item",
                 name: sideSelection.name,
                 image: sideSelection.image,
+                imagePresentation: sideSelection.imagePresentation,
                 calories: sideSelection.nutrition.calories,
                 protein: sideSelection.nutrition.protein,
+                carbs: sideSelection.nutrition.carbs,
+                totalFat: sideSelection.nutrition.totalFat,
               }] : []),
               ...(drinkSelection?.nutrition ? [{
                 id: "protein-drink-item",
                 name: drinkSelection.name,
                 image: drinkSelection.image,
+                imagePresentation: drinkSelection.imagePresentation,
                 calories: drinkSelection.nutrition.calories,
                 protein: drinkSelection.nutrition.protein,
+                carbs: drinkSelection.nutrition.carbs,
+                totalFat: drinkSelection.nutrition.totalFat,
               }] : []),
             ]}
+            beforeList={<SectionEyebrow className={MEAL_DETAILS_SECTION_LABEL_CLASSNAME}>Items</SectionEyebrow>}
           >
             {totalSelectedCount > 0 ? (
               <SelectionScrollList>
-                {mainItem ? <SelectionSummaryRow key="summary-main-item" image={mainItem.image} name={mainItem.name} badge={mainItem.variantLabel} /> : null}
+                {mainItem ? (
+                  <MealDetailItemRow
+                    key="summary-main-item"
+                    image={mainItem.image}
+                    imagePresentation={mainItem.imagePresentation}
+                    name={mainItem.name}
+                    secondaryText={mainItem.variantLabel}
+                  />
+                ) : null}
                 {mainItemCustomizationEntries.length > 0 ? (
                   <li key="summary-main-item-customizations" className="list-none">
                     <NestedUnderMainItem compact>
@@ -450,7 +477,13 @@ export default function CartItemPreviewContent({
                   </li>
                 ) : null}
                 {peerSummaryRows.map((row) => (
-                  <SelectionSummaryRow key={row.id} image={row.image} name={row.name} badge={row.badge} />
+                  <MealDetailItemRow
+                    key={row.id}
+                    image={row.image}
+                    imagePresentation={row.imagePresentation}
+                    name={row.name}
+                    secondaryText={row.badge}
+                  />
                 ))}
               </SelectionScrollList>
             ) : (

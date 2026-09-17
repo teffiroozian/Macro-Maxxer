@@ -1,9 +1,10 @@
 import type { CartCustomization, CartItem, CartSelectionOption } from "@/types/cart";
 import { getCustomizationLabel } from "@/lib/cart/customizationLabels";
 import { findCartMenuItem, getCartRestaurantMenu } from "@/lib/cart/cartItemLookup";
-import { getSplitPortionModeLabel } from "@/lib/restaurantBuilders/chipotle";
+import { getSplitPortionModeLabel, normalizeIngredientCategory } from "@/lib/restaurantBuilders/chipotle";
 import { resolveChipotleIngredientDisplayName } from "@/lib/restaurantBuilders/chipotle/ingredientMenuItems";
 import type { ChipotleBuilderConfig, ChipotleEntreeSelection } from "@/lib/restaurantBuilders/chipotle/types";
+import { resolvePrimaryCategory } from "@/lib/ingredientTabs";
 
 export function hasComboCustomization(item: CartItem) {
   return (item.customizations ?? []).some((customization) => customization.kind === "combo");
@@ -19,6 +20,7 @@ export type CartSummaryGroupKind = "mainItem" | "side" | "drink" | "sauce" | "dr
 export type CartSummaryGroup = {
   kind: CartSummaryGroupKind;
   label: string;
+  inlineItems?: Array<{ label: string; category: string }>;
 };
 
 // "sauce" and "dressing" are the two option refs that survive as distinct
@@ -73,10 +75,9 @@ export function buildCartItemSummaryGroups(item: CartItem): CartSummaryGroup[] {
       else customizationGroups.push({ kind: "customization", label });
     });
   } else {
-    // One group total, not one per ingredient — CartCustomizationSummary
-    // renders a leading icon per group, and a Build Your Own item can have
-    // a dozen+ ingredients, so pushing one group each would repeat the icon
-    // down the whole line instead of reading as a single ingredient list.
+    // Keep Build Your Own ingredients in one inline group. Chipotle also
+    // carries category metadata so the shared renderer can mark category
+    // transitions without turning the summary into separate rows/groups.
     // ingredient.label is never populated by the restaurant builder adapters
     // (e.g. chipotle/cartAdapter.ts), so the real name has to be looked up
     // from the restaurant's catalog by id.
@@ -90,7 +91,7 @@ export function buildCartItemSummaryGroups(item: CartItem): CartSummaryGroup[] {
       item.restaurantId === "chipotle"
         ? ((item.selection.buildConfiguration.baseItemId ?? null) as ChipotleEntreeSelection)
         : undefined;
-    const ingredientLabels = item.selection.buildConfiguration.ingredients
+    const ingredientItems = item.selection.buildConfiguration.ingredients
       .filter((ingredient) => ingredient.quantity > 0)
       .map((ingredient) => {
         const catalogItem = restaurant ? findCartMenuItem(restaurant, ingredient.id) : null;
@@ -105,10 +106,17 @@ export function buildCartItemSummaryGroups(item: CartItem): CartSummaryGroup[] {
         const name = ingredient.label ?? catalogName ?? "Ingredient";
         const qualifier =
           ingredient.portion && ingredient.portion !== "normal" ? ` (${getSplitPortionModeLabel(ingredient.portion)})` : "";
-        return ingredient.quantity === 1 ? `${name}${qualifier}` : `${name}${qualifier}: ${ingredient.quantity}x`;
+        return {
+          label: ingredient.quantity === 1 ? `${name}${qualifier}` : `${name}${qualifier}: ${ingredient.quantity}x`,
+          category: normalizeIngredientCategory(resolvePrimaryCategory(catalogItem?.categories)),
+        };
       });
-    if (ingredientLabels.length > 0) {
-      customizationGroups.push({ kind: "customization", label: ingredientLabels.join(" · ") });
+    if (ingredientItems.length > 0) {
+      customizationGroups.push({
+        kind: "customization",
+        label: ingredientItems.map((ingredient) => ingredient.label).join(" · "),
+        ...(item.restaurantId === "chipotle" ? { inlineItems: ingredientItems } : {}),
+      });
     }
   }
 

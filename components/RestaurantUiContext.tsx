@@ -50,6 +50,7 @@ export function RestaurantUiProvider({ children }: { children: ReactNode }) {
           addons={editState.addons}
           ingredients={editState.restaurant.ingredients}
           customizationRules={editState.restaurant.customizationRules}
+          builderConfig={editState.restaurant.builderConfig}
           closeBehavior="local"
           editCartItemId={editState.cartItemId}
           initialMode={editState.mode}

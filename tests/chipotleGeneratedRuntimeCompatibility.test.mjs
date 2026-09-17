@@ -27,6 +27,7 @@ import {
   isChipotleEditablePresetBuildItem,
   isChipotleHighProteinPresetMealArtwork,
 } from "../lib/restaurantBuilders/chipotle/highProtein.ts";
+import { diffChipotleBuildConfigurations } from "../lib/restaurantBuilders/chipotle/buildDiff.ts";
 
 const ingredients = CHIPOTLE_GENERATED_RUNTIME_MENU.ingredients;
 const items = CHIPOTLE_GENERATED_RUNTIME_MENU.items;
@@ -323,6 +324,12 @@ test("preset-meal editorial artwork flag matches only wide Protein Meals photogr
   assert.equal(isChipotleHighProteinPresetMealArtwork(joshHartBurrito, "chipotle"), true);
   assert.equal(isChipotleHighProteinPresetMealArtwork(proteinCup, "chipotle"), false);
   assert.equal(isChipotleHighProteinPresetMealArtwork(bowl, "chipotle"), false);
+  assert.deepEqual(joshHartBurrito.imagePresentation, {
+    fit: "cover",
+    position: "60% 50%",
+  });
+  assert.equal(proteinCup.imagePresentation, undefined);
+  assert.equal(bowl.imagePresentation, undefined);
   assert.equal(
     isChipotleHighProteinPresetMealArtwork(joshHartBurrito, "chick-fil-a"),
     false,
@@ -438,6 +445,16 @@ test("every supported generated Chipotle preset resolves, groups, and round-trip
     );
     assert.deepEqual(roundTripped.selectedIngredientItems, configuration.selectedIngredientItems);
     assert.equal(roundTripped.selectedEntree, configuration.selectedEntree);
+    assert.deepEqual(
+      diffChipotleBuildConfigurations(configuration, roundTripped, ingredients),
+      {
+        isCustomized: false,
+        differenceCount: 0,
+        statusById: {},
+        removedIngredientIds: [],
+      },
+      `${preset.name} untouched cart state must equal its preset baseline`,
+    );
 
     const total = calculateChipotleBuildNutrition(roundTripped, ingredients);
     for (const field of ["calories", "protein", "carbs", "totalFat"]) {

@@ -32,6 +32,7 @@ export default async function ItemModalPage({
       addons={addons}
       ingredients={restaurant.ingredients}
       customizationRules={restaurant.customizationRules}
+      builderConfig={restaurant.builderConfig}
       closeBehavior="back"
       initialVariantId={initialVariantId}
     />

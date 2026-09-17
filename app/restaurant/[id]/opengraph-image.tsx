@@ -27,8 +27,8 @@ export default async function RestaurantOgImage({ params }: { params: Promise<{ 
       <svg width={1200} height={630} style={{ position: 'absolute', top: 0, left: 0 }} viewBox="0 0 1200 630">{Array.from({ length: 55 * 29 }, (_, i) => <circle key={i} cx={(i % 55) * 22 + 1} cy={Math.floor(i / 55) * 22 + 1} r={1} fill="#047857" opacity={0.13} />)}</svg>
       <div style={{ display: 'flex', flexDirection: 'column', width: 612 }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 16, marginBottom: 48 }}>
-        <div style={{ display: 'flex', flexShrink: 0, width: 52, height: 52, borderRadius: 12, background: 'white', alignItems: 'center', justifyContent: 'center', overflow: 'hidden' }}>
-          {logo ? <img src={logo} width={52} height={52} style={{ objectFit: 'contain' }} alt="" /> : <span style={{ fontSize: 24, fontWeight: 700 }}>{restaurant.name.slice(0, 1)}</span>}
+        <div style={{ display: 'flex', flexShrink: 0, width: 52, height: 52, borderRadius: 999, background: 'white', alignItems: 'center', justifyContent: 'center', overflow: 'hidden' }}>
+          {logo ? <img src={logo} width={52} height={52} style={{ objectFit: 'contain', borderRadius: 999 }} alt="" /> : <span style={{ fontSize: 24, fontWeight: 700 }}>{restaurant.name.slice(0, 1)}</span>}
         </div>
         <span style={{ fontFamily: 'Unbounded', fontWeight: 700, fontSize: restaurant.name.length > 30 ? 22 : 28, lineHeight: 1.2, overflowWrap: 'anywhere' }}>{fitOgText(restaurant.name, 60)}</span>
         </div>

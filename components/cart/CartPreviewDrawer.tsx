@@ -110,7 +110,7 @@ export default function CartPreviewDrawer() {
               <div className="flex min-w-0 items-center gap-3">
                 <div className={`relative size-11 shrink-0 overflow-hidden border border-slate-200 bg-slate-100 ${
                   cartHeaderInfo.mode === "single" && cartHeaderInfo.restaurant
-                    ? getRestaurantLogoShapeClassName(cartHeaderInfo.restaurant.id)
+                    ? getRestaurantLogoShapeClassName()
                     : "rounded-xl"
                 }`}>
                   {cartHeaderInfo.mode === "single" && cartHeaderInfo.restaurant?.logo ? (
@@ -256,6 +256,7 @@ export default function CartPreviewDrawer() {
           addons={editState.addons}
           ingredients={editState.restaurant.ingredients}
           customizationRules={editState.restaurant.customizationRules}
+          builderConfig={editState.restaurant.builderConfig}
           closeBehavior="local"
           editCartItemId={editState.cartItemId}
           initialMode={editState.mode}

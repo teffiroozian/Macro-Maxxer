@@ -2,6 +2,7 @@ import MacroStat from "@/components/nutrition/MacroStat";
 import { getCartCustomizationItemId, resolveCartItemDetails } from "@/lib/cart/cartItemLookup";
 import type { CartCustomization, CartItem } from "@/types/cart";
 import type { CartDetailMenuItem } from "@/lib/cart/cartItemLookup";
+import RestaurantItemImage from "@/components/ui/RestaurantItemImage";
 
 function getDetailTitle(customization: CartCustomization) {
   if (customization.comboRole === "side") return "Side";
@@ -19,14 +20,14 @@ function CartItemDetailCard({ detailItem, title, label }: { detailItem: CartDeta
 
   return (
     <div className="flex items-center gap-3 rounded-2xl border border-slate-200 bg-white px-3 py-2.5 shadow-[0_1px_4px_rgba(15,23,42,0.06)]">
-      <div className="h-12 w-12 shrink-0 overflow-hidden rounded-xl border border-slate-200 bg-slate-50">
-        {detailItem?.image ? (
-          // eslint-disable-next-line @next/next/no-img-element
-          <img src={detailItem.image} alt={label} className="h-full w-full object-contain p-1" />
-        ) : (
-          <div className="flex h-full w-full items-center justify-center text-sm font-bold text-slate-500">{label.charAt(0)}</div>
-        )}
-      </div>
+      <RestaurantItemImage
+        src={detailItem?.image}
+        alt={label}
+        imagePresentation={detailItem && "imagePresentation" in detailItem ? detailItem.imagePresentation : undefined}
+        fallbackClassName="object-contain p-1"
+        containerClassName="h-12 w-12 shrink-0 overflow-hidden rounded-xl border border-slate-200 bg-slate-50"
+        fallback={<div className="flex h-full w-full items-center justify-center text-sm font-bold text-slate-500">{label.charAt(0)}</div>}
+      />
       <div className="min-w-0 flex-1">
         <p className="text-[10px] font-bold uppercase tracking-[0.12em] text-slate-500">{title}</p>
         <p className="truncate text-sm font-semibold text-slate-900">{label}</p>

@@ -1,13 +1,11 @@
 import Image from "next/image";
 
 export type RestaurantLogoBadgeSize = "sm" | "md" | "lg";
-export type RestaurantLogoBadgeShape = "rounded" | "circle";
 
 type RestaurantLogoBadgeProps = {
   src: string;
   alt: string;
   size?: RestaurantLogoBadgeSize;
-  shape?: RestaurantLogoBadgeShape;
   // Most restaurant marks are roughly square (icon-style). A few use a
   // wider wordmark — pass `wide` for those rather than guessing a fixed
   // aspect ratio from the file itself.
@@ -44,11 +42,6 @@ const widthClassNames: Record<RestaurantLogoBadgeSize, { square: string; wide: s
   lg: { square: "w-16", wide: "w-32" },
 };
 
-const shapeClassNames: Record<RestaurantLogoBadgeShape, string> = {
-  rounded: "rounded-xl",
-  circle: "rounded-full",
-};
-
 // object-contain + `fill` centers and non-distorts any source aspect
 // ratio (square, circular, wide) inside whatever box it's given, without
 // next/image needing to know the file's real dimensions up front — that's
@@ -57,7 +50,6 @@ export default function RestaurantLogoBadge({
   src,
   alt,
   size = "md",
-  shape = "rounded",
   wide = false,
   ring = true,
   className = "",
@@ -67,7 +59,7 @@ export default function RestaurantLogoBadge({
     <span
       className={`relative inline-flex shrink-0 items-center justify-center overflow-hidden bg-white ${
         ring ? "border border-black/10 shadow-sm" : ""
-      } ${heightClassNames[size]} ${wide ? widthClassNames[size].wide : widthClassNames[size].square} ${shapeClassNames[shape]} ${className}`}
+      } ${heightClassNames[size]} ${wide ? widthClassNames[size].wide : widthClassNames[size].square} rounded-full ${className}`}
     >
       <span className="relative" style={{ height: `${fill}%`, width: `${fill}%` }}>
         <Image src={src} alt={alt} fill sizes="128px" className="object-contain" />

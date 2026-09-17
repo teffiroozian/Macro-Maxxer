@@ -1,4 +1,5 @@
 import type { CoreMacros, Nutrition } from "@/types/nutrition";
+import type { ItemImagePresentation } from "@/types/menu";
 
 export type CartMacros = CoreMacros;
 
@@ -75,6 +76,7 @@ export type CartItem = {
   itemId: string;
   name: string;
   image: string;
+  imagePresentation?: ItemImagePresentation;
   // Convenience mirror for legacy callers; standard item variant source of truth is selection.variantId.
   variantId?: string;
   // Structured customization data. Keep top-level until combo/ingredient customization data is fully folded into selection.

@@ -86,8 +86,15 @@ export default function MobileNavDrawer({
     }
   }
 
-  const featuredRestaurants = useMemo(
-    () => visibleRestaurants.filter((restaurant) => restaurant.isMacroFriendly),
+  // Same grouping desktop uses (DesktopRestaurantMenu): split on
+  // isComingSoon rather than isMacroFriendly, so every restaurant shows up
+  // (McDonald's isn't macro-friendly but is still a real Coming Soon entry)
+  // and the two lists land in the same order/sections as desktop.
+  const { availableRestaurants, comingSoonRestaurants } = useMemo(
+    () => ({
+      availableRestaurants: visibleRestaurants.filter((restaurant) => !restaurant.isComingSoon),
+      comingSoonRestaurants: visibleRestaurants.filter((restaurant) => restaurant.isComingSoon),
+    }),
     [visibleRestaurants]
   );
 
@@ -121,8 +128,8 @@ export default function MobileNavDrawer({
           {headerTitle ? (
             <div className="inline-flex min-w-0 items-center gap-2">
               {headerLogoSrc ? (
-                <span className="relative h-7 w-7 shrink-0 overflow-hidden rounded-lg bg-white ring-1 ring-black/5">
-                  <Image src={headerLogoSrc} alt={`${headerTitle} logo`} fill className="object-contain rounded-md" />
+                <span className="relative h-7 w-7 shrink-0 overflow-hidden rounded-full bg-white ring-1 ring-black/5">
+                  <Image src={headerLogoSrc} alt={`${headerTitle} logo`} fill className="object-contain" />
                 </span>
               ) : null}
               <span className="truncate text-[15px] font-semibold text-slate-900">{headerTitle}</span>
@@ -178,51 +185,65 @@ export default function MobileNavDrawer({
                   <ChevronDown className={`h-3.5 w-3.5 text-slate-400 transition-transform ${isFeaturedOpen ? "rotate-180" : ""}`} strokeWidth={2.5} />
                 </button>
                 {isFeaturedOpen ? (
-                  // Its own row treatment — flat surfaces with a hairline
-                  // divider between items instead of the desktop dropdown's
-                  // individually outlined cards, so this reads as designed
-                  // for the drawer rather than reused wholesale.
-                  <div className="divide-y divide-black/5 overflow-hidden rounded-xl border border-black/5">
-                    {featuredRestaurants.map((restaurant) =>
-                      !restaurant.isComingSoon ? (
-                        <Link
-                          key={restaurant.id}
-                          href={`/restaurant/${restaurant.id}`}
-                          onClick={(event) => {
-                            onClose();
-                            if (!isPlainLeftClick(event)) return;
-                            event.preventDefault();
-                            const href = `/restaurant/${restaurant.id}`;
-                            guardNavigation(() => router.push(href));
-                          }}
-                          className="flex items-center justify-between gap-2 bg-white px-3 py-2.5 text-sm font-semibold text-slate-800 transition-colors hover:bg-slate-50 active:bg-slate-100"
-                        >
-                          <span className="inline-flex min-w-0 items-center gap-2.5">
-                            <span className={`relative h-8 w-8 shrink-0 overflow-hidden bg-white ring-1 ring-black/5 ${getRestaurantLogoShapeClassName(restaurant.id)}`}>
-                              <Image src={restaurant.logo} alt={`${restaurant.name} logo`} fill className="object-cover" />
+                  <div className="space-y-3">
+                    <div>
+                      <p className="px-1 pb-1.5 text-[11px] font-semibold uppercase tracking-wide text-slate-400">Available Now</p>
+                      {/* Its own row treatment — flat surfaces with a hairline
+                          divider between items instead of the desktop
+                          dropdown's individually outlined cards, so this
+                          reads as designed for the drawer rather than reused
+                          wholesale. */}
+                      <div className="divide-y divide-black/5 overflow-hidden rounded-xl border border-black/5">
+                        {availableRestaurants.map((restaurant) => (
+                          <Link
+                            key={restaurant.id}
+                            href={`/restaurant/${restaurant.id}`}
+                            onClick={(event) => {
+                              onClose();
+                              if (!isPlainLeftClick(event)) return;
+                              event.preventDefault();
+                              const href = `/restaurant/${restaurant.id}`;
+                              guardNavigation(() => router.push(href));
+                            }}
+                            className="flex items-center justify-between gap-2 bg-white px-3 py-2.5 text-sm font-semibold text-slate-800 transition-colors hover:bg-slate-50 active:bg-slate-100"
+                          >
+                            <span className="inline-flex min-w-0 items-center gap-2.5">
+                              <span className={`relative h-8 w-8 shrink-0 overflow-hidden bg-white ring-1 ring-black/5 ${getRestaurantLogoShapeClassName()}`}>
+                                <Image src={restaurant.logo} alt={`${restaurant.name} logo`} fill className="object-cover" />
+                              </span>
+                              <span className="truncate">{restaurant.name}</span>
                             </span>
-                            <span className="truncate">{restaurant.name}</span>
-                          </span>
-                          <ChevronRight className="h-4 w-4 shrink-0 text-slate-400" strokeWidth={2.5} />
-                        </Link>
-                      ) : (
-                        <div
-                          key={restaurant.id}
-                          aria-disabled="true"
-                          className="flex items-center justify-between gap-2 bg-white px-3 py-2.5 text-sm font-semibold text-slate-400"
-                        >
-                          <span className="inline-flex min-w-0 items-center gap-2.5">
-                            <span className={`relative h-8 w-8 shrink-0 overflow-hidden bg-white opacity-50 ring-1 ring-black/5 ${getRestaurantLogoShapeClassName(restaurant.id)}`}>
-                              <Image src={restaurant.logo} alt={`${restaurant.name} logo`} fill className="object-cover grayscale" />
-                            </span>
-                            <span className="truncate">{restaurant.name}</span>
-                          </span>
-                          <span className="shrink-0 text-[10px] font-medium uppercase tracking-wide text-slate-400">
-                            Coming Soon
-                          </span>
+                            <ChevronRight className="h-4 w-4 shrink-0 text-slate-400" strokeWidth={2.5} />
+                          </Link>
+                        ))}
+                      </div>
+                    </div>
+
+                    {comingSoonRestaurants.length > 0 ? (
+                      <div>
+                        <div className="mb-3 border-t border-black/5" />
+                        <p className="px-1 pb-1.5 text-[11px] font-semibold uppercase tracking-wide text-slate-400">Coming Soon</p>
+                        <div className="divide-y divide-black/5 overflow-hidden rounded-xl border border-black/5">
+                          {comingSoonRestaurants.map((restaurant) => (
+                            <div
+                              key={restaurant.id}
+                              aria-disabled="true"
+                              className="flex items-center justify-between gap-2 bg-white px-3 py-2.5 text-sm font-semibold text-slate-400"
+                            >
+                              <span className="inline-flex min-w-0 items-center gap-2.5">
+                                <span className={`relative h-8 w-8 shrink-0 overflow-hidden bg-white opacity-50 ring-1 ring-black/5 ${getRestaurantLogoShapeClassName()}`}>
+                                  <Image src={restaurant.logo} alt={`${restaurant.name} logo`} fill className="object-cover grayscale" />
+                                </span>
+                                <span className="truncate">{restaurant.name}</span>
+                              </span>
+                              <span className="shrink-0 text-[10px] font-medium uppercase tracking-wide text-slate-400">
+                                Coming Soon
+                              </span>
+                            </div>
+                          ))}
                         </div>
-                      )
-                    )}
+                      </div>
+                    ) : null}
                   </div>
                 ) : null}
               </section>

@@ -242,6 +242,7 @@ export function buildStandardCartItemPayload({
   return {
     name: item.name,
     image: selectedVariant?.image ?? item.image,
+    imagePresentation: item.imagePresentation,
     variantId: selectedVariant?.id,
     customizations,
     quantity,

@@ -22,6 +22,7 @@ export default function GlobalItemPreviewModal() {
       addons={addons}
       ingredients={restaurant.ingredients}
       customizationRules={restaurant.customizationRules}
+      builderConfig={restaurant.builderConfig}
       closeBehavior="local"
       onClose={closePreview}
     />

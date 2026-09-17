@@ -6,14 +6,14 @@ import MenuItemTitle from "./MenuItemTitle";
 import RankBadge from "./RankBadge";
 import ComparativeLabelBadge from "./ComparativeLabelBadge";
 import StatusLabelBadge from "./StatusLabelBadge";
-import { CHIPOTLE_PRESET_MEAL_IMAGE_CLASSNAME } from "@/lib/restaurantBuilders/chipotle/highProtein";
+import RestaurantItemImage from "@/components/ui/RestaurantItemImage";
 
 export default function MenuItemCardHeader({
   item,
   selectedItemImage,
   isCartMode,
-  isHighProteinMenuCard = false,
   itemImageClassName,
+  itemImageBackgroundColor,
   rank,
   comparativeLabel,
   variants,
@@ -29,8 +29,8 @@ export default function MenuItemCardHeader({
   item: MenuItem;
   selectedItemImage?: string;
   isCartMode: boolean;
-  isHighProteinMenuCard?: boolean;
   itemImageClassName?: string;
+  itemImageBackgroundColor?: string;
   rank: number | null;
   comparativeLabel?: ComparativeLabelKind;
   variants: ItemVariant[] | null;
@@ -48,28 +48,23 @@ export default function MenuItemCardHeader({
 
   return (
     <>
-      <div className="relative w-full shrink-0 overflow-hidden rounded-2xl border border-black/[0.06] bg-image-placeholder lg:mx-0 lg:w-auto">
-        {selectedItemImage ? (
-          <img
-            className={`block h-[190px] w-full lg:h-[184px] lg:w-[184px] ${
-              isHighProteinMenuCard && !isCartMode
-                ? CHIPOTLE_PRESET_MEAL_IMAGE_CLASSNAME
-                : (itemImageClassName ?? "object-contain p-3")
-            }`}
-            src={selectedItemImage}
-            alt={item.name}
-          />
-        ) : (
-          <div className="h-[190px] w-full lg:h-[184px] lg:w-[184px]" />
-        )}
-        {!isCartMode && hasImageLabel ? (
-          <div className="absolute left-2 top-2 z-10 flex flex-col items-start gap-1">
-            {rank !== null ? <RankBadge rank={rank} /> : null}
-            {rank === null && comparativeLabel ? <ComparativeLabelBadge kind={comparativeLabel} /> : null}
-            {status ? <StatusLabelBadge status={status} /> : null}
-          </div>
-        ) : null}
-      </div>
+      <RestaurantItemImage
+        src={selectedItemImage}
+        alt={item.name}
+        imagePresentation={item.imagePresentation}
+        fallbackClassName={itemImageClassName ?? "object-contain p-3"}
+        fallbackBackgroundColor={itemImageBackgroundColor}
+        containerClassName="relative h-[190px] w-full shrink-0 overflow-hidden rounded-2xl border border-black/[0.06] bg-image-placeholder lg:mx-0 lg:h-[184px] lg:w-[184px]"
+        overlay={
+          !isCartMode && hasImageLabel ? (
+            <div className="absolute left-2 top-2 z-10 flex flex-col items-start gap-1">
+              {rank !== null ? <RankBadge rank={rank} /> : null}
+              {rank === null && comparativeLabel ? <ComparativeLabelBadge kind={comparativeLabel} /> : null}
+              {status ? <StatusLabelBadge status={status} /> : null}
+            </div>
+          ) : null
+        }
+      />
 
       <div className="flex min-w-0 flex-1 flex-col self-stretch py-0.5">
         <div className="flex min-w-0 flex-col gap-2">

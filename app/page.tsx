@@ -215,7 +215,7 @@ export default async function Home() {
 
         <main className="relative">
           {liveRestaurants.length > 0 ? (
-            <HomeSectionContainer className="pb-16 pt-4 sm:pb-20 lg:pb-24">
+            <HomeSectionContainer id="restaurants" className="scroll-mt-24 pb-16 pt-4 sm:pb-20 lg:pb-24">
               <HomeSectionHeading
                 eyebrowVariant="pill"
                 eyebrow={
@@ -293,6 +293,7 @@ export default async function Home() {
                     restaurantLogo={previewRestaurant.logo}
                     itemName={previewItem.name}
                     itemImage={previewItem.image}
+                    itemImagePresentation={previewItem.imagePresentation}
                     itemDescription={previewItemDescription}
                     nutrition={previewItem.nutrition}
                     href={`/restaurant/${previewRestaurant.id}/${toItemSlug(previewItem)}`}

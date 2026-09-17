@@ -2,7 +2,6 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import Image from "@/components/ui/AppImage";
 import { Pencil, Utensils, X } from "lucide-react";
 import ItemDetailsPanel, {
     ITEM_DETAILS_SECTION_IDS,
@@ -26,6 +25,7 @@ import type {
     IngredientItem,
     RestaurantCustomizationRules,
 } from "@/types/menu";
+import type { RestaurantBuilderConfig } from "@/types/builder";
 import type { Nutrition } from "@/types/nutrition";
 import { buildStructuredOptionSelections } from "@/lib/menuItemCard/cartLabelUtils";
 import { getDefaultVariantId } from "@/lib/menuItemCalculations";
@@ -37,16 +37,18 @@ import {
     buildHighProteinBuildConfiguration,
     isChipotleEditablePresetBuildItem,
     isChipotleHighProteinPresetMealArtwork,
-    CHIPOTLE_PRESET_MEAL_IMAGE_CLASSNAME,
 } from "@/lib/restaurantBuilders/chipotle/highProtein";
 import {
     getChipotlePortionModeOptions,
+    getIngredientCategoryMaxSelections,
     getProteinBadgeLabel,
     getProteinMultiplier,
     getProteinPortionModeLabel,
     getSplitPortionLabel,
     getSplitPortionModeLabel,
     normalizeIngredientCategory,
+    resolveIncludedIngredientIds,
+    type ChipotleBuilderConfig,
     type ChipotlePortionModeOption,
     type ProteinPortionMode,
     type SplitPortionMode,
@@ -57,6 +59,7 @@ import { resolveEffectiveIngredientNutrition } from "@/lib/ingredientNutrition";
 import { resolveAddonGroupForAddon } from "@/lib/addonGroups";
 import type { ChipotleBuildConfiguration } from "@/lib/restaurantBuilders/chipotle";
 import { fromUniversalChipotleBuildConfiguration } from "@/lib/restaurantBuilders/chipotle/cartAdapter";
+import { buildChipotleIngredientMenuItems } from "@/lib/restaurantBuilders/chipotle/ingredientMenuItems";
 import { getIncludedIngredientIdsForChipotleBuild } from "@/lib/cart/buildItemAdapters";
 import {
     calculateChipotleBuildNutrition,
@@ -90,6 +93,7 @@ import { useItemCustomizationState } from "./useItemCustomizationState";
 import { useItemCartSubmission } from "./useItemCartSubmission";
 import { useCart } from "@/stores/cartStore";
 import { getRestaurantImagePresentation } from "@/lib/restaurantPresentation";
+import RestaurantItemImage from "@/components/ui/RestaurantItemImage";
 
 const emptyAddon: MenuItem = {
     id: "none",
@@ -174,6 +178,7 @@ export default function ItemRouteModal({
     ingredients,
     menuItems,
     customizationRules,
+    builderConfig,
     closeBehavior = "back",
     onClose,
     editCartItemId: editCartItemIdProp,
@@ -189,6 +194,7 @@ export default function ItemRouteModal({
     ingredients?: IngredientItem[];
     menuItems?: MenuItem[];
     customizationRules?: RestaurantCustomizationRules;
+    builderConfig?: RestaurantBuilderConfig;
     closeBehavior?: "back" | "replace" | "local";
     onClose?: () => void;
     editCartItemId?: string | null;
@@ -374,106 +380,122 @@ export default function ItemRouteModal({
         );
     const isChipotleTacoItem =
         chipotleBuildConfiguration.selectedEntree === "tacos";
-    const chipotleAllIngredientMenuItems = useMemo<MenuItem[]>(
+    const chipotleBuilderConfig =
+        restaurantId === "chipotle"
+            ? (builderConfig as ChipotleBuilderConfig | undefined)
+            : undefined;
+    const chipotleIncludedIngredientIds = useMemo(
         () =>
-            (ingredients ?? [])
-                .filter((ingredient) => !ingredient.hideFromIngredientView)
-                .filter((ingredient) => {
-                    const ingredientId = (
-                        ingredient.id ?? ingredient.name
-                    ).toLowerCase();
-                    const isTacoOnlySide =
-                        ingredientId === "crispy-corn-tortilla" ||
-                        ingredientId === "soft-flour-tortilla";
-                    return !isTacoOnlySide || isChipotleTacoItem;
-                })
-                .flatMap((ingredient) => {
-                    const nutrition = resolveEffectiveIngredientNutrition(ingredient);
-                    if (!nutrition) return [];
-                    return [{
-                        id: ingredient.id ?? ingredient.name,
-                        name: ingredient.name,
-                        image: ingredient.image ?? "",
-                        defaultOrder: ingredient.defaultOrder ?? 0,
-                        nutrition,
-                        categories: ingredient.categories,
-                        servingType: "addon" as const,
-                        variants: ingredient.variants,
-                        defaultVariantId: ingredient.defaultVariantId,
-                    }];
-                }),
-        [ingredients, isChipotleTacoItem],
+            resolveIncludedIngredientIds({
+                selectedEntree: chipotleBuildConfiguration.selectedEntree,
+                selectedKidsMeal: chipotleBuildConfiguration.selectedKidsMeal,
+                selectedTacoShell: chipotleBuildConfiguration.selectedTacoShell,
+                selectedTacoCount: chipotleBuildConfiguration.selectedTacoCount,
+                builderConfig: chipotleBuilderConfig,
+            }),
+        [chipotleBuildConfiguration, chipotleBuilderConfig],
     );
+    const chipotleAllIngredientMenuItems = useMemo<MenuItem[]>(() => {
+        // buildChipotleIngredientMenuItems assumes Chipotle's ingredient
+        // shape/categories and throws if an ingredient it processes has no
+        // resolvable nutrition (see resolveEffectiveIngredientNutrition
+        // callers in ingredientMenuItems.ts). `ingredients` here is whatever
+        // the current restaurant's catalog provides (e.g. Chick-fil-A
+        // modifiers like cfa-modifier-1000019), so this must never run for a
+        // non-Chipotle item — there's nothing for it to build anyway.
+        if (restaurantId !== "chipotle") return [];
+
+        return buildChipotleIngredientMenuItems({
+            restaurantId,
+            ingredients: ingredients ?? [],
+            selectedEntree: chipotleBuildConfiguration.selectedEntree,
+            selectedTacoCount:
+                chipotleBuildConfiguration.selectedTacoCount === 1 ? 1 : 3,
+            selectedKidsMeal: chipotleBuildConfiguration.selectedKidsMeal,
+            selectedIncludedIngredientIds: chipotleIncludedIngredientIds,
+            tacoShellIngredientIds:
+                chipotleBuilderConfig?.chipotle?.tacoShellIngredientIds ?? [],
+            getIngredientPortionMultiplier: () => 1,
+            getSelectedIngredientPortionMultiplier: () => 1,
+            builderConfig: chipotleBuilderConfig,
+        });
+    }, [
+        chipotleBuildConfiguration.selectedEntree,
+        chipotleBuildConfiguration.selectedKidsMeal,
+        chipotleBuildConfiguration.selectedTacoCount,
+        chipotleBuilderConfig,
+        chipotleIncludedIngredientIds,
+        ingredients,
+        restaurantId,
+    ]);
     const chipotleIngredientById = useMemo(
-        () =>
-            new Map(
+        () => {
+            const ingredientById = new Map(
                 chipotleAllIngredientMenuItems.map((ingredientItem) => [
                     ingredientItem.id ?? ingredientItem.name,
                     ingredientItem,
                 ]),
-            ),
-        [chipotleAllIngredientMenuItems],
-    );
-    const chipotleIncludedIngredientIds = useMemo(
-        () => {
-            const includedIds = new Set(
-                Object.keys(
-                    chipotleBuildConfiguration.selectedIngredientItems ?? {},
-                ).filter((ingredientId) => {
-                    const ingredient = chipotleIngredientById.get(ingredientId);
-                    return (
-                        ingredient &&
-                        normalizeIngredientCategory(
-                            resolvePrimaryCategory(ingredient.categories),
-                        ) === "included ingredients"
-                    );
-                }),
             );
-            if (isChipotleTacoItem) {
-                const contextSuffix =
-                    chipotleBuildConfiguration.selectedTacoCount === 3
-                        ? "-tacos-3"
-                        : "-taco";
-                chipotleAllIngredientMenuItems.forEach((ingredient) => {
-                    const ingredientId = ingredient.id ?? ingredient.name;
-                    if (
-                        ingredientId.toLowerCase().includes("tortilla") &&
-                        ingredientId.toLowerCase().endsWith(contextSuffix)
-                    ) {
-                        includedIds.add(ingredientId);
-                    }
+
+            // A preset recipe can contain a preset-only component that is
+            // not a general customization option for its entree. Keep those
+            // records available for state hydration, diffing, and nutrition,
+            // without adding them to chipotleAllIngredientMenuItems (the
+            // actual Customize option list).
+            const selectedIds = new Set([
+                ...Object.keys(
+                    chipotleBuildConfiguration.selectedIngredientItems ?? {},
+                ),
+                ...Object.keys(
+                    originalPresetBuildConfiguration.selectedIngredientItems ?? {},
+                ),
+            ]);
+            (ingredients ?? []).forEach((ingredient) => {
+                if (!selectedIds.has(ingredient.id) || ingredientById.has(ingredient.id)) {
+                    return;
+                }
+                const nutrition = resolveEffectiveIngredientNutrition(ingredient);
+                if (!nutrition) return;
+                ingredientById.set(ingredient.id, {
+                    id: ingredient.id,
+                    name: ingredient.name,
+                    image: ingredient.image ?? "",
+                    categories: ingredient.categories,
+                    servingType: "addon",
+                    nutrition,
+                    variants: ingredient.variants,
+                    defaultVariantId: ingredient.defaultVariantId,
+                    defaultOrder: ingredient.defaultOrder,
                 });
-            }
-            return includedIds;
+            });
+            return ingredientById;
         },
         [
             chipotleAllIngredientMenuItems,
             chipotleBuildConfiguration.selectedIngredientItems,
-            chipotleBuildConfiguration.selectedTacoCount,
-            chipotleIngredientById,
-            isChipotleTacoItem,
+            ingredients,
+            originalPresetBuildConfiguration.selectedIngredientItems,
         ],
     );
     const chipotleIngredientMenuItems = useMemo(
         () =>
             chipotleAllIngredientMenuItems.filter(
                 (ingredientItem) =>
-                    !chipotleIncludedIngredientIds.has(
-                        (
-                            ingredientItem.id ?? ingredientItem.name
-                        ).toLowerCase(),
-                    ),
+                    normalizeIngredientCategory(
+                        resolvePrimaryCategory(ingredientItem.categories),
+                    ) !== "included ingredients",
             ),
-        [chipotleAllIngredientMenuItems, chipotleIncludedIngredientIds],
+        [chipotleAllIngredientMenuItems],
     );
     const chipotleIncludedIngredientMenuItems = useMemo(
         () =>
-            chipotleAllIngredientMenuItems.filter((ingredientItem) =>
-                chipotleIncludedIngredientIds.has(
-                    (ingredientItem.id ?? ingredientItem.name).toLowerCase(),
-                ),
+            chipotleAllIngredientMenuItems.filter(
+                (ingredientItem) =>
+                    normalizeIngredientCategory(
+                        resolvePrimaryCategory(ingredientItem.categories),
+                    ) === "included ingredients",
             ),
-        [chipotleAllIngredientMenuItems, chipotleIncludedIngredientIds],
+        [chipotleAllIngredientMenuItems],
     );
     // Shared derivation from a ChipotleBuildConfiguration to the modal's
     // live selection-state shape — used both to seed initial state (from
@@ -1583,19 +1605,16 @@ export default function ItemRouteModal({
                 >
                     <div className="flex min-w-0 flex-1 items-center gap-3">
                         {selectedItemImage ? (
-                            <div className="relative h-10 w-10 shrink-0 overflow-hidden rounded-xl border border-black/[0.06] bg-image-placeholder">
-                                <Image
-                                    src={selectedItemImage}
-                                    alt=""
-                                    fill
-                                    sizes="40px"
-                                    className={
-                                        isChipotlePresetMealArtwork
-                                            ? CHIPOTLE_PRESET_MEAL_IMAGE_CLASSNAME
-                                            : (imagePresentation.itemThumbnailImageClassName ?? "object-contain p-1")
-                                    }
-                                />
-                            </div>
+                            <RestaurantItemImage
+                                src={selectedItemImage}
+                                alt=""
+                                imagePresentation={item.imagePresentation}
+                                fallbackClassName={imagePresentation.itemThumbnailImageClassName ?? "object-contain p-1"}
+                                fallbackBackgroundColor={imagePresentation.imageBackgroundColor}
+                                containerClassName="relative h-10 w-10 shrink-0 overflow-hidden rounded-xl border border-black/[0.06] bg-image-placeholder"
+                                renderer="next-image"
+                                sizes="40px"
+                            />
                         ) : null}
                         <div className="min-w-0 flex-1">
                             <MenuItemTitle
@@ -1625,8 +1644,16 @@ export default function ItemRouteModal({
                             className="item-overview-grid relative sm:gap-x-7 lg:gap-x-8"
                         >
                             {selectedItemImage ? (
-                                <div
-                                    className={`item-overview-image relative overflow-hidden rounded-3xl border border-black/[0.06] bg-image-placeholder sm:aspect-auto sm:h-40 sm:w-40 lg:h-52 lg:w-52 ${
+                                <RestaurantItemImage
+                                    src={selectedItemImage}
+                                    alt={item.name}
+                                    imagePresentation={item.imagePresentation}
+                                    fallbackClassName={
+                                        imagePresentation.itemDetailImageClassName ??
+                                        "object-contain p-1.5 sm:p-2.5 lg:p-3"
+                                    }
+                                    fallbackBackgroundColor={imagePresentation.imageBackgroundColor}
+                                    containerClassName={`item-overview-image relative overflow-hidden rounded-3xl border border-black/[0.06] bg-image-placeholder sm:aspect-auto sm:h-40 sm:w-40 lg:h-52 lg:w-52 ${
                                         // Mobile-only: the wide 3:2 editorial
                                         // artwork gets a slightly wider (not
                                         // square) box so less of it has to be
@@ -1636,26 +1663,18 @@ export default function ItemRouteModal({
                                             ? "h-48 w-56"
                                             : "aspect-square w-48"
                                     }`}
-                                >
-                                    <Image
-                                        src={selectedItemImage}
-                                        alt={item.name}
-                                        fill
-                                        sizes="(min-width: 1024px) 208px, (min-width: 640px) 160px, 224px"
-                                        className={
-                                            isChipotlePresetMealArtwork
-                                                ? CHIPOTLE_PRESET_MEAL_IMAGE_CLASSNAME
-                                                : (imagePresentation.itemDetailImageClassName ?? "object-contain p-1.5 sm:p-2.5 lg:p-3")
-                                        }
-                                    />
-                                    {comparativeLabel ? (
-                                        <div className="absolute left-2 top-2 z-10">
-                                            <ComparativeLabelBadge
-                                                kind={comparativeLabel}
-                                            />
-                                        </div>
-                                    ) : null}
-                                </div>
+                                    renderer="next-image"
+                                    sizes="(min-width: 1024px) 208px, (min-width: 640px) 160px, 224px"
+                                    overlay={
+                                        comparativeLabel ? (
+                                            <div className="absolute left-2 top-2 z-10">
+                                                <ComparativeLabelBadge
+                                                    kind={comparativeLabel}
+                                                />
+                                            </div>
+                                        ) : null
+                                    }
+                                />
                             ) : null}
                             <div className="item-overview-content min-w-0">
                                 <p className="item-overview-label mt-4 min-w-0 pr-12 text-[11px] font-semibold uppercase tracking-wide text-slate-400 sm:mt-0 sm:pr-14">
@@ -2129,6 +2148,42 @@ export default function ItemRouteModal({
                                                                 ];
                                                                 return next;
                                                             }
+                                                            const category =
+                                                                normalizeIngredientCategory(
+                                                                    resolvePrimaryCategory(
+                                                                        nextItem.categories,
+                                                                    ),
+                                                                );
+                                                            const maxSelections =
+                                                                getIngredientCategoryMaxSelections({
+                                                                    category,
+                                                                    selectedEntree:
+                                                                        chipotleBuildConfiguration.selectedEntree,
+                                                                    selectedKidsMeal:
+                                                                        chipotleBuildConfiguration.selectedKidsMeal,
+                                                                    builderConfig:
+                                                                        chipotleBuilderConfig,
+                                                                });
+                                                            if (
+                                                                typeof maxSelections ===
+                                                                    "number" &&
+                                                                Object.values(
+                                                                    prev,
+                                                                ).filter(
+                                                                    (entry) =>
+                                                                        normalizeIngredientCategory(
+                                                                            resolvePrimaryCategory(
+                                                                                entry
+                                                                                    .item
+                                                                                    .categories,
+                                                                            ),
+                                                                        ) ===
+                                                                        category,
+                                                                ).length >=
+                                                                    maxSelections
+                                                            ) {
+                                                                return prev;
+                                                            }
                                                             return {
                                                                 ...prev,
                                                                 [ingredientId]:
@@ -2214,7 +2269,6 @@ export default function ItemRouteModal({
                                     item={item}
                                     nutrition={nutrition}
                                     quantityMultiplier={quantity}
-                                    isMainItemPresetMealArtwork={isChipotlePresetMealArtwork}
                                     standardRecipeNotice={
                                         restaurantId === "starbucks"
                                             ? {
@@ -2225,6 +2279,9 @@ export default function ItemRouteModal({
                                     }
                                     mealDetailImageClassName={
                                         imagePresentation.itemThumbnailImageClassName
+                                    }
+                                    mealDetailImageBackgroundColor={
+                                        imagePresentation.imageBackgroundColor
                                     }
                                     variants={variants}
                                     selectedVariantId={selectedVariantId}

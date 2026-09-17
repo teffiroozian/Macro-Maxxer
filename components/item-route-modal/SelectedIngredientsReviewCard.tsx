@@ -56,8 +56,11 @@ export default function SelectedIngredientsReviewCard({
                 id: ingredientId,
                 name: selectedIngredient.item.name,
                 image: selectedIngredient.item.image,
+                imagePresentation: selectedIngredient.item.imagePresentation,
                 calories: selectedIngredient.item.nutrition.calories,
                 protein: selectedIngredient.item.nutrition.protein,
+                carbs: selectedIngredient.item.nutrition.carbs,
+                totalFat: selectedIngredient.item.nutrition.totalFat,
             }))}
         >
             <SelectionScrollList>
@@ -71,6 +74,7 @@ export default function SelectedIngredientsReviewCard({
                             key={ingredientId}
                             image={selectedIngredient.item.image}
                             fallbackImage={restaurantLogo}
+                            imagePresentation={selectedIngredient.item.imagePresentation}
                             name={name}
                             imageAlt={selectedIngredient.item.name}
                             accessory={

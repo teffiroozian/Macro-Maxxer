@@ -157,7 +157,7 @@ test("chipotle-cmg-5354 still exists untouched in generated/runtime data (not de
 
 // --- Fix 2: Burrito's optional Extra Tortilla -------------------------------
 
-test("Burrito shows Extra Tortilla, unselected by default, separate from the locked included tortilla", () => {
+test("Burrito keeps its included tortilla but excludes standalone Side options", () => {
   const { includedIds, items } = burritoMenuItems();
 
   // Only the real included tortilla is included/locked by default.
@@ -182,16 +182,9 @@ test("Burrito shows Extra Tortilla, unselected by default, separate from the loc
   });
 
   const doubleWrap = items.find((item) => item.id === "chipotle-cmg-4026");
-  assert.ok(doubleWrap, "expected the optional Extra Tortilla add-on");
-  assert.equal(doubleWrap.name, "Extra Tortilla");
-  assert.deepEqual(coreNutrition(doubleWrap.nutrition), {
-    calories: 320,
-    protein: 8,
-    carbs: 50,
-    totalFat: 9,
-  });
-  // Not part of the default included/locked set — unselected by default.
-  assert.equal(includedIds.includes("chipotle-cmg-4026"), false);
+  assert.equal(doubleWrap, undefined, "standalone Extra Tortilla must not appear in Burrito Customize");
+  assert.equal(items.some((item) => item.categories.includes("Side")), false);
+  assert.equal(items.some((item) => item.categories.includes("Beverages")), false);
 });
 
 test("Selecting Extra Tortilla adds exactly one extra tortilla serving to Burrito macros", () => {

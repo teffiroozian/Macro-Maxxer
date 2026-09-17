@@ -13,6 +13,8 @@ import { buildCartItemSummaryGroups } from "@/lib/cart/displayLabels";
 import { getCartItemCoreMacros } from "@/lib/cart/itemAccessors";
 import type { CartItem } from "@/types/cart";
 import { getRestaurantImagePresentation } from "@/lib/restaurantPresentation";
+import { getCartItemImagePresentation } from "@/lib/cart/cartItemLookup";
+import RestaurantItemImage from "@/components/ui/RestaurantItemImage";
 
 // Re-exported for CartItemPreviewContent's section headings, which import it
 // from here — CartCustomizationSummary is the single source of truth.
@@ -38,9 +40,7 @@ export default function CartItemCard({
   onDecrement,
 }: CartItemCardProps) {
   const quantityMultiplier = Math.max(cartItem.quantity, 1);
-  const imageClassName =
-    getRestaurantImagePresentation(cartItem.restaurantId).itemThumbnailImageClassName ??
-    "object-contain p-3";
+  const restaurantImagePresentation = getRestaurantImagePresentation(cartItem.restaurantId);
   const coreMacros = getCartItemCoreMacros(cartItem);
   const displayCalories = coreMacros.calories * quantityMultiplier;
   const displayProtein = coreMacros.protein * quantityMultiplier;
@@ -86,18 +86,14 @@ export default function CartItemCard({
       className="cursor-pointer overflow-hidden border-black/10 shadow-[0_2px_10px_rgba(15,23,42,0.06)] transition hover:border-black/20 hover:shadow-[0_4px_16px_rgba(15,23,42,0.1)] focus-within:border-black/20 focus-within:shadow-[0_4px_16px_rgba(15,23,42,0.1)]"
     >
       <div className="flex flex-col gap-4 p-4 sm:gap-6 sm:p-5 lg:flex-row">
-        <div className="relative w-full shrink-0 overflow-hidden rounded-2xl border border-black/[0.06] bg-image-placeholder lg:w-[184px]">
-          {cartItem.image ? (
-            // eslint-disable-next-line @next/next/no-img-element
-            <img
-              src={cartItem.image}
-              alt={displayName}
-              className={`block h-[190px] w-full lg:h-[184px] lg:w-[184px] ${imageClassName}`}
-            />
-          ) : (
-            <div className="h-[190px] w-full lg:h-[184px] lg:w-[184px]" />
-          )}
-        </div>
+        <RestaurantItemImage
+          src={cartItem.image}
+          alt={displayName}
+          imagePresentation={getCartItemImagePresentation(cartItem)}
+          fallbackClassName={restaurantImagePresentation.itemThumbnailImageClassName ?? "object-contain p-3"}
+          fallbackBackgroundColor={restaurantImagePresentation.imageBackgroundColor}
+          containerClassName="relative h-[190px] w-full shrink-0 overflow-hidden rounded-2xl border border-black/[0.06] bg-image-placeholder lg:h-[184px] lg:w-[184px]"
+        />
 
         {/* Content order (name, macros, divider, summary, controls) is
             deliberately identical at every breakpoint — unlike the standard

@@ -7,6 +7,7 @@ import { Info } from "lucide-react";
 export type MacroSegment = {
     label: string;
     shortLabel: string;
+    grams: number;
     percent: number;
     roundedPercent: number;
     color: string;
@@ -30,22 +31,64 @@ export function buildMacroSegments({
         {
             label: "Protein",
             shortLabel: "P",
+            grams: protein,
             percent: macroTotalGrams > 0 ? (protein / macroTotalGrams) * 100 : 0,
             color: "bg-[#c2410c] text-white",
         },
         {
             label: "Carbs",
             shortLabel: "C",
+            grams: carbs,
             percent: macroTotalGrams > 0 ? (carbs / macroTotalGrams) * 100 : 0,
             color: "bg-[#ca8a04] text-white",
         },
         {
             label: "Fat",
             shortLabel: "F",
+            grams: fat,
             percent: macroTotalGrams > 0 ? (fat / macroTotalGrams) * 100 : 0,
             color: "bg-[#2563eb] text-white",
         },
     ].map((segment) => ({ ...segment, roundedPercent: Math.round(segment.percent) }));
+}
+
+// A segment's true `percent` can be too narrow to fit its own label (e.g. a
+// 6% fat share). Rather than let that label spill or disappear, every
+// non-zero segment gets boosted up to MIN_VISUAL_PERCENT of the bar's width,
+// and the width taken to do that is pulled back out of the larger segments
+// (proportionally, so the biggest segment gives up the most) — the bar
+// always sums to 100% and the segment order/rounded corners stay intact.
+// This only changes rendered width: `roundedPercent`/aria-label (the
+// truthful percentage) are untouched.
+const MIN_VISUAL_PERCENT = 14;
+
+function computeVisualPercents(percents: number[]): number[] {
+    const nonZeroIndexes = percents
+        .map((percent, index) => ({ percent, index }))
+        .filter(({ percent }) => percent > 0);
+
+    if (nonZeroIndexes.length <= 1) return percents;
+
+    const visualPercents = [...percents];
+    let deficit = 0;
+    nonZeroIndexes.forEach(({ percent, index }) => {
+        if (percent < MIN_VISUAL_PERCENT) {
+            deficit += MIN_VISUAL_PERCENT - percent;
+            visualPercents[index] = MIN_VISUAL_PERCENT;
+        }
+    });
+
+    if (deficit === 0) return percents;
+
+    const donorIndexes = nonZeroIndexes.filter(({ percent }) => percent >= MIN_VISUAL_PERCENT);
+    const donorTotal = donorIndexes.reduce((sum, { percent }) => sum + percent, 0);
+    if (donorTotal === 0) return visualPercents;
+
+    donorIndexes.forEach(({ percent, index }) => {
+        visualPercents[index] = percent - deficit * (percent / donorTotal);
+    });
+
+    return visualPercents;
 }
 
 // Label detail level is picked purely by CSS container query (see the
@@ -54,27 +97,29 @@ export function buildMacroSegments({
 // percentage can be a wide or narrow bar depending on how many macros are
 // present and how wide the chart itself is on a given screen. All three
 // variants are always in the DOM; the stylesheet shows exactly one (or none,
-// once the segment is too narrow even for "25%"). The wrapper's aria-label
-// carries the full macro name + percentage regardless of which/whether a
-// visual variant is showing, so the accessible name never gets truncated.
-function MacroSegmentBar({ segment }: { segment: MacroSegment }) {
+// once the segment is too narrow even to fit its own gram amount). The
+// wrapper's aria-label carries the full macro name + gram amount regardless
+// of which/whether a visual variant is showing, so the accessible name
+// never gets truncated.
+function MacroSegmentBar({ segment, visualPercent }: { segment: MacroSegment; visualPercent: number }) {
+    const roundedGrams = Math.round(segment.grams);
     return (
         <div
             className="relative min-w-0"
-            style={{ width: `${segment.percent}%` }}
+            style={{ width: `${visualPercent}%` }}
         >
             <div
                 className={`macro-segment flex h-full w-full min-w-0 items-center justify-center rounded-lg px-1 text-[11px] font-semibold ${segment.color}`}
-                aria-label={`${segment.label} ${segment.roundedPercent}%`}
+                aria-label={`${segment.label} ${roundedGrams}g`}
             >
                 <span className="macro-segment-label-full truncate" aria-hidden="true">
-                    {segment.label} {segment.roundedPercent}%
+                    {segment.label} {roundedGrams}g
                 </span>
                 <span className="macro-segment-label-medium truncate" aria-hidden="true">
-                    {segment.shortLabel} {segment.roundedPercent}%
+                    {segment.shortLabel} {roundedGrams}g
                 </span>
-                <span className="macro-segment-label-percent truncate" aria-hidden="true">
-                    {segment.roundedPercent}%
+                <span className="macro-segment-label-grams-only truncate" aria-hidden="true">
+                    {roundedGrams}g
                 </span>
             </div>
         </div>
@@ -239,11 +284,12 @@ export default function MacroSplitChart({
     // container's overflow-hidden. Labels/tooltip still see every macro via
     // the untouched `segments` prop.
     const visibleSegments = segments.filter((segment) => segment.percent > 0);
+    const visualPercents = computeVisualPercents(visibleSegments.map((segment) => segment.percent));
 
     return (
         <div className="flex h-12 w-full gap-1.5 overflow-hidden rounded-xl border border-black/10 bg-neutral-100 p-1.5">
-            {visibleSegments.map((segment) => (
-                <MacroSegmentBar key={segment.label} segment={segment} />
+            {visibleSegments.map((segment, index) => (
+                <MacroSegmentBar key={segment.label} segment={segment} visualPercent={visualPercents[index]} />
             ))}
         </div>
     );

@@ -8,6 +8,17 @@ export type ServingType = "addon" | "breakfast" | "combo" | "dessert" | "drink" 
 // computed from nutrition data rather than stored on the item.
 export type MenuItemStatus = "new" | "limited-time" | "seasonal" | "returning";
 
+export type ItemImagePresentation = {
+  fit?: "cover" | "contain";
+  position?: string;
+  scale?: number;
+  // Applied to the image container behind the image (not the image itself)
+  // so a "contain"-fit image's side gutters blend into the surrounding area
+  // instead of showing the container's default gray. Item-level value wins
+  // over the restaurant-level default (RestaurantImagePresentation.imageBackgroundColor).
+  backgroundColor?: string;
+};
+
 // Some restaurant ordering systems reuse one visible ingredient identity while
 // selecting a different official nutrition unit from the parent relationship.
 // The source tag remains implementation metadata; it is not a user-facing
@@ -177,6 +188,7 @@ export type MenuItem = {
   id: string;
   name: string;
   image: string;
+  imagePresentation?: ItemImagePresentation;
 
   // a single item can have multiple categories
   categories: string[];

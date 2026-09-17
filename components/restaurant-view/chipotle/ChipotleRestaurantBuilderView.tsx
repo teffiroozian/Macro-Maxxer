@@ -10,44 +10,19 @@ import {
 } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import Image from "@/components/ui/AppImage";
-import type { LucideIcon } from "lucide-react";
+import RestaurantItemImage from "@/components/ui/RestaurantItemImage";
+import { getRestaurantImagePresentation } from "@/lib/restaurantPresentation";
+import { getCartItemImagePresentation } from "@/lib/cart/cartItemLookup";
 import {
   ArrowLeft,
-  Bean,
-  Beef,
-  CakeSlice,
   ChevronDown,
-  CircleDashed,
-  CupSoda,
-  Egg,
-  EggFried,
   Expand,
-  Diamond,
-  Droplets,
-  Drumstick,
-  Ham,
-  IceCreamCone,
-  SquareUser,
   LayoutGrid,
-  LeafyGreen,
-  Pin,
-  Salad,
-  Sandwich,
-  Shell,
-  SquarePlus,
-  Sprout,
-  Soup,
-  Torus,
-  Tractor,
-  Triangle,
-  ToggleLeft,
-  Cylinder,
   Shrink,
   ShoppingCart,
-  Utensils,
   UtensilsCrossed,
-  Waves,
 } from "lucide-react";
+import { CHIPOTLE_CATEGORY_ICONS } from "@/components/restaurant-view/chipotle/categoryIcons";
 import type {
   IngredientItem,
   MenuItem,
@@ -120,58 +95,6 @@ import {
 // unfiltered state — distinct from any real (normalized, lowercased)
 // ingredient category key so it can never collide with one.
 const ALL_INGREDIENTS_FILTER_ID = "__all__";
-
-const CATEGORY_ICONS: Record<string, LucideIcon> = {
-  sandwich: Sandwich,
-  sandwiches: Sandwich,
-  "sandwich toppings": LeafyGreen,
-  toppings: LeafyGreen,
-  chicken: Drumstick,
-  proteins: Drumstick,
-  rice: Sprout,
-  beans: Bean,
-  "included ingredient": Pin,
-  "included ingredients": Pin,
-  // View All Ingredients' "Base" category (its renamed Included Ingredients
-  // group — see buildAllChipotleIngredientMenuItems) keeps the same pin
-  // icon used for Included Ingredients elsewhere.
-  base: Pin,
-  "breakfast protein": Drumstick,
-  condiments: Utensils,
-  "salad condiments": Utensils,
-  salads: Salad,
-  "salad toppings": Salad,
-  drinks: CupSoda,
-  "fountain drinks": CupSoda,
-  "tractor beverages": Tractor,
-  "kids drinks": SquareUser,
-  breakfast: EggFried,
-  "breakfast side": Torus,
-  "breakfast sides": Torus,
-  kids: SquareUser,
-  sides: SquarePlus,
-  side: CircleDashed,
-  desserts: CakeSlice,
-  wraps: Shell,
-  "wrap toppings": Waves,
-  burgers: Beef,
-  entrees: Utensils,
-  "bowls & plates": Soup,
-  buns: CircleDashed,
-  "breakfast buns": CircleDashed,
-  cheeses: Diamond,
-  eggs: Egg,
-  "soup toppings": Soup,
-  "parfait toppings": IceCreamCone,
-  "treat toppings": IceCreamCone,
-  dressings: Droplets,
-  "dipping sauces": ToggleLeft,
-  "chips & dips": Triangle,
-  "single sides": Cylinder,
-  "protein meals": UtensilsCrossed,
-  "protein cups": Ham,
-  treats: IceCreamCone,
-};
 
 type EntreeKey = Exclude<ChipotleEntreeSelection, null>;
 type BuildConfigurationSnapshot = ChipotleBuildConfiguration;
@@ -2968,10 +2891,13 @@ export default function ChipotleRestaurantBuilderView({
                 <h2 className="text-center text-2xl font-extrabold sm:text-[32px]">
                   {editingBuildItem.name}
                 </h2>
-                <img
-                  className="h-[220px] w-[220px] rounded-[14px] bg-[#efefef] object-contain p-2 shadow-[0_0_5px_rgba(0,0,0,0.25)] sm:h-[300px] sm:w-[300px]"
+                <RestaurantItemImage
                   src={editingBuildItem.image}
                   alt={editingBuildItem.name}
+                  imagePresentation={getCartItemImagePresentation(editingBuildItem)}
+                  fallbackClassName="object-contain p-2"
+                  fallbackBackgroundColor={getRestaurantImagePresentation(restaurantId).imageBackgroundColor}
+                  containerClassName="h-[220px] w-[220px] rounded-[14px] bg-[#efefef] shadow-[0_0_5px_rgba(0,0,0,0.25)] sm:h-[300px] sm:w-[300px]"
                 />
                 <MacroTotalsGrid
                   macros={{
@@ -3566,7 +3492,7 @@ export default function ChipotleRestaurantBuilderView({
               isViewingAllIngredients ? activeAllIngredientsCategory : resolvedActiveCategory
             }
             onCategorySelect={handleCategorySelect}
-            categoryIcons={CATEGORY_ICONS}
+            categoryIcons={CHIPOTLE_CATEGORY_ICONS}
             filters={filters}
             onFiltersChange={handleFiltersChange}
             onEditFilters={openMobileFiltersDrawer}

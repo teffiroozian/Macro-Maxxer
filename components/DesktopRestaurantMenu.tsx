@@ -102,8 +102,8 @@ export default function DesktopRestaurantMenu() {
                   className="group inline-flex items-center justify-between rounded-xl px-2 py-2.5 text-sm font-semibold text-neutral-900 transition hover:bg-neutral-100 focus:bg-neutral-100 focus:outline-none"
                 >
                   <span className="inline-flex min-w-0 items-center gap-2.5">
-                    <span className={`relative h-8 w-8 shrink-0 overflow-hidden bg-neutral-50 ${getRestaurantLogoShapeClassName(restaurant.id)}`}>
-                      <Image src={restaurant.logo} alt={`${restaurant.name} logo`} fill className="object-contain rounded-md" />
+                    <span className={`relative h-8 w-8 shrink-0 overflow-hidden bg-neutral-50 ${getRestaurantLogoShapeClassName()}`}>
+                      <Image src={restaurant.logo} alt={`${restaurant.name} logo`} fill className="object-contain" />
                     </span>
                     <span className="truncate">{restaurant.name}</span>
                   </span>
@@ -125,8 +125,8 @@ export default function DesktopRestaurantMenu() {
                       className="inline-flex cursor-default items-center justify-between rounded-xl px-2 py-2.5 text-sm font-semibold text-neutral-400"
                     >
                       <span className="inline-flex min-w-0 items-center gap-2.5">
-                        <span className={`relative h-8 w-8 shrink-0 overflow-hidden bg-neutral-50 opacity-60 ${getRestaurantLogoShapeClassName(restaurant.id)}`}>
-                          <Image src={restaurant.logo} alt={`${restaurant.name} logo`} fill className="object-contain rounded-md grayscale" />
+                        <span className={`relative h-8 w-8 shrink-0 overflow-hidden bg-neutral-50 opacity-60 ${getRestaurantLogoShapeClassName()}`}>
+                          <Image src={restaurant.logo} alt={`${restaurant.name} logo`} fill className="object-contain grayscale" />
                         </span>
                         <span className="truncate">{restaurant.name}</span>
                       </span>

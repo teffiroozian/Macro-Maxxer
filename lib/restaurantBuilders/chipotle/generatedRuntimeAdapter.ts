@@ -410,6 +410,10 @@ export function adaptGeneratedChipotleMenuForRuntime(
       id: firstMember.variantId ?? firstMember.recordId,
       name: card.label,
       image: card.image,
+      imagePresentation:
+        card.browseCategory === "Protein Meals"
+          ? { fit: "cover", position: "60% 50%" }
+          : undefined,
       categories: [card.browseCategory],
       servingType:
         "servingType" in firstRecord ? firstRecord.servingType : "side",
@@ -427,6 +431,10 @@ export function adaptGeneratedChipotleMenuForRuntime(
       const placement = browseCategoryByRecordId.get(item.id);
       return {
         ...item,
+        imagePresentation:
+          placement?.label === "Protein Meals"
+            ? { fit: "cover" as const, position: "60% 50%" }
+            : item.imagePresentation,
         categories: placement ? [placement.label] : item.categories,
         defaultOrder: placement?.displayOrder ?? item.defaultOrder,
         sourceOnly: familyMemberIds.has(item.id) ? true : item.sourceOnly,
@@ -523,8 +531,8 @@ function buildGeneratedChipotleBuilderConfig(
       // here. Double Wrap with Tortilla (chipotle-cmg-4026) is a genuine
       // optional upsell — unlike Quesadilla, whose tortilla+cheese base is
       // structurally included — so it must not be pre-selected/pinned to
-      // Included Ingredients. It stays eligible via ingredientIdsByEntree
-      // below so it still renders as a normal, unselected Side add-on.
+      // Included Ingredients. As a standalone side, it is intentionally not
+      // part of the Burrito customization options.
       burrito: option("burrito", "chipotle-burrito", [
         "chipotle-cmg-4026-burrito-base",
       ]),
@@ -625,14 +633,13 @@ function buildGeneratedChipotleBuilderConfig(
         quesadillaTripleCheese: "chipotle-cmg-5252",
       },
       ingredientIdsByEntree: {
-        // Side Tortilla is Bowl-only, unselected by default (not part of
-        // includedIngredientIds above), and its own id so it never gets
-        // confused with the Burrito's Double Wrap or the base Bowl itself.
-        bowl: [...ingredientIds("chipotle-bowl"), "chipotle-cmg-4025-bowl-side"],
+        // Adult BYO entrees expose only the options declared by their own
+        // generated builder definitions. Standalone sides and beverages
+        // remain regular menu/cart items rather than leaking into Customize.
+        bowl: ingredientIds("chipotle-bowl"),
         burrito: [
           ...ingredientIds("chipotle-burrito"),
           "chipotle-cmg-4026-burrito-base",
-          "chipotle-cmg-4026",
         ],
         // Romaine Lettuce isn't in the generated Salad's own topping list
         // (it's a real, separate selectable topping there, distinct from

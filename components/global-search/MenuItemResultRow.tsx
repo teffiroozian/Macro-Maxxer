@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import Image from "@/components/ui/AppImage";
 import { macroColorTokens } from "@/components/nutrition/macroColorTokens";
 import { formatMacroDisplayNumber } from "@/components/nutrition/macroDisplay";
 import VariantSelector from "@/components/VariantSelector";
@@ -16,6 +15,7 @@ import type { MenuItem } from "@/types/menu";
 import type { RestaurantIndexEntry } from "@/types/restaurant";
 import { getRestaurantImagePresentation } from "@/lib/restaurantPresentation";
 import { getMenuItemSearchResultName } from "@/lib/search/resultLabels";
+import RestaurantItemImage from "@/components/ui/RestaurantItemImage";
 
 type MenuItemResultRowProps = {
   item: MenuItem;
@@ -40,9 +40,7 @@ export default function MenuItemResultRow({
   quickAdd,
 }: MenuItemResultRowProps) {
   const variants = item.variants?.length ? item.variants : null;
-  const imageClassName =
-    getRestaurantImagePresentation(restaurant.id).itemThumbnailImageClassName ??
-    "object-contain rounded-md";
+  const restaurantImagePresentation = getRestaurantImagePresentation(restaurant.id);
   const canPickVariant = Boolean(quickAdd?.eligible && quickAdd.hasVariantChoice && variants);
 
   const defaultVariantId = useMemo(() => {
@@ -138,9 +136,17 @@ export default function MenuItemResultRow({
       onMouseDown={(event) => event.preventDefault()}
       onClick={() => onSelect(item, restaurant)}
     >
-      <span className="flex h-12 w-12 shrink-0 items-center justify-center overflow-hidden rounded-lg bg-neutral-50">
-        <Image src={selectedVariant?.image ?? item.image} alt="" width={36} height={36} className={imageClassName} />
-      </span>
+      <RestaurantItemImage
+        src={selectedVariant?.image ?? item.image}
+        alt=""
+        imagePresentation={item.imagePresentation}
+        fallbackClassName={restaurantImagePresentation.itemThumbnailImageClassName ?? "object-contain rounded-md"}
+        fallbackBackgroundColor={restaurantImagePresentation.imageBackgroundColor}
+        containerClassName="flex h-12 w-12 shrink-0 items-center justify-center overflow-hidden rounded-lg bg-neutral-50"
+        renderer="next-image"
+        width={36}
+        height={36}
+      />
       <span className="min-w-0 flex-1">
         <span className="block truncate font-semibold text-neutral-900">
           {resultName}

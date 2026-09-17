@@ -71,22 +71,14 @@ export function isChipotleEditablePresetBuildItem(item: MenuItem, restaurantId: 
 // image boxes with plain object-contain, that composition reads as tiny and
 // letterboxed; a naive centered object-cover crop instead cuts into either
 // the food or the athlete's face. This flag isolates exactly that artwork so
-// its object-fit/position treatment (see CHIPOTLE_PRESET_MEAL_IMAGE_CLASSNAME)
-// never touches normal item/ingredient images or Protein Cups.
+// its reusable item image-presentation metadata never touches normal
+// item/ingredient images or Protein Cups.
 export function isChipotleHighProteinPresetMealArtwork(item: MenuItem, restaurantId: string) {
   return (
     isChipotleHighProteinMenuItem(item, restaurantId) &&
     !isChipotleProteinCupItem(item, restaurantId)
   );
 }
-
-// Shared object-fit/object-position pair for preset-meal editorial images.
-// The 3:2 source is wider than every container it renders in, so cover only
-// ever crops horizontally (full height always survives) — object-[60%_50%]
-// biases that horizontal crop right-of-center to favor the athlete's face
-// (explicitly the thing to protect from awkward cropping) while still
-// keeping most of the food composition on the left in frame.
-export const CHIPOTLE_PRESET_MEAL_IMAGE_CLASSNAME = "object-cover object-[60%_50%]";
 
 function getProteinIngredientIds(ingredientItems: IngredientItem[] = []) {
   return new Set(

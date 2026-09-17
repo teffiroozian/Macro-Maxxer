@@ -1,5 +1,4 @@
 import { Zap } from "lucide-react";
-import Image from "@/components/ui/AppImage";
 import Link from "next/link";
 import SurfaceCard from "@/components/ui/SurfaceCard";
 import RestaurantLogoBadge from "@/components/ui/RestaurantLogoBadge";
@@ -9,7 +8,9 @@ import MacroBadge from "@/components/ui/MacroBadge";
 import { appButtonClassName } from "@/components/ui/AppButton";
 import { getProteinPer100Calories } from "@/lib/nutrition";
 import type { CoreMacros } from "@/types/nutrition";
+import type { ItemImagePresentation } from "@/types/menu";
 import { getRestaurantImagePresentation } from "@/lib/restaurantPresentation";
+import RestaurantItemImage from "@/components/ui/RestaurantItemImage";
 
 type ProductPreviewCardProps = {
   restaurantId: string;
@@ -17,6 +18,7 @@ type ProductPreviewCardProps = {
   restaurantLogo: string;
   itemName: string;
   itemImage: string;
+  itemImagePresentation?: ItemImagePresentation;
   itemDescription?: string;
   nutrition: CoreMacros;
   href: string;
@@ -33,12 +35,13 @@ export default function ProductPreviewCard({
   restaurantLogo,
   itemName,
   itemImage,
+  itemImagePresentation,
   itemDescription,
   nutrition,
   href,
   tag = "High-Protein Pick",
 }: ProductPreviewCardProps) {
-  const imagePresentation = getRestaurantImagePresentation(restaurantId);
+  const restaurantImagePresentation = getRestaurantImagePresentation(restaurantId);
   const proteinPer100Calories = Math.round(
     getProteinPer100Calories(nutrition.protein, nutrition.calories) ?? 0
   );
@@ -73,26 +76,29 @@ export default function ProductPreviewCard({
                 src={restaurantLogo}
                 alt=""
                 size="sm"
-                shape={imagePresentation.headerLogoShape}
                 ring={false}
                 className="border border-black/10"
               />
               <span className="text-sm font-medium text-neutral-500">{restaurantName}</span>
             </div>
 
-            <div className="relative h-40 w-40 overflow-hidden rounded-2xl border border-black/10 bg-neutral-50">
-              <Image
-                src={itemImage}
-                alt={itemName}
-                fill
-                className={imagePresentation.itemDetailImageClassName ?? "object-cover"}
-              />
-              <MacroBadge
-                macroKey="protein"
-                value={nutrition.protein}
-                className="absolute right-2 top-2"
-              />
-            </div>
+            <RestaurantItemImage
+              src={itemImage}
+              alt={itemName}
+              imagePresentation={itemImagePresentation}
+              fallbackClassName={restaurantImagePresentation.itemDetailImageClassName ?? "object-cover"}
+              fallbackBackgroundColor={restaurantImagePresentation.imageBackgroundColor}
+              containerClassName="relative h-40 w-40 overflow-hidden rounded-2xl border border-black/10 bg-neutral-50"
+              renderer="next-image"
+              sizes="160px"
+              overlay={
+                <MacroBadge
+                  macroKey="protein"
+                  value={nutrition.protein}
+                  className="absolute right-2 top-2"
+                />
+              }
+            />
           </div>
 
           <div className="flex min-w-0 flex-1 flex-col gap-4">

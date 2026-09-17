@@ -128,6 +128,7 @@ export function createChipotleCartItemPayload({
   return {
     name: item.name,
     image: item.image,
+    imagePresentation: item.imagePresentation,
     quantity,
     macrosPerItem: {
       calories: chipotle.adjustedTotals.calories,

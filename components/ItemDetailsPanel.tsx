@@ -42,10 +42,12 @@ import {
 import type { ResolvedPanelIngredient } from "@/lib/itemDetails/types";
 import { addonGroupUsesQuantitySelection } from "@/lib/addonGroups";
 import { resolveEffectiveIngredientNutrition } from "@/lib/ingredientNutrition";
-import { CHIPOTLE_PRESET_MEAL_IMAGE_CLASSNAME } from "@/lib/restaurantBuilders/chipotle/highProtein";
+import type { ItemImagePresentation } from "@/types/menu";
 import SectionEyebrow from "@/components/ui/SectionEyebrow";
 import NutritionFactsPanel from "@/components/nutrition/NutritionFactsPanel";
 import {
+  MEAL_DETAILS_SECTION_LABEL_CLASSNAME,
+  MealDetailItemRow,
   NutritionDetailsGrid,
   SelectionSummaryShell,
 } from "@/components/item-route-modal/SelectionSummaryPanels";
@@ -567,18 +569,15 @@ type MealDetailItem = {
   image?: string;
   calories: number;
   protein: number;
+  carbs: number;
+  totalFat: number;
   // Display-only — a meaningful size/portion variant label (e.g. "Medium",
   // "Extra"), never a generic role name like "Main Item"/"Side"/"Drink".
   // Meal Details is a read-only summary; changing a size/portion happens
   // through the item's own selector (variantConfig) or the combo side/drink
   // picker (ComboCustomizationSection), not from this list.
   variantLabel?: string;
-  // Chipotle High Protein preset meals only (see isMainItemPresetMealArtwork
-  // below) — this row's image is wide 3:2 editorial photography rather than
-  // this component's normal near-square product shots, so it needs its own
-  // object-fit/position treatment instead of the generic contain-with-padding
-  // crop every other row uses.
-  isPresetMealArtwork?: boolean;
+  imagePresentation?: ItemImagePresentation;
 };
 
 type IngredientConfig = {
@@ -1740,43 +1739,25 @@ function AddonCustomizationSection({ config }: AddonCustomizationSectionProps) {
 function MealDetailItemsList({
   items,
   imageClassName,
+  imageBackgroundColor,
 }: {
   items: MealDetailItem[];
   imageClassName?: string;
+  imageBackgroundColor?: string;
 }) {
   return (
-    <ul className="flex list-none flex-col divide-y divide-black/[0.06] pl-0">
+    <ul className="grid list-none gap-2 pl-0">
       {items.map((detailItem) => (
-        <li
+        <MealDetailItemRow
           key={detailItem.id}
-          className="flex items-center gap-3 py-2.5"
-        >
-          <div className="h-11 w-11 shrink-0 overflow-hidden rounded-lg border border-black/10 bg-white">
-            {detailItem.image && detailItem.image !== "none" ? (
-              // eslint-disable-next-line @next/next/no-img-element
-              <img
-                src={detailItem.image}
-                alt={detailItem.name}
-                className={`h-full w-full ${
-                  detailItem.isPresetMealArtwork
-                    ? CHIPOTLE_PRESET_MEAL_IMAGE_CLASSNAME
-                    : (imageClassName ?? "object-contain p-1")
-                }`}
-              />
-            ) : null}
-          </div>
-          <p
-            className="min-w-0 flex-1 truncate text-sm font-medium text-neutral-900"
-            title={`${detailItem.quantity}x ${detailItem.name}`}
-          >
-            {detailItem.quantity}x {detailItem.name}
-          </p>
-          {detailItem.variantLabel ? (
-            <span className="shrink-0 rounded-full bg-slate-100 px-2 py-0.5 text-[10px] font-semibold tracking-wide text-slate-500 uppercase">
-              {detailItem.variantLabel}
-            </span>
-          ) : null}
-        </li>
+          name={detailItem.name}
+          secondaryText={detailItem.variantLabel}
+          quantity={detailItem.quantity}
+          image={detailItem.image && detailItem.image !== "none" ? detailItem.image : undefined}
+          imagePresentation={detailItem.imagePresentation}
+          imageFallbackClassName={imageClassName}
+          imageFallbackBackgroundColor={imageBackgroundColor}
+        />
       ))}
     </ul>
   );
@@ -1821,9 +1802,9 @@ export default function ItemDetailsPanel({
   onSelectComboDrinkVariant,
   onCustomizeIngredients,
   quantityMultiplier = 1,
-  isMainItemPresetMealArtwork = false,
   standardRecipeNotice,
   mealDetailImageClassName,
+  mealDetailImageBackgroundColor,
 }: {
   item: MenuItem;
   nutrition: Nutrition;
@@ -1867,13 +1848,12 @@ export default function ItemDetailsPanel({
   onSelectComboDrinkVariant?: (variantId: string) => void;
   onCustomizeIngredients?: () => void;
   quantityMultiplier?: number;
-  // Chipotle High Protein preset meals only — see MealDetailItem above.
-  isMainItemPresetMealArtwork?: boolean;
   standardRecipeNotice?: {
     title: string;
     body: string;
   };
   mealDetailImageClassName?: string;
+  mealDetailImageBackgroundColor?: string;
 }) {
   const safeQuantityMultiplier = Math.max(quantityMultiplier ?? 1, 1);
   const scaleNutritionValue = (value?: number) =>
@@ -1939,8 +1919,10 @@ export default function ItemDetailsPanel({
       image: selectedMainItemImage,
       calories: (n.calories ?? 0) - (selectedComboSideVariant?.nutrition?.calories ?? selectedComboSide?.nutrition.calories ?? 0) - (selectedComboDrinkVariant?.nutrition?.calories ?? selectedComboDrink?.nutrition.calories ?? 0),
       protein: (n.protein ?? 0) - (selectedComboSideVariant?.nutrition?.protein ?? selectedComboSide?.nutrition.protein ?? 0) - (selectedComboDrinkVariant?.nutrition?.protein ?? selectedComboDrink?.nutrition.protein ?? 0),
+      carbs: (n.carbs ?? 0) - (selectedComboSideVariant?.nutrition?.carbs ?? selectedComboSide?.nutrition.carbs ?? 0) - (selectedComboDrinkVariant?.nutrition?.carbs ?? selectedComboDrink?.nutrition.carbs ?? 0),
+      totalFat: (n.totalFat ?? 0) - (selectedComboSideVariant?.nutrition?.totalFat ?? selectedComboSide?.nutrition.totalFat ?? 0) - (selectedComboDrinkVariant?.nutrition?.totalFat ?? selectedComboDrink?.nutrition.totalFat ?? 0),
       variantLabel: selectedMainVariant?.label,
-      isPresetMealArtwork: isMainItemPresetMealArtwork,
+      imagePresentation: item.imagePresentation,
     },
     ...(comboType === "combo-meal" && selectedComboSide
       ? [
@@ -1951,7 +1933,10 @@ export default function ItemDetailsPanel({
             image: selectedComboSide.image,
             calories: selectedComboSideVariant?.nutrition?.calories ?? selectedComboSide.nutrition.calories,
             protein: selectedComboSideVariant?.nutrition?.protein ?? selectedComboSide.nutrition.protein,
+            carbs: selectedComboSideVariant?.nutrition?.carbs ?? selectedComboSide.nutrition.carbs,
+            totalFat: selectedComboSideVariant?.nutrition?.totalFat ?? selectedComboSide.nutrition.totalFat,
             variantLabel: selectedComboSideVariant?.label,
+            imagePresentation: selectedComboSide.imagePresentation,
           },
         ]
       : []),
@@ -1964,7 +1949,10 @@ export default function ItemDetailsPanel({
             image: selectedComboDrink.image,
             calories: selectedComboDrinkVariant?.nutrition?.calories ?? selectedComboDrink.nutrition.calories,
             protein: selectedComboDrinkVariant?.nutrition?.protein ?? selectedComboDrink.nutrition.protein,
+            carbs: selectedComboDrinkVariant?.nutrition?.carbs ?? selectedComboDrink.nutrition.carbs,
+            totalFat: selectedComboDrinkVariant?.nutrition?.totalFat ?? selectedComboDrink.nutrition.totalFat,
             variantLabel: selectedComboDrinkVariant?.label,
+            imagePresentation: selectedComboDrink.imagePresentation,
           },
         ]
       : []),
@@ -2238,16 +2226,20 @@ export default function ItemDetailsPanel({
                 id: detailItem.id,
                 name: detailItem.name,
                 image: detailItem.image,
+                imagePresentation: detailItem.imagePresentation,
                 calories: detailItem.calories,
                 protein: detailItem.protein,
+                carbs: detailItem.carbs,
+                totalFat: detailItem.totalFat,
               }))}
+              beforeList={
+                <SectionEyebrow className={MEAL_DETAILS_SECTION_LABEL_CLASSNAME}>Items</SectionEyebrow>
+              }
             >
-              <SectionEyebrow className="text-base text-neutral-500">
-                Items
-              </SectionEyebrow>
               <MealDetailItemsList
                 items={detailItems}
                 imageClassName={mealDetailImageClassName}
+                imageBackgroundColor={mealDetailImageBackgroundColor}
               />
             </SelectionSummaryShell>
           }

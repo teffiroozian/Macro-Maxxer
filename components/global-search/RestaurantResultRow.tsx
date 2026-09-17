@@ -37,7 +37,7 @@ export default function RestaurantResultRow({
       }}
     >
       <span className={`flex h-8 w-8 items-center justify-center overflow-hidden bg-neutral-50 ${
-        getRestaurantLogoShapeClassName(restaurant.id)
+        getRestaurantLogoShapeClassName()
       }`}>
         <Image
           src={restaurant.logo}

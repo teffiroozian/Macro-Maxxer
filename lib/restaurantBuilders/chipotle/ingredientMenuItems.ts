@@ -367,6 +367,17 @@ export function buildChipotleIngredientMenuItems({
 
       return true;
     })
+    // Generated ids are the canonical option identities for an entree.
+    // Deduplicate repeated source records by that id, while preserving
+    // intentionally distinct options that share a logical ingredient
+    // identity (Burrito's included Tortilla vs. optional Extra Tortilla).
+    .filter(
+      (ingredient, index, eligibleIngredients) =>
+        eligibleIngredients.findIndex(
+          (candidate) =>
+            candidate.id === ingredient.id,
+        ) === index,
+    )
     .map((ingredient, index) => {
       const ingredientId =
         ingredient.id ??

@@ -18,9 +18,11 @@ import pandaMenu from "@/data/restaurants/panda.json";
 import paneraMenu from "@/data/restaurants/panera.json";
 import subwayMenu from "@/data/restaurants/subway.json";
 import type { CartCustomization, CartItem, CartSelectionOption } from "@/types/cart";
-import type { IngredientItem, ItemVariant, MenuItem, RestaurantMenu } from "@/types/menu";
+import type { IngredientItem, ItemImagePresentation, ItemVariant, MenuItem, RestaurantMenu } from "@/types/menu";
 import type { Nutrition } from "@/types/nutrition";
+import type { MacroBreakdownEntry, MacroBreakdownNestedKind } from "@/types/macroBreakdown";
 import { resolveMenuItemVariantNutrition } from "@/lib/nutrition";
+import { resolveEffectiveIngredientNutrition } from "@/lib/ingredientNutrition";
 
 export type CartDetailMenuItem = MenuItem | IngredientItem;
 
@@ -46,6 +48,17 @@ export function getCartRestaurantMenu(restaurantId: string): RestaurantMenu | nu
   return restaurantMenusById[restaurantId] ?? null;
 }
 
+export function getCartItemImagePresentation(
+  cartItem: Pick<CartItem, "restaurantId" | "itemId" | "imagePresentation">,
+) {
+  if (cartItem.imagePresentation) return cartItem.imagePresentation;
+  const restaurant = getCartRestaurantMenu(cartItem.restaurantId);
+  const item = restaurant ? findCartMenuItem(restaurant, cartItem.itemId) : null;
+  return item && "imagePresentation" in item
+    ? item.imagePresentation
+    : undefined;
+}
+
 export function getCartCustomizationItemId(customization: CartCustomization) {
   return customization.itemId ?? customization.ingredientId ?? customization.toIngredientId ?? customization.fromIngredientId;
 }
@@ -56,6 +69,15 @@ export function findCartMenuItem(restaurant: RestaurantMenu, itemId: string): Ca
     restaurant.ingredients?.find((ingredient) => ingredient.id === itemId) ??
     null
   );
+}
+
+// Only MenuItem carries per-item image display overrides (IngredientItem has
+// no such field) — this is the one place that reads it off a CartDetailMenuItem
+// union so every resolver below (combo selections, customization/sauce/dressing
+// cards, the main item) shares the same shared-image-renderer behavior instead
+// of each re-deriving it.
+function itemImagePresentationOf(item: CartDetailMenuItem | null | undefined): ItemImagePresentation | undefined {
+  return item && "imagePresentation" in item ? item.imagePresentation : undefined;
 }
 
 function resolveChipotleCartCatalogId(
@@ -143,6 +165,7 @@ export type ResolvedCartComboSelection = {
   name: string;
   variantLabel?: string;
   image?: string;
+  imagePresentation?: ItemImagePresentation;
   nutrition?: Nutrition;
 };
 
@@ -168,6 +191,10 @@ export function resolveCartItemComboSelections(cartItem: CartItem): ResolvedCart
       // only the base drink does), so the preview never renders an empty
       // placeholder when the menu already has a valid image available.
       image: variant?.image ?? item?.image,
+      // Variants carry no imagePresentation of their own — only the base
+      // item does — so this always reflects the item-level override
+      // regardless of which variant's image is actually showing.
+      imagePresentation: itemImagePresentationOf(item),
       // Same variant/multiplier-aware resolution the menu itself uses
       // (resolveMenuItemVariantNutrition), so a combo drink/side's full
       // nutrition set (not just calories/protein/carbs/fat) always matches
@@ -187,6 +214,7 @@ export type ResolvedCartItemCard = {
   qualifierLabel?: string;
   sign: "add" | "remove";
   image?: string;
+  imagePresentation?: ItemImagePresentation;
   nutrition?: Nutrition;
 };
 
@@ -234,7 +262,14 @@ export function resolveCartItemCustomizationCards(cartItem: CartItem): ResolvedC
           qualifierLabel,
           sign: customization.action === "remove" || customization.action === "light" ? "remove" : "add",
           image: item?.image,
-          nutrition: item?.nutrition,
+          imagePresentation: itemImagePresentationOf(item),
+          // Some ingredients (e.g. a Chipotle protein's Light/Normal/Extra
+          // portions) are variant containers with no nutrition of their
+          // own — resolveEffectiveIngredientNutrition picks the saved
+          // variant (falling back to the item's declared default, then its
+          // own direct nutrition), instead of a plain item?.nutrition read
+          // silently coming back undefined and dropping the card.
+          nutrition: item ? resolveEffectiveIngredientNutrition(item, customization.variantId) : undefined,
         });
       });
 
@@ -248,7 +283,8 @@ export function resolveCartItemCustomizationCards(cartItem: CartItem): ResolvedC
           qualifierLabel: option.quantity && option.quantity > 1 ? `×${option.quantity}` : undefined,
           sign: "add",
           image: item?.image,
-          nutrition: item?.nutrition,
+          imagePresentation: itemImagePresentationOf(item),
+          nutrition: item ? resolveEffectiveIngredientNutrition(item) : undefined,
         });
       });
   } else {
@@ -289,7 +325,12 @@ export function resolveCartItemCustomizationCards(cartItem: CartItem): ResolvedC
           qualifierLabel: ingredient.quantity > 1 ? `×${ingredient.quantity}` : undefined,
           sign: "add",
           image: item?.image,
-          nutrition: item?.nutrition,
+          imagePresentation: itemImagePresentationOf(item),
+          // See the standard-item ingredient branch above — a Chipotle
+          // protein (and similar Light/Normal/Extra ingredients) is a
+          // variant container with no nutrition of its own until the
+          // saved portion variant is resolved.
+          nutrition: item ? resolveEffectiveIngredientNutrition(item, ingredient.variantId) : undefined,
         });
       });
   }
@@ -314,6 +355,7 @@ export function resolveCartItemSauceCards(cartItem: CartItem): ResolvedCartItemC
         qualifierLabel: option.quantity && option.quantity > 1 ? `×${option.quantity}` : undefined,
         sign: "add" as const,
         image: item?.image,
+        imagePresentation: itemImagePresentationOf(item),
         nutrition: item?.nutrition,
       };
     });
@@ -322,6 +364,7 @@ export function resolveCartItemSauceCards(cartItem: CartItem): ResolvedCartItemC
 export type ResolvedCartItemMainItem = {
   name: string;
   image?: string;
+  imagePresentation?: ItemImagePresentation;
   variantLabel?: string;
   nutrition: Nutrition;
 };
@@ -368,6 +411,7 @@ export function resolveCartItemMainItem(cartItem: CartItem): ResolvedCartItemMai
   return {
     name: item.name,
     image: variant?.image ?? item.image,
+    imagePresentation: itemImagePresentationOf(item),
     variantLabel: variant?.label ?? variantLabel,
     nutrition: resolveMenuItemVariantNutrition(item as MenuItem, variant),
   };
@@ -398,7 +442,79 @@ export function resolveCartItemDressingCards(cartItem: CartItem): ResolvedCartIt
         qualifierLabel: option.quantity && option.quantity > 1 ? `×${option.quantity}` : undefined,
         sign: "add" as const,
         image: item?.image,
+        imagePresentation: itemImagePresentationOf(item),
         nutrition: item?.nutrition,
       };
     });
+}
+
+// Cards with resolved nutrition, mapped down to the plain macro-entry shape
+// MacroSplitDetails/ProteinScoreDetails nest under a cart item — shared by
+// every branch of resolveCartItemMacroBreakdown below so none of them repeat
+// the same nutrition -> MacroBreakdownEntry mapping.
+function toMacroBreakdownEntries(cards: ResolvedCartItemCard[]): MacroBreakdownEntry[] {
+  return cards
+    .filter((card): card is ResolvedCartItemCard & { nutrition: Nutrition } => Boolean(card.nutrition))
+    .map((card) => ({
+      id: card.id,
+      name: card.name,
+      image: card.image,
+      imagePresentation: card.imagePresentation,
+      calories: card.nutrition.calories,
+      protein: card.nutrition.protein,
+      carbs: card.nutrition.carbs,
+      totalFat: card.nutrition.totalFat,
+    }));
+}
+
+// The nested "Ingredients"/"Items" breakdown for a cart item's Macro Split
+// and Protein Score detail views (see MacroBreakdownItem.nestedKind) — a
+// fully build-your-own item (Chipotle) has no single base recipe, so every
+// selected ingredient becomes its own "Ingredients" row. A standard/combo
+// item's "Items" breakdown includes the main entree itself (e.g. "Chicken
+// Sandwich") alongside its distinct catalog components (combo side/drink,
+// dressings, sauces, added ingredients/addons) — every sub-item that makes
+// up the meal, not just the extras layered on top of it.
+export function resolveCartItemMacroBreakdown(cartItem: CartItem): {
+  kind: MacroBreakdownNestedKind;
+  entries: MacroBreakdownEntry[];
+} {
+  if (cartItem.selection.type !== "standard") {
+    const addedCards = resolveCartItemCustomizationCards(cartItem).filter((card) => card.sign === "add");
+    return { kind: "ingredients", entries: toMacroBreakdownEntries(addedCards) };
+  }
+
+  const mainItem = resolveCartItemMainItem(cartItem);
+  const mainItemCard: ResolvedCartItemCard[] = mainItem
+    ? [
+        {
+          id: "main-item",
+          name: mainItem.name,
+          sign: "add",
+          image: mainItem.image,
+          imagePresentation: mainItem.imagePresentation,
+          nutrition: mainItem.nutrition,
+        },
+      ]
+    : [];
+  const comboSelectionCards: ResolvedCartItemCard[] = resolveCartItemComboSelections(cartItem).map((selection) => ({
+    id: `combo-${selection.role}`,
+    name: selection.name,
+    sign: "add",
+    image: selection.image,
+    imagePresentation: selection.imagePresentation,
+    nutrition: selection.nutrition,
+  }));
+  const addedCustomizationCards = resolveCartItemCustomizationCards(cartItem).filter((card) => card.sign === "add");
+
+  return {
+    kind: "items",
+    entries: toMacroBreakdownEntries([
+      ...mainItemCard,
+      ...comboSelectionCards,
+      ...resolveCartItemDressingCards(cartItem),
+      ...resolveCartItemSauceCards(cartItem),
+      ...addedCustomizationCards,
+    ]),
+  };
 }

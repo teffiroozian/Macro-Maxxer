@@ -23,7 +23,6 @@ import { getCartItemAddToCartAnalytics } from "@/lib/cart/itemAccessors";
 import { useMenuItemConfiguration } from "./menu-item-card/useMenuItemConfiguration";
 import {
   isChipotleEditablePresetBuildItem,
-  isChipotleHighProteinMenuItem,
 } from "@/lib/restaurantBuilders/chipotle/highProtein";
 import { parseIncludedIngredientEntry } from "@/lib/itemIngredients";
 
@@ -32,6 +31,7 @@ import { getProteinPer100Calories, getProteinScoreTier, normalizeNutrition } fro
 import { resolveFinalizedCartConfiguration, type CartConfigurationPayload } from "@/lib/menuItemCard/finalizedCartConfiguration";
 import type { ComparativeLabelKind } from "@/lib/menuSections/comparativeLabels";
 import { getRestaurantImagePresentation } from "@/lib/restaurantPresentation";
+import RestaurantItemImage from "@/components/ui/RestaurantItemImage";
 
 // Same portion multipliers already used across the build-your-own portion
 // modes (light/normal/extra for rice, beans, toppings; normal/double for
@@ -512,7 +512,6 @@ export default function MenuItemCard({
   // Only High Protein Menu cards (editable meals and Protein Cups alike)
   // get the full-cover crop — standard items (Chips & Sides, drinks, sauces,
   // normal entrees, etc.) keep the normal contained image treatment.
-  const isHighProteinMenuCard = isChipotleHighProteinMenuItem(item, restaurantId);
   const imagePresentation = getRestaurantImagePresentation(restaurantId);
   const quantityMultiplier = isCartMode ? Math.max(cartQuantity, 1) : 1;
   const displayCalories = (calories ?? 0) * quantityMultiplier;
@@ -659,6 +658,7 @@ export default function MenuItemCard({
           itemId: item.id ?? item.name,
           name: item.name,
           image: selectedVariantForCart?.image ?? item.image,
+          imagePresentation: item.imagePresentation,
           variantId: selectedVariantForCart?.id,
           customizations,
           quantity: 1,
@@ -808,8 +808,8 @@ export default function MenuItemCard({
           item={item}
           selectedItemImage={selectedItemImage}
           isCartMode={isCartMode}
-          isHighProteinMenuCard={isHighProteinMenuCard}
           itemImageClassName={imagePresentation.menuCardImageClassName}
+          itemImageBackgroundColor={imagePresentation.imageBackgroundColor}
           rank={rank}
           comparativeLabel={rank === null ? comparativeLabel : undefined}
           variants={variants}
@@ -842,6 +842,9 @@ export default function MenuItemCard({
             proteinScoreTier={!isCartMode ? proteinScoreTier : undefined}
             itemName={item.name}
             itemImage={selectedItemImage}
+            itemImagePresentation={item.imagePresentation}
+            imageClassName={imagePresentation.itemThumbnailImageClassName}
+            imageBackgroundColor={imagePresentation.imageBackgroundColor}
             actions={isCartMode ? (
               <CartCardActions
                 itemName={item.name}
@@ -905,11 +908,14 @@ export default function MenuItemCard({
                 <section>
                   <SectionEyebrow className="mb-2 px-1 text-[11px] text-slate-500">Main</SectionEyebrow>
                   <div className="grid grid-cols-[72px_minmax(0,1fr)] items-start gap-3 rounded-xl border border-slate-200 bg-white px-3 py-2.5">
-                    <div className="h-[72px] w-[72px] overflow-hidden rounded-lg border border-black/10 bg-white">
-                      {selectedItemImage ? (
-                        <img src={selectedItemImage} alt={item.name} className="h-full w-full object-contain p-1" />
-                      ) : null}
-                    </div>
+                    <RestaurantItemImage
+                      src={selectedItemImage}
+                      alt={item.name}
+                      imagePresentation={item.imagePresentation}
+                      fallbackClassName={imagePresentation.itemThumbnailImageClassName ?? "object-contain p-1"}
+                      fallbackBackgroundColor={imagePresentation.imageBackgroundColor}
+                      containerClassName="h-[72px] w-[72px] overflow-hidden rounded-lg border border-black/10 bg-white"
+                    />
                     <div className="min-w-0">
                       <div className="flex items-start justify-between gap-2">
                         <p className="min-w-0 flex-1 truncate text-lg font-semibold text-slate-900">{quickMainName}</p>
@@ -939,11 +945,14 @@ export default function MenuItemCard({
                   <section>
                     <SectionEyebrow className="mb-2 px-1 text-[11px] text-slate-500">Side</SectionEyebrow>
                     <div className="grid grid-cols-[72px_minmax(0,1fr)] items-start gap-3 rounded-xl border border-slate-200 bg-white px-3 py-2.5">
-                      <div className="h-[72px] w-[72px] overflow-hidden rounded-lg border border-black/10 bg-white">
-                        {selectedComboSide.image ? (
-                          <img src={selectedComboSide.image} alt={selectedComboSide.name} className="h-full w-full object-contain p-1" />
-                        ) : null}
-                      </div>
+                      <RestaurantItemImage
+                        src={selectedComboSide.image}
+                        alt={selectedComboSide.name}
+                        imagePresentation={selectedComboSide.imagePresentation}
+                        fallbackClassName={imagePresentation.itemThumbnailImageClassName ?? "object-contain p-1"}
+                        fallbackBackgroundColor={imagePresentation.imageBackgroundColor}
+                        containerClassName="h-[72px] w-[72px] overflow-hidden rounded-lg border border-black/10 bg-white"
+                      />
                       <div className="min-w-0">
                         <div className="flex items-start justify-between gap-2">
                           <p className="min-w-0 flex-1 truncate text-lg font-semibold text-slate-900">{selectedComboSide.name}</p>
@@ -974,11 +983,14 @@ export default function MenuItemCard({
                   <section>
                     <SectionEyebrow className="mb-2 px-1 text-[11px] text-slate-500">Drink</SectionEyebrow>
                     <div className="grid grid-cols-[72px_minmax(0,1fr)] items-start gap-3 rounded-xl border border-slate-200 bg-white px-3 py-2.5">
-                      <div className="h-[72px] w-[72px] overflow-hidden rounded-lg border border-black/10 bg-white">
-                        {selectedComboDrink.image ? (
-                          <img src={selectedComboDrink.image} alt={selectedComboDrink.name} className="h-full w-full object-contain p-1" />
-                        ) : null}
-                      </div>
+                      <RestaurantItemImage
+                        src={selectedComboDrink.image}
+                        alt={selectedComboDrink.name}
+                        imagePresentation={selectedComboDrink.imagePresentation}
+                        fallbackClassName={imagePresentation.itemThumbnailImageClassName ?? "object-contain p-1"}
+                        fallbackBackgroundColor={imagePresentation.imageBackgroundColor}
+                        containerClassName="h-[72px] w-[72px] overflow-hidden rounded-lg border border-black/10 bg-white"
+                      />
                       <div className="min-w-0">
                         <div className="flex items-start justify-between gap-2">
                           <p className="min-w-0 flex-1 truncate text-lg font-semibold text-slate-900">{selectedComboDrink.name}</p>
@@ -1018,11 +1030,14 @@ export default function MenuItemCard({
                             key={addon.name}
                             className="grid grid-cols-[72px_minmax(0,1fr)] items-start gap-3 rounded-xl border border-slate-200 bg-white px-3 py-2.5"
                           >
-                            <div className="h-[72px] w-[72px] overflow-hidden rounded-lg border border-black/10 bg-white">
-                              {addon.image ? (
-                                <img src={addon.image} alt={addon.name} className="h-full w-full object-contain p-1" />
-                              ) : null}
-                            </div>
+                            <RestaurantItemImage
+                              src={addon.image}
+                              alt={addon.name}
+                              imagePresentation={addon.imagePresentation}
+                              fallbackClassName={imagePresentation.itemThumbnailImageClassName ?? "object-contain p-1"}
+                              fallbackBackgroundColor={imagePresentation.imageBackgroundColor}
+                              containerClassName="h-[72px] w-[72px] overflow-hidden rounded-lg border border-black/10 bg-white"
+                            />
                             <div className="min-w-0">
                               <p className="truncate text-sm font-semibold text-slate-900">{addon.name}</p>
                               <div className="mt-2 inline-flex items-center gap-2 rounded-lg border border-black/10 bg-white px-1 py-1">
@@ -1084,11 +1099,14 @@ export default function MenuItemCard({
                     <SectionEyebrow className="mb-2 px-1 text-[11px] text-slate-500">{addons?.dressings?.label ?? "Dressings"}</SectionEyebrow>
                     <div className="space-y-1.5">
                       <div className="grid w-full grid-cols-[72px_minmax(0,1fr)] items-start gap-3 rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-left">
-                        <div className="h-[72px] w-[72px] overflow-hidden rounded-lg border border-black/10 bg-white">
-                          {selectedAddons.dressings.image ? (
-                            <img src={selectedAddons.dressings.image} alt={selectedAddons.dressings.name} className="h-full w-full object-contain p-1" />
-                          ) : null}
-                        </div>
+                        <RestaurantItemImage
+                          src={selectedAddons.dressings.image}
+                          alt={selectedAddons.dressings.name}
+                          imagePresentation={selectedAddons.dressings.imagePresentation}
+                          fallbackClassName={imagePresentation.itemThumbnailImageClassName ?? "object-contain p-1"}
+                          fallbackBackgroundColor={imagePresentation.imageBackgroundColor}
+                          containerClassName="h-[72px] w-[72px] overflow-hidden rounded-lg border border-black/10 bg-white"
+                        />
                         <div className="min-w-0">
                           <p className="truncate text-sm font-semibold text-slate-900">{selectedAddons.dressings.name}</p>
                           <div className="mt-2 flex flex-wrap items-end gap-x-3 gap-y-2">

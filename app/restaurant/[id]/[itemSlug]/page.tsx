@@ -36,6 +36,7 @@ export default async function ItemPage({
         addons={addons}
         ingredients={restaurant.ingredients}
         customizationRules={restaurant.customizationRules}
+        builderConfig={restaurant.builderConfig}
         closeBehavior="replace"
         initialVariantId={initialVariantId}
       />
