@@ -178,7 +178,10 @@ export default function MenuSections({
               }}
               ingredientSelection={getIngredientSelection(item)}
               detailPanel={{
-                showDetailsButton: categoryMode !== "ingredients",
+                showDetailsButton:
+                  categoryMode !== "ingredients" || restaurantId === "chickfila",
+                ingredientOnly:
+                  categoryMode === "ingredients" && restaurantId === "chickfila",
               }}
             />
           ))}
@@ -229,6 +232,7 @@ export default function MenuSections({
   const sections = applyRestaurantMenuSectionOrder(
     getOrderedMenuSections(items, categoryMode),
     restaurantId,
+    categoryMode,
   );
 
   if (!sections.length) {
@@ -262,7 +266,10 @@ export default function MenuSections({
                 }}
                 ingredientSelection={getIngredientSelection(item)}
                 detailPanel={{
-                  showDetailsButton: categoryMode !== "ingredients",
+                  showDetailsButton:
+                    categoryMode !== "ingredients" || restaurantId === "chickfila",
+                  ingredientOnly:
+                    categoryMode === "ingredients" && restaurantId === "chickfila",
                 }}
               />
             ))}

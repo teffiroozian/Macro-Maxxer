@@ -164,6 +164,7 @@ export function useRestaurantMenuControls({
                     effectiveViewMode === "ranking" ? "menu" : effectiveViewMode,
                 ),
                 restaurantId,
+                effectiveViewMode === "ranking" ? "menu" : effectiveViewMode,
             ),
         [effectiveViewMode, restaurantId, visibleMenuItems],
     );

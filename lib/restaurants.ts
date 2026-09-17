@@ -14,7 +14,7 @@ const restaurantIndex = restaurants as RestaurantIndexEntry[];
 // in this graph.
 const runtimeMenuLoaders: Record<string, () => Promise<RestaurantMenu>> = {
   chickfila: async () =>
-    (await import("@/data/restaurants/chick-fil-a/generated/restaurant.json")).default as unknown as RestaurantMenu,
+    (await import("@/lib/restaurantBuilders/chickfila/generatedRuntimeAdapter")).CHICKFILA_GENERATED_RUNTIME_MENU,
   chipotle: async () =>
     (await import("@/lib/restaurantBuilders/chipotle/generatedRuntimeAdapter")).CHIPOTLE_GENERATED_RUNTIME_MENU,
   habit: async () => (await import("@/data/restaurants/habit.json")).default as RestaurantMenu,
@@ -42,7 +42,7 @@ function toSlug(value: string) {
 }
 
 // takes a menu item and turns it into a URL-safe slug
-export function toItemSlug(item: MenuItem) {
+export function toItemSlug(item: Pick<MenuItem, "id" | "name">) {
   return toSlug(item.id ?? item.name);
 }
 

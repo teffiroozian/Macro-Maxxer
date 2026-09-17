@@ -2,7 +2,6 @@
 
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import type { LucideIcon } from "lucide-react";
 import {
   CATEGORY_ICONS,
   STARBUCKS_CATEGORY_ICON_OVERRIDES,
@@ -132,6 +131,10 @@ function StandardRestaurantView({
     () => orderedSections[0] ?? "",
   );
 
+  const isIngredientView = effectiveViewMode === "ingredients";
+  const isCategorizedIngredientsView =
+    restaurantId === "chickfila" && isIngredientView;
+
   // Lets the mobile active-filter row's "Edit filters" icon (rendered in
   // RestaurantCategorySidebar, a sibling of StickyRestaurantBar) open the
   // same controls drawer StickyRestaurantBar's own hamburger button uses —
@@ -143,9 +146,10 @@ function StandardRestaurantView({
     setOpenMobileFiltersDrawer(() => openDrawer);
   }, []);
 
-  const resolvedActiveCategory = orderedSections.includes(activeCategory)
+  const activeCategoryOptions = categoryOptions;
+  const resolvedActiveCategory = activeCategoryOptions.some((option) => option.id === activeCategory)
     ? activeCategory
-    : (orderedSections[0] ?? "");
+    : (activeCategoryOptions[0]?.id ?? "");
 
   const handleCategorySelect = (categoryId: string) => {
     setActiveCategory(categoryId);
@@ -163,7 +167,11 @@ function StandardRestaurantView({
   };
 
   useEffect(() => {
-    if (effectiveViewMode === "ranking" || orderedSections.length === 0) {
+    if (
+      effectiveViewMode === "ranking" ||
+      (effectiveViewMode === "ingredients" && !isCategorizedIngredientsView) ||
+      orderedSections.length === 0
+    ) {
       return;
     }
 
@@ -206,7 +214,7 @@ function StandardRestaurantView({
       window.removeEventListener("scroll", updateActiveCategoryOnScroll);
       window.removeEventListener("resize", updateActiveCategoryOnScroll);
     };
-  }, [activeCategory, effectiveViewMode, orderedSections]);
+  }, [activeCategory, effectiveViewMode, isCategorizedIngredientsView, orderedSections]);
 
   return (
     <div>
@@ -242,7 +250,7 @@ function StandardRestaurantView({
           rankedParentStates={rankedParentStates}
           toggleRankedAllFilter={toggleRankedAllFilter}
           toggleRankedChildFilter={toggleRankedChildFilter}
-          categoryOptions={categoryOptions}
+          categoryOptions={activeCategoryOptions}
           resolvedActiveCategory={resolvedActiveCategory}
           onCategorySelect={handleCategorySelect}
           categoryIcons={categoryIcons}

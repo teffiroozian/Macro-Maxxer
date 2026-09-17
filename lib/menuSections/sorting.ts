@@ -235,10 +235,33 @@ const STARBUCKS_MENU_SECTION_ORDER = [
   "snacks",
 ] as const;
 
+const CHICKFILA_INGREDIENT_SECTION_ORDER = [
+  "proteins",
+  "buns & bread",
+  "cheese",
+  "toppings",
+  "salad & fruit toppings",
+  "milk & creamers",
+  "syrups & sweeteners",
+  "dessert toppings & mix-ins",
+] as const;
+
 export function applyRestaurantMenuSectionOrder(
   sections: string[],
   restaurantId: string,
+  mode: CategoryMode = "menu",
 ): string[] {
+  if (restaurantId === "chickfila" && mode === "ingredients") {
+    const priority = new Map<string, number>(
+      CHICKFILA_INGREDIENT_SECTION_ORDER.map((section, index) => [section, index]),
+    );
+    return [...sections].sort(
+      (left, right) =>
+        (priority.get(normalizeCategory(left)) ?? Number.POSITIVE_INFINITY) -
+          (priority.get(normalizeCategory(right)) ?? Number.POSITIVE_INFINITY) ||
+        left.localeCompare(right),
+    );
+  }
   if (restaurantId !== "starbucks") return sections;
   const priority = new Map<string, number>(
     STARBUCKS_MENU_SECTION_ORDER.map((section, index) => [section, index]),

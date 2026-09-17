@@ -2268,6 +2268,7 @@ export default function ItemRouteModal({
                                 <ItemDetailsPanel
                                     item={item}
                                     nutrition={nutrition}
+                                    ingredientOnly={Boolean(item.ingredientRef)}
                                     quantityMultiplier={quantity}
                                     standardRecipeNotice={
                                         restaurantId === "starbucks"

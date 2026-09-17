@@ -1805,6 +1805,7 @@ export default function ItemDetailsPanel({
   standardRecipeNotice,
   mealDetailImageClassName,
   mealDetailImageBackgroundColor,
+  ingredientOnly = false,
 }: {
   item: MenuItem;
   nutrition: Nutrition;
@@ -1854,6 +1855,7 @@ export default function ItemDetailsPanel({
   };
   mealDetailImageClassName?: string;
   mealDetailImageBackgroundColor?: string;
+  ingredientOnly?: boolean;
 }) {
   const safeQuantityMultiplier = Math.max(quantityMultiplier ?? 1, 1);
   const scaleNutritionValue = (value?: number) =>
@@ -2116,9 +2118,10 @@ export default function ItemDetailsPanel({
       (availableIngredientTabs[0]?.ingredients.length ?? 0) > 0;
   const shouldShowComboSelections = comboType === "combo-meal";
   const hasBuildContent =
-    shouldShowIngredientSection ||
-    shouldShowComboSelections ||
-    availableAddonSections.length > 0;
+    !ingredientOnly &&
+    (shouldShowIngredientSection ||
+      shouldShowComboSelections ||
+      availableAddonSections.length > 0);
   const shouldShowInfoSection = displayMode === "full";
 
   const ingredientConfig: IngredientConfig | undefined = selectedIngredientTab
@@ -2215,7 +2218,7 @@ export default function ItemDetailsPanel({
           }
           details={
             <SelectionSummaryShell
-              title="Meal Details"
+              title={ingredientOnly ? "Ingredient Details" : "Meal Details"}
               totals={{
                 calories: n.calories ?? 0,
                 protein: n.protein ?? 0,
@@ -2233,7 +2236,11 @@ export default function ItemDetailsPanel({
                 totalFat: detailItem.totalFat,
               }))}
               beforeList={
-                <SectionEyebrow className={MEAL_DETAILS_SECTION_LABEL_CLASSNAME}>Items</SectionEyebrow>
+                ingredientOnly ? undefined : (
+                  <SectionEyebrow className={MEAL_DETAILS_SECTION_LABEL_CLASSNAME}>
+                    Items
+                  </SectionEyebrow>
+                )
               }
             >
               <MealDetailItemsList

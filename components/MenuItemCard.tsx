@@ -189,6 +189,7 @@ type MenuItemCardDetailPanelBehavior = {
   flattenIngredientList?: boolean;
   lockedIngredientIds?: string[];
   showDetailsButton?: boolean;
+  ingredientOnly?: boolean;
 };
 
 type MenuItemCardProps = MenuItemCardData & {
@@ -1304,6 +1305,7 @@ export default function MenuItemCard({
               customizationTotals={customizationTotals}
               showCustomizationDeltas={hasActiveCustomization}
               displayMode="full"
+              ingredientOnly={detailPanel?.ingredientOnly}
               flattenIngredientList={flattenIngredientListInDetails}
               lockedIngredientIds={lockedIngredientIdsInDetails}
             />
