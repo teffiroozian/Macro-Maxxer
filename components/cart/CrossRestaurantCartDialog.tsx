@@ -31,7 +31,7 @@ export default function CrossRestaurantCartDialog() {
 
     return () => {
       document.removeEventListener("keydown", onKeyDown);
-      previouslyFocusedElement?.focus();
+      previouslyFocusedElement?.focus({ preventScroll: true });
     };
   }, [pendingConflict, cancelPendingAdd]);
 

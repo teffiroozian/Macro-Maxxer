@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { resolveIngredientCategoryLabel, type ContentSearchResult } from "@/lib/search/searchAllContent";
 import { resolveQuickAddEligibility } from "@/lib/search/quickAddEligibility";
 import type { SearchIndexEntry } from "@/lib/search/searchIndex";
@@ -40,19 +40,25 @@ function toRef(result: ContentSearchResult): RecentMenuItemRef {
 // mode results (standard items and Chipotle builder ingredients alike).
 // Recorded on selection, not on every keystroke, matching "searched" intent.
 export function useRecentMenuItems(searchIndex: SearchIndexEntry[] | null) {
-  const [recentRefs, setRecentRefs] = useState<RecentMenuItemRef[]>(() => {
-    if (typeof window === "undefined") {
-      return [];
-    }
+  // Empty is the deterministic SSR/first-client snapshot. Browser history
+  // is applied only after hydration so it cannot change the initial listbox.
+  const [recentRefs, setRecentRefs] = useState<RecentMenuItemRef[]>([]);
 
-    try {
-      const stored = window.localStorage.getItem(RECENT_MENU_ITEMS_KEY);
-      const parsed = stored ? (JSON.parse(stored) as RecentMenuItemRef[]) : [];
-      return Array.isArray(parsed) ? parsed.slice(0, MAX_RECENT_MENU_ITEMS) : [];
-    } catch {
-      return [];
-    }
-  });
+  useEffect(() => {
+    const timeout = window.setTimeout(() => {
+      try {
+        const stored = window.localStorage.getItem(RECENT_MENU_ITEMS_KEY);
+        const parsed = stored ? (JSON.parse(stored) as RecentMenuItemRef[]) : [];
+        if (Array.isArray(parsed)) {
+          setRecentRefs(parsed.slice(0, MAX_RECENT_MENU_ITEMS));
+        }
+      } catch {
+        // Ignore localStorage read errors; state stays empty.
+      }
+    }, 0);
+
+    return () => window.clearTimeout(timeout);
+  }, []);
 
   const recentResults: ContentSearchResult[] = useMemo(() => {
     if (!searchIndex) {

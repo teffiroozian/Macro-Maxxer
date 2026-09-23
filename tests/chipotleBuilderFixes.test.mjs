@@ -101,6 +101,31 @@ function burritoMenuItems() {
   };
 }
 
+function bowlMenuItems() {
+  const includedIds = resolveIncludedIngredientIds({
+    selectedEntree: "bowl",
+    selectedKidsMeal: "build-your-own",
+    selectedTacoShell: "crispy",
+    selectedTacoCount: 3,
+    builderConfig,
+  });
+  return {
+    includedIds,
+    items: buildChipotleIngredientMenuItems({
+      restaurantId: "chipotle",
+      ingredients,
+      selectedEntree: "bowl",
+      selectedTacoCount: 3,
+      selectedKidsMeal: "build-your-own",
+      selectedIncludedIngredientIds: includedIds,
+      tacoShellIngredientIds: builderConfig.chipotle.tacoShellIngredientIds,
+      getIngredientPortionMultiplier: () => 1,
+      getSelectedIngredientPortionMultiplier: () => 1,
+      builderConfig,
+    }),
+  };
+}
+
 // --- Fix 1: Quesadilla drops Chipotle-Honey Vinaigrette --------------------
 
 test("Quesadilla toppings no longer include Chipotle-Honey Vinaigrette", () => {
@@ -157,7 +182,7 @@ test("chipotle-cmg-5354 still exists untouched in generated/runtime data (not de
 
 // --- Fix 2: Burrito's optional Extra Tortilla -------------------------------
 
-test("Burrito keeps its included tortilla but excludes standalone Side options", () => {
+test("Burrito keeps its included tortilla and offers an additional tortilla under Side", () => {
   const { includedIds, items } = burritoMenuItems();
 
   // Only the real included tortilla is included/locked by default.
@@ -182,9 +207,69 @@ test("Burrito keeps its included tortilla but excludes standalone Side options",
   });
 
   const doubleWrap = items.find((item) => item.id === "chipotle-cmg-4026");
-  assert.equal(doubleWrap, undefined, "standalone Extra Tortilla must not appear in Burrito Customize");
-  assert.equal(items.some((item) => item.categories.includes("Side")), false);
+  assert.ok(doubleWrap, "expected the optional tortilla in Burrito Customize");
+  assert.equal(doubleWrap.name, "Extra Tortilla");
+  assert.deepEqual(doubleWrap.categories, ["Side"]);
+  assert.deepEqual(coreNutrition(doubleWrap.nutrition), {
+    calories: 320,
+    protein: 8,
+    carbs: 50,
+    totalFat: 9,
+  });
   assert.equal(items.some((item) => item.categories.includes("Beverages")), false);
+});
+
+test("Bowl offers the official tortilla side record under Side", () => {
+  const { includedIds, items } = bowlMenuItems();
+  assert.deepEqual(includedIds, []);
+
+  const sideTortilla = items.find((item) => item.id === "chipotle-cmg-4025-bowl-side");
+  assert.ok(sideTortilla, "expected Side Tortilla in Bowl Customize");
+  assert.equal(sideTortilla.name, "Side Tortilla");
+  assert.deepEqual(sideTortilla.categories, ["Side"]);
+  assert.deepEqual(coreNutrition(sideTortilla.nutrition), {
+    calories: 320,
+    protein: 8,
+    carbs: 50,
+    totalFat: 9,
+  });
+});
+
+test("Selecting Bowl's Side Tortilla updates nutrition and round-trips through cart", () => {
+  const baseConfiguration = {
+    selectedEntree: "bowl",
+    selectedIngredientItems: {},
+    selectedIngredientVariantIds: {},
+    proteinPortionMode: "normal",
+    splitPortionModeById: {},
+    selectedTacoShell: "crispy",
+    selectedTacoCount: 3,
+    selectedKidsMeal: "build-your-own",
+  };
+  const withSideTortilla = {
+    ...baseConfiguration,
+    selectedIngredientItems: {
+      "chipotle-cmg-4025-bowl-side": { quantity: 1 },
+    },
+  };
+
+  const baseNutrition = calculateChipotleBuildNutrition(baseConfiguration, ingredients);
+  const selectedNutrition = calculateChipotleBuildNutrition(withSideTortilla, ingredients);
+  assert.deepEqual(coreNutrition(selectedNutrition), {
+    calories: baseNutrition.calories + 320,
+    protein: baseNutrition.protein + 8,
+    carbs: baseNutrition.carbs + 50,
+    totalFat: baseNutrition.totalFat + 9,
+  });
+
+  const universalConfiguration = toUniversalChipotleBuildConfiguration(withSideTortilla);
+  assert.ok(universalConfiguration.ingredients.some(({ id, quantity }) =>
+    id === "chipotle-cmg-4025-bowl-side" && quantity === 1
+  ));
+  assert.deepEqual(
+    fromUniversalChipotleBuildConfiguration(universalConfiguration).selectedIngredientItems,
+    withSideTortilla.selectedIngredientItems,
+  );
 });
 
 test("Selecting Extra Tortilla adds exactly one extra tortilla serving to Burrito macros", () => {

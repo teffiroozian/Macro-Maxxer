@@ -48,7 +48,11 @@ export function GlobalSearchProvider({ children }: { children: ReactNode }) {
     setQuery("");
 
     const target = previouslyFocusedElementRef.current;
-    target?.focus();
+    // Restoring keyboard focus must not ask the browser to reveal a trigger
+    // that has moved offscreen while the fixed search UI was open. Without
+    // preventScroll, closing search as part of Quick Add can jump the
+    // restaurant document before the Just Added preview appears.
+    target?.focus({ preventScroll: true });
 
     // Escape, and selecting a result (rows use onMouseDown preventDefault so
     // clicking them never natively blurs the input), close() without the

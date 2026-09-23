@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef } from "react";
 import { useCart } from "@/stores/cartStore";
 import { buildCartItemSummaryGroups } from "@/lib/cart/displayLabels";
 import { useOptionalRestaurantUi } from "@/components/RestaurantUiContext";
@@ -116,38 +116,6 @@ export default function CartIconDropdown({
       window.removeEventListener("scroll", handleScroll);
     };
   }, [dismissLastAddedPreview, isOpen]);
-
-  // GlobalMobileNav (which renders the "sheet" variant) and DesktopNav
-  // (which renders the default "popover" variant) are both mounted at every
-  // viewport width — each is only CSS-hidden (`lg:hidden` / `hidden lg:*`)
-  // outside its own breakpoint, not unmounted. Both instances share the same
-  // `isOpen` state via useLastAddedPreviewOpen, so a `variant === "sheet"`
-  // check alone isn't enough: on a desktop-width viewport the CSS-hidden
-  // mobile sheet instance would still be "open" and would lock body scroll
-  // out from under the visible desktop popover. Track the matching
-  // `lg:hidden` breakpoint here too, so this only locks when the sheet is
-  // actually the thing on screen.
-  const [isBelowLgViewport, setIsBelowLgViewport] = useState(false);
-
-  useEffect(() => {
-    const mediaQuery = window.matchMedia("(max-width: 1023px)");
-    const updateIsBelowLgViewport = () => setIsBelowLgViewport(mediaQuery.matches);
-    updateIsBelowLgViewport();
-    mediaQuery.addEventListener("change", updateIsBelowLgViewport);
-    return () => mediaQuery.removeEventListener("change", updateIsBelowLgViewport);
-  }, []);
-
-  // The sheet covers the viewport behind it, so lock background scroll while
-  // it's open — same pattern as CartPreviewDrawer. The popover is small and
-  // non-blocking, so it doesn't need this.
-  useEffect(() => {
-    if (variant !== "sheet" || !isOpen || !isBelowLgViewport) return;
-
-    document.body.style.overflow = "hidden";
-    return () => {
-      document.body.style.overflow = "";
-    };
-  }, [isOpen, variant, isBelowLgViewport]);
 
   // Escape dismisses either presentation — matches every other dialog/sheet
   // in the app (MobileNavDrawer, ItemRouteModal, CartPreviewDrawer).
@@ -302,20 +270,23 @@ export default function CartIconDropdown({
         <div
           aria-hidden={!isOpen}
           inert={!isOpen}
-          className={`fixed inset-0 z-[231] ${isOpen ? "" : "pointer-events-none"}`}
+          className={`fixed inset-0 z-[231] overscroll-none ${isOpen ? "" : "pointer-events-none"}`}
         >
           <button
             type="button"
             aria-label="Dismiss just added preview"
             onClick={dismissLastAddedPreview}
-            className={`absolute inset-0 bg-slate-900/35 transition-opacity duration-200 ${
+            className={`absolute inset-0 touch-none bg-slate-900/35 transition-opacity duration-200 ${
               isOpen ? "opacity-100" : "opacity-0"
             }`}
           />
 
-          {/* h-auto: sized to its own content by default, no forced min/max
+          {/* The fixed backdrop blocks background touch gestures directly,
+              so opening this transient sheet never needs to mutate body
+              overflow (which can reposition the document on mobile Safari).
+              h-auto: sized to its own content by default, no forced min/max
               band — a short item row shouldn't leave blank space, and a
-              normal one shouldn't be squeezed into a scrollbar. max-h-[85vh]
+              normal one shouldn't be squeezed into a scrollbar. max-h-[85dvh]
               + overflow-y-auto only ever engage as a fallback, on a screen
               short enough (or content tall enough) that the sheet would
               otherwise run past the viewport — `auto` only draws a
@@ -324,7 +295,7 @@ export default function CartIconDropdown({
             role="dialog"
             aria-modal="true"
             aria-label="Item added to cart"
-            className={`absolute inset-x-0 bottom-0 flex h-auto max-h-[85vh] flex-col overflow-y-auto rounded-t-3xl bg-white text-slate-900 shadow-[0_-18px_40px_rgba(15,23,42,0.18)] transition-transform duration-300 ${
+            className={`absolute inset-x-0 bottom-0 flex h-auto max-h-[85dvh] touch-pan-y flex-col overflow-y-auto overscroll-contain rounded-t-3xl bg-white text-slate-900 shadow-[0_-18px_40px_rgba(15,23,42,0.18)] transition-transform duration-300 ${
               isOpen ? "translate-y-0" : "translate-y-full"
             }`}
           >

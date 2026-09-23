@@ -4,6 +4,7 @@
 
 import { useMemo, useSyncExternalStore } from "react";
 import { buildCartMacroTotals, hasPartialCartNutritionData } from "@/lib/cart/nutrition";
+import { CART_STORAGE_KEY, deserializeCartItems, serializeCartItems } from "@/lib/cart/persistence";
 import type { CartItem, CartState } from "@/types/cart";
 export type { CartItem, CartMacros, CartState } from "@/types/cart";
 
@@ -13,6 +14,44 @@ let cartState: CartState = {
   lastAddedAt: null,
   lastAddedEventId: null,
   lastAddedPreviewDismissedEventId: null,
+};
+
+let hasHydratedFromStorage = false;
+
+const persistCartItems = () => {
+  if (typeof window === "undefined" || !hasHydratedFromStorage) return;
+  try {
+    window.localStorage.setItem(CART_STORAGE_KEY, serializeCartItems(cartState.items));
+  } catch {
+    // Storage may be unavailable in private browsing or under a strict quota.
+    // The in-memory cart should continue to work in that case.
+  }
+};
+
+const hydrateCartFromStorage = () => {
+  if (hasHydratedFromStorage) return;
+  hasHydratedFromStorage = true;
+  if (typeof window === "undefined") return;
+
+  try {
+    const serialized = window.localStorage.getItem(CART_STORAGE_KEY);
+    if (serialized === null) return;
+    const items = deserializeCartItems(serialized);
+    if (items === null) return;
+
+    cartState = {
+      ...cartState,
+      items,
+      // Preview state is intentionally session-only. A restored cart should
+      // not reopen the just-added drawer after a reload.
+      lastAddedItemId: null,
+      lastAddedAt: null,
+      lastAddedEventId: null,
+      lastAddedPreviewDismissedEventId: null,
+    };
+  } catch {
+    // Leave the current in-memory state intact if storage cannot be read.
+  }
 };
 
 // store all components listening to cart changes
@@ -25,20 +64,43 @@ const notify = () => {
   }
 };
 
+const onCartStorage = (event: StorageEvent) => {
+  if (event.key !== CART_STORAGE_KEY) return;
+  const items = event.newValue === null ? [] : deserializeCartItems(event.newValue);
+  if (items === null) return;
+  cartState = {
+    ...cartState,
+    items,
+    lastAddedItemId: null,
+    lastAddedAt: null,
+    lastAddedEventId: null,
+    lastAddedPreviewDismissedEventId: null,
+  };
+  notify();
+};
+
 // updates the cart when changes are made and calls notify
 const getNextLastAddedEventId = (prev: CartState) => (prev.lastAddedEventId ?? 0) + 1;
 
 const setCartState = (updater: (prev: CartState) => CartState) => {
+  // A user action can happen before React installs the first subscription.
+  // Read saved data first so the initial empty state can never overwrite it.
+  hydrateCartFromStorage();
   cartState = updater(cartState);
+  persistCartItems();
   notify();
 };
 
 // lets React components subscribe to the cart store
 const subscribe = (listener: () => void) => {
+  const isFirstListener = listeners.size === 0;
   listeners.add(listener);
+  hydrateCartFromStorage();
+  if (isFirstListener && typeof window !== "undefined") window.addEventListener("storage", onCartStorage);
 
   return () => {
     listeners.delete(listener);
+    if (listeners.size === 0 && typeof window !== "undefined") window.removeEventListener("storage", onCartStorage);
   };
 };
 
@@ -209,7 +271,12 @@ export const __cartStoreTestUtils = {
   },
   addItem,
   updateItem,
+  clearCart,
   dismissLastAddedPreview,
+  resetPersistenceForTests() {
+    hasHydratedFromStorage = false;
+  },
+  hydrateCartFromStorage,
 };
 
 // public api for the cart store for current cart data and functions to change cart

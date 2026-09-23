@@ -633,13 +633,20 @@ function buildGeneratedChipotleBuilderConfig(
         quesadillaTripleCheese: "chipotle-cmg-5252",
       },
       ingredientIdsByEntree: {
-        // Adult BYO entrees expose only the options declared by their own
-        // generated builder definitions. Standalone sides and beverages
-        // remain regular menu/cart items rather than leaking into Customize.
-        bowl: ingredientIds("chipotle-bowl"),
+        // Adult BYO entrees primarily expose the options declared by their
+        // generated builder definitions. The official side-tortilla item is
+        // projected into Bowl as an ingredient above because the generated
+        // Bowl definition omits that separately purchasable side.
+        bowl: [
+          ...ingredientIds("chipotle-bowl"),
+          "chipotle-cmg-4025-bowl-side",
+        ],
         burrito: [
           ...ingredientIds("chipotle-burrito"),
           "chipotle-cmg-4026-burrito-base",
+          // Distinct from the locked base tortilla: selecting this existing
+          // generated record adds one more tortilla as a Side.
+          "chipotle-cmg-4026",
         ],
         // Romaine Lettuce isn't in the generated Salad's own topping list
         // (it's a real, separate selectable topping there, distinct from

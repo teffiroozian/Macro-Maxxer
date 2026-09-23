@@ -1528,7 +1528,11 @@ export default function ItemRouteModal({
 
         return () => {
             document.removeEventListener("keydown", onKeyDown);
-            previouslyFocusedElement?.focus();
+            // The opener may be far outside the current viewport after the
+            // user scrolls within a route modal. Preserve accessible focus
+            // restoration without allowing focus() to scroll the underlying
+            // restaurant page during Add to Cart / modal teardown.
+            previouslyFocusedElement?.focus({ preventScroll: true });
         };
     }, []);
 

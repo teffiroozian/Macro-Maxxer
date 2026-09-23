@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState, useSyncExternalStore } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import type { KeyboardEvent } from "react";
 import { searchRestaurants } from "@/lib/search/searchRestaurants";
@@ -31,6 +31,7 @@ const SEARCH_ANALYTICS_DEBOUNCE_MS = 500;
 // resets to null whenever the query empties out (e.g. on close()), so
 // reopening and re-running the same search still fires a fresh event.
 let lastTrackedSearchSignature: string | null = null;
+const subscribeToClientReady = () => () => undefined;
 
 // All the state and selection logic behind the nav's Global Search — shared
 // by the desktop search bar (DesktopSearchDropdown) and the mobile sheet
@@ -43,6 +44,15 @@ export function useGlobalSearchState() {
   const { query, setQuery, close } = useGlobalSearch();
   const { items: cartItems } = useCart();
   const [activeIndex, setActiveIndex] = useState(-1);
+  // Persisted cart data can become available at different moments during
+  // selective hydration (the desktop and mobile search surfaces hydrate
+  // independently). Keep the first client render identical to SSR, where
+  // there is no browser cart, then opt into cart-derived scope after mount.
+  const canUseClientCart = useSyncExternalStore(
+    subscribeToClientReady,
+    () => true,
+    () => false,
+  );
 
   const isCartPage = pathname === "/cart";
   // Matches /restaurant/[id], /restaurant/[id]/[itemSlug], and the
@@ -50,7 +60,7 @@ export function useGlobalSearchState() {
   const currentRestaurantId = pathname?.match(/^\/restaurant\/([^/]+)/)?.[1] ?? null;
 
   const [scope, setScope] = useState<SearchScope>(() =>
-    isCartPage || currentRestaurantId ? "menu-items" : "restaurants"
+    isCartPage ? "menu-items" : "restaurants"
   );
 
   // The restaurant this page is naturally scoped to (restaurant page, or a
@@ -64,11 +74,33 @@ export function useGlobalSearchState() {
     if (!isCartPage) {
       return null;
     }
-    const cartContext = getCartRestaurantContext(cartItems);
+    const cartContext = getCartRestaurantContext(canUseClientCart ? cartItems : []);
     return cartContext.scope === "single" ? cartContext.restaurantId : null;
-  }, [currentRestaurantId, isCartPage, cartItems]);
+  }, [currentRestaurantId, isCartPage, canUseClientCart, cartItems]);
 
-  const [restaurantFilterId, setRestaurantFilterId] = useState<string | null>(() => naturalRestaurantId);
+  const scopeContextKey = currentRestaurantId
+    ? `restaurant:${currentRestaurantId}`
+    : isCartPage
+      ? `cart:${naturalRestaurantId ?? "all"}`
+      : "global";
+  const [restaurantFilterOverride, setRestaurantFilterOverride] = useState<{
+    contextKey: string;
+    value: string | null;
+  } | null>(null);
+  const defaultRestaurantFilterId = isCartPage ? naturalRestaurantId : null;
+  const restaurantFilterId = restaurantFilterOverride?.contextKey === scopeContextKey
+    ? restaurantFilterOverride.value
+    : defaultRestaurantFilterId;
+  const setRestaurantFilterId = (value: string | null) => {
+    setRestaurantFilterOverride({ contextKey: scopeContextKey, value });
+  };
+  const isRestaurantScoped = Boolean(currentRestaurantId);
+  // Restaurant routes are a hard view over the shared search state. Keeping
+  // this derived (instead of copying pathname into state in an effect) makes
+  // the very first open correctly scoped and lets homepage state remain
+  // untouched when navigating into and back out of a restaurant.
+  const activeScope: SearchScope = isRestaurantScoped ? "menu-items" : scope;
+  const activeRestaurantFilterId = currentRestaurantId ?? restaurantFilterId;
 
   const isEmptyQuery = !query.trim();
 
@@ -80,8 +112,8 @@ export function useGlobalSearchState() {
 
   // ----- Menu Items scope -----
   const { searchIndex, results: menuItemResults } = useMenuItemSearch(query, {
-    enabled: scope === "menu-items",
-    restaurantFilterId,
+    enabled: activeScope === "menu-items",
+    restaurantFilterId: activeRestaurantFilterId,
   });
   const {
     recentResults: recentMenuItemsAll,
@@ -93,10 +125,10 @@ export function useGlobalSearchState() {
   // surface another restaurant's history.
   const recentMenuItems = useMemo(
     () =>
-      restaurantFilterId
-        ? recentMenuItemsAll.filter((result) => result.restaurant.id === restaurantFilterId)
+      activeRestaurantFilterId
+        ? recentMenuItemsAll.filter((result) => result.restaurant.id === activeRestaurantFilterId)
         : recentMenuItemsAll,
-    [recentMenuItemsAll, restaurantFilterId]
+    [recentMenuItemsAll, activeRestaurantFilterId]
   );
   const menuItemSuggestions = isEmptyQuery ? recentMenuItems : menuItemResults;
 
@@ -115,10 +147,10 @@ export function useGlobalSearchState() {
       return;
     }
 
-    const resultsCount = scope === "restaurants" ? restaurantResults.length : menuItemResults.length;
+    const resultsCount = activeScope === "restaurants" ? restaurantResults.length : menuItemResults.length;
     const searchContext: SearchContext =
-      scope === "restaurants" ? "restaurants" : restaurantFilterId ? "restaurant_menu" : "global_menu_items";
-    const restaurantId = scope === "menu-items" ? (restaurantFilterId ?? undefined) : undefined;
+      activeScope === "restaurants" ? "restaurants" : activeRestaurantFilterId ? "restaurant_menu" : "global_menu_items";
+    const restaurantId = activeScope === "menu-items" ? (activeRestaurantFilterId ?? undefined) : undefined;
 
     const signature = `${searchContext}|${restaurantId ?? ""}|${term.toLowerCase()}|${resultsCount}`;
     if (lastTrackedSearchSignature === signature) {
@@ -127,10 +159,10 @@ export function useGlobalSearchState() {
     lastTrackedSearchSignature = signature;
 
     trackSearch({ searchTerm: term, resultsCount, searchContext, restaurantId });
-  }, [analyticsQuery, scope, restaurantFilterId, restaurantResults.length, menuItemResults.length]);
+  }, [analyticsQuery, activeScope, activeRestaurantFilterId, restaurantResults.length, menuItemResults.length]);
 
-  const filteredRestaurantName = restaurantFilterId
-    ? restaurants.find((restaurant) => restaurant.id === restaurantFilterId)?.name
+  const filteredRestaurantName = activeRestaurantFilterId
+    ? restaurants.find((restaurant) => restaurant.id === activeRestaurantFilterId)?.name
     : null;
   const naturalRestaurant = naturalRestaurantId
     ? restaurants.find((restaurant) => restaurant.id === naturalRestaurantId) ?? null
@@ -138,7 +170,7 @@ export function useGlobalSearchState() {
 
   // ----- Shared selection handlers -----
   const suggestions: SearchResult[] =
-    scope === "restaurants"
+    activeScope === "restaurants"
       ? restaurantSuggestions.map((restaurant): SearchResult => ({ kind: "restaurant", restaurant }))
       : menuItemSuggestions;
 
@@ -174,6 +206,7 @@ export function useGlobalSearchState() {
   };
 
   const handleScopeChange = (nextScope: SearchScope) => {
+    if (isRestaurantScoped) return;
     setScope(nextScope);
     setActiveIndex(-1);
   };
@@ -208,7 +241,7 @@ export function useGlobalSearchState() {
     query,
     handleInputChange,
     handleInputKeyDown,
-    scope,
+    scope: activeScope,
     handleScopeChange,
     activeIndex,
     isEmptyQuery,
@@ -221,10 +254,11 @@ export function useGlobalSearchState() {
     menuItemResults,
     recentMenuItems,
     removeRecentMenuItem,
-    restaurantFilterId,
+    restaurantFilterId: activeRestaurantFilterId,
     filteredRestaurantName,
     naturalRestaurantId,
     naturalRestaurant,
+    isRestaurantScoped,
     setRestaurantFilterId,
     handleSelectRestaurant,
     handleSelectMenuItem,

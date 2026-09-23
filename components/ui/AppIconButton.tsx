@@ -1,3 +1,4 @@
+import { forwardRef } from "react";
 import type { ButtonHTMLAttributes, ReactNode } from "react";
 
 export type AppIconButtonSize = "sm" | "md";
@@ -58,19 +59,25 @@ export function appIconButtonClassName({
     .join(" ");
 }
 
-export default function AppIconButton({
-  size = "sm",
-  variant = "default",
-  active = false,
-  className,
-  type = "button",
-  ...props
-}: AppIconButtonProps) {
+const AppIconButton = forwardRef<HTMLButtonElement, AppIconButtonProps>(function AppIconButton(
+  {
+    size = "sm",
+    variant = "default",
+    active = false,
+    className,
+    type = "button",
+    ...props
+  },
+  ref,
+) {
   return (
     <button
+      ref={ref}
       type={type}
       className={appIconButtonClassName({ size, variant, active, className })}
       {...props}
     />
   );
-}
+});
+
+export default AppIconButton;

@@ -4,6 +4,7 @@ import { useState } from "react";
 import { ChevronRight, Zap } from "lucide-react";
 import { formatProteinScoreDisplay } from "@/components/nutrition/macroDisplay";
 import type { ProteinScoreTier } from "@/lib/nutrition";
+import { proteinScoreTierStyles } from "@/components/nutrition/proteinScoreStyles";
 import ProteinScoreDetails, { type ProteinScoreDetailItem } from "@/components/nutrition/ProteinScoreDetails";
 import type { ItemImagePresentation } from "@/types/menu";
 
@@ -15,46 +16,7 @@ import type { ItemImagePresentation } from "@/types/menu";
 // error state, so only Elite/Excellent get saturated, high-contrast
 // treatments. Good/Moderate/Low step down in saturation and contrast so a
 // below-average score reads as neutral information rather than a warning.
-export const tierStyles: Record<
-  ProteinScoreTier,
-  { chip: string; iconWrap: string; icon: string; value: string; supporting: string }
-> = {
-  elite: {
-    chip: "bg-[#ECFDF3]",
-    iconWrap: "bg-[#047857]",
-    icon: "text-white",
-    value: "text-[#047857]",
-    supporting: "text-[#4B7F6B]",
-  },
-  excellent: {
-    chip: "bg-[#EEF4FF]",
-    iconWrap: "bg-[#4C84C4]",
-    icon: "text-white",
-    value: "text-[#2F5F85]",
-    supporting: "text-[#6E88A3]",
-  },
-  good: {
-    chip: "bg-[#FFFBEB]",
-    iconWrap: "bg-[#F3E8CE]",
-    icon: "text-[#B08A3E]",
-    value: "text-[#8A6D2F]",
-    supporting: "text-[#64748B]",
-  },
-  moderate: {
-    chip: "bg-[#F1F5F9]",
-    iconWrap: "bg-[#E2E8F0]",
-    icon: "text-[#64748B]",
-    value: "text-[#334155]",
-    supporting: "text-[#7C8798]",
-  },
-  low: {
-    chip: "bg-[#F8FAFC]",
-    iconWrap: "bg-[#EEF2F6]",
-    icon: "text-[#94A3B8]",
-    value: "text-[#64748B]",
-    supporting: "text-[#9AA5B1]",
-  },
-};
+export const tierStyles = proteinScoreTierStyles;
 
 export default function ProteinScorePill({
   scorePerHundredCalories,

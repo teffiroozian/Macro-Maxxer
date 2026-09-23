@@ -1,7 +1,8 @@
 "use client";
 
-import { useEffect, useMemo, useRef } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
+import { Download } from "lucide-react";
 import SectionEyebrow from "@/components/ui/SectionEyebrow";
 import SurfaceCard from "@/components/ui/SurfaceCard";
 import MacroStat from "@/components/nutrition/MacroStat";
@@ -14,6 +15,8 @@ import EmptyStateCard from "@/components/EmptyStateCard";
 import ItemRouteModal from "@/components/item-route-modal/ItemRouteModal";
 import CartItemsSection from "@/components/cart/CartItemsSection";
 import CartMealBreakdown from "@/components/cart/CartMealBreakdown";
+import ExportOrderDialog from "@/components/cart/ExportOrderDialog";
+import AppButton from "@/components/ui/AppButton";
 import { NutritionDetailsGrid } from "@/components/item-route-modal/SelectionSummaryPanels";
 import { useCart } from "@/stores/cartStore";
 import { buildCartNutritionTotals, getCartViewAnalytics, type NutritionTotals } from "@/lib/cart/nutrition";
@@ -39,6 +42,7 @@ const EMPTY_CART_NUTRITION: NutritionTotals = {
 export default function CartPage() {
   const { items, totals, updateQuantity } = useCart();
   const { editState, loadingEditItemId, openModal, closeEditModal } = useCartItemEditModal();
+  const [isExportOpen, setIsExportOpen] = useState(false);
 
   // calculate total nutrition of the cart
   const nutritionTotals = useMemo(() => buildCartNutritionTotals(items), [items]);
@@ -69,9 +73,15 @@ export default function CartPage() {
               Your Cart
             </h1>
             {!isEmpty ? (
-              <span className="inline-flex w-fit items-center rounded-full bg-emerald-50 px-3 py-1 text-xs font-semibold text-emerald-700">
-                {itemCount} item{itemCount === 1 ? "" : "s"}
-              </span>
+              <div className="flex flex-wrap items-center gap-2">
+                <span className="inline-flex w-fit items-center rounded-full bg-emerald-50 px-3 py-1 text-xs font-semibold text-emerald-700">
+                  {itemCount} item{itemCount === 1 ? "" : "s"}
+                </span>
+                <AppButton variant="secondary" size="sm" onClick={() => setIsExportOpen(true)}>
+                  <Download className="size-3.5" aria-hidden="true" />
+                  Export Order
+                </AppButton>
+              </div>
             ) : null}
           </div>
 
@@ -122,18 +132,26 @@ export default function CartPage() {
         )}
 
         <section className="flex flex-col gap-4 mt-6 sm:mt-8 lg:mt-14">
-          <div className="flex flex-col gap-1.5">
-            <SectionEyebrow className="text-sm text-neutral-500">Order Summary</SectionEyebrow>
-            {isEmpty ? (
-              <p className="text-sm text-slate-500">A preview of what you&rsquo;ll see here.</p>
-            ) : (
-              <>
-                <h2 className="font-heading text-2xl font-bold text-neutral-900 sm:text-3xl">
-                  Nutrition &amp; Meal Details
-                </h2>
-                <p className="text-sm text-slate-500">Totals and items for everything currently in your cart.</p>
-              </>
-            )}
+          <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+            <div className="flex flex-col gap-1.5">
+              <SectionEyebrow className="text-sm text-neutral-500">Order Summary</SectionEyebrow>
+              {isEmpty ? (
+                <p className="text-sm text-slate-500">A preview of what you&rsquo;ll see here.</p>
+              ) : (
+                <>
+                  <h2 className="font-heading text-2xl font-bold text-neutral-900 sm:text-3xl">
+                    Nutrition &amp; Meal Details
+                  </h2>
+                  <p className="text-sm text-slate-500">Totals and items for everything currently in your cart.</p>
+                </>
+              )}
+            </div>
+            {!isEmpty ? (
+              <AppButton variant="secondary" size="md" className="w-full shrink-0 sm:w-auto" onClick={() => setIsExportOpen(true)}>
+                <Download className="size-4" aria-hidden="true" />
+                Export Order
+              </AppButton>
+            ) : null}
           </div>
           <div className={isEmpty ? "pointer-events-none" : undefined} aria-hidden={isEmpty || undefined}>
             <NutritionDetailsGrid
@@ -158,6 +176,13 @@ export default function CartPage() {
           editCartItemId={editState.cartItemId}
           initialMode={editState.mode}
           onClose={closeEditModal}
+        />
+      ) : null}
+      {isExportOpen && !isEmpty ? (
+        <ExportOrderDialog
+          items={items}
+          nutritionTotals={nutritionTotals}
+          onClose={() => setIsExportOpen(false)}
         />
       ) : null}
     </>

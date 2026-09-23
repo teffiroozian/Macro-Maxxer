@@ -8,7 +8,9 @@ import ScopeSwitcher from "@/components/global-search/ScopeSwitcher";
 import RestaurantScopeControl from "@/components/global-search/RestaurantScopeControl";
 import type { useGlobalSearchState } from "@/lib/search/useGlobalSearchState";
 
-type GlobalSearchPanelProps = ReturnType<typeof useGlobalSearchState>;
+type GlobalSearchPanelProps = ReturnType<typeof useGlobalSearchState> & {
+  constrainResults?: boolean;
+};
 
 // Restaurants + Menu Items (standard items and Chipotle-only build-your-own
 // entree/build options, ranked per searchAllContent's tier rule) share this
@@ -38,22 +40,26 @@ export default function GlobalSearchPanel({
   filteredRestaurantName,
   naturalRestaurantId,
   naturalRestaurant,
+  isRestaurantScoped,
   setRestaurantFilterId,
   handleSelectRestaurant,
   handleSelectMenuItem,
   handleStartBuild,
   handleStartEntreeBuild,
   handleViewAllRestaurants,
+  constrainResults = true,
 }: GlobalSearchPanelProps) {
   const menuItemSuggestions = isEmptyQuery ? recentMenuItems : menuItemResults;
 
   return (
     <div className="flex flex-col">
-      <div className="pt-4">
-        <ScopeSwitcher scope={scope} onChange={handleScopeChange} />
-      </div>
+      {!isRestaurantScoped ? (
+        <div className="pt-4">
+          <ScopeSwitcher scope={scope} onChange={handleScopeChange} />
+        </div>
+      ) : null}
 
-      {scope === "menu-items" && naturalRestaurantId && naturalRestaurant ? (
+      {!isRestaurantScoped && scope === "menu-items" && naturalRestaurantId && naturalRestaurant ? (
         <RestaurantScopeControl
           restaurant={naturalRestaurant}
           isScoped={restaurantFilterId === naturalRestaurantId}
@@ -65,7 +71,7 @@ export default function GlobalSearchPanel({
 
       {scope === "restaurants" ? (
         <>
-          <ul role="listbox" className="mt-4 max-h-80 overflow-y-auto pb-2">
+          <ul role="listbox" className={`mt-4 pb-2 ${constrainResults ? "max-h-80 overflow-y-auto" : ""}`}>
             {isEmptyQuery ? (
               <>
                 {recentRestaurants.length > 0 && (
@@ -125,7 +131,7 @@ export default function GlobalSearchPanel({
           ) : null}
         </>
       ) : (
-        <ul role="listbox" className="mt-4 max-h-80 overflow-y-auto pb-4">
+        <ul role="listbox" className={`mt-4 pb-4 ${constrainResults ? "max-h-80 overflow-y-auto" : ""}`}>
           {isEmptyQuery ? (
             !searchIndex ? (
               <li className="px-5 py-6 text-center text-sm text-neutral-500">Loading menu items…</li>
@@ -215,13 +221,15 @@ export default function GlobalSearchPanel({
           ) : restaurantFilterId ? (
             <li className="px-5 py-6 text-center text-sm text-neutral-500">
               <p>No results in {filteredRestaurantName}.</p>
-              <button
-                type="button"
-                onClick={() => setRestaurantFilterId(null)}
-                className="mt-2 cursor-pointer text-sm font-semibold text-neutral-700 underline-offset-2 hover:underline"
-              >
-                Search all restaurants
-              </button>
+              {!isRestaurantScoped ? (
+                <button
+                  type="button"
+                  onClick={() => setRestaurantFilterId(null)}
+                  className="mt-2 cursor-pointer text-sm font-semibold text-neutral-700 underline-offset-2 hover:underline"
+                >
+                  Search all restaurants
+                </button>
+              ) : null}
             </li>
           ) : (
             <li className="px-5 py-6 text-center text-sm text-neutral-500">No menu items found.</li>

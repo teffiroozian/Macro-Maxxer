@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useLayoutEffect, useRef } from "react";
 import { Search } from "lucide-react";
 import AppIconButton from "@/components/ui/AppIconButton";
 import GlobalSearchPanel from "@/components/global-search/GlobalSearchPanel";
@@ -17,6 +17,7 @@ export default function GlobalSearchOverlay() {
   const state = useGlobalSearchState();
   const dialogRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+  const resultsRef = useRef<HTMLDivElement>(null);
 
   useCloseOnEscape(isOpen, close);
 
@@ -32,10 +33,37 @@ export default function GlobalSearchOverlay() {
       return;
     }
 
+    const previousOverflow = document.body.style.overflow;
     document.body.style.overflow = "hidden";
 
     return () => {
-      document.body.style.overflow = "";
+      document.body.style.overflow = previousOverflow;
+    };
+  }, [isOpen]);
+
+  // Keep the fixed overlay pinned to the actually visible viewport on mobile
+  // browsers. In particular, iOS may pan/resize visualViewport when the
+  // keyboard appears without giving a fixed, layout-viewport sheet the same
+  // geometry. The results flex child then absorbs the height change and owns
+  // scrolling, while the header/input remain fixed above it.
+  useLayoutEffect(() => {
+    if (!isOpen || !dialogRef.current || !window.visualViewport) return;
+
+    const viewport = window.visualViewport;
+    const dialog = dialogRef.current;
+    const updateViewport = () => {
+      dialog.style.top = `${viewport.offsetTop}px`;
+      dialog.style.height = `${viewport.height}px`;
+    };
+
+    updateViewport();
+    viewport.addEventListener("resize", updateViewport);
+    viewport.addEventListener("scroll", updateViewport);
+    return () => {
+      viewport.removeEventListener("resize", updateViewport);
+      viewport.removeEventListener("scroll", updateViewport);
+      dialog.style.top = "";
+      dialog.style.height = "";
     };
   }, [isOpen]);
 
@@ -48,7 +76,8 @@ export default function GlobalSearchOverlay() {
   // effect takes over focusing the input each time it opens instead.
   useEffect(() => {
     if (isOpen) {
-      inputRef.current?.focus();
+      resultsRef.current?.scrollTo({ top: 0 });
+      inputRef.current?.focus({ preventScroll: true });
     }
   }, [isOpen]);
 
@@ -60,13 +89,13 @@ export default function GlobalSearchOverlay() {
       aria-label="Search"
       aria-hidden={!isOpen}
       inert={!isOpen}
-      className={`fixed inset-0 z-[230] flex items-end justify-center bg-black/35 transition-opacity duration-300 lg:hidden ${
+      className={`fixed inset-x-0 bottom-auto top-0 z-[230] flex h-[100dvh] items-end justify-center overflow-hidden bg-black/35 transition-opacity duration-300 lg:hidden ${
         isOpen ? "opacity-100" : "pointer-events-none opacity-0"
       }`}
       onClick={close}
     >
       <div
-        className={`flex h-[85vh] w-full flex-col overflow-hidden rounded-t-[28px] bg-white shadow-[0_18px_50px_rgba(15,23,42,0.25)] transition-transform duration-300 ${
+        className={`flex h-[85dvh] max-h-full w-full flex-col overflow-hidden rounded-t-[28px] bg-white pb-[env(safe-area-inset-bottom)] shadow-[0_18px_50px_rgba(15,23,42,0.25)] transition-transform duration-300 ${
           isOpen ? "translate-y-0" : "translate-y-full"
         }`}
         onClick={(event) => event.stopPropagation()}
@@ -89,7 +118,9 @@ export default function GlobalSearchOverlay() {
               value={state.query}
               onChange={(event) => state.handleInputChange(event.target.value)}
               onKeyDown={state.handleInputKeyDown}
-              placeholder="Search restaurants, menu items..."
+              placeholder={state.isRestaurantScoped && state.filteredRestaurantName
+                ? `Search ${state.filteredRestaurantName} menu...`
+                : "Search restaurants, menu items..."}
               className="w-full rounded-2xl border border-black/10 bg-white py-3 pl-12 pr-4 text-base text-neutral-900 outline-none transition focus:border-accent focus:ring-4 focus:ring-accent/15"
             />
             <span className="pointer-events-none absolute inset-y-0 left-3 my-auto flex h-7 w-7 items-center justify-center rounded-full bg-accent-soft text-accent-strong">
@@ -98,8 +129,8 @@ export default function GlobalSearchOverlay() {
           </div>
         </div>
 
-        <div className="flex-1 overflow-y-auto">
-          <GlobalSearchPanel {...state} />
+        <div ref={resultsRef} className="min-h-0 flex-1 overflow-y-auto overscroll-contain">
+          <GlobalSearchPanel {...state} constrainResults={false} />
         </div>
       </div>
     </div>
