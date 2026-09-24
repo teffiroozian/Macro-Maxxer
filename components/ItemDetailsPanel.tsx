@@ -863,10 +863,10 @@ function IngredientCustomizationSection({
       <div className="mb-5 flex items-start justify-between gap-3">
         <div>
           <h2 className="text-lg font-bold text-neutral-900 sm:text-xl">
-            Customize ingredients
+            {selectedTab.sectionTitle ?? "Customize ingredients"}
           </h2>
           <p className="mt-1 text-sm text-slate-500">
-            Add, remove, or swap ingredients.
+            {selectedTab.helperText ?? "Add, remove, or swap ingredients."}
           </p>
         </div>
         {onCustomize ? (
@@ -886,6 +886,14 @@ function IngredientCustomizationSection({
           selectedTab={selectedTab}
           setActiveTab={setActiveTab}
         />
+      ) : null}
+      {selectedTab.helperText ? (
+        <div className="mb-3 flex items-center justify-end gap-3 rounded-xl bg-slate-50 px-3 py-2 text-sm text-slate-600">
+          {!selectedTab.sectionTitle ? <span className="mr-auto">{selectedTab.helperText}</span> : null}
+          <span className="shrink-0 font-semibold text-neutral-900">
+            {displayIngredients.reduce((sum, ingredient) => sum + ingredient.displayCount, 0)} selected
+          </span>
+        </div>
       ) : null}
       {displayIngredients.length > 0 ? (
         <ul className="flex list-none flex-col divide-y divide-black/[0.06] pl-0">

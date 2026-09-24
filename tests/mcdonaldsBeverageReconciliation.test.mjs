@@ -36,8 +36,24 @@ test("64 of 70 combo drinks map and only the six audited ambiguities remain", ()
 });
 
 test("runtime beverage sections contain the reconciled product counts", () => {
-  assert.equal(menu.items.filter((item) => item.categories[0] === "Drinks" && !item.sourceOnly).length, 25);
-  assert.equal(menu.items.filter((item) => item.categories[0] === "McCafé" && !item.sourceOnly).length, 43);
+  assert.equal(menu.items.filter((item) => item.categories[0] === "Drinks" && !item.sourceOnly).length, 33);
+  assert.equal(menu.items.filter((item) => item.categories[0] === "McCafé" && !item.sourceOnly).length, 35);
+});
+
+test("Orange Dream, Refreshers, and Energizers present as Drinks without mutating source categories", () => {
+  const movedFamilies = menu.items.filter((item) =>
+    /orange dream|refresher|energizer/i.test(item.name) && !item.sourceOnly
+  );
+  assert.equal(movedFamilies.length, 7);
+  assert.ok(movedFamilies.every((item) => item.categories[0] === "Drinks"));
+  assert.ok(movedFamilies.every((item) => item.source.generated.menu.officialCategories.includes("McCafé®")));
+});
+
+test("Dirty Dr Pepper presents as a Drink without mutating source identity or categories", () => {
+  const items = menu.items.filter((item) => /dirty dr pepper/i.test(item.name) && !item.sourceOnly);
+  assert.deepEqual(items.map((item) => item.id), ["mcd-item-204630"]);
+  assert.ok(items.every((item) => item.categories[0] === "Drinks"));
+  assert.ok(items.every((item) => item.source.generated.menu.officialCategories.includes("McCafé®")));
 });
 
 test("McCafé branding stays in source metadata but not presentation names", () => {
@@ -51,8 +67,11 @@ test("selected fries and beverage variants use loadable exact or same-family ima
   const fries = menu.items.find((item) => item.id === "mcd-item-200066");
   const mediumFries = fries.variants.find((variant) => variant.id === "mcd-item-201234");
   const largeFries = fries.variants.find((variant) => variant.id === "mcd-item-200083");
-  assert.equal(mediumFries.image, fries.image);
-  assert.equal(largeFries.image, fries.image);
+  assert.match(fries.image, /t-mcdonalds-fries-small/);
+  assert.match(mediumFries.image, /t-mcdonalds-fries-medium/);
+  assert.match(largeFries.image, /t-mcdonalds-fries-large/);
+  assert.notEqual(mediumFries.image, fries.image);
+  assert.notEqual(largeFries.image, mediumFries.image);
 
   const coke = menu.items.find((item) => item.id === "mcd-item-200611");
   assert.ok(coke.variants.every((variant) => variant.image.includes("scene7.com/is/image/mcdonalds/")));

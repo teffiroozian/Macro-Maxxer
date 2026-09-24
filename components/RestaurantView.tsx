@@ -2,9 +2,9 @@
 
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import type { LucideIcon } from "lucide-react";
 import {
   CATEGORY_ICONS,
+  MCDONALDS_INGREDIENT_CATEGORY_ICON_OVERRIDES,
   STARBUCKS_CATEGORY_ICON_OVERRIDES,
 } from "@/data/menuCategoryIcons";
 import type {
@@ -71,13 +71,6 @@ function StandardRestaurantView({
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
-  const categoryIcons = useMemo(
-    () =>
-      restaurantId === "starbucks"
-        ? { ...CATEGORY_ICONS, ...STARBUCKS_CATEGORY_ICON_OVERRIDES }
-        : CATEGORY_ICONS,
-    [restaurantId],
-  );
   const ingredientMenuItems = useMemo<MenuItem[]>(
     () =>
       ingredients
@@ -87,9 +80,9 @@ function StandardRestaurantView({
           if (!nutrition) return [];
           return [{
             id: ingredient.id,
-            name: ingredient.name,
-            image: ingredient.image ?? restaurantLogo,
-            categories: ingredient.categories,
+            name: ingredient.ingredientViewName ?? ingredient.name,
+            image: ingredient.ingredientViewImage ?? ingredient.image ?? restaurantLogo,
+            categories: ingredient.ingredientViewCategories ?? ingredient.categories,
             servingType: "addon" as const,
             nutrition,
             variants: ingredient.variants,
@@ -128,6 +121,15 @@ function StandardRestaurantView({
     pathname,
     searchParams,
   });
+  const categoryIcons = useMemo(
+    () =>
+      restaurantId === "starbucks"
+        ? { ...CATEGORY_ICONS, ...STARBUCKS_CATEGORY_ICON_OVERRIDES }
+        : restaurantId === "mcdonalds" && effectiveViewMode === "ingredients"
+          ? { ...CATEGORY_ICONS, ...MCDONALDS_INGREDIENT_CATEGORY_ICON_OVERRIDES }
+          : CATEGORY_ICONS,
+    [effectiveViewMode, restaurantId],
+  );
   const [activeCategory, setActiveCategory] = useState<string>(
     () => orderedSections[0] ?? "",
   );

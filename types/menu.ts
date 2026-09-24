@@ -189,6 +189,8 @@ export type ResolvedAddonGroups = Record<string, ResolvedAddonGroup>;
 // e.g. Cheese (includes american cheese, pepper jack, swiss)
 export type IngredientItemCategory = {
   name: string;
+  helperText?: string;
+  sectionTitle?: string;
   // Stable internal identity for this category, distinct from the
   // user-facing `name`. Generated data uses this when the same display
   // name (e.g. "Bread Carriers") legitimately recurs across many items but
@@ -332,6 +334,11 @@ export type IngredientItemBase = {
 
   hideVariantSelector?: boolean;
   hideFromIngredientView?: boolean;
+  // Presentation-only overrides for the restaurant-wide Ingredients view.
+  // Contextual customization continues to use the source name/category/image.
+  ingredientViewName?: string;
+  ingredientViewImage?: string;
+  ingredientViewCategories?: string[];
 
   // Ordering systems can expose a single visible ingredient with asymmetric
   // state transitions (for example McDonald's cheese: removing the default

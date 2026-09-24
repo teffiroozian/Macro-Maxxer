@@ -136,6 +136,8 @@ export function resolveIngredientItemCategory(item: MenuItem, categoryName: stri
 
   return {
     name: matches[0].name,
+    helperText: matches.find((category) => category.helperText)?.helperText,
+    sectionTitle: matches.find((category) => category.sectionTitle)?.sectionTitle,
     ingredients: Array.from(new Set(matches.flatMap((category) => category.ingredients))),
     allowNone: matches.some((category) => category.allowNone),
   };

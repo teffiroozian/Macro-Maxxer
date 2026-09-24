@@ -97,7 +97,7 @@ import { useItemCartSubmission } from "./useItemCartSubmission";
 import { useCart } from "@/stores/cartStore";
 import { getCartItemVariantId } from "@/lib/cart/itemAccessors";
 import { getRestaurantImagePresentation } from "@/lib/restaurantPresentation";
-import { areRequiredIngredientSelectionsComplete } from "@/lib/menuItemCard/ingredientCountCustomization";
+import { areRequiredIngredientSelectionsComplete, incrementIngredientCountWithinCategoryLimit } from "@/lib/menuItemCard/ingredientCountCustomization";
 
 const emptyAddon: MenuItem = {
     id: "none",
@@ -2432,23 +2432,14 @@ export default function ItemRouteModal({
                                             if (typeof maxQuantity !== "number")
                                                 return prev;
 
-                                            const current =
-                                                ingredientCounts[
-                                                    ingredientId
-                                                ] ??
-                                                ingredient?.defaultCount ??
-                                                0;
-                                            const nextCount = Math.min(
-                                                maxQuantity,
-                                                current + 1,
-                                            );
-                                            if (nextCount === current)
-                                                return prev;
-
-                                            return {
-                                                ...prev,
-                                                [ingredientId]: nextCount,
-                                            };
+                                            return incrementIngredientCountWithinCategoryLimit({
+                                                ingredientId,
+                                                resolvedIngredients,
+                                                ingredientCounts,
+                                                categoryMaxQuantity: ingredientId.startsWith("mcd-sauce-")
+                                                    ? maxQuantity
+                                                    : undefined,
+                                            });
                                         })
                                     }
                                     onToggleIngredient={(ingredientId) =>
@@ -2469,15 +2460,17 @@ export default function ItemRouteModal({
                                                 prev[ingredientId] ??
                                                 ingredient?.defaultCount ??
                                                 0;
-                                            const nextCount =
-                                                current > 0 ? 0 : 1;
-                                            if (nextCount === current)
-                                                return prev;
-
-                                            return {
-                                                ...prev,
-                                                [ingredientId]: nextCount,
-                                            };
+                                            if (current > 0) {
+                                                return { ...prev, [ingredientId]: 0 };
+                                            }
+                                            return incrementIngredientCountWithinCategoryLimit({
+                                                ingredientId,
+                                                resolvedIngredients,
+                                                ingredientCounts,
+                                                categoryMaxQuantity: ingredientId.startsWith("mcd-sauce-")
+                                                    ? maxQuantity
+                                                    : undefined,
+                                            });
                                         })
                                     }
                                     onSelectSingleIngredient={(

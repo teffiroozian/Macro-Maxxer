@@ -60,22 +60,28 @@ test("Quarter Pounder with Cheese exposes generic ingredient customization data"
   assert.ok(item, "mcd-item-200466 should exist in the runtime menu");
   assert.equal(item.ingredients.length, model.defaultComponents.length);
   const groupNames = item.customization.ingredientCategories.map((category) => category.name).sort();
-  assert.deepEqual(groupNames, ["Buns", "Cheeses", "Protein", "Sauces", "Toppings"]);
+  assert.deepEqual(groupNames, ["Bread", "Cheeses", "Protein", "Sauces", "Toppings"]);
 
   const mappedIngredientIds = new Set(item.customization.ingredientCategories.flatMap((category) => category.ingredients));
-  assert.equal(mappedIngredientIds.size, new Set(model.options.map((option) => option.componentId)).size);
+  const capturedComponentIds = new Set(model.options.map((option) => componentIngredientId(option.componentId)));
+  assert.ok([...capturedComponentIds].every((ingredientId) => mappedIngredientIds.has(ingredientId)));
+  assert.ok(mappedIngredientIds.size > capturedComponentIds.size, "shared sandwich ingredients should supplement captured components");
   assert.deepEqual(item.customization.ingredientCategories.map((category) => category.name), [
-    "Buns", "Protein", "Cheeses", "Toppings", "Sauces",
+    "Bread", "Cheeses", "Protein", "Toppings", "Sauces",
   ]);
 });
 
-test("No Salt / Extra Salt never reach the generated ingredient catalog", () => {
-  const allLabels = menu.ingredients.map((ingredient) => ingredient.name.toLowerCase());
-  assert.ok(!allLabels.some((label) => label.includes("salt")));
+test("lunch salt modifiers stay hidden while captured steak-bagel salt removal is preserved", () => {
+  const lunchSalt = menu.ingredients.filter((ingredient) =>
+    ingredient.name.toLowerCase() === "salt" && !ingredient.id.startsWith("mcd-safe-200145-")
+  );
+  assert.equal(lunchSalt.length, 0);
+  const breakfastSalt = menu.ingredients.find((ingredient) => ingredient.id === "mcd-safe-200145-salt");
+  assert.equal(breakfastSalt.orderingOptionIdByCount[0], "35958009426");
 });
 
 test("a non-customizable McDonald's item keeps the plain item view", () => {
-  const fries = menu.items.find((candidate) => candidate.name.toLowerCase().includes("world famous fries"));
+  const fries = menu.items.find((candidate) => candidate.name === "French Fries");
   assert.ok(fries);
   assert.equal(fries.ingredients, undefined);
 });
@@ -707,7 +713,7 @@ test("included rows use normal names and official component images in requested 
   const included = tabs.find((tab) => tab.label === "Included");
   assert.ok(included);
   assert.deepEqual(included.ingredients.map((ingredient) => ingredient.label), [
-    "Sesame Seed Bun", "1/4 Lb Beef", "American Cheese", "Slivered Onions", "Pickle", "Mustard", "Ketchup",
+    "Sesame Seed Bun", "American Cheese", "Quarter Pound 100% Beef Patty", "Slivered Onions", "Pickle", "Mustard", "Ketchup",
   ]);
   assert.ok(included.ingredients.every((ingredient) => !ingredient.label.startsWith("No ")));
   assert.ok(included.ingredients.every((ingredient) => ingredient.icon.includes("s7d1.scene7.com/is/image/mcdonalds/")));

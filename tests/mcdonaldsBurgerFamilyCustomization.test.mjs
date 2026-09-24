@@ -48,6 +48,82 @@ test("all seven fully captured burger models are live", () => {
   }
 });
 
+test("burger presentation uses official component images and customer-facing beef names", () => {
+  for (const definition of definitions) {
+    const resolved = resolvedFor(definition.itemId);
+    const visualRows = resolved.filter((ingredient) =>
+      ["Bread", "Protein", "Sauces"].includes(ingredient.tabLabel)
+    );
+    assert.ok(visualRows.length > 0, definition.slug);
+    assert.ok(visualRows.every((ingredient) =>
+      ingredient.ingredientItem.image?.startsWith("https://s7d1.scene7.com/is/image/mcdonalds/")
+    ), `${definition.slug} should use official McDonald's component images`);
+    assert.ok(resolved
+      .filter((ingredient) => ingredient.tabLabel === "Protein")
+      .every((ingredient) => /100% Beef Patt(?:y|ies)$/.test(ingredient.label)));
+  }
+
+  for (const itemId of ["200480", "200477", "200491", "200486"]) {
+    const bun = resolvedFor(itemId).find((ingredient) => ingredient.label === "Regular Bun");
+    assert.match(bun?.ingredientItem.image ?? "", /\/regular_bun\?fmt=png-alpha$/);
+  }
+});
+
+test("each burger exposes the shared sauce library while preserving item-specific ordering ids", () => {
+  const expectedSauces = {
+    "200480": ["Mac Sauce", "McCrispy Ranch Sauce", "Mustard", "Ketchup", "Mayonnaise"],
+    "200477": ["Mac Sauce", "McCrispy Ranch Sauce", "Mustard", "Ketchup", "Mayonnaise"],
+    "200491": ["Mac Sauce", "McCrispy Ranch Sauce", "Mustard", "Ketchup", "Mayonnaise"],
+    "200486": ["Mac Sauce", "McCrispy Ranch Sauce", "Mustard", "Ketchup", "Mayonnaise"],
+    "200765": ["Mac Sauce", "McCrispy Ranch Sauce", "Mustard", "Ketchup", "Mayonnaise"],
+    "200476": ["Mac Sauce", "McCrispy Ranch Sauce", "Mustard", "Ketchup", "Mayonnaise"],
+    "203410": ["Mac Sauce", "McCrispy Ranch Sauce", "Mustard", "Ketchup", "Mayonnaise"],
+  };
+  for (const [itemId, expected] of Object.entries(expectedSauces)) {
+    const sauces = resolvedFor(itemId).filter((ingredient) => ingredient.tabLabel === "Sauces");
+    assert.deepEqual(sauces.map((ingredient) => ingredient.label).sort(), [...expected].sort(), itemId);
+    assert.ok(sauces.every((ingredient) => ingredient.defaultCount > 0 || ingredient.maxQuantity === 1), itemId);
+    assert.match(
+      sauces.find((ingredient) => ingredient.label === "McCrispy Ranch Sauce")?.ingredientItem.image ?? "",
+      /DC_Ingredient_Condiment_202203_02861-036__0922_CreamyRanch_1564x1564-1\?fmt=png-alpha$/,
+    );
+  }
+});
+
+test("burgers expose the complete shared topping library as default or Add", () => {
+  for (const definition of definitions) {
+    const resolved = resolvedFor(definition.itemId);
+    for (const componentId of ["300042", "300041", "301502", "300098", "301407", "300163", "301518"]) {
+      assert.ok(
+        resolved.some((ingredient) => ingredient.id === ingredientIdForComponent(definition.itemId, componentId)),
+        `${definition.slug}:${componentId}`,
+      );
+    }
+  }
+});
+
+test("Cheeseburger Mac Sauce adds macros and restores without an ordering id", () => {
+  const itemId = "200480";
+  const item = itemFor(itemId);
+  const resolved = resolvedFor(itemId);
+  const macSauce = resolved.find((ingredient) => ingredient.label === "Mac Sauce");
+  assert.ok(macSauce);
+  const configuration = resolveStandardItemConfiguration({
+    item, resolvedIngredients: resolved, selectedIngredientCounts: { [macSauce.id]: 1 },
+    selectedAddons: {}, selectedSauceCounts: {}, comboSides: [], comboDrinks: [],
+    isComboEligibleCategory: false, comboType: "just-item",
+  });
+  const customization = configuration.customizations.find((entry) => entry.ingredientId === macSauce.id);
+  assert.deepEqual([customization.action, customization.orderingGroupId, customization.orderingOptionId], ["add", undefined, undefined]);
+  close(configuration.ingredientCountTotals.calories, macSauce.nutrition.calories, "Cheeseburger Mac Sauce calories");
+  const restored = getSelectedIngredientCountsFromCustomizations(
+    resolved,
+    getCustomizationLabels(configuration.customizations),
+    configuration.customizations,
+  );
+  assert.equal(restored[macSauce.id], 1);
+});
+
 test("every supported burger option applies exactly one captured nutrition delta", () => {
   for (const definition of definitions) {
     const model = models.get(definition.itemId);

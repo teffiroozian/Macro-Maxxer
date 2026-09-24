@@ -89,10 +89,45 @@ test("standard, deluxe, spicy, and non-spicy recipes retain distinct defaults", 
   assert.equal(spicyDeluxe.has("300430"), false, "Spicy Deluxe mayonnaise remains add-only");
 });
 
+test("chicken sandwiches expose shared sauces and toppings as nutrition-only Add options", () => {
+  for (const definition of definitions) {
+    const resolved = resolvedFor(definition.itemId);
+    for (const label of ["Mac Sauce", "Ketchup", "McCrispy Ranch Sauce", "Pickle", "Diced Onions", "Slivered Onions"]) {
+      const ingredient = resolved.find((candidate) => candidate.label === label);
+      assert.ok(ingredient, `${definition.slug}:${label}`);
+      assert.equal(ingredient.defaultCount, 0, `${definition.slug}:${label}`);
+      if (label !== "McCrispy Ranch Sauce") {
+        assert.deepEqual(ingredient.orderingOptionIdByCount, {}, `${definition.slug}:${label}`);
+      }
+    }
+    assert.ok(resolved.some((ingredient) => ingredient.label === "Shredded Lettuce"));
+    assert.ok(resolved.some((ingredient) => ingredient.label === "Tomato"));
+    assert.ok(resolved.some((ingredient) => /Bacon$/.test(ingredient.label)));
+    assert.ok(resolved.some((ingredient) => ingredient.label === "American Cheese"));
+  }
+});
+
+test("every McCrispy variant uses official captured roll, filet, pickle, sauce, and ranch artwork", () => {
+  for (const definition of definitions.filter(({ itemId }) => itemId !== "200438")) {
+    const resolved = resolvedFor(definition.itemId);
+    const roll = resolved.find((ingredient) => ingredient.id === ingredientIdForComponent(definition.itemId, "302402"));
+    const filet = resolved.find((ingredient) => ingredient.id === ingredientIdForComponent(definition.itemId, "302309"));
+    const ranch = resolved.find((ingredient) => ingredient.id === ingredientIdForComponent(definition.itemId, "204161"));
+    const pickle = resolved.find((ingredient) => ingredient.id === ingredientIdForComponent(definition.itemId, "302415"));
+    const spicySauce = resolved.find((ingredient) => ingredient.id === ingredientIdForComponent(definition.itemId, "302376"));
+    assert.match(roll?.ingredientItem.image ?? "", /\/t-potato-roll\?fmt=png-alpha$/);
+    assert.match(filet?.ingredientItem.image ?? "", /\/t-crispy-chicken-fillet\?fmt=png-alpha$/);
+    assert.match(ranch?.ingredientItem.image ?? "", /\/DC_Ingredient_Condiment_202203_02861-036__0922_CreamyRanch_1564x1564-1\?fmt=png-alpha$/);
+    assert.match(pickle?.ingredientItem.image ?? "", /\/t-crinkle-cut-pickle\?fmt=png-alpha$/);
+    assert.match(spicySauce?.ingredientItem.image ?? "", /\/t-original-spicy-sauce\?fmt=png-alpha$/);
+  }
+});
+
 test("McChicken uses its specific patty, bun, and two-half-strip bacon contexts", () => {
   const patty = componentFor("200438", "300708");
   const bun = componentFor("200438", "301578");
   const bacon = componentFor("200438", "300163");
+  assert.match(patty.ingredientItem.image ?? "", /\/mcchicken\?fmt=png-alpha$/);
   assert.deepEqual([patty.defaultCount, patty.maxQuantity], [1, 2]);
   assert.equal(patty.orderingOptionIdByCount[0], "40538345648");
   assert.equal(patty.orderingOptionIdByCount[2], "40538308605");

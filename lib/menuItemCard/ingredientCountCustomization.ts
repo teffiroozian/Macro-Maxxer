@@ -4,6 +4,30 @@ import type { CartCustomization } from "@/types/cart";
 import type { MenuItem, RestaurantCustomizationRules } from "@/types/menu";
 import { resolveIngredientCategoryRule, resolveItemCustomization } from "@/lib/ingredientTabs";
 
+export function incrementIngredientCountWithinCategoryLimit({
+  ingredientId,
+  resolvedIngredients,
+  ingredientCounts,
+  categoryMaxQuantity,
+}: {
+  ingredientId: string;
+  resolvedIngredients: ResolvedPanelIngredient[];
+  ingredientCounts: Record<string, number>;
+  categoryMaxQuantity?: number;
+}) {
+  const ingredient = resolvedIngredients.find((candidate) => candidate.id === ingredientId);
+  if (!ingredient || typeof ingredient.maxQuantity !== "number") return ingredientCounts;
+  const current = ingredientCounts[ingredientId] ?? ingredient.defaultCount;
+  if (current >= ingredient.maxQuantity) return ingredientCounts;
+  if (typeof categoryMaxQuantity === "number" && ingredient.tabLabel) {
+    const categoryTotal = resolvedIngredients
+      .filter((candidate) => candidate.tabLabel === ingredient.tabLabel && !candidate.isNoneOption)
+      .reduce((sum, candidate) => sum + (ingredientCounts[candidate.id] ?? candidate.defaultCount), 0);
+    if (categoryTotal >= categoryMaxQuantity) return ingredientCounts;
+  }
+  return { ...ingredientCounts, [ingredientId]: current + 1 };
+}
+
 export function formatIngredientCountCustomizationLabel(ingredientName: string, count: number) {
   return count === 0 ? `${ingredientName}: Removed` : `${ingredientName}: ${count}x`;
 }

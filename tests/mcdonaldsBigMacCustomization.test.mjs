@@ -100,6 +100,60 @@ test("Big Mac tomato and mayonnaise additions use their validated portions", () 
   assert.equal(model.options.find((option) => option.id === "43914730761").nutritionContextId, mayo.id);
 });
 
+test("Big Mac ingredient cards combine captured modifiers with the shared nutrition library", () => {
+  const resolved = resolvePanelIngredients(item, menu.ingredients, undefined, menu.items, null, undefined, menu.customizationRules);
+  const byName = new Map(resolved.map((ingredient) => [ingredient.ingredientItem.name, ingredient.ingredientItem]));
+  assert.match(byName.get("Mac Sauce")?.image ?? "", /DC_Ingredient_202110_00055-080__9049_BigMacSauce_1564x1564/);
+  assert.match(byName.get("Big Mac Bun")?.image ?? "", /quarter_pounder_bun/);
+  assert.deepEqual(
+    resolved.filter((ingredient) => ingredient.ingredientItem.categories.includes("Sauces")).map((ingredient) => ingredient.ingredientItem.name).sort(),
+    ["Ketchup", "Mac Sauce", "Mayonnaise", "McCrispy Ranch Sauce", "Mustard"],
+  );
+  assert.equal(model.options.some((option) => /ketchup|mustard/i.test(option.name)), false);
+});
+
+test("Big Mac shared Ketchup is a nutrition-only Add that round-trips without fabricated ordering ids", () => {
+  const resolved = resolvePanelIngredients(item, menu.ingredients, undefined, menu.items, null, undefined, menu.customizationRules);
+  const ketchup = resolved.find((ingredient) => ingredient.label === "Ketchup");
+  assert.ok(ketchup);
+  assert.equal(ketchup.defaultCount, 0);
+  assert.deepEqual(ketchup.orderingOptionIdByCount, {});
+  const configuration = resolveStandardItemConfiguration({
+    item, resolvedIngredients: resolved, selectedIngredientCounts: { [ketchup.id]: 1 },
+    selectedAddons: {}, selectedSauceCounts: {}, comboSides: [], comboDrinks: [],
+    isComboEligibleCategory: false, comboType: "just-item",
+  });
+  const added = configuration.customizations.find((entry) => entry.ingredientId === ketchup.id);
+  assert.deepEqual([added.action, added.orderingGroupId, added.orderingOptionId], ["add", undefined, undefined]);
+  close(configuration.ingredientCountTotals.calories, ketchup.nutrition.calories, "shared ketchup calories");
+  const restored = getSelectedIngredientCountsFromCustomizations(
+    resolved,
+    getCustomizationLabels(configuration.customizations),
+    configuration.customizations,
+  );
+  assert.equal(restored[ketchup.id], 1);
+});
+
+test("French Fries presentation and combo artwork use size-specific high-resolution official assets", () => {
+  const fries = menu.items.find((candidate) => candidate.id === "mcd-item-200066");
+  assert.ok(fries);
+  assert.equal(fries.name, "French Fries");
+  const kidsImage = "https://s7d1.scene7.com/is/image/mcdonalds/NR_201909_1858_KidsFries_2000x2000?wid=1564&hei=1564&fmt=png-alpha";
+  const smallImage = "https://s7d1.scene7.com/is/image/mcdonalds/t-mcdonalds-fries-small?wid=1564&hei=1564&fmt=png-alpha";
+  const mediumImage = "https://s7d1.scene7.com/is/image/mcdonalds/t-mcdonalds-fries-medium?wid=1564&hei=1564&fmt=png-alpha";
+  const largeImage = "https://s7d1.scene7.com/is/image/mcdonalds/t-mcdonalds-fries-large?wid=1564&hei=1564&fmt=png-alpha";
+  assert.equal(fries.image, smallImage);
+  assert.deepEqual(
+    fries.variants.map(({ id, label, image }) => [id, label, image]),
+    [
+      ["mcd-item-200092", "Kids", kidsImage],
+      ["mcd-item-200066", "Small", smallImage],
+      ["mcd-item-201234", "Medium", mediumImage],
+      ["mcd-item-200083", "Large", largeImage],
+    ],
+  );
+});
+
 test("Big Mac customizations restore from cart/edit state with ordering identities intact", () => {
   const resolved = resolvePanelIngredients(item, menu.ingredients, undefined, menu.items, null, undefined, menu.customizationRules);
   const beefId = componentIngredientId("300038");
@@ -143,7 +197,7 @@ test("Big Mac ingredient customization coexists with meal side and drink state",
     selectedComboDrinkId: drink.id,
     selectedComboDrinkVariantId: drinkVariant?.id,
   });
-  assert.ok(configuration.ingredientCustomizationLabels.some((label) => label.includes("1/10 Lb Beef: 3x")));
+  assert.ok(configuration.ingredientCustomizationLabels.some((label) => label.includes("100% Beef Patties: 3x")));
   assert.ok(configuration.ingredientCustomizationLabels.some((label) => label.includes("Tomato: 1x")));
   assert.ok(configuration.customizations.some((entry) => entry.kind === "combo" && entry.comboRole === "side"));
   assert.ok(configuration.customizations.some((entry) => entry.kind === "combo" && entry.comboRole === "drink"));

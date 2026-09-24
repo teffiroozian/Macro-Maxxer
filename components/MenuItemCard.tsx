@@ -32,6 +32,7 @@ import { getProteinPer100Calories, getProteinScoreTier, normalizeNutrition } fro
 import { resolveFinalizedCartConfiguration, type CartConfigurationPayload } from "@/lib/menuItemCard/finalizedCartConfiguration";
 import type { ComparativeLabelKind } from "@/lib/menuSections/comparativeLabels";
 import { getRestaurantImagePresentation } from "@/lib/restaurantPresentation";
+import { incrementIngredientCountWithinCategoryLimit } from "@/lib/menuItemCard/ingredientCountCustomization";
 
 // Same portion multipliers already used across the build-your-own portion
 // modes (light/normal/extra for rice, beans, toppings; normal/double for
@@ -1223,9 +1224,13 @@ export default function MenuItemCard({
                   const maxQuantity = ingredient?.maxQuantity;
                   if (typeof maxQuantity !== "number") return prev;
 
-                  const current = ingredientCounts[ingredientId] ?? ingredient?.defaultCount ?? 0;
-                  const next = { ...prev, [ingredientId]: Math.min(maxQuantity, current + 1) };
-                  if (next[ingredientId] === current) return prev;
+                  const next = incrementIngredientCountWithinCategoryLimit({
+                    ingredientId,
+                    resolvedIngredients,
+                    ingredientCounts: ingredientCounts,
+                    categoryMaxQuantity: ingredientId.startsWith("mcd-sauce-") ? maxQuantity : undefined,
+                  });
+                  if (next === ingredientCounts) return prev;
 
                   emitCartConfiguration(
                     selectedVariantId,
@@ -1245,7 +1250,15 @@ export default function MenuItemCard({
                   if (typeof maxQuantity !== "number") return prev;
 
                   const current = prev[ingredientId] ?? ingredient?.defaultCount ?? 0;
-                  const next = { ...prev, [ingredientId]: current > 0 ? 0 : 1 };
+                  const next = current > 0
+                    ? { ...prev, [ingredientId]: 0 }
+                    : incrementIngredientCountWithinCategoryLimit({
+                        ingredientId,
+                        resolvedIngredients,
+                        ingredientCounts,
+                        categoryMaxQuantity: ingredientId.startsWith("mcd-sauce-") ? maxQuantity : undefined,
+                      });
+                  if (next === ingredientCounts) return prev;
                   if (next[ingredientId] === current) return prev;
 
                   emitCartConfiguration(

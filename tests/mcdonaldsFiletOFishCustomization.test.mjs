@@ -33,6 +33,25 @@ test("Filet-O-Fish exposes every validated captured option and hides only pickle
   assert.ok(model.options.every((option) => option.id !== "43914731853" && option.id !== "43914731857"));
 });
 
+test("Filet-O-Fish exposes the shared sandwich library without replacing its captured defaults", () => {
+  const expectedSharedAdds = ["Mac Sauce", "Ketchup", "McCrispy Ranch Sauce", "Pickle", "Diced Onions", "Slivered Onions"];
+  for (const label of expectedSharedAdds) {
+    const ingredient = resolved.find((candidate) => candidate.label === label);
+    assert.ok(ingredient, label);
+    assert.equal(ingredient.defaultCount, 0, label);
+    assert.deepEqual(ingredient.orderingOptionIdByCount, {}, label);
+  }
+  assert.match(
+    resolved.find((ingredient) => ingredient.label === "McCrispy Ranch Sauce")?.ingredientItem.image ?? "",
+    /DC_Ingredient_Condiment_202203_02861-036__0922_CreamyRanch_1564x1564-1\?fmt=png-alpha$/,
+  );
+  assert.equal(resolved.find((ingredient) => ingredient.label === "Tartar Sauce")?.defaultCount, 1);
+  assert.equal(resolved.find((ingredient) => ingredient.label === "American Cheese")?.defaultCount, 1);
+  for (const label of ["Shredded Lettuce", "Tomato", "2 Half Strips Bacon", "Mustard", "Mayonnaise"]) {
+    assert.equal(resolved.find((ingredient) => ingredient.label === label)?.defaultCount, 0, label);
+  }
+});
+
 test("removing American cheese subtracts the default half-slice context", () => {
   const base = calculateMcDonaldsCustomizationNutrition(model, []);
   const removed = calculateMcDonaldsCustomizationNutrition(model, [{ optionId: "43914731847" }]);

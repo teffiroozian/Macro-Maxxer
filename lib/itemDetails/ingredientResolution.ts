@@ -38,6 +38,8 @@ import type { ResolvedPanelIngredient } from "@/lib/itemDetails/types";
 export type ResolvedIngredientTab = {
   id: string;
   label: string;
+  helperText?: string;
+  sectionTitle?: string;
   selectionMode: IngredientSelectionMode;
   ingredients: ResolvedPanelIngredient[];
   selectionTarget?: "parent-variant";
@@ -64,12 +66,11 @@ function includedIngredientPriority(ingredient: ResolvedPanelIngredient) {
   const normalizedCategories = categories.map((category) => normalizeIngredientCategory(category));
   const normalizedRole = normalizeIngredientCategory(ingredient.tabLabel ?? "");
 
-  if (/bun|bread carrier/.test(normalizedRole) || normalizedCategories.some((category) => /bun|bread carrier/.test(category))) return 0;
-  if (/protein|meat|egg/.test(normalizedRole)) return 1;
-  if (normalizedCategories.some((category) => category === "eggs" || category === "egg")) return 1;
-  if (normalizedCategories.some((category) => category.includes("protein") || category.includes("meat"))) return 1;
-  if (normalizedRole.includes("cheese") || normalizedCategories.some((category) => category.includes("cheese"))) return 2;
-  if (ingredient.isReadOnly) return 2;
+  if (/bun|bread|wrap/.test(normalizedRole) || normalizedCategories.some((category) => /bun|bread|wrap/.test(category))) return 0;
+  if (normalizedRole.includes("cheese") || normalizedCategories.some((category) => category.includes("cheese"))) return 1;
+  if (/protein|meat|egg/.test(normalizedRole)) return 2;
+  if (normalizedCategories.some((category) => category === "eggs" || category === "egg")) return 2;
+  if (normalizedCategories.some((category) => category.includes("protein") || category.includes("meat"))) return 2;
   if (/topping|pickle|removal/.test(normalizedRole) || normalizedCategories.some((category) => category.includes("topping"))) return 3;
   if (
     /sauce|condiment|dressing/.test(normalizedRole) ||
@@ -346,6 +347,8 @@ export function resolvePanelIngredientTabs(
     return {
       id: normalizeIngredientToken(tab),
       label: tab,
+      helperText: resolveIngredientItemCategory(effectiveItem, tab)?.helperText,
+      sectionTitle: resolveIngredientItemCategory(effectiveItem, tab)?.sectionTitle,
       selectionMode,
       ingredients,
     };
@@ -417,7 +420,7 @@ export function resolvePanelIngredientTabs(
   });
 
   const tabOrder = new Map(
-    ["Included", "Buns", "Cheeses", "Protein", "Meat", "Toppings", "Sauces"].map((label, index) => [label, index]),
+    ["Included", "Bread", "Buns", "Cheeses", "Protein", "Meat", "Toppings", "Sauces"].map((label, index) => [label, index]),
   );
   return [...mergedTabs.values()].sort(
     (left, right) =>

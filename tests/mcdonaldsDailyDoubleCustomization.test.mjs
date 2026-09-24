@@ -18,7 +18,7 @@ assert.ok(item);
 const resolved = resolvePanelIngredients(item, menu.ingredients, undefined, menu.items, null, undefined, menu.customizationRules);
 const close = (actual, expected, label) => assert.ok(Math.abs(actual - expected) < 1e-6, `${label}: ${actual} != ${expected}`);
 
-test("Daily Double exposes only the ten validated captured options", () => {
+test("Daily Double exposes its complete default recipe while limiting actions to validated options", () => {
   assert.equal(model.orderingItemId, "6600487527");
   assert.deepEqual(model.groups.map((group) => group.id), ["7250468670", "7250475529"]);
   assert.deepEqual(model.options.map((option) => option.id), [
@@ -29,8 +29,61 @@ test("Daily Double exposes only the ten validated captured options", () => {
   assert.equal(report.summary.unmatched, 7);
   assert.equal(report.summary.defaultNutritionValidated, true);
   const visibleLabels = resolved.map((ingredient) => ingredient.label);
-  assert.deepEqual(visibleLabels.sort(), ["1/10 Lb Beef", "American Cheese", "Mayonnaise", "Regular Bun", "Shredded Lettuce", "Slivered Onions"].sort());
-  assert.ok(!visibleLabels.some((label) => /tomato|diced|pickle|mustard|ketchup|salt/i.test(label)));
+  assert.deepEqual(visibleLabels.sort(), [
+    "100% Beef Patties", "American Cheese", "Diced Onions", "Ketchup", "Mac Sauce", "Mayonnaise",
+    "McCrispy Ranch Sauce", "Mustard", "Pickle", "Regular Bun", "Shredded Lettuce", "Slivered Onions",
+    "Thick Cut Applewood Smoked Bacon", "Tomato",
+  ].sort());
+  const tomato = resolved.find((ingredient) => ingredient.label === "Tomato");
+  assert.equal(tomato.defaultCount, 1);
+  assert.equal(tomato.maxQuantity, 2);
+  assert.equal(tomato.isReadOnly, false);
+  assert.deepEqual(tomato.orderingOptionIdByCount, {});
+  assert.ok(!visibleLabels.some((label) => /salt/i.test(label)));
+});
+
+test("Daily Double tomato uses the validated single-slice macro and round-trips at two", () => {
+  const tomato = resolved.find((ingredient) => ingredient.label === "Tomato");
+  const tomatoId = ingredientIdForComponent("200497", "301407");
+  const context = model.componentContexts.find((candidate) => candidate.id === "tomato-single-slice");
+  assert.ok(tomato);
+  assert.ok(context);
+
+  const configuration = resolveStandardItemConfiguration({
+    item, resolvedIngredients: resolved, selectedIngredientCounts: { [tomatoId]: 2 },
+    selectedAddons: {}, selectedSauceCounts: {}, comboSides: [], comboDrinks: [],
+    isComboEligibleCategory: false, comboType: "just-item",
+  });
+  const savedTomato = configuration.customizations.find((entry) => entry.ingredientId === tomatoId);
+  assert.equal(savedTomato?.quantity, 2);
+  assert.equal(savedTomato?.orderingOptionId, undefined);
+  const restored = getSelectedIngredientCountsFromCustomizations(
+    resolved,
+    getCustomizationLabels(configuration.customizations),
+    configuration.customizations,
+  );
+  assert.equal(restored[tomatoId], 2);
+  close(configuration.nutrition.calories - item.nutrition.calories, context.nutrients.calories, "tomato calories");
+  close(configuration.nutrition.protein - item.nutrition.protein, context.nutrients.protein, "tomato protein");
+  close(configuration.nutrition.carbs - item.nutrition.carbs, context.nutrients.carbohydrate, "tomato carbs");
+  close(configuration.nutrition.totalFat - item.nutrition.totalFat, context.nutrients.fat, "tomato fat");
+});
+
+test("Daily Double categories preserve every captured default component", () => {
+  const defaultsByCategory = Object.fromEntries(
+    ["Bread", "Cheeses", "Protein", "Toppings", "Sauces"].map((category) => [
+      category,
+      resolved.filter((ingredient) => ingredient.tabLabel === category && ingredient.defaultCount > 0)
+        .map((ingredient) => ingredient.label),
+    ]),
+  );
+  assert.deepEqual(defaultsByCategory, {
+    Bread: ["Regular Bun"],
+    Cheeses: ["American Cheese"],
+    Protein: ["100% Beef Patties"],
+    Toppings: ["Slivered Onions", "Shredded Lettuce", "Tomato"],
+    Sauces: ["Mayonnaise"],
+  });
 });
 
 test("Daily Double safe options apply exact live macro deltas", () => {

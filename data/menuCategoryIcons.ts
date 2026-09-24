@@ -18,6 +18,7 @@ import {
   IceCreamCone,
   Leaf,
   LeafyGreen,
+  Layers3,
   Pin,
   Popcorn,
   PackageOpen,
@@ -112,4 +113,18 @@ export const STARBUCKS_CATEGORY_ICON_OVERRIDES: Record<string, LucideIcon> = {
   "cold coffee & espresso": CupSoda,
   "tea & chai": Leaf,
   matcha: Sprout,
+};
+
+// McDonald's ingredient-catalog categories are intentionally scoped to the
+// Ingredients view. Reuse the same Lucide vocabulary as its main menu
+// sidebar so sizing, stroke, and active/inactive treatment remain shared.
+export const MCDONALDS_INGREDIENT_CATEGORY_ICON_OVERRIDES: Record<string, LucideIcon> = {
+  bread: Sandwich,
+  cheeses: Diamond,
+  hotcakes: Layers3,
+  oatmeal: Soup,
+  potatoes: PackageOpen,
+  protein: Drumstick,
+  sauces: Droplets,
+  toppings: LeafyGreen,
 };

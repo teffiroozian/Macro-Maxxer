@@ -18,8 +18,10 @@ import mcChickenCustomizationModel from "@/data/restaurants/mcdonalds/customizat
 import filetOFishCustomizationModel from "@/data/restaurants/mcdonalds/customization/generated/filet-o-fish.json";
 import type { ComboMealChoiceOption, MenuItem, RestaurantMenu } from "@/types/menu";
 import { buildMcDonaldsItemCustomization } from "./customizationIngredients";
+import type { McDonaldsSharedSandwichComponent } from "./customizationIngredients";
 import { buildMcDonaldsSauceSelection } from "./sauceSelection";
 import { buildMcDonaldsRemainingSafeCustomization } from "./remainingSafeCustomization";
+import { applyMcDonaldsIngredientCatalogPresentation } from "./ingredientCatalog";
 import type { McDonaldsCustomizationModel } from "./customization";
 
 export const MCDONALDS_MENU_SECTION_ORDER = [
@@ -81,8 +83,21 @@ export function normalizeMcDonaldsPresentationName(item: MenuItem): string {
     name = `${snackWrapFlavor} Snack Wrap`;
   }
 
+  // Presentation-only normalization. Source names, ids, ordering identities,
+  // variants, and nutrition remain untouched in the generated payload.
+  if (/^World Famous Fries®?$/i.test(name)) {
+    name = "French Fries";
+  }
+
   return name.replace(/\s{2,}/g, " ");
 }
+
+const MCDONALDS_FRIES_IMAGE_BY_VARIANT_ID: Record<string, string> = {
+  "mcd-item-200092": "https://s7d1.scene7.com/is/image/mcdonalds/NR_201909_1858_KidsFries_2000x2000?wid=1564&hei=1564&fmt=png-alpha",
+  "mcd-item-200066": "https://s7d1.scene7.com/is/image/mcdonalds/t-mcdonalds-fries-small?wid=1564&hei=1564&fmt=png-alpha",
+  "mcd-item-201234": "https://s7d1.scene7.com/is/image/mcdonalds/t-mcdonalds-fries-medium?wid=1564&hei=1564&fmt=png-alpha",
+  "mcd-item-200083": "https://s7d1.scene7.com/is/image/mcdonalds/t-mcdonalds-fries-large?wid=1564&hei=1564&fmt=png-alpha",
+};
 
 function mediumVariantId(item: MenuItem): string | undefined {
   return item.variants?.find((variant) => variant.label.trim().toLocaleLowerCase("en-US") === "medium")?.id;
@@ -133,6 +148,10 @@ function presentationCategoryFor(item: MenuItem): McDonaldsPresentationCategory 
   if (hasCategory(item, "Fries & Sides")) return "Fries & Sides";
   if (hasCategory(item, "Happy Meal®")) return "Happy Meals";
   if (hasCategory(item, "Sweets & Treats")) return "Sweets & Treats";
+  // These cold/non-coffee families are sometimes tagged with both Drinks and
+  // McCafé in the source feed. Keep that provenance intact, but present them
+  // with general beverages rather than letting McCafé win by tag order.
+  if (/orange dream|refresher|energizer|dirty dr pepper/.test(name)) return "Drinks";
   if (hasCategory(item, "McCafé®")) return "McCafé";
   if (hasCategory(item, "Drinks")) return "Drinks";
   if (hasCategory(item, "Sauces & Condiments")) return "Sauces & Condiments";
@@ -181,10 +200,48 @@ const CUSTOMIZATION_MODELS_BY_ITEM_ID: Record<string, McDonaldsCustomizationMode
 
 const REMAINING_SAFE_CUSTOMIZATION = buildMcDonaldsRemainingSafeCustomization();
 
+const CUSTOMIZATION_CONTEXT_BY_ID = new Map(
+  Object.values(CUSTOMIZATION_MODELS_BY_ITEM_ID).flatMap((model) =>
+    model.componentContexts.map((context) => [context.id, context] as const)
+  ),
+);
+
+function sharedComponent(componentId: string, contextId: string, maxQuantity?: number): McDonaldsSharedSandwichComponent {
+  const context = CUSTOMIZATION_CONTEXT_BY_ID.get(contextId);
+  if (!context) throw new Error(`Missing shared McDonald's sandwich nutrition context ${contextId}`);
+  return { componentId, context, maxQuantity };
+}
+
+const SHARED_SANDWICH_COMPONENTS = [
+  sharedComponent("301554", "big-mac-sauce"),
+  sharedComponent("300037", "small-ketchup"),
+  sharedComponent("300044", "qpc-mustard"),
+  sharedComponent("300430", "qpc-add-mayonnaise"),
+  sharedComponent("204161", "mccrispy-ranch-sauce"),
+  sharedComponent("300042", "small-pickle-single"),
+  sharedComponent("300041", "diced-onions-single"),
+  sharedComponent("301502", "qpc-onions"),
+  sharedComponent("300098", "qpc-add-lettuce"),
+  // The Daily Double capture gives us an exact single-slice portion. Reusing
+  // it permits a safe 1 -> 2 stepper without fabricating an ordering option.
+  sharedComponent("301407", "tomato-single-slice", 2),
+  sharedComponent("300163", "bacon-two-half-strips"),
+  sharedComponent("301518", "american-cheese-single"),
+];
+
+const CHICKEN_SANDWICH_ITEM_IDS = new Set([
+  "mcd-item-203747", "mcd-item-203745", "mcd-item-203901", "mcd-item-203873", "mcd-item-200438",
+]);
+
 const CUSTOMIZATION_DATA_BY_ITEM_ID = Object.fromEntries(
   Object.entries(CUSTOMIZATION_MODELS_BY_ITEM_ID).map(([itemId, model]) => [
     itemId,
-    buildMcDonaldsItemCustomization(model, itemId),
+    buildMcDonaldsItemCustomization(model, itemId, [
+      ...SHARED_SANDWICH_COMPONENTS,
+      ...(CHICKEN_SANDWICH_ITEM_IDS.has(itemId)
+        ? [sharedComponent("302376", "mccrispy-spicy-sauce")]
+        : []),
+    ]),
   ]),
 );
 
@@ -555,9 +612,16 @@ function adaptItem(item: MenuItem): MenuItem {
     } : {}),
     name: normalizeMcDonaldsPresentationName(item),
     categories: [category],
-    variants: item.variants?.map((variant) => ({ ...variant, categories: [category] })),
+    image: MCDONALDS_FRIES_IMAGE_BY_VARIANT_ID[item.id] ?? item.image,
+    variants: item.variants?.map((variant) => ({
+      ...variant,
+      categories: [category],
+      image: MCDONALDS_FRIES_IMAGE_BY_VARIANT_ID[variant.id] ?? variant.image,
+    })),
     ...(preferredMediumVariantId ? { defaultVariantId: preferredMediumVariantId } : {}),
-    ...(isPrebuiltMeal || isCustomizationOnlyBacon(item) ? { sourceOnly: true } : {}),
+    ...(isPrebuiltMeal || isCustomizationOnlyBacon(item) || item.id === "mcd-item-201306"
+      ? { sourceOnly: true }
+      : {}),
     ...(STANDARD_COMBO_ENTREE_IDS.has(item.id) ? { comboConfig: standardComboConfig(item.id) } : {}),
     ...(BREAKFAST_COMBO_ENTREE_IDS.has(item.id) ? { comboConfig: breakfastComboConfig(item.id) } : {}),
     ...(item.id === "mcd-item-203745" ? {
@@ -589,9 +653,23 @@ function adaptItem(item: MenuItem): MenuItem {
       ? { comboConfig: snackWrapComboConfig(item.id) }
       : {}),
     ...(customizationData
-      ? { ingredients: customizationData.itemIngredientIds, customization: customizationData.itemCustomization }
+      ? {
+        ingredients: customizationData.itemIngredientIds,
+        informationalIngredients: customizationData.readOnlyIngredientIds.map((id) => ({
+          id,
+          label: customizationData.ingredients.find((ingredient) => ingredient.id === id)!.name,
+        })),
+        customization: customizationData.itemCustomization,
+      }
       : remainingSafeCustomization
-        ? { ingredients: remainingSafeCustomization.ingredients, customization: remainingSafeCustomization.customization }
+        ? {
+          ingredients: remainingSafeCustomization.ingredients,
+          informationalIngredients: remainingSafeCustomization.readOnlyIngredientIds?.map((id) => ({
+            id,
+            label: REMAINING_SAFE_CUSTOMIZATION.ingredients.find((ingredient) => ingredient.id === id)!.name,
+          })),
+          customization: remainingSafeCustomization.customization,
+        }
       : {}),
     ...((item.id === "mcd-item-200692" || item.id === "mcd-item-204386")
       ? { customizationByVariantId: MCDONALDS_SAUCE_SELECTION.customizationByVariantId }
@@ -602,12 +680,12 @@ function adaptItem(item: MenuItem): MenuItem {
 export const MCDONALDS_GENERATED_RUNTIME_MENU: RestaurantMenu = {
   ...(generatedMenu as unknown as RestaurantMenu),
   items: [...applyFamilyAwareSweetsOrder((generatedMenu.items as unknown as MenuItem[]).map(adaptItem)), HAPPY_MEAL_TOY],
-  ingredients: [
+  ingredients: applyMcDonaldsIngredientCatalogPresentation([
     ...((generatedMenu as unknown as RestaurantMenu).ingredients ?? []),
     ...MCDONALDS_CUSTOMIZATION_INGREDIENTS,
     ...MCDONALDS_SAUCE_SELECTION.ingredients,
     ...REMAINING_SAFE_CUSTOMIZATION.ingredients,
-  ],
+  ]),
   customizationRules: {
     ...(generatedMenu as unknown as RestaurantMenu).customizationRules,
     ingredientCategories: {
