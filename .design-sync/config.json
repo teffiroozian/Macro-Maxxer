@@ -1,0 +1,21 @@
+{
+  "projectId": "a8ffc07a-07c1-4243-9449-5ecee056615c",
+  "shape": "package",
+  "pkg": "macro-maxxer-ui",
+  "globalName": "MacroMaxxerUI",
+  "srcDir": "components/ui",
+  "tsconfig": "tsconfig.json",
+  "cssEntry": ".design-sync/.cache/tailwind-compiled.css",
+  "readmeHeader": ".design-sync/conventions.md",
+  "componentSrcMap": {
+    "AppImage": null,
+    "RestaurantItemImage": null,
+    "RestaurantLogoBadge": null
+  },
+  "overrides": {
+    "Dialog": { "cardMode": "single", "viewport": "480x480" }
+  },
+  "libOverrides": {
+    "source-kit.mjs": "synth-entry export* misses `export default` (components/ui uses default exports); also drops componentSrcMap:null files from the synth entry itself so a next/image-dependent file's top-level side effects can't break the shared IIFE for every other component"
+  }
+}

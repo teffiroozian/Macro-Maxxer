@@ -38,3 +38,12 @@ yarn-error.log*
 
 # typescript
 *.tsbuildinfo
+
+# design-sync (Claude Design) - staged converter scripts, generated bundle,
+# and machine state; the durable set (config.json, NOTES.md, conventions.md,
+# previews/, overrides/) is committed.
+/.ds-sync
+/ds-bundle
+/.design-sync/.cache
+/.design-sync/learnings
+/.design-sync/node_modules
