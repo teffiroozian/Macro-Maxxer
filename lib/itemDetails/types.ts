@@ -13,6 +13,9 @@ export type ResolvedPanelIngredient = {
   defaultCount: number;
   isNoneOption?: boolean;
   isReadOnly?: boolean;
+  orderingOptionIdByCount?: Record<number, string>;
+  orderingGroupIdByCount?: Record<number, string>;
+  nutritionDeltaByCount?: Record<number, Nutrition>;
   extraOption?: {
     id: string;
     label: string;

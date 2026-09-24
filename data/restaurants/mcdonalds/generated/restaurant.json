@@ -47,6 +47,7 @@
               "Lunch & Dinner Meal Deals"
             ],
             "productUrl": "https://www.mcdonalds.com/us/en-us/meal/3-piece-mccrispy-strips-meal.html",
+            "originalName": "Now Crispier McCrispy® Strips Meal",
             "shortName": "3-piece-mccrispy-strips-meal",
             "componentItemIds": [
               "204386",
@@ -125,6 +126,7 @@
               "$4 Meal Deals (Breakfast)*"
             ],
             "productUrl": "https://www.mcdonalds.com/us/en-us/meal/4-dollar-sausage-biscuit-meal-deal.html",
+            "originalName": "Limited Time Only The Sausage Biscuit Meal Deal",
             "shortName": "sausage-biscuit-meal-deal",
             "componentItemIds": [
               "200301",
@@ -203,6 +205,7 @@
               "$4 Meal Deals (Breakfast)*"
             ],
             "productUrl": "https://www.mcdonalds.com/us/en-us/meal/4-dollar-sausage-mcmuffin-meal-deal.html",
+            "originalName": "Limited Time Only The Sausage McMuffin® Meal Deal",
             "shortName": "sausage-mcmuffin-meal-deal",
             "componentItemIds": [
               "200449",
@@ -280,6 +283,7 @@
               "Happy Meal®"
             ],
             "productUrl": "https://www.mcdonalds.com/us/en-us/meal/4-piece-chicken-mcnuggets-happy-meal.html",
+            "originalName": "4 piece Chicken McNuggets® Happy Meal®",
             "shortName": "4-piece-chicken-mcnuggets-happy-meal",
             "componentItemIds": [
               "200692",
@@ -362,6 +366,7 @@
               "Happy Meal®"
             ],
             "productUrl": "https://www.mcdonalds.com/us/en-us/meal/6-piece-chicken-mcnuggets-happy-meal.html",
+            "originalName": "6 Piece McNuggets® Happy Meal®",
             "shortName": "6-piece-chicken-mcnuggets-happy-meal",
             "componentItemIds": [
               "200574",
@@ -406,10 +411,10 @@
       ],
       "servingType": "combo",
       "comboConfig": {
-        "entreeItemId": "mcd-item-200340",
+        "entreeItemId": "mcd-item-200424",
         "includedItemIds": [
-          "mcd-item-200020",
-          "mcd-item-200424"
+          "mcd-item-200340",
+          "mcd-item-200020"
         ]
       },
       "nutrition": {
@@ -444,6 +449,7 @@
               "Breakfast Meal Deals"
             ],
             "productUrl": "https://www.mcdonalds.com/us/en-us/meal/bacon-egg-cheese-bagel-sandwich-meal.html",
+            "originalName": "Bacon, Egg & Cheese Bagel Meal",
             "shortName": "bacon-egg-cheese-bagel-meal",
             "componentItemIds": [
               "200340",
@@ -525,6 +531,7 @@
               "Breakfast Meal Deals"
             ],
             "productUrl": "https://www.mcdonalds.com/us/en-us/meal/bacon-egg-cheese-biscuit-meal.html",
+            "originalName": "Bacon, Egg & Cheese Biscuit Meal",
             "shortName": "bacon-egg-cheese-biscuit-meal",
             "componentItemIds": [
               "200300",
@@ -608,6 +615,7 @@
               "Breakfast Meal Deals"
             ],
             "productUrl": "https://www.mcdonalds.com/us/en-us/meal/bacon-egg-cheese-mcgriddles-meal.html",
+            "originalName": "Bacon, Egg & Cheese McGriddles® Meal",
             "shortName": "bacon-egg-cheese-mcgriddles-meal",
             "componentItemIds": [
               "200304",
@@ -652,9 +660,9 @@
       ],
       "servingType": "combo",
       "comboConfig": {
-        "entreeItemId": "mcd-item-200066",
+        "entreeItemId": "mcd-item-203410",
         "includedItemIds": [
-          "mcd-item-203410"
+          "mcd-item-200066"
         ]
       },
       "nutrition": {
@@ -688,6 +696,7 @@
               "Lunch & Dinner Meal Deals"
             ],
             "productUrl": "https://www.mcdonalds.com/us/en-us/meal/bacon-quarter-pounder-with-cheese-meal.html",
+            "originalName": "Bacon Quarter Pounder®* with Cheese Meal",
             "shortName": "bacon-quarter-pounder-with-cheese-meal",
             "componentItemIds": [
               "201234",
@@ -768,6 +777,7 @@
               "Lunch & Dinner Meal Deals"
             ],
             "productUrl": "https://www.mcdonalds.com/us/en-us/meal/big-mac-meal.html",
+            "originalName": "Big Mac® Meal",
             "shortName": "big-mac-meal",
             "componentItemIds": [
               "200463",
@@ -847,6 +857,7 @@
               "Lunch & Dinner Meal Deals"
             ],
             "productUrl": "https://www.mcdonalds.com/us/en-us/meal/cheeseburger-meal.html",
+            "originalName": "Cheeseburger Meal",
             "shortName": "cheeseburger-meal",
             "componentItemIds": [
               "200480",
@@ -927,6 +938,7 @@
               "Lunch & Dinner Meal Deals"
             ],
             "productUrl": "https://www.mcdonalds.com/us/en-us/meal/chicken-mcnuggets-10-piece-meal.html",
+            "originalName": "10 piece Chicken McNuggets® Meal",
             "shortName": "chicken-mcnuggets-10-piece-meal",
             "componentItemIds": [
               "200567",
@@ -1008,6 +1020,7 @@
               "Lunch & Dinner Meal Deals"
             ],
             "productUrl": "https://www.mcdonalds.com/us/en-us/meal/deluxe-mccrispy-chicken-sandwich-meal.html",
+            "originalName": "Deluxe McCrispy® Meal",
             "shortName": "deluxe-mccrispy-meal-with-baked-apple-pie",
             "componentItemIds": [
               "203745",
@@ -1049,9 +1062,9 @@
       ],
       "servingType": "combo",
       "comboConfig": {
-        "entreeItemId": "mcd-item-200066",
+        "entreeItemId": "mcd-item-200765",
         "includedItemIds": [
-          "mcd-item-200765"
+          "mcd-item-200066"
         ]
       },
       "nutrition": {
@@ -1085,6 +1098,7 @@
               "Lunch & Dinner Meal Deals"
             ],
             "productUrl": "https://www.mcdonalds.com/us/en-us/meal/deluxe-quarter-pounder-with-cheese-meal.html",
+            "originalName": "Quarter Pounder®* with Cheese Deluxe Meal",
             "shortName": "quarter-pounder-with-cheese-deluxe-meal",
             "componentItemIds": [
               "201234",
@@ -1164,6 +1178,7 @@
               "Lunch & Dinner Meal Deals"
             ],
             "productUrl": "https://www.mcdonalds.com/us/en-us/meal/double-quarter-pounder-with-cheese-meal.html",
+            "originalName": "Double Quarter Pounder®* with Cheese Meal",
             "shortName": "double-quarter-pounder-with-cheese-meal",
             "componentItemIds": [
               "200476",
@@ -1247,6 +1262,7 @@
               "Breakfast Meal Deals"
             ],
             "productUrl": "https://www.mcdonalds.com/us/en-us/meal/egg-mcmuffin-meal.html",
+            "originalName": "Egg McMuffin® Meal",
             "shortName": "egg-mcmuffin-meal",
             "componentItemIds": [
               "200298",
@@ -1327,6 +1343,7 @@
               "Lunch & Dinner Meal Deals"
             ],
             "productUrl": "https://www.mcdonalds.com/us/en-us/meal/filet-o-fish-meal.html",
+            "originalName": "Filet-O-Fish® Meal",
             "shortName": "filet-o-fish-meal",
             "componentItemIds": [
               "200445",
@@ -1407,6 +1424,7 @@
               "Happy Meal®"
             ],
             "productUrl": "https://www.mcdonalds.com/us/en-us/meal/hamburger-happy-meal.html",
+            "originalName": "Hamburger Happy Meal®",
             "shortName": "hamburger-happy-meal",
             "componentItemIds": [
               "200477",
@@ -1490,6 +1508,7 @@
               "Meal Deals (Lunch and Dinner)*"
             ],
             "productUrl": "https://www.mcdonalds.com/us/en-us/meal/mcchicken-meal-deal.html",
+            "originalName": "Limited Time Only The McChicken® Meal Deal*",
             "shortName": "the-mcchicken-meal-deal-bundle",
             "componentItemIds": [
               "200438",
@@ -1568,6 +1587,7 @@
               "Lunch & Dinner Meal Deals"
             ],
             "productUrl": "https://www.mcdonalds.com/us/en-us/meal/mccrispy-chicken-sandwich-meal.html",
+            "originalName": "McCrispy® Meal",
             "shortName": "mccrispy-chicken-sandwich-meal",
             "componentItemIds": [
               "203747",
@@ -1647,6 +1667,7 @@
               "Meal Deals (Lunch and Dinner)*"
             ],
             "productUrl": "https://www.mcdonalds.com/us/en-us/meal/mcdouble-meal-deal.html",
+            "originalName": "Limited Time Only The McDouble® Meal Deal*",
             "shortName": "the-mcdouble-meal-deal-bundle",
             "componentItemIds": [
               "200491",
@@ -1725,6 +1746,7 @@
               "Lunch & Dinner Meal Deals"
             ],
             "productUrl": "https://www.mcdonalds.com/us/en-us/meal/quarter-pounder-with-cheese-meal.html",
+            "originalName": "Quarter Pounder®* with Cheese Meal",
             "shortName": "quarter-pounder-with-cheese-meal",
             "componentItemIds": [
               "200466",
@@ -1806,6 +1828,7 @@
               "Lunch & Dinner Meal Deals"
             ],
             "productUrl": "https://www.mcdonalds.com/us/en-us/meal/ranch-and-spicy-snack-wrap-combo-meal.html",
+            "originalName": "Now Crispier McCrispy® Strips Ranch & Spicy Snack Wrap® Meal",
             "shortName": "snack-wrap-meal",
             "componentItemIds": [
               "204401",
@@ -1847,9 +1870,9 @@
       ],
       "servingType": "combo",
       "comboConfig": {
-        "entreeItemId": "mcd-item-200066",
+        "entreeItemId": "mcd-item-204401",
         "includedItemIds": [
-          "mcd-item-204401"
+          "mcd-item-200066"
         ]
       },
       "nutrition": {
@@ -1883,6 +1906,7 @@
               "Lunch & Dinner Meal Deals"
             ],
             "productUrl": "https://www.mcdonalds.com/us/en-us/meal/ranch-snack-wrap-meal.html",
+            "originalName": "Now Crispier McCrispy® Strips Ranch Snack Wrap® Meal",
             "shortName": "ranch-snack-wrap-meal",
             "componentItemIds": [
               "201234",
@@ -1965,6 +1989,7 @@
               "Breakfast Meal Deals"
             ],
             "productUrl": "https://www.mcdonalds.com/us/en-us/meal/sausage-biscuit-with-egg-meal.html",
+            "originalName": "Sausage Biscuit with Egg Meal",
             "shortName": "sausage-biscuit-with-egg-meal",
             "componentItemIds": [
               "200302",
@@ -2010,10 +2035,10 @@
       ],
       "servingType": "combo",
       "comboConfig": {
-        "entreeItemId": "mcd-item-200020",
+        "entreeItemId": "mcd-item-200267",
         "includedItemIds": [
-          "mcd-item-200340",
-          "mcd-item-200267"
+          "mcd-item-200020",
+          "mcd-item-200340"
         ]
       },
       "nutrition": {
@@ -2048,6 +2073,7 @@
               "Breakfast Meal Deals"
             ],
             "productUrl": "https://www.mcdonalds.com/us/en-us/meal/sausage-burrito-meal.html",
+            "originalName": "Sausage Burrito Meal",
             "shortName": "sausage-burrito-meal",
             "componentItemIds": [
               "200020",
@@ -2132,6 +2158,7 @@
               "Breakfast Meal Deals"
             ],
             "productUrl": "https://www.mcdonalds.com/us/en-us/meal/sausage-egg-cheese-mcgriddles-meal.html",
+            "originalName": "Sausage, Egg & Cheese McGriddles® Meal",
             "shortName": "sausage-egg-cheese-mcgriddles-meal",
             "componentItemIds": [
               "200307",
@@ -2211,6 +2238,7 @@
               "Breakfast"
             ],
             "productUrl": "https://www.mcdonalds.com/us/en-us/meal/sausage-mcgriddles-meal.html",
+            "originalName": "Sausage McGriddles® Meal",
             "shortName": "sausage-mcgriddles-meal",
             "componentItemIds": [
               "200306",
@@ -2293,6 +2321,7 @@
               "Breakfast Meal Deals"
             ],
             "productUrl": "https://www.mcdonalds.com/us/en-us/meal/sausage-mcmuffin-with-egg-meal.html",
+            "originalName": "Sausage McMuffin® with Egg Meal",
             "shortName": "sausage-mcmuffin-with-egg-meal",
             "componentItemIds": [
               "200161",
@@ -2373,6 +2402,7 @@
               "Lunch & Dinner Meal Deals"
             ],
             "productUrl": "https://www.mcdonalds.com/us/en-us/meal/spicy-deluxe-mccrispy-sandwich-meal.html",
+            "originalName": "Spicy Deluxe McCrispy® Meal",
             "shortName": "spicy-deluxe-mccrispy-meal",
             "componentItemIds": [
               "203873",
@@ -2451,6 +2481,7 @@
               "Lunch & Dinner Meal Deals"
             ],
             "productUrl": "https://www.mcdonalds.com/us/en-us/meal/spicy-mccrispy-chicken-sandwich-meal.html",
+            "originalName": "Spicy McCrispy® Meal",
             "shortName": "spicy-mccrispy-meal",
             "componentItemIds": [
               "203901",
@@ -2491,9 +2522,9 @@
       ],
       "servingType": "combo",
       "comboConfig": {
-        "entreeItemId": "mcd-item-200066",
+        "entreeItemId": "mcd-item-204402",
         "includedItemIds": [
-          "mcd-item-204402"
+          "mcd-item-200066"
         ]
       },
       "nutrition": {
@@ -2527,6 +2558,7 @@
               "Lunch & Dinner Meal Deals"
             ],
             "productUrl": "https://www.mcdonalds.com/us/en-us/meal/spicy-snack-wrap-meal.html",
+            "originalName": "Now Crispier McCrispy® Strips Spicy Snack Wrap® Meal",
             "shortName": "spicy-snack-wrap-meal",
             "componentItemIds": [
               "201234",
@@ -2571,10 +2603,10 @@
       ],
       "servingType": "combo",
       "comboConfig": {
-        "entreeItemId": "mcd-item-200020",
+        "entreeItemId": "mcd-item-200145",
         "includedItemIds": [
-          "mcd-item-200340",
-          "mcd-item-200145"
+          "mcd-item-200020",
+          "mcd-item-200340"
         ]
       },
       "nutrition": {
@@ -2609,6 +2641,7 @@
               "Breakfast Meal Deals"
             ],
             "productUrl": "https://www.mcdonalds.com/us/en-us/meal/steak-egg-cheese-bagel-sandwich-meal.html",
+            "originalName": "Steak, Egg & Cheese Bagel Meal",
             "shortName": "steak-egg-cheese-bagel-meal",
             "componentItemIds": [
               "200020",
@@ -2681,6 +2714,7 @@
               "Bottled Drinks & Juices"
             ],
             "productUrl": "https://www.mcdonalds.com/us/en-us/product/1-low-fat-milk-jug.html",
+            "originalName": "1% Low Fat Milk Jug",
             "shortName": "1-low-fat-milk-jug",
             "componentItemIds": [
               "300316"
@@ -2705,6 +2739,67 @@
           }
         }
       },
+      "variants": [
+        {
+          "id": "mcd-item-200610",
+          "label": "National",
+          "image": "https://s7d1.scene7.com/is/image/mcdonalds/DC_202103_0066_MilkJug_1564x1564-1:nutrition-calculator-tile?fmt=png-alpha",
+          "nutrition": {
+            "calories": 100,
+            "protein": 8,
+            "carbs": 12,
+            "totalFat": 2,
+            "satFat": 1.5,
+            "transFat": 0,
+            "cholesterol": 10,
+            "sodium": 80,
+            "fiber": 0,
+            "sugars": 11
+          },
+          "categories": [
+            "Drinks",
+            "Bottled Drinks & Juices"
+          ],
+          "servingType": "drink",
+          "canonicalItemId": "mcd-item-200610",
+          "source": {
+            "menu": {
+              "tags": [],
+              "pins": []
+            }
+          }
+        },
+        {
+          "id": "mcd-item-201352",
+          "label": "California",
+          "image": "https://s7d1.scene7.com/is/image/mcdonalds/DC_202103_0066_MilkJug_1564x1564-1:nutrition-calculator-tile?fmt=png-alpha",
+          "nutrition": {
+            "calories": 120,
+            "protein": 10,
+            "carbs": 15,
+            "totalFat": 2,
+            "satFat": 1.5,
+            "transFat": 0,
+            "cholesterol": 15,
+            "sodium": 115,
+            "fiber": 0,
+            "sugars": 14
+          },
+          "categories": [
+            "Drinks",
+            "Bottled Drinks & Juices"
+          ],
+          "servingType": "drink",
+          "canonicalItemId": "mcd-item-200610",
+          "source": {
+            "menu": {
+              "tags": [],
+              "pins": []
+            }
+          }
+        }
+      ],
+      "defaultVariantId": "mcd-item-200610",
       "addonEligible": false,
       "defaultOrder": 33
     },
@@ -2746,6 +2841,7 @@
               "Fries & Sides"
             ],
             "productUrl": "https://www.mcdonalds.com/us/en-us/product/apple-slices.html",
+            "originalName": "Apple Slices",
             "shortName": "apple-slices",
             "componentItemIds": [
               "300323"
@@ -2811,6 +2907,7 @@
               "Breakfast"
             ],
             "productUrl": "https://www.mcdonalds.com/us/en-us/product/bacon-egg-cheese-bagel.html",
+            "originalName": "Bacon, Egg & Cheese Bagel",
             "shortName": "bacon-egg-cheese-bagel",
             "componentItemIds": [
               "302369",
@@ -2882,6 +2979,7 @@
               "Breakfast"
             ],
             "productUrl": "https://www.mcdonalds.com/us/en-us/product/bacon-egg-cheese-biscuit.html",
+            "originalName": "Bacon, Egg & Cheese Biscuit",
             "shortName": "bacon-egg-cheese-biscuit",
             "componentItemIds": [
               "300131",
@@ -2953,6 +3051,7 @@
               "Breakfast"
             ],
             "productUrl": "https://www.mcdonalds.com/us/en-us/product/bacon-egg-cheese-mcgriddles.html",
+            "originalName": "Bacon, Egg & Cheese McGriddles®",
             "shortName": "bacon-egg-cheese-mcgriddles",
             "componentItemIds": [
               "300666",
@@ -3023,6 +3122,7 @@
               "Breakfast"
             ],
             "productUrl": "https://www.mcdonalds.com/us/en-us/product/bagel-plain.html",
+            "originalName": "Bagel (plain)",
             "shortName": "bagel-plain-201306",
             "componentItemIds": [
               "302369"
@@ -3086,6 +3186,7 @@
               "Sweets & Treats"
             ],
             "productUrl": "https://www.mcdonalds.com/us/en-us/product/baked-hot-apple-pie.html",
+            "originalName": "Baked Apple Pie",
             "shortName": "baked-hot-apple-pie",
             "componentItemIds": [
               "302357"
@@ -3150,6 +3251,7 @@
               "Breakfast"
             ],
             "productUrl": "https://www.mcdonalds.com/us/en-us/product/big-breakfast-with-hotcakes.html",
+            "originalName": "Big Breakfast® with Hotcakes",
             "shortName": "big-breakfast-with-hotcakes",
             "componentItemIds": [
               "300757",
@@ -3224,6 +3326,7 @@
               "Breakfast"
             ],
             "productUrl": "https://www.mcdonalds.com/us/en-us/product/big-breakfast.html",
+            "originalName": "Big Breakfast®",
             "shortName": "big-breakfast",
             "componentItemIds": [
               "300524",
@@ -3298,6 +3401,7 @@
               "Burgers"
             ],
             "productUrl": "https://www.mcdonalds.com/us/en-us/product/big-mac.html",
+            "originalName": "Big Mac®",
             "shortName": "big-mac",
             "componentItemIds": [
               "302510",
@@ -3376,6 +3480,7 @@
               "McCafé® Specialty Drinks*"
             ],
             "productUrl": "https://www.mcdonalds.com/us/en-us/product/blackberry-passionfruit-refresher-small.html",
+            "originalName": "New Blackberry Passion Fruit Refresher",
             "shortName": "blackberry-passion-fruit-refresher-16-oz",
             "componentItemIds": [
               "300303",
@@ -3399,6 +3504,102 @@
           }
         }
       },
+      "variants": [
+        {
+          "id": "mcd-item-204623",
+          "label": "Small",
+          "image": "https://s7d1.scene7.com/is/image/mcdonalds/DC_202601_25682_MediumBlackberryPassionfruitRefresherLemonade_1564x1564:nutrition-calculator-tile?fmt=png-alpha",
+          "nutrition": {
+            "calories": 110,
+            "protein": 1,
+            "carbs": 25,
+            "totalFat": 0,
+            "satFat": 0,
+            "transFat": 0,
+            "cholesterol": 0,
+            "sodium": 35,
+            "fiber": 1,
+            "sugars": 22
+          },
+          "categories": [
+            "McCafé®",
+            "Drinks",
+            "Specialty Drinks*",
+            "McCafé® Specialty Drinks*"
+          ],
+          "servingType": "drink",
+          "canonicalItemId": "mcd-item-204623",
+          "source": {
+            "menu": {
+              "tags": [],
+              "pins": []
+            }
+          }
+        },
+        {
+          "id": "mcd-item-204622",
+          "label": "Medium",
+          "image": "https://s7d1.scene7.com/is/image/mcdonalds/DC_202601_25682_MediumBlackberryPassionfruitRefresherLemonade_1564x1564:nutrition-calculator-tile?fmt=png-alpha",
+          "nutrition": {
+            "calories": 140,
+            "protein": 1,
+            "carbs": 32,
+            "totalFat": 0,
+            "satFat": 0,
+            "transFat": 0,
+            "cholesterol": 0,
+            "sodium": 50,
+            "fiber": 1,
+            "sugars": 29
+          },
+          "categories": [
+            "McCafé®",
+            "Drinks",
+            "Specialty Drinks*",
+            "McCafé® Specialty Drinks*"
+          ],
+          "servingType": "drink",
+          "canonicalItemId": "mcd-item-204623",
+          "source": {
+            "menu": {
+              "tags": [],
+              "pins": []
+            }
+          }
+        },
+        {
+          "id": "mcd-item-204621",
+          "label": "Large",
+          "image": "https://s7d1.scene7.com/is/image/mcdonalds/DC_202601_25682_MediumBlackberryPassionfruitRefresherLemonade_1564x1564:nutrition-calculator-tile?fmt=png-alpha",
+          "nutrition": {
+            "calories": 170,
+            "protein": 1,
+            "carbs": 39,
+            "totalFat": 0,
+            "satFat": 0,
+            "transFat": 0,
+            "cholesterol": 0,
+            "sodium": 65,
+            "fiber": 1,
+            "sugars": 35
+          },
+          "categories": [
+            "McCafé®",
+            "Drinks",
+            "Specialty Drinks*",
+            "McCafé® Specialty Drinks*"
+          ],
+          "servingType": "drink",
+          "canonicalItemId": "mcd-item-204623",
+          "source": {
+            "menu": {
+              "tags": [],
+              "pins": []
+            }
+          }
+        }
+      ],
+      "defaultVariantId": "mcd-item-204623",
       "addonEligible": false,
       "defaultOrder": 43,
       "status": "new"
@@ -3443,6 +3644,7 @@
               "Cappuccino"
             ],
             "productUrl": "https://www.mcdonalds.com/us/en-us/product/cappuccino-small.html",
+            "originalName": "McCafé® Cappuccino",
             "shortName": "cappuccino-small",
             "componentItemIds": [
               "300303",
@@ -3600,6 +3802,7 @@
               "Cappuccino"
             ],
             "productUrl": "https://www.mcdonalds.com/us/en-us/product/caramel-cappuccino-small.html",
+            "originalName": "McCafé® Caramel Cappuccino",
             "shortName": "caramel-cappuccino-small",
             "componentItemIds": [
               "300089",
@@ -3759,6 +3962,7 @@
               "Macchiato"
             ],
             "productUrl": "https://www.mcdonalds.com/us/en-us/product/caramel-macchiato-small.html",
+            "originalName": "McCafé® Caramel Macchiato",
             "shortName": "caramel-macchiato-small",
             "componentItemIds": [
               "300089",
@@ -3917,6 +4121,7 @@
               "Burgers"
             ],
             "productUrl": "https://www.mcdonalds.com/us/en-us/product/cheeseburger.html",
+            "originalName": "Cheeseburger",
             "shortName": "cheeseburger",
             "componentItemIds": [
               "301578",
@@ -3995,6 +4200,7 @@
               "Under $3 Menu (Lunch & Dinner)*"
             ],
             "productUrl": "https://www.mcdonalds.com/us/en-us/product/chicken-mcnuggets-4-piece.html",
+            "originalName": "4 Piece Chicken McNuggets®",
             "shortName": "chicken-mcnuggets-4-piece",
             "componentItemIds": [
               "300701"
@@ -4214,6 +4420,7 @@
               "Sweets & Treats"
             ],
             "productUrl": "https://www.mcdonalds.com/us/en-us/product/chocolate-chip-cookie.html",
+            "originalName": "Chocolate Chip Cookie",
             "shortName": "chocolate-chip-cookie",
             "componentItemIds": [
               "300739"
@@ -4278,6 +4485,7 @@
               "Sweets & Treats"
             ],
             "productUrl": "https://www.mcdonalds.com/us/en-us/product/chocolate-shake-small.html",
+            "originalName": "Chocolate Shake",
             "shortName": "chocolate-shake-small",
             "componentItemIds": [
               "300766",
@@ -4432,6 +4640,7 @@
               "Under $3 Menu (Lunch & Dinner)*"
             ],
             "productUrl": "https://www.mcdonalds.com/us/en-us/product/coca-cola-medium.html",
+            "originalName": "Medium Coca-Cola®",
             "shortName": "coca-cola-medium",
             "componentItemIds": [
               "300387",
@@ -4499,6 +4708,7 @@
               "Soft Drinks"
             ],
             "productUrl": "https://www.mcdonalds.com/us/en-us/product/coca-cola-small.html",
+            "originalName": "Coca-Cola®",
             "shortName": "coca-cola-small",
             "componentItemIds": [
               "300387",
@@ -4685,6 +4895,7 @@
               "Coffee & Classics"
             ],
             "productUrl": "https://www.mcdonalds.com/us/en-us/product/coffee-decaf-small.html",
+            "originalName": "McCafé® Premium Roast Decaf Coffee",
             "shortName": "coffee-decaf-small",
             "componentItemIds": [
               "302481"
@@ -4705,6 +4916,96 @@
           }
         }
       },
+      "variants": [
+        {
+          "id": "mcd-item-201038",
+          "label": "Small",
+          "image": "https://s7d1.scene7.com/is/image/mcdonalds/DC_202601_0321_PremiumRoastDecafCoffee_HL_1564x1564:nutrition-calculator-tile?fmt=png-alpha",
+          "nutrition": {
+            "calories": 5,
+            "protein": 1,
+            "carbs": 1,
+            "totalFat": 0,
+            "satFat": 0,
+            "transFat": 0,
+            "cholesterol": 0,
+            "sodium": 10,
+            "fiber": 0,
+            "sugars": 0
+          },
+          "categories": [
+            "McCafé®",
+            "Coffee & Classics"
+          ],
+          "servingType": "drink",
+          "canonicalItemId": "mcd-item-201038",
+          "source": {
+            "menu": {
+              "tags": [],
+              "pins": []
+            }
+          }
+        },
+        {
+          "id": "mcd-item-201459",
+          "label": "Medium",
+          "image": "https://s7d1.scene7.com/is/image/mcdonalds/DC_202601_0321_PremiumRoastDecafCoffee_HL_1564x1564:nutrition-calculator-tile?fmt=png-alpha",
+          "nutrition": {
+            "calories": 10,
+            "protein": 1,
+            "carbs": 2,
+            "totalFat": 0,
+            "satFat": 0,
+            "transFat": 0,
+            "cholesterol": 0,
+            "sodium": 10,
+            "fiber": 0,
+            "sugars": 0
+          },
+          "categories": [
+            "McCafé®",
+            "Coffee & Classics"
+          ],
+          "servingType": "drink",
+          "canonicalItemId": "mcd-item-201038",
+          "source": {
+            "menu": {
+              "tags": [],
+              "pins": []
+            }
+          }
+        },
+        {
+          "id": "mcd-item-201074",
+          "label": "Large",
+          "image": "https://s7d1.scene7.com/is/image/mcdonalds/DC_202601_0321_PremiumRoastDecafCoffee_HL_1564x1564:nutrition-calculator-tile?fmt=png-alpha",
+          "nutrition": {
+            "calories": 15,
+            "protein": 1,
+            "carbs": 2,
+            "totalFat": 0,
+            "satFat": 0,
+            "transFat": 0,
+            "cholesterol": 0,
+            "sodium": 15,
+            "fiber": 0,
+            "sugars": 0
+          },
+          "categories": [
+            "McCafé®",
+            "Coffee & Classics"
+          ],
+          "servingType": "drink",
+          "canonicalItemId": "mcd-item-201038",
+          "source": {
+            "menu": {
+              "tags": [],
+              "pins": []
+            }
+          }
+        }
+      ],
+      "defaultVariantId": "mcd-item-201038",
       "addonEligible": false,
       "defaultOrder": 53
     },
@@ -4752,6 +5053,7 @@
               "Coffee & Classics"
             ],
             "productUrl": "https://www.mcdonalds.com/us/en-us/product/coffee-small.html",
+            "originalName": "McCafé® Premium Roast Coffee",
             "shortName": "coffee-small",
             "componentItemIds": [
               "302466",
@@ -4914,6 +5216,7 @@
               "Sauces & Condiments"
             ],
             "productUrl": "https://www.mcdonalds.com/us/en-us/product/creamy-chili-sauce.html",
+            "originalName": "Creamy Chili McCrispy® Strip Dip",
             "shortName": "mccrispy-signature-creamy-chili-sauce",
             "componentItemIds": [
               "302598"
@@ -4972,6 +5275,7 @@
               "Sauces & Condiments"
             ],
             "productUrl": "https://www.mcdonalds.com/us/en-us/product/creamy-ranch-sauce.html",
+            "originalName": "Creamy Ranch Sauce",
             "shortName": "creamy-ranch-sauce",
             "componentItemIds": [
               "302554"
@@ -5038,6 +5342,7 @@
               "Burgers"
             ],
             "productUrl": "https://www.mcdonalds.com/us/en-us/product/daily-double.html",
+            "originalName": "Daily Double",
             "shortName": "daily-double",
             "componentItemIds": [
               "300038",
@@ -5110,6 +5415,7 @@
               "Bottled Drinks & Juices"
             ],
             "productUrl": "https://www.mcdonalds.com/us/en-us/product/dasani-water.html",
+            "originalName": "DASANI® Water",
             "shortName": "dasani-water",
             "componentItemIds": [
               "300795"
@@ -5175,6 +5481,7 @@
               "Chicken & Fish Sandwiches"
             ],
             "productUrl": "https://www.mcdonalds.com/us/en-us/product/deluxe-mccrispy-chicken-sandwich.html",
+            "originalName": "Deluxe McCrispy®",
             "shortName": "deluxe-mccrispy",
             "componentItemIds": [
               "302309",
@@ -5241,6 +5548,7 @@
               "Burgers"
             ],
             "productUrl": "https://www.mcdonalds.com/us/en-us/product/deluxe-quarter-pounder-with-cheese.html",
+            "originalName": "Quarter Pounder®* with Cheese Deluxe",
             "shortName": "deluxe-quarter-pounder-with-cheese",
             "componentItemIds": [
               "301574",
@@ -5317,6 +5625,7 @@
               "Soft Drinks"
             ],
             "productUrl": "https://www.mcdonalds.com/us/en-us/product/diet-coke-small.html",
+            "originalName": "Diet Coke®",
             "shortName": "diet-coke-small",
             "componentItemIds": [
               "300399",
@@ -5503,6 +5812,7 @@
               "McCafé® Specialty Drinks*"
             ],
             "productUrl": "https://www.mcdonalds.com/us/en-us/product/dirty-dr-pepper-small.html",
+            "originalName": "New Dirty Dr Pepper®",
             "shortName": "dirty-dr-pepper-16-oz",
             "componentItemIds": [
               "300403",
@@ -5569,6 +5879,7 @@
               "Burgers"
             ],
             "productUrl": "https://www.mcdonalds.com/us/en-us/product/double-cheeseburger.html",
+            "originalName": "Double Cheeseburger",
             "shortName": "double-cheeseburger",
             "componentItemIds": [
               "300038",
@@ -5641,6 +5952,7 @@
               "Burgers"
             ],
             "productUrl": "https://www.mcdonalds.com/us/en-us/product/double-quarter-pounder-with-cheese.html",
+            "originalName": "Double Quarter Pounder®* with Cheese",
             "shortName": "double-quarter-pounder-with-cheese",
             "componentItemIds": [
               "301574",
@@ -5715,6 +6027,7 @@
               "Soft Drinks"
             ],
             "productUrl": "https://www.mcdonalds.com/us/en-us/product/dr-pepper-small.html",
+            "originalName": "Dr Pepper®",
             "shortName": "dr-pepper-small",
             "componentItemIds": [
               "300403",
@@ -5896,6 +6209,7 @@
               "Breakfast"
             ],
             "productUrl": "https://www.mcdonalds.com/us/en-us/product/egg-and-cheese-bagel.html",
+            "originalName": "Egg and Cheese Bagel",
             "shortName": "egg-and-cheese-bagel",
             "componentItemIds": [
               "302369",
@@ -5967,6 +6281,7 @@
               "Breakfast"
             ],
             "productUrl": "https://www.mcdonalds.com/us/en-us/product/egg-cheese-biscuit.html",
+            "originalName": "Egg Cheese Biscuit",
             "shortName": "egg-and-cheese-biscuit",
             "componentItemIds": [
               "300131",
@@ -6036,6 +6351,7 @@
               "Breakfast"
             ],
             "productUrl": "https://www.mcdonalds.com/us/en-us/product/egg-mcmuffin.html",
+            "originalName": "Egg McMuffin®",
             "shortName": "egg-mcmuffin",
             "componentItemIds": [
               "301533",
@@ -6109,6 +6425,7 @@
               "Americano"
             ],
             "productUrl": "https://www.mcdonalds.com/us/en-us/product/espresso-americano-coffee-small.html",
+            "originalName": "McCafé® Americano",
             "shortName": "espresso-americano-coffee-small-12-oz",
             "componentItemIds": [
               "300303",
@@ -6261,6 +6578,7 @@
               "Chicken & Fish Sandwiches"
             ],
             "productUrl": "https://www.mcdonalds.com/us/en-us/product/filet-o-fish.html",
+            "originalName": "Filet-O-Fish®",
             "shortName": "filet-o-fish",
             "componentItemIds": [
               "300055",
@@ -6331,6 +6649,7 @@
               "Frappé"
             ],
             "productUrl": "https://www.mcdonalds.com/us/en-us/product/frappe-caramel-small.html",
+            "originalName": "McCafé® Caramel Frappé",
             "shortName": "frappe-caramel-small",
             "componentItemIds": [
               "300002",
@@ -6490,6 +6809,7 @@
               "Frappé"
             ],
             "productUrl": "https://www.mcdonalds.com/us/en-us/product/frappe-mocha-small.html",
+            "originalName": "McCafé® Mocha Frappé",
             "shortName": "frappe-mocha-small",
             "componentItemIds": [
               "300006",
@@ -6649,6 +6969,7 @@
               "Cappuccino"
             ],
             "productUrl": "https://www.mcdonalds.com/us/en-us/product/french-vanilla-cappuccino-small.html",
+            "originalName": "McCafé® French Vanilla Cappuccino",
             "shortName": "french-vanilla-cappuccino-small",
             "componentItemIds": [
               "300089",
@@ -6809,6 +7130,7 @@
               "Frozen Drinks"
             ],
             "productUrl": "https://www.mcdonalds.com/us/en-us/product/frozen-coke-small.html",
+            "originalName": "Frozen Coca-Cola® Classic",
             "shortName": "frozen-coke-small",
             "componentItemIds": [
               "300389"
@@ -6963,6 +7285,7 @@
               "Frozen Drinks"
             ],
             "productUrl": "https://www.mcdonalds.com/us/en-us/product/frozen-fanta-blue-raspberry-small.html",
+            "originalName": "Frozen Fanta® Blue Raspberry",
             "shortName": "frozen-fanta-blue-raspberry-small",
             "componentItemIds": [
               "300405"
@@ -7119,6 +7442,7 @@
               "Frozen Drinks"
             ],
             "productUrl": "https://www.mcdonalds.com/us/en-us/product/frozen-hawaiian-punch-small.html",
+            "originalName": "Frozen Hawaiian Punch®",
             "shortName": "frozen-hawaiian-punch-small",
             "componentItemIds": [
               "302536"
@@ -7181,6 +7505,7 @@
               "Breakfast"
             ],
             "productUrl": "https://www.mcdonalds.com/us/en-us/product/fruit-maple-oatmeal.html",
+            "originalName": "Fruit & Maple Oatmeal",
             "shortName": "fruit-maple-oatmeal",
             "componentItemIds": [
               "300123",
@@ -7250,6 +7575,7 @@
               "Burgers"
             ],
             "productUrl": "https://www.mcdonalds.com/us/en-us/product/hamburger.html",
+            "originalName": "Hamburger: The Classic McDonald's Burger",
             "shortName": "hamburger",
             "componentItemIds": [
               "301578",
@@ -7322,6 +7648,7 @@
               "Under $3 Menu (Breakfast)*"
             ],
             "productUrl": "https://www.mcdonalds.com/us/en-us/product/hash-browns.html",
+            "originalName": "Hash Browns",
             "shortName": "hash-browns",
             "componentItemIds": [
               "300036"
@@ -7390,6 +7717,7 @@
               "Soft Drinks"
             ],
             "productUrl": "https://www.mcdonalds.com/us/en-us/product/hi-c-orange-lavaburst-small.html",
+            "originalName": "Hi-C® Orange Lavaburst®",
             "shortName": "hi-c-orange-lavaburst-small",
             "componentItemIds": [
               "300447",
@@ -7576,6 +7904,7 @@
               "Bottled Drinks & Juices"
             ],
             "productUrl": "https://www.mcdonalds.com/us/en-us/product/honest-kids-appley-ever-after-6-fl-oz-drink-box.html",
+            "originalName": "Honest Kids® Appley Ever After® Organic Juice Drink",
             "shortName": "honest-kids-appley-ever-after-6-fl-oz-drink-box",
             "componentItemIds": [
               "301429"
@@ -7639,6 +7968,7 @@
               "Sauces & Condiments"
             ],
             "productUrl": "https://www.mcdonalds.com/us/en-us/product/honey-mustard-sauce.html",
+            "originalName": "Honey Mustard Sauce",
             "shortName": "honey-mustard-sauce",
             "componentItemIds": [
               "302336"
@@ -7705,6 +8035,7 @@
               "Sauces & Condiments"
             ],
             "productUrl": "https://www.mcdonalds.com/us/en-us/product/honey.html",
+            "originalName": "Honey",
             "shortName": "honey",
             "componentItemIds": [
               "300451"
@@ -7771,6 +8102,7 @@
               "Sweets & Treats"
             ],
             "productUrl": "https://www.mcdonalds.com/us/en-us/product/hot-caramel-sundae.html",
+            "originalName": "Hot Caramel Sundae",
             "shortName": "hot-caramel-sundae",
             "componentItemIds": [
               "300766",
@@ -7839,6 +8171,7 @@
               "Coffee & Classics"
             ],
             "productUrl": "https://www.mcdonalds.com/us/en-us/product/hot-chocolate-small.html",
+            "originalName": "McCafé® Hot Chocolate",
             "shortName": "hot-chocolate-small",
             "componentItemIds": [
               "300089",
@@ -7993,6 +8326,7 @@
               "Sweets & Treats"
             ],
             "productUrl": "https://www.mcdonalds.com/us/en-us/product/hot-fudge-sundae.html",
+            "originalName": "Hot Fudge Sundae",
             "shortName": "hot-fudge-sundae",
             "componentItemIds": [
               "300766",
@@ -8061,6 +8395,7 @@
               "Coffee & Classics"
             ],
             "productUrl": "https://www.mcdonalds.com/us/en-us/product/hot-tea-small.html",
+            "originalName": "Hot Tea",
             "shortName": "hot-tea-small",
             "componentItemIds": [
               "301668"
@@ -8215,6 +8550,7 @@
               "Breakfast"
             ],
             "productUrl": "https://www.mcdonalds.com/us/en-us/product/hotcakes-and-sausage.html",
+            "originalName": "Hotcakes and Sausage",
             "shortName": "hotcakes-and-sausage",
             "componentItemIds": [
               "300757",
@@ -8284,6 +8620,7 @@
               "Breakfast"
             ],
             "productUrl": "https://www.mcdonalds.com/us/en-us/product/hotcakes.html",
+            "originalName": "Hotcakes",
             "shortName": "hotcakes",
             "componentItemIds": [
               "300757",
@@ -8354,6 +8691,7 @@
               "Latte"
             ],
             "productUrl": "https://www.mcdonalds.com/us/en-us/product/iced-caramel-latte-small.html",
+            "originalName": "McCafé® Iced Caramel Latte",
             "shortName": "latte-iced-caramel-small",
             "componentItemIds": [
               "300089",
@@ -8379,6 +8717,96 @@
           }
         }
       },
+      "variants": [
+        {
+          "id": "mcd-item-204189",
+          "label": "Small",
+          "image": "https://s7d1.scene7.com/is/image/mcdonalds/DC_202601_0379_MediumIcedCaramelLatte_1564x1564-1:nutrition-calculator-tile?fmt=png-alpha",
+          "nutrition": {
+            "calories": 180,
+            "protein": 6,
+            "carbs": 28,
+            "totalFat": 4.5,
+            "satFat": 2.5,
+            "transFat": 0,
+            "cholesterol": 20,
+            "sodium": 240,
+            "fiber": 0,
+            "sugars": 25
+          },
+          "categories": [
+            "McCafé®",
+            "Latte"
+          ],
+          "servingType": "drink",
+          "canonicalItemId": "mcd-item-204189",
+          "source": {
+            "menu": {
+              "tags": [],
+              "pins": []
+            }
+          }
+        },
+        {
+          "id": "mcd-item-200336",
+          "label": "Medium",
+          "image": "https://s7d1.scene7.com/is/image/mcdonalds/DC_202601_0379_MediumIcedCaramelLatte_1564x1564-1:nutrition-calculator-tile?fmt=png-alpha",
+          "nutrition": {
+            "calories": 220,
+            "protein": 7,
+            "carbs": 36,
+            "totalFat": 5,
+            "satFat": 3,
+            "transFat": 0,
+            "cholesterol": 20,
+            "sodium": 300,
+            "fiber": 0,
+            "sugars": 32
+          },
+          "categories": [
+            "McCafé®",
+            "Latte"
+          ],
+          "servingType": "drink",
+          "canonicalItemId": "mcd-item-204189",
+          "source": {
+            "menu": {
+              "tags": [],
+              "pins": []
+            }
+          }
+        },
+        {
+          "id": "mcd-item-200335",
+          "label": "Large",
+          "image": "https://s7d1.scene7.com/is/image/mcdonalds/DC_202601_0379_MediumIcedCaramelLatte_1564x1564-1:nutrition-calculator-tile?fmt=png-alpha",
+          "nutrition": {
+            "calories": 330,
+            "protein": 11,
+            "carbs": 55,
+            "totalFat": 8,
+            "satFat": 4.5,
+            "transFat": 0,
+            "cholesterol": 30,
+            "sodium": 460,
+            "fiber": 0,
+            "sugars": 48
+          },
+          "categories": [
+            "McCafé®",
+            "Latte"
+          ],
+          "servingType": "drink",
+          "canonicalItemId": "mcd-item-204189",
+          "source": {
+            "menu": {
+              "tags": [],
+              "pins": []
+            }
+          }
+        }
+      ],
+      "defaultVariantId": "mcd-item-204189",
       "addonEligible": false,
       "defaultOrder": 91
     },
@@ -8422,6 +8850,7 @@
               "Macchiato"
             ],
             "productUrl": "https://www.mcdonalds.com/us/en-us/product/iced-caramel-macchiato-small.html",
+            "originalName": "McCafé® Iced Caramel Macchiato",
             "shortName": "iced-caramel-macchiato",
             "componentItemIds": [
               "300089",
@@ -8581,6 +9010,7 @@
               "Coffee & Classics"
             ],
             "productUrl": "https://www.mcdonalds.com/us/en-us/product/iced-coffee-black-small.html",
+            "originalName": "McCafé® Iced Black Coffee",
             "shortName": "iced-coffee-black-small",
             "componentItemIds": [
               "302399",
@@ -8646,6 +9076,7 @@
               "Coffee & Classics"
             ],
             "productUrl": "https://www.mcdonalds.com/us/en-us/product/iced-coffee-caramel-small.html",
+            "originalName": "McCafé® Iced Caramel Coffee",
             "shortName": "iced-caramel-coffee-small",
             "componentItemIds": [
               "302399",
@@ -8670,6 +9101,96 @@
           }
         }
       },
+      "variants": [
+        {
+          "id": "mcd-item-204205",
+          "label": "Small",
+          "image": "https://s7d1.scene7.com/is/image/mcdonalds/DC_202601_1207_MediumIcedCaramelCoffee_1564x1564-1:nutrition-calculator-tile?fmt=png-alpha",
+          "nutrition": {
+            "calories": 150,
+            "protein": 2,
+            "carbs": 23,
+            "totalFat": 5,
+            "satFat": 3,
+            "transFat": 0,
+            "cholesterol": 15,
+            "sodium": 210,
+            "fiber": 0,
+            "sugars": 19
+          },
+          "categories": [
+            "McCafé®",
+            "Coffee & Classics"
+          ],
+          "servingType": "drink",
+          "canonicalItemId": "mcd-item-204205",
+          "source": {
+            "menu": {
+              "tags": [],
+              "pins": []
+            }
+          }
+        },
+        {
+          "id": "mcd-item-204210",
+          "label": "Medium",
+          "image": "https://s7d1.scene7.com/is/image/mcdonalds/DC_202601_1207_MediumIcedCaramelCoffee_1564x1564-1:nutrition-calculator-tile?fmt=png-alpha",
+          "nutrition": {
+            "calories": 200,
+            "protein": 3,
+            "carbs": 31,
+            "totalFat": 6,
+            "satFat": 4,
+            "transFat": 0,
+            "cholesterol": 25,
+            "sodium": 280,
+            "fiber": 0,
+            "sugars": 26
+          },
+          "categories": [
+            "McCafé®",
+            "Coffee & Classics"
+          ],
+          "servingType": "drink",
+          "canonicalItemId": "mcd-item-204205",
+          "source": {
+            "menu": {
+              "tags": [],
+              "pins": []
+            }
+          }
+        },
+        {
+          "id": "mcd-item-204199",
+          "label": "Large",
+          "image": "https://s7d1.scene7.com/is/image/mcdonalds/DC_202601_1207_MediumIcedCaramelCoffee_1564x1564-1:nutrition-calculator-tile?fmt=png-alpha",
+          "nutrition": {
+            "calories": 280,
+            "protein": 5,
+            "carbs": 46,
+            "totalFat": 8,
+            "satFat": 5,
+            "transFat": 0,
+            "cholesterol": 30,
+            "sodium": 410,
+            "fiber": 0,
+            "sugars": 38
+          },
+          "categories": [
+            "McCafé®",
+            "Coffee & Classics"
+          ],
+          "servingType": "drink",
+          "canonicalItemId": "mcd-item-204205",
+          "source": {
+            "menu": {
+              "tags": [],
+              "pins": []
+            }
+          }
+        }
+      ],
+      "defaultVariantId": "mcd-item-204205",
       "addonEligible": false,
       "defaultOrder": 94
     },
@@ -8713,6 +9234,7 @@
               "Coffee & Classics"
             ],
             "productUrl": "https://www.mcdonalds.com/us/en-us/product/iced-coffee-french-vanilla-small.html",
+            "originalName": "McCafé® Iced French Vanilla Coffee",
             "shortName": "iced-french-vanilla-coffee-small",
             "componentItemIds": [
               "302399",
@@ -8737,6 +9259,96 @@
           }
         }
       },
+      "variants": [
+        {
+          "id": "mcd-item-204219",
+          "label": "Small",
+          "image": "https://s7d1.scene7.com/is/image/mcdonalds/DC_202601_1216_MediumIcedFrenchVanillaCoffee_1564x1564-1:nutrition-calculator-tile?fmt=png-alpha",
+          "nutrition": {
+            "calories": 150,
+            "protein": 1,
+            "carbs": 25,
+            "totalFat": 5,
+            "satFat": 3,
+            "transFat": 0,
+            "cholesterol": 15,
+            "sodium": 35,
+            "fiber": 0,
+            "sugars": 17
+          },
+          "categories": [
+            "McCafé®",
+            "Coffee & Classics"
+          ],
+          "servingType": "drink",
+          "canonicalItemId": "mcd-item-204219",
+          "source": {
+            "menu": {
+              "tags": [],
+              "pins": []
+            }
+          }
+        },
+        {
+          "id": "mcd-item-204203",
+          "label": "Medium",
+          "image": "https://s7d1.scene7.com/is/image/mcdonalds/DC_202601_1216_MediumIcedFrenchVanillaCoffee_1564x1564-1:nutrition-calculator-tile?fmt=png-alpha",
+          "nutrition": {
+            "calories": 200,
+            "protein": 2,
+            "carbs": 33,
+            "totalFat": 6,
+            "satFat": 4,
+            "transFat": 0,
+            "cholesterol": 20,
+            "sodium": 50,
+            "fiber": 0,
+            "sugars": 22
+          },
+          "categories": [
+            "McCafé®",
+            "Coffee & Classics"
+          ],
+          "servingType": "drink",
+          "canonicalItemId": "mcd-item-204219",
+          "source": {
+            "menu": {
+              "tags": [],
+              "pins": []
+            }
+          }
+        },
+        {
+          "id": "mcd-item-204217",
+          "label": "Large",
+          "image": "https://s7d1.scene7.com/is/image/mcdonalds/DC_202601_1216_MediumIcedFrenchVanillaCoffee_1564x1564-1:nutrition-calculator-tile?fmt=png-alpha",
+          "nutrition": {
+            "calories": 280,
+            "protein": 2,
+            "carbs": 49,
+            "totalFat": 8,
+            "satFat": 5,
+            "transFat": 0,
+            "cholesterol": 30,
+            "sodium": 65,
+            "fiber": 0,
+            "sugars": 33
+          },
+          "categories": [
+            "McCafé®",
+            "Coffee & Classics"
+          ],
+          "servingType": "drink",
+          "canonicalItemId": "mcd-item-204219",
+          "source": {
+            "menu": {
+              "tags": [],
+              "pins": []
+            }
+          }
+        }
+      ],
+      "defaultVariantId": "mcd-item-204219",
       "addonEligible": false,
       "defaultOrder": 95
     },
@@ -8782,6 +9394,7 @@
               "Coffee & Classics"
             ],
             "productUrl": "https://www.mcdonalds.com/us/en-us/product/iced-coffee-small.html",
+            "originalName": "McCafé® Iced Coffee",
             "shortName": "iced-coffee-small",
             "componentItemIds": [
               "300078",
@@ -8806,6 +9419,97 @@
           }
         }
       },
+      "variants": [
+        {
+          "id": "mcd-item-200123",
+          "label": "Small",
+          "image": "https://s7d1.scene7.com/is/image/mcdonalds/DC_202601_1212_MediumIcedCoffee_1564x1564-1:nutrition-calculator-tile?fmt=png-alpha",
+          "nutrition": {
+            "calories": 140,
+            "protein": 2,
+            "carbs": 24,
+            "totalFat": 5,
+            "satFat": 3,
+            "transFat": 0,
+            "cholesterol": 15,
+            "sodium": 40,
+            "fiber": 0,
+            "sugars": 22
+          },
+          "categories": [
+            "Featured Favorites",
+            "McCafé®",
+            "Coffee & Classics"
+          ],
+          "servingType": "drink",
+          "canonicalItemId": "mcd-item-200123",
+          "source": {
+            "menu": {
+              "tags": [],
+              "pins": []
+            }
+          }
+        },
+        {
+          "id": "mcd-item-200602",
+          "label": "Medium",
+          "image": "https://s7d1.scene7.com/is/image/mcdonalds/DC_202601_1212_MediumIcedCoffee_1564x1564-1:nutrition-calculator-tile?fmt=png-alpha",
+          "nutrition": {
+            "calories": 170,
+            "protein": 2,
+            "carbs": 30,
+            "totalFat": 5,
+            "satFat": 3.5,
+            "transFat": 0,
+            "cholesterol": 20,
+            "sodium": 60,
+            "sugars": 28
+          },
+          "categories": [
+            "Featured Favorites",
+            "McCafé®",
+            "Coffee & Classics"
+          ],
+          "servingType": "drink",
+          "canonicalItemId": "mcd-item-200123",
+          "source": {
+            "menu": {
+              "tags": [],
+              "pins": []
+            }
+          }
+        },
+        {
+          "id": "mcd-item-200601",
+          "label": "Large",
+          "image": "https://s7d1.scene7.com/is/image/mcdonalds/DC_202601_1212_MediumIcedCoffee_1564x1564-1:nutrition-calculator-tile?fmt=png-alpha",
+          "nutrition": {
+            "calories": 240,
+            "protein": 3,
+            "carbs": 44,
+            "totalFat": 7,
+            "satFat": 4.5,
+            "transFat": 0,
+            "cholesterol": 30,
+            "sodium": 80,
+            "sugars": 41
+          },
+          "categories": [
+            "Featured Favorites",
+            "McCafé®",
+            "Coffee & Classics"
+          ],
+          "servingType": "drink",
+          "canonicalItemId": "mcd-item-200123",
+          "source": {
+            "menu": {
+              "tags": [],
+              "pins": []
+            }
+          }
+        }
+      ],
+      "defaultVariantId": "mcd-item-200123",
       "addonEligible": false,
       "defaultOrder": 96
     },
@@ -8849,6 +9553,7 @@
               "Latte"
             ],
             "productUrl": "https://www.mcdonalds.com/us/en-us/product/iced-latte-small.html",
+            "originalName": "McCafé® Iced Latte",
             "shortName": "iced-latte-small",
             "componentItemIds": [
               "300089",
@@ -8916,6 +9621,7 @@
               "Mocha"
             ],
             "productUrl": "https://www.mcdonalds.com/us/en-us/product/iced-mocha-small.html",
+            "originalName": "McCafé® Iced Mocha Latte",
             "shortName": "iced-mocha-small",
             "componentItemIds": [
               "300089",
@@ -9069,6 +9775,7 @@
               "Iced Tea & Lemonade"
             ],
             "productUrl": "https://www.mcdonalds.com/us/en-us/product/iced-tea-small.html",
+            "originalName": "Unsweetened Iced Tea",
             "shortName": "iced-tea-small",
             "componentItemIds": [
               "300312",
@@ -9252,6 +9959,7 @@
               "Sauces & Condiments"
             ],
             "productUrl": "https://www.mcdonalds.com/us/en-us/product/ketchup-packet.html",
+            "originalName": "Ketchup Packet",
             "shortName": "ketchup-packet",
             "componentItemIds": [
               "300462"
@@ -9319,6 +10027,7 @@
               "Latte"
             ],
             "productUrl": "https://www.mcdonalds.com/us/en-us/product/latte-caramel-small.html",
+            "originalName": "McCafé® Caramel Latte",
             "shortName": "latte-caramel-small-204208",
             "componentItemIds": [
               "300089",
@@ -9341,6 +10050,96 @@
           }
         }
       },
+      "variants": [
+        {
+          "id": "mcd-item-204208",
+          "label": "Small",
+          "image": "https://s7d1.scene7.com/is/image/mcdonalds/DC_202601_1324_MediumCaramelLatte_HL_1564x1564-1:nutrition-calculator-tile?fmt=png-alpha",
+          "nutrition": {
+            "calories": 250,
+            "protein": 9,
+            "carbs": 39,
+            "totalFat": 7,
+            "satFat": 4,
+            "transFat": 0,
+            "cholesterol": 25,
+            "sodium": 320,
+            "fiber": 0,
+            "sugars": 34
+          },
+          "categories": [
+            "McCafé®",
+            "Latte"
+          ],
+          "servingType": "drink",
+          "canonicalItemId": "mcd-item-204208",
+          "source": {
+            "menu": {
+              "tags": [],
+              "pins": []
+            }
+          }
+        },
+        {
+          "id": "mcd-item-204191",
+          "label": "Medium",
+          "image": "https://s7d1.scene7.com/is/image/mcdonalds/DC_202601_1324_MediumCaramelLatte_HL_1564x1564-1:nutrition-calculator-tile?fmt=png-alpha",
+          "nutrition": {
+            "calories": 320,
+            "protein": 11,
+            "carbs": 49,
+            "totalFat": 8,
+            "satFat": 5,
+            "transFat": 0,
+            "cholesterol": 35,
+            "sodium": 400,
+            "fiber": 0,
+            "sugars": 43
+          },
+          "categories": [
+            "McCafé®",
+            "Latte"
+          ],
+          "servingType": "drink",
+          "canonicalItemId": "mcd-item-204208",
+          "source": {
+            "menu": {
+              "tags": [],
+              "pins": []
+            }
+          }
+        },
+        {
+          "id": "mcd-item-204183",
+          "label": "Large",
+          "image": "https://s7d1.scene7.com/is/image/mcdonalds/DC_202601_1324_MediumCaramelLatte_HL_1564x1564-1:nutrition-calculator-tile?fmt=png-alpha",
+          "nutrition": {
+            "calories": 390,
+            "protein": 14,
+            "carbs": 60,
+            "totalFat": 11,
+            "satFat": 6,
+            "transFat": 0,
+            "cholesterol": 45,
+            "sodium": 490,
+            "fiber": 0,
+            "sugars": 52
+          },
+          "categories": [
+            "McCafé®",
+            "Latte"
+          ],
+          "servingType": "drink",
+          "canonicalItemId": "mcd-item-204208",
+          "source": {
+            "menu": {
+              "tags": [],
+              "pins": []
+            }
+          }
+        }
+      ],
+      "defaultVariantId": "mcd-item-204208",
       "addonEligible": false,
       "defaultOrder": 101
     },
@@ -9384,6 +10183,7 @@
               "Latte"
             ],
             "productUrl": "https://www.mcdonalds.com/us/en-us/product/latte-french-vanilla-small.html",
+            "originalName": "McCafé® French Vanilla Latte",
             "shortName": "latte-french-vanilla-small-204209",
             "componentItemIds": [
               "300089",
@@ -9407,6 +10207,96 @@
           }
         }
       },
+      "variants": [
+        {
+          "id": "mcd-item-204209",
+          "label": "Small",
+          "image": "https://s7d1.scene7.com/is/image/mcdonalds/DC_202601_1331_MediumFrenchVanillaLatte_HL_1564x1564-1:nutrition-calculator-tile?fmt=png-alpha",
+          "nutrition": {
+            "calories": 250,
+            "protein": 8,
+            "carbs": 41,
+            "totalFat": 6,
+            "satFat": 4,
+            "transFat": 0,
+            "cholesterol": 25,
+            "sodium": 90,
+            "fiber": 0,
+            "sugars": 30
+          },
+          "categories": [
+            "McCafé®",
+            "Latte"
+          ],
+          "servingType": "drink",
+          "canonicalItemId": "mcd-item-204209",
+          "source": {
+            "menu": {
+              "tags": [],
+              "pins": []
+            }
+          }
+        },
+        {
+          "id": "mcd-item-204216",
+          "label": "Medium",
+          "image": "https://s7d1.scene7.com/is/image/mcdonalds/DC_202601_1331_MediumFrenchVanillaLatte_HL_1564x1564-1:nutrition-calculator-tile?fmt=png-alpha",
+          "nutrition": {
+            "calories": 320,
+            "protein": 10,
+            "carbs": 52,
+            "totalFat": 8,
+            "satFat": 5,
+            "transFat": 0,
+            "cholesterol": 35,
+            "sodium": 115,
+            "fiber": 0,
+            "sugars": 38
+          },
+          "categories": [
+            "McCafé®",
+            "Latte"
+          ],
+          "servingType": "drink",
+          "canonicalItemId": "mcd-item-204209",
+          "source": {
+            "menu": {
+              "tags": [],
+              "pins": []
+            }
+          }
+        },
+        {
+          "id": "mcd-item-204184",
+          "label": "Large",
+          "image": "https://s7d1.scene7.com/is/image/mcdonalds/DC_202601_1331_MediumFrenchVanillaLatte_HL_1564x1564-1:nutrition-calculator-tile?fmt=png-alpha",
+          "nutrition": {
+            "calories": 400,
+            "protein": 12,
+            "carbs": 63,
+            "totalFat": 11,
+            "satFat": 6,
+            "transFat": 0,
+            "cholesterol": 40,
+            "sodium": 150,
+            "fiber": 0,
+            "sugars": 47
+          },
+          "categories": [
+            "McCafé®",
+            "Latte"
+          ],
+          "servingType": "drink",
+          "canonicalItemId": "mcd-item-204209",
+          "source": {
+            "menu": {
+              "tags": [],
+              "pins": []
+            }
+          }
+        }
+      ],
+      "defaultVariantId": "mcd-item-204209",
       "addonEligible": false,
       "defaultOrder": 102
     },
@@ -9450,6 +10340,7 @@
               "Latte"
             ],
             "productUrl": "https://www.mcdonalds.com/us/en-us/product/latte-small.html",
+            "originalName": "McCafé® Latte",
             "shortName": "latte-small",
             "componentItemIds": [
               "300089",
@@ -9608,6 +10499,7 @@
               "Iced Tea & Lemonade"
             ],
             "productUrl": "https://www.mcdonalds.com/us/en-us/product/lemonade-small.html",
+            "originalName": "Lemonade",
             "shortName": "mcdonalds-lemonade-16-oz",
             "componentItemIds": [
               "302540",
@@ -9628,6 +10520,96 @@
           }
         }
       },
+      "variants": [
+        {
+          "id": "mcd-item-203957",
+          "label": "Small",
+          "image": "https://s7d1.scene7.com/is/image/mcdonalds/DC_202511_14878_Medium_SignatureLemonade_1564x1564v2:nutrition-calculator-tile?fmt=png-alpha",
+          "nutrition": {
+            "calories": 120,
+            "protein": 0,
+            "carbs": 31,
+            "totalFat": 0,
+            "satFat": 0,
+            "transFat": 0,
+            "cholesterol": 0,
+            "sodium": 5,
+            "fiber": 0,
+            "sugars": 29
+          },
+          "categories": [
+            "Drinks",
+            "Iced Tea & Lemonade"
+          ],
+          "servingType": "drink",
+          "canonicalItemId": "mcd-item-203957",
+          "source": {
+            "menu": {
+              "tags": [],
+              "pins": []
+            }
+          }
+        },
+        {
+          "id": "mcd-item-203958",
+          "label": "Medium",
+          "image": "https://s7d1.scene7.com/is/image/mcdonalds/DC_202511_14878_Medium_SignatureLemonade_1564x1564v2:nutrition-calculator-tile?fmt=png-alpha",
+          "nutrition": {
+            "calories": 190,
+            "protein": 1,
+            "carbs": 48,
+            "totalFat": 0,
+            "satFat": 0,
+            "transFat": 0,
+            "cholesterol": 0,
+            "sodium": 10,
+            "fiber": 0,
+            "sugars": 45
+          },
+          "categories": [
+            "Drinks",
+            "Iced Tea & Lemonade"
+          ],
+          "servingType": "drink",
+          "canonicalItemId": "mcd-item-203957",
+          "source": {
+            "menu": {
+              "tags": [],
+              "pins": []
+            }
+          }
+        },
+        {
+          "id": "mcd-item-203962",
+          "label": "Large",
+          "image": "https://s7d1.scene7.com/is/image/mcdonalds/DC_202511_14878_Medium_SignatureLemonade_1564x1564v2:nutrition-calculator-tile?fmt=png-alpha",
+          "nutrition": {
+            "calories": 270,
+            "protein": 1,
+            "carbs": 68,
+            "totalFat": 0,
+            "satFat": 0,
+            "transFat": 0,
+            "cholesterol": 0,
+            "sodium": 15,
+            "fiber": 0,
+            "sugars": 63
+          },
+          "categories": [
+            "Drinks",
+            "Iced Tea & Lemonade"
+          ],
+          "servingType": "drink",
+          "canonicalItemId": "mcd-item-203957",
+          "source": {
+            "menu": {
+              "tags": [],
+              "pins": []
+            }
+          }
+        }
+      ],
+      "defaultVariantId": "mcd-item-203957",
       "addonEligible": false,
       "defaultOrder": 104
     },
@@ -9675,6 +10657,7 @@
               "McCafé® Specialty Drinks*"
             ],
             "productUrl": "https://www.mcdonalds.com/us/en-us/product/mango-pineapple-refresher-small.html",
+            "originalName": "New Mango Pineapple Refresher",
             "shortName": "mango-pineapple-refresher-16-oz-204589",
             "componentItemIds": [
               "300303",
@@ -9697,6 +10680,102 @@
           }
         }
       },
+      "variants": [
+        {
+          "id": "mcd-item-204589",
+          "label": "Small",
+          "image": "https://s7d1.scene7.com/is/image/mcdonalds/DC_202601_25343_MediumPoppingTropicRefresher_1564x1564:nutrition-calculator-tile?fmt=png-alpha",
+          "nutrition": {
+            "calories": 120,
+            "protein": 0,
+            "carbs": 29,
+            "totalFat": 0,
+            "satFat": 0,
+            "transFat": 0,
+            "cholesterol": 0,
+            "sodium": 35,
+            "fiber": 0,
+            "sugars": 26
+          },
+          "categories": [
+            "McCafé®",
+            "Drinks",
+            "Specialty Drinks*",
+            "McCafé® Specialty Drinks*"
+          ],
+          "servingType": "drink",
+          "canonicalItemId": "mcd-item-204589",
+          "source": {
+            "menu": {
+              "tags": [],
+              "pins": []
+            }
+          }
+        },
+        {
+          "id": "mcd-item-204588",
+          "label": "Medium",
+          "image": "https://s7d1.scene7.com/is/image/mcdonalds/DC_202601_25343_MediumPoppingTropicRefresher_1564x1564:nutrition-calculator-tile?fmt=png-alpha",
+          "nutrition": {
+            "calories": 160,
+            "protein": 0,
+            "carbs": 36,
+            "totalFat": 0,
+            "satFat": 0,
+            "transFat": 0,
+            "cholesterol": 0,
+            "sodium": 45,
+            "fiber": 0,
+            "sugars": 32
+          },
+          "categories": [
+            "McCafé®",
+            "Drinks",
+            "Specialty Drinks*",
+            "McCafé® Specialty Drinks*"
+          ],
+          "servingType": "drink",
+          "canonicalItemId": "mcd-item-204589",
+          "source": {
+            "menu": {
+              "tags": [],
+              "pins": []
+            }
+          }
+        },
+        {
+          "id": "mcd-item-204587",
+          "label": "Large",
+          "image": "https://s7d1.scene7.com/is/image/mcdonalds/DC_202601_25343_MediumPoppingTropicRefresher_1564x1564:nutrition-calculator-tile?fmt=png-alpha",
+          "nutrition": {
+            "calories": 220,
+            "protein": 0,
+            "carbs": 50,
+            "totalFat": 0,
+            "satFat": 0,
+            "transFat": 0,
+            "cholesterol": 0,
+            "sodium": 65,
+            "fiber": 0,
+            "sugars": 45
+          },
+          "categories": [
+            "McCafé®",
+            "Drinks",
+            "Specialty Drinks*",
+            "McCafé® Specialty Drinks*"
+          ],
+          "servingType": "drink",
+          "canonicalItemId": "mcd-item-204589",
+          "source": {
+            "menu": {
+              "tags": [],
+              "pins": []
+            }
+          }
+        }
+      ],
+      "defaultVariantId": "mcd-item-204589",
       "addonEligible": false,
       "defaultOrder": 105,
       "status": "new"
@@ -9741,6 +10820,7 @@
               "Smoothies"
             ],
             "productUrl": "https://www.mcdonalds.com/us/en-us/product/mango-pineapple-smoothie-small.html",
+            "originalName": "Mango Pineapple Smoothie",
             "shortName": "mango-pineapple-smoothie-small",
             "componentItemIds": [
               "300149",
@@ -9897,6 +10977,7 @@
               "Sauces & Condiments"
             ],
             "productUrl": "https://www.mcdonalds.com/us/en-us/product/mayonnaise-packet.html",
+            "originalName": "Mayonnaise Packet",
             "shortName": "mayonnaise-packet",
             "componentItemIds": [
               "302382"
@@ -9965,6 +11046,7 @@
               "Under $3 Menu (Lunch & Dinner)*"
             ],
             "productUrl": "https://www.mcdonalds.com/us/en-us/product/mcchicken.html",
+            "originalName": "McChicken®",
             "shortName": "mcchicken",
             "componentItemIds": [
               "300708",
@@ -10035,6 +11117,7 @@
               "Chicken & Fish Sandwiches"
             ],
             "productUrl": "https://www.mcdonalds.com/us/en-us/product/mccrispy-chicken-sandwich.html",
+            "originalName": "McCrispy®",
             "shortName": "mccrispy",
             "componentItemIds": [
               "302309",
@@ -10100,6 +11183,7 @@
               "McNuggets® & McCrispy® Strips"
             ],
             "productUrl": "https://www.mcdonalds.com/us/en-us/product/mccrispy-strips-3-piece.html",
+            "originalName": "Now Crispier McCrispy® Strips",
             "shortName": "mccrispy-strips-3-piece",
             "componentItemIds": [
               "302687"
@@ -10121,6 +11205,65 @@
           }
         }
       },
+      "variants": [
+        {
+          "id": "mcd-item-204386",
+          "label": "3 piece",
+          "image": "https://s7d1.scene7.com/is/image/mcdonalds/DC_202605_25157_3PieceMcCrispyStrips_Protein_1564x1564:nutrition-calculator-tile?fmt=png-alpha",
+          "nutrition": {
+            "calories": 400,
+            "protein": 31,
+            "carbs": 24,
+            "totalFat": 20,
+            "satFat": 2,
+            "transFat": 0,
+            "cholesterol": 90,
+            "sodium": 1320,
+            "fiber": 2,
+            "sugars": 1
+          },
+          "categories": [
+            "McNuggets® & McCrispy® Strips"
+          ],
+          "servingType": "drink",
+          "canonicalItemId": "mcd-item-204386",
+          "source": {
+            "menu": {
+              "tags": [],
+              "pins": []
+            }
+          }
+        },
+        {
+          "id": "mcd-item-204385",
+          "label": "4 piece",
+          "image": "https://s7d1.scene7.com/is/image/mcdonalds/DC_202605_25157_3PieceMcCrispyStrips_Protein_1564x1564:nutrition-calculator-tile?fmt=png-alpha",
+          "nutrition": {
+            "calories": 530,
+            "protein": 41,
+            "carbs": 32,
+            "totalFat": 26,
+            "satFat": 2.5,
+            "transFat": 0.5,
+            "cholesterol": 120,
+            "sodium": 1760,
+            "fiber": 2,
+            "sugars": 1
+          },
+          "categories": [
+            "McNuggets® & McCrispy® Strips"
+          ],
+          "servingType": "drink",
+          "canonicalItemId": "mcd-item-204386",
+          "source": {
+            "menu": {
+              "tags": [],
+              "pins": []
+            }
+          }
+        }
+      ],
+      "defaultVariantId": "mcd-item-204386",
       "addonEligible": false,
       "defaultOrder": 110
     },
@@ -10166,6 +11309,7 @@
               "Under $3 Menu (Lunch & Dinner)*"
             ],
             "productUrl": "https://www.mcdonalds.com/us/en-us/product/mcdouble.html",
+            "originalName": "McDouble®",
             "shortName": "mcdouble",
             "componentItemIds": [
               "300038",
@@ -10238,6 +11382,7 @@
               "Sweets & Treats"
             ],
             "productUrl": "https://www.mcdonalds.com/us/en-us/product/mcflurry-with-oreo-cookies.html",
+            "originalName": "OREO® McFlurry®",
             "shortName": "mcflurry-with-oreo-cookies",
             "componentItemIds": [
               "300766",
@@ -10301,6 +11446,7 @@
               "Sauces & Condiments"
             ],
             "productUrl": "https://www.mcdonalds.com/us/en-us/product/mighty-hot-sauce-dip-cup.html",
+            "originalName": "Limited Time Only Mighty Hot Sauce*",
             "shortName": "mighty-hot-sauce",
             "componentItemIds": [
               "302372"
@@ -10366,6 +11512,7 @@
               "Bottled Drinks & Juices"
             ],
             "productUrl": "https://www.mcdonalds.com/us/en-us/product/minute-maid-orange-juice-medium-201248.html",
+            "originalName": "Minute Maid® Premium Orange Juice",
             "shortName": "minute-maid-orange-juice-medium-201248",
             "componentItemIds": [
               "300487"
@@ -10520,6 +11667,7 @@
               "Sweets & Treats"
             ],
             "productUrl": "https://www.mcdonalds.com/us/en-us/product/mm-candy-mcflurry.html",
+            "originalName": "M&M'S® McFlurry®",
             "shortName": "mm-candy-mcflurry",
             "componentItemIds": [
               "300766",
@@ -10584,6 +11732,7 @@
               "Mocha"
             ],
             "productUrl": "https://www.mcdonalds.com/us/en-us/product/mocha-latte-small.html",
+            "originalName": "McCafé® Mocha Latte",
             "shortName": "mocha-small-202961",
             "componentItemIds": [
               "300089",
@@ -10646,6 +11795,7 @@
               "Sauces & Condiments"
             ],
             "productUrl": "https://www.mcdonalds.com/us/en-us/product/mustard-package.html",
+            "originalName": "Mustard Packet",
             "shortName": "mustard-packet",
             "componentItemIds": [
               "300495"
@@ -10713,6 +11863,7 @@
               "McCafé® Specialty Drinks*"
             ],
             "productUrl": "https://www.mcdonalds.com/us/en-us/product/orange-dream-small.html",
+            "originalName": "New Orange Dream with Hi-C®",
             "shortName": "orange-dream-16-oz",
             "componentItemIds": [
               "300447",
@@ -10784,6 +11935,7 @@
               "McCafé® Specialty Drinks*"
             ],
             "productUrl": "https://www.mcdonalds.com/us/en-us/product/orange-dream-with-fanta-small.html",
+            "originalName": "New Orange Dream with Fanta®",
             "shortName": "fanta-orange-dream-16-oz",
             "componentItemIds": [
               "300824",
@@ -10849,6 +12001,7 @@
               "Burgers"
             ],
             "productUrl": "https://www.mcdonalds.com/us/en-us/product/quarter-pounder-bacon.html",
+            "originalName": "Bacon Quarter Pounder®* with Cheese",
             "shortName": "quarter-pounder-bacon",
             "componentItemIds": [
               "301574",
@@ -10923,6 +12076,7 @@
               "Burgers"
             ],
             "productUrl": "https://www.mcdonalds.com/us/en-us/product/quarter-pounder-with-cheese.html",
+            "originalName": "Quarter Pounder®* with Cheese",
             "shortName": "quarter-pounder-with-cheese",
             "componentItemIds": [
               "301574",
@@ -10997,6 +12151,7 @@
               "Snack Wrap®"
             ],
             "productUrl": "https://www.mcdonalds.com/us/en-us/product/ranch-snack-wrap.html",
+            "originalName": "Now Crispier McCrispy® Strip Ranch Snack Wrap®",
             "shortName": "snack-wrap-mccrispy-ranch",
             "componentItemIds": [
               "302687",
@@ -11067,6 +12222,7 @@
               "McCafé® Specialty Drinks*"
             ],
             "productUrl": "https://www.mcdonalds.com/us/en-us/product/red-bull-dragonberry-energizer.html",
+            "originalName": "New Red Bull® Dragonberry Energizer*",
             "shortName": "red-bull-dragonberry-energizer-22-oz",
             "componentItemIds": [
               "302637",
@@ -11134,6 +12290,7 @@
               "Bottled Drinks & Juices"
             ],
             "productUrl": "https://www.mcdonalds.com/us/en-us/product/reduced-sugar-low-fat-chocolate-milk-jug.html",
+            "originalName": "Reduced Sugar^ Low Fat Chocolate Milk Jug",
             "shortName": "reduced-sugar-low-fat-chocolate-milk-jug",
             "componentItemIds": [
               "301658"
@@ -11205,6 +12362,7 @@
               "McCafé® Specialty Drinks*"
             ],
             "productUrl": "https://www.mcdonalds.com/us/en-us/product/reduced-sugar-red-bull-dragonberry-energizer.html",
+            "originalName": "New Reduced Sugar Red Bull® Dragonberry Energizer*",
             "shortName": "red-bull-zero-sugar-dragonberry-energizer-22-oz",
             "componentItemIds": [
               "300002",
@@ -11275,6 +12433,7 @@
               "McCafé® Specialty Drinks*"
             ],
             "productUrl": "https://www.mcdonalds.com/us/en-us/product/reduced-sugar-vanilla-swirl-with-diet-coke-small.html",
+            "originalName": "New Reduced Sugar Vanilla Swirl with Diet Coke®",
             "shortName": "vanilla-swirl-diet-coke-small",
             "componentItemIds": [
               "300399",
@@ -11339,6 +12498,7 @@
               "Breakfast"
             ],
             "productUrl": "https://www.mcdonalds.com/us/en-us/product/sausage-biscuit-with-egg.html",
+            "originalName": "Sausage Biscuit with Egg",
             "shortName": "sausage-biscuit-with-egg",
             "componentItemIds": [
               "300131",
@@ -11413,6 +12573,7 @@
               "Under $3 Menu (Breakfast)*"
             ],
             "productUrl": "https://www.mcdonalds.com/us/en-us/product/sausage-biscuit.html",
+            "originalName": "Sausage Biscuit",
             "shortName": "sausage-biscuit",
             "componentItemIds": [
               "300131",
@@ -11487,6 +12648,7 @@
               "Under $3 Menu (Breakfast)*"
             ],
             "productUrl": "https://www.mcdonalds.com/us/en-us/product/sausage-burrito.html",
+            "originalName": "Sausage Burrito",
             "shortName": "sausage-burrito",
             "componentItemIds": [
               "300777",
@@ -11555,6 +12717,7 @@
               "Breakfast"
             ],
             "productUrl": "https://www.mcdonalds.com/us/en-us/product/sausage-egg-and-cheese-bagel.html",
+            "originalName": "Sausage, Egg & Cheese Bagel",
             "shortName": "sausage-egg-and-cheese-bagel",
             "componentItemIds": [
               "302369",
@@ -11627,6 +12790,7 @@
               "Breakfast"
             ],
             "productUrl": "https://www.mcdonalds.com/us/en-us/product/sausage-egg-cheese-mcgriddles.html",
+            "originalName": "Sausage, Egg & Cheese McGriddles®",
             "shortName": "sausage-egg-cheese-mcgriddles",
             "componentItemIds": [
               "300666",
@@ -11697,6 +12861,7 @@
               "Breakfast"
             ],
             "productUrl": "https://www.mcdonalds.com/us/en-us/product/sausage-mcgriddles.html",
+            "originalName": "Sausage McGriddles®",
             "shortName": "sausage-mcgriddles",
             "componentItemIds": [
               "300666",
@@ -11764,6 +12929,7 @@
               "Breakfast"
             ],
             "productUrl": "https://www.mcdonalds.com/us/en-us/product/sausage-mcmuffin-with-egg.html",
+            "originalName": "Sausage McMuffin® with Egg",
             "shortName": "sausage-mcmuffin-with-egg",
             "componentItemIds": [
               "301533",
@@ -11839,6 +13005,7 @@
               "Under $3 Menu (Breakfast)*"
             ],
             "productUrl": "https://www.mcdonalds.com/us/en-us/product/sausage-mcmuffin.html",
+            "originalName": "Sausage McMuffin®",
             "shortName": "sausage-mcmuffin",
             "componentItemIds": [
               "301533",
@@ -11912,6 +13079,7 @@
               "Under $3 Menu (Lunch & Dinner)*"
             ],
             "productUrl": "https://www.mcdonalds.com/us/en-us/product/small-french-fries.html",
+            "originalName": "Small World Famous Fries®",
             "shortName": "small-french-fries",
             "componentItemIds": [
               "300135",
@@ -12100,6 +13268,7 @@
               "Sauces & Condiments"
             ],
             "productUrl": "https://www.mcdonalds.com/us/en-us/product/spicy-buffalo-sauce.html",
+            "originalName": "Spicy Buffalo Sauce",
             "shortName": "spicy-buffalo-sauce",
             "componentItemIds": [
               "300043"
@@ -12166,6 +13335,7 @@
               "McNuggets® & McCrispy® Strips"
             ],
             "productUrl": "https://www.mcdonalds.com/us/en-us/product/spicy-chicken-mcnuggets-10-piece.html",
+            "originalName": "Limited Time Only 10 Piece Spicy Chicken McNuggets®*",
             "shortName": "spicy-chicken-mcnuggets-10-piece",
             "componentItemIds": [
               "302383"
@@ -12345,6 +13515,7 @@
               "Chicken & Fish Sandwiches"
             ],
             "productUrl": "https://www.mcdonalds.com/us/en-us/product/spicy-deluxe-mccrispy-chicken-sandwich.html",
+            "originalName": "Spicy Deluxe McCrispy®",
             "shortName": "spicy-deluxe-mccrispy",
             "componentItemIds": [
               "302309",
@@ -12411,6 +13582,7 @@
               "Chicken & Fish Sandwiches"
             ],
             "productUrl": "https://www.mcdonalds.com/us/en-us/product/spicy-mccrispy-chicken-sandwich.html",
+            "originalName": "Spicy McCrispy®",
             "shortName": "spicy-mccrispy",
             "componentItemIds": [
               "302309",
@@ -12476,6 +13648,7 @@
               "Snack Wrap®"
             ],
             "productUrl": "https://www.mcdonalds.com/us/en-us/product/spicy-snack-wrap.html",
+            "originalName": "Now Crispier McCrispy® Strip Spicy Snack Wrap®",
             "shortName": "snack-wrap-mccrispy-spicy",
             "componentItemIds": [
               "302687",
@@ -12546,6 +13719,7 @@
               "McCafé® Specialty Drinks*"
             ],
             "productUrl": "https://www.mcdonalds.com/us/en-us/product/sprite-berry-blast-small.html",
+            "originalName": "New Sprite® Berry Blast",
             "shortName": "sprite-berry-blast-16-oz",
             "componentItemIds": [
               "300586",
@@ -12613,6 +13787,7 @@
               "Soft Drinks"
             ],
             "productUrl": "https://www.mcdonalds.com/us/en-us/product/sprite-small.html",
+            "originalName": "Sprite®",
             "shortName": "sprite-small",
             "componentItemIds": [
               "300586",
@@ -12794,6 +13969,7 @@
               "Breakfast"
             ],
             "productUrl": "https://www.mcdonalds.com/us/en-us/product/steak-egg-cheese-bagel.html",
+            "originalName": "Steak, Egg & Cheese Bagel",
             "shortName": "steak-egg-cheese-bagel",
             "componentItemIds": [
               "302369",
@@ -12869,6 +14045,7 @@
               "Smoothies"
             ],
             "productUrl": "https://www.mcdonalds.com/us/en-us/product/strawberry-banana-smoothie-small.html",
+            "originalName": "Strawberry Banana Smoothie",
             "shortName": "strawberry-banana-smoothie-small",
             "componentItemIds": [
               "300013",
@@ -13023,6 +14200,7 @@
               "Sweets & Treats"
             ],
             "productUrl": "https://www.mcdonalds.com/us/en-us/product/strawberry-shake-small.html",
+            "originalName": "Strawberry Shake",
             "shortName": "strawberry-shake-small",
             "componentItemIds": [
               "300766",
@@ -13181,6 +14359,7 @@
               "McCafé® Specialty Drinks*"
             ],
             "productUrl": "https://www.mcdonalds.com/us/en-us/product/strawberry-watermelon-refresher-small.html",
+            "originalName": "New Strawberry Watermelon Refresher",
             "shortName": "strawberry-watermelon-refresher-16-oz-204586",
             "componentItemIds": [
               "300303",
@@ -13203,6 +14382,102 @@
           }
         }
       },
+      "variants": [
+        {
+          "id": "mcd-item-204586",
+          "label": "Small",
+          "image": "https://s7d1.scene7.com/is/image/mcdonalds/DC_202601_25340_MediumStrawberryWatermelonRefresher_1564x1564:nutrition-calculator-tile?fmt=png-alpha",
+          "nutrition": {
+            "calories": 100,
+            "protein": 0,
+            "carbs": 22,
+            "totalFat": 0,
+            "satFat": 0,
+            "transFat": 0,
+            "cholesterol": 0,
+            "sodium": 35,
+            "fiber": 0,
+            "sugars": 20
+          },
+          "categories": [
+            "McCafé®",
+            "Drinks",
+            "Specialty Drinks*",
+            "McCafé® Specialty Drinks*"
+          ],
+          "servingType": "drink",
+          "canonicalItemId": "mcd-item-204586",
+          "source": {
+            "menu": {
+              "tags": [],
+              "pins": []
+            }
+          }
+        },
+        {
+          "id": "mcd-item-204585",
+          "label": "Medium",
+          "image": "https://s7d1.scene7.com/is/image/mcdonalds/DC_202601_25340_MediumStrawberryWatermelonRefresher_1564x1564:nutrition-calculator-tile?fmt=png-alpha",
+          "nutrition": {
+            "calories": 120,
+            "protein": 0,
+            "carbs": 29,
+            "totalFat": 0,
+            "satFat": 0,
+            "transFat": 0,
+            "cholesterol": 0,
+            "sodium": 50,
+            "fiber": 0,
+            "sugars": 27
+          },
+          "categories": [
+            "McCafé®",
+            "Drinks",
+            "Specialty Drinks*",
+            "McCafé® Specialty Drinks*"
+          ],
+          "servingType": "drink",
+          "canonicalItemId": "mcd-item-204586",
+          "source": {
+            "menu": {
+              "tags": [],
+              "pins": []
+            }
+          }
+        },
+        {
+          "id": "mcd-item-204584",
+          "label": "Large",
+          "image": "https://s7d1.scene7.com/is/image/mcdonalds/DC_202601_25340_MediumStrawberryWatermelonRefresher_1564x1564:nutrition-calculator-tile?fmt=png-alpha",
+          "nutrition": {
+            "calories": 150,
+            "protein": 0,
+            "carbs": 35,
+            "totalFat": 0,
+            "satFat": 0,
+            "transFat": 0,
+            "cholesterol": 0,
+            "sodium": 60,
+            "fiber": 0,
+            "sugars": 33
+          },
+          "categories": [
+            "McCafé®",
+            "Drinks",
+            "Specialty Drinks*",
+            "McCafé® Specialty Drinks*"
+          ],
+          "servingType": "drink",
+          "canonicalItemId": "mcd-item-204586",
+          "source": {
+            "menu": {
+              "tags": [],
+              "pins": []
+            }
+          }
+        }
+      ],
+      "defaultVariantId": "mcd-item-204586",
       "addonEligible": false,
       "defaultOrder": 146,
       "status": "new"
@@ -13245,6 +14520,7 @@
               "Sauces & Condiments"
             ],
             "productUrl": "https://www.mcdonalds.com/us/en-us/product/sweet-n-sour-sauce.html",
+            "originalName": "Sweet 'N Sour Sauce",
             "shortName": "sweet-n-sour-sauce",
             "componentItemIds": [
               "300599"
@@ -13312,6 +14588,7 @@
               "Iced Tea & Lemonade"
             ],
             "productUrl": "https://www.mcdonalds.com/us/en-us/product/sweet-tea-small.html",
+            "originalName": "Sweet Tea",
             "shortName": "sweet-tea-small",
             "componentItemIds": [
               "300312",
@@ -13495,6 +14772,7 @@
               "Sauces & Condiments"
             ],
             "productUrl": "https://www.mcdonalds.com/us/en-us/product/tangy-barbeque-sauce.html",
+            "originalName": "Tangy Barbeque Sauce",
             "shortName": "tangy-barbeque-sauce",
             "componentItemIds": [
               "300605"
@@ -13561,6 +14839,7 @@
               "Sweets & Treats"
             ],
             "productUrl": "https://www.mcdonalds.com/us/en-us/product/vanilla-cone.html",
+            "originalName": "Vanilla Cone",
             "shortName": "vanilla-cone",
             "componentItemIds": [
               "300766",
@@ -13626,6 +14905,7 @@
               "Sweets & Treats"
             ],
             "productUrl": "https://www.mcdonalds.com/us/en-us/product/vanilla-shake-small.html",
+            "originalName": "Vanilla Shake",
             "shortName": "vanilla-shake-small",
             "componentItemIds": [
               "300766",
@@ -13785,6 +15065,7 @@
               "McCafé® Specialty Drinks*"
             ],
             "productUrl": "https://www.mcdonalds.com/us/en-us/product/vanilla-swirl-with-coke-small.html",
+            "originalName": "New Vanilla Swirl with Coca-Cola®",
             "shortName": "vanilla-swirl-with-coke-16-oz",
             "componentItemIds": [
               "300387",
@@ -13811,6 +15092,2313 @@
       "addonEligible": false,
       "defaultOrder": 152,
       "status": "new"
+    },
+    {
+      "id": "mcd-item-200169",
+      "name": "Hot Mustard Sauce",
+      "image": "none",
+      "categories": [
+        "Sauces & Condiments"
+      ],
+      "servingType": "addon",
+      "nutrition": {
+        "calories": 45,
+        "protein": 1,
+        "carbs": 7,
+        "totalFat": 1.5,
+        "satFat": 0,
+        "transFat": 0,
+        "cholesterol": 5,
+        "sodium": 200,
+        "fiber": 1,
+        "sugars": 5
+      },
+      "addonEligible": false,
+      "defaultOrder": 152,
+      "sourceOnly": true,
+      "source": {
+        "menu": {
+          "tags": [],
+          "pins": []
+        },
+        "generated": {
+          "provider": "McDonald's",
+          "menu": {
+            "itemIds": [],
+            "itemType": "Core Item",
+            "itemCategory": "Sauces & Condiments",
+            "role": "standalone_product",
+            "officialCategories": [
+              "Sauces & Condiments"
+            ],
+            "productUrl": "https://www.mcdonalds.com/us/en-us/full-menu.html",
+            "originalName": "Hot Mustard Sauce",
+            "shortName": "hot-mustard-sauce",
+            "componentItemIds": [],
+            "reconciliationStatus": "manual_reconciliation",
+            "reconciliationReasons": [
+              "reviewed_official_dna_catalog_family"
+            ],
+            "manualReconciliation": "Promoted from official DNA catalog for ordering-menu reuse."
+          },
+          "nutrition": {
+            "method": "official_us_dna_item_details",
+            "sourceItemId": "200169"
+          }
+        }
+      }
+    },
+    {
+      "id": "mcd-item-201677",
+      "name": "Coca-Cola® (Small) No Ice",
+      "image": "none",
+      "categories": [
+        "Drinks",
+        "Soft Drinks"
+      ],
+      "servingType": "drink",
+      "nutrition": {
+        "calories": 200,
+        "protein": 0,
+        "carbs": 53,
+        "totalFat": 0,
+        "satFat": 0,
+        "transFat": 0,
+        "cholesterol": 0,
+        "sodium": 50,
+        "fiber": 0,
+        "sugars": 53
+      },
+      "addonEligible": false,
+      "defaultOrder": 153,
+      "sourceOnly": true,
+      "source": {
+        "menu": {
+          "tags": [],
+          "pins": []
+        },
+        "generated": {
+          "provider": "McDonald's",
+          "menu": {
+            "itemIds": [],
+            "itemType": "Core Item",
+            "itemCategory": "Drinks",
+            "role": "standalone_product",
+            "officialCategories": [
+              "Drinks",
+              "Soft Drinks"
+            ],
+            "productUrl": "https://www.mcdonalds.com/us/en-us/product/coca-cola-small.html",
+            "originalName": "Coca-Cola® (Small) No Ice",
+            "shortName": "coca-cola-small-no-ice",
+            "componentItemIds": [],
+            "reconciliationStatus": "manual_reconciliation",
+            "reconciliationReasons": [
+              "reviewed_official_dna_catalog_family"
+            ],
+            "manualReconciliation": "Promoted from official DNA catalog for ordering-menu reuse."
+          },
+          "nutrition": {
+            "method": "official_us_dna_item_details",
+            "sourceItemId": "201677"
+          }
+        }
+      }
+    },
+    {
+      "id": "mcd-item-204268",
+      "name": "Cheeseburger (Second Included)",
+      "image": "none",
+      "categories": [
+        "Burgers"
+      ],
+      "servingType": "entree",
+      "nutrition": {
+        "calories": 300,
+        "protein": 15,
+        "carbs": 31,
+        "totalFat": 13,
+        "satFat": 6,
+        "transFat": 0.5,
+        "cholesterol": 40,
+        "sodium": 720,
+        "fiber": 2,
+        "sugars": 6
+      },
+      "addonEligible": false,
+      "defaultOrder": 154,
+      "sourceOnly": true,
+      "source": {
+        "menu": {
+          "tags": [],
+          "pins": []
+        },
+        "generated": {
+          "provider": "McDonald's",
+          "menu": {
+            "itemIds": [],
+            "itemType": "Core Item",
+            "itemCategory": "Burgers",
+            "role": "standalone_product",
+            "officialCategories": [
+              "Burgers"
+            ],
+            "productUrl": "https://www.mcdonalds.com/us/en-us/product/cheeseburger.html",
+            "originalName": "Cheeseburger (Second Included)",
+            "shortName": "cheeseburger-204268",
+            "componentItemIds": [],
+            "reconciliationStatus": "manual_reconciliation",
+            "reconciliationReasons": [
+              "reviewed_official_dna_catalog_family"
+            ],
+            "manualReconciliation": "Promoted from official DNA catalog for ordering-menu reuse."
+          },
+          "nutrition": {
+            "method": "official_us_dna_item_details",
+            "sourceItemId": "204268"
+          }
+        }
+      }
+    },
+    {
+      "id": "mcd-item-204339",
+      "name": "Sausage Burrito (Second Included)",
+      "image": "none",
+      "categories": [
+        "Breakfast"
+      ],
+      "servingType": "breakfast",
+      "nutrition": {
+        "calories": 310,
+        "protein": 13,
+        "carbs": 25,
+        "totalFat": 17,
+        "satFat": 7,
+        "transFat": 0,
+        "cholesterol": 170,
+        "sodium": 800,
+        "fiber": 1,
+        "sugars": 2
+      },
+      "addonEligible": false,
+      "defaultOrder": 155,
+      "sourceOnly": true,
+      "source": {
+        "menu": {
+          "tags": [],
+          "pins": []
+        },
+        "generated": {
+          "provider": "McDonald's",
+          "menu": {
+            "itemIds": [],
+            "itemType": "Core Item",
+            "itemCategory": "Breakfast",
+            "role": "standalone_product",
+            "officialCategories": [
+              "Breakfast"
+            ],
+            "productUrl": "https://www.mcdonalds.com/us/en-us/product/sausage-burrito.html",
+            "originalName": "Sausage Burrito (Second Included)",
+            "shortName": "sausage-burrito-2",
+            "componentItemIds": [],
+            "reconciliationStatus": "manual_reconciliation",
+            "reconciliationReasons": [
+              "reviewed_official_dna_catalog_family"
+            ],
+            "manualReconciliation": "Promoted from official DNA catalog for ordering-menu reuse."
+          },
+          "nutrition": {
+            "method": "official_us_dna_item_details",
+            "sourceItemId": "204339"
+          }
+        }
+      }
+    },
+    {
+      "id": "mcd-item-204408",
+      "name": "Ranch Snack Wrap (Second Included)",
+      "image": "none",
+      "categories": [
+        "Snack Wraps"
+      ],
+      "servingType": "entree",
+      "nutrition": {
+        "calories": 390,
+        "protein": 17,
+        "carbs": 31,
+        "totalFat": 22,
+        "satFat": 6,
+        "transFat": 0,
+        "cholesterol": 45,
+        "sodium": 900,
+        "fiber": 1,
+        "sugars": 3
+      },
+      "addonEligible": false,
+      "defaultOrder": 156,
+      "sourceOnly": true,
+      "source": {
+        "menu": {
+          "tags": [],
+          "pins": []
+        },
+        "generated": {
+          "provider": "McDonald's",
+          "menu": {
+            "itemIds": [],
+            "itemType": "Core Item",
+            "itemCategory": "Snack Wraps",
+            "role": "standalone_product",
+            "officialCategories": [
+              "Snack Wraps"
+            ],
+            "productUrl": "https://www.mcdonalds.com/us/en-us/product/ranch-snack-wrap.html",
+            "originalName": "Ranch Snack Wrap (Second Included)",
+            "shortName": "snack-wrap-mccrispy-ranch-2",
+            "componentItemIds": [],
+            "reconciliationStatus": "manual_reconciliation",
+            "reconciliationReasons": [
+              "reviewed_official_dna_catalog_family"
+            ],
+            "manualReconciliation": "Promoted from official DNA catalog for ordering-menu reuse."
+          },
+          "nutrition": {
+            "method": "official_us_dna_item_details",
+            "sourceItemId": "204408"
+          }
+        }
+      }
+    },
+    {
+      "id": "mcd-item-204407",
+      "name": "Spicy Snack Wrap (Second Included)",
+      "image": "none",
+      "categories": [
+        "Snack Wraps"
+      ],
+      "servingType": "entree",
+      "nutrition": {
+        "calories": 380,
+        "protein": 17,
+        "carbs": 30,
+        "totalFat": 21,
+        "satFat": 6,
+        "transFat": 0,
+        "cholesterol": 50,
+        "sodium": 920,
+        "fiber": 1,
+        "sugars": 2
+      },
+      "addonEligible": false,
+      "defaultOrder": 157,
+      "sourceOnly": true,
+      "source": {
+        "menu": {
+          "tags": [],
+          "pins": []
+        },
+        "generated": {
+          "provider": "McDonald's",
+          "menu": {
+            "itemIds": [],
+            "itemType": "Core Item",
+            "itemCategory": "Snack Wraps",
+            "role": "standalone_product",
+            "officialCategories": [
+              "Snack Wraps"
+            ],
+            "productUrl": "https://www.mcdonalds.com/us/en-us/product/spicy-snack-wrap.html",
+            "originalName": "Spicy Snack Wrap (Second Included)",
+            "shortName": "snack-wrap-mccrispy-spicy-2",
+            "componentItemIds": [],
+            "reconciliationStatus": "manual_reconciliation",
+            "reconciliationReasons": [
+              "reviewed_official_dna_catalog_family"
+            ],
+            "manualReconciliation": "Promoted from official DNA catalog for ordering-menu reuse."
+          },
+          "nutrition": {
+            "method": "official_us_dna_item_details",
+            "sourceItemId": "204407"
+          }
+        }
+      }
+    },
+    {
+      "id": "mcd-item-203057",
+      "name": "Fanta® Orange",
+      "image": "https://s7d1.scene7.com/is/image/mcdonalds/2026XX_32127_OrangeDreamFanta_r2:nutrition-calculator-tile?fmt=png-alpha",
+      "categories": [
+        "Drinks",
+        "Soft Drinks"
+      ],
+      "servingType": "drink",
+      "nutrition": {
+        "calories": 150,
+        "protein": 0,
+        "carbs": 39,
+        "totalFat": 0,
+        "satFat": 0,
+        "transFat": 0,
+        "cholesterol": 0,
+        "sodium": 40,
+        "fiber": 0,
+        "sugars": 38
+      },
+      "addonEligible": false,
+      "defaultOrder": 158,
+      "variants": [
+        {
+          "id": "mcd-item-203057",
+          "label": "Small",
+          "image": "https://s7d1.scene7.com/is/image/mcdonalds/2026XX_32127_OrangeDreamFanta_r2:nutrition-calculator-tile?fmt=png-alpha",
+          "nutrition": {
+            "calories": 150,
+            "protein": 0,
+            "carbs": 39,
+            "totalFat": 0,
+            "satFat": 0,
+            "transFat": 0,
+            "cholesterol": 0,
+            "sodium": 40,
+            "fiber": 0,
+            "sugars": 38
+          },
+          "categories": [
+            "Drinks",
+            "Soft Drinks"
+          ],
+          "servingType": "drink",
+          "canonicalItemId": "mcd-item-203057",
+          "source": {
+            "menu": {
+              "tags": [],
+              "pins": []
+            }
+          }
+        },
+        {
+          "id": "mcd-item-203058",
+          "label": "Medium",
+          "image": "https://s7d1.scene7.com/is/image/mcdonalds/2026XX_32127_OrangeDreamFanta_r2:nutrition-calculator-tile?fmt=png-alpha",
+          "nutrition": {
+            "calories": 210,
+            "protein": 0,
+            "carbs": 56,
+            "totalFat": 0,
+            "satFat": 0,
+            "transFat": 0,
+            "cholesterol": 0,
+            "sodium": 60,
+            "fiber": 0,
+            "sugars": 55
+          },
+          "categories": [
+            "Drinks",
+            "Soft Drinks"
+          ],
+          "servingType": "drink",
+          "canonicalItemId": "mcd-item-203057",
+          "source": {
+            "menu": {
+              "tags": [],
+              "pins": []
+            }
+          }
+        },
+        {
+          "id": "mcd-item-203063",
+          "label": "Large",
+          "image": "https://s7d1.scene7.com/is/image/mcdonalds/2026XX_32127_OrangeDreamFanta_r2:nutrition-calculator-tile?fmt=png-alpha",
+          "nutrition": {
+            "calories": 300,
+            "protein": 0,
+            "carbs": 78,
+            "totalFat": 0,
+            "satFat": 0,
+            "transFat": 0,
+            "cholesterol": 0,
+            "sodium": 80,
+            "fiber": 0,
+            "sugars": 76
+          },
+          "categories": [
+            "Drinks",
+            "Soft Drinks"
+          ],
+          "servingType": "drink",
+          "canonicalItemId": "mcd-item-203057",
+          "source": {
+            "menu": {
+              "tags": [],
+              "pins": []
+            }
+          }
+        }
+      ],
+      "defaultVariantId": "mcd-item-203057",
+      "source": {
+        "menu": {
+          "tags": [],
+          "pins": []
+        },
+        "generated": {
+          "provider": "McDonald's",
+          "menu": {
+            "itemIds": [],
+            "itemType": "Core Item",
+            "itemCategory": "Drinks",
+            "role": "standalone_product",
+            "officialCategories": [
+              "Drinks",
+              "Soft Drinks"
+            ],
+            "productUrl": "https://www.mcdonalds.com/us/en-us/product/fanta-orange-small.html",
+            "originalName": "Fanta® Orange",
+            "shortName": "fanta-orange-small",
+            "componentItemIds": [],
+            "reconciliationStatus": "manual_reconciliation",
+            "reconciliationReasons": [
+              "reviewed_official_dna_catalog_family"
+            ],
+            "manualReconciliation": "Promoted from official DNA catalog for ordering-menu reuse."
+          },
+          "nutrition": {
+            "method": "official_us_dna_item_details",
+            "sourceItemId": "203057"
+          }
+        }
+      }
+    },
+    {
+      "id": "mcd-item-200614",
+      "name": "Diet Dr Pepper®",
+      "image": "https://s7d1.scene7.com/is/image/mcdonalds/DC_201905_0421_MediumDrPepper_Glass_1564x1564-1:nutrition-calculator-tile?fmt=png-alpha",
+      "categories": [
+        "Drinks",
+        "Soft Drinks"
+      ],
+      "servingType": "drink",
+      "nutrition": {
+        "calories": 0,
+        "protein": 0,
+        "carbs": 0,
+        "totalFat": 0,
+        "satFat": 0,
+        "transFat": 0,
+        "cholesterol": 0,
+        "sodium": 25,
+        "sugars": 0
+      },
+      "addonEligible": false,
+      "defaultOrder": 159,
+      "variants": [
+        {
+          "id": "mcd-item-200614",
+          "label": "Small",
+          "image": "https://s7d1.scene7.com/is/image/mcdonalds/DC_201905_0421_MediumDrPepper_Glass_1564x1564-1:nutrition-calculator-tile?fmt=png-alpha",
+          "nutrition": {
+            "calories": 0,
+            "protein": 0,
+            "carbs": 0,
+            "totalFat": 0,
+            "satFat": 0,
+            "transFat": 0,
+            "cholesterol": 0,
+            "sodium": 25,
+            "sugars": 0
+          },
+          "categories": [
+            "Drinks",
+            "Soft Drinks"
+          ],
+          "servingType": "drink",
+          "canonicalItemId": "mcd-item-200614",
+          "source": {
+            "menu": {
+              "tags": [],
+              "pins": []
+            }
+          }
+        },
+        {
+          "id": "mcd-item-200645",
+          "label": "Medium",
+          "image": "https://s7d1.scene7.com/is/image/mcdonalds/DC_201905_0421_MediumDrPepper_Glass_1564x1564-1:nutrition-calculator-tile?fmt=png-alpha",
+          "nutrition": {
+            "calories": 0,
+            "protein": 0,
+            "carbs": 0,
+            "totalFat": 0,
+            "satFat": 0,
+            "transFat": 0,
+            "cholesterol": 0,
+            "sodium": 30,
+            "sugars": 0
+          },
+          "categories": [
+            "Drinks",
+            "Soft Drinks"
+          ],
+          "servingType": "drink",
+          "canonicalItemId": "mcd-item-200614",
+          "source": {
+            "menu": {
+              "tags": [],
+              "pins": []
+            }
+          }
+        },
+        {
+          "id": "mcd-item-200644",
+          "label": "Large",
+          "image": "https://s7d1.scene7.com/is/image/mcdonalds/DC_201905_0421_MediumDrPepper_Glass_1564x1564-1:nutrition-calculator-tile?fmt=png-alpha",
+          "nutrition": {
+            "calories": 0,
+            "protein": 0,
+            "carbs": 0,
+            "totalFat": 0,
+            "satFat": 0,
+            "transFat": 0,
+            "cholesterol": 0,
+            "sodium": 45,
+            "sugars": 0
+          },
+          "categories": [
+            "Drinks",
+            "Soft Drinks"
+          ],
+          "servingType": "drink",
+          "canonicalItemId": "mcd-item-200614",
+          "source": {
+            "menu": {
+              "tags": [],
+              "pins": []
+            }
+          }
+        }
+      ],
+      "defaultVariantId": "mcd-item-200614",
+      "source": {
+        "menu": {
+          "tags": [],
+          "pins": []
+        },
+        "generated": {
+          "provider": "McDonald's",
+          "menu": {
+            "itemIds": [],
+            "itemType": "Core Item",
+            "itemCategory": "Drinks",
+            "role": "standalone_product",
+            "officialCategories": [
+              "Drinks",
+              "Soft Drinks"
+            ],
+            "productUrl": "https://www.mcdonalds.com/us/en-us/product/diet-dr-pepper-small.html",
+            "originalName": "Diet Dr Pepper®",
+            "shortName": "diet-dr-pepper-small",
+            "componentItemIds": [],
+            "reconciliationStatus": "manual_reconciliation",
+            "reconciliationReasons": [
+              "reviewed_official_dna_catalog_family"
+            ],
+            "manualReconciliation": "Promoted from official DNA catalog for ordering-menu reuse."
+          },
+          "nutrition": {
+            "method": "official_us_dna_item_details",
+            "sourceItemId": "200614"
+          }
+        }
+      }
+    },
+    {
+      "id": "mcd-item-204484",
+      "name": "Red Bull®",
+      "image": "https://s7d1.scene7.com/is/image/mcdonalds/DC_202607_25351_RedBull_DragonberryEnergizer_1564x1564:nutrition-calculator-tile?fmt=png-alpha",
+      "categories": [
+        "Drinks"
+      ],
+      "servingType": "drink",
+      "nutrition": {
+        "calories": 110,
+        "protein": 0,
+        "carbs": 26,
+        "totalFat": 0,
+        "satFat": 0,
+        "transFat": 0,
+        "cholesterol": 0,
+        "sodium": 100,
+        "fiber": 0,
+        "sugars": 26
+      },
+      "addonEligible": false,
+      "defaultOrder": 160,
+      "source": {
+        "menu": {
+          "tags": [],
+          "pins": []
+        },
+        "generated": {
+          "provider": "McDonald's",
+          "menu": {
+            "itemIds": [],
+            "itemType": "Core Item",
+            "itemCategory": "Drinks",
+            "role": "standalone_product",
+            "officialCategories": [
+              "Drinks"
+            ],
+            "productUrl": "https://www.mcdonalds.com/us/en-us/product/red-bull.html",
+            "originalName": "Red Bull®",
+            "shortName": "red-bull-energy-drink-can",
+            "componentItemIds": [],
+            "reconciliationStatus": "manual_reconciliation",
+            "reconciliationReasons": [
+              "reviewed_official_dna_catalog_family"
+            ],
+            "manualReconciliation": "Promoted from official DNA catalog for ordering-menu reuse."
+          },
+          "nutrition": {
+            "method": "official_us_dna_item_details",
+            "sourceItemId": "204484"
+          }
+        }
+      }
+    },
+    {
+      "id": "mcd-item-204702",
+      "name": "Red Bull Zero®",
+      "image": "https://s7d1.scene7.com/is/image/mcdonalds/2026XX_32127_RedbullZeroEnergizer_WithCan_Light_r0:nutrition-calculator-tile?fmt=png-alpha",
+      "categories": [
+        "Drinks"
+      ],
+      "servingType": "drink",
+      "nutrition": {
+        "calories": 5,
+        "protein": 0,
+        "carbs": 4,
+        "totalFat": 0,
+        "satFat": 0,
+        "transFat": 0,
+        "cholesterol": 0,
+        "sodium": 20,
+        "fiber": 0,
+        "sugars": 0
+      },
+      "addonEligible": false,
+      "defaultOrder": 161,
+      "source": {
+        "menu": {
+          "tags": [],
+          "pins": []
+        },
+        "generated": {
+          "provider": "McDonald's",
+          "menu": {
+            "itemIds": [],
+            "itemType": "Core Item",
+            "itemCategory": "Drinks",
+            "role": "standalone_product",
+            "officialCategories": [
+              "Drinks"
+            ],
+            "productUrl": "https://www.mcdonalds.com/us/en-us/product/red-bull-zero.html",
+            "originalName": "Red Bull Zero®",
+            "shortName": "red-bull-zero-sugar-can",
+            "componentItemIds": [],
+            "reconciliationStatus": "manual_reconciliation",
+            "reconciliationReasons": [
+              "reviewed_official_dna_catalog_family"
+            ],
+            "manualReconciliation": "Promoted from official DNA catalog for ordering-menu reuse."
+          },
+          "nutrition": {
+            "method": "official_us_dna_item_details",
+            "sourceItemId": "204702"
+          }
+        }
+      }
+    },
+    {
+      "id": "mcd-item-203967",
+      "name": "Unsweetened Tea Lemonade",
+      "image": "https://s7d1.scene7.com/is/image/mcdonalds/DC_202511_14878_Medium_SignatureLemonade_1564x1564v2:nutrition-calculator-tile?fmt=png-alpha",
+      "categories": [
+        "Drinks",
+        "Iced Tea & Lemonade"
+      ],
+      "servingType": "drink",
+      "nutrition": {
+        "calories": 70,
+        "protein": 1,
+        "carbs": 16,
+        "totalFat": 0,
+        "satFat": 0,
+        "transFat": 0,
+        "cholesterol": 0,
+        "sodium": 10,
+        "fiber": 0,
+        "sugars": 15
+      },
+      "addonEligible": false,
+      "defaultOrder": 162,
+      "variants": [
+        {
+          "id": "mcd-item-203967",
+          "label": "Small",
+          "image": "https://s7d1.scene7.com/is/image/mcdonalds/DC_202511_14878_Medium_SignatureLemonade_1564x1564v2:nutrition-calculator-tile?fmt=png-alpha",
+          "nutrition": {
+            "calories": 70,
+            "protein": 1,
+            "carbs": 16,
+            "totalFat": 0,
+            "satFat": 0,
+            "transFat": 0,
+            "cholesterol": 0,
+            "sodium": 10,
+            "fiber": 0,
+            "sugars": 15
+          },
+          "categories": [
+            "Drinks",
+            "Iced Tea & Lemonade"
+          ],
+          "servingType": "drink",
+          "canonicalItemId": "mcd-item-203967",
+          "source": {
+            "menu": {
+              "tags": [],
+              "pins": []
+            }
+          }
+        },
+        {
+          "id": "mcd-item-203965",
+          "label": "Medium",
+          "image": "https://s7d1.scene7.com/is/image/mcdonalds/DC_202511_14878_Medium_SignatureLemonade_1564x1564v2:nutrition-calculator-tile?fmt=png-alpha",
+          "nutrition": {
+            "calories": 100,
+            "protein": 1,
+            "carbs": 26,
+            "totalFat": 0,
+            "satFat": 0,
+            "transFat": 0,
+            "cholesterol": 0,
+            "sodium": 15,
+            "fiber": 0,
+            "sugars": 24
+          },
+          "categories": [
+            "Drinks",
+            "Iced Tea & Lemonade"
+          ],
+          "servingType": "drink",
+          "canonicalItemId": "mcd-item-203967",
+          "source": {
+            "menu": {
+              "tags": [],
+              "pins": []
+            }
+          }
+        },
+        {
+          "id": "mcd-item-203963",
+          "label": "Large",
+          "image": "https://s7d1.scene7.com/is/image/mcdonalds/DC_202511_14878_Medium_SignatureLemonade_1564x1564v2:nutrition-calculator-tile?fmt=png-alpha",
+          "nutrition": {
+            "calories": 140,
+            "protein": 1,
+            "carbs": 36,
+            "totalFat": 0,
+            "satFat": 0,
+            "transFat": 0,
+            "cholesterol": 0,
+            "sodium": 20,
+            "fiber": 0,
+            "sugars": 33
+          },
+          "categories": [
+            "Drinks",
+            "Iced Tea & Lemonade"
+          ],
+          "servingType": "drink",
+          "canonicalItemId": "mcd-item-203967",
+          "source": {
+            "menu": {
+              "tags": [],
+              "pins": []
+            }
+          }
+        }
+      ],
+      "defaultVariantId": "mcd-item-203967",
+      "source": {
+        "menu": {
+          "tags": [],
+          "pins": []
+        },
+        "generated": {
+          "provider": "McDonald's",
+          "menu": {
+            "itemIds": [],
+            "itemType": "Core Item",
+            "itemCategory": "Drinks",
+            "role": "standalone_product",
+            "officialCategories": [
+              "Drinks",
+              "Iced Tea & Lemonade"
+            ],
+            "productUrl": "https://www.mcdonalds.com/us/en-us/product/unsweetened-tea-lemonade.html",
+            "originalName": "Unsweetened Tea Lemonade",
+            "shortName": "lemonade-wunsweet-tea-16-oz",
+            "componentItemIds": [],
+            "reconciliationStatus": "manual_reconciliation",
+            "reconciliationReasons": [
+              "reviewed_official_dna_catalog_family"
+            ],
+            "manualReconciliation": "Promoted from official DNA catalog for ordering-menu reuse."
+          },
+          "nutrition": {
+            "method": "official_us_dna_item_details",
+            "sourceItemId": "203967"
+          }
+        }
+      }
+    },
+    {
+      "id": "mcd-item-203964",
+      "name": "Sweet Tea Lemonade",
+      "image": "https://s7d1.scene7.com/is/image/mcdonalds/DC_202511_14878_Medium_SignatureLemonade_1564x1564v2:nutrition-calculator-tile?fmt=png-alpha",
+      "categories": [
+        "Drinks",
+        "Iced Tea & Lemonade"
+      ],
+      "servingType": "drink",
+      "nutrition": {
+        "calories": 120,
+        "protein": 0,
+        "carbs": 29,
+        "totalFat": 0,
+        "satFat": 0,
+        "transFat": 0,
+        "cholesterol": 0,
+        "sodium": 10,
+        "fiber": 0,
+        "sugars": 27
+      },
+      "addonEligible": false,
+      "defaultOrder": 163,
+      "variants": [
+        {
+          "id": "mcd-item-203964",
+          "label": "Small",
+          "image": "https://s7d1.scene7.com/is/image/mcdonalds/DC_202511_14878_Medium_SignatureLemonade_1564x1564v2:nutrition-calculator-tile?fmt=png-alpha",
+          "nutrition": {
+            "calories": 120,
+            "protein": 0,
+            "carbs": 29,
+            "totalFat": 0,
+            "satFat": 0,
+            "transFat": 0,
+            "cholesterol": 0,
+            "sodium": 10,
+            "fiber": 0,
+            "sugars": 27
+          },
+          "categories": [
+            "Drinks",
+            "Iced Tea & Lemonade"
+          ],
+          "servingType": "drink",
+          "canonicalItemId": "mcd-item-203964",
+          "source": {
+            "menu": {
+              "tags": [],
+              "pins": []
+            }
+          }
+        },
+        {
+          "id": "mcd-item-203966",
+          "label": "Medium",
+          "image": "https://s7d1.scene7.com/is/image/mcdonalds/DC_202511_14878_Medium_SignatureLemonade_1564x1564v2:nutrition-calculator-tile?fmt=png-alpha",
+          "nutrition": {
+            "calories": 170,
+            "protein": 1,
+            "carbs": 41,
+            "totalFat": 0,
+            "satFat": 0,
+            "transFat": 0,
+            "cholesterol": 0,
+            "sodium": 15,
+            "fiber": 0,
+            "sugars": 39
+          },
+          "categories": [
+            "Drinks",
+            "Iced Tea & Lemonade"
+          ],
+          "servingType": "drink",
+          "canonicalItemId": "mcd-item-203964",
+          "source": {
+            "menu": {
+              "tags": [],
+              "pins": []
+            }
+          }
+        },
+        {
+          "id": "mcd-item-203961",
+          "label": "Large",
+          "image": "https://s7d1.scene7.com/is/image/mcdonalds/DC_202511_14878_Medium_SignatureLemonade_1564x1564v2:nutrition-calculator-tile?fmt=png-alpha",
+          "nutrition": {
+            "calories": 230,
+            "protein": 1,
+            "carbs": 57,
+            "totalFat": 0,
+            "satFat": 0,
+            "transFat": 0,
+            "cholesterol": 0,
+            "sodium": 20,
+            "fiber": 0,
+            "sugars": 54
+          },
+          "categories": [
+            "Drinks",
+            "Iced Tea & Lemonade"
+          ],
+          "servingType": "drink",
+          "canonicalItemId": "mcd-item-203964",
+          "source": {
+            "menu": {
+              "tags": [],
+              "pins": []
+            }
+          }
+        }
+      ],
+      "defaultVariantId": "mcd-item-203964",
+      "source": {
+        "menu": {
+          "tags": [],
+          "pins": []
+        },
+        "generated": {
+          "provider": "McDonald's",
+          "menu": {
+            "itemIds": [],
+            "itemType": "Core Item",
+            "itemCategory": "Drinks",
+            "role": "standalone_product",
+            "officialCategories": [
+              "Drinks",
+              "Iced Tea & Lemonade"
+            ],
+            "productUrl": "https://www.mcdonalds.com/us/en-us/product/sweet-tea-lemonade.html",
+            "originalName": "Sweet Tea Lemonade",
+            "shortName": "lemonade-wsweet-tea-16-oz",
+            "componentItemIds": [],
+            "reconciliationStatus": "manual_reconciliation",
+            "reconciliationReasons": [
+              "reviewed_official_dna_catalog_family"
+            ],
+            "manualReconciliation": "Promoted from official DNA catalog for ordering-menu reuse."
+          },
+          "nutrition": {
+            "method": "official_us_dna_item_details",
+            "sourceItemId": "203964"
+          }
+        }
+      }
+    },
+    {
+      "id": "mcd-item-200591",
+      "name": "McCafé® Iced Sugar Free Vanilla Coffee",
+      "image": "https://s7d1.scene7.com/is/image/mcdonalds/DC_202601_1216_MediumIcedFrenchVanillaCoffee_1564x1564-1:nutrition-calculator-tile?fmt=png-alpha",
+      "categories": [
+        "McCafé®"
+      ],
+      "servingType": "drink",
+      "nutrition": {
+        "calories": 80,
+        "protein": 2,
+        "carbs": 9,
+        "totalFat": 5,
+        "satFat": 3.5,
+        "transFat": 0,
+        "cholesterol": 20,
+        "sodium": 70,
+        "sugars": 1
+      },
+      "addonEligible": false,
+      "defaultOrder": 164,
+      "variants": [
+        {
+          "id": "mcd-item-200591",
+          "label": "Small",
+          "image": "https://s7d1.scene7.com/is/image/mcdonalds/DC_202601_1216_MediumIcedFrenchVanillaCoffee_1564x1564-1:nutrition-calculator-tile?fmt=png-alpha",
+          "nutrition": {
+            "calories": 80,
+            "protein": 2,
+            "carbs": 9,
+            "totalFat": 5,
+            "satFat": 3.5,
+            "transFat": 0,
+            "cholesterol": 20,
+            "sodium": 70,
+            "sugars": 1
+          },
+          "categories": [
+            "McCafé®"
+          ],
+          "servingType": "drink",
+          "canonicalItemId": "mcd-item-200591",
+          "source": {
+            "menu": {
+              "tags": [],
+              "pins": []
+            }
+          }
+        },
+        {
+          "id": "mcd-item-200590",
+          "label": "Medium",
+          "image": "https://s7d1.scene7.com/is/image/mcdonalds/DC_202601_1216_MediumIcedFrenchVanillaCoffee_1564x1564-1:nutrition-calculator-tile?fmt=png-alpha",
+          "nutrition": {
+            "calories": 110,
+            "protein": 2,
+            "carbs": 12,
+            "totalFat": 7,
+            "satFat": 4.5,
+            "transFat": 0,
+            "cholesterol": 25,
+            "sodium": 100,
+            "sugars": 2
+          },
+          "categories": [
+            "McCafé®"
+          ],
+          "servingType": "drink",
+          "canonicalItemId": "mcd-item-200591",
+          "source": {
+            "menu": {
+              "tags": [],
+              "pins": []
+            }
+          }
+        },
+        {
+          "id": "mcd-item-200589",
+          "label": "Large",
+          "image": "https://s7d1.scene7.com/is/image/mcdonalds/DC_202601_1216_MediumIcedFrenchVanillaCoffee_1564x1564-1:nutrition-calculator-tile?fmt=png-alpha",
+          "nutrition": {
+            "calories": 140,
+            "protein": 3,
+            "carbs": 16,
+            "totalFat": 9,
+            "satFat": 6,
+            "transFat": 0,
+            "cholesterol": 35,
+            "sodium": 135,
+            "sugars": 2
+          },
+          "categories": [
+            "McCafé®"
+          ],
+          "servingType": "drink",
+          "canonicalItemId": "mcd-item-200591",
+          "source": {
+            "menu": {
+              "tags": [],
+              "pins": []
+            }
+          }
+        }
+      ],
+      "defaultVariantId": "mcd-item-200591",
+      "source": {
+        "menu": {
+          "tags": [],
+          "pins": []
+        },
+        "generated": {
+          "provider": "McDonald's",
+          "menu": {
+            "itemIds": [],
+            "itemType": "Core Item",
+            "itemCategory": "McCafé®",
+            "role": "standalone_product",
+            "officialCategories": [
+              "McCafé®"
+            ],
+            "productUrl": "https://www.mcdonalds.com/us/en-us/product/iced-sugar-free-vanilla-coffee-small.html",
+            "originalName": "McCafé® Iced Sugar Free Vanilla Coffee",
+            "shortName": "iced-coffee-sugar-free-french-vanilla-small",
+            "componentItemIds": [],
+            "reconciliationStatus": "manual_reconciliation",
+            "reconciliationReasons": [
+              "reviewed_official_dna_catalog_family"
+            ],
+            "manualReconciliation": "Promoted from official DNA catalog for ordering-menu reuse."
+          },
+          "nutrition": {
+            "method": "official_us_dna_item_details",
+            "sourceItemId": "200591"
+          }
+        }
+      }
+    },
+    {
+      "id": "mcd-item-200223",
+      "name": "McCafé® Iced French Vanilla Latte",
+      "image": "https://s7d1.scene7.com/is/image/mcdonalds/DC_202601_1331_MediumFrenchVanillaLatte_HL_1564x1564-1:nutrition-calculator-tile?fmt=png-alpha",
+      "categories": [
+        "McCafé®",
+        "Latte"
+      ],
+      "servingType": "drink",
+      "nutrition": {
+        "calories": 180,
+        "protein": 5,
+        "carbs": 30,
+        "totalFat": 4.5,
+        "satFat": 2.5,
+        "transFat": 0,
+        "cholesterol": 20,
+        "sodium": 65,
+        "sugars": 22
+      },
+      "addonEligible": false,
+      "defaultOrder": 165,
+      "variants": [
+        {
+          "id": "mcd-item-200223",
+          "label": "Small",
+          "image": "https://s7d1.scene7.com/is/image/mcdonalds/DC_202601_1331_MediumFrenchVanillaLatte_HL_1564x1564-1:nutrition-calculator-tile?fmt=png-alpha",
+          "nutrition": {
+            "calories": 180,
+            "protein": 5,
+            "carbs": 30,
+            "totalFat": 4.5,
+            "satFat": 2.5,
+            "transFat": 0,
+            "cholesterol": 20,
+            "sodium": 65,
+            "sugars": 22
+          },
+          "categories": [
+            "McCafé®",
+            "Latte"
+          ],
+          "servingType": "drink",
+          "canonicalItemId": "mcd-item-200223",
+          "source": {
+            "menu": {
+              "tags": [],
+              "pins": []
+            }
+          }
+        },
+        {
+          "id": "mcd-item-200209",
+          "label": "Medium",
+          "image": "https://s7d1.scene7.com/is/image/mcdonalds/DC_202601_1331_MediumFrenchVanillaLatte_HL_1564x1564-1:nutrition-calculator-tile?fmt=png-alpha",
+          "nutrition": {
+            "calories": 220,
+            "protein": 6,
+            "carbs": 38,
+            "totalFat": 5,
+            "satFat": 3,
+            "transFat": 0,
+            "cholesterol": 20,
+            "sodium": 75,
+            "sugars": 28
+          },
+          "categories": [
+            "McCafé®",
+            "Latte"
+          ],
+          "servingType": "drink",
+          "canonicalItemId": "mcd-item-200223",
+          "source": {
+            "menu": {
+              "tags": [],
+              "pins": []
+            }
+          }
+        },
+        {
+          "id": "mcd-item-200201",
+          "label": "Large",
+          "image": "https://s7d1.scene7.com/is/image/mcdonalds/DC_202601_1331_MediumFrenchVanillaLatte_HL_1564x1564-1:nutrition-calculator-tile?fmt=png-alpha",
+          "nutrition": {
+            "calories": 330,
+            "protein": 9,
+            "carbs": 57,
+            "totalFat": 8,
+            "satFat": 4.5,
+            "transFat": 0,
+            "cholesterol": 30,
+            "sodium": 115,
+            "sugars": 42
+          },
+          "categories": [
+            "McCafé®",
+            "Latte"
+          ],
+          "servingType": "drink",
+          "canonicalItemId": "mcd-item-200223",
+          "source": {
+            "menu": {
+              "tags": [],
+              "pins": []
+            }
+          }
+        }
+      ],
+      "defaultVariantId": "mcd-item-200223",
+      "source": {
+        "menu": {
+          "tags": [],
+          "pins": []
+        },
+        "generated": {
+          "provider": "McDonald's",
+          "menu": {
+            "itemIds": [],
+            "itemType": "Core Item",
+            "itemCategory": "McCafé®",
+            "role": "standalone_product",
+            "officialCategories": [
+              "McCafé®",
+              "Latte"
+            ],
+            "productUrl": "https://www.mcdonalds.com/us/en-us/product/iced-french-vanilla-latte-small.html",
+            "originalName": "McCafé® Iced French Vanilla Latte",
+            "shortName": "iced-french-vanilla-latte-small",
+            "componentItemIds": [],
+            "reconciliationStatus": "manual_reconciliation",
+            "reconciliationReasons": [
+              "reviewed_official_dna_catalog_family"
+            ],
+            "manualReconciliation": "Promoted from official DNA catalog for ordering-menu reuse."
+          },
+          "nutrition": {
+            "method": "official_us_dna_item_details",
+            "sourceItemId": "200223"
+          }
+        }
+      }
+    },
+    {
+      "id": "mcd-item-200333",
+      "name": "McCafé® Iced Sugar Free Vanilla Latte",
+      "image": "https://s7d1.scene7.com/is/image/mcdonalds/DC_202601_1331_MediumFrenchVanillaLatte_HL_1564x1564-1:nutrition-calculator-tile?fmt=png-alpha",
+      "categories": [
+        "McCafé®",
+        "Latte"
+      ],
+      "servingType": "drink",
+      "nutrition": {
+        "calories": 120,
+        "protein": 5,
+        "carbs": 14,
+        "totalFat": 4.5,
+        "satFat": 2.5,
+        "transFat": 0,
+        "cholesterol": 20,
+        "sodium": 90,
+        "fiber": 0,
+        "sugars": 7
+      },
+      "addonEligible": false,
+      "defaultOrder": 166,
+      "variants": [
+        {
+          "id": "mcd-item-200333",
+          "label": "Small",
+          "image": "https://s7d1.scene7.com/is/image/mcdonalds/DC_202601_1331_MediumFrenchVanillaLatte_HL_1564x1564-1:nutrition-calculator-tile?fmt=png-alpha",
+          "nutrition": {
+            "calories": 120,
+            "protein": 5,
+            "carbs": 14,
+            "totalFat": 4.5,
+            "satFat": 2.5,
+            "transFat": 0,
+            "cholesterol": 20,
+            "sodium": 90,
+            "fiber": 0,
+            "sugars": 7
+          },
+          "categories": [
+            "McCafé®",
+            "Latte"
+          ],
+          "servingType": "drink",
+          "canonicalItemId": "mcd-item-200333",
+          "source": {
+            "menu": {
+              "tags": [],
+              "pins": []
+            }
+          }
+        },
+        {
+          "id": "mcd-item-200227",
+          "label": "Medium",
+          "image": "https://s7d1.scene7.com/is/image/mcdonalds/DC_202601_1331_MediumFrenchVanillaLatte_HL_1564x1564-1:nutrition-calculator-tile?fmt=png-alpha",
+          "nutrition": {
+            "calories": 140,
+            "protein": 6,
+            "carbs": 17,
+            "totalFat": 5,
+            "satFat": 3,
+            "transFat": 0,
+            "cholesterol": 20,
+            "sodium": 105,
+            "fiber": 0,
+            "sugars": 8
+          },
+          "categories": [
+            "McCafé®",
+            "Latte"
+          ],
+          "servingType": "drink",
+          "canonicalItemId": "mcd-item-200333",
+          "source": {
+            "menu": {
+              "tags": [],
+              "pins": []
+            }
+          }
+        },
+        {
+          "id": "mcd-item-200225",
+          "label": "Large",
+          "image": "https://s7d1.scene7.com/is/image/mcdonalds/DC_202601_1331_MediumFrenchVanillaLatte_HL_1564x1564-1:nutrition-calculator-tile?fmt=png-alpha",
+          "nutrition": {
+            "calories": 210,
+            "protein": 9,
+            "carbs": 26,
+            "totalFat": 8,
+            "satFat": 4.5,
+            "transFat": 0,
+            "cholesterol": 30,
+            "sodium": 160,
+            "fiber": 0,
+            "sugars": 11
+          },
+          "categories": [
+            "McCafé®",
+            "Latte"
+          ],
+          "servingType": "drink",
+          "canonicalItemId": "mcd-item-200333",
+          "source": {
+            "menu": {
+              "tags": [],
+              "pins": []
+            }
+          }
+        }
+      ],
+      "defaultVariantId": "mcd-item-200333",
+      "source": {
+        "menu": {
+          "tags": [],
+          "pins": []
+        },
+        "generated": {
+          "provider": "McDonald's",
+          "menu": {
+            "itemIds": [],
+            "itemType": "Core Item",
+            "itemCategory": "McCafé®",
+            "role": "standalone_product",
+            "officialCategories": [
+              "McCafé®",
+              "Latte"
+            ],
+            "productUrl": "https://www.mcdonalds.com/us/en-us/product/iced-sugar-free-vanilla-latte-small.html",
+            "originalName": "McCafé® Iced Sugar Free Vanilla Latte",
+            "shortName": "iced-latte-with-sugar-free-french-vanilla-syrup-small",
+            "componentItemIds": [],
+            "reconciliationStatus": "manual_reconciliation",
+            "reconciliationReasons": [
+              "reviewed_official_dna_catalog_family"
+            ],
+            "manualReconciliation": "Promoted from official DNA catalog for ordering-menu reuse."
+          },
+          "nutrition": {
+            "method": "official_us_dna_item_details",
+            "sourceItemId": "200333"
+          }
+        }
+      }
+    },
+    {
+      "id": "mcd-item-200706",
+      "name": "McCafé® Sugar Free Vanilla Latte",
+      "image": "https://s7d1.scene7.com/is/image/mcdonalds/DC_202601_1331_MediumFrenchVanillaLatte_HL_1564x1564-1:nutrition-calculator-tile?fmt=png-alpha",
+      "categories": [
+        "McCafé®",
+        "Latte"
+      ],
+      "servingType": "drink",
+      "nutrition": {
+        "calories": 170,
+        "protein": 7,
+        "carbs": 19,
+        "totalFat": 7,
+        "satFat": 4,
+        "transFat": 0,
+        "cholesterol": 20,
+        "sodium": 130,
+        "sugars": 11
+      },
+      "addonEligible": false,
+      "defaultOrder": 167,
+      "variants": [
+        {
+          "id": "mcd-item-200706",
+          "label": "Small",
+          "image": "https://s7d1.scene7.com/is/image/mcdonalds/DC_202601_1331_MediumFrenchVanillaLatte_HL_1564x1564-1:nutrition-calculator-tile?fmt=png-alpha",
+          "nutrition": {
+            "calories": 170,
+            "protein": 7,
+            "carbs": 19,
+            "totalFat": 7,
+            "satFat": 4,
+            "transFat": 0,
+            "cholesterol": 20,
+            "sodium": 130,
+            "sugars": 11
+          },
+          "categories": [
+            "McCafé®",
+            "Latte"
+          ],
+          "servingType": "drink",
+          "canonicalItemId": "mcd-item-200706",
+          "source": {
+            "menu": {
+              "tags": [],
+              "pins": []
+            }
+          }
+        },
+        {
+          "id": "mcd-item-200707",
+          "label": "Medium",
+          "image": "https://s7d1.scene7.com/is/image/mcdonalds/DC_202601_1331_MediumFrenchVanillaLatte_HL_1564x1564-1:nutrition-calculator-tile?fmt=png-alpha",
+          "nutrition": {
+            "calories": 220,
+            "protein": 9,
+            "carbs": 24,
+            "totalFat": 9,
+            "satFat": 5,
+            "transFat": 0,
+            "cholesterol": 30,
+            "sodium": 160,
+            "sugars": 14
+          },
+          "categories": [
+            "McCafé®",
+            "Latte"
+          ],
+          "servingType": "drink",
+          "canonicalItemId": "mcd-item-200706",
+          "source": {
+            "menu": {
+              "tags": [],
+              "pins": []
+            }
+          }
+        },
+        {
+          "id": "mcd-item-200708",
+          "label": "Large",
+          "image": "https://s7d1.scene7.com/is/image/mcdonalds/DC_202601_1331_MediumFrenchVanillaLatte_HL_1564x1564-1:nutrition-calculator-tile?fmt=png-alpha",
+          "nutrition": {
+            "calories": 270,
+            "protein": 12,
+            "carbs": 29,
+            "totalFat": 12,
+            "satFat": 7,
+            "transFat": 0,
+            "cholesterol": 35,
+            "sodium": 210,
+            "sugars": 18
+          },
+          "categories": [
+            "McCafé®",
+            "Latte"
+          ],
+          "servingType": "drink",
+          "canonicalItemId": "mcd-item-200706",
+          "source": {
+            "menu": {
+              "tags": [],
+              "pins": []
+            }
+          }
+        }
+      ],
+      "defaultVariantId": "mcd-item-200706",
+      "source": {
+        "menu": {
+          "tags": [],
+          "pins": []
+        },
+        "generated": {
+          "provider": "McDonald's",
+          "menu": {
+            "itemIds": [],
+            "itemType": "Core Item",
+            "itemCategory": "McCafé®",
+            "role": "standalone_product",
+            "officialCategories": [
+              "McCafé®",
+              "Latte"
+            ],
+            "productUrl": "https://www.mcdonalds.com/us/en-us/product/sugar-free-vanilla-latte-small.html",
+            "originalName": "McCafé® Sugar Free Vanilla Latte",
+            "shortName": "latte-sugar-free-french-vanilla-small",
+            "componentItemIds": [],
+            "reconciliationStatus": "manual_reconciliation",
+            "reconciliationReasons": [
+              "reviewed_official_dna_catalog_family"
+            ],
+            "manualReconciliation": "Promoted from official DNA catalog for ordering-menu reuse."
+          },
+          "nutrition": {
+            "method": "official_us_dna_item_details",
+            "sourceItemId": "200706"
+          }
+        }
+      }
+    },
+    {
+      "id": "mcd-item-200390",
+      "name": "McCafé® Sugar Free Vanilla Cappuccino",
+      "image": "https://s7d1.scene7.com/is/image/mcdonalds/DC_202601_1372_MediumVanillaCappuccino_HL_1564x1564-1:nutrition-calculator-tile?fmt=png-alpha",
+      "categories": [
+        "McCafé®",
+        "Cappuccino"
+      ],
+      "servingType": "drink",
+      "nutrition": {
+        "calories": 130,
+        "protein": 5,
+        "carbs": 16,
+        "totalFat": 4.5,
+        "satFat": 3,
+        "transFat": 0,
+        "cholesterol": 20,
+        "sodium": 95,
+        "fiber": 0,
+        "sugars": 7
+      },
+      "addonEligible": false,
+      "defaultOrder": 168,
+      "variants": [
+        {
+          "id": "mcd-item-200390",
+          "label": "Small",
+          "image": "https://s7d1.scene7.com/is/image/mcdonalds/DC_202601_1372_MediumVanillaCappuccino_HL_1564x1564-1:nutrition-calculator-tile?fmt=png-alpha",
+          "nutrition": {
+            "calories": 130,
+            "protein": 5,
+            "carbs": 16,
+            "totalFat": 4.5,
+            "satFat": 3,
+            "transFat": 0,
+            "cholesterol": 20,
+            "sodium": 95,
+            "fiber": 0,
+            "sugars": 7
+          },
+          "categories": [
+            "McCafé®",
+            "Cappuccino"
+          ],
+          "servingType": "drink",
+          "canonicalItemId": "mcd-item-200390",
+          "source": {
+            "menu": {
+              "tags": [],
+              "pins": []
+            }
+          }
+        },
+        {
+          "id": "mcd-item-200389",
+          "label": "Medium",
+          "image": "https://s7d1.scene7.com/is/image/mcdonalds/DC_202601_1372_MediumVanillaCappuccino_HL_1564x1564-1:nutrition-calculator-tile?fmt=png-alpha",
+          "nutrition": {
+            "calories": 160,
+            "protein": 7,
+            "carbs": 20,
+            "totalFat": 6,
+            "satFat": 3.5,
+            "transFat": 0,
+            "cholesterol": 25,
+            "sodium": 120,
+            "fiber": 0,
+            "sugars": 8
+          },
+          "categories": [
+            "McCafé®",
+            "Cappuccino"
+          ],
+          "servingType": "drink",
+          "canonicalItemId": "mcd-item-200390",
+          "source": {
+            "menu": {
+              "tags": [],
+              "pins": []
+            }
+          }
+        },
+        {
+          "id": "mcd-item-200388",
+          "label": "Large",
+          "image": "https://s7d1.scene7.com/is/image/mcdonalds/DC_202601_1372_MediumVanillaCappuccino_HL_1564x1564-1:nutrition-calculator-tile?fmt=png-alpha",
+          "nutrition": {
+            "calories": 220,
+            "protein": 10,
+            "carbs": 27,
+            "totalFat": 8,
+            "satFat": 5,
+            "transFat": 0,
+            "cholesterol": 30,
+            "sodium": 160,
+            "fiber": 0,
+            "sugars": 12
+          },
+          "categories": [
+            "McCafé®",
+            "Cappuccino"
+          ],
+          "servingType": "drink",
+          "canonicalItemId": "mcd-item-200390",
+          "source": {
+            "menu": {
+              "tags": [],
+              "pins": []
+            }
+          }
+        }
+      ],
+      "defaultVariantId": "mcd-item-200390",
+      "source": {
+        "menu": {
+          "tags": [],
+          "pins": []
+        },
+        "generated": {
+          "provider": "McDonald's",
+          "menu": {
+            "itemIds": [],
+            "itemType": "Core Item",
+            "itemCategory": "McCafé®",
+            "role": "standalone_product",
+            "officialCategories": [
+              "McCafé®",
+              "Cappuccino"
+            ],
+            "productUrl": "https://www.mcdonalds.com/us/en-us/product/sugar-free-vanilla-cappuccino-small.html",
+            "originalName": "McCafé® Sugar Free Vanilla Cappuccino",
+            "shortName": "cappuccino-with-sugar-free-vanilla-syrup-small",
+            "componentItemIds": [],
+            "reconciliationStatus": "manual_reconciliation",
+            "reconciliationReasons": [
+              "reviewed_official_dna_catalog_family"
+            ],
+            "manualReconciliation": "Promoted from official DNA catalog for ordering-menu reuse."
+          },
+          "nutrition": {
+            "method": "official_us_dna_item_details",
+            "sourceItemId": "200390"
+          }
+        }
+      }
+    },
+    {
+      "id": "mcd-item-204695",
+      "name": "McCafé® Caramel Apple Pie Frappé",
+      "image": "https://s7d1.scene7.com/is/image/mcdonalds/DC_202601_2842_MediumCaramelFrappe_1564x1564-1:nutrition-calculator-tile?fmt=png-alpha",
+      "categories": [
+        "McCafé®"
+      ],
+      "servingType": "drink",
+      "nutrition": {
+        "calories": 530,
+        "protein": 7,
+        "carbs": 81,
+        "totalFat": 19,
+        "satFat": 12,
+        "transFat": 0.5,
+        "cholesterol": 55,
+        "sodium": 220,
+        "fiber": 1,
+        "sugars": 69
+      },
+      "addonEligible": false,
+      "defaultOrder": 169,
+      "variants": [
+        {
+          "id": "mcd-item-204695",
+          "label": "Small",
+          "image": "https://s7d1.scene7.com/is/image/mcdonalds/DC_202601_2842_MediumCaramelFrappe_1564x1564-1:nutrition-calculator-tile?fmt=png-alpha",
+          "nutrition": {
+            "calories": 530,
+            "protein": 7,
+            "carbs": 81,
+            "totalFat": 19,
+            "satFat": 12,
+            "transFat": 0.5,
+            "cholesterol": 55,
+            "sodium": 220,
+            "fiber": 1,
+            "sugars": 69
+          },
+          "categories": [
+            "McCafé®"
+          ],
+          "servingType": "drink",
+          "canonicalItemId": "mcd-item-204695",
+          "source": {
+            "menu": {
+              "tags": [],
+              "pins": []
+            }
+          }
+        },
+        {
+          "id": "mcd-item-204687",
+          "label": "Medium",
+          "image": "https://s7d1.scene7.com/is/image/mcdonalds/DC_202601_2842_MediumCaramelFrappe_1564x1564-1:nutrition-calculator-tile?fmt=png-alpha",
+          "nutrition": {
+            "calories": 620,
+            "protein": 8,
+            "carbs": 98,
+            "totalFat": 22,
+            "satFat": 13,
+            "transFat": 0.5,
+            "cholesterol": 60,
+            "sodium": 260,
+            "fiber": 1,
+            "sugars": 83
+          },
+          "categories": [
+            "McCafé®"
+          ],
+          "servingType": "drink",
+          "canonicalItemId": "mcd-item-204695",
+          "source": {
+            "menu": {
+              "tags": [],
+              "pins": []
+            }
+          }
+        },
+        {
+          "id": "mcd-item-204689",
+          "label": "Large",
+          "image": "https://s7d1.scene7.com/is/image/mcdonalds/DC_202601_2842_MediumCaramelFrappe_1564x1564-1:nutrition-calculator-tile?fmt=png-alpha",
+          "nutrition": {
+            "calories": 840,
+            "protein": 11,
+            "carbs": 135,
+            "totalFat": 28,
+            "satFat": 17,
+            "transFat": 1,
+            "cholesterol": 80,
+            "sodium": 340,
+            "fiber": 2,
+            "sugars": 115
+          },
+          "categories": [
+            "McCafé®"
+          ],
+          "servingType": "drink",
+          "canonicalItemId": "mcd-item-204695",
+          "source": {
+            "menu": {
+              "tags": [],
+              "pins": []
+            }
+          }
+        }
+      ],
+      "defaultVariantId": "mcd-item-204695",
+      "source": {
+        "menu": {
+          "tags": [],
+          "pins": []
+        },
+        "generated": {
+          "provider": "McDonald's",
+          "menu": {
+            "itemIds": [],
+            "itemType": "Core Item",
+            "itemCategory": "McCafé®",
+            "role": "standalone_product",
+            "officialCategories": [
+              "McCafé®"
+            ],
+            "productUrl": "https://www.mcdonalds.com/us/en-us/product/caramel-apple-pie-frappe-small.html",
+            "originalName": "McCafé® Caramel Apple Pie Frappé",
+            "shortName": "caramel-apple-pie-frappe-small",
+            "componentItemIds": [],
+            "reconciliationStatus": "manual_reconciliation",
+            "reconciliationReasons": [
+              "reviewed_official_dna_catalog_family"
+            ],
+            "manualReconciliation": "Promoted from official DNA catalog for ordering-menu reuse."
+          },
+          "nutrition": {
+            "method": "official_us_dna_item_details",
+            "sourceItemId": "204695"
+          }
+        }
+      }
+    },
+    {
+      "id": "mcd-item-204697",
+      "name": "McCafé® Caramel Apple Pie Latte",
+      "image": "https://s7d1.scene7.com/is/image/mcdonalds/DC_202601_1324_MediumCaramelLatte_HL_1564x1564-1:nutrition-calculator-tile?fmt=png-alpha",
+      "categories": [
+        "McCafé®",
+        "Latte"
+      ],
+      "servingType": "drink",
+      "nutrition": {
+        "calories": 340,
+        "protein": 9,
+        "carbs": 49,
+        "totalFat": 13,
+        "satFat": 7,
+        "transFat": 0,
+        "cholesterol": 40,
+        "sodium": 270,
+        "fiber": 0,
+        "sugars": 36
+      },
+      "addonEligible": false,
+      "defaultOrder": 170,
+      "variants": [
+        {
+          "id": "mcd-item-204697",
+          "label": "Small",
+          "image": "https://s7d1.scene7.com/is/image/mcdonalds/DC_202601_1324_MediumCaramelLatte_HL_1564x1564-1:nutrition-calculator-tile?fmt=png-alpha",
+          "nutrition": {
+            "calories": 340,
+            "protein": 9,
+            "carbs": 49,
+            "totalFat": 13,
+            "satFat": 7,
+            "transFat": 0,
+            "cholesterol": 40,
+            "sodium": 270,
+            "fiber": 0,
+            "sugars": 36
+          },
+          "categories": [
+            "McCafé®",
+            "Latte"
+          ],
+          "servingType": "drink",
+          "canonicalItemId": "mcd-item-204697",
+          "source": {
+            "menu": {
+              "tags": [],
+              "pins": []
+            }
+          }
+        },
+        {
+          "id": "mcd-item-204685",
+          "label": "Medium",
+          "image": "https://s7d1.scene7.com/is/image/mcdonalds/DC_202601_1324_MediumCaramelLatte_HL_1564x1564-1:nutrition-calculator-tile?fmt=png-alpha",
+          "nutrition": {
+            "calories": 410,
+            "protein": 11,
+            "carbs": 59,
+            "totalFat": 14,
+            "satFat": 8,
+            "transFat": 0,
+            "cholesterol": 50,
+            "sodium": 330,
+            "fiber": 0,
+            "sugars": 44
+          },
+          "categories": [
+            "McCafé®",
+            "Latte"
+          ],
+          "servingType": "drink",
+          "canonicalItemId": "mcd-item-204697",
+          "source": {
+            "menu": {
+              "tags": [],
+              "pins": []
+            }
+          }
+        },
+        {
+          "id": "mcd-item-204700",
+          "label": "Large",
+          "image": "https://s7d1.scene7.com/is/image/mcdonalds/DC_202601_1324_MediumCaramelLatte_HL_1564x1564-1:nutrition-calculator-tile?fmt=png-alpha",
+          "nutrition": {
+            "calories": 490,
+            "protein": 14,
+            "carbs": 70,
+            "totalFat": 17,
+            "satFat": 10,
+            "transFat": 0.5,
+            "cholesterol": 55,
+            "sodium": 390,
+            "fiber": 0,
+            "sugars": 53
+          },
+          "categories": [
+            "McCafé®",
+            "Latte"
+          ],
+          "servingType": "drink",
+          "canonicalItemId": "mcd-item-204697",
+          "source": {
+            "menu": {
+              "tags": [],
+              "pins": []
+            }
+          }
+        }
+      ],
+      "defaultVariantId": "mcd-item-204697",
+      "source": {
+        "menu": {
+          "tags": [],
+          "pins": []
+        },
+        "generated": {
+          "provider": "McDonald's",
+          "menu": {
+            "itemIds": [],
+            "itemType": "Core Item",
+            "itemCategory": "McCafé®",
+            "role": "standalone_product",
+            "officialCategories": [
+              "McCafé®",
+              "Latte"
+            ],
+            "productUrl": "https://www.mcdonalds.com/us/en-us/product/caramel-apple-pie-latte-small.html",
+            "originalName": "McCafé® Caramel Apple Pie Latte",
+            "shortName": "caramel-apple-pie-latte-small",
+            "componentItemIds": [],
+            "reconciliationStatus": "manual_reconciliation",
+            "reconciliationReasons": [
+              "reviewed_official_dna_catalog_family"
+            ],
+            "manualReconciliation": "Promoted from official DNA catalog for ordering-menu reuse."
+          },
+          "nutrition": {
+            "method": "official_us_dna_item_details",
+            "sourceItemId": "204697"
+          }
+        }
+      }
+    },
+    {
+      "id": "mcd-item-204693",
+      "name": "McCafé® Caramel Apple Pie Iced Coffee",
+      "image": "https://s7d1.scene7.com/is/image/mcdonalds/DC_202601_1207_MediumIcedCaramelCoffee_1564x1564-1:nutrition-calculator-tile?fmt=png-alpha",
+      "categories": [
+        "McCafé®"
+      ],
+      "servingType": "drink",
+      "nutrition": {
+        "calories": 240,
+        "protein": 3,
+        "carbs": 33,
+        "totalFat": 11,
+        "satFat": 6,
+        "transFat": 0,
+        "cholesterol": 30,
+        "sodium": 200,
+        "fiber": 0,
+        "sugars": 23
+      },
+      "addonEligible": false,
+      "defaultOrder": 171,
+      "variants": [
+        {
+          "id": "mcd-item-204693",
+          "label": "Small",
+          "image": "https://s7d1.scene7.com/is/image/mcdonalds/DC_202601_1207_MediumIcedCaramelCoffee_1564x1564-1:nutrition-calculator-tile?fmt=png-alpha",
+          "nutrition": {
+            "calories": 240,
+            "protein": 3,
+            "carbs": 33,
+            "totalFat": 11,
+            "satFat": 6,
+            "transFat": 0,
+            "cholesterol": 30,
+            "sodium": 200,
+            "fiber": 0,
+            "sugars": 23
+          },
+          "categories": [
+            "McCafé®"
+          ],
+          "servingType": "drink",
+          "canonicalItemId": "mcd-item-204693",
+          "source": {
+            "menu": {
+              "tags": [],
+              "pins": []
+            }
+          }
+        },
+        {
+          "id": "mcd-item-204698",
+          "label": "Medium",
+          "image": "https://s7d1.scene7.com/is/image/mcdonalds/DC_202601_1207_MediumIcedCaramelCoffee_1564x1564-1:nutrition-calculator-tile?fmt=png-alpha",
+          "nutrition": {
+            "calories": 290,
+            "protein": 3,
+            "carbs": 42,
+            "totalFat": 13,
+            "satFat": 7,
+            "transFat": 0,
+            "cholesterol": 35,
+            "sodium": 240,
+            "fiber": 0,
+            "sugars": 28
+          },
+          "categories": [
+            "McCafé®"
+          ],
+          "servingType": "drink",
+          "canonicalItemId": "mcd-item-204693",
+          "source": {
+            "menu": {
+              "tags": [],
+              "pins": []
+            }
+          }
+        },
+        {
+          "id": "mcd-item-204690",
+          "label": "Large",
+          "image": "https://s7d1.scene7.com/is/image/mcdonalds/DC_202601_1207_MediumIcedCaramelCoffee_1564x1564-1:nutrition-calculator-tile?fmt=png-alpha",
+          "nutrition": {
+            "calories": 330,
+            "protein": 4,
+            "carbs": 49,
+            "totalFat": 13,
+            "satFat": 8,
+            "transFat": 0,
+            "cholesterol": 40,
+            "sodium": 280,
+            "fiber": 0,
+            "sugars": 34
+          },
+          "categories": [
+            "McCafé®"
+          ],
+          "servingType": "drink",
+          "canonicalItemId": "mcd-item-204693",
+          "source": {
+            "menu": {
+              "tags": [],
+              "pins": []
+            }
+          }
+        }
+      ],
+      "defaultVariantId": "mcd-item-204693",
+      "source": {
+        "menu": {
+          "tags": [],
+          "pins": []
+        },
+        "generated": {
+          "provider": "McDonald's",
+          "menu": {
+            "itemIds": [],
+            "itemType": "Core Item",
+            "itemCategory": "McCafé®",
+            "role": "standalone_product",
+            "officialCategories": [
+              "McCafé®"
+            ],
+            "productUrl": "https://www.mcdonalds.com/us/en-us/product/caramel-apple-pie-iced-coffee-small.html",
+            "originalName": "McCafé® Caramel Apple Pie Iced Coffee",
+            "shortName": "caramel-apple-pie-iced-coffee-small",
+            "componentItemIds": [],
+            "reconciliationStatus": "manual_reconciliation",
+            "reconciliationReasons": [
+              "reviewed_official_dna_catalog_family"
+            ],
+            "manualReconciliation": "Promoted from official DNA catalog for ordering-menu reuse."
+          },
+          "nutrition": {
+            "method": "official_us_dna_item_details",
+            "sourceItemId": "204693"
+          }
+        }
+      }
+    },
+    {
+      "id": "mcd-item-204691",
+      "name": "McCafé® Iced Caramel Apple Pie Latte",
+      "image": "https://s7d1.scene7.com/is/image/mcdonalds/DC_202601_0379_MediumIcedCaramelLatte_1564x1564-1:nutrition-calculator-tile?fmt=png-alpha",
+      "categories": [
+        "McCafé®",
+        "Latte"
+      ],
+      "servingType": "drink",
+      "nutrition": {
+        "calories": 280,
+        "protein": 6,
+        "carbs": 38,
+        "totalFat": 11,
+        "satFat": 6,
+        "transFat": 0,
+        "cholesterol": 35,
+        "sodium": 220,
+        "fiber": 0,
+        "sugars": 28
+      },
+      "addonEligible": false,
+      "defaultOrder": 172,
+      "variants": [
+        {
+          "id": "mcd-item-204691",
+          "label": "Small",
+          "image": "https://s7d1.scene7.com/is/image/mcdonalds/DC_202601_0379_MediumIcedCaramelLatte_1564x1564-1:nutrition-calculator-tile?fmt=png-alpha",
+          "nutrition": {
+            "calories": 280,
+            "protein": 6,
+            "carbs": 38,
+            "totalFat": 11,
+            "satFat": 6,
+            "transFat": 0,
+            "cholesterol": 35,
+            "sodium": 220,
+            "fiber": 0,
+            "sugars": 28
+          },
+          "categories": [
+            "McCafé®",
+            "Latte"
+          ],
+          "servingType": "drink",
+          "canonicalItemId": "mcd-item-204691",
+          "source": {
+            "menu": {
+              "tags": [],
+              "pins": []
+            }
+          }
+        },
+        {
+          "id": "mcd-item-204699",
+          "label": "Medium",
+          "image": "https://s7d1.scene7.com/is/image/mcdonalds/DC_202601_0379_MediumIcedCaramelLatte_1564x1564-1:nutrition-calculator-tile?fmt=png-alpha",
+          "nutrition": {
+            "calories": 310,
+            "protein": 7,
+            "carbs": 46,
+            "totalFat": 11,
+            "satFat": 6,
+            "transFat": 0,
+            "cholesterol": 35,
+            "sodium": 260,
+            "fiber": 0,
+            "sugars": 34
+          },
+          "categories": [
+            "McCafé®",
+            "Latte"
+          ],
+          "servingType": "drink",
+          "canonicalItemId": "mcd-item-204691",
+          "source": {
+            "menu": {
+              "tags": [],
+              "pins": []
+            }
+          }
+        },
+        {
+          "id": "mcd-item-204692",
+          "label": "Large",
+          "image": "https://s7d1.scene7.com/is/image/mcdonalds/DC_202601_0379_MediumIcedCaramelLatte_1564x1564-1:nutrition-calculator-tile?fmt=png-alpha",
+          "nutrition": {
+            "calories": 420,
+            "protein": 10,
+            "carbs": 64,
+            "totalFat": 14,
+            "satFat": 8,
+            "transFat": 0,
+            "cholesterol": 45,
+            "sodium": 350,
+            "fiber": 0,
+            "sugars": 49
+          },
+          "categories": [
+            "McCafé®",
+            "Latte"
+          ],
+          "servingType": "drink",
+          "canonicalItemId": "mcd-item-204691",
+          "source": {
+            "menu": {
+              "tags": [],
+              "pins": []
+            }
+          }
+        }
+      ],
+      "defaultVariantId": "mcd-item-204691",
+      "source": {
+        "menu": {
+          "tags": [],
+          "pins": []
+        },
+        "generated": {
+          "provider": "McDonald's",
+          "menu": {
+            "itemIds": [],
+            "itemType": "Core Item",
+            "itemCategory": "McCafé®",
+            "role": "standalone_product",
+            "officialCategories": [
+              "McCafé®",
+              "Latte"
+            ],
+            "productUrl": "https://www.mcdonalds.com/us/en-us/product/iced-caramel-apple-pie-latte-small.html",
+            "originalName": "McCafé® Iced Caramel Apple Pie Latte",
+            "shortName": "caramel-apple-pie-iced-latte-small",
+            "componentItemIds": [],
+            "reconciliationStatus": "manual_reconciliation",
+            "reconciliationReasons": [
+              "reviewed_official_dna_catalog_family"
+            ],
+            "manualReconciliation": "Promoted from official DNA catalog for ordering-menu reuse."
+          },
+          "nutrition": {
+            "method": "official_us_dna_item_details",
+            "sourceItemId": "204691"
+          }
+        }
+      }
     }
   ],
   "importMetadata": {
@@ -13823,9 +17411,9 @@
     },
     "generatedFrom": "2026-09-16T17:23:01.711Z",
     "sourceRecordCount": 153,
-    "generatedItemCount": 152,
-    "variantRecordCount": 104,
-    "categoryCount": 34,
+    "generatedItemCount": 173,
+    "variantRecordCount": 180,
+    "categoryCount": 35,
     "skipped": [
       {
         "itemId": 200543,

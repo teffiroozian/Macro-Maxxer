@@ -1,0 +1,444 @@
+{
+   "menuSection": {
+       "dayparts": [{
+               "daypart": 1,
+               "description": "breakfast",
+               "categories": [
+			        {
+						"categoryId": 489,
+						"localImage": "202608_bev",
+						"imageUrl": "https://us-prod5-digitalasset-v2.s3.amazonaws.com/MOP_Category_202607_LimitedTimeOnly_315x304.jpg",
+						"displayOrder": 1,
+						"Names": [
+						  {
+							"LanguageID": "en-US",
+							"ShortName": "NEW: McCafé®",
+							"LongName": "NEW: McCafé®"
+						  },
+						  {
+							"LanguageID": "es-US",
+							"ShortName": "NEW: McCafé®",
+							"LongName": "NEW: McCafé®"
+						  }
+						]
+					},
+					{
+						"categoryId": 34,
+						"localImage": "202509_EVMs",
+						"imageUrl": "https://us-prod5-digitalasset-v2.s3.us-east-1.amazonaws.com/MOP_Category_202508_BreakfastMeals_315x304.jpg",
+						"displayOrder": 2,
+						"Names": [
+						  {
+							"LanguageID": "en-US",
+							"ShortName": "Extra Value Meals",
+							"LongName": "Extra Value Meals"
+						  },
+						  {
+							"LanguageID": "es-US",
+							"ShortName": "Extra Value Meals",
+							"LongName": "Extra Value Meals"
+						  }
+						]
+					},
+                    {
+                       "categoryId": 39,
+                       "displayOrder": 3,
+                       "localImage": "category_201609_platters",
+                       "imageUrl": "https://us-prod5-digitalasset-v2.s3.amazonaws.com/MOP_Category_202005_0107_BigBreakfast_315x304.jpg",
+                       "Names": [{
+                               "LanguageID": "en-US",
+                               "ShortName": "Homestyle Breakfasts",
+                               "LongName": "Homestyle Breakfasts"
+                           },
+                           {
+                               "LanguageID": "es-US",
+                               "ShortName": "Desayunos Estilo Casero",
+                               "LongName": "Desayunos Estilo Casero"
+                           }
+                       ]
+                   },
+				   {
+						"categoryId": 207,
+						"localImage": "202509_SW",
+						"imageUrl": "https://us-prod5-digitalasset-v2.s3.us-east-1.amazonaws.com/MOP_Category_202508_BreakfastSand_315x304.jpg",
+						"displayOrder": 4,
+						"Names": [
+						  {
+							"LanguageID": "en-US",
+							"ShortName": "Sandwiches",
+							"LongName": "Sandwiches"
+						  },
+						  {
+							"LanguageID": "es-US",
+							"ShortName": "Sandwiches",
+							"LongName": "Sandwiches"
+						  }
+						]
+				   },
+				   {
+                       "categoryId": 40,
+                       "localImage": "category_201807_mccafeglass_bakedgoods",
+                       "imageUrl": "https://us-prod5-digitalasset-v2.s3.amazonaws.com/MOP_Category_202201_McCafe_315x304.jpg",
+                       "displayOrder": 5,
+                       "Names": [{
+                               "LanguageID": "en-US",
+                               "ShortName": "McCafé",
+                               "LongName": "McCafé"
+                           },
+                           {
+                               "LanguageID": "es-US",
+                               "ShortName": "McCafé",
+                               "LongName": "McCafé"
+                           }
+                       ]
+                   }
+				]
+           },
+           {
+               "daypart": 2,
+               "description": "lunch",
+               "categories": [
+				   	{
+						"categoryId": 490,
+						"localImage": "202608_bev",
+						"imageUrl": "https://us-prod5-digitalasset-v2.s3.amazonaws.com/MOP_Category_202607_LimitedTimeOnly_315x304.jpg",
+						"displayOrder": 1,
+						"Names": [
+						  {
+							"LanguageID": "en-US",
+							"ShortName": "NEW: McCafé®",
+							"LongName": "NEW: McCafé®"
+						  },
+						  {
+							"LanguageID": "es-US",
+							"ShortName": "NEW: McCafé®",
+							"LongName": "NEW: McCafé®"
+						  }
+						]
+					},
+					{
+						"categoryId": 256,
+						"localImage": "202608_spicynuggets",
+						"imageUrl": "https://us-prod5-digitalasset-v2.s3.amazonaws.com/MOP_Category_202608_SpicyNuggets_315x304.jpg",
+						"displayOrder": 2,
+						"Names": [
+						  {
+							"LanguageID": "en-US",
+							"ShortName": "Limited Time: Spicy McNuggets®",
+							"LongName": "Limited Time: Spicy McNuggets®"
+						  },
+						  {
+							"LanguageID": "es-US",
+							"ShortName": "Limited Time: Spicy McNuggets®",
+							"LongName": "Limited Time: Spicy McNuggets®"
+						  }
+						]
+					},
+					{
+						"categoryId": 381,
+						"localImage": "evm_m_202509_Meals",
+						"imageUrl": "https://us-prod5-digitalasset-v2.s3.amazonaws.com/MOP_Category_202508_RODMeals_315x304.jpg",
+						"displayOrder": 3,
+						"Names": [{
+							"LanguageID": "en-US",
+							"ShortName": "Extra Value Meals",
+							"LongName": "Extra Value Meals"
+						   },
+						   {
+							"LanguageID": "es-US",
+							"ShortName": "Extra Value Meals",
+							"LongName": "Extra Value Meals"
+						   }
+					    ]
+                   },
+		           {
+						"categoryId": 382,
+						"localImage": "evm_m_202504_Burgers",
+						"imageUrl": "https://us-prod5-digitalasset-v2.s3.amazonaws.com/MOP_Category_202503_Burgers_315x304.jpg",
+						"displayOrder": 4,
+						"Names": [{
+							"LanguageID": "en-US",
+							"ShortName": "Burgers",
+							"LongName": "Burgers"
+							},
+							{
+							"LanguageID": "es-US",
+							"ShortName": "Burgers",
+							"LongName": "Burgers"
+							}
+						]
+					},
+				    {
+						"categoryId": 112,
+						"localImage": "category_20160330_happy_meal",
+						"imageUrl": "https://us-prod5-digitalasset-v2.s3.us-east-1.amazonaws.com/MOP_Category_202608_HM8_315x304.jpg",
+						"displayOrder": 5,
+						"Names": [
+						  {
+							"LanguageID": "en-US",
+							"ShortName": "Happy Meal",
+							"LongName": "Happy Meal"
+						  },
+						  {
+							"LanguageID": "es-US",
+							"ShortName": "Menus de Happy Meal",
+							"LongName": "Menus de Happy Meal"
+						  }
+						]
+					}
+				]
+			},
+           {
+               "daypart": 3,
+               "description": "dinner",
+               "categories": [
+					{
+						"categoryId": 491,
+						"localImage": "202608_bev",
+						"imageUrl": "https://us-prod5-digitalasset-v2.s3.amazonaws.com/MOP_Category_202607_LimitedTimeOnly_315x304.jpg",
+						"displayOrder": 1,
+						"Names": [
+						  {
+							"LanguageID": "en-US",
+							"ShortName": "NEW: McCafé®",
+							"LongName": "NEW: McCafé®"
+						  },
+						  {
+							"LanguageID": "es-US",
+							"ShortName": "NEW: McCafé®",
+							"LongName": "NEW: McCafé®"
+						  }
+						]
+					},
+					{
+						"categoryId": 262,
+						"localImage": "202608_spicynuggets",
+						"imageUrl": "https://us-prod5-digitalasset-v2.s3.amazonaws.com/MOP_Category_202608_SpicyNuggets_315x304.jpg",
+						"displayOrder": 2,
+						"Names": [
+						  {
+							"LanguageID": "en-US",
+							"ShortName": "Limited Time: Spicy McNuggets®",
+							"LongName": "Limited Time: Spicy McNuggets®"
+						  },
+						  {
+							"LanguageID": "es-US",
+							"ShortName": "Limited Time: Spicy McNuggets®",
+							"LongName": "Limited Time: Spicy McNuggets®"
+						  }
+						]
+					},
+					{
+						"categoryId": 399,
+						"localImage": "evm_m_202509_Meals",
+						"imageUrl": "https://us-prod5-digitalasset-v2.s3.amazonaws.com/MOP_Category_202508_RODMeals_315x304.jpg",
+						"displayOrder": 3,
+						"Names": [
+						  {
+							"LanguageID": "en-US",
+							"ShortName": "Extra Value Meals",
+							"LongName": "Extra Value Meals"
+						  },
+						  {
+							"LanguageID": "es-US",
+							"ShortName": "Extra Value Meals",
+							"LongName": "Extra Value Meals"
+						  }
+						]
+					},
+					{
+						"categoryId": 400,
+						"localImage": "evm_m_202504_Burgers",
+						"imageUrl": "https://us-prod5-digitalasset-v2.s3.amazonaws.com/MOP_Category_202503_Burgers_315x304.jpg",
+						"displayOrder": 4,
+						"Names": [
+						  {
+							"LanguageID": "en-US",
+							"ShortName": "Burgers",
+							"LongName": "Burgers"
+						  },
+						  {
+							"LanguageID": "es-US",
+							"ShortName": "Burgers",
+							"LongName": "Burgers"
+						  }
+						]
+					},
+					{
+						"categoryId": 156,
+						"localImage": "category_20160330_happy_meal",
+						"imageUrl": "https://us-prod5-digitalasset-v2.s3.us-east-1.amazonaws.com/MOP_Category_202608_HM8_315x304.jpg",
+						"displayOrder": 5,
+						"Names": [
+						  {
+							"LanguageID": "en-US",
+							"ShortName": "Happy Meal",
+							"LongName": "Happy Meal"
+						  },
+						  {
+							"LanguageID": "es-US",
+							"ShortName": "Menus de Happy Meal",
+							"LongName": "Menus de Happy Meal"
+						  }
+						]
+					}
+				]
+           },
+           {
+               "daypart": 4,
+               "description": "latenight",
+               "categories": [
+					{
+						"categoryId": 492,
+						"localImage": "202608_bev",
+						"imageUrl": "https://us-prod5-digitalasset-v2.s3.amazonaws.com/MOP_Category_202607_LimitedTimeOnly_315x304.jpg",
+						"displayOrder": 1,
+						"Names": [
+						  {
+							"LanguageID": "en-US",
+							"ShortName": "NEW: McCafé®",
+							"LongName": "NEW: McCafé®"
+						  },
+						  {
+							"LanguageID": "es-US",
+							"ShortName": "NEW: McCafé®",
+							"LongName": "NEW: McCafé®"
+						  }
+						]
+					},
+					{
+						"categoryId": 320,
+						"localImage": "202608_spicynuggets",
+						"imageUrl": "https://us-prod5-digitalasset-v2.s3.amazonaws.com/MOP_Category_202608_SpicyNuggets_315x304.jpg",
+						"displayOrder": 2,
+						"Names": [
+						  {
+							"LanguageID": "en-US",
+							"ShortName": "Limited Time: Spicy McNuggets®",
+							"LongName": "Limited Time: Spicy McNuggets®"
+						  },
+						  {
+							"LanguageID": "es-US",
+							"ShortName": "Limited Time: Spicy McNuggets®",
+							"LongName": "Limited Time: Spicy McNuggets®"
+						  }
+						]
+					},
+					{
+						"categoryId": 403,
+						"localImage": "evm_m_202509_Meals",
+						"imageUrl": "https://us-prod5-digitalasset-v2.s3.amazonaws.com/MOP_Category_202508_RODMeals_315x304.jpg",
+						"displayOrder": 3,
+						"Names": [
+						  {
+							"LanguageID": "en-US",
+							"ShortName": "Extra Value Meals",
+							"LongName": "Extra Value Meals"
+						  },
+						  {
+							"LanguageID": "es-US",
+							"ShortName": "Extra Value Meals",
+							"LongName": "Extra Value Meals"
+						  }
+						]
+					},
+					{
+						"categoryId": 404,
+						"localImage": "evm_m_202504_Burgers",
+						"imageUrl": "https://us-prod5-digitalasset-v2.s3.amazonaws.com/MOP_Category_202503_Burgers_315x304.jpg",
+						"displayOrder": 4,
+						"Names": [
+						  {
+							"LanguageID": "en-US",
+							"ShortName": "Burgers",
+							"LongName": "Burgers"
+						  },
+						  {
+							"LanguageID": "es-US",
+							"ShortName": "Burgers",
+							"LongName": "Burgers"
+						  }
+						]
+					},	
+					{
+						"categoryId": 330,
+						"localImage": "category_20160330_happy_meal",
+						"imageUrl": "https://us-prod5-digitalasset-v2.s3.us-east-1.amazonaws.com/MOP_Category_202608_HM8_315x304.jpg",
+						"displayOrder": 5,
+						"Names": [
+						  {
+							"LanguageID": "en-US",
+							"ShortName": "Happy Meal",
+							"LongName": "Happy Meal"
+						  },
+						  {
+							"LanguageID": "es-US",
+							"ShortName": "Menus de Happy Meal",
+							"LongName": "Menus de Happy Meal"
+						  }
+						]
+					}
+				]
+           },
+           {
+               "daypart": -1,
+               "description": "default fallback",
+               "categories": [ {
+						"categoryId": 381,
+						"localImage": "evm_m_202509_Meals",
+						"imageUrl": "https://us-prod5-digitalasset-v2.s3.us-east-1.amazonaws.com/MOP_Category_202508_RODMeals_315x304.jpg",
+						"displayOrder": 1,
+						"Names": [
+						  {
+							"LanguageID": "en-US",
+							"ShortName": "Extra Value Meals",
+							"LongName": "Extra Value Meals"
+						  },
+						  {
+							"LanguageID": "es-US",
+							"ShortName": "Extra Value Meals",
+							"LongName": "Extra Value Meals"
+						  }
+						]
+					  },
+					  {
+						"categoryId": 382,
+						"localImage": "evm_m_202504_Burgers",
+						"imageUrl": "https://us-prod5-digitalasset-v2.s3.amazonaws.com/MOP_Category_202503_Burgers_315x304.jpg",
+						"displayOrder": 2,
+						"Names": [
+						  {
+							"LanguageID": "en-US",
+							"ShortName": "Burgers",
+							"LongName": "Burgers"
+						  },
+						  {
+							"LanguageID": "es-US",
+							"ShortName": "Burgers",
+							"LongName": "Burgers"
+						  }
+						]
+					  },
+					  {
+						"categoryId": 383,
+						"localImage": "evm_m_202504_Chicken",
+						"imageUrl": "https://us-prod5-digitalasset-v2.s3.amazonaws.com/MOP_Category_202506_Chicken_315x304.jpg",
+						"displayOrder": 3,
+						"Names": [
+						  {
+							"LanguageID": "en-US",
+							"ShortName": "Chicken",
+							"LongName": "Chicken"
+						  },
+						  {
+							"LanguageID": "es-US",
+							"ShortName": "Chicken",
+							"LongName": "Chicken"
+						  }
+						]
+					  }
+               ]
+           }
+       ]
+   }
+}

@@ -4,11 +4,13 @@ import AppButton from "@/components/ui/AppButton";
 export default function MenuCardActions({
   itemName,
   isAddFeedbackVisible,
+  isQuickAddDisabled = false,
   onQuickAdd,
   onViewDetails,
 }: {
   itemName: string;
   isAddFeedbackVisible: boolean;
+  isQuickAddDisabled?: boolean;
   onQuickAdd: () => void;
   onViewDetails: () => void;
 }) {
@@ -38,7 +40,7 @@ export default function MenuCardActions({
         // and `disabled:opacity-60` on AppButton's base class does the rest
         // of the "temporarily inactive" softening.
         className={`px-5! text-sm! transition ${isAddFeedbackVisible ? "border-neutral-800! bg-neutral-800! text-white!" : ""}`}
-        disabled={isAddFeedbackVisible}
+        disabled={isAddFeedbackVisible || isQuickAddDisabled}
         aria-label={`Quick add ${itemName} to cart`}
         onClick={(event) => { event.stopPropagation(); onQuickAdd(); }}
       >

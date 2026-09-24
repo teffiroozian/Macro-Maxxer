@@ -1,0 +1,1228 @@
+{
+  "generatedAt": "2026-09-24T17:20:52.507Z",
+  "counts": {
+    "full": 0,
+    "partial": 37,
+    "none": 137
+  },
+  "entries": [
+    {
+      "id": "mcd-item-204560",
+      "name": "McCrispy® Strips Meal",
+      "category": "Chicken & Fish",
+      "status": "none",
+      "reason": "Source-only relationship/add-on record; not a standalone customization surface."
+    },
+    {
+      "id": "mcd-item-204650",
+      "name": "The Sausage Biscuit Meal Deal",
+      "category": "Breakfast",
+      "status": "none",
+      "reason": "Source-only relationship/add-on record; not a standalone customization surface."
+    },
+    {
+      "id": "mcd-item-204651",
+      "name": "The Sausage McMuffin® Meal Deal",
+      "category": "Breakfast",
+      "status": "none",
+      "reason": "Source-only relationship/add-on record; not a standalone customization surface."
+    },
+    {
+      "id": "mcd-item-203634",
+      "name": "4 piece Chicken McNuggets® Happy Meal®",
+      "category": "Happy Meals",
+      "status": "none",
+      "reason": "Source-only relationship/add-on record; not a standalone customization surface."
+    },
+    {
+      "id": "mcd-item-203635",
+      "name": "6 Piece McNuggets® Happy Meal®",
+      "category": "Happy Meals",
+      "status": "none",
+      "reason": "Source-only relationship/add-on record; not a standalone customization surface."
+    },
+    {
+      "id": "mcd-item-204558",
+      "name": "Bacon, Egg & Cheese Bagel Meal",
+      "category": "Breakfast",
+      "status": "none",
+      "reason": "Source-only relationship/add-on record; not a standalone customization surface."
+    },
+    {
+      "id": "mcd-item-200723",
+      "name": "Bacon, Egg & Cheese Biscuit Meal",
+      "category": "Breakfast",
+      "status": "none",
+      "reason": "Source-only relationship/add-on record; not a standalone customization surface."
+    },
+    {
+      "id": "mcd-item-200715",
+      "name": "Bacon, Egg & Cheese McGriddles® Meal",
+      "category": "Breakfast",
+      "status": "none",
+      "reason": "Source-only relationship/add-on record; not a standalone customization surface."
+    },
+    {
+      "id": "mcd-item-204534",
+      "name": "Bacon Quarter Pounder® with Cheese Meal",
+      "category": "Burgers",
+      "status": "none",
+      "reason": "Source-only relationship/add-on record; not a standalone customization surface."
+    },
+    {
+      "id": "mcd-item-200721",
+      "name": "Big Mac® Meal",
+      "category": "Burgers",
+      "status": "none",
+      "reason": "Source-only relationship/add-on record; not a standalone customization surface."
+    },
+    {
+      "id": "mcd-item-203451",
+      "name": "Cheeseburger Meal",
+      "category": "Burgers",
+      "status": "none",
+      "reason": "Source-only relationship/add-on record; not a standalone customization surface."
+    },
+    {
+      "id": "mcd-item-200734",
+      "name": "10 piece Chicken McNuggets® Meal",
+      "category": "McNuggets & Strips",
+      "status": "none",
+      "reason": "Source-only relationship/add-on record; not a standalone customization surface."
+    },
+    {
+      "id": "mcd-item-204364",
+      "name": "Deluxe McCrispy® Meal",
+      "category": "Chicken & Fish",
+      "status": "none",
+      "reason": "Source-only relationship/add-on record; not a standalone customization surface."
+    },
+    {
+      "id": "mcd-item-204535",
+      "name": "Quarter Pounder® with Cheese Deluxe Meal",
+      "category": "Burgers",
+      "status": "none",
+      "reason": "Source-only relationship/add-on record; not a standalone customization surface."
+    },
+    {
+      "id": "mcd-item-200712",
+      "name": "Double Quarter Pounder® with Cheese Meal",
+      "category": "Burgers",
+      "status": "none",
+      "reason": "Source-only relationship/add-on record; not a standalone customization surface."
+    },
+    {
+      "id": "mcd-item-200739",
+      "name": "Egg McMuffin® Meal",
+      "category": "Breakfast",
+      "status": "none",
+      "reason": "Source-only relationship/add-on record; not a standalone customization surface."
+    },
+    {
+      "id": "mcd-item-200732",
+      "name": "Filet-O-Fish® Meal",
+      "category": "Chicken & Fish",
+      "status": "none",
+      "reason": "Source-only relationship/add-on record; not a standalone customization surface."
+    },
+    {
+      "id": "mcd-item-203633",
+      "name": "Hamburger Happy Meal®",
+      "category": "Happy Meals",
+      "status": "none",
+      "reason": "Source-only relationship/add-on record; not a standalone customization surface."
+    },
+    {
+      "id": "mcd-item-204350",
+      "name": "The McChicken® Meal Deal",
+      "category": "Chicken & Fish",
+      "status": "none",
+      "reason": "Source-only relationship/add-on record; not a standalone customization surface."
+    },
+    {
+      "id": "mcd-item-203920",
+      "name": "McCrispy® Meal",
+      "category": "Chicken & Fish",
+      "status": "none",
+      "reason": "Source-only relationship/add-on record; not a standalone customization surface."
+    },
+    {
+      "id": "mcd-item-204349",
+      "name": "The McDouble® Meal Deal",
+      "category": "Burgers",
+      "status": "none",
+      "reason": "Source-only relationship/add-on record; not a standalone customization surface."
+    },
+    {
+      "id": "mcd-item-200720",
+      "name": "Quarter Pounder® with Cheese Meal",
+      "category": "Burgers",
+      "status": "none",
+      "reason": "Source-only relationship/add-on record; not a standalone customization surface."
+    },
+    {
+      "id": "mcd-item-204406",
+      "name": "McCrispy® Strips Ranch & Spicy Snack Wrap® Meal",
+      "category": "Snack Wraps",
+      "status": "none",
+      "reason": "Source-only relationship/add-on record; not a standalone customization surface."
+    },
+    {
+      "id": "mcd-item-204409",
+      "name": "McCrispy® Strips Ranch Snack Wrap® Meal",
+      "category": "Snack Wraps",
+      "status": "none",
+      "reason": "Source-only relationship/add-on record; not a standalone customization surface."
+    },
+    {
+      "id": "mcd-item-200731",
+      "name": "Sausage Biscuit with Egg Meal",
+      "category": "Breakfast",
+      "status": "none",
+      "reason": "Source-only relationship/add-on record; not a standalone customization surface."
+    },
+    {
+      "id": "mcd-item-200716",
+      "name": "Sausage Burrito Meal",
+      "category": "Breakfast",
+      "status": "none",
+      "reason": "Source-only relationship/add-on record; not a standalone customization surface."
+    },
+    {
+      "id": "mcd-item-200714",
+      "name": "Sausage, Egg & Cheese McGriddles® Meal",
+      "category": "Breakfast",
+      "status": "none",
+      "reason": "Source-only relationship/add-on record; not a standalone customization surface."
+    },
+    {
+      "id": "mcd-item-200717",
+      "name": "Sausage McGriddles® Meal",
+      "category": "Breakfast",
+      "status": "none",
+      "reason": "Source-only relationship/add-on record; not a standalone customization surface."
+    },
+    {
+      "id": "mcd-item-200724",
+      "name": "Sausage McMuffin® with Egg Meal",
+      "category": "Breakfast",
+      "status": "none",
+      "reason": "Source-only relationship/add-on record; not a standalone customization surface."
+    },
+    {
+      "id": "mcd-item-204557",
+      "name": "Spicy Deluxe McCrispy® Meal",
+      "category": "Chicken & Fish",
+      "status": "none",
+      "reason": "Source-only relationship/add-on record; not a standalone customization surface."
+    },
+    {
+      "id": "mcd-item-203922",
+      "name": "Spicy McCrispy® Meal",
+      "category": "Chicken & Fish",
+      "status": "none",
+      "reason": "Source-only relationship/add-on record; not a standalone customization surface."
+    },
+    {
+      "id": "mcd-item-204410",
+      "name": "McCrispy® Strips Spicy Snack Wrap® Meal",
+      "category": "Snack Wraps",
+      "status": "none",
+      "reason": "Source-only relationship/add-on record; not a standalone customization surface."
+    },
+    {
+      "id": "mcd-item-204559",
+      "name": "Steak, Egg & Cheese Bagel Meal",
+      "category": "Breakfast",
+      "status": "none",
+      "reason": "Source-only relationship/add-on record; not a standalone customization surface."
+    },
+    {
+      "id": "mcd-item-200610",
+      "name": "1% Low Fat Milk Jug",
+      "category": "Drinks",
+      "status": "none",
+      "reason": "No validated real ordering modifier graph and full nutrition mapping in the current dataset."
+    },
+    {
+      "id": "mcd-item-200068",
+      "name": "Apple Slices",
+      "category": "Fries & Sides",
+      "status": "none",
+      "reason": "No validated real ordering modifier graph and full nutrition mapping in the current dataset."
+    },
+    {
+      "id": "mcd-item-200424",
+      "name": "Bacon, Egg & Cheese Bagel",
+      "category": "Breakfast",
+      "status": "partial",
+      "reason": "Safe captured actions are enabled; unresolved captured options are intentionally hidden."
+    },
+    {
+      "id": "mcd-item-200300",
+      "name": "Bacon, Egg & Cheese Biscuit",
+      "category": "Breakfast",
+      "status": "partial",
+      "reason": "Safe captured actions are enabled; unresolved captured options are intentionally hidden."
+    },
+    {
+      "id": "mcd-item-200304",
+      "name": "Bacon, Egg & Cheese McGriddles®",
+      "category": "Breakfast",
+      "status": "partial",
+      "reason": "Safe captured actions are enabled; unresolved captured options are intentionally hidden."
+    },
+    {
+      "id": "mcd-item-201306",
+      "name": "Bagel (plain)",
+      "category": "Breakfast",
+      "status": "none",
+      "reason": "No validated real ordering modifier graph and full nutrition mapping in the current dataset."
+    },
+    {
+      "id": "mcd-item-200007",
+      "name": "Baked Apple Pie",
+      "category": "Sweets & Treats",
+      "status": "none",
+      "reason": "No validated real ordering modifier graph and full nutrition mapping in the current dataset."
+    },
+    {
+      "id": "mcd-item-200323",
+      "name": "Big Breakfast® with Hotcakes",
+      "category": "Breakfast",
+      "status": "partial",
+      "reason": "Safe captured actions are enabled; unresolved captured options are intentionally hidden."
+    },
+    {
+      "id": "mcd-item-200322",
+      "name": "Big Breakfast®",
+      "category": "Breakfast",
+      "status": "partial",
+      "reason": "Safe captured actions are enabled; unresolved captured options are intentionally hidden."
+    },
+    {
+      "id": "mcd-item-200463",
+      "name": "Big Mac®",
+      "category": "Burgers",
+      "status": "partial",
+      "reason": "Safe captured actions are enabled; unresolved captured options are intentionally hidden."
+    },
+    {
+      "id": "mcd-item-204623",
+      "name": "Blackberry Passion Fruit Refresher",
+      "category": "McCafé",
+      "status": "none",
+      "reason": "No validated real ordering modifier graph and full nutrition mapping in the current dataset."
+    },
+    {
+      "id": "mcd-item-200500",
+      "name": "Cappuccino",
+      "category": "McCafé",
+      "status": "none",
+      "reason": "Ordering graph captured, but no modifier has a reliable size-specific four-macro delta."
+    },
+    {
+      "id": "mcd-item-200181",
+      "name": "Caramel Cappuccino",
+      "category": "McCafé",
+      "status": "none",
+      "reason": "Ordering graph captured, but no modifier has a reliable size-specific four-macro delta."
+    },
+    {
+      "id": "mcd-item-203087",
+      "name": "Caramel Macchiato",
+      "category": "McCafé",
+      "status": "none",
+      "reason": "Ordering graph captured, but no modifier has a reliable size-specific four-macro delta."
+    },
+    {
+      "id": "mcd-item-200480",
+      "name": "Cheeseburger",
+      "category": "Burgers",
+      "status": "partial",
+      "reason": "Safe captured actions are enabled; unresolved captured options are intentionally hidden."
+    },
+    {
+      "id": "mcd-item-200692",
+      "name": "Chicken McNuggets®",
+      "category": "McNuggets & Strips",
+      "status": "partial",
+      "reason": "Safe captured actions are enabled; unresolved captured options are intentionally hidden."
+    },
+    {
+      "id": "mcd-item-200009",
+      "name": "Chocolate Chip Cookie",
+      "category": "Sweets & Treats",
+      "status": "none",
+      "reason": "No validated real ordering modifier graph and full nutrition mapping in the current dataset."
+    },
+    {
+      "id": "mcd-item-200107",
+      "name": "Chocolate Shake",
+      "category": "Sweets & Treats",
+      "status": "none",
+      "reason": "No validated real ordering modifier graph and full nutrition mapping in the current dataset."
+    },
+    {
+      "id": "mcd-item-200639",
+      "name": "Medium Coca-Cola®",
+      "category": "Drinks",
+      "status": "none",
+      "reason": "No validated real ordering modifier graph and full nutrition mapping in the current dataset."
+    },
+    {
+      "id": "mcd-item-200611",
+      "name": "Coca-Cola®",
+      "category": "Drinks",
+      "status": "none",
+      "reason": "No validated real ordering modifier graph and full nutrition mapping in the current dataset."
+    },
+    {
+      "id": "mcd-item-201038",
+      "name": "Premium Roast Decaf Coffee",
+      "category": "McCafé",
+      "status": "none",
+      "reason": "Ordering graph captured, but no modifier has a reliable size-specific four-macro delta."
+    },
+    {
+      "id": "mcd-item-200020",
+      "name": "Premium Roast Coffee",
+      "category": "McCafé",
+      "status": "none",
+      "reason": "Ordering graph captured, but no modifier has a reliable size-specific four-macro delta."
+    },
+    {
+      "id": "mcd-item-204377",
+      "name": "Creamy Chili McCrispy® Strip Dip",
+      "category": "Sauces & Condiments",
+      "status": "none",
+      "reason": "No validated real ordering modifier graph and full nutrition mapping in the current dataset."
+    },
+    {
+      "id": "mcd-item-200293",
+      "name": "Creamy Ranch Sauce",
+      "category": "Sauces & Condiments",
+      "status": "none",
+      "reason": "No validated real ordering modifier graph and full nutrition mapping in the current dataset."
+    },
+    {
+      "id": "mcd-item-200497",
+      "name": "Daily Double",
+      "category": "Burgers",
+      "status": "partial",
+      "reason": "Safe captured actions are enabled; unresolved captured options are intentionally hidden."
+    },
+    {
+      "id": "mcd-item-200609",
+      "name": "DASANI® Water",
+      "category": "Drinks",
+      "status": "none",
+      "reason": "No validated real ordering modifier graph and full nutrition mapping in the current dataset."
+    },
+    {
+      "id": "mcd-item-203745",
+      "name": "Deluxe McCrispy®",
+      "category": "Chicken & Fish",
+      "status": "partial",
+      "reason": "Safe captured actions are enabled; unresolved captured options are intentionally hidden."
+    },
+    {
+      "id": "mcd-item-200765",
+      "name": "Quarter Pounder® with Cheese Deluxe",
+      "category": "Burgers",
+      "status": "partial",
+      "reason": "Safe captured actions are enabled; unresolved captured options are intentionally hidden."
+    },
+    {
+      "id": "mcd-item-200612",
+      "name": "Diet Coke®",
+      "category": "Drinks",
+      "status": "none",
+      "reason": "No validated real ordering modifier graph and full nutrition mapping in the current dataset."
+    },
+    {
+      "id": "mcd-item-204630",
+      "name": "Dirty Dr Pepper®",
+      "category": "McCafé",
+      "status": "none",
+      "reason": "No validated real ordering modifier graph and full nutrition mapping in the current dataset."
+    },
+    {
+      "id": "mcd-item-200486",
+      "name": "Double Cheeseburger",
+      "category": "Burgers",
+      "status": "partial",
+      "reason": "Safe captured actions are enabled; unresolved captured options are intentionally hidden."
+    },
+    {
+      "id": "mcd-item-200476",
+      "name": "Double Quarter Pounder® with Cheese",
+      "category": "Burgers",
+      "status": "partial",
+      "reason": "Safe captured actions are enabled; unresolved captured options are intentionally hidden."
+    },
+    {
+      "id": "mcd-item-200613",
+      "name": "Dr Pepper®",
+      "category": "Drinks",
+      "status": "none",
+      "reason": "No validated real ordering modifier graph and full nutrition mapping in the current dataset."
+    },
+    {
+      "id": "mcd-item-200876",
+      "name": "Egg and Cheese Bagel",
+      "category": "Breakfast",
+      "status": "partial",
+      "reason": "Safe captured actions are enabled; unresolved captured options are intentionally hidden."
+    },
+    {
+      "id": "mcd-item-201256",
+      "name": "Egg Cheese Biscuit",
+      "category": "Breakfast",
+      "status": "partial",
+      "reason": "Safe captured actions are enabled; unresolved captured options are intentionally hidden."
+    },
+    {
+      "id": "mcd-item-200298",
+      "name": "Egg McMuffin®",
+      "category": "Breakfast",
+      "status": "partial",
+      "reason": "Safe captured actions are enabled; unresolved captured options are intentionally hidden."
+    },
+    {
+      "id": "mcd-item-202381",
+      "name": "Americano",
+      "category": "McCafé",
+      "status": "none",
+      "reason": "Ordering graph captured, but no modifier has a reliable size-specific four-macro delta."
+    },
+    {
+      "id": "mcd-item-200445",
+      "name": "Filet-O-Fish®",
+      "category": "Chicken & Fish",
+      "status": "partial",
+      "reason": "Safe captured actions are enabled; unresolved captured options are intentionally hidden."
+    },
+    {
+      "id": "mcd-item-200149",
+      "name": "Caramel Frappé",
+      "category": "McCafé",
+      "status": "none",
+      "reason": "Ordering graph captured, but no modifier has a reliable size-specific four-macro delta."
+    },
+    {
+      "id": "mcd-item-200148",
+      "name": "Mocha Frappé",
+      "category": "McCafé",
+      "status": "none",
+      "reason": "Ordering graph captured, but no modifier has a reliable size-specific four-macro delta."
+    },
+    {
+      "id": "mcd-item-200186",
+      "name": "French Vanilla Cappuccino",
+      "category": "McCafé",
+      "status": "none",
+      "reason": "Ordering graph captured, but no modifier has a reliable size-specific four-macro delta."
+    },
+    {
+      "id": "mcd-item-202274",
+      "name": "Frozen Coca-Cola® Classic",
+      "category": "Drinks",
+      "status": "none",
+      "reason": "No validated real ordering modifier graph and full nutrition mapping in the current dataset."
+    },
+    {
+      "id": "mcd-item-201971",
+      "name": "Frozen Fanta® Blue Raspberry",
+      "category": "Drinks",
+      "status": "none",
+      "reason": "No validated real ordering modifier graph and full nutrition mapping in the current dataset."
+    },
+    {
+      "id": "mcd-item-204159",
+      "name": "Frozen Hawaiian Punch®",
+      "category": "Drinks",
+      "status": "none",
+      "reason": "No validated real ordering modifier graph and full nutrition mapping in the current dataset."
+    },
+    {
+      "id": "mcd-item-200284",
+      "name": "Fruit & Maple Oatmeal",
+      "category": "Breakfast",
+      "status": "none",
+      "reason": "No validated real ordering modifier graph and full nutrition mapping in the current dataset."
+    },
+    {
+      "id": "mcd-item-200477",
+      "name": "Hamburger",
+      "category": "Burgers",
+      "status": "partial",
+      "reason": "Safe captured actions are enabled; unresolved captured options are intentionally hidden."
+    },
+    {
+      "id": "mcd-item-200340",
+      "name": "Hash Browns",
+      "category": "Breakfast",
+      "status": "none",
+      "reason": "No validated real ordering modifier graph and full nutrition mapping in the current dataset."
+    },
+    {
+      "id": "mcd-item-203556",
+      "name": "Hi-C® Orange Lavaburst®",
+      "category": "Drinks",
+      "status": "none",
+      "reason": "No validated real ordering modifier graph and full nutrition mapping in the current dataset."
+    },
+    {
+      "id": "mcd-item-203082",
+      "name": "Honest Kids® Appley Ever After® Organic Juice Drink",
+      "category": "Drinks",
+      "status": "none",
+      "reason": "No validated real ordering modifier graph and full nutrition mapping in the current dataset."
+    },
+    {
+      "id": "mcd-item-200411",
+      "name": "Honey Mustard Sauce",
+      "category": "Sauces & Condiments",
+      "status": "none",
+      "reason": "No validated real ordering modifier graph and full nutrition mapping in the current dataset."
+    },
+    {
+      "id": "mcd-item-200313",
+      "name": "Honey",
+      "category": "Sauces & Condiments",
+      "status": "none",
+      "reason": "No validated real ordering modifier graph and full nutrition mapping in the current dataset."
+    },
+    {
+      "id": "mcd-item-200081",
+      "name": "Hot Caramel Sundae",
+      "category": "Sweets & Treats",
+      "status": "none",
+      "reason": "No validated real ordering modifier graph and full nutrition mapping in the current dataset."
+    },
+    {
+      "id": "mcd-item-200162",
+      "name": "Hot Chocolate",
+      "category": "McCafé",
+      "status": "none",
+      "reason": "Ordering graph captured, but no modifier has a reliable size-specific four-macro delta."
+    },
+    {
+      "id": "mcd-item-200074",
+      "name": "Hot Fudge Sundae",
+      "category": "Sweets & Treats",
+      "status": "none",
+      "reason": "No validated real ordering modifier graph and full nutrition mapping in the current dataset."
+    },
+    {
+      "id": "mcd-item-202116",
+      "name": "Hot Tea",
+      "category": "McCafé",
+      "status": "none",
+      "reason": "No validated real ordering modifier graph and full nutrition mapping in the current dataset."
+    },
+    {
+      "id": "mcd-item-200258",
+      "name": "Hotcakes and Sausage",
+      "category": "Breakfast",
+      "status": "none",
+      "reason": "No validated real ordering modifier graph and full nutrition mapping in the current dataset."
+    },
+    {
+      "id": "mcd-item-200325",
+      "name": "Hotcakes",
+      "category": "Breakfast",
+      "status": "none",
+      "reason": "No validated real ordering modifier graph and full nutrition mapping in the current dataset."
+    },
+    {
+      "id": "mcd-item-204189",
+      "name": "Iced Caramel Latte",
+      "category": "McCafé",
+      "status": "none",
+      "reason": "Ordering graph captured, but no modifier has a reliable size-specific four-macro delta."
+    },
+    {
+      "id": "mcd-item-203275",
+      "name": "Iced Caramel Macchiato",
+      "category": "McCafé",
+      "status": "none",
+      "reason": "Ordering graph captured, but no modifier has a reliable size-specific four-macro delta."
+    },
+    {
+      "id": "mcd-item-203260",
+      "name": "Iced Black Coffee",
+      "category": "McCafé",
+      "status": "none",
+      "reason": "No validated real ordering modifier graph and full nutrition mapping in the current dataset."
+    },
+    {
+      "id": "mcd-item-204205",
+      "name": "Iced Caramel Coffee",
+      "category": "McCafé",
+      "status": "none",
+      "reason": "Ordering graph captured, but no modifier has a reliable size-specific four-macro delta."
+    },
+    {
+      "id": "mcd-item-204219",
+      "name": "Iced French Vanilla Coffee",
+      "category": "McCafé",
+      "status": "none",
+      "reason": "Ordering graph captured, but no modifier has a reliable size-specific four-macro delta."
+    },
+    {
+      "id": "mcd-item-200123",
+      "name": "Iced Coffee",
+      "category": "McCafé",
+      "status": "none",
+      "reason": "Ordering graph captured, but no modifier has a reliable size-specific four-macro delta."
+    },
+    {
+      "id": "mcd-item-200194",
+      "name": "Iced Latte",
+      "category": "McCafé",
+      "status": "none",
+      "reason": "Ordering graph captured, but no modifier has a reliable size-specific four-macro delta."
+    },
+    {
+      "id": "mcd-item-200653",
+      "name": "Iced Mocha Latte",
+      "category": "McCafé",
+      "status": "none",
+      "reason": "Ordering graph captured, but no modifier has a reliable size-specific four-macro delta."
+    },
+    {
+      "id": "mcd-item-200626",
+      "name": "Unsweetened Iced Tea",
+      "category": "Drinks",
+      "status": "none",
+      "reason": "No validated real ordering modifier graph and full nutrition mapping in the current dataset."
+    },
+    {
+      "id": "mcd-item-200268",
+      "name": "Ketchup Packet",
+      "category": "Sauces & Condiments",
+      "status": "none",
+      "reason": "No validated real ordering modifier graph and full nutrition mapping in the current dataset."
+    },
+    {
+      "id": "mcd-item-204208",
+      "name": "Caramel Latte",
+      "category": "McCafé",
+      "status": "none",
+      "reason": "Ordering graph captured, but no modifier has a reliable size-specific four-macro delta."
+    },
+    {
+      "id": "mcd-item-204209",
+      "name": "French Vanilla Latte",
+      "category": "McCafé",
+      "status": "none",
+      "reason": "Ordering graph captured, but no modifier has a reliable size-specific four-macro delta."
+    },
+    {
+      "id": "mcd-item-200358",
+      "name": "Latte",
+      "category": "McCafé",
+      "status": "none",
+      "reason": "Ordering graph captured, but no modifier has a reliable size-specific four-macro delta."
+    },
+    {
+      "id": "mcd-item-203957",
+      "name": "Lemonade",
+      "category": "Drinks",
+      "status": "none",
+      "reason": "No validated real ordering modifier graph and full nutrition mapping in the current dataset."
+    },
+    {
+      "id": "mcd-item-204589",
+      "name": "Mango Pineapple Refresher",
+      "category": "McCafé",
+      "status": "none",
+      "reason": "No validated real ordering modifier graph and full nutrition mapping in the current dataset."
+    },
+    {
+      "id": "mcd-item-200155",
+      "name": "Mango Pineapple Smoothie",
+      "category": "Drinks",
+      "status": "none",
+      "reason": "No validated real ordering modifier graph and full nutrition mapping in the current dataset."
+    },
+    {
+      "id": "mcd-item-201157",
+      "name": "Mayonnaise Packet",
+      "category": "Sauces & Condiments",
+      "status": "none",
+      "reason": "No validated real ordering modifier graph and full nutrition mapping in the current dataset."
+    },
+    {
+      "id": "mcd-item-200438",
+      "name": "McChicken®",
+      "category": "Chicken & Fish",
+      "status": "partial",
+      "reason": "Safe captured actions are enabled; unresolved captured options are intentionally hidden."
+    },
+    {
+      "id": "mcd-item-203747",
+      "name": "McCrispy®",
+      "category": "Chicken & Fish",
+      "status": "partial",
+      "reason": "Safe captured actions are enabled; unresolved captured options are intentionally hidden."
+    },
+    {
+      "id": "mcd-item-204386",
+      "name": "McCrispy® Strips",
+      "category": "McNuggets & Strips",
+      "status": "partial",
+      "reason": "Safe captured actions are enabled; unresolved captured options are intentionally hidden."
+    },
+    {
+      "id": "mcd-item-200491",
+      "name": "McDouble®",
+      "category": "Burgers",
+      "status": "partial",
+      "reason": "Safe captured actions are enabled; unresolved captured options are intentionally hidden."
+    },
+    {
+      "id": "mcd-item-200101",
+      "name": "OREO® McFlurry®",
+      "category": "Sweets & Treats",
+      "status": "none",
+      "reason": "No validated real ordering modifier graph and full nutrition mapping in the current dataset."
+    },
+    {
+      "id": "mcd-item-203834",
+      "name": "Mighty Hot Sauce",
+      "category": "Sauces & Condiments",
+      "status": "none",
+      "reason": "No validated real ordering modifier graph and full nutrition mapping in the current dataset."
+    },
+    {
+      "id": "mcd-item-201248",
+      "name": "Minute Maid® Premium Orange Juice",
+      "category": "Drinks",
+      "status": "none",
+      "reason": "No validated real ordering modifier graph and full nutrition mapping in the current dataset."
+    },
+    {
+      "id": "mcd-item-200096",
+      "name": "M&M'S® McFlurry®",
+      "category": "Sweets & Treats",
+      "status": "none",
+      "reason": "No validated real ordering modifier graph and full nutrition mapping in the current dataset."
+    },
+    {
+      "id": "mcd-item-202961",
+      "name": "Mocha Latte",
+      "category": "McCafé",
+      "status": "none",
+      "reason": "Ordering graph captured, but no modifier has a reliable size-specific four-macro delta."
+    },
+    {
+      "id": "mcd-item-201660",
+      "name": "Mustard Packet",
+      "category": "Sauces & Condiments",
+      "status": "none",
+      "reason": "No validated real ordering modifier graph and full nutrition mapping in the current dataset."
+    },
+    {
+      "id": "mcd-item-204626",
+      "name": "Orange Dream with Hi-C®",
+      "category": "McCafé",
+      "status": "none",
+      "reason": "No validated real ordering modifier graph and full nutrition mapping in the current dataset."
+    },
+    {
+      "id": "mcd-item-204716",
+      "name": "Orange Dream with Fanta®",
+      "category": "McCafé",
+      "status": "none",
+      "reason": "No validated real ordering modifier graph and full nutrition mapping in the current dataset."
+    },
+    {
+      "id": "mcd-item-203410",
+      "name": "Bacon Quarter Pounder® with Cheese",
+      "category": "Burgers",
+      "status": "partial",
+      "reason": "Safe captured actions are enabled; unresolved captured options are intentionally hidden."
+    },
+    {
+      "id": "mcd-item-200466",
+      "name": "Quarter Pounder® with Cheese",
+      "category": "Burgers",
+      "status": "partial",
+      "reason": "Safe captured actions are enabled; unresolved captured options are intentionally hidden."
+    },
+    {
+      "id": "mcd-item-204401",
+      "name": "Ranch Snack Wrap",
+      "category": "Snack Wraps",
+      "status": "partial",
+      "reason": "Safe captured actions are enabled; unresolved captured options are intentionally hidden."
+    },
+    {
+      "id": "mcd-item-204498",
+      "name": "Red Bull® Dragonberry Energizer",
+      "category": "McCafé",
+      "status": "none",
+      "reason": "No validated real ordering modifier graph and full nutrition mapping in the current dataset."
+    },
+    {
+      "id": "mcd-item-200607",
+      "name": "Reduced Sugar Low Fat Chocolate Milk Jug",
+      "category": "Drinks",
+      "status": "none",
+      "reason": "No validated real ordering modifier graph and full nutrition mapping in the current dataset."
+    },
+    {
+      "id": "mcd-item-204688",
+      "name": "Reduced Sugar Red Bull® Dragonberry Energizer",
+      "category": "McCafé",
+      "status": "none",
+      "reason": "No validated real ordering modifier graph and full nutrition mapping in the current dataset."
+    },
+    {
+      "id": "mcd-item-204709",
+      "name": "Reduced Sugar Vanilla Swirl with Diet Coke®",
+      "category": "McCafé",
+      "status": "none",
+      "reason": "No validated real ordering modifier graph and full nutrition mapping in the current dataset."
+    },
+    {
+      "id": "mcd-item-200302",
+      "name": "Sausage Biscuit with Egg",
+      "category": "Breakfast",
+      "status": "partial",
+      "reason": "Safe captured actions are enabled; unresolved captured options are intentionally hidden."
+    },
+    {
+      "id": "mcd-item-200301",
+      "name": "Sausage Biscuit",
+      "category": "Breakfast",
+      "status": "partial",
+      "reason": "Safe captured actions are enabled; unresolved captured options are intentionally hidden."
+    },
+    {
+      "id": "mcd-item-200267",
+      "name": "Sausage Burrito",
+      "category": "Breakfast",
+      "status": "partial",
+      "reason": "Safe captured actions are enabled; unresolved captured options are intentionally hidden."
+    },
+    {
+      "id": "mcd-item-201030",
+      "name": "Sausage, Egg & Cheese Bagel",
+      "category": "Breakfast",
+      "status": "partial",
+      "reason": "Safe captured actions are enabled; unresolved captured options are intentionally hidden."
+    },
+    {
+      "id": "mcd-item-200307",
+      "name": "Sausage, Egg & Cheese McGriddles®",
+      "category": "Breakfast",
+      "status": "partial",
+      "reason": "Safe captured actions are enabled; unresolved captured options are intentionally hidden."
+    },
+    {
+      "id": "mcd-item-200306",
+      "name": "Sausage McGriddles®",
+      "category": "Breakfast",
+      "status": "partial",
+      "reason": "Safe captured actions are enabled; unresolved captured options are intentionally hidden."
+    },
+    {
+      "id": "mcd-item-200161",
+      "name": "Sausage McMuffin® with Egg",
+      "category": "Breakfast",
+      "status": "partial",
+      "reason": "Safe captured actions are enabled; unresolved captured options are intentionally hidden."
+    },
+    {
+      "id": "mcd-item-200449",
+      "name": "Sausage McMuffin®",
+      "category": "Breakfast",
+      "status": "partial",
+      "reason": "Safe captured actions are enabled; unresolved captured options are intentionally hidden."
+    },
+    {
+      "id": "mcd-item-200066",
+      "name": "World Famous Fries®",
+      "category": "Fries & Sides",
+      "status": "none",
+      "reason": "No validated real ordering modifier graph and full nutrition mapping in the current dataset."
+    },
+    {
+      "id": "mcd-item-200295",
+      "name": "Spicy Buffalo Sauce",
+      "category": "Sauces & Condiments",
+      "status": "none",
+      "reason": "No validated real ordering modifier graph and full nutrition mapping in the current dataset."
+    },
+    {
+      "id": "mcd-item-203841",
+      "name": "Spicy Chicken McNuggets®",
+      "category": "McNuggets & Strips",
+      "status": "none",
+      "reason": "No validated real ordering modifier graph and full nutrition mapping in the current dataset."
+    },
+    {
+      "id": "mcd-item-203873",
+      "name": "Spicy Deluxe McCrispy®",
+      "category": "Chicken & Fish",
+      "status": "partial",
+      "reason": "Safe captured actions are enabled; unresolved captured options are intentionally hidden."
+    },
+    {
+      "id": "mcd-item-203901",
+      "name": "Spicy McCrispy®",
+      "category": "Chicken & Fish",
+      "status": "partial",
+      "reason": "Safe captured actions are enabled; unresolved captured options are intentionally hidden."
+    },
+    {
+      "id": "mcd-item-204402",
+      "name": "Spicy Snack Wrap",
+      "category": "Snack Wraps",
+      "status": "partial",
+      "reason": "Safe captured actions are enabled; unresolved captured options are intentionally hidden."
+    },
+    {
+      "id": "mcd-item-204452",
+      "name": "Sprite® Berry Blast",
+      "category": "McCafé",
+      "status": "none",
+      "reason": "No validated real ordering modifier graph and full nutrition mapping in the current dataset."
+    },
+    {
+      "id": "mcd-item-200615",
+      "name": "Sprite®",
+      "category": "Drinks",
+      "status": "none",
+      "reason": "No validated real ordering modifier graph and full nutrition mapping in the current dataset."
+    },
+    {
+      "id": "mcd-item-200145",
+      "name": "Steak, Egg & Cheese Bagel",
+      "category": "Breakfast",
+      "status": "partial",
+      "reason": "Safe captured actions are enabled; unresolved captured options are intentionally hidden."
+    },
+    {
+      "id": "mcd-item-200152",
+      "name": "Strawberry Banana Smoothie",
+      "category": "Drinks",
+      "status": "none",
+      "reason": "No validated real ordering modifier graph and full nutrition mapping in the current dataset."
+    },
+    {
+      "id": "mcd-item-200109",
+      "name": "Strawberry Shake",
+      "category": "Sweets & Treats",
+      "status": "none",
+      "reason": "No validated real ordering modifier graph and full nutrition mapping in the current dataset."
+    },
+    {
+      "id": "mcd-item-204586",
+      "name": "Strawberry Watermelon Refresher",
+      "category": "McCafé",
+      "status": "none",
+      "reason": "No validated real ordering modifier graph and full nutrition mapping in the current dataset."
+    },
+    {
+      "id": "mcd-item-200315",
+      "name": "Sweet 'N Sour Sauce",
+      "category": "Sauces & Condiments",
+      "status": "none",
+      "reason": "No validated real ordering modifier graph and full nutrition mapping in the current dataset."
+    },
+    {
+      "id": "mcd-item-200627",
+      "name": "Sweet Tea",
+      "category": "Drinks",
+      "status": "none",
+      "reason": "No validated real ordering modifier graph and full nutrition mapping in the current dataset."
+    },
+    {
+      "id": "mcd-item-200412",
+      "name": "Tangy Barbeque Sauce",
+      "category": "Sauces & Condiments",
+      "status": "none",
+      "reason": "No validated real ordering modifier graph and full nutrition mapping in the current dataset."
+    },
+    {
+      "id": "mcd-item-200062",
+      "name": "Vanilla Cone",
+      "category": "Sweets & Treats",
+      "status": "none",
+      "reason": "No validated real ordering modifier graph and full nutrition mapping in the current dataset."
+    },
+    {
+      "id": "mcd-item-200108",
+      "name": "Vanilla Shake",
+      "category": "Sweets & Treats",
+      "status": "none",
+      "reason": "No validated real ordering modifier graph and full nutrition mapping in the current dataset."
+    },
+    {
+      "id": "mcd-item-204717",
+      "name": "Vanilla Swirl with Coca-Cola®",
+      "category": "McCafé",
+      "status": "none",
+      "reason": "No validated real ordering modifier graph and full nutrition mapping in the current dataset."
+    },
+    {
+      "id": "mcd-item-200169",
+      "name": "Hot Mustard Sauce",
+      "category": "Sauces & Condiments",
+      "status": "none",
+      "reason": "Source-only relationship/add-on record; not a standalone customization surface."
+    },
+    {
+      "id": "mcd-item-201677",
+      "name": "Coca-Cola® (Small) No Ice",
+      "category": "Drinks",
+      "status": "none",
+      "reason": "Source-only relationship/add-on record; not a standalone customization surface."
+    },
+    {
+      "id": "mcd-item-204268",
+      "name": "Cheeseburger (Second Included)",
+      "category": "Burgers",
+      "status": "none",
+      "reason": "Source-only relationship/add-on record; not a standalone customization surface."
+    },
+    {
+      "id": "mcd-item-204339",
+      "name": "Sausage Burrito (Second Included)",
+      "category": "Breakfast",
+      "status": "none",
+      "reason": "Source-only relationship/add-on record; not a standalone customization surface."
+    },
+    {
+      "id": "mcd-item-204408",
+      "name": "Ranch Snack Wrap (Second Included)",
+      "category": "Snack Wraps",
+      "status": "none",
+      "reason": "Source-only relationship/add-on record; not a standalone customization surface."
+    },
+    {
+      "id": "mcd-item-204407",
+      "name": "Spicy Snack Wrap (Second Included)",
+      "category": "Snack Wraps",
+      "status": "none",
+      "reason": "Source-only relationship/add-on record; not a standalone customization surface."
+    },
+    {
+      "id": "mcd-item-203057",
+      "name": "Fanta® Orange",
+      "category": "Drinks",
+      "status": "none",
+      "reason": "No validated real ordering modifier graph and full nutrition mapping in the current dataset."
+    },
+    {
+      "id": "mcd-item-200614",
+      "name": "Diet Dr Pepper®",
+      "category": "Drinks",
+      "status": "none",
+      "reason": "No validated real ordering modifier graph and full nutrition mapping in the current dataset."
+    },
+    {
+      "id": "mcd-item-204484",
+      "name": "Red Bull®",
+      "category": "Drinks",
+      "status": "none",
+      "reason": "No validated real ordering modifier graph and full nutrition mapping in the current dataset."
+    },
+    {
+      "id": "mcd-item-204702",
+      "name": "Red Bull Zero®",
+      "category": "Drinks",
+      "status": "none",
+      "reason": "No validated real ordering modifier graph and full nutrition mapping in the current dataset."
+    },
+    {
+      "id": "mcd-item-203967",
+      "name": "Unsweetened Tea Lemonade",
+      "category": "Drinks",
+      "status": "none",
+      "reason": "No validated real ordering modifier graph and full nutrition mapping in the current dataset."
+    },
+    {
+      "id": "mcd-item-203964",
+      "name": "Sweet Tea Lemonade",
+      "category": "Drinks",
+      "status": "none",
+      "reason": "No validated real ordering modifier graph and full nutrition mapping in the current dataset."
+    },
+    {
+      "id": "mcd-item-200591",
+      "name": "Iced Sugar Free Vanilla Coffee",
+      "category": "McCafé",
+      "status": "none",
+      "reason": "No validated real ordering modifier graph and full nutrition mapping in the current dataset."
+    },
+    {
+      "id": "mcd-item-200223",
+      "name": "Iced French Vanilla Latte",
+      "category": "McCafé",
+      "status": "none",
+      "reason": "Ordering graph captured, but no modifier has a reliable size-specific four-macro delta."
+    },
+    {
+      "id": "mcd-item-200333",
+      "name": "Iced Sugar Free Vanilla Latte",
+      "category": "McCafé",
+      "status": "none",
+      "reason": "No validated real ordering modifier graph and full nutrition mapping in the current dataset."
+    },
+    {
+      "id": "mcd-item-200706",
+      "name": "Sugar Free Vanilla Latte",
+      "category": "McCafé",
+      "status": "none",
+      "reason": "No validated real ordering modifier graph and full nutrition mapping in the current dataset."
+    },
+    {
+      "id": "mcd-item-200390",
+      "name": "Sugar Free Vanilla Cappuccino",
+      "category": "McCafé",
+      "status": "none",
+      "reason": "No validated real ordering modifier graph and full nutrition mapping in the current dataset."
+    },
+    {
+      "id": "mcd-item-204695",
+      "name": "Caramel Apple Pie Frappé",
+      "category": "McCafé",
+      "status": "none",
+      "reason": "No validated real ordering modifier graph and full nutrition mapping in the current dataset."
+    },
+    {
+      "id": "mcd-item-204697",
+      "name": "Caramel Apple Pie Latte",
+      "category": "McCafé",
+      "status": "none",
+      "reason": "No validated real ordering modifier graph and full nutrition mapping in the current dataset."
+    },
+    {
+      "id": "mcd-item-204693",
+      "name": "Caramel Apple Pie Iced Coffee",
+      "category": "McCafé",
+      "status": "none",
+      "reason": "No validated real ordering modifier graph and full nutrition mapping in the current dataset."
+    },
+    {
+      "id": "mcd-item-204691",
+      "name": "Iced Caramel Apple Pie Latte",
+      "category": "McCafé",
+      "status": "none",
+      "reason": "No validated real ordering modifier graph and full nutrition mapping in the current dataset."
+    },
+    {
+      "id": "mcd-happy-meal-toy",
+      "name": "Happy Meal Toy",
+      "category": "Happy Meals",
+      "status": "none",
+      "reason": "Source-only relationship/add-on record; not a standalone customization surface."
+    }
+  ]
+}

@@ -9,6 +9,7 @@ import {
   resolveIngredientItemCategory,
   resolveIngredientTabs,
   resolveSingleSelectIngredientTabs,
+  resolveItemCustomization,
   type IngredientSelectionMode,
 } from "@/lib/ingredientTabs";
 import {
@@ -64,10 +65,10 @@ function includedIngredientPriority(ingredient: ResolvedPanelIngredient) {
   const normalizedRole = normalizeIngredientCategory(ingredient.tabLabel ?? "");
 
   if (/bun|bread carrier/.test(normalizedRole) || normalizedCategories.some((category) => /bun|bread carrier/.test(category))) return 0;
-  if (normalizedRole.includes("cheese") || normalizedCategories.some((category) => category.includes("cheese"))) return 1;
-  if (/protein|meat|egg/.test(normalizedRole)) return 2;
-  if (normalizedCategories.some((category) => category === "eggs" || category === "egg")) return 2;
-  if (normalizedCategories.some((category) => category.includes("protein") || category.includes("meat"))) return 2;
+  if (/protein|meat|egg/.test(normalizedRole)) return 1;
+  if (normalizedCategories.some((category) => category === "eggs" || category === "egg")) return 1;
+  if (normalizedCategories.some((category) => category.includes("protein") || category.includes("meat"))) return 1;
+  if (normalizedRole.includes("cheese") || normalizedCategories.some((category) => category.includes("cheese"))) return 2;
   if (ingredient.isReadOnly) return 2;
   if (/topping|pickle|removal/.test(normalizedRole) || normalizedCategories.some((category) => category.includes("topping"))) return 3;
   if (
@@ -148,6 +149,10 @@ export function resolvePanelIngredientTabs(
   selectedVariantId?: string,
   customizationRules?: RestaurantCustomizationRules
 ): ResolvedIngredientTab[] {
+  const effectiveItem: MenuItem = {
+    ...item,
+    customization: resolveItemCustomization(item, selectedVariantId),
+  };
   const selectedParentVariant = variants?.find(
     (variant) => variant.id === selectedVariantId,
   );
@@ -160,8 +165,8 @@ export function resolvePanelIngredientTabs(
     ingredientDefaultsById.set(ingredient.id.toLowerCase(), 1);
   });
   const ingredientIds = [...ingredientDefaultsById.keys()];
-  const resolvedTabs = resolveIngredientTabs(item, customizationRules);
-  const singleSelectTabs = resolveSingleSelectIngredientTabs(item, customizationRules);
+  const resolvedTabs = resolveIngredientTabs(effectiveItem, customizationRules);
+  const singleSelectTabs = resolveSingleSelectIngredientTabs(effectiveItem, customizationRules);
 
   const ingredientByIdLookup = new Map<string, IngredientItem>();
   const ingredientByNameLookup = new Map<string, IngredientItem>();
@@ -259,11 +264,15 @@ export function resolvePanelIngredientTabs(
       tabLabel: ingredientTabLabel,
       ingredientItem: match,
       maxQuantity:
-        ingredientTabLabel ? resolveIngredientTabMaxQuantity(item, ingredientTabLabel, customizationRules) : undefined,
+        match?.maxQuantity ??
+        (ingredientTabLabel ? resolveIngredientTabMaxQuantity(effectiveItem, ingredientTabLabel, customizationRules) : undefined),
       nutrition,
       calories: nutrition.calories,
       defaultCount: ingredientDefaultsById.get(normalizedId) ?? 0,
       isReadOnly: informationalIngredientLabels.has(normalizedId),
+      orderingOptionIdByCount: match?.orderingOptionIdByCount,
+      orderingGroupIdByCount: match?.orderingGroupIdByCount,
+      nutritionDeltaByCount: match?.nutritionDeltaByCount,
     };
 
     resolvedIngredientLookup.set(normalizedId, resolvedIngredient);
@@ -271,11 +280,11 @@ export function resolvePanelIngredientTabs(
   }
 
   function getConfiguredIngredientIdsForTab(tabName: string) {
-    const itemLevelIngredientOptions = resolveIngredientItemCategory(item, tabName)?.ingredients;
+    const itemLevelIngredientOptions = resolveIngredientItemCategory(effectiveItem, tabName)?.ingredients;
 
     if (itemLevelIngredientOptions?.length) return itemLevelIngredientOptions;
 
-    const categoryIngredientOptions = resolveFoodCategoryRule(item, customizationRules)?.ingredientOptionsByCategory;
+    const categoryIngredientOptions = resolveFoodCategoryRule(effectiveItem, customizationRules)?.ingredientOptionsByCategory;
 
     return Object.entries(categoryIngredientOptions ?? {}).find(
       ([candidateTab]) => normalizeIngredientCategory(candidateTab) === normalizeIngredientCategory(tabName)
@@ -305,7 +314,7 @@ export function resolvePanelIngredientTabs(
       return tabIngredients.findIndex((candidate) => candidate.id === ingredient.id) === index;
     });
 
-    const tabMaxQuantity = resolveIngredientTabMaxQuantity(item, tab, customizationRules);
+    const tabMaxQuantity = resolveIngredientTabMaxQuantity(effectiveItem, tab, customizationRules);
     const selectionMode = singleSelectTabs.has(normalizeTabName(tab)) ? "single" : "quantity";
     const scopedTabIngredients =
       tab === INCLUDED_INGREDIENT_TAB
@@ -313,12 +322,13 @@ export function resolvePanelIngredientTabs(
         : uniqueTabIngredients.map((ingredient) => ({
           ...ingredient,
           tabLabel: tab,
-          maxQuantity: tabMaxQuantity,
+          maxQuantity: ingredient.ingredientItem?.maxQuantity ?? tabMaxQuantity,
         }));
     const hasDefaultIngredient = scopedTabIngredients.some((ingredient) => ingredient.defaultCount > 0);
     const ingredients =
-      selectionMode === "single" && tabSupportsNoneOption(item, tab, customizationRules)
+      selectionMode === "single" && tabSupportsNoneOption(effectiveItem, tab, customizationRules)
         ? [
+          ...scopedTabIngredients,
           {
             id: `none-${normalizeIngredientToken(tab)}`,
             label: "None",
@@ -330,7 +340,6 @@ export function resolvePanelIngredientTabs(
             defaultCount: hasDefaultIngredient ? 0 : 1,
             isNoneOption: true,
           },
-          ...scopedTabIngredients,
         ]
         : scopedTabIngredients;
 

@@ -1163,14 +1163,17 @@ function IngredientCustomizationSection({
 }
 
 type ComboConfig = {
+  bundles: MenuItem[];
   sides: MenuItem[];
   drinks: MenuItem[];
   selectedSideId?: string;
   selectedDrinkId?: string;
+  selectedBundleId?: string;
   selectedSideVariantId?: string;
   selectedDrinkVariantId?: string;
   onSelectSide?: (itemId: string) => void;
   onSelectDrink?: (itemId: string) => void;
+  onSelectBundle?: (itemId: string) => void;
   onSelectSideVariant?: (variantId: string) => void;
   onSelectDrinkVariant?: (variantId: string) => void;
 };
@@ -1218,7 +1221,7 @@ function ComboOptionRow({
           className="flex w-full flex-1 cursor-pointer items-center gap-3 px-2 py-2.5 text-left sm:px-3"
           onClick={() => onSelect?.(itemId)}
         >
-          <IngredientThumb icon={item.image ?? ""} />
+          <IngredientThumb icon={activeVariant?.image ?? item.image ?? ""} />
           <div className="min-w-0 flex-1">
             <p className="line-clamp-2 break-words text-sm font-semibold text-neutral-900 sm:line-clamp-1 sm:truncate sm:text-base">
               {item.name}
@@ -1244,7 +1247,7 @@ function ComboOptionRow({
             ) : null}
           </span>
         </button>
-        {isSelected && variants.length > 0 ? (
+        {isSelected && variants.length > 1 && !item.hideVariantSelector ? (
           <div className="flex w-full flex-wrap gap-1.5 px-2 pb-2.5 pl-[52px] sm:px-3 sm:pl-[60px]">
             <div className="inline-flex w-fit items-center gap-0.5 rounded-full bg-black/5 p-0.5">
               {variants.map((variant) => {
@@ -1534,18 +1537,30 @@ function ComboCustomizationSection({ config }: ComboCustomizationSectionProps) {
   const {
     sides,
     drinks,
+    bundles,
     selectedSideId,
     selectedDrinkId,
+    selectedBundleId,
     selectedSideVariantId,
     selectedDrinkVariantId,
     onSelectSide,
     onSelectDrink,
+    onSelectBundle,
     onSelectSideVariant,
     onSelectDrinkVariant,
   } = config;
   return (
     <>
-      <section id={ITEM_DETAILS_SECTION_IDS.side} className="rounded-2xl border border-black/10 bg-white p-5 sm:p-6">
+      {bundles.length > 1 ? (
+        <section className="rounded-2xl border border-black/10 bg-white p-5 sm:p-6">
+          <div className="mb-5">
+            <h2 className="text-lg font-bold text-neutral-900 sm:text-xl">Choose your wrap bundle</h2>
+            <p className="mt-1 text-sm text-slate-500">The second wrap is required.</p>
+          </div>
+          <ComboOptionList items={bundles} selectedId={selectedBundleId} onSelect={onSelectBundle} />
+        </section>
+      ) : null}
+      {sides.length > 0 ? <section id={ITEM_DETAILS_SECTION_IDS.side} className="rounded-2xl border border-black/10 bg-white p-5 sm:p-6">
         <div className="mb-5">
           <h2 className="text-lg font-bold text-neutral-900 sm:text-xl">
             Choose a side
@@ -1559,8 +1574,8 @@ function ComboCustomizationSection({ config }: ComboCustomizationSectionProps) {
           onSelect={onSelectSide}
           onSelectVariant={onSelectSideVariant}
         />
-      </section>
-      <section id={ITEM_DETAILS_SECTION_IDS.drink} className="rounded-2xl border border-black/10 bg-white p-5 sm:p-6">
+      </section> : null}
+      {drinks.length > 0 ? <section id={ITEM_DETAILS_SECTION_IDS.drink} className="rounded-2xl border border-black/10 bg-white p-5 sm:p-6">
         <div className="mb-5">
           <h2 className="text-lg font-bold text-neutral-900 sm:text-xl">
             Choose a drink
@@ -1574,7 +1589,7 @@ function ComboCustomizationSection({ config }: ComboCustomizationSectionProps) {
           onSelect={onSelectDrink}
           onSelectVariant={onSelectDrinkVariant}
         />
-      </section>
+      </section> : null}
     </>
   );
 }
@@ -1811,6 +1826,9 @@ export default function ItemDetailsPanel({
   comboType = "just-item",
   comboSides = [],
   comboDrinks = [],
+  comboBundles = [],
+  selectedComboBundleId,
+  onSelectComboBundle,
   selectedComboSideId,
   selectedComboDrinkId,
   onSelectComboSide,
@@ -1857,6 +1875,9 @@ export default function ItemDetailsPanel({
   comboType?: "just-item" | "combo-meal";
   comboSides?: MenuItem[];
   comboDrinks?: MenuItem[];
+  comboBundles?: MenuItem[];
+  selectedComboBundleId?: string;
+  onSelectComboBundle?: (itemId: string) => void;
   selectedComboSideId?: string;
   selectedComboDrinkId?: string;
   onSelectComboSide?: (itemId: string) => void;
@@ -1913,6 +1934,7 @@ export default function ItemDetailsPanel({
   const selectedComboDrink = comboDrinks.find(
     (drink) => (drink.id ?? drink.name) === selectedComboDrinkId,
   );
+  const selectedComboBundle = comboBundles.find((bundle) => bundle.id === selectedComboBundleId);
   const selectedComboSideVariant = selectedComboSide?.variants?.find(
     (variant) =>
       (selectedComboSideVariantId ??
@@ -1937,18 +1959,28 @@ export default function ItemDetailsPanel({
       name: item.name,
       quantity: 1,
       image: selectedMainItemImage,
-      calories: (n.calories ?? 0) - (selectedComboSideVariant?.nutrition?.calories ?? selectedComboSide?.nutrition.calories ?? 0) - (selectedComboDrinkVariant?.nutrition?.calories ?? selectedComboDrink?.nutrition.calories ?? 0),
-      protein: (n.protein ?? 0) - (selectedComboSideVariant?.nutrition?.protein ?? selectedComboSide?.nutrition.protein ?? 0) - (selectedComboDrinkVariant?.nutrition?.protein ?? selectedComboDrink?.nutrition.protein ?? 0),
+      calories: (n.calories ?? 0) - (selectedComboBundle?.nutrition.calories ?? 0) - (selectedComboSideVariant?.nutrition?.calories ?? selectedComboSide?.nutrition.calories ?? 0) - (selectedComboDrinkVariant?.nutrition?.calories ?? selectedComboDrink?.nutrition.calories ?? 0),
+      protein: (n.protein ?? 0) - (selectedComboBundle?.nutrition.protein ?? 0) - (selectedComboSideVariant?.nutrition?.protein ?? selectedComboSide?.nutrition.protein ?? 0) - (selectedComboDrinkVariant?.nutrition?.protein ?? selectedComboDrink?.nutrition.protein ?? 0),
       variantLabel: selectedMainVariant?.label,
       isPresetMealArtwork: isMainItemPresetMealArtwork,
     },
+    ...(comboType === "combo-meal" && selectedComboBundle
+      ? [{
+          id: `combo-bundle-${selectedComboBundle.id}`,
+          name: selectedComboBundle.name,
+          quantity: 1,
+          image: selectedComboBundle.image,
+          calories: selectedComboBundle.nutrition.calories,
+          protein: selectedComboBundle.nutrition.protein,
+        }]
+      : []),
     ...(comboType === "combo-meal" && selectedComboSide
       ? [
           {
             id: `combo-side-${selectedComboSide.id ?? selectedComboSide.name}`,
             name: selectedComboSide.name,
             quantity: 1,
-            image: selectedComboSide.image,
+            image: selectedComboSideVariant?.image ?? selectedComboSide.image,
             calories: selectedComboSideVariant?.nutrition?.calories ?? selectedComboSide.nutrition.calories,
             protein: selectedComboSideVariant?.nutrition?.protein ?? selectedComboSide.nutrition.protein,
             variantLabel: selectedComboSideVariant?.label,
@@ -1961,7 +1993,7 @@ export default function ItemDetailsPanel({
             id: `combo-drink-${selectedComboDrink.id ?? selectedComboDrink.name}`,
             name: selectedComboDrink.name,
             quantity: 1,
-            image: selectedComboDrink.image,
+            image: selectedComboDrinkVariant?.image ?? selectedComboDrink.image,
             calories: selectedComboDrinkVariant?.nutrition?.calories ?? selectedComboDrink.nutrition.calories,
             protein: selectedComboDrinkVariant?.nutrition?.protein ?? selectedComboDrink.nutrition.protein,
             variantLabel: selectedComboDrinkVariant?.label,
@@ -2176,14 +2208,17 @@ export default function ItemDetailsPanel({
     onIncrementSauce,
   };
   const comboConfig: ComboConfig = {
+    bundles: comboBundles,
     sides: comboSides,
     drinks: comboDrinks,
     selectedSideId: selectedComboSideId,
     selectedDrinkId: selectedComboDrinkId,
+    selectedBundleId: selectedComboBundleId,
     selectedSideVariantId: selectedComboSideVariantId,
     selectedDrinkVariantId: selectedComboDrinkVariantId,
     onSelectSide: onSelectComboSide,
     onSelectDrink: onSelectComboDrink,
+    onSelectBundle: onSelectComboBundle,
     onSelectSideVariant: onSelectComboSideVariant,
     onSelectDrinkVariant: onSelectComboDrinkVariant,
   };

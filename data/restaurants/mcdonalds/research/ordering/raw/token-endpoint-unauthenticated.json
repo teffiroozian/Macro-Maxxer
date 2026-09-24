@@ -1,0 +1,17 @@
+{
+  "status": {
+    "code": "30000",
+    "type": "BusinessException",
+    "message": "Authorization Failed",
+    "errors": [
+      {
+        "code": "30001",
+        "type": "AuthorizationException",
+        "message": "The authenticated user is not authorized to perform this operation",
+        "property": "Authorization",
+        "path": "/v1/security/auth/token",
+        "service": "TokenGenerator"
+      }
+    ]
+  }
+}

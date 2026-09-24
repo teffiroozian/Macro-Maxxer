@@ -1,0 +1,17 @@
+{
+  "status": {
+    "code": 40000,
+    "type": "ValidationException",
+    "message": "Bad Request - Policy validation cannot be performed.",
+    "errors": [
+      {
+        "code": 40003,
+        "type": "FieldMissingException",
+        "message": "Bad Request - The mandatory field authorization is missing.",
+        "property": "Authorization",
+        "path": "/prod01/menu/gmal/restaurants/3228/menus",
+        "service": "Menu"
+      }
+    ]
+  }
+}

@@ -33,6 +33,7 @@ const validHttpUrl = (value: unknown): boolean => {
   if (typeof value !== "string") return false;
   try { return ["http:", "https:"].includes(new URL(value).protocol); } catch { return false; }
 };
+const validImage = (value: unknown): boolean => value === "none" || validHttpUrl(value);
 const duplicates = (values: string[]): string[] => [...new Set(values.filter((value, index) => values.indexOf(value) !== index))];
 const sourceGenerated = (record: JsonObject): JsonObject | undefined => isObject(record.source) && isObject(record.source.generated) ? record.source.generated : undefined;
 const sourceMenu = (record: JsonObject): JsonObject | undefined => isObject(sourceGenerated(record)?.menu) ? sourceGenerated(record)?.menu as JsonObject : undefined;
@@ -93,7 +94,7 @@ async function main(): Promise<void> {
   for (const item of items) {
     const id = nonEmptyString(item.id) ?? "unknown";
     if (validateNutrition(item.nutrition, `items.${id}.nutrition`, id, context, "nutrition") && isObject(item.nutrition)) validateMacroPlausibility(item.nutrition, id, `items.${id}.nutrition`);
-    if (!validHttpUrl(item.image)) addFinding(context, "error", "images_urls", "missing_or_malformed_image", `${id} lacks a valid HTTP(S) image.`, { recordIds: [id] });
+    if (!validImage(item.image)) addFinding(context, "error", "images_urls", "missing_or_malformed_image", `${id} lacks a valid image or explicit no-image marker.`, { recordIds: [id] });
     const productUrl = sourceMenu(item)?.productUrl;
     if (!validHttpUrl(productUrl)) addFinding(context, "error", "images_urls", "malformed_product_url", `${id} lacks a valid source product URL.`, { recordIds: [id] });
     const categories = stringArray(item.categories);
@@ -110,7 +111,7 @@ async function main(): Promise<void> {
         const variantId = nonEmptyString(variant.id) ?? "unknown";
         if (variant.canonicalItemId !== id) addFinding(context, "error", "variants", "broken_variant_parent", `${variantId} does not point to parent ${id}.`, { recordIds: [id, variantId] });
         if (validateNutrition(variant.nutrition, `variants.${variantId}.nutrition`, variantId, context, "nutrition") && isObject(variant.nutrition)) validateMacroPlausibility(variant.nutrition, variantId, `variants.${variantId}.nutrition`);
-        if (!validHttpUrl(variant.image)) addFinding(context, "error", "images_urls", "missing_or_malformed_variant_image", `${variantId} lacks a valid HTTP(S) image.`, { recordIds: [variantId] });
+        if (!validImage(variant.image)) addFinding(context, "error", "images_urls", "missing_or_malformed_variant_image", `${variantId} lacks a valid image or explicit no-image marker.`, { recordIds: [variantId] });
         if (JSON.stringify(variant.categories) !== JSON.stringify(item.categories)) addFinding(context, "error", "categories", "variant_category_mismatch", `${variantId} categories differ from ${id}.`, { recordIds: [id, variantId] });
       }
     } else if (item.defaultVariantId !== undefined) addFinding(context, "error", "variants", "default_without_variants", `${id} has defaultVariantId without variants.`, { recordIds: [id] });

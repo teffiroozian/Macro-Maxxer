@@ -2,7 +2,6 @@ import type { CartCustomization, CartSelectionOption, StandardCartSelection } fr
 import type { ItemVariant, MenuItem, ResolvedAddonGroups } from "@/types/menu";
 import type { CoreMacros, Nutrition } from "@/types/nutrition";
 import type { ResolvedPanelIngredient } from "@/lib/itemDetails/types";
-import { customizationsFromLabels } from "@/lib/cart/customizationLabels";
 import { buildStructuredOptionSelections } from "@/lib/menuItemCard/cartLabelUtils";
 import { formatIngredientCountCustomizationLabel } from "@/lib/menuItemCard/ingredientCountCustomization";
 import {
@@ -90,20 +89,25 @@ export function resolveActiveAddons({
 }
 
 export function resolveStandardComboSelection({
+  comboBundles,
   comboSides,
   comboDrinks,
   selectedComboSideId,
   selectedComboDrinkId,
   selectedComboSideVariantId,
   selectedComboDrinkVariantId,
+  selectedComboBundleId,
 }: {
+  comboBundles?: MenuItem[];
   comboSides: MenuItem[];
   comboDrinks: MenuItem[];
   selectedComboSideId?: string;
   selectedComboDrinkId?: string;
   selectedComboSideVariantId?: string;
   selectedComboDrinkVariantId?: string;
+  selectedComboBundleId?: string;
 }) {
+  const selectedComboBundle = comboBundles?.find((bundle) => bundle.id === selectedComboBundleId);
   const selectedComboSide = comboSides.find((side) => (side.id ?? side.name) === selectedComboSideId);
   const selectedComboDrink = comboDrinks.find((drink) => (drink.id ?? drink.name) === selectedComboDrinkId);
   return {
@@ -111,6 +115,7 @@ export function resolveStandardComboSelection({
     selectedComboDrink,
     selectedComboSideVariant: selectedComboSide?.variants?.find((variant) => variant.id === selectedComboSideVariantId),
     selectedComboDrinkVariant: selectedComboDrink?.variants?.find((variant) => variant.id === selectedComboDrinkVariantId),
+    selectedComboBundle,
   };
 }
 
@@ -130,6 +135,34 @@ export function buildIngredientCustomizationLabels({
       if (suppressRemovedIngredientCustomizationsInCart && ingredientCount <= 0) return [];
       return [formatIngredientCountCustomizationLabel(ingredient.label, ingredientCount)];
     });
+}
+
+export function buildIngredientCustomizations({
+  resolvedIngredients,
+  ingredientCounts,
+  suppressRemovedIngredientCustomizationsInCart = false,
+}: {
+  resolvedIngredients: ResolvedPanelIngredient[];
+  ingredientCounts: Record<string, number>;
+  suppressRemovedIngredientCustomizationsInCart?: boolean;
+}): CartCustomization[] {
+  return resolvedIngredients.flatMap((ingredient) => {
+    if (ingredient.isNoneOption) return [];
+    const count = ingredientCounts[ingredient.id] ?? ingredient.defaultCount;
+    if (count === ingredient.defaultCount) return [];
+    if (suppressRemovedIngredientCustomizationsInCart && count <= 0) return [];
+    const orderingOptionId = ingredient.orderingOptionIdByCount?.[count];
+    const orderingGroupId = ingredient.orderingGroupIdByCount?.[count];
+    return [{
+      action: count < ingredient.defaultCount ? "remove" : ingredient.defaultCount > 0 ? "extra" : "add",
+      kind: "ingredient",
+      ingredientId: ingredient.id,
+      ingredientLabel: ingredient.label,
+      quantity: count,
+      orderingGroupId,
+      orderingOptionId,
+    } satisfies CartCustomization];
+  });
 }
 
 export function buildComboCustomizationLabels({
@@ -166,10 +199,56 @@ export function buildComboCustomizations({
   selectedComboSideVariant,
   selectedComboDrink,
   selectedComboDrinkVariant,
+  selectedComboBundle,
 }: Parameters<typeof calculateComboNutritionTotals>[0]): CartCustomization[] {
   if (!isComboEligibleCategory || comboType !== "combo-meal") return [];
 
   const entries: CartCustomization[] = [{ action: "add", kind: "combo", comboRole: "meal" }];
+
+  if (selectedComboBundle) {
+    const generatedMenu = selectedComboBundle.source?.generated?.menu;
+    const bundleComponents: Array<{
+      itemId: string;
+      variantId?: string;
+      role: Exclude<NonNullable<CartCustomization["comboRole"]>, "meal" | "size" | "side" | "drink">;
+      label?: string;
+    }> = Array.isArray(generatedMenu?.bundleComponents)
+      ? generatedMenu.bundleComponents.flatMap((value) => {
+          if (!value || typeof value !== "object" || Array.isArray(value)) return [];
+          const component = value as Record<string, unknown>;
+          if (typeof component.itemId !== "string" || typeof component.role !== "string") return [];
+          return [{
+            itemId: component.itemId,
+            variantId: typeof component.variantId === "string" ? component.variantId : undefined,
+            role: component.role as Exclude<NonNullable<CartCustomization["comboRole"]>, "meal" | "size" | "side" | "drink">,
+            label: typeof component.label === "string" ? component.label : undefined,
+          }];
+        })
+      : [];
+    bundleComponents.forEach((component) => entries.push({
+        action: "add",
+        kind: "combo",
+        comboRole: component.role,
+        bundleId: selectedComboBundle.id,
+        itemId: component.itemId,
+        itemLabel: component.label ?? selectedComboBundle.name,
+        variantId: component.variantId,
+      }));
+  }
+
+  const selectedMealSizeOrderingOptionId = selectedComboSideVariant
+    ? selectedComboSide?.comboOrdering?.mealSizeOptionIdByVariantId?.[selectedComboSideVariant.id]
+    : undefined;
+  if (selectedMealSizeOrderingOptionId && selectedComboSide?.comboOrdering?.mealSizeGroupId) {
+    entries.push({
+      action: "add",
+      kind: "combo",
+      comboRole: "size",
+      orderingGroupId: selectedComboSide.comboOrdering.mealSizeGroupId,
+      orderingOptionId: selectedMealSizeOrderingOptionId,
+      itemLabel: selectedComboSideVariant?.label,
+    });
+  }
 
   if (selectedComboSide) {
     entries.push({
@@ -180,6 +259,8 @@ export function buildComboCustomizations({
       itemLabel: selectedComboSide.name,
       variantId: selectedComboSideVariant?.id,
       variantLabel: selectedComboSideVariant?.label,
+      orderingGroupId: selectedComboSide.comboOrdering?.groupId,
+      orderingOptionId: selectedComboSide.comboOrdering?.optionId,
     });
   }
 
@@ -192,6 +273,8 @@ export function buildComboCustomizations({
       itemLabel: selectedComboDrink.name,
       variantId: selectedComboDrinkVariant?.id,
       variantLabel: selectedComboDrinkVariant?.label,
+      orderingGroupId: selectedComboDrink.comboOrdering?.groupId,
+      orderingOptionId: selectedComboDrink.comboOrdering?.optionId,
     });
   }
 
@@ -268,12 +351,14 @@ export function resolveStandardItemConfiguration({
   addons,
   comboSides,
   comboDrinks,
+  comboBundles = [],
   isComboEligibleCategory,
   comboType,
   selectedComboSideId,
   selectedComboDrinkId,
   selectedComboSideVariantId,
   selectedComboDrinkVariantId,
+  selectedComboBundleId,
   suppressRemovedIngredientCustomizationsInCart,
 }: {
   item: MenuItem;
@@ -287,12 +372,14 @@ export function resolveStandardItemConfiguration({
   addons?: ResolvedAddonGroups;
   comboSides: MenuItem[];
   comboDrinks: MenuItem[];
+  comboBundles?: MenuItem[];
   isComboEligibleCategory: boolean;
   comboType: ComboType;
   selectedComboSideId?: string;
   selectedComboDrinkId?: string;
   selectedComboSideVariantId?: string;
   selectedComboDrinkVariantId?: string;
+  selectedComboBundleId?: string;
   suppressRemovedIngredientCustomizationsInCart?: boolean;
 }) {
   const selectedVariant = resolveStandardItemVariant({ variants, selectedVariantId, defaultVariantId });
@@ -302,7 +389,7 @@ export function resolveStandardItemConfiguration({
   const activeAddons = resolveActiveAddons({ selectedAddons, selectedSauceOptions });
   const addonTotals = calculateAddonTotals(activeAddons);
   const ingredientCountTotals = calculateIngredientCountTotals(ingredientCounts, resolvedIngredients);
-  const comboSelection = resolveStandardComboSelection({ comboSides, comboDrinks, selectedComboSideId, selectedComboDrinkId, selectedComboSideVariantId, selectedComboDrinkVariantId });
+  const comboSelection = resolveStandardComboSelection({ comboBundles, comboSides, comboDrinks, selectedComboBundleId, selectedComboSideId, selectedComboDrinkId, selectedComboSideVariantId, selectedComboDrinkVariantId });
   const comboNutritionTotals = calculateFullComboNutritionTotals({ isComboEligibleCategory, comboType, ...comboSelection });
   const nutrition = calculateStandardItemNutrition({ baseNutrition, addonTotals, ingredientCountTotals, comboNutritionTotals });
   const ingredientCustomizationLabels = buildIngredientCustomizationLabels({ resolvedIngredients, ingredientCounts, suppressRemovedIngredientCustomizationsInCart });
@@ -313,7 +400,8 @@ export function resolveStandardItemConfiguration({
   // through comboCustomizationLabels + customizationFromLabel — see
   // buildComboCustomizations for why that round-trip is lossy.
   const comboCustomizations = buildComboCustomizations({ isComboEligibleCategory, comboType, ...comboSelection });
-  const customizations = [...(customizationsFromLabels(ingredientCustomizationLabels) ?? []), ...comboCustomizations];
+  const ingredientCustomizations = buildIngredientCustomizations({ resolvedIngredients, ingredientCounts, suppressRemovedIngredientCustomizationsInCart });
+  const customizations = [...ingredientCustomizations, ...comboCustomizations];
   const optionSelections = buildStructuredOptionSelections(selectedAddons, selectedSauceCounts, addons);
 
   return {

@@ -1,6 +1,6 @@
 {
   "restaurant": "McDonald's",
-  "generatedAt": "2026-09-16",
+  "generatedAt": "2026-09-24",
   "valid": true,
   "summary": {
     "errors": 0,
@@ -17,8 +17,8 @@
       "info": 0,
       "details": {
         "rawItems": 153,
-        "items": 152,
-        "variants": 104
+        "items": 173,
+        "variants": 180
       }
     },
     "coverage": {
@@ -28,7 +28,7 @@
       "info": 0,
       "details": {
         "raw": 153,
-        "generated": 152,
+        "generated": 173,
         "filtered": 1,
         "reconciled": true
       }
@@ -39,8 +39,8 @@
       "warnings": 0,
       "info": 0,
       "details": {
-        "uniqueItems": 152,
-        "uniqueVariants": 104
+        "uniqueItems": 173,
+        "uniqueVariants": 180
       }
     },
     "names": {
@@ -58,8 +58,8 @@
       "warnings": 0,
       "info": 0,
       "details": {
-        "itemPanels": 152,
-        "variantPanels": 104
+        "itemPanels": 173,
+        "variantPanels": 180
       }
     },
     "images_urls": {
@@ -68,9 +68,9 @@
       "warnings": 0,
       "info": 0,
       "details": {
-        "itemImages": 152,
-        "variantImages": 104,
-        "productUrls": 152
+        "itemImages": 173,
+        "variantImages": 180,
+        "productUrls": 173
       }
     },
     "categories": {
@@ -79,7 +79,7 @@
       "warnings": 0,
       "info": 0,
       "details": {
-        "categoryCount": 34
+        "categoryCount": 35
       }
     },
     "variants": {
@@ -88,7 +88,7 @@
       "warnings": 0,
       "info": 0,
       "details": {
-        "variants": 104
+        "variants": 180
       }
     },
     "collections": {

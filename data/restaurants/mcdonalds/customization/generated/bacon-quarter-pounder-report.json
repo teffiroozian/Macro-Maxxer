@@ -1,0 +1,71 @@
+{
+  "itemId": "203410",
+  "orderingItemId": "25120693138",
+  "orderingFile": "bacon-quarter-pounder-item-page.json",
+  "summary": {
+    "optionsMapped": 18,
+    "unmatched": 2,
+    "defaultNutritionValidated": true,
+    "maxRawNutrientError": 1.1368683772161603e-13
+  },
+  "unmatched": [
+    {
+      "optionId": "43914730979",
+      "name": "No Salt",
+      "reason": "salt_nutrition_unresolved"
+    },
+    {
+      "optionId": "43914730988",
+      "name": "Extra Salt",
+      "reason": "salt_nutrition_unresolved"
+    }
+  ],
+  "validation": {
+    "expected": {
+      "calories": 627.2360443019,
+      "protein": 35.7063987079,
+      "carbohydrate": 43.282931507,
+      "fat": 34.8954602521,
+      "sodium": 1470.0352253719,
+      "saturated_fat": 15.492236807,
+      "trans_fat": 1.5439168946,
+      "cholesterol": 116.579767138,
+      "fibre": 2.6093769638,
+      "sugars": 10.4148356371,
+      "addedsugars": 7.868898,
+      "vitaminD": 0.3620516201,
+      "calcium": 192.2507428884,
+      "iron": 4.3578449539,
+      "potassium": 488.4199336319,
+      "vitaminB6": 0,
+      "phosphorus": 2.1837,
+      "caffeine": 0,
+      "calories_from_fat": 314.0591422689,
+      "energy_kJ": 2624.355685909024,
+      "fibre2015": 2.6093769638
+    },
+    "calculated": {
+      "calories": 627.2360443018999,
+      "protein": 35.7063987079,
+      "carbohydrate": 43.282931507,
+      "fat": 34.8954602521,
+      "sodium": 1470.0352253719,
+      "saturated_fat": 15.492236807,
+      "trans_fat": 1.5439168946000001,
+      "cholesterol": 116.579767138,
+      "fibre": 2.6093769638,
+      "sugars": 10.4148356371,
+      "addedsugars": 7.868898,
+      "vitaminD": 0.3620516201,
+      "calcium": 192.25074288839997,
+      "iron": 4.3578449539,
+      "potassium": 488.4199336319,
+      "vitaminB6": 0,
+      "phosphorus": 2.1837,
+      "caffeine": 0,
+      "calories_from_fat": 314.0591422689,
+      "energy_kJ": 2624.355685909024,
+      "fibre2015": 2.6093769638
+    }
+  }
+}

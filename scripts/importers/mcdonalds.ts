@@ -29,6 +29,71 @@ type RawDetails = Record<string, { item: JsonObject }>;
 type RawCatalog = { items: JsonObject[] };
 type RawMetadata = { manualReconciliations?: Array<{ productUrl: string; itemId: number; reason: string }> };
 
+type PromotedFamily = { parentId: number; name: string; categories: string[]; productUrl: string; sizes: Array<[number, string]>; familyFallbackItemId?: number; servingType?: ServingType; sourceOnly?: boolean };
+
+// The national public menu omits some regional and seasonal SKUs used by
+// ordering. These reviewed groupings retain official DNA IDs and nutrition.
+const REVIEWED_SIZE_FAMILIES: Record<number, Array<[number, string]>> = {
+  204386: [[204386, "3 piece"], [204385, "4 piece"]],
+  203957: [[203957, "Small"], [203958, "Medium"], [203962, "Large"]],
+  204586: [[204586, "Small"], [204585, "Medium"], [204584, "Large"]],
+  204589: [[204589, "Small"], [204588, "Medium"], [204587, "Large"]],
+  204623: [[204623, "Small"], [204622, "Medium"], [204621, "Large"]],
+  204205: [[204205, "Small"], [204210, "Medium"], [204199, "Large"]],
+  200123: [[200123, "Small"], [200602, "Medium"], [200601, "Large"]],
+  204219: [[204219, "Small"], [204203, "Medium"], [204217, "Large"]],
+  201038: [[201038, "Small"], [201459, "Medium"], [201074, "Large"]],
+  204189: [[204189, "Small"], [200336, "Medium"], [200335, "Large"]],
+  204208: [[204208, "Small"], [204191, "Medium"], [204183, "Large"]],
+  204209: [[204209, "Small"], [204216, "Medium"], [204184, "Large"]],
+  200610: [[200610, "National"], [201352, "California"]],
+};
+
+const PROMOTED_FAMILIES: PromotedFamily[] = [
+  { parentId: 200169, name: "Hot Mustard Sauce", categories: ["Sauces & Condiments"], productUrl: "https://www.mcdonalds.com/us/en-us/full-menu.html", sizes: [[200169, "Packet"]], servingType: "addon", sourceOnly: true },
+  { parentId: 201677, name: "Coca-Cola® (Small) No Ice", categories: ["Drinks", "Soft Drinks"], productUrl: "https://www.mcdonalds.com/us/en-us/product/coca-cola-small.html", sizes: [[201677, "Small No Ice"]], servingType: "drink", sourceOnly: true },
+  { parentId: 204268, name: "Cheeseburger (Second Included)", categories: ["Burgers"], productUrl: "https://www.mcdonalds.com/us/en-us/product/cheeseburger.html", sizes: [[204268, "Included"]], servingType: "entree", sourceOnly: true },
+  { parentId: 204339, name: "Sausage Burrito (Second Included)", categories: ["Breakfast"], productUrl: "https://www.mcdonalds.com/us/en-us/product/sausage-burrito.html", sizes: [[204339, "Included"]], servingType: "breakfast", sourceOnly: true },
+  { parentId: 204408, name: "Ranch Snack Wrap (Second Included)", categories: ["Snack Wraps"], productUrl: "https://www.mcdonalds.com/us/en-us/product/ranch-snack-wrap.html", sizes: [[204408, "Included"]], servingType: "entree", sourceOnly: true },
+  { parentId: 204407, name: "Spicy Snack Wrap (Second Included)", categories: ["Snack Wraps"], productUrl: "https://www.mcdonalds.com/us/en-us/product/spicy-snack-wrap.html", sizes: [[204407, "Included"]], servingType: "entree", sourceOnly: true },
+  { parentId: 203057, name: "Fanta® Orange", categories: ["Drinks", "Soft Drinks"], productUrl: "https://www.mcdonalds.com/us/en-us/product/fanta-orange-small.html", sizes: [[203057, "Small"], [203058, "Medium"], [203063, "Large"]], familyFallbackItemId: 204716 },
+  { parentId: 200614, name: "Diet Dr Pepper®", categories: ["Drinks", "Soft Drinks"], productUrl: "https://www.mcdonalds.com/us/en-us/product/diet-dr-pepper-small.html", sizes: [[200614, "Small"], [200645, "Medium"], [200644, "Large"]], familyFallbackItemId: 200613 },
+  { parentId: 204484, name: "Red Bull®", categories: ["Drinks"], productUrl: "https://www.mcdonalds.com/us/en-us/product/red-bull.html", sizes: [[204484, "Can"]], familyFallbackItemId: 204498 },
+  { parentId: 204702, name: "Red Bull Zero®", categories: ["Drinks"], productUrl: "https://www.mcdonalds.com/us/en-us/product/red-bull-zero.html", sizes: [[204702, "Can"]], familyFallbackItemId: 204688 },
+  { parentId: 203967, name: "Unsweetened Tea Lemonade", categories: ["Drinks", "Iced Tea & Lemonade"], productUrl: "https://www.mcdonalds.com/us/en-us/product/unsweetened-tea-lemonade.html", sizes: [[203967, "Small"], [203965, "Medium"], [203963, "Large"]], familyFallbackItemId: 203957 },
+  { parentId: 203964, name: "Sweet Tea Lemonade", categories: ["Drinks", "Iced Tea & Lemonade"], productUrl: "https://www.mcdonalds.com/us/en-us/product/sweet-tea-lemonade.html", sizes: [[203964, "Small"], [203966, "Medium"], [203961, "Large"]], familyFallbackItemId: 203957 },
+  { parentId: 200591, name: "McCafé® Iced Sugar Free Vanilla Coffee", categories: ["McCafé®"], productUrl: "https://www.mcdonalds.com/us/en-us/product/iced-sugar-free-vanilla-coffee-small.html", sizes: [[200591, "Small"], [200590, "Medium"], [200589, "Large"]], familyFallbackItemId: 204219 },
+  { parentId: 200223, name: "McCafé® Iced French Vanilla Latte", categories: ["McCafé®", "Latte"], productUrl: "https://www.mcdonalds.com/us/en-us/product/iced-french-vanilla-latte-small.html", sizes: [[200223, "Small"], [200209, "Medium"], [200201, "Large"]], familyFallbackItemId: 204209 },
+  { parentId: 200333, name: "McCafé® Iced Sugar Free Vanilla Latte", categories: ["McCafé®", "Latte"], productUrl: "https://www.mcdonalds.com/us/en-us/product/iced-sugar-free-vanilla-latte-small.html", sizes: [[200333, "Small"], [200227, "Medium"], [200225, "Large"]], familyFallbackItemId: 200223 },
+  { parentId: 200706, name: "McCafé® Sugar Free Vanilla Latte", categories: ["McCafé®", "Latte"], productUrl: "https://www.mcdonalds.com/us/en-us/product/sugar-free-vanilla-latte-small.html", sizes: [[200706, "Small"], [200707, "Medium"], [200708, "Large"]], familyFallbackItemId: 204209 },
+  { parentId: 200390, name: "McCafé® Sugar Free Vanilla Cappuccino", categories: ["McCafé®", "Cappuccino"], productUrl: "https://www.mcdonalds.com/us/en-us/product/sugar-free-vanilla-cappuccino-small.html", sizes: [[200390, "Small"], [200389, "Medium"], [200388, "Large"]], familyFallbackItemId: 200186 },
+  { parentId: 204695, name: "McCafé® Caramel Apple Pie Frappé", categories: ["McCafé®"], productUrl: "https://www.mcdonalds.com/us/en-us/product/caramel-apple-pie-frappe-small.html", sizes: [[204695, "Small"], [204687, "Medium"], [204689, "Large"]], familyFallbackItemId: 200149 },
+  { parentId: 204697, name: "McCafé® Caramel Apple Pie Latte", categories: ["McCafé®", "Latte"], productUrl: "https://www.mcdonalds.com/us/en-us/product/caramel-apple-pie-latte-small.html", sizes: [[204697, "Small"], [204685, "Medium"], [204700, "Large"]], familyFallbackItemId: 204208 },
+  { parentId: 204693, name: "McCafé® Caramel Apple Pie Iced Coffee", categories: ["McCafé®"], productUrl: "https://www.mcdonalds.com/us/en-us/product/caramel-apple-pie-iced-coffee-small.html", sizes: [[204693, "Small"], [204698, "Medium"], [204690, "Large"]], familyFallbackItemId: 204205 },
+  { parentId: 204691, name: "McCafé® Iced Caramel Apple Pie Latte", categories: ["McCafé®", "Latte"], productUrl: "https://www.mcdonalds.com/us/en-us/product/iced-caramel-apple-pie-latte-small.html", sizes: [[204691, "Small"], [204699, "Medium"], [204692, "Large"]], familyFallbackItemId: 204189 },
+];
+
+// Some official meal records list their components in side/drink-first order,
+// so component position alone cannot identify the entree. Keep the reviewed
+// corrections scoped to meal/entree pairs established by the captured meal
+// records; unresolved components continue to be ignored rather than guessed.
+const REVIEWED_MEAL_ENTREE_IDS: Record<number, number> = {
+  200714: 200307, // Sausage, Egg & Cheese McGriddles Meal
+  200715: 200304, // Bacon, Egg & Cheese McGriddles Meal
+  200717: 200306, // Sausage McGriddles Meal
+  204534: 203410, // Bacon Quarter Pounder with Cheese Meal
+  204535: 200765, // Quarter Pounder with Cheese Deluxe Meal
+  204558: 200424, // Bacon, Egg & Cheese Bagel Meal
+  200723: 200300, // Bacon, Egg & Cheese Biscuit Meal
+  200724: 200161, // Sausage McMuffin with Egg Meal
+  200731: 200302, // Sausage Biscuit with Egg Meal
+  200739: 200298, // Egg McMuffin Meal
+  200716: 200267, // Sausage Burrito Meal
+  204559: 200145, // Steak, Egg & Cheese Bagel Meal
+  204409: 204401, // 2 Ranch Snack Wraps Meal
+  204410: 204402, // 2 Spicy Snack Wraps Meal
+};
+
 type McDonaldsSource = {
   provider: "McDonald's";
   menu: {
@@ -38,6 +103,7 @@ type McDonaldsSource = {
     role: "standalone_product" | "meal";
     officialCategories: string[];
     productUrl: string;
+    originalName: string;
     shortName: string | null;
     componentItemIds: string[];
     reconciliationStatus: string;
@@ -177,13 +243,34 @@ function variantFor(
   return {
     id: itemId(id),
     label: stringValue(related.label) ?? stringValue(related.abbr_label) ?? String(id),
-    image: fallbackImage,
+    image: catalogImage(sourceItem) ?? fallbackImage,
     nutrition,
     categories,
     servingType,
     canonicalItemId: canonicalId,
     source: { menu: { tags: [], pins: [] } },
   };
+}
+
+function catalogImage(item: JsonObject): string | undefined {
+  const hero = object(item.attach_item_hero_image);
+  const file = stringValue(hero?.url) ?? stringValue(hero?.image_name);
+  if (!file) return undefined;
+  if (/^https:\/\//i.test(file)) return encodeURI(file);
+  const asset = file.split("/").at(-1)!.replace(/\.[a-z0-9]+$/i, "");
+  // The DNA feed mixes current Scene7 asset IDs with retired filenames such
+  // as h-mcdonalds-*. Turning retired filenames into Scene7 URLs yields 403s.
+  // Only current DAM-style IDs are safe to normalize onto the Scene7 host.
+  if (!/^(?:DC_|\d{4}(?:XX|\d{2})_)/.test(asset)) return undefined;
+  return `https://s7d1.scene7.com/is/image/mcdonalds/${asset}:nutrition-calculator-tile?fmt=png-alpha`;
+}
+
+function reviewedVariants(sizes: Array<[number, string]>, catalogById: Map<number, JsonObject>, image: string, categories: string[], canonicalId: string): ItemVariant[] {
+  return sizes.flatMap(([id, label]) => {
+    const record = catalogById.get(id);
+    const nutrition = record && nutritionFor(record);
+    return nutrition ? [{ id: itemId(id), label, image: catalogImage(record) ?? image, nutrition, categories, servingType: "drink" as const, canonicalItemId: canonicalId, source: { menu: { tags: [], pins: [] } } }] : [];
+  });
 }
 
 async function main(): Promise<void> {
@@ -275,12 +362,15 @@ async function main(): Promise<void> {
     const categories = familyCategories.get(entry.itemId) ?? entry.categories;
     const components = nutritionResult.componentIds;
     const ownsSizeFamily = (sizeFamilyParentByMenuId.get(entry.itemId) ?? entry.itemId) === entry.itemId;
-    const variants = (ownsSizeFamily ? relatedSizeItems(sourceItem) : [])
-      .map((related) => variantFor(related, catalogById, entry.imageUrl, categories, servingType, itemId(entry.itemId)))
-      .filter((variant): variant is ItemVariant => Boolean(variant));
-    const missingVariantIds = (ownsSizeFamily ? relatedSizeItems(sourceItem) : [])
-      .map((related) => numberValue(related.id))
-      .filter((id): id is number => id !== undefined && !variants.some((variant) => variant.id === itemId(id)));
+    const reviewedSizes = REVIEWED_SIZE_FAMILIES[entry.itemId];
+    const variants = reviewedSizes
+      ? reviewedVariants(reviewedSizes, catalogById, entry.imageUrl, categories, itemId(entry.itemId))
+      : (ownsSizeFamily ? relatedSizeItems(sourceItem) : [])
+        .map((related) => variantFor(related, catalogById, entry.imageUrl, categories, servingType, itemId(entry.itemId)))
+        .filter((variant): variant is ItemVariant => Boolean(variant));
+    const expectedVariantIds = reviewedSizes?.map(([id]) => id) ?? (ownsSizeFamily ? relatedSizeItems(sourceItem) : [])
+      .map((related) => numberValue(related.id)).filter((id): id is number => id !== undefined);
+    const missingVariantIds = expectedVariantIds.filter((id) => !variants.some((variant) => variant.id === itemId(id)));
     if (missingVariantIds.length) warnings.push(`${entry.itemId}: omitted unresolved size variants ${missingVariantIds.join(", ")}`);
 
     let comboConfig: ComboMealConfig | undefined;
@@ -288,10 +378,14 @@ async function main(): Promise<void> {
       const resolvable = [...new Set(components
         .map((id) => generatedIds.has(id) ? id : variantOwnerById.get(id))
         .filter((id): id is number => id !== undefined))];
-      if (resolvable.length) {
+      const reviewedEntreeId = REVIEWED_MEAL_ENTREE_IDS[entry.itemId];
+      const entreeId = reviewedEntreeId ?? resolvable[0];
+      if (entreeId !== undefined && generatedIds.has(entreeId)) {
         comboConfig = {
-          entreeItemId: itemId(resolvable[0]),
-          ...(resolvable.length > 1 ? { includedItemIds: resolvable.slice(1).map(itemId) } : {}),
+          entreeItemId: itemId(entreeId),
+          ...(resolvable.some((id) => id !== entreeId)
+            ? { includedItemIds: resolvable.filter((id) => id !== entreeId).map(itemId) }
+            : {}),
         };
       } else {
         warnings.push(`${entry.itemId}: meal components do not resolve to generated menu items`);
@@ -307,6 +401,7 @@ async function main(): Promise<void> {
         role: servingType === "combo" || servingType === "kids" ? "meal" : "standalone_product",
         officialCategories: categories,
         productUrl: entry.productUrl,
+        originalName: entry.name,
         shortName: stringValue(sourceItem.short_name) ?? null,
         componentItemIds: components.map(String),
         reconciliationStatus: entry.match.status,
@@ -345,6 +440,29 @@ async function main(): Promise<void> {
       defaultOrder: index,
       ...(entry.name.toLowerCase().startsWith("new ") ? { status: "new" as const } : {}),
       ...(/limited time/i.test(entry.name) ? { status: "limited-time" as const } : {}),
+    });
+  }
+
+  for (const family of PROMOTED_FAMILIES) {
+    if (items.some((item) => item.id === itemId(family.parentId))) continue;
+    const sourceItem = catalogById.get(family.parentId);
+    const nutrition = sourceItem && nutritionFor(sourceItem);
+    if (!sourceItem || !nutrition) { warnings.push(`${family.parentId}: reviewed promoted family lacks official nutrition`); continue; }
+    const familyFallbackImage = family.familyFallbackItemId
+      ? items.find((item) => item.id === itemId(family.familyFallbackItemId!))?.image
+      : undefined;
+    // An explicit missing image is preferable to showing an unrelated product.
+    const image = catalogImage(sourceItem) ?? familyFallbackImage ?? "none";
+    const variants = reviewedVariants(family.sizes, catalogById, image, family.categories, itemId(family.parentId));
+    items.push({
+      id: itemId(family.parentId), name: family.name, image, categories: family.categories, servingType: family.servingType ?? "drink",
+      nutrition, addonEligible: false, defaultOrder: items.length,
+      ...(family.sourceOnly ? { sourceOnly: true } : {}),
+      ...(variants.length > 1 ? { variants, defaultVariantId: itemId(family.parentId) } : {}),
+      source: { menu: { tags: [], pins: [] }, generated: {
+        provider: "McDonald's", menu: { itemIds: [], itemType: "Core Item", itemCategory: family.categories[0], role: "standalone_product", officialCategories: family.categories, productUrl: family.productUrl, originalName: family.name, shortName: stringValue(sourceItem.short_name) ?? null, componentItemIds: componentIds(sourceItem).map(String), reconciliationStatus: "manual_reconciliation", reconciliationReasons: ["reviewed_official_dna_catalog_family"], manualReconciliation: "Promoted from official DNA catalog for ordering-menu reuse." },
+        nutrition: { method: "official_us_dna_item_details", sourceItemId: String(family.parentId) },
+      } },
     });
   }
 

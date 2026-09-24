@@ -1,0 +1,71 @@
+{
+  "itemId": "200438",
+  "orderingItemId": "6600487530",
+  "orderingFile": "mcchicken-item-page.json",
+  "summary": {
+    "optionsMapped": 11,
+    "unmatched": 2,
+    "defaultNutritionValidated": true,
+    "maxRawNutrientError": 1.1368683772161603e-13
+  },
+  "unmatched": [
+    {
+      "optionId": "31802112911",
+      "name": "Add Pickle",
+      "reason": "no_validated_nutrition_mapping"
+    },
+    {
+      "optionId": "31802112914",
+      "name": "Add Ketchup",
+      "reason": "no_validated_nutrition_mapping"
+    }
+  ],
+  "validation": {
+    "expected": {
+      "calories": 392.87662438,
+      "protein": 14.1010126033,
+      "carbohydrate": 37.703154278,
+      "fat": 20.812651836,
+      "sodium": 562.58338004,
+      "saturated_fat": 3.690104281,
+      "trans_fat": 0.17439859054,
+      "cholesterol": 39.953440814,
+      "fibre": 1.406922,
+      "sugars": 4.173965733,
+      "addedsugars": 3.508482733,
+      "vitaminD": 0,
+      "calcium": 17.7671740068,
+      "iron": 2.038089,
+      "potassium": 311.33675,
+      "vitaminB6": 0,
+      "phosphorus": 0,
+      "caffeine": 0,
+      "calories_from_fat": 187.313866524,
+      "energy_kJ": 1643.79579640592,
+      "fibre2015": 1.406922
+    },
+    "calculated": {
+      "calories": 392.87662438,
+      "protein": 14.1010126033,
+      "carbohydrate": 37.703154278,
+      "fat": 20.812651836,
+      "sodium": 562.5833800400001,
+      "saturated_fat": 3.690104281,
+      "trans_fat": 0.17439859054,
+      "cholesterol": 39.953440814000004,
+      "fibre": 1.406922,
+      "sugars": 4.173965733,
+      "addedsugars": 3.5084827329999997,
+      "vitaminD": 0,
+      "calcium": 17.7671740068,
+      "iron": 2.0380890000000003,
+      "potassium": 311.33675,
+      "vitaminB6": 0,
+      "phosphorus": 0,
+      "caffeine": 0,
+      "calories_from_fat": 187.313866524,
+      "energy_kJ": 1643.79579640592,
+      "fibre2015": 1.406922
+    }
+  }
+}

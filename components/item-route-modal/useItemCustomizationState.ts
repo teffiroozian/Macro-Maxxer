@@ -22,6 +22,7 @@ type UseItemCustomizationStateParams = {
   comboConfig?: ComboMealConfig;
   comboSides: MenuItem[];
   comboDrinks: MenuItem[];
+  comboBundles?: MenuItem[];
   initialVariantId?: string;
 };
 
@@ -35,6 +36,7 @@ export function useItemCustomizationState({
   comboConfig,
   comboSides,
   comboDrinks,
+  comboBundles = [],
   initialVariantId,
 }: UseItemCustomizationStateParams) {
   const variants = item.variants?.length ? item.variants : null;
@@ -54,6 +56,7 @@ export function useItemCustomizationState({
     meal: editingCartItem?.customizations?.find((entry) => entry.kind === "combo" && entry.comboRole === "meal"),
     side: editingCartItem?.customizations?.find((entry) => entry.kind === "combo" && entry.comboRole === "side"),
     drink: editingCartItem?.customizations?.find((entry) => entry.kind === "combo" && entry.comboRole === "drink"),
+    bundle: editingCartItem?.customizations?.find((entry) => entry.kind === "combo" && Boolean(entry.bundleId)),
   }), [editingCartItem?.customizations]);
 
   const [selectedVariantId, setSelectedVariantId] = useState(
@@ -77,7 +80,11 @@ export function useItemCustomizationState({
   );
 
   const [selectedIngredientCounts, setSelectedIngredientCounts] = useState<Record<string, number>>(() =>
-    getSelectedIngredientCountsFromCustomizations(resolvedIngredients, getCustomizationLabels(editingCartItem?.customizations))
+    getSelectedIngredientCountsFromCustomizations(
+      resolvedIngredients,
+      getCustomizationLabels(editingCartItem?.customizations),
+      editingCartItem?.customizations,
+    )
   );
 
   const [comboType, setComboType] = useState<"just-item" | "combo-meal">(
@@ -111,6 +118,11 @@ export function useItemCustomizationState({
       variant.id === structuredComboSelections.drink?.variantId || variant.label === parsedInitialComboCustomization.drinkVariantLabel
     )?.id;
   });
+  const [selectedComboBundleId, setSelectedComboBundleId] = useState<string | undefined>(() =>
+    comboBundles.some((bundle) => bundle.id === structuredComboSelections.bundle?.bundleId)
+      ? structuredComboSelections.bundle?.bundleId
+      : comboConfig?.defaultBundleId
+  );
 
   return {
     variants,
@@ -137,5 +149,7 @@ export function useItemCustomizationState({
     setSelectedComboSideVariantId,
     selectedComboDrinkVariantId,
     setSelectedComboDrinkVariantId,
+    selectedComboBundleId,
+    setSelectedComboBundleId,
   };
 }

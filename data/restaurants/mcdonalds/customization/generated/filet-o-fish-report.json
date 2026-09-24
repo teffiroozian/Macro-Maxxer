@@ -1,0 +1,71 @@
+{
+  "itemId": "200445",
+  "orderingItemId": "25120693162",
+  "orderingFile": "filet-o-fish-item-page.json",
+  "summary": {
+    "optionsMapped": 11,
+    "unmatched": 2,
+    "defaultNutritionValidated": true,
+    "maxRawNutrientError": 5.684341886080802e-14
+  },
+  "unmatched": [
+    {
+      "optionId": "43914731853",
+      "name": "Add Pickle",
+      "reason": "no_validated_nutrition_mapping"
+    },
+    {
+      "optionId": "43914731857",
+      "name": "Add Ketchup",
+      "reason": "no_validated_nutrition_mapping"
+    }
+  ],
+  "validation": {
+    "expected": {
+      "calories": 383.8225325,
+      "protein": 15.61740675,
+      "carbohydrate": 37.621927,
+      "fat": 18.883566925,
+      "sodium": 579.9909,
+      "saturated_fat": 3.8301703,
+      "trans_fat": 0.22137085,
+      "cholesterol": 28.814555,
+      "fibre": 1.48308435,
+      "sugars": 4.29363625,
+      "addedsugars": 3.5054254,
+      "vitaminD": 0.03549125,
+      "calcium": 60.186593,
+      "iron": 1.9140426,
+      "potassium": 280.82179,
+      "vitaminB6": 0,
+      "phosphorus": 0,
+      "caffeine": 0,
+      "calories_from_fat": 169.952102325,
+      "energy_kJ": 1605.913558162,
+      "fibre2015": 1.48308435
+    },
+    "calculated": {
+      "calories": 383.8225325,
+      "protein": 15.61740675,
+      "carbohydrate": 37.621927,
+      "fat": 18.883566925,
+      "sodium": 579.9909,
+      "saturated_fat": 3.8301703000000002,
+      "trans_fat": 0.22137085,
+      "cholesterol": 28.814555,
+      "fibre": 1.48308435,
+      "sugars": 4.2936362500000005,
+      "addedsugars": 3.5054253999999996,
+      "vitaminD": 0.03549125,
+      "calcium": 60.186593,
+      "iron": 1.9140426000000001,
+      "potassium": 280.82178999999996,
+      "vitaminB6": 0,
+      "phosphorus": 0,
+      "caffeine": 0,
+      "calories_from_fat": 169.952102325,
+      "energy_kJ": 1605.913558162,
+      "fibre2015": 1.48308435
+    }
+  }
+}

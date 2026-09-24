@@ -1,0 +1,81 @@
+{
+  "generatedAt": "2026-09-23T22:58:11.998Z",
+  "sources": {
+    "itemDetails": "/Users/hateffiroozian/Developer/macro-maxxer-data/data/restaurants/mcdonalds/raw/item-details.json",
+    "orderingItemPage": "/Users/hateffiroozian/Developer/macro-maxxer-data/data/restaurants/mcdonalds/research/ordering/raw/big-mac-item-page.json",
+    "calculatorCapture": "/Users/hateffiroozian/Developer/macro-maxxer-data/data/restaurants/mcdonalds/customization/raw/dna-calculator.json"
+  },
+  "summary": {
+    "componentNutritionContexts": 9,
+    "orderingOptionsMapped": 15,
+    "unmatched": 2,
+    "ambiguous": 0,
+    "validationPassed": true
+  },
+  "unmatched": [
+    {
+      "optionId": "43914730751",
+      "name": "No Salt",
+      "reason": "salt_nutrition_unresolved"
+    },
+    {
+      "optionId": "43914730759",
+      "name": "Extra Salt",
+      "reason": "salt_nutrition_unresolved"
+    }
+  ],
+  "ambiguous": [],
+  "validationCases": [
+    {
+      "id": "big-mac-component-sum",
+      "passed": true,
+      "maxRawNutrientError": 2.2737367544323206e-13,
+      "expected": {
+        "calories": 581.389819,
+        "protein": 24.860155151,
+        "carbohydrate": 44.88617634,
+        "fat": 33.88508757,
+        "sodium": 1062.4337152,
+        "saturated_fat": 11.192082023,
+        "trans_fat": 1.2109141592,
+        "cholesterol": 83.54361228,
+        "fibre": 2.808052805,
+        "sugars": 6.68728782,
+        "addedsugars": 5.107908747,
+        "vitaminD": 0.0709825,
+        "calcium": 120.27717736,
+        "iron": 4.2153706495,
+        "potassium": 371.95435745,
+        "vitaminB6": 0,
+        "phosphorus": 0,
+        "caffeine": 0,
+        "calories_from_fat": 304.96578813,
+        "energy_kJ": 2432.53507032,
+        "fibre2015": 2.201732805
+      },
+      "calculated": {
+        "calories": 581.389819,
+        "protein": 24.860155150999997,
+        "carbohydrate": 44.88617634,
+        "fat": 33.885087569999996,
+        "sodium": 1062.4337151999998,
+        "saturated_fat": 11.192082023000001,
+        "trans_fat": 1.2109141592,
+        "cholesterol": 83.54361227999999,
+        "fibre": 2.808052805,
+        "sugars": 6.68728782,
+        "addedsugars": 5.107908747,
+        "vitaminD": 0.0709825,
+        "calcium": 120.27717735999998,
+        "iron": 4.2153706495000005,
+        "potassium": 371.95435745,
+        "vitaminB6": 0,
+        "phosphorus": 0,
+        "caffeine": 0,
+        "calories_from_fat": 304.96578812999996,
+        "energy_kJ": 2432.53507032,
+        "fibre2015": 2.201732805
+      }
+    }
+  ]
+}

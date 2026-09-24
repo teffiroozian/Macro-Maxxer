@@ -2,6 +2,17 @@ import type { CoreMacros, Nutrition } from "@/types/nutrition";
 
 export type CartMacros = CoreMacros;
 
+export type CartComboRole =
+  | "meal"
+  | "included-entree"
+  | "included-side"
+  | "included-drink"
+  | "included-dessert"
+  | "non-nutrition"
+  | "size"
+  | "side"
+  | "drink";
+
 // common portion values we expect
 export type CartBuildIngredientPortion = "light" | "normal" | "extra";
 
@@ -45,7 +56,10 @@ export type CartCustomization = {
   toIngredientId?: string;
   toIngredientLabel?: string;
   quantity?: number;
-  comboRole?: "meal" | "side" | "drink";
+  comboRole?: CartComboRole;
+  bundleId?: string;
+  orderingGroupId?: string;
+  orderingOptionId?: string;
   itemId?: string;
   itemLabel?: string;
   variantId?: string;

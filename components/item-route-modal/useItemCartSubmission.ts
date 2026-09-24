@@ -3,7 +3,7 @@
 import { useCallback, useMemo } from "react";
 import type { IngredientItem, ItemVariant, MenuItem } from "@/types/menu";
 import type { Nutrition } from "@/types/nutrition";
-import type { CartItem, CartSelectionOption } from "@/types/cart";
+import type { CartCustomization, CartItem, CartSelectionOption } from "@/types/cart";
 import { useCart } from "@/stores/cartStore";
 import { useCartAddConfirmation } from "@/components/CartAddConfirmationContext";
 import { customizationsFromLabels } from "@/lib/cart/customizationLabels";
@@ -21,6 +21,7 @@ type CartSubmissionStandardState = {
   selectedVariant?: ItemVariant;
   optionSelections?: CartSelectionOption[];
   selectedIngredientCustomizations: string[];
+  ingredientCartCustomizations?: CartCustomization[];
   nutritionPerItem: Nutrition;
   combo: Parameters<typeof buildComboCustomizations>[0];
 };
@@ -34,6 +35,7 @@ export function useItemCartSubmission({
   standard,
   chipotle,
   onAfterSubmit,
+  canSubmit = true,
 }: {
   restaurantId: string;
   item: MenuItem;
@@ -43,6 +45,7 @@ export function useItemCartSubmission({
   standard: CartSubmissionStandardState;
   chipotle: ChipotleCartSubmissionState;
   onAfterSubmit: () => void;
+  canSubmit?: boolean;
 }) {
   const { updateItem } = useCart();
   const { requestAddItem } = useCartAddConfirmation();
@@ -55,6 +58,7 @@ export function useItemCartSubmission({
   // writes it to the cart store, without any closing/navigation behavior of
   // its own.
   const commitCartItem = useCallback(() => {
+    if (!canSubmit) return;
     if (chipotle.isPrebuiltBuilderItem) {
       const payload = createChipotleCartItemPayload({ item, quantity, chipotle });
 
@@ -79,7 +83,9 @@ export function useItemCartSubmission({
     // contains parentheses (e.g. Chick-fil-A's Sunjoy drinks), which broke
     // the cart Preview modal's image/nutrition resolution for those items.
     const comboCustomizations = buildComboCustomizations(standard.combo);
-    const ingredientCustomizations = customizationsFromLabels(standard.selectedIngredientCustomizations) ?? [];
+    const ingredientCustomizations = standard.ingredientCartCustomizations
+      ?? customizationsFromLabels(standard.selectedIngredientCustomizations)
+      ?? [];
     const customizations = [...ingredientCustomizations, ...comboCustomizations];
     const standardPayload = buildStandardCartItemPayload({
       item,
@@ -116,6 +122,7 @@ export function useItemCartSubmission({
   }, [
     requestAddItem,
     chipotle,
+    canSubmit,
     editingCartItem,
     ingredients,
     item,
@@ -129,17 +136,19 @@ export function useItemCartSubmission({
   // first (so a toast/confirmation isn't hidden behind it), then commits on
   // the next tick.
   const submitCartItem = useCallback(() => {
+    if (!canSubmit) return;
     onAfterSubmit();
     window.setTimeout(commitCartItem, 0);
-  }, [commitCartItem, onAfterSubmit]);
+  }, [canSubmit, commitCartItem, onAfterSubmit]);
 
   // Customize → Save Changes path for an item already in the cart: commits
   // immediately and leaves the modal open — the caller is responsible for
   // switching back to the Preview state so the just-saved item is what
   // renders there.
   const saveChangesInPlace = useCallback(() => {
+    if (!canSubmit) return;
     commitCartItem();
-  }, [commitCartItem]);
+  }, [canSubmit, commitCartItem]);
 
   return useMemo(
     () => ({

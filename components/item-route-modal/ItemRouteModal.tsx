@@ -70,6 +70,7 @@ import {
 } from "@/lib/nutrition";
 import {
     buildIngredientCustomizationLabels,
+    buildIngredientCustomizations,
     calculateStandardItemNutrition,
     resolveActiveAddons,
     resolveSelectedSauceOptions,
@@ -82,6 +83,11 @@ import {
     calculateIngredientCountTotals,
 } from "@/lib/menuItemCard/totals";
 import {
+    comboMealSizeFromSideVariant,
+    isComboMealSelectionComplete,
+    isComboMealEligible,
+    resolveComboBundleOptions,
+    resolveComboChoiceVariantId,
     resolveComboDrinkOptions,
     resolveComboMealConfig,
     resolveComboSideOptions,
@@ -89,7 +95,9 @@ import {
 import { useItemCustomizationState } from "./useItemCustomizationState";
 import { useItemCartSubmission } from "./useItemCartSubmission";
 import { useCart } from "@/stores/cartStore";
+import { getCartItemVariantId } from "@/lib/cart/itemAccessors";
 import { getRestaurantImagePresentation } from "@/lib/restaurantPresentation";
+import { areRequiredIngredientSelectionsComplete } from "@/lib/menuItemCard/ingredientCountCustomization";
 
 const emptyAddon: MenuItem = {
     id: "none",
@@ -238,17 +246,22 @@ export default function ItemRouteModal({
         // (variant/addon/ingredient selections) don't refire it.
     }, [restaurantId, restaurantName, item.id, item.name, item.categories]);
 
-    const comboConfig = useMemo(
-        () => resolveComboMealConfig(restaurantId, item, menuItems),
-        [item, menuItems, restaurantId],
+    const initialComboVariantId = (editingCartItem ? getCartItemVariantId(editingCartItem) : undefined) ?? initialVariantId ?? item.defaultVariantId;
+    const initialComboConfig = useMemo(
+        () => resolveComboMealConfig(restaurantId, item, menuItems, initialComboVariantId),
+        [initialComboVariantId, item, menuItems, restaurantId],
     );
-    const comboSides = useMemo(
-        () => resolveComboSideOptions(restaurantId, item, menuItems),
-        [item, menuItems, restaurantId],
+    const initialComboSides = useMemo(
+        () => resolveComboSideOptions(restaurantId, item, menuItems, initialComboVariantId),
+        [initialComboVariantId, item, menuItems, restaurantId],
     );
-    const comboDrinks = useMemo(
-        () => resolveComboDrinkOptions(restaurantId, item, menuItems),
-        [item, menuItems, restaurantId],
+    const initialComboDrinks = useMemo(
+        () => resolveComboDrinkOptions(restaurantId, item, menuItems, initialComboVariantId),
+        [initialComboVariantId, item, menuItems, restaurantId],
+    );
+    const initialComboBundles = useMemo(
+        () => resolveComboBundleOptions(restaurantId, item, menuItems, initialComboVariantId),
+        [initialComboVariantId, item, menuItems, restaurantId],
     );
     const {
         variants,
@@ -273,6 +286,8 @@ export default function ItemRouteModal({
         setSelectedComboSideVariantId,
         selectedComboDrinkVariantId,
         setSelectedComboDrinkVariantId,
+        selectedComboBundleId,
+        setSelectedComboBundleId,
     } = useItemCustomizationState({
         item,
         addons,
@@ -280,11 +295,33 @@ export default function ItemRouteModal({
         menuItems,
         customizationRules,
         editingCartItem,
-        comboConfig,
-        comboSides,
-        comboDrinks,
+        comboConfig: initialComboConfig,
+        comboSides: initialComboSides,
+        comboDrinks: initialComboDrinks,
+        comboBundles: initialComboBundles,
         initialVariantId,
     });
+    const comboConfig = useMemo(
+        () => resolveComboMealConfig(restaurantId, item, menuItems, selectedVariantId),
+        [item, menuItems, restaurantId, selectedVariantId],
+    );
+    const comboSides = useMemo(
+        () => resolveComboSideOptions(restaurantId, item, menuItems, selectedVariantId),
+        [item, menuItems, restaurantId, selectedVariantId],
+    );
+    const comboDrinks = useMemo(
+        () => resolveComboDrinkOptions(restaurantId, item, menuItems, selectedVariantId),
+        [item, menuItems, restaurantId, selectedVariantId],
+    );
+    const comboBundles = useMemo(
+        () => resolveComboBundleOptions(restaurantId, item, menuItems, selectedVariantId),
+        [item, menuItems, restaurantId, selectedVariantId],
+    );
+    useEffect(() => {
+        if (!comboConfig?.bundleOptions?.some((option) => option.id === selectedComboBundleId)) {
+            setSelectedComboBundleId(comboConfig?.defaultBundleId);
+        }
+    }, [comboConfig, selectedComboBundleId, setSelectedComboBundleId]);
     const selectedVariant = variants?.find(
         (variant) => variant.id === selectedVariantId,
     );
@@ -810,7 +847,19 @@ export default function ItemRouteModal({
             }),
         [ingredientCounts, resolvedIngredients],
     );
-    const isComboEligibleCategory = Boolean(comboConfig);
+    const ingredientCartCustomizations = useMemo(
+        () => buildIngredientCustomizations({
+            resolvedIngredients,
+            ingredientCounts,
+        }),
+        [ingredientCounts, resolvedIngredients],
+    );
+    const isComboEligibleCategory = isComboMealEligible(
+        restaurantId,
+        item,
+        menuItems,
+        selectedVariantId,
+    );
     const comboTypeOptions = useMemo(
         () => [
             {
@@ -827,11 +876,14 @@ export default function ItemRouteModal({
         selectedComboSideVariant,
         selectedComboDrink,
         selectedComboDrinkVariant,
+        selectedComboBundle,
     } = useMemo(
         () =>
             resolveStandardComboSelection({
                 comboSides,
                 comboDrinks,
+                comboBundles,
+                selectedComboBundleId,
                 selectedComboSideId,
                 selectedComboDrinkId,
                 selectedComboSideVariantId,
@@ -839,6 +891,8 @@ export default function ItemRouteModal({
             }),
         [
             comboDrinks,
+            comboBundles,
+            selectedComboBundleId,
             comboSides,
             selectedComboDrinkId,
             selectedComboDrinkVariantId,
@@ -855,6 +909,7 @@ export default function ItemRouteModal({
                 selectedComboDrinkVariant,
                 selectedComboSide,
                 selectedComboSideVariant,
+                selectedComboBundle,
             }),
         [
             comboType,
@@ -863,8 +918,25 @@ export default function ItemRouteModal({
             selectedComboDrinkVariant,
             selectedComboSide,
             selectedComboSideVariant,
+            selectedComboBundle,
         ],
     );
+    const isComboSelectionComplete = isComboMealSelectionComplete({
+        config: comboConfig,
+        comboType,
+        selectedSideId: selectedComboSideId,
+        selectedSideVariantId: selectedComboSideVariantId,
+        selectedDrinkId: selectedComboDrinkId,
+        selectedDrinkVariantId: selectedComboDrinkVariantId,
+        selectedBundleId: selectedComboBundleId,
+    });
+    const areIngredientSelectionsComplete = areRequiredIngredientSelectionsComplete({
+        item,
+        selectedVariantId,
+        resolvedIngredients,
+        ingredientCounts,
+        customizationRules,
+    });
     const scrollContainerRef = useRef<HTMLDivElement | null>(null);
     const closeButtonRef = useRef<HTMLButtonElement | null>(null);
     const overviewSectionRef = useRef<HTMLElement | null>(null);
@@ -1520,6 +1592,7 @@ export default function ItemRouteModal({
             selectedVariant,
             optionSelections,
             selectedIngredientCustomizations,
+            ingredientCartCustomizations,
             nutritionPerItem: nutrition,
             combo: {
                 isComboEligibleCategory,
@@ -1528,6 +1601,7 @@ export default function ItemRouteModal({
                 selectedComboSideVariant,
                 selectedComboDrink,
                 selectedComboDrinkVariant,
+                selectedComboBundle,
             },
         },
         chipotle: {
@@ -1543,6 +1617,7 @@ export default function ItemRouteModal({
             adjustedTotals: chipotleAdjustedTotals,
         },
         onAfterSubmit: handleClose,
+        canSubmit: isComboSelectionComplete && areIngredientSelectionsComplete,
     });
     // Customize → Save Changes for an item already in the cart: commit the
     // edit, then land back on the (now up-to-date) Preview state instead of
@@ -2434,6 +2509,9 @@ export default function ItemRouteModal({
                                     comboType={comboType}
                                     comboSides={comboSides}
                                     comboDrinks={comboDrinks}
+                                    comboBundles={comboBundles}
+                                    selectedComboBundleId={selectedComboBundleId}
+                                    onSelectComboBundle={setSelectedComboBundleId}
                                     selectedComboSideId={selectedComboSideId}
                                     selectedComboDrinkId={selectedComboDrinkId}
                                     onSelectComboSide={(sideId) => {
@@ -2455,20 +2533,44 @@ export default function ItemRouteModal({
                                         );
                                         setSelectedComboDrinkId(drinkId);
                                         setSelectedComboDrinkVariantId(
-                                            getDefaultVariantId(nextDrink),
+                                            resolveComboChoiceVariantId({
+                                                config: comboConfig,
+                                                role: "drink",
+                                                itemId: drinkId,
+                                                mealSize: comboMealSizeFromSideVariant(
+                                                    selectedComboSide,
+                                                    selectedComboSideVariantId,
+                                                ),
+                                            }) ?? getDefaultVariantId(nextDrink),
                                         );
                                     }}
                                     selectedComboSideVariantId={
                                         selectedComboSideVariantId
                                     }
                                     onSelectComboSideVariant={
-                                        setSelectedComboSideVariantId
+                                        (variantId) => {
+                                            const mealSize = comboMealSizeFromSideVariant(
+                                                selectedComboSide,
+                                                variantId,
+                                            );
+                                            setSelectedComboSideVariantId(variantId);
+                                            setSelectedComboDrinkVariantId(
+                                                resolveComboChoiceVariantId({
+                                                    config: comboConfig,
+                                                    role: "drink",
+                                                    itemId: selectedComboDrinkId,
+                                                    mealSize,
+                                                }) ?? selectedComboDrinkVariantId,
+                                            );
+                                        }
                                     }
                                     selectedComboDrinkVariantId={
                                         selectedComboDrinkVariantId
                                     }
                                     onSelectComboDrinkVariant={
-                                        setSelectedComboDrinkVariantId
+                                        (variantId) => {
+                                            setSelectedComboDrinkVariantId(variantId);
+                                        }
                                     }
                                     onCustomizeIngredients={
                                         canCustomizeViaBuildPage &&
@@ -2546,6 +2648,7 @@ export default function ItemRouteModal({
                                           ? "Done"
                                           : submitButtonLabel,
                                       onPrimaryAction: submitCartItem,
+                                      primaryDisabled: !isComboSelectionComplete || !areIngredientSelectionsComplete,
                                   }
                             : editingCartItem && cartPreviewStage === "preview"
                               ? {
@@ -2569,6 +2672,7 @@ export default function ItemRouteModal({
                                       onSaveChanges:
                                           handleSaveCartItemChanges,
                                       saveLabel: "Save Changes",
+                                      saveDisabled: !isComboSelectionComplete || !areIngredientSelectionsComplete,
                                   }
                                 : {
                                       mode: "preview",
@@ -2580,6 +2684,7 @@ export default function ItemRouteModal({
                                           handleDecrementQuantity,
                                       primaryLabel: submitButtonLabel,
                                       onPrimaryAction: submitCartItem,
+                                      primaryDisabled: !isComboSelectionComplete || !areIngredientSelectionsComplete,
                                   }
                     }
                 />

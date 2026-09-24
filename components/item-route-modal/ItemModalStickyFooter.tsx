@@ -19,6 +19,7 @@ export type ItemModalStickyFooterState =
           customizeLabel?: string;
           primaryLabel: string;
           onPrimaryAction: () => void;
+          primaryDisabled?: boolean;
       }
     | {
           mode: "customize";
@@ -26,6 +27,7 @@ export type ItemModalStickyFooterState =
           backLabel?: string;
           onSaveChanges: () => void;
           saveLabel?: string;
+          saveDisabled?: boolean;
       };
 
 // Single sticky footer for the item-route modal, covering both the
@@ -86,6 +88,7 @@ export default function ItemModalStickyFooter({
                     <PresetHeaderPillButton
                         key="save-changes"
                         tone="solid"
+                        disabled={state.saveDisabled}
                         onClick={state.onSaveChanges}
                         className="w-full sm:w-auto sm:flex-1"
                     >
@@ -122,6 +125,7 @@ export default function ItemModalStickyFooter({
                     <PresetHeaderPillButton
                         key="primary-action"
                         tone="solid"
+                        disabled={state.primaryDisabled}
                         onClick={state.onPrimaryAction}
                         className="w-full sm:w-auto sm:min-w-0 sm:flex-1"
                     >

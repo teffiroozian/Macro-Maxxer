@@ -1,0 +1,71 @@
+{
+  "itemId": "200486",
+  "orderingItemId": "6600487519",
+  "orderingFile": "double-cheeseburger-item-page.json",
+  "summary": {
+    "optionsMapped": 17,
+    "unmatched": 2,
+    "defaultNutritionValidated": true,
+    "maxRawNutrientError": 2.2737367544323206e-13
+  },
+  "unmatched": [
+    {
+      "optionId": "23640084727",
+      "name": "No Salt",
+      "reason": "salt_nutrition_unresolved"
+    },
+    {
+      "optionId": "30184040063",
+      "name": "Extra Salt",
+      "reason": "salt_nutrition_unresolved"
+    }
+  ],
+  "validation": {
+    "expected": {
+      "calories": 443.332914,
+      "protein": 24.9497126,
+      "carbohydrate": 33.5500516,
+      "fat": 23.547992,
+      "sodium": 1123.138264,
+      "saturated_fat": 11.3460762,
+      "trans_fat": 1.3064089,
+      "cholesterol": 84.2531812,
+      "fibre": 1.8435298,
+      "sugars": 6.215969,
+      "addedsugars": 4.703669,
+      "vitaminD": 0.141965,
+      "calcium": 180.8224572,
+      "iron": 3.3735338,
+      "potassium": 346.794682,
+      "vitaminB6": 0,
+      "phosphorus": 0,
+      "caffeine": 0,
+      "calories_from_fat": 211.931928,
+      "energy_kJ": 1854.9049877,
+      "fibre2015": 1.8435298
+    },
+    "calculated": {
+      "calories": 443.33291399999996,
+      "protein": 24.9497126,
+      "carbohydrate": 33.5500516,
+      "fat": 23.547991999999997,
+      "sodium": 1123.138264,
+      "saturated_fat": 11.346076199999999,
+      "trans_fat": 1.3064089,
+      "cholesterol": 84.2531812,
+      "fibre": 1.8435298,
+      "sugars": 6.215969,
+      "addedsugars": 4.703669,
+      "vitaminD": 0.141965,
+      "calcium": 180.8224572,
+      "iron": 3.3735337999999997,
+      "potassium": 346.79468199999997,
+      "vitaminB6": 0,
+      "phosphorus": 0,
+      "caffeine": 0,
+      "calories_from_fat": 211.93192799999997,
+      "energy_kJ": 1854.9049876999998,
+      "fibre2015": 1.8435298
+    }
+  }
+}

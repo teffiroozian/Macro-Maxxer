@@ -6,6 +6,11 @@ import type { CartDetailMenuItem } from "@/lib/cart/cartItemLookup";
 function getDetailTitle(customization: CartCustomization) {
   if (customization.comboRole === "side") return "Side";
   if (customization.comboRole === "drink") return "Drink";
+  if (customization.comboRole === "included-entree") return "Included entrée";
+  if (customization.comboRole === "included-side") return "Included side";
+  if (customization.comboRole === "included-drink") return "Included drink";
+  if (customization.comboRole === "included-dessert") return "Included dessert";
+  if (customization.comboRole === "non-nutrition") return "Included item";
   if (customization.kind === "ingredient") return "Customization";
   return "Selection";
 }
