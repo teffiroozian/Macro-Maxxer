@@ -23,7 +23,7 @@ export default function EntreeSelectionHero({
       <h2 className="text-center text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl lg:text-5xl">
         Choose your entrée
       </h2>
-      <p className="mt-3 text-center text-base text-slate-600 sm:text-lg">
+      <p className="text-body-lg mt-3 text-center text-slate-600">
         Start your build by selecting a base.
       </p>
       <div className="mt-8 grid w-full grid-cols-1 gap-4 sm:mt-10 sm:grid-cols-2 lg:grid-cols-3">
@@ -37,7 +37,7 @@ export default function EntreeSelectionHero({
             key={entreeKey}
             type="button"
             onClick={() => onSelectEntree(entreeKey)}
-            className="flex h-full cursor-pointer flex-col items-center gap-4 rounded-3xl border border-black/15 bg-white p-6 text-center shadow-[0_8px_22px_rgba(0,0,0,0.08)] transition hover:border-black/30 hover:shadow-[0_12px_26px_rgba(0,0,0,0.12)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-900 active:shadow-[0_4px_12px_rgba(0,0,0,0.08)]"
+            className="flex h-full cursor-pointer flex-col items-center gap-4 rounded-3xl border border-black/15 bg-white p-6 text-center shadow-[0_8px_22px_rgba(0,0,0,0.08)] transition hover:border-black/30 hover:shadow-[0_12px_26px_rgba(0,0,0,0.12)] focus-ring active:shadow-[0_4px_12px_rgba(0,0,0,0.08)]"
           >
             <div className="flex h-28 w-full items-center justify-center">
               <Image
@@ -56,7 +56,7 @@ export default function EntreeSelectionHero({
           <button
             type="button"
             onClick={onSelectViewAllIngredients}
-            className="flex h-full cursor-pointer flex-col items-center justify-center gap-4 rounded-3xl border border-dashed border-black/20 bg-slate-50 p-6 text-center transition hover:border-black/35 hover:bg-slate-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-900 active:bg-slate-100/80"
+            className="flex h-full cursor-pointer flex-col items-center justify-center gap-4 rounded-3xl border border-dashed border-black/20 bg-slate-50 p-6 text-center transition hover:border-black/35 hover:bg-slate-100 focus-ring active:bg-slate-100/80"
           >
             <div className="flex h-28 w-full items-center justify-center">
               <span className="flex h-16 w-16 items-center justify-center rounded-2xl bg-white ring-1 ring-black/10">

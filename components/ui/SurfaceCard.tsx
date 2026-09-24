@@ -30,7 +30,9 @@ const radiusClassNames: Record<SurfaceCardRadius, string> = {
 const shadowClassNames: Record<SurfaceCardShadow, string> = {
   none: "shadow-none",
   sm: "shadow-sm",
-  md: "shadow-[0_4px_12px_rgba(0,0,0,0.12)]",
+  // Design System PDF "elev-2" — was a bespoke one-off shadow value; now
+  // the approved foundation token from app/globals.css.
+  md: "shadow-elev-2",
   lg: "shadow-lg",
 };
 

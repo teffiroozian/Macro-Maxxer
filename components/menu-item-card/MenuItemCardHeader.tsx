@@ -72,7 +72,7 @@ export default function MenuItemCardHeader({
           <MenuItemTitle
             name={item.name}
             as={isCartMode ? "div" : "h3"}
-            className="font-heading text-[22px] leading-[1.15] font-bold tracking-tight text-neutral-900 sm:text-[26px]"
+            className="font-heading text-card-title text-slate-900"
           />
           {variants && !item.hideVariantSelector ? (
             <div className="mt-1">

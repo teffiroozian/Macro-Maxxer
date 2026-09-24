@@ -59,14 +59,14 @@ export default function CartItemsSection({
             className={groupIndex > 0 ? "border-t border-black/10 pt-6" : ""}
           >
             <div className="mb-3 flex items-center gap-2 px-1">
-              <span className={`relative flex h-6 w-6 shrink-0 items-center justify-center overflow-hidden bg-neutral-50 ${
+              <span className={`relative flex h-6 w-6 shrink-0 items-center justify-center overflow-hidden bg-slate-50 ${
                 getRestaurantLogoShapeClassName()
               }`}>
                 {restaurant?.logo ? (
                   <Image src={restaurant.logo} alt="" fill sizes="24px" className="object-cover" />
                 ) : null}
               </span>
-              <h2 className="text-sm font-semibold text-neutral-600">
+              <h2 className="text-sm font-semibold text-slate-600">
                 {restaurant?.name ?? "Restaurant"}
               </h2>
             </div>

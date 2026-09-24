@@ -18,7 +18,7 @@ export default function MenuCardActions({
         type="button"
         aria-label={`View details for ${itemName}`}
         onClick={(event) => { event.stopPropagation(); onViewDetails(); }}
-        className="group/details inline-flex cursor-pointer items-center gap-0.5 text-sm font-semibold text-slate-600 transition-colors hover:text-slate-900 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-900"
+        className="group/details inline-flex cursor-pointer items-center gap-0.5 text-sm font-semibold text-slate-600 transition-colors hover:text-slate-900 focus-ring"
       >
         <span className="underline-offset-4 group-hover/details:underline">View Details</span>
         <ChevronRight
@@ -37,7 +37,7 @@ export default function MenuCardActions({
         // the active state (only color changes) so there's no layout shift,
         // and `disabled:opacity-60` on AppButton's base class does the rest
         // of the "temporarily inactive" softening.
-        className={`px-5! text-sm! transition ${isAddFeedbackVisible ? "border-neutral-800! bg-neutral-800! text-white!" : ""}`}
+        className={`px-5! text-sm! transition ${isAddFeedbackVisible ? "border-slate-800! bg-slate-800! text-white!" : ""}`}
         disabled={isAddFeedbackVisible}
         aria-label={`Quick add ${itemName} to cart`}
         onClick={(event) => { event.stopPropagation(); onQuickAdd(); }}

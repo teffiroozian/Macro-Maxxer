@@ -179,7 +179,7 @@ export default function RestaurantCarousel({ restaurants }: RestaurantCarouselPr
               onClick={() => canGoPrev && scrollToIndex(activeIndex - 1)}
               disabled={!canGoPrev}
               aria-label="Show previous restaurant"
-              className="absolute left-2 top-1/2 z-10 hidden h-11 w-11 -translate-y-1/2 cursor-pointer items-center justify-center rounded-full border border-black/10 bg-white/90 text-neutral-700 shadow-md backdrop-blur-sm transition hover:scale-105 hover:bg-white hover:text-neutral-900 hover:shadow-lg active:scale-95 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-900 disabled:pointer-events-none disabled:opacity-0 motion-reduce:transition-none motion-reduce:hover:scale-100 motion-reduce:active:scale-100 sm:flex"
+              className="absolute left-2 top-1/2 z-10 hidden h-12 w-12 -translate-y-1/2 cursor-pointer items-center justify-center rounded-full border border-black/10 bg-white/90 text-slate-700 shadow-md backdrop-blur-sm transition hover:scale-105 hover:bg-white hover:text-slate-900 hover:shadow-lg active:scale-95 focus-ring disabled:pointer-events-none disabled:opacity-0 motion-reduce:transition-none motion-reduce:hover:scale-100 motion-reduce:active:scale-100 sm:flex"
             >
               <ChevronLeft className="h-5 w-5" aria-hidden="true" />
             </button>
@@ -188,7 +188,7 @@ export default function RestaurantCarousel({ restaurants }: RestaurantCarouselPr
               onClick={() => canGoNext && scrollToIndex(activeIndex + 1)}
               disabled={!canGoNext}
               aria-label="Show next restaurant"
-              className="absolute right-2 top-1/2 z-10 hidden h-11 w-11 -translate-y-1/2 cursor-pointer items-center justify-center rounded-full border border-black/10 bg-white/90 text-neutral-700 shadow-md backdrop-blur-sm transition hover:scale-105 hover:bg-white hover:text-neutral-900 hover:shadow-lg active:scale-95 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-900 disabled:pointer-events-none disabled:opacity-0 motion-reduce:transition-none motion-reduce:hover:scale-100 motion-reduce:active:scale-100 sm:flex"
+              className="absolute right-2 top-1/2 z-10 hidden h-12 w-12 -translate-y-1/2 cursor-pointer items-center justify-center rounded-full border border-black/10 bg-white/90 text-slate-700 shadow-md backdrop-blur-sm transition hover:scale-105 hover:bg-white hover:text-slate-900 hover:shadow-lg active:scale-95 focus-ring disabled:pointer-events-none disabled:opacity-0 motion-reduce:transition-none motion-reduce:hover:scale-100 motion-reduce:active:scale-100 sm:flex"
             >
               <ChevronRight className="h-5 w-5" aria-hidden="true" />
             </button>
@@ -220,12 +220,12 @@ export default function RestaurantCarousel({ restaurants }: RestaurantCarouselPr
                 onClick={() => scrollToIndex(index)}
                 aria-pressed={isActive}
                 aria-label={`Show ${restaurant.name}`}
-                className="group cursor-pointer p-2 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-900"
+                className="group cursor-pointer p-2 focus-ring"
               >
                 <span
                   aria-hidden="true"
                   className={`block h-1.5 rounded-full transition-all duration-300 motion-reduce:transition-none ${
-                    isActive ? "w-8 bg-neutral-800" : "w-4 bg-neutral-300 group-hover:bg-neutral-400"
+                    isActive ? "w-8 bg-slate-800" : "w-4 bg-slate-300 group-hover:bg-slate-400"
                   }`}
                 />
               </button>

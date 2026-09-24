@@ -1,4 +1,5 @@
 import type { MenuItemStatus } from "@/types/menu";
+import CornerLabelBadge from "@/components/ui/CornerLabelBadge";
 
 // Same geometry as ComparativeLabelBadge, kept to a distinct purple fill
 // (matching the comparative green's saturation/lightness tier) so the two
@@ -12,9 +13,5 @@ const labelText: Record<MenuItemStatus, string> = {
 };
 
 export default function StatusLabelBadge({ status }: { status: MenuItemStatus }) {
-  return (
-    <span className="inline-flex h-5 w-fit items-center whitespace-nowrap rounded-full bg-violet-700 px-2.5 text-[9px] font-bold uppercase tracking-wider text-white shadow-sm">
-      {labelText[status]}
-    </span>
-  );
+  return <CornerLabelBadge tone="violet">{labelText[status]}</CornerLabelBadge>;
 }

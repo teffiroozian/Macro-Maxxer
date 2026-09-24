@@ -76,7 +76,7 @@ function NutritionFactsInfoTooltip({
       <span
         role="tooltip"
         id={tooltipId}
-        className={`pointer-events-none absolute top-full left-1/2 z-10 mt-2 w-56 -translate-x-1/2 rounded-lg bg-neutral-900 px-2.5 py-1.5 text-[11px] leading-snug font-medium text-white shadow-lg transition-opacity duration-150 ${
+        className={`pointer-events-none absolute top-full left-1/2 z-10 mt-2 w-56 -translate-x-1/2 rounded-lg bg-slate-900 px-2.5 py-1.5 text-[11px] leading-snug font-medium text-white shadow-lg transition-opacity duration-150 ${
           isOpen ? "opacity-100" : "opacity-0"
         }`}
       >
@@ -159,7 +159,7 @@ export default function NutritionFactsPanel({
 
   return (
     <section className={`rounded-2xl border border-black/10 bg-white ${spacing.sectionPadding} ${className}`.trim()}>
-      <h2 className={`${spacing.headingMargin} text-2xl font-bold text-neutral-900`}>{title}</h2>
+      <h2 className={`${spacing.headingMargin} text-2xl font-bold text-slate-900`}>{title}</h2>
 
       <div className="flex items-center gap-1.5 text-xs font-medium text-slate-500">
         <span>{caption}</span>
@@ -172,9 +172,9 @@ export default function NutritionFactsPanel({
       </div>
 
       <div className="mt-1 flex items-end justify-between">
-        <h3 className="text-xl font-bold text-neutral-900">Calories</h3>
+        <h3 className="text-xl font-bold text-slate-900">Calories</h3>
         <div className="inline-flex items-baseline gap-1.5">
-          <div className="text-xl font-bold text-neutral-900">
+          <div className="text-xl font-bold text-slate-900">
             {n.calories === undefined || Number.isNaN(n.calories)
               ? "—"
               : n.calories}
@@ -189,14 +189,14 @@ export default function NutritionFactsPanel({
         </div>
       </div>
 
-      <div className={`${spacing.divider} rounded-full bg-neutral-900/80`} />
+      <div className={`${spacing.divider} rounded-full bg-slate-900/80`} />
 
       <div className={`flex items-baseline justify-between border-b border-black/10 ${spacing.bigRow}`}>
-        <div className={`${spacing.bigRowText} font-semibold text-neutral-900`}>
+        <div className={`${spacing.bigRowText} font-semibold text-slate-900`}>
           Total Fat
         </div>
         <div className="inline-flex items-baseline gap-1.5">
-          <div className={`${spacing.bigRowText} font-semibold text-neutral-900`}>
+          <div className={`${spacing.bigRowText} font-semibold text-slate-900`}>
             {format(n.totalFat, "g")}
           </div>
           {showCustomizationDeltas &&
@@ -224,29 +224,29 @@ export default function NutritionFactsPanel({
       </div>
 
       <div className={`flex items-baseline justify-between border-b border-black/10 ${spacing.bigRow}`}>
-        <div className={`${spacing.bigRowText} font-semibold text-neutral-900`}>
+        <div className={`${spacing.bigRowText} font-semibold text-slate-900`}>
           Cholesterol
         </div>
-        <div className={`${spacing.bigRowText} font-semibold text-neutral-900`}>
+        <div className={`${spacing.bigRowText} font-semibold text-slate-900`}>
           {format(n.cholesterol, "mg")}
         </div>
       </div>
 
       <div className={`flex items-baseline justify-between border-b border-black/10 ${spacing.bigRow}`}>
-        <div className={`${spacing.bigRowText} font-semibold text-neutral-900`}>
+        <div className={`${spacing.bigRowText} font-semibold text-slate-900`}>
           Sodium
         </div>
-        <div className={`${spacing.bigRowText} font-semibold text-neutral-900`}>
+        <div className={`${spacing.bigRowText} font-semibold text-slate-900`}>
           {format(n.sodium, "mg")}
         </div>
       </div>
 
       <div className={`flex items-baseline justify-between border-b border-black/10 ${spacing.bigRow}`}>
-        <div className={`${spacing.bigRowText} font-semibold text-neutral-900`}>
+        <div className={`${spacing.bigRowText} font-semibold text-slate-900`}>
           Carbohydrates
         </div>
         <div className="inline-flex items-baseline gap-1.5">
-          <div className={`${spacing.bigRowText} font-semibold text-neutral-900`}>
+          <div className={`${spacing.bigRowText} font-semibold text-slate-900`}>
             {format(n.carbs, "g")}
           </div>
           {showCustomizationDeltas &&
@@ -274,11 +274,11 @@ export default function NutritionFactsPanel({
       </div>
 
       <div className={`flex items-baseline justify-between border-b border-black/10 ${spacing.bigRow}`}>
-        <div className={`${spacing.bigRowText} font-semibold text-neutral-900`}>
+        <div className={`${spacing.bigRowText} font-semibold text-slate-900`}>
           Protein
         </div>
         <div className="inline-flex items-baseline gap-1.5">
-          <div className={`${spacing.bigRowText} font-semibold text-neutral-900`}>
+          <div className={`${spacing.bigRowText} font-semibold text-slate-900`}>
             {format(n.protein, "g")}
           </div>
           {showCustomizationDeltas &&

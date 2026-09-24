@@ -1,8 +1,8 @@
 import { forwardRef } from "react";
 import type { ButtonHTMLAttributes, ReactNode } from "react";
 
-export type AppIconButtonSize = "sm" | "md";
-export type AppIconButtonVariant = "default" | "ghost" | "nav";
+export type AppIconButtonSize = "sm" | "md" | "nav";
+export type AppIconButtonVariant = "default" | "ghost" | "nav" | "muted";
 
 type AppIconButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
   "aria-label": string;
@@ -17,11 +17,16 @@ type AppIconButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
 };
 
 const baseClassName =
-  "inline-flex shrink-0 cursor-pointer items-center justify-center rounded-full border transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-900 disabled:cursor-not-allowed disabled:opacity-50";
+  "inline-flex shrink-0 cursor-pointer items-center justify-center rounded-full border transition focus-ring disabled:cursor-not-allowed disabled:opacity-50";
 
 const sizeClassNames: Record<AppIconButtonSize, string> = {
   sm: "size-8 text-sm",
   md: "size-10 text-base",
+  // 36px — the global nav's own icon-button size (cart, hamburger, mobile
+  // search), consistently applied via a `size-9` className override across
+  // GlobalMobileNav/DesktopNav/StickyRestaurantBar/HeroSearchNav before
+  // being formalized here.
+  nav: "size-9 text-base",
 };
 
 const variantClassNames: Record<AppIconButtonVariant, string> = {
@@ -32,6 +37,11 @@ const variantClassNames: Record<AppIconButtonVariant, string> = {
   // hover/active rather than the previous permanent outlined circle, so all
   // three read as one consistent system tied to the app's own accent color.
   nav: "border-transparent bg-transparent text-slate-600 hover:bg-accent-soft hover:text-accent-strong active:bg-accent-soft active:text-accent-strong",
+  // A dimmer resting state than `ghost` — used for a modal's own close
+  // button, where the icon should read as a quiet corner affordance rather
+  // than a normal-weight control. Previously duplicated verbatim as two raw
+  // buttons in ItemRouteModal.tsx.
+  muted: "border-transparent bg-transparent text-slate-400 hover:bg-slate-100 hover:text-slate-600",
 };
 
 export function appIconButtonClassName({

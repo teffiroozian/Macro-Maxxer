@@ -34,7 +34,7 @@ export default function MenuItemVariantControls({
           compact
         />
       ) : (
-        <span className="rounded-full border border-neutral-300 bg-white px-3 py-0.5 text-xs font-semibold text-neutral-700">
+        <span className="rounded-full border border-slate-300 bg-white px-3 py-0.5 text-xs font-semibold text-slate-700">
           {selectedVariantLabel ?? variants[0]?.label}
         </span>
       )}

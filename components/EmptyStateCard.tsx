@@ -30,8 +30,8 @@ const variantClassNames: Record<EmptyStateCardVariant, {
   default: {
     container: "gap-2 py-8",
     icon: "mb-1 flex h-12 w-12 items-center justify-center rounded-full bg-slate-100 text-2xl text-slate-700",
-    title: "text-lg font-semibold text-neutral-900",
-    description: "max-w-md text-sm leading-6 text-neutral-600",
+    title: "text-lg font-semibold text-slate-900",
+    description: "max-w-md text-sm leading-6 text-slate-600",
     action: "mt-2",
   },
   compact: {

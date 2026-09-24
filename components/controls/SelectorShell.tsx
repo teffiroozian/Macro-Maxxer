@@ -125,7 +125,7 @@ export default function SelectorShell<TValue extends string>({
                 onClick={() => onSelect(option.value)}
                 onMouseEnter={() => onHover(option.value)}
                 onMouseLeave={() => onHover(null)}
-                className={`flex h-10 w-full cursor-pointer items-center gap-2.5 rounded-xl px-3 text-left text-sm font-semibold transition-colors duration-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-900 ${
+                className={`flex h-10 w-full cursor-pointer items-center gap-2.5 rounded-xl px-3 text-left text-sm font-semibold transition-colors duration-100 focus-ring ${
                   isActive
                     ? "bg-accent-soft text-accent-strong"
                     : isHovered

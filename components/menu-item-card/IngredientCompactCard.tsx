@@ -113,12 +113,12 @@ export default function IngredientCompactCard({
             shadow="none"
             className={`list-none scroll-mt-6 overflow-hidden transition duration-150 ${
                 isIngredientLocked || ingredientSelectionState
-                    ? "border-[1.5px] border-accent! bg-accent-soft/50 shadow-[0_1px_2px_rgba(0,0,0,0.04)]"
+                    ? "border-[1.5px] border-accent! bg-accent-soft/50 shadow-elev-1"
                     : isIngredientSelectionDisabled
                       ? "border border-black/8 bg-black/[0.015] opacity-70"
                       : readOnly
-                        ? "border border-black/10 bg-white shadow-[0_1px_2px_rgba(0,0,0,0.04)]"
-                        : "border border-black/10 bg-white shadow-[0_1px_2px_rgba(0,0,0,0.04)] hover:-translate-y-px hover:border-black/15 hover:shadow-[0_2px_6px_rgba(0,0,0,0.05)]"
+                        ? "border border-black/10 bg-white shadow-elev-1"
+                        : "border border-black/10 bg-white shadow-elev-1 hover:-translate-y-px hover:border-black/15 hover:shadow-elev-2"
             }`}
         >
             <div

@@ -47,7 +47,7 @@ function PreviewSection({
     <div>
       <div className="mb-3 flex items-center gap-2">
         <Icon className="h-4 w-4 text-slate-400" strokeWidth={2.25} />
-        <h3 className="font-heading text-base font-bold text-neutral-900 sm:text-lg">{label}</h3>
+        <h3 className="font-heading text-base font-bold text-slate-900 sm:text-lg">{label}</h3>
       </div>
       {children}
     </div>
@@ -62,7 +62,7 @@ function NestedSectionHeading({ icon: Icon, label }: { icon: LucideIcon; label: 
   return (
     <div className="mb-2.5 flex items-center gap-1.5">
       <Icon className="h-3.5 w-3.5 text-slate-400" strokeWidth={2.25} />
-      <h4 className="font-heading text-sm font-bold text-neutral-600 sm:text-[15px]">{label}</h4>
+      <h4 className="font-heading text-sm font-bold text-slate-600 sm:text-[15px]">{label}</h4>
     </div>
   );
 }
@@ -297,7 +297,7 @@ export default function CartItemPreviewContent({
   return (
     <div>
       <div>
-        <h2 className="font-heading text-2xl font-bold text-neutral-900 sm:text-3xl">Order Details</h2>
+        <h2 className="font-heading text-2xl font-bold text-slate-900 sm:text-3xl">Order Details</h2>
         <p className="mt-1.5 text-sm text-slate-500">Review what&apos;s included in this item. Select a section to make changes.</p>
       </div>
 
@@ -402,9 +402,9 @@ export default function CartItemPreviewContent({
           ) : null}
         </div>
       ) : (
-        <div className="mt-6 rounded-2xl border border-black/[0.06] bg-neutral-50/70 px-5 py-6 text-center sm:mt-10">
-          <p className="text-sm font-semibold text-neutral-700">No customizations</p>
-          <p className="mt-0.5 text-sm text-neutral-500">Standard preparation</p>
+        <div className="mt-6 rounded-2xl border border-black/[0.06] bg-slate-50/70 px-5 py-6 text-center sm:mt-10">
+          <p className="text-sm font-semibold text-slate-700">No customizations</p>
+          <p className="mt-0.5 text-sm text-slate-500">Standard preparation</p>
         </div>
       )}
 
@@ -487,7 +487,7 @@ export default function CartItemPreviewContent({
                 ))}
               </SelectionScrollList>
             ) : (
-              <p className="text-sm text-neutral-500">No additional selections.</p>
+              <p className="text-sm text-slate-500">No additional selections.</p>
             )}
           </SelectionSummaryShell>
         }

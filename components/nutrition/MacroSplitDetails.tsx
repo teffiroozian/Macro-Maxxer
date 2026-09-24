@@ -172,12 +172,12 @@ export default function MacroSplitDetails({
       }}
     >
       <section
-        className="flex max-h-[85dvh] w-full flex-col overflow-hidden rounded-t-[28px] bg-white shadow-2xl sm:max-h-[min(720px,calc(100dvh-3rem))] sm:max-w-[520px] sm:rounded-[28px]"
+        className="flex max-h-[85dvh] w-full flex-col overflow-hidden rounded-t-sheet bg-white shadow-2xl sm:max-h-[min(720px,calc(100dvh-3rem))] sm:max-w-[520px] sm:rounded-sheet"
         onMouseDown={(event) => event.stopPropagation()}
       >
         <div className="mx-auto mt-2 h-1 w-10 rounded-full bg-slate-300 sm:hidden" aria-hidden="true" />
         <header className="flex shrink-0 items-center justify-between border-b border-black/[0.06] px-5 py-4 sm:px-6">
-          <h2 id="macro-split-title" className="truncate font-heading text-xl font-bold text-neutral-900">
+          <h2 id="macro-split-title" className="truncate font-heading text-xl font-bold text-slate-900">
             Macro Split
           </h2>
           <button
@@ -203,7 +203,7 @@ export default function MacroSplitDetails({
                   aria-selected={isSelected}
                   onClick={() => setSelectedMacro(macroKey)}
                   className={`flex flex-1 cursor-pointer items-center justify-center gap-1.5 rounded-full px-3 py-2 text-sm font-semibold transition-all duration-200 ${
-                    isSelected ? "bg-white text-neutral-900 shadow-sm" : "text-slate-500 hover:text-slate-700"
+                    isSelected ? "bg-white text-slate-900 shadow-sm" : "text-slate-500 hover:text-slate-700"
                   }`}
                 >
                   <span aria-hidden="true" className={`h-1.5 w-1.5 shrink-0 rounded-full ${macroColorTokens[macroKey].segmentClassName}`} />

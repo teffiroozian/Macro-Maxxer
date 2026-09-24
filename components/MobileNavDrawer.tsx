@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -8,8 +8,9 @@ import { Store, ChevronDown, ChevronRight, SlidersHorizontal, X } from "lucide-r
 import { getAllRestaurants } from "@/lib/restaurants";
 import AppIconButton from "@/components/ui/AppIconButton";
 import { useBuildInProgressGuard } from "@/components/BuildInProgressGuardContext";
+import { useDialogA11y } from "@/hooks/useDialogA11y";
 import { isPlainLeftClick } from "@/lib/isPlainLeftClick";
-import { getRestaurantLogoShapeClassName } from "@/lib/restaurantPresentation";
+import RestaurantLogoBadge from "@/components/ui/RestaurantLogoBadge";
 
 type DrawerTab = "controls" | "restaurants";
 
@@ -39,34 +40,15 @@ export default function MobileNavDrawer({
   const [wasOpen, setWasOpen] = useState(isOpen);
   const visibleRestaurants = getAllRestaurants();
   const panelRef = useRef<HTMLDivElement | null>(null);
+  const closeButtonRef = useRef<HTMLButtonElement | null>(null);
   const router = useRouter();
   const { guardNavigation } = useBuildInProgressGuard();
 
   // This drawer declares itself `role="dialog" aria-modal="true"` below, so
   // it needs to behave like one: Escape closes it, opening moves focus into
   // it (the close button — first focusable element in the panel), and
-  // closing restores focus to whatever triggered it. Matches the pattern
-  // already established for CartClearConfirmationDialog/ItemRouteModal.
-  useEffect(() => {
-    if (!isOpen) return;
-
-    const previouslyFocusedElement =
-      document.activeElement instanceof HTMLElement ? document.activeElement : null;
-    panelRef.current?.querySelector<HTMLButtonElement>("button")?.focus();
-
-    const onKeyDown = (event: KeyboardEvent) => {
-      if (event.key === "Escape") {
-        onClose();
-      }
-    };
-
-    document.addEventListener("keydown", onKeyDown);
-
-    return () => {
-      document.removeEventListener("keydown", onKeyDown);
-      previouslyFocusedElement?.focus();
-    };
-  }, [isOpen, onClose]);
+  // closing restores focus to whatever triggered it.
+  useDialogA11y({ isOpen, onClose, initialFocusRef: closeButtonRef });
 
   // This drawer stays mounted at all times (only `isOpen` toggles its
   // translate/opacity classes) so the CSS transition can actually animate
@@ -113,7 +95,7 @@ export default function MobileNavDrawer({
         type="button"
         onClick={onClose}
         aria-label="Close navigation drawer"
-        className={`absolute inset-0 bg-black/35 transition-opacity duration-200 ${isOpen ? "opacity-100" : "opacity-0"}`}
+        className={`absolute inset-0 bg-overlay-scrim transition-opacity duration-200 ${isOpen ? "opacity-100" : "opacity-0"}`}
       />
       <div
         ref={panelRef}
@@ -122,7 +104,7 @@ export default function MobileNavDrawer({
         }`}
       >
         <div className="flex items-center gap-2.5 border-b border-black/5 bg-slate-50/80 px-4 py-3">
-          <AppIconButton onClick={onClose} variant="ghost" size="sm" aria-label="Close navigation drawer">
+          <AppIconButton ref={closeButtonRef} onClick={onClose} variant="ghost" size="sm" aria-label="Close navigation drawer">
             <X className="h-4 w-4" strokeWidth={2.5} />
           </AppIconButton>
           {headerTitle ? (
@@ -187,7 +169,7 @@ export default function MobileNavDrawer({
                 {isFeaturedOpen ? (
                   <div className="space-y-3">
                     <div>
-                      <p className="px-1 pb-1.5 text-[11px] font-semibold uppercase tracking-wide text-slate-400">Available Now</p>
+                      <p className="px-1 pb-1.5 text-label text-slate-400">Available Now</p>
                       {/* Its own row treatment — flat surfaces with a hairline
                           divider between items instead of the desktop
                           dropdown's individually outlined cards, so this
@@ -208,9 +190,14 @@ export default function MobileNavDrawer({
                             className="flex items-center justify-between gap-2 bg-white px-3 py-2.5 text-sm font-semibold text-slate-800 transition-colors hover:bg-slate-50 active:bg-slate-100"
                           >
                             <span className="inline-flex min-w-0 items-center gap-2.5">
-                              <span className={`relative h-8 w-8 shrink-0 overflow-hidden bg-white ring-1 ring-black/5 ${getRestaurantLogoShapeClassName()}`}>
-                                <Image src={restaurant.logo} alt={`${restaurant.name} logo`} fill className="object-cover" />
-                              </span>
+                              <RestaurantLogoBadge
+                                src={restaurant.logo}
+                                alt={`${restaurant.name} logo`}
+                                size="xs"
+                                ring={false}
+                                fit="cover"
+                                className="ring-1 ring-black/5"
+                              />
                               <span className="truncate">{restaurant.name}</span>
                             </span>
                             <ChevronRight className="h-4 w-4 shrink-0 text-slate-400" strokeWidth={2.5} />
@@ -222,7 +209,7 @@ export default function MobileNavDrawer({
                     {comingSoonRestaurants.length > 0 ? (
                       <div>
                         <div className="mb-3 border-t border-black/5" />
-                        <p className="px-1 pb-1.5 text-[11px] font-semibold uppercase tracking-wide text-slate-400">Coming Soon</p>
+                        <p className="px-1 pb-1.5 text-label text-slate-400">Coming Soon</p>
                         <div className="divide-y divide-black/5 overflow-hidden rounded-xl border border-black/5">
                           {comingSoonRestaurants.map((restaurant) => (
                             <div
@@ -231,9 +218,15 @@ export default function MobileNavDrawer({
                               className="flex items-center justify-between gap-2 bg-white px-3 py-2.5 text-sm font-semibold text-slate-400"
                             >
                               <span className="inline-flex min-w-0 items-center gap-2.5">
-                                <span className={`relative h-8 w-8 shrink-0 overflow-hidden bg-white opacity-50 ring-1 ring-black/5 ${getRestaurantLogoShapeClassName()}`}>
-                                  <Image src={restaurant.logo} alt={`${restaurant.name} logo`} fill className="object-cover grayscale" />
-                                </span>
+                                <RestaurantLogoBadge
+                                  src={restaurant.logo}
+                                  alt={`${restaurant.name} logo`}
+                                  size="xs"
+                                  ring={false}
+                                  fit="cover"
+                                  grayscale
+                                  className="opacity-50 ring-1 ring-black/5"
+                                />
                                 <span className="truncate">{restaurant.name}</span>
                               </span>
                               <span className="shrink-0 text-[10px] font-medium uppercase tracking-wide text-slate-400">

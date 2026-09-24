@@ -34,7 +34,7 @@ export default function ScopeSwitcher({
     <div
       role="tablist"
       aria-label="Search scope"
-      className={`flex gap-1 ${isSegmented ? "rounded-full bg-neutral-100 p-1" : ""} ${className}`}
+      className={`flex gap-1 ${isSegmented ? "rounded-full bg-slate-100 p-1" : ""} ${className}`}
     >
       {TABS.map((tab) => (
         <button
@@ -52,10 +52,10 @@ export default function ScopeSwitcher({
             scope === tab.value
               ? isSegmented
                 ? "bg-white text-accent-strong shadow-[0_1px_6px_rgba(15,23,42,0.15)]"
-                : "bg-neutral-900 text-white"
+                : "bg-slate-900 text-white"
               : isSegmented
-                ? "text-neutral-500 hover:bg-white/60 hover:text-neutral-900"
-                : "text-neutral-500 hover:bg-neutral-100 hover:text-neutral-900"
+                ? "text-slate-500 hover:bg-white/60 hover:text-slate-900"
+                : "text-slate-500 hover:bg-surface-hover hover:text-slate-900"
           }`}
         >
           {showIcons ? <tab.Icon className="h-3.5 w-3.5" strokeWidth={2.5} aria-hidden="true" /> : null}

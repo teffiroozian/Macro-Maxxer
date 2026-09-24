@@ -1,14 +1,13 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
-import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { ChevronDown, ChevronRight } from "lucide-react";
 import { getAllRestaurants } from "@/lib/restaurants";
 import { useBuildInProgressGuard } from "@/components/BuildInProgressGuardContext";
 import { isPlainLeftClick } from "@/lib/isPlainLeftClick";
-import { getRestaurantLogoShapeClassName } from "@/lib/restaurantPresentation";
+import RestaurantLogoBadge from "@/components/ui/RestaurantLogoBadge";
 
 export default function DesktopRestaurantMenu() {
   const [isRestaurantMenuOpen, setIsRestaurantMenuOpen] = useState(false);
@@ -66,7 +65,7 @@ export default function DesktopRestaurantMenu() {
         // muted gray fill, never a tinted text color. No permanent border —
         // bg-transparent at rest, so it never reads as its own separately-
         // chromed control next to the logo.
-        className={`inline-flex h-9 cursor-pointer items-center gap-1.5 rounded-full px-3 text-sm font-semibold text-slate-700 transition hover:bg-slate-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-900 ${
+        className={`inline-flex h-10 cursor-pointer items-center gap-1.5 rounded-full px-3 text-sm font-semibold text-slate-700 transition hover:bg-slate-100 focus-ring ${
           isRestaurantMenuOpen ? "bg-slate-100" : "bg-transparent"
         }`}
       >
@@ -85,7 +84,7 @@ export default function DesktopRestaurantMenu() {
             aria-label="Restaurants"
             className="overflow-hidden rounded-2xl border border-black/10 bg-white py-2 shadow-[0_18px_40px_rgba(15,23,42,0.16)]"
           >
-            <div className="px-3 pb-1 text-xs font-semibold uppercase tracking-wide text-neutral-500">Available Now</div>
+            <div className="px-3 pb-1 text-xs font-semibold uppercase tracking-wide text-slate-500">Available Now</div>
             <div className="grid gap-1 px-2">
               {availableRestaurants.map((restaurant) => (
                 <Link
@@ -99,15 +98,19 @@ export default function DesktopRestaurantMenu() {
                     const href = `/restaurant/${restaurant.id}`;
                     guardNavigation(() => router.push(href));
                   }}
-                  className="group inline-flex items-center justify-between rounded-xl px-2 py-2.5 text-sm font-semibold text-neutral-900 transition hover:bg-neutral-100 focus:bg-neutral-100 focus:outline-none"
+                  className="group inline-flex items-center justify-between rounded-xl px-2 py-2.5 text-sm font-semibold text-slate-900 transition hover:bg-surface-hover focus:bg-slate-100 focus:outline-none"
                 >
                   <span className="inline-flex min-w-0 items-center gap-2.5">
-                    <span className={`relative h-8 w-8 shrink-0 overflow-hidden bg-neutral-50 ${getRestaurantLogoShapeClassName()}`}>
-                      <Image src={restaurant.logo} alt={`${restaurant.name} logo`} fill className="object-contain" />
-                    </span>
+                    <RestaurantLogoBadge
+                      src={restaurant.logo}
+                      alt={`${restaurant.name} logo`}
+                      size="xs"
+                      ring={false}
+                      background="bg-slate-50"
+                    />
                     <span className="truncate">{restaurant.name}</span>
                   </span>
-                  <ChevronRight className="h-4 w-4 text-neutral-400 transition group-hover:text-neutral-600" strokeWidth={2.4} />
+                  <ChevronRight className="h-4 w-4 text-icon-decorative transition group-hover:text-slate-600" strokeWidth={2.4} />
                 </Link>
               ))}
             </div>
@@ -115,22 +118,28 @@ export default function DesktopRestaurantMenu() {
             {comingSoonRestaurants.length > 0 ? (
               <>
                 <div className="my-2 border-t border-black/10" />
-                <div className="px-3 pb-1 text-xs font-semibold uppercase tracking-wide text-neutral-500">Coming Soon</div>
+                <div className="px-3 pb-1 text-xs font-semibold uppercase tracking-wide text-slate-500">Coming Soon</div>
                 <div className="grid gap-1 px-2">
                   {comingSoonRestaurants.map((restaurant) => (
                     <div
                       key={restaurant.id}
                       role="menuitem"
                       aria-disabled="true"
-                      className="inline-flex cursor-default items-center justify-between rounded-xl px-2 py-2.5 text-sm font-semibold text-neutral-400"
+                      className="inline-flex cursor-default items-center justify-between rounded-xl px-2 py-2.5 text-sm font-semibold text-slate-400"
                     >
                       <span className="inline-flex min-w-0 items-center gap-2.5">
-                        <span className={`relative h-8 w-8 shrink-0 overflow-hidden bg-neutral-50 opacity-60 ${getRestaurantLogoShapeClassName()}`}>
-                          <Image src={restaurant.logo} alt={`${restaurant.name} logo`} fill className="object-contain grayscale" />
-                        </span>
+                        <RestaurantLogoBadge
+                          src={restaurant.logo}
+                          alt={`${restaurant.name} logo`}
+                          size="xs"
+                          ring={false}
+                          background="bg-slate-50"
+                          grayscale
+                          className="opacity-60"
+                        />
                         <span className="truncate">{restaurant.name}</span>
                       </span>
-                      <span className="ml-3 shrink-0 rounded-full border border-neutral-300 px-2 py-0.5 text-[11px] font-semibold uppercase tracking-wide text-neutral-500">
+                      <span className="ml-3 shrink-0 rounded-full border border-slate-300 px-2 py-0.5 text-label">
                         Coming Soon
                       </span>
                     </div>

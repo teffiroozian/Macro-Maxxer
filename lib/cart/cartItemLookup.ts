@@ -23,6 +23,7 @@ import type { Nutrition } from "@/types/nutrition";
 import type { MacroBreakdownEntry, MacroBreakdownNestedKind } from "@/types/macroBreakdown";
 import { resolveMenuItemVariantNutrition } from "@/lib/nutrition";
 import { resolveEffectiveIngredientNutrition } from "@/lib/ingredientNutrition";
+import { getRestaurantItemImagePresentation } from "@/lib/restaurantPresentation";
 
 export type CartDetailMenuItem = MenuItem | IngredientItem;
 
@@ -54,9 +55,14 @@ export function getCartItemImagePresentation(
   if (cartItem.imagePresentation) return cartItem.imagePresentation;
   const restaurant = getCartRestaurantMenu(cartItem.restaurantId);
   const item = restaurant ? findCartMenuItem(restaurant, cartItem.itemId) : null;
-  return item && "imagePresentation" in item
-    ? item.imagePresentation
-    : undefined;
+  const itemPresentation = item && "imagePresentation" in item ? item.imagePresentation : undefined;
+  // Falls through to the restaurant's own structured default (currently only
+  // Starbucks) so per-item presentation still carries the right treatment in
+  // contexts that can only pass one ItemImagePresentation per row — a
+  // cross-restaurant list (e.g. CartMealBreakdown's Protein Score item-by-item
+  // view) has no single shared fallbackClassName that would be correct for
+  // every item there, unlike a single-restaurant image renderer.
+  return itemPresentation ?? getRestaurantItemImagePresentation(cartItem.restaurantId);
 }
 
 export function getCartCustomizationItemId(customization: CartCustomization) {

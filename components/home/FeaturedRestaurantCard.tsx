@@ -28,7 +28,7 @@ export default function FeaturedRestaurantCard({ restaurant, className = "" }: F
         padding="none"
         radius="large"
         shadow="md"
-        className="relative h-full bg-white transition duration-300 group-hover:-translate-y-1 group-hover:shadow-[0_24px_55px_rgba(15,23,42,0.16)]"
+        className="relative h-full bg-white transition duration-300 group-hover:-translate-y-1 group-hover:shadow-elev-hover"
       >
         <div className="flex h-full flex-col sm:flex-row">
           <div className="relative h-60 w-full shrink-0 overflow-hidden rounded-t-3xl sm:h-auto sm:w-[44%] sm:rounded-l-3xl sm:rounded-tr-none">
@@ -60,13 +60,13 @@ export default function FeaturedRestaurantCard({ restaurant, className = "" }: F
                 the restaurant name regardless of description length. */}
             <div className="relative flex items-center gap-3 sm:-ml-12 sm:pl-12">
               <RestaurantLogoBadge src={restaurant.logo} alt={`${restaurant.name} logo`} size="sm" className="sm:hidden" />
-              <h3 className="font-heading text-2xl font-bold text-neutral-900 sm:text-3xl lg:text-4xl">{restaurant.name}</h3>
+              <h3 className="font-heading text-2xl font-bold text-slate-900 sm:text-3xl lg:text-4xl">{restaurant.name}</h3>
               <div className="absolute left-0 top-1/2 z-10 hidden -translate-x-1/2 -translate-y-1/2 sm:block">
                 <RestaurantLogoBadge src={restaurant.logo} alt={`${restaurant.name} logo`} size="md" />
               </div>
             </div>
 
-            <p className="text-sm text-neutral-600 sm:text-base lg:text-md">
+            <p className="text-sm text-slate-600 sm:text-base lg:text-md">
               Browse the full menu with real macros on every item, then build an order that fits your goals.
             </p>
 

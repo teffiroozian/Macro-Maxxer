@@ -48,7 +48,7 @@ export default function MacroTotalsGrid({
         return (
           <div key={macroKey} className={`px-1 py-1 ${itemClassName}`.trim()}>
             <p
-              className={`font-bold leading-none ${sizeClassNames.value} ${config.valueClassNameByVariant[variant]} ${valueClassName}`.trim()}
+              className={`font-bold leading-none tabular-nums ${sizeClassNames.value} ${config.valueClassNameByVariant[variant]} ${valueClassName}`.trim()}
             >
               {macros[macroKey]}
               {config.unit ?? ""}

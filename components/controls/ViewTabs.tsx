@@ -38,7 +38,7 @@ export default function ViewTabs({ options, value, onSelect }: ViewTabsProps) {
             role="tab"
             aria-selected={isActive}
             onClick={() => onSelect(option.value)}
-            className={`inline-flex h-8 cursor-pointer items-center gap-1.5 whitespace-nowrap rounded-full px-3 text-sm font-semibold transition-colors duration-150 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-900 ${
+            className={`inline-flex h-8 cursor-pointer items-center gap-1.5 whitespace-nowrap rounded-full px-3 text-sm font-semibold transition-colors duration-150 focus-ring ${
               isActive
                 ? "bg-white text-accent-strong shadow-sm"
                 : "text-slate-500 hover:bg-white/70 hover:text-slate-700 active:bg-white"

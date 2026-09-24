@@ -20,6 +20,8 @@ import { FilterChips } from "@/components/ControlsRow";
 import { useFilterChipActions } from "@/components/useFilterChipActions";
 import { useStickyNavClearance } from "@/components/restaurant-view/useStickyNavClearance";
 import SectionEyebrow from "@/components/ui/SectionEyebrow";
+import { selectableRowClassName } from "@/components/ui/selectableRow";
+import AppIconButton from "@/components/ui/AppIconButton";
 
 type CategoryOption = {
   id: string;
@@ -148,7 +150,7 @@ function CategoryNavItem({ option, isActive, Icon, onSelect, variant }: Category
         <button
           type="button"
           onClick={onSelect}
-          className={`cursor-pointer box-border flex h-11 min-w-0 w-full max-w-full items-center gap-3 rounded-full px-4 text-left text-base font-semibold transition-colors duration-50 ease-in focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-strong ${
+          className={`cursor-pointer box-border flex h-12 min-w-0 w-full max-w-full items-center gap-3 rounded-full px-4 text-left text-base font-semibold transition-colors duration-50 ease-in focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-strong ${
             isActive ? "shadow-[0px_0_8px_rgba(0,0,0,0.25)] bg-white text-slate-800" : "text-slate-700 hover:bg-slate-200"
           }`}
         >
@@ -173,9 +175,7 @@ function CategoryNavItem({ option, isActive, Icon, onSelect, variant }: Category
       <button
         type="button"
         onClick={onSelect}
-        className={`cursor-pointer flex h-10 items-center gap-2 rounded-[10px] border-none px-2.5 text-left font-semibold text-black/88 transition-colors duration-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-strong ${
-          isActive ? "bg-black/10" : "hover:bg-slate-900/5"
-        }`}
+        className={selectableRowClassName({ active: isActive, className: "flex h-10 border-none" })}
       >
         <Icon className="h-4 w-4 shrink-0" strokeWidth={2.2} aria-hidden="true" />
         <TruncatedCategoryLabel label={option.label} className="min-w-0 flex-1 truncate whitespace-nowrap" />
@@ -190,7 +190,7 @@ function CategoryNavItem({ option, isActive, Icon, onSelect, variant }: Category
     <button
       type="button"
       onClick={onSelect}
-      className={`cursor-pointer inline-flex h-9 shrink-0 items-center gap-2 whitespace-nowrap rounded-full border px-3 text-sm font-semibold transition-colors duration-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-strong ${
+      className={`cursor-pointer inline-flex h-10 shrink-0 items-center gap-2 whitespace-nowrap rounded-full border px-3 text-sm font-semibold transition-colors duration-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-strong ${
         isActive
           ? "border-transparent bg-accent-strong text-white shadow-[0px_0_8px_rgba(0,0,0,0.2)]"
           : "border-black/20 bg-white text-slate-700 hover:bg-slate-50"
@@ -199,7 +199,7 @@ function CategoryNavItem({ option, isActive, Icon, onSelect, variant }: Category
       <Icon className="h-4 w-4" strokeWidth={2.4} aria-hidden="true" />
       <span>{option.label}</span>
       {formattedCount ? (
-        <span className={`shrink-0 text-xs font-semibold tabular-nums ${isActive ? "text-white/75" : "text-slate-400"}`}>
+        <span className={`shrink-0 text-xs font-semibold tabular-nums ${isActive ? "text-white/70" : "text-slate-400"}`}>
           {formattedCount}
         </span>
       ) : null}
@@ -651,21 +651,21 @@ function MobileCategoryMenu({
 }: MobileCategoryMenuProps) {
   return (
     <div ref={menuRef} className="relative shrink-0">
-      <button
-        type="button"
+      <AppIconButton
+        variant="ghost"
+        size="sm"
         aria-haspopup="menu"
         aria-expanded={isOpen}
         onClick={() => setIsOpen((previous) => !previous)}
-        className="cursor-pointer inline-flex h-8 w-8 items-center justify-center rounded-full bg-transparent text-black/85 transition-colors duration-150 hover:bg-slate-900/5"
         aria-label="Open categories menu"
       >
         <PanelTopOpen className="h-4 w-4" strokeWidth={2.2} />
-      </button>
+      </AppIconButton>
 
       {isOpen ? (
         <div
           role="menu"
-          className="absolute left-0 top-[calc(100%+8px)] z-20 w-[min(240px,calc(100vw-2rem))] max-h-[70vh] overflow-y-auto rounded-[14px] border border-black/15 bg-white p-2 shadow-[0_12px_28px_rgba(0,0,0,0.12)]"
+          className="absolute left-0 top-[calc(100%+8px)] z-20 w-[min(240px,calc(100vw-2rem))] max-h-[70vh] overflow-y-auto rounded-[14px] border border-black/15 bg-white p-2 shadow-elev-3"
         >
           {effectiveViewMode === "ranking" ? (
             <RankingCategoryTree

@@ -18,10 +18,10 @@ type MacroStatProps = {
 
 const valueClassBySize: Record<MacroStatSize, string> = {
   summary: "text-2xl font-bold",
-  cartHeaderTotal: "text-2xl font-bold sm:text-3xl",
-  card: "text-[20px] font-bold sm:text-[22px]",
+  cartHeaderTotal: "text-value-1",
+  card: "text-value-2",
   quick: "text-sm leading-4 font-bold",
-  cartCompact: "font-semibold",
+  cartCompact: "text-value-inline",
   cartDetailed: "text-base font-semibold",
   ingredientCompact: "text-lg leading-none font-bold sm:text-xl",
 };
@@ -98,7 +98,7 @@ export default function MacroStat({
     return (
       <div className="flex min-w-0 flex-col items-center justify-center">
         <span className={`${valueClassBySize[size]} ${toneClass}`}>{displayValue}</span>
-        <span className="mt-1 text-[9px] font-bold uppercase tracking-[0.06em] text-slate-600">
+        <span className="text-macro-label mt-1">
           {label}
         </span>
       </div>

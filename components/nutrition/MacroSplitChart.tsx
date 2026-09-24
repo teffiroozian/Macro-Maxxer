@@ -3,54 +3,9 @@
 import { useEffect, useId, useLayoutEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { Info } from "lucide-react";
+import type { MacroSegment } from "@/components/nutrition/macroSegments";
 
-export type MacroSegment = {
-    label: string;
-    shortLabel: string;
-    grams: number;
-    percent: number;
-    roundedPercent: number;
-    color: string;
-};
-
-// Shared with the standard item modal's Macro Split section (ItemDetailsPanel)
-// so any prebuilt/preset review card that shows a macro split stays visually
-// and numerically identical to it.
-export function buildMacroSegments({
-    protein,
-    carbs,
-    fat,
-}: {
-    protein: number;
-    carbs: number;
-    fat: number;
-}): MacroSegment[] {
-    const macroTotalGrams = protein + carbs + fat;
-
-    return [
-        {
-            label: "Protein",
-            shortLabel: "P",
-            grams: protein,
-            percent: macroTotalGrams > 0 ? (protein / macroTotalGrams) * 100 : 0,
-            color: "bg-[#c2410c] text-white",
-        },
-        {
-            label: "Carbs",
-            shortLabel: "C",
-            grams: carbs,
-            percent: macroTotalGrams > 0 ? (carbs / macroTotalGrams) * 100 : 0,
-            color: "bg-[#ca8a04] text-white",
-        },
-        {
-            label: "Fat",
-            shortLabel: "F",
-            grams: fat,
-            percent: macroTotalGrams > 0 ? (fat / macroTotalGrams) * 100 : 0,
-            color: "bg-[#2563eb] text-white",
-        },
-    ].map((segment) => ({ ...segment, roundedPercent: Math.round(segment.percent) }));
-}
+export type { MacroSegment };
 
 // A segment's true `percent` can be too narrow to fit its own label (e.g. a
 // 6% fat share). Rather than let that label spill or disappear, every
@@ -222,7 +177,7 @@ export function MacroLegendInfo({ segments }: { segments: MacroSegment[] }) {
             role="tooltip"
             id={tooltipId}
             style={{ top: position.top, left: position.left }}
-            className={`pointer-events-none fixed z-[250] w-36 rounded-lg bg-neutral-900 px-3 py-2 text-white shadow-lg transition-opacity duration-150 ${
+            className={`pointer-events-none fixed z-[250] w-36 rounded-lg bg-slate-900 px-3 py-2 text-white shadow-lg transition-opacity duration-150 ${
                 isOpen ? "opacity-100" : "opacity-0"
             }`}
         >
@@ -287,7 +242,7 @@ export default function MacroSplitChart({
     const visualPercents = computeVisualPercents(visibleSegments.map((segment) => segment.percent));
 
     return (
-        <div className="flex h-12 w-full gap-1.5 overflow-hidden rounded-xl border border-black/10 bg-neutral-100 p-1.5">
+        <div className="flex h-12 w-full gap-1.5 overflow-hidden rounded-xl border border-black/10 bg-slate-100 p-1.5">
             {visibleSegments.map((segment, index) => (
                 <MacroSegmentBar key={segment.label} segment={segment} visualPercent={visualPercents[index]} />
             ))}

@@ -1,6 +1,5 @@
 import { useLayoutEffect, useMemo, useRef, useState, type ReactNode } from "react";
-import Image from "@/components/ui/AppImage";
-import { ArrowRight, Eye, EyeOff, Lock, RotateCcw, Save, Trash2 } from "lucide-react";
+import { ArrowRight, ChevronRight, Eye, EyeOff, Lock, RotateCcw, Save, Trash2 } from "lucide-react";
 import type { MenuItem } from "@/types/menu";
 import NutritionFactsPanel, {
   type NutritionFactsPanelProps,
@@ -11,9 +10,12 @@ import QuantityStepper from "@/components/QuantityStepper";
 import SectionEyebrow from "@/components/ui/SectionEyebrow";
 import InlineVariantSelect from "@/components/ui/InlineVariantSelect";
 import RestaurantLogoBadge from "@/components/ui/RestaurantLogoBadge";
+import { SelectionSummaryRow } from "@/components/item-route-modal/SelectionSummaryPanels";
 import type { CompactOption } from "@/components/menu-item-card/IngredientCompactCard";
 import ProteinScorePill from "@/components/menu-item-card/ProteinScorePill";
-import MacroSplitChart, { buildMacroSegments, MacroLegendInfo } from "@/components/nutrition/MacroSplitChart";
+import MacroSplitChart from "@/components/nutrition/MacroSplitChart";
+import MacroSplitDetails from "@/components/nutrition/MacroSplitDetails";
+import { buildMacroSegments } from "@/components/nutrition/macroSegments";
 import { getProteinPer100Calories, getProteinScoreTier } from "@/lib/nutrition";
 import { PairedPanelHeightProvider, PairedPanelSource, usePairedPanelHeight } from "@/components/PairedPanelHeight";
 
@@ -110,28 +112,24 @@ function SelectedIngredientRow({
 }) {
   if (!isPanel) {
     return (
-      <SurfaceCard as="li" padding="none" radius="default" shadow="none" className="flex items-center justify-between rounded-xl px-3 py-2">
-        <div className="flex min-w-0 items-center gap-2">
-          <div className="h-8 w-8 shrink-0 overflow-hidden rounded-md border border-black/10 bg-neutral-100">
-            <Image src={selectedIngredient.item.image || restaurantLogo} alt={selectedIngredient.item.image ? selectedIngredient.item.name : ""} width={32} height={32} className="h-full w-full object-cover" />
-          </div>
-          <span className="min-w-0 flex-1 truncate text-sm font-medium text-slate-900">
-            {selectedIngredient.item.name}
-            {selectedIngredient.quantity > 1 ? ` (x${selectedIngredient.quantity})` : ""}
-            {portionLabel ? ` · ${portionLabel}` : ""}
-          </span>
-        </div>
-        <QuantityStepper
-          value={selectedIngredient.quantity}
-          onDecrement={() => onAdjustIngredientQuantity(ingredientId, -1)}
-          onIncrement={() => onAdjustIngredientQuantity(ingredientId, 1)}
-          decrementLabel={`Decrease ${selectedIngredient.item.name}`}
-          incrementLabel={`Increase ${selectedIngredient.item.name}`}
-          decrementDisabled={isLocked}
-          incrementDisabled={isLocked}
-          variant="small"
-        />
-      </SurfaceCard>
+      <SelectionSummaryRow
+        image={selectedIngredient.item.image}
+        fallbackImage={restaurantLogo}
+        imageAlt={selectedIngredient.item.name}
+        name={`${selectedIngredient.item.name}${selectedIngredient.quantity > 1 ? ` (x${selectedIngredient.quantity})` : ""}${portionLabel ? ` · ${portionLabel}` : ""}`}
+        accessory={
+          <QuantityStepper
+            value={selectedIngredient.quantity}
+            onDecrement={() => onAdjustIngredientQuantity(ingredientId, -1)}
+            onIncrement={() => onAdjustIngredientQuantity(ingredientId, 1)}
+            decrementLabel={`Decrease ${selectedIngredient.item.name}`}
+            incrementLabel={`Increase ${selectedIngredient.item.name}`}
+            decrementDisabled={isLocked}
+            incrementDisabled={isLocked}
+            variant="small"
+          />
+        }
+      />
     );
   }
 
@@ -141,62 +139,48 @@ function SelectedIngredientRow({
   // Ingredients card (see SelectionSummaryRow).
   if (isLocked) {
     return (
-      <SurfaceCard as="li" padding="none" radius="default" shadow="none" className="flex items-center gap-2 rounded-xl px-3 py-2 opacity-80">
-        <div className="h-8 w-8 shrink-0 overflow-hidden rounded-md border border-black/10 bg-neutral-100">
-          <Image src={selectedIngredient.item.image || restaurantLogo} alt={selectedIngredient.item.image ? selectedIngredient.item.name : ""} width={32} height={32} className="h-full w-full object-cover" />
-        </div>
-        <span className="min-w-0 flex-1 truncate text-sm font-medium text-slate-600">
-          {selectedIngredient.item.name}
-          {portionLabel ? ` · ${portionLabel}` : ""}
-        </span>
-        <span className="inline-flex shrink-0 items-center gap-1 rounded-full bg-slate-200/70 px-2.5 py-1 text-[11px] font-semibold text-slate-500">
-          <Lock className="h-3 w-3" aria-hidden="true" />
-          Included
-        </span>
-      </SurfaceCard>
+      <SelectionSummaryRow
+        image={selectedIngredient.item.image}
+        fallbackImage={restaurantLogo}
+        imageAlt={selectedIngredient.item.name}
+        name={`${selectedIngredient.item.name}${portionLabel ? ` · ${portionLabel}` : ""}`}
+        state="muted"
+        accessory={
+          <span className="inline-flex shrink-0 items-center gap-1 rounded-full bg-slate-200/70 px-2.5 py-1 text-[11px] font-semibold text-slate-500">
+            <Lock className="h-3 w-3" aria-hidden="true" />
+            Included
+          </span>
+        }
+      />
     );
   }
 
   return (
-    <SurfaceCard
-      as="li"
-      padding="none"
-      radius="default"
-      shadow="none"
-      className={`flex items-center gap-2 rounded-xl px-3 py-2 ${
-        isExcluded ? "border-dashed! border-slate-300!" : ""
-      }`}
-    >
-      <div className="h-8 w-8 shrink-0 overflow-hidden rounded-md border border-black/10 bg-neutral-100">
-        <Image src={selectedIngredient.item.image || restaurantLogo} alt={selectedIngredient.item.image ? selectedIngredient.item.name : ""} width={32} height={32} className="h-full w-full object-cover" />
-      </div>
-      <span
-        className={`min-w-0 flex-1 truncate text-sm font-medium ${
-          isExcluded ? "text-slate-400 line-through" : "text-slate-900"
-        }`}
-      >
-        {selectedIngredient.item.name}
-        {selectedIngredient.quantity > 1 ? ` (x${selectedIngredient.quantity})` : ""}
-      </span>
-      {portionControl && onPortionModeChange ? (
-        <InlineVariantSelect
-          options={portionControl.options}
-          selectedOptionId={portionControl.selectedId}
-          onSelectOption={(optionId) => onPortionModeChange(selectedIngredient.item, optionId)}
-          ariaLabel={`Change ${selectedIngredient.item.name} portion`}
-          disabled={isExcluded}
-        />
-      ) : portionLabel ? (
-        <span
-          className={`shrink-0 rounded-md bg-black/5 px-1.5 py-0.5 text-[10px] font-semibold tracking-wide ${
-            isExcluded ? "text-black/30" : "text-black/60"
-          }`}
-        >
-          {portionLabel}
-        </span>
-      ) : null}
-      {isPanel ? (
+    <SelectionSummaryRow
+      image={selectedIngredient.item.image}
+      fallbackImage={restaurantLogo}
+      imageAlt={selectedIngredient.item.name}
+      name={`${selectedIngredient.item.name}${selectedIngredient.quantity > 1 ? ` (x${selectedIngredient.quantity})` : ""}`}
+      state={isExcluded ? "excluded" : "default"}
+      accessory={
         <>
+          {portionControl && onPortionModeChange ? (
+            <InlineVariantSelect
+              options={portionControl.options}
+              selectedOptionId={portionControl.selectedId}
+              onSelectOption={(optionId) => onPortionModeChange(selectedIngredient.item, optionId)}
+              ariaLabel={`Change ${selectedIngredient.item.name} portion`}
+              disabled={isExcluded}
+            />
+          ) : portionLabel ? (
+            <span
+              className={`shrink-0 rounded-md bg-black/5 px-1.5 py-0.5 text-[10px] font-semibold tracking-wide ${
+                isExcluded ? "text-black/30" : "text-black/60"
+              }`}
+            >
+              {portionLabel}
+            </span>
+          ) : null}
           <button
             type="button"
             onClick={() => onToggleExcludeIngredient?.(ingredientId)}
@@ -220,8 +204,8 @@ function SelectedIngredientRow({
             <Trash2 className="h-3.5 w-3.5" aria-hidden="true" />
           </button>
         </>
-      ) : null}
-    </SurfaceCard>
+      }
+    />
   );
 }
 
@@ -305,9 +289,9 @@ function SelectedIngredientsCard({
       className="order-1 flex flex-col lg:order-2 lg:overflow-hidden"
       style={pairedHeight !== null ? { height: pairedHeight } : undefined}
     >
-      <h3 className="shrink-0 text-2xl font-bold text-neutral-900">Selected Ingredients</h3>
+      <h3 className="shrink-0 text-2xl font-bold text-slate-900">Selected Ingredients</h3>
       <p className="mt-2 shrink-0 text-sm font-semibold text-slate-600">{selectedBuildName} · {selectedIngredientCount} selected</p>
-      <div className="mt-4 flex-1 rounded-xl bg-[#efefef] p-2 lg:min-h-0 lg:overflow-y-auto">
+      <div className="mt-4 flex-1 rounded-xl bg-app-background p-2 lg:min-h-0 lg:overflow-y-auto">
         <div className="space-y-3">
           {groupedSelectedIngredientEntries.map((group) => (
             <div key={group.categoryKey || "uncategorized"} className="space-y-1.5">
@@ -358,11 +342,46 @@ function ViewBuildStatBlock({
   return (
     <div className={`flex min-w-0 flex-col gap-1.5 ${className}`.trim()}>
       <div className="flex items-center gap-1.5">
-        <SectionEyebrow className="text-[10px] text-neutral-500">{eyebrow}</SectionEyebrow>
+        <SectionEyebrow className="text-[10px] text-slate-500">{eyebrow}</SectionEyebrow>
         {headerExtra}
       </div>
       {children}
     </div>
+  );
+}
+
+// Macro Split's View Build treatment, aligned with the regular item-detail
+// sections (see SelectionSummaryPanels.tsx's CLICKABLE_SECTION_CLASSNAME /
+// SectionHeaderRow): the whole block is one clickable button — hover
+// background + trailing chevron — opening the same MacroSplitDetails modal,
+// instead of the old inline tooltip/info-icon. Eyebrow stays at View Build's
+// own compact size rather than adopting the item-detail one, since only the
+// interaction pattern is meant to align, not the type scale.
+function ClickableMacroSplitBlock({
+  segments,
+  onOpen,
+  className = "",
+}: {
+  segments: ReturnType<typeof buildMacroSegments>;
+  onOpen: () => void;
+  className?: string;
+}) {
+  return (
+    <button
+      type="button"
+      onClick={onOpen}
+      aria-haspopup="dialog"
+      className={`group -mx-2 flex min-w-0 cursor-pointer flex-col gap-1.5 rounded-xl px-2 py-1.5 text-left transition-colors duration-200 hover:bg-slate-50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-900 ${className}`.trim()}
+    >
+      <span className="flex items-center justify-between gap-1.5">
+        <SectionEyebrow className="text-[10px] text-slate-500">Macro Split</SectionEyebrow>
+        <ChevronRight
+          className="h-3.5 w-3.5 shrink-0 text-slate-400 transition-transform duration-200 group-hover:translate-x-0.5"
+          aria-hidden="true"
+        />
+      </span>
+      <MacroSplitChart segments={segments} />
+    </button>
   );
 }
 
@@ -485,6 +504,7 @@ export default function BuildSummaryDrawer({
   // the bottom or once removals shrink the list below the fold.
   const ingredientsScrollRef = useRef<HTMLDivElement | null>(null);
   const [showIngredientsBottomFade, setShowIngredientsBottomFade] = useState(false);
+  const [isMacroSplitOpen, setIsMacroSplitOpen] = useState(false);
 
   useLayoutEffect(() => {
     const node = ingredientsScrollRef.current;
@@ -575,7 +595,7 @@ export default function BuildSummaryDrawer({
       <div className="flex h-full min-h-0 flex-col p-2.5 sm:p-3">
         <div className="flex shrink-0 items-center gap-2 pb-2.5">
           <RestaurantLogoBadge src={restaurantLogo} alt="" size="sm" ring={false} className="border border-black/10" />
-          <h2 className="truncate text-base font-bold text-neutral-900 sm:text-lg">{selectedBuildName}</h2>
+          <h2 className="truncate text-base font-bold text-slate-900 sm:text-lg">{selectedBuildName}</h2>
         </div>
 
         {/* Mobile (<lg): one normal block-flow column — every section is a
@@ -590,7 +610,7 @@ export default function BuildSummaryDrawer({
             fixed to the bottom of the modal regardless of content length. */}
         <div className="flex min-h-0 flex-1 flex-col gap-3 overflow-y-auto lg:hidden">
           <SurfaceCard as="section" padding="compact" radius="large" shadow="none">
-            <h3 className="text-lg font-bold text-neutral-900">Selected Ingredients</h3>
+            <h3 className="text-lg font-bold text-slate-900">Selected Ingredients</h3>
             <p className="mt-1 text-sm font-medium text-slate-400">
               {selectedEntreeLabel} · {selectedIngredientCount} ingredient{selectedIngredientCount === 1 ? "" : "s"}
             </p>
@@ -602,15 +622,13 @@ export default function BuildSummaryDrawer({
               {typeof proteinScore === "number" && proteinScoreTier ? (
                 <ProteinScorePill scorePerHundredCalories={proteinScore} tier={proteinScoreTier} protein={displayNutritionLabelTotals.protein} calories={displayNutritionLabelTotals.calories} itemName={selectedBuildName} />
               ) : (
-                <p className="text-sm text-neutral-500">—</p>
+                <p className="text-sm text-slate-500">—</p>
               )}
             </ViewBuildStatBlock>
           </SurfaceCard>
 
           <SurfaceCard as="section" padding="compact" radius="large" shadow="none">
-            <ViewBuildStatBlock eyebrow="Macro Split" headerExtra={<MacroLegendInfo segments={macroSegments} />}>
-              <MacroSplitChart segments={macroSegments} />
-            </ViewBuildStatBlock>
+            <ClickableMacroSplitBlock segments={macroSegments} onOpen={() => setIsMacroSplitOpen(true)} />
           </SurfaceCard>
 
           {/* Normal/default NutritionFactsPanel — no `compact` variant, no
@@ -634,7 +652,7 @@ export default function BuildSummaryDrawer({
             className="flex min-h-0 flex-1 flex-col lg:overflow-hidden"
           >
             <div className="shrink-0">
-              <h3 className="text-lg font-bold text-neutral-900">Selected Ingredients</h3>
+              <h3 className="text-lg font-bold text-slate-900">Selected Ingredients</h3>
               <p className="mt-1 text-sm font-medium text-slate-400">
                 {selectedEntreeLabel} · {selectedIngredientCount} ingredient{selectedIngredientCount === 1 ? "" : "s"}
               </p>
@@ -654,25 +672,37 @@ export default function BuildSummaryDrawer({
               />
             </div>
 
-            <div className="mt-3 flex shrink-0 items-start gap-5 border-t border-black/[0.06] pt-3">
-              <ViewBuildStatBlock eyebrow="Protein Score" className="shrink-0">
+            {/* Fixed-width Protein Score column (sized to comfortably fit the
+                pill's longest realistic text, e.g. "18.5g protein / 100
+                cal") so a changing score value never reflows Macro Split's
+                starting position next to it. `minmax(0, 1fr)` lets Macro
+                Split take the rest of the row and still shrink correctly
+                instead of overflowing. */}
+            <div className="mt-3 grid grid-cols-[200px_minmax(0,1fr)] items-start gap-5 border-t border-black/[0.06] pt-3">
+              <ViewBuildStatBlock eyebrow="Protein Score" className="min-w-0">
                 {typeof proteinScore === "number" && proteinScoreTier ? (
                   <ProteinScorePill scorePerHundredCalories={proteinScore} tier={proteinScoreTier} protein={displayNutritionLabelTotals.protein} calories={displayNutritionLabelTotals.calories} itemName={selectedBuildName} />
                 ) : (
-                  <p className="text-sm text-neutral-500">—</p>
+                  <p className="text-sm text-slate-500">—</p>
                 )}
               </ViewBuildStatBlock>
 
-              <ViewBuildStatBlock
-                eyebrow="Macro Split"
-                headerExtra={<MacroLegendInfo segments={macroSegments} />}
-                className="min-w-0 flex-1"
-              >
-                <MacroSplitChart segments={macroSegments} />
-              </ViewBuildStatBlock>
+              <ClickableMacroSplitBlock
+                segments={macroSegments}
+                onOpen={() => setIsMacroSplitOpen(true)}
+                className="min-w-0"
+              />
             </div>
           </SurfaceCard>
         </div>
+
+        {isMacroSplitOpen ? (
+          <MacroSplitDetails
+            open
+            onClose={() => setIsMacroSplitOpen(false)}
+            totals={displayNutritionLabelTotals}
+          />
+        ) : null}
       </div>
     );
   }

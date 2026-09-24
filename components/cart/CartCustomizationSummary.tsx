@@ -27,7 +27,7 @@ type CartCustomizationSummaryProps = {
 };
 
 const sizeStyles: Record<CartCustomizationSummarySize, { text: string; icon: string; dot: string }> = {
-  default: { text: "text-sm text-neutral-500", icon: "h-3.5 w-3.5 text-neutral-400", dot: "text-neutral-300" },
+  default: { text: "text-sm text-slate-500", icon: "h-3.5 w-3.5 text-slate-400", dot: "text-slate-300" },
   compact: { text: "text-xs text-slate-500", icon: "h-3 w-3 text-slate-400", dot: "text-slate-300" },
 };
 

@@ -84,7 +84,7 @@ export default function DesktopSearchDropdown({ className = "w-full" }: { classN
           field above; only its own opacity and a small upward slide
           animate. */}
       <div
-        className={`fixed inset-0 z-[228] bg-black/30 transition-opacity duration-200 ${
+        className={`fixed inset-0 z-[228] bg-overlay-scrim transition-opacity duration-200 ${
           isOpen ? "opacity-100" : "pointer-events-none opacity-0"
         }`}
         onClick={close}

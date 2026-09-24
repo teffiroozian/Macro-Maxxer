@@ -94,6 +94,8 @@ import { useItemCartSubmission } from "./useItemCartSubmission";
 import { useCart } from "@/stores/cartStore";
 import { getRestaurantImagePresentation } from "@/lib/restaurantPresentation";
 import RestaurantItemImage from "@/components/ui/RestaurantItemImage";
+import SegmentedControl from "@/components/ui/SegmentedControl";
+import AppIconButton from "@/components/ui/AppIconButton";
 
 const emptyAddon: MenuItem = {
     id: "none",
@@ -153,14 +155,14 @@ function PreviewControlShortcut({
 }) {
     return (
         <div className="min-w-0">
-            <p className="text-[11px] font-semibold uppercase tracking-wide text-slate-400">
+            <p className="text-label text-slate-400">
                 {label}
             </p>
             <button
                 type="button"
                 onClick={onClick}
                 aria-label={`Edit ${label}`}
-                className="mt-1.5 inline-flex h-9 max-w-full cursor-pointer items-center gap-1.5 rounded-full border border-black/15 bg-slate-50 px-4 text-[13px] font-semibold text-slate-700 transition hover:border-black/25 hover:bg-slate-100 active:bg-slate-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-strong sm:text-sm"
+                className="mt-1.5 inline-flex h-10 max-w-full cursor-pointer items-center gap-1.5 rounded-full border border-black/15 bg-slate-50 px-4 text-[13px] font-semibold text-slate-700 transition hover:border-black/25 hover:bg-slate-100 active:bg-slate-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-strong sm:text-sm"
             >
                 <span className="truncate">{value}</span>
                 <Pencil className="h-3 w-3 shrink-0 text-slate-400" strokeWidth={2.5} />
@@ -1595,7 +1597,7 @@ export default function ItemRouteModal({
         >
             <button
                 type="button"
-                className="cursor-pointer absolute inset-0 border-0 bg-slate-900/60"
+                className="cursor-pointer absolute inset-0 border-0 bg-overlay-scrim"
                 onClick={handleClose}
                 aria-label="Close item modal"
             />
@@ -1623,19 +1625,20 @@ export default function ItemRouteModal({
                         <div className="min-w-0 flex-1">
                             <MenuItemTitle
                                 name={item.name}
-                                className="font-heading text-lg font-medium leading-tight text-neutral-900"
+                                className="font-heading text-title text-slate-900"
                             />
                         </div>
                     </div>
-                    <button
-                        type="button"
+                    <AppIconButton
+                        variant="muted"
+                        size="md"
                         tabIndex={isOverviewCollapsed ? 0 : -1}
-                        className="cursor-pointer inline-flex size-10 shrink-0 items-center justify-center rounded-full text-slate-400 transition hover:bg-slate-100 hover:text-slate-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-strong"
+                        className="focus-visible:outline-accent-strong"
                         onClick={handleClose}
                         aria-label="Close item modal"
                     >
                         <X size={18} strokeWidth={2.25} />
-                    </button>
+                    </AppIconButton>
                 </div>
 
                 <div
@@ -1681,13 +1684,13 @@ export default function ItemRouteModal({
                                 />
                             ) : null}
                             <div className="item-overview-content min-w-0">
-                                <p className="item-overview-label mt-4 min-w-0 pr-12 text-[11px] font-semibold uppercase tracking-wide text-slate-400 sm:mt-0 sm:pr-14">
+                                <p className="item-overview-label mt-4 min-w-0 pr-12 text-label text-slate-400 sm:mt-0 sm:pr-14">
                                     Base Nutrition
                                 </p>
                                 <MenuItemTitle
                                     as="h2"
                                     name={item.name}
-                                    className="item-overview-title mt-1.5 min-w-0 font-heading text-lg font-bold leading-tight tracking-tight text-neutral-900 sm:pr-14 sm:text-xl lg:text-2xl"
+                                    className="item-overview-title font-heading text-display-3 mt-1.5 min-w-0 text-slate-900 sm:pr-14"
                                 />
                                 <div className="item-overview-macros mt-5 flex flex-wrap items-center justify-start gap-x-4 gap-y-2 sm:mt-3 sm:gap-x-5">
                                     <MacroStat
@@ -1770,52 +1773,31 @@ export default function ItemRouteModal({
                                             id={ITEM_DETAILS_SECTION_IDS.orderType}
                                             className="min-w-0 lg:w-[45%]"
                                         >
-                                            <p className="text-[11px] font-semibold uppercase tracking-wide text-slate-400">
+                                            <p className="text-label text-slate-400">
                                                 Order Type
                                             </p>
-                                            <div
-                                                role="radiogroup"
-                                                aria-label="Order type"
-                                                className="mt-1.5 grid w-full grid-cols-2 gap-1 rounded-full bg-slate-100 p-1"
-                                            >
-                                                {comboTypeOptions.map((option) => {
-                                                    const isActive = comboType === option.id;
-                                                    const Icon = option.icon;
-                                                    return (
-                                                        <button
-                                                            key={option.id}
-                                                            type="button"
-                                                            role="radio"
-                                                            aria-checked={isActive}
-                                                            onClick={() => setComboType(option.id)}
-                                                            className={`box-border flex h-9 min-w-0 cursor-pointer items-center justify-center gap-1 whitespace-nowrap rounded-full border px-2 text-[13px] font-semibold transition-colors duration-150 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-strong sm:gap-1.5 sm:px-5 sm:text-sm ${
-                                                                isActive
-                                                                    ? "border-transparent bg-accent-strong text-white/95 shadow-sm"
-                                                                    : "border-transparent text-slate-500 hover:bg-white/70 active:bg-white"
-                                                            }`}
-                                                        >
-                                                            <Icon
-                                                                className={`h-4 w-4 shrink-0 ${isActive ? "text-white/95" : "text-slate-400"}`}
-                                                                strokeWidth={2.3}
-                                                            />
-                                                            {option.label}
-                                                        </button>
-                                                    );
-                                                })}
-                                            </div>
+                                            <SegmentedControl
+                                                className="mt-1.5"
+                                                ariaLabel="Order type"
+                                                size="comfortable"
+                                                value={comboType}
+                                                onChange={setComboType}
+                                                options={comboTypeOptions}
+                                            />
                                         </div>
                                     </div>
                                 ) : null}
                             </div>
-                            <button
+                            <AppIconButton
                                 ref={closeButtonRef}
-                                type="button"
-                                className="cursor-pointer absolute right-0 top-0 inline-flex size-10 shrink-0 items-center justify-center rounded-full text-slate-400 transition hover:bg-slate-100 hover:text-slate-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-strong"
+                                variant="muted"
+                                size="md"
+                                className="absolute right-0 top-0 focus-visible:outline-accent-strong"
                                 onClick={handleClose}
                                 aria-label="Close item modal"
                             >
                                 <X size={18} strokeWidth={2.25} />
-                            </button>
+                            </AppIconButton>
                         </section>
 
                         {!isOverviewPreviewState &&
@@ -1915,7 +1897,7 @@ export default function ItemRouteModal({
                                     className="preset-stage-enter"
                                 >
                                     <div>
-                                        <h2 className="font-heading text-2xl font-bold text-neutral-900 sm:text-3xl">
+                                        <h2 className="font-heading text-2xl font-bold text-slate-900 sm:text-3xl">
                                             Customize Your Build
                                         </h2>
                                         <p className="mt-1.5 text-sm text-slate-500">
@@ -1927,7 +1909,7 @@ export default function ItemRouteModal({
                                     {chipotleIncludedIngredientDisplayItems.length >
                                     0 ? (
                                         <div>
-                                            <h2 className="font-heading mb-4 text-2xl font-bold text-neutral-900 sm:text-3xl">
+                                            <h2 className="font-heading mb-4 text-2xl font-bold text-slate-900 sm:text-3xl">
                                                 Included Ingredients
                                             </h2>
                                             <MenuSections

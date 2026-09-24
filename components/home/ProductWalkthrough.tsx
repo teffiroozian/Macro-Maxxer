@@ -7,7 +7,8 @@ import { ArrowRight, Check, Flame, Leaf, Plus, Scale, type LucideIcon } from "lu
 import SurfaceCard from "@/components/ui/SurfaceCard";
 import FilterChip from "@/components/ui/FilterChip";
 import MacroStat from "@/components/nutrition/MacroStat";
-import MacroSplitBar from "@/components/nutrition/MacroSplitBar";
+import MacroSplitChart from "@/components/nutrition/MacroSplitChart";
+import { buildMacroSegments } from "@/components/nutrition/macroSegments";
 import CartItemPreviewRow from "@/components/cart/CartItemPreviewRow";
 import { addNutrition, getProteinPer100Calories, normalizeNutrition } from "@/lib/nutrition";
 import type { Nutrition } from "@/types/nutrition";
@@ -95,7 +96,7 @@ function prefersReducedMotion() {
 }
 
 const TAB_ACTIVE_CLASS = "bg-accent-soft text-accent-strong";
-const TAB_INACTIVE_CLASS = "text-neutral-500 hover:bg-black/5 hover:text-neutral-800";
+const TAB_INACTIVE_CLASS = "text-slate-500 hover:bg-black/5 hover:text-slate-800";
 
 // Interactive three-tab showcase for the Product Walkthrough (Slice 3). One
 // step is active at a time, driven entirely by user action (no autoplay) —
@@ -202,14 +203,14 @@ export default function ProductWalkthrough({
               tabIndex={isActive ? 0 : -1}
               onClick={() => setActiveIndex(index)}
               onKeyDown={handleTabKeyDown}
-              className={`inline-flex cursor-pointer items-center whitespace-nowrap rounded-full px-3.5 py-2 text-sm font-semibold transition-colors duration-200 motion-reduce:transition-none focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-900 sm:px-4 ${
+              className={`inline-flex cursor-pointer items-center whitespace-nowrap rounded-full px-3.5 py-2 text-sm font-semibold transition-colors duration-200 motion-reduce:transition-none focus-ring sm:px-4 ${
                 isActive ? TAB_ACTIVE_CLASS : TAB_INACTIVE_CLASS
               }`}
             >
               <span
                 aria-hidden="true"
                 className={`mr-2 inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-full text-[11px] font-bold ${
-                  isActive ? "bg-accent text-white" : "bg-neutral-200 text-neutral-600"
+                  isActive ? "bg-accent text-white" : "bg-slate-200 text-slate-600"
                 }`}
               >
                 {index + 1}
@@ -225,21 +226,21 @@ export default function ProductWalkthrough({
           transition that's automatically skipped under
           prefers-reduced-motion via that class's own media query. */}
       <div key={activeStep.key} className="walkthrough-panel-enter mx-auto mt-6 max-w-2xl text-center">
-        <h3 className="font-heading text-balance text-xl font-bold text-neutral-900 sm:text-2xl">
+        <h3 className="font-heading text-balance text-xl font-bold text-slate-900 sm:text-2xl">
           {activeStep.title}
         </h3>
-        <p className="text-pretty mt-2 text-sm text-neutral-600 sm:text-base">{activeStep.description}</p>
+        <p className="text-pretty mt-2 text-sm text-slate-600 sm:text-base">{activeStep.description}</p>
       </div>
 
       <div className="mx-auto mt-8 w-full max-w-4xl">
         <SurfaceCard as="article" radius="large" shadow="md" padding="none" className="overflow-hidden bg-white">
           {/* Light "device chrome" — same treatment as ProductPreviewCard,
               so this preview reads as part of the same visual system. */}
-          <div className="flex items-center gap-1.5 border-b border-black/5 bg-neutral-50/80 px-5 py-3">
-            <span className="h-2 w-2 rounded-full bg-neutral-300" />
-            <span className="h-2 w-2 rounded-full bg-neutral-300" />
-            <span className="h-2 w-2 rounded-full bg-neutral-300" />
-            <span className="ml-2 truncate text-xs font-medium text-neutral-400">
+          <div className="flex items-center gap-1.5 border-b border-black/5 bg-slate-50/80 px-5 py-3">
+            <span className="h-2 w-2 rounded-full bg-slate-300" />
+            <span className="h-2 w-2 rounded-full bg-slate-300" />
+            <span className="h-2 w-2 rounded-full bg-slate-300" />
+            <span className="ml-2 truncate text-xs font-medium text-slate-400">
               Macro Maxxer · {activeStep.key === "find" ? findRestaurantName : restaurantName} · {activeStep.tabLabel}
             </span>
           </div>
@@ -277,7 +278,7 @@ export default function ProductWalkthrough({
         <div className="mt-5 flex justify-center">
           <Link
             href={ctaHrefByStep[activeStep.key]}
-            className="group inline-flex items-center gap-2 rounded-full bg-accent px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-accent-strong focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-900"
+            className="group inline-flex items-center gap-2 rounded-full bg-accent px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-accent-strong focus-ring"
           >
             {activeStep.ctaLabel}
             <ArrowRight
@@ -370,7 +371,7 @@ function FindComparePreview({ items }: { items: WalkthroughMenuItem[] }) {
         {displayItems.map((item) => (
           <div
             key={item.id}
-            className="flex items-center gap-3 rounded-2xl border border-black/10 bg-neutral-50/60 px-3 py-2.5"
+            className="flex items-center gap-3 rounded-2xl border border-black/10 bg-slate-50/60 px-3 py-2.5"
           >
             <div className="relative h-12 w-12 shrink-0 overflow-hidden rounded-xl bg-white ring-1 ring-black/10">
               <Image src={item.image} alt="" fill className="object-cover" sizes="48px" />
@@ -378,7 +379,7 @@ function FindComparePreview({ items }: { items: WalkthroughMenuItem[] }) {
 
             <div className="min-w-0 flex-1">
               <div className="flex flex-wrap items-center gap-x-2 gap-y-0.5">
-                <p className="truncate text-sm font-semibold text-neutral-900">{item.name}</p>
+                <p className="truncate text-sm font-semibold text-slate-900">{item.name}</p>
                 {item.id === topProteinItemId ? (
                   <span className="inline-flex shrink-0 items-center gap-1 rounded-full border border-orange-100 bg-orange-50 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide text-[#c2410c]">
                     <Flame className="h-3 w-3" aria-hidden="true" />
@@ -386,7 +387,7 @@ function FindComparePreview({ items }: { items: WalkthroughMenuItem[] }) {
                   </span>
                 ) : null}
               </div>
-              <p className="truncate text-xs text-neutral-500">{item.category}</p>
+              <p className="truncate text-xs text-slate-500">{item.category}</p>
             </div>
 
             <div className="flex shrink-0 items-center gap-3">
@@ -421,13 +422,13 @@ function BuildItemCard({
 }) {
   return (
     <div className="flex flex-col gap-3 sm:flex-row sm:items-start">
-      <div className="relative mx-auto h-20 w-20 shrink-0 overflow-hidden rounded-xl border border-black/10 bg-neutral-50 sm:mx-0">
+      <div className="relative mx-auto h-20 w-20 shrink-0 overflow-hidden rounded-xl border border-black/10 bg-slate-50 sm:mx-0">
         <Image src={item.image} alt={item.name} fill className="object-cover" sizes="80px" />
       </div>
 
       <div className="min-w-0 flex-1">
-        <p className="text-[11px] font-semibold uppercase tracking-wide text-neutral-500">{item.category}</p>
-        <h4 className="font-heading text-base font-bold text-neutral-900">{item.name}</h4>
+        <p className="text-label">{item.category}</p>
+        <h4 className="font-heading text-base font-bold text-slate-900">{item.name}</h4>
 
         <div className="mt-2 flex flex-wrap gap-1.5">
           {item.addOns.map((addOn) => {
@@ -438,10 +439,10 @@ function BuildItemCard({
                 type="button"
                 onClick={() => onToggleAddOn(addOn.id)}
                 aria-pressed={isSelected}
-                className={`inline-flex cursor-pointer items-center gap-1 rounded-full border px-2.5 py-1 text-xs font-semibold transition motion-reduce:transition-none focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-900 ${
+                className={`inline-flex cursor-pointer items-center gap-1 rounded-full border px-2.5 py-1 text-xs font-semibold transition motion-reduce:transition-none focus-ring ${
                   isSelected
                     ? "border-accent bg-accent-soft text-accent-strong"
-                    : "border-black/15 bg-white text-neutral-600 hover:bg-black/5"
+                    : "border-black/15 bg-white text-slate-600 hover:bg-black/5"
                 }`}
               >
                 {isSelected ? (
@@ -520,7 +521,7 @@ function ReviewOrderPreview({ items, totals }: { items: WalkthroughReviewItem[];
           of which side's content is taller. */}
       <div className="mt-4 grid gap-6 sm:grid-cols-2 sm:gap-8">
         <div>
-          <p className="text-xs font-semibold uppercase tracking-wide text-neutral-500">Total Macros</p>
+          <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">Total Macros</p>
           <div className="mt-2 flex flex-wrap items-end gap-x-6 gap-y-3">
             <MacroStat macroKey="calories" value={totals.calories} labelVariant="uppercase" size="summary" />
             <MacroStat macroKey="protein" value={totals.protein} labelVariant="uppercase" size="summary" />
@@ -530,9 +531,11 @@ function ReviewOrderPreview({ items, totals }: { items: WalkthroughReviewItem[];
         </div>
 
         <div>
-          <p className="text-xs font-semibold uppercase tracking-wide text-neutral-500">Order Totals</p>
+          <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">Order Totals</p>
           <div className="mt-2">
-            <MacroSplitBar protein={totals.protein} carbs={totals.carbs} totalFat={totals.totalFat} />
+            <MacroSplitChart
+              segments={buildMacroSegments({ protein: totals.protein, carbs: totals.carbs, fat: totals.totalFat })}
+            />
           </div>
         </div>
       </div>

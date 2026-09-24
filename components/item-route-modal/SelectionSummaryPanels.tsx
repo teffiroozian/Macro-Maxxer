@@ -7,7 +7,8 @@ import SurfaceCard from "@/components/ui/SurfaceCard";
 import RestaurantItemImage from "@/components/ui/RestaurantItemImage";
 import ProteinScorePill from "@/components/menu-item-card/ProteinScorePill";
 import ProteinScoreDetails from "@/components/nutrition/ProteinScoreDetails";
-import MacroSplitChart, { buildMacroSegments } from "@/components/nutrition/MacroSplitChart";
+import MacroSplitChart from "@/components/nutrition/MacroSplitChart";
+import { buildMacroSegments } from "@/components/nutrition/macroSegments";
 import MacroSplitDetails from "@/components/nutrition/MacroSplitDetails";
 import { getProteinPer100Calories, getProteinScoreTier } from "@/lib/nutrition";
 import { PairedPanelHeightProvider, PairedPanelSource, usePairedPanelHeight } from "@/components/PairedPanelHeight";
@@ -18,7 +19,7 @@ import type { ItemImagePresentation } from "@/types/menu";
 // Details surfaces (ITEMS, PROTEIN SCORE, MACRO SPLIT) — one constant so the
 // cart page, item overview modal, and customize modal can never drift from
 // each other again. Matches the cart page's original "Items" label exactly.
-export const MEAL_DETAILS_SECTION_LABEL_CLASSNAME = "text-sm text-neutral-500";
+export const MEAL_DETAILS_SECTION_LABEL_CLASSNAME = "text-sm text-slate-500";
 
 // The gray two-panel wrapper (Nutrition Facts + a selection summary) — the
 // single shared layout for every "Nutrition Facts + details card" pairing in
@@ -66,11 +67,28 @@ export function NutritionDetailsGrid({
 // height even if the internal flex math is ever off by a pixel.
 const SHELL_ROOT_CLASSNAME = "flex flex-col rounded-2xl border border-black/10 bg-white p-5 md:overflow-hidden";
 
+export type SelectionSummaryRowState = "default" | "muted" | "excluded";
+
+// "muted": the row is locked/already-included (BuildSummaryDrawer's View
+// Build panel) — dims the whole row and softens the name text, but doesn't
+// strike it through since it's still part of the build, just not editable
+// here. "excluded": the row has been toggled out of nutrition totals — a
+// dashed border plus a struck-through, faded name marks it as present but
+// not counted.
+const rowStateClassNames: Record<SelectionSummaryRowState, { wrapper: string; name: string }> = {
+  default: { wrapper: "", name: "text-slate-900" },
+  muted: { wrapper: "opacity-80", name: "text-slate-600" },
+  excluded: { wrapper: "border-dashed! border-slate-300!", name: "text-slate-400 line-through" },
+};
+
 // Same compact row already established for the Build Your Own order summary
 // — a 32px image, a name, and either a tiny muted badge (a size/qualifier —
 // "Medium", "Extra", "Removed") or an accessory control (the portion-mode
-// quick-edit dropdown), never both. Generic over both use cases rather than
-// duplicated per caller.
+// quick-edit dropdown, a quantity stepper, or a set of row actions), never
+// more than one accessory slot. Generic over every "selected ingredient/item
+// row" use case in the app (the standard item modal's Selected Ingredients
+// card, the prebuilt-meal review card, and BuildSummaryDrawer's editable and
+// read-only ingredient rows) rather than duplicated per caller.
 export function SelectionSummaryRow({
   image,
   fallbackImage,
@@ -79,6 +97,7 @@ export function SelectionSummaryRow({
   imageAlt,
   badge,
   accessory,
+  state = "default",
 }: {
   image?: string;
   fallbackImage?: string;
@@ -91,17 +110,26 @@ export function SelectionSummaryRow({
   imageAlt?: string;
   badge?: string;
   accessory?: ReactNode;
+  state?: SelectionSummaryRowState;
 }) {
+  const { wrapper: stateWrapperClassName, name: stateNameClassName } = rowStateClassNames[state];
+
   return (
-    <SurfaceCard as="li" padding="none" radius="default" shadow="none" className="flex min-w-0 max-w-full items-center gap-2 rounded-xl px-3 py-2">
+    <SurfaceCard
+      as="li"
+      padding="none"
+      radius="default"
+      shadow="none"
+      className={`flex min-w-0 max-w-full items-center gap-2 rounded-xl px-3 py-2 ${stateWrapperClassName}`.trim()}
+    >
       <RestaurantItemImage
         src={image || fallbackImage}
         alt={image ? imageAlt ?? name : ""}
         imagePresentation={imagePresentation}
         fallbackClassName="object-cover"
-        containerClassName="h-8 w-8 shrink-0 overflow-hidden rounded-md border border-black/10 bg-neutral-100"
+        containerClassName="h-8 w-8 shrink-0 overflow-hidden rounded-md border border-black/10 bg-slate-100"
       />
-      <span className="min-w-0 flex-1 truncate text-sm font-medium text-slate-900">{name}</span>
+      <span className={`min-w-0 flex-1 truncate text-sm font-medium ${stateNameClassName}`}>{name}</span>
       {badge ? (
         <span className="shrink-0 rounded-md bg-black/5 px-1.5 py-0.5 text-[10px] font-semibold tracking-wide text-black/60">{badge}</span>
       ) : null}
@@ -167,7 +195,7 @@ export function MealDetailItemRow({
       {...interactiveProps}
       className={`flex min-w-0 items-center gap-3 rounded-xl border border-black/10 bg-white px-3 py-2 outline-none transition ${
         onClick
-          ? "cursor-pointer hover:border-black/20 hover:bg-neutral-50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-900"
+          ? "cursor-pointer hover:border-black/20 hover:bg-slate-50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-900"
           : ""
       }`}
     >
@@ -177,7 +205,7 @@ export function MealDetailItemRow({
         imagePresentation={imagePresentation}
         fallbackClassName={imageFallbackClassName}
         fallbackBackgroundColor={imageFallbackBackgroundColor}
-        containerClassName="h-10 w-10 shrink-0 overflow-hidden rounded-lg border border-black/10 bg-neutral-50"
+        containerClassName="h-10 w-10 shrink-0 overflow-hidden rounded-lg border border-black/10 bg-slate-50"
       />
       <div className="min-w-0 flex-1">
         <p className="truncate text-sm font-medium text-slate-900">{name}</p>
@@ -284,7 +312,7 @@ export function SelectionSummaryShell({
       className={SHELL_ROOT_CLASSNAME}
       style={pairedHeight !== null ? { height: pairedHeight } : undefined}
     >
-      <h2 className="shrink-0 text-2xl font-bold text-neutral-900">{title}</h2>
+      <h2 className="shrink-0 text-2xl font-bold text-slate-900">{title}</h2>
 
       {subtitle ? (
         <p className="mt-5 shrink-0 truncate text-sm font-medium normal-case tracking-normal text-slate-500">{subtitle}</p>
@@ -323,7 +351,7 @@ export function SelectionSummaryShell({
         ) : (
           <div className="space-y-2 px-2 py-4">
             <SectionEyebrow className={MEAL_DETAILS_SECTION_LABEL_CLASSNAME}>Protein Score</SectionEyebrow>
-            <p className="text-sm text-neutral-500">—</p>
+            <p className="text-sm text-slate-500">—</p>
           </div>
         )}
       </div>

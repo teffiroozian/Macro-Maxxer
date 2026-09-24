@@ -90,7 +90,7 @@ export default function CartPreviewDrawer() {
   return (
     <>
       <div
-        className={`fixed inset-0 z-[120] bg-slate-900/30 transition ${
+        className={`fixed inset-0 z-[120] bg-overlay-scrim transition ${
           isCartOpen
             ? "pointer-events-auto opacity-100"
             : "pointer-events-none opacity-0"
@@ -166,7 +166,7 @@ export default function CartPreviewDrawer() {
                       key={item.id}
                       padding="compact"
                       onClick={activatePreview}
-                      className="cursor-pointer border-slate-200 px-3 py-3 transition hover:border-slate-300 hover:shadow-[0_4px_14px_rgba(15,23,42,0.08)] focus-within:border-slate-300 focus-within:shadow-[0_4px_14px_rgba(15,23,42,0.08)]"
+                      className="cursor-pointer border-slate-200 px-3 py-3 transition hover:border-slate-300 hover:shadow-elev-2 focus-within:border-slate-300 focus-within:shadow-elev-2"
                     >
                       <CartItemPreviewRow
                         item={item}

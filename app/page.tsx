@@ -219,7 +219,7 @@ export default async function Home() {
               <HomeSectionHeading
                 eyebrowVariant="pill"
                 eyebrow={
-                  <span className="inline-flex items-center gap-2 rounded-full border border-black/10 bg-white/70 px-3 py-1 text-xs font-semibold text-neutral-600">
+                  <span className="inline-flex items-center gap-2 rounded-full border border-black/10 bg-white/70 px-3 py-1 text-xs font-semibold text-slate-600">
                     {/* "success" semantic role — an available/live status. */}
                     <span className="relative flex h-2 w-2">
                       <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-success opacity-75" />
@@ -276,7 +276,7 @@ export default async function Home() {
             <div className="relative">
               <div
                 aria-hidden="true"
-                className="pointer-events-none absolute inset-y-0 left-1/2 -z-10 w-screen -translate-x-1/2 bg-gradient-to-b from-transparent via-neutral-50/80 to-transparent"
+                className="pointer-events-none absolute inset-y-0 left-1/2 -z-10 w-screen -translate-x-1/2 bg-gradient-to-b from-transparent via-slate-50/80 to-transparent"
               />
 
               <HomeSectionContainer className="py-20 sm:py-24 lg:py-28">

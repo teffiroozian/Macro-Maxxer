@@ -2,7 +2,7 @@ import ExportOrderCard from "@/components/export/ExportOrderCard";
 
 export default function ExportCardPreviewPage() {
   return (
-    <main className="min-h-screen bg-neutral-950 p-4 sm:p-8">
+    <main className="min-h-screen bg-slate-950 p-4 sm:p-8">
       <div className="mx-auto max-w-[960px]">
         <ExportOrderCard
           restaurant={{

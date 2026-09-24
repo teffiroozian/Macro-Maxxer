@@ -61,11 +61,11 @@ function HeroRankingCard({ icon: Icon, label, value, accentClassName, itemName, 
         <div className="flex flex-col gap-1 rounded-2xl border border-black/[0.07] bg-white/90 px-3.5 py-2.5 shadow-[0_10px_26px_rgba(15,23,42,0.08)] backdrop-blur-sm">
           <span className="flex items-center gap-1.5">
             <Icon className={`h-3 w-3 shrink-0 ${accentClassName}`} strokeWidth={2.5} />
-            <span className="text-[10px] font-semibold uppercase tracking-normal text-neutral-600">{label}</span>
+            <span className="text-[10px] font-semibold uppercase tracking-normal text-slate-600">{label}</span>
           </span>
           <span className="flex items-baseline gap-1.5 whitespace-nowrap">
             <span className={`text-base font-extrabold ${accentClassName}`}>{value}</span>
-            <span className="text-xs font-medium text-neutral-500">
+            <span className="text-xs font-medium text-slate-500">
               {itemName} · {restaurantName}
             </span>
           </span>
@@ -100,13 +100,13 @@ function HeroItemPreviewCard({ image, itemName, restaurantName, calories, stando
     <div aria-hidden="true" className={`pointer-events-none absolute ${wrapperClassName}`}>
       <div className="hero-float" style={floatStyle}>
         <div className="flex items-center gap-2.5 rounded-2xl border border-black/[0.07] bg-white/90 py-2 pl-2 pr-3.5 shadow-[0_10px_26px_rgba(15,23,42,0.08)] backdrop-blur-sm">
-          <div className="relative h-10 w-10 shrink-0 overflow-hidden rounded-xl bg-neutral-50">
+          <div className="relative h-10 w-10 shrink-0 overflow-hidden rounded-xl bg-slate-50">
             <Image src={image} alt="" fill sizes="40px" className="object-cover" />
           </div>
           <div className="min-w-0">
-            <p className="truncate text-xs font-semibold text-neutral-700">{itemName}</p>
-            <p className="truncate text-[10px] font-medium text-neutral-500">{restaurantName}</p>
-            <p className="whitespace-nowrap text-[11px] font-semibold text-neutral-500">
+            <p className="truncate text-xs font-semibold text-slate-700">{itemName}</p>
+            <p className="truncate text-[10px] font-medium text-slate-500">{restaurantName}</p>
+            <p className="whitespace-nowrap text-[11px] font-semibold text-slate-500">
               {calories} cal · <span className={`font-extrabold ${accentClassName}`}>{standout}</span>
             </p>
           </div>
@@ -123,7 +123,7 @@ function HeroItemPreviewCard({ image, itemName, restaurantName, calories, stando
 function RestaurantSearchFallback() {
   return (
     <section aria-hidden="true" className="mx-auto w-full max-w-3xl">
-      <div className="overflow-hidden rounded-[28px] border border-slate-200/80 bg-white shadow-[0_30px_70px_-15px_rgba(15,23,42,0.28)] ring-1 ring-black/[0.02]">
+      <div className="overflow-hidden rounded-[28px] border border-slate-200/80 bg-white shadow-elev-float ring-1 ring-black/[0.02]">
         <div className="flex justify-center border-b border-slate-100 bg-slate-50/60 px-4 py-3">
           <div className="h-8 w-48 rounded-full bg-slate-100" />
         </div>
@@ -174,7 +174,7 @@ export default function HeroSearchNav({ restaurants }: { restaurants: Restaurant
         cartSlot={
           <CartIconDropdown
             variant="sheet"
-            buttonClassName={appIconButtonClassName({ variant: "nav", className: "relative size-9 shrink-0 text-base" })}
+            buttonClassName={appIconButtonClassName({ variant: "nav", size: "nav", className: "relative shrink-0" })}
           />
         }
       />
@@ -273,12 +273,12 @@ export default function HeroSearchNav({ restaurants }: { restaurants: Restaurant
             <header className="text-center">
               <div className="inline-flex items-center gap-2.5">
                 <span aria-hidden="true" className="h-1 w-1 rounded-full bg-accent-strong" />
-                <SectionEyebrow className="text-xs tracking-[0.18em] text-neutral-700 sm:text-sm">
+                <SectionEyebrow className="text-xs tracking-[0.18em] text-slate-700 sm:text-sm">
                   Real menu data, real macros
                 </SectionEyebrow>
                 <span aria-hidden="true" className="h-1 w-1 rounded-full bg-accent-strong" />
               </div>
-              <h1 className="font-heading mt-4 text-4xl font-bold leading-[1.05] tracking-tight text-neutral-900 sm:text-5xl lg:text-6xl">
+              <h1 className="text-display-1 mt-4 text-slate-900">
                 Find High-Protein Fast Food Items in Seconds
               </h1>
             </header>
@@ -289,7 +289,7 @@ export default function HeroSearchNav({ restaurants }: { restaurants: Restaurant
           </Suspense>
 
           <div className="mx-auto flex flex-col items-center gap-4 text-center">
-            <p className="max-w-md text-base text-neutral-600 sm:text-lg">
+            <p className="text-body-lg max-w-md text-slate-600">
               Compare menu items, build your order, and see the total macros before you check out.
             </p>
             <HeroRestaurantChips restaurants={restaurants} />

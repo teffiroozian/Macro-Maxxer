@@ -16,6 +16,7 @@ import FilterChip from "@/components/ui/FilterChip";
 import ViewTabs from "@/components/controls/ViewTabs";
 import SortSelector from "@/components/controls/SortSelector";
 import { pillTriggerClassName } from "@/components/controls/pillButton";
+import { useDialogA11y } from "@/hooks/useDialogA11y";
 import {
   SlidersHorizontal,
   ChevronDown,
@@ -122,7 +123,7 @@ export function FilterChips({
           type="button"
           onClick={onEditFilters}
           aria-label="Edit filters"
-          className="inline-flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-slate-500 transition-colors hover:bg-slate-100 hover:text-slate-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-900"
+          className="inline-flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-slate-500 transition-colors hover:bg-slate-100 hover:text-slate-700 focus-ring"
         >
           <SlidersHorizontal className="h-4 w-4" strokeWidth={2.3} />
         </button>
@@ -288,28 +289,15 @@ export default function ControlsRow({
   // The desktop filters dialog declares `role="dialog" aria-modal="true"` —
   // Escape closes it, opening moves focus into it (Reset, its first
   // focusable control), and closing restores focus to whatever opened it.
-  // Same pattern as CartClearConfirmationDialog/ItemRouteModal.
-  useEffect(() => {
-    if (!isFiltersOpen) return;
-
-    const previouslyFocusedElement =
-      document.activeElement instanceof HTMLElement ? document.activeElement : null;
-    filtersDialogResetButtonRef.current?.focus();
-
-    const onKeyDown = (event: KeyboardEvent) => {
-      if (event.key === "Escape") {
-        setIsFiltersOpen(false);
-        setIsMobileDrawerOpen(false);
-      }
-    };
-
-    document.addEventListener("keydown", onKeyDown);
-
-    return () => {
-      document.removeEventListener("keydown", onKeyDown);
-      previouslyFocusedElement?.focus();
-    };
-  }, [isFiltersOpen]);
+  const closeFiltersDialog = useCallback(() => {
+    setIsFiltersOpen(false);
+    setIsMobileDrawerOpen(false);
+  }, []);
+  useDialogA11y({
+    isOpen: isFiltersOpen,
+    onClose: closeFiltersDialog,
+    initialFocusRef: filtersDialogResetButtonRef,
+  });
 
   const handleResetFilters = () => {
     setDraftFilters({ caloriesMax: defaultCaloriesMax });
@@ -412,7 +400,7 @@ export default function ControlsRow({
   // identical geometry whether active or inactive so toggling selection
   // never shifts the row's shape.
   const selectableRowClassName = (isActive: boolean) =>
-    `flex items-center gap-2.5 rounded-full px-3 py-2.5 text-left text-sm font-semibold transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-900 ${
+    `flex items-center gap-2.5 rounded-full px-3 py-2.5 text-left text-sm font-semibold transition-colors focus-ring ${
       isActive
         ? "bg-accent-strong text-white hover:brightness-95 active:brightness-90"
         : "text-slate-700 hover:bg-slate-50 active:bg-slate-100"
@@ -625,7 +613,7 @@ export default function ControlsRow({
   );
 
   const filtersDialog = isFiltersOpen ? (
-    <div role="dialog" aria-modal="true" className="fixed inset-0 z-[200] flex items-end justify-center bg-black/35 p-2 sm:items-center sm:p-4" onClick={() => setIsFiltersOpen(false)}>
+    <div role="dialog" aria-modal="true" className="fixed inset-0 z-[200] flex items-end justify-center bg-overlay-scrim p-2 sm:items-center sm:p-4" onClick={() => setIsFiltersOpen(false)}>
       <div className="max-h-[calc(100vh-1rem)] w-full max-w-[520px] overflow-y-auto rounded-[20px] bg-white p-4 shadow-[0_16px_40px_rgba(0,0,0,0.2)] sm:max-h-[calc(100vh-2rem)] sm:p-5" onClick={(event) => event.stopPropagation()}>
         <div className="mb-4 flex items-center gap-2">
           <h3 className="text-xl font-bold">Filters</h3>

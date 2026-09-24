@@ -189,8 +189,8 @@ export default function StickyRestaurantBar({
               openMobileControlsDrawer();
             }}
             variant="nav"
+            size="nav"
             active={hideSecondaryNav ? isBrowseDrawerOpen : isControlsDrawerOpen}
-            className="size-9"
             aria-label="Open controls drawer"
           >
             <Menu className="h-4 w-4" strokeWidth={2.5} />
@@ -199,7 +199,7 @@ export default function StickyRestaurantBar({
         cartSlot={
           <CartIconDropdown
             variant="sheet"
-            buttonClassName={appIconButtonClassName({ variant: "nav", className: "relative size-9 shrink-0 text-base" })}
+            buttonClassName={appIconButtonClassName({ variant: "nav", size: "nav", className: "relative shrink-0" })}
           />
         }
       />

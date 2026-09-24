@@ -101,12 +101,12 @@ function MacroSummarySection({ contextLine, isCartLayout, totals }: MacroSummary
   return (
     <section className={`${isCartLayout ? "flex-1" : "w-full md:w-auto md:shrink-0"}`}>
       {contextLine ? (
-        <p className="text-sm font-medium tracking-tight text-neutral-500">
+        <p className="text-sm font-medium tracking-tight text-slate-500">
           {contextLine}
         </p>
       ) : null}
       {isCartLayout ? (
-        <p className={`text-left text-sm font-semibold tracking-tight text-neutral-500 sm:text-center ${contextLine ? "mt-1" : ""}`}>
+        <p className={`text-left text-sm font-semibold tracking-tight text-slate-500 sm:text-center ${contextLine ? "mt-1" : ""}`}>
           TOTAL MACROS
         </p>
       ) : null}
@@ -421,7 +421,7 @@ export default function StickyMacroTotalsBar({
           >
             <button
               type="button"
-              className={`absolute inset-0 border-0 bg-slate-900/50 transition-opacity duration-200 ease-out ${
+              className={`absolute inset-0 border-0 bg-overlay-scrim transition-opacity duration-200 ease-out ${
                 isDesktopEntered ? "opacity-100" : "opacity-0"
               }`}
               onClick={onSecondaryAction}
@@ -461,7 +461,7 @@ export default function StickyMacroTotalsBar({
           accent, not the primary motion. */}
       <button
         type="button"
-        className={`lg:hidden fixed inset-0 z-[119] border-0 bg-slate-900/50 transition-opacity duration-300 ease-out ${
+        className={`lg:hidden fixed inset-0 z-[119] border-0 bg-overlay-scrim transition-opacity duration-300 ease-out ${
           isMobileSheetOpen ? "pointer-events-auto opacity-100" : "pointer-events-none opacity-0"
         }`}
         onClick={onSecondaryAction}

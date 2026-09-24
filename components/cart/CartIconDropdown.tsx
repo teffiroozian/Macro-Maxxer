@@ -276,7 +276,7 @@ export default function CartIconDropdown({
             type="button"
             aria-label="Dismiss just added preview"
             onClick={dismissLastAddedPreview}
-            className={`absolute inset-0 touch-none bg-slate-900/35 transition-opacity duration-200 ${
+            className={`absolute inset-0 touch-none bg-overlay-scrim transition-opacity duration-200 ${
               isOpen ? "opacity-100" : "opacity-0"
             }`}
           />

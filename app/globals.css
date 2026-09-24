@@ -23,8 +23,122 @@
        state is a form of positive product emphasis, not a separate hue. */
     --semantic-success: #059669;
     --semantic-info: #2563eb;
-    --semantic-warning: #d97706;
+    --semantic-warning: #b45309;
     --semantic-error: #dc2626;
+
+    /* Soft/strong companions for each semantic role (Design System PDF
+       "Color" table: success/info/warning/error rows, each with a -soft
+       background and a -strong text/icon tone). Success reuses the
+       existing accent-soft/-strong pair rather than redefining new hexes,
+       since success already shares the accent hue above. Info/warning/error
+       match the PDF exactly. */
+    --semantic-success-soft: var(--product-accent-soft);
+    --semantic-success-strong: var(--product-accent-strong);
+    --semantic-info-soft: #eff6ff;
+    --semantic-info-strong: #1d4ed8;
+    --semantic-warning-soft: #fffbeb;
+    --semantic-warning-strong: #92400e;
+    --semantic-error-soft: #fef2f2;
+    --semantic-error-strong: #b91c1c;
+
+    /* Surface roles (Design System PDF "surface-*"). surface-page and
+       surface-muted already existed above under their original names;
+       everything else here is additive. */
+    --surface-card: #ffffff;
+    --surface-subtle: #f8fafc;
+    --surface-hover: #f1f5f9;
+    --surface-inverse: #0f172a;
+    /* 52% (darker than the original 40%) — needed enough separation from
+       the page behind large surfaces like ItemRouteModal that the lighter
+       value didn't provide. Applied through this one token so every
+       dialog/drawer backdrop darkens together. */
+    --overlay-scrim: rgb(15 23 42 / 0.52);
+
+    /* Border roles (Design System PDF "border-*"). border-hairline is the
+       `border-black/10` treatment already used ad hoc across cards/panels
+       (e.g. components/ui/SurfaceCard.tsx); border-control/-divider are
+       the slate-300/slate-200 hexes already used for inputs and dividers
+       throughout the app. border-selected pairs a 2px width with the
+       existing accent-strong color. */
+    --border-hairline: rgb(0 0 0 / 0.1);
+    --border-control: #cbd5e1;
+    --border-divider: #e2e8f0;
+    --border-selected-width: 2px;
+    --border-selected-color: var(--product-accent-strong);
+
+    /* Decorative icon tone (Design System PDF "icon-decorative"), matches
+       Tailwind's built-in slate-400 — exposed as its own role so icon
+       usage doesn't depend on knowing the underlying gray-scale step. */
+    --icon-decorative: #94a3b8;
+
+    /* Elevation scale (Design System PDF "elev-0" … "elev-3", "elev-brand").
+       elev-brand is the soft accent-tinted shadow already duplicated
+       verbatim in components/GlobalMobileNav.tsx and components/DesktopNav.tsx. */
+    --elev-0: none;
+    --elev-1: 0 1px 2px rgba(15, 23, 42, 0.05);
+    --elev-2: 0 4px 14px rgba(15, 23, 42, 0.08);
+    --elev-3: 0 12px 32px rgba(15, 23, 42, 0.14);
+    --elev-brand:
+        0 1px 2px rgba(15, 23, 42, 0.04), 0 8px 20px -6px rgba(5, 150, 105, 0.12);
+
+    /* Three additional, genuinely distinct repeated shadow roles found
+       during the Phase 6 drift audit — each already shared by 2+ call sites
+       with byte-identical values, but shaped differently enough from
+       elev-0..3 that forcing them onto an existing tier would change how
+       they render.
+       elev-modal: the confirm-dialog/full-sheet shadow (components/ui/Dialog.tsx,
+       GlobalSearchOverlay.tsx).
+       elev-float: the homepage's large soft "floating card" shadow with
+       negative spread (HeroSearchNav.tsx, RestaurantSearch.tsx).
+       elev-hover: the homepage card hover-lift shadow (ProductPreviewCard.tsx,
+       FeaturedRestaurantCard.tsx). */
+    --elev-modal: 0 18px 50px rgba(15, 23, 42, 0.25);
+    --elev-float: 0 30px 70px -15px rgba(15, 23, 42, 0.28);
+    --elev-hover: 0 24px 55px rgba(15, 23, 42, 0.16);
+
+    /* Focus ring (Design System PDF ":focus-visible"). Matches the
+       `focus-visible:outline focus-visible:outline-2
+       focus-visible:outline-offset-2 focus-visible:outline-slate-900`
+       combination already used at ~50 call sites across the app —
+       slate-900 (#0f172a) is exactly the PDF's outline color. */
+    --focus-ring-color: #0f172a;
+    --focus-ring-width: 2px;
+    --focus-ring-offset: 2px;
+
+    /* Layout widths (Design System PDF "shell 1152 / content 896 / measure
+       68ch / gutter 24 / 16"). These already exist as Tailwind's own
+       max-w-6xl (1152px) and max-w-4xl (896px) utilities — used that way
+       throughout (e.g. components/RestaurantPageContent.tsx,
+       components/home/HomeSectionContainer.tsx) — so no utility override is
+       needed; these vars exist for non-utility contexts (inline styles,
+       computed layout). */
+    --shell-width: 1152px;
+    --content-width: 896px;
+    --measure: 68ch;
+    --gutter-desktop: 24px;
+    --gutter-mobile: 16px;
+
+    /* Control-height scale (Design System PDF gap/height row: 32 / 40 / 48).
+       Matches components/ui/AppButton.tsx's existing sm/md/lg heights
+       (h-8/h-10/h-12) — formalized here rather than redefined. h-9/h-11
+       call sites elsewhere in the app fall outside this scale; see the
+       design-system audit note. */
+    --control-height-sm: 2rem;
+    --control-height-md: 2.5rem;
+    --control-height-lg: 3rem;
+
+    /* Z-index layers (Design System PDF "z-sticky z-nav z-dropdown
+       z-drawer z-dialog z-tooltip"). Named to match the numeric tiers
+       already in use across the app's stacking contexts (sticky bars,
+       StickyRestaurantBar/HeroSearchNav's nav shell, cart/search dropdowns,
+       nav + filter drawers, modal dialogs, tooltips/overlays layered above
+       dialogs) rather than introducing a new, conflicting scale. */
+    --z-sticky: 10;
+    --z-nav: 95;
+    --z-dropdown: 120;
+    --z-drawer: 210;
+    --z-dialog: 240;
+    --z-tooltip: 260;
 }
 
 @theme inline {
@@ -35,6 +149,15 @@
     --color-image-placeholder: var(--surface-image-placeholder);
     --font-sans: var(--font-outfit);
     --font-heading: var(--font-unbounded);
+
+    /* rounded-sheet — the bottom-sheet/dialog radius shared across the
+       app's larger modal surfaces (ProteinScoreDetails, MacroSplitDetails,
+       GlobalSearchOverlay, ExportOrderDialog), each previously duplicating
+       the same rounded-[28px]/rounded-t-[28px] arbitrary value. Not applied
+       to RestaurantSearch/HeroSearchNav's floating search card, which
+       coincidentally uses the same 28px value for an unrelated, non-sheet
+       role. */
+    --radius-sheet: 28px;
 
     /* bg-accent / text-accent / border-accent, etc. Macro-specific colors
        (protein/carbs/fat/calories) stay in components/nutrition/macroColorTokens.ts —
@@ -47,6 +170,252 @@
     --color-info: var(--semantic-info);
     --color-warning: var(--semantic-warning);
     --color-error: var(--semantic-error);
+    --color-success-soft: var(--semantic-success-soft);
+    --color-success-strong: var(--semantic-success-strong);
+    --color-info-soft: var(--semantic-info-soft);
+    --color-info-strong: var(--semantic-info-strong);
+    --color-warning-soft: var(--semantic-warning-soft);
+    --color-warning-strong: var(--semantic-warning-strong);
+    --color-error-soft: var(--semantic-error-soft);
+    --color-error-strong: var(--semantic-error-strong);
+
+    /* bg-surface-card / bg-surface-subtle / bg-surface-hover / bg-surface-inverse,
+       bg-overlay-scrim, border-hairline / border-control / border-divider,
+       text-icon-decorative, etc. */
+    --color-surface-card: var(--surface-card);
+    --color-surface-subtle: var(--surface-subtle);
+    --color-surface-hover: var(--surface-hover);
+    --color-surface-inverse: var(--surface-inverse);
+    --color-overlay-scrim: var(--overlay-scrim);
+    --color-hairline: var(--border-hairline);
+    --color-control: var(--border-control);
+    --color-divider: var(--border-divider);
+    --color-icon-decorative: var(--icon-decorative);
+
+    /* shadow-elev-1 / shadow-elev-2 / shadow-elev-3 / shadow-elev-brand */
+    --shadow-elev-1: var(--elev-1);
+    --shadow-elev-2: var(--elev-2);
+    --shadow-elev-3: var(--elev-3);
+    --shadow-elev-brand: var(--elev-brand);
+    --shadow-elev-modal: var(--elev-modal);
+    --shadow-elev-float: var(--elev-float);
+    --shadow-elev-hover: var(--elev-hover);
+}
+
+/* Reusable focus-ring treatment (Design System PDF ":focus-visible"). Use
+   as `className="focus-ring"` alongside `focus-visible:outline-none` isn't
+   needed — this targets :focus-visible directly, matching the
+   outline/outline-2/outline-offset-2/outline-slate-900 utility chain
+   already applied ad hoc across buttons, pills, and interactive rows. */
+@layer components {
+    .focus-ring:focus-visible {
+        outline: var(--focus-ring-width) solid var(--focus-ring-color);
+        outline-offset: var(--focus-ring-offset);
+    }
+
+    /* Label/micro text roles (Design System PDF "label" / "micro"): the
+       uppercase, tracked-out, small-caps-style caption used for eyebrows,
+       section labels, and secondary metadata. Mirrors the
+       `text-[11px] font-semibold uppercase tracking-wide text-neutral-500`
+       (and text-slate-400) combination already repeated at ~25 call sites
+       (e.g. components/DesktopRestaurantMenu.tsx,
+       components/item-route-modal/ItemRouteModal.tsx,
+       components/home/RestaurantSearch.tsx). New call sites should use
+       this class instead of re-typing the utility chain; existing call
+       sites are listed as a follow-up consolidation in the phase summary. */
+    .text-label {
+        font-size: 0.6875rem;
+        font-weight: 600;
+        letter-spacing: 0.025em;
+        text-transform: uppercase;
+        color: var(--color-neutral-500, #737373);
+    }
+
+    /* Full type scale (Design System PDF "Typography" section). Each tier's
+       exact size/weight/line-height/tracking is pulled verbatim from the
+       real call site the PDF itself uses as that tier's example — not
+       invented — so applying a class below never changes what's rendered
+       at its source. All headings use font-heading (Unbounded 700); value
+       tiers use the default body font (Outfit) with tabular-nums so digits
+       never shift width as a number changes. */
+
+    /* display-1 — homepage hero H1 ("Real macros" / HeroSearchNav.tsx),
+       source: font-heading text-4xl font-bold leading-[1.05] tracking-tight
+       sm:text-5xl lg:text-6xl. */
+    .text-display-1 {
+        font-family: var(--font-heading);
+        font-weight: 700;
+        font-size: 2.25rem;
+        line-height: 1.05;
+        letter-spacing: -0.025em;
+    }
+    @media (min-width: 640px) {
+        .text-display-1 {
+            font-size: 3rem;
+        }
+    }
+    @media (min-width: 1024px) {
+        .text-display-1 {
+            font-size: 3.75rem;
+        }
+    }
+
+    /* display-2 — homepage section H2 ("Jump Straight to the Menu" /
+       HomeSectionHeading.tsx), source: font-heading text-3xl font-bold
+       sm:text-4xl. */
+    .text-display-2 {
+        font-family: var(--font-heading);
+        font-weight: 700;
+        font-size: 1.875rem;
+        line-height: 1.2;
+    }
+    @media (min-width: 640px) {
+        .text-display-2 {
+            font-size: 2.25rem;
+        }
+    }
+
+    /* display-3 — item detail product title ("Grilled Chicken Sandwich" /
+       ItemRouteModal.tsx product overview), source: font-heading text-lg
+       font-bold leading-tight tracking-tight sm:text-xl lg:text-2xl. */
+    .text-display-3 {
+        font-family: var(--font-heading);
+        font-weight: 700;
+        font-size: 1.125rem;
+        line-height: 1.25;
+        letter-spacing: -0.025em;
+    }
+    @media (min-width: 640px) {
+        .text-display-3 {
+            font-size: 1.25rem;
+        }
+    }
+    @media (min-width: 1024px) {
+        .text-display-3 {
+            font-size: 1.5rem;
+        }
+    }
+
+    /* card-title — menu/cart card title ("Spicy Deluxe Sandwich" /
+       MenuItemCardHeader.tsx, CartItemCard.tsx), source: font-heading
+       text-[22px] leading-[1.15] font-bold tracking-tight sm:text-[26px]. */
+    .text-card-title {
+        font-family: var(--font-heading);
+        font-weight: 700;
+        font-size: 1.375rem;
+        line-height: 1.15;
+        letter-spacing: -0.025em;
+    }
+    @media (min-width: 640px) {
+        .text-card-title {
+            font-size: 1.625rem;
+        }
+    }
+
+    /* title — compact item-name title (item-route-modal/ItemRouteModal.tsx's
+       MenuItemTitle usage in the preset build review row), source:
+       font-heading text-lg font-medium leading-tight. Lighter weight and no
+       responsive bump distinguishes it from card-title/display-3. */
+    .text-title {
+        font-family: var(--font-heading);
+        font-weight: 500;
+        font-size: 1.125rem;
+        line-height: 1.25;
+    }
+
+    /* body-lg — lead/descriptive paragraph copy (hero + section subcopy,
+       e.g. components/home/HeroSearchNav.tsx,
+       components/restaurant-view/chipotle/EntreeSelectionHero.tsx), source:
+       text-base sm:text-lg. */
+    .text-body-lg {
+        font-family: var(--font-sans);
+        font-weight: 400;
+        font-size: 1rem;
+        line-height: 1.5;
+    }
+    @media (min-width: 640px) {
+        .text-body-lg {
+            font-size: 1.125rem;
+        }
+    }
+
+    /* body — default running/paragraph copy, Tailwind's own text-base. */
+    .text-body {
+        font-family: var(--font-sans);
+        font-weight: 400;
+        font-size: 1rem;
+        line-height: 1.5;
+    }
+
+    /* body-sm — secondary/supporting copy, Tailwind's own text-sm. */
+    .text-body-sm {
+        font-family: var(--font-sans);
+        font-weight: 400;
+        font-size: 0.875rem;
+        line-height: 1.43;
+    }
+
+    /* micro — smaller than label (10px), e.g. MobileNavDrawer.tsx's
+       "Coming Soon" sub-caption: text-[10px] font-medium uppercase
+       tracking-wide text-slate-400. */
+    .text-micro {
+        font-size: 0.625rem;
+        font-weight: 500;
+        letter-spacing: 0.025em;
+        text-transform: uppercase;
+        color: var(--color-neutral-400, #a3a3a3);
+    }
+
+    /* value-1 — the larger tabular macro-stat number (e.g.
+       components/nutrition/MacroStat.tsx's cartHeaderTotal size), source:
+       text-2xl font-bold sm:text-3xl. */
+    .text-value-1 {
+        font-family: var(--font-sans);
+        font-weight: 700;
+        font-size: 1.5rem;
+        line-height: 1;
+        font-variant-numeric: tabular-nums;
+    }
+    @media (min-width: 640px) {
+        .text-value-1 {
+            font-size: 1.875rem;
+        }
+    }
+
+    /* value-2 — the secondary tabular macro-stat number (MacroStat.tsx's
+       "card" size), source: text-[20px] font-bold sm:text-[22px]. */
+    .text-value-2 {
+        font-family: var(--font-sans);
+        font-weight: 700;
+        font-size: 1.25rem;
+        line-height: 1;
+        font-variant-numeric: tabular-nums;
+    }
+    @media (min-width: 640px) {
+        .text-value-2 {
+            font-size: 1.375rem;
+        }
+    }
+
+    /* value-inline — a macro number set inline within a label sentence
+       (MacroStat.tsx's "cartCompact" size), source: font-semibold, sized by
+       the surrounding text rather than its own fixed size. */
+    .text-value-inline {
+        font-weight: 600;
+        font-variant-numeric: tabular-nums;
+    }
+
+    /* macro-label — the 9px exception below the 11px label baseline, used
+       under a compact tabular macro-stat value (MacroStat.tsx's "quick"
+       size label), source: text-[9px] font-bold uppercase
+       tracking-[0.06em] text-slate-600. */
+    .text-macro-label {
+        font-size: 0.5625rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+        color: var(--color-slate-600, #475569);
+    }
 }
 
 /* @media (prefers-color-scheme: dark) {

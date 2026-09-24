@@ -69,7 +69,7 @@ export default function CartPage() {
       <main className="mx-auto flex min-h-screen w-full max-w-5xl flex-col gap-8 px-4 pb-16 pt-28 sm:px-6 lg:gap-10 lg:pb-20 lg:pt-10">
         <header className="flex flex-col gap-5 lg:flex-row lg:items-center lg:justify-between lg:gap-24">
           <div className="flex flex-col gap-3 lg:shrink-0">
-            <h1 className="font-heading text-3xl font-bold leading-tight text-neutral-900 sm:text-4xl">
+            <h1 className="font-heading text-3xl font-bold leading-tight text-slate-900 sm:text-4xl">
               Your Cart
             </h1>
             {!isEmpty ? (
@@ -134,12 +134,12 @@ export default function CartPage() {
         <section className="flex flex-col gap-4 mt-6 sm:mt-8 lg:mt-14">
           <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
             <div className="flex flex-col gap-1.5">
-              <SectionEyebrow className="text-sm text-neutral-500">Order Summary</SectionEyebrow>
+              <SectionEyebrow className="text-sm text-slate-500">Order Summary</SectionEyebrow>
               {isEmpty ? (
                 <p className="text-sm text-slate-500">A preview of what you&rsquo;ll see here.</p>
               ) : (
                 <>
-                  <h2 className="font-heading text-2xl font-bold text-neutral-900 sm:text-3xl">
+                  <h2 className="font-heading text-2xl font-bold text-slate-900 sm:text-3xl">
                     Nutrition &amp; Meal Details
                   </h2>
                   <p className="text-sm text-slate-500">Totals and items for everything currently in your cart.</p>

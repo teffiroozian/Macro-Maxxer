@@ -9,7 +9,7 @@ type MacroBadgeProps = {
 };
 
 // Small pill used to call out one macro value on top of product visuals
-// (e.g. an item image). Reuses the same color tokens as MacroStat/MacroSplitBar
+// (e.g. an item image). Reuses the same color tokens as MacroStat/MacroSplitChart
 // so the accent color for a given macro stays consistent everywhere it appears.
 export default function MacroBadge({ macroKey, value, label, className = "" }: MacroBadgeProps) {
   const config = macroDisplayConfig[macroKey];
@@ -24,7 +24,7 @@ export default function MacroBadge({ macroKey, value, label, className = "" }: M
         {value}
         {config.unit ?? ""}
       </span>
-      <span className="font-semibold text-neutral-500">{label ?? config.label}</span>
+      <span className="font-semibold text-slate-500">{label ?? config.label}</span>
     </span>
   );
 }

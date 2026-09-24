@@ -10,7 +10,7 @@ type CartControlButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
 // radius, light gray fill) so the two controls read as one cohesive cluster
 // in both the cart drawer and the full cart page.
 export const cartControlButtonClassName =
-  "inline-flex h-9 w-9 shrink-0 cursor-pointer items-center justify-center rounded-xl border border-slate-200 bg-slate-50 text-slate-700 transition hover:bg-slate-100 active:bg-slate-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-900 disabled:cursor-not-allowed disabled:opacity-50";
+  "inline-flex h-9 w-9 shrink-0 cursor-pointer items-center justify-center rounded-xl border border-slate-200 bg-slate-50 text-slate-700 transition hover:bg-slate-100 active:bg-slate-200 focus-ring disabled:cursor-not-allowed disabled:opacity-50";
 
 export default function CartControlButton({ className, type = "button", ...props }: CartControlButtonProps) {
   return (

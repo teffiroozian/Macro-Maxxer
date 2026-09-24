@@ -11,6 +11,7 @@ import {
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import Image from "@/components/ui/AppImage";
 import RestaurantItemImage from "@/components/ui/RestaurantItemImage";
+import { selectableRowClassName } from "@/components/ui/selectableRow";
 import { getRestaurantImagePresentation } from "@/lib/restaurantPresentation";
 import { getCartItemImagePresentation } from "@/lib/cart/cartItemLookup";
 import {
@@ -2868,14 +2869,14 @@ export default function ChipotleRestaurantBuilderView({
       >
         <button
           type="button"
-          className="absolute inset-0 border-0 bg-slate-900/66"
+          className="absolute inset-0 border-0 bg-overlay-scrim"
           onClick={handleCloseBuildCustomizationModal}
           aria-label="Close build customization modal"
         />
         <div className="relative flex h-[calc(100vh-1rem)] w-full max-w-[1024px] flex-col overflow-hidden rounded-2xl bg-white px-3 pt-3 sm:h-[calc(100vh-2rem)] sm:px-5 sm:pt-5 lg:px-6 lg:pt-6">
           <button
             type="button"
-            className="sticky top-0 z-20 ml-auto h-9 w-9 cursor-pointer rounded-full border border-black/12 bg-white/95 text-2xl"
+            className="sticky top-0 z-20 ml-auto h-10 w-10 cursor-pointer rounded-full border border-black/12 bg-white/95 text-2xl"
             onClick={handleCloseBuildCustomizationModal}
             aria-label="Close build customization modal"
           >
@@ -2897,7 +2898,7 @@ export default function ChipotleRestaurantBuilderView({
                   imagePresentation={getCartItemImagePresentation(editingBuildItem)}
                   fallbackClassName="object-contain p-2"
                   fallbackBackgroundColor={getRestaurantImagePresentation(restaurantId).imageBackgroundColor}
-                  containerClassName="h-[220px] w-[220px] rounded-[14px] bg-[#efefef] shadow-[0_0_5px_rgba(0,0,0,0.25)] sm:h-[300px] sm:w-[300px]"
+                  containerClassName="h-[220px] w-[220px] rounded-[14px] bg-app-background shadow-[0_0_5px_rgba(0,0,0,0.25)] sm:h-[300px] sm:w-[300px]"
                 />
                 <MacroTotalsGrid
                   macros={{
@@ -2929,7 +2930,7 @@ export default function ChipotleRestaurantBuilderView({
                 </div>
               ) : null}
 
-              <div className="w-full rounded-3xl border border-black/10 bg-[#e0e0e0] p-4">
+              <div className="w-full rounded-3xl border border-black/10 bg-muted-panel p-4">
                 <MenuSections
                   restaurantId={restaurantId}
                   items={visibleMenuItems}
@@ -3231,7 +3232,7 @@ export default function ChipotleRestaurantBuilderView({
                 />
               </div>
 
-              <div className="w-full rounded-3xl border border-black/10 bg-[#e0e0e0] p-4">
+              <div className="w-full rounded-3xl border border-black/10 bg-muted-panel p-4">
                 <BuildSummaryDrawer
                   adjustedNutritionLabelTotals={adjustedNutritionLabelTotals}
                   selectedBuildName={editingBuildItem.name}
@@ -3301,7 +3302,7 @@ export default function ChipotleRestaurantBuilderView({
         <button
           type="button"
           onClick={() => setIsEntreeMenuOpen((prev) => !prev)}
-          className="cursor-pointer inline-flex h-10 items-center gap-2 whitespace-nowrap rounded-full border border-black/20 bg-white px-4 text-sm font-semibold text-black/90 transition-colors duration-150 hover:border-black/30 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-900"
+          className="cursor-pointer inline-flex h-10 items-center gap-2 whitespace-nowrap rounded-full border border-black/20 bg-white px-4 text-sm font-semibold text-black/90 transition-colors duration-150 hover:border-black/30 focus-ring"
           aria-haspopup="menu"
           aria-expanded={isEntreeMenuOpen}
         >
@@ -3332,7 +3333,7 @@ export default function ChipotleRestaurantBuilderView({
         {isEntreeMenuOpen ? (
           <div
             role="menu"
-            className="absolute left-0 top-[calc(100%+8px)] z-20 w-[260px] rounded-[14px] border border-black/15 bg-white p-2 shadow-[0_12px_28px_rgba(0,0,0,0.12)]"
+            className="absolute left-0 top-[calc(100%+8px)] z-20 w-[260px] rounded-[14px] border border-black/15 bg-white p-2 shadow-elev-3"
           >
             <div className="grid gap-1">
               <button
@@ -3363,9 +3364,7 @@ export default function ChipotleRestaurantBuilderView({
                       handleEntreeSelection(entreeKey);
                       setIsEntreeMenuOpen(false);
                     }}
-                    className={`cursor-pointer inline-flex items-center gap-2 rounded-[10px] px-2.5 py-2 text-left font-semibold text-black/88 transition-colors duration-100 ${
-                      isActive ? "bg-black/10" : "hover:bg-slate-900/5"
-                    }`}
+                    className={selectableRowClassName({ active: isActive, className: "inline-flex py-2" })}
                   >
                     <span className="relative h-6 w-6 shrink-0 overflow-hidden rounded-full border border-slate-200 bg-white">
                       <Image
@@ -3385,9 +3384,7 @@ export default function ChipotleRestaurantBuilderView({
               <button
                 type="button"
                 onClick={handleViewAllIngredientsSelection}
-                className={`cursor-pointer inline-flex items-center gap-2 rounded-[10px] px-2.5 py-2 text-left font-semibold text-black/88 transition-colors duration-100 ${
-                  isViewingAllIngredients ? "bg-black/10" : "hover:bg-slate-900/5"
-                }`}
+                className={selectableRowClassName({ active: isViewingAllIngredients, className: "inline-flex py-2" })}
               >
                 <LayoutGrid className="h-4 w-4 shrink-0" strokeWidth={2.2} />
                 <span>View All Ingredients</span>

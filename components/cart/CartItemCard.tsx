@@ -112,11 +112,11 @@ export default function CartItemCard({
               event.preventDefault();
               onPreview();
             }}
-            className="flex cursor-pointer flex-col gap-3 rounded-lg text-left outline-none transition-opacity duration-100 hover:opacity-90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-900"
+            className="flex cursor-pointer flex-col gap-3 rounded-lg text-left outline-none transition-opacity duration-100 hover:opacity-90 focus-ring"
           >
             <MenuItemTitle
               name={displayName}
-              className="font-heading text-[22px] leading-[1.15] font-bold tracking-tight text-neutral-900 sm:text-[26px]"
+              className="font-heading text-card-title text-slate-900"
             />
 
             <div className="flex flex-wrap items-end gap-x-6 gap-y-3 lg:gap-x-8">

@@ -14,10 +14,10 @@ type RestaurantScopeControlProps = {
 // mode, this row narrows Menu Items to one restaurant or all of them.
 export default function RestaurantScopeControl({ restaurant, isScoped, onToggle }: RestaurantScopeControlProps) {
   return (
-    <div className="mt-3 flex flex-wrap items-center justify-between gap-x-2 gap-y-1 border-t border-neutral-100 px-5 py-2.5 text-xs text-neutral-500">
+    <div className="mt-3 flex flex-wrap items-center justify-between gap-x-2 gap-y-1 border-t border-slate-100 px-5 py-2.5 text-xs text-slate-500">
       <span className="flex min-w-0 items-center gap-2">
         {isScoped ? (
-          <span className={`flex h-5 w-5 shrink-0 items-center justify-center overflow-hidden bg-neutral-50 ${getRestaurantLogoShapeClassName()}`}>
+          <span className={`flex h-5 w-5 shrink-0 items-center justify-center overflow-hidden bg-slate-50 ${getRestaurantLogoShapeClassName()}`}>
             <Image src={restaurant.logo} alt="" width={14} height={14} className="object-contain" />
           </span>
         ) : null}
@@ -36,7 +36,7 @@ export default function RestaurantScopeControl({ restaurant, isScoped, onToggle 
         // ScopeSwitcher for why this needs to run on mousedown.
         onMouseDown={(event) => event.preventDefault()}
         onClick={onToggle}
-        className="shrink-0 cursor-pointer border-l border-neutral-200 pl-2 font-semibold text-neutral-600 transition hover:text-neutral-900 hover:underline"
+        className="shrink-0 cursor-pointer border-l border-divider pl-2 font-semibold text-slate-600 transition hover:text-slate-900 hover:underline"
       >
         {isScoped ? "Switch to all restaurants" : `Back to ${restaurant.name}`}
       </button>

@@ -150,7 +150,7 @@ export default function CartItemPreviewRow({
               event.preventDefault();
               onActivate();
             }}
-            className="cursor-pointer rounded-lg text-left outline-none focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-900"
+            className="cursor-pointer rounded-lg text-left outline-none focus-ring"
           >
             {infoContent}
           </div>

@@ -15,6 +15,7 @@ import {
 import type { ItemImagePresentation } from "@/types/menu";
 import type { MacroBreakdownEntry, MacroBreakdownNestedKind } from "@/types/macroBreakdown";
 import RestaurantItemImage from "@/components/ui/RestaurantItemImage";
+import { proteinScoreTierStyles } from "@/components/nutrition/proteinScoreStyles";
 
 export type ProteinScoreDetailItem = {
   id: string;
@@ -38,13 +39,32 @@ export type ProteinScoreDetailItem = {
   nestedItems?: MacroBreakdownEntry[];
 };
 
-const tierColors: Record<ProteinScoreTier, { bar: string; text: string; soft: string; iconBg: string; icon: string }> = {
-  low: { bar: "bg-[#94A3B8]", text: "text-[#64748B]", soft: "bg-[#F8FAFC]", iconBg: "bg-[#EEF2F6]", icon: "text-[#94A3B8]" },
-  moderate: { bar: "bg-[#64748B]", text: "text-[#334155]", soft: "bg-[#F1F5F9]", iconBg: "bg-[#E2E8F0]", icon: "text-[#64748B]" },
-  good: { bar: "bg-[#B08A3E]", text: "text-[#8A6D2F]", soft: "bg-[#FFFBEB]", iconBg: "bg-[#F3E8CE]", icon: "text-[#B08A3E]" },
-  excellent: { bar: "bg-[#4C84C4]", text: "text-[#2F5F85]", soft: "bg-[#EEF4FF]", iconBg: "bg-[#4C84C4]", icon: "text-white" },
-  elite: { bar: "bg-[#047857]", text: "text-[#047857]", soft: "bg-[#ECFDF3]", iconBg: "bg-[#047857]", icon: "text-white" },
+// The scale-tick/marker bar color for each tier — the one color this modal
+// needs that proteinScoreTierStyles doesn't already provide (that file
+// covers the pill/detail-card chip, icon background, icon, and value text).
+// Every other field below is derived from proteinScoreTierStyles instead of
+// re-declaring the same hex values a second time.
+const tierBarColors: Record<ProteinScoreTier, string> = {
+  low: "bg-[#94A3B8]",
+  moderate: "bg-[#64748B]",
+  good: "bg-[#B08A3E]",
+  excellent: "bg-[#4C84C4]",
+  elite: "bg-[#047857]",
 };
+
+const tierColors: Record<ProteinScoreTier, { bar: string; text: string; soft: string; iconBg: string; icon: string }> =
+  Object.fromEntries(
+    PROTEIN_SCORE_TIER_ORDER.map((tier) => [
+      tier,
+      {
+        bar: tierBarColors[tier],
+        text: proteinScoreTierStyles[tier].value,
+        soft: proteinScoreTierStyles[tier].chip,
+        iconBg: proteinScoreTierStyles[tier].iconWrap,
+        icon: proteinScoreTierStyles[tier].icon,
+      },
+    ]),
+  ) as Record<ProteinScoreTier, { bar: string; text: string; soft: string; iconBg: string; icon: string }>;
 
 function ScoreScale({ score }: { score: number }) {
   const tier = getProteinScoreTier(score);
@@ -165,7 +185,7 @@ function NestedProteinScoreBreakdown({
                 containerClassName="h-11 w-11 shrink-0 overflow-hidden rounded-xl border border-black/10 bg-slate-50"
               />
               <span className="min-w-0 flex-1">
-                <span className="block truncate text-sm font-semibold text-neutral-900">{nestedItem.name}</span>
+                <span className="block truncate text-sm font-semibold text-slate-900">{nestedItem.name}</span>
                 <span
                   className={`mt-0.5 block text-xs font-semibold ${hasScore && nestedTier ? tierColors[nestedTier].text : tierColors.low.text}`}
                 >
@@ -259,7 +279,7 @@ export default function ProteinScoreDetails({
         if (event.target === event.currentTarget) onClose();
       }}
     >
-      <section className="flex max-h-[85dvh] w-full flex-col overflow-hidden rounded-t-[28px] bg-white shadow-2xl sm:max-h-[min(720px,calc(100dvh-3rem))] sm:max-w-[520px] sm:rounded-[28px]" onMouseDown={(event) => event.stopPropagation()}>
+      <section className="flex max-h-[85dvh] w-full flex-col overflow-hidden rounded-t-sheet bg-white shadow-2xl sm:max-h-[min(720px,calc(100dvh-3rem))] sm:max-w-[520px] sm:rounded-sheet" onMouseDown={(event) => event.stopPropagation()}>
         <div className="mx-auto mt-2 h-1 w-10 rounded-full bg-slate-300 sm:hidden" aria-hidden="true" />
         <header className="flex shrink-0 items-center justify-between border-b border-black/[0.06] px-5 py-4 sm:px-6">
           <div className="flex min-w-0 items-center gap-2">
@@ -278,7 +298,7 @@ export default function ProteinScoreDetails({
                 containerClassName="h-8 w-8 shrink-0 overflow-hidden rounded-lg border border-black/10 bg-slate-50"
               />
             ) : null}
-            <h2 id="protein-score-title" className="truncate font-heading text-xl font-bold text-neutral-900">
+            <h2 id="protein-score-title" className="truncate font-heading text-xl font-bold text-slate-900">
               {selectedItem ? selectedItem.name : isAggregate ? "Protein Score" : name}
             </h2>
           </div>
@@ -320,7 +340,13 @@ export default function ProteinScoreDetails({
                 <div className="mt-6 border-t border-black/[0.06] pt-5">
                   <h3 className="text-xs font-bold uppercase tracking-[0.12em] text-slate-500">Item-by-item</h3>
                   <div className="mt-3 divide-y divide-black/[0.06]">
-                    {items.map((item) => {
+                    {[...items]
+                      .sort((left, right) => {
+                        const leftScore = getProteinPer100Calories(left.protein, left.calories) ?? -1;
+                        const rightScore = getProteinPer100Calories(right.protein, right.calories) ?? -1;
+                        return rightScore - leftScore;
+                      })
+                      .map((item) => {
                       const itemScore = getProteinPer100Calories(item.protein, item.calories);
                       const hasScore = typeof itemScore === "number";
                       const itemTier = hasScore ? getProteinScoreTier(itemScore) : undefined;
@@ -335,7 +361,7 @@ export default function ProteinScoreDetails({
                             containerClassName="h-11 w-11 shrink-0 overflow-hidden rounded-xl border border-black/10 bg-slate-50"
                           />
                           <span className="min-w-0 flex-1">
-                            <span className="block truncate text-sm font-semibold text-neutral-900">{item.name}</span>
+                            <span className="block truncate text-sm font-semibold text-slate-900">{item.name}</span>
                             <span className={`mt-0.5 block text-xs font-semibold ${hasScore && itemTier ? tierColors[itemTier].text : "text-slate-400"}`}>
                               {hasScore && itemTier
                                 ? `${formatProteinScoreDisplay(itemScore)}g / 100 cal · ${PROTEIN_SCORE_TIER_SCALE[itemTier].label}`

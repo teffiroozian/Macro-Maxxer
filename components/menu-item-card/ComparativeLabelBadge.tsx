@@ -1,4 +1,5 @@
 import type { ComparativeLabelKind } from "@/lib/menuSections/comparativeLabels";
+import CornerLabelBadge from "@/components/ui/CornerLabelBadge";
 
 // Styled after the homepage hero card's tag pill (components/home/ProductPreviewCard.tsx):
 // no icon, all-caps, white text on the app's primary accent green so a page
@@ -11,9 +12,5 @@ const labelText: Record<ComparativeLabelKind, string> = {
 };
 
 export default function ComparativeLabelBadge({ kind }: { kind: ComparativeLabelKind }) {
-  return (
-    <span className="inline-flex h-5 w-fit items-center whitespace-nowrap rounded-full bg-accent-strong px-2.5 text-[9px] font-bold uppercase tracking-wider text-white shadow-sm">
-      {labelText[kind]}
-    </span>
-  );
+  return <CornerLabelBadge tone="accent">{labelText[kind]}</CornerLabelBadge>;
 }

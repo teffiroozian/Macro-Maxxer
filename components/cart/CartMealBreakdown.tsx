@@ -31,9 +31,13 @@ export default function CartMealBreakdown({ items, totals, onPreviewItem }: Cart
           id: item.id,
           name: formatCartItemName(item),
           image: item.image,
-          // Item-level override only here — the cart can mix items from
-          // several restaurants in one list, so there's no single
-          // restaurant-level default that would be correct for all of them.
+          // Per-item presentation only here — the cart can mix items from
+          // several restaurants in one list, so there's no single shared
+          // fallbackClassName that would be correct for all of them (unlike
+          // the list below, which resolves each row's own restaurant).
+          // getCartItemImagePresentation already falls through catalog
+          // item-level override -> that restaurant's own structured default
+          // (e.g. Starbucks), so this still carries the right treatment.
           imagePresentation: getCartItemImagePresentation(item),
           calories: item.nutritionPerItem.calories * quantityMultiplier,
           protein: item.nutritionPerItem.protein * quantityMultiplier,
@@ -58,10 +62,10 @@ export default function CartMealBreakdown({ items, totals, onPreviewItem }: Cart
               key={`meal-breakdown-skeleton-${placeholderKey}`}
               className="flex min-w-0 items-center gap-3 rounded-xl border border-black/10 bg-white px-3 py-2"
             >
-              <div className="h-10 w-10 shrink-0 rounded-lg bg-neutral-100" />
+              <div className="h-10 w-10 shrink-0 rounded-lg bg-slate-100" />
               <div className="flex min-w-0 flex-1 flex-col gap-1.5">
-                <div className="h-3 w-3/5 rounded-full bg-neutral-100" />
-                <div className="h-2.5 w-2/5 rounded-full bg-neutral-100" />
+                <div className="h-3 w-3/5 rounded-full bg-slate-100" />
+                <div className="h-2.5 w-2/5 rounded-full bg-slate-100" />
               </div>
             </li>
           ))}

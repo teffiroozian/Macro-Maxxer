@@ -34,9 +34,9 @@ export default function HomeSectionHeading({
       ) : (
         <SectionEyebrow className="text-xs sm:text-sm">{eyebrow}</SectionEyebrow>
       )}
-      <h2 className="font-heading text-balance mt-3 text-3xl font-bold text-neutral-900 sm:text-4xl">{heading}</h2>
+      <h2 className="text-display-2 text-balance mt-3 text-slate-900">{heading}</h2>
       {description ? (
-        <p className="text-pretty mx-auto mt-3 max-w-2xl text-base text-neutral-600">{description}</p>
+        <p className="text-pretty mx-auto mt-3 max-w-2xl text-base text-slate-600">{description}</p>
       ) : null}
     </div>
   );

@@ -10,10 +10,10 @@ type AppButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
 };
 
 const baseClassName =
-  "inline-flex cursor-pointer items-center justify-center gap-2 font-semibold transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-900 disabled:cursor-not-allowed disabled:opacity-60";
+  "inline-flex cursor-pointer items-center justify-center gap-2 font-semibold transition focus-ring disabled:cursor-not-allowed disabled:opacity-60";
 
 const variantClassNames: Record<AppButtonVariant, string> = {
-  primary: "border border-black bg-black text-white hover:bg-neutral-900 active:bg-black",
+  primary: "border border-black bg-black text-white hover:bg-slate-900 active:bg-black",
   secondary: "border border-black/20 bg-white text-[#1A1A1A] hover:bg-black/5 active:bg-black/10",
   ghost: "border border-slate-300 bg-white text-slate-900 hover:bg-slate-50 active:bg-slate-100",
   pill: "rounded-full border border-slate-200 bg-white text-slate-700 hover:bg-slate-100 active:bg-slate-200",

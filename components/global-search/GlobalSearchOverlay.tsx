@@ -89,13 +89,13 @@ export default function GlobalSearchOverlay() {
       aria-label="Search"
       aria-hidden={!isOpen}
       inert={!isOpen}
-      className={`fixed inset-x-0 bottom-auto top-0 z-[230] flex h-[100dvh] items-end justify-center overflow-hidden bg-black/35 transition-opacity duration-300 lg:hidden ${
+      className={`fixed inset-x-0 bottom-auto top-0 z-[230] flex h-[100dvh] items-end justify-center overflow-hidden bg-overlay-scrim transition-opacity duration-300 lg:hidden ${
         isOpen ? "opacity-100" : "pointer-events-none opacity-0"
       }`}
       onClick={close}
     >
       <div
-        className={`flex h-[85dvh] max-h-full w-full flex-col overflow-hidden rounded-t-[28px] bg-white pb-[env(safe-area-inset-bottom)] shadow-[0_18px_50px_rgba(15,23,42,0.25)] transition-transform duration-300 ${
+        className={`flex h-[85dvh] max-h-full w-full flex-col overflow-hidden rounded-t-sheet bg-white pb-[env(safe-area-inset-bottom)] shadow-elev-modal transition-transform duration-300 ${
           isOpen ? "translate-y-0" : "translate-y-full"
         }`}
         onClick={(event) => event.stopPropagation()}
@@ -121,7 +121,7 @@ export default function GlobalSearchOverlay() {
               placeholder={state.isRestaurantScoped && state.filteredRestaurantName
                 ? `Search ${state.filteredRestaurantName} menu...`
                 : "Search restaurants, menu items..."}
-              className="w-full rounded-2xl border border-black/10 bg-white py-3 pl-12 pr-4 text-base text-neutral-900 outline-none transition focus:border-accent focus:ring-4 focus:ring-accent/15"
+              className="w-full rounded-2xl border border-black/10 bg-white py-3 pl-12 pr-4 text-base text-slate-900 outline-none transition focus:border-accent focus:ring-4 focus:ring-accent/15"
             />
             <span className="pointer-events-none absolute inset-y-0 left-3 my-auto flex h-7 w-7 items-center justify-center rounded-full bg-accent-soft text-accent-strong">
               <Search className="h-3.5 w-3.5" strokeWidth={2.5} />

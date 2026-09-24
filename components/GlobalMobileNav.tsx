@@ -42,7 +42,7 @@ export default function GlobalMobileNav({
       data-global-nav="true"
       data-sticky-nav={markStickyNav ? "true" : undefined}
     >
-      <div className="relative z-[110] mx-auto mt-1 flex w-[calc(100%-0.5rem)] max-w-6xl items-center rounded-2xl border border-black/10 bg-white shadow-[0_1px_2px_rgba(15,23,42,0.04),0_8px_20px_-6px_rgba(5,150,105,0.12)] sm:w-[calc(100%-1rem)]">
+      <div className="relative z-[110] mx-auto mt-1 flex w-[calc(100%-0.5rem)] max-w-6xl items-center rounded-2xl border border-black/10 bg-white shadow-elev-brand sm:w-[calc(100%-1rem)]">
         {/* px-2/sm:px-4 matches RestaurantCategorySidebar's mobile category
             strip (and, through it, the active-filter row merged into it) so
             every stacked row in the sticky mobile nav shares the same outer
@@ -63,7 +63,7 @@ export default function GlobalMobileNav({
             <div className="ml-auto flex items-center gap-1.5 sm:gap-2">
               {middleSlot}
               {showSearchButton ? (
-                <AppIconButton onClick={() => openSearch()} variant="nav" className="size-9" aria-label="Search">
+                <AppIconButton onClick={() => openSearch()} variant="nav" size="nav" aria-label="Search">
                   <Search className="h-4 w-4" strokeWidth={2.5} />
                 </AppIconButton>
               ) : null}
@@ -71,7 +71,7 @@ export default function GlobalMobileNav({
                 (showCartButton ? (
                   <Link
                     href="/cart"
-                    className={appIconButtonClassName({ variant: "nav", className: "size-9 min-w-9" })}
+                    className={appIconButtonClassName({ variant: "nav", size: "nav", className: "min-w-9" })}
                     aria-label="Open cart"
                   >
                     <ShoppingCart className="h-4 w-4" strokeWidth={2.5} />

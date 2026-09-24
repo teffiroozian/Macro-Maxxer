@@ -48,7 +48,7 @@ export default function DesktopNav({
     // flanking columns regardless of how much of it their own content
     // fills, so the auto-sized middle column stays centered on the row no
     // matter how the left/right content widths compare.
-    <div className="mx-auto hidden w-full max-w-6xl items-center gap-3 rounded-2xl border border-black/10 bg-white px-6 py-1.5 shadow-[0_1px_2px_rgba(15,23,42,0.04),0_8px_20px_-6px_rgba(5,150,105,0.12)] lg:grid lg:grid-cols-[1fr_auto_1fr]">
+    <div className="mx-auto hidden w-full max-w-6xl items-center gap-3 rounded-2xl border border-black/10 bg-white px-6 py-1.5 shadow-elev-brand lg:grid lg:grid-cols-[1fr_auto_1fr]">
       {/* Logo + Restaurants read as one group (tighter gap than the row's
           own column gap above) rather than two separately-spaced controls. */}
       <div className="flex min-w-0 items-center gap-2">
@@ -95,7 +95,7 @@ export default function DesktopNav({
 
       <div className="flex shrink-0 items-center justify-end gap-2">
         {showCartButton ? (
-          <CartIconDropdown buttonClassName={appIconButtonClassName({ variant: "nav", className: "relative size-9" })} />
+          <CartIconDropdown buttonClassName={appIconButtonClassName({ variant: "nav", size: "nav", className: "relative" })} />
         ) : null}
       </div>
     </div>

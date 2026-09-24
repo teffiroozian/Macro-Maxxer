@@ -1,10 +1,11 @@
 "use client";
 
-import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
+import { useLayoutEffect, useMemo, useRef, useState } from "react";
 import { Download, LoaderCircle, X } from "lucide-react";
 import ExportOrderCard from "@/components/export/ExportOrderCard";
 import AppButton from "@/components/ui/AppButton";
 import AppIconButton from "@/components/ui/AppIconButton";
+import { useDialogA11y } from "@/hooks/useDialogA11y";
 import { buildCartItemExportSummary, formatCartItemName } from "@/lib/cart/displayLabels";
 import { getAllRestaurants } from "@/lib/restaurants";
 import type { NutritionTotals } from "@/lib/cart/nutrition";
@@ -115,38 +116,19 @@ export default function ExportOrderDialog({ items, nutritionTotals, onClose }: E
     }
   };
 
-  useEffect(() => {
-    const previouslyFocusedElement = document.activeElement instanceof HTMLElement ? document.activeElement : null;
-    const previousOverflow = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
-    closeButtonRef.current?.focus();
-
-    const onKeyDown = (event: KeyboardEvent) => {
-      if (event.key === "Escape") {
-        event.stopPropagation();
-        onClose();
-      }
-    };
-
-    document.addEventListener("keydown", onKeyDown);
-    return () => {
-      document.removeEventListener("keydown", onKeyDown);
-      document.body.style.overflow = previousOverflow;
-      previouslyFocusedElement?.focus();
-    };
-  }, [onClose]);
+  useDialogA11y({ isOpen: true, onClose, initialFocusRef: closeButtonRef, lockBodyScroll: true });
 
   return (
     <div
       role="dialog"
       aria-modal="true"
       aria-labelledby="export-order-dialog-title"
-      className="fixed inset-0 z-[260] flex items-end justify-center bg-black/50 md:items-center md:p-6"
+      className="fixed inset-0 z-[var(--z-tooltip)] flex items-end justify-center bg-overlay-scrim md:items-center md:p-6"
       onClick={onClose}
     >
       <div
         ref={sheetRef}
-        className="flex max-h-[94dvh] w-full flex-col overflow-y-auto overscroll-contain rounded-t-[28px] bg-white shadow-[0_24px_80px_rgba(0,0,0,0.35)] md:grid md:h-[min(780px,calc(100dvh-3rem))] md:max-h-none md:w-[min(1120px,calc(100vw-3rem))] md:grid-cols-[minmax(0,1fr)_360px] md:grid-rows-[auto_minmax(0,1fr)] md:overflow-hidden md:rounded-[32px]"
+        className="flex max-h-[94dvh] w-full flex-col overflow-y-auto overscroll-contain rounded-t-sheet bg-white shadow-[0_24px_80px_rgba(0,0,0,0.35)] md:grid md:h-[min(780px,calc(100dvh-3rem))] md:max-h-none md:w-[min(1120px,calc(100vw-3rem))] md:grid-cols-[minmax(0,1fr)_360px] md:grid-rows-[auto_minmax(0,1fr)] md:overflow-hidden md:rounded-[32px]"
         onClick={(event) => event.stopPropagation()}
       >
         <header ref={headerRef} className="shrink-0 px-5 pb-3 pt-2 md:col-start-2 md:row-start-1 md:px-8 md:pb-0 md:pt-8">

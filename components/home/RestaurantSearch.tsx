@@ -159,7 +159,7 @@ export default function RestaurantSearch({ restaurants }: RestaurantSearchProps)
             border/shadow/icon language as the nav's DesktopSearchDropdown,
             just scaled up (more padding, larger type, deeper shadow) for
             hero prominence. */}
-        <div className="overflow-hidden rounded-[28px] border border-slate-200/80 bg-white shadow-[0_30px_70px_-15px_rgba(15,23,42,0.28)] ring-1 ring-black/[0.02] transition-shadow duration-200 focus-within:border-accent/40 focus-within:ring-2 focus-within:ring-accent/40">
+        <div className="overflow-hidden rounded-[28px] border border-slate-200/80 bg-white shadow-elev-float ring-1 ring-black/[0.02] transition-shadow duration-200 focus-within:border-accent/40 focus-within:ring-2 focus-within:ring-accent/40">
           <div className="flex justify-center border-b border-slate-100 bg-slate-50/60 px-4 py-3">
             <ScopeSwitcher
               scope={scope}
@@ -246,7 +246,7 @@ export default function RestaurantSearch({ restaurants }: RestaurantSearchProps)
                 isEmptyQuery ? (
                   <>
                     {recentRestaurants.length > 0 && (
-                      <li className="px-4 py-1 text-xs font-medium uppercase tracking-wide text-neutral-500">
+                      <li className="px-4 py-1 text-xs font-medium uppercase tracking-wide text-slate-500">
                         Recently Searched
                       </li>
                     )}
@@ -260,7 +260,7 @@ export default function RestaurantSearch({ restaurants }: RestaurantSearchProps)
                       />
                     ))}
 
-                    <li className="px-4 pt-2 text-xs font-medium uppercase tracking-wide text-neutral-500">
+                    <li className="px-4 pt-2 text-xs font-medium uppercase tracking-wide text-slate-500">
                       Popular Restaurants
                     </li>
                     {popularRestaurants.map((restaurant, index) => {
@@ -288,10 +288,10 @@ export default function RestaurantSearch({ restaurants }: RestaurantSearchProps)
                 )
               ) : isEmptyQuery ? (
                 !searchIndex ? (
-                  <li className="px-4 py-6 text-center text-sm text-neutral-500">Loading menu items…</li>
+                  <li className="px-4 py-6 text-center text-sm text-slate-500">Loading menu items…</li>
                 ) : recentMenuItems.length > 0 ? (
                   <>
-                    <li className="px-4 py-1 text-xs font-medium uppercase tracking-wide text-neutral-500">
+                    <li className="px-4 py-1 text-xs font-medium uppercase tracking-wide text-slate-500">
                       Recently Searched
                     </li>
                     {recentMenuItems.map((result, index) =>
@@ -331,12 +331,12 @@ export default function RestaurantSearch({ restaurants }: RestaurantSearchProps)
                     )}
                   </>
                 ) : (
-                  <li className="px-4 py-6 text-center text-sm text-neutral-500">
+                  <li className="px-4 py-6 text-center text-sm text-slate-500">
                     Start typing to search menu items.
                   </li>
                 )
               ) : !searchIndex ? (
-                <li className="px-4 py-6 text-center text-sm text-neutral-500">Loading menu items…</li>
+                <li className="px-4 py-6 text-center text-sm text-slate-500">Loading menu items…</li>
               ) : menuItemResults.length > 0 ? (
                 menuItemResults.map((result, index) =>
                   result.kind === "menu-item" ? (
@@ -371,7 +371,7 @@ export default function RestaurantSearch({ restaurants }: RestaurantSearchProps)
                   )
                 )
               ) : (
-                <li className="px-4 py-6 text-center text-sm text-neutral-500">No menu items found.</li>
+                <li className="px-4 py-6 text-center text-sm text-slate-500">No menu items found.</li>
               )}
             </ul>
           </SurfaceCard>

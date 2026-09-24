@@ -39,7 +39,7 @@ export default function PresetHeaderPillButton({
             onClick={onClick}
             className={`cursor-pointer inline-flex min-h-10 items-center justify-center gap-1 rounded-full px-3 text-center text-sm font-semibold transition sm:gap-1.5 sm:px-4 ${
                 tone === "solid"
-                    ? "bg-neutral-900 text-white hover:bg-neutral-800"
+                    ? "bg-slate-900 text-white hover:bg-slate-800"
                     : "border border-black/15 bg-white text-slate-600 hover:bg-slate-50 hover:text-slate-900"
             } ${className}`.trim()}
         >

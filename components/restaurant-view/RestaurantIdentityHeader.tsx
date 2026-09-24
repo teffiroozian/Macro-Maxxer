@@ -94,11 +94,11 @@ export default function RestaurantIdentityHeader({
             />
 
             <div className="min-w-0">
-              <h1 className="font-heading text-3xl font-bold leading-tight text-neutral-900 sm:text-4xl">
+              <h1 className="font-heading text-3xl font-bold leading-tight text-slate-900 sm:text-4xl">
                 {name} Nutrition
               </h1>
               {description ? (
-                <p className="mt-1.5 max-w-2xl text-sm text-neutral-600 sm:text-base">{description}</p>
+                <p className="mt-1.5 max-w-2xl text-sm text-slate-600 sm:text-base">{description}</p>
               ) : null}
             </div>
           </div>
@@ -108,13 +108,13 @@ export default function RestaurantIdentityHeader({
               aligned to the right rather than spread across the card. */}
           <div className="mt-6 flex flex-wrap items-center justify-end gap-x-5 gap-y-2 border-t border-black/[0.06] pt-4">
             {updatedAtLabel ? (
-              <span className="inline-flex items-center gap-1.5 text-xs font-medium text-neutral-500">
+              <span className="inline-flex items-center gap-1.5 text-xs font-medium text-slate-500">
                 <CalendarCheck2 className="h-3.5 w-3.5 text-accent/60" aria-hidden="true" />
                 Last updated: {updatedAtLabel}
               </span>
             ) : null}
 
-            <span className="inline-flex items-center gap-1.5 text-xs font-medium text-neutral-500">
+            <span className="inline-flex items-center gap-1.5 text-xs font-medium text-slate-500">
               <UtensilsCrossed className="h-3.5 w-3.5 text-accent/60" aria-hidden="true" />
               {itemCount} menu items
             </span>
@@ -124,7 +124,7 @@ export default function RestaurantIdentityHeader({
                 href={nutritionSourceUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-1.5 text-xs font-medium text-neutral-500 transition hover:text-neutral-900 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-900"
+                className="inline-flex items-center gap-1.5 text-xs font-medium text-slate-500 transition hover:text-slate-900 focus-ring"
               >
                 <ExternalLink className="h-3.5 w-3.5 text-accent/60" aria-hidden="true" />
                 Nutrition Source
@@ -135,9 +135,9 @@ export default function RestaurantIdentityHeader({
               href={`${REPORT_ISSUE_URL}?title=${encodeURIComponent(`Data issue: ${name}`)}`}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-1.5 text-xs font-medium text-neutral-500 transition hover:text-neutral-900 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-900"
+              className="inline-flex items-center gap-1.5 text-xs font-medium text-slate-500 transition hover:text-slate-900 focus-ring"
             >
-              <Flag className="h-3.5 w-3.5 text-neutral-400" aria-hidden="true" />
+              <Flag className="h-3.5 w-3.5 text-icon-decorative" aria-hidden="true" />
               Report an error
             </a>
           </div>

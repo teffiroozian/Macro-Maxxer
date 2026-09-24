@@ -2,7 +2,8 @@ import { Zap } from "lucide-react";
 import Link from "next/link";
 import SurfaceCard from "@/components/ui/SurfaceCard";
 import RestaurantLogoBadge from "@/components/ui/RestaurantLogoBadge";
-import MacroSplitBar from "@/components/nutrition/MacroSplitBar";
+import MacroSplitChart from "@/components/nutrition/MacroSplitChart";
+import { buildMacroSegments } from "@/components/nutrition/macroSegments";
 import MacroStat from "@/components/nutrition/MacroStat";
 import MacroBadge from "@/components/ui/MacroBadge";
 import { appButtonClassName } from "@/components/ui/AppButton";
@@ -56,15 +57,15 @@ export default function ProductPreviewCard({
         radius="large"
         shadow="md"
         padding="none"
-        className="overflow-hidden bg-white transition duration-300 group-hover:-translate-y-1 group-hover:shadow-[0_24px_55px_rgba(15,23,42,0.16)]"
+        className="overflow-hidden bg-white transition duration-300 group-hover:-translate-y-1 group-hover:shadow-elev-hover"
       >
         {/* Light "device chrome" — signals this is a real product view, not
             a decorative image. */}
-        <div className="flex items-center gap-1.5 border-b border-black/5 bg-neutral-50/80 px-5 py-3">
-          <span className="h-2 w-2 rounded-full bg-neutral-300" />
-          <span className="h-2 w-2 rounded-full bg-neutral-300" />
-          <span className="h-2 w-2 rounded-full bg-neutral-300" />
-          <span className="ml-2 truncate text-xs font-medium text-neutral-400">
+        <div className="flex items-center gap-1.5 border-b border-black/5 bg-slate-50/80 px-5 py-3">
+          <span className="h-2 w-2 rounded-full bg-slate-300" />
+          <span className="h-2 w-2 rounded-full bg-slate-300" />
+          <span className="h-2 w-2 rounded-full bg-slate-300" />
+          <span className="ml-2 truncate text-xs font-medium text-slate-400">
             Macro Maxxer · {restaurantName} · Item View
           </span>
         </div>
@@ -79,7 +80,7 @@ export default function ProductPreviewCard({
                 ring={false}
                 className="border border-black/10"
               />
-              <span className="text-sm font-medium text-neutral-500">{restaurantName}</span>
+              <span className="text-sm font-medium text-slate-500">{restaurantName}</span>
             </div>
 
             <RestaurantItemImage
@@ -88,7 +89,7 @@ export default function ProductPreviewCard({
               imagePresentation={itemImagePresentation}
               fallbackClassName={restaurantImagePresentation.itemDetailImageClassName ?? "object-cover"}
               fallbackBackgroundColor={restaurantImagePresentation.imageBackgroundColor}
-              containerClassName="relative h-40 w-40 overflow-hidden rounded-2xl border border-black/10 bg-neutral-50"
+              containerClassName="relative h-40 w-40 overflow-hidden rounded-2xl border border-black/10 bg-slate-50"
               renderer="next-image"
               sizes="160px"
               overlay={
@@ -104,17 +105,19 @@ export default function ProductPreviewCard({
           <div className="flex min-w-0 flex-1 flex-col gap-4">
             <div>
               {tag ? (
-                <span className="inline-flex rounded-full bg-neutral-900 px-2.5 py-0.5 text-[11px] font-bold uppercase tracking-wide text-white">
+                <span className="inline-flex rounded-full bg-slate-900 px-2.5 py-0.5 text-[11px] font-bold uppercase tracking-wide text-white">
                   {tag}
                 </span>
               ) : null}
-              <h3 className="font-heading mt-2 text-2xl font-bold text-neutral-900">{itemName}</h3>
+              <h3 className="font-heading mt-2 text-2xl font-bold text-slate-900">{itemName}</h3>
               {itemDescription ? (
-                <p className="mt-1.5 text-sm leading-snug text-neutral-500">{itemDescription}</p>
+                <p className="mt-1.5 text-sm leading-snug text-slate-500">{itemDescription}</p>
               ) : null}
             </div>
 
-            <MacroSplitBar protein={nutrition.protein} carbs={nutrition.carbs} totalFat={nutrition.totalFat} />
+            <MacroSplitChart
+              segments={buildMacroSegments({ protein: nutrition.protein, carbs: nutrition.carbs, fat: nutrition.totalFat })}
+            />
 
             {/* Deliberately asymmetric spacing: more room above (on top of
                 the column's own gap-4) so the protein score reads as its

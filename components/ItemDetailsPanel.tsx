@@ -44,6 +44,8 @@ import { addonGroupUsesQuantitySelection } from "@/lib/addonGroups";
 import { resolveEffectiveIngredientNutrition } from "@/lib/ingredientNutrition";
 import type { ItemImagePresentation } from "@/types/menu";
 import SectionEyebrow from "@/components/ui/SectionEyebrow";
+import SegmentedControl from "@/components/ui/SegmentedControl";
+import AppIconButton from "@/components/ui/AppIconButton";
 import NutritionFactsPanel from "@/components/nutrition/NutritionFactsPanel";
 import {
   MEAL_DETAILS_SECTION_LABEL_CLASSNAME,
@@ -481,42 +483,23 @@ export function PortionSelector({
   if (layout === "top") {
     return (
       <div id={id} className={className}>
-        <p className="text-[11px] font-semibold uppercase tracking-wide text-slate-400">
+        <p className="text-label text-slate-400">
           {groupLabel}
         </p>
-        <div
-          role="radiogroup"
-          aria-label={groupLabel}
-          className="mt-1.5 grid w-full auto-cols-fr grid-flow-col gap-1 rounded-full bg-slate-100 p-1"
-        >
-          {variants.map((variant) => {
-            const isActive = variant.id === selectedVariantId;
-
-            return (
-              <button
-                key={variant.id}
-                type="button"
-                role="radio"
-                aria-checked={isActive}
-                onClick={() => onSelectVariant?.(variant.id)}
-                className={`box-border flex h-9 min-w-0 cursor-pointer items-center justify-center whitespace-nowrap rounded-full border px-2 text-[13px] font-semibold transition-colors duration-150 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-strong sm:px-3 sm:text-sm ${
-                  isActive
-                    ? "border-transparent bg-accent-strong text-white/95 shadow-sm"
-                    : "border-transparent text-slate-500 hover:bg-white/70 active:bg-white"
-                }`}
-              >
-                {variant.label}
-              </button>
-            );
-          })}
-        </div>
+        <SegmentedControl
+          className="mt-1.5"
+          ariaLabel={groupLabel}
+          value={selectedVariantId ?? ""}
+          onChange={(variantId) => onSelectVariant?.(variantId)}
+          options={variants.map((variant) => ({ id: variant.id, label: variant.label }))}
+        />
       </div>
     );
   }
 
   return (
     <div className={`${className} space-y-2`}>
-      <div className="text-base font-semibold uppercase tracking-wide text-neutral-500">
+      <div className="text-base font-semibold uppercase tracking-wide text-slate-500">
         {groupLabel}
       </div>
       <div className="grid w-full grid-flow-col auto-cols-fr gap-2">
@@ -715,7 +698,7 @@ function QuantityStepper({
                       <Minus size={compact ? 10 : 12} strokeWidth={2.5} />
                   </button>
                   <span
-                      className={`min-w-[1.25rem] text-center font-bold text-neutral-900 ${
+                      className={`min-w-[1.25rem] text-center font-bold text-slate-900 ${
                           compact ? "text-xs" : "text-sm"
                       }`}
                   >
@@ -861,7 +844,7 @@ function IngredientCustomizationSection({
     <section id={ITEM_DETAILS_SECTION_IDS.ingredients} className="min-w-0 overflow-x-hidden rounded-2xl border border-black/10 bg-white p-4 sm:p-6">
       <div className="mb-5 flex items-start justify-between gap-3">
         <div>
-          <h2 className="text-lg font-bold text-neutral-900 sm:text-xl">
+          <h2 className="text-lg font-bold text-slate-900 sm:text-xl">
             Customize ingredients
           </h2>
           <p className="mt-1 text-sm text-slate-500">
@@ -869,14 +852,14 @@ function IngredientCustomizationSection({
           </p>
         </div>
         {onCustomize ? (
-          <button
-            type="button"
+          <AppIconButton
+            variant="default"
+            size="md"
             onClick={onCustomize}
             aria-label="Customize ingredients"
-            className="cursor-pointer inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-700 transition hover:bg-slate-100"
           >
             <Pencil className="h-4 w-4" />
-          </button>
+          </AppIconButton>
         ) : null}
       </div>
       {!flattenList && visibleTabs.length > 1 ? (
@@ -914,7 +897,7 @@ function IngredientCustomizationSection({
                   className={`line-clamp-2 break-words text-sm font-semibold sm:line-clamp-1 sm:truncate sm:text-base ${
                     isRemoved
                       ? "text-slate-400 line-through decoration-slate-300"
-                      : "text-neutral-900"
+                      : "text-slate-900"
                   }`}
                 >
                   {displayLabel}
@@ -972,7 +955,7 @@ function IngredientCustomizationSection({
                           linkedSingleSelectTab,
                         );
                       }}
-                      className="inline-flex cursor-pointer items-center gap-0.5 rounded-full py-1.5 pr-2 pl-0 text-xs font-semibold text-slate-500 transition hover:text-neutral-900"
+                      className="inline-flex cursor-pointer items-center gap-0.5 rounded-full py-1.5 pr-2 pl-0 text-xs font-semibold text-slate-500 transition hover:text-slate-900"
                     >
                       {isRemoved ? "Add back" : "Change"}
                       <ChevronRight size={14} />
@@ -986,10 +969,10 @@ function IngredientCustomizationSection({
               return (
                 <li key={ingredient.id} className="flex py-1">
                   <div
-                    className={`w-full rounded-xl border bg-white shadow-[0_1px_2px_rgba(0,0,0,0.04)] transition duration-150 ${
+                    className={`w-full rounded-xl border bg-white shadow-elev-1 transition duration-150 ${
                       isSelected
                         ? "border-[1.5px] border-accent"
-                        : "border-black/10 hover:-translate-y-px hover:border-black/15 hover:shadow-[0_2px_6px_rgba(0,0,0,0.05)]"
+                        : "border-black/10 hover:-translate-y-px hover:border-black/15 hover:shadow-elev-2"
                     }`}
                   >
                     <button
@@ -1073,7 +1056,7 @@ function IngredientCustomizationSection({
                         linkedSingleSelectTab,
                       );
                     }}
-                    className="hidden shrink-0 cursor-pointer items-center gap-0.5 rounded-full py-1.5 pr-2 pl-2.5 text-xs font-semibold text-slate-500 transition hover:bg-slate-100 hover:text-neutral-900 sm:inline-flex sm:text-sm"
+                    className="hidden shrink-0 cursor-pointer items-center gap-0.5 rounded-full py-1.5 pr-2 pl-2.5 text-xs font-semibold text-slate-500 transition hover:bg-slate-100 hover:text-slate-900 sm:inline-flex sm:text-sm"
                   >
                     {isRemoved ? "Add back" : "Change"}
                     <ChevronRight size={14} />
@@ -1106,10 +1089,10 @@ function IngredientCustomizationSection({
             return (
               <li key={ingredient.id} className="flex py-1">
                 <div
-                  className={`flex w-full items-start gap-3 rounded-xl border px-2 py-2 shadow-[0_1px_2px_rgba(0,0,0,0.04)] transition duration-150 sm:items-center sm:px-3 ${
+                  className={`flex w-full items-start gap-3 rounded-xl border px-2 py-2 shadow-elev-1 transition duration-150 sm:items-center sm:px-3 ${
                     isActiveSelectedRow
                       ? "border-[1.5px] border-accent bg-white"
-                      : `border-black/10 bg-white ${isRowInteractive ? "hover:-translate-y-px hover:border-black/15 hover:shadow-[0_2px_6px_rgba(0,0,0,0.05)]" : ""}`
+                      : `border-black/10 bg-white ${isRowInteractive ? "hover:-translate-y-px hover:border-black/15 hover:shadow-elev-2" : ""}`
                   } ${isRowInteractive ? "cursor-pointer" : ""}`}
                   role={isRowInteractive ? "button" : undefined}
                   tabIndex={isRowInteractive ? 0 : undefined}
@@ -1206,10 +1189,10 @@ function ComboOptionRow({
   return (
     <li className="flex py-1">
       <div
-        className={`flex w-full flex-1 flex-col overflow-hidden rounded-xl border shadow-[0_1px_2px_rgba(0,0,0,0.04)] transition duration-150 ${
+        className={`flex w-full flex-1 flex-col overflow-hidden rounded-xl border shadow-elev-1 transition duration-150 ${
           isSelected
             ? "border-[1.5px] border-accent bg-white"
-            : "border-black/10 bg-white hover:-translate-y-px hover:border-black/15 hover:shadow-[0_2px_6px_rgba(0,0,0,0.05)]"
+            : "border-black/10 bg-white hover:-translate-y-px hover:border-black/15 hover:shadow-elev-2"
         }`}
       >
         <button
@@ -1219,7 +1202,7 @@ function ComboOptionRow({
         >
           <IngredientThumb icon={item.image ?? ""} />
           <div className="min-w-0 flex-1">
-            <p className="line-clamp-2 break-words text-sm font-semibold text-neutral-900 sm:line-clamp-1 sm:truncate sm:text-base">
+            <p className="line-clamp-2 break-words text-sm font-semibold text-slate-900 sm:line-clamp-1 sm:truncate sm:text-base">
               {item.name}
             </p>
             {activeNutrition ? (
@@ -1294,7 +1277,7 @@ export function ProductOptionsSection({
     <section
       id={ITEM_DETAILS_SECTION_IDS.portion}
     >
-      <h2 className="text-lg font-bold text-neutral-900 sm:text-xl">Options</h2>
+      <h2 className="text-lg font-bold text-slate-900 sm:text-xl">Options</h2>
       <ul className="mt-4 grid list-none grid-cols-1 gap-3 pl-0 md:grid-cols-3">
         {variants.map((variant, index) => (
           <ComboOptionRow
@@ -1340,10 +1323,10 @@ function SauceOptionRow({
       <div
         role="button"
         tabIndex={0}
-        className={`flex w-full cursor-pointer items-start gap-3 rounded-xl border px-2 py-2 shadow-[0_1px_2px_rgba(0,0,0,0.04)] transition duration-150 sm:items-center sm:px-3 ${
+        className={`flex w-full cursor-pointer items-start gap-3 rounded-xl border px-2 py-2 shadow-elev-1 transition duration-150 sm:items-center sm:px-3 ${
           isSelected
             ? "border-[1.5px] border-accent bg-white"
-            : "border-black/10 bg-white hover:-translate-y-px hover:border-black/15 hover:shadow-[0_2px_6px_rgba(0,0,0,0.05)]"
+            : "border-black/10 bg-white hover:-translate-y-px hover:border-black/15 hover:shadow-elev-2"
         }`}
         onClick={() => onToggleSauce?.(addon)}
         onKeyDown={(event) => {
@@ -1354,7 +1337,7 @@ function SauceOptionRow({
       >
         <IngredientThumb icon={addon.image} />
         <div className="min-w-0 flex-1">
-          <p className="line-clamp-2 break-words text-sm font-semibold text-neutral-900 sm:line-clamp-1 sm:truncate sm:text-base">
+          <p className="line-clamp-2 break-words text-sm font-semibold text-slate-900 sm:line-clamp-1 sm:truncate sm:text-base">
             {addon.name}
           </p>
           <MacroInlineSummary
@@ -1546,7 +1529,7 @@ function ComboCustomizationSection({ config }: ComboCustomizationSectionProps) {
     <>
       <section id={ITEM_DETAILS_SECTION_IDS.side} className="rounded-2xl border border-black/10 bg-white p-5 sm:p-6">
         <div className="mb-5">
-          <h2 className="text-lg font-bold text-neutral-900 sm:text-xl">
+          <h2 className="text-lg font-bold text-slate-900 sm:text-xl">
             Choose a side
           </h2>
           <p className="mt-1 text-sm text-slate-500">Select one option.</p>
@@ -1561,7 +1544,7 @@ function ComboCustomizationSection({ config }: ComboCustomizationSectionProps) {
       </section>
       <section id={ITEM_DETAILS_SECTION_IDS.drink} className="rounded-2xl border border-black/10 bg-white p-5 sm:p-6">
         <div className="mb-5">
-          <h2 className="text-lg font-bold text-neutral-900 sm:text-xl">
+          <h2 className="text-lg font-bold text-slate-900 sm:text-xl">
             Choose a drink
           </h2>
           <p className="mt-1 text-sm text-slate-500">Select one option.</p>
@@ -1639,7 +1622,7 @@ function AddonCustomizationSection({ config }: AddonCustomizationSectionProps) {
               }
             >
               <div className="flex min-h-[44px] w-full items-center justify-between gap-[10px] rounded-[10px] border-0 bg-transparent py-1 text-left">
-                <h3 className="m-0 text-lg font-bold text-neutral-900 sm:text-xl">
+                <h3 className="m-0 text-lg font-bold text-slate-900 sm:text-xl">
                   {section.title}
                 </h3>
               </div>

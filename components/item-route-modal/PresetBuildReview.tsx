@@ -103,7 +103,7 @@ export function PresetIngredientCard({
             as="li"
             padding="none"
             shadow="none"
-            className="min-w-0 max-w-full list-none overflow-hidden border border-black/10 bg-white shadow-[0_1px_2px_rgba(0,0,0,0.04)] transition duration-150 hover:-translate-y-px hover:border-black/15 hover:shadow-[0_2px_6px_rgba(0,0,0,0.05)]"
+            className="min-w-0 max-w-full list-none overflow-hidden border border-black/10 bg-white shadow-elev-1 transition duration-150 hover:-translate-y-px hover:border-black/15 hover:shadow-elev-2"
         >
             <div
                 {...interactiveProps}
@@ -122,7 +122,7 @@ export function PresetIngredientCard({
                 </div>
                 <div className="min-w-0 flex-1">
                     <div className="flex min-w-0 items-baseline gap-1.5">
-                        <p className="min-w-0 flex-1 truncate font-heading text-[15px] font-semibold text-neutral-900 sm:text-base">
+                        <p className="min-w-0 flex-1 truncate font-heading text-[15px] font-semibold text-slate-900 sm:text-base">
                             {name}
                         </p>
                         {portionLabel ? (
@@ -199,7 +199,7 @@ export default function PresetBuildReview({
         <div>
             <div className="grid gap-4">
                 <div>
-                    <h2 className="font-heading text-2xl font-bold text-neutral-900 sm:text-3xl">
+                    <h2 className="font-heading text-2xl font-bold text-slate-900 sm:text-3xl">
                         Included in this Build
                     </h2>
                     <p className="mt-1.5 text-sm text-slate-500">
@@ -232,7 +232,7 @@ export default function PresetBuildReview({
                                         className="h-4 w-4 text-slate-400"
                                         strokeWidth={2.25}
                                     />
-                                    <h3 className="font-heading text-base font-bold text-neutral-900 sm:text-lg">
+                                    <h3 className="font-heading text-base font-bold text-slate-900 sm:text-lg">
                                         {group.categoryLabel}
                                     </h3>
                                 </div>
