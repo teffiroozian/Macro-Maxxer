@@ -1,0 +1,96 @@
+{
+  "itemId": "200497",
+  "orderingItemId": "6600487527",
+  "orderingFile": "daily-double-item-page.json",
+  "summary": {
+    "optionsMapped": 10,
+    "unmatched": 7,
+    "defaultNutritionValidated": true,
+    "maxRawNutrientError": 1.1368683772161603e-13
+  },
+  "unmatched": [
+    {
+      "optionId": "31802106328",
+      "name": "No x2 Slc Tomato",
+      "reason": "no_validated_nutrition_mapping"
+    },
+    {
+      "optionId": "35628083812",
+      "name": "No Diced Onions",
+      "reason": "no_validated_nutrition_mapping"
+    },
+    {
+      "optionId": "31802106330",
+      "name": "No Salt",
+      "reason": "salt_nutrition_unresolved"
+    },
+    {
+      "optionId": "31802111956",
+      "name": "Extra x2 Slc Tomato",
+      "reason": "no_validated_nutrition_mapping"
+    },
+    {
+      "optionId": "31802111957",
+      "name": "Add Pickle",
+      "reason": "no_validated_nutrition_mapping"
+    },
+    {
+      "optionId": "31802111958",
+      "name": "Add Mustard",
+      "reason": "no_validated_nutrition_mapping"
+    },
+    {
+      "optionId": "31802111959",
+      "name": "Add Ketchup",
+      "reason": "no_validated_nutrition_mapping"
+    }
+  ],
+  "validation": {
+    "expected": {
+      "calories": 485.73340338,
+      "protein": 22.4130477033,
+      "carbohydrate": 30.453099878,
+      "fat": 30.698514336,
+      "sodium": 810.09878604,
+      "saturated_fat": 10.648640881,
+      "trans_fat": 1.23645094054,
+      "cholesterol": 79.463224014,
+      "fibre": 1.6148879,
+      "sugars": 4.994440233,
+      "addedsugars": 3.490164733,
+      "vitaminD": 0.0709825,
+      "calcium": 98.0743972068,
+      "iron": 3.3345264,
+      "potassium": 321.299972,
+      "vitaminB6": 0,
+      "phosphorus": 2.1837,
+      "caffeine": 0,
+      "calories_from_fat": 276.286629024,
+      "energy_kJ": 2032.30862096592,
+      "fibre2015": 1.6148879
+    },
+    "calculated": {
+      "calories": 485.73340338,
+      "protein": 22.413047703300006,
+      "carbohydrate": 30.453099878000003,
+      "fat": 30.698514336,
+      "sodium": 810.0987860399999,
+      "saturated_fat": 10.648640881,
+      "trans_fat": 1.23645094054,
+      "cholesterol": 79.463224014,
+      "fibre": 1.6148878999999998,
+      "sugars": 4.994440233,
+      "addedsugars": 3.490164733,
+      "vitaminD": 0.0709825,
+      "calcium": 98.0743972068,
+      "iron": 3.3345264,
+      "potassium": 321.299972,
+      "vitaminB6": 0,
+      "phosphorus": 2.1837,
+      "caffeine": 0,
+      "calories_from_fat": 276.286629024,
+      "energy_kJ": 2032.30862096592,
+      "fibre2015": 1.6148878999999998
+    }
+  }
+}

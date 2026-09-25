@@ -1,0 +1,5563 @@
+{
+  "capturedAt": "2026-09-24T17:17:13.275Z",
+  "storeId": "662393",
+  "menuId": "18196178",
+  "composedBreakfast": [
+    {
+      "slug": "big-breakfast",
+      "item": {
+        "id": "6570917221",
+        "name": "Big Breakfast® with Muffin",
+        "description": "(650 Cal.)",
+        "unitAmount": 839,
+        "currency": "USD",
+        "caloricInfoDisplayString": "650 cal",
+        "quantityLimit": 0,
+        "menuId": "18196178"
+      },
+      "itemType": "HAS_NESTED_OPTIONS",
+      "groups": [
+        {
+          "type": "extra_option",
+          "id": "5820739915",
+          "name": "Remove from Big Breakfast w/Muf",
+          "minNumOptions": 0,
+          "maxNumOptions": 3,
+          "minAggregateOptionsQuantity": null,
+          "maxAggregateOptionsQuantity": null,
+          "minOptionChoiceQuantity": null,
+          "maxOptionChoiceQuantity": null,
+          "isOptional": true,
+          "options": [
+            {
+              "id": "23568342379",
+              "name": "No Scrambled Eggs",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "160 cal"
+            },
+            {
+              "id": "23568342380",
+              "name": "No Sausage",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "190 cal"
+            },
+            {
+              "id": "23568342381",
+              "name": "No English McMuffin®",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "160 cal"
+            }
+          ]
+        },
+        {
+          "type": "extra_option",
+          "id": "5820739916",
+          "name": "Extra for Big Breakfast w/Muf",
+          "minNumOptions": 0,
+          "maxNumOptions": 12,
+          "minAggregateOptionsQuantity": null,
+          "maxAggregateOptionsQuantity": null,
+          "minOptionChoiceQuantity": null,
+          "maxOptionChoiceQuantity": null,
+          "isOptional": true,
+          "options": [
+            {
+              "id": "23568342386",
+              "name": "Add Butter",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "35 cal"
+            },
+            {
+              "id": "23568342387",
+              "name": "Add Syrup",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "180 cal"
+            },
+            {
+              "id": "23568342391",
+              "name": "Add Napkin",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": ""
+            },
+            {
+              "id": "23568342392",
+              "name": "Add Fork",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": ""
+            },
+            {
+              "id": "23568342385",
+              "name": "Add Salt",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": ""
+            },
+            {
+              "id": "23568342389",
+              "name": "Add Grape Jam",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "40 cal"
+            },
+            {
+              "id": "23568342393",
+              "name": "Add Knife",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": ""
+            },
+            {
+              "id": "23568342382",
+              "name": "Extra Scrambled Eggs",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "160 cal"
+            },
+            {
+              "id": "23568342383",
+              "name": "Extra Sausage",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "190 cal"
+            },
+            {
+              "id": "23568342384",
+              "name": "Extra English McMuffin®",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "160 cal"
+            },
+            {
+              "id": "23568342388",
+              "name": "Add Pepper Packet",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "0 cal"
+            },
+            {
+              "id": "23568342390",
+              "name": "Add Strawberry Preserve",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "40 cal"
+            }
+          ]
+        },
+        {
+          "type": "extra_option",
+          "id": "5820739917",
+          "name": "Extra for Hash Browns",
+          "minNumOptions": 0,
+          "maxNumOptions": 1,
+          "minAggregateOptionsQuantity": null,
+          "maxAggregateOptionsQuantity": null,
+          "minOptionChoiceQuantity": null,
+          "maxOptionChoiceQuantity": null,
+          "isOptional": true,
+          "options": [
+            {
+              "id": "23568342394",
+              "name": "Add Ketchup Packet",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "10 cal"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "big-breakfast-with-hotcakes",
+      "item": {
+        "id": "6570917222",
+        "name": "Big Breakfast® with Muffin & Hotcakes",
+        "description": "(1230 Cal.)",
+        "unitAmount": 1019,
+        "currency": "USD",
+        "caloricInfoDisplayString": "1230 cal",
+        "quantityLimit": 0,
+        "menuId": "18196178"
+      },
+      "itemType": "HAS_NESTED_OPTIONS",
+      "groups": [
+        {
+          "type": "extra_option",
+          "id": "5820739918",
+          "name": "Remove from Big Brkfst/w Mf HtCk",
+          "minNumOptions": 0,
+          "maxNumOptions": 4,
+          "minAggregateOptionsQuantity": null,
+          "maxAggregateOptionsQuantity": null,
+          "minOptionChoiceQuantity": null,
+          "maxOptionChoiceQuantity": null,
+          "isOptional": true,
+          "options": [
+            {
+              "id": "23568342395",
+              "name": "No Scrambled Eggs",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "160 cal"
+            },
+            {
+              "id": "23568342396",
+              "name": "No Sausage",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "190 cal"
+            },
+            {
+              "id": "23568342397",
+              "name": "No English McMuffin®",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "160 cal"
+            },
+            {
+              "id": "23568342398",
+              "name": "No Hotcakes",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "580 cal"
+            }
+          ]
+        },
+        {
+          "type": "extra_option",
+          "id": "5820739919",
+          "name": "Extra for Big Brkfst/w Mf HtCk",
+          "minNumOptions": 0,
+          "maxNumOptions": 12,
+          "minAggregateOptionsQuantity": null,
+          "maxAggregateOptionsQuantity": null,
+          "minOptionChoiceQuantity": null,
+          "maxOptionChoiceQuantity": null,
+          "isOptional": true,
+          "options": [
+            {
+              "id": "23568342404",
+              "name": "Add Syrup",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "180 cal"
+            },
+            {
+              "id": "23568342403",
+              "name": "Add Butter",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "35 cal"
+            },
+            {
+              "id": "23568342409",
+              "name": "Add Fork",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": ""
+            },
+            {
+              "id": "23568342410",
+              "name": "Add Knife",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": ""
+            },
+            {
+              "id": "23568342399",
+              "name": "Extra Scrambled Eggs",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "160 cal"
+            },
+            {
+              "id": "23568342400",
+              "name": "Extra Sausage",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "190 cal"
+            },
+            {
+              "id": "23568342402",
+              "name": "Add Salt",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": ""
+            },
+            {
+              "id": "23568342405",
+              "name": "Add Pepper Packet",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "0 cal"
+            },
+            {
+              "id": "23568342406",
+              "name": "Add Grape Jam",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "40 cal"
+            },
+            {
+              "id": "23568342407",
+              "name": "Add Strawberry Preserve",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "40 cal"
+            },
+            {
+              "id": "23568342408",
+              "name": "Add Napkin",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": ""
+            },
+            {
+              "id": "23568342401",
+              "name": "Extra English McMuffin®",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "160 cal"
+            }
+          ]
+        },
+        {
+          "type": "extra_option",
+          "id": "5820739920",
+          "name": "Extra for Hash Browns",
+          "minNumOptions": 0,
+          "maxNumOptions": 1,
+          "minAggregateOptionsQuantity": null,
+          "maxAggregateOptionsQuantity": null,
+          "minOptionChoiceQuantity": null,
+          "maxOptionChoiceQuantity": null,
+          "isOptional": true,
+          "options": [
+            {
+              "id": "23568342411",
+              "name": "Add Ketchup Packet",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "10 cal"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "hotcakes",
+      "item": {
+        "id": "6570917224",
+        "name": "Hotcakes",
+        "description": "If you love hot pancakes, you've got to try McDonald's Hotcakes with a side of real butter and sweet maple flavored Hotcake syrup. Comes with 3 golden brown Hotcakes. Order them with a Premium Roast Coffee for the perfect breakfast combo.",
+        "unitAmount": 679,
+        "currency": "USD",
+        "caloricInfoDisplayString": "580 cal",
+        "quantityLimit": 0,
+        "menuId": "18196178"
+      },
+      "itemType": "HAS_NESTED_OPTIONS",
+      "groups": [
+        {
+          "type": "extra_option",
+          "id": "5820739922",
+          "name": "Extra for Hotcakes",
+          "minNumOptions": 0,
+          "maxNumOptions": 5,
+          "minAggregateOptionsQuantity": null,
+          "maxAggregateOptionsQuantity": null,
+          "minOptionChoiceQuantity": null,
+          "maxOptionChoiceQuantity": null,
+          "isOptional": true,
+          "options": [
+            {
+              "id": "23568342419",
+              "name": "Add Syrup",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "180 cal"
+            },
+            {
+              "id": "23568342418",
+              "name": "Add Butter",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "35 cal"
+            },
+            {
+              "id": "23568342420",
+              "name": "Add Napkin",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": ""
+            },
+            {
+              "id": "23568342421",
+              "name": "Add Fork",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": ""
+            },
+            {
+              "id": "23568342422",
+              "name": "Add Knife",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": ""
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "hotcakes-and-sausage",
+      "item": {
+        "id": "6570917223",
+        "name": "Hotcakes and Sausage",
+        "description": "When you're craving pancakes and sausage, McDonald's has you covered with our Hotcakes and Sausage breakfast. Featuring 3 golden brown Hotcakes and real butter, topped with sweet maple flavored hotcake syrup. On the side, you get a hot McDonald's sausage patty. Pair it with a Premium Roast Coffee for a perfect pancakes and sausage breakfast combo.",
+        "unitAmount": 759,
+        "currency": "USD",
+        "caloricInfoDisplayString": "770 cal",
+        "quantityLimit": 0,
+        "menuId": "18196178"
+      },
+      "itemType": "HAS_NESTED_OPTIONS",
+      "groups": [
+        {
+          "type": "extra_option",
+          "id": "5820739921",
+          "name": "Extra for Hotcakes and Sausage",
+          "minNumOptions": 0,
+          "maxNumOptions": 6,
+          "minAggregateOptionsQuantity": null,
+          "maxAggregateOptionsQuantity": null,
+          "minOptionChoiceQuantity": null,
+          "maxOptionChoiceQuantity": null,
+          "isOptional": true,
+          "options": [
+            {
+              "id": "23568342416",
+              "name": "Add Fork",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": ""
+            },
+            {
+              "id": "23568342417",
+              "name": "Add Knife",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": ""
+            },
+            {
+              "id": "23568342412",
+              "name": "Extra Sausage",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "190 cal"
+            },
+            {
+              "id": "23568342413",
+              "name": "Add Butter",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "35 cal"
+            },
+            {
+              "id": "23568342414",
+              "name": "Add Syrup",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "180 cal"
+            },
+            {
+              "id": "23568342415",
+              "name": "Add Napkin",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": ""
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "fruit-maple-oatmeal",
+      "item": {
+        "id": "6570921441",
+        "name": "Oatmeal",
+        "description": "Two full servings of whole-grain oats with a touch of cream and brown sugar. Loaded with red and green apples, cranberries, and two varieties of raisins, our oatmeal makes for a hearty, wholesome breakfast of whole grains and fruit. Enjoy this whole grain oatmeal for breakfast with a McCafé® Premium Roast Coffee to give a healthy start to your day.",
+        "unitAmount": 479,
+        "currency": "USD",
+        "caloricInfoDisplayString": "320 cal",
+        "quantityLimit": 0,
+        "menuId": "18196178"
+      },
+      "itemType": "HAS_NESTED_OPTIONS",
+      "groups": [
+        {
+          "type": "extra_option",
+          "id": "5820748344",
+          "name": "Remove from Oatmeal",
+          "minNumOptions": 0,
+          "maxNumOptions": 3,
+          "minAggregateOptionsQuantity": null,
+          "maxAggregateOptionsQuantity": null,
+          "minOptionChoiceQuantity": null,
+          "maxOptionChoiceQuantity": null,
+          "isOptional": true,
+          "options": [
+            {
+              "id": "23568414533",
+              "name": "No Raisins & Cranberries",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "70 cal"
+            },
+            {
+              "id": "23568414534",
+              "name": "No Diced Apples",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "15 cal"
+            },
+            {
+              "id": "23568414535",
+              "name": "No Cream",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "20 cal"
+            }
+          ]
+        },
+        {
+          "type": "extra_option",
+          "id": "5820748345",
+          "name": "Extra for Oatmeal",
+          "minNumOptions": 0,
+          "maxNumOptions": 5,
+          "minAggregateOptionsQuantity": null,
+          "maxAggregateOptionsQuantity": null,
+          "minOptionChoiceQuantity": null,
+          "maxOptionChoiceQuantity": null,
+          "isOptional": true,
+          "options": [
+            {
+              "id": "23568414539",
+              "name": "Add Spoons",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": ""
+            },
+            {
+              "id": "23568414540",
+              "name": "Add Napkin",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": ""
+            },
+            {
+              "id": "23568414537",
+              "name": "Extra Diced Apples",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "15 cal"
+            },
+            {
+              "id": "23568414536",
+              "name": "Extra Raisins & Cranberries",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "70 cal"
+            },
+            {
+              "id": "23568414538",
+              "name": "Extra Cream",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "20 cal"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "sausage-burrito",
+      "item": {
+        "id": "6570932133",
+        "name": "Sausage Burrito",
+        "description": "Start your day off with a loaded Egg and Sausage Burrito. Loaded with fluffy scrambled egg, pork sausage, melty cheese, green chiles, and onion! It's wrapped in a soft tortilla, making it the perfect grab and go breakfast. Enjoy it as a snack or grab a Sausage Burrito Meal with a crispy golden Hash Browns and a small McCafé® Premium Roast Coffee.",
+        "unitAmount": 309,
+        "currency": "USD",
+        "caloricInfoDisplayString": "310 cal",
+        "quantityLimit": 0,
+        "menuId": "18196178"
+      },
+      "itemType": "HAS_NESTED_OPTIONS",
+      "groups": [
+        {
+          "type": "extra_option",
+          "id": "5820746178",
+          "name": "Select Sauce",
+          "minNumOptions": 1,
+          "maxNumOptions": 1,
+          "minAggregateOptionsQuantity": null,
+          "maxAggregateOptionsQuantity": null,
+          "minOptionChoiceQuantity": null,
+          "maxOptionChoiceQuantity": null,
+          "isOptional": false,
+          "options": [
+            {
+              "id": "23568409565",
+              "name": "Hot Picante Salsa",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "0 cal"
+            },
+            {
+              "id": "23568409566",
+              "name": "Mild Picante Salsa",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "5 cal"
+            },
+            {
+              "id": "23568409567",
+              "name": "Ketchup Packet",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "10 cal"
+            },
+            {
+              "id": "23568409568",
+              "name": "No Sauce",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": ""
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "mcCafe": [
+    {
+      "slug": "premium-roast-coffee",
+      "item": {
+        "id": "6570913666",
+        "name": "Premium Roast Coffee",
+        "description": "Treat yourself to a cup of our simple, satisfying McCafé® Premium Roast Coffee. Made with 100% Arabica beans, McCafé® Premium Roast Coffee is expertly roasted and freshly brewed every 30 minutes. Enjoy your hot coffee black or with your choice of sugar, sweetener, and dairy or creamer.",
+        "unitAmount": 219,
+        "currency": "USD",
+        "caloricInfoDisplayString": "5 cal",
+        "quantityLimit": 0,
+        "menuId": "18196178"
+      },
+      "itemType": "HAS_OPTIONS",
+      "groups": [
+        {
+          "type": "extra_option",
+          "id": "5820742290",
+          "name": "Select Size",
+          "minNumOptions": 1,
+          "maxNumOptions": 1,
+          "minAggregateOptionsQuantity": null,
+          "maxAggregateOptionsQuantity": null,
+          "minOptionChoiceQuantity": null,
+          "maxOptionChoiceQuantity": null,
+          "isOptional": false,
+          "options": [
+            {
+              "id": "23568303584",
+              "name": "Small",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "5 cal"
+            },
+            {
+              "id": "23568303585",
+              "name": "Medium",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "10 cal"
+            },
+            {
+              "id": "29645343485",
+              "name": "Large",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "10 cal"
+            }
+          ]
+        },
+        {
+          "type": "extra_option",
+          "id": "5820742291",
+          "name": "Extra for Premium Roast Coffee",
+          "minNumOptions": 0,
+          "maxNumOptions": 12,
+          "minAggregateOptionsQuantity": null,
+          "maxAggregateOptionsQuantity": null,
+          "minOptionChoiceQuantity": null,
+          "maxOptionChoiceQuantity": null,
+          "isOptional": true,
+          "options": [
+            {
+              "id": "30350650014",
+              "name": "Add Cream",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "20 cal"
+            },
+            {
+              "id": "30350666262",
+              "name": "Add Sugar",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "15 cal"
+            },
+            {
+              "id": "30350661977",
+              "name": "Add Espresso Shot",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "5 cal"
+            },
+            {
+              "id": "30350673880",
+              "name": "Add Splenda",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "0 cal"
+            },
+            {
+              "id": "51204252459",
+              "name": "Add Vanilla Syrup",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "25 cal"
+            },
+            {
+              "id": "51204252460",
+              "name": "Add Cold Foam",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "150 cal"
+            },
+            {
+              "id": "30350674794",
+              "name": "Add Equal",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "0 cal"
+            },
+            {
+              "id": "30350686711",
+              "name": "Add Ice",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "0 cal"
+            },
+            {
+              "id": "30350673960",
+              "name": "Add Sugar Free Vanilla Syrup",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "5 cal"
+            },
+            {
+              "id": "30350682508",
+              "name": "Add Caramel Syrup",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "30 cal"
+            },
+            {
+              "id": "30350689588",
+              "name": "Add Liquid Sugar",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "70 cal"
+            },
+            {
+              "id": "30350689041",
+              "name": "Add Coffee Stirrer",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": ""
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "premium-roast-decaf-coffee",
+      "item": {
+        "id": "6570913667",
+        "name": "Decaf Coffee",
+        "description": "Savour the great tasting flavour you love, decaffeinated. Our coffee beans are naturally decaffeinated using the Swiss Water® Process, leaving only a quality Decaf coffee you can enjoy all day long.",
+        "unitAmount": 219,
+        "currency": "USD",
+        "caloricInfoDisplayString": "5 cal",
+        "quantityLimit": 0,
+        "menuId": "18196178"
+      },
+      "itemType": "HAS_OPTIONS",
+      "groups": [
+        {
+          "type": "extra_option",
+          "id": "5820742292",
+          "name": "Select Size",
+          "minNumOptions": 1,
+          "maxNumOptions": 1,
+          "minAggregateOptionsQuantity": null,
+          "maxAggregateOptionsQuantity": null,
+          "minOptionChoiceQuantity": null,
+          "maxOptionChoiceQuantity": null,
+          "isOptional": false,
+          "options": [
+            {
+              "id": "23568303600",
+              "name": "Small",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "5 cal"
+            },
+            {
+              "id": "23568303601",
+              "name": "Medium",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "10 cal"
+            },
+            {
+              "id": "29645337790",
+              "name": "Large",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "15 cal"
+            }
+          ]
+        },
+        {
+          "type": "extra_option",
+          "id": "5820742293",
+          "name": "Extra for Decaf Coffee",
+          "minNumOptions": 0,
+          "maxNumOptions": 12,
+          "minAggregateOptionsQuantity": null,
+          "maxAggregateOptionsQuantity": null,
+          "minOptionChoiceQuantity": null,
+          "maxOptionChoiceQuantity": null,
+          "isOptional": true,
+          "options": [
+            {
+              "id": "51204252462",
+              "name": "Add Cold Foam",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "150 cal"
+            },
+            {
+              "id": "23568303603",
+              "name": "Add Cream",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "20 cal"
+            },
+            {
+              "id": "23568303604",
+              "name": "Add Sugar",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "15 cal"
+            },
+            {
+              "id": "23568303605",
+              "name": "Add Equal",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "0 cal"
+            },
+            {
+              "id": "23568303606",
+              "name": "Add Splenda",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "0 cal"
+            },
+            {
+              "id": "23568303607",
+              "name": "Add Ice",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "0 cal"
+            },
+            {
+              "id": "51204252461",
+              "name": "Add Vanilla Syrup",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "25 cal"
+            },
+            {
+              "id": "23568303608",
+              "name": "Add Espresso Shot",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "5 cal"
+            },
+            {
+              "id": "23568303610",
+              "name": "Add Sugar Free Vanilla Syrup",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "5 cal"
+            },
+            {
+              "id": "23568303611",
+              "name": "Add Caramel Syrup",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "30 cal"
+            },
+            {
+              "id": "23568303613",
+              "name": "Add Liquid Sugar",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "70 cal"
+            },
+            {
+              "id": "23568303615",
+              "name": "Add Coffee Stirrer",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": ""
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "iced-coffee",
+      "item": {
+        "id": "6570913669",
+        "name": "Iced Coffee",
+        "description": "Enjoy a refreshingly cool Iced Coffee! Made with 100% Arabica beans, cream, and your choice of flavored coffee syrup—Caramel, Hazelnut, French Vanilla, and Sugar-Free French Vanilla. A fan of black coffee? Get it without the sugar or cream to refresh your mornings with a cool Black Iced Coffee.",
+        "unitAmount": 318,
+        "currency": "USD",
+        "caloricInfoDisplayString": "150 cal",
+        "quantityLimit": 0,
+        "menuId": "18196178"
+      },
+      "itemType": "HAS_OPTIONS",
+      "groups": [
+        {
+          "type": "extra_option",
+          "id": "5820742296",
+          "name": "Select Size",
+          "minNumOptions": 1,
+          "maxNumOptions": 1,
+          "minAggregateOptionsQuantity": null,
+          "maxAggregateOptionsQuantity": null,
+          "minOptionChoiceQuantity": null,
+          "maxOptionChoiceQuantity": null,
+          "isOptional": false,
+          "options": [
+            {
+              "id": "23568303624",
+              "name": "Small",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "150 cal"
+            },
+            {
+              "id": "23568303625",
+              "name": "Medium",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "190 cal"
+            },
+            {
+              "id": "29645342549",
+              "name": "Large",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "270 cal"
+            }
+          ]
+        },
+        {
+          "type": "extra_option",
+          "id": "5820742297",
+          "name": "Remove from Iced Coffee",
+          "minNumOptions": 0,
+          "maxNumOptions": 3,
+          "minAggregateOptionsQuantity": null,
+          "maxAggregateOptionsQuantity": null,
+          "minOptionChoiceQuantity": null,
+          "maxOptionChoiceQuantity": null,
+          "isOptional": true,
+          "options": [
+            {
+              "id": "23568303627",
+              "name": "No Ice",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "0 cal"
+            },
+            {
+              "id": "23568303628",
+              "name": "No Cream",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "20 cal"
+            },
+            {
+              "id": "23568303629",
+              "name": "No Liquid Sugar",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "70 cal"
+            }
+          ]
+        },
+        {
+          "type": "extra_option",
+          "id": "5820742298",
+          "name": "Extra for Iced Coffee",
+          "minNumOptions": 0,
+          "maxNumOptions": 16,
+          "minAggregateOptionsQuantity": null,
+          "maxAggregateOptionsQuantity": null,
+          "minOptionChoiceQuantity": null,
+          "maxOptionChoiceQuantity": null,
+          "isOptional": true,
+          "options": [
+            {
+              "id": "23568419037",
+              "name": "Add Espresso Shot",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "5 cal"
+            },
+            {
+              "id": "23568303630",
+              "name": "Extra Ice",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "0 cal"
+            },
+            {
+              "id": "23568303631",
+              "name": "Extra Cream",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "20 cal"
+            },
+            {
+              "id": "23568303632",
+              "name": "Extra Liquid Sugar",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "70 cal"
+            },
+            {
+              "id": "51204252451",
+              "name": "Add Cold Foam",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "150 cal"
+            },
+            {
+              "id": "23568303633",
+              "name": "Add Straw",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": ""
+            },
+            {
+              "id": "23568303634",
+              "name": "Add Sugar",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "15 cal"
+            },
+            {
+              "id": "23568303635",
+              "name": "Add Equal",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "0 cal"
+            },
+            {
+              "id": "23568419036",
+              "name": "Add Splenda",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "0 cal"
+            },
+            {
+              "id": "51204252450",
+              "name": "Add Vanilla Syrup",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "25 cal"
+            },
+            {
+              "id": "23568419039",
+              "name": "Add Sugar Free Vanilla Syrup",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "5 cal"
+            },
+            {
+              "id": "23568419040",
+              "name": "Add Caramel Syrup",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "30 cal"
+            },
+            {
+              "id": "23568419041",
+              "name": "Add Chocolate Syrup",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "30 cal"
+            },
+            {
+              "id": "23568419043",
+              "name": "Add Whipped Cream",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "60 cal"
+            },
+            {
+              "id": "23568419044",
+              "name": "Add Chocolate Drizzle",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "10 cal"
+            },
+            {
+              "id": "23568419045",
+              "name": "Add Caramel Drizzle",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "10 cal"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "iced-caramel-coffee",
+      "item": {
+        "id": "6570913670",
+        "name": "Iced Caramel Coffee",
+        "description": "Enjoy a refreshingly cool Iced Caramel Coffee that features premium roast beans and buttery caramel flavor. It’s personalized with your choice of sweetener and creamer for a taste that’s unmistakably yours.",
+        "unitAmount": 318,
+        "currency": "USD",
+        "caloricInfoDisplayString": "150 cal",
+        "quantityLimit": 0,
+        "menuId": "18196178"
+      },
+      "itemType": "HAS_OPTIONS",
+      "groups": [
+        {
+          "type": "extra_option",
+          "id": "5820742299",
+          "name": "Select Size",
+          "minNumOptions": 1,
+          "maxNumOptions": 1,
+          "minAggregateOptionsQuantity": null,
+          "maxAggregateOptionsQuantity": null,
+          "minOptionChoiceQuantity": null,
+          "maxOptionChoiceQuantity": null,
+          "isOptional": false,
+          "options": [
+            {
+              "id": "23568419046",
+              "name": "Small",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "150 cal"
+            },
+            {
+              "id": "23568419047",
+              "name": "Medium",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "200 cal"
+            },
+            {
+              "id": "29645308575",
+              "name": "Large",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "270 cal"
+            }
+          ]
+        },
+        {
+          "type": "extra_option",
+          "id": "5820742300",
+          "name": "Remove from Iced Caramel Coffee",
+          "minNumOptions": 0,
+          "maxNumOptions": 3,
+          "minAggregateOptionsQuantity": null,
+          "maxAggregateOptionsQuantity": null,
+          "minOptionChoiceQuantity": null,
+          "maxOptionChoiceQuantity": null,
+          "isOptional": true,
+          "options": [
+            {
+              "id": "23568419049",
+              "name": "No Ice",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "0 cal"
+            },
+            {
+              "id": "23568419050",
+              "name": "No Cream",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "20 cal"
+            },
+            {
+              "id": "23568419051",
+              "name": "No Caramel Syrup",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "30 cal"
+            }
+          ]
+        },
+        {
+          "type": "extra_option",
+          "id": "5820742301",
+          "name": "Extra for Iced Caramel Coffee",
+          "minNumOptions": 0,
+          "maxNumOptions": 16,
+          "minAggregateOptionsQuantity": null,
+          "maxAggregateOptionsQuantity": null,
+          "minOptionChoiceQuantity": null,
+          "maxOptionChoiceQuantity": null,
+          "isOptional": true,
+          "options": [
+            {
+              "id": "30350644689",
+              "name": "Add Straw",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": ""
+            },
+            {
+              "id": "30350637166",
+              "name": "Extra Ice",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "0 cal"
+            },
+            {
+              "id": "30350649239",
+              "name": "Extra Cream",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "20 cal"
+            },
+            {
+              "id": "30350646537",
+              "name": "Extra Caramel Syrup",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "30 cal"
+            },
+            {
+              "id": "51204252453",
+              "name": "Add Cold Foam",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "150 cal"
+            },
+            {
+              "id": "30350646546",
+              "name": "Add Sugar",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "15 cal"
+            },
+            {
+              "id": "30350650246",
+              "name": "Add Equal",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "0 cal"
+            },
+            {
+              "id": "30350642776",
+              "name": "Add Splenda",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "0 cal"
+            },
+            {
+              "id": "30350648740",
+              "name": "Add Espresso Shot",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "5 cal"
+            },
+            {
+              "id": "51204252452",
+              "name": "Add Vanilla Syrup",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "25 cal"
+            },
+            {
+              "id": "30350653145",
+              "name": "Add Sugar Free Vanilla Syrup",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "5 cal"
+            },
+            {
+              "id": "30350648579",
+              "name": "Add Chocolate Syrup",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "30 cal"
+            },
+            {
+              "id": "30350650405",
+              "name": "Add Liquid Sugar",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "70 cal"
+            },
+            {
+              "id": "30350649792",
+              "name": "Add Whipped Cream",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "60 cal"
+            },
+            {
+              "id": "30350642820",
+              "name": "Add Chocolate Drizzle",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "10 cal"
+            },
+            {
+              "id": "30350648595",
+              "name": "Add Caramel Drizzle",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "10 cal"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "iced-vanilla-coffee",
+      "item": {
+        "id": "6570913672",
+        "name": "Iced Vanilla Coffee",
+        "description": "Refreshingly cool iced coffee made with premium roast beans and smooth French vanilla flavor.",
+        "unitAmount": 318,
+        "currency": "USD",
+        "caloricInfoDisplayString": "150 cal",
+        "quantityLimit": 0,
+        "menuId": "18196178"
+      },
+      "itemType": "HAS_OPTIONS",
+      "groups": [
+        {
+          "type": "extra_option",
+          "id": "5820742305",
+          "name": "Select Size",
+          "minNumOptions": 1,
+          "maxNumOptions": 1,
+          "minAggregateOptionsQuantity": null,
+          "maxAggregateOptionsQuantity": null,
+          "minOptionChoiceQuantity": null,
+          "maxOptionChoiceQuantity": null,
+          "isOptional": false,
+          "options": [
+            {
+              "id": "23568419090",
+              "name": "Small",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "150 cal"
+            },
+            {
+              "id": "23568419091",
+              "name": "Medium",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "200 cal"
+            },
+            {
+              "id": "29645308576",
+              "name": "Large",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "280 cal"
+            }
+          ]
+        },
+        {
+          "type": "extra_option",
+          "id": "11675546071",
+          "name": "Remove from Iced Vanilla Coffee",
+          "minNumOptions": 0,
+          "maxNumOptions": 3,
+          "minAggregateOptionsQuantity": null,
+          "maxAggregateOptionsQuantity": null,
+          "minOptionChoiceQuantity": null,
+          "maxOptionChoiceQuantity": null,
+          "isOptional": true,
+          "options": [
+            {
+              "id": "23568419093",
+              "name": "No Ice",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "0 cal"
+            },
+            {
+              "id": "23568419094",
+              "name": "No Cream",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "20 cal"
+            },
+            {
+              "id": "51204252454",
+              "name": "No Vanilla Syrup",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "25 cal"
+            }
+          ]
+        },
+        {
+          "type": "extra_option",
+          "id": "11675546072",
+          "name": "Extra for Iced Vanilla Coffee",
+          "minNumOptions": 0,
+          "maxNumOptions": 16,
+          "minAggregateOptionsQuantity": null,
+          "maxAggregateOptionsQuantity": null,
+          "minOptionChoiceQuantity": null,
+          "maxOptionChoiceQuantity": null,
+          "isOptional": true,
+          "options": [
+            {
+              "id": "23568419097",
+              "name": "Extra Cream",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "20 cal"
+            },
+            {
+              "id": "23568419103",
+              "name": "Add Espresso Shot",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "5 cal"
+            },
+            {
+              "id": "23568419105",
+              "name": "Add Caramel Syrup",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "30 cal"
+            },
+            {
+              "id": "23568419096",
+              "name": "Extra Ice",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "0 cal"
+            },
+            {
+              "id": "51204252455",
+              "name": "Extra Vanilla Syrup",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "25 cal"
+            },
+            {
+              "id": "51204252456",
+              "name": "Add Cold Foam",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "150 cal"
+            },
+            {
+              "id": "23568419099",
+              "name": "Add Straw",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": ""
+            },
+            {
+              "id": "23568419100",
+              "name": "Add Sugar",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "15 cal"
+            },
+            {
+              "id": "23568419101",
+              "name": "Add Equal",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "0 cal"
+            },
+            {
+              "id": "23568419102",
+              "name": "Add Splenda",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "0 cal"
+            },
+            {
+              "id": "23568419104",
+              "name": "Add Sugar Free Vanilla Syrup",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "5 cal"
+            },
+            {
+              "id": "23568419106",
+              "name": "Add Chocolate Syrup",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "30 cal"
+            },
+            {
+              "id": "23568419108",
+              "name": "Add Liquid Sugar",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "70 cal"
+            },
+            {
+              "id": "23568419109",
+              "name": "Add Whipped Cream",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "60 cal"
+            },
+            {
+              "id": "23568419110",
+              "name": "Add Chocolate Drizzle",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "10 cal"
+            },
+            {
+              "id": "23568419111",
+              "name": "Add Caramel Drizzle",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "10 cal"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "hot-chocolate",
+      "item": {
+        "id": "6570936474",
+        "name": "Premium Hot Chocolate",
+        "description": "Taste the delicious chocolatey flavor of McCafé® Hot Chocolate. McDonald’s Hot Chocolate recipe features steamed whole milk with rich hot chocolate syrup and is finished with whipped light cream and chocolate drizzle.",
+        "unitAmount": 308,
+        "currency": "USD",
+        "caloricInfoDisplayString": "370 cal",
+        "quantityLimit": 0,
+        "menuId": "18196178"
+      },
+      "itemType": "HAS_OPTIONS",
+      "groups": [
+        {
+          "type": "extra_option",
+          "id": "5820742311",
+          "name": "Select Size",
+          "minNumOptions": 1,
+          "maxNumOptions": 1,
+          "minAggregateOptionsQuantity": null,
+          "maxAggregateOptionsQuantity": null,
+          "minOptionChoiceQuantity": null,
+          "maxOptionChoiceQuantity": null,
+          "isOptional": false,
+          "options": [
+            {
+              "id": "23568419133",
+              "name": "Small",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "370 cal"
+            },
+            {
+              "id": "29645347649",
+              "name": "Medium",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "450 cal"
+            },
+            {
+              "id": "29645341830",
+              "name": "Large",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "550 cal"
+            }
+          ]
+        },
+        {
+          "type": "extra_option",
+          "id": "5820742312",
+          "name": "Remove from Premium Hot Chocolate",
+          "minNumOptions": 0,
+          "maxNumOptions": 5,
+          "minAggregateOptionsQuantity": null,
+          "maxAggregateOptionsQuantity": null,
+          "minOptionChoiceQuantity": null,
+          "maxOptionChoiceQuantity": null,
+          "isOptional": true,
+          "options": [
+            {
+              "id": "23568419136",
+              "name": "No Chocolate Syrup",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "30 cal"
+            },
+            {
+              "id": "23568419137",
+              "name": "No Whole Milk",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "100 cal"
+            },
+            {
+              "id": "23568419138",
+              "name": "No Whipped Cream",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "60 cal"
+            },
+            {
+              "id": "23568419139",
+              "name": "No Chocolate Drizzle",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "10 cal"
+            },
+            {
+              "id": "23568419140",
+              "name": "No Plain",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": ""
+            }
+          ]
+        },
+        {
+          "type": "extra_option",
+          "id": "5820742313",
+          "name": "Extra for Premium Hot Chocolate",
+          "minNumOptions": 0,
+          "maxNumOptions": 15,
+          "minAggregateOptionsQuantity": null,
+          "maxAggregateOptionsQuantity": null,
+          "minOptionChoiceQuantity": null,
+          "maxOptionChoiceQuantity": null,
+          "isOptional": true,
+          "options": [
+            {
+              "id": "23568419141",
+              "name": "Extra Chocolate Syrup",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "30 cal"
+            },
+            {
+              "id": "23568419143",
+              "name": "Extra Whipped Cream",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "60 cal"
+            },
+            {
+              "id": "23568419144",
+              "name": "Extra Chocolate Drizzle",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "10 cal"
+            },
+            {
+              "id": "23568419142",
+              "name": "Extra Whole Milk",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "100 cal"
+            },
+            {
+              "id": "51204252464",
+              "name": "Add Cold Foam",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "150 cal"
+            },
+            {
+              "id": "23568419145",
+              "name": "Add Cream",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "20 cal"
+            },
+            {
+              "id": "23568419146",
+              "name": "Add Sugar",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "15 cal"
+            },
+            {
+              "id": "23568419147",
+              "name": "Add Equal",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "0 cal"
+            },
+            {
+              "id": "23568419148",
+              "name": "Add Splenda",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "0 cal"
+            },
+            {
+              "id": "23568419149",
+              "name": "Add Espresso Shot",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "5 cal"
+            },
+            {
+              "id": "51204252463",
+              "name": "Add Vanilla Syrup",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "25 cal"
+            },
+            {
+              "id": "23568419151",
+              "name": "Add Sugar Free Vanilla Syrup",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "5 cal"
+            },
+            {
+              "id": "23568419152",
+              "name": "Add Caramel Syrup",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "30 cal"
+            },
+            {
+              "id": "23568419155",
+              "name": "Add Liquid Sugar",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "70 cal"
+            },
+            {
+              "id": "23568419156",
+              "name": "Add Caramel Drizzle",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "10 cal"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "mocha-frappe",
+      "item": {
+        "id": "6570936478",
+        "name": "Mocha Frappé",
+        "description": "Cold and creamy Mocha Frappé made with rich chocolate flavor and a hint of coffee. Blended with ice and topped with whipped light cream and chocolatey drizzle.",
+        "unitAmount": 468,
+        "currency": "USD",
+        "caloricInfoDisplayString": "430 cal",
+        "quantityLimit": 0,
+        "menuId": "18196178"
+      },
+      "itemType": "HAS_OPTIONS",
+      "groups": [
+        {
+          "type": "extra_option",
+          "id": "5820742321",
+          "name": "Select Size",
+          "minNumOptions": 1,
+          "maxNumOptions": 1,
+          "minAggregateOptionsQuantity": null,
+          "maxAggregateOptionsQuantity": null,
+          "minOptionChoiceQuantity": null,
+          "maxOptionChoiceQuantity": null,
+          "isOptional": false,
+          "options": [
+            {
+              "id": "23568419188",
+              "name": "Small",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "430 cal"
+            },
+            {
+              "id": "29645342280",
+              "name": "Medium",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "490 cal"
+            },
+            {
+              "id": "29645341831",
+              "name": "Large",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "660 cal"
+            }
+          ]
+        },
+        {
+          "type": "extra_option",
+          "id": "5820742322",
+          "name": "Remove from Mocha Frappé",
+          "minNumOptions": 0,
+          "maxNumOptions": 2,
+          "minAggregateOptionsQuantity": null,
+          "maxAggregateOptionsQuantity": null,
+          "minOptionChoiceQuantity": null,
+          "maxOptionChoiceQuantity": null,
+          "isOptional": true,
+          "options": [
+            {
+              "id": "23568419191",
+              "name": "No Whipped Cream",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "60 cal"
+            },
+            {
+              "id": "23568419192",
+              "name": "No Chocolate Drizzle",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "10 cal"
+            }
+          ]
+        },
+        {
+          "type": "extra_option",
+          "id": "5820742323",
+          "name": "Extra for Mocha Frappé",
+          "minNumOptions": 0,
+          "maxNumOptions": 7,
+          "minAggregateOptionsQuantity": null,
+          "maxAggregateOptionsQuantity": null,
+          "minOptionChoiceQuantity": null,
+          "maxOptionChoiceQuantity": null,
+          "isOptional": true,
+          "options": [
+            {
+              "id": "23568419195",
+              "name": "Add Straw",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": ""
+            },
+            {
+              "id": "23568419193",
+              "name": "Extra Whipped Cream",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "60 cal"
+            },
+            {
+              "id": "23568419194",
+              "name": "Extra Chocolate Drizzle",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "10 cal"
+            },
+            {
+              "id": "51204252535",
+              "name": "Add Cold Foam",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "150 cal"
+            },
+            {
+              "id": "23568419196",
+              "name": "Add Espresso Shot",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "5 cal"
+            },
+            {
+              "id": "23568419197",
+              "name": "Add Caramel Drizzle",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "10 cal"
+            },
+            {
+              "id": "23568419198",
+              "name": "Add Crushed OREO®",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "40 cal"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "caramel-frappe",
+      "item": {
+        "id": "6570936479",
+        "name": "Caramel Frappé",
+        "description": "Rich caramel flavor and a hint of coffee, blended with ice, and topped with whipped topping and caramel drizzle.",
+        "unitAmount": 468,
+        "currency": "USD",
+        "caloricInfoDisplayString": "420 cal",
+        "quantityLimit": 0,
+        "menuId": "18196178"
+      },
+      "itemType": "HAS_OPTIONS",
+      "groups": [
+        {
+          "type": "extra_option",
+          "id": "5820742324",
+          "name": "Select Size",
+          "minNumOptions": 1,
+          "maxNumOptions": 1,
+          "minAggregateOptionsQuantity": null,
+          "maxAggregateOptionsQuantity": null,
+          "minOptionChoiceQuantity": null,
+          "maxOptionChoiceQuantity": null,
+          "isOptional": false,
+          "options": [
+            {
+              "id": "23568419199",
+              "name": "Small",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "420 cal"
+            },
+            {
+              "id": "29645347457",
+              "name": "Medium",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "490 cal"
+            },
+            {
+              "id": "29645341574",
+              "name": "Large",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "650 cal"
+            }
+          ]
+        },
+        {
+          "type": "extra_option",
+          "id": "5820742325",
+          "name": "Remove from Caramel Frappé",
+          "minNumOptions": 0,
+          "maxNumOptions": 2,
+          "minAggregateOptionsQuantity": null,
+          "maxAggregateOptionsQuantity": null,
+          "minOptionChoiceQuantity": null,
+          "maxOptionChoiceQuantity": null,
+          "isOptional": true,
+          "options": [
+            {
+              "id": "23568419202",
+              "name": "No Whipped Cream",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "60 cal"
+            },
+            {
+              "id": "23568419203",
+              "name": "No Caramel Drizzle",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "10 cal"
+            }
+          ]
+        },
+        {
+          "type": "extra_option",
+          "id": "5820742326",
+          "name": "Extra for Caramel Frappé",
+          "minNumOptions": 0,
+          "maxNumOptions": 7,
+          "minAggregateOptionsQuantity": null,
+          "maxAggregateOptionsQuantity": null,
+          "minOptionChoiceQuantity": null,
+          "maxOptionChoiceQuantity": null,
+          "isOptional": true,
+          "options": [
+            {
+              "id": "23568419205",
+              "name": "Extra Caramel Drizzle",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "10 cal"
+            },
+            {
+              "id": "23568419209",
+              "name": "Add Crushed OREO®",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "40 cal"
+            },
+            {
+              "id": "23568419206",
+              "name": "Add Straw",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": ""
+            },
+            {
+              "id": "23568419204",
+              "name": "Extra Whipped Cream",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "60 cal"
+            },
+            {
+              "id": "51204252534",
+              "name": "Add Cold Foam",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "150 cal"
+            },
+            {
+              "id": "23568419207",
+              "name": "Add Espresso Shot",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "5 cal"
+            },
+            {
+              "id": "23568419208",
+              "name": "Add Chocolate Drizzle",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "10 cal"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "caramel-macchiato",
+      "item": {
+        "id": "6570936480",
+        "name": "Caramel Macchiato",
+        "description": "Our McCafé® Caramel Macchiato recipe features rich, dark-roast espresso served with steamed whole milk, mixed with sweet caramel syrup.",
+        "unitAmount": 289,
+        "currency": "USD",
+        "caloricInfoDisplayString": "260 cal",
+        "quantityLimit": 0,
+        "menuId": "18196178"
+      },
+      "itemType": "HAS_OPTIONS",
+      "groups": [
+        {
+          "type": "extra_option",
+          "id": "5820742327",
+          "name": "Select Size",
+          "minNumOptions": 1,
+          "maxNumOptions": 1,
+          "minAggregateOptionsQuantity": null,
+          "maxAggregateOptionsQuantity": null,
+          "minOptionChoiceQuantity": null,
+          "maxOptionChoiceQuantity": null,
+          "isOptional": false,
+          "options": [
+            {
+              "id": "23568419211",
+              "name": "Medium",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "320 cal"
+            },
+            {
+              "id": "23568419212",
+              "name": "Large",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "410 cal"
+            }
+          ]
+        },
+        {
+          "type": "extra_option",
+          "id": "5820742328",
+          "name": "Remove from Caramel Macchiato",
+          "minNumOptions": 0,
+          "maxNumOptions": 4,
+          "minAggregateOptionsQuantity": null,
+          "maxAggregateOptionsQuantity": null,
+          "minOptionChoiceQuantity": null,
+          "maxOptionChoiceQuantity": null,
+          "isOptional": true,
+          "options": [
+            {
+              "id": "23568419213",
+              "name": "No Caramel Syrup",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "30 cal"
+            },
+            {
+              "id": "23568419214",
+              "name": "No Espresso Shot",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "5 cal"
+            },
+            {
+              "id": "23568419215",
+              "name": "No Whole Milk",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "100 cal"
+            },
+            {
+              "id": "23568419216",
+              "name": "No Caramel Drizzle",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "10 cal"
+            }
+          ]
+        },
+        {
+          "type": "extra_option",
+          "id": "5820742329",
+          "name": "Extra for Caramel Macchiato",
+          "minNumOptions": 0,
+          "maxNumOptions": 15,
+          "minAggregateOptionsQuantity": null,
+          "maxAggregateOptionsQuantity": null,
+          "minOptionChoiceQuantity": null,
+          "maxOptionChoiceQuantity": null,
+          "isOptional": true,
+          "options": [
+            {
+              "id": "23568419217",
+              "name": "Extra Caramel Syrup",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "30 cal"
+            },
+            {
+              "id": "23568419218",
+              "name": "Extra Espresso Shot",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "5 cal"
+            },
+            {
+              "id": "23568419219",
+              "name": "Extra Whole Milk",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "100 cal"
+            },
+            {
+              "id": "23568419220",
+              "name": "Extra Caramel Drizzle",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "10 cal"
+            },
+            {
+              "id": "51204252537",
+              "name": "Add Cold Foam",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "150 cal"
+            },
+            {
+              "id": "23568419221",
+              "name": "Add Cream",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "20 cal"
+            },
+            {
+              "id": "23568419222",
+              "name": "Add Sugar",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "15 cal"
+            },
+            {
+              "id": "23568419223",
+              "name": "Add Equal",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "0 cal"
+            },
+            {
+              "id": "23568419224",
+              "name": "Add Splenda",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "0 cal"
+            },
+            {
+              "id": "51204252536",
+              "name": "Add Vanilla Syrup",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "25 cal"
+            },
+            {
+              "id": "23568419226",
+              "name": "Add Sugar Free Vanilla Syrup",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "5 cal"
+            },
+            {
+              "id": "23568419227",
+              "name": "Add Chocolate Syrup",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "30 cal"
+            },
+            {
+              "id": "23568419229",
+              "name": "Add Liquid Sugar",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "70 cal"
+            },
+            {
+              "id": "23568419230",
+              "name": "Add Whipped Cream",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "60 cal"
+            },
+            {
+              "id": "23568419231",
+              "name": "Add Chocolate Drizzle",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "10 cal"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "iced-caramel-macchiato",
+      "item": {
+        "id": "6570936481",
+        "name": "Iced Caramel Macchiato",
+        "description": "The McDonald's Iced Caramel Macchiato recipe is made with our rich, dark-roasted McCafe espresso and is served with whole milk, mixed with sweet caramel syrup. It is almost similar to Iced Caramel Latte but with an extra buttery caramel drizzle.",
+        "unitAmount": 289,
+        "currency": "USD",
+        "caloricInfoDisplayString": "210 cal",
+        "quantityLimit": 0,
+        "menuId": "18196178"
+      },
+      "itemType": "HAS_OPTIONS",
+      "groups": [
+        {
+          "type": "extra_option",
+          "id": "5820742330",
+          "name": "Select Size",
+          "minNumOptions": 1,
+          "maxNumOptions": 1,
+          "minAggregateOptionsQuantity": null,
+          "maxAggregateOptionsQuantity": null,
+          "minOptionChoiceQuantity": null,
+          "maxOptionChoiceQuantity": null,
+          "isOptional": false,
+          "options": [
+            {
+              "id": "23568419232",
+              "name": "Small",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "210 cal"
+            },
+            {
+              "id": "23568419233",
+              "name": "Medium",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "250 cal"
+            },
+            {
+              "id": "23568419234",
+              "name": "Large",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "370 cal"
+            }
+          ]
+        },
+        {
+          "type": "extra_option",
+          "id": "5820742331",
+          "name": "Remove from Iced Caramel Macchiato",
+          "minNumOptions": 0,
+          "maxNumOptions": 5,
+          "minAggregateOptionsQuantity": null,
+          "maxAggregateOptionsQuantity": null,
+          "minOptionChoiceQuantity": null,
+          "maxOptionChoiceQuantity": null,
+          "isOptional": true,
+          "options": [
+            {
+              "id": "23568419235",
+              "name": "No Espresso Shot",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "5 cal"
+            },
+            {
+              "id": "23568419236",
+              "name": "No Whole Milk",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "100 cal"
+            },
+            {
+              "id": "23568419237",
+              "name": "No Caramel Drizzle",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "10 cal"
+            },
+            {
+              "id": "23568419238",
+              "name": "No Caramel Syrup",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "30 cal"
+            },
+            {
+              "id": "23568419239",
+              "name": "No Ice",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "0 cal"
+            }
+          ]
+        },
+        {
+          "type": "extra_option",
+          "id": "5820742332",
+          "name": "Extra for Iced Caramel Macchiato",
+          "minNumOptions": 0,
+          "maxNumOptions": 17,
+          "minAggregateOptionsQuantity": null,
+          "maxAggregateOptionsQuantity": null,
+          "minOptionChoiceQuantity": null,
+          "maxOptionChoiceQuantity": null,
+          "isOptional": true,
+          "options": [
+            {
+              "id": "23568419240",
+              "name": "Extra Espresso Shot",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "5 cal"
+            },
+            {
+              "id": "23568419241",
+              "name": "Extra Whole Milk",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "100 cal"
+            },
+            {
+              "id": "23568419242",
+              "name": "Extra Caramel Drizzle",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "10 cal"
+            },
+            {
+              "id": "23568419243",
+              "name": "Extra Caramel Syrup",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "30 cal"
+            },
+            {
+              "id": "23568419244",
+              "name": "Extra Ice",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "0 cal"
+            },
+            {
+              "id": "51204252539",
+              "name": "Add Cold Foam",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "150 cal"
+            },
+            {
+              "id": "23568419245",
+              "name": "Add Straw",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": ""
+            },
+            {
+              "id": "23568419246",
+              "name": "Add Cream",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "20 cal"
+            },
+            {
+              "id": "23568419247",
+              "name": "Add Sugar",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "15 cal"
+            },
+            {
+              "id": "23568419248",
+              "name": "Add Equal",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "0 cal"
+            },
+            {
+              "id": "23568419249",
+              "name": "Add Splenda",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "0 cal"
+            },
+            {
+              "id": "51204252538",
+              "name": "Add Vanilla Syrup",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "25 cal"
+            },
+            {
+              "id": "23568419251",
+              "name": "Add Sugar Free Vanilla Syrup",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "5 cal"
+            },
+            {
+              "id": "23568419252",
+              "name": "Add Chocolate Syrup",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "30 cal"
+            },
+            {
+              "id": "23568419254",
+              "name": "Add Liquid Sugar",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "70 cal"
+            },
+            {
+              "id": "23568419255",
+              "name": "Add Whipped Cream",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "60 cal"
+            },
+            {
+              "id": "23568419256",
+              "name": "Add Chocolate Drizzle",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "10 cal"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "mocha-latte",
+      "item": {
+        "id": "6570936482",
+        "name": "Mocha",
+        "description": "Made from 100% Rainforest Alliance Certified espresso, steamed with whole or nonfat milk, chocolate syrup, topped with whipped cream and a chocolate drizzle.",
+        "unitAmount": 289,
+        "currency": "USD",
+        "caloricInfoDisplayString": "290 cal",
+        "quantityLimit": 0,
+        "menuId": "18196178"
+      },
+      "itemType": "HAS_OPTIONS",
+      "groups": [
+        {
+          "type": "extra_option",
+          "id": "5820742333",
+          "name": "Select Size",
+          "minNumOptions": 1,
+          "maxNumOptions": 1,
+          "minAggregateOptionsQuantity": null,
+          "maxAggregateOptionsQuantity": null,
+          "minOptionChoiceQuantity": null,
+          "maxOptionChoiceQuantity": null,
+          "isOptional": false,
+          "options": [
+            {
+              "id": "23568419258",
+              "name": "Medium",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "370 cal"
+            },
+            {
+              "id": "23568419259",
+              "name": "Large",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "470 cal"
+            }
+          ]
+        },
+        {
+          "type": "extra_option",
+          "id": "5820742334",
+          "name": "Remove from Mocha",
+          "minNumOptions": 0,
+          "maxNumOptions": 6,
+          "minAggregateOptionsQuantity": null,
+          "maxAggregateOptionsQuantity": null,
+          "minOptionChoiceQuantity": null,
+          "maxOptionChoiceQuantity": null,
+          "isOptional": true,
+          "options": [
+            {
+              "id": "23568419260",
+              "name": "No Chocolate Syrup",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "30 cal"
+            },
+            {
+              "id": "23568419261",
+              "name": "No Espresso Shot",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "5 cal"
+            },
+            {
+              "id": "23568419262",
+              "name": "No Whole Milk",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "100 cal"
+            },
+            {
+              "id": "23568419263",
+              "name": "No Whipped Cream",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "60 cal"
+            },
+            {
+              "id": "23568419264",
+              "name": "No Chocolate Drizzle",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "10 cal"
+            },
+            {
+              "id": "23568419265",
+              "name": "No Plain",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": ""
+            }
+          ]
+        },
+        {
+          "type": "extra_option",
+          "id": "5820742335",
+          "name": "Extra for Mocha",
+          "minNumOptions": 0,
+          "maxNumOptions": 15,
+          "minAggregateOptionsQuantity": null,
+          "maxAggregateOptionsQuantity": null,
+          "minOptionChoiceQuantity": null,
+          "maxOptionChoiceQuantity": null,
+          "isOptional": true,
+          "options": [
+            {
+              "id": "23568419266",
+              "name": "Extra Chocolate Syrup",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "30 cal"
+            },
+            {
+              "id": "23568419267",
+              "name": "Extra Espresso Shot",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "5 cal"
+            },
+            {
+              "id": "23568419268",
+              "name": "Extra Whole Milk",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "100 cal"
+            },
+            {
+              "id": "23568419269",
+              "name": "Extra Whipped Cream",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "60 cal"
+            },
+            {
+              "id": "23568419270",
+              "name": "Extra Chocolate Drizzle",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "10 cal"
+            },
+            {
+              "id": "51204252541",
+              "name": "Add Cold Foam",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "150 cal"
+            },
+            {
+              "id": "23568419271",
+              "name": "Add Cream",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "20 cal"
+            },
+            {
+              "id": "23568419272",
+              "name": "Add Sugar",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "15 cal"
+            },
+            {
+              "id": "23568419273",
+              "name": "Add Equal",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "0 cal"
+            },
+            {
+              "id": "23568419274",
+              "name": "Add Splenda",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "0 cal"
+            },
+            {
+              "id": "51204252540",
+              "name": "Add Vanilla Syrup",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "25 cal"
+            },
+            {
+              "id": "23568419276",
+              "name": "Add Sugar Free Vanilla Syrup",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "5 cal"
+            },
+            {
+              "id": "23568419277",
+              "name": "Add Caramel Syrup",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "30 cal"
+            },
+            {
+              "id": "23568419279",
+              "name": "Add Liquid Sugar",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "70 cal"
+            },
+            {
+              "id": "23568419280",
+              "name": "Add Caramel Drizzle",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "10 cal"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "iced-mocha-latte",
+      "item": {
+        "id": "6570936484",
+        "name": "Iced Mocha",
+        "description": "Put a pep in your step with McDonald’s Iced Mocha Latte—Made with sustainably sourced espresso beans from Rainforest Alliance Certified™ farms, our refreshingly cool Iced Mocha Latte recipe is made with whole milk, chocolate syrup, and finished with whipped light cream and chocolate drizzle.",
+        "unitAmount": 308,
+        "currency": "USD",
+        "caloricInfoDisplayString": "280 cal",
+        "quantityLimit": 0,
+        "menuId": "18196178"
+      },
+      "itemType": "HAS_OPTIONS",
+      "groups": [
+        {
+          "type": "extra_option",
+          "id": "5820742339",
+          "name": "Select Size",
+          "minNumOptions": 1,
+          "maxNumOptions": 1,
+          "minAggregateOptionsQuantity": null,
+          "maxAggregateOptionsQuantity": null,
+          "minOptionChoiceQuantity": null,
+          "maxOptionChoiceQuantity": null,
+          "isOptional": false,
+          "options": [
+            {
+              "id": "23568419305",
+              "name": "Small",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "280 cal"
+            },
+            {
+              "id": "23568419306",
+              "name": "Medium",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "260 - 410 cal"
+            },
+            {
+              "id": "23568419307",
+              "name": "Large",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "360 - 500 cal"
+            }
+          ]
+        },
+        {
+          "type": "extra_option",
+          "id": "5820742340",
+          "name": "Remove from Iced Mocha",
+          "minNumOptions": 0,
+          "maxNumOptions": 7,
+          "minAggregateOptionsQuantity": null,
+          "maxAggregateOptionsQuantity": null,
+          "minOptionChoiceQuantity": null,
+          "maxOptionChoiceQuantity": null,
+          "isOptional": true,
+          "options": [
+            {
+              "id": "23568419308",
+              "name": "No Ice",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "0 cal"
+            },
+            {
+              "id": "23568419309",
+              "name": "No Chocolate Syrup",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "30 cal"
+            },
+            {
+              "id": "23568419310",
+              "name": "No Espresso Shot",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "5 cal"
+            },
+            {
+              "id": "23568419311",
+              "name": "No Whole Milk",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "100 cal"
+            },
+            {
+              "id": "23568419312",
+              "name": "No Whipped Cream",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "60 cal"
+            },
+            {
+              "id": "23568419313",
+              "name": "No Chocolate Drizzle",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "10 cal"
+            },
+            {
+              "id": "23568419314",
+              "name": "No Plain",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": ""
+            }
+          ]
+        },
+        {
+          "type": "extra_option",
+          "id": "5820742341",
+          "name": "Extra for Iced Mocha",
+          "minNumOptions": 0,
+          "maxNumOptions": 17,
+          "minAggregateOptionsQuantity": null,
+          "maxAggregateOptionsQuantity": null,
+          "minOptionChoiceQuantity": null,
+          "maxOptionChoiceQuantity": null,
+          "isOptional": true,
+          "options": [
+            {
+              "id": "23568419315",
+              "name": "Extra Ice",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "0 cal"
+            },
+            {
+              "id": "23568419316",
+              "name": "Extra Chocolate Syrup",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "30 cal"
+            },
+            {
+              "id": "23568419317",
+              "name": "Extra Espresso Shot",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "5 cal"
+            },
+            {
+              "id": "23568419318",
+              "name": "Extra Whole Milk",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "100 cal"
+            },
+            {
+              "id": "23568419319",
+              "name": "Extra Whipped Cream",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "60 cal"
+            },
+            {
+              "id": "23568419320",
+              "name": "Extra Chocolate Drizzle",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "10 cal"
+            },
+            {
+              "id": "51204252543",
+              "name": "Add Cold Foam",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "150 cal"
+            },
+            {
+              "id": "23568419321",
+              "name": "Add Straw",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": ""
+            },
+            {
+              "id": "23568419322",
+              "name": "Add Cream",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "20 cal"
+            },
+            {
+              "id": "23568419323",
+              "name": "Add Sugar",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "15 cal"
+            },
+            {
+              "id": "23568419324",
+              "name": "Add Equal",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "0 cal"
+            },
+            {
+              "id": "23568419325",
+              "name": "Add Splenda",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "0 cal"
+            },
+            {
+              "id": "51204252542",
+              "name": "Add Vanilla Syrup",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "25 cal"
+            },
+            {
+              "id": "23568419327",
+              "name": "Add Sugar Free Vanilla Syrup",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "5 cal"
+            },
+            {
+              "id": "23568419328",
+              "name": "Add Caramel Syrup",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "30 cal"
+            },
+            {
+              "id": "23568419330",
+              "name": "Add Liquid Sugar",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "70 cal"
+            },
+            {
+              "id": "23568419331",
+              "name": "Add Caramel Drizzle",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "10 cal"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "latte",
+      "item": {
+        "id": "6570936486",
+        "name": "Latte",
+        "description": "Our McCafé® Latte is made from Rainforest Alliance Certified™ espresso and steamed milk. Customize the Hot Latte that’s made fresh just for you with whole milk, mixed with your choice of flavor at certain locations.",
+        "unitAmount": 308,
+        "currency": "USD",
+        "caloricInfoDisplayString": "140 cal",
+        "quantityLimit": 0,
+        "menuId": "18196178"
+      },
+      "itemType": "HAS_OPTIONS",
+      "groups": [
+        {
+          "type": "extra_option",
+          "id": "5820742345",
+          "name": "Select Size",
+          "minNumOptions": 1,
+          "maxNumOptions": 1,
+          "minAggregateOptionsQuantity": null,
+          "maxAggregateOptionsQuantity": null,
+          "minOptionChoiceQuantity": null,
+          "maxOptionChoiceQuantity": null,
+          "isOptional": false,
+          "options": [
+            {
+              "id": "27050559484",
+              "name": "Medium",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "200 cal"
+            },
+            {
+              "id": "23568419361",
+              "name": "Large",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "260 cal"
+            }
+          ]
+        },
+        {
+          "type": "extra_option",
+          "id": "5820742346",
+          "name": "Remove from Latte",
+          "minNumOptions": 0,
+          "maxNumOptions": 3,
+          "minAggregateOptionsQuantity": null,
+          "maxAggregateOptionsQuantity": null,
+          "minOptionChoiceQuantity": null,
+          "maxOptionChoiceQuantity": null,
+          "isOptional": true,
+          "options": [
+            {
+              "id": "23568419362",
+              "name": "No Espresso Shot",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "5 cal"
+            },
+            {
+              "id": "23568419363",
+              "name": "No Whole Milk",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "100 cal"
+            },
+            {
+              "id": "23568419364",
+              "name": "No Plain",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": ""
+            }
+          ]
+        },
+        {
+          "type": "extra_option",
+          "id": "5820742347",
+          "name": "Extra for Latte",
+          "minNumOptions": 0,
+          "maxNumOptions": 15,
+          "minAggregateOptionsQuantity": null,
+          "maxAggregateOptionsQuantity": null,
+          "minOptionChoiceQuantity": null,
+          "maxOptionChoiceQuantity": null,
+          "isOptional": true,
+          "options": [
+            {
+              "id": "23568419365",
+              "name": "Extra Espresso Shot",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "5 cal"
+            },
+            {
+              "id": "23568419366",
+              "name": "Extra Whole Milk",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "100 cal"
+            },
+            {
+              "id": "51204252545",
+              "name": "Add Cold Foam",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "150 cal"
+            },
+            {
+              "id": "23568419367",
+              "name": "Add Cream",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "20 cal"
+            },
+            {
+              "id": "23568419368",
+              "name": "Add Sugar",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "15 cal"
+            },
+            {
+              "id": "23568419369",
+              "name": "Add Equal",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "0 cal"
+            },
+            {
+              "id": "23568419370",
+              "name": "Add Splenda",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "0 cal"
+            },
+            {
+              "id": "51204252544",
+              "name": "Add Vanilla Syrup",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "25 cal"
+            },
+            {
+              "id": "23568419372",
+              "name": "Add Sugar Free Vanilla Syrup",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "5 cal"
+            },
+            {
+              "id": "23568419373",
+              "name": "Add Caramel Syrup",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "30 cal"
+            },
+            {
+              "id": "23568419374",
+              "name": "Add Chocolate Syrup",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "30 cal"
+            },
+            {
+              "id": "23568419377",
+              "name": "Add Liquid Sugar",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "70 cal"
+            },
+            {
+              "id": "23568419378",
+              "name": "Add Whipped Cream",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "60 cal"
+            },
+            {
+              "id": "23568419379",
+              "name": "Add Chocolate Drizzle",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "10 cal"
+            },
+            {
+              "id": "23568419380",
+              "name": "Add Caramel Drizzle",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "10 cal"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "caramel-latte",
+      "item": {
+        "id": "6570936487",
+        "name": "Caramel Latte",
+        "description": "Take a break and warm up with a cup of creamy McDonald's Caramel Latte. Our McCafé® Caramel Latte recipe is made with Rainforest Alliance Certified™ espresso, steamed milk, and a sweet, satisfying caramel flavor. The added caramel syrup makes it slightly sweeter than a regular McCafé® Latte.",
+        "unitAmount": 308,
+        "currency": "USD",
+        "caloricInfoDisplayString": "260 cal",
+        "quantityLimit": 0,
+        "menuId": "18196178"
+      },
+      "itemType": "HAS_OPTIONS",
+      "groups": [
+        {
+          "type": "extra_option",
+          "id": "5820742348",
+          "name": "Select Size",
+          "minNumOptions": 1,
+          "maxNumOptions": 1,
+          "minAggregateOptionsQuantity": null,
+          "maxAggregateOptionsQuantity": null,
+          "minOptionChoiceQuantity": null,
+          "maxOptionChoiceQuantity": null,
+          "isOptional": false,
+          "options": [
+            {
+              "id": "23568419381",
+              "name": "Small",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "260 cal"
+            },
+            {
+              "id": "27050552131",
+              "name": "Medium",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "320 cal"
+            },
+            {
+              "id": "23568419383",
+              "name": "Large",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "400 cal"
+            }
+          ]
+        },
+        {
+          "type": "extra_option",
+          "id": "5820742349",
+          "name": "Remove from Caramel Latte",
+          "minNumOptions": 0,
+          "maxNumOptions": 3,
+          "minAggregateOptionsQuantity": null,
+          "maxAggregateOptionsQuantity": null,
+          "minOptionChoiceQuantity": null,
+          "maxOptionChoiceQuantity": null,
+          "isOptional": true,
+          "options": [
+            {
+              "id": "23568419384",
+              "name": "No Caramel Syrup",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "30 cal"
+            },
+            {
+              "id": "23568419385",
+              "name": "No Espresso Shot",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "5 cal"
+            },
+            {
+              "id": "23568419386",
+              "name": "No Whole Milk",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "100 cal"
+            }
+          ]
+        },
+        {
+          "type": "extra_option",
+          "id": "5820742350",
+          "name": "Extra for Caramel Latte",
+          "minNumOptions": 0,
+          "maxNumOptions": 15,
+          "minAggregateOptionsQuantity": null,
+          "maxAggregateOptionsQuantity": null,
+          "minOptionChoiceQuantity": null,
+          "maxOptionChoiceQuantity": null,
+          "isOptional": true,
+          "options": [
+            {
+              "id": "23568419388",
+              "name": "Extra Espresso Shot",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "5 cal"
+            },
+            {
+              "id": "23568419387",
+              "name": "Extra Caramel Syrup",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "30 cal"
+            },
+            {
+              "id": "23568419389",
+              "name": "Extra Whole Milk",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "100 cal"
+            },
+            {
+              "id": "51204252547",
+              "name": "Add Cold Foam",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "150 cal"
+            },
+            {
+              "id": "23568419390",
+              "name": "Add Cream",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "20 cal"
+            },
+            {
+              "id": "23568419391",
+              "name": "Add Sugar",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "15 cal"
+            },
+            {
+              "id": "23568419392",
+              "name": "Add Equal",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "0 cal"
+            },
+            {
+              "id": "23568419393",
+              "name": "Add Splenda",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "0 cal"
+            },
+            {
+              "id": "51204252546",
+              "name": "Add Vanilla Syrup",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "25 cal"
+            },
+            {
+              "id": "23568419395",
+              "name": "Add Sugar Free Vanilla Syrup",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "5 cal"
+            },
+            {
+              "id": "23568419396",
+              "name": "Add Chocolate Syrup",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "30 cal"
+            },
+            {
+              "id": "23568419399",
+              "name": "Add Liquid Sugar",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "70 cal"
+            },
+            {
+              "id": "23568419400",
+              "name": "Add Whipped Cream",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "60 cal"
+            },
+            {
+              "id": "23568419401",
+              "name": "Add Chocolate Drizzle",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "10 cal"
+            },
+            {
+              "id": "23568419402",
+              "name": "Add Caramel Drizzle",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "10 cal"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "vanilla-latte",
+      "item": {
+        "id": "6570936489",
+        "name": "Vanilla Latte",
+        "description": "Warm up with a rich, creamy McCafé® French Vanilla Latte! Our McDonald’s French Vanilla Latte recipe features Rainforest Alliance Certified™ espresso, steamed whole milk and infused with a smooth French vanilla syrup.",
+        "unitAmount": 308,
+        "currency": "USD",
+        "caloricInfoDisplayString": "260 cal",
+        "quantityLimit": 0,
+        "menuId": "18196178"
+      },
+      "itemType": "HAS_OPTIONS",
+      "groups": [
+        {
+          "type": "extra_option",
+          "id": "5820742354",
+          "name": "Select Size",
+          "minNumOptions": 1,
+          "maxNumOptions": 1,
+          "minAggregateOptionsQuantity": null,
+          "maxAggregateOptionsQuantity": null,
+          "minOptionChoiceQuantity": null,
+          "maxOptionChoiceQuantity": null,
+          "isOptional": false,
+          "options": [
+            {
+              "id": "23568419425",
+              "name": "Small",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "260 cal"
+            },
+            {
+              "id": "27050560682",
+              "name": "Medium",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "330 cal"
+            },
+            {
+              "id": "23568419427",
+              "name": "Large",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "410 cal"
+            }
+          ]
+        },
+        {
+          "type": "extra_option",
+          "id": "11675546073",
+          "name": "Remove from Vanilla Latte",
+          "minNumOptions": 0,
+          "maxNumOptions": 3,
+          "minAggregateOptionsQuantity": null,
+          "maxAggregateOptionsQuantity": null,
+          "minOptionChoiceQuantity": null,
+          "maxOptionChoiceQuantity": null,
+          "isOptional": true,
+          "options": [
+            {
+              "id": "51204252548",
+              "name": "No Vanilla Syrup",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "25 cal"
+            },
+            {
+              "id": "23568419429",
+              "name": "No Espresso Shot",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "5 cal"
+            },
+            {
+              "id": "23568419430",
+              "name": "No Whole Milk",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "100 cal"
+            }
+          ]
+        },
+        {
+          "type": "extra_option",
+          "id": "11675546074",
+          "name": "Extra for Vanilla Latte",
+          "minNumOptions": 0,
+          "maxNumOptions": 15,
+          "minAggregateOptionsQuantity": null,
+          "maxAggregateOptionsQuantity": null,
+          "minOptionChoiceQuantity": null,
+          "maxOptionChoiceQuantity": null,
+          "isOptional": true,
+          "options": [
+            {
+              "id": "51204252549",
+              "name": "Extra Vanilla Syrup",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "25 cal"
+            },
+            {
+              "id": "23568419432",
+              "name": "Extra Espresso Shot",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "5 cal"
+            },
+            {
+              "id": "23568419433",
+              "name": "Extra Whole Milk",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "100 cal"
+            },
+            {
+              "id": "51204252550",
+              "name": "Add Cold Foam",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "150 cal"
+            },
+            {
+              "id": "23568419434",
+              "name": "Add Cream",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "20 cal"
+            },
+            {
+              "id": "23568419435",
+              "name": "Add Sugar",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "15 cal"
+            },
+            {
+              "id": "23568419436",
+              "name": "Add Equal",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "0 cal"
+            },
+            {
+              "id": "23568419437",
+              "name": "Add Splenda",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "0 cal"
+            },
+            {
+              "id": "23568419438",
+              "name": "Add Sugar Free Vanilla Syrup",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "5 cal"
+            },
+            {
+              "id": "23568419439",
+              "name": "Add Caramel Syrup",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "30 cal"
+            },
+            {
+              "id": "23568419440",
+              "name": "Add Chocolate Syrup",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "30 cal"
+            },
+            {
+              "id": "23568419443",
+              "name": "Add Liquid Sugar",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "70 cal"
+            },
+            {
+              "id": "23568419444",
+              "name": "Add Whipped Cream",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "60 cal"
+            },
+            {
+              "id": "23568419445",
+              "name": "Add Chocolate Drizzle",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "10 cal"
+            },
+            {
+              "id": "23568419446",
+              "name": "Add Caramel Drizzle",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "10 cal"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "iced-latte",
+      "item": {
+        "id": "6570936491",
+        "name": "Iced Latte",
+        "description": "Cool down with a cold McCafé® Iced Latte at McDonald's. Our Iced Latte recipe combines espresso with cold whole milk, mixed with your choice of flavor at certain locations. Wondering what's the difference between an iced coffee and an iced latte? While iced coffee is made with brewed coffee, McDonald's Iced latte is made from Rainforest Alliance Certified™ espresso.",
+        "unitAmount": 308,
+        "currency": "USD",
+        "caloricInfoDisplayString": "90 cal",
+        "quantityLimit": 0,
+        "menuId": "18196178"
+      },
+      "itemType": "HAS_OPTIONS",
+      "groups": [
+        {
+          "type": "extra_option",
+          "id": "5820742360",
+          "name": "Select Size",
+          "minNumOptions": 1,
+          "maxNumOptions": 1,
+          "minAggregateOptionsQuantity": null,
+          "maxAggregateOptionsQuantity": null,
+          "minOptionChoiceQuantity": null,
+          "maxOptionChoiceQuantity": null,
+          "isOptional": false,
+          "options": [
+            {
+              "id": "23568419469",
+              "name": "Small",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "90 cal"
+            },
+            {
+              "id": "23568419470",
+              "name": "Medium",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "120 cal"
+            },
+            {
+              "id": "23568419471",
+              "name": "Large",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "130 - 450 cal"
+            }
+          ]
+        },
+        {
+          "type": "extra_option",
+          "id": "5820742361",
+          "name": "Remove from Iced Latte",
+          "minNumOptions": 0,
+          "maxNumOptions": 4,
+          "minAggregateOptionsQuantity": null,
+          "maxAggregateOptionsQuantity": null,
+          "minOptionChoiceQuantity": null,
+          "maxOptionChoiceQuantity": null,
+          "isOptional": true,
+          "options": [
+            {
+              "id": "23568419472",
+              "name": "No Ice",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "0 cal"
+            },
+            {
+              "id": "23568419473",
+              "name": "No Espresso Shot",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "5 cal"
+            },
+            {
+              "id": "23568419474",
+              "name": "No Whole Milk",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "100 cal"
+            },
+            {
+              "id": "23568419475",
+              "name": "No Plain",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": ""
+            }
+          ]
+        },
+        {
+          "type": "extra_option",
+          "id": "5820742362",
+          "name": "Extra for Iced Latte",
+          "minNumOptions": 0,
+          "maxNumOptions": 17,
+          "minAggregateOptionsQuantity": null,
+          "maxAggregateOptionsQuantity": null,
+          "minOptionChoiceQuantity": null,
+          "maxOptionChoiceQuantity": null,
+          "isOptional": true,
+          "options": [
+            {
+              "id": "23568419476",
+              "name": "Extra Ice",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "0 cal"
+            },
+            {
+              "id": "23568419477",
+              "name": "Extra Espresso Shot",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "5 cal"
+            },
+            {
+              "id": "23568419478",
+              "name": "Extra Whole Milk",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "100 cal"
+            },
+            {
+              "id": "51204252554",
+              "name": "Add Cold Foam",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "150 cal"
+            },
+            {
+              "id": "23568419479",
+              "name": "Add Straw",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": ""
+            },
+            {
+              "id": "23568419480",
+              "name": "Add Cream",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "20 cal"
+            },
+            {
+              "id": "23568419481",
+              "name": "Add Sugar",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "15 cal"
+            },
+            {
+              "id": "23568419482",
+              "name": "Add Equal",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "0 cal"
+            },
+            {
+              "id": "23568419483",
+              "name": "Add Splenda",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "0 cal"
+            },
+            {
+              "id": "51204252553",
+              "name": "Add Vanilla Syrup",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "25 cal"
+            },
+            {
+              "id": "23568419485",
+              "name": "Add Sugar Free Vanilla Syrup",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "5 cal"
+            },
+            {
+              "id": "23568419486",
+              "name": "Add Caramel Syrup",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "30 cal"
+            },
+            {
+              "id": "23568419487",
+              "name": "Add Chocolate Syrup",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "30 cal"
+            },
+            {
+              "id": "23568419490",
+              "name": "Add Liquid Sugar",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "70 cal"
+            },
+            {
+              "id": "23568419491",
+              "name": "Add Whipped Cream",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "60 cal"
+            },
+            {
+              "id": "23568419492",
+              "name": "Add Chocolate Drizzle",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "10 cal"
+            },
+            {
+              "id": "23568419493",
+              "name": "Add Caramel Drizzle",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "10 cal"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "iced-caramel-latte",
+      "item": {
+        "id": "6570936492",
+        "name": "Iced Caramel Latte",
+        "description": "Cool off with a refreshing McCafé® Iced Caramel Latte at McDonald's. Our Iced Caramel Latte recipe features Rainforest Alliance Certified™ espresso and buttery caramel flavor.",
+        "unitAmount": 308,
+        "currency": "USD",
+        "caloricInfoDisplayString": "180 cal",
+        "quantityLimit": 0,
+        "menuId": "18196178"
+      },
+      "itemType": "HAS_OPTIONS",
+      "groups": [
+        {
+          "type": "extra_option",
+          "id": "5820742363",
+          "name": "Select Size",
+          "minNumOptions": 1,
+          "maxNumOptions": 1,
+          "minAggregateOptionsQuantity": null,
+          "maxAggregateOptionsQuantity": null,
+          "minOptionChoiceQuantity": null,
+          "maxOptionChoiceQuantity": null,
+          "isOptional": false,
+          "options": [
+            {
+              "id": "23568419495",
+              "name": "Medium",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "220 cal"
+            },
+            {
+              "id": "23568419496",
+              "name": "Large",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "340 cal"
+            }
+          ]
+        },
+        {
+          "type": "extra_option",
+          "id": "5820742364",
+          "name": "Remove from Iced Caramel Latte",
+          "minNumOptions": 0,
+          "maxNumOptions": 4,
+          "minAggregateOptionsQuantity": null,
+          "maxAggregateOptionsQuantity": null,
+          "minOptionChoiceQuantity": null,
+          "maxOptionChoiceQuantity": null,
+          "isOptional": true,
+          "options": [
+            {
+              "id": "23568419497",
+              "name": "No Ice",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "0 cal"
+            },
+            {
+              "id": "23568419498",
+              "name": "No Caramel Syrup",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "30 cal"
+            },
+            {
+              "id": "23568419499",
+              "name": "No Espresso Shot",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "5 cal"
+            },
+            {
+              "id": "23568419500",
+              "name": "No Whole Milk",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "100 cal"
+            }
+          ]
+        },
+        {
+          "type": "extra_option",
+          "id": "5820742365",
+          "name": "Extra for Iced Caramel Latte",
+          "minNumOptions": 0,
+          "maxNumOptions": 17,
+          "minAggregateOptionsQuantity": null,
+          "maxAggregateOptionsQuantity": null,
+          "minOptionChoiceQuantity": null,
+          "maxOptionChoiceQuantity": null,
+          "isOptional": true,
+          "options": [
+            {
+              "id": "23568419501",
+              "name": "Extra Ice",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "0 cal"
+            },
+            {
+              "id": "23568419502",
+              "name": "Extra Caramel Syrup",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "30 cal"
+            },
+            {
+              "id": "23568419503",
+              "name": "Extra Espresso Shot",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "5 cal"
+            },
+            {
+              "id": "23568419504",
+              "name": "Extra Whole Milk",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "100 cal"
+            },
+            {
+              "id": "51204252556",
+              "name": "Add Cold Foam",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "150 cal"
+            },
+            {
+              "id": "23568419505",
+              "name": "Add Straw",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": ""
+            },
+            {
+              "id": "23568419506",
+              "name": "Add Cream",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "20 cal"
+            },
+            {
+              "id": "23568419507",
+              "name": "Add Sugar",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "15 cal"
+            },
+            {
+              "id": "23568419508",
+              "name": "Add Equal",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "0 cal"
+            },
+            {
+              "id": "23568419509",
+              "name": "Add Splenda",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "0 cal"
+            },
+            {
+              "id": "51204252555",
+              "name": "Add Vanilla Syrup",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "25 cal"
+            },
+            {
+              "id": "23568419511",
+              "name": "Add Sugar Free Vanilla Syrup",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "5 cal"
+            },
+            {
+              "id": "23568419512",
+              "name": "Add Chocolate Syrup",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "30 cal"
+            },
+            {
+              "id": "23568419515",
+              "name": "Add Liquid Sugar",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "70 cal"
+            },
+            {
+              "id": "23568419516",
+              "name": "Add Whipped Cream",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "60 cal"
+            },
+            {
+              "id": "23568419517",
+              "name": "Add Chocolate Drizzle",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "10 cal"
+            },
+            {
+              "id": "23568419518",
+              "name": "Add Caramel Drizzle",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "10 cal"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "iced-vanilla-latte",
+      "item": {
+        "id": "6570936494",
+        "name": "Iced Vanilla Latte",
+        "description": "Cool down with a McCafé® Iced French Vanilla Latte, made with Rainforest Alliance Certified™ espresso. Our McDonald’s Iced Vanilla Latte recipe features bold espresso, whole milk and sweet French vanilla syrup.",
+        "unitAmount": 308,
+        "currency": "USD",
+        "caloricInfoDisplayString": "190 cal",
+        "quantityLimit": 0,
+        "menuId": "18196178"
+      },
+      "itemType": "HAS_OPTIONS",
+      "groups": [
+        {
+          "type": "extra_option",
+          "id": "5820742369",
+          "name": "Select Size",
+          "minNumOptions": 1,
+          "maxNumOptions": 1,
+          "minAggregateOptionsQuantity": null,
+          "maxAggregateOptionsQuantity": null,
+          "minOptionChoiceQuantity": null,
+          "maxOptionChoiceQuantity": null,
+          "isOptional": false,
+          "options": [
+            {
+              "id": "23568419545",
+              "name": "Medium",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "230 cal"
+            },
+            {
+              "id": "23568419546",
+              "name": "Large",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "340 cal"
+            }
+          ]
+        },
+        {
+          "type": "extra_option",
+          "id": "11675546075",
+          "name": "Remove from Iced Vanilla Latte",
+          "minNumOptions": 0,
+          "maxNumOptions": 4,
+          "minAggregateOptionsQuantity": null,
+          "maxAggregateOptionsQuantity": null,
+          "minOptionChoiceQuantity": null,
+          "maxOptionChoiceQuantity": null,
+          "isOptional": true,
+          "options": [
+            {
+              "id": "23568419547",
+              "name": "No Ice",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "0 cal"
+            },
+            {
+              "id": "51204252557",
+              "name": "No Vanilla Syrup",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "25 cal"
+            },
+            {
+              "id": "23568419549",
+              "name": "No Espresso Shot",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "5 cal"
+            },
+            {
+              "id": "23568419550",
+              "name": "No Whole Milk",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "100 cal"
+            }
+          ]
+        },
+        {
+          "type": "extra_option",
+          "id": "11675546076",
+          "name": "Extra for Iced Vanilla Latte",
+          "minNumOptions": 0,
+          "maxNumOptions": 17,
+          "minAggregateOptionsQuantity": null,
+          "maxAggregateOptionsQuantity": null,
+          "minOptionChoiceQuantity": null,
+          "maxOptionChoiceQuantity": null,
+          "isOptional": true,
+          "options": [
+            {
+              "id": "23568419551",
+              "name": "Extra Ice",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "0 cal"
+            },
+            {
+              "id": "51204252558",
+              "name": "Extra Vanilla Syrup",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "25 cal"
+            },
+            {
+              "id": "23568419553",
+              "name": "Extra Espresso Shot",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "5 cal"
+            },
+            {
+              "id": "23568419554",
+              "name": "Extra Whole Milk",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "100 cal"
+            },
+            {
+              "id": "51204252559",
+              "name": "Add Cold Foam",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "150 cal"
+            },
+            {
+              "id": "23568419555",
+              "name": "Add Straw",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": ""
+            },
+            {
+              "id": "23568419556",
+              "name": "Add Cream",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "20 cal"
+            },
+            {
+              "id": "23568419557",
+              "name": "Add Sugar",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "15 cal"
+            },
+            {
+              "id": "23568419558",
+              "name": "Add Equal",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "0 cal"
+            },
+            {
+              "id": "23568419559",
+              "name": "Add Splenda",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "0 cal"
+            },
+            {
+              "id": "23568419560",
+              "name": "Add Sugar Free Vanilla Syrup",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "5 cal"
+            },
+            {
+              "id": "23568419561",
+              "name": "Add Caramel Syrup",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "30 cal"
+            },
+            {
+              "id": "23568419562",
+              "name": "Add Chocolate Syrup",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "30 cal"
+            },
+            {
+              "id": "23568419565",
+              "name": "Add Liquid Sugar",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "70 cal"
+            },
+            {
+              "id": "23568419566",
+              "name": "Add Whipped Cream",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "60 cal"
+            },
+            {
+              "id": "23568419567",
+              "name": "Add Chocolate Drizzle",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "10 cal"
+            },
+            {
+              "id": "23568419568",
+              "name": "Add Caramel Drizzle",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "10 cal"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "cappuccino",
+      "item": {
+        "id": "6570936496",
+        "name": "Cappuccino",
+        "description": "Enjoy a warm cup of Cappuccino from McDonald’s. Made with whole steamed milk, bold espresso made from sustainably sourced beans, foamed milk, and your choice of flavor. The ingredients are the same as that of a McCafé® Latte but the main difference between a latte and a cappuccino is that a cappuccino is distinctly layered and has a slightly stronger flavor than the latte.",
+        "unitAmount": 289,
+        "currency": "USD",
+        "caloricInfoDisplayString": "120 cal",
+        "quantityLimit": 0,
+        "menuId": "18196178"
+      },
+      "itemType": "HAS_OPTIONS",
+      "groups": [
+        {
+          "type": "extra_option",
+          "id": "5820742375",
+          "name": "Select Size",
+          "minNumOptions": 1,
+          "maxNumOptions": 1,
+          "minAggregateOptionsQuantity": null,
+          "maxAggregateOptionsQuantity": null,
+          "minOptionChoiceQuantity": null,
+          "maxOptionChoiceQuantity": null,
+          "isOptional": false,
+          "options": [
+            {
+              "id": "23568419595",
+              "name": "Medium",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "160 cal"
+            },
+            {
+              "id": "23568419596",
+              "name": "Large",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "210 cal"
+            }
+          ]
+        },
+        {
+          "type": "extra_option",
+          "id": "5820742376",
+          "name": "Remove from Cappuccino",
+          "minNumOptions": 0,
+          "maxNumOptions": 3,
+          "minAggregateOptionsQuantity": null,
+          "maxAggregateOptionsQuantity": null,
+          "minOptionChoiceQuantity": null,
+          "maxOptionChoiceQuantity": null,
+          "isOptional": true,
+          "options": [
+            {
+              "id": "23568419597",
+              "name": "No Espresso Shot",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "5 cal"
+            },
+            {
+              "id": "23568419598",
+              "name": "No Whole Milk",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "100 cal"
+            },
+            {
+              "id": "23568419599",
+              "name": "No Plain",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": ""
+            }
+          ]
+        },
+        {
+          "type": "extra_option",
+          "id": "5820742377",
+          "name": "Extra for Cappuccino",
+          "minNumOptions": 0,
+          "maxNumOptions": 15,
+          "minAggregateOptionsQuantity": null,
+          "maxAggregateOptionsQuantity": null,
+          "minOptionChoiceQuantity": null,
+          "maxOptionChoiceQuantity": null,
+          "isOptional": true,
+          "options": [
+            {
+              "id": "23568419600",
+              "name": "Extra Espresso Shot",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "5 cal"
+            },
+            {
+              "id": "23568419607",
+              "name": "Add Sugar Free Vanilla Syrup",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "5 cal"
+            },
+            {
+              "id": "23568419601",
+              "name": "Extra Whole Milk",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "100 cal"
+            },
+            {
+              "id": "51204252563",
+              "name": "Add Cold Foam",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "150 cal"
+            },
+            {
+              "id": "23568419602",
+              "name": "Add Cream",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "20 cal"
+            },
+            {
+              "id": "23568419603",
+              "name": "Add Sugar",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "15 cal"
+            },
+            {
+              "id": "23568419604",
+              "name": "Add Equal",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "0 cal"
+            },
+            {
+              "id": "23568419605",
+              "name": "Add Splenda",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "0 cal"
+            },
+            {
+              "id": "23568419608",
+              "name": "Add Caramel Syrup",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "30 cal"
+            },
+            {
+              "id": "23568419609",
+              "name": "Add Chocolate Syrup",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "30 cal"
+            },
+            {
+              "id": "23568419611",
+              "name": "Add Liquid Sugar",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "70 cal"
+            },
+            {
+              "id": "23568419612",
+              "name": "Add Whipped Cream",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "60 cal"
+            },
+            {
+              "id": "23568419613",
+              "name": "Add Chocolate Drizzle",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "10 cal"
+            },
+            {
+              "id": "23568419614",
+              "name": "Add Caramel Drizzle",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "10 cal"
+            },
+            {
+              "id": "51204252562",
+              "name": "Add Vanilla Syrup",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "25 cal"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "vanilla-cappuccino",
+      "item": {
+        "id": "6570936497",
+        "name": "Vanilla Cappuccino",
+        "description": "Whole steamed milk, bold espresso made from sustainably-sourced beans, fluffy foam, and rich French Vanilla flavor.",
+        "unitAmount": 289,
+        "currency": "USD",
+        "caloricInfoDisplayString": "220 cal",
+        "quantityLimit": 0,
+        "menuId": "18196178"
+      },
+      "itemType": "HAS_OPTIONS",
+      "groups": [
+        {
+          "type": "extra_option",
+          "id": "5820742378",
+          "name": "Select Size",
+          "minNumOptions": 1,
+          "maxNumOptions": 1,
+          "minAggregateOptionsQuantity": null,
+          "maxAggregateOptionsQuantity": null,
+          "minOptionChoiceQuantity": null,
+          "maxOptionChoiceQuantity": null,
+          "isOptional": false,
+          "options": [
+            {
+              "id": "23568419615",
+              "name": "Small",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "220 cal"
+            },
+            {
+              "id": "23568419616",
+              "name": "Medium",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "270 cal"
+            },
+            {
+              "id": "23568419617",
+              "name": "Large",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "350 cal"
+            }
+          ]
+        },
+        {
+          "type": "extra_option",
+          "id": "5820742379",
+          "name": "Remove from Vanilla Cappuccino",
+          "minNumOptions": 0,
+          "maxNumOptions": 3,
+          "minAggregateOptionsQuantity": null,
+          "maxAggregateOptionsQuantity": null,
+          "minOptionChoiceQuantity": null,
+          "maxOptionChoiceQuantity": null,
+          "isOptional": true,
+          "options": [
+            {
+              "id": "51204252564",
+              "name": "No Vanilla Syrup",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "25 cal"
+            },
+            {
+              "id": "23568419619",
+              "name": "No Espresso Shot",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "5 cal"
+            },
+            {
+              "id": "23568419620",
+              "name": "No Whole Milk",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "100 cal"
+            }
+          ]
+        },
+        {
+          "type": "extra_option",
+          "id": "5820742380",
+          "name": "Extra for Vanilla Cappuccino",
+          "minNumOptions": 0,
+          "maxNumOptions": 15,
+          "minAggregateOptionsQuantity": null,
+          "maxAggregateOptionsQuantity": null,
+          "minOptionChoiceQuantity": null,
+          "maxOptionChoiceQuantity": null,
+          "isOptional": true,
+          "options": [
+            {
+              "id": "51204252565",
+              "name": "Extra Vanilla Syrup",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "25 cal"
+            },
+            {
+              "id": "23568419622",
+              "name": "Extra Espresso Shot",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "5 cal"
+            },
+            {
+              "id": "23568419623",
+              "name": "Extra Whole Milk",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "100 cal"
+            },
+            {
+              "id": "51204252566",
+              "name": "Add Cold Foam",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "150 cal"
+            },
+            {
+              "id": "23568419624",
+              "name": "Add Cream",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "20 cal"
+            },
+            {
+              "id": "23568419625",
+              "name": "Add Sugar",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "15 cal"
+            },
+            {
+              "id": "23568419626",
+              "name": "Add Equal",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "0 cal"
+            },
+            {
+              "id": "23568419627",
+              "name": "Add Splenda",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "0 cal"
+            },
+            {
+              "id": "23568419628",
+              "name": "Add Sugar Free Vanilla Syrup",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "5 cal"
+            },
+            {
+              "id": "23568419629",
+              "name": "Add Caramel Syrup",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "30 cal"
+            },
+            {
+              "id": "23568419630",
+              "name": "Add Chocolate Syrup",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "30 cal"
+            },
+            {
+              "id": "23568419632",
+              "name": "Add Liquid Sugar",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "70 cal"
+            },
+            {
+              "id": "23568419633",
+              "name": "Add Whipped Cream",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "60 cal"
+            },
+            {
+              "id": "23568419634",
+              "name": "Add Chocolate Drizzle",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "10 cal"
+            },
+            {
+              "id": "23568419635",
+              "name": "Add Caramel Drizzle",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "10 cal"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "caramel-cappuccino",
+      "item": {
+        "id": "6570936500",
+        "name": "Caramel Cappuccino",
+        "description": "Enjoy a warm and comforting Caramel Cappuccino from McDonald’s. Our McCafé® Caramel Cappuccino recipe features whole steamed milk, bold espresso made from sustainably-sourced beans, fluffy foam, and buttery caramel flavor.",
+        "unitAmount": 289,
+        "currency": "USD",
+        "caloricInfoDisplayString": "210 cal",
+        "quantityLimit": 0,
+        "menuId": "18196178"
+      },
+      "itemType": "HAS_OPTIONS",
+      "groups": [
+        {
+          "type": "extra_option",
+          "id": "5820742387",
+          "name": "Select Size",
+          "minNumOptions": 1,
+          "maxNumOptions": 1,
+          "minAggregateOptionsQuantity": null,
+          "maxAggregateOptionsQuantity": null,
+          "minOptionChoiceQuantity": null,
+          "maxOptionChoiceQuantity": null,
+          "isOptional": false,
+          "options": [
+            {
+              "id": "23568419678",
+              "name": "Small",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "210 cal"
+            },
+            {
+              "id": "23568419679",
+              "name": "Medium",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "270 cal"
+            },
+            {
+              "id": "23568419680",
+              "name": "Large",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "350 cal"
+            }
+          ]
+        },
+        {
+          "type": "extra_option",
+          "id": "5820742388",
+          "name": "Remove from Caramel Cappuccino",
+          "minNumOptions": 0,
+          "maxNumOptions": 3,
+          "minAggregateOptionsQuantity": null,
+          "maxAggregateOptionsQuantity": null,
+          "minOptionChoiceQuantity": null,
+          "maxOptionChoiceQuantity": null,
+          "isOptional": true,
+          "options": [
+            {
+              "id": "23568419681",
+              "name": "No Caramel Syrup",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "30 cal"
+            },
+            {
+              "id": "23568419682",
+              "name": "No Espresso Shot",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "5 cal"
+            },
+            {
+              "id": "23568419683",
+              "name": "No Whole Milk",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "100 cal"
+            }
+          ]
+        },
+        {
+          "type": "extra_option",
+          "id": "5820742389",
+          "name": "Extra for Caramel Cappuccino",
+          "minNumOptions": 0,
+          "maxNumOptions": 15,
+          "minAggregateOptionsQuantity": null,
+          "maxAggregateOptionsQuantity": null,
+          "minOptionChoiceQuantity": null,
+          "maxOptionChoiceQuantity": null,
+          "isOptional": true,
+          "options": [
+            {
+              "id": "23568419684",
+              "name": "Extra Caramel Syrup",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "30 cal"
+            },
+            {
+              "id": "23568419685",
+              "name": "Extra Espresso Shot",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "5 cal"
+            },
+            {
+              "id": "23568419686",
+              "name": "Extra Whole Milk",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "100 cal"
+            },
+            {
+              "id": "51204252570",
+              "name": "Add Cold Foam",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "150 cal"
+            },
+            {
+              "id": "23568419687",
+              "name": "Add Cream",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "20 cal"
+            },
+            {
+              "id": "23568419688",
+              "name": "Add Sugar",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "15 cal"
+            },
+            {
+              "id": "23568419689",
+              "name": "Add Equal",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "0 cal"
+            },
+            {
+              "id": "23568419690",
+              "name": "Add Splenda",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "0 cal"
+            },
+            {
+              "id": "51204252569",
+              "name": "Add Vanilla Syrup",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "25 cal"
+            },
+            {
+              "id": "23568419692",
+              "name": "Add Sugar Free Vanilla Syrup",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "5 cal"
+            },
+            {
+              "id": "23568419693",
+              "name": "Add Chocolate Syrup",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "30 cal"
+            },
+            {
+              "id": "23568419695",
+              "name": "Add Liquid Sugar",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "70 cal"
+            },
+            {
+              "id": "23568419696",
+              "name": "Add Whipped Cream",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "60 cal"
+            },
+            {
+              "id": "23568419697",
+              "name": "Add Chocolate Drizzle",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "10 cal"
+            },
+            {
+              "id": "23568419698",
+              "name": "Add Caramel Drizzle",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "10 cal"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "slug": "americano",
+      "item": {
+        "id": "6570936501",
+        "name": "Americano",
+        "description": "Start your mornings with a bold McCafé® Americano coffee that pairs perfectly with our breakfast menu items. Our simple yet satisfying Americano is made with hot water poured over our Rainforest Alliance Certified™ espresso.",
+        "unitAmount": 319,
+        "currency": "USD",
+        "caloricInfoDisplayString": "0 cal",
+        "quantityLimit": 0,
+        "menuId": "18196178"
+      },
+      "itemType": "HAS_OPTIONS",
+      "groups": [
+        {
+          "type": "extra_option",
+          "id": "5820742390",
+          "name": "Select Size",
+          "minNumOptions": 1,
+          "maxNumOptions": 1,
+          "minAggregateOptionsQuantity": null,
+          "maxAggregateOptionsQuantity": null,
+          "minOptionChoiceQuantity": null,
+          "maxOptionChoiceQuantity": null,
+          "isOptional": false,
+          "options": [
+            {
+              "id": "23568419699",
+              "name": "Small",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "0 cal"
+            },
+            {
+              "id": "23568419700",
+              "name": "Medium",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "5 cal"
+            },
+            {
+              "id": "23568419701",
+              "name": "Large",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "5 cal"
+            }
+          ]
+        },
+        {
+          "type": "extra_option",
+          "id": "5820742391",
+          "name": "Remove from Americano",
+          "minNumOptions": 0,
+          "maxNumOptions": 1,
+          "minAggregateOptionsQuantity": null,
+          "maxAggregateOptionsQuantity": null,
+          "minOptionChoiceQuantity": null,
+          "maxOptionChoiceQuantity": null,
+          "isOptional": true,
+          "options": [
+            {
+              "id": "23568419702",
+              "name": "No Espresso Shot",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "5 cal"
+            }
+          ]
+        },
+        {
+          "type": "extra_option",
+          "id": "5820742392",
+          "name": "Extra for Americano",
+          "minNumOptions": 0,
+          "maxNumOptions": 14,
+          "minAggregateOptionsQuantity": null,
+          "maxAggregateOptionsQuantity": null,
+          "minOptionChoiceQuantity": null,
+          "maxOptionChoiceQuantity": null,
+          "isOptional": true,
+          "options": [
+            {
+              "id": "23568419703",
+              "name": "Extra Espresso Shot",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "5 cal"
+            },
+            {
+              "id": "51204252572",
+              "name": "Add Cold Foam",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "150 cal"
+            },
+            {
+              "id": "23568419704",
+              "name": "Add Cream",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "20 cal"
+            },
+            {
+              "id": "23568419705",
+              "name": "Add Sugar",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "15 cal"
+            },
+            {
+              "id": "23568419706",
+              "name": "Add Equal",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "0 cal"
+            },
+            {
+              "id": "23568419707",
+              "name": "Add Splenda",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "0 cal"
+            },
+            {
+              "id": "51204252571",
+              "name": "Add Vanilla Syrup",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "25 cal"
+            },
+            {
+              "id": "23568419709",
+              "name": "Add Sugar Free Vanilla Syrup",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "5 cal"
+            },
+            {
+              "id": "23568419710",
+              "name": "Add Caramel Syrup",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "30 cal"
+            },
+            {
+              "id": "23568419711",
+              "name": "Add Chocolate Syrup",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "30 cal"
+            },
+            {
+              "id": "23568419714",
+              "name": "Add Liquid Sugar",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "70 cal"
+            },
+            {
+              "id": "23568419715",
+              "name": "Add Whipped Cream",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "60 cal"
+            },
+            {
+              "id": "23568419716",
+              "name": "Add Chocolate Drizzle",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "10 cal"
+            },
+            {
+              "id": "23568419717",
+              "name": "Add Caramel Drizzle",
+              "defaultQuantity": 0,
+              "minOptionChoiceQuantity": null,
+              "maxOptionChoiceQuantity": null,
+              "caloricInfoDisplayString": "10 cal"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -22,6 +22,7 @@ export default function PresetHeaderPillButton({
     children,
     onClick,
     tabIndex,
+    disabled = false,
     tone = "soft",
     className = "",
 }: {
@@ -29,6 +30,7 @@ export default function PresetHeaderPillButton({
     children: ReactNode;
     onClick: () => void;
     tabIndex?: number;
+    disabled?: boolean;
     tone?: "soft" | "solid";
     className?: string;
 }) {
@@ -36,8 +38,11 @@ export default function PresetHeaderPillButton({
         <button
             type="button"
             tabIndex={tabIndex}
+            disabled={disabled}
             onClick={onClick}
-            className={`cursor-pointer inline-flex min-h-10 items-center justify-center gap-1 rounded-full px-3 text-center text-sm font-semibold transition sm:gap-1.5 sm:px-4 ${
+            className={`inline-flex min-h-10 items-center justify-center gap-1 rounded-full px-3 text-center text-sm font-semibold transition disabled:cursor-not-allowed disabled:opacity-45 sm:gap-1.5 sm:px-4 ${
+                disabled ? "cursor-not-allowed" : "cursor-pointer"
+            } ${
                 tone === "solid"
                     ? "bg-slate-900 text-white hover:bg-slate-800"
                     : "border border-black/15 bg-white text-slate-600 hover:bg-slate-50 hover:text-slate-900"

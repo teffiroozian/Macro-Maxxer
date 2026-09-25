@@ -59,6 +59,7 @@ export function resolveIngredientCategoryRule(
   if (idRules.length > 0) {
     const hasUnlimited = idRules.some((rule) => rule.maxQuantity === undefined);
     return {
+      minQuantity: Math.max(...idRules.map((rule) => rule.minQuantity ?? 0)),
       allowNone: idRules.some((rule) => rule.allowNone),
       ...(hasUnlimited
         ? {}
@@ -67,6 +68,10 @@ export function resolveIngredientCategoryRule(
   }
 
   return resolveRuleValueByCategoryKey(customizationRules?.ingredientCategories, categoryName);
+}
+
+export function resolveItemCustomization(item: MenuItem, variantId?: string) {
+  return (variantId ? item.customizationByVariantId?.[variantId] : undefined) ?? item.customization;
 }
 
 // Aliases for raw source group names that map 1:1 onto Macro Maxxer's
@@ -131,6 +136,8 @@ export function resolveIngredientItemCategory(item: MenuItem, categoryName: stri
 
   return {
     name: matches[0].name,
+    helperText: matches.find((category) => category.helperText)?.helperText,
+    sectionTitle: matches.find((category) => category.sectionTitle)?.sectionTitle,
     ingredients: Array.from(new Set(matches.flatMap((category) => category.ingredients))),
     allowNone: matches.some((category) => category.allowNone),
   };

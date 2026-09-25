@@ -1,0 +1,71 @@
+{
+  "itemId": "200491",
+  "orderingItemId": "6600487528",
+  "orderingFile": "mcdouble-item-page.json",
+  "summary": {
+    "optionsMapped": 17,
+    "unmatched": 2,
+    "defaultNutritionValidated": true,
+    "maxRawNutrientError": 2.2737367544323206e-13
+  },
+  "unmatched": [
+    {
+      "optionId": "31802104022",
+      "name": "No Salt",
+      "reason": "salt_nutrition_unresolved"
+    },
+    {
+      "optionId": "31802120722",
+      "name": "Extra Salt",
+      "reason": "salt_nutrition_unresolved"
+    }
+  ],
+  "validation": {
+    "expected": {
+      "calories": 393.219269,
+      "protein": 22.3517531,
+      "carbohydrate": 32.1871876,
+      "fat": 19.7291335,
+      "sodium": 918.708664,
+      "saturated_fat": 8.9326712,
+      "trans_fat": 1.12611335,
+      "cholesterol": 69.7727512,
+      "fibre": 1.6646539,
+      "sugars": 5.7474845,
+      "addedsugars": 4.703669,
+      "vitaminD": 0.0709825,
+      "calcium": 102.7417072,
+      "iron": 3.3735338,
+      "potassium": 322.944562,
+      "vitaminB6": 0,
+      "phosphorus": 0,
+      "caffeine": 0,
+      "calories_from_fat": 177.5622015,
+      "energy_kJ": 1645.22949702,
+      "fibre2015": 1.6646539
+    },
+    "calculated": {
+      "calories": 393.219269,
+      "protein": 22.351753100000003,
+      "carbohydrate": 32.1871876,
+      "fat": 19.7291335,
+      "sodium": 918.708664,
+      "saturated_fat": 8.9326712,
+      "trans_fat": 1.12611335,
+      "cholesterol": 69.7727512,
+      "fibre": 1.6646539,
+      "sugars": 5.7474845,
+      "addedsugars": 4.703669,
+      "vitaminD": 0.0709825,
+      "calcium": 102.74170719999998,
+      "iron": 3.3735337999999997,
+      "potassium": 322.94456199999996,
+      "vitaminB6": 0,
+      "phosphorus": 0,
+      "caffeine": 0,
+      "calories_from_fat": 177.5622015,
+      "energy_kJ": 1645.2294970199998,
+      "fibre2015": 1.6646539
+    }
+  }
+}

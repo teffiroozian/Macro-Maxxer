@@ -2,7 +2,6 @@ import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import SurfaceCard from "@/components/ui/SurfaceCard";
-import SectionEyebrow from "@/components/ui/SectionEyebrow";
 import RestaurantLogoBadge from "@/components/ui/RestaurantLogoBadge";
 import { DEFAULT_BRAND_ACCENT, RESTAURANT_BRAND_COLORS } from "@/lib/theme/colors";
 import type { RestaurantIndexEntry } from "@/types/restaurant";
@@ -16,6 +15,7 @@ type FeaturedRestaurantCardProps = {
 // slide in the Featured Restaurants carousel (Slice 2).
 export default function FeaturedRestaurantCard({ restaurant, className = "" }: FeaturedRestaurantCardProps) {
   const accent = RESTAURANT_BRAND_COLORS[restaurant.id] ?? DEFAULT_BRAND_ACCENT;
+  const ctaAccent = restaurant.id === "mcdonalds" ? "#FFC72C" : accent;
 
   return (
     <Link
@@ -46,8 +46,6 @@ export default function FeaturedRestaurantCard({ restaurant, className = "" }: F
           </div>
 
           <div className="flex flex-1 flex-col justify-center gap-6 p-8 sm:items-start sm:py-12 sm:pl-12 sm:pr-10 lg:py-14">
-            <SectionEyebrow className="text-xs">Featured Restaurant</SectionEyebrow>
-
             {/* Name row: logo sits inline on mobile (no side divider to
                 overlap). At sm+, the row cancels the panel's own left
                 padding with a matching negative margin (then reinstates it
@@ -71,8 +69,8 @@ export default function FeaturedRestaurantCard({ restaurant, className = "" }: F
             </p>
 
             <span
-              className="inline-flex w-fit items-center gap-2 rounded-full px-5 py-2.5 text-sm font-semibold text-white sm:text-base"
-              style={{ backgroundColor: accent }}
+              className={`inline-flex w-fit items-center gap-2 rounded-full px-5 py-2.5 text-sm font-semibold sm:text-base ${restaurant.id === "mcdonalds" ? "text-neutral-900" : "text-white"}`}
+              style={{ backgroundColor: ctaAccent }}
             >
               View Menu
               {/* Width-stable nudge: only the icon translates (never the

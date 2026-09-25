@@ -26,12 +26,13 @@ import {
 } from "@/lib/restaurantBuilders/chipotle/highProtein";
 import { parseIncludedIngredientEntry } from "@/lib/itemIngredients";
 
-import { resolveComboDrinkOptions, resolveComboMealConfig, resolveComboSideOptions } from "@/lib/comboMeals";
+import { comboMealSizeFromSideVariant, isComboMealSelectionComplete, resolveComboBundleOptions, resolveComboChoiceVariantId, resolveComboDrinkOptions, resolveComboMealConfig, resolveComboSideOptions } from "@/lib/comboMeals";
 import { getProteinPer100Calories, getProteinScoreTier, normalizeNutrition } from "@/lib/nutrition";
 import { resolveFinalizedCartConfiguration, type CartConfigurationPayload } from "@/lib/menuItemCard/finalizedCartConfiguration";
 import type { ComparativeLabelKind } from "@/lib/menuSections/comparativeLabels";
 import { getRestaurantImagePresentation } from "@/lib/restaurantPresentation";
 import RestaurantItemImage from "@/components/ui/RestaurantItemImage";
+import { incrementIngredientCountWithinCategoryLimit } from "@/lib/menuItemCard/ingredientCountCustomization";
 
 // Same portion multipliers already used across the build-your-own portion
 // modes (light/normal/extra for rice, beans, toppings; normal/double for
@@ -337,17 +338,21 @@ export default function MenuItemCard({
   }, [resolvedIngredients]);
 
   const comboConfig = useMemo(
-    () => resolveComboMealConfig(restaurantId, item, menuItems),
-    [item, menuItems, restaurantId]
+    () => resolveComboMealConfig(restaurantId, item, menuItems, selectedVariantId),
+    [item, menuItems, restaurantId, selectedVariantId]
   );
   const isComboEligibleCategory = Boolean(comboConfig);
+  const comboBundles = useMemo(
+    () => resolveComboBundleOptions(restaurantId, item, menuItems, selectedVariantId),
+    [item, menuItems, restaurantId, selectedVariantId]
+  );
   const comboSides = useMemo(
-    () => resolveComboSideOptions(restaurantId, item, menuItems),
-    [item, menuItems, restaurantId]
+    () => resolveComboSideOptions(restaurantId, item, menuItems, selectedVariantId),
+    [item, menuItems, restaurantId, selectedVariantId]
   );
   const comboDrinks = useMemo(
-    () => resolveComboDrinkOptions(restaurantId, item, menuItems),
-    [item, menuItems, restaurantId]
+    () => resolveComboDrinkOptions(restaurantId, item, menuItems, selectedVariantId),
+    [item, menuItems, restaurantId, selectedVariantId]
   );
   const [selectedComboSideId, setSelectedComboSideId] = useState<string | undefined>(() => {
     const matchedSide = comboSides.find((side) => side.name === parsedInitialComboCustomization.sideName);
@@ -369,6 +374,12 @@ export default function MenuItemCard({
     const matchedVariant = drinkVariants.find((variant) => variant.label === parsedInitialComboCustomization.drinkVariantLabel);
     return matchedVariant?.id ?? getDefaultVariantId(matchedDrink);
   });
+  const [selectedComboBundleId, setSelectedComboBundleId] = useState<string | undefined>(comboConfig?.defaultBundleId);
+  useEffect(() => {
+    if (!comboConfig?.bundleOptions?.some((option) => option.id === selectedComboBundleId)) {
+      setSelectedComboBundleId(comboConfig?.defaultBundleId);
+    }
+  }, [comboConfig, selectedComboBundleId]);
 
   const retainedCustomizations = useMemo(() => {
     if (!initialCartCustomizations || initialCartCustomizations.length === 0) return [];
@@ -392,7 +403,7 @@ export default function MenuItemCard({
       const isIngredientCustomization =
         ingredientMatch ? ingredientLabels.has(ingredientMatch[1].trim().toLowerCase()) : false;
 
-      return !addonNames.has(normalized) && !isIngredientCustomization && normalized !== "Combo Meal" && !/^Side:\s*/i.test(normalized) && !/^Drink:\s*/i.test(normalized);
+      return !addonNames.has(normalized) && !isIngredientCustomization && normalized !== "Combo Meal" && !/^Size:\s*/i.test(normalized) && !/^Side:\s*/i.test(normalized) && !/^Drink:\s*/i.test(normalized);
     });
   }, [addons, initialCartCustomizations, item.addonRefs, resolvedIngredients]);
 
@@ -410,17 +421,19 @@ export default function MenuItemCard({
       addons,
       comboSides,
       comboDrinks,
+      comboBundles,
       isComboEligibleCategory,
       comboType,
       selectedComboSideId,
       selectedComboDrinkId,
       selectedComboSideVariantId,
       selectedComboDrinkVariantId,
+      selectedComboBundleId,
       suppressRemovedIngredientCustomizationsInCart,
       retainedCustomizationLabels: isCartMode ? retainedCustomizations : [],
       ingredientItems,
     }),
-    [addons, comboDrinks, comboSides, comboType, defaultVariantId, ingredientItems, isCartMode, isComboEligibleCategory, item, restaurantId, resolvedIngredients, retainedCustomizations, selectedAddons, selectedComboDrinkId, selectedComboDrinkVariantId, selectedComboSideId, selectedComboSideVariantId, selectedIngredientCounts, selectedSauceCounts, selectedVariantId, suppressRemovedIngredientCustomizationsInCart, variants]
+    [addons, comboBundles, comboDrinks, comboSides, comboType, defaultVariantId, ingredientItems, isCartMode, isComboEligibleCategory, item, restaurantId, resolvedIngredients, retainedCustomizations, selectedAddons, selectedComboBundleId, selectedComboDrinkId, selectedComboDrinkVariantId, selectedComboSideId, selectedComboSideVariantId, selectedIngredientCounts, selectedSauceCounts, selectedVariantId, suppressRemovedIngredientCustomizationsInCart, variants]
   );
 
   const {
@@ -553,6 +566,15 @@ export default function MenuItemCard({
       ...duplicateMatchingConfiguration,
     });
   }, [duplicateMatchingConfiguration, getMatchingItem, isCartMode, item.id, item.name, restaurantId]);
+  const isComboSelectionComplete = isComboMealSelectionComplete({
+    config: comboConfig,
+    comboType,
+    selectedSideId: selectedComboSideId,
+    selectedSideVariantId: selectedComboSideVariantId,
+    selectedDrinkId: selectedComboDrinkId,
+    selectedDrinkVariantId: selectedComboDrinkVariantId,
+    selectedBundleId: selectedComboBundleId,
+  });
 
   const emitCartConfiguration = (
     nextVariantId: string,
@@ -580,12 +602,14 @@ export default function MenuItemCard({
       addons,
       comboSides,
       comboDrinks,
+      comboBundles,
       isComboEligibleCategory,
       comboType: nextComboType,
       selectedComboSideId: nextComboSideId,
       selectedComboDrinkId: nextComboDrinkId,
       selectedComboSideVariantId: nextComboSideVariantId,
       selectedComboDrinkVariantId: nextComboDrinkVariantId,
+      selectedComboBundleId,
       suppressRemovedIngredientCustomizationsInCart,
       retainedCustomizationLabels: retainedCustomizations,
       ingredientItems,
@@ -642,6 +666,7 @@ export default function MenuItemCard({
 
   const handleAddToCart = () => {
     if (isAddFeedbackVisible) return;
+    if (!isComboSelectionComplete) return;
 
     if (matchingCartItem) {
       updateQuantity(matchingCartItem.id, matchingCartItem.quantity + 1, { markAsJustAdded: true });
@@ -864,6 +889,7 @@ export default function MenuItemCard({
               <MenuCardActions
                 itemName={item.name}
                 isAddFeedbackVisible={isAddFeedbackVisible}
+                isQuickAddDisabled={!isComboSelectionComplete}
                 onQuickAdd={handleAddToCart}
                 onViewDetails={openItemDetails}
               />
@@ -947,7 +973,7 @@ export default function MenuItemCard({
                     <SectionEyebrow className="mb-2 px-1 text-[11px] text-slate-500">Side</SectionEyebrow>
                     <div className="grid grid-cols-[72px_minmax(0,1fr)] items-start gap-3 rounded-xl border border-slate-200 bg-white px-3 py-2.5">
                       <RestaurantItemImage
-                        src={selectedComboSide.image}
+                        src={selectedComboSideVariant?.image ?? selectedComboSide.image}
                         alt={selectedComboSide.name}
                         imagePresentation={selectedComboSide.imagePresentation}
                         fallbackClassName={imagePresentation.itemThumbnailImageClassName ?? "object-contain p-1"}
@@ -985,7 +1011,7 @@ export default function MenuItemCard({
                     <SectionEyebrow className="mb-2 px-1 text-[11px] text-slate-500">Drink</SectionEyebrow>
                     <div className="grid grid-cols-[72px_minmax(0,1fr)] items-start gap-3 rounded-xl border border-slate-200 bg-white px-3 py-2.5">
                       <RestaurantItemImage
-                        src={selectedComboDrink.image}
+                        src={selectedComboDrinkVariant?.image ?? selectedComboDrink.image}
                         alt={selectedComboDrink.name}
                         imagePresentation={selectedComboDrink.imagePresentation}
                         fallbackClassName={imagePresentation.itemThumbnailImageClassName ?? "object-contain p-1"}
@@ -1217,9 +1243,13 @@ export default function MenuItemCard({
                   const maxQuantity = ingredient?.maxQuantity;
                   if (typeof maxQuantity !== "number") return prev;
 
-                  const current = ingredientCounts[ingredientId] ?? ingredient?.defaultCount ?? 0;
-                  const next = { ...prev, [ingredientId]: Math.min(maxQuantity, current + 1) };
-                  if (next[ingredientId] === current) return prev;
+                  const next = incrementIngredientCountWithinCategoryLimit({
+                    ingredientId,
+                    resolvedIngredients,
+                    ingredientCounts: ingredientCounts,
+                    categoryMaxQuantity: ingredientId.startsWith("mcd-sauce-") ? maxQuantity : undefined,
+                  });
+                  if (next === ingredientCounts) return prev;
 
                   emitCartConfiguration(
                     selectedVariantId,
@@ -1239,7 +1269,15 @@ export default function MenuItemCard({
                   if (typeof maxQuantity !== "number") return prev;
 
                   const current = prev[ingredientId] ?? ingredient?.defaultCount ?? 0;
-                  const next = { ...prev, [ingredientId]: current > 0 ? 0 : 1 };
+                  const next = current > 0
+                    ? { ...prev, [ingredientId]: 0 }
+                    : incrementIngredientCountWithinCategoryLimit({
+                        ingredientId,
+                        resolvedIngredients,
+                        ingredientCounts,
+                        categoryMaxQuantity: ingredientId.startsWith("mcd-sauce-") ? maxQuantity : undefined,
+                      });
+                  if (next === ingredientCounts) return prev;
                   if (next[ingredientId] === current) return prev;
 
                   emitCartConfiguration(
@@ -1276,6 +1314,9 @@ export default function MenuItemCard({
               comboType={comboType}
               comboSides={comboSides}
               comboDrinks={comboDrinks}
+              comboBundles={comboBundles}
+              selectedComboBundleId={selectedComboBundleId}
+              onSelectComboBundle={setSelectedComboBundleId}
               selectedComboSideId={selectedComboSideId}
               selectedComboDrinkId={selectedComboDrinkId}
               selectedComboSideVariantId={selectedComboSideVariantId}
@@ -1289,14 +1330,27 @@ export default function MenuItemCard({
               }}
               onSelectComboDrink={(drinkId) => {
                 const nextDrink = comboDrinks.find((drink) => (drink.id ?? drink.name) === drinkId);
-                const nextDrinkVariantId = getDefaultVariantId(nextDrink);
+                const nextDrinkVariantId = resolveComboChoiceVariantId({
+                  config: comboConfig,
+                  role: "drink",
+                  itemId: drinkId,
+                  mealSize: comboMealSizeFromSideVariant(selectedComboSide, selectedComboSideVariantId),
+                }) ?? getDefaultVariantId(nextDrink);
                 setSelectedComboDrinkId(drinkId);
                 setSelectedComboDrinkVariantId(nextDrinkVariantId);
                 emitCartConfiguration(selectedVariantId, selectedAddons, selectedSauceCounts, ingredientCounts, comboType, selectedComboSideId, drinkId, selectedComboSideVariantId, nextDrinkVariantId);
               }}
               onSelectComboSideVariant={(variantId) => {
+                const mealSize = comboMealSizeFromSideVariant(selectedComboSide, variantId);
+                const nextDrinkVariantId = resolveComboChoiceVariantId({
+                  config: comboConfig,
+                  role: "drink",
+                  itemId: selectedComboDrinkId,
+                  mealSize,
+                }) ?? selectedComboDrinkVariantId;
                 setSelectedComboSideVariantId(variantId);
-                emitCartConfiguration(selectedVariantId, selectedAddons, selectedSauceCounts, ingredientCounts, comboType, selectedComboSideId, selectedComboDrinkId, variantId, selectedComboDrinkVariantId);
+                setSelectedComboDrinkVariantId(nextDrinkVariantId);
+                emitCartConfiguration(selectedVariantId, selectedAddons, selectedSauceCounts, ingredientCounts, comboType, selectedComboSideId, selectedComboDrinkId, variantId, nextDrinkVariantId);
               }}
               onSelectComboDrinkVariant={(variantId) => {
                 setSelectedComboDrinkVariantId(variantId);

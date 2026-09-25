@@ -1,7 +1,6 @@
 import type { LucideIcon } from "lucide-react";
 import {
   Bean,
-  Beef,
   CakeSlice,
   Candy,
   CircleDashed,
@@ -17,12 +16,15 @@ import {
   Egg,
   EggFried,
   Ham,
+  Hamburger,
   IceCreamCone,
   Leaf,
   LeafyGreen,
+  Layers3,
   Milk,
   Pin,
   Popcorn,
+  PackageOpen,
   Salad,
   Sandwich,
   Shell,
@@ -78,7 +80,14 @@ export const CATEGORY_ICONS: Record<string, LucideIcon> = {
   desserts: CakeSlice,
   wraps: Shell,
   "wrap toppings": Waves,
-  burgers: Beef,
+  burgers: Hamburger,
+  "chicken & fish": Sandwich,
+  "mcnuggets & strips": Drumstick,
+  "snack wraps": Shell,
+  "fries & sides": PackageOpen,
+  "sweets & treats": IceCreamCone,
+  "mccafé": Coffee,
+  "sauces & condiments": Droplets,
   entrees: Utensils,
   "bowls & plates": Soup,
   buns: CircleDashed,
@@ -114,4 +123,18 @@ export const STARBUCKS_CATEGORY_ICON_OVERRIDES: Record<string, LucideIcon> = {
   "cold coffee & espresso": CupSoda,
   "tea & chai": Leaf,
   matcha: Sprout,
+};
+
+// McDonald's ingredient-catalog categories are intentionally scoped to the
+// Ingredients view. Reuse the same Lucide vocabulary as its main menu
+// sidebar so sizing, stroke, and active/inactive treatment remain shared.
+export const MCDONALDS_INGREDIENT_CATEGORY_ICON_OVERRIDES: Record<string, LucideIcon> = {
+  bread: Sandwich,
+  cheeses: Diamond,
+  hotcakes: Layers3,
+  oatmeal: Soup,
+  potatoes: PackageOpen,
+  protein: Drumstick,
+  sauces: Droplets,
+  toppings: LeafyGreen,
 };

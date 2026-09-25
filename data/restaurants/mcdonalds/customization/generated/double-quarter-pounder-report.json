@@ -1,0 +1,71 @@
+{
+  "itemId": "200476",
+  "orderingItemId": "25120693136",
+  "orderingFile": "double-quarter-pounder-item-page.json",
+  "summary": {
+    "optionsMapped": 17,
+    "unmatched": 2,
+    "defaultNutritionValidated": true,
+    "maxRawNutrientError": 2.2737367544323206e-13
+  },
+  "unmatched": [
+    {
+      "optionId": "43914730901",
+      "name": "No Salt",
+      "reason": "salt_nutrition_unresolved"
+    },
+    {
+      "optionId": "43914730909",
+      "name": "Extra Salt",
+      "reason": "salt_nutrition_unresolved"
+    }
+  ],
+  "validation": {
+    "expected": {
+      "calories": 738.5404618,
+      "protein": 48.1731882,
+      "carbohydrate": 42.8485138,
+      "fat": 41.8869506,
+      "sodium": 1355.4141792,
+      "saturated_fat": 19.5569272,
+      "trans_fat": 2.62232844,
+      "cholesterol": 164.4555196,
+      "fibre": 2.4736226,
+      "sugars": 9.8194398,
+      "addedsugars": 7.868898,
+      "vitaminD": 0.141965,
+      "calcium": 201.9976292,
+      "iron": 6.1450424,
+      "potassium": 655.8031324,
+      "vitaminB6": 0,
+      "phosphorus": 2.1837,
+      "caffeine": 0,
+      "calories_from_fat": 376.9825554,
+      "energy_kJ": 3090.053352266,
+      "fibre2015": 2.4736226
+    },
+    "calculated": {
+      "calories": 738.5404618,
+      "protein": 48.1731882,
+      "carbohydrate": 42.84851379999999,
+      "fat": 41.886950600000006,
+      "sodium": 1355.4141792000003,
+      "saturated_fat": 19.556927199999997,
+      "trans_fat": 2.6223284400000004,
+      "cholesterol": 164.4555196,
+      "fibre": 2.4736226,
+      "sugars": 9.8194398,
+      "addedsugars": 7.868898,
+      "vitaminD": 0.141965,
+      "calcium": 201.99762919999998,
+      "iron": 6.1450423999999995,
+      "potassium": 655.8031324,
+      "vitaminB6": 0,
+      "phosphorus": 2.1837,
+      "caffeine": 0,
+      "calories_from_fat": 376.98255539999997,
+      "energy_kJ": 3090.053352266,
+      "fibre2015": 2.4736226
+    }
+  }
+}

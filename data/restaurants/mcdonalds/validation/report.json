@@ -1,0 +1,128 @@
+{
+  "restaurant": "McDonald's",
+  "generatedAt": "2026-09-24",
+  "valid": true,
+  "summary": {
+    "errors": 0,
+    "warnings": 0,
+    "info": 0,
+    "errorTypes": {},
+    "warningTypes": {}
+  },
+  "checks": {
+    "structure": {
+      "passed": true,
+      "errors": 0,
+      "warnings": 0,
+      "info": 0,
+      "details": {
+        "rawItems": 153,
+        "items": 173,
+        "variants": 180
+      }
+    },
+    "coverage": {
+      "passed": true,
+      "errors": 0,
+      "warnings": 0,
+      "info": 0,
+      "details": {
+        "raw": 153,
+        "generated": 173,
+        "filtered": 1,
+        "reconciled": true
+      }
+    },
+    "identity": {
+      "passed": true,
+      "errors": 0,
+      "warnings": 0,
+      "info": 0,
+      "details": {
+        "uniqueItems": 173,
+        "uniqueVariants": 180
+      }
+    },
+    "names": {
+      "passed": true,
+      "errors": 0,
+      "warnings": 0,
+      "info": 0,
+      "details": {
+        "duplicateGroups": 0
+      }
+    },
+    "nutrition": {
+      "passed": true,
+      "errors": 0,
+      "warnings": 0,
+      "info": 0,
+      "details": {
+        "itemPanels": 173,
+        "variantPanels": 180
+      }
+    },
+    "images_urls": {
+      "passed": true,
+      "errors": 0,
+      "warnings": 0,
+      "info": 0,
+      "details": {
+        "itemImages": 173,
+        "variantImages": 180,
+        "productUrls": 173
+      }
+    },
+    "categories": {
+      "passed": true,
+      "errors": 0,
+      "warnings": 0,
+      "info": 0,
+      "details": {
+        "categoryCount": 35
+      }
+    },
+    "variants": {
+      "passed": true,
+      "errors": 0,
+      "warnings": 0,
+      "info": 0,
+      "details": {
+        "variants": 180
+      }
+    },
+    "collections": {
+      "passed": true,
+      "errors": 0,
+      "warnings": 0,
+      "info": 0,
+      "details": {
+        "meals": 33
+      }
+    },
+    "reconciliation": {
+      "passed": true,
+      "errors": 0,
+      "warnings": 0,
+      "info": 0,
+      "details": {
+        "unresolved": 0,
+        "documentedManualExceptions": 1,
+        "mochaExceptionPreserved": true
+      }
+    },
+    "filtered": {
+      "passed": true,
+      "errors": 0,
+      "warnings": 0,
+      "info": 0,
+      "details": {
+        "filtered": 1,
+        "expectedCoffeeSizeMerge": true
+      }
+    }
+  },
+  "errors": [],
+  "warnings": [],
+  "info": []
+}

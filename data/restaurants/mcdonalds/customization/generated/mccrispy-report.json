@@ -1,0 +1,66 @@
+{
+  "itemId": "203747",
+  "orderingItemId": "25120693150",
+  "orderingFile": "mccrispy-item-page.json",
+  "summary": {
+    "optionsMapped": 12,
+    "unmatched": 1,
+    "defaultNutritionValidated": true,
+    "maxRawNutrientError": 2.2737367544323206e-13
+  },
+  "unmatched": [
+    {
+      "optionId": "43914731446",
+      "name": "Add Ketchup",
+      "reason": "no_validated_nutrition_mapping"
+    }
+  ],
+  "validation": {
+    "expected": {
+      "calories": 466.21699125,
+      "protein": 26.2845306,
+      "carbohydrate": 46.44209037,
+      "fat": 19.63898898,
+      "sodium": 1140.423522,
+      "saturated_fat": 5.35329434,
+      "trans_fat": 0.31445132,
+      "cholesterol": 69.9120301,
+      "fibre": 1.456628,
+      "sugars": 8.87342735,
+      "addedsugars": 7.25383735,
+      "vitaminD": 0,
+      "calcium": 28.44663111,
+      "iron": 2.19786956,
+      "potassium": 422.893725,
+      "vitaminB6": 0,
+      "phosphorus": 0,
+      "caffeine": 0,
+      "calories_from_fat": 176.75090082,
+      "energy_kJ": 1950.651910256,
+      "fibre2015": 1.456628
+    },
+    "calculated": {
+      "calories": 466.21699125,
+      "protein": 26.284530599999997,
+      "carbohydrate": 46.44209037,
+      "fat": 19.63898898,
+      "sodium": 1140.4235219999998,
+      "saturated_fat": 5.35329434,
+      "trans_fat": 0.31445132,
+      "cholesterol": 69.9120301,
+      "fibre": 1.456628,
+      "sugars": 8.87342735,
+      "addedsugars": 7.2538373499999995,
+      "vitaminD": 0,
+      "calcium": 28.446631109999995,
+      "iron": 2.19786956,
+      "potassium": 422.893725,
+      "vitaminB6": 0,
+      "phosphorus": 0,
+      "caffeine": 0,
+      "calories_from_fat": 176.75090082000003,
+      "energy_kJ": 1950.651910256,
+      "fibre2015": 1.456628
+    }
+  }
+}

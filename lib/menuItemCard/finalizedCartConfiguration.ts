@@ -36,12 +36,14 @@ export type FinalizedCartConfigurationInput = {
   addons?: ResolvedAddonGroups;
   comboSides: MenuItem[];
   comboDrinks: MenuItem[];
+  comboBundles?: MenuItem[];
   isComboEligibleCategory: boolean;
   comboType: ComboType;
   selectedComboSideId?: string;
   selectedComboDrinkId?: string;
   selectedComboSideVariantId?: string;
   selectedComboDrinkVariantId?: string;
+  selectedComboBundleId?: string;
   suppressRemovedIngredientCustomizationsInCart?: boolean;
   retainedCustomizationLabels?: string[];
   ingredientItems?: IngredientItem[];
@@ -69,12 +71,14 @@ export function resolveFinalizedCartConfiguration({
   addons,
   comboSides,
   comboDrinks,
+  comboBundles,
   isComboEligibleCategory,
   comboType,
   selectedComboSideId,
   selectedComboDrinkId,
   selectedComboSideVariantId,
   selectedComboDrinkVariantId,
+  selectedComboBundleId,
   suppressRemovedIngredientCustomizationsInCart,
   retainedCustomizationLabels = [],
   ingredientItems,
@@ -91,12 +95,14 @@ export function resolveFinalizedCartConfiguration({
     addons,
     comboSides,
     comboDrinks,
+    comboBundles,
     isComboEligibleCategory,
     comboType,
     selectedComboSideId,
     selectedComboDrinkId,
     selectedComboSideVariantId,
     selectedComboDrinkVariantId,
+    selectedComboBundleId,
     suppressRemovedIngredientCustomizationsInCart,
   });
 

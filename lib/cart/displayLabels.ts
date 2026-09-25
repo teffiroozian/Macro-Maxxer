@@ -214,6 +214,15 @@ export function buildCartItemSummaryGroups(item: CartItem): CartSummaryGroup[] {
         const label = `${customization.itemLabel ?? customization.ingredientLabel ?? "Item"}${customization.variantLabel ? ` (${customization.variantLabel})` : ""}`;
         if (customization.comboRole === "side") sideGroups.push({ kind: "side", label });
         else if (customization.comboRole === "drink") drinkGroups.push({ kind: "drink", label });
+        else {
+          const prefix = customization.comboRole === "included-entree" ? "Included entrée"
+            : customization.comboRole === "included-side" ? "Included side"
+            : customization.comboRole === "included-drink" ? "Included drink"
+            : customization.comboRole === "included-dessert" ? "Included dessert"
+            : customization.comboRole === "non-nutrition" ? "Included item"
+            : "Size";
+          customizationGroups.push({ kind: "customization", label: `${prefix}: ${label}` });
+        }
         return;
       }
 

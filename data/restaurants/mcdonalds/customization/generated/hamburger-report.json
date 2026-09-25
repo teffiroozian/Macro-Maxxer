@@ -1,0 +1,71 @@
+{
+  "itemId": "200477",
+  "orderingItemId": "6600487523",
+  "orderingFile": "hamburger-item-page.json",
+  "summary": {
+    "optionsMapped": 14,
+    "unmatched": 2,
+    "defaultNutritionValidated": true,
+    "maxRawNutrientError": 2.842170943040401e-14
+  },
+  "unmatched": [
+    {
+      "optionId": "23640084805",
+      "name": "No Salt",
+      "reason": "salt_nutrition_unresolved"
+    },
+    {
+      "optionId": "23640084810",
+      "name": "Extra Salt",
+      "reason": "salt_nutrition_unresolved"
+    }
+  ],
+  "validation": {
+    "expected": {
+      "calories": 246.461712,
+      "protein": 12.3971908,
+      "carbohydrate": 29.9408508,
+      "fat": 8.83549,
+      "sodium": 513.068702,
+      "saturated_fat": 3.4202996,
+      "trans_fat": 0.4805154,
+      "cholesterol": 27.6482356,
+      "fibre": 1.3727,
+      "sugars": 5.25142,
+      "addedsugars": 4.703669,
+      "vitaminD": 0,
+      "calcium": 16.8892276,
+      "iron": 2.5247234,
+      "potassium": 190.569066,
+      "vitaminB6": 0,
+      "phosphorus": 0,
+      "caffeine": 0,
+      "calories_from_fat": 79.51941,
+      "energy_kJ": 1031.19584472,
+      "fibre2015": 1.3727
+    },
+    "calculated": {
+      "calories": 246.46171200000003,
+      "protein": 12.3971908,
+      "carbohydrate": 29.940850800000003,
+      "fat": 8.83549,
+      "sodium": 513.068702,
+      "saturated_fat": 3.4202996000000003,
+      "trans_fat": 0.4805154,
+      "cholesterol": 27.648235599999996,
+      "fibre": 1.3727,
+      "sugars": 5.25142,
+      "addedsugars": 4.703669,
+      "vitaminD": 0,
+      "calcium": 16.8892276,
+      "iron": 2.5247233999999996,
+      "potassium": 190.569066,
+      "vitaminB6": 0,
+      "phosphorus": 0,
+      "caffeine": 0,
+      "calories_from_fat": 79.51940999999998,
+      "energy_kJ": 1031.19584472,
+      "fibre2015": 1.3727
+    }
+  }
+}

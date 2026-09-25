@@ -1,4 +1,4 @@
-import type { ComboMealConfig, MenuItem } from "@/types/menu";
+import type { ComboMealChoiceGroup, ComboMealConfig, MenuItem } from "@/types/menu";
 import type { Nutrition } from "@/types/nutrition";
 import { compareByDefaultOrder, normalizeCategory } from "@/lib/menuItemCalculations";
 import {
@@ -89,6 +89,98 @@ function resolveConfiguredItems(itemIds: string[] | undefined, menuItems: MenuIt
   });
 }
 
+function resolveChoiceGroupItems(group: ComboMealChoiceGroup | undefined, menuItems: MenuItem[] | undefined) {
+  if (!group) return [];
+  return group.options.flatMap((option) =>
+    resolveConfiguredItems([option.itemId], menuItems).map((item) => {
+      const comboOrdering = group.orderingGroupId && option.orderingOptionId
+        ? { groupId: group.orderingGroupId, optionId: option.orderingOptionId }
+        : undefined;
+      const configuredVariantIds = [
+        ...(option.allowedVariantIds ?? []),
+        ...(option.fixedVariantId ? [option.fixedVariantId] : []),
+        ...Object.values(option.variantIdByMealSize ?? {}).filter((id): id is string => Boolean(id)),
+      ];
+      if (!configuredVariantIds.length) return comboOrdering ? { ...item, comboOrdering } : item;
+      const allowedVariantIds = new Set(configuredVariantIds);
+      const variants = item.variants?.filter((variant) => allowedVariantIds.has(variant.id)) ?? [];
+      return {
+        ...item,
+        variants,
+        defaultVariantId: variants[0]?.id,
+        ...(comboOrdering ? { comboOrdering } : {}),
+      };
+    }),
+  );
+}
+
+export function resolveComboChoiceVariantId({
+  config,
+  role,
+  itemId,
+  mealSize,
+}: {
+  config: ComboMealConfig | undefined;
+  role: "side" | "drink";
+  itemId: string | undefined;
+  mealSize: "medium" | "large";
+}) {
+  if (!itemId) return undefined;
+  const group = role === "side" ? config?.sideGroup : config?.drinkGroup;
+  const option = group?.options.find((candidate) => candidate.itemId === itemId);
+  return option?.variantIdByMealSize?.[mealSize] ?? option?.fixedVariantId;
+}
+
+export function comboMealSizeFromSideVariant(side: MenuItem | undefined, variantId: string | undefined) {
+  const label = side?.variants?.find((variant) => variant.id === variantId)?.label.toLowerCase();
+  return label === "large" ? "large" as const : "medium" as const;
+}
+
+function isChoiceGroupSelectionComplete(
+  group: ComboMealChoiceGroup | undefined,
+  selectedItemId: string | undefined,
+  selectedVariantId: string | undefined,
+) {
+  if (!group) return true;
+  if (!group.required && group.minSelections === 0 && !selectedItemId) return true;
+  if (!selectedItemId) return false;
+  const option = group.options.find((candidate) => candidate.itemId === selectedItemId);
+  if (!option) return false;
+  const configuredVariantIds = [
+    ...(option.allowedVariantIds ?? []),
+    ...(option.fixedVariantId ? [option.fixedVariantId] : []),
+    ...Object.values(option.variantIdByMealSize ?? {}).filter((id): id is string => Boolean(id)),
+  ];
+  return configuredVariantIds.length === 0 || Boolean(
+    selectedVariantId && configuredVariantIds.includes(selectedVariantId),
+  );
+}
+
+export function isComboMealSelectionComplete({
+  config,
+  comboType,
+  selectedSideId,
+  selectedSideVariantId,
+  selectedDrinkId,
+  selectedDrinkVariantId,
+  selectedBundleId,
+}: {
+  config: ComboMealConfig | undefined;
+  comboType: "just-item" | "combo-meal";
+  selectedSideId?: string;
+  selectedSideVariantId?: string;
+  selectedDrinkId?: string;
+  selectedDrinkVariantId?: string;
+  selectedBundleId?: string;
+}) {
+  if (comboType !== "combo-meal") return true;
+  if (!config) return false;
+  if (config.bundleOptions?.length && !config.bundleOptions.some((option) => option.id === selectedBundleId)) return false;
+  if (config.sizeGroup && !selectedSideVariantId) return false;
+  return isChoiceGroupSelectionComplete(config.sideGroup, selectedSideId, selectedSideVariantId) &&
+    isChoiceGroupSelectionComplete(config.drinkGroup, selectedDrinkId, selectedDrinkVariantId);
+}
+
 function resolveLegacyChickfilaComboConfig(
   restaurantId: string,
   item: MenuItem,
@@ -136,10 +228,16 @@ function resolveLinkedComboConfig(item: MenuItem, menuItems: MenuItem[] | undefi
 export function resolveComboMealConfig(
   restaurantId: string,
   item: MenuItem,
-  menuItems: MenuItem[] | undefined
+  menuItems: MenuItem[] | undefined,
+  selectedVariantId?: string,
 ): ComboMealConfig | undefined {
-  const generatedConfig = item.comboConfig ?? resolveLinkedComboConfig(item, menuItems);
-  if (generatedConfig) return generatedConfig;
+  const variantConfig = selectedVariantId ? item.comboConfigByVariantId?.[selectedVariantId] : undefined;
+  const generatedConfig = variantConfig ?? item.comboConfig ?? resolveLinkedComboConfig(item, menuItems);
+  if (generatedConfig) {
+    const variantMealMap = generatedConfig.mealItemIdByEntreeVariantId;
+    if (variantMealMap && selectedVariantId && !variantMealMap[selectedVariantId]) return undefined;
+    return generatedConfig;
+  }
 
   // Generated Chick-fil-A records must be eligible only when the official
   // source graph links the entree to a meal container. Keep the legacy
@@ -151,16 +249,42 @@ export function resolveComboMealConfig(
   return resolveLegacyChickfilaComboConfig(restaurantId, item, menuItems);
 }
 
-export function isComboMealEligible(restaurantId: string, item: MenuItem, menuItems: MenuItem[] | undefined) {
-  return Boolean(resolveComboMealConfig(restaurantId, item, menuItems));
+export function isComboMealEligible(
+  restaurantId: string,
+  item: MenuItem,
+  menuItems: MenuItem[] | undefined,
+  selectedVariantId?: string,
+) {
+  return Boolean(resolveComboMealConfig(restaurantId, item, menuItems, selectedVariantId));
 }
 
 export function resolveComboSideOptions(
   restaurantId: string,
   item: MenuItem,
-  menuItems: MenuItem[] | undefined
+  menuItems: MenuItem[] | undefined,
+  selectedVariantId?: string,
 ) {
-  const config = resolveComboMealConfig(restaurantId, item, menuItems);
+  const config = resolveComboMealConfig(restaurantId, item, menuItems, selectedVariantId);
+  if (config?.sideGroup) {
+    return resolveChoiceGroupItems(config.sideGroup, menuItems).map((side) => {
+      if (!side.comboOrdering || !config.sizeGroup) return side;
+      const mealSizeOptionIdByVariantId = Object.fromEntries(
+        (side.variants ?? []).flatMap((variant) => {
+          const size = variant.label.toLowerCase();
+          const sizeOption = config.sizeGroup?.options.find((option) => option.id === size);
+          return sizeOption ? [[variant.id, sizeOption.orderingOptionId]] : [];
+        }),
+      );
+      return {
+        ...side,
+        comboOrdering: {
+          ...side.comboOrdering,
+          mealSizeGroupId: config.sizeGroup.orderingGroupId,
+          mealSizeOptionIdByVariantId,
+        },
+      };
+    });
+  }
   const options = resolveConfiguredItems(config?.sideOptions, menuItems);
   return options.length > 0 ? [NO_SIDE_OPTION, ...options] : options;
 }
@@ -168,9 +292,69 @@ export function resolveComboSideOptions(
 export function resolveComboDrinkOptions(
   restaurantId: string,
   item: MenuItem,
-  menuItems: MenuItem[] | undefined
+  menuItems: MenuItem[] | undefined,
+  selectedVariantId?: string,
 ) {
-  const config = resolveComboMealConfig(restaurantId, item, menuItems);
+  const config = resolveComboMealConfig(restaurantId, item, menuItems, selectedVariantId);
+  if (config?.drinkGroup) {
+    return resolveChoiceGroupItems(config.drinkGroup, menuItems);
+  }
   const options = resolveConfiguredItems(config?.drinkOptions, menuItems);
   return options.length > 0 ? [NO_DRINK_OPTION, ...options] : options;
+}
+
+export function resolveComboBundleOptions(
+  restaurantId: string,
+  item: MenuItem,
+  menuItems: MenuItem[] | undefined,
+  selectedVariantId?: string,
+) {
+  const config = resolveComboMealConfig(restaurantId, item, menuItems, selectedVariantId);
+  if (!config?.bundleOptions?.length || !menuItems?.length) return [];
+  const byId = new Map(menuItems.map((candidate) => [candidate.id, candidate]));
+  return config.bundleOptions.flatMap((option, index) => {
+    const meal = byId.get(option.mealItemId);
+    const included = option.components.map((component) => byId.get(component.itemId)).filter((value): value is MenuItem => Boolean(value));
+    if (!meal || included.length !== option.components.length) return [];
+    return [{
+      id: option.id,
+      name: option.label,
+      image: meal.image,
+      categories: item.categories,
+      servingType: "combo" as const,
+      nutrition: included.reduce((sum, item, componentIndex) => {
+        const configuredComponent = option.components[componentIndex];
+        const componentNutrition = item.variants?.find((variant) => variant.id === configuredComponent.variantId)?.nutrition ?? item.nutrition;
+        return {
+        calories: sum.calories + componentNutrition.calories,
+        protein: sum.protein + componentNutrition.protein,
+        carbs: sum.carbs + componentNutrition.carbs,
+        totalFat: sum.totalFat + componentNutrition.totalFat,
+      }; }, { calories: 0, protein: 0, carbs: 0, totalFat: 0 }),
+      defaultOrder: index,
+      source: { menu: { tags: [], pins: [] }, generated: {
+        provider: "McDonald's",
+        menu: {
+          role: "required_bundle_components",
+          mealItemId: option.mealItemId,
+          bundleComponents: option.components.map((component) => ({
+            ...component,
+            label: byId.get(component.itemId)?.name,
+          })),
+        },
+      } },
+    } satisfies MenuItem];
+  });
+}
+
+export function resolveComboBundleIncludedItems(
+  config: ComboMealConfig | undefined,
+  bundleId: string | undefined,
+  menuItems: MenuItem[] | undefined,
+) {
+  if (!bundleId || !menuItems) return [];
+  const option = config?.bundleOptions?.find((candidate) => candidate.id === bundleId);
+  if (!option) return [];
+  const byId = new Map(menuItems.map((candidate) => [candidate.id, candidate]));
+  return option.components.map((component) => byId.get(component.itemId)).filter((value): value is MenuItem => Boolean(value));
 }

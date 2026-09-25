@@ -18,7 +18,8 @@ const runtimeMenuLoaders: Record<string, () => Promise<RestaurantMenu>> = {
   chipotle: async () =>
     (await import("@/lib/restaurantBuilders/chipotle/generatedRuntimeAdapter")).CHIPOTLE_GENERATED_RUNTIME_MENU,
   habit: async () => (await import("@/data/restaurants/habit.json")).default as RestaurantMenu,
-  mcdonalds: async () => (await import("@/data/restaurants/mcdonalds.json")).default as RestaurantMenu,
+  mcdonalds: async () =>
+    (await import("@/lib/restaurantBuilders/mcdonalds/generatedRuntimeAdapter")).MCDONALDS_GENERATED_RUNTIME_MENU,
   mod: async () => (await import("@/data/restaurants/mod.json")).default as RestaurantMenu,
   panda: async () => (await import("@/data/restaurants/panda.json")).default as RestaurantMenu,
   panera: async () => (await import("@/data/restaurants/panera.json")).default as RestaurantMenu,
@@ -56,7 +57,7 @@ export async function getRestaurantData(id: string): Promise<RestaurantData | nu
   // data/restaurants/index.json owns restaurant identity/metadata; individual menu JSON files own menu content only.
   // The loader merges both sources into the full RestaurantData object consumed by the app.
   //
-  // Chick-fil-A, Chipotle, and Starbucks are promoted from their generated datasets.
+  // Chick-fil-A, Chipotle, McDonald's, and Starbucks are promoted from their generated datasets.
   // Chipotle passes through its runtime/presentation adapter so generated
   // provenance and canonical ids remain intact while the existing UI gets
   // its curated browse/navigation shape. The old hand-authored JSON remains
