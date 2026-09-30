@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "next dev --webpack",
     "build": "next build",
+    "build:capacitor": "node scripts/build-capacitor.mjs",
     "start": "next start",
     "lint": "eslint",
     "test": "node --import tsx --test tests/*.test.mjs",
@@ -31,6 +32,8 @@
     "review:chick-fil-a": "node --import tsx scripts/review/chick-fil-a.ts"
   },
   "dependencies": {
+    "@capacitor/core": "^8.5.2",
+    "@capacitor/ios": "^8.5.2",
     "@next/third-parties": "^16.3.4",
     "@vercel/analytics": "^2.0.1",
     "@vercel/speed-insights": "^2.0.0",
@@ -44,6 +47,7 @@
     "sharp": "^0.34.5"
   },
   "devDependencies": {
+    "@capacitor/cli": "^8.5.2",
     "@tailwindcss/postcss": "^4.1.18",
     "@types/node": "^20",
     "@types/react": "^19",

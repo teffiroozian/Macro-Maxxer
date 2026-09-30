@@ -38,11 +38,11 @@ export default function GlobalMobileNav({
 
   return (
     <div
-      className="fixed left-0 right-0 top-0 z-[95] lg:hidden"
+      className="fixed left-0 right-0 top-0 z-[95] bg-white pt-[env(safe-area-inset-top)] lg:hidden"
       data-global-nav="true"
       data-sticky-nav={markStickyNav ? "true" : undefined}
     >
-      <div className="relative z-[110] mx-auto mt-1 flex w-[calc(100%-0.5rem)] max-w-6xl items-center rounded-2xl border border-black/10 bg-white shadow-elev-brand sm:w-[calc(100%-1rem)]">
+      <div className="relative z-[110] mx-auto flex w-full max-w-6xl items-center border-b border-black/10 bg-white shadow-elev-brand">
         {/* px-2/sm:px-4 matches RestaurantCategorySidebar's mobile category
             strip (and, through it, the active-filter row merged into it) so
             every stacked row in the sticky mobile nav shares the same outer

@@ -1,21 +1,27 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
+import { Suspense } from "react";
 import RestaurantPageContent from "@/components/RestaurantPageContent";
 import { getRestaurantData } from "@/lib/restaurants";
+import { getStaticRestaurantParams } from "@/lib/staticRouteParams";
+import { IS_CAPACITOR_BUILD } from "@/lib/buildTarget";
 
 type RestaurantPageProps = {
   params: Promise<{ id: string }>;
   searchParams: Promise<Record<string, string | string[] | undefined>>;
 };
 
+export function generateStaticParams() {
+  return getStaticRestaurantParams();
+}
+
 export async function generateMetadata({
   searchParams,
 }: RestaurantPageProps): Promise<Metadata> {
-  const query = await searchParams;
+  if (IS_CAPACITOR_BUILD) return {};
 
-  if (Object.keys(query).length === 0) {
-    return {};
-  }
+  const query = await searchParams;
+  if (Object.keys(query).length === 0) return {};
 
   return {
     robots: {
@@ -40,5 +46,9 @@ export default async function RestaurantPage({
     notFound();
   }
 
-  return <RestaurantPageContent restaurantData={restaurantData} />;
+  return (
+    <Suspense fallback={null}>
+      <RestaurantPageContent restaurantData={restaurantData} />
+    </Suspense>
+  );
 }

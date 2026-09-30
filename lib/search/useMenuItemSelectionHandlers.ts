@@ -7,6 +7,7 @@ import type { ContentSearchResult } from "@/lib/search/searchAllContent";
 import type { BuilderEntreeOption } from "@/types/builder";
 import type { IngredientItem, MenuItem } from "@/types/menu";
 import type { RestaurantIndexEntry } from "@/types/restaurant";
+import { IS_CAPACITOR_BUILD } from "@/lib/buildTarget";
 
 // Shared "select a menu item" / "start a build" behavior for every Global
 // Search surface (nav dropdown + mobile overlay, homepage hero) — the two
@@ -32,7 +33,7 @@ export function useMenuItemSelectionHandlers({
     addRecentMenuItem({ kind: "menu-item", item, restaurant });
     onAfterSelect();
 
-    if (currentRestaurantId === restaurant.id) {
+    if (currentRestaurantId === restaurant.id && !IS_CAPACITOR_BUILD) {
       // Already on this restaurant's page (menu, an entree-selection/builder
       // view, or another item's modal) — a same-restaurant push is a sibling
       // navigation, so Next's intercepted @modal route engages and layers

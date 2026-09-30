@@ -33,6 +33,8 @@ import type { ComparativeLabelKind } from "@/lib/menuSections/comparativeLabels"
 import { getRestaurantImagePresentation } from "@/lib/restaurantPresentation";
 import RestaurantItemImage from "@/components/ui/RestaurantItemImage";
 import { incrementIngredientCountWithinCategoryLimit } from "@/lib/menuItemCard/ingredientCountCustomization";
+import { useGlobalItemPreview } from "@/components/GlobalItemPreviewContext";
+import { IS_CAPACITOR_BUILD } from "@/lib/buildTarget";
 
 // Same portion multipliers already used across the build-your-own portion
 // modes (light/normal/extra for rice, beans, toppings; normal/double for
@@ -252,6 +254,7 @@ export default function MenuItemCard({
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
+  const { openPreview } = useGlobalItemPreview();
   const id = useId();
   const shouldOpenModalOnCardClick = mode !== "cart" && Boolean(itemHref) && showDetailsButton;
   const variants = item.variants?.length ? item.variants : null;
@@ -648,6 +651,10 @@ export default function MenuItemCard({
 
   const openItemDetails = () => {
     if (shouldOpenModalOnCardClick && itemHref) {
+      if (IS_CAPACITOR_BUILD) {
+        void openPreview(restaurantId, item);
+        return;
+      }
       const query = searchParams.toString();
       router.push(query ? `${itemHref}?${query}` : itemHref, { scroll: false });
       return;
@@ -657,6 +664,10 @@ export default function MenuItemCard({
 
   const handleCardActivate = () => {
     if (shouldOpenModalOnCardClick && itemHref) {
+      if (IS_CAPACITOR_BUILD) {
+        void openPreview(restaurantId, item);
+        return;
+      }
       const query = searchParams.toString();
       router.push(query ? `${itemHref}?${query}` : itemHref, { scroll: false });
       return;

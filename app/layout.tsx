@@ -3,7 +3,7 @@ import { SpeedInsights } from "@vercel/speed-insights/next";
 import type { Metadata, Viewport } from "next";
 import { Suspense } from "react";
 import { GoogleAnalytics } from "@next/third-parties/google";
-import { Outfit, Unbounded } from "next/font/google";
+import localFont from "next/font/local";
 import { GlobalSearchProvider } from "@/components/GlobalSearchContext";
 import { GlobalItemPreviewProvider } from "@/components/GlobalItemPreviewContext";
 import { CartAddConfirmationProvider } from "@/components/CartAddConfirmationContext";
@@ -30,16 +30,19 @@ import "./globals.css";
 // `display: "swap"` on both — self-hosted by next/font (no runtime network
 // request), so the swap window is effectively immediate rather than a
 // visible fallback-font flash.
-const outfit = Outfit({
+const outfit = localFont({
+    src: [
+        { path: "../public/fonts/Outfit-Regular.ttf", weight: "400", style: "normal" },
+        { path: "../public/fonts/Outfit-Bold.ttf", weight: "700", style: "normal" },
+    ],
     variable: "--font-outfit",
-    subsets: ["latin"],
     display: "swap",
 });
 
-const unbounded = Unbounded({
+const unbounded = localFont({
+    src: "../public/fonts/Unbounded-Bold.ttf",
     variable: "--font-unbounded",
-    subsets: ["latin"],
-    weight: ["500", "600", "700", "800"],
+    weight: "700",
     display: "swap",
 });
 

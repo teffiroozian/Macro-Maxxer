@@ -3,12 +3,17 @@ import { getAllRestaurants, getRestaurantData } from '@/lib/restaurants';
 import { loadOgFonts, loadOgImage } from '@/lib/og/assets';
 import { fitOgText, ogHeadline, selectOgFeatured } from '@/lib/og/restaurant';
 import MenuItemPreview from '@/lib/og/MenuItemPreview';
+import { getStaticRestaurantParams } from '@/lib/staticRouteParams';
 
 export const alt = 'Restaurant nutrition and high-protein menu options on Macro Maxxer';
 export const size = { width: 1200, height: 630 };
 export const contentType = 'image/png';
 export const runtime = 'nodejs';
 export const revalidate = 86400;
+
+export function generateStaticParams() {
+  return getStaticRestaurantParams();
+}
 
 export default async function RestaurantOgImage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;

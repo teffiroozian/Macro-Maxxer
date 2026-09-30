@@ -425,8 +425,12 @@
     }
 } */
 
+html,
 body {
-    background: var(--surface-app-background);
+    background: #ffffff;
+}
+
+body {
     color: var(--foreground);
     overflow-x: hidden;
 }

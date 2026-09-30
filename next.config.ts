@@ -1,10 +1,17 @@
 import type { NextConfig } from "next";
 
+const isCapacitorBuild = process.env.CAPACITOR_BUILD === "1";
+
 const nextConfig: NextConfig = {
+  ...(isCapacitorBuild ? { output: "export" as const } : {}),
+  env: {
+    NEXT_PUBLIC_CAPACITOR_BUILD: isCapacitorBuild ? "1" : "0",
+  },
   outputFileTracingIncludes: {
     '/restaurant/*/opengraph-image': ['./public/fonts/**/*', './public/logo.svg', './public/restaurants/**/*'],
   },
   images: {
+    unoptimized: isCapacitorBuild,
     remotePatterns: [
       // Official Chick-fil-A ordering-menu CDN — the generated Chick-fil-A
       // dataset (data/restaurants/chick-fil-a/generated/restaurant.json) points every

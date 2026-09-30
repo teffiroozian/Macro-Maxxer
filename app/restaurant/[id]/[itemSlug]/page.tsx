@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
+import { Suspense } from "react";
 import ItemRouteModal from "@/components/item-route-modal/ItemRouteModal";
 import RestaurantPageContent from "@/components/RestaurantPageContent";
 import { getRestaurantItemRouteData } from "@/lib/restaurantItemRouteData";
@@ -25,7 +26,7 @@ export default async function ItemPage({
   const { restaurant, item, addons, initialVariantId } = routeData;
 
   return (
-    <>
+    <Suspense fallback={null}>
       <RestaurantPageContent restaurantData={restaurant} />
       <ItemRouteModal
         restaurantId={restaurant.id}
@@ -40,6 +41,6 @@ export default async function ItemPage({
         closeBehavior="replace"
         initialVariantId={initialVariantId}
       />
-    </>
+    </Suspense>
   );
 }

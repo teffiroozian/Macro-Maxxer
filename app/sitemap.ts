@@ -2,6 +2,8 @@ import type { MetadataRoute } from "next";
 import { getAllRestaurants } from "@/lib/restaurants";
 import { SITE_URL } from "@/lib/site";
 
+export const dynamic = "force-static";
+
 export default function sitemap(): MetadataRoute.Sitemap {
   const restaurantPages = getAllRestaurants()
     .filter((restaurant) => !restaurant.isComingSoon)
