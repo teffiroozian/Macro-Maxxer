@@ -19,7 +19,7 @@ const listClassName = "mt-3 list-disc space-y-1.5 pl-5 text-sm leading-7 text-sl
 
 export default function PrivacyPage() {
   return (
-    <div className="relative isolate min-h-screen">
+    <div className="relative isolate min-h-[var(--app-viewport-height)]">
       <HomeBackdrop />
 
       <header>

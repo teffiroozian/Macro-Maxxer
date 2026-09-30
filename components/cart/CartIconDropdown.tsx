@@ -16,6 +16,7 @@ import ItemRouteModal from "@/components/item-route-modal/ItemRouteModal";
 import { useCartItemEditModal } from "@/hooks/useCartItemEditModal";
 import { useLastAddedPreviewOpen } from "@/hooks/useLastAddedPreviewOpen";
 import { getRemainingLastAddedPreviewMs, LAST_ADDED_PREVIEW_DURATION_MS } from "@/lib/cart/lastAddedPreview";
+import CartItemCountBadge from "@/components/cart/CartItemCountBadge";
 
 type CartIconDropdownProps = {
   buttonClassName: string;
@@ -137,11 +138,7 @@ export default function CartIconDropdown({
   const countLabel = (
     <>
       <ShoppingCart className="h-4 w-4" strokeWidth={2.5} />
-      {cartCount > 0 ? (
-        <span className="absolute -right-1 -top-1 inline-flex min-h-4 min-w-4 items-center justify-center rounded-full bg-slate-900 px-1 text-[10px] leading-none font-bold tabular-nums text-white">
-          {cartCount}
-        </span>
-      ) : null}
+      <CartItemCountBadge count={cartCount} />
     </>
   );
 

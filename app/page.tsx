@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import HeroSearchNav from "@/components/home/HeroSearchNav";
 import HomeBackdrop from "@/components/home/HomeBackdrop";
 import RestaurantCarousel from "@/components/home/RestaurantCarousel";
@@ -10,6 +11,7 @@ import ProductWalkthrough, {
 import type { RestaurantData } from "@/types/restaurant";
 import HomeSectionHeading from "@/components/home/HomeSectionHeading";
 import HomeSectionContainer, { HOME_VISUAL_WIDTH_CLASS } from "@/components/home/HomeSectionContainer";
+import LiveRestaurantsBadge from "@/components/home/LiveRestaurantsBadge";
 import { RestaurantUiProvider } from "@/components/RestaurantUiContext";
 import CartPreviewDrawer from "@/components/cart/CartPreviewDrawer";
 import { getAllRestaurants, getRestaurantData, toItemSlug } from "@/lib/restaurants";
@@ -218,21 +220,21 @@ export default async function Home() {
             <HomeSectionContainer id="restaurants" className="scroll-mt-24 pb-16 pt-4 sm:pb-20 lg:pb-24">
               <HomeSectionHeading
                 eyebrowVariant="pill"
-                eyebrow={
-                  <span className="inline-flex items-center gap-2 rounded-full border border-black/10 bg-white/70 px-3 py-1 text-xs font-semibold text-slate-600">
-                    {/* "success" semantic role — an available/live status. */}
-                    <span className="relative flex h-2 w-2">
-                      <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-success opacity-75" />
-                      <span className="relative inline-flex h-2 w-2 rounded-full bg-success" />
-                    </span>
-                    {liveRestaurants.length} restaurant{liveRestaurants.length === 1 ? "" : "s"} live now
-                  </span>
-                }
+                eyebrow={<LiveRestaurantsBadge count={liveRestaurants.length} />}
                 heading="Jump Straight to the Menu"
                 description="Every supported restaurant comes with a full menu, real nutrition data, and an order builder."
               />
 
-              <div className={`mx-auto mt-10 w-full ${HOME_VISUAL_WIDTH_CLASS}`}>
+              <div className="mt-4 text-center">
+                <Link
+                  href="/restaurants"
+                  className="inline-flex items-center gap-1 text-sm font-semibold text-slate-600 transition hover:text-slate-950 focus-ring"
+                >
+                  View all restaurants <span aria-hidden="true">→</span>
+                </Link>
+              </div>
+
+              <div className={`mx-auto mt-8 w-full ${HOME_VISUAL_WIDTH_CLASS}`}>
                 <RestaurantCarousel restaurants={liveRestaurants} />
               </div>
             </HomeSectionContainer>

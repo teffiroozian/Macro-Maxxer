@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -38,7 +38,7 @@ export default function MobileNavDrawer({
   const [activeTab, setActiveTab] = useState<DrawerTab>(defaultTab);
   const [isFeaturedOpen, setIsFeaturedOpen] = useState(true);
   const [wasOpen, setWasOpen] = useState(isOpen);
-  const visibleRestaurants = getAllRestaurants();
+  const availableRestaurants = getAllRestaurants().filter((restaurant) => !restaurant.isComingSoon);
   const panelRef = useRef<HTMLDivElement | null>(null);
   const closeButtonRef = useRef<HTMLButtonElement | null>(null);
   const router = useRouter();
@@ -68,18 +68,6 @@ export default function MobileNavDrawer({
     }
   }
 
-  // Same grouping desktop uses (DesktopRestaurantMenu): split on
-  // isComingSoon rather than isMacroFriendly, so every restaurant shows up
-  // (McDonald's isn't macro-friendly but is still a real Coming Soon entry)
-  // and the two lists land in the same order/sections as desktop.
-  const { availableRestaurants, comingSoonRestaurants } = useMemo(
-    () => ({
-      availableRestaurants: visibleRestaurants.filter((restaurant) => !restaurant.isComingSoon),
-      comingSoonRestaurants: visibleRestaurants.filter((restaurant) => restaurant.isComingSoon),
-    }),
-    [visibleRestaurants]
-  );
-
   return (
     <div
       className={`fixed inset-0 z-[210] lg:hidden ${isOpen ? "" : "pointer-events-none"}`}
@@ -99,7 +87,7 @@ export default function MobileNavDrawer({
       />
       <div
         ref={panelRef}
-        className={`absolute inset-y-0 left-0 flex w-[min(90vw,360px)] flex-col bg-white shadow-[0_18px_40px_rgba(0,0,0,0.24)] transition-transform duration-200 ${
+        className={`absolute inset-y-0 left-0 flex h-[var(--app-viewport-height)] w-[min(90vw,360px)] flex-col bg-white pt-[var(--safe-area-top)] shadow-[0_18px_40px_rgba(0,0,0,0.24)] transition-transform duration-200 ${
           isOpen ? "translate-x-0" : "-translate-x-full"
         }`}
       >
@@ -155,7 +143,7 @@ export default function MobileNavDrawer({
           </div>
         </div>
 
-        <div className="flex-1 overflow-y-auto px-4 py-4">
+        <div className="flex-1 overflow-y-auto overscroll-contain px-4 pb-[max(1rem,var(--safe-area-bottom))] pt-4">
           {activeTab === "controls" && showControls ? (
             <div>{controlsContent}</div>
           ) : (
@@ -206,37 +194,22 @@ export default function MobileNavDrawer({
                       </div>
                     </div>
 
-                    {comingSoonRestaurants.length > 0 ? (
-                      <div>
-                        <div className="mb-3 border-t border-black/5" />
-                        <p className="px-1 pb-1.5 text-label text-slate-400">Coming Soon</p>
-                        <div className="divide-y divide-black/5 overflow-hidden rounded-xl border border-black/5">
-                          {comingSoonRestaurants.map((restaurant) => (
-                            <div
-                              key={restaurant.id}
-                              aria-disabled="true"
-                              className="flex items-center justify-between gap-2 bg-white px-3 py-2.5 text-sm font-semibold text-slate-400"
-                            >
-                              <span className="inline-flex min-w-0 items-center gap-2.5">
-                                <RestaurantLogoBadge
-                                  src={restaurant.logo}
-                                  alt={`${restaurant.name} logo`}
-                                  size="xs"
-                                  ring={false}
-                                  fit="cover"
-                                  grayscale
-                                  className="opacity-50 ring-1 ring-black/5"
-                                />
-                                <span className="truncate">{restaurant.name}</span>
-                              </span>
-                              <span className="shrink-0 text-[10px] font-medium uppercase tracking-wide text-slate-400">
-                                Coming Soon
-                              </span>
-                            </div>
-                          ))}
-                        </div>
-                      </div>
-                    ) : null}
+                    <div>
+                      <div className="mx-2 mb-2 border-t border-black/10" />
+                      <Link
+                        href="/restaurants"
+                        onClick={(event) => {
+                          onClose();
+                          if (!isPlainLeftClick(event)) return;
+                          event.preventDefault();
+                          guardNavigation(() => router.push("/restaurants"));
+                        }}
+                        className="flex items-center justify-between rounded-xl px-3 py-2.5 text-sm font-semibold text-slate-800 transition-colors hover:bg-slate-50 active:bg-slate-100"
+                      >
+                        <span>All Restaurants</span>
+                        <ChevronRight className="h-4 w-4 shrink-0 text-slate-400" strokeWidth={2.5} />
+                      </Link>
+                    </div>
                   </div>
                 ) : null}
               </section>
@@ -244,7 +217,7 @@ export default function MobileNavDrawer({
           )}
         </div>
         {activeTab === "controls" && showControls && controlsFooter ? (
-          <div className="sticky bottom-0 border-t border-black/5 bg-white px-4 py-3 shadow-[0_-6px_16px_rgba(15,23,42,0.06)]">
+          <div className="sticky bottom-0 border-t border-black/5 bg-white px-4 pb-[max(0.75rem,var(--safe-area-bottom))] pt-3 shadow-[0_-6px_16px_rgba(15,23,42,0.06)]">
             {controlsFooter}
           </div>
         ) : null}

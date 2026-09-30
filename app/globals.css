@@ -118,6 +118,20 @@
     --gutter-desktop: 24px;
     --gutter-mobile: 16px;
 
+    /* The viewport is allowed to extend behind iOS system UI via
+       `viewport-fit=cover`. Keep the insets named in one place so every
+       full-height surface can use the same zero-on-web, real-on-device
+       values without notch-specific assumptions. */
+    --safe-area-top: env(safe-area-inset-top, 0px);
+    --safe-area-right: env(safe-area-inset-right, 0px);
+    --safe-area-bottom: env(safe-area-inset-bottom, 0px);
+    --safe-area-left: env(safe-area-inset-left, 0px);
+    --app-viewport-height: 100vh;
+    --native-bottom-nav-content-height: 3.5rem;
+    --native-bottom-nav-height: calc(
+        var(--native-bottom-nav-content-height) + var(--safe-area-bottom)
+    );
+
     /* Control-height scale (Design System PDF gap/height row: 32 / 40 / 48).
        Matches components/ui/AppButton.tsx's existing sm/md/lg heights
        (h-8/h-10/h-12) — formalized here rather than redefined. h-9/h-11
@@ -425,14 +439,69 @@
     }
 } */
 
-html,
-body {
-    background: #ffffff;
+html {
+    min-height: 100%;
+    scroll-padding-top: calc(var(--safe-area-top) + 4rem);
+    scroll-padding-bottom: calc(var(--safe-area-bottom) + 1rem);
 }
 
 body {
+    min-height: var(--app-viewport-height);
+    margin: 0;
+    background: var(--surface-app-background);
     color: var(--foreground);
     overflow-x: hidden;
+}
+
+/* The native WebView extends beneath iOS system UI. Keep its canvas solid
+   behind the status bar and home indicator without changing the web
+   document background that the existing Macro Maxxer backdrop relies on. */
+html.capacitor-native,
+html.capacitor-native body {
+    background: #ffffff;
+}
+
+html.capacitor-native body {
+    padding-bottom: var(--native-bottom-nav-height);
+}
+
+/* Native has its own persistent tab bar. Web keeps every existing global
+   top-nav presentation unchanged. */
+html.capacitor-native [data-global-nav="true"] {
+    display: none !important;
+}
+
+html.capacitor-native .native-top-level-page {
+    padding-top: calc(2rem + var(--safe-area-top));
+}
+
+html.capacitor-native .native-home-page {
+    padding-top: var(--safe-area-top);
+}
+
+html.capacitor-native .native-sticky-action {
+    bottom: var(--native-bottom-nav-height);
+}
+
+/* The existing search sheet is mobile-first and normally disappears at the
+   desktop breakpoint. A native tab must keep the same sheet available on
+   wider iOS devices as well. */
+html.capacitor-native .native-global-search {
+    display: flex !important;
+}
+
+@supports (height: 100dvh) {
+    :root {
+        --app-viewport-height: 100dvh;
+    }
+}
+
+/* Give browser-driven focus scrolling room above and below form controls.
+   This is especially important in the iOS WebView, where the visual
+   viewport becomes shorter while the keyboard is present. */
+:where(input, textarea, select, [contenteditable="true"]) {
+    scroll-margin-top: calc(var(--safe-area-top) + 4rem);
+    scroll-margin-bottom: calc(var(--safe-area-bottom) + 1rem);
 }
 
 /* Hides the scrollbar on the homepage restaurant carousel track while
@@ -551,6 +620,53 @@ body {
     }
     50% {
         transform: translateY(var(--hero-float-distance, -6px));
+    }
+}
+
+/* Restaurants page logo rail. Each group includes the same trailing gap as
+   its internal logo spacing, making the two groups exactly equal widths.
+   Translating the combined track by 50% therefore moves precisely one full
+   group and resets on an identical frame with no empty seam. */
+@keyframes restaurant-logo-marquee {
+    to {
+        transform: translateX(-50%);
+    }
+}
+
+.restaurant-logo-marquee-track {
+    animation: restaurant-logo-marquee 24s linear infinite;
+    will-change: transform;
+}
+
+.restaurant-logo-marquee-group {
+    display: flex;
+    flex-shrink: 0;
+    align-items: center;
+    gap: 1.5rem;
+    padding-right: 1.5rem;
+}
+
+@media (min-width: 640px) {
+    .restaurant-logo-marquee-group {
+        gap: 2rem;
+        padding-right: 2rem;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .restaurant-logo-marquee-track {
+        width: 100%;
+        justify-content: center;
+        animation: none;
+        will-change: auto;
+    }
+
+    .restaurant-logo-marquee-group:first-child {
+        padding-right: 0;
+    }
+
+    .restaurant-logo-marquee-group[aria-hidden="true"] {
+        display: none;
     }
 }
 

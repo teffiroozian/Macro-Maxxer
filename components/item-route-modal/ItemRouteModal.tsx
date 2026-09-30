@@ -1665,7 +1665,7 @@ export default function ItemRouteModal({
 
     return (
         <div
-            className="fixed inset-0 z-[235] flex items-end justify-center sm:items-center sm:p-6"
+            className="fixed inset-0 z-[235] flex h-[var(--app-viewport-height)] items-end justify-center pt-[var(--safe-area-top)] sm:items-center sm:p-6"
             role="dialog"
             aria-modal="true"
             aria-label={item.name}
@@ -1676,7 +1676,7 @@ export default function ItemRouteModal({
                 onClick={handleClose}
                 aria-label="Close item modal"
             />
-            <div className="item-route-modal-root relative flex h-[92dvh] w-full flex-col overflow-hidden rounded-t-3xl bg-white shadow-[0_24px_70px_rgba(15,23,42,0.35)] sm:h-auto sm:max-h-[88vh] sm:min-h-[78vh] sm:w-full sm:max-w-[660px] sm:rounded-3xl md:max-w-[800px] lg:max-w-[1000px]">
+            <div className="item-route-modal-root relative flex h-[min(92dvh,calc(100dvh-var(--safe-area-top)))] w-full flex-col overflow-hidden rounded-t-3xl bg-white shadow-[0_24px_70px_rgba(15,23,42,0.35)] sm:h-auto sm:max-h-[88dvh] sm:min-h-[78dvh] sm:w-full sm:max-w-[660px] sm:rounded-3xl md:max-w-[800px] lg:max-w-[1000px]">
                 <div
                     className={`absolute inset-x-0 top-0 z-20 flex items-center justify-between gap-3 border-b bg-white px-4 py-3 transition-[opacity,transform,box-shadow,border-color] duration-300 ease-out sm:px-6 sm:py-4 lg:px-8 ${
                         isOverviewCollapsed

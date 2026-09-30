@@ -18,7 +18,7 @@ const paragraphClassName = "mt-3 text-sm leading-7 text-slate-600 sm:text-base";
 
 export default function TermsPage() {
   return (
-    <div className="relative isolate min-h-screen">
+    <div className="relative isolate min-h-[var(--app-viewport-height)]">
       <HomeBackdrop />
 
       <header>

@@ -3,7 +3,7 @@ import { SpeedInsights } from "@vercel/speed-insights/next";
 import type { Metadata, Viewport } from "next";
 import { Suspense } from "react";
 import { GoogleAnalytics } from "@next/third-parties/google";
-import localFont from "next/font/local";
+import { Outfit, Unbounded } from "next/font/google";
 import { GlobalSearchProvider } from "@/components/GlobalSearchContext";
 import { GlobalItemPreviewProvider } from "@/components/GlobalItemPreviewContext";
 import { CartAddConfirmationProvider } from "@/components/CartAddConfirmationContext";
@@ -13,6 +13,8 @@ import GlobalItemPreviewModal from "@/components/GlobalItemPreviewModal";
 import CrossRestaurantCartDialog from "@/components/cart/CrossRestaurantCartDialog";
 import InProgressBuildDialog from "@/components/InProgressBuildDialog";
 import SiteFooter from "@/components/SiteFooter";
+import NativeBottomNav from "@/components/NativeBottomNav";
+import { IS_CAPACITOR_BUILD } from "@/lib/buildTarget";
 import { SITE_DESCRIPTION, SITE_NAME, SITE_URL } from "@/lib/site";
 import "./globals.css";
 
@@ -30,19 +32,16 @@ import "./globals.css";
 // `display: "swap"` on both — self-hosted by next/font (no runtime network
 // request), so the swap window is effectively immediate rather than a
 // visible fallback-font flash.
-const outfit = localFont({
-    src: [
-        { path: "../public/fonts/Outfit-Regular.ttf", weight: "400", style: "normal" },
-        { path: "../public/fonts/Outfit-Bold.ttf", weight: "700", style: "normal" },
-    ],
+const outfit = Outfit({
     variable: "--font-outfit",
+    subsets: ["latin"],
     display: "swap",
 });
 
-const unbounded = localFont({
-    src: "../public/fonts/Unbounded-Bold.ttf",
+const unbounded = Unbounded({
     variable: "--font-unbounded",
-    weight: "700",
+    subsets: ["latin"],
+    weight: ["500", "600", "700", "800"],
     display: "swap",
 });
 
@@ -95,7 +94,7 @@ export default function RootLayout({
     children: React.ReactNode;
 }>) {
     return (
-        <html lang="en">
+        <html lang="en" className={IS_CAPACITOR_BUILD ? "capacitor-native" : undefined}>
             <body
                 className={`${outfit.className} ${unbounded.variable} antialiased`}
             >
@@ -104,13 +103,14 @@ export default function RootLayout({
                         <CartAddConfirmationProvider>
                             <BuildInProgressGuardProvider>
                                 {children}
-                                <SiteFooter />
+                                {!IS_CAPACITOR_BUILD ? <SiteFooter /> : null}
                                 <Suspense fallback={null}>
                                     <GlobalSearchOverlay />
                                 </Suspense>
                                 <GlobalItemPreviewModal />
                                 <CrossRestaurantCartDialog />
                                 <InProgressBuildDialog />
+                                {IS_CAPACITOR_BUILD ? <NativeBottomNav /> : null}
                             </BuildInProgressGuardProvider>
                         </CartAddConfirmationProvider>
                     </GlobalItemPreviewProvider>

@@ -100,7 +100,7 @@ export default function GlobalSearchOverlay() {
       aria-label="Search"
       aria-hidden={!isOpen}
       inert={!isOpen}
-      className={`fixed inset-x-0 bottom-auto top-0 z-[230] flex h-[100dvh] items-end justify-center overflow-hidden bg-overlay-scrim transition-opacity duration-300 lg:hidden ${
+      className={`native-global-search fixed inset-x-0 bottom-auto top-0 z-[230] flex h-[100dvh] items-end justify-center overflow-hidden bg-overlay-scrim transition-opacity duration-300 lg:hidden ${
         isOpen ? "opacity-100" : "pointer-events-none opacity-0"
       }`}
       onClick={close}

@@ -61,7 +61,7 @@ function getWrapperClassName(inline: boolean, isCartLayout: boolean, visible: bo
 
   return `fixed left-0 right-0 ${
     isCartLayout
-      ? "bottom-2 max-w-5xl px-2 sm:bottom-4 sm:px-6"
+      ? "bottom-[max(0.5rem,var(--safe-area-bottom))] max-w-5xl px-2 sm:bottom-4 sm:px-6"
       : "bottom-0 md:bottom-1 md:max-w-6xl md:px-2"
   } mx-auto z-[120] transition-all duration-300 ease-out ${
     visible
@@ -429,7 +429,7 @@ export default function StickyMacroTotalsBar({
             />
             <div
               ref={expandedPanelRef}
-              className={`relative z-10 flex h-[94vh] max-h-[94vh] w-[92vw] max-w-[1440px] flex-col overflow-hidden rounded-2xl border border-black/10 bg-white shadow-[0_10px_30px_rgba(0,0,0,0.24)] transition-[opacity,transform] duration-200 ease-out ${
+              className={`relative z-10 flex h-[94dvh] max-h-[94dvh] w-[92vw] max-w-[1440px] flex-col overflow-hidden rounded-2xl border border-black/10 bg-white shadow-[0_10px_30px_rgba(0,0,0,0.24)] transition-[opacity,transform] duration-200 ease-out ${
                 isDesktopEntered
                   ? "translate-y-0 scale-100 opacity-100"
                   : "translate-y-[10px] scale-[0.98] opacity-0"
@@ -470,17 +470,17 @@ export default function StickyMacroTotalsBar({
         tabIndex={isMobileSheetOpen ? 0 : -1}
       />
       <div
-        className={`lg:hidden fixed inset-x-0 bottom-0 z-[120] transition-opacity duration-300 ease-out ${
+        className={`native-sticky-action lg:hidden fixed inset-x-0 bottom-0 z-[120] transition-opacity duration-300 ease-out ${
           visible ? "opacity-100" : "pointer-events-none opacity-0"
         }`}
         role={isMobileSheetOpen ? "dialog" : undefined}
         aria-modal={isMobileSheetOpen ? true : undefined}
         aria-label={isMobileSheetOpen ? "Build summary" : undefined}
       >
-        <div className="relative flex max-h-[94vh] flex-col overflow-hidden rounded-t-3xl border-t border-slate-200/70 bg-white shadow-[0_-8px_24px_rgba(0,0,0,0.14)]">
+        <div className="relative flex max-h-[calc(100dvh-var(--safe-area-top))] flex-col overflow-hidden rounded-t-3xl border-t border-slate-200/70 bg-white shadow-[0_-8px_24px_rgba(0,0,0,0.14)]">
           <div
             className={`overflow-hidden transition-[max-height] duration-300 ease-out ${
-              isMobileSheetOpen ? "max-h-[85vh]" : "max-h-0"
+              isMobileSheetOpen ? "max-h-[85dvh]" : "max-h-0"
             }`}
             // Content stays mounted (and visible) throughout the close
             // animation on purpose — see the note above — so `inert`
@@ -488,7 +488,7 @@ export default function StickyMacroTotalsBar({
             // order/accessibility tree while it's clipped to zero height.
             inert={!isMobileSheetOpen}
           >
-            <div className="h-[85vh] min-h-0">{hasMobileDetailsEverOpened ? detailsContent : null}</div>
+            <div className="h-[85dvh] min-h-0">{hasMobileDetailsEverOpened ? detailsContent : null}</div>
           </div>
           <div
             className={`shrink-0 px-4 pt-2 pb-[max(1rem,env(safe-area-inset-bottom))] ${

@@ -99,7 +99,7 @@ export default function CartPreviewDrawer() {
       />
 
       <aside
-        className={`fixed right-0 top-0 z-[125] h-full w-[88%] max-w-md border-l border-slate-200 bg-white shadow-[0_18px_50px_rgba(15,23,42,0.22)] transition-transform duration-300 sm:w-[78%] ${
+        className={`fixed right-0 top-0 z-[125] h-[var(--app-viewport-height)] w-[88%] max-w-md border-l border-slate-200 bg-white pt-[var(--safe-area-top)] shadow-[0_18px_50px_rgba(15,23,42,0.22)] transition-transform duration-300 sm:w-[78%] ${
           isCartOpen ? "translate-x-0" : "translate-x-full"
         }`}
         aria-hidden={!isCartOpen}
@@ -214,7 +214,7 @@ export default function CartPreviewDrawer() {
             )}
           </section>
 
-          <section className="shrink-0 border-t border-slate-200 px-5 py-4">
+          <section className="shrink-0 border-t border-slate-200 px-5 pb-[max(1rem,var(--safe-area-bottom))] pt-4">
             <div>
               <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-slate-500">
                 Total Macros

@@ -737,7 +737,7 @@ function DesktopCategorySidebar({
   return (
     <aside
       className="sticky hidden w-60 max-w-60 shrink-0 flex-col py-4 lg:flex"
-      style={{ top: stickyTop, maxHeight: `calc(100vh - ${stickyTop}px)` }}
+      style={{ top: stickyTop, maxHeight: `calc(100dvh - ${stickyTop}px - var(--safe-area-bottom))` }}
     >
       <SectionEyebrow as="h3" className="mb-3 shrink-0 text-xs">
         {effectiveViewMode === "ranking" ? "Categories" : effectiveViewMode === "ingredients" ? "Ingredients" : "Categories"}

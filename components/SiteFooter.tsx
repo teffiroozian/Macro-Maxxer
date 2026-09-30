@@ -12,7 +12,7 @@ const REPOSITORY_URL = "https://github.com/teffiroozian/Macro-Maxxer";
 // panel, macro-color signature, legal links, and external repository link.
 export default function SiteFooter() {
   return (
-    <footer className="relative mt-8 overflow-hidden border-t border-black/5 bg-gradient-to-b from-transparent via-emerald-50/30 to-emerald-50/60">
+    <footer className="relative mt-8 overflow-hidden border-t border-black/5 bg-gradient-to-b from-transparent via-emerald-50/30 to-emerald-50/60 pb-[var(--safe-area-bottom)]">
       <div
         aria-hidden="true"
         className="pointer-events-none absolute right-[-120px] top-[-120px] h-72 w-72 rounded-full bg-[radial-gradient(closest-side,rgba(5,150,105,0.16),transparent_75%)] blur-2xl"

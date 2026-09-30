@@ -40,7 +40,7 @@ export default function Dialog({
       aria-modal="true"
       aria-labelledby={titleId}
       aria-describedby={descriptionId}
-      className="fixed inset-0 z-[var(--z-dialog)] flex items-end justify-center bg-overlay-scrim p-3 sm:items-center sm:p-4"
+      className="fixed inset-0 z-[var(--z-dialog)] flex h-[var(--app-viewport-height)] items-end justify-center bg-overlay-scrim px-3 pb-[max(0.75rem,var(--safe-area-bottom))] pt-[max(0.75rem,var(--safe-area-top))] sm:items-center sm:p-4"
       onClick={onClose}
     >
       <div

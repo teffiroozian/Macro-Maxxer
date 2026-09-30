@@ -168,7 +168,7 @@ export default function HeroSearchNav({ restaurants }: { restaurants: Restaurant
   }, []);
 
   return (
-    <section className="relative">
+    <section className="native-home-page relative">
       <GlobalMobileNav
         leadingButton={<GlobalMobileMenuButton />}
         cartSlot={
@@ -278,7 +278,7 @@ export default function HeroSearchNav({ restaurants }: { restaurants: Restaurant
                 </SectionEyebrow>
                 <span aria-hidden="true" className="h-1 w-1 rounded-full bg-accent-strong" />
               </div>
-              <h1 className="text-display-1 mt-4 text-slate-900">
+              <h1 className="font-heading text-display-1 mt-4 text-slate-900">
                 Find High-Protein Fast Food Items in Seconds
               </h1>
             </header>

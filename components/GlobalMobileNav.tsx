@@ -48,7 +48,7 @@ export default function GlobalMobileNav({
             every stacked row in the sticky mobile nav shares the same outer
             left/right edge instead of the category strip appearing inset
             relative to this bar. */}
-        <div className="mx-auto flex w-full max-w-5xl items-center gap-2 px-2 py-1.5 sm:gap-3 sm:px-4">
+        <div className="mx-auto flex w-full max-w-5xl items-center gap-2 pl-[max(0.5rem,var(--safe-area-left))] pr-[max(0.5rem,var(--safe-area-right))] py-1.5 sm:gap-3 sm:px-4">
           {leadingButton}
           <Link
             href="/"

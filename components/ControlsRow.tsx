@@ -613,8 +613,8 @@ export default function ControlsRow({
   );
 
   const filtersDialog = isFiltersOpen ? (
-    <div role="dialog" aria-modal="true" className="fixed inset-0 z-[200] flex items-end justify-center bg-overlay-scrim p-2 sm:items-center sm:p-4" onClick={() => setIsFiltersOpen(false)}>
-      <div className="max-h-[calc(100vh-1rem)] w-full max-w-[520px] overflow-y-auto rounded-[20px] bg-white p-4 shadow-[0_16px_40px_rgba(0,0,0,0.2)] sm:max-h-[calc(100vh-2rem)] sm:p-5" onClick={(event) => event.stopPropagation()}>
+    <div role="dialog" aria-modal="true" className="fixed inset-0 z-[200] flex h-[var(--app-viewport-height)] items-end justify-center bg-overlay-scrim px-2 pb-[max(0.5rem,var(--safe-area-bottom))] pt-[max(0.5rem,var(--safe-area-top))] sm:items-center sm:p-4" onClick={() => setIsFiltersOpen(false)}>
+      <div className="max-h-[calc(100dvh-1rem-var(--safe-area-top)-var(--safe-area-bottom))] w-full max-w-[520px] overflow-y-auto overscroll-contain rounded-[20px] bg-white p-4 shadow-[0_16px_40px_rgba(0,0,0,0.2)] sm:max-h-[calc(100dvh-2rem)] sm:p-5" onClick={(event) => event.stopPropagation()}>
         <div className="mb-4 flex items-center gap-2">
           <h3 className="text-xl font-bold">Filters</h3>
           {/* Live draft count, same derivation and semantics as the mobile

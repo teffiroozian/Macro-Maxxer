@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { ChevronDown, ChevronRight } from "lucide-react";
@@ -12,17 +12,9 @@ import RestaurantLogoBadge from "@/components/ui/RestaurantLogoBadge";
 export default function DesktopRestaurantMenu() {
   const [isRestaurantMenuOpen, setIsRestaurantMenuOpen] = useState(false);
   const restaurantMenuRef = useRef<HTMLDivElement>(null);
-  const restaurants = getAllRestaurants();
+  const availableRestaurants = getAllRestaurants().filter((restaurant) => !restaurant.isComingSoon);
   const router = useRouter();
   const { guardNavigation } = useBuildInProgressGuard();
-
-  const { availableRestaurants, comingSoonRestaurants } = useMemo(
-    () => ({
-      availableRestaurants: restaurants.filter((restaurant) => !restaurant.isComingSoon),
-      comingSoonRestaurants: restaurants.filter((restaurant) => restaurant.isComingSoon),
-    }),
-    [restaurants]
-  );
 
   useEffect(() => {
     if (!isRestaurantMenuOpen) return;
@@ -54,27 +46,43 @@ export default function DesktopRestaurantMenu() {
       onMouseEnter={() => setIsRestaurantMenuOpen(true)}
       onMouseLeave={() => setIsRestaurantMenuOpen(false)}
     >
-      <button
-        type="button"
-        aria-haspopup="menu"
-        aria-expanded={isRestaurantMenuOpen}
-        aria-controls="desktop-restaurant-menu"
-        onClick={() => setIsRestaurantMenuOpen((prev) => !prev)}
+      <div
         // Label and chevron stay the same dark, neutral color in every
         // state (rest, hover, open) — only the background shifts, via a
         // muted gray fill, never a tinted text color. No permanent border —
         // bg-transparent at rest, so it never reads as its own separately-
         // chromed control next to the logo.
-        className={`inline-flex h-10 cursor-pointer items-center gap-1.5 rounded-full px-3 text-sm font-semibold text-slate-700 transition hover:bg-slate-100 focus-ring ${
+        className={`inline-flex h-10 items-center rounded-full text-sm font-semibold text-slate-700 transition hover:bg-slate-100 ${
           isRestaurantMenuOpen ? "bg-slate-100" : "bg-transparent"
         }`}
       >
-        Restaurants
-        <ChevronDown
-          className={`h-3.5 w-3.5 shrink-0 text-slate-700 transition-transform ${isRestaurantMenuOpen ? "rotate-180" : ""}`}
-          strokeWidth={2.4}
-        />
-      </button>
+        <Link
+          href="/restaurants"
+          onClick={(event) => {
+            setIsRestaurantMenuOpen(false);
+            if (!isPlainLeftClick(event)) return;
+            event.preventDefault();
+            guardNavigation(() => router.push("/restaurants"));
+          }}
+          className="inline-flex h-full items-center rounded-l-full pl-3 pr-1.5 focus-ring"
+        >
+          Restaurants
+        </Link>
+        <button
+          type="button"
+          aria-haspopup="menu"
+          aria-expanded={isRestaurantMenuOpen}
+          aria-controls="desktop-restaurant-menu"
+          aria-label="Toggle restaurant menu"
+          onClick={() => setIsRestaurantMenuOpen((prev) => !prev)}
+          className="inline-flex h-full cursor-pointer items-center rounded-r-full pl-1.5 pr-3 focus-ring"
+        >
+          <ChevronDown
+            className={`h-3.5 w-3.5 shrink-0 text-slate-700 transition-transform ${isRestaurantMenuOpen ? "rotate-180" : ""}`}
+            strokeWidth={2.4}
+          />
+        </button>
+      </div>
 
       {isRestaurantMenuOpen ? (
         <div className="absolute left-0 top-full z-50 w-[min(20rem,calc(100vw-2rem))] pt-2">
@@ -115,38 +123,23 @@ export default function DesktopRestaurantMenu() {
               ))}
             </div>
 
-            {comingSoonRestaurants.length > 0 ? (
-              <>
-                <div className="my-2 border-t border-black/10" />
-                <div className="px-3 pb-1 text-xs font-semibold uppercase tracking-wide text-slate-500">Coming Soon</div>
-                <div className="grid gap-1 px-2">
-                  {comingSoonRestaurants.map((restaurant) => (
-                    <div
-                      key={restaurant.id}
-                      role="menuitem"
-                      aria-disabled="true"
-                      className="inline-flex cursor-default items-center justify-between rounded-xl px-2 py-2.5 text-sm font-semibold text-slate-400"
-                    >
-                      <span className="inline-flex min-w-0 items-center gap-2.5">
-                        <RestaurantLogoBadge
-                          src={restaurant.logo}
-                          alt={`${restaurant.name} logo`}
-                          size="xs"
-                          ring={false}
-                          background="bg-slate-50"
-                          grayscale
-                          className="opacity-60"
-                        />
-                        <span className="truncate">{restaurant.name}</span>
-                      </span>
-                      <span className="ml-3 shrink-0 rounded-full border border-slate-300 px-2 py-0.5 text-label">
-                        Coming Soon
-                      </span>
-                    </div>
-                  ))}
-                </div>
-              </>
-            ) : null}
+            <div className="mx-3 my-2 border-t border-black/10" />
+            <div className="px-2">
+              <Link
+                href="/restaurants"
+                role="menuitem"
+                onClick={(event) => {
+                  setIsRestaurantMenuOpen(false);
+                  if (!isPlainLeftClick(event)) return;
+                  event.preventDefault();
+                  guardNavigation(() => router.push("/restaurants"));
+                }}
+                className="group inline-flex w-full items-center justify-between rounded-xl px-2 py-2.5 text-sm font-semibold text-slate-900 transition hover:bg-surface-hover focus:bg-slate-100 focus:outline-none"
+              >
+                <span>All Restaurants</span>
+                <ChevronRight className="h-4 w-4 text-icon-decorative transition group-hover:text-slate-600" strokeWidth={2.4} />
+              </Link>
+            </div>
           </div>
         </div>
       ) : null}

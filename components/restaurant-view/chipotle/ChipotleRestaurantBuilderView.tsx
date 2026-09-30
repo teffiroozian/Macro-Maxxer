@@ -2862,7 +2862,7 @@ export default function ChipotleRestaurantBuilderView({
 
     return (
       <div
-        className="fixed inset-0 z-[130] flex items-end justify-center p-2 sm:items-center sm:p-4"
+        className="fixed inset-0 z-[130] flex h-[var(--app-viewport-height)] items-end justify-center px-2 pb-[max(0.5rem,var(--safe-area-bottom))] pt-[max(0.5rem,var(--safe-area-top))] sm:items-center sm:p-4"
         role="dialog"
         aria-modal="true"
         aria-label={`${editingBuildItem.name} customization`}
@@ -2873,7 +2873,7 @@ export default function ChipotleRestaurantBuilderView({
           onClick={handleCloseBuildCustomizationModal}
           aria-label="Close build customization modal"
         />
-        <div className="relative flex h-[calc(100vh-1rem)] w-full max-w-[1024px] flex-col overflow-hidden rounded-2xl bg-white px-3 pt-3 sm:h-[calc(100vh-2rem)] sm:px-5 sm:pt-5 lg:px-6 lg:pt-6">
+        <div className="relative flex h-[calc(100dvh-1rem-var(--safe-area-top)-var(--safe-area-bottom))] w-full max-w-[1024px] flex-col overflow-hidden rounded-2xl bg-white px-3 pt-3 sm:h-[calc(100dvh-2rem)] sm:px-5 sm:pt-5 lg:px-6 lg:pt-6">
           <button
             type="button"
             className="sticky top-0 z-20 ml-auto h-10 w-10 cursor-pointer rounded-full border border-black/12 bg-white/95 text-2xl"

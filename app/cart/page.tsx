@@ -66,7 +66,7 @@ export default function CartPage() {
     <>
       <GlobalMobileNav leadingButton={<GlobalMobileMenuButton />} />
       <div className="px-4 pt-1 sm:px-6"><DesktopNav searchBarVariant="compact" /></div>
-      <main className="mx-auto flex min-h-screen w-full max-w-5xl flex-col gap-8 px-4 pb-16 pt-28 sm:px-6 lg:gap-10 lg:pb-20 lg:pt-10">
+      <main className="native-top-level-page mx-auto flex min-h-[var(--app-viewport-height)] w-full max-w-5xl flex-col gap-8 px-4 pb-[max(4rem,var(--safe-area-bottom))] pt-[calc(7rem+var(--safe-area-top))] sm:px-6 lg:gap-10 lg:pb-20 lg:pt-10">
         <header className="flex flex-col gap-5 lg:flex-row lg:items-center lg:justify-between lg:gap-24">
           <div className="flex flex-col gap-3 lg:shrink-0">
             <h1 className="font-heading text-3xl font-bold leading-tight text-slate-900 sm:text-4xl">

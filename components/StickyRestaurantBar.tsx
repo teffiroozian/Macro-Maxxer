@@ -2,6 +2,7 @@
 
 import type { ReactNode } from "react";
 import { useCallback, useState } from "react";
+import { useRouter } from "next/navigation";
 import CartIconDropdown from "@/components/cart/CartIconDropdown";
 import DesktopNav from "@/components/DesktopNav";
 import GlobalMobileNav from "@/components/GlobalMobileNav";
@@ -12,9 +13,12 @@ import type { Filters } from "@/lib/menuSections/filterOptions";
 import type { SortOption } from "@/lib/menuSections/sortOptions";
 import type { RankedAllFilterKey } from "@/lib/menuSections/filtering";
 import type { MenuItem } from "@/types/menu";
-import { Menu } from "lucide-react";
+import { ChevronLeft, Menu, SlidersHorizontal } from "lucide-react";
 import MobileNavDrawer from "@/components/MobileNavDrawer";
 import AppIconButton, { appIconButtonClassName } from "@/components/ui/AppIconButton";
+import RestaurantLogoBadge from "@/components/ui/RestaurantLogoBadge";
+import { useBuildInProgressGuard } from "@/components/BuildInProgressGuardContext";
+import { IS_CAPACITOR_BUILD } from "@/lib/buildTarget";
 
 type StickyRestaurantBarProps = {
   restaurantName: string;
@@ -85,6 +89,8 @@ export default function StickyRestaurantBar({
   const [openMobileControlsDrawer, setOpenMobileControlsDrawer] = useState<() => void>(() => () => {});
   const [isBrowseDrawerOpen, setIsBrowseDrawerOpen] = useState(false);
   const [isControlsDrawerOpen, setIsControlsDrawerOpen] = useState(false);
+  const router = useRouter();
+  const { guardNavigation } = useBuildInProgressGuard();
   const handleMobileDrawerOpenReady = useCallback((openDrawer: () => void) => {
     setOpenMobileControlsDrawer(() => openDrawer);
   }, []);
@@ -109,7 +115,7 @@ export default function StickyRestaurantBar({
           filters, Chipotle's entrée switcher) live in the secondary row
           below, and that row disappears entirely when it would have
           nothing else in it. */}
-      <div
+      {!IS_CAPACITOR_BUILD ? <div
         className="fixed inset-x-0 top-0 z-[95] hidden px-4 pt-1 sm:px-6 lg:block"
         data-sticky-nav="true"
       >
@@ -171,13 +177,13 @@ export default function StickyRestaurantBar({
             ) : null}
           </div>
         ) : null}
-      </div>
+      </div> : null}
 
       {/* Mobile nav — literally GlobalMobileNav (same component/card as the
           homepage/cart mobile nav), with the same shared Search button
           (opens the global search pop-up, scoped to this restaurant) that
           every other page uses — no restaurant-page-only search widget. */}
-      <GlobalMobileNav
+      {!IS_CAPACITOR_BUILD ? <GlobalMobileNav
         markStickyNav
         leadingButton={
           <AppIconButton
@@ -202,7 +208,48 @@ export default function StickyRestaurantBar({
             buttonClassName={appIconButtonClassName({ variant: "nav", size: "nav", className: "relative shrink-0" })}
           />
         }
-      />
+      /> : null}
+
+      {IS_CAPACITOR_BUILD ? (
+        <div
+          className="fixed inset-x-0 top-0 z-[95] border-b border-black/10 bg-white/95 pt-[var(--safe-area-top)] shadow-elev-brand backdrop-blur-lg"
+          data-sticky-nav="true"
+        >
+          <div className="mx-auto flex h-12 w-full max-w-5xl items-center gap-2 px-3">
+            <AppIconButton
+              variant="ghost"
+              size="sm"
+              onClick={() => guardNavigation(() => router.back())}
+              aria-label="Go back"
+            >
+              <ChevronLeft className="h-4 w-4" strokeWidth={2.5} />
+            </AppIconButton>
+            <div className="flex min-w-0 flex-1 items-center gap-2">
+              <RestaurantLogoBadge src={restaurantLogo} alt="" size="xs" fit="cover" />
+              <span className="truncate text-sm font-semibold text-slate-900">{restaurantName}</span>
+            </div>
+            <AppIconButton
+              variant="ghost"
+              size="sm"
+              active={hideSecondaryNav ? isBrowseDrawerOpen : isControlsDrawerOpen}
+              onClick={() => {
+                if (hideSecondaryNav) {
+                  setIsBrowseDrawerOpen(true);
+                  return;
+                }
+                openMobileControlsDrawer();
+              }}
+              aria-label={hideSecondaryNav ? "Browse restaurants" : "Open menu controls"}
+            >
+              {hideSecondaryNav ? (
+                <Menu className="h-4 w-4" strokeWidth={2.5} />
+              ) : (
+                <SlidersHorizontal className="h-4 w-4" strokeWidth={2.4} />
+              )}
+            </AppIconButton>
+          </div>
+        </div>
+      ) : null}
 
       <MobileNavDrawer
         isOpen={isBrowseDrawerOpen}
