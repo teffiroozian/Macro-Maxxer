@@ -15,6 +15,7 @@ export default function GlobalMobileNav({
   middleSlot,
   cartSlot,
   markStickyNav = false,
+  flat = false,
 }: {
   logoSrc?: string;
   showSearchButton?: boolean;
@@ -32,6 +33,9 @@ export default function GlobalMobileNav({
   // RestaurantView.tsx / ChipotleRestaurantBuilderView.tsx / RestaurantCategorySidebar.tsx);
   // opt-in so it doesn't leak onto pages that don't need it.
   markStickyNav?: boolean;
+  // Restaurant-page shell uses a quiet edge-to-edge band; other surfaces
+  // retain the established elevated mobile navigation treatment.
+  flat?: boolean;
 }) {
   const { open: openSearch } = useGlobalSearch();
   const showTrailingCluster = showSearchButton || showCartButton || Boolean(middleSlot) || Boolean(cartSlot);
@@ -42,7 +46,7 @@ export default function GlobalMobileNav({
       data-global-nav="true"
       data-sticky-nav={markStickyNav ? "true" : undefined}
     >
-      <div className="relative z-[110] mx-auto flex w-full max-w-6xl items-center border-b border-black/10 bg-white shadow-elev-brand">
+      <div className={`relative z-[110] mx-auto flex w-full max-w-6xl items-center border-b border-hairline bg-white ${flat ? "" : "shadow-elev-brand"}`}>
         {/* px-2/sm:px-4 matches RestaurantCategorySidebar's mobile category
             strip (and, through it, the active-filter row merged into it) so
             every stacked row in the sticky mobile nav shares the same outer

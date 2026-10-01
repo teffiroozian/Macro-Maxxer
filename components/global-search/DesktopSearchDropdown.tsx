@@ -18,8 +18,15 @@ export default function DesktopSearchDropdown({ className = "w-full" }: { classN
   const { isOpen, open, close } = useGlobalSearch();
   const state = useGlobalSearchState();
   const containerRef = useRef<HTMLDivElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
 
   useCloseOnEscape(isOpen, close);
+
+  useEffect(() => {
+    if (isOpen && inputRef.current?.offsetParent !== null) {
+      inputRef.current.focus({ preventScroll: true });
+    }
+  }, [isOpen]);
 
   useEffect(() => {
     if (!isOpen) {
@@ -58,6 +65,7 @@ export default function DesktopSearchDropdown({ className = "w-full" }: { classN
           the panel below; the field itself doesn't visually react. */}
       <div className="relative z-[229]">
         <input
+          ref={inputRef}
           type="text"
           value={state.query}
           onChange={(event) => state.handleInputChange(event.target.value)}
@@ -65,10 +73,16 @@ export default function DesktopSearchDropdown({ className = "w-full" }: { classN
           onKeyDown={state.handleInputKeyDown}
           placeholder="Search restaurants, menu items..."
           aria-label="Search"
-          className="h-10 w-full cursor-text rounded-full border border-black/10 bg-white pl-10 pr-4 text-sm text-slate-900 outline-none placeholder:text-slate-500 focus:border-accent focus:ring-4 focus:ring-accent/15"
+          className="h-10 w-full cursor-text rounded-full border border-black/10 bg-white pl-10 pr-12 text-sm text-slate-900 outline-none placeholder:text-slate-500 focus:border-accent focus:ring-4 focus:ring-accent/15"
         />
         <span className="pointer-events-none absolute inset-y-0 left-2 my-auto flex h-6 w-6 items-center justify-center rounded-full bg-accent-soft text-accent-strong">
           <Search className="h-3.5 w-3.5" strokeWidth={2.5} />
+        </span>
+        <span
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-y-0 right-3 my-auto inline-flex h-5 min-w-5 items-center justify-center rounded-md border border-control bg-surface-subtle px-1 text-[11px] font-semibold text-slate-500"
+        >
+          /
         </span>
       </div>
 

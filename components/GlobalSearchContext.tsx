@@ -1,6 +1,6 @@
 "use client";
 
-import { createContext, useContext, useMemo, useRef, useState, type ReactNode } from "react";
+import { createContext, useContext, useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 
 type GlobalSearchContextValue = {
   isOpen: boolean;
@@ -19,6 +19,28 @@ export function GlobalSearchProvider({ children }: { children: ReactNode }) {
   // since by the time an effect runs the panel's autoFocus input has
   // already stolen focus away from whatever triggered the open.
   const previouslyFocusedElementRef = useRef<HTMLElement | null>(null);
+
+  useEffect(() => {
+    const handleSearchShortcut = (event: KeyboardEvent) => {
+      if (event.key !== "/" || event.metaKey || event.ctrlKey || event.altKey) return;
+
+      const target = event.target;
+      if (
+        target instanceof HTMLElement &&
+        (target.isContentEditable || ["INPUT", "TEXTAREA", "SELECT"].includes(target.tagName))
+      ) {
+        return;
+      }
+
+      event.preventDefault();
+      previouslyFocusedElementRef.current =
+        document.activeElement instanceof HTMLElement ? document.activeElement : null;
+      setIsOpen(true);
+    };
+
+    document.addEventListener("keydown", handleSearchShortcut);
+    return () => document.removeEventListener("keydown", handleSearchShortcut);
+  }, []);
 
   // Accepts an explicit previously-focused element (pass this when open() is
   // called from the search input's own onFocus handler, via the native

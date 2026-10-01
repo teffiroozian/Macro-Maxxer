@@ -420,7 +420,6 @@ function MobileCategoryNav({
   rankingFallbackIcons,
   categoryNavLabel,
 }: SharedCategoryNavProps) {
-  const [mobileNavTop, setMobileNavTop] = useState(0);
   const [isMobileCategoryMenuOpen, setIsMobileCategoryMenuOpen] = useState(false);
   const mobileCategoryMenuRef = useRef<HTMLDivElement | null>(null);
   const mobileCategoryScrollRef = useRef<HTMLDivElement | null>(null);
@@ -430,31 +429,6 @@ function MobileCategoryNav({
     filters,
     onFiltersChange,
   });
-
-  useEffect(() => {
-    const syncMobileNavTop = () => {
-      // Desktop and mobile now render as two separate `data-sticky-nav`
-      // elements, only one of which is actually visible at a given
-      // viewport width — the hidden one collapses to an all-zero rect, so
-      // Math.max across every match always picks the real, visible one.
-      const stickyNavs = document.querySelectorAll('[data-sticky-nav="true"]');
-      const bottom = Array.from(stickyNavs).reduce(
-        (max, nav) => (nav instanceof HTMLElement ? Math.max(max, nav.getBoundingClientRect().bottom) : max),
-        0,
-      );
-
-      setMobileNavTop(Math.ceil(bottom));
-    };
-
-    syncMobileNavTop();
-    window.addEventListener("resize", syncMobileNavTop);
-    window.addEventListener("scroll", syncMobileNavTop, { passive: true });
-
-    return () => {
-      window.removeEventListener("resize", syncMobileNavTop);
-      window.removeEventListener("scroll", syncMobileNavTop);
-    };
-  }, []);
 
   useEffect(() => {
     if (!isMobileCategoryMenuOpen) return;
@@ -501,16 +475,9 @@ function MobileCategoryNav({
     };
   }, [effectiveViewMode, categoryOptions, rankedParentStates]);
 
-  // No trailing spacer here: this strip is `position: fixed`, so it needs
-  // whatever renders right after it in flow to reserve matching space —
-  // that's now RestaurantIdentityHeader (always rendered above this
-  // component), which measures this exact `data-mobile-category-nav`
-  // element and clears it dynamically. Adding a second static spacer here
-  // on top of that would double-reserve the same space.
   return (
-    <>
-      <div className="fixed left-0 right-0 z-[90] lg:hidden" style={{ top: mobileNavTop + 4 }} data-mobile-category-nav="true">
-        <div className="relative mx-auto w-[calc(100%-0.5rem)] max-w-6xl overflow-visible rounded-2xl border border-slate-200/70 bg-white/95 shadow-[0_1px_4px_rgba(15,23,42,0.08)] backdrop-blur sm:w-[calc(100%-1rem)]">
+      <div className="relative z-[var(--z-sticky)] col-span-full mb-4 w-full lg:hidden">
+        <div className="relative mx-auto w-full overflow-visible border-y border-hairline bg-white shadow-elev-1 sm:rounded-2xl sm:border">
           <div className="mx-auto flex w-full max-w-5xl items-center gap-2 px-2 py-0.5 sm:px-4">
             <MobileCategoryMenu
               effectiveViewMode={effectiveViewMode}
@@ -622,7 +589,6 @@ function MobileCategoryNav({
           ) : null}
         </div>
       </div>
-    </>
   );
 }
 

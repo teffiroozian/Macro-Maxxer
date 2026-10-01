@@ -2,7 +2,6 @@
 
 import { CalendarCheck2, ExternalLink, Flag, UtensilsCrossed } from "lucide-react";
 import RestaurantLogoBadge from "@/components/ui/RestaurantLogoBadge";
-import SurfaceCard from "@/components/ui/SurfaceCard";
 import { useStickyNavClearance } from "@/components/restaurant-view/useStickyNavClearance";
 
 // Same real, functional destination SiteFooter links to for the repo — the
@@ -67,25 +66,13 @@ export default function RestaurantIdentityHeader({
   const stickyClearance = useStickyNavClearance();
 
   return (
-    <div className="relative mb-12 sm:mb-14 lg:mb-16" style={{ marginTop: stickyClearance ?? 160 }}>
-      {/* The broader ambient wash/glow lives one level up, in
-          RestaurantPageContent — it covers the nav-to-header transition, so
-          this card doesn't need its own separate glow layered on top. */}
-      <SurfaceCard
-        as="header"
-        radius="large"
-        shadow="sm"
-        padding="none"
-        className="relative overflow-hidden bg-white/90 backdrop-blur-sm"
-      >
-        <div className="p-5 sm:p-7 lg:p-8">
-          {/* Identity row: logo top-aligned with the restaurant name (not
-              centered against the whole name+description block) so the two
-              read as one balanced identity line, description directly
-              underneath. Full card width so the description has room to
-              breathe instead of wrapping into short lines beside a
-              competing right-hand column. */}
-          <div className="flex items-start gap-3.5">
+    <header
+      className="relative border-b border-hairline bg-white"
+      style={{ marginTop: stickyClearance ?? 64 }}
+    >
+      <div className="mx-auto w-full max-w-6xl px-4 py-7 sm:px-6 sm:py-9 lg:py-10">
+        <div className="mx-auto flex max-w-4xl flex-col items-center text-center">
+          <div className="flex items-center justify-center gap-3.5">
             <RestaurantLogoBadge
               src={logo}
               alt={`${name} logo`}
@@ -93,20 +80,18 @@ export default function RestaurantIdentityHeader({
               className="shrink-0"
             />
 
-            <div className="min-w-0">
-              <h1 className="font-heading text-3xl font-bold leading-tight text-slate-900 sm:text-4xl">
+            <div className="min-w-0 text-left">
+              <h1 className="font-heading text-2xl font-bold leading-tight text-slate-950 sm:text-3xl lg:text-4xl">
                 {name} Nutrition
               </h1>
-              {description ? (
-                <p className="mt-1.5 max-w-2xl text-sm text-slate-600 sm:text-base">{description}</p>
-              ) : null}
             </div>
           </div>
 
-          {/* Dedicated trust/freshness row: smaller and visually secondary
-              relative to the identity row above, grouped tightly and
-              aligned to the right rather than spread across the card. */}
-          <div className="mt-6 flex flex-wrap items-center justify-end gap-x-5 gap-y-2 border-t border-black/[0.06] pt-4">
+          {description ? (
+            <p className="mt-3 max-w-3xl text-sm leading-6 text-slate-600 sm:text-base sm:leading-7">{description}</p>
+          ) : null}
+
+          <div className="mt-6 flex w-full flex-wrap items-center justify-center gap-x-5 gap-y-2 border-t border-divider pt-4">
             {updatedAtLabel ? (
               <span className="inline-flex items-center gap-1.5 text-xs font-medium text-slate-500">
                 <CalendarCheck2 className="h-3.5 w-3.5 text-accent/60" aria-hidden="true" />
@@ -142,7 +127,7 @@ export default function RestaurantIdentityHeader({
             </a>
           </div>
         </div>
-      </SurfaceCard>
-    </div>
+      </div>
+    </header>
   );
 }

@@ -13,7 +13,7 @@ import type { Filters } from "@/lib/menuSections/filterOptions";
 import type { SortOption } from "@/lib/menuSections/sortOptions";
 import type { RankedAllFilterKey } from "@/lib/menuSections/filtering";
 import type { MenuItem } from "@/types/menu";
-import { ChevronLeft, Menu, SlidersHorizontal } from "lucide-react";
+import { ChevronLeft, Menu, Store, SlidersHorizontal } from "lucide-react";
 import MobileNavDrawer from "@/components/MobileNavDrawer";
 import AppIconButton, { appIconButtonClassName } from "@/components/ui/AppIconButton";
 import RestaurantLogoBadge from "@/components/ui/RestaurantLogoBadge";
@@ -115,100 +115,25 @@ export default function StickyRestaurantBar({
 
   return (
     <>
-      {/* Desktop nav — literally DesktopNav (same component/card as the
-          homepage/cart nav): Logo | Restaurants | Search | Cart. Search
-          defaults to this restaurant's menu (Slice 3's restaurant-context
-          mechanism, generalized in useGlobalSearchState). The restaurant
-          switcher now lives in this global nav (DesktopNav itself) so it's
-          identical everywhere — only page-specific controls (view/sort/
-          filters, Chipotle's entrée switcher) live in the secondary row
-          below, and that row disappears entirely when it would have
-          nothing else in it. */}
       {!IS_CAPACITOR_BUILD ? <div
-        className="fixed inset-x-0 top-0 z-[95] hidden px-4 pt-1 sm:px-6 lg:block"
+        className="fixed inset-x-0 top-0 z-[var(--z-nav)] hidden lg:block"
         data-sticky-nav="true"
       >
-        <DesktopNav searchBarVariant="compact" />
-
-        {secondaryNavLeading || !hideSecondaryNav ? (
-          <div className="mx-auto mt-0.5 hidden w-full max-w-6xl flex-col rounded-2xl border border-slate-200/70 bg-white px-5 shadow-[0_3px_12px_rgba(15,23,42,0.12)] lg:flex">
-            {/* Row 1: entrée selector (left) + view/sort/filters (right).
-                The entrée selector never shares height with the active-filter
-                row below — it's scoped to this row only. Horizontal padding
-                lives on the shared outer container (not this row) so the
-                divider below is inset by that same padding instead of
-                running edge-to-edge. */}
-            <div className="flex items-center py-1.5">
-              {secondaryNavLeading ? <div className="shrink-0">{secondaryNavLeading}</div> : null}
-              {hideSecondaryNav ? null : (
-                <div className={`min-w-0 shrink-0 ${secondaryNavLeading ? "ml-auto" : "flex-1"}`}>
-                  <ControlsRow
-                    view={view}
-                    onChange={onChange}
-                    sort={sort}
-                    onSortChange={onSortChange}
-                    filters={filters}
-                    onFiltersChange={onFiltersChange}
-                    proteinOptions={proteinOptions}
-                    calorieBounds={calorieBounds}
-                    sourceItems={sourceItems}
-                    rankedChildSelections={rankedChildSelections}
-                    isRankingView={isRankingView}
-                    hideViewSelector={hideViewSelector}
-                    hideIngredientsView={hideIngredientsView}
-                    showMobileTrigger={false}
-                    onMobileDrawerOpenReady={handleMobileDrawerOpenReady}
-                    onMobileFiltersDrawerOpenReady={onEditFiltersDrawerReady}
-                    onMobileDrawerOpenChange={setIsControlsDrawerOpen}
-                    mobileEntreeOptions={mobileEntreeOptions}
-                    mobileDrawerHeaderTitle={restaurantName}
-                    mobileDrawerHeaderLogoSrc={restaurantLogo}
-                  />
-                </div>
-              )}
-            </div>
-
-            {/* Row 2: active-filter chips + Clear All — dedicated row, only
-                present while a filter is actually applied. Its top border
-                sits inside the same px-5 the outer container already
-                applies, so the divider is inset to match the controls above
-                rather than running edge-to-edge. */}
-            {!hideSecondaryNav && hasActiveFilters ? (
-              <div className="border-t border-slate-200/70 pb-1.5 pt-1.5">
-                <FilterChips
-                  filters={filters}
-                  onClearProtein={clearProteinFilter}
-                  onClearCalories={clearCaloriesFilter}
-                  onClearAll={resetFilters}
-                  withMargin={false}
-                />
-              </div>
-            ) : null}
-          </div>
-        ) : null}
+        <DesktopNav searchBarVariant="compact" presentation="band" />
       </div> : null}
 
-      {/* Mobile nav — literally GlobalMobileNav (same component/card as the
-          homepage/cart mobile nav), with the same shared Search button
-          (opens the global search pop-up, scoped to this restaurant) that
-          every other page uses — no restaurant-page-only search widget. */}
       {!IS_CAPACITOR_BUILD ? <GlobalMobileNav
         markStickyNav
-        leadingButton={
+        flat
+        middleSlot={
           <AppIconButton
-            onClick={() => {
-              if (hideSecondaryNav) {
-                setIsBrowseDrawerOpen(true);
-                return;
-              }
-              openMobileControlsDrawer();
-            }}
+            onClick={() => setIsBrowseDrawerOpen(true)}
             variant="nav"
             size="nav"
-            active={hideSecondaryNav ? isBrowseDrawerOpen : isControlsDrawerOpen}
-            aria-label="Open controls drawer"
+            active={isBrowseDrawerOpen}
+            aria-label="Browse restaurants"
           >
-            <Menu className="h-4 w-4" strokeWidth={2.5} />
+            <Store className="h-4 w-4" strokeWidth={2.4} />
           </AppIconButton>
         }
         cartSlot={
@@ -256,6 +181,56 @@ export default function StickyRestaurantBar({
                 <SlidersHorizontal className="h-4 w-4" strokeWidth={2.4} />
               )}
             </AppIconButton>
+          </div>
+        </div>
+      ) : null}
+
+      {secondaryNavLeading || !hideSecondaryNav ? (
+        <div className="relative -mx-3 py-4 sm:-mx-4 sm:py-5 lg:mx-0 lg:py-6">
+          <div className="absolute inset-x-0 top-1/2 border-t border-divider" aria-hidden="true" />
+          <div className="relative mx-auto w-full lg:w-fit lg:max-w-full">
+            <div className="flex min-w-0 flex-col border-y border-hairline bg-white px-3 py-2 shadow-elev-1 sm:px-4 lg:min-w-[34rem] lg:rounded-full lg:border lg:px-3">
+              <div className="flex min-w-0 items-center gap-3 overflow-x-auto hide-scrollbar">
+                {secondaryNavLeading ? <div className="shrink-0">{secondaryNavLeading}</div> : null}
+                {hideSecondaryNav ? null : (
+                  <div className={`min-w-0 ${secondaryNavLeading ? "lg:ml-auto" : "flex-1"}`}>
+                    <ControlsRow
+                      view={view}
+                      onChange={onChange}
+                      sort={sort}
+                      onSortChange={onSortChange}
+                      filters={filters}
+                      onFiltersChange={onFiltersChange}
+                      proteinOptions={proteinOptions}
+                      calorieBounds={calorieBounds}
+                      sourceItems={sourceItems}
+                      rankedChildSelections={rankedChildSelections}
+                      isRankingView={isRankingView}
+                      hideViewSelector={hideViewSelector}
+                      hideIngredientsView={hideIngredientsView}
+                      onMobileDrawerOpenReady={handleMobileDrawerOpenReady}
+                      onMobileFiltersDrawerOpenReady={onEditFiltersDrawerReady}
+                      onMobileDrawerOpenChange={setIsControlsDrawerOpen}
+                      mobileEntreeOptions={mobileEntreeOptions}
+                      mobileDrawerHeaderTitle={restaurantName}
+                      mobileDrawerHeaderLogoSrc={restaurantLogo}
+                    />
+                  </div>
+                )}
+              </div>
+              {!hideSecondaryNav && hasActiveFilters ? (
+                <div className="mt-2 border-t border-divider pt-2">
+                  <FilterChips
+                    filters={filters}
+                    onClearProtein={clearProteinFilter}
+                    onClearCalories={clearCaloriesFilter}
+                    onClearAll={resetFilters}
+                    withMargin={false}
+                    scrollable
+                  />
+                </div>
+              ) : null}
+            </div>
           </div>
         </div>
       ) : null}
