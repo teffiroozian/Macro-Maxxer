@@ -1,5 +1,5 @@
 import type { ItemVariant, MenuItem } from "@/types/menu";
-import { getDefaultMenuItemNutrition } from "@/lib/nutrition";
+import { getDefaultMenuItemNutrition, getProteinPer100Calories } from "@/lib/nutrition";
 import { getCategoryLabel, getItemCategories, normalizeCategory } from "@/lib/menuSections/sorting";
 import type { Filters } from "@/lib/menuSections/filterOptions";
 import { normalizeSearchText, squashSearchText } from "@/lib/search/normalizeSearchText";
@@ -119,6 +119,19 @@ export function itemMatchesNutritionFilters(item: MenuItem, filters: Filters): b
   // boundary instead of correctly excluding every item above it.
   if (filters.caloriesMax !== undefined && calories > filters.caloriesMax) {
     return false;
+  }
+
+  const proteinScore = getProteinPer100Calories(protein, calories);
+  if (filters.proteinScoreMin !== undefined && (proteinScore === undefined || proteinScore < filters.proteinScoreMin)) return false;
+  if (filters.carbsMax !== undefined && nutrition.carbs > filters.carbsMax) return false;
+  if (filters.fatMax !== undefined && nutrition.totalFat > filters.fatMax) return false;
+  if (filters.fiberMin !== undefined && (nutrition.fiber === undefined || nutrition.fiber < filters.fiberMin)) return false;
+  if (filters.sodiumMax !== undefined && (nutrition.sodium === undefined || nutrition.sodium > filters.sodiumMax)) return false;
+  if (filters.sugarMax !== undefined && (nutrition.sugars === undefined || nutrition.sugars > filters.sugarMax)) return false;
+
+  if (filters.categories !== undefined) {
+    const selected = new Set(filters.categories.map(normalizeCategory));
+    if (!getItemCategories(item).some((category) => selected.has(category))) return false;
   }
 
   return true;

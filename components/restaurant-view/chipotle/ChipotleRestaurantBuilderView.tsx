@@ -3433,6 +3433,7 @@ export default function ChipotleRestaurantBuilderView({
   return (
     <div>
       <StickyRestaurantBar
+        restaurantId={restaurantId}
         restaurantName={restaurantName}
         restaurantLogo={restaurantLogo}
         view={effectiveViewMode}

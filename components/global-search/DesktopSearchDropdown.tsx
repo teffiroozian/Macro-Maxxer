@@ -23,8 +23,9 @@ export default function DesktopSearchDropdown({ className = "w-full" }: { classN
   useCloseOnEscape(isOpen, close);
 
   useEffect(() => {
-    if (isOpen && inputRef.current?.offsetParent !== null) {
-      inputRef.current.focus({ preventScroll: true });
+    const input = inputRef.current;
+    if (isOpen && input && input.offsetParent !== null) {
+      input.focus({ preventScroll: true });
     }
   }, [isOpen]);
 

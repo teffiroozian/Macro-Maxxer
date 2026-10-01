@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { Suspense } from "react";
 import ItemRouteModal from "@/components/item-route-modal/ItemRouteModal";
 import RestaurantPageContent from "@/components/RestaurantPageContent";
+import RestaurantPageSkeleton from "@/components/restaurant-view/RestaurantPageSkeleton";
 import { getRestaurantItemRouteData } from "@/lib/restaurantItemRouteData";
 
 export const metadata: Metadata = {
@@ -26,7 +27,7 @@ export default async function ItemPage({
   const { restaurant, item, addons, initialVariantId } = routeData;
 
   return (
-    <Suspense fallback={null}>
+    <Suspense fallback={<RestaurantPageSkeleton />}>
       <RestaurantPageContent restaurantData={restaurant} />
       <ItemRouteModal
         restaurantId={restaurant.id}

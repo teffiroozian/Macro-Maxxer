@@ -6,8 +6,7 @@ import { useRouter } from "next/navigation";
 import CartIconDropdown from "@/components/cart/CartIconDropdown";
 import DesktopNav from "@/components/DesktopNav";
 import GlobalMobileNav from "@/components/GlobalMobileNav";
-import ControlsRow, { FilterChips } from "./ControlsRow";
-import { useFilterChipActions } from "./useFilterChipActions";
+import ControlsRow from "./ControlsRow";
 import type { ViewOption } from "@/components/controls/types";
 import type { Filters } from "@/lib/menuSections/filterOptions";
 import type { SortOption } from "@/lib/menuSections/sortOptions";
@@ -21,6 +20,7 @@ import { useBuildInProgressGuard } from "@/components/BuildInProgressGuardContex
 import { IS_CAPACITOR_BUILD } from "@/lib/buildTarget";
 
 type StickyRestaurantBarProps = {
+  restaurantId: string;
   restaurantName: string;
   restaurantLogo: string;
   view: ViewOption;
@@ -66,6 +66,7 @@ type StickyRestaurantBarProps = {
 };
 
 export default function StickyRestaurantBar({
+  restaurantId,
   restaurantName,
   restaurantLogo,
   view,
@@ -108,11 +109,6 @@ export default function StickyRestaurantBar({
   // same FilterChips component and clear/reset actions the mobile drawer's
   // own chip row (RestaurantCategorySidebar) already uses, rather than a
   // second hand-rolled chip UI.
-  const { hasActiveFilters, clearProteinFilter, clearCaloriesFilter, resetFilters } = useFilterChipActions({
-    filters,
-    onFiltersChange,
-  });
-
   return (
     <>
       {!IS_CAPACITOR_BUILD ? <div
@@ -189,12 +185,13 @@ export default function StickyRestaurantBar({
         <div className="relative -mx-3 py-4 sm:-mx-4 sm:py-5 lg:mx-0 lg:py-6">
           <div className="absolute inset-x-0 top-1/2 border-t border-divider" aria-hidden="true" />
           <div className="relative mx-auto w-full lg:w-fit lg:max-w-full">
-            <div className="flex min-w-0 flex-col border-y border-hairline bg-white px-3 py-2 shadow-elev-1 sm:px-4 lg:min-w-[34rem] lg:rounded-full lg:border lg:px-3">
-              <div className="flex min-w-0 items-center gap-3 overflow-x-auto hide-scrollbar">
+            <div className="flex min-w-0 flex-col border-y border-hairline bg-white p-1.5 shadow-elev-1 lg:rounded-full lg:border">
+              <div className="flex min-w-0 items-center gap-3 overflow-x-auto hide-scrollbar lg:overflow-visible">
                 {secondaryNavLeading ? <div className="shrink-0">{secondaryNavLeading}</div> : null}
                 {hideSecondaryNav ? null : (
                   <div className={`min-w-0 ${secondaryNavLeading ? "lg:ml-auto" : "flex-1"}`}>
                     <ControlsRow
+                      restaurantId={restaurantId}
                       view={view}
                       onChange={onChange}
                       sort={sort}
@@ -218,18 +215,6 @@ export default function StickyRestaurantBar({
                   </div>
                 )}
               </div>
-              {!hideSecondaryNav && hasActiveFilters ? (
-                <div className="mt-2 border-t border-divider pt-2">
-                  <FilterChips
-                    filters={filters}
-                    onClearProtein={clearProteinFilter}
-                    onClearCalories={clearCaloriesFilter}
-                    onClearAll={resetFilters}
-                    withMargin={false}
-                    scrollable
-                  />
-                </div>
-              ) : null}
             </div>
           </div>
         </div>

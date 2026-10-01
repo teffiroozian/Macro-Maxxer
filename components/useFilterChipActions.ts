@@ -9,8 +9,8 @@ type UseFilterChipActionsOptions = {
 
 export function useFilterChipActions({ filters, onFiltersChange }: UseFilterChipActionsOptions) {
   const hasActiveFilters = useMemo(
-    () => Boolean(filters.proteinMin || filters.caloriesMax),
-    [filters.caloriesMax, filters.proteinMin]
+    () => Object.values(filters).some((value) => value !== undefined),
+    [filters]
   );
 
   const clearProteinFilter = () => {

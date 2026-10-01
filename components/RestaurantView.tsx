@@ -222,6 +222,7 @@ function StandardRestaurantView({
   return (
     <div>
       <StickyRestaurantBar
+        restaurantId={restaurantId}
         restaurantName={restaurantName}
         restaurantLogo={restaurantLogo}
         view={effectiveViewMode}

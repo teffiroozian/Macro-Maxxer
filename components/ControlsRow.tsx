@@ -14,12 +14,13 @@ import type { MenuItem } from "@/types/menu";
 import MobileNavDrawer from "@/components/MobileNavDrawer";
 import AppButton from "@/components/ui/AppButton";
 import FilterChip from "@/components/ui/FilterChip";
-import ViewTabs from "@/components/controls/ViewTabs";
-import SortSelector from "@/components/controls/SortSelector";
+import RankSelector from "@/components/controls/RankSelector";
+import RestaurantFiltersPanel from "@/components/controls/RestaurantFiltersPanel";
 import { pillTriggerClassName } from "@/components/controls/pillButton";
 import { useDialogA11y } from "@/hooks/useDialogA11y";
 import {
   SlidersHorizontal,
+  ListFilter,
   ChevronDown,
   ClipboardList,
   Carrot,
@@ -32,6 +33,7 @@ import {
   Check,
   ArrowLeft,
   LayoutGrid,
+  List,
 } from "lucide-react";
 
 
@@ -56,7 +58,16 @@ const SORT_OPTIONS: Array<{ label: string; value: SortOption; icon: typeof Flame
 // filtering" either way.
 function countActiveFilters(candidate: Filters, defaultCaloriesMax: number) {
   const hasCalories = candidate.caloriesMax !== undefined && candidate.caloriesMax !== defaultCaloriesMax;
-  return (candidate.proteinMin ? 1 : 0) + (hasCalories ? 1 : 0);
+  return [
+    candidate.proteinMin,
+    candidate.proteinScoreMin,
+    candidate.carbsMax,
+    candidate.fatMax,
+    candidate.fiberMin,
+    candidate.sodiumMax,
+    candidate.sugarMax,
+    candidate.categories !== undefined ? 1 : undefined,
+  ].filter((value) => value !== undefined).length + (hasCalories ? 1 : 0);
 }
 
 export function FilterChips({
@@ -134,6 +145,7 @@ export function FilterChips({
 }
 
 export default function ControlsRow({
+  restaurantId,
   view,
   onChange,
   sort,
@@ -156,6 +168,7 @@ export default function ControlsRow({
   mobileDrawerHeaderTitle,
   mobileDrawerHeaderLogoSrc,
 }: {
+  restaurantId: string;
   view: ViewOption;
   onChange: (view: ViewOption) => void;
   sort: SortOption;
@@ -214,8 +227,7 @@ export default function ControlsRow({
   const [isSortSectionOpen, setIsSortSectionOpen] = useState(true);
   const [isFiltersSectionOpen, setIsFiltersSectionOpen] = useState(true);
   const [draftFilters, setDraftFilters] = useState<Filters>(filters);
-  const [hoveredSortOption, setHoveredSortOption] = useState<SortOption | null>(null);
-  const sortMenuRef = useRef<HTMLDivElement>(null);
+  const [resultLayout, setResultLayout] = useState<"list" | "grid">("list");
   const filtersSectionRef = useRef<HTMLDivElement>(null);
   const filtersDialogResetButtonRef = useRef<HTMLButtonElement>(null);
 
@@ -226,18 +238,10 @@ export default function ControlsRow({
         : SORT_OPTIONS,
     [view]
   );
-  const currentSortOption = useMemo(
-    () => visibleSortOptions.find((option) => option.value === sort) ?? visibleSortOptions[0],
-    [sort, visibleSortOptions]
-  );
-
   const defaultCaloriesMax = calorieBounds.max;
 
   const openFilters = () => {
-    setDraftFilters({
-      ...filters,
-      caloriesMax: filters.caloriesMax ?? defaultCaloriesMax,
-    });
+    setDraftFilters(filters);
     setIsFiltersOpen(true);
   };
 
@@ -264,16 +268,12 @@ export default function ControlsRow({
 
   const applyFilters = () => {
     const nextFilters = { ...draftFilters };
-    if (nextFilters.caloriesMax === defaultCaloriesMax) {
-      nextFilters.caloriesMax = undefined;
-    }
-
     onFiltersChange(nextFilters);
     setIsFiltersOpen(false);
     setIsMobileDrawerOpen(false);
   };
 
-  const { hasActiveFilters, resetFilters } = useFilterChipActions({
+  const { resetFilters } = useFilterChipActions({
     filters,
     onFiltersChange,
   });
@@ -300,8 +300,22 @@ export default function ControlsRow({
     initialFocusRef: filtersDialogResetButtonRef,
   });
 
+  useEffect(() => {
+    if (!isFiltersOpen) return;
+    const body = document.body;
+    const previousOverflow = body.style.overflow;
+    const previousPaddingRight = body.style.paddingRight;
+    const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
+    body.style.overflow = "hidden";
+    if (scrollbarWidth > 0) body.style.paddingRight = `${scrollbarWidth}px`;
+    return () => {
+      body.style.overflow = previousOverflow;
+      body.style.paddingRight = previousPaddingRight;
+    };
+  }, [isFiltersOpen]);
+
   const handleResetFilters = () => {
-    setDraftFilters({ caloriesMax: defaultCaloriesMax });
+    setDraftFilters({});
     resetFilters();
   };
 
@@ -359,6 +373,15 @@ export default function ControlsRow({
     draftMatchingItemCount === 0
       ? "No matching items"
       : `Show ${draftMatchingItemCount} item${draftMatchingItemCount === 1 ? "" : "s"}`;
+
+  const fullDraftMatchingItemCount = useMemo(
+    () => filterMenuItems({ items: sourceItems, filters: draftFilters, searchTerms: [], rankedChildSelections, isRankingView }).length,
+    [draftFilters, isRankingView, rankedChildSelections, sourceItems],
+  );
+  const appliedMatchingItemCount = useMemo(
+    () => filterMenuItems({ items: sourceItems, filters, searchTerms: [], rankedChildSelections, isRankingView }).length,
+    [filters, isRankingView, rankedChildSelections, sourceItems],
+  );
 
   // Shared by both the desktop modal's and mobile drawer's protein chips so
   // the two surfaces can never disagree on a count, disabled state, or
@@ -695,6 +718,22 @@ export default function ControlsRow({
     </div>
   ) : null;
 
+  const redesignedFiltersDialog = isFiltersOpen ? (
+    <div role="dialog" aria-modal="true" aria-label="Filters" className="fixed inset-0 z-[200] flex items-center justify-center bg-overlay-scrim p-4" onClick={closeFiltersDialog}>
+      <div className="w-full max-w-[720px]" onClick={(event) => event.stopPropagation()}>
+        <RestaurantFiltersPanel
+          restaurantId={restaurantId}
+          items={sourceItems}
+          value={draftFilters}
+          onChange={setDraftFilters}
+          onClose={closeFiltersDialog}
+          onApply={applyFilters}
+          matchingCount={fullDraftMatchingItemCount}
+        />
+      </div>
+    </div>
+  ) : null;
+
   return (
     <>
       <div id={wrapperId} className="grid gap-2 overflow-visible">
@@ -707,54 +746,42 @@ export default function ControlsRow({
           </div>
         ) : null}
 
-        <div className={IS_CAPACITOR_BUILD ? "hidden" : "hidden min-w-0 flex-nowrap items-center gap-2.5 lg:flex"}>
-          {hideViewSelector ? null : (
-            <ViewTabs
-              options={VIEW_OPTIONS.filter(
-                (option) => !hideIngredientsView || option.value !== "ingredients",
-              )}
-              value={view}
-              onSelect={onChange}
-            />
-          )}
-
-          <div className="ml-auto flex shrink-0 items-center justify-end gap-2">
-            <SortSelector
-              options={visibleSortOptions}
-              value={sort}
-              currentOption={currentSortOption}
-              isOpen={isSortOpen}
-              hoveredOption={hoveredSortOption}
-              menuRef={sortMenuRef}
-              onToggleOpen={() => setIsSortOpen((prev) => !prev)}
-              onSelect={(nextSort) => {
-                onSortChange(nextSort);
-                setIsSortOpen(false);
-              }}
-              onHover={setHoveredSortOption}
-              onClose={() => setIsSortOpen(false)}
-            />
+        <div className={IS_CAPACITOR_BUILD ? "hidden" : "hidden min-w-0 flex-nowrap items-center gap-2 lg:flex"}>
+          <div className="flex shrink-0 items-center gap-2">
+            <RankSelector value={sort} isOpen={isSortOpen} onOpenChange={setIsSortOpen} onChange={onSortChange} />
 
             <button
               type="button"
               onClick={openFilters}
               aria-haspopup="dialog"
               aria-expanded={isFiltersOpen}
-              className={pillTriggerClassName({ active: isFiltersOpen || hasActiveFilters })}
+              className={pillTriggerClassName({ className: isFiltersOpen ? "border-slate-900" : "" })}
             >
-              <SlidersHorizontal className="h-4 w-4 shrink-0" strokeWidth={2.3} />
+              <ListFilter className="h-4 w-4 shrink-0" strokeWidth={2.5} />
               Filters
-              {hasActiveFilters ? (
+              {appliedActiveFilterCount > 0 ? (
                 <span className="inline-flex h-5 min-w-5 shrink-0 items-center justify-center rounded-full bg-accent px-1 text-[11px] font-bold text-white">
                   {appliedActiveFilterCount}
                 </span>
               ) : null}
             </button>
+            <span className="mx-1 h-6 w-px bg-slate-200" aria-hidden="true" />
+            <span className="whitespace-nowrap px-1 text-sm text-slate-600">
+              <strong className="font-bold text-slate-950">{appliedMatchingItemCount}</strong> of {sourceItems.length} items
+            </span>
+            <div className="ml-1 flex rounded-full bg-slate-100 p-[3px]" role="group" aria-label="Results layout">
+              {([{ value: "list", label: "List view", icon: List }, { value: "grid", label: "Grid view", icon: LayoutGrid }] as const).map((option) => {
+                const Icon = option.icon;
+                const active = resultLayout === option.value;
+                return <button key={option.value} type="button" aria-label={option.label} aria-pressed={active} onClick={() => setResultLayout(option.value)} className={`flex h-[34px] w-[34px] cursor-pointer items-center justify-center rounded-full transition ${active ? "bg-white text-slate-950 shadow-sm" : "text-slate-400 hover:text-slate-700"}`}><Icon className="h-4 w-4" strokeWidth={2.2} /></button>;
+              })}
+            </div>
           </div>
         </div>
       </div>
 
-      {filtersDialog ? (typeof document === "undefined" ? filtersDialog : createPortal(filtersDialog, document.body)) : null}
+      {redesignedFiltersDialog ? (typeof document === "undefined" ? redesignedFiltersDialog : createPortal(redesignedFiltersDialog, document.body)) : null}
+      {false ? filtersDialog : null}
       {mobileControlsDrawer ? (typeof document === "undefined" ? mobileControlsDrawer : createPortal(mobileControlsDrawer, document.body)) : null}
     </>
   );

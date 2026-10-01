@@ -16,7 +16,6 @@ import { getDefaultMenuItemNutrition } from "@/lib/nutrition";
 import { isStandaloneMenuItem } from "@/lib/menuItemCalculations";
 import {
     RANKING_DEFAULT_SORT,
-    SORT_OPTION_VALUES,
     isDefaultOrderSort,
     type SortOption,
 } from "@/lib/menuSections/sortOptions";
@@ -24,8 +23,10 @@ import {
     countItemsByCategory,
     applyRestaurantMenuSectionOrder,
     getCategoryLabel,
+    getItemCategories,
     getOrderedMenuSections,
 } from "@/lib/menuSections/sorting";
+import { RESTAURANT_MAIN_MENU_CATEGORIES } from "@/data/restaurantControlPresets";
 
 export function useRestaurantMenuControls({
     restaurantId,
@@ -61,19 +62,19 @@ export function useRestaurantMenuControls({
             : requestedView === "ranking"
               ? "ranking"
               : defaultView;
-    const [sort, setSort] = useState<SortOption>(() =>
-        viewMode === "ranking"
-            ? RANKING_DEFAULT_SORT
-            : SORT_OPTION_VALUES.DEFAULT_ORDER,
-    );
-    const [filters, setFilters] = useState<Filters>({});
-
+    const [sort, setSort] = useState<SortOption>(RANKING_DEFAULT_SORT);
     // Structural/internal source records (see MenuItem.sourceOnly) are valid
     // lookup targets for combo/ingredient relationships elsewhere, but never
     // a standalone item a user browses, filters, or ranks on their own — so
     // every browsable list this hook builds starts from this filtered set,
     // not the raw `items` prop.
     const standaloneItems = useMemo(() => items.filter(isStandaloneMenuItem), [items]);
+
+    const [filters, setFilters] = useState<Filters>(() => {
+        const available = new Set(standaloneItems.flatMap((item) => getItemCategories(item)));
+        const mainMenu = (RESTAURANT_MAIN_MENU_CATEGORIES[restaurantId] ?? []).filter((category) => available.has(category));
+        return mainMenu.length ? { categories: mainMenu } : {};
+    });
 
     // The narrower categories available inside each broad Rankings parent
     // bucket, derived from this restaurant's own items — never hard-coded —

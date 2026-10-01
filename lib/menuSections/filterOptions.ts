@@ -2,6 +2,13 @@
 export type Filters = {
   proteinMin?: number;
   caloriesMax?: number;
+  proteinScoreMin?: number;
+  carbsMax?: number;
+  fatMax?: number;
+  fiberMin?: number;
+  sodiumMax?: number;
+  sugarMax?: number;
+  categories?: string[];
 };
 
 // Protein-minimum chip presets. Finished meals commonly clear 20-50g, but

@@ -17,7 +17,7 @@ export default function RestaurantPageContent({
 
   return (
     <RestaurantUiProvider>
-      <div className="w-full bg-app-background">
+      <div className="min-h-[calc(var(--app-viewport-height)+24rem)] w-full bg-app-background">
         <RecentRestaurantTracker restaurantId={restaurantData.id} />
         <ScrollToTopOnMount />
 

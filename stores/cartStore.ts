@@ -16,6 +16,16 @@ let cartState: CartState = {
   lastAddedPreviewDismissedEventId: null,
 };
 
+// SSR and the client's hydration pass must see the same immutable snapshot.
+// Local storage is intentionally applied only after React subscribes.
+const serverCartSnapshot: CartState = {
+  items: [],
+  lastAddedItemId: null,
+  lastAddedAt: null,
+  lastAddedEventId: null,
+  lastAddedPreviewDismissedEventId: null,
+};
+
 let hasHydratedFromStorage = false;
 
 const persistCartItems = () => {
@@ -258,6 +268,7 @@ const dismissLastAddedPreview = () => {
 
 export const __cartStoreTestUtils = {
   getSnapshot,
+  getServerSnapshot: () => serverCartSnapshot,
   resetCartState(nextState?: Partial<CartState>) {
     cartState = {
       items: [],
@@ -281,7 +292,7 @@ export const __cartStoreTestUtils = {
 
 // public api for the cart store for current cart data and functions to change cart
 export const useCart = () => {
-  const state = useSyncExternalStore(subscribe, getSnapshot, getSnapshot);
+  const state = useSyncExternalStore(subscribe, getSnapshot, () => serverCartSnapshot);
 
   const totals = useMemo(() => computeTotals(state.items), [state.items]);
   const hasPartialNutritionData = useMemo(() => computeHasPartialNutritionData(state.items), [state.items]);
