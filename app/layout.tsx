@@ -14,6 +14,7 @@ import CrossRestaurantCartDialog from "@/components/cart/CrossRestaurantCartDial
 import InProgressBuildDialog from "@/components/InProgressBuildDialog";
 import SiteFooter from "@/components/SiteFooter";
 import NativeBottomNav from "@/components/NativeBottomNav";
+import CartIconDropdown from "@/components/cart/CartIconDropdown";
 import { IS_CAPACITOR_BUILD } from "@/lib/buildTarget";
 import { SITE_DESCRIPTION, SITE_NAME, SITE_URL } from "@/lib/site";
 import "./globals.css";
@@ -105,11 +106,14 @@ export default function RootLayout({
                                 {children}
                                 {!IS_CAPACITOR_BUILD ? <SiteFooter /> : null}
                                 <Suspense fallback={null}>
-                                    <GlobalSearchOverlay />
+                                    {!IS_CAPACITOR_BUILD ? <GlobalSearchOverlay /> : null}
                                 </Suspense>
                                 <GlobalItemPreviewModal />
                                 <CrossRestaurantCartDialog />
                                 <InProgressBuildDialog />
+                                {IS_CAPACITOR_BUILD ? (
+                                    <CartIconDropdown buttonClassName="" variant="sheet" showTrigger={false} />
+                                ) : null}
                                 {IS_CAPACITOR_BUILD ? <NativeBottomNav /> : null}
                             </BuildInProgressGuardProvider>
                         </CartAddConfirmationProvider>

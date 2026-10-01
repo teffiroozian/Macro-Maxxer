@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { Pencil, Utensils, X } from "lucide-react";
+import { ChevronLeft, Pencil, Utensils, X } from "lucide-react";
 import ItemDetailsPanel, {
     ITEM_DETAILS_SECTION_IDS,
     ProductOptionsSection,
@@ -67,6 +67,7 @@ import {
 } from "@/lib/restaurantBuilders/chipotle/nutrition";
 import { diffChipotleBuildConfigurations } from "@/lib/restaurantBuilders/chipotle/buildDiff";
 import { SORT_OPTION_VALUES } from "@/lib/menuSections/sortOptions";
+import { IS_CAPACITOR_BUILD } from "@/lib/buildTarget";
 import {
     resolveIngredientRelationshipNutrition,
     resolveMenuItemVariantNutrition,
@@ -1665,7 +1666,9 @@ export default function ItemRouteModal({
 
     return (
         <div
-            className="fixed inset-0 z-[235] flex h-[var(--app-viewport-height)] items-end justify-center pt-[var(--safe-area-top)] sm:items-center sm:p-6"
+            className={IS_CAPACITOR_BUILD
+                ? "fixed inset-0 z-[var(--z-tooltip)] flex h-[var(--app-viewport-height)] items-stretch justify-center"
+                : "fixed inset-0 z-[235] flex h-[var(--app-viewport-height)] items-end justify-center pt-[var(--safe-area-top)] sm:items-center sm:p-6"}
             role="dialog"
             aria-modal="true"
             aria-label={item.name}
@@ -1676,9 +1679,11 @@ export default function ItemRouteModal({
                 onClick={handleClose}
                 aria-label="Close item modal"
             />
-            <div className="item-route-modal-root relative flex h-[min(92dvh,calc(100dvh-var(--safe-area-top)))] w-full flex-col overflow-hidden rounded-t-3xl bg-white shadow-[0_24px_70px_rgba(15,23,42,0.35)] sm:h-auto sm:max-h-[88dvh] sm:min-h-[78dvh] sm:w-full sm:max-w-[660px] sm:rounded-3xl md:max-w-[800px] lg:max-w-[1000px]">
+            <div className={IS_CAPACITOR_BUILD
+                ? "item-route-modal-root relative flex h-[var(--app-viewport-height)] w-full flex-col overflow-hidden bg-white"
+                : "item-route-modal-root relative flex h-[min(92dvh,calc(100dvh-var(--safe-area-top)))] w-full flex-col overflow-hidden rounded-t-3xl bg-white shadow-[0_24px_70px_rgba(15,23,42,0.35)] sm:h-auto sm:max-h-[88dvh] sm:min-h-[78dvh] sm:w-full sm:max-w-[660px] sm:rounded-3xl md:max-w-[800px] lg:max-w-[1000px]"}>
                 <div
-                    className={`absolute inset-x-0 top-0 z-20 flex items-center justify-between gap-3 border-b bg-white px-4 py-3 transition-[opacity,transform,box-shadow,border-color] duration-300 ease-out sm:px-6 sm:py-4 lg:px-8 ${
+                    className={`absolute inset-x-0 top-0 z-20 flex items-center justify-between gap-3 border-b bg-white px-4 transition-[opacity,transform,box-shadow,border-color] duration-300 ease-out sm:px-6 lg:px-8 ${IS_CAPACITOR_BUILD ? "pb-3 pt-[calc(var(--safe-area-top)+0.75rem)]" : "py-3 sm:py-4"} ${
                         isOverviewCollapsed
                             ? "translate-y-0 border-black/[0.06] opacity-100 shadow-[0_1px_2px_rgba(15,23,42,0.05)]"
                             : "pointer-events-none -translate-y-2 border-transparent opacity-0"
@@ -1710,9 +1715,9 @@ export default function ItemRouteModal({
                         tabIndex={isOverviewCollapsed ? 0 : -1}
                         className="focus-visible:outline-accent-strong"
                         onClick={handleClose}
-                        aria-label="Close item modal"
+                        aria-label={IS_CAPACITOR_BUILD ? "Back" : "Close item modal"}
                     >
-                        <X size={18} strokeWidth={2.25} />
+                        {IS_CAPACITOR_BUILD ? <ChevronLeft size={20} strokeWidth={2.4} /> : <X size={18} strokeWidth={2.25} />}
                     </AppIconButton>
                 </div>
 
@@ -1720,7 +1725,7 @@ export default function ItemRouteModal({
                     ref={scrollContainerRef}
                     className="min-h-0 flex-1 overflow-x-hidden overflow-y-auto overscroll-contain"
                 >
-                    <div className="px-4 pb-8 pt-7 sm:px-6 sm:pb-10 sm:pt-9 lg:px-8 lg:pt-10">
+                    <div className={`px-4 pb-8 sm:px-6 sm:pb-10 lg:px-8 ${IS_CAPACITOR_BUILD ? "pt-[calc(var(--safe-area-top)+1.75rem)]" : "pt-7 sm:pt-9 lg:pt-10"}`}>
                         <section
                             ref={overviewSectionRef}
                             className="item-overview-grid relative sm:gap-x-7 lg:gap-x-8"
@@ -1869,9 +1874,9 @@ export default function ItemRouteModal({
                                 size="md"
                                 className="absolute right-0 top-0 focus-visible:outline-accent-strong"
                                 onClick={handleClose}
-                                aria-label="Close item modal"
+                                aria-label={IS_CAPACITOR_BUILD ? "Back" : "Close item modal"}
                             >
-                                <X size={18} strokeWidth={2.25} />
+                                {IS_CAPACITOR_BUILD ? <ChevronLeft size={20} strokeWidth={2.4} /> : <X size={18} strokeWidth={2.25} />}
                             </AppIconButton>
                         </section>
 

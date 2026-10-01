@@ -6,6 +6,7 @@ import Dialog from "@/components/ui/Dialog";
 import { useCartAddConfirmation } from "@/components/CartAddConfirmationContext";
 import { useCart } from "@/stores/cartStore";
 import { getAllRestaurants } from "@/lib/restaurants";
+import { IS_CAPACITOR_BUILD } from "@/lib/buildTarget";
 
 export default function CrossRestaurantCartDialog() {
   const { pendingConflict, confirmAddAnyway, confirmReplaceCart, cancelPendingAdd } = useCartAddConfirmation();
@@ -27,6 +28,7 @@ export default function CrossRestaurantCartDialog() {
       titleId="cross-restaurant-dialog-title"
       descriptionId="cross-restaurant-dialog-description"
       initialFocusRef={cancelButtonRef}
+      presentation={IS_CAPACITOR_BUILD ? "bottom-sheet" : "responsive"}
     >
       <p className="text-xs font-semibold uppercase tracking-[0.14em] text-slate-500">
         Different Restaurant

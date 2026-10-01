@@ -6,6 +6,7 @@ import ExportOrderCard from "@/components/export/ExportOrderCard";
 import AppButton from "@/components/ui/AppButton";
 import AppIconButton from "@/components/ui/AppIconButton";
 import { useDialogA11y } from "@/hooks/useDialogA11y";
+import { IS_CAPACITOR_BUILD } from "@/lib/buildTarget";
 import { buildCartItemExportSummary, formatCartItemName } from "@/lib/cart/displayLabels";
 import { getAllRestaurants } from "@/lib/restaurants";
 import type { NutritionTotals } from "@/lib/cart/nutrition";
@@ -80,7 +81,7 @@ export default function ExportOrderDialog({ items, nutritionTotals, onClose }: E
         pane.clientWidth - parseFloat(paneStyle.paddingLeft) - parseFloat(paneStyle.paddingRight),
         PREVIEW_MAX_WIDTH,
       );
-      const paneHeight = sideBySideQuery.matches
+      const paneHeight = !IS_CAPACITOR_BUILD && sideBySideQuery.matches
         ? pane.clientHeight
         : parseFloat(getComputedStyle(sheet).maxHeight) - header.offsetHeight - controls.offsetHeight;
       const availableHeight = paneHeight - parseFloat(paneStyle.paddingTop) - parseFloat(paneStyle.paddingBottom);
@@ -123,18 +124,18 @@ export default function ExportOrderDialog({ items, nutritionTotals, onClose }: E
       role="dialog"
       aria-modal="true"
       aria-labelledby="export-order-dialog-title"
-      className="fixed inset-0 z-[var(--z-tooltip)] flex items-end justify-center bg-overlay-scrim md:items-center md:p-6"
+      className={`fixed inset-0 z-[var(--z-tooltip)] flex items-end justify-center bg-overlay-scrim ${IS_CAPACITOR_BUILD ? "" : "md:items-center md:p-6"}`}
       onClick={onClose}
     >
       <div
         ref={sheetRef}
-        className="flex max-h-[94dvh] w-full flex-col overflow-y-auto overscroll-contain rounded-t-sheet bg-white shadow-[0_24px_80px_rgba(0,0,0,0.35)] md:grid md:h-[min(780px,calc(100dvh-3rem))] md:max-h-none md:w-[min(1120px,calc(100vw-3rem))] md:grid-cols-[minmax(0,1fr)_360px] md:grid-rows-[auto_minmax(0,1fr)] md:overflow-hidden md:rounded-[32px]"
+        className={`flex w-full flex-col overflow-y-auto overscroll-contain rounded-t-sheet bg-white shadow-[0_24px_80px_rgba(0,0,0,0.35)] ${IS_CAPACITOR_BUILD ? "max-h-[calc(94dvh-var(--safe-area-top))]" : "max-h-[94dvh] md:grid md:h-[min(780px,calc(100dvh-3rem))] md:max-h-none md:w-[min(1120px,calc(100vw-3rem))] md:grid-cols-[minmax(0,1fr)_360px] md:grid-rows-[auto_minmax(0,1fr)] md:overflow-hidden md:rounded-[32px]"}`}
         onClick={(event) => event.stopPropagation()}
       >
-        <header ref={headerRef} className="shrink-0 px-5 pb-3 pt-2 md:col-start-2 md:row-start-1 md:px-8 md:pb-0 md:pt-8">
-          <div className="mx-auto mb-2 h-1 w-10 rounded-full bg-black/15 md:hidden" aria-hidden="true" />
+        <header ref={headerRef} className={`shrink-0 px-5 pb-3 pt-2 ${IS_CAPACITOR_BUILD ? "" : "md:col-start-2 md:row-start-1 md:px-8 md:pb-0 md:pt-8"}`}>
+          <div className={`mx-auto mb-2 h-1 w-10 rounded-full bg-black/15 ${IS_CAPACITOR_BUILD ? "" : "md:hidden"}`} aria-hidden="true" />
           <div className="flex items-center justify-between gap-4">
-            <h2 id="export-order-dialog-title" className="whitespace-nowrap font-heading text-[22px] font-bold tracking-[-0.02em] text-slate-950 md:text-[23px]">
+            <h2 id="export-order-dialog-title" className={`whitespace-nowrap font-heading text-[22px] font-bold tracking-[-0.02em] text-slate-950 ${IS_CAPACITOR_BUILD ? "" : "md:text-[23px]"}`}>
               Export order
             </h2>
             <AppIconButton
@@ -152,10 +153,10 @@ export default function ExportOrderDialog({ items, nutritionTotals, onClose }: E
 
         <div
           ref={previewPaneRef}
-          className="flex shrink-0 items-center justify-center bg-[#f1f0ec] px-6 py-4 md:col-start-1 md:row-span-2 md:row-start-1 md:min-h-0 md:p-10"
+          className={`flex shrink-0 items-center justify-center bg-[#f1f0ec] px-6 py-4 ${IS_CAPACITOR_BUILD ? "" : "md:col-start-1 md:row-span-2 md:row-start-1 md:min-h-0 md:p-10"}`}
         >
           <div
-            className="relative overflow-hidden rounded-[12px] shadow-[0_18px_44px_rgba(0,0,0,0.18)] md:rounded-[18px]"
+            className={`relative overflow-hidden rounded-[12px] shadow-[0_18px_44px_rgba(0,0,0,0.18)] ${IS_CAPACITOR_BUILD ? "" : "md:rounded-[18px]"}`}
             style={{
               width: `${EXPORT_WIDTH * previewScale}px`,
               height: `${EXPORT_HEIGHT * previewScale}px`,
@@ -184,8 +185,8 @@ export default function ExportOrderDialog({ items, nutritionTotals, onClose }: E
           />
         </div>
 
-        <div ref={controlsRef} className="flex shrink-0 flex-col px-5 pb-[max(1rem,env(safe-area-inset-bottom))] pt-4 md:col-start-2 md:row-start-2 md:min-h-0 md:px-8 md:pb-8 md:pt-8">
-          <div className="hidden md:block">
+        <div ref={controlsRef} className={`flex shrink-0 flex-col px-5 pb-[max(1rem,env(safe-area-inset-bottom))] pt-4 ${IS_CAPACITOR_BUILD ? "" : "md:col-start-2 md:row-start-2 md:min-h-0 md:px-8 md:pb-8 md:pt-8"}`}>
+          <div className={IS_CAPACITOR_BUILD ? "hidden" : "hidden md:block"}>
             <p className="text-[11px] font-medium uppercase tracking-[0.14em] text-slate-400">Format</p>
             <div className="mt-2.5 flex items-center gap-3 rounded-xl border border-black/10 bg-[#f6f5f1] px-3.5 py-2.5">
               <span className="h-[18px] w-[14px] shrink-0 rounded-[3px] border-2 border-slate-950" aria-hidden="true" />
@@ -193,13 +194,13 @@ export default function ExportOrderDialog({ items, nutritionTotals, onClose }: E
             </div>
           </div>
 
-          <div className="md:mt-auto">
+          <div className={IS_CAPACITOR_BUILD ? "" : "md:mt-auto"}>
             {exportError ? <p role="alert" className="mb-3 text-center text-sm font-medium text-red-600">{exportError}</p> : null}
             <AppButton disabled={isExporting} variant="primary" size="lg" className="w-full rounded-2xl! text-[16px]!" onClick={saveImage}>
               {isExporting ? <LoaderCircle className="size-[18px] animate-spin" aria-hidden="true" /> : <Download className="size-[18px]" aria-hidden="true" />}
               {isExporting ? "Saving…" : "Save image"}
             </AppButton>
-            <p className="mt-2 text-center text-[13px] text-slate-500 md:mt-3 md:text-sm">
+            <p className={`mt-2 text-center text-[13px] text-slate-500 ${IS_CAPACITOR_BUILD ? "" : "md:mt-3 md:text-sm"}`}>
               {EXPORT_WIDTH} × {EXPORT_HEIGHT} PNG
             </p>
           </div>

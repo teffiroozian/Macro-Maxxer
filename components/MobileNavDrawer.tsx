@@ -11,6 +11,7 @@ import { useBuildInProgressGuard } from "@/components/BuildInProgressGuardContex
 import { useDialogA11y } from "@/hooks/useDialogA11y";
 import { isPlainLeftClick } from "@/lib/isPlainLeftClick";
 import RestaurantLogoBadge from "@/components/ui/RestaurantLogoBadge";
+import { IS_CAPACITOR_BUILD } from "@/lib/buildTarget";
 
 type DrawerTab = "controls" | "restaurants";
 
@@ -70,7 +71,7 @@ export default function MobileNavDrawer({
 
   return (
     <div
-      className={`fixed inset-0 z-[210] lg:hidden ${isOpen ? "" : "pointer-events-none"}`}
+      className={`fixed inset-0 z-[var(--z-drawer)] ${IS_CAPACITOR_BUILD ? "" : "lg:hidden"} ${isOpen ? "" : "pointer-events-none"}`}
       aria-modal="true"
       role="dialog"
       // Stays mounted at all times for the slide transition (see the
@@ -87,8 +88,10 @@ export default function MobileNavDrawer({
       />
       <div
         ref={panelRef}
-        className={`absolute inset-y-0 left-0 flex h-[var(--app-viewport-height)] w-[min(90vw,360px)] flex-col bg-white pt-[var(--safe-area-top)] shadow-[0_18px_40px_rgba(0,0,0,0.24)] transition-transform duration-200 ${
-          isOpen ? "translate-x-0" : "-translate-x-full"
+        className={`absolute flex flex-col overflow-hidden bg-white shadow-[0_18px_40px_rgba(0,0,0,0.24)] transition-transform duration-200 ${
+          IS_CAPACITOR_BUILD
+            ? `inset-x-0 bottom-0 max-h-[88dvh] min-h-[50dvh] w-full rounded-t-sheet ${isOpen ? "translate-y-0" : "translate-y-full"}`
+            : `inset-y-0 left-0 h-[var(--app-viewport-height)] w-[min(90vw,360px)] pt-[var(--safe-area-top)] ${isOpen ? "translate-x-0" : "-translate-x-full"}`
         }`}
       >
         <div className="flex items-center gap-2.5 border-b border-black/5 bg-slate-50/80 px-4 py-3">
@@ -143,7 +146,7 @@ export default function MobileNavDrawer({
           </div>
         </div>
 
-        <div className="flex-1 overflow-y-auto overscroll-contain px-4 pb-[max(1rem,var(--safe-area-bottom))] pt-4">
+        <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain px-4 pb-[max(1rem,var(--safe-area-bottom))] pt-4">
           {activeTab === "controls" && showControls ? (
             <div>{controlsContent}</div>
           ) : (

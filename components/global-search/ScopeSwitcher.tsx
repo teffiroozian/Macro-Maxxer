@@ -14,6 +14,7 @@ type ScopeSwitcherProps = {
   // "segmented": light track + raised active pill, used by the hero only —
   // additive so every other caller is visually unchanged.
   variant?: ScopeSwitcherVariant;
+  fullWidth?: boolean;
 };
 
 const TABS = [
@@ -27,6 +28,7 @@ export default function ScopeSwitcher({
   showIcons = false,
   className = "px-5",
   variant = "default",
+  fullWidth = false,
 }: ScopeSwitcherProps) {
   const isSegmented = variant === "segmented";
 
@@ -48,7 +50,7 @@ export default function ScopeSwitcher({
           // results panel is focus-driven) closing the results in the process.
           onMouseDown={(event) => event.preventDefault()}
           onClick={() => onChange(tab.value)}
-          className={`inline-flex cursor-pointer items-center gap-1.5 rounded-full px-3 py-1.5 text-sm font-semibold transition ${
+          className={`inline-flex cursor-pointer items-center justify-center gap-1.5 rounded-full px-3 py-1.5 text-sm font-semibold transition ${fullWidth ? "flex-1" : ""} ${
             scope === tab.value
               ? isSegmented
                 ? "bg-white text-accent-strong shadow-[0_1px_6px_rgba(15,23,42,0.15)]"

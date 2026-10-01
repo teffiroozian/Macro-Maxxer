@@ -483,13 +483,6 @@ html.capacitor-native .native-sticky-action {
     bottom: var(--native-bottom-nav-height);
 }
 
-/* The existing search sheet is mobile-first and normally disappears at the
-   desktop breakpoint. A native tab must keep the same sheet available on
-   wider iOS devices as well. */
-html.capacitor-native .native-global-search {
-    display: flex !important;
-}
-
 @supports (height: 100dvh) {
     :root {
         --app-viewport-height: 100dvh;

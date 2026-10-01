@@ -17,6 +17,7 @@ import { useCartItemEditModal } from "@/hooks/useCartItemEditModal";
 import { useLastAddedPreviewOpen } from "@/hooks/useLastAddedPreviewOpen";
 import { getRemainingLastAddedPreviewMs, LAST_ADDED_PREVIEW_DURATION_MS } from "@/lib/cart/lastAddedPreview";
 import CartItemCountBadge from "@/components/cart/CartItemCountBadge";
+import { IS_CAPACITOR_BUILD } from "@/lib/buildTarget";
 
 type CartIconDropdownProps = {
   buttonClassName: string;
@@ -26,6 +27,7 @@ type CartIconDropdownProps = {
   // read/write the same cart store (useCart); this only changes how that
   // shared "just added" state is presented.
   variant?: "popover" | "sheet";
+  showTrigger?: boolean;
 };
 
 const SCROLL_CLOSE_THRESHOLD = 90;
@@ -33,6 +35,7 @@ const SCROLL_CLOSE_THRESHOLD = 90;
 export default function CartIconDropdown({
   buttonClassName,
   variant = "popover",
+  showTrigger = true,
 }: CartIconDropdownProps) {
   const router = useRouter();
   const pathname = usePathname();
@@ -154,7 +157,9 @@ export default function CartIconDropdown({
     if (isCurrentPage) {
       return;
     }
-    if (restaurantUi) {
+    if (IS_CAPACITOR_BUILD) {
+      router.push("/cart");
+    } else if (restaurantUi) {
       restaurantUi.openCart();
     } else {
       router.push("/cart");
@@ -249,7 +254,7 @@ export default function CartIconDropdown({
 
   return (
     <div ref={containerRef} data-cart-icon-dropdown className="relative">
-      <button
+      {showTrigger ? <button
         type="button"
         onClick={() => {
           handleOpenCart();
@@ -261,7 +266,7 @@ export default function CartIconDropdown({
         aria-expanded={isOpen}
       >
         {countLabel}
-      </button>
+      </button> : null}
 
       {variant === "sheet" ? (
         <div

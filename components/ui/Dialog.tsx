@@ -13,6 +13,7 @@ type DialogProps = {
   // that need more room (e.g. a longer options list) without giving up the
   // shared overlay/panel chrome and open/close behavior.
   panelClassName?: string;
+  presentation?: "responsive" | "bottom-sheet";
 };
 
 // Canonical small/centered dialog shell (Design System PDF "Dialog"):
@@ -31,6 +32,7 @@ export default function Dialog({
   initialFocusRef,
   children,
   panelClassName = "",
+  presentation = "responsive",
 }: DialogProps) {
   useDialogA11y({ isOpen: true, onClose, initialFocusRef });
 
@@ -40,11 +42,15 @@ export default function Dialog({
       aria-modal="true"
       aria-labelledby={titleId}
       aria-describedby={descriptionId}
-      className="fixed inset-0 z-[var(--z-dialog)] flex h-[var(--app-viewport-height)] items-end justify-center bg-overlay-scrim px-3 pb-[max(0.75rem,var(--safe-area-bottom))] pt-[max(0.75rem,var(--safe-area-top))] sm:items-center sm:p-4"
+      className={presentation === "bottom-sheet"
+        ? "fixed inset-0 z-[var(--z-dialog)] flex h-[var(--app-viewport-height)] items-end justify-center bg-overlay-scrim pt-[max(0.75rem,var(--safe-area-top))]"
+        : "fixed inset-0 z-[var(--z-dialog)] flex h-[var(--app-viewport-height)] items-end justify-center bg-overlay-scrim px-3 pb-[max(0.75rem,var(--safe-area-bottom))] pt-[max(0.75rem,var(--safe-area-top))] sm:items-center sm:p-4"}
       onClick={onClose}
     >
       <div
-        className={`relative w-full max-w-[420px] rounded-[24px] bg-white p-5 shadow-elev-modal ${panelClassName}`.trim()}
+        className={`${presentation === "bottom-sheet"
+          ? "relative w-full rounded-t-[24px] bg-white px-5 pb-[max(1.25rem,var(--safe-area-bottom))] pt-5 shadow-elev-modal"
+          : "relative w-full max-w-[420px] rounded-[24px] bg-white p-5 shadow-elev-modal"} ${panelClassName}`.trim()}
         onClick={(event) => event.stopPropagation()}
       >
         {children}

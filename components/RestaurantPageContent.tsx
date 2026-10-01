@@ -6,6 +6,7 @@ import { RestaurantUiProvider } from "@/components/RestaurantUiContext";
 import CartPreviewDrawer from "@/components/cart/CartPreviewDrawer";
 import { resolveAddonMenuItems } from "@/lib/addonGroups";
 import type { RestaurantData } from "@/types/restaurant";
+import { IS_CAPACITOR_BUILD } from "@/lib/buildTarget";
 
 export default function RestaurantPageContent({
   restaurantData,
@@ -62,7 +63,7 @@ export default function RestaurantPageContent({
           ) : null}
         </main>
       </div>
-      <CartPreviewDrawer />
+      {!IS_CAPACITOR_BUILD ? <CartPreviewDrawer /> : null}
     </RestaurantUiProvider>
   );
 }

@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { Suspense } from "react";
 import HeroSearchNav from "@/components/home/HeroSearchNav";
 import HomeBackdrop from "@/components/home/HomeBackdrop";
 import RestaurantCarousel from "@/components/home/RestaurantCarousel";
@@ -14,6 +15,8 @@ import HomeSectionContainer, { HOME_VISUAL_WIDTH_CLASS } from "@/components/home
 import LiveRestaurantsBadge from "@/components/home/LiveRestaurantsBadge";
 import { RestaurantUiProvider } from "@/components/RestaurantUiContext";
 import CartPreviewDrawer from "@/components/cart/CartPreviewDrawer";
+import { IS_CAPACITOR_BUILD } from "@/lib/buildTarget";
+import NativeHomePage from "@/components/native/NativeHomePage";
 import { getAllRestaurants, getRestaurantData, toItemSlug } from "@/lib/restaurants";
 import { parseIncludedIngredientEntry } from "@/lib/itemIngredients";
 import { resolveEffectiveIngredientNutrition } from "@/lib/ingredientNutrition";
@@ -130,6 +133,14 @@ const WALKTHROUGH_FIND_ITEM_IDS = [
 ];
 
 export default async function Home() {
+  if (IS_CAPACITOR_BUILD) {
+    return (
+      <Suspense fallback={null}>
+        <NativeHomePage restaurants={liveRestaurants} />
+      </Suspense>
+    );
+  }
+
   const previewRestaurant = await getRestaurantData("chipotle");
   const walkthroughFindRestaurant = await getRestaurantData("chickfila");
   const previewItem = findEditorialRecord(
@@ -307,7 +318,7 @@ export default async function Home() {
         </main>
       </div>
 
-      <CartPreviewDrawer />
+      {!IS_CAPACITOR_BUILD ? <CartPreviewDrawer /> : null}
     </RestaurantUiProvider>
   );
 }

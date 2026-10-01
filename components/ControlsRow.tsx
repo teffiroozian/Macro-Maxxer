@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState, type CSSProperties } from "react";
 import { createPortal } from "react-dom";
+import { IS_CAPACITOR_BUILD } from "@/lib/buildTarget";
 import Image from "@/components/ui/AppImage";
 
 import { useFilterChipActions } from "./useFilterChipActions";
@@ -698,7 +699,7 @@ export default function ControlsRow({
     <>
       <div id={wrapperId} className="grid gap-2 overflow-visible">
         {showMobileTrigger ? (
-          <div className="lg:hidden">
+          <div className={IS_CAPACITOR_BUILD ? "block" : "lg:hidden"}>
             <AppButton variant="secondary" size="md" onClick={openMobileDrawer} className="px-[14px] text-black/85">
               <Menu className="h-4 w-4" strokeWidth={2.5} />
               Controls
@@ -706,7 +707,7 @@ export default function ControlsRow({
           </div>
         ) : null}
 
-        <div className="hidden min-w-0 flex-nowrap items-center gap-2.5 lg:flex">
+        <div className={IS_CAPACITOR_BUILD ? "hidden" : "hidden min-w-0 flex-nowrap items-center gap-2.5 lg:flex"}>
           {hideViewSelector ? null : (
             <ViewTabs
               options={VIEW_OPTIONS.filter(

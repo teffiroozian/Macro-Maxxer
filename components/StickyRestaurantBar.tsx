@@ -91,6 +91,15 @@ export default function StickyRestaurantBar({
   const [isControlsDrawerOpen, setIsControlsDrawerOpen] = useState(false);
   const router = useRouter();
   const { guardNavigation } = useBuildInProgressGuard();
+  const handleNativeBack = () => {
+    guardNavigation(() => {
+      if (window.history.length > 1) {
+        router.back();
+      } else {
+        router.replace("/restaurants");
+      }
+    });
+  };
   const handleMobileDrawerOpenReady = useCallback((openDrawer: () => void) => {
     setOpenMobileControlsDrawer(() => openDrawer);
   }, []);
@@ -219,7 +228,7 @@ export default function StickyRestaurantBar({
             <AppIconButton
               variant="ghost"
               size="sm"
-              onClick={() => guardNavigation(() => router.back())}
+              onClick={handleNativeBack}
               aria-label="Go back"
             >
               <ChevronLeft className="h-4 w-4" strokeWidth={2.5} />

@@ -4,7 +4,6 @@ import { Home, Search, ShoppingCart, Store, type LucideIcon } from "lucide-react
 import { usePathname, useRouter } from "next/navigation";
 import { useMemo } from "react";
 import { useBuildInProgressGuard } from "@/components/BuildInProgressGuardContext";
-import { useGlobalSearch } from "@/components/GlobalSearchContext";
 import { useCart } from "@/stores/cartStore";
 import CartItemCountBadge from "@/components/cart/CartItemCountBadge";
 
@@ -39,12 +38,10 @@ export default function NativeBottomNav() {
   const pathname = usePathname();
   const router = useRouter();
   const { items } = useCart();
-  const { isOpen: isSearchOpen, open: openSearch, close: closeSearch } = useGlobalSearch();
   const { guardNavigation } = useBuildInProgressGuard();
   const cartCount = useMemo(() => items.reduce((total, item) => total + item.quantity, 0), [items]);
 
   const navigate = (href: string) => {
-    closeSearch();
     if (pathname === href) {
       window.scrollTo({ top: 0, behavior: "smooth" });
       return;
@@ -60,10 +57,10 @@ export default function NativeBottomNav() {
       className="native-bottom-nav fixed inset-x-0 bottom-0 z-[var(--z-nav)] border-t border-black/10 bg-white/95 px-[max(0.5rem,var(--safe-area-left))] pb-[var(--safe-area-bottom)] shadow-[0_-8px_24px_rgba(15,23,42,0.08)] backdrop-blur-lg"
     >
       <div className="mx-auto flex h-14 max-w-md items-center gap-1">
-        <NativeTab label="Home" icon={Home} active={!isSearchOpen && pathname === "/"} onClick={() => navigate("/")} />
-        <NativeTab label="Search" icon={Search} active={isSearchOpen} onClick={() => openSearch()} />
-        <NativeTab label="Restaurants" icon={Store} active={!isSearchOpen && isRestaurantsActive} onClick={() => navigate("/restaurants")} />
-        <NativeTab label="Cart" icon={ShoppingCart} active={!isSearchOpen && pathname === "/cart"} onClick={() => navigate("/cart")} badge={cartCount} />
+        <NativeTab label="Home" icon={Home} active={pathname === "/"} onClick={() => navigate("/")} />
+        <NativeTab label="Search" icon={Search} active={pathname === "/search"} onClick={() => navigate("/search")} />
+        <NativeTab label="Restaurants" icon={Store} active={isRestaurantsActive} onClick={() => navigate("/restaurants")} />
+        <NativeTab label="Cart" icon={ShoppingCart} active={pathname === "/cart"} onClick={() => navigate("/cart")} badge={cartCount} />
       </div>
     </nav>
   );
