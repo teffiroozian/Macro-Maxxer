@@ -290,6 +290,8 @@ export type MenuItem = {
   variants?: ItemVariant[];
   // Source of truth for default variant selection; falls back to the first variant when missing or invalid.
   defaultVariantId?: string;
+  // Ranking projection metadata; the source dataset and its variants stay intact.
+  rankingFamilyDefaultVariantId?: string;
   // When the variant dimension is a single-component choice (e.g. a cheese
   // swap) rather than a size/count/portion difference, this labels the
   // variant selector accordingly ("Cheese") instead of the generic default.

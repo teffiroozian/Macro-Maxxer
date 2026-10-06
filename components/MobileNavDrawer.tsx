@@ -5,7 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Store, ChevronDown, ChevronRight, SlidersHorizontal, X } from "lucide-react";
-import { getAllRestaurants } from "@/lib/restaurants";
+import { useRestaurantCatalog } from "@/components/RestaurantCatalogContext";
 import AppIconButton from "@/components/ui/AppIconButton";
 import { useBuildInProgressGuard } from "@/components/BuildInProgressGuardContext";
 import { useDialogA11y } from "@/hooks/useDialogA11y";
@@ -39,7 +39,7 @@ export default function MobileNavDrawer({
   const [activeTab, setActiveTab] = useState<DrawerTab>(defaultTab);
   const [isFeaturedOpen, setIsFeaturedOpen] = useState(true);
   const [wasOpen, setWasOpen] = useState(isOpen);
-  const availableRestaurants = getAllRestaurants().filter((restaurant) => !restaurant.isComingSoon);
+  const availableRestaurants = useRestaurantCatalog().filter((restaurant) => !restaurant.isComingSoon);
   const panelRef = useRef<HTMLDivElement | null>(null);
   const closeButtonRef = useRef<HTMLButtonElement | null>(null);
   const router = useRouter();

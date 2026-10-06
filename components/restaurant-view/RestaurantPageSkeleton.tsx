@@ -1,7 +1,3 @@
-import DesktopNav from "@/components/DesktopNav";
-import GlobalMobileNav from "@/components/GlobalMobileNav";
-import { IS_CAPACITOR_BUILD } from "@/lib/buildTarget";
-
 const pulse = "animate-pulse rounded-full bg-slate-200 motion-reduce:animate-none";
 
 function MenuCardSkeleton() {
@@ -28,15 +24,6 @@ function MenuCardSkeleton() {
 export default function RestaurantPageSkeleton() {
   return (
     <div className="min-h-[calc(var(--app-viewport-height)+36rem)] w-full bg-app-background" aria-busy="true" aria-label="Loading restaurant menu">
-      {!IS_CAPACITOR_BUILD ? (
-        <>
-          <div className="fixed inset-x-0 top-0 z-[var(--z-nav)] hidden lg:block" data-sticky-nav="true">
-            <DesktopNav searchBarVariant="compact" presentation="band" />
-          </div>
-          <GlobalMobileNav markStickyNav flat />
-        </>
-      ) : null}
-
       <header className="relative mt-12 border-b border-hairline bg-white pt-4 lg:mt-16 lg:pt-0">
         <div className="mx-auto w-full max-w-6xl px-4 py-8 sm:px-6 lg:py-10">
           <div className="mx-auto flex max-w-4xl flex-col items-center">

@@ -90,7 +90,7 @@ export function loadSearchIndex(): Promise<SearchIndexEntry[]> {
           }
 
           return {
-            restaurant,
+            restaurant: { ...restaurant, menuItemCount: data.menuItemCount },
             // Structural/internal source records (see MenuItem.sourceOnly)
             // are real relationship targets, not standalone items — never
             // surfaced as their own search result.

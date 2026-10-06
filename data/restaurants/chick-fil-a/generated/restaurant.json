@@ -3267,7 +3267,7 @@
           "label": "10 Ct",
           "image": "https://www.cfacdn.com/img/order/menu/Online/Breakfast/10ctMinis_Desk.png",
           "categories": [
-            "Breakfast"
+            "shareables"
           ],
           "servingType": "breakfast",
           "nutrition": {
@@ -11787,9 +11787,9 @@
           "label": "30 Ct",
           "image": "https://www.cfacdn.com/img/order/menu/Online/Entrees/nuggets_30ct_PDP_Desk.png",
           "categories": [
-            "Chicken"
+            "shareables"
           ],
-          "servingType": "entree",
+          "servingType": "shareable",
           "nutrition": {
             "calories": 950,
             "protein": 100,
@@ -12136,9 +12136,9 @@
           "label": "30 Ct",
           "image": "https://www.cfacdn.com/img/order/menu/Online/Entrees/30ctGrilledNugget_800x800.png",
           "categories": [
-            "Chicken"
+            "shareables"
           ],
-          "servingType": "entree",
+          "servingType": "shareable",
           "nutrition": {
             "calories": 510,
             "protein": 98,
@@ -12482,7 +12482,7 @@
           "label": "10 Ct",
           "image": "https://www.cfacdn.com/img/order/menu/Mobile/Entrees/Menu%20Item/CFA_IHA_Family_Bundle_App_800x800_Strips5.png",
           "categories": [
-            "Chicken"
+            "shareables"
           ],
           "servingType": "entree",
           "nutrition": {
@@ -46623,7 +46623,7 @@
       "name": "10 ct Chick-fil-A Chick-n-Minis®",
       "image": "https://www.cfacdn.com/img/order/menu/Online/Breakfast/10ctMinis_Desk.png",
       "categories": [
-        "Breakfast"
+        "shareables"
       ],
       "servingType": "breakfast",
       "defaultOrder": 100398,
@@ -53069,7 +53069,7 @@
       "name": "30 ct Chick-fil-A® Nuggets",
       "image": "https://www.cfacdn.com/img/order/menu/Online/Entrees/nuggets_30ct_PDP_Desk.png",
       "categories": [
-        "Chicken"
+        "shareables"
       ],
       "servingType": "entree",
       "defaultOrder": 100732,
@@ -53301,7 +53301,7 @@
       "name": "30 ct Grilled Nuggets",
       "image": "https://www.cfacdn.com/img/order/menu/Online/Entrees/30ctGrilledNugget_800x800.png",
       "categories": [
-        "Chicken"
+        "shareables"
       ],
       "servingType": "entree",
       "defaultOrder": 100735,
@@ -53527,7 +53527,7 @@
       "name": "10 ct Chick-fil-A Chick-n-Strips®",
       "image": "https://www.cfacdn.com/img/order/menu/Mobile/Entrees/Menu%20Item/CFA_IHA_Family_Bundle_App_800x800_Strips5.png",
       "categories": [
-        "Chicken"
+        "shareables"
       ],
       "servingType": "entree",
       "defaultOrder": 100738,

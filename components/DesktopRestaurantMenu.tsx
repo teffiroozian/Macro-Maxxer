@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { ChevronDown, ChevronRight } from "lucide-react";
-import { getAllRestaurants } from "@/lib/restaurants";
+import { useRestaurantCatalog } from "@/components/RestaurantCatalogContext";
 import { useBuildInProgressGuard } from "@/components/BuildInProgressGuardContext";
 import { isPlainLeftClick } from "@/lib/isPlainLeftClick";
 import RestaurantLogoBadge from "@/components/ui/RestaurantLogoBadge";
@@ -12,7 +12,7 @@ import RestaurantLogoBadge from "@/components/ui/RestaurantLogoBadge";
 export default function DesktopRestaurantMenu() {
   const [isRestaurantMenuOpen, setIsRestaurantMenuOpen] = useState(false);
   const restaurantMenuRef = useRef<HTMLDivElement>(null);
-  const availableRestaurants = getAllRestaurants().filter((restaurant) => !restaurant.isComingSoon);
+  const availableRestaurants = useRestaurantCatalog().filter((restaurant) => !restaurant.isComingSoon);
   const router = useRouter();
   const { guardNavigation } = useBuildInProgressGuard();
 

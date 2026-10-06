@@ -118,6 +118,11 @@
     --gutter-desktop: 24px;
     --gutter-mobile: 16px;
 
+    /* Document-flow spacing around restaurant controls. */
+    --restaurant-controls-gap: 2.5rem;
+    /* Desktop sticky clearance is intentionally more compact. */
+    --restaurant-controls-sticky-gap: 0.5rem;
+
     /* The viewport is allowed to extend behind iOS system UI via
        `viewport-fit=cover`. Keep the insets named in one place so every
        full-height surface can use the same zero-on-web, real-on-device

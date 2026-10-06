@@ -29,10 +29,6 @@ export function isDefaultOrderSort(sort: SortOption) {
   return sort === SORT_OPTION_VALUES.DEFAULT_ORDER;
 }
 
-export function isSplitRankingSort(sort: SortOption) {
-  return sort !== SORT_OPTION_VALUES.DEFAULT_ORDER;
-}
-
 export function getRankState(sort: SortOption): { metric: RankMetric; direction: RankDirection } {
   if (sort === SORT_OPTION_VALUES.DEFAULT_ORDER) return { metric: "protein-score", direction: "highest" };
   const direction: RankDirection = sort.startsWith("lowest-") ? "lowest" : "highest";

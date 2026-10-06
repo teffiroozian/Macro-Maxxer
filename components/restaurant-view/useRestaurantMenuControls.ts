@@ -12,6 +12,7 @@ import {
     type RankedAllFilterKey,
     type RankedParentSelectionState,
 } from "@/lib/menuSections/filtering";
+import { getOfficialRankingItems } from "@/lib/menuSections/ranking";
 import { getDefaultMenuItemNutrition } from "@/lib/nutrition";
 import { isStandaloneMenuItem } from "@/lib/menuItemCalculations";
 import {
@@ -39,6 +40,7 @@ export function useRestaurantMenuControls({
     router,
     pathname,
     searchParams,
+    filterRankingCategories = true,
 }: {
     restaurantId: string;
     hasBuildYourOwn: boolean;
@@ -52,10 +54,14 @@ export function useRestaurantMenuControls({
     };
     pathname: string;
     searchParams: ReadonlyURLSearchParams;
+    filterRankingCategories?: boolean;
 }) {
     const requestedView = searchParams.get("view");
     const supportsIngredientsView = restaurantId !== "starbucks";
-    const defaultView: ViewOption = hasBuildYourOwn && supportsIngredientsView ? "ingredients" : "menu";
+    // Standard restaurant pages are ranking-first. Builder restaurants keep
+    // their ingredient-first entry point, while explicit ?view=menu and
+    // ?view=ingredients URLs remain supported for existing deep links.
+    const defaultView: ViewOption = hasBuildYourOwn && supportsIngredientsView ? "ingredients" : "ranking";
     const viewMode: ViewOption =
         requestedView === "ingredients" && supportsIngredientsView
             ? "ingredients"
@@ -73,7 +79,9 @@ export function useRestaurantMenuControls({
     const [filters, setFilters] = useState<Filters>(() => {
         const available = new Set(standaloneItems.flatMap((item) => getItemCategories(item)));
         const mainMenu = (RESTAURANT_MAIN_MENU_CATEGORIES[restaurantId] ?? []).filter((category) => available.has(category));
-        return mainMenu.length ? { categories: mainMenu } : {};
+        return mainMenu.length
+            ? { categories: mainMenu, categoryPreset: "main" }
+            : {};
     });
 
     // The narrower categories available inside each broad Rankings parent
@@ -109,8 +117,14 @@ export function useRestaurantMenuControls({
 
     const allItems = standaloneItems;
 
-    const sourceItems =
-        effectiveViewMode === "ingredients" ? ingredientMenuItems : allItems;
+    const sourceItems = useMemo(
+        () => effectiveViewMode === "ingredients"
+            ? ingredientMenuItems
+            : effectiveViewMode === "ranking"
+              ? getOfficialRankingItems(allItems)
+              : allItems,
+        [effectiveViewMode, ingredientMenuItems, allItems],
+    );
 
     const calorieBounds = useMemo(() => {
         const calories = sourceItems
@@ -145,6 +159,8 @@ export function useRestaurantMenuControls({
                 searchTerms,
                 rankedChildSelections,
                 isRankingView: effectiveViewMode === "ranking",
+                filterRankingCategories,
+                rankingSort: sort,
             }),
         [
             effectiveViewMode,
@@ -152,6 +168,8 @@ export function useRestaurantMenuControls({
             filters,
             searchTerms,
             rankedChildSelections,
+            filterRankingCategories,
+            sort,
         ],
     );
 

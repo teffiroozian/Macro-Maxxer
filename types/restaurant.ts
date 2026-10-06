@@ -1,5 +1,5 @@
 import type { RestaurantBuilderConfig } from "@/types/builder";
-import type { IngredientItem, MenuItem, RestaurantAddonGroups, RestaurantCustomizationRules, RestaurantMenu } from "@/types/menu";
+import type { IngredientItem, MenuItem, RestaurantAddonGroups, RestaurantCustomizationRules } from "@/types/menu";
 
 // restaurant overall info
 export type RestaurantIndexEntry = {
@@ -8,6 +8,8 @@ export type RestaurantIndexEntry = {
   logo: string;
   cover: string;
   menuFile: string;
+  // Computed from normalized browse items, never raw records or ranking rows.
+  menuItemCount?: number;
   isMacroFriendly: boolean;
   isComingSoon?: boolean;
   // Short, functional supporting copy shown in the restaurant page header —

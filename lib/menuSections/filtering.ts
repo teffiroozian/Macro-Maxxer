@@ -1,17 +1,12 @@
+import type { SortOption } from "@/lib/menuSections/sortOptions";
+import { selectRankingItems } from "@/lib/menuSections/ranking";
 import type { ItemVariant, MenuItem } from "@/types/menu";
 import { getDefaultMenuItemNutrition, getProteinPer100Calories } from "@/lib/nutrition";
 import { getCategoryLabel, getItemCategories, normalizeCategory } from "@/lib/menuSections/sorting";
 import type { Filters } from "@/lib/menuSections/filterOptions";
 import { normalizeSearchText, squashSearchText } from "@/lib/search/normalizeSearchText";
 
-// A variant that doesn't specify its own `categories` (e.g. a serving-size
-// or serving-type override like a 30-piece "shareable" nugget tray) belongs
-// to whatever categories its parent item belongs to — same fallback
-// `getVisibleVariants` (lib/menuSections/sorting.ts) already uses for the
-// Menu/Ingredients grouping, applied here too so a bucket like "shareables"
-// that only ever exists as a variant-level override isn't silently treated
-// as having zero real categories just because the variant itself is
-// category-less.
+// Variant category overrides take precedence over the parent catalog category.
 function getVariantCategoriesForRanking(item: MenuItem, variant: ItemVariant): string[] {
   return variant.categories && variant.categories.length > 0
     ? variant.categories.map(normalizeCategory)
@@ -131,7 +126,10 @@ export function itemMatchesNutritionFilters(item: MenuItem, filters: Filters): b
 
   if (filters.categories !== undefined) {
     const selected = new Set(filters.categories.map(normalizeCategory));
-    if (!getItemCategories(item).some((category) => selected.has(category))) return false;
+    const categories = item.variants?.length
+      ? item.variants.flatMap((variant) => getVariantCategoriesForRanking(item, variant))
+      : getItemCategories(item);
+    if (!categories.some((category) => selected.has(category))) return false;
   }
 
   return true;
@@ -170,16 +168,47 @@ export function filterMenuItems({
   searchTerms,
   rankedChildSelections,
   isRankingView,
+  filterRankingCategories = true,
+  rankingSort,
 }: {
   items: MenuItem[];
   filters: Filters;
   searchTerms: string[];
   rankedChildSelections: Record<RankedAllFilterKey, Set<string>>;
   isRankingView: boolean;
+  filterRankingCategories?: boolean;
+  rankingSort?: SortOption;
 }): MenuItem[] {
-  return items
+  const candidates = isRankingView && rankingSort ? selectRankingItems(items, rankingSort, filters) : items;
+  return candidates
     .map((item) => {
-      if (!isRankingView) {
+      if (filters.categories === undefined || !item.variants?.length) return item;
+      const selected = new Set(filters.categories.map(normalizeCategory));
+      const variants = item.variants.filter((variant) =>
+        getVariantCategoriesForRanking(item, variant).some((category) => selected.has(category))
+      );
+      return variants.length ? { ...item, variants } : null;
+    })
+    .filter((item): item is MenuItem => Boolean(item))
+    .map((item) => {
+      if (!isRankingView || filters.rankingGroups === undefined) return item;
+
+      const allowedGroups = new Set(filters.rankingGroups);
+      const itemGroup = getRankedAllFilterKey(item.servingType);
+      const filteredVariants = item.variants?.filter((variant) => {
+        const variantGroup = getRankedAllFilterKey(variant.servingType);
+        return variantGroup !== null && allowedGroups.has(variantGroup);
+      });
+      const itemMatches = itemGroup !== null && allowedGroups.has(itemGroup);
+      const hasMatchingVariants = Boolean(filteredVariants?.length);
+
+      if (!itemMatches && !hasMatchingVariants) return null;
+      if (!item.variants?.length) return item;
+      return { ...item, variants: filteredVariants ?? [] };
+    })
+    .filter((item): item is MenuItem => Boolean(item))
+    .map((item) => {
+      if (!isRankingView || !filterRankingCategories) {
         return item;
       }
 

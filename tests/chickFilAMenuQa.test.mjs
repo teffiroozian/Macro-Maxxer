@@ -422,6 +422,7 @@ test("Bag of Ice and its mixed Gallon Beverages container stay off user surfaces
 test("category counts match visible generated menu items", () => {
   assert.deepEqual(countItemsByCategory(visibleItems), {
     breakfast: 15,
+    shareables: 4,
     sides: 10,
     sandwiches: 9,
     chicken: 3,

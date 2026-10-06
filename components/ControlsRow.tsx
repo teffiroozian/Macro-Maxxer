@@ -7,8 +7,9 @@ import Image from "@/components/ui/AppImage";
 
 import { useFilterChipActions } from "./useFilterChipActions";
 import { SORT_OPTION_VALUES, type SortOption } from "@/lib/menuSections/sortOptions";
-import { MEAL_PROTEIN_OPTIONS, type Filters } from "@/lib/menuSections/filterOptions";
+import { MEAL_PROTEIN_OPTIONS, getVariantSettings, countVariantSettingsChanges, type Filters } from "@/lib/menuSections/filterOptions";
 import type { ViewOption } from "@/components/controls/types";
+import { selectRankingItems } from "@/lib/menuSections/ranking";
 import { filterMenuItems, type RankedAllFilterKey } from "@/lib/menuSections/filtering";
 import type { MenuItem } from "@/types/menu";
 import MobileNavDrawer from "@/components/MobileNavDrawer";
@@ -66,8 +67,8 @@ function countActiveFilters(candidate: Filters, defaultCaloriesMax: number) {
     candidate.fiberMin,
     candidate.sodiumMax,
     candidate.sugarMax,
-    candidate.categories !== undefined ? 1 : undefined,
-  ].filter((value) => value !== undefined).length + (hasCalories ? 1 : 0);
+    candidate.categories !== undefined && candidate.categoryPreset !== "all" ? 1 : undefined,
+  ].filter((value) => value !== undefined).length + (hasCalories ? 1 : 0) + countVariantSettingsChanges(candidate);
 }
 
 export function FilterChips({
@@ -156,17 +157,23 @@ export default function ControlsRow({
   wrapperId,
   calorieBounds,
   sourceItems,
+  visibleItemCount,
   rankedChildSelections,
   isRankingView,
   hideViewSelector = false,
   hideIngredientsView = false,
   showMobileTrigger = true,
+  renderMobileDrawer = true,
   onMobileDrawerOpenReady,
   onMobileFiltersDrawerOpenReady,
   onMobileDrawerOpenChange,
   mobileEntreeOptions,
   mobileDrawerHeaderTitle,
   mobileDrawerHeaderLogoSrc,
+  resultLayout,
+  onResultLayoutChange,
+  filterRankingCategories = true,
+  showInlineMobileControls = false,
 }: {
   restaurantId: string;
   view: ViewOption;
@@ -192,11 +199,13 @@ export default function ControlsRow({
   // category-filtered "All Ingredients" view) so chip counts never reflect
   // a broader set than what the user is actually looking at.
   sourceItems: MenuItem[];
+  visibleItemCount?: number;
   rankedChildSelections: Record<RankedAllFilterKey, Set<string>>;
   isRankingView: boolean;
   hideViewSelector?: boolean;
   hideIngredientsView?: boolean;
   showMobileTrigger?: boolean;
+  renderMobileDrawer?: boolean;
   onMobileDrawerOpenReady?: (openDrawer: () => void) => void;
   // Same drawer, but scrolled straight to the Filters section once open —
   // for a caller-supplied "Edit filters" control (the active-filter row)
@@ -219,6 +228,10 @@ export default function ControlsRow({
   }>;
   mobileDrawerHeaderTitle?: string;
   mobileDrawerHeaderLogoSrc?: string;
+  resultLayout: "list" | "grid";
+  onResultLayoutChange: (layout: "list" | "grid") => void;
+  filterRankingCategories?: boolean;
+  showInlineMobileControls?: boolean;
 }) {
   const [isFiltersOpen, setIsFiltersOpen] = useState(false);
   const [isSortOpen, setIsSortOpen] = useState(false);
@@ -227,7 +240,6 @@ export default function ControlsRow({
   const [isSortSectionOpen, setIsSortSectionOpen] = useState(true);
   const [isFiltersSectionOpen, setIsFiltersSectionOpen] = useState(true);
   const [draftFilters, setDraftFilters] = useState<Filters>(filters);
-  const [resultLayout, setResultLayout] = useState<"list" | "grid">("list");
   const filtersSectionRef = useRef<HTMLDivElement>(null);
   const filtersDialogResetButtonRef = useRef<HTMLButtonElement>(null);
 
@@ -339,16 +351,20 @@ export default function ControlsRow({
   // Reuses the exact same filterMenuItems the page itself uses to render
   // results — never a parallel counting implementation — so these previews
   // can't silently drift from what Apply will actually show.
+  const totalResultCount = (isRankingView ? selectRankingItems(sourceItems, sort, filters) : sourceItems).length;
+
   const countMatchingItems = useCallback(
     (proteinMin: number | undefined, caloriesMax: number | undefined) =>
       filterMenuItems({
         items: sourceItems,
-        filters: { proteinMin, caloriesMax },
+        filters: { ...getVariantSettings(draftFilters), proteinMin, caloriesMax },
         searchTerms: [],
         rankedChildSelections,
         isRankingView,
+        filterRankingCategories,
+        rankingSort: sort,
       }).length,
-    [sourceItems, rankedChildSelections, isRankingView]
+    [sourceItems, rankedChildSelections, isRankingView, filterRankingCategories, draftFilters, sort]
   );
 
   // Per-chip "what if this threshold were selected" preview — always
@@ -375,12 +391,12 @@ export default function ControlsRow({
       : `Show ${draftMatchingItemCount} item${draftMatchingItemCount === 1 ? "" : "s"}`;
 
   const fullDraftMatchingItemCount = useMemo(
-    () => filterMenuItems({ items: sourceItems, filters: draftFilters, searchTerms: [], rankedChildSelections, isRankingView }).length,
-    [draftFilters, isRankingView, rankedChildSelections, sourceItems],
+    () => filterMenuItems({ items: sourceItems, filters: draftFilters, searchTerms: [], rankedChildSelections, isRankingView, filterRankingCategories, rankingSort: sort }).length,
+    [draftFilters, isRankingView, rankedChildSelections, sourceItems, filterRankingCategories, sort],
   );
   const appliedMatchingItemCount = useMemo(
-    () => filterMenuItems({ items: sourceItems, filters, searchTerms: [], rankedChildSelections, isRankingView }).length,
-    [filters, isRankingView, rankedChildSelections, sourceItems],
+    () => visibleItemCount ?? filterMenuItems({ items: sourceItems, filters, searchTerms: [], rankedChildSelections, isRankingView, filterRankingCategories, rankingSort: sort }).length,
+    [filterRankingCategories, filters, isRankingView, rankedChildSelections, sourceItems, visibleItemCount, sort],
   );
 
   // Shared by both the desktop modal's and mobile drawer's protein chips so
@@ -497,6 +513,23 @@ export default function ControlsRow({
           <div className={sectionDividerClassName} aria-hidden="true" />
         </>
       )}
+      {isRankingView ? (
+        <section className="space-y-2 lg:hidden">
+          <p className={sectionHeadingClassName}>Layout</p>
+          <div className="grid grid-cols-2 gap-1 rounded-xl bg-slate-100 p-1.5" role="group" aria-label="Results layout">
+            {([{ value: "list", label: "List", icon: List }, { value: "grid", label: "Compact", icon: LayoutGrid }] as const).map((option) => {
+              const Icon = option.icon;
+              const active = resultLayout === option.value;
+              return (
+                <button key={option.value} type="button" aria-pressed={active} onClick={() => onResultLayoutChange(option.value)} className={selectableRowClassName(active)}>
+                  <Icon className={`h-4 w-4 ${active ? "text-white" : "text-slate-400"}`} strokeWidth={2.2} />
+                  {option.label}
+                </button>
+              );
+            })}
+          </div>
+        </section>
+      ) : null}
       <section className="space-y-2">
         <button type="button" onClick={() => setIsSortSectionOpen((prev) => !prev)} className="flex w-full items-center justify-between text-left">
           <span className={sectionHeadingClassName}>Sort</span>
@@ -746,7 +779,7 @@ export default function ControlsRow({
           </div>
         ) : null}
 
-        <div className={IS_CAPACITOR_BUILD ? "hidden" : "hidden min-w-0 flex-nowrap items-center gap-2 lg:flex"}>
+        <div className={IS_CAPACITOR_BUILD ? "hidden" : `${showInlineMobileControls ? "flex" : "hidden lg:flex"} min-w-0 flex-nowrap items-center gap-2`}>
           <div className="flex shrink-0 items-center gap-2">
             <RankSelector value={sort} isOpen={isSortOpen} onOpenChange={setIsSortOpen} onChange={onSortChange} />
 
@@ -767,22 +800,22 @@ export default function ControlsRow({
             </button>
             <span className="mx-1 h-6 w-px bg-slate-200" aria-hidden="true" />
             <span className="whitespace-nowrap px-1 text-sm text-slate-600">
-              <strong className="font-bold text-slate-950">{appliedMatchingItemCount}</strong> of {sourceItems.length} items
+              <strong className="font-bold text-slate-950">{appliedMatchingItemCount}</strong> of {totalResultCount} items
             </span>
-            <div className="ml-1 flex rounded-full bg-slate-100 p-[3px]" role="group" aria-label="Results layout">
+            {isRankingView ? <div className="ml-1 flex rounded-full bg-slate-100 p-[3px]" role="group" aria-label="Results layout">
               {([{ value: "list", label: "List view", icon: List }, { value: "grid", label: "Grid view", icon: LayoutGrid }] as const).map((option) => {
                 const Icon = option.icon;
                 const active = resultLayout === option.value;
-                return <button key={option.value} type="button" aria-label={option.label} aria-pressed={active} onClick={() => setResultLayout(option.value)} className={`flex h-[34px] w-[34px] cursor-pointer items-center justify-center rounded-full transition ${active ? "bg-white text-slate-950 shadow-sm" : "text-slate-400 hover:text-slate-700"}`}><Icon className="h-4 w-4" strokeWidth={2.2} /></button>;
+                return <button key={option.value} type="button" aria-label={option.label} aria-pressed={active} onClick={() => onResultLayoutChange(option.value)} className={`flex h-[34px] w-[34px] cursor-pointer items-center justify-center rounded-full transition ${active ? "bg-white text-slate-950 shadow-sm" : "text-slate-400 hover:text-slate-700"}`}><Icon className="h-4 w-4" strokeWidth={2.2} /></button>;
               })}
-            </div>
+            </div> : null}
           </div>
         </div>
       </div>
 
       {redesignedFiltersDialog ? (typeof document === "undefined" ? redesignedFiltersDialog : createPortal(redesignedFiltersDialog, document.body)) : null}
       {false ? filtersDialog : null}
-      {mobileControlsDrawer ? (typeof document === "undefined" ? mobileControlsDrawer : createPortal(mobileControlsDrawer, document.body)) : null}
+      {renderMobileDrawer && mobileControlsDrawer ? (typeof document === "undefined" ? mobileControlsDrawer : createPortal(mobileControlsDrawer, document.body)) : null}
     </>
   );
 }

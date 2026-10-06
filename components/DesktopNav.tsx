@@ -28,114 +28,31 @@ function DesktopSearchDropdownFallback({ className = "w-full" }: { className?: s
   );
 }
 
-export default function DesktopNav({
-  logoSrc = "/logo.svg",
-  showSearchButton = true,
-  showCartButton = true,
-  searchBarVariant = "full",
-  presentation = "card",
-}: {
-  logoSrc?: string;
-  showSearchButton?: boolean;
-  showCartButton?: boolean;
-  searchBarVariant?: "full" | "compact" | "hidden";
-  presentation?: "card" | "band";
-}) {
-  const showSearchBar = showSearchButton && searchBarVariant !== "hidden";
-
-  if (presentation === "band") {
-    return (
-      <div data-global-nav="true" className="hidden w-full border-b border-hairline bg-white lg:block">
-        <div className="mx-auto grid h-16 w-full max-w-6xl grid-cols-[1fr_auto_1fr] items-center gap-6 px-6">
-          <Link
-            href="/"
-            className="inline-flex w-fit items-center gap-2.5 rounded-lg focus-ring"
-            aria-label="Go to homepage"
-          >
-            <span className="relative h-8 w-8 shrink-0">
-              <Image src={logoSrc} alt="" fill className="object-contain" />
-            </span>
-            <span className="font-heading text-sm font-bold text-slate-950">Macro Maxxer</span>
-          </Link>
-
-          <div className="flex min-w-0 items-center justify-center">
-            {showSearchBar ? (
-              <Suspense fallback={<DesktopSearchDropdownFallback className="w-[34rem] max-w-full" />}>
-                <DesktopSearchDropdown className="w-[34rem] max-w-full" />
-              </Suspense>
-            ) : null}
-          </div>
-
-          <div className="flex items-center justify-end gap-2">
-            <DesktopRestaurantMenu />
-            {showCartButton ? (
-              <CartIconDropdown buttonClassName={appIconButtonClassName({ variant: "nav", size: "nav", className: "relative" })} />
-            ) : null}
-          </div>
-        </div>
-      </div>
-    );
-  }
-
+export default function DesktopNav() {
   return (
-    // `lg:grid-cols-[1fr_auto_1fr]` (not a flex row with a centered flex-1
-    // middle) is what keeps the search bar centered against the *row's*
-    // full width — the Restaurants button (left) is much wider than the
-    // cart button (right), so centering search within the flex-1 space left
-    // over after them would always land it right-of-center. A 1fr/auto/1fr
-    // grid instead splits the leftover space equally between the two
-    // flanking columns regardless of how much of it their own content
-    // fills, so the auto-sized middle column stays centered on the row no
-    // matter how the left/right content widths compare.
-    <div data-global-nav="true" className="mx-auto hidden w-full max-w-6xl items-center gap-3 rounded-2xl border border-black/10 bg-white px-6 py-1.5 shadow-elev-brand lg:grid lg:grid-cols-[1fr_auto_1fr]">
-      {/* Logo + Restaurants read as one group (tighter gap than the row's
-          own column gap above) rather than two separately-spaced controls. */}
-      <div className="flex min-w-0 items-center gap-2">
+    <div data-global-nav="true" className="hidden w-full border-b border-hairline bg-white lg:block">
+      <div className="mx-auto grid h-16 w-full max-w-6xl grid-cols-[1fr_auto_1fr] items-center gap-6 px-6">
         <Link
           href="/"
-          className="inline-flex h-9 w-9 shrink-0 items-center justify-center overflow-hidden rounded-lg bg-white"
+          className="inline-flex w-fit items-center gap-2.5 rounded-lg focus-ring"
           aria-label="Go to homepage"
         >
-          <span className="relative h-7 w-7">
-            <Image src={logoSrc} alt="Macro Maxxer logo" fill className="object-contain" />
+          <span className="relative h-8 w-8 shrink-0">
+            <Image src="/logo.svg" alt="" fill className="object-contain" />
           </span>
+          <span className="font-heading text-sm font-bold text-slate-950">Macro Maxxer</span>
         </Link>
 
-        {/* Restaurant switcher — part of the global nav itself (Logo |
-            Restaurants | Search | Cart) so it's identical across every page,
-            not a restaurant-page-only secondary control. */}
-        <DesktopRestaurantMenu />
-      </div>
-
-      <div className="flex min-w-0 items-center justify-center">
-        {showSearchBar ? (
-          // An explicit width (not `w-full`) so the grid's auto column has
-          // a definite size to measure — a percentage width here would be
-          // circular (the column sizes to its content, and the content
-          // would be sized as a percentage of that same column). 34rem
-          // matches DesktopSearchDropdown's panel min-width, so the compact
-          // bar and the panel that opens beneath it are always exactly the
-          // same width. Sized to comfortably fit larger thumbnails, full
-          // nutrition, and future Quick Add/variant rows. `max-w-full`
-          // keeps it from ever overflowing at the narrow end of `lg`.
-          <Suspense
-            fallback={
-              <DesktopSearchDropdownFallback
-                className={searchBarVariant === "compact" ? "w-[34rem] max-w-full" : "w-full"}
-              />
-            }
-          >
-            <DesktopSearchDropdown
-              className={searchBarVariant === "compact" ? "w-[34rem] max-w-full" : "w-full"}
-            />
+        <div className="flex min-w-0 items-center justify-center">
+          <Suspense fallback={<DesktopSearchDropdownFallback className="w-[34rem] max-w-full" />}>
+            <DesktopSearchDropdown className="w-[34rem] max-w-full" />
           </Suspense>
-        ) : null}
-      </div>
+        </div>
 
-      <div className="flex shrink-0 items-center justify-end gap-2">
-        {showCartButton ? (
+        <div className="flex items-center justify-end gap-2">
+          <DesktopRestaurantMenu />
           <CartIconDropdown buttonClassName={appIconButtonClassName({ variant: "nav", size: "nav", className: "relative" })} />
-        ) : null}
+        </div>
       </div>
     </div>
   );

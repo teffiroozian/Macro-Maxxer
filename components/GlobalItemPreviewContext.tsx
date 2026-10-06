@@ -6,7 +6,7 @@ import type { MenuItem } from "@/types/menu";
 
 type GlobalItemPreviewContextValue = {
   previewState: ItemPreviewState | null;
-  openPreview: (restaurantId: string, item: MenuItem) => Promise<void>;
+  openPreview: (restaurantId: string, item: MenuItem, initialVariantId?: string) => Promise<void>;
   closePreview: () => void;
 };
 

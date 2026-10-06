@@ -12,6 +12,11 @@ import GlobalSearchOverlay from "@/components/global-search/GlobalSearchOverlay"
 import GlobalItemPreviewModal from "@/components/GlobalItemPreviewModal";
 import CrossRestaurantCartDialog from "@/components/cart/CrossRestaurantCartDialog";
 import InProgressBuildDialog from "@/components/InProgressBuildDialog";
+import { RestaurantCatalogProvider } from "@/components/RestaurantCatalogContext";
+import { getAllRestaurantsWithMenuCounts } from "@/lib/restaurants";
+import GlobalNav from "@/components/GlobalNav";
+import { RestaurantUiProvider } from "@/components/RestaurantUiContext";
+import CartPreviewDrawer from "@/components/cart/CartPreviewDrawer";
 import SiteFooter from "@/components/SiteFooter";
 import NativeBottomNav from "@/components/NativeBottomNav";
 import CartIconDropdown from "@/components/cart/CartIconDropdown";
@@ -89,36 +94,42 @@ export const viewport: Viewport = {
     viewportFit: "cover",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
     children,
 }: Readonly<{
     children: React.ReactNode;
 }>) {
+    const restaurants = await getAllRestaurantsWithMenuCounts();
     return (
         <html lang="en" className={IS_CAPACITOR_BUILD ? "capacitor-native" : undefined}>
             <body
                 className={`${outfit.className} ${unbounded.variable} antialiased`}
             >
-                <GlobalSearchProvider>
-                    <GlobalItemPreviewProvider>
-                        <CartAddConfirmationProvider>
-                            <BuildInProgressGuardProvider>
-                                {children}
-                                {!IS_CAPACITOR_BUILD ? <SiteFooter /> : null}
-                                <Suspense fallback={null}>
-                                    {!IS_CAPACITOR_BUILD ? <GlobalSearchOverlay /> : null}
-                                </Suspense>
-                                <GlobalItemPreviewModal />
-                                <CrossRestaurantCartDialog />
-                                <InProgressBuildDialog />
-                                {IS_CAPACITOR_BUILD ? (
-                                    <CartIconDropdown buttonClassName="" variant="sheet" showTrigger={false} />
-                                ) : null}
-                                {IS_CAPACITOR_BUILD ? <NativeBottomNav /> : null}
-                            </BuildInProgressGuardProvider>
-                        </CartAddConfirmationProvider>
-                    </GlobalItemPreviewProvider>
-                </GlobalSearchProvider>
+                <RestaurantCatalogProvider restaurants={restaurants}>
+                    <GlobalSearchProvider>
+                        <GlobalItemPreviewProvider>
+                            <CartAddConfirmationProvider>
+                                <BuildInProgressGuardProvider>
+                                    <RestaurantUiProvider>
+                                        <GlobalNav>{children}</GlobalNav>
+                                        {!IS_CAPACITOR_BUILD ? <CartPreviewDrawer /> : null}
+                                    </RestaurantUiProvider>
+                                    {!IS_CAPACITOR_BUILD ? <SiteFooter /> : null}
+                                    <Suspense fallback={null}>
+                                        {!IS_CAPACITOR_BUILD ? <GlobalSearchOverlay /> : null}
+                                    </Suspense>
+                                    <GlobalItemPreviewModal />
+                                    <CrossRestaurantCartDialog />
+                                    <InProgressBuildDialog />
+                                    {IS_CAPACITOR_BUILD ? (
+                                        <CartIconDropdown buttonClassName="" variant="sheet" showTrigger={false} />
+                                    ) : null}
+                                    {IS_CAPACITOR_BUILD ? <NativeBottomNav /> : null}
+                                </BuildInProgressGuardProvider>
+                            </CartAddConfirmationProvider>
+                        </GlobalItemPreviewProvider>
+                    </GlobalSearchProvider>
+                </RestaurantCatalogProvider>
                 <Analytics />
                 <SpeedInsights />
                 <GoogleAnalytics gaId="G-LRJD1DEDVK" />

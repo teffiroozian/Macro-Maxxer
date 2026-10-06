@@ -15,12 +15,15 @@ export const metadata: Metadata = {
 
 export default async function ItemPage({
   params,
+  searchParams,
 }: {
   params: Promise<{ id: string; itemSlug: string }>;
+  searchParams: Promise<{ variant?: string | string[] }>;
 }) {
   // recieves two params, one for restaurant one for item
   const { id, itemSlug } = await params;
-  const routeData = await getRestaurantItemRouteData(id, itemSlug);
+  const { variant } = await searchParams;
+  const routeData = await getRestaurantItemRouteData(id, itemSlug, typeof variant === "string" ? variant : undefined);
 
   if (!routeData) notFound();
 
@@ -30,6 +33,7 @@ export default async function ItemPage({
     <Suspense fallback={<RestaurantPageSkeleton />}>
       <RestaurantPageContent restaurantData={restaurant} />
       <ItemRouteModal
+        key={`${item.id}:${initialVariantId ?? "default"}`}
         restaurantId={restaurant.id}
         restaurantName={restaurant.name}
         restaurantPath={`/restaurant/${restaurant.id}`}

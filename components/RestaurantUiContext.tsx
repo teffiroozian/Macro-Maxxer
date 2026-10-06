@@ -10,7 +10,7 @@ type RestaurantUiContextValue = {
   openCart: () => void;
   closeCart: () => void;
   // Opens the same shared item-preview modal CartPreviewDrawer uses, rendered
-  // once here (a sibling of CartPreviewDrawer in RestaurantPageContent) — a
+  // once here (a sibling of CartPreviewDrawer in the root layout) — a
   // caller nested deep inside the sticky nav's own fixed/z-index stacking
   // context (e.g. CartIconDropdown's "Just Added" popover) can't render its
   // own ItemRouteModal instance in place and expect it to stack above the

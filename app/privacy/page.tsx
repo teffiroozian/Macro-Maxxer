@@ -1,6 +1,4 @@
 import type { Metadata } from "next";
-import Image from "next/image";
-import Link from "next/link";
 import HomeBackdrop from "@/components/home/HomeBackdrop";
 import HomeSectionContainer from "@/components/home/HomeSectionContainer";
 import SurfaceCard from "@/components/ui/SurfaceCard";
@@ -22,19 +20,7 @@ export default function PrivacyPage() {
     <div className="relative isolate min-h-[var(--app-viewport-height)]">
       <HomeBackdrop />
 
-      <header>
-        <HomeSectionContainer as="div" className="py-5 sm:py-6">
-          <Link
-            href="/"
-            className="inline-flex items-center gap-2 rounded-lg focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-slate-900"
-          >
-            <span className="flex h-8 w-8 shrink-0 items-center justify-center">
-              <Image src="/logo.svg" alt="" width={100} height={100} aria-hidden="true" className="h-full w-full object-contain" />
-            </span>
-            <span className="font-heading text-lg font-bold text-slate-900">Macro Maxxer</span>
-          </Link>
-        </HomeSectionContainer>
-      </header>
+
 
       <main>
         <HomeSectionContainer className="pb-12 pt-8 sm:pb-16 sm:pt-12">

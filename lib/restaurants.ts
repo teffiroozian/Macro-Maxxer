@@ -1,5 +1,6 @@
 // DATA LOADER FILE
 
+import { getCanonicalMenuItemCount } from "@/lib/restaurantMenuCount";
 import restaurants from "@/data/restaurants/index.json";
 import type { MenuItem, RestaurantMenu } from "@/types/menu";
 import type { RestaurantData, RestaurantIndexEntry } from "@/types/restaurant";
@@ -95,6 +96,7 @@ export async function getRestaurantData(id: string): Promise<RestaurantData | nu
     // menu file data
     hasBuildYourOwn,
     items,
+    menuItemCount: getCanonicalMenuItemCount(items),
     ingredients,
     addonGroups,
     customizationRules: menu.customizationRules,
@@ -105,4 +107,14 @@ export async function getRestaurantData(id: string): Promise<RestaurantData | nu
 // finds a menu item based on the URL slug from the list
 export function getItemBySlug(items: MenuItem[], slug: string) {
   return items.find((item) => toItemSlug(item) === slug);
+}
+
+// Lightweight shared metadata for selectors and restaurant search. Menu
+// contents stay server-side; only canonical counts accompany index identity.
+export async function getAllRestaurantsWithMenuCounts(): Promise<RestaurantIndexEntry[]> {
+  return Promise.all(restaurantIndex.map(async (entry) => {
+    if (entry.isComingSoon) return entry;
+    const restaurant = await getRestaurantData(entry.id);
+    return { ...entry, menuItemCount: restaurant?.menuItemCount ?? 0 };
+  }));
 }

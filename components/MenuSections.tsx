@@ -17,8 +17,6 @@ import {
   normalizeCategory,
   sortItems,
 } from "@/lib/menuSections/sorting";
-import { isSplitRankingSort } from "@/lib/menuSections/sortOptions";
-import { selectRankingRepresentativeItems } from "@/lib/menuSections/ranking";
 import { computeComparativeLabels, type ComparativeLabelKind } from "@/lib/menuSections/comparativeLabels";
 
 function getSectionSort(_section: string, sort: SortOption): SortOption {
@@ -84,6 +82,7 @@ type MenuSectionsProps = {
   // Optional per-item scroll-target id, used by the preset Overview cards'
   // "jump to this ingredient in Customize" shortcut. Unused elsewhere.
   getItemDomId?: (item: MenuItem) => string | undefined;
+  resultLayout?: "list" | "grid";
 };
 
 export default function MenuSections({
@@ -100,6 +99,7 @@ export default function MenuSections({
   ingredientSelectionConfig,
   showRankBadges = false,
   getItemDomId,
+  resultLayout = "list",
 }: MenuSectionsProps) {
   const menuItemsForResolution = allMenuItems ?? items;
 
@@ -149,11 +149,7 @@ export default function MenuSections({
   };
 
   if (!groupByCategory) {
-    const displayItems =
-      categoryMode === "menu" && isSplitRankingSort(sort)
-        ? selectRankingRepresentativeItems(items, sort)
-        : items;
-    const sortedItems = sortItems(displayItems, sort, categoryMode);
+    const sortedItems = sortItems(items, sort, categoryMode);
 
     if (!sortedItems.length) {
       return <EmptyFilteredState />;
@@ -161,10 +157,10 @@ export default function MenuSections({
 
     return (
       <div className="mt-8 grid gap-3">
-        <ul className="mt-0 p-0 grid gap-3">
+        <ul className={`mt-0 grid p-0 ${showRankBadges && resultLayout === "grid" ? "gap-3 lg:grid-cols-2 xl:grid-cols-3" : "gap-3"}`}>
           {sortedItems.map((item, index) => (
             <MenuItemCard
-              key={`${item.name}-${index}`}
+              key={`${item.id}-${item.defaultVariantId ?? "base"}`}
               restaurantId={restaurantId}
               item={item}
               addons={addons}
@@ -175,6 +171,7 @@ export default function MenuSections({
                 itemHref: `/restaurant/${restaurantId}/${toItemSlug(item)}`,
                 comparativeLabel: getComparativeLabel(item),
                 ...(showRankBadges ? { rankIndex: index, isTopRanked: index < 3 } : {}),
+                resultLayout,
               }}
               ingredientSelection={getIngredientSelection(item)}
               detailPanel={{
@@ -251,9 +248,9 @@ export default function MenuSections({
             {getCategoryLabel(section, categoryMode)}
           </h2>
           <ul className="mt-0 p-0 grid gap-3">
-            {(sortedGrouped[section] ?? []).map((item, index) => (
+            {(sortedGrouped[section] ?? []).map((item) => (
               <MenuItemCard
-                key={`${item.name}-${index}`}
+                key={`${item.id}-${item.defaultVariantId ?? "base"}`}
                 restaurantId={restaurantId}
                 item={item}
                 addons={addons}
