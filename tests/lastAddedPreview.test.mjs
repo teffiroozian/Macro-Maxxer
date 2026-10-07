@@ -5,6 +5,7 @@ import { shouldShowLastAddedPreview } from '../lib/cart/lastAddedPreview.js';
 const now = 10_000;
 const previewDurationMs = 4_500;
 const freshEvent = {
+  lastAddedItem: { id: "added", quantity: 1 },
   lastAddedAt: now,
   lastAddedEventId: 1,
   lastAddedPreviewDismissedEventId: null,
@@ -33,6 +34,7 @@ test('navigating or remounting after an event is acknowledged does not reopen it
 
 test('adding another item creates a new preview event normally', () => {
   const nextEvent = {
+    lastAddedItem: { id: "next", quantity: 1 },
     lastAddedAt: now + 1_000,
     lastAddedEventId: 2,
     lastAddedPreviewDismissedEventId: 1,
@@ -43,4 +45,8 @@ test('adding another item creates a new preview event normally', () => {
 
 test('an expired lastAddedAt does not open during hydration or later navigation', () => {
   assert.equal(shouldShowLastAddedPreview(freshEvent, now + 60_000), false);
+});
+
+test('no valid recently-added item means no open preview even with a fresh event', () => {
+  for (const lastAddedItem of [null, undefined, { id: "added", quantity: 0 }]) assert.equal(shouldShowLastAddedPreview({ ...freshEvent, lastAddedItem }, now), false);
 });

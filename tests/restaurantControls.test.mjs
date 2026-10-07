@@ -110,3 +110,20 @@ test("Chick-fil-A shareable sizes use catalog categories throughout filtering an
   const ordinaryMenu = filterMenuItems({ ...common, isRankingView: false, filters: { categories: ["shareables"] } });
   assert.deepEqual(ordinaryMenu.map((item) => item.id), shareables.map((item) => item.id));
 });
+
+test("Fiber ranks both directions with missing values last and defaulting to highest", () => {
+  const source = [
+    { ...items[0], id: "low", nutrition: { ...items[0].nutrition, fiber: 1 } },
+    { ...items[0], id: "high", nutrition: { ...items[0].nutrition, fiber: 8 } },
+    { ...items[1], id: "unknown" },
+    { ...items[0], id: "zero", nutrition: { ...items[0].nutrition, fiber: 0 } },
+  ];
+  assert.deepEqual(sortItems(source, SORT_OPTION_VALUES.HIGHEST_FIBER).map((item) => item.id), ["high", "low", "zero", "unknown"]);
+  assert.deepEqual(sortItems(source, SORT_OPTION_VALUES.LOWEST_FIBER).map((item) => item.id), ["zero", "low", "high", "unknown"]);
+  assert.equal(getNaturalRankDirection("fiber"), "highest");
+  assert.deepEqual(getRankState(toRankSort("fiber", "lowest")), { metric: "fiber", direction: "lowest" });
+});
+
+test("Rank metric defaults match the neutral direction controls", () => {
+  assert.deepEqual(["protein", "calories", "protein-score", "carbs", "fat", "fiber"].map(getNaturalRankDirection), ["highest", "lowest", "highest", "lowest", "lowest", "highest"]);
+});

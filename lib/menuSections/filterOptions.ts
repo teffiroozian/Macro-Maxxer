@@ -1,8 +1,12 @@
 import type { CategoryPresetId } from "@/lib/menuSections/categoryPresets";
 import type { RankedAllFilterKey } from "@/lib/menuSections/filtering";
 
+import type { CardDisplayMode } from "@/lib/menuItemCard/rankingMacroDisplay";
+
 // filter options for the menu section
 export type Filters = {
+  // Display preference only; undefined restores automatic sort-based display.
+  cardDisplayOverride?: CardDisplayMode;
   showServingSizeVariants?: boolean;
   showRecipeVariants?: boolean;
   separateSizesInProteinScore?: boolean;
@@ -15,6 +19,9 @@ export type Filters = {
   sodiumMax?: number;
   sugarMax?: number;
   categories?: string[];
+  categoryTags?: string[];
+  // Explicit manual exclusions override category/tag unions.
+  categoryExclusions?: string[];
   // UI intent only: filtering always reads the same categories array.
   categoryPreset?: CategoryPresetId | "custom";
   rankingGroups?: RankedAllFilterKey[];

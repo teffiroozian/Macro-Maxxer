@@ -1,5 +1,7 @@
 "use client";
 
+import type { MenuSizeSelectorControl } from "@/lib/menuSections/menuSizeSelector";
+
 import type { ReactNode } from "react";
 import { useCallback, useEffect, useRef, useState, type CSSProperties } from "react";
 import { useRouter } from "next/navigation";
@@ -19,6 +21,7 @@ import { IS_CAPACITOR_BUILD } from "@/lib/buildTarget";
 import { useStickyNavClearance } from "@/components/restaurant-view/useStickyNavClearance";
 
 type StickyRestaurantBarProps = {
+  menuSizeControl?: MenuSizeSelectorControl;
   restaurantId: string;
   restaurantName: string;
   restaurantLogo: string;
@@ -71,8 +74,8 @@ type StickyRestaurantBarProps = {
 };
 
 export default function StickyRestaurantBar({
-  restaurantId,
-  restaurantName,
+  menuSizeControl,
+  restaurantId,  restaurantName,
   restaurantLogo,
   view,
   onChange,
@@ -249,6 +252,7 @@ export default function StickyRestaurantBar({
                       </div>
                     </div>
                     <ControlsRow
+                      menuSizeControl={menuSizeControl}
                       restaurantId={restaurantId}
                       view={view}
                       onChange={onChange}

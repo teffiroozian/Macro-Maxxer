@@ -1,3 +1,5 @@
+import { getRankingCardMacroKeys, type CardDisplayMode } from "@/lib/menuItemCard/rankingMacroDisplay";
+import type { RankMetric } from "@/lib/menuSections/sortOptions";
 import type { ReactNode } from "react";
 import { formatDelta } from "@/lib/menuItemCalculations";
 import MacroStat from "@/components/nutrition/MacroStat";
@@ -10,6 +12,9 @@ export default function MenuItemMacroSummary({
   displayProtein,
   displayCarbs,
   displayFat,
+  displayFiber,
+  rankMetric,
+  cardDisplayOverride,
   caloriesDelta,
   proteinDelta,
   carbsDelta,
@@ -30,6 +35,9 @@ export default function MenuItemMacroSummary({
   displayProtein: number;
   displayCarbs: number;
   displayFat: number;
+  displayFiber?: number;
+  rankMetric?: RankMetric;
+  cardDisplayOverride?: CardDisplayMode;
   caloriesDelta: number;
   proteinDelta: number;
   carbsDelta: number;
@@ -69,34 +77,11 @@ export default function MenuItemMacroSummary({
         />
       ) : null}
       <div className={`flex flex-wrap items-end border-t border-black/[0.06] ${rankedLayout === "grid" ? "gap-x-4 gap-y-3 pt-3 lg:gap-x-6" : "gap-x-4 gap-y-3 pt-4 lg:gap-x-8"}`}>
-        <MacroStat
-          macroKey="calories"
-          value={displayCalories}
-          delta={hasActiveCustomization ? formatDelta(caloriesDelta * quantityMultiplier) : undefined}
-          labelVariant="uppercase"
-          size={macroSize}
-        />
-        <MacroStat
-          macroKey="protein"
-          value={displayProtein}
-          delta={hasActiveCustomization ? formatDelta(proteinDelta * quantityMultiplier) : undefined}
-          labelVariant="uppercase"
-          size={macroSize}
-        />
-        <MacroStat
-          macroKey="carbs"
-          value={displayCarbs}
-          delta={hasActiveCustomization ? formatDelta(carbsDelta * quantityMultiplier) : undefined}
-          labelVariant="uppercase"
-          size={macroSize}
-        />
-        <MacroStat
-          macroKey="totalFat"
-          value={displayFat}
-          delta={hasActiveCustomization ? formatDelta(fatDelta * quantityMultiplier) : undefined}
-          labelVariant="uppercase"
-          size={macroSize}
-        />
+        {getRankingCardMacroKeys(rankMetric, cardDisplayOverride).map((key) => {
+          const values = { calories: displayCalories, protein: displayProtein, carbs: displayCarbs, totalFat: displayFat, fiber: displayFiber ?? NaN };
+          const deltas = { calories: caloriesDelta, protein: proteinDelta, carbs: carbsDelta, totalFat: fatDelta, fiber: undefined };
+          return <MacroStat key={key} macroKey={key} value={values[key]} delta={hasActiveCustomization && deltas[key] !== undefined ? formatDelta(deltas[key]! * quantityMultiplier) : undefined} labelVariant="uppercase" size={macroSize} />;
+        })}
 
         <div className={rankedLayout === "grid" ? "ml-auto inline-flex items-end justify-end gap-2 lg:mt-4 lg:basis-full lg:w-full" : "ml-0 inline-flex w-full flex-row items-end justify-end gap-2 sm:ml-auto sm:w-auto"}>
           {actions}

@@ -65,7 +65,7 @@ test("six category presets, Only and Clear all share category state without losi
   const restaurant = await getRestaurantData("chickfila");
   const rows = getOfficialRankingItems(restaurant.items.filter((item) => !item.sourceOnly));
   const presets = getCategoryPresets(rows, "chickfila");
-  assert.deepEqual(presets.map((preset) => preset.label), ["Main entrées", "Sides", "Drinks", "Shareables", "Sauces", "All items"]);
+  assert.deepEqual(presets.map((preset) => preset.label), ["Main menu", "Sides", "Drinks", "Shareables", "Sauces", "All items"]);
   const byId = Object.fromEntries(presets.map((preset) => [preset.id, preset]));
   assert.deepEqual(byId.sauces.ids, ["sauces"]);
   assert.deepEqual(byId.shareables.ids, ["shareables"]);

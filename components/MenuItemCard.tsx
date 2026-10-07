@@ -1,5 +1,7 @@
 "use client";
 
+import type { CardDisplayMode } from "@/lib/menuItemCard/rankingMacroDisplay";
+
 import { useEffect, useId, useMemo, useRef, useState } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { ChevronDown } from "lucide-react";
@@ -30,6 +32,7 @@ import { parseIncludedIngredientEntry } from "@/lib/itemIngredients";
 import { comboMealSizeFromSideVariant, isComboMealSelectionComplete, resolveComboBundleOptions, resolveComboChoiceVariantId, resolveComboDrinkOptions, resolveComboMealConfig, resolveComboSideOptions } from "@/lib/comboMeals";
 import { getDefaultMenuItemNutrition, getProteinPer100Calories, getProteinScoreTier, normalizeNutrition } from "@/lib/nutrition";
 import { resolveFinalizedCartConfiguration, type CartConfigurationPayload } from "@/lib/menuItemCard/finalizedCartConfiguration";
+import type { RankMetric } from "@/lib/menuSections/sortOptions";
 import type { ComparativeLabelKind } from "@/lib/menuSections/comparativeLabels";
 import { getRestaurantImagePresentation } from "@/lib/restaurantPresentation";
 import RestaurantItemImage from "@/components/ui/RestaurantItemImage";
@@ -147,6 +150,8 @@ type MenuItemCardMenuBehavior = {
   rankIndex?: number;
   isTopRanked?: boolean;
   itemHref?: string;
+  rankMetric?: RankMetric;
+  cardDisplayOverride?: CardDisplayMode;
   comparativeLabel?: ComparativeLabelKind;
   resultLayout?: "list" | "grid";
 };
@@ -893,6 +898,9 @@ export default function MenuItemCard({
             displayProtein={displayProtein}
             displayCarbs={displayCarbs}
             displayFat={displayFat}
+            displayFiber={nutrition.fiber === undefined ? undefined : nutrition.fiber * quantityMultiplier}
+            rankMetric={!isCartMode ? menu?.rankMetric : undefined}
+            cardDisplayOverride={!isCartMode ? menu?.cardDisplayOverride : undefined}
             caloriesDelta={customizationTotals.calories}
             proteinDelta={customizationTotals.protein}
             carbsDelta={customizationTotals.carbs}

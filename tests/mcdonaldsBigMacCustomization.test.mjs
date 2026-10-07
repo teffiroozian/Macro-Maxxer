@@ -139,7 +139,7 @@ test("French Fries presentation and combo artwork use size-specific high-resolut
   assert.ok(fries);
   assert.equal(fries.name, "French Fries");
   const kidsImage = "https://s7d1.scene7.com/is/image/mcdonalds/NR_201909_1858_KidsFries_2000x2000?wid=1564&hei=1564&fmt=png-alpha";
-  const smallImage = "https://s7d1.scene7.com/is/image/mcdonalds/t-mcdonalds-fries-small?wid=1564&hei=1564&fmt=png-alpha";
+  const smallImage = "https://s7d1.scene7.com/is/image/mcdonalds/DC_202408_6050_SmallFrenchFries_Standing_1564x1564?wid=1564&hei=1564&fmt=png-alpha";
   const mediumImage = "https://s7d1.scene7.com/is/image/mcdonalds/t-mcdonalds-fries-medium?wid=1564&hei=1564&fmt=png-alpha";
   const largeImage = "https://s7d1.scene7.com/is/image/mcdonalds/t-mcdonalds-fries-large?wid=1564&hei=1564&fmt=png-alpha";
   assert.equal(fries.image, smallImage);

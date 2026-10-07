@@ -1,6 +1,8 @@
 import type { RestaurantBuilderConfig } from "@/types/builder";
 import type { IngredientItem, MenuItem, RestaurantAddonGroups, RestaurantCustomizationRules } from "@/types/menu";
 
+export type MenuSizeSelectorCapability = { enabled: boolean; defaultValue: string; allowedValues?: string[] };
+
 // restaurant overall info
 export type RestaurantIndexEntry = {
   id: string;
@@ -8,6 +10,7 @@ export type RestaurantIndexEntry = {
   logo: string;
   cover: string;
   menuFile: string;
+  menuSizeSelector?: MenuSizeSelectorCapability;
   // Computed from normalized browse items, never raw records or ranking rows.
   menuItemCount?: number;
   isMacroFriendly: boolean;

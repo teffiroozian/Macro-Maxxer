@@ -1,3 +1,4 @@
+import { getDisplayVariantLabel } from "@/lib/menuItemCard/titlePresentation";
 import { useMemo } from "react";
 import type { ReactNode } from "react";
 import { Minus, Plus } from "lucide-react";
@@ -310,7 +311,7 @@ export default function CartItemPreviewContent({
                   <PresetIngredientCard
                     image={mainItem.image}
                     name={mainItem.name}
-                    portionLabel={mainItem.variantLabel}
+                    portionLabel={getDisplayVariantLabel(mainItem.variantLabel)}
                     quantity={1}
                     isLocked={false}
                     nutrition={mainItem.nutrition}
@@ -337,7 +338,7 @@ export default function CartItemPreviewContent({
                 <PresetIngredientCard
                   image={sideSelection.image}
                   name={sideSelection.name}
-                  portionLabel={sideSelection.variantLabel}
+                  portionLabel={getDisplayVariantLabel(sideSelection.variantLabel)}
                   quantity={1}
                   isLocked={false}
                   nutrition={sideSelection.nutrition}
@@ -353,7 +354,7 @@ export default function CartItemPreviewContent({
                 <PresetIngredientCard
                   image={drinkSelection.image}
                   name={drinkSelection.name}
-                  portionLabel={drinkSelection.variantLabel}
+                  portionLabel={getDisplayVariantLabel(drinkSelection.variantLabel)}
                   quantity={1}
                   isLocked={false}
                   nutrition={drinkSelection.nutrition}
@@ -462,7 +463,7 @@ export default function CartItemPreviewContent({
                     image={mainItem.image}
                     imagePresentation={mainItem.imagePresentation}
                     name={mainItem.name}
-                    secondaryText={mainItem.variantLabel}
+                    secondaryText={getDisplayVariantLabel(mainItem.variantLabel)}
                   />
                 ) : null}
                 {mainItemCustomizationEntries.length > 0 ? (
@@ -482,7 +483,7 @@ export default function CartItemPreviewContent({
                     image={row.image}
                     imagePresentation={row.imagePresentation}
                     name={row.name}
-                    secondaryText={row.badge}
+                    secondaryText={getDisplayVariantLabel(row.badge)}
                   />
                 ))}
               </SelectionScrollList>

@@ -1,3 +1,5 @@
+import type { MenuSizeSelectorCapability } from "@/types/restaurant";
+import { getMenuSizeOptions, ALL_MENU_SIZES } from "@/lib/menuSections/menuSizeSelector";
 import { useCallback, useMemo, useState } from "react";
 import type { ReadonlyURLSearchParams } from "next/navigation";
 import type { ViewOption } from "@/components/controls/types";
@@ -12,6 +14,7 @@ import {
     type RankedAllFilterKey,
     type RankedParentSelectionState,
 } from "@/lib/menuSections/filtering";
+import { getNutritionControlData, reconcileNutritionThresholds } from "@/lib/menuSections/nutritionPresets";
 import { getOfficialRankingItems } from "@/lib/menuSections/ranking";
 import { getDefaultMenuItemNutrition } from "@/lib/nutrition";
 import { isStandaloneMenuItem } from "@/lib/menuItemCalculations";
@@ -40,9 +43,11 @@ export function useRestaurantMenuControls({
     router,
     pathname,
     searchParams,
+    menuSizeSelector,
     filterRankingCategories = true,
 }: {
     restaurantId: string;
+    menuSizeSelector?: MenuSizeSelectorCapability;
     hasBuildYourOwn: boolean;
     effectiveViewModeOverride?: ViewOption;
     isViewChangeAllowed?: (nextView: ViewOption) => boolean;
@@ -75,6 +80,9 @@ export function useRestaurantMenuControls({
     // every browsable list this hook builds starts from this filtered set,
     // not the raw `items` prop.
     const standaloneItems = useMemo(() => items.filter(isStandaloneMenuItem), [items]);
+    const menuSizeOptions = useMemo(() => getMenuSizeOptions(standaloneItems, menuSizeSelector), [standaloneItems, menuSizeSelector]);
+    const [menuSizePreference, setMenuSizePreference] = useState(() => menuSizeSelector?.enabled && menuSizeOptions.some((option) => option.value === menuSizeSelector.defaultValue) ? menuSizeSelector.defaultValue : ALL_MENU_SIZES);
+
 
     const [filters, setFilters] = useState<Filters>(() => {
         const available = new Set(standaloneItems.flatMap((item) => getItemCategories(item)));
@@ -161,6 +169,7 @@ export function useRestaurantMenuControls({
                 isRankingView: effectiveViewMode === "ranking",
                 filterRankingCategories,
                 rankingSort: sort,
+                menuSizePreference: menuSizeOptions.length ? menuSizePreference : undefined,
             }),
         [
             effectiveViewMode,
@@ -170,6 +179,8 @@ export function useRestaurantMenuControls({
             rankedChildSelections,
             filterRankingCategories,
             sort,
+            menuSizePreference,
+            menuSizeOptions.length,
         ],
     );
 
@@ -236,13 +247,23 @@ export function useRestaurantMenuControls({
         ],
     );
 
+    const reconcileForContext = useCallback((nextFilters: Filters, nextSize = menuSizePreference, nextSort = sort) =>
+        reconcileNutritionThresholds(nextFilters, getNutritionControlData({ items: sourceItems, filters: nextFilters, searchTerms: [], rankedChildSelections, isRankingView: effectiveViewMode === "ranking", filterRankingCategories, rankingSort: nextSort, menuSizePreference: nextSize })),
+        [sourceItems, rankedChildSelections, effectiveViewMode, filterRankingCategories, sort, menuSizePreference],
+    );
     const handleSortChange = useCallback((nextSort: SortOption) => {
         setSort(nextSort);
-    }, []);
+        setFilters((previous) => reconcileForContext(previous, menuSizePreference, nextSort));
+    }, [reconcileForContext, menuSizePreference]);
 
     const handleFiltersChange = useCallback((nextFilters: Filters) => {
-        setFilters(nextFilters);
-    }, []);
+        setFilters(reconcileForContext(nextFilters));
+    }, [reconcileForContext]);
+    const handleMenuSizeChange = useCallback((nextSize: string) => {
+        setMenuSizePreference(nextSize);
+        setFilters((previous) => reconcileForContext(previous, nextSize));
+    }, [reconcileForContext]);
+    const menuSizeControl = menuSizeOptions.length ? { value: menuSizePreference, options: menuSizeOptions, onChange: handleMenuSizeChange } : undefined;
 
     // Parent-row click: acts as a convenient select-all/deselect-all for that
     // parent's children. A partially-selected parent moves to fully selected
@@ -294,6 +315,7 @@ export function useRestaurantMenuControls({
     }, []);
 
     return {
+        menuSizeControl,
         sort,
         filters,
         handleFiltersChange,

@@ -1,3 +1,4 @@
+import { matchesMenuMembership } from "@/lib/menuSections/memberships";
 import type { SortOption } from "@/lib/menuSections/sortOptions";
 import { selectRankingItems } from "@/lib/menuSections/ranking";
 import type { ItemVariant, MenuItem } from "@/types/menu";
@@ -124,12 +125,11 @@ export function itemMatchesNutritionFilters(item: MenuItem, filters: Filters): b
   if (filters.sodiumMax !== undefined && (nutrition.sodium === undefined || nutrition.sodium > filters.sodiumMax)) return false;
   if (filters.sugarMax !== undefined && (nutrition.sugars === undefined || nutrition.sugars > filters.sugarMax)) return false;
 
-  if (filters.categories !== undefined) {
-    const selected = new Set(filters.categories.map(normalizeCategory));
-    const categories = item.variants?.length
-      ? item.variants.flatMap((variant) => getVariantCategoriesForRanking(item, variant))
-      : getItemCategories(item);
-    if (!categories.some((category) => selected.has(category))) return false;
+  if (filters.categories !== undefined || filters.categoryTags !== undefined || filters.categoryExclusions !== undefined) {
+    const matches = item.variants?.length
+      ? item.variants.some((variant) => matchesMenuMembership({ category: variant.category ?? variant.categories?.[0] ?? item.category ?? item.categories?.[0], tags: [...(item.tags ?? []), ...(variant.tags ?? [])] }, filters.categories, filters.categoryTags, filters.categoryExclusions))
+      : matchesMenuMembership(item, filters.categories, filters.categoryTags, filters.categoryExclusions);
+    if (!matches) return false;
   }
 
   return true;
@@ -170,6 +170,7 @@ export function filterMenuItems({
   isRankingView,
   filterRankingCategories = true,
   rankingSort,
+  menuSizePreference,
 }: {
   items: MenuItem[];
   filters: Filters;
@@ -178,14 +179,14 @@ export function filterMenuItems({
   isRankingView: boolean;
   filterRankingCategories?: boolean;
   rankingSort?: SortOption;
+  menuSizePreference?: string;
 }): MenuItem[] {
-  const candidates = isRankingView && rankingSort ? selectRankingItems(items, rankingSort, filters) : items;
+  const candidates = isRankingView && rankingSort ? selectRankingItems(items, rankingSort, filters, menuSizePreference) : items;
   return candidates
     .map((item) => {
-      if (filters.categories === undefined || !item.variants?.length) return item;
-      const selected = new Set(filters.categories.map(normalizeCategory));
+      if ((filters.categories === undefined && filters.categoryTags === undefined && filters.categoryExclusions === undefined) || !item.variants?.length) return item;
       const variants = item.variants.filter((variant) =>
-        getVariantCategoriesForRanking(item, variant).some((category) => selected.has(category))
+        matchesMenuMembership({ category: variant.category ?? variant.categories?.[0] ?? item.category ?? item.categories?.[0], tags: [...(item.tags ?? []), ...(variant.tags ?? [])] }, filters.categories, filters.categoryTags, filters.categoryExclusions)
       );
       return variants.length ? { ...item, variants } : null;
     })

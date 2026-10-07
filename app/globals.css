@@ -119,7 +119,7 @@
     --gutter-mobile: 16px;
 
     /* Document-flow spacing around restaurant controls. */
-    --restaurant-controls-gap: 2.5rem;
+    --restaurant-controls-gap: 2rem;
     /* Desktop sticky clearance is intentionally more compact. */
     --restaurant-controls-sticky-gap: 0.5rem;
 

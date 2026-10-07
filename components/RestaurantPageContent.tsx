@@ -31,6 +31,7 @@ export default function RestaurantPageContent({
 
         <main className="mx-auto w-full max-w-6xl px-3 pb-12 sm:px-4 lg:px-6">
           <RestaurantView
+            menuSizeSelector={restaurantData.menuSizeSelector}
             restaurantId={restaurantData.id}
             restaurantName={restaurantData.name}
             restaurantLogo={restaurantData.logo}

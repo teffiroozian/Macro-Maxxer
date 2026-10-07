@@ -17,7 +17,7 @@ export function normalizeCategory(category: string) {
 }
 
 export function getItemCategories(item: MenuItem) {
-  const categories = item.categories?.length ? item.categories : ["Other"];
+  const categories = item.category ? [item.category] : item.categories?.length ? item.categories : ["Other"];
   return categories.map((category) => normalizeCategory(category));
 }
 
@@ -172,7 +172,7 @@ export function sortItems(
       const value = (nutrition: typeof left) => {
         if (metric === "protein-score") return getProteinPer100Calories(nutrition.protein, nutrition.calories);
         if (metric === "fat") return nutrition.totalFat;
-        return nutrition[metric as "protein" | "calories" | "carbs"];
+        return nutrition[metric as "protein" | "calories" | "carbs" | "fiber"];
       };
       return compareNumericWithMissingLast(value(left), value(right), direction);
     });
@@ -205,8 +205,9 @@ export function getOrderedMenuSections(
 
 const STARBUCKS_MENU_SECTION_ORDER = [
   "protein drinks",
-  "hot coffee & espresso",
-  "cold coffee & espresso",
+  "hot coffee",
+  "iced coffee",
+  "espresso drinks",
   "frappuccino",
   "tea & chai",
   "matcha",

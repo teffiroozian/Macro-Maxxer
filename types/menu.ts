@@ -82,6 +82,8 @@ export type MenuSourceIdentity = {
 // item variants allow for different versions of the same base item, 
 // e.g. 8pc vs 10pc nuggets, small vs medium fries
 export type ItemVariant = {
+  category?: string;
+  tags?: string[];
   id: string;
   label: string;
   image?: string;
@@ -250,6 +252,9 @@ export type RestaurantCustomizationRules = {
 
 // represents one menu item
 export type MenuItem = {
+  // One primary organization; tags carry cross-category classifications.
+  category?: string;
+  tags?: string[];
   id: string;
   name: string;
   image: string;

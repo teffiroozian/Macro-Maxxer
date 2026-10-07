@@ -1,5 +1,7 @@
 "use client";
 
+import type { MenuSizeSelectorControl } from "@/lib/menuSections/menuSizeSelector";
+
 import { useCallback, useEffect, useMemo, useRef, useState, type CSSProperties } from "react";
 import { createPortal } from "react-dom";
 import { IS_CAPACITOR_BUILD } from "@/lib/buildTarget";
@@ -9,12 +11,13 @@ import { useFilterChipActions } from "./useFilterChipActions";
 import { SORT_OPTION_VALUES, type SortOption } from "@/lib/menuSections/sortOptions";
 import { MEAL_PROTEIN_OPTIONS, getVariantSettings, countVariantSettingsChanges, type Filters } from "@/lib/menuSections/filterOptions";
 import type { ViewOption } from "@/components/controls/types";
-import { selectRankingItems } from "@/lib/menuSections/ranking";
+import { getMenuResultCounts } from "@/lib/menuSections/resultCounts";
 import { filterMenuItems, type RankedAllFilterKey } from "@/lib/menuSections/filtering";
 import type { MenuItem } from "@/types/menu";
 import MobileNavDrawer from "@/components/MobileNavDrawer";
 import AppButton from "@/components/ui/AppButton";
 import FilterChip from "@/components/ui/FilterChip";
+import MenuSizeSelector from "@/components/controls/MenuSizeSelector";
 import RankSelector from "@/components/controls/RankSelector";
 import RestaurantFiltersPanel from "@/components/controls/RestaurantFiltersPanel";
 import { pillTriggerClassName } from "@/components/controls/pillButton";
@@ -146,8 +149,8 @@ export function FilterChips({
 }
 
 export default function ControlsRow({
-  restaurantId,
-  view,
+  menuSizeControl,
+  restaurantId,  view,
   onChange,
   sort,
   onSortChange,
@@ -175,6 +178,7 @@ export default function ControlsRow({
   filterRankingCategories = true,
   showInlineMobileControls = false,
 }: {
+  menuSizeControl?: MenuSizeSelectorControl;
   restaurantId: string;
   view: ViewOption;
   onChange: (view: ViewOption) => void;
@@ -351,7 +355,12 @@ export default function ControlsRow({
   // Reuses the exact same filterMenuItems the page itself uses to render
   // results — never a parallel counting implementation — so these previews
   // can't silently drift from what Apply will actually show.
-  const totalResultCount = (isRankingView ? selectRankingItems(sourceItems, sort, filters) : sourceItems).length;
+  const menuSizePreference = menuSizeControl?.value;
+  const appliedResultCounts = useMemo(
+    () => getMenuResultCounts({ items: sourceItems, filters, searchTerms: [], rankedChildSelections, isRankingView, filterRankingCategories, rankingSort: sort, menuSizePreference }),
+    [sourceItems, filters, rankedChildSelections, isRankingView, filterRankingCategories, sort, menuSizePreference],
+  );
+  const totalResultCount = appliedResultCounts.total;
 
   const countMatchingItems = useCallback(
     (proteinMin: number | undefined, caloriesMax: number | undefined) =>
@@ -363,8 +372,9 @@ export default function ControlsRow({
         isRankingView,
         filterRankingCategories,
         rankingSort: sort,
+        menuSizePreference,
       }).length,
-    [sourceItems, rankedChildSelections, isRankingView, filterRankingCategories, draftFilters, sort]
+    [sourceItems, rankedChildSelections, isRankingView, filterRankingCategories, draftFilters, sort, menuSizePreference]
   );
 
   // Per-chip "what if this threshold were selected" preview — always
@@ -391,13 +401,10 @@ export default function ControlsRow({
       : `Show ${draftMatchingItemCount} item${draftMatchingItemCount === 1 ? "" : "s"}`;
 
   const fullDraftMatchingItemCount = useMemo(
-    () => filterMenuItems({ items: sourceItems, filters: draftFilters, searchTerms: [], rankedChildSelections, isRankingView, filterRankingCategories, rankingSort: sort }).length,
-    [draftFilters, isRankingView, rankedChildSelections, sourceItems, filterRankingCategories, sort],
+    () => filterMenuItems({ items: sourceItems, filters: draftFilters, searchTerms: [], rankedChildSelections, isRankingView, filterRankingCategories, rankingSort: sort, menuSizePreference }).length,
+    [draftFilters, isRankingView, rankedChildSelections, sourceItems, filterRankingCategories, sort, menuSizePreference],
   );
-  const appliedMatchingItemCount = useMemo(
-    () => visibleItemCount ?? filterMenuItems({ items: sourceItems, filters, searchTerms: [], rankedChildSelections, isRankingView, filterRankingCategories, rankingSort: sort }).length,
-    [filterRankingCategories, filters, isRankingView, rankedChildSelections, sourceItems, visibleItemCount, sort],
-  );
+  const appliedMatchingItemCount = visibleItemCount ?? appliedResultCounts.matching;
 
   // Shared by both the desktop modal's and mobile drawer's protein chips so
   // the two surfaces can never disagree on a count, disabled state, or
@@ -762,6 +769,7 @@ export default function ControlsRow({
           onClose={closeFiltersDialog}
           onApply={applyFilters}
           matchingCount={fullDraftMatchingItemCount}
+          resultContext={{ rankingSort: sort, isRankingView, filterRankingCategories, rankedChildSelections, menuSizePreference }}
         />
       </div>
     </div>
@@ -782,6 +790,7 @@ export default function ControlsRow({
         <div className={IS_CAPACITOR_BUILD ? "hidden" : `${showInlineMobileControls ? "flex" : "hidden lg:flex"} min-w-0 flex-nowrap items-center gap-2`}>
           <div className="flex shrink-0 items-center gap-2">
             <RankSelector value={sort} isOpen={isSortOpen} onOpenChange={setIsSortOpen} onChange={onSortChange} />
+            {menuSizeControl ? <MenuSizeSelector {...menuSizeControl} /> : null}
 
             <button
               type="button"

@@ -1,3 +1,5 @@
+import { getCleanMenuItemName, getDisplayVariantLabel } from "@/lib/menuItemCard/titlePresentation";
+
 export function getMenuItemSearchResultName({
   itemName,
   restaurantId,
@@ -9,6 +11,8 @@ export function getMenuItemSearchResultName({
   variantLabel?: string;
   showVariant: boolean;
 }) {
+  itemName = getCleanMenuItemName(itemName);
+  variantLabel = getDisplayVariantLabel(variantLabel);
   if (restaurantId === "starbucks" || !showVariant || !variantLabel) {
     return itemName;
   }

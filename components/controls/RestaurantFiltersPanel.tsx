@@ -1,19 +1,34 @@
 "use client";
 
-import { useMemo, useState, type CSSProperties } from "react";
-import { Check, ChevronDown, Droplets, CupSoda, Grid2X2, SlidersHorizontal, Soup, UtensilsCrossed, Users, X, Zap, type LucideIcon } from "lucide-react";
+import { useEffect, useRef, useMemo, useState, type CSSProperties } from "react";
+import { Check, Minus, ChevronDown, Coffee, Cookie, Leaf, GlassWater, Droplets, CupSoda, Grid2X2, SlidersHorizontal, Soup, UtensilsCrossed, Users, X, Zap, type LucideIcon } from "lucide-react";
+import { getNutritionControlData, reconcileNutritionThresholds } from "@/lib/menuSections/nutritionPresets";
 import { getVariantSettings, countVariantSettingsChanges, VARIANT_FILTER_DEFAULTS, type Filters, type VariantSettings } from "@/lib/menuSections/filterOptions";
 import type { MenuItem } from "@/types/menu";
-import { isNutritionHistogramBinIncluded, buildNutritionHistogram, getNutritionDisplayData, getActiveCategoryCalorieData } from "@/lib/menuSections/nutritionDisplayRange";
-import { countItemsByCategory, getCategoryLabel, getItemCategories } from "@/lib/menuSections/sorting";
+import { getNutritionHistogramBinInclusion, buildNutritionHistogram } from "@/lib/menuSections/nutritionDisplayRange";
+import { getCategoryLabel } from "@/lib/menuSections/sorting";
+import { PROTEIN_SCORE_COLOR, FIBER_COLOR } from "@/components/nutrition/metricColors";
 import { proteinScoreTierStyles } from "@/components/nutrition/proteinScoreStyles";
-import { getCategoryPresets, getSelectedCategoryPreset, selectCategoryPreset, selectCustomCategories, type CategoryPreset, type CategoryPresetId } from "@/lib/menuSections/categoryPresets";
-import { getRankedAllFilterKey } from "@/lib/menuSections/filtering";
+import { getCategoryPresets, getSelectedCategoryPreset, selectCategoryPreset, selectCustomCategories, toggleCategoryMembership, type CategoryPreset, type CategoryPresetId } from "@/lib/menuSections/categoryPresets";
+import { getMenuCategoryFacets, getMenuResultCounts, type MenuResultContext, type CategorySelectionState } from "@/lib/menuSections/resultCounts";
+import { getRankState } from "@/lib/menuSections/sortOptions";
+import { resolveCardDisplayMode, type CardDisplayMode } from "@/lib/menuItemCard/rankingMacroDisplay";
 import AppButton from "@/components/ui/AppButton";
 
 type Bounds = { min: number; max: number };
 type Preset = { label: string; value?: number };
-const categoryPresetIcons: Record<CategoryPresetId, LucideIcon> = { main: UtensilsCrossed, sides: Soup, drinks: CupSoda, shareables: Users, sauces: Droplets, all: Grid2X2 };
+const categoryPresetIcons: Record<CategoryPresetId, LucideIcon> = { main: UtensilsCrossed, food: UtensilsCrossed, coffee: Coffee, matcha: Leaf, refreshers: GlassWater, sweets: Cookie, sides: Soup, drinks: CupSoda, shareables: Users, sauces: Droplets, all: Grid2X2 };
+
+function CategoryCheckbox({ state, onChange }: { state: CategorySelectionState; onChange: () => void }) {
+  const ref = useRef<HTMLInputElement>(null);
+  useEffect(() => { if (ref.current) ref.current.indeterminate = state === "some"; }, [state]);
+  return <>
+    <input ref={ref} type="checkbox" checked={state === "all"} aria-checked={state === "some" ? "mixed" : state === "all"} onChange={onChange} className="peer sr-only" />
+    <span className={`flex h-4 w-4 shrink-0 items-center justify-center rounded-[5px] border transition peer-focus-visible:ring-2 peer-focus-visible:ring-[#047857]/30 ${state === "all" ? "border-[#047857] bg-[#047857] text-white" : state === "some" ? "border-[#047857] bg-[#ECFDF5] text-[#047857]" : "border-slate-300 bg-white text-transparent"}`}>
+      {state === "some" ? <Minus className="h-3 w-3" strokeWidth={3} /> : <Check className="h-3 w-3" strokeWidth={3} />}
+    </span>
+  </>;
+}
 
 function SectionHeader({ title, summary, open, onClick }: { title: string; summary: string; open: boolean; onClick: () => void }) {
   return <button type="button" onClick={onClick} className="flex min-h-16 w-full cursor-pointer items-center gap-4 py-1 text-left">
@@ -29,7 +44,8 @@ function Histogram({ values, bounds, color, threshold, minimum }: { values: numb
     const peak = Math.max(1, ...buckets);
     return buckets.map((count) => count / peak);
   }, [bounds, values]);
-  return <div className="flex h-9 items-end gap-[3px] px-1" aria-hidden="true">{bars.map((height, index) => <span key={index} className={`flex-1 rounded-t-[2px] ${isNutritionHistogramBinIncluded(index, bounds, threshold, minimum) ? color : minimum ? "bg-orange-200" : "bg-slate-300"}`} style={{ height: `${Math.max(2, height * 36)}px` }} />)}</div>;
+  const included = useMemo(() => getNutritionHistogramBinInclusion(values, bounds, threshold, minimum), [values, bounds, threshold, minimum]);
+  return <div className="flex h-[45px] items-end gap-[3px] px-1" aria-hidden="true">{bars.map((height, index) => <span key={index} className={`flex-1 rounded-t-[2px] ${included[index] ? color : minimum ? "bg-orange-200" : "bg-slate-300"}`} style={{ height: `${Math.max(2, height * 45)}px` }} />)}</div>;
 }
 
 function NutritionSlider({ label, displayValue, value, bounds, values, color, presets, anyAt, step, onChange }: { label: string; displayValue: string; value?: number; bounds: Bounds; values: number[]; color: string; presets: Preset[]; anyAt: "min" | "max"; step: number; onChange: (value?: number) => void }) {
@@ -58,16 +74,20 @@ function CompactSlider({ label, value, max, unit, kind, color, onChange }: { lab
   </div>;
 }
 
-export default function RestaurantFiltersPanel({ restaurantId, items, value, onChange, onClose, onApply, matchingCount }: { restaurantId: string; items: MenuItem[]; value: Filters; onChange: (filters: Filters) => void; onClose: () => void; onApply: () => void; matchingCount: number }) {
+export default function RestaurantFiltersPanel({ restaurantId, items, value, onChange, onClose, onApply, matchingCount, resultContext }: { restaurantId: string; items: MenuItem[]; value: Filters; onChange: (filters: Filters) => void; onClose: () => void; onApply: () => void; matchingCount: number; resultContext?: MenuResultContext }) {
   const [menuOpen, setMenuOpen] = useState(true);
   const [variantsOpen, setVariantsOpen] = useState(true);
   const [nutritionOpen, setNutritionOpen] = useState(true);
   const [moreOpen, setMoreOpen] = useState(false);
-  const { proteins, proteinBounds } = useMemo(() => getNutritionDisplayData(items), [items]);
-  const { calories, calorieBounds } = useMemo(() => getActiveCategoryCalorieData(items, value.categories), [items, value.categories]);
-  const categoryCounts = useMemo(() => {
-    return new Map(Object.entries(countItemsByCategory(items)));
-  }, [items]);
+  const countInput = { items, filters: value, searchTerms: [], ...(resultContext ?? { isRankingView: false, filterRankingCategories: false, rankedChildSelections: { "main-entrees": new Set<string>(), breakfast: new Set<string>(), shareables: new Set<string>(), sides: new Set<string>(), drinks: new Set<string>() } }) };
+  const nutritionData = getNutritionControlData(countInput);
+  const { calories, proteins, calorieBounds, proteinBounds, caloriePresets, proteinPresets } = nutritionData;
+  useEffect(() => {
+    const reconciled = reconcileNutritionThresholds(value, nutritionData);
+    if (reconciled !== value) onChange(reconciled);
+  }, [value, nutritionData, onChange]);
+  const facets = getMenuCategoryFacets(countInput);
+  const categoryCounts = facets.counts;
   const categoryPresets = getCategoryPresets(items, restaurantId).map((preset) => ({ ...preset, Icon: categoryPresetIcons[preset.id] }));
   const allIds = categoryPresets.find((preset) => preset.id === "all")!.ids;
   const categories = allIds.map((id) => ({ id, count: categoryCounts.get(id) ?? 0, label: getCategoryLabel(id) }));
@@ -80,41 +100,28 @@ export default function RestaurantFiltersPanel({ restaurantId, items, value, onC
   const baseCategoryPreset = categoryPresets.find((preset) => preset.id === baseCategoryPresetId) ?? categoryPresets[0];
   const isCustomCategorySelection = !matchingCategoryPreset;
   const selectedSet = new Set(selected);
-  const hasSelectedCategories = selectedSet.size > 0;
+  const hasSelectedCategories = selectedSet.size > 0 || Boolean(value.categoryTags?.length);
   const showItemCount = hasSelectedCategories ? matchingCount : 0;
-  const selectedRankingGroups = value.rankingGroups ? new Set(value.rankingGroups) : undefined;
-  const selectedItemCount = items.filter((item) => {
-    const itemCategories = item.variants?.length
-      ? item.variants.flatMap((variant) => variant.categories?.length ? variant.categories : getItemCategories(item))
-      : getItemCategories(item);
-    const categoryMatches = itemCategories.some((category) => selectedSet.has(category.toLowerCase()));
-    if (!categoryMatches || !selectedRankingGroups) return categoryMatches;
-    const itemGroup = getRankedAllFilterKey(item.servingType);
-    return (itemGroup !== null && selectedRankingGroups.has(itemGroup)) || Boolean(item.variants?.some((variant) => {
-      const variantGroup = getRankedAllFilterKey(variant.servingType);
-      return variantGroup !== null && selectedRankingGroups.has(variantGroup);
-    }));
-  }).length;
+  const selectedItemCount = getMenuResultCounts(countInput).matching;
+  const categoryState = (id: string): CategorySelectionState => facets.states.get(id) ?? (selectedSet.has(id) ? "all" : "none");
+  const includedCategoryCount = categories.filter((category) => categoryState(category.id) !== "none").length;
   const applyCategoryPreset = (preset: CategoryPreset) => {
     setBaseCategoryPresetId(preset.id);
     onChange(selectCategoryPreset(value, preset));
   };
   const toggleCategory = (categoryId: string) => {
-    const nextSelected = selected.includes(categoryId)
-      ? selected.filter((id) => id !== categoryId)
-      : [...selected, categoryId];
-    onChange(selectCustomCategories(value, nextSelected));
+    onChange(toggleCategoryMembership(value, selected, categoryId, categoryState(categoryId)));
   };
   const variantSettings = getVariantSettings(value);
   const variantChanges = countVariantSettingsChanges(value);
-  const activeCount = variantChanges + Object.entries(value).filter(([key, entry]) => key !== "rankingGroups" && key !== "categoryPreset" && !(key in VARIANT_FILTER_DEFAULTS) && entry !== undefined && (!Array.isArray(entry) || !same(entry, allIds))).length;
+  const activeCount = variantChanges + Object.entries(value).filter(([key, entry]) => key !== "cardDisplayOverride" && key !== "rankingGroups" && key !== "categoryPreset" && key !== "categoryTags" && key !== "categoryExclusions" && !(key in VARIANT_FILTER_DEFAULTS) && entry !== undefined && (!Array.isArray(entry) || !same(entry, allIds))).length;
   const nutritionCount = [value.caloriesMax, value.proteinMin, value.proteinScoreMin].filter((entry) => entry !== undefined).length;
   const moreCount = [value.carbsMax, value.fatMax, value.fiberMin, value.sodiumMax, value.sugarMax].filter((entry) => entry !== undefined).length;
   const proteinTiers = [
     { label: "Any", value: undefined, tier: "moderate", caption: "All", border: "#64748B" },
-    { label: "Good", value: 6, tier: "good", caption: "6+", border: "#B08A3E" },
-    { label: "Excellent", value: 9, tier: "excellent", caption: "9+", border: "#4C84C4" },
-    { label: "Elite", value: 12, tier: "elite", caption: "12+", border: "#047857" },
+    { label: "Good", value: 6, tier: "good", caption: "6+", border: PROTEIN_SCORE_COLOR },
+    { label: "Excellent", value: 9, tier: "excellent", caption: "9+", border: PROTEIN_SCORE_COLOR },
+    { label: "Elite", value: 12, tier: "elite", caption: "12+", border: PROTEIN_SCORE_COLOR },
   ] as const;
 
   return <div className="flex max-h-[calc(100dvh-2rem)] w-full flex-col overflow-hidden rounded-[28px] bg-white shadow-[0_24px_70px_rgba(15,23,42,.25)] sm:max-h-[calc(100dvh-3rem)]">
@@ -166,14 +173,11 @@ export default function RestaurantFiltersPanel({ restaurantId, items, value, onC
           </div>
           <div className="grid gap-x-6 sm:grid-cols-2">
             {categories.map((category) => {
-              const checked = selected.includes(category.id);
-              const showOnlyPersistently = checked && selectedSet.size === 1;
+              const state = categoryState(category.id);
+              const showOnlyPersistently = state === "all" && includedCategoryCount === 1;
               return <div key={category.id} className="group flex min-h-10 items-center gap-2 border-b border-slate-100 last:border-b-0 sm:[&:nth-last-child(-n+2)]:border-b-0">
                 <label className="flex min-h-10 min-w-0 flex-1 cursor-pointer items-center gap-3 py-2">
-                  <input type="checkbox" checked={checked} onChange={() => toggleCategory(category.id)} className="peer sr-only" />
-                  <span className={`flex h-4 w-4 shrink-0 items-center justify-center rounded-[5px] border transition peer-focus-visible:ring-2 peer-focus-visible:ring-[#047857]/30 ${checked ? "border-[#047857] bg-[#047857] text-white" : "border-slate-300 bg-white text-transparent"}`}>
-                    <Check className="h-3 w-3" strokeWidth={3} />
-                  </span>
+                  <CategoryCheckbox state={state} onChange={() => toggleCategory(category.id)} />
                   <span className="flex-1 text-sm font-semibold text-slate-800">{category.label}</span>
                   <span className="text-xs tabular-nums text-slate-400">{category.count}</span>
                 </label>
@@ -208,11 +212,28 @@ export default function RestaurantFiltersPanel({ restaurantId, items, value, onC
         </div> : null}
       </section>
       <section className="border-t border-slate-200"><SectionHeader title="Nutrition" summary={nutritionCount ? `${nutritionCount} set` : "Any"} open={nutritionOpen} onClick={() => setNutritionOpen(!nutritionOpen)} />{nutritionOpen ? <div className="divide-y divide-slate-100 pb-3">
-        <NutritionSlider label="Max calories" displayValue={value.caloriesMax === undefined ? "Any" : `Under ${value.caloriesMax} cal`} value={value.caloriesMax} bounds={calorieBounds} values={calories} color="bg-[#111318]" anyAt="max" step={10} onChange={(next) => onChange({ ...value, caloriesMax: next })} presets={[{label:"≤ 300",value:300},{label:"≤ 500",value:500},{label:"≤ 700",value:700},{label:"Any"}]} />
-        <NutritionSlider label="Min protein" displayValue={value.proteinMin === undefined ? "Any" : `${value.proteinMin}g+`} value={value.proteinMin} bounds={proteinBounds} values={proteins} color="bg-[#C2410C]" anyAt="min" step={1} onChange={(next) => onChange({ ...value, proteinMin: next === proteinBounds.min ? undefined : next })} presets={[{label:"Any"},{label:"20g+",value:20},{label:"30g+",value:30},{label:"40g+",value:40}]} />
+        <NutritionSlider label="Max calories" displayValue={value.caloriesMax === undefined ? "Any" : `Under ${value.caloriesMax} cal`} value={value.caloriesMax} bounds={calorieBounds} values={calories} color="bg-[#111318]" anyAt="max" step={10} onChange={(next) => onChange({ ...value, caloriesMax: next })} presets={caloriePresets} />
+        <NutritionSlider label="Min protein" displayValue={value.proteinMin === undefined ? "Any" : `${value.proteinMin}g+`} value={value.proteinMin} bounds={proteinBounds} values={proteins} color="bg-[#C2410C]" anyAt="min" step={1} onChange={(next) => onChange({ ...value, proteinMin: next === proteinBounds.min ? undefined : next })} presets={proteinPresets} />
         <div className="py-5"><div className="mb-4 flex items-baseline justify-between"><h4 className="text-[15px] font-bold text-slate-950">Min Protein Score</h4><span className="text-sm font-semibold text-slate-500">{value.proteinScoreMin === undefined ? "Any" : `${value.proteinScoreMin}+`}</span></div><div className="grid grid-cols-4 gap-3">{proteinTiers.map((option) => { const active = value.proteinScoreMin === option.value; return <button key={option.label} type="button" onClick={() => onChange({ ...value, proteinScoreMin: option.value })} style={active ? { borderColor: option.border } : undefined} className={`min-h-[88px] cursor-pointer rounded-[14px] border p-2.5 text-center transition ${active ? "bg-slate-50 shadow-sm" : "border-slate-200 bg-white hover:border-slate-300"}`}><span className={`mx-auto mb-2 flex h-6 w-6 items-center justify-center rounded-full ${proteinScoreTierStyles[option.tier].iconWrap}`}><Zap className={`h-3.5 w-3.5 ${proteinScoreTierStyles[option.tier].icon}`} fill="currentColor" /></span><span className={`block text-xs font-bold ${proteinScoreTierStyles[option.tier].value}`}>{option.label}</span><span className="mt-0.5 block text-[10px] font-medium text-slate-500">{option.caption}</span></button>; })}</div></div>
-      </div> : null}</section>
-      <section className="border-t border-slate-200"><SectionHeader title="More nutrition" summary={moreCount ? `${moreCount} set` : "Off"} open={moreOpen} onClick={() => setMoreOpen(!moreOpen)} />{moreOpen ? <div className="pb-6"><CompactSlider label="Max carbs" value={value.carbsMax} max={200} unit="g" kind="max" color="#CA8A04" onChange={(next) => onChange({...value,carbsMax:next})}/><CompactSlider label="Max fat" value={value.fatMax} max={100} unit="g" kind="max" color="#2563EB" onChange={(next) => onChange({...value,fatMax:next})}/><CompactSlider label="Min fiber" value={value.fiberMin} max={30} unit="g" kind="min" color="#047857" onChange={(next) => onChange({...value,fiberMin:next})}/><CompactSlider label="Max sodium" value={value.sodiumMax} max={3000} unit="mg" kind="max" color="#64748B" onChange={(next) => onChange({...value,sodiumMax:next})}/><CompactSlider label="Max sugar" value={value.sugarMax} max={100} unit="g" kind="max" color="#BE185D" onChange={(next) => onChange({...value,sugarMax:next})}/></div> : null}</section>
+        <div className="py-4">
+          <div id="card-display-label" className="mb-2 text-xs font-medium text-slate-500">Card display</div>
+          <div role="radiogroup" aria-labelledby="card-display-label" className="divide-y divide-slate-200 overflow-hidden rounded-xl border border-slate-200 bg-white">
+            {(["standard", "fiber"] as CardDisplayMode[]).map((mode) => {
+              const selected = resolveCardDisplayMode(resultContext?.rankingSort ? getRankState(resultContext.rankingSort).metric : undefined, value.cardDisplayOverride) === mode;
+              const legend = mode === "standard" ? [["Calories", "#334155"], ["Protein", "#EA580C"], ["Carbs", "#D97706"], ["Fat", "#2563EB"]] : [["Calories", "#334155"], ["Protein", "#EA580C"], ["Fiber", FIBER_COLOR]];
+              return <label key={mode} className="flex min-h-12 cursor-pointer items-center justify-between gap-2 px-3 py-3 hover:bg-slate-50/60">
+                <span className="flex shrink-0 items-center gap-2">
+                  <input type="radio" name="card-display" checked={selected} onChange={() => {}} onClick={() => onChange({ ...value, cardDisplayOverride: mode })} className="peer sr-only" />
+                  <span className={`flex h-4 w-4 items-center justify-center rounded-full border peer-focus-visible:ring-2 peer-focus-visible:ring-[#047857]/30 ${selected ? "border-[#047857]" : "border-slate-300"}`}>{selected ? <span className="h-2 w-2 rounded-full bg-[#047857]" /> : null}</span>
+                  <span className="text-sm font-semibold text-slate-800">{mode === "standard" ? "Standard" : "Fiber"}</span>
+                </span>
+                <span className="flex flex-wrap justify-end gap-x-2 gap-y-1 text-[10px] text-slate-500">{legend.map(([label, color]) => <span key={label} className="inline-flex items-center gap-1"><span className="h-1.5 w-1.5 rounded-full" style={{ backgroundColor: color }} />{label}</span>)}</span>
+              </label>;
+            })}
+          </div>
+        </div>
+        </div> : null}</section>
+      <section className="border-t border-slate-200"><SectionHeader title="More nutrition" summary={moreCount ? `${moreCount} set` : "Off"} open={moreOpen} onClick={() => setMoreOpen(!moreOpen)} />{moreOpen ? <div className="pb-6"><CompactSlider label="Max carbs" value={value.carbsMax} max={200} unit="g" kind="max" color="#CA8A04" onChange={(next) => onChange({...value,carbsMax:next})}/><CompactSlider label="Max fat" value={value.fatMax} max={100} unit="g" kind="max" color="#2563EB" onChange={(next) => onChange({...value,fatMax:next})}/><CompactSlider label="Min fiber" value={value.fiberMin} max={30} unit="g" kind="min" color={FIBER_COLOR} onChange={(next) => onChange({...value,fiberMin:next})}/><CompactSlider label="Max sodium" value={value.sodiumMax} max={3000} unit="mg" kind="max" color="#64748B" onChange={(next) => onChange({...value,sodiumMax:next})}/><CompactSlider label="Max sugar" value={value.sugarMax} max={100} unit="g" kind="max" color="#BE185D" onChange={(next) => onChange({...value,sugarMax:next})}/></div> : null}</section>
     </div>
     <footer className="grid shrink-0 grid-cols-[120px_1fr] gap-3 border-t border-slate-200 bg-white p-4 sm:px-8"><AppButton variant="secondary" size="lg" onClick={() => { setBaseCategoryPresetId("main"); onChange(selectCategoryPreset({}, categoryPresets[0])); }}>Reset</AppButton><AppButton size="lg" disabled={!hasSelectedCategories} onClick={onApply}>Show {showItemCount} item{showItemCount === 1 ? "" : "s"}</AppButton></footer>
   </div>;

@@ -2932,6 +2932,7 @@ export default function ChipotleRestaurantBuilderView({
 
               <div className="w-full rounded-3xl border border-black/10 bg-muted-panel p-4">
                 <MenuSections
+                  cardDisplayOverride={filters.cardDisplayOverride}
                   restaurantId={restaurantId}
                   items={visibleMenuItems}
                   sort={sort}
@@ -3517,6 +3518,7 @@ export default function ChipotleRestaurantBuilderView({
                     </button>
                   </div>
                   <MenuSections
+                    cardDisplayOverride={filters.cardDisplayOverride}
                     restaurantId={restaurantId}
                     items={allIngredientsDisplayItems}
                     sort={sort}
@@ -3848,6 +3850,7 @@ export default function ChipotleRestaurantBuilderView({
                 />
               ) : (
                 <MenuSections
+                  cardDisplayOverride={filters.cardDisplayOverride}
                   restaurantId={restaurantId}
                   items={visibleMenuItems}
                   sort={sort}

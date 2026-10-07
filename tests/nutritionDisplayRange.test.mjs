@@ -58,7 +58,7 @@ test("active-category calories use their own percentile plus approximately one h
   assert.equal(getActiveCategoryCalorieData(catalog, ["shareables"]).calorieBounds.max, 1350);
   assert.equal(getActiveCategoryCalorieData(catalog).calories.length, 40);
   assert.equal(buildNutritionHistogram(selected.calories, selected.calorieBounds).reduce((sum, count) => sum + count, 0), 20);
-  assert.equal(buildNutritionHistogram(selected.calories, selected.calorieBounds)[19], 1);
+  assert.equal(buildNutritionHistogram(selected.calories, selected.calorieBounds)[19], 20);
   assert.equal(getActiveCategoryCalorieData(catalog, []).calorieBounds.max, 10);
   assert.equal(getActiveCategoryCalorieData([item("zero", 0, 0)]).calorieBounds.max, 10);
 });
@@ -91,4 +91,13 @@ test("histogram emphasis follows maximum/minimum thresholds and keeps Any fully 
     assert.equal(isNutritionHistogramBinIncluded(index, bounds, undefined, true), true);
     assert.equal(isNutritionHistogramBinIncluded(index, bounds, undefined, false), true);
   }
+});
+
+test("overflow and threshold-straddling bars use their actual samples for emphasis", async () => {
+  const { getNutritionHistogramBinInclusion } = await import("../lib/menuSections/nutritionDisplayRange.ts");
+  const bounds = { min: 0, max: 800 };
+  assert.equal(getNutritionHistogramBinInclusion([2600], bounds, 800, false)[19], false);
+  assert.equal(getNutritionHistogramBinInclusion([780, 2600], bounds, 800, false)[19], true);
+  assert.equal(getNutritionHistogramBinInclusion([15], bounds, 30, true)[0], false);
+  assert.equal(getNutritionHistogramBinInclusion([15, 35], bounds, 30, true)[0], true);
 });

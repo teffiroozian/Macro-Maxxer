@@ -1,5 +1,6 @@
 "use client";
 
+import type { MenuSizeSelectorCapability } from "@/types/restaurant";
 import { useEffect, useMemo, useState } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import type {
@@ -21,6 +22,7 @@ function StandardRestaurantView({
   restaurantId,
   restaurantName,
   restaurantLogo,
+  menuSizeSelector,
   hasBuildYourOwn = false,
   items,
   ingredients = [],
@@ -30,6 +32,7 @@ function StandardRestaurantView({
   restaurantId: string;
   restaurantName: string;
   restaurantLogo: string;
+  menuSizeSelector?: MenuSizeSelectorCapability;
   hasBuildYourOwn?: boolean;
   items: MenuItem[];
   ingredients?: IngredientItem[];
@@ -64,6 +67,7 @@ function StandardRestaurantView({
     [ingredients, restaurantLogo],
   );
   const {
+    menuSizeControl,
     sort,
     filters,
     handleFiltersChange,
@@ -76,6 +80,7 @@ function StandardRestaurantView({
     handleSortChange,
   } = useRestaurantMenuControls({
     restaurantId,
+    menuSizeSelector,
     hasBuildYourOwn,
     items,
     ingredientMenuItems,
@@ -93,6 +98,7 @@ function StandardRestaurantView({
   return (
     <div className="grid gap-y-[var(--restaurant-controls-gap)] pt-[var(--restaurant-controls-gap)]">
       <StickyRestaurantBar
+        menuSizeControl={menuSizeControl}
         restaurantId={restaurantId}
         restaurantName={restaurantName}
         restaurantLogo={restaurantLogo}
@@ -125,6 +131,7 @@ function StandardRestaurantView({
       <div className="col-start-1 row-start-2 min-w-0 [&>div>div]:mt-0">
           <div className={`mx-auto w-full ${effectiveViewMode === "ranking" ? "" : "max-w-[900px]"}`}>
             <MenuSections
+              cardDisplayOverride={filters.cardDisplayOverride}
               restaurantId={restaurantId}
               items={visibleMenuItems}
               // The full, unfiltered catalog (including structural/
@@ -156,6 +163,7 @@ export default function RestaurantView(props: {
   restaurantId: string;
   restaurantName: string;
   restaurantLogo: string;
+  menuSizeSelector?: MenuSizeSelectorCapability;
   hasBuildYourOwn?: boolean;
   items: MenuItem[];
   ingredients?: IngredientItem[];
@@ -176,5 +184,5 @@ export default function RestaurantView(props: {
     return <ChipotleRestaurantBuilderView {...props} />;
   }
 
-  return <StandardRestaurantView {...props} />;
+  return <StandardRestaurantView key={restaurantId} {...props} />;
 }

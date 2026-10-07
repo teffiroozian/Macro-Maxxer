@@ -106,8 +106,9 @@ export const CATEGORY_ICONS: Record<string, LucideIcon> = {
   "protein cups": Ham,
   treats: IceCreamCone,
   "protein drinks": Dumbbell,
-  "hot coffee & espresso": Coffee,
-  "cold coffee & espresso": Coffee,
+  "hot coffee": Coffee,
+  "iced coffee": Coffee,
+  "espresso drinks": Coffee,
   frappuccino: IceCreamCone,
   "tea & chai": Leaf,
   matcha: Leaf,
@@ -119,8 +120,9 @@ export const CATEGORY_ICONS: Record<string, LucideIcon> = {
 };
 
 export const STARBUCKS_CATEGORY_ICON_OVERRIDES: Record<string, LucideIcon> = {
-  "hot coffee & espresso": Coffee,
-  "cold coffee & espresso": CupSoda,
+  "hot coffee": Coffee,
+  "iced coffee": CupSoda,
+  "espresso drinks": Coffee,
   "tea & chai": Leaf,
   matcha: Sprout,
 };

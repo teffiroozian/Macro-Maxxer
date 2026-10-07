@@ -1,3 +1,5 @@
+import GridItemTitle from "./GridItemTitle";
+import { getRankedMenuItemTitle, getDisplayVariantLabel } from "@/lib/menuItemCard/titlePresentation";
 import type { ReactNode } from "react";
 import type { ItemVariant, MenuItem } from "@/types/menu";
 import type { ComparativeLabelKind } from "@/lib/menuSections/comparativeLabels";
@@ -48,27 +50,15 @@ export default function MenuItemCardHeader({
 }) {
   const status = item.status;
   const hasImageLabel = Boolean(comparativeLabel) || Boolean(status);
-  const normalizedVariantLabel = selectedVariantLabel
-    ?.trim()
-    .replace(/\b(\d+)\s*(?:ct|count)\b/gi, "$1 ct");
-  const itemNameIncludesVariant = Boolean(
-    normalizedVariantLabel &&
-    (item.name.toLocaleLowerCase().includes(normalizedVariantLabel.toLocaleLowerCase()) ||
-      (selectedVariantLabel && item.name.toLocaleLowerCase().includes(selectedVariantLabel.toLocaleLowerCase()))),
-  );
-  const rankedListDisplayName = normalizedVariantLabel && !itemNameIncludesVariant
-    ? `${item.name} (${normalizedVariantLabel})`
+  const rankedDisplayName = getRankedMenuItemTitle(item.name, selectedVariantLabel);
+  // Preserve the compact mobile card's existing presentation; the new
+  // canonical format and reveal behavior apply to desktop Grid titles.
+  const mobileVariantLabel = getDisplayVariantLabel(selectedVariantLabel)?.trim().replace(/\b(\d+)\s*(?:ct|count)\b/gi, "$1 ct");
+  const mobileCount = mobileVariantLabel?.match(/^(\d+)\s+ct$/i)?.[1];
+  const mobileBaseName = mobileCount
+    ? item.name.replace(new RegExp(`\\s*\\(?${mobileCount}\\s*(?:ct|count)\\)?`, "i"), "").trim()
     : item.name;
-  const gridCountLabel = normalizedVariantLabel;
-  const gridCountValue = normalizedVariantLabel?.match(/^(\d+)\s+ct$/i)?.[1];
-  const gridBaseName = gridCountValue
-    ? item.name
-        .replace(new RegExp(`\\s*\\(?${gridCountValue}\\s*(?:ct|count)\\)?`, "i"), "")
-        .trim()
-    : item.name;
-  const rankedDisplayName = resultLayout === "grid" && gridCountLabel
-    ? `${gridCountLabel} ${gridBaseName}`
-    : rankedListDisplayName;
+  const mobileGridDisplayName = mobileVariantLabel ? `${mobileVariantLabel} ${mobileBaseName}` : rankedDisplayName;
 
   return (
     <>
@@ -103,7 +93,12 @@ export default function MenuItemCardHeader({
               title={resultLayout === "grid" ? `${rank}. ${rankedDisplayName}` : undefined}
             >
               <span className="shrink-0 text-slate-400">{rank}.</span>
-              <span className="truncate">{rankedDisplayName}</span>
+              {resultLayout === "grid" ? (
+                <>
+                  <span className="truncate lg:hidden">{mobileGridDisplayName}</span>
+                  <GridItemTitle name={rankedDisplayName} />
+                </>
+              ) : <span className="truncate">{rankedDisplayName}</span>}
             </h3>
           ) : (
             <MenuItemTitle name={item.name} as={isCartMode ? "div" : "h3"} className="font-heading text-card-title text-slate-900" />

@@ -1,5 +1,7 @@
 "use client";
 
+import { getDisplayVariantLabel } from "@/lib/menuItemCard/titlePresentation";
+
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { ChevronLeft, Pencil, Utensils, X } from "lucide-react";
@@ -1823,7 +1825,7 @@ export default function ItemRouteModal({
                                         {variants &&
                                         variants.length > 0 &&
                                         !item.hideVariantSelector &&
-                                        selectedVariant ? (
+                                        selectedVariant && (variants.length > 1 || getDisplayVariantLabel(selectedVariant.label)) ? (
                                             <PreviewControlShortcut
                                                 label="Options"
                                                 value={selectedVariant.label}

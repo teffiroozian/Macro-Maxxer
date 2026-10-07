@@ -1,3 +1,4 @@
+import { matchesMenuMembership } from "@/lib/menuSections/memberships";
 import type { MenuItem } from "@/types/menu";
 import { isStandaloneMenuItem } from "@/lib/menuItemCalculations";
 import { getDefaultMenuItemNutrition } from "@/lib/nutrition";
@@ -42,10 +43,9 @@ export function buildNutritionHistogram(values: number[], bounds: NutritionDispl
 
 // Only category selection changes this pool; nutrition filters must not
 // feed back into their own display domain.
-export function getActiveCategoryCalorieData(items: MenuItem[], categories?: string[]) {
-  const selected = categories ? new Set(categories.map((category) => category.trim().toLowerCase())) : undefined;
+export function getActiveCategoryCalorieData(items: MenuItem[], categories?: string[], tags?: string[], exclusions?: string[]) {
   const eligible = getOfficialRankingItems(items.filter(isStandaloneMenuItem)).filter((item) =>
-    !selected || item.categories.some((category) => selected.has(category.trim().toLowerCase()))
+    matchesMenuMembership(item, categories, tags, exclusions)
   );
   const calories = eligible.map((item) => getDefaultMenuItemNutrition(item).calories).filter(Number.isFinite);
   const rounded = getPercentileDisplayBounds(calories, 10);
@@ -65,4 +65,12 @@ export function isNutritionHistogramBinIncluded(index: number, bounds: Nutrition
   const lower = bounds.min + index * width;
   const upper = index === bucketCount - 1 ? Infinity : lower + width;
   return minimum ? upper > threshold : lower <= threshold;
+}
+
+export function getNutritionHistogramBinInclusion(values: number[], bounds: NutritionDisplayBounds, threshold: number | undefined, minimum: boolean): boolean[] {
+  const total = buildNutritionHistogram(values, bounds);
+  const included = buildNutritionHistogram(values.filter((value) => threshold === undefined || (minimum ? value >= threshold : value <= threshold)), bounds);
+  return total.map((count, index) => threshold === undefined || (count > 0
+    ? included[index] > 0
+    : isNutritionHistogramBinIncluded(index, bounds, threshold, minimum)));
 }

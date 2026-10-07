@@ -1,6 +1,6 @@
 import type { CoreMacros } from "@/types/nutrition";
 
-type MacroKey = keyof CoreMacros;
+type MacroKey = keyof CoreMacros | "fiber";
 
 export type MacroColorToken = {
   valueClassName: string;
@@ -23,6 +23,11 @@ export const macroColorTokens: Record<MacroKey, MacroColorToken> = {
     valueClassName: "text-[#ca8a04]",
     barValueClassName: "text-[#D0A700]",
     segmentClassName: "bg-[#ca8a04] text-white",
+  },
+  fiber: {
+    valueClassName: "text-[#047857]",
+    barValueClassName: "text-[#047857]",
+    segmentClassName: "bg-[#047857] text-white",
   },
   totalFat: {
     valueClassName: "text-[#2563eb]",

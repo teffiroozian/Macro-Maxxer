@@ -1,3 +1,4 @@
+import { ALL_MENU_SIZES } from "@/lib/menuSections/menuSizeSelector";
 import { getVariantSettings, type Filters } from "@/lib/menuSections/filterOptions";
 import type { SortOption } from "@/lib/menuSections/sortOptions";
 import type { MenuItem } from "@/types/menu";
@@ -15,6 +16,8 @@ export function getOfficialRankingItems(items: MenuItem[]): MenuItem[] {
       return {
         ...item,
         image: variant.image ?? item.image,
+        category: variant.category ?? variant.categories?.[0] ?? item.category ?? item.categories?.[0],
+        tags: [...new Set([...(item.tags ?? []), ...(variant.tags ?? [])])],
         categories: variant.categories?.length ? variant.categories : item.categories,
         servingType: variant.servingType ?? item.servingType,
         variants: [{ ...variant, nutrition, nutritionMultiplier: undefined }],
@@ -43,10 +46,29 @@ export function getMenuItemDetailsHref(itemHref: string, query: string, variantI
 function variantDimensions(item: MenuItem): { size: string; recipe: string } {
   const label = item.variants?.[0]?.label.trim().toLowerCase() ?? "";
   if (item.variantGroupKind === "component") return { size: "", recipe: label };
-  const sizePattern = /\b(?:small|medium|large|regular|tall|grande|venti|trenta)\b|\b\d+(?:\.\d+)?\s*(?:ct|count|pc|pcs|piece|pieces|oz|fl\s*oz|ml|g)\b/gi;
+  const sizePattern = /\b(?:extra[\s-]+small|extra[\s-]+large|x[\s-]?small|x[\s-]?large|kids?|small|medium|large|regular|short|tall|grande|venti|trenta)\b|\b\d+(?:\.\d+)?\s*(?:ct|count|pc|pcs|piece|pieces|oz|fl\s*oz|ml|g)\b/gi;
   const size = label.match(sizePattern)?.join(" ") ?? "";
   const recipe = label.replace(sizePattern, " ").replace(/[®™()[\],-]/g, " ").replace(/\s+/g, " ").trim();
   return { size, recipe };
+}
+
+// A preference selects a representative, not a menu-wide exclusion filter.
+// Missing sizes retain the canonical/default candidate within each recipe.
+function selectPreferredMenuSize(items: MenuItem[], preference?: string): MenuItem[] {
+  if (!preference || preference === ALL_MENU_SIZES) return items;
+  const rows: MenuItem[] = [];
+  const groups = new Map<string, number>();
+  for (const item of items) {
+    const dimension = variantDimensions(item);
+    if (!dimension.size || item.variantGroupKind === "component") { rows.push(item); continue; }
+    const key = JSON.stringify([item.id, dimension.recipe]);
+    const position = groups.get(key);
+    if (position === undefined) { groups.set(key, rows.length); rows.push(item); continue; }
+    const current = rows[position];
+    const matches = (row: MenuItem) => row.variants?.[0]?.label.trim().toLowerCase() === preference.trim().toLowerCase();
+    if (matches(item) || (!matches(current) && item.defaultVariantId === item.rankingFamilyDefaultVariantId)) rows[position] = item;
+  }
+  return rows;
 }
 
 // Exact macro equality only dedupes the serving-size dimension. Component
@@ -76,12 +98,12 @@ function dedupeIdenticalServingSizes(items: MenuItem[]): MenuItem[] {
 
 // Group before filters, using the normalized default rather than any metric.
 // Local detail/variant state never participates in this stable projection.
-export function selectRankingItems(items: MenuItem[], sort: SortOption, filters: Filters = {}): MenuItem[] {
+export function selectRankingItems(items: MenuItem[], sort: SortOption, filters: Filters = {}, menuSizePreference?: string): MenuItem[] {
   const settings = getVariantSettings(filters);
   const isProteinScore = sort === "highest-protein-score" || sort === "lowest-protein-score";
   // Protein Score's explicit switch overrides the general serving-size switch.
   const separateSizes = isProteinScore ? settings.separateSizesInProteinScore : settings.showServingSizeVariants;
-  const candidates = dedupeIdenticalServingSizes(items);
+  const candidates = dedupeIdenticalServingSizes(selectPreferredMenuSize(items, menuSizePreference));
   if (separateSizes && settings.showRecipeVariants) return candidates;
   const rows: MenuItem[] = [];
   const groups = new Map<string, number>();

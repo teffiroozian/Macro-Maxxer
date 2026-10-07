@@ -74,7 +74,7 @@ export async function getRestaurantData(id: string): Promise<RestaurantData | nu
   const menu = await loadMenu();
 
   // pulling important pieces out of the menu
-  const items = menu.items ?? [];
+  const items = (menu.items ?? []).map((item) => ({ ...item, category: item.category ?? item.categories?.[0], variants: item.variants?.map((variant) => ({ ...variant, category: variant.category ?? variant.categories?.[0] ?? item.category ?? item.categories?.[0] })) }));
   const ingredients = menu.ingredients ?? [];
   const addonGroups = menu.addonGroups ?? {};
   const hasBuildYourOwn = menu.hasBuildYourOwn ?? false;
@@ -87,6 +87,7 @@ export async function getRestaurantData(id: string): Promise<RestaurantData | nu
     logo: restaurant.logo,
     cover: restaurant.cover,
     menuFile: restaurant.menuFile,
+    menuSizeSelector: restaurant.menuSizeSelector,
     isMacroFriendly: restaurant.isMacroFriendly,
     isComingSoon: restaurant.isComingSoon,
     description: restaurant.description,

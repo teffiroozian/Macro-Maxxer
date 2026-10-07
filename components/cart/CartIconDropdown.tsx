@@ -1,14 +1,14 @@
 "use client";
 
+import { createPortal } from "react-dom";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { useEffect, useMemo, useRef } from "react";
+import { useEffect, useMemo, useRef, useSyncExternalStore } from "react";
 import { useCart } from "@/stores/cartStore";
 import { buildCartItemSummaryGroups } from "@/lib/cart/displayLabels";
 import { useOptionalRestaurantUi } from "@/components/RestaurantUiContext";
 import MacroTotalsGrid from "@/components/MacroTotalsGrid";
 import CartItemPreviewRow from "@/components/cart/CartItemPreviewRow";
-import EmptyStateCard from "@/components/EmptyStateCard";
 import { ShoppingCart, X } from "lucide-react";
 import AppButton, { appButtonClassName } from "@/components/ui/AppButton";
 import AppIconButton from "@/components/ui/AppIconButton";
@@ -32,11 +32,20 @@ type CartIconDropdownProps = {
 
 const SCROLL_CLOSE_THRESHOLD = 90;
 
+function subscribeToMobileViewport(listener: () => void) {
+  const media = window.matchMedia("(max-width: 1023px)");
+  media.addEventListener("change", listener);
+  return () => media.removeEventListener("change", listener);
+}
+const getMobileViewport = () => window.matchMedia("(max-width: 1023px)").matches;
+const getServerMobileViewport = () => false;
+
 export default function CartIconDropdown({
   buttonClassName,
   variant = "popover",
   showTrigger = true,
 }: CartIconDropdownProps) {
+  const mobileViewport = useSyncExternalStore(subscribeToMobileViewport, getMobileViewport, getServerMobileViewport);
   const router = useRouter();
   const pathname = usePathname();
   const isCurrentPage = pathname === "/cart";
@@ -221,9 +230,7 @@ export default function CartIconDropdown({
               activateLabel={`Preview ${lastAddedItem.name}`}
             />
           </div>
-        ) : (
-          <EmptyStateCard variant="compact" align="left" title="Your cart is empty." className="py-0" />
-        )}
+        ) : null}
       </div>
 
       <div className="my-2.5 h-px bg-slate-200" />
@@ -268,8 +275,9 @@ export default function CartIconDropdown({
         {countLabel}
       </button> : null}
 
-      {variant === "sheet" ? (
+      {variant === "sheet" ? (isOpen && lastAddedItem && (mobileViewport || IS_CAPACITOR_BUILD) && typeof document !== "undefined" ? createPortal(
         <div
+          data-cart-icon-dropdown
           aria-hidden={!isOpen}
           inert={!isOpen}
           className={`fixed inset-0 z-[231] overscroll-none ${isOpen ? "" : "pointer-events-none"}`}
@@ -328,7 +336,7 @@ export default function CartIconDropdown({
             </div>
           </div>
         </div>
-      ) : (
+        , document.body) : null) : (
         <div
           aria-hidden={!isOpen}
           inert={!isOpen}

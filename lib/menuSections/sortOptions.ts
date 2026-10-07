@@ -11,6 +11,8 @@ export const SORT_OPTION_VALUES = {
   LOWEST_CARBS: "lowest-carbs",
   HIGHEST_FAT: "highest-fat",
   LOWEST_FAT: "lowest-fat",
+  HIGHEST_FIBER: "highest-fiber",
+  LOWEST_FIBER: "lowest-fiber",
   BEST_RATIO: "highest-protein-score",
 } as const;
 
@@ -19,7 +21,7 @@ export type SortOption =
   (typeof SORT_OPTION_VALUES)[keyof typeof SORT_OPTION_VALUES];
 
 // default order for the ranking view
-export type RankMetric = "protein-score" | "protein" | "calories" | "carbs" | "fat";
+export type RankMetric = "protein-score" | "protein" | "calories" | "carbs" | "fat" | "fiber";
 export type RankDirection = "highest" | "lowest";
 
 export const RANKING_DEFAULT_SORT: SortOption = SORT_OPTION_VALUES.HIGHEST_PROTEIN;
@@ -41,5 +43,5 @@ export function toRankSort(metric: RankMetric, direction: RankDirection): SortOp
 }
 
 export function getNaturalRankDirection(metric: RankMetric): RankDirection {
-  return metric === "calories" ? "lowest" : "highest";
+  return metric === "calories" || metric === "carbs" || metric === "fat" ? "lowest" : "highest";
 }

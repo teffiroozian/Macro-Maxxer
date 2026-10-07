@@ -1,8 +1,10 @@
 "use client";
 
+import type { CardDisplayMode } from "@/lib/menuItemCard/rankingMacroDisplay";
+
 import { useMemo } from "react";
 import type { IngredientItem, MenuItem, ResolvedAddonGroups, RestaurantCustomizationRules } from "@/types/menu";
-import type { SortOption } from "@/lib/menuSections/sortOptions";
+import { getRankState, type SortOption } from "@/lib/menuSections/sortOptions";
 import MenuItemCard from "./MenuItemCard";
 import EmptyStateCard from "./EmptyStateCard";
 import { toItemSlug } from "@/lib/restaurants";
@@ -68,6 +70,7 @@ type MenuSectionsProps = {
   // card. Defaults to `items` for callers with no such distinction.
   allMenuItems?: MenuItem[];
   sort: SortOption;
+  cardDisplayOverride?: CardDisplayMode;
   addons?: ResolvedAddonGroups;
   ingredients?: IngredientItem[];
   customizationRules?: RestaurantCustomizationRules;
@@ -90,6 +93,7 @@ export default function MenuSections({
   items,
   allMenuItems,
   sort,
+  cardDisplayOverride,
   addons,
   ingredients,
   customizationRules,
@@ -168,6 +172,8 @@ export default function MenuSections({
               menuItems={menuItemsForResolution}
               customizationRules={customizationRules}
               menu={{
+                rankMetric: getRankState(sort).metric,
+                cardDisplayOverride,
                 itemHref: `/restaurant/${restaurantId}/${toItemSlug(item)}`,
                 comparativeLabel: getComparativeLabel(item),
                 ...(showRankBadges ? { rankIndex: index, isTopRanked: index < 3 } : {}),
@@ -259,6 +265,8 @@ export default function MenuSections({
                 customizationRules={customizationRules}
                 menu={{
                   itemHref: `/restaurant/${restaurantId}/${toItemSlug(item)}`,
+                  rankMetric: getRankState(sort).metric,
+                  cardDisplayOverride,
                   comparativeLabel: getComparativeLabel(item),
                 }}
                 ingredientSelection={getIngredientSelection(item)}

@@ -3,7 +3,7 @@ import {
   formatMacroDisplayNumber,
   macroDisplayConfig,
 } from "@/components/nutrition/macroDisplay";
-import type { MacroKey } from "@/components/nutrition/macroDisplay";
+import type { NutritionMetricKey as MacroKey } from "@/components/nutrition/macroDisplay";
 
 type MacroStatSize = "summary" | "cartHeaderTotal" | "card" | "gridCard" | "quick" | "cartCompact" | "cartDetailed" | "ingredientCompact";
 type MacroStatLabel = "label" | "shortLabel" | "uppercase" | "lowercase";

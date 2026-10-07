@@ -1,0 +1,18 @@
+{
+  "200092": {
+    "imageUrl": "https://s7d1.scene7.com/is/image/mcdonalds/NR_201909_1858_KidsFries_2000x2000?wid=1564&hei=1564&fmt=png-alpha",
+    "sourceUrl": "https://corporate.mcdonalds.com/corpmcd/our-stories/media-assets-library/media-article/happy_meal_french_fries.html"
+  },
+  "200066": {
+    "imageUrl": "https://s7d1.scene7.com/is/image/mcdonalds/DC_202408_6050_SmallFrenchFries_Standing_1564x1564?wid=1564&hei=1564&fmt=png-alpha",
+    "sourceUrl": "data/restaurants/mcdonalds/raw/menu.json"
+  },
+  "201234": {
+    "imageUrl": "https://s7d1.scene7.com/is/image/mcdonalds/t-mcdonalds-fries-medium?wid=1564&hei=1564&fmt=png-alpha",
+    "sourceUrl": "data/restaurants/mcdonalds/raw/item-list-catalog.json"
+  },
+  "200083": {
+    "imageUrl": "https://s7d1.scene7.com/is/image/mcdonalds/t-mcdonalds-fries-large?wid=1564&hei=1564&fmt=png-alpha",
+    "sourceUrl": "data/restaurants/mcdonalds/raw/item-list-catalog.json"
+  }
+}

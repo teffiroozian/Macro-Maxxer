@@ -1,3 +1,4 @@
+import { getCleanMenuItemName } from "@/lib/menuItemCard/titlePresentation";
 import { ReactNode } from "react";
 import { getCartItemCoreMacros } from "@/lib/cart/itemAccessors";
 import MacroStat from "@/components/nutrition/MacroStat";
@@ -79,7 +80,7 @@ export default function CartItemPreviewRow({
             : "truncate text-base font-semibold leading-tight text-slate-900"
         }
       >
-        <span>{item.name}</span>
+        <span>{getCleanMenuItemName(item.name)}</span>
       </p>
 
       {macroStyle === "compact" ? (
