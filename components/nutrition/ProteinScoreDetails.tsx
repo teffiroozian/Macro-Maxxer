@@ -1,6 +1,8 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useSheetLayer } from "@/hooks/useSheetLayer";
+
+import { useMemo, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { ArrowLeft, ChevronRight, X, Zap } from "lucide-react";
 import { formatMacroDisplayNumber, formatProteinScoreDisplay } from "@/components/nutrition/macroDisplay";
@@ -240,18 +242,7 @@ export default function ProteinScoreDetails({
   // never has anything to click.
   const singleItem = !isAggregate && items.length === 1 ? items[0] : undefined;
 
-  useEffect(() => {
-    if (!open) return;
-    const previousOverflow = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
-    const onKeyDown = (event: KeyboardEvent) => event.key === "Escape" && onClose();
-    window.addEventListener("keydown", onKeyDown);
-    requestAnimationFrame(() => closeButtonRef.current?.focus());
-    return () => {
-      document.body.style.overflow = previousOverflow;
-      window.removeEventListener("keydown", onKeyDown);
-    };
-  }, [open, onClose]);
+  useSheetLayer({ open, onClose, initialFocusRef: closeButtonRef });
 
   if (!open) return null;
   const selectedScore = selectedItem
@@ -274,6 +265,7 @@ export default function ProteinScoreDetails({
       aria-modal="true"
       aria-labelledby="protein-score-title"
       onMouseDown={(event) => event.stopPropagation()}
+      onTouchStart={(event) => event.stopPropagation()}
       onClick={(event) => {
         event.stopPropagation();
         if (event.target === event.currentTarget) onClose();

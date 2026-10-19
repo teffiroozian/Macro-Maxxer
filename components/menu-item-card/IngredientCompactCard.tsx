@@ -64,7 +64,6 @@ export default function IngredientCompactCard({
     ingredientSelectionControl,
     ingredientDisabledReason,
     ingredientPortionBadge,
-    isIngredientUnavailable,
     ingredientUnavailableReason,
     activeCompactOptions,
     selectedCompactOptionId,
@@ -128,7 +127,7 @@ export default function IngredientCompactCard({
     const macroKeys = getRankingCardMacroKeys(rankMetric, cardDisplayOverride);
     const isFiberDisplay = resolveCardDisplayMode(rankMetric, cardDisplayOverride) === "fiber";
     const values = { calories, protein, carbs, totalFat, fiber };
-    const renderMacros = (size: "card" | "ingredientCompact", mobile = false) => macroKeys.map((key) => (
+    const renderMacros = (size: "card" | "ingredientCompact", mobile = false) => (mobile && isGrid ? getRankingCardMacroKeys(undefined, "standard") : macroKeys).map((key) => (
         <MacroStat
             key={key}
             macroKey={key}
@@ -282,14 +281,12 @@ export default function IngredientCompactCard({
                     </div>
                 </div>
 
-                {/* Rows retain distributed spacing; Grid uses a wider, content-sized group. */}
-                <div className={compactMobileControls
-                    ? isGrid
-                      ? "mt-auto flex flex-wrap justify-start gap-x-3 gap-y-2 border-t border-black/[0.06] px-1.5 pt-2 md:hidden [&>div]:flex-none [&>div]:min-w-0 [&>div]:gap-1"
-                      : "flex flex-wrap items-end justify-between gap-x-5 gap-y-2 border-t border-black/[0.06] pt-2 md:hidden [&>div]:gap-1"
-                    : isGrid
-                      ? `grid ${isFiberDisplay ? "grid-cols-3" : "grid-cols-4"} gap-1 border-t border-black/[0.06] pt-2 md:hidden`
-                      : `${isFiberDisplay ? "grid grid-cols-3" : "flex flex-wrap items-end gap-x-5 gap-y-2"} border-t border-black/[0.06] pt-2 md:hidden`}>
+                {/* Mobile Grid uses two macro rows; Rows keeps its compact flex layout. */}
+                <div className={`${isGrid ? "grid grid-cols-2" : "flex flex-wrap"} items-end justify-start ${compactMobileControls && !isGrid ? "gap-x-5" : "gap-x-3"} border-t border-black/[0.06] px-1.5 pt-2 md:hidden [&>div]:flex-none [&>div]:min-w-0 ${compactMobileControls && !isGrid ? "[&>div]:items-center [&>div]:text-center [&>div]:w-max" : "[&>div]:items-start [&>div]:text-left"} ${
+                    compactMobileControls
+                        ? `${isGrid ? "mt-auto " : ""}gap-y-2 [&>div]:gap-1`
+                        : isGrid ? "gap-y-1" : isFiberDisplay ? "" : "gap-y-2"
+                }`}>
                     {renderMacros("card", true)}
                 </div>
 

@@ -1,5 +1,5 @@
 import { useLayoutEffect, useMemo, useRef, useState, type ReactNode } from "react";
-import { ArrowRight, ChevronRight, Eye, EyeOff, Lock, RotateCcw, Save, Trash2 } from "lucide-react";
+import { ArrowRight, ChevronRight, Eye, EyeOff, Lock, RotateCcw, Save, Trash2, X } from "lucide-react";
 import type { MenuItem } from "@/types/menu";
 import NutritionFactsPanel, {
   type NutritionFactsPanelProps,
@@ -32,8 +32,6 @@ type SelectedEntry = [string, { item: MenuItem; quantity: number }];
 
 type PortionControl = { options: CompactOption[]; selectedId: string };
 
-const INCLUDED_INGREDIENT_CATEGORY_KEY = "included ingredient";
-
 // Stable empty-set fallback for the `excludedIngredientIds` prop — a fresh
 // `new Set()` literal as a default value would be a new reference on every
 // render, which would defeat `displayNutritionLabelTotals`'s memoization
@@ -42,6 +40,7 @@ const INCLUDED_INGREDIENT_CATEGORY_KEY = "included ingredient";
 const EMPTY_EXCLUDED_INGREDIENT_IDS: Set<string> = new Set();
 
 type Props = {
+  onClose?: () => void;
   adjustedNutritionLabelTotals: NutritionFactsPanelProps["totals"];
   selectedBuildName: string;
   // Entree type only (e.g. "Burrito"), no protein — used by the panel
@@ -371,7 +370,7 @@ function ClickableMacroSplitBlock({
       type="button"
       onClick={onOpen}
       aria-haspopup="dialog"
-      className={`group -mx-2 flex min-w-0 cursor-pointer flex-col gap-1.5 rounded-xl px-2 py-1.5 text-left transition-colors duration-200 hover:bg-slate-50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-900 ${className}`.trim()}
+      className={`group -mx-2 flex w-full min-w-0 cursor-pointer flex-col gap-1.5 rounded-xl px-2 py-1.5 text-left transition-colors duration-200 hover:bg-slate-50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-900 ${className}`.trim()}
     >
       <span className="flex items-center justify-between gap-1.5">
         <SectionEyebrow className="text-[10px] text-slate-500">Macro Split</SectionEyebrow>
@@ -456,13 +455,13 @@ export default function BuildSummaryDrawer({
   onAdjustIngredientQuantity,
   portionControlByIngredientId,
   onPortionModeChange,
-  onNavigateToCategory,
   hideActionButtons = false,
   variant = "embedded",
   ingredientNutritionContributionById,
   excludedIngredientIds = EMPTY_EXCLUDED_INGREDIENT_IDS,
   onToggleExcludeIngredient,
   onRemoveIngredient,
+  onClose,
 }: Props) {
   const isPanel = variant === "panel";
 
@@ -595,7 +594,8 @@ export default function BuildSummaryDrawer({
       <div className="flex h-full min-h-0 flex-col p-2.5 sm:p-3">
         <div className="flex shrink-0 items-center gap-2 pb-2.5">
           <RestaurantLogoBadge src={restaurantLogo} alt="" size="sm" ring={false} className="border border-black/10" />
-          <h2 className="truncate text-base font-bold text-slate-900 sm:text-lg">{selectedBuildName}</h2>
+          <h2 className="min-w-0 flex-1 truncate text-base font-bold text-slate-900 sm:text-lg">{selectedBuildName}</h2>
+          {onClose ? <button type="button" onClick={onClose} aria-label="Close build summary" className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-slate-100 text-slate-500 hover:bg-slate-200 lg:hidden"><X className="h-4 w-4" /></button> : null}
         </div>
 
         {/* Mobile (<lg): one normal block-flow column — every section is a
@@ -608,7 +608,7 @@ export default function BuildSummaryDrawer({
             Close Build / Add to Cart footer lives one level up, in
             StickyMacroTotalsBar — outside this scroll area, so it stays
             fixed to the bottom of the modal regardless of content length. */}
-        <div className="flex min-h-0 flex-1 flex-col gap-3 overflow-y-auto lg:hidden">
+        <div className="flex min-h-0 flex-1 flex-col gap-3 overflow-y-auto overscroll-contain lg:hidden">
           <SurfaceCard as="section" padding="compact" radius="large" shadow="none">
             <h3 className="text-lg font-bold text-slate-900">Selected Ingredients</h3>
             <p className="mt-1 text-sm font-medium text-slate-400">

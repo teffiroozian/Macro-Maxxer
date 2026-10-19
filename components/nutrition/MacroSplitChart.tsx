@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useId, useLayoutEffect, useRef, useState } from "react";
+import { useEffect, useId, useLayoutEffect, useRef, useState, useSyncExternalStore } from "react";
 import { createPortal } from "react-dom";
 import { Info } from "lucide-react";
 import type { MacroSegment } from "@/components/nutrition/macroSegments";
@@ -65,7 +65,7 @@ function MacroSegmentBar({ segment, visualPercent }: { segment: MacroSegment; vi
         >
             <div
                 className={`macro-segment flex h-full w-full min-w-0 items-center justify-center rounded-lg px-1 text-[11px] font-semibold ${segment.color}`}
-                aria-label={`${segment.label} ${roundedGrams}g`}
+                aria-label={`${segment.label} ${roundedGrams}g, ${segment.roundedPercent}% of macro calories`}
             >
                 <span className="macro-segment-label-full truncate" aria-hidden="true">
                     {segment.label} {roundedGrams}g
@@ -87,9 +87,13 @@ function MacroSegmentBar({ segment, visualPercent }: { segment: MacroSegment; vi
 const TOOLTIP_WIDTH_PX = 144;
 const VIEWPORT_EDGE_PADDING_PX = 8;
 
+const subscribeToHydration = () => () => {};
+const clientHydratedSnapshot = () => true;
+const serverHydratedSnapshot = () => false;
+
 export function MacroLegendInfo({ segments }: { segments: MacroSegment[] }) {
     const [isOpen, setIsOpen] = useState(false);
-    const [isMounted, setIsMounted] = useState(false);
+    const isMounted = useSyncExternalStore(subscribeToHydration, clientHydratedSnapshot, serverHydratedSnapshot);
     const [position, setPosition] = useState({ top: -9999, left: -9999 });
     const tooltipId = useId();
     const containerRef = useRef<HTMLSpanElement>(null);
@@ -97,7 +101,6 @@ export function MacroLegendInfo({ segments }: { segments: MacroSegment[] }) {
     const supportsHoverRef = useRef(false);
 
     useEffect(() => {
-        setIsMounted(true);
         supportsHoverRef.current = window.matchMedia(
             "(hover: hover) and (pointer: fine)",
         ).matches;
@@ -242,7 +245,7 @@ export default function MacroSplitChart({
     const visualPercents = computeVisualPercents(visibleSegments.map((segment) => segment.percent));
 
     return (
-        <div className="flex h-12 w-full gap-1.5 overflow-hidden rounded-xl border border-black/10 bg-slate-100 p-1.5">
+        <div className="flex h-12 w-full flex-row gap-1.5 overflow-hidden rounded-xl border border-black/10 bg-slate-100 p-1.5">
             {visibleSegments.map((segment, index) => (
                 <MacroSegmentBar key={segment.label} segment={segment} visualPercent={visualPercents[index]} />
             ))}

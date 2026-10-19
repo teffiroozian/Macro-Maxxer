@@ -96,7 +96,7 @@ function StandardRestaurantView({
   const [resultLayout, setResultLayout] = useState<"list" | "grid">("list");
 
   return (
-    <div className="grid gap-y-[var(--restaurant-controls-gap)] pt-[var(--restaurant-controls-gap)]">
+    <div className="grid gap-y-[var(--restaurant-controls-gap)] pt-0 lg:pt-[var(--restaurant-controls-gap)]">
       <StickyRestaurantBar
         menuSizeControl={menuSizeControl}
         restaurantId={restaurantId}

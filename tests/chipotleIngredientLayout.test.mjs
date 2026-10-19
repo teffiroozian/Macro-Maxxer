@@ -48,7 +48,7 @@ test("grid renders compact nutrition and selected portion controls without menu 
     assert.ok(markup.includes(text), text);
   }
   assert.doesNotMatch(markup, /Protein Score|View Details|Quick Add|min-h-\[132px\]/);
-  assert.match(markup, /grid-cols-4/);
+  assert.match(markup, /grid grid-cols-2 items-end justify-start gap-x-3/);
 });
 
 test("portion buttons preserve the existing callback and stop the card click", () => {
@@ -116,22 +116,23 @@ test("ingredient rank precedes the name and stays the same across layouts and po
   }
 });
 
-test("Fiber ranking uses the shared three-macro display in both layouts and breakpoints", () => {
+test("Fiber ranking preserves Rows and desktop display while mobile Grid keeps four core macros", () => {
   for (const layout of ["list", "grid"]) {
     const content = IngredientCard({ ...baseProps, layout, rankMetric: "fiber", fiber: 3.5 }).props.children;
     const groups = React.Children.toArray(content.props.children).slice(-2);
-    for (const group of groups) {
+    for (const [index, group] of groups.entries()) {
       const stats = React.Children.toArray(group.props.children);
-      assert.deepEqual(stats.map(({ props }) => props.macroKey), ["calories", "protein", "fiber"]);
-      assert.equal(stats[2].props.value, 3.5);
+      const mobileGrid = layout === "grid" && index === 0;
+      assert.deepEqual(stats.map(({ props }) => props.macroKey), mobileGrid ? ["calories", "protein", "carbs", "totalFat"] : ["calories", "protein", "fiber"]);
+      assert.equal(stats[2].props.value, mobileGrid ? 0 : 3.5);
       assert.equal(stats[2].props.labelVariant, "uppercase");
       assert.equal(stats[2].props.size, layout === "grid" ? "gridCard" : "card");
-      assert.match(group.props.className, /grid-cols-3/);
+      assert.match(group.props.className, index === 0 ? /justify-start/ : /grid-cols-3/);
     }
     const markup = renderToStaticMarkup(React.createElement(IngredientCard, { ...baseProps, layout, rankMetric: "fiber", fiber: 3.5 }));
     assert.match(markup, />4g</); // Shared MacroStat rounds display values to whole grams.
     assert.match(markup, /text-\[#047857\]/);
-    assert.doesNotMatch(markup, />Carbs<|>Fat<|>CARBS<|>FAT</);
+    if (layout === "list") assert.doesNotMatch(markup, />Carbs<|>Fat<|>CARBS<|>FAT</);
   }
 });
 
@@ -146,23 +147,24 @@ test("non-Fiber metrics retain four macros and missing Fiber stays unavailable",
   assert.ok(Number.isNaN(React.Children.toArray(group.props.children)[2].props.value));
 });
 
-test("Chipotle Rows distribute macros while Grid uses responsive content-sized gaps", () => {
+test("Chipotle mobile Rows and Grid use compact gaps while desktop spacing stays unchanged", () => {
   for (const layout of ["list", "grid"]) {
     for (const rankMetric of ["protein", "fiber"]) {
       const content = IngredientCard({ ...baseProps, layout, compactMobileControls: true, rankMetric, fiber: 3 }).props.children;
       const groups = React.Children.toArray(content.props.children).slice(-2);
-      for (const group of groups) {
-        assert.doesNotMatch(group.props.className, /grid-cols-/);
-        assert.match(group.props.className, layout === "grid" ? /justify-start/ : /justify-between/);
+      for (const [index, group] of groups.entries()) {
+        if (index === 0 && layout === "grid") assert.match(group.props.className, /grid-cols-2/);
+        else assert.doesNotMatch(group.props.className, /grid-cols-/);
+        assert.match(group.props.className, index === 0 || layout === "grid" ? /justify-start/ : /justify-between/);
         const keys = React.Children.toArray(group.props.children).map(({ props }) => props.macroKey);
-        assert.deepEqual(keys, rankMetric === "fiber" ? ["calories", "protein", "fiber"] : ["calories", "protein", "carbs", "totalFat"]);
+        assert.deepEqual(keys, rankMetric === "fiber" && !(index === 0 && layout === "grid") ? ["calories", "protein", "fiber"] : ["calories", "protein", "carbs", "totalFat"]);
       }
       if (layout === "grid") {
         assert.match(groups[0].props.className, /gap-x-3/);
         assert.match(groups[1].props.className, /gap-x-5/);
         assert.match(groups[1].props.className, /lg:gap-x-6/);
-        for (const group of groups) {
-          assert.match(group.props.className, /flex-wrap/);
+        for (const [index, group] of groups.entries()) {
+          assert.match(group.props.className, index === 0 ? /grid-cols-2/ : /flex-wrap/);
           assert.match(group.props.className, /px-1\.5/);
         }
       } else {
@@ -181,16 +183,16 @@ test("Chipotle mobile Rows retain their header layout and only add macro label b
   assert.doesNotMatch(children.at(-1).props.className, /\[&>div\]:gap-1/);
 });
 
-test("manual ingredient Card display overrides the metric in Rows/Grid and both responsive macro groups", () => {
+test("manual ingredient Card display is preserved outside the fixed four-macro mobile Grid", () => {
   for (const layout of ["list", "grid"]) {
     for (const rankMetric of ["protein", "fiber", "calories", "protein-score"]) {
       for (const cardDisplayOverride of ["standard", "fiber", undefined]) {
         const content = IngredientCard({ ...baseProps, layout, compactMobileControls: true, rankMetric, cardDisplayOverride, fiber: 3 }).props.children;
         const expectedFiber = cardDisplayOverride === "fiber" || (cardDisplayOverride === undefined && rankMetric === "fiber");
-        for (const group of React.Children.toArray(content.props.children).slice(-2)) {
+        for (const [index, group] of React.Children.toArray(content.props.children).slice(-2).entries()) {
           const stats = React.Children.toArray(group.props.children);
-          assert.deepEqual(stats.map(({ props }) => props.macroKey), expectedFiber ? ["calories", "protein", "fiber"] : ["calories", "protein", "carbs", "totalFat"]);
-          assert.match(group.props.className, layout === "grid" ? /justify-start/ : /justify-between/);
+          assert.deepEqual(stats.map(({ props }) => props.macroKey), expectedFiber && !(index === 0 && layout === "grid") ? ["calories", "protein", "fiber"] : ["calories", "protein", "carbs", "totalFat"]);
+          assert.match(group.props.className, index === 0 || layout === "grid" ? /justify-start/ : /justify-between/);
         }
       }
     }
@@ -201,9 +203,44 @@ test("Chipotle Grid titles reserve a non-wrapping badge and cap responsive name 
   const props = { ...baseProps, compactMobileControls: true, rank: 2, ingredientPortionBadge: "1/2x", item: { ...baseProps.item, name: "Long Chipotle ingredient name" } };
   const markup = renderToStaticMarkup(React.createElement(IngredientCard, { ...props, layout: "grid" }));
   assert.match(markup, /max-md:whitespace-nowrap/);
-  assert.match(markup, /md:line-clamp-2/);
+  assert.match(markup, /md:max-h-\[2lh\]/);
+  assert.doesNotMatch(markup, /line-clamp|text-ellipsis/);
+  assert.match(markup, /relative flex w-full min-w-0 items-center/);
   assert.match(markup, /shrink-0 whitespace-nowrap rounded-md/);
   assert.equal((markup.match(/>1\/2x<\/span>/g) ?? []).length, 1);
   const rows = renderToStaticMarkup(React.createElement(IngredientCard, { ...props, layout: "list" }));
-  assert.doesNotMatch(rows, /md:line-clamp-2/);
+  assert.doesNotMatch(rows, /md:max-h-\[2lh\]/);
+});
+
+
+test("rendered mobile ingredient macros stay content-sized and left-aligned in every layout and selection state", () => {
+  for (const layout of ["list", "grid"]) {
+    for (const compactMobileControls of [false, true]) {
+      for (const state of [{}, { ingredientSelectionState: true }, { isIngredientLocked: true }, { isIngredientSelectionDisabled: true }, { readOnly: true }]) {
+        const props = { ...baseProps, layout, compactMobileControls, ...state };
+        const markup = renderToStaticMarkup(React.createElement(IngredientCard, props));
+        const groups = [...markup.matchAll(/<div class="([^"]*md:hidden[^"]*)">/g)];
+        const mobile = groups.find(([, className]) => className.includes("border-t"));
+        assert.ok(mobile, `${layout}, compact=${compactMobileControls}`);
+        const className = mobile[1];
+        assert.match(className, layout === "grid" ? /grid grid-cols-2 items-end justify-start gap-x-3/ : compactMobileControls ? /flex flex-wrap items-end justify-start gap-x-5/ : /flex flex-wrap items-end justify-start gap-x-3/);
+        assert.match(className, /px-1\.5 pt-2/);
+        assert.match(className, /\[&amp;&gt;div\]:flex-none/);
+        assert.match(className, /\[&amp;&gt;div\]:min-w-0/);
+        if (compactMobileControls && layout === "list") {
+          assert.match(className, /\[&amp;&gt;div\]:items-center/);
+          assert.match(className, /\[&amp;&gt;div\]:text-center/);
+          assert.match(className, /\[&amp;&gt;div\]:w-max/);
+          assert.doesNotMatch(className, /items-start|text-left/);
+        } else {
+          assert.match(className, /\[&amp;&gt;div\]:items-start/);
+          assert.match(className, /\[&amp;&gt;div\]:text-left/);
+        }
+        assert.doesNotMatch(className, /justify-between|justify-around|space-between/);
+        const content = IngredientCard(props).props.children;
+        const row = React.Children.toArray(content.props.children).at(-2);
+        assert.deepEqual(React.Children.toArray(row.props.children).map(({ props }) => props.macroKey), ["calories", "protein", "carbs", "totalFat"]);
+      }
+    }
+  }
 });

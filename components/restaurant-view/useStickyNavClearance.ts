@@ -23,12 +23,11 @@ export function useStickyNavClearance() {
       const stickyBottom = Array.from(stickyBars).reduce(
         (max, bar) => {
           if (!(bar instanceof HTMLElement)) return max;
-          // A restaurant mobile nav can translate out of view without
-          // leaving document flow. Keep its measured height reserved for
-          // layout-clearance consumers so that hide/reveal never shifts the
-          // page itself; the mobile controls rail owns its live 0/height
-          // offset separately.
-          const bottom = bar.dataset.mobileNavHidden === "true"
+          // Reserve the mobile nav's full height throughout both hide
+          // and reveal transitions. Its animated bottom edge must not
+          // move the restaurant header; only the controls rail follows
+          // the live 0/height offset.
+          const bottom = bar.dataset.mobileNavHidden !== undefined
             ? bar.getBoundingClientRect().height
             : bar.getBoundingClientRect().bottom;
           return Math.max(max, bottom);

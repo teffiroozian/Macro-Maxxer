@@ -2,7 +2,7 @@
 
 import type { CardDisplayMode } from "@/lib/menuItemCard/rankingMacroDisplay";
 
-import { useEffect, useId, useMemo, useRef, useState } from "react";
+import { useEffect, useEffectEvent, useId, useMemo, useRef, useState } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { ChevronDown } from "lucide-react";
 import type { IngredientItem, ItemVariant, MenuItem, ResolvedAddonGroups, RestaurantCustomizationRules } from "@/types/menu";
@@ -388,12 +388,14 @@ export default function MenuItemCard({
     const matchedVariant = drinkVariants.find((variant) => variant.label === parsedInitialComboCustomization.drinkVariantLabel);
     return matchedVariant?.id ?? getDefaultVariantId(matchedDrink);
   });
-  const [selectedComboBundleId, setSelectedComboBundleId] = useState<string | undefined>(comboConfig?.defaultBundleId);
-  useEffect(() => {
-    if (!comboConfig?.bundleOptions?.some((option) => option.id === selectedComboBundleId)) {
-      setSelectedComboBundleId(comboConfig?.defaultBundleId);
-    }
-  }, [comboConfig, selectedComboBundleId]);
+  const [storedComboBundleId, setSelectedComboBundleId] = useState<string | undefined>(comboConfig?.defaultBundleId);
+  const selectedComboBundleId = comboConfig?.bundleOptions?.some((option) => option.id === storedComboBundleId)
+    ? storedComboBundleId
+    : comboConfig?.defaultBundleId;
+  // Reconcile a no-longer-available bundle before committing this render.
+  if (storedComboBundleId !== selectedComboBundleId) {
+    setSelectedComboBundleId(selectedComboBundleId);
+  }
 
   const retainedCustomizations = useMemo(() => {
     if (!initialCartCustomizations || initialCartCustomizations.length === 0) return [];
@@ -635,14 +637,16 @@ export default function MenuItemCard({
     onCartConfigurationChange(nextConfiguration.cartConfigurationPayload);
   };
 
+  const emitCartConfigurationFromEffect = useEffectEvent(emitCartConfiguration);
+
   useEffect(() => {
     if (!isCartMode || !isComboEligibleCategory) return;
 
-    emitCartConfiguration(
+    emitCartConfigurationFromEffect(
       selectedVariantId,
       selectedAddons,
       selectedSauceCounts,
-        ingredientCounts,
+      ingredientCounts,
       comboType,
       selectedComboSideId,
       selectedComboDrinkId,

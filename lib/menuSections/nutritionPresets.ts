@@ -17,6 +17,23 @@ export function getProteinShortcuts(maximum: number, displayMaximum = Infinity):
   const values = proteinBands.find(([limit]) => maximum <= limit)![1];
   return [{ label: "Any" }, ...values.filter((value) => value <= maximum && value <= displayMaximum).map((value) => ({ label: `${value}g+`, value }))];
 }
+// Mobile keeps Any plus three shortcuts, including low-protein menus and
+// categories whose display range excludes a rare high-protein outlier.
+export function getMobileProteinShortcuts(maximum: number, displayMaximum: number): NutritionShortcut[] {
+  const preferred = maximum <= 10 ? [2, 5, 8]
+    : maximum <= 15 ? [5, 10, 15]
+    : proteinBands.find(([limit]) => maximum <= limit)![1];
+  const ceiling = Math.max(3, Math.floor(Math.min(maximum, displayMaximum)));
+  let previous = 0;
+  const values = preferred.map((value, index) => {
+    const scaled = preferred[2] > ceiling ? Math.round(value / preferred[2] * ceiling) : value;
+    const next = Math.max(previous + 1, Math.min(scaled, ceiling - (2 - index)));
+    previous = next;
+    return next;
+  });
+  return [{ label: "Any" }, ...values.map((value) => ({ label: `${value}g+`, value }))];
+}
+
 export function getCalorieShortcuts(maximum: number, displayMaximum = Infinity): NutritionShortcut[] {
   const preferred = calorieBands.find(([limit]) => maximum <= limit)![1];
   let values = preferred;

@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { getCalorieShortcuts, getProteinShortcuts, getNutritionControlData, reconcileNutritionThresholds } from "../lib/menuSections/nutritionPresets.ts";
+import { getCalorieShortcuts, getProteinShortcuts, getMobileProteinShortcuts, getNutritionControlData, reconcileNutritionThresholds } from "../lib/menuSections/nutritionPresets.ts";
 import { getRestaurantData } from "../lib/restaurants.ts";
 import { getOfficialRankingItems } from "../lib/menuSections/ranking.ts";
 
@@ -52,4 +52,23 @@ test("threshold reconciliation preserves valid values and unrelated state", () =
   assert.equal(reconcileNutritionThresholds(valid, { ...data, eligibleCount: 0 }), valid);
   assert.deepEqual(reconcileNutritionThresholds({ ...valid, caloriesMax: 1500, proteinMin: 60 }, data), { ...valid, caloriesMax: 850, proteinMin: 40 });
   assert.equal(reconcileNutritionThresholds({ proteinMin: 10 }, { ...data, maxProtein: 0 }).proteinMin, undefined);
+});
+
+
+test("mobile protein shortcuts always provide Any and three distinct slider-compatible thresholds", () => {
+  for (const maximum of [0, 1, 2, 3, 5, 10, 15, 20, 30, 40, 80, 150, 300]) {
+    for (const displayMaximum of [10, 20, 40, 100, 300]) {
+      const shortcuts = getMobileProteinShortcuts(maximum, displayMaximum);
+      assert.equal(shortcuts.length, 4);
+      assert.deepEqual(shortcuts[0], { label: "Any" });
+      const numeric = values(shortcuts).slice(1);
+      assert.equal(new Set(numeric).size, 3);
+      assert.ok(numeric.every((value) => Number.isInteger(value) && value > 0 && value <= displayMaximum));
+      assert.deepEqual(numeric, [...numeric].sort((a, b) => a - b));
+      if (maximum >= 3) assert.ok(numeric.every((value) => value <= maximum));
+    }
+  }
+  assert.deepEqual(values(getMobileProteinShortcuts(10, 10)), [undefined, 2, 5, 8]);
+  assert.deepEqual(values(getMobileProteinShortcuts(40, 40)), [undefined, 10, 20, 30]);
+  assert.deepEqual(values(getMobileProteinShortcuts(100, 40)), [undefined, 13, 27, 40]);
 });

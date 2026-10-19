@@ -2,24 +2,26 @@
 
 import type { MenuSizeSelectorControl } from "@/lib/menuSections/menuSizeSelector";
 
-import { useCallback, useEffect, useMemo, useRef, useState, type CSSProperties } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState, type ReactNode } from "react";
+import Image from "@/components/ui/AppImage";
 import { createPortal } from "react-dom";
 import { IS_CAPACITOR_BUILD } from "@/lib/buildTarget";
-import Image from "@/components/ui/AppImage";
 
-import { useFilterChipActions } from "./useFilterChipActions";
-import { SORT_OPTION_VALUES, type SortOption } from "@/lib/menuSections/sortOptions";
-import { MEAL_PROTEIN_OPTIONS, getVariantSettings, countVariantSettingsChanges, type Filters } from "@/lib/menuSections/filterOptions";
+import { RANKING_DEFAULT_SORT, type SortOption } from "@/lib/menuSections/sortOptions";
+import { countVariantSettingsChanges, type Filters } from "@/lib/menuSections/filterOptions";
 import type { ViewOption } from "@/components/controls/types";
 import { getMenuResultCounts } from "@/lib/menuSections/resultCounts";
 import { filterMenuItems, type RankedAllFilterKey } from "@/lib/menuSections/filtering";
 import type { MenuItem } from "@/types/menu";
-import MobileNavDrawer from "@/components/MobileNavDrawer";
-import AppButton from "@/components/ui/AppButton";
 import FilterChip from "@/components/ui/FilterChip";
-import MenuSizeSelector from "@/components/controls/MenuSizeSelector";
+import MenuSizeSelector, { MenuSizeOptions } from "@/components/controls/MenuSizeSelector";
 import RankSelector from "@/components/controls/RankSelector";
-import RestaurantFiltersPanel from "@/components/controls/RestaurantFiltersPanel";
+import RankOptions, { RankSelection } from "@/components/controls/RankOptions";
+import EntreeOptions from "@/components/controls/EntreeOptions";
+import ResultLayoutToggle from "@/components/controls/ResultLayoutToggle";
+import { getCategoryPresets, getSelectedCategoryPreset } from "@/lib/menuSections/categoryPresets";
+import { getCategoryLabel } from "@/lib/menuSections/sorting";
+import RestaurantFiltersPanel, { SectionHeader } from "@/components/controls/RestaurantFiltersPanel";
 import { pillTriggerClassName } from "@/components/controls/pillButton";
 import { useDialogA11y } from "@/hooks/useDialogA11y";
 import {
@@ -28,16 +30,8 @@ import {
   ChevronDown,
   ClipboardList,
   Carrot,
-  Flame,
-  Leaf,
-  Scale,
   Award,
-  ListOrdered,
-  Menu,
-  Check,
-  ArrowLeft,
   LayoutGrid,
-  List,
 } from "lucide-react";
 
 
@@ -45,13 +39,6 @@ const VIEW_OPTIONS: Array<{ label: string; value: ViewOption; icon: typeof Clipb
   { label: "Menu", value: "menu", icon: ClipboardList },
   { label: "Ingredients", value: "ingredients", icon: Carrot },
   { label: "Rankings", value: "ranking", icon: Award },
-];
-
-const SORT_OPTIONS: Array<{ label: string; value: SortOption; icon: typeof Flame }> = [
-  { label: "Default Order", value: SORT_OPTION_VALUES.DEFAULT_ORDER, icon: ListOrdered },
-  { label: "Highest Protein", value: SORT_OPTION_VALUES.HIGHEST_PROTEIN, icon: Flame },
-  { label: "Lowest Calories", value: SORT_OPTION_VALUES.LOWEST_CALORIES, icon: Leaf },
-  { label: "Best Protein Score", value: SORT_OPTION_VALUES.BEST_RATIO, icon: Scale },
 ];
 
 // Single source of truth for "how many filters are active" — reused for both
@@ -156,7 +143,6 @@ export default function ControlsRow({
   onSortChange,
   filters,
   onFiltersChange,
-  proteinOptions = MEAL_PROTEIN_OPTIONS,
   wrapperId,
   calorieBounds,
   sourceItems,
@@ -171,8 +157,6 @@ export default function ControlsRow({
   onMobileFiltersDrawerOpenReady,
   onMobileDrawerOpenChange,
   mobileEntreeOptions,
-  mobileDrawerHeaderTitle,
-  mobileDrawerHeaderLogoSrc,
   showResultLayoutToggle = false,
   resultLayout,
   onResultLayoutChange,
@@ -242,20 +226,14 @@ export default function ControlsRow({
   const [isFiltersOpen, setIsFiltersOpen] = useState(false);
   const [isSortOpen, setIsSortOpen] = useState(false);
   const [isMobileDrawerOpen, setIsMobileDrawerOpen] = useState(false);
-  const [isViewSectionOpen, setIsViewSectionOpen] = useState(true);
-  const [isSortSectionOpen, setIsSortSectionOpen] = useState(true);
-  const [isFiltersSectionOpen, setIsFiltersSectionOpen] = useState(true);
+  const [mobileFocus, setMobileFocus] = useState<"all" | "rank" | "categories" | "nutrition" | "calories" | "protein" | "variants" | "entree" | "size">("all");
+  const [rankOpen, setRankOpen] = useState(true);
+  const [entreeOpen, setEntreeOpen] = useState(false);
+  const [sizeOpen, setSizeOpen] = useState(true);
+  const [viewOpen, setViewOpen] = useState(true);
   const [draftFilters, setDraftFilters] = useState<Filters>(filters);
-  const filtersSectionRef = useRef<HTMLDivElement>(null);
   const filtersDialogResetButtonRef = useRef<HTMLButtonElement>(null);
 
-  const visibleSortOptions = useMemo(
-    () =>
-      view === "ranking"
-        ? SORT_OPTIONS.filter((option) => option.value !== SORT_OPTION_VALUES.DEFAULT_ORDER)
-        : SORT_OPTIONS,
-    [view]
-  );
   const defaultCaloriesMax = calorieBounds.max;
 
   const openFilters = () => {
@@ -264,25 +242,11 @@ export default function ControlsRow({
   };
 
   const openMobileDrawer = useCallback(() => {
-    setDraftFilters({
-      ...filters,
-      caloriesMax: filters.caloriesMax ?? defaultCaloriesMax,
-    });
-    setIsViewSectionOpen(true);
-    setIsSortSectionOpen(true);
-    setIsFiltersSectionOpen(true);
+    setMobileFocus("all");
+    setEntreeOpen(false);
     setIsMobileDrawerOpen(true);
-  }, [defaultCaloriesMax, filters]);
-
-  // Same drawer as above, plus a scroll straight to the Filters section —
-  // used by the active-filter row's "Edit filters" control so it lands on
-  // the relevant section instead of the top of the drawer.
-  const openMobileDrawerToFilters = useCallback(() => {
-    openMobileDrawer();
-    requestAnimationFrame(() => {
-      filtersSectionRef.current?.scrollIntoView({ block: "start", behavior: "smooth" });
-    });
-  }, [openMobileDrawer]);
+  }, []);
+  const openMobileDrawerToFilters = openMobileDrawer;
 
   const applyFilters = () => {
     const nextFilters = { ...draftFilters };
@@ -291,19 +255,9 @@ export default function ControlsRow({
     setIsMobileDrawerOpen(false);
   };
 
-  const { resetFilters } = useFilterChipActions({
-    filters,
-    onFiltersChange,
-  });
-
   // Reflects the currently applied filters — for the closed Filters
   // trigger, wherever it's shown. Never derived from draft edits.
   const appliedActiveFilterCount = countActiveFilters(filters, defaultCaloriesMax);
-
-  const closeFilters = () => {
-    setIsFiltersOpen(false);
-    setIsMobileDrawerOpen(false);
-  };
 
   // The desktop filters dialog declares `role="dialog" aria-modal="true"` —
   // Escape closes it, opening moves focus into it (Reset, its first
@@ -332,28 +286,6 @@ export default function ControlsRow({
     };
   }, [isFiltersOpen]);
 
-  const handleResetFilters = () => {
-    setDraftFilters({});
-    resetFilters();
-  };
-
-  // Live count of the *draft* panel state — recomputed every render off
-  // draftFilters, so it updates immediately as protein/calories change,
-  // with no dependency on the previously applied filters.
-  const draftActiveFilterCount = countActiveFilters(draftFilters, defaultCaloriesMax);
-  const hasDraftFilters = draftActiveFilterCount > 0;
-
-  // Drives the desktop modal's custom-rendered slider fill (see .calorie-range
-  // in globals.css) — computed here rather than relying on native
-  // accent-color rendering, which can't have its hover chrome suppressed.
-  const calorieRangeSpan = calorieBounds.max - calorieBounds.min;
-  const desktopCalorieFillPercent =
-    calorieRangeSpan > 0
-      ? (((draftFilters.caloriesMax ?? defaultCaloriesMax) - calorieBounds.min) / calorieRangeSpan) * 100
-      : 0;
-
-  const draftCaloriesMax = draftFilters.caloriesMax ?? defaultCaloriesMax;
-
   // Reuses the exact same filterMenuItems the page itself uses to render
   // results — never a parallel counting implementation — so these previews
   // can't silently drift from what Apply will actually show.
@@ -364,64 +296,11 @@ export default function ControlsRow({
   );
   const totalResultCount = appliedResultCounts.total;
 
-  const countMatchingItems = useCallback(
-    (proteinMin: number | undefined, caloriesMax: number | undefined) =>
-      filterMenuItems({
-        items: sourceItems,
-        filters: { ...getVariantSettings(draftFilters), proteinMin, caloriesMax },
-        searchTerms: [],
-        rankedChildSelections,
-        isRankingView,
-        filterRankingCategories,
-        rankingSort: sort,
-        menuSizePreference,
-      }).length,
-    [sourceItems, rankedChildSelections, isRankingView, filterRankingCategories, draftFilters, sort, menuSizePreference]
-  );
-
-  // Per-chip "what if this threshold were selected" preview — always
-  // evaluated against the *current* draft calorie value, independently of
-  // whichever protein option (if any) is currently selected, so one chip's
-  // count is never chained through another's selection.
-  const proteinOptionCounts = useMemo(() => {
-    const counts = new Map<number, number>();
-    proteinOptions.forEach((value) => {
-      counts.set(value, countMatchingItems(value, draftCaloriesMax));
-    });
-    return counts;
-  }, [countMatchingItems, draftCaloriesMax, proteinOptions]);
-
-  // Live count for the full current draft combination — drives the primary
-  // action's label ("Show N items"), not just the count of active filters.
-  const draftMatchingItemCount = useMemo(
-    () => countMatchingItems(draftFilters.proteinMin, draftCaloriesMax),
-    [countMatchingItems, draftFilters.proteinMin, draftCaloriesMax]
-  );
-  const draftMatchLabel =
-    draftMatchingItemCount === 0
-      ? "No matching items"
-      : `Show ${draftMatchingItemCount} item${draftMatchingItemCount === 1 ? "" : "s"}`;
-
   const fullDraftMatchingItemCount = useMemo(
     () => filterMenuItems({ items: sourceItems, filters: draftFilters, searchTerms: [], rankedChildSelections, isRankingView, filterRankingCategories, rankingSort: sort, menuSizePreference }).length,
     [draftFilters, isRankingView, rankedChildSelections, sourceItems, filterRankingCategories, sort, menuSizePreference],
   );
   const appliedMatchingItemCount = visibleItemCount ?? appliedResultCounts.matching;
-
-  // Shared by both the desktop modal's and mobile drawer's protein chips so
-  // the two surfaces can never disagree on a count, disabled state, or
-  // accessible label for the same threshold.
-  const getProteinChipMeta = (value: number, isActive: boolean) => {
-    const count = proteinOptionCounts.get(value) ?? 0;
-    return {
-      count,
-      // A zero-result option that's already selected must stay interactive
-      // (Reset/re-selecting another option still needs to reach it) rather
-      // than becoming a dead end.
-      isDisabled: count === 0 && !isActive,
-      ariaLabel: `${value} grams or more protein, ${count} matching item${count === 1 ? "" : "s"}`,
-    };
-  };
 
   useEffect(() => {
     onMobileDrawerOpenReady?.(openMobileDrawer);
@@ -435,330 +314,55 @@ export default function ControlsRow({
     onMobileDrawerOpenChange?.(isMobileDrawerOpen);
   }, [onMobileDrawerOpenChange, isMobileDrawerOpen]);
 
-  const sectionHeadingClassName = "text-xs font-semibold uppercase tracking-wide text-slate-400";
-  const chevronClassName = "h-3.5 w-3.5 text-slate-400 transition-transform";
-  const sectionDividerClassName = "border-t border-slate-200/70";
-  const optionRowClassName = (isActive: boolean) =>
-    `flex items-center gap-2.5 rounded-lg px-3 py-2.5 text-left text-sm font-semibold transition-colors ${
-      isActive
-        ? "border border-transparent bg-accent-strong text-white"
-        : "border border-transparent text-slate-700 hover:bg-slate-50 active:bg-slate-100"
-    }`;
-  // Shared by the View and Sort sections only (never Entree) so both read
-  // as the same reusable row component — fully rounded selected pill,
-  // identical geometry whether active or inactive so toggling selection
-  // never shifts the row's shape.
-  const selectableRowClassName = (isActive: boolean) =>
-    `flex items-center gap-2.5 rounded-full px-3 py-2.5 text-left text-sm font-semibold transition-colors focus-ring ${
-      isActive
-        ? "bg-accent-strong text-white hover:brightness-95 active:brightness-90"
-        : "text-slate-700 hover:bg-slate-50 active:bg-slate-100"
-    }`;
-
-  const controlsContent = (
-    <div className="space-y-6">
-      {mobileEntreeOptions?.length ? (
-        <section className="space-y-2">
-          <p className={sectionHeadingClassName}>Entree</p>
-          <div className="space-y-1 rounded-xl bg-slate-100 p-1.5">
-            {mobileEntreeOptions.map((option) => (
-              <div key={option.key}>
-                {option.showDividerBefore ? (
-                  <div className="my-1 border-t border-black/10" aria-hidden="true" />
-                ) : null}
-                <button
-                  type="button"
-                  onClick={() => {
-                    option.onSelect();
-                    setIsMobileDrawerOpen(false);
-                  }}
-                  className={`w-full ${optionRowClassName(Boolean(option.selected))}`}
-                >
-                  {option.image ? (
-                    <span className="relative h-6 w-6 shrink-0 overflow-hidden rounded-full bg-white ring-1 ring-black/5">
-                      <Image src={option.image} alt={option.label} fill className="object-cover" />
-                    </span>
-                  ) : option.key === "choose-entree" ? (
-                    <ArrowLeft className="h-4 w-4 shrink-0" strokeWidth={2.5} />
-                  ) : option.key === "view-all-ingredients" ? (
-                    <LayoutGrid className="h-4 w-4 shrink-0" strokeWidth={2.5} />
-                  ) : null}
-                  <span className="flex-1 truncate">{option.label}</span>
-                  {option.selected ? <Check className="h-4 w-4 shrink-0 text-white" strokeWidth={2.5} /> : null}
-                </button>
-              </div>
-            ))}
-          </div>
-        </section>
-      ) : null}
-      {hideViewSelector ? null : (
-        <>
-          <section className="space-y-2">
-            <button type="button" onClick={() => setIsViewSectionOpen((prev) => !prev)} className="flex w-full items-center justify-between text-left">
-              <span className={sectionHeadingClassName}>View</span>
-              <ChevronDown className={`${chevronClassName} ${isViewSectionOpen ? "rotate-180" : ""}`} strokeWidth={2.5} />
-            </button>
-            {isViewSectionOpen ? (
-              <div className="grid gap-1">
-                {VIEW_OPTIONS.filter(
-                  (option) => !hideIngredientsView || option.value !== "ingredients",
-                ).map((option) => {
-                  const Icon = option.icon;
-                  const isActive = option.value === view;
-                  return (
-                    <button key={option.value} type="button" onClick={() => {
-                      onChange(option.value);
-                      setIsMobileDrawerOpen(false);
-                    }} className={selectableRowClassName(isActive)}>
-                      <Icon className={`h-4 w-4 shrink-0 ${isActive ? "text-white" : "text-slate-400"}`} strokeWidth={2.2} />
-                      <span className="flex-1">{option.label}</span>
-                      {isActive ? <Check className="h-4 w-4 shrink-0 text-white" strokeWidth={2.5} /> : null}
-                    </button>
-                  );
-                })}
-              </div>
-            ) : null}
-          </section>
-          <div className={sectionDividerClassName} aria-hidden="true" />
-        </>
-      )}
-      {isRankingView || showResultLayoutToggle ? (
-        <section className="space-y-2 lg:hidden">
-          <p className={sectionHeadingClassName}>Layout</p>
-          <div className="grid grid-cols-2 gap-1 rounded-xl bg-slate-100 p-1.5" role="group" aria-label="Results layout">
-            {([{ value: "list", label: "List", icon: List }, { value: "grid", label: "Compact", icon: LayoutGrid }] as const).map((option) => {
-              const Icon = option.icon;
-              const active = resultLayout === option.value;
-              return (
-                <button key={option.value} type="button" aria-pressed={active} onClick={() => onResultLayoutChange(option.value)} className={selectableRowClassName(active)}>
-                  <Icon className={`h-4 w-4 ${active ? "text-white" : "text-slate-400"}`} strokeWidth={2.2} />
-                  {option.label}
-                </button>
-              );
-            })}
-          </div>
-        </section>
-      ) : null}
-      <section className="space-y-2">
-        <button type="button" onClick={() => setIsSortSectionOpen((prev) => !prev)} className="flex w-full items-center justify-between text-left">
-          <span className={sectionHeadingClassName}>Sort</span>
-          <ChevronDown className={`${chevronClassName} ${isSortSectionOpen ? "rotate-180" : ""}`} strokeWidth={2.5} />
-        </button>
-        {isSortSectionOpen ? (
-          <div className="grid gap-1">
-            {visibleSortOptions.map((option) => {
-              const Icon = option.icon;
-              const isActive = option.value === sort;
-              return (
-                <button key={option.value} type="button" onClick={() => {
-                  onSortChange(option.value);
-                  setIsMobileDrawerOpen(false);
-                }} className={selectableRowClassName(isActive)}>
-                  <Icon className={`h-4 w-4 shrink-0 ${isActive ? "text-white" : "text-slate-400"}`} strokeWidth={2.2} />
-                  <span className="flex-1">{option.label}</span>
-                  {isActive ? <Check className="h-4 w-4 shrink-0 text-white" strokeWidth={2.5} /> : null}
-                </button>
-              );
-            })}
-          </div>
-        ) : null}
-      </section>
-      <div className={sectionDividerClassName} aria-hidden="true" />
-      <section ref={filtersSectionRef} className="space-y-3">
-        <button type="button" onClick={() => setIsFiltersSectionOpen((prev) => !prev)} className="flex w-full items-center justify-between text-left">
-          <span className="inline-flex items-center gap-2">
-            <span className={sectionHeadingClassName}>Filters</span>
-            {/* Live draft count — updates immediately as protein/calories
-                change in this panel, before Apply. The closed trigger's
-                badge (appliedActiveFilterCount) is a separate derivation
-                and intentionally doesn't move until Apply is pressed. */}
-            {draftActiveFilterCount > 0 ? (
-              <span className="inline-flex h-4 min-w-4 items-center justify-center rounded-full bg-accent-soft px-1 text-[10px] font-bold text-accent-strong">
-                {draftActiveFilterCount}
-              </span>
-            ) : null}
-          </span>
-          <ChevronDown className={`${chevronClassName} ${isFiltersSectionOpen ? "rotate-180" : ""}`} strokeWidth={2.5} />
-        </button>
-        {isFiltersSectionOpen ? (
-          <>
-            <div>
-              <div className="mb-2 text-sm font-semibold text-black/80">Protein minimum</div>
-              <div className="flex flex-wrap gap-2">
-                {proteinOptions.map((value) => {
-                  const isActive = draftFilters.proteinMin === value;
-                  const { count, isDisabled, ariaLabel } = getProteinChipMeta(value, isActive);
-                  return (
-                    <FilterChip
-                      key={value}
-                      active={isActive}
-                      disabled={isDisabled}
-                      aria-label={ariaLabel}
-                      onClick={() => setDraftFilters((prev) => ({ ...prev, proteinMin: isActive ? undefined : value }))}
-                    >
-                      <span>{value}g+</span>
-                      <span className={`ml-1 font-normal ${isActive ? "text-white/70" : "text-slate-400"}`}>
-                        · {count}
-                      </span>
-                    </FilterChip>
-                  );
-                })}
-              </div>
-            </div>
-            <div>
-              <div className="mb-2 text-sm font-semibold text-black/80">Calories max: {draftFilters.caloriesMax ?? defaultCaloriesMax}</div>
-              <input
-                type="range"
-                min={calorieBounds.min}
-                max={calorieBounds.max}
-                step={10}
-                value={draftFilters.caloriesMax ?? defaultCaloriesMax}
-                onChange={(event) => setDraftFilters((prev) => ({ ...prev, caloriesMax: Number(event.target.value) }))}
-                className="w-full cursor-pointer accent-accent hover:accent-accent-strong active:accent-accent-strong focus-visible:accent-accent-strong"
-              />
-              <div className="mt-1 flex justify-between text-xs font-semibold text-black/60">
-                <span>{calorieBounds.min}</span>
-                <span>{calorieBounds.max}</span>
-              </div>
-            </div>
-            {hasDraftFilters ? (
-              <button
-                type="button"
-                onClick={handleResetFilters}
-                className="text-sm font-semibold text-black/55 underline-offset-4 transition hover:text-black/80 hover:underline"
-              >
-                Clear Filters
-              </button>
-            ) : null}
-          </>
-        ) : null}
-      </section>
-    </div>
-  );
-
-  const controlsFooter = (
-    <div className="grid grid-cols-2 gap-2">
-      <AppButton
-        variant="secondary"
-        size="md"
-        onClick={closeFilters}
-        className="border-transparent! bg-transparent! text-slate-500! hover:bg-slate-100! active:bg-slate-200!"
-      >
-        Cancel
-      </AppButton>
-      <AppButton
-        size="md"
-        onClick={applyFilters}
-        disabled={draftMatchingItemCount === 0}
-        // `!` forces these past AppButton's `primary` variant (solid
-        // black) — without it, Tailwind's build-order cascade can leave
-        // `bg-black` from the variant winning over `bg-accent` here even
-        // though this className is applied second. `min-w-0` lets the
-        // label span below actually shrink instead of forcing this 50%-wide
-        // grid cell wider than the drawer on narrow phones once the item
-        // count hits 3 digits.
-        className="border-accent! bg-accent! font-bold text-white! hover:bg-accent-strong! active:bg-accent-strong! min-w-0"
-        aria-live="polite"
-      >
-        <span className="min-w-0 truncate">{draftMatchLabel}</span>
-      </AppButton>
-    </div>
-  );
-
-  const mobileControlsDrawer = (
-    <MobileNavDrawer
-      isOpen={isMobileDrawerOpen}
-      onClose={() => setIsMobileDrawerOpen(false)}
-      showControls
-      defaultTab="controls"
-      controlsContent={controlsContent}
-      controlsFooter={controlsFooter}
-      headerTitle={mobileDrawerHeaderTitle}
-      headerLogoSrc={mobileDrawerHeaderLogoSrc}
-    />
-  );
-
-  const filtersDialog = isFiltersOpen ? (
-    <div role="dialog" aria-modal="true" className="fixed inset-0 z-[200] flex h-[var(--app-viewport-height)] items-end justify-center bg-overlay-scrim px-2 pb-[max(0.5rem,var(--safe-area-bottom))] pt-[max(0.5rem,var(--safe-area-top))] sm:items-center sm:p-4" onClick={() => setIsFiltersOpen(false)}>
-      <div className="max-h-[calc(100dvh-1rem-var(--safe-area-top)-var(--safe-area-bottom))] w-full max-w-[520px] overflow-y-auto overscroll-contain rounded-[20px] bg-white p-4 shadow-[0_16px_40px_rgba(0,0,0,0.2)] sm:max-h-[calc(100dvh-2rem)] sm:p-5" onClick={(event) => event.stopPropagation()}>
-        <div className="mb-4 flex items-center gap-2">
-          <h3 className="text-xl font-bold">Filters</h3>
-          {/* Live draft count, same derivation and semantics as the mobile
-              drawer's heading badge — see draftActiveFilterCount. */}
-          {draftActiveFilterCount > 0 ? (
-            <span className="inline-flex h-5 min-w-5 items-center justify-center rounded-full bg-accent-soft px-1.5 text-xs font-bold text-accent-strong">
-              {draftActiveFilterCount}
-            </span>
-          ) : null}
-        </div>
-        <div className="grid gap-4">
-          <div>
-            <div className="mb-2 font-semibold">Protein minimum</div>
-            <div className="flex flex-wrap gap-2">
-              {proteinOptions.map((value) => {
-                const isActive = draftFilters.proteinMin === value;
-                const { count, isDisabled, ariaLabel } = getProteinChipMeta(value, isActive);
-                return (
-                  <FilterChip
-                    key={value}
-                    active={isActive}
-                    disabled={isDisabled}
-                    aria-label={ariaLabel}
-                    onClick={() => setDraftFilters((prev) => ({ ...prev, proteinMin: value }))}
-                  >
-                    <span>{value}g+</span>
-                    <span className={`ml-1 font-normal ${isActive ? "text-white/70" : "text-slate-400"}`}>
-                      · {count}
-                    </span>
-                  </FilterChip>
-                );
-              })}
-            </div>
-          </div>
-          <div>
-            <div className="mb-2 font-semibold">Calories max: {draftFilters.caloriesMax ?? defaultCaloriesMax}</div>
-            <div className="grid gap-2">
-              <input
-                type="range"
-                min={calorieBounds.min}
-                max={calorieBounds.max}
-                step={10}
-                value={draftFilters.caloriesMax ?? defaultCaloriesMax}
-                onChange={(event) => {
-                  const value = Number(event.target.value);
-                  setDraftFilters((prev) => ({ ...prev, caloriesMax: value }));
-                }}
-                className="calorie-range"
-                style={
-                  {
-                    "--range-fill-percent": `${desktopCalorieFillPercent}%`,
-                  } as CSSProperties
-                }
-              />
-              <div className="flex justify-between text-xs font-semibold text-black/60">
-                <span>{calorieBounds.min}</span>
-                <span>{calorieBounds.max}</span>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div className="mt-5 flex flex-col-reverse gap-2 sm:flex-row sm:justify-end sm:gap-3">
-          <AppButton ref={filtersDialogResetButtonRef} variant="secondary" size="md" onClick={handleResetFilters}>
-            Reset
-          </AppButton>
-          <AppButton
-            size="md"
-            onClick={applyFilters}
-            disabled={draftMatchingItemCount === 0}
-            className="border-accent! bg-accent! font-bold text-white! hover:bg-accent-strong! active:bg-accent-strong! whitespace-nowrap"
-            aria-live="polite"
-          >
-            {draftMatchLabel}
-          </AppButton>
-        </div>
-      </div>
-    </div>
-  ) : null;
+  const mobileCloseRef = useRef<HTMLDivElement>(null);
+  const closeMobile = useCallback(() => setIsMobileDrawerOpen(false), []);
+  useDialogA11y({ isOpen: isMobileDrawerOpen, onClose: closeMobile, initialFocusRef: mobileCloseRef, lockBodyScroll: true });
+  const showMobileSection = (section: string) => mobileFocus === "all" || mobileFocus === section;
+  const isBuildYourOwn = restaurantId === "chipotle" || Boolean(mobileEntreeOptions?.length);
+  const selectedEntree = mobileEntreeOptions?.find((option) => option.selected);
+  const hasVariants = restaurantId !== "chipotle" && sourceItems.some((item) => !item.sourceOnly && item.variants?.length);
+  const selectedCategoryPreset = getSelectedCategoryPreset(filters, getCategoryPresets(sourceItems, restaurantId));
+  const categoryLabel = selectedCategoryPreset?.label ?? (filters.categories?.length === 1 ? getCategoryLabel(filters.categories[0]) : "Custom");
+  const layoutToggle = <ResultLayoutToggle value={resultLayout} onChange={onResultLayoutChange} />;
+  const mobileLeading = <>
+    {mobileFocus === "all" && isBuildYourOwn && !hideViewSelector ? <section className="border-b border-slate-200">
+      <SectionHeader title="View" summary={VIEW_OPTIONS.find((option) => option.value === view)?.label ?? ""} open={viewOpen} onClick={() => setViewOpen(!viewOpen)} />
+      {viewOpen ? <div className="grid gap-1 pb-5">{VIEW_OPTIONS.filter((option) => !hideIngredientsView || option.value !== "ingredients").map((option) => {
+        const Icon = option.icon;
+        const active = view === option.value;
+        return <button key={option.value} type="button" aria-pressed={active} onClick={() => onChange(option.value)} className={`flex items-center gap-2.5 rounded-full px-3 py-2.5 text-left text-sm font-semibold transition-colors focus-ring ${active ? "bg-accent-strong text-white hover:brightness-95 active:brightness-90" : "text-slate-700 hover:bg-slate-50 active:bg-slate-100"}`}><Icon className={`h-4 w-4 shrink-0 ${active ? "text-white" : "text-slate-400"}`} strokeWidth={2.2} />{option.label}</button>;
+      })}</div> : null}
+    </section> : null}
+    {showMobileSection("entree") && mobileEntreeOptions?.length ? <section className="border-b border-slate-200">
+      {mobileFocus === "all" ? <SectionHeader title="Entree" summary={mobileEntreeOptions.find((option) => option.selected)?.label ?? ""} open={entreeOpen} onClick={() => setEntreeOpen(!entreeOpen)} /> : null}
+      {mobileFocus !== "all" || entreeOpen ? <div className="pb-5"><EntreeOptions options={mobileEntreeOptions} mobileGrid /></div> : null}
+    </section> : null}
+    {showMobileSection("rank") ? <section className="border-b border-slate-200">
+      {mobileFocus === "all" ? <SectionHeader title="Rank By" summary="" open={rankOpen} onClick={() => setRankOpen(!rankOpen)} /> : null}
+      {mobileFocus !== "all" || rankOpen ? <div role="menu" aria-label="Rank by" className="pb-5"><RankOptions value={sort} onChange={onSortChange} colorful showDefault={!isBuildYourOwn && !isRankingView} /></div> : null}
+    </section> : null}
+    {showMobileSection("size") && menuSizeControl ? <section className="border-b border-slate-200">
+      {mobileFocus === "all" ? <SectionHeader title="Size" summary={menuSizeControl.options.find((option) => option.value === menuSizeControl.value)?.label ?? ""} open={sizeOpen} onClick={() => setSizeOpen(!sizeOpen)} /> : null}
+      {mobileFocus !== "all" || sizeOpen ? <div role="menu" aria-label="Menu size" className="pb-5"><MenuSizeOptions {...menuSizeControl} showTitle={false} /></div> : null}
+    </section> : null}
+  </>;
+  const mobileControlsDrawer = isMobileDrawerOpen ? <div role="dialog" aria-modal="true" aria-label={mobileFocus === "all" ? "Filters" : mobileFocus} className="fixed inset-0 z-[200] flex items-end justify-center bg-overlay-scrim pt-[max(1rem,env(safe-area-inset-top))]" onClick={closeMobile} onKeyDown={(event) => {
+    if (event.key !== "Tab") return;
+    const nodes = Array.from(event.currentTarget.querySelectorAll<HTMLElement>('button:not(:disabled), input, [tabindex="0"]'));
+    const first = nodes[0], last = nodes[nodes.length - 1];
+    if (event.shiftKey && (document.activeElement === first || document.activeElement === mobileCloseRef.current)) { event.preventDefault(); last?.focus(); }
+    else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first?.focus(); }
+  }}><div ref={mobileCloseRef} tabIndex={-1} className="w-full max-w-[720px] outline-none" onClick={(event) => event.stopPropagation()}><RestaurantFiltersPanel restaurantId={restaurantId} items={sourceItems} value={filters} onChange={onFiltersChange} onClose={closeMobile} onApply={closeMobile} matchingCount={appliedMatchingItemCount} resultContext={{ rankingSort: sort, isRankingView, filterRankingCategories, rankedChildSelections, menuSizePreference }} focus={mobileFocus} isMobileSheet headerControls={mobileFocus === "all" && (isRankingView || showResultLayoutToggle) ? layoutToggle : undefined} leadingControls={mobileLeading} showVariants={hasVariants} onReset={mobileFocus === "rank" ? () => onSortChange(RANKING_DEFAULT_SORT) : mobileFocus === "size" ? () => menuSizeControl?.onChange("all-sizes") : mobileFocus === "entree" ? () => mobileEntreeOptions?.find((option) => option.key === "choose-entree")?.onSelect() : undefined} /></div></div> : null;
+  const mobilePill = (focus: typeof mobileFocus, label: ReactNode, active = false) => <button key={focus} type="button" aria-label={focus === "all" ? `Filters${appliedActiveFilterCount ? `, ${appliedActiveFilterCount} active` : ""}` : undefined} aria-haspopup="dialog" onClick={() => {
+    setMobileFocus(focus);
+    if (focus === "rank") setRankOpen(true);
+    if (focus === "all") setEntreeOpen(false);
+    if (focus === "entree") setEntreeOpen(true);
+    if (focus === "size") setSizeOpen(true);
+    setIsMobileDrawerOpen(true);
+  }} className={pillTriggerClassName({ className: `shrink-0 ${active ? "border-slate-950!" : ""}` })}>
+    {focus === "all" ? <><SlidersHorizontal className="h-4 w-4" />{appliedActiveFilterCount > 0 ? <span className="inline-flex h-5 min-w-5 items-center justify-center rounded-full bg-[#047857] px-1 text-[11px] font-bold text-white">{appliedActiveFilterCount}</span> : null}</> : <>{active ? <span className="h-1.5 w-1.5 rounded-full bg-emerald-600" /> : null}{label}<ChevronDown className="h-3.5 w-3.5 shrink-0 text-slate-400" /></>}
+  </button>;
 
   const redesignedFiltersDialog = isFiltersOpen ? (
     <div role="dialog" aria-modal="true" aria-label="Filters" className="fixed inset-0 z-[200] flex items-center justify-center bg-overlay-scrim p-4" onClick={closeFiltersDialog}>
@@ -780,16 +384,17 @@ export default function ControlsRow({
   return (
     <>
       <div id={wrapperId} className="grid gap-2 overflow-visible">
-        {showMobileTrigger ? (
-          <div className={IS_CAPACITOR_BUILD ? "block" : "lg:hidden"}>
-            <AppButton variant="secondary" size="md" onClick={openMobileDrawer} className="px-[14px] text-black/85">
-              <Menu className="h-4 w-4" strokeWidth={2.5} />
-              Controls
-            </AppButton>
-          </div>
-        ) : null}
+        {showMobileTrigger || showInlineMobileControls ? <div className={`flex min-w-0 max-w-full gap-2 overflow-x-auto overscroll-x-contain hide-scrollbar ${IS_CAPACITOR_BUILD ? "" : "lg:hidden"}`} aria-label="Menu controls">
+          {mobilePill("all", null, appliedActiveFilterCount > 0)}
+          {mobileEntreeOptions?.length ? mobilePill("entree", <>{selectedEntree?.image ? <span className="relative h-6 w-6 shrink-0 overflow-hidden rounded-full border border-slate-200 bg-white"><Image src={selectedEntree.image} alt="" fill className="object-cover" /></span> : <LayoutGrid className="h-4 w-4 shrink-0 text-slate-500" strokeWidth={2.2} />}{selectedEntree?.label ?? "Entree"}</>) : null}
+          {mobilePill("rank", <RankSelection value={sort} colorful />)}
+          {!isBuildYourOwn ? mobilePill("categories", categoryLabel) : null}
+          {mobilePill("calories", filters.caloriesMax === undefined ? "Calories" : `≤${filters.caloriesMax} cal`, filters.caloriesMax !== undefined)}
+          {mobilePill("protein", filters.proteinMin === undefined ? "Protein" : `≥${filters.proteinMin}g protein`, filters.proteinMin !== undefined)}
+          {hasVariants ? mobilePill("variants", "Variants", countVariantSettingsChanges(filters) > 0) : null}
+        </div> : null}
 
-        <div className={IS_CAPACITOR_BUILD ? "hidden" : `${showInlineMobileControls ? "flex" : "hidden lg:flex"} min-w-0 flex-nowrap items-center gap-2`}>
+        <div className={IS_CAPACITOR_BUILD ? "hidden" : `hidden lg:flex min-w-0 flex-nowrap items-center gap-2`}>
           <div className="flex shrink-0 items-center gap-2">
             <RankSelector value={sort} isOpen={isSortOpen} onOpenChange={setIsSortOpen} onChange={onSortChange} />
             {menuSizeControl ? <MenuSizeSelector {...menuSizeControl} /> : null}
@@ -813,19 +418,12 @@ export default function ControlsRow({
             <span className="whitespace-nowrap px-1 text-sm text-slate-600">
               <strong className="font-bold text-slate-950">{appliedMatchingItemCount}</strong> of {totalResultCount} items
             </span>
-            {isRankingView || showResultLayoutToggle ? <div className="ml-1 flex rounded-full bg-slate-100 p-[3px]" role="group" aria-label="Results layout">
-              {([{ value: "list", label: "List view", icon: List }, { value: "grid", label: "Grid view", icon: LayoutGrid }] as const).map((option) => {
-                const Icon = option.icon;
-                const active = resultLayout === option.value;
-                return <button key={option.value} type="button" aria-label={option.label} aria-pressed={active} onClick={() => onResultLayoutChange(option.value)} className={`flex h-[34px] w-[34px] cursor-pointer items-center justify-center rounded-full transition ${active ? "bg-white text-slate-950 shadow-sm" : "text-slate-400 hover:text-slate-700"}`}><Icon className="h-4 w-4" strokeWidth={2.2} /></button>;
-              })}
-            </div> : null}
+            {isRankingView || showResultLayoutToggle ? layoutToggle : null}
           </div>
         </div>
       </div>
 
       {redesignedFiltersDialog ? (typeof document === "undefined" ? redesignedFiltersDialog : createPortal(redesignedFiltersDialog, document.body)) : null}
-      {false ? filtersDialog : null}
       {renderMobileDrawer && mobileControlsDrawer ? (typeof document === "undefined" ? mobileControlsDrawer : createPortal(mobileControlsDrawer, document.body)) : null}
     </>
   );

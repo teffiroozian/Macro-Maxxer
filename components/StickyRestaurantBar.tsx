@@ -13,7 +13,6 @@ import type { SortOption } from "@/lib/menuSections/sortOptions";
 import type { RankedAllFilterKey } from "@/lib/menuSections/filtering";
 import type { MenuItem } from "@/types/menu";
 import { ChevronLeft, Menu, SlidersHorizontal } from "lucide-react";
-import MobileNavDrawer from "@/components/MobileNavDrawer";
 import AppIconButton from "@/components/ui/AppIconButton";
 import RestaurantLogoBadge from "@/components/ui/RestaurantLogoBadge";
 import { useBuildInProgressGuard } from "@/components/BuildInProgressGuardContext";
@@ -105,15 +104,29 @@ export default function StickyRestaurantBar({
   filterRankingCategories = true,
   showMobileRail = false,
 }: StickyRestaurantBarProps) {
+  // A visible rail owns working sheets even when the legacy standalone
+  // mobile controls trigger is hidden (standard restaurant pages).
+  const mobileControlsEnabled = showMobileRail || !hideMobileControls;
   const [openMobileControlsDrawer, setOpenMobileControlsDrawer] = useState<() => void>(() => () => {});
-  const [isBrowseDrawerOpen, setIsBrowseDrawerOpen] = useState(false);
   const [isControlsDrawerOpen, setIsControlsDrawerOpen] = useState(false);
   const { mobileNavVisible: isMobileNavVisible, mobileNavHeight, setHideOnScroll } = useGlobalNav();
   const router = useRouter();
   const { guardNavigation } = useBuildInProgressGuard();
   const globalNavBottom = useStickyNavClearance();
+  const nativeNavRef = useRef<HTMLDivElement>(null);
+  const [nativeNavHeight, setNativeNavHeight] = useState(49);
   const desktopCapsuleRef = useRef<HTMLDivElement>(null);
   const [isDesktopSticky, setIsDesktopSticky] = useState(false);
+
+  useEffect(() => {
+    const nav = nativeNavRef.current;
+    if (!nav) return;
+    const measure = () => setNativeNavHeight(nav.getBoundingClientRect().height);
+    measure();
+    const observer = new ResizeObserver(measure);
+    observer.observe(nav);
+    return () => observer.disconnect();
+  }, []);
 
   useEffect(() => {
     if (IS_CAPACITOR_BUILD) return;
@@ -175,7 +188,9 @@ export default function StickyRestaurantBar({
     <>
       {IS_CAPACITOR_BUILD ? (
         <div
-          className="fixed inset-x-0 top-0 z-[95] border-b border-black/10 bg-white/95 pt-[var(--safe-area-top)] shadow-elev-brand backdrop-blur-lg"
+          ref={nativeNavRef}
+          className={`fixed inset-x-0 top-0 z-[95] border-b border-black/10 bg-white/95 pt-[var(--safe-area-top)] shadow-elev-brand backdrop-blur-lg transition-transform duration-300 ease-out ${isMobileNavVisible ? "translate-y-0" : "-translate-y-full"}`}
+          data-mobile-nav-hidden={isMobileNavVisible ? "false" : "true"}
           data-sticky-nav="true"
         >
           <div className="mx-auto flex h-12 w-full max-w-5xl items-center gap-2 px-3">
@@ -194,10 +209,10 @@ export default function StickyRestaurantBar({
             <AppIconButton
               variant="ghost"
               size="sm"
-              active={hideSecondaryNav ? isBrowseDrawerOpen : isControlsDrawerOpen}
+              active={!hideSecondaryNav && isControlsDrawerOpen}
               onClick={() => {
                 if (hideSecondaryNav) {
-                  setIsBrowseDrawerOpen(true);
+                  guardNavigation(() => router.push("/restaurants"));
                   return;
                 }
                 openMobileControlsDrawer();
@@ -214,17 +229,13 @@ export default function StickyRestaurantBar({
         </div>
       ) : null}
 
-      {showMobileRail && !hideSecondaryNav ? (
-        <div className="pointer-events-none col-start-1 row-start-1 self-center border-t border-slate-200 lg:hidden" aria-hidden="true" />
-      ) : null}
+
 
       {secondaryNavLeading || !hideSecondaryNav ? (
         <div
-          className={`sticky top-[var(--mobile-controls-top)] -mx-3 z-[var(--z-sticky)] ${showMobileRail ? "col-start-1 row-start-1 bg-transparent" : "bg-app-background"} py-0 transition-[top] duration-300 ease-out sm:-mx-4 lg:contents ${hideMobileControls && !secondaryNavLeading && !showMobileRail ? "hidden lg:block" : ""}`}
+          className={`sticky self-start top-[var(--mobile-controls-top)] -mx-3 z-[var(--z-sticky)] ${showMobileRail ? "col-start-1 row-start-1 bg-app-background lg:bg-transparent" : "bg-app-background"} py-0 transition-[top] duration-300 ease-out sm:-mx-4 lg:contents ${hideMobileControls && !secondaryNavLeading && !showMobileRail ? "hidden lg:block" : ""}`}
           style={{
-            "--mobile-controls-top": showMobileRail
-              ? `calc(${isMobileNavVisible ? mobileNavHeight : 0}px + var(--restaurant-controls-gap))`
-              : `${isMobileNavVisible ? mobileNavHeight : 0}px`,
+            "--mobile-controls-top": `${isMobileNavVisible ? (IS_CAPACITOR_BUILD ? nativeNavHeight : mobileNavHeight) : 0}px`,
             "--desktop-controls-top": showMobileRail
               ? `calc(${globalNavBottom ?? 64}px + var(--restaurant-controls-sticky-gap))`
               : `${(globalNavBottom ?? 64) + 8}px`,
@@ -241,7 +252,7 @@ export default function StickyRestaurantBar({
             </>
           )}
           <div ref={desktopCapsuleRef} className={`relative mx-auto w-full lg:sticky lg:top-[var(--desktop-controls-top)] lg:z-[var(--z-sticky)] lg:w-fit lg:max-w-full ${showMobileRail ? "lg:col-start-1 lg:row-start-1 lg:justify-self-center" : ""}`}>
-            <div className="flex min-w-0 flex-col border-y border-hairline bg-white p-1.5 shadow-elev-1 lg:rounded-full lg:border">
+            <div className="flex min-w-0 flex-col border-b border-hairline bg-white px-1.5 py-3 shadow-elev-1 lg:rounded-full lg:border lg:p-1.5">
               <div className="flex min-w-0 items-center overflow-x-auto hide-scrollbar lg:overflow-visible">
                 <div
                   aria-hidden={!isDesktopSticky}
@@ -254,7 +265,7 @@ export default function StickyRestaurantBar({
                     <span className="h-6 w-px shrink-0 bg-slate-200" aria-hidden="true" />
                   </div>
                 </div>
-                {secondaryNavLeading ? <div className={`shrink-0 ${hideSecondaryNav ? "" : "mr-2"}`}>{secondaryNavLeading}</div> : null}
+                {secondaryNavLeading ? <div className={`hidden shrink-0 lg:block ${hideSecondaryNav ? "" : "mr-2"}`}>{secondaryNavLeading}</div> : null}
                 {hideSecondaryNav ? null : (
                   <div className={`min-w-0 lg:flex lg:items-center ${secondaryNavLeading ? "lg:ml-auto" : "flex-1"}`}>
                     <ControlsRow
@@ -274,9 +285,9 @@ export default function StickyRestaurantBar({
                       isRankingView={isRankingView}
                       hideViewSelector={hideViewSelector}
                       hideIngredientsView={hideIngredientsView}
-                      onMobileDrawerOpenReady={hideMobileControls ? undefined : handleMobileDrawerOpenReady}
-                      onMobileFiltersDrawerOpenReady={hideMobileControls ? undefined : onEditFiltersDrawerReady}
-                      onMobileDrawerOpenChange={hideMobileControls ? undefined : setIsControlsDrawerOpen}
+                      onMobileDrawerOpenReady={mobileControlsEnabled ? handleMobileDrawerOpenReady : undefined}
+                      onMobileFiltersDrawerOpenReady={mobileControlsEnabled ? onEditFiltersDrawerReady : undefined}
+                      onMobileDrawerOpenChange={mobileControlsEnabled ? setIsControlsDrawerOpen : undefined}
                       mobileEntreeOptions={mobileEntreeOptions}
                       mobileDrawerHeaderTitle={restaurantName}
                       mobileDrawerHeaderLogoSrc={restaurantLogo}
@@ -284,7 +295,7 @@ export default function StickyRestaurantBar({
                       resultLayout={resultLayout}
                       onResultLayoutChange={onResultLayoutChange}
                       showMobileTrigger={!hideMobileControls && showMobileControlsTrigger}
-                      renderMobileDrawer={!hideMobileControls}
+                      renderMobileDrawer={mobileControlsEnabled}
                       filterRankingCategories={filterRankingCategories}
                       showInlineMobileControls={showMobileRail}
                     />
@@ -296,12 +307,6 @@ export default function StickyRestaurantBar({
         </div>
       ) : null}
 
-      <MobileNavDrawer
-        isOpen={isBrowseDrawerOpen}
-        onClose={() => setIsBrowseDrawerOpen(false)}
-        headerTitle={restaurantName}
-        headerLogoSrc={restaurantLogo}
-      />
     </>
   );
 }

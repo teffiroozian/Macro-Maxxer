@@ -42,7 +42,7 @@ export default function GlobalMobileNav({
   useEffect(() => {
     const element = navRef.current;
     if (!element || !onHeightChange) return;
-    const measure = () => onHeightChange(Math.ceil(element.getBoundingClientRect().height));
+    const measure = () => onHeightChange(element.getBoundingClientRect().height);
     measure();
     const observer = new ResizeObserver(measure);
     observer.observe(element);

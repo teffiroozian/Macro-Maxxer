@@ -1,5 +1,8 @@
 "use client";
 
+import EntreeOptions from "@/components/controls/EntreeOptions";
+import ViewportMenu from "@/components/controls/ViewportMenu";
+
 import {
   useCallback,
   useEffect,
@@ -11,7 +14,6 @@ import {
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import Image from "@/components/ui/AppImage";
 import RestaurantItemImage from "@/components/ui/RestaurantItemImage";
-import { selectableRowClassName } from "@/components/ui/selectableRow";
 import { getRestaurantImagePresentation } from "@/lib/restaurantPresentation";
 import { getCartItemImagePresentation } from "@/lib/cart/cartItemLookup";
 import {
@@ -21,7 +23,6 @@ import {
   LayoutGrid,
   Shrink,
   ShoppingCart,
-  UtensilsCrossed,
 } from "lucide-react";
 import type {
   IngredientItem,
@@ -321,9 +322,10 @@ export default function ChipotleRestaurantBuilderView({
   const [viewBuildExcludedIngredientIds, setViewBuildExcludedIngredientIds] =
     useState<Set<string>>(() => new Set());
   const [resultLayout, setResultLayout] = useState<"list" | "grid">("list");
-  const buildStickyContainerRef = useRef<HTMLDivElement | null>(null);
   const buildCustomizationModalScrollRef = useRef<HTMLDivElement | null>(null);
   const entreeMenuRef = useRef<HTMLDivElement | null>(null);
+  const entreeAnchorRef = useRef<HTMLButtonElement | null>(null);
+  const entreePopoverRef = useRef<HTMLDivElement | null>(null);
   const initialBuilderNavState = isChipotleBuildPage
     ? parseChipotleBuilderNavState(searchParams, entreeOptions, ALL_INGREDIENTS_FILTER_ID)
     : {
@@ -2320,13 +2322,10 @@ export default function ChipotleRestaurantBuilderView({
   // panel (committing any pending zero-quantity removals, same as any other
   // close path) and scroll the main builder to that category, exactly like
   // clicking it in the category sidebar.
-  const handleCategoryNavigate = useCallback(
-    (categoryKey: string) => {
-      closeBuildSummary();
-      handleCategorySelect(categoryKey);
-    },
-    [closeBuildSummary, handleCategorySelect],
-  );
+  const handleCategoryNavigate = (categoryKey: string) => {
+    closeBuildSummary();
+    handleCategorySelect(categoryKey);
+  };
 
   // Shared by the ingredient list's portion pills and View Build's inline
   // portion control — kept as a single implementation so both surfaces
@@ -2697,35 +2696,12 @@ export default function ChipotleRestaurantBuilderView({
   );
 
   useEffect(() => {
-    if (!isBuildSummaryExpanded) return;
-
-    const handlePointerDown = (event: MouseEvent | TouchEvent) => {
-      const target = event.target;
-      if (!(target instanceof Node)) return;
-
-      if (buildStickyContainerRef.current?.contains(target)) {
-        return;
-      }
-
-      closeBuildSummary();
-    };
-
-    document.addEventListener("mousedown", handlePointerDown);
-    document.addEventListener("touchstart", handlePointerDown);
-
-    return () => {
-      document.removeEventListener("mousedown", handlePointerDown);
-      document.removeEventListener("touchstart", handlePointerDown);
-    };
-  }, [closeBuildSummary, isBuildSummaryExpanded]);
-
-  useEffect(() => {
     if (!isEntreeMenuOpen) return;
 
     const handlePointerDown = (event: MouseEvent) => {
       const target = event.target;
       if (!(target instanceof Node)) return;
-      if (entreeMenuRef.current?.contains(target)) return;
+      if (entreeMenuRef.current?.contains(target) || entreePopoverRef.current?.contains(target)) return;
       setIsEntreeMenuOpen(false);
     };
 
@@ -3174,108 +3150,6 @@ export default function ChipotleRestaurantBuilderView({
     );
   }
 
-  const entreeSelectionControl =
-    isChipotleBuildPage && (selectedEntree !== null || isViewingAllIngredients) ? (
-      <div className="flex shrink-0 items-center gap-2.5">
-        <div ref={entreeMenuRef} className="relative">
-        <button
-          type="button"
-          onClick={() => setIsEntreeMenuOpen((prev) => !prev)}
-          className="cursor-pointer inline-flex h-10 items-center gap-2 whitespace-nowrap rounded-full border border-black/20 bg-white px-4 text-sm font-semibold text-black/90 transition-colors duration-150 hover:border-black/30 focus-ring"
-          aria-label="Select entrée"
-          aria-haspopup="menu"
-          aria-expanded={isEntreeMenuOpen}
-        >
-          {/* isViewingAllIngredients always wins here even when
-              selectedEntree still holds whatever entree was last active in
-              the builder (e.g. the user got here via "View All Ingredients"
-              from a Bowl build) — this control must read as its own
-              neutral context, never as if the list were still scoped to
-              that entree. */}
-          {!isViewingAllIngredients && selectedEntree !== null ? (
-            <span className="relative h-6 w-6 shrink-0 overflow-hidden rounded-full border border-slate-200 bg-white">
-              <Image
-                src={entreeOptions[selectedEntree]?.image ?? ""}
-                alt={entreeOptions[selectedEntree]?.label ?? selectedEntree}
-                fill
-                className="object-cover"
-              />
-            </span>
-          ) : (
-            <LayoutGrid className="h-4 w-4 shrink-0 text-slate-500" strokeWidth={2.2} />
-          )}
-          {!isViewingAllIngredients && selectedEntree !== null
-            ? (entreeOptions[selectedEntree]?.label ?? selectedEntree)
-            : "View All Ingredients"}
-          <ChevronDown className="h-4 w-4" strokeWidth={2.5} />
-        </button>
-
-        {isEntreeMenuOpen ? (
-          <div
-            role="menu"
-            className="absolute left-0 top-[calc(100%+8px)] z-20 w-[260px] rounded-[14px] border border-black/15 bg-white p-2 shadow-elev-3"
-          >
-            <div className="grid gap-1">
-              <button
-                type="button"
-                onClick={() => {
-                  setIsEntreeMenuOpen(false);
-                  handleGoToEntreeChooser();
-                }}
-                className="cursor-pointer inline-flex items-center gap-2 rounded-[10px] px-2.5 py-2 text-left font-semibold text-black/88 transition-colors duration-100 hover:bg-slate-900/5"
-              >
-                <UtensilsCrossed
-                  className="h-4 w-4 shrink-0"
-                  strokeWidth={2.2}
-                />
-                <span>Choose entrée</span>
-              </button>
-              {Object.entries(entreeOptions).map(([entreeKey, entree]) => {
-                if (!isChipotleEntreeId(entreeKey)) {
-                  return null;
-                }
-
-                const isActive = entreeKey === selectedEntree && !isViewingAllIngredients;
-                return (
-                  <button
-                    key={entreeKey}
-                    type="button"
-                    onClick={() => {
-                      handleEntreeSelection(entreeKey);
-                      setIsEntreeMenuOpen(false);
-                    }}
-                    className={selectableRowClassName({ active: isActive, className: "inline-flex py-2" })}
-                  >
-                    <span className="relative h-6 w-6 shrink-0 overflow-hidden rounded-full border border-slate-200 bg-white">
-                      <Image
-                        src={entree.image}
-                        alt={entree.label}
-                        fill
-                        className="object-cover"
-                      />
-                    </span>
-                    <span>{entree.label}</span>
-                  </button>
-                );
-              })}
-              {/* Utility action, not another entrée — separated from the
-                  real options above by a divider. */}
-              <div className="my-1 border-t border-black/10" aria-hidden="true" />
-              <button
-                type="button"
-                onClick={handleViewAllIngredientsSelection}
-                className={selectableRowClassName({ active: isViewingAllIngredients, className: "inline-flex py-2" })}
-              >
-                <LayoutGrid className="h-4 w-4 shrink-0" strokeWidth={2.2} />
-                <span>View All Ingredients</span>
-              </button>
-            </div>
-          </div>
-        ) : null}
-        </div>
-      </div>
-    ) : null;
-
   const mobileEntreeOptions =
     isChipotleBuildPage && (selectedEntree !== null || isViewingAllIngredients)
       ? [
@@ -3310,8 +3184,54 @@ export default function ChipotleRestaurantBuilderView({
         ]
       : [];
 
+
+  const entreeSelectionControl =
+    isChipotleBuildPage && (selectedEntree !== null || isViewingAllIngredients) ? (
+      <div className="hidden shrink-0 items-center gap-2.5 lg:flex">
+        <div ref={entreeMenuRef} className="relative">
+        <button
+          ref={entreeAnchorRef}
+          type="button"
+          onClick={() => setIsEntreeMenuOpen((prev) => !prev)}
+          className="cursor-pointer inline-flex h-10 items-center gap-2 whitespace-nowrap rounded-full border border-black/20 bg-white px-4 text-sm font-semibold text-black/90 transition-colors duration-150 hover:border-black/30 focus-ring"
+          aria-label="Select entrée"
+          aria-haspopup="menu"
+          aria-expanded={isEntreeMenuOpen}
+        >
+          {/* isViewingAllIngredients always wins here even when
+              selectedEntree still holds whatever entree was last active in
+              the builder (e.g. the user got here via "View All Ingredients"
+              from a Bowl build) — this control must read as its own
+              neutral context, never as if the list were still scoped to
+              that entree. */}
+          {!isViewingAllIngredients && selectedEntree !== null ? (
+            <span className="relative h-6 w-6 shrink-0 overflow-hidden rounded-full border border-slate-200 bg-white">
+              <Image
+                src={entreeOptions[selectedEntree]?.image ?? ""}
+                alt={entreeOptions[selectedEntree]?.label ?? selectedEntree}
+                fill
+                className="object-cover"
+              />
+            </span>
+          ) : (
+            <LayoutGrid className="h-4 w-4 shrink-0 text-slate-500" strokeWidth={2.2} />
+          )}
+          {!isViewingAllIngredients && selectedEntree !== null
+            ? (entreeOptions[selectedEntree]?.label ?? selectedEntree)
+            : "View All Ingredients"}
+          <ChevronDown className="h-4 w-4" strokeWidth={2.5} />
+        </button>
+
+        <ViewportMenu open={isEntreeMenuOpen} anchorRef={entreeAnchorRef} menuRef={entreePopoverRef} width={260} label="Select entrée" onKeyDown={(event) => { if (event.key === "Escape") { setIsEntreeMenuOpen(false); entreeAnchorRef.current?.focus(); } }}>
+          <EntreeOptions options={mobileEntreeOptions} onSelect={() => setIsEntreeMenuOpen(false)} />
+        </ViewportMenu>
+        </div>
+      </div>
+    ) : null;
+
+
   return (
-    <div className="grid gap-y-[var(--restaurant-controls-gap)] pt-[var(--restaurant-controls-gap)]">
+    <div className="grid gap-y-[var(--restaurant-controls-gap)] pt-0 lg:pt-[var(--restaurant-controls-gap)]">
       <StickyRestaurantBar
         restaurantId={restaurantId}
         restaurantName={restaurantName}
@@ -3751,7 +3671,7 @@ export default function ChipotleRestaurantBuilderView({
         // reappears exactly as it was once the sheet is dismissed. Desktop
         // (`lg:` and up) uses the popover presentation instead, which never
         // overlaps the footer, so it's left unaffected.
-        <div ref={buildStickyContainerRef} className={isJustAddedSheetOpen ? "hidden lg:block" : undefined}>
+        <div className={isJustAddedSheetOpen ? "hidden lg:block" : undefined}>
           <StickyMacroTotalsBar
             totals={viewBuildDisplayTotals}
             secondaryActionLabel="View Selected"
@@ -3781,6 +3701,7 @@ export default function ChipotleRestaurantBuilderView({
                 excludedIngredientIds={viewBuildExcludedIngredientIds}
                 onToggleExcludeIngredient={handleToggleExcludeIngredientInBuildSummary}
                 onRemoveIngredient={handleRemoveIngredientFromBuildSummary}
+                onClose={closeBuildSummary}
                 variant="panel"
               />
             }

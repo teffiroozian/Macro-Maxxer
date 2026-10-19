@@ -1,8 +1,8 @@
 "use client";
 
-import { useEffect, useRef, useMemo, useState, type CSSProperties } from "react";
+import { useEffect, useRef, useMemo, useState, type ReactNode, type CSSProperties } from "react";
 import { Check, Minus, ChevronDown, Coffee, Cookie, Leaf, GlassWater, Droplets, CupSoda, Grid2X2, SlidersHorizontal, Soup, UtensilsCrossed, Users, X, Zap, type LucideIcon } from "lucide-react";
-import { getNutritionControlData, reconcileNutritionThresholds } from "@/lib/menuSections/nutritionPresets";
+import { getMobileProteinShortcuts, getNutritionControlData, reconcileNutritionThresholds } from "@/lib/menuSections/nutritionPresets";
 import { getVariantSettings, countVariantSettingsChanges, VARIANT_FILTER_DEFAULTS, type Filters, type VariantSettings } from "@/lib/menuSections/filterOptions";
 import type { MenuItem } from "@/types/menu";
 import { getNutritionHistogramBinInclusion, buildNutritionHistogram } from "@/lib/menuSections/nutritionDisplayRange";
@@ -30,8 +30,8 @@ function CategoryCheckbox({ state, onChange }: { state: CategorySelectionState; 
   </>;
 }
 
-function SectionHeader({ title, summary, open, onClick }: { title: string; summary: string; open: boolean; onClick: () => void }) {
-  return <button type="button" onClick={onClick} className="flex min-h-16 w-full cursor-pointer items-center gap-4 py-1 text-left">
+export function SectionHeader({ title, summary, open, onClick }: { title: string; summary: string; open: boolean; onClick: () => void }) {
+  return <button type="button" aria-expanded={open} onClick={onClick} className="flex min-h-16 w-full cursor-pointer items-center gap-4 py-1 text-left">
     <span className="font-heading text-xl font-bold text-slate-950 sm:text-[22px]">{title}</span>
     <span className="ml-auto text-[13px] font-medium text-slate-500">{summary}</span>
     <ChevronDown className={`h-4 w-4 shrink-0 text-slate-400 transition-transform ${open ? "rotate-180" : ""}`} strokeWidth={2.4} />
@@ -52,7 +52,7 @@ function NutritionSlider({ label, displayValue, value, bounds, values, color, pr
   const resolved = Math.min(bounds.max, Math.max(bounds.min, value ?? bounds[anyAt]));
   const fill = ((resolved - bounds.min) / Math.max(1, bounds.max - bounds.min)) * 100;
   return <div className="py-5">
-    <div className="mb-4 flex items-baseline justify-between gap-4"><h4 className="text-[15px] font-bold text-slate-950">{label}</h4><span className="text-sm font-semibold text-slate-600">{displayValue}</span></div>
+    <div className="mb-4 flex items-baseline justify-between gap-4"><h4 className="text-[15px] font-bold text-slate-950">{label}</h4><span className="text-sm font-semibold text-slate-600">{displayValue}</span><button type="button" onClick={() => onChange(undefined)} className="min-h-10 text-xs font-semibold text-slate-500">Reset</button></div>
     <div className="mx-auto max-w-[560px]">
       <Histogram values={values} bounds={bounds} color={color} threshold={value} minimum={anyAt === "min"} />
       <input type="range" min={bounds.min} max={bounds.max} step={step} value={resolved} aria-valuetext={displayValue} onChange={(event) => onChange(Number(event.target.value))} className={`nutrition-range mt-2 ${anyAt === "min" ? "minimum" : ""}`} style={{ "--range-color": color.startsWith("bg-[") ? color.slice(4, -1) : "#0f172a", "--range-fill-percent": `${fill}%` } as CSSProperties} aria-label={label} />
@@ -74,7 +74,8 @@ function CompactSlider({ label, value, max, unit, kind, color, onChange }: { lab
   </div>;
 }
 
-export default function RestaurantFiltersPanel({ restaurantId, items, value, onChange, onClose, onApply, matchingCount, resultContext }: { restaurantId: string; items: MenuItem[]; value: Filters; onChange: (filters: Filters) => void; onClose: () => void; onApply: () => void; matchingCount: number; resultContext?: MenuResultContext }) {
+export default function RestaurantFiltersPanel({ restaurantId, items, value, onChange, onClose, onApply, matchingCount, resultContext, focus = "all", leadingControls, showVariants = true, onReset, headerControls, isMobileSheet = false }: { focus?: "all" | "rank" | "categories" | "nutrition" | "calories" | "protein" | "variants" | "entree" | "size"; isMobileSheet?: boolean; leadingControls?: ReactNode; headerControls?: ReactNode; showVariants?: boolean; onReset?: () => void; restaurantId: string; items: MenuItem[]; value: Filters; onChange: (filters: Filters) => void; onClose: () => void; onApply: () => void; matchingCount: number; resultContext?: MenuResultContext }) {
+  const dragStartY = useRef<number | null>(null);
   const isChipotle = restaurantId === "chipotle";
   const [menuOpen, setMenuOpen] = useState(true);
   const [variantsOpen, setVariantsOpen] = useState(true);
@@ -125,18 +126,57 @@ export default function RestaurantFiltersPanel({ restaurantId, items, value, onC
     { label: "Elite", value: 12, tier: "elite", caption: "12+", border: PROTEIN_SCORE_COLOR },
   ] as const;
 
+  const moreNutritionControls = <div className="pb-6"><CompactSlider label="Max carbs" value={value.carbsMax} max={200} unit="g" kind="max" color="#CA8A04" onChange={(next) => onChange({...value,carbsMax:next})}/><CompactSlider label="Max fat" value={value.fatMax} max={100} unit="g" kind="max" color="#2563EB" onChange={(next) => onChange({...value,fatMax:next})}/><CompactSlider label="Min fiber" value={value.fiberMin} max={30} unit="g" kind="min" color={FIBER_COLOR} onChange={(next) => onChange({...value,fiberMin:next})}/><CompactSlider label="Max sodium" value={value.sodiumMax} max={3000} unit="mg" kind="max" color="#64748B" onChange={(next) => onChange({...value,sodiumMax:next})}/><CompactSlider label="Max sugar" value={value.sugarMax} max={100} unit="g" kind="max" color="#BE185D" onChange={(next) => onChange({...value,sugarMax:next})}/></div>;
+
+  const title = ({ all: "Filters", rank: "Rank By", categories: isMobileSheet ? "Categories" : "Menu / Categories", nutrition: "Nutrition", calories: "Calories", protein: "Protein", variants: "Variants", entree: "Entree", size: "Size" })[focus];
+  const show = (...sections: string[]) => focus === "all" || sections.includes(focus);
+  const variantsSection = !isChipotle && (showVariants && show("variants") ? <section className={focus === "all" ? "border-t border-slate-200" : ""}>
+        {focus === "all" ? <SectionHeader title="Variants" summary={variantChanges ? "Custom" : "Default"} open={variantsOpen} onClick={() => setVariantsOpen(!variantsOpen)} /> : null}
+        {focus !== "all" || variantsOpen ? <div className="pb-5">
+          <div className="divide-y divide-slate-100">
+            {([
+              { key: "showServingSizeVariants", title: "Show different serving sizes", description: "Show different serving sizes and counts as separate ranking results.", example: "Example: 8 ct nuggets vs 12 ct nuggets" },
+              { key: "showRecipeVariants", title: "Show different flavors", description: "Show different flavors, proteins, or recipe versions as separate ranking results.", example: "Example: Cobb Salad with Nuggets vs Cobb Salad with Chick-n-Strips" },
+              { key: "separateSizesInProteinScore", title: "Separate sizes in Protein Score", description: "Show serving sizes separately even when their Protein Score is similar.", example: "Example: Protein Score for 5 ct nuggets vs 12 ct nuggets" },
+            ] satisfies Array<{ key: keyof VariantSettings; title: string; description: string; example: string }>).map((option) => (
+              <button key={option.key} type="button" role="switch" aria-checked={variantSettings[option.key]} aria-labelledby={`variant-title-${option.key}`} aria-describedby={`variant-description-${option.key}`} onClick={() => onChange({ ...value, [option.key]: !variantSettings[option.key] })} className="flex w-full cursor-pointer items-center gap-4 py-4 text-left focus-ring">
+                <span className="min-w-0 flex-1">
+                  <span id={`variant-title-${option.key}`} className="text-[15px] font-bold text-slate-950">{option.title}</span>
+                  <span id={`variant-description-${option.key}`} className="mt-1 block text-sm leading-5 text-slate-500">{option.description}</span>
+                  <span className="mt-1 block text-xs italic leading-5 text-slate-400">{option.example}</span>
+                </span>
+                <span aria-hidden="true" className={`relative h-6 w-11 shrink-0 rounded-full transition-colors ${variantSettings[option.key] ? "bg-[#047857]" : "bg-slate-200"}`}>
+                  <span className={`absolute left-0.5 top-0.5 h-5 w-5 rounded-full bg-white shadow-sm transition-transform ${variantSettings[option.key] ? "translate-x-5" : "translate-x-0"}`} />
+                </span>
+              </button>
+            ))}
+          </div>
+          <button type="button" onClick={() => onChange({ ...value, ...VARIANT_FILTER_DEFAULTS })} className="min-h-8 cursor-pointer text-xs font-semibold text-slate-500 hover:text-slate-900 focus-ring">Restore defaults</button>
+        </div> : null}
+      </section> : null);
+
   return <div className="flex max-h-[calc(100dvh-2rem)] w-full flex-col overflow-hidden rounded-[28px] bg-white shadow-[0_24px_70px_rgba(15,23,42,.25)] sm:max-h-[calc(100dvh-3rem)]">
-    <header className="flex shrink-0 items-center px-5 pb-2 pt-5 sm:px-8"><h2 className="font-heading text-2xl font-bold">Filters</h2>{activeCount ? <span className="ml-2 inline-flex h-5 min-w-5 items-center justify-center rounded-full bg-[#047857] px-1.5 text-xs font-bold text-white">{activeCount}</span> : null}<button type="button" onClick={onClose} aria-label="Close filters" className="ml-auto flex h-9 w-9 cursor-pointer items-center justify-center rounded-full bg-slate-100 text-slate-500 hover:bg-slate-200"><X className="h-4 w-4" /></button></header>
+    <div className="flex h-6 shrink-0 touch-none items-center justify-center lg:hidden" aria-hidden="true" onPointerDown={(event) => { dragStartY.current = event.clientY; event.currentTarget.setPointerCapture(event.pointerId); }} onPointerUp={(event) => { if (dragStartY.current !== null && event.clientY - dragStartY.current > 50) onClose(); dragStartY.current = null; }} onPointerCancel={() => { dragStartY.current = null; }}><span className="h-1 w-10 rounded-full bg-slate-300" /></div>
+    <header className="flex shrink-0 items-center px-5 pb-2 pt-5 sm:px-8">
+      <h2 className="font-heading text-2xl font-bold">{title}</h2>
+      {activeCount && !headerControls ? <span className="ml-2 inline-flex h-5 min-w-5 items-center justify-center rounded-full bg-[#047857] px-1.5 text-xs font-bold text-white">{activeCount}</span> : null}
+      <div className="ml-auto flex items-center gap-2">
+        {headerControls}
+        <button type="button" onClick={onClose} aria-label="Close filters" className="flex h-9 w-9 cursor-pointer items-center justify-center rounded-full bg-slate-100 text-slate-500 hover:bg-slate-200"><X className="h-4 w-4" /></button>
+      </div>
+    </header>
     <div className="min-h-0 overflow-y-auto overscroll-contain px-5 sm:px-8 xl:overflow-y-auto">
+      {leadingControls}
       {!isChipotle ? <>
+      {show("categories") ? <>
       <section>
-        <SectionHeader
-          title="Categories"
+        {focus === "all" ? <SectionHeader
+          title={isMobileSheet ? "Categories" : "Menu / Categories"}
           summary={`${isCustomCategorySelection ? "Custom" : matchingCategoryPreset?.label} · ${selectedItemCount} item${selectedItemCount === 1 ? "" : "s"}`}
           open={menuOpen}
           onClick={() => setMenuOpen(!menuOpen)}
-        />
-        {menuOpen ? <div className="pb-6">
+        /> : null}
+        {focus !== "all" || menuOpen ? <div className="pb-6">
           <div className="flex flex-wrap gap-2">
             {categoryPresets.map((preset) => {
               const active = matchingCategoryPreset?.id === preset.id;
@@ -189,35 +229,13 @@ export default function RestaurantFiltersPanel({ restaurantId, items, value, onC
           </div>
         </div> : null}
       </section>
-      <section className="border-t border-slate-200">
-        <SectionHeader title="Variants" summary={variantChanges ? "Custom" : "Default"} open={variantsOpen} onClick={() => setVariantsOpen(!variantsOpen)} />
-        {variantsOpen ? <div className="pb-5">
-          <div className="divide-y divide-slate-100">
-            {([
-              { key: "showServingSizeVariants", title: "Show different serving sizes", description: "Show different serving sizes and counts as separate ranking results.", example: "Example: 8 ct nuggets vs 12 ct nuggets" },
-              { key: "showRecipeVariants", title: "Show different flavors", description: "Show different flavors, proteins, or recipe versions as separate ranking results.", example: "Example: Cobb Salad with Nuggets vs Cobb Salad with Chick-n-Strips" },
-              { key: "separateSizesInProteinScore", title: "Separate sizes in Protein Score", description: "Show serving sizes separately even when their Protein Score is similar.", example: "Example: Protein Score for 5 ct nuggets vs 12 ct nuggets" },
-            ] satisfies Array<{ key: keyof VariantSettings; title: string; description: string; example: string }>).map((option) => (
-              <button key={option.key} type="button" role="switch" aria-checked={variantSettings[option.key]} aria-labelledby={`variant-title-${option.key}`} aria-describedby={`variant-description-${option.key}`} onClick={() => onChange({ ...value, [option.key]: !variantSettings[option.key] })} className="flex w-full cursor-pointer items-center gap-4 py-4 text-left focus-ring">
-                <span className="min-w-0 flex-1">
-                  <span id={`variant-title-${option.key}`} className="text-[15px] font-bold text-slate-950">{option.title}</span>
-                  <span id={`variant-description-${option.key}`} className="mt-1 block text-sm leading-5 text-slate-500">{option.description}</span>
-                  <span className="mt-1 block text-xs italic leading-5 text-slate-400">{option.example}</span>
-                </span>
-                <span aria-hidden="true" className={`relative h-6 w-11 shrink-0 rounded-full transition-colors ${variantSettings[option.key] ? "bg-[#047857]" : "bg-slate-200"}`}>
-                  <span className={`absolute left-0.5 top-0.5 h-5 w-5 rounded-full bg-white shadow-sm transition-transform ${variantSettings[option.key] ? "translate-x-5" : "translate-x-0"}`} />
-                </span>
-              </button>
-            ))}
-          </div>
-          <button type="button" onClick={() => onChange({ ...value, ...VARIANT_FILTER_DEFAULTS })} className="min-h-8 cursor-pointer text-xs font-semibold text-slate-500 hover:text-slate-900 focus-ring">Restore defaults</button>
-        </div> : null}
-      </section>
       </> : null}
-      <section className={isChipotle ? "" : "border-t border-slate-200"}><SectionHeader title="Nutrition" summary={nutritionCount ? `${nutritionCount} set` : "Any"} open={nutritionOpen} onClick={() => setNutritionOpen(!nutritionOpen)} />{nutritionOpen ? <div className="divide-y divide-slate-100 pb-3">
-        <NutritionSlider label="Max calories" displayValue={value.caloriesMax === undefined ? "Any" : `Under ${value.caloriesMax} cal`} value={value.caloriesMax} bounds={calorieBounds} values={calories} color="bg-[#111318]" anyAt="max" step={10} onChange={(next) => onChange({ ...value, caloriesMax: next })} presets={caloriePresets} />
-        <NutritionSlider label="Min protein" displayValue={value.proteinMin === undefined ? "Any" : `${value.proteinMin}g+`} value={value.proteinMin} bounds={proteinBounds} values={proteins} color="bg-[#C2410C]" anyAt="min" step={1} onChange={(next) => onChange({ ...value, proteinMin: next === proteinBounds.min ? undefined : next })} presets={proteinPresets} />
-        <div className="py-5"><div className="mb-4 flex items-baseline justify-between"><h4 className="text-[15px] font-bold text-slate-950">Min Protein Score</h4><span className="text-sm font-semibold text-slate-500">{value.proteinScoreMin === undefined ? "Any" : `${value.proteinScoreMin}+`}</span></div><div className="grid grid-cols-4 gap-3">{proteinTiers.map((option) => { const active = value.proteinScoreMin === option.value; return <button key={option.label} type="button" onClick={() => onChange({ ...value, proteinScoreMin: option.value })} style={active ? { borderColor: option.border } : undefined} className={`min-h-[88px] cursor-pointer rounded-[14px] border p-2.5 text-center transition ${active ? "bg-slate-50 shadow-sm" : "border-slate-200 bg-white hover:border-slate-300"}`}><span className={`mx-auto mb-2 flex h-6 w-6 items-center justify-center rounded-full ${proteinScoreTierStyles[option.tier].iconWrap}`}><Zap className={`h-3.5 w-3.5 ${proteinScoreTierStyles[option.tier].icon}`} fill="currentColor" /></span><span className={`block text-xs font-bold ${proteinScoreTierStyles[option.tier].value}`}>{option.label}</span><span className="mt-0.5 block text-[10px] font-medium text-slate-500">{option.caption}</span></button>; })}</div></div>
+      {!isMobileSheet ? variantsSection : null}
+      </> : null}
+      {show("nutrition", "calories", "protein") ? <section className={isChipotle || focus !== "all" ? "" : "border-t border-slate-200"}>{focus === "all" ? <SectionHeader title="Nutrition" summary={(nutritionCount + (isMobileSheet ? moreCount : 0)) ? `${nutritionCount + (isMobileSheet ? moreCount : 0)} set` : "Any"} open={nutritionOpen} onClick={() => setNutritionOpen(!nutritionOpen)} /> : null}{focus !== "all" || nutritionOpen ? <div className="divide-y divide-slate-100 pb-3">
+        {focus !== "protein" ? <NutritionSlider label="Max calories" displayValue={value.caloriesMax === undefined ? "Any" : `Under ${value.caloriesMax} cal`} value={value.caloriesMax} bounds={calorieBounds} values={calories} color="bg-[#111318]" anyAt="max" step={10} onChange={(next) => onChange({ ...value, caloriesMax: next })} presets={caloriePresets} /> : null}
+        {focus !== "calories" ? <NutritionSlider label="Min protein" displayValue={value.proteinMin === undefined ? "Any" : `${value.proteinMin}g+`} value={value.proteinMin} bounds={proteinBounds} values={proteins} color="bg-[#C2410C]" anyAt="min" step={1} onChange={(next) => onChange({ ...value, proteinMin: next === proteinBounds.min ? undefined : next })} presets={isMobileSheet ? getMobileProteinShortcuts(nutritionData.maxProtein, proteinBounds.max) : proteinPresets} /> : null}
+        {focus !== "calories" && focus !== "protein" ? <><div className="py-5"><div className="mb-4 flex items-baseline justify-between"><h4 className="text-[15px] font-bold text-slate-950">Min Protein Score</h4><span className="text-sm font-semibold text-slate-500">{value.proteinScoreMin === undefined ? "Any" : `${value.proteinScoreMin}+`}</span></div><div className="grid grid-cols-4 gap-3">{proteinTiers.map((option) => { const active = value.proteinScoreMin === option.value; return <button key={option.label} type="button" onClick={() => onChange({ ...value, proteinScoreMin: option.value })} style={active ? { borderColor: option.border } : undefined} className={`min-h-[88px] cursor-pointer rounded-[14px] border p-2.5 text-center transition ${active ? "bg-slate-50 shadow-sm" : "border-slate-200 bg-white hover:border-slate-300"}`}><span className={`mx-auto mb-2 flex h-6 w-6 items-center justify-center rounded-full ${proteinScoreTierStyles[option.tier].iconWrap}`}><Zap className={`h-3.5 w-3.5 ${proteinScoreTierStyles[option.tier].icon}`} fill="currentColor" /></span><span className={`block text-xs font-bold ${proteinScoreTierStyles[option.tier].value}`}>{option.label}</span><span className="mt-0.5 block text-[10px] font-medium text-slate-500">{option.caption}</span></button>; })}</div></div>
         <div className="py-4">
           <div id="card-display-label" className="mb-2 text-xs font-medium text-slate-500">Card display</div>
           <div role="radiogroup" aria-labelledby="card-display-label" className="divide-y divide-slate-200 overflow-hidden rounded-xl border border-slate-200 bg-white">
@@ -235,9 +253,19 @@ export default function RestaurantFiltersPanel({ restaurantId, items, value, onC
             })}
           </div>
         </div>
-        </div> : null}</section>
-      <section className="border-t border-slate-200"><SectionHeader title="More nutrition" summary={moreCount ? `${moreCount} set` : "Off"} open={moreOpen} onClick={() => setMoreOpen(!moreOpen)} />{moreOpen ? <div className="pb-6"><CompactSlider label="Max carbs" value={value.carbsMax} max={200} unit="g" kind="max" color="#CA8A04" onChange={(next) => onChange({...value,carbsMax:next})}/><CompactSlider label="Max fat" value={value.fatMax} max={100} unit="g" kind="max" color="#2563EB" onChange={(next) => onChange({...value,fatMax:next})}/><CompactSlider label="Min fiber" value={value.fiberMin} max={30} unit="g" kind="min" color={FIBER_COLOR} onChange={(next) => onChange({...value,fiberMin:next})}/><CompactSlider label="Max sodium" value={value.sodiumMax} max={3000} unit="mg" kind="max" color="#64748B" onChange={(next) => onChange({...value,sodiumMax:next})}/><CompactSlider label="Max sugar" value={value.sugarMax} max={100} unit="g" kind="max" color="#BE185D" onChange={(next) => onChange({...value,sugarMax:next})}/></div> : null}</section>
+        {isMobileSheet ? moreNutritionControls : null}
+        </> : null}</div> : null}</section> : null}
+      {!isMobileSheet && show("nutrition") ? <section className="border-t border-slate-200"><SectionHeader title="More nutrition" summary={moreCount ? `${moreCount} set` : "Off"} open={moreOpen} onClick={() => setMoreOpen(!moreOpen)} />{moreOpen ? moreNutritionControls : null}</section> : null}
+      {isMobileSheet ? variantsSection : null}
     </div>
-    <footer className="grid shrink-0 grid-cols-[120px_1fr] gap-3 border-t border-slate-200 bg-white p-4 sm:px-8"><AppButton variant="secondary" size="lg" onClick={() => { setBaseCategoryPresetId("main"); onChange(isChipotle ? {} : selectCategoryPreset({}, categoryPresets[0])); }}>Reset</AppButton><AppButton size="lg" disabled={!hasSelectedCategories} onClick={onApply}>Show {showItemCount} item{showItemCount === 1 ? "" : "s"}</AppButton></footer>
+    <footer className="grid shrink-0 grid-cols-[120px_1fr] gap-3 border-t border-slate-200 bg-white p-4 pb-[max(1rem,env(safe-area-inset-bottom))] sm:px-8"><AppButton variant="secondary" size="lg" onClick={() => {
+      if (onReset) { onReset(); return; }
+      if (focus === "calories") { onChange({ ...value, caloriesMax: undefined }); return; }
+      if (focus === "protein") { onChange({ ...value, proteinMin: undefined }); return; }
+      if (focus === "variants") { onChange({ ...value, ...VARIANT_FILTER_DEFAULTS }); return; }
+      if (focus === "nutrition") { onChange({ ...value, caloriesMax: undefined, proteinMin: undefined, proteinScoreMin: undefined, carbsMax: undefined, fatMax: undefined, fiberMin: undefined, sodiumMax: undefined, sugarMax: undefined }); return; }
+      setBaseCategoryPresetId("main");
+      onChange(isChipotle ? {} : selectCategoryPreset(focus === "categories" ? value : {}, categoryPresets[0]));
+    }}>Reset</AppButton><AppButton size="lg" disabled={!hasSelectedCategories} onClick={onApply}>Show {showItemCount} item{showItemCount === 1 ? "" : "s"}</AppButton></footer>
   </div>;
 }

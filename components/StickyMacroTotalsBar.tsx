@@ -1,5 +1,7 @@
 "use client";
 
+import { useSheetLayer } from "@/hooks/useSheetLayer";
+import { IS_CAPACITOR_BUILD } from "@/lib/buildTarget";
 import type { CartMacros } from "@/types/cart";
 import MacroTotalsGrid from "@/components/MacroTotalsGrid";
 import AppButton from "@/components/ui/AppButton";
@@ -276,14 +278,7 @@ export default function StickyMacroTotalsBar({
     setIsExpandedPanelEntered(false);
   }
 
-  useEffect(() => {
-    if (!wantsExpandedBuildPanel) return;
-
-    document.body.style.overflow = "hidden";
-    return () => {
-      document.body.style.overflow = "";
-    };
-  }, [wantsExpandedBuildPanel]);
+  useSheetLayer({ open: Boolean(wantsExpandedBuildPanel && visible && !inline && !isCartLayout), onClose: onSecondaryAction });
 
   // Enter (open): a single rAF isn't reliably enough here — it can still
   // land inside the same frame the browser was about to use for the first
@@ -477,10 +472,10 @@ export default function StickyMacroTotalsBar({
         aria-modal={isMobileSheetOpen ? true : undefined}
         aria-label={isMobileSheetOpen ? "Build summary" : undefined}
       >
-        <div className="relative flex max-h-[calc(100dvh-var(--safe-area-top))] flex-col overflow-hidden rounded-t-3xl border-t border-slate-200/70 bg-white shadow-[0_-8px_24px_rgba(0,0,0,0.14)]">
+        <div style={{ maxHeight: `min(90dvh, calc(100dvh - var(--safe-area-top) - ${IS_CAPACITOR_BUILD ? "var(--native-bottom-nav-height)" : "0px"}))` }} className={`relative flex flex-col overflow-hidden rounded-t-3xl border-t border-slate-200/70 bg-white shadow-[0_-8px_24px_rgba(0,0,0,0.14)] ${isMobileSheetOpen ? "h-[90dvh]" : ""}`}>
           <div
-            className={`overflow-hidden transition-[max-height] duration-300 ease-out ${
-              isMobileSheetOpen ? "max-h-[85dvh]" : "max-h-0"
+            className={`min-h-0 flex-1 overflow-hidden transition-[max-height] duration-300 ease-out ${
+              isMobileSheetOpen ? "max-h-[90dvh]" : "max-h-0"
             }`}
             // Content stays mounted (and visible) throughout the close
             // animation on purpose — see the note above — so `inert`
@@ -488,7 +483,7 @@ export default function StickyMacroTotalsBar({
             // order/accessibility tree while it's clipped to zero height.
             inert={!isMobileSheetOpen}
           >
-            <div className="h-[85dvh] min-h-0">{hasMobileDetailsEverOpened ? detailsContent : null}</div>
+            <div className="h-full min-h-0">{hasMobileDetailsEverOpened ? detailsContent : null}</div>
           </div>
           <div
             className={`shrink-0 px-4 pt-2 pb-[max(1rem,env(safe-area-inset-bottom))] ${

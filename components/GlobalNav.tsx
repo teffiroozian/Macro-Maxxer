@@ -1,11 +1,11 @@
 "use client";
 
 import { createContext, useContext, useEffect, useRef, useState, type CSSProperties, type ReactNode } from "react";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { Store } from "lucide-react";
 import DesktopNav from "@/components/DesktopNav";
 import GlobalMobileNav from "@/components/GlobalMobileNav";
-import MobileNavDrawer from "@/components/MobileNavDrawer";
+import { useBuildInProgressGuard } from "@/components/BuildInProgressGuardContext";
 import AppIconButton, { appIconButtonClassName } from "@/components/ui/AppIconButton";
 import CartIconDropdown from "@/components/cart/CartIconDropdown";
 import { IS_CAPACITOR_BUILD } from "@/lib/buildTarget";
@@ -29,14 +29,15 @@ export default function GlobalNav({ children }: { children: ReactNode }) {
   const [mobileVisibility, setMobileVisibility] = useState({ pathname, visible: true });
   const [mobileNavHeight, setMobileNavHeight] = useState(52);
   const [hideOnScroll, setHideOnScroll] = useState(false);
-  const [browseOpen, setBrowseOpen] = useState(false);
+  const router = useRouter();
+  const { guardNavigation } = useBuildInProgressGuard();
   const previousScroll = useRef(0);
   const direction = useRef<"up" | "down" | null>(null);
   const distance = useRef(0);
   const isRestaurant = pathname.startsWith("/restaurant/");
 
   useEffect(() => {
-    if (IS_CAPACITOR_BUILD || !hideOnScroll) return;
+    if (!hideOnScroll) return;
     previousScroll.current = window.scrollY;
     direction.current = null;
     distance.current = 0;
@@ -77,13 +78,12 @@ export default function GlobalNav({ children }: { children: ReactNode }) {
             visible={visible}
             onHeightChange={setMobileNavHeight}
             middleSlot={
-              <AppIconButton onClick={() => setBrowseOpen(true)} variant="nav" size="nav" active={browseOpen} aria-label="Browse restaurants">
+              <AppIconButton onClick={() => guardNavigation(() => router.push("/restaurants"))} variant="nav" size="nav" aria-label="Browse restaurants">
                 <Store className="h-4 w-4" strokeWidth={2.4} />
               </AppIconButton>
             }
             cartSlot={<CartIconDropdown variant="sheet" buttonClassName={appIconButtonClassName({ variant: "navSlate", size: "nav", className: "relative shrink-0" })} />}
           />
-          <MobileNavDrawer isOpen={browseOpen} onClose={() => setBrowseOpen(false)} />
         </>
       ) : null}
       {IS_CAPACITOR_BUILD || isRestaurant ? children : (

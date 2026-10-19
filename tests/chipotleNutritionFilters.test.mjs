@@ -28,6 +28,25 @@ test("only Chipotle hides Categories and Variants while preserving Nutrition", (
   assert.match(chipotle, /Max calories/);
   assert.match(chipotle, /Show 2 items/);
   const standard = render("chickfila");
-  assert.match(standard, />Categories</);
+  assert.match(standard, />Menu \/ Categories</);
   assert.match(standard, />Variants</);
+});
+
+test("focused sheets reuse nutrition controls and exclude unrelated sections", () => {
+  const render = (focus) => renderToStaticMarkup(React.createElement(Panel, {
+    restaurantId: "chickfila", items, value: { caloriesMax: 200, proteinMin: 10 }, matchingCount: 1, focus,
+    onChange() {}, onClose() {}, onApply() {},
+  }));
+  const calories = render("calories");
+  assert.match(calories, /Max calories/);
+  assert.doesNotMatch(calories, /Min protein|More nutrition|Show different serving sizes|Customize/);
+  assert.match(calories, /Show 1 item</);
+  const protein = render("protein");
+  assert.match(protein, /Min protein/);
+  assert.doesNotMatch(protein, /Max calories|Min Protein Score|Customize/);
+  const variants = render("variants");
+  assert.match(variants, /Show different serving sizes/);
+  assert.doesNotMatch(variants, /Max calories|Customize/);
+  const rank = render("rank");
+  assert.doesNotMatch(rank, /Max calories|Show different serving sizes|Customize/);
 });

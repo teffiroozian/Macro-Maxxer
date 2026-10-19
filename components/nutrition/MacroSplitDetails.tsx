@@ -1,6 +1,8 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useSheetLayer } from "@/hooks/useSheetLayer";
+
+import { useMemo, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { ChevronDown, X } from "lucide-react";
 import { gramMacroOrder, macroDisplayConfig, type MacroKey } from "@/components/nutrition/macroDisplay";
@@ -134,18 +136,7 @@ export default function MacroSplitDetails({
   const [selectedMacro, setSelectedMacro] = useState<GramMacroKey>("protein");
   const closeButtonRef = useRef<HTMLButtonElement>(null);
 
-  useEffect(() => {
-    if (!open) return;
-    const previousOverflow = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
-    const onKeyDown = (event: KeyboardEvent) => event.key === "Escape" && onClose();
-    window.addEventListener("keydown", onKeyDown);
-    requestAnimationFrame(() => closeButtonRef.current?.focus());
-    return () => {
-      document.body.style.overflow = previousOverflow;
-      window.removeEventListener("keydown", onKeyDown);
-    };
-  }, [open, onClose]);
+  useSheetLayer({ open, onClose, initialFocusRef: closeButtonRef });
 
   if (!open) return null;
 
@@ -166,6 +157,7 @@ export default function MacroSplitDetails({
       aria-modal="true"
       aria-labelledby="macro-split-title"
       onMouseDown={(event) => event.stopPropagation()}
+      onTouchStart={(event) => event.stopPropagation()}
       onClick={(event) => {
         event.stopPropagation();
         if (event.target === event.currentTarget) onClose();
