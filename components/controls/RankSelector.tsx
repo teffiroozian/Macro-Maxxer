@@ -4,6 +4,7 @@ import { Fragment, useEffect, useRef, useState, useSyncExternalStore } from "rea
 import { ArrowDown, ArrowUp, ChevronDown, Flame, Trophy, Wheat, Droplets, Drumstick } from "lucide-react";
 import { pillTriggerClassName } from "@/components/controls/pillButton";
 import { macroColorTokens } from "@/components/nutrition/macroColorTokens";
+import { proteinScoreColorTokens } from "@/components/nutrition/metricColors";
 import FiberIcon from "@/components/nutrition/FiberIcon";
 import ViewportMenu from "./ViewportMenu";
 import { getNaturalRankDirection, getRankState, toRankSort, type RankMetric, type SortOption, type RankDirection } from "@/lib/menuSections/sortOptions";
@@ -11,7 +12,7 @@ import { getNaturalRankDirection, getRankState, toRankSort, type RankMetric, typ
 const metrics: Array<{ metric: RankMetric; label: string; icon: typeof Trophy; color: string }> = [
   { metric: "protein", label: "Protein", icon: Drumstick, color: macroColorTokens.protein.valueClassName },
   { metric: "calories", label: "Calories", icon: Flame, color: macroColorTokens.calories.valueClassName },
-  { metric: "protein-score", label: "Protein Score", icon: Trophy, color: "text-[#6366F1]" },
+  { metric: "protein-score", label: "Protein Score", icon: Trophy, color: proteinScoreColorTokens.value },
   { metric: "carbs", label: "Carbs", icon: Wheat, color: macroColorTokens.carbs.valueClassName },
   { metric: "fat", label: "Fat", icon: Droplets, color: macroColorTokens.totalFat.valueClassName },
   { metric: "fiber", label: "Fiber", icon: FiberIcon, color: "text-[#047857]" },
@@ -36,7 +37,7 @@ export default function RankSelector({ value, isOpen, onOpenChange, onChange }: 
   const state = getRankState(value);
   const selected = metrics.find((option) => option.metric === state.metric) ?? metrics[0];
   const Icon = selected.icon;
-  const triggerIconColor = desktop ? selected.color : selected.metric === "protein-score" || selected.metric === "fiber" ? macroColorTokens.fiber.valueClassName : "text-slate-500";
+  const triggerIconColor = desktop || selected.metric === "protein-score" ? selected.color : selected.metric === "fiber" ? macroColorTokens.fiber.valueClassName : "text-slate-500";
   useEffect(() => {
     if (!isOpen) return;
     const close = (event: PointerEvent) => {
@@ -76,7 +77,7 @@ export default function RankSelector({ value, isOpen, onOpenChange, onChange }: 
       {metrics.map((option) => {
         const active = state.metric === option.metric;
         const OptionIcon = option.icon;
-        const iconColor = desktop ? option.color : option.metric === "calories" ? "text-black" : option.metric === "protein-score" || option.metric === "fiber" ? macroColorTokens.fiber.valueClassName : "text-slate-500";
+        const iconColor = desktop || option.metric === "protein-score" ? option.color : option.metric === "calories" ? "text-black" : option.metric === "fiber" ? macroColorTokens.fiber.valueClassName : "text-slate-500";
         const direction = active ? state.direction : getNaturalRankDirection(option.metric);
         const displayedDirection = desktop && isOpen && hoverDirection?.metric === option.metric ? hoverDirection.direction : direction;
         return <Fragment key={option.metric}>

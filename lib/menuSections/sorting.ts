@@ -109,7 +109,7 @@ function titleCase(text: string) {
 }
 
 function getSortNutrition(item: MenuItem) {
-  return getDefaultMenuItemNutrition(item);
+  return item.rankingNutrition ?? getDefaultMenuItemNutrition(item);
 }
 
 function compareNumericWithMissingLast(

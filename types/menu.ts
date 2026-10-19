@@ -278,6 +278,8 @@ export type MenuItem = {
   entreeGroup?: string;
 
   nutrition: Nutrition;
+  // Stable baseline for ingredient ranking while displayed portions change.
+  rankingNutrition?: Nutrition;
   source?: MenuSourceIdentity;
 
   ingredientRef?: string;

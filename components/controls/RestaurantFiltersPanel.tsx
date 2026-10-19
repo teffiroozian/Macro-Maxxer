@@ -75,6 +75,7 @@ function CompactSlider({ label, value, max, unit, kind, color, onChange }: { lab
 }
 
 export default function RestaurantFiltersPanel({ restaurantId, items, value, onChange, onClose, onApply, matchingCount, resultContext }: { restaurantId: string; items: MenuItem[]; value: Filters; onChange: (filters: Filters) => void; onClose: () => void; onApply: () => void; matchingCount: number; resultContext?: MenuResultContext }) {
+  const isChipotle = restaurantId === "chipotle";
   const [menuOpen, setMenuOpen] = useState(true);
   const [variantsOpen, setVariantsOpen] = useState(true);
   const [nutritionOpen, setNutritionOpen] = useState(true);
@@ -100,7 +101,7 @@ export default function RestaurantFiltersPanel({ restaurantId, items, value, onC
   const baseCategoryPreset = categoryPresets.find((preset) => preset.id === baseCategoryPresetId) ?? categoryPresets[0];
   const isCustomCategorySelection = !matchingCategoryPreset;
   const selectedSet = new Set(selected);
-  const hasSelectedCategories = selectedSet.size > 0 || Boolean(value.categoryTags?.length);
+  const hasSelectedCategories = isChipotle || selectedSet.size > 0 || Boolean(value.categoryTags?.length);
   const showItemCount = hasSelectedCategories ? matchingCount : 0;
   const selectedItemCount = getMenuResultCounts(countInput).matching;
   const categoryState = (id: string): CategorySelectionState => facets.states.get(id) ?? (selectedSet.has(id) ? "all" : "none");
@@ -127,6 +128,7 @@ export default function RestaurantFiltersPanel({ restaurantId, items, value, onC
   return <div className="flex max-h-[calc(100dvh-2rem)] w-full flex-col overflow-hidden rounded-[28px] bg-white shadow-[0_24px_70px_rgba(15,23,42,.25)] sm:max-h-[calc(100dvh-3rem)]">
     <header className="flex shrink-0 items-center px-5 pb-2 pt-5 sm:px-8"><h2 className="font-heading text-2xl font-bold">Filters</h2>{activeCount ? <span className="ml-2 inline-flex h-5 min-w-5 items-center justify-center rounded-full bg-[#047857] px-1.5 text-xs font-bold text-white">{activeCount}</span> : null}<button type="button" onClick={onClose} aria-label="Close filters" className="ml-auto flex h-9 w-9 cursor-pointer items-center justify-center rounded-full bg-slate-100 text-slate-500 hover:bg-slate-200"><X className="h-4 w-4" /></button></header>
     <div className="min-h-0 overflow-y-auto overscroll-contain px-5 sm:px-8 xl:overflow-y-auto">
+      {!isChipotle ? <>
       <section>
         <SectionHeader
           title="Categories"
@@ -211,7 +213,8 @@ export default function RestaurantFiltersPanel({ restaurantId, items, value, onC
           <button type="button" onClick={() => onChange({ ...value, ...VARIANT_FILTER_DEFAULTS })} className="min-h-8 cursor-pointer text-xs font-semibold text-slate-500 hover:text-slate-900 focus-ring">Restore defaults</button>
         </div> : null}
       </section>
-      <section className="border-t border-slate-200"><SectionHeader title="Nutrition" summary={nutritionCount ? `${nutritionCount} set` : "Any"} open={nutritionOpen} onClick={() => setNutritionOpen(!nutritionOpen)} />{nutritionOpen ? <div className="divide-y divide-slate-100 pb-3">
+      </> : null}
+      <section className={isChipotle ? "" : "border-t border-slate-200"}><SectionHeader title="Nutrition" summary={nutritionCount ? `${nutritionCount} set` : "Any"} open={nutritionOpen} onClick={() => setNutritionOpen(!nutritionOpen)} />{nutritionOpen ? <div className="divide-y divide-slate-100 pb-3">
         <NutritionSlider label="Max calories" displayValue={value.caloriesMax === undefined ? "Any" : `Under ${value.caloriesMax} cal`} value={value.caloriesMax} bounds={calorieBounds} values={calories} color="bg-[#111318]" anyAt="max" step={10} onChange={(next) => onChange({ ...value, caloriesMax: next })} presets={caloriePresets} />
         <NutritionSlider label="Min protein" displayValue={value.proteinMin === undefined ? "Any" : `${value.proteinMin}g+`} value={value.proteinMin} bounds={proteinBounds} values={proteins} color="bg-[#C2410C]" anyAt="min" step={1} onChange={(next) => onChange({ ...value, proteinMin: next === proteinBounds.min ? undefined : next })} presets={proteinPresets} />
         <div className="py-5"><div className="mb-4 flex items-baseline justify-between"><h4 className="text-[15px] font-bold text-slate-950">Min Protein Score</h4><span className="text-sm font-semibold text-slate-500">{value.proteinScoreMin === undefined ? "Any" : `${value.proteinScoreMin}+`}</span></div><div className="grid grid-cols-4 gap-3">{proteinTiers.map((option) => { const active = value.proteinScoreMin === option.value; return <button key={option.label} type="button" onClick={() => onChange({ ...value, proteinScoreMin: option.value })} style={active ? { borderColor: option.border } : undefined} className={`min-h-[88px] cursor-pointer rounded-[14px] border p-2.5 text-center transition ${active ? "bg-slate-50 shadow-sm" : "border-slate-200 bg-white hover:border-slate-300"}`}><span className={`mx-auto mb-2 flex h-6 w-6 items-center justify-center rounded-full ${proteinScoreTierStyles[option.tier].iconWrap}`}><Zap className={`h-3.5 w-3.5 ${proteinScoreTierStyles[option.tier].icon}`} fill="currentColor" /></span><span className={`block text-xs font-bold ${proteinScoreTierStyles[option.tier].value}`}>{option.label}</span><span className="mt-0.5 block text-[10px] font-medium text-slate-500">{option.caption}</span></button>; })}</div></div>
@@ -235,6 +238,6 @@ export default function RestaurantFiltersPanel({ restaurantId, items, value, onC
         </div> : null}</section>
       <section className="border-t border-slate-200"><SectionHeader title="More nutrition" summary={moreCount ? `${moreCount} set` : "Off"} open={moreOpen} onClick={() => setMoreOpen(!moreOpen)} />{moreOpen ? <div className="pb-6"><CompactSlider label="Max carbs" value={value.carbsMax} max={200} unit="g" kind="max" color="#CA8A04" onChange={(next) => onChange({...value,carbsMax:next})}/><CompactSlider label="Max fat" value={value.fatMax} max={100} unit="g" kind="max" color="#2563EB" onChange={(next) => onChange({...value,fatMax:next})}/><CompactSlider label="Min fiber" value={value.fiberMin} max={30} unit="g" kind="min" color={FIBER_COLOR} onChange={(next) => onChange({...value,fiberMin:next})}/><CompactSlider label="Max sodium" value={value.sodiumMax} max={3000} unit="mg" kind="max" color="#64748B" onChange={(next) => onChange({...value,sodiumMax:next})}/><CompactSlider label="Max sugar" value={value.sugarMax} max={100} unit="g" kind="max" color="#BE185D" onChange={(next) => onChange({...value,sugarMax:next})}/></div> : null}</section>
     </div>
-    <footer className="grid shrink-0 grid-cols-[120px_1fr] gap-3 border-t border-slate-200 bg-white p-4 sm:px-8"><AppButton variant="secondary" size="lg" onClick={() => { setBaseCategoryPresetId("main"); onChange(selectCategoryPreset({}, categoryPresets[0])); }}>Reset</AppButton><AppButton size="lg" disabled={!hasSelectedCategories} onClick={onApply}>Show {showItemCount} item{showItemCount === 1 ? "" : "s"}</AppButton></footer>
+    <footer className="grid shrink-0 grid-cols-[120px_1fr] gap-3 border-t border-slate-200 bg-white p-4 sm:px-8"><AppButton variant="secondary" size="lg" onClick={() => { setBaseCategoryPresetId("main"); onChange(isChipotle ? {} : selectCategoryPreset({}, categoryPresets[0])); }}>Reset</AppButton><AppButton size="lg" disabled={!hasSelectedCategories} onClick={onApply}>Show {showItemCount} item{showItemCount === 1 ? "" : "s"}</AppButton></footer>
   </div>;
 }

@@ -20,6 +20,8 @@ import {
   toUniversalChipotleBuildConfiguration,
 } from "../lib/restaurantBuilders/chipotle/cartAdapter.ts";
 
+import { sortItems } from "../lib/menuSections/sorting.ts";
+
 const ingredients = CHIPOTLE_GENERATED_RUNTIME_MENU.ingredients;
 const builderConfig = CHIPOTLE_GENERATED_RUNTIME_MENU.builderConfig;
 
@@ -331,4 +333,38 @@ test("Extra Tortilla round-trips correctly through the cart adapter", () => {
     fromUniversalChipotleBuildConfiguration(universalConfiguration).selectedIngredientItems,
     configuration.selectedIngredientItems,
   );
+});
+
+
+test("ingredient rankings stay at standard nutrition when portions change", () => {
+  const build = (selectedId, multiplier) => buildChipotleIngredientMenuItems({
+    restaurantId: "chipotle",
+    ingredients,
+    selectedEntree: "bowl",
+    selectedTacoCount: 3,
+    selectedKidsMeal: "build-your-own",
+    selectedIncludedIngredientIds: [],
+    tacoShellIngredientIds: builderConfig.chipotle.tacoShellIngredientIds,
+    getIngredientPortionMultiplier: () => 1,
+    getSelectedIngredientPortionMultiplier: (id) => id === selectedId ? multiplier : 1,
+    builderConfig,
+  });
+  const normal = build(null, 1);
+  const proteins = normal.filter((item) => item.categories.includes("Proteins"));
+  assert.ok(proteins.length > 1);
+  const first = proteins[0];
+  const doubled = build(first.id, 2);
+  const switched = build(proteins[1].id, 2);
+  assert.equal(doubled.find((item) => item.id === first.id).nutrition.protein, first.nutrition.protein * 2);
+  assert.equal(switched.find((item) => item.id === first.id).nutrition.protein, first.nutrition.protein);
+  for (const metric of ["protein", "calories", "carbs", "fat", "fiber", "protein-score"]) {
+    for (const direction of ["highest", "lowest"]) {
+      const sort = `${direction}-${metric}`;
+      const ids = (items) => sortItems(items, sort, "ingredients").map((item) => item.id);
+      assert.deepEqual(ids(doubled), ids(normal), sort);
+      assert.deepEqual(ids(switched), ids(normal), sort);
+    }
+  }
+  const ranked = (sort) => sortItems(proteins, sort, "ingredients").map((item) => item.id);
+  assert.notDeepEqual(ranked("highest-protein"), ranked("lowest-protein"));
 });

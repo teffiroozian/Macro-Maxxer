@@ -54,3 +54,10 @@ export function countVariantSettingsChanges(filters: Filters): number {
   return (Object.keys(VARIANT_FILTER_DEFAULTS) as Array<keyof VariantSettings>)
     .filter((key) => settings[key] !== VARIANT_FILTER_DEFAULTS[key]).length;
 }
+
+// Chipotle's builder exposes nutrition thresholds only. Discard legacy
+// category/variant settings so hidden controls cannot narrow its ingredients.
+export function getChipotleNutritionFilters(filters: Filters): Filters {
+  const allowed: (keyof Filters)[] = ["cardDisplayOverride", "proteinMin", "caloriesMax", "proteinScoreMin", "carbsMax", "fatMax", "fiberMin", "sodiumMax", "sugarMax"];
+  return Object.fromEntries(Object.entries(filters).filter(([key]) => allowed.includes(key as keyof Filters))) as Filters;
+}

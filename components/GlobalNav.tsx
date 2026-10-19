@@ -81,7 +81,7 @@ export default function GlobalNav({ children }: { children: ReactNode }) {
                 <Store className="h-4 w-4" strokeWidth={2.4} />
               </AppIconButton>
             }
-            cartSlot={<CartIconDropdown variant="sheet" buttonClassName={appIconButtonClassName({ variant: "nav", size: "nav", className: "relative shrink-0" })} />}
+            cartSlot={<CartIconDropdown variant="sheet" buttonClassName={appIconButtonClassName({ variant: "navSlate", size: "nav", className: "relative shrink-0" })} />}
           />
           <MobileNavDrawer isOpen={browseOpen} onClose={() => setBrowseOpen(false)} />
         </>

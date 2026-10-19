@@ -147,6 +147,8 @@ type MenuItemCardData = {
 };
 
 type MenuItemCardMenuBehavior = {
+  // Display-only category rank; keep configured ingredient nutrition intact.
+  ingredientRank?: number;
   rankIndex?: number;
   isTopRanked?: boolean;
   itemHref?: string;
@@ -770,9 +772,16 @@ export default function MenuItemCard({
     const displayProtein = localVariantNutrition?.protein ?? protein;
     const displayCarbs = localVariantNutrition?.carbs ?? carbs;
     const displayTotalFat = localVariantNutrition?.totalFat ?? totalFat;
+    const displayFiber = localVariantNutrition ? localVariantNutrition.fiber : nutrition.fiber;
 
     return (
       <IngredientCompactCard
+        rankMetric={restaurantId === "chipotle" ? menu?.rankMetric : undefined}
+        cardDisplayOverride={restaurantId === "chipotle" ? menu?.cardDisplayOverride : undefined}
+        fiber={displayFiber === undefined ? undefined : displayFiber * localPortionMultiplier}
+        rank={menu?.ingredientRank}
+        layout={resultLayout}
+        compactMobileControls={restaurantId === "chipotle"}
         item={item}
         domId={ingredientDomId}
         selectedItemImage={selectedItemImage}

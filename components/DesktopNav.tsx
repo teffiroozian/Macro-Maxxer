@@ -51,7 +51,7 @@ export default function DesktopNav() {
 
         <div className="flex items-center justify-end gap-2">
           <DesktopRestaurantMenu />
-          <CartIconDropdown buttonClassName={appIconButtonClassName({ variant: "nav", size: "nav", className: "relative" })} />
+          <CartIconDropdown buttonClassName={appIconButtonClassName({ variant: "navSlate", size: "nav", className: "relative" })} />
         </div>
       </div>
     </div>

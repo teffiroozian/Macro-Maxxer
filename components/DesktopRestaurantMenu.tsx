@@ -64,7 +64,7 @@ export default function DesktopRestaurantMenu() {
             event.preventDefault();
             guardNavigation(() => router.push("/restaurants"));
           }}
-          className="inline-flex h-full items-center rounded-l-full pl-3 pr-1.5 focus-ring"
+          className="inline-flex h-full items-center rounded-l-full pl-3 pr-0.5 focus-ring"
         >
           Restaurants
         </Link>
@@ -75,11 +75,11 @@ export default function DesktopRestaurantMenu() {
           aria-controls="desktop-restaurant-menu"
           aria-label="Toggle restaurant menu"
           onClick={() => setIsRestaurantMenuOpen((prev) => !prev)}
-          className="inline-flex h-full cursor-pointer items-center rounded-r-full pl-1.5 pr-3 focus-ring"
+          className="inline-flex h-full cursor-pointer items-center rounded-r-full pl-0.5 pr-3 focus-ring"
         >
           <ChevronDown
-            className={`h-3.5 w-3.5 shrink-0 text-slate-700 transition-transform ${isRestaurantMenuOpen ? "rotate-180" : ""}`}
-            strokeWidth={2.4}
+            className={`h-4 w-4 shrink-0 text-slate-700 transition-transform ${isRestaurantMenuOpen ? "rotate-180" : ""}`}
+            strokeWidth={2.5}
           />
         </button>
       </div>

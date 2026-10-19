@@ -173,6 +173,7 @@ export default function ControlsRow({
   mobileEntreeOptions,
   mobileDrawerHeaderTitle,
   mobileDrawerHeaderLogoSrc,
+  showResultLayoutToggle = false,
   resultLayout,
   onResultLayoutChange,
   filterRankingCategories = true,
@@ -232,6 +233,7 @@ export default function ControlsRow({
   }>;
   mobileDrawerHeaderTitle?: string;
   mobileDrawerHeaderLogoSrc?: string;
+  showResultLayoutToggle?: boolean;
   resultLayout: "list" | "grid";
   onResultLayoutChange: (layout: "list" | "grid") => void;
   filterRankingCategories?: boolean;
@@ -520,7 +522,7 @@ export default function ControlsRow({
           <div className={sectionDividerClassName} aria-hidden="true" />
         </>
       )}
-      {isRankingView ? (
+      {isRankingView || showResultLayoutToggle ? (
         <section className="space-y-2 lg:hidden">
           <p className={sectionHeadingClassName}>Layout</p>
           <div className="grid grid-cols-2 gap-1 rounded-xl bg-slate-100 p-1.5" role="group" aria-label="Results layout">
@@ -811,7 +813,7 @@ export default function ControlsRow({
             <span className="whitespace-nowrap px-1 text-sm text-slate-600">
               <strong className="font-bold text-slate-950">{appliedMatchingItemCount}</strong> of {totalResultCount} items
             </span>
-            {isRankingView ? <div className="ml-1 flex rounded-full bg-slate-100 p-[3px]" role="group" aria-label="Results layout">
+            {isRankingView || showResultLayoutToggle ? <div className="ml-1 flex rounded-full bg-slate-100 p-[3px]" role="group" aria-label="Results layout">
               {([{ value: "list", label: "List view", icon: List }, { value: "grid", label: "Grid view", icon: LayoutGrid }] as const).map((option) => {
                 const Icon = option.icon;
                 const active = resultLayout === option.value;

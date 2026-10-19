@@ -13,6 +13,7 @@ type MacroStatProps = {
   value: number | string;
   size: MacroStatSize;
   labelVariant?: MacroStatLabel;
+  labelStyle?: "default" | "ingredient";
   delta?: ReactNode;
 };
 
@@ -53,11 +54,15 @@ export default function MacroStat({
   value,
   size,
   labelVariant = "label",
+  labelStyle = "default",
   delta,
 }: MacroStatProps) {
   const toneClass = macroDisplayConfig[macroKey].valueClassNameByVariant.default;
   const displayValue = formatMacroValue(macroKey, value);
   const label = resolveLabel(macroKey, labelVariant);
+  const ingredientLabelClassName = `font-semibold uppercase tracking-wide text-black/80 ${
+    macroKey === "protein" ? "text-[9px] sm:text-[10px]" : "text-[10px]"
+  }`;
 
   if (size === "summary") {
     return (
@@ -90,7 +95,7 @@ export default function MacroStat({
           <div className={`${valueClassBySize[size]} ${toneClass}`}>{displayValue}</div>
           {delta ? <span className="text-xs font-bold text-success">{delta}</span> : null}
         </div>
-        <div className={`${size === "gridCard" ? "text-[9px]" : "text-[10px]"} font-bold tracking-wide text-slate-500`}>{label}</div>
+        <div className={labelStyle === "ingredient" ? ingredientLabelClassName : `${size === "gridCard" ? "text-[9px]" : "text-[10px]"} font-bold tracking-wide text-slate-500`}>{label}</div>
       </div>
     );
   }
@@ -119,9 +124,7 @@ export default function MacroStat({
       <div className="flex min-w-[44px] flex-col items-center gap-1 sm:min-w-[54px]">
         <div className={`${valueClassBySize[size]} ${toneClass}`}>{displayValue}</div>
         <div
-          className={`font-semibold uppercase tracking-wide text-black/80 ${
-            macroKey === "protein" ? "text-[9px] sm:text-[10px]" : "text-[10px]"
-          }`}
+          className={ingredientLabelClassName}
         >
           {label}
         </div>

@@ -4,7 +4,7 @@ import { useCallback, useMemo, useState } from "react";
 import type { ReadonlyURLSearchParams } from "next/navigation";
 import type { ViewOption } from "@/components/controls/types";
 import type { MenuItem } from "@/types/menu";
-import type { Filters } from "@/lib/menuSections/filterOptions";
+import { getChipotleNutritionFilters, type Filters } from "@/lib/menuSections/filterOptions";
 import {
     filterMenuItems,
     getParentSelectionState,
@@ -84,13 +84,19 @@ export function useRestaurantMenuControls({
     const [menuSizePreference, setMenuSizePreference] = useState(() => menuSizeSelector?.enabled && menuSizeOptions.some((option) => option.value === menuSizeSelector.defaultValue) ? menuSizeSelector.defaultValue : ALL_MENU_SIZES);
 
 
-    const [filters, setFilters] = useState<Filters>(() => {
+    const [storedFilters, setFilters] = useState<Filters>(() => {
+        if (restaurantId === "chipotle") return {};
         const available = new Set(standaloneItems.flatMap((item) => getItemCategories(item)));
         const mainMenu = (RESTAURANT_MAIN_MENU_CATEGORIES[restaurantId] ?? []).filter((category) => available.has(category));
         return mainMenu.length
             ? { categories: mainMenu, categoryPreset: "main" }
             : {};
     });
+
+    const filters = useMemo(
+        () => restaurantId === "chipotle" ? getChipotleNutritionFilters(storedFilters) : storedFilters,
+        [restaurantId, storedFilters],
+    );
 
     // The narrower categories available inside each broad Rankings parent
     // bucket, derived from this restaurant's own items — never hard-coded —
@@ -247,10 +253,10 @@ export function useRestaurantMenuControls({
         ],
     );
 
-    const reconcileForContext = useCallback((nextFilters: Filters, nextSize = menuSizePreference, nextSort = sort) =>
-        reconcileNutritionThresholds(nextFilters, getNutritionControlData({ items: sourceItems, filters: nextFilters, searchTerms: [], rankedChildSelections, isRankingView: effectiveViewMode === "ranking", filterRankingCategories, rankingSort: nextSort, menuSizePreference: nextSize })),
-        [sourceItems, rankedChildSelections, effectiveViewMode, filterRankingCategories, sort, menuSizePreference],
-    );
+    const reconcileForContext = useCallback((nextFilters: Filters, nextSize = menuSizePreference, nextSort = sort) => {
+        const supportedFilters = restaurantId === "chipotle" ? getChipotleNutritionFilters(nextFilters) : nextFilters;
+        return reconcileNutritionThresholds(supportedFilters, getNutritionControlData({ items: sourceItems, filters: supportedFilters, searchTerms: [], rankedChildSelections, isRankingView: effectiveViewMode === "ranking", filterRankingCategories, rankingSort: nextSort, menuSizePreference: nextSize }));
+    }, [restaurantId, sourceItems, rankedChildSelections, effectiveViewMode, filterRankingCategories, sort, menuSizePreference]);
     const handleSortChange = useCallback((nextSort: SortOption) => {
         setSort(nextSort);
         setFilters((previous) => reconcileForContext(previous, menuSizePreference, nextSort));

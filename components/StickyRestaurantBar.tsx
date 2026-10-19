@@ -66,9 +66,11 @@ type StickyRestaurantBarProps = {
   // control living outside this component (the active-filter row beneath
   // the mobile category strip).
   onEditFiltersDrawerReady?: (openEditFiltersDrawer: () => void) => void;
+  showResultLayoutToggle?: boolean;
   resultLayout?: "list" | "grid";
   onResultLayoutChange?: (layout: "list" | "grid") => void;
   hideMobileControls?: boolean;
+  showMobileControlsTrigger?: boolean;
   filterRankingCategories?: boolean;
   showMobileRail?: boolean;
 };
@@ -95,9 +97,11 @@ export default function StickyRestaurantBar({
   hideIngredientsView = false,
   hideSecondaryNav = false,
   onEditFiltersDrawerReady,
+  showResultLayoutToggle = false,
   resultLayout = "list",
   onResultLayoutChange = () => {},
   hideMobileControls = false,
+  showMobileControlsTrigger = true,
   filterRankingCategories = true,
   showMobileRail = false,
 }: StickyRestaurantBarProps) {
@@ -238,19 +242,21 @@ export default function StickyRestaurantBar({
           )}
           <div ref={desktopCapsuleRef} className={`relative mx-auto w-full lg:sticky lg:top-[var(--desktop-controls-top)] lg:z-[var(--z-sticky)] lg:w-fit lg:max-w-full ${showMobileRail ? "lg:col-start-1 lg:row-start-1 lg:justify-self-center" : ""}`}>
             <div className="flex min-w-0 flex-col border-y border-hairline bg-white p-1.5 shadow-elev-1 lg:rounded-full lg:border">
-              <div className="flex min-w-0 items-center gap-3 overflow-x-auto hide-scrollbar lg:overflow-visible">
-                {secondaryNavLeading ? <div className="shrink-0">{secondaryNavLeading}</div> : null}
+              <div className="flex min-w-0 items-center overflow-x-auto hide-scrollbar lg:overflow-visible">
+                <div
+                  aria-hidden={!isDesktopSticky}
+                  className={`hidden shrink-0 overflow-hidden transition-[width,opacity,transform] duration-[180ms] ease-out motion-reduce:transition-none lg:block ${isDesktopSticky ? "w-[49px] translate-x-0 opacity-100" : "w-0 -translate-x-1 opacity-0"}`}
+                >
+                  {/* Include both 8px gaps in the animated width so neither
+                      reserves space when the logo and divider collapse. */}
+                  <div className="flex w-max items-center gap-2 pr-2">
+                    <RestaurantLogoBadge src={restaurantLogo} alt={`${restaurantName} logo`} size="xs" />
+                    <span className="h-6 w-px shrink-0 bg-slate-200" aria-hidden="true" />
+                  </div>
+                </div>
+                {secondaryNavLeading ? <div className={`shrink-0 ${hideSecondaryNav ? "" : "mr-2"}`}>{secondaryNavLeading}</div> : null}
                 {hideSecondaryNav ? null : (
                   <div className={`min-w-0 lg:flex lg:items-center ${secondaryNavLeading ? "lg:ml-auto" : "flex-1"}`}>
-                    <div
-                      aria-hidden={!isDesktopSticky}
-                      className={`hidden shrink-0 overflow-hidden transition-[width,opacity,transform] duration-[180ms] ease-out motion-reduce:transition-none lg:block ${isDesktopSticky ? "w-14 translate-x-0 opacity-100" : "w-0 -translate-x-1 opacity-0"}`}
-                    >
-                      <div className="flex w-14 items-center gap-3 pl-1">
-                        <RestaurantLogoBadge src={restaurantLogo} alt={`${restaurantName} logo`} size="xs" />
-                        <span className="h-6 w-px shrink-0 bg-slate-200" aria-hidden="true" />
-                      </div>
-                    </div>
                     <ControlsRow
                       menuSizeControl={menuSizeControl}
                       restaurantId={restaurantId}
@@ -274,9 +280,10 @@ export default function StickyRestaurantBar({
                       mobileEntreeOptions={mobileEntreeOptions}
                       mobileDrawerHeaderTitle={restaurantName}
                       mobileDrawerHeaderLogoSrc={restaurantLogo}
+                      showResultLayoutToggle={showResultLayoutToggle}
                       resultLayout={resultLayout}
                       onResultLayoutChange={onResultLayoutChange}
-                      showMobileTrigger={!hideMobileControls}
+                      showMobileTrigger={!hideMobileControls && showMobileControlsTrigger}
                       renderMobileDrawer={!hideMobileControls}
                       filterRankingCategories={filterRankingCategories}
                       showInlineMobileControls={showMobileRail}

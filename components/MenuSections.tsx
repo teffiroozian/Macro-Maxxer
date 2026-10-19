@@ -106,6 +106,8 @@ export default function MenuSections({
   resultLayout = "list",
 }: MenuSectionsProps) {
   const menuItemsForResolution = allMenuItems ?? items;
+  const showIngredientRanks = restaurantId === "chipotle" && categoryMode === "ingredients" && hasBuildYourOwn;
+  const isIngredientGrid = categoryMode === "ingredients" && hasBuildYourOwn && resultLayout === "grid";
 
   // Computed once per rendered menu (not per card) and only for the plain
   // Menu view — Rankings shows its own rank badge instead (never both, see
@@ -154,6 +156,15 @@ export default function MenuSections({
 
   if (!groupByCategory) {
     const sortedItems = sortItems(items, sort, categoryMode);
+    // Use the existing filtered/sorted order; numbering never reads selection
+    // state or configured portions, and restarts in each ingredient category.
+    const categoryCounts = new Map<string, number>();
+    const ingredientRanks = sortedItems.map((item) => {
+      const category = getItemCategories(item)[0] ?? "";
+      const rank = (categoryCounts.get(category) ?? 0) + 1;
+      categoryCounts.set(category, rank);
+      return rank;
+    });
 
     if (!sortedItems.length) {
       return <EmptyFilteredState />;
@@ -161,7 +172,7 @@ export default function MenuSections({
 
     return (
       <div className="mt-8 grid gap-3">
-        <ul className={`mt-0 grid p-0 ${showRankBadges && resultLayout === "grid" ? "gap-3 lg:grid-cols-2 xl:grid-cols-3" : "gap-3"}`}>
+        <ul className={`mt-0 grid p-0 ${isIngredientGrid ? "grid-cols-2 gap-3 lg:grid-cols-3" : showRankBadges && resultLayout === "grid" ? "gap-3 lg:grid-cols-2 xl:grid-cols-3" : "gap-3"}`}>
           {sortedItems.map((item, index) => (
             <MenuItemCard
               key={`${item.id}-${item.defaultVariantId ?? "base"}`}
@@ -178,6 +189,7 @@ export default function MenuSections({
                 comparativeLabel: getComparativeLabel(item),
                 ...(showRankBadges ? { rankIndex: index, isTopRanked: index < 3 } : {}),
                 resultLayout,
+                ingredientRank: showIngredientRanks ? ingredientRanks[index] : undefined,
               }}
               ingredientSelection={getIngredientSelection(item)}
               detailPanel={{
@@ -253,8 +265,8 @@ export default function MenuSections({
           <h2 className="font-heading mb-4 text-2xl font-bold text-slate-900 sm:text-3xl">
             {getCategoryLabel(section, categoryMode)}
           </h2>
-          <ul className="mt-0 p-0 grid gap-3">
-            {(sortedGrouped[section] ?? []).map((item) => (
+          <ul className={`mt-0 grid gap-3 p-0 ${isIngredientGrid ? "grid-cols-2 lg:grid-cols-3" : ""}`}>
+            {(sortedGrouped[section] ?? []).map((item, index) => (
               <MenuItemCard
                 key={`${item.id}-${item.defaultVariantId ?? "base"}`}
                 restaurantId={restaurantId}
@@ -268,6 +280,8 @@ export default function MenuSections({
                   rankMetric: getRankState(sort).metric,
                   cardDisplayOverride,
                   comparativeLabel: getComparativeLabel(item),
+                  resultLayout,
+                  ingredientRank: showIngredientRanks ? index + 1 : undefined,
                 }}
                 ingredientSelection={getIngredientSelection(item)}
                 detailPanel={{

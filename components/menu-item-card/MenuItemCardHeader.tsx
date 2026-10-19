@@ -1,3 +1,4 @@
+import RankNumber from "./RankNumber";
 import GridItemTitle from "./GridItemTitle";
 import { getRankedMenuItemTitle, getDisplayVariantLabel } from "@/lib/menuItemCard/titlePresentation";
 import type { ReactNode } from "react";
@@ -92,7 +93,7 @@ export default function MenuItemCardHeader({
               className={`font-heading flex min-w-0 items-baseline gap-1.5 font-bold tracking-tight text-slate-900 ${resultLayout === "grid" ? "text-base leading-[1.2] lg:text-xl" : "text-xl leading-[1.15] lg:text-2xl"}`}
               title={resultLayout === "grid" ? `${rank}. ${rankedDisplayName}` : undefined}
             >
-              <span className="shrink-0 text-slate-400">{rank}.</span>
+              <RankNumber rank={rank} />
               {resultLayout === "grid" ? (
                 <>
                   <span className="truncate lg:hidden">{mobileGridDisplayName}</span>
