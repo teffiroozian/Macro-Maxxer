@@ -2562,7 +2562,7 @@ export default function ChipotleRestaurantBuilderView({
 
   const handleSaveSelectedIngredientOrder = () => {
     if (typeof window !== "undefined") {
-      window.alert("Ingredient order saved.");
+      window.alert("Meal saved.");
     }
   };
 
@@ -3882,7 +3882,7 @@ export default function ChipotleRestaurantBuilderView({
             totals={viewBuildDisplayTotals}
             secondaryActionLabel="View Selected"
             secondaryActionExpandedLabel="View Selected"
-            primaryActionLabel={isEditingBuild ? "Save & Add" : "Add to Cart"}
+            primaryActionLabel={isEditingBuild ? "Save & Add" : "Add to Meal"}
             SecondaryActionIcon={Expand}
             SecondaryActionExpandedIcon={Shrink}
             PrimaryActionIcon={ShoppingCart}

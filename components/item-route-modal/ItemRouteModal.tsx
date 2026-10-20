@@ -1834,7 +1834,7 @@ export default function ItemRouteModal({
                                         ) : null}
                                         {isComboEligibleCategory ? (
                                             <PreviewControlShortcut
-                                                label="Order Type"
+                                                label="Meal Type"
                                                 value={
                                                     comboTypeOptions.find(
                                                         (option) => option.id === comboType,
@@ -1854,11 +1854,11 @@ export default function ItemRouteModal({
                                             className="min-w-0 lg:w-[45%]"
                                         >
                                             <p className="text-label text-slate-400">
-                                                Order Type
+                                                Meal Type
                                             </p>
                                             <SegmentedControl
                                                 className="mt-1.5"
-                                                ariaLabel="Order type"
+                                                ariaLabel="Meal type"
                                                 size="comfortable"
                                                 value={comboType}
                                                 onChange={setComboType}
@@ -1982,7 +1982,7 @@ export default function ItemRouteModal({
                                         </h2>
                                         <p className="mt-1.5 text-sm text-slate-500">
                                             Adjust this preset before adding
-                                            it to your order.
+                                            it to your meal.
                                         </p>
                                     </div>
                                     <div className="mt-10 grid gap-7">

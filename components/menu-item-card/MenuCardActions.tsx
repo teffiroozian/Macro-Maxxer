@@ -41,10 +41,10 @@ export default function MenuCardActions({
         // of the "temporarily inactive" softening.
         className={`px-5! text-sm! transition ${isAddFeedbackVisible ? "border-slate-800! bg-slate-800! text-white!" : ""}`}
         disabled={isAddFeedbackVisible || isQuickAddDisabled}
-        aria-label={`Quick add ${itemName} to cart`}
+        aria-label={`Quick add ${itemName} to meal`}
         onClick={(event) => { event.stopPropagation(); onQuickAdd(); }}
       >
-        {isAddFeedbackVisible ? "Added" : "Quick Add"}
+        {isAddFeedbackVisible ? "Added" : "+ Add"}
       </AppButton>
     </div>
   );

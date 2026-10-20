@@ -30,7 +30,7 @@ export default function SiteFooter() {
               </Link>
 
               <p className="mt-3 max-w-sm text-sm text-slate-600">
-                See exactly what you&apos;re ordering before you order it — real menu data and real macros, one search away.
+                Build your meal and calculate its nutrition — real menu data and real macros, one search away.
               </p>
 
               <Link

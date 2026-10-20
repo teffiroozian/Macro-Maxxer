@@ -57,7 +57,7 @@ export function getExportPngFilename(name: string) {
   return `macro-maxxer-${slug || "order"}.png`;
 }
 
-export async function downloadElementAsPng(element: HTMLElement, filename: string) {
+export async function generateElementPng(element: HTMLElement) {
   await document.fonts?.ready;
   await waitForImages(element);
 
@@ -79,5 +79,10 @@ export async function downloadElementAsPng(element: HTMLElement, filename: strin
   });
 
   await assertPngDimensions(dataUrl);
+  return dataUrl;
+}
+
+export async function downloadElementAsPng(element: HTMLElement, filename: string) {
+  const dataUrl = await generateElementPng(element);
   downloadDataUrl(dataUrl, filename);
 }

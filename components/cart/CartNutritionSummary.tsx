@@ -10,7 +10,7 @@ export default function CartNutritionSummary({ nutritionTotals }: CartNutritionS
     <NutritionFactsPanel
       totals={nutritionTotals}
       title="Nutrition Summary"
-      caption="Totals for every item in your cart"
+      caption="Totals for every item in your meal"
     />
   );
 }

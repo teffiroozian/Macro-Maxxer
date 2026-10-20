@@ -37,15 +37,15 @@ export default function CrossRestaurantCartDialog() {
         Add from {newRestaurantName}?
       </h2>
       <p id="cross-restaurant-dialog-description" className="mt-2 text-sm leading-6 text-slate-600">
-        Your cart has items from {existingRestaurantNames.join(", ")}. You can add this item alongside them, or
-        replace your cart so it only contains this item.
+        Your meal has items from {existingRestaurantNames.join(", ")}. You can add this item alongside them, or
+        replace your meal so it only contains this item.
       </p>
       <div className="mt-5 flex flex-col gap-2">
         <AppButton variant="primary" size="md" onClick={confirmAddAnyway}>
           Add Anyway
         </AppButton>
         <AppButton variant="secondary" size="md" onClick={confirmReplaceCart}>
-          Replace Cart
+          Replace Meal
         </AppButton>
         <AppButton ref={cancelButtonRef} variant="ghost" size="md" onClick={cancelPendingAdd}>
           Cancel

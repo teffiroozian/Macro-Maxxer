@@ -233,7 +233,7 @@ export default async function Home() {
                 eyebrowVariant="pill"
                 eyebrow={<LiveRestaurantsBadge count={liveRestaurants.length} />}
                 heading="Jump Straight to the Menu"
-                description="Every supported restaurant comes with a full menu, real nutrition data, and an order builder."
+                description="Every supported restaurant comes with a full menu, real nutrition data, and a meal builder."
               />
 
               <div className="mt-4 text-center">
@@ -265,8 +265,8 @@ export default async function Home() {
               <HomeSectionContainer className="py-16 sm:py-20 lg:py-24">
                 <HomeSectionHeading
                   eyebrow="How It Works"
-                  heading="Build an Order That Fits Your Goals"
-                  description="Compare menus, customize your meal, and review the full macros before ordering."
+                  heading="Build a Meal That Fits Your Goals"
+                  description="Compare menus, customize your meal, and review your meal’s total nutrition."
                 />
 
                 <div className="mt-10">
@@ -296,7 +296,7 @@ export default async function Home() {
                 <HomeSectionHeading
                   eyebrow="See It In Action"
                   heading="Real Menu Data, Real Macros"
-                  description="Every item shows calories, protein, carbs, and fat up front — before you customize or add it to your order."
+                  description="Every item shows calories, protein, carbs, and fat up front — before you customize or add it to your meal."
                 />
 
                 <div className={`mx-auto mt-10 w-full ${HOME_VISUAL_WIDTH_CLASS}`}>

@@ -297,7 +297,7 @@ export default function CartItemPreviewContent({
   return (
     <div>
       <div>
-        <h2 className="font-heading text-2xl font-bold text-slate-900 sm:text-3xl">Order Details</h2>
+        <h2 className="font-heading text-2xl font-bold text-slate-900 sm:text-3xl">Meal Details</h2>
         <p className="mt-1.5 text-sm text-slate-500">Review what&apos;s included in this item. Select a section to make changes.</p>
       </div>
 

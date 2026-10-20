@@ -60,7 +60,7 @@ export default function NativeBottomNav() {
         <NativeTab label="Home" icon={Home} active={pathname === "/"} onClick={() => navigate("/")} />
         <NativeTab label="Search" icon={Search} active={pathname === "/search"} onClick={() => navigate("/search")} />
         <NativeTab label="Restaurants" icon={Store} active={isRestaurantsActive} onClick={() => navigate("/restaurants")} />
-        <NativeTab label="Cart" icon={ShoppingCart} active={pathname === "/cart"} onClick={() => navigate("/cart")} badge={cartCount} />
+        <NativeTab label="My Meal" icon={ShoppingCart} active={pathname === "/cart"} onClick={() => navigate("/cart")} badge={cartCount} />
       </div>
     </nav>
   );

@@ -70,7 +70,7 @@ export default function CartPage() {
         <header className="flex flex-col gap-5 lg:flex-row lg:items-center lg:justify-between lg:gap-24">
           <div className="flex flex-col gap-3 lg:shrink-0">
             <h1 className="font-heading text-3xl font-bold leading-tight text-slate-900 sm:text-4xl">
-              Your Cart
+              My Meal
             </h1>
             {!isEmpty ? (
               <div className="flex flex-wrap items-center gap-2">
@@ -79,7 +79,7 @@ export default function CartPage() {
                 </span>
                 <AppButton variant="secondary" size="sm" onClick={() => setIsExportOpen(true)}>
                   <Download className="size-3.5" aria-hidden="true" />
-                  Export Order
+                  Share Meal
                 </AppButton>
               </div>
             ) : null}
@@ -113,8 +113,8 @@ export default function CartPage() {
 
         {isEmpty ? (
           <EmptyStateCard
-            title="Your cart is empty."
-            description="Your totals fill in as you add items. Add one to start meal finalization."
+            title="Your meal is empty."
+            description="Your totals fill in as you add items. Add one to start building your meal."
             action={
               <Link href="/#restaurants" className={appButtonClassName({ variant: "primary", size: "lg" })}>
                 Browse Restaurants
@@ -134,7 +134,7 @@ export default function CartPage() {
         <section className="flex flex-col gap-4 mt-6 sm:mt-8 lg:mt-14">
           <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
             <div className="flex flex-col gap-1.5">
-              <SectionEyebrow className="text-sm text-slate-500">Order Summary</SectionEyebrow>
+              <SectionEyebrow className="text-sm text-slate-500">Meal Summary</SectionEyebrow>
               {isEmpty ? (
                 <p className="text-sm text-slate-500">A preview of what you&rsquo;ll see here.</p>
               ) : (
@@ -142,14 +142,14 @@ export default function CartPage() {
                   <h2 className="font-heading text-2xl font-bold text-slate-900 sm:text-3xl">
                     Nutrition &amp; Meal Details
                   </h2>
-                  <p className="text-sm text-slate-500">Totals and items for everything currently in your cart.</p>
+                  <p className="text-sm text-slate-500">Totals and items for everything currently in your meal.</p>
                 </>
               )}
             </div>
             {!isEmpty ? (
               <AppButton variant="secondary" size="md" className="w-full shrink-0 sm:w-auto" onClick={() => setIsExportOpen(true)}>
                 <Download className="size-4" aria-hidden="true" />
-                Export Order
+                Share Meal
               </AppButton>
             ) : null}
           </div>

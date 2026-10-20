@@ -72,7 +72,7 @@ export default function GlobalMobileNav({
                   <Link
                     href="/cart"
                     className={appIconButtonClassName({ variant: "nav", size: "nav", className: "min-w-9" })}
-                    aria-label="Open cart"
+                    aria-label="Open my meal"
                   >
                     <ShoppingCart className="h-4 w-4" strokeWidth={2.5} />
                   </Link>

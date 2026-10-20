@@ -84,10 +84,10 @@ const STEPS: StepMeta[] = [
   },
   {
     key: "review",
-    tabLabel: "Review Your Order",
-    title: "See the Full Order",
-    description: "Review every item, customization, and total before checking out.",
-    ctaLabel: "View Your Cart",
+    tabLabel: "Review Your Meal",
+    title: "See the Full Meal",
+    description: "Review every item, customization, and nutrition total in your meal.",
+    ctaLabel: "View My Meal",
   },
 ];
 
@@ -531,7 +531,7 @@ function ReviewOrderPreview({ items, totals }: { items: WalkthroughReviewItem[];
         </div>
 
         <div>
-          <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">Order Totals</p>
+          <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">Meal Totals</p>
           <div className="mt-2">
             <MacroSplitChart
               segments={buildMacroSegments({ protein: totals.protein, carbs: totals.carbs, fat: totals.totalFat })}

@@ -203,7 +203,7 @@ function getButtonText({
   const isCartLayout = layoutPreset === "cart";
 
   return {
-    primaryButtonText: isCartLayout ? primaryActionLabel : "Add to Cart",
+    primaryButtonText: isCartLayout ? primaryActionLabel : "Add to Meal",
     secondaryButtonText: isCartLayout
       ? detailsOpen && secondaryActionExpandedLabel
         ? secondaryActionExpandedLabel

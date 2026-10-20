@@ -290,7 +290,7 @@ export default function HeroSearchNav({ restaurants }: { restaurants: Restaurant
 
           <div className="mx-auto flex flex-col items-center gap-4 text-center">
             <p className="text-body-lg max-w-md text-slate-600">
-              Compare menu items, build your order, and see the total macros before you check out.
+              Compare menu items, build your meal, and calculate your total nutrition.
             </p>
             <HeroRestaurantChips restaurants={restaurants} />
           </div>

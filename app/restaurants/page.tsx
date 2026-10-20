@@ -40,7 +40,7 @@ export default async function RestaurantsPage() {
               Restaurants
             </h1>
             <p className="mx-auto mt-4 max-w-2xl text-sm leading-6 text-slate-600 sm:text-base sm:leading-7">
-              Browse supported restaurants and explore real menu and nutrition data before building your order.
+              Browse supported restaurants and explore real menu and nutrition data before building your meal.
             </p>
           </div>
 

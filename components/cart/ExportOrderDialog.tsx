@@ -11,7 +11,8 @@ import { buildCartItemExportSummary, formatCartItemName } from "@/lib/cart/displ
 import { getAllRestaurants } from "@/lib/restaurants";
 import type { NutritionTotals } from "@/lib/cart/nutrition";
 import type { CartItem } from "@/types/cart";
-import { downloadElementAsPng, getExportPngFilename } from "@/lib/export/downloadElementAsPng";
+import { downloadElementAsPng, generateElementPng, getExportPngFilename } from "@/lib/export/downloadElementAsPng";
+import { canSharePng, isMobileExportBrowser, pngDataUrlToFile, sharePng } from "@/lib/export/sharePng";
 import { EXPORT_HEIGHT, EXPORT_WIDTH } from "@/lib/export/dimensions";
 
 const PREVIEW_MAX_WIDTH = 540;
@@ -32,6 +33,17 @@ export default function ExportOrderDialog({ items, nutritionTotals, onClose }: E
   const [isExporting, setIsExporting] = useState(false);
   const [exportError, setExportError] = useState<string | null>(null);
   const [previewScale, setPreviewScale] = useState(1);
+  const [preparedImage, setPreparedImage] = useState<{
+    dataUrl: string;
+    file: File;
+    shareable: boolean;
+    items: CartItem[];
+    nutritionTotals: NutritionTotals;
+  } | null>(null);
+  // Never share a stale image if the order changes while the dialog is open.
+  const image = preparedImage?.items === items && preparedImage.nutritionTotals === nutritionTotals
+    ? preparedImage
+    : null;
 
   const cardData = useMemo(() => {
     const restaurantsById = new Map(getAllRestaurants().map((restaurant) => [restaurant.id, restaurant]));
@@ -40,13 +52,13 @@ export default function ExportOrderDialog({ items, nutritionTotals, onClose }: E
     const additionalRestaurantCount = Math.max(restaurantIds.length - 1, 0);
     const restaurantName = primaryRestaurant
       ? `${primaryRestaurant.name}${additionalRestaurantCount > 0 ? ` + ${additionalRestaurantCount} more` : ""}`
-      : "Restaurant order";
+      : "Restaurant meal";
 
     const orderName = items.length === 1
       ? formatCartItemName(items[0])
       : restaurantIds.length === 1 && primaryRestaurant
-        ? `${primaryRestaurant.name} Order`
-        : "Multi-Restaurant Order";
+        ? `${primaryRestaurant.name} Meal`
+        : "Multi-Restaurant Meal";
 
     return {
       restaurant: {
@@ -108,10 +120,24 @@ export default function ExportOrderDialog({ items, nutritionTotals, onClose }: E
     setExportError(null);
     setIsExporting(true);
     try {
-      await downloadElementAsPng(exportCardRef.current, getExportPngFilename(cardData.orderName));
+      if (image) {
+        // No asynchronous work before sharePng invokes navigator.share.
+        const result = await sharePng(image.file);
+        if (result === "unsupported") {
+          setPreparedImage({ ...image, shareable: false });
+        }
+      } else if (isMobileExportBrowser()) {
+        const dataUrl = await generateElementPng(exportCardRef.current);
+        const file = pngDataUrlToFile(dataUrl, getExportPngFilename(cardData.orderName));
+        setPreparedImage({ dataUrl, file, shareable: canSharePng(file), items, nutritionTotals });
+      } else {
+        await downloadElementAsPng(exportCardRef.current, getExportPngFilename(cardData.orderName));
+      }
     } catch (error) {
       console.error("Unable to export order card", error);
-      setExportError("We couldn’t save this image. Please try again.");
+      setExportError(image
+        ? "We couldn’t share this image. Try again, or use the image below to save it."
+        : "We couldn’t create this image. Please try again.");
     } finally {
       setIsExporting(false);
     }
@@ -136,11 +162,11 @@ export default function ExportOrderDialog({ items, nutritionTotals, onClose }: E
           <div className={`mx-auto mb-2 h-1 w-10 rounded-full bg-black/15 ${IS_CAPACITOR_BUILD ? "" : "md:hidden"}`} aria-hidden="true" />
           <div className="flex items-center justify-between gap-4">
             <h2 id="export-order-dialog-title" className={`whitespace-nowrap font-heading text-[22px] font-bold tracking-[-0.02em] text-slate-950 ${IS_CAPACITOR_BUILD ? "" : "md:text-[23px]"}`}>
-              Export order
+              Share Meal
             </h2>
             <AppIconButton
               ref={closeButtonRef}
-              aria-label="Close export order"
+              aria-label="Close share meal"
               variant="ghost"
               size="md"
               className="size-10! rounded-full! bg-[#f1f0ec]! hover:bg-[#e8e6e0]!"
@@ -196,10 +222,20 @@ export default function ExportOrderDialog({ items, nutritionTotals, onClose }: E
 
           <div className={IS_CAPACITOR_BUILD ? "" : "md:mt-auto"}>
             {exportError ? <p role="alert" className="mb-3 text-center text-sm font-medium text-red-600">{exportError}</p> : null}
-            <AppButton disabled={isExporting} variant="primary" size="lg" className="w-full rounded-2xl! text-[16px]!" onClick={saveImage}>
+            {image && !image.shareable ? null : <AppButton disabled={isExporting} variant="primary" size="lg" className="w-full rounded-2xl! text-[16px]!" onClick={saveImage}>
               {isExporting ? <LoaderCircle className="size-[18px] animate-spin" aria-hidden="true" /> : <Download className="size-[18px]" aria-hidden="true" />}
-              {isExporting ? "Saving…" : "Save image"}
-            </AppButton>
+              {isExporting ? "Saving…" : image ? "Share image" : "Save image"}
+            </AppButton>}
+            {image ? (
+              <details className="mt-3 text-center text-sm text-slate-600" open={!image.shareable || !!exportError}>
+                <summary className="cursor-pointer font-medium">View image to save</summary>
+                <p className="my-2">Touch and hold the image, then choose Save to Photos or Save Image. You can also share it from that menu.</p>
+                {/* A real PNG image supports Safari's native long-press save menu. */}
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src={image.dataUrl} alt="Your exported meal" width={EXPORT_WIDTH} height={EXPORT_HEIGHT} className="mx-auto h-auto w-full rounded-lg" />
+              </details>
+            ) : null}
+            {image?.shareable ? <p role="status" className="mt-2 text-center text-sm text-slate-600">Image ready. Tap Share image to save or send it.</p> : null}
             <p className={`mt-2 text-center text-[13px] text-slate-500 ${IS_CAPACITOR_BUILD ? "" : "md:mt-3 md:text-sm"}`}>
               {EXPORT_WIDTH} × {EXPORT_HEIGHT} PNG
             </p>

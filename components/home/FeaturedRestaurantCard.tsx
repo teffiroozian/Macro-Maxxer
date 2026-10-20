@@ -65,7 +65,7 @@ export default function FeaturedRestaurantCard({ restaurant, className = "" }: F
             </div>
 
             <p className="text-sm text-slate-600 sm:text-base lg:text-md">
-              Browse the full menu with real macros on every item, then build an order that fits your goals.
+              Browse the full menu with real macros on every item, then build a meal that fits your goals.
             </p>
 
             <span

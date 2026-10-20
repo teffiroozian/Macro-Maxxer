@@ -713,11 +713,11 @@ export default function BuildSummaryDrawer({
         <div className="sticky top-0 z-20 -mx-1 flex flex-wrap items-center justify-end gap-2 bg-white/95 px-1 py-1 backdrop-blur-sm">
           <AppButton variant="secondary" size="sm" onClick={onResetOrder} className="h-7 px-3 text-xs text-slate-700">
             <RotateCcw className="h-3.5 w-3.5" aria-hidden="true" />
-            <span>Reset order</span>
+            <span>Reset Meal</span>
           </AppButton>
           <AppButton size="sm" onClick={onSaveOrder} className="h-7 border-transparent bg-slate-900 px-3 text-xs hover:bg-slate-800">
             <Save className="h-3.5 w-3.5" aria-hidden="true" />
-            <span>Save order</span>
+            <span>Save Meal</span>
           </AppButton>
         </div>
       ) : null}

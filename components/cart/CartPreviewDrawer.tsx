@@ -133,7 +133,7 @@ export default function CartPreviewDrawer() {
                 </div>
                 <div className="min-w-0">
                   <p className="truncate text-base font-semibold text-slate-900">
-                    {cartHeaderInfo.mode === "single" ? cartHeaderInfo.restaurant?.name ?? "Your cart" : "Your Cart"}
+                    {cartHeaderInfo.mode === "single" ? cartHeaderInfo.restaurant?.name ?? "My Meal" : "My Meal"}
                   </p>
                   <p className="text-sm text-slate-600">
                     {cartHeaderInfo.mode === "single"
@@ -142,7 +142,7 @@ export default function CartPreviewDrawer() {
                   </p>
                 </div>
               </div>
-              <AppIconButton onClick={closeCart} aria-label="Close cart panel">
+              <AppIconButton onClick={closeCart} aria-label="Close meal panel">
                 ✕
               </AppIconButton>
             </div>
@@ -154,7 +154,7 @@ export default function CartPreviewDrawer() {
             </p>
 
             {items.length === 0 ? (
-              <EmptyStateCard variant="compact" align="left" title="Your cart is empty." className="py-6" />
+              <EmptyStateCard variant="compact" align="left" title="Your meal is empty." className="py-6" />
             ) : (
               <ul className="mt-3 space-y-3 pb-2">
                 {items.map((item) => {
@@ -200,7 +200,7 @@ export default function CartPreviewDrawer() {
                                 event.stopPropagation();
                                 updateQuantity(item.id, item.quantity + 1);
                               }}
-                              decrementLabel={item.quantity === 1 ? `Remove ${item.name} from cart` : `Decrease quantity of ${item.name}`}
+                              decrementLabel={item.quantity === 1 ? `Remove ${item.name} from meal` : `Decrease quantity of ${item.name}`}
                               incrementLabel={`Increase quantity of ${item.name}`}
                               decrementContent={item.quantity === 1 ? <Trash2 className="h-4 w-4" strokeWidth={2.5} /> : undefined}
                             />
@@ -224,14 +224,14 @@ export default function CartPreviewDrawer() {
 
             <div className="mt-4 grid grid-cols-2 gap-2 border-t border-slate-200 pt-4">
               <AppButton type="button" variant="ghost" size="md" onClick={() => setIsClearCartDialogOpen(true)} disabled={items.length === 0}>
-                Clear Cart
+                Clear Meal
               </AppButton>
               <Link
                 href="/cart"
                 onClick={closeCart}
                 className={appButtonClassName({ variant: "primary", size: "md", className: "border-slate-900 bg-slate-900 font-medium hover:bg-slate-800" })}
               >
-                Open Full Cart
+                Open My Meal
               </Link>
             </div>
           </section>

@@ -222,7 +222,7 @@ export default function CartIconDropdown({
             />
           </div>
         ) : (
-          <EmptyStateCard variant="compact" align="left" title="Your cart is empty." className="py-0" />
+          <EmptyStateCard variant="compact" align="left" title="Your meal is empty." className="py-0" />
         )}
       </div>
 
@@ -238,7 +238,7 @@ export default function CartIconDropdown({
   const actionButtons = (
     <>
       <AppButton variant="ghost" size="md" onClick={handleViewCart} className="flex-1 font-medium">
-        View Cart
+        View My Meal
       </AppButton>
       <Link
         href="/cart"
@@ -261,7 +261,7 @@ export default function CartIconDropdown({
           dismissLastAddedPreview();
         }}
         className={`${buttonClassName} cursor-pointer`}
-        aria-label={cartCount > 0 ? `Cart (${cartCount})` : "Cart"}
+        aria-label={cartCount > 0 ? `My Meal (${cartCount})` : "My Meal"}
         aria-current={isCurrentPage ? "page" : undefined}
         aria-expanded={isOpen}
       >
@@ -296,7 +296,7 @@ export default function CartIconDropdown({
           <div
             role="dialog"
             aria-modal="true"
-            aria-label="Item added to cart"
+            aria-label="Item added to meal"
             className={`absolute inset-x-0 bottom-0 flex h-auto max-h-[85dvh] touch-pan-y flex-col overflow-y-auto overscroll-contain rounded-t-3xl bg-white text-slate-900 shadow-[0_-18px_40px_rgba(15,23,42,0.18)] transition-transform duration-300 ${
               isOpen ? "translate-y-0" : "translate-y-full"
             }`}

@@ -166,7 +166,7 @@ export default function NutritionFactsPanel({
         {showCustomizationDeltas ? (
           <NutritionFactsInfoTooltip
             label="What do the green values mean?"
-            description="Green values show the difference between your customized order and this item's base nutrition."
+            description="Green values show the difference between your customized meal and this item's base nutrition."
           />
         ) : null}
       </div>

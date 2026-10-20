@@ -34,13 +34,13 @@ export default function InProgressBuildDialog() {
           You have an unfinished build
         </h2>
         <p id="in-progress-build-dialog-description" className="mt-2 text-sm leading-6 text-slate-600">
-          Leaving now will lose your current selections. Add your build to the cart, discard it, or keep editing.
+          Leaving now will lose your current selections. Add your build to your meal, discard it, or keep editing.
         </p>
       </div>
       <div className="mt-5 flex flex-col gap-2">
         <AppButton variant="primary" size="md" onClick={confirmAddToCart}>
           <ShoppingCart className="h-4 w-4 shrink-0" strokeWidth={2.2} aria-hidden="true" />
-          Add to Cart
+          Add to Meal
         </AppButton>
         <AppButton
           variant="secondary"

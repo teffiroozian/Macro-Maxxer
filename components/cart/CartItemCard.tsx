@@ -156,7 +156,7 @@ export default function CartItemCard({
               value={cartItem.quantity}
               onDecrement={handleDecrement}
               onIncrement={handleIncrement}
-              decrementLabel={isRemoveStep ? `Remove ${displayName} from cart` : `Decrease quantity of ${displayName}`}
+              decrementLabel={isRemoveStep ? `Remove ${displayName} from meal` : `Decrease quantity of ${displayName}`}
               incrementLabel={`Increase quantity of ${displayName}`}
               decrementContent={isRemoveStep ? <Trash2 className="h-4 w-4" strokeWidth={2.5} /> : "−"}
             />
