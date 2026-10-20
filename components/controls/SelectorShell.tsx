@@ -84,7 +84,7 @@ export default function SelectorShell<TValue extends string>({
         <CurrentIcon className="h-4 w-4 shrink-0" strokeWidth={2.3} />
         <span className="min-w-0 truncate">
           {valuePrefix ? (
-            <span className="hidden font-medium text-slate-500 xl:inline">{valuePrefix}: </span>
+            <span className="hidden font-medium text-slate-500 dark:text-slate-400 xl:inline">{valuePrefix}: </span>
           ) : null}
           {currentOption.label}
         </span>
@@ -103,7 +103,7 @@ export default function SelectorShell<TValue extends string>({
       <div
         role="menu"
         aria-hidden={!isOpen}
-        className={`absolute ${align === "right" ? "right-0" : "left-0"} top-[calc(100%+8px)] z-20 w-[min(230px,calc(100vw-2rem))] origin-top rounded-2xl border border-black/10 bg-white p-1.5 shadow-[0_16px_32px_rgba(15,23,42,0.14)] transition-all duration-150 ease-out ${
+        className={`absolute ${align === "right" ? "right-0" : "left-0"} top-[calc(100%+8px)] z-20 w-[min(230px,calc(100vw-2rem))] origin-top rounded-2xl border border-black/10 dark:border-hairline bg-white dark:bg-surface-card p-1.5 shadow-[0_16px_32px_rgba(15,23,42,0.14)] transition-all duration-150 ease-out ${
           isOpen
             ? "pointer-events-auto translate-y-0 scale-100 opacity-100"
             : "pointer-events-none -translate-y-1 scale-95 opacity-0"
@@ -129,12 +129,12 @@ export default function SelectorShell<TValue extends string>({
                   isActive
                     ? "bg-accent-soft text-accent-strong"
                     : isHovered
-                      ? "bg-slate-100 text-slate-800"
-                      : "bg-transparent text-slate-700"
+                      ? "bg-slate-100 dark:bg-surface-hover text-slate-800 dark:text-slate-200"
+                      : "bg-transparent text-slate-700 dark:text-slate-200"
                 }`}
               >
                 <Icon
-                  className={`h-4 w-4 shrink-0 ${isActive ? "text-accent-strong" : "text-slate-400"}`}
+                  className={`h-4 w-4 shrink-0 ${isActive ? "text-accent-strong" : "text-slate-400 dark:text-slate-500"}`}
                   strokeWidth={2.3}
                 />
                 <span className="min-w-0 flex-1 truncate">{option.label}</span>

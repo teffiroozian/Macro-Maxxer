@@ -64,7 +64,7 @@ export default function MenuItemMacroSummary({
           className="mb-2"
         />
       ) : null}
-      <div className="flex flex-wrap items-end gap-x-6 gap-y-3 border-t border-black/[0.06] pt-3 lg:gap-x-8">
+      <div className="flex flex-wrap items-end gap-x-6 gap-y-3 border-t border-black/[0.06] dark:border-white/[0.07] pt-3 lg:gap-x-8">
         <MacroStat
           macroKey="calories"
           value={displayCalories}

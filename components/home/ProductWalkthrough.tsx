@@ -96,7 +96,7 @@ function prefersReducedMotion() {
 }
 
 const TAB_ACTIVE_CLASS = "bg-accent-soft text-accent-strong";
-const TAB_INACTIVE_CLASS = "text-slate-500 hover:bg-black/5 hover:text-slate-800";
+const TAB_INACTIVE_CLASS = "text-slate-500 dark:text-slate-400 hover:bg-black/5 dark:hover:bg-surface-hover hover:text-slate-800 dark:hover:text-slate-200";
 
 // Interactive three-tab showcase for the Product Walkthrough (Slice 3). One
 // step is active at a time, driven entirely by user action (no autoplay) —
@@ -186,7 +186,7 @@ export default function ProductWalkthrough({
       <div
         role="tablist"
         aria-label="Product walkthrough steps"
-        className="mx-auto flex w-fit max-w-full flex-wrap items-center justify-center gap-1 rounded-3xl border border-black/10 bg-white p-1.5 shadow-sm sm:rounded-full"
+        className="mx-auto flex w-fit max-w-full flex-wrap items-center justify-center gap-1 rounded-3xl border border-black/10 dark:border-hairline bg-white dark:bg-surface-card p-1.5 shadow-sm sm:rounded-full"
       >
         {STEPS.map((step, index) => {
           const isActive = index === activeIndex;
@@ -210,7 +210,7 @@ export default function ProductWalkthrough({
               <span
                 aria-hidden="true"
                 className={`mr-2 inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-full text-[11px] font-bold ${
-                  isActive ? "bg-accent text-white" : "bg-slate-200 text-slate-600"
+                  isActive ? "bg-accent text-white dark:text-slate-950" : "bg-slate-200 dark:bg-surface-hover text-slate-600 dark:text-slate-300"
                 }`}
               >
                 {index + 1}
@@ -226,21 +226,21 @@ export default function ProductWalkthrough({
           transition that's automatically skipped under
           prefers-reduced-motion via that class's own media query. */}
       <div key={activeStep.key} className="walkthrough-panel-enter mx-auto mt-6 max-w-2xl text-center">
-        <h3 className="font-heading text-balance text-xl font-bold text-slate-900 sm:text-2xl">
+        <h3 className="font-heading text-balance text-xl font-bold text-slate-900 dark:text-slate-100 sm:text-2xl">
           {activeStep.title}
         </h3>
-        <p className="text-pretty mt-2 text-sm text-slate-600 sm:text-base">{activeStep.description}</p>
+        <p className="text-pretty mt-2 text-sm text-slate-600 dark:text-slate-300 sm:text-base">{activeStep.description}</p>
       </div>
 
       <div className="mx-auto mt-8 w-full max-w-4xl">
-        <SurfaceCard as="article" radius="large" shadow="md" padding="none" className="overflow-hidden bg-white">
+        <SurfaceCard as="article" radius="large" shadow="md" padding="none" className="overflow-hidden bg-white dark:bg-surface-card">
           {/* Light "device chrome" — same treatment as ProductPreviewCard,
               so this preview reads as part of the same visual system. */}
-          <div className="flex items-center gap-1.5 border-b border-black/5 bg-slate-50/80 px-5 py-3">
-            <span className="h-2 w-2 rounded-full bg-slate-300" />
-            <span className="h-2 w-2 rounded-full bg-slate-300" />
-            <span className="h-2 w-2 rounded-full bg-slate-300" />
-            <span className="ml-2 truncate text-xs font-medium text-slate-400">
+          <div className="flex items-center gap-1.5 border-b border-black/5 dark:border-hairline bg-slate-50/80 dark:bg-surface-subtle px-5 py-3">
+            <span className="h-2 w-2 rounded-full bg-slate-300 dark:bg-control" />
+            <span className="h-2 w-2 rounded-full bg-slate-300 dark:bg-control" />
+            <span className="h-2 w-2 rounded-full bg-slate-300 dark:bg-control" />
+            <span className="ml-2 truncate text-xs font-medium text-slate-400 dark:text-slate-400">
               Macro Maxxer · {activeStep.key === "find" ? findRestaurantName : restaurantName} · {activeStep.tabLabel}
             </span>
           </div>
@@ -278,7 +278,7 @@ export default function ProductWalkthrough({
         <div className="mt-5 flex justify-center">
           <Link
             href={ctaHrefByStep[activeStep.key]}
-            className="group inline-flex items-center gap-2 rounded-full bg-accent px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-accent-strong focus-ring"
+            className="group inline-flex items-center gap-2 rounded-full bg-accent px-5 py-2.5 text-sm font-semibold text-white dark:text-slate-950 shadow-sm transition-colors hover:bg-accent-strong focus-ring"
           >
             {activeStep.ctaLabel}
             <ArrowRight
@@ -371,23 +371,23 @@ function FindComparePreview({ items }: { items: WalkthroughMenuItem[] }) {
         {displayItems.map((item) => (
           <div
             key={item.id}
-            className="flex items-center gap-3 rounded-2xl border border-black/10 bg-slate-50/60 px-3 py-2.5"
+            className="flex items-center gap-3 rounded-2xl border border-black/10 dark:border-hairline bg-slate-50/60 dark:bg-surface-subtle px-3 py-2.5"
           >
-            <div className="relative h-12 w-12 shrink-0 overflow-hidden rounded-xl bg-white ring-1 ring-black/10">
+            <div className="relative h-12 w-12 shrink-0 overflow-hidden rounded-xl bg-white dark:bg-image-placeholder! ring-1 ring-black/10 dark:ring-hairline">
               <Image src={item.image} alt="" fill className="object-cover" sizes="48px" />
             </div>
 
             <div className="min-w-0 flex-1">
               <div className="flex flex-wrap items-center gap-x-2 gap-y-0.5">
-                <p className="truncate text-sm font-semibold text-slate-900">{item.name}</p>
+                <p className="truncate text-sm font-semibold text-slate-900 dark:text-slate-100">{item.name}</p>
                 {item.id === topProteinItemId ? (
-                  <span className="inline-flex shrink-0 items-center gap-1 rounded-full border border-orange-100 bg-orange-50 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide text-[#c2410c]">
+                  <span className="inline-flex shrink-0 items-center gap-1 rounded-full border border-orange-100 dark:border-hairline bg-orange-50 dark:bg-surface-hover px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide text-[#c2410c] dark:text-[#f96306]">
                     <Flame className="h-3 w-3" aria-hidden="true" />
                     Top Protein
                   </span>
                 ) : null}
               </div>
-              <p className="truncate text-xs text-slate-500">{item.category}</p>
+              <p className="truncate text-xs text-slate-500 dark:text-slate-400">{item.category}</p>
             </div>
 
             <div className="flex shrink-0 items-center gap-3">
@@ -422,13 +422,13 @@ function BuildItemCard({
 }) {
   return (
     <div className="flex flex-col gap-3 sm:flex-row sm:items-start">
-      <div className="relative mx-auto h-20 w-20 shrink-0 overflow-hidden rounded-xl border border-black/10 bg-slate-50 sm:mx-0">
+      <div className="relative mx-auto h-20 w-20 shrink-0 overflow-hidden rounded-xl border border-black/10 dark:border-hairline bg-slate-50 dark:bg-image-placeholder! sm:mx-0">
         <Image src={item.image} alt={item.name} fill className="object-cover" sizes="80px" />
       </div>
 
       <div className="min-w-0 flex-1">
         <p className="text-label">{item.category}</p>
-        <h4 className="font-heading text-base font-bold text-slate-900">{item.name}</h4>
+        <h4 className="font-heading text-base font-bold text-slate-900 dark:text-slate-100">{item.name}</h4>
 
         <div className="mt-2 flex flex-wrap gap-1.5">
           {item.addOns.map((addOn) => {
@@ -442,7 +442,7 @@ function BuildItemCard({
                 className={`inline-flex cursor-pointer items-center gap-1 rounded-full border px-2.5 py-1 text-xs font-semibold transition motion-reduce:transition-none focus-ring ${
                   isSelected
                     ? "border-accent bg-accent-soft text-accent-strong"
-                    : "border-black/15 bg-white text-slate-600 hover:bg-black/5"
+                    : "border-black/15 dark:border-control bg-white dark:bg-surface-card text-slate-600 dark:text-slate-300 hover:bg-black/5 dark:hover:bg-surface-hover"
                 }`}
               >
                 {isSelected ? (
@@ -482,7 +482,7 @@ function CustomizeBuildPreview({
     <div>
       {items.map((item, index) => (
         <div key={item.id}>
-          {index > 0 ? <div className="my-3 h-px bg-black/10" /> : null}
+          {index > 0 ? <div className="my-3 h-px bg-black/10 dark:bg-divider" /> : null}
           <BuildItemCard
             item={item}
             selectedAddOnIds={selectedAddOnIdsByItem[item.id] ?? []}
@@ -514,14 +514,14 @@ function ReviewOrderPreview({ items, totals }: { items: WalkthroughReviewItem[];
         ))}
       </div>
 
-      <div className="mt-5 h-px bg-black/10" />
+      <div className="mt-5 h-px bg-black/10 dark:bg-divider" />
 
       {/* Total Macros (left) and Order Totals (right) share one row instead
           of stacking — an equal-width grid keeps the two balanced regardless
           of which side's content is taller. */}
       <div className="mt-4 grid gap-6 sm:grid-cols-2 sm:gap-8">
         <div>
-          <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">Total Macros</p>
+          <p className="text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">Total Macros</p>
           <div className="mt-2 flex flex-wrap items-end gap-x-6 gap-y-3">
             <MacroStat macroKey="calories" value={totals.calories} labelVariant="uppercase" size="summary" />
             <MacroStat macroKey="protein" value={totals.protein} labelVariant="uppercase" size="summary" />
@@ -531,7 +531,7 @@ function ReviewOrderPreview({ items, totals }: { items: WalkthroughReviewItem[];
         </div>
 
         <div>
-          <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">Meal Totals</p>
+          <p className="text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">Meal Totals</p>
           <div className="mt-2">
             <MacroSplitChart
               segments={buildMacroSegments({ protein: totals.protein, carbs: totals.carbs, fat: totals.totalFat })}

@@ -75,10 +75,10 @@ export default function MenuItemResultRow({
   }, [isAddFeedbackVisible]);
 
   const macroSegments = [
-    { key: "calories", text: `${formatMacroDisplayNumber(nutrition.calories)} cal`, className: macroColorTokens.calories.valueClassName },
-    { key: "protein", text: `${formatMacroDisplayNumber(nutrition.protein)}g P`, className: macroColorTokens.protein.valueClassName },
-    { key: "carbs", text: `${formatMacroDisplayNumber(nutrition.carbs)}g C`, className: macroColorTokens.carbs.valueClassName },
-    { key: "totalFat", text: `${formatMacroDisplayNumber(nutrition.totalFat)}g F`, className: macroColorTokens.totalFat.valueClassName },
+    { key: "calories", text: `${formatMacroDisplayNumber(nutrition.calories)} cal`, className: macroColorTokens.calories.compactValueClassName },
+    { key: "protein", text: `${formatMacroDisplayNumber(nutrition.protein)}g P`, className: macroColorTokens.protein.compactValueClassName },
+    { key: "carbs", text: `${formatMacroDisplayNumber(nutrition.carbs)}g C`, className: macroColorTokens.carbs.compactValueClassName },
+    { key: "totalFat", text: `${formatMacroDisplayNumber(nutrition.totalFat)}g F`, className: macroColorTokens.totalFat.compactValueClassName },
   ];
 
   const handleQuickAdd = () => {
@@ -131,8 +131,8 @@ export default function MenuItemResultRow({
     <li
       role="option"
       aria-selected={isActive}
-      className={`flex cursor-pointer items-center gap-3 px-4 py-3 text-sm text-slate-700 transition hover:bg-surface-hover ${
-        isActive ? "bg-slate-100" : ""
+      className={`flex cursor-pointer items-center gap-3 px-4 py-3 text-sm text-slate-700 dark:text-slate-200 transition hover:bg-surface-hover ${
+        isActive ? "bg-slate-100 dark:bg-surface-hover" : ""
       }`}
       onMouseDown={(event) => event.preventDefault()}
       onClick={() => onSelect(item, restaurant)}
@@ -143,19 +143,19 @@ export default function MenuItemResultRow({
         imagePresentation={item.imagePresentation}
         fallbackClassName={restaurantImagePresentation.itemThumbnailImageClassName ?? "object-contain rounded-md"}
         fallbackBackgroundColor={restaurantImagePresentation.imageBackgroundColor}
-        containerClassName="flex h-12 w-12 shrink-0 items-center justify-center overflow-hidden rounded-lg bg-slate-50"
+        containerClassName="flex h-12 w-12 shrink-0 items-center justify-center overflow-hidden rounded-lg bg-slate-50 dark:bg-image-placeholder!"
         renderer="next-image"
         width={36}
         height={36}
       />
       <span className="min-w-0 flex-1">
-        <span className="block truncate font-semibold text-slate-900">
+        <span className="block truncate font-semibold text-slate-900 dark:text-slate-100">
           {resultName}
         </span>
         {/* Below `lg`, restaurant name and macros stack; at `lg`+ they share
             one row (name left, macros right) since there's more width. */}
         <span className="mt-0.5 flex flex-col lg:flex-row lg:items-baseline lg:justify-between lg:gap-3">
-          <span className="min-w-0 truncate text-xs text-slate-500">{restaurant.name}</span>
+          <span className="min-w-0 truncate text-xs text-slate-500 dark:text-slate-400">{restaurant.name}</span>
           <span className="mt-0.5 whitespace-nowrap text-xs font-semibold lg:mt-0 lg:shrink-0">
             {macroSegments.map((segment, index) => (
               <span key={segment.key}>
@@ -188,7 +188,7 @@ export default function MenuItemResultRow({
               className={`shrink-0 cursor-pointer rounded-full px-3 py-1 text-xs font-bold transition ${
                 isAddFeedbackVisible
                   ? "bg-slate-800 text-white opacity-70"
-                  : "bg-black/90 text-white hover:bg-black"
+                  : "bg-black/90 text-white hover:bg-black dark:bg-slate-50 dark:text-slate-950 dark:hover:bg-slate-200"
               }`}
             >
               {isAddFeedbackVisible ? "Added" : "Quick Add"}

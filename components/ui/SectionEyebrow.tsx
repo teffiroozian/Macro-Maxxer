@@ -1,6 +1,6 @@
 import type { ComponentPropsWithoutRef, ElementType, ReactNode } from "react";
 
-export const sectionEyebrowClassName = "font-semibold uppercase tracking-[0.14em] text-slate-600";
+export const sectionEyebrowClassName = "font-semibold uppercase tracking-[0.14em] text-slate-600 dark:text-slate-300";
 
 type SectionEyebrowProps<TElement extends ElementType = "p"> = {
   as?: TElement;

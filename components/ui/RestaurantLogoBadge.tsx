@@ -29,10 +29,6 @@ type RestaurantLogoBadgeProps = {
   fit?: "contain" | "cover";
   // Muted/unavailable state (MobileNavDrawer's "Coming Soon" list).
   grayscale?: boolean;
-  // The wrapper's own background, shown through any transparent margin
-  // around the mark. Defaults to white; callers embedded in a tinted list
-  // row (e.g. a slate-50 panel) can match that background instead.
-  background?: string;
 };
 
 // Fixed *height*, width from a small enum (square vs wide) — a wrapper
@@ -76,12 +72,11 @@ export default function RestaurantLogoBadge({
   fill = 100,
   fit = "contain",
   grayscale = false,
-  background = "bg-white",
 }: RestaurantLogoBadgeProps) {
   return (
     <span
-      className={`relative inline-flex shrink-0 items-center justify-center overflow-hidden ${background} ${
-        ring ? "border border-black/10 shadow-sm" : ""
+      className={`relative inline-flex shrink-0 items-center justify-center overflow-hidden logo-surface ${
+        ring ? "border border-black/10 dark:border-white/12 shadow-sm" : ""
       } ${heightClassNames[size]} ${wide ? widthClassNames[size].wide : widthClassNames[size].square} rounded-full ${className}`}
     >
       <span className="relative" style={{ height: `${fill}%`, width: `${fill}%` }}>

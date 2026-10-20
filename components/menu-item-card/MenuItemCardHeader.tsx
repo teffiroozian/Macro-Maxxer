@@ -54,7 +54,7 @@ export default function MenuItemCardHeader({
         imagePresentation={item.imagePresentation}
         fallbackClassName={itemImageClassName ?? "object-contain p-3"}
         fallbackBackgroundColor={itemImageBackgroundColor}
-        containerClassName="relative h-[190px] w-full shrink-0 overflow-hidden rounded-2xl border border-black/[0.06] bg-image-placeholder lg:mx-0 lg:h-[184px] lg:w-[184px]"
+        containerClassName="relative h-[190px] w-full shrink-0 overflow-hidden rounded-2xl border border-black/[0.06] dark:border-divider bg-image-placeholder dark:bg-image-placeholder! lg:mx-0 lg:h-[184px] lg:w-[184px]"
         overlay={
           !isCartMode && hasImageLabel ? (
             <div className="absolute left-2 top-2 z-10 flex flex-col items-start gap-1">
@@ -72,7 +72,7 @@ export default function MenuItemCardHeader({
           <MenuItemTitle
             name={item.name}
             as={isCartMode ? "div" : "h3"}
-            className="font-heading text-card-title text-slate-900"
+            className="font-heading text-card-title text-slate-900 dark:text-slate-100"
           />
           {variants && !item.hideVariantSelector ? (
             <div className="mt-1">
@@ -89,10 +89,10 @@ export default function MenuItemCardHeader({
           ) : null}
         </div>
         {isCartMode && cartSummaryLine ? (
-          <p className="mt-0.5 truncate text-xs text-black/55">{cartSummaryLine}</p>
+          <p className="mt-0.5 truncate text-xs text-black/55 dark:text-slate-400">{cartSummaryLine}</p>
         ) : null}
         {!isCartMode && highProteinIngredientSummaryLine ? (
-          <p className="mt-0.5 truncate text-[13px] text-black/55">{highProteinIngredientSummaryLine}</p>
+          <p className="mt-0.5 truncate text-[13px] text-black/55 dark:text-slate-400">{highProteinIngredientSummaryLine}</p>
         ) : null}
         </div>
 

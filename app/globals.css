@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@custom-variant dark (&:where(.dark, .dark *));
 
 :root {
     --background: #efefef;
@@ -432,12 +433,35 @@
     }
 }
 
-/* @media (prefers-color-scheme: dark) {
-    :root {
-        --background: #0a0a0a;
-        --foreground: #ededed;
-    }
-} */
+/* Final Direction 4a. Proposed modal/muted-panel tokens await design review. */
+:root { color-scheme: light; }
+.dark {
+    --background: #020617;
+    --foreground: #f8fafc;
+    --surface-app-background: #020617;
+    --surface-image-placeholder: #e9edf2;
+    --product-accent: #10b981;
+    --product-accent-strong: #6ee7b7;
+    --product-accent-soft: rgb(52 211 153 / 0.14);
+    --surface-card: #162033;
+    --surface-subtle: #020617;
+    --surface-hover: #243149;
+    --surface-inverse: #f8fafc;
+    --border-hairline: rgb(255 255 255 / 0.08);
+    --border-control: #3a4a66;
+    --border-divider: #243149;
+    --icon-decorative: #64748b;
+    --elev-1: 0 1px 2px rgb(0 0 0 / 0.5);
+    --elev-2: 0 2px 10px rgb(0 0 0 / 0.45);
+    --elev-float: var(--elev-2);
+    --elev-hover: var(--elev-2);
+    --elev-brand: var(--elev-1);
+    color-scheme: dark;
+}
+/* Preserve the existing geometry while making keyboard focus visible. */
+.dark .focus-ring:focus-visible { outline-color: var(--foreground); }
+html.capacitor-native.dark,
+html.capacitor-native.dark body { background: #020617; }
 
 html {
     min-height: 100%;
@@ -797,5 +821,22 @@ html.capacitor-native .native-sticky-action {
     }
     .macro-segment-label-medium {
         display: none;
+    }
+}
+
+@layer components {
+    .dark .text-label,
+    .dark .text-micro,
+    .dark .text-macro-label {
+        color: var(--color-slate-400);
+    }
+}
+
+/* Shared by logo badges and direct logo containers. This deliberately
+   wins over theme utilities and inline product-image fallback fills;
+   geometry, clipping, borders and image rendering stay with each caller. */
+@layer components {
+    .logo-surface {
+        background-color: #FFFFFF !important;
     }
 }

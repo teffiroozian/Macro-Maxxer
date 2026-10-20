@@ -194,14 +194,14 @@ const ExportOrderCard = forwardRef<HTMLElement, ExportOrderCardProps>(function E
       <div className="relative flex h-full flex-col px-[64px] pb-[52px] pt-[60px]">
         <header className="flex shrink-0 items-center justify-between gap-8">
           <div className="flex items-center gap-4">
-            <span className="relative size-[60px] overflow-hidden rounded-[16px] bg-black shadow-sm">
+            <span className="relative size-[60px] overflow-hidden rounded-[16px] logo-surface shadow-sm">
               <Image src="/logo.svg" alt="Macro Maxxer" fill className="object-contain p-2.5" />
             </span>
             <span className="font-heading text-[30px] font-bold tracking-[-0.01em]">Macro Maxxer</span>
           </div>
 
           <div className="flex min-w-0 items-center gap-3.5 rounded-full border border-white/15 bg-white/10 py-2 pl-2 pr-6 backdrop-blur-sm">
-            <span className="relative size-[48px] shrink-0 overflow-hidden rounded-full bg-white">
+            <span className="relative size-[48px] shrink-0 overflow-hidden rounded-full logo-surface">
               <Image src={restaurant.logo} alt="" fill sizes="96px" className="object-contain" />
             </span>
             <span className="truncate text-[24px] font-semibold">{restaurant.name}</span>

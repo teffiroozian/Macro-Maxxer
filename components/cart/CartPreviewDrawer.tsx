@@ -108,7 +108,7 @@ export default function CartPreviewDrawer() {
           <header className="border-b border-slate-200 px-5 py-4">
             <div className="flex items-start justify-between gap-3">
               <div className="flex min-w-0 items-center gap-3">
-                <div className={`relative size-11 shrink-0 overflow-hidden border border-slate-200 bg-slate-100 ${
+                <div className={`relative size-11 shrink-0 overflow-hidden ${cartHeaderInfo.mode === "single" && cartHeaderInfo.restaurant?.logo ? "logo-surface" : ""} border border-slate-200 bg-slate-100 ${
                   cartHeaderInfo.mode === "single" && cartHeaderInfo.restaurant
                     ? getRestaurantLogoShapeClassName()
                     : "rounded-xl"

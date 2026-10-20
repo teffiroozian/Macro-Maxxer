@@ -15,7 +15,7 @@ import { appIconButtonClassName } from "@/components/ui/AppIconButton";
 function DesktopSearchDropdownFallback({ className = "w-full" }: { className?: string }) {
   return (
     <div aria-hidden="true" className={`relative ${className}`}>
-      <div className="relative flex h-10 w-full items-center gap-2 rounded-full border border-black/10 bg-white pl-10 pr-4 text-sm text-slate-500">
+      <div className="relative flex h-10 w-full items-center gap-2 rounded-full border border-black/10 dark:border-hairline bg-white dark:bg-surface-subtle pl-10 pr-4 text-sm text-slate-500 dark:text-slate-400">
         <span className="pointer-events-none absolute inset-y-0 left-2 my-auto flex h-6 w-6 items-center justify-center rounded-full bg-accent-soft text-accent-strong">
           <Search className="h-3.5 w-3.5" strokeWidth={2.5} />
         </span>
@@ -48,13 +48,13 @@ export default function DesktopNav({
     // flanking columns regardless of how much of it their own content
     // fills, so the auto-sized middle column stays centered on the row no
     // matter how the left/right content widths compare.
-    <div data-global-nav="true" className="mx-auto hidden w-full max-w-6xl items-center gap-3 rounded-2xl border border-black/10 bg-white px-6 py-1.5 shadow-elev-brand lg:grid lg:grid-cols-[1fr_auto_1fr]">
+    <div data-global-nav="true" className="mx-auto hidden w-full max-w-6xl items-center gap-3 rounded-2xl border border-black/10 dark:border-hairline bg-white dark:bg-surface-card px-6 py-1.5 shadow-elev-brand lg:grid lg:grid-cols-[1fr_auto_1fr]">
       {/* Logo + Restaurants read as one group (tighter gap than the row's
           own column gap above) rather than two separately-spaced controls. */}
       <div className="flex min-w-0 items-center gap-2">
         <Link
           href="/"
-          className="inline-flex h-9 w-9 shrink-0 items-center justify-center overflow-hidden rounded-lg bg-white"
+          className="inline-flex h-9 w-9 shrink-0 items-center justify-center overflow-hidden rounded-lg logo-surface"
           aria-label="Go to homepage"
         >
           <span className="relative h-7 w-7">

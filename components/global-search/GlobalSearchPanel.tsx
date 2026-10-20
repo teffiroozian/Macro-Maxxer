@@ -75,7 +75,7 @@ export default function GlobalSearchPanel({
             {isEmptyQuery ? (
               <>
                 {recentRestaurants.length > 0 && (
-                  <li className="px-5 pb-1.5 text-xs font-medium uppercase tracking-wide text-slate-500">
+                  <li className="px-5 pb-1.5 text-xs font-medium uppercase tracking-wide text-slate-500 dark:text-slate-400">
                     Recently Searched
                   </li>
                 )}
@@ -89,7 +89,7 @@ export default function GlobalSearchPanel({
                   />
                 ))}
 
-                <li className="px-5 pb-1.5 pt-5 text-xs font-medium uppercase tracking-wide text-slate-500">
+                <li className="px-5 pb-1.5 pt-5 text-xs font-medium uppercase tracking-wide text-slate-500 dark:text-slate-400">
                   Popular Restaurants
                 </li>
                 {popularRestaurants.map((restaurant, index) => {
@@ -114,16 +114,16 @@ export default function GlobalSearchPanel({
                 />
               ))
             ) : (
-              <li className="px-5 py-6 text-center text-sm text-slate-500">No restaurants found.</li>
+              <li className="px-5 py-6 text-center text-sm text-slate-500 dark:text-slate-400">No restaurants found.</li>
             )}
           </ul>
 
           {isEmptyQuery ? (
-            <div className="border-t border-black/5 px-5 py-3">
+            <div className="border-t border-black/5 dark:border-hairline px-5 py-3">
               <button
                 type="button"
                 onClick={handleViewAllRestaurants}
-                className="cursor-pointer text-sm font-semibold text-slate-700 transition hover:text-slate-900"
+                className="cursor-pointer text-sm font-semibold text-slate-700 dark:text-slate-200 transition hover:text-slate-900 dark:hover:text-slate-100"
               >
                 View All Restaurants
               </button>
@@ -134,10 +134,10 @@ export default function GlobalSearchPanel({
         <ul role="listbox" className={`mt-4 pb-4 ${constrainResults ? "max-h-80 overflow-y-auto" : ""}`}>
           {isEmptyQuery ? (
             !searchIndex ? (
-              <li className="px-5 py-6 text-center text-sm text-slate-500">Loading menu items…</li>
+              <li className="px-5 py-6 text-center text-sm text-slate-500 dark:text-slate-400">Loading menu items…</li>
             ) : recentMenuItems.length > 0 ? (
               <>
-                <li className="px-5 pb-1.5 text-xs font-medium uppercase tracking-wide text-slate-500">
+                <li className="px-5 pb-1.5 text-xs font-medium uppercase tracking-wide text-slate-500 dark:text-slate-400">
                   Recently Searched
                 </li>
                 {recentMenuItems.map((result, index) =>
@@ -177,14 +177,14 @@ export default function GlobalSearchPanel({
                 )}
               </>
             ) : restaurantFilterId ? (
-              <li className="px-5 py-6 text-center text-sm text-slate-500">
+              <li className="px-5 py-6 text-center text-sm text-slate-500 dark:text-slate-400">
                 Search {filteredRestaurantName}&rsquo;s menu
               </li>
             ) : (
-              <li className="px-5 py-6 text-center text-sm text-slate-500">Start typing to search menu items.</li>
+              <li className="px-5 py-6 text-center text-sm text-slate-500 dark:text-slate-400">Start typing to search menu items.</li>
             )
           ) : !searchIndex ? (
-            <li className="px-5 py-6 text-center text-sm text-slate-500">Loading menu items…</li>
+            <li className="px-5 py-6 text-center text-sm text-slate-500 dark:text-slate-400">Loading menu items…</li>
           ) : menuItemSuggestions.length > 0 ? (
             menuItemSuggestions.map((result, index) =>
               result.kind === "menu-item" ? (
@@ -219,20 +219,20 @@ export default function GlobalSearchPanel({
               )
             )
           ) : restaurantFilterId ? (
-            <li className="px-5 py-6 text-center text-sm text-slate-500">
+            <li className="px-5 py-6 text-center text-sm text-slate-500 dark:text-slate-400">
               <p>No results in {filteredRestaurantName}.</p>
               {!isRestaurantScoped ? (
                 <button
                   type="button"
                   onClick={() => setRestaurantFilterId(null)}
-                  className="mt-2 cursor-pointer text-sm font-semibold text-slate-700 underline-offset-2 hover:underline"
+                  className="mt-2 cursor-pointer text-sm font-semibold text-slate-700 dark:text-slate-200 underline-offset-2 hover:underline"
                 >
                   Search all restaurants
                 </button>
               ) : null}
             </li>
           ) : (
-            <li className="px-5 py-6 text-center text-sm text-slate-500">No menu items found.</li>
+            <li className="px-5 py-6 text-center text-sm text-slate-500 dark:text-slate-400">No menu items found.</li>
           )}
         </ul>
       )}

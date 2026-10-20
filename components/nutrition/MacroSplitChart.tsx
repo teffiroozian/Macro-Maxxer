@@ -177,7 +177,7 @@ export function MacroLegendInfo({ segments }: { segments: MacroSegment[] }) {
             role="tooltip"
             id={tooltipId}
             style={{ top: position.top, left: position.left }}
-            className={`pointer-events-none fixed z-[250] w-36 rounded-lg bg-slate-900 px-3 py-2 text-white shadow-lg transition-opacity duration-150 ${
+            className={`pointer-events-none fixed z-[250] w-36 rounded-lg bg-slate-900 dark:bg-surface-card dark:ring-1 dark:ring-hairline px-3 py-2 text-white shadow-lg transition-opacity duration-150 ${
                 isOpen ? "opacity-100" : "opacity-0"
             }`}
         >
@@ -242,7 +242,7 @@ export default function MacroSplitChart({
     const visualPercents = computeVisualPercents(visibleSegments.map((segment) => segment.percent));
 
     return (
-        <div className="flex h-12 w-full gap-1.5 overflow-hidden rounded-xl border border-black/10 bg-slate-100 p-1.5">
+        <div className="flex h-12 w-full gap-1.5 overflow-hidden rounded-xl border border-black/10 dark:border-hairline bg-slate-100 dark:bg-surface-subtle p-1.5">
             {visibleSegments.map((segment, index) => (
                 <MacroSegmentBar key={segment.label} segment={segment} visualPercent={visualPercents[index]} />
             ))}

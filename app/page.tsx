@@ -239,7 +239,7 @@ export default async function Home() {
               <div className="mt-4 text-center">
                 <Link
                   href="/restaurants"
-                  className="inline-flex items-center gap-1 text-sm font-semibold text-slate-600 transition hover:text-slate-950 focus-ring"
+                  className="inline-flex items-center gap-1 text-sm font-semibold text-slate-600 dark:text-slate-300 transition hover:text-slate-950 dark:hover:text-slate-50 focus-ring"
                 >
                   View all restaurants <span aria-hidden="true">→</span>
                 </Link>
@@ -259,7 +259,7 @@ export default async function Home() {
                   same treatment. */}
               <div
                 aria-hidden="true"
-                className="pointer-events-none absolute inset-y-0 left-1/2 -z-10 w-screen -translate-x-1/2 bg-gradient-to-b from-transparent via-emerald-100/80 to-transparent"
+                className="pointer-events-none absolute inset-y-0 left-1/2 -z-10 w-screen -translate-x-1/2 bg-gradient-to-b from-transparent via-emerald-100/80 dark:via-surface-card/40 to-transparent"
               />
 
               <HomeSectionContainer className="py-16 sm:py-20 lg:py-24">
@@ -289,7 +289,7 @@ export default async function Home() {
             <div className="relative">
               <div
                 aria-hidden="true"
-                className="pointer-events-none absolute inset-y-0 left-1/2 -z-10 w-screen -translate-x-1/2 bg-gradient-to-b from-transparent via-slate-50/80 to-transparent"
+                className="pointer-events-none absolute inset-y-0 left-1/2 -z-10 w-screen -translate-x-1/2 bg-gradient-to-b from-transparent via-slate-50/80 dark:via-surface-card/40 to-transparent"
               />
 
               <HomeSectionContainer className="py-20 sm:py-24 lg:py-28">

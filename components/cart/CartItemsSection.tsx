@@ -59,7 +59,7 @@ export default function CartItemsSection({
             className={groupIndex > 0 ? "border-t border-black/10 pt-6" : ""}
           >
             <div className="mb-3 flex items-center gap-2 px-1">
-              <span className={`relative flex h-6 w-6 shrink-0 items-center justify-center overflow-hidden bg-slate-50 ${
+              <span className={`relative flex h-6 w-6 shrink-0 items-center justify-center overflow-hidden logo-surface ${
                 getRestaurantLogoShapeClassName()
               }`}>
                 {restaurant?.logo ? (

@@ -76,7 +76,7 @@ export default function RestaurantIdentityHeader({
         radius="large"
         shadow="sm"
         padding="none"
-        className="relative overflow-hidden bg-white/90 backdrop-blur-sm"
+        className="relative overflow-hidden bg-white/90 dark:bg-surface-card backdrop-blur-sm"
       >
         <div className="p-5 sm:p-7 lg:p-8">
           {/* Identity row: logo top-aligned with the restaurant name (not
@@ -94,11 +94,11 @@ export default function RestaurantIdentityHeader({
             />
 
             <div className="min-w-0">
-              <h1 className="font-heading text-3xl font-bold leading-tight text-slate-900 sm:text-4xl">
+              <h1 className="font-heading text-3xl font-bold leading-tight text-slate-900 dark:text-slate-100 sm:text-4xl">
                 {name} Nutrition
               </h1>
               {description ? (
-                <p className="mt-1.5 max-w-2xl text-sm text-slate-600 sm:text-base">{description}</p>
+                <p className="mt-1.5 max-w-2xl text-sm text-slate-600 dark:text-slate-300 sm:text-base">{description}</p>
               ) : null}
             </div>
           </div>
@@ -106,16 +106,16 @@ export default function RestaurantIdentityHeader({
           {/* Dedicated trust/freshness row: smaller and visually secondary
               relative to the identity row above, grouped tightly and
               aligned to the right rather than spread across the card. */}
-          <div className="mt-6 flex flex-wrap items-center justify-end gap-x-5 gap-y-2 border-t border-black/[0.06] pt-4">
+          <div className="mt-6 flex flex-wrap items-center justify-end gap-x-5 gap-y-2 border-t border-black/[0.06] dark:border-divider pt-4">
             {updatedAtLabel ? (
-              <span className="inline-flex items-center gap-1.5 text-xs font-medium text-slate-500">
-                <CalendarCheck2 className="h-3.5 w-3.5 text-accent/60" aria-hidden="true" />
+              <span className="inline-flex items-center gap-1.5 text-xs font-medium text-slate-500 dark:text-slate-400">
+                <CalendarCheck2 className="h-3.5 w-3.5 text-accent/60 dark:text-[#34d399]" aria-hidden="true" />
                 Last updated: {updatedAtLabel}
               </span>
             ) : null}
 
-            <span className="inline-flex items-center gap-1.5 text-xs font-medium text-slate-500">
-              <UtensilsCrossed className="h-3.5 w-3.5 text-accent/60" aria-hidden="true" />
+            <span className="inline-flex items-center gap-1.5 text-xs font-medium text-slate-500 dark:text-slate-400">
+              <UtensilsCrossed className="h-3.5 w-3.5 text-accent/60 dark:text-[#34d399]" aria-hidden="true" />
               {itemCount} menu items
             </span>
 
@@ -124,9 +124,9 @@ export default function RestaurantIdentityHeader({
                 href={nutritionSourceUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-1.5 text-xs font-medium text-slate-500 transition hover:text-slate-900 focus-ring"
+                className="inline-flex items-center gap-1.5 text-xs font-medium text-slate-500 dark:text-slate-400 transition hover:text-slate-900 dark:hover:text-slate-100 focus-ring"
               >
-                <ExternalLink className="h-3.5 w-3.5 text-accent/60" aria-hidden="true" />
+                <ExternalLink className="h-3.5 w-3.5 text-accent/60 dark:text-[#34d399]" aria-hidden="true" />
                 Nutrition Source
               </a>
             ) : null}
@@ -135,7 +135,7 @@ export default function RestaurantIdentityHeader({
               href={`${REPORT_ISSUE_URL}?title=${encodeURIComponent(`Data issue: ${name}`)}`}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-1.5 text-xs font-medium text-slate-500 transition hover:text-slate-900 focus-ring"
+              className="inline-flex items-center gap-1.5 text-xs font-medium text-slate-500 dark:text-slate-400 transition hover:text-slate-900 dark:hover:text-slate-100 focus-ring"
             >
               <Flag className="h-3.5 w-3.5 text-icon-decorative" aria-hidden="true" />
               Report an error

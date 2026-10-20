@@ -21,14 +21,14 @@ export default function FeaturedRestaurantCard({ restaurant, className = "" }: F
     <Link
       href={`/restaurant/${restaurant.id}`}
       scroll
-      className={`group block h-full rounded-3xl focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-slate-900 ${className}`}
+      className={`group block h-full rounded-3xl focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-slate-900 dark:focus-visible:outline-slate-50 ${className}`}
     >
       <SurfaceCard
         as="article"
         padding="none"
         radius="large"
         shadow="md"
-        className="relative h-full bg-white transition duration-300 group-hover:-translate-y-1 group-hover:shadow-elev-hover"
+        className="relative h-full bg-white dark:bg-surface-card transition duration-300 group-hover:-translate-y-1 group-hover:shadow-elev-hover dark:shadow-elev-2"
       >
         <div className="flex h-full flex-col sm:flex-row">
           <div className="relative h-60 w-full shrink-0 overflow-hidden rounded-t-3xl sm:h-auto sm:w-[44%] sm:rounded-l-3xl sm:rounded-tr-none">
@@ -58,13 +58,13 @@ export default function FeaturedRestaurantCard({ restaurant, className = "" }: F
                 the restaurant name regardless of description length. */}
             <div className="relative flex items-center gap-3 sm:-ml-12 sm:pl-12">
               <RestaurantLogoBadge src={restaurant.logo} alt={`${restaurant.name} logo`} size="sm" className="sm:hidden" />
-              <h3 className="font-heading text-2xl font-bold text-slate-900 sm:text-3xl lg:text-4xl">{restaurant.name}</h3>
+              <h3 className="font-heading text-2xl font-bold text-slate-900 dark:text-slate-100 sm:text-3xl lg:text-4xl">{restaurant.name}</h3>
               <div className="absolute left-0 top-1/2 z-10 hidden -translate-x-1/2 -translate-y-1/2 sm:block">
                 <RestaurantLogoBadge src={restaurant.logo} alt={`${restaurant.name} logo`} size="md" />
               </div>
             </div>
 
-            <p className="text-sm text-slate-600 sm:text-base lg:text-md">
+            <p className="text-sm text-slate-600 dark:text-slate-300 sm:text-base lg:text-md">
               Browse the full menu with real macros on every item, then build a meal that fits your goals.
             </p>
 

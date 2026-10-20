@@ -131,7 +131,7 @@ export default function StickyRestaurantBar({
         <DesktopNav searchBarVariant="compact" />
 
         {secondaryNavLeading || !hideSecondaryNav ? (
-          <div className="mx-auto mt-0.5 hidden w-full max-w-6xl flex-col rounded-2xl border border-slate-200/70 bg-white px-5 shadow-[0_3px_12px_rgba(15,23,42,0.12)] lg:flex">
+          <div className="mx-auto mt-0.5 hidden w-full max-w-6xl flex-col rounded-2xl border border-slate-200/70 dark:border-divider bg-white dark:bg-surface-card px-5 shadow-[0_3px_12px_rgba(15,23,42,0.12)] dark:shadow-elev-1 lg:flex">
             {/* Row 1: entrée selector (left) + view/sort/filters (right).
                 The entrée selector never shares height with the active-filter
                 row below — it's scoped to this row only. Horizontal padding
@@ -174,7 +174,7 @@ export default function StickyRestaurantBar({
                 applies, so the divider is inset to match the controls above
                 rather than running edge-to-edge. */}
             {!hideSecondaryNav && hasActiveFilters ? (
-              <div className="border-t border-slate-200/70 pb-1.5 pt-1.5">
+              <div className="border-t border-slate-200/70 dark:border-divider pb-1.5 pt-1.5">
                 <FilterChips
                   filters={filters}
                   onClearProtein={clearProteinFilter}
@@ -221,7 +221,7 @@ export default function StickyRestaurantBar({
 
       {IS_CAPACITOR_BUILD ? (
         <div
-          className="fixed inset-x-0 top-0 z-[95] border-b border-black/10 bg-white/95 pt-[var(--safe-area-top)] shadow-elev-brand backdrop-blur-lg"
+          className="fixed inset-x-0 top-0 z-[95] border-b border-black/10 dark:border-hairline bg-white/95 dark:bg-surface-card pt-[var(--safe-area-top)] shadow-elev-brand backdrop-blur-lg"
           data-sticky-nav="true"
         >
           <div className="mx-auto flex h-12 w-full max-w-5xl items-center gap-2 px-3">
@@ -235,7 +235,7 @@ export default function StickyRestaurantBar({
             </AppIconButton>
             <div className="flex min-w-0 flex-1 items-center gap-2">
               <RestaurantLogoBadge src={restaurantLogo} alt="" size="xs" fit="cover" />
-              <span className="truncate text-sm font-semibold text-slate-900">{restaurantName}</span>
+              <span className="truncate text-sm font-semibold text-slate-900 dark:text-slate-100">{restaurantName}</span>
             </div>
             <AppIconButton
               variant="ghost"

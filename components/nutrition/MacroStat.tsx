@@ -1,3 +1,4 @@
+import { macroColorTokens } from "@/components/nutrition/macroColorTokens";
 import type { ReactNode } from "react";
 import {
   formatMacroDisplayNumber,
@@ -54,7 +55,10 @@ export default function MacroStat({
   labelVariant = "label",
   delta,
 }: MacroStatProps) {
-  const toneClass = macroDisplayConfig[macroKey].valueClassNameByVariant.default;
+  const isCompact = size === "quick" || size === "cartCompact" || size === "cartDetailed";
+  const toneClass = isCompact
+    ? macroColorTokens[macroKey].compactValueClassName
+    : macroDisplayConfig[macroKey].valueClassNameByVariant.default;
   const displayValue = formatMacroValue(macroKey, value);
   const label = resolveLabel(macroKey, labelVariant);
 
@@ -77,7 +81,7 @@ export default function MacroStat({
           <div className={`${valueClassBySize[size]} ${toneClass}`}>{displayValue}</div>
           {delta ? <span className="text-sm font-bold text-green-600">{delta}</span> : null}
         </div>
-        <div className="mt-0.5 text-[11px] font-bold tracking-wide text-slate-500">{label}</div>
+        <div className="mt-0.5 text-[11px] font-bold tracking-wide text-slate-500 dark:text-slate-400">{label}</div>
       </div>
     );
   }
@@ -89,7 +93,7 @@ export default function MacroStat({
           <div className={`${valueClassBySize[size]} ${toneClass}`}>{displayValue}</div>
           {delta ? <span className="text-xs font-bold text-success">{delta}</span> : null}
         </div>
-        <div className="text-[10px] font-bold tracking-wide text-slate-500">{label}</div>
+        <div className="text-[10px] font-bold tracking-wide text-slate-500 dark:text-slate-400">{label}</div>
       </div>
     );
   }
@@ -107,7 +111,7 @@ export default function MacroStat({
 
   if (size === "cartCompact") {
     return (
-      <p className="text-slate-500">
+      <p className="text-slate-500 dark:text-slate-400">
         {label}:<span className={`ml-1 ${valueClassBySize[size]} ${toneClass}`}>{displayValue}</span>
       </p>
     );
@@ -118,7 +122,7 @@ export default function MacroStat({
       <div className="flex min-w-[44px] flex-col items-center gap-1 sm:min-w-[54px]">
         <div className={`${valueClassBySize[size]} ${toneClass}`}>{displayValue}</div>
         <div
-          className={`font-semibold uppercase tracking-wide text-black/80 ${
+          className={`font-semibold uppercase tracking-wide text-black/80 dark:text-slate-300 ${
             macroKey === "protein" ? "text-[9px] sm:text-[10px]" : "text-[10px]"
           }`}
         >
@@ -129,7 +133,7 @@ export default function MacroStat({
   }
 
   return (
-    <p className="whitespace-nowrap text-slate-500">
+    <p className="whitespace-nowrap text-slate-500 dark:text-slate-400">
       <span className={`${valueClassBySize[size]} ${toneClass}`}>{displayValue}</span>
       <span className="ml-1 text-xs">{label}</span>
     </p>

@@ -52,8 +52,8 @@ export default function DesktopRestaurantMenu() {
         // muted gray fill, never a tinted text color. No permanent border —
         // bg-transparent at rest, so it never reads as its own separately-
         // chromed control next to the logo.
-        className={`inline-flex h-10 items-center rounded-full text-sm font-semibold text-slate-700 transition hover:bg-slate-100 ${
-          isRestaurantMenuOpen ? "bg-slate-100" : "bg-transparent"
+        className={`inline-flex h-10 items-center rounded-full text-sm font-semibold text-slate-700 dark:text-slate-200 transition hover:bg-slate-100 dark:hover:bg-surface-hover ${
+          isRestaurantMenuOpen ? "bg-slate-100 dark:bg-surface-hover" : "bg-transparent"
         }`}
       >
         <Link
@@ -78,7 +78,7 @@ export default function DesktopRestaurantMenu() {
           className="inline-flex h-full cursor-pointer items-center rounded-r-full pl-1.5 pr-3 focus-ring"
         >
           <ChevronDown
-            className={`h-3.5 w-3.5 shrink-0 text-slate-700 transition-transform ${isRestaurantMenuOpen ? "rotate-180" : ""}`}
+            className={`h-3.5 w-3.5 shrink-0 text-slate-700 dark:text-slate-200 transition-transform ${isRestaurantMenuOpen ? "rotate-180" : ""}`}
             strokeWidth={2.4}
           />
         </button>
@@ -90,9 +90,9 @@ export default function DesktopRestaurantMenu() {
             id="desktop-restaurant-menu"
             role="menu"
             aria-label="Restaurants"
-            className="overflow-hidden rounded-2xl border border-black/10 bg-white py-2 shadow-[0_18px_40px_rgba(15,23,42,0.16)]"
+            className="overflow-hidden rounded-2xl border border-black/10 dark:border-hairline bg-white dark:bg-surface-card py-2 shadow-[0_18px_40px_rgba(15,23,42,0.16)]"
           >
-            <div className="px-3 pb-1 text-xs font-semibold uppercase tracking-wide text-slate-500">Available Now</div>
+            <div className="px-3 pb-1 text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">Available Now</div>
             <div className="grid gap-1 px-2">
               {availableRestaurants.map((restaurant) => (
                 <Link
@@ -106,7 +106,7 @@ export default function DesktopRestaurantMenu() {
                     const href = `/restaurant/${restaurant.id}`;
                     guardNavigation(() => router.push(href));
                   }}
-                  className="group inline-flex items-center justify-between rounded-xl px-2 py-2.5 text-sm font-semibold text-slate-900 transition hover:bg-surface-hover focus:bg-slate-100 focus:outline-none"
+                  className="group inline-flex items-center justify-between rounded-xl px-2 py-2.5 text-sm font-semibold text-slate-900 dark:text-slate-100 transition hover:bg-surface-hover focus:bg-slate-100 dark:focus:bg-surface-hover focus:outline-none"
                 >
                   <span className="inline-flex min-w-0 items-center gap-2.5">
                     <RestaurantLogoBadge
@@ -114,7 +114,6 @@ export default function DesktopRestaurantMenu() {
                       alt={`${restaurant.name} logo`}
                       size="xs"
                       ring={false}
-                      background="bg-slate-50"
                     />
                     <span className="truncate">{restaurant.name}</span>
                   </span>
@@ -123,7 +122,7 @@ export default function DesktopRestaurantMenu() {
               ))}
             </div>
 
-            <div className="mx-3 my-2 border-t border-black/10" />
+            <div className="mx-3 my-2 border-t border-black/10 dark:border-hairline" />
             <div className="px-2">
               <Link
                 href="/restaurants"
@@ -134,7 +133,7 @@ export default function DesktopRestaurantMenu() {
                   event.preventDefault();
                   guardNavigation(() => router.push("/restaurants"));
                 }}
-                className="group inline-flex w-full items-center justify-between rounded-xl px-2 py-2.5 text-sm font-semibold text-slate-900 transition hover:bg-surface-hover focus:bg-slate-100 focus:outline-none"
+                className="group inline-flex w-full items-center justify-between rounded-xl px-2 py-2.5 text-sm font-semibold text-slate-900 dark:text-slate-100 transition hover:bg-surface-hover focus:bg-slate-100 dark:focus:bg-surface-hover focus:outline-none"
               >
                 <span>All Restaurants</span>
                 <ChevronRight className="h-4 w-4 text-icon-decorative transition group-hover:text-slate-600" strokeWidth={2.4} />

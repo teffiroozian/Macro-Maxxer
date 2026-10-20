@@ -1,4 +1,5 @@
 /* eslint-disable @next/next/no-img-element -- Satori requires native images, not next/image. */
+import { LOGO_BACKGROUND } from '@/lib/logoPresentation';
 import { macroColorTokens } from '@/components/nutrition/macroColorTokens';
 import { macroDisplayConfig, macroOrder, formatMacroDisplayNumber, formatProteinScoreDisplay } from '@/components/nutrition/macroDisplay';
 import { tierStyles } from '@/components/menu-item-card/ProteinScorePill';
@@ -24,7 +25,7 @@ export default function MenuItemPreview({ name, nutrition, photo, brand }: {
   const title = fitOgText(name, 66);
   return <div style={{ display: 'flex', flexDirection: 'column', width: 396, padding: 20, borderRadius: 24, border: '1px solid #0000001a', background: 'white', boxShadow: '0 2px 10px #0f172a0f' }}>
     <div style={{ display: 'flex', height: 190, borderRadius: 16, border: '1px solid #0000000f', background: '#efefef', alignItems: 'center', justifyContent: 'center', overflow: 'hidden' }}>
-      {photo ? <img src={photo} width={354} height={190} style={{ objectFit: 'contain', padding: 12 }} alt="" /> : brand ? <img src={brand} width={48} height={48} alt="" /> : null}
+      {photo ? <img src={photo} width={354} height={190} style={{ objectFit: 'contain', padding: 12 }} alt="" /> : brand ? <img src={brand} width={48} height={48} style={{ backgroundColor: LOGO_BACKGROUND }} alt="" /> : null}
     </div>
     <div style={{ display: 'flex', marginTop: 16, minHeight: 60, fontFamily: 'Unbounded', fontSize: title.length > 42 ? 20 : 24, fontWeight: 700, lineHeight: 1.15, letterSpacing: '-0.6px', color: '#171717', overflowWrap: 'anywhere' }}>{title}</div>
     {tier && score !== undefined ? <div style={{ display: 'flex', alignItems: 'center', alignSelf: 'flex-start', gap: 6, marginTop: 12, marginBottom: 8, borderRadius: 999, padding: '4px 10px 4px 4px', background: tokenColor(tier.chip), fontSize: 12 }}>

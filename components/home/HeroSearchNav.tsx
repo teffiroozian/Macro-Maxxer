@@ -58,14 +58,14 @@ function HeroRankingCard({ icon: Icon, label, value, accentClassName, itemName, 
   return (
     <div aria-hidden="true" className={`pointer-events-none absolute ${wrapperClassName}`}>
       <div className="hero-float" style={floatStyle}>
-        <div className="flex flex-col gap-1 rounded-2xl border border-black/[0.07] bg-white/90 px-3.5 py-2.5 shadow-[0_10px_26px_rgba(15,23,42,0.08)] backdrop-blur-sm">
+        <div className="flex flex-col gap-1 rounded-2xl border border-black/[0.07] dark:border-hairline bg-white/90 dark:bg-surface-card px-3.5 py-2.5 shadow-[0_10px_26px_rgba(15,23,42,0.08)] backdrop-blur-sm">
           <span className="flex items-center gap-1.5">
             <Icon className={`h-3 w-3 shrink-0 ${accentClassName}`} strokeWidth={2.5} />
-            <span className="text-[10px] font-semibold uppercase tracking-normal text-slate-600">{label}</span>
+            <span className="text-[10px] font-semibold uppercase tracking-normal text-slate-600 dark:text-slate-300">{label}</span>
           </span>
           <span className="flex items-baseline gap-1.5 whitespace-nowrap">
             <span className={`text-base font-extrabold ${accentClassName}`}>{value}</span>
-            <span className="text-xs font-medium text-slate-500">
+            <span className="text-xs font-medium text-slate-500 dark:text-slate-400">
               {itemName} · {restaurantName}
             </span>
           </span>
@@ -99,14 +99,14 @@ function HeroItemPreviewCard({ image, itemName, restaurantName, calories, stando
   return (
     <div aria-hidden="true" className={`pointer-events-none absolute ${wrapperClassName}`}>
       <div className="hero-float" style={floatStyle}>
-        <div className="flex items-center gap-2.5 rounded-2xl border border-black/[0.07] bg-white/90 py-2 pl-2 pr-3.5 shadow-[0_10px_26px_rgba(15,23,42,0.08)] backdrop-blur-sm">
-          <div className="relative h-10 w-10 shrink-0 overflow-hidden rounded-xl bg-slate-50">
+        <div className="flex items-center gap-2.5 rounded-2xl border border-black/[0.07] dark:border-hairline bg-white/90 dark:bg-surface-card py-2 pl-2 pr-3.5 shadow-[0_10px_26px_rgba(15,23,42,0.08)] backdrop-blur-sm">
+          <div className="relative h-10 w-10 shrink-0 overflow-hidden rounded-xl bg-slate-50 dark:bg-image-placeholder!">
             <Image src={image} alt="" fill sizes="40px" className="object-cover" />
           </div>
           <div className="min-w-0">
-            <p className="truncate text-xs font-semibold text-slate-700">{itemName}</p>
-            <p className="truncate text-[10px] font-medium text-slate-500">{restaurantName}</p>
-            <p className="whitespace-nowrap text-[11px] font-semibold text-slate-500">
+            <p className="truncate text-xs font-semibold text-slate-700 dark:text-slate-200">{itemName}</p>
+            <p className="truncate text-[10px] font-medium text-slate-500 dark:text-slate-400">{restaurantName}</p>
+            <p className="whitespace-nowrap text-[11px] font-semibold text-slate-500 dark:text-slate-400">
               {calories} cal · <span className={`font-extrabold ${accentClassName}`}>{standout}</span>
             </p>
           </div>
@@ -123,15 +123,15 @@ function HeroItemPreviewCard({ image, itemName, restaurantName, calories, stando
 function RestaurantSearchFallback() {
   return (
     <section aria-hidden="true" className="mx-auto w-full max-w-3xl">
-      <div className="overflow-hidden rounded-[28px] border border-slate-200/80 bg-white shadow-elev-float ring-1 ring-black/[0.02]">
-        <div className="flex justify-center border-b border-slate-100 bg-slate-50/60 px-4 py-3">
-          <div className="h-8 w-48 rounded-full bg-slate-100" />
+      <div className="overflow-hidden rounded-[28px] border border-slate-200/80 dark:border-hairline bg-white dark:bg-surface-card shadow-elev-float ring-1 ring-black/[0.02]">
+        <div className="flex justify-center border-b border-slate-100 dark:border-divider bg-slate-50/60 dark:bg-surface-subtle px-4 py-3">
+          <div className="h-8 w-48 rounded-full bg-slate-100 dark:bg-surface-hover" />
         </div>
         <div className="flex items-center gap-3 px-5 py-5">
           <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-accent-soft text-accent-strong">
             <Search className="h-4 w-4" strokeWidth={2.5} />
           </span>
-          <span className="text-base text-slate-400 sm:text-lg">Search restaurants, menu items...</span>
+          <span className="text-base text-slate-400 dark:text-slate-400 sm:text-lg">Search restaurants, menu items...</span>
         </div>
       </div>
     </section>
@@ -227,7 +227,7 @@ export default function HeroSearchNav({ restaurants }: { restaurants: Restaurant
               label="High Protein Pick"
               value="44g"
               // Warm red-orange — same protein accent used elsewhere in the app.
-              accentClassName="text-[#c2410c]"
+              accentClassName="text-[#c2410c] dark:text-[#f96306]"
               itemName="High Protein Bowl"
               restaurantName="Chipotle"
               wrapperClassName="hidden left-[-24px] -top-12 -rotate-6 lg:flex xl:left-[-100px]"
@@ -240,7 +240,7 @@ export default function HeroSearchNav({ restaurants }: { restaurants: Restaurant
               // Restrained blue (the shared `info` token) — distinct from the
               // protein/fiber accents and from the app's near-black calorie
               // color used elsewhere, so this pill reads as its own category.
-              accentClassName="text-info"
+              accentClassName="text-info dark:text-slate-300"
               itemName="Grilled Nuggets"
               restaurantName="Chick-fil-A"
               wrapperClassName="hidden right-[-24px] -top-16 rotate-4 lg:flex xl:right-[-80px]"
@@ -265,7 +265,7 @@ export default function HeroSearchNav({ restaurants }: { restaurants: Restaurant
               restaurantName="Chipotle"
               calories={180}
               standout="32g Protein"
-              accentClassName="text-[#c2410c]"
+              accentClassName="text-[#c2410c] dark:text-[#f96306]"
               wrapperClassName="hidden right-[-32px] -bottom-70 -rotate-7 lg:flex xl:right-[-72px]"
               floatStyle={floatVars("7.6s", "0.3s", "-4px")}
             />
@@ -273,12 +273,12 @@ export default function HeroSearchNav({ restaurants }: { restaurants: Restaurant
             <header className="text-center">
               <div className="inline-flex items-center gap-2.5">
                 <span aria-hidden="true" className="h-1 w-1 rounded-full bg-accent-strong" />
-                <SectionEyebrow className="text-xs tracking-[0.18em] text-slate-700 sm:text-sm">
+                <SectionEyebrow className="text-xs tracking-[0.18em] text-slate-700 dark:text-slate-200 sm:text-sm">
                   Real menu data, real macros
                 </SectionEyebrow>
                 <span aria-hidden="true" className="h-1 w-1 rounded-full bg-accent-strong" />
               </div>
-              <h1 className="font-heading text-display-1 mt-4 text-slate-900">
+              <h1 className="font-heading text-display-1 mt-4 text-slate-900 dark:text-slate-100">
                 Find High-Protein Fast Food Items in Seconds
               </h1>
             </header>
@@ -289,7 +289,7 @@ export default function HeroSearchNav({ restaurants }: { restaurants: Restaurant
           </Suspense>
 
           <div className="mx-auto flex flex-col items-center gap-4 text-center">
-            <p className="text-body-lg max-w-md text-slate-600">
+            <p className="text-body-lg max-w-md text-slate-600 dark:text-slate-300">
               Compare menu items, build your meal, and calculate your total nutrition.
             </p>
             <HeroRestaurantChips restaurants={restaurants} />

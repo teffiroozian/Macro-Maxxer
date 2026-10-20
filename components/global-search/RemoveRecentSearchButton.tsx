@@ -6,8 +6,8 @@ type RemoveRecentSearchButtonProps = {
 };
 
 const toneHoverClassNames: Record<NonNullable<RemoveRecentSearchButtonProps["tone"]>, string> = {
-  neutral: "hover:bg-slate-200 hover:text-slate-700",
-  amber: "hover:bg-amber-100 hover:text-slate-700",
+  neutral: "hover:bg-slate-200 dark:hover:bg-surface-hover hover:text-slate-700 dark:hover:text-slate-200",
+  amber: "hover:bg-amber-100 dark:hover:bg-surface-hover hover:text-slate-700 dark:hover:text-slate-200",
 };
 
 // The "×" control on a Recently Searched result row (nav panel and hero) —
@@ -22,7 +22,7 @@ export default function RemoveRecentSearchButton({
   return (
     <button
       type="button"
-      className={`shrink-0 cursor-pointer rounded-md p-1 text-slate-400 transition ${toneHoverClassNames[tone]} ${className}`.trim()}
+      className={`shrink-0 cursor-pointer rounded-md p-1 text-slate-400 dark:text-slate-400 transition ${toneHoverClassNames[tone]} ${className}`.trim()}
       onMouseDown={(event) => event.preventDefault()}
       onClick={(event) => {
         event.stopPropagation();

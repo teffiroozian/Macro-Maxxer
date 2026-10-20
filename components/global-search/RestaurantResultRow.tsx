@@ -27,8 +27,8 @@ export default function RestaurantResultRow({
       aria-disabled={Boolean(restaurant.isComingSoon)}
       className={`flex items-center gap-3 px-4 py-2 text-sm transition ${
         !restaurant.isComingSoon
-          ? `cursor-pointer text-slate-700 hover:bg-surface-hover ${isActive ? "bg-surface-hover" : ""}`
-          : "cursor-default text-slate-400"
+          ? `cursor-pointer text-slate-700 dark:text-slate-200 hover:bg-surface-hover ${isActive ? "bg-surface-hover" : ""}`
+          : "cursor-default text-slate-400 dark:text-slate-400"
       }`}
       onMouseDown={(event) => event.preventDefault()}
       onClick={() => {
@@ -37,7 +37,7 @@ export default function RestaurantResultRow({
         }
       }}
     >
-      <span className={`flex h-8 w-8 items-center justify-center overflow-hidden bg-slate-50 ${
+      <span className={`flex h-8 w-8 items-center justify-center overflow-hidden logo-surface ${
         getRestaurantLogoShapeClassName()
       }`}>
         <Image
@@ -48,11 +48,11 @@ export default function RestaurantResultRow({
           className={imageClassName}
         />
       </span>
-      <span className="font-semibold text-slate-900">
+      <span className="font-semibold text-slate-900 dark:text-slate-100">
         {restaurant.name}
       </span>
       {restaurant.isComingSoon ? (
-        <span className="ml-auto rounded-full border border-slate-300 px-2 py-0.5 text-label">
+        <span className="ml-auto rounded-full border border-slate-300 dark:border-control px-2 py-0.5 text-label">
           Coming Soon
         </span>
       ) : null}

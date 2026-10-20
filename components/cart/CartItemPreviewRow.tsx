@@ -75,8 +75,8 @@ export default function CartItemPreviewRow({
       <p
         className={
           isDetailed
-            ? "break-words text-base font-semibold leading-tight text-slate-900 sm:truncate"
-            : "truncate text-base font-semibold leading-tight text-slate-900"
+            ? "break-words text-base font-semibold leading-tight text-slate-900 dark:text-slate-100 sm:truncate"
+            : "truncate text-base font-semibold leading-tight text-slate-900 dark:text-slate-100"
         }
       >
         <span>{item.name}</span>
@@ -106,7 +106,7 @@ export default function CartItemPreviewRow({
       {customizationGroups && customizationGroups.length > 0 ? (
         <CartCustomizationSummary groups={customizationGroups} size="compact" className="mt-1.5" />
       ) : customizationsText ? (
-        <p className={`mt-1.5 text-xs text-slate-500 ${customizationClampClass}`}>
+        <p className={`mt-1.5 text-xs text-slate-500 dark:text-slate-400 ${customizationClampClass}`}>
           {customizationsText}
         </p>
       ) : null}
@@ -121,14 +121,14 @@ export default function CartItemPreviewRow({
         imagePresentation={itemImagePresentation}
         fallbackClassName={restaurantImagePresentation.itemThumbnailImageClassName ?? "object-contain p-1"}
         fallbackBackgroundColor={restaurantImagePresentation.imageBackgroundColor}
-        containerClassName="relative h-14 w-14 shrink-0 overflow-hidden rounded-lg bg-slate-100 ring-1 ring-slate-200"
+        containerClassName="relative h-14 w-14 shrink-0 overflow-hidden rounded-lg bg-slate-100 dark:bg-image-placeholder! ring-1 ring-slate-200 dark:ring-hairline"
         renderer={imageRenderer === "next-image" ? "next-image" : "img"}
         sizes="56px"
         fallback={
           imageFallback === "placeholder" ? (
-            <div className="h-full w-full bg-slate-200" aria-hidden="true" />
+            <div className="h-full w-full bg-slate-200 dark:bg-surface-hover" aria-hidden="true" />
           ) : imageFallback === "initial" ? (
-            <div className="inline-flex h-full w-full items-center justify-center text-base font-semibold text-slate-600">
+            <div className="inline-flex h-full w-full items-center justify-center text-base font-semibold text-slate-600 dark:text-slate-300">
               {itemInitial}
             </div>
           ) : null

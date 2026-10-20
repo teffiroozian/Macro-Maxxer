@@ -35,20 +35,20 @@ export default function BuilderResultRow({
     <li
       role="option"
       aria-selected={isActive}
-      className={`flex cursor-pointer items-center gap-3 border-l-2 border-amber-400 bg-amber-50/50 px-4 py-3 text-sm text-slate-700 transition hover:bg-amber-50 ${
-        isActive ? "bg-amber-50" : ""
+      className={`flex cursor-pointer items-center gap-3 border-l-2 border-amber-400 bg-amber-50/50 dark:bg-surface-card px-4 py-3 text-sm text-slate-700 dark:text-slate-200 transition hover:bg-amber-50 dark:hover:bg-surface-hover ${
+        isActive ? "bg-amber-50 dark:bg-surface-hover!" : ""
       }`}
       onMouseDown={(event) => event.preventDefault()}
       onClick={onSelect}
     >
-      <span className="flex h-12 w-12 shrink-0 items-center justify-center overflow-hidden rounded-lg bg-white">
+      <span className="flex h-12 w-12 shrink-0 items-center justify-center overflow-hidden rounded-lg bg-white dark:bg-image-placeholder!">
         {image}
       </span>
       <span className="min-w-0 flex-1">
-        <span className="block truncate font-semibold text-slate-900">{title}</span>
-        <span className="block truncate text-xs text-slate-500">{subtitle}</span>
+        <span className="block truncate font-semibold text-slate-900 dark:text-slate-100">{title}</span>
+        <span className="block truncate text-xs text-slate-500 dark:text-slate-400">{subtitle}</span>
       </span>
-      <span className="ml-auto shrink-0 rounded-full bg-amber-100 px-2 py-0.5 text-[11px] font-semibold uppercase tracking-wide text-amber-700">
+      <span className="ml-auto shrink-0 rounded-full bg-amber-100 dark:bg-surface-hover px-2 py-0.5 text-[11px] font-semibold uppercase tracking-wide text-amber-700 dark:text-slate-200">
         {badgeLabel}
       </span>
       {onRemoveRecent ? (

@@ -97,7 +97,7 @@ export default function MenuItemTitle({
         {isOverflowing ? (
           <span
             aria-hidden="true"
-            className={`pointer-events-none absolute inset-y-0 right-0 w-10 bg-gradient-to-r from-transparent to-white transition-opacity duration-300 ${
+            className={`pointer-events-none absolute inset-y-0 right-0 w-10 bg-gradient-to-r from-transparent to-white dark:to-surface-card transition-opacity duration-300 ${
               isScrolled ? "opacity-0" : "opacity-100"
             }`}
           />

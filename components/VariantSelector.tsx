@@ -44,12 +44,12 @@ export default function VariantSelector({
 }: VariantSelectorProps) {
   const darkClassName =
     size === "sm"
-      ? `w-fit appearance-none rounded-full bg-[#121212] py-[1px] pr-5 pl-3 text-sm font-bold text-white [field-sizing:content] [background-image:linear-gradient(45deg,transparent_50%,#ffffff_50%),linear-gradient(135deg,#ffffff_50%,transparent_50%),linear-gradient(to_right,transparent,transparent)] [background-position:calc(100%-12px)_55%,calc(100%-8px)_55%,100%_0] [background-size:4px_4px,4px_4px,2em_2em] bg-no-repeat focus:outline focus:outline-1 focus:outline-black/20 focus:outline-offset-2 ${disabled ? "cursor-not-allowed opacity-85" : "cursor-pointer"}`
-      : `w-fit appearance-none rounded-full bg-[#121212] py-[2px] pr-6 pl-4 text-base font-bold text-white [field-sizing:content] [background-image:linear-gradient(45deg,transparent_50%,#ffffff_50%),linear-gradient(135deg,#ffffff_50%,transparent_50%),linear-gradient(to_right,transparent,transparent)] [background-position:calc(100%-15px)_55%,calc(100%-10px)_55%,100%_0] [background-size:5px_5px,5px_5px,2.5em_2.5em] bg-no-repeat focus:outline focus:outline-1 focus:outline-black/20 focus:outline-offset-2 ${disabled ? "cursor-not-allowed opacity-85" : "cursor-pointer"}`;
+      ? `w-fit appearance-none rounded-full bg-[#121212] dark:bg-surface-hover py-[1px] pr-5 pl-3 text-sm font-bold text-white [field-sizing:content] [background-image:linear-gradient(45deg,transparent_50%,#ffffff_50%),linear-gradient(135deg,#ffffff_50%,transparent_50%),linear-gradient(to_right,transparent,transparent)] [background-position:calc(100%-12px)_55%,calc(100%-8px)_55%,100%_0] [background-size:4px_4px,4px_4px,2em_2em] bg-no-repeat focus:outline focus:outline-1 focus:outline-black/20 focus:outline-offset-2 ${disabled ? "cursor-not-allowed opacity-85" : "cursor-pointer"}`
+      : `w-fit appearance-none rounded-full bg-[#121212] dark:bg-surface-hover py-[2px] pr-6 pl-4 text-base font-bold text-white [field-sizing:content] [background-image:linear-gradient(45deg,transparent_50%,#ffffff_50%),linear-gradient(135deg,#ffffff_50%,transparent_50%),linear-gradient(to_right,transparent,transparent)] [background-position:calc(100%-15px)_55%,calc(100%-10px)_55%,100%_0] [background-size:5px_5px,5px_5px,2.5em_2.5em] bg-no-repeat focus:outline focus:outline-1 focus:outline-black/20 focus:outline-offset-2 ${disabled ? "cursor-not-allowed opacity-85" : "cursor-pointer"}`;
 
   const showCompactChevron = compact && !disabled;
   const className = compact
-    ? `w-fit appearance-none rounded-full bg-[#121212] ${dense ? "py-1" : "py-0.75"} ${
+    ? `w-fit appearance-none rounded-full bg-[#121212] dark:bg-surface-hover ${dense ? "py-1" : "py-0.75"} ${
         dense ? (showCompactChevron ? "pr-6" : "pr-3") : showCompactChevron ? "pr-7" : "pr-4"
       } ${dense ? "pl-3" : "pl-4"} ${dense ? "text-xs" : "text-[13px]"} font-bold text-white [field-sizing:content] focus:outline focus:outline-1 focus:outline-white/30 focus:outline-offset-2 ${disabled ? "cursor-not-allowed" : "cursor-pointer"}`
     : darkClassName;

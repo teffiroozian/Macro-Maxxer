@@ -1,3 +1,4 @@
+import ThemeToggle from "@/components/ThemeToggle";
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight, Github } from "lucide-react";
@@ -12,24 +13,24 @@ const REPOSITORY_URL = "https://github.com/teffiroozian/Macro-Maxxer";
 // panel, macro-color signature, legal links, and external repository link.
 export default function SiteFooter() {
   return (
-    <footer className="relative mt-8 overflow-hidden border-t border-black/5 bg-gradient-to-b from-transparent via-emerald-50/30 to-emerald-50/60 pb-[var(--safe-area-bottom)]">
+    <footer className="relative mt-8 overflow-hidden border-t border-black/5 dark:border-hairline bg-gradient-to-b from-transparent via-emerald-50/30 to-emerald-50/60 dark:via-transparent dark:to-transparent pb-[var(--safe-area-bottom)]">
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute right-[-120px] top-[-120px] h-72 w-72 rounded-full bg-[radial-gradient(closest-side,rgba(5,150,105,0.16),transparent_75%)] blur-2xl"
+        className="pointer-events-none absolute right-[-120px] top-[-120px] h-72 w-72 rounded-full bg-[radial-gradient(closest-side,rgba(5,150,105,0.16),transparent_75%)] blur-2xl dark:opacity-0"
       />
 
       <HomeSectionContainer as="div" className="py-14 sm:py-16">
-        <SurfaceCard as="div" radius="large" shadow="sm" padding="none" className={`mx-auto w-full ${HOME_VISUAL_WIDTH_CLASS} overflow-hidden bg-white/90 backdrop-blur-sm`}>
+        <SurfaceCard as="div" radius="large" shadow="sm" padding="none" className={`mx-auto w-full ${HOME_VISUAL_WIDTH_CLASS} overflow-hidden bg-white/90 dark:bg-surface-card backdrop-blur-sm`}>
           <div className="grid gap-8 p-6 sm:grid-cols-[1.3fr_1fr] sm:items-center sm:gap-10 sm:p-10">
             <div>
               <Link href="/" className="inline-flex items-center gap-2 focus-ring">
-                <span className="flex h-7 w-7 shrink-0 items-center justify-center">
+                <span className="flex h-7 w-7 shrink-0 items-center justify-center logo-surface">
                   <Image src="/logo.svg" alt="" width={100} height={100} aria-hidden="true" className="h-full w-full object-contain" />
                 </span>
-                <span className="font-heading text-lg font-bold text-slate-900">Macro Maxxer</span>
+                <span className="font-heading text-lg font-bold text-slate-900 dark:text-slate-100">Macro Maxxer</span>
               </Link>
 
-              <p className="mt-3 max-w-sm text-sm text-slate-600">
+              <p className="mt-3 max-w-sm text-sm text-slate-600 dark:text-slate-300">
                 Build your meal and calculate its nutrition — real menu data and real macros, one search away.
               </p>
 
@@ -45,39 +46,42 @@ export default function SiteFooter() {
               </Link>
             </div>
 
-            <div aria-hidden="true" className="rounded-2xl border border-black/10 bg-slate-50/70 p-4 sm:p-5">
-              <p className="text-label">Every Item, Broken Down</p>
-              <div className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-2">
-                {macroOrder.map((macroKey) => {
-                  const config = macroDisplayConfig[macroKey];
-                  return (
-                    <span key={macroKey} className="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-700">
-                      <span className={`h-2 w-2 shrink-0 rounded-full bg-current ${config.valueClassNameByVariant.default}`} />
-                      {config.label}
-                    </span>
-                  );
-                })}
+            <div className="flex flex-col items-end justify-between gap-4 self-stretch">
+              <div aria-hidden="true" className="w-full rounded-2xl border border-black/10 dark:border-hairline bg-slate-50/70 dark:bg-surface-subtle p-4 sm:p-5">
+                <p className="text-label">Every Item, Broken Down</p>
+                <div className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-2">
+                  {macroOrder.map((macroKey) => {
+                    const config = macroDisplayConfig[macroKey];
+                    return (
+                      <span key={macroKey} className="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-700 dark:text-slate-200">
+                        <span className={`h-2 w-2 shrink-0 rounded-full bg-current ${config.valueClassNameByVariant.default}`} />
+                        {config.label}
+                      </span>
+                    );
+                  })}
+                </div>
               </div>
+              <ThemeToggle />
             </div>
           </div>
         </SurfaceCard>
 
-        <p className="mx-auto mt-6 w-full max-w-4xl text-center text-xs leading-5 text-slate-500">
+        <p className="mx-auto mt-6 w-full max-w-4xl text-center text-xs leading-5 text-slate-500 dark:text-slate-400">
           Nutrition information may vary by location, preparation, portion size, substitutions, or restaurant updates.
         </p>
 
-        <div className="mx-auto mt-3 flex w-full max-w-4xl flex-col items-center justify-between gap-3 text-xs text-slate-500 sm:flex-row">
+        <div className="mx-auto mt-3 flex w-full max-w-4xl flex-col items-center justify-between gap-3 text-xs text-slate-500 dark:text-slate-400 sm:flex-row">
           <p>© {new Date().getFullYear()} Macro Maxxer</p>
-          <div className="flex items-center gap-4">
+          <div className="flex flex-wrap items-center justify-center gap-4">
             <Link
               href="/privacy"
-              className="font-medium text-slate-500 transition hover:text-slate-900 focus-ring"
+              className="font-medium text-slate-500 dark:text-slate-400 transition hover:text-slate-900 dark:hover:text-slate-100 focus-ring"
             >
               Privacy
             </Link>
             <Link
               href="/terms"
-              className="font-medium text-slate-500 transition hover:text-slate-900 focus-ring"
+              className="font-medium text-slate-500 dark:text-slate-400 transition hover:text-slate-900 dark:hover:text-slate-100 focus-ring"
             >
               Terms
             </Link>
@@ -85,7 +89,7 @@ export default function SiteFooter() {
               href={REPOSITORY_URL}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-1.5 font-semibold text-slate-600 transition hover:text-slate-900 focus-ring"
+              className="inline-flex items-center gap-1.5 font-semibold text-slate-600 dark:text-slate-300 transition hover:text-slate-900 dark:hover:text-slate-100 focus-ring"
             >
               <Github className="h-3.5 w-3.5" aria-hidden="true" />
               View on GitHub

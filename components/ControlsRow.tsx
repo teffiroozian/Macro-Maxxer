@@ -745,7 +745,7 @@ export default function ControlsRow({
               <SlidersHorizontal className="h-4 w-4 shrink-0" strokeWidth={2.3} />
               Filters
               {hasActiveFilters ? (
-                <span className="inline-flex h-5 min-w-5 shrink-0 items-center justify-center rounded-full bg-accent px-1 text-[11px] font-bold text-white">
+                <span className="inline-flex h-5 min-w-5 shrink-0 items-center justify-center rounded-full bg-accent px-1 text-[11px] font-bold text-white dark:text-[#022c22]">
                   {appliedActiveFilterCount}
                 </span>
               ) : null}

@@ -30,18 +30,18 @@ const sizeClassNames: Record<AppIconButtonSize, string> = {
 };
 
 const variantClassNames: Record<AppIconButtonVariant, string> = {
-  default: "border-slate-200 bg-white text-slate-700 hover:bg-slate-100 active:bg-slate-200",
-  ghost: "border-transparent bg-transparent text-black/85 hover:bg-slate-900/5 active:bg-slate-900/10",
+  default: "border-slate-200 dark:border-divider bg-white dark:bg-surface-card text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-surface-hover active:bg-slate-200 dark:active:bg-surface-hover",
+  ghost: "border-transparent bg-transparent text-black/85 dark:text-slate-200 hover:bg-slate-900/5 dark:hover:bg-surface-hover active:bg-slate-900/10 dark:active:bg-surface-hover",
   // Shared treatment for the global nav's icon controls (cart, hamburger,
   // mobile search) — clean/transparent at rest, a soft green-tinted fill on
   // hover/active rather than the previous permanent outlined circle, so all
   // three read as one consistent system tied to the app's own accent color.
-  nav: "border-transparent bg-transparent text-slate-600 hover:bg-accent-soft hover:text-accent-strong active:bg-accent-soft active:text-accent-strong",
+  nav: "border-transparent bg-transparent text-slate-600 dark:text-slate-300 hover:bg-accent-soft hover:text-accent-strong active:bg-accent-soft active:text-accent-strong",
   // A dimmer resting state than `ghost` — used for a modal's own close
   // button, where the icon should read as a quiet corner affordance rather
   // than a normal-weight control. Previously duplicated verbatim as two raw
   // buttons in ItemRouteModal.tsx.
-  muted: "border-transparent bg-transparent text-slate-400 hover:bg-slate-100 hover:text-slate-600",
+  muted: "border-transparent bg-transparent text-slate-400 dark:text-slate-500 hover:bg-slate-100 dark:hover:bg-surface-hover hover:text-slate-600 dark:hover:text-slate-300",
 };
 
 export function appIconButtonClassName({

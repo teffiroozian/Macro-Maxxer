@@ -65,7 +65,7 @@ export default function DesktopSearchDropdown({ className = "w-full" }: { classN
           onKeyDown={state.handleInputKeyDown}
           placeholder="Search restaurants, menu items..."
           aria-label="Search"
-          className="h-10 w-full cursor-text rounded-full border border-black/10 bg-white pl-10 pr-4 text-sm text-slate-900 outline-none placeholder:text-slate-500 focus:border-accent focus:ring-4 focus:ring-accent/15"
+          className="h-10 w-full cursor-text rounded-full border border-black/10 dark:border-hairline bg-white dark:bg-surface-subtle pl-10 pr-4 text-sm text-slate-900 dark:text-slate-100 outline-none placeholder:text-slate-500 dark:placeholder:text-slate-400 focus:border-accent focus:ring-4 focus:ring-accent/15"
         />
         <span className="pointer-events-none absolute inset-y-0 left-2 my-auto flex h-6 w-6 items-center justify-center rounded-full bg-accent-soft text-accent-strong">
           <Search className="h-3.5 w-3.5" strokeWidth={2.5} />
@@ -96,7 +96,7 @@ export default function DesktopSearchDropdown({ className = "w-full" }: { classN
         aria-label="Search"
         aria-hidden={!isOpen}
         inert={!isOpen}
-        className={`absolute inset-x-0 top-full z-[229] mt-2 overflow-hidden rounded-2xl border border-black/10 bg-white shadow-[0_18px_40px_rgba(15,23,42,0.18)] transition-[opacity,transform] duration-200 ${
+        className={`absolute inset-x-0 top-full z-[229] mt-2 overflow-hidden rounded-2xl border border-black/10 dark:border-hairline bg-white dark:bg-surface-card shadow-[0_18px_40px_rgba(15,23,42,0.18)] transition-[opacity,transform] duration-200 ${
           isOpen ? "translate-y-0 opacity-100" : "pointer-events-none -translate-y-1 opacity-0"
         }`}
       >

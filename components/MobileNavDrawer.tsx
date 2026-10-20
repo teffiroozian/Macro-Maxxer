@@ -88,24 +88,24 @@ export default function MobileNavDrawer({
       />
       <div
         ref={panelRef}
-        className={`absolute flex flex-col overflow-hidden bg-white shadow-[0_18px_40px_rgba(0,0,0,0.24)] transition-transform duration-200 ${
+        className={`absolute flex flex-col overflow-hidden bg-white dark:bg-surface-card shadow-[0_18px_40px_rgba(0,0,0,0.24)] transition-transform duration-200 ${
           IS_CAPACITOR_BUILD
             ? `inset-x-0 bottom-0 max-h-[88dvh] min-h-[50dvh] w-full rounded-t-sheet ${isOpen ? "translate-y-0" : "translate-y-full"}`
             : `inset-y-0 left-0 h-[var(--app-viewport-height)] w-[min(90vw,360px)] pt-[var(--safe-area-top)] ${isOpen ? "translate-x-0" : "-translate-x-full"}`
         }`}
       >
-        <div className="flex items-center gap-2.5 border-b border-black/5 bg-slate-50/80 px-4 py-3">
+        <div className="flex items-center gap-2.5 border-b border-black/5 dark:border-hairline bg-slate-50/80 dark:bg-surface-subtle px-4 py-3">
           <AppIconButton ref={closeButtonRef} onClick={onClose} variant="ghost" size="sm" aria-label="Close navigation drawer">
             <X className="h-4 w-4" strokeWidth={2.5} />
           </AppIconButton>
           {headerTitle ? (
             <div className="inline-flex min-w-0 items-center gap-2">
               {headerLogoSrc ? (
-                <span className="relative h-7 w-7 shrink-0 overflow-hidden rounded-full bg-white ring-1 ring-black/5">
+                <span className="relative h-7 w-7 shrink-0 overflow-hidden rounded-full logo-surface ring-1 ring-black/5">
                   <Image src={headerLogoSrc} alt={`${headerTitle} logo`} fill className="object-contain" />
                 </span>
               ) : null}
-              <span className="truncate text-[15px] font-semibold text-slate-900">{headerTitle}</span>
+              <span className="truncate text-[15px] font-semibold text-slate-900 dark:text-slate-100">{headerTitle}</span>
             </div>
           ) : null}
         </div>
@@ -115,16 +115,16 @@ export default function MobileNavDrawer({
             same icons/click handlers, just a treatment consistent with the
             rest of the app's green design system instead of a stray blue
             accent. */}
-        <div className="border-b border-black/5 px-4 py-2.5">
-          <div className="inline-flex gap-1 rounded-xl bg-slate-100 p-1">
+        <div className="border-b border-black/5 dark:border-hairline px-4 py-2.5">
+          <div className="inline-flex gap-1 rounded-xl bg-slate-100 dark:bg-surface-hover p-1">
             {showControls ? (
               <button
                 type="button"
                 onClick={() => setActiveTab("controls")}
                 className={`inline-flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-sm font-semibold transition-all duration-200 ${
                   activeTab === "controls"
-                    ? "bg-white text-slate-900 shadow-sm"
-                    : "text-slate-500 hover:text-slate-700"
+                    ? "bg-white dark:bg-surface-card text-slate-900 dark:text-slate-100 shadow-sm"
+                    : "text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200"
                 }`}
               >
                 <SlidersHorizontal className="h-4 w-4" strokeWidth={2.4} />
@@ -136,8 +136,8 @@ export default function MobileNavDrawer({
               onClick={() => setActiveTab("restaurants")}
               className={`inline-flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-sm font-semibold transition-all duration-200 ${
                 activeTab === "restaurants"
-                  ? "bg-white text-slate-900 shadow-sm"
-                  : "text-slate-500 hover:text-slate-700"
+                  ? "bg-white dark:bg-surface-card text-slate-900 dark:text-slate-100 shadow-sm"
+                  : "text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200"
               }`}
             >
               <Store className="h-4 w-4" strokeWidth={2.4} />
@@ -154,19 +154,19 @@ export default function MobileNavDrawer({
               {browseTopContent ? <div>{browseTopContent}</div> : null}
               <section className="space-y-2">
                 <button type="button" onClick={() => setIsFeaturedOpen((prev) => !prev)} className="flex w-full items-center justify-between text-left">
-                  <p className="text-xs font-semibold uppercase tracking-wide text-slate-400">Featured Restaurants</p>
-                  <ChevronDown className={`h-3.5 w-3.5 text-slate-400 transition-transform ${isFeaturedOpen ? "rotate-180" : ""}`} strokeWidth={2.5} />
+                  <p className="text-xs font-semibold uppercase tracking-wide text-slate-400 dark:text-slate-400">Featured Restaurants</p>
+                  <ChevronDown className={`h-3.5 w-3.5 text-slate-400 dark:text-slate-400 transition-transform ${isFeaturedOpen ? "rotate-180" : ""}`} strokeWidth={2.5} />
                 </button>
                 {isFeaturedOpen ? (
                   <div className="space-y-3">
                     <div>
-                      <p className="px-1 pb-1.5 text-label text-slate-400">Available Now</p>
+                      <p className="px-1 pb-1.5 text-label text-slate-400 dark:text-slate-400">Available Now</p>
                       {/* Its own row treatment — flat surfaces with a hairline
                           divider between items instead of the desktop
                           dropdown's individually outlined cards, so this
                           reads as designed for the drawer rather than reused
                           wholesale. */}
-                      <div className="divide-y divide-black/5 overflow-hidden rounded-xl border border-black/5">
+                      <div className="divide-y divide-black/5 dark:divide-hairline overflow-hidden rounded-xl border border-black/5 dark:border-hairline">
                         {availableRestaurants.map((restaurant) => (
                           <Link
                             key={restaurant.id}
@@ -178,7 +178,7 @@ export default function MobileNavDrawer({
                               const href = `/restaurant/${restaurant.id}`;
                               guardNavigation(() => router.push(href));
                             }}
-                            className="flex items-center justify-between gap-2 bg-white px-3 py-2.5 text-sm font-semibold text-slate-800 transition-colors hover:bg-slate-50 active:bg-slate-100"
+                            className="flex items-center justify-between gap-2 bg-white dark:bg-surface-card px-3 py-2.5 text-sm font-semibold text-slate-800 dark:text-slate-200 transition-colors hover:bg-slate-50 dark:hover:bg-surface-hover active:bg-slate-100 dark:active:bg-surface-hover"
                           >
                             <span className="inline-flex min-w-0 items-center gap-2.5">
                               <RestaurantLogoBadge
@@ -191,14 +191,14 @@ export default function MobileNavDrawer({
                               />
                               <span className="truncate">{restaurant.name}</span>
                             </span>
-                            <ChevronRight className="h-4 w-4 shrink-0 text-slate-400" strokeWidth={2.5} />
+                            <ChevronRight className="h-4 w-4 shrink-0 text-slate-400 dark:text-slate-400" strokeWidth={2.5} />
                           </Link>
                         ))}
                       </div>
                     </div>
 
                     <div>
-                      <div className="mx-2 mb-2 border-t border-black/10" />
+                      <div className="mx-2 mb-2 border-t border-black/10 dark:border-hairline" />
                       <Link
                         href="/restaurants"
                         onClick={(event) => {
@@ -207,10 +207,10 @@ export default function MobileNavDrawer({
                           event.preventDefault();
                           guardNavigation(() => router.push("/restaurants"));
                         }}
-                        className="flex items-center justify-between rounded-xl px-3 py-2.5 text-sm font-semibold text-slate-800 transition-colors hover:bg-slate-50 active:bg-slate-100"
+                        className="flex items-center justify-between rounded-xl px-3 py-2.5 text-sm font-semibold text-slate-800 dark:text-slate-200 transition-colors hover:bg-slate-50 dark:hover:bg-surface-hover active:bg-slate-100 dark:active:bg-surface-hover"
                       >
                         <span>All Restaurants</span>
-                        <ChevronRight className="h-4 w-4 shrink-0 text-slate-400" strokeWidth={2.5} />
+                        <ChevronRight className="h-4 w-4 shrink-0 text-slate-400 dark:text-slate-400" strokeWidth={2.5} />
                       </Link>
                     </div>
                   </div>
@@ -220,7 +220,7 @@ export default function MobileNavDrawer({
           )}
         </div>
         {activeTab === "controls" && showControls && controlsFooter ? (
-          <div className="sticky bottom-0 border-t border-black/5 bg-white px-4 pb-[max(0.75rem,var(--safe-area-bottom))] pt-3 shadow-[0_-6px_16px_rgba(15,23,42,0.06)]">
+          <div className="sticky bottom-0 border-t border-black/5 dark:border-hairline bg-white dark:bg-surface-card px-4 pb-[max(0.75rem,var(--safe-area-bottom))] pt-3 shadow-[0_-6px_16px_rgba(15,23,42,0.06)]">
             {controlsFooter}
           </div>
         ) : null}

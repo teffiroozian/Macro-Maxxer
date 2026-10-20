@@ -17,6 +17,7 @@ import NativeBottomNav from "@/components/NativeBottomNav";
 import CartIconDropdown from "@/components/cart/CartIconDropdown";
 import { IS_CAPACITOR_BUILD } from "@/lib/buildTarget";
 import { SITE_DESCRIPTION, SITE_NAME, SITE_URL } from "@/lib/site";
+import { themeBootstrapScript } from "@/lib/theme";
 import "./globals.css";
 
 // Central type system for the whole app (Slice 1 establishes this on the
@@ -95,7 +96,10 @@ export default function RootLayout({
     children: React.ReactNode;
 }>) {
     return (
-        <html lang="en" className={IS_CAPACITOR_BUILD ? "capacitor-native" : undefined}>
+        <html suppressHydrationWarning lang="en" className={IS_CAPACITOR_BUILD ? "capacitor-native" : undefined}>
+            <head>
+                <script dangerouslySetInnerHTML={{ __html: themeBootstrapScript }} />
+            </head>
             <body
                 className={`${outfit.className} ${unbounded.variable} antialiased`}
             >
