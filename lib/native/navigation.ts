@@ -1,5 +1,5 @@
 export function getOrderCountLabel(count: number) {
-  return count === 0 ? "Order" : `Order, ${count} ${count === 1 ? "item" : "items"}`;
+  return count === 0 ? "My Meal" : `My Meal, ${count} ${count === 1 ? "item" : "items"}`;
 }
 
 export function getOrderCountDigit(count: number) {

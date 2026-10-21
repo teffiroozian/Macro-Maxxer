@@ -45,7 +45,7 @@ export default function NativeCartPage() {
     <>
       <main className="native-top-level-page min-h-[var(--app-viewport-height)] bg-slate-50 pb-[var(--native-nav-clearance)] pt-[calc(var(--safe-area-top)+6px)]">
         <header className="flex flex-col gap-1 px-5 pt-2.5">
-          <h1 className="font-heading text-[28px] font-bold leading-[1.15] tracking-[-0.02em] text-slate-900">Your Cart</h1>
+          <h1 className="font-heading text-[28px] font-bold leading-[1.15] tracking-[-0.02em] text-slate-900">My Meal</h1>
           <p className="text-[15px] text-slate-500">{hydrated ? itemCountLabel(count) : " "}</p>
         </header>
         {hydrated ? (
@@ -54,7 +54,7 @@ export default function NativeCartPage() {
             {isEmpty ? (
               <div className="mx-[18px] mt-6">
                 <EmptyStateCard
-                  title="Your cart is empty."
+                  title="Your meal is empty."
                   description="Your totals fill in as you add items. Add one to start meal finalization."
                   action={<Link href="/restaurants" className={appButtonClassName({ variant: "primary", size: "lg" })}>Browse Restaurants</Link>}
                 />

@@ -5,8 +5,8 @@ import { renderToStaticMarkup } from "react-dom/server";
 import OrderBagIcon from "../components/icons/OrderBagIcon.tsx";
 import { getOrderCountLabel, getOrderCountDigit, getActiveNativeDestination, isKeyboardViewportReduced } from "../lib/native/navigation.ts";
 
-test("Order announces quantity with singular/plural and caps only the visible digit", () => {
-  for (const [count, label, digit] of [[0, "Order", ""], [1, "Order, 1 item", "1"], [3, "Order, 3 items", "3"], [12, "Order, 12 items", "9+"]]) {
+test("My Meal announces quantity with singular/plural and caps only the visible digit", () => {
+  for (const [count, label, digit] of [[0, "My Meal", ""], [1, "My Meal, 1 item", "1"], [3, "My Meal, 3 items", "3"], [12, "My Meal, 12 items", "9+"]]) {
     assert.equal(getOrderCountLabel(count), label);
     assert.equal(getOrderCountDigit(count), digit);
     const icon = renderToStaticMarkup(createElement(OrderBagIcon.default ?? OrderBagIcon, { count }));

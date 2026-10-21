@@ -25,7 +25,7 @@ export default function NativeCartTotalsCard({ totals, empty, onExport }: { tota
       {empty ? null : (
         <button type="button" onClick={onExport} className="mt-[14px] flex h-12 w-full items-center justify-center gap-2 rounded-[15px] bg-accent text-base font-bold text-white transition-colors active:bg-accent-strong focus-ring">
           <svg width="17" height="17" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 4v11M7 10l5 5 5-5M5 20h14" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" /></svg>
-          Export Order
+          Share Meal
         </button>
       )}
     </div>
