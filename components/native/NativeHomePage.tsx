@@ -63,7 +63,7 @@ export default function NativeHomePage({ restaurants }: { restaurants: Restauran
     <main className="min-h-[var(--app-viewport-height)] bg-slate-50 pb-8 pl-[max(1rem,var(--safe-area-left))] pr-[max(1rem,var(--safe-area-right))] pt-[calc(var(--safe-area-top)+1rem)]">
       <div className="mx-auto w-full max-w-2xl">
         <header className="flex items-center gap-3 px-1 py-2">
-          <span className="relative h-11 w-11 overflow-hidden rounded-xl shadow-sm logo-surface">
+          <span className="relative h-11 w-11 overflow-hidden rounded-xl shadow-sm">
             <Image src="/logo.svg" alt="" fill className="object-contain" priority />
           </span>
           <div>

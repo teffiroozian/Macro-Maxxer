@@ -2,34 +2,32 @@
 
 import { Fragment, useState } from "react";
 import { ArrowDown, ArrowUp, ChevronDown, Flame, Trophy, Wheat, Droplets, Drumstick, ListOrdered } from "lucide-react";
-import { macroColorTokens } from "@/components/nutrition/macroColorTokens";
-import { proteinScoreColorTokens } from "@/components/nutrition/metricColors";
 import FiberIcon from "@/components/nutrition/FiberIcon";
 import { getNaturalRankDirection, getRankState, toRankSort, type RankMetric, type SortOption, type RankDirection } from "@/lib/menuSections/sortOptions";
 
-const metrics: Array<{ metric: RankMetric; label: string; icon: typeof Trophy; color: string }> = [
-  { metric: "protein", label: "Protein", icon: Drumstick, color: macroColorTokens.protein.valueClassName },
-  { metric: "calories", label: "Calories", icon: Flame, color: macroColorTokens.calories.valueClassName },
-  { metric: "protein-score", label: "Protein Score", icon: Trophy, color: proteinScoreColorTokens.value },
-  { metric: "carbs", label: "Carbs", icon: Wheat, color: macroColorTokens.carbs.valueClassName },
-  { metric: "fat", label: "Fat", icon: Droplets, color: macroColorTokens.totalFat.valueClassName },
-  { metric: "fiber", label: "Fiber", icon: FiberIcon, color: macroColorTokens.fiber.valueClassName },
+const metrics: Array<{ metric: RankMetric; label: string; icon: typeof Trophy }> = [
+  { metric: "protein", label: "Protein", icon: Drumstick },
+  { metric: "calories", label: "Calories", icon: Flame },
+  { metric: "protein-score", label: "Protein Score", icon: Trophy },
+  { metric: "carbs", label: "Carbs", icon: Wheat },
+  { metric: "fat", label: "Fat", icon: Droplets },
+  { metric: "fiber", label: "Fiber", icon: FiberIcon },
 ];
 
-export function RankSelection({ value, colorful = false, showChevron = false, isOpen = false, displayDefault = true }: { value: SortOption; colorful?: boolean; showChevron?: boolean; isOpen?: boolean; displayDefault?: boolean }) {
+export function RankSelection({ value, showChevron = false, isOpen = false, displayDefault = true }: { value: SortOption; colorful?: boolean; showChevron?: boolean; isOpen?: boolean; displayDefault?: boolean }) {
   const state = getRankState(value);
   const selected = metrics.find((option) => option.metric === state.metric) ?? metrics[0];
   const Icon = displayDefault && value === "default-order" ? ListOrdered : selected.icon;
-  const color = colorful || selected.metric === "protein-score" ? selected.color : selected.metric === "fiber" ? macroColorTokens.fiber.valueClassName : "text-slate-500 dark:text-slate-400";
+  const color = "text-slate-500 dark:text-slate-400";
   return <>
     <Icon className={`h-4 w-4 ${color}`} strokeWidth={2.7} />
     <span>{displayDefault && value === "default-order" ? "Default Order" : `${state.direction === "highest" ? "Highest" : "Lowest"} ${selected.label}`}</span>
-    {showChevron ? <ChevronDown className={`h-3.5 w-3.5 text-slate-400 dark:text-slate-400 transition-transform ${isOpen ? "rotate-180" : ""}`} /> : null}
+    {showChevron ? <ChevronDown className={`h-3.5 w-3.5 text-slate-400 transition-transform ${isOpen ? "rotate-180" : ""}`} /> : null}
   </>;
 }
 
 // The existing rank menu body is shared by the desktop popover and mobile sheets.
-export default function RankOptions({ value, onChange, desktop = false, colorful = false, isOpen = true, showDefault = false }: {
+export default function RankOptions({ value, onChange, desktop = false, isOpen = true, showDefault = false }: {
   value: SortOption; onChange: (value: SortOption) => void; desktop?: boolean; colorful?: boolean; isOpen?: boolean; showDefault?: boolean;
 }) {
   const state = getRankState(value);
@@ -43,7 +41,7 @@ export default function RankOptions({ value, onChange, desktop = false, colorful
       {metrics.map((option) => {
         const active = (!showDefault || value !== "default-order") && state.metric === option.metric;
         const OptionIcon = option.icon;
-        const iconColor = colorful || desktop || option.metric === "protein-score" ? option.color : option.metric === "calories" ? "text-black dark:text-slate-50" : option.metric === "fiber" ? macroColorTokens.fiber.valueClassName : "text-slate-500 dark:text-slate-400";
+        const iconColor = "text-slate-500 dark:text-slate-400";
         const direction = active ? state.direction : getNaturalRankDirection(option.metric);
         const displayedDirection = desktop && isOpen && hoverDirection?.metric === option.metric ? hoverDirection.direction : direction;
         return <Fragment key={option.metric}>

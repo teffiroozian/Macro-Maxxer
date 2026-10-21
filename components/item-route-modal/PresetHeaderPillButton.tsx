@@ -44,8 +44,8 @@ export default function PresetHeaderPillButton({
                 disabled ? "cursor-not-allowed" : "cursor-pointer"
             } ${
                 tone === "solid"
-                    ? "bg-slate-900 text-white hover:bg-slate-800"
-                    : "border border-black/15 bg-white text-slate-600 hover:bg-slate-50 hover:text-slate-900"
+                    ? "bg-slate-900 text-white hover:bg-slate-800 dark:bg-surface-inverse dark:text-slate-950 dark:hover:bg-slate-200"
+                    : "border border-black/15 dark:border-control bg-white dark:bg-surface-card text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-surface-subtle hover:text-slate-900 dark:hover:text-slate-100"
             } ${className}`.trim()}
         >
             {Icon ? <Icon className="h-4 w-4" strokeWidth={2.5} /> : null}

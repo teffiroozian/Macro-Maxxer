@@ -159,7 +159,7 @@ export default function ExportOrderDialog({ items, nutritionTotals, onClose }: E
         onClick={(event) => event.stopPropagation()}
       >
         <header ref={headerRef} className={`shrink-0 px-5 pb-3 pt-2 ${IS_CAPACITOR_BUILD ? "" : "md:col-start-2 md:row-start-1 md:px-8 md:pb-0 md:pt-8"}`}>
-          <div className={`mx-auto mb-2 h-1 w-10 rounded-full bg-black/15 ${IS_CAPACITOR_BUILD ? "" : "md:hidden"}`} aria-hidden="true" />
+          <div className={`mx-auto mb-2 h-1 w-10 rounded-full bg-black/15 dark:bg-divider ${IS_CAPACITOR_BUILD ? "" : "md:hidden"}`} aria-hidden="true" />
           <div className="flex items-center justify-between gap-4">
             <h2 id="export-order-dialog-title" className={`whitespace-nowrap font-heading text-[22px] font-bold tracking-[-0.02em] text-slate-950 dark:text-slate-50 ${IS_CAPACITOR_BUILD ? "" : "md:text-[23px]"}`}>
               Share Meal
@@ -169,7 +169,7 @@ export default function ExportOrderDialog({ items, nutritionTotals, onClose }: E
               aria-label="Close share meal"
               variant="ghost"
               size="md"
-              className="size-10! rounded-full! bg-[#f1f0ec]! hover:bg-[#e8e6e0]!"
+              className="size-10! rounded-full! bg-[#f1f0ec]! dark:bg-surface-hover! hover:bg-[#e8e6e0]! dark:hover:bg-surface-card!"
               onClick={onClose}
             >
               <X className="size-5" aria-hidden="true" />
@@ -179,7 +179,7 @@ export default function ExportOrderDialog({ items, nutritionTotals, onClose }: E
 
         <div
           ref={previewPaneRef}
-          className={`flex shrink-0 items-center justify-center bg-[#f1f0ec] px-6 py-4 ${IS_CAPACITOR_BUILD ? "" : "md:col-start-1 md:row-span-2 md:row-start-1 md:min-h-0 md:p-10"}`}
+          className={`flex shrink-0 items-center justify-center bg-[#f1f0ec] dark:bg-surface-subtle px-6 py-4 ${IS_CAPACITOR_BUILD ? "" : "md:col-start-1 md:row-span-2 md:row-start-1 md:min-h-0 md:p-10"}`}
         >
           <div
             className={`relative overflow-hidden rounded-[12px] shadow-[0_18px_44px_rgba(0,0,0,0.18)] ${IS_CAPACITOR_BUILD ? "" : "md:rounded-[18px]"}`}
@@ -213,8 +213,8 @@ export default function ExportOrderDialog({ items, nutritionTotals, onClose }: E
 
         <div ref={controlsRef} className={`flex shrink-0 flex-col px-5 pb-[max(1rem,env(safe-area-inset-bottom))] pt-4 ${IS_CAPACITOR_BUILD ? "" : "md:col-start-2 md:row-start-2 md:min-h-0 md:px-8 md:pb-8 md:pt-8"}`}>
           <div className={IS_CAPACITOR_BUILD ? "hidden" : "hidden md:block"}>
-            <p className="text-[11px] font-medium uppercase tracking-[0.14em] text-slate-400 dark:text-slate-400">Format</p>
-            <div className="mt-2.5 flex items-center gap-3 rounded-xl border border-black/10 dark:border-hairline bg-[#f6f5f1] px-3.5 py-2.5">
+            <p className="text-[11px] font-medium uppercase tracking-[0.14em] text-slate-400">Format</p>
+            <div className="mt-2.5 flex items-center gap-3 rounded-xl border border-black/10 dark:border-hairline bg-[#f6f5f1] dark:bg-surface-hover px-3.5 py-2.5">
               <span className="h-[18px] w-[14px] shrink-0 rounded-[3px] border-2 border-slate-950" aria-hidden="true" />
               <span className="text-[15px] font-semibold text-slate-950 dark:text-slate-50">Portrait · 4:5</span>
             </div>

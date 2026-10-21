@@ -82,14 +82,14 @@ function MacroSourceRow({
             style={{ width: `${Math.max(0, Math.min(100, percentOfTotal))}%` }}
           />
         </div>
-        <span className="w-9 shrink-0 text-right text-xs font-medium text-slate-400 dark:text-slate-400">{percentOfTotal}%</span>
+        <span className="w-9 shrink-0 text-right text-xs font-medium text-slate-400">{percentOfTotal}%</span>
       </div>
 
       {rankedNestedItems.length > 0 ? (
         <>
           <button
             type="button"
-            className="mt-2 flex cursor-pointer items-center gap-1 text-xs font-semibold text-emerald-700 transition-colors hover:text-emerald-800"
+            className="mt-2 flex cursor-pointer items-center gap-1 text-xs font-semibold text-emerald-700 dark:text-accent-strong transition-colors hover:text-emerald-800"
             onClick={() => setIsExpanded((current) => !current)}
             aria-expanded={isExpanded}
           >

@@ -166,17 +166,17 @@ function PreviewControlShortcut({
 }) {
     return (
         <div className="min-w-0">
-            <p className="text-label text-slate-400 dark:text-slate-400">
+            <p className="text-label text-slate-400">
                 {label}
             </p>
             <button
                 type="button"
                 onClick={onClick}
                 aria-label={`Edit ${label}`}
-                className="mt-1.5 inline-flex h-10 max-w-full cursor-pointer items-center gap-1.5 rounded-full border border-black/15 dark:border-control bg-slate-50 dark:bg-surface-subtle px-4 text-[13px] font-semibold text-slate-700 dark:text-slate-200 transition hover:border-black/25 hover:bg-slate-100 dark:hover:bg-surface-hover active:bg-slate-200 dark:active:bg-surface-hover focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-strong sm:text-sm"
+                className="mt-1.5 inline-flex h-10 max-w-full cursor-pointer items-center gap-1.5 rounded-full border border-black/15 dark:border-control bg-slate-50 dark:bg-surface-subtle px-4 text-[13px] font-semibold text-slate-700 dark:text-slate-200 transition hover:border-black/25 dark:hover:border-control hover:bg-slate-100 dark:hover:bg-surface-hover active:bg-slate-200 dark:active:bg-surface-hover focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-strong sm:text-sm"
             >
                 <span className="truncate">{value}</span>
-                <Pencil className="h-3 w-3 shrink-0 text-slate-400 dark:text-slate-400" strokeWidth={2.5} />
+                <Pencil className="h-3 w-3 shrink-0 text-slate-400" strokeWidth={2.5} />
             </button>
         </div>
     );
@@ -1766,7 +1766,7 @@ export default function ItemRouteModal({
                                 />
                             ) : null}
                             <div className="item-overview-content min-w-0">
-                                <p className="item-overview-label mt-4 min-w-0 pr-12 text-label text-slate-400 dark:text-slate-400 sm:mt-0 sm:pr-14">
+                                <p className="item-overview-label mt-4 min-w-0 pr-12 text-label text-slate-400 sm:mt-0 sm:pr-14">
                                     Base Nutrition
                                 </p>
                                 <MenuItemTitle
@@ -1855,7 +1855,7 @@ export default function ItemRouteModal({
                                             id={ITEM_DETAILS_SECTION_IDS.orderType}
                                             className="min-w-0 lg:w-[45%]"
                                         >
-                                            <p className="text-label text-slate-400 dark:text-slate-400">
+                                            <p className="text-label text-slate-400">
                                                 Meal Type
                                             </p>
                                             <SegmentedControl
@@ -1886,7 +1886,7 @@ export default function ItemRouteModal({
                         variants &&
                         variants.length > 0 &&
                         !item.hideVariantSelector ? (
-                            <div className="my-6 h-px bg-black/[0.06] sm:my-7" />
+                            <div className="my-6 h-px bg-black/[0.06] dark:bg-divider sm:my-7" />
                         ) : null}
 
                         {!isOverviewPreviewState &&
@@ -1901,7 +1901,7 @@ export default function ItemRouteModal({
                             />
                         ) : null}
 
-                        <div className="my-6 h-px bg-black/[0.06] sm:my-7" />
+                        <div className="my-6 h-px bg-black/[0.06] dark:bg-divider sm:my-7" />
 
                         <div className="mt-6 w-full">
                             {usesChipotleBuildReview ? (

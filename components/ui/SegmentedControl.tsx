@@ -41,7 +41,7 @@ export default function SegmentedControl<T extends string>({
     <div
       role="radiogroup"
       aria-label={ariaLabel}
-      className={`grid w-full auto-cols-fr grid-flow-col gap-1 rounded-full bg-slate-100 p-1 ${className}`.trim()}
+      className={`grid w-full auto-cols-fr grid-flow-col gap-1 rounded-full bg-slate-100 dark:bg-surface-hover p-1 ${className}`.trim()}
     >
       {options.map((option) => {
         const isActive = option.id === value;
@@ -56,13 +56,13 @@ export default function SegmentedControl<T extends string>({
             onClick={() => onChange(option.id)}
             className={`box-border flex h-10 min-w-0 cursor-pointer items-center justify-center whitespace-nowrap rounded-full border text-[13px] font-semibold transition-colors duration-150 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-strong sm:text-sm ${sizeClassNames[size]} ${
               isActive
-                ? "border-transparent bg-accent-strong text-white/95 shadow-sm"
-                : "border-transparent text-slate-500 hover:bg-white/70 active:bg-white"
+                ? "border-transparent bg-accent-strong text-white/95 dark:bg-accent-soft dark:text-accent-strong shadow-sm"
+                : "border-transparent text-slate-500 dark:text-slate-400 hover:bg-white/70 dark:hover:bg-surface-card active:bg-white dark:active:bg-surface-card"
             }`}
           >
             {Icon ? (
               <Icon
-                className={`h-4 w-4 shrink-0 ${isActive ? "text-white/95" : "text-slate-400"}`}
+                className={`h-4 w-4 shrink-0 ${isActive ? "text-white/95 dark:text-accent-strong" : "text-slate-400"}`}
                 strokeWidth={2.3}
               />
             ) : null}

@@ -117,7 +117,7 @@ export default function DesktopRestaurantMenu() {
                     />
                     <span className="truncate">{restaurant.name}</span>
                   </span>
-                  <ChevronRight className="h-4 w-4 text-icon-decorative transition group-hover:text-slate-600" strokeWidth={2.4} />
+                  <ChevronRight className="h-4 w-4 text-icon-decorative transition group-hover:text-slate-600 dark:group-hover:text-slate-300" strokeWidth={2.4} />
                 </Link>
               ))}
             </div>
@@ -136,7 +136,7 @@ export default function DesktopRestaurantMenu() {
                 className="group inline-flex w-full items-center justify-between rounded-xl px-2 py-2.5 text-sm font-semibold text-slate-900 dark:text-slate-100 transition hover:bg-surface-hover focus:bg-slate-100 dark:focus:bg-surface-hover focus:outline-none"
               >
                 <span>All Restaurants</span>
-                <ChevronRight className="h-4 w-4 text-icon-decorative transition group-hover:text-slate-600" strokeWidth={2.4} />
+                <ChevronRight className="h-4 w-4 text-icon-decorative transition group-hover:text-slate-600 dark:group-hover:text-slate-300" strokeWidth={2.4} />
               </Link>
             </div>
           </div>

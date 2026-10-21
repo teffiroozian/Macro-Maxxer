@@ -103,7 +103,7 @@ export function PresetIngredientCard({
             as="li"
             padding="none"
             shadow="none"
-            className="min-w-0 max-w-full list-none overflow-hidden border border-black/10 bg-white shadow-elev-1 transition duration-150 hover:-translate-y-px hover:border-black/15 hover:shadow-elev-2"
+            className="min-w-0 max-w-full list-none overflow-hidden border border-black/10 dark:border-hairline bg-white dark:bg-surface-card shadow-elev-1 transition duration-150 hover:-translate-y-px hover:border-black/15 dark:hover:border-control hover:shadow-elev-2"
         >
             <div
                 {...interactiveProps}
@@ -122,11 +122,11 @@ export function PresetIngredientCard({
                 </div>
                 <div className="min-w-0 flex-1">
                     <div className="flex min-w-0 items-baseline gap-1.5">
-                        <p className="min-w-0 flex-1 truncate font-heading text-[15px] font-semibold text-slate-900 sm:text-base">
+                        <p className="min-w-0 flex-1 truncate font-heading text-[15px] font-semibold text-slate-900 dark:text-slate-100 sm:text-base">
                             {name}
                         </p>
                         {portionLabel ? (
-                            <span className="shrink-0 rounded-md bg-black/5 px-1.5 py-0.5 text-[10px] font-semibold tracking-wide text-black/60">
+                            <span className="shrink-0 rounded-md bg-black/5 dark:bg-surface-hover px-1.5 py-0.5 text-[10px] font-semibold tracking-wide text-black/60 dark:text-slate-400">
                                 {portionLabel}
                             </span>
                         ) : null}
@@ -135,7 +135,7 @@ export function PresetIngredientCard({
                     {quantity > 1 || isLocked || diffStatus ? (
                         <div className="mt-1.5 flex flex-wrap items-center gap-1.5">
                             {quantity > 1 ? (
-                                <span className="rounded-md bg-black/5 px-1.5 py-0.5 text-[10px] font-semibold tracking-wide text-black/60">
+                                <span className="rounded-md bg-black/5 dark:bg-surface-hover px-1.5 py-0.5 text-[10px] font-semibold tracking-wide text-black/60 dark:text-slate-400">
                                     ×{quantity}
                                 </span>
                             ) : null}
@@ -199,10 +199,10 @@ export default function PresetBuildReview({
         <div>
             <div className="grid gap-4">
                 <div>
-                    <h2 className="font-heading text-2xl font-bold text-slate-900 sm:text-3xl">
+                    <h2 className="font-heading text-2xl font-bold text-slate-900 dark:text-slate-100 sm:text-3xl">
                         Included in this Build
                     </h2>
-                    <p className="mt-1.5 text-sm text-slate-500">
+                    <p className="mt-1.5 text-sm text-slate-500 dark:text-slate-400">
                         These are the ingredients that define this preset.
                         Tap an ingredient to edit it.
                     </p>
@@ -211,7 +211,7 @@ export default function PresetBuildReview({
                     <button
                         type="button"
                         onClick={onResetToOriginal}
-                        className="cursor-pointer inline-flex w-fit items-center gap-1 text-sm font-semibold text-slate-500 underline decoration-slate-300 underline-offset-2 transition hover:text-slate-700 hover:decoration-slate-500"
+                        className="cursor-pointer inline-flex w-fit items-center gap-1 text-sm font-semibold text-slate-500 dark:text-slate-400 underline decoration-slate-300 underline-offset-2 transition hover:text-slate-700 dark:hover:text-slate-200 hover:decoration-slate-500"
                     >
                         <RotateCcw className="h-3.5 w-3.5" strokeWidth={2.5} />
                         Reset to Original
@@ -232,7 +232,7 @@ export default function PresetBuildReview({
                                         className="h-4 w-4 text-slate-400"
                                         strokeWidth={2.25}
                                     />
-                                    <h3 className="font-heading text-base font-bold text-slate-900 sm:text-lg">
+                                    <h3 className="font-heading text-base font-bold text-slate-900 dark:text-slate-100 sm:text-lg">
                                         {group.categoryLabel}
                                     </h3>
                                 </div>

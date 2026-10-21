@@ -22,7 +22,7 @@ function NativeTab({ label, icon: Icon, active, onClick, badge }: NativeTabProps
       onClick={onClick}
       aria-current={active ? "page" : undefined}
       className={`relative flex h-14 min-w-0 flex-1 cursor-pointer flex-col items-center justify-center gap-0.5 rounded-xl transition-colors focus-ring ${
-        active ? "bg-accent-soft text-accent-strong" : "text-slate-500 active:bg-slate-100 active:text-slate-900"
+        active ? "bg-accent-soft text-accent-strong" : "text-slate-500 dark:text-slate-400 active:bg-slate-100 dark:active:bg-surface-hover active:text-slate-900 dark:active:text-slate-100"
       }`}
     >
       <span className="relative">
@@ -54,7 +54,7 @@ export default function NativeBottomNav() {
   return (
     <nav
       aria-label="Primary navigation"
-      className="native-bottom-nav fixed inset-x-0 bottom-0 z-[var(--z-nav)] border-t border-black/10 bg-white/95 px-[max(0.5rem,var(--safe-area-left))] pb-[var(--safe-area-bottom)] shadow-[0_-8px_24px_rgba(15,23,42,0.08)] backdrop-blur-lg"
+      className="native-bottom-nav fixed inset-x-0 bottom-0 z-[var(--z-nav)] border-t border-black/10 dark:border-hairline bg-white/95 dark:bg-surface-card px-[max(0.5rem,var(--safe-area-left))] pb-[var(--safe-area-bottom)] shadow-[0_-8px_24px_rgba(15,23,42,0.08)] backdrop-blur-lg"
     >
       <div className="mx-auto flex h-14 max-w-md items-center gap-1">
         <NativeTab label="Home" icon={Home} active={pathname === "/"} onClick={() => navigate("/")} />

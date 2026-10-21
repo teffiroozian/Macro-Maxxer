@@ -67,7 +67,7 @@ export default function GlobalMobileNav({
           {leadingButton}
           <Link
             href="/"
-            className="inline-flex h-9 w-9 shrink-0 items-center justify-center overflow-hidden rounded-lg logo-surface"
+            className={`inline-flex h-9 w-9 shrink-0 items-center justify-center overflow-hidden rounded-lg ${logoSrc === "/logo.svg" ? "" : "logo-surface"}`}
             aria-label="Go to homepage"
           >
             <span className="relative h-7 w-7">

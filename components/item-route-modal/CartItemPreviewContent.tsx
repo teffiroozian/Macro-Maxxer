@@ -47,7 +47,7 @@ function PreviewSection({
   return (
     <div>
       <div className="mb-3 flex items-center gap-2">
-        <Icon className="h-4 w-4 text-slate-400 dark:text-slate-400" strokeWidth={2.25} />
+        <Icon className="h-4 w-4 text-slate-400" strokeWidth={2.25} />
         <h3 className="font-heading text-base font-bold text-slate-900 dark:text-slate-100 sm:text-lg">{label}</h3>
       </div>
       {children}
@@ -62,7 +62,7 @@ function PreviewSection({
 function NestedSectionHeading({ icon: Icon, label }: { icon: LucideIcon; label: string }) {
   return (
     <div className="mb-2.5 flex items-center gap-1.5">
-      <Icon className="h-3.5 w-3.5 text-slate-400 dark:text-slate-400" strokeWidth={2.25} />
+      <Icon className="h-3.5 w-3.5 text-slate-400" strokeWidth={2.25} />
       <h4 className="font-heading text-sm font-bold text-slate-600 dark:text-slate-300 sm:text-[15px]">{label}</h4>
     </div>
   );
@@ -112,7 +112,7 @@ function CustomizationImpactSummary({ delta }: { delta: CoreMacros }) {
         const isZero = rounded === 0;
         const label = macroKey === "calories" ? config.shortLabel : config.label;
         const displayValue = isZero ? "—" : `${rounded > 0 ? "+" : "−"}${Math.abs(rounded)}${config.unit ?? ""}`;
-        const valueClassName = isZero ? "text-slate-400 dark:text-slate-400" : config.valueClassNameByVariant.default;
+        const valueClassName = isZero ? "text-slate-400" : config.valueClassNameByVariant.default;
 
         return (
           <span key={macroKey} className="whitespace-nowrap text-[13px] font-bold sm:text-sm">
@@ -134,7 +134,7 @@ function NestedCustomizationSummaryRow({ name, sign }: { name: string; sign: "ad
   return (
     <li className="flex list-none items-center gap-1.5 py-0.5">
       <span
-        className={`flex h-3.5 w-3.5 shrink-0 items-center justify-center rounded-full ${isAdd ? "bg-success/15 text-success" : "bg-black/10 dark:bg-divider text-black/45"}`}
+        className={`flex h-3.5 w-3.5 shrink-0 items-center justify-center rounded-full ${isAdd ? "bg-success/15 text-success" : "bg-black/10 dark:bg-divider text-black/45 dark:text-slate-400"}`}
       >
         {isAdd ? <Plus className="h-2 w-2" strokeWidth={3.5} /> : <Minus className="h-2 w-2" strokeWidth={3.5} />}
       </span>
@@ -166,11 +166,11 @@ function CustomizationGroup({
     <div className="rounded-2xl border border-black/10 dark:border-hairline bg-black/[0.02] p-3 sm:p-4">
       <div className="mb-3 flex items-center gap-1.5">
         <span
-          className={`flex h-5 w-5 shrink-0 items-center justify-center rounded-full ${isAdd ? "bg-success/15 text-success" : "bg-black/10 dark:bg-divider text-black/45"}`}
+          className={`flex h-5 w-5 shrink-0 items-center justify-center rounded-full ${isAdd ? "bg-success/15 text-success" : "bg-black/10 dark:bg-divider text-black/45 dark:text-slate-400"}`}
         >
           <Icon className="h-3 w-3" strokeWidth={3} />
         </span>
-        <span className={`text-xs font-bold uppercase tracking-wide ${isAdd ? "text-success" : "text-black/45"}`}>{label}</span>
+        <span className={`text-xs font-bold uppercase tracking-wide ${isAdd ? "text-success" : "text-black/45 dark:text-slate-400"}`}>{label}</span>
       </div>
       <ul className={cardGridClassName}>
         {cards.map((card) => (
@@ -403,7 +403,7 @@ export default function CartItemPreviewContent({
           ) : null}
         </div>
       ) : (
-        <div className="mt-6 rounded-2xl border border-black/[0.06] dark:border-divider bg-slate-50/70 px-5 py-6 text-center sm:mt-10">
+        <div className="mt-6 rounded-2xl border border-black/[0.06] dark:border-divider bg-slate-50/70 dark:bg-surface-subtle px-5 py-6 text-center sm:mt-10">
           <p className="text-sm font-semibold text-slate-700 dark:text-slate-200">No customizations</p>
           <p className="mt-0.5 text-sm text-slate-500 dark:text-slate-400">Standard preparation</p>
         </div>

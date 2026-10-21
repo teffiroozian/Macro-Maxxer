@@ -180,7 +180,7 @@ function CategoryNavItem({ option, isActive, Icon, onSelect, variant }: Category
         <Icon className="h-4 w-4 shrink-0" strokeWidth={2.2} aria-hidden="true" />
         <TruncatedCategoryLabel label={option.label} className="min-w-0 flex-1 truncate whitespace-nowrap" />
         {formattedCount ? (
-          <span className="shrink-0 text-xs font-semibold tabular-nums text-black/40">{formattedCount}</span>
+          <span className="shrink-0 text-xs font-semibold tabular-nums text-black/40 dark:text-slate-400">{formattedCount}</span>
         ) : null}
       </button>
     );

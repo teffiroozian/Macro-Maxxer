@@ -29,15 +29,15 @@ export default async function RestaurantsPage() {
         <HomeSectionContainer as="header">
           <div className="mx-auto max-w-3xl text-center">
             <LiveRestaurantsBadge count={availableRestaurants.length} />
-            <h1 className="font-heading mt-3 text-3xl font-bold tracking-tight text-slate-950 sm:text-4xl lg:text-5xl">
+            <h1 className="font-heading mt-3 text-3xl font-bold tracking-tight text-slate-950 dark:text-slate-50 sm:text-4xl lg:text-5xl">
               Restaurants
             </h1>
-            <p className="mx-auto mt-4 max-w-2xl text-sm leading-6 text-slate-600 sm:text-base sm:leading-7">
+            <p className="mx-auto mt-4 max-w-2xl text-sm leading-6 text-slate-600 dark:text-slate-300 sm:text-base sm:leading-7">
               Browse supported restaurants and explore real menu and nutrition data before building your meal.
             </p>
           </div>
 
-          <div className="mx-auto mt-8 w-full max-w-[30rem] overflow-hidden rounded-full border border-black/10 bg-white/70 py-3 shadow-elev-1 sm:mt-10">
+          <div className="mx-auto mt-8 w-full max-w-[30rem] overflow-hidden rounded-full border border-black/10 dark:border-hairline bg-white/70 dark:bg-surface-card py-3 shadow-elev-1 sm:mt-10">
             <div className="restaurant-logo-marquee-track flex w-max">
               {[0, 1].map((groupIndex) => (
                 <div
@@ -74,7 +74,7 @@ export default async function RestaurantsPage() {
                   radius="large"
                   shadow="md"
                   padding="none"
-                  className="flex h-full min-h-64 flex-col p-6 transition duration-200 group-hover:-translate-y-0.5 group-hover:border-black/15 group-hover:shadow-elev-3 sm:min-h-72 sm:p-7"
+                  className="flex h-full min-h-64 flex-col p-6 transition duration-200 group-hover:-translate-y-0.5 group-hover:border-black/15 dark:group-hover:border-control group-hover:shadow-elev-3 sm:min-h-72 sm:p-7"
                 >
                   <div className="flex items-start justify-between gap-4">
                     <RestaurantLogoBadge
@@ -89,11 +89,11 @@ export default async function RestaurantsPage() {
                   </div>
 
                   <div className="mt-6">
-                    <h2 className="font-heading text-2xl font-bold leading-tight text-slate-950 sm:text-3xl">
+                    <h2 className="font-heading text-2xl font-bold leading-tight text-slate-950 dark:text-slate-50 sm:text-3xl">
                       {restaurant.name}
                     </h2>
                     {restaurant.description ? (
-                      <p className="mt-3 line-clamp-2 text-sm leading-6 text-slate-600">
+                      <p className="mt-3 line-clamp-2 text-sm leading-6 text-slate-600 dark:text-slate-300">
                         {restaurant.description}
                       </p>
                     ) : null}
@@ -103,7 +103,7 @@ export default async function RestaurantsPage() {
                     className={appButtonClassName({
                       variant: "secondary",
                       size: "md",
-                      className: "mt-auto w-fit group-hover:border-black/30",
+                      className: "mt-auto w-fit group-hover:border-black/30 dark:group-hover:border-control",
                     })}
                   >
                     View Menu

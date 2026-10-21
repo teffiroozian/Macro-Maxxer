@@ -40,7 +40,7 @@ export default async function RestaurantOgImage({ params }: { params: Promise<{ 
         </div>
         <div style={{ display: 'flex', fontFamily: 'Unbounded', fontWeight: 700, fontSize: headline.length > 75 ? 36 : 46, lineHeight: 1.22, letterSpacing: '-1px', overflowWrap: 'anywhere' }}>{headline}</div>
         <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginTop: 64 }}>
-          {brand && <img src={brand} width={28} height={28} style={{ backgroundColor: LOGO_BACKGROUND }} alt="" />}
+          {brand && <img src={brand} width={28} height={28} alt="" />}
           <span style={{ fontFamily: 'Unbounded', fontSize: 18, fontWeight: 700, color: '#171717' }}>Macro Maxxer</span>
         </div>
       </div>

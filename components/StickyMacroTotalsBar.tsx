@@ -121,7 +121,7 @@ function MacroSummarySection({ contextLine, isCartLayout, totals }: MacroSummary
             ? "mt-4 grid-cols-2 gap-x-4 gap-y-4 sm:grid-cols-4 sm:gap-x-6"
             : `mt-1 w-full grid-cols-4 gap-x-3 ${contextLine ? "sm:mt-2" : ""} md:w-fit`
         }`}
-        labelClassName={`${isCartLayout ? "text-[#1A1A1A]" : "text-[#1A1A1A] !mt-0.5 !text-[9px] sm:!text-[10px]"}`}
+        labelClassName={`${isCartLayout ? "text-[#1A1A1A] dark:text-slate-300" : "text-[#1A1A1A] dark:text-slate-300 !mt-0.5 !text-[9px] sm:!text-[10px]"}`}
         valueClassName={isCartLayout ? "" : "!text-xl sm:!text-2xl lg:!text-xl"}
       />
     </section>

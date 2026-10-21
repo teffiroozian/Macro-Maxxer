@@ -44,7 +44,7 @@ export default function ItemModalStickyFooter({
 }) {
     return (
         <div
-            className="flex h-fit shrink-0 flex-col gap-3 border-t border-black/[0.06] bg-white px-4 pt-3 sm:px-6 sm:py-4 lg:flex-row lg:items-center lg:justify-between lg:px-8"
+            className="flex h-fit shrink-0 flex-col gap-3 border-t border-black/[0.06] dark:border-hairline bg-white dark:bg-surface-card px-4 pt-3 sm:px-6 sm:py-4 lg:flex-row lg:items-center lg:justify-between lg:px-8"
             style={{
                 paddingBottom: "max(0.75rem, env(safe-area-inset-bottom))",
             }}
@@ -54,7 +54,7 @@ export default function ItemModalStickyFooter({
                 size="panel"
                 className="w-full justify-between gap-2 sm:gap-3 lg:!w-fit lg:justify-start"
                 itemClassName="px-2 py-0.5"
-                labelClassName="text-[#64748b]"
+                labelClassName="text-[#64748b] dark:text-slate-400"
             />
             {/* Mobile: an equal-width grid, so a lone primary button never
                 balloons to consume most of the footer while the stepper

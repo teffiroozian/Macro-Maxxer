@@ -961,7 +961,7 @@ export default function MenuItemCard({
               role="button"
               tabIndex={0}
               aria-label="Reset customizations"
-              className="cursor-pointer text-[26px] leading-none font-medium text-black/75 transition-colors duration-200 group-hover:text-black/95"
+              className="cursor-pointer text-[26px] leading-none font-medium text-black/75 dark:text-slate-300 transition-colors duration-200 group-hover:text-black/95 dark:group-hover:text-slate-100"
               onClick={(event) => {
                 event.stopPropagation();
                 resetMods();

@@ -64,7 +64,7 @@ export default function MobileNavDrawer({
           {headerTitle ? (
             <div className="inline-flex min-w-0 items-center gap-2">
               {headerLogoSrc ? (
-                <span className="relative h-7 w-7 shrink-0 overflow-hidden rounded-full logo-surface ring-1 ring-black/5">
+                <span className={`relative h-7 w-7 shrink-0 overflow-hidden rounded-full ${headerLogoSrc === "/logo.svg" ? "" : "logo-surface ring-1 ring-black/5"}`}>
                   <Image src={headerLogoSrc} alt={`${headerTitle} logo`} fill className="object-contain" />
                 </span>
               ) : null}

@@ -24,13 +24,13 @@ export default function CartClearConfirmationDialog({
       descriptionId="clear-cart-dialog-description"
       initialFocusRef={cancelButtonRef}
     >
-      <p className="text-xs font-semibold uppercase tracking-[0.14em] text-slate-500">
+      <p className="text-xs font-semibold uppercase tracking-[0.14em] text-slate-500 dark:text-slate-400">
         Clear Meal
       </p>
-      <h2 id="clear-cart-dialog-title" className="mt-2 text-xl font-bold text-slate-900">
+      <h2 id="clear-cart-dialog-title" className="mt-2 text-xl font-bold text-slate-900 dark:text-slate-100">
         Remove all meal items?
       </h2>
-      <p id="clear-cart-dialog-description" className="mt-2 text-sm leading-6 text-slate-600">
+      <p id="clear-cart-dialog-description" className="mt-2 text-sm leading-6 text-slate-600 dark:text-slate-300">
         This will remove all {itemCount} {itemCount === 1 ? "item" : "items"} from your meal. You can cancel to keep your meal unchanged.
       </p>
       <div className="mt-5 grid grid-cols-2 gap-2">

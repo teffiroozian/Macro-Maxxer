@@ -37,7 +37,7 @@ export default function DesktopNav() {
           className="inline-flex w-fit items-center gap-2.5 rounded-lg focus-ring"
           aria-label="Go to homepage"
         >
-          <span className="relative h-8 w-8 shrink-0 logo-surface">
+          <span className="relative h-8 w-8 shrink-0">
             <Image src="/logo.svg" alt="" fill className="object-contain" />
           </span>
           <span className="font-heading text-sm font-bold text-slate-950 dark:text-slate-50">Macro Maxxer</span>

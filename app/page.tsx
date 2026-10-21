@@ -234,7 +234,9 @@ export default async function Home() {
                 description="Every supported restaurant comes with a full menu, real nutrition data, and a meal builder."
               />
 
-              <div className="mt-4 text-center">
+              {/* The carousel's shadow padding extends above its layout box.
+                  Keep this link above that scroll area so clicks and taps reach it. */}
+              <div className="relative z-10 mt-4 text-center">
                 <Link
                   href="/restaurants"
                   className="inline-flex items-center gap-1 text-sm font-semibold text-slate-600 dark:text-slate-300 transition hover:text-slate-950 dark:hover:text-slate-50 focus-ring"

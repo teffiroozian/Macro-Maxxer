@@ -194,7 +194,7 @@ const ExportOrderCard = forwardRef<HTMLElement, ExportOrderCardProps>(function E
       <div className="relative flex h-full flex-col px-[64px] pb-[52px] pt-[60px]">
         <header className="flex shrink-0 items-center justify-between gap-8">
           <div className="flex items-center gap-4">
-            <span className="relative size-[60px] overflow-hidden rounded-[16px] logo-surface shadow-sm">
+            <span className="relative size-[60px] overflow-hidden rounded-[16px] shadow-sm">
               <Image src="/logo.svg" alt="Macro Maxxer" fill className="object-contain p-2.5" />
             </span>
             <span className="font-heading text-[30px] font-bold tracking-[-0.01em]">Macro Maxxer</span>

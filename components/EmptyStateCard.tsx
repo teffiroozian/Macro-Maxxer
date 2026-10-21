@@ -29,23 +29,23 @@ const variantClassNames: Record<EmptyStateCardVariant, {
 }> = {
   default: {
     container: "gap-2 py-8",
-    icon: "mb-1 flex h-12 w-12 items-center justify-center rounded-full bg-slate-100 text-2xl text-slate-700",
-    title: "text-lg font-semibold text-slate-900",
-    description: "max-w-md text-sm leading-6 text-slate-600",
+    icon: "mb-1 flex h-12 w-12 items-center justify-center rounded-full bg-slate-100 dark:bg-surface-hover text-2xl text-slate-700 dark:text-slate-200",
+    title: "text-lg font-semibold text-slate-900 dark:text-slate-100",
+    description: "max-w-md text-sm leading-6 text-slate-600 dark:text-slate-300",
     action: "mt-2",
   },
   compact: {
     container: "gap-1.5 py-4",
-    icon: "mb-0.5 flex h-9 w-9 items-center justify-center rounded-full bg-slate-100 text-lg text-slate-700",
-    title: "text-sm font-medium text-black/70",
-    description: "text-sm leading-5 text-slate-600",
+    icon: "mb-0.5 flex h-9 w-9 items-center justify-center rounded-full bg-slate-100 dark:bg-surface-hover text-lg text-slate-700 dark:text-slate-200",
+    title: "text-sm font-medium text-black/70 dark:text-slate-300",
+    description: "text-sm leading-5 text-slate-600 dark:text-slate-300",
     action: "mt-1.5",
   },
   transparent: {
     container: "gap-1.5 px-4 py-[18px]",
-    icon: "mb-0.5 flex h-9 w-9 items-center justify-center rounded-full bg-slate-100 text-lg text-slate-700",
-    title: "text-sm font-medium text-black/70",
-    description: "text-sm leading-5 text-slate-600",
+    icon: "mb-0.5 flex h-9 w-9 items-center justify-center rounded-full bg-slate-100 dark:bg-surface-hover text-lg text-slate-700 dark:text-slate-200",
+    title: "text-sm font-medium text-black/70 dark:text-slate-300",
+    description: "text-sm leading-5 text-slate-600 dark:text-slate-300",
     action: "mt-1.5",
   },
 };

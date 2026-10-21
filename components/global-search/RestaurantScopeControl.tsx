@@ -36,7 +36,7 @@ export default function RestaurantScopeControl({ restaurant, isScoped, onToggle 
         // ScopeSwitcher for why this needs to run on mousedown.
         onMouseDown={(event) => event.preventDefault()}
         onClick={onToggle}
-        className="shrink-0 cursor-pointer border-l border-divider pl-2 font-semibold text-slate-600 transition hover:text-slate-900 hover:underline"
+        className="shrink-0 cursor-pointer border-l border-divider pl-2 font-semibold text-slate-600 dark:text-slate-300 transition hover:text-slate-900 dark:hover:text-slate-100 hover:underline"
       >
         {isScoped ? "Switch to all restaurants" : `Back to ${restaurant.name}`}
       </button>

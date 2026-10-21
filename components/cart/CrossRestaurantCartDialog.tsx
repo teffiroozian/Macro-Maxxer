@@ -30,13 +30,13 @@ export default function CrossRestaurantCartDialog() {
       initialFocusRef={cancelButtonRef}
       presentation={IS_CAPACITOR_BUILD ? "bottom-sheet" : "responsive"}
     >
-      <p className="text-xs font-semibold uppercase tracking-[0.14em] text-slate-500">
+      <p className="text-xs font-semibold uppercase tracking-[0.14em] text-slate-500 dark:text-slate-400">
         Different Restaurant
       </p>
-      <h2 id="cross-restaurant-dialog-title" className="mt-2 text-xl font-bold text-slate-900">
+      <h2 id="cross-restaurant-dialog-title" className="mt-2 text-xl font-bold text-slate-900 dark:text-slate-100">
         Add from {newRestaurantName}?
       </h2>
-      <p id="cross-restaurant-dialog-description" className="mt-2 text-sm leading-6 text-slate-600">
+      <p id="cross-restaurant-dialog-description" className="mt-2 text-sm leading-6 text-slate-600 dark:text-slate-300">
         Your meal has items from {existingRestaurantNames.join(", ")}. You can add this item alongside them, or
         replace your meal so it only contains this item.
       </p>

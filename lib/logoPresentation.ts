@@ -3,6 +3,6 @@
 export const LOGO_BACKGROUND = "#FFFFFF";
 
 export function isLogoImage(src: string | undefined): boolean {
-  if (!src) return false;
+  if (!src || /^\/logo\.(?:svg|png|jpe?g|webp)(?:[?#].*)?$/i.test(src)) return false;
   return /(?:^|\/)logo\.(?:svg|png|jpe?g|webp)(?:[?#].*)?$/i.test(src);
 }

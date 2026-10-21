@@ -71,6 +71,6 @@ export default function ViewportMenu({ open, anchorRef, menuRef, width, id, labe
   if (!open || typeof document === "undefined") return null;
   return createPortal(<div ref={menuRef} id={id} role="menu" aria-label={label} onKeyDown={onKeyDown} style={{ visibility: "hidden" }} className="fixed z-[120] overflow-hidden rounded-[18px] border border-black/10 dark:border-hairline bg-white dark:bg-surface-card p-1.5 text-slate-700 dark:text-slate-200 shadow-[0_16px_32px_rgba(15,23,42,.16)]">
     <div ref={scrollRef} className="hide-scrollbar overflow-y-auto overscroll-contain"><div ref={contentRef}>{children}</div></div>
-    <div ref={fadeRef} aria-hidden="true" className="pointer-events-none absolute inset-x-1.5 bottom-1.5 h-7 bg-gradient-to-t from-white to-transparent opacity-0 transition-opacity" />
+    <div ref={fadeRef} aria-hidden="true" className="pointer-events-none absolute inset-x-1.5 bottom-1.5 h-7 bg-gradient-to-t from-white dark:from-surface-card to-transparent opacity-0 transition-opacity" />
   </div>, document.body);
 }

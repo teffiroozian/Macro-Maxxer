@@ -105,14 +105,14 @@ function MacroInlineSummary({
     <p
       className={`flex min-w-0 flex-wrap items-baseline gap-x-1.5 gap-y-0.5 text-xs ${className}`}
     >
-      <span className="font-medium text-slate-600">
+      <span className="font-medium text-slate-600 dark:text-slate-300">
         {calories !== undefined ? `${calories} Cal` : "— Cal"}
       </span>
       {gramMacroOrder.map((macroKey) => {
         const value = gramValues[macroKey];
         return (
           <span key={macroKey} className="whitespace-nowrap">
-            <span className="text-black">· </span>
+            <span className="text-black dark:text-slate-50">· </span>
             <span
               className={`font-medium ${macroDisplayConfig[macroKey].valueClassNameByVariant.default}`}
             >
@@ -499,15 +499,15 @@ export function PortionSelector({
 
   return (
     <div className={`${className} space-y-2`}>
-      <div className="text-base font-semibold uppercase tracking-wide text-slate-500">
+      <div className="text-base font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">
         {groupLabel}
       </div>
       <div className="grid w-full grid-flow-col auto-cols-fr gap-2">
         {variants.map((variant) => {
           const isActive = variant.id === selectedVariantId;
           const variantColorClasses = isActive
-            ? "border-blue-500 bg-blue-50 text-slate-700 shadow-[0_8px_20px_rgba(37,99,235,0.18)]"
-            : "border-slate-200 bg-white text-slate-500 shadow-[0_2px_8px_rgba(15,23,42,0.06)] hover:border-slate-300 hover:bg-slate-50";
+            ? "border-blue-500 bg-blue-50 dark:bg-blue-400/10 text-slate-700 dark:text-slate-200 shadow-[0_8px_20px_rgba(37,99,235,0.18)]"
+            : "border-slate-200 dark:border-divider bg-white dark:bg-surface-card text-slate-500 dark:text-slate-400 shadow-[0_2px_8px_rgba(15,23,42,0.06)] hover:border-slate-300 dark:hover:border-control hover:bg-slate-50 dark:hover:bg-surface-subtle";
 
           return (
             <button
@@ -593,15 +593,15 @@ const includedStatusMeta: Record<
   included: { label: "Included", className: "text-slate-400" },
   customized: {
     label: "Customized",
-    className: "rounded-full bg-amber-50 px-2 py-0.5 text-amber-700",
+    className: "rounded-full bg-amber-50 dark:bg-amber-400/10 px-2 py-0.5 text-amber-700 dark:text-amber-300",
   },
   replaced: {
     label: "Replaced",
-    className: "rounded-full bg-amber-50 px-2 py-0.5 text-amber-700",
+    className: "rounded-full bg-amber-50 dark:bg-amber-400/10 px-2 py-0.5 text-amber-700 dark:text-amber-300",
   },
   removed: {
     label: "Removed",
-    className: "rounded-full bg-slate-100 px-2 py-0.5 text-slate-500",
+    className: "rounded-full bg-slate-100 dark:bg-surface-hover px-2 py-0.5 text-slate-500 dark:text-slate-400",
   },
   added: {
     label: "Added",
@@ -626,7 +626,7 @@ function IngredientThumb({
   if (icon === "none") {
     return (
       <div
-        className="grid shrink-0 place-items-center rounded-xl bg-slate-50 text-slate-400"
+        className="grid shrink-0 place-items-center rounded-xl bg-slate-50 dark:bg-surface-subtle text-slate-400"
         style={{ width: size, height: size }}
         aria-hidden="true"
       >
@@ -637,7 +637,7 @@ function IngredientThumb({
   if (isIconImage(icon)) {
     return (
       <div
-        className="relative shrink-0 overflow-hidden rounded-xl bg-slate-50"
+        className="relative shrink-0 overflow-hidden rounded-xl bg-slate-50 dark:bg-surface-subtle"
         style={{ width: size, height: size }}
       >
         <Image src={icon} alt="" fill sizes={`${size}px`} className="object-cover" />
@@ -646,7 +646,7 @@ function IngredientThumb({
   }
   return (
     <div
-      className="grid shrink-0 place-items-center rounded-xl bg-slate-50 text-xl"
+      className="grid shrink-0 place-items-center rounded-xl bg-slate-50 dark:bg-surface-subtle text-xl"
       style={{ width: size, height: size }}
       aria-hidden="true"
     >
@@ -682,7 +682,7 @@ function QuantityStepper({
       >
           {count > 0 ? (
               <div
-                  className={`inline-flex shrink-0 items-center rounded-full border border-accent/25 bg-white shadow-sm ${
+                  className={`inline-flex shrink-0 items-center rounded-full border border-accent/25 bg-white dark:bg-surface-card shadow-sm ${
                       compact ? "h-6 gap-0.5 p-0.5" : "h-8 gap-1 p-1"
                   }`}
               >
@@ -691,14 +691,14 @@ function QuantityStepper({
                       onClick={onDecrement}
                       aria-label={`Remove one ${label}`}
                       disabled={disabled}
-                      className={`inline-flex cursor-pointer items-center justify-center rounded-full bg-accent-soft text-slate-600 shadow-sm transition hover:bg-slate-100 active:bg-slate-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-strong/50 disabled:cursor-not-allowed disabled:opacity-30 ${
+                      className={`inline-flex cursor-pointer items-center justify-center rounded-full bg-accent-soft text-slate-600 dark:text-slate-300 shadow-sm transition hover:bg-slate-100 dark:hover:bg-surface-hover active:bg-slate-200 dark:active:bg-divider focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-strong/50 disabled:cursor-not-allowed disabled:opacity-30 ${
                           compact ? "h-5 w-5" : "h-6 w-6"
                       }`}
                   >
                       <Minus size={compact ? 10 : 12} strokeWidth={2.5} />
                   </button>
                   <span
-                      className={`min-w-[1.25rem] text-center font-bold text-slate-900 ${
+                      className={`min-w-[1.25rem] text-center font-bold text-slate-900 dark:text-slate-100 ${
                           compact ? "text-xs" : "text-sm"
                       }`}
                   >
@@ -709,7 +709,7 @@ function QuantityStepper({
                       onClick={onIncrement}
                       aria-label={`Add one more ${label}`}
                       disabled={count >= maxQuantity}
-                      className={`inline-flex cursor-pointer items-center justify-center rounded-full bg-accent-soft text-slate-600 shadow-sm transition hover:bg-slate-100 active:bg-slate-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-strong/50 disabled:cursor-not-allowed disabled:opacity-30 ${
+                      className={`inline-flex cursor-pointer items-center justify-center rounded-full bg-accent-soft text-slate-600 dark:text-slate-300 shadow-sm transition hover:bg-slate-100 dark:hover:bg-surface-hover active:bg-slate-200 dark:active:bg-divider focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-strong/50 disabled:cursor-not-allowed disabled:opacity-30 ${
                           compact ? "h-5 w-5" : "h-6 w-6"
                       }`}
                   >
@@ -721,7 +721,7 @@ function QuantityStepper({
                   type="button"
                   onClick={onIncrement}
                   aria-label={`Add ${label}`}
-                  className="inline-flex h-8 w-8 shrink-0 cursor-pointer items-center justify-center rounded-full border border-slate-200 text-slate-600 transition hover:border-accent-strong hover:text-accent-strong"
+                  className="inline-flex h-8 w-8 shrink-0 cursor-pointer items-center justify-center rounded-full border border-slate-200 dark:border-divider text-slate-600 dark:text-slate-300 transition hover:border-accent-strong hover:text-accent-strong"
               >
                   <Plus size={14} strokeWidth={2.5} />
               </button>
@@ -731,7 +731,7 @@ function QuantityStepper({
                       type="button"
                       onClick={onIncrement}
                       aria-label={`Add ${label}`}
-                      className="inline-flex h-7 w-7 shrink-0 cursor-pointer items-center justify-center rounded-full border border-slate-200 text-slate-600 transition hover:border-accent-strong hover:text-accent-strong sm:hidden"
+                      className="inline-flex h-7 w-7 shrink-0 cursor-pointer items-center justify-center rounded-full border border-slate-200 dark:border-divider text-slate-600 dark:text-slate-300 transition hover:border-accent-strong hover:text-accent-strong sm:hidden"
                   >
                       <Plus size={13} strokeWidth={2.5} />
                   </button>
@@ -739,7 +739,7 @@ function QuantityStepper({
                       type="button"
                       onClick={onIncrement}
                       aria-label={`Add ${label}`}
-                      className="hidden cursor-pointer items-center gap-1 rounded-full border border-slate-200 px-3 py-1.5 text-xs font-semibold text-slate-600 transition hover:border-accent-strong hover:text-accent-strong sm:inline-flex sm:text-sm"
+                      className="hidden cursor-pointer items-center gap-1 rounded-full border border-slate-200 dark:border-divider px-3 py-1.5 text-xs font-semibold text-slate-600 dark:text-slate-300 transition hover:border-accent-strong hover:text-accent-strong sm:inline-flex sm:text-sm"
                   >
                       <Plus size={13} strokeWidth={2.5} />
                       Add
@@ -777,7 +777,7 @@ function IngredientCategoryTabs({
   }, [updateScrollState, visibleTabs.length]);
 
   return (
-    <div className="relative min-w-0 mb-3 border-b border-black/[0.06] pb-3">
+    <div className="relative min-w-0 mb-3 border-b border-black/[0.06] dark:border-hairline pb-3">
       <div
         ref={scrollRef}
         role="tablist"
@@ -797,7 +797,7 @@ function IngredientCategoryTabs({
               className={`shrink-0 cursor-pointer rounded-full px-3.5 py-1.5 text-sm font-semibold whitespace-nowrap transition-colors duration-150 ${
                 isActive
                   ? "bg-accent-soft text-accent-strong"
-                  : "text-slate-500 hover:bg-slate-50 hover:text-slate-700"
+                  : "text-slate-500 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-surface-subtle hover:text-slate-700 dark:hover:text-slate-200"
               }`}
               onClick={() => setActiveTab(tab.label)}
             >
@@ -808,13 +808,13 @@ function IngredientCategoryTabs({
       </div>
       <div
         aria-hidden="true"
-        className={`pointer-events-none absolute top-0 bottom-3 left-0 w-8 bg-gradient-to-r from-white to-transparent transition-opacity duration-150 ${
+        className={`pointer-events-none absolute top-0 bottom-3 left-0 w-8 bg-gradient-to-r from-white dark:from-surface-card to-transparent transition-opacity duration-150 ${
           canScrollLeft ? "opacity-100" : "opacity-0"
         }`}
       />
       <div
         aria-hidden="true"
-        className={`pointer-events-none absolute top-0 right-0 bottom-3 w-8 bg-gradient-to-l from-white to-transparent transition-opacity duration-150 ${
+        className={`pointer-events-none absolute top-0 right-0 bottom-3 w-8 bg-gradient-to-l from-white dark:from-surface-card to-transparent transition-opacity duration-150 ${
           canScrollRight ? "opacity-100" : "opacity-0"
         }`}
       />
@@ -841,13 +841,13 @@ function IngredientCustomizationSection({
     onIncrement,
   } = config;
   return (
-    <section id={ITEM_DETAILS_SECTION_IDS.ingredients} className="min-w-0 overflow-x-hidden rounded-2xl border border-black/10 bg-white p-4 sm:p-6">
+    <section id={ITEM_DETAILS_SECTION_IDS.ingredients} className="min-w-0 overflow-x-hidden rounded-2xl border border-black/10 dark:border-hairline bg-white dark:bg-surface-card p-4 sm:p-6">
       <div className="mb-5 flex items-start justify-between gap-3">
         <div>
-          <h2 className="text-lg font-bold text-slate-900 sm:text-xl">
+          <h2 className="text-lg font-bold text-slate-900 dark:text-slate-100 sm:text-xl">
             {selectedTab.sectionTitle ?? "Customize ingredients"}
           </h2>
-          <p className="mt-1 text-sm text-slate-500">
+          <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
             {selectedTab.helperText ?? "Add, remove, or swap ingredients."}
           </p>
         </div>
@@ -870,9 +870,9 @@ function IngredientCustomizationSection({
         />
       ) : null}
       {selectedTab.helperText ? (
-        <div className="mb-3 flex items-center justify-end gap-3 rounded-xl bg-slate-50 px-3 py-2 text-sm text-slate-600">
+        <div className="mb-3 flex items-center justify-end gap-3 rounded-xl bg-slate-50 dark:bg-surface-subtle px-3 py-2 text-sm text-slate-600 dark:text-slate-300">
           {!selectedTab.sectionTitle ? <span className="mr-auto">{selectedTab.helperText}</span> : null}
-          <span className="shrink-0 font-semibold text-slate-900">
+          <span className="shrink-0 font-semibold text-slate-900 dark:text-slate-100">
             {displayIngredients.reduce((sum, ingredient) => sum + ingredient.displayCount, 0)} selected
           </span>
         </div>
@@ -905,7 +905,7 @@ function IngredientCustomizationSection({
                   className={`line-clamp-2 break-words text-sm font-semibold sm:line-clamp-1 sm:truncate sm:text-base ${
                     isRemoved
                       ? "text-slate-400 line-through decoration-slate-300"
-                      : "text-slate-900"
+                      : "text-slate-900 dark:text-slate-100"
                   }`}
                 >
                   {displayLabel}
@@ -963,7 +963,7 @@ function IngredientCustomizationSection({
                           linkedSingleSelectTab,
                         );
                       }}
-                      className="inline-flex cursor-pointer items-center gap-0.5 rounded-full py-1.5 pr-2 pl-0 text-xs font-semibold text-slate-500 transition hover:text-slate-900"
+                      className="inline-flex cursor-pointer items-center gap-0.5 rounded-full py-1.5 pr-2 pl-0 text-xs font-semibold text-slate-500 dark:text-slate-400 transition hover:text-slate-900 dark:hover:text-slate-100"
                     >
                       {isRemoved ? "Add back" : "Change"}
                       <ChevronRight size={14} />
@@ -977,10 +977,10 @@ function IngredientCustomizationSection({
               return (
                 <li key={ingredient.id} className="flex py-1">
                   <div
-                    className={`w-full rounded-xl border bg-white shadow-elev-1 transition duration-150 ${
+                    className={`w-full rounded-xl border bg-white dark:bg-surface-card shadow-elev-1 transition duration-150 ${
                       isSelected
                         ? "border-[1.5px] border-accent"
-                        : "border-black/10 hover:-translate-y-px hover:border-black/15 hover:shadow-elev-2"
+                        : "border-black/10 dark:border-hairline hover:-translate-y-px hover:border-black/15 dark:hover:border-control hover:shadow-elev-2"
                     }`}
                   >
                     <button
@@ -999,7 +999,7 @@ function IngredientCustomizationSection({
                       {nameAndMeta}
                       <span
                         aria-hidden="true"
-                        className={`inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-full border-2 bg-white ${
+                        className={`inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-full border-2 bg-white dark:bg-surface-card ${
                           isSelected ? "border-accent-strong" : "border-slate-300"
                         }`}
                       >
@@ -1015,7 +1015,7 @@ function IngredientCustomizationSection({
                         <div
                           role="radiogroup"
                           aria-label={`${ingredient.label} portion`}
-                          className="inline-flex w-fit items-center gap-0.5 rounded-full bg-black/5 p-0.5"
+                          className="inline-flex w-fit items-center gap-0.5 rounded-full bg-black/5 dark:bg-surface-hover p-0.5"
                         >
                           {[
                             { label: "Normal", extra: false },
@@ -1033,8 +1033,8 @@ function IngredientCustomizationSection({
                                 }}
                                 className={`inline-flex min-h-[30px] cursor-pointer items-center justify-center rounded-full px-3 py-[1px] text-[11px] font-semibold transition md:min-h-0 md:px-3.5 md:py-[5px] ${
                                   isActive
-                                    ? "bg-white text-black shadow-sm"
-                                    : "text-black/50 hover:text-black/70"
+                                    ? "bg-white dark:bg-surface-card text-black dark:text-slate-50 shadow-sm"
+                                    : "text-black/50 dark:text-slate-400 hover:text-black/70 dark:hover:text-slate-200"
                                 }`}
                               >
                                 {option.label}
@@ -1064,7 +1064,7 @@ function IngredientCustomizationSection({
                         linkedSingleSelectTab,
                       );
                     }}
-                    className="hidden shrink-0 cursor-pointer items-center gap-0.5 rounded-full py-1.5 pr-2 pl-2.5 text-xs font-semibold text-slate-500 transition hover:bg-slate-100 hover:text-slate-900 sm:inline-flex sm:text-sm"
+                    className="hidden shrink-0 cursor-pointer items-center gap-0.5 rounded-full py-1.5 pr-2 pl-2.5 text-xs font-semibold text-slate-500 dark:text-slate-400 transition hover:bg-slate-100 dark:hover:bg-surface-hover hover:text-slate-900 dark:hover:text-slate-100 sm:inline-flex sm:text-sm"
                   >
                     {isRemoved ? "Add back" : "Change"}
                     <ChevronRight size={14} />
@@ -1099,8 +1099,8 @@ function IngredientCustomizationSection({
                 <div
                   className={`flex w-full items-start gap-3 rounded-xl border px-2 py-2 shadow-elev-1 transition duration-150 sm:items-center sm:px-3 ${
                     isActiveSelectedRow
-                      ? "border-[1.5px] border-accent bg-white"
-                      : `border-black/10 bg-white ${isRowInteractive ? "hover:-translate-y-px hover:border-black/15 hover:shadow-elev-2" : ""}`
+                      ? "border-[1.5px] border-accent bg-white dark:bg-surface-card"
+                      : `border-black/10 dark:border-hairline bg-white dark:bg-surface-card ${isRowInteractive ? "hover:-translate-y-px hover:border-black/15 dark:hover:border-control hover:shadow-elev-2" : ""}`
                   } ${isRowInteractive ? "cursor-pointer" : ""}`}
                   role={isRowInteractive ? "button" : undefined}
                   tabIndex={isRowInteractive ? 0 : undefined}
@@ -1144,7 +1144,7 @@ function IngredientCustomizationSection({
           })}
         </ul>
       ) : (
-        <div className="rounded-xl border border-dashed border-black/10 bg-slate-50 px-4 py-6 text-sm font-medium text-slate-500">
+        <div className="rounded-xl border border-dashed border-black/10 dark:border-hairline bg-slate-50 dark:bg-surface-subtle px-4 py-6 text-sm font-medium text-slate-500 dark:text-slate-400">
           No ingredients available in this tab.
         </div>
       )}
@@ -1202,8 +1202,8 @@ function ComboOptionRow({
       <div
         className={`flex w-full flex-1 flex-col overflow-hidden rounded-xl border shadow-elev-1 transition duration-150 ${
           isSelected
-            ? "border-[1.5px] border-accent bg-white"
-            : "border-black/10 bg-white hover:-translate-y-px hover:border-black/15 hover:shadow-elev-2"
+            ? "border-[1.5px] border-accent bg-white dark:bg-surface-card"
+            : "border-black/10 dark:border-hairline bg-white dark:bg-surface-card hover:-translate-y-px hover:border-black/15 dark:hover:border-control hover:shadow-elev-2"
         }`}
       >
         <button
@@ -1213,7 +1213,7 @@ function ComboOptionRow({
         >
           <IngredientThumb icon={activeVariant?.image ?? item.image ?? ""} />
           <div className="min-w-0 flex-1">
-            <p className="line-clamp-2 break-words text-sm font-semibold text-slate-900 sm:line-clamp-1 sm:truncate sm:text-base">
+            <p className="line-clamp-2 break-words text-sm font-semibold text-slate-900 dark:text-slate-100 sm:line-clamp-1 sm:truncate sm:text-base">
               {item.name}
             </p>
             {activeNutrition ? (
@@ -1228,7 +1228,7 @@ function ComboOptionRow({
           </div>
           <span
             aria-hidden="true"
-            className={`inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-full border-2 bg-white ${
+            className={`inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-full border-2 bg-white dark:bg-surface-card ${
               isSelected ? "border-accent-strong" : "border-slate-300"
             }`}
           >
@@ -1239,7 +1239,7 @@ function ComboOptionRow({
         </button>
         {isSelected && variants.length > 1 && !item.hideVariantSelector ? (
           <div className="flex w-full flex-wrap gap-1.5 px-2 pb-2.5 pl-[52px] sm:px-3 sm:pl-[60px]">
-            <div className="inline-flex w-fit items-center gap-0.5 rounded-full bg-black/5 p-0.5">
+            <div className="inline-flex w-fit items-center gap-0.5 rounded-full bg-black/5 dark:bg-surface-hover p-0.5">
               {variants.map((variant) => {
                 const isVariantSelected =
                   (selectedVariantId ?? item.defaultVariantId ?? variants[0]?.id) ===
@@ -1250,8 +1250,8 @@ function ComboOptionRow({
                     type="button"
                     className={`inline-flex min-h-[30px] cursor-pointer items-center justify-center rounded-full px-3 py-[1px] text-[11px] font-semibold transition md:min-h-0 md:px-3.5 md:py-[5px] ${
                       isVariantSelected
-                        ? "bg-white text-black shadow-sm"
-                        : "text-black/50 hover:text-black/70"
+                        ? "bg-white dark:bg-surface-card text-black dark:text-slate-50 shadow-sm"
+                        : "text-black/50 dark:text-slate-400 hover:text-black/70 dark:hover:text-slate-200"
                     }`}
                     onClick={(event) => {
                       event.stopPropagation();
@@ -1288,7 +1288,7 @@ export function ProductOptionsSection({
     <section
       id={ITEM_DETAILS_SECTION_IDS.portion}
     >
-      <h2 className="text-lg font-bold text-slate-900 sm:text-xl">Options</h2>
+      <h2 className="text-lg font-bold text-slate-900 dark:text-slate-100 sm:text-xl">Options</h2>
       <ul className="mt-4 grid list-none grid-cols-1 gap-3 pl-0 md:grid-cols-3">
         {variants.map((variant, index) => (
           <ComboOptionRow
@@ -1336,8 +1336,8 @@ function SauceOptionRow({
         tabIndex={0}
         className={`flex w-full cursor-pointer items-start gap-3 rounded-xl border px-2 py-2 shadow-elev-1 transition duration-150 sm:items-center sm:px-3 ${
           isSelected
-            ? "border-[1.5px] border-accent bg-white"
-            : "border-black/10 bg-white hover:-translate-y-px hover:border-black/15 hover:shadow-elev-2"
+            ? "border-[1.5px] border-accent bg-white dark:bg-surface-card"
+            : "border-black/10 dark:border-hairline bg-white dark:bg-surface-card hover:-translate-y-px hover:border-black/15 dark:hover:border-control hover:shadow-elev-2"
         }`}
         onClick={() => onToggleSauce?.(addon)}
         onKeyDown={(event) => {
@@ -1348,7 +1348,7 @@ function SauceOptionRow({
       >
         <IngredientThumb icon={addon.image} />
         <div className="min-w-0 flex-1">
-          <p className="line-clamp-2 break-words text-sm font-semibold text-slate-900 sm:line-clamp-1 sm:truncate sm:text-base">
+          <p className="line-clamp-2 break-words text-sm font-semibold text-slate-900 dark:text-slate-100 sm:line-clamp-1 sm:truncate sm:text-base">
             {addon.name}
           </p>
           <MacroInlineSummary
@@ -1431,7 +1431,7 @@ function SauceOptionList({
           <ul
             key={columnIndex}
             className={`flex list-none flex-col divide-y divide-black/[0.06] pl-0 ${
-              columnIndex === 1 ? "border-t border-black/[0.06] sm:border-t-0" : ""
+              columnIndex === 1 ? "border-t border-black/[0.06] dark:border-hairline sm:border-t-0" : ""
             }`}
             style={
               hasSecondColumn
@@ -1492,7 +1492,7 @@ function ComboOptionList({
           <ul
             key={columnIndex}
             className={`flex list-none flex-col divide-y divide-black/[0.06] pl-0 ${
-              columnIndex === 1 ? "border-t border-black/[0.06] sm:border-t-0" : ""
+              columnIndex === 1 ? "border-t border-black/[0.06] dark:border-hairline sm:border-t-0" : ""
             }`}
             style={
               hasSecondColumn
@@ -1542,20 +1542,20 @@ function ComboCustomizationSection({ config }: ComboCustomizationSectionProps) {
   return (
     <>
       {bundles.length > 1 ? (
-        <section className="rounded-2xl border border-black/10 bg-white p-5 sm:p-6">
+        <section className="rounded-2xl border border-black/10 dark:border-hairline bg-white dark:bg-surface-card p-5 sm:p-6">
           <div className="mb-5">
-            <h2 className="text-lg font-bold text-slate-900 sm:text-xl">Choose your wrap bundle</h2>
-            <p className="mt-1 text-sm text-slate-500">The second wrap is required.</p>
+            <h2 className="text-lg font-bold text-slate-900 dark:text-slate-100 sm:text-xl">Choose your wrap bundle</h2>
+            <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">The second wrap is required.</p>
           </div>
           <ComboOptionList items={bundles} selectedId={selectedBundleId} onSelect={onSelectBundle} />
         </section>
       ) : null}
-      {sides.length > 0 ? <section id={ITEM_DETAILS_SECTION_IDS.side} className="rounded-2xl border border-black/10 bg-white p-5 sm:p-6">
+      {sides.length > 0 ? <section id={ITEM_DETAILS_SECTION_IDS.side} className="rounded-2xl border border-black/10 dark:border-hairline bg-white dark:bg-surface-card p-5 sm:p-6">
         <div className="mb-5">
-          <h2 className="text-lg font-bold text-slate-900 sm:text-xl">
+          <h2 className="text-lg font-bold text-slate-900 dark:text-slate-100 sm:text-xl">
             Choose a side
           </h2>
-          <p className="mt-1 text-sm text-slate-500">Select one option.</p>
+          <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">Select one option.</p>
         </div>
         <ComboOptionList
           items={sides}
@@ -1565,12 +1565,12 @@ function ComboCustomizationSection({ config }: ComboCustomizationSectionProps) {
           onSelectVariant={onSelectSideVariant}
         />
       </section> : null}
-      {drinks.length > 0 ? <section id={ITEM_DETAILS_SECTION_IDS.drink} className="rounded-2xl border border-black/10 bg-white p-5 sm:p-6">
+      {drinks.length > 0 ? <section id={ITEM_DETAILS_SECTION_IDS.drink} className="rounded-2xl border border-black/10 dark:border-hairline bg-white dark:bg-surface-card p-5 sm:p-6">
         <div className="mb-5">
-          <h2 className="text-lg font-bold text-slate-900 sm:text-xl">
+          <h2 className="text-lg font-bold text-slate-900 dark:text-slate-100 sm:text-xl">
             Choose a drink
           </h2>
-          <p className="mt-1 text-sm text-slate-500">Select one option.</p>
+          <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">Select one option.</p>
         </div>
         <ComboOptionList
           items={drinks}
@@ -1629,7 +1629,7 @@ function AddonCustomizationSection({ config }: AddonCustomizationSectionProps) {
     );
 
   return (
-    <section className="rounded-2xl border border-black/10 bg-white p-5 sm:p-6">
+    <section className="rounded-2xl border border-black/10 dark:border-hairline bg-white dark:bg-surface-card p-5 sm:p-6">
       <div className="grid gap-4">
         {primarySections.map((section) => {
           return (
@@ -1645,7 +1645,7 @@ function AddonCustomizationSection({ config }: AddonCustomizationSectionProps) {
               }
             >
               <div className="flex min-h-[44px] w-full items-center justify-between gap-[10px] rounded-[10px] border-0 bg-transparent py-1 text-left">
-                <h3 className="m-0 text-lg font-bold text-slate-900 sm:text-xl">
+                <h3 className="m-0 text-lg font-bold text-slate-900 dark:text-slate-100 sm:text-xl">
                   {section.title}
                 </h3>
               </div>
@@ -1708,11 +1708,11 @@ function AddonCustomizationSection({ config }: AddonCustomizationSectionProps) {
                 }));
               }}
             >
-              <h3 className="m-0 text-sm font-semibold text-slate-500 sm:text-base">
+              <h3 className="m-0 text-sm font-semibold text-slate-500 dark:text-slate-400 sm:text-base">
                 Extras
               </h3>
               <div className="inline-flex items-center gap-2">
-                <span className="inline-flex h-7 w-7 cursor-inherit items-center justify-center bg-white">
+                <span className="inline-flex h-7 w-7 cursor-inherit items-center justify-center bg-white dark:bg-surface-card">
                   <ChevronDown
                     size={24}
                     className={`transition-transform ${isTertiaryOpen ? "rotate-180" : ""}`}
@@ -2226,11 +2226,11 @@ export default function ItemDetailsPanel({
       ) : null}
 
       {shouldShowInfoSection && standardRecipeNotice ? (
-        <section className="rounded-2xl border border-slate-200/70 bg-slate-50/70 px-4 py-3 sm:px-5">
-          <h2 className="text-sm font-semibold text-slate-700">
+        <section className="rounded-2xl border border-slate-200/70 bg-slate-50/70 dark:bg-surface-subtle px-4 py-3 sm:px-5">
+          <h2 className="text-sm font-semibold text-slate-700 dark:text-slate-200">
             {standardRecipeNotice.title}
           </h2>
-          <p className="mt-1 text-sm leading-5 text-slate-500">
+          <p className="mt-1 text-sm leading-5 text-slate-500 dark:text-slate-400">
             {standardRecipeNotice.body}
           </p>
         </section>

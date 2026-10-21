@@ -440,7 +440,7 @@
     }
 }
 
-/* Final Direction 4a. Proposed modal/muted-panel tokens await design review. */
+/* Approved Midnight Slate theme. */
 :root { color-scheme: light; }
 .dark {
     --background: #020617;
@@ -901,4 +901,9 @@ html.capacitor-native .native-sticky-action {
 }
 .dark .nutrition-histogram-bar {
     background-color: var(--histogram-dark-color);
+}
+
+/* Utility-based controls share the same dark keyboard focus tone. */
+.dark .focus-visible\:outline-slate-900:focus-visible {
+    outline-color: var(--foreground);
 }
