@@ -1,35 +1,33 @@
 "use client";
 
-import { Home, Search, ShoppingCart, Store, type LucideIcon } from "lucide-react";
+import { Home, Search, Store } from "lucide-react";
 import { usePathname, useRouter } from "next/navigation";
-import { useMemo } from "react";
+import { useMemo, type ReactNode } from "react";
 import { useBuildInProgressGuard } from "@/components/BuildInProgressGuardContext";
 import { useCart } from "@/stores/cartStore";
-import CartItemCountBadge from "@/components/cart/CartItemCountBadge";
+import OrderBagIcon from "@/components/icons/OrderBagIcon";
+import { useNativeSearchKeyboard } from "@/hooks/useNativeSearchKeyboard";
+import { getActiveNativeDestination, getOrderCountLabel } from "@/lib/native/navigation";
 
-type NativeTabProps = {
+function NativeTab({ label, accessibleLabel = label, active, onClick, children }: {
   label: string;
-  icon: LucideIcon;
+  accessibleLabel?: string;
   active: boolean;
   onClick: () => void;
-  badge?: number;
-};
-
-function NativeTab({ label, icon: Icon, active, onClick, badge }: NativeTabProps) {
+  children: ReactNode;
+}) {
   return (
     <button
       type="button"
       onClick={onClick}
+      aria-label={accessibleLabel}
       aria-current={active ? "page" : undefined}
-      className={`relative flex h-14 min-w-0 flex-1 cursor-pointer flex-col items-center justify-center gap-0.5 rounded-xl transition-colors focus-ring ${
-        active ? "bg-accent-soft text-accent-strong" : "text-slate-500 active:bg-slate-100 active:text-slate-900"
+      className={`native-floating-tab flex min-w-0 cursor-pointer flex-col items-center justify-center gap-0.5 rounded-[26px] transition-colors duration-200 ease-out focus-ring ${
+        active ? "bg-accent text-white active:bg-accent-strong" : "text-slate-700 active:bg-slate-900/[.06]"
       }`}
     >
-      <span className="relative">
-        <Icon className="h-5 w-5" strokeWidth={active ? 2.6 : 2.2} aria-hidden="true" />
-        {badge ? <CartItemCountBadge count={badge} /> : null}
-      </span>
-      <span className="truncate text-[10px] font-semibold leading-none">{label}</span>
+      {children}
+      <span className="max-w-full truncate text-[10px] font-semibold leading-none">{label}</span>
     </button>
   );
 }
@@ -40,28 +38,47 @@ export default function NativeBottomNav() {
   const { items } = useCart();
   const { guardNavigation } = useBuildInProgressGuard();
   const cartCount = useMemo(() => items.reduce((total, item) => total + item.quantity, 0), [items]);
+  const destination = getActiveNativeDestination(pathname);
+  const keyboardOpen = useNativeSearchKeyboard(destination === "search");
 
   const navigate = (href: string) => {
     if (pathname === href) {
       window.scrollTo({ top: 0, behavior: "smooth" });
+      if (href === "/search") window.dispatchEvent(new Event("native-nav-reselect"));
       return;
     }
     guardNavigation(() => router.replace(href));
   };
 
-  const isRestaurantsActive = pathname === "/restaurants" || pathname.startsWith("/restaurant/");
-
   return (
     <nav
       aria-label="Primary navigation"
-      className="native-bottom-nav fixed inset-x-0 bottom-0 z-[var(--z-nav)] border-t border-black/10 bg-white/95 px-[max(0.5rem,var(--safe-area-left))] pb-[var(--safe-area-bottom)] shadow-[0_-8px_24px_rgba(15,23,42,0.08)] backdrop-blur-lg"
+      aria-hidden={keyboardOpen ? true : undefined}
+      inert={keyboardOpen}
+      className={`native-bottom-nav fixed z-[var(--z-nav)] flex h-[62px] gap-2.5 transition-opacity duration-150 ${keyboardOpen ? "pointer-events-none opacity-0" : "opacity-100"}`}
     >
-      <div className="mx-auto flex h-14 max-w-md items-center gap-1">
-        <NativeTab label="Home" icon={Home} active={pathname === "/"} onClick={() => navigate("/")} />
-        <NativeTab label="Search" icon={Search} active={pathname === "/search"} onClick={() => navigate("/search")} />
-        <NativeTab label="Restaurants" icon={Store} active={isRestaurantsActive} onClick={() => navigate("/restaurants")} />
-        <NativeTab label="Cart" icon={ShoppingCart} active={pathname === "/cart"} onClick={() => navigate("/cart")} badge={cartCount} />
+      <div className="glass-surface grid min-w-0 flex-1 grid-cols-3 gap-0.5 rounded-[31px] p-[5px]">
+        <NativeTab label="Home" active={destination === "home"} onClick={() => navigate("/")}>
+          <Home size={23} fill={destination === "home" ? "currentColor" : "none"} strokeWidth={destination === "home" ? 0 : 2} aria-hidden="true" />
+        </NativeTab>
+        <NativeTab label="Restaurants" active={destination === "restaurants"} onClick={() => navigate("/restaurants")}>
+          <Store size={23} strokeWidth={destination === "restaurants" ? 2.4 : 2} aria-hidden="true" />
+        </NativeTab>
+        <NativeTab label="Order" accessibleLabel={getOrderCountLabel(cartCount)} active={destination === "order"} onClick={() => navigate("/cart")}>
+          <OrderBagIcon count={cartCount} active={destination === "order"} />
+        </NativeTab>
       </div>
+      <button
+        type="button"
+        aria-label="Search"
+        aria-current={destination === "search" ? "page" : undefined}
+        onClick={() => navigate("/search")}
+        className={`glass-surface native-search-tab flex size-[62px] flex-none cursor-pointer items-center justify-center rounded-full transition-colors duration-200 ease-out focus-ring ${
+          destination === "search" ? "native-search-active text-white" : "text-slate-700 active:bg-slate-900/[.06]"
+        }`}
+      >
+        <Search size={24} strokeWidth={2.4} aria-hidden="true" />
+      </button>
     </nav>
   );
 }

@@ -76,5 +76,10 @@ export function useRecentAndPopularRestaurants(allRestaurants: RestaurantIndexEn
     });
   };
 
-  return { recentRestaurants, popularRestaurants, removeRecent };
+  const clearAll = () => {
+    setRecentRestaurantIds([]);
+    try { window.localStorage.setItem(RECENT_RESTAURANTS_KEY, "[]"); } catch { /* Storage is optional. */ }
+  };
+
+  return { recentRestaurants, popularRestaurants, removeRecent, clearAll };
 }

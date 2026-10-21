@@ -59,7 +59,7 @@ function getWrapperClassName(inline: boolean, isCartLayout: boolean, visible: bo
     return "w-full";
   }
 
-  return `fixed left-0 right-0 ${
+  return `native-sticky-action fixed left-0 right-0 ${
     isCartLayout
       ? "bottom-[max(0.5rem,var(--safe-area-bottom))] max-w-5xl px-2 sm:bottom-4 sm:px-6"
       : "bottom-0 md:bottom-1 md:max-w-6xl md:px-2"

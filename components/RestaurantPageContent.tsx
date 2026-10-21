@@ -7,6 +7,7 @@ import CartPreviewDrawer from "@/components/cart/CartPreviewDrawer";
 import { resolveAddonMenuItems } from "@/lib/addonGroups";
 import type { RestaurantData } from "@/types/restaurant";
 import { IS_CAPACITOR_BUILD } from "@/lib/buildTarget";
+import NativeRestaurantPage from "@/components/native/restaurant/NativeRestaurantPage";
 
 export default function RestaurantPageContent({
   restaurantData,
@@ -14,6 +15,16 @@ export default function RestaurantPageContent({
   restaurantData: RestaurantData;
 }) {
   const addons = resolveAddonMenuItems(restaurantData.addonGroups, restaurantData.items);
+
+  if (IS_CAPACITOR_BUILD && !restaurantData.hasBuildYourOwn) {
+    return (
+      <RestaurantUiProvider>
+        <RecentRestaurantTracker restaurantId={restaurantData.id} />
+        <ScrollToTopOnMount />
+        <NativeRestaurantPage restaurantData={restaurantData} addons={addons} />
+      </RestaurantUiProvider>
+    );
+  }
 
   return (
     <RestaurantUiProvider>
@@ -35,7 +46,7 @@ export default function RestaurantPageContent({
         <RecentRestaurantTracker restaurantId={restaurantData.id} />
         <ScrollToTopOnMount />
 
-        <main className="mx-auto w-full max-w-6xl px-3 pb-12 sm:px-4 lg:px-6">
+        <main className="native-nav-page mx-auto w-full max-w-6xl px-3 pb-12 sm:px-4 lg:px-6">
           <RestaurantIdentityHeader
             restaurantId={restaurantData.id}
             name={restaurantData.name}

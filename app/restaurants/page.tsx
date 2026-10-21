@@ -9,6 +9,8 @@ import LiveRestaurantsBadge from "@/components/home/LiveRestaurantsBadge";
 import { appButtonClassName } from "@/components/ui/AppButton";
 import RestaurantLogoBadge from "@/components/ui/RestaurantLogoBadge";
 import SurfaceCard from "@/components/ui/SurfaceCard";
+import NativeRestaurantsPage from "@/components/native/restaurants/NativeRestaurantsPage";
+import { IS_CAPACITOR_BUILD } from "@/lib/buildTarget";
 import { getAllRestaurants, getRestaurantData } from "@/lib/restaurants";
 
 export const metadata: Metadata = {
@@ -25,6 +27,19 @@ export default async function RestaurantsPage() {
     await Promise.all(availableRestaurantEntries.map((restaurant) => getRestaurantData(restaurant.id)))
   ).filter((restaurant) => restaurant !== null);
 
+  if (IS_CAPACITOR_BUILD) {
+    return (
+      <NativeRestaurantsPage
+        restaurants={availableRestaurants.map((restaurant) => ({
+          id: restaurant.id,
+          name: restaurant.name,
+          logo: restaurant.logo,
+          itemCount: restaurant.items.length,
+        }))}
+      />
+    );
+  }
+
   return (
     <>
       <GlobalMobileNav leadingButton={<GlobalMobileMenuButton />} />
@@ -32,7 +47,7 @@ export default async function RestaurantsPage() {
         <DesktopNav searchBarVariant="compact" />
       </div>
 
-      <main className="native-top-level-page min-h-[var(--app-viewport-height)] pb-[max(4rem,var(--safe-area-bottom))] pt-[calc(7rem+var(--safe-area-top))] lg:pb-20 lg:pt-14">
+      <main className="native-top-level-page native-nav-page min-h-[var(--app-viewport-height)] pb-[max(4rem,var(--safe-area-bottom))] pt-[calc(7rem+var(--safe-area-top))] lg:pb-20 lg:pt-14">
         <HomeSectionContainer as="header">
           <div className="mx-auto max-w-3xl text-center">
             <LiveRestaurantsBadge count={availableRestaurants.length} />

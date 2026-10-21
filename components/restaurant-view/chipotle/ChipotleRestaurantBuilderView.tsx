@@ -1,4 +1,6 @@
 "use client";
+import { recordView } from "@/lib/history/browsingHistory";
+import { IS_CAPACITOR_BUILD } from "@/lib/buildTarget";
 
 import {
   useCallback,
@@ -794,6 +796,10 @@ export default function ChipotleRestaurantBuilderView({
 
     window.scrollTo({ top: nextScrollTop, behavior: "smooth" });
   };
+
+  useEffect(() => {
+    if (IS_CAPACITOR_BUILD && selectedEntree && isChipotleBuildPage) recordView({ restaurantId: "chipotle", kind: "builder-entree", refId: selectedEntree });
+  }, [selectedEntree, isChipotleBuildPage]);
 
   useEffect(() => {
     if (

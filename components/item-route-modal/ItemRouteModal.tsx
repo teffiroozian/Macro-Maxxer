@@ -1,4 +1,5 @@
 "use client";
+import { recordView } from "@/lib/history/browsingHistory";
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -18,6 +19,7 @@ import NutritionFactsPanel from "@/components/nutrition/NutritionFactsPanel";
 import SelectedIngredientsReviewCard from "@/components/item-route-modal/SelectedIngredientsReviewCard";
 import { NutritionDetailsGrid } from "@/components/item-route-modal/SelectionSummaryPanels";
 import ItemModalStickyFooter from "@/components/item-route-modal/ItemModalStickyFooter";
+import NativeItemDetails from "@/components/native/item/NativeItemDetails";
 import type {
     MenuItem,
     ResolvedAddonGroup,
@@ -228,7 +230,7 @@ export default function ItemRouteModal({
     const searchParams = useSearchParams();
     const editCartItemId =
         editCartItemIdProp ?? searchParams.get("editCartItem");
-    const { items } = useCart();
+    const { items, removeItem } = useCart();
     const editingCartItem = useMemo(() => {
         if (!editCartItemId) return null;
 
@@ -243,6 +245,7 @@ export default function ItemRouteModal({
     }, [editCartItemId, item.id, item.name, items, restaurantId]);
 
     useEffect(() => {
+        if (IS_CAPACITOR_BUILD) recordView({ restaurantId, kind: "menu-item", refId: item.id });
         trackMenuItemView({
             restaurantId,
             restaurantName,
@@ -1664,10 +1667,162 @@ export default function ItemRouteModal({
         setQuantity((prev) => prev + 1);
     };
 
+    if (IS_CAPACITOR_BUILD && !usesChipotleBuildReview) {
+        const incrementIngredient = (ingredientId: string) =>
+            setSelectedIngredientCounts((prev) => {
+                const ingredient = ingredientLookup.get(ingredientId) ?? ingredientLookup.get(ingredientId.toLowerCase());
+                const maxQuantity = ingredient?.maxQuantity;
+                if (typeof maxQuantity !== "number") return prev;
+                return incrementIngredientCountWithinCategoryLimit({
+                    ingredientId,
+                    resolvedIngredients,
+                    ingredientCounts,
+                    categoryMaxQuantity: ingredientId.startsWith("mcd-sauce-") ? maxQuantity : undefined,
+                });
+            });
+        const decrementIngredient = (ingredientId: string) =>
+            setSelectedIngredientCounts((prev) => {
+                const current = ingredientCounts[ingredientId] ?? 0;
+                const nextCount = Math.max(0, current - 1);
+                if (nextCount === current) return prev;
+                return { ...prev, [ingredientId]: nextCount };
+            });
+        const selectSingleIngredient = (ingredientId: string, ingredientIdsInTab: string[]) =>
+            setSelectedIngredientCounts((prev) => {
+                const next = { ...prev };
+                ingredientIdsInTab.forEach((id) => {
+                    next[id] = id === ingredientId ? 1 : 0;
+                });
+                const hasChanged = ingredientIdsInTab.some(
+                    (id) => (ingredientCounts[id] ?? ingredientLookup.get(id)?.defaultCount ?? 0) !== next[id],
+                );
+                return hasChanged ? next : prev;
+            });
+        const incrementSauce = (addon: MenuItem) =>
+            setSelectedSauceCounts((prev) => {
+                const group = resolveAddonGroupForAddon(addons, addon);
+                const groupTotal = sumSauceSelectionsInGroup(prev, group);
+                const groupMax = group?.maxPerItem ?? maxSauceSelections;
+                if (groupTotal >= groupMax) return prev;
+                return { ...prev, [addon.name]: (prev[addon.name] ?? 0) + 1 };
+            });
+        const decrementSauce = (addon: MenuItem) =>
+            setSelectedSauceCounts((prev) => {
+                const current = prev[addon.name] ?? 0;
+                if (current <= 0) return prev;
+                const next = { ...prev };
+                if (current === 1) delete next[addon.name];
+                else next[addon.name] = current - 1;
+                return next;
+            });
+        const selectComboSide = (sideId: string) => {
+            const nextSide = comboSides.find((side) => (side.id ?? side.name) === sideId);
+            setSelectedComboSideId(sideId);
+            setSelectedComboSideVariantId(getDefaultVariantId(nextSide));
+        };
+        const selectComboDrink = (drinkId: string) => {
+            const nextDrink = comboDrinks.find((drink) => (drink.id ?? drink.name) === drinkId);
+            setSelectedComboDrinkId(drinkId);
+            setSelectedComboDrinkVariantId(
+                resolveComboChoiceVariantId({
+                    config: comboConfig,
+                    role: "drink",
+                    itemId: drinkId,
+                    mealSize: comboMealSizeFromSideVariant(selectedComboSide, selectedComboSideVariantId),
+                }) ?? getDefaultVariantId(nextDrink),
+            );
+        };
+        const selectComboSideVariant = (variantId: string) => {
+            const mealSize = comboMealSizeFromSideVariant(selectedComboSide, variantId);
+            setSelectedComboSideVariantId(variantId);
+            setSelectedComboDrinkVariantId(
+                resolveComboChoiceVariantId({ config: comboConfig, role: "drink", itemId: selectedComboDrinkId, mealSize }) ??
+                    selectedComboDrinkVariantId,
+            );
+        };
+        return (
+            <div
+                className="native-item-sheet !pb-0 fixed inset-0 z-[var(--z-tooltip)] flex h-[var(--app-viewport-height)] items-stretch justify-center"
+                role="dialog"
+                aria-modal="true"
+                aria-label={item.name}
+            >
+                <div className="item-route-modal-root relative h-full w-full overflow-hidden bg-[#eef2f6]">
+                    <NativeItemDetails
+                        restaurantId={restaurantId}
+                        restaurantName={restaurantName}
+                        item={item}
+                        addons={addons}
+                        ingredients={ingredients}
+                        menuItems={menuItems}
+                        customizationRules={customizationRules}
+                        variants={variants ?? undefined}
+                        selectedVariantId={selectedVariantId}
+                        selectedVariant={selectedVariant}
+                        onSelectVariant={setSelectedVariantId}
+                        image={selectedItemImage}
+                        baseNutrition={baseNutrition}
+                        nutrition={nutrition}
+                        quantity={quantity}
+                        onQuantityChange={setQuantity}
+                        isEditing={Boolean(editingCartItem)}
+                        combo={{
+                            eligible: isComboEligibleCategory,
+                            comboType,
+                            onComboTypeChange: setComboType,
+                            sides: comboSides,
+                            drinks: comboDrinks,
+                            bundles: comboBundles,
+                            selectedSideId: selectedComboSideId,
+                            selectedDrinkId: selectedComboDrinkId,
+                            selectedBundleId: selectedComboBundleId,
+                            selectedSideVariantId: selectedComboSideVariantId,
+                            selectedDrinkVariantId: selectedComboDrinkVariantId,
+                            selectedSide: selectedComboSide,
+                            selectedDrink: selectedComboDrink,
+                            selectedSideVariant: selectedComboSideVariant,
+                            selectedDrinkVariant: selectedComboDrinkVariant,
+                            selectedBundle: selectedComboBundle,
+                            onSelectSide: selectComboSide,
+                            onSelectDrink: selectComboDrink,
+                            onSelectBundle: setSelectedComboBundleId,
+                            onSelectSideVariant: selectComboSideVariant,
+                            onSelectDrinkVariant: setSelectedComboDrinkVariantId,
+                        }}
+                        ingredientCounts={ingredientCounts}
+                        selectedAddons={selectedAddons}
+                        sauceCounts={selectedSauceCounts}
+                        customizeHandlers={{
+                            incrementIngredient,
+                            decrementIngredient,
+                            selectSingleIngredient,
+                            incrementSauce,
+                            decrementSauce,
+                            selectAddon: (ref, addon) =>
+                                setSelectedAddons((prev) => ({ ...prev, [ref]: addon ?? emptyAddon })),
+                        }}
+                        submitLabel={editingCartItem ? "Update Item" : "Add to Order"}
+                        submitDisabled={!isComboSelectionComplete || !areIngredientSelectionsComplete}
+                        onSubmit={submitCartItem}
+                        onRemove={
+                            editingCartItem
+                                ? () => {
+                                      removeItem(editingCartItem.id);
+                                      handleClose();
+                                  }
+                                : undefined
+                        }
+                        onBack={handleClose}
+                    />
+                </div>
+            </div>
+        );
+    }
+
     return (
         <div
             className={IS_CAPACITOR_BUILD
-                ? "fixed inset-0 z-[var(--z-tooltip)] flex h-[var(--app-viewport-height)] items-stretch justify-center"
+                ? "native-item-sheet fixed inset-0 z-[var(--z-tooltip)] flex h-[var(--app-viewport-height)] items-stretch justify-center"
                 : "fixed inset-0 z-[235] flex h-[var(--app-viewport-height)] items-end justify-center pt-[var(--safe-area-top)] sm:items-center sm:p-6"}
             role="dialog"
             aria-modal="true"

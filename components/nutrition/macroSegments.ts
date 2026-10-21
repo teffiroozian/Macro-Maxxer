@@ -50,3 +50,13 @@ export function buildMacroSegments({
     },
   ].map((segment) => ({ ...segment, roundedPercent: Math.round(segment.percent) }));
 }
+
+// Energy share, rather than the gram share used by buildMacroSegments.
+export function buildCalorieSegments({ protein, carbs, fat }: { protein: number; carbs: number; fat: number }): MacroSegment[] {
+  const grams = [protein, carbs, fat].map(value => Number.isFinite(value) ? Math.max(0, value) : 0);
+  const energy = grams.map((value, index) => value * (index === 2 ? 9 : 4));
+  const total = energy.reduce((sum, value) => sum + value, 0);
+  const segments = buildMacroSegments({ protein: grams[0], carbs: grams[1], fat: grams[2] }).map((segment, index) => ({ ...segment, percent: total ? energy[index] / total * 100 : 0, roundedPercent: total ? Math.round(energy[index] / total * 100) : 0 }));
+  if (total) segments[energy.indexOf(Math.max(...energy))].roundedPercent += 100 - segments.reduce((sum, segment) => sum + segment.roundedPercent, 0);
+  return segments;
+}

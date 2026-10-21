@@ -142,5 +142,10 @@ export function useRecentMenuItems(searchIndex: SearchIndexEntry[] | null) {
     });
   };
 
-  return { recentResults, addRecent, removeRecent };
+  const clearAll = () => {
+    setRecentRefs([]);
+    persist([]);
+  };
+
+  return { recentResults, addRecent, removeRecent, clearAll };
 }

@@ -1,0 +1,7 @@
+import { Search } from "lucide-react";
+import { StorefrontIcon } from "@/components/icons/SearchScopeIcons";
+import type { SearchScope } from "@/components/global-search/ScopeSwitcher";
+export default function NativeSearchEmpty({ query, scope, onBrowse, onScopeChange }: { query: string; scope: SearchScope; onBrowse: () => void; onScopeChange: (s: SearchScope) => void }) {
+  const restaurants = scope === "restaurants";
+  return <div className="flex flex-col items-center px-10 pt-[72px] text-center"><span className="flex size-16 items-center justify-center rounded-full bg-slate-100 text-slate-400"><Search size={28} strokeWidth={2.2} aria-hidden="true" /></span><h2 className="mt-[18px] max-w-full break-words text-[19px] font-bold">No results for “{query.trim().slice(0,40)}”</h2><p className="mt-1.5 text-pretty text-[15px] leading-[1.45] text-slate-500">Check the spelling or try a different {restaurants ? "restaurant" : "item"} name.</p><button type="button" onClick={onBrowse} className="mt-[22px] flex h-[46px] items-center gap-2 rounded-full bg-slate-900 px-[22px] text-[15px] font-semibold text-white active:bg-slate-700 focus-ring"><StorefrontIcon />Browse restaurants</button><button type="button" onClick={() => onScopeChange(restaurants ? "menu-items" : "restaurants")} className="relative mt-3.5 min-h-8 text-[15px] font-semibold text-accent-strong before:absolute before:-inset-y-1.5 before:inset-x-0 focus-ring">Search {restaurants ? "Menu Items" : "Restaurants"} instead</button></div>;
+}
