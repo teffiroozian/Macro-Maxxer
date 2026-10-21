@@ -4332,10 +4332,7 @@
             "sugars": 0
           },
           "categories": [
-            "Featured Favorites",
-            "McValue®",
-            "McNuggets® & McCrispy® Strips",
-            "Under $3 Menu (Lunch & Dinner)*"
+            "shareables"
           ],
           "servingType": "dessert",
           "canonicalItemId": "mcd-item-200692",
@@ -4363,10 +4360,7 @@
             "sugars": 1
           },
           "categories": [
-            "Featured Favorites",
-            "McValue®",
-            "McNuggets® & McCrispy® Strips",
-            "Under $3 Menu (Lunch & Dinner)*"
+            "shareables"
           ],
           "servingType": "dessert",
           "canonicalItemId": "mcd-item-200692",
@@ -13040,7 +13034,7 @@
     {
       "id": "mcd-item-200066",
       "name": "Small World Famous Fries®",
-      "image": "https://s7d1.scene7.com/is/image/mcdonalds/DC_202408_6050_SmallFrenchFries_Standing_1564x1564:nutrition-calculator-tile?fmt=png-alpha",
+      "image": "https://s7d1.scene7.com/is/image/mcdonalds/DC_202408_6050_SmallFrenchFries_Standing_1564x1564?wid=1564&hei=1564&fmt=png-alpha",
       "categories": [
         "McValue®",
         "Fries & Sides",
@@ -13108,7 +13102,7 @@
         {
           "id": "mcd-item-200092",
           "label": "Kids",
-          "image": "https://s7d1.scene7.com/is/image/mcdonalds/DC_202408_6050_SmallFrenchFries_Standing_1564x1564:nutrition-calculator-tile?fmt=png-alpha",
+          "image": "https://s7d1.scene7.com/is/image/mcdonalds/NR_201909_1858_KidsFries_2000x2000?wid=1564&hei=1564&fmt=png-alpha",
           "nutrition": {
             "calories": 110,
             "protein": 2,
@@ -13138,7 +13132,7 @@
         {
           "id": "mcd-item-200066",
           "label": "Small",
-          "image": "https://s7d1.scene7.com/is/image/mcdonalds/DC_202408_6050_SmallFrenchFries_Standing_1564x1564:nutrition-calculator-tile?fmt=png-alpha",
+          "image": "https://s7d1.scene7.com/is/image/mcdonalds/DC_202408_6050_SmallFrenchFries_Standing_1564x1564?wid=1564&hei=1564&fmt=png-alpha",
           "nutrition": {
             "calories": 230,
             "protein": 3,
@@ -13168,7 +13162,7 @@
         {
           "id": "mcd-item-201234",
           "label": "Medium",
-          "image": "https://s7d1.scene7.com/is/image/mcdonalds/DC_202408_6050_SmallFrenchFries_Standing_1564x1564:nutrition-calculator-tile?fmt=png-alpha",
+          "image": "https://s7d1.scene7.com/is/image/mcdonalds/t-mcdonalds-fries-medium?wid=1564&hei=1564&fmt=png-alpha",
           "nutrition": {
             "calories": 320,
             "protein": 5,
@@ -13198,7 +13192,7 @@
         {
           "id": "mcd-item-200083",
           "label": "Large",
-          "image": "https://s7d1.scene7.com/is/image/mcdonalds/DC_202408_6050_SmallFrenchFries_Standing_1564x1564:nutrition-calculator-tile?fmt=png-alpha",
+          "image": "https://s7d1.scene7.com/is/image/mcdonalds/t-mcdonalds-fries-large?wid=1564&hei=1564&fmt=png-alpha",
           "nutrition": {
             "calories": 480,
             "protein": 7,
@@ -13432,7 +13426,7 @@
             "sugars": 1
           },
           "categories": [
-            "McNuggets® & McCrispy® Strips"
+            "shareables"
           ],
           "servingType": "dessert",
           "canonicalItemId": "mcd-item-203841",
@@ -13460,7 +13454,7 @@
             "sugars": 2
           },
           "categories": [
-            "McNuggets® & McCrispy® Strips"
+            "shareables"
           ],
           "servingType": "dessert",
           "canonicalItemId": "mcd-item-203841",

@@ -25,7 +25,7 @@ export default function ViewTabs({ options, value, onSelect }: ViewTabsProps) {
     <div
       role="tablist"
       aria-label="Menu view"
-      className="inline-flex shrink-0 items-center gap-1 rounded-full bg-slate-100 p-1"
+      className="inline-flex shrink-0 items-center gap-1 rounded-full bg-slate-100 dark:bg-surface-subtle p-1"
     >
       {options.map((option) => {
         const Icon = option.icon;
@@ -40,12 +40,12 @@ export default function ViewTabs({ options, value, onSelect }: ViewTabsProps) {
             onClick={() => onSelect(option.value)}
             className={`inline-flex h-8 cursor-pointer items-center gap-1.5 whitespace-nowrap rounded-full px-3 text-sm font-semibold transition-colors duration-150 focus-ring ${
               isActive
-                ? "bg-white text-accent-strong shadow-sm"
-                : "text-slate-500 hover:bg-white/70 hover:text-slate-700 active:bg-white"
+                ? "bg-white dark:bg-surface-hover text-accent-strong shadow-sm"
+                : "text-slate-500 dark:text-slate-400 hover:bg-white/70 hover:text-slate-700 dark:hover:text-slate-200 active:bg-white dark:active:bg-surface-hover"
             }`}
           >
             <Icon
-              className={`h-4 w-4 shrink-0 ${isActive ? "text-accent-strong" : "text-slate-400"}`}
+              className={`h-4 w-4 shrink-0 ${isActive ? "text-accent-strong" : "text-slate-400 dark:text-slate-500"}`}
               strokeWidth={2.3}
             />
             {option.label}

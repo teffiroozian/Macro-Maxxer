@@ -1,54 +1,122 @@
-import type { ItemVariant, MenuItem } from "@/types/menu";
-import { SORT_OPTION_VALUES, type SortOption } from "@/lib/menuSections/sortOptions";
+import { ALL_MENU_SIZES } from "@/lib/menuSections/menuSizeSelector";
+import { getVariantSettings, type Filters } from "@/lib/menuSections/filterOptions";
+import type { SortOption } from "@/lib/menuSections/sortOptions";
+import type { MenuItem } from "@/types/menu";
+import { getDefaultMenuItemNutrition, resolveMenuItemVariantNutrition } from "@/lib/nutrition";
 
-// Portion/size variants (e.g. 5/8/12 ct) compete for the same base item's
-// ranked row, but shareable/family-size packs scale nutrition up for a whole
-// group — including them would let a bulk pack's inflated totals win "highest
-// protein" purely by being multi-serving, not by being the best single
-// portion. They're excluded from the metric comparison whenever a
-// non-shareable option exists.
-function getMetricCandidateVariants(item: MenuItem): ItemVariant[] {
-  const variants = item.variants ?? [];
-  if (variants.length === 0) return [];
-
-  const nonShareable = variants.filter((variant) => variant.servingType !== "shareable");
-  return nonShareable.length > 0 ? nonShareable : variants;
-}
-
-function pickRepresentativeVariant(item: MenuItem, sort: SortOption): ItemVariant | undefined {
-  const candidates = getMetricCandidateVariants(item);
-  if (candidates.length === 0) return undefined;
-
-  if (sort === SORT_OPTION_VALUES.LOWEST_CALORIES) {
-    return candidates.reduce((lowest, variant) =>
-      (variant.nutrition?.calories ?? Infinity) < (lowest.nutrition?.calories ?? Infinity) ? variant : lowest
-    );
-  }
-
-  // Highest Protein: the max-protein variant. Best Protein Score isn't split
-  // by this function at all (see MenuSections) since proportional variants
-  // share the same protein-per-100-cal ratio, so the item's default variant
-  // already represents it.
-  return candidates.reduce((highest, variant) =>
-    (variant.nutrition?.protein ?? -Infinity) > (highest.nutrition?.protein ?? -Infinity) ? variant : highest
-  );
-}
-
-// Collapses each base menu item down to a single representative variant for
-// Rankings-view metrics that vary by portion (Highest Protein, Lowest
-// Calories), so a multi-variant item never occupies more than one ranked
-// row. Ranking must run on these reduced, one-row-per-item results rather
-// than on the raw variant records.
-export function selectRankingRepresentativeItems(items: MenuItem[], sort: SortOption): MenuItem[] {
-  return items.map((item) => {
-    const variant = pickRepresentativeVariant(item, sort);
-    if (!variant) return item;
-
-    return {
-      ...item,
-      defaultVariantId: variant.id,
-      disableVariantSelector: true,
-      nutrition: variant.nutrition,
-    };
+// Catalog-only ranking rows. No sort metric participates in choosing an
+// item's configuration: every dataset variant remains an independent row.
+// Keep this projection separate from manual customization and any future
+// optimized-mode implementation.
+export function getOfficialRankingItems(items: MenuItem[]): MenuItem[] {
+  return items.flatMap((item) => {
+    if (!item.variants?.length) return [item];
+    return item.variants.map((variant) => {
+      const nutrition = resolveMenuItemVariantNutrition(item, variant);
+      return {
+        ...item,
+        image: variant.image ?? item.image,
+        category: variant.category ?? variant.categories?.[0] ?? item.category ?? item.categories?.[0],
+        tags: [...new Set([...(item.tags ?? []), ...(variant.tags ?? [])])],
+        categories: variant.categories?.length ? variant.categories : item.categories,
+        servingType: variant.servingType ?? item.servingType,
+        variants: [{ ...variant, nutrition, nutritionMultiplier: undefined }],
+        defaultVariantId: variant.id,
+        rankingFamilyDefaultVariantId: item.defaultVariantId ?? item.variants?.[0]?.id,
+        disableVariantSelector: true,
+        nutrition,
+      };
+    });
   });
+}
+
+// Preserve page filters, but always carry the displayed official variant
+// through to both intercepted modals and directly loaded item routes.
+export function getMenuItemDetailsHref(itemHref: string, query: string, variantId?: string): string {
+  const params = new URLSearchParams(query);
+  if (variantId) params.set("variant", variantId);
+  else params.delete("variant");
+  const suffix = params.toString();
+  return suffix ? `${itemHref}?${suffix}` : itemHref;
+}
+
+
+// The parent identifies the product family. Size tokens form the serving
+// dimension; remaining label text preserves recipe/flavor distinctions.
+function variantDimensions(item: MenuItem): { size: string; recipe: string } {
+  const label = item.variants?.[0]?.label.trim().toLowerCase() ?? "";
+  if (item.variantGroupKind === "component") return { size: "", recipe: label };
+  const sizePattern = /\b(?:extra[\s-]+small|extra[\s-]+large|x[\s-]?small|x[\s-]?large|kids?|small|medium|large|regular|short|tall|grande|venti|trenta)\b|\b\d+(?:\.\d+)?\s*(?:ct|count|pc|pcs|piece|pieces|oz|fl\s*oz|ml|g)\b/gi;
+  const size = label.match(sizePattern)?.join(" ") ?? "";
+  const recipe = label.replace(sizePattern, " ").replace(/[®™()[\],-]/g, " ").replace(/\s+/g, " ").trim();
+  return { size, recipe };
+}
+
+// A preference selects a representative, not a menu-wide exclusion filter.
+// Missing sizes retain the canonical/default candidate within each recipe.
+function selectPreferredMenuSize(items: MenuItem[], preference?: string): MenuItem[] {
+  if (!preference || preference === ALL_MENU_SIZES) return items;
+  const rows: MenuItem[] = [];
+  const groups = new Map<string, number>();
+  for (const item of items) {
+    const dimension = variantDimensions(item);
+    if (!dimension.size || item.variantGroupKind === "component") { rows.push(item); continue; }
+    const key = JSON.stringify([item.id, dimension.recipe]);
+    const position = groups.get(key);
+    if (position === undefined) { groups.set(key, rows.length); rows.push(item); continue; }
+    const current = rows[position];
+    const matches = (row: MenuItem) => row.variants?.[0]?.label.trim().toLowerCase() === preference.trim().toLowerCase();
+    if (matches(item) || (!matches(current) && item.defaultVariantId === item.rankingFamilyDefaultVariantId)) rows[position] = item;
+  }
+  return rows;
+}
+
+// Exact macro equality only dedupes the serving-size dimension. Component
+// choices and recipe/flavor signatures remain distinct regardless of macros.
+function dedupeIdenticalServingSizes(items: MenuItem[]): MenuItem[] {
+  const rows: MenuItem[] = [];
+  const groups = new Map<string, number>();
+  items.forEach((item) => {
+    const dimensions = variantDimensions(item);
+    const nutrition = getDefaultMenuItemNutrition(item);
+    const macros = [nutrition.calories, nutrition.protein, nutrition.carbs, nutrition.totalFat];
+    if (!dimensions.size || item.variants?.length !== 1 || !macros.every(Number.isFinite)) {
+      rows.push(item);
+      return;
+    }
+    const key = JSON.stringify([item.id, dimensions.recipe, ...macros]);
+    const position = groups.get(key);
+    if (position === undefined) {
+      groups.set(key, rows.length);
+      rows.push(item);
+    } else if (item.defaultVariantId === item.rankingFamilyDefaultVariantId) {
+      rows[position] = item;
+    }
+  });
+  return rows;
+}
+
+// Group before filters, using the normalized default rather than any metric.
+// Local detail/variant state never participates in this stable projection.
+export function selectRankingItems(items: MenuItem[], sort: SortOption, filters: Filters = {}, menuSizePreference?: string): MenuItem[] {
+  const settings = getVariantSettings(filters);
+  const isProteinScore = sort === "highest-protein-score" || sort === "lowest-protein-score";
+  // Protein Score's explicit switch overrides the general serving-size switch.
+  const separateSizes = isProteinScore ? settings.separateSizesInProteinScore : settings.showServingSizeVariants;
+  const candidates = dedupeIdenticalServingSizes(selectPreferredMenuSize(items, menuSizePreference));
+  if (separateSizes && settings.showRecipeVariants) return candidates;
+  const rows: MenuItem[] = [];
+  const groups = new Map<string, number>();
+  candidates.forEach((item) => {
+    const dimensions = variantDimensions(item);
+    const key = JSON.stringify([item.id, separateSizes ? dimensions.size : "", settings.showRecipeVariants ? dimensions.recipe : ""]);
+    const position = groups.get(key);
+    if (position === undefined) {
+      groups.set(key, rows.length);
+      rows.push(item);
+    } else if (item.defaultVariantId === item.rankingFamilyDefaultVariantId) {
+      rows[position] = item;
+    }
+  });
+  return rows;
 }

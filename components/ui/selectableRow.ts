@@ -16,8 +16,8 @@ export function selectableRowClassName({
   className?: string;
 } = {}) {
   return [
-    "cursor-pointer items-center gap-2 rounded-[10px] px-2.5 text-left font-semibold text-black/88 transition-colors duration-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-strong",
-    active ? "bg-black/10" : "hover:bg-slate-900/5",
+    "cursor-pointer items-center gap-2 rounded-[10px] px-2.5 text-left font-semibold text-black/88 dark:text-slate-200 transition-colors duration-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-strong",
+    active ? "bg-black/10 dark:bg-divider" : "hover:bg-slate-900/5 dark:hover:bg-surface-hover",
     className,
   ]
     .filter(Boolean)

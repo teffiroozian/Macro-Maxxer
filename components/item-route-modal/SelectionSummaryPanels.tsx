@@ -19,7 +19,7 @@ import type { ItemImagePresentation } from "@/types/menu";
 // Details surfaces (ITEMS, PROTEIN SCORE, MACRO SPLIT) — one constant so the
 // cart page, item overview modal, and customize modal can never drift from
 // each other again. Matches the cart page's original "Items" label exactly.
-export const MEAL_DETAILS_SECTION_LABEL_CLASSNAME = "text-sm text-slate-500";
+export const MEAL_DETAILS_SECTION_LABEL_CLASSNAME = "text-sm text-slate-500 dark:text-slate-400";
 
 // The gray two-panel wrapper (Nutrition Facts + a selection summary) — the
 // single shared layout for every "Nutrition Facts + details card" pairing in
@@ -33,7 +33,7 @@ export const MEAL_DETAILS_SECTION_LABEL_CLASSNAME = "text-sm text-slate-500";
 // NutritionDetailsGrid below rather than wiring this className up by hand,
 // so every screen gets the same breakpoint, order, and height behavior.
 export const SUMMARY_PANELS_GRID_CLASSNAME =
-  "grid grid-cols-1 gap-3 rounded-3xl border border-black/8 bg-app-background p-3 md:grid-cols-2";
+  "grid grid-cols-1 gap-3 rounded-3xl border border-black/8 dark:border-hairline bg-app-background p-3 md:grid-cols-2";
 
 // Pairs a Nutrition Facts panel with its details card (Selected Items,
 // Selected Ingredients, Meal Breakdown, ...) using the app's one shared
@@ -65,7 +65,7 @@ export function NutritionDetailsGrid({
 // (a percentage/stretch height doesn't — see PairedPanelHeight.tsx).
 // md:overflow-hidden is a backstop so nothing can visually spill past that
 // height even if the internal flex math is ever off by a pixel.
-const SHELL_ROOT_CLASSNAME = "flex flex-col rounded-2xl border border-black/10 bg-white p-5 md:overflow-hidden";
+const SHELL_ROOT_CLASSNAME = "flex flex-col rounded-2xl border border-black/10 dark:border-hairline bg-white dark:bg-surface-card p-5 md:overflow-hidden";
 
 export type SelectionSummaryRowState = "default" | "muted" | "excluded";
 
@@ -76,9 +76,9 @@ export type SelectionSummaryRowState = "default" | "muted" | "excluded";
 // dashed border plus a struck-through, faded name marks it as present but
 // not counted.
 const rowStateClassNames: Record<SelectionSummaryRowState, { wrapper: string; name: string }> = {
-  default: { wrapper: "", name: "text-slate-900" },
-  muted: { wrapper: "opacity-80", name: "text-slate-600" },
-  excluded: { wrapper: "border-dashed! border-slate-300!", name: "text-slate-400 line-through" },
+  default: { wrapper: "", name: "text-slate-900 dark:text-slate-100" },
+  muted: { wrapper: "opacity-80", name: "text-slate-600 dark:text-slate-300" },
+  excluded: { wrapper: "border-dashed! border-slate-300! dark:border-control!", name: "text-slate-400 line-through" },
 };
 
 // Same compact row already established for the Build Your Own order summary
@@ -127,11 +127,11 @@ export function SelectionSummaryRow({
         alt={image ? imageAlt ?? name : ""}
         imagePresentation={imagePresentation}
         fallbackClassName="object-cover"
-        containerClassName="h-8 w-8 shrink-0 overflow-hidden rounded-md border border-black/10 bg-slate-100"
+        containerClassName="h-8 w-8 shrink-0 overflow-hidden rounded-md border border-black/10 dark:border-hairline bg-slate-100 dark:bg-surface-hover"
       />
       <span className={`min-w-0 flex-1 truncate text-sm font-medium ${stateNameClassName}`}>{name}</span>
       {badge ? (
-        <span className="shrink-0 rounded-md bg-black/5 px-1.5 py-0.5 text-[10px] font-semibold tracking-wide text-black/60">{badge}</span>
+        <span className="shrink-0 rounded-md bg-black/5 dark:bg-surface-hover px-1.5 py-0.5 text-[10px] font-semibold tracking-wide text-black/60 dark:text-slate-400">{badge}</span>
       ) : null}
       {accessory}
     </SurfaceCard>
@@ -193,9 +193,9 @@ export function MealDetailItemRow({
   return (
     <li
       {...interactiveProps}
-      className={`flex min-w-0 items-center gap-3 rounded-xl border border-black/10 bg-white px-3 py-2 outline-none transition ${
+      className={`flex min-w-0 items-center gap-3 rounded-xl border border-black/10 dark:border-hairline bg-white dark:bg-surface-card px-3 py-2 outline-none transition ${
         onClick
-          ? "cursor-pointer hover:border-black/20 hover:bg-slate-50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-900"
+          ? "cursor-pointer hover:border-black/20 dark:hover:border-control hover:bg-slate-50 dark:hover:bg-surface-subtle focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-900"
           : ""
       }`}
     >
@@ -205,15 +205,15 @@ export function MealDetailItemRow({
         imagePresentation={imagePresentation}
         fallbackClassName={imageFallbackClassName}
         fallbackBackgroundColor={imageFallbackBackgroundColor}
-        containerClassName="h-10 w-10 shrink-0 overflow-hidden rounded-lg border border-black/10 bg-slate-50"
+        containerClassName="h-10 w-10 shrink-0 overflow-hidden rounded-lg border border-black/10 dark:border-hairline bg-slate-50 dark:bg-surface-subtle"
       />
       <div className="min-w-0 flex-1">
-        <p className="truncate text-sm font-medium text-slate-900">{name}</p>
+        <p className="truncate text-sm font-medium text-slate-900 dark:text-slate-100">{name}</p>
         {secondaryText ? (
-          <p className="line-clamp-2 min-w-0 break-words text-xs text-slate-500">{secondaryText}</p>
+          <p className="line-clamp-2 min-w-0 break-words text-xs text-slate-500 dark:text-slate-400">{secondaryText}</p>
         ) : null}
       </div>
-      <span className="shrink-0 rounded-md bg-black/5 px-1.5 py-0.5 text-[10px] font-semibold tracking-wide text-black/60">
+      <span className="shrink-0 rounded-md bg-black/5 dark:bg-surface-hover px-1.5 py-0.5 text-[10px] font-semibold tracking-wide text-black/60 dark:text-slate-400">
         ×{quantity}
       </span>
     </li>
@@ -258,7 +258,7 @@ export type SummaryMacroTotals = {
 // stays at the shell's existing inset. Generous py-4 makes the hoverable/
 // tappable area feel like a full-height card rather than a thin strip.
 const CLICKABLE_SECTION_CLASSNAME =
-  "group -mx-2 flex w-full cursor-pointer flex-col gap-2 rounded-xl px-2 py-4 text-left transition-colors duration-200 hover:bg-slate-50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-900";
+  "group -mx-2 flex w-full cursor-pointer flex-col gap-2 rounded-xl px-2 py-4 text-left transition-colors duration-200 hover:bg-slate-50 dark:hover:bg-surface-subtle focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-900";
 
 function SectionHeaderRow({ label }: { label: string }) {
   return (
@@ -312,10 +312,10 @@ export function SelectionSummaryShell({
       className={SHELL_ROOT_CLASSNAME}
       style={pairedHeight !== null ? { height: pairedHeight } : undefined}
     >
-      <h2 className="shrink-0 text-2xl font-bold text-slate-900">{title}</h2>
+      <h2 className="shrink-0 text-2xl font-bold text-slate-900 dark:text-slate-100">{title}</h2>
 
       {subtitle ? (
-        <p className="mt-5 shrink-0 truncate text-sm font-medium normal-case tracking-normal text-slate-500">{subtitle}</p>
+        <p className="mt-5 shrink-0 truncate text-sm font-medium normal-case tracking-normal text-slate-500 dark:text-slate-400">{subtitle}</p>
       ) : null}
 
       {beforeList ? (
@@ -328,7 +328,7 @@ export function SelectionSummaryShell({
         {children}
       </div>
 
-      <div className="mt-3 shrink-0 border-t border-black/[0.06] pt-2">
+      <div className="mt-3 shrink-0 border-t border-black/[0.06] dark:border-hairline pt-2">
         {typeof proteinScore === "number" && proteinScoreTier ? (
           <button
             type="button"
@@ -351,12 +351,12 @@ export function SelectionSummaryShell({
         ) : (
           <div className="space-y-2 px-2 py-4">
             <SectionEyebrow className={MEAL_DETAILS_SECTION_LABEL_CLASSNAME}>Protein Score</SectionEyebrow>
-            <p className="text-sm text-slate-500">—</p>
+            <p className="text-sm text-slate-500 dark:text-slate-400">—</p>
           </div>
         )}
       </div>
 
-      <div className="mt-1 shrink-0 border-t border-black/[0.06] pt-2">
+      <div className="mt-1 shrink-0 border-t border-black/[0.06] dark:border-hairline pt-2">
         <button
           type="button"
           className={CLICKABLE_SECTION_CLASSNAME}

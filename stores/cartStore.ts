@@ -16,6 +16,16 @@ let cartState: CartState = {
   lastAddedPreviewDismissedEventId: null,
 };
 
+// SSR and the client's hydration pass must see the same immutable snapshot.
+// Local storage is intentionally applied only after React subscribes.
+const serverCartSnapshot: CartState = {
+  items: [],
+  lastAddedItemId: null,
+  lastAddedAt: null,
+  lastAddedEventId: null,
+  lastAddedPreviewDismissedEventId: null,
+};
+
 let hasHydratedFromStorage = false;
 
 const persistCartItems = () => {
@@ -86,7 +96,9 @@ const setCartState = (updater: (prev: CartState) => CartState) => {
   // A user action can happen before React installs the first subscription.
   // Read saved data first so the initial empty state can never overwrite it.
   hydrateCartFromStorage();
-  cartState = updater(cartState);
+  const next = updater(cartState);
+  const recent = next.items.find((item) => item.id === next.lastAddedItemId && item.quantity > 0);
+  cartState = recent ? next : { ...next, lastAddedItemId: null, lastAddedAt: null, lastAddedEventId: null, lastAddedPreviewDismissedEventId: null };
   persistCartItems();
   notify();
 };
@@ -113,6 +125,7 @@ const computeHasPartialNutritionData = hasPartialCartNutritionData;
 
 // add item
 const addItem = (item: CartItem) => {
+  if (!item.id || !Number.isFinite(item.quantity) || item.quantity <= 0) return;
   setCartState((prev) => {
     // checks for existing items in the cart
     const existingIndex = prev.items.findIndex((cartItem) => cartItem.id === item.id);
@@ -172,6 +185,7 @@ const updateQuantity = (id: string, quantity: number, options?: { markAsJustAdde
     return;
   }
   setCartState((prev) => {
+    const markAdded = options?.markAsJustAdded === true && quantity > (prev.items.find((item) => item.id === id)?.quantity ?? Infinity);
     let matched = false;
     // if id matches, return a copy with new quantity
     const items = prev.items.map((item) => {
@@ -187,9 +201,9 @@ const updateQuantity = (id: string, quantity: number, options?: { markAsJustAdde
     return {
       ...prev,
       items,
-      lastAddedItemId: options?.markAsJustAdded ? id : prev.lastAddedItemId,
-      lastAddedAt: options?.markAsJustAdded ? Date.now() : prev.lastAddedAt,
-      lastAddedEventId: options?.markAsJustAdded ? getNextLastAddedEventId(prev) : prev.lastAddedEventId,
+      lastAddedItemId: markAdded ? id : prev.lastAddedItemId,
+      lastAddedAt: markAdded ? Date.now() : prev.lastAddedAt,
+      lastAddedEventId: markAdded ? getNextLastAddedEventId(prev) : prev.lastAddedEventId,
     };
   });
 };
@@ -202,6 +216,7 @@ const updateItem = (
   options?: { markAsJustAdded?: boolean }
 ) => {
   setCartState((prev) => {
+    const markAdded = options?.markAsJustAdded === true && (updates.quantity ?? 0) > (prev.items.find((item) => item.id === id)?.quantity ?? Infinity);
     let updatedItem: CartItem | null = null;
     const items = prev.items.map((item) => {
       if (item.id !== id) return item;
@@ -223,9 +238,9 @@ const updateItem = (
     return {
       ...prev,
       items,
-      lastAddedItemId: options?.markAsJustAdded ? id : prev.lastAddedItemId,
-      lastAddedAt: options?.markAsJustAdded ? Date.now() : prev.lastAddedAt,
-      lastAddedEventId: options?.markAsJustAdded ? getNextLastAddedEventId(prev) : prev.lastAddedEventId,
+      lastAddedItemId: markAdded ? id : prev.lastAddedItemId,
+      lastAddedAt: markAdded ? Date.now() : prev.lastAddedAt,
+      lastAddedEventId: markAdded ? getNextLastAddedEventId(prev) : prev.lastAddedEventId,
     };
   });
 };
@@ -251,6 +266,8 @@ const dismissLastAddedPreview = () => {
 
     return {
       ...prev,
+      lastAddedItemId: null,
+      lastAddedAt: null,
       lastAddedPreviewDismissedEventId: prev.lastAddedEventId,
     };
   });
@@ -258,6 +275,7 @@ const dismissLastAddedPreview = () => {
 
 export const __cartStoreTestUtils = {
   getSnapshot,
+  getServerSnapshot: () => serverCartSnapshot,
   resetCartState(nextState?: Partial<CartState>) {
     cartState = {
       items: [],
@@ -271,6 +289,8 @@ export const __cartStoreTestUtils = {
   },
   addItem,
   updateItem,
+  removeItem,
+  updateQuantity,
   clearCart,
   dismissLastAddedPreview,
   resetPersistenceForTests() {
@@ -281,7 +301,7 @@ export const __cartStoreTestUtils = {
 
 // public api for the cart store for current cart data and functions to change cart
 export const useCart = () => {
-  const state = useSyncExternalStore(subscribe, getSnapshot, getSnapshot);
+  const state = useSyncExternalStore(subscribe, getSnapshot, () => serverCartSnapshot);
 
   const totals = useMemo(() => computeTotals(state.items), [state.items]);
   const hasPartialNutritionData = useMemo(() => computeHasPartialNutritionData(state.items), [state.items]);

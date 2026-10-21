@@ -24,28 +24,28 @@ export function buildMacroSegments({
   carbs: number;
   fat: number;
 }): MacroSegment[] {
-  const macroTotalGrams = protein + carbs + fat;
+  const macroTotalCalories = protein * 4 + carbs * 4 + fat * 9;
 
   return [
     {
       label: "Protein",
       shortLabel: "P",
       grams: protein,
-      percent: macroTotalGrams > 0 ? (protein / macroTotalGrams) * 100 : 0,
+      percent: macroTotalCalories > 0 ? (protein * 4 / macroTotalCalories) * 100 : 0,
       color: macroDisplayConfig.protein.segmentClassName,
     },
     {
       label: "Carbs",
       shortLabel: "C",
       grams: carbs,
-      percent: macroTotalGrams > 0 ? (carbs / macroTotalGrams) * 100 : 0,
+      percent: macroTotalCalories > 0 ? (carbs * 4 / macroTotalCalories) * 100 : 0,
       color: macroDisplayConfig.carbs.segmentClassName,
     },
     {
       label: "Fat",
       shortLabel: "F",
       grams: fat,
-      percent: macroTotalGrams > 0 ? (fat / macroTotalGrams) * 100 : 0,
+      percent: macroTotalCalories > 0 ? (fat * 9 / macroTotalCalories) * 100 : 0,
       color: macroDisplayConfig.totalFat.segmentClassName,
     },
   ].map((segment) => ({ ...segment, roundedPercent: Math.round(segment.percent) }));

@@ -10,10 +10,12 @@ export default function GlobalItemPreviewModal() {
     return null;
   }
 
-  const { restaurant, item, addons } = previewState;
+  const { restaurant, item, addons, initialVariantId } = previewState;
 
   return (
     <ItemRouteModal
+      key={`${item.id}:${initialVariantId ?? "default"}`}
+      initialVariantId={initialVariantId}
       restaurantId={restaurant.id}
       restaurantName={restaurant.name}
       restaurantPath={`/restaurant/${restaurant.id}`}

@@ -1,17 +1,13 @@
+import { matchesMenuMembership } from "@/lib/menuSections/memberships";
+import type { SortOption } from "@/lib/menuSections/sortOptions";
+import { selectRankingItems } from "@/lib/menuSections/ranking";
 import type { ItemVariant, MenuItem } from "@/types/menu";
-import { getDefaultMenuItemNutrition } from "@/lib/nutrition";
+import { getDefaultMenuItemNutrition, getProteinPer100Calories } from "@/lib/nutrition";
 import { getCategoryLabel, getItemCategories, normalizeCategory } from "@/lib/menuSections/sorting";
 import type { Filters } from "@/lib/menuSections/filterOptions";
 import { normalizeSearchText, squashSearchText } from "@/lib/search/normalizeSearchText";
 
-// A variant that doesn't specify its own `categories` (e.g. a serving-size
-// or serving-type override like a 30-piece "shareable" nugget tray) belongs
-// to whatever categories its parent item belongs to — same fallback
-// `getVisibleVariants` (lib/menuSections/sorting.ts) already uses for the
-// Menu/Ingredients grouping, applied here too so a bucket like "shareables"
-// that only ever exists as a variant-level override isn't silently treated
-// as having zero real categories just because the variant itself is
-// category-less.
+// Variant category overrides take precedence over the parent catalog category.
 function getVariantCategoriesForRanking(item: MenuItem, variant: ItemVariant): string[] {
   return variant.categories && variant.categories.length > 0
     ? variant.categories.map(normalizeCategory)
@@ -121,6 +117,21 @@ export function itemMatchesNutritionFilters(item: MenuItem, filters: Filters): b
     return false;
   }
 
+  const proteinScore = getProteinPer100Calories(protein, calories);
+  if (filters.proteinScoreMin !== undefined && (proteinScore === undefined || proteinScore < filters.proteinScoreMin)) return false;
+  if (filters.carbsMax !== undefined && nutrition.carbs > filters.carbsMax) return false;
+  if (filters.fatMax !== undefined && nutrition.totalFat > filters.fatMax) return false;
+  if (filters.fiberMin !== undefined && (nutrition.fiber === undefined || nutrition.fiber < filters.fiberMin)) return false;
+  if (filters.sodiumMax !== undefined && (nutrition.sodium === undefined || nutrition.sodium > filters.sodiumMax)) return false;
+  if (filters.sugarMax !== undefined && (nutrition.sugars === undefined || nutrition.sugars > filters.sugarMax)) return false;
+
+  if (filters.categories !== undefined || filters.categoryTags !== undefined || filters.categoryExclusions !== undefined) {
+    const matches = item.variants?.length
+      ? item.variants.some((variant) => matchesMenuMembership({ category: variant.category ?? variant.categories?.[0] ?? item.category ?? item.categories?.[0], tags: [...(item.tags ?? []), ...(variant.tags ?? [])] }, filters.categories, filters.categoryTags, filters.categoryExclusions))
+      : matchesMenuMembership(item, filters.categories, filters.categoryTags, filters.categoryExclusions);
+    if (!matches) return false;
+  }
+
   return true;
 }
 
@@ -157,16 +168,48 @@ export function filterMenuItems({
   searchTerms,
   rankedChildSelections,
   isRankingView,
+  filterRankingCategories = true,
+  rankingSort,
+  menuSizePreference,
 }: {
   items: MenuItem[];
   filters: Filters;
   searchTerms: string[];
   rankedChildSelections: Record<RankedAllFilterKey, Set<string>>;
   isRankingView: boolean;
+  filterRankingCategories?: boolean;
+  rankingSort?: SortOption;
+  menuSizePreference?: string;
 }): MenuItem[] {
-  return items
+  const candidates = isRankingView && rankingSort ? selectRankingItems(items, rankingSort, filters, menuSizePreference) : items;
+  return candidates
     .map((item) => {
-      if (!isRankingView) {
+      if ((filters.categories === undefined && filters.categoryTags === undefined && filters.categoryExclusions === undefined) || !item.variants?.length) return item;
+      const variants = item.variants.filter((variant) =>
+        matchesMenuMembership({ category: variant.category ?? variant.categories?.[0] ?? item.category ?? item.categories?.[0], tags: [...(item.tags ?? []), ...(variant.tags ?? [])] }, filters.categories, filters.categoryTags, filters.categoryExclusions)
+      );
+      return variants.length ? { ...item, variants } : null;
+    })
+    .filter((item): item is MenuItem => Boolean(item))
+    .map((item) => {
+      if (!isRankingView || filters.rankingGroups === undefined) return item;
+
+      const allowedGroups = new Set(filters.rankingGroups);
+      const itemGroup = getRankedAllFilterKey(item.servingType);
+      const filteredVariants = item.variants?.filter((variant) => {
+        const variantGroup = getRankedAllFilterKey(variant.servingType);
+        return variantGroup !== null && allowedGroups.has(variantGroup);
+      });
+      const itemMatches = itemGroup !== null && allowedGroups.has(itemGroup);
+      const hasMatchingVariants = Boolean(filteredVariants?.length);
+
+      if (!itemMatches && !hasMatchingVariants) return null;
+      if (!item.variants?.length) return item;
+      return { ...item, variants: filteredVariants ?? [] };
+    })
+    .filter((item): item is MenuItem => Boolean(item))
+    .map((item) => {
+      if (!isRankingView || !filterRankingCategories) {
         return item;
       }
 

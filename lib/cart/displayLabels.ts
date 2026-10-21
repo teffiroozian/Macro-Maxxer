@@ -1,3 +1,4 @@
+import { getCleanMenuItemName, getDisplayVariantLabel } from "@/lib/menuItemCard/titlePresentation";
 import type { CartCustomization, CartItem, CartSelectionOption } from "@/types/cart";
 import { getCustomizationLabel } from "@/lib/cart/customizationLabels";
 import { findCartMenuItem, getCartRestaurantMenu, resolveCartItemComboSelections } from "@/lib/cart/cartItemLookup";
@@ -11,11 +12,11 @@ export function hasComboCustomization(item: CartItem) {
 }
 
 export function formatCartItemName(item: CartItem) {
-  if (!hasComboCustomization(item)) return item.name;
+  if (!hasComboCustomization(item)) return getCleanMenuItemName(item.name);
   const restaurant = getCartRestaurantMenu(item.restaurantId);
   const catalogItem = restaurant ? findCartMenuItem(restaurant, item.itemId) : null;
-  if (catalogItem && "comboConfig" in catalogItem && catalogItem.comboConfig) return catalogItem.name;
-  return /\bcombo\b/i.test(item.name) ? item.name : `${item.name} Combo`;
+  if (catalogItem && "comboConfig" in catalogItem && catalogItem.comboConfig) return getCleanMenuItemName(catalogItem.name);
+  return /\bcombo\b/i.test(item.name) ? getCleanMenuItemName(item.name) : `${getCleanMenuItemName(item.name)} Combo`;
 }
 
 export type CartSummaryGroupKind = "mainItem" | "side" | "drink" | "sauce" | "dressing" | "customization";
@@ -96,7 +97,7 @@ export function buildCartItemExportSummary(item: CartItem): CartExportSummaryIte
     const components: NonNullable<CartExportSummaryItem["components"]> = [
       {
         role: "Entrée",
-        label: entree?.name ?? item.name,
+        label: getCleanMenuItemName(entree?.name ?? item.name),
       },
       ...comboSelections.map((selection) => ({
         role: selection.role === "side" ? "Side" as const : "Drink" as const,
@@ -171,6 +172,8 @@ function formatExportQuantity(quantity: number) {
 }
 
 function formatComponentLabel(name: string, variantLabel?: string) {
+  name = getCleanMenuItemName(name);
+  variantLabel = getDisplayVariantLabel(variantLabel);
   if (!variantLabel) return name;
   const normalizedName = name.toLocaleLowerCase();
   const normalizedVariant = variantLabel.toLocaleLowerCase();
@@ -211,7 +214,7 @@ export function buildCartItemSummaryGroups(item: CartItem): CartSummaryGroup[] {
     (item.customizations ?? []).forEach((customization) => {
       if (customization.kind === "combo") {
         if (customization.comboRole === "meal") return;
-        const label = `${customization.itemLabel ?? customization.ingredientLabel ?? "Item"}${customization.variantLabel ? ` (${customization.variantLabel})` : ""}`;
+        const label = getCleanMenuItemName(`${customization.itemLabel ?? customization.ingredientLabel ?? "Item"}${customization.variantLabel ? ` (${customization.variantLabel})` : ""}`);
         if (customization.comboRole === "side") sideGroups.push({ kind: "side", label });
         else if (customization.comboRole === "drink") drinkGroups.push({ kind: "drink", label });
         else {

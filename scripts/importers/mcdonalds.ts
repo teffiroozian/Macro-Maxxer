@@ -1,3 +1,5 @@
+import reviewedCategoryOverrides from "../../data/restaurants/mcdonalds/review/category-overrides.json";
+import reviewedImageOverrides from "../../data/restaurants/mcdonalds/review/image-overrides.json";
 import { readFile } from "node:fs/promises";
 import { resolve } from "node:path";
 
@@ -226,6 +228,12 @@ function nutritionOrComponents(
   };
 }
 
+// Reviewed record-owned categories survive every regeneration, including
+// child variants whose categories otherwise inherit the parent family.
+function categoriesForRecord(id: number, fallback: string[]): string[] {
+  return (reviewedCategoryOverrides as Record<string, string[]>)[String(id)] ?? fallback;
+}
+
 function variantFor(
   related: JsonObject,
   catalogById: Map<number, JsonObject>,
@@ -245,7 +253,7 @@ function variantFor(
     label: stringValue(related.label) ?? stringValue(related.abbr_label) ?? String(id),
     image: catalogImage(sourceItem) ?? fallbackImage,
     nutrition,
-    categories,
+    categories: categoriesForRecord(id, categories),
     servingType,
     canonicalItemId: canonicalId,
     source: { menu: { tags: [], pins: [] } },
@@ -253,6 +261,9 @@ function variantFor(
 }
 
 function catalogImage(item: JsonObject): string | undefined {
+  const id = numberValue(item.item_id) ?? numberValue(item.id);
+  const reviewed = id === undefined ? undefined : (reviewedImageOverrides as Record<string, { imageUrl: string }>)[String(id)];
+  if (reviewed) return reviewed.imageUrl;
   const hero = object(item.attach_item_hero_image);
   const file = stringValue(hero?.url) ?? stringValue(hero?.image_name);
   if (!file) return undefined;
@@ -269,7 +280,7 @@ function reviewedVariants(sizes: Array<[number, string]>, catalogById: Map<numbe
   return sizes.flatMap(([id, label]) => {
     const record = catalogById.get(id);
     const nutrition = record && nutritionFor(record);
-    return nutrition ? [{ id: itemId(id), label, image: catalogImage(record) ?? image, nutrition, categories, servingType: "drink" as const, canonicalItemId: canonicalId, source: { menu: { tags: [], pins: [] } } }] : [];
+    return nutrition ? [{ id: itemId(id), label, image: catalogImage(record) ?? image, nutrition, categories: categoriesForRecord(id, categories), servingType: "drink" as const, canonicalItemId: canonicalId, source: { menu: { tags: [], pins: [] } } }] : [];
   });
 }
 
@@ -359,7 +370,7 @@ async function main(): Promise<void> {
       continue;
     }
     const servingType = servingTypeFor(entry);
-    const categories = familyCategories.get(entry.itemId) ?? entry.categories;
+    const categories = categoriesForRecord(entry.itemId, familyCategories.get(entry.itemId) ?? entry.categories);
     const components = nutritionResult.componentIds;
     const ownsSizeFamily = (sizeFamilyParentByMenuId.get(entry.itemId) ?? entry.itemId) === entry.itemId;
     const reviewedSizes = REVIEWED_SIZE_FAMILIES[entry.itemId];
@@ -420,7 +431,7 @@ async function main(): Promise<void> {
     items.push({
       id: itemId(entry.itemId),
       name: entry.name,
-      image: entry.imageUrl,
+      image: catalogImage(catalogById.get(entry.itemId) ?? {}) ?? entry.imageUrl,
       categories,
       servingType,
       ...(comboConfig ? { comboConfig } : {}),

@@ -60,12 +60,12 @@ export default function CartMealBreakdown({ items, totals, onPreviewItem }: Cart
           {[0, 1].map((placeholderKey) => (
             <li
               key={`meal-breakdown-skeleton-${placeholderKey}`}
-              className="flex min-w-0 items-center gap-3 rounded-xl border border-black/10 bg-white px-3 py-2"
+              className="flex min-w-0 items-center gap-3 rounded-xl border border-black/10 dark:border-hairline bg-white dark:bg-surface-card px-3 py-2"
             >
-              <div className="h-10 w-10 shrink-0 rounded-lg bg-slate-100" />
+              <div className="h-10 w-10 shrink-0 rounded-lg bg-slate-100 dark:bg-surface-hover" />
               <div className="flex min-w-0 flex-1 flex-col gap-1.5">
-                <div className="h-3 w-3/5 rounded-full bg-slate-100" />
-                <div className="h-2.5 w-2/5 rounded-full bg-slate-100" />
+                <div className="h-3 w-3/5 rounded-full bg-slate-100 dark:bg-surface-hover" />
+                <div className="h-2.5 w-2/5 rounded-full bg-slate-100 dark:bg-surface-hover" />
               </div>
             </li>
           ))}

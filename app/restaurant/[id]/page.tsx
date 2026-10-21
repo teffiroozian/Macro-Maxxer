@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
 import RestaurantPageContent from "@/components/RestaurantPageContent";
+import RestaurantPageSkeleton from "@/components/restaurant-view/RestaurantPageSkeleton";
 import { getRestaurantData } from "@/lib/restaurants";
 import { getStaticRestaurantParams } from "@/lib/staticRouteParams";
 import { IS_CAPACITOR_BUILD } from "@/lib/buildTarget";
@@ -47,7 +48,7 @@ export default async function RestaurantPage({
   }
 
   return (
-    <Suspense fallback={null}>
+    <Suspense fallback={<RestaurantPageSkeleton />}>
       <RestaurantPageContent restaurantData={restaurantData} />
     </Suspense>
   );

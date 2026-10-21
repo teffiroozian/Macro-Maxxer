@@ -1,6 +1,4 @@
 import type { Metadata } from "next";
-import Image from "next/image";
-import Link from "next/link";
 import HomeBackdrop from "@/components/home/HomeBackdrop";
 import HomeSectionContainer from "@/components/home/HomeSectionContainer";
 import SurfaceCard from "@/components/ui/SurfaceCard";
@@ -13,37 +11,25 @@ export const metadata: Metadata = {
   },
 };
 
-const sectionHeadingClassName = "font-heading text-lg font-bold text-slate-900 sm:text-xl";
-const paragraphClassName = "mt-3 text-sm leading-7 text-slate-600 sm:text-base";
+const sectionHeadingClassName = "font-heading text-lg font-bold text-slate-900 dark:text-slate-100 sm:text-xl";
+const paragraphClassName = "mt-3 text-sm leading-7 text-slate-600 dark:text-slate-300 sm:text-base";
 
 export default function TermsPage() {
   return (
     <div className="relative isolate min-h-[var(--app-viewport-height)]">
       <HomeBackdrop />
 
-      <header>
-        <HomeSectionContainer as="div" className="py-5 sm:py-6">
-          <Link
-            href="/"
-            className="inline-flex items-center gap-2 rounded-lg focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-slate-900"
-          >
-            <span className="flex h-8 w-8 shrink-0 items-center justify-center">
-              <Image src="/logo.svg" alt="" width={100} height={100} aria-hidden="true" className="h-full w-full object-contain" />
-            </span>
-            <span className="font-heading text-lg font-bold text-slate-900">Macro Maxxer</span>
-          </Link>
-        </HomeSectionContainer>
-      </header>
+
 
       <main>
         <HomeSectionContainer className="pb-12 pt-8 sm:pb-16 sm:pt-12">
           <div className="mx-auto max-w-3xl">
             <div className="text-center">
               <p className="text-xs font-bold uppercase tracking-[0.16em] text-accent-strong">Terms</p>
-              <h1 className="mt-3 font-heading text-3xl font-bold tracking-tight text-slate-950 sm:text-4xl">
+              <h1 className="mt-3 font-heading text-3xl font-bold tracking-tight text-slate-950 dark:text-slate-50 sm:text-4xl">
                 Terms of Use
               </h1>
-              <p className="mt-4 text-sm text-slate-500">Last updated: September 3, 2026</p>
+              <p className="mt-4 text-sm text-slate-500 dark:text-slate-400">Last updated: September 3, 2026</p>
             </div>
 
             <SurfaceCard
@@ -51,7 +37,7 @@ export default function TermsPage() {
               radius="large"
               shadow="sm"
               padding="none"
-              className="mt-8 space-y-9 bg-white/90 p-6 backdrop-blur-sm sm:p-10"
+              className="mt-8 space-y-9 bg-white/90 dark:bg-surface-card p-6 backdrop-blur-sm sm:p-10"
             >
               <section>
                 <h2 className={sectionHeadingClassName}>1. Acceptance of Terms</h2>
@@ -136,7 +122,7 @@ export default function TermsPage() {
                   For questions about these terms, email{" "}
                   <a
                     href="mailto:tef.firoozian@gmail.com"
-                    className="font-semibold text-accent-strong underline decoration-accent/30 underline-offset-4 transition hover:text-slate-900 focus-ring"
+                    className="font-semibold text-accent-strong underline decoration-accent/30 underline-offset-4 transition hover:text-slate-900 dark:hover:text-slate-100 focus-ring"
                   >
                     tef.firoozian@gmail.com
                   </a>

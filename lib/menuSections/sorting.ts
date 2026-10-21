@@ -7,11 +7,7 @@ import {
   getDefaultMenuItemNutrition,
   getProteinPer100Calories,
 } from "@/lib/nutrition";
-import {
-  SORT_OPTION_VALUES,
-  isDefaultOrderSort,
-  type SortOption,
-} from "@/lib/menuSections/sortOptions";
+import { isDefaultOrderSort, type SortOption } from "@/lib/menuSections/sortOptions";
 import { MCDONALDS_MENU_SECTION_ORDER } from "@/lib/restaurantBuilders/mcdonalds/generatedRuntimeAdapter";
 
 export type CategoryMode = "menu" | "ingredients";
@@ -21,7 +17,7 @@ export function normalizeCategory(category: string) {
 }
 
 export function getItemCategories(item: MenuItem) {
-  const categories = item.categories?.length ? item.categories : ["Other"];
+  const categories = item.category ? [item.category] : item.categories?.length ? item.categories : ["Other"];
   return categories.map((category) => normalizeCategory(category));
 }
 
@@ -113,7 +109,7 @@ function titleCase(text: string) {
 }
 
 function getSortNutrition(item: MenuItem) {
-  return getDefaultMenuItemNutrition(item);
+  return item.rankingNutrition ?? getDefaultMenuItemNutrition(item);
 }
 
 function compareNumericWithMissingLast(
@@ -167,33 +163,19 @@ export function sortItems(
       ...orderedCategories.flatMap((category) => groupedByCategory[category] ?? []),
       ...orderedUncategorizedItems,
     ];
-  } else if (sort === SORT_OPTION_VALUES.HIGHEST_PROTEIN) {
-    sorted.sort((a, b) =>
-      compareNumericWithMissingLast(
-        getSortNutrition(a).protein,
-        getSortNutrition(b).protein,
-        "desc"
-      )
-    );
-  } else if (sort === SORT_OPTION_VALUES.BEST_RATIO) {
-    sorted.sort((a, b) => {
-      const aNutrition = getSortNutrition(a);
-      const bNutrition = getSortNutrition(b);
-
-      return compareNumericWithMissingLast(
-        getProteinPer100Calories(aNutrition.protein, aNutrition.calories),
-        getProteinPer100Calories(bNutrition.protein, bNutrition.calories),
-        "desc"
-      );
-    });
   } else {
-    sorted.sort((a, b) =>
-      compareNumericWithMissingLast(
-        getSortNutrition(a).calories,
-        getSortNutrition(b).calories,
-        "asc"
-      )
-    );
+    const direction = sort.startsWith("lowest-") ? "asc" : "desc";
+    const metric = sort.replace(/^(highest|lowest)-/, "");
+    sorted.sort((a, b) => {
+      const left = getSortNutrition(a);
+      const right = getSortNutrition(b);
+      const value = (nutrition: typeof left) => {
+        if (metric === "protein-score") return getProteinPer100Calories(nutrition.protein, nutrition.calories);
+        if (metric === "fat") return nutrition.totalFat;
+        return nutrition[metric as "protein" | "calories" | "carbs" | "fiber"];
+      };
+      return compareNumericWithMissingLast(value(left), value(right), direction);
+    });
   }
 
   return sorted;
@@ -223,8 +205,9 @@ export function getOrderedMenuSections(
 
 const STARBUCKS_MENU_SECTION_ORDER = [
   "protein drinks",
-  "hot coffee & espresso",
-  "cold coffee & espresso",
+  "hot coffee",
+  "iced coffee",
+  "espresso drinks",
   "frappuccino",
   "tea & chai",
   "matcha",
@@ -278,7 +261,8 @@ export function applyRestaurantMenuSectionOrder(
   );
 }
 
-export function getCategoryLabel(category: string, _mode: CategoryMode = "menu") {
+export function getCategoryLabel(category: string, mode: CategoryMode = "menu") {
+  void mode;
   const normalized = normalizeCategory(category);
   const labelOverrides: Record<string, string> = {
     "mccafé": "McCafé",

@@ -106,13 +106,13 @@ export default function GlobalSearchOverlay() {
       onClick={close}
     >
       <div
-        className={`flex h-[85dvh] max-h-full w-full flex-col overflow-hidden rounded-t-sheet bg-white pb-[env(safe-area-inset-bottom)] shadow-elev-modal transition-transform duration-300 ${
+        className={`flex h-[85dvh] max-h-full w-full flex-col overflow-hidden rounded-t-sheet bg-white dark:bg-surface-card pb-[env(safe-area-inset-bottom)] shadow-elev-modal transition-transform duration-300 ${
           isOpen ? "translate-y-0" : "translate-y-full"
         }`}
         onClick={(event) => event.stopPropagation()}
       >
-        <div className="flex shrink-0 items-center justify-between border-b border-slate-200 px-5 py-4">
-          <h2 className="text-xs font-semibold uppercase tracking-[0.14em] text-slate-500">
+        <div className="flex shrink-0 items-center justify-between border-b border-slate-200 dark:border-divider px-5 py-4">
+          <h2 className="text-xs font-semibold uppercase tracking-[0.14em] text-slate-500 dark:text-slate-400">
             Search
           </h2>
           <AppIconButton onClick={close} aria-label="Close search">
@@ -132,7 +132,7 @@ export default function GlobalSearchOverlay() {
               placeholder={state.isRestaurantScoped && state.filteredRestaurantName
                 ? `Search ${state.filteredRestaurantName} menu...`
                 : "Search restaurants, menu items..."}
-              className="w-full rounded-2xl border border-black/10 bg-white py-3 pl-12 pr-4 text-base text-slate-900 outline-none transition focus:border-accent focus:ring-4 focus:ring-accent/15"
+              className="w-full rounded-2xl border border-black/10 dark:border-hairline bg-white dark:bg-surface-card py-3 pl-12 pr-4 text-base text-slate-900 dark:text-slate-100 outline-none transition focus:border-accent focus:ring-4 focus:ring-accent/15"
             />
             <span className="pointer-events-none absolute inset-y-0 left-3 my-auto flex h-7 w-7 items-center justify-center rounded-full bg-accent-soft text-accent-strong">
               <Search className="h-3.5 w-3.5" strokeWidth={2.5} />

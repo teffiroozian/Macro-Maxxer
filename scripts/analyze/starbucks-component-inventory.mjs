@@ -1,9 +1,10 @@
 #!/usr/bin/env node
 
-const fs = require("fs");
-const path = require("path");
+import fs from "node:fs";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
 
-const root = path.resolve(__dirname, "../..");
+const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../..");
 const sourcePath = path.join(root, "data/restaurants/starbucks/raw/menu.json");
 const outputPath = path.join(root, "data/restaurants/starbucks/generated/component-inventory.json");
 const reportPath = path.join(root, "data/restaurants/starbucks/generated/component-inventory-report.md");

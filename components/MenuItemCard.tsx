@@ -1,6 +1,8 @@
 "use client";
 
-import { useEffect, useId, useMemo, useRef, useState } from "react";
+import type { CardDisplayMode } from "@/lib/menuItemCard/rankingMacroDisplay";
+
+import { useEffect, useEffectEvent, useId, useMemo, useRef, useState } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { ChevronDown } from "lucide-react";
 import type { IngredientItem, ItemVariant, MenuItem, ResolvedAddonGroups, RestaurantCustomizationRules } from "@/types/menu";
@@ -12,6 +14,7 @@ import {
 import IngredientCompactCard from "./menu-item-card/IngredientCompactCard";
 import MenuItemCardHeader from "./menu-item-card/MenuItemCardHeader";
 import MenuItemMacroSummary from "./menu-item-card/MenuItemMacroSummary";
+import ProteinScorePill from "./menu-item-card/ProteinScorePill";
 import MacroStat from "./nutrition/MacroStat";
 import MenuCardActions from "./menu-item-card/MenuCardActions";
 import SurfaceCard from "@/components/ui/SurfaceCard";
@@ -27,13 +30,15 @@ import {
 import { parseIncludedIngredientEntry } from "@/lib/itemIngredients";
 
 import { comboMealSizeFromSideVariant, isComboMealSelectionComplete, resolveComboBundleOptions, resolveComboChoiceVariantId, resolveComboDrinkOptions, resolveComboMealConfig, resolveComboSideOptions } from "@/lib/comboMeals";
-import { getProteinPer100Calories, getProteinScoreTier, normalizeNutrition } from "@/lib/nutrition";
+import { getDefaultMenuItemNutrition, getProteinPer100Calories, getProteinScoreTier, normalizeNutrition } from "@/lib/nutrition";
 import { resolveFinalizedCartConfiguration, type CartConfigurationPayload } from "@/lib/menuItemCard/finalizedCartConfiguration";
+import type { RankMetric } from "@/lib/menuSections/sortOptions";
 import type { ComparativeLabelKind } from "@/lib/menuSections/comparativeLabels";
 import { getRestaurantImagePresentation } from "@/lib/restaurantPresentation";
 import RestaurantItemImage from "@/components/ui/RestaurantItemImage";
 import { incrementIngredientCountWithinCategoryLimit } from "@/lib/menuItemCard/ingredientCountCustomization";
 import { useGlobalItemPreview } from "@/components/GlobalItemPreviewContext";
+import { getMenuItemDetailsHref } from "@/lib/menuSections/ranking";
 import { IS_CAPACITOR_BUILD } from "@/lib/buildTarget";
 
 // Same portion multipliers already used across the build-your-own portion
@@ -86,14 +91,14 @@ function QuickVariantDropdown({
         type="button"
         aria-label={ariaLabel}
         onClick={() => setOpen((prev) => !prev)}
-        className="inline-flex h-7 max-w-[160px] items-center justify-between gap-1.5 rounded-full border border-slate-300 bg-slate-50 px-2.5 text-[11px] font-semibold text-slate-700 transition hover:bg-white"
+        className="inline-flex h-7 max-w-[160px] items-center justify-between gap-1.5 rounded-full border border-slate-300 dark:border-control bg-slate-50 dark:bg-surface-subtle px-2.5 text-[11px] font-semibold text-slate-700 dark:text-slate-200 transition hover:bg-white dark:hover:bg-surface-hover"
       >
         <span className="truncate">{selectedLabel}</span>
-        <ChevronDown className={`h-3.5 w-3.5 text-slate-500 transition ${open ? "rotate-180" : ""}`} />
+        <ChevronDown className={`h-3.5 w-3.5 text-slate-500 dark:text-slate-400 transition ${open ? "rotate-180" : ""}`} />
       </button>
 
       {open ? (
-        <div className="absolute bottom-[calc(100%+6px)] left-0 z-40 w-max min-w-full overflow-hidden rounded-xl border border-black/15 bg-white p-1.5 shadow-[0_12px_28px_rgba(0,0,0,0.14)]">
+        <div className="absolute bottom-[calc(100%+6px)] left-0 z-40 w-max min-w-full overflow-hidden rounded-xl border border-black/15 bg-white dark:bg-surface-card p-1.5 shadow-[0_12px_28px_rgba(0,0,0,0.14)]">
           {options.map((option) => {
             const active = option.id === value;
             return (
@@ -105,7 +110,7 @@ function QuickVariantDropdown({
                   setOpen(false);
                 }}
                 className={`flex w-full items-center rounded-lg px-3 py-2 text-left text-sm font-semibold transition ${
-                  active ? "bg-black text-white" : "text-slate-800 hover:bg-slate-100"
+                  active ? "bg-black text-white" : "text-slate-800 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-surface-hover"
                 }`}
               >
                 {option.label}
@@ -142,10 +147,15 @@ type MenuItemCardData = {
 };
 
 type MenuItemCardMenuBehavior = {
+  // Display-only category rank; keep configured ingredient nutrition intact.
+  ingredientRank?: number;
   rankIndex?: number;
   isTopRanked?: boolean;
   itemHref?: string;
+  rankMetric?: RankMetric;
+  cardDisplayOverride?: CardDisplayMode;
   comparativeLabel?: ComparativeLabelKind;
+  resultLayout?: "list" | "grid";
 };
 
 type MenuItemCardCartBehavior = {
@@ -219,6 +229,7 @@ export default function MenuItemCard({
   const isTopRanked = menu?.isTopRanked;
   const itemHref = menu?.itemHref;
   const comparativeLabel = menu?.comparativeLabel;
+  const resultLayout = menu?.resultLayout ?? "list";
   const cartQuantity = cart?.quantity ?? 1;
   const onCartIncrement = cart?.onIncrement;
   const onCartDecrement = cart?.onDecrement;
@@ -377,12 +388,14 @@ export default function MenuItemCard({
     const matchedVariant = drinkVariants.find((variant) => variant.label === parsedInitialComboCustomization.drinkVariantLabel);
     return matchedVariant?.id ?? getDefaultVariantId(matchedDrink);
   });
-  const [selectedComboBundleId, setSelectedComboBundleId] = useState<string | undefined>(comboConfig?.defaultBundleId);
-  useEffect(() => {
-    if (!comboConfig?.bundleOptions?.some((option) => option.id === selectedComboBundleId)) {
-      setSelectedComboBundleId(comboConfig?.defaultBundleId);
-    }
-  }, [comboConfig, selectedComboBundleId]);
+  const [storedComboBundleId, setSelectedComboBundleId] = useState<string | undefined>(comboConfig?.defaultBundleId);
+  const selectedComboBundleId = comboConfig?.bundleOptions?.some((option) => option.id === storedComboBundleId)
+    ? storedComboBundleId
+    : comboConfig?.defaultBundleId;
+  // Reconcile a no-longer-available bundle before committing this render.
+  if (storedComboBundleId !== selectedComboBundleId) {
+    setSelectedComboBundleId(selectedComboBundleId);
+  }
 
   const retainedCustomizations = useMemo(() => {
     if (!initialCartCustomizations || initialCartCustomizations.length === 0) return [];
@@ -453,8 +466,11 @@ export default function MenuItemCard({
     selectedComboDrinkVariant,
     customizations,
     duplicateMatchingConfiguration,
-    nutritionPerItem: nutrition,
+    nutritionPerItem: configuredNutrition,
   } = finalizedCartConfiguration;
+
+  // Ranked cards display catalog macros, never ingredient/customization totals.
+  const nutrition = typeof rankIndex === "number" ? getDefaultMenuItemNutrition(item) : configuredNutrition;
 
   const customizationTotals = useMemo(
     () => ({
@@ -621,14 +637,16 @@ export default function MenuItemCard({
     onCartConfigurationChange(nextConfiguration.cartConfigurationPayload);
   };
 
+  const emitCartConfigurationFromEffect = useEffectEvent(emitCartConfiguration);
+
   useEffect(() => {
     if (!isCartMode || !isComboEligibleCategory) return;
 
-    emitCartConfiguration(
+    emitCartConfigurationFromEffect(
       selectedVariantId,
       selectedAddons,
       selectedSauceCounts,
-        ingredientCounts,
+      ingredientCounts,
       comboType,
       selectedComboSideId,
       selectedComboDrinkId,
@@ -652,11 +670,11 @@ export default function MenuItemCard({
   const openItemDetails = () => {
     if (shouldOpenModalOnCardClick && itemHref) {
       if (IS_CAPACITOR_BUILD) {
-        void openPreview(restaurantId, item);
+        void openPreview(restaurantId, item, effectiveSelectedVariantId);
         return;
       }
       const query = searchParams.toString();
-      router.push(query ? `${itemHref}?${query}` : itemHref, { scroll: false });
+      router.push(getMenuItemDetailsHref(itemHref, query, effectiveSelectedVariantId), { scroll: false });
       return;
     }
     setOpen(true);
@@ -665,11 +683,11 @@ export default function MenuItemCard({
   const handleCardActivate = () => {
     if (shouldOpenModalOnCardClick && itemHref) {
       if (IS_CAPACITOR_BUILD) {
-        void openPreview(restaurantId, item);
+        void openPreview(restaurantId, item, effectiveSelectedVariantId);
         return;
       }
       const query = searchParams.toString();
-      router.push(query ? `${itemHref}?${query}` : itemHref, { scroll: false });
+      router.push(getMenuItemDetailsHref(itemHref, query, effectiveSelectedVariantId), { scroll: false });
       return;
     }
     setOpen((v) => !v);
@@ -758,9 +776,16 @@ export default function MenuItemCard({
     const displayProtein = localVariantNutrition?.protein ?? protein;
     const displayCarbs = localVariantNutrition?.carbs ?? carbs;
     const displayTotalFat = localVariantNutrition?.totalFat ?? totalFat;
+    const displayFiber = localVariantNutrition ? localVariantNutrition.fiber : nutrition.fiber;
 
     return (
       <IngredientCompactCard
+        rankMetric={restaurantId === "chipotle" ? menu?.rankMetric : undefined}
+        cardDisplayOverride={restaurantId === "chipotle" ? menu?.cardDisplayOverride : undefined}
+        fiber={displayFiber === undefined ? undefined : displayFiber * localPortionMultiplier}
+        rank={menu?.ingredientRank}
+        layout={resultLayout}
+        compactMobileControls={restaurantId === "chipotle"}
         item={item}
         domId={ingredientDomId}
         selectedItemImage={selectedItemImage}
@@ -817,18 +842,18 @@ export default function MenuItemCard({
       padding="none"
       radius="large"
       shadow="none"
-      className={`list-none transition-[translate,box-shadow,border-color] duration-[450ms] ease-out will-change-[translate] ${
+      className={`h-full list-none rounded-3xl transition-[translate,box-shadow,border-color] duration-[450ms] ease-out will-change-[translate] ${
         open && useCartQuickEditPanel ? "overflow-visible" : "overflow-hidden"
       } ${
         isTopRanked
           ? "border-[1.5px] border-accent/40 shadow-[0_6px_20px_rgba(5,150,105,0.14)]"
-          : "border-black/10 shadow-[0_2px_10px_rgba(15,23,42,0.06)] hover:-translate-y-0.5 hover:border-black/15 hover:shadow-[0_14px_30px_rgba(15,23,42,0.12)]"
+          : "border-black/10 dark:border-hairline shadow-[0_2px_10px_rgba(15,23,42,0.06)] dark:shadow-elev-2 hover:-translate-y-0.5 hover:border-black/15 hover:shadow-[0_14px_30px_rgba(15,23,42,0.12)]"
       }`}
     >
       <div
         role="button"
         tabIndex={0}
-        className="group relative flex w-full cursor-pointer flex-col items-stretch gap-4 bg-transparent p-4 text-left focus-visible:outline-2 focus-visible:outline-blue-600 focus-visible:outline-offset-[-2px] sm:gap-6 sm:p-5 lg:flex-row"
+        className={`group relative h-full w-full cursor-pointer items-stretch bg-transparent text-left focus-visible:outline-2 focus-visible:outline-blue-600 focus-visible:outline-offset-[-2px] ${rank !== null && resultLayout === "grid" ? "grid grid-cols-[64px_minmax(0,1fr)] gap-3 p-3 lg:flex lg:flex-col lg:gap-4 lg:px-4 lg:pb-3 lg:pt-4" : "flex flex-col gap-4 p-4 sm:gap-6 sm:p-5 lg:flex-row"}`}
         onClick={handleCardActivate}
         onKeyDown={(event) => {
           if (event.key === "Enter" || event.key === " ") {
@@ -853,7 +878,9 @@ export default function MenuItemCard({
           hasVariantDropdown={hasVariantDropdown}
           variantSelectorDisabled={variantSelectorDisabled}
           selectedVariantId={selectedVariantId}
-          selectedVariantLabel={selectedVariantForCart?.label}
+          selectedVariantLabel={rank !== null
+            ? variants?.find((variant) => variant.id === item.defaultVariantId)?.label
+            : selectedVariantForCart?.label}
           onVariantChange={(nextVariantId) => {
             if (variantSelectorDisabled) {
               return;
@@ -863,12 +890,30 @@ export default function MenuItemCard({
           }}
           cartSummaryLine={cartSummaryLine}
           highProteinIngredientSummaryLine={highProteinIngredientSummaryLine}
+          resultLayout={resultLayout}
+          proteinScoreOverlay={rank !== null && resultLayout === "list" && typeof proteinScore === "number" && proteinScoreTier ? (
+            <ProteinScorePill
+              scorePerHundredCalories={proteinScore}
+              tier={proteinScoreTier}
+              protein={displayProtein}
+              calories={displayCalories}
+              itemName={item.name}
+              itemImage={selectedItemImage}
+              itemImagePresentation={item.imagePresentation}
+              imageClassName={imagePresentation.itemThumbnailImageClassName}
+              imageBackgroundColor={imagePresentation.imageBackgroundColor}
+              className="lg:hidden"
+            />
+          ) : undefined}
         >
           <MenuItemMacroSummary
             displayCalories={displayCalories}
             displayProtein={displayProtein}
             displayCarbs={displayCarbs}
             displayFat={displayFat}
+            displayFiber={nutrition.fiber === undefined ? undefined : nutrition.fiber * quantityMultiplier}
+            rankMetric={!isCartMode ? menu?.rankMetric : undefined}
+            cardDisplayOverride={!isCartMode ? menu?.cardDisplayOverride : undefined}
             caloriesDelta={customizationTotals.calories}
             proteinDelta={customizationTotals.protein}
             carbsDelta={customizationTotals.carbs}
@@ -903,8 +948,10 @@ export default function MenuItemCard({
                 isQuickAddDisabled={!isComboSelectionComplete}
                 onQuickAdd={handleAddToCart}
                 onViewDetails={openItemDetails}
+                compactMobile={rank !== null && resultLayout === "grid"}
               />
             )}
+            rankedLayout={rank !== null ? resultLayout : undefined}
           />
         </MenuItemCardHeader>
 
@@ -914,7 +961,7 @@ export default function MenuItemCard({
               role="button"
               tabIndex={0}
               aria-label="Reset customizations"
-              className="cursor-pointer text-[26px] leading-none font-medium text-black/75 transition-colors duration-200 group-hover:text-black/95"
+              className="cursor-pointer text-[26px] leading-none font-medium text-black/75 dark:text-slate-300 transition-colors duration-200 group-hover:text-black/95 dark:group-hover:text-slate-100"
               onClick={(event) => {
                 event.stopPropagation();
                 resetMods();
@@ -935,28 +982,28 @@ export default function MenuItemCard({
 
       <div
         id={`${id}-details`}
-        className={`rounded-b-3xl ${open && useCartQuickEditPanel ? "overflow-x-visible overflow-y-visible" : "overflow-hidden"} bg-white transition-[max-height] duration-300 ease-in-out ${
+        className={`rounded-b-3xl ${open && useCartQuickEditPanel ? "overflow-x-visible overflow-y-visible" : "overflow-hidden"} bg-white dark:bg-surface-card transition-[max-height] duration-300 ease-in-out ${
           open ? "max-h-[5000px]" : "max-h-0"
         }`}
       >
         <div className="p-3">
           {useCartQuickEditPanel ? (
-            <div className="rounded-2xl border border-black/10 bg-[#efefef] p-3">
+            <div className="rounded-2xl border border-black/10 dark:border-hairline bg-[#efefef] p-3">
               <div className="space-y-3">
                 <section>
-                  <SectionEyebrow className="mb-2 px-1 text-[11px] text-slate-500">Main</SectionEyebrow>
-                  <div className="grid grid-cols-[72px_minmax(0,1fr)] items-start gap-3 rounded-xl border border-slate-200 bg-white px-3 py-2.5">
+                  <SectionEyebrow className="mb-2 px-1 text-[11px] text-slate-500 dark:text-slate-400">Main</SectionEyebrow>
+                  <div className="grid grid-cols-[72px_minmax(0,1fr)] items-start gap-3 rounded-xl border border-slate-200 dark:border-divider bg-white dark:bg-surface-card px-3 py-2.5">
                     <RestaurantItemImage
                       src={selectedItemImage}
                       alt={item.name}
                       imagePresentation={item.imagePresentation}
                       fallbackClassName={imagePresentation.itemThumbnailImageClassName ?? "object-contain p-1"}
                       fallbackBackgroundColor={imagePresentation.imageBackgroundColor}
-                      containerClassName="h-[72px] w-[72px] overflow-hidden rounded-lg border border-black/10 bg-white"
+                      containerClassName="h-[72px] w-[72px] overflow-hidden rounded-lg border border-black/10 dark:border-hairline bg-white dark:bg-surface-card"
                     />
                     <div className="min-w-0">
                       <div className="flex items-start justify-between gap-2">
-                        <p className="min-w-0 flex-1 truncate text-lg font-semibold text-slate-900">{quickMainName}</p>
+                        <p className="min-w-0 flex-1 truncate text-lg font-semibold text-slate-900 dark:text-slate-100">{quickMainName}</p>
                         {hasVariantDropdown ? (
                           <QuickVariantDropdown
                             ariaLabel={`${item.name} quick portion`}
@@ -981,19 +1028,19 @@ export default function MenuItemCard({
 
                 {comboType === "combo-meal" && selectedComboSide ? (
                   <section>
-                    <SectionEyebrow className="mb-2 px-1 text-[11px] text-slate-500">Side</SectionEyebrow>
-                    <div className="grid grid-cols-[72px_minmax(0,1fr)] items-start gap-3 rounded-xl border border-slate-200 bg-white px-3 py-2.5">
+                    <SectionEyebrow className="mb-2 px-1 text-[11px] text-slate-500 dark:text-slate-400">Side</SectionEyebrow>
+                    <div className="grid grid-cols-[72px_minmax(0,1fr)] items-start gap-3 rounded-xl border border-slate-200 dark:border-divider bg-white dark:bg-surface-card px-3 py-2.5">
                       <RestaurantItemImage
                         src={selectedComboSideVariant?.image ?? selectedComboSide.image}
                         alt={selectedComboSide.name}
                         imagePresentation={selectedComboSide.imagePresentation}
                         fallbackClassName={imagePresentation.itemThumbnailImageClassName ?? "object-contain p-1"}
                         fallbackBackgroundColor={imagePresentation.imageBackgroundColor}
-                        containerClassName="h-[72px] w-[72px] overflow-hidden rounded-lg border border-black/10 bg-white"
+                        containerClassName="h-[72px] w-[72px] overflow-hidden rounded-lg border border-black/10 dark:border-hairline bg-white dark:bg-surface-card"
                       />
                       <div className="min-w-0">
                         <div className="flex items-start justify-between gap-2">
-                          <p className="min-w-0 flex-1 truncate text-lg font-semibold text-slate-900">{selectedComboSide.name}</p>
+                          <p className="min-w-0 flex-1 truncate text-lg font-semibold text-slate-900 dark:text-slate-100">{selectedComboSide.name}</p>
                           {selectedComboSide.variants && selectedComboSide.variants.length > 1 ? (
                             <QuickVariantDropdown
                               ariaLabel={`${selectedComboSide.name} size`}
@@ -1019,19 +1066,19 @@ export default function MenuItemCard({
 
                 {comboType === "combo-meal" && selectedComboDrink ? (
                   <section>
-                    <SectionEyebrow className="mb-2 px-1 text-[11px] text-slate-500">Drink</SectionEyebrow>
-                    <div className="grid grid-cols-[72px_minmax(0,1fr)] items-start gap-3 rounded-xl border border-slate-200 bg-white px-3 py-2.5">
+                    <SectionEyebrow className="mb-2 px-1 text-[11px] text-slate-500 dark:text-slate-400">Drink</SectionEyebrow>
+                    <div className="grid grid-cols-[72px_minmax(0,1fr)] items-start gap-3 rounded-xl border border-slate-200 dark:border-divider bg-white dark:bg-surface-card px-3 py-2.5">
                       <RestaurantItemImage
                         src={selectedComboDrinkVariant?.image ?? selectedComboDrink.image}
                         alt={selectedComboDrink.name}
                         imagePresentation={selectedComboDrink.imagePresentation}
                         fallbackClassName={imagePresentation.itemThumbnailImageClassName ?? "object-contain p-1"}
                         fallbackBackgroundColor={imagePresentation.imageBackgroundColor}
-                        containerClassName="h-[72px] w-[72px] overflow-hidden rounded-lg border border-black/10 bg-white"
+                        containerClassName="h-[72px] w-[72px] overflow-hidden rounded-lg border border-black/10 dark:border-hairline bg-white dark:bg-surface-card"
                       />
                       <div className="min-w-0">
                         <div className="flex items-start justify-between gap-2">
-                          <p className="min-w-0 flex-1 truncate text-lg font-semibold text-slate-900">{selectedComboDrink.name}</p>
+                          <p className="min-w-0 flex-1 truncate text-lg font-semibold text-slate-900 dark:text-slate-100">{selectedComboDrink.name}</p>
                           {selectedComboDrink.variants && selectedComboDrink.variants.length > 1 ? (
                             <QuickVariantDropdown
                               ariaLabel={`${selectedComboDrink.name} size`}
@@ -1059,14 +1106,14 @@ export default function MenuItemCard({
                 (addons?.sauces?.items.length ?? 0) > 0 &&
                 addons?.sauces?.items.some((addon) => (selectedSauceCounts[addon.name] ?? 0) > 0) ? (
                   <section>
-                    <SectionEyebrow className="mb-2 px-1 text-[11px] text-slate-500">{addons?.sauces?.label ?? "Sauces"}</SectionEyebrow>
+                    <SectionEyebrow className="mb-2 px-1 text-[11px] text-slate-500 dark:text-slate-400">{addons?.sauces?.label ?? "Sauces"}</SectionEyebrow>
                     <div className="space-y-1.5">
                       {addons?.sauces?.items.filter((addon) => addon.name !== "None" && (selectedSauceCounts[addon.name] ?? 0) > 0).map((addon) => {
                         const count = selectedSauceCounts[addon.name] ?? 0;
                         return (
                           <div
                             key={addon.name}
-                            className="grid grid-cols-[72px_minmax(0,1fr)] items-start gap-3 rounded-xl border border-slate-200 bg-white px-3 py-2.5"
+                            className="grid grid-cols-[72px_minmax(0,1fr)] items-start gap-3 rounded-xl border border-slate-200 dark:border-divider bg-white dark:bg-surface-card px-3 py-2.5"
                           >
                             <RestaurantItemImage
                               src={addon.image}
@@ -1074,14 +1121,14 @@ export default function MenuItemCard({
                               imagePresentation={addon.imagePresentation}
                               fallbackClassName={imagePresentation.itemThumbnailImageClassName ?? "object-contain p-1"}
                               fallbackBackgroundColor={imagePresentation.imageBackgroundColor}
-                              containerClassName="h-[72px] w-[72px] overflow-hidden rounded-lg border border-black/10 bg-white"
+                              containerClassName="h-[72px] w-[72px] overflow-hidden rounded-lg border border-black/10 dark:border-hairline bg-white dark:bg-surface-card"
                             />
                             <div className="min-w-0">
-                              <p className="truncate text-sm font-semibold text-slate-900">{addon.name}</p>
-                              <div className="mt-2 inline-flex items-center gap-2 rounded-lg border border-black/10 bg-white px-1 py-1">
+                              <p className="truncate text-sm font-semibold text-slate-900 dark:text-slate-100">{addon.name}</p>
+                              <div className="mt-2 inline-flex items-center gap-2 rounded-lg border border-black/10 dark:border-hairline bg-white dark:bg-surface-card px-1 py-1">
                                 <button
                                   type="button"
-                                  className="h-7 w-7 rounded-md border border-black/15 text-base font-semibold text-slate-800"
+                                  className="h-7 w-7 rounded-md border border-black/15 text-base font-semibold text-slate-800 dark:text-slate-200"
                                   onClick={() => {
                                     setSelectedSauceCounts((prev) => {
                                       const current = prev[addon.name] ?? 0;
@@ -1102,7 +1149,7 @@ export default function MenuItemCard({
                                 <span className="min-w-4 text-center text-sm font-semibold">{count}</span>
                                 <button
                                   type="button"
-                                  className="h-7 w-7 rounded-md border border-black/15 text-base font-semibold text-slate-800"
+                                  className="h-7 w-7 rounded-md border border-black/15 text-base font-semibold text-slate-800 dark:text-slate-200"
                                   onClick={() => {
                                     setSelectedSauceCounts((prev) => {
                                       const currentTotal = Object.values(prev).reduce((sum, selectedCount) => sum + selectedCount, 0);
@@ -1134,19 +1181,19 @@ export default function MenuItemCard({
                 selectedAddons.dressings &&
                 selectedAddons.dressings.name !== "None" ? (
                   <section>
-                    <SectionEyebrow className="mb-2 px-1 text-[11px] text-slate-500">{addons?.dressings?.label ?? "Dressings"}</SectionEyebrow>
+                    <SectionEyebrow className="mb-2 px-1 text-[11px] text-slate-500 dark:text-slate-400">{addons?.dressings?.label ?? "Dressings"}</SectionEyebrow>
                     <div className="space-y-1.5">
-                      <div className="grid w-full grid-cols-[72px_minmax(0,1fr)] items-start gap-3 rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-left">
+                      <div className="grid w-full grid-cols-[72px_minmax(0,1fr)] items-start gap-3 rounded-xl border border-slate-200 dark:border-divider bg-white dark:bg-surface-card px-3 py-2.5 text-left">
                         <RestaurantItemImage
                           src={selectedAddons.dressings.image}
                           alt={selectedAddons.dressings.name}
                           imagePresentation={selectedAddons.dressings.imagePresentation}
                           fallbackClassName={imagePresentation.itemThumbnailImageClassName ?? "object-contain p-1"}
                           fallbackBackgroundColor={imagePresentation.imageBackgroundColor}
-                          containerClassName="h-[72px] w-[72px] overflow-hidden rounded-lg border border-black/10 bg-white"
+                          containerClassName="h-[72px] w-[72px] overflow-hidden rounded-lg border border-black/10 dark:border-hairline bg-white dark:bg-surface-card"
                         />
                         <div className="min-w-0">
-                          <p className="truncate text-sm font-semibold text-slate-900">{selectedAddons.dressings.name}</p>
+                          <p className="truncate text-sm font-semibold text-slate-900 dark:text-slate-100">{selectedAddons.dressings.name}</p>
                           <div className="mt-2 flex flex-wrap items-end gap-x-3 gap-y-2">
                             <MacroStat value={toMacroNumber(selectedAddons.dressings.nutrition.calories)} macroKey="calories" labelVariant="shortLabel" size="quick" />
                             <MacroStat value={toMacroNumber(selectedAddons.dressings.nutrition.protein)} macroKey="protein" size="quick" />

@@ -36,7 +36,7 @@ export default function ScopeSwitcher({
     <div
       role="tablist"
       aria-label="Search scope"
-      className={`flex gap-1 ${isSegmented ? "rounded-full bg-slate-100 p-1" : ""} ${className}`}
+      className={`flex gap-1 ${isSegmented ? "rounded-full bg-slate-100 dark:bg-surface-hover p-1" : ""} ${className}`}
     >
       {TABS.map((tab) => (
         <button
@@ -53,11 +53,11 @@ export default function ScopeSwitcher({
           className={`inline-flex cursor-pointer items-center justify-center gap-1.5 rounded-full px-3 py-1.5 text-sm font-semibold transition ${fullWidth ? "flex-1" : ""} ${
             scope === tab.value
               ? isSegmented
-                ? "bg-white text-accent-strong shadow-[0_1px_6px_rgba(15,23,42,0.15)]"
-                : "bg-slate-900 text-white"
+                ? "bg-white dark:bg-surface-card text-accent-strong shadow-[0_1px_6px_rgba(15,23,42,0.15)]"
+                : "bg-slate-900 text-white dark:bg-surface-hover dark:text-slate-50"
               : isSegmented
-                ? "text-slate-500 hover:bg-white/60 hover:text-slate-900"
-                : "text-slate-500 hover:bg-surface-hover hover:text-slate-900"
+                ? "text-slate-500 dark:text-slate-400 hover:bg-white/60 dark:hover:bg-surface-hover hover:text-slate-900 dark:hover:text-slate-100"
+                : "text-slate-500 dark:text-slate-400 hover:bg-surface-hover hover:text-slate-900 dark:hover:text-slate-100"
           }`}
         >
           {showIcons ? <tab.Icon className="h-3.5 w-3.5" strokeWidth={2.5} aria-hidden="true" /> : null}

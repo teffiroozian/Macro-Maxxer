@@ -1,13 +1,8 @@
 "use client";
 
-import { Suspense, useEffect, useRef, useState, type CSSProperties } from "react";
+import { Suspense, type CSSProperties } from "react";
 import Image from "@/components/ui/AppImage";
 import { Dumbbell, Flame, Search, type LucideIcon } from "lucide-react";
-import DesktopNav from "@/components/DesktopNav";
-import GlobalMobileNav from "@/components/GlobalMobileNav";
-import GlobalMobileMenuButton from "@/components/GlobalMobileMenuButton";
-import CartIconDropdown from "@/components/cart/CartIconDropdown";
-import { appIconButtonClassName } from "@/components/ui/AppIconButton";
 import RestaurantSearch from "@/components/home/RestaurantSearch";
 import HeroRestaurantChips from "@/components/home/HeroRestaurantChips";
 import SectionEyebrow from "@/components/ui/SectionEyebrow";
@@ -58,14 +53,14 @@ function HeroRankingCard({ icon: Icon, label, value, accentClassName, itemName, 
   return (
     <div aria-hidden="true" className={`pointer-events-none absolute ${wrapperClassName}`}>
       <div className="hero-float" style={floatStyle}>
-        <div className="flex flex-col gap-1 rounded-2xl border border-black/[0.07] bg-white/90 px-3.5 py-2.5 shadow-[0_10px_26px_rgba(15,23,42,0.08)] backdrop-blur-sm">
+        <div className="flex flex-col gap-1 rounded-2xl border border-black/[0.07] dark:border-hairline bg-white/90 dark:bg-surface-card px-3.5 py-2.5 shadow-[0_10px_26px_rgba(15,23,42,0.08)] backdrop-blur-sm">
           <span className="flex items-center gap-1.5">
             <Icon className={`h-3 w-3 shrink-0 ${accentClassName}`} strokeWidth={2.5} />
-            <span className="text-[10px] font-semibold uppercase tracking-normal text-slate-600">{label}</span>
+            <span className="text-[10px] font-semibold uppercase tracking-normal text-slate-600 dark:text-slate-300">{label}</span>
           </span>
           <span className="flex items-baseline gap-1.5 whitespace-nowrap">
             <span className={`text-base font-extrabold ${accentClassName}`}>{value}</span>
-            <span className="text-xs font-medium text-slate-500">
+            <span className="text-xs font-medium text-slate-500 dark:text-slate-400">
               {itemName} · {restaurantName}
             </span>
           </span>
@@ -99,14 +94,14 @@ function HeroItemPreviewCard({ image, itemName, restaurantName, calories, stando
   return (
     <div aria-hidden="true" className={`pointer-events-none absolute ${wrapperClassName}`}>
       <div className="hero-float" style={floatStyle}>
-        <div className="flex items-center gap-2.5 rounded-2xl border border-black/[0.07] bg-white/90 py-2 pl-2 pr-3.5 shadow-[0_10px_26px_rgba(15,23,42,0.08)] backdrop-blur-sm">
-          <div className="relative h-10 w-10 shrink-0 overflow-hidden rounded-xl bg-slate-50">
+        <div className="flex items-center gap-2.5 rounded-2xl border border-black/[0.07] dark:border-hairline bg-white/90 dark:bg-surface-card py-2 pl-2 pr-3.5 shadow-[0_10px_26px_rgba(15,23,42,0.08)] backdrop-blur-sm">
+          <div className="relative h-10 w-10 shrink-0 overflow-hidden rounded-xl bg-slate-50 dark:bg-image-placeholder!">
             <Image src={image} alt="" fill sizes="40px" className="object-cover" />
           </div>
           <div className="min-w-0">
-            <p className="truncate text-xs font-semibold text-slate-700">{itemName}</p>
-            <p className="truncate text-[10px] font-medium text-slate-500">{restaurantName}</p>
-            <p className="whitespace-nowrap text-[11px] font-semibold text-slate-500">
+            <p className="truncate text-xs font-semibold text-slate-700 dark:text-slate-200">{itemName}</p>
+            <p className="truncate text-[10px] font-medium text-slate-500 dark:text-slate-400">{restaurantName}</p>
+            <p className="whitespace-nowrap text-[11px] font-semibold text-slate-500 dark:text-slate-400">
               {calories} cal · <span className={`font-extrabold ${accentClassName}`}>{standout}</span>
             </p>
           </div>
@@ -123,84 +118,26 @@ function HeroItemPreviewCard({ image, itemName, restaurantName, calories, stando
 function RestaurantSearchFallback() {
   return (
     <section aria-hidden="true" className="mx-auto w-full max-w-3xl">
-      <div className="overflow-hidden rounded-[28px] border border-slate-200/80 bg-white shadow-elev-float ring-1 ring-black/[0.02]">
-        <div className="flex justify-center border-b border-slate-100 bg-slate-50/60 px-4 py-3">
-          <div className="h-8 w-48 rounded-full bg-slate-100" />
+      <div className="overflow-hidden rounded-[28px] border border-slate-200/80 dark:border-hairline bg-white dark:bg-surface-card shadow-elev-float ring-1 ring-black/[0.02]">
+        <div className="flex justify-center border-b border-slate-100 dark:border-divider bg-slate-50/60 dark:bg-surface-subtle px-4 py-3">
+          <div className="h-8 w-48 rounded-full bg-slate-100 dark:bg-surface-hover" />
         </div>
         <div className="flex items-center gap-3 px-5 py-5">
           <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-accent-soft text-accent-strong">
             <Search className="h-4 w-4" strokeWidth={2.5} />
           </span>
-          <span className="text-base text-slate-400 sm:text-lg">Search restaurants, menu items...</span>
+          <span className="text-base text-slate-400 dark:text-slate-400 sm:text-lg">Search restaurants, menu items...</span>
         </div>
       </div>
     </section>
   );
 }
 
-// Owns the homepage's hero-vs-nav search handoff. Two separate desktop nav
-// elements, never morphed into one another:
-// - Static hero nav: logo + cart only, no search, sits inline at the top
-//   of the hero and scrolls away with it like any other page content.
-// - Sticky search nav: logo + centered search bar + cart, fixed at the
-//   top, hidden while the hero search is in view, fades in once it scrolls
-//   out.
-// Desktop-only — mobile's nav is already fixed and unaffected by hero
-// scroll position.
+// Homepage hero content; navigation is supplied by the root layout.
 export default function HeroSearchNav({ restaurants }: { restaurants: RestaurantIndexEntry[] }) {
-  const heroRef = useRef<HTMLDivElement>(null);
-  const [isHeroVisible, setIsHeroVisible] = useState(true);
-
-  useEffect(() => {
-    const node = heroRef.current;
-    if (!node) {
-      return;
-    }
-
-    const observer = new IntersectionObserver(
-      ([entry]) => setIsHeroVisible(entry.isIntersecting),
-      { threshold: 0, rootMargin: "-72px 0px 0px 0px" }
-    );
-
-    observer.observe(node);
-
-    return () => observer.disconnect();
-  }, []);
-
   return (
     <section className="native-home-page relative">
-      <GlobalMobileNav
-        leadingButton={<GlobalMobileMenuButton />}
-        cartSlot={
-          <CartIconDropdown
-            variant="sheet"
-            buttonClassName={appIconButtonClassName({ variant: "nav", size: "nav", className: "relative shrink-0" })}
-          />
-        }
-      />
-
-      {/* Sticky search nav: fixed, hidden while the hero search is visible.
-          `inert` while hidden keeps its (otherwise invisible, duplicate)
-          logo/search/cart controls out of both the tab order and the
-          accessibility tree — without it, keyboard and screen-reader users
-          would hit three unclickable phantom stops before ever reaching the
-          real, visible hero nav below. */}
       <div
-        inert={isHeroVisible}
-        className={`fixed inset-x-0 top-0 z-[95] px-4 pt-1 transition-all duration-200 sm:px-6 ${
-          isHeroVisible ? "pointer-events-none -translate-y-2 opacity-0" : "opacity-100"
-        }`}
-      >
-        <DesktopNav searchBarVariant="compact" />
-      </div>
-
-      {/* Static hero nav: logo + cart only, scrolls away naturally with the hero. */}
-      <div className="mx-auto max-w-6xl px-4 pt-1 sm:px-6">
-        <DesktopNav searchBarVariant="hidden" />
-      </div>
-
-      <div
-        ref={heroRef}
         className="relative mx-auto flex max-w-6xl flex-col gap-8 px-4 pb-20 pt-16 sm:px-6 sm:pb-24 sm:pt-20 lg:pb-28 lg:pt-24"
       >
         <div className="relative z-10 flex flex-col gap-8">
@@ -227,7 +164,7 @@ export default function HeroSearchNav({ restaurants }: { restaurants: Restaurant
               label="High Protein Pick"
               value="44g"
               // Warm red-orange — same protein accent used elsewhere in the app.
-              accentClassName="text-[#c2410c]"
+              accentClassName="text-[#c2410c] dark:text-[#f96306]"
               itemName="High Protein Bowl"
               restaurantName="Chipotle"
               wrapperClassName="hidden left-[-24px] -top-12 -rotate-6 lg:flex xl:left-[-100px]"
@@ -240,7 +177,7 @@ export default function HeroSearchNav({ restaurants }: { restaurants: Restaurant
               // Restrained blue (the shared `info` token) — distinct from the
               // protein/fiber accents and from the app's near-black calorie
               // color used elsewhere, so this pill reads as its own category.
-              accentClassName="text-info"
+              accentClassName="text-info dark:text-slate-300"
               itemName="Grilled Nuggets"
               restaurantName="Chick-fil-A"
               wrapperClassName="hidden right-[-24px] -top-16 rotate-4 lg:flex xl:right-[-80px]"
@@ -265,7 +202,7 @@ export default function HeroSearchNav({ restaurants }: { restaurants: Restaurant
               restaurantName="Chipotle"
               calories={180}
               standout="32g Protein"
-              accentClassName="text-[#c2410c]"
+              accentClassName="text-[#c2410c] dark:text-[#f96306]"
               wrapperClassName="hidden right-[-32px] -bottom-70 -rotate-7 lg:flex xl:right-[-72px]"
               floatStyle={floatVars("7.6s", "0.3s", "-4px")}
             />
@@ -273,12 +210,12 @@ export default function HeroSearchNav({ restaurants }: { restaurants: Restaurant
             <header className="text-center">
               <div className="inline-flex items-center gap-2.5">
                 <span aria-hidden="true" className="h-1 w-1 rounded-full bg-accent-strong" />
-                <SectionEyebrow className="text-xs tracking-[0.18em] text-slate-700 sm:text-sm">
+                <SectionEyebrow className="text-xs tracking-[0.18em] text-slate-700 dark:text-slate-200 sm:text-sm">
                   Real menu data, real macros
                 </SectionEyebrow>
                 <span aria-hidden="true" className="h-1 w-1 rounded-full bg-accent-strong" />
               </div>
-              <h1 className="font-heading text-display-1 mt-4 text-slate-900">
+              <h1 className="font-heading text-display-1 mt-4 text-slate-900 dark:text-slate-100">
                 Find High-Protein Fast Food Items in Seconds
               </h1>
             </header>
@@ -289,8 +226,8 @@ export default function HeroSearchNav({ restaurants }: { restaurants: Restaurant
           </Suspense>
 
           <div className="mx-auto flex flex-col items-center gap-4 text-center">
-            <p className="text-body-lg max-w-md text-slate-600">
-              Compare menu items, build your order, and see the total macros before you check out.
+            <p className="text-body-lg max-w-md text-slate-600 dark:text-slate-300">
+              Compare menu items, build your meal, and calculate your total nutrition.
             </p>
             <HeroRestaurantChips restaurants={restaurants} />
           </div>

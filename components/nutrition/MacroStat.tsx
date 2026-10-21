@@ -1,11 +1,12 @@
+import { macroColorTokens } from "@/components/nutrition/macroColorTokens";
 import type { ReactNode } from "react";
 import {
   formatMacroDisplayNumber,
   macroDisplayConfig,
 } from "@/components/nutrition/macroDisplay";
-import type { MacroKey } from "@/components/nutrition/macroDisplay";
+import type { NutritionMetricKey as MacroKey } from "@/components/nutrition/macroDisplay";
 
-type MacroStatSize = "summary" | "cartHeaderTotal" | "card" | "quick" | "cartCompact" | "cartDetailed" | "ingredientCompact";
+type MacroStatSize = "summary" | "cartHeaderTotal" | "card" | "gridCard" | "quick" | "cartCompact" | "cartDetailed" | "ingredientCompact";
 type MacroStatLabel = "label" | "shortLabel" | "uppercase" | "lowercase";
 
 type MacroStatProps = {
@@ -13,6 +14,7 @@ type MacroStatProps = {
   value: number | string;
   size: MacroStatSize;
   labelVariant?: MacroStatLabel;
+  labelStyle?: "default" | "ingredient";
   delta?: ReactNode;
 };
 
@@ -20,6 +22,7 @@ const valueClassBySize: Record<MacroStatSize, string> = {
   summary: "text-2xl font-bold",
   cartHeaderTotal: "text-value-1",
   card: "text-value-2",
+  gridCard: "text-lg leading-none font-bold lg:text-xl",
   quick: "text-sm leading-4 font-bold",
   cartCompact: "text-value-inline",
   cartDetailed: "text-base font-semibold",
@@ -52,11 +55,19 @@ export default function MacroStat({
   value,
   size,
   labelVariant = "label",
+  labelStyle = "default",
   delta,
 }: MacroStatProps) {
-  const toneClass = macroDisplayConfig[macroKey].valueClassNameByVariant.default;
+  const isCompact = size === "quick" || size === "cartCompact" || size === "cartDetailed" || size === "gridCard" || size === "ingredientCompact";
+  const baseToneClass = isCompact
+    ? macroColorTokens[macroKey].compactValueClassName
+    : macroDisplayConfig[macroKey].valueClassNameByVariant.default;
+  const toneClass = `${baseToneClass}${macroKey === "totalFat" && size === "gridCard" ? " dark:lg:text-[#336dfa]" : macroKey === "totalFat" && size === "ingredientCompact" ? " dark:sm:text-[#336dfa]" : ""}`;
   const displayValue = formatMacroValue(macroKey, value);
   const label = resolveLabel(macroKey, labelVariant);
+  const ingredientLabelClassName = `font-semibold uppercase tracking-wide text-black/80 dark:text-slate-300 ${
+    macroKey === "protein" ? "text-[9px] sm:text-[10px]" : "text-[10px]"
+  }`;
 
   if (size === "summary") {
     return (
@@ -77,19 +88,19 @@ export default function MacroStat({
           <div className={`${valueClassBySize[size]} ${toneClass}`}>{displayValue}</div>
           {delta ? <span className="text-sm font-bold text-green-600">{delta}</span> : null}
         </div>
-        <div className="mt-0.5 text-[11px] font-bold tracking-wide text-slate-500">{label}</div>
+        <div className="mt-0.5 text-[11px] font-bold tracking-wide text-slate-500 dark:text-slate-400">{label}</div>
       </div>
     );
   }
 
-  if (size === "card") {
+  if (size === "card" || size === "gridCard") {
     return (
       <div className="flex flex-col items-center justify-start">
         <div className="inline-flex items-baseline gap-1">
           <div className={`${valueClassBySize[size]} ${toneClass}`}>{displayValue}</div>
           {delta ? <span className="text-xs font-bold text-success">{delta}</span> : null}
         </div>
-        <div className="text-[10px] font-bold tracking-wide text-slate-500">{label}</div>
+        <div className={labelStyle === "ingredient" ? ingredientLabelClassName : `${size === "gridCard" ? "text-[9px]" : "text-[10px]"} font-bold tracking-wide text-slate-500 dark:text-slate-400`}>{label}</div>
       </div>
     );
   }
@@ -107,7 +118,7 @@ export default function MacroStat({
 
   if (size === "cartCompact") {
     return (
-      <p className="text-slate-500">
+      <p className="text-slate-500 dark:text-slate-400">
         {label}:<span className={`ml-1 ${valueClassBySize[size]} ${toneClass}`}>{displayValue}</span>
       </p>
     );
@@ -118,9 +129,7 @@ export default function MacroStat({
       <div className="flex min-w-[44px] flex-col items-center gap-1 sm:min-w-[54px]">
         <div className={`${valueClassBySize[size]} ${toneClass}`}>{displayValue}</div>
         <div
-          className={`font-semibold uppercase tracking-wide text-black/80 ${
-            macroKey === "protein" ? "text-[9px] sm:text-[10px]" : "text-[10px]"
-          }`}
+          className={ingredientLabelClassName}
         >
           {label}
         </div>
@@ -129,7 +138,7 @@ export default function MacroStat({
   }
 
   return (
-    <p className="whitespace-nowrap text-slate-500">
+    <p className="whitespace-nowrap text-slate-500 dark:text-slate-400">
       <span className={`${valueClassBySize[size]} ${toneClass}`}>{displayValue}</span>
       <span className="ml-1 text-xs">{label}</span>
     </p>

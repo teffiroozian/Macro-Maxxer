@@ -9,6 +9,7 @@ import { getRestaurantData } from "@/lib/restaurants";
 export type ItemPreviewState = {
   restaurant: RestaurantData;
   item: MenuItem;
+  initialVariantId?: string;
   addons: ResolvedAddonGroups;
 };
 
@@ -27,15 +28,17 @@ export function useItemPreviewModal() {
     setPreviewState(null);
   };
 
-  const openPreview = async (restaurantId: string, item: MenuItem) => {
+  const openPreview = async (restaurantId: string, item: MenuItem, initialVariantId?: string) => {
     const restaurant = await getRestaurantData(restaurantId);
     if (!restaurant) {
       return;
     }
 
+    const catalogItem = restaurant.items.find((candidate) => candidate.id === item.id) ?? item;
     setPreviewState({
       restaurant,
-      item,
+      item: catalogItem,
+      initialVariantId: catalogItem.variants?.some((variant) => variant.id === initialVariantId) ? initialVariantId : undefined,
       addons: resolveAddonMenuItems(restaurant.addonGroups, restaurant.items),
     });
   };

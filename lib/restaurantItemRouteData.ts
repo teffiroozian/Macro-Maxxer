@@ -3,7 +3,7 @@ import { getItemBySlug, getRestaurantData, toItemSlug } from "@/lib/restaurants"
 import { resolveChipotleLegacyItemRoute } from "@/lib/restaurantBuilders/chipotle/legacyCompatibility";
 import { resolveEffectiveIngredientNutrition } from "@/lib/ingredientNutrition";
 
-export async function getRestaurantItemRouteData(id: string, itemSlug: string) {
+export async function getRestaurantItemRouteData(id: string, itemSlug: string, requestedVariantId?: string) {
   const restaurant = await getRestaurantData(id);
 
   if (!restaurant || restaurant.isComingSoon) {
@@ -58,6 +58,10 @@ export async function getRestaurantItemRouteData(id: string, itemSlug: string) {
   }
   if (!item) {
     return null;
+  }
+
+  if (requestedVariantId && item.variants?.some((variant) => variant.id === requestedVariantId)) {
+    initialVariantId = requestedVariantId;
   }
 
   const addons = resolveAddonMenuItems(restaurant.addonGroups, restaurant.items);

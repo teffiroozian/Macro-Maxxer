@@ -23,7 +23,7 @@ function NativeTab({ label, accessibleLabel = label, active, onClick, children }
       aria-label={accessibleLabel}
       aria-current={active ? "page" : undefined}
       className={`native-floating-tab flex min-w-0 cursor-pointer flex-col items-center justify-center gap-0.5 rounded-[26px] transition-colors duration-200 ease-out focus-ring ${
-        active ? "bg-accent text-white active:bg-accent-strong" : "text-slate-700 active:bg-slate-900/[.06]"
+        active ? "bg-accent text-white dark:text-slate-950 active:bg-accent-strong" : "text-slate-700 dark:text-slate-300 active:bg-slate-900/[.06] dark:active:bg-surface-hover"
       }`}
     >
       {children}
@@ -64,7 +64,7 @@ export default function NativeBottomNav() {
         <NativeTab label="Restaurants" active={destination === "restaurants"} onClick={() => navigate("/restaurants")}>
           <Store size={23} strokeWidth={destination === "restaurants" ? 2.4 : 2} aria-hidden="true" />
         </NativeTab>
-        <NativeTab label="Order" accessibleLabel={getOrderCountLabel(cartCount)} active={destination === "order"} onClick={() => navigate("/cart")}>
+        <NativeTab label="My Meal" accessibleLabel={getOrderCountLabel(cartCount)} active={destination === "order"} onClick={() => navigate("/cart")}>
           <OrderBagIcon count={cartCount} active={destination === "order"} />
         </NativeTab>
       </div>
@@ -74,7 +74,7 @@ export default function NativeBottomNav() {
         aria-current={destination === "search" ? "page" : undefined}
         onClick={() => navigate("/search")}
         className={`glass-surface native-search-tab flex size-[62px] flex-none cursor-pointer items-center justify-center rounded-full transition-colors duration-200 ease-out focus-ring ${
-          destination === "search" ? "native-search-active text-white" : "text-slate-700 active:bg-slate-900/[.06]"
+          destination === "search" ? "native-search-active text-white dark:text-slate-950" : "text-slate-700 dark:text-slate-300 active:bg-slate-900/[.06] dark:active:bg-surface-hover"
         }`}
       >
         <Search size={24} strokeWidth={2.4} aria-hidden="true" />

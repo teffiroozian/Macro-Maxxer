@@ -50,22 +50,22 @@ export default function ProductPreviewCard({
   return (
     <Link
       href={href}
-      className="group block rounded-3xl focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-slate-900"
+      className="group block rounded-3xl focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-slate-900 dark:focus-visible:outline-slate-50"
     >
       <SurfaceCard
         as="article"
         radius="large"
         shadow="md"
         padding="none"
-        className="overflow-hidden bg-white transition duration-300 group-hover:-translate-y-1 group-hover:shadow-elev-hover"
+        className="overflow-hidden bg-white dark:bg-surface-card transition duration-300 group-hover:-translate-y-1 group-hover:shadow-elev-hover"
       >
         {/* Light "device chrome" — signals this is a real product view, not
             a decorative image. */}
-        <div className="flex items-center gap-1.5 border-b border-black/5 bg-slate-50/80 px-5 py-3">
-          <span className="h-2 w-2 rounded-full bg-slate-300" />
-          <span className="h-2 w-2 rounded-full bg-slate-300" />
-          <span className="h-2 w-2 rounded-full bg-slate-300" />
-          <span className="ml-2 truncate text-xs font-medium text-slate-400">
+        <div className="flex items-center gap-1.5 border-b border-black/5 dark:border-hairline bg-slate-50/80 dark:bg-surface-subtle px-5 py-3">
+          <span className="h-2 w-2 rounded-full bg-slate-300 dark:bg-control" />
+          <span className="h-2 w-2 rounded-full bg-slate-300 dark:bg-control" />
+          <span className="h-2 w-2 rounded-full bg-slate-300 dark:bg-control" />
+          <span className="ml-2 truncate text-xs font-medium text-slate-400 dark:text-slate-400">
             Macro Maxxer · {restaurantName} · Item View
           </span>
         </div>
@@ -78,9 +78,9 @@ export default function ProductPreviewCard({
                 alt=""
                 size="sm"
                 ring={false}
-                className="border border-black/10"
+                className="border border-black/10 dark:border-hairline"
               />
-              <span className="text-sm font-medium text-slate-500">{restaurantName}</span>
+              <span className="text-sm font-medium text-slate-500 dark:text-slate-400">{restaurantName}</span>
             </div>
 
             <RestaurantItemImage
@@ -89,7 +89,7 @@ export default function ProductPreviewCard({
               imagePresentation={itemImagePresentation}
               fallbackClassName={restaurantImagePresentation.itemDetailImageClassName ?? "object-cover"}
               fallbackBackgroundColor={restaurantImagePresentation.imageBackgroundColor}
-              containerClassName="relative h-40 w-40 overflow-hidden rounded-2xl border border-black/10 bg-slate-50"
+              containerClassName="relative h-40 w-40 overflow-hidden rounded-2xl border border-black/10 dark:border-hairline bg-slate-50 dark:bg-image-placeholder!"
               renderer="next-image"
               sizes="160px"
               overlay={
@@ -105,13 +105,13 @@ export default function ProductPreviewCard({
           <div className="flex min-w-0 flex-1 flex-col gap-4">
             <div>
               {tag ? (
-                <span className="inline-flex rounded-full bg-slate-900 px-2.5 py-0.5 text-[11px] font-bold uppercase tracking-wide text-white">
+                <span className="inline-flex rounded-full bg-slate-900 dark:bg-surface-hover px-2.5 py-0.5 text-[11px] font-bold uppercase tracking-wide text-white">
                   {tag}
                 </span>
               ) : null}
-              <h3 className="font-heading mt-2 text-2xl font-bold text-slate-900">{itemName}</h3>
+              <h3 className="font-heading mt-2 text-2xl font-bold text-slate-900 dark:text-slate-100">{itemName}</h3>
               {itemDescription ? (
-                <p className="mt-1.5 text-sm leading-snug text-slate-500">{itemDescription}</p>
+                <p className="mt-1.5 text-sm leading-snug text-slate-500 dark:text-slate-400">{itemDescription}</p>
               ) : null}
             </div>
 
@@ -126,12 +126,12 @@ export default function ProductPreviewCard({
                 part of that same gap-4) rather than sitting equidistant
                 between the two — it's the stats' own supporting detail, not
                 a card centered between two neighbors. */}
-            <p className="mt-3 inline-flex w-fit items-center gap-1.5 rounded-full bg-emerald-50 py-1 pl-1 pr-2.5 text-xs text-emerald-700 sm:mt-4">
-              <span className="flex h-4 w-4 shrink-0 items-center justify-center rounded-full bg-emerald-600">
-                <Zap className="h-2.5 w-2.5 text-emerald-50" strokeWidth={2.5} aria-hidden="true" />
+            <p className="mt-3 inline-flex w-fit items-center gap-1.5 rounded-full bg-emerald-50 dark:bg-accent-soft py-1 pl-1 pr-2.5 text-xs text-emerald-700 dark:text-accent-strong sm:mt-4">
+              <span className="flex h-4 w-4 shrink-0 items-center justify-center rounded-full bg-emerald-600 dark:bg-accent">
+                <Zap className="h-2.5 w-2.5 text-emerald-50 dark:text-slate-950" strokeWidth={2.5} aria-hidden="true" />
               </span>
               <span className="font-bold">{proteinPer100Calories}g protein</span>
-              <span className="text-emerald-700/70">per 100 cal</span>
+              <span className="text-emerald-700/70 dark:text-slate-400">per 100 cal</span>
             </p>
 
             <div className="-mt-2 flex flex-wrap items-end gap-x-6 gap-y-4 sm:gap-x-8">

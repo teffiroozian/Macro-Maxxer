@@ -10,7 +10,7 @@ import { useRecentMenuItems } from "@/lib/search/useRecentMenuItems";
 import { getCartRestaurantContext } from "@/lib/search/getCartRestaurantContext";
 import { useRecentAndPopularRestaurants } from "@/lib/search/useRecentAndPopularRestaurants";
 import { useGlobalSearch } from "@/components/GlobalSearchContext";
-import { getAllRestaurants } from "@/lib/restaurants";
+import { useRestaurantCatalog } from "@/components/RestaurantCatalogContext";
 import { useCart } from "@/stores/cartStore";
 import { useDebouncedValue } from "@/hooks/useDebouncedValue";
 import { trackSearch, type SearchContext } from "@/lib/analytics";
@@ -105,7 +105,7 @@ export function useGlobalSearchState() {
   const isEmptyQuery = !query.trim();
 
   // ----- Restaurants scope -----
-  const restaurants = useMemo(() => getAllRestaurants(), []);
+  const restaurants = useRestaurantCatalog();
   const restaurantResults = useMemo(() => searchRestaurants(restaurants, query), [restaurants, query]);
   const { recentRestaurants, popularRestaurants, removeRecent } = useRecentAndPopularRestaurants(restaurants);
   const restaurantSuggestions = isEmptyQuery ? [...recentRestaurants, ...popularRestaurants] : restaurantResults;

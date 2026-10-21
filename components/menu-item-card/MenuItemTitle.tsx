@@ -1,5 +1,6 @@
 "use client";
 
+import { getCleanMenuItemName } from "@/lib/menuItemCard/titlePresentation";
 import { useEffect, useRef, useState } from "react";
 
 const HOVER_SCROLL_DELAY_MS = 600;
@@ -20,6 +21,7 @@ export default function MenuItemTitle({
   className?: string;
   as?: "div" | "h2" | "h3";
 }) {
+  name = getCleanMenuItemName(name);
   const containerRef = useRef<HTMLSpanElement | null>(null);
   const textRef = useRef<HTMLSpanElement | null>(null);
   const [isOverflowing, setIsOverflowing] = useState(false);
@@ -97,7 +99,7 @@ export default function MenuItemTitle({
         {isOverflowing ? (
           <span
             aria-hidden="true"
-            className={`pointer-events-none absolute inset-y-0 right-0 w-10 bg-gradient-to-r from-transparent to-white transition-opacity duration-300 ${
+            className={`pointer-events-none absolute inset-y-0 right-0 w-10 bg-gradient-to-r from-transparent to-white dark:to-surface-card transition-opacity duration-300 ${
               isScrolled ? "opacity-0" : "opacity-100"
             }`}
           />

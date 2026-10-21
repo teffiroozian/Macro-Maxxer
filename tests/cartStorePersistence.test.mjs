@@ -48,6 +48,12 @@ test.beforeEach(() => {
   __cartStoreTestUtils.resetPersistenceForTests();
 });
 
+test('server cart snapshot stays empty after client state changes', () => {
+  __cartStoreTestUtils.resetCartState({ items: [customizedItem] });
+  assert.deepEqual(__cartStoreTestUtils.getServerSnapshot().items, []);
+  assert.equal(__cartStoreTestUtils.getServerSnapshot().lastAddedItemId, null);
+});
+
 test('saved structured cart hydrates after a simulated app reload', () => {
   __cartStoreTestUtils.addItem(customizedItem);
   assert.ok(storage.has(CART_STORAGE_KEY));

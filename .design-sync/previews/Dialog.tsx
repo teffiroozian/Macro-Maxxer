@@ -7,7 +7,7 @@ export function ConfirmDialog() {
         Clear cart?
       </SectionEyebrow>
       <p id="dialog-desc" style={{ marginTop: 8, fontSize: 14, color: '#475569' }}>
-        This removes every item you've added. You can't undo this.
+        This removes every item you&apos;ve added. You can&apos;t undo this.
       </p>
       <div style={{ display: 'flex', gap: 12, marginTop: 20, justifyContent: 'flex-end' }}>
         <AppButton variant="ghost">Cancel</AppButton>

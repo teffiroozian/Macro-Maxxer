@@ -3139,7 +3139,7 @@ async function main(): Promise<void> {
   }
   for (const group of visibleGroupsByCanonicalIdentity.values()) {
     if (group.length < 2) continue;
-    const [preferred, ...duplicates] = group;
+    const [, ...duplicates] = group;
     for (const item of duplicates) {
       item.sourceOnly = true;
       item.source.menu.role = "structural";

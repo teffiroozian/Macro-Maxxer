@@ -1,3 +1,4 @@
+import { isLogoImage } from "@/lib/logoPresentation";
 import type { CSSProperties, ReactNode } from "react";
 import AppImage from "@/components/ui/AppImage";
 import { itemImageContainerStyle, resolveItemImagePresentation } from "@/lib/itemImagePresentation";
@@ -72,7 +73,7 @@ export default function RestaurantItemImage({
 
   return (
     <div
-      className={containerClassName}
+      className={isLogoImage(src) ? `${containerClassName ?? ""} logo-surface` : containerClassName}
       style={backgroundStyle ? { ...containerStyle, ...backgroundStyle } : containerStyle}
     >
       {src ? (

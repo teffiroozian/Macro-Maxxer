@@ -8,9 +8,6 @@ import SurfaceCard from "@/components/ui/SurfaceCard";
 import MacroStat from "@/components/nutrition/MacroStat";
 import { appButtonClassName } from "@/components/ui/AppButton";
 import CartNutritionSummary from "@/components/cart/CartNutritionSummary";
-import GlobalMobileNav from "@/components/GlobalMobileNav";
-import GlobalMobileMenuButton from "@/components/GlobalMobileMenuButton";
-import DesktopNav from "@/components/DesktopNav";
 import EmptyStateCard from "@/components/EmptyStateCard";
 import ItemRouteModal from "@/components/item-route-modal/ItemRouteModal";
 import CartItemsSection from "@/components/cart/CartItemsSection";
@@ -70,22 +67,20 @@ function WebCartPage() {
 
   return (
     <>
-      <GlobalMobileNav leadingButton={<GlobalMobileMenuButton />} />
-      <div className="px-4 pt-1 sm:px-6"><DesktopNav searchBarVariant="compact" /></div>
-      <main className="native-top-level-page native-nav-page mx-auto flex min-h-[var(--app-viewport-height)] w-full max-w-5xl flex-col gap-8 px-4 pb-[max(4rem,var(--safe-area-bottom))] pt-[calc(7rem+var(--safe-area-top))] sm:px-6 lg:gap-10 lg:pb-20 lg:pt-10">
+      <main className="native-top-level-page mx-auto flex min-h-[var(--app-viewport-height)] w-full max-w-5xl flex-col gap-8 px-4 pb-[max(4rem,var(--safe-area-bottom))] pt-14 sm:px-6 lg:gap-10 lg:pb-20 lg:pt-10">
         <header className="flex flex-col gap-5 lg:flex-row lg:items-center lg:justify-between lg:gap-24">
           <div className="flex flex-col gap-3 lg:shrink-0">
-            <h1 className="font-heading text-3xl font-bold leading-tight text-slate-900 sm:text-4xl">
-              Your Cart
+            <h1 className="font-heading text-3xl font-bold leading-tight text-slate-900 dark:text-slate-100 sm:text-4xl">
+              My Meal
             </h1>
             {!isEmpty ? (
               <div className="flex flex-wrap items-center gap-2">
-                <span className="inline-flex w-fit items-center rounded-full bg-emerald-50 px-3 py-1 text-xs font-semibold text-emerald-700">
+                <span className="inline-flex w-fit items-center rounded-full bg-emerald-50 dark:bg-accent-soft px-3 py-1 text-xs font-semibold text-emerald-700 dark:text-accent-strong">
                   {itemCount} item{itemCount === 1 ? "" : "s"}
                 </span>
                 <AppButton variant="secondary" size="sm" onClick={() => setIsExportOpen(true)}>
                   <Download className="size-3.5" aria-hidden="true" />
-                  Export Order
+                  Share Meal
                 </AppButton>
               </div>
             ) : null}
@@ -101,15 +96,15 @@ function WebCartPage() {
               <div className="flex flex-1 justify-center px-2 py-3.5 sm:px-4 sm:py-4 lg:px-5">
                 <MacroStat macroKey="calories" value={displayNutritionTotals.calories} labelVariant="uppercase" size="cartHeaderTotal" />
               </div>
-              <div className="my-auto h-9 w-px bg-black/[0.08] sm:h-11" aria-hidden="true" />
+              <div className="my-auto h-9 w-px bg-black/[0.08] dark:bg-divider sm:h-11" aria-hidden="true" />
               <div className="flex flex-1 justify-center px-2 py-3.5 sm:px-4 sm:py-4 lg:px-5">
                 <MacroStat macroKey="protein" value={displayNutritionTotals.protein} labelVariant="uppercase" size="cartHeaderTotal" />
               </div>
-              <div className="my-auto h-9 w-px bg-black/[0.08] sm:h-11" aria-hidden="true" />
+              <div className="my-auto h-9 w-px bg-black/[0.08] dark:bg-divider sm:h-11" aria-hidden="true" />
               <div className="flex flex-1 justify-center px-2 py-3.5 sm:px-4 sm:py-4 lg:px-5">
                 <MacroStat macroKey="carbs" value={displayNutritionTotals.carbs} labelVariant="uppercase" size="cartHeaderTotal" />
               </div>
-              <div className="my-auto h-9 w-px bg-black/[0.08] sm:h-11" aria-hidden="true" />
+              <div className="my-auto h-9 w-px bg-black/[0.08] dark:bg-divider sm:h-11" aria-hidden="true" />
               <div className="flex flex-1 justify-center px-2 py-3.5 sm:px-4 sm:py-4 lg:px-5">
                 <MacroStat macroKey="totalFat" value={displayNutritionTotals.totalFat} labelVariant="uppercase" size="cartHeaderTotal" />
               </div>
@@ -119,8 +114,8 @@ function WebCartPage() {
 
         {isEmpty ? (
           <EmptyStateCard
-            title="Your cart is empty."
-            description="Your totals fill in as you add items. Add one to start meal finalization."
+            title="Your meal is empty."
+            description="Your totals fill in as you add items. Add one to start building your meal."
             action={
               <Link href="/#restaurants" className={appButtonClassName({ variant: "primary", size: "lg" })}>
                 Browse Restaurants
@@ -140,22 +135,22 @@ function WebCartPage() {
         <section className="flex flex-col gap-4 mt-6 sm:mt-8 lg:mt-14">
           <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
             <div className="flex flex-col gap-1.5">
-              <SectionEyebrow className="text-sm text-slate-500">Order Summary</SectionEyebrow>
+              <SectionEyebrow className="text-sm text-slate-500 dark:text-slate-400">Meal Summary</SectionEyebrow>
               {isEmpty ? (
-                <p className="text-sm text-slate-500">A preview of what you&rsquo;ll see here.</p>
+                <p className="text-sm text-slate-500 dark:text-slate-400">A preview of what you&rsquo;ll see here.</p>
               ) : (
                 <>
-                  <h2 className="font-heading text-2xl font-bold text-slate-900 sm:text-3xl">
+                  <h2 className="font-heading text-2xl font-bold text-slate-900 dark:text-slate-100 sm:text-3xl">
                     Nutrition &amp; Meal Details
                   </h2>
-                  <p className="text-sm text-slate-500">Totals and items for everything currently in your cart.</p>
+                  <p className="text-sm text-slate-500 dark:text-slate-400">Totals and items for everything currently in your meal.</p>
                 </>
               )}
             </div>
             {!isEmpty ? (
               <AppButton variant="secondary" size="md" className="w-full shrink-0 sm:w-auto" onClick={() => setIsExportOpen(true)}>
                 <Download className="size-4" aria-hidden="true" />
-                Export Order
+                Share Meal
               </AppButton>
             ) : null}
           </div>

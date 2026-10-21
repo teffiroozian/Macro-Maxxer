@@ -13,8 +13,6 @@ import type { RestaurantData } from "@/types/restaurant";
 import HomeSectionHeading from "@/components/home/HomeSectionHeading";
 import HomeSectionContainer, { HOME_VISUAL_WIDTH_CLASS } from "@/components/home/HomeSectionContainer";
 import LiveRestaurantsBadge from "@/components/home/LiveRestaurantsBadge";
-import { RestaurantUiProvider } from "@/components/RestaurantUiContext";
-import CartPreviewDrawer from "@/components/cart/CartPreviewDrawer";
 import { IS_CAPACITOR_BUILD } from "@/lib/buildTarget";
 import NativeHomePage from "@/components/native/NativeHomePage";
 import { getAllRestaurants, getRestaurantData, toItemSlug } from "@/lib/restaurants";
@@ -211,7 +209,7 @@ export default async function Home() {
       CHIPOTLE_HOMEPAGE_EDITORIAL.reviewItems.length;
 
   return (
-    <RestaurantUiProvider>
+    <>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
@@ -233,13 +231,15 @@ export default async function Home() {
                 eyebrowVariant="pill"
                 eyebrow={<LiveRestaurantsBadge count={liveRestaurants.length} />}
                 heading="Jump Straight to the Menu"
-                description="Every supported restaurant comes with a full menu, real nutrition data, and an order builder."
+                description="Every supported restaurant comes with a full menu, real nutrition data, and a meal builder."
               />
 
-              <div className="mt-4 text-center">
+              {/* The carousel's shadow padding extends above its layout box.
+                  Keep this link above that scroll area so clicks and taps reach it. */}
+              <div className="relative z-10 mt-4 text-center">
                 <Link
                   href="/restaurants"
-                  className="inline-flex items-center gap-1 text-sm font-semibold text-slate-600 transition hover:text-slate-950 focus-ring"
+                  className="inline-flex items-center gap-1 text-sm font-semibold text-slate-600 dark:text-slate-300 transition hover:text-slate-950 dark:hover:text-slate-50 focus-ring"
                 >
                   View all restaurants <span aria-hidden="true">→</span>
                 </Link>
@@ -259,14 +259,14 @@ export default async function Home() {
                   same treatment. */}
               <div
                 aria-hidden="true"
-                className="pointer-events-none absolute inset-y-0 left-1/2 -z-10 w-screen -translate-x-1/2 bg-gradient-to-b from-transparent via-emerald-100/80 to-transparent"
+                className="pointer-events-none absolute inset-y-0 left-1/2 -z-10 w-screen -translate-x-1/2 bg-gradient-to-b from-transparent via-emerald-100/80 dark:via-surface-card/40 to-transparent"
               />
 
               <HomeSectionContainer className="py-16 sm:py-20 lg:py-24">
                 <HomeSectionHeading
                   eyebrow="How It Works"
-                  heading="Build an Order That Fits Your Goals"
-                  description="Compare menus, customize your meal, and review the full macros before ordering."
+                  heading="Build a Meal That Fits Your Goals"
+                  description="Compare menus, customize your meal, and review your meal’s total nutrition."
                 />
 
                 <div className="mt-10">
@@ -289,14 +289,14 @@ export default async function Home() {
             <div className="relative">
               <div
                 aria-hidden="true"
-                className="pointer-events-none absolute inset-y-0 left-1/2 -z-10 w-screen -translate-x-1/2 bg-gradient-to-b from-transparent via-slate-50/80 to-transparent"
+                className="pointer-events-none absolute inset-y-0 left-1/2 -z-10 w-screen -translate-x-1/2 bg-gradient-to-b from-transparent via-slate-50/80 dark:via-surface-card/40 to-transparent"
               />
 
               <HomeSectionContainer className="py-20 sm:py-24 lg:py-28">
                 <HomeSectionHeading
                   eyebrow="See It In Action"
                   heading="Real Menu Data, Real Macros"
-                  description="Every item shows calories, protein, carbs, and fat up front — before you customize or add it to your order."
+                  description="Every item shows calories, protein, carbs, and fat up front — before you customize or add it to your meal."
                 />
 
                 <div className={`mx-auto mt-10 w-full ${HOME_VISUAL_WIDTH_CLASS}`}>
@@ -317,8 +317,6 @@ export default async function Home() {
           ) : null}
         </main>
       </div>
-
-      {!IS_CAPACITOR_BUILD ? <CartPreviewDrawer /> : null}
-    </RestaurantUiProvider>
+    </>
   );
 }

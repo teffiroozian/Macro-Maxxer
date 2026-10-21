@@ -67,7 +67,7 @@ test("selected fries and beverage variants use loadable exact or same-family ima
   const fries = menu.items.find((item) => item.id === "mcd-item-200066");
   const mediumFries = fries.variants.find((variant) => variant.id === "mcd-item-201234");
   const largeFries = fries.variants.find((variant) => variant.id === "mcd-item-200083");
-  assert.match(fries.image, /t-mcdonalds-fries-small/);
+  assert.match(fries.image, /DC_202408_6050_SmallFrenchFries_Standing_1564x1564/);
   assert.match(mediumFries.image, /t-mcdonalds-fries-medium/);
   assert.match(largeFries.image, /t-mcdonalds-fries-large/);
   assert.notEqual(mediumFries.image, fries.image);

@@ -1,6 +1,8 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useSheetLayer } from "@/hooks/useSheetLayer";
+
+import { useMemo, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { ArrowLeft, ChevronRight, X, Zap } from "lucide-react";
 import { formatMacroDisplayNumber, formatProteinScoreDisplay } from "@/components/nutrition/macroDisplay";
@@ -76,8 +78,8 @@ function ScoreScale({ score }: { score: number }) {
   const markerPosition = ((tierIndex + progress) / PROTEIN_SCORE_TIER_ORDER.length) * 100;
 
   return (
-    <div className="mt-6 border-t border-black/[0.06] pt-5">
-      <h3 className="text-xs font-bold uppercase tracking-[0.12em] text-slate-500">Where it lands</h3>
+    <div className="mt-6 border-t border-black/[0.06] dark:border-divider pt-5">
+      <h3 className="text-xs font-bold uppercase tracking-[0.12em] text-slate-500 dark:text-slate-400">Where it lands</h3>
       <div className="relative mt-8">
         <div
           className={`absolute -top-7 -translate-x-1/2 text-xs font-bold ${styles.text}`}
@@ -98,10 +100,10 @@ function ScoreScale({ score }: { score: number }) {
         <div className="mt-2 grid grid-cols-5 gap-1">
           {PROTEIN_SCORE_TIER_ORDER.map((scaleTier) => (
             <div key={scaleTier} className="min-w-0">
-              <p className={`truncate text-[10px] font-semibold sm:text-xs ${tier === scaleTier ? tierColors[scaleTier].text : "text-slate-500"}`}>
+              <p className={`truncate text-[10px] font-semibold sm:text-xs ${tier === scaleTier ? tierColors[scaleTier].text : "text-slate-500 dark:text-slate-400"}`}>
                 {PROTEIN_SCORE_TIER_SCALE[scaleTier].label}
               </p>
-              <p className="mt-0.5 text-[10px] text-slate-400">{PROTEIN_SCORE_TIER_SCALE[scaleTier].tickLabel}</p>
+              <p className="mt-0.5 text-[10px] text-slate-400 dark:text-slate-400">{PROTEIN_SCORE_TIER_SCALE[scaleTier].tickLabel}</p>
             </div>
           ))}
         </div>
@@ -115,22 +117,22 @@ function ScoreDetail({ label, score, protein, calories }: { label: string; score
   const styles = tierColors[tier];
   return (
     <>
-      <p className="text-xs font-bold uppercase tracking-[0.12em] text-slate-500">{label}</p>
+      <p className="text-xs font-bold uppercase tracking-[0.12em] text-slate-500 dark:text-slate-400">{label}</p>
       <div className={`mt-4 rounded-2xl p-5 ${styles.soft}`}>
         <div className="flex items-center gap-3 whitespace-nowrap">
           <span className={`flex h-10 w-10 items-center justify-center rounded-full ${styles.iconBg}`}>
             <Zap className={`h-5 w-5 ${styles.icon}`} fill="currentColor" aria-hidden="true" />
           </span>
-          <p className="min-w-0 text-sm font-medium text-slate-500 sm:text-base">
+          <p className="min-w-0 text-sm font-medium text-slate-500 dark:text-slate-400 sm:text-base">
             <span className={`text-3xl font-bold leading-none ${styles.text}`}>{formatProteinScoreDisplay(score)}g</span>
             <span className="ml-2.5">per 100 calories</span>
           </p>
         </div>
       </div>
-      <div className="mt-6 border-t border-black/[0.06] pt-5">
-        <h3 className="text-xs font-bold uppercase tracking-[0.12em] text-slate-500">How it&apos;s calculated</h3>
-        <div className="mt-3 rounded-xl bg-slate-50 px-4 py-3 text-center text-sm font-normal tabular-nums text-slate-600">
-          {formatProteinScoreDisplay(protein)}g protein <span className="text-slate-400">÷</span> {formatProteinScoreDisplay(calories)} cal <span className="text-slate-400">×</span> 100 <span className="text-slate-400">=</span> <span className={`font-bold ${styles.text}`}>{formatProteinScoreDisplay(score)}</span>
+      <div className="mt-6 border-t border-black/[0.06] dark:border-divider pt-5">
+        <h3 className="text-xs font-bold uppercase tracking-[0.12em] text-slate-500 dark:text-slate-400">How it&apos;s calculated</h3>
+        <div className="mt-3 rounded-xl bg-slate-50 dark:bg-surface-subtle px-4 py-3 text-center text-sm font-normal tabular-nums text-slate-600 dark:text-slate-300">
+          {formatProteinScoreDisplay(protein)}g protein <span className="text-slate-400 dark:text-slate-400">÷</span> {formatProteinScoreDisplay(calories)} cal <span className="text-slate-400 dark:text-slate-400">×</span> 100 <span className="text-slate-400 dark:text-slate-400">=</span> <span className={`font-bold ${styles.text}`}>{formatProteinScoreDisplay(score)}</span>
         </div>
       </div>
       <ScoreScale score={score} />
@@ -167,8 +169,8 @@ function NestedProteinScoreBreakdown({
   );
 
   return (
-    <div className="mt-6 border-t border-black/[0.06] pt-5">
-      <h3 className="text-xs font-bold uppercase tracking-[0.12em] text-slate-500">{label}</h3>
+    <div className="mt-6 border-t border-black/[0.06] dark:border-divider pt-5">
+      <h3 className="text-xs font-bold uppercase tracking-[0.12em] text-slate-500 dark:text-slate-400">{label}</h3>
       <div className="mt-3 divide-y divide-black/[0.06]">
         {rankedItems.map((nestedItem) => {
           const nestedScore = getProteinPer100Calories(nestedItem.protein, nestedItem.calories);
@@ -182,10 +184,10 @@ function NestedProteinScoreBreakdown({
                 imagePresentation={nestedItem.imagePresentation}
                 fallbackClassName={imageClassName ?? "object-contain p-1"}
                 fallbackBackgroundColor={imageBackgroundColor}
-                containerClassName="h-11 w-11 shrink-0 overflow-hidden rounded-xl border border-black/10 bg-slate-50"
+                containerClassName="h-11 w-11 shrink-0 overflow-hidden rounded-xl border border-black/10 dark:border-hairline bg-slate-50 dark:bg-surface-subtle"
               />
               <span className="min-w-0 flex-1">
-                <span className="block truncate text-sm font-semibold text-slate-900">{nestedItem.name}</span>
+                <span className="block truncate text-sm font-semibold text-slate-900 dark:text-slate-100">{nestedItem.name}</span>
                 <span
                   className={`mt-0.5 block text-xs font-semibold ${hasScore && nestedTier ? tierColors[nestedTier].text : tierColors.low.text}`}
                 >
@@ -240,18 +242,7 @@ export default function ProteinScoreDetails({
   // never has anything to click.
   const singleItem = !isAggregate && items.length === 1 ? items[0] : undefined;
 
-  useEffect(() => {
-    if (!open) return;
-    const previousOverflow = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
-    const onKeyDown = (event: KeyboardEvent) => event.key === "Escape" && onClose();
-    window.addEventListener("keydown", onKeyDown);
-    requestAnimationFrame(() => closeButtonRef.current?.focus());
-    return () => {
-      document.body.style.overflow = previousOverflow;
-      window.removeEventListener("keydown", onKeyDown);
-    };
-  }, [open, onClose]);
+  useSheetLayer({ open, onClose, initialFocusRef: closeButtonRef });
 
   if (!open) return null;
   const selectedScore = selectedItem
@@ -274,17 +265,18 @@ export default function ProteinScoreDetails({
       aria-modal="true"
       aria-labelledby="protein-score-title"
       onMouseDown={(event) => event.stopPropagation()}
+      onTouchStart={(event) => event.stopPropagation()}
       onClick={(event) => {
         event.stopPropagation();
         if (event.target === event.currentTarget) onClose();
       }}
     >
-      <section className="flex max-h-[85dvh] w-full flex-col overflow-hidden rounded-t-sheet bg-white shadow-2xl sm:max-h-[min(720px,calc(100dvh-3rem))] sm:max-w-[520px] sm:rounded-sheet" onMouseDown={(event) => event.stopPropagation()}>
-        <div className="mx-auto mt-2 h-1 w-10 rounded-full bg-slate-300 sm:hidden" aria-hidden="true" />
-        <header className="flex shrink-0 items-center justify-between border-b border-black/[0.06] px-5 py-4 sm:px-6">
+      <section className="flex max-h-[85dvh] w-full flex-col overflow-hidden rounded-t-sheet bg-white dark:bg-surface-card shadow-2xl sm:max-h-[min(720px,calc(100dvh-3rem))] sm:max-w-[520px] sm:rounded-sheet" onMouseDown={(event) => event.stopPropagation()}>
+        <div className="mx-auto mt-2 h-1 w-10 rounded-full bg-slate-300 dark:bg-control sm:hidden" aria-hidden="true" />
+        <header className="flex shrink-0 items-center justify-between border-b border-black/[0.06] dark:border-divider px-5 py-4 sm:px-6">
           <div className="flex min-w-0 items-center gap-2">
             {selectedItem ? (
-              <button type="button" className="-ml-2 cursor-pointer rounded-full p-2 text-slate-600 transition-colors hover:bg-slate-100 hover:text-slate-900" onClick={() => setSelectedItem(null)} aria-label="Back to overall Protein Score">
+              <button type="button" className="-ml-2 cursor-pointer rounded-full p-2 text-slate-600 dark:text-slate-300 transition-colors hover:bg-slate-100 dark:hover:bg-surface-hover hover:text-slate-900 dark:hover:text-slate-100" onClick={() => setSelectedItem(null)} aria-label="Back to overall Protein Score">
                 <ArrowLeft className="h-5 w-5" />
               </button>
             ) : null}
@@ -295,14 +287,14 @@ export default function ProteinScoreDetails({
                 imagePresentation={headerImagePresentation}
                 fallbackClassName={imageClassName ?? "object-contain p-0.5"}
                 fallbackBackgroundColor={imageBackgroundColor}
-                containerClassName="h-8 w-8 shrink-0 overflow-hidden rounded-lg border border-black/10 bg-slate-50"
+                containerClassName="h-8 w-8 shrink-0 overflow-hidden rounded-lg border border-black/10 dark:border-hairline bg-slate-50 dark:bg-surface-subtle"
               />
             ) : null}
-            <h2 id="protein-score-title" className="truncate font-heading text-xl font-bold text-slate-900">
+            <h2 id="protein-score-title" className="truncate font-heading text-xl font-bold text-slate-900 dark:text-slate-100">
               {selectedItem ? selectedItem.name : isAggregate ? "Protein Score" : name}
             </h2>
           </div>
-          <button ref={closeButtonRef} type="button" className="-mr-2 cursor-pointer rounded-full p-2 text-slate-500 transition-colors hover:bg-slate-100 hover:text-slate-900" onClick={onClose} aria-label="Close Protein Score">
+          <button ref={closeButtonRef} type="button" className="-mr-2 cursor-pointer rounded-full p-2 text-slate-500 dark:text-slate-400 transition-colors hover:bg-slate-100 dark:hover:bg-surface-hover hover:text-slate-900 dark:hover:text-slate-100" onClick={onClose} aria-label="Close Protein Score">
             <X className="h-5 w-5" />
           </button>
         </header>
@@ -337,8 +329,8 @@ export default function ProteinScoreDetails({
                 />
               ) : null}
               {isAggregate ? (
-                <div className="mt-6 border-t border-black/[0.06] pt-5">
-                  <h3 className="text-xs font-bold uppercase tracking-[0.12em] text-slate-500">Item-by-item</h3>
+                <div className="mt-6 border-t border-black/[0.06] dark:border-divider pt-5">
+                  <h3 className="text-xs font-bold uppercase tracking-[0.12em] text-slate-500 dark:text-slate-400">Item-by-item</h3>
                   <div className="mt-3 divide-y divide-black/[0.06]">
                     {[...items]
                       .sort((left, right) => {
@@ -358,22 +350,22 @@ export default function ProteinScoreDetails({
                             imagePresentation={item.imagePresentation}
                             fallbackClassName={imageClassName ?? "object-contain p-1"}
                             fallbackBackgroundColor={imageBackgroundColor}
-                            containerClassName="h-11 w-11 shrink-0 overflow-hidden rounded-xl border border-black/10 bg-slate-50"
+                            containerClassName="h-11 w-11 shrink-0 overflow-hidden rounded-xl border border-black/10 dark:border-hairline bg-slate-50 dark:bg-surface-subtle"
                           />
                           <span className="min-w-0 flex-1">
-                            <span className="block truncate text-sm font-semibold text-slate-900">{item.name}</span>
-                            <span className={`mt-0.5 block text-xs font-semibold ${hasScore && itemTier ? tierColors[itemTier].text : "text-slate-400"}`}>
+                            <span className="block truncate text-sm font-semibold text-slate-900 dark:text-slate-100">{item.name}</span>
+                            <span className={`mt-0.5 block text-xs font-semibold ${hasScore && itemTier ? tierColors[itemTier].text : "text-slate-400 dark:text-slate-400"}`}>
                               {hasScore && itemTier
                                 ? `${formatProteinScoreDisplay(itemScore)}g / 100 cal · ${PROTEIN_SCORE_TIER_SCALE[itemTier].label}`
                                 : `N/A · ${formatMacroDisplayNumber(item.protein)}g protein · ${formatMacroDisplayNumber(item.calories)} cal`}
                             </span>
                           </span>
-                          {hasScore ? <ChevronRight className="h-4 w-4 shrink-0 text-slate-400" aria-hidden="true" /> : null}
+                          {hasScore ? <ChevronRight className="h-4 w-4 shrink-0 text-slate-400 dark:text-slate-400" aria-hidden="true" /> : null}
                         </>
                       );
 
                       return hasScore ? (
-                        <button key={item.id} type="button" className="flex w-full items-center gap-3 py-3 text-left hover:bg-slate-50" onClick={() => setSelectedItem(item)}>
+                        <button key={item.id} type="button" className="flex w-full items-center gap-3 py-3 text-left hover:bg-slate-50 dark:hover:bg-surface-hover" onClick={() => setSelectedItem(item)}>
                           {rowContent}
                         </button>
                       ) : (

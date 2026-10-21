@@ -3,7 +3,6 @@ import { dirname, resolve } from "node:path";
 
 // pdfjs-dist ships without types for the legacy Node build's default export
 // shape, so we import it dynamically and treat its surface as unknown.
-// eslint-disable-next-line @typescript-eslint/consistent-type-imports
 type PdfJsModule = typeof import("pdfjs-dist/legacy/build/pdf.mjs");
 
 const RESTAURANT = "Chipotle";

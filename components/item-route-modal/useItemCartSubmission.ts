@@ -50,7 +50,7 @@ export function useItemCartSubmission({
   const { updateItem } = useCart();
   const { requestAddItem } = useCartAddConfirmation();
   const isEditing = Boolean(editingCartItem);
-  const submitButtonLabel = isEditing ? "Update" : "Add to Cart";
+  const submitButtonLabel = isEditing ? "Update" : "Add to Meal";
 
   // Shared by both submitCartItem (closes the modal) and saveChangesInPlace
   // (keeps it open, for the Customize → Save Changes → updated Preview

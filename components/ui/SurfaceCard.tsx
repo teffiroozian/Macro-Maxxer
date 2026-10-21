@@ -13,7 +13,7 @@ type SurfaceCardProps = HTMLAttributes<HTMLElement> & {
   shadow?: SurfaceCardShadow;
 };
 
-const baseClassName = "border border-black/10 bg-white";
+const baseClassName = "border border-black/10 dark:border-hairline bg-white dark:bg-surface-card";
 
 const paddingClassNames: Record<SurfaceCardPadding, string> = {
   none: "p-0",
