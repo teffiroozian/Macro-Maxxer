@@ -1,5 +1,6 @@
 // DATA LOADER FILE
 
+import { getCanonicalMenuItemCount } from "@/lib/restaurantMenuCount";
 import restaurants from "@/data/restaurants/index.json";
 import type { MenuItem, RestaurantMenu } from "@/types/menu";
 import type { RestaurantData, RestaurantIndexEntry } from "@/types/restaurant";
@@ -73,7 +74,7 @@ export async function getRestaurantData(id: string): Promise<RestaurantData | nu
   const menu = await loadMenu();
 
   // pulling important pieces out of the menu
-  const items = menu.items ?? [];
+  const items = (menu.items ?? []).map((item) => ({ ...item, category: item.category ?? item.categories?.[0], variants: item.variants?.map((variant) => ({ ...variant, category: variant.category ?? variant.categories?.[0] ?? item.category ?? item.categories?.[0] })) }));
   const ingredients = menu.ingredients ?? [];
   const addonGroups = menu.addonGroups ?? {};
   const hasBuildYourOwn = menu.hasBuildYourOwn ?? false;
@@ -86,6 +87,7 @@ export async function getRestaurantData(id: string): Promise<RestaurantData | nu
     logo: restaurant.logo,
     cover: restaurant.cover,
     menuFile: restaurant.menuFile,
+    menuSizeSelector: restaurant.menuSizeSelector,
     isMacroFriendly: restaurant.isMacroFriendly,
     isComingSoon: restaurant.isComingSoon,
     description: restaurant.description,
@@ -95,6 +97,7 @@ export async function getRestaurantData(id: string): Promise<RestaurantData | nu
     // menu file data
     hasBuildYourOwn,
     items,
+    menuItemCount: getCanonicalMenuItemCount(items),
     ingredients,
     addonGroups,
     customizationRules: menu.customizationRules,
@@ -105,4 +108,14 @@ export async function getRestaurantData(id: string): Promise<RestaurantData | nu
 // finds a menu item based on the URL slug from the list
 export function getItemBySlug(items: MenuItem[], slug: string) {
   return items.find((item) => toItemSlug(item) === slug);
+}
+
+// Lightweight shared metadata for selectors and restaurant search. Menu
+// contents stay server-side; only canonical counts accompany index identity.
+export async function getAllRestaurantsWithMenuCounts(): Promise<RestaurantIndexEntry[]> {
+  return Promise.all(restaurantIndex.map(async (entry) => {
+    if (entry.isComingSoon) return entry;
+    const restaurant = await getRestaurantData(entry.id);
+    return { ...entry, menuItemCount: restaurant?.menuItemCount ?? 0 };
+  }));
 }

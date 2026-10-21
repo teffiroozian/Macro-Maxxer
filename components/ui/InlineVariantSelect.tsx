@@ -33,7 +33,7 @@ export default function InlineVariantSelect({
                 onChange={(event) => onSelectOption(event.target.value)}
                 aria-label={ariaLabel}
                 disabled={disabled}
-                className="cursor-pointer appearance-none rounded-full border border-slate-200 bg-white py-1 pr-6 pl-2.5 text-xs font-semibold text-slate-600 transition hover:border-accent-strong hover:text-accent-strong focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-strong/50 disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:border-slate-200 disabled:hover:text-slate-600"
+                className="cursor-pointer appearance-none rounded-full border border-slate-200 dark:border-divider bg-white dark:bg-surface-card py-1 pr-6 pl-2.5 text-xs font-semibold text-slate-600 dark:text-slate-300 transition hover:border-accent-strong hover:text-accent-strong focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-strong/50 disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:border-slate-200 dark:disabled:hover:border-divider disabled:hover:text-slate-600 dark:disabled:hover:text-slate-300"
             >
                 {options.map((option) => (
                     <option key={option.id} value={option.id}>
@@ -45,7 +45,7 @@ export default function InlineVariantSelect({
                 size={12}
                 strokeWidth={2.5}
                 aria-hidden="true"
-                className="pointer-events-none absolute right-2 text-slate-400"
+                className="pointer-events-none absolute right-2 text-slate-400 dark:text-slate-400"
             />
         </span>
     );

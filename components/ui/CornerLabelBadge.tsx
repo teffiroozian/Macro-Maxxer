@@ -1,10 +1,11 @@
 import type { ReactNode } from "react";
 
-export type CornerLabelBadgeTone = "accent" | "violet";
+export type CornerLabelBadgeTone = "accent" | "violet" | "protein-score";
 
 const toneClassNames: Record<CornerLabelBadgeTone, string> = {
   accent: "bg-accent-strong",
   violet: "bg-violet-700",
+  "protein-score": "bg-accent-strong",
 };
 
 // Canonical compact corner-overlay badge (Design System PDF "Badge"): a

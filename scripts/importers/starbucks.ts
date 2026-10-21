@@ -209,6 +209,15 @@ function primaryOccurrenceFor(occurrences: CatalogOccurrence[]): CatalogOccurren
   return [...usableCategoryOccurrences(occurrences)].sort((a, b) => compareOrderPath(a.orderPath, b.orderPath))[0];
 }
 
+function productClassifications(product: RawDetailProduct, occurrences: CatalogOccurrence[]): string[] {
+  const tags = new Set<string>();
+  if (occurrences.some(({ path }) => path[0] === "Protein")) tags.add("protein");
+  // Match ingredient membership from official taxonomy and its catalog text,
+  // including packaged matcha products outside the Tea/Matcha navigation.
+  if (occurrences.some(({ path }) => path.some((part) => /\bmatcha\b/i.test(part))) || /\bmatcha\b/i.test(product.name)) tags.add("matcha");
+  return [...tags];
+}
+
 function primaryBrowseCategory(product: RawDetailProduct, occurrences: CatalogOccurrence[]): string {
   // Starbucks lists Avocado Spread beneath every food family it can accompany.
   // It is a condiment product, not seven separate breakfast/lunch products.
@@ -217,8 +226,9 @@ function primaryBrowseCategory(product: RawDetailProduct, occurrences: CatalogOc
   const paths = usableCategoryOccurrences(occurrences).map(({ path }) => path);
   const groupRules: Array<[string, (path: string[]) => boolean]> = [
     ["Protein Drinks", (path) => path[0] === "Protein"],
-    ["Hot Coffee & Espresso", (path) => path[0] === "Coffee & Espresso" && path[1] === "Hot Coffee & Espresso"],
-    ["Cold Coffee & Espresso", (path) => path[0] === "Coffee & Espresso" && path[1] === "Cold Coffee & Espresso"],
+    ["Hot Coffee", (path) => path[0] === "Coffee & Espresso" && ["Brewed Coffee", "Coffee Traveler"].includes(path[2])],
+    ["Iced Coffee", (path) => path[0] === "Coffee & Espresso" && ["Iced Coffee", "Cold Brew", "Nitro Cold Brew"].includes(path[2])],
+    ["Espresso Drinks", (path) => path[0] === "Coffee & Espresso"],
     ["Frappuccino", (path) => path[0] === "Frappuccino® Blended Beverage"],
     ["Tea & Chai", (path) => path[0] === "Tea" && path[1] !== "Matcha"],
     ["Matcha", (path) => path[0] === "Tea" && path[1] === "Matcha"],
@@ -354,6 +364,8 @@ async function main(): Promise<void> {
       resolvedVariants.push({
         id: `starbucks-sku-${size.sku}`,
         label: sanitizeDisplayName(size.name),
+        category: primaryBrowseCategory(product, occurrences),
+        tags: productClassifications(product, occurrences),
         categories: [primaryBrowseCategory(product, occurrences)],
         servingType: servingTypeFor(product, occurrences),
         nutrition,
@@ -373,6 +385,8 @@ async function main(): Promise<void> {
       id: `starbucks-${product.productNumber}-${slugify(product.formCode)}`,
       name: sanitizeDisplayName(product.name),
       image: product.imageURL ?? "none",
+      category: primaryBrowseCategory(product, occurrences),
+      tags: productClassifications(product, occurrences),
       categories: [primaryBrowseCategory(product, occurrences)],
       servingType: servingTypeFor(product, occurrences),
       nutrition: defaultVariant.nutrition,

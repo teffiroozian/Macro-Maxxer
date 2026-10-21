@@ -460,6 +460,7 @@ export function buildChipotleIngredientMenuItems({
           selectedEntree,
         ),
         nutrition: ingredientBaseNutrition,
+        rankingNutrition: scaleNutritionValues(effectiveNutrition, 1),
         defaultOrder:
           shouldPinToIncludedCategory &&
           !isTacoShellChoiceContext &&

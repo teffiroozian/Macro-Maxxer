@@ -1,6 +1,8 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useSheetLayer } from "@/hooks/useSheetLayer";
+
+import { useMemo, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { ChevronDown, X } from "lucide-react";
 import { gramMacroOrder, macroDisplayConfig, type MacroKey } from "@/components/nutrition/macroDisplay";
@@ -62,11 +64,11 @@ function MacroSourceRow({
           alt=""
           imagePresentation={item.imagePresentation}
           fallbackClassName="object-contain p-1"
-          containerClassName="h-11 w-11 shrink-0 overflow-hidden rounded-xl border border-black/10 bg-slate-50"
+          containerClassName="h-11 w-11 shrink-0 overflow-hidden rounded-xl border border-black/10 dark:border-hairline bg-slate-50 dark:bg-surface-subtle"
         />
         <div className="min-w-0 flex-1">
-          <p className="truncate text-sm font-semibold text-slate-900">{item.name}</p>
-          <p className="text-xs text-slate-500">{formatGrams(item.calories)} cal</p>
+          <p className="truncate text-sm font-semibold text-slate-900 dark:text-slate-100">{item.name}</p>
+          <p className="text-xs text-slate-500 dark:text-slate-400">{formatGrams(item.calories)} cal</p>
         </div>
         <p className={`shrink-0 text-base font-bold leading-tight ${accent.valueClassName}`}>
           {formatGrams(macroValue)}g {shortLabel}
@@ -74,13 +76,13 @@ function MacroSourceRow({
       </div>
 
       <div className="mt-2 flex items-center gap-2">
-        <div className="h-1.5 min-w-0 flex-1 overflow-hidden rounded-full bg-slate-100">
+        <div className="h-1.5 min-w-0 flex-1 overflow-hidden rounded-full bg-slate-100 dark:bg-surface-hover">
           <div
             className={`h-full rounded-full ${accent.segmentClassName}`}
             style={{ width: `${Math.max(0, Math.min(100, percentOfTotal))}%` }}
           />
         </div>
-        <span className="w-9 shrink-0 text-right text-xs font-medium text-slate-400">{percentOfTotal}%</span>
+        <span className="w-9 shrink-0 text-right text-xs font-medium text-slate-400 dark:text-slate-400">{percentOfTotal}%</span>
       </div>
 
       {rankedNestedItems.length > 0 ? (
@@ -105,10 +107,10 @@ function MacroSourceRow({
                       alt=""
                       imagePresentation={nestedItem.imagePresentation}
                       fallbackClassName="object-contain p-1"
-                      containerClassName="h-8 w-8 shrink-0 overflow-hidden rounded-lg border border-black/10 bg-slate-50"
+                      containerClassName="h-8 w-8 shrink-0 overflow-hidden rounded-lg border border-black/10 dark:border-hairline bg-slate-50 dark:bg-surface-subtle"
                     />
-                    <span className="min-w-0 flex-1 truncate text-xs font-medium text-slate-600">{nestedItem.name}</span>
-                    <span className="shrink-0 text-xs font-semibold text-slate-700">{formatGrams(nestedValue)}g</span>
+                    <span className="min-w-0 flex-1 truncate text-xs font-medium text-slate-600 dark:text-slate-300">{nestedItem.name}</span>
+                    <span className="shrink-0 text-xs font-semibold text-slate-700 dark:text-slate-200">{formatGrams(nestedValue)}g</span>
                   </div>
                 );
               })}
@@ -134,18 +136,7 @@ export default function MacroSplitDetails({
   const [selectedMacro, setSelectedMacro] = useState<GramMacroKey>("protein");
   const closeButtonRef = useRef<HTMLButtonElement>(null);
 
-  useEffect(() => {
-    if (!open) return;
-    const previousOverflow = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
-    const onKeyDown = (event: KeyboardEvent) => event.key === "Escape" && onClose();
-    window.addEventListener("keydown", onKeyDown);
-    requestAnimationFrame(() => closeButtonRef.current?.focus());
-    return () => {
-      document.body.style.overflow = previousOverflow;
-      window.removeEventListener("keydown", onKeyDown);
-    };
-  }, [open, onClose]);
+  useSheetLayer({ open, onClose, initialFocusRef: closeButtonRef });
 
   if (!open) return null;
 
@@ -166,24 +157,25 @@ export default function MacroSplitDetails({
       aria-modal="true"
       aria-labelledby="macro-split-title"
       onMouseDown={(event) => event.stopPropagation()}
+      onTouchStart={(event) => event.stopPropagation()}
       onClick={(event) => {
         event.stopPropagation();
         if (event.target === event.currentTarget) onClose();
       }}
     >
       <section
-        className="flex max-h-[85dvh] w-full flex-col overflow-hidden rounded-t-sheet bg-white shadow-2xl sm:max-h-[min(720px,calc(100dvh-3rem))] sm:max-w-[520px] sm:rounded-sheet"
+        className="flex max-h-[85dvh] w-full flex-col overflow-hidden rounded-t-sheet bg-white dark:bg-surface-card shadow-2xl sm:max-h-[min(720px,calc(100dvh-3rem))] sm:max-w-[520px] sm:rounded-sheet"
         onMouseDown={(event) => event.stopPropagation()}
       >
-        <div className="mx-auto mt-2 h-1 w-10 rounded-full bg-slate-300 sm:hidden" aria-hidden="true" />
-        <header className="flex shrink-0 items-center justify-between border-b border-black/[0.06] px-5 py-4 sm:px-6">
-          <h2 id="macro-split-title" className="truncate font-heading text-xl font-bold text-slate-900">
+        <div className="mx-auto mt-2 h-1 w-10 rounded-full bg-slate-300 dark:bg-control sm:hidden" aria-hidden="true" />
+        <header className="flex shrink-0 items-center justify-between border-b border-black/[0.06] dark:border-divider px-5 py-4 sm:px-6">
+          <h2 id="macro-split-title" className="truncate font-heading text-xl font-bold text-slate-900 dark:text-slate-100">
             Macro Split
           </h2>
           <button
             ref={closeButtonRef}
             type="button"
-            className="-mr-2 cursor-pointer rounded-full p-2 text-slate-500 transition-colors hover:bg-slate-100 hover:text-slate-900"
+            className="-mr-2 cursor-pointer rounded-full p-2 text-slate-500 dark:text-slate-400 transition-colors hover:bg-slate-100 dark:hover:bg-surface-hover hover:text-slate-900 dark:hover:text-slate-100"
             onClick={onClose}
             aria-label="Close Macro Split"
           >
@@ -192,7 +184,7 @@ export default function MacroSplitDetails({
         </header>
 
         <div className="overflow-y-auto overscroll-contain px-5 pb-[max(24px,env(safe-area-inset-bottom))] pt-5 sm:px-6 sm:pb-6">
-          <div role="tablist" aria-label="Select a macro" className="flex w-full gap-1 rounded-full bg-slate-100 p-1">
+          <div role="tablist" aria-label="Select a macro" className="flex w-full gap-1 rounded-full bg-slate-100 dark:bg-surface-hover p-1">
             {gramMacroOrder.map((macroKey) => {
               const isSelected = macroKey === selectedMacro;
               return (
@@ -203,7 +195,7 @@ export default function MacroSplitDetails({
                   aria-selected={isSelected}
                   onClick={() => setSelectedMacro(macroKey)}
                   className={`flex flex-1 cursor-pointer items-center justify-center gap-1.5 rounded-full px-3 py-2 text-sm font-semibold transition-all duration-200 ${
-                    isSelected ? "bg-white text-slate-900 shadow-sm" : "text-slate-500 hover:text-slate-700"
+                    isSelected ? "bg-white dark:bg-surface-card text-slate-900 dark:text-slate-100 shadow-sm" : "text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200"
                   }`}
                 >
                   <span aria-hidden="true" className={`h-1.5 w-1.5 shrink-0 rounded-full ${macroColorTokens[macroKey].segmentClassName}`} />
@@ -214,22 +206,22 @@ export default function MacroSplitDetails({
           </div>
 
           <div className="mt-5">
-            <p className="text-xs font-bold uppercase tracking-[0.12em] text-slate-500">
+            <p className="text-xs font-bold uppercase tracking-[0.12em] text-slate-500 dark:text-slate-400">
               {macroDisplayConfig[selectedMacro].label} Total
             </p>
-            <div className="mt-2 border-t border-black/[0.06]" />
+            <div className="mt-2 border-t border-black/[0.06] dark:border-divider" />
             <p className="mt-3 flex items-baseline gap-2">
               <span className={`text-4xl font-bold leading-none ${accent.valueClassName}`}>{formatGrams(macroTotal)}g</span>
               {contributingItemCount > 0 ? (
-                <span className="text-sm font-medium text-slate-500">{itemCountLabel(contributingItemCount)}</span>
+                <span className="text-sm font-medium text-slate-500 dark:text-slate-400">{itemCountLabel(contributingItemCount)}</span>
               ) : null}
             </p>
           </div>
 
           {rankedItems.length > 0 ? (
             <div className="mt-6">
-              <h3 className="text-xs font-bold uppercase tracking-[0.12em] text-slate-500">Where it&apos;s coming from</h3>
-              <div className="mt-2 border-t border-black/[0.06]" />
+              <h3 className="text-xs font-bold uppercase tracking-[0.12em] text-slate-500 dark:text-slate-400">Where it&apos;s coming from</h3>
+              <div className="mt-2 border-t border-black/[0.06] dark:border-divider" />
               <div className="mt-3 divide-y divide-black/[0.06]">
                 {rankedItems.map((item) => (
                   <MacroSourceRow key={item.id} item={item} macro={selectedMacro} macroTotal={macroTotal} />

@@ -2,11 +2,9 @@ import RestaurantView from "@/components/RestaurantView";
 import RestaurantIdentityHeader from "@/components/restaurant-view/RestaurantIdentityHeader";
 import RecentRestaurantTracker from "@/components/RecentRestaurantTracker";
 import ScrollToTopOnMount from "@/components/ScrollToTopOnMount";
-import { RestaurantUiProvider } from "@/components/RestaurantUiContext";
-import CartPreviewDrawer from "@/components/cart/CartPreviewDrawer";
 import { resolveAddonMenuItems } from "@/lib/addonGroups";
 import type { RestaurantData } from "@/types/restaurant";
-import { IS_CAPACITOR_BUILD } from "@/lib/buildTarget";
+import { getCanonicalMenuItemCount } from "@/lib/restaurantMenuCount";
 
 export default function RestaurantPageContent({
   restaurantData,
@@ -16,36 +14,24 @@ export default function RestaurantPageContent({
   const addons = resolveAddonMenuItems(restaurantData.addonGroups, restaurantData.items);
 
   return (
-    <RestaurantUiProvider>
-      {/* This is deliberately just breathing room, not a nav-clearance
-          offset — RestaurantIdentityHeader measures the fixed nav stack's
-          real height itself (useStickyNavClearance) and reserves exactly
-          that via its own margin, so this padding only needs to add the
-          small visual gap between the stack and the identity card below
-          it. */}
-      <div className="relative w-full pt-6 sm:pt-8 lg:pt-10">
-        <div
-          aria-hidden="true"
-          className="pointer-events-none absolute inset-x-0 top-0 -z-10 h-[380px] overflow-hidden sm:h-[460px] lg:h-[560px]"
-        >
-          <div className="absolute inset-x-0 top-0 h-full bg-gradient-to-b from-emerald-50/60 via-emerald-50/15 to-transparent dark:opacity-0" />
-          <div className="absolute left-1/2 top-[-160px] h-[420px] w-[820px] -translate-x-1/2 rounded-full bg-[radial-gradient(closest-side,rgba(5,150,105,0.14),transparent_75%)] blur-3xl dark:opacity-0" />
-        </div>
-
+    <>
+      <div className="min-h-[calc(var(--app-viewport-height)+24rem)] w-full bg-app-background">
         <RecentRestaurantTracker restaurantId={restaurantData.id} />
         <ScrollToTopOnMount />
 
+        <RestaurantIdentityHeader
+          restaurantId={restaurantData.id}
+          name={restaurantData.name}
+          logo={restaurantData.logo}
+          description={restaurantData.description}
+          itemCount={getCanonicalMenuItemCount(restaurantData.items)}
+          nutritionSourceUrl={restaurantData.nutritionSourceUrl}
+          lastUpdated={restaurantData.lastUpdated}
+        />
+
         <main className="mx-auto w-full max-w-6xl px-3 pb-12 sm:px-4 lg:px-6">
-          <RestaurantIdentityHeader
-            restaurantId={restaurantData.id}
-            name={restaurantData.name}
-            logo={restaurantData.logo}
-            description={restaurantData.description}
-            itemCount={restaurantData.items.length}
-            nutritionSourceUrl={restaurantData.nutritionSourceUrl}
-            lastUpdated={restaurantData.lastUpdated}
-          />
           <RestaurantView
+            menuSizeSelector={restaurantData.menuSizeSelector}
             restaurantId={restaurantData.id}
             restaurantName={restaurantData.name}
             restaurantLogo={restaurantData.logo}
@@ -63,7 +49,6 @@ export default function RestaurantPageContent({
           ) : null}
         </main>
       </div>
-      {!IS_CAPACITOR_BUILD ? <CartPreviewDrawer /> : null}
-    </RestaurantUiProvider>
+    </>
   );
 }

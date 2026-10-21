@@ -7,12 +7,14 @@ export default function MenuCardActions({
   isQuickAddDisabled = false,
   onQuickAdd,
   onViewDetails,
+  compactMobile = false,
 }: {
   itemName: string;
   isAddFeedbackVisible: boolean;
   isQuickAddDisabled?: boolean;
   onQuickAdd: () => void;
   onViewDetails: () => void;
+  compactMobile?: boolean;
 }) {
   return (
     <div className="ml-auto inline-flex flex-row items-center gap-4">
@@ -20,7 +22,7 @@ export default function MenuCardActions({
         type="button"
         aria-label={`View details for ${itemName}`}
         onClick={(event) => { event.stopPropagation(); onViewDetails(); }}
-        className="group/details inline-flex cursor-pointer items-center gap-0.5 text-sm font-semibold text-slate-600 dark:text-slate-300 transition-colors hover:text-slate-900 dark:hover:text-slate-100 focus-ring"
+        className={`group/details cursor-pointer items-center gap-0.5 text-sm font-semibold text-slate-600 dark:text-slate-300 transition-colors hover:text-slate-900 dark:hover:text-slate-100 focus-ring ${compactMobile ? "hidden lg:inline-flex" : "inline-flex"}`}
       >
         <span className="underline-offset-4 group-hover/details:underline">View Details</span>
         <ChevronRight
@@ -44,7 +46,7 @@ export default function MenuCardActions({
         aria-label={`Quick add ${itemName} to meal`}
         onClick={(event) => { event.stopPropagation(); onQuickAdd(); }}
       >
-        {isAddFeedbackVisible ? "Added" : "+ Add"}
+        {isAddFeedbackVisible ? "Added" : compactMobile ? "+ Add" : "Add to Meal"}
       </AppButton>
     </div>
   );

@@ -1,8 +1,10 @@
+import type { MenuSizeSelectorCapability } from "@/types/restaurant";
+import { getMenuSizeOptions, ALL_MENU_SIZES } from "@/lib/menuSections/menuSizeSelector";
 import { useCallback, useMemo, useState } from "react";
 import type { ReadonlyURLSearchParams } from "next/navigation";
 import type { ViewOption } from "@/components/controls/types";
 import type { MenuItem } from "@/types/menu";
-import type { Filters } from "@/lib/menuSections/filterOptions";
+import { getChipotleNutritionFilters, type Filters } from "@/lib/menuSections/filterOptions";
 import {
     filterMenuItems,
     getParentSelectionState,
@@ -12,11 +14,12 @@ import {
     type RankedAllFilterKey,
     type RankedParentSelectionState,
 } from "@/lib/menuSections/filtering";
+import { getNutritionControlData, reconcileNutritionThresholds } from "@/lib/menuSections/nutritionPresets";
+import { getOfficialRankingItems } from "@/lib/menuSections/ranking";
 import { getDefaultMenuItemNutrition } from "@/lib/nutrition";
 import { isStandaloneMenuItem } from "@/lib/menuItemCalculations";
 import {
     RANKING_DEFAULT_SORT,
-    SORT_OPTION_VALUES,
     isDefaultOrderSort,
     type SortOption,
 } from "@/lib/menuSections/sortOptions";
@@ -24,8 +27,10 @@ import {
     countItemsByCategory,
     applyRestaurantMenuSectionOrder,
     getCategoryLabel,
+    getItemCategories,
     getOrderedMenuSections,
 } from "@/lib/menuSections/sorting";
+import { RESTAURANT_MAIN_MENU_CATEGORIES } from "@/data/restaurantControlPresets";
 
 export function useRestaurantMenuControls({
     restaurantId,
@@ -38,8 +43,11 @@ export function useRestaurantMenuControls({
     router,
     pathname,
     searchParams,
+    menuSizeSelector,
+    filterRankingCategories = true,
 }: {
     restaurantId: string;
+    menuSizeSelector?: MenuSizeSelectorCapability;
     hasBuildYourOwn: boolean;
     effectiveViewModeOverride?: ViewOption;
     isViewChangeAllowed?: (nextView: ViewOption) => boolean;
@@ -51,29 +59,44 @@ export function useRestaurantMenuControls({
     };
     pathname: string;
     searchParams: ReadonlyURLSearchParams;
+    filterRankingCategories?: boolean;
 }) {
     const requestedView = searchParams.get("view");
     const supportsIngredientsView = restaurantId !== "starbucks";
-    const defaultView: ViewOption = hasBuildYourOwn && supportsIngredientsView ? "ingredients" : "menu";
+    // Standard restaurant pages are ranking-first. Builder restaurants keep
+    // their ingredient-first entry point, while explicit ?view=menu and
+    // ?view=ingredients URLs remain supported for existing deep links.
+    const defaultView: ViewOption = hasBuildYourOwn && supportsIngredientsView ? "ingredients" : "ranking";
     const viewMode: ViewOption =
         requestedView === "ingredients" && supportsIngredientsView
             ? "ingredients"
             : requestedView === "ranking"
               ? "ranking"
               : defaultView;
-    const [sort, setSort] = useState<SortOption>(() =>
-        viewMode === "ranking"
-            ? RANKING_DEFAULT_SORT
-            : SORT_OPTION_VALUES.DEFAULT_ORDER,
-    );
-    const [filters, setFilters] = useState<Filters>({});
-
+    const [sort, setSort] = useState<SortOption>(RANKING_DEFAULT_SORT);
     // Structural/internal source records (see MenuItem.sourceOnly) are valid
     // lookup targets for combo/ingredient relationships elsewhere, but never
     // a standalone item a user browses, filters, or ranks on their own — so
     // every browsable list this hook builds starts from this filtered set,
     // not the raw `items` prop.
     const standaloneItems = useMemo(() => items.filter(isStandaloneMenuItem), [items]);
+    const menuSizeOptions = useMemo(() => getMenuSizeOptions(standaloneItems, menuSizeSelector), [standaloneItems, menuSizeSelector]);
+    const [menuSizePreference, setMenuSizePreference] = useState(() => menuSizeSelector?.enabled && menuSizeOptions.some((option) => option.value === menuSizeSelector.defaultValue) ? menuSizeSelector.defaultValue : ALL_MENU_SIZES);
+
+
+    const [storedFilters, setFilters] = useState<Filters>(() => {
+        if (restaurantId === "chipotle") return {};
+        const available = new Set(standaloneItems.flatMap((item) => getItemCategories(item)));
+        const mainMenu = (RESTAURANT_MAIN_MENU_CATEGORIES[restaurantId] ?? []).filter((category) => available.has(category));
+        return mainMenu.length
+            ? { categories: mainMenu, categoryPreset: "main" }
+            : {};
+    });
+
+    const filters = useMemo(
+        () => restaurantId === "chipotle" ? getChipotleNutritionFilters(storedFilters) : storedFilters,
+        [restaurantId, storedFilters],
+    );
 
     // The narrower categories available inside each broad Rankings parent
     // bucket, derived from this restaurant's own items — never hard-coded —
@@ -108,8 +131,14 @@ export function useRestaurantMenuControls({
 
     const allItems = standaloneItems;
 
-    const sourceItems =
-        effectiveViewMode === "ingredients" ? ingredientMenuItems : allItems;
+    const sourceItems = useMemo(
+        () => effectiveViewMode === "ingredients"
+            ? ingredientMenuItems
+            : effectiveViewMode === "ranking"
+              ? getOfficialRankingItems(allItems)
+              : allItems,
+        [effectiveViewMode, ingredientMenuItems, allItems],
+    );
 
     const calorieBounds = useMemo(() => {
         const calories = sourceItems
@@ -144,6 +173,9 @@ export function useRestaurantMenuControls({
                 searchTerms,
                 rankedChildSelections,
                 isRankingView: effectiveViewMode === "ranking",
+                filterRankingCategories,
+                rankingSort: sort,
+                menuSizePreference: menuSizeOptions.length ? menuSizePreference : undefined,
             }),
         [
             effectiveViewMode,
@@ -151,6 +183,10 @@ export function useRestaurantMenuControls({
             filters,
             searchTerms,
             rankedChildSelections,
+            filterRankingCategories,
+            sort,
+            menuSizePreference,
+            menuSizeOptions.length,
         ],
     );
 
@@ -217,13 +253,23 @@ export function useRestaurantMenuControls({
         ],
     );
 
+    const reconcileForContext = useCallback((nextFilters: Filters, nextSize = menuSizePreference, nextSort = sort) => {
+        const supportedFilters = restaurantId === "chipotle" ? getChipotleNutritionFilters(nextFilters) : nextFilters;
+        return reconcileNutritionThresholds(supportedFilters, getNutritionControlData({ items: sourceItems, filters: supportedFilters, searchTerms: [], rankedChildSelections, isRankingView: effectiveViewMode === "ranking", filterRankingCategories, rankingSort: nextSort, menuSizePreference: nextSize }));
+    }, [restaurantId, sourceItems, rankedChildSelections, effectiveViewMode, filterRankingCategories, sort, menuSizePreference]);
     const handleSortChange = useCallback((nextSort: SortOption) => {
         setSort(nextSort);
-    }, []);
+        setFilters((previous) => reconcileForContext(previous, menuSizePreference, nextSort));
+    }, [reconcileForContext, menuSizePreference]);
 
     const handleFiltersChange = useCallback((nextFilters: Filters) => {
-        setFilters(nextFilters);
-    }, []);
+        setFilters(reconcileForContext(nextFilters));
+    }, [reconcileForContext]);
+    const handleMenuSizeChange = useCallback((nextSize: string) => {
+        setMenuSizePreference(nextSize);
+        setFilters((previous) => reconcileForContext(previous, nextSize));
+    }, [reconcileForContext]);
+    const menuSizeControl = menuSizeOptions.length ? { value: menuSizePreference, options: menuSizeOptions, onChange: handleMenuSizeChange } : undefined;
 
     // Parent-row click: acts as a convenient select-all/deselect-all for that
     // parent's children. A partially-selected parent moves to fully selected
@@ -275,6 +321,7 @@ export function useRestaurantMenuControls({
     }, []);
 
     return {
+        menuSizeControl,
         sort,
         filters,
         handleFiltersChange,

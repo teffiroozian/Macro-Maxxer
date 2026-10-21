@@ -1,14 +1,14 @@
 "use client";
 
+import { createPortal } from "react-dom";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { useEffect, useMemo, useRef } from "react";
+import { useEffect, useMemo, useRef, useSyncExternalStore } from "react";
 import { useCart } from "@/stores/cartStore";
 import { buildCartItemSummaryGroups } from "@/lib/cart/displayLabels";
 import { useOptionalRestaurantUi } from "@/components/RestaurantUiContext";
 import MacroTotalsGrid from "@/components/MacroTotalsGrid";
 import CartItemPreviewRow from "@/components/cart/CartItemPreviewRow";
-import EmptyStateCard from "@/components/EmptyStateCard";
 import { ShoppingCart, X } from "lucide-react";
 import AppButton, { appButtonClassName } from "@/components/ui/AppButton";
 import AppIconButton from "@/components/ui/AppIconButton";
@@ -32,11 +32,20 @@ type CartIconDropdownProps = {
 
 const SCROLL_CLOSE_THRESHOLD = 90;
 
+function subscribeToMobileViewport(listener: () => void) {
+  const media = window.matchMedia("(max-width: 1023px)");
+  media.addEventListener("change", listener);
+  return () => media.removeEventListener("change", listener);
+}
+const getMobileViewport = () => window.matchMedia("(max-width: 1023px)").matches;
+const getServerMobileViewport = () => false;
+
 export default function CartIconDropdown({
   buttonClassName,
   variant = "popover",
   showTrigger = true,
 }: CartIconDropdownProps) {
+  const mobileViewport = useSyncExternalStore(subscribeToMobileViewport, getMobileViewport, getServerMobileViewport);
   const router = useRouter();
   const pathname = usePathname();
   const isCurrentPage = pathname === "/cart";
@@ -221,15 +230,13 @@ export default function CartIconDropdown({
               activateLabel={`Preview ${lastAddedItem.name}`}
             />
           </div>
-        ) : (
-          <EmptyStateCard variant="compact" align="left" title="Your meal is empty." className="py-0" />
-        )}
+        ) : null}
       </div>
 
-      <div className="my-2.5 h-px bg-slate-200" />
+      <div className="my-2.5 h-px bg-slate-200 dark:bg-surface-hover" />
 
       <div>
-        <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-slate-500">Total Macros</p>
+        <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-slate-500 dark:text-slate-400">Total Macros</p>
         <MacroTotalsGrid macros={totals} size="compact" className="mt-2.5" />
       </div>
     </>
@@ -268,8 +275,9 @@ export default function CartIconDropdown({
         {countLabel}
       </button> : null}
 
-      {variant === "sheet" ? (
+      {variant === "sheet" ? (isOpen && lastAddedItem && (mobileViewport || IS_CAPACITOR_BUILD) && typeof document !== "undefined" ? createPortal(
         <div
+          data-cart-icon-dropdown
           aria-hidden={!isOpen}
           inert={!isOpen}
           className={`fixed inset-0 z-[231] overscroll-none ${isOpen ? "" : "pointer-events-none"}`}
@@ -297,16 +305,16 @@ export default function CartIconDropdown({
             role="dialog"
             aria-modal="true"
             aria-label="Item added to meal"
-            className={`absolute inset-x-0 bottom-0 flex h-auto max-h-[85dvh] touch-pan-y flex-col overflow-y-auto overscroll-contain rounded-t-3xl bg-white text-slate-900 shadow-[0_-18px_40px_rgba(15,23,42,0.18)] transition-transform duration-300 ${
+            className={`absolute inset-x-0 bottom-0 flex h-auto max-h-[85dvh] touch-pan-y flex-col overflow-y-auto overscroll-contain rounded-t-3xl bg-white dark:bg-surface-card text-slate-900 dark:text-slate-100 shadow-[0_-18px_40px_rgba(15,23,42,0.18)] transition-transform duration-300 ${
               isOpen ? "translate-y-0" : "translate-y-full"
             }`}
           >
             <div className="flex justify-center pb-1 pt-2.5" aria-hidden="true">
-              <span className="h-1 w-9 rounded-full bg-slate-300" />
+              <span className="h-1 w-9 rounded-full bg-slate-300 dark:bg-control" />
             </div>
 
             <div className="flex items-center justify-between gap-2 px-4 pt-1">
-              <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-slate-500">
+              <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-slate-500 dark:text-slate-400">
                 Just Added
               </p>
               <AppIconButton onClick={dismissLastAddedPreview} variant="ghost" size="sm" aria-label="Dismiss just added preview">
@@ -323,23 +331,23 @@ export default function CartIconDropdown({
                 depends on a one-off arbitrary viewport breakpoint to avoid
                 stacking; a grid keeps both buttons side-by-side and equal
                 width at any realistic phone size without one. */}
-            <div className="grid grid-cols-2 gap-2 border-t border-slate-200 px-4 pb-[max(1rem,env(safe-area-inset-bottom))] pt-3">
+            <div className="grid grid-cols-2 gap-2 border-t border-slate-200 dark:border-divider px-4 pb-[max(1rem,env(safe-area-inset-bottom))] pt-3">
               {actionButtons}
             </div>
           </div>
         </div>
-      ) : (
+        , document.body) : null) : (
         <div
           aria-hidden={!isOpen}
           inert={!isOpen}
-          className={`absolute right-0 top-[calc(100%+0.55rem)] z-[231] w-[22rem] rounded-2xl border border-slate-200 bg-white p-3.5 text-slate-900 shadow-[0_18px_40px_rgba(15,23,42,0.18)] transition-all duration-200 ${
+          className={`absolute right-0 top-[calc(100%+0.55rem)] z-[231] w-[22rem] rounded-2xl border border-slate-200 dark:border-divider bg-white dark:bg-surface-card p-3.5 text-slate-900 dark:text-slate-100 shadow-[0_18px_40px_rgba(15,23,42,0.18)] transition-all duration-200 ${
             isOpen
               ? "translate-y-0 opacity-100"
               : "pointer-events-none -translate-y-1 opacity-0"
           }`}
         >
           <div className="flex items-center justify-between gap-2">
-            <p className="text-[10px] font-semibold uppercase tracking-[0.14em] text-slate-500">
+            <p className="text-[10px] font-semibold uppercase tracking-[0.14em] text-slate-500 dark:text-slate-400">
               Just added
             </p>
             <AppIconButton onClick={dismissLastAddedPreview} variant="ghost" size="sm" aria-label="Dismiss just added preview">
@@ -349,7 +357,7 @@ export default function CartIconDropdown({
 
           <div className="mt-2">{itemAndTotalsContent}</div>
 
-          <div className="mt-2.5 flex items-center gap-2 border-t border-slate-200 pt-2.5">
+          <div className="mt-2.5 flex items-center gap-2 border-t border-slate-200 dark:border-divider pt-2.5">
             {actionButtons}
           </div>
         </div>

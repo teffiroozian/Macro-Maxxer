@@ -2,7 +2,7 @@ import { forwardRef } from "react";
 import type { ButtonHTMLAttributes, ReactNode } from "react";
 
 export type AppIconButtonSize = "sm" | "md" | "nav";
-export type AppIconButtonVariant = "default" | "ghost" | "nav" | "muted";
+export type AppIconButtonVariant = "default" | "ghost" | "nav" | "navSlate" | "muted";
 
 type AppIconButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
   "aria-label": string;
@@ -30,6 +30,7 @@ const sizeClassNames: Record<AppIconButtonSize, string> = {
 };
 
 const variantClassNames: Record<AppIconButtonVariant, string> = {
+  navSlate: "border-transparent bg-transparent text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-surface-hover hover:text-slate-700 dark:hover:text-slate-200 active:bg-slate-200 dark:active:bg-surface-hover",
   default: "border-slate-200 dark:border-divider bg-white dark:bg-surface-card text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-surface-hover active:bg-slate-200 dark:active:bg-surface-hover",
   ghost: "border-transparent bg-transparent text-black/85 dark:text-slate-200 hover:bg-slate-900/5 dark:hover:bg-surface-hover active:bg-slate-900/10 dark:active:bg-surface-hover",
   // Shared treatment for the global nav's icon controls (cart, hamburger,

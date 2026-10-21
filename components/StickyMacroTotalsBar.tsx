@@ -1,5 +1,7 @@
 "use client";
 
+import { useSheetLayer } from "@/hooks/useSheetLayer";
+import { IS_CAPACITOR_BUILD } from "@/lib/buildTarget";
 import type { CartMacros } from "@/types/cart";
 import MacroTotalsGrid from "@/components/MacroTotalsGrid";
 import AppButton from "@/components/ui/AppButton";
@@ -80,7 +82,7 @@ function getPanelClassName({
   visible: boolean;
 }) {
   if (inline) {
-    return `w-full rounded-3xl border border-black/10 bg-white px-4 ${isCartLayout ? "py-4" : "py-3"}`;
+    return `w-full rounded-3xl border border-black/10 dark:border-hairline bg-white dark:bg-surface-card px-4 ${isCartLayout ? "py-4" : "py-3"}`;
   }
 
   // Build layout doubles as the mobile bottom sheet: full-bleed, flush to
@@ -89,10 +91,10 @@ function getPanelClassName({
   // doesn't leave a transparent strip below it for Safari's chrome to show
   // through. `md:` restores the original floating pill for desktop.
   const layoutClassName = isCartLayout
-    ? "rounded-[1.5rem] border border-black/10 px-3 py-4 shadow-[0_10px_30px_rgba(0,0,0,0.24)] sm:rounded-[2.25rem] sm:px-6 sm:py-6"
-    : "rounded-t-3xl border-t border-x-0 border-b-0 border-slate-200/70 px-4 pt-2 pb-[max(1rem,env(safe-area-inset-bottom))] shadow-[0_-8px_24px_rgba(0,0,0,0.14)] md:rounded-2xl md:border md:px-4 md:py-2 md:shadow-[0_10px_30px_rgba(0,0,0,0.24)]";
+    ? "rounded-[1.5rem] border border-black/10 dark:border-hairline px-3 py-4 shadow-[0_10px_30px_rgba(0,0,0,0.24)] sm:rounded-[2.25rem] sm:px-6 sm:py-6"
+    : "rounded-t-3xl border-t border-x-0 border-b-0 border-slate-200/70 dark:border-divider px-4 pt-2 pb-[max(1rem,env(safe-area-inset-bottom))] shadow-[0_-8px_24px_rgba(0,0,0,0.14)] md:rounded-2xl md:border md:px-4 md:py-2 md:shadow-[0_10px_30px_rgba(0,0,0,0.24)]";
 
-  return `mx-auto w-full ${layoutClassName} bg-white transition-all duration-300 ${
+  return `mx-auto w-full ${layoutClassName} bg-white dark:bg-surface-card transition-all duration-300 ${
     visible ? "pointer-events-auto" : "pointer-events-none"
   }`;
 }
@@ -101,12 +103,12 @@ function MacroSummarySection({ contextLine, isCartLayout, totals }: MacroSummary
   return (
     <section className={`${isCartLayout ? "flex-1" : "w-full md:w-auto md:shrink-0"}`}>
       {contextLine ? (
-        <p className="text-sm font-medium tracking-tight text-slate-500">
+        <p className="text-sm font-medium tracking-tight text-slate-500 dark:text-slate-400">
           {contextLine}
         </p>
       ) : null}
       {isCartLayout ? (
-        <p className={`text-left text-sm font-semibold tracking-tight text-slate-500 sm:text-center ${contextLine ? "mt-1" : ""}`}>
+        <p className={`text-left text-sm font-semibold tracking-tight text-slate-500 dark:text-slate-400 sm:text-center ${contextLine ? "mt-1" : ""}`}>
           TOTAL MACROS
         </p>
       ) : null}
@@ -276,14 +278,7 @@ export default function StickyMacroTotalsBar({
     setIsExpandedPanelEntered(false);
   }
 
-  useEffect(() => {
-    if (!wantsExpandedBuildPanel) return;
-
-    document.body.style.overflow = "hidden";
-    return () => {
-      document.body.style.overflow = "";
-    };
-  }, [wantsExpandedBuildPanel]);
+  useSheetLayer({ open: Boolean(wantsExpandedBuildPanel && visible && !inline && !isCartLayout), onClose: onSecondaryAction });
 
   // Enter (open): a single rAF isn't reliably enough here — it can still
   // land inside the same frame the browser was about to use for the first
@@ -429,14 +424,14 @@ export default function StickyMacroTotalsBar({
             />
             <div
               ref={expandedPanelRef}
-              className={`relative z-10 flex h-[94dvh] max-h-[94dvh] w-[92vw] max-w-[1440px] flex-col overflow-hidden rounded-2xl border border-black/10 bg-white shadow-[0_10px_30px_rgba(0,0,0,0.24)] transition-[opacity,transform] duration-200 ease-out ${
+              className={`relative z-10 flex h-[94dvh] max-h-[94dvh] w-[92vw] max-w-[1440px] flex-col overflow-hidden rounded-2xl border border-black/10 dark:border-hairline bg-white dark:bg-surface-card shadow-[0_10px_30px_rgba(0,0,0,0.24)] transition-[opacity,transform] duration-200 ease-out ${
                 isDesktopEntered
                   ? "translate-y-0 scale-100 opacity-100"
                   : "translate-y-[10px] scale-[0.98] opacity-0"
               }`}
             >
               <div className="min-h-0 flex-1 overflow-hidden">{detailsContent}</div>
-              <div className="shrink-0 border-t border-slate-200/70 bg-white px-3 py-2 sm:px-4">
+              <div className="shrink-0 border-t border-slate-200/70 dark:border-divider bg-white dark:bg-surface-card px-3 py-2 sm:px-4">
                 {barContentNode}
               </div>
             </div>
@@ -477,10 +472,10 @@ export default function StickyMacroTotalsBar({
         aria-modal={isMobileSheetOpen ? true : undefined}
         aria-label={isMobileSheetOpen ? "Build summary" : undefined}
       >
-        <div className="relative flex max-h-[calc(100dvh-var(--safe-area-top))] flex-col overflow-hidden rounded-t-3xl border-t border-slate-200/70 bg-white shadow-[0_-8px_24px_rgba(0,0,0,0.14)]">
+        <div style={{ maxHeight: `min(90dvh, calc(100dvh - var(--safe-area-top) - ${IS_CAPACITOR_BUILD ? "var(--native-bottom-nav-height)" : "0px"}))` }} className={`relative flex flex-col overflow-hidden rounded-t-3xl border-t border-slate-200/70 dark:border-divider bg-white dark:bg-surface-card shadow-[0_-8px_24px_rgba(0,0,0,0.14)] ${isMobileSheetOpen ? "h-[90dvh]" : ""}`}>
           <div
-            className={`overflow-hidden transition-[max-height] duration-300 ease-out ${
-              isMobileSheetOpen ? "max-h-[85dvh]" : "max-h-0"
+            className={`min-h-0 flex-1 overflow-hidden transition-[max-height] duration-300 ease-out ${
+              isMobileSheetOpen ? "max-h-[90dvh]" : "max-h-0"
             }`}
             // Content stays mounted (and visible) throughout the close
             // animation on purpose — see the note above — so `inert`
@@ -488,11 +483,11 @@ export default function StickyMacroTotalsBar({
             // order/accessibility tree while it's clipped to zero height.
             inert={!isMobileSheetOpen}
           >
-            <div className="h-[85dvh] min-h-0">{hasMobileDetailsEverOpened ? detailsContent : null}</div>
+            <div className="h-full min-h-0">{hasMobileDetailsEverOpened ? detailsContent : null}</div>
           </div>
           <div
             className={`shrink-0 px-4 pt-2 pb-[max(1rem,env(safe-area-inset-bottom))] ${
-              isMobileSheetOpen ? "border-t border-slate-200/70" : ""
+              isMobileSheetOpen ? "border-t border-slate-200/70 dark:border-divider" : ""
             }`}
           >
             {barContentNode}

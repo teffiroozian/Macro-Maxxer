@@ -82,6 +82,8 @@ export type MenuSourceIdentity = {
 // item variants allow for different versions of the same base item, 
 // e.g. 8pc vs 10pc nuggets, small vs medium fries
 export type ItemVariant = {
+  category?: string;
+  tags?: string[];
   id: string;
   label: string;
   image?: string;
@@ -250,6 +252,9 @@ export type RestaurantCustomizationRules = {
 
 // represents one menu item
 export type MenuItem = {
+  // One primary organization; tags carry cross-category classifications.
+  category?: string;
+  tags?: string[];
   id: string;
   name: string;
   image: string;
@@ -273,6 +278,8 @@ export type MenuItem = {
   entreeGroup?: string;
 
   nutrition: Nutrition;
+  // Stable baseline for ingredient ranking while displayed portions change.
+  rankingNutrition?: Nutrition;
   source?: MenuSourceIdentity;
 
   ingredientRef?: string;
@@ -290,6 +297,8 @@ export type MenuItem = {
   variants?: ItemVariant[];
   // Source of truth for default variant selection; falls back to the first variant when missing or invalid.
   defaultVariantId?: string;
+  // Ranking projection metadata; the source dataset and its variants stay intact.
+  rankingFamilyDefaultVariantId?: string;
   // When the variant dimension is a single-component choice (e.g. a cheese
   // swap) rather than a size/count/portion difference, this labels the
   // variant selector accordingly ("Cheese") instead of the generic default.

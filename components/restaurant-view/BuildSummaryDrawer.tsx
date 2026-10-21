@@ -1,5 +1,5 @@
 import { useLayoutEffect, useMemo, useRef, useState, type ReactNode } from "react";
-import { ArrowRight, ChevronRight, Eye, EyeOff, Lock, RotateCcw, Save, Trash2 } from "lucide-react";
+import { ArrowRight, ChevronRight, Eye, EyeOff, Lock, RotateCcw, Save, Trash2, X } from "lucide-react";
 import type { MenuItem } from "@/types/menu";
 import NutritionFactsPanel, {
   type NutritionFactsPanelProps,
@@ -32,8 +32,6 @@ type SelectedEntry = [string, { item: MenuItem; quantity: number }];
 
 type PortionControl = { options: CompactOption[]; selectedId: string };
 
-const INCLUDED_INGREDIENT_CATEGORY_KEY = "included ingredient";
-
 // Stable empty-set fallback for the `excludedIngredientIds` prop — a fresh
 // `new Set()` literal as a default value would be a new reference on every
 // render, which would defeat `displayNutritionLabelTotals`'s memoization
@@ -42,6 +40,7 @@ const INCLUDED_INGREDIENT_CATEGORY_KEY = "included ingredient";
 const EMPTY_EXCLUDED_INGREDIENT_IDS: Set<string> = new Set();
 
 type Props = {
+  onClose?: () => void;
   adjustedNutritionLabelTotals: NutritionFactsPanelProps["totals"];
   selectedBuildName: string;
   // Entree type only (e.g. "Burrito"), no protein — used by the panel
@@ -146,7 +145,7 @@ function SelectedIngredientRow({
         name={`${selectedIngredient.item.name}${portionLabel ? ` · ${portionLabel}` : ""}`}
         state="muted"
         accessory={
-          <span className="inline-flex shrink-0 items-center gap-1 rounded-full bg-slate-200/70 px-2.5 py-1 text-[11px] font-semibold text-slate-500">
+          <span className="inline-flex shrink-0 items-center gap-1 rounded-full bg-slate-200/70 px-2.5 py-1 text-[11px] font-semibold text-slate-500 dark:text-slate-400">
             <Lock className="h-3 w-3" aria-hidden="true" />
             Included
           </span>
@@ -174,8 +173,8 @@ function SelectedIngredientRow({
             />
           ) : portionLabel ? (
             <span
-              className={`shrink-0 rounded-md bg-black/5 px-1.5 py-0.5 text-[10px] font-semibold tracking-wide ${
-                isExcluded ? "text-black/30" : "text-black/60"
+              className={`shrink-0 rounded-md bg-black/5 dark:bg-surface-hover px-1.5 py-0.5 text-[10px] font-semibold tracking-wide ${
+                isExcluded ? "text-black/30" : "text-black/60 dark:text-slate-400"
               }`}
             >
               {portionLabel}
@@ -186,7 +185,7 @@ function SelectedIngredientRow({
             onClick={() => onToggleExcludeIngredient?.(ingredientId)}
             aria-pressed={isExcluded}
             aria-label={`${isExcluded ? "Include" : "Exclude"} ${selectedIngredient.item.name} from nutrition totals`}
-            className="inline-flex h-6 w-6 shrink-0 cursor-pointer items-center justify-center rounded-md text-slate-400 transition hover:bg-black/5 hover:text-slate-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-strong/50"
+            className="inline-flex h-6 w-6 shrink-0 cursor-pointer items-center justify-center rounded-md text-slate-400 dark:text-slate-400 transition hover:bg-black/5 dark:hover:bg-surface-hover hover:text-slate-600 dark:hover:text-slate-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-strong/50"
           >
             {isExcluded ? (
               <EyeOff className="h-3.5 w-3.5" aria-hidden="true" />
@@ -194,12 +193,12 @@ function SelectedIngredientRow({
               <Eye className="h-3.5 w-3.5" aria-hidden="true" />
             )}
           </button>
-          <span aria-hidden="true" className="h-4 w-px shrink-0 bg-black/10" />
+          <span aria-hidden="true" className="h-4 w-px shrink-0 bg-black/10 dark:bg-divider" />
           <button
             type="button"
             onClick={() => onRemoveIngredient?.(selectedIngredient.item)}
             aria-label={`Remove ${selectedIngredient.item.name}`}
-            className="inline-flex h-6 w-6 shrink-0 cursor-pointer items-center justify-center rounded-md text-slate-400 transition hover:bg-red-50 hover:text-red-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-strong/50"
+            className="inline-flex h-6 w-6 shrink-0 cursor-pointer items-center justify-center rounded-md text-slate-400 dark:text-slate-400 transition hover:bg-red-50 hover:text-red-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-strong/50"
           >
             <Trash2 className="h-3.5 w-3.5" aria-hidden="true" />
           </button>
@@ -231,17 +230,17 @@ function IngredientCategoryHeader({
         type="button"
         onClick={() => onNavigateToCategory?.(categoryKey)}
         aria-label={`Edit ${categoryLabel} in the builder`}
-        className="group -ml-1 flex items-center gap-1 rounded-md px-1 py-0.5 transition hover:bg-black/5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-slate-900"
+        className="group -ml-1 flex items-center gap-1 rounded-md px-1 py-0.5 transition hover:bg-black/5 dark:hover:bg-surface-hover focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-slate-900 dark:focus-visible:outline-slate-50"
       >
-        <SectionEyebrow className="text-[10px] text-slate-500 group-hover:text-slate-700">{categoryLabel}</SectionEyebrow>
-        <ArrowRight className="h-3.5 w-3.5 shrink-0 text-slate-400 transition group-hover:text-slate-700" aria-hidden="true" />
+        <SectionEyebrow className="text-[10px] text-slate-500 dark:text-slate-400 group-hover:text-slate-700 dark:group-hover:text-slate-200">{categoryLabel}</SectionEyebrow>
+        <ArrowRight className="h-3.5 w-3.5 shrink-0 text-slate-400 dark:text-slate-400 transition group-hover:text-slate-700 dark:group-hover:text-slate-200" aria-hidden="true" />
       </button>
     );
   }
 
   return (
     <div className="px-1">
-      <SectionEyebrow className="text-[10px] text-slate-500">{categoryLabel}</SectionEyebrow>
+      <SectionEyebrow className="text-[10px] text-slate-500 dark:text-slate-400">{categoryLabel}</SectionEyebrow>
     </div>
   );
 }
@@ -289,8 +288,8 @@ function SelectedIngredientsCard({
       className="order-1 flex flex-col lg:order-2 lg:overflow-hidden"
       style={pairedHeight !== null ? { height: pairedHeight } : undefined}
     >
-      <h3 className="shrink-0 text-2xl font-bold text-slate-900">Selected Ingredients</h3>
-      <p className="mt-2 shrink-0 text-sm font-semibold text-slate-600">{selectedBuildName} · {selectedIngredientCount} selected</p>
+      <h3 className="shrink-0 text-2xl font-bold text-slate-900 dark:text-slate-100">Selected Ingredients</h3>
+      <p className="mt-2 shrink-0 text-sm font-semibold text-slate-600 dark:text-slate-300">{selectedBuildName} · {selectedIngredientCount} selected</p>
       <div className="mt-4 flex-1 rounded-xl bg-app-background p-2 lg:min-h-0 lg:overflow-y-auto">
         <div className="space-y-3">
           {groupedSelectedIngredientEntries.map((group) => (
@@ -342,7 +341,7 @@ function ViewBuildStatBlock({
   return (
     <div className={`flex min-w-0 flex-col gap-1.5 ${className}`.trim()}>
       <div className="flex items-center gap-1.5">
-        <SectionEyebrow className="text-[10px] text-slate-500">{eyebrow}</SectionEyebrow>
+        <SectionEyebrow className="text-[10px] text-slate-500 dark:text-slate-400">{eyebrow}</SectionEyebrow>
         {headerExtra}
       </div>
       {children}
@@ -371,12 +370,12 @@ function ClickableMacroSplitBlock({
       type="button"
       onClick={onOpen}
       aria-haspopup="dialog"
-      className={`group -mx-2 flex min-w-0 cursor-pointer flex-col gap-1.5 rounded-xl px-2 py-1.5 text-left transition-colors duration-200 hover:bg-slate-50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-900 ${className}`.trim()}
+      className={`group -mx-2 flex w-full min-w-0 cursor-pointer flex-col gap-1.5 rounded-xl px-2 py-1.5 text-left transition-colors duration-200 hover:bg-slate-50 dark:hover:bg-surface-hover focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-900 dark:focus-visible:outline-slate-50 ${className}`.trim()}
     >
       <span className="flex items-center justify-between gap-1.5">
-        <SectionEyebrow className="text-[10px] text-slate-500">Macro Split</SectionEyebrow>
+        <SectionEyebrow className="text-[10px] text-slate-500 dark:text-slate-400">Macro Split</SectionEyebrow>
         <ChevronRight
-          className="h-3.5 w-3.5 shrink-0 text-slate-400 transition-transform duration-200 group-hover:translate-x-0.5"
+          className="h-3.5 w-3.5 shrink-0 text-slate-400 dark:text-slate-400 transition-transform duration-200 group-hover:translate-x-0.5"
           aria-hidden="true"
         />
       </span>
@@ -456,13 +455,13 @@ export default function BuildSummaryDrawer({
   onAdjustIngredientQuantity,
   portionControlByIngredientId,
   onPortionModeChange,
-  onNavigateToCategory,
   hideActionButtons = false,
   variant = "embedded",
   ingredientNutritionContributionById,
   excludedIngredientIds = EMPTY_EXCLUDED_INGREDIENT_IDS,
   onToggleExcludeIngredient,
   onRemoveIngredient,
+  onClose,
 }: Props) {
   const isPanel = variant === "panel";
 
@@ -594,8 +593,9 @@ export default function BuildSummaryDrawer({
     return (
       <div className="flex h-full min-h-0 flex-col p-2.5 sm:p-3">
         <div className="flex shrink-0 items-center gap-2 pb-2.5">
-          <RestaurantLogoBadge src={restaurantLogo} alt="" size="sm" ring={false} className="border border-black/10" />
-          <h2 className="truncate text-base font-bold text-slate-900 sm:text-lg">{selectedBuildName}</h2>
+          <RestaurantLogoBadge src={restaurantLogo} alt="" size="sm" ring={false} className="border border-black/10 dark:border-hairline" />
+          <h2 className="min-w-0 flex-1 truncate text-base font-bold text-slate-900 dark:text-slate-100 sm:text-lg">{selectedBuildName}</h2>
+          {onClose ? <button type="button" onClick={onClose} aria-label="Close build summary" className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-slate-100 dark:bg-surface-hover text-slate-500 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-surface-hover lg:hidden"><X className="h-4 w-4" /></button> : null}
         </div>
 
         {/* Mobile (<lg): one normal block-flow column — every section is a
@@ -608,10 +608,10 @@ export default function BuildSummaryDrawer({
             Close Build / Add to Cart footer lives one level up, in
             StickyMacroTotalsBar — outside this scroll area, so it stays
             fixed to the bottom of the modal regardless of content length. */}
-        <div className="flex min-h-0 flex-1 flex-col gap-3 overflow-y-auto lg:hidden">
+        <div className="flex min-h-0 flex-1 flex-col gap-3 overflow-y-auto overscroll-contain lg:hidden">
           <SurfaceCard as="section" padding="compact" radius="large" shadow="none">
-            <h3 className="text-lg font-bold text-slate-900">Selected Ingredients</h3>
-            <p className="mt-1 text-sm font-medium text-slate-400">
+            <h3 className="text-lg font-bold text-slate-900 dark:text-slate-100">Selected Ingredients</h3>
+            <p className="mt-1 text-sm font-medium text-slate-400 dark:text-slate-400">
               {selectedEntreeLabel} · {selectedIngredientCount} ingredient{selectedIngredientCount === 1 ? "" : "s"}
             </p>
             <div className="mt-3">{selectedIngredientsListNode}</div>
@@ -622,7 +622,7 @@ export default function BuildSummaryDrawer({
               {typeof proteinScore === "number" && proteinScoreTier ? (
                 <ProteinScorePill scorePerHundredCalories={proteinScore} tier={proteinScoreTier} protein={displayNutritionLabelTotals.protein} calories={displayNutritionLabelTotals.calories} itemName={selectedBuildName} />
               ) : (
-                <p className="text-sm text-slate-500">—</p>
+                <p className="text-sm text-slate-500 dark:text-slate-400">—</p>
               )}
             </ViewBuildStatBlock>
           </SurfaceCard>
@@ -652,8 +652,8 @@ export default function BuildSummaryDrawer({
             className="flex min-h-0 flex-1 flex-col lg:overflow-hidden"
           >
             <div className="shrink-0">
-              <h3 className="text-lg font-bold text-slate-900">Selected Ingredients</h3>
-              <p className="mt-1 text-sm font-medium text-slate-400">
+              <h3 className="text-lg font-bold text-slate-900 dark:text-slate-100">Selected Ingredients</h3>
+              <p className="mt-1 text-sm font-medium text-slate-400 dark:text-slate-400">
                 {selectedEntreeLabel} · {selectedIngredientCount} ingredient{selectedIngredientCount === 1 ? "" : "s"}
               </p>
             </div>
@@ -678,12 +678,12 @@ export default function BuildSummaryDrawer({
                 starting position next to it. `minmax(0, 1fr)` lets Macro
                 Split take the rest of the row and still shrink correctly
                 instead of overflowing. */}
-            <div className="mt-3 grid grid-cols-[200px_minmax(0,1fr)] items-start gap-5 border-t border-black/[0.06] pt-3">
+            <div className="mt-3 grid grid-cols-[200px_minmax(0,1fr)] items-start gap-5 border-t border-black/[0.06] dark:border-divider pt-3">
               <ViewBuildStatBlock eyebrow="Protein Score" className="min-w-0">
                 {typeof proteinScore === "number" && proteinScoreTier ? (
                   <ProteinScorePill scorePerHundredCalories={proteinScore} tier={proteinScoreTier} protein={displayNutritionLabelTotals.protein} calories={displayNutritionLabelTotals.calories} itemName={selectedBuildName} />
                 ) : (
-                  <p className="text-sm text-slate-500">—</p>
+                  <p className="text-sm text-slate-500 dark:text-slate-400">—</p>
                 )}
               </ViewBuildStatBlock>
 
@@ -710,8 +710,8 @@ export default function BuildSummaryDrawer({
   return (
     <div className="space-y-3">
       {!hideActionButtons ? (
-        <div className="sticky top-0 z-20 -mx-1 flex flex-wrap items-center justify-end gap-2 bg-white/95 px-1 py-1 backdrop-blur-sm">
-          <AppButton variant="secondary" size="sm" onClick={onResetOrder} className="h-7 px-3 text-xs text-slate-700">
+        <div className="sticky top-0 z-20 -mx-1 flex flex-wrap items-center justify-end gap-2 bg-white/95 dark:bg-surface-card px-1 py-1 backdrop-blur-sm">
+          <AppButton variant="secondary" size="sm" onClick={onResetOrder} className="h-7 px-3 text-xs text-slate-700 dark:text-slate-200">
             <RotateCcw className="h-3.5 w-3.5" aria-hidden="true" />
             <span>Reset Meal</span>
           </AppButton>

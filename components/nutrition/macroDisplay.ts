@@ -2,6 +2,7 @@ import type { CoreMacros } from "@/types/nutrition";
 import { macroColorTokens } from "@/components/nutrition/macroColorTokens";
 
 export type MacroKey = keyof CoreMacros;
+export type NutritionMetricKey = MacroKey | "fiber";
 export type MacroDisplayVariant = "default" | "bar";
 
 export type MacroDisplayConfig = {
@@ -12,7 +13,7 @@ export type MacroDisplayConfig = {
   segmentClassName: string;
 };
 
-export const macroDisplayConfig: Record<MacroKey, MacroDisplayConfig> = {
+export const macroDisplayConfig: Record<NutritionMetricKey, MacroDisplayConfig> = {
   calories: {
     label: "Calories",
     shortLabel: "Cal",
@@ -41,6 +42,11 @@ export const macroDisplayConfig: Record<MacroKey, MacroDisplayConfig> = {
       bar: macroColorTokens.carbs.barValueClassName,
     },
     segmentClassName: macroColorTokens.carbs.segmentClassName,
+  },
+  fiber: {
+    label: "Fiber", shortLabel: "Fiber", unit: "g",
+    valueClassNameByVariant: { default: macroColorTokens.fiber.valueClassName, bar: macroColorTokens.fiber.barValueClassName },
+    segmentClassName: macroColorTokens.fiber.segmentClassName,
   },
   totalFat: {
     label: "Fat",

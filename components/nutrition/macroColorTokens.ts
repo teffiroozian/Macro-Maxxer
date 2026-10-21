@@ -1,6 +1,6 @@
 import type { CoreMacros } from "@/types/nutrition";
 
-type MacroKey = keyof CoreMacros;
+type MacroKey = keyof CoreMacros | "fiber";
 
 export type MacroColorToken = {
   valueClassName: string;
@@ -13,25 +13,31 @@ export const macroColorTokens: Record<MacroKey, MacroColorToken> = {
   calories: {
     compactValueClassName: "text-slate-900 dark:text-slate-50",
     valueClassName: "text-slate-900 dark:text-slate-50",
-    barValueClassName: "text-[#111318]",
+    barValueClassName: "text-[#111318] dark:text-slate-50",
     segmentClassName: "bg-[#111318] text-white dark:bg-slate-50 dark:text-slate-950",
   },
   protein: {
     compactValueClassName: "text-[#c2410c] dark:text-[#f96306]",
     valueClassName: "text-[#c2410c] dark:text-[#f96306]",
-    barValueClassName: "text-[#C75A1B]",
+    barValueClassName: "text-[#C75A1B] dark:text-[#f96306]",
     segmentClassName: "bg-[#c2410c] text-white dark:bg-[#f96306] dark:text-slate-950",
   },
   carbs: {
     compactValueClassName: "text-[#ca8a04] dark:text-[#f9c406]",
     valueClassName: "text-[#ca8a04] dark:text-[#f9c406]",
-    barValueClassName: "text-[#D0A700]",
+    barValueClassName: "text-[#D0A700] dark:text-[#f9c406]",
     segmentClassName: "bg-[#ca8a04] text-white dark:bg-[#f9c406] dark:text-slate-950",
+  },
+  fiber: {
+    compactValueClassName: "text-[#047857] dark:text-accent-strong",
+    valueClassName: "text-[#047857] dark:text-accent-strong",
+    barValueClassName: "text-[#047857] dark:text-accent-strong",
+    segmentClassName: "bg-[#047857] text-white dark:bg-accent-strong dark:text-slate-950",
   },
   totalFat: {
     compactValueClassName: "text-[#2563eb] dark:text-slate-300",
     valueClassName: "text-[#2563eb] dark:text-[#336dfa]",
-    barValueClassName: "text-[#2563eb]",
+    barValueClassName: "text-[#2563eb] dark:text-slate-300",
     segmentClassName: "bg-[#2563eb] text-white dark:bg-[#336dfa] dark:text-slate-950",
   },
 };

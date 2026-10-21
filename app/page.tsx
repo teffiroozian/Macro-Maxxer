@@ -13,8 +13,6 @@ import type { RestaurantData } from "@/types/restaurant";
 import HomeSectionHeading from "@/components/home/HomeSectionHeading";
 import HomeSectionContainer, { HOME_VISUAL_WIDTH_CLASS } from "@/components/home/HomeSectionContainer";
 import LiveRestaurantsBadge from "@/components/home/LiveRestaurantsBadge";
-import { RestaurantUiProvider } from "@/components/RestaurantUiContext";
-import CartPreviewDrawer from "@/components/cart/CartPreviewDrawer";
 import { IS_CAPACITOR_BUILD } from "@/lib/buildTarget";
 import NativeHomePage from "@/components/native/NativeHomePage";
 import { getAllRestaurants, getRestaurantData, toItemSlug } from "@/lib/restaurants";
@@ -211,7 +209,7 @@ export default async function Home() {
       CHIPOTLE_HOMEPAGE_EDITORIAL.reviewItems.length;
 
   return (
-    <RestaurantUiProvider>
+    <>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
@@ -317,8 +315,6 @@ export default async function Home() {
           ) : null}
         </main>
       </div>
-
-      {!IS_CAPACITOR_BUILD ? <CartPreviewDrawer /> : null}
-    </RestaurantUiProvider>
+    </>
   );
 }

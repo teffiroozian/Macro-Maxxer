@@ -1,0 +1,271 @@
+"use client";
+
+import { useEffect, useRef, useMemo, useState, type ReactNode, type CSSProperties } from "react";
+import { Check, Minus, ChevronDown, Coffee, Cookie, Leaf, GlassWater, Droplets, CupSoda, Grid2X2, SlidersHorizontal, Soup, UtensilsCrossed, Users, X, Zap, type LucideIcon } from "lucide-react";
+import { getMobileProteinShortcuts, getNutritionControlData, reconcileNutritionThresholds } from "@/lib/menuSections/nutritionPresets";
+import { getVariantSettings, countVariantSettingsChanges, VARIANT_FILTER_DEFAULTS, type Filters, type VariantSettings } from "@/lib/menuSections/filterOptions";
+import type { MenuItem } from "@/types/menu";
+import { getNutritionHistogramBinInclusion, buildNutritionHistogram } from "@/lib/menuSections/nutritionDisplayRange";
+import { getCategoryLabel } from "@/lib/menuSections/sorting";
+import { PROTEIN_SCORE_COLOR, FIBER_COLOR, getDarkRangeColor } from "@/components/nutrition/metricColors";
+import { proteinScoreTierStyles } from "@/components/nutrition/proteinScoreStyles";
+import { getCategoryPresets, getSelectedCategoryPreset, selectCategoryPreset, selectCustomCategories, toggleCategoryMembership, type CategoryPreset, type CategoryPresetId } from "@/lib/menuSections/categoryPresets";
+import { getMenuCategoryFacets, getMenuResultCounts, type MenuResultContext, type CategorySelectionState } from "@/lib/menuSections/resultCounts";
+import { getRankState } from "@/lib/menuSections/sortOptions";
+import { resolveCardDisplayMode, type CardDisplayMode } from "@/lib/menuItemCard/rankingMacroDisplay";
+import AppButton from "@/components/ui/AppButton";
+
+type Bounds = { min: number; max: number };
+type Preset = { label: string; value?: number };
+const categoryPresetIcons: Record<CategoryPresetId, LucideIcon> = { main: UtensilsCrossed, food: UtensilsCrossed, coffee: Coffee, matcha: Leaf, refreshers: GlassWater, sweets: Cookie, sides: Soup, drinks: CupSoda, shareables: Users, sauces: Droplets, all: Grid2X2 };
+
+function CategoryCheckbox({ state, onChange }: { state: CategorySelectionState; onChange: () => void }) {
+  const ref = useRef<HTMLInputElement>(null);
+  useEffect(() => { if (ref.current) ref.current.indeterminate = state === "some"; }, [state]);
+  return <>
+    <input ref={ref} type="checkbox" checked={state === "all"} aria-checked={state === "some" ? "mixed" : state === "all"} onChange={onChange} className="peer sr-only" />
+    <span className={`flex h-4 w-4 shrink-0 items-center justify-center rounded-[5px] border transition peer-focus-visible:ring-2 peer-focus-visible:ring-[#047857]/30 ${state === "all" ? "border-[#047857] dark:border-accent-strong bg-[#047857] dark:bg-accent text-white dark:text-slate-950" : state === "some" ? "border-[#047857] dark:border-accent-strong bg-[#ECFDF5] dark:bg-accent-soft text-[#047857] dark:text-accent-strong" : "border-slate-300 dark:border-control bg-white dark:bg-surface-card text-transparent"}`}>
+      {state === "some" ? <Minus className="h-3 w-3" strokeWidth={3} /> : <Check className="h-3 w-3" strokeWidth={3} />}
+    </span>
+  </>;
+}
+
+export function SectionHeader({ title, summary, open, onClick }: { title: string; summary: string; open: boolean; onClick: () => void }) {
+  return <button type="button" aria-expanded={open} onClick={onClick} className="flex min-h-16 w-full cursor-pointer items-center gap-4 py-1 text-left">
+    <span className="font-heading text-xl font-bold text-slate-950 dark:text-slate-50 sm:text-[22px]">{title}</span>
+    <span className="ml-auto text-[13px] font-medium text-slate-500 dark:text-slate-400">{summary}</span>
+    <ChevronDown className={`h-4 w-4 shrink-0 text-slate-400 dark:text-slate-400 transition-transform ${open ? "rotate-180" : ""}`} strokeWidth={2.4} />
+  </button>;
+}
+
+function Histogram({ values, bounds, color, threshold, minimum }: { values: number[]; bounds: Bounds; color: string; threshold?: number; minimum: boolean }) {
+  const bars = useMemo(() => {
+    const buckets = buildNutritionHistogram(values, bounds);
+    const peak = Math.max(1, ...buckets);
+    return buckets.map((count) => count / peak);
+  }, [bounds, values]);
+  const included = useMemo(() => getNutritionHistogramBinInclusion(values, bounds, threshold, minimum), [values, bounds, threshold, minimum]);
+  return <div className="flex h-[45px] items-end gap-[3px] px-1" aria-hidden="true">{bars.map((height, index) => <span key={index} className={`nutrition-histogram-bar flex-1 rounded-t-[2px] ${included[index] ? color : minimum ? "bg-orange-200 dark:bg-control" : "bg-slate-300 dark:bg-control"}`} style={{ height: `${Math.max(2, height * 45)}px`, "--histogram-dark-color": included[index] ? getDarkRangeColor(color.slice(4, -1)) : "var(--border-control)" } as CSSProperties} />)}</div>;
+}
+
+function NutritionSlider({ label, displayValue, value, bounds, values, color, presets, anyAt, step, onChange }: { label: string; displayValue: string; value?: number; bounds: Bounds; values: number[]; color: string; presets: Preset[]; anyAt: "min" | "max"; step: number; onChange: (value?: number) => void }) {
+  const resolved = Math.min(bounds.max, Math.max(bounds.min, value ?? bounds[anyAt]));
+  const fill = ((resolved - bounds.min) / Math.max(1, bounds.max - bounds.min)) * 100;
+  return <div className="py-5">
+    <div className="mb-4 flex items-baseline justify-between gap-4"><h4 className="text-[15px] font-bold text-slate-950 dark:text-slate-50">{label}</h4><span className="text-sm font-semibold text-slate-600 dark:text-slate-300">{displayValue}</span><button type="button" onClick={() => onChange(undefined)} className="min-h-10 text-xs font-semibold text-slate-500 dark:text-slate-400">Reset</button></div>
+    <div className="mx-auto max-w-[560px]">
+      <Histogram values={values} bounds={bounds} color={color} threshold={value} minimum={anyAt === "min"} />
+      <input type="range" min={bounds.min} max={bounds.max} step={step} value={resolved} aria-valuetext={displayValue} onChange={(event) => onChange(Number(event.target.value))} className={`nutrition-range mt-2 ${anyAt === "min" ? "minimum" : ""}`} style={{ "--range-color": color.startsWith("bg-[") ? color.slice(4, -1) : "#0f172a", "--range-dark-color": getDarkRangeColor(color.startsWith("bg-[") ? color.slice(4, -1) : color), "--range-fill-percent": `${fill}%` } as CSSProperties} aria-label={label} />
+      <div className="mt-4 grid grid-flow-col auto-cols-fr rounded-xl bg-slate-100 dark:bg-surface-hover p-1">{presets.map((preset) => {
+        const active = value === preset.value;
+        return <button key={preset.label} type="button" onClick={() => onChange(preset.value)} className={`h-8 cursor-pointer rounded-lg border text-xs font-semibold transition ${active ? "border-slate-200 dark:border-divider bg-white dark:bg-surface-card text-slate-950 dark:text-slate-50 shadow-sm" : "border-transparent bg-transparent text-slate-600 dark:text-slate-300 hover:text-slate-950 dark:hover:text-slate-50"}`}>{preset.label}</button>;
+      })}</div>
+    </div>
+  </div>;
+}
+
+function CompactSlider({ label, value, max, unit, kind, color, onChange }: { label: string; value?: number; max: number; unit: string; kind: "min" | "max"; color: string; onChange: (value?: number) => void }) {
+  const resolved = value ?? (kind === "max" ? max : 0);
+  const fill = resolved / Math.max(1, max) * 100;
+  return <div className="grid min-h-12 grid-cols-[112px_minmax(120px,1fr)_84px] items-center gap-4 border-b border-slate-100 dark:border-divider last:border-0">
+    <label className="text-sm font-semibold text-slate-800 dark:text-slate-200">{label}</label>
+    <input type="range" min={0} max={max} value={resolved} onChange={(event) => onChange(Number(event.target.value))} className={`nutrition-range compact ${kind === "min" ? "minimum" : ""}`} style={{ "--range-color": color, "--range-dark-color": getDarkRangeColor(color.startsWith("bg-[") ? color.slice(4, -1) : color), "--range-fill-percent": `${fill}%` } as CSSProperties} />
+    <button type="button" onClick={() => onChange(undefined)} className="cursor-pointer text-right text-xs font-semibold tabular-nums text-slate-500 dark:text-slate-400">{value === undefined ? "Any" : `${kind === "max" ? "≤" : "≥"} ${value}${unit}`}</button>
+  </div>;
+}
+
+export default function RestaurantFiltersPanel({ restaurantId, items, value, onChange, onClose, onApply, matchingCount, resultContext, focus = "all", leadingControls, showVariants = true, onReset, headerControls, isMobileSheet = false }: { focus?: "all" | "rank" | "categories" | "nutrition" | "calories" | "protein" | "variants" | "entree" | "size"; isMobileSheet?: boolean; leadingControls?: ReactNode; headerControls?: ReactNode; showVariants?: boolean; onReset?: () => void; restaurantId: string; items: MenuItem[]; value: Filters; onChange: (filters: Filters) => void; onClose: () => void; onApply: () => void; matchingCount: number; resultContext?: MenuResultContext }) {
+  const dragStartY = useRef<number | null>(null);
+  const isChipotle = restaurantId === "chipotle";
+  const [menuOpen, setMenuOpen] = useState(true);
+  const [variantsOpen, setVariantsOpen] = useState(true);
+  const [nutritionOpen, setNutritionOpen] = useState(true);
+  const [moreOpen, setMoreOpen] = useState(false);
+  const countInput = { items, filters: value, searchTerms: [], ...(resultContext ?? { isRankingView: false, filterRankingCategories: false, rankedChildSelections: { "main-entrees": new Set<string>(), breakfast: new Set<string>(), shareables: new Set<string>(), sides: new Set<string>(), drinks: new Set<string>() } }) };
+  const nutritionData = getNutritionControlData(countInput);
+  const { calories, proteins, calorieBounds, proteinBounds, caloriePresets, proteinPresets } = nutritionData;
+  useEffect(() => {
+    const reconciled = reconcileNutritionThresholds(value, nutritionData);
+    if (reconciled !== value) onChange(reconciled);
+  }, [value, nutritionData, onChange]);
+  const facets = getMenuCategoryFacets(countInput);
+  const categoryCounts = facets.counts;
+  const categoryPresets = getCategoryPresets(items, restaurantId).map((preset) => ({ ...preset, Icon: categoryPresetIcons[preset.id] }));
+  const allIds = categoryPresets.find((preset) => preset.id === "all")!.ids;
+  const categories = allIds.map((id) => ({ id, count: categoryCounts.get(id) ?? 0, label: getCategoryLabel(id) }));
+  const selected = value.categories ?? allIds;
+  const same = (left: string[], right: string[]) => left.length === right.length && left.every((id) => right.includes(id));
+  const matchingCategoryPreset = getSelectedCategoryPreset(value, categoryPresets);
+  const [baseCategoryPresetId, setBaseCategoryPresetId] = useState<CategoryPresetId>(
+    () => matchingCategoryPreset?.id ?? "main",
+  );
+  const baseCategoryPreset = categoryPresets.find((preset) => preset.id === baseCategoryPresetId) ?? categoryPresets[0];
+  const isCustomCategorySelection = !matchingCategoryPreset;
+  const selectedSet = new Set(selected);
+  const hasSelectedCategories = isChipotle || selectedSet.size > 0 || Boolean(value.categoryTags?.length);
+  const showItemCount = hasSelectedCategories ? matchingCount : 0;
+  const selectedItemCount = getMenuResultCounts(countInput).matching;
+  const categoryState = (id: string): CategorySelectionState => facets.states.get(id) ?? (selectedSet.has(id) ? "all" : "none");
+  const includedCategoryCount = categories.filter((category) => categoryState(category.id) !== "none").length;
+  const applyCategoryPreset = (preset: CategoryPreset) => {
+    setBaseCategoryPresetId(preset.id);
+    onChange(selectCategoryPreset(value, preset));
+  };
+  const toggleCategory = (categoryId: string) => {
+    onChange(toggleCategoryMembership(value, selected, categoryId, categoryState(categoryId)));
+  };
+  const variantSettings = getVariantSettings(value);
+  const variantChanges = countVariantSettingsChanges(value);
+  const activeCount = variantChanges + Object.entries(value).filter(([key, entry]) => key !== "cardDisplayOverride" && key !== "rankingGroups" && key !== "categoryPreset" && key !== "categoryTags" && key !== "categoryExclusions" && !(key in VARIANT_FILTER_DEFAULTS) && entry !== undefined && (!Array.isArray(entry) || !same(entry, allIds))).length;
+  const nutritionCount = [value.caloriesMax, value.proteinMin, value.proteinScoreMin].filter((entry) => entry !== undefined).length;
+  const moreCount = [value.carbsMax, value.fatMax, value.fiberMin, value.sodiumMax, value.sugarMax].filter((entry) => entry !== undefined).length;
+  const proteinTiers = [
+    { label: "Any", value: undefined, tier: "moderate", caption: "All", border: "#64748B" },
+    { label: "Good", value: 6, tier: "good", caption: "6+", border: PROTEIN_SCORE_COLOR },
+    { label: "Excellent", value: 9, tier: "excellent", caption: "9+", border: PROTEIN_SCORE_COLOR },
+    { label: "Elite", value: 12, tier: "elite", caption: "12+", border: PROTEIN_SCORE_COLOR },
+  ] as const;
+
+  const moreNutritionControls = <div className="pb-6"><CompactSlider label="Max carbs" value={value.carbsMax} max={200} unit="g" kind="max" color="#CA8A04" onChange={(next) => onChange({...value,carbsMax:next})}/><CompactSlider label="Max fat" value={value.fatMax} max={100} unit="g" kind="max" color="#2563EB" onChange={(next) => onChange({...value,fatMax:next})}/><CompactSlider label="Min fiber" value={value.fiberMin} max={30} unit="g" kind="min" color={FIBER_COLOR} onChange={(next) => onChange({...value,fiberMin:next})}/><CompactSlider label="Max sodium" value={value.sodiumMax} max={3000} unit="mg" kind="max" color="#64748B" onChange={(next) => onChange({...value,sodiumMax:next})}/><CompactSlider label="Max sugar" value={value.sugarMax} max={100} unit="g" kind="max" color="#BE185D" onChange={(next) => onChange({...value,sugarMax:next})}/></div>;
+
+  const title = ({ all: "Filters", rank: "Rank By", categories: isMobileSheet ? "Categories" : "Menu / Categories", nutrition: "Nutrition", calories: "Calories", protein: "Protein", variants: "Variants", entree: "Entree", size: "Size" })[focus];
+  const show = (...sections: string[]) => focus === "all" || sections.includes(focus);
+  const variantsSection = !isChipotle && (showVariants && show("variants") ? <section className={focus === "all" ? "border-t border-slate-200 dark:border-divider" : ""}>
+        {focus === "all" ? <SectionHeader title="Variants" summary={variantChanges ? "Custom" : "Default"} open={variantsOpen} onClick={() => setVariantsOpen(!variantsOpen)} /> : null}
+        {focus !== "all" || variantsOpen ? <div className="pb-5">
+          <div className="divide-y divide-slate-100 dark:divide-divider">
+            {([
+              { key: "showServingSizeVariants", title: "Show different serving sizes", description: "Show different serving sizes and counts as separate ranking results.", example: "Example: 8 ct nuggets vs 12 ct nuggets" },
+              { key: "showRecipeVariants", title: "Show different flavors", description: "Show different flavors, proteins, or recipe versions as separate ranking results.", example: "Example: Cobb Salad with Nuggets vs Cobb Salad with Chick-n-Strips" },
+              { key: "separateSizesInProteinScore", title: "Separate sizes in Protein Score", description: "Show serving sizes separately even when their Protein Score is similar.", example: "Example: Protein Score for 5 ct nuggets vs 12 ct nuggets" },
+            ] satisfies Array<{ key: keyof VariantSettings; title: string; description: string; example: string }>).map((option) => (
+              <button key={option.key} type="button" role="switch" aria-checked={variantSettings[option.key]} aria-labelledby={`variant-title-${option.key}`} aria-describedby={`variant-description-${option.key}`} onClick={() => onChange({ ...value, [option.key]: !variantSettings[option.key] })} className="flex w-full cursor-pointer items-center gap-4 py-4 text-left focus-ring">
+                <span className="min-w-0 flex-1">
+                  <span id={`variant-title-${option.key}`} className="text-[15px] font-bold text-slate-950 dark:text-slate-50">{option.title}</span>
+                  <span id={`variant-description-${option.key}`} className="mt-1 block text-sm leading-5 text-slate-500 dark:text-slate-400">{option.description}</span>
+                  <span className="mt-1 block text-xs italic leading-5 text-slate-400 dark:text-slate-400">{option.example}</span>
+                </span>
+                <span aria-hidden="true" className={`relative h-6 w-11 shrink-0 rounded-full transition-colors ${variantSettings[option.key] ? "bg-[#047857] dark:bg-accent" : "bg-slate-200 dark:bg-surface-hover"}`}>
+                  <span className={`absolute left-0.5 top-0.5 h-5 w-5 rounded-full bg-white dark:bg-slate-50 shadow-sm transition-transform ${variantSettings[option.key] ? "translate-x-5" : "translate-x-0"}`} />
+                </span>
+              </button>
+            ))}
+          </div>
+          <button type="button" onClick={() => onChange({ ...value, ...VARIANT_FILTER_DEFAULTS })} className="min-h-8 cursor-pointer text-xs font-semibold text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 focus-ring">Restore defaults</button>
+        </div> : null}
+      </section> : null);
+
+  return <div className="flex max-h-[calc(100dvh-2rem)] w-full flex-col overflow-hidden rounded-[28px] bg-white dark:bg-surface-card shadow-[0_24px_70px_rgba(15,23,42,.25)] sm:max-h-[calc(100dvh-3rem)]">
+    <div className="flex h-6 shrink-0 touch-none items-center justify-center lg:hidden" aria-hidden="true" onPointerDown={(event) => { dragStartY.current = event.clientY; event.currentTarget.setPointerCapture(event.pointerId); }} onPointerUp={(event) => { if (dragStartY.current !== null && event.clientY - dragStartY.current > 50) onClose(); dragStartY.current = null; }} onPointerCancel={() => { dragStartY.current = null; }}><span className="h-1 w-10 rounded-full bg-slate-300 dark:bg-control" /></div>
+    <header className="flex shrink-0 items-center px-5 pb-2 pt-5 sm:px-8">
+      <h2 className="font-heading text-2xl font-bold">{title}</h2>
+      {activeCount && !headerControls ? <span className="ml-2 inline-flex h-5 min-w-5 items-center justify-center rounded-full bg-[#047857] dark:bg-accent px-1.5 text-xs font-bold text-white dark:text-slate-950">{activeCount}</span> : null}
+      <div className="ml-auto flex items-center gap-2">
+        {headerControls}
+        <button type="button" onClick={onClose} aria-label="Close filters" className="flex h-9 w-9 cursor-pointer items-center justify-center rounded-full bg-slate-100 dark:bg-surface-hover text-slate-500 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-surface-hover"><X className="h-4 w-4" /></button>
+      </div>
+    </header>
+    <div className="min-h-0 overflow-y-auto overscroll-contain px-5 sm:px-8 xl:overflow-y-auto">
+      {leadingControls}
+      {!isChipotle ? <>
+      {show("categories") ? <>
+      <section>
+        {focus === "all" ? <SectionHeader
+          title={isMobileSheet ? "Categories" : "Menu / Categories"}
+          summary={`${isCustomCategorySelection ? "Custom" : matchingCategoryPreset?.label} · ${selectedItemCount} item${selectedItemCount === 1 ? "" : "s"}`}
+          open={menuOpen}
+          onClick={() => setMenuOpen(!menuOpen)}
+        /> : null}
+        {focus !== "all" || menuOpen ? <div className="pb-6">
+          <div className="flex flex-wrap gap-2">
+            {categoryPresets.map((preset) => {
+              const active = matchingCategoryPreset?.id === preset.id;
+              const Icon = preset.Icon;
+              return <button
+                key={preset.id}
+                type="button"
+                onClick={() => applyCategoryPreset(preset)}
+                className={`inline-flex min-h-9 cursor-pointer items-center gap-2 rounded-full border px-1.5 pr-3 text-sm font-semibold transition ${active ? "border-[#047857] dark:border-accent-strong bg-[#ECFDF5] dark:bg-accent-soft text-[#065F46] dark:text-accent-strong" : "border-slate-200 dark:border-divider bg-white dark:bg-surface-card text-slate-700 dark:text-slate-200 hover:border-slate-300 dark:hover:border-control"}`}
+              >
+                <span className={`flex h-6 w-6 shrink-0 items-center justify-center rounded-full ${active ? "bg-[#047857] dark:bg-accent text-white dark:text-slate-950" : "bg-slate-100 dark:bg-surface-hover text-slate-500 dark:text-slate-400"}`}>
+                  <Icon className="h-3.5 w-3.5" strokeWidth={2.2} />
+                </span>
+                {preset.label}
+              </button>;
+            })}
+            {isCustomCategorySelection ? <span className="inline-flex min-h-9 items-center gap-2 rounded-full border border-[#047857] dark:border-accent-strong bg-[#ECFDF5] dark:bg-accent-soft px-1.5 pr-3 text-sm font-semibold text-[#065F46] dark:text-accent-strong">
+              <span className="flex h-6 w-6 items-center justify-center rounded-full bg-[#047857] dark:bg-accent text-white dark:text-slate-950"><SlidersHorizontal className="h-3.5 w-3.5" strokeWidth={2.2} /></span>
+              Custom
+            </span> : null}
+          </div>
+
+          {isCustomCategorySelection ? <div className="mt-2 flex items-center gap-1.5 text-xs text-slate-500 dark:text-slate-400">
+            <span>Edited from {baseCategoryPreset.label}</span>
+            <button type="button" onClick={() => applyCategoryPreset(baseCategoryPreset)} className="cursor-pointer font-semibold text-[#047857] dark:text-accent-strong hover:underline">Reset</button>
+          </div> : null}
+
+          <div className="mb-2 mt-5 flex items-center gap-3">
+            <span className="text-[11px] font-bold uppercase tracking-[0.12em] text-slate-500 dark:text-slate-400">Customize</span>
+            <span className="h-px flex-1 bg-slate-200 dark:bg-surface-hover" aria-hidden="true" />
+            <div className="flex shrink-0 items-center gap-1.5">
+              <button type="button" onClick={() => onChange(selectCustomCategories(value, allIds))} className="min-h-8 cursor-pointer text-xs font-semibold text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 focus-ring">Select all</button>
+              <span className="text-xs text-slate-400 dark:text-slate-400" aria-hidden="true">·</span>
+              <button type="button" onClick={() => onChange(selectCustomCategories(value, []))} className="min-h-8 cursor-pointer text-xs font-semibold text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 focus-ring">Clear all</button>
+            </div>
+          </div>
+          <div className="grid gap-x-6 sm:grid-cols-2">
+            {categories.map((category) => {
+              const state = categoryState(category.id);
+              const showOnlyPersistently = state === "all" && includedCategoryCount === 1;
+              return <div key={category.id} className="group flex min-h-10 items-center gap-2 border-b border-slate-100 dark:border-divider last:border-b-0 sm:[&:nth-last-child(-n+2)]:border-b-0">
+                <label className="flex min-h-10 min-w-0 flex-1 cursor-pointer items-center gap-3 py-2">
+                  <CategoryCheckbox state={state} onChange={() => toggleCategory(category.id)} />
+                  <span className="flex-1 text-sm font-semibold text-slate-800 dark:text-slate-200">{category.label}</span>
+                  <span className="text-xs tabular-nums text-slate-400 dark:text-slate-400">{category.count}</span>
+                </label>
+                <button type="button" aria-label={`Only ${category.label}`} onClick={() => onChange(selectCustomCategories(value, [category.id]))} className={`min-h-10 shrink-0 cursor-pointer rounded px-2 text-xs font-semibold text-[#047857] dark:text-accent-strong opacity-100 transition-opacity hover:bg-emerald-50 dark:hover:bg-surface-hover focus-ring lg:group-hover:opacity-100 lg:group-has-[:focus-visible]:opacity-100 [@media(hover:none)]:opacity-100 ${showOnlyPersistently ? "lg:opacity-100" : "lg:opacity-0"}`}>Only</button>
+              </div>;
+            })}
+          </div>
+        </div> : null}
+      </section>
+      </> : null}
+      {!isMobileSheet ? variantsSection : null}
+      </> : null}
+      {show("nutrition", "calories", "protein") ? <section className={isChipotle || focus !== "all" ? "" : "border-t border-slate-200 dark:border-divider"}>{focus === "all" ? <SectionHeader title="Nutrition" summary={(nutritionCount + (isMobileSheet ? moreCount : 0)) ? `${nutritionCount + (isMobileSheet ? moreCount : 0)} set` : "Any"} open={nutritionOpen} onClick={() => setNutritionOpen(!nutritionOpen)} /> : null}{focus !== "all" || nutritionOpen ? <div className="divide-y divide-slate-100 dark:divide-divider pb-3">
+        {focus !== "protein" ? <NutritionSlider label="Max calories" displayValue={value.caloriesMax === undefined ? "Any" : `Under ${value.caloriesMax} cal`} value={value.caloriesMax} bounds={calorieBounds} values={calories} color="bg-[#111318]" anyAt="max" step={10} onChange={(next) => onChange({ ...value, caloriesMax: next })} presets={caloriePresets} /> : null}
+        {focus !== "calories" ? <NutritionSlider label="Min protein" displayValue={value.proteinMin === undefined ? "Any" : `${value.proteinMin}g+`} value={value.proteinMin} bounds={proteinBounds} values={proteins} color="bg-[#C2410C]" anyAt="min" step={1} onChange={(next) => onChange({ ...value, proteinMin: next === proteinBounds.min ? undefined : next })} presets={isMobileSheet ? getMobileProteinShortcuts(nutritionData.maxProtein, proteinBounds.max) : proteinPresets} /> : null}
+        {focus !== "calories" && focus !== "protein" ? <><div className="py-5"><div className="mb-4 flex items-baseline justify-between"><h4 className="text-[15px] font-bold text-slate-950 dark:text-slate-50">Min Protein Score</h4><span className="text-sm font-semibold text-slate-500 dark:text-slate-400">{value.proteinScoreMin === undefined ? "Any" : `${value.proteinScoreMin}+`}</span></div><div className="grid grid-cols-4 gap-3">{proteinTiers.map((option) => { const active = value.proteinScoreMin === option.value; return <button key={option.label} type="button" onClick={() => onChange({ ...value, proteinScoreMin: option.value })} style={active ? { borderColor: option.border } : undefined} className={`min-h-[88px] cursor-pointer rounded-[14px] border p-2.5 text-center transition ${active ? "bg-slate-50 dark:bg-surface-subtle dark:border-accent-strong! shadow-sm" : "border-slate-200 dark:border-divider bg-white dark:bg-surface-card hover:border-slate-300 dark:hover:border-control"}`}><span className={`mx-auto mb-2 flex h-6 w-6 items-center justify-center rounded-full ${proteinScoreTierStyles[option.tier].iconWrap}`}><Zap className={`h-3.5 w-3.5 ${proteinScoreTierStyles[option.tier].icon}`} fill="currentColor" /></span><span className={`block text-xs font-bold ${proteinScoreTierStyles[option.tier].value}`}>{option.label}</span><span className="mt-0.5 block text-[10px] font-medium text-slate-500 dark:text-slate-400">{option.caption}</span></button>; })}</div></div>
+        <div className="py-4">
+          <div id="card-display-label" className="mb-2 text-xs font-medium text-slate-500 dark:text-slate-400">Card display</div>
+          <div role="radiogroup" aria-labelledby="card-display-label" className="divide-y divide-slate-200 dark:divide-divider overflow-hidden rounded-xl border border-slate-200 dark:border-divider bg-white dark:bg-surface-card">
+            {(["standard", "fiber"] as CardDisplayMode[]).map((mode) => {
+              const selected = resolveCardDisplayMode(resultContext?.rankingSort ? getRankState(resultContext.rankingSort).metric : undefined, value.cardDisplayOverride) === mode;
+              const legend = mode === "standard" ? [["Calories", "#334155"], ["Protein", "#EA580C"], ["Carbs", "#D97706"], ["Fat", "#2563EB"]] : [["Calories", "#334155"], ["Protein", "#EA580C"], ["Fiber", FIBER_COLOR]];
+              return <label key={mode} className="flex min-h-12 cursor-pointer items-center justify-between gap-2 px-3 py-3 hover:bg-slate-50/60 dark:hover:bg-surface-hover">
+                <span className="flex shrink-0 items-center gap-2">
+                  <input type="radio" name="card-display" checked={selected} onChange={() => {}} onClick={() => onChange({ ...value, cardDisplayOverride: mode })} className="peer sr-only" />
+                  <span className={`flex h-4 w-4 items-center justify-center rounded-full border peer-focus-visible:ring-2 peer-focus-visible:ring-[#047857]/30 ${selected ? "border-[#047857] dark:border-accent-strong" : "border-slate-300 dark:border-control"}`}>{selected ? <span className="h-2 w-2 rounded-full bg-[#047857] dark:bg-accent" /> : null}</span>
+                  <span className="text-sm font-semibold text-slate-800 dark:text-slate-200">{mode === "standard" ? "Standard" : "Fiber"}</span>
+                </span>
+                <span className="flex flex-wrap justify-end gap-x-2 gap-y-1 text-[10px] text-slate-500 dark:text-slate-400">{legend.map(([label, color]) => <span key={label} className="inline-flex items-center gap-1"><span className="h-1.5 w-1.5 rounded-full" style={{ backgroundColor: color }} />{label}</span>)}</span>
+              </label>;
+            })}
+          </div>
+        </div>
+        {isMobileSheet ? moreNutritionControls : null}
+        </> : null}</div> : null}</section> : null}
+      {!isMobileSheet && show("nutrition") ? <section className="border-t border-slate-200 dark:border-divider"><SectionHeader title="More nutrition" summary={moreCount ? `${moreCount} set` : "Off"} open={moreOpen} onClick={() => setMoreOpen(!moreOpen)} />{moreOpen ? moreNutritionControls : null}</section> : null}
+      {isMobileSheet ? variantsSection : null}
+    </div>
+    <footer className="grid shrink-0 grid-cols-[120px_1fr] gap-3 border-t border-slate-200 dark:border-divider bg-white dark:bg-surface-card p-4 pb-[max(1rem,env(safe-area-inset-bottom))] sm:px-8"><AppButton variant="secondary" size="lg" onClick={() => {
+      if (onReset) { onReset(); return; }
+      if (focus === "calories") { onChange({ ...value, caloriesMax: undefined }); return; }
+      if (focus === "protein") { onChange({ ...value, proteinMin: undefined }); return; }
+      if (focus === "variants") { onChange({ ...value, ...VARIANT_FILTER_DEFAULTS }); return; }
+      if (focus === "nutrition") { onChange({ ...value, caloriesMax: undefined, proteinMin: undefined, proteinScoreMin: undefined, carbsMax: undefined, fatMax: undefined, fiberMin: undefined, sodiumMax: undefined, sugarMax: undefined }); return; }
+      setBaseCategoryPresetId("main");
+      onChange(isChipotle ? {} : selectCategoryPreset(focus === "categories" ? value : {}, categoryPresets[0]));
+    }}>Reset</AppButton><AppButton size="lg" disabled={!hasSelectedCategories} onClick={onApply}>Show {showItemCount} item{showItemCount === 1 ? "" : "s"}</AppButton></footer>
+  </div>;
+}

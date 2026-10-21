@@ -1,6 +1,8 @@
 "use client";
 
-import { useEffect, useId, useMemo, useRef, useState } from "react";
+import type { CardDisplayMode } from "@/lib/menuItemCard/rankingMacroDisplay";
+
+import { useEffect, useEffectEvent, useId, useMemo, useRef, useState } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { ChevronDown } from "lucide-react";
 import type { IngredientItem, ItemVariant, MenuItem, ResolvedAddonGroups, RestaurantCustomizationRules } from "@/types/menu";
@@ -12,6 +14,7 @@ import {
 import IngredientCompactCard from "./menu-item-card/IngredientCompactCard";
 import MenuItemCardHeader from "./menu-item-card/MenuItemCardHeader";
 import MenuItemMacroSummary from "./menu-item-card/MenuItemMacroSummary";
+import ProteinScorePill from "./menu-item-card/ProteinScorePill";
 import MacroStat from "./nutrition/MacroStat";
 import MenuCardActions from "./menu-item-card/MenuCardActions";
 import SurfaceCard from "@/components/ui/SurfaceCard";
@@ -27,13 +30,15 @@ import {
 import { parseIncludedIngredientEntry } from "@/lib/itemIngredients";
 
 import { comboMealSizeFromSideVariant, isComboMealSelectionComplete, resolveComboBundleOptions, resolveComboChoiceVariantId, resolveComboDrinkOptions, resolveComboMealConfig, resolveComboSideOptions } from "@/lib/comboMeals";
-import { getProteinPer100Calories, getProteinScoreTier, normalizeNutrition } from "@/lib/nutrition";
+import { getDefaultMenuItemNutrition, getProteinPer100Calories, getProteinScoreTier, normalizeNutrition } from "@/lib/nutrition";
 import { resolveFinalizedCartConfiguration, type CartConfigurationPayload } from "@/lib/menuItemCard/finalizedCartConfiguration";
+import type { RankMetric } from "@/lib/menuSections/sortOptions";
 import type { ComparativeLabelKind } from "@/lib/menuSections/comparativeLabels";
 import { getRestaurantImagePresentation } from "@/lib/restaurantPresentation";
 import RestaurantItemImage from "@/components/ui/RestaurantItemImage";
 import { incrementIngredientCountWithinCategoryLimit } from "@/lib/menuItemCard/ingredientCountCustomization";
 import { useGlobalItemPreview } from "@/components/GlobalItemPreviewContext";
+import { getMenuItemDetailsHref } from "@/lib/menuSections/ranking";
 import { IS_CAPACITOR_BUILD } from "@/lib/buildTarget";
 
 // Same portion multipliers already used across the build-your-own portion
@@ -142,10 +147,15 @@ type MenuItemCardData = {
 };
 
 type MenuItemCardMenuBehavior = {
+  // Display-only category rank; keep configured ingredient nutrition intact.
+  ingredientRank?: number;
   rankIndex?: number;
   isTopRanked?: boolean;
   itemHref?: string;
+  rankMetric?: RankMetric;
+  cardDisplayOverride?: CardDisplayMode;
   comparativeLabel?: ComparativeLabelKind;
+  resultLayout?: "list" | "grid";
 };
 
 type MenuItemCardCartBehavior = {
@@ -219,6 +229,7 @@ export default function MenuItemCard({
   const isTopRanked = menu?.isTopRanked;
   const itemHref = menu?.itemHref;
   const comparativeLabel = menu?.comparativeLabel;
+  const resultLayout = menu?.resultLayout ?? "list";
   const cartQuantity = cart?.quantity ?? 1;
   const onCartIncrement = cart?.onIncrement;
   const onCartDecrement = cart?.onDecrement;
@@ -377,12 +388,14 @@ export default function MenuItemCard({
     const matchedVariant = drinkVariants.find((variant) => variant.label === parsedInitialComboCustomization.drinkVariantLabel);
     return matchedVariant?.id ?? getDefaultVariantId(matchedDrink);
   });
-  const [selectedComboBundleId, setSelectedComboBundleId] = useState<string | undefined>(comboConfig?.defaultBundleId);
-  useEffect(() => {
-    if (!comboConfig?.bundleOptions?.some((option) => option.id === selectedComboBundleId)) {
-      setSelectedComboBundleId(comboConfig?.defaultBundleId);
-    }
-  }, [comboConfig, selectedComboBundleId]);
+  const [storedComboBundleId, setSelectedComboBundleId] = useState<string | undefined>(comboConfig?.defaultBundleId);
+  const selectedComboBundleId = comboConfig?.bundleOptions?.some((option) => option.id === storedComboBundleId)
+    ? storedComboBundleId
+    : comboConfig?.defaultBundleId;
+  // Reconcile a no-longer-available bundle before committing this render.
+  if (storedComboBundleId !== selectedComboBundleId) {
+    setSelectedComboBundleId(selectedComboBundleId);
+  }
 
   const retainedCustomizations = useMemo(() => {
     if (!initialCartCustomizations || initialCartCustomizations.length === 0) return [];
@@ -453,8 +466,11 @@ export default function MenuItemCard({
     selectedComboDrinkVariant,
     customizations,
     duplicateMatchingConfiguration,
-    nutritionPerItem: nutrition,
+    nutritionPerItem: configuredNutrition,
   } = finalizedCartConfiguration;
+
+  // Ranked cards display catalog macros, never ingredient/customization totals.
+  const nutrition = typeof rankIndex === "number" ? getDefaultMenuItemNutrition(item) : configuredNutrition;
 
   const customizationTotals = useMemo(
     () => ({
@@ -621,14 +637,16 @@ export default function MenuItemCard({
     onCartConfigurationChange(nextConfiguration.cartConfigurationPayload);
   };
 
+  const emitCartConfigurationFromEffect = useEffectEvent(emitCartConfiguration);
+
   useEffect(() => {
     if (!isCartMode || !isComboEligibleCategory) return;
 
-    emitCartConfiguration(
+    emitCartConfigurationFromEffect(
       selectedVariantId,
       selectedAddons,
       selectedSauceCounts,
-        ingredientCounts,
+      ingredientCounts,
       comboType,
       selectedComboSideId,
       selectedComboDrinkId,
@@ -652,11 +670,11 @@ export default function MenuItemCard({
   const openItemDetails = () => {
     if (shouldOpenModalOnCardClick && itemHref) {
       if (IS_CAPACITOR_BUILD) {
-        void openPreview(restaurantId, item);
+        void openPreview(restaurantId, item, effectiveSelectedVariantId);
         return;
       }
       const query = searchParams.toString();
-      router.push(query ? `${itemHref}?${query}` : itemHref, { scroll: false });
+      router.push(getMenuItemDetailsHref(itemHref, query, effectiveSelectedVariantId), { scroll: false });
       return;
     }
     setOpen(true);
@@ -665,11 +683,11 @@ export default function MenuItemCard({
   const handleCardActivate = () => {
     if (shouldOpenModalOnCardClick && itemHref) {
       if (IS_CAPACITOR_BUILD) {
-        void openPreview(restaurantId, item);
+        void openPreview(restaurantId, item, effectiveSelectedVariantId);
         return;
       }
       const query = searchParams.toString();
-      router.push(query ? `${itemHref}?${query}` : itemHref, { scroll: false });
+      router.push(getMenuItemDetailsHref(itemHref, query, effectiveSelectedVariantId), { scroll: false });
       return;
     }
     setOpen((v) => !v);
@@ -758,9 +776,16 @@ export default function MenuItemCard({
     const displayProtein = localVariantNutrition?.protein ?? protein;
     const displayCarbs = localVariantNutrition?.carbs ?? carbs;
     const displayTotalFat = localVariantNutrition?.totalFat ?? totalFat;
+    const displayFiber = localVariantNutrition ? localVariantNutrition.fiber : nutrition.fiber;
 
     return (
       <IngredientCompactCard
+        rankMetric={restaurantId === "chipotle" ? menu?.rankMetric : undefined}
+        cardDisplayOverride={restaurantId === "chipotle" ? menu?.cardDisplayOverride : undefined}
+        fiber={displayFiber === undefined ? undefined : displayFiber * localPortionMultiplier}
+        rank={menu?.ingredientRank}
+        layout={resultLayout}
+        compactMobileControls={restaurantId === "chipotle"}
         item={item}
         domId={ingredientDomId}
         selectedItemImage={selectedItemImage}
@@ -817,7 +842,7 @@ export default function MenuItemCard({
       padding="none"
       radius="large"
       shadow="none"
-      className={`list-none transition-[translate,box-shadow,border-color] duration-[450ms] ease-out will-change-[translate] ${
+      className={`h-full list-none rounded-3xl transition-[translate,box-shadow,border-color] duration-[450ms] ease-out will-change-[translate] ${
         open && useCartQuickEditPanel ? "overflow-visible" : "overflow-hidden"
       } ${
         isTopRanked
@@ -828,7 +853,7 @@ export default function MenuItemCard({
       <div
         role="button"
         tabIndex={0}
-        className="group relative flex w-full cursor-pointer flex-col items-stretch gap-4 bg-transparent p-4 text-left focus-visible:outline-2 focus-visible:outline-blue-600 focus-visible:outline-offset-[-2px] sm:gap-6 sm:p-5 lg:flex-row"
+        className={`group relative h-full w-full cursor-pointer items-stretch bg-transparent text-left focus-visible:outline-2 focus-visible:outline-blue-600 focus-visible:outline-offset-[-2px] ${rank !== null && resultLayout === "grid" ? "grid grid-cols-[64px_minmax(0,1fr)] gap-3 p-3 lg:flex lg:flex-col lg:gap-4 lg:px-4 lg:pb-3 lg:pt-4" : "flex flex-col gap-4 p-4 sm:gap-6 sm:p-5 lg:flex-row"}`}
         onClick={handleCardActivate}
         onKeyDown={(event) => {
           if (event.key === "Enter" || event.key === " ") {
@@ -853,7 +878,9 @@ export default function MenuItemCard({
           hasVariantDropdown={hasVariantDropdown}
           variantSelectorDisabled={variantSelectorDisabled}
           selectedVariantId={selectedVariantId}
-          selectedVariantLabel={selectedVariantForCart?.label}
+          selectedVariantLabel={rank !== null
+            ? variants?.find((variant) => variant.id === item.defaultVariantId)?.label
+            : selectedVariantForCart?.label}
           onVariantChange={(nextVariantId) => {
             if (variantSelectorDisabled) {
               return;
@@ -863,12 +890,30 @@ export default function MenuItemCard({
           }}
           cartSummaryLine={cartSummaryLine}
           highProteinIngredientSummaryLine={highProteinIngredientSummaryLine}
+          resultLayout={resultLayout}
+          proteinScoreOverlay={rank !== null && resultLayout === "list" && typeof proteinScore === "number" && proteinScoreTier ? (
+            <ProteinScorePill
+              scorePerHundredCalories={proteinScore}
+              tier={proteinScoreTier}
+              protein={displayProtein}
+              calories={displayCalories}
+              itemName={item.name}
+              itemImage={selectedItemImage}
+              itemImagePresentation={item.imagePresentation}
+              imageClassName={imagePresentation.itemThumbnailImageClassName}
+              imageBackgroundColor={imagePresentation.imageBackgroundColor}
+              className="lg:hidden"
+            />
+          ) : undefined}
         >
           <MenuItemMacroSummary
             displayCalories={displayCalories}
             displayProtein={displayProtein}
             displayCarbs={displayCarbs}
             displayFat={displayFat}
+            displayFiber={nutrition.fiber === undefined ? undefined : nutrition.fiber * quantityMultiplier}
+            rankMetric={!isCartMode ? menu?.rankMetric : undefined}
+            cardDisplayOverride={!isCartMode ? menu?.cardDisplayOverride : undefined}
             caloriesDelta={customizationTotals.calories}
             proteinDelta={customizationTotals.protein}
             carbsDelta={customizationTotals.carbs}
@@ -903,8 +948,10 @@ export default function MenuItemCard({
                 isQuickAddDisabled={!isComboSelectionComplete}
                 onQuickAdd={handleAddToCart}
                 onViewDetails={openItemDetails}
+                compactMobile={rank !== null && resultLayout === "grid"}
               />
             )}
+            rankedLayout={rank !== null ? resultLayout : undefined}
           />
         </MenuItemCardHeader>
 

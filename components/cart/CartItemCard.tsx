@@ -83,7 +83,7 @@ export default function CartItemCard({
       radius="large"
       shadow="none"
       onClick={handleCardClick}
-      className="cursor-pointer overflow-hidden border-black/10 shadow-[0_2px_10px_rgba(15,23,42,0.06)] transition hover:border-black/20 hover:shadow-[0_4px_16px_rgba(15,23,42,0.1)] focus-within:border-black/20 focus-within:shadow-[0_4px_16px_rgba(15,23,42,0.1)]"
+      className="cursor-pointer overflow-hidden border-black/10 dark:border-hairline shadow-[0_2px_10px_rgba(15,23,42,0.06)] transition hover:border-black/20 dark:hover:border-control hover:shadow-[0_4px_16px_rgba(15,23,42,0.1)] focus-within:border-black/20 dark:focus-within:border-control focus-within:shadow-[0_4px_16px_rgba(15,23,42,0.1)]"
     >
       <div className="flex flex-col gap-4 p-4 sm:gap-6 sm:p-5 lg:flex-row">
         <RestaurantItemImage
@@ -92,7 +92,7 @@ export default function CartItemCard({
           imagePresentation={getCartItemImagePresentation(cartItem)}
           fallbackClassName={restaurantImagePresentation.itemThumbnailImageClassName ?? "object-contain p-3"}
           fallbackBackgroundColor={restaurantImagePresentation.imageBackgroundColor}
-          containerClassName="relative h-[190px] w-full shrink-0 overflow-hidden rounded-2xl border border-black/[0.06] bg-image-placeholder lg:h-[184px] lg:w-[184px]"
+          containerClassName="relative h-[190px] w-full shrink-0 overflow-hidden rounded-2xl border border-black/[0.06] dark:border-divider bg-image-placeholder lg:h-[184px] lg:w-[184px]"
         />
 
         {/* Content order (name, macros, divider, summary, controls) is
@@ -116,7 +116,7 @@ export default function CartItemCard({
           >
             <MenuItemTitle
               name={displayName}
-              className="font-heading text-card-title text-slate-900"
+              className="font-heading text-card-title text-slate-900 dark:text-slate-100"
             />
 
             <div className="flex flex-wrap items-end gap-x-6 gap-y-3 lg:gap-x-8">
@@ -126,7 +126,7 @@ export default function CartItemCard({
               <MacroStat macroKey="totalFat" value={displayFat} labelVariant="uppercase" size="card" />
             </div>
 
-            <div className="border-t border-black/[0.06]" aria-hidden="true" />
+            <div className="border-t border-black/[0.06] dark:border-divider" aria-hidden="true" />
 
             <CartCustomizationSummary groups={summaryGroups} />
           </div>

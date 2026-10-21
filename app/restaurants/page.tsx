@@ -1,9 +1,7 @@
+import { getCanonicalMenuItemCount } from "@/lib/restaurantMenuCount";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
-import DesktopNav from "@/components/DesktopNav";
-import GlobalMobileMenuButton from "@/components/GlobalMobileMenuButton";
-import GlobalMobileNav from "@/components/GlobalMobileNav";
 import HomeSectionContainer from "@/components/home/HomeSectionContainer";
 import LiveRestaurantsBadge from "@/components/home/LiveRestaurantsBadge";
 import { appButtonClassName } from "@/components/ui/AppButton";
@@ -27,12 +25,7 @@ export default async function RestaurantsPage() {
 
   return (
     <>
-      <GlobalMobileNav leadingButton={<GlobalMobileMenuButton />} />
-      <div className="px-4 pt-1 sm:px-6">
-        <DesktopNav searchBarVariant="compact" />
-      </div>
-
-      <main className="native-top-level-page min-h-[var(--app-viewport-height)] pb-[max(4rem,var(--safe-area-bottom))] pt-[calc(7rem+var(--safe-area-top))] lg:pb-20 lg:pt-14">
+      <main className="native-top-level-page min-h-[var(--app-viewport-height)] pb-[max(4rem,var(--safe-area-bottom))] pt-14 lg:pb-20 lg:pt-14">
         <HomeSectionContainer as="header">
           <div className="mx-auto max-w-3xl text-center">
             <LiveRestaurantsBadge count={availableRestaurants.length} />
@@ -91,7 +84,7 @@ export default async function RestaurantsPage() {
                       fit="cover"
                     />
                     <span className="rounded-full bg-accent-soft px-3 py-1 text-xs font-semibold text-accent-strong">
-                      {restaurant.items.length} menu items
+                      {getCanonicalMenuItemCount(restaurant.items)} menu items
                     </span>
                   </div>
 

@@ -155,13 +155,13 @@ export default function ExportOrderDialog({ items, nutritionTotals, onClose }: E
     >
       <div
         ref={sheetRef}
-        className={`flex w-full flex-col overflow-y-auto overscroll-contain rounded-t-sheet bg-white shadow-[0_24px_80px_rgba(0,0,0,0.35)] ${IS_CAPACITOR_BUILD ? "max-h-[calc(94dvh-var(--safe-area-top))]" : "max-h-[94dvh] md:grid md:h-[min(780px,calc(100dvh-3rem))] md:max-h-none md:w-[min(1120px,calc(100vw-3rem))] md:grid-cols-[minmax(0,1fr)_360px] md:grid-rows-[auto_minmax(0,1fr)] md:overflow-hidden md:rounded-[32px]"}`}
+        className={`flex w-full flex-col overflow-y-auto overscroll-contain rounded-t-sheet bg-white dark:bg-surface-card shadow-[0_24px_80px_rgba(0,0,0,0.35)] ${IS_CAPACITOR_BUILD ? "max-h-[calc(94dvh-var(--safe-area-top))]" : "max-h-[94dvh] md:grid md:h-[min(780px,calc(100dvh-3rem))] md:max-h-none md:w-[min(1120px,calc(100vw-3rem))] md:grid-cols-[minmax(0,1fr)_360px] md:grid-rows-[auto_minmax(0,1fr)] md:overflow-hidden md:rounded-[32px]"}`}
         onClick={(event) => event.stopPropagation()}
       >
         <header ref={headerRef} className={`shrink-0 px-5 pb-3 pt-2 ${IS_CAPACITOR_BUILD ? "" : "md:col-start-2 md:row-start-1 md:px-8 md:pb-0 md:pt-8"}`}>
           <div className={`mx-auto mb-2 h-1 w-10 rounded-full bg-black/15 ${IS_CAPACITOR_BUILD ? "" : "md:hidden"}`} aria-hidden="true" />
           <div className="flex items-center justify-between gap-4">
-            <h2 id="export-order-dialog-title" className={`whitespace-nowrap font-heading text-[22px] font-bold tracking-[-0.02em] text-slate-950 ${IS_CAPACITOR_BUILD ? "" : "md:text-[23px]"}`}>
+            <h2 id="export-order-dialog-title" className={`whitespace-nowrap font-heading text-[22px] font-bold tracking-[-0.02em] text-slate-950 dark:text-slate-50 ${IS_CAPACITOR_BUILD ? "" : "md:text-[23px]"}`}>
               Share Meal
             </h2>
             <AppIconButton
@@ -213,10 +213,10 @@ export default function ExportOrderDialog({ items, nutritionTotals, onClose }: E
 
         <div ref={controlsRef} className={`flex shrink-0 flex-col px-5 pb-[max(1rem,env(safe-area-inset-bottom))] pt-4 ${IS_CAPACITOR_BUILD ? "" : "md:col-start-2 md:row-start-2 md:min-h-0 md:px-8 md:pb-8 md:pt-8"}`}>
           <div className={IS_CAPACITOR_BUILD ? "hidden" : "hidden md:block"}>
-            <p className="text-[11px] font-medium uppercase tracking-[0.14em] text-slate-400">Format</p>
-            <div className="mt-2.5 flex items-center gap-3 rounded-xl border border-black/10 bg-[#f6f5f1] px-3.5 py-2.5">
+            <p className="text-[11px] font-medium uppercase tracking-[0.14em] text-slate-400 dark:text-slate-400">Format</p>
+            <div className="mt-2.5 flex items-center gap-3 rounded-xl border border-black/10 dark:border-hairline bg-[#f6f5f1] px-3.5 py-2.5">
               <span className="h-[18px] w-[14px] shrink-0 rounded-[3px] border-2 border-slate-950" aria-hidden="true" />
-              <span className="text-[15px] font-semibold text-slate-950">Portrait · 4:5</span>
+              <span className="text-[15px] font-semibold text-slate-950 dark:text-slate-50">Portrait · 4:5</span>
             </div>
           </div>
 
@@ -227,7 +227,7 @@ export default function ExportOrderDialog({ items, nutritionTotals, onClose }: E
               {isExporting ? "Saving…" : image ? "Share image" : "Save image"}
             </AppButton>}
             {image ? (
-              <details className="mt-3 text-center text-sm text-slate-600" open={!image.shareable || !!exportError}>
+              <details className="mt-3 text-center text-sm text-slate-600 dark:text-slate-300" open={!image.shareable || !!exportError}>
                 <summary className="cursor-pointer font-medium">View image to save</summary>
                 <p className="my-2">Touch and hold the image, then choose Save to Photos or Save Image. You can also share it from that menu.</p>
                 {/* A real PNG image supports Safari's native long-press save menu. */}
@@ -235,8 +235,8 @@ export default function ExportOrderDialog({ items, nutritionTotals, onClose }: E
                 <img src={image.dataUrl} alt="Your exported meal" width={EXPORT_WIDTH} height={EXPORT_HEIGHT} className="mx-auto h-auto w-full rounded-lg" />
               </details>
             ) : null}
-            {image?.shareable ? <p role="status" className="mt-2 text-center text-sm text-slate-600">Image ready. Tap Share image to save or send it.</p> : null}
-            <p className={`mt-2 text-center text-[13px] text-slate-500 ${IS_CAPACITOR_BUILD ? "" : "md:mt-3 md:text-sm"}`}>
+            {image?.shareable ? <p role="status" className="mt-2 text-center text-sm text-slate-600 dark:text-slate-300">Image ready. Tap Share image to save or send it.</p> : null}
+            <p className={`mt-2 text-center text-[13px] text-slate-500 dark:text-slate-400 ${IS_CAPACITOR_BUILD ? "" : "md:mt-3 md:text-sm"}`}>
               {EXPORT_WIDTH} × {EXPORT_HEIGHT} PNG
             </p>
           </div>

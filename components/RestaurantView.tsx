@@ -1,12 +1,8 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useState } from "react";
+import type { MenuSizeSelectorCapability } from "@/types/restaurant";
+import { useEffect, useMemo, useState } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import {
-  CATEGORY_ICONS,
-  MCDONALDS_INGREDIENT_CATEGORY_ICON_OVERRIDES,
-  STARBUCKS_CATEGORY_ICON_OVERRIDES,
-} from "@/data/menuCategoryIcons";
 import type {
   IngredientItem,
   MenuItem,
@@ -14,44 +10,19 @@ import type {
   RestaurantCustomizationRules,
 } from "@/types/menu";
 import type { RestaurantBuilderConfig } from "@/types/builder";
-import { categorySectionId } from "@/lib/menuSections/sorting";
 import { INGREDIENT_PROTEIN_OPTIONS } from "@/lib/menuSections/filterOptions";
 import { resolveEffectiveIngredientNutrition } from "@/lib/ingredientNutrition";
 import { trackRestaurantView } from "@/lib/analytics";
 import MenuSections from "./MenuSections";
 import StickyRestaurantBar from "./StickyRestaurantBar";
 import { useRestaurantMenuControls } from "./restaurant-view/useRestaurantMenuControls";
-import RestaurantCategorySidebar from "./restaurant-view/RestaurantCategorySidebar";
 import ChipotleRestaurantBuilderView from "./restaurant-view/chipotle/ChipotleRestaurantBuilderView";
-
-const SECTION_HEADER_TOP_GAP = 24;
-
-const getStickyOffset = () => {
-  // Desktop and mobile now render as two separate `data-sticky-nav`
-  // elements (DesktopNav's wrapper + GlobalMobileNav's own root), only one
-  // of which is actually visible at a given viewport width — the other is
-  // `display:none` and its rect collapses to all zeros, so Math.max across
-  // every match always picks the real, visible one.
-  const stickyBars = document.querySelectorAll('[data-sticky-nav="true"]');
-  const mobileCategoryNav = document.querySelector(
-    '[data-mobile-category-nav="true"]',
-  );
-  const stickyBottom = Array.from(stickyBars).reduce(
-    (max, bar) => (bar instanceof HTMLElement ? Math.max(max, bar.getBoundingClientRect().bottom) : max),
-    0,
-  );
-  const mobileCategoryBottom =
-    mobileCategoryNav instanceof HTMLElement
-      ? Math.max(0, mobileCategoryNav.getBoundingClientRect().bottom)
-      : 0;
-
-  return Math.max(stickyBottom, mobileCategoryBottom);
-};
 
 function StandardRestaurantView({
   restaurantId,
   restaurantName,
   restaurantLogo,
+  menuSizeSelector,
   hasBuildYourOwn = false,
   items,
   ingredients = [],
@@ -61,6 +32,7 @@ function StandardRestaurantView({
   restaurantId: string;
   restaurantName: string;
   restaurantLogo: string;
+  menuSizeSelector?: MenuSizeSelectorCapability;
   hasBuildYourOwn?: boolean;
   items: MenuItem[];
   ingredients?: IngredientItem[];
@@ -95,24 +67,20 @@ function StandardRestaurantView({
     [ingredients, restaurantLogo],
   );
   const {
+    menuSizeControl,
     sort,
     filters,
     handleFiltersChange,
-    rankedChildOptions,
     rankedChildSelections,
-    rankedParentStates,
     effectiveViewMode,
     calorieBounds,
     sourceItems,
     visibleMenuItems,
-    orderedSections,
-    categoryOptions,
     handleViewChange,
     handleSortChange,
-    toggleRankedAllFilter,
-    toggleRankedChildFilter,
   } = useRestaurantMenuControls({
     restaurantId,
+    menuSizeSelector,
     hasBuildYourOwn,
     items,
     ingredientMenuItems,
@@ -120,108 +88,18 @@ function StandardRestaurantView({
     router,
     pathname,
     searchParams,
+    // The retired category sidebar owned a second ranking-category state.
+    // Standard pages now use Filters.categories as their only category
+    // source of truth; builder flows retain the legacy tree where needed.
+    filterRankingCategories: false,
   });
-  const categoryIcons = useMemo(
-    () =>
-      restaurantId === "starbucks"
-        ? { ...CATEGORY_ICONS, ...STARBUCKS_CATEGORY_ICON_OVERRIDES }
-        : restaurantId === "mcdonalds" && effectiveViewMode === "ingredients"
-          ? { ...CATEGORY_ICONS, ...MCDONALDS_INGREDIENT_CATEGORY_ICON_OVERRIDES }
-          : CATEGORY_ICONS,
-    [effectiveViewMode, restaurantId],
-  );
-  const [activeCategory, setActiveCategory] = useState<string>(
-    () => orderedSections[0] ?? "",
-  );
-
-  const isIngredientView = effectiveViewMode === "ingredients";
-  const isCategorizedIngredientsView =
-    restaurantId === "chickfila" && isIngredientView;
-
-  // Lets the mobile active-filter row's "Edit filters" icon (rendered in
-  // RestaurantCategorySidebar, a sibling of StickyRestaurantBar) open the
-  // same controls drawer StickyRestaurantBar's own hamburger button uses —
-  // captured here once StickyRestaurantBar surfaces it, then handed down.
-  const [openMobileFiltersDrawer, setOpenMobileFiltersDrawer] = useState<() => void>(
-    () => () => {},
-  );
-  const handleEditFiltersDrawerReady = useCallback((openDrawer: () => void) => {
-    setOpenMobileFiltersDrawer(() => openDrawer);
-  }, []);
-
-  const activeCategoryOptions = categoryOptions;
-  const resolvedActiveCategory = activeCategoryOptions.some((option) => option.id === activeCategory)
-    ? activeCategory
-    : (activeCategoryOptions[0]?.id ?? "");
-
-  const handleCategorySelect = (categoryId: string) => {
-    setActiveCategory(categoryId);
-    const section = document.getElementById(categorySectionId(categoryId));
-    if (!section) return;
-
-    const stickyOffset = getStickyOffset();
-    const sectionTop = window.scrollY + section.getBoundingClientRect().top;
-    const nextScrollTop = Math.max(
-      0,
-      sectionTop - stickyOffset - SECTION_HEADER_TOP_GAP,
-    );
-
-    window.scrollTo({ top: nextScrollTop, behavior: "smooth" });
-  };
-
-  useEffect(() => {
-    if (
-      effectiveViewMode === "ranking" ||
-      (effectiveViewMode === "ingredients" && !isCategorizedIngredientsView) ||
-      orderedSections.length === 0
-    ) {
-      return;
-    }
-
-    const sectionElements = orderedSections
-      .map((sectionId) => ({
-        id: sectionId,
-        element: document.getElementById(categorySectionId(sectionId)),
-      }))
-      .filter((section): section is { id: string; element: HTMLElement } =>
-        Boolean(section.element),
-      );
-
-    if (sectionElements.length === 0) {
-      return;
-    }
-
-    const updateActiveCategoryOnScroll = () => {
-      const activationOffset = getStickyOffset() + SECTION_HEADER_TOP_GAP + 1;
-      const reachedSections = sectionElements.filter(
-        (section) =>
-          section.element.getBoundingClientRect().top <= activationOffset,
-      );
-
-      const nextActive =
-        reachedSections[reachedSections.length - 1]?.id ??
-        sectionElements[0]?.id;
-
-      if (nextActive && nextActive !== activeCategory) {
-        setActiveCategory(nextActive);
-      }
-    };
-
-    updateActiveCategoryOnScroll();
-    window.addEventListener("scroll", updateActiveCategoryOnScroll, {
-      passive: true,
-    });
-    window.addEventListener("resize", updateActiveCategoryOnScroll);
-
-    return () => {
-      window.removeEventListener("scroll", updateActiveCategoryOnScroll);
-      window.removeEventListener("resize", updateActiveCategoryOnScroll);
-    };
-  }, [activeCategory, effectiveViewMode, isCategorizedIngredientsView, orderedSections]);
+  const [resultLayout, setResultLayout] = useState<"list" | "grid">("list");
 
   return (
-    <div>
+    <div className="grid gap-y-[var(--restaurant-controls-gap)] pt-0 lg:pt-[var(--restaurant-controls-gap)]">
       <StickyRestaurantBar
+        menuSizeControl={menuSizeControl}
+        restaurantId={restaurantId}
         restaurantName={restaurantName}
         restaurantLogo={restaurantLogo}
         view={effectiveViewMode}
@@ -232,6 +110,7 @@ function StandardRestaurantView({
         onFiltersChange={handleFiltersChange}
         calorieBounds={calorieBounds}
         sourceItems={sourceItems}
+        visibleItemCount={visibleMenuItems.length}
         rankedChildSelections={rankedChildSelections}
         isRankingView={effectiveViewMode === "ranking"}
         // Determined by what's actually being filtered (individual
@@ -242,29 +121,17 @@ function StandardRestaurantView({
         }
         hideViewSelector={hasBuildYourOwn}
         hideIngredientsView={restaurantId === "starbucks"}
-        onEditFiltersDrawerReady={handleEditFiltersDrawerReady}
+        resultLayout={resultLayout}
+        onResultLayoutChange={setResultLayout}
+        hideMobileControls
+        filterRankingCategories={false}
+        showMobileRail
       />
 
-      <div className="grid items-start gap-4 lg:gap-6 lg:[grid-template-columns:240px_minmax(0,1fr)]">
-        <RestaurantCategorySidebar
-          effectiveViewMode={effectiveViewMode}
-          rankedChildOptions={rankedChildOptions}
-          rankedChildSelections={rankedChildSelections}
-          rankedParentStates={rankedParentStates}
-          toggleRankedAllFilter={toggleRankedAllFilter}
-          toggleRankedChildFilter={toggleRankedChildFilter}
-          categoryOptions={activeCategoryOptions}
-          resolvedActiveCategory={resolvedActiveCategory}
-          onCategorySelect={handleCategorySelect}
-          categoryIcons={categoryIcons}
-          filters={filters}
-          onFiltersChange={handleFiltersChange}
-          onEditFilters={openMobileFiltersDrawer}
-        />
-
-        <div className="min-w-0">
-          <div className="mx-auto w-full max-w-[900px]">
+      <div className="col-start-1 row-start-2 min-w-0 [&>div>div]:mt-0">
+          <div className={`mx-auto w-full ${effectiveViewMode === "ranking" ? "" : "max-w-[900px]"}`}>
             <MenuSections
+              cardDisplayOverride={filters.cardDisplayOverride}
               restaurantId={restaurantId}
               items={visibleMenuItems}
               // The full, unfiltered catalog (including structural/
@@ -284,8 +151,8 @@ function StandardRestaurantView({
               }
               hasBuildYourOwn={hasBuildYourOwn}
               showRankBadges={effectiveViewMode === "ranking"}
+              resultLayout={resultLayout}
             />
-          </div>
         </div>
       </div>
     </div>
@@ -296,6 +163,7 @@ export default function RestaurantView(props: {
   restaurantId: string;
   restaurantName: string;
   restaurantLogo: string;
+  menuSizeSelector?: MenuSizeSelectorCapability;
   hasBuildYourOwn?: boolean;
   items: MenuItem[];
   ingredients?: IngredientItem[];
@@ -316,5 +184,5 @@ export default function RestaurantView(props: {
     return <ChipotleRestaurantBuilderView {...props} />;
   }
 
-  return <StandardRestaurantView {...props} />;
+  return <StandardRestaurantView key={restaurantId} {...props} />;
 }

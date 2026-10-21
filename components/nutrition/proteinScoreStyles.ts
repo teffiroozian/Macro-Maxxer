@@ -7,18 +7,18 @@ export const proteinScoreTierStyles: Record<
   { chip: string; iconWrap: string; icon: string; value: string; supporting: string }
 > = {
   elite: {
-    chip: "bg-[#ECFDF3]",
-    iconWrap: "bg-[#047857]",
-    icon: "text-white",
-    value: "text-[#047857]",
-    supporting: "text-[#4B7F6B]",
+    chip: "bg-[#ECFDF3] dark:bg-accent-soft",
+    iconWrap: "bg-[#047857] dark:bg-accent",
+    icon: "text-white dark:text-slate-950",
+    value: "text-[#047857] dark:text-accent-strong",
+    supporting: "text-[#4B7F6B] dark:text-slate-400",
   },
   excellent: {
-    chip: "bg-[#EEF4FF]",
-    iconWrap: "bg-[#4C84C4]",
-    icon: "text-white",
-    value: "text-[#2F5F85]",
-    supporting: "text-[#6E88A3]",
+    chip: "bg-[#EEF4FF] dark:bg-surface-hover",
+    iconWrap: "bg-[#4C84C4] dark:bg-[#4C84C4]",
+    icon: "text-white dark:text-white",
+    value: "text-[#2F5F85] dark:text-slate-200",
+    supporting: "text-[#6E88A3] dark:text-slate-400",
   },
   good: {
     chip: "bg-[#FFFBEB] dark:bg-[rgb(234_179_8_/_0.13)]",
@@ -35,10 +35,10 @@ export const proteinScoreTierStyles: Record<
     supporting: "text-[#7C8798] dark:text-[#94a3b8]",
   },
   low: {
-    chip: "bg-[#F8FAFC]",
-    iconWrap: "bg-[#EEF2F6]",
-    icon: "text-[#94A3B8]",
-    value: "text-[#64748B]",
-    supporting: "text-[#9AA5B1]",
+    chip: "bg-[#F8FAFC] dark:bg-surface-subtle",
+    iconWrap: "bg-[#EEF2F6] dark:bg-surface-hover",
+    icon: "text-[#94A3B8] dark:text-slate-400",
+    value: "text-[#64748B] dark:text-slate-300",
+    supporting: "text-[#9AA5B1] dark:text-slate-400",
   },
 };

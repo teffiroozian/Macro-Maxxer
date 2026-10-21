@@ -28,6 +28,7 @@ export const MCDONALDS_MENU_SECTION_ORDER = [
   "burgers",
   "chicken & fish",
   "mcnuggets & strips",
+  "shareables",
   "snack wraps",
   "breakfast",
   "fries & sides",
@@ -42,6 +43,7 @@ type McDonaldsPresentationCategory =
   | "Burgers"
   | "Chicken & Fish"
   | "McNuggets & Strips"
+  | "shareables"
   | "Snack Wraps"
   | "Breakfast"
   | "Fries & Sides"
@@ -92,13 +94,6 @@ export function normalizeMcDonaldsPresentationName(item: MenuItem): string {
   return name.replace(/\s{2,}/g, " ");
 }
 
-const MCDONALDS_FRIES_IMAGE_BY_VARIANT_ID: Record<string, string> = {
-  "mcd-item-200092": "https://s7d1.scene7.com/is/image/mcdonalds/NR_201909_1858_KidsFries_2000x2000?wid=1564&hei=1564&fmt=png-alpha",
-  "mcd-item-200066": "https://s7d1.scene7.com/is/image/mcdonalds/t-mcdonalds-fries-small?wid=1564&hei=1564&fmt=png-alpha",
-  "mcd-item-201234": "https://s7d1.scene7.com/is/image/mcdonalds/t-mcdonalds-fries-medium?wid=1564&hei=1564&fmt=png-alpha",
-  "mcd-item-200083": "https://s7d1.scene7.com/is/image/mcdonalds/t-mcdonalds-fries-large?wid=1564&hei=1564&fmt=png-alpha",
-};
-
 function mediumVariantId(item: MenuItem): string | undefined {
   return item.variants?.find((variant) => variant.label.trim().toLocaleLowerCase("en-US") === "medium")?.id;
 }
@@ -140,6 +135,7 @@ function applyFamilyAwareSweetsOrder(items: MenuItem[]): MenuItem[] {
 function presentationCategoryFor(item: MenuItem): McDonaldsPresentationCategory {
   const name = item.name.toLocaleLowerCase("en-US");
 
+  if (hasCategory(item, "shareables")) return "shareables";
   if (hasCategory(item, "Burgers")) return "Burgers";
   if (hasCategory(item, "Chicken & Fish Sandwiches")) return "Chicken & Fish";
   if (item.categories.some((category) => category.toLocaleLowerCase("en-US").includes("mcnuggets"))) return "McNuggets & Strips";
@@ -612,11 +608,9 @@ function adaptItem(item: MenuItem): MenuItem {
     } : {}),
     name: normalizeMcDonaldsPresentationName(item),
     categories: [category],
-    image: MCDONALDS_FRIES_IMAGE_BY_VARIANT_ID[item.id] ?? item.image,
     variants: item.variants?.map((variant) => ({
       ...variant,
-      categories: [category],
-      image: MCDONALDS_FRIES_IMAGE_BY_VARIANT_ID[variant.id] ?? variant.image,
+      categories: variant.categories?.some((id) => id.trim().toLowerCase() === "shareables") ? ["shareables"] : [category],
     })),
     ...(preferredMediumVariantId ? { defaultVariantId: preferredMediumVariantId } : {}),
     ...(isPrebuiltMeal || isCustomizationOnlyBacon(item) || item.id === "mcd-item-201306"

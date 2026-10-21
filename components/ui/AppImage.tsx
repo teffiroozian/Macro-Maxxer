@@ -22,5 +22,5 @@ function isUnoptimizedRemoteImage(src: ImageProps["src"]): boolean {
 // image (including every other restaurant's) keeps normal optimization.
 // Drop-in replacement for next/image — swap the import, nothing else.
 export default function AppImage(props: ImageProps) {
-  return <Image {...props} unoptimized={props.unoptimized ?? isUnoptimizedRemoteImage(props.src)} />;
+  return <Image {...props} alt={props.alt} unoptimized={props.unoptimized ?? isUnoptimizedRemoteImage(props.src)} />;
 }

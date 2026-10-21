@@ -12,11 +12,14 @@ export const metadata: Metadata = {
 
 export default async function ItemModalPage({
   params,
+  searchParams,
 }: {
   params: Promise<{ id: string; itemSlug: string }>;
+  searchParams: Promise<{ variant?: string | string[] }>;
 }) {
   const { id, itemSlug } = await params;
-  const routeData = await getRestaurantItemRouteData(id, itemSlug);
+  const { variant } = await searchParams;
+  const routeData = await getRestaurantItemRouteData(id, itemSlug, typeof variant === "string" ? variant : undefined);
 
   if (!routeData) notFound();
 
@@ -24,6 +27,7 @@ export default async function ItemModalPage({
 
   return (
     <ItemRouteModal
+      key={`${item.id}:${initialVariantId ?? "default"}`}
       restaurantId={restaurant.id}
       restaurantName={restaurant.name}
       restaurantPath={`/restaurant/${restaurant.id}`}

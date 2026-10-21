@@ -191,7 +191,7 @@ export default function MenuItemResultRow({
                   : "bg-black/90 text-white hover:bg-black dark:bg-slate-50 dark:text-slate-950 dark:hover:bg-slate-200"
               }`}
             >
-              {isAddFeedbackVisible ? "Added" : "Quick Add"}
+              {isAddFeedbackVisible ? "Added" : "+ Add"}
             </button>
           </span>
         ) : null}

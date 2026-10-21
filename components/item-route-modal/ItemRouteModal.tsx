@@ -1,5 +1,7 @@
 "use client";
 
+import { getDisplayVariantLabel } from "@/lib/menuItemCard/titlePresentation";
+
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { ChevronLeft, Pencil, Utensils, X } from "lucide-react";
@@ -164,17 +166,17 @@ function PreviewControlShortcut({
 }) {
     return (
         <div className="min-w-0">
-            <p className="text-label text-slate-400">
+            <p className="text-label text-slate-400 dark:text-slate-400">
                 {label}
             </p>
             <button
                 type="button"
                 onClick={onClick}
                 aria-label={`Edit ${label}`}
-                className="mt-1.5 inline-flex h-10 max-w-full cursor-pointer items-center gap-1.5 rounded-full border border-black/15 bg-slate-50 px-4 text-[13px] font-semibold text-slate-700 transition hover:border-black/25 hover:bg-slate-100 active:bg-slate-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-strong sm:text-sm"
+                className="mt-1.5 inline-flex h-10 max-w-full cursor-pointer items-center gap-1.5 rounded-full border border-black/15 dark:border-control bg-slate-50 dark:bg-surface-subtle px-4 text-[13px] font-semibold text-slate-700 dark:text-slate-200 transition hover:border-black/25 hover:bg-slate-100 dark:hover:bg-surface-hover active:bg-slate-200 dark:active:bg-surface-hover focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-strong sm:text-sm"
             >
                 <span className="truncate">{value}</span>
-                <Pencil className="h-3 w-3 shrink-0 text-slate-400" strokeWidth={2.5} />
+                <Pencil className="h-3 w-3 shrink-0 text-slate-400 dark:text-slate-400" strokeWidth={2.5} />
             </button>
         </div>
     );
@@ -1680,12 +1682,12 @@ export default function ItemRouteModal({
                 aria-label="Close item modal"
             />
             <div className={IS_CAPACITOR_BUILD
-                ? "item-route-modal-root relative flex h-[var(--app-viewport-height)] w-full flex-col overflow-hidden bg-white"
-                : "item-route-modal-root relative flex h-[min(92dvh,calc(100dvh-var(--safe-area-top)))] w-full flex-col overflow-hidden rounded-t-3xl bg-white shadow-[0_24px_70px_rgba(15,23,42,0.35)] sm:h-auto sm:max-h-[88dvh] sm:min-h-[78dvh] sm:w-full sm:max-w-[660px] sm:rounded-3xl md:max-w-[800px] lg:max-w-[1000px]"}>
+                ? "item-route-modal-root relative flex h-[var(--app-viewport-height)] w-full flex-col overflow-hidden bg-white dark:bg-surface-card"
+                : "item-route-modal-root relative flex h-[min(92dvh,calc(100dvh-var(--safe-area-top)))] w-full flex-col overflow-hidden rounded-t-3xl bg-white dark:bg-surface-card shadow-[0_24px_70px_rgba(15,23,42,0.35)] sm:h-auto sm:max-h-[88dvh] sm:min-h-[78dvh] sm:w-full sm:max-w-[660px] sm:rounded-3xl md:max-w-[800px] lg:max-w-[1000px]"}>
                 <div
-                    className={`absolute inset-x-0 top-0 z-20 flex items-center justify-between gap-3 border-b bg-white px-4 transition-[opacity,transform,box-shadow,border-color] duration-300 ease-out sm:px-6 lg:px-8 ${IS_CAPACITOR_BUILD ? "pb-3 pt-[calc(var(--safe-area-top)+0.75rem)]" : "py-3 sm:py-4"} ${
+                    className={`absolute inset-x-0 top-0 z-20 flex items-center justify-between gap-3 border-b bg-white dark:bg-surface-card px-4 transition-[opacity,transform,box-shadow,border-color] duration-300 ease-out sm:px-6 lg:px-8 ${IS_CAPACITOR_BUILD ? "pb-3 pt-[calc(var(--safe-area-top)+0.75rem)]" : "py-3 sm:py-4"} ${
                         isOverviewCollapsed
-                            ? "translate-y-0 border-black/[0.06] opacity-100 shadow-[0_1px_2px_rgba(15,23,42,0.05)]"
+                            ? "translate-y-0 border-black/[0.06] dark:border-divider opacity-100 shadow-[0_1px_2px_rgba(15,23,42,0.05)]"
                             : "pointer-events-none -translate-y-2 border-transparent opacity-0"
                     }`}
                 >
@@ -1697,7 +1699,7 @@ export default function ItemRouteModal({
                                 imagePresentation={item.imagePresentation}
                                 fallbackClassName={imagePresentation.itemThumbnailImageClassName ?? "object-contain p-1"}
                                 fallbackBackgroundColor={imagePresentation.imageBackgroundColor}
-                                containerClassName="relative h-10 w-10 shrink-0 overflow-hidden rounded-xl border border-black/[0.06] bg-image-placeholder"
+                                containerClassName="relative h-10 w-10 shrink-0 overflow-hidden rounded-xl border border-black/[0.06] dark:border-divider bg-image-placeholder"
                                 renderer="next-image"
                                 sizes="40px"
                             />
@@ -1705,7 +1707,7 @@ export default function ItemRouteModal({
                         <div className="min-w-0 flex-1">
                             <MenuItemTitle
                                 name={item.name}
-                                className="font-heading text-title text-slate-900"
+                                className="font-heading text-title text-slate-900 dark:text-slate-100"
                             />
                         </div>
                     </div>
@@ -1740,7 +1742,7 @@ export default function ItemRouteModal({
                                         "object-contain p-1.5 sm:p-2.5 lg:p-3"
                                     }
                                     fallbackBackgroundColor={imagePresentation.imageBackgroundColor}
-                                    containerClassName={`item-overview-image relative overflow-hidden rounded-3xl border border-black/[0.06] bg-image-placeholder sm:aspect-auto sm:h-40 sm:w-40 lg:h-52 lg:w-52 ${
+                                    containerClassName={`item-overview-image relative overflow-hidden rounded-3xl border border-black/[0.06] dark:border-divider bg-image-placeholder sm:aspect-auto sm:h-40 sm:w-40 lg:h-52 lg:w-52 ${
                                         // Mobile-only: the wide 3:2 editorial
                                         // artwork gets a slightly wider (not
                                         // square) box so less of it has to be
@@ -1764,13 +1766,13 @@ export default function ItemRouteModal({
                                 />
                             ) : null}
                             <div className="item-overview-content min-w-0">
-                                <p className="item-overview-label mt-4 min-w-0 pr-12 text-label text-slate-400 sm:mt-0 sm:pr-14">
+                                <p className="item-overview-label mt-4 min-w-0 pr-12 text-label text-slate-400 dark:text-slate-400 sm:mt-0 sm:pr-14">
                                     Base Nutrition
                                 </p>
                                 <MenuItemTitle
                                     as="h2"
                                     name={item.name}
-                                    className="item-overview-title font-heading text-display-3 mt-1.5 min-w-0 text-slate-900 sm:pr-14"
+                                    className="item-overview-title font-heading text-display-3 mt-1.5 min-w-0 text-slate-900 dark:text-slate-100 sm:pr-14"
                                 />
                                 <div className="item-overview-macros mt-5 flex flex-wrap items-center justify-start gap-x-4 gap-y-2 sm:mt-3 sm:gap-x-5">
                                     <MacroStat
@@ -1823,7 +1825,7 @@ export default function ItemRouteModal({
                                         {variants &&
                                         variants.length > 0 &&
                                         !item.hideVariantSelector &&
-                                        selectedVariant ? (
+                                        selectedVariant && (variants.length > 1 || getDisplayVariantLabel(selectedVariant.label)) ? (
                                             <PreviewControlShortcut
                                                 label="Options"
                                                 value={selectedVariant.label}
@@ -1853,7 +1855,7 @@ export default function ItemRouteModal({
                                             id={ITEM_DETAILS_SECTION_IDS.orderType}
                                             className="min-w-0 lg:w-[45%]"
                                         >
-                                            <p className="text-label text-slate-400">
+                                            <p className="text-label text-slate-400 dark:text-slate-400">
                                                 Meal Type
                                             </p>
                                             <SegmentedControl
@@ -1977,10 +1979,10 @@ export default function ItemRouteModal({
                                     className="preset-stage-enter"
                                 >
                                     <div>
-                                        <h2 className="font-heading text-2xl font-bold text-slate-900 sm:text-3xl">
+                                        <h2 className="font-heading text-2xl font-bold text-slate-900 dark:text-slate-100 sm:text-3xl">
                                             Customize Your Build
                                         </h2>
-                                        <p className="mt-1.5 text-sm text-slate-500">
+                                        <p className="mt-1.5 text-sm text-slate-500 dark:text-slate-400">
                                             Adjust this preset before adding
                                             it to your meal.
                                         </p>
@@ -1989,7 +1991,7 @@ export default function ItemRouteModal({
                                     {chipotleIncludedIngredientDisplayItems.length >
                                     0 ? (
                                         <div>
-                                            <h2 className="font-heading mb-4 text-2xl font-bold text-slate-900 sm:text-3xl">
+                                            <h2 className="font-heading mb-4 text-2xl font-bold text-slate-900 dark:text-slate-100 sm:text-3xl">
                                                 Included Ingredients
                                             </h2>
                                             <MenuSections

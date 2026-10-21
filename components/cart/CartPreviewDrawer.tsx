@@ -99,16 +99,16 @@ export default function CartPreviewDrawer() {
       />
 
       <aside
-        className={`fixed right-0 top-0 z-[125] h-[var(--app-viewport-height)] w-[88%] max-w-md border-l border-slate-200 bg-white pt-[var(--safe-area-top)] shadow-[0_18px_50px_rgba(15,23,42,0.22)] transition-transform duration-300 sm:w-[78%] ${
+        className={`fixed right-0 top-0 z-[125] h-[var(--app-viewport-height)] w-[88%] max-w-md border-l border-slate-200 dark:border-divider bg-white dark:bg-surface-card pt-[var(--safe-area-top)] shadow-[0_18px_50px_rgba(15,23,42,0.22)] transition-transform duration-300 sm:w-[78%] ${
           isCartOpen ? "translate-x-0" : "translate-x-full"
         }`}
         aria-hidden={!isCartOpen}
       >
         <div className="flex h-full flex-col">
-          <header className="border-b border-slate-200 px-5 py-4">
+          <header className="border-b border-slate-200 dark:border-divider px-5 py-4">
             <div className="flex items-start justify-between gap-3">
               <div className="flex min-w-0 items-center gap-3">
-                <div className={`relative size-11 shrink-0 overflow-hidden ${cartHeaderInfo.mode === "single" && cartHeaderInfo.restaurant?.logo ? "logo-surface" : ""} border border-slate-200 bg-slate-100 ${
+                <div className={`relative size-11 shrink-0 overflow-hidden ${cartHeaderInfo.mode === "single" && cartHeaderInfo.restaurant?.logo ? "logo-surface" : ""} border border-slate-200 dark:border-divider bg-slate-100 dark:bg-surface-hover ${
                   cartHeaderInfo.mode === "single" && cartHeaderInfo.restaurant
                     ? getRestaurantLogoShapeClassName()
                     : "rounded-xl"
@@ -122,20 +122,20 @@ export default function CartPreviewDrawer() {
                       sizes="44px"
                     />
                   ) : cartHeaderInfo.mode === "single" ? (
-                    <div className="flex h-full items-center justify-center text-sm font-semibold text-slate-600">
+                    <div className="flex h-full items-center justify-center text-sm font-semibold text-slate-600 dark:text-slate-300">
                       {cartHeaderInfo.restaurant?.name?.[0] ?? "C"}
                     </div>
                   ) : (
-                    <div className="flex h-full items-center justify-center text-slate-600">
+                    <div className="flex h-full items-center justify-center text-slate-600 dark:text-slate-300">
                       <ShoppingCart className="h-5 w-5" strokeWidth={2.5} />
                     </div>
                   )}
                 </div>
                 <div className="min-w-0">
-                  <p className="truncate text-base font-semibold text-slate-900">
+                  <p className="truncate text-base font-semibold text-slate-900 dark:text-slate-100">
                     {cartHeaderInfo.mode === "single" ? cartHeaderInfo.restaurant?.name ?? "My Meal" : "My Meal"}
                   </p>
-                  <p className="text-sm text-slate-600">
+                  <p className="text-sm text-slate-600 dark:text-slate-300">
                     {cartHeaderInfo.mode === "single"
                       ? `Items: ${items.length}`
                       : `${items.length} ${items.length === 1 ? "item" : "items"} · ${cartHeaderInfo.restaurantCount} restaurants`}
@@ -149,7 +149,7 @@ export default function CartPreviewDrawer() {
           </header>
 
           <section className="flex-1 overflow-y-auto px-5 py-4">
-            <p className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-500">
+            <p className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-500 dark:text-slate-400">
               Items
             </p>
 
@@ -166,7 +166,7 @@ export default function CartPreviewDrawer() {
                       key={item.id}
                       padding="compact"
                       onClick={activatePreview}
-                      className="cursor-pointer border-slate-200 px-3 py-3 transition hover:border-slate-300 hover:shadow-elev-2 focus-within:border-slate-300 focus-within:shadow-elev-2"
+                      className="cursor-pointer border-slate-200 dark:border-divider px-3 py-3 transition hover:border-slate-300 dark:hover:border-control hover:shadow-elev-2 focus-within:border-slate-300 dark:focus-within:border-control focus-within:shadow-elev-2"
                     >
                       <CartItemPreviewRow
                         item={item}
@@ -214,15 +214,15 @@ export default function CartPreviewDrawer() {
             )}
           </section>
 
-          <section className="shrink-0 border-t border-slate-200 px-5 pb-[max(1rem,var(--safe-area-bottom))] pt-4">
+          <section className="shrink-0 border-t border-slate-200 dark:border-divider px-5 pb-[max(1rem,var(--safe-area-bottom))] pt-4">
             <div>
-              <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-slate-500">
+              <p className="text-[11px] font-semibold uppercase tracking-[0.14em] text-slate-500 dark:text-slate-400">
                 Total Macros
               </p>
               <MacroTotalsGrid macros={totals} size="panel" className="mt-3" />
             </div>
 
-            <div className="mt-4 grid grid-cols-2 gap-2 border-t border-slate-200 pt-4">
+            <div className="mt-4 grid grid-cols-2 gap-2 border-t border-slate-200 dark:border-divider pt-4">
               <AppButton type="button" variant="ghost" size="md" onClick={() => setIsClearCartDialogOpen(true)} disabled={items.length === 0}>
                 Clear Meal
               </AppButton>

@@ -1,3 +1,4 @@
+import { getDisplayVariantLabel } from "@/lib/menuItemCard/titlePresentation";
 import { useMemo } from "react";
 import type { ReactNode } from "react";
 import { Minus, Plus } from "lucide-react";
@@ -46,8 +47,8 @@ function PreviewSection({
   return (
     <div>
       <div className="mb-3 flex items-center gap-2">
-        <Icon className="h-4 w-4 text-slate-400" strokeWidth={2.25} />
-        <h3 className="font-heading text-base font-bold text-slate-900 sm:text-lg">{label}</h3>
+        <Icon className="h-4 w-4 text-slate-400 dark:text-slate-400" strokeWidth={2.25} />
+        <h3 className="font-heading text-base font-bold text-slate-900 dark:text-slate-100 sm:text-lg">{label}</h3>
       </div>
       {children}
     </div>
@@ -61,8 +62,8 @@ function PreviewSection({
 function NestedSectionHeading({ icon: Icon, label }: { icon: LucideIcon; label: string }) {
   return (
     <div className="mb-2.5 flex items-center gap-1.5">
-      <Icon className="h-3.5 w-3.5 text-slate-400" strokeWidth={2.25} />
-      <h4 className="font-heading text-sm font-bold text-slate-600 sm:text-[15px]">{label}</h4>
+      <Icon className="h-3.5 w-3.5 text-slate-400 dark:text-slate-400" strokeWidth={2.25} />
+      <h4 className="font-heading text-sm font-bold text-slate-600 dark:text-slate-300 sm:text-[15px]">{label}</h4>
     </div>
   );
 }
@@ -78,7 +79,7 @@ function NestedSectionHeading({ icon: Icon, label }: { icon: LucideIcon; label: 
 function NestedUnderMainItem({ compact = false, children }: { compact?: boolean; children: ReactNode }) {
   return (
     <div className={`relative ${compact ? "pl-3" : "mt-4 pl-3 sm:pl-5"}`}>
-      <span className="absolute inset-y-0 left-0 w-px bg-black/10" aria-hidden="true" />
+      <span className="absolute inset-y-0 left-0 w-px bg-black/10 dark:bg-divider" aria-hidden="true" />
       {children}
     </div>
   );
@@ -111,12 +112,12 @@ function CustomizationImpactSummary({ delta }: { delta: CoreMacros }) {
         const isZero = rounded === 0;
         const label = macroKey === "calories" ? config.shortLabel : config.label;
         const displayValue = isZero ? "—" : `${rounded > 0 ? "+" : "−"}${Math.abs(rounded)}${config.unit ?? ""}`;
-        const valueClassName = isZero ? "text-slate-400" : config.valueClassNameByVariant.default;
+        const valueClassName = isZero ? "text-slate-400 dark:text-slate-400" : config.valueClassNameByVariant.default;
 
         return (
           <span key={macroKey} className="whitespace-nowrap text-[13px] font-bold sm:text-sm">
             <span className={valueClassName}>{displayValue}</span>
-            <span className="ml-1 font-medium text-slate-500">{label}</span>
+            <span className="ml-1 font-medium text-slate-500 dark:text-slate-400">{label}</span>
           </span>
         );
       })}
@@ -133,11 +134,11 @@ function NestedCustomizationSummaryRow({ name, sign }: { name: string; sign: "ad
   return (
     <li className="flex list-none items-center gap-1.5 py-0.5">
       <span
-        className={`flex h-3.5 w-3.5 shrink-0 items-center justify-center rounded-full ${isAdd ? "bg-success/15 text-success" : "bg-black/10 text-black/45"}`}
+        className={`flex h-3.5 w-3.5 shrink-0 items-center justify-center rounded-full ${isAdd ? "bg-success/15 text-success" : "bg-black/10 dark:bg-divider text-black/45"}`}
       >
         {isAdd ? <Plus className="h-2 w-2" strokeWidth={3.5} /> : <Minus className="h-2 w-2" strokeWidth={3.5} />}
       </span>
-      <span className="min-w-0 flex-1 truncate text-xs font-medium text-slate-600">{name}</span>
+      <span className="min-w-0 flex-1 truncate text-xs font-medium text-slate-600 dark:text-slate-300">{name}</span>
     </li>
   );
 }
@@ -162,10 +163,10 @@ function CustomizationGroup({
   const Icon = isAdd ? Plus : Minus;
 
   return (
-    <div className="rounded-2xl border border-black/10 bg-black/[0.02] p-3 sm:p-4">
+    <div className="rounded-2xl border border-black/10 dark:border-hairline bg-black/[0.02] p-3 sm:p-4">
       <div className="mb-3 flex items-center gap-1.5">
         <span
-          className={`flex h-5 w-5 shrink-0 items-center justify-center rounded-full ${isAdd ? "bg-success/15 text-success" : "bg-black/10 text-black/45"}`}
+          className={`flex h-5 w-5 shrink-0 items-center justify-center rounded-full ${isAdd ? "bg-success/15 text-success" : "bg-black/10 dark:bg-divider text-black/45"}`}
         >
           <Icon className="h-3 w-3" strokeWidth={3} />
         </span>
@@ -297,8 +298,8 @@ export default function CartItemPreviewContent({
   return (
     <div>
       <div>
-        <h2 className="font-heading text-2xl font-bold text-slate-900 sm:text-3xl">Meal Details</h2>
-        <p className="mt-1.5 text-sm text-slate-500">Review what&apos;s included in this item. Select a section to make changes.</p>
+        <h2 className="font-heading text-2xl font-bold text-slate-900 dark:text-slate-100 sm:text-3xl">Meal Details</h2>
+        <p className="mt-1.5 text-sm text-slate-500 dark:text-slate-400">Review what&apos;s included in this item. Select a section to make changes.</p>
       </div>
 
       {hasAnything ? (
@@ -310,7 +311,7 @@ export default function CartItemPreviewContent({
                   <PresetIngredientCard
                     image={mainItem.image}
                     name={mainItem.name}
-                    portionLabel={mainItem.variantLabel}
+                    portionLabel={getDisplayVariantLabel(mainItem.variantLabel)}
                     quantity={1}
                     isLocked={false}
                     nutrition={mainItem.nutrition}
@@ -337,7 +338,7 @@ export default function CartItemPreviewContent({
                 <PresetIngredientCard
                   image={sideSelection.image}
                   name={sideSelection.name}
-                  portionLabel={sideSelection.variantLabel}
+                  portionLabel={getDisplayVariantLabel(sideSelection.variantLabel)}
                   quantity={1}
                   isLocked={false}
                   nutrition={sideSelection.nutrition}
@@ -353,7 +354,7 @@ export default function CartItemPreviewContent({
                 <PresetIngredientCard
                   image={drinkSelection.image}
                   name={drinkSelection.name}
-                  portionLabel={drinkSelection.variantLabel}
+                  portionLabel={getDisplayVariantLabel(drinkSelection.variantLabel)}
                   quantity={1}
                   isLocked={false}
                   nutrition={drinkSelection.nutrition}
@@ -402,9 +403,9 @@ export default function CartItemPreviewContent({
           ) : null}
         </div>
       ) : (
-        <div className="mt-6 rounded-2xl border border-black/[0.06] bg-slate-50/70 px-5 py-6 text-center sm:mt-10">
-          <p className="text-sm font-semibold text-slate-700">No customizations</p>
-          <p className="mt-0.5 text-sm text-slate-500">Standard preparation</p>
+        <div className="mt-6 rounded-2xl border border-black/[0.06] dark:border-divider bg-slate-50/70 px-5 py-6 text-center sm:mt-10">
+          <p className="text-sm font-semibold text-slate-700 dark:text-slate-200">No customizations</p>
+          <p className="mt-0.5 text-sm text-slate-500 dark:text-slate-400">Standard preparation</p>
         </div>
       )}
 
@@ -462,7 +463,7 @@ export default function CartItemPreviewContent({
                     image={mainItem.image}
                     imagePresentation={mainItem.imagePresentation}
                     name={mainItem.name}
-                    secondaryText={mainItem.variantLabel}
+                    secondaryText={getDisplayVariantLabel(mainItem.variantLabel)}
                   />
                 ) : null}
                 {mainItemCustomizationEntries.length > 0 ? (
@@ -482,12 +483,12 @@ export default function CartItemPreviewContent({
                     image={row.image}
                     imagePresentation={row.imagePresentation}
                     name={row.name}
-                    secondaryText={row.badge}
+                    secondaryText={getDisplayVariantLabel(row.badge)}
                   />
                 ))}
               </SelectionScrollList>
             ) : (
-              <p className="text-sm text-slate-500">No additional selections.</p>
+              <p className="text-sm text-slate-500 dark:text-slate-400">No additional selections.</p>
             )}
           </SelectionSummaryShell>
         }

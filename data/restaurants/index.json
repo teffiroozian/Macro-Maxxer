@@ -54,7 +54,16 @@
     "description": "Browse the standard Starbucks menu and compare official nutrition by size. Nutrition reflects each drink or food item’s standard recipe; customizations are not included.",
     "nutritionSourceUrl": "https://www.starbucks.com/menu",
     "nutritionSourceAttribution": "Nutrition data comes from official Starbucks US ordering information and reflects standard recipes only. In-store customizations can change nutrition.",
-    "lastUpdated": "2026-09-11"
+    "lastUpdated": "2026-09-11",
+    "menuSizeSelector": {
+      "enabled": true,
+      "defaultValue": "Grande",
+      "allowedValues": [
+        "Tall",
+        "Grande",
+        "Venti"
+      ]
+    }
   },
   {
     "id": "habit",

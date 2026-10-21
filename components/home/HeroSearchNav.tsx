@@ -1,13 +1,8 @@
 "use client";
 
-import { Suspense, useEffect, useRef, useState, type CSSProperties } from "react";
+import { Suspense, type CSSProperties } from "react";
 import Image from "@/components/ui/AppImage";
 import { Dumbbell, Flame, Search, type LucideIcon } from "lucide-react";
-import DesktopNav from "@/components/DesktopNav";
-import GlobalMobileNav from "@/components/GlobalMobileNav";
-import GlobalMobileMenuButton from "@/components/GlobalMobileMenuButton";
-import CartIconDropdown from "@/components/cart/CartIconDropdown";
-import { appIconButtonClassName } from "@/components/ui/AppIconButton";
 import RestaurantSearch from "@/components/home/RestaurantSearch";
 import HeroRestaurantChips from "@/components/home/HeroRestaurantChips";
 import SectionEyebrow from "@/components/ui/SectionEyebrow";
@@ -138,69 +133,11 @@ function RestaurantSearchFallback() {
   );
 }
 
-// Owns the homepage's hero-vs-nav search handoff. Two separate desktop nav
-// elements, never morphed into one another:
-// - Static hero nav: logo + cart only, no search, sits inline at the top
-//   of the hero and scrolls away with it like any other page content.
-// - Sticky search nav: logo + centered search bar + cart, fixed at the
-//   top, hidden while the hero search is in view, fades in once it scrolls
-//   out.
-// Desktop-only — mobile's nav is already fixed and unaffected by hero
-// scroll position.
+// Homepage hero content; navigation is supplied by the root layout.
 export default function HeroSearchNav({ restaurants }: { restaurants: RestaurantIndexEntry[] }) {
-  const heroRef = useRef<HTMLDivElement>(null);
-  const [isHeroVisible, setIsHeroVisible] = useState(true);
-
-  useEffect(() => {
-    const node = heroRef.current;
-    if (!node) {
-      return;
-    }
-
-    const observer = new IntersectionObserver(
-      ([entry]) => setIsHeroVisible(entry.isIntersecting),
-      { threshold: 0, rootMargin: "-72px 0px 0px 0px" }
-    );
-
-    observer.observe(node);
-
-    return () => observer.disconnect();
-  }, []);
-
   return (
     <section className="native-home-page relative">
-      <GlobalMobileNav
-        leadingButton={<GlobalMobileMenuButton />}
-        cartSlot={
-          <CartIconDropdown
-            variant="sheet"
-            buttonClassName={appIconButtonClassName({ variant: "nav", size: "nav", className: "relative shrink-0" })}
-          />
-        }
-      />
-
-      {/* Sticky search nav: fixed, hidden while the hero search is visible.
-          `inert` while hidden keeps its (otherwise invisible, duplicate)
-          logo/search/cart controls out of both the tab order and the
-          accessibility tree — without it, keyboard and screen-reader users
-          would hit three unclickable phantom stops before ever reaching the
-          real, visible hero nav below. */}
       <div
-        inert={isHeroVisible}
-        className={`fixed inset-x-0 top-0 z-[95] px-4 pt-1 transition-all duration-200 sm:px-6 ${
-          isHeroVisible ? "pointer-events-none -translate-y-2 opacity-0" : "opacity-100"
-        }`}
-      >
-        <DesktopNav searchBarVariant="compact" />
-      </div>
-
-      {/* Static hero nav: logo + cart only, scrolls away naturally with the hero. */}
-      <div className="mx-auto max-w-6xl px-4 pt-1 sm:px-6">
-        <DesktopNav searchBarVariant="hidden" />
-      </div>
-
-      <div
-        ref={heroRef}
         className="relative mx-auto flex max-w-6xl flex-col gap-8 px-4 pb-20 pt-16 sm:px-6 sm:pb-24 sm:pt-20 lg:pb-28 lg:pt-24"
       >
         <div className="relative z-10 flex flex-col gap-8">

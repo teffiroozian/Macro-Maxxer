@@ -8,9 +8,6 @@ import SurfaceCard from "@/components/ui/SurfaceCard";
 import MacroStat from "@/components/nutrition/MacroStat";
 import { appButtonClassName } from "@/components/ui/AppButton";
 import CartNutritionSummary from "@/components/cart/CartNutritionSummary";
-import GlobalMobileNav from "@/components/GlobalMobileNav";
-import GlobalMobileMenuButton from "@/components/GlobalMobileMenuButton";
-import DesktopNav from "@/components/DesktopNav";
 import EmptyStateCard from "@/components/EmptyStateCard";
 import ItemRouteModal from "@/components/item-route-modal/ItemRouteModal";
 import CartItemsSection from "@/components/cart/CartItemsSection";
@@ -64,9 +61,7 @@ export default function CartPage() {
 
   return (
     <>
-      <GlobalMobileNav leadingButton={<GlobalMobileMenuButton />} />
-      <div className="px-4 pt-1 sm:px-6"><DesktopNav searchBarVariant="compact" /></div>
-      <main className="native-top-level-page mx-auto flex min-h-[var(--app-viewport-height)] w-full max-w-5xl flex-col gap-8 px-4 pb-[max(4rem,var(--safe-area-bottom))] pt-[calc(7rem+var(--safe-area-top))] sm:px-6 lg:gap-10 lg:pb-20 lg:pt-10">
+      <main className="native-top-level-page mx-auto flex min-h-[var(--app-viewport-height)] w-full max-w-5xl flex-col gap-8 px-4 pb-[max(4rem,var(--safe-area-bottom))] pt-14 sm:px-6 lg:gap-10 lg:pb-20 lg:pt-10">
         <header className="flex flex-col gap-5 lg:flex-row lg:items-center lg:justify-between lg:gap-24">
           <div className="flex flex-col gap-3 lg:shrink-0">
             <h1 className="font-heading text-3xl font-bold leading-tight text-slate-900 sm:text-4xl">

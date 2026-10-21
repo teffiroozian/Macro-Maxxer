@@ -1,5 +1,7 @@
 "use client";
 
+import { useRestaurantCatalog } from "@/components/RestaurantCatalogContext";
+
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Search, X } from "lucide-react";
@@ -34,7 +36,9 @@ type RestaurantSearchProps = {
 // index, ranking, and result rows as the nav's GlobalSearchPanel (via
 // useMenuItemSearch/useRecentMenuItems) rather than a second, homepage-only
 // implementation.
-export default function RestaurantSearch({ restaurants }: RestaurantSearchProps) {
+export default function RestaurantSearch({ restaurants: fallbackRestaurants }: RestaurantSearchProps) {
+  const catalog = useRestaurantCatalog();
+  const restaurants = catalog.length ? catalog : fallbackRestaurants;
   const router = useRouter();
   const [scope, setScope] = useState<SearchScope>("restaurants");
   const [query, setQuery] = useState("");
