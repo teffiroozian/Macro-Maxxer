@@ -189,10 +189,8 @@ function resolveContextualTortilla(
     },
     "chipotle-kids-quesadilla": {
       // Matches the live builder's included tortilla (see
-      // kidsQuesadillaIncludedIngredientIds in generatedRuntimeAdapter.ts):
-      // the more accurate official single-taco panel, not the generated
-      // Kids Quesadilla composition's own rounded chipotle-cmg-5401 record.
-      soft: "chipotle-tortilla-soft-flour-taco",
+      // kidsQuesadillaIncludedIngredientIds in generatedRuntimeAdapter.ts).
+      soft: "chipotle-cmg-5401",
     },
   };
   return isSoft ? targets[buildTargetId]?.soft : targets[buildTargetId]?.crispy;

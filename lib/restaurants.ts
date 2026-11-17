@@ -16,8 +16,13 @@ const restaurantIndex = restaurants as RestaurantIndexEntry[];
 const runtimeMenuLoaders: Record<string, () => Promise<RestaurantMenu>> = {
   chickfila: async () =>
     (await import("@/lib/restaurantBuilders/chickfila/generatedRuntimeAdapter")).CHICKFILA_GENERATED_RUNTIME_MENU,
+  // Local preview switch: with NEXT_PUBLIC_CHIPOTLE_PIPELINE_PREVIEW=1 the
+  // Chipotle menu comes from the import pipeline's staging output instead of
+  // the generated dataset. Off by default; never set it for a deployed build.
   chipotle: async () =>
-    (await import("@/lib/restaurantBuilders/chipotle/generatedRuntimeAdapter")).CHIPOTLE_GENERATED_RUNTIME_MENU,
+    process.env.NEXT_PUBLIC_CHIPOTLE_PIPELINE_PREVIEW === "1"
+      ? (await import("@/lib/restaurantBuilders/chipotle/pipelinePreview")).CHIPOTLE_PIPELINE_PREVIEW_MENU
+      : (await import("@/lib/restaurantBuilders/chipotle/generatedRuntimeAdapter")).CHIPOTLE_GENERATED_RUNTIME_MENU,
   habit: async () => (await import("@/data/restaurants/habit.json")).default as RestaurantMenu,
   mcdonalds: async () =>
     (await import("@/lib/restaurantBuilders/mcdonalds/generatedRuntimeAdapter")).MCDONALDS_GENERATED_RUNTIME_MENU,

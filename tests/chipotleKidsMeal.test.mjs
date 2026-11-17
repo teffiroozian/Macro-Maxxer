@@ -23,7 +23,7 @@ import {
   calculateChipotleBuildNutrition,
 } from "../lib/restaurantBuilders/chipotle/nutrition.ts";
 
-const TORTILLA_ID = "chipotle-tortilla-soft-flour-taco";
+const TORTILLA_ID = "chipotle-cmg-5401";
 const CHEESE_ID = "chipotle-cmg-5252";
 const KIDS_CRISPY_ID = "chipotle-cmg-5403";
 const ingredients = CHIPOTLE_GENERATED_RUNTIME_MENU.ingredients;
@@ -152,10 +152,10 @@ test("Kids Quesadilla required base is locked and totals tortilla plus 1x Cheese
       ),
     ),
     {
-      calories: 193,
+      calories: 190,
       protein: 8,
       carbs: 14,
-      totalFat: 11,
+      totalFat: 10.5,
     },
   );
 });
@@ -189,10 +189,10 @@ test("Kids Quesadilla cart configuration and summary retain Cheese", () => {
     image: "",
     quantity: 1,
     macrosPerItem: {
-      calories: 193,
+      calories: 190,
       protein: 8,
       carbs: 14,
-      totalFat: 11,
+      totalFat: 10.5,
     },
     nutritionPerItem: calculateChipotleBuildNutrition(
       configuration,

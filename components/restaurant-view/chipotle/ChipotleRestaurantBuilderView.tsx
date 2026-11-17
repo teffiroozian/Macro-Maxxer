@@ -865,28 +865,17 @@ export default function ChipotleRestaurantBuilderView({
       selectedIngredientVariantIds,
     ],
   );
-  const adjustedSelectedIngredientTotals = useMemo(() => {
-    const scaledCalories =
-      selectedIngredientTotals.calories * servingMultiplier;
-    const shouldRoundKidsQuesadillaCalories =
-      selectedEntree === "kids-meal" && selectedKidsMeal === "quesadilla";
-
-    return {
-      calories: shouldRoundKidsQuesadillaCalories
-        ? Math.round(scaledCalories / 10) * 10
-        : Math.round(scaledCalories),
+  const adjustedSelectedIngredientTotals = useMemo(
+    () => ({
+      calories: Math.round(selectedIngredientTotals.calories * servingMultiplier),
       protein: Math.round(selectedIngredientTotals.protein * servingMultiplier),
       carbs: Math.round(selectedIngredientTotals.carbs * servingMultiplier),
       totalFat: Math.round(
         selectedIngredientTotals.totalFat * servingMultiplier,
       ),
-    };
-  }, [
-    selectedEntree,
-    selectedIngredientTotals,
-    selectedKidsMeal,
-    servingMultiplier,
-  ]);
+    }),
+    [selectedIngredientTotals, servingMultiplier],
+  );
 
   const selectedNutritionLabelTotals = useMemo(
     () =>
@@ -937,15 +926,10 @@ export default function ChipotleRestaurantBuilderView({
     ],
   );
   const adjustedNutritionLabelTotals = useMemo(() => {
-    const scaledCalories =
-      selectedNutritionLabelTotals.calories * servingMultiplier;
-    const shouldRoundKidsQuesadillaCalories =
-      selectedEntree === "kids-meal" && selectedKidsMeal === "quesadilla";
-
     return {
-      calories: shouldRoundKidsQuesadillaCalories
-        ? Math.round(scaledCalories / 10) * 10
-        : Math.round(scaledCalories),
+      calories: Math.round(
+        selectedNutritionLabelTotals.calories * servingMultiplier,
+      ),
       totalFat: Math.round(
         selectedNutritionLabelTotals.totalFat * servingMultiplier,
       ),
@@ -970,12 +954,7 @@ export default function ChipotleRestaurantBuilderView({
         selectedNutritionLabelTotals.protein * servingMultiplier,
       ),
     };
-  }, [
-    selectedEntree,
-    selectedKidsMeal,
-    selectedNutritionLabelTotals,
-    servingMultiplier,
-  ]);
+  }, [selectedNutritionLabelTotals, servingMultiplier]);
 
   // View Build's per-ingredient "eye" toggle needs to know exactly how much
   // each selected ingredient contributes to `adjustedNutritionLabelTotals`

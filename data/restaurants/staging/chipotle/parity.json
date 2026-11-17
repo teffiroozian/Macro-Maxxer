@@ -1,0 +1,1089 @@
+{
+  "sections": [
+    {
+      "name": "Menu items and categories",
+      "compared": 77,
+      "matched": 61
+    },
+    {
+      "name": "Nutrition values (standard items)",
+      "compared": 119,
+      "matched": 92
+    },
+    {
+      "name": "Build-your-own containers",
+      "compared": 8,
+      "matched": 4
+    },
+    {
+      "name": "Selection groups and rules",
+      "compared": 36,
+      "matched": 31
+    },
+    {
+      "name": "Ingredients and portion sizes",
+      "compared": 272,
+      "matched": 251
+    },
+    {
+      "name": "Stable ids",
+      "compared": 244,
+      "matched": 220
+    },
+    {
+      "name": "Customizations and runtime compatibility",
+      "compared": 209,
+      "matched": 194
+    }
+  ],
+  "findings": [
+    {
+      "section": "Menu items and categories",
+      "subject": "Fountain Drink (22 fl oz)",
+      "field": "name",
+      "generated": "Fountain Drink (22 fl oz)",
+      "draft": "22 fl oz Soda/Iced Tea",
+      "classification": "presentation",
+      "reason": "The importer renames this record for display; the source name is kept in the draft."
+    },
+    {
+      "section": "Menu items and categories",
+      "subject": "Fountain Drink (32 fl oz)",
+      "field": "name",
+      "generated": "Fountain Drink (32 fl oz)",
+      "draft": "32 fl oz Soda/Iced Tea",
+      "classification": "presentation",
+      "reason": "The importer renames this record for display; the source name is kept in the draft."
+    },
+    {
+      "section": "Menu items and categories",
+      "subject": "Serving Utensils",
+      "field": "presence",
+      "generated": "chipotle-cmg-6112 (structural)",
+      "draft": "absent",
+      "classification": "engine_gap",
+      "gap": "structural_records",
+      "reason": "Non-food ordering record kept as source-only."
+    },
+    {
+      "section": "Menu items and categories",
+      "subject": "Napkins & Utensils",
+      "field": "presence",
+      "generated": "chipotle-cmg-6110 (structural)",
+      "draft": "absent",
+      "classification": "engine_gap",
+      "gap": "structural_records",
+      "reason": "Non-food ordering record kept as source-only."
+    },
+    {
+      "section": "Menu items and categories",
+      "subject": "6 Serving Bowls",
+      "field": "presence",
+      "generated": "chipotle-cmg-6111 (structural)",
+      "draft": "absent",
+      "classification": "engine_gap",
+      "gap": "structural_records",
+      "reason": "Non-food ordering record kept as source-only."
+    },
+    {
+      "section": "Menu items and categories",
+      "subject": "Josh Hart's High Protein Burrito",
+      "field": "presence",
+      "generated": "chipotle-meal-653abfb2-3b20-4b17-8638-d6a20b2c340c (preconfigured_meal)",
+      "draft": "absent",
+      "classification": "engine_gap",
+      "gap": "preset_compositions",
+      "reason": "Preconfigured meal built from builder selections."
+    },
+    {
+      "section": "Menu items and categories",
+      "subject": "Bardi Bowl with Chili Lime Chips",
+      "field": "presence",
+      "generated": "chipotle-meal-3916248a-68fd-4c0f-87e9-38d794e50d7e (preconfigured_meal)",
+      "draft": "absent",
+      "classification": "engine_gap",
+      "gap": "preset_compositions",
+      "reason": "Preconfigured meal built from builder selections."
+    },
+    {
+      "section": "Menu items and categories",
+      "subject": "Mikal Bridges High Protein Bowl",
+      "field": "presence",
+      "generated": "chipotle-meal-2b15ccfe-9059-4e25-9c84-67b5f46c18c9 (preconfigured_meal)",
+      "draft": "absent",
+      "classification": "engine_gap",
+      "gap": "preset_compositions",
+      "reason": "Preconfigured meal built from builder selections."
+    },
+    {
+      "section": "Menu items and categories",
+      "subject": "The Salish Matter Meal",
+      "field": "presence",
+      "generated": "chipotle-meal-02774ed8-f878-4dc2-b6cd-5e86977b4907 (preconfigured_meal)",
+      "draft": "absent",
+      "classification": "engine_gap",
+      "gap": "preset_compositions",
+      "reason": "Preconfigured meal built from builder selections."
+    },
+    {
+      "section": "Menu items and categories",
+      "subject": "Tara Davis-Woodhall High Protein Bowl",
+      "field": "presence",
+      "generated": "chipotle-meal-f4929790-1d6c-4297-a5bd-acdc7f8b67c6 (preconfigured_meal)",
+      "draft": "absent",
+      "classification": "engine_gap",
+      "gap": "preset_compositions",
+      "reason": "Preconfigured meal built from builder selections."
+    },
+    {
+      "section": "Menu items and categories",
+      "subject": "Hunter Woodhall's High Protein Bowl",
+      "field": "presence",
+      "generated": "chipotle-meal-e1d03f68-0189-499b-8c55-403b7058acdd (preconfigured_meal)",
+      "draft": "absent",
+      "classification": "engine_gap",
+      "gap": "preset_compositions",
+      "reason": "Preconfigured meal built from builder selections."
+    },
+    {
+      "section": "Menu items and categories",
+      "subject": "Double High Protein Bowl",
+      "field": "presence",
+      "generated": "chipotle-meal-56ab2f6e-747d-46f9-9cf6-9ebc2855d86d (preconfigured_meal)",
+      "draft": "absent",
+      "classification": "engine_gap",
+      "gap": "preset_compositions",
+      "reason": "Preconfigured meal built from builder selections."
+    },
+    {
+      "section": "Menu items and categories",
+      "subject": "High Protein-High Fiber Bowl",
+      "field": "presence",
+      "generated": "chipotle-meal-6ba21999-f6b8-4a83-803a-bf68ef319c5e (preconfigured_meal)",
+      "draft": "absent",
+      "classification": "engine_gap",
+      "gap": "preset_compositions",
+      "reason": "Preconfigured meal built from builder selections."
+    },
+    {
+      "section": "Menu items and categories",
+      "subject": "High Protein Taco",
+      "field": "presence",
+      "generated": "chipotle-meal-2991ff70-3dfb-47af-84e0-cbe547e5395f (preconfigured_meal)",
+      "draft": "absent",
+      "classification": "engine_gap",
+      "gap": "preset_compositions",
+      "reason": "Preconfigured meal built from builder selections."
+    },
+    {
+      "section": "Menu items and categories",
+      "subject": "High Protein - Low Calorie Bowl",
+      "field": "presence",
+      "generated": "chipotle-meal-be88e387-62ed-4271-877c-7216b6485387 (preconfigured_meal)",
+      "draft": "absent",
+      "classification": "engine_gap",
+      "gap": "preset_compositions",
+      "reason": "Preconfigured meal built from builder selections."
+    },
+    {
+      "section": "Menu items and categories",
+      "subject": "Double High Protein Burrito",
+      "field": "presence",
+      "generated": "chipotle-meal-1a3697bb-88c5-4f2e-a061-85ac3cfa0a28 (preconfigured_meal)",
+      "draft": "absent",
+      "classification": "engine_gap",
+      "gap": "preset_compositions",
+      "reason": "Preconfigured meal built from builder selections."
+    },
+    {
+      "section": "Nutrition values (standard items)",
+      "subject": "Large Side of Queso Blanco",
+      "field": "nutrition",
+      "generated": "calories 480, protein 20, carbs 14, totalFat 37, satFat 23, transFat 1.5, cholesterol 120, sodium 980, fiber 0, sugars 5",
+      "draft": "calories 480, protein 20, carbs 14, totalFat 37, satFat 23, transFat 1.5, sodium 980, fiber 0, sugars 5",
+      "classification": "restaurant_decision",
+      "reason": "The generated record takes cholesterol from the PDF row \"Queso Blanco (large)\", linked through the importer's hand-written size-suffix table; no mechanical name match exists. cholesterol: generated 120, draft has none."
+    },
+    {
+      "section": "Nutrition values (standard items)",
+      "subject": "Side of Queso Blanco",
+      "field": "nutrition",
+      "generated": "calories 240, protein 10, carbs 8, totalFat 18, satFat 12, transFat 0, cholesterol 60, sodium 500, fiber 0, sugars 2",
+      "draft": "calories 240, protein 10, carbs 8, totalFat 18, satFat 12, transFat 0, sodium 500, fiber 0, sugars 2",
+      "classification": "restaurant_decision",
+      "reason": "The generated record takes cholesterol from the PDF row \"Queso Blanco (side)\", linked through the importer's hand-written size-suffix table; no mechanical name match exists. cholesterol: generated 60, draft has none."
+    },
+    {
+      "section": "Nutrition values (standard items)",
+      "subject": "Large Side of Guacamole",
+      "field": "nutrition",
+      "generated": "calories 460, protein 4, carbs 16, totalFat 44, satFat 7, transFat 0, cholesterol 0, sodium 740, fiber 12, sugars 2",
+      "draft": "calories 460, protein 4, carbs 16, totalFat 44, satFat 7, transFat 0, sodium 740, fiber 12, sugars 2",
+      "classification": "restaurant_decision",
+      "reason": "The generated record takes cholesterol from the PDF row \"Guacamole (large)\", linked through the importer's hand-written size-suffix table; no mechanical name match exists. cholesterol: generated 0, draft has none."
+    },
+    {
+      "section": "Nutrition values (standard items)",
+      "subject": "Side of Guacamole",
+      "field": "nutrition",
+      "generated": "calories 230, protein 2, carbs 8, totalFat 22, satFat 3.5, transFat 0, cholesterol 0, sodium 370, fiber 6, sugars 1",
+      "draft": "calories 230, protein 2, carbs 8, totalFat 22, satFat 3.5, transFat 0, sodium 370, fiber 6, sugars 1",
+      "classification": "restaurant_decision",
+      "reason": "The generated record takes cholesterol from the PDF row \"Guacamole (topping/side)\", linked through the importer's hand-written size-suffix table; no mechanical name match exists. cholesterol: generated 0, draft has none."
+    },
+    {
+      "section": "Nutrition values (standard items)",
+      "subject": "Large Chili Lime Chips & Guacamole",
+      "field": "nutrition",
+      "generated": "calories 1250, protein 15, carbs 123, totalFat 80, satFat 12, transFat 0, sodium 1920, fiber 14, sugars 7",
+      "draft": "none",
+      "classification": "restaurant_decision",
+      "reason": "Generated value sums an importer-approved pairing of component records. The draft found no pairing of the named records whose calories confirm this product's published calories, so it composed nothing. calories: generated 1250, draft has none; protein: generated 15, draft has none; carbs: generated 123, draft has none; totalFat: generated 80, draft has none; satFat: generated 12, draft has none; transFat: generated 0, draft has none; sodium: generated 1920, draft has none; fiber: generated 14, draft has none; sugars: generated 7, draft has none."
+    },
+    {
+      "section": "Nutrition values (standard items)",
+      "subject": "Large Chili Lime Chips & Queso Blanco",
+      "field": "nutrition",
+      "generated": "calories 1270, protein 31, carbs 121, totalFat 73, satFat 28, transFat 1.5, sodium 2160, fiber 2, sugars 10",
+      "draft": "none",
+      "classification": "restaurant_decision",
+      "reason": "Generated value sums an importer-approved pairing of component records. The draft found no pairing of the named records whose calories confirm this product's published calories, so it composed nothing. calories: generated 1270, draft has none; protein: generated 31, draft has none; carbs: generated 121, draft has none; totalFat: generated 73, draft has none; satFat: generated 28, draft has none; transFat: generated 1.5, draft has none; sodium: generated 2160, draft has none; fiber: generated 2, draft has none; sugars: generated 10, draft has none."
+    },
+    {
+      "section": "Nutrition values (standard items)",
+      "subject": "Fountain Drink (22 fl oz) › Minute Maid Lemonade",
+      "field": "variant",
+      "generated": "absent",
+      "draft": "chipotle:item:drink:22-fl-oz-soda-iced-tea:minute-maid-lemonade (calories 280, protein 0, carbs 75, totalFat 0, satFat 0, transFat 0, cholesterol 0, sodium 95, fiber 0, sugars 75)",
+      "classification": "restaurant_decision",
+      "reason": "The official PDF lists this drink at this cup size; the existing importer does not treat it as a flavor of this fountain cup."
+    },
+    {
+      "section": "Nutrition values (standard items)",
+      "subject": "Fountain Drink (22 fl oz) › Lemonade - Blue Sky",
+      "field": "variant",
+      "generated": "absent",
+      "draft": "chipotle:item:drink:22-fl-oz-soda-iced-tea:lemonade-blue-sky (calories 300, protein 0, carbs 78, totalFat 0, satFat 0, transFat 0, cholesterol 0, sodium 95, fiber 0, sugars 74)",
+      "classification": "restaurant_decision",
+      "reason": "The official PDF lists this drink at this cup size; the existing importer does not treat it as a flavor of this fountain cup."
+    },
+    {
+      "section": "Nutrition values (standard items)",
+      "subject": "Fountain Drink (22 fl oz) › Mango Orange - Blue Sky",
+      "field": "variant",
+      "generated": "absent",
+      "draft": "chipotle:item:drink:22-fl-oz-soda-iced-tea:mango-orange-blue-sky (calories 300, protein 0, carbs 75, totalFat 0, satFat 0, transFat 0, cholesterol 0, sodium 80, fiber 0, sugars 74)",
+      "classification": "restaurant_decision",
+      "reason": "The official PDF lists this drink at this cup size; the existing importer does not treat it as a flavor of this fountain cup."
+    },
+    {
+      "section": "Nutrition values (standard items)",
+      "subject": "Fountain Drink (22 fl oz) › Maine Root Root Beer",
+      "field": "variant",
+      "generated": "absent",
+      "draft": "chipotle:item:drink:22-fl-oz-soda-iced-tea:maine-root-root-beer (calories 170, protein 0, carbs 62, totalFat 0, satFat 0, transFat 0, cholesterol 0, sodium 45, fiber 0, sugars 62)",
+      "classification": "restaurant_decision",
+      "reason": "The official PDF lists this drink at this cup size; the existing importer does not treat it as a flavor of this fountain cup."
+    },
+    {
+      "section": "Nutrition values (standard items)",
+      "subject": "Fountain Drink (22 fl oz) › Tractor Berry Agua Fresca",
+      "field": "variant",
+      "generated": "absent",
+      "draft": "chipotle:item:drink:22-fl-oz-soda-iced-tea:tractor-berry-agua-fresca (calories 200, protein 0, carbs 50, totalFat 0, satFat 0, transFat 0, cholesterol 0, sodium 10, fiber 0, sugars 49)",
+      "classification": "restaurant_decision",
+      "reason": "The official PDF lists this drink at this cup size; the existing importer does not treat it as a flavor of this fountain cup."
+    },
+    {
+      "section": "Nutrition values (standard items)",
+      "subject": "Fountain Drink (22 fl oz) › Tractor Watermelon Limeade",
+      "field": "variant",
+      "generated": "absent",
+      "draft": "chipotle:item:drink:22-fl-oz-soda-iced-tea:tractor-watermelon-limeade (calories 230, protein 0, carbs 56, totalFat 0, satFat 0, transFat 0, cholesterol 0, sodium 5, fiber 0, sugars 50)",
+      "classification": "restaurant_decision",
+      "reason": "The official PDF lists this drink at this cup size; the existing importer does not treat it as a flavor of this fountain cup."
+    },
+    {
+      "section": "Nutrition values (standard items)",
+      "subject": "Fountain Drink (22 fl oz) › Tractor Lemonade",
+      "field": "variant",
+      "generated": "absent",
+      "draft": "chipotle:item:drink:22-fl-oz-soda-iced-tea:tractor-lemonade (calories 170, protein 0, carbs 43, totalFat 0, satFat 0, transFat 0, cholesterol 0, sodium 10, fiber 0, sugars 37)",
+      "classification": "restaurant_decision",
+      "reason": "The official PDF lists this drink at this cup size; the existing importer does not treat it as a flavor of this fountain cup."
+    },
+    {
+      "section": "Nutrition values (standard items)",
+      "subject": "Fountain Drink (22 fl oz) › Tractor Mandarin Agua Fresca",
+      "field": "variant",
+      "generated": "absent",
+      "draft": "chipotle:item:drink:22-fl-oz-soda-iced-tea:tractor-mandarin-agua-fresca (calories 190, protein 0, carbs 47, totalFat 0, satFat 0, transFat 0, cholesterol 0, sodium 0, fiber 0, sugars 47)",
+      "classification": "restaurant_decision",
+      "reason": "The official PDF lists this drink at this cup size; the existing importer does not treat it as a flavor of this fountain cup."
+    },
+    {
+      "section": "Nutrition values (standard items)",
+      "subject": "Fountain Drink (22 fl oz) › Tropicana Lemonade",
+      "field": "variant",
+      "generated": "absent",
+      "draft": "chipotle:item:drink:22-fl-oz-soda-iced-tea:tropicana-lemonade (calories 280, protein 0, carbs 74, totalFat 0, satFat 0, transFat 0, cholesterol 0, sodium 290, fiber 0, sugars 74)",
+      "classification": "restaurant_decision",
+      "reason": "The official PDF lists this drink at this cup size; the existing importer does not treat it as a flavor of this fountain cup."
+    },
+    {
+      "section": "Nutrition values (standard items)",
+      "subject": "Fountain Drink (22 fl oz) › Sobe Yumberry Pomegranate",
+      "field": "variant",
+      "generated": "absent",
+      "draft": "chipotle:item:drink:22-fl-oz-soda-iced-tea:sobe-yumberry-pomegranate (calories 0, protein 0, carbs 0, totalFat 0, satFat 0, transFat 0, cholesterol 0, sodium 85, fiber 0, sugars 0)",
+      "classification": "restaurant_decision",
+      "reason": "The official PDF lists this drink at this cup size; the existing importer does not treat it as a flavor of this fountain cup."
+    },
+    {
+      "section": "Nutrition values (standard items)",
+      "subject": "Fountain Drink (32 fl oz) › Diet Coke, Caffeine Free",
+      "field": "nutrition",
+      "generated": "calories 0, protein 0, carbs 0, totalFat 0, satFat 0, transFat 0, cholesterol 0, sodium 130, fiber 0, sugars 0",
+      "draft": "calories 0, protein 0, totalFat 0, satFat 0, transFat 0, cholesterol 0, sodium 130, fiber 0, sugars 0",
+      "classification": "generated_departs_from_source",
+      "reason": "The official PDF cell is blank for this nutrient; the importer's PDF reader substitutes 0, the draft leaves it unknown. carbs: generated 0, draft has none."
+    },
+    {
+      "section": "Nutrition values (standard items)",
+      "subject": "Fountain Drink (32 fl oz) › Minute Maid Lemonade",
+      "field": "variant",
+      "generated": "absent",
+      "draft": "chipotle:item:drink:32-fl-oz-soda-iced-tea:minute-maid-lemonade (calories 400, protein 0, carbs 110, totalFat 0, satFat 0, transFat 0, cholesterol 0, sodium 140, fiber 0, sugars 110)",
+      "classification": "restaurant_decision",
+      "reason": "The official PDF lists this drink at this cup size; the existing importer does not treat it as a flavor of this fountain cup."
+    },
+    {
+      "section": "Nutrition values (standard items)",
+      "subject": "Fountain Drink (32 fl oz) › Lemonade - Blue Sky",
+      "field": "variant",
+      "generated": "absent",
+      "draft": "chipotle:item:drink:32-fl-oz-soda-iced-tea:lemonade-blue-sky (calories 440, protein 0, carbs 113, totalFat 0, satFat 0, transFat 0, cholesterol 0, sodium 135, fiber 0, sugars 108)",
+      "classification": "restaurant_decision",
+      "reason": "The official PDF lists this drink at this cup size; the existing importer does not treat it as a flavor of this fountain cup."
+    },
+    {
+      "section": "Nutrition values (standard items)",
+      "subject": "Fountain Drink (32 fl oz) › Mango Orange - Blue Sky",
+      "field": "variant",
+      "generated": "absent",
+      "draft": "chipotle:item:drink:32-fl-oz-soda-iced-tea:mango-orange-blue-sky (calories 430, protein 0, carbs 109, totalFat 0, satFat 0, transFat 0, cholesterol 0, sodium 120, fiber 0, sugars 108)",
+      "classification": "restaurant_decision",
+      "reason": "The official PDF lists this drink at this cup size; the existing importer does not treat it as a flavor of this fountain cup."
+    },
+    {
+      "section": "Nutrition values (standard items)",
+      "subject": "Fountain Drink (32 fl oz) › Maine Root Root Beer",
+      "field": "variant",
+      "generated": "absent",
+      "draft": "chipotle:item:drink:32-fl-oz-soda-iced-tea:maine-root-root-beer (calories 240, protein 0, carbs 90, totalFat 0, satFat 0, transFat 0, cholesterol 0, sodium 65, fiber 0, sugars 90)",
+      "classification": "restaurant_decision",
+      "reason": "The official PDF lists this drink at this cup size; the existing importer does not treat it as a flavor of this fountain cup."
+    },
+    {
+      "section": "Nutrition values (standard items)",
+      "subject": "Fountain Drink (32 fl oz) › Tractor Berry Agua Fresca",
+      "field": "variant",
+      "generated": "absent",
+      "draft": "chipotle:item:drink:32-fl-oz-soda-iced-tea:tractor-berry-agua-fresca (calories 290, protein 0, carbs 72, totalFat 0, satFat 0, transFat 0, cholesterol 0, sodium 15, fiber 0, sugars 72)",
+      "classification": "restaurant_decision",
+      "reason": "The official PDF lists this drink at this cup size; the existing importer does not treat it as a flavor of this fountain cup."
+    },
+    {
+      "section": "Nutrition values (standard items)",
+      "subject": "Fountain Drink (32 fl oz) › Tractor Watermelon Limeade",
+      "field": "variant",
+      "generated": "absent",
+      "draft": "chipotle:item:drink:32-fl-oz-soda-iced-tea:tractor-watermelon-limeade (calories 330, protein 0, carbs 82, totalFat 0, satFat 0, transFat 0, cholesterol 0, sodium 10, fiber 0, sugars 72)",
+      "classification": "restaurant_decision",
+      "reason": "The official PDF lists this drink at this cup size; the existing importer does not treat it as a flavor of this fountain cup."
+    },
+    {
+      "section": "Nutrition values (standard items)",
+      "subject": "Fountain Drink (32 fl oz) › Tractor Lemonade",
+      "field": "variant",
+      "generated": "absent",
+      "draft": "chipotle:item:drink:32-fl-oz-soda-iced-tea:tractor-lemonade (calories 250, protein 0, carbs 62, totalFat 0, satFat 0, transFat 0, cholesterol 0, sodium 15, fiber 0, sugars 53)",
+      "classification": "restaurant_decision",
+      "reason": "The official PDF lists this drink at this cup size; the existing importer does not treat it as a flavor of this fountain cup."
+    },
+    {
+      "section": "Nutrition values (standard items)",
+      "subject": "Fountain Drink (32 fl oz) › Tractor Mandarin Agua Fresca",
+      "field": "variant",
+      "generated": "absent",
+      "draft": "chipotle:item:drink:32-fl-oz-soda-iced-tea:tractor-mandarin-agua-fresca (calories 280, protein 0, carbs 69, totalFat 0, satFat 0, transFat 0, cholesterol 0, sodium 5, fiber 0, sugars 69)",
+      "classification": "restaurant_decision",
+      "reason": "The official PDF lists this drink at this cup size; the existing importer does not treat it as a flavor of this fountain cup."
+    },
+    {
+      "section": "Nutrition values (standard items)",
+      "subject": "Fountain Drink (32 fl oz) › Tropicana Lemonade",
+      "field": "variant",
+      "generated": "absent",
+      "draft": "chipotle:item:drink:32-fl-oz-soda-iced-tea:tropicana-lemonade (calories 400, protein 0, carbs 108, totalFat 0, satFat 0, transFat 0, cholesterol 0, sodium 420, fiber 0, sugars 108)",
+      "classification": "restaurant_decision",
+      "reason": "The official PDF lists this drink at this cup size; the existing importer does not treat it as a flavor of this fountain cup."
+    },
+    {
+      "section": "Nutrition values (standard items)",
+      "subject": "Fountain Drink (32 fl oz) › Sobe Yumberry Pomegranate",
+      "field": "variant",
+      "generated": "absent",
+      "draft": "chipotle:item:drink:32-fl-oz-soda-iced-tea:sobe-yumberry-pomegranate (calories 0, protein 0, carbs 0, totalFat 0, satFat 0, transFat 0, cholesterol 0, sodium 120, fiber 0, sugars 0)",
+      "classification": "restaurant_decision",
+      "reason": "The official PDF lists this drink at this cup size; the existing importer does not treat it as a flavor of this fountain cup."
+    },
+    {
+      "section": "Build-your-own containers",
+      "subject": "Burrito",
+      "field": "nutrition",
+      "generated": "calories 500, protein 40, carbs 50, totalFat 16, satFat 3.5, cholesterol 125, sodium 910, fiber 3, sugars 0",
+      "draft": "calories 500, protein 40, carbs 50, totalFat 16, satFat 3.5, transFat 0, cholesterol 125, sodium 910, fiber 3, sugars 0",
+      "classification": "generated_departs_from_source",
+      "reason": "Every nutrient the generated total carries matches. The draft total also carries nutrients every component publishes, which the generated total omits: transFat: draft 0, generated has none."
+    },
+    {
+      "section": "Ingredients and portion sizes",
+      "subject": "Burrito › Protein › Veggie › Normal",
+      "field": "portion",
+      "generated": "chipotle-protein-veggie-normal (calories 0, protein 0, carbs 0, totalFat 0, satFat 0, transFat 0, sodium 0, fiber 0, sugars 0)",
+      "draft": "option has no portions",
+      "classification": "presentation",
+      "reason": "The source offers a single portion here; the draft keeps it on the option instead of a one-entry portion list."
+    },
+    {
+      "section": "Ingredients and portion sizes",
+      "subject": "Burrito › Protein › Pollo Asado › Half",
+      "field": "nutrition",
+      "generated": "calories 90, protein 14.5, carbs 1.5, totalFat 3.5, satFat 1.5, transFat 0, sodium 175, fiber 0, sugars 0.5",
+      "draft": "none (source publishes no calorie figure for this portion, so no factor)",
+      "classification": "restaurant_decision",
+      "reason": "The source lists this portion without any nutrition record; the generated value applies a record-specific approved factor (approved_portion_scaling)."
+    },
+    {
+      "section": "Selection groups and rules",
+      "subject": "Burrito › Toppings",
+      "field": "allowNone",
+      "generated": "false",
+      "draft": "true (minimum none, no none option)",
+      "classification": "generated_departs_from_source",
+      "reason": "The generated flag disagrees with the source's minimum and none option for this group."
+    },
+    {
+      "section": "Selection groups and rules",
+      "subject": "Burrito › Options",
+      "field": "group",
+      "generated": "absent",
+      "draft": "chipotle:item:burrito:burrito:options (Double Wrap with Tortilla)",
+      "classification": "restaurant_decision",
+      "reason": "The ordering source offers this group; the existing importer does not expose it on this container."
+    },
+    {
+      "section": "Ingredients and portion sizes",
+      "subject": "Bowl › Protein › Veggie › Normal",
+      "field": "portion",
+      "generated": "chipotle-protein-veggie-normal (calories 0, protein 0, carbs 0, totalFat 0, satFat 0, transFat 0, sodium 0, fiber 0, sugars 0)",
+      "draft": "option has no portions",
+      "classification": "presentation",
+      "reason": "The source offers a single portion here; the draft keeps it on the option instead of a one-entry portion list."
+    },
+    {
+      "section": "Ingredients and portion sizes",
+      "subject": "Bowl › Protein › Pollo Asado › Half",
+      "field": "nutrition",
+      "generated": "calories 90, protein 14.5, carbs 1.5, totalFat 3.5, satFat 1.5, transFat 0, sodium 175, fiber 0, sugars 0.5",
+      "draft": "none (source publishes no calorie figure for this portion, so no factor)",
+      "classification": "restaurant_decision",
+      "reason": "The source lists this portion without any nutrition record; the generated value applies a record-specific approved factor (approved_portion_scaling)."
+    },
+    {
+      "section": "Selection groups and rules",
+      "subject": "Bowl › Toppings",
+      "field": "allowNone",
+      "generated": "false",
+      "draft": "true (minimum none, no none option)",
+      "classification": "generated_departs_from_source",
+      "reason": "The generated flag disagrees with the source's minimum and none option for this group."
+    },
+    {
+      "section": "Build-your-own containers",
+      "subject": "Salad",
+      "field": "nutrition",
+      "generated": "calories 415, protein 34, carbs 21, totalFat 23, satFat 5.5, sodium 1175, fiber 3, sugars 13",
+      "draft": "calories 415, protein 34, carbs 21, totalFat 23, satFat 5.5, transFat 0, cholesterol 125, sodium 1175, fiber 3, sugars 13",
+      "classification": "generated_departs_from_source",
+      "reason": "Every nutrient the generated total carries matches. The draft total also carries nutrients every component publishes, which the generated total omits: transFat: draft 0, generated has none; cholesterol: draft 125, generated has none."
+    },
+    {
+      "section": "Ingredients and portion sizes",
+      "subject": "Salad › Protein › Veggie › Normal",
+      "field": "portion",
+      "generated": "chipotle-protein-veggie-normal (calories 0, protein 0, carbs 0, totalFat 0, satFat 0, transFat 0, sodium 0, fiber 0, sugars 0)",
+      "draft": "option has no portions",
+      "classification": "presentation",
+      "reason": "The source offers a single portion here; the draft keeps it on the option instead of a one-entry portion list."
+    },
+    {
+      "section": "Ingredients and portion sizes",
+      "subject": "Salad › Protein › Pollo Asado › Half",
+      "field": "nutrition",
+      "generated": "calories 90, protein 14.5, carbs 1.5, totalFat 3.5, satFat 1.5, transFat 0, sodium 175, fiber 0, sugars 0.5",
+      "draft": "none (source publishes no calorie figure for this portion, so no factor)",
+      "classification": "restaurant_decision",
+      "reason": "The source lists this portion without any nutrition record; the generated value applies a record-specific approved factor (approved_portion_scaling)."
+    },
+    {
+      "section": "Selection groups and rules",
+      "subject": "Salad › Toppings",
+      "field": "allowNone",
+      "generated": "false",
+      "draft": "true (minimum none, no none option)",
+      "classification": "generated_departs_from_source",
+      "reason": "The generated flag disagrees with the source's minimum and none option for this group."
+    },
+    {
+      "section": "Build-your-own containers",
+      "subject": "Quesadilla",
+      "field": "nutrition",
+      "generated": "calories 830, protein 58, carbs 53, totalFat 40, satFat 18.5, cholesterol 215, sodium 1480, fiber 3, sugars 0",
+      "draft": "calories 830, protein 58, carbs 53, totalFat 40, satFat 18.5, transFat 0, cholesterol 215, sodium 1480, fiber 3, sugars 0",
+      "classification": "generated_departs_from_source",
+      "reason": "Every nutrient the generated total carries matches. The draft total also carries nutrients every component publishes, which the generated total omits: transFat: draft 0, generated has none."
+    },
+    {
+      "section": "Selection groups and rules",
+      "subject": "Quesadilla › Protein",
+      "field": "members",
+      "generated": "7 ingredients",
+      "draft": "6 options",
+      "classification": "generated_departs_from_source",
+      "reason": "Draft options are the raw source's own list for this container. Generated only: veggie."
+    },
+    {
+      "section": "Ingredients and portion sizes",
+      "subject": "Quesadilla › Protein › Steak › Extra",
+      "field": "portion",
+      "generated": "chipotle-protein-steak-extra (calories 300, protein 42, carbs 2, totalFat 12, satFat 5, transFat 0, cholesterol 160, sodium 660, fiber 2, sugars 0)",
+      "draft": "not offered (source offers Normal, Half)",
+      "classification": "generated_departs_from_source",
+      "reason": "The ordering source does not offer this portion of this protein on this container."
+    },
+    {
+      "section": "Ingredients and portion sizes",
+      "subject": "Quesadilla › Protein › Chicken › Extra",
+      "field": "portion",
+      "generated": "chipotle-protein-chicken-extra (calories 360, protein 64, carbs 0, totalFat 14, satFat 6, transFat 0, cholesterol 250, sodium 620, fiber 0, sugars 0)",
+      "draft": "not offered (source offers Normal, Half)",
+      "classification": "generated_departs_from_source",
+      "reason": "The ordering source does not offer this portion of this protein on this container."
+    },
+    {
+      "section": "Ingredients and portion sizes",
+      "subject": "Quesadilla › Protein › Carnitas › Extra",
+      "field": "portion",
+      "generated": "chipotle-protein-carnitas-extra (calories 420, protein 46, carbs 0, totalFat 24, satFat 14, transFat 0, cholesterol 130, sodium 900, fiber 0, sugars 0)",
+      "draft": "not offered (source offers Normal, Half)",
+      "classification": "generated_departs_from_source",
+      "reason": "The ordering source does not offer this portion of this protein on this container."
+    },
+    {
+      "section": "Ingredients and portion sizes",
+      "subject": "Quesadilla › Protein › Beef Barbacoa › Extra",
+      "field": "portion",
+      "generated": "chipotle-protein-beef-barbacoa-extra (calories 340, protein 48, carbs 4, totalFat 14, satFat 5, transFat 0, cholesterol 130, sodium 1060, fiber 2, sugars 0)",
+      "draft": "not offered (source offers Normal, Half)",
+      "classification": "generated_departs_from_source",
+      "reason": "The ordering source does not offer this portion of this protein on this container."
+    },
+    {
+      "section": "Ingredients and portion sizes",
+      "subject": "Quesadilla › Protein › Sofritas › Extra",
+      "field": "portion",
+      "generated": "chipotle-protein-sofritas-extra (calories 300, protein 16, carbs 18, totalFat 20, satFat 3, transFat 0, cholesterol 0, sodium 1120, fiber 6, sugars 10)",
+      "draft": "not offered (source offers Normal, Half)",
+      "classification": "generated_departs_from_source",
+      "reason": "The ordering source does not offer this portion of this protein on this container."
+    },
+    {
+      "section": "Ingredients and portion sizes",
+      "subject": "Quesadilla › Protein › Pollo Asado › Half",
+      "field": "nutrition",
+      "generated": "calories 90, protein 14.5, carbs 1.5, totalFat 3.5, satFat 1.5, transFat 0, sodium 175, fiber 0, sugars 0.5",
+      "draft": "none (source publishes no calorie figure for this portion, so no factor)",
+      "classification": "restaurant_decision",
+      "reason": "The source lists this portion without any nutrition record; the generated value applies a record-specific approved factor (approved_portion_scaling)."
+    },
+    {
+      "section": "Ingredients and portion sizes",
+      "subject": "Quesadilla › Protein › Pollo Asado › Extra",
+      "field": "portion",
+      "generated": "chipotle-protein-pollo-asado-extra (calories 200, protein 23, carbs 5, totalFat 10, satFat 2, transFat 0, sodium 680, fiber 1, sugars 3)",
+      "draft": "not offered (source offers Normal, Half)",
+      "classification": "generated_departs_from_source",
+      "reason": "The ordering source does not offer this portion of this protein on this container."
+    },
+    {
+      "section": "Ingredients and portion sizes",
+      "subject": "Kids Build Your Own › Tortillas › 2 Crispy Corn Tortillas",
+      "field": "nutrition",
+      "generated": "calories 130, protein 2, carbs 19, totalFat 6, satFat 1, transFat 0, cholesterol 0, sodium 0, fiber 2, sugars 0",
+      "draft": "calories 140, protein 2, carbs 18, totalFat 6, satFat 0, transFat 0, sodium 0, fiber 2, sugars 0",
+      "classification": "restaurant_decision",
+      "reason": "Generated values come from the importer's hand-maintained per-item table (CHIPOTLE_KIDS_BYO_TORTILLA_NUTRITION_BY_ITEM_ID[\"CMG-5403\"]), not from a mechanical match. calories: generated 130, draft 140; carbs: generated 19, draft 18; satFat: generated 1, draft 0; cholesterol: generated 0, draft has none."
+    },
+    {
+      "section": "Ingredients and portion sizes",
+      "subject": "Kids Build Your Own › Tortillas › 2 Soft Flour Tortillas",
+      "field": "nutrition",
+      "generated": "calories 170, protein 5, carbs 27, totalFat 5, satFat 0, transFat 0, cholesterol 0, sodium 320, fiber 1, sugars 0",
+      "draft": "calories 170, protein 5, carbs 27, totalFat 5, satFat 0, transFat 0, sodium 320, fiber 1, sugars 0",
+      "classification": "generated_departs_from_source",
+      "reason": "The official PDF cell is blank for this nutrient; the importer's PDF reader substitutes 0, the draft leaves it unknown. cholesterol: generated 0, draft has none."
+    },
+    {
+      "section": "Ingredients and portion sizes",
+      "subject": "Kids Build Your Own › Kids Drink › Organic Chocolate Milk",
+      "field": "nutrition",
+      "generated": "calories 160, protein 9, carbs 24, totalFat 3, satFat 2, transFat 0, sodium 220, fiber 1, sugars 22",
+      "draft": "calories 160, protein 9, carbs 24, totalFat 3, satFat 2, transFat 0, cholesterol 15, sodium 220, fiber 1, sugars 22",
+      "classification": "generated_departs_from_source",
+      "reason": "The draft carries published values the generated record omits (a calorie-confirmed official PDF row). cholesterol: draft 15, generated has none."
+    },
+    {
+      "section": "Ingredients and portion sizes",
+      "subject": "Kids Build Your Own › Kids Drink › Organic Apple Juice",
+      "field": "nutrition",
+      "generated": "calories 100, protein 0, carbs 25, totalFat 0, satFat 0, transFat 0, sodium 10, fiber 0, sugars 22",
+      "draft": "calories 100, protein 0, carbs 25, totalFat 0, satFat 0, transFat 0, cholesterol 0, sodium 10, fiber 0, sugars 22",
+      "classification": "generated_departs_from_source",
+      "reason": "The draft carries published values the generated record omits (a calorie-confirmed official PDF row). cholesterol: draft 0, generated has none."
+    },
+    {
+      "section": "Ingredients and portion sizes",
+      "subject": "Kids Build Your Own › Kids Drink › Organic Milk",
+      "field": "nutrition",
+      "generated": "calories 110, protein 8, carbs 12, totalFat 2.5, satFat 1.5, transFat 0, sodium 125, fiber 0, sugars 12",
+      "draft": "calories 110, protein 8, carbs 12, totalFat 2.5, satFat 1.5, transFat 0, cholesterol 15, sodium 125, fiber 0, sugars 12",
+      "classification": "generated_departs_from_source",
+      "reason": "The draft carries published values the generated record omits (a calorie-confirmed official PDF row). cholesterol: draft 15, generated has none."
+    },
+    {
+      "section": "Build-your-own containers",
+      "subject": "Kids Quesadilla",
+      "field": "nutrition",
+      "generated": "calories 280, protein 23, carbs 14, totalFat 13.5, satFat 6.5, cholesterol 95, sodium 500, sugars 0",
+      "draft": "calories 280, protein 23, carbs 14, totalFat 13.5, satFat 6.5, transFat 0, sodium 500, fiber 0.5, sugars 0",
+      "classification": "generated_departs_from_source",
+      "reason": "Shared nutrients match. A nutrient is totalled in the draft only when every component publishes it; the generated total includes a nutrient that a component record does not publish: transFat: draft 0, generated has none; cholesterol: generated 95, draft has none; fiber: draft 0.5, generated has none."
+    },
+    {
+      "section": "Ingredients and portion sizes",
+      "subject": "Kids Quesadilla › Kids Drink › Organic Chocolate Milk",
+      "field": "nutrition",
+      "generated": "calories 160, protein 9, carbs 24, totalFat 3, satFat 2, transFat 0, sodium 220, fiber 1, sugars 22",
+      "draft": "calories 160, protein 9, carbs 24, totalFat 3, satFat 2, transFat 0, cholesterol 15, sodium 220, fiber 1, sugars 22",
+      "classification": "generated_departs_from_source",
+      "reason": "The draft carries published values the generated record omits (a calorie-confirmed official PDF row). cholesterol: draft 15, generated has none."
+    },
+    {
+      "section": "Ingredients and portion sizes",
+      "subject": "Kids Quesadilla › Kids Drink › Organic Apple Juice",
+      "field": "nutrition",
+      "generated": "calories 100, protein 0, carbs 25, totalFat 0, satFat 0, transFat 0, sodium 10, fiber 0, sugars 22",
+      "draft": "calories 100, protein 0, carbs 25, totalFat 0, satFat 0, transFat 0, cholesterol 0, sodium 10, fiber 0, sugars 22",
+      "classification": "generated_departs_from_source",
+      "reason": "The draft carries published values the generated record omits (a calorie-confirmed official PDF row). cholesterol: draft 0, generated has none."
+    },
+    {
+      "section": "Ingredients and portion sizes",
+      "subject": "Kids Quesadilla › Kids Drink › Organic Milk",
+      "field": "nutrition",
+      "generated": "calories 110, protein 8, carbs 12, totalFat 2.5, satFat 1.5, transFat 0, sodium 125, fiber 0, sugars 12",
+      "draft": "calories 110, protein 8, carbs 12, totalFat 2.5, satFat 1.5, transFat 0, cholesterol 15, sodium 125, fiber 0, sugars 12",
+      "classification": "generated_departs_from_source",
+      "reason": "The draft carries published values the generated record omits (a calorie-confirmed official PDF row). cholesterol: draft 15, generated has none."
+    },
+    {
+      "section": "Stable ids",
+      "subject": "Large Chili Lime Chips & Guacamole",
+      "field": "item id",
+      "generated": "chipotle-cmg-5366",
+      "draft": "withheld: missing calories, protein, carbs, totalFat",
+      "classification": "withheld_incomplete",
+      "reason": "The draft record exists but is not projected: missing calories, protein, carbs, totalFat."
+    },
+    {
+      "section": "Stable ids",
+      "subject": "Large Chili Lime Chips & Queso Blanco",
+      "field": "item id",
+      "generated": "chipotle-cmg-5367",
+      "draft": "withheld: missing calories, protein, carbs, totalFat",
+      "classification": "withheld_incomplete",
+      "reason": "The draft record exists but is not projected: missing calories, protein, carbs, totalFat."
+    },
+    {
+      "section": "Stable ids",
+      "subject": "Fountain Drink (32 fl oz) › Diet Coke, Caffeine Free",
+      "field": "variant id",
+      "generated": "chipotle-fountain-32-fl-oz-diet-coke-caffeine-free",
+      "draft": "withheld: missing carbs",
+      "classification": "withheld_incomplete",
+      "reason": "The draft record exists but is not projected: missing carbs."
+    },
+    {
+      "section": "Stable ids",
+      "subject": "Serving Utensils",
+      "field": "item id",
+      "generated": "chipotle-cmg-6112",
+      "draft": "not represented",
+      "classification": "engine_gap",
+      "gap": "structural_records",
+      "reason": "The draft has no record of this kind, so there is nothing to give the id to."
+    },
+    {
+      "section": "Stable ids",
+      "subject": "Napkins & Utensils",
+      "field": "item id",
+      "generated": "chipotle-cmg-6110",
+      "draft": "not represented",
+      "classification": "engine_gap",
+      "gap": "structural_records",
+      "reason": "The draft has no record of this kind, so there is nothing to give the id to."
+    },
+    {
+      "section": "Stable ids",
+      "subject": "6 Serving Bowls",
+      "field": "item id",
+      "generated": "chipotle-cmg-6111",
+      "draft": "not represented",
+      "classification": "engine_gap",
+      "gap": "structural_records",
+      "reason": "The draft has no record of this kind, so there is nothing to give the id to."
+    },
+    {
+      "section": "Stable ids",
+      "subject": "Josh Hart's High Protein Burrito",
+      "field": "item id",
+      "generated": "chipotle-meal-653abfb2-3b20-4b17-8638-d6a20b2c340c",
+      "draft": "not represented",
+      "classification": "engine_gap",
+      "gap": "preset_compositions",
+      "reason": "The draft has no record of this kind, so there is nothing to give the id to."
+    },
+    {
+      "section": "Stable ids",
+      "subject": "Bardi Bowl with Chili Lime Chips",
+      "field": "item id",
+      "generated": "chipotle-meal-3916248a-68fd-4c0f-87e9-38d794e50d7e",
+      "draft": "not represented",
+      "classification": "engine_gap",
+      "gap": "preset_compositions",
+      "reason": "The draft has no record of this kind, so there is nothing to give the id to."
+    },
+    {
+      "section": "Stable ids",
+      "subject": "Mikal Bridges High Protein Bowl",
+      "field": "item id",
+      "generated": "chipotle-meal-2b15ccfe-9059-4e25-9c84-67b5f46c18c9",
+      "draft": "not represented",
+      "classification": "engine_gap",
+      "gap": "preset_compositions",
+      "reason": "The draft has no record of this kind, so there is nothing to give the id to."
+    },
+    {
+      "section": "Stable ids",
+      "subject": "The Salish Matter Meal",
+      "field": "item id",
+      "generated": "chipotle-meal-02774ed8-f878-4dc2-b6cd-5e86977b4907",
+      "draft": "not represented",
+      "classification": "engine_gap",
+      "gap": "preset_compositions",
+      "reason": "The draft has no record of this kind, so there is nothing to give the id to."
+    },
+    {
+      "section": "Stable ids",
+      "subject": "Tara Davis-Woodhall High Protein Bowl",
+      "field": "item id",
+      "generated": "chipotle-meal-f4929790-1d6c-4297-a5bd-acdc7f8b67c6",
+      "draft": "not represented",
+      "classification": "engine_gap",
+      "gap": "preset_compositions",
+      "reason": "The draft has no record of this kind, so there is nothing to give the id to."
+    },
+    {
+      "section": "Stable ids",
+      "subject": "Hunter Woodhall's High Protein Bowl",
+      "field": "item id",
+      "generated": "chipotle-meal-e1d03f68-0189-499b-8c55-403b7058acdd",
+      "draft": "not represented",
+      "classification": "engine_gap",
+      "gap": "preset_compositions",
+      "reason": "The draft has no record of this kind, so there is nothing to give the id to."
+    },
+    {
+      "section": "Stable ids",
+      "subject": "Double High Protein Bowl",
+      "field": "item id",
+      "generated": "chipotle-meal-56ab2f6e-747d-46f9-9cf6-9ebc2855d86d",
+      "draft": "not represented",
+      "classification": "engine_gap",
+      "gap": "preset_compositions",
+      "reason": "The draft has no record of this kind, so there is nothing to give the id to."
+    },
+    {
+      "section": "Stable ids",
+      "subject": "High Protein-High Fiber Bowl",
+      "field": "item id",
+      "generated": "chipotle-meal-6ba21999-f6b8-4a83-803a-bf68ef319c5e",
+      "draft": "not represented",
+      "classification": "engine_gap",
+      "gap": "preset_compositions",
+      "reason": "The draft has no record of this kind, so there is nothing to give the id to."
+    },
+    {
+      "section": "Stable ids",
+      "subject": "High Protein Taco",
+      "field": "item id",
+      "generated": "chipotle-meal-2991ff70-3dfb-47af-84e0-cbe547e5395f",
+      "draft": "not represented",
+      "classification": "engine_gap",
+      "gap": "preset_compositions",
+      "reason": "The draft has no record of this kind, so there is nothing to give the id to."
+    },
+    {
+      "section": "Stable ids",
+      "subject": "High Protein - Low Calorie Bowl",
+      "field": "item id",
+      "generated": "chipotle-meal-be88e387-62ed-4271-877c-7216b6485387",
+      "draft": "not represented",
+      "classification": "engine_gap",
+      "gap": "preset_compositions",
+      "reason": "The draft has no record of this kind, so there is nothing to give the id to."
+    },
+    {
+      "section": "Stable ids",
+      "subject": "Double High Protein Burrito",
+      "field": "item id",
+      "generated": "chipotle-meal-1a3697bb-88c5-4f2e-a061-85ac3cfa0a28",
+      "draft": "not represented",
+      "classification": "engine_gap",
+      "gap": "preset_compositions",
+      "reason": "The draft has no record of this kind, so there is nothing to give the id to."
+    },
+    {
+      "section": "Stable ids",
+      "subject": "Guacamole",
+      "field": "ingredient id",
+      "generated": "chipotle-cmg-5301",
+      "draft": "not emitted",
+      "classification": "generated_departs_from_source",
+      "reason": "No builder option in the raw ordering menu resolves to this live record through its source keys (CMG-5301; live_full_nutrition)."
+    },
+    {
+      "section": "Stable ids",
+      "subject": "Veggie › Normal",
+      "field": "portion id",
+      "generated": "chipotle-protein-veggie-normal",
+      "draft": "not emitted",
+      "classification": "restaurant_decision",
+      "reason": "Generated value comes from a documented manual decision (structural_zero_choice)."
+    },
+    {
+      "section": "Stable ids",
+      "subject": "Pollo Asado › Half",
+      "field": "portion id",
+      "generated": "chipotle-protein-pollo-asado-half",
+      "draft": "withheld: missing calories, protein, carbs, totalFat",
+      "classification": "withheld_incomplete",
+      "reason": "The draft portion exists but is not projected: missing calories, protein, carbs, totalFat."
+    },
+    {
+      "section": "Stable ids",
+      "subject": "new ingredient-variant ids",
+      "field": "minted",
+      "generated": "none",
+      "draft": "10: chipotle-cmg-5551-minute-maid-lemonade, chipotle-cmg-5551-lemonade-blue-sky, chipotle-cmg-5551-mango-orange-blue-sky, chipotle-cmg-5551-maine-root-root-beer, chipotle-cmg-5551-tractor-berry-agua-fresca, chipotle-cmg-5551-tractor-watermelon-limeade, chipotle-cmg-5551-tractor-lemonade, chipotle-cmg-5551-tractor-mandarin-agua-fresca, …",
+      "classification": "restaurant_decision",
+      "reason": "The draft carries records the live menu has no id for (catering builds, extra fountain flavors, groups and options the importer does not expose). They are given new ids and never reuse an existing one."
+    },
+    {
+      "section": "Stable ids",
+      "subject": "new category ids",
+      "field": "minted",
+      "generated": "none",
+      "draft": "9: burrito-protein, burrito-options, taco-protein, tacos-3-protein, kids-build-your-own-protein, kids-quesadilla-protein, bowl-protein, salad-protein, …",
+      "classification": "restaurant_decision",
+      "reason": "The draft carries records the live menu has no id for (catering builds, extra fountain flavors, groups and options the importer does not expose). They are given new ids and never reuse an existing one."
+    },
+    {
+      "section": "Stable ids",
+      "subject": "new ingredient ids",
+      "field": "minted",
+      "generated": "none",
+      "draft": "1: chipotle-cheese-base",
+      "classification": "restaurant_decision",
+      "reason": "The draft carries records the live menu has no id for (catering builds, extra fountain flavors, groups and options the importer does not expose). They are given new ids and never reuse an existing one."
+    },
+    {
+      "section": "Stable ids",
+      "subject": "new variant ids",
+      "field": "minted",
+      "generated": "none",
+      "draft": "20: chipotle-fountain-22-fl-oz-minute-maid-lemonade, chipotle-fountain-22-fl-oz-lemonade-blue-sky, chipotle-fountain-22-fl-oz-mango-orange-blue-sky, chipotle-fountain-22-fl-oz-maine-root-root-beer, chipotle-fountain-22-fl-oz-tractor-berry-agua-fresca, chipotle-fountain-22-fl-oz-tractor-watermelon-limeade, chipotle-fountain-22-fl-oz-tractor-lemonade, chipotle-fountain-22-fl-oz-tractor-mandarin-agua-fresca, …",
+      "classification": "restaurant_decision",
+      "reason": "The draft carries records the live menu has no id for (catering builds, extra fountain flavors, groups and options the importer does not expose). They are given new ids and never reuse an existing one."
+    },
+    {
+      "section": "Customizations and runtime compatibility",
+      "subject": "items.sourceOnly",
+      "field": "runtimeField",
+      "generated": "on 3 record(s)",
+      "draft": "never emitted",
+      "classification": "restaurant_decision",
+      "reason": "Marks non-food ordering records, which the draft does not hold."
+    },
+    {
+      "section": "Customizations and runtime compatibility",
+      "subject": "ingredients.hideFromIngredientView",
+      "field": "runtimeField",
+      "generated": "on 3 record(s)",
+      "draft": "never emitted",
+      "classification": "restaurant_decision",
+      "reason": "A display flag set by an import decision (hide the structural Veggie choice)."
+    },
+    {
+      "section": "Customizations and runtime compatibility",
+      "subject": "menu.importMetadata",
+      "field": "runtimeField",
+      "generated": "on 1 record(s)",
+      "draft": "never emitted",
+      "classification": "restaurant_decision",
+      "reason": "Bookkeeping of the existing importer; the draft's own sources and issues play this role."
+    },
+    {
+      "section": "Customizations and runtime compatibility",
+      "subject": "menu.runtimeIntegration",
+      "field": "runtimeField",
+      "generated": "on 1 record(s)",
+      "draft": "never emitted",
+      "classification": "restaurant_decision",
+      "reason": "A status note written by the existing importer."
+    },
+    {
+      "section": "Customizations and runtime compatibility",
+      "subject": "Tomatillo-Green Chili Salsa (chipotle-cmg-5203)",
+      "field": "display order",
+      "generated": "7",
+      "draft": "11",
+      "classification": "restaurant_decision",
+      "reason": "The projection carries the position Chipotle's own section order gives this record. The importer replaces the source order for a hand-verified list of toppings (VERIFIED_TOPPING_ORDER_BY_ITEM_ID in scripts/importers/chipotle.ts)."
+    },
+    {
+      "section": "Customizations and runtime compatibility",
+      "subject": "Tomatillo-Red Chili Salsa (chipotle-cmg-5204)",
+      "field": "display order",
+      "generated": "8",
+      "draft": "12",
+      "classification": "restaurant_decision",
+      "reason": "The projection carries the position Chipotle's own section order gives this record. The importer replaces the source order for a hand-verified list of toppings (VERIFIED_TOPPING_ORDER_BY_ITEM_ID in scripts/importers/chipotle.ts)."
+    },
+    {
+      "section": "Customizations and runtime compatibility",
+      "subject": "Sour Cream (chipotle-cmg-5251)",
+      "field": "display order",
+      "generated": "9",
+      "draft": "13",
+      "classification": "restaurant_decision",
+      "reason": "The projection carries the position Chipotle's own section order gives this record. The importer replaces the source order for a hand-verified list of toppings (VERIFIED_TOPPING_ORDER_BY_ITEM_ID in scripts/importers/chipotle.ts)."
+    },
+    {
+      "section": "Customizations and runtime compatibility",
+      "subject": "Cheese (chipotle-cmg-5252)",
+      "field": "display order",
+      "generated": "11",
+      "draft": "15",
+      "classification": "restaurant_decision",
+      "reason": "The projection carries the position Chipotle's own section order gives this record. The importer replaces the source order for a hand-verified list of toppings (VERIFIED_TOPPING_ORDER_BY_ITEM_ID in scripts/importers/chipotle.ts)."
+    },
+    {
+      "section": "Customizations and runtime compatibility",
+      "subject": "Queso Blanco (chipotle-cmg-1029)",
+      "field": "display order",
+      "generated": "2",
+      "draft": "18",
+      "classification": "restaurant_decision",
+      "reason": "The projection carries the position Chipotle's own section order gives this record. The importer replaces the source order for a hand-verified list of toppings (VERIFIED_TOPPING_ORDER_BY_ITEM_ID in scripts/importers/chipotle.ts)."
+    },
+    {
+      "section": "Customizations and runtime compatibility",
+      "subject": "Fresh Tomato Salsa (chipotle-cmg-5201)",
+      "field": "display order",
+      "generated": "4",
+      "draft": "9",
+      "classification": "restaurant_decision",
+      "reason": "The projection carries the position Chipotle's own section order gives this record. The importer replaces the source order for a hand-verified list of toppings (VERIFIED_TOPPING_ORDER_BY_ITEM_ID in scripts/importers/chipotle.ts)."
+    },
+    {
+      "section": "Customizations and runtime compatibility",
+      "subject": "Romaine Lettuce (chipotle-cmg-5351)",
+      "field": "display order",
+      "generated": "12",
+      "draft": "16",
+      "classification": "restaurant_decision",
+      "reason": "The projection carries the position Chipotle's own section order gives this record. The importer replaces the source order for a hand-verified list of toppings (VERIFIED_TOPPING_ORDER_BY_ITEM_ID in scripts/importers/chipotle.ts)."
+    },
+    {
+      "section": "Customizations and runtime compatibility",
+      "subject": "Fajita Veggies (chipotle-cmg-5101)",
+      "field": "display order",
+      "generated": "10",
+      "draft": "14",
+      "classification": "restaurant_decision",
+      "reason": "The projection carries the position Chipotle's own section order gives this record. The importer replaces the source order for a hand-verified list of toppings (VERIFIED_TOPPING_ORDER_BY_ITEM_ID in scripts/importers/chipotle.ts)."
+    },
+    {
+      "section": "Customizations and runtime compatibility",
+      "subject": "Roasted Chili-Corn Salsa (chipotle-cmg-5202)",
+      "field": "display order",
+      "generated": "5",
+      "draft": "10",
+      "classification": "restaurant_decision",
+      "reason": "The projection carries the position Chipotle's own section order gives this record. The importer replaces the source order for a hand-verified list of toppings (VERIFIED_TOPPING_ORDER_BY_ITEM_ID in scripts/importers/chipotle.ts)."
+    },
+    {
+      "section": "Customizations and runtime compatibility",
+      "subject": "Guacamole (chipotle-cmg-1001)",
+      "field": "display order",
+      "generated": "3",
+      "draft": "8",
+      "classification": "restaurant_decision",
+      "reason": "The projection carries the position Chipotle's own section order gives this record. The importer replaces the source order for a hand-verified list of toppings (VERIFIED_TOPPING_ORDER_BY_ITEM_ID in scripts/importers/chipotle.ts)."
+    },
+    {
+      "section": "Customizations and runtime compatibility",
+      "subject": "Chipotle-Honey Vinaigrette (chipotle-cmg-5353)",
+      "field": "display order",
+      "generated": "6",
+      "draft": "19",
+      "classification": "restaurant_decision",
+      "reason": "The projection carries the position Chipotle's own section order gives this record. The importer replaces the source order for a hand-verified list of toppings (VERIFIED_TOPPING_ORDER_BY_ITEM_ID in scripts/importers/chipotle.ts)."
+    }
+  ],
+  "byClass": {
+    "engine_gap": 28,
+    "restaurant_decision": 52,
+    "generated_departs_from_source": 23,
+    "withheld_incomplete": 4,
+    "presentation": 5,
+    "unexplained": 0
+  },
+  "gapCounts": {
+    "structural_records": 6,
+    "preset_compositions": 22
+  }
+}

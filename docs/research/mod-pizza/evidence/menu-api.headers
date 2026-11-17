@@ -1,0 +1,12 @@
+HTTP/2 401 
+date: Wed, 21 Oct 2026 00:57:07 GMT
+content-type: application/json
+server: nginx
+cache-control: no-cache, private
+x-request-id: Root=1-6ad80de3-45751d0b670783e2334b3139
+strict-transport-security: max-age=31536000; includeSubdomains
+x-xss-protection: 1; mode=block
+x-content-type-options: nosniff
+x-frame-options: SAMEORIGIN
+referrer-policy: no-referrer-when-downgrade
+

@@ -35,11 +35,9 @@ export const CHIPOTLE_TORTILLA_FAMILIES: ContextVariantFamily[] = [
       { id: "chipotle-tortilla-soft-flour-taco", label: "1 Taco" },
       { id: "chipotle-cmg-5404", label: "2 Tacos" },
       { id: "chipotle-tortilla-soft-flour-tacos-3", label: "3 Tacos" },
-      // No separate "Kids Quesadilla" variant: Kids Quesadilla's included
-      // tortilla now uses this same 1-Taco record's exact macros (see
-      // kidsQuesadillaIncludedIngredientIds in generatedRuntimeAdapter.ts),
-      // so chipotle-cmg-5401 (the old, less accurate 80-cal record) is
-      // retired — see CHIPOTLE_HIDDEN_DUPLICATE_CANONICAL_ID_BY_ID below.
+      // No separate "Kids Quesadilla" variant: its tortilla, chipotle-cmg-5401,
+      // is the same official taco-size tortilla as this 1-Taco record — see
+      // CHIPOTLE_HIDDEN_DUPLICATE_CANONICAL_ID_BY_ID below.
     ],
   },
 ];
@@ -112,8 +110,8 @@ export const CHIPOTLE_HIDDEN_DUPLICATE_CANONICAL_ID_BY_ID = new Map<string, stri
   // tortilla under two generated ids (Burrito's optional extra vs. the
   // Burrito/Quesadilla included base).
   ["chipotle-cmg-4026", "chipotle-cmg-4026-burrito-base"],
-  // Superseded by chipotle-tortilla-soft-flour-taco's exact 1-Taco panel
-  // (83 cal/3g fat/2g protein/13g carbs) — no longer referenced anywhere.
+  // Kids Quesadilla's included tortilla: the same official taco-size flour
+  // tortilla (CMG-5401, 80 cal) as the single-Taco record.
   ["chipotle-cmg-5401", "chipotle-tortilla-soft-flour-taco"],
   ["chipotle-cmg-5301", "chipotle-cmg-1001"], // Guacamole — identical to chipotle-cmg-1001
   ["chipotle-cmg-1207", "chipotle-cmg-1001"], // Guacamole (single-Taco context) — identical to chipotle-cmg-1001

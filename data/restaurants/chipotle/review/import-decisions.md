@@ -228,6 +228,15 @@ tortilla — see `runtime-decisions.md` §21 ("Kids Quesadilla flour tortilla
 uses the 1-Taco 83-cal context"). This is a presentation/runtime override,
 not a revision of the finding above.
 
+**Correction (2026-11-17):** The single-Taco values above (`83/2/13/3`,
+`67/1/10/3`) are not official panels; they are the three-tortilla panels
+divided by three, which this decision itself rules out. The official
+one-tortilla panels are live `CMG-5401` (Flour Tortilla, taco size: 80 cal /
+2.5g fat / 2g protein / 13g carbs) and the PDF's 1 ea rows (Flour Tortilla
+(taco) 80; Crispy Corn Tortilla 70 / 3 / 1 / 10). `CHIPOTLE_TACO_TORTILLA_
+NUTRITION_BY_CONTEXT` now uses them. The `§21` override was reversed; see
+`runtime-decisions.md` §21.
+
 ---
 
 ## 6. Adult tortilla and Burrito base

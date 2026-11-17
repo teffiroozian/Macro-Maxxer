@@ -656,6 +656,19 @@ definition, which excludes the old record via
 `lib/restaurantBuilders/chipotle/legacyCompatibility.ts`
 (`resolveContextualTortilla`'s `"chipotle-kids-quesadilla"` target).
 
+**Reversed (2026-11-17):** The premise was wrong. 83 cal is no official
+figure: it is the three-tortilla panel (CMG-5501, 250 cal) divided by three.
+Chipotle's live nutrition API (CMG-5401, "flour tortilla, taco size", 1 oz:
+80 cal / 2.5g fat / 2g protein / 13g carbs), the March 2025 nutrition PDF
+("Flour Tortilla (quesadilla)" and "Flour Tortilla (taco)", 1 ea: the same
+values) and the official calculator (Kids Quesadilla default = 80 + 110 =
+190) all give 80. The Kids Quesadilla again selects `chipotle-cmg-5401`,
+the single-Taco panels were corrected to the official 1-tortilla values
+(soft 80, crispy 70; see `import-decisions.md` §5), and the
+Kids-Quesadilla-only round-to-nearest-10 in `ChipotleRestaurantBuilderView`
+that displayed 193 as 190 was removed. Basis:
+`docs/nutrition-data-quality-standards.md` §2.2.
+
 ---
 
 ## 22. Grouping proteins into one user-facing card each in All Ingredients

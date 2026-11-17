@@ -406,14 +406,14 @@
       ],
       "servingType": "entree",
       "nutrition": {
-        "calories": 143,
+        "calories": 140,
         "protein": 12.7,
         "carbs": 13,
-        "totalFat": 5.3,
+        "totalFat": 4.8,
         "satFat": 1,
         "transFat": 0,
         "sodium": 263.3,
-        "fiber": 0,
+        "fiber": 0.5,
         "sugars": 0
       },
       "ingredients": [
@@ -5506,14 +5506,14 @@
       ],
       "servingType": "combo",
       "nutrition": {
-        "calories": 196.334,
+        "calories": 193.334,
         "protein": 15.033,
         "carbs": 16.666,
-        "totalFat": 7.967,
+        "totalFat": 7.467,
         "satFat": 2.667,
         "transFat": 0,
         "sodium": 559.966,
-        "fiber": 0.999,
+        "fiber": 1.499,
         "sugars": 1
       },
       "ingredients": [
@@ -7865,15 +7865,15 @@
         "Tortillas"
       ],
       "nutrition": {
-        "calories": 83,
+        "calories": 80,
         "protein": 2,
         "carbs": 13,
-        "totalFat": 3,
+        "totalFat": 2.5,
         "satFat": 0,
         "transFat": 0,
         "cholesterol": 0,
         "sodium": 160,
-        "fiber": 0,
+        "fiber": 0.5,
         "sugars": 0
       },
       "maxQuantity": 1,
@@ -7947,7 +7947,7 @@
         "Tortillas"
       ],
       "nutrition": {
-        "calories": 67,
+        "calories": 70,
         "protein": 1,
         "carbs": 10,
         "totalFat": 3,
@@ -10733,11 +10733,11 @@
     "restaurant": "Chipotle",
     "restaurantId": 469,
     "sources": {
-      "calculatorMenu": "data/raw/chipotle/calculator-menu.json",
-      "menuMetadata": "data/raw/chipotle/menu-metadata.json",
-      "menuMetadataNutrition": "data/raw/chipotle/menu-metadata-nutrition.json",
-      "nutrition": "data/raw/chipotle/nutrition.json",
-      "onlineMeals": "data/raw/chipotle/online-meals.json"
+      "calculatorMenu": "data/restaurants/chipotle/raw/calculator-menu.json",
+      "menuMetadata": "data/restaurants/chipotle/raw/menu-metadata.json",
+      "menuMetadataNutrition": "data/restaurants/chipotle/raw/menu-metadata-nutrition.json",
+      "nutrition": "data/restaurants/chipotle/raw/nutrition.json",
+      "onlineMeals": "data/restaurants/chipotle/raw/online-meals.json"
     },
     "note": "menu-rules.json was deliberately not read by this importer: source-analysis.md §4 confirms calculator-menu.json already carries identical build-rule fields (maxContents, contentGroups, defaultContent, etc.) for every id in its own restaurant-scoped universe, and menu-rules.json/menu-metadata.json are template/national-catalog sources that must never expand restaurant-469 availability beyond calculator-menu.json (import-decisions.md §1).",
     "logicalRecordCounts": {
@@ -10759,6 +10759,6 @@
   },
   "runtimeIntegration": {
     "status": "prepared_not_promoted",
-    "note": "This generated dataset is NOT wired into data/restaurants/chipotle.json or the runtime app. See data/generated/chipotle/unresolved.json for review items before any runtime integration is considered."
+    "note": "This generated dataset is NOT wired into data/restaurants/chipotle.json or the runtime app. See data/restaurants/chipotle/generated/unresolved.json for review items before any runtime integration is considered."
   }
 }

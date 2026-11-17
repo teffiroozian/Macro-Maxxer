@@ -378,6 +378,9 @@ export function adaptGeneratedChipotleMenuForRuntime(
       const sourceVariant = member.variantId
         ? record.variants?.find((variant) => variant.id === member.variantId)
         : undefined;
+      // A named variant the record lacks is dropped: the record's own
+      // nutrition describes a different size or flavor.
+      if (member.variantId && !sourceVariant) return [];
       const nutrition = sourceVariant?.nutrition ??
         ("maxQuantity" in record
           ? resolveEffectiveIngredientNutrition(record)
@@ -607,14 +610,10 @@ function buildGeneratedChipotleBuilderConfig(
         crispy: [kidsTacoShellIngredientIds[0]],
         soft: [kidsTacoShellIngredientIds[1]],
       },
-      // The generated Kids Quesadilla composition's own tortilla record
-      // (chipotle-cmg-5401, 80 cal) is a rounded duplicate of the official
-      // single-taco Soft Flour Tortilla panel (chipotle-tortilla-soft-flour-
-      // taco, 83 cal/3g fat/2g protein/13g carbs) — that more accurate,
-      // already-official record is used here instead so Kids Quesadilla's
-      // included tortilla macros match the real single-tortilla panel.
+      // Official calculator default: one kids flour tortilla (CMG-5401,
+      // 80 cal) plus one standard cheese portion (CMG-5252, 110 cal) = 190.
       kidsQuesadillaIncludedIngredientIds: [
-        "chipotle-tortilla-soft-flour-taco",
+        "chipotle-cmg-5401",
         "chipotle-cmg-5252",
       ],
       kidsMealOptions: [
@@ -673,18 +672,10 @@ function buildGeneratedChipotleBuilderConfig(
           ...adultTacoShellIngredientIds,
         ],
         "kids-build-your-own": ingredientIds("chipotle-kids-build-your-own"),
-        // The generated Kids Quesadilla composition's own tortilla id
-        // (chipotle-cmg-5401) is swapped out for the more accurate
-        // chipotle-tortilla-soft-flour-taco record above, so it's dropped
-        // here too — otherwise it would still surface as a selectable
-        // (if unincluded) duplicate tortilla. The official calculator
-        // separately supplies the standard single Cheese serving as the
-        // other required base component.
+        // The official calculator supplies the standard single Cheese
+        // serving as the other required base component.
         "kids-quesadilla": Array.from(new Set([
-          ...ingredientIds("chipotle-kids-quesadilla").filter(
-            (id) => id !== "chipotle-cmg-5401",
-          ),
-          "chipotle-tortilla-soft-flour-taco",
+          ...ingredientIds("chipotle-kids-quesadilla"),
           "chipotle-cmg-5252",
         ])),
       },

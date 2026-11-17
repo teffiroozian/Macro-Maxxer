@@ -1,0 +1,96 @@
+{
+  "research_date_local": "2026-10-20",
+  "timezone": "America/Los_Angeles",
+  "notes": [
+    "Headers omit transient Set-Cookie values.",
+    "gz files decompress to original public response content.",
+    "Derived JSON files are research extracts, not normalized import records.",
+    "Browser network capture was unavailable; no HAR was captured."
+  ],
+  "files": [
+    {
+      "path": "allergen.html",
+      "source_url": "https://modpizza.com/allergen/",
+      "bytes": 298800,
+      "sha256": "e1fe93b02da6122c3472294fecd476d72564e39806abb7de5de6487c0e8dc109"
+    },
+    {
+      "path": "menu-api.headers",
+      "source_url": "https://api.koala.io/v1/ordering/store-locations/4080/menu?wanted-at=asap",
+      "bytes": 381,
+      "sha256": "7ccae0ef15b676594a7834030af71bd65b94b4ba62d94084a9726a3c94ff4b30"
+    },
+    {
+      "path": "menu-api.json",
+      "source_url": "https://api.koala.io/v1/ordering/store-locations/4080/menu?wanted-at=asap",
+      "bytes": 103,
+      "sha256": "06b088bdd3a3d6b70f8c658da4beca526bf2778e40b2c4f8fe1af643bf9faf5c"
+    },
+    {
+      "path": "menu-structure-summary.json",
+      "source_url": "https://orders.modpizza.com/store/4080",
+      "bytes": 21157,
+      "sha256": "4e1b0b724a7825774be9d6bb845a57d40b133211394e59bdfd97edbb59d1846e"
+    },
+    {
+      "path": "menu.html",
+      "source_url": "https://modpizza.com/menu/",
+      "bytes": 184936,
+      "sha256": "400cbd795539b4457f939abe0a33d37946f4fc96835e7828b52df6e3d11555fb"
+    },
+    {
+      "path": "nutrition-rows.json",
+      "source_url": "https://modpizza.com/nutrition/",
+      "bytes": 9188,
+      "sha256": "3fc35f77114e3155922881f167a3f80b152a5476af57a170d6103a68b7765364"
+    },
+    {
+      "path": "nutrition-wp.json",
+      "source_url": "https://modpizza.com/wp-json/wp/v2/pages/762",
+      "bytes": 7708,
+      "sha256": "b639873193bbad8bbea51770edcd52ce3bc7fc307a2918e317ab522d138cb40a"
+    },
+    {
+      "path": "nutrition.headers",
+      "source_url": "https://modpizza.com/nutrition/",
+      "bytes": 772,
+      "sha256": "5766fca67015d33b254f3ae4b6eaa7a828be63dc30a1da4516cf57a3665d61bd"
+    },
+    {
+      "path": "nutrition.html",
+      "source_url": "https://modpizza.com/nutrition/",
+      "bytes": 310256,
+      "sha256": "b5788ff25ad0f3428b15246b2fdb49c2610387ef34972a8eb99419f7f406d721"
+    },
+    {
+      "path": "ordering-4168.html.gz",
+      "source_url": "https://orders.modpizza.com/store/4168",
+      "bytes": 865794,
+      "sha256": "e929a8067914295bf8512ee7fb3fd5f3dc7630621d41dbf33f1ef35c1ff6a8fe"
+    },
+    {
+      "path": "ordering-app.js.gz",
+      "source_url": "https://orders.modpizza.com/_next/static/chunks/pages/_app-121bdd5ca0fb094b.js",
+      "bytes": 411453,
+      "sha256": "8380eac700404a59f424576e59609ae73d6ca45f1a687c3ba5d5b5a33badd71b"
+    },
+    {
+      "path": "ordering-store.js.gz",
+      "source_url": "https://orders.modpizza.com/_next/static/chunks/pages/store/%5B...id%5D-77bf279beea09b08.js",
+      "bytes": 25435,
+      "sha256": "ae18bd8b1e4837a60bcf8d521d61acc4b418599a4bb8d1e3f2fba54e3474770d"
+    },
+    {
+      "path": "ordering.headers",
+      "source_url": "https://orders.modpizza.com/store/4080",
+      "bytes": 555,
+      "sha256": "eb90a75f7ea4cd49418961955f309db3c6d3edbf6220149adae7d713a4607cdd"
+    },
+    {
+      "path": "ordering.html.gz",
+      "source_url": "https://orders.modpizza.com/store/4080",
+      "bytes": 1395360,
+      "sha256": "84d9456bc37b8353a2bfa50192702cf51e5f625eb459a94a30edff1bb959e1c0"
+    }
+  ]
+}

@@ -149,7 +149,9 @@ export const CHIPOTLE_KIDS_QUESADILLA_IMPLICIT_BASE: {
 // Taco tortilla records are authoritative per build context. In particular,
 // the official 3-tortilla panels are not exact multiples of the official
 // single-tortilla panels, so neither context may be calculated from the
-// rounded values of the other.
+// rounded values of the other. Single panels: soft is live CMG-5401 (Flour
+// Tortilla, taco size; matches the PDF "Flour Tortilla (taco)" 1 ea row);
+// crispy is the PDF "Crispy Corn Tortilla" 1 ea row (no live single record).
 export const CHIPOTLE_TACO_TORTILLA_NUTRITION_BY_CONTEXT: Readonly<
   Record<
     string,
@@ -165,14 +167,14 @@ export const CHIPOTLE_TACO_TORTILLA_NUTRITION_BY_CONTEXT: Readonly<
   soft_flour: {
     label: "Soft Flour Tortilla",
     sourceItemId: "CMG-5501",
-    single: { calories: 83, protein: 2, carbs: 13, totalFat: 3, satFat: 0, transFat: 0, cholesterol: 0, sodium: 160, fiber: 0, sugars: 0 },
+    single: { calories: 80, protein: 2, carbs: 13, totalFat: 2.5, satFat: 0, transFat: 0, cholesterol: 0, sodium: 160, fiber: 0.5, sugars: 0 },
     trio: { calories: 250, protein: 7, carbs: 40, totalFat: 8, satFat: 0.5, transFat: 0, sodium: 480, fiber: 2, sugars: 0 },
     trioPortion: "3oz",
   },
   crispy_corn: {
     label: "Crispy Corn Tortilla",
     sourceItemId: "CMG-5503",
-    single: { calories: 67, protein: 1, carbs: 10, totalFat: 3, satFat: 0, transFat: 0, cholesterol: 0, sodium: 0, fiber: 1, sugars: 0 },
+    single: { calories: 70, protein: 1, carbs: 10, totalFat: 3, satFat: 0, transFat: 0, cholesterol: 0, sodium: 0, fiber: 1, sugars: 0 },
     trio: { calories: 200, protein: 3, carbs: 29, totalFat: 9, satFat: 1, transFat: 0, sodium: 0, fiber: 3, sugars: 0 },
     trioPortion: "1.5oz",
   },

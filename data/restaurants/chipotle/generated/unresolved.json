@@ -2,11 +2,11 @@
   "restaurant": "Chipotle",
   "restaurantId": 469,
   "sources": {
-    "calculatorMenu": "data/raw/chipotle/calculator-menu.json",
-    "menuMetadata": "data/raw/chipotle/menu-metadata.json",
-    "menuMetadataNutrition": "data/raw/chipotle/menu-metadata-nutrition.json",
-    "nutrition": "data/raw/chipotle/nutrition.json",
-    "onlineMeals": "data/raw/chipotle/online-meals.json"
+    "calculatorMenu": "data/restaurants/chipotle/raw/calculator-menu.json",
+    "menuMetadata": "data/restaurants/chipotle/raw/menu-metadata.json",
+    "menuMetadataNutrition": "data/restaurants/chipotle/raw/menu-metadata-nutrition.json",
+    "nutrition": "data/restaurants/chipotle/raw/nutrition.json",
+    "onlineMeals": "data/restaurants/chipotle/raw/online-meals.json"
   },
   "policy": {
     "order": [
@@ -39,7 +39,7 @@
         "CMG-5418"
       ],
       "reason": "unsupported_preconfigured_meal",
-      "details": "Build-Your-Own Pollo Asado (BYOProtein) uses the catering/large-format ingredient namespace (CMG-537x/539x-style ids), which this first-pass importer deliberately does not model to avoid conflating it with the individual-order ingredient namespace (see data/review/chipotle/source-analysis.md §10.C). Preserved here as unresolved rather than imported."
+      "details": "Build-Your-Own Pollo Asado (BYOProtein) uses the catering/large-format ingredient namespace (CMG-537x/539x-style ids), which this first-pass importer deliberately does not model to avoid conflating it with the individual-order ingredient namespace (see data/restaurants/chipotle/review/source-analysis.md §10.C). Preserved here as unresolved rather than imported."
     },
     {
       "standardizedRecordId": "chipotle-cmg-5384",
@@ -49,7 +49,7 @@
         "CMG-5384"
       ],
       "reason": "unsupported_preconfigured_meal",
-      "details": "Build-Your-Own Steak (BYOProtein) uses the catering/large-format ingredient namespace (CMG-537x/539x-style ids), which this first-pass importer deliberately does not model to avoid conflating it with the individual-order ingredient namespace (see data/review/chipotle/source-analysis.md §10.C). Preserved here as unresolved rather than imported."
+      "details": "Build-Your-Own Steak (BYOProtein) uses the catering/large-format ingredient namespace (CMG-537x/539x-style ids), which this first-pass importer deliberately does not model to avoid conflating it with the individual-order ingredient namespace (see data/restaurants/chipotle/review/source-analysis.md §10.C). Preserved here as unresolved rather than imported."
     },
     {
       "standardizedRecordId": "chipotle-cmg-5387",
@@ -59,7 +59,7 @@
         "CMG-5387"
       ],
       "reason": "unsupported_preconfigured_meal",
-      "details": "Build-Your-Own Carnitas (BYOProtein) uses the catering/large-format ingredient namespace (CMG-537x/539x-style ids), which this first-pass importer deliberately does not model to avoid conflating it with the individual-order ingredient namespace (see data/review/chipotle/source-analysis.md §10.C). Preserved here as unresolved rather than imported."
+      "details": "Build-Your-Own Carnitas (BYOProtein) uses the catering/large-format ingredient namespace (CMG-537x/539x-style ids), which this first-pass importer deliberately does not model to avoid conflating it with the individual-order ingredient namespace (see data/restaurants/chipotle/review/source-analysis.md §10.C). Preserved here as unresolved rather than imported."
     },
     {
       "standardizedRecordId": "chipotle-cmg-5385",
@@ -69,7 +69,7 @@
         "CMG-5385"
       ],
       "reason": "unsupported_preconfigured_meal",
-      "details": "Build-Your-Own Sofritas (BYOProtein) uses the catering/large-format ingredient namespace (CMG-537x/539x-style ids), which this first-pass importer deliberately does not model to avoid conflating it with the individual-order ingredient namespace (see data/review/chipotle/source-analysis.md §10.C). Preserved here as unresolved rather than imported."
+      "details": "Build-Your-Own Sofritas (BYOProtein) uses the catering/large-format ingredient namespace (CMG-537x/539x-style ids), which this first-pass importer deliberately does not model to avoid conflating it with the individual-order ingredient namespace (see data/restaurants/chipotle/review/source-analysis.md §10.C). Preserved here as unresolved rather than imported."
     },
     {
       "standardizedRecordId": "chipotle-cmg-5386",
@@ -79,7 +79,7 @@
         "CMG-5386"
       ],
       "reason": "unsupported_preconfigured_meal",
-      "details": "Build-Your-Own Beef Barbacoa (BYOProtein) uses the catering/large-format ingredient namespace (CMG-537x/539x-style ids), which this first-pass importer deliberately does not model to avoid conflating it with the individual-order ingredient namespace (see data/review/chipotle/source-analysis.md §10.C). Preserved here as unresolved rather than imported."
+      "details": "Build-Your-Own Beef Barbacoa (BYOProtein) uses the catering/large-format ingredient namespace (CMG-537x/539x-style ids), which this first-pass importer deliberately does not model to avoid conflating it with the individual-order ingredient namespace (see data/restaurants/chipotle/review/source-analysis.md §10.C). Preserved here as unresolved rather than imported."
     },
     {
       "standardizedRecordId": "chipotle-cmg-5374",
@@ -89,7 +89,7 @@
         "CMG-5374"
       ],
       "reason": "unsupported_preconfigured_meal",
-      "details": "Build-Your-Own Chicken (BYOProtein) uses the catering/large-format ingredient namespace (CMG-537x/539x-style ids), which this first-pass importer deliberately does not model to avoid conflating it with the individual-order ingredient namespace (see data/review/chipotle/source-analysis.md §10.C). Preserved here as unresolved rather than imported."
+      "details": "Build-Your-Own Chicken (BYOProtein) uses the catering/large-format ingredient namespace (CMG-537x/539x-style ids), which this first-pass importer deliberately does not model to avoid conflating it with the individual-order ingredient namespace (see data/restaurants/chipotle/review/source-analysis.md §10.C). Preserved here as unresolved rather than imported."
     },
     {
       "standardizedRecordId": "chipotle-cmg-5390",
@@ -99,7 +99,7 @@
         "CMG-5390"
       ],
       "reason": "unsupported_preconfigured_meal",
-      "details": "2 Large Chips & 3 Large Sides (BYOChips) uses the catering/large-format ingredient namespace (CMG-537x/539x-style ids), which this first-pass importer deliberately does not model to avoid conflating it with the individual-order ingredient namespace (see data/review/chipotle/source-analysis.md §10.C). Preserved here as unresolved rather than imported."
+      "details": "2 Large Chips & 3 Large Sides (BYOChips) uses the catering/large-format ingredient namespace (CMG-537x/539x-style ids), which this first-pass importer deliberately does not model to avoid conflating it with the individual-order ingredient namespace (see data/restaurants/chipotle/review/source-analysis.md §10.C). Preserved here as unresolved rather than imported."
     },
     {
       "standardizedRecordId": "chipotle-meal-e4200067-da42-490c-81f1-37d26ddd9722",

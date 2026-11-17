@@ -1,0 +1,24 @@
+HTTP/2 200 
+date: Wed, 21 Oct 2026 00:55:26 GMT
+content-type: text/html; charset=UTF-8
+server: cloudflare
+vary: Accept-Encoding
+vary: Accept-Encoding,Cookie
+accept-ch: Sec-CH-UA-Mobile
+cf-cache-status: DYNAMIC
+x-nitro-cache: HIT
+x-nitro-cache-from: drop-in
+x-nitro-rev: 58912d9
+link: <https://modpizza.com/nitropack_static>; rel=preconnect
+link: <https://modpizza.com/wp-json/>; rel="https://api.w.org/"
+link: <https://modpizza.com/wp-json/wp/v2/pages/762>; rel="alternate"; title="JSON"; type="application/json"
+link: <https://modpizza.com/?p=762>; rel=shortlink
+x-cache-ctime: 1790577209
+x-powered-by: WP Engine
+x-cacheable: SHORT
+cache-control: max-age=600, must-revalidate
+x-cache: MISS
+x-cache-group: normal
+cf-ray: a4dc4bf3fdc0cfed-SJC
+alt-svc: h3=":443"; ma=86400
+

@@ -533,7 +533,7 @@ function validateSpecialCases(
     "chipotle-salad": { calories: 415, protein: 34, carbs: 21, totalFat: 23, satFat: 5.5, sodium: 1175, fiber: 3, sugars: 13 },
     "chipotle-quesadilla": { calories: 830, protein: 58, carbs: 53, totalFat: 40, satFat: 18.5, cholesterol: 215, sodium: 1480, fiber: 3, sugars: 0 },
     "chipotle-kids-quesadilla": { calories: 280, protein: 23, carbs: 14, totalFat: 13.5, satFat: 6.5, cholesterol: 95, sodium: 500, sugars: 0 },
-    "chipotle-taco": { calories: 143, protein: 12.7, carbs: 13, totalFat: 5.3, satFat: 1, transFat: 0, sodium: 263.3, fiber: 0, sugars: 0 },
+    "chipotle-taco": { calories: 140, protein: 12.7, carbs: 13, totalFat: 4.8, satFat: 1, transFat: 0, sodium: 263.3, fiber: 0.5, sugars: 0 },
     "chipotle-tacos-3": { calories: 430, protein: 39, carbs: 40, totalFat: 15, satFat: 3.5, transFat: 0, sodium: 790, fiber: 2, sugars: 0 },
   };
   for (const [id, panel] of Object.entries(expected)) if (!nutritionMatches(nutrition(id), panel)) addFinding(context, "error", "special_cases", "approved_container_nutrition_mismatch", `${id} no longer matches its approved default/base composition.`, { recordIds: [id] });

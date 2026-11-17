@@ -30,16 +30,16 @@ const expectedById = {
     totalFat: 8,
   },
   "chipotle-tortilla-crispy-corn-taco": {
-    calories: 67,
+    calories: 70,
     protein: 1,
     carbs: 10,
     totalFat: 3,
   },
   "chipotle-tortilla-soft-flour-taco": {
-    calories: 83,
+    calories: 80,
     protein: 2,
     carbs: 13,
-    totalFat: 3,
+    totalFat: 2.5,
   },
   "chipotle-cmg-5403": {
     calories: 130,
@@ -220,8 +220,8 @@ test("Kids BYO treats each two-tortilla record as one selectable serving", () =>
   }
 });
 
-test("Kids Quesadilla uses the accurate 1-Taco Soft Flour Tortilla panel, not the rounded CMG-5401 record", () => {
-  const id = "chipotle-tortilla-soft-flour-taco";
+test("Kids Quesadilla uses the official CMG-5401 taco-size tortilla (80 cal)", () => {
+  const id = "chipotle-cmg-5401";
   const menuItem = contextMenuItems({
     selectedEntree: "kids-meal",
     selectedTacoCount: 3,
@@ -243,13 +243,6 @@ test("Kids Quesadilla uses the accurate 1-Taco Soft Flour Tortilla panel, not th
     ),
     expectedById[id],
   );
-
-  // The old, less accurate 80-cal CMG-5401 record is no longer offered at
-  // all for Kids Quesadilla.
-  const legacyTortilla = contextMenuItems({
-    selectedEntree: "kids-meal",
-    selectedTacoCount: 3,
-    selectedKidsMeal: "quesadilla",
-  }).find((ingredient) => ingredient.id === "chipotle-cmg-5401");
-  assert.equal(legacyTortilla, undefined);
+  // The single-Taco record carries the same official panel.
+  assert.deepEqual(expectedById["chipotle-tortilla-soft-flour-taco"], expectedById[id]);
 });

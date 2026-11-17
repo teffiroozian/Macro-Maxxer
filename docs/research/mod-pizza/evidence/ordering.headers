@@ -1,0 +1,15 @@
+HTTP/2 200 
+content-type: text/html; charset=utf-8
+date: Wed, 21 Oct 2026 00:55:37 GMT
+x-powered-by: Next.js
+x-frame-options: DENY
+content-security-policy: frame-ancestors https://*.cms.koala.io https://cms.koala.io
+strict-transport-security: max-age=63072000; preload
+x-content-type-options: nosniff
+cache-control: public, max-age=86400
+vary: Accept-Encoding
+x-cache: Miss from cloudfront
+via: 1.1 eba07474a9c0cb5a4d512c634c8d4b40.cloudfront.net (CloudFront)
+x-amz-cf-pop: DFW56-P13
+x-amz-cf-id: voIWhi2bStYSMauLy_ARM8riPxQlVas00NwLccftJcSQbWPqlsH7bw==
+

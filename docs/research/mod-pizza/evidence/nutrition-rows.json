@@ -1,0 +1,438 @@
+[
+  {
+    "name": "Veg Out",
+    "calories_text": "CALORIES (kcal) 670"
+  },
+  {
+    "name": "Smoke Show",
+    "calories_text": "CALORIES (kcal) 954"
+  },
+  {
+    "name": "Perfect Pesto",
+    "calories_text": "CALORIES (kcal) 888"
+  },
+  {
+    "name": "MOD-gherita",
+    "calories_text": "CALORIES (kcal) 725"
+  },
+  {
+    "name": "Loaded Legend",
+    "calories_text": "CALORIES (kcal) 1011"
+  },
+  {
+    "name": "Firebird",
+    "calories_text": "CALORIES (kcal) 850"
+  },
+  {
+    "name": "Aloha",
+    "calories_text": "CALORIES (kcal) 660"
+  },
+  {
+    "name": "Carnivore",
+    "calories_text": "CALORIES (kcal) 1121"
+  },
+  {
+    "name": "OG Pepperoni",
+    "calories_text": "CALORIES (kcal) 906"
+  },
+  {
+    "name": "Maddy's Favorite",
+    "calories_text": "CALORIES (kcal) 682"
+  },
+  {
+    "name": "small (thin 6-inch)",
+    "calories_text": "CALORIES (kcal) 200"
+  },
+  {
+    "name": "regular (thin 11-inch)",
+    "calories_text": "CALORIES (kcal) 467"
+  },
+  {
+    "name": "thick crust (11-inch)",
+    "calories_text": "CALORIES (kcal) 933"
+  },
+  {
+    "name": "cauliflower crust",
+    "calories_text": "CALORIES (kcal) 520"
+  },
+  {
+    "name": "gluten-friendly*",
+    "calories_text": "CALORIES (kcal) 650"
+  },
+  {
+    "name": "balsamic fig glaze",
+    "calories_text": "CALORIES (kcal) 30"
+  },
+  {
+    "name": "BBQ sauce",
+    "calories_text": "CALORIES (kcal) 30"
+  },
+  {
+    "name": "creamy alfredo sauce",
+    "calories_text": "CALORIES (kcal) 15"
+  },
+  {
+    "name": "Frank's Redhot Buffalo Sauce",
+    "calories_text": "CALORIES (kcal) 0"
+  },
+  {
+    "name": "garlic rub",
+    "calories_text": "CALORIES (kcal) 15"
+  },
+  {
+    "name": "Mike\u2019s Hot Honey",
+    "calories_text": "CALORIES (kcal) 70"
+  },
+  {
+    "name": "olive oil",
+    "calories_text": "CALORIES (kcal) 120"
+  },
+  {
+    "name": "pesto",
+    "calories_text": "CALORIES (kcal) 45"
+  },
+  {
+    "name": "ranch",
+    "calories_text": "CALORIES (kcal) 50"
+  },
+  {
+    "name": "spicy tomato sauce",
+    "calories_text": "CALORIES (kcal) 12"
+  },
+  {
+    "name": "sriracha",
+    "calories_text": "CALORIES (kcal) 25"
+  },
+  {
+    "name": "sriracha ranch",
+    "calories_text": "CALORIES (kcal) 35"
+  },
+  {
+    "name": "tomato sauce",
+    "calories_text": "CALORIES (kcal) 5"
+  },
+  {
+    "name": "butter flavored spread",
+    "calories_text": "CALORIES (kcal) 243"
+  },
+  {
+    "name": "asiago",
+    "calories_text": "CALORIES (kcal) 110"
+  },
+  {
+    "name": "cheddar",
+    "calories_text": "CALORIES (kcal) 110"
+  },
+  {
+    "name": "feta",
+    "calories_text": "CALORIES (kcal) 70"
+  },
+  {
+    "name": "gorgonzola",
+    "calories_text": "CALORIES (kcal) 100"
+  },
+  {
+    "name": "mozzarella",
+    "calories_text": "CALORIES (kcal) 90"
+  },
+  {
+    "name": "parmesan",
+    "calories_text": "CALORIES (kcal) 130"
+  },
+  {
+    "name": "plant-based cheese",
+    "calories_text": "CALORIES (kcal) 80"
+  },
+  {
+    "name": "ricotta",
+    "calories_text": "CALORIES (kcal) 100"
+  },
+  {
+    "name": "anchovies",
+    "calories_text": "CALORIES (kcal) 30"
+  },
+  {
+    "name": "bacon",
+    "calories_text": "CALORIES (kcal) 140"
+  },
+  {
+    "name": "canadian bacon",
+    "calories_text": "CALORIES (kcal) 50"
+  },
+  {
+    "name": "egg \u2013 scrambled (limited locations)",
+    "calories_text": "CALORIES (kcal) 80"
+  },
+  {
+    "name": "grilled chicken",
+    "calories_text": "CALORIES (kcal) 70"
+  },
+  {
+    "name": "ground beef",
+    "calories_text": "CALORIES (kcal) 210"
+  },
+  {
+    "name": "mild Italian sausage",
+    "calories_text": "CALORIES (kcal) 240"
+  },
+  {
+    "name": "pepperoni",
+    "calories_text": "CALORIES (kcal) 50"
+  },
+  {
+    "name": "plant-based Italian sausage",
+    "calories_text": "CALORIES (kcal) 90"
+  },
+  {
+    "name": "salami",
+    "calories_text": "CALORIES (kcal) 90"
+  },
+  {
+    "name": "spicy chicken sausage",
+    "calories_text": "CALORIES (kcal) 90"
+  },
+  {
+    "name": "artichokes",
+    "calories_text": "CALORIES (kcal) 30"
+  },
+  {
+    "name": "arugula",
+    "calories_text": "CALORIES (kcal) 0"
+  },
+  {
+    "name": "banana peppers (limited locations)",
+    "calories_text": "CALORIES (kcal) 5"
+  },
+  {
+    "name": "basil",
+    "calories_text": "CALORIES (kcal) 0"
+  },
+  {
+    "name": "black olives",
+    "calories_text": "CALORIES (kcal) 50"
+  },
+  {
+    "name": "broccoli \u2013 roasted",
+    "calories_text": "CALORIES (kcal) 15"
+  },
+  {
+    "name": "cilantro",
+    "calories_text": "CALORIES (kcal) 0"
+  },
+  {
+    "name": "croutons",
+    "calories_text": "CALORIES (kcal) 120"
+  },
+  {
+    "name": "chickpeas",
+    "calories_text": "CALORIES (kcal) 50"
+  },
+  {
+    "name": "chopped garlic",
+    "calories_text": "CALORIES (kcal) 15"
+  },
+  {
+    "name": "corn \u2013 roasted",
+    "calories_text": "CALORIES (kcal) 45"
+  },
+  {
+    "name": "crushed red pepper flakes",
+    "calories_text": "CALORIES (kcal) 0"
+  },
+  {
+    "name": "cucumbers",
+    "calories_text": "CALORIES (kcal) 10"
+  },
+  {
+    "name": "jalapenos",
+    "calories_text": "CALORIES (kcal) 5"
+  },
+  {
+    "name": "green bell peppers",
+    "calories_text": "CALORIES (kcal) 5"
+  },
+  {
+    "name": "mama lil's sweet hot peppas",
+    "calories_text": "CALORIES (kcal) 50"
+  },
+  {
+    "name": "mixed spring greens",
+    "calories_text": "CALORIES (kcal) 5"
+  },
+  {
+    "name": "mushrooms",
+    "calories_text": "CALORIES (kcal) 0"
+  },
+  {
+    "name": "oregano",
+    "calories_text": "CALORIES (kcal) 0"
+  },
+  {
+    "name": "pineapple",
+    "calories_text": "CALORIES (kcal) 40"
+  },
+  {
+    "name": "red onion",
+    "calories_text": "CALORIES (kcal) 10"
+  },
+  {
+    "name": "red peppers \u2013 roasted",
+    "calories_text": "CALORIES (kcal) 15"
+  },
+  {
+    "name": "roasted garlic",
+    "calories_text": "CALORIES (kcal) 60"
+  },
+  {
+    "name": "romaine",
+    "calories_text": "CALORIES (kcal) 0"
+  },
+  {
+    "name": "rosemary \u2013 fresh chopped",
+    "calories_text": "CALORIES (kcal) 10"
+  },
+  {
+    "name": "sea salt",
+    "calories_text": "CALORIES (kcal) 0"
+  },
+  {
+    "name": "pepper",
+    "calories_text": "CALORIES (kcal) 0"
+  },
+  {
+    "name": "serrano peppers (limited locations)",
+    "calories_text": "CALORIES (kcal) 10"
+  },
+  {
+    "name": "spinach",
+    "calories_text": "CALORIES (kcal) 0"
+  },
+  {
+    "name": "tomatoes",
+    "calories_text": "CALORIES (kcal) 20"
+  },
+  {
+    "name": "Mediterranean",
+    "calories_text": "CALORIES (kcal) 460"
+  },
+  {
+    "name": "Italian Chop",
+    "calories_text": "CALORIES (kcal) 375"
+  },
+  {
+    "name": "Garden",
+    "calories_text": "CALORIES (kcal) 125"
+  },
+  {
+    "name": "Caesar",
+    "calories_text": "CALORIES (kcal) 428"
+  },
+  {
+    "name": "balsamic vinaigrette",
+    "calories_text": "CALORIES (kcal) 55"
+  },
+  {
+    "name": "caesar dressing",
+    "calories_text": "CALORIES (kcal) 100"
+  },
+  {
+    "name": "champagne vinaigrette",
+    "calories_text": "CALORIES (kcal) 67"
+  },
+  {
+    "name": "oil and vinegar",
+    "calories_text": "CALORIES (kcal) 60"
+  },
+  {
+    "name": "red wine vinegar",
+    "calories_text": "CALORIES (kcal) 0"
+  },
+  {
+    "name": "cheesy garlic bread",
+    "calories_text": "CALORIES (kcal) 1340"
+  },
+  {
+    "name": "caramelized pear ice tea",
+    "calories_text": "CALORIES (kcal) 80 / 120"
+  },
+  {
+    "name": "vintage lemonade   (16 fl oz / 24 fl oz)",
+    "calories_text": "CALORIES (kcal) 250 / 380"
+  },
+  {
+    "name": "marionberry lemonade   (16 fl oz / 24 fl oz)",
+    "calories_text": "CALORIES (kcal) 320 / 480"
+  },
+  {
+    "name": "Coca-Cola   (16 fl oz / 24 fl oz)",
+    "calories_text": "CALORIES (kcal) 200 / 300"
+  },
+  {
+    "name": "Diet Coke   (16 fl oz / 24 fl oz)",
+    "calories_text": "CALORIES (kcal) 0 / 0"
+  },
+  {
+    "name": "Sprite   (16 fl oz / 24 fl oz)",
+    "calories_text": "CALORIES (kcal) 200 / 300"
+  },
+  {
+    "name": "Barq's Root Beer   (16 fl oz / 24 fl oz)",
+    "calories_text": "CALORIES (kcal) 220 / 320"
+  },
+  {
+    "name": "Fanta Orange   (16 fl oz / 24 fl oz)",
+    "calories_text": "CALORIES (kcal) 220 / 320"
+  },
+  {
+    "name": "Powerade Mountain Blast   (16 fl oz / 24 fl oz)",
+    "calories_text": "CALORIES (kcal) 110 / 160"
+  },
+  {
+    "name": "Coke Zero   (16 fl oz / 24 fl oz)",
+    "calories_text": "CALORIES (kcal) 0 / 0"
+  },
+  {
+    "name": "Dr. Pepper   (16 fl oz / 24 fl oz)",
+    "calories_text": "CALORIES (kcal) 190 / 290"
+  },
+  {
+    "name": "no name cake",
+    "calories_text": "CALORIES (kcal) 290"
+  },
+  {
+    "name": "strawberry lemonade no name cake (limited edition)",
+    "calories_text": "CALORIES (kcal) 330"
+  },
+  {
+    "name": "mega cookie",
+    "calories_text": "CALORIES (kcal) 1610"
+  },
+  {
+    "name": "cinnaMOD",
+    "calories_text": "CALORIES (kcal) 1182"
+  },
+  {
+    "name": "cake pop - pink vanilla",
+    "calories_text": "CALORIES (kcal) 140"
+  },
+  {
+    "name": "cake pop - pumpkin spice",
+    "calories_text": "CALORIES (kcal) 140"
+  },
+  {
+    "name": "sea salt caramel sauce",
+    "calories_text": "CALORIES (kcal) 50"
+  },
+  {
+    "name": "cinnamon",
+    "calories_text": "CALORIES (kcal) 20"
+  },
+  {
+    "name": "vanilla icing",
+    "calories_text": "CALORIES (kcal) 80"
+  },
+  {
+    "name": "sugar",
+    "calories_text": "CALORIES (kcal) 15"
+  }
+]

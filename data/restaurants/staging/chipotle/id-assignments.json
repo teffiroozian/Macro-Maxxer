@@ -1,0 +1,308 @@
+{
+  "registry": "/Users/hateffiroozian/Developer/macro-maxxer-data/data/restaurants/id-registry/chipotle.json",
+  "additions": [
+    {
+      "id": "chipotle-cmg-5551-minute-maid-lemonade",
+      "kind": "ingredient-variant",
+      "keys": [
+        "chipotle-cmg-5551/portion:minute maid lemonade"
+      ]
+    },
+    {
+      "id": "chipotle-cmg-5551-lemonade-blue-sky",
+      "kind": "ingredient-variant",
+      "keys": [
+        "chipotle-cmg-5551/portion:lemonade blue sky"
+      ]
+    },
+    {
+      "id": "chipotle-cmg-5551-mango-orange-blue-sky",
+      "kind": "ingredient-variant",
+      "keys": [
+        "chipotle-cmg-5551/portion:mango orange blue sky"
+      ]
+    },
+    {
+      "id": "chipotle-cmg-5551-maine-root-root-beer",
+      "kind": "ingredient-variant",
+      "keys": [
+        "chipotle-cmg-5551/portion:maine root root beer"
+      ]
+    },
+    {
+      "id": "chipotle-cmg-5551-tractor-berry-agua-fresca",
+      "kind": "ingredient-variant",
+      "keys": [
+        "chipotle-cmg-5551/portion:tractor berry agua fresca"
+      ]
+    },
+    {
+      "id": "chipotle-cmg-5551-tractor-watermelon-limeade",
+      "kind": "ingredient-variant",
+      "keys": [
+        "chipotle-cmg-5551/portion:tractor watermelon limeade"
+      ]
+    },
+    {
+      "id": "chipotle-cmg-5551-tractor-lemonade",
+      "kind": "ingredient-variant",
+      "keys": [
+        "chipotle-cmg-5551/portion:tractor lemonade"
+      ]
+    },
+    {
+      "id": "chipotle-cmg-5551-tractor-mandarin-agua-fresca",
+      "kind": "ingredient-variant",
+      "keys": [
+        "chipotle-cmg-5551/portion:tractor mandarin agua fresca"
+      ]
+    },
+    {
+      "id": "chipotle-cmg-5551-tropicana-lemonade",
+      "kind": "ingredient-variant",
+      "keys": [
+        "chipotle-cmg-5551/portion:tropicana lemonade"
+      ]
+    },
+    {
+      "id": "chipotle-cmg-5551-sobe-yumberry-pomegranate",
+      "kind": "ingredient-variant",
+      "keys": [
+        "chipotle-cmg-5551/portion:sobe yumberry pomegranate"
+      ]
+    },
+    {
+      "id": "burrito-protein",
+      "kind": "category",
+      "keys": [
+        "chipotle-burrito/group:protein"
+      ]
+    },
+    {
+      "id": "burrito-options",
+      "kind": "category",
+      "keys": [
+        "chipotle-burrito/group:option"
+      ]
+    },
+    {
+      "id": "taco-protein",
+      "kind": "category",
+      "keys": [
+        "chipotle-taco/group:protein"
+      ]
+    },
+    {
+      "id": "tacos-3-protein",
+      "kind": "category",
+      "keys": [
+        "chipotle-tacos-3/group:protein"
+      ]
+    },
+    {
+      "id": "kids-build-your-own-protein",
+      "kind": "category",
+      "keys": [
+        "chipotle-kids-build-your-own/group:protein"
+      ]
+    },
+    {
+      "id": "chipotle-cheese-base",
+      "kind": "ingredient",
+      "keys": [
+        "name:included ingredients/cheese"
+      ]
+    },
+    {
+      "id": "kids-quesadilla-protein",
+      "kind": "category",
+      "keys": [
+        "chipotle-kids-quesadilla/group:protein"
+      ]
+    },
+    {
+      "id": "bowl-protein",
+      "kind": "category",
+      "keys": [
+        "chipotle-bowl/group:protein"
+      ]
+    },
+    {
+      "id": "salad-protein",
+      "kind": "category",
+      "keys": [
+        "chipotle-salad/group:protein"
+      ]
+    },
+    {
+      "id": "quesadilla-protein",
+      "kind": "category",
+      "keys": [
+        "chipotle-quesadilla/group:protein"
+      ]
+    },
+    {
+      "id": "chipotle-fountain-22-fl-oz-minute-maid-lemonade",
+      "kind": "variant",
+      "keys": [
+        "chipotle-fountain-22-fl-oz/variant:minute maid lemonade"
+      ]
+    },
+    {
+      "id": "chipotle-fountain-22-fl-oz-lemonade-blue-sky",
+      "kind": "variant",
+      "keys": [
+        "chipotle-fountain-22-fl-oz/variant:lemonade blue sky"
+      ]
+    },
+    {
+      "id": "chipotle-fountain-22-fl-oz-mango-orange-blue-sky",
+      "kind": "variant",
+      "keys": [
+        "chipotle-fountain-22-fl-oz/variant:mango orange blue sky"
+      ]
+    },
+    {
+      "id": "chipotle-fountain-22-fl-oz-maine-root-root-beer",
+      "kind": "variant",
+      "keys": [
+        "chipotle-fountain-22-fl-oz/variant:maine root root beer"
+      ]
+    },
+    {
+      "id": "chipotle-fountain-22-fl-oz-tractor-berry-agua-fresca",
+      "kind": "variant",
+      "keys": [
+        "chipotle-fountain-22-fl-oz/variant:tractor berry agua fresca"
+      ]
+    },
+    {
+      "id": "chipotle-fountain-22-fl-oz-tractor-watermelon-limeade",
+      "kind": "variant",
+      "keys": [
+        "chipotle-fountain-22-fl-oz/variant:tractor watermelon limeade"
+      ]
+    },
+    {
+      "id": "chipotle-fountain-22-fl-oz-tractor-lemonade",
+      "kind": "variant",
+      "keys": [
+        "chipotle-fountain-22-fl-oz/variant:tractor lemonade"
+      ]
+    },
+    {
+      "id": "chipotle-fountain-22-fl-oz-tractor-mandarin-agua-fresca",
+      "kind": "variant",
+      "keys": [
+        "chipotle-fountain-22-fl-oz/variant:tractor mandarin agua fresca"
+      ]
+    },
+    {
+      "id": "chipotle-fountain-22-fl-oz-tropicana-lemonade",
+      "kind": "variant",
+      "keys": [
+        "chipotle-fountain-22-fl-oz/variant:tropicana lemonade"
+      ]
+    },
+    {
+      "id": "chipotle-fountain-22-fl-oz-sobe-yumberry-pomegranate",
+      "kind": "variant",
+      "keys": [
+        "chipotle-fountain-22-fl-oz/variant:sobe yumberry pomegranate"
+      ]
+    },
+    {
+      "id": "chipotle-fountain-32-fl-oz-minute-maid-lemonade",
+      "kind": "variant",
+      "keys": [
+        "chipotle-fountain-32-fl-oz/variant:minute maid lemonade"
+      ]
+    },
+    {
+      "id": "chipotle-fountain-32-fl-oz-lemonade-blue-sky",
+      "kind": "variant",
+      "keys": [
+        "chipotle-fountain-32-fl-oz/variant:lemonade blue sky"
+      ]
+    },
+    {
+      "id": "chipotle-fountain-32-fl-oz-mango-orange-blue-sky",
+      "kind": "variant",
+      "keys": [
+        "chipotle-fountain-32-fl-oz/variant:mango orange blue sky"
+      ]
+    },
+    {
+      "id": "chipotle-fountain-32-fl-oz-maine-root-root-beer",
+      "kind": "variant",
+      "keys": [
+        "chipotle-fountain-32-fl-oz/variant:maine root root beer"
+      ]
+    },
+    {
+      "id": "chipotle-fountain-32-fl-oz-tractor-berry-agua-fresca",
+      "kind": "variant",
+      "keys": [
+        "chipotle-fountain-32-fl-oz/variant:tractor berry agua fresca"
+      ]
+    },
+    {
+      "id": "chipotle-fountain-32-fl-oz-tractor-watermelon-limeade",
+      "kind": "variant",
+      "keys": [
+        "chipotle-fountain-32-fl-oz/variant:tractor watermelon limeade"
+      ]
+    },
+    {
+      "id": "chipotle-fountain-32-fl-oz-tractor-lemonade",
+      "kind": "variant",
+      "keys": [
+        "chipotle-fountain-32-fl-oz/variant:tractor lemonade"
+      ]
+    },
+    {
+      "id": "chipotle-fountain-32-fl-oz-tractor-mandarin-agua-fresca",
+      "kind": "variant",
+      "keys": [
+        "chipotle-fountain-32-fl-oz/variant:tractor mandarin agua fresca"
+      ]
+    },
+    {
+      "id": "chipotle-fountain-32-fl-oz-tropicana-lemonade",
+      "kind": "variant",
+      "keys": [
+        "chipotle-fountain-32-fl-oz/variant:tropicana lemonade"
+      ]
+    },
+    {
+      "id": "chipotle-fountain-32-fl-oz-sobe-yumberry-pomegranate",
+      "kind": "variant",
+      "keys": [
+        "chipotle-fountain-32-fl-oz/variant:sobe yumberry pomegranate"
+      ]
+    }
+  ],
+  "conflicts": [],
+  "excluded": [
+    {
+      "id": "chipotle:item:burrito:burrito:protein:pollo-asado:half",
+      "name": "Burrito › Pollo Asado › Half",
+      "reason": "missing calories, protein, carbs, totalFat"
+    },
+    {
+      "id": "chipotle:item:side:large-chili-lime-chips-guacamole",
+      "name": "Large Chili Lime Chips & Guacamole",
+      "reason": "missing calories, protein, carbs, totalFat"
+    },
+    {
+      "id": "chipotle:item:side:large-chili-lime-chips-queso-blanco",
+      "name": "Large Chili Lime Chips & Queso Blanco",
+      "reason": "missing calories, protein, carbs, totalFat"
+    },
+    {
+      "id": "chipotle:item:drink:32-fl-oz-soda-iced-tea:diet-coke-caffeine-free",
+      "name": "32 fl oz Soda/Iced Tea › Diet Coke, Caffeine Free",
+      "reason": "missing carbs"
+    }
+  ]
+}

@@ -60,7 +60,7 @@ test("Crispy Corn Tortilla is one card with 1 Taco / 2 Tacos / 3 Tacos variants"
     card.variants.map((variant) => variant.label),
     ["1 Taco", "2 Tacos", "3 Tacos"],
   );
-  assert.equal(card.nutrition.calories, 67);
+  assert.equal(card.nutrition.calories, 70);
   const twoTacos = card.variants.find((variant) => variant.id === "chipotle-cmg-5403");
   assert.equal(twoTacos.nutrition.calories, 130);
   const threeTacos = card.variants.find((variant) => variant.id === "chipotle-tortilla-crispy-corn-tacos-3");
@@ -77,7 +77,7 @@ test("Soft Flour Tortilla is one card with only 1 Taco / 2 Tacos / 3 Tacos — n
     card.variants.map((variant) => variant.label),
     ["1 Taco", "2 Tacos", "3 Tacos"],
   );
-  assert.equal(card.nutrition.calories, 83);
+  assert.equal(card.nutrition.calories, 80);
   const twoTacos = card.variants.find((variant) => variant.id === "chipotle-cmg-5404");
   assert.equal(twoTacos.nutrition.calories, 170);
   const threeTacos = card.variants.find((variant) => variant.id === "chipotle-tortilla-soft-flour-tacos-3");

@@ -1,14 +1,14 @@
 {
   "restaurant": "Chipotle",
-  "validatedAt": "2026-09-01",
+  "validatedAt": "2026-11-17",
   "inputs": {
-    "restaurant": "data/generated/chipotle/restaurant.json",
-    "unresolved": "data/generated/chipotle/unresolved.json",
-    "calculatorMenu": "data/raw/chipotle/calculator-menu.json",
-    "liveNutrition": "data/raw/chipotle/menu-metadata-nutrition.json",
-    "pdfNutrition": "data/raw/chipotle/nutrition.json",
-    "onlineMeals": "data/raw/chipotle/online-meals.json",
-    "decisions": "data/review/chipotle/import-decisions.md"
+    "restaurant": "data/restaurants/chipotle/generated/restaurant.json",
+    "unresolved": "data/restaurants/chipotle/generated/unresolved.json",
+    "calculatorMenu": "data/restaurants/chipotle/raw/calculator-menu.json",
+    "liveNutrition": "data/restaurants/chipotle/raw/menu-metadata-nutrition.json",
+    "pdfNutrition": "data/restaurants/chipotle/raw/nutrition.json",
+    "onlineMeals": "data/restaurants/chipotle/raw/online-meals.json",
+    "decisions": "data/restaurants/chipotle/review/import-decisions.md"
   },
   "valid": true,
   "summary": {

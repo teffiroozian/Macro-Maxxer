@@ -1,0 +1,2125 @@
+{
+  "restaurantId": "chipotle",
+  "version": 1,
+  "entries": [
+    {
+      "id": "chipotle-burrito",
+      "kind": "item",
+      "keys": [
+        "src:CMG-2",
+        "src:CMG-1",
+        "src:CMG-3",
+        "src:CMG-6",
+        "src:CMG-4",
+        "src:CMG-5",
+        "src:CMG-11",
+        "name:burrito/burrito"
+      ]
+    },
+    {
+      "id": "burrito-beans",
+      "kind": "category",
+      "keys": [
+        "chipotle-burrito/group:bean"
+      ]
+    },
+    {
+      "id": "burrito-toppings",
+      "kind": "category",
+      "keys": [
+        "chipotle-burrito/group:topping"
+      ]
+    },
+    {
+      "id": "burrito-rice",
+      "kind": "category",
+      "keys": [
+        "chipotle-burrito/group:rice"
+      ]
+    },
+    {
+      "id": "chipotle-bowl",
+      "kind": "item",
+      "keys": [
+        "src:CMG-102",
+        "src:CMG-101",
+        "src:CMG-103",
+        "src:CMG-106",
+        "src:CMG-104",
+        "src:CMG-105",
+        "src:CMG-113",
+        "name:bowl/bowl"
+      ]
+    },
+    {
+      "id": "bowl-beans",
+      "kind": "category",
+      "keys": [
+        "chipotle-bowl/group:bean"
+      ]
+    },
+    {
+      "id": "bowl-toppings",
+      "kind": "category",
+      "keys": [
+        "chipotle-bowl/group:topping"
+      ]
+    },
+    {
+      "id": "bowl-rice",
+      "kind": "category",
+      "keys": [
+        "chipotle-bowl/group:rice"
+      ]
+    },
+    {
+      "id": "chipotle-salad",
+      "kind": "item",
+      "keys": [
+        "src:CMG-302",
+        "src:CMG-305",
+        "src:CMG-306",
+        "src:CMG-303",
+        "src:CMG-301",
+        "src:CMG-304",
+        "src:CMG-311",
+        "name:salad/salad"
+      ]
+    },
+    {
+      "id": "salad-beans",
+      "kind": "category",
+      "keys": [
+        "chipotle-salad/group:bean"
+      ]
+    },
+    {
+      "id": "salad-toppings",
+      "kind": "category",
+      "keys": [
+        "chipotle-salad/group:topping"
+      ]
+    },
+    {
+      "id": "salad-rice",
+      "kind": "category",
+      "keys": [
+        "chipotle-salad/group:rice"
+      ]
+    },
+    {
+      "id": "chipotle-quesadilla",
+      "kind": "item",
+      "keys": [
+        "src:CMG-403",
+        "src:CMG-404",
+        "src:CMG-405",
+        "src:CMG-401",
+        "src:CMG-407",
+        "src:CMG-402",
+        "src:CMG-412",
+        "name:quesadilla/quesadilla"
+      ]
+    },
+    {
+      "id": "quesadilla-dips",
+      "kind": "category",
+      "keys": [
+        "chipotle-quesadilla/group:dip"
+      ]
+    },
+    {
+      "id": "quesadilla-fillings",
+      "kind": "category",
+      "keys": [
+        "chipotle-quesadilla/group:filling"
+      ]
+    },
+    {
+      "id": "quesadilla-addons",
+      "kind": "category",
+      "keys": [
+        "chipotle-quesadilla/group:addon"
+      ]
+    },
+    {
+      "id": "chipotle-taco",
+      "kind": "item",
+      "keys": [
+        "src:CMG-1202",
+        "src:CMG-1204",
+        "src:CMG-1201",
+        "src:CMG-1203",
+        "src:CMG-1206",
+        "src:CMG-1205",
+        "src:CMG-1212",
+        "name:tacos/taco"
+      ]
+    },
+    {
+      "id": "taco-tortilla",
+      "kind": "category",
+      "keys": [
+        "chipotle-taco/group:tortilla"
+      ]
+    },
+    {
+      "id": "tacos-toppings",
+      "kind": "category",
+      "keys": [
+        "chipotle-taco/group:topping",
+        "chipotle-tacos-3/group:topping"
+      ]
+    },
+    {
+      "id": "tacos-addons",
+      "kind": "category",
+      "keys": [
+        "chipotle-taco/group:addon",
+        "chipotle-tacos-3/group:addon"
+      ]
+    },
+    {
+      "id": "chipotle-tacos-3",
+      "kind": "item",
+      "keys": [
+        "src:CMG-202",
+        "src:CMG-201",
+        "src:CMG-203",
+        "src:CMG-206",
+        "src:CMG-204",
+        "src:CMG-205",
+        "src:CMG-211",
+        "name:tacos/tacos 3"
+      ]
+    },
+    {
+      "id": "tacos-3-tortilla",
+      "kind": "category",
+      "keys": [
+        "chipotle-tacos-3/group:tortilla"
+      ]
+    },
+    {
+      "id": "chipotle-kids-build-your-own",
+      "kind": "item",
+      "keys": [
+        "src:CMG-3007",
+        "src:CMG-3002",
+        "src:CMG-3003",
+        "src:CMG-3004",
+        "src:CMG-3005",
+        "src:CMG-3006",
+        "src:CMG-3013",
+        "src:CMG-3011",
+        "name:kids/kids build your own"
+      ]
+    },
+    {
+      "id": "kidsbyo-kids-side",
+      "kind": "category",
+      "keys": [
+        "chipotle-kids-build-your-own/group:kids side"
+      ]
+    },
+    {
+      "id": "kidsbyo-toppings",
+      "kind": "category",
+      "keys": [
+        "chipotle-kids-build-your-own/group:topping"
+      ]
+    },
+    {
+      "id": "kidsbyo-tortillas",
+      "kind": "category",
+      "keys": [
+        "chipotle-kids-build-your-own/group:tortilla"
+      ]
+    },
+    {
+      "id": "kidsbyo-kids-drink",
+      "kind": "category",
+      "keys": [
+        "chipotle-kids-build-your-own/group:kids drink"
+      ]
+    },
+    {
+      "id": "chipotle-kids-quesadilla",
+      "kind": "item",
+      "keys": [
+        "src:CMG-3101",
+        "src:CMG-3102",
+        "src:CMG-3103",
+        "src:CMG-3104",
+        "src:CMG-3105",
+        "src:CMG-3106",
+        "src:CMG-3111",
+        "src:CMG-3107",
+        "name:kids/kids quesadilla"
+      ]
+    },
+    {
+      "id": "kidsquesadilla-kids-side",
+      "kind": "category",
+      "keys": [
+        "chipotle-kids-quesadilla/group:kids side"
+      ]
+    },
+    {
+      "id": "kidsquesadilla-beans",
+      "kind": "category",
+      "keys": [
+        "chipotle-kids-quesadilla/group:bean"
+      ]
+    },
+    {
+      "id": "kidsquesadilla-tortillas",
+      "kind": "category",
+      "keys": [
+        "chipotle-kids-quesadilla/group:tortilla"
+      ]
+    },
+    {
+      "id": "kidsquesadilla-rice",
+      "kind": "category",
+      "keys": [
+        "chipotle-kids-quesadilla/group:rice"
+      ]
+    },
+    {
+      "id": "kidsquesadilla-kids-drink",
+      "kind": "category",
+      "keys": [
+        "chipotle-kids-quesadilla/group:kids drink"
+      ]
+    },
+    {
+      "id": "chipotle-cmg-1007",
+      "kind": "item",
+      "keys": [
+        "src:CMG-1007",
+        "name:sides/chips tomatillo red chili salsa"
+      ]
+    },
+    {
+      "id": "chipotle-cmg-1006",
+      "kind": "item",
+      "keys": [
+        "src:CMG-1006",
+        "name:sides/chips tomatillo green chili salsa"
+      ]
+    },
+    {
+      "id": "chipotle-cmg-1008",
+      "kind": "item",
+      "keys": [
+        "src:CMG-1008",
+        "name:sides/chips roasted chili corn salsa"
+      ]
+    },
+    {
+      "id": "chipotle-cmg-5370",
+      "kind": "item",
+      "keys": [
+        "src:CMG-5370",
+        "name:sides/chili lime chips tomatillo green chili salsa"
+      ]
+    },
+    {
+      "id": "chipotle-cmg-5371",
+      "kind": "item",
+      "keys": [
+        "src:CMG-5371",
+        "name:sides/chili lime chips tomatillo red chili salsa"
+      ]
+    },
+    {
+      "id": "chipotle-cmg-5372",
+      "kind": "item",
+      "keys": [
+        "src:CMG-5372",
+        "name:sides/chili lime chips roasted chili corn salsa"
+      ]
+    },
+    {
+      "id": "chipotle-cmg-5369",
+      "kind": "item",
+      "keys": [
+        "src:CMG-5369",
+        "name:sides/chili lime chips fresh tomato salsa"
+      ]
+    },
+    {
+      "id": "chipotle-cmg-1005",
+      "kind": "item",
+      "keys": [
+        "src:CMG-1005",
+        "name:sides/chips fresh tomato salsa"
+      ]
+    },
+    {
+      "id": "chipotle-cmg-1002",
+      "kind": "item",
+      "keys": [
+        "src:CMG-1002",
+        "name:sides/chips"
+      ]
+    },
+    {
+      "id": "chipotle-cmg-1016",
+      "kind": "item",
+      "keys": [
+        "src:CMG-1016",
+        "name:sides/large chips"
+      ]
+    },
+    {
+      "id": "chipotle-cmg-5363",
+      "kind": "item",
+      "keys": [
+        "src:CMG-5363",
+        "name:sides/large chili lime chips"
+      ]
+    },
+    {
+      "id": "chipotle-cmg-5362",
+      "kind": "item",
+      "keys": [
+        "src:CMG-5362",
+        "name:sides/chili lime chips"
+      ]
+    },
+    {
+      "id": "chipotle-cmg-4025",
+      "kind": "item",
+      "keys": [
+        "src:CMG-4025",
+        "name:sides/tortilla on the side"
+      ]
+    },
+    {
+      "id": "chipotle-cmg-1031",
+      "kind": "item",
+      "keys": [
+        "src:CMG-1031",
+        "src:CMG-1052",
+        "name:sides/large side of queso blanco"
+      ]
+    },
+    {
+      "id": "chipotle-cmg-1030",
+      "kind": "item",
+      "keys": [
+        "src:CMG-1030",
+        "name:sides/side of queso blanco"
+      ]
+    },
+    {
+      "id": "chipotle-cmg-1025",
+      "kind": "item",
+      "keys": [
+        "src:CMG-1025",
+        "src:CMG-1051",
+        "name:sides/large side of guacamole"
+      ]
+    },
+    {
+      "id": "chipotle-cmg-1009",
+      "kind": "item",
+      "keys": [
+        "src:CMG-1009",
+        "name:sides/side of guacamole"
+      ]
+    },
+    {
+      "id": "chipotle-cmg-5400",
+      "kind": "item",
+      "keys": [
+        "src:CMG-5400",
+        "src:CMG-1049",
+        "name:sides/large tomatillo green chili salsa"
+      ]
+    },
+    {
+      "id": "chipotle-cmg-5398",
+      "kind": "item",
+      "keys": [
+        "src:CMG-1047",
+        "src:CMG-5398",
+        "name:sides/large fresh tomato salsa"
+      ]
+    },
+    {
+      "id": "chipotle-cmg-5399",
+      "kind": "item",
+      "keys": [
+        "src:CMG-1048",
+        "src:CMG-5399",
+        "name:sides/large roasted chili corn salsa"
+      ]
+    },
+    {
+      "id": "chipotle-cmg-5416",
+      "kind": "item",
+      "keys": [
+        "src:CMG-5416",
+        "src:CMG-5415",
+        "name:sides/large side of cilantro lime sauce"
+      ]
+    },
+    {
+      "id": "chipotle-cmg-5413",
+      "kind": "item",
+      "keys": [
+        "src:CMG-5413",
+        "name:sides/side of cilantro lime sauce"
+      ]
+    },
+    {
+      "id": "chipotle-cmg-1141",
+      "kind": "item",
+      "keys": [
+        "src:CMG-1141",
+        "name:sides/side of pollo asado"
+      ]
+    },
+    {
+      "id": "chipotle-cmg-1032",
+      "kind": "item",
+      "keys": [
+        "src:CMG-1032",
+        "name:sides/chips queso blanco"
+      ]
+    },
+    {
+      "id": "chipotle-cmg-1033",
+      "kind": "item",
+      "keys": [
+        "src:CMG-1033",
+        "name:sides/large chips large queso blanco"
+      ]
+    },
+    {
+      "id": "chipotle-cmg-5365",
+      "kind": "item",
+      "keys": [
+        "src:CMG-5365",
+        "name:sides/chili lime chips queso blanco"
+      ]
+    },
+    {
+      "id": "chipotle-cmg-1015",
+      "kind": "item",
+      "keys": [
+        "src:CMG-1015",
+        "name:sides/large chips large guacamole"
+      ]
+    },
+    {
+      "id": "chipotle-cmg-5364",
+      "kind": "item",
+      "keys": [
+        "src:CMG-5364",
+        "name:sides/chili lime chips guacamole"
+      ]
+    },
+    {
+      "id": "chipotle-cmg-1003",
+      "kind": "item",
+      "keys": [
+        "src:CMG-1003",
+        "name:sides/chips guacamole"
+      ]
+    },
+    {
+      "id": "chipotle-cmg-1125",
+      "kind": "item",
+      "keys": [
+        "src:CMG-1125",
+        "name:sides/side of chicken"
+      ]
+    },
+    {
+      "id": "chipotle-cmg-1126",
+      "kind": "item",
+      "keys": [
+        "src:CMG-1126",
+        "name:sides/side of steak"
+      ]
+    },
+    {
+      "id": "chipotle-cmg-5366",
+      "kind": "item",
+      "keys": [
+        "src:CMG-5366",
+        "name:sides/large chili lime chips guacamole"
+      ]
+    },
+    {
+      "id": "chipotle-cmg-5367",
+      "kind": "item",
+      "keys": [
+        "src:CMG-5367",
+        "name:sides/large chili lime chips queso blanco"
+      ]
+    },
+    {
+      "id": "chipotle-cmg-5500",
+      "kind": "item",
+      "keys": [
+        "src:CMG-1050",
+        "src:CMG-5500",
+        "name:sides/large tomatillo red chili salsa"
+      ]
+    },
+    {
+      "id": "chipotle-fountain-22-fl-oz",
+      "kind": "item",
+      "keys": [
+        "src:CMG-2001",
+        "name:beverages/fountain drink 22 fl oz"
+      ]
+    },
+    {
+      "id": "chipotle-fountain-22-fl-oz-coca-cola-classic",
+      "kind": "variant",
+      "keys": [
+        "chipotle-fountain-22-fl-oz/variant:coca cola classic"
+      ]
+    },
+    {
+      "id": "chipotle-fountain-22-fl-oz-diet-coke",
+      "kind": "variant",
+      "keys": [
+        "chipotle-fountain-22-fl-oz/variant:diet coke"
+      ]
+    },
+    {
+      "id": "chipotle-fountain-22-fl-oz-diet-coke-caffeine-free",
+      "kind": "variant",
+      "keys": [
+        "chipotle-fountain-22-fl-oz/variant:diet coke caffeine free"
+      ]
+    },
+    {
+      "id": "chipotle-fountain-22-fl-oz-coca-cola-zero",
+      "kind": "variant",
+      "keys": [
+        "chipotle-fountain-22-fl-oz/variant:coca cola zero"
+      ]
+    },
+    {
+      "id": "chipotle-fountain-22-fl-oz-coca-cola-life",
+      "kind": "variant",
+      "keys": [
+        "chipotle-fountain-22-fl-oz/variant:coca cola life"
+      ]
+    },
+    {
+      "id": "chipotle-fountain-22-fl-oz-sprite",
+      "kind": "variant",
+      "keys": [
+        "chipotle-fountain-22-fl-oz/variant:sprite"
+      ]
+    },
+    {
+      "id": "chipotle-fountain-22-fl-oz-fanta-orange",
+      "kind": "variant",
+      "keys": [
+        "chipotle-fountain-22-fl-oz/variant:fanta orange"
+      ]
+    },
+    {
+      "id": "chipotle-fountain-22-fl-oz-dr-pepper",
+      "kind": "variant",
+      "keys": [
+        "chipotle-fountain-22-fl-oz/variant:dr pepper"
+      ]
+    },
+    {
+      "id": "chipotle-fountain-22-fl-oz-diet-dr-pepper",
+      "kind": "variant",
+      "keys": [
+        "chipotle-fountain-22-fl-oz/variant:diet dr pepper"
+      ]
+    },
+    {
+      "id": "chipotle-fountain-22-fl-oz-mountain-dew",
+      "kind": "variant",
+      "keys": [
+        "chipotle-fountain-22-fl-oz/variant:mountain dew"
+      ]
+    },
+    {
+      "id": "chipotle-fountain-22-fl-oz-diet-mountain-dew",
+      "kind": "variant",
+      "keys": [
+        "chipotle-fountain-22-fl-oz/variant:diet mountain dew"
+      ]
+    },
+    {
+      "id": "chipotle-fountain-22-fl-oz-mello-yello",
+      "kind": "variant",
+      "keys": [
+        "chipotle-fountain-22-fl-oz/variant:mello yello"
+      ]
+    },
+    {
+      "id": "chipotle-fountain-22-fl-oz-pibb-xtra",
+      "kind": "variant",
+      "keys": [
+        "chipotle-fountain-22-fl-oz/variant:pibb xtra"
+      ]
+    },
+    {
+      "id": "chipotle-fountain-22-fl-oz-barq-s-root-beer",
+      "kind": "variant",
+      "keys": [
+        "chipotle-fountain-22-fl-oz/variant:barq s root beer"
+      ]
+    },
+    {
+      "id": "chipotle-fountain-22-fl-oz-mug-root-beer",
+      "kind": "variant",
+      "keys": [
+        "chipotle-fountain-22-fl-oz/variant:mug root beer"
+      ]
+    },
+    {
+      "id": "chipotle-fountain-22-fl-oz-pepsi",
+      "kind": "variant",
+      "keys": [
+        "chipotle-fountain-22-fl-oz/variant:pepsi"
+      ]
+    },
+    {
+      "id": "chipotle-fountain-22-fl-oz-diet-pepsi",
+      "kind": "variant",
+      "keys": [
+        "chipotle-fountain-22-fl-oz/variant:diet pepsi"
+      ]
+    },
+    {
+      "id": "chipotle-fountain-22-fl-oz-sierra-mist",
+      "kind": "variant",
+      "keys": [
+        "chipotle-fountain-22-fl-oz/variant:sierra mist"
+      ]
+    },
+    {
+      "id": "chipotle-fountain-22-fl-oz-crush-orange",
+      "kind": "variant",
+      "keys": [
+        "chipotle-fountain-22-fl-oz/variant:crush orange"
+      ]
+    },
+    {
+      "id": "chipotle-fountain-22-fl-oz-powerade-mountain-berry-blast",
+      "kind": "variant",
+      "keys": [
+        "chipotle-fountain-22-fl-oz/variant:powerade mountain berry blast"
+      ]
+    },
+    {
+      "id": "chipotle-fountain-22-fl-oz-chipotle-iced-tea",
+      "kind": "variant",
+      "keys": [
+        "chipotle-fountain-22-fl-oz/variant:chipotle iced tea"
+      ]
+    },
+    {
+      "id": "chipotle-fountain-22-fl-oz-chipotle-sweet-iced-tea",
+      "kind": "variant",
+      "keys": [
+        "chipotle-fountain-22-fl-oz/variant:chipotle sweet iced tea"
+      ]
+    },
+    {
+      "id": "chipotle-fountain-22-fl-oz-lipton-raspberry-brisk-iced-tea",
+      "kind": "variant",
+      "keys": [
+        "chipotle-fountain-22-fl-oz/variant:lipton raspberry brisk iced tea"
+      ]
+    },
+    {
+      "id": "chipotle-fountain-32-fl-oz",
+      "kind": "item",
+      "keys": [
+        "src:CMG-2002",
+        "name:beverages/fountain drink 32 fl oz"
+      ]
+    },
+    {
+      "id": "chipotle-fountain-32-fl-oz-coca-cola-classic",
+      "kind": "variant",
+      "keys": [
+        "chipotle-fountain-32-fl-oz/variant:coca cola classic"
+      ]
+    },
+    {
+      "id": "chipotle-fountain-32-fl-oz-diet-coke",
+      "kind": "variant",
+      "keys": [
+        "chipotle-fountain-32-fl-oz/variant:diet coke"
+      ]
+    },
+    {
+      "id": "chipotle-fountain-32-fl-oz-diet-coke-caffeine-free",
+      "kind": "variant",
+      "keys": [
+        "chipotle-fountain-32-fl-oz/variant:diet coke caffeine free"
+      ]
+    },
+    {
+      "id": "chipotle-fountain-32-fl-oz-coca-cola-zero",
+      "kind": "variant",
+      "keys": [
+        "chipotle-fountain-32-fl-oz/variant:coca cola zero"
+      ]
+    },
+    {
+      "id": "chipotle-fountain-32-fl-oz-coca-cola-life",
+      "kind": "variant",
+      "keys": [
+        "chipotle-fountain-32-fl-oz/variant:coca cola life"
+      ]
+    },
+    {
+      "id": "chipotle-fountain-32-fl-oz-sprite",
+      "kind": "variant",
+      "keys": [
+        "chipotle-fountain-32-fl-oz/variant:sprite"
+      ]
+    },
+    {
+      "id": "chipotle-fountain-32-fl-oz-fanta-orange",
+      "kind": "variant",
+      "keys": [
+        "chipotle-fountain-32-fl-oz/variant:fanta orange"
+      ]
+    },
+    {
+      "id": "chipotle-fountain-32-fl-oz-dr-pepper",
+      "kind": "variant",
+      "keys": [
+        "chipotle-fountain-32-fl-oz/variant:dr pepper"
+      ]
+    },
+    {
+      "id": "chipotle-fountain-32-fl-oz-diet-dr-pepper",
+      "kind": "variant",
+      "keys": [
+        "chipotle-fountain-32-fl-oz/variant:diet dr pepper"
+      ]
+    },
+    {
+      "id": "chipotle-fountain-32-fl-oz-mountain-dew",
+      "kind": "variant",
+      "keys": [
+        "chipotle-fountain-32-fl-oz/variant:mountain dew"
+      ]
+    },
+    {
+      "id": "chipotle-fountain-32-fl-oz-diet-mountain-dew",
+      "kind": "variant",
+      "keys": [
+        "chipotle-fountain-32-fl-oz/variant:diet mountain dew"
+      ]
+    },
+    {
+      "id": "chipotle-fountain-32-fl-oz-mello-yello",
+      "kind": "variant",
+      "keys": [
+        "chipotle-fountain-32-fl-oz/variant:mello yello"
+      ]
+    },
+    {
+      "id": "chipotle-fountain-32-fl-oz-pibb-xtra",
+      "kind": "variant",
+      "keys": [
+        "chipotle-fountain-32-fl-oz/variant:pibb xtra"
+      ]
+    },
+    {
+      "id": "chipotle-fountain-32-fl-oz-barq-s-root-beer",
+      "kind": "variant",
+      "keys": [
+        "chipotle-fountain-32-fl-oz/variant:barq s root beer"
+      ]
+    },
+    {
+      "id": "chipotle-fountain-32-fl-oz-mug-root-beer",
+      "kind": "variant",
+      "keys": [
+        "chipotle-fountain-32-fl-oz/variant:mug root beer"
+      ]
+    },
+    {
+      "id": "chipotle-fountain-32-fl-oz-pepsi",
+      "kind": "variant",
+      "keys": [
+        "chipotle-fountain-32-fl-oz/variant:pepsi"
+      ]
+    },
+    {
+      "id": "chipotle-fountain-32-fl-oz-diet-pepsi",
+      "kind": "variant",
+      "keys": [
+        "chipotle-fountain-32-fl-oz/variant:diet pepsi"
+      ]
+    },
+    {
+      "id": "chipotle-fountain-32-fl-oz-sierra-mist",
+      "kind": "variant",
+      "keys": [
+        "chipotle-fountain-32-fl-oz/variant:sierra mist"
+      ]
+    },
+    {
+      "id": "chipotle-fountain-32-fl-oz-crush-orange",
+      "kind": "variant",
+      "keys": [
+        "chipotle-fountain-32-fl-oz/variant:crush orange"
+      ]
+    },
+    {
+      "id": "chipotle-fountain-32-fl-oz-powerade-mountain-berry-blast",
+      "kind": "variant",
+      "keys": [
+        "chipotle-fountain-32-fl-oz/variant:powerade mountain berry blast"
+      ]
+    },
+    {
+      "id": "chipotle-fountain-32-fl-oz-chipotle-iced-tea",
+      "kind": "variant",
+      "keys": [
+        "chipotle-fountain-32-fl-oz/variant:chipotle iced tea"
+      ]
+    },
+    {
+      "id": "chipotle-fountain-32-fl-oz-chipotle-sweet-iced-tea",
+      "kind": "variant",
+      "keys": [
+        "chipotle-fountain-32-fl-oz/variant:chipotle sweet iced tea"
+      ]
+    },
+    {
+      "id": "chipotle-fountain-32-fl-oz-lipton-raspberry-brisk-iced-tea",
+      "kind": "variant",
+      "keys": [
+        "chipotle-fountain-32-fl-oz/variant:lipton raspberry brisk iced tea"
+      ]
+    },
+    {
+      "id": "chipotle-cmg-2878",
+      "kind": "item",
+      "keys": [
+        "src:CMG-2878",
+        "name:beverages/open water still"
+      ]
+    },
+    {
+      "id": "chipotle-cmg-2849",
+      "kind": "item",
+      "keys": [
+        "src:CMG-2849",
+        "name:beverages/coke zero"
+      ]
+    },
+    {
+      "id": "chipotle-cmg-2101",
+      "kind": "item",
+      "keys": [
+        "src:CMG-2101",
+        "name:beverages/apple juice"
+      ]
+    },
+    {
+      "id": "chipotle-cmg-2838",
+      "kind": "item",
+      "keys": [
+        "src:CMG-2838",
+        "name:beverages/tractor organic lemonade"
+      ]
+    },
+    {
+      "id": "chipotle-cmg-2013",
+      "kind": "item",
+      "keys": [
+        "src:CMG-2013",
+        "name:beverages/32 fl oz tractor organic mandarin agua fresca"
+      ]
+    },
+    {
+      "id": "chipotle-cmg-2018",
+      "kind": "item",
+      "keys": [
+        "src:CMG-2018",
+        "name:beverages/32 fl oz tractor organic berry agua fresca"
+      ]
+    },
+    {
+      "id": "chipotle-cmg-2017",
+      "kind": "item",
+      "keys": [
+        "src:CMG-2017",
+        "name:beverages/22 fl oz tractor organic berry agua fresca"
+      ]
+    },
+    {
+      "id": "chipotle-cmg-2012",
+      "kind": "item",
+      "keys": [
+        "src:CMG-2012",
+        "name:beverages/22 fl oz tractor organic mandarin agua fresca"
+      ]
+    },
+    {
+      "id": "chipotle-cmg-2010",
+      "kind": "item",
+      "keys": [
+        "src:CMG-2010",
+        "name:beverages/22 fl oz tractor organic lemonade"
+      ]
+    },
+    {
+      "id": "chipotle-cmg-2011",
+      "kind": "item",
+      "keys": [
+        "src:CMG-2011",
+        "name:beverages/32 fl oz tractor organic lemonade"
+      ]
+    },
+    {
+      "id": "chipotle-cmg-2020",
+      "kind": "item",
+      "keys": [
+        "src:CMG-2020",
+        "name:beverages/32 fl oz tractor organic watermelon limeade"
+      ]
+    },
+    {
+      "id": "chipotle-cmg-2019",
+      "kind": "item",
+      "keys": [
+        "src:CMG-2019",
+        "name:beverages/22 fl oz tractor organic watermelon limeade"
+      ]
+    },
+    {
+      "id": "chipotle-cmg-2810",
+      "kind": "item",
+      "keys": [
+        "src:CMG-2810",
+        "name:beverages/mexican coca cola"
+      ]
+    },
+    {
+      "id": "chipotle-cmg-2839",
+      "kind": "item",
+      "keys": [
+        "src:CMG-2839",
+        "name:beverages/mexican sprite"
+      ]
+    },
+    {
+      "id": "chipotle-cmg-2022",
+      "kind": "item",
+      "keys": [
+        "src:CMG-2022",
+        "name:beverages/jarritos guava"
+      ]
+    },
+    {
+      "id": "chipotle-cmg-2021",
+      "kind": "item",
+      "keys": [
+        "src:CMG-2021",
+        "name:beverages/jarritos mango"
+      ]
+    },
+    {
+      "id": "chipotle-cmg-2805",
+      "kind": "item",
+      "keys": [
+        "src:CMG-2805",
+        "name:beverages/san pellegrino sparkling"
+      ]
+    },
+    {
+      "id": "chipotle-cmg-2883",
+      "kind": "item",
+      "keys": [
+        "src:CMG-2883",
+        "name:beverages/poppi orange"
+      ]
+    },
+    {
+      "id": "chipotle-cmg-2884",
+      "kind": "item",
+      "keys": [
+        "src:CMG-2884",
+        "name:beverages/poppi strawberry lemon"
+      ]
+    },
+    {
+      "id": "chipotle-cmg-6112",
+      "kind": "item",
+      "keys": [
+        "src:CMG-6112",
+        "name:non food/serving utensils"
+      ]
+    },
+    {
+      "id": "chipotle-cmg-6110",
+      "kind": "item",
+      "keys": [
+        "src:CMG-6110",
+        "name:non food/napkins utensils"
+      ]
+    },
+    {
+      "id": "chipotle-cmg-6111",
+      "kind": "item",
+      "keys": [
+        "src:CMG-6111",
+        "name:non food/6 serving bowls"
+      ]
+    },
+    {
+      "id": "chipotle-meal-653abfb2-3b20-4b17-8638-d6a20b2c340c",
+      "kind": "item",
+      "keys": [
+        "src:653abfb2-3b20-4b17-8638-d6a20b2c340c",
+        "src:ec59f2f3-0c3f-4082-82af-ca58727f3e9f",
+        "name:preconfigured meals/josh hart s high protein burrito"
+      ]
+    },
+    {
+      "id": "chipotle-meal-3916248a-68fd-4c0f-87e9-38d794e50d7e",
+      "kind": "item",
+      "keys": [
+        "src:3916248a-68fd-4c0f-87e9-38d794e50d7e",
+        "name:preconfigured meals/bardi bowl with chili lime chips"
+      ]
+    },
+    {
+      "id": "chipotle-meal-2b15ccfe-9059-4e25-9c84-67b5f46c18c9",
+      "kind": "item",
+      "keys": [
+        "src:2b15ccfe-9059-4e25-9c84-67b5f46c18c9",
+        "src:f3038bca-5c62-4900-b33a-717650d03467",
+        "name:preconfigured meals/mikal bridges high protein bowl"
+      ]
+    },
+    {
+      "id": "chipotle-meal-02774ed8-f878-4dc2-b6cd-5e86977b4907",
+      "kind": "item",
+      "keys": [
+        "src:02774ed8-f878-4dc2-b6cd-5e86977b4907",
+        "name:preconfigured meals/the salish matter meal"
+      ]
+    },
+    {
+      "id": "chipotle-meal-f4929790-1d6c-4297-a5bd-acdc7f8b67c6",
+      "kind": "item",
+      "keys": [
+        "src:f4929790-1d6c-4297-a5bd-acdc7f8b67c6",
+        "src:8aebe083-fb22-4113-973c-cb22ca4f2c19",
+        "name:preconfigured meals/tara davis woodhall high protein bowl"
+      ]
+    },
+    {
+      "id": "chipotle-meal-e1d03f68-0189-499b-8c55-403b7058acdd",
+      "kind": "item",
+      "keys": [
+        "src:e1d03f68-0189-499b-8c55-403b7058acdd",
+        "src:57a2be3f-63ee-49c0-9de2-3162ad80c22c",
+        "name:preconfigured meals/hunter woodhall s high protein bowl"
+      ]
+    },
+    {
+      "id": "chipotle-meal-56ab2f6e-747d-46f9-9cf6-9ebc2855d86d",
+      "kind": "item",
+      "keys": [
+        "src:56ab2f6e-747d-46f9-9cf6-9ebc2855d86d",
+        "name:preconfigured meals/double high protein bowl"
+      ]
+    },
+    {
+      "id": "chipotle-meal-6ba21999-f6b8-4a83-803a-bf68ef319c5e",
+      "kind": "item",
+      "keys": [
+        "src:6ba21999-f6b8-4a83-803a-bf68ef319c5e",
+        "name:preconfigured meals/high protein high fiber bowl"
+      ]
+    },
+    {
+      "id": "chipotle-meal-2991ff70-3dfb-47af-84e0-cbe547e5395f",
+      "kind": "item",
+      "keys": [
+        "src:2991ff70-3dfb-47af-84e0-cbe547e5395f",
+        "name:preconfigured meals/high protein taco"
+      ]
+    },
+    {
+      "id": "chipotle-meal-be88e387-62ed-4271-877c-7216b6485387",
+      "kind": "item",
+      "keys": [
+        "src:be88e387-62ed-4271-877c-7216b6485387",
+        "name:preconfigured meals/high protein low calorie bowl"
+      ]
+    },
+    {
+      "id": "chipotle-meal-1a3697bb-88c5-4f2e-a061-85ac3cfa0a28",
+      "kind": "item",
+      "keys": [
+        "src:1a3697bb-88c5-4f2e-a061-85ac3cfa0a28",
+        "name:preconfigured meals/double high protein burrito"
+      ]
+    },
+    {
+      "id": "burrito",
+      "kind": "entree-option",
+      "keys": [
+        "chipotle-burrito/entree-option"
+      ]
+    },
+    {
+      "id": "bowl",
+      "kind": "entree-option",
+      "keys": [
+        "chipotle-bowl/entree-option"
+      ]
+    },
+    {
+      "id": "salad",
+      "kind": "entree-option",
+      "keys": [
+        "chipotle-salad/entree-option"
+      ]
+    },
+    {
+      "id": "quesadilla",
+      "kind": "entree-option",
+      "keys": [
+        "chipotle-quesadilla/entree-option"
+      ]
+    },
+    {
+      "id": "taco",
+      "kind": "entree-option",
+      "keys": [
+        "chipotle-taco/entree-option"
+      ]
+    },
+    {
+      "id": "tacos-3",
+      "kind": "entree-option",
+      "keys": [
+        "chipotle-tacos-3/entree-option"
+      ]
+    },
+    {
+      "id": "kids-build-your-own",
+      "kind": "entree-option",
+      "keys": [
+        "chipotle-kids-build-your-own/entree-option"
+      ]
+    },
+    {
+      "id": "kids-quesadilla",
+      "kind": "entree-option",
+      "keys": [
+        "chipotle-kids-quesadilla/entree-option"
+      ]
+    },
+    {
+      "id": "chipotle-cmg-4026",
+      "kind": "ingredient",
+      "keys": [
+        "name:tortillas/double wrap with tortilla",
+        "src:CMG-4026@chipotle-burrito"
+      ]
+    },
+    {
+      "id": "chipotle-cmg-5051",
+      "kind": "ingredient",
+      "keys": [
+        "src:CMG-5051",
+        "name:beans/black beans"
+      ]
+    },
+    {
+      "id": "chipotle-cmg-5052",
+      "kind": "ingredient",
+      "keys": [
+        "src:CMG-5052",
+        "name:beans/pinto beans"
+      ]
+    },
+    {
+      "id": "chipotle-cmg-5203",
+      "kind": "ingredient",
+      "keys": [
+        "src:CMG-5203",
+        "name:salsas/tomatillo green chili salsa"
+      ]
+    },
+    {
+      "id": "chipotle-cmg-5204",
+      "kind": "ingredient",
+      "keys": [
+        "src:CMG-5204",
+        "name:salsas/tomatillo red chili salsa"
+      ]
+    },
+    {
+      "id": "chipotle-cmg-5251",
+      "kind": "ingredient",
+      "keys": [
+        "src:CMG-5251",
+        "name:sour cream/sour cream"
+      ]
+    },
+    {
+      "id": "chipotle-cmg-5252",
+      "kind": "ingredient",
+      "keys": [
+        "src:CMG-5252",
+        "name:cheese/cheese"
+      ]
+    },
+    {
+      "id": "chipotle-cmg-1029",
+      "kind": "ingredient",
+      "keys": [
+        "src:CMG-1029"
+      ]
+    },
+    {
+      "id": "chipotle-cmg-5201",
+      "kind": "ingredient",
+      "keys": [
+        "src:CMG-5201",
+        "name:salsas/fresh tomato salsa"
+      ]
+    },
+    {
+      "id": "chipotle-cmg-5351",
+      "kind": "ingredient",
+      "keys": [
+        "src:CMG-5351",
+        "name:lettuce/romaine lettuce"
+      ]
+    },
+    {
+      "id": "chipotle-cmg-5101",
+      "kind": "ingredient",
+      "keys": [
+        "src:CMG-5101",
+        "name:fajita veggies/fajita veggies"
+      ]
+    },
+    {
+      "id": "chipotle-cmg-5202",
+      "kind": "ingredient",
+      "keys": [
+        "src:CMG-5202",
+        "name:salsas/roasted chili corn salsa"
+      ]
+    },
+    {
+      "id": "chipotle-cmg-5412",
+      "kind": "ingredient",
+      "keys": [
+        "src:CMG-5412"
+      ]
+    },
+    {
+      "id": "chipotle-cmg-1001",
+      "kind": "ingredient",
+      "keys": [
+        "src:CMG-1001"
+      ]
+    },
+    {
+      "id": "chipotle-cmg-5301",
+      "kind": "ingredient",
+      "keys": [
+        "src:CMG-5301"
+      ]
+    },
+    {
+      "id": "chipotle-cmg-5353",
+      "kind": "ingredient",
+      "keys": [
+        "src:CMG-5353"
+      ]
+    },
+    {
+      "id": "chipotle-cmg-5001",
+      "kind": "ingredient",
+      "keys": [
+        "src:CMG-5001",
+        "name:rice/white rice"
+      ]
+    },
+    {
+      "id": "chipotle-cmg-5354",
+      "kind": "ingredient",
+      "keys": [
+        "src:CMG-5354"
+      ]
+    },
+    {
+      "id": "chipotle-cmg-5002",
+      "kind": "ingredient",
+      "keys": [
+        "src:CMG-5002",
+        "name:rice/brown rice"
+      ]
+    },
+    {
+      "id": "chipotle-cmg-5414",
+      "kind": "ingredient",
+      "keys": [
+        "src:CMG-5414"
+      ]
+    },
+    {
+      "id": "chipotle-cmg-1034",
+      "kind": "ingredient",
+      "keys": [
+        "src:CMG-1034"
+      ]
+    },
+    {
+      "id": "chipotle-cmg-1207",
+      "kind": "ingredient",
+      "keys": [
+        "src:CMG-1207"
+      ]
+    },
+    {
+      "id": "chipotle-cmg-4134",
+      "kind": "ingredient",
+      "keys": [
+        "src:CMG-4134"
+      ]
+    },
+    {
+      "id": "chipotle-cmg-1402",
+      "kind": "ingredient",
+      "keys": [
+        "src:CMG-1402",
+        "name:kids side/kid s fruit"
+      ]
+    },
+    {
+      "id": "chipotle-cmg-1401",
+      "kind": "ingredient",
+      "keys": [
+        "src:CMG-1401",
+        "name:kids side/kid s chips"
+      ]
+    },
+    {
+      "id": "chipotle-cmg-5553",
+      "kind": "ingredient",
+      "keys": [
+        "src:CMG-5553",
+        "name:kids drink/organic chocolate milk"
+      ]
+    },
+    {
+      "id": "chipotle-cmg-5552",
+      "kind": "ingredient",
+      "keys": [
+        "src:CMG-5552",
+        "name:kids drink/organic apple juice"
+      ]
+    },
+    {
+      "id": "chipotle-cmg-5551",
+      "kind": "ingredient",
+      "keys": [
+        "src:CMG-5551",
+        "name:beverages/16 fl oz soda iced tea"
+      ]
+    },
+    {
+      "id": "chipotle-fountain-16-fl-oz-coca-cola-classic",
+      "kind": "ingredient-variant",
+      "keys": [
+        "chipotle-cmg-5551/portion:coca cola classic"
+      ]
+    },
+    {
+      "id": "chipotle-fountain-16-fl-oz-diet-coke",
+      "kind": "ingredient-variant",
+      "keys": [
+        "chipotle-cmg-5551/portion:diet coke"
+      ]
+    },
+    {
+      "id": "chipotle-fountain-16-fl-oz-diet-coke-caffeine-free",
+      "kind": "ingredient-variant",
+      "keys": [
+        "chipotle-cmg-5551/portion:diet coke caffeine free"
+      ]
+    },
+    {
+      "id": "chipotle-fountain-16-fl-oz-coca-cola-zero",
+      "kind": "ingredient-variant",
+      "keys": [
+        "chipotle-cmg-5551/portion:coca cola zero"
+      ]
+    },
+    {
+      "id": "chipotle-fountain-16-fl-oz-coca-cola-life",
+      "kind": "ingredient-variant",
+      "keys": [
+        "chipotle-cmg-5551/portion:coca cola life"
+      ]
+    },
+    {
+      "id": "chipotle-fountain-16-fl-oz-sprite",
+      "kind": "ingredient-variant",
+      "keys": [
+        "chipotle-cmg-5551/portion:sprite"
+      ]
+    },
+    {
+      "id": "chipotle-fountain-16-fl-oz-fanta-orange",
+      "kind": "ingredient-variant",
+      "keys": [
+        "chipotle-cmg-5551/portion:fanta orange"
+      ]
+    },
+    {
+      "id": "chipotle-fountain-16-fl-oz-dr-pepper",
+      "kind": "ingredient-variant",
+      "keys": [
+        "chipotle-cmg-5551/portion:dr pepper"
+      ]
+    },
+    {
+      "id": "chipotle-fountain-16-fl-oz-diet-dr-pepper",
+      "kind": "ingredient-variant",
+      "keys": [
+        "chipotle-cmg-5551/portion:diet dr pepper"
+      ]
+    },
+    {
+      "id": "chipotle-fountain-16-fl-oz-mountain-dew",
+      "kind": "ingredient-variant",
+      "keys": [
+        "chipotle-cmg-5551/portion:mountain dew"
+      ]
+    },
+    {
+      "id": "chipotle-fountain-16-fl-oz-diet-mountain-dew",
+      "kind": "ingredient-variant",
+      "keys": [
+        "chipotle-cmg-5551/portion:diet mountain dew"
+      ]
+    },
+    {
+      "id": "chipotle-fountain-16-fl-oz-mello-yello",
+      "kind": "ingredient-variant",
+      "keys": [
+        "chipotle-cmg-5551/portion:mello yello"
+      ]
+    },
+    {
+      "id": "chipotle-fountain-16-fl-oz-pibb-xtra",
+      "kind": "ingredient-variant",
+      "keys": [
+        "chipotle-cmg-5551/portion:pibb xtra"
+      ]
+    },
+    {
+      "id": "chipotle-fountain-16-fl-oz-barq-s-root-beer",
+      "kind": "ingredient-variant",
+      "keys": [
+        "chipotle-cmg-5551/portion:barq s root beer"
+      ]
+    },
+    {
+      "id": "chipotle-fountain-16-fl-oz-mug-root-beer",
+      "kind": "ingredient-variant",
+      "keys": [
+        "chipotle-cmg-5551/portion:mug root beer"
+      ]
+    },
+    {
+      "id": "chipotle-fountain-16-fl-oz-pepsi",
+      "kind": "ingredient-variant",
+      "keys": [
+        "chipotle-cmg-5551/portion:pepsi"
+      ]
+    },
+    {
+      "id": "chipotle-fountain-16-fl-oz-diet-pepsi",
+      "kind": "ingredient-variant",
+      "keys": [
+        "chipotle-cmg-5551/portion:diet pepsi"
+      ]
+    },
+    {
+      "id": "chipotle-fountain-16-fl-oz-sierra-mist",
+      "kind": "ingredient-variant",
+      "keys": [
+        "chipotle-cmg-5551/portion:sierra mist"
+      ]
+    },
+    {
+      "id": "chipotle-fountain-16-fl-oz-crush-orange",
+      "kind": "ingredient-variant",
+      "keys": [
+        "chipotle-cmg-5551/portion:crush orange"
+      ]
+    },
+    {
+      "id": "chipotle-fountain-16-fl-oz-powerade-mountain-berry-blast",
+      "kind": "ingredient-variant",
+      "keys": [
+        "chipotle-cmg-5551/portion:powerade mountain berry blast"
+      ]
+    },
+    {
+      "id": "chipotle-fountain-16-fl-oz-chipotle-iced-tea",
+      "kind": "ingredient-variant",
+      "keys": [
+        "chipotle-cmg-5551/portion:chipotle iced tea"
+      ]
+    },
+    {
+      "id": "chipotle-fountain-16-fl-oz-chipotle-sweet-iced-tea",
+      "kind": "ingredient-variant",
+      "keys": [
+        "chipotle-cmg-5551/portion:chipotle sweet iced tea"
+      ]
+    },
+    {
+      "id": "chipotle-fountain-16-fl-oz-lipton-raspberry-brisk-iced-tea",
+      "kind": "ingredient-variant",
+      "keys": [
+        "chipotle-cmg-5551/portion:lipton raspberry brisk iced tea"
+      ]
+    },
+    {
+      "id": "chipotle-cmg-5554",
+      "kind": "ingredient",
+      "keys": [
+        "src:CMG-5554",
+        "name:kids drink/organic milk"
+      ]
+    },
+    {
+      "id": "chipotle-tortilla-soft-flour-taco",
+      "kind": "ingredient",
+      "keys": [
+        "src:CMG-5501@chipotle-taco"
+      ]
+    },
+    {
+      "id": "chipotle-tortilla-soft-flour-tacos-3",
+      "kind": "ingredient",
+      "keys": [
+        "src:CMG-5501@chipotle-tacos-3"
+      ]
+    },
+    {
+      "id": "chipotle-tortilla-crispy-corn-taco",
+      "kind": "ingredient",
+      "keys": [
+        "src:CMG-5503@chipotle-taco"
+      ]
+    },
+    {
+      "id": "chipotle-tortilla-crispy-corn-tacos-3",
+      "kind": "ingredient",
+      "keys": [
+        "src:CMG-5503@chipotle-tacos-3"
+      ]
+    },
+    {
+      "id": "chipotle-cmg-5403",
+      "kind": "ingredient",
+      "keys": [
+        "src:CMG-5403",
+        "name:tortillas/2 crispy corn tortillas"
+      ]
+    },
+    {
+      "id": "chipotle-cmg-5404",
+      "kind": "ingredient",
+      "keys": [
+        "src:CMG-5404",
+        "name:tortillas/2 soft flour tortillas"
+      ]
+    },
+    {
+      "id": "chipotle-cmg-5401",
+      "kind": "ingredient",
+      "keys": [
+        "src:CMG-5401"
+      ]
+    },
+    {
+      "id": "chipotle-cmg-4026-burrito-base",
+      "kind": "ingredient",
+      "keys": [
+        "name:included ingredients/tortilla"
+      ]
+    },
+    {
+      "id": "chipotle-salad-supergreens-base",
+      "kind": "ingredient",
+      "keys": [
+        "name:included ingredients/supergreens salad mix"
+      ]
+    },
+    {
+      "id": "chipotle-protein-steak",
+      "kind": "ingredient",
+      "keys": [
+        "src:CMG-2",
+        "src:CMG-102",
+        "src:CMG-302@chipotle-burrito",
+        "src:CMG-302@chipotle-bowl",
+        "src:CMG-302@chipotle-salad",
+        "src:CMG-302@chipotle-quesadilla",
+        "src:CMG-402",
+        "src:CMG-5602",
+        "src:CMG-1102"
+      ]
+    },
+    {
+      "id": "chipotle-protein-steak-normal",
+      "kind": "ingredient-variant",
+      "keys": [
+        "chipotle-protein-steak/portion:normal"
+      ]
+    },
+    {
+      "id": "chipotle-protein-steak-half",
+      "kind": "ingredient-variant",
+      "keys": [
+        "chipotle-protein-steak/portion:half"
+      ]
+    },
+    {
+      "id": "chipotle-protein-steak-extra",
+      "kind": "ingredient-variant",
+      "keys": [
+        "chipotle-protein-steak/portion:extra"
+      ]
+    },
+    {
+      "id": "chipotle-protein-steak-taco",
+      "kind": "ingredient",
+      "keys": [
+        "src:CMG-1202"
+      ]
+    },
+    {
+      "id": "chipotle-protein-steak-tacos-3",
+      "kind": "ingredient",
+      "keys": [
+        "src:CMG-202"
+      ]
+    },
+    {
+      "id": "chipotle-protein-steak-kids-byo",
+      "kind": "ingredient",
+      "keys": [
+        "src:CMG-3003"
+      ]
+    },
+    {
+      "id": "chipotle-protein-steak-kids-quesadilla",
+      "kind": "ingredient",
+      "keys": [
+        "src:CMG-3103"
+      ]
+    },
+    {
+      "id": "chipotle-protein-chicken",
+      "kind": "ingredient",
+      "keys": [
+        "src:CMG-1",
+        "src:CMG-101",
+        "src:CMG-301@chipotle-burrito",
+        "src:CMG-301@chipotle-bowl",
+        "src:CMG-301@chipotle-salad",
+        "src:CMG-301@chipotle-quesadilla",
+        "src:CMG-401",
+        "src:CMG-5601",
+        "src:CMG-1101"
+      ]
+    },
+    {
+      "id": "chipotle-protein-chicken-normal",
+      "kind": "ingredient-variant",
+      "keys": [
+        "chipotle-protein-chicken/portion:normal"
+      ]
+    },
+    {
+      "id": "chipotle-protein-chicken-half",
+      "kind": "ingredient-variant",
+      "keys": [
+        "chipotle-protein-chicken/portion:half"
+      ]
+    },
+    {
+      "id": "chipotle-protein-chicken-extra",
+      "kind": "ingredient-variant",
+      "keys": [
+        "chipotle-protein-chicken/portion:extra"
+      ]
+    },
+    {
+      "id": "chipotle-protein-chicken-taco",
+      "kind": "ingredient",
+      "keys": [
+        "src:CMG-1201"
+      ]
+    },
+    {
+      "id": "chipotle-protein-chicken-tacos-3",
+      "kind": "ingredient",
+      "keys": [
+        "src:CMG-201"
+      ]
+    },
+    {
+      "id": "chipotle-protein-chicken-kids-byo",
+      "kind": "ingredient",
+      "keys": [
+        "src:CMG-3002"
+      ]
+    },
+    {
+      "id": "chipotle-protein-chicken-kids-quesadilla",
+      "kind": "ingredient",
+      "keys": [
+        "src:CMG-3102"
+      ]
+    },
+    {
+      "id": "chipotle-protein-carnitas",
+      "kind": "ingredient",
+      "keys": [
+        "src:CMG-3",
+        "src:CMG-103",
+        "src:CMG-303@chipotle-burrito",
+        "src:CMG-303@chipotle-bowl",
+        "src:CMG-303@chipotle-salad",
+        "src:CMG-303@chipotle-quesadilla",
+        "src:CMG-403",
+        "src:CMG-5603",
+        "src:CMG-1103"
+      ]
+    },
+    {
+      "id": "chipotle-protein-carnitas-normal",
+      "kind": "ingredient-variant",
+      "keys": [
+        "chipotle-protein-carnitas/portion:normal"
+      ]
+    },
+    {
+      "id": "chipotle-protein-carnitas-half",
+      "kind": "ingredient-variant",
+      "keys": [
+        "chipotle-protein-carnitas/portion:half"
+      ]
+    },
+    {
+      "id": "chipotle-protein-carnitas-extra",
+      "kind": "ingredient-variant",
+      "keys": [
+        "chipotle-protein-carnitas/portion:extra"
+      ]
+    },
+    {
+      "id": "chipotle-protein-carnitas-taco",
+      "kind": "ingredient",
+      "keys": [
+        "src:CMG-1203"
+      ]
+    },
+    {
+      "id": "chipotle-protein-carnitas-tacos-3",
+      "kind": "ingredient",
+      "keys": [
+        "src:CMG-203"
+      ]
+    },
+    {
+      "id": "chipotle-protein-carnitas-kids-byo",
+      "kind": "ingredient",
+      "keys": [
+        "src:CMG-3004"
+      ]
+    },
+    {
+      "id": "chipotle-protein-carnitas-kids-quesadilla",
+      "kind": "ingredient",
+      "keys": [
+        "src:CMG-3104"
+      ]
+    },
+    {
+      "id": "chipotle-protein-veggie",
+      "kind": "ingredient",
+      "keys": [
+        "src:CMG-6",
+        "src:CMG-106",
+        "src:CMG-306@chipotle-burrito",
+        "src:CMG-306@chipotle-bowl",
+        "src:CMG-306@chipotle-salad",
+        "src:CMG-306@chipotle-quesadilla"
+      ]
+    },
+    {
+      "id": "chipotle-protein-veggie-normal",
+      "kind": "ingredient-variant",
+      "keys": [
+        "chipotle-protein-veggie/portion:normal"
+      ]
+    },
+    {
+      "id": "chipotle-protein-veggie-taco",
+      "kind": "ingredient",
+      "keys": [
+        "src:CMG-1206"
+      ]
+    },
+    {
+      "id": "chipotle-protein-veggie-tacos-3",
+      "kind": "ingredient",
+      "keys": [
+        "src:CMG-206"
+      ]
+    },
+    {
+      "id": "chipotle-protein-beef-barbacoa",
+      "kind": "ingredient",
+      "keys": [
+        "src:CMG-4",
+        "src:CMG-104",
+        "src:CMG-304@chipotle-burrito",
+        "src:CMG-304@chipotle-bowl",
+        "src:CMG-304@chipotle-salad",
+        "src:CMG-304@chipotle-quesadilla",
+        "src:CMG-404",
+        "src:CMG-5604",
+        "src:CMG-1104"
+      ]
+    },
+    {
+      "id": "chipotle-protein-beef-barbacoa-normal",
+      "kind": "ingredient-variant",
+      "keys": [
+        "chipotle-protein-beef-barbacoa/portion:normal"
+      ]
+    },
+    {
+      "id": "chipotle-protein-beef-barbacoa-half",
+      "kind": "ingredient-variant",
+      "keys": [
+        "chipotle-protein-beef-barbacoa/portion:half"
+      ]
+    },
+    {
+      "id": "chipotle-protein-beef-barbacoa-extra",
+      "kind": "ingredient-variant",
+      "keys": [
+        "chipotle-protein-beef-barbacoa/portion:extra"
+      ]
+    },
+    {
+      "id": "chipotle-protein-beef-barbacoa-taco",
+      "kind": "ingredient",
+      "keys": [
+        "src:CMG-1204"
+      ]
+    },
+    {
+      "id": "chipotle-protein-beef-barbacoa-tacos-3",
+      "kind": "ingredient",
+      "keys": [
+        "src:CMG-204"
+      ]
+    },
+    {
+      "id": "chipotle-protein-beef-barbacoa-kids-byo",
+      "kind": "ingredient",
+      "keys": [
+        "src:CMG-3005"
+      ]
+    },
+    {
+      "id": "chipotle-protein-beef-barbacoa-kids-quesadilla",
+      "kind": "ingredient",
+      "keys": [
+        "src:CMG-3105"
+      ]
+    },
+    {
+      "id": "chipotle-protein-sofritas",
+      "kind": "ingredient",
+      "keys": [
+        "src:CMG-5",
+        "src:CMG-105",
+        "src:CMG-305@chipotle-burrito",
+        "src:CMG-305@chipotle-bowl",
+        "src:CMG-305@chipotle-salad",
+        "src:CMG-305@chipotle-quesadilla",
+        "src:CMG-405",
+        "src:CMG-5605",
+        "src:CMG-1106"
+      ]
+    },
+    {
+      "id": "chipotle-protein-sofritas-normal",
+      "kind": "ingredient-variant",
+      "keys": [
+        "chipotle-protein-sofritas/portion:normal"
+      ]
+    },
+    {
+      "id": "chipotle-protein-sofritas-half",
+      "kind": "ingredient-variant",
+      "keys": [
+        "chipotle-protein-sofritas/portion:half"
+      ]
+    },
+    {
+      "id": "chipotle-protein-sofritas-extra",
+      "kind": "ingredient-variant",
+      "keys": [
+        "chipotle-protein-sofritas/portion:extra"
+      ]
+    },
+    {
+      "id": "chipotle-protein-sofritas-taco",
+      "kind": "ingredient",
+      "keys": [
+        "src:CMG-1205"
+      ]
+    },
+    {
+      "id": "chipotle-protein-sofritas-tacos-3",
+      "kind": "ingredient",
+      "keys": [
+        "src:CMG-205"
+      ]
+    },
+    {
+      "id": "chipotle-protein-sofritas-kids-byo",
+      "kind": "ingredient",
+      "keys": [
+        "src:CMG-3006"
+      ]
+    },
+    {
+      "id": "chipotle-protein-sofritas-kids-quesadilla",
+      "kind": "ingredient",
+      "keys": [
+        "src:CMG-3106"
+      ]
+    },
+    {
+      "id": "chipotle-protein-pollo-asado",
+      "kind": "ingredient",
+      "keys": [
+        "src:CMG-11",
+        "src:CMG-113",
+        "src:CMG-311@chipotle-burrito",
+        "src:CMG-311@chipotle-bowl",
+        "src:CMG-311@chipotle-salad",
+        "src:CMG-311@chipotle-quesadilla",
+        "src:CMG-412",
+        "src:CMG-5609",
+        "src:CMG-1110"
+      ]
+    },
+    {
+      "id": "chipotle-protein-pollo-asado-normal",
+      "kind": "ingredient-variant",
+      "keys": [
+        "chipotle-protein-pollo-asado/portion:normal"
+      ]
+    },
+    {
+      "id": "chipotle-protein-pollo-asado-half",
+      "kind": "ingredient-variant",
+      "keys": [
+        "chipotle-protein-pollo-asado/portion:half"
+      ]
+    },
+    {
+      "id": "chipotle-protein-pollo-asado-extra",
+      "kind": "ingredient-variant",
+      "keys": [
+        "chipotle-protein-pollo-asado/portion:extra"
+      ]
+    },
+    {
+      "id": "chipotle-protein-pollo-asado-taco",
+      "kind": "ingredient",
+      "keys": [
+        "src:CMG-1212"
+      ]
+    },
+    {
+      "id": "chipotle-protein-pollo-asado-tacos-3",
+      "kind": "ingredient",
+      "keys": [
+        "src:CMG-211"
+      ]
+    },
+    {
+      "id": "chipotle-protein-pollo-asado-kids-byo",
+      "kind": "ingredient",
+      "keys": [
+        "src:CMG-3013"
+      ]
+    },
+    {
+      "id": "chipotle-protein-pollo-asado-kids-quesadilla",
+      "kind": "ingredient",
+      "keys": [
+        "src:CMG-3111"
+      ]
+    },
+    {
+      "id": "chipotle-protein-guacamole-kids-byo",
+      "kind": "ingredient",
+      "keys": [
+        "src:CMG-3007"
+      ]
+    },
+    {
+      "id": "chipotle-protein-guacamole-kids-quesadilla",
+      "kind": "ingredient",
+      "keys": [
+        "src:CMG-3107"
+      ]
+    },
+    {
+      "id": "chipotle-protein-queso-blanco-kids-byo",
+      "kind": "ingredient",
+      "keys": [
+        "src:CMG-3011",
+        "name:proteins/queso blanco"
+      ]
+    }
+  ]
+}
