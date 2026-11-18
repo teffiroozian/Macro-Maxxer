@@ -6,6 +6,7 @@ import type { MenuItem, ResolvedAddonGroups } from "@/types/menu";
 import type { RestaurantData } from "@/types/restaurant";
 import { resolveAddonMenuItems } from "@/lib/addonGroups";
 import { buildCartMenuItemFromState } from "@/lib/cart/buildItemAdapters";
+import { hasUnavailablePreviewCustomization, resolveCartStandardCatalogSelection, usesPreviewCatalogSelection } from "@/lib/cart/cartItemLookup";
 import { getRestaurantData } from "@/lib/restaurants";
 
 export type CartItemModalMode = "preview" | "edit";
@@ -19,7 +20,11 @@ export type CartItemEditState = {
 };
 
 function getSourceItem(cartItem: CartItem, restaurant: RestaurantData) {
-  return restaurant.items.find((item) => (item.id ?? item.name) === cartItem.itemId) ?? null;
+  const itemId = usesPreviewCatalogSelection(cartItem.restaurantId) &&
+      cartItem.selection.type === "standard"
+    ? resolveCartStandardCatalogSelection(cartItem)?.item.id
+    : cartItem.itemId;
+  return restaurant.items.find((item) => (item.id ?? item.name) === itemId) ?? null;
 }
 
 export function useCartItemEditModal() {
@@ -36,14 +41,17 @@ export function useCartItemEditModal() {
       const restaurant = await getRestaurantData(cartItem.restaurantId);
       if (!restaurant) return;
 
-      const sourceItem = buildCartMenuItemFromState(cartItem, getSourceItem(cartItem, restaurant), restaurant.ingredients);
+      const catalogItem = getSourceItem(cartItem, restaurant);
+      const unavailableInPreview = usesPreviewCatalogSelection(cartItem.restaurantId) &&
+        cartItem.selection.type === "standard" && (!catalogItem || hasUnavailablePreviewCustomization(cartItem));
+      const sourceItem = buildCartMenuItemFromState(cartItem, catalogItem, restaurant.ingredients);
 
       setEditState({
         cartItemId: cartItem.id,
         restaurant,
         sourceItem,
         addons: resolveAddonMenuItems(restaurant.addonGroups, restaurant.items),
-        mode,
+        mode: unavailableInPreview ? "preview" : mode,
       });
     } finally {
       setLoadingEditItemId(null);

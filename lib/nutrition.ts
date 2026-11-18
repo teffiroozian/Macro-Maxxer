@@ -11,7 +11,7 @@ export type NutritionDataQuality = {
 
 export const CORE_NUTRITION_KEYS: CoreNutritionKey[] = ["calories", "protein", "carbs", "totalFat"];
 
-const OPTIONAL_NUTRITION_KEYS: OptionalNutritionKey[] = [
+export const OPTIONAL_NUTRITION_KEYS: readonly OptionalNutritionKey[] = [
   "satFat",
   "transFat",
   "cholesterol",

@@ -2,7 +2,7 @@ import {
   CHIPOTLE_GENERATED_LEGACY_ID_CONFIG,
   CHIPOTLE_GENERATED_LEGACY_PRESENTATION_FAMILIES,
 } from "@/data/restaurants/chipotle-generated-legacy-ids";
-import { CHIPOTLE_GENERATED_RUNTIME_MENU } from "@/lib/restaurantBuilders/chipotle/generatedRuntimeAdapter";
+import { getChipotleRuntimeMenu } from "@/lib/restaurantBuilders/chipotle/runtimeMenu";
 import type { CartItem } from "@/types/cart";
 
 export type ChipotleLegacyBuildTargetId =
@@ -34,9 +34,10 @@ export type ResolveChipotleLegacyIdOptions = {
   buildTargetId?: ChipotleLegacyBuildTargetId;
 };
 
+const runtimeMenu = getChipotleRuntimeMenu();
 const generatedRecords = [
-  ...CHIPOTLE_GENERATED_RUNTIME_MENU.items,
-  ...(CHIPOTLE_GENERATED_RUNTIME_MENU.ingredients ?? []),
+  ...runtimeMenu.items,
+  ...(runtimeMenu.ingredients ?? []),
 ];
 const generatedRecordIds = new Set(generatedRecords.map((record) => record.id));
 const generatedVariantIds = new Set(
@@ -48,7 +49,7 @@ const generatedRecordById = new Map(
   generatedRecords.map((record) => [record.id, record]),
 );
 const generatedItemIds = new Set(
-  CHIPOTLE_GENERATED_RUNTIME_MENU.items.map((item) => item.id),
+  runtimeMenu.items.map((item) => item.id),
 );
 
 const obsoleteIds = new Set(
@@ -147,7 +148,7 @@ function resolveContextualRelationship(
   legacyId: string,
   buildTargetId: ChipotleLegacyBuildTargetId,
 ) {
-  const target = CHIPOTLE_GENERATED_RUNTIME_MENU.items.find(
+  const target = runtimeMenu.items.find(
     (item) => item.id === buildTargetId,
   );
   const expectedName =
@@ -309,6 +310,7 @@ export function resolveChipotleLegacyItemRoute(itemSlug: string) {
 }
 
 function buildTargetForGeneratedMainItem(recordId: string) {
+  if (recordId === "chipotle-tacos-3") return recordId;
   if (recordId === "chipotle-burrito" || recordId.includes("burrito")) {
     return "chipotle-burrito" as const;
   }

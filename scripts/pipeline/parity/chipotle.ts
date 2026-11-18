@@ -6,6 +6,7 @@
 // evidence on the record: the generated record's own provenance method, or
 // which side is missing.
 import { CHIPOTLE_KIDS_BYO_TORTILLA_NUTRITION_BY_ITEM_ID } from "../../importers/chipotle-nutrition-mappings";
+import { parseIncludedIngredientEntry } from "../../../lib/itemIngredients";
 import { normalizeName } from "../../lib/normalize-name";
 import {
   ALL_NUTRIENTS,
@@ -23,7 +24,7 @@ import { checkRuntimeMenu, projectToRestaurantMenu } from "../project";
 // ── Generated menu shape (only what is compared) ─────────────────────────
 
 type GeneratedSource = {
-  menu: { itemIds?: string[]; role?: string };
+  menu: { itemIds?: string[]; role?: string; buildBaseItemId?: string };
   nutrition?: { method?: string; pdfName?: string | null };
 };
 type GeneratedVariant = { id: string; label: string; nutrition: PartialNutrition; source?: GeneratedSource };
@@ -79,7 +80,7 @@ export const ENGINE_GAPS = {
   composed_nutrition: "No composed nutrition: an item's total cannot be built from component records (builder defaults, implicit bases, chips-and-dip combinations).",
   derived_nutrition: "No derived observation: a panel scaled from a trusted record by a stated portion ratio has nowhere to live, with its provenance.",
   preset_compositions: "No preset composition: a preconfigured meal (a named set of builder selections) is not representable.",
-  structural_records: "No structural / source-only record: non-food ordering records cannot be kept without nutrition.",
+  structural_records: "A non-food record is absent or fails to project as source-only without nutrition.",
   multiplier_portions_counted_missing: "Multiplier portions are counted as missing nutrition even when the factor is known, which blocks approval.",
   mixed_portion_policy: "Portion policy is set per option: one option cannot mix a portion with its own published panel and a portion scaled by a factor.",
   context_ingredients: "No per-container ingredient record: one ingredient list entry per name cannot hold a different serving per container.",
@@ -241,6 +242,9 @@ export function compareChipotleParity(draft: RestaurantDraft, generated: Generat
     });
   };
 
+  const projection = projectToRestaurantMenu(draft, registry ? { registry } : {});
+  const projected = projection.menu;
+
   // 1. Standard items: presence, name, category, serving type.
   const items = section("Menu items and categories");
   const standalone = generated.items.filter((item) => item.source.menu.role === "standalone_product");
@@ -275,7 +279,27 @@ export function compareChipotleParity(draft: RestaurantDraft, generated: Generat
   for (const item of generated.items) {
     const role = item.source.menu.role;
     if (role === "standalone_product" || role === "build_container") continue;
-    items.compare((report) =>
+    const match = findDraftItem(draft, item, "standard");
+    if (match) pairedDraftIds.add(match.id);
+    items.compare((report) => {
+      const runtime = projected.items.find((record) => record.id === item.id);
+      if (role === "preconfigured_meal" && match && runtime?.mealPreset) {
+        const expected = (item.ingredients ?? []).map(parseIncludedIngredientEntry);
+        const actual = runtime.mealPreset.selections.map(({ itemId, quantity }) => ({ ingredientId: itemId, defaultCount: quantity }));
+        const differences = nutritionDifferences(item.nutrition, runtime.nutrition);
+        if (JSON.stringify(expected) !== JSON.stringify(actual) ||
+            runtime.mealPreset.builderItemId !== item.source.menu.buildBaseItemId || differences.length > 0 ||
+            JSON.stringify([...sourceIds(match)].sort()) !== JSON.stringify([...(item.source.menu.itemIds ?? [])].sort())) {
+          report({
+            subject: item.name, field: "preset", generated: "existing curated recipe", draft: "different curated recipe",
+            classification: "unexplained", reason: `The projected preset differs in ancestry, selections, or nutrition. ${differences.join("; ")}`,
+          });
+        }
+        return;
+      }
+      if (match?.sourceOnly && match.nonNutritionComponent && projected.items.some(
+        (record) => record.id === item.id && record.sourceOnly && record.nutrition === undefined,
+      )) return;
       report({
         subject: item.name,
         field: "presence",
@@ -284,8 +308,8 @@ export function compareChipotleParity(draft: RestaurantDraft, generated: Generat
         classification: "engine_gap",
         gap: role === "preconfigured_meal" ? "preset_compositions" : "structural_records",
         reason: role === "preconfigured_meal" ? "Preconfigured meal built from builder selections." : "Non-food ordering record kept as source-only.",
-      }),
-    );
+      });
+    });
   }
   for (const item of draft.items) {
     if (pairedDraftIds.has(item.id)) continue;
@@ -540,8 +564,6 @@ export function compareChipotleParity(draft: RestaurantDraft, generated: Generat
   }
 
   // 6. Stable ids: does the projected menu reuse the ids the app persists?
-  const projection = projectToRestaurantMenu(draft, registry ? { registry } : {});
-  const projected = projection.menu;
   const ids = section("Stable ids");
   const projectedItems = new Map(projected.items.map((item) => [item.id, item]));
   const projectedIngredients = new Map((projected.ingredients ?? []).map((ingredient) => [ingredient.id, ingredient]));
@@ -665,7 +687,6 @@ export function compareChipotleParity(draft: RestaurantDraft, generated: Generat
   };
   // Fields the pipeline has no source for; everything else missing is a gap.
   const NOT_CARRIED: Record<string, string> = {
-    sourceOnly: "Marks non-food ordering records, which the draft does not hold.",
     hideFromIngredientView: "A display flag set by an import decision (hide the structural Veggie choice).",
     importMetadata: "Bookkeeping of the existing importer; the draft's own sources and issues play this role.",
     runtimeIntegration: "A status note written by the existing importer.",

@@ -1,20 +1,21 @@
 # Chipotle — import review (draft)
 
-Generated 2026-11-17T22:19:53.452Z. Status: **draft**. Not published; the live restaurant index is untouched.
+Generated 2026-11-18T21:11:45.630Z. Status: **draft**. Not published; the live restaurant index is untouched.
 
 - Structurally valid: **yes**
 - Ready for approval: **no**
 - Menu models: standard, build-your-own
-- Items: 63 (55 standard, 8 build-your-own)
+- Items: 77 (69 standard, 8 build-your-own)
 - Ingredients: 54
-- Nutrition records: 468, of which 460 have all four core macros
+- Nutrition records: 479, of which 471 have all four core macros
 - Records missing core macros: 8
 - Unresolved nutrition conflicts: 0
-- Publishable to the runtime schema today: 61 items, 74 ingredients (4 excluded)
+- Projected into the runtime schema: 75 items, 74 ingredients (4 excluded)
 - Ids: 272 in the registry, 40 new, 0 conflicts
 
 ## Sources
 
+- `chipotle:online-meals` — https://services.chipotle.com/menuinnovation/v1/restaurants/469/onlinemeals?channelId=web (official; retrieved 2026-08-31T17:34:54.060Z)
 - `chipotle:calculator-menu` — https://services.chipotle.com/menuinnovation/v1/restaurants/469/onlinemenu/compressed?channelId=web&includeUnavailableItems=true (ordering_system; retrieved 2026-08-31T23:40:20.515Z)
 - `chipotle:live-nutrition` — https://services.chipotle.com/menu-metadata/v1/menu-metadata/nutrition?channel=web&region=US (official; retrieved 2026-08-31T23:40:20.861Z)
 - `chipotle:nutrition-pdf` — https://www.chipotle.com/content/dam/chipotle/menu/nutrition/US-Nutrition-Facts-Paper-Menu-3-2025.pdf (official; retrieved 2026-08-27)
@@ -25,21 +26,26 @@ Generated 2026-11-17T22:19:53.452Z. Status: **draft**. Not published; the live r
 - `core_nutrition_missing` — 7 record(s) have no published or agreed value for: calories, protein, carbs, totalFat. The values were left empty.
 - `core_nutrition_missing` — 1 record(s) have no published or agreed value for: carbs. The values were left empty.
 
-## Warnings (4)
+## Warnings (5)
 
+- `unmapped_category` — Source category "Preconfigured Meals" has no Macro Maxxer category mapping; the source name was kept.
 - `portion_multiplier_missing` — Burrito › Protein › Pollo Asado › Half has no complete published nutrition and the source supports no factor for it; its nutrition stays unknown.
 - `portion_multiplier_missing` — Bowl › Protein › Pollo Asado › Half has no complete published nutrition and the source supports no factor for it; its nutrition stays unknown.
 - `portion_multiplier_missing` — Salad › Protein › Pollo Asado › Half has no complete published nutrition and the source supports no factor for it; its nutrition stays unknown.
 - `portion_multiplier_missing` — Quesadilla › Protein › Pollo Asado › Half has no complete published nutrition and the source supports no factor for it; its nutrition stays unknown.
 
-## Infos (89)
+## Infos (93)
 
 - `live_panel_rejected` — 33 live nutrition panel(s) were not used because they are placeholders or implausible: Extra Steak: live panel has a placeholder 0 portion; Half Steak: live panel has a placeholder 0 portion; Extra Chicken: live panel has a placeholder 0 portion; Half Chicken: live panel has a placeholder 0 portion; Extra Carnitas: live panel has a placeholder 0 portion; Half Carnitas: live panel has a placeholder 0 portion; Extra Beef Barbacoa: live panel has a placeholder 0 portion; Half Beef Barbacoa: live panel has a placeholder 0 portion; …
 - `portion_choices_without_amounts` — The ordering source offers 1385 Light / Extra / Side / Half choices on contents but publishes no amounts for them; they are not imported.
-- `non_food_items_not_imported` — 3 non-food ordering records (utensils, bowls) are not imported.
 - `catering_not_imported` — 7 catering entree records (BYOProtein, BYOChips; serve 4–6) are not imported.
 - `single_taco_tortilla_panels` — The single Taco and Tacos (3) share tortilla records whose panels describe three tortillas. The single Taco uses Chipotle's official one-tortilla panels instead: live CMG-5401 (Flour Tortilla, taco size) and the PDF's 1 ea Crispy Corn Tortilla row.
-- `preconfigured_meals_not_imported` — 21 preconfigured online meals are not imported; the contracts have no preset-composition record.
+- `preset_source_unresolved` — "Build-Your-Own Chicken" (mealType BuildYourOwn) uses the catering/BuildYourOwn ingredient namespace, deliberately excluded from this first pass (see source-analysis.md §10.C).
+- `preset_source_unresolved` — "Build-Your-Own Steak" (mealType BuildYourOwn) uses the catering/BuildYourOwn ingredient namespace, deliberately excluded from this first pass (see source-analysis.md §10.C).
+- `preset_source_unresolved` — "Build-Your-Own Sofritas" (mealType BuildYourOwn) uses the catering/BuildYourOwn ingredient namespace, deliberately excluded from this first pass (see source-analysis.md §10.C).
+- `preset_source_unresolved` — "2 Large Chips & 3 Large Sides" (mealType BuildYourOwn) uses the catering/BuildYourOwn ingredient namespace, deliberately excluded from this first pass (see source-analysis.md §10.C).
+- `preset_source_unresolved` — "High Protein Cup - Chicken" is an entree:null meal (its entire product is a single sides[] entry) — not modeled by this first-pass importer.
+- `preset_source_unresolved` — "High Protein Cup - Steak" is an entree:null meal (its entire product is a single sides[] entry) — not modeled by this first-pass importer.
 - `duplicate_item_merged` — "Burrito" appeared more than once in Burrito; the records were merged into chipotle:item:burrito:burrito.
 - `duplicate_item_merged` — "Burrito" appeared more than once in Burrito; the records were merged into chipotle:item:burrito:burrito.
 - `duplicate_item_merged` — "Burrito" appeared more than once in Burrito; the records were merged into chipotle:item:burrito:burrito.

@@ -3,7 +3,7 @@
     {
       "name": "Menu items and categories",
       "compared": 77,
-      "matched": 61
+      "matched": 75
     },
     {
       "name": "Nutrition values (standard items)",
@@ -28,12 +28,12 @@
     {
       "name": "Stable ids",
       "compared": 244,
-      "matched": 220
+      "matched": 234
     },
     {
       "name": "Customizations and runtime compatibility",
-      "compared": 209,
-      "matched": 194
+      "compared": 223,
+      "matched": 209
     }
   ],
   "findings": [
@@ -54,146 +54,6 @@
       "draft": "32 fl oz Soda/Iced Tea",
       "classification": "presentation",
       "reason": "The importer renames this record for display; the source name is kept in the draft."
-    },
-    {
-      "section": "Menu items and categories",
-      "subject": "Serving Utensils",
-      "field": "presence",
-      "generated": "chipotle-cmg-6112 (structural)",
-      "draft": "absent",
-      "classification": "engine_gap",
-      "gap": "structural_records",
-      "reason": "Non-food ordering record kept as source-only."
-    },
-    {
-      "section": "Menu items and categories",
-      "subject": "Napkins & Utensils",
-      "field": "presence",
-      "generated": "chipotle-cmg-6110 (structural)",
-      "draft": "absent",
-      "classification": "engine_gap",
-      "gap": "structural_records",
-      "reason": "Non-food ordering record kept as source-only."
-    },
-    {
-      "section": "Menu items and categories",
-      "subject": "6 Serving Bowls",
-      "field": "presence",
-      "generated": "chipotle-cmg-6111 (structural)",
-      "draft": "absent",
-      "classification": "engine_gap",
-      "gap": "structural_records",
-      "reason": "Non-food ordering record kept as source-only."
-    },
-    {
-      "section": "Menu items and categories",
-      "subject": "Josh Hart's High Protein Burrito",
-      "field": "presence",
-      "generated": "chipotle-meal-653abfb2-3b20-4b17-8638-d6a20b2c340c (preconfigured_meal)",
-      "draft": "absent",
-      "classification": "engine_gap",
-      "gap": "preset_compositions",
-      "reason": "Preconfigured meal built from builder selections."
-    },
-    {
-      "section": "Menu items and categories",
-      "subject": "Bardi Bowl with Chili Lime Chips",
-      "field": "presence",
-      "generated": "chipotle-meal-3916248a-68fd-4c0f-87e9-38d794e50d7e (preconfigured_meal)",
-      "draft": "absent",
-      "classification": "engine_gap",
-      "gap": "preset_compositions",
-      "reason": "Preconfigured meal built from builder selections."
-    },
-    {
-      "section": "Menu items and categories",
-      "subject": "Mikal Bridges High Protein Bowl",
-      "field": "presence",
-      "generated": "chipotle-meal-2b15ccfe-9059-4e25-9c84-67b5f46c18c9 (preconfigured_meal)",
-      "draft": "absent",
-      "classification": "engine_gap",
-      "gap": "preset_compositions",
-      "reason": "Preconfigured meal built from builder selections."
-    },
-    {
-      "section": "Menu items and categories",
-      "subject": "The Salish Matter Meal",
-      "field": "presence",
-      "generated": "chipotle-meal-02774ed8-f878-4dc2-b6cd-5e86977b4907 (preconfigured_meal)",
-      "draft": "absent",
-      "classification": "engine_gap",
-      "gap": "preset_compositions",
-      "reason": "Preconfigured meal built from builder selections."
-    },
-    {
-      "section": "Menu items and categories",
-      "subject": "Tara Davis-Woodhall High Protein Bowl",
-      "field": "presence",
-      "generated": "chipotle-meal-f4929790-1d6c-4297-a5bd-acdc7f8b67c6 (preconfigured_meal)",
-      "draft": "absent",
-      "classification": "engine_gap",
-      "gap": "preset_compositions",
-      "reason": "Preconfigured meal built from builder selections."
-    },
-    {
-      "section": "Menu items and categories",
-      "subject": "Hunter Woodhall's High Protein Bowl",
-      "field": "presence",
-      "generated": "chipotle-meal-e1d03f68-0189-499b-8c55-403b7058acdd (preconfigured_meal)",
-      "draft": "absent",
-      "classification": "engine_gap",
-      "gap": "preset_compositions",
-      "reason": "Preconfigured meal built from builder selections."
-    },
-    {
-      "section": "Menu items and categories",
-      "subject": "Double High Protein Bowl",
-      "field": "presence",
-      "generated": "chipotle-meal-56ab2f6e-747d-46f9-9cf6-9ebc2855d86d (preconfigured_meal)",
-      "draft": "absent",
-      "classification": "engine_gap",
-      "gap": "preset_compositions",
-      "reason": "Preconfigured meal built from builder selections."
-    },
-    {
-      "section": "Menu items and categories",
-      "subject": "High Protein-High Fiber Bowl",
-      "field": "presence",
-      "generated": "chipotle-meal-6ba21999-f6b8-4a83-803a-bf68ef319c5e (preconfigured_meal)",
-      "draft": "absent",
-      "classification": "engine_gap",
-      "gap": "preset_compositions",
-      "reason": "Preconfigured meal built from builder selections."
-    },
-    {
-      "section": "Menu items and categories",
-      "subject": "High Protein Taco",
-      "field": "presence",
-      "generated": "chipotle-meal-2991ff70-3dfb-47af-84e0-cbe547e5395f (preconfigured_meal)",
-      "draft": "absent",
-      "classification": "engine_gap",
-      "gap": "preset_compositions",
-      "reason": "Preconfigured meal built from builder selections."
-    },
-    {
-      "section": "Menu items and categories",
-      "subject": "High Protein - Low Calorie Bowl",
-      "field": "presence",
-      "generated": "chipotle-meal-be88e387-62ed-4271-877c-7216b6485387 (preconfigured_meal)",
-      "draft": "absent",
-      "classification": "engine_gap",
-      "gap": "preset_compositions",
-      "reason": "Preconfigured meal built from builder selections."
-    },
-    {
-      "section": "Menu items and categories",
-      "subject": "Double High Protein Burrito",
-      "field": "presence",
-      "generated": "chipotle-meal-1a3697bb-88c5-4f2e-a061-85ac3cfa0a28 (preconfigured_meal)",
-      "draft": "absent",
-      "classification": "engine_gap",
-      "gap": "preset_compositions",
-      "reason": "Preconfigured meal built from builder selections."
     },
     {
       "section": "Nutrition values (standard items)",
@@ -737,146 +597,6 @@
     },
     {
       "section": "Stable ids",
-      "subject": "Serving Utensils",
-      "field": "item id",
-      "generated": "chipotle-cmg-6112",
-      "draft": "not represented",
-      "classification": "engine_gap",
-      "gap": "structural_records",
-      "reason": "The draft has no record of this kind, so there is nothing to give the id to."
-    },
-    {
-      "section": "Stable ids",
-      "subject": "Napkins & Utensils",
-      "field": "item id",
-      "generated": "chipotle-cmg-6110",
-      "draft": "not represented",
-      "classification": "engine_gap",
-      "gap": "structural_records",
-      "reason": "The draft has no record of this kind, so there is nothing to give the id to."
-    },
-    {
-      "section": "Stable ids",
-      "subject": "6 Serving Bowls",
-      "field": "item id",
-      "generated": "chipotle-cmg-6111",
-      "draft": "not represented",
-      "classification": "engine_gap",
-      "gap": "structural_records",
-      "reason": "The draft has no record of this kind, so there is nothing to give the id to."
-    },
-    {
-      "section": "Stable ids",
-      "subject": "Josh Hart's High Protein Burrito",
-      "field": "item id",
-      "generated": "chipotle-meal-653abfb2-3b20-4b17-8638-d6a20b2c340c",
-      "draft": "not represented",
-      "classification": "engine_gap",
-      "gap": "preset_compositions",
-      "reason": "The draft has no record of this kind, so there is nothing to give the id to."
-    },
-    {
-      "section": "Stable ids",
-      "subject": "Bardi Bowl with Chili Lime Chips",
-      "field": "item id",
-      "generated": "chipotle-meal-3916248a-68fd-4c0f-87e9-38d794e50d7e",
-      "draft": "not represented",
-      "classification": "engine_gap",
-      "gap": "preset_compositions",
-      "reason": "The draft has no record of this kind, so there is nothing to give the id to."
-    },
-    {
-      "section": "Stable ids",
-      "subject": "Mikal Bridges High Protein Bowl",
-      "field": "item id",
-      "generated": "chipotle-meal-2b15ccfe-9059-4e25-9c84-67b5f46c18c9",
-      "draft": "not represented",
-      "classification": "engine_gap",
-      "gap": "preset_compositions",
-      "reason": "The draft has no record of this kind, so there is nothing to give the id to."
-    },
-    {
-      "section": "Stable ids",
-      "subject": "The Salish Matter Meal",
-      "field": "item id",
-      "generated": "chipotle-meal-02774ed8-f878-4dc2-b6cd-5e86977b4907",
-      "draft": "not represented",
-      "classification": "engine_gap",
-      "gap": "preset_compositions",
-      "reason": "The draft has no record of this kind, so there is nothing to give the id to."
-    },
-    {
-      "section": "Stable ids",
-      "subject": "Tara Davis-Woodhall High Protein Bowl",
-      "field": "item id",
-      "generated": "chipotle-meal-f4929790-1d6c-4297-a5bd-acdc7f8b67c6",
-      "draft": "not represented",
-      "classification": "engine_gap",
-      "gap": "preset_compositions",
-      "reason": "The draft has no record of this kind, so there is nothing to give the id to."
-    },
-    {
-      "section": "Stable ids",
-      "subject": "Hunter Woodhall's High Protein Bowl",
-      "field": "item id",
-      "generated": "chipotle-meal-e1d03f68-0189-499b-8c55-403b7058acdd",
-      "draft": "not represented",
-      "classification": "engine_gap",
-      "gap": "preset_compositions",
-      "reason": "The draft has no record of this kind, so there is nothing to give the id to."
-    },
-    {
-      "section": "Stable ids",
-      "subject": "Double High Protein Bowl",
-      "field": "item id",
-      "generated": "chipotle-meal-56ab2f6e-747d-46f9-9cf6-9ebc2855d86d",
-      "draft": "not represented",
-      "classification": "engine_gap",
-      "gap": "preset_compositions",
-      "reason": "The draft has no record of this kind, so there is nothing to give the id to."
-    },
-    {
-      "section": "Stable ids",
-      "subject": "High Protein-High Fiber Bowl",
-      "field": "item id",
-      "generated": "chipotle-meal-6ba21999-f6b8-4a83-803a-bf68ef319c5e",
-      "draft": "not represented",
-      "classification": "engine_gap",
-      "gap": "preset_compositions",
-      "reason": "The draft has no record of this kind, so there is nothing to give the id to."
-    },
-    {
-      "section": "Stable ids",
-      "subject": "High Protein Taco",
-      "field": "item id",
-      "generated": "chipotle-meal-2991ff70-3dfb-47af-84e0-cbe547e5395f",
-      "draft": "not represented",
-      "classification": "engine_gap",
-      "gap": "preset_compositions",
-      "reason": "The draft has no record of this kind, so there is nothing to give the id to."
-    },
-    {
-      "section": "Stable ids",
-      "subject": "High Protein - Low Calorie Bowl",
-      "field": "item id",
-      "generated": "chipotle-meal-be88e387-62ed-4271-877c-7216b6485387",
-      "draft": "not represented",
-      "classification": "engine_gap",
-      "gap": "preset_compositions",
-      "reason": "The draft has no record of this kind, so there is nothing to give the id to."
-    },
-    {
-      "section": "Stable ids",
-      "subject": "Double High Protein Burrito",
-      "field": "item id",
-      "generated": "chipotle-meal-1a3697bb-88c5-4f2e-a061-85ac3cfa0a28",
-      "draft": "not represented",
-      "classification": "engine_gap",
-      "gap": "preset_compositions",
-      "reason": "The draft has no record of this kind, so there is nothing to give the id to."
-    },
-    {
-      "section": "Stable ids",
       "subject": "Guacamole",
       "field": "ingredient id",
       "generated": "chipotle-cmg-5301",
@@ -937,15 +657,6 @@
       "draft": "20: chipotle-fountain-22-fl-oz-minute-maid-lemonade, chipotle-fountain-22-fl-oz-lemonade-blue-sky, chipotle-fountain-22-fl-oz-mango-orange-blue-sky, chipotle-fountain-22-fl-oz-maine-root-root-beer, chipotle-fountain-22-fl-oz-tractor-berry-agua-fresca, chipotle-fountain-22-fl-oz-tractor-watermelon-limeade, chipotle-fountain-22-fl-oz-tractor-lemonade, chipotle-fountain-22-fl-oz-tractor-mandarin-agua-fresca, …",
       "classification": "restaurant_decision",
       "reason": "The draft carries records the live menu has no id for (catering builds, extra fountain flavors, groups and options the importer does not expose). They are given new ids and never reuse an existing one."
-    },
-    {
-      "section": "Customizations and runtime compatibility",
-      "subject": "items.sourceOnly",
-      "field": "runtimeField",
-      "generated": "on 3 record(s)",
-      "draft": "never emitted",
-      "classification": "restaurant_decision",
-      "reason": "Marks non-food ordering records, which the draft does not hold."
     },
     {
       "section": "Customizations and runtime compatibility",
@@ -1075,15 +786,12 @@
     }
   ],
   "byClass": {
-    "engine_gap": 28,
-    "restaurant_decision": 52,
+    "engine_gap": 0,
+    "restaurant_decision": 51,
     "generated_departs_from_source": 23,
     "withheld_incomplete": 4,
     "presentation": 5,
     "unexplained": 0
   },
-  "gapCounts": {
-    "structural_records": 6,
-    "preset_compositions": 22
-  }
+  "gapCounts": {}
 }

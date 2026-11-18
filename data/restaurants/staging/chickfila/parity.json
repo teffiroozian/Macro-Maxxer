@@ -1,0 +1,84 @@
+{
+  "baseline": {
+    "items": 439,
+    "ingredients": 59,
+    "variants": 224,
+    "panelsPresent": 647,
+    "contextualItemPanels": 109,
+    "combos": 45,
+    "addonGroups": 208,
+    "sourceGroups": 474,
+    "sourceEdges": 1946,
+    "nestedGroupReferences": 1380,
+    "constrainedEdges": 433,
+    "edgeNutritionUnits": 22
+  },
+  "draftOptions": {
+    "groups": 869,
+    "options": 2588,
+    "contextualPanels": 212
+  },
+  "runtime": {
+    "items": 435,
+    "ingredients": 59,
+    "variants": 224,
+    "executableOrderingPlans": 73,
+    "comboCarriers": 45,
+    "addonGroups": 208,
+    "itemContexts": 102,
+    "variantContexts": 74,
+    "sourceOnlyWithoutNutrition": 45,
+    "idsReused": 435,
+    "registryAdditions": 0,
+    "registryConflicts": 0,
+    "relationshipErrors": [],
+    "excludedByReason": {
+      "missing calories, protein, carbs, totalFat": 4
+    }
+  },
+  "preservedGraph": {
+    "groups": 474,
+    "edges": 1946
+  },
+  "runtimeRelationships": {
+    "comboCases": 659,
+    "differences": {
+      "comboBehavior": [],
+      "addonGroups": [],
+      "itemRelationships": [],
+      "ingredientUnits": []
+    }
+  },
+  "differences": {
+    "itemIds": [],
+    "ingredientIds": [],
+    "nutrition": [],
+    "variants": [],
+    "categoryOrServingType": [],
+    "defaults": [],
+    "groups": [],
+    "runtimeVariants": [],
+    "runtimeNutrition": [],
+    "defaultVariantParentNutrition": [
+      "cfa-group-100180",
+      "cfa-group-100369",
+      "cfa-group-100385",
+      "cfa-group-100392",
+      "cfa-group-100399",
+      "cfa-group-100400",
+      "cfa-group-100402",
+      "cfa-group-100408",
+      "cfa-group-100413",
+      "cfa-group-100420",
+      "cfa-group-100421",
+      "cfa-group-100423",
+      "cfa-group-100424",
+      "cfa-group-100426",
+      "cfa-group-100427",
+      "cfa-group-100429",
+      "cfa-group-100435",
+      "cfa-group-100442"
+    ],
+    "contextualPanelsMissing": []
+  }
+}

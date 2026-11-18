@@ -591,12 +591,12 @@ function withFixedComponents(
   };
 }
 
-function adaptItem(item: MenuItem): MenuItem {
+function adaptItem(item: MenuItem, remaining: ReturnType<typeof buildMcDonaldsRemainingSafeCustomization>): MenuItem {
   const category = presentationCategoryFor(item);
   const isPrebuiltMeal = item.servingType === "combo" || item.servingType === "kids";
   const preferredMediumVariantId = mediumVariantId(item);
   const customizationData = CUSTOMIZATION_DATA_BY_ITEM_ID[item.id];
-  const remainingSafeCustomization = REMAINING_SAFE_CUSTOMIZATION.byItemId[item.id];
+  const remainingSafeCustomization = remaining.byItemId[item.id];
   return {
     ...item,
     // Prebuilt meal records are relationship/provenance records, not the UI
@@ -660,7 +660,7 @@ function adaptItem(item: MenuItem): MenuItem {
           ingredients: remainingSafeCustomization.ingredients,
           informationalIngredients: remainingSafeCustomization.readOnlyIngredientIds?.map((id) => ({
             id,
-            label: REMAINING_SAFE_CUSTOMIZATION.ingredients.find((ingredient) => ingredient.id === id)!.name,
+            label: remaining.ingredients.find((ingredient) => ingredient.id === id)!.name,
           })),
           customization: remainingSafeCustomization.customization,
         }
@@ -671,22 +671,26 @@ function adaptItem(item: MenuItem): MenuItem {
   };
 }
 
-export const MCDONALDS_GENERATED_RUNTIME_MENU: RestaurantMenu = {
-  ...(generatedMenu as unknown as RestaurantMenu),
-  items: [...applyFamilyAwareSweetsOrder((generatedMenu.items as unknown as MenuItem[]).map(adaptItem)), HAPPY_MEAL_TOY],
+export function adaptMcDonaldsMenuForRuntime(menu: RestaurantMenu, remaining = REMAINING_SAFE_CUSTOMIZATION): RestaurantMenu {
+  return {
+  ...menu,
+  items: [...applyFamilyAwareSweetsOrder(menu.items.map((item) => adaptItem(item, remaining))), HAPPY_MEAL_TOY],
   ingredients: applyMcDonaldsIngredientCatalogPresentation([
-    ...((generatedMenu as unknown as RestaurantMenu).ingredients ?? []),
+    ...(menu.ingredients ?? []),
     ...MCDONALDS_CUSTOMIZATION_INGREDIENTS,
     ...MCDONALDS_SAUCE_SELECTION.ingredients,
-    ...REMAINING_SAFE_CUSTOMIZATION.ingredients,
+    ...remaining.ingredients,
   ]),
   customizationRules: {
-    ...(generatedMenu as unknown as RestaurantMenu).customizationRules,
+    ...menu.customizationRules,
     ingredientCategories: {
-      ...(generatedMenu as unknown as RestaurantMenu).customizationRules?.ingredientCategories,
+      ...menu.customizationRules?.ingredientCategories,
       ...MCDONALDS_CUSTOMIZATION_CATEGORY_RULES,
       ...MCDONALDS_SAUCE_SELECTION.categoryRules,
-      ...REMAINING_SAFE_CUSTOMIZATION.categoryRules,
+      ...remaining.categoryRules,
     },
   },
-};
+  };
+}
+
+export const MCDONALDS_GENERATED_RUNTIME_MENU = adaptMcDonaldsMenuForRuntime(generatedMenu as unknown as RestaurantMenu);

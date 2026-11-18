@@ -1,0 +1,1509 @@
+{
+  "draft": {
+    "items": 174,
+    "standardItems": 174,
+    "buildYourOwnItems": 0,
+    "ingredients": 454,
+    "nutritionRecords": 710,
+    "completeNutritionRecords": 593,
+    "recordsMissingCoreMacros": 117,
+    "nutritionConflicts": 0,
+    "blockers": 3
+  },
+  "runtime": {
+    "items": 174,
+    "sizePanels": 180,
+    "ingredients": 337,
+    "comboCases": 354,
+    "withheldModifierRecords": 117,
+    "normalizedDefaultPanels": [
+      "mcd-item-204623",
+      "mcd-item-200500",
+      "mcd-item-200181",
+      "mcd-item-203087",
+      "mcd-item-200107",
+      "mcd-item-200611",
+      "mcd-item-201038",
+      "mcd-item-200020",
+      "mcd-item-200612",
+      "mcd-item-200613",
+      "mcd-item-202381",
+      "mcd-item-200149",
+      "mcd-item-200148",
+      "mcd-item-200186",
+      "mcd-item-202274",
+      "mcd-item-201971",
+      "mcd-item-203556",
+      "mcd-item-200162",
+      "mcd-item-202116",
+      "mcd-item-204189",
+      "mcd-item-203275",
+      "mcd-item-204205",
+      "mcd-item-204219",
+      "mcd-item-200123",
+      "mcd-item-200653",
+      "mcd-item-200626",
+      "mcd-item-204208",
+      "mcd-item-204209",
+      "mcd-item-200358",
+      "mcd-item-203957",
+      "mcd-item-204589",
+      "mcd-item-200155",
+      "mcd-item-200066",
+      "mcd-item-200615",
+      "mcd-item-200152",
+      "mcd-item-200109",
+      "mcd-item-204586",
+      "mcd-item-200627",
+      "mcd-item-200108",
+      "mcd-item-203057",
+      "mcd-item-200614",
+      "mcd-item-203967",
+      "mcd-item-203964",
+      "mcd-item-200591",
+      "mcd-item-200223",
+      "mcd-item-200333",
+      "mcd-item-200706",
+      "mcd-item-200390",
+      "mcd-item-204695",
+      "mcd-item-204697",
+      "mcd-item-204693",
+      "mcd-item-204691"
+    ],
+    "enrichedPackets": [
+      "mcd-safe-200322-ketchup-packet",
+      "mcd-safe-200323-ketchup-packet",
+      "mcd-safe-200267-ketchup-packet"
+    ],
+    "issuedIds": 0,
+    "idConflicts": 0,
+    "legacyReferenceErrors": [
+      "mcd-item-200692: variant \"mcd-item-204386\" does not exist.",
+      "mcd-item-200692: variant \"mcd-item-204385\" does not exist.",
+      "mcd-item-204386: variant \"mcd-item-200692\" does not exist.",
+      "mcd-item-204386: variant \"mcd-item-200574\" does not exist.",
+      "mcd-item-204386: variant \"mcd-item-200567\" does not exist.",
+      "mcd-item-204386: variant \"mcd-item-200573\" does not exist.",
+      "mcd-item-204386: variant \"mcd-item-200577\" does not exist.",
+      "Selection rule \"mcd-mcd-item-200424-safe-bread\" belongs to no ingredient category.",
+      "Selection rule \"mcd-mcd-item-200424-safe-cheeses\" belongs to no ingredient category.",
+      "Selection rule \"mcd-mcd-item-200424-safe-protein\" belongs to no ingredient category.",
+      "Selection rule \"mcd-mcd-item-200424-safe-sauces\" belongs to no ingredient category.",
+      "Selection rule \"mcd-mcd-item-200876-safe-bread\" belongs to no ingredient category.",
+      "Selection rule \"mcd-mcd-item-200876-safe-cheeses\" belongs to no ingredient category.",
+      "Selection rule \"mcd-mcd-item-200876-safe-protein\" belongs to no ingredient category.",
+      "Selection rule \"mcd-mcd-item-200876-safe-sauces\" belongs to no ingredient category.",
+      "Selection rule \"mcd-mcd-item-201030-safe-bread\" belongs to no ingredient category.",
+      "Selection rule \"mcd-mcd-item-201030-safe-cheeses\" belongs to no ingredient category.",
+      "Selection rule \"mcd-mcd-item-201030-safe-protein\" belongs to no ingredient category.",
+      "Selection rule \"mcd-mcd-item-201030-safe-sauces\" belongs to no ingredient category.",
+      "Selection rule \"mcd-mcd-item-200145-safe-bread\" belongs to no ingredient category.",
+      "Selection rule \"mcd-mcd-item-200145-safe-cheeses\" belongs to no ingredient category.",
+      "Selection rule \"mcd-mcd-item-200145-safe-protein\" belongs to no ingredient category.",
+      "Selection rule \"mcd-mcd-item-200145-safe-toppings\" belongs to no ingredient category.",
+      "Selection rule \"mcd-mcd-item-200145-safe-sauces\" belongs to no ingredient category.",
+      "Selection rule \"mcd-mcd-item-200300-safe-bread\" belongs to no ingredient category.",
+      "Selection rule \"mcd-mcd-item-200300-safe-cheeses\" belongs to no ingredient category.",
+      "Selection rule \"mcd-mcd-item-200300-safe-protein\" belongs to no ingredient category.",
+      "Selection rule \"mcd-mcd-item-200300-safe-sauces\" belongs to no ingredient category.",
+      "Selection rule \"mcd-mcd-item-201256-safe-bread\" belongs to no ingredient category.",
+      "Selection rule \"mcd-mcd-item-201256-safe-cheeses\" belongs to no ingredient category.",
+      "Selection rule \"mcd-mcd-item-201256-safe-protein\" belongs to no ingredient category.",
+      "Selection rule \"mcd-mcd-item-200302-safe-bread\" belongs to no ingredient category.",
+      "Selection rule \"mcd-mcd-item-200302-safe-cheeses\" belongs to no ingredient category.",
+      "Selection rule \"mcd-mcd-item-200302-safe-protein\" belongs to no ingredient category.",
+      "Selection rule \"mcd-mcd-item-200302-safe-sauces\" belongs to no ingredient category.",
+      "Selection rule \"mcd-mcd-item-200301-safe-bread\" belongs to no ingredient category.",
+      "Selection rule \"mcd-mcd-item-200301-safe-cheeses\" belongs to no ingredient category.",
+      "Selection rule \"mcd-mcd-item-200301-safe-protein\" belongs to no ingredient category.",
+      "Selection rule \"mcd-mcd-item-200301-safe-sauces\" belongs to no ingredient category.",
+      "Selection rule \"mcd-mcd-item-200304-safe-bread\" belongs to no ingredient category.",
+      "Selection rule \"mcd-mcd-item-200304-safe-cheeses\" belongs to no ingredient category.",
+      "Selection rule \"mcd-mcd-item-200304-safe-protein\" belongs to no ingredient category.",
+      "Selection rule \"mcd-mcd-item-200304-safe-sauces\" belongs to no ingredient category.",
+      "Selection rule \"mcd-mcd-item-200307-safe-bread\" belongs to no ingredient category.",
+      "Selection rule \"mcd-mcd-item-200307-safe-cheeses\" belongs to no ingredient category.",
+      "Selection rule \"mcd-mcd-item-200307-safe-protein\" belongs to no ingredient category.",
+      "Selection rule \"mcd-mcd-item-200307-safe-sauces\" belongs to no ingredient category.",
+      "Selection rule \"mcd-mcd-item-200306-safe-bread\" belongs to no ingredient category.",
+      "Selection rule \"mcd-mcd-item-200306-safe-cheeses\" belongs to no ingredient category.",
+      "Selection rule \"mcd-mcd-item-200306-safe-protein\" belongs to no ingredient category.",
+      "Selection rule \"mcd-mcd-item-200306-safe-sauces\" belongs to no ingredient category.",
+      "Selection rule \"mcd-mcd-item-200298-safe-bread\" belongs to no ingredient category.",
+      "Selection rule \"mcd-mcd-item-200298-safe-cheeses\" belongs to no ingredient category.",
+      "Selection rule \"mcd-mcd-item-200298-safe-protein\" belongs to no ingredient category.",
+      "Selection rule \"mcd-mcd-item-200298-safe-sauces\" belongs to no ingredient category.",
+      "Selection rule \"mcd-mcd-item-200161-safe-bread\" belongs to no ingredient category.",
+      "Selection rule \"mcd-mcd-item-200161-safe-cheeses\" belongs to no ingredient category.",
+      "Selection rule \"mcd-mcd-item-200161-safe-protein\" belongs to no ingredient category.",
+      "Selection rule \"mcd-mcd-item-200161-safe-sauces\" belongs to no ingredient category.",
+      "Selection rule \"mcd-mcd-item-200449-safe-bread\" belongs to no ingredient category.",
+      "Selection rule \"mcd-mcd-item-200449-safe-cheeses\" belongs to no ingredient category.",
+      "Selection rule \"mcd-mcd-item-200449-safe-protein\" belongs to no ingredient category.",
+      "Selection rule \"mcd-mcd-item-200449-safe-sauces\" belongs to no ingredient category.",
+      "Selection rule \"mcd-mcd-item-200322-safe-add-ons\" belongs to no ingredient category.",
+      "Selection rule \"mcd-mcd-item-200323-safe-add-ons\" belongs to no ingredient category."
+    ],
+    "runtimeReferenceErrors": []
+  },
+  "withheldEvidence": [
+    {
+      "id": "mcd-safe-200424-butter",
+      "label": "Salted Butter",
+      "itemIds": [
+        "mcd-item-200424"
+      ],
+      "capturedOptionIds": {
+        "0": "35957955095",
+        "2": "35957955101"
+      },
+      "capturedGroupIds": {
+        "0": "8076608900",
+        "2": "8076608901"
+      }
+    },
+    {
+      "id": "mcd-safe-200424-folded-egg",
+      "label": "Folded Egg",
+      "itemIds": [
+        "mcd-item-200424"
+      ],
+      "capturedOptionIds": {
+        "0": "35957955098",
+        "2": "35957955104"
+      },
+      "capturedGroupIds": {
+        "0": "8076608900",
+        "2": "8076608901"
+      }
+    },
+    {
+      "id": "mcd-safe-200424-breakfast-sauce",
+      "label": "Breakfast Sauce",
+      "itemIds": [
+        "mcd-item-200424"
+      ],
+      "capturedOptionIds": {
+        "0": "35957955099",
+        "2": "35957955105"
+      },
+      "capturedGroupIds": {
+        "0": "8076608900",
+        "2": "8076608901"
+      }
+    },
+    {
+      "id": "mcd-safe-200424-bagel",
+      "label": "Plain Bagel",
+      "itemIds": [
+        "mcd-item-200424"
+      ],
+      "capturedOptionIds": {
+        "0": "35957955100"
+      },
+      "capturedGroupIds": {
+        "0": "8076608900"
+      }
+    },
+    {
+      "id": "mcd-safe-200424-round-egg",
+      "label": "Round Egg",
+      "itemIds": [
+        "mcd-item-200424"
+      ],
+      "capturedOptionIds": {
+        "1": "35957955106"
+      },
+      "capturedGroupIds": {
+        "1": "8076608901"
+      }
+    },
+    {
+      "id": "mcd-safe-200876-butter",
+      "label": "Salted Butter",
+      "itemIds": [
+        "mcd-item-200876"
+      ],
+      "capturedOptionIds": {
+        "0": "35958000913",
+        "2": "35958000918"
+      },
+      "capturedGroupIds": {
+        "0": "8076619559",
+        "2": "8076619560"
+      }
+    },
+    {
+      "id": "mcd-safe-200876-folded-egg",
+      "label": "Folded Egg",
+      "itemIds": [
+        "mcd-item-200876"
+      ],
+      "capturedOptionIds": {
+        "0": "35958000915",
+        "2": "35958000920"
+      },
+      "capturedGroupIds": {
+        "0": "8076619559",
+        "2": "8076619560"
+      }
+    },
+    {
+      "id": "mcd-safe-200876-breakfast-sauce",
+      "label": "Breakfast Sauce",
+      "itemIds": [
+        "mcd-item-200876"
+      ],
+      "capturedOptionIds": {
+        "0": "35958000916",
+        "2": "35958000921"
+      },
+      "capturedGroupIds": {
+        "0": "8076619559",
+        "2": "8076619560"
+      }
+    },
+    {
+      "id": "mcd-safe-200876-bagel",
+      "label": "Plain Bagel",
+      "itemIds": [
+        "mcd-item-200876"
+      ],
+      "capturedOptionIds": {
+        "0": "35958000917"
+      },
+      "capturedGroupIds": {
+        "0": "8076619559"
+      }
+    },
+    {
+      "id": "mcd-safe-201030-butter",
+      "label": "Salted Butter",
+      "itemIds": [
+        "mcd-item-201030"
+      ],
+      "capturedOptionIds": {
+        "0": "35958026070",
+        "2": "35958026076"
+      },
+      "capturedGroupIds": {
+        "0": "8076620000",
+        "2": "8076620001"
+      }
+    },
+    {
+      "id": "mcd-safe-201030-sausage",
+      "label": "Sausage Patty",
+      "itemIds": [
+        "mcd-item-201030"
+      ],
+      "capturedOptionIds": {
+        "0": "35958026072",
+        "2": "35958026078"
+      },
+      "capturedGroupIds": {
+        "0": "8076620000",
+        "2": "8076620001"
+      }
+    },
+    {
+      "id": "mcd-safe-201030-folded-egg",
+      "label": "Folded Egg",
+      "itemIds": [
+        "mcd-item-201030"
+      ],
+      "capturedOptionIds": {
+        "0": "35958026073",
+        "2": "35958026079"
+      },
+      "capturedGroupIds": {
+        "0": "8076620000",
+        "2": "8076620001"
+      }
+    },
+    {
+      "id": "mcd-safe-201030-breakfast-sauce",
+      "label": "Breakfast Sauce",
+      "itemIds": [
+        "mcd-item-201030"
+      ],
+      "capturedOptionIds": {
+        "0": "35958026074",
+        "2": "35958026080"
+      },
+      "capturedGroupIds": {
+        "0": "8076620000",
+        "2": "8076620001"
+      }
+    },
+    {
+      "id": "mcd-safe-201030-bagel",
+      "label": "Plain Bagel",
+      "itemIds": [
+        "mcd-item-201030"
+      ],
+      "capturedOptionIds": {
+        "0": "35958026075"
+      },
+      "capturedGroupIds": {
+        "0": "8076620000"
+      }
+    },
+    {
+      "id": "mcd-safe-201030-round-egg",
+      "label": "Round Egg",
+      "itemIds": [
+        "mcd-item-201030"
+      ],
+      "capturedOptionIds": {
+        "1": "35958026081"
+      },
+      "capturedGroupIds": {
+        "1": "8076620001"
+      }
+    },
+    {
+      "id": "mcd-safe-200145-butter",
+      "label": "Salted Butter",
+      "itemIds": [
+        "mcd-item-200145"
+      ],
+      "capturedOptionIds": {
+        "0": "35958009423",
+        "2": "35958009431"
+      },
+      "capturedGroupIds": {
+        "0": "8076590658",
+        "2": "8076590659"
+      }
+    },
+    {
+      "id": "mcd-safe-200145-steak",
+      "label": "Breakfast Steak Patty",
+      "itemIds": [
+        "mcd-item-200145"
+      ],
+      "capturedOptionIds": {
+        "0": "35958009425",
+        "2": "35958009433"
+      },
+      "capturedGroupIds": {
+        "0": "8076590658",
+        "2": "8076590659"
+      }
+    },
+    {
+      "id": "mcd-safe-200145-salt",
+      "label": "Salt",
+      "itemIds": [
+        "mcd-item-200145"
+      ],
+      "capturedOptionIds": {
+        "0": "35958009426"
+      },
+      "capturedGroupIds": {
+        "0": "8076590658"
+      }
+    },
+    {
+      "id": "mcd-safe-200145-onions",
+      "label": "Grilled Onions",
+      "itemIds": [
+        "mcd-item-200145"
+      ],
+      "capturedOptionIds": {
+        "0": "35958009427",
+        "2": "35958009434"
+      },
+      "capturedGroupIds": {
+        "0": "8076590658",
+        "2": "8076590659"
+      }
+    },
+    {
+      "id": "mcd-safe-200145-folded-egg",
+      "label": "Folded Egg",
+      "itemIds": [
+        "mcd-item-200145"
+      ],
+      "capturedOptionIds": {
+        "0": "35958009428",
+        "2": "35958009435"
+      },
+      "capturedGroupIds": {
+        "0": "8076590658",
+        "2": "8076590659"
+      }
+    },
+    {
+      "id": "mcd-safe-200145-breakfast-sauce",
+      "label": "Breakfast Sauce",
+      "itemIds": [
+        "mcd-item-200145"
+      ],
+      "capturedOptionIds": {
+        "0": "35958009429",
+        "2": "35958048036"
+      },
+      "capturedGroupIds": {
+        "0": "8076590658",
+        "2": "8076590659"
+      }
+    },
+    {
+      "id": "mcd-safe-200145-bagel",
+      "label": "Plain Bagel",
+      "itemIds": [
+        "mcd-item-200145"
+      ],
+      "capturedOptionIds": {
+        "0": "35958009430"
+      },
+      "capturedGroupIds": {
+        "0": "8076590658"
+      }
+    },
+    {
+      "id": "mcd-safe-200145-round-egg",
+      "label": "Round Egg",
+      "itemIds": [
+        "mcd-item-200145"
+      ],
+      "capturedOptionIds": {
+        "1": "35958048037"
+      },
+      "capturedGroupIds": {
+        "1": "8076590659"
+      }
+    },
+    {
+      "id": "mcd-safe-200300-folded-egg",
+      "label": "Folded Egg",
+      "itemIds": [
+        "mcd-item-200300"
+      ],
+      "capturedOptionIds": {
+        "0": "30435542481",
+        "2": "23568409478"
+      },
+      "capturedGroupIds": {
+        "0": "5820746153",
+        "2": "5820746154"
+      }
+    },
+    {
+      "id": "mcd-safe-200300-biscuit",
+      "label": "Biscuit",
+      "itemIds": [
+        "mcd-item-200300"
+      ],
+      "capturedOptionIds": {
+        "0": "30435555681"
+      },
+      "capturedGroupIds": {
+        "0": "5820746153"
+      }
+    },
+    {
+      "id": "mcd-safe-200300-round-egg",
+      "label": "Round Egg",
+      "itemIds": [
+        "mcd-item-200300"
+      ],
+      "capturedOptionIds": {
+        "1": "23568409480"
+      },
+      "capturedGroupIds": {
+        "1": "5820746154"
+      }
+    },
+    {
+      "id": "mcd-safe-200300-canadian-bacon",
+      "label": "Canadian Bacon",
+      "itemIds": [
+        "mcd-item-200300"
+      ],
+      "capturedOptionIds": {
+        "1": "23568409481"
+      },
+      "capturedGroupIds": {
+        "1": "5820746154"
+      }
+    },
+    {
+      "id": "mcd-safe-201256-folded-egg",
+      "label": "Folded Egg",
+      "itemIds": [
+        "mcd-item-201256"
+      ],
+      "capturedOptionIds": {
+        "0": "23568409501",
+        "2": "23568409504"
+      },
+      "capturedGroupIds": {
+        "0": "5820746161",
+        "2": "5820746162"
+      }
+    },
+    {
+      "id": "mcd-safe-201256-biscuit",
+      "label": "Biscuit",
+      "itemIds": [
+        "mcd-item-201256"
+      ],
+      "capturedOptionIds": {
+        "0": "23568409502"
+      },
+      "capturedGroupIds": {
+        "0": "5820746161"
+      }
+    },
+    {
+      "id": "mcd-safe-200302-folded-egg",
+      "label": "Folded Egg",
+      "itemIds": [
+        "mcd-item-200302"
+      ],
+      "capturedOptionIds": {
+        "0": "23568409482",
+        "2": "23568409485"
+      },
+      "capturedGroupIds": {
+        "0": "5820746155",
+        "2": "5820746156"
+      }
+    },
+    {
+      "id": "mcd-safe-200302-sausage",
+      "label": "Sausage Patty",
+      "itemIds": [
+        "mcd-item-200302"
+      ],
+      "capturedOptionIds": {
+        "0": "23568409483",
+        "2": "23568409486"
+      },
+      "capturedGroupIds": {
+        "0": "5820746155",
+        "2": "5820746156"
+      }
+    },
+    {
+      "id": "mcd-safe-200302-biscuit",
+      "label": "Biscuit",
+      "itemIds": [
+        "mcd-item-200302"
+      ],
+      "capturedOptionIds": {
+        "0": "23568409484"
+      },
+      "capturedGroupIds": {
+        "0": "5820746155"
+      }
+    },
+    {
+      "id": "mcd-safe-200302-round-egg",
+      "label": "Round Egg",
+      "itemIds": [
+        "mcd-item-200302"
+      ],
+      "capturedOptionIds": {
+        "1": "23568409489"
+      },
+      "capturedGroupIds": {
+        "1": "5820746156"
+      }
+    },
+    {
+      "id": "mcd-safe-200302-canadian-bacon",
+      "label": "Canadian Bacon",
+      "itemIds": [
+        "mcd-item-200302"
+      ],
+      "capturedOptionIds": {
+        "1": "23568409490"
+      },
+      "capturedGroupIds": {
+        "1": "5820746156"
+      }
+    },
+    {
+      "id": "mcd-safe-200301-sausage",
+      "label": "Sausage Patty",
+      "itemIds": [
+        "mcd-item-200301"
+      ],
+      "capturedOptionIds": {
+        "0": "23568409491",
+        "2": "23568409493"
+      },
+      "capturedGroupIds": {
+        "0": "5820746157",
+        "2": "5820746158"
+      }
+    },
+    {
+      "id": "mcd-safe-200301-biscuit",
+      "label": "Biscuit",
+      "itemIds": [
+        "mcd-item-200301"
+      ],
+      "capturedOptionIds": {
+        "0": "23568409492"
+      },
+      "capturedGroupIds": {
+        "0": "5820746157"
+      }
+    },
+    {
+      "id": "mcd-safe-200304-folded-egg",
+      "label": "Folded Egg",
+      "itemIds": [
+        "mcd-item-200304"
+      ],
+      "capturedOptionIds": {
+        "0": "31761978433",
+        "2": "31761977208"
+      },
+      "capturedGroupIds": {
+        "0": "7243057754",
+        "2": "7243050650"
+      }
+    },
+    {
+      "id": "mcd-safe-200304-mcgriddles-cakes",
+      "label": "McGriddles Cakes",
+      "itemIds": [
+        "mcd-item-200304"
+      ],
+      "capturedOptionIds": {
+        "0": "31761978434"
+      },
+      "capturedGroupIds": {
+        "0": "7243057754"
+      }
+    },
+    {
+      "id": "mcd-safe-200304-canadian-bacon",
+      "label": "Canadian Bacon",
+      "itemIds": [
+        "mcd-item-200304"
+      ],
+      "capturedOptionIds": {
+        "1": "31761977209"
+      },
+      "capturedGroupIds": {
+        "1": "7243050650"
+      }
+    },
+    {
+      "id": "mcd-safe-200304-round-egg",
+      "label": "Round Egg",
+      "itemIds": [
+        "mcd-item-200304"
+      ],
+      "capturedOptionIds": {
+        "1": "31761977210"
+      },
+      "capturedGroupIds": {
+        "1": "7243050650"
+      }
+    },
+    {
+      "id": "mcd-safe-200307-sausage",
+      "label": "Sausage Patty",
+      "itemIds": [
+        "mcd-item-200307"
+      ],
+      "capturedOptionIds": {
+        "0": "31761992270",
+        "2": "31761995444"
+      },
+      "capturedGroupIds": {
+        "0": "7243059537",
+        "2": "7243058359"
+      }
+    },
+    {
+      "id": "mcd-safe-200307-folded-egg",
+      "label": "Folded Egg",
+      "itemIds": [
+        "mcd-item-200307"
+      ],
+      "capturedOptionIds": {
+        "0": "31761992271",
+        "2": "31761995445"
+      },
+      "capturedGroupIds": {
+        "0": "7243059537",
+        "2": "7243058359"
+      }
+    },
+    {
+      "id": "mcd-safe-200307-mcgriddles-cakes",
+      "label": "McGriddles Cakes",
+      "itemIds": [
+        "mcd-item-200307"
+      ],
+      "capturedOptionIds": {
+        "0": "31761992272"
+      },
+      "capturedGroupIds": {
+        "0": "7243059537"
+      }
+    },
+    {
+      "id": "mcd-safe-200307-round-egg",
+      "label": "Round Egg",
+      "itemIds": [
+        "mcd-item-200307"
+      ],
+      "capturedOptionIds": {
+        "1": "31761995446"
+      },
+      "capturedGroupIds": {
+        "1": "7243058359"
+      }
+    },
+    {
+      "id": "mcd-safe-200307-canadian-bacon",
+      "label": "Canadian Bacon",
+      "itemIds": [
+        "mcd-item-200307"
+      ],
+      "capturedOptionIds": {
+        "1": "31761995448"
+      },
+      "capturedGroupIds": {
+        "1": "7243058359"
+      }
+    },
+    {
+      "id": "mcd-safe-200306-sausage",
+      "label": "Sausage Patty",
+      "itemIds": [
+        "mcd-item-200306"
+      ],
+      "capturedOptionIds": {
+        "0": "31761988139",
+        "2": "31761972402"
+      },
+      "capturedGroupIds": {
+        "0": "7243057175",
+        "2": "7243053603"
+      }
+    },
+    {
+      "id": "mcd-safe-200306-mcgriddles-cakes",
+      "label": "McGriddles Cakes",
+      "itemIds": [
+        "mcd-item-200306"
+      ],
+      "capturedOptionIds": {
+        "0": "31761988140"
+      },
+      "capturedGroupIds": {
+        "0": "7243057175"
+      }
+    },
+    {
+      "id": "mcd-safe-200306-canadian-bacon",
+      "label": "Canadian Bacon",
+      "itemIds": [
+        "mcd-item-200306"
+      ],
+      "capturedOptionIds": {
+        "1": "31761972405"
+      },
+      "capturedGroupIds": {
+        "1": "7243053603"
+      }
+    },
+    {
+      "id": "mcd-safe-200306-round-egg",
+      "label": "Round Egg",
+      "itemIds": [
+        "mcd-item-200306"
+      ],
+      "capturedOptionIds": {
+        "1": "31761972406"
+      },
+      "capturedGroupIds": {
+        "1": "7243053603"
+      }
+    },
+    {
+      "id": "mcd-safe-200306-folded-egg",
+      "label": "Folded Egg",
+      "itemIds": [
+        "mcd-item-200306"
+      ],
+      "capturedOptionIds": {
+        "1": "31761972407"
+      },
+      "capturedGroupIds": {
+        "1": "7243053603"
+      }
+    },
+    {
+      "id": "mcd-safe-200298-butter",
+      "label": "Salted Butter",
+      "itemIds": [
+        "mcd-item-200298"
+      ],
+      "capturedOptionIds": {
+        "0": "31761989524",
+        "2": "31761988134"
+      },
+      "capturedGroupIds": {
+        "0": "7243051829",
+        "2": "7243057174"
+      }
+    },
+    {
+      "id": "mcd-safe-200298-round-egg",
+      "label": "Round Egg",
+      "itemIds": [
+        "mcd-item-200298"
+      ],
+      "capturedOptionIds": {
+        "0": "31761989526",
+        "2": "31761988136"
+      },
+      "capturedGroupIds": {
+        "0": "7243051829",
+        "2": "7243057174"
+      }
+    },
+    {
+      "id": "mcd-safe-200298-canadian-bacon",
+      "label": "Canadian Bacon",
+      "itemIds": [
+        "mcd-item-200298"
+      ],
+      "capturedOptionIds": {
+        "0": "31761989527",
+        "2": "31761988137"
+      },
+      "capturedGroupIds": {
+        "0": "7243051829",
+        "2": "7243057174"
+      }
+    },
+    {
+      "id": "mcd-safe-200298-english-muffin",
+      "label": "English Muffin",
+      "itemIds": [
+        "mcd-item-200298"
+      ],
+      "capturedOptionIds": {
+        "0": "31761989528"
+      },
+      "capturedGroupIds": {
+        "0": "7243051829"
+      }
+    },
+    {
+      "id": "mcd-safe-200161-butter",
+      "label": "Salted Butter",
+      "itemIds": [
+        "mcd-item-200161"
+      ],
+      "capturedOptionIds": {
+        "0": "31761977201",
+        "2": "31761989719"
+      },
+      "capturedGroupIds": {
+        "0": "7243050649",
+        "2": "7243051652"
+      }
+    },
+    {
+      "id": "mcd-safe-200161-sausage",
+      "label": "Sausage Patty",
+      "itemIds": [
+        "mcd-item-200161"
+      ],
+      "capturedOptionIds": {
+        "0": "31761977203",
+        "2": "31761989721"
+      },
+      "capturedGroupIds": {
+        "0": "7243050649",
+        "2": "7243051652"
+      }
+    },
+    {
+      "id": "mcd-safe-200161-round-egg",
+      "label": "Round Egg",
+      "itemIds": [
+        "mcd-item-200161"
+      ],
+      "capturedOptionIds": {
+        "0": "31761977204",
+        "2": "31761989722"
+      },
+      "capturedGroupIds": {
+        "0": "7243050649",
+        "2": "7243051652"
+      }
+    },
+    {
+      "id": "mcd-safe-200161-english-muffin",
+      "label": "English Muffin",
+      "itemIds": [
+        "mcd-item-200161"
+      ],
+      "capturedOptionIds": {
+        "0": "31761977205"
+      },
+      "capturedGroupIds": {
+        "0": "7243050649"
+      }
+    },
+    {
+      "id": "mcd-safe-200161-canadian-bacon",
+      "label": "Canadian Bacon",
+      "itemIds": [
+        "mcd-item-200161"
+      ],
+      "capturedOptionIds": {
+        "1": "31761989724"
+      },
+      "capturedGroupIds": {
+        "1": "7243051652"
+      }
+    },
+    {
+      "id": "mcd-safe-200449-butter",
+      "label": "Salted Butter",
+      "itemIds": [
+        "mcd-item-200449"
+      ],
+      "capturedOptionIds": {
+        "0": "31761989130",
+        "2": "31761993491"
+      },
+      "capturedGroupIds": {
+        "0": "7243049860",
+        "2": "7243064313"
+      }
+    },
+    {
+      "id": "mcd-safe-200449-sausage",
+      "label": "Sausage Patty",
+      "itemIds": [
+        "mcd-item-200449"
+      ],
+      "capturedOptionIds": {
+        "0": "31761989131",
+        "2": "31761993492"
+      },
+      "capturedGroupIds": {
+        "0": "7243049860",
+        "2": "7243064313"
+      }
+    },
+    {
+      "id": "mcd-safe-200449-english-muffin",
+      "label": "English Muffin",
+      "itemIds": [
+        "mcd-item-200449"
+      ],
+      "capturedOptionIds": {
+        "0": "31761989133"
+      },
+      "capturedGroupIds": {
+        "0": "7243049860"
+      }
+    },
+    {
+      "id": "mcd-safe-200449-canadian-bacon",
+      "label": "Canadian Bacon",
+      "itemIds": [
+        "mcd-item-200449"
+      ],
+      "capturedOptionIds": {
+        "1": "31761993495"
+      },
+      "capturedGroupIds": {
+        "1": "7243064313"
+      }
+    },
+    {
+      "id": "mcd-safe-204401-chicken-strip",
+      "label": "McCrispy Chicken Strip",
+      "itemIds": [
+        "mcd-item-204401"
+      ],
+      "capturedOptionIds": {},
+      "capturedGroupIds": {}
+    },
+    {
+      "id": "mcd-safe-204401-flour-tortilla",
+      "label": "Flour Tortilla",
+      "itemIds": [
+        "mcd-item-204401"
+      ],
+      "capturedOptionIds": {},
+      "capturedGroupIds": {}
+    },
+    {
+      "id": "mcd-safe-204401-sauce",
+      "label": "McCrispy Ranch Sauce",
+      "itemIds": [
+        "mcd-item-204401"
+      ],
+      "capturedOptionIds": {
+        "0": "45501690899",
+        "2": "45501690902"
+      },
+      "capturedGroupIds": {
+        "0": "9999652020",
+        "2": "9999652021"
+      }
+    },
+    {
+      "id": "mcd-safe-204401-shredded-cheese",
+      "label": "Shredded Cheese",
+      "itemIds": [
+        "mcd-item-204401"
+      ],
+      "capturedOptionIds": {
+        "0": "45501690901",
+        "2": "45501690904"
+      },
+      "capturedGroupIds": {
+        "0": "9999652020",
+        "2": "9999652021"
+      }
+    },
+    {
+      "id": "mcd-safe-204402-chicken-strip",
+      "label": "McCrispy Chicken Strip",
+      "itemIds": [
+        "mcd-item-204402"
+      ],
+      "capturedOptionIds": {},
+      "capturedGroupIds": {}
+    },
+    {
+      "id": "mcd-safe-204402-flour-tortilla",
+      "label": "Flour Tortilla",
+      "itemIds": [
+        "mcd-item-204402"
+      ],
+      "capturedOptionIds": {},
+      "capturedGroupIds": {}
+    },
+    {
+      "id": "mcd-safe-204402-sauce",
+      "label": "Spicy Pepper Sauce",
+      "itemIds": [
+        "mcd-item-204402"
+      ],
+      "capturedOptionIds": {
+        "0": "45501690907",
+        "2": "45501690910"
+      },
+      "capturedGroupIds": {
+        "0": "9999652022",
+        "2": "9999652023"
+      }
+    },
+    {
+      "id": "mcd-safe-204402-shredded-cheese",
+      "label": "Shredded Cheese",
+      "itemIds": [
+        "mcd-item-204402"
+      ],
+      "capturedOptionIds": {
+        "0": "45501690909",
+        "2": "45501690912"
+      },
+      "capturedGroupIds": {
+        "0": "9999652022",
+        "2": "9999652023"
+      }
+    },
+    {
+      "id": "mcd-breakfast-200424-300654",
+      "label": "Clarified Butter",
+      "itemIds": [
+        "mcd-item-200424"
+      ]
+    },
+    {
+      "id": "mcd-breakfast-200876-300654",
+      "label": "Clarified Butter",
+      "itemIds": [
+        "mcd-item-200876"
+      ]
+    },
+    {
+      "id": "mcd-breakfast-201030-300654",
+      "label": "Clarified Butter",
+      "itemIds": [
+        "mcd-item-201030"
+      ]
+    },
+    {
+      "id": "mcd-breakfast-200145-300654",
+      "label": "Clarified Butter",
+      "itemIds": [
+        "mcd-item-200145"
+      ]
+    },
+    {
+      "id": "mcd-breakfast-200300-300310",
+      "label": "Salted Butter",
+      "itemIds": [
+        "mcd-item-200300"
+      ]
+    },
+    {
+      "id": "mcd-breakfast-200300-300654",
+      "label": "Clarified Butter",
+      "itemIds": [
+        "mcd-item-200300"
+      ]
+    },
+    {
+      "id": "mcd-breakfast-201256-300310",
+      "label": "Salted Butter",
+      "itemIds": [
+        "mcd-item-201256"
+      ]
+    },
+    {
+      "id": "mcd-breakfast-201256-300654",
+      "label": "Clarified Butter",
+      "itemIds": [
+        "mcd-item-201256"
+      ]
+    },
+    {
+      "id": "mcd-breakfast-200302-300310",
+      "label": "Salted Butter",
+      "itemIds": [
+        "mcd-item-200302"
+      ]
+    },
+    {
+      "id": "mcd-breakfast-200302-300654",
+      "label": "Clarified Butter",
+      "itemIds": [
+        "mcd-item-200302"
+      ]
+    },
+    {
+      "id": "mcd-breakfast-200301-300310",
+      "label": "Salted Butter",
+      "itemIds": [
+        "mcd-item-200301"
+      ]
+    },
+    {
+      "id": "mcd-breakfast-200304-300654",
+      "label": "Clarified Butter",
+      "itemIds": [
+        "mcd-item-200304"
+      ]
+    },
+    {
+      "id": "mcd-breakfast-200307-300654",
+      "label": "Clarified Butter",
+      "itemIds": [
+        "mcd-item-200307"
+      ]
+    },
+    {
+      "id": "mcd-breakfast-200298-300654",
+      "label": "Clarified Butter",
+      "itemIds": [
+        "mcd-item-200298"
+      ]
+    },
+    {
+      "id": "mcd-breakfast-200161-300654",
+      "label": "Clarified Butter",
+      "itemIds": [
+        "mcd-item-200161"
+      ]
+    },
+    {
+      "id": "mcd-breakfast-201306-302369",
+      "label": "Plain Bagel",
+      "itemIds": [
+        "mcd-item-201306"
+      ]
+    },
+    {
+      "id": "mcd-breakfast-200267-300777",
+      "label": "Scrambled Egg, Sausage & Vegetable Mix",
+      "itemIds": [
+        "mcd-item-200267"
+      ]
+    },
+    {
+      "id": "mcd-breakfast-200267-300422",
+      "label": "Flour Tortilla",
+      "itemIds": [
+        "mcd-item-200267"
+      ]
+    },
+    {
+      "id": "mcd-breakfast-200267-301518",
+      "label": "American Cheese",
+      "itemIds": [
+        "mcd-item-200267"
+      ]
+    },
+    {
+      "id": "mcd-breakfast-200322-300524",
+      "label": "Scrambled Eggs",
+      "itemIds": [
+        "mcd-item-200322"
+      ],
+      "capturedOptionIds": {
+        "0": "23568342379"
+      },
+      "capturedGroupIds": {
+        "0": "5820739915"
+      }
+    },
+    {
+      "id": "mcd-breakfast-200322-300131",
+      "label": "Biscuit",
+      "itemIds": [
+        "mcd-item-200322"
+      ],
+      "capturedOptionIds": {
+        "0": "23568342381"
+      },
+      "capturedGroupIds": {
+        "0": "5820739915"
+      }
+    },
+    {
+      "id": "mcd-breakfast-200322-300036",
+      "label": "Hash Browns",
+      "itemIds": [
+        "mcd-item-200322"
+      ]
+    },
+    {
+      "id": "mcd-breakfast-200322-300694",
+      "label": "Sausage Patty",
+      "itemIds": [
+        "mcd-item-200322"
+      ],
+      "capturedOptionIds": {
+        "0": "23568342380"
+      },
+      "capturedGroupIds": {
+        "0": "5820739915"
+      }
+    },
+    {
+      "id": "mcd-breakfast-200322-300310",
+      "label": "Salted Butter",
+      "itemIds": [
+        "mcd-item-200322"
+      ],
+      "capturedOptionIds": {},
+      "capturedGroupIds": {}
+    },
+    {
+      "id": "mcd-breakfast-200322-300654",
+      "label": "Clarified Butter",
+      "itemIds": [
+        "mcd-item-200322"
+      ],
+      "capturedOptionIds": {},
+      "capturedGroupIds": {}
+    },
+    {
+      "id": "mcd-breakfast-200322-300759",
+      "label": "Hotcake Syrup",
+      "itemIds": [
+        "mcd-item-200322"
+      ],
+      "capturedOptionIds": {},
+      "capturedGroupIds": {}
+    },
+    {
+      "id": "mcd-breakfast-200323-300757",
+      "label": "Hotcakes",
+      "itemIds": [
+        "mcd-item-200323"
+      ],
+      "capturedOptionIds": {
+        "0": "23568342398"
+      },
+      "capturedGroupIds": {
+        "0": "5820739918"
+      }
+    },
+    {
+      "id": "mcd-breakfast-200323-300524",
+      "label": "Scrambled Eggs",
+      "itemIds": [
+        "mcd-item-200323"
+      ],
+      "capturedOptionIds": {
+        "0": "23568342395"
+      },
+      "capturedGroupIds": {
+        "0": "5820739918"
+      }
+    },
+    {
+      "id": "mcd-breakfast-200323-300131",
+      "label": "Biscuit",
+      "itemIds": [
+        "mcd-item-200323"
+      ],
+      "capturedOptionIds": {
+        "0": "23568342397"
+      },
+      "capturedGroupIds": {
+        "0": "5820739918"
+      }
+    },
+    {
+      "id": "mcd-breakfast-200323-300759",
+      "label": "Hotcake Syrup",
+      "itemIds": [
+        "mcd-item-200323"
+      ],
+      "capturedOptionIds": {},
+      "capturedGroupIds": {}
+    },
+    {
+      "id": "mcd-breakfast-200323-300036",
+      "label": "Hash Browns",
+      "itemIds": [
+        "mcd-item-200323"
+      ]
+    },
+    {
+      "id": "mcd-breakfast-200323-300694",
+      "label": "Sausage Patty",
+      "itemIds": [
+        "mcd-item-200323"
+      ],
+      "capturedOptionIds": {
+        "0": "23568342396"
+      },
+      "capturedGroupIds": {
+        "0": "5820739918"
+      }
+    },
+    {
+      "id": "mcd-breakfast-200323-301643",
+      "label": "Salted Whipped Butter",
+      "itemIds": [
+        "mcd-item-200323"
+      ],
+      "capturedOptionIds": {},
+      "capturedGroupIds": {}
+    },
+    {
+      "id": "mcd-breakfast-200323-300310",
+      "label": "Salted Butter",
+      "itemIds": [
+        "mcd-item-200323"
+      ],
+      "capturedOptionIds": {},
+      "capturedGroupIds": {}
+    },
+    {
+      "id": "mcd-breakfast-200323-300654",
+      "label": "Clarified Butter",
+      "itemIds": [
+        "mcd-item-200323"
+      ],
+      "capturedOptionIds": {},
+      "capturedGroupIds": {}
+    },
+    {
+      "id": "mcd-breakfast-200325-300757",
+      "label": "Hotcakes",
+      "itemIds": [
+        "mcd-item-200325"
+      ]
+    },
+    {
+      "id": "mcd-breakfast-200325-300759",
+      "label": "Hotcake Syrup",
+      "itemIds": [
+        "mcd-item-200325"
+      ]
+    },
+    {
+      "id": "mcd-breakfast-200325-301643",
+      "label": "Salted Whipped Butter",
+      "itemIds": [
+        "mcd-item-200325"
+      ]
+    },
+    {
+      "id": "mcd-breakfast-200258-300757",
+      "label": "Hotcakes",
+      "itemIds": [
+        "mcd-item-200258"
+      ]
+    },
+    {
+      "id": "mcd-breakfast-200258-300759",
+      "label": "Hotcake Syrup",
+      "itemIds": [
+        "mcd-item-200258"
+      ]
+    },
+    {
+      "id": "mcd-breakfast-200258-300694",
+      "label": "Sausage Patty",
+      "itemIds": [
+        "mcd-item-200258"
+      ]
+    },
+    {
+      "id": "mcd-breakfast-200258-301643",
+      "label": "Salted Whipped Butter",
+      "itemIds": [
+        "mcd-item-200258"
+      ]
+    },
+    {
+      "id": "mcd-breakfast-200284-300123",
+      "label": "Oatmeal",
+      "itemIds": [
+        "mcd-item-200284"
+      ]
+    },
+    {
+      "id": "mcd-breakfast-200284-300167",
+      "label": "Diced Apples",
+      "itemIds": [
+        "mcd-item-200284"
+      ]
+    },
+    {
+      "id": "mcd-breakfast-200284-300165",
+      "label": "Cranberry Raisin Blend",
+      "itemIds": [
+        "mcd-item-200284"
+      ]
+    },
+    {
+      "id": "mcd-breakfast-200284-300091",
+      "label": "Light Cream",
+      "itemIds": [
+        "mcd-item-200284"
+      ]
+    }
+  ],
+  "differences": []
+}

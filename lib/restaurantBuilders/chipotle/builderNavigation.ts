@@ -109,3 +109,15 @@ export function buildAllIngredientsCategoryParams(
   }
   return next;
 }
+
+export function getChipotleBuilderEntryHref(
+  restaurantPath: string,
+  itemId: string,
+  builderConfig?: import("@/types/builder").RestaurantBuilderConfig,
+) {
+  const entree = Object.entries(builderConfig?.entreeOptions ?? {}).find(([key, option]) =>
+    isChipotleEntreeId(key) && resolveDefaultViewForEntree(key) === "ingredients" && option.id === itemId,
+  )?.[0];
+  if (!entree || !isChipotleEntreeId(entree)) return undefined;
+  return `${restaurantPath}?${buildEntreeSelectionParams(new URLSearchParams(), entree)}`;
+}

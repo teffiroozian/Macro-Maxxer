@@ -1,23 +1,23 @@
 # Chipotle parity report — universal engine vs existing generated menu
 
-Draft generated 2026-11-17T22:19:53.681Z from the raw captures in `data/restaurants/chipotle/raw/`. Compared against `data/restaurants/chipotle/generated/restaurant.json`, which was not read by the adapter.
+Draft generated 2026-11-18T21:11:46.360Z from the raw captures in `data/restaurants/chipotle/raw/`. Compared against `data/restaurants/chipotle/generated/restaurant.json`, which was not read by the adapter.
 
-**853 of 965 comparisons match.** 112 comparisons differ, producing 112 findings.
+**896 of 979 comparisons match.** 83 comparisons differ, producing 83 findings.
 
 | Section | Compared | Match | Differ |
 |---|---:|---:|---:|
-| Menu items and categories | 77 | 61 | 16 |
+| Menu items and categories | 77 | 75 | 2 |
 | Nutrition values (standard items) | 119 | 92 | 27 |
 | Build-your-own containers | 8 | 4 | 4 |
 | Selection groups and rules | 36 | 31 | 5 |
 | Ingredients and portion sizes | 272 | 251 | 21 |
-| Stable ids | 244 | 220 | 24 |
-| Customizations and runtime compatibility | 209 | 194 | 15 |
+| Stable ids | 244 | 234 | 10 |
+| Customizations and runtime compatibility | 223 | 209 | 14 |
 
 | Classification | Findings |
 |---|---:|
-| Missing universal functionality | 28 |
-| Legitimate Chipotle-specific behavior | 52 |
+| Missing universal functionality | 0 |
+| Legitimate Chipotle-specific behavior | 51 |
 | Generated menu departs from the raw source | 23 |
 | Withheld from the runtime menu: nutrition incomplete (cause listed under nutrition) | 4 |
 | Presentation only | 5 |
@@ -27,50 +27,8 @@ Draft generated 2026-11-17T22:19:53.681Z from the raw captures in `data/restaura
 
 | Capability | Findings |
 |---|---:|
-| No preset composition: a preconfigured meal (a named set of builder selections) is not representable. | 22 |
-| No structural / source-only record: non-food ordering records cannot be kept without nutrition. | 6 |
 
-## Missing universal functionality (28)
-
-### Menu items and categories (14)
-
-| Record | Field | Generated | Draft | Why |
-|---|---|---|---|---|
-| Serving Utensils | presence | chipotle-cmg-6112 (structural) | absent | Non-food ordering record kept as source-only. |
-| Napkins & Utensils | presence | chipotle-cmg-6110 (structural) | absent | Non-food ordering record kept as source-only. |
-| 6 Serving Bowls | presence | chipotle-cmg-6111 (structural) | absent | Non-food ordering record kept as source-only. |
-| Josh Hart's High Protein Burrito | presence | chipotle-meal-653abfb2-3b20-4b17-8638-d6a20b2c340c (preconfigured_meal) | absent | Preconfigured meal built from builder selections. |
-| Bardi Bowl with Chili Lime Chips | presence | chipotle-meal-3916248a-68fd-4c0f-87e9-38d794e50d7e (preconfigured_meal) | absent | Preconfigured meal built from builder selections. |
-| Mikal Bridges High Protein Bowl | presence | chipotle-meal-2b15ccfe-9059-4e25-9c84-67b5f46c18c9 (preconfigured_meal) | absent | Preconfigured meal built from builder selections. |
-| The Salish Matter Meal | presence | chipotle-meal-02774ed8-f878-4dc2-b6cd-5e86977b4907 (preconfigured_meal) | absent | Preconfigured meal built from builder selections. |
-| Tara Davis-Woodhall High Protein Bowl | presence | chipotle-meal-f4929790-1d6c-4297-a5bd-acdc7f8b67c6 (preconfigured_meal) | absent | Preconfigured meal built from builder selections. |
-| Hunter Woodhall's High Protein Bowl | presence | chipotle-meal-e1d03f68-0189-499b-8c55-403b7058acdd (preconfigured_meal) | absent | Preconfigured meal built from builder selections. |
-| Double High Protein Bowl | presence | chipotle-meal-56ab2f6e-747d-46f9-9cf6-9ebc2855d86d (preconfigured_meal) | absent | Preconfigured meal built from builder selections. |
-| High Protein-High Fiber Bowl | presence | chipotle-meal-6ba21999-f6b8-4a83-803a-bf68ef319c5e (preconfigured_meal) | absent | Preconfigured meal built from builder selections. |
-| High Protein Taco | presence | chipotle-meal-2991ff70-3dfb-47af-84e0-cbe547e5395f (preconfigured_meal) | absent | Preconfigured meal built from builder selections. |
-| High Protein - Low Calorie Bowl | presence | chipotle-meal-be88e387-62ed-4271-877c-7216b6485387 (preconfigured_meal) | absent | Preconfigured meal built from builder selections. |
-| Double High Protein Burrito | presence | chipotle-meal-1a3697bb-88c5-4f2e-a061-85ac3cfa0a28 (preconfigured_meal) | absent | Preconfigured meal built from builder selections. |
-
-### Stable ids (14)
-
-| Record | Field | Generated | Draft | Why |
-|---|---|---|---|---|
-| Serving Utensils | item id | chipotle-cmg-6112 | not represented | The draft has no record of this kind, so there is nothing to give the id to. |
-| Napkins & Utensils | item id | chipotle-cmg-6110 | not represented | The draft has no record of this kind, so there is nothing to give the id to. |
-| 6 Serving Bowls | item id | chipotle-cmg-6111 | not represented | The draft has no record of this kind, so there is nothing to give the id to. |
-| Josh Hart's High Protein Burrito | item id | chipotle-meal-653abfb2-3b20-4b17-8638-d6a20b2c340c | not represented | The draft has no record of this kind, so there is nothing to give the id to. |
-| Bardi Bowl with Chili Lime Chips | item id | chipotle-meal-3916248a-68fd-4c0f-87e9-38d794e50d7e | not represented | The draft has no record of this kind, so there is nothing to give the id to. |
-| Mikal Bridges High Protein Bowl | item id | chipotle-meal-2b15ccfe-9059-4e25-9c84-67b5f46c18c9 | not represented | The draft has no record of this kind, so there is nothing to give the id to. |
-| The Salish Matter Meal | item id | chipotle-meal-02774ed8-f878-4dc2-b6cd-5e86977b4907 | not represented | The draft has no record of this kind, so there is nothing to give the id to. |
-| Tara Davis-Woodhall High Protein Bowl | item id | chipotle-meal-f4929790-1d6c-4297-a5bd-acdc7f8b67c6 | not represented | The draft has no record of this kind, so there is nothing to give the id to. |
-| Hunter Woodhall's High Protein Bowl | item id | chipotle-meal-e1d03f68-0189-499b-8c55-403b7058acdd | not represented | The draft has no record of this kind, so there is nothing to give the id to. |
-| Double High Protein Bowl | item id | chipotle-meal-56ab2f6e-747d-46f9-9cf6-9ebc2855d86d | not represented | The draft has no record of this kind, so there is nothing to give the id to. |
-| High Protein-High Fiber Bowl | item id | chipotle-meal-6ba21999-f6b8-4a83-803a-bf68ef319c5e | not represented | The draft has no record of this kind, so there is nothing to give the id to. |
-| High Protein Taco | item id | chipotle-meal-2991ff70-3dfb-47af-84e0-cbe547e5395f | not represented | The draft has no record of this kind, so there is nothing to give the id to. |
-| High Protein - Low Calorie Bowl | item id | chipotle-meal-be88e387-62ed-4271-877c-7216b6485387 | not represented | The draft has no record of this kind, so there is nothing to give the id to. |
-| Double High Protein Burrito | item id | chipotle-meal-1a3697bb-88c5-4f2e-a061-85ac3cfa0a28 | not represented | The draft has no record of this kind, so there is nothing to give the id to. |
-
-## Legitimate Chipotle-specific behavior (52)
+## Legitimate Chipotle-specific behavior (51)
 
 ### Nutrition values (standard items) (26)
 
@@ -129,11 +87,10 @@ Draft generated 2026-11-17T22:19:53.681Z from the raw captures in `data/restaura
 | new ingredient ids | minted | none | 1: chipotle-cheese-base | The draft carries records the live menu has no id for (catering builds, extra fountain flavors, groups and options the importer does not expose). They are given new ids and never reuse an existing one. |
 | new variant ids | minted | none | 20: chipotle-fountain-22-fl-oz-minute-maid-lemonade, chipotle-fountain-22-fl-oz-lemonade-blue-sky, chipotle-fountain-22-fl-oz-mango-orange-blue-sky, chipotle-fountain-22-fl-oz-maine-root-root-beer, chipotle-fountain-22-fl-oz-tractor-berry-agua-fresca, chipotle-fountain-22-fl-oz-tractor-watermelon-limeade, chipotle-fountain-22-fl-oz-tractor-lemonade, chipotle-fountain-22-fl-oz-tractor-mandarin-agua-fresca, … | The draft carries records the live menu has no id for (catering builds, extra fountain flavors, groups and options the importer does not expose). They are given new ids and never reuse an existing one. |
 
-### Customizations and runtime compatibility (15)
+### Customizations and runtime compatibility (14)
 
 | Record | Field | Generated | Draft | Why |
 |---|---|---|---|---|
-| items.sourceOnly | runtimeField | on 3 record(s) | never emitted | Marks non-food ordering records, which the draft does not hold. |
 | ingredients.hideFromIngredientView | runtimeField | on 3 record(s) | never emitted | A display flag set by an import decision (hide the structural Veggie choice). |
 | menu.importMetadata | runtimeField | on 1 record(s) | never emitted | Bookkeeping of the existing importer; the draft's own sources and issues play this role. |
 | menu.runtimeIntegration | runtimeField | on 1 record(s) | never emitted | A status note written by the existing importer. |

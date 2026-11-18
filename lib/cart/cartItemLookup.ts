@@ -2,9 +2,10 @@
 // lib/restaurants.ts for the matching getRestaurantData switch) rather than
 // the old hand-authored data/restaurants/chickfila.json, which stays in
 // place temporarily as a fallback/reference until runtime QA is complete.
+import { getChickfilaRuntimeMenu, isChickfilaPipelinePreview } from "@/lib/restaurantBuilders/chickfila/runtimeMenu";
 import chickfilaMenu from "@/data/restaurants/chick-fil-a/generated/restaurant.json";
-import { CHIPOTLE_GENERATED_RUNTIME_MENU } from "@/lib/restaurantBuilders/chipotle/generatedRuntimeAdapter";
-import { STARBUCKS_GENERATED_RUNTIME_MENU } from "@/lib/restaurantBuilders/starbucks/generatedRuntimeAdapter";
+import { getChipotleRuntimeMenu, isChipotlePipelinePreview } from "@/lib/restaurantBuilders/chipotle/runtimeMenu";
+import { getStarbucksRuntimeMenu, isStarbucksPipelinePreview } from "@/lib/restaurantBuilders/starbucks/runtimeMenu";
 import { resolveChipotleIngredientDisplayName } from "@/lib/restaurantBuilders/chipotle/ingredientMenuItems";
 import type { ChipotleBuilderConfig, ChipotleEntreeSelection } from "@/lib/restaurantBuilders/chipotle/types";
 import {
@@ -12,7 +13,7 @@ import {
   resolveChipotleLegacyCartMainItem,
 } from "@/lib/restaurantBuilders/chipotle/legacyCompatibility";
 import habitMenu from "@/data/restaurants/habit.json";
-import { MCDONALDS_GENERATED_RUNTIME_MENU } from "@/lib/restaurantBuilders/mcdonalds/generatedRuntimeAdapter";
+import { getMcDonaldsRuntimeMenu, isMcDonaldsPipelinePreview } from "@/lib/restaurantBuilders/mcdonalds/runtimeMenu";
 import modMenu from "@/data/restaurants/mod.json";
 import pandaMenu from "@/data/restaurants/panda.json";
 import paneraMenu from "@/data/restaurants/panera.json";
@@ -34,14 +35,14 @@ export type ResolvedCartItemDetail = {
 };
 
 const restaurantMenusById: Record<string, RestaurantMenu> = {
-  chickfila: chickfilaMenu as RestaurantMenu,
-  chipotle: CHIPOTLE_GENERATED_RUNTIME_MENU,
+  chickfila: isChickfilaPipelinePreview ? getChickfilaRuntimeMenu() : chickfilaMenu as RestaurantMenu,
+  chipotle: getChipotleRuntimeMenu(),
   habit: habitMenu as RestaurantMenu,
-  mcdonalds: MCDONALDS_GENERATED_RUNTIME_MENU,
+  mcdonalds: getMcDonaldsRuntimeMenu(),
   mod: modMenu as RestaurantMenu,
   panda: pandaMenu as RestaurantMenu,
   panera: paneraMenu as RestaurantMenu,
-  starbucks: STARBUCKS_GENERATED_RUNTIME_MENU,
+  starbucks: getStarbucksRuntimeMenu(),
   subway: subwayMenu as RestaurantMenu,
 };
 
@@ -98,6 +99,19 @@ function resolveChipotleCartCatalogId(
       ? mainResolution
       : resolveChipotleLegacyCartIngredientId(itemId, mainResolution);
   return resolution.status === "resolved" ? resolution.recordId : undefined;
+}
+
+function resolveCartIngredientNutrition(
+  cartItem: CartItem,
+  item: CartDetailMenuItem | null,
+  variantId?: string,
+) {
+  if (!item) return undefined;
+  if (isChipotlePipelinePreview && cartItem.restaurantId === "chipotle" &&
+      variantId && !item.variants?.some((variant) => variant.id === variantId)) {
+    return undefined;
+  }
+  return resolveEffectiveIngredientNutrition(item, variantId);
 }
 
 function normalizeMenuLabel(value: string) {
@@ -205,7 +219,9 @@ export function resolveCartItemComboSelections(cartItem: CartItem): ResolvedCart
       // (resolveMenuItemVariantNutrition), so a combo drink/side's full
       // nutrition set (not just calories/protein/carbs/fat) always matches
       // what the menu card showed when it was selected.
-      nutrition: item ? resolveMenuItemVariantNutrition(item as MenuItem, variant ?? undefined) : undefined,
+      nutrition: customization.nutritionSnapshot ?? (item && !(isChipotlePipelinePreview && cartItem.restaurantId === "chipotle" && customization.variantId && !variant)
+        ? resolveMenuItemVariantNutrition(item as MenuItem, variant ?? undefined)
+        : undefined),
     };
   });
 }
@@ -275,7 +291,7 @@ export function resolveCartItemCustomizationCards(cartItem: CartItem): ResolvedC
           // variant (falling back to the item's declared default, then its
           // own direct nutrition), instead of a plain item?.nutrition read
           // silently coming back undefined and dropping the card.
-          nutrition: item ? resolveEffectiveIngredientNutrition(item, customization.variantId) : undefined,
+          nutrition: customization.nutritionSnapshot ?? resolveCartIngredientNutrition(cartItem, item, customization.variantId),
         });
       });
 
@@ -336,7 +352,7 @@ export function resolveCartItemCustomizationCards(cartItem: CartItem): ResolvedC
           // protein (and similar Light/Normal/Extra ingredients) is a
           // variant container with no nutrition of its own until the
           // saved portion variant is resolved.
-          nutrition: item ? resolveEffectiveIngredientNutrition(item, ingredient.variantId) : undefined,
+          nutrition: resolveCartIngredientNutrition(cartItem, item, ingredient.variantId),
         });
       });
   }
@@ -375,15 +391,26 @@ export type ResolvedCartItemMainItem = {
   nutrition: Nutrition;
 };
 
-// The base/main menu item itself (e.g. "Spicy Southwest Salad") at its
-// selected size/variant, before any ingredient customizations or addons —
-// resolved to real catalog name/image/nutrition for the Preview modal's
-// "Main Item" card and its row in Selected Items. Build Your Own has no
-// single base item to point to (it's built from scratch), so this only
-// resolves for standard selections (which combo meals are too — a combo's
-// entree is still a standard selection with side/drink customizations
-// layered on top).
-export function resolveCartItemMainItem(cartItem: CartItem): ResolvedCartItemMainItem | null {
+export function usesPreviewCatalogSelection(restaurantId: string) {
+  return (restaurantId === "chickfila" && isChickfilaPipelinePreview) ||
+    (restaurantId === "chipotle" && isChipotlePipelinePreview) ||
+    (restaurantId === "starbucks" && isStarbucksPipelinePreview) ||
+    (restaurantId === "mcdonalds" && isMcDonaldsPipelinePreview);
+}
+
+// Historical carts can contain modifier choices excluded from a stricter
+// preview. Preserve the saved totals and prevent a lossy edit.
+export function hasUnavailablePreviewCustomization(cartItem: CartItem) {
+  if (cartItem.restaurantId !== "mcdonalds" || !isMcDonaldsPipelinePreview) return false;
+  const restaurant = getCartRestaurantMenu(cartItem.restaurantId);
+  return Boolean(restaurant && cartItem.customizations?.some((entry) => entry.kind !== "combo" &&
+    [entry.ingredientId, entry.fromIngredientId, entry.toIngredientId].some((id) =>
+      id?.startsWith("mcd-") && !findCartMenuItem(restaurant, id),
+    ),
+  ));
+}
+
+export function resolveCartStandardCatalogSelection(cartItem: CartItem) {
   if (cartItem.selection.type !== "standard") return null;
   const restaurant = getCartRestaurantMenu(cartItem.restaurantId);
   if (!restaurant) return null;
@@ -397,15 +424,21 @@ export function resolveCartItemMainItem(cartItem: CartItem): ResolvedCartItemMai
       ? mainResolution.recordId
       : cartItem.itemId;
   const item = findCartMenuItem(restaurant, resolvedItemId);
-  if (!item) return null;
+  if (!item || ("sourceOnly" in item && item.sourceOnly && !item.nutrition)) return null;
 
   const { variantLabel } = cartItem.selection;
-  const variantId =
-    mainResolution?.status === "resolved" && mainResolution.variantId
-      ? mainResolution.variantId
-      : cartItem.selection.variantId;
+  const preview = usesPreviewCatalogSelection(cartItem.restaurantId);
+  const variantId = mainResolution?.status === "resolved" && mainResolution.variantId
+    ? mainResolution.variantId
+    : cartItem.selection.variantId ?? (preview ? cartItem.variantId : undefined);
+  const exactVariant = item.variants?.find((candidate) => candidate.id === variantId);
+  if (preview && !mainResolution && variantId && !exactVariant) return null;
+  if (isChipotlePipelinePreview && mainResolution?.status === "resolved" &&
+      (mainResolution.variantId || variantId?.startsWith("chipotle-")) && !exactVariant) {
+    return null;
+  }
   const variant =
-    (variantId ? item.variants?.find((candidate) => candidate.id === variantId) : undefined) ??
+    exactVariant ??
     (mainResolution?.status === "resolved"
       ? item.variants?.find(
           (candidate) =>
@@ -413,6 +446,22 @@ export function resolveCartItemMainItem(cartItem: CartItem): ResolvedCartItemMai
         )
       : undefined) ??
     (variantLabel ? item.variants?.find((candidate) => candidate.label === variantLabel) : undefined);
+
+  return { item, variant, variantLabel };
+}
+
+// The base/main menu item itself (e.g. "Spicy Southwest Salad") at its
+// selected size/variant, before any ingredient customizations or addons —
+// resolved to real catalog name/image/nutrition for the Preview modal's
+// "Main Item" card and its row in Selected Items. Build Your Own has no
+// single base item to point to (it's built from scratch), so this only
+// resolves for standard selections (which combo meals are too — a combo's
+// entree is still a standard selection with side/drink customizations
+// layered on top).
+export function resolveCartItemMainItem(cartItem: CartItem): ResolvedCartItemMainItem | null {
+  const selection = resolveCartStandardCatalogSelection(cartItem);
+  if (!selection) return null;
+  const { item, variant, variantLabel } = selection;
 
   return {
     name: item.name,
@@ -489,6 +538,10 @@ export function resolveCartItemMacroBreakdown(cartItem: CartItem): {
     const addedCards = resolveCartItemCustomizationCards(cartItem).filter((card) => card.sign === "add");
     return { kind: "ingredients", entries: toMacroBreakdownEntries(addedCards) };
   }
+
+  // A nested recipe can change the nutrition of a combo component. Keep its
+  // saved total authoritative instead of recomputing from flat catalog cards.
+  if (cartItem.selection.ordering) return { kind: "items", entries: [] };
 
   const mainItem = resolveCartItemMainItem(cartItem);
   const mainItemCard: ResolvedCartItemCard[] = mainItem

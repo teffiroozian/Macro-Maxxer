@@ -1,0 +1,7334 @@
+{
+  "restaurantId": "chickfila",
+  "version": 1,
+  "entries": [
+    {
+      "id": "cfa-group-100100",
+      "kind": "item",
+      "keys": [
+        "src:itemGroupId:100100",
+        "name:sides/chicken waffles breakfast sandwich w chick fil a filet meal"
+      ]
+    },
+    {
+      "id": "cfa-group-100101",
+      "kind": "item",
+      "keys": [
+        "src:itemGroupId:100101",
+        "name:sides/chicken waffles breakfast sandwich w spicy filet meal"
+      ]
+    },
+    {
+      "id": "cfa-group-100102",
+      "kind": "item",
+      "keys": [
+        "src:itemGroupId:100102",
+        "name:sides/chicken waffles breakfast sandwich w grilled filet meal"
+      ]
+    },
+    {
+      "id": "cfa-group-100109",
+      "kind": "item",
+      "keys": [
+        "src:itemGroupId:100109",
+        "name:sides/chick fil a chicken biscuit meal"
+      ]
+    },
+    {
+      "id": "cfa-group-100113",
+      "kind": "item",
+      "keys": [
+        "src:itemGroupId:100113",
+        "name:sides/spicy chicken biscuit meal"
+      ]
+    },
+    {
+      "id": "cfa-group-100117",
+      "kind": "item",
+      "keys": [
+        "src:itemGroupId:100117",
+        "name:sides/chick fil a chick n minis meal"
+      ]
+    },
+    {
+      "id": "cfa-group-100123",
+      "kind": "item",
+      "keys": [
+        "src:itemGroupId:100123",
+        "name:sides/egg white grill meal"
+      ]
+    },
+    {
+      "id": "cfa-group-100139",
+      "kind": "item",
+      "keys": [
+        "src:itemGroupId:100139",
+        "name:sides/hash brown scramble burrito meal"
+      ]
+    },
+    {
+      "id": "cfa-group-100152",
+      "kind": "item",
+      "keys": [
+        "src:itemGroupId:100152",
+        "name:sides/hash brown scramble bowl meal"
+      ]
+    },
+    {
+      "id": "cfa-group-100156",
+      "kind": "item",
+      "keys": [
+        "src:itemGroupId:100156",
+        "name:sides/chicken egg cheese biscuit meal"
+      ]
+    },
+    {
+      "id": "cfa-group-100157",
+      "kind": "item",
+      "keys": [
+        "src:itemGroupId:100157",
+        "name:sides/bacon egg cheese biscuit meal"
+      ]
+    },
+    {
+      "id": "cfa-group-100158",
+      "kind": "item",
+      "keys": [
+        "src:itemGroupId:100158",
+        "name:sides/sausage egg cheese biscuit meal"
+      ]
+    },
+    {
+      "id": "cfa-group-100160",
+      "kind": "item",
+      "keys": [
+        "src:itemGroupId:100160",
+        "name:sides/chicken egg cheese muffin meal"
+      ]
+    },
+    {
+      "id": "cfa-group-100161",
+      "kind": "item",
+      "keys": [
+        "src:itemGroupId:100161",
+        "name:sides/bacon egg cheese muffin meal"
+      ]
+    },
+    {
+      "id": "cfa-group-100162",
+      "kind": "item",
+      "keys": [
+        "src:itemGroupId:100162",
+        "name:sides/sausage egg cheese muffin meal"
+      ]
+    },
+    {
+      "id": "cfa-item-1009734",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1009734",
+        "name:breakfast/chicken waffles breakfast sandwich w chick fil a filet"
+      ]
+    },
+    {
+      "id": "Individual Sauces [CFA 100005:0]",
+      "kind": "category",
+      "keys": [
+        "cfa-item-1009734/group:individual sauce",
+        "cfa-item-1009736/group:individual sauce",
+        "cfa-item-1009735/group:individual sauce"
+      ]
+    },
+    {
+      "id": "Breakfast Removal [CFA 100005:2]",
+      "kind": "category",
+      "keys": [
+        "cfa-item-1009734/group:breakfast removal",
+        "cfa-item-1009736/group:breakfast removal",
+        "cfa-item-1009735/group:breakfast removal"
+      ]
+    },
+    {
+      "id": "Breakfast Sandwich Modifiers [CFA 100005:3]",
+      "kind": "category",
+      "keys": [
+        "cfa-item-1009734/group:breakfast sandwich modifier",
+        "cfa-item-1009736/group:breakfast sandwich modifier",
+        "cfa-item-1009735/group:breakfast sandwich modifier"
+      ]
+    },
+    {
+      "id": "cfa-item-1009736",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1009736",
+        "name:breakfast/chicken waffles breakfast sandwich w spicy filet"
+      ]
+    },
+    {
+      "id": "cfa-item-1009735",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1009735",
+        "name:breakfast/chicken waffles breakfast sandwich w grilled filet"
+      ]
+    },
+    {
+      "id": "cfa-item-1000085",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1000085",
+        "name:breakfast/chick fil a chicken biscuit"
+      ]
+    },
+    {
+      "id": "Breakfast Bread Carriers [CFA 100106:2]",
+      "kind": "category",
+      "keys": [
+        "cfa-item-1000085/group:breakfast bread carrier"
+      ]
+    },
+    {
+      "id": "Breakfast Sandwich Modifiers [CFA 100106:3]",
+      "kind": "category",
+      "keys": [
+        "cfa-item-1000085/group:breakfast sandwich modifier"
+      ]
+    },
+    {
+      "id": "cfa-item-1002843",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1002843",
+        "name:breakfast/spicy chicken biscuit"
+      ]
+    },
+    {
+      "id": "Breakfast Bread Carriers [CFA 100112:2]",
+      "kind": "category",
+      "keys": []
+    },
+    {
+      "id": "Cheese [CFA 100112:3]",
+      "kind": "category",
+      "keys": [
+        "cfa-item-1002843/group:cheese"
+      ]
+    },
+    {
+      "id": "Breakfast Sandwich Modifiers [CFA 100112:4]",
+      "kind": "category",
+      "keys": []
+    },
+    {
+      "id": "cfa-group-100164",
+      "kind": "item",
+      "keys": [
+        "src:itemGroupId:100164",
+        "name:breakfast/chick fil a chick n minis"
+      ]
+    },
+    {
+      "id": "cfa-item-1000093",
+      "kind": "variant",
+      "keys": [
+        "cfa-group-100164/variant:4 ct"
+      ]
+    },
+    {
+      "id": "cfa-item-1008141",
+      "kind": "variant",
+      "keys": [
+        "cfa-group-100164/variant:10 ct"
+      ]
+    },
+    {
+      "id": "cfa-item-1005312",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1005312",
+        "name:breakfast/egg white grill"
+      ]
+    },
+    {
+      "id": "Breakfast Bread Carriers [CFA 100167:2]",
+      "kind": "category",
+      "keys": []
+    },
+    {
+      "id": "Breakfast Sandwich Modifiers [CFA 100167:3]",
+      "kind": "category",
+      "keys": []
+    },
+    {
+      "id": "Breakfast Removal [CFA 100167:4]",
+      "kind": "category",
+      "keys": []
+    },
+    {
+      "id": "Breakfast Bread Carriers [CFA 100122:2]",
+      "kind": "category",
+      "keys": []
+    },
+    {
+      "id": "Breakfast Sandwich Modifiers [CFA 100122:3]",
+      "kind": "category",
+      "keys": []
+    },
+    {
+      "id": "Breakfast Removal [CFA 100122:4]",
+      "kind": "category",
+      "keys": []
+    },
+    {
+      "id": "cfa-group-100168",
+      "kind": "item",
+      "keys": [
+        "src:itemGroupId:100168",
+        "name:breakfast/hash brown scramble burrito"
+      ]
+    },
+    {
+      "id": "cfa-item-1005924",
+      "kind": "variant",
+      "keys": [
+        "cfa-group-100168/variant:nuggets"
+      ]
+    },
+    {
+      "id": "cfa-item-1005925",
+      "kind": "variant",
+      "keys": [
+        "cfa-group-100168/variant:sausage"
+      ]
+    },
+    {
+      "id": "cfa-item-1005926",
+      "kind": "variant",
+      "keys": [
+        "cfa-group-100168/variant:grilled filet"
+      ]
+    },
+    {
+      "id": "cfa-item-1006333",
+      "kind": "variant",
+      "keys": [
+        "cfa-group-100168/variant:spicy chicken"
+      ]
+    },
+    {
+      "id": "cfa-item-1008530",
+      "kind": "variant",
+      "keys": [
+        "cfa-group-100168/variant:bacon"
+      ]
+    },
+    {
+      "id": "cfa-item-1007832",
+      "kind": "variant",
+      "keys": [
+        "cfa-group-100168/variant:no meat"
+      ]
+    },
+    {
+      "id": "Shredded Cheese Group [CFA 100126:2]",
+      "kind": "category",
+      "keys": [
+        "cfa-group-100168/group:shredded cheese group",
+        "cfa-group-100169/group:shredded cheese group",
+        "cfa-item-1005924/group:shredded cheese group",
+        "cfa-item-1005925/group:shredded cheese group",
+        "cfa-item-1005926/group:shredded cheese group",
+        "cfa-item-1006333/group:shredded cheese group",
+        "cfa-item-1008530/group:shredded cheese group",
+        "cfa-item-1007832/group:shredded cheese group",
+        "cfa-item-1005945/group:shredded cheese group",
+        "cfa-item-1005946/group:shredded cheese group",
+        "cfa-item-1005947/group:shredded cheese group",
+        "cfa-item-1006334/group:shredded cheese group",
+        "cfa-item-1008531/group:shredded cheese group",
+        "cfa-item-1007833/group:shredded cheese group",
+        "cfa-item-1005921/group:shredded cheese group",
+        "cfa-item-1005922/group:shredded cheese group",
+        "cfa-item-1005923/group:shredded cheese group",
+        "cfa-item-1006336/group:shredded cheese group",
+        "cfa-item-1008532/group:shredded cheese group",
+        "cfa-item-1007830/group:shredded cheese group",
+        "cfa-item-1005942/group:shredded cheese group",
+        "cfa-item-1005943/group:shredded cheese group",
+        "cfa-item-1005944/group:shredded cheese group",
+        "cfa-item-1006337/group:shredded cheese group",
+        "cfa-item-1008533/group:shredded cheese group",
+        "cfa-item-1007831/group:shredded cheese group"
+      ]
+    },
+    {
+      "id": "cfa-group-100169",
+      "kind": "item",
+      "keys": [
+        "src:itemGroupId:100169",
+        "name:breakfast/hash brown scramble bowl"
+      ]
+    },
+    {
+      "id": "cfa-item-1005921",
+      "kind": "variant",
+      "keys": [
+        "cfa-group-100169/variant:nuggets"
+      ]
+    },
+    {
+      "id": "cfa-item-1005922",
+      "kind": "variant",
+      "keys": [
+        "cfa-group-100169/variant:sausage"
+      ]
+    },
+    {
+      "id": "cfa-item-1005923",
+      "kind": "variant",
+      "keys": [
+        "cfa-group-100169/variant:grilled filet"
+      ]
+    },
+    {
+      "id": "cfa-item-1006336",
+      "kind": "variant",
+      "keys": [
+        "cfa-group-100169/variant:spicy chicken"
+      ]
+    },
+    {
+      "id": "cfa-item-1008532",
+      "kind": "variant",
+      "keys": [
+        "cfa-group-100169/variant:bacon"
+      ]
+    },
+    {
+      "id": "cfa-item-1007830",
+      "kind": "variant",
+      "keys": [
+        "cfa-group-100169/variant:no meat"
+      ]
+    },
+    {
+      "id": "cfa-item-1002035",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1002035",
+        "name:breakfast/chicken egg cheese biscuit"
+      ]
+    },
+    {
+      "id": "Breakfast Sandwich Modifiers [CFA 100155:2]",
+      "kind": "category",
+      "keys": [
+        "cfa-item-1002035/group:breakfast sandwich modifier",
+        "cfa-item-1000082/group:breakfast sandwich modifier",
+        "cfa-item-1000089/group:breakfast sandwich modifier"
+      ]
+    },
+    {
+      "id": "Breakfast Removal [CFA 100155:3]",
+      "kind": "category",
+      "keys": [
+        "cfa-item-1002035/group:breakfast removal",
+        "cfa-item-1000082/group:breakfast removal",
+        "cfa-item-1000089/group:breakfast removal"
+      ]
+    },
+    {
+      "id": "cfa-item-1000082",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1000082",
+        "name:breakfast/bacon egg cheese biscuit"
+      ]
+    },
+    {
+      "id": "cfa-item-1000089",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1000089",
+        "name:breakfast/sausage egg cheese biscuit"
+      ]
+    },
+    {
+      "id": "cfa-item-1004568",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1004568",
+        "name:breakfast/chicken egg cheese muffin"
+      ]
+    },
+    {
+      "id": "Breakfast Sandwich Modifiers [CFA 100159:2]",
+      "kind": "category",
+      "keys": [
+        "cfa-item-1004568/group:breakfast sandwich modifier",
+        "cfa-item-1004565/group:breakfast sandwich modifier",
+        "cfa-item-1004564/group:breakfast sandwich modifier"
+      ]
+    },
+    {
+      "id": "Breakfast Removal [CFA 100159:3]",
+      "kind": "category",
+      "keys": [
+        "cfa-item-1004568/group:breakfast removal",
+        "cfa-item-1004565/group:breakfast removal",
+        "cfa-item-1004564/group:breakfast removal"
+      ]
+    },
+    {
+      "id": "cfa-item-1004565",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1004565",
+        "name:breakfast/bacon egg cheese muffin"
+      ]
+    },
+    {
+      "id": "cfa-item-1004564",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1004564",
+        "name:breakfast/sausage egg cheese muffin"
+      ]
+    },
+    {
+      "id": "cfa-group-100171",
+      "kind": "item",
+      "keys": [
+        "src:itemGroupId:100171",
+        "name:sides/hash browns"
+      ]
+    },
+    {
+      "id": "cfa-item-1000225",
+      "kind": "variant",
+      "keys": [
+        "cfa-group-100171/variant:small"
+      ]
+    },
+    {
+      "id": "cfa-item-1007828",
+      "kind": "variant",
+      "keys": [
+        "cfa-group-100171/variant:large"
+      ]
+    },
+    {
+      "id": "cfa-group-100172",
+      "kind": "item",
+      "keys": [
+        "src:itemGroupId:100172"
+      ]
+    },
+    {
+      "id": "cfa-item-1005315",
+      "kind": "variant",
+      "keys": [
+        "cfa-group-100172/variant:cookie crumbs",
+        "cfa-group-100377/variant:cookie crumbs"
+      ]
+    },
+    {
+      "id": "cfa-item-1005316",
+      "kind": "variant",
+      "keys": [
+        "cfa-group-100172/variant:granola",
+        "cfa-group-100377/variant:granola"
+      ]
+    },
+    {
+      "id": "Parfait Fruit Modifier [CFA 100012:1]",
+      "kind": "category",
+      "keys": [
+        "cfa-group-100172/group:parfait fruit modifier",
+        "cfa-group-100377/group:parfait fruit modifier",
+        "cfa-item-1005726/group:parfait fruit modifier",
+        "cfa-item-1005316/group:parfait fruit modifier"
+      ]
+    },
+    {
+      "id": "cfa-group-100173",
+      "kind": "item",
+      "keys": [
+        "src:itemGroupId:100173",
+        "name:sides/fruit cup"
+      ]
+    },
+    {
+      "id": "cfa-item-1004575",
+      "kind": "variant",
+      "keys": [
+        "cfa-group-100173/variant:small"
+      ]
+    },
+    {
+      "id": "cfa-item-1004576",
+      "kind": "variant",
+      "keys": [
+        "cfa-group-100173/variant:medium"
+      ]
+    },
+    {
+      "id": "cfa-item-1004577",
+      "kind": "variant",
+      "keys": [
+        "cfa-group-100173/variant:large"
+      ]
+    },
+    {
+      "id": "cfa-group-100180",
+      "kind": "item",
+      "keys": [
+        "src:itemGroupId:100180",
+        "name:breakfast/breakfast proteins"
+      ]
+    },
+    {
+      "id": "cfa-item-1005308",
+      "kind": "variant",
+      "keys": [
+        "cfa-group-100180/variant:grilled"
+      ]
+    },
+    {
+      "id": "cfa-item-1000309",
+      "kind": "variant",
+      "keys": [
+        "cfa-group-100180/variant:chick fil a"
+      ]
+    },
+    {
+      "id": "cfa-item-1002844",
+      "kind": "variant",
+      "keys": [
+        "cfa-group-100180/variant:spicy"
+      ]
+    },
+    {
+      "id": "Breakfast Sandwich Modifiers [CFA 100175:2]",
+      "kind": "category",
+      "keys": [
+        "cfa-group-100180/group:breakfast sandwich modifier",
+        "cfa-item-1005308/group:breakfast sandwich modifier",
+        "cfa-item-1000309/group:breakfast sandwich modifier",
+        "cfa-item-1002844/group:breakfast sandwich modifier"
+      ]
+    },
+    {
+      "id": "cfa-item-1009737",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1009737",
+        "name:breakfast/breakfast waffle"
+      ]
+    },
+    {
+      "id": "Individual Sauces [CFA 100183:0]",
+      "kind": "category",
+      "keys": [
+        "cfa-item-1009737/group:individual sauce"
+      ]
+    },
+    {
+      "id": "Breakfast Sandwich Modifiers [CFA 100183:2]",
+      "kind": "category",
+      "keys": [
+        "cfa-item-1009737/group:breakfast sandwich modifier"
+      ]
+    },
+    {
+      "id": "cfa-group-100185",
+      "kind": "item",
+      "keys": [
+        "src:itemGroupId:100185",
+        "name:breakfast/breakfast breads"
+      ]
+    },
+    {
+      "id": "cfa-group-100220",
+      "kind": "item",
+      "keys": [
+        "src:itemGroupId:100220",
+        "name:sides/chicken waffles sandwich w chick fil a filet meal"
+      ]
+    },
+    {
+      "id": "cfa-group-100221",
+      "kind": "item",
+      "keys": [
+        "src:itemGroupId:100221",
+        "name:sides/chicken waffles sandwich w spicy filet meal"
+      ]
+    },
+    {
+      "id": "cfa-group-100222",
+      "kind": "item",
+      "keys": [
+        "src:itemGroupId:100222",
+        "name:sides/chicken waffles sandwich w grilled filet meal"
+      ]
+    },
+    {
+      "id": "cfa-group-100234",
+      "kind": "item",
+      "keys": [
+        "src:itemGroupId:100234",
+        "name:sides/chick fil a sandwich meal"
+      ]
+    },
+    {
+      "id": "cfa-group-100242",
+      "kind": "item",
+      "keys": [
+        "src:itemGroupId:100242",
+        "name:sides/chick fil a deluxe meal"
+      ]
+    },
+    {
+      "id": "cfa-group-100243",
+      "kind": "item",
+      "keys": [
+        "src:itemGroupId:100243",
+        "name:sides/chick fil a spicy chicken sandwich meal"
+      ]
+    },
+    {
+      "id": "cfa-group-100251",
+      "kind": "item",
+      "keys": [
+        "src:itemGroupId:100251",
+        "name:sides/spicy chicken sandwich deluxe meal"
+      ]
+    },
+    {
+      "id": "cfa-group-100257",
+      "kind": "item",
+      "keys": [
+        "src:itemGroupId:100257",
+        "name:sides/grilled chicken sandwich meal"
+      ]
+    },
+    {
+      "id": "cfa-group-100264",
+      "kind": "item",
+      "keys": [
+        "src:itemGroupId:100264",
+        "name:sides/grilled chicken club meal"
+      ]
+    },
+    {
+      "id": "cfa-group-100273",
+      "kind": "item",
+      "keys": [
+        "src:itemGroupId:100273",
+        "name:chicken/chick fil a nuggets meal"
+      ]
+    },
+    {
+      "id": "cfa-group-100278",
+      "kind": "item",
+      "keys": [
+        "src:itemGroupId:100278",
+        "name:chicken/grilled nuggets meal"
+      ]
+    },
+    {
+      "id": "cfa-group-100285",
+      "kind": "item",
+      "keys": [
+        "src:itemGroupId:100285",
+        "name:chicken/chick n strips meal"
+      ]
+    },
+    {
+      "id": "cfa-group-100289",
+      "kind": "item",
+      "keys": [
+        "src:itemGroupId:100289",
+        "name:wraps/chick fil a cool wrap meal"
+      ]
+    },
+    {
+      "id": "cfa-group-100292",
+      "kind": "item",
+      "keys": [
+        "src:itemGroupId:100292",
+        "name:wraps/southwest veggie wrap meal"
+      ]
+    },
+    {
+      "id": "cfa-group-100336",
+      "kind": "item",
+      "keys": [
+        "src:itemGroupId:100336",
+        "name:chicken/5 ct nuggets kid s meal"
+      ]
+    },
+    {
+      "id": "cfa-group-100340",
+      "kind": "item",
+      "keys": [
+        "src:itemGroupId:100340",
+        "name:chicken/2 ct chick n strips kid s meal"
+      ]
+    },
+    {
+      "id": "cfa-group-100341",
+      "kind": "item",
+      "keys": [
+        "src:itemGroupId:100341",
+        "name:chicken/5 ct grilled nuggets kid s meal"
+      ]
+    },
+    {
+      "id": "cfa-group-100349",
+      "kind": "item",
+      "keys": [
+        "src:itemGroupId:100349",
+        "name:sides/mac cheese kid s meal"
+      ]
+    },
+    {
+      "id": "cfa-item-1009738",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1009738",
+        "name:sandwiches/chicken waffles sandwich w chick fil a filet"
+      ]
+    },
+    {
+      "id": "Individual Sauces [CFA 100350:0]",
+      "kind": "category",
+      "keys": []
+    },
+    {
+      "id": "Sandwich Paid Modifiers [CFA 100350:2]",
+      "kind": "category",
+      "keys": []
+    },
+    {
+      "id": "Sandwich Remove Modifiers [CFA 100350:3]",
+      "kind": "category",
+      "keys": []
+    },
+    {
+      "id": "Individual Sauces [CFA 100188:0]",
+      "kind": "category",
+      "keys": []
+    },
+    {
+      "id": "Sandwich Paid Modifiers [CFA 100188:2]",
+      "kind": "category",
+      "keys": []
+    },
+    {
+      "id": "Sandwich Remove Modifiers [CFA 100188:3]",
+      "kind": "category",
+      "keys": []
+    },
+    {
+      "id": "cfa-item-1009740",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1009740",
+        "name:sandwiches/chicken waffles sandwich w spicy filet"
+      ]
+    },
+    {
+      "id": "cfa-item-1009739",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1009739",
+        "name:sandwiches/chicken waffles sandwich w grilled filet"
+      ]
+    },
+    {
+      "id": "cfa-item-1000231",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1000231",
+        "name:sandwiches/chick fil a chicken sandwich"
+      ]
+    },
+    {
+      "id": "Individual Sauces [CFA 100227:0]",
+      "kind": "category",
+      "keys": [
+        "cfa-item-1000231/group:individual sauce",
+        "cfa-item-1001285/group:individual sauce"
+      ]
+    },
+    {
+      "id": "Bread Carriers [CFA 100227:2]",
+      "kind": "category",
+      "keys": [
+        "cfa-item-1000231/group:bread carrier",
+        "cfa-item-1001285/group:bread carrier"
+      ]
+    },
+    {
+      "id": "Sandwich Paid Modifiers [CFA 100227:3]",
+      "kind": "category",
+      "keys": [
+        "cfa-item-1000231/group:sandwich paid modifier",
+        "cfa-item-1001285/group:sandwich paid modifier"
+      ]
+    },
+    {
+      "id": "Sandwich Remove Modifiers [CFA 100227:4]",
+      "kind": "category",
+      "keys": [
+        "cfa-item-1000231/group:sandwich remove modifier",
+        "cfa-item-1001285/group:sandwich remove modifier"
+      ]
+    },
+    {
+      "id": "Add Pickles Mod [CFA 100227:5]",
+      "kind": "category",
+      "keys": [
+        "cfa-item-1000231/group:add pickles mod",
+        "cfa-item-1001285/group:add pickles mod"
+      ]
+    },
+    {
+      "id": "cfa-group-100351",
+      "kind": "item",
+      "keys": [
+        "src:itemGroupId:100351",
+        "name:sandwiches/chick fil a deluxe sandwich"
+      ]
+    },
+    {
+      "id": "cfa-item-1003016",
+      "kind": "variant",
+      "keys": [
+        "cfa-group-100351/variant:american"
+      ]
+    },
+    {
+      "id": "cfa-item-1004691",
+      "kind": "variant",
+      "keys": [
+        "cfa-group-100351/variant:colby jack"
+      ]
+    },
+    {
+      "id": "cfa-item-1003018",
+      "kind": "variant",
+      "keys": [
+        "cfa-group-100351/variant:pepper jack"
+      ]
+    },
+    {
+      "id": "cfa-item-1001445",
+      "kind": "variant",
+      "keys": [
+        "cfa-group-100351/variant:no cheese"
+      ]
+    },
+    {
+      "id": "Individual Sauces [CFA 100236:0]",
+      "kind": "category",
+      "keys": [
+        "cfa-group-100351/group:individual sauce",
+        "cfa-group-100352/group:individual sauce",
+        "cfa-item-1003016/group:individual sauce",
+        "cfa-item-1004691/group:individual sauce",
+        "cfa-item-1003018/group:individual sauce",
+        "cfa-item-1003021/group:individual sauce"
+      ]
+    },
+    {
+      "id": "Bread Carriers [CFA 100236:2]",
+      "kind": "category",
+      "keys": [
+        "cfa-group-100351/group:bread carrier",
+        "cfa-group-100352/group:bread carrier",
+        "cfa-item-1003016/group:bread carrier",
+        "cfa-item-1004691/group:bread carrier",
+        "cfa-item-1003018/group:bread carrier",
+        "cfa-item-1003021/group:bread carrier"
+      ]
+    },
+    {
+      "id": "Sandwich Paid Modifiers [CFA 100236:3]",
+      "kind": "category",
+      "keys": [
+        "cfa-group-100351/group:sandwich paid modifier",
+        "cfa-group-100352/group:sandwich paid modifier",
+        "cfa-item-1003016/group:sandwich paid modifier",
+        "cfa-item-1004691/group:sandwich paid modifier",
+        "cfa-item-1003018/group:sandwich paid modifier",
+        "cfa-item-1003021/group:sandwich paid modifier"
+      ]
+    },
+    {
+      "id": "Sandwich Remove Modifiers [CFA 100236:4]",
+      "kind": "category",
+      "keys": [
+        "cfa-group-100351/group:sandwich remove modifier",
+        "cfa-group-100352/group:sandwich remove modifier",
+        "cfa-item-1003016/group:sandwich remove modifier",
+        "cfa-item-1004691/group:sandwich remove modifier",
+        "cfa-item-1003018/group:sandwich remove modifier",
+        "cfa-item-1003021/group:sandwich remove modifier"
+      ]
+    },
+    {
+      "id": "Add Pickles Mod [CFA 100236:5]",
+      "kind": "category",
+      "keys": [
+        "cfa-group-100351/group:add pickles mod",
+        "cfa-group-100352/group:add pickles mod",
+        "cfa-item-1003016/group:add pickles mod",
+        "cfa-item-1004691/group:add pickles mod",
+        "cfa-item-1003018/group:add pickles mod",
+        "cfa-item-1003021/group:add pickles mod"
+      ]
+    },
+    {
+      "id": "cfa-item-1001285",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1001285",
+        "name:sandwiches/spicy chicken sandwich"
+      ]
+    },
+    {
+      "id": "cfa-group-100352",
+      "kind": "item",
+      "keys": [
+        "src:itemGroupId:100352",
+        "name:sandwiches/spicy deluxe sandwich"
+      ]
+    },
+    {
+      "id": "cfa-item-1003021",
+      "kind": "variant",
+      "keys": [
+        "cfa-group-100352/variant:pepper jack"
+      ]
+    },
+    {
+      "id": "cfa-item-1003019",
+      "kind": "variant",
+      "keys": [
+        "cfa-group-100352/variant:american"
+      ]
+    },
+    {
+      "id": "cfa-item-1004692",
+      "kind": "variant",
+      "keys": [
+        "cfa-group-100352/variant:colby jack"
+      ]
+    },
+    {
+      "id": "cfa-item-1001443",
+      "kind": "variant",
+      "keys": [
+        "cfa-group-100352/variant:no cheese"
+      ]
+    },
+    {
+      "id": "cfa-item-1004610",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1004610",
+        "name:sandwiches/grilled chicken sandwich"
+      ]
+    },
+    {
+      "id": "Individual Sauces [CFA 100354:0]",
+      "kind": "category",
+      "keys": []
+    },
+    {
+      "id": "Bread Carriers [CFA 100354:2]",
+      "kind": "category",
+      "keys": []
+    },
+    {
+      "id": "Sandwich Paid Modifiers [CFA 100354:3]",
+      "kind": "category",
+      "keys": []
+    },
+    {
+      "id": "Sandwich Remove Modifiers [CFA 100354:4]",
+      "kind": "category",
+      "keys": []
+    },
+    {
+      "id": "Individual Sauces [CFA 100256:0]",
+      "kind": "category",
+      "keys": []
+    },
+    {
+      "id": "Bread Carriers [CFA 100256:2]",
+      "kind": "category",
+      "keys": []
+    },
+    {
+      "id": "Sandwich Paid Modifiers [CFA 100256:3]",
+      "kind": "category",
+      "keys": []
+    },
+    {
+      "id": "Sandwich Remove Modifiers [CFA 100256:4]",
+      "kind": "category",
+      "keys": []
+    },
+    {
+      "id": "cfa-group-100355",
+      "kind": "item",
+      "keys": [
+        "src:itemGroupId:100355",
+        "name:sandwiches/chick fil a grilled chicken club sandwich"
+      ]
+    },
+    {
+      "id": "cfa-item-1004613",
+      "kind": "variant",
+      "keys": [
+        "cfa-group-100355/variant:colby jack"
+      ]
+    },
+    {
+      "id": "cfa-item-1004611",
+      "kind": "variant",
+      "keys": [
+        "cfa-group-100355/variant:american"
+      ]
+    },
+    {
+      "id": "cfa-item-1004612",
+      "kind": "variant",
+      "keys": [
+        "cfa-group-100355/variant:pepper jack"
+      ]
+    },
+    {
+      "id": "cfa-item-1004639",
+      "kind": "variant",
+      "keys": [
+        "cfa-group-100355/variant:no cheese"
+      ]
+    },
+    {
+      "id": "Individual Sauces [CFA 100259:0]",
+      "kind": "category",
+      "keys": [
+        "cfa-group-100355/group:individual sauce",
+        "cfa-item-1004613/group:individual sauce",
+        "cfa-item-1004612/group:individual sauce",
+        "cfa-item-1004611/group:individual sauce",
+        "cfa-item-1004639/group:individual sauce"
+      ]
+    },
+    {
+      "id": "Bread Carriers [CFA 100259:2]",
+      "kind": "category",
+      "keys": [
+        "cfa-group-100355/group:bread carrier",
+        "cfa-item-1004613/group:bread carrier",
+        "cfa-item-1004612/group:bread carrier",
+        "cfa-item-1004611/group:bread carrier",
+        "cfa-item-1004639/group:bread carrier"
+      ]
+    },
+    {
+      "id": "Sandwich Paid Modifiers [CFA 100259:3]",
+      "kind": "category",
+      "keys": [
+        "cfa-group-100355/group:sandwich paid modifier",
+        "cfa-item-1004613/group:sandwich paid modifier",
+        "cfa-item-1004612/group:sandwich paid modifier",
+        "cfa-item-1004611/group:sandwich paid modifier",
+        "cfa-item-1004639/group:sandwich paid modifier"
+      ]
+    },
+    {
+      "id": "Sandwich Remove Modifiers [CFA 100259:4]",
+      "kind": "category",
+      "keys": [
+        "cfa-group-100355/group:sandwich remove modifier",
+        "cfa-item-1004613/group:sandwich remove modifier",
+        "cfa-item-1004612/group:sandwich remove modifier",
+        "cfa-item-1004611/group:sandwich remove modifier",
+        "cfa-item-1004639/group:sandwich remove modifier"
+      ]
+    },
+    {
+      "id": "cfa-group-100357",
+      "kind": "item",
+      "keys": [
+        "src:itemGroupId:100357",
+        "name:chicken/chick fil a nuggets"
+      ]
+    },
+    {
+      "id": "cfa-item-1007115",
+      "kind": "variant",
+      "keys": [
+        "cfa-group-100357/variant:5 ct"
+      ]
+    },
+    {
+      "id": "cfa-item-1000161",
+      "kind": "variant",
+      "keys": [
+        "cfa-group-100357/variant:8 ct"
+      ]
+    },
+    {
+      "id": "cfa-item-1000162",
+      "kind": "variant",
+      "keys": [
+        "cfa-group-100357/variant:12 ct"
+      ]
+    },
+    {
+      "id": "cfa-item-1006616",
+      "kind": "variant",
+      "keys": [
+        "cfa-group-100357/variant:30 ct"
+      ]
+    },
+    {
+      "id": "cfa-group-100360",
+      "kind": "item",
+      "keys": [
+        "src:itemGroupId:100360",
+        "name:chicken/grilled nuggets"
+      ]
+    },
+    {
+      "id": "cfa-item-1007116",
+      "kind": "variant",
+      "keys": [
+        "cfa-group-100360/variant:5 ct"
+      ]
+    },
+    {
+      "id": "cfa-item-1004667",
+      "kind": "variant",
+      "keys": [
+        "cfa-group-100360/variant:8 ct"
+      ]
+    },
+    {
+      "id": "cfa-item-1004668",
+      "kind": "variant",
+      "keys": [
+        "cfa-group-100360/variant:12 ct"
+      ]
+    },
+    {
+      "id": "cfa-item-1007846",
+      "kind": "variant",
+      "keys": [
+        "cfa-group-100360/variant:30 ct"
+      ]
+    },
+    {
+      "id": "cfa-group-100361",
+      "kind": "item",
+      "keys": [
+        "src:itemGroupId:100361",
+        "name:chicken/chick fil a chick n strips"
+      ]
+    },
+    {
+      "id": "cfa-item-1001326",
+      "kind": "variant",
+      "keys": [
+        "cfa-group-100361/variant:2 ct"
+      ]
+    },
+    {
+      "id": "cfa-item-1001327",
+      "kind": "variant",
+      "keys": [
+        "cfa-group-100361/variant:3 ct"
+      ]
+    },
+    {
+      "id": "cfa-item-1001328",
+      "kind": "variant",
+      "keys": [
+        "cfa-group-100361/variant:4 ct"
+      ]
+    },
+    {
+      "id": "cfa-item-1009275",
+      "kind": "variant",
+      "keys": [
+        "cfa-group-100361/variant:10 ct"
+      ]
+    },
+    {
+      "id": "cfa-item-1004641",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1004641",
+        "name:wraps/chick fil a cool wrap"
+      ]
+    },
+    {
+      "id": "Shredded Cheese Group [CFA 100362:1]",
+      "kind": "category",
+      "keys": []
+    },
+    {
+      "id": "Shredded Cheese Group [CFA 100288:1]",
+      "kind": "category",
+      "keys": []
+    },
+    {
+      "id": "cfa-item-1007366",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1007366",
+        "name:wraps/southwest veggie wrap"
+      ]
+    },
+    {
+      "id": "Shredded Cheese Group [CFA 100363:3]",
+      "kind": "category",
+      "keys": []
+    },
+    {
+      "id": "Shredded Cheese Group [CFA 100291:3]",
+      "kind": "category",
+      "keys": []
+    },
+    {
+      "id": "cfa-item-1009741",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1009741",
+        "name:sandwiches/waffle"
+      ]
+    },
+    {
+      "id": "Individual Sauces [CFA 100364:0]",
+      "kind": "category",
+      "keys": [
+        "cfa-item-1009741/group:individual sauce"
+      ]
+    },
+    {
+      "id": "cfa-item-1006329",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1006329",
+        "name:sandwiches/gluten free bun"
+      ]
+    },
+    {
+      "id": "cfa-group-100369",
+      "kind": "item",
+      "keys": [
+        "src:itemGroupId:100369",
+        "name:sandwiches/filets"
+      ]
+    },
+    {
+      "id": "cfa-item-1000239",
+      "kind": "variant",
+      "keys": [
+        "cfa-group-100369/variant:chick fil a"
+      ]
+    },
+    {
+      "id": "cfa-item-1004609",
+      "kind": "variant",
+      "keys": [
+        "cfa-group-100369/variant:grilled"
+      ]
+    },
+    {
+      "id": "cfa-item-1001287",
+      "kind": "variant",
+      "keys": [
+        "cfa-group-100369/variant:spicy"
+      ]
+    },
+    {
+      "id": "Add Pickles Mod [CFA 100367:2]",
+      "kind": "category",
+      "keys": [
+        "cfa-group-100369/group:add pickles mod",
+        "cfa-item-1000239/group:add pickles mod"
+      ]
+    },
+    {
+      "id": "Sandwich Paid Modifiers [CFA 100367:3]",
+      "kind": "category",
+      "keys": [
+        "cfa-group-100369/group:sandwich paid modifier",
+        "cfa-item-1000239/group:sandwich paid modifier"
+      ]
+    },
+    {
+      "id": "cfa-group-100371",
+      "kind": "item",
+      "keys": [
+        "src:itemGroupId:100371",
+        "name:sides/chick fil a waffle potato fries"
+      ]
+    },
+    {
+      "id": "cfa-item-1000122",
+      "kind": "variant",
+      "keys": [
+        "cfa-group-100371/variant:small"
+      ]
+    },
+    {
+      "id": "cfa-item-1000123",
+      "kind": "variant",
+      "keys": [
+        "cfa-group-100371/variant:medium"
+      ]
+    },
+    {
+      "id": "cfa-item-1000124",
+      "kind": "variant",
+      "keys": [
+        "cfa-group-100371/variant:large"
+      ]
+    },
+    {
+      "id": "Medium Fries Modifiers [CFA 100191:2]",
+      "kind": "category",
+      "keys": []
+    },
+    {
+      "id": "Medium Fries Modifiers [CFA 100228:2]",
+      "kind": "category",
+      "keys": []
+    },
+    {
+      "id": "Medium Fries Modifiers [CFA 100494:0]",
+      "kind": "category",
+      "keys": []
+    },
+    {
+      "id": "cfa-item-1004265",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1004265",
+        "name:sides/side salad"
+      ]
+    },
+    {
+      "id": "Paid Salad Toppings [CFA 100372:3]",
+      "kind": "category",
+      "keys": []
+    },
+    {
+      "id": "Paid Salad Toppings [CFA 100212:0]",
+      "kind": "category",
+      "keys": []
+    },
+    {
+      "id": "Paid Salad Toppings [CFA 100497:0]",
+      "kind": "category",
+      "keys": []
+    },
+    {
+      "id": "cfa-group-100373",
+      "kind": "item",
+      "keys": [
+        "src:itemGroupId:100373",
+        "name:sides/mac cheese"
+      ]
+    },
+    {
+      "id": "cfa-item-1006212",
+      "kind": "variant",
+      "keys": [
+        "cfa-group-100373/variant:small"
+      ]
+    },
+    {
+      "id": "cfa-item-1006280",
+      "kind": "variant",
+      "keys": [
+        "cfa-group-100373/variant:medium"
+      ]
+    },
+    {
+      "id": "cfa-item-1006211",
+      "kind": "variant",
+      "keys": [
+        "cfa-group-100373/variant:large"
+      ]
+    },
+    {
+      "id": "Bacon Crumble Group [CFA 100205:0]",
+      "kind": "category",
+      "keys": [
+        "cfa-group-100373/group:bacon crumble group",
+        "cfa-item-1006280/group:bacon crumble group",
+        "cfa-item-1006212/group:bacon crumble group",
+        "cfa-item-1010240/group:bacon crumble group"
+      ]
+    },
+    {
+      "id": "cfa-group-100375",
+      "kind": "item",
+      "keys": [
+        "src:itemGroupId:100375",
+        "name:sides/chicken noodle soup"
+      ]
+    },
+    {
+      "id": "cfa-item-1000166",
+      "kind": "variant",
+      "keys": [
+        "cfa-group-100375/variant:cup"
+      ]
+    },
+    {
+      "id": "cfa-item-1000167",
+      "kind": "variant",
+      "keys": [
+        "cfa-group-100375/variant:bowl"
+      ]
+    },
+    {
+      "id": "cfa-group-100376",
+      "kind": "item",
+      "keys": [
+        "src:itemGroupId:100376"
+      ]
+    },
+    {
+      "id": "cfa-group-100377",
+      "kind": "item",
+      "keys": [
+        "src:itemGroupId:100377"
+      ]
+    },
+    {
+      "id": "cfa-item-1000224",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1000224"
+      ]
+    },
+    {
+      "id": "cfa-item-1003653",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1003653",
+        "name:sides/buddy fruits apple sauce"
+      ]
+    },
+    {
+      "id": "cfa-group-100385",
+      "kind": "item",
+      "keys": [
+        "src:itemGroupId:100385"
+      ]
+    },
+    {
+      "id": "cfa-item-1009676",
+      "kind": "variant",
+      "keys": [
+        "cfa-group-100385/variant:caramel",
+        "cfa-group-100402/variant:caramel"
+      ]
+    },
+    {
+      "id": "cfa-item-1007075",
+      "kind": "variant",
+      "keys": [
+        "cfa-group-100385/variant:mocha",
+        "cfa-group-100402/variant:mocha"
+      ]
+    },
+    {
+      "id": "cfa-item-1009779",
+      "kind": "variant",
+      "keys": [
+        "cfa-group-100385/variant:vanilla",
+        "cfa-group-100402/variant:vanilla"
+      ]
+    },
+    {
+      "id": "cfa-item-1010294",
+      "kind": "variant",
+      "keys": [
+        "cfa-group-100385/variant:toasted marshmallow",
+        "cfa-group-100402/variant:toasted marshmallow"
+      ]
+    },
+    {
+      "id": "cfa-item-1009781",
+      "kind": "variant",
+      "keys": [
+        "cfa-group-100385/variant:original",
+        "cfa-group-100402/variant:original"
+      ]
+    },
+    {
+      "id": "Syrup Removal [CFA 100043:0]",
+      "kind": "category",
+      "keys": []
+    },
+    {
+      "id": "Creamers [CFA 100043:1]",
+      "kind": "category",
+      "keys": []
+    },
+    {
+      "id": "Sweeteners [CFA 100043:2]",
+      "kind": "category",
+      "keys": []
+    },
+    {
+      "id": "Syrup Extra [CFA 100043:3]",
+      "kind": "category",
+      "keys": []
+    },
+    {
+      "id": "Syrup Removal [CFA 100379:0]",
+      "kind": "category",
+      "keys": []
+    },
+    {
+      "id": "Creamers [CFA 100379:1]",
+      "kind": "category",
+      "keys": []
+    },
+    {
+      "id": "Sweeteners [CFA 100379:2]",
+      "kind": "category",
+      "keys": []
+    },
+    {
+      "id": "Syrup Extra [CFA 100379:3]",
+      "kind": "category",
+      "keys": []
+    },
+    {
+      "id": "cfa-group-100392",
+      "kind": "item",
+      "keys": [
+        "src:itemGroupId:100392"
+      ]
+    },
+    {
+      "id": "cfa-item-1009675",
+      "kind": "variant",
+      "keys": [
+        "cfa-group-100392/variant:caramel",
+        "cfa-group-100408/variant:caramel"
+      ]
+    },
+    {
+      "id": "cfa-item-1009677",
+      "kind": "variant",
+      "keys": [
+        "cfa-group-100392/variant:mocha",
+        "cfa-group-100408/variant:mocha"
+      ]
+    },
+    {
+      "id": "cfa-item-1004728",
+      "kind": "variant",
+      "keys": [
+        "cfa-group-100392/variant:vanilla",
+        "cfa-group-100408/variant:vanilla"
+      ]
+    },
+    {
+      "id": "cfa-item-1010293",
+      "kind": "variant",
+      "keys": [
+        "cfa-group-100392/variant:toasted marshmallow",
+        "cfa-group-100408/variant:toasted marshmallow"
+      ]
+    },
+    {
+      "id": "cfa-item-1009678",
+      "kind": "variant",
+      "keys": [
+        "cfa-group-100392/variant:original",
+        "cfa-group-100408/variant:original"
+      ]
+    },
+    {
+      "id": "Coffee Removals [CFA 100032:0]",
+      "kind": "category",
+      "keys": []
+    },
+    {
+      "id": "Syrup Removal [CFA 100032:1]",
+      "kind": "category",
+      "keys": []
+    },
+    {
+      "id": "Creamers [CFA 100032:2]",
+      "kind": "category",
+      "keys": []
+    },
+    {
+      "id": "Sweeteners [CFA 100032:3]",
+      "kind": "category",
+      "keys": []
+    },
+    {
+      "id": "Syrup Extra [CFA 100032:4]",
+      "kind": "category",
+      "keys": []
+    },
+    {
+      "id": "Coffee Removals [CFA 100387:0]",
+      "kind": "category",
+      "keys": []
+    },
+    {
+      "id": "Syrup Removal [CFA 100387:1]",
+      "kind": "category",
+      "keys": []
+    },
+    {
+      "id": "Creamers [CFA 100387:2]",
+      "kind": "category",
+      "keys": []
+    },
+    {
+      "id": "Sweeteners [CFA 100387:3]",
+      "kind": "category",
+      "keys": []
+    },
+    {
+      "id": "Syrup Extra [CFA 100387:4]",
+      "kind": "category",
+      "keys": []
+    },
+    {
+      "id": "Coffee Removals [CFA 100403:0]",
+      "kind": "category",
+      "keys": []
+    },
+    {
+      "id": "Syrup Removal [CFA 100403:1]",
+      "kind": "category",
+      "keys": []
+    },
+    {
+      "id": "Creamers [CFA 100403:2]",
+      "kind": "category",
+      "keys": []
+    },
+    {
+      "id": "Sweeteners [CFA 100403:3]",
+      "kind": "category",
+      "keys": []
+    },
+    {
+      "id": "Syrup Extra [CFA 100403:4]",
+      "kind": "category",
+      "keys": []
+    },
+    {
+      "id": "cfa-item-1010295",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1010295",
+        "name:coffee/toasted marshmallow hot coffee"
+      ]
+    },
+    {
+      "id": "Creamers [CFA 100393:0]",
+      "kind": "category",
+      "keys": []
+    },
+    {
+      "id": "Sweeteners [CFA 100393:1]",
+      "kind": "category",
+      "keys": []
+    },
+    {
+      "id": "Syrup Extra [CFA 100393:2]",
+      "kind": "category",
+      "keys": []
+    },
+    {
+      "id": "Creamers [CFA 100087:0]",
+      "kind": "category",
+      "keys": []
+    },
+    {
+      "id": "Sweeteners [CFA 100087:1]",
+      "kind": "category",
+      "keys": []
+    },
+    {
+      "id": "Syrup Extra [CFA 100087:2]",
+      "kind": "category",
+      "keys": []
+    },
+    {
+      "id": "cfa-group-100394",
+      "kind": "item",
+      "keys": [
+        "src:itemGroupId:100394"
+      ]
+    },
+    {
+      "id": "cfa-item-1009681",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1009681",
+        "name:treats/s mores frosted coffee"
+      ]
+    },
+    {
+      "id": "Frosted Coffee Mixins [CFA 100396:0]",
+      "kind": "category",
+      "keys": []
+    },
+    {
+      "id": "Inclusions Removal [CFA 100396:1]",
+      "kind": "category",
+      "keys": []
+    },
+    {
+      "id": "Frosted Coffee Mixins [CFA 100021:0]",
+      "kind": "category",
+      "keys": []
+    },
+    {
+      "id": "Inclusions Removal [CFA 100021:1]",
+      "kind": "category",
+      "keys": []
+    },
+    {
+      "id": "cfa-group-100397",
+      "kind": "item",
+      "keys": [
+        "src:itemGroupId:100397",
+        "name:coffee/frosted coffee"
+      ]
+    },
+    {
+      "id": "cfa-item-1010013",
+      "kind": "variant",
+      "keys": [
+        "cfa-group-100397/variant:caramel",
+        "cfa-group-100443/variant:caramel"
+      ]
+    },
+    {
+      "id": "cfa-item-1010014",
+      "kind": "variant",
+      "keys": [
+        "cfa-group-100397/variant:mocha",
+        "cfa-group-100443/variant:mocha"
+      ]
+    },
+    {
+      "id": "cfa-item-1010015",
+      "kind": "variant",
+      "keys": [
+        "cfa-group-100397/variant:vanilla",
+        "cfa-group-100443/variant:vanilla"
+      ]
+    },
+    {
+      "id": "cfa-item-1005767",
+      "kind": "variant",
+      "keys": [
+        "cfa-group-100397/variant:original",
+        "cfa-group-100443/variant:original"
+      ]
+    },
+    {
+      "id": "Frosted Coffee Mixins [CFA 100084:0]",
+      "kind": "category",
+      "keys": [
+        "cfa-group-100397/group:frosted coffee mixin",
+        "cfa-group-100443/group:frosted coffee mixin",
+        "cfa-item-1005767/group:frosted coffee mixin",
+        "cfa-item-1010013/group:frosted coffee mixin",
+        "cfa-item-1010014/group:frosted coffee mixin",
+        "cfa-item-1010015/group:frosted coffee mixin"
+      ]
+    },
+    {
+      "id": "cfa-item-1010177",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1010177",
+        "name:beverages/pineapple dragonfruit sprite"
+      ]
+    },
+    {
+      "id": "Ice Modifiers [CFA 100023:0]",
+      "kind": "category",
+      "keys": [
+        "cfa-item-1010177/group:ice modifier",
+        "cfa-group-100398/group:ice modifier",
+        "cfa-group-100399/group:ice modifier",
+        "cfa-group-100400/group:ice modifier",
+        "cfa-group-100419/group:ice modifier",
+        "cfa-group-100420/group:ice modifier",
+        "cfa-group-100421/group:ice modifier",
+        "cfa-group-100423/group:ice modifier",
+        "cfa-group-100424/group:ice modifier",
+        "cfa-group-100425/group:ice modifier",
+        "cfa-group-100426/group:ice modifier",
+        "cfa-group-100427/group:ice modifier",
+        "cfa-group-100429/group:ice modifier",
+        "cfa-group-100435/group:ice modifier",
+        "cfa-item-1009330/group:ice modifier",
+        "cfa-item-1009331/group:ice modifier",
+        "cfa-item-1009324/group:ice modifier",
+        "cfa-item-1009325/group:ice modifier",
+        "cfa-item-1009326/group:ice modifier",
+        "cfa-item-1009327/group:ice modifier",
+        "cfa-item-1009328/group:ice modifier",
+        "cfa-item-1009329/group:ice modifier",
+        "cfa-item-1000248/group:ice modifier",
+        "cfa-item-1000247/group:ice modifier",
+        "cfa-item-1000246/group:ice modifier",
+        "cfa-item-1000253/group:ice modifier",
+        "cfa-item-1000252/group:ice modifier",
+        "cfa-item-1000251/group:ice modifier",
+        "cfa-item-1001506/group:ice modifier",
+        "cfa-item-1001505/group:ice modifier",
+        "cfa-item-1001504/group:ice modifier",
+        "cfa-item-1000070/group:ice modifier",
+        "cfa-item-1000069/group:ice modifier",
+        "cfa-item-1000068/group:ice modifier",
+        "cfa-item-1000312/group:ice modifier",
+        "cfa-item-1000311/group:ice modifier",
+        "cfa-item-1000310/group:ice modifier",
+        "cfa-item-1000263/group:ice modifier",
+        "cfa-item-1000262/group:ice modifier",
+        "cfa-item-1000261/group:ice modifier",
+        "cfa-item-1000258/group:ice modifier",
+        "cfa-item-1000257/group:ice modifier",
+        "cfa-item-1000256/group:ice modifier",
+        "cfa-item-1000283/group:ice modifier",
+        "cfa-item-1000282/group:ice modifier",
+        "cfa-item-1000281/group:ice modifier",
+        "cfa-item-1000268/group:ice modifier",
+        "cfa-item-1000267/group:ice modifier",
+        "cfa-item-1000266/group:ice modifier",
+        "cfa-item-1000432/group:ice modifier",
+        "cfa-item-1000431/group:ice modifier",
+        "cfa-item-1000430/group:ice modifier",
+        "cfa-item-1000250/group:ice modifier",
+        "cfa-item-1000255/group:ice modifier",
+        "cfa-item-1001508/group:ice modifier",
+        "cfa-item-1000072/group:ice modifier",
+        "cfa-item-1000314/group:ice modifier",
+        "cfa-item-1000260/group:ice modifier",
+        "cfa-item-1000265/group:ice modifier",
+        "cfa-item-1000285/group:ice modifier",
+        "cfa-item-1000270/group:ice modifier",
+        "cfa-item-1000434/group:ice modifier"
+      ]
+    },
+    {
+      "id": "cfa-group-100398",
+      "kind": "item",
+      "keys": [
+        "src:itemGroupId:100398"
+      ]
+    },
+    {
+      "id": "cfa-item-1009330",
+      "kind": "variant",
+      "keys": [
+        "cfa-group-100398/variant:lemonade"
+      ]
+    },
+    {
+      "id": "cfa-item-1009331",
+      "kind": "variant",
+      "keys": [
+        "cfa-group-100398/variant:diet lemonade"
+      ]
+    },
+    {
+      "id": "cfa-group-100399",
+      "kind": "item",
+      "keys": [
+        "src:itemGroupId:100399",
+        "name:beverages/pineapple dragonfruit sunjoy"
+      ]
+    },
+    {
+      "id": "cfa-item-1009324",
+      "kind": "variant",
+      "keys": [
+        "cfa-group-100399/variant:sweet tea lemonade"
+      ]
+    },
+    {
+      "id": "cfa-item-1009325",
+      "kind": "variant",
+      "keys": [
+        "cfa-group-100399/variant:sweet tea diet lemonade"
+      ]
+    },
+    {
+      "id": "cfa-item-1009326",
+      "kind": "variant",
+      "keys": [
+        "cfa-group-100399/variant:unsweet tea lemonade"
+      ]
+    },
+    {
+      "id": "cfa-item-1009327",
+      "kind": "variant",
+      "keys": [
+        "cfa-group-100399/variant:unsweet tea diet lemonade"
+      ]
+    },
+    {
+      "id": "cfa-group-100400",
+      "kind": "item",
+      "keys": [
+        "src:itemGroupId:100400",
+        "name:beverages/pineapple dragonfruit teas"
+      ]
+    },
+    {
+      "id": "cfa-item-1009328",
+      "kind": "variant",
+      "keys": [
+        "cfa-group-100400/variant:sweet"
+      ]
+    },
+    {
+      "id": "cfa-item-1009329",
+      "kind": "variant",
+      "keys": [
+        "cfa-group-100400/variant:unsweet"
+      ]
+    },
+    {
+      "id": "cfa-group-100402",
+      "kind": "item",
+      "keys": [
+        "src:itemGroupId:100402",
+        "name:beverages/cream cold brew"
+      ]
+    },
+    {
+      "id": "cfa-group-100408",
+      "kind": "item",
+      "keys": [
+        "src:itemGroupId:100408",
+        "name:beverages/iced coffee"
+      ]
+    },
+    {
+      "id": "cfa-group-100409",
+      "kind": "item",
+      "keys": [
+        "src:itemGroupId:100409",
+        "name:beverages/freshly brewed sweetened iced tea"
+      ]
+    },
+    {
+      "id": "cfa-item-1000336",
+      "kind": "variant",
+      "keys": [
+        "cfa-group-100409/variant:small"
+      ]
+    },
+    {
+      "id": "cfa-item-1000335",
+      "kind": "variant",
+      "keys": [
+        "cfa-group-100409/variant:medium"
+      ]
+    },
+    {
+      "id": "cfa-item-1000334",
+      "kind": "variant",
+      "keys": [
+        "cfa-group-100409/variant:large"
+      ]
+    },
+    {
+      "id": "Ice Modifiers [CFA 100056:0]",
+      "kind": "category",
+      "keys": [
+        "cfa-group-100409/group:ice modifier",
+        "cfa-group-100410/group:ice modifier",
+        "cfa-group-100411/group:ice modifier",
+        "cfa-group-100412/group:ice modifier",
+        "cfa-group-100413/group:ice modifier",
+        "cfa-group-100414/group:ice modifier",
+        "cfa-group-100415/group:ice modifier",
+        "cfa-group-100416/group:ice modifier",
+        "cfa-group-100417/group:ice modifier",
+        "cfa-item-1000336/group:ice modifier",
+        "cfa-item-1000335/group:ice modifier",
+        "cfa-item-1000334/group:ice modifier",
+        "cfa-item-1000341/group:ice modifier",
+        "cfa-item-1000340/group:ice modifier",
+        "cfa-item-1000339/group:ice modifier",
+        "cfa-item-1000127/group:ice modifier",
+        "cfa-item-1000126/group:ice modifier",
+        "cfa-item-1000125/group:ice modifier",
+        "cfa-item-1000132/group:ice modifier",
+        "cfa-item-1000131/group:ice modifier",
+        "cfa-item-1000130/group:ice modifier",
+        "cfa-item-1004190/group:ice modifier",
+        "cfa-item-1004189/group:ice modifier",
+        "cfa-item-1004188/group:ice modifier",
+        "cfa-item-1004159/group:ice modifier",
+        "cfa-item-1004158/group:ice modifier",
+        "cfa-item-1004157/group:ice modifier",
+        "cfa-item-1004164/group:ice modifier",
+        "cfa-item-1004163/group:ice modifier",
+        "cfa-item-1004162/group:ice modifier",
+        "cfa-item-1004174/group:ice modifier",
+        "cfa-item-1004173/group:ice modifier",
+        "cfa-item-1004172/group:ice modifier",
+        "cfa-item-1004169/group:ice modifier",
+        "cfa-item-1004168/group:ice modifier",
+        "cfa-item-1004167/group:ice modifier",
+        "cfa-item-1000343/group:ice modifier",
+        "cfa-item-1000338/group:ice modifier",
+        "cfa-item-1000129/group:ice modifier",
+        "cfa-item-1000134/group:ice modifier",
+        "cfa-item-1004161/group:ice modifier",
+        "cfa-item-1004166/group:ice modifier",
+        "cfa-item-1004176/group:ice modifier",
+        "cfa-item-1004171/group:ice modifier",
+        "cfa-item-1004192/group:ice modifier"
+      ]
+    },
+    {
+      "id": "Tea & Lemonade Modifiers [CFA 100056:1]",
+      "kind": "category",
+      "keys": [
+        "cfa-group-100409/group:tea lemonade modifier",
+        "cfa-group-100410/group:tea lemonade modifier",
+        "cfa-group-100411/group:tea lemonade modifier",
+        "cfa-group-100412/group:tea lemonade modifier",
+        "cfa-group-100413/group:tea lemonade modifier",
+        "cfa-group-100414/group:tea lemonade modifier",
+        "cfa-group-100415/group:tea lemonade modifier",
+        "cfa-group-100416/group:tea lemonade modifier",
+        "cfa-group-100417/group:tea lemonade modifier",
+        "cfa-item-1000336/group:tea lemonade modifier",
+        "cfa-item-1000335/group:tea lemonade modifier",
+        "cfa-item-1000334/group:tea lemonade modifier",
+        "cfa-item-1000341/group:tea lemonade modifier",
+        "cfa-item-1000340/group:tea lemonade modifier",
+        "cfa-item-1000339/group:tea lemonade modifier",
+        "cfa-item-1000127/group:tea lemonade modifier",
+        "cfa-item-1000126/group:tea lemonade modifier",
+        "cfa-item-1000125/group:tea lemonade modifier",
+        "cfa-item-1000132/group:tea lemonade modifier",
+        "cfa-item-1000131/group:tea lemonade modifier",
+        "cfa-item-1000130/group:tea lemonade modifier",
+        "cfa-item-1004190/group:tea lemonade modifier",
+        "cfa-item-1004189/group:tea lemonade modifier",
+        "cfa-item-1004188/group:tea lemonade modifier",
+        "cfa-item-1004159/group:tea lemonade modifier",
+        "cfa-item-1004158/group:tea lemonade modifier",
+        "cfa-item-1004157/group:tea lemonade modifier",
+        "cfa-item-1004164/group:tea lemonade modifier",
+        "cfa-item-1004163/group:tea lemonade modifier",
+        "cfa-item-1004162/group:tea lemonade modifier",
+        "cfa-item-1004174/group:tea lemonade modifier",
+        "cfa-item-1004173/group:tea lemonade modifier",
+        "cfa-item-1004172/group:tea lemonade modifier",
+        "cfa-item-1004169/group:tea lemonade modifier",
+        "cfa-item-1004168/group:tea lemonade modifier",
+        "cfa-item-1004167/group:tea lemonade modifier",
+        "cfa-item-1000343/group:tea lemonade modifier",
+        "cfa-item-1000338/group:tea lemonade modifier",
+        "cfa-item-1000129/group:tea lemonade modifier",
+        "cfa-item-1000134/group:tea lemonade modifier",
+        "cfa-item-1004161/group:tea lemonade modifier",
+        "cfa-item-1004166/group:tea lemonade modifier",
+        "cfa-item-1004176/group:tea lemonade modifier",
+        "cfa-item-1004171/group:tea lemonade modifier",
+        "cfa-item-1004192/group:tea lemonade modifier"
+      ]
+    },
+    {
+      "id": "Tea and Lemonade Mix-Ins [CFA 100056:2]",
+      "kind": "category",
+      "keys": [
+        "cfa-group-100409/group:tea and lemonade mix in",
+        "cfa-group-100410/group:tea and lemonade mix in",
+        "cfa-group-100411/group:tea and lemonade mix in",
+        "cfa-group-100412/group:tea and lemonade mix in",
+        "cfa-group-100413/group:tea and lemonade mix in",
+        "cfa-group-100414/group:tea and lemonade mix in",
+        "cfa-group-100415/group:tea and lemonade mix in",
+        "cfa-group-100416/group:tea and lemonade mix in",
+        "cfa-group-100417/group:tea and lemonade mix in",
+        "cfa-item-1000336/group:tea and lemonade mix in",
+        "cfa-item-1000335/group:tea and lemonade mix in",
+        "cfa-item-1000334/group:tea and lemonade mix in",
+        "cfa-item-1000341/group:tea and lemonade mix in",
+        "cfa-item-1000340/group:tea and lemonade mix in",
+        "cfa-item-1000339/group:tea and lemonade mix in",
+        "cfa-item-1000127/group:tea and lemonade mix in",
+        "cfa-item-1000126/group:tea and lemonade mix in",
+        "cfa-item-1000125/group:tea and lemonade mix in",
+        "cfa-item-1000132/group:tea and lemonade mix in",
+        "cfa-item-1000131/group:tea and lemonade mix in",
+        "cfa-item-1000130/group:tea and lemonade mix in",
+        "cfa-item-1004190/group:tea and lemonade mix in",
+        "cfa-item-1004189/group:tea and lemonade mix in",
+        "cfa-item-1004188/group:tea and lemonade mix in",
+        "cfa-item-1004159/group:tea and lemonade mix in",
+        "cfa-item-1004158/group:tea and lemonade mix in",
+        "cfa-item-1004157/group:tea and lemonade mix in",
+        "cfa-item-1004164/group:tea and lemonade mix in",
+        "cfa-item-1004163/group:tea and lemonade mix in",
+        "cfa-item-1004162/group:tea and lemonade mix in",
+        "cfa-item-1004174/group:tea and lemonade mix in",
+        "cfa-item-1004173/group:tea and lemonade mix in",
+        "cfa-item-1004172/group:tea and lemonade mix in",
+        "cfa-item-1004169/group:tea and lemonade mix in",
+        "cfa-item-1004168/group:tea and lemonade mix in",
+        "cfa-item-1004167/group:tea and lemonade mix in",
+        "cfa-item-1000343/group:tea and lemonade mix in",
+        "cfa-item-1000338/group:tea and lemonade mix in",
+        "cfa-item-1000129/group:tea and lemonade mix in",
+        "cfa-item-1000134/group:tea and lemonade mix in",
+        "cfa-item-1004161/group:tea and lemonade mix in",
+        "cfa-item-1004166/group:tea and lemonade mix in",
+        "cfa-item-1004176/group:tea and lemonade mix in",
+        "cfa-item-1004171/group:tea and lemonade mix in",
+        "cfa-item-1004192/group:tea and lemonade mix in"
+      ]
+    },
+    {
+      "id": "cfa-group-100410",
+      "kind": "item",
+      "keys": [
+        "src:itemGroupId:100410",
+        "name:beverages/freshly brewed unsweetened iced tea"
+      ]
+    },
+    {
+      "id": "cfa-item-1000341",
+      "kind": "variant",
+      "keys": [
+        "cfa-group-100410/variant:small"
+      ]
+    },
+    {
+      "id": "cfa-item-1000340",
+      "kind": "variant",
+      "keys": [
+        "cfa-group-100410/variant:medium"
+      ]
+    },
+    {
+      "id": "cfa-item-1000339",
+      "kind": "variant",
+      "keys": [
+        "cfa-group-100410/variant:large"
+      ]
+    },
+    {
+      "id": "cfa-group-100411",
+      "kind": "item",
+      "keys": [
+        "src:itemGroupId:100411",
+        "name:beverages/chick fil a lemonade"
+      ]
+    },
+    {
+      "id": "cfa-item-1000127",
+      "kind": "variant",
+      "keys": [
+        "cfa-group-100411/variant:small"
+      ]
+    },
+    {
+      "id": "cfa-item-1000126",
+      "kind": "variant",
+      "keys": [
+        "cfa-group-100411/variant:medium"
+      ]
+    },
+    {
+      "id": "cfa-item-1000125",
+      "kind": "variant",
+      "keys": [
+        "cfa-group-100411/variant:large"
+      ]
+    },
+    {
+      "id": "cfa-group-100412",
+      "kind": "item",
+      "keys": [
+        "src:itemGroupId:100412",
+        "name:beverages/chick fil a diet lemonade"
+      ]
+    },
+    {
+      "id": "cfa-item-1000132",
+      "kind": "variant",
+      "keys": [
+        "cfa-group-100412/variant:small"
+      ]
+    },
+    {
+      "id": "cfa-item-1000131",
+      "kind": "variant",
+      "keys": [
+        "cfa-group-100412/variant:medium"
+      ]
+    },
+    {
+      "id": "cfa-item-1000130",
+      "kind": "variant",
+      "keys": [
+        "cfa-group-100412/variant:large"
+      ]
+    },
+    {
+      "id": "cfa-group-100413",
+      "kind": "item",
+      "keys": [
+        "src:itemGroupId:100413",
+        "name:beverages/1 2 sweet tea 1 2 unsweet tea"
+      ]
+    },
+    {
+      "id": "cfa-item-1004190",
+      "kind": "variant",
+      "keys": [
+        "cfa-group-100413/variant:small"
+      ]
+    },
+    {
+      "id": "cfa-item-1004189",
+      "kind": "variant",
+      "keys": [
+        "cfa-group-100413/variant:medium"
+      ]
+    },
+    {
+      "id": "cfa-item-1004188",
+      "kind": "variant",
+      "keys": [
+        "cfa-group-100413/variant:large"
+      ]
+    },
+    {
+      "id": "cfa-group-100414",
+      "kind": "item",
+      "keys": [
+        "src:itemGroupId:100414",
+        "name:beverages/sunjoy 1 2 sweet tea 1 2 lemonade"
+      ]
+    },
+    {
+      "id": "cfa-item-1004159",
+      "kind": "variant",
+      "keys": [
+        "cfa-group-100414/variant:small"
+      ]
+    },
+    {
+      "id": "cfa-item-1004158",
+      "kind": "variant",
+      "keys": [
+        "cfa-group-100414/variant:medium"
+      ]
+    },
+    {
+      "id": "cfa-item-1004157",
+      "kind": "variant",
+      "keys": [
+        "cfa-group-100414/variant:large"
+      ]
+    },
+    {
+      "id": "cfa-group-100415",
+      "kind": "item",
+      "keys": [
+        "src:itemGroupId:100415",
+        "name:beverages/sunjoy 1 2 sweet tea 1 2 diet lemonade"
+      ]
+    },
+    {
+      "id": "cfa-item-1004169",
+      "kind": "variant",
+      "keys": [
+        "cfa-group-100415/variant:small"
+      ]
+    },
+    {
+      "id": "cfa-item-1004168",
+      "kind": "variant",
+      "keys": [
+        "cfa-group-100415/variant:medium"
+      ]
+    },
+    {
+      "id": "cfa-item-1004167",
+      "kind": "variant",
+      "keys": [
+        "cfa-group-100415/variant:large"
+      ]
+    },
+    {
+      "id": "cfa-group-100416",
+      "kind": "item",
+      "keys": [
+        "src:itemGroupId:100416",
+        "name:beverages/sunjoy 1 2 unsweet tea 1 2 lemonade"
+      ]
+    },
+    {
+      "id": "cfa-item-1004174",
+      "kind": "variant",
+      "keys": [
+        "cfa-group-100416/variant:small"
+      ]
+    },
+    {
+      "id": "cfa-item-1004173",
+      "kind": "variant",
+      "keys": [
+        "cfa-group-100416/variant:medium"
+      ]
+    },
+    {
+      "id": "cfa-item-1004172",
+      "kind": "variant",
+      "keys": [
+        "cfa-group-100416/variant:large"
+      ]
+    },
+    {
+      "id": "cfa-group-100417",
+      "kind": "item",
+      "keys": [
+        "src:itemGroupId:100417",
+        "name:beverages/sunjoy 1 2 unsweet tea 1 2 diet lemonade"
+      ]
+    },
+    {
+      "id": "cfa-item-1004164",
+      "kind": "variant",
+      "keys": [
+        "cfa-group-100417/variant:small"
+      ]
+    },
+    {
+      "id": "cfa-item-1004163",
+      "kind": "variant",
+      "keys": [
+        "cfa-group-100417/variant:medium"
+      ]
+    },
+    {
+      "id": "cfa-item-1004162",
+      "kind": "variant",
+      "keys": [
+        "cfa-group-100417/variant:large"
+      ]
+    },
+    {
+      "id": "cfa-group-100419",
+      "kind": "item",
+      "keys": [
+        "src:itemGroupId:100419",
+        "name:beverages/coca cola"
+      ]
+    },
+    {
+      "id": "cfa-item-1000248",
+      "kind": "variant",
+      "keys": [
+        "cfa-group-100419/variant:small"
+      ]
+    },
+    {
+      "id": "cfa-item-1000247",
+      "kind": "variant",
+      "keys": [
+        "cfa-group-100419/variant:medium"
+      ]
+    },
+    {
+      "id": "cfa-item-1000246",
+      "kind": "variant",
+      "keys": [
+        "cfa-group-100419/variant:large"
+      ]
+    },
+    {
+      "id": "cfa-group-100420",
+      "kind": "item",
+      "keys": [
+        "src:itemGroupId:100420",
+        "name:beverages/diet coke"
+      ]
+    },
+    {
+      "id": "cfa-item-1000253",
+      "kind": "variant",
+      "keys": [
+        "cfa-group-100420/variant:small"
+      ]
+    },
+    {
+      "id": "cfa-item-1000252",
+      "kind": "variant",
+      "keys": [
+        "cfa-group-100420/variant:medium"
+      ]
+    },
+    {
+      "id": "cfa-item-1000251",
+      "kind": "variant",
+      "keys": [
+        "cfa-group-100420/variant:large"
+      ]
+    },
+    {
+      "id": "cfa-group-100421",
+      "kind": "item",
+      "keys": [
+        "src:itemGroupId:100421",
+        "name:beverages/coke zero sugar"
+      ]
+    },
+    {
+      "id": "cfa-item-1001506",
+      "kind": "variant",
+      "keys": [
+        "cfa-group-100421/variant:small"
+      ]
+    },
+    {
+      "id": "cfa-item-1001505",
+      "kind": "variant",
+      "keys": [
+        "cfa-group-100421/variant:medium"
+      ]
+    },
+    {
+      "id": "cfa-item-1001504",
+      "kind": "variant",
+      "keys": [
+        "cfa-group-100421/variant:large"
+      ]
+    },
+    {
+      "id": "cfa-group-100423",
+      "kind": "item",
+      "keys": [
+        "src:itemGroupId:100423",
+        "name:beverages/coca cola cherry"
+      ]
+    },
+    {
+      "id": "cfa-item-1000070",
+      "kind": "variant",
+      "keys": [
+        "cfa-group-100423/variant:small"
+      ]
+    },
+    {
+      "id": "cfa-item-1000069",
+      "kind": "variant",
+      "keys": [
+        "cfa-group-100423/variant:medium"
+      ]
+    },
+    {
+      "id": "cfa-item-1000068",
+      "kind": "variant",
+      "keys": [
+        "cfa-group-100423/variant:large"
+      ]
+    },
+    {
+      "id": "cfa-group-100424",
+      "kind": "item",
+      "keys": [
+        "src:itemGroupId:100424",
+        "name:beverages/sprite"
+      ]
+    },
+    {
+      "id": "cfa-item-1000312",
+      "kind": "variant",
+      "keys": [
+        "cfa-group-100424/variant:small"
+      ]
+    },
+    {
+      "id": "cfa-item-1000311",
+      "kind": "variant",
+      "keys": [
+        "cfa-group-100424/variant:medium"
+      ]
+    },
+    {
+      "id": "cfa-item-1000310",
+      "kind": "variant",
+      "keys": [
+        "cfa-group-100424/variant:large"
+      ]
+    },
+    {
+      "id": "cfa-group-100425",
+      "kind": "item",
+      "keys": [
+        "src:itemGroupId:100425",
+        "name:beverages/dr pepper"
+      ]
+    },
+    {
+      "id": "cfa-item-1000263",
+      "kind": "variant",
+      "keys": [
+        "cfa-group-100425/variant:small"
+      ]
+    },
+    {
+      "id": "cfa-item-1000262",
+      "kind": "variant",
+      "keys": [
+        "cfa-group-100425/variant:medium"
+      ]
+    },
+    {
+      "id": "cfa-item-1000261",
+      "kind": "variant",
+      "keys": [
+        "cfa-group-100425/variant:large"
+      ]
+    },
+    {
+      "id": "cfa-group-100426",
+      "kind": "item",
+      "keys": [
+        "src:itemGroupId:100426",
+        "name:beverages/diet dr pepper"
+      ]
+    },
+    {
+      "id": "cfa-item-1000258",
+      "kind": "variant",
+      "keys": [
+        "cfa-group-100426/variant:small"
+      ]
+    },
+    {
+      "id": "cfa-item-1000257",
+      "kind": "variant",
+      "keys": [
+        "cfa-group-100426/variant:medium"
+      ]
+    },
+    {
+      "id": "cfa-item-1000256",
+      "kind": "variant",
+      "keys": [
+        "cfa-group-100426/variant:large"
+      ]
+    },
+    {
+      "id": "cfa-group-100427",
+      "kind": "item",
+      "keys": [
+        "src:itemGroupId:100427",
+        "name:beverages/barq s root beer"
+      ]
+    },
+    {
+      "id": "cfa-item-1000283",
+      "kind": "variant",
+      "keys": [
+        "cfa-group-100427/variant:small"
+      ]
+    },
+    {
+      "id": "cfa-item-1000282",
+      "kind": "variant",
+      "keys": [
+        "cfa-group-100427/variant:medium"
+      ]
+    },
+    {
+      "id": "cfa-item-1000281",
+      "kind": "variant",
+      "keys": [
+        "cfa-group-100427/variant:large"
+      ]
+    },
+    {
+      "id": "cfa-group-100429",
+      "kind": "item",
+      "keys": [
+        "src:itemGroupId:100429",
+        "name:beverages/hi c fruit punch"
+      ]
+    },
+    {
+      "id": "cfa-item-1000268",
+      "kind": "variant",
+      "keys": [
+        "cfa-group-100429/variant:small"
+      ]
+    },
+    {
+      "id": "cfa-item-1000267",
+      "kind": "variant",
+      "keys": [
+        "cfa-group-100429/variant:medium"
+      ]
+    },
+    {
+      "id": "cfa-item-1000266",
+      "kind": "variant",
+      "keys": [
+        "cfa-group-100429/variant:large"
+      ]
+    },
+    {
+      "id": "cfa-group-100435",
+      "kind": "item",
+      "keys": [
+        "src:itemGroupId:100435",
+        "name:beverages/powerade"
+      ]
+    },
+    {
+      "id": "cfa-item-1000432",
+      "kind": "variant",
+      "keys": [
+        "cfa-group-100435/variant:small"
+      ]
+    },
+    {
+      "id": "cfa-item-1000431",
+      "kind": "variant",
+      "keys": [
+        "cfa-group-100435/variant:medium"
+      ]
+    },
+    {
+      "id": "cfa-item-1000430",
+      "kind": "variant",
+      "keys": [
+        "cfa-group-100435/variant:large"
+      ]
+    },
+    {
+      "id": "cfa-item-1000190",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1000190",
+        "name:beverages/dasani bottled water"
+      ]
+    },
+    {
+      "id": "cfa-item-1001291",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1001291"
+      ]
+    },
+    {
+      "id": "cfa-item-1003375",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1003375",
+        "name:beverages/simply orange"
+      ]
+    },
+    {
+      "id": "cfa-item-1001176",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1001176"
+      ]
+    },
+    {
+      "id": "cfa-item-1001170",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1001170"
+      ]
+    },
+    {
+      "id": "cfa-group-100436",
+      "kind": "item",
+      "keys": [
+        "src:itemGroupId:100436",
+        "name:beverages/gallon beverages"
+      ]
+    },
+    {
+      "id": "cfa-item-1000135",
+      "kind": "variant",
+      "keys": [
+        "cfa-group-100436/variant:chick fil a lemonade"
+      ]
+    },
+    {
+      "id": "cfa-item-1000137",
+      "kind": "variant",
+      "keys": [
+        "cfa-group-100436/variant:chick fil a diet lemonade"
+      ]
+    },
+    {
+      "id": "cfa-item-1007481",
+      "kind": "variant",
+      "keys": [
+        "cfa-group-100436/variant:chick fil a lemonade 1 2 lemonade 1 2 diet lemonade"
+      ]
+    },
+    {
+      "id": "cfa-item-1000354",
+      "kind": "variant",
+      "keys": [
+        "cfa-group-100436/variant:freshly brewed iced tea sweetened"
+      ]
+    },
+    {
+      "id": "cfa-item-1000355",
+      "kind": "variant",
+      "keys": [
+        "cfa-group-100436/variant:freshly brewed iced tea unsweetened"
+      ]
+    },
+    {
+      "id": "cfa-item-1007480",
+      "kind": "variant",
+      "keys": [
+        "cfa-group-100436/variant:chick fil a iced tea 1 2 sweet tea 1 2 unsweet tea"
+      ]
+    },
+    {
+      "id": "cfa-item-1007133",
+      "kind": "variant",
+      "keys": [
+        "cfa-group-100436/variant:sunjoy 1 2 sweet tea 1 2 lemonade"
+      ]
+    },
+    {
+      "id": "cfa-item-1007394",
+      "kind": "variant",
+      "keys": [
+        "cfa-group-100436/variant:sunjoy 1 2 sweet tea 1 2 diet lemonade"
+      ]
+    },
+    {
+      "id": "cfa-item-1007396",
+      "kind": "variant",
+      "keys": [
+        "cfa-group-100436/variant:sunjoy 1 2 unsweet tea 1 2 lemonade"
+      ]
+    },
+    {
+      "id": "cfa-item-1007397",
+      "kind": "variant",
+      "keys": [
+        "cfa-group-100436/variant:sunjoy 1 2 unsweet tea 1 2 diet lemonade"
+      ]
+    },
+    {
+      "id": "cfa-group-100437",
+      "kind": "item",
+      "keys": [
+        "src:itemGroupId:100437",
+        "name:beverages/seasonal gallon beverages"
+      ]
+    },
+    {
+      "id": "cfa-item-1009353",
+      "kind": "variant",
+      "keys": [
+        "cfa-group-100437/variant:lemonade"
+      ]
+    },
+    {
+      "id": "cfa-item-1009358",
+      "kind": "variant",
+      "keys": [
+        "cfa-group-100437/variant:diet lemonade"
+      ]
+    },
+    {
+      "id": "cfa-item-1009375",
+      "kind": "variant",
+      "keys": [
+        "cfa-group-100437/variant:sunjoy 1 2 sweet tea 1 2 lemonade"
+      ]
+    },
+    {
+      "id": "cfa-item-1009361",
+      "kind": "variant",
+      "keys": [
+        "cfa-group-100437/variant:sunjoy 1 2 unsweet tea 1 2 lemonade"
+      ]
+    },
+    {
+      "id": "cfa-item-1009359",
+      "kind": "variant",
+      "keys": [
+        "cfa-group-100437/variant:sunjoy 1 2 sweet tea 1 2 diet lemonade"
+      ]
+    },
+    {
+      "id": "cfa-item-1009360",
+      "kind": "variant",
+      "keys": [
+        "cfa-group-100437/variant:sunjoy 1 2 unsweet tea 1 2 diet lemonade"
+      ]
+    },
+    {
+      "id": "cfa-item-1009362",
+      "kind": "variant",
+      "keys": [
+        "cfa-group-100437/variant:sweet tea"
+      ]
+    },
+    {
+      "id": "cfa-item-1009363",
+      "kind": "variant",
+      "keys": [
+        "cfa-group-100437/variant:unsweet tea"
+      ]
+    },
+    {
+      "id": "cfa-group-100438",
+      "kind": "item",
+      "keys": [
+        "src:itemGroupId:100438",
+        "name:beverages/ice products"
+      ]
+    },
+    {
+      "id": "cfa-item-1009674",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1009674",
+        "name:treats/s mores milkshake"
+      ]
+    },
+    {
+      "id": "Milkshake Modifiers [CFA 100297:0]",
+      "kind": "category",
+      "keys": []
+    },
+    {
+      "id": "Milkshake Mix-Ins [CFA 100297:1]",
+      "kind": "category",
+      "keys": []
+    },
+    {
+      "id": "Inclusions Removal [CFA 100297:2]",
+      "kind": "category",
+      "keys": []
+    },
+    {
+      "id": "Milkshake Modifiers [CFA 100020:0]",
+      "kind": "category",
+      "keys": []
+    },
+    {
+      "id": "Milkshake Mix-Ins [CFA 100020:1]",
+      "kind": "category",
+      "keys": []
+    },
+    {
+      "id": "Inclusions Removal [CFA 100020:2]",
+      "kind": "category",
+      "keys": []
+    },
+    {
+      "id": "cfa-group-100439",
+      "kind": "item",
+      "keys": [
+        "src:itemGroupId:100439"
+      ]
+    },
+    {
+      "id": "cfa-item-1009332",
+      "kind": "variant",
+      "keys": [
+        "cfa-group-100439/variant:lemonade"
+      ]
+    },
+    {
+      "id": "cfa-item-1009333",
+      "kind": "variant",
+      "keys": [
+        "cfa-group-100439/variant:diet lemonade"
+      ]
+    },
+    {
+      "id": "cfa-group-100440",
+      "kind": "item",
+      "keys": [
+        "src:itemGroupId:100440"
+      ]
+    },
+    {
+      "id": "cfa-item-1005216",
+      "kind": "variant",
+      "keys": [
+        "cfa-group-100440/variant:lemonade"
+      ]
+    },
+    {
+      "id": "cfa-item-1005221",
+      "kind": "variant",
+      "keys": [
+        "cfa-group-100440/variant:diet lemonade"
+      ]
+    },
+    {
+      "id": "Milkshake Mix-Ins [CFA 100051:0]",
+      "kind": "category",
+      "keys": [
+        "cfa-group-100440/group:milkshake mix in",
+        "cfa-item-1005216/group:milkshake mix in",
+        "cfa-item-1005221/group:milkshake mix in"
+      ]
+    },
+    {
+      "id": "cfa-group-100441",
+      "kind": "item",
+      "keys": [
+        "src:itemGroupId:100441",
+        "name:treats/frosted sodas"
+      ]
+    },
+    {
+      "id": "cfa-item-1009402",
+      "kind": "variant",
+      "keys": [
+        "cfa-group-100441/variant:dr pepper"
+      ]
+    },
+    {
+      "id": "cfa-item-1009403",
+      "kind": "variant",
+      "keys": [
+        "cfa-group-100441/variant:diet dr pepper"
+      ]
+    },
+    {
+      "id": "cfa-item-1009396",
+      "kind": "variant",
+      "keys": [
+        "cfa-group-100441/variant:barq s root beer"
+      ]
+    },
+    {
+      "id": "cfa-item-1009343",
+      "kind": "variant",
+      "keys": [
+        "cfa-group-100441/variant:coke"
+      ]
+    },
+    {
+      "id": "cfa-item-1009346",
+      "kind": "variant",
+      "keys": [
+        "cfa-group-100441/variant:coca cola cherry"
+      ]
+    },
+    {
+      "id": "cfa-item-1009344",
+      "kind": "variant",
+      "keys": [
+        "cfa-group-100441/variant:diet coke"
+      ]
+    },
+    {
+      "id": "cfa-item-1009345",
+      "kind": "variant",
+      "keys": [
+        "cfa-group-100441/variant:coke zero sugar"
+      ]
+    },
+    {
+      "id": "cfa-item-1009350",
+      "kind": "variant",
+      "keys": [
+        "cfa-group-100441/variant:hi c fruit punch"
+      ]
+    },
+    {
+      "id": "cfa-item-1009348",
+      "kind": "variant",
+      "keys": [
+        "cfa-group-100441/variant:sprite"
+      ]
+    },
+    {
+      "id": "cfa-group-100442",
+      "kind": "item",
+      "keys": [
+        "src:itemGroupId:100442",
+        "name:treats/float"
+      ]
+    },
+    {
+      "id": "cfa-item-1009386",
+      "kind": "variant",
+      "keys": [
+        "cfa-group-100442/variant:coke"
+      ]
+    },
+    {
+      "id": "cfa-item-1009389",
+      "kind": "variant",
+      "keys": [
+        "cfa-group-100442/variant:coca cola cherry"
+      ]
+    },
+    {
+      "id": "cfa-item-1009387",
+      "kind": "variant",
+      "keys": [
+        "cfa-group-100442/variant:diet coke"
+      ]
+    },
+    {
+      "id": "cfa-item-1009388",
+      "kind": "variant",
+      "keys": [
+        "cfa-group-100442/variant:coke zero sugar"
+      ]
+    },
+    {
+      "id": "cfa-item-1009378",
+      "kind": "variant",
+      "keys": [
+        "cfa-group-100442/variant:barq s root beer"
+      ]
+    },
+    {
+      "id": "cfa-item-1009384",
+      "kind": "variant",
+      "keys": [
+        "cfa-group-100442/variant:dr pepper"
+      ]
+    },
+    {
+      "id": "cfa-item-1009385",
+      "kind": "variant",
+      "keys": [
+        "cfa-group-100442/variant:diet dr pepper"
+      ]
+    },
+    {
+      "id": "cfa-item-1009393",
+      "kind": "variant",
+      "keys": [
+        "cfa-group-100442/variant:hi c fruit punch"
+      ]
+    },
+    {
+      "id": "cfa-item-1009391",
+      "kind": "variant",
+      "keys": [
+        "cfa-group-100442/variant:sprite"
+      ]
+    },
+    {
+      "id": "cfa-item-1009377",
+      "kind": "variant",
+      "keys": [
+        "cfa-group-100442/variant:powerade mountain berry blast"
+      ]
+    },
+    {
+      "id": "cfa-group-100443",
+      "kind": "item",
+      "keys": [
+        "src:itemGroupId:100443"
+      ]
+    },
+    {
+      "id": "cfa-group-100444",
+      "kind": "item",
+      "keys": [
+        "src:itemGroupId:100444"
+      ]
+    },
+    {
+      "id": "cfa-item-1004056",
+      "kind": "variant",
+      "keys": [
+        "cfa-group-100444/variant:1 ct"
+      ]
+    },
+    {
+      "id": "cfa-item-1004057",
+      "kind": "variant",
+      "keys": [
+        "cfa-group-100444/variant:6 ct"
+      ]
+    },
+    {
+      "id": "cfa-item-1006266",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1006266",
+        "name:treats/chocolate fudge brownie"
+      ]
+    },
+    {
+      "id": "cfa-item-1002075",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1002075",
+        "name:treats/cookies cream milkshake"
+      ]
+    },
+    {
+      "id": "Milkshake Modifiers [CFA 100093:0]",
+      "kind": "category",
+      "keys": []
+    },
+    {
+      "id": "Milkshake Mix-Ins [CFA 100093:1]",
+      "kind": "category",
+      "keys": []
+    },
+    {
+      "id": "Milkshake Modifiers [CFA 100215:0]",
+      "kind": "category",
+      "keys": []
+    },
+    {
+      "id": "Milkshake Mix-Ins [CFA 100215:1]",
+      "kind": "category",
+      "keys": []
+    },
+    {
+      "id": "cfa-item-1002071",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1002071",
+        "name:treats/chocolate milkshake"
+      ]
+    },
+    {
+      "id": "Milkshake Modifiers [CFA 100095:0]",
+      "kind": "category",
+      "keys": []
+    },
+    {
+      "id": "Milkshake Mix-Ins [CFA 100095:1]",
+      "kind": "category",
+      "keys": []
+    },
+    {
+      "id": "Milkshake Modifiers [CFA 100216:0]",
+      "kind": "category",
+      "keys": []
+    },
+    {
+      "id": "Milkshake Mix-Ins [CFA 100216:1]",
+      "kind": "category",
+      "keys": []
+    },
+    {
+      "id": "cfa-item-1002073",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1002073",
+        "name:treats/strawberry milkshake"
+      ]
+    },
+    {
+      "id": "Milkshake Modifiers [CFA 100096:0]",
+      "kind": "category",
+      "keys": []
+    },
+    {
+      "id": "Milkshake Mix-Ins [CFA 100096:1]",
+      "kind": "category",
+      "keys": []
+    },
+    {
+      "id": "Milkshake Modifiers [CFA 100217:0]",
+      "kind": "category",
+      "keys": []
+    },
+    {
+      "id": "Milkshake Mix-Ins [CFA 100217:1]",
+      "kind": "category",
+      "keys": []
+    },
+    {
+      "id": "cfa-item-1002069",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1002069",
+        "name:treats/vanilla milkshake"
+      ]
+    },
+    {
+      "id": "Milkshake Modifiers [CFA 100097:0]",
+      "kind": "category",
+      "keys": []
+    },
+    {
+      "id": "Milkshake Modifiers [CFA 100218:0]",
+      "kind": "category",
+      "keys": []
+    },
+    {
+      "id": "cfa-item-1000108",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1000108",
+        "name:treats/chick fil a icedream cone"
+      ]
+    },
+    {
+      "id": "cfa-item-1000104",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1000104",
+        "name:treats/chick fil a icedream cup"
+      ]
+    },
+    {
+      "id": "Icedream Modifiers [CFA 100334:0]",
+      "kind": "category",
+      "keys": [
+        "cfa-item-1000104/group:icedream modifier"
+      ]
+    },
+    {
+      "id": "cfa-group-100466",
+      "kind": "item",
+      "keys": [
+        "src:itemGroupId:100466",
+        "name:salads/cobb salad"
+      ]
+    },
+    {
+      "id": "cfa-item-1004273",
+      "kind": "variant",
+      "keys": [
+        "cfa-group-100466/variant:nuggets"
+      ]
+    },
+    {
+      "id": "cfa-item-1005540",
+      "kind": "variant",
+      "keys": [
+        "cfa-group-100466/variant:spicy grilled filet cold"
+      ]
+    },
+    {
+      "id": "cfa-item-1004655",
+      "kind": "variant",
+      "keys": [
+        "cfa-group-100466/variant:grilled nuggets"
+      ]
+    },
+    {
+      "id": "cfa-item-1004268",
+      "kind": "variant",
+      "keys": [
+        "cfa-group-100466/variant:chick fil a chick n strips"
+      ]
+    },
+    {
+      "id": "cfa-item-1004658",
+      "kind": "variant",
+      "keys": [
+        "cfa-group-100466/variant:grilled filet cold"
+      ]
+    },
+    {
+      "id": "cfa-item-1004270",
+      "kind": "variant",
+      "keys": [
+        "cfa-group-100466/variant:chick fil a filet"
+      ]
+    },
+    {
+      "id": "cfa-item-1004274",
+      "kind": "variant",
+      "keys": [
+        "cfa-group-100466/variant:spicy filet"
+      ]
+    },
+    {
+      "id": "cfa-item-1007235",
+      "kind": "variant",
+      "keys": [
+        "cfa-group-100466/variant:grilled filet warm"
+      ]
+    },
+    {
+      "id": "cfa-item-1004269",
+      "kind": "variant",
+      "keys": [
+        "cfa-group-100466/variant:no chicken"
+      ]
+    },
+    {
+      "id": "Paid Salad Toppings [CFA 100448:0]",
+      "kind": "category",
+      "keys": [
+        "cfa-group-100466/group:paid salad topping",
+        "cfa-item-1004273/group:paid salad topping"
+      ]
+    },
+    {
+      "id": "Extra Salad Proteins [CFA 100448:4]",
+      "kind": "category",
+      "keys": [
+        "cfa-group-100466/group:extra salad protein",
+        "cfa-item-1004273/group:extra salad protein"
+      ]
+    },
+    {
+      "id": "cfa-group-100479",
+      "kind": "item",
+      "keys": [
+        "src:itemGroupId:100479",
+        "name:salads/spicy southwest salad"
+      ]
+    },
+    {
+      "id": "cfa-item-1005539",
+      "kind": "variant",
+      "keys": [
+        "cfa-group-100479/variant:spicy grilled filet cold"
+      ]
+    },
+    {
+      "id": "cfa-item-1005534",
+      "kind": "variant",
+      "keys": [
+        "cfa-group-100479/variant:grilled filet cold"
+      ]
+    },
+    {
+      "id": "cfa-item-1005536",
+      "kind": "variant",
+      "keys": [
+        "cfa-group-100479/variant:nuggets"
+      ]
+    },
+    {
+      "id": "cfa-item-1005535",
+      "kind": "variant",
+      "keys": [
+        "cfa-group-100479/variant:grilled nuggets"
+      ]
+    },
+    {
+      "id": "cfa-item-1005537",
+      "kind": "variant",
+      "keys": [
+        "cfa-group-100479/variant:chick fil a chick n strips"
+      ]
+    },
+    {
+      "id": "cfa-item-1005533",
+      "kind": "variant",
+      "keys": [
+        "cfa-group-100479/variant:chick fil a filet"
+      ]
+    },
+    {
+      "id": "cfa-item-1005538",
+      "kind": "variant",
+      "keys": [
+        "cfa-group-100479/variant:spicy filet"
+      ]
+    },
+    {
+      "id": "cfa-item-1007236",
+      "kind": "variant",
+      "keys": [
+        "cfa-group-100479/variant:grilled filet warm"
+      ]
+    },
+    {
+      "id": "cfa-item-1005532",
+      "kind": "variant",
+      "keys": [
+        "cfa-group-100479/variant:no chicken"
+      ]
+    },
+    {
+      "id": "Paid Salad Toppings [CFA 100470:0]",
+      "kind": "category",
+      "keys": [
+        "cfa-group-100479/group:paid salad topping",
+        "cfa-item-1005539/group:paid salad topping"
+      ]
+    },
+    {
+      "id": "Extra Salad Proteins [CFA 100470:4]",
+      "kind": "category",
+      "keys": [
+        "cfa-group-100479/group:extra salad protein",
+        "cfa-item-1005539/group:extra salad protein"
+      ]
+    },
+    {
+      "id": "cfa-group-100492",
+      "kind": "item",
+      "keys": [
+        "src:itemGroupId:100492",
+        "name:salads/market salad"
+      ]
+    },
+    {
+      "id": "cfa-item-1004654",
+      "kind": "variant",
+      "keys": [
+        "cfa-group-100492/variant:grilled filet cold"
+      ]
+    },
+    {
+      "id": "cfa-item-1005542",
+      "kind": "variant",
+      "keys": [
+        "cfa-group-100492/variant:spicy grilled filet cold"
+      ]
+    },
+    {
+      "id": "cfa-item-1004247",
+      "kind": "variant",
+      "keys": [
+        "cfa-group-100492/variant:chick fil a chick n strips"
+      ]
+    },
+    {
+      "id": "cfa-item-1004245",
+      "kind": "variant",
+      "keys": [
+        "cfa-group-100492/variant:nuggets"
+      ]
+    },
+    {
+      "id": "cfa-item-1004660",
+      "kind": "variant",
+      "keys": [
+        "cfa-group-100492/variant:grilled nuggets"
+      ]
+    },
+    {
+      "id": "cfa-item-1004242",
+      "kind": "variant",
+      "keys": [
+        "cfa-group-100492/variant:chick fil a filet"
+      ]
+    },
+    {
+      "id": "cfa-item-1004246",
+      "kind": "variant",
+      "keys": [
+        "cfa-group-100492/variant:spicy filet"
+      ]
+    },
+    {
+      "id": "cfa-item-1007234",
+      "kind": "variant",
+      "keys": [
+        "cfa-group-100492/variant:grilled filet warm"
+      ]
+    },
+    {
+      "id": "cfa-item-1004241",
+      "kind": "variant",
+      "keys": [
+        "cfa-group-100492/variant:no chicken"
+      ]
+    },
+    {
+      "id": "Paid Salad Toppings [CFA 100483:0]",
+      "kind": "category",
+      "keys": [
+        "cfa-group-100492/group:paid salad topping",
+        "cfa-item-1004654/group:paid salad topping"
+      ]
+    },
+    {
+      "id": "Extra Salad Proteins [CFA 100483:4]",
+      "kind": "category",
+      "keys": [
+        "cfa-group-100492/group:extra salad protein",
+        "cfa-item-1004654/group:extra salad protein"
+      ]
+    },
+    {
+      "id": "cfa-group-100500",
+      "kind": "item",
+      "keys": [
+        "src:itemGroupId:100500",
+        "name:chicken/chick fil a nuggets family style meal"
+      ]
+    },
+    {
+      "id": "cfa-group-100501",
+      "kind": "item",
+      "keys": [
+        "src:itemGroupId:100501",
+        "name:chicken/chick fil a chick n strips family style meal"
+      ]
+    },
+    {
+      "id": "cfa-group-100502",
+      "kind": "item",
+      "keys": [
+        "src:itemGroupId:100502",
+        "name:chicken/grilled nuggets family style meal"
+      ]
+    },
+    {
+      "id": "cfa-item-1007205",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1007205",
+        "name:sauces/8oz polynesian sauce"
+      ]
+    },
+    {
+      "id": "cfa-item-1007203",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1007203",
+        "name:sauces/8oz garden herb ranch sauce"
+      ]
+    },
+    {
+      "id": "cfa-item-1007201",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1007201",
+        "name:sauces/8oz barbeque sauce"
+      ]
+    },
+    {
+      "id": "cfa-item-1007204",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1007204",
+        "name:sauces/8oz honey mustard sauce"
+      ]
+    },
+    {
+      "id": "cfa-addon-1000034",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1000034",
+        "name:condiments/ketchup"
+      ]
+    },
+    {
+      "id": "cfa-addon-1001323",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1001323",
+        "name:sauces/chick fil a sauce"
+      ]
+    },
+    {
+      "id": "cfa-addon-1000044",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1000044",
+        "name:sauces/polynesian sauce"
+      ]
+    },
+    {
+      "id": "cfa-addon-1000010",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1000010",
+        "name:sauces/barbeque sauce"
+      ]
+    },
+    {
+      "id": "cfa-addon-1000045",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1000045",
+        "name:sauces/garden herb ranch sauce"
+      ]
+    },
+    {
+      "id": "cfa-addon-1000029",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1000029",
+        "name:sauces/honey mustard sauce"
+      ]
+    },
+    {
+      "id": "cfa-addon-1000013",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1000013",
+        "name:sauces/zesty buffalo sauce"
+      ]
+    },
+    {
+      "id": "cfa-addon-1001381",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1001381",
+        "name:sauces/honey roasted bbq sauce"
+      ]
+    },
+    {
+      "id": "cfa-addon-1005749",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1005749",
+        "name:sauces/sweet spicy sriracha sauce"
+      ]
+    },
+    {
+      "id": "cfa-addon-1000039",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1000039",
+        "name:condiments/mayo"
+      ]
+    },
+    {
+      "id": "cfa-addon-1000030",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1000030",
+        "name:condiments/hot sauce"
+      ]
+    },
+    {
+      "id": "cfa-addon-1000027",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1000027",
+        "name:condiments/honey"
+      ]
+    },
+    {
+      "id": "cfa-addon-1000032",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1000032",
+        "name:condiments/grape jam"
+      ]
+    },
+    {
+      "id": "cfa-addon-1000033",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1000033",
+        "name:condiments/strawberry jam"
+      ]
+    },
+    {
+      "id": "cfa-addon-1002301",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1002301",
+        "name:condiments/salt packet"
+      ]
+    },
+    {
+      "id": "cfa-addon-1002302",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1002302",
+        "name:condiments/pepper"
+      ]
+    },
+    {
+      "id": "cfa-item-1000225",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1000225",
+        "name:sides/small hash browns"
+      ]
+    },
+    {
+      "id": "cfa-item-1007828",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1007828",
+        "name:sides/large hash browns"
+      ]
+    },
+    {
+      "id": "cfa-addon-1001268",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1001268",
+        "name:condiments/harvest nut granola"
+      ]
+    },
+    {
+      "id": "cfa-item-1005726",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1005726"
+      ]
+    },
+    {
+      "id": "cfa-item-1005725",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1005725"
+      ]
+    },
+    {
+      "id": "Parfait Modifiers [CFA 100014:0]",
+      "kind": "category",
+      "keys": [
+        "cfa-item-1005725/group:parfait modifier",
+        "cfa-item-1005315/group:parfait modifier"
+      ]
+    },
+    {
+      "id": "Parfait Fruit Modifier [CFA 100014:1]",
+      "kind": "category",
+      "keys": [
+        "cfa-item-1005725/group:parfait fruit modifier",
+        "cfa-item-1005315/group:parfait fruit modifier"
+      ]
+    },
+    {
+      "id": "cfa-item-1004576",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1004576",
+        "name:sides/medium fruit cup"
+      ]
+    },
+    {
+      "id": "cfa-item-1009330",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1009330"
+      ]
+    },
+    {
+      "id": "cfa-item-1009331",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1009331",
+        "name:beverages/pineapple dragonfruit diet lemonade"
+      ]
+    },
+    {
+      "id": "cfa-item-1009324",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1009324",
+        "name:beverages/pineapple dragonfruit sunjoy sweet tea lemonade"
+      ]
+    },
+    {
+      "id": "cfa-item-1009325",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1009325",
+        "name:beverages/pineapple dragonfruit sunjoy sweet tea diet lemonade"
+      ]
+    },
+    {
+      "id": "cfa-item-1009326",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1009326",
+        "name:beverages/pineapple dragonfruit sunjoy unsweet tea lemonade"
+      ]
+    },
+    {
+      "id": "cfa-item-1009327",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1009327",
+        "name:beverages/pineapple dragonfruit sunjoy unsweet tea diet lemonade"
+      ]
+    },
+    {
+      "id": "cfa-item-1009328",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1009328",
+        "name:beverages/pineapple dragonfruit sweet tea"
+      ]
+    },
+    {
+      "id": "cfa-item-1009329",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1009329",
+        "name:beverages/pineapple dragonfruit unsweet tea"
+      ]
+    },
+    {
+      "id": "cfa-item-1009675",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1009675",
+        "name:coffee/caramel iced coffee"
+      ]
+    },
+    {
+      "id": "cfa-item-1009677",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1009677",
+        "name:coffee/mocha iced coffee"
+      ]
+    },
+    {
+      "id": "Coffee Removals [CFA 100035:0]",
+      "kind": "category",
+      "keys": []
+    },
+    {
+      "id": "Syrup Removal [CFA 100035:1]",
+      "kind": "category",
+      "keys": []
+    },
+    {
+      "id": "Creamers [CFA 100035:2]",
+      "kind": "category",
+      "keys": []
+    },
+    {
+      "id": "Sweeteners [CFA 100035:3]",
+      "kind": "category",
+      "keys": []
+    },
+    {
+      "id": "Syrup Extra [CFA 100035:4]",
+      "kind": "category",
+      "keys": []
+    },
+    {
+      "id": "Coffee Removals [CFA 100388:0]",
+      "kind": "category",
+      "keys": []
+    },
+    {
+      "id": "Syrup Removal [CFA 100388:1]",
+      "kind": "category",
+      "keys": []
+    },
+    {
+      "id": "Creamers [CFA 100388:2]",
+      "kind": "category",
+      "keys": []
+    },
+    {
+      "id": "Sweeteners [CFA 100388:3]",
+      "kind": "category",
+      "keys": []
+    },
+    {
+      "id": "Syrup Extra [CFA 100388:4]",
+      "kind": "category",
+      "keys": []
+    },
+    {
+      "id": "Coffee Removals [CFA 100404:0]",
+      "kind": "category",
+      "keys": []
+    },
+    {
+      "id": "Syrup Removal [CFA 100404:1]",
+      "kind": "category",
+      "keys": []
+    },
+    {
+      "id": "Creamers [CFA 100404:2]",
+      "kind": "category",
+      "keys": []
+    },
+    {
+      "id": "Sweeteners [CFA 100404:3]",
+      "kind": "category",
+      "keys": []
+    },
+    {
+      "id": "Syrup Extra [CFA 100404:4]",
+      "kind": "category",
+      "keys": []
+    },
+    {
+      "id": "cfa-item-1004728",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1004728",
+        "name:coffee/vanilla iced coffee"
+      ]
+    },
+    {
+      "id": "Coffee Removals [CFA 100038:0]",
+      "kind": "category",
+      "keys": []
+    },
+    {
+      "id": "Syrup Removal [CFA 100038:1]",
+      "kind": "category",
+      "keys": []
+    },
+    {
+      "id": "Creamers [CFA 100038:2]",
+      "kind": "category",
+      "keys": []
+    },
+    {
+      "id": "Sweeteners [CFA 100038:3]",
+      "kind": "category",
+      "keys": []
+    },
+    {
+      "id": "Syrup Extra [CFA 100038:4]",
+      "kind": "category",
+      "keys": []
+    },
+    {
+      "id": "Coffee Removals [CFA 100389:0]",
+      "kind": "category",
+      "keys": []
+    },
+    {
+      "id": "Syrup Removal [CFA 100389:1]",
+      "kind": "category",
+      "keys": []
+    },
+    {
+      "id": "Creamers [CFA 100389:2]",
+      "kind": "category",
+      "keys": []
+    },
+    {
+      "id": "Sweeteners [CFA 100389:3]",
+      "kind": "category",
+      "keys": []
+    },
+    {
+      "id": "Syrup Extra [CFA 100389:4]",
+      "kind": "category",
+      "keys": []
+    },
+    {
+      "id": "Coffee Removals [CFA 100405:0]",
+      "kind": "category",
+      "keys": []
+    },
+    {
+      "id": "Syrup Removal [CFA 100405:1]",
+      "kind": "category",
+      "keys": []
+    },
+    {
+      "id": "Creamers [CFA 100405:2]",
+      "kind": "category",
+      "keys": []
+    },
+    {
+      "id": "Sweeteners [CFA 100405:3]",
+      "kind": "category",
+      "keys": []
+    },
+    {
+      "id": "Syrup Extra [CFA 100405:4]",
+      "kind": "category",
+      "keys": []
+    },
+    {
+      "id": "cfa-item-1010293",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1010293",
+        "name:coffee/toasted marshmallow iced coffee"
+      ]
+    },
+    {
+      "id": "Coffee Removals [CFA 100040:0]",
+      "kind": "category",
+      "keys": []
+    },
+    {
+      "id": "Creamers [CFA 100040:1]",
+      "kind": "category",
+      "keys": []
+    },
+    {
+      "id": "Sweeteners [CFA 100040:2]",
+      "kind": "category",
+      "keys": []
+    },
+    {
+      "id": "Syrup Extra [CFA 100040:3]",
+      "kind": "category",
+      "keys": []
+    },
+    {
+      "id": "Coffee Removals [CFA 100390:0]",
+      "kind": "category",
+      "keys": []
+    },
+    {
+      "id": "Creamers [CFA 100390:1]",
+      "kind": "category",
+      "keys": []
+    },
+    {
+      "id": "Sweeteners [CFA 100390:2]",
+      "kind": "category",
+      "keys": []
+    },
+    {
+      "id": "Syrup Extra [CFA 100390:3]",
+      "kind": "category",
+      "keys": []
+    },
+    {
+      "id": "Coffee Removals [CFA 100407:0]",
+      "kind": "category",
+      "keys": []
+    },
+    {
+      "id": "Creamers [CFA 100407:1]",
+      "kind": "category",
+      "keys": []
+    },
+    {
+      "id": "Sweeteners [CFA 100407:2]",
+      "kind": "category",
+      "keys": []
+    },
+    {
+      "id": "Syrup Extra [CFA 100407:3]",
+      "kind": "category",
+      "keys": []
+    },
+    {
+      "id": "cfa-item-1009678",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1009678"
+      ]
+    },
+    {
+      "id": "Coffee Removals [CFA 100041:0]",
+      "kind": "category",
+      "keys": []
+    },
+    {
+      "id": "Creamers [CFA 100041:1]",
+      "kind": "category",
+      "keys": []
+    },
+    {
+      "id": "Sweeteners [CFA 100041:2]",
+      "kind": "category",
+      "keys": []
+    },
+    {
+      "id": "Coffee Removals [CFA 100391:0]",
+      "kind": "category",
+      "keys": []
+    },
+    {
+      "id": "Sweeteners [CFA 100391:1]",
+      "kind": "category",
+      "keys": []
+    },
+    {
+      "id": "Creamers [CFA 100391:2]",
+      "kind": "category",
+      "keys": []
+    },
+    {
+      "id": "cfa-item-1009676",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1009676",
+        "name:coffee/caramel cream cold brew"
+      ]
+    },
+    {
+      "id": "cfa-item-1007075",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1007075",
+        "name:coffee/mocha cream cold brew"
+      ]
+    },
+    {
+      "id": "Syrup Removal [CFA 100044:0]",
+      "kind": "category",
+      "keys": []
+    },
+    {
+      "id": "Creamers [CFA 100044:1]",
+      "kind": "category",
+      "keys": []
+    },
+    {
+      "id": "Sweeteners [CFA 100044:2]",
+      "kind": "category",
+      "keys": []
+    },
+    {
+      "id": "Syrup Extra [CFA 100044:3]",
+      "kind": "category",
+      "keys": []
+    },
+    {
+      "id": "Syrup Removal [CFA 100380:0]",
+      "kind": "category",
+      "keys": []
+    },
+    {
+      "id": "Creamers [CFA 100380:1]",
+      "kind": "category",
+      "keys": []
+    },
+    {
+      "id": "Sweeteners [CFA 100380:2]",
+      "kind": "category",
+      "keys": []
+    },
+    {
+      "id": "Syrup Extra [CFA 100380:3]",
+      "kind": "category",
+      "keys": []
+    },
+    {
+      "id": "cfa-item-1009779",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1009779",
+        "name:coffee/vanilla cream cold brew"
+      ]
+    },
+    {
+      "id": "Syrup Removal [CFA 100045:0]",
+      "kind": "category",
+      "keys": []
+    },
+    {
+      "id": "Creamers [CFA 100045:1]",
+      "kind": "category",
+      "keys": []
+    },
+    {
+      "id": "Sweeteners [CFA 100045:2]",
+      "kind": "category",
+      "keys": []
+    },
+    {
+      "id": "Syrup Extra [CFA 100045:3]",
+      "kind": "category",
+      "keys": []
+    },
+    {
+      "id": "Syrup Removal [CFA 100383:0]",
+      "kind": "category",
+      "keys": []
+    },
+    {
+      "id": "Creamers [CFA 100383:1]",
+      "kind": "category",
+      "keys": []
+    },
+    {
+      "id": "Sweeteners [CFA 100383:2]",
+      "kind": "category",
+      "keys": []
+    },
+    {
+      "id": "Syrup Extra [CFA 100383:3]",
+      "kind": "category",
+      "keys": []
+    },
+    {
+      "id": "Syrup Removal [CFA 100401:0]",
+      "kind": "category",
+      "keys": []
+    },
+    {
+      "id": "Creamers [CFA 100401:1]",
+      "kind": "category",
+      "keys": []
+    },
+    {
+      "id": "Sweeteners [CFA 100401:2]",
+      "kind": "category",
+      "keys": []
+    },
+    {
+      "id": "Syrup Extra [CFA 100401:3]",
+      "kind": "category",
+      "keys": []
+    },
+    {
+      "id": "cfa-item-1010294",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1010294",
+        "name:coffee/toasted marshmallow cream cold brew"
+      ]
+    },
+    {
+      "id": "Creamers [CFA 100046:0]",
+      "kind": "category",
+      "keys": [
+        "cfa-item-1010294/group:creamer"
+      ]
+    },
+    {
+      "id": "Sweeteners [CFA 100046:1]",
+      "kind": "category",
+      "keys": [
+        "cfa-item-1010294/group:sweetener"
+      ]
+    },
+    {
+      "id": "Syrup Extra [CFA 100046:2]",
+      "kind": "category",
+      "keys": [
+        "cfa-item-1010294/group:syrup extra"
+      ]
+    },
+    {
+      "id": "cfa-item-1009781",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1009781"
+      ]
+    },
+    {
+      "id": "Creamers [CFA 100047:0]",
+      "kind": "category",
+      "keys": []
+    },
+    {
+      "id": "Sweeteners [CFA 100047:1]",
+      "kind": "category",
+      "keys": []
+    },
+    {
+      "id": "Creamers [CFA 100384:0]",
+      "kind": "category",
+      "keys": []
+    },
+    {
+      "id": "Sweeteners [CFA 100384:1]",
+      "kind": "category",
+      "keys": []
+    },
+    {
+      "id": "cfa-item-1009332",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1009332"
+      ]
+    },
+    {
+      "id": "cfa-item-1009333",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1009333",
+        "name:treats/pineapple dragonfruit frosted lemonade w diet lemonade"
+      ]
+    },
+    {
+      "id": "cfa-item-1005216",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1005216"
+      ]
+    },
+    {
+      "id": "cfa-item-1005221",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1005221",
+        "name:treats/frosted lemonade w diet lemonade"
+      ]
+    },
+    {
+      "id": "cfa-item-1009402",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1009402",
+        "name:treats/frosted dr pepper"
+      ]
+    },
+    {
+      "id": "cfa-item-1009403",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1009403",
+        "name:treats/frosted diet dr pepper"
+      ]
+    },
+    {
+      "id": "cfa-item-1009396",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1009396",
+        "name:treats/frosted barq s root beer"
+      ]
+    },
+    {
+      "id": "cfa-item-1009343",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1009343",
+        "name:treats/frosted coke"
+      ]
+    },
+    {
+      "id": "cfa-item-1009344",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1009344",
+        "name:treats/frosted diet coke"
+      ]
+    },
+    {
+      "id": "cfa-item-1009345",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1009345",
+        "name:treats/frosted coke zero sugar"
+      ]
+    },
+    {
+      "id": "cfa-item-1009346",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1009346",
+        "name:treats/frosted coca cola cherry"
+      ]
+    },
+    {
+      "id": "cfa-item-1009350",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1009350",
+        "name:treats/frosted hi c fruit punch"
+      ]
+    },
+    {
+      "id": "cfa-item-1009348",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1009348",
+        "name:treats/frosted sprite"
+      ]
+    },
+    {
+      "id": "cfa-item-1009386",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1009386",
+        "name:treats/coke float"
+      ]
+    },
+    {
+      "id": "cfa-item-1009387",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1009387",
+        "name:treats/diet coke float"
+      ]
+    },
+    {
+      "id": "cfa-item-1009388",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1009388",
+        "name:treats/coke zero sugar float"
+      ]
+    },
+    {
+      "id": "cfa-item-1009389",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1009389",
+        "name:treats/coca cola cherry float"
+      ]
+    },
+    {
+      "id": "cfa-item-1009391",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1009391",
+        "name:treats/sprite float"
+      ]
+    },
+    {
+      "id": "cfa-item-1009384",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1009384",
+        "name:treats/dr pepper float"
+      ]
+    },
+    {
+      "id": "cfa-item-1009385",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1009385",
+        "name:treats/diet dr pepper float"
+      ]
+    },
+    {
+      "id": "cfa-item-1009378",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1009378",
+        "name:treats/barq s root beer float"
+      ]
+    },
+    {
+      "id": "cfa-item-1009393",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1009393",
+        "name:treats/hi c fruit punch float"
+      ]
+    },
+    {
+      "id": "cfa-item-1009377",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1009377",
+        "name:treats/powerade mountain berry blast float"
+      ]
+    },
+    {
+      "id": "cfa-item-1000336",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1000336",
+        "name:beverages/small freshly brewed sweetened iced tea"
+      ]
+    },
+    {
+      "id": "cfa-item-1000335",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1000335",
+        "name:beverages/medium freshly brewed sweetened iced tea"
+      ]
+    },
+    {
+      "id": "cfa-item-1000334",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1000334",
+        "name:beverages/large freshly brewed sweetened iced tea"
+      ]
+    },
+    {
+      "id": "cfa-item-1000341",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1000341",
+        "name:beverages/small freshly brewed unsweetened iced tea"
+      ]
+    },
+    {
+      "id": "cfa-item-1000340",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1000340",
+        "name:beverages/medium freshly brewed unsweetened iced tea"
+      ]
+    },
+    {
+      "id": "cfa-item-1000339",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1000339",
+        "name:beverages/large freshly brewed unsweetened iced tea"
+      ]
+    },
+    {
+      "id": "cfa-item-1000127",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1000127"
+      ]
+    },
+    {
+      "id": "cfa-item-1000126",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1000126",
+        "name:beverages/medium chick fil a lemonade"
+      ]
+    },
+    {
+      "id": "cfa-item-1000125",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1000125",
+        "name:beverages/large chick fil a lemonade"
+      ]
+    },
+    {
+      "id": "cfa-item-1000132",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1000132"
+      ]
+    },
+    {
+      "id": "cfa-item-1000131",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1000131",
+        "name:beverages/medium chick fil a diet lemonade"
+      ]
+    },
+    {
+      "id": "cfa-item-1000130",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1000130",
+        "name:beverages/large chick fil a diet lemonade"
+      ]
+    },
+    {
+      "id": "cfa-item-1004190",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1004190"
+      ]
+    },
+    {
+      "id": "cfa-item-1004189",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1004189",
+        "name:beverages/medium 1 2 sweet tea 1 2 unsweet tea"
+      ]
+    },
+    {
+      "id": "cfa-item-1004188",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1004188",
+        "name:beverages/large 1 2 sweet tea 1 2 unsweet tea"
+      ]
+    },
+    {
+      "id": "cfa-item-1004159",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1004159"
+      ]
+    },
+    {
+      "id": "cfa-item-1004158",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1004158",
+        "name:beverages/medium sunjoy 1 2 sweet tea 1 2 lemonade"
+      ]
+    },
+    {
+      "id": "cfa-item-1004157",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1004157",
+        "name:beverages/large sunjoy 1 2 sweet tea 1 2 lemonade"
+      ]
+    },
+    {
+      "id": "cfa-item-1004164",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1004164"
+      ]
+    },
+    {
+      "id": "cfa-item-1004163",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1004163",
+        "name:beverages/medium sunjoy 1 2 unsweet tea 1 2 diet lemonade"
+      ]
+    },
+    {
+      "id": "cfa-item-1004162",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1004162",
+        "name:beverages/large sunjoy 1 2 unsweet tea 1 2 diet lemonade"
+      ]
+    },
+    {
+      "id": "cfa-item-1004174",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1004174"
+      ]
+    },
+    {
+      "id": "cfa-item-1004173",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1004173",
+        "name:beverages/medium sunjoy 1 2 unsweet tea 1 2 lemonade"
+      ]
+    },
+    {
+      "id": "cfa-item-1004172",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1004172",
+        "name:beverages/large sunjoy 1 2 unsweet tea 1 2 lemonade"
+      ]
+    },
+    {
+      "id": "cfa-item-1004169",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1004169"
+      ]
+    },
+    {
+      "id": "cfa-item-1004168",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1004168",
+        "name:beverages/medium sunjoy 1 2 sweet tea 1 2 diet lemonade"
+      ]
+    },
+    {
+      "id": "cfa-item-1004167",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1004167",
+        "name:beverages/large sunjoy 1 2 sweet tea 1 2 diet lemonade"
+      ]
+    },
+    {
+      "id": "cfa-item-1000248",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1000248"
+      ]
+    },
+    {
+      "id": "cfa-item-1000247",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1000247",
+        "name:beverages/medium coca cola"
+      ]
+    },
+    {
+      "id": "cfa-item-1000246",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1000246",
+        "name:beverages/large coca cola"
+      ]
+    },
+    {
+      "id": "cfa-item-1000253",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1000253"
+      ]
+    },
+    {
+      "id": "cfa-item-1000252",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1000252",
+        "name:beverages/medium diet coke"
+      ]
+    },
+    {
+      "id": "cfa-item-1000251",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1000251",
+        "name:beverages/large diet coke"
+      ]
+    },
+    {
+      "id": "cfa-item-1001506",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1001506",
+        "name:beverages/small coke zero sugar"
+      ]
+    },
+    {
+      "id": "cfa-item-1001505",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1001505",
+        "name:beverages/medium coke zero sugar"
+      ]
+    },
+    {
+      "id": "cfa-item-1001504",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1001504",
+        "name:beverages/large coke zero sugar"
+      ]
+    },
+    {
+      "id": "cfa-item-1000070",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1000070"
+      ]
+    },
+    {
+      "id": "cfa-item-1000069",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1000069",
+        "name:beverages/medium coca cola cherry"
+      ]
+    },
+    {
+      "id": "cfa-item-1000068",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1000068",
+        "name:beverages/large coca cola cherry"
+      ]
+    },
+    {
+      "id": "cfa-item-1000312",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1000312"
+      ]
+    },
+    {
+      "id": "cfa-item-1000311",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1000311",
+        "name:beverages/medium sprite"
+      ]
+    },
+    {
+      "id": "cfa-item-1000310",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1000310",
+        "name:beverages/large sprite"
+      ]
+    },
+    {
+      "id": "cfa-item-1000263",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1000263"
+      ]
+    },
+    {
+      "id": "cfa-item-1000262",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1000262",
+        "name:beverages/medium dr pepper"
+      ]
+    },
+    {
+      "id": "cfa-item-1000261",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1000261",
+        "name:beverages/large dr pepper"
+      ]
+    },
+    {
+      "id": "cfa-item-1000258",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1000258"
+      ]
+    },
+    {
+      "id": "cfa-item-1000257",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1000257",
+        "name:beverages/medium diet dr pepper"
+      ]
+    },
+    {
+      "id": "cfa-item-1000256",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1000256",
+        "name:beverages/large diet dr pepper"
+      ]
+    },
+    {
+      "id": "cfa-item-1000283",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1000283"
+      ]
+    },
+    {
+      "id": "cfa-item-1000282",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1000282",
+        "name:beverages/medium barq s root beer"
+      ]
+    },
+    {
+      "id": "cfa-item-1000281",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1000281",
+        "name:beverages/large barq s root beer"
+      ]
+    },
+    {
+      "id": "cfa-item-1000268",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1000268"
+      ]
+    },
+    {
+      "id": "cfa-item-1000267",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1000267",
+        "name:beverages/medium hi c fruit punch"
+      ]
+    },
+    {
+      "id": "cfa-item-1000266",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1000266",
+        "name:beverages/large hi c fruit punch"
+      ]
+    },
+    {
+      "id": "cfa-item-1000432",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1000432"
+      ]
+    },
+    {
+      "id": "cfa-item-1000431",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1000431",
+        "name:beverages/medium powerade"
+      ]
+    },
+    {
+      "id": "cfa-item-1000430",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1000430",
+        "name:beverages/large powerade"
+      ]
+    },
+    {
+      "id": "cfa-item-1005767",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1005767"
+      ]
+    },
+    {
+      "id": "cfa-item-1010013",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1010013",
+        "name:treats/caramel frosted coffee"
+      ]
+    },
+    {
+      "id": "cfa-item-1010014",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1010014",
+        "name:treats/mocha frosted coffee"
+      ]
+    },
+    {
+      "id": "cfa-item-1010015",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1010015",
+        "name:treats/vanilla frosted coffee"
+      ]
+    },
+    {
+      "id": "cfa-item-1004713",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1004713"
+      ]
+    },
+    {
+      "id": "Creamers [CFA 100089:0]",
+      "kind": "category",
+      "keys": [
+        "cfa-item-1004713/group:creamer"
+      ]
+    },
+    {
+      "id": "Sweeteners [CFA 100089:1]",
+      "kind": "category",
+      "keys": [
+        "cfa-item-1004713/group:sweetener"
+      ]
+    },
+    {
+      "id": "cfa-item-1001175",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1001175"
+      ]
+    },
+    {
+      "id": "cfa-item-1001290",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1001290"
+      ]
+    },
+    {
+      "id": "cfa-item-1000093",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1000093",
+        "name:breakfast/4 ct chick fil a chick n minis"
+      ]
+    },
+    {
+      "id": "cfa-item-1008141",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1008141",
+        "name:shareables/10 ct chick fil a chick n minis"
+      ]
+    },
+    {
+      "id": "cfa-addon-1000048",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1000048",
+        "name:condiments/salsa"
+      ]
+    },
+    {
+      "id": "cfa-item-1005924",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1005924",
+        "name:breakfast/hash brown scramble burrito w nuggets"
+      ]
+    },
+    {
+      "id": "cfa-item-1005925",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1005925",
+        "name:breakfast/hash brown scramble burrito w sausage"
+      ]
+    },
+    {
+      "id": "cfa-item-1005926",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1005926",
+        "name:breakfast/hash brown scramble burrito w grilled filet"
+      ]
+    },
+    {
+      "id": "cfa-item-1006333",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1006333",
+        "name:breakfast/hash brown scramble burrito w spicy chicken"
+      ]
+    },
+    {
+      "id": "cfa-item-1008530",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1008530",
+        "name:breakfast/hash brown scramble burrito w bacon"
+      ]
+    },
+    {
+      "id": "cfa-item-1007832",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1007832",
+        "name:breakfast/hash brown scramble burrito w no meat"
+      ]
+    },
+    {
+      "id": "cfa-item-1005945",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1005945",
+        "name:breakfast/hash brown scramble burrito w nuggets no hash browns"
+      ]
+    },
+    {
+      "id": "cfa-item-1005946",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1005946",
+        "name:breakfast/hash brown scramble burrito w sausage no hash browns"
+      ]
+    },
+    {
+      "id": "cfa-item-1005947",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1005947",
+        "name:breakfast/hash brown scramble burrito w grilled filet no hash brown"
+      ]
+    },
+    {
+      "id": "cfa-item-1006334",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1006334",
+        "name:breakfast/hash brown scramble burrito w spicy chicken no hash browns"
+      ]
+    },
+    {
+      "id": "cfa-item-1008531",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1008531",
+        "name:breakfast/hash brown scramble burrito w bacon no hash browns"
+      ]
+    },
+    {
+      "id": "cfa-item-1007833",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1007833",
+        "name:breakfast/hash brown scramble burrito w no meat no hash browns"
+      ]
+    },
+    {
+      "id": "cfa-item-1005921",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1005921",
+        "name:breakfast/hash brown scramble bowl w nuggets"
+      ]
+    },
+    {
+      "id": "cfa-item-1005922",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1005922",
+        "name:breakfast/hash brown scramble bowl w sausage"
+      ]
+    },
+    {
+      "id": "cfa-item-1005923",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1005923",
+        "name:breakfast/hash brown scramble bowl w grilled filet"
+      ]
+    },
+    {
+      "id": "cfa-item-1006336",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1006336",
+        "name:breakfast/hash brown scramble bowl w spicy chicken"
+      ]
+    },
+    {
+      "id": "cfa-item-1008532",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1008532",
+        "name:breakfast/hash brown scramble bowl w bacon"
+      ]
+    },
+    {
+      "id": "cfa-item-1007830",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1007830",
+        "name:breakfast/hash brown scramble bowl w no meat"
+      ]
+    },
+    {
+      "id": "cfa-item-1005942",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1005942",
+        "name:breakfast/hash brown scramble bowl w nuggets no hash browns"
+      ]
+    },
+    {
+      "id": "cfa-item-1005943",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1005943",
+        "name:breakfast/hash brown scramble bowl w sausage no hash browns"
+      ]
+    },
+    {
+      "id": "cfa-item-1005944",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1005944",
+        "name:breakfast/hash brown scramble bowl w grilled filet no hash browns"
+      ]
+    },
+    {
+      "id": "cfa-item-1006337",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1006337",
+        "name:breakfast/hash brown scramble bowl w spicy chicken no hash browns"
+      ]
+    },
+    {
+      "id": "cfa-item-1008533",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1008533",
+        "name:breakfast/hash brown scramble bowl w bacon no hash browns"
+      ]
+    },
+    {
+      "id": "cfa-item-1007831",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1007831",
+        "name:breakfast/hash brown scramble bowl w no meat no hash browns"
+      ]
+    },
+    {
+      "id": "cfa-item-1005315",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1005315"
+      ]
+    },
+    {
+      "id": "cfa-item-1005316",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1005316"
+      ]
+    },
+    {
+      "id": "cfa-item-1004575",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1004575",
+        "name:sides/small fruit cup"
+      ]
+    },
+    {
+      "id": "cfa-item-1005308",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1005308",
+        "name:breakfast/grilled breakfast filet"
+      ]
+    },
+    {
+      "id": "cfa-item-1000309",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1000309",
+        "name:breakfast/chick fil a breakfast filet"
+      ]
+    },
+    {
+      "id": "cfa-item-1002844",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1002844",
+        "name:breakfast/spicy breakfast filet"
+      ]
+    },
+    {
+      "id": "cfa-item-1008145",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1008145",
+        "name:breakfast/sausage patty"
+      ]
+    },
+    {
+      "id": "Breakfast Sandwich Modifiers [CFA 100177:2]",
+      "kind": "category",
+      "keys": [
+        "cfa-item-1008145/group:breakfast sandwich modifier"
+      ]
+    },
+    {
+      "id": "cfa-item-1008425",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1008425",
+        "name:breakfast/bacon"
+      ]
+    },
+    {
+      "id": "Breakfast Sandwich Modifiers [CFA 100179:2]",
+      "kind": "category",
+      "keys": [
+        "cfa-item-1008425/group:breakfast sandwich modifier"
+      ]
+    },
+    {
+      "id": "cfa-item-1000083",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1000083",
+        "name:breakfast/buttery biscuit"
+      ]
+    },
+    {
+      "id": "Breakfast Sandwich Modifiers [CFA 100184:2]",
+      "kind": "category",
+      "keys": [
+        "cfa-item-1000083/group:breakfast sandwich modifier",
+        "cfa-item-1004563/group:breakfast sandwich modifier"
+      ]
+    },
+    {
+      "id": "cfa-item-1004563",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1004563",
+        "name:breakfast/english muffin"
+      ]
+    },
+    {
+      "id": "cfa-item-1000123",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1000123",
+        "name:sides/medium chick fil a waffle potato fries"
+      ]
+    },
+    {
+      "id": "cfa-item-1000124",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1000124",
+        "name:sides/large chick fil a waffle potato fries"
+      ]
+    },
+    {
+      "id": "Large Fries Modifiers [CFA 100193:2]",
+      "kind": "category",
+      "keys": []
+    },
+    {
+      "id": "Large Fries Modifiers [CFA 100229:2]",
+      "kind": "category",
+      "keys": []
+    },
+    {
+      "id": "cfa-addon-1006845",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1006845",
+        "name:condiments/roasted almonds"
+      ]
+    },
+    {
+      "id": "cfa-item-1006832",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1006832"
+      ]
+    },
+    {
+      "id": "cfa-addon-1000062",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1000062",
+        "name:condiments/saltines"
+      ]
+    },
+    {
+      "id": "cfa-item-1000166",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1000166",
+        "name:sides/cup of chicken noodle soup"
+      ]
+    },
+    {
+      "id": "cfa-item-1000167",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1000167",
+        "name:sides/bowl of chicken noodle soup"
+      ]
+    },
+    {
+      "id": "cfa-item-1006280",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1006280",
+        "name:sides/medium mac cheese"
+      ]
+    },
+    {
+      "id": "cfa-item-1006211",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1006211",
+        "name:sides/large mac cheese"
+      ]
+    },
+    {
+      "id": "Bacon Crumble Group [CFA 100207:0]",
+      "kind": "category",
+      "keys": [
+        "cfa-item-1006211/group:bacon crumble group"
+      ]
+    },
+    {
+      "id": "cfa-addon-1004276",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1004276",
+        "name:dressings/avocado lime ranch dressing"
+      ]
+    },
+    {
+      "id": "cfa-addon-1005787",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1005787",
+        "name:dressings/garden herb ranch dressing"
+      ]
+    },
+    {
+      "id": "cfa-addon-1000028",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1000028",
+        "name:dressings/fat free honey mustard dressing"
+      ]
+    },
+    {
+      "id": "cfa-addon-1005788",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1005788",
+        "name:dressings/light balsamic vinaigrette dressing"
+      ]
+    },
+    {
+      "id": "cfa-addon-1004249",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1004249",
+        "name:dressings/zesty apple cider vinaigrette dressing"
+      ]
+    },
+    {
+      "id": "cfa-addon-1005543",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1005543",
+        "name:dressings/creamy salsa dressing"
+      ]
+    },
+    {
+      "id": "cfa-addon-1000038",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1000038",
+        "name:dressings/light italian dressing"
+      ]
+    },
+    {
+      "id": "cfa-addon-1004275",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1004275",
+        "name:condiments/crispy bell peppers"
+      ]
+    },
+    {
+      "id": "cfa-item-1003016",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1003016",
+        "name:sandwiches/chick fil a deluxe sandwich w american"
+      ]
+    },
+    {
+      "id": "cfa-item-1004691",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1004691",
+        "name:sandwiches/chick fil a deluxe sandwich w colby jack"
+      ]
+    },
+    {
+      "id": "cfa-item-1003018",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1003018",
+        "name:sandwiches/chick fil a deluxe sandwich w pepper jack"
+      ]
+    },
+    {
+      "id": "cfa-item-1001445",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1001445",
+        "name:sandwiches/chick fil a deluxe sandwich w no cheese"
+      ]
+    },
+    {
+      "id": "Individual Sauces [CFA 100240:0]",
+      "kind": "category",
+      "keys": [
+        "cfa-item-1001445/group:individual sauce"
+      ]
+    },
+    {
+      "id": "Bread Carriers [CFA 100240:2]",
+      "kind": "category",
+      "keys": [
+        "cfa-item-1001445/group:bread carrier"
+      ]
+    },
+    {
+      "id": "Sandwich Paid Modifiers [CFA 100240:3]",
+      "kind": "category",
+      "keys": [
+        "cfa-item-1001445/group:sandwich paid modifier"
+      ]
+    },
+    {
+      "id": "Sandwich Remove Modifiers [CFA 100240:4]",
+      "kind": "category",
+      "keys": [
+        "cfa-item-1001445/group:sandwich remove modifier"
+      ]
+    },
+    {
+      "id": "Add Pickles Mod [CFA 100240:5]",
+      "kind": "category",
+      "keys": [
+        "cfa-item-1001445/group:add pickles mod"
+      ]
+    },
+    {
+      "id": "cfa-item-1003021",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1003021",
+        "name:sandwiches/spicy deluxe sandwich w pepper jack"
+      ]
+    },
+    {
+      "id": "cfa-item-1004692",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1004692",
+        "name:sandwiches/spicy deluxe sandwich w colby jack"
+      ]
+    },
+    {
+      "id": "cfa-item-1003019",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1003019",
+        "name:sandwiches/spicy deluxe sandwich w american"
+      ]
+    },
+    {
+      "id": "Individual Sauces [CFA 100247:0]",
+      "kind": "category",
+      "keys": []
+    },
+    {
+      "id": "Bread Carriers [CFA 100247:2]",
+      "kind": "category",
+      "keys": []
+    },
+    {
+      "id": "Sandwich Paid Modifiers [CFA 100247:3]",
+      "kind": "category",
+      "keys": []
+    },
+    {
+      "id": "Sandwich Remove Modifiers [CFA 100247:4]",
+      "kind": "category",
+      "keys": []
+    },
+    {
+      "id": "Add Pickles Mod [CFA 100247:5]",
+      "kind": "category",
+      "keys": []
+    },
+    {
+      "id": "cfa-item-1001443",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1001443",
+        "name:sandwiches/spicy deluxe sandwich w no cheese"
+      ]
+    },
+    {
+      "id": "Individual Sauces [CFA 100249:0]",
+      "kind": "category",
+      "keys": [
+        "cfa-item-1001443/group:individual sauce"
+      ]
+    },
+    {
+      "id": "Bread Carriers [CFA 100249:2]",
+      "kind": "category",
+      "keys": [
+        "cfa-item-1001443/group:bread carrier"
+      ]
+    },
+    {
+      "id": "Sandwich Paid Modifiers [CFA 100249:3]",
+      "kind": "category",
+      "keys": [
+        "cfa-item-1001443/group:sandwich paid modifier"
+      ]
+    },
+    {
+      "id": "Sandwich Remove Modifiers [CFA 100249:4]",
+      "kind": "category",
+      "keys": [
+        "cfa-item-1001443/group:sandwich remove modifier"
+      ]
+    },
+    {
+      "id": "Add Pickles Mod [CFA 100249:5]",
+      "kind": "category",
+      "keys": [
+        "cfa-item-1001443/group:add pickles mod"
+      ]
+    },
+    {
+      "id": "cfa-item-1004613",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1004613",
+        "name:sandwiches/grilled chicken club w colby jack"
+      ]
+    },
+    {
+      "id": "cfa-item-1004612",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1004612",
+        "name:sandwiches/grilled chicken club w pepper jack"
+      ]
+    },
+    {
+      "id": "cfa-item-1004611",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1004611",
+        "name:sandwiches/grilled chicken club w american"
+      ]
+    },
+    {
+      "id": "cfa-item-1004639",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1004639",
+        "name:sandwiches/grilled chicken club w no cheese"
+      ]
+    },
+    {
+      "id": "cfa-item-1000161",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1000161",
+        "name:chicken/8 ct chick fil a nuggets"
+      ]
+    },
+    {
+      "id": "cfa-item-1000162",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1000162",
+        "name:chicken/12 ct chick fil a nuggets"
+      ]
+    },
+    {
+      "id": "cfa-item-1006616",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1006616",
+        "name:shareables/30 ct chick fil a nuggets"
+      ]
+    },
+    {
+      "id": "cfa-item-1004667",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1004667",
+        "name:chicken/8 ct grilled nuggets"
+      ]
+    },
+    {
+      "id": "cfa-item-1004668",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1004668",
+        "name:chicken/12 ct grilled nuggets"
+      ]
+    },
+    {
+      "id": "cfa-item-1007846",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1007846",
+        "name:shareables/30 ct grilled nuggets"
+      ]
+    },
+    {
+      "id": "cfa-item-1001327",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1001327",
+        "name:chicken/3 ct chick fil a chick n strips"
+      ]
+    },
+    {
+      "id": "cfa-item-1001328",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1001328",
+        "name:chicken/4 ct chick fil a chick n strips"
+      ]
+    },
+    {
+      "id": "cfa-item-1009275",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1009275",
+        "name:shareables/10 ct chick fil a chick n strips"
+      ]
+    },
+    {
+      "id": "cfa-item-1000122",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1000122",
+        "name:sides/small chick fil a waffle potato fries"
+      ]
+    },
+    {
+      "id": "Small Fries Modifiers [CFA 100295:2]",
+      "kind": "category",
+      "keys": []
+    },
+    {
+      "id": "Small Fries Modifiers [CFA 100344:2]",
+      "kind": "category",
+      "keys": []
+    },
+    {
+      "id": "Small Fries Modifiers [CFA 100370:2]",
+      "kind": "category",
+      "keys": []
+    },
+    {
+      "id": "cfa-item-1006212",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1006212",
+        "name:sides/small mac cheese"
+      ]
+    },
+    {
+      "id": "cfa-item-1007180",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1007180"
+      ]
+    },
+    {
+      "id": "cfa-item-1000343",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1000343",
+        "name:beverages/small freshly brewed iced tea unsweetened"
+      ]
+    },
+    {
+      "id": "cfa-item-1000338",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1000338",
+        "name:beverages/small freshly brewed iced tea sweetened"
+      ]
+    },
+    {
+      "id": "cfa-item-1000129",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1000129"
+      ]
+    },
+    {
+      "id": "cfa-item-1000134",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1000134"
+      ]
+    },
+    {
+      "id": "cfa-item-1004161",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1004161"
+      ]
+    },
+    {
+      "id": "cfa-item-1004166",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1004166"
+      ]
+    },
+    {
+      "id": "cfa-item-1004176",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1004176"
+      ]
+    },
+    {
+      "id": "cfa-item-1004171",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1004171"
+      ]
+    },
+    {
+      "id": "cfa-item-1004192",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1004192"
+      ]
+    },
+    {
+      "id": "cfa-item-1000250",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1000250"
+      ]
+    },
+    {
+      "id": "cfa-item-1000255",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1000255"
+      ]
+    },
+    {
+      "id": "cfa-item-1001508",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1001508",
+        "name:beverages/small coca cola zero sugar"
+      ]
+    },
+    {
+      "id": "cfa-item-1000072",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1000072"
+      ]
+    },
+    {
+      "id": "cfa-item-1000314",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1000314"
+      ]
+    },
+    {
+      "id": "cfa-item-1000260",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1000260"
+      ]
+    },
+    {
+      "id": "cfa-item-1000265",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1000265"
+      ]
+    },
+    {
+      "id": "cfa-item-1000285",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1000285"
+      ]
+    },
+    {
+      "id": "cfa-item-1000270",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1000270"
+      ]
+    },
+    {
+      "id": "cfa-item-1000434",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1000434"
+      ]
+    },
+    {
+      "id": "cfa-item-1001173",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1001173"
+      ]
+    },
+    {
+      "id": "cfa-item-1001178",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1001178"
+      ]
+    },
+    {
+      "id": "cfa-item-1001293",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1001293"
+      ]
+    },
+    {
+      "id": "cfa-item-1000353",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1000353",
+        "name:sides/prize 3 under while supplies last"
+      ]
+    },
+    {
+      "id": "cfa-item-1000158",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1000158",
+        "name:sides/prize 4 up while supplies last"
+      ]
+    },
+    {
+      "id": "cfa-item-1002292",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1002292",
+        "name:sides/no toy"
+      ]
+    },
+    {
+      "id": "cfa-item-1007115",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1007115",
+        "name:chicken/5 ct chick fil a nuggets"
+      ]
+    },
+    {
+      "id": "cfa-item-1001326",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1001326",
+        "name:chicken/2 ct chick fil a chick n strips"
+      ]
+    },
+    {
+      "id": "cfa-item-1007116",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1007116",
+        "name:chicken/5 ct grilled nuggets"
+      ]
+    },
+    {
+      "id": "cfa-item-1010240",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1010240",
+        "name:sandwiches/mac cheese"
+      ]
+    },
+    {
+      "id": "cfa-item-1000239",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1000239",
+        "name:sandwiches/chick fil a filet"
+      ]
+    },
+    {
+      "id": "cfa-item-1004609",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1004609",
+        "name:sandwiches/grilled filet"
+      ]
+    },
+    {
+      "id": "Add Pickles Mod [CFA 100368:2]",
+      "kind": "category",
+      "keys": [
+        "cfa-item-1004609/group:add pickles mod",
+        "cfa-item-1001287/group:add pickles mod"
+      ]
+    },
+    {
+      "id": "Sandwich Paid Modifiers [CFA 100368:3]",
+      "kind": "category",
+      "keys": [
+        "cfa-item-1004609/group:sandwich paid modifier",
+        "cfa-item-1001287/group:sandwich paid modifier"
+      ]
+    },
+    {
+      "id": "cfa-item-1001287",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1001287",
+        "name:sandwiches/spicy filet"
+      ]
+    },
+    {
+      "id": "cfa-item-1000135",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1000135",
+        "name:beverages/gallon chick fil a lemonade"
+      ]
+    },
+    {
+      "id": "cfa-item-1000137",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1000137",
+        "name:beverages/gallon chick fil a diet lemonade"
+      ]
+    },
+    {
+      "id": "cfa-item-1007481",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1007481",
+        "name:beverages/gallon chick fil a lemonade 1 2 lemonade 1 2 diet lemonade"
+      ]
+    },
+    {
+      "id": "cfa-item-1000354",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1000354",
+        "name:beverages/gallon freshly brewed iced tea sweetened"
+      ]
+    },
+    {
+      "id": "cfa-item-1000355",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1000355",
+        "name:beverages/gallon freshly brewed iced tea unsweetened"
+      ]
+    },
+    {
+      "id": "cfa-item-1007480",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1007480",
+        "name:beverages/gallon chick fil a iced tea 1 2 sweet tea 1 2 unsweet tea"
+      ]
+    },
+    {
+      "id": "cfa-item-1007133",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1007133",
+        "name:beverages/gallon sunjoy 1 2 sweet tea 1 2 lemonade"
+      ]
+    },
+    {
+      "id": "cfa-item-1007394",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1007394",
+        "name:beverages/gallon sunjoy 1 2 sweet tea 1 2 diet lemonade"
+      ]
+    },
+    {
+      "id": "cfa-item-1007396",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1007396",
+        "name:beverages/gallon sunjoy 1 2 unsweet tea 1 2 lemonade"
+      ]
+    },
+    {
+      "id": "cfa-item-1007397",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1007397",
+        "name:beverages/gallon sunjoy 1 2 unsweet tea 1 2 diet lemonade"
+      ]
+    },
+    {
+      "id": "cfa-item-1001322",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1001322",
+        "name:beverages/bag of ice"
+      ]
+    },
+    {
+      "id": "cfa-item-1009353",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1009353",
+        "name:beverages/gallon pineapple dragonfruit lemonade"
+      ]
+    },
+    {
+      "id": "cfa-item-1009358",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1009358",
+        "name:beverages/gallon pineapple dragonfruit diet lemonade"
+      ]
+    },
+    {
+      "id": "cfa-item-1009375",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1009375",
+        "name:beverages/gallon pineapple dragonfruit sunjoy 1 2 sweet tea 1 2 lemonade"
+      ]
+    },
+    {
+      "id": "cfa-item-1009361",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1009361",
+        "name:beverages/gallon pineapple dragonfruit sunjoy 1 2 unsweet tea 1 2 lemonade"
+      ]
+    },
+    {
+      "id": "cfa-item-1009359",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1009359",
+        "name:beverages/gallon pineapple dragonfruit sunjoy 1 2 sweet tea 1 2 diet lemonade"
+      ]
+    },
+    {
+      "id": "cfa-item-1009360",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1009360",
+        "name:beverages/gallon pineapple dragonfruit sunjoy 1 2 unsweet tea 1 2 diet lemonade"
+      ]
+    },
+    {
+      "id": "cfa-item-1009362",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1009362",
+        "name:beverages/gallon pineapple dragonfruit sweet tea"
+      ]
+    },
+    {
+      "id": "cfa-item-1009363",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1009363",
+        "name:beverages/gallon pineapple dragonfruit unsweet tea"
+      ]
+    },
+    {
+      "id": "cfa-item-1004056",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1004056"
+      ]
+    },
+    {
+      "id": "cfa-item-1004057",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1004057",
+        "name:treats/6 pack chocolate chunk cookie"
+      ]
+    },
+    {
+      "id": "cfa-item-1004273",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1004273",
+        "name:salads/cobb salad w nuggets"
+      ]
+    },
+    {
+      "id": "cfa-item-1005540",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1005540",
+        "name:salads/cobb salad w spicy grilled filet cold"
+      ]
+    },
+    {
+      "id": "Paid Salad Toppings [CFA 100452:0]",
+      "kind": "category",
+      "keys": [
+        "cfa-item-1005540/group:paid salad topping"
+      ]
+    },
+    {
+      "id": "Extra Salad Proteins [CFA 100452:4]",
+      "kind": "category",
+      "keys": [
+        "cfa-item-1005540/group:extra salad protein"
+      ]
+    },
+    {
+      "id": "cfa-item-1004655",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1004655",
+        "name:salads/cobb salad w grilled nuggets"
+      ]
+    },
+    {
+      "id": "Paid Salad Toppings [CFA 100454:0]",
+      "kind": "category",
+      "keys": [
+        "cfa-item-1004655/group:paid salad topping"
+      ]
+    },
+    {
+      "id": "Extra Salad Proteins [CFA 100454:4]",
+      "kind": "category",
+      "keys": [
+        "cfa-item-1004655/group:extra salad protein"
+      ]
+    },
+    {
+      "id": "cfa-item-1004268",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1004268",
+        "name:salads/cobb salad w chick fil a chick n strips"
+      ]
+    },
+    {
+      "id": "Paid Salad Toppings [CFA 100456:0]",
+      "kind": "category",
+      "keys": [
+        "cfa-item-1004268/group:paid salad topping"
+      ]
+    },
+    {
+      "id": "Extra Salad Proteins [CFA 100456:4]",
+      "kind": "category",
+      "keys": [
+        "cfa-item-1004268/group:extra salad protein"
+      ]
+    },
+    {
+      "id": "cfa-item-1004658",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1004658",
+        "name:salads/cobb salad w grilled filet cold"
+      ]
+    },
+    {
+      "id": "Paid Salad Toppings [CFA 100458:0]",
+      "kind": "category",
+      "keys": [
+        "cfa-item-1004658/group:paid salad topping"
+      ]
+    },
+    {
+      "id": "Extra Salad Proteins [CFA 100458:4]",
+      "kind": "category",
+      "keys": [
+        "cfa-item-1004658/group:extra salad protein"
+      ]
+    },
+    {
+      "id": "cfa-item-1004270",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1004270",
+        "name:salads/cobb salad w chick fil a filet"
+      ]
+    },
+    {
+      "id": "Paid Salad Toppings [CFA 100460:0]",
+      "kind": "category",
+      "keys": [
+        "cfa-item-1004270/group:paid salad topping"
+      ]
+    },
+    {
+      "id": "Extra Salad Proteins [CFA 100460:4]",
+      "kind": "category",
+      "keys": [
+        "cfa-item-1004270/group:extra salad protein"
+      ]
+    },
+    {
+      "id": "cfa-item-1004274",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1004274",
+        "name:salads/cobb salad w spicy filet"
+      ]
+    },
+    {
+      "id": "Paid Salad Toppings [CFA 100462:0]",
+      "kind": "category",
+      "keys": [
+        "cfa-item-1004274/group:paid salad topping"
+      ]
+    },
+    {
+      "id": "Extra Salad Proteins [CFA 100462:4]",
+      "kind": "category",
+      "keys": [
+        "cfa-item-1004274/group:extra salad protein"
+      ]
+    },
+    {
+      "id": "cfa-item-1007235",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1007235",
+        "name:salads/cobb salad w grilled filet warm"
+      ]
+    },
+    {
+      "id": "Paid Salad Toppings [CFA 100464:0]",
+      "kind": "category",
+      "keys": [
+        "cfa-item-1007235/group:paid salad topping"
+      ]
+    },
+    {
+      "id": "Extra Salad Proteins [CFA 100464:4]",
+      "kind": "category",
+      "keys": [
+        "cfa-item-1007235/group:extra salad protein"
+      ]
+    },
+    {
+      "id": "cfa-item-1004269",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1004269",
+        "name:salads/cobb salad w no chicken"
+      ]
+    },
+    {
+      "id": "Paid Salad Toppings [CFA 100465:0]",
+      "kind": "category",
+      "keys": [
+        "cfa-item-1004269/group:paid salad topping"
+      ]
+    },
+    {
+      "id": "cfa-addon-1000435",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1000435",
+        "name:condiments/seasoned tortilla strips"
+      ]
+    },
+    {
+      "id": "cfa-addon-1005544",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1005544",
+        "name:condiments/chili lime pepitas"
+      ]
+    },
+    {
+      "id": "cfa-item-1005539",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1005539",
+        "name:salads/spicy southwest salad w spicy grilled filet cold"
+      ]
+    },
+    {
+      "id": "cfa-item-1005534",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1005534",
+        "name:salads/spicy southwest salad w grilled filet cold"
+      ]
+    },
+    {
+      "id": "Paid Salad Toppings [CFA 100471:0]",
+      "kind": "category",
+      "keys": [
+        "cfa-item-1005534/group:paid salad topping"
+      ]
+    },
+    {
+      "id": "Extra Salad Proteins [CFA 100471:4]",
+      "kind": "category",
+      "keys": [
+        "cfa-item-1005534/group:extra salad protein"
+      ]
+    },
+    {
+      "id": "cfa-item-1005536",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1005536",
+        "name:salads/spicy southwest salad w nuggets"
+      ]
+    },
+    {
+      "id": "Paid Salad Toppings [CFA 100472:0]",
+      "kind": "category",
+      "keys": [
+        "cfa-item-1005536/group:paid salad topping"
+      ]
+    },
+    {
+      "id": "Extra Salad Proteins [CFA 100472:4]",
+      "kind": "category",
+      "keys": [
+        "cfa-item-1005536/group:extra salad protein"
+      ]
+    },
+    {
+      "id": "cfa-item-1005535",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1005535",
+        "name:salads/spicy southwest salad w grilled nuggets"
+      ]
+    },
+    {
+      "id": "Paid Salad Toppings [CFA 100473:0]",
+      "kind": "category",
+      "keys": [
+        "cfa-item-1005535/group:paid salad topping"
+      ]
+    },
+    {
+      "id": "Extra Salad Proteins [CFA 100473:4]",
+      "kind": "category",
+      "keys": [
+        "cfa-item-1005535/group:extra salad protein"
+      ]
+    },
+    {
+      "id": "cfa-item-1005537",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1005537",
+        "name:salads/spicy southwest salad w chick fil a chick n strips"
+      ]
+    },
+    {
+      "id": "Paid Salad Toppings [CFA 100474:0]",
+      "kind": "category",
+      "keys": [
+        "cfa-item-1005537/group:paid salad topping"
+      ]
+    },
+    {
+      "id": "Extra Salad Proteins [CFA 100474:4]",
+      "kind": "category",
+      "keys": [
+        "cfa-item-1005537/group:extra salad protein"
+      ]
+    },
+    {
+      "id": "cfa-item-1005533",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1005533",
+        "name:salads/spicy southwest salad w chick fil a filet"
+      ]
+    },
+    {
+      "id": "Paid Salad Toppings [CFA 100475:0]",
+      "kind": "category",
+      "keys": [
+        "cfa-item-1005533/group:paid salad topping"
+      ]
+    },
+    {
+      "id": "Extra Salad Proteins [CFA 100475:4]",
+      "kind": "category",
+      "keys": [
+        "cfa-item-1005533/group:extra salad protein"
+      ]
+    },
+    {
+      "id": "cfa-item-1005538",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1005538",
+        "name:salads/spicy southwest salad w spicy filet"
+      ]
+    },
+    {
+      "id": "Paid Salad Toppings [CFA 100476:0]",
+      "kind": "category",
+      "keys": [
+        "cfa-item-1005538/group:paid salad topping"
+      ]
+    },
+    {
+      "id": "Extra Salad Proteins [CFA 100476:4]",
+      "kind": "category",
+      "keys": [
+        "cfa-item-1005538/group:extra salad protein"
+      ]
+    },
+    {
+      "id": "cfa-item-1007236",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1007236",
+        "name:salads/spicy southwest salad w grilled filet warm"
+      ]
+    },
+    {
+      "id": "Paid Salad Toppings [CFA 100477:0]",
+      "kind": "category",
+      "keys": [
+        "cfa-item-1007236/group:paid salad topping"
+      ]
+    },
+    {
+      "id": "Extra Salad Proteins [CFA 100477:4]",
+      "kind": "category",
+      "keys": [
+        "cfa-item-1007236/group:extra salad protein"
+      ]
+    },
+    {
+      "id": "cfa-item-1005532",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1005532",
+        "name:salads/spicy southwest salad w no chicken"
+      ]
+    },
+    {
+      "id": "Paid Salad Toppings [CFA 100478:0]",
+      "kind": "category",
+      "keys": [
+        "cfa-item-1005532/group:paid salad topping"
+      ]
+    },
+    {
+      "id": "cfa-item-1004654",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1004654",
+        "name:salads/market salad w grilled filet cold"
+      ]
+    },
+    {
+      "id": "cfa-item-1005542",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1005542",
+        "name:salads/market salad w spicy grilled filet cold"
+      ]
+    },
+    {
+      "id": "Paid Salad Toppings [CFA 100484:0]",
+      "kind": "category",
+      "keys": [
+        "cfa-item-1005542/group:paid salad topping"
+      ]
+    },
+    {
+      "id": "Extra Salad Proteins [CFA 100484:4]",
+      "kind": "category",
+      "keys": [
+        "cfa-item-1005542/group:extra salad protein"
+      ]
+    },
+    {
+      "id": "cfa-item-1004247",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1004247",
+        "name:salads/market salad w chick fil a chick n strips"
+      ]
+    },
+    {
+      "id": "Paid Salad Toppings [CFA 100485:0]",
+      "kind": "category",
+      "keys": [
+        "cfa-item-1004247/group:paid salad topping"
+      ]
+    },
+    {
+      "id": "Extra Salad Proteins [CFA 100485:4]",
+      "kind": "category",
+      "keys": [
+        "cfa-item-1004247/group:extra salad protein"
+      ]
+    },
+    {
+      "id": "cfa-item-1004245",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1004245",
+        "name:salads/market salad w nuggets"
+      ]
+    },
+    {
+      "id": "Paid Salad Toppings [CFA 100486:0]",
+      "kind": "category",
+      "keys": [
+        "cfa-item-1004245/group:paid salad topping"
+      ]
+    },
+    {
+      "id": "Extra Salad Proteins [CFA 100486:4]",
+      "kind": "category",
+      "keys": [
+        "cfa-item-1004245/group:extra salad protein"
+      ]
+    },
+    {
+      "id": "cfa-item-1004660",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1004660",
+        "name:salads/market salad w grilled nuggets"
+      ]
+    },
+    {
+      "id": "Paid Salad Toppings [CFA 100487:0]",
+      "kind": "category",
+      "keys": [
+        "cfa-item-1004660/group:paid salad topping"
+      ]
+    },
+    {
+      "id": "Extra Salad Proteins [CFA 100487:4]",
+      "kind": "category",
+      "keys": [
+        "cfa-item-1004660/group:extra salad protein"
+      ]
+    },
+    {
+      "id": "cfa-item-1004242",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1004242",
+        "name:salads/market salad w chick fil a filet"
+      ]
+    },
+    {
+      "id": "Paid Salad Toppings [CFA 100488:0]",
+      "kind": "category",
+      "keys": [
+        "cfa-item-1004242/group:paid salad topping"
+      ]
+    },
+    {
+      "id": "Extra Salad Proteins [CFA 100488:4]",
+      "kind": "category",
+      "keys": [
+        "cfa-item-1004242/group:extra salad protein"
+      ]
+    },
+    {
+      "id": "cfa-item-1004246",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1004246",
+        "name:salads/market salad w spicy filet"
+      ]
+    },
+    {
+      "id": "Paid Salad Toppings [CFA 100489:0]",
+      "kind": "category",
+      "keys": [
+        "cfa-item-1004246/group:paid salad topping"
+      ]
+    },
+    {
+      "id": "Extra Salad Proteins [CFA 100489:4]",
+      "kind": "category",
+      "keys": [
+        "cfa-item-1004246/group:extra salad protein"
+      ]
+    },
+    {
+      "id": "cfa-item-1007234",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1007234",
+        "name:salads/market salad w grilled filet warm"
+      ]
+    },
+    {
+      "id": "Paid Salad Toppings [CFA 100490:0]",
+      "kind": "category",
+      "keys": [
+        "cfa-item-1007234/group:paid salad topping"
+      ]
+    },
+    {
+      "id": "Extra Salad Proteins [CFA 100490:4]",
+      "kind": "category",
+      "keys": [
+        "cfa-item-1007234/group:extra salad protein"
+      ]
+    },
+    {
+      "id": "cfa-item-1004241",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1004241",
+        "name:salads/market salad w no chicken"
+      ]
+    },
+    {
+      "id": "Paid Salad Toppings [CFA 100491:0]",
+      "kind": "category",
+      "keys": [
+        "cfa-item-1004241/group:paid salad topping"
+      ]
+    },
+    {
+      "id": "cfa-item-1004577",
+      "kind": "item",
+      "keys": [
+        "src:retailModifiedItemId:1004577",
+        "name:sides/large fruit cup"
+      ]
+    },
+    {
+      "id": "cfa-mealgroup-100115",
+      "kind": "item",
+      "keys": [
+        "src:itemGroupId:100115",
+        "name:breakfast/chick fil a chick n minis 4 ct meal"
+      ]
+    },
+    {
+      "id": "cfa-mealgroup-100127",
+      "kind": "item",
+      "keys": [
+        "src:itemGroupId:100127",
+        "name:breakfast/hash brown scramble burrito w nuggets meal"
+      ]
+    },
+    {
+      "id": "cfa-mealgroup-100140",
+      "kind": "item",
+      "keys": [
+        "src:itemGroupId:100140",
+        "name:breakfast/hash brown scramble bowl w nuggets meal"
+      ]
+    },
+    {
+      "id": "cfa-mealgroup-100237",
+      "kind": "item",
+      "keys": [
+        "src:itemGroupId:100237",
+        "name:sandwiches/chick fil a deluxe w american meal"
+      ]
+    },
+    {
+      "id": "cfa-mealgroup-100244",
+      "kind": "item",
+      "keys": [
+        "src:itemGroupId:100244",
+        "name:sandwiches/spicy deluxe w pepper jack meal"
+      ]
+    },
+    {
+      "id": "cfa-mealgroup-100260",
+      "kind": "item",
+      "keys": [
+        "src:itemGroupId:100260",
+        "name:sandwiches/club w colby jack meal"
+      ]
+    },
+    {
+      "id": "cfa-mealgroup-100267",
+      "kind": "item",
+      "keys": [
+        "src:itemGroupId:100267",
+        "name:chicken/chick fil a nuggets 8 ct meal"
+      ]
+    },
+    {
+      "id": "cfa-mealgroup-100274",
+      "kind": "item",
+      "keys": [
+        "src:itemGroupId:100274",
+        "name:chicken/grilled nuggets 8 ct meal"
+      ]
+    },
+    {
+      "id": "cfa-mealgroup-100280",
+      "kind": "item",
+      "keys": [
+        "src:itemGroupId:100280",
+        "name:chicken/chick fil a chick n strips 3 ct meal"
+      ]
+    },
+    {
+      "id": "cfa-modifier-1009747",
+      "kind": "ingredient",
+      "keys": [
+        "src:retailModifiedItemId:1009747",
+        "name:ingredients/classic syrup"
+      ]
+    },
+    {
+      "id": "cfa-modifier-1000391",
+      "kind": "ingredient",
+      "keys": [
+        "src:retailModifiedItemId:1000391",
+        "name:ingredients/bacon"
+      ]
+    },
+    {
+      "id": "cfa-modifier-1000016",
+      "kind": "ingredient",
+      "keys": [
+        "src:retailModifiedItemId:1000016",
+        "name:ingredients/american cheese"
+      ]
+    },
+    {
+      "id": "cfa-modifier-1004689",
+      "kind": "ingredient",
+      "keys": [
+        "src:retailModifiedItemId:1004689",
+        "name:ingredients/colby jack cheese"
+      ]
+    },
+    {
+      "id": "cfa-modifier-1001214",
+      "kind": "ingredient",
+      "keys": [
+        "src:retailModifiedItemId:1001214",
+        "name:ingredients/pepper jack cheese"
+      ]
+    },
+    {
+      "id": "cfa-modifier-1000024",
+      "kind": "ingredient",
+      "keys": [
+        "src:retailModifiedItemId:1000024",
+        "name:ingredients/egg"
+      ]
+    },
+    {
+      "id": "cfa-modifier-1005314",
+      "kind": "ingredient",
+      "keys": [
+        "src:retailModifiedItemId:1005314",
+        "name:ingredients/egg whites"
+      ]
+    },
+    {
+      "id": "cfa-modifier-1000049",
+      "kind": "ingredient",
+      "keys": [
+        "src:retailModifiedItemId:1000049",
+        "name:ingredients/extra sausage"
+      ]
+    },
+    {
+      "id": "cfa-modifier-1000056",
+      "kind": "ingredient",
+      "keys": [
+        "src:retailModifiedItemId:1000056",
+        "name:ingredients/tomato"
+      ]
+    },
+    {
+      "id": "cfa-modifier-1000043",
+      "kind": "ingredient",
+      "keys": [
+        "src:retailModifiedItemId:1000043",
+        "name:ingredients/pickles"
+      ]
+    },
+    {
+      "id": "cfa-modifier-1007482",
+      "kind": "ingredient",
+      "keys": [
+        "src:retailModifiedItemId:1007482",
+        "name:ingredients/fruit"
+      ]
+    },
+    {
+      "id": "cfa-modifier-1007472",
+      "kind": "ingredient",
+      "keys": [
+        "src:retailModifiedItemId:1007472"
+      ]
+    },
+    {
+      "id": "cfa-modifier-1000713",
+      "kind": "ingredient",
+      "keys": [
+        "src:retailModifiedItemId:1000713",
+        "name:ingredients/cherry"
+      ]
+    },
+    {
+      "id": "cfa-modifier-1009687",
+      "kind": "ingredient",
+      "keys": [
+        "src:retailModifiedItemId:1009687",
+        "name:ingredients/toasted marshmallow whipped topping"
+      ]
+    },
+    {
+      "id": "cfa-modifier-1000019",
+      "kind": "ingredient",
+      "keys": [
+        "src:retailModifiedItemId:1000019",
+        "name:ingredients/chocolate syrup"
+      ]
+    },
+    {
+      "id": "cfa-modifier-1007260",
+      "kind": "ingredient",
+      "keys": [
+        "src:retailModifiedItemId:1007260"
+      ]
+    },
+    {
+      "id": "cfa-modifier-1009682",
+      "kind": "ingredient",
+      "keys": [
+        "src:retailModifiedItemId:1009682",
+        "name:ingredients/chocolate shortbread graham cracker crumbles"
+      ]
+    },
+    {
+      "id": "cfa-modifier-1000025",
+      "kind": "ingredient",
+      "keys": [
+        "src:retailModifiedItemId:1000025",
+        "name:ingredients/extra ice"
+      ]
+    },
+    {
+      "id": "cfa-modifier-1000037",
+      "kind": "ingredient",
+      "keys": [
+        "src:retailModifiedItemId:1000037",
+        "name:ingredients/lite ice"
+      ]
+    },
+    {
+      "id": "cfa-modifier-1000057",
+      "kind": "ingredient",
+      "keys": [
+        "src:retailModifiedItemId:1000057",
+        "name:ingredients/no ice"
+      ]
+    },
+    {
+      "id": "cfa-modifier-1007483",
+      "kind": "ingredient",
+      "keys": [
+        "src:retailModifiedItemId:1007483",
+        "name:ingredients/2 milk"
+      ]
+    },
+    {
+      "id": "cfa-modifier-1009679",
+      "kind": "ingredient",
+      "keys": [
+        "src:retailModifiedItemId:1009679",
+        "name:ingredients/caramel syrup"
+      ]
+    },
+    {
+      "id": "cfa-modifier-1000020",
+      "kind": "ingredient",
+      "keys": [
+        "src:retailModifiedItemId:1000020",
+        "name:ingredients/chick fil a half half"
+      ]
+    },
+    {
+      "id": "cfa-modifier-1000401",
+      "kind": "ingredient",
+      "keys": [
+        "src:retailModifiedItemId:1000401",
+        "name:ingredients/french vanilla creamer"
+      ]
+    },
+    {
+      "id": "cfa-modifier-1009850",
+      "kind": "ingredient",
+      "keys": [
+        "src:retailModifiedItemId:1009850",
+        "name:ingredients/cane syrup"
+      ]
+    },
+    {
+      "id": "cfa-modifier-1000395",
+      "kind": "ingredient",
+      "keys": [
+        "src:retailModifiedItemId:1000395",
+        "name:ingredients/sugar"
+      ]
+    },
+    {
+      "id": "cfa-modifier-1000399",
+      "kind": "ingredient",
+      "keys": [
+        "src:retailModifiedItemId:1000399",
+        "name:ingredients/sugar free sweetener"
+      ]
+    },
+    {
+      "id": "cfa-modifier-1007484",
+      "kind": "ingredient",
+      "keys": [
+        "src:retailModifiedItemId:1007484",
+        "name:ingredients/french vanilla syrup"
+      ]
+    },
+    {
+      "id": "cfa-modifier-1009683",
+      "kind": "ingredient",
+      "keys": [
+        "src:retailModifiedItemId:1009683",
+        "name:ingredients/toasted marshmallow syrup"
+      ]
+    },
+    {
+      "id": "cfa-modifier-1000047",
+      "kind": "ingredient",
+      "keys": [
+        "src:retailModifiedItemId:1000047",
+        "name:ingredients/strawberry syrup"
+      ]
+    },
+    {
+      "id": "cfa-modifier-1000714",
+      "kind": "ingredient",
+      "keys": [
+        "src:retailModifiedItemId:1000714",
+        "name:ingredients/whipped cream"
+      ]
+    },
+    {
+      "id": "cfa-modifier-1007280",
+      "kind": "ingredient",
+      "keys": [
+        "src:retailModifiedItemId:1007280",
+        "name:ingredients/buttery biscuit"
+      ]
+    },
+    {
+      "id": "cfa-modifier-1007279",
+      "kind": "ingredient",
+      "keys": [
+        "src:retailModifiedItemId:1007279",
+        "name:ingredients/english muffin"
+      ]
+    },
+    {
+      "id": "cfa-modifier-1004302",
+      "kind": "ingredient",
+      "keys": [
+        "src:retailModifiedItemId:1004302",
+        "name:ingredients/shredded monterey cheddar cheese"
+      ]
+    },
+    {
+      "id": "cfa-modifier-1000005",
+      "kind": "ingredient",
+      "keys": [
+        "src:retailModifiedItemId:1000005",
+        "name:ingredients/lettuce"
+      ]
+    },
+    {
+      "id": "cfa-modifier-1000058",
+      "kind": "ingredient",
+      "keys": [
+        "src:retailModifiedItemId:1000058",
+        "name:ingredients/salt"
+      ]
+    },
+    {
+      "id": "cfa-modifier-1004304",
+      "kind": "ingredient",
+      "keys": [
+        "src:retailModifiedItemId:1004304",
+        "name:ingredients/bacon crumbles"
+      ]
+    },
+    {
+      "id": "cfa-modifier-1006536",
+      "kind": "ingredient",
+      "keys": [
+        "src:retailModifiedItemId:1006536",
+        "name:ingredients/grape tomatoes"
+      ]
+    },
+    {
+      "id": "cfa-modifier-1004303",
+      "kind": "ingredient",
+      "keys": [
+        "src:retailModifiedItemId:1004303",
+        "name:ingredients/sliced egg"
+      ]
+    },
+    {
+      "id": "cfa-modifier-1006538",
+      "kind": "ingredient",
+      "keys": [
+        "src:retailModifiedItemId:1006538",
+        "name:ingredients/roasted corn"
+      ]
+    },
+    {
+      "id": "cfa-modifier-1005545",
+      "kind": "ingredient",
+      "keys": [
+        "src:retailModifiedItemId:1005545",
+        "name:ingredients/black beans and corn"
+      ]
+    },
+    {
+      "id": "cfa-modifier-1006539",
+      "kind": "ingredient",
+      "keys": [
+        "src:retailModifiedItemId:1006539",
+        "name:ingredients/blueberries"
+      ]
+    },
+    {
+      "id": "cfa-modifier-1006541",
+      "kind": "ingredient",
+      "keys": [
+        "src:retailModifiedItemId:1006541",
+        "name:ingredients/apples"
+      ]
+    },
+    {
+      "id": "cfa-modifier-1006540",
+      "kind": "ingredient",
+      "keys": [
+        "src:retailModifiedItemId:1006540",
+        "name:ingredients/strawberries"
+      ]
+    },
+    {
+      "id": "cfa-modifier-1004301",
+      "kind": "ingredient",
+      "keys": [
+        "src:retailModifiedItemId:1004301",
+        "name:ingredients/blue cheese crumbles"
+      ]
+    },
+    {
+      "id": "cfa-modifier-1007242",
+      "kind": "ingredient",
+      "keys": [
+        "src:retailModifiedItemId:1007242",
+        "name:ingredients/buttery white bun"
+      ]
+    },
+    {
+      "id": "cfa-modifier-1007843",
+      "kind": "ingredient",
+      "keys": [
+        "src:retailModifiedItemId:1007843",
+        "name:ingredients/white bun unbuttered"
+      ]
+    },
+    {
+      "id": "cfa-modifier-1007243",
+      "kind": "ingredient",
+      "keys": [
+        "src:retailModifiedItemId:1007243",
+        "name:ingredients/multigrain brioche bun"
+      ]
+    },
+    {
+      "id": "cfa-modifier-1007244",
+      "kind": "ingredient",
+      "keys": [
+        "src:retailModifiedItemId:1007244",
+        "name:ingredients/gluten free bun"
+      ]
+    },
+    {
+      "id": "cfa-modifier-1007822",
+      "kind": "ingredient",
+      "keys": [
+        "src:retailModifiedItemId:1007822",
+        "name:ingredients/wrapped in lettuce"
+      ]
+    },
+    {
+      "id": "cfa-modifier-1007257",
+      "kind": "ingredient",
+      "keys": [
+        "src:retailModifiedItemId:1007257",
+        "name:ingredients/jalapeños"
+      ]
+    },
+    {
+      "id": "cfa-modifier-1008149",
+      "kind": "ingredient",
+      "keys": [
+        "src:retailModifiedItemId:1008149",
+        "name:ingredients/extra chick fil a nuggets"
+      ]
+    },
+    {
+      "id": "cfa-modifier-1008150",
+      "kind": "ingredient",
+      "keys": [
+        "src:retailModifiedItemId:1008150",
+        "name:ingredients/extra spicy grilled filet cold"
+      ]
+    },
+    {
+      "id": "cfa-modifier-1008151",
+      "kind": "ingredient",
+      "keys": [
+        "src:retailModifiedItemId:1008151",
+        "name:ingredients/extra grilled nuggets"
+      ]
+    },
+    {
+      "id": "cfa-modifier-1008152",
+      "kind": "ingredient",
+      "keys": [
+        "src:retailModifiedItemId:1008152",
+        "name:ingredients/extra chick fil a chick n strips"
+      ]
+    },
+    {
+      "id": "cfa-modifier-1008153",
+      "kind": "ingredient",
+      "keys": [
+        "src:retailModifiedItemId:1008153",
+        "name:ingredients/extra grilled filet cold"
+      ]
+    },
+    {
+      "id": "cfa-modifier-1008154",
+      "kind": "ingredient",
+      "keys": [
+        "src:retailModifiedItemId:1008154",
+        "name:ingredients/extra chick fil a filet"
+      ]
+    },
+    {
+      "id": "cfa-modifier-1008155",
+      "kind": "ingredient",
+      "keys": [
+        "src:retailModifiedItemId:1008155",
+        "name:ingredients/extra spicy filet"
+      ]
+    },
+    {
+      "id": "cfa-modifier-1008156",
+      "kind": "ingredient",
+      "keys": [
+        "src:retailModifiedItemId:1008156",
+        "name:ingredients/extra grilled filet warm"
+      ]
+    }
+  ]
+}

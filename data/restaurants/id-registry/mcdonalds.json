@@ -1,0 +1,7209 @@
+{
+  "restaurantId": "mcdonalds",
+  "version": 1,
+  "entries": [
+    {
+      "id": "mcd-item-204560",
+      "kind": "item",
+      "keys": [
+        "src:mcd-item-204560",
+        "name:chicken fish/mccrispy strips meal"
+      ]
+    },
+    {
+      "id": "mcd-item-204650",
+      "kind": "item",
+      "keys": [
+        "src:mcd-item-204650",
+        "name:breakfast/the sausage biscuit meal deal"
+      ]
+    },
+    {
+      "id": "mcd-item-204651",
+      "kind": "item",
+      "keys": [
+        "src:mcd-item-204651",
+        "name:breakfast/the sausage mcmuffin meal deal"
+      ]
+    },
+    {
+      "id": "mcd-item-203634",
+      "kind": "item",
+      "keys": [
+        "src:mcd-item-203634",
+        "name:happy meals/4 piece chicken mcnuggets happy meal"
+      ]
+    },
+    {
+      "id": "mcd-item-203635",
+      "kind": "item",
+      "keys": [
+        "src:mcd-item-203635",
+        "name:happy meals/6 piece mcnuggets happy meal"
+      ]
+    },
+    {
+      "id": "mcd-item-204558",
+      "kind": "item",
+      "keys": [
+        "src:mcd-item-204558",
+        "name:breakfast/bacon egg cheese bagel meal"
+      ]
+    },
+    {
+      "id": "mcd-item-200723",
+      "kind": "item",
+      "keys": [
+        "src:mcd-item-200723",
+        "name:breakfast/bacon egg cheese biscuit meal"
+      ]
+    },
+    {
+      "id": "mcd-item-200715",
+      "kind": "item",
+      "keys": [
+        "src:mcd-item-200715",
+        "name:breakfast/bacon egg cheese mcgriddles meal"
+      ]
+    },
+    {
+      "id": "mcd-item-204534",
+      "kind": "item",
+      "keys": [
+        "src:mcd-item-204534",
+        "name:burgers/bacon quarter pounder with cheese meal"
+      ]
+    },
+    {
+      "id": "mcd-item-200721",
+      "kind": "item",
+      "keys": [
+        "src:mcd-item-200721",
+        "name:burgers/big mac meal"
+      ]
+    },
+    {
+      "id": "mcd-item-203451",
+      "kind": "item",
+      "keys": [
+        "src:mcd-item-203451",
+        "name:burgers/cheeseburger meal"
+      ]
+    },
+    {
+      "id": "mcd-item-200734",
+      "kind": "item",
+      "keys": [
+        "src:mcd-item-200734",
+        "name:mcnuggets strips/10 piece chicken mcnuggets meal"
+      ]
+    },
+    {
+      "id": "mcd-item-204364",
+      "kind": "item",
+      "keys": [
+        "src:mcd-item-204364",
+        "name:chicken fish/deluxe mccrispy meal"
+      ]
+    },
+    {
+      "id": "mcd-item-204535",
+      "kind": "item",
+      "keys": [
+        "src:mcd-item-204535",
+        "name:burgers/quarter pounder with cheese deluxe meal"
+      ]
+    },
+    {
+      "id": "mcd-item-200712",
+      "kind": "item",
+      "keys": [
+        "src:mcd-item-200712",
+        "name:burgers/double quarter pounder with cheese meal"
+      ]
+    },
+    {
+      "id": "mcd-item-200739",
+      "kind": "item",
+      "keys": [
+        "src:mcd-item-200739",
+        "name:breakfast/egg mcmuffin meal"
+      ]
+    },
+    {
+      "id": "mcd-item-200732",
+      "kind": "item",
+      "keys": [
+        "src:mcd-item-200732",
+        "name:chicken fish/filet o fish meal"
+      ]
+    },
+    {
+      "id": "mcd-item-203633",
+      "kind": "item",
+      "keys": [
+        "src:mcd-item-203633",
+        "name:happy meals/hamburger happy meal"
+      ]
+    },
+    {
+      "id": "mcd-item-204350",
+      "kind": "item",
+      "keys": [
+        "src:mcd-item-204350",
+        "name:chicken fish/the mcchicken meal deal"
+      ]
+    },
+    {
+      "id": "mcd-item-203920",
+      "kind": "item",
+      "keys": [
+        "src:mcd-item-203920",
+        "name:chicken fish/mccrispy meal"
+      ]
+    },
+    {
+      "id": "mcd-item-204349",
+      "kind": "item",
+      "keys": [
+        "src:mcd-item-204349",
+        "name:burgers/the mcdouble meal deal"
+      ]
+    },
+    {
+      "id": "mcd-item-200720",
+      "kind": "item",
+      "keys": [
+        "src:mcd-item-200720",
+        "name:burgers/quarter pounder with cheese meal"
+      ]
+    },
+    {
+      "id": "mcd-item-204406",
+      "kind": "item",
+      "keys": [
+        "src:mcd-item-204406",
+        "name:snack wraps/mccrispy strips ranch spicy snack wrap meal"
+      ]
+    },
+    {
+      "id": "mcd-item-204409",
+      "kind": "item",
+      "keys": [
+        "src:mcd-item-204409",
+        "name:snack wraps/mccrispy strips ranch snack wrap meal"
+      ]
+    },
+    {
+      "id": "mcd-item-200731",
+      "kind": "item",
+      "keys": [
+        "src:mcd-item-200731",
+        "name:breakfast/sausage biscuit with egg meal"
+      ]
+    },
+    {
+      "id": "mcd-item-200716",
+      "kind": "item",
+      "keys": [
+        "src:mcd-item-200716",
+        "name:breakfast/sausage burrito meal"
+      ]
+    },
+    {
+      "id": "mcd-item-200714",
+      "kind": "item",
+      "keys": [
+        "src:mcd-item-200714",
+        "name:breakfast/sausage egg cheese mcgriddles meal"
+      ]
+    },
+    {
+      "id": "mcd-item-200717",
+      "kind": "item",
+      "keys": [
+        "src:mcd-item-200717",
+        "name:breakfast/sausage mcgriddles meal"
+      ]
+    },
+    {
+      "id": "mcd-item-200724",
+      "kind": "item",
+      "keys": [
+        "src:mcd-item-200724",
+        "name:breakfast/sausage mcmuffin with egg meal"
+      ]
+    },
+    {
+      "id": "mcd-item-204557",
+      "kind": "item",
+      "keys": [
+        "src:mcd-item-204557",
+        "name:chicken fish/spicy deluxe mccrispy meal"
+      ]
+    },
+    {
+      "id": "mcd-item-203922",
+      "kind": "item",
+      "keys": [
+        "src:mcd-item-203922",
+        "name:chicken fish/spicy mccrispy meal"
+      ]
+    },
+    {
+      "id": "mcd-item-204410",
+      "kind": "item",
+      "keys": [
+        "src:mcd-item-204410",
+        "name:snack wraps/mccrispy strips spicy snack wrap meal"
+      ]
+    },
+    {
+      "id": "mcd-item-204559",
+      "kind": "item",
+      "keys": [
+        "src:mcd-item-204559",
+        "name:breakfast/steak egg cheese bagel meal"
+      ]
+    },
+    {
+      "id": "mcd-item-200610",
+      "kind": "item",
+      "keys": [
+        "src:mcd-item-200610",
+        "name:drinks/1 low fat milk jug"
+      ]
+    },
+    {
+      "id": "mcd-item-200610",
+      "kind": "variant",
+      "keys": [
+        "mcd-item-200610/variant-source:mcd-item-200610",
+        "mcd-item-200610/variant:national"
+      ]
+    },
+    {
+      "id": "mcd-item-201352",
+      "kind": "variant",
+      "keys": [
+        "mcd-item-200610/variant-source:mcd-item-201352",
+        "mcd-item-200610/variant:california"
+      ]
+    },
+    {
+      "id": "mcd-item-200068",
+      "kind": "item",
+      "keys": [
+        "src:mcd-item-200068",
+        "name:fries sides/apple slices"
+      ]
+    },
+    {
+      "id": "mcd-item-200424",
+      "kind": "item",
+      "keys": [
+        "src:mcd-item-200424",
+        "name:breakfast/bacon egg cheese bagel"
+      ]
+    },
+    {
+      "id": "mcd-mcd-item-200424-breakfast-bread",
+      "kind": "category",
+      "keys": [
+        "mcd-item-200424/group:bread"
+      ]
+    },
+    {
+      "id": "mcd-mcd-item-200424-breakfast-cheeses",
+      "kind": "category",
+      "keys": [
+        "mcd-item-200424/group:cheese"
+      ]
+    },
+    {
+      "id": "mcd-mcd-item-200424-breakfast-protein",
+      "kind": "category",
+      "keys": [
+        "mcd-item-200424/group:protein"
+      ]
+    },
+    {
+      "id": "mcd-mcd-item-200424-breakfast-sauces",
+      "kind": "category",
+      "keys": [
+        "mcd-item-200424/group:sauce"
+      ]
+    },
+    {
+      "id": "mcd-item-200300",
+      "kind": "item",
+      "keys": [
+        "src:mcd-item-200300",
+        "name:breakfast/bacon egg cheese biscuit"
+      ]
+    },
+    {
+      "id": "mcd-mcd-item-200300-breakfast-bread",
+      "kind": "category",
+      "keys": [
+        "mcd-item-200300/group:bread"
+      ]
+    },
+    {
+      "id": "mcd-mcd-item-200300-breakfast-cheeses",
+      "kind": "category",
+      "keys": [
+        "mcd-item-200300/group:cheese"
+      ]
+    },
+    {
+      "id": "mcd-mcd-item-200300-breakfast-protein",
+      "kind": "category",
+      "keys": [
+        "mcd-item-200300/group:protein"
+      ]
+    },
+    {
+      "id": "mcd-mcd-item-200300-breakfast-sauces",
+      "kind": "category",
+      "keys": [
+        "mcd-item-200300/group:sauce"
+      ]
+    },
+    {
+      "id": "mcd-item-200304",
+      "kind": "item",
+      "keys": [
+        "src:mcd-item-200304",
+        "name:breakfast/bacon egg cheese mcgriddles"
+      ]
+    },
+    {
+      "id": "mcd-mcd-item-200304-breakfast-bread",
+      "kind": "category",
+      "keys": [
+        "mcd-item-200304/group:bread"
+      ]
+    },
+    {
+      "id": "mcd-mcd-item-200304-breakfast-cheeses",
+      "kind": "category",
+      "keys": [
+        "mcd-item-200304/group:cheese"
+      ]
+    },
+    {
+      "id": "mcd-mcd-item-200304-breakfast-protein",
+      "kind": "category",
+      "keys": [
+        "mcd-item-200304/group:protein"
+      ]
+    },
+    {
+      "id": "mcd-mcd-item-200304-breakfast-sauces",
+      "kind": "category",
+      "keys": [
+        "mcd-item-200304/group:sauce"
+      ]
+    },
+    {
+      "id": "mcd-item-201306",
+      "kind": "item",
+      "keys": [
+        "src:mcd-item-201306",
+        "name:breakfast/bagel plain"
+      ]
+    },
+    {
+      "id": "mcd-mcd-item-201306-breakfast-bread",
+      "kind": "category",
+      "keys": [
+        "mcd-item-201306/group:bread"
+      ]
+    },
+    {
+      "id": "mcd-item-200007",
+      "kind": "item",
+      "keys": [
+        "src:mcd-item-200007",
+        "name:sweets treats/baked apple pie"
+      ]
+    },
+    {
+      "id": "mcd-item-200323",
+      "kind": "item",
+      "keys": [
+        "src:mcd-item-200323",
+        "name:breakfast/big breakfast with hotcakes"
+      ]
+    },
+    {
+      "id": "mcd-mcd-item-200323-breakfast-bread",
+      "kind": "category",
+      "keys": [
+        "mcd-item-200323/group:bread"
+      ]
+    },
+    {
+      "id": "mcd-mcd-item-200323-breakfast-protein",
+      "kind": "category",
+      "keys": [
+        "mcd-item-200323/group:protein"
+      ]
+    },
+    {
+      "id": "mcd-mcd-item-200323-breakfast-sauces",
+      "kind": "category",
+      "keys": [
+        "mcd-item-200323/group:sauce"
+      ]
+    },
+    {
+      "id": "mcd-mcd-item-200323-breakfast-potatoes",
+      "kind": "category",
+      "keys": [
+        "mcd-item-200323/group:potatoe"
+      ]
+    },
+    {
+      "id": "mcd-mcd-item-200323-breakfast-hotcakes",
+      "kind": "category",
+      "keys": [
+        "mcd-item-200323/group:hotcake"
+      ]
+    },
+    {
+      "id": "mcd-item-200322",
+      "kind": "item",
+      "keys": [
+        "src:mcd-item-200322",
+        "name:breakfast/big breakfast"
+      ]
+    },
+    {
+      "id": "mcd-mcd-item-200322-breakfast-bread",
+      "kind": "category",
+      "keys": [
+        "mcd-item-200322/group:bread"
+      ]
+    },
+    {
+      "id": "mcd-mcd-item-200322-breakfast-protein",
+      "kind": "category",
+      "keys": [
+        "mcd-item-200322/group:protein"
+      ]
+    },
+    {
+      "id": "mcd-mcd-item-200322-breakfast-sauces",
+      "kind": "category",
+      "keys": [
+        "mcd-item-200322/group:sauce"
+      ]
+    },
+    {
+      "id": "mcd-mcd-item-200322-breakfast-potatoes",
+      "kind": "category",
+      "keys": [
+        "mcd-item-200322/group:potatoe"
+      ]
+    },
+    {
+      "id": "mcd-item-200463",
+      "kind": "item",
+      "keys": [
+        "src:mcd-item-200463",
+        "name:burgers/big mac"
+      ]
+    },
+    {
+      "id": "mcd-mcd-item-200463-buns",
+      "kind": "category",
+      "keys": [
+        "mcd-item-200463/group:bread"
+      ]
+    },
+    {
+      "id": "mcd-mcd-item-200463-cheeses",
+      "kind": "category",
+      "keys": [
+        "mcd-item-200463/group:cheese"
+      ]
+    },
+    {
+      "id": "mcd-mcd-item-200463-protein",
+      "kind": "category",
+      "keys": [
+        "mcd-item-200463/group:protein"
+      ]
+    },
+    {
+      "id": "mcd-mcd-item-200463-toppings",
+      "kind": "category",
+      "keys": [
+        "mcd-item-200463/group:topping"
+      ]
+    },
+    {
+      "id": "mcd-mcd-item-200463-sauces",
+      "kind": "category",
+      "keys": [
+        "mcd-item-200463/group:sauce"
+      ]
+    },
+    {
+      "id": "mcd-item-204623",
+      "kind": "item",
+      "keys": [
+        "src:mcd-item-204623",
+        "name:drinks/blackberry passion fruit refresher"
+      ]
+    },
+    {
+      "id": "mcd-item-204623",
+      "kind": "variant",
+      "keys": [
+        "mcd-item-204623/variant-source:mcd-item-204623",
+        "mcd-item-204623/variant:small"
+      ]
+    },
+    {
+      "id": "mcd-item-204622",
+      "kind": "variant",
+      "keys": [
+        "mcd-item-204623/variant-source:mcd-item-204622",
+        "mcd-item-204623/variant:medium"
+      ]
+    },
+    {
+      "id": "mcd-item-204621",
+      "kind": "variant",
+      "keys": [
+        "mcd-item-204623/variant-source:mcd-item-204621",
+        "mcd-item-204623/variant:large"
+      ]
+    },
+    {
+      "id": "mcd-item-200500",
+      "kind": "item",
+      "keys": [
+        "src:mcd-item-200500",
+        "name:mccafé/cappuccino"
+      ]
+    },
+    {
+      "id": "mcd-item-200500",
+      "kind": "variant",
+      "keys": [
+        "mcd-item-200500/variant-source:mcd-item-200500",
+        "mcd-item-200500/variant:small"
+      ]
+    },
+    {
+      "id": "mcd-item-200501",
+      "kind": "variant",
+      "keys": [
+        "mcd-item-200500/variant-source:mcd-item-200501",
+        "mcd-item-200500/variant:medium"
+      ]
+    },
+    {
+      "id": "mcd-item-200502",
+      "kind": "variant",
+      "keys": [
+        "mcd-item-200500/variant-source:mcd-item-200502",
+        "mcd-item-200500/variant:large"
+      ]
+    },
+    {
+      "id": "mcd-item-200181",
+      "kind": "item",
+      "keys": [
+        "src:mcd-item-200181",
+        "name:mccafé/caramel cappuccino"
+      ]
+    },
+    {
+      "id": "mcd-item-200181",
+      "kind": "variant",
+      "keys": [
+        "mcd-item-200181/variant-source:mcd-item-200181",
+        "mcd-item-200181/variant:small"
+      ]
+    },
+    {
+      "id": "mcd-item-200386",
+      "kind": "variant",
+      "keys": [
+        "mcd-item-200181/variant-source:mcd-item-200386",
+        "mcd-item-200181/variant:medium"
+      ]
+    },
+    {
+      "id": "mcd-item-200385",
+      "kind": "variant",
+      "keys": [
+        "mcd-item-200181/variant-source:mcd-item-200385",
+        "mcd-item-200181/variant:large"
+      ]
+    },
+    {
+      "id": "mcd-item-203087",
+      "kind": "item",
+      "keys": [
+        "src:mcd-item-203087",
+        "name:mccafé/caramel macchiato"
+      ]
+    },
+    {
+      "id": "mcd-item-203087",
+      "kind": "variant",
+      "keys": [
+        "mcd-item-203087/variant-source:mcd-item-203087",
+        "mcd-item-203087/variant:small"
+      ]
+    },
+    {
+      "id": "mcd-item-203102",
+      "kind": "variant",
+      "keys": [
+        "mcd-item-203087/variant-source:mcd-item-203102",
+        "mcd-item-203087/variant:medium"
+      ]
+    },
+    {
+      "id": "mcd-item-203088",
+      "kind": "variant",
+      "keys": [
+        "mcd-item-203087/variant-source:mcd-item-203088",
+        "mcd-item-203087/variant:large"
+      ]
+    },
+    {
+      "id": "mcd-item-200480",
+      "kind": "item",
+      "keys": [
+        "src:mcd-item-200480",
+        "name:burgers/cheeseburger"
+      ]
+    },
+    {
+      "id": "mcd-mcd-item-200480-buns",
+      "kind": "category",
+      "keys": [
+        "mcd-item-200480/group:bread"
+      ]
+    },
+    {
+      "id": "mcd-mcd-item-200480-cheeses",
+      "kind": "category",
+      "keys": [
+        "mcd-item-200480/group:cheese"
+      ]
+    },
+    {
+      "id": "mcd-mcd-item-200480-protein",
+      "kind": "category",
+      "keys": [
+        "mcd-item-200480/group:protein"
+      ]
+    },
+    {
+      "id": "mcd-mcd-item-200480-toppings",
+      "kind": "category",
+      "keys": [
+        "mcd-item-200480/group:topping"
+      ]
+    },
+    {
+      "id": "mcd-mcd-item-200480-sauces",
+      "kind": "category",
+      "keys": [
+        "mcd-item-200480/group:sauce"
+      ]
+    },
+    {
+      "id": "mcd-item-200692",
+      "kind": "item",
+      "keys": [
+        "src:mcd-item-200692",
+        "name:mcnuggets strips/chicken mcnuggets"
+      ]
+    },
+    {
+      "id": "mcd-item-200692",
+      "kind": "variant",
+      "keys": [
+        "mcd-item-200692/variant-source:mcd-item-200692",
+        "mcd-item-200692/variant:4 piece"
+      ]
+    },
+    {
+      "id": "mcd-item-200574",
+      "kind": "variant",
+      "keys": [
+        "mcd-item-200692/variant-source:mcd-item-200574",
+        "mcd-item-200692/variant:6 piece"
+      ]
+    },
+    {
+      "id": "mcd-item-200567",
+      "kind": "variant",
+      "keys": [
+        "mcd-item-200692/variant-source:mcd-item-200567",
+        "mcd-item-200692/variant:10 piece"
+      ]
+    },
+    {
+      "id": "mcd-item-200573",
+      "kind": "variant",
+      "keys": [
+        "mcd-item-200692/variant-source:mcd-item-200573",
+        "mcd-item-200692/variant:20 piece"
+      ]
+    },
+    {
+      "id": "mcd-item-200577",
+      "kind": "variant",
+      "keys": [
+        "mcd-item-200692/variant-source:mcd-item-200577",
+        "mcd-item-200692/variant:40 piece"
+      ]
+    },
+    {
+      "id": "mcd-item-200009",
+      "kind": "item",
+      "keys": [
+        "src:mcd-item-200009",
+        "name:sweets treats/chocolate chip cookie"
+      ]
+    },
+    {
+      "id": "mcd-item-200107",
+      "kind": "item",
+      "keys": [
+        "src:mcd-item-200107",
+        "name:sweets treats/chocolate shake"
+      ]
+    },
+    {
+      "id": "mcd-item-200107",
+      "kind": "variant",
+      "keys": [
+        "mcd-item-200107/variant-source:mcd-item-200107",
+        "mcd-item-200107/variant:small"
+      ]
+    },
+    {
+      "id": "mcd-item-200052",
+      "kind": "variant",
+      "keys": [
+        "mcd-item-200107/variant-source:mcd-item-200052",
+        "mcd-item-200107/variant:medium"
+      ]
+    },
+    {
+      "id": "mcd-item-200058",
+      "kind": "variant",
+      "keys": [
+        "mcd-item-200107/variant-source:mcd-item-200058",
+        "mcd-item-200107/variant:large"
+      ]
+    },
+    {
+      "id": "mcd-item-200639",
+      "kind": "item",
+      "keys": [
+        "src:mcd-item-200639",
+        "name:drinks/medium coca cola"
+      ]
+    },
+    {
+      "id": "mcd-item-200611",
+      "kind": "item",
+      "keys": [
+        "src:mcd-item-200611",
+        "name:drinks/coca cola"
+      ]
+    },
+    {
+      "id": "mcd-item-200631",
+      "kind": "variant",
+      "keys": [
+        "mcd-item-200611/variant-source:mcd-item-200631",
+        "mcd-item-200611/variant:extra small"
+      ]
+    },
+    {
+      "id": "mcd-item-200611",
+      "kind": "variant",
+      "keys": [
+        "mcd-item-200611/variant-source:mcd-item-200611",
+        "mcd-item-200611/variant:small"
+      ]
+    },
+    {
+      "id": "mcd-item-200639",
+      "kind": "variant",
+      "keys": [
+        "mcd-item-200611/variant-source:mcd-item-200639",
+        "mcd-item-200611/variant:medium"
+      ]
+    },
+    {
+      "id": "mcd-item-200632",
+      "kind": "variant",
+      "keys": [
+        "mcd-item-200611/variant-source:mcd-item-200632",
+        "mcd-item-200611/variant:large"
+      ]
+    },
+    {
+      "id": "mcd-item-201038",
+      "kind": "item",
+      "keys": [
+        "src:mcd-item-201038",
+        "name:mccafé/premium roast decaf coffee"
+      ]
+    },
+    {
+      "id": "mcd-item-201038",
+      "kind": "variant",
+      "keys": [
+        "mcd-item-201038/variant-source:mcd-item-201038",
+        "mcd-item-201038/variant:small"
+      ]
+    },
+    {
+      "id": "mcd-item-201459",
+      "kind": "variant",
+      "keys": [
+        "mcd-item-201038/variant-source:mcd-item-201459",
+        "mcd-item-201038/variant:medium"
+      ]
+    },
+    {
+      "id": "mcd-item-201074",
+      "kind": "variant",
+      "keys": [
+        "mcd-item-201038/variant-source:mcd-item-201074",
+        "mcd-item-201038/variant:large"
+      ]
+    },
+    {
+      "id": "mcd-item-200020",
+      "kind": "item",
+      "keys": [
+        "src:mcd-item-200020",
+        "name:mccafé/premium roast coffee"
+      ]
+    },
+    {
+      "id": "mcd-item-200020",
+      "kind": "variant",
+      "keys": [
+        "mcd-item-200020/variant-source:mcd-item-200020",
+        "mcd-item-200020/variant:small"
+      ]
+    },
+    {
+      "id": "mcd-item-200543",
+      "kind": "variant",
+      "keys": [
+        "mcd-item-200020/variant-source:mcd-item-200543",
+        "mcd-item-200020/variant:medium"
+      ]
+    },
+    {
+      "id": "mcd-item-200122",
+      "kind": "variant",
+      "keys": [
+        "mcd-item-200020/variant-source:mcd-item-200122",
+        "mcd-item-200020/variant:large"
+      ]
+    },
+    {
+      "id": "mcd-item-204377",
+      "kind": "item",
+      "keys": [
+        "src:mcd-item-204377",
+        "name:sauces condiments/creamy chili mccrispy strip dip"
+      ]
+    },
+    {
+      "id": "mcd-item-200293",
+      "kind": "item",
+      "keys": [
+        "src:mcd-item-200293",
+        "name:sauces condiments/creamy ranch sauce"
+      ]
+    },
+    {
+      "id": "mcd-item-200497",
+      "kind": "item",
+      "keys": [
+        "src:mcd-item-200497",
+        "name:burgers/daily double"
+      ]
+    },
+    {
+      "id": "mcd-mcd-item-200497-buns",
+      "kind": "category",
+      "keys": [
+        "mcd-item-200497/group:bread"
+      ]
+    },
+    {
+      "id": "mcd-mcd-item-200497-cheeses",
+      "kind": "category",
+      "keys": [
+        "mcd-item-200497/group:cheese"
+      ]
+    },
+    {
+      "id": "mcd-mcd-item-200497-protein",
+      "kind": "category",
+      "keys": [
+        "mcd-item-200497/group:protein"
+      ]
+    },
+    {
+      "id": "mcd-mcd-item-200497-toppings",
+      "kind": "category",
+      "keys": [
+        "mcd-item-200497/group:topping"
+      ]
+    },
+    {
+      "id": "mcd-mcd-item-200497-sauces",
+      "kind": "category",
+      "keys": [
+        "mcd-item-200497/group:sauce"
+      ]
+    },
+    {
+      "id": "mcd-item-200609",
+      "kind": "item",
+      "keys": [
+        "src:mcd-item-200609",
+        "name:drinks/dasani water"
+      ]
+    },
+    {
+      "id": "mcd-item-203745",
+      "kind": "item",
+      "keys": [
+        "src:mcd-item-203745",
+        "name:chicken fish/deluxe mccrispy"
+      ]
+    },
+    {
+      "id": "mcd-mcd-item-203745-buns",
+      "kind": "category",
+      "keys": [
+        "mcd-item-203745/group:bread"
+      ]
+    },
+    {
+      "id": "mcd-mcd-item-203745-cheeses",
+      "kind": "category",
+      "keys": [
+        "mcd-item-203745/group:cheese"
+      ]
+    },
+    {
+      "id": "mcd-mcd-item-203745-protein",
+      "kind": "category",
+      "keys": [
+        "mcd-item-203745/group:protein"
+      ]
+    },
+    {
+      "id": "mcd-mcd-item-203745-toppings",
+      "kind": "category",
+      "keys": [
+        "mcd-item-203745/group:topping"
+      ]
+    },
+    {
+      "id": "mcd-mcd-item-203745-sauces",
+      "kind": "category",
+      "keys": [
+        "mcd-item-203745/group:sauce"
+      ]
+    },
+    {
+      "id": "mcd-item-200765",
+      "kind": "item",
+      "keys": [
+        "src:mcd-item-200765",
+        "name:burgers/quarter pounder with cheese deluxe"
+      ]
+    },
+    {
+      "id": "mcd-mcd-item-200765-buns",
+      "kind": "category",
+      "keys": [
+        "mcd-item-200765/group:bread"
+      ]
+    },
+    {
+      "id": "mcd-mcd-item-200765-cheeses",
+      "kind": "category",
+      "keys": [
+        "mcd-item-200765/group:cheese"
+      ]
+    },
+    {
+      "id": "mcd-mcd-item-200765-protein",
+      "kind": "category",
+      "keys": [
+        "mcd-item-200765/group:protein"
+      ]
+    },
+    {
+      "id": "mcd-mcd-item-200765-toppings",
+      "kind": "category",
+      "keys": [
+        "mcd-item-200765/group:topping"
+      ]
+    },
+    {
+      "id": "mcd-mcd-item-200765-sauces",
+      "kind": "category",
+      "keys": [
+        "mcd-item-200765/group:sauce"
+      ]
+    },
+    {
+      "id": "mcd-item-200612",
+      "kind": "item",
+      "keys": [
+        "src:mcd-item-200612",
+        "name:drinks/diet coke"
+      ]
+    },
+    {
+      "id": "mcd-item-200640",
+      "kind": "variant",
+      "keys": [
+        "mcd-item-200612/variant-source:mcd-item-200640",
+        "mcd-item-200612/variant:extra small"
+      ]
+    },
+    {
+      "id": "mcd-item-200612",
+      "kind": "variant",
+      "keys": [
+        "mcd-item-200612/variant-source:mcd-item-200612",
+        "mcd-item-200612/variant:small"
+      ]
+    },
+    {
+      "id": "mcd-item-200642",
+      "kind": "variant",
+      "keys": [
+        "mcd-item-200612/variant-source:mcd-item-200642",
+        "mcd-item-200612/variant:medium"
+      ]
+    },
+    {
+      "id": "mcd-item-200641",
+      "kind": "variant",
+      "keys": [
+        "mcd-item-200612/variant-source:mcd-item-200641",
+        "mcd-item-200612/variant:large"
+      ]
+    },
+    {
+      "id": "mcd-item-204630",
+      "kind": "item",
+      "keys": [
+        "src:mcd-item-204630",
+        "name:drinks/dirty dr pepper"
+      ]
+    },
+    {
+      "id": "mcd-item-200486",
+      "kind": "item",
+      "keys": [
+        "src:mcd-item-200486",
+        "name:burgers/double cheeseburger"
+      ]
+    },
+    {
+      "id": "mcd-mcd-item-200486-buns",
+      "kind": "category",
+      "keys": [
+        "mcd-item-200486/group:bread"
+      ]
+    },
+    {
+      "id": "mcd-mcd-item-200486-cheeses",
+      "kind": "category",
+      "keys": [
+        "mcd-item-200486/group:cheese"
+      ]
+    },
+    {
+      "id": "mcd-mcd-item-200486-protein",
+      "kind": "category",
+      "keys": [
+        "mcd-item-200486/group:protein"
+      ]
+    },
+    {
+      "id": "mcd-mcd-item-200486-toppings",
+      "kind": "category",
+      "keys": [
+        "mcd-item-200486/group:topping"
+      ]
+    },
+    {
+      "id": "mcd-mcd-item-200486-sauces",
+      "kind": "category",
+      "keys": [
+        "mcd-item-200486/group:sauce"
+      ]
+    },
+    {
+      "id": "mcd-item-200476",
+      "kind": "item",
+      "keys": [
+        "src:mcd-item-200476",
+        "name:burgers/double quarter pounder with cheese"
+      ]
+    },
+    {
+      "id": "mcd-mcd-item-200476-buns",
+      "kind": "category",
+      "keys": [
+        "mcd-item-200476/group:bread"
+      ]
+    },
+    {
+      "id": "mcd-mcd-item-200476-cheeses",
+      "kind": "category",
+      "keys": [
+        "mcd-item-200476/group:cheese"
+      ]
+    },
+    {
+      "id": "mcd-mcd-item-200476-protein",
+      "kind": "category",
+      "keys": [
+        "mcd-item-200476/group:protein"
+      ]
+    },
+    {
+      "id": "mcd-mcd-item-200476-toppings",
+      "kind": "category",
+      "keys": [
+        "mcd-item-200476/group:topping"
+      ]
+    },
+    {
+      "id": "mcd-mcd-item-200476-sauces",
+      "kind": "category",
+      "keys": [
+        "mcd-item-200476/group:sauce"
+      ]
+    },
+    {
+      "id": "mcd-item-200613",
+      "kind": "item",
+      "keys": [
+        "src:mcd-item-200613",
+        "name:drinks/dr pepper"
+      ]
+    },
+    {
+      "id": "mcd-item-200646",
+      "kind": "variant",
+      "keys": [
+        "mcd-item-200613/variant-source:mcd-item-200646",
+        "mcd-item-200613/variant:extra small"
+      ]
+    },
+    {
+      "id": "mcd-item-200613",
+      "kind": "variant",
+      "keys": [
+        "mcd-item-200613/variant-source:mcd-item-200613",
+        "mcd-item-200613/variant:small"
+      ]
+    },
+    {
+      "id": "mcd-item-200648",
+      "kind": "variant",
+      "keys": [
+        "mcd-item-200613/variant-source:mcd-item-200648",
+        "mcd-item-200613/variant:medium"
+      ]
+    },
+    {
+      "id": "mcd-item-200647",
+      "kind": "variant",
+      "keys": [
+        "mcd-item-200613/variant-source:mcd-item-200647",
+        "mcd-item-200613/variant:large"
+      ]
+    },
+    {
+      "id": "mcd-item-200876",
+      "kind": "item",
+      "keys": [
+        "src:mcd-item-200876",
+        "name:breakfast/egg and cheese bagel"
+      ]
+    },
+    {
+      "id": "mcd-mcd-item-200876-breakfast-bread",
+      "kind": "category",
+      "keys": [
+        "mcd-item-200876/group:bread"
+      ]
+    },
+    {
+      "id": "mcd-mcd-item-200876-breakfast-cheeses",
+      "kind": "category",
+      "keys": [
+        "mcd-item-200876/group:cheese"
+      ]
+    },
+    {
+      "id": "mcd-mcd-item-200876-breakfast-protein",
+      "kind": "category",
+      "keys": [
+        "mcd-item-200876/group:protein"
+      ]
+    },
+    {
+      "id": "mcd-mcd-item-200876-breakfast-sauces",
+      "kind": "category",
+      "keys": [
+        "mcd-item-200876/group:sauce"
+      ]
+    },
+    {
+      "id": "mcd-item-201256",
+      "kind": "item",
+      "keys": [
+        "src:mcd-item-201256",
+        "name:breakfast/egg cheese biscuit"
+      ]
+    },
+    {
+      "id": "mcd-mcd-item-201256-breakfast-bread",
+      "kind": "category",
+      "keys": [
+        "mcd-item-201256/group:bread"
+      ]
+    },
+    {
+      "id": "mcd-mcd-item-201256-breakfast-cheeses",
+      "kind": "category",
+      "keys": [
+        "mcd-item-201256/group:cheese"
+      ]
+    },
+    {
+      "id": "mcd-mcd-item-201256-breakfast-protein",
+      "kind": "category",
+      "keys": [
+        "mcd-item-201256/group:protein"
+      ]
+    },
+    {
+      "id": "mcd-mcd-item-201256-breakfast-sauces",
+      "kind": "category",
+      "keys": [
+        "mcd-item-201256/group:sauce"
+      ]
+    },
+    {
+      "id": "mcd-item-200298",
+      "kind": "item",
+      "keys": [
+        "src:mcd-item-200298",
+        "name:breakfast/egg mcmuffin"
+      ]
+    },
+    {
+      "id": "mcd-mcd-item-200298-breakfast-bread",
+      "kind": "category",
+      "keys": [
+        "mcd-item-200298/group:bread"
+      ]
+    },
+    {
+      "id": "mcd-mcd-item-200298-breakfast-cheeses",
+      "kind": "category",
+      "keys": [
+        "mcd-item-200298/group:cheese"
+      ]
+    },
+    {
+      "id": "mcd-mcd-item-200298-breakfast-protein",
+      "kind": "category",
+      "keys": [
+        "mcd-item-200298/group:protein"
+      ]
+    },
+    {
+      "id": "mcd-mcd-item-200298-breakfast-sauces",
+      "kind": "category",
+      "keys": [
+        "mcd-item-200298/group:sauce"
+      ]
+    },
+    {
+      "id": "mcd-item-202381",
+      "kind": "item",
+      "keys": [
+        "src:mcd-item-202381",
+        "name:mccafé/americano"
+      ]
+    },
+    {
+      "id": "mcd-item-202381",
+      "kind": "variant",
+      "keys": [
+        "mcd-item-202381/variant-source:mcd-item-202381",
+        "mcd-item-202381/variant:small"
+      ]
+    },
+    {
+      "id": "mcd-item-202383",
+      "kind": "variant",
+      "keys": [
+        "mcd-item-202381/variant-source:mcd-item-202383",
+        "mcd-item-202381/variant:medium"
+      ]
+    },
+    {
+      "id": "mcd-item-202371",
+      "kind": "variant",
+      "keys": [
+        "mcd-item-202381/variant-source:mcd-item-202371",
+        "mcd-item-202381/variant:large"
+      ]
+    },
+    {
+      "id": "mcd-item-200445",
+      "kind": "item",
+      "keys": [
+        "src:mcd-item-200445",
+        "name:chicken fish/filet o fish"
+      ]
+    },
+    {
+      "id": "mcd-mcd-item-200445-buns",
+      "kind": "category",
+      "keys": [
+        "mcd-item-200445/group:bread"
+      ]
+    },
+    {
+      "id": "mcd-mcd-item-200445-cheeses",
+      "kind": "category",
+      "keys": [
+        "mcd-item-200445/group:cheese"
+      ]
+    },
+    {
+      "id": "mcd-mcd-item-200445-protein",
+      "kind": "category",
+      "keys": [
+        "mcd-item-200445/group:protein"
+      ]
+    },
+    {
+      "id": "mcd-mcd-item-200445-toppings",
+      "kind": "category",
+      "keys": [
+        "mcd-item-200445/group:topping"
+      ]
+    },
+    {
+      "id": "mcd-mcd-item-200445-sauces",
+      "kind": "category",
+      "keys": [
+        "mcd-item-200445/group:sauce"
+      ]
+    },
+    {
+      "id": "mcd-item-200149",
+      "kind": "item",
+      "keys": [
+        "src:mcd-item-200149",
+        "name:mccafé/caramel frappé"
+      ]
+    },
+    {
+      "id": "mcd-item-200149",
+      "kind": "variant",
+      "keys": [
+        "mcd-item-200149/variant-source:mcd-item-200149",
+        "mcd-item-200149/variant:small"
+      ]
+    },
+    {
+      "id": "mcd-item-200564",
+      "kind": "variant",
+      "keys": [
+        "mcd-item-200149/variant-source:mcd-item-200564",
+        "mcd-item-200149/variant:medium"
+      ]
+    },
+    {
+      "id": "mcd-item-200464",
+      "kind": "variant",
+      "keys": [
+        "mcd-item-200149/variant-source:mcd-item-200464",
+        "mcd-item-200149/variant:large"
+      ]
+    },
+    {
+      "id": "mcd-item-200148",
+      "kind": "item",
+      "keys": [
+        "src:mcd-item-200148",
+        "name:mccafé/mocha frappé"
+      ]
+    },
+    {
+      "id": "mcd-item-200148",
+      "kind": "variant",
+      "keys": [
+        "mcd-item-200148/variant-source:mcd-item-200148",
+        "mcd-item-200148/variant:small"
+      ]
+    },
+    {
+      "id": "mcd-item-200562",
+      "kind": "variant",
+      "keys": [
+        "mcd-item-200148/variant-source:mcd-item-200562",
+        "mcd-item-200148/variant:medium"
+      ]
+    },
+    {
+      "id": "mcd-item-200563",
+      "kind": "variant",
+      "keys": [
+        "mcd-item-200148/variant-source:mcd-item-200563",
+        "mcd-item-200148/variant:large"
+      ]
+    },
+    {
+      "id": "mcd-item-200186",
+      "kind": "item",
+      "keys": [
+        "src:mcd-item-200186",
+        "name:mccafé/french vanilla cappuccino"
+      ]
+    },
+    {
+      "id": "mcd-item-200186",
+      "kind": "variant",
+      "keys": [
+        "mcd-item-200186/variant-source:mcd-item-200186",
+        "mcd-item-200186/variant:small"
+      ]
+    },
+    {
+      "id": "mcd-item-200185",
+      "kind": "variant",
+      "keys": [
+        "mcd-item-200186/variant-source:mcd-item-200185",
+        "mcd-item-200186/variant:medium"
+      ]
+    },
+    {
+      "id": "mcd-item-200184",
+      "kind": "variant",
+      "keys": [
+        "mcd-item-200186/variant-source:mcd-item-200184",
+        "mcd-item-200186/variant:large"
+      ]
+    },
+    {
+      "id": "mcd-item-202274",
+      "kind": "item",
+      "keys": [
+        "src:mcd-item-202274",
+        "name:drinks/frozen coca cola classic"
+      ]
+    },
+    {
+      "id": "mcd-item-202274",
+      "kind": "variant",
+      "keys": [
+        "mcd-item-202274/variant-source:mcd-item-202274",
+        "mcd-item-202274/variant:small"
+      ]
+    },
+    {
+      "id": "mcd-item-202279",
+      "kind": "variant",
+      "keys": [
+        "mcd-item-202274/variant-source:mcd-item-202279",
+        "mcd-item-202274/variant:medium"
+      ]
+    },
+    {
+      "id": "mcd-item-202282",
+      "kind": "variant",
+      "keys": [
+        "mcd-item-202274/variant-source:mcd-item-202282",
+        "mcd-item-202274/variant:large"
+      ]
+    },
+    {
+      "id": "mcd-item-201971",
+      "kind": "item",
+      "keys": [
+        "src:mcd-item-201971",
+        "name:drinks/frozen fanta blue raspberry"
+      ]
+    },
+    {
+      "id": "mcd-item-201971",
+      "kind": "variant",
+      "keys": [
+        "mcd-item-201971/variant-source:mcd-item-201971",
+        "mcd-item-201971/variant:small"
+      ]
+    },
+    {
+      "id": "mcd-item-201970",
+      "kind": "variant",
+      "keys": [
+        "mcd-item-201971/variant-source:mcd-item-201970",
+        "mcd-item-201971/variant:medium"
+      ]
+    },
+    {
+      "id": "mcd-item-201972",
+      "kind": "variant",
+      "keys": [
+        "mcd-item-201971/variant-source:mcd-item-201972",
+        "mcd-item-201971/variant:large"
+      ]
+    },
+    {
+      "id": "mcd-item-204159",
+      "kind": "item",
+      "keys": [
+        "src:mcd-item-204159",
+        "name:drinks/frozen hawaiian punch"
+      ]
+    },
+    {
+      "id": "mcd-item-200284",
+      "kind": "item",
+      "keys": [
+        "src:mcd-item-200284",
+        "name:breakfast/fruit maple oatmeal"
+      ]
+    },
+    {
+      "id": "mcd-mcd-item-200284-breakfast-toppings",
+      "kind": "category",
+      "keys": [
+        "mcd-item-200284/group:topping"
+      ]
+    },
+    {
+      "id": "mcd-mcd-item-200284-breakfast-oatmeal",
+      "kind": "category",
+      "keys": [
+        "mcd-item-200284/group:oatmeal"
+      ]
+    },
+    {
+      "id": "mcd-item-200477",
+      "kind": "item",
+      "keys": [
+        "src:mcd-item-200477",
+        "name:burgers/hamburger"
+      ]
+    },
+    {
+      "id": "mcd-mcd-item-200477-buns",
+      "kind": "category",
+      "keys": [
+        "mcd-item-200477/group:bread"
+      ]
+    },
+    {
+      "id": "mcd-mcd-item-200477-cheeses",
+      "kind": "category",
+      "keys": [
+        "mcd-item-200477/group:cheese"
+      ]
+    },
+    {
+      "id": "mcd-mcd-item-200477-protein",
+      "kind": "category",
+      "keys": [
+        "mcd-item-200477/group:protein"
+      ]
+    },
+    {
+      "id": "mcd-mcd-item-200477-toppings",
+      "kind": "category",
+      "keys": [
+        "mcd-item-200477/group:topping"
+      ]
+    },
+    {
+      "id": "mcd-mcd-item-200477-sauces",
+      "kind": "category",
+      "keys": [
+        "mcd-item-200477/group:sauce"
+      ]
+    },
+    {
+      "id": "mcd-item-200340",
+      "kind": "item",
+      "keys": [
+        "src:mcd-item-200340",
+        "name:breakfast/hash browns"
+      ]
+    },
+    {
+      "id": "mcd-item-203556",
+      "kind": "item",
+      "keys": [
+        "src:mcd-item-203556",
+        "name:drinks/hi c orange lavaburst"
+      ]
+    },
+    {
+      "id": "mcd-item-203550",
+      "kind": "variant",
+      "keys": [
+        "mcd-item-203556/variant-source:mcd-item-203550",
+        "mcd-item-203556/variant:extra small"
+      ]
+    },
+    {
+      "id": "mcd-item-203556",
+      "kind": "variant",
+      "keys": [
+        "mcd-item-203556/variant-source:mcd-item-203556",
+        "mcd-item-203556/variant:small"
+      ]
+    },
+    {
+      "id": "mcd-item-203567",
+      "kind": "variant",
+      "keys": [
+        "mcd-item-203556/variant-source:mcd-item-203567",
+        "mcd-item-203556/variant:medium"
+      ]
+    },
+    {
+      "id": "mcd-item-203553",
+      "kind": "variant",
+      "keys": [
+        "mcd-item-203556/variant-source:mcd-item-203553",
+        "mcd-item-203556/variant:large"
+      ]
+    },
+    {
+      "id": "mcd-item-203082",
+      "kind": "item",
+      "keys": [
+        "src:mcd-item-203082",
+        "name:drinks/honest kids appley ever after organic juice drink"
+      ]
+    },
+    {
+      "id": "mcd-item-200411",
+      "kind": "item",
+      "keys": [
+        "src:mcd-item-200411",
+        "name:sauces condiments/honey mustard sauce"
+      ]
+    },
+    {
+      "id": "mcd-item-200313",
+      "kind": "item",
+      "keys": [
+        "src:mcd-item-200313",
+        "name:sauces condiments/honey"
+      ]
+    },
+    {
+      "id": "mcd-item-200081",
+      "kind": "item",
+      "keys": [
+        "src:mcd-item-200081",
+        "name:sweets treats/hot caramel sundae"
+      ]
+    },
+    {
+      "id": "mcd-item-200162",
+      "kind": "item",
+      "keys": [
+        "src:mcd-item-200162",
+        "name:mccafé/hot chocolate"
+      ]
+    },
+    {
+      "id": "mcd-item-200162",
+      "kind": "variant",
+      "keys": [
+        "mcd-item-200162/variant-source:mcd-item-200162",
+        "mcd-item-200162/variant:small"
+      ]
+    },
+    {
+      "id": "mcd-item-200537",
+      "kind": "variant",
+      "keys": [
+        "mcd-item-200162/variant-source:mcd-item-200537",
+        "mcd-item-200162/variant:medium"
+      ]
+    },
+    {
+      "id": "mcd-item-200651",
+      "kind": "variant",
+      "keys": [
+        "mcd-item-200162/variant-source:mcd-item-200651",
+        "mcd-item-200162/variant:large"
+      ]
+    },
+    {
+      "id": "mcd-item-200074",
+      "kind": "item",
+      "keys": [
+        "src:mcd-item-200074",
+        "name:sweets treats/hot fudge sundae"
+      ]
+    },
+    {
+      "id": "mcd-item-202116",
+      "kind": "item",
+      "keys": [
+        "src:mcd-item-202116",
+        "name:mccafé/hot tea"
+      ]
+    },
+    {
+      "id": "mcd-item-202116",
+      "kind": "variant",
+      "keys": [
+        "mcd-item-202116/variant-source:mcd-item-202116",
+        "mcd-item-202116/variant:small"
+      ]
+    },
+    {
+      "id": "mcd-item-202764",
+      "kind": "variant",
+      "keys": [
+        "mcd-item-202116/variant-source:mcd-item-202764",
+        "mcd-item-202116/variant:medium"
+      ]
+    },
+    {
+      "id": "mcd-item-202115",
+      "kind": "variant",
+      "keys": [
+        "mcd-item-202116/variant-source:mcd-item-202115",
+        "mcd-item-202116/variant:large"
+      ]
+    },
+    {
+      "id": "mcd-item-200258",
+      "kind": "item",
+      "keys": [
+        "src:mcd-item-200258",
+        "name:breakfast/hotcakes and sausage"
+      ]
+    },
+    {
+      "id": "mcd-mcd-item-200258-breakfast-protein",
+      "kind": "category",
+      "keys": [
+        "mcd-item-200258/group:protein"
+      ]
+    },
+    {
+      "id": "mcd-mcd-item-200258-breakfast-sauces",
+      "kind": "category",
+      "keys": [
+        "mcd-item-200258/group:sauce"
+      ]
+    },
+    {
+      "id": "mcd-mcd-item-200258-breakfast-hotcakes",
+      "kind": "category",
+      "keys": [
+        "mcd-item-200258/group:hotcake"
+      ]
+    },
+    {
+      "id": "mcd-item-200325",
+      "kind": "item",
+      "keys": [
+        "src:mcd-item-200325",
+        "name:breakfast/hotcakes"
+      ]
+    },
+    {
+      "id": "mcd-mcd-item-200325-breakfast-sauces",
+      "kind": "category",
+      "keys": [
+        "mcd-item-200325/group:sauce"
+      ]
+    },
+    {
+      "id": "mcd-mcd-item-200325-breakfast-hotcakes",
+      "kind": "category",
+      "keys": [
+        "mcd-item-200325/group:hotcake"
+      ]
+    },
+    {
+      "id": "mcd-item-204189",
+      "kind": "item",
+      "keys": [
+        "src:mcd-item-204189",
+        "name:mccafé/iced caramel latte"
+      ]
+    },
+    {
+      "id": "mcd-item-204189",
+      "kind": "variant",
+      "keys": [
+        "mcd-item-204189/variant-source:mcd-item-204189",
+        "mcd-item-204189/variant:small"
+      ]
+    },
+    {
+      "id": "mcd-item-200336",
+      "kind": "variant",
+      "keys": [
+        "mcd-item-204189/variant-source:mcd-item-200336",
+        "mcd-item-204189/variant:medium"
+      ]
+    },
+    {
+      "id": "mcd-item-200335",
+      "kind": "variant",
+      "keys": [
+        "mcd-item-204189/variant-source:mcd-item-200335",
+        "mcd-item-204189/variant:large"
+      ]
+    },
+    {
+      "id": "mcd-item-203275",
+      "kind": "item",
+      "keys": [
+        "src:mcd-item-203275",
+        "name:mccafé/iced caramel macchiato"
+      ]
+    },
+    {
+      "id": "mcd-item-203275",
+      "kind": "variant",
+      "keys": [
+        "mcd-item-203275/variant-source:mcd-item-203275",
+        "mcd-item-203275/variant:small"
+      ]
+    },
+    {
+      "id": "mcd-item-203098",
+      "kind": "variant",
+      "keys": [
+        "mcd-item-203275/variant-source:mcd-item-203098",
+        "mcd-item-203275/variant:medium"
+      ]
+    },
+    {
+      "id": "mcd-item-203109",
+      "kind": "variant",
+      "keys": [
+        "mcd-item-203275/variant-source:mcd-item-203109",
+        "mcd-item-203275/variant:large"
+      ]
+    },
+    {
+      "id": "mcd-item-203260",
+      "kind": "item",
+      "keys": [
+        "src:mcd-item-203260",
+        "name:mccafé/iced black coffee"
+      ]
+    },
+    {
+      "id": "mcd-item-204205",
+      "kind": "item",
+      "keys": [
+        "src:mcd-item-204205",
+        "name:mccafé/iced caramel coffee"
+      ]
+    },
+    {
+      "id": "mcd-item-204205",
+      "kind": "variant",
+      "keys": [
+        "mcd-item-204205/variant-source:mcd-item-204205",
+        "mcd-item-204205/variant:small"
+      ]
+    },
+    {
+      "id": "mcd-item-204210",
+      "kind": "variant",
+      "keys": [
+        "mcd-item-204205/variant-source:mcd-item-204210",
+        "mcd-item-204205/variant:medium"
+      ]
+    },
+    {
+      "id": "mcd-item-204199",
+      "kind": "variant",
+      "keys": [
+        "mcd-item-204205/variant-source:mcd-item-204199",
+        "mcd-item-204205/variant:large"
+      ]
+    },
+    {
+      "id": "mcd-item-204219",
+      "kind": "item",
+      "keys": [
+        "src:mcd-item-204219",
+        "name:mccafé/iced french vanilla coffee"
+      ]
+    },
+    {
+      "id": "mcd-item-204219",
+      "kind": "variant",
+      "keys": [
+        "mcd-item-204219/variant-source:mcd-item-204219",
+        "mcd-item-204219/variant:small"
+      ]
+    },
+    {
+      "id": "mcd-item-204203",
+      "kind": "variant",
+      "keys": [
+        "mcd-item-204219/variant-source:mcd-item-204203",
+        "mcd-item-204219/variant:medium"
+      ]
+    },
+    {
+      "id": "mcd-item-204217",
+      "kind": "variant",
+      "keys": [
+        "mcd-item-204219/variant-source:mcd-item-204217",
+        "mcd-item-204219/variant:large"
+      ]
+    },
+    {
+      "id": "mcd-item-200123",
+      "kind": "item",
+      "keys": [
+        "src:mcd-item-200123",
+        "name:mccafé/iced coffee"
+      ]
+    },
+    {
+      "id": "mcd-item-200123",
+      "kind": "variant",
+      "keys": [
+        "mcd-item-200123/variant-source:mcd-item-200123",
+        "mcd-item-200123/variant:small"
+      ]
+    },
+    {
+      "id": "mcd-item-200602",
+      "kind": "variant",
+      "keys": [
+        "mcd-item-200123/variant-source:mcd-item-200602",
+        "mcd-item-200123/variant:medium"
+      ]
+    },
+    {
+      "id": "mcd-item-200601",
+      "kind": "variant",
+      "keys": [
+        "mcd-item-200123/variant-source:mcd-item-200601",
+        "mcd-item-200123/variant:large"
+      ]
+    },
+    {
+      "id": "mcd-item-200194",
+      "kind": "item",
+      "keys": [
+        "src:mcd-item-200194",
+        "name:mccafé/iced latte"
+      ]
+    },
+    {
+      "id": "mcd-item-200653",
+      "kind": "item",
+      "keys": [
+        "src:mcd-item-200653",
+        "name:mccafé/iced mocha latte"
+      ]
+    },
+    {
+      "id": "mcd-item-200653",
+      "kind": "variant",
+      "keys": [
+        "mcd-item-200653/variant-source:mcd-item-200653",
+        "mcd-item-200653/variant:small"
+      ]
+    },
+    {
+      "id": "mcd-item-200554",
+      "kind": "variant",
+      "keys": [
+        "mcd-item-200653/variant-source:mcd-item-200554",
+        "mcd-item-200653/variant:medium"
+      ]
+    },
+    {
+      "id": "mcd-item-200652",
+      "kind": "variant",
+      "keys": [
+        "mcd-item-200653/variant-source:mcd-item-200652",
+        "mcd-item-200653/variant:large"
+      ]
+    },
+    {
+      "id": "mcd-item-200626",
+      "kind": "item",
+      "keys": [
+        "src:mcd-item-200626",
+        "name:drinks/unsweetened iced tea"
+      ]
+    },
+    {
+      "id": "mcd-item-200660",
+      "kind": "variant",
+      "keys": [
+        "mcd-item-200626/variant-source:mcd-item-200660",
+        "mcd-item-200626/variant:extra small"
+      ]
+    },
+    {
+      "id": "mcd-item-200626",
+      "kind": "variant",
+      "keys": [
+        "mcd-item-200626/variant-source:mcd-item-200626",
+        "mcd-item-200626/variant:small"
+      ]
+    },
+    {
+      "id": "mcd-item-200662",
+      "kind": "variant",
+      "keys": [
+        "mcd-item-200626/variant-source:mcd-item-200662",
+        "mcd-item-200626/variant:medium"
+      ]
+    },
+    {
+      "id": "mcd-item-200661",
+      "kind": "variant",
+      "keys": [
+        "mcd-item-200626/variant-source:mcd-item-200661",
+        "mcd-item-200626/variant:large"
+      ]
+    },
+    {
+      "id": "mcd-item-200268",
+      "kind": "item",
+      "keys": [
+        "src:mcd-item-200268",
+        "name:sauces condiments/ketchup packet"
+      ]
+    },
+    {
+      "id": "mcd-item-204208",
+      "kind": "item",
+      "keys": [
+        "src:mcd-item-204208",
+        "name:mccafé/caramel latte"
+      ]
+    },
+    {
+      "id": "mcd-item-204208",
+      "kind": "variant",
+      "keys": [
+        "mcd-item-204208/variant-source:mcd-item-204208",
+        "mcd-item-204208/variant:small"
+      ]
+    },
+    {
+      "id": "mcd-item-204191",
+      "kind": "variant",
+      "keys": [
+        "mcd-item-204208/variant-source:mcd-item-204191",
+        "mcd-item-204208/variant:medium"
+      ]
+    },
+    {
+      "id": "mcd-item-204183",
+      "kind": "variant",
+      "keys": [
+        "mcd-item-204208/variant-source:mcd-item-204183",
+        "mcd-item-204208/variant:large"
+      ]
+    },
+    {
+      "id": "mcd-item-204209",
+      "kind": "item",
+      "keys": [
+        "src:mcd-item-204209",
+        "name:mccafé/french vanilla latte"
+      ]
+    },
+    {
+      "id": "mcd-item-204209",
+      "kind": "variant",
+      "keys": [
+        "mcd-item-204209/variant-source:mcd-item-204209",
+        "mcd-item-204209/variant:small"
+      ]
+    },
+    {
+      "id": "mcd-item-204216",
+      "kind": "variant",
+      "keys": [
+        "mcd-item-204209/variant-source:mcd-item-204216",
+        "mcd-item-204209/variant:medium"
+      ]
+    },
+    {
+      "id": "mcd-item-204184",
+      "kind": "variant",
+      "keys": [
+        "mcd-item-204209/variant-source:mcd-item-204184",
+        "mcd-item-204209/variant:large"
+      ]
+    },
+    {
+      "id": "mcd-item-200358",
+      "kind": "item",
+      "keys": [
+        "src:mcd-item-200358",
+        "name:mccafé/latte"
+      ]
+    },
+    {
+      "id": "mcd-item-200358",
+      "kind": "variant",
+      "keys": [
+        "mcd-item-200358/variant-source:mcd-item-200358",
+        "mcd-item-200358/variant:small"
+      ]
+    },
+    {
+      "id": "mcd-item-200484",
+      "kind": "variant",
+      "keys": [
+        "mcd-item-200358/variant-source:mcd-item-200484",
+        "mcd-item-200358/variant:medium"
+      ]
+    },
+    {
+      "id": "mcd-item-200453",
+      "kind": "variant",
+      "keys": [
+        "mcd-item-200358/variant-source:mcd-item-200453",
+        "mcd-item-200358/variant:large"
+      ]
+    },
+    {
+      "id": "mcd-item-203957",
+      "kind": "item",
+      "keys": [
+        "src:mcd-item-203957",
+        "name:drinks/lemonade"
+      ]
+    },
+    {
+      "id": "mcd-item-203957",
+      "kind": "variant",
+      "keys": [
+        "mcd-item-203957/variant-source:mcd-item-203957",
+        "mcd-item-203957/variant:small"
+      ]
+    },
+    {
+      "id": "mcd-item-203958",
+      "kind": "variant",
+      "keys": [
+        "mcd-item-203957/variant-source:mcd-item-203958",
+        "mcd-item-203957/variant:medium"
+      ]
+    },
+    {
+      "id": "mcd-item-203962",
+      "kind": "variant",
+      "keys": [
+        "mcd-item-203957/variant-source:mcd-item-203962",
+        "mcd-item-203957/variant:large"
+      ]
+    },
+    {
+      "id": "mcd-item-204589",
+      "kind": "item",
+      "keys": [
+        "src:mcd-item-204589",
+        "name:drinks/mango pineapple refresher"
+      ]
+    },
+    {
+      "id": "mcd-item-204589",
+      "kind": "variant",
+      "keys": [
+        "mcd-item-204589/variant-source:mcd-item-204589",
+        "mcd-item-204589/variant:small"
+      ]
+    },
+    {
+      "id": "mcd-item-204588",
+      "kind": "variant",
+      "keys": [
+        "mcd-item-204589/variant-source:mcd-item-204588",
+        "mcd-item-204589/variant:medium"
+      ]
+    },
+    {
+      "id": "mcd-item-204587",
+      "kind": "variant",
+      "keys": [
+        "mcd-item-204589/variant-source:mcd-item-204587",
+        "mcd-item-204589/variant:large"
+      ]
+    },
+    {
+      "id": "mcd-item-200155",
+      "kind": "item",
+      "keys": [
+        "src:mcd-item-200155",
+        "name:drinks/mango pineapple smoothie"
+      ]
+    },
+    {
+      "id": "mcd-item-200155",
+      "kind": "variant",
+      "keys": [
+        "mcd-item-200155/variant-source:mcd-item-200155",
+        "mcd-item-200155/variant:small"
+      ]
+    },
+    {
+      "id": "mcd-item-200548",
+      "kind": "variant",
+      "keys": [
+        "mcd-item-200155/variant-source:mcd-item-200548",
+        "mcd-item-200155/variant:medium"
+      ]
+    },
+    {
+      "id": "mcd-item-200547",
+      "kind": "variant",
+      "keys": [
+        "mcd-item-200155/variant-source:mcd-item-200547",
+        "mcd-item-200155/variant:large"
+      ]
+    },
+    {
+      "id": "mcd-item-201157",
+      "kind": "item",
+      "keys": [
+        "src:mcd-item-201157",
+        "name:sauces condiments/mayonnaise packet"
+      ]
+    },
+    {
+      "id": "mcd-item-200438",
+      "kind": "item",
+      "keys": [
+        "src:mcd-item-200438",
+        "name:chicken fish/mcchicken"
+      ]
+    },
+    {
+      "id": "mcd-mcd-item-200438-buns",
+      "kind": "category",
+      "keys": [
+        "mcd-item-200438/group:bread"
+      ]
+    },
+    {
+      "id": "mcd-mcd-item-200438-cheeses",
+      "kind": "category",
+      "keys": [
+        "mcd-item-200438/group:cheese"
+      ]
+    },
+    {
+      "id": "mcd-mcd-item-200438-protein",
+      "kind": "category",
+      "keys": [
+        "mcd-item-200438/group:protein"
+      ]
+    },
+    {
+      "id": "mcd-mcd-item-200438-toppings",
+      "kind": "category",
+      "keys": [
+        "mcd-item-200438/group:topping"
+      ]
+    },
+    {
+      "id": "mcd-mcd-item-200438-sauces",
+      "kind": "category",
+      "keys": [
+        "mcd-item-200438/group:sauce"
+      ]
+    },
+    {
+      "id": "mcd-item-203747",
+      "kind": "item",
+      "keys": [
+        "src:mcd-item-203747",
+        "name:chicken fish/mccrispy"
+      ]
+    },
+    {
+      "id": "mcd-mcd-item-203747-buns",
+      "kind": "category",
+      "keys": [
+        "mcd-item-203747/group:bread"
+      ]
+    },
+    {
+      "id": "mcd-mcd-item-203747-cheeses",
+      "kind": "category",
+      "keys": [
+        "mcd-item-203747/group:cheese"
+      ]
+    },
+    {
+      "id": "mcd-mcd-item-203747-protein",
+      "kind": "category",
+      "keys": [
+        "mcd-item-203747/group:protein"
+      ]
+    },
+    {
+      "id": "mcd-mcd-item-203747-toppings",
+      "kind": "category",
+      "keys": [
+        "mcd-item-203747/group:topping"
+      ]
+    },
+    {
+      "id": "mcd-mcd-item-203747-sauces",
+      "kind": "category",
+      "keys": [
+        "mcd-item-203747/group:sauce"
+      ]
+    },
+    {
+      "id": "mcd-item-204386",
+      "kind": "item",
+      "keys": [
+        "src:mcd-item-204386",
+        "name:mcnuggets strips/mccrispy strips"
+      ]
+    },
+    {
+      "id": "mcd-item-204386",
+      "kind": "variant",
+      "keys": [
+        "mcd-item-204386/variant-source:mcd-item-204386",
+        "mcd-item-204386/variant:3 piece"
+      ]
+    },
+    {
+      "id": "mcd-item-204385",
+      "kind": "variant",
+      "keys": [
+        "mcd-item-204386/variant-source:mcd-item-204385",
+        "mcd-item-204386/variant:4 piece"
+      ]
+    },
+    {
+      "id": "mcd-item-200491",
+      "kind": "item",
+      "keys": [
+        "src:mcd-item-200491",
+        "name:burgers/mcdouble"
+      ]
+    },
+    {
+      "id": "mcd-mcd-item-200491-buns",
+      "kind": "category",
+      "keys": [
+        "mcd-item-200491/group:bread"
+      ]
+    },
+    {
+      "id": "mcd-mcd-item-200491-cheeses",
+      "kind": "category",
+      "keys": [
+        "mcd-item-200491/group:cheese"
+      ]
+    },
+    {
+      "id": "mcd-mcd-item-200491-protein",
+      "kind": "category",
+      "keys": [
+        "mcd-item-200491/group:protein"
+      ]
+    },
+    {
+      "id": "mcd-mcd-item-200491-toppings",
+      "kind": "category",
+      "keys": [
+        "mcd-item-200491/group:topping"
+      ]
+    },
+    {
+      "id": "mcd-mcd-item-200491-sauces",
+      "kind": "category",
+      "keys": [
+        "mcd-item-200491/group:sauce"
+      ]
+    },
+    {
+      "id": "mcd-item-200101",
+      "kind": "item",
+      "keys": [
+        "src:mcd-item-200101",
+        "name:sweets treats/oreo mcflurry"
+      ]
+    },
+    {
+      "id": "mcd-item-203834",
+      "kind": "item",
+      "keys": [
+        "src:mcd-item-203834",
+        "name:sauces condiments/mighty hot sauce"
+      ]
+    },
+    {
+      "id": "mcd-item-201248",
+      "kind": "item",
+      "keys": [
+        "src:mcd-item-201248",
+        "name:drinks/minute maid premium orange juice"
+      ]
+    },
+    {
+      "id": "mcd-item-200982",
+      "kind": "variant",
+      "keys": [
+        "mcd-item-201248/variant-source:mcd-item-200982",
+        "mcd-item-201248/variant:small"
+      ]
+    },
+    {
+      "id": "mcd-item-201248",
+      "kind": "variant",
+      "keys": [
+        "mcd-item-201248/variant-source:mcd-item-201248",
+        "mcd-item-201248/variant:medium"
+      ]
+    },
+    {
+      "id": "mcd-item-200663",
+      "kind": "variant",
+      "keys": [
+        "mcd-item-201248/variant-source:mcd-item-200663",
+        "mcd-item-201248/variant:large"
+      ]
+    },
+    {
+      "id": "mcd-item-200096",
+      "kind": "item",
+      "keys": [
+        "src:mcd-item-200096",
+        "name:sweets treats/m m s mcflurry"
+      ]
+    },
+    {
+      "id": "mcd-item-202961",
+      "kind": "item",
+      "keys": [
+        "src:mcd-item-202961",
+        "name:mccafé/mocha latte"
+      ]
+    },
+    {
+      "id": "mcd-item-201660",
+      "kind": "item",
+      "keys": [
+        "src:mcd-item-201660",
+        "name:sauces condiments/mustard packet"
+      ]
+    },
+    {
+      "id": "mcd-item-204626",
+      "kind": "item",
+      "keys": [
+        "src:mcd-item-204626",
+        "name:drinks/orange dream with hi c"
+      ]
+    },
+    {
+      "id": "mcd-item-204716",
+      "kind": "item",
+      "keys": [
+        "src:mcd-item-204716",
+        "name:drinks/orange dream with fanta"
+      ]
+    },
+    {
+      "id": "mcd-item-203410",
+      "kind": "item",
+      "keys": [
+        "src:mcd-item-203410",
+        "name:burgers/bacon quarter pounder with cheese"
+      ]
+    },
+    {
+      "id": "mcd-mcd-item-203410-buns",
+      "kind": "category",
+      "keys": [
+        "mcd-item-203410/group:bread"
+      ]
+    },
+    {
+      "id": "mcd-mcd-item-203410-cheeses",
+      "kind": "category",
+      "keys": [
+        "mcd-item-203410/group:cheese"
+      ]
+    },
+    {
+      "id": "mcd-mcd-item-203410-protein",
+      "kind": "category",
+      "keys": [
+        "mcd-item-203410/group:protein"
+      ]
+    },
+    {
+      "id": "mcd-mcd-item-203410-toppings",
+      "kind": "category",
+      "keys": [
+        "mcd-item-203410/group:topping"
+      ]
+    },
+    {
+      "id": "mcd-mcd-item-203410-sauces",
+      "kind": "category",
+      "keys": [
+        "mcd-item-203410/group:sauce"
+      ]
+    },
+    {
+      "id": "mcd-item-200466",
+      "kind": "item",
+      "keys": [
+        "src:mcd-item-200466",
+        "name:burgers/quarter pounder with cheese"
+      ]
+    },
+    {
+      "id": "mcd-mcd-item-200466-buns",
+      "kind": "category",
+      "keys": [
+        "mcd-item-200466/group:bread"
+      ]
+    },
+    {
+      "id": "mcd-mcd-item-200466-cheeses",
+      "kind": "category",
+      "keys": [
+        "mcd-item-200466/group:cheese"
+      ]
+    },
+    {
+      "id": "mcd-mcd-item-200466-protein",
+      "kind": "category",
+      "keys": [
+        "mcd-item-200466/group:protein"
+      ]
+    },
+    {
+      "id": "mcd-mcd-item-200466-toppings",
+      "kind": "category",
+      "keys": [
+        "mcd-item-200466/group:topping"
+      ]
+    },
+    {
+      "id": "mcd-mcd-item-200466-sauces",
+      "kind": "category",
+      "keys": [
+        "mcd-item-200466/group:sauce"
+      ]
+    },
+    {
+      "id": "mcd-item-204401",
+      "kind": "item",
+      "keys": [
+        "src:mcd-item-204401",
+        "name:snack wraps/ranch snack wrap"
+      ]
+    },
+    {
+      "id": "mcd-mcd-item-204401-safe-bread",
+      "kind": "category",
+      "keys": [
+        "mcd-item-204401/group:bread"
+      ]
+    },
+    {
+      "id": "mcd-mcd-item-204401-safe-cheeses",
+      "kind": "category",
+      "keys": [
+        "mcd-item-204401/group:cheese"
+      ]
+    },
+    {
+      "id": "mcd-mcd-item-204401-safe-protein",
+      "kind": "category",
+      "keys": [
+        "mcd-item-204401/group:protein"
+      ]
+    },
+    {
+      "id": "mcd-mcd-item-204401-safe-toppings",
+      "kind": "category",
+      "keys": [
+        "mcd-item-204401/group:topping"
+      ]
+    },
+    {
+      "id": "mcd-mcd-item-204401-safe-sauces",
+      "kind": "category",
+      "keys": [
+        "mcd-item-204401/group:sauce"
+      ]
+    },
+    {
+      "id": "mcd-item-204498",
+      "kind": "item",
+      "keys": [
+        "src:mcd-item-204498",
+        "name:drinks/red bull dragonberry energizer"
+      ]
+    },
+    {
+      "id": "mcd-item-200607",
+      "kind": "item",
+      "keys": [
+        "src:mcd-item-200607",
+        "name:drinks/reduced sugar low fat chocolate milk jug"
+      ]
+    },
+    {
+      "id": "mcd-item-204688",
+      "kind": "item",
+      "keys": [
+        "src:mcd-item-204688",
+        "name:drinks/reduced sugar red bull dragonberry energizer"
+      ]
+    },
+    {
+      "id": "mcd-item-204709",
+      "kind": "item",
+      "keys": [
+        "src:mcd-item-204709",
+        "name:mccafé/reduced sugar vanilla swirl with diet coke"
+      ]
+    },
+    {
+      "id": "mcd-item-200302",
+      "kind": "item",
+      "keys": [
+        "src:mcd-item-200302",
+        "name:breakfast/sausage biscuit with egg"
+      ]
+    },
+    {
+      "id": "mcd-mcd-item-200302-breakfast-bread",
+      "kind": "category",
+      "keys": [
+        "mcd-item-200302/group:bread"
+      ]
+    },
+    {
+      "id": "mcd-mcd-item-200302-breakfast-cheeses",
+      "kind": "category",
+      "keys": [
+        "mcd-item-200302/group:cheese"
+      ]
+    },
+    {
+      "id": "mcd-mcd-item-200302-breakfast-protein",
+      "kind": "category",
+      "keys": [
+        "mcd-item-200302/group:protein"
+      ]
+    },
+    {
+      "id": "mcd-mcd-item-200302-breakfast-sauces",
+      "kind": "category",
+      "keys": [
+        "mcd-item-200302/group:sauce"
+      ]
+    },
+    {
+      "id": "mcd-item-200301",
+      "kind": "item",
+      "keys": [
+        "src:mcd-item-200301",
+        "name:breakfast/sausage biscuit"
+      ]
+    },
+    {
+      "id": "mcd-mcd-item-200301-breakfast-bread",
+      "kind": "category",
+      "keys": [
+        "mcd-item-200301/group:bread"
+      ]
+    },
+    {
+      "id": "mcd-mcd-item-200301-breakfast-cheeses",
+      "kind": "category",
+      "keys": [
+        "mcd-item-200301/group:cheese"
+      ]
+    },
+    {
+      "id": "mcd-mcd-item-200301-breakfast-protein",
+      "kind": "category",
+      "keys": [
+        "mcd-item-200301/group:protein"
+      ]
+    },
+    {
+      "id": "mcd-mcd-item-200301-breakfast-sauces",
+      "kind": "category",
+      "keys": [
+        "mcd-item-200301/group:sauce"
+      ]
+    },
+    {
+      "id": "mcd-item-200267",
+      "kind": "item",
+      "keys": [
+        "src:mcd-item-200267",
+        "name:breakfast/sausage burrito"
+      ]
+    },
+    {
+      "id": "mcd-mcd-item-200267-breakfast-bread",
+      "kind": "category",
+      "keys": [
+        "mcd-item-200267/group:bread"
+      ]
+    },
+    {
+      "id": "mcd-mcd-item-200267-breakfast-cheeses",
+      "kind": "category",
+      "keys": [
+        "mcd-item-200267/group:cheese"
+      ]
+    },
+    {
+      "id": "mcd-mcd-item-200267-breakfast-protein",
+      "kind": "category",
+      "keys": [
+        "mcd-item-200267/group:protein"
+      ]
+    },
+    {
+      "id": "mcd-mcd-item-200267-safe-sauce",
+      "kind": "category",
+      "keys": [
+        "mcd-item-200267/group:sauce"
+      ]
+    },
+    {
+      "id": "mcd-item-201030",
+      "kind": "item",
+      "keys": [
+        "src:mcd-item-201030",
+        "name:breakfast/sausage egg cheese bagel"
+      ]
+    },
+    {
+      "id": "mcd-mcd-item-201030-breakfast-bread",
+      "kind": "category",
+      "keys": [
+        "mcd-item-201030/group:bread"
+      ]
+    },
+    {
+      "id": "mcd-mcd-item-201030-breakfast-cheeses",
+      "kind": "category",
+      "keys": [
+        "mcd-item-201030/group:cheese"
+      ]
+    },
+    {
+      "id": "mcd-mcd-item-201030-breakfast-protein",
+      "kind": "category",
+      "keys": [
+        "mcd-item-201030/group:protein"
+      ]
+    },
+    {
+      "id": "mcd-mcd-item-201030-breakfast-sauces",
+      "kind": "category",
+      "keys": [
+        "mcd-item-201030/group:sauce"
+      ]
+    },
+    {
+      "id": "mcd-item-200307",
+      "kind": "item",
+      "keys": [
+        "src:mcd-item-200307",
+        "name:breakfast/sausage egg cheese mcgriddles"
+      ]
+    },
+    {
+      "id": "mcd-mcd-item-200307-breakfast-bread",
+      "kind": "category",
+      "keys": [
+        "mcd-item-200307/group:bread"
+      ]
+    },
+    {
+      "id": "mcd-mcd-item-200307-breakfast-cheeses",
+      "kind": "category",
+      "keys": [
+        "mcd-item-200307/group:cheese"
+      ]
+    },
+    {
+      "id": "mcd-mcd-item-200307-breakfast-protein",
+      "kind": "category",
+      "keys": [
+        "mcd-item-200307/group:protein"
+      ]
+    },
+    {
+      "id": "mcd-mcd-item-200307-breakfast-sauces",
+      "kind": "category",
+      "keys": [
+        "mcd-item-200307/group:sauce"
+      ]
+    },
+    {
+      "id": "mcd-item-200306",
+      "kind": "item",
+      "keys": [
+        "src:mcd-item-200306",
+        "name:breakfast/sausage mcgriddles"
+      ]
+    },
+    {
+      "id": "mcd-mcd-item-200306-breakfast-bread",
+      "kind": "category",
+      "keys": [
+        "mcd-item-200306/group:bread"
+      ]
+    },
+    {
+      "id": "mcd-mcd-item-200306-breakfast-cheeses",
+      "kind": "category",
+      "keys": [
+        "mcd-item-200306/group:cheese"
+      ]
+    },
+    {
+      "id": "mcd-mcd-item-200306-breakfast-protein",
+      "kind": "category",
+      "keys": [
+        "mcd-item-200306/group:protein"
+      ]
+    },
+    {
+      "id": "mcd-mcd-item-200306-breakfast-sauces",
+      "kind": "category",
+      "keys": [
+        "mcd-item-200306/group:sauce"
+      ]
+    },
+    {
+      "id": "mcd-item-200161",
+      "kind": "item",
+      "keys": [
+        "src:mcd-item-200161",
+        "name:breakfast/sausage mcmuffin with egg"
+      ]
+    },
+    {
+      "id": "mcd-mcd-item-200161-breakfast-bread",
+      "kind": "category",
+      "keys": [
+        "mcd-item-200161/group:bread"
+      ]
+    },
+    {
+      "id": "mcd-mcd-item-200161-breakfast-cheeses",
+      "kind": "category",
+      "keys": [
+        "mcd-item-200161/group:cheese"
+      ]
+    },
+    {
+      "id": "mcd-mcd-item-200161-breakfast-protein",
+      "kind": "category",
+      "keys": [
+        "mcd-item-200161/group:protein"
+      ]
+    },
+    {
+      "id": "mcd-mcd-item-200161-breakfast-sauces",
+      "kind": "category",
+      "keys": [
+        "mcd-item-200161/group:sauce"
+      ]
+    },
+    {
+      "id": "mcd-item-200449",
+      "kind": "item",
+      "keys": [
+        "src:mcd-item-200449",
+        "name:breakfast/sausage mcmuffin"
+      ]
+    },
+    {
+      "id": "mcd-mcd-item-200449-breakfast-bread",
+      "kind": "category",
+      "keys": [
+        "mcd-item-200449/group:bread"
+      ]
+    },
+    {
+      "id": "mcd-mcd-item-200449-breakfast-cheeses",
+      "kind": "category",
+      "keys": [
+        "mcd-item-200449/group:cheese"
+      ]
+    },
+    {
+      "id": "mcd-mcd-item-200449-breakfast-protein",
+      "kind": "category",
+      "keys": [
+        "mcd-item-200449/group:protein"
+      ]
+    },
+    {
+      "id": "mcd-mcd-item-200449-breakfast-sauces",
+      "kind": "category",
+      "keys": [
+        "mcd-item-200449/group:sauce"
+      ]
+    },
+    {
+      "id": "mcd-item-200066",
+      "kind": "item",
+      "keys": [
+        "src:mcd-item-200066",
+        "name:fries sides/french fries"
+      ]
+    },
+    {
+      "id": "mcd-item-200092",
+      "kind": "variant",
+      "keys": [
+        "mcd-item-200066/variant-source:mcd-item-200092",
+        "mcd-item-200066/variant:kids"
+      ]
+    },
+    {
+      "id": "mcd-item-200066",
+      "kind": "variant",
+      "keys": [
+        "mcd-item-200066/variant-source:mcd-item-200066",
+        "mcd-item-200066/variant:small"
+      ]
+    },
+    {
+      "id": "mcd-item-201234",
+      "kind": "variant",
+      "keys": [
+        "mcd-item-200066/variant-source:mcd-item-201234",
+        "mcd-item-200066/variant:medium"
+      ]
+    },
+    {
+      "id": "mcd-item-200083",
+      "kind": "variant",
+      "keys": [
+        "mcd-item-200066/variant-source:mcd-item-200083",
+        "mcd-item-200066/variant:large"
+      ]
+    },
+    {
+      "id": "mcd-item-200295",
+      "kind": "item",
+      "keys": [
+        "src:mcd-item-200295",
+        "name:sauces condiments/spicy buffalo sauce"
+      ]
+    },
+    {
+      "id": "mcd-item-203841",
+      "kind": "item",
+      "keys": [
+        "src:mcd-item-203841",
+        "name:mcnuggets strips/spicy chicken mcnuggets"
+      ]
+    },
+    {
+      "id": "mcd-item-203839",
+      "kind": "variant",
+      "keys": [
+        "mcd-item-203841/variant-source:mcd-item-203839",
+        "mcd-item-203841/variant:6 piece"
+      ]
+    },
+    {
+      "id": "mcd-item-203841",
+      "kind": "variant",
+      "keys": [
+        "mcd-item-203841/variant-source:mcd-item-203841",
+        "mcd-item-203841/variant:10 piece"
+      ]
+    },
+    {
+      "id": "mcd-item-203836",
+      "kind": "variant",
+      "keys": [
+        "mcd-item-203841/variant-source:mcd-item-203836",
+        "mcd-item-203841/variant:20 piece"
+      ]
+    },
+    {
+      "id": "mcd-item-203838",
+      "kind": "variant",
+      "keys": [
+        "mcd-item-203841/variant-source:mcd-item-203838",
+        "mcd-item-203841/variant:40 piece"
+      ]
+    },
+    {
+      "id": "mcd-item-203873",
+      "kind": "item",
+      "keys": [
+        "src:mcd-item-203873",
+        "name:chicken fish/spicy deluxe mccrispy"
+      ]
+    },
+    {
+      "id": "mcd-mcd-item-203873-buns",
+      "kind": "category",
+      "keys": [
+        "mcd-item-203873/group:bread"
+      ]
+    },
+    {
+      "id": "mcd-mcd-item-203873-cheeses",
+      "kind": "category",
+      "keys": [
+        "mcd-item-203873/group:cheese"
+      ]
+    },
+    {
+      "id": "mcd-mcd-item-203873-protein",
+      "kind": "category",
+      "keys": [
+        "mcd-item-203873/group:protein"
+      ]
+    },
+    {
+      "id": "mcd-mcd-item-203873-toppings",
+      "kind": "category",
+      "keys": [
+        "mcd-item-203873/group:topping"
+      ]
+    },
+    {
+      "id": "mcd-mcd-item-203873-sauces",
+      "kind": "category",
+      "keys": [
+        "mcd-item-203873/group:sauce"
+      ]
+    },
+    {
+      "id": "mcd-item-203901",
+      "kind": "item",
+      "keys": [
+        "src:mcd-item-203901",
+        "name:chicken fish/spicy mccrispy"
+      ]
+    },
+    {
+      "id": "mcd-mcd-item-203901-buns",
+      "kind": "category",
+      "keys": [
+        "mcd-item-203901/group:bread"
+      ]
+    },
+    {
+      "id": "mcd-mcd-item-203901-cheeses",
+      "kind": "category",
+      "keys": [
+        "mcd-item-203901/group:cheese"
+      ]
+    },
+    {
+      "id": "mcd-mcd-item-203901-protein",
+      "kind": "category",
+      "keys": [
+        "mcd-item-203901/group:protein"
+      ]
+    },
+    {
+      "id": "mcd-mcd-item-203901-toppings",
+      "kind": "category",
+      "keys": [
+        "mcd-item-203901/group:topping"
+      ]
+    },
+    {
+      "id": "mcd-mcd-item-203901-sauces",
+      "kind": "category",
+      "keys": [
+        "mcd-item-203901/group:sauce"
+      ]
+    },
+    {
+      "id": "mcd-item-204402",
+      "kind": "item",
+      "keys": [
+        "src:mcd-item-204402",
+        "name:snack wraps/spicy snack wrap"
+      ]
+    },
+    {
+      "id": "mcd-mcd-item-204402-safe-bread",
+      "kind": "category",
+      "keys": [
+        "mcd-item-204402/group:bread"
+      ]
+    },
+    {
+      "id": "mcd-mcd-item-204402-safe-cheeses",
+      "kind": "category",
+      "keys": [
+        "mcd-item-204402/group:cheese"
+      ]
+    },
+    {
+      "id": "mcd-mcd-item-204402-safe-protein",
+      "kind": "category",
+      "keys": [
+        "mcd-item-204402/group:protein"
+      ]
+    },
+    {
+      "id": "mcd-mcd-item-204402-safe-toppings",
+      "kind": "category",
+      "keys": [
+        "mcd-item-204402/group:topping"
+      ]
+    },
+    {
+      "id": "mcd-mcd-item-204402-safe-sauces",
+      "kind": "category",
+      "keys": [
+        "mcd-item-204402/group:sauce"
+      ]
+    },
+    {
+      "id": "mcd-item-204452",
+      "kind": "item",
+      "keys": [
+        "src:mcd-item-204452",
+        "name:mccafé/sprite berry blast"
+      ]
+    },
+    {
+      "id": "mcd-item-200615",
+      "kind": "item",
+      "keys": [
+        "src:mcd-item-200615",
+        "name:drinks/sprite"
+      ]
+    },
+    {
+      "id": "mcd-item-200667",
+      "kind": "variant",
+      "keys": [
+        "mcd-item-200615/variant-source:mcd-item-200667",
+        "mcd-item-200615/variant:extra small"
+      ]
+    },
+    {
+      "id": "mcd-item-200615",
+      "kind": "variant",
+      "keys": [
+        "mcd-item-200615/variant-source:mcd-item-200615",
+        "mcd-item-200615/variant:small"
+      ]
+    },
+    {
+      "id": "mcd-item-200674",
+      "kind": "variant",
+      "keys": [
+        "mcd-item-200615/variant-source:mcd-item-200674",
+        "mcd-item-200615/variant:medium"
+      ]
+    },
+    {
+      "id": "mcd-item-200668",
+      "kind": "variant",
+      "keys": [
+        "mcd-item-200615/variant-source:mcd-item-200668",
+        "mcd-item-200615/variant:large"
+      ]
+    },
+    {
+      "id": "mcd-item-200145",
+      "kind": "item",
+      "keys": [
+        "src:mcd-item-200145",
+        "name:breakfast/steak egg cheese bagel"
+      ]
+    },
+    {
+      "id": "mcd-mcd-item-200145-breakfast-bread",
+      "kind": "category",
+      "keys": [
+        "mcd-item-200145/group:bread"
+      ]
+    },
+    {
+      "id": "mcd-mcd-item-200145-breakfast-cheeses",
+      "kind": "category",
+      "keys": [
+        "mcd-item-200145/group:cheese"
+      ]
+    },
+    {
+      "id": "mcd-mcd-item-200145-breakfast-protein",
+      "kind": "category",
+      "keys": [
+        "mcd-item-200145/group:protein"
+      ]
+    },
+    {
+      "id": "mcd-mcd-item-200145-breakfast-toppings",
+      "kind": "category",
+      "keys": [
+        "mcd-item-200145/group:topping"
+      ]
+    },
+    {
+      "id": "mcd-mcd-item-200145-breakfast-sauces",
+      "kind": "category",
+      "keys": [
+        "mcd-item-200145/group:sauce"
+      ]
+    },
+    {
+      "id": "mcd-item-200152",
+      "kind": "item",
+      "keys": [
+        "src:mcd-item-200152",
+        "name:drinks/strawberry banana smoothie"
+      ]
+    },
+    {
+      "id": "mcd-item-200152",
+      "kind": "variant",
+      "keys": [
+        "mcd-item-200152/variant-source:mcd-item-200152",
+        "mcd-item-200152/variant:small"
+      ]
+    },
+    {
+      "id": "mcd-item-200565",
+      "kind": "variant",
+      "keys": [
+        "mcd-item-200152/variant-source:mcd-item-200565",
+        "mcd-item-200152/variant:medium"
+      ]
+    },
+    {
+      "id": "mcd-item-200566",
+      "kind": "variant",
+      "keys": [
+        "mcd-item-200152/variant-source:mcd-item-200566",
+        "mcd-item-200152/variant:large"
+      ]
+    },
+    {
+      "id": "mcd-item-200109",
+      "kind": "item",
+      "keys": [
+        "src:mcd-item-200109",
+        "name:sweets treats/strawberry shake"
+      ]
+    },
+    {
+      "id": "mcd-item-200109",
+      "kind": "variant",
+      "keys": [
+        "mcd-item-200109/variant-source:mcd-item-200109",
+        "mcd-item-200109/variant:small"
+      ]
+    },
+    {
+      "id": "mcd-item-200621",
+      "kind": "variant",
+      "keys": [
+        "mcd-item-200109/variant-source:mcd-item-200621",
+        "mcd-item-200109/variant:medium"
+      ]
+    },
+    {
+      "id": "mcd-item-200622",
+      "kind": "variant",
+      "keys": [
+        "mcd-item-200109/variant-source:mcd-item-200622",
+        "mcd-item-200109/variant:large"
+      ]
+    },
+    {
+      "id": "mcd-item-204586",
+      "kind": "item",
+      "keys": [
+        "src:mcd-item-204586",
+        "name:drinks/strawberry watermelon refresher"
+      ]
+    },
+    {
+      "id": "mcd-item-204586",
+      "kind": "variant",
+      "keys": [
+        "mcd-item-204586/variant-source:mcd-item-204586",
+        "mcd-item-204586/variant:small"
+      ]
+    },
+    {
+      "id": "mcd-item-204585",
+      "kind": "variant",
+      "keys": [
+        "mcd-item-204586/variant-source:mcd-item-204585",
+        "mcd-item-204586/variant:medium"
+      ]
+    },
+    {
+      "id": "mcd-item-204584",
+      "kind": "variant",
+      "keys": [
+        "mcd-item-204586/variant-source:mcd-item-204584",
+        "mcd-item-204586/variant:large"
+      ]
+    },
+    {
+      "id": "mcd-item-200315",
+      "kind": "item",
+      "keys": [
+        "src:mcd-item-200315",
+        "name:sauces condiments/sweet n sour sauce"
+      ]
+    },
+    {
+      "id": "mcd-item-200627",
+      "kind": "item",
+      "keys": [
+        "src:mcd-item-200627",
+        "name:drinks/sweet tea"
+      ]
+    },
+    {
+      "id": "mcd-item-200675",
+      "kind": "variant",
+      "keys": [
+        "mcd-item-200627/variant-source:mcd-item-200675",
+        "mcd-item-200627/variant:extra small"
+      ]
+    },
+    {
+      "id": "mcd-item-200627",
+      "kind": "variant",
+      "keys": [
+        "mcd-item-200627/variant-source:mcd-item-200627",
+        "mcd-item-200627/variant:small"
+      ]
+    },
+    {
+      "id": "mcd-item-200630",
+      "kind": "variant",
+      "keys": [
+        "mcd-item-200627/variant-source:mcd-item-200630",
+        "mcd-item-200627/variant:medium"
+      ]
+    },
+    {
+      "id": "mcd-item-200676",
+      "kind": "variant",
+      "keys": [
+        "mcd-item-200627/variant-source:mcd-item-200676",
+        "mcd-item-200627/variant:large"
+      ]
+    },
+    {
+      "id": "mcd-item-200412",
+      "kind": "item",
+      "keys": [
+        "src:mcd-item-200412",
+        "name:sauces condiments/tangy barbeque sauce"
+      ]
+    },
+    {
+      "id": "mcd-item-200062",
+      "kind": "item",
+      "keys": [
+        "src:mcd-item-200062",
+        "name:sweets treats/vanilla cone"
+      ]
+    },
+    {
+      "id": "mcd-item-200108",
+      "kind": "item",
+      "keys": [
+        "src:mcd-item-200108",
+        "name:sweets treats/vanilla shake"
+      ]
+    },
+    {
+      "id": "mcd-item-200108",
+      "kind": "variant",
+      "keys": [
+        "mcd-item-200108/variant-source:mcd-item-200108",
+        "mcd-item-200108/variant:small"
+      ]
+    },
+    {
+      "id": "mcd-item-200623",
+      "kind": "variant",
+      "keys": [
+        "mcd-item-200108/variant-source:mcd-item-200623",
+        "mcd-item-200108/variant:medium"
+      ]
+    },
+    {
+      "id": "mcd-item-200624",
+      "kind": "variant",
+      "keys": [
+        "mcd-item-200108/variant-source:mcd-item-200624",
+        "mcd-item-200108/variant:large"
+      ]
+    },
+    {
+      "id": "mcd-item-204717",
+      "kind": "item",
+      "keys": [
+        "src:mcd-item-204717",
+        "name:mccafé/vanilla swirl with coca cola"
+      ]
+    },
+    {
+      "id": "mcd-item-200169",
+      "kind": "item",
+      "keys": [
+        "src:mcd-item-200169",
+        "name:sauces condiments/hot mustard sauce"
+      ]
+    },
+    {
+      "id": "mcd-item-201677",
+      "kind": "item",
+      "keys": [
+        "src:mcd-item-201677",
+        "name:drinks/coca cola small no ice"
+      ]
+    },
+    {
+      "id": "mcd-item-204268",
+      "kind": "item",
+      "keys": [
+        "src:mcd-item-204268",
+        "name:burgers/cheeseburger second included"
+      ]
+    },
+    {
+      "id": "mcd-item-204339",
+      "kind": "item",
+      "keys": [
+        "src:mcd-item-204339",
+        "name:breakfast/sausage burrito second included"
+      ]
+    },
+    {
+      "id": "mcd-item-204408",
+      "kind": "item",
+      "keys": [
+        "src:mcd-item-204408",
+        "name:snack wraps/ranch snack wrap second included"
+      ]
+    },
+    {
+      "id": "mcd-item-204407",
+      "kind": "item",
+      "keys": [
+        "src:mcd-item-204407",
+        "name:snack wraps/spicy snack wrap second included"
+      ]
+    },
+    {
+      "id": "mcd-item-203057",
+      "kind": "item",
+      "keys": [
+        "src:mcd-item-203057",
+        "name:drinks/fanta orange"
+      ]
+    },
+    {
+      "id": "mcd-item-203057",
+      "kind": "variant",
+      "keys": [
+        "mcd-item-203057/variant-source:mcd-item-203057",
+        "mcd-item-203057/variant:small"
+      ]
+    },
+    {
+      "id": "mcd-item-203058",
+      "kind": "variant",
+      "keys": [
+        "mcd-item-203057/variant-source:mcd-item-203058",
+        "mcd-item-203057/variant:medium"
+      ]
+    },
+    {
+      "id": "mcd-item-203063",
+      "kind": "variant",
+      "keys": [
+        "mcd-item-203057/variant-source:mcd-item-203063",
+        "mcd-item-203057/variant:large"
+      ]
+    },
+    {
+      "id": "mcd-item-200614",
+      "kind": "item",
+      "keys": [
+        "src:mcd-item-200614",
+        "name:drinks/diet dr pepper"
+      ]
+    },
+    {
+      "id": "mcd-item-200614",
+      "kind": "variant",
+      "keys": [
+        "mcd-item-200614/variant-source:mcd-item-200614",
+        "mcd-item-200614/variant:small"
+      ]
+    },
+    {
+      "id": "mcd-item-200645",
+      "kind": "variant",
+      "keys": [
+        "mcd-item-200614/variant-source:mcd-item-200645",
+        "mcd-item-200614/variant:medium"
+      ]
+    },
+    {
+      "id": "mcd-item-200644",
+      "kind": "variant",
+      "keys": [
+        "mcd-item-200614/variant-source:mcd-item-200644",
+        "mcd-item-200614/variant:large"
+      ]
+    },
+    {
+      "id": "mcd-item-204484",
+      "kind": "item",
+      "keys": [
+        "src:mcd-item-204484",
+        "name:drinks/red bull"
+      ]
+    },
+    {
+      "id": "mcd-item-204702",
+      "kind": "item",
+      "keys": [
+        "src:mcd-item-204702",
+        "name:drinks/red bull zero"
+      ]
+    },
+    {
+      "id": "mcd-item-203967",
+      "kind": "item",
+      "keys": [
+        "src:mcd-item-203967",
+        "name:drinks/unsweetened tea lemonade"
+      ]
+    },
+    {
+      "id": "mcd-item-203967",
+      "kind": "variant",
+      "keys": [
+        "mcd-item-203967/variant-source:mcd-item-203967",
+        "mcd-item-203967/variant:small"
+      ]
+    },
+    {
+      "id": "mcd-item-203965",
+      "kind": "variant",
+      "keys": [
+        "mcd-item-203967/variant-source:mcd-item-203965",
+        "mcd-item-203967/variant:medium"
+      ]
+    },
+    {
+      "id": "mcd-item-203963",
+      "kind": "variant",
+      "keys": [
+        "mcd-item-203967/variant-source:mcd-item-203963",
+        "mcd-item-203967/variant:large"
+      ]
+    },
+    {
+      "id": "mcd-item-203964",
+      "kind": "item",
+      "keys": [
+        "src:mcd-item-203964",
+        "name:drinks/sweet tea lemonade"
+      ]
+    },
+    {
+      "id": "mcd-item-203964",
+      "kind": "variant",
+      "keys": [
+        "mcd-item-203964/variant-source:mcd-item-203964",
+        "mcd-item-203964/variant:small"
+      ]
+    },
+    {
+      "id": "mcd-item-203966",
+      "kind": "variant",
+      "keys": [
+        "mcd-item-203964/variant-source:mcd-item-203966",
+        "mcd-item-203964/variant:medium"
+      ]
+    },
+    {
+      "id": "mcd-item-203961",
+      "kind": "variant",
+      "keys": [
+        "mcd-item-203964/variant-source:mcd-item-203961",
+        "mcd-item-203964/variant:large"
+      ]
+    },
+    {
+      "id": "mcd-item-200591",
+      "kind": "item",
+      "keys": [
+        "src:mcd-item-200591",
+        "name:mccafé/iced sugar free vanilla coffee"
+      ]
+    },
+    {
+      "id": "mcd-item-200591",
+      "kind": "variant",
+      "keys": [
+        "mcd-item-200591/variant-source:mcd-item-200591",
+        "mcd-item-200591/variant:small"
+      ]
+    },
+    {
+      "id": "mcd-item-200590",
+      "kind": "variant",
+      "keys": [
+        "mcd-item-200591/variant-source:mcd-item-200590",
+        "mcd-item-200591/variant:medium"
+      ]
+    },
+    {
+      "id": "mcd-item-200589",
+      "kind": "variant",
+      "keys": [
+        "mcd-item-200591/variant-source:mcd-item-200589",
+        "mcd-item-200591/variant:large"
+      ]
+    },
+    {
+      "id": "mcd-item-200223",
+      "kind": "item",
+      "keys": [
+        "src:mcd-item-200223",
+        "name:mccafé/iced french vanilla latte"
+      ]
+    },
+    {
+      "id": "mcd-item-200223",
+      "kind": "variant",
+      "keys": [
+        "mcd-item-200223/variant-source:mcd-item-200223",
+        "mcd-item-200223/variant:small"
+      ]
+    },
+    {
+      "id": "mcd-item-200209",
+      "kind": "variant",
+      "keys": [
+        "mcd-item-200223/variant-source:mcd-item-200209",
+        "mcd-item-200223/variant:medium"
+      ]
+    },
+    {
+      "id": "mcd-item-200201",
+      "kind": "variant",
+      "keys": [
+        "mcd-item-200223/variant-source:mcd-item-200201",
+        "mcd-item-200223/variant:large"
+      ]
+    },
+    {
+      "id": "mcd-item-200333",
+      "kind": "item",
+      "keys": [
+        "src:mcd-item-200333",
+        "name:mccafé/iced sugar free vanilla latte"
+      ]
+    },
+    {
+      "id": "mcd-item-200333",
+      "kind": "variant",
+      "keys": [
+        "mcd-item-200333/variant-source:mcd-item-200333",
+        "mcd-item-200333/variant:small"
+      ]
+    },
+    {
+      "id": "mcd-item-200227",
+      "kind": "variant",
+      "keys": [
+        "mcd-item-200333/variant-source:mcd-item-200227",
+        "mcd-item-200333/variant:medium"
+      ]
+    },
+    {
+      "id": "mcd-item-200225",
+      "kind": "variant",
+      "keys": [
+        "mcd-item-200333/variant-source:mcd-item-200225",
+        "mcd-item-200333/variant:large"
+      ]
+    },
+    {
+      "id": "mcd-item-200706",
+      "kind": "item",
+      "keys": [
+        "src:mcd-item-200706",
+        "name:mccafé/sugar free vanilla latte"
+      ]
+    },
+    {
+      "id": "mcd-item-200706",
+      "kind": "variant",
+      "keys": [
+        "mcd-item-200706/variant-source:mcd-item-200706",
+        "mcd-item-200706/variant:small"
+      ]
+    },
+    {
+      "id": "mcd-item-200707",
+      "kind": "variant",
+      "keys": [
+        "mcd-item-200706/variant-source:mcd-item-200707",
+        "mcd-item-200706/variant:medium"
+      ]
+    },
+    {
+      "id": "mcd-item-200708",
+      "kind": "variant",
+      "keys": [
+        "mcd-item-200706/variant-source:mcd-item-200708",
+        "mcd-item-200706/variant:large"
+      ]
+    },
+    {
+      "id": "mcd-item-200390",
+      "kind": "item",
+      "keys": [
+        "src:mcd-item-200390",
+        "name:mccafé/sugar free vanilla cappuccino"
+      ]
+    },
+    {
+      "id": "mcd-item-200390",
+      "kind": "variant",
+      "keys": [
+        "mcd-item-200390/variant-source:mcd-item-200390",
+        "mcd-item-200390/variant:small"
+      ]
+    },
+    {
+      "id": "mcd-item-200389",
+      "kind": "variant",
+      "keys": [
+        "mcd-item-200390/variant-source:mcd-item-200389",
+        "mcd-item-200390/variant:medium"
+      ]
+    },
+    {
+      "id": "mcd-item-200388",
+      "kind": "variant",
+      "keys": [
+        "mcd-item-200390/variant-source:mcd-item-200388",
+        "mcd-item-200390/variant:large"
+      ]
+    },
+    {
+      "id": "mcd-item-204695",
+      "kind": "item",
+      "keys": [
+        "src:mcd-item-204695",
+        "name:mccafé/caramel apple pie frappé"
+      ]
+    },
+    {
+      "id": "mcd-item-204695",
+      "kind": "variant",
+      "keys": [
+        "mcd-item-204695/variant-source:mcd-item-204695",
+        "mcd-item-204695/variant:small"
+      ]
+    },
+    {
+      "id": "mcd-item-204687",
+      "kind": "variant",
+      "keys": [
+        "mcd-item-204695/variant-source:mcd-item-204687",
+        "mcd-item-204695/variant:medium"
+      ]
+    },
+    {
+      "id": "mcd-item-204689",
+      "kind": "variant",
+      "keys": [
+        "mcd-item-204695/variant-source:mcd-item-204689",
+        "mcd-item-204695/variant:large"
+      ]
+    },
+    {
+      "id": "mcd-item-204697",
+      "kind": "item",
+      "keys": [
+        "src:mcd-item-204697",
+        "name:mccafé/caramel apple pie latte"
+      ]
+    },
+    {
+      "id": "mcd-item-204697",
+      "kind": "variant",
+      "keys": [
+        "mcd-item-204697/variant-source:mcd-item-204697",
+        "mcd-item-204697/variant:small"
+      ]
+    },
+    {
+      "id": "mcd-item-204685",
+      "kind": "variant",
+      "keys": [
+        "mcd-item-204697/variant-source:mcd-item-204685",
+        "mcd-item-204697/variant:medium"
+      ]
+    },
+    {
+      "id": "mcd-item-204700",
+      "kind": "variant",
+      "keys": [
+        "mcd-item-204697/variant-source:mcd-item-204700",
+        "mcd-item-204697/variant:large"
+      ]
+    },
+    {
+      "id": "mcd-item-204693",
+      "kind": "item",
+      "keys": [
+        "src:mcd-item-204693",
+        "name:mccafé/caramel apple pie iced coffee"
+      ]
+    },
+    {
+      "id": "mcd-item-204693",
+      "kind": "variant",
+      "keys": [
+        "mcd-item-204693/variant-source:mcd-item-204693",
+        "mcd-item-204693/variant:small"
+      ]
+    },
+    {
+      "id": "mcd-item-204698",
+      "kind": "variant",
+      "keys": [
+        "mcd-item-204693/variant-source:mcd-item-204698",
+        "mcd-item-204693/variant:medium"
+      ]
+    },
+    {
+      "id": "mcd-item-204690",
+      "kind": "variant",
+      "keys": [
+        "mcd-item-204693/variant-source:mcd-item-204690",
+        "mcd-item-204693/variant:large"
+      ]
+    },
+    {
+      "id": "mcd-item-204691",
+      "kind": "item",
+      "keys": [
+        "src:mcd-item-204691",
+        "name:mccafé/iced caramel apple pie latte"
+      ]
+    },
+    {
+      "id": "mcd-item-204691",
+      "kind": "variant",
+      "keys": [
+        "mcd-item-204691/variant-source:mcd-item-204691",
+        "mcd-item-204691/variant:small"
+      ]
+    },
+    {
+      "id": "mcd-item-204699",
+      "kind": "variant",
+      "keys": [
+        "mcd-item-204691/variant-source:mcd-item-204699",
+        "mcd-item-204691/variant:medium"
+      ]
+    },
+    {
+      "id": "mcd-item-204692",
+      "kind": "variant",
+      "keys": [
+        "mcd-item-204691/variant-source:mcd-item-204692",
+        "mcd-item-204691/variant:large"
+      ]
+    },
+    {
+      "id": "mcd-happy-meal-toy",
+      "kind": "item",
+      "keys": [
+        "src:mcd-happy-meal-toy",
+        "name:happy meals/happy meal toy"
+      ]
+    },
+    {
+      "id": "mcd-200463-component-301554",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-200463-component-301554"
+      ]
+    },
+    {
+      "id": "mcd-200463-component-300041",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-200463-component-300041"
+      ]
+    },
+    {
+      "id": "mcd-200463-component-300098",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-200463-component-300098"
+      ]
+    },
+    {
+      "id": "mcd-200463-component-300042",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-200463-component-300042"
+      ]
+    },
+    {
+      "id": "mcd-200463-component-301518",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-200463-component-301518"
+      ]
+    },
+    {
+      "id": "mcd-200463-component-300038",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-200463-component-300038"
+      ]
+    },
+    {
+      "id": "mcd-200463-component-302510",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-200463-component-302510",
+        "name:bread/big mac bun"
+      ]
+    },
+    {
+      "id": "mcd-200463-component-301407",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-200463-component-301407"
+      ]
+    },
+    {
+      "id": "mcd-200463-component-300430",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-200463-component-300430"
+      ]
+    },
+    {
+      "id": "mcd-200463-component-300037",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-200463-component-300037"
+      ]
+    },
+    {
+      "id": "mcd-200463-component-300044",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-200463-component-300044"
+      ]
+    },
+    {
+      "id": "mcd-200463-component-204161",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-200463-component-204161"
+      ]
+    },
+    {
+      "id": "mcd-200463-component-301502",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-200463-component-301502"
+      ]
+    },
+    {
+      "id": "mcd-200463-component-300163",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-200463-component-300163"
+      ]
+    },
+    {
+      "id": "mcd-200466-component-300044",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-200466-component-300044"
+      ]
+    },
+    {
+      "id": "mcd-200466-component-300037",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-200466-component-300037"
+      ]
+    },
+    {
+      "id": "mcd-200466-component-301502",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-200466-component-301502"
+      ]
+    },
+    {
+      "id": "mcd-200466-component-300042",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-200466-component-300042"
+      ]
+    },
+    {
+      "id": "mcd-200466-component-301518",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-200466-component-301518"
+      ]
+    },
+    {
+      "id": "mcd-200466-component-301574",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-200466-component-301574"
+      ]
+    },
+    {
+      "id": "mcd-200466-component-301516",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-200466-component-301516"
+      ]
+    },
+    {
+      "id": "mcd-200466-component-300163",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-200466-component-300163"
+      ]
+    },
+    {
+      "id": "mcd-200466-component-300098",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-200466-component-300098"
+      ]
+    },
+    {
+      "id": "mcd-200466-component-301407",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-200466-component-301407"
+      ]
+    },
+    {
+      "id": "mcd-200466-component-300430",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-200466-component-300430"
+      ]
+    },
+    {
+      "id": "mcd-200466-component-301554",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-200466-component-301554"
+      ]
+    },
+    {
+      "id": "mcd-200466-component-204161",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-200466-component-204161"
+      ]
+    },
+    {
+      "id": "mcd-200466-component-300041",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-200466-component-300041"
+      ]
+    },
+    {
+      "id": "mcd-200480-component-300044",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-200480-component-300044"
+      ]
+    },
+    {
+      "id": "mcd-200480-component-300037",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-200480-component-300037"
+      ]
+    },
+    {
+      "id": "mcd-200480-component-300041",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-200480-component-300041"
+      ]
+    },
+    {
+      "id": "mcd-200480-component-300042",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-200480-component-300042"
+      ]
+    },
+    {
+      "id": "mcd-200480-component-301518",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-200480-component-301518"
+      ]
+    },
+    {
+      "id": "mcd-200480-component-300038",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-200480-component-300038"
+      ]
+    },
+    {
+      "id": "mcd-200480-component-301578",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-200480-component-301578"
+      ]
+    },
+    {
+      "id": "mcd-200480-component-300163",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-200480-component-300163"
+      ]
+    },
+    {
+      "id": "mcd-200480-component-300098",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-200480-component-300098"
+      ]
+    },
+    {
+      "id": "mcd-200480-component-301407",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-200480-component-301407"
+      ]
+    },
+    {
+      "id": "mcd-200480-component-300430",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-200480-component-300430"
+      ]
+    },
+    {
+      "id": "mcd-200480-component-301554",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-200480-component-301554"
+      ]
+    },
+    {
+      "id": "mcd-200480-component-204161",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-200480-component-204161"
+      ]
+    },
+    {
+      "id": "mcd-200480-component-301502",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-200480-component-301502"
+      ]
+    },
+    {
+      "id": "mcd-200477-component-300044",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-200477-component-300044"
+      ]
+    },
+    {
+      "id": "mcd-200477-component-300037",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-200477-component-300037"
+      ]
+    },
+    {
+      "id": "mcd-200477-component-300041",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-200477-component-300041"
+      ]
+    },
+    {
+      "id": "mcd-200477-component-300042",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-200477-component-300042"
+      ]
+    },
+    {
+      "id": "mcd-200477-component-300038",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-200477-component-300038"
+      ]
+    },
+    {
+      "id": "mcd-200477-component-301578",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-200477-component-301578"
+      ]
+    },
+    {
+      "id": "mcd-200477-component-300163",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-200477-component-300163"
+      ]
+    },
+    {
+      "id": "mcd-200477-component-300098",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-200477-component-300098"
+      ]
+    },
+    {
+      "id": "mcd-200477-component-301407",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-200477-component-301407"
+      ]
+    },
+    {
+      "id": "mcd-200477-component-300430",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-200477-component-300430"
+      ]
+    },
+    {
+      "id": "mcd-200477-component-301554",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-200477-component-301554"
+      ]
+    },
+    {
+      "id": "mcd-200477-component-204161",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-200477-component-204161"
+      ]
+    },
+    {
+      "id": "mcd-200477-component-301502",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-200477-component-301502"
+      ]
+    },
+    {
+      "id": "mcd-200477-component-301518",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-200477-component-301518"
+      ]
+    },
+    {
+      "id": "mcd-200491-component-300044",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-200491-component-300044"
+      ]
+    },
+    {
+      "id": "mcd-200491-component-300037",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-200491-component-300037"
+      ]
+    },
+    {
+      "id": "mcd-200491-component-300041",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-200491-component-300041"
+      ]
+    },
+    {
+      "id": "mcd-200491-component-300042",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-200491-component-300042"
+      ]
+    },
+    {
+      "id": "mcd-200491-component-301518",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-200491-component-301518"
+      ]
+    },
+    {
+      "id": "mcd-200491-component-300038",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-200491-component-300038"
+      ]
+    },
+    {
+      "id": "mcd-200491-component-301578",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-200491-component-301578"
+      ]
+    },
+    {
+      "id": "mcd-200491-component-300163",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-200491-component-300163"
+      ]
+    },
+    {
+      "id": "mcd-200491-component-300098",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-200491-component-300098"
+      ]
+    },
+    {
+      "id": "mcd-200491-component-301407",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-200491-component-301407"
+      ]
+    },
+    {
+      "id": "mcd-200491-component-300430",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-200491-component-300430"
+      ]
+    },
+    {
+      "id": "mcd-200491-component-301554",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-200491-component-301554"
+      ]
+    },
+    {
+      "id": "mcd-200491-component-204161",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-200491-component-204161"
+      ]
+    },
+    {
+      "id": "mcd-200491-component-301502",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-200491-component-301502"
+      ]
+    },
+    {
+      "id": "mcd-200486-component-300044",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-200486-component-300044"
+      ]
+    },
+    {
+      "id": "mcd-200486-component-300037",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-200486-component-300037"
+      ]
+    },
+    {
+      "id": "mcd-200486-component-300041",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-200486-component-300041"
+      ]
+    },
+    {
+      "id": "mcd-200486-component-300042",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-200486-component-300042"
+      ]
+    },
+    {
+      "id": "mcd-200486-component-301518",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-200486-component-301518"
+      ]
+    },
+    {
+      "id": "mcd-200486-component-300038",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-200486-component-300038"
+      ]
+    },
+    {
+      "id": "mcd-200486-component-301578",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-200486-component-301578"
+      ]
+    },
+    {
+      "id": "mcd-200486-component-300163",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-200486-component-300163"
+      ]
+    },
+    {
+      "id": "mcd-200486-component-300098",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-200486-component-300098"
+      ]
+    },
+    {
+      "id": "mcd-200486-component-301407",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-200486-component-301407"
+      ]
+    },
+    {
+      "id": "mcd-200486-component-300430",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-200486-component-300430"
+      ]
+    },
+    {
+      "id": "mcd-200486-component-301554",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-200486-component-301554"
+      ]
+    },
+    {
+      "id": "mcd-200486-component-204161",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-200486-component-204161"
+      ]
+    },
+    {
+      "id": "mcd-200486-component-301502",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-200486-component-301502"
+      ]
+    },
+    {
+      "id": "mcd-200497-component-300430",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-200497-component-300430"
+      ]
+    },
+    {
+      "id": "mcd-200497-component-301518",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-200497-component-301518"
+      ]
+    },
+    {
+      "id": "mcd-200497-component-301502",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-200497-component-301502"
+      ]
+    },
+    {
+      "id": "mcd-200497-component-300098",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-200497-component-300098"
+      ]
+    },
+    {
+      "id": "mcd-200497-component-300038",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-200497-component-300038"
+      ]
+    },
+    {
+      "id": "mcd-200497-component-301578",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-200497-component-301578"
+      ]
+    },
+    {
+      "id": "mcd-200497-component-301407",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-200497-component-301407"
+      ]
+    },
+    {
+      "id": "mcd-200497-component-301554",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-200497-component-301554"
+      ]
+    },
+    {
+      "id": "mcd-200497-component-300037",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-200497-component-300037"
+      ]
+    },
+    {
+      "id": "mcd-200497-component-300044",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-200497-component-300044"
+      ]
+    },
+    {
+      "id": "mcd-200497-component-204161",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-200497-component-204161"
+      ]
+    },
+    {
+      "id": "mcd-200497-component-300042",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-200497-component-300042"
+      ]
+    },
+    {
+      "id": "mcd-200497-component-300041",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-200497-component-300041"
+      ]
+    },
+    {
+      "id": "mcd-200497-component-300163",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-200497-component-300163"
+      ]
+    },
+    {
+      "id": "mcd-200765-component-300044",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-200765-component-300044"
+      ]
+    },
+    {
+      "id": "mcd-200765-component-300037",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-200765-component-300037"
+      ]
+    },
+    {
+      "id": "mcd-200765-component-300430",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-200765-component-300430"
+      ]
+    },
+    {
+      "id": "mcd-200765-component-300098",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-200765-component-300098"
+      ]
+    },
+    {
+      "id": "mcd-200765-component-301502",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-200765-component-301502"
+      ]
+    },
+    {
+      "id": "mcd-200765-component-300042",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-200765-component-300042"
+      ]
+    },
+    {
+      "id": "mcd-200765-component-301407",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-200765-component-301407"
+      ]
+    },
+    {
+      "id": "mcd-200765-component-301518",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-200765-component-301518"
+      ]
+    },
+    {
+      "id": "mcd-200765-component-301574",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-200765-component-301574"
+      ]
+    },
+    {
+      "id": "mcd-200765-component-301516",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-200765-component-301516"
+      ]
+    },
+    {
+      "id": "mcd-200765-component-300163",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-200765-component-300163"
+      ]
+    },
+    {
+      "id": "mcd-200765-component-301554",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-200765-component-301554"
+      ]
+    },
+    {
+      "id": "mcd-200765-component-204161",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-200765-component-204161"
+      ]
+    },
+    {
+      "id": "mcd-200765-component-300041",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-200765-component-300041"
+      ]
+    },
+    {
+      "id": "mcd-200476-component-300044",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-200476-component-300044"
+      ]
+    },
+    {
+      "id": "mcd-200476-component-300037",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-200476-component-300037"
+      ]
+    },
+    {
+      "id": "mcd-200476-component-301502",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-200476-component-301502"
+      ]
+    },
+    {
+      "id": "mcd-200476-component-300042",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-200476-component-300042"
+      ]
+    },
+    {
+      "id": "mcd-200476-component-301518",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-200476-component-301518"
+      ]
+    },
+    {
+      "id": "mcd-200476-component-301574",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-200476-component-301574",
+        "name:protein/quarter pound 100 beef patties"
+      ]
+    },
+    {
+      "id": "mcd-200476-component-301516",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-200476-component-301516"
+      ]
+    },
+    {
+      "id": "mcd-200476-component-300163",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-200476-component-300163"
+      ]
+    },
+    {
+      "id": "mcd-200476-component-300098",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-200476-component-300098"
+      ]
+    },
+    {
+      "id": "mcd-200476-component-301407",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-200476-component-301407"
+      ]
+    },
+    {
+      "id": "mcd-200476-component-300430",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-200476-component-300430"
+      ]
+    },
+    {
+      "id": "mcd-200476-component-301554",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-200476-component-301554"
+      ]
+    },
+    {
+      "id": "mcd-200476-component-204161",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-200476-component-204161"
+      ]
+    },
+    {
+      "id": "mcd-200476-component-300041",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-200476-component-300041"
+      ]
+    },
+    {
+      "id": "mcd-203410-component-300044",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-203410-component-300044"
+      ]
+    },
+    {
+      "id": "mcd-203410-component-300037",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-203410-component-300037"
+      ]
+    },
+    {
+      "id": "mcd-203410-component-301502",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-203410-component-301502"
+      ]
+    },
+    {
+      "id": "mcd-203410-component-300042",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-203410-component-300042"
+      ]
+    },
+    {
+      "id": "mcd-203410-component-301518",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-203410-component-301518"
+      ]
+    },
+    {
+      "id": "mcd-203410-component-300163",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-203410-component-300163"
+      ]
+    },
+    {
+      "id": "mcd-203410-component-301574",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-203410-component-301574"
+      ]
+    },
+    {
+      "id": "mcd-203410-component-301516",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-203410-component-301516"
+      ]
+    },
+    {
+      "id": "mcd-203410-component-300098",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-203410-component-300098"
+      ]
+    },
+    {
+      "id": "mcd-203410-component-301407",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-203410-component-301407"
+      ]
+    },
+    {
+      "id": "mcd-203410-component-300430",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-203410-component-300430"
+      ]
+    },
+    {
+      "id": "mcd-203410-component-301554",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-203410-component-301554"
+      ]
+    },
+    {
+      "id": "mcd-203410-component-204161",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-203410-component-204161"
+      ]
+    },
+    {
+      "id": "mcd-203410-component-300041",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-203410-component-300041"
+      ]
+    },
+    {
+      "id": "mcd-203747-component-300310",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-203747-component-300310",
+        "name:toppings/butter"
+      ]
+    },
+    {
+      "id": "mcd-203747-component-302415",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-203747-component-302415"
+      ]
+    },
+    {
+      "id": "mcd-203747-component-302309",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-203747-component-302309"
+      ]
+    },
+    {
+      "id": "mcd-203747-component-302402",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-203747-component-302402"
+      ]
+    },
+    {
+      "id": "mcd-203747-component-301518",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-203747-component-301518"
+      ]
+    },
+    {
+      "id": "mcd-203747-component-300163",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-203747-component-300163"
+      ]
+    },
+    {
+      "id": "mcd-203747-component-300044",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-203747-component-300044"
+      ]
+    },
+    {
+      "id": "mcd-203747-component-300430",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-203747-component-300430"
+      ]
+    },
+    {
+      "id": "mcd-203747-component-204161",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-203747-component-204161"
+      ]
+    },
+    {
+      "id": "mcd-203747-component-301554",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-203747-component-301554"
+      ]
+    },
+    {
+      "id": "mcd-203747-component-300037",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-203747-component-300037"
+      ]
+    },
+    {
+      "id": "mcd-203747-component-300042",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-203747-component-300042"
+      ]
+    },
+    {
+      "id": "mcd-203747-component-300041",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-203747-component-300041"
+      ]
+    },
+    {
+      "id": "mcd-203747-component-301502",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-203747-component-301502"
+      ]
+    },
+    {
+      "id": "mcd-203747-component-300098",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-203747-component-300098"
+      ]
+    },
+    {
+      "id": "mcd-203747-component-301407",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-203747-component-301407"
+      ]
+    },
+    {
+      "id": "mcd-203747-component-302376",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-203747-component-302376"
+      ]
+    },
+    {
+      "id": "mcd-203745-component-300430",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-203745-component-300430"
+      ]
+    },
+    {
+      "id": "mcd-203745-component-300098",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-203745-component-300098"
+      ]
+    },
+    {
+      "id": "mcd-203745-component-301407",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-203745-component-301407"
+      ]
+    },
+    {
+      "id": "mcd-203745-component-302309",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-203745-component-302309"
+      ]
+    },
+    {
+      "id": "mcd-203745-component-302402",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-203745-component-302402"
+      ]
+    },
+    {
+      "id": "mcd-203745-component-301518",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-203745-component-301518"
+      ]
+    },
+    {
+      "id": "mcd-203745-component-300163",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-203745-component-300163"
+      ]
+    },
+    {
+      "id": "mcd-203745-component-302415",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-203745-component-302415"
+      ]
+    },
+    {
+      "id": "mcd-203745-component-300044",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-203745-component-300044"
+      ]
+    },
+    {
+      "id": "mcd-203745-component-204161",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-203745-component-204161"
+      ]
+    },
+    {
+      "id": "mcd-203745-component-301554",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-203745-component-301554"
+      ]
+    },
+    {
+      "id": "mcd-203745-component-300037",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-203745-component-300037"
+      ]
+    },
+    {
+      "id": "mcd-203745-component-300042",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-203745-component-300042"
+      ]
+    },
+    {
+      "id": "mcd-203745-component-300041",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-203745-component-300041"
+      ]
+    },
+    {
+      "id": "mcd-203745-component-301502",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-203745-component-301502"
+      ]
+    },
+    {
+      "id": "mcd-203745-component-302376",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-203745-component-302376"
+      ]
+    },
+    {
+      "id": "mcd-203901-component-302376",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-203901-component-302376"
+      ]
+    },
+    {
+      "id": "mcd-203901-component-302415",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-203901-component-302415"
+      ]
+    },
+    {
+      "id": "mcd-203901-component-302309",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-203901-component-302309"
+      ]
+    },
+    {
+      "id": "mcd-203901-component-302402",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-203901-component-302402"
+      ]
+    },
+    {
+      "id": "mcd-203901-component-301518",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-203901-component-301518"
+      ]
+    },
+    {
+      "id": "mcd-203901-component-300163",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-203901-component-300163"
+      ]
+    },
+    {
+      "id": "mcd-203901-component-300044",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-203901-component-300044"
+      ]
+    },
+    {
+      "id": "mcd-203901-component-204161",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-203901-component-204161"
+      ]
+    },
+    {
+      "id": "mcd-203901-component-301554",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-203901-component-301554"
+      ]
+    },
+    {
+      "id": "mcd-203901-component-300037",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-203901-component-300037"
+      ]
+    },
+    {
+      "id": "mcd-203901-component-300430",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-203901-component-300430"
+      ]
+    },
+    {
+      "id": "mcd-203901-component-300042",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-203901-component-300042"
+      ]
+    },
+    {
+      "id": "mcd-203901-component-300041",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-203901-component-300041"
+      ]
+    },
+    {
+      "id": "mcd-203901-component-301502",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-203901-component-301502"
+      ]
+    },
+    {
+      "id": "mcd-203901-component-300098",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-203901-component-300098"
+      ]
+    },
+    {
+      "id": "mcd-203901-component-301407",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-203901-component-301407"
+      ]
+    },
+    {
+      "id": "mcd-203873-component-302376",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-203873-component-302376"
+      ]
+    },
+    {
+      "id": "mcd-203873-component-300098",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-203873-component-300098"
+      ]
+    },
+    {
+      "id": "mcd-203873-component-301407",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-203873-component-301407"
+      ]
+    },
+    {
+      "id": "mcd-203873-component-302309",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-203873-component-302309"
+      ]
+    },
+    {
+      "id": "mcd-203873-component-302402",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-203873-component-302402"
+      ]
+    },
+    {
+      "id": "mcd-203873-component-300163",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-203873-component-300163"
+      ]
+    },
+    {
+      "id": "mcd-203873-component-301518",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-203873-component-301518"
+      ]
+    },
+    {
+      "id": "mcd-203873-component-300430",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-203873-component-300430"
+      ]
+    },
+    {
+      "id": "mcd-203873-component-300044",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-203873-component-300044"
+      ]
+    },
+    {
+      "id": "mcd-203873-component-302415",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-203873-component-302415"
+      ]
+    },
+    {
+      "id": "mcd-203873-component-204161",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-203873-component-204161"
+      ]
+    },
+    {
+      "id": "mcd-203873-component-301554",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-203873-component-301554"
+      ]
+    },
+    {
+      "id": "mcd-203873-component-300037",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-203873-component-300037"
+      ]
+    },
+    {
+      "id": "mcd-203873-component-300042",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-203873-component-300042"
+      ]
+    },
+    {
+      "id": "mcd-203873-component-300041",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-203873-component-300041"
+      ]
+    },
+    {
+      "id": "mcd-203873-component-301502",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-203873-component-301502"
+      ]
+    },
+    {
+      "id": "mcd-200438-component-300098",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-200438-component-300098"
+      ]
+    },
+    {
+      "id": "mcd-200438-component-300430",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-200438-component-300430"
+      ]
+    },
+    {
+      "id": "mcd-200438-component-300708",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-200438-component-300708",
+        "name:protein/mcchicken patty"
+      ]
+    },
+    {
+      "id": "mcd-200438-component-301578",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-200438-component-301578"
+      ]
+    },
+    {
+      "id": "mcd-200438-component-300163",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-200438-component-300163"
+      ]
+    },
+    {
+      "id": "mcd-200438-component-301518",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-200438-component-301518"
+      ]
+    },
+    {
+      "id": "mcd-200438-component-301407",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-200438-component-301407"
+      ]
+    },
+    {
+      "id": "mcd-200438-component-300044",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-200438-component-300044"
+      ]
+    },
+    {
+      "id": "mcd-200438-component-301554",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-200438-component-301554"
+      ]
+    },
+    {
+      "id": "mcd-200438-component-300037",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-200438-component-300037"
+      ]
+    },
+    {
+      "id": "mcd-200438-component-204161",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-200438-component-204161"
+      ]
+    },
+    {
+      "id": "mcd-200438-component-300042",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-200438-component-300042"
+      ]
+    },
+    {
+      "id": "mcd-200438-component-300041",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-200438-component-300041"
+      ]
+    },
+    {
+      "id": "mcd-200438-component-301502",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-200438-component-301502"
+      ]
+    },
+    {
+      "id": "mcd-200438-component-302376",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-200438-component-302376"
+      ]
+    },
+    {
+      "id": "mcd-200445-component-302503",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-200445-component-302503",
+        "name:sauces/tartar sauce"
+      ]
+    },
+    {
+      "id": "mcd-200445-component-300716",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-200445-component-300716"
+      ]
+    },
+    {
+      "id": "mcd-200445-component-300055",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-200445-component-300055",
+        "name:protein/filet o fish patty"
+      ]
+    },
+    {
+      "id": "mcd-200445-component-301578",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-200445-component-301578"
+      ]
+    },
+    {
+      "id": "mcd-200445-component-300163",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-200445-component-300163"
+      ]
+    },
+    {
+      "id": "mcd-200445-component-300098",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-200445-component-300098"
+      ]
+    },
+    {
+      "id": "mcd-200445-component-301407",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-200445-component-301407"
+      ]
+    },
+    {
+      "id": "mcd-200445-component-300044",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-200445-component-300044"
+      ]
+    },
+    {
+      "id": "mcd-200445-component-300430",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-200445-component-300430"
+      ]
+    },
+    {
+      "id": "mcd-200445-component-301554",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-200445-component-301554"
+      ]
+    },
+    {
+      "id": "mcd-200445-component-300037",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-200445-component-300037"
+      ]
+    },
+    {
+      "id": "mcd-200445-component-204161",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-200445-component-204161"
+      ]
+    },
+    {
+      "id": "mcd-200445-component-300042",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-200445-component-300042"
+      ]
+    },
+    {
+      "id": "mcd-200445-component-300041",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-200445-component-300041"
+      ]
+    },
+    {
+      "id": "mcd-200445-component-301502",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-200445-component-301502"
+      ]
+    },
+    {
+      "id": "mcd-sauce-200692-200412",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-sauce-200692-200412"
+      ]
+    },
+    {
+      "id": "mcd-sauce-200692-200315",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-sauce-200692-200315"
+      ]
+    },
+    {
+      "id": "mcd-sauce-200692-200313",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-sauce-200692-200313"
+      ]
+    },
+    {
+      "id": "mcd-sauce-200692-200169",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-sauce-200692-200169"
+      ]
+    },
+    {
+      "id": "mcd-sauce-200692-200293",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-sauce-200692-200293"
+      ]
+    },
+    {
+      "id": "mcd-sauce-200692-200268",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-sauce-200692-200268"
+      ]
+    },
+    {
+      "id": "mcd-sauce-200692-200411",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-sauce-200692-200411"
+      ]
+    },
+    {
+      "id": "mcd-sauce-200692-200295",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-sauce-200692-200295"
+      ]
+    },
+    {
+      "id": "mcd-sauce-200574-200412",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-sauce-200574-200412"
+      ]
+    },
+    {
+      "id": "mcd-sauce-200574-200315",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-sauce-200574-200315"
+      ]
+    },
+    {
+      "id": "mcd-sauce-200574-200313",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-sauce-200574-200313"
+      ]
+    },
+    {
+      "id": "mcd-sauce-200574-200169",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-sauce-200574-200169"
+      ]
+    },
+    {
+      "id": "mcd-sauce-200574-200293",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-sauce-200574-200293"
+      ]
+    },
+    {
+      "id": "mcd-sauce-200574-200268",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-sauce-200574-200268"
+      ]
+    },
+    {
+      "id": "mcd-sauce-200574-200411",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-sauce-200574-200411"
+      ]
+    },
+    {
+      "id": "mcd-sauce-200574-200295",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-sauce-200574-200295"
+      ]
+    },
+    {
+      "id": "mcd-sauce-200567-200412",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-sauce-200567-200412"
+      ]
+    },
+    {
+      "id": "mcd-sauce-200567-200315",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-sauce-200567-200315"
+      ]
+    },
+    {
+      "id": "mcd-sauce-200567-200313",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-sauce-200567-200313"
+      ]
+    },
+    {
+      "id": "mcd-sauce-200567-200169",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-sauce-200567-200169"
+      ]
+    },
+    {
+      "id": "mcd-sauce-200567-200293",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-sauce-200567-200293"
+      ]
+    },
+    {
+      "id": "mcd-sauce-200567-200268",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-sauce-200567-200268"
+      ]
+    },
+    {
+      "id": "mcd-sauce-200567-200411",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-sauce-200567-200411"
+      ]
+    },
+    {
+      "id": "mcd-sauce-200567-200295",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-sauce-200567-200295"
+      ]
+    },
+    {
+      "id": "mcd-sauce-200573-200412",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-sauce-200573-200412"
+      ]
+    },
+    {
+      "id": "mcd-sauce-200573-200315",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-sauce-200573-200315"
+      ]
+    },
+    {
+      "id": "mcd-sauce-200573-200313",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-sauce-200573-200313"
+      ]
+    },
+    {
+      "id": "mcd-sauce-200573-200169",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-sauce-200573-200169"
+      ]
+    },
+    {
+      "id": "mcd-sauce-200573-200293",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-sauce-200573-200293"
+      ]
+    },
+    {
+      "id": "mcd-sauce-200573-200268",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-sauce-200573-200268"
+      ]
+    },
+    {
+      "id": "mcd-sauce-200573-200411",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-sauce-200573-200411"
+      ]
+    },
+    {
+      "id": "mcd-sauce-200573-200295",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-sauce-200573-200295"
+      ]
+    },
+    {
+      "id": "mcd-sauce-200577-203834",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-sauce-200577-203834",
+        "name:sauces/mighty hot sauce"
+      ]
+    },
+    {
+      "id": "mcd-sauce-200577-204377",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-sauce-200577-204377",
+        "name:sauces/creamy chili mccrispytm strip dip"
+      ]
+    },
+    {
+      "id": "mcd-sauce-200577-200412",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-sauce-200577-200412"
+      ]
+    },
+    {
+      "id": "mcd-sauce-200577-200315",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-sauce-200577-200315"
+      ]
+    },
+    {
+      "id": "mcd-sauce-200577-200313",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-sauce-200577-200313"
+      ]
+    },
+    {
+      "id": "mcd-sauce-200577-200293",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-sauce-200577-200293"
+      ]
+    },
+    {
+      "id": "mcd-sauce-200577-200268",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-sauce-200577-200268"
+      ]
+    },
+    {
+      "id": "mcd-sauce-200577-200411",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-sauce-200577-200411"
+      ]
+    },
+    {
+      "id": "mcd-sauce-200577-200295",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-sauce-200577-200295"
+      ]
+    },
+    {
+      "id": "mcd-sauce-204386-200412",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-sauce-204386-200412"
+      ]
+    },
+    {
+      "id": "mcd-sauce-204386-200315",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-sauce-204386-200315"
+      ]
+    },
+    {
+      "id": "mcd-sauce-204386-200313",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-sauce-204386-200313"
+      ]
+    },
+    {
+      "id": "mcd-sauce-204386-200169",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-sauce-204386-200169"
+      ]
+    },
+    {
+      "id": "mcd-sauce-204386-200293",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-sauce-204386-200293"
+      ]
+    },
+    {
+      "id": "mcd-sauce-204386-200268",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-sauce-204386-200268"
+      ]
+    },
+    {
+      "id": "mcd-sauce-204386-200411",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-sauce-204386-200411"
+      ]
+    },
+    {
+      "id": "mcd-sauce-204386-200295",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-sauce-204386-200295"
+      ]
+    },
+    {
+      "id": "mcd-sauce-204385-200412",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-sauce-204385-200412"
+      ]
+    },
+    {
+      "id": "mcd-sauce-204385-200315",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-sauce-204385-200315"
+      ]
+    },
+    {
+      "id": "mcd-sauce-204385-200313",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-sauce-204385-200313"
+      ]
+    },
+    {
+      "id": "mcd-sauce-204385-200169",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-sauce-204385-200169"
+      ]
+    },
+    {
+      "id": "mcd-sauce-204385-200293",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-sauce-204385-200293"
+      ]
+    },
+    {
+      "id": "mcd-sauce-204385-200268",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-sauce-204385-200268"
+      ]
+    },
+    {
+      "id": "mcd-sauce-204385-200411",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-sauce-204385-200411"
+      ]
+    },
+    {
+      "id": "mcd-sauce-204385-200295",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-sauce-204385-200295"
+      ]
+    },
+    {
+      "id": "mcd-safe-200424-butter",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-safe-200424-butter"
+      ]
+    },
+    {
+      "id": "mcd-safe-200424-american-cheese",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-safe-200424-american-cheese"
+      ]
+    },
+    {
+      "id": "mcd-safe-200424-bacon",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-safe-200424-bacon"
+      ]
+    },
+    {
+      "id": "mcd-safe-200424-folded-egg",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-safe-200424-folded-egg"
+      ]
+    },
+    {
+      "id": "mcd-safe-200424-breakfast-sauce",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-safe-200424-breakfast-sauce"
+      ]
+    },
+    {
+      "id": "mcd-safe-200424-bagel",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-safe-200424-bagel"
+      ]
+    },
+    {
+      "id": "mcd-safe-200424-spicy-pepper-sauce",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-safe-200424-spicy-pepper-sauce"
+      ]
+    },
+    {
+      "id": "mcd-safe-200424-round-egg",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-safe-200424-round-egg"
+      ]
+    },
+    {
+      "id": "mcd-safe-200876-butter",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-safe-200876-butter"
+      ]
+    },
+    {
+      "id": "mcd-safe-200876-american-cheese",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-safe-200876-american-cheese"
+      ]
+    },
+    {
+      "id": "mcd-safe-200876-folded-egg",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-safe-200876-folded-egg"
+      ]
+    },
+    {
+      "id": "mcd-safe-200876-breakfast-sauce",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-safe-200876-breakfast-sauce"
+      ]
+    },
+    {
+      "id": "mcd-safe-200876-bagel",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-safe-200876-bagel"
+      ]
+    },
+    {
+      "id": "mcd-safe-200876-spicy-pepper-sauce",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-safe-200876-spicy-pepper-sauce"
+      ]
+    },
+    {
+      "id": "mcd-safe-201030-butter",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-safe-201030-butter"
+      ]
+    },
+    {
+      "id": "mcd-safe-201030-american-cheese",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-safe-201030-american-cheese"
+      ]
+    },
+    {
+      "id": "mcd-safe-201030-sausage",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-safe-201030-sausage"
+      ]
+    },
+    {
+      "id": "mcd-safe-201030-folded-egg",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-safe-201030-folded-egg"
+      ]
+    },
+    {
+      "id": "mcd-safe-201030-breakfast-sauce",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-safe-201030-breakfast-sauce"
+      ]
+    },
+    {
+      "id": "mcd-safe-201030-bagel",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-safe-201030-bagel"
+      ]
+    },
+    {
+      "id": "mcd-safe-201030-spicy-pepper-sauce",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-safe-201030-spicy-pepper-sauce"
+      ]
+    },
+    {
+      "id": "mcd-safe-201030-round-egg",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-safe-201030-round-egg"
+      ]
+    },
+    {
+      "id": "mcd-safe-200145-butter",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-safe-200145-butter"
+      ]
+    },
+    {
+      "id": "mcd-safe-200145-american-cheese",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-safe-200145-american-cheese"
+      ]
+    },
+    {
+      "id": "mcd-safe-200145-steak",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-safe-200145-steak",
+        "name:protein/breakfast steak patty"
+      ]
+    },
+    {
+      "id": "mcd-safe-200145-salt",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-safe-200145-salt",
+        "name:sauces/salt"
+      ]
+    },
+    {
+      "id": "mcd-safe-200145-onions",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-safe-200145-onions",
+        "name:toppings/grilled onions"
+      ]
+    },
+    {
+      "id": "mcd-safe-200145-folded-egg",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-safe-200145-folded-egg"
+      ]
+    },
+    {
+      "id": "mcd-safe-200145-breakfast-sauce",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-safe-200145-breakfast-sauce"
+      ]
+    },
+    {
+      "id": "mcd-safe-200145-bagel",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-safe-200145-bagel"
+      ]
+    },
+    {
+      "id": "mcd-safe-200145-spicy-pepper-sauce",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-safe-200145-spicy-pepper-sauce"
+      ]
+    },
+    {
+      "id": "mcd-safe-200145-round-egg",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-safe-200145-round-egg"
+      ]
+    },
+    {
+      "id": "mcd-safe-200300-american-cheese",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-safe-200300-american-cheese"
+      ]
+    },
+    {
+      "id": "mcd-safe-200300-folded-egg",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-safe-200300-folded-egg"
+      ]
+    },
+    {
+      "id": "mcd-safe-200300-bacon",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-safe-200300-bacon"
+      ]
+    },
+    {
+      "id": "mcd-safe-200300-biscuit",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-safe-200300-biscuit"
+      ]
+    },
+    {
+      "id": "mcd-safe-200300-spicy-pepper-sauce",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-safe-200300-spicy-pepper-sauce"
+      ]
+    },
+    {
+      "id": "mcd-safe-200300-round-egg",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-safe-200300-round-egg"
+      ]
+    },
+    {
+      "id": "mcd-safe-200300-canadian-bacon",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-safe-200300-canadian-bacon"
+      ]
+    },
+    {
+      "id": "mcd-safe-201256-american-cheese",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-safe-201256-american-cheese"
+      ]
+    },
+    {
+      "id": "mcd-safe-201256-folded-egg",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-safe-201256-folded-egg"
+      ]
+    },
+    {
+      "id": "mcd-safe-201256-biscuit",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-safe-201256-biscuit"
+      ]
+    },
+    {
+      "id": "mcd-safe-200302-folded-egg",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-safe-200302-folded-egg"
+      ]
+    },
+    {
+      "id": "mcd-safe-200302-sausage",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-safe-200302-sausage"
+      ]
+    },
+    {
+      "id": "mcd-safe-200302-biscuit",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-safe-200302-biscuit"
+      ]
+    },
+    {
+      "id": "mcd-safe-200302-spicy-pepper-sauce",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-safe-200302-spicy-pepper-sauce"
+      ]
+    },
+    {
+      "id": "mcd-safe-200302-american-cheese",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-safe-200302-american-cheese"
+      ]
+    },
+    {
+      "id": "mcd-safe-200302-bacon",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-safe-200302-bacon"
+      ]
+    },
+    {
+      "id": "mcd-safe-200302-round-egg",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-safe-200302-round-egg"
+      ]
+    },
+    {
+      "id": "mcd-safe-200302-canadian-bacon",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-safe-200302-canadian-bacon"
+      ]
+    },
+    {
+      "id": "mcd-safe-200301-sausage",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-safe-200301-sausage"
+      ]
+    },
+    {
+      "id": "mcd-safe-200301-biscuit",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-safe-200301-biscuit"
+      ]
+    },
+    {
+      "id": "mcd-safe-200301-spicy-pepper-sauce",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-safe-200301-spicy-pepper-sauce"
+      ]
+    },
+    {
+      "id": "mcd-safe-200301-american-cheese",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-safe-200301-american-cheese"
+      ]
+    },
+    {
+      "id": "mcd-safe-200301-bacon",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-safe-200301-bacon"
+      ]
+    },
+    {
+      "id": "mcd-safe-200304-american-cheese",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-safe-200304-american-cheese"
+      ]
+    },
+    {
+      "id": "mcd-safe-200304-bacon",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-safe-200304-bacon"
+      ]
+    },
+    {
+      "id": "mcd-safe-200304-folded-egg",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-safe-200304-folded-egg"
+      ]
+    },
+    {
+      "id": "mcd-safe-200304-mcgriddles-cakes",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-safe-200304-mcgriddles-cakes"
+      ]
+    },
+    {
+      "id": "mcd-safe-200304-spicy-pepper-sauce",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-safe-200304-spicy-pepper-sauce"
+      ]
+    },
+    {
+      "id": "mcd-safe-200304-canadian-bacon",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-safe-200304-canadian-bacon"
+      ]
+    },
+    {
+      "id": "mcd-safe-200304-round-egg",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-safe-200304-round-egg"
+      ]
+    },
+    {
+      "id": "mcd-safe-200307-american-cheese",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-safe-200307-american-cheese"
+      ]
+    },
+    {
+      "id": "mcd-safe-200307-sausage",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-safe-200307-sausage"
+      ]
+    },
+    {
+      "id": "mcd-safe-200307-folded-egg",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-safe-200307-folded-egg"
+      ]
+    },
+    {
+      "id": "mcd-safe-200307-mcgriddles-cakes",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-safe-200307-mcgriddles-cakes"
+      ]
+    },
+    {
+      "id": "mcd-safe-200307-spicy-pepper-sauce",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-safe-200307-spicy-pepper-sauce"
+      ]
+    },
+    {
+      "id": "mcd-safe-200307-round-egg",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-safe-200307-round-egg"
+      ]
+    },
+    {
+      "id": "mcd-safe-200307-bacon",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-safe-200307-bacon"
+      ]
+    },
+    {
+      "id": "mcd-safe-200307-canadian-bacon",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-safe-200307-canadian-bacon"
+      ]
+    },
+    {
+      "id": "mcd-safe-200306-sausage",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-safe-200306-sausage"
+      ]
+    },
+    {
+      "id": "mcd-safe-200306-mcgriddles-cakes",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-safe-200306-mcgriddles-cakes"
+      ]
+    },
+    {
+      "id": "mcd-safe-200306-spicy-pepper-sauce",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-safe-200306-spicy-pepper-sauce"
+      ]
+    },
+    {
+      "id": "mcd-safe-200306-american-cheese",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-safe-200306-american-cheese"
+      ]
+    },
+    {
+      "id": "mcd-safe-200306-bacon",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-safe-200306-bacon"
+      ]
+    },
+    {
+      "id": "mcd-safe-200306-canadian-bacon",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-safe-200306-canadian-bacon"
+      ]
+    },
+    {
+      "id": "mcd-safe-200306-round-egg",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-safe-200306-round-egg"
+      ]
+    },
+    {
+      "id": "mcd-safe-200306-folded-egg",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-safe-200306-folded-egg"
+      ]
+    },
+    {
+      "id": "mcd-safe-200298-butter",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-safe-200298-butter"
+      ]
+    },
+    {
+      "id": "mcd-safe-200298-american-cheese",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-safe-200298-american-cheese"
+      ]
+    },
+    {
+      "id": "mcd-safe-200298-round-egg",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-safe-200298-round-egg"
+      ]
+    },
+    {
+      "id": "mcd-safe-200298-canadian-bacon",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-safe-200298-canadian-bacon"
+      ]
+    },
+    {
+      "id": "mcd-safe-200298-english-muffin",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-safe-200298-english-muffin"
+      ]
+    },
+    {
+      "id": "mcd-safe-200298-spicy-pepper-sauce",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-safe-200298-spicy-pepper-sauce"
+      ]
+    },
+    {
+      "id": "mcd-safe-200298-bacon",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-safe-200298-bacon"
+      ]
+    },
+    {
+      "id": "mcd-safe-200161-butter",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-safe-200161-butter"
+      ]
+    },
+    {
+      "id": "mcd-safe-200161-american-cheese",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-safe-200161-american-cheese"
+      ]
+    },
+    {
+      "id": "mcd-safe-200161-sausage",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-safe-200161-sausage"
+      ]
+    },
+    {
+      "id": "mcd-safe-200161-round-egg",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-safe-200161-round-egg"
+      ]
+    },
+    {
+      "id": "mcd-safe-200161-english-muffin",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-safe-200161-english-muffin"
+      ]
+    },
+    {
+      "id": "mcd-safe-200161-bacon",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-safe-200161-bacon"
+      ]
+    },
+    {
+      "id": "mcd-safe-200161-canadian-bacon",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-safe-200161-canadian-bacon"
+      ]
+    },
+    {
+      "id": "mcd-safe-200449-butter",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-safe-200449-butter"
+      ]
+    },
+    {
+      "id": "mcd-safe-200449-sausage",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-safe-200449-sausage"
+      ]
+    },
+    {
+      "id": "mcd-safe-200449-american-cheese",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-safe-200449-american-cheese"
+      ]
+    },
+    {
+      "id": "mcd-safe-200449-english-muffin",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-safe-200449-english-muffin"
+      ]
+    },
+    {
+      "id": "mcd-safe-200449-bacon",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-safe-200449-bacon"
+      ]
+    },
+    {
+      "id": "mcd-safe-200449-canadian-bacon",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-safe-200449-canadian-bacon"
+      ]
+    },
+    {
+      "id": "mcd-safe-204401-chicken-strip",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-safe-204401-chicken-strip"
+      ]
+    },
+    {
+      "id": "mcd-safe-204401-flour-tortilla",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-safe-204401-flour-tortilla"
+      ]
+    },
+    {
+      "id": "mcd-safe-204401-sauce",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-safe-204401-sauce"
+      ]
+    },
+    {
+      "id": "mcd-safe-204401-lettuce",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-safe-204401-lettuce"
+      ]
+    },
+    {
+      "id": "mcd-safe-204401-shredded-cheese",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-safe-204401-shredded-cheese"
+      ]
+    },
+    {
+      "id": "mcd-safe-204401-bacon",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-safe-204401-bacon"
+      ]
+    },
+    {
+      "id": "mcd-safe-204401-tomato-x2",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-safe-204401-tomato-x2"
+      ]
+    },
+    {
+      "id": "mcd-safe-204402-chicken-strip",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-safe-204402-chicken-strip"
+      ]
+    },
+    {
+      "id": "mcd-safe-204402-flour-tortilla",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-safe-204402-flour-tortilla"
+      ]
+    },
+    {
+      "id": "mcd-safe-204402-sauce",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-safe-204402-sauce"
+      ]
+    },
+    {
+      "id": "mcd-safe-204402-lettuce",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-safe-204402-lettuce"
+      ]
+    },
+    {
+      "id": "mcd-safe-204402-shredded-cheese",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-safe-204402-shredded-cheese"
+      ]
+    },
+    {
+      "id": "mcd-safe-204402-bacon",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-safe-204402-bacon"
+      ]
+    },
+    {
+      "id": "mcd-safe-204402-tomato-x2",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-safe-204402-tomato-x2"
+      ]
+    },
+    {
+      "id": "mcd-safe-200322-ketchup-packet",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-safe-200322-ketchup-packet"
+      ]
+    },
+    {
+      "id": "mcd-safe-200323-ketchup-packet",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-safe-200323-ketchup-packet"
+      ]
+    },
+    {
+      "id": "mcd-safe-200267-ketchup-packet",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-safe-200267-ketchup-packet"
+      ]
+    },
+    {
+      "id": "mcd-safe-200267-no-sauce",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-safe-200267-no-sauce",
+        "name:sauces/no sauce"
+      ]
+    },
+    {
+      "id": "mcd-breakfast-200424-300654",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-breakfast-200424-300654"
+      ]
+    },
+    {
+      "id": "mcd-breakfast-200876-300654",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-breakfast-200876-300654"
+      ]
+    },
+    {
+      "id": "mcd-breakfast-201030-300654",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-breakfast-201030-300654"
+      ]
+    },
+    {
+      "id": "mcd-breakfast-200145-300654",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-breakfast-200145-300654"
+      ]
+    },
+    {
+      "id": "mcd-breakfast-200300-300310",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-breakfast-200300-300310"
+      ]
+    },
+    {
+      "id": "mcd-breakfast-200300-300654",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-breakfast-200300-300654"
+      ]
+    },
+    {
+      "id": "mcd-breakfast-201256-300310",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-breakfast-201256-300310"
+      ]
+    },
+    {
+      "id": "mcd-breakfast-201256-300654",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-breakfast-201256-300654"
+      ]
+    },
+    {
+      "id": "mcd-breakfast-200302-300310",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-breakfast-200302-300310"
+      ]
+    },
+    {
+      "id": "mcd-breakfast-200302-300654",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-breakfast-200302-300654"
+      ]
+    },
+    {
+      "id": "mcd-breakfast-200301-300310",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-breakfast-200301-300310"
+      ]
+    },
+    {
+      "id": "mcd-breakfast-200304-300654",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-breakfast-200304-300654"
+      ]
+    },
+    {
+      "id": "mcd-breakfast-200307-300654",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-breakfast-200307-300654"
+      ]
+    },
+    {
+      "id": "mcd-breakfast-200298-300654",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-breakfast-200298-300654"
+      ]
+    },
+    {
+      "id": "mcd-breakfast-200161-300654",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-breakfast-200161-300654"
+      ]
+    },
+    {
+      "id": "mcd-breakfast-201306-302369",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-breakfast-201306-302369"
+      ]
+    },
+    {
+      "id": "mcd-breakfast-200267-300777",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-breakfast-200267-300777",
+        "name:protein/scrambled egg sausage vegetable mix"
+      ]
+    },
+    {
+      "id": "mcd-breakfast-200267-300422",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-breakfast-200267-300422"
+      ]
+    },
+    {
+      "id": "mcd-breakfast-200267-301518",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-breakfast-200267-301518"
+      ]
+    },
+    {
+      "id": "mcd-breakfast-200322-300524",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-breakfast-200322-300524"
+      ]
+    },
+    {
+      "id": "mcd-breakfast-200322-300131",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-breakfast-200322-300131"
+      ]
+    },
+    {
+      "id": "mcd-breakfast-200322-300036",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-breakfast-200322-300036"
+      ]
+    },
+    {
+      "id": "mcd-breakfast-200322-300694",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-breakfast-200322-300694"
+      ]
+    },
+    {
+      "id": "mcd-breakfast-200322-300310",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-breakfast-200322-300310"
+      ]
+    },
+    {
+      "id": "mcd-breakfast-200322-300654",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-breakfast-200322-300654"
+      ]
+    },
+    {
+      "id": "mcd-breakfast-200322-300759",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-breakfast-200322-300759"
+      ]
+    },
+    {
+      "id": "mcd-breakfast-200323-300757",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-breakfast-200323-300757"
+      ]
+    },
+    {
+      "id": "mcd-breakfast-200323-300524",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-breakfast-200323-300524"
+      ]
+    },
+    {
+      "id": "mcd-breakfast-200323-300131",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-breakfast-200323-300131"
+      ]
+    },
+    {
+      "id": "mcd-breakfast-200323-300759",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-breakfast-200323-300759"
+      ]
+    },
+    {
+      "id": "mcd-breakfast-200323-300036",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-breakfast-200323-300036"
+      ]
+    },
+    {
+      "id": "mcd-breakfast-200323-300694",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-breakfast-200323-300694"
+      ]
+    },
+    {
+      "id": "mcd-breakfast-200323-301643",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-breakfast-200323-301643"
+      ]
+    },
+    {
+      "id": "mcd-breakfast-200323-300310",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-breakfast-200323-300310"
+      ]
+    },
+    {
+      "id": "mcd-breakfast-200323-300654",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-breakfast-200323-300654"
+      ]
+    },
+    {
+      "id": "mcd-breakfast-200325-300757",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-breakfast-200325-300757"
+      ]
+    },
+    {
+      "id": "mcd-breakfast-200325-300759",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-breakfast-200325-300759"
+      ]
+    },
+    {
+      "id": "mcd-breakfast-200325-301643",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-breakfast-200325-301643"
+      ]
+    },
+    {
+      "id": "mcd-breakfast-200258-300757",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-breakfast-200258-300757"
+      ]
+    },
+    {
+      "id": "mcd-breakfast-200258-300759",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-breakfast-200258-300759"
+      ]
+    },
+    {
+      "id": "mcd-breakfast-200258-300694",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-breakfast-200258-300694"
+      ]
+    },
+    {
+      "id": "mcd-breakfast-200258-301643",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-breakfast-200258-301643"
+      ]
+    },
+    {
+      "id": "mcd-breakfast-200284-300123",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-breakfast-200284-300123",
+        "name:oatmeal/oatmeal"
+      ]
+    },
+    {
+      "id": "mcd-breakfast-200284-300167",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-breakfast-200284-300167",
+        "name:toppings/diced apples"
+      ]
+    },
+    {
+      "id": "mcd-breakfast-200284-300165",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-breakfast-200284-300165",
+        "name:toppings/cranberry raisin blend"
+      ]
+    },
+    {
+      "id": "mcd-breakfast-200284-300091",
+      "kind": "ingredient",
+      "keys": [
+        "src:mcd-breakfast-200284-300091",
+        "name:toppings/light cream"
+      ]
+    }
+  ]
+}

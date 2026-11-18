@@ -1,4 +1,5 @@
 import type { RestaurantBuilderConfig } from "@/types/builder";
+import type { OrderingPlan } from "@/types/ordering";
 import type { Nutrition } from "@/types/nutrition";
 
 export type ServingType = "addon" | "breakfast" | "combo" | "dessert" | "drink" | "entree" | "kids" | "shareable" | "side" | "single";
@@ -251,6 +252,16 @@ export type RestaurantCustomizationRules = {
 };
 
 // represents one menu item
+export type MealPreset = {
+  builderItemId: string;
+  selections: Array<{
+    itemId: string;
+    quantity: number;
+    // Nutrition of the selected portion in this preset's serving context.
+    nutrition: Nutrition;
+  }>;
+};
+
 export type MenuItem = {
   // One primary organization; tags carry cross-category classifications.
   category?: string;
@@ -264,6 +275,8 @@ export type MenuItem = {
   categories: string[];
   servingType: ServingType;
   // explicit combo data for items that can be configured as combo meals.
+  orderingPlan?: OrderingPlan;
+  additionalOrderingPlans?: OrderingPlan[];
   comboConfig?: ComboMealConfig;
   comboConfigByVariantId?: Record<string, ComboMealConfig>;
   // Source ordering identity carried by resolved combo-only clones. It is
@@ -282,6 +295,7 @@ export type MenuItem = {
   rankingNutrition?: Nutrition;
   source?: MenuSourceIdentity;
 
+  mealPreset?: MealPreset;
   ingredientRef?: string;
   ingredients?: string[];
   // Default components that are part of the product's composition but are

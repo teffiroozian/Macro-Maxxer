@@ -71,7 +71,7 @@ export function fromUniversalChipotleBuildConfiguration(configuration: CartBuild
     ),
     proteinPortionMode: (options.proteinPortionMode as ProteinPortionMode | undefined) ?? "normal",
     splitPortionModeById: Object.fromEntries(
-      configuration.ingredients
+      migratedIngredients
         .filter((ingredient) => Boolean(ingredient.portion))
         .map((ingredient) => [ingredient.id, ingredient.portion as SplitPortionMode])
     ),

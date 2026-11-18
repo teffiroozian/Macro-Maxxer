@@ -235,7 +235,11 @@ export function resolvePanelIngredientTabs(
       return tab !== INCLUDED_INGREDIENT_TAB && match ? ingredientMatchesTab(match, tab) : false;
     });
     const addonMatch = addonLookup.get(label.toLowerCase());
+    const presetSelection = item.mealPreset?.selections.find(({ itemId }) => itemId.toLowerCase() === normalizedId);
+    const presetUnit = presetSelection && Object.fromEntries(Object.entries(presetSelection.nutrition)
+      .map(([key, value]) => [key, value / presetSelection.quantity]));
     const nutrition = normalizeNutrition(
+      presetUnit ??
       resolveIngredientRelationshipNutrition(
         item,
         ingredientId,

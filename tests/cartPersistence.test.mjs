@@ -65,3 +65,25 @@ test('corrupt or unsupported storage is ignored rather than interpreted as an em
   assert.equal(deserializeCartItems('{not json'), null);
   assert.equal(deserializeCartItems(JSON.stringify({ version: 99, items: [standardItem] })), null);
 });
+
+test('mixed legacy meal snapshots keep their panels and quantities when the catalog cannot resolve them', async () => {
+  const { buildCartMenuItemFromState } = await import('../lib/cart/buildItemAdapters.ts');
+  const { buildCartNutritionTotals } = await import('../lib/cart/nutrition.ts');
+  const items = ['chipotle', 'chickfila', 'starbucks', 'mcdonalds'].map((restaurantId, index) => ({
+    ...standardItem,
+    restaurantId,
+    id: `historic-${index}`,
+    quantity: index + 1,
+    nutritionPerItem: { ...standardItem.nutritionPerItem, sodium: 40 + index },
+  }));
+  const restored = deserializeCartItems(serializeCartItems(items));
+  assert.deepEqual(restored, items);
+  for (const item of restored) {
+    assert.deepEqual(buildCartMenuItemFromState(item, null).nutrition, item.nutritionPerItem);
+  }
+  assert.equal(buildCartNutritionTotals(restored).calories, 6000);
+  assert.equal(buildCartNutritionTotals(restored).sodium, 420);
+  delete restored[0].nutritionPerItem.sodium;
+  assert.equal(buildCartNutritionTotals(restored).sodium, undefined);
+  assert.equal(buildCartNutritionTotals(restored).calories, 6000);
+});

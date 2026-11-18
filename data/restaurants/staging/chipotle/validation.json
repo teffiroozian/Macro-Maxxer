@@ -38,12 +38,12 @@
       "details": {
         "blockers": 2,
         "summary": {
-          "items": 63,
-          "standardItems": 55,
+          "items": 77,
+          "standardItems": 69,
           "buildYourOwnItems": 8,
           "ingredients": 54,
-          "nutritionRecords": 468,
-          "completeNutritionRecords": 460,
+          "nutritionRecords": 479,
+          "completeNutritionRecords": 471,
           "recordsMissingCoreMacros": 8,
           "nutritionConflicts": 0,
           "blockers": 2
@@ -57,18 +57,18 @@
   },
   "errors": [],
   "summary": {
-    "items": 63,
-    "standardItems": 55,
+    "items": 77,
+    "standardItems": 69,
     "buildYourOwnItems": 8,
     "ingredients": 54,
-    "nutritionRecords": 468,
-    "completeNutritionRecords": 460,
+    "nutritionRecords": 479,
+    "completeNutritionRecords": 471,
     "recordsMissingCoreMacros": 8,
     "nutritionConflicts": 0,
     "blockers": 2
   },
   "runtimeProjection": {
-    "items": 61,
+    "items": 75,
     "ingredients": 74,
     "excluded": 4,
     "referenceErrors": [],

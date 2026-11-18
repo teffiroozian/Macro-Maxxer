@@ -1,0 +1,82 @@
+{
+  "valid": true,
+  "readyForApproval": false,
+  "checks": {
+    "structure": {
+      "passed": true,
+      "errors": 0,
+      "warnings": 0,
+      "info": 0,
+      "details": {}
+    },
+    "sources": {
+      "passed": true,
+      "errors": 0,
+      "warnings": 0,
+      "info": 0,
+      "details": {}
+    },
+    "freshness": {
+      "passed": true,
+      "errors": 0,
+      "warnings": 0,
+      "info": 0,
+      "details": {}
+    },
+    "nutrition": {
+      "passed": true,
+      "errors": 0,
+      "warnings": 0,
+      "info": 0,
+      "details": {}
+    },
+    "readiness": {
+      "passed": true,
+      "errors": 0,
+      "warnings": 3,
+      "info": 0,
+      "details": {
+        "blockers": 3,
+        "summary": {
+          "items": 174,
+          "standardItems": 174,
+          "buildYourOwnItems": 0,
+          "ingredients": 454,
+          "nutritionRecords": 710,
+          "completeNutritionRecords": 593,
+          "recordsMissingCoreMacros": 117,
+          "nutritionConflicts": 0,
+          "blockers": 3
+        }
+      }
+    }
+  },
+  "errorCounts": {},
+  "warningCounts": {
+    "modifier_macros_unverified": 20,
+    "core_nutrition_missing": 26
+  },
+  "errors": [],
+  "summary": {
+    "items": 174,
+    "standardItems": 174,
+    "buildYourOwnItems": 0,
+    "ingredients": 454,
+    "nutritionRecords": 710,
+    "completeNutritionRecords": 593,
+    "recordsMissingCoreMacros": 117,
+    "nutritionConflicts": 0,
+    "blockers": 3
+  },
+  "runtimeProjection": {
+    "items": 174,
+    "ingredients": 337,
+    "excluded": 117,
+    "referenceErrors": [],
+    "ids": {
+      "fromRegistry": 976,
+      "minted": 0,
+      "conflicts": 0
+    }
+  }
+}

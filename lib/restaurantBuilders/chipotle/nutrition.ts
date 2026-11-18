@@ -1,4 +1,7 @@
-import type { IngredientItem } from "@/types/menu";
+import { NUTRITION_KEYS } from "@/lib/nutrition";
+import { sumMealPresetContributions } from "@/lib/ordering/mealPreset";
+import { buildHighProteinBuildConfiguration } from "./highProtein";
+import type { IngredientItem, MenuItem } from "@/types/menu";
 import type { Nutrition } from "@/types/nutrition";
 import { resolveEffectiveIngredientNutrition } from "@/lib/ingredientNutrition";
 import {
@@ -222,4 +225,26 @@ export function calculateChipotleIngredientNutritionById(
   );
 
   return Object.fromEntries(contributions);
+}
+
+// Match at the resolved serving level so legacy fractional quantities and
+// current explicit portion modes can restore the same verified component.
+export function calculateChipotlePresetNutrition(
+  item: MenuItem,
+  configuration: ChipotleBuildConfiguration,
+  ingredients: IngredientItem[],
+) {
+  const preset = item.mealPreset;
+  if (!preset) return undefined;
+  const original = buildHighProteinBuildConfiguration(item, ingredients);
+  const factory = calculateChipotleIngredientNutritionById(original, ingredients);
+  const current = calculateChipotleIngredientNutritionById(configuration, ingredients);
+  const reviewed = new Map(preset.selections.map(({ itemId, nutrition }) => [itemId, nutrition]));
+  const byIngredient = Object.fromEntries(Object.entries(current).map(([id, panel]) => [
+    id,
+    factory[id] && NUTRITION_KEYS.every((key) => factory[id][key] === panel[key])
+      ? reviewed.get(id) ?? panel
+      : panel,
+  ]));
+  return { byIngredient, nutrition: sumMealPresetContributions(Object.values(byIngredient)) };
 }

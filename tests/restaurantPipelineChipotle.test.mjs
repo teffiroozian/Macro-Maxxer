@@ -281,7 +281,7 @@ test("Chipotle adapter: display order is carried only where the source states it
 
 test("Chipotle adapter: what it does not import is on the record", () => {
   const codes = fixtureDraft().issues.map((issue) => issue.code);
-  for (const code of ["portion_choices_without_amounts", "non_food_items_not_imported", "preconfigured_meals_not_imported"]) {
+  for (const code of ["portion_choices_without_amounts", "preconfigured_meals_not_imported"]) {
     assert.ok(codes.includes(code), code);
   }
 });
@@ -427,9 +427,8 @@ test("parity: differences are reported and classified, not hidden", async () => 
   assert.equal(dietCoke.classification, "generated_departs_from_source");
   assert.match(dietCoke.reason, /carbs: generated 0, draft has none/);
 
-  // Each unrepresentable record is counted once as a missing item and once as a missing id.
-  assert.equal(report.gapCounts.preset_compositions, 22);
-  assert.equal(report.gapCounts.structural_records, 6);
+  assert.equal(report.gapCounts.preset_compositions ?? 0, 0);
+  assert.equal(report.gapCounts.structural_records ?? 0, 0);
   for (const closed of ["composed_nutrition", "default_selections", "mixed_portion_policy", "multiplier_portions_counted_missing", "stable_ids", "context_ingredients", "runtime_projection", "derived_nutrition", "ordering"]) {
     assert.equal(report.gapCounts[closed], undefined, closed);
   }
@@ -444,7 +443,7 @@ test("projection: live Chipotle ids are reused through the registry, never re-mi
 
   const liveItems = new Set(generated.items.map((item) => item.id));
   const liveIngredients = new Set(generated.ingredients.map((ingredient) => ingredient.id));
-  assert.equal(menu.items.filter((item) => liveItems.has(item.id)).length, 61);
+  assert.equal(menu.items.filter((item) => liveItems.has(item.id)).length, 75);
   assert.equal(menu.ingredients.filter((ingredient) => liveIngredients.has(ingredient.id)).length, 72);
   for (const id of ["chipotle-burrito", "chipotle-tacos-3", "chipotle-cmg-1007", "chipotle-fountain-22-fl-oz"]) assert.ok(menu.items.some((item) => item.id === id), id);
 
@@ -487,7 +486,7 @@ test("projection: builders carry the live runtime structure", async () => {
   assert.deepEqual(structural, []);
   const idSection = report.sections.find((section) => section.name === "Stable ids");
   // 246 compared before catering builders stopped being imported.
-  assert.deepEqual([idSection.compared, idSection.matched], [244, 219]);
+  assert.deepEqual([idSection.compared, idSection.matched], [244, 233]);
 });
 
 test("projection: a record without complete nutrition is withheld, not zero-filled", async () => {
@@ -553,8 +552,9 @@ test("parity report renders every section and classification", async () => {
   const { report, draft } = await real;
   const markdown = renderParityReport(report, draft);
   for (const section of report.sections) assert.ok(markdown.includes(`| ${section.name} |`), section.name);
-  for (const heading of ["Missing universal functionality", "Legitimate Chipotle-specific behavior", "Generated menu departs from the raw source"]) {
+  for (const heading of ["Legitimate Chipotle-specific behavior", "Generated menu departs from the raw source"]) {
     assert.ok(markdown.includes(`## ${heading}`), heading);
   }
+  assert.ok(!markdown.includes("## Missing universal functionality"));
   assert.ok(!markdown.includes("## Unexplained"));
 });

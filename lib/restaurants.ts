@@ -15,22 +15,17 @@ const restaurantIndex = restaurants as RestaurantIndexEntry[];
 // in this graph.
 const runtimeMenuLoaders: Record<string, () => Promise<RestaurantMenu>> = {
   chickfila: async () =>
-    (await import("@/lib/restaurantBuilders/chickfila/generatedRuntimeAdapter")).CHICKFILA_GENERATED_RUNTIME_MENU,
-  // Local preview switch: with NEXT_PUBLIC_CHIPOTLE_PIPELINE_PREVIEW=1 the
-  // Chipotle menu comes from the import pipeline's staging output instead of
-  // the generated dataset. Off by default; never set it for a deployed build.
+    (await import("@/lib/restaurantBuilders/chickfila/runtimeMenu")).getChickfilaRuntimeMenu(),
   chipotle: async () =>
-    process.env.NEXT_PUBLIC_CHIPOTLE_PIPELINE_PREVIEW === "1"
-      ? (await import("@/lib/restaurantBuilders/chipotle/pipelinePreview")).CHIPOTLE_PIPELINE_PREVIEW_MENU
-      : (await import("@/lib/restaurantBuilders/chipotle/generatedRuntimeAdapter")).CHIPOTLE_GENERATED_RUNTIME_MENU,
+    (await import("@/lib/restaurantBuilders/chipotle/runtimeMenu")).getChipotleRuntimeMenu(),
   habit: async () => (await import("@/data/restaurants/habit.json")).default as RestaurantMenu,
   mcdonalds: async () =>
-    (await import("@/lib/restaurantBuilders/mcdonalds/generatedRuntimeAdapter")).MCDONALDS_GENERATED_RUNTIME_MENU,
+    (await import("@/lib/restaurantBuilders/mcdonalds/runtimeMenu")).getMcDonaldsRuntimeMenu(),
   mod: async () => (await import("@/data/restaurants/mod.json")).default as RestaurantMenu,
   panda: async () => (await import("@/data/restaurants/panda.json")).default as RestaurantMenu,
   panera: async () => (await import("@/data/restaurants/panera.json")).default as RestaurantMenu,
   starbucks: async () =>
-    (await import("@/lib/restaurantBuilders/starbucks/generatedRuntimeAdapter")).STARBUCKS_GENERATED_RUNTIME_MENU,
+    (await import("@/lib/restaurantBuilders/starbucks/runtimeMenu")).getStarbucksRuntimeMenu(),
   subway: async () => (await import("@/data/restaurants/subway.json")).default as RestaurantMenu,
 };
 

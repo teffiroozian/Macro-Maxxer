@@ -324,6 +324,7 @@ export function resolveComboBundleOptions(
       servingType: "combo" as const,
       nutrition: included.reduce((sum, item, componentIndex) => {
         const configuredComponent = option.components[componentIndex];
+        if (configuredComponent.role === "non-nutrition") return sum;
         const componentNutrition = item.variants?.find((variant) => variant.id === configuredComponent.variantId)?.nutrition ?? item.nutrition;
         return {
         calories: sum.calories + componentNutrition.calories,

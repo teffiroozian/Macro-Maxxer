@@ -1,3 +1,4 @@
+import { validateOrderingPlan } from "../../lib/ordering/evaluate";
 import {
   addFinding,
   createValidationContext,
@@ -111,6 +112,37 @@ export function validateDraft(draft: RestaurantDraft, options: ValidateDraftOpti
     claimId(ingredient.id, "ingredient");
     ingredient.sources.forEach((ref) => checkRef(ref, ingredient.id));
     checkNutrition(ingredient.nutrition, ingredient.id);
+  }
+
+  const itemIds = new Set(draft.items.map((item) => item.id));
+  const allPlans = [
+    ...Object.entries(draft.orderingPlans ?? {}),
+    ...Object.entries(draft.additionalOrderingPlans ?? {}).flatMap(([owner, plans]) => plans.map((plan) => [owner, plan] as const)),
+  ];
+  for (const [owner, plan] of allPlans) {
+    if (!itemIds.has(owner)) addFinding(context, "error", "structure", "ordering_plan_owner_missing", `Ordering plan owner "${owner}" does not exist.`);
+    for (const error of validateOrderingPlan(plan)) {
+      addFinding(context, "error", "structure", "ordering_plan_invalid", `${owner}: ${error}`, { recordIds: [owner] });
+    }
+  }
+
+  const graph = draft.orderingGraph;
+  if (graph) {
+    checkRef(graph.source, "ordering graph");
+    const groupIds = new Set(graph.groups.map((group) => group.id));
+    if (groupIds.size !== graph.groups.length || groupIds.has("")) {
+      addFinding(context, "error", "structure", "invalid_ordering_group_id", "Ordering graph group IDs must be nonempty and unique.");
+    }
+    for (const group of graph.groups) {
+      for (const option of group.options) {
+        const child = option.referencedItemGroupId;
+        if (child && !groupIds.has(child)) {
+          addFinding(context, "error", "structure", "ordering_group_missing", `Ordering group "${group.id}" references missing group "${child}".`, {
+            recordIds: [group.id, child],
+          });
+        }
+      }
+    }
   }
 
   const now = Date.parse(options.now ?? draft.generatedAt);

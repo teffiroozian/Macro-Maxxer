@@ -1,0 +1,592 @@
+{
+  "registry": "/Users/hateffiroozian/Developer/macro-maxxer-data/data/restaurants/id-registry/mcdonalds.json",
+  "additions": [],
+  "conflicts": [],
+  "excluded": [
+    {
+      "id": "mcd-safe-200424-butter",
+      "name": "Salted Butter",
+      "reason": "missing protein, carbs, totalFat"
+    },
+    {
+      "id": "mcd-safe-200424-folded-egg",
+      "name": "Folded Egg",
+      "reason": "missing protein, carbs, totalFat"
+    },
+    {
+      "id": "mcd-safe-200424-breakfast-sauce",
+      "name": "Breakfast Sauce",
+      "reason": "missing protein, carbs, totalFat"
+    },
+    {
+      "id": "mcd-safe-200424-bagel",
+      "name": "Plain Bagel",
+      "reason": "missing protein, carbs, totalFat"
+    },
+    {
+      "id": "mcd-safe-200424-round-egg",
+      "name": "Round Egg",
+      "reason": "missing protein, carbs, totalFat"
+    },
+    {
+      "id": "mcd-safe-200876-butter",
+      "name": "Salted Butter",
+      "reason": "missing protein, carbs, totalFat"
+    },
+    {
+      "id": "mcd-safe-200876-folded-egg",
+      "name": "Folded Egg",
+      "reason": "missing protein, carbs, totalFat"
+    },
+    {
+      "id": "mcd-safe-200876-breakfast-sauce",
+      "name": "Breakfast Sauce",
+      "reason": "missing protein, carbs, totalFat"
+    },
+    {
+      "id": "mcd-safe-200876-bagel",
+      "name": "Plain Bagel",
+      "reason": "missing protein, carbs, totalFat"
+    },
+    {
+      "id": "mcd-safe-201030-butter",
+      "name": "Salted Butter",
+      "reason": "missing protein, carbs, totalFat"
+    },
+    {
+      "id": "mcd-safe-201030-sausage",
+      "name": "Sausage Patty",
+      "reason": "missing protein, carbs, totalFat"
+    },
+    {
+      "id": "mcd-safe-201030-folded-egg",
+      "name": "Folded Egg",
+      "reason": "missing protein, carbs, totalFat"
+    },
+    {
+      "id": "mcd-safe-201030-breakfast-sauce",
+      "name": "Breakfast Sauce",
+      "reason": "missing protein, carbs, totalFat"
+    },
+    {
+      "id": "mcd-safe-201030-bagel",
+      "name": "Plain Bagel",
+      "reason": "missing protein, carbs, totalFat"
+    },
+    {
+      "id": "mcd-safe-201030-round-egg",
+      "name": "Round Egg",
+      "reason": "missing protein, carbs, totalFat"
+    },
+    {
+      "id": "mcd-safe-200145-butter",
+      "name": "Salted Butter",
+      "reason": "missing protein, carbs, totalFat"
+    },
+    {
+      "id": "mcd-safe-200145-steak",
+      "name": "Breakfast Steak Patty",
+      "reason": "missing protein, carbs, totalFat"
+    },
+    {
+      "id": "mcd-safe-200145-salt",
+      "name": "Salt",
+      "reason": "missing calories, protein, carbs, totalFat"
+    },
+    {
+      "id": "mcd-safe-200145-onions",
+      "name": "Grilled Onions",
+      "reason": "missing protein, carbs, totalFat"
+    },
+    {
+      "id": "mcd-safe-200145-folded-egg",
+      "name": "Folded Egg",
+      "reason": "missing protein, carbs, totalFat"
+    },
+    {
+      "id": "mcd-safe-200145-breakfast-sauce",
+      "name": "Breakfast Sauce",
+      "reason": "missing protein, carbs, totalFat"
+    },
+    {
+      "id": "mcd-safe-200145-bagel",
+      "name": "Plain Bagel",
+      "reason": "missing protein, carbs, totalFat"
+    },
+    {
+      "id": "mcd-safe-200145-round-egg",
+      "name": "Round Egg",
+      "reason": "missing protein, carbs, totalFat"
+    },
+    {
+      "id": "mcd-safe-200300-folded-egg",
+      "name": "Folded Egg",
+      "reason": "missing protein, carbs, totalFat"
+    },
+    {
+      "id": "mcd-safe-200300-biscuit",
+      "name": "Biscuit",
+      "reason": "missing protein, carbs, totalFat"
+    },
+    {
+      "id": "mcd-safe-200300-round-egg",
+      "name": "Round Egg",
+      "reason": "missing protein, carbs, totalFat"
+    },
+    {
+      "id": "mcd-safe-200300-canadian-bacon",
+      "name": "Canadian Bacon",
+      "reason": "missing protein, carbs, totalFat"
+    },
+    {
+      "id": "mcd-safe-201256-folded-egg",
+      "name": "Folded Egg",
+      "reason": "missing protein, carbs, totalFat"
+    },
+    {
+      "id": "mcd-safe-201256-biscuit",
+      "name": "Biscuit",
+      "reason": "missing protein, carbs, totalFat"
+    },
+    {
+      "id": "mcd-safe-200302-folded-egg",
+      "name": "Folded Egg",
+      "reason": "missing protein, carbs, totalFat"
+    },
+    {
+      "id": "mcd-safe-200302-sausage",
+      "name": "Sausage Patty",
+      "reason": "missing protein, carbs, totalFat"
+    },
+    {
+      "id": "mcd-safe-200302-biscuit",
+      "name": "Biscuit",
+      "reason": "missing protein, carbs, totalFat"
+    },
+    {
+      "id": "mcd-safe-200302-round-egg",
+      "name": "Round Egg",
+      "reason": "missing protein, carbs, totalFat"
+    },
+    {
+      "id": "mcd-safe-200302-canadian-bacon",
+      "name": "Canadian Bacon",
+      "reason": "missing protein, carbs, totalFat"
+    },
+    {
+      "id": "mcd-safe-200301-sausage",
+      "name": "Sausage Patty",
+      "reason": "missing protein, carbs, totalFat"
+    },
+    {
+      "id": "mcd-safe-200301-biscuit",
+      "name": "Biscuit",
+      "reason": "missing protein, carbs, totalFat"
+    },
+    {
+      "id": "mcd-safe-200304-folded-egg",
+      "name": "Folded Egg",
+      "reason": "missing protein, carbs, totalFat"
+    },
+    {
+      "id": "mcd-safe-200304-mcgriddles-cakes",
+      "name": "McGriddles Cakes",
+      "reason": "missing protein, carbs, totalFat"
+    },
+    {
+      "id": "mcd-safe-200304-canadian-bacon",
+      "name": "Canadian Bacon",
+      "reason": "missing protein, carbs, totalFat"
+    },
+    {
+      "id": "mcd-safe-200304-round-egg",
+      "name": "Round Egg",
+      "reason": "missing protein, carbs, totalFat"
+    },
+    {
+      "id": "mcd-safe-200307-sausage",
+      "name": "Sausage Patty",
+      "reason": "missing protein, carbs, totalFat"
+    },
+    {
+      "id": "mcd-safe-200307-folded-egg",
+      "name": "Folded Egg",
+      "reason": "missing protein, carbs, totalFat"
+    },
+    {
+      "id": "mcd-safe-200307-mcgriddles-cakes",
+      "name": "McGriddles Cakes",
+      "reason": "missing protein, carbs, totalFat"
+    },
+    {
+      "id": "mcd-safe-200307-round-egg",
+      "name": "Round Egg",
+      "reason": "missing protein, carbs, totalFat"
+    },
+    {
+      "id": "mcd-safe-200307-canadian-bacon",
+      "name": "Canadian Bacon",
+      "reason": "missing protein, carbs, totalFat"
+    },
+    {
+      "id": "mcd-safe-200306-sausage",
+      "name": "Sausage Patty",
+      "reason": "missing protein, carbs, totalFat"
+    },
+    {
+      "id": "mcd-safe-200306-mcgriddles-cakes",
+      "name": "McGriddles Cakes",
+      "reason": "missing protein, carbs, totalFat"
+    },
+    {
+      "id": "mcd-safe-200306-canadian-bacon",
+      "name": "Canadian Bacon",
+      "reason": "missing protein, carbs, totalFat"
+    },
+    {
+      "id": "mcd-safe-200306-round-egg",
+      "name": "Round Egg",
+      "reason": "missing protein, carbs, totalFat"
+    },
+    {
+      "id": "mcd-safe-200306-folded-egg",
+      "name": "Folded Egg",
+      "reason": "missing protein, carbs, totalFat"
+    },
+    {
+      "id": "mcd-safe-200298-butter",
+      "name": "Salted Butter",
+      "reason": "missing protein, carbs, totalFat"
+    },
+    {
+      "id": "mcd-safe-200298-round-egg",
+      "name": "Round Egg",
+      "reason": "missing protein, carbs, totalFat"
+    },
+    {
+      "id": "mcd-safe-200298-canadian-bacon",
+      "name": "Canadian Bacon",
+      "reason": "missing protein, carbs, totalFat"
+    },
+    {
+      "id": "mcd-safe-200298-english-muffin",
+      "name": "English Muffin",
+      "reason": "missing protein, carbs, totalFat"
+    },
+    {
+      "id": "mcd-safe-200161-butter",
+      "name": "Salted Butter",
+      "reason": "missing protein, carbs, totalFat"
+    },
+    {
+      "id": "mcd-safe-200161-sausage",
+      "name": "Sausage Patty",
+      "reason": "missing protein, carbs, totalFat"
+    },
+    {
+      "id": "mcd-safe-200161-round-egg",
+      "name": "Round Egg",
+      "reason": "missing protein, carbs, totalFat"
+    },
+    {
+      "id": "mcd-safe-200161-english-muffin",
+      "name": "English Muffin",
+      "reason": "missing protein, carbs, totalFat"
+    },
+    {
+      "id": "mcd-safe-200161-canadian-bacon",
+      "name": "Canadian Bacon",
+      "reason": "missing protein, carbs, totalFat"
+    },
+    {
+      "id": "mcd-safe-200449-butter",
+      "name": "Salted Butter",
+      "reason": "missing protein, carbs, totalFat"
+    },
+    {
+      "id": "mcd-safe-200449-sausage",
+      "name": "Sausage Patty",
+      "reason": "missing protein, carbs, totalFat"
+    },
+    {
+      "id": "mcd-safe-200449-english-muffin",
+      "name": "English Muffin",
+      "reason": "missing protein, carbs, totalFat"
+    },
+    {
+      "id": "mcd-safe-200449-canadian-bacon",
+      "name": "Canadian Bacon",
+      "reason": "missing protein, carbs, totalFat"
+    },
+    {
+      "id": "mcd-safe-204401-chicken-strip",
+      "name": "McCrispy Chicken Strip",
+      "reason": "missing protein, carbs, totalFat"
+    },
+    {
+      "id": "mcd-safe-204401-flour-tortilla",
+      "name": "Flour Tortilla",
+      "reason": "missing protein, carbs, totalFat"
+    },
+    {
+      "id": "mcd-safe-204401-sauce",
+      "name": "McCrispy Ranch Sauce",
+      "reason": "missing protein, carbs, totalFat"
+    },
+    {
+      "id": "mcd-safe-204401-shredded-cheese",
+      "name": "Shredded Cheese",
+      "reason": "missing protein, carbs, totalFat"
+    },
+    {
+      "id": "mcd-safe-204402-chicken-strip",
+      "name": "McCrispy Chicken Strip",
+      "reason": "missing protein, carbs, totalFat"
+    },
+    {
+      "id": "mcd-safe-204402-flour-tortilla",
+      "name": "Flour Tortilla",
+      "reason": "missing protein, carbs, totalFat"
+    },
+    {
+      "id": "mcd-safe-204402-sauce",
+      "name": "Spicy Pepper Sauce",
+      "reason": "missing protein, carbs, totalFat"
+    },
+    {
+      "id": "mcd-safe-204402-shredded-cheese",
+      "name": "Shredded Cheese",
+      "reason": "missing protein, carbs, totalFat"
+    },
+    {
+      "id": "mcd-breakfast-200424-300654",
+      "name": "Clarified Butter",
+      "reason": "missing protein, carbs, totalFat"
+    },
+    {
+      "id": "mcd-breakfast-200876-300654",
+      "name": "Clarified Butter",
+      "reason": "missing protein, carbs, totalFat"
+    },
+    {
+      "id": "mcd-breakfast-201030-300654",
+      "name": "Clarified Butter",
+      "reason": "missing protein, carbs, totalFat"
+    },
+    {
+      "id": "mcd-breakfast-200145-300654",
+      "name": "Clarified Butter",
+      "reason": "missing protein, carbs, totalFat"
+    },
+    {
+      "id": "mcd-breakfast-200300-300310",
+      "name": "Salted Butter",
+      "reason": "missing protein, carbs, totalFat"
+    },
+    {
+      "id": "mcd-breakfast-200300-300654",
+      "name": "Clarified Butter",
+      "reason": "missing protein, carbs, totalFat"
+    },
+    {
+      "id": "mcd-breakfast-201256-300310",
+      "name": "Salted Butter",
+      "reason": "missing protein, carbs, totalFat"
+    },
+    {
+      "id": "mcd-breakfast-201256-300654",
+      "name": "Clarified Butter",
+      "reason": "missing protein, carbs, totalFat"
+    },
+    {
+      "id": "mcd-breakfast-200302-300310",
+      "name": "Salted Butter",
+      "reason": "missing protein, carbs, totalFat"
+    },
+    {
+      "id": "mcd-breakfast-200302-300654",
+      "name": "Clarified Butter",
+      "reason": "missing protein, carbs, totalFat"
+    },
+    {
+      "id": "mcd-breakfast-200301-300310",
+      "name": "Salted Butter",
+      "reason": "missing protein, carbs, totalFat"
+    },
+    {
+      "id": "mcd-breakfast-200304-300654",
+      "name": "Clarified Butter",
+      "reason": "missing protein, carbs, totalFat"
+    },
+    {
+      "id": "mcd-breakfast-200307-300654",
+      "name": "Clarified Butter",
+      "reason": "missing protein, carbs, totalFat"
+    },
+    {
+      "id": "mcd-breakfast-200298-300654",
+      "name": "Clarified Butter",
+      "reason": "missing protein, carbs, totalFat"
+    },
+    {
+      "id": "mcd-breakfast-200161-300654",
+      "name": "Clarified Butter",
+      "reason": "missing protein, carbs, totalFat"
+    },
+    {
+      "id": "mcd-breakfast-201306-302369",
+      "name": "Plain Bagel",
+      "reason": "missing protein, carbs, totalFat"
+    },
+    {
+      "id": "mcd-breakfast-200267-300777",
+      "name": "Scrambled Egg, Sausage & Vegetable Mix",
+      "reason": "missing protein, carbs, totalFat"
+    },
+    {
+      "id": "mcd-breakfast-200267-300422",
+      "name": "Flour Tortilla",
+      "reason": "missing protein, carbs, totalFat"
+    },
+    {
+      "id": "mcd-breakfast-200267-301518",
+      "name": "American Cheese",
+      "reason": "missing protein, carbs, totalFat"
+    },
+    {
+      "id": "mcd-breakfast-200322-300524",
+      "name": "Scrambled Eggs",
+      "reason": "missing protein, carbs, totalFat"
+    },
+    {
+      "id": "mcd-breakfast-200322-300131",
+      "name": "Biscuit",
+      "reason": "missing protein, carbs, totalFat"
+    },
+    {
+      "id": "mcd-breakfast-200322-300036",
+      "name": "Hash Browns",
+      "reason": "missing protein, carbs, totalFat"
+    },
+    {
+      "id": "mcd-breakfast-200322-300694",
+      "name": "Sausage Patty",
+      "reason": "missing protein, carbs, totalFat"
+    },
+    {
+      "id": "mcd-breakfast-200322-300310",
+      "name": "Salted Butter",
+      "reason": "missing protein, carbs, totalFat"
+    },
+    {
+      "id": "mcd-breakfast-200322-300654",
+      "name": "Clarified Butter",
+      "reason": "missing protein, carbs, totalFat"
+    },
+    {
+      "id": "mcd-breakfast-200322-300759",
+      "name": "Hotcake Syrup",
+      "reason": "missing protein, carbs, totalFat"
+    },
+    {
+      "id": "mcd-breakfast-200323-300757",
+      "name": "Hotcakes",
+      "reason": "missing protein, carbs, totalFat"
+    },
+    {
+      "id": "mcd-breakfast-200323-300524",
+      "name": "Scrambled Eggs",
+      "reason": "missing protein, carbs, totalFat"
+    },
+    {
+      "id": "mcd-breakfast-200323-300131",
+      "name": "Biscuit",
+      "reason": "missing protein, carbs, totalFat"
+    },
+    {
+      "id": "mcd-breakfast-200323-300759",
+      "name": "Hotcake Syrup",
+      "reason": "missing protein, carbs, totalFat"
+    },
+    {
+      "id": "mcd-breakfast-200323-300036",
+      "name": "Hash Browns",
+      "reason": "missing protein, carbs, totalFat"
+    },
+    {
+      "id": "mcd-breakfast-200323-300694",
+      "name": "Sausage Patty",
+      "reason": "missing protein, carbs, totalFat"
+    },
+    {
+      "id": "mcd-breakfast-200323-301643",
+      "name": "Salted Whipped Butter",
+      "reason": "missing protein, carbs, totalFat"
+    },
+    {
+      "id": "mcd-breakfast-200323-300310",
+      "name": "Salted Butter",
+      "reason": "missing protein, carbs, totalFat"
+    },
+    {
+      "id": "mcd-breakfast-200323-300654",
+      "name": "Clarified Butter",
+      "reason": "missing protein, carbs, totalFat"
+    },
+    {
+      "id": "mcd-breakfast-200325-300757",
+      "name": "Hotcakes",
+      "reason": "missing protein, carbs, totalFat"
+    },
+    {
+      "id": "mcd-breakfast-200325-300759",
+      "name": "Hotcake Syrup",
+      "reason": "missing protein, carbs, totalFat"
+    },
+    {
+      "id": "mcd-breakfast-200325-301643",
+      "name": "Salted Whipped Butter",
+      "reason": "missing protein, carbs, totalFat"
+    },
+    {
+      "id": "mcd-breakfast-200258-300757",
+      "name": "Hotcakes",
+      "reason": "missing protein, carbs, totalFat"
+    },
+    {
+      "id": "mcd-breakfast-200258-300759",
+      "name": "Hotcake Syrup",
+      "reason": "missing protein, carbs, totalFat"
+    },
+    {
+      "id": "mcd-breakfast-200258-300694",
+      "name": "Sausage Patty",
+      "reason": "missing protein, carbs, totalFat"
+    },
+    {
+      "id": "mcd-breakfast-200258-301643",
+      "name": "Salted Whipped Butter",
+      "reason": "missing protein, carbs, totalFat"
+    },
+    {
+      "id": "mcd-breakfast-200284-300123",
+      "name": "Oatmeal",
+      "reason": "missing protein, carbs, totalFat"
+    },
+    {
+      "id": "mcd-breakfast-200284-300167",
+      "name": "Diced Apples",
+      "reason": "missing protein, carbs, totalFat"
+    },
+    {
+      "id": "mcd-breakfast-200284-300165",
+      "name": "Cranberry Raisin Blend",
+      "reason": "missing protein, carbs, totalFat"
+    },
+    {
+      "id": "mcd-breakfast-200284-300091",
+      "name": "Light Cream",
+      "reason": "missing protein, carbs, totalFat"
+    }
+  ]
+}

@@ -1,3 +1,5 @@
+import { mcdonaldsAdapter } from "./adapters/mcdonalds";
+import { starbucksAdapter } from "./adapters/starbucks";
 // Usage: npm run pipeline -- <adapter-id> [--write-ids]
 //
 // Runs load → translate → normalize → validate → project for one restaurant
@@ -13,6 +15,7 @@ import { readFile } from "node:fs/promises";
 import { resolve } from "node:path";
 import { writeAtomically } from "../lib/write-atomically";
 import { findingTypeCounts } from "../validate/shared";
+import { chickFilAAdapter } from "./adapters/chick-fil-a";
 import { chipotleAdapter } from "./adapters/chipotle";
 import { modPizzaAdapter } from "./adapters/mod-pizza";
 import type { RestaurantAdapter, RestaurantDraft } from "./contracts";
@@ -23,11 +26,14 @@ import { checkRuntimeMenu, projectToRestaurantMenu, type RuntimeProjection } fro
 import { validateDraft, type DraftValidation } from "./validate";
 
 const ADAPTERS: Record<string, RestaurantAdapter<never>> = {
+  [mcdonaldsAdapter.id]: mcdonaldsAdapter as RestaurantAdapter<never>,
+  [starbucksAdapter.id]: starbucksAdapter as RestaurantAdapter<never>,
+  [chickFilAAdapter.id]: chickFilAAdapter as RestaurantAdapter<never>,
   [modPizzaAdapter.id]: modPizzaAdapter as RestaurantAdapter<never>,
   [chipotleAdapter.id]: chipotleAdapter as RestaurantAdapter<never>,
 };
 
-function reviewReport(draft: RestaurantDraft, validation: DraftValidation, projection: RuntimeProjection): string {
+function reviewReport(draft: RestaurantDraft, validation: DraftValidation, projection: RuntimeProjection, runtimeErrors: string[]): string {
   const { summary } = draft;
   const lines = [
     `# ${draft.restaurant.name} — import review (draft)`,
@@ -42,7 +48,7 @@ function reviewReport(draft: RestaurantDraft, validation: DraftValidation, proje
     `- Nutrition records: ${summary.nutritionRecords}, of which ${summary.completeNutritionRecords} have all four core macros`,
     `- Records missing core macros: ${summary.recordsMissingCoreMacros}`,
     `- Unresolved nutrition conflicts: ${summary.nutritionConflicts}`,
-    `- Publishable to the runtime schema today: ${projection.menu.items.length} items, ${projection.menu.ingredients?.length ?? 0} ingredients (${projection.excluded.length} excluded)`,
+    `- Projected into the runtime schema: ${projection.menu.items.length} items, ${projection.menu.ingredients?.length ?? 0} ingredients (${projection.excluded.length} excluded)`,
     `- Ids: ${projection.ids.registry.entries.length - projection.ids.additions.length} in the registry, ${projection.ids.additions.length} new, ${projection.ids.conflicts.length} conflicts`,
     "",
     "## Sources",
@@ -57,6 +63,9 @@ function reviewReport(draft: RestaurantDraft, validation: DraftValidation, proje
     if (issues.length === 0) continue;
     lines.push("", `## ${severity[0].toUpperCase()}${severity.slice(1)}s (${issues.length})`, "");
     lines.push(...issues.map((issue) => `- \`${issue.code}\` — ${issue.message}`));
+  }
+  if (runtimeErrors.length > 0) {
+    lines.push("", "## Runtime relationship errors", "", ...runtimeErrors.map((error) => `- ${error}`));
   }
   if (draft.unmatchedReferenceRows.length > 0) {
     lines.push("", `## Official nutrition rows not linked to a catalog record (${draft.unmatchedReferenceRows.length})`, "");
@@ -82,7 +91,8 @@ async function main(): Promise<void> {
     () => emptyRegistry(draft.restaurant.id),
   );
   const projection = projectToRestaurantMenu(draft, { registry });
-  const runtimeErrors = checkRuntimeMenu(projection.menu);
+  const runtimeErrors = [...projection.relationshipErrors, ...checkRuntimeMenu(projection.menu)];
+  validation.readyForApproval &&= runtimeErrors.length === 0 && projection.ids.conflicts.length === 0;
 
   const outputDir = resolve(process.cwd(), "data/restaurants/staging", draft.restaurant.id);
   await writeAtomically(resolve(outputDir, "draft.json"), `${JSON.stringify(draft)}\n`);
@@ -113,7 +123,7 @@ async function main(): Promise<void> {
       2,
     )}\n`,
   );
-  await writeAtomically(resolve(outputDir, "review.md"), reviewReport(draft, validation, projection));
+  await writeAtomically(resolve(outputDir, "review.md"), reviewReport(draft, validation, projection, runtimeErrors));
   await writeAtomically(resolve(outputDir, "runtime-menu.json"), `${JSON.stringify(projection.menu)}\n`);
   await writeAtomically(
     resolve(outputDir, "id-assignments.json"),

@@ -143,7 +143,7 @@ export function resolveFinalizedCartConfiguration({
     }
   }
   const nutritionPerItem = highProteinBuildConfiguration
-    ? calculateChipotleBuildNutrition(highProteinBuildConfiguration, ingredientItems ?? [])
+    ? item.mealPreset ? item.nutrition : calculateChipotleBuildNutrition(highProteinBuildConfiguration, ingredientItems ?? [])
     : standardConfiguration.nutrition;
   const macrosPerItem = macrosFromNutrition(nutritionPerItem);
 

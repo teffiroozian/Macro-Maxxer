@@ -1,0 +1,386 @@
+{
+  "registry": "/Users/hateffiroozian/Developer/macro-maxxer-data/data/restaurants/id-registry/starbucks.json",
+  "additions": [
+    {
+      "id": "starbucks-komodo-dragon-blend",
+      "kind": "item",
+      "keys": [
+        "src:10/whole-bean",
+        "name:coffees/komodo dragon blend"
+      ]
+    },
+    {
+      "id": "starbucks-caffè-verona",
+      "kind": "item",
+      "keys": [
+        "src:15/whole-bean",
+        "name:coffees/caffè verona"
+      ]
+    },
+    {
+      "id": "starbucks-espresso-roast",
+      "kind": "item",
+      "keys": [
+        "src:20/whole-bean",
+        "name:coffees/espresso roast"
+      ]
+    },
+    {
+      "id": "starbucks-starbucks-blonde-espresso-roast",
+      "kind": "item",
+      "keys": [
+        "src:2122186/whole-bean",
+        "name:coffees/starbucks blonde espresso roast"
+      ]
+    },
+    {
+      "id": "starbucks-starbucks-siren-s-blendtm",
+      "kind": "item",
+      "keys": [
+        "src:2123124/whole-bean",
+        "name:coffees/starbucks siren s blendtm"
+      ]
+    },
+    {
+      "id": "starbucks-starbucks-green-apron-blendtm",
+      "kind": "item",
+      "keys": [
+        "src:2123755/whole-bean",
+        "name:coffees/starbucks green apron blendtm"
+      ]
+    },
+    {
+      "id": "starbucks-starbucks-sunsera-blend",
+      "kind": "item",
+      "keys": [
+        "src:2124816/whole-bean",
+        "name:coffees/starbucks sunsera blend"
+      ]
+    },
+    {
+      "id": "starbucks-starbucks-1971-roasttm",
+      "kind": "item",
+      "keys": [
+        "src:22157/whole-bean",
+        "name:coffees/starbucks 1971 roasttm"
+      ]
+    },
+    {
+      "id": "starbucks-starbucks-via-instant-italian-roast",
+      "kind": "item",
+      "keys": [
+        "src:23/via",
+        "name:coffees/starbucks via instant italian roast"
+      ]
+    },
+    {
+      "id": "starbucks-italian-roast",
+      "kind": "item",
+      "keys": [
+        "src:23/whole-bean",
+        "name:coffees/italian roast"
+      ]
+    },
+    {
+      "id": "starbucks-starbucks-via-instant-pike-place-roast",
+      "kind": "item",
+      "keys": [
+        "src:24/via",
+        "name:coffees/starbucks via instant pike place roast"
+      ]
+    },
+    {
+      "id": "starbucks-pike-place-roast",
+      "kind": "item",
+      "keys": [
+        "src:24/whole-bean",
+        "name:coffees/pike place roast"
+      ]
+    },
+    {
+      "id": "starbucks-decaf-pike-place-roast",
+      "kind": "item",
+      "keys": [
+        "src:25/whole-bean",
+        "name:coffees/decaf pike place roast"
+      ]
+    },
+    {
+      "id": "starbucks-organic-yukon-blend",
+      "kind": "item",
+      "keys": [
+        "src:290/whole-bean",
+        "name:coffees/organic yukon blend"
+      ]
+    },
+    {
+      "id": "starbucks-guatemala-antigua",
+      "kind": "item",
+      "keys": [
+        "src:3/whole-bean",
+        "name:coffees/guatemala antigua"
+      ]
+    },
+    {
+      "id": "starbucks-decaf-sumatra",
+      "kind": "item",
+      "keys": [
+        "src:581/whole-bean",
+        "name:coffees/decaf sumatra"
+      ]
+    },
+    {
+      "id": "starbucks-sumatra",
+      "kind": "item",
+      "keys": [
+        "src:8/whole-bean",
+        "name:coffees/sumatra"
+      ]
+    },
+    {
+      "id": "starbucks-starbucks-via-instant-sweetened-iced-coffee",
+      "kind": "item",
+      "keys": [
+        "src:810/via",
+        "name:coffees/starbucks via instant sweetened iced coffee"
+      ]
+    },
+    {
+      "id": "starbucks-starbucks-via-instant-veranda-blend",
+      "kind": "item",
+      "keys": [
+        "src:860/via",
+        "name:coffees/starbucks via instant veranda blend"
+      ]
+    },
+    {
+      "id": "starbucks-veranda-blend",
+      "kind": "item",
+      "keys": [
+        "src:860/whole-bean",
+        "name:coffees/veranda blend"
+      ]
+    },
+    {
+      "id": "starbucks-starbucks-via-instant-decaf-italian-roast",
+      "kind": "item",
+      "keys": [
+        "src:868/via",
+        "name:coffees/starbucks via instant decaf italian roast"
+      ]
+    }
+  ],
+  "conflicts": [],
+  "excluded": [
+    {
+      "id": "starbucks-sku-11130111",
+      "name": "Komodo Dragon Blend® › 1lb",
+      "reason": "missing calories, protein, carbs, totalFat"
+    },
+    {
+      "id": "starbucks-10-whole-bean",
+      "name": "Komodo Dragon Blend®",
+      "reason": "no variant has complete nutrition"
+    },
+    {
+      "id": "starbucks-sku-11130115",
+      "name": "Caffè Verona® › 1lb",
+      "reason": "missing calories, protein, carbs, totalFat"
+    },
+    {
+      "id": "starbucks-15-whole-bean",
+      "name": "Caffè Verona®",
+      "reason": "no variant has complete nutrition"
+    },
+    {
+      "id": "starbucks-sku-11028472",
+      "name": "Espresso Roast › 1lb",
+      "reason": "missing calories, protein, carbs, totalFat"
+    },
+    {
+      "id": "starbucks-20-whole-bean",
+      "name": "Espresso Roast",
+      "reason": "no variant has complete nutrition"
+    },
+    {
+      "id": "starbucks-sku-11130045",
+      "name": "Starbucks® Blonde Espresso Roast › 1lb",
+      "reason": "missing calories, protein, carbs, totalFat"
+    },
+    {
+      "id": "starbucks-2122186-whole-bean",
+      "name": "Starbucks® Blonde Espresso Roast",
+      "reason": "no variant has complete nutrition"
+    },
+    {
+      "id": "starbucks-sku-11104434",
+      "name": "Starbucks Siren’s Blend™ › 1lb",
+      "reason": "missing calories, protein, carbs, totalFat"
+    },
+    {
+      "id": "starbucks-2123124-whole-bean",
+      "name": "Starbucks Siren’s Blend™",
+      "reason": "no variant has complete nutrition"
+    },
+    {
+      "id": "starbucks-sku-11144386",
+      "name": "Starbucks® Green Apron Blend™ › 1lb",
+      "reason": "missing calories, protein, carbs, totalFat"
+    },
+    {
+      "id": "starbucks-2123755-whole-bean",
+      "name": "Starbucks® Green Apron Blend™",
+      "reason": "no variant has complete nutrition"
+    },
+    {
+      "id": "starbucks-sku-11168404",
+      "name": "Starbucks® Sunsera Blend › 1lb",
+      "reason": "missing calories, protein, carbs, totalFat"
+    },
+    {
+      "id": "starbucks-2124816-whole-bean",
+      "name": "Starbucks® Sunsera Blend",
+      "reason": "no variant has complete nutrition"
+    },
+    {
+      "id": "starbucks-sku-11133510",
+      "name": "Starbucks 1971 Roast™ › 1lb",
+      "reason": "missing calories, protein, carbs, totalFat"
+    },
+    {
+      "id": "starbucks-22157-whole-bean",
+      "name": "Starbucks 1971 Roast™",
+      "reason": "no variant has complete nutrition"
+    },
+    {
+      "id": "starbucks-sku-11009768",
+      "name": "Starbucks VIA® Instant Italian Roast › 12 count",
+      "reason": "missing calories, protein, carbs, totalFat"
+    },
+    {
+      "id": "starbucks-23-via",
+      "name": "Starbucks VIA® Instant Italian Roast",
+      "reason": "no variant has complete nutrition"
+    },
+    {
+      "id": "starbucks-sku-11130113",
+      "name": "Italian Roast › 1lb",
+      "reason": "missing calories, protein, carbs, totalFat"
+    },
+    {
+      "id": "starbucks-23-whole-bean",
+      "name": "Italian Roast",
+      "reason": "no variant has complete nutrition"
+    },
+    {
+      "id": "starbucks-sku-11022748",
+      "name": "Starbucks VIA® Instant Pike Place® Roast › 12 count",
+      "reason": "missing calories, protein, carbs, totalFat"
+    },
+    {
+      "id": "starbucks-24-via",
+      "name": "Starbucks VIA® Instant Pike Place® Roast",
+      "reason": "no variant has complete nutrition"
+    },
+    {
+      "id": "starbucks-sku-11130114",
+      "name": "Pike Place® Roast › 1lb",
+      "reason": "missing calories, protein, carbs, totalFat"
+    },
+    {
+      "id": "starbucks-24-whole-bean",
+      "name": "Pike Place® Roast",
+      "reason": "no variant has complete nutrition"
+    },
+    {
+      "id": "starbucks-sku-11135844",
+      "name": "Decaf Pike Place® Roast › 1lb",
+      "reason": "missing calories, protein, carbs, totalFat"
+    },
+    {
+      "id": "starbucks-25-whole-bean",
+      "name": "Decaf Pike Place® Roast",
+      "reason": "no variant has complete nutrition"
+    },
+    {
+      "id": "starbucks-sku-11130107",
+      "name": "Organic Yukon Blend® › 1lb",
+      "reason": "missing calories, protein, carbs, totalFat"
+    },
+    {
+      "id": "starbucks-290-whole-bean",
+      "name": "Organic Yukon Blend®",
+      "reason": "no variant has complete nutrition"
+    },
+    {
+      "id": "starbucks-sku-11130106",
+      "name": "Guatemala Antigua › 1lb",
+      "reason": "missing calories, protein, carbs, totalFat"
+    },
+    {
+      "id": "starbucks-3-whole-bean",
+      "name": "Guatemala Antigua",
+      "reason": "no variant has complete nutrition"
+    },
+    {
+      "id": "starbucks-sku-11130109",
+      "name": "Decaf Sumatra › 1lb",
+      "reason": "missing calories, protein, carbs, totalFat"
+    },
+    {
+      "id": "starbucks-581-whole-bean",
+      "name": "Decaf Sumatra",
+      "reason": "no variant has complete nutrition"
+    },
+    {
+      "id": "starbucks-sku-11130110",
+      "name": "Sumatra › 1lb",
+      "reason": "missing calories, protein, carbs, totalFat"
+    },
+    {
+      "id": "starbucks-8-whole-bean",
+      "name": "Sumatra",
+      "reason": "no variant has complete nutrition"
+    },
+    {
+      "id": "starbucks-sku-11057246",
+      "name": "Starbucks VIA® Instant Sweetened Iced Coffee › 5 count",
+      "reason": "missing calories, protein, carbs, totalFat"
+    },
+    {
+      "id": "starbucks-810-via",
+      "name": "Starbucks VIA® Instant Sweetened Iced Coffee",
+      "reason": "no variant has complete nutrition"
+    },
+    {
+      "id": "starbucks-sku-11026073",
+      "name": "Starbucks VIA® Instant Veranda Blend® › Veranda Blend® VIA® Instant 12 count",
+      "reason": "missing calories, protein, carbs, totalFat"
+    },
+    {
+      "id": "starbucks-860-via",
+      "name": "Starbucks VIA® Instant Veranda Blend®",
+      "reason": "no variant has complete nutrition"
+    },
+    {
+      "id": "starbucks-sku-11130046",
+      "name": "Veranda Blend® › 1lb",
+      "reason": "missing calories, protein, carbs, totalFat"
+    },
+    {
+      "id": "starbucks-860-whole-bean",
+      "name": "Veranda Blend®",
+      "reason": "no variant has complete nutrition"
+    },
+    {
+      "id": "starbucks-sku-11009771",
+      "name": "Starbucks VIA® Instant Decaf Italian Roast › 12 count",
+      "reason": "missing calories, protein, carbs, totalFat"
+    },
+    {
+      "id": "starbucks-868-via",
+      "name": "Starbucks VIA® Instant Decaf Italian Roast",
+      "reason": "no variant has complete nutrition"
+    }
+  ]
+}

@@ -11,7 +11,7 @@ import {
 } from "@/data/restaurants/chipotle-generated-presentation";
 
 function resolveGeneratedBuildBaseItemId(item: MenuItem) {
-  const value = item.source?.generated?.menu.buildBaseItemId;
+  const value = item.mealPreset?.builderItemId ?? item.source?.generated?.menu.buildBaseItemId;
   return typeof value === "string" ? value.toLowerCase() : "";
 }
 
@@ -31,7 +31,7 @@ function resolveHighProteinEntree(item: MenuItem): ChipotleEntreeId {
 }
 
 function resolveHighProteinTacoShell(item: MenuItem): ChipotleTacoShell {
-  const ingredients = item.ingredients ?? [];
+  const ingredients = item.mealPreset?.selections.map(({ itemId }) => itemId) ?? item.ingredients ?? [];
   return ingredients.some((entry) => entry.toLowerCase().includes("soft-flour-tortilla"))
     ? "soft"
     : "crispy";
@@ -60,7 +60,7 @@ export function isChipotleEditablePresetBuildItem(item: MenuItem, restaurantId: 
   return (
     isChipotleHighProteinMenuItem(item, restaurantId) &&
     !isChipotleProteinCupItem(item, restaurantId) &&
-    (item.ingredients?.length ?? 0) > 0
+    (item.mealPreset?.selections.length ?? item.ingredients?.length ?? 0) > 0
   );
 }
 
@@ -96,14 +96,11 @@ export function buildHighProteinBuildConfiguration(
   ingredientItems: IngredientItem[] = []
 ): ChipotleBuildConfiguration {
   const highProteinEntree = resolveHighProteinEntree(item);
-  const selectedIngredientItems = (item.ingredients ?? []).reduce<Record<string, { quantity: number }>>(
-    (acc, entry) => {
-      const parsed = parseIncludedIngredientEntry(entry);
-      if (!parsed || parsed.defaultCount <= 0) return acc;
-      acc[parsed.ingredientId] = { quantity: parsed.defaultCount };
-      return acc;
-    },
-    {}
+  const selections = item.mealPreset?.selections.map(({ itemId, quantity }) => ({ ingredientId: itemId, defaultCount: quantity })) ??
+    (item.ingredients ?? []).flatMap((entry) => parseIncludedIngredientEntry(entry) ?? []);
+  const selectedIngredientItems = Object.fromEntries(
+    selections.filter(({ defaultCount }) => defaultCount > 0)
+      .map(({ ingredientId, defaultCount }) => [ingredientId, { quantity: defaultCount }]),
   );
   const proteinIngredientIds = getProteinIngredientIds(ingredientItems);
   const selectedProteinEntries = Object.entries(selectedIngredientItems)

@@ -25,6 +25,9 @@ type RawNutrition = {
 };
 
 type RawSize = {
+  default?: boolean;
+  recipe?: import("../../types/menu").SourceProvenanceValue;
+  defaultOptionValues?: import("../../types/menu").SourceProvenanceValue;
   name: string;
   sizeCode?: string;
   sku: string;
@@ -32,6 +35,7 @@ type RawSize = {
 };
 
 type RawDetailProduct = {
+  productOptions?: import("../../types/menu").SourceProvenanceValue;
   productNumber: number;
   formCode: string;
   productType: string;
@@ -173,18 +177,17 @@ function factIndex(nutrition: RawNutrition): Map<string, number> {
   return result;
 }
 
-function nutritionFor(raw: RawNutrition | undefined): Nutrition | undefined {
-  if (!raw) return undefined;
+export function readStarbucksSizeNutrition(raw: RawNutrition | undefined): Partial<Nutrition> {
+  if (!raw) return {};
   const rawCalories = raw.calories?.displayValue;
-  const calories = typeof rawCalories === "number" ? rawCalories : Number(rawCalories);
+  const calories = typeof rawCalories === "string" && rawCalories.trim() !== "" ? Number(rawCalories) : rawCalories;
   const facts = factIndex(raw);
-  const protein = facts.get("protein");
-  const carbs = facts.get("totalCarbs");
-  const totalFat = facts.get("totalFat");
-  if (![calories, protein, carbs, totalFat].every((value) => typeof value === "number" && Number.isFinite(value) && value >= 0)) {
-    return undefined;
+  const result: Partial<Nutrition> = {};
+  const core = { calories, protein: facts.get("protein"), carbs: facts.get("totalCarbs"), totalFat: facts.get("totalFat") } as const;
+  for (const field of Object.keys(core) as Array<keyof typeof core>) {
+    const value = core[field];
+    if (typeof value === "number" && Number.isFinite(value) && value >= 0) result[field] = value;
   }
-  const result: Nutrition = { calories, protein: protein as number, carbs: carbs as number, totalFat: totalFat as number };
   const optionalFacts: Array<[keyof Nutrition, string]> = [
     ["satFat", "saturatedFat"],
     ["transFat", "transFat"],
@@ -198,6 +201,12 @@ function nutritionFor(raw: RawNutrition | undefined): Nutrition | undefined {
     if (value !== undefined && Number.isFinite(value) && value >= 0) result[field] = value;
   }
   return result;
+}
+
+function nutritionFor(raw: RawNutrition | undefined): Nutrition | undefined {
+  const panel = readStarbucksSizeNutrition(raw);
+  return [panel.calories, panel.protein, panel.carbs, panel.totalFat].every((value) => value !== undefined)
+    ? panel as Nutrition : undefined;
 }
 
 function usableCategoryOccurrences(occurrences: CatalogOccurrence[]): CatalogOccurrence[] {
@@ -289,7 +298,7 @@ function sourceTrace(
   };
 }
 
-async function main(): Promise<void> {
+export async function buildStarbucksFromCaptures() {
   const raw = JSON.parse(await readFile(MENU_PATH, "utf8")) as RawStarbucksMenu;
   if (raw.region !== "US") throw new Error(`Expected Starbucks US data, received region ${raw.region}.`);
   if (raw.failures.length > 0) throw new Error(`Starbucks snapshot contains ${raw.failures.length} collection failures.`);
@@ -437,14 +446,19 @@ async function main(): Promise<void> {
     filteredRecords: filtered,
   };
 
+  return { raw, items, restaurantOutput, unresolvedOutput };
+}
+
+async function main(): Promise<void> {
+  const { items, restaurantOutput, unresolvedOutput } = await buildStarbucksFromCaptures();
   await Promise.all([
     writeAtomically(OUTPUT_PATH, `${JSON.stringify(restaurantOutput, null, 2)}\n`),
     writeAtomically(UNRESOLVED_PATH, `${JSON.stringify(unresolvedOutput, null, 2)}\n`),
   ]);
-  console.log(JSON.stringify({ output: OUTPUT_PATH, unresolvedOutput: UNRESOLVED_PATH, items: items.length, unresolved: unresolved.length, filtered: filtered.length }, null, 2));
+  console.log(JSON.stringify({ output: OUTPUT_PATH, unresolvedOutput: UNRESOLVED_PATH, items: items.length, unresolved: unresolvedOutput.records.length, filtered: unresolvedOutput.filteredRecords.length }, null, 2));
 }
 
-main().catch((error: unknown) => {
+if (process.argv[1] && resolve(process.argv[1]) === resolve("scripts/importers/starbucks.ts")) main().catch((error: unknown) => {
   console.error(error instanceof Error ? error.stack ?? error.message : error);
   process.exitCode = 1;
 });

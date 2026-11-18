@@ -2,7 +2,7 @@ import type { ItemVariant, MenuItem } from "@/types/menu";
 import type { CoreMacros, Nutrition } from "@/types/nutrition";
 import type { ResolvedPanelIngredient } from "@/lib/itemDetails/types";
 import { addonFat, menuItemFatWithFallback } from "@/lib/menuItemCalculations";
-import { addNutrition, normalizeNutrition } from "@/lib/nutrition";
+import { addNutrition, normalizeNutrition, OPTIONAL_NUTRITION_KEYS } from "@/lib/nutrition";
 
 const zeroCoreMacros: CoreMacros = {
   calories: 0,
@@ -55,8 +55,9 @@ export function calculateAddonTotals(addons: Array<MenuItem | undefined | null>)
 
 export function calculateIngredientCountTotals(
   ingredientCounts: Record<string, number>,
-  ingredients: ResolvedPanelIngredient[]
-): CoreMacros {
+  ingredients: ResolvedPanelIngredient[],
+  includeOptionalDeltas = false,
+): Nutrition {
   const ingredientLookup = new Map<string, ResolvedPanelIngredient>();
 
   ingredients.forEach((ingredient) => {
@@ -65,22 +66,26 @@ export function calculateIngredientCountTotals(
     ingredientLookup.set(ingredient.label.toLowerCase(), ingredient);
   });
 
-  return Object.entries(ingredientCounts).reduce<CoreMacros>((sum, [ingredientId, count]) => {
+  const applied = Object.entries(ingredientCounts).flatMap(([ingredientId, count]) => {
     const ingredient = ingredientLookup.get(ingredientId) ?? ingredientLookup.get(ingredientId.toLowerCase());
+    if (!ingredient || count === ingredient.defaultCount) return [];
+    return [{ ingredient, countDelta: count - ingredient.defaultCount, stateDelta: ingredient.nutritionDeltaByCount?.[count] }];
+  });
+  const totals = applied.reduce<Nutrition>((sum, { ingredient, countDelta, stateDelta }) => ({
+    calories: sum.calories + (stateDelta?.calories ?? (ingredient.nutrition.calories ?? 0) * countDelta),
+    protein: sum.protein + (stateDelta?.protein ?? (ingredient.nutrition.protein ?? 0) * countDelta),
+    carbs: sum.carbs + (stateDelta?.carbs ?? (ingredient.nutrition.carbs ?? 0) * countDelta),
+    totalFat: sum.totalFat + (stateDelta?.totalFat ?? (ingredient.nutrition.totalFat ?? 0) * countDelta),
+  }), zeroCoreMacros);
+  if (!includeOptionalDeltas || !applied.some(({ stateDelta }) => stateDelta)) return totals;
 
-    if (!ingredient) return sum;
-    const countDelta = count - ingredient.defaultCount;
-    if (countDelta === 0) return sum;
-
-    const stateDelta = ingredient.nutritionDeltaByCount?.[count];
-
-    return {
-      calories: sum.calories + (stateDelta?.calories ?? (ingredient.nutrition.calories ?? 0) * countDelta),
-      protein: sum.protein + (stateDelta?.protein ?? (ingredient.nutrition.protein ?? 0) * countDelta),
-      carbs: sum.carbs + (stateDelta?.carbs ?? (ingredient.nutrition.carbs ?? 0) * countDelta),
-      totalFat: sum.totalFat + (stateDelta?.totalFat ?? (ingredient.nutrition.totalFat ?? 0) * countDelta),
-    };
-  }, zeroCoreMacros);
+  for (const key of OPTIONAL_NUTRITION_KEYS) {
+    const deltas = applied.map(({ ingredient, countDelta, stateDelta }) =>
+      stateDelta ? stateDelta[key] : ingredient.nutrition[key] === undefined ? undefined : ingredient.nutrition[key] * countDelta,
+    );
+    totals[key] = deltas.every((delta) => delta !== undefined) ? deltas.reduce((sum, delta) => sum + delta, 0) : undefined;
+  }
+  return totals;
 }
 
 export function calculateComboNutritionTotals({

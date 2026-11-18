@@ -45,6 +45,7 @@ interface RawMenuEntry {
   dotComVisible?: RawValue;
   isSellable?: RawValue;
   disabled?: RawValue;
+  isEdible?: RawValue;
   status?: RawValue;
   modifierType?: RawValue;
   modifierTypeGrouping?: RawValue;
@@ -1586,7 +1587,7 @@ function buildSourceTrace(
   };
 }
 
-async function main(): Promise<void> {
+export async function buildChickFilAFromCaptures() {
   const [
     menuText,
     nutritionText,
@@ -3324,6 +3325,8 @@ async function main(): Promise<void> {
       sourceItemGroupId: stringValue(group.itemGroupId),
       options: group.items.map((entry, optionIndex) => ({
         optionIndex,
+        disabled: typeof entry.disabled === "boolean" ? entry.disabled : null,
+        isEdible: typeof entry.isEdible === "boolean" ? entry.isEdible : null,
         name: stringValue(entry.name) ?? null,
         tag: stringValue(entry.tag) ?? null,
         itemClass: stringValue(entry.itemClass) ?? null,
@@ -3755,34 +3758,35 @@ async function main(): Promise<void> {
     records: [...unresolvedRecords, ...syntheticUnresolvedRecords],
   };
 
+  const summary = {
+    output: "data/restaurants/chick-fil-a/generated/restaurant.json",
+    unresolvedOutput: "data/restaurants/chick-fil-a/generated/unresolved.json",
+    logicalRecords: records.length + syntheticMealContainerCount,
+    menuItems: menuItems.length,
+    ingredients: ingredients.length,
+    nutritionRows: nutritionRows.length,
+    orderingNutritionRows: orderingNutrition.items.length,
+    matches: classification,
+    orderingSystemMatches: orderingNutritionAttached,
+    contextualOrderingSystemMatches: contextualNutritionResolved,
+    nutritionAttached: nutritionResolved,
+    unresolved: unresolvedRecords.length + syntheticUnresolvedRecords.length,
+  };
+  return { restaurantOutput, unresolvedOutput, summary };
+}
+
+async function main(): Promise<void> {
+  const { restaurantOutput, unresolvedOutput, summary } = await buildChickFilAFromCaptures();
   await Promise.all([
     writeAtomically(OUTPUT_PATH, `${JSON.stringify(restaurantOutput, null, 2)}\n`),
     writeAtomically(UNRESOLVED_PATH, `${JSON.stringify(unresolvedOutput, null, 2)}\n`),
   ]);
-
-  console.log(
-    JSON.stringify(
-      {
-        output: "data/restaurants/chick-fil-a/generated/restaurant.json",
-        unresolvedOutput: "data/restaurants/chick-fil-a/generated/unresolved.json",
-        logicalRecords: records.length + syntheticMealContainerCount,
-        menuItems: menuItems.length,
-        ingredients: ingredients.length,
-        nutritionRows: nutritionRows.length,
-        orderingNutritionRows: orderingNutrition.items.length,
-        matches: classification,
-        orderingSystemMatches: orderingNutritionAttached,
-        contextualOrderingSystemMatches: contextualNutritionResolved,
-        nutritionAttached: nutritionResolved,
-        unresolved: unresolvedRecords.length + syntheticUnresolvedRecords.length,
-      },
-      null,
-      2,
-    ),
-  );
+  console.log(JSON.stringify(summary, null, 2));
 }
 
-main().catch((error: unknown) => {
-  console.error(error instanceof Error ? error.message : error);
-  process.exitCode = 1;
-});
+if (process.argv[1] && resolve(process.argv[1]) === resolve("scripts/importers/chick-fil-a.ts")) {
+  main().catch((error: unknown) => {
+    console.error(error instanceof Error ? error.message : error);
+    process.exitCode = 1;
+  });
+}

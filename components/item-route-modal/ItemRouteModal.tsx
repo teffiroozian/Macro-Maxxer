@@ -65,6 +65,7 @@ import { buildChipotleIngredientMenuItems } from "@/lib/restaurantBuilders/chipo
 import { getIncludedIngredientIdsForChipotleBuild } from "@/lib/cart/buildItemAdapters";
 import {
     calculateChipotleBuildNutrition,
+    calculateChipotlePresetNutrition,
     calculateChipotleIngredientNutritionById,
 } from "@/lib/restaurantBuilders/chipotle/nutrition";
 import { diffChipotleBuildConfigurations } from "@/lib/restaurantBuilders/chipotle/buildDiff";
@@ -101,6 +102,10 @@ import {
 import { useItemCustomizationState } from "./useItemCustomizationState";
 import { useItemCartSubmission } from "./useItemCartSubmission";
 import { useCart } from "@/stores/cartStore";
+import { hasUnavailablePreviewCustomization, resolveCartStandardCatalogSelection, usesPreviewCatalogSelection } from "@/lib/cart/cartItemLookup";
+import { resolveSavedBuildMode } from "@/lib/cart/buildItemAdapters";
+import { getChipotleBuilderEntryHref } from "@/lib/restaurantBuilders/chipotle/builderNavigation";
+import OrderingPanel from "./OrderingPanel";
 import { getCartItemVariantId } from "@/lib/cart/itemAccessors";
 import { getRestaurantImagePresentation } from "@/lib/restaurantPresentation";
 import RestaurantItemImage from "@/components/ui/RestaurantItemImage";
@@ -231,18 +236,38 @@ export default function ItemRouteModal({
     const editCartItemId =
         editCartItemIdProp ?? searchParams.get("editCartItem");
     const { items } = useCart();
-    const editingCartItem = useMemo(() => {
+    const cartItemForModal = useMemo(() => {
         if (!editCartItemId) return null;
 
         return (
             items.find(
                 (cartItem) =>
                     cartItem.id === editCartItemId &&
-                    cartItem.restaurantId === restaurantId &&
-                    cartItem.itemId === (item.id ?? item.name),
+                    cartItem.restaurantId === restaurantId,
             ) ?? null
         );
-    }, [editCartItemId, item.id, item.name, items, restaurantId]);
+    }, [editCartItemId, items, restaurantId]);
+    const previewCartSelection = useMemo(() =>
+        cartItemForModal && usesPreviewCatalogSelection(cartItemForModal.restaurantId)
+            ? resolveCartStandardCatalogSelection(cartItemForModal)
+            : null,
+        [cartItemForModal],
+    );
+    const editingCartItem = useMemo(() => {
+        if (!cartItemForModal) return null;
+        const itemId = item.id ?? item.name;
+        if (previewCartSelection?.item.id === itemId && cartItemForModal.selection.type === "standard") {
+            const variantId = previewCartSelection.variant?.id;
+            return {
+                ...cartItemForModal,
+                variantId,
+                selection: { ...cartItemForModal.selection, variantId },
+            };
+        }
+        return cartItemForModal.itemId === itemId ? cartItemForModal : null;
+    }, [cartItemForModal, item.id, item.name, previewCartSelection]);
+    const unavailableInCatalogPreview = usesPreviewCatalogSelection(restaurantId) &&
+        editingCartItem?.selection.type === "standard" && (!previewCartSelection || hasUnavailablePreviewCustomization(editingCartItem));
 
     useEffect(() => {
         trackMenuItemView({
@@ -369,19 +394,21 @@ export default function ItemRouteModal({
     // ingredient-category builder lives on the full restaurant build page) —
     // for these the cart Preview's only "Customize" action is a route out to
     // that page, so the modal never enters an internal edit stage for them.
-    const isBuildYourOwnCartItem =
-        editingCartItem?.selection.type === "build-your-own";
     // A from-scratch build (not one of the catalog High Protein presets) —
     // these have no "original" to diff/reset against, but otherwise share
     // every bit of the preset review/customize machinery below, since both
     // are ultimately just selectedChipotleIngredientItems hydrated from a
     // CartBuildConfiguration.
-    const isTrueBuildYourOwnCartItem =
-        isBuildYourOwnCartItem && !isChipotlePrebuiltBuilderItem;
+    const savedBuildMode = resolveSavedBuildMode(editingCartItem);
+    const isTrueBuildYourOwnCartItem = savedBuildMode === "chipotle" && !isChipotlePrebuiltBuilderItem;
+    const unsupportedBuildEdit = savedBuildMode === "snapshot";
+    const builderEntryHref = restaurantId === "chipotle" && !editingCartItem
+        ? getChipotleBuilderEntryHref(restaurantPath, item.id, builderConfig)
+        : undefined;
     const usesChipotleBuildReview =
         isChipotlePrebuiltBuilderItem || isTrueBuildYourOwnCartItem;
     const editingBuildConfiguration =
-        editingCartItem?.selection.type === "build-your-own"
+        savedBuildMode === "chipotle" && editingCartItem?.selection.type === "build-your-own"
             ? editingCartItem.selection.buildConfiguration
             : undefined;
     const chipotleBuildConfiguration =
@@ -852,6 +879,7 @@ export default function ItemRouteModal({
             calculateIngredientCountTotals(
                 ingredientCounts,
                 resolvedIngredients,
+                true,
             ),
         [ingredientCounts, resolvedIngredients],
     );
@@ -1407,13 +1435,16 @@ export default function ItemRouteModal({
             selectedChipotleTacoShellId,
         ],
     );
+    const resolvedPresetNutrition = useMemo(() => calculateChipotlePresetNutrition(
+        item, chipotleBuildConfigurationForTotals, ingredients ?? [],
+    ), [item, chipotleBuildConfigurationForTotals, ingredients]);
     const chipotleAdjustedTotals = useMemo(
         () =>
-            calculateChipotleBuildNutrition(
+            resolvedPresetNutrition?.nutrition ?? calculateChipotleBuildNutrition(
                 chipotleBuildConfigurationForTotals,
                 ingredients ?? [],
             ),
-        [chipotleBuildConfigurationForTotals, ingredients],
+        [chipotleBuildConfigurationForTotals, ingredients, resolvedPresetNutrition],
     );
     // Per-ingredient macro contribution (at its currently selected portion)
     // for the Overview "Included in this Build" cards — reuses the exact
@@ -1421,21 +1452,21 @@ export default function ItemRouteModal({
     // numbers always add up to the same totals shown elsewhere.
     const chipotlePresetIngredientNutritionById = useMemo(
         () =>
-            calculateChipotleIngredientNutritionById(
+            resolvedPresetNutrition?.byIngredient ?? calculateChipotleIngredientNutritionById(
                 chipotleBuildConfigurationForTotals,
                 ingredients ?? [],
             ),
-        [chipotleBuildConfigurationForTotals, ingredients],
+        [chipotleBuildConfigurationForTotals, ingredients, resolvedPresetNutrition],
     );
     // "Base Nutrition" — always the original preset's totals, never the
     // live/current build. Fixed regardless of customization.
     const originalPresetNutrition = useMemo(
         () =>
-            calculateChipotleBuildNutrition(
+            item.mealPreset ? item.nutrition : calculateChipotleBuildNutrition(
                 originalPresetBuildConfiguration,
                 ingredients ?? [],
             ),
-        [originalPresetBuildConfiguration, ingredients],
+        [item, originalPresetBuildConfiguration, ingredients],
     );
     // Customize (n) / Added / Modified / Reset to Original all compare the
     // current saved build against the original preset — never the
@@ -1648,7 +1679,7 @@ export default function ItemRouteModal({
             adjustedTotals: chipotleAdjustedTotals,
         },
         onAfterSubmit: handleClose,
-        canSubmit: isComboSelectionComplete && areIngredientSelectionsComplete,
+        canSubmit: !unavailableInCatalogPreview && !builderEntryHref && !unsupportedBuildEdit && isComboSelectionComplete && areIngredientSelectionsComplete,
     });
     // Customize → Save Changes for an item already in the cart: commit the
     // edit, then land back on the (now up-to-date) Preview state instead of
@@ -1665,6 +1696,16 @@ export default function ItemRouteModal({
     const handleIncrementQuantity = () => {
         setQuantity((prev) => prev + 1);
     };
+
+    const [orderingPlanId, setOrderingPlanId] = useState<string>();
+    const savedOrdering = editingCartItem?.selection.type === "standard" && editingCartItem.selection.ordering;
+    const availableOrderingPlans = [
+        ...(item.orderingPlan ? [item.orderingPlan] : []),
+        ...(item.additionalOrderingPlans ?? []),
+    ];
+    const activeOrderingPlan = availableOrderingPlans.find((plan) =>
+        plan.id === (savedOrdering ? savedOrdering.planId : orderingPlanId),
+    );
 
     return (
         <div
@@ -1684,6 +1725,11 @@ export default function ItemRouteModal({
             <div className={IS_CAPACITOR_BUILD
                 ? "item-route-modal-root relative flex h-[var(--app-viewport-height)] w-full flex-col overflow-hidden bg-white dark:bg-surface-card"
                 : "item-route-modal-root relative flex h-[min(92dvh,calc(100dvh-var(--safe-area-top)))] w-full flex-col overflow-hidden rounded-t-3xl bg-white dark:bg-surface-card shadow-[0_24px_70px_rgba(15,23,42,0.35)] sm:h-auto sm:max-h-[88dvh] sm:min-h-[78dvh] sm:w-full sm:max-w-[660px] sm:rounded-3xl md:max-w-[800px] lg:max-w-[1000px]"}>
+                {savedOrdering || activeOrderingPlan ? (
+                    <OrderingPanel key={activeOrderingPlan?.id ?? "saved"} item={item} plan={activeOrderingPlan} restaurantId={restaurantId}
+                        savedItem={editingCartItem} initialMode={initialMode} onClose={handleClose}
+                        onBack={savedOrdering ? undefined : () => setOrderingPlanId(undefined)} />
+                ) : <>
                 <div
                     className={`absolute inset-x-0 top-0 z-20 flex items-center justify-between gap-3 border-b bg-white dark:bg-surface-card px-4 transition-[opacity,transform,box-shadow,border-color] duration-300 ease-out sm:px-6 lg:px-8 ${IS_CAPACITOR_BUILD ? "pb-3 pt-[calc(var(--safe-area-top)+0.75rem)]" : "py-3 sm:py-4"} ${
                         isOverviewCollapsed
@@ -1728,6 +1774,14 @@ export default function ItemRouteModal({
                     className="min-h-0 flex-1 overflow-x-hidden overflow-y-auto overscroll-contain"
                 >
                     <div className={`px-4 pb-8 sm:px-6 sm:pb-10 lg:px-8 ${IS_CAPACITOR_BUILD ? "pt-[calc(var(--safe-area-top)+1.75rem)]" : "pt-7 sm:pt-9 lg:pt-10"}`}>
+                        {!editingCartItem && availableOrderingPlans.map((plan) => (
+                            <button key={plan.id} type="button" className="mb-3 mr-2 rounded-lg border border-divider px-3 py-2 text-sm"
+                                onClick={() => setOrderingPlanId(plan.id)}>{plan.label ?? "Try source ordering preview"}</button>
+                        ))}
+                        {builderEntryHref && (
+                            <a className="mb-3 inline-block rounded-lg border border-divider px-3 py-2 text-sm" href={builderEntryHref}>Open Chipotle builder</a>
+                        )}
+                        {unsupportedBuildEdit && <p role="status">This saved build can be reviewed, but its builder is unavailable here.</p>}
                         <section
                             ref={overviewSectionRef}
                             className="item-overview-grid relative sm:gap-x-7 lg:gap-x-8"
@@ -2692,7 +2746,7 @@ export default function ItemRouteModal({
                                           ? "Done"
                                           : submitButtonLabel,
                                       onPrimaryAction: submitCartItem,
-                                      primaryDisabled: !isComboSelectionComplete || !areIngredientSelectionsComplete,
+                                      primaryDisabled: Boolean(builderEntryHref) || !isComboSelectionComplete || !areIngredientSelectionsComplete,
                                   }
                             : editingCartItem && cartPreviewStage === "preview"
                               ? {
@@ -2703,8 +2757,9 @@ export default function ItemRouteModal({
                                         handleIncrementQuantity,
                                     onDecrementQuantity:
                                         handleDecrementQuantity,
-                                    onCustomize: () =>
-                                        setCartPreviewStage("edit"),
+                                    onCustomize: unavailableInCatalogPreview
+                                        ? undefined
+                                        : () => setCartPreviewStage("edit"),
                                     primaryLabel: "Done",
                                     onPrimaryAction: handleClose,
                                 }
@@ -2716,7 +2771,7 @@ export default function ItemRouteModal({
                                       onSaveChanges:
                                           handleSaveCartItemChanges,
                                       saveLabel: "Save Changes",
-                                      saveDisabled: !isComboSelectionComplete || !areIngredientSelectionsComplete,
+                                      saveDisabled: unsupportedBuildEdit || !isComboSelectionComplete || !areIngredientSelectionsComplete,
                                   }
                                 : {
                                       mode: "preview",
@@ -2728,10 +2783,11 @@ export default function ItemRouteModal({
                                           handleDecrementQuantity,
                                       primaryLabel: submitButtonLabel,
                                       onPrimaryAction: submitCartItem,
-                                      primaryDisabled: !isComboSelectionComplete || !areIngredientSelectionsComplete,
+                                      primaryDisabled: Boolean(builderEntryHref) || !isComboSelectionComplete || !areIngredientSelectionsComplete,
                                   }
                     }
                 />
+                </>}
             </div>
         </div>
     );

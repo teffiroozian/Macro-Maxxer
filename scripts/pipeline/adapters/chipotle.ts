@@ -7,9 +7,8 @@
 // knowledge from data/restaurants/chipotle/review/import-decisions.md are
 // declared here as structure only (which components, how many), never as
 // numbers: the implicit bases of each builder and its default build. The
-// engine does the arithmetic. Other manual decisions (taco tortilla panels,
-// scaled kids fountain drinks, preconfigured meals) are not reproduced; the
-// parity report shows them.
+// engine does the arithmetic. Curated meals reuse the existing source resolver
+// for verified portion relationships before entering the shared pipeline.
 import { readFile } from "node:fs/promises";
 import { resolve } from "node:path";
 import {
@@ -20,6 +19,8 @@ import {
   CHIPOTLE_PDF_NAME_ALIASES,
   CHIPOTLE_SALAD_IMPLICIT_BASE,
 } from "../../importers/chipotle-nutrition-mappings";
+import { buildChipotleFromCaptures } from "../../importers/chipotle";
+import { parseIncludedIngredientEntry } from "../../../lib/itemIngredients";
 import { normalizeName } from "../../lib/normalize-name";
 import type {
   AdapterIngredient,
@@ -108,6 +109,8 @@ export type ChipotleRaw = {
   // content ids within each content section.
   displayOrder?: { entrees: Record<string, number>; sections: Record<string, Record<string, number>> };
   onlineMealCount: number;
+  onlineMealSource?: { url: string; retrievedAt: string };
+  curated?: Awaited<ReturnType<typeof buildChipotleFromCaptures>>;
 };
 
 // ── Restaurant knowledge ─────────────────────────────────────────────────
@@ -115,12 +118,14 @@ export type ChipotleRaw = {
 const MENU_SOURCE = "chipotle:calculator-menu";
 const LIVE_SOURCE = "chipotle:live-nutrition";
 const PDF_SOURCE = "chipotle:nutrition-pdf";
+const MEAL_SOURCE = "chipotle:online-meals";
 
 // Entree itemType → Macro Maxxer category. Unlisted types keep their name.
 const CATEGORY_MAP: Record<string, string> = {
   KidsBYO: "Kids",
   KidsQuesadilla: "Kids",
   Side: "Sides",
+  NonFood: "Non-Food",
   Drink: "Beverages",
 };
 
@@ -873,7 +878,63 @@ export function translateChipotle(raw: ChipotleRaw): AdapterOutput {
     });
   }
 
+  for (const product of raw.calculatorMenu.nonFoodItems) {
+    items.push({
+      id: productId(product),
+      name: product.itemName.trim(),
+      model: "standard",
+      sourceCategory: "NonFood",
+      servingType: "side",
+      isAvailable: false,
+      sourceOnly: true,
+      nonNutritionComponent: true,
+      nutrition: [],
+      variants: [],
+      groups: [],
+      sources: [{ sourceId: MENU_SOURCE, recordId: product.itemId }],
+    });
+  }
+
+  const curated = raw.curated;
+  if (curated) {
+    for (const recipe of curated.restaurantOutput.items) {
+      const identity = recipe.source.menu;
+      if (identity.role !== "preconfigured_meal" || !identity.buildBaseItemId) continue;
+      const resolved = curated.presetComponents.get(recipe.id);
+      if (!resolved?.length) continue;
+      const defaults = resolved.map((component) => {
+        const { ingredientId, defaultCount } = parseIncludedIngredientEntry(component.entry)!;
+        return { itemId: ingredientId, quantity: defaultCount * (component.orderedQuantity ?? 1), nutrition: component.nutrition };
+      });
+      items.push({
+        id: recipe.id,
+        name: recipe.name,
+        model: "standard",
+        sourceCategory: recipe.categories[0],
+        servingType: "combo",
+        isAvailable: true,
+        nutrition: [],
+        mealPreset: {
+          builderItemId: identity.buildBaseItemId,
+          selections: defaults,
+        },
+        generatedSource: {
+          ...recipe.source,
+          menu: { ...identity, itemType: identity.itemType ?? undefined, itemCategory: identity.itemCategory ?? undefined },
+        },
+        variants: [],
+        groups: [],
+        sources: identity.itemIds.map((recordId) => ({ sourceId: MEAL_SOURCE, recordId })),
+      });
+    }
+  }
+
   const sources: SourceDescriptor[] = [
+    ...(raw.onlineMealSource ? [{
+      id: MEAL_SOURCE, kind: "public_api" as const, authority: "official" as const,
+      ...raw.onlineMealSource,
+      notes: "Curated recipe identities, selected components and portions. Component panels are resolved by the reviewed importer from ordering and nutrition captures.",
+    }] : []),
     {
       id: MENU_SOURCE,
       kind: "ordering_structured_data",
@@ -914,14 +975,6 @@ export function translateChipotle(raw: ChipotleRaw): AdapterOutput {
       sourceIds: [MENU_SOURCE],
     });
   }
-  if (raw.calculatorMenu.nonFoodItems.length > 0) {
-    knownIssues.push({
-      severity: "info",
-      code: "non_food_items_not_imported",
-      message: `${raw.calculatorMenu.nonFoodItems.length} non-food ordering records (utensils, bowls) are not imported.`,
-      affectedCount: raw.calculatorMenu.nonFoodItems.length,
-    });
-  }
   if (cateringEntreeCount > 0) {
     knownIssues.push({
       severity: "info",
@@ -940,12 +993,23 @@ export function translateChipotle(raw: ChipotleRaw): AdapterOutput {
       sourceIds: [MENU_SOURCE, LIVE_SOURCE, PDF_SOURCE],
     });
   }
-  if (raw.onlineMealCount > 0) {
+  if (!curated && raw.onlineMealCount > 0) {
     knownIssues.push({
       severity: "info",
       code: "preconfigured_meals_not_imported",
-      message: `${raw.onlineMealCount} preconfigured online meals are not imported; the contracts have no preset-composition record.`,
+      message: `${raw.onlineMealCount} preconfigured online meals are not imported; no resolved preset input was supplied.`,
       affectedCount: raw.onlineMealCount,
+    });
+  }
+
+  if (curated) {
+    const unsupported = curated.unresolvedOutput.records.filter((entry) => entry.recordType === "preconfigured_meal");
+    for (const entry of unsupported) knownIssues.push({
+      severity: "info",
+      code: "preset_source_unresolved",
+      message: entry.details ?? entry.reason,
+      entityIds: [entry.standardizedRecordId],
+      sourceIds: [MEAL_SOURCE],
     });
   }
 
@@ -977,7 +1041,7 @@ async function loadChipotle(): Promise<ChipotleRaw> {
   type SourceFile = { source: string; retrieved: string };
   type OrderedItems = { items?: Array<{ menuItemId: string; sortOrder: number }> };
   const orderOf = (entry: OrderedItems) => Object.fromEntries((entry.items ?? []).map((item) => [item.menuItemId, item.sortOrder]));
-  const [menu, menuSource, live, liveSource, pdf, pdfSource, meals, metadata] = await Promise.all([
+  const [menu, menuSource, live, liveSource, pdf, pdfSource, meals, mealsSource, metadata, curated] = await Promise.all([
     readJson<Omit<ChipotleRaw["calculatorMenu"], "url" | "retrievedAt">>("calculator-menu.json"),
     readJson<SourceFile>("calculator-menu-source.json"),
     readJson<{ items: Record<string, ChipotleLiveItem> }>("menu-metadata-nutrition.json"),
@@ -985,7 +1049,9 @@ async function loadChipotle(): Promise<ChipotleRaw> {
     readJson<{ records: ChipotlePdfRow[] }>("nutrition.json"),
     readJson<SourceFile>("nutrition-source.json"),
     readJson<unknown[]>("online-meals.json"),
+    readJson<SourceFile>("online-meals-source.json"),
     readJson<{ groups?: OrderedItems[]; itemSections?: Record<string, OrderedItems> }>("menu-metadata.json"),
+    buildChipotleFromCaptures(),
   ]);
   return {
     calculatorMenu: { ...menu, url: menuSource.source, retrievedAt: menuSource.retrieved },
@@ -996,6 +1062,8 @@ async function loadChipotle(): Promise<ChipotleRaw> {
       sections: Object.fromEntries(Object.entries(metadata.itemSections ?? {}).map(([key, section]) => [key, orderOf(section)])),
     },
     onlineMealCount: meals.length,
+    onlineMealSource: { url: mealsSource.source, retrievedAt: mealsSource.retrieved },
+    curated,
   };
 }
 

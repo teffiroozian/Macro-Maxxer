@@ -22,7 +22,12 @@ function hasFiniteCoreMacros(value: unknown) {
 function hasValidSelection(value: unknown) {
   if (!isRecord(value)) return false;
   if (value.type === "standard") {
-    return value.optionSelections === undefined || Array.isArray(value.optionSelections);
+    if (value.optionSelections !== undefined && !Array.isArray(value.optionSelections)) return false;
+    const ordering = value.ordering;
+    return ordering === undefined || (isRecord(ordering) && typeof ordering.planId === "string" &&
+      isRecord(ordering.quantities) && Object.values(ordering.quantities).every(
+        (quantity) => typeof quantity === "number" && Number.isSafeInteger(quantity) && quantity >= 0,
+      ));
   }
   if (value.type !== "build-your-own" || !isRecord(value.buildConfiguration)) return false;
   return Array.isArray(value.buildConfiguration.ingredients);

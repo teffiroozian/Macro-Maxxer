@@ -1,3 +1,5 @@
+import { getMealPresetErrors, getMealPresetNutrition } from "../../lib/ordering/mealPreset";
+import { validateOrderingPlan } from "../../lib/ordering/evaluate";
 // Projects a draft onto the existing runtime schema (types/menu.ts).
 //
 // The runtime Nutrition type requires all four core macros, so any record
@@ -6,8 +8,8 @@
 // recognizes keeps the id the app already knows, and only an unrecognized
 // record is given a new one.
 //
-// Not projected yet: selection groups on standard items (add-ons and
-// required choices) and preparation groups.
+// General nested ordering logic stays in the draft. Explicit runtime
+// relationships are projected through the app-compatible shape.
 import type { BuilderEntreeOption, RestaurantBuilderConfig } from "../../types/builder";
 import type {
   GeneratedMenuSourceIdentity,
@@ -23,6 +25,7 @@ import type { Nutrition } from "../../types/nutrition";
 import { normalizeName } from "../lib/normalize-name";
 import type { DraftItem, NutritionRecord, RestaurantDraft, SelectionGroup, SelectionOption, SourceRef } from "./contracts";
 import { emptyRegistry, idKeys, IdResolver, type IdRegistry, type IdRegistryEntry } from "./ids";
+import { remapCombo, remapItemRelationships, remapOrderingPlan } from "./runtime-relationships";
 import { toRuntimeNutrition, unresolvedConflicts } from "./nutrition";
 
 export type ProjectionExclusion = { id: string; name: string; reason: string };
@@ -32,6 +35,7 @@ export type RuntimeProjection = {
   excluded: ProjectionExclusion[];
   // Things the runtime schema cannot express the way the source states them.
   notes: string[];
+  relationshipErrors: string[];
   ids: {
     // The registry including ids minted in this projection.
     registry: IdRegistry;
@@ -60,20 +64,22 @@ function recordIds(refs: ReadonlyArray<SourceRef | undefined>): string[] {
   return [...new Set(refs.flatMap((ref) => (ref?.recordId ? [ref.recordId] : [])))];
 }
 
-function sourceIdentity(draft: RestaurantDraft, itemIds: string[], role: string, record: NutritionRecord | undefined): MenuSourceIdentity {
+function sourceIdentity(draft: RestaurantDraft, itemIds: string[], role: string, record: NutritionRecord | undefined, orderingIdentity?: MenuSourceIdentity["menu"]): MenuSourceIdentity {
   const generated: GeneratedMenuSourceIdentity = {
     provider: draft.restaurant.name,
     menu: { itemIds, role },
     // "published", or how the engine calculated the values.
     nutrition: { method: record?.derivation?.method ?? "published" },
   };
-  return { menu: { tags: [], pins: [] }, generated };
+  return { menu: orderingIdentity ?? { tags: [], pins: [] }, generated };
 }
 
 export function projectToRestaurantMenu(draft: RestaurantDraft, options: ProjectionOptions = {}): RuntimeProjection {
   const resolver = new IdResolver(options.registry ?? emptyRegistry(draft.restaurant.id));
   const excluded: ProjectionExclusion[] = [];
+  const relationshipErrors: string[] = [];
   const prefix = draft.restaurant.id;
+  const relationships = draft.runtimeRelationships;
   const builders = draft.items.filter((item) => item.model === "build-your-own");
 
   // ── Items: ids first, so ingredient keys can name the item that offers them.
@@ -196,6 +202,30 @@ export function projectToRestaurantMenu(draft: RestaurantDraft, options: Project
     }
   }
 
+  const ingredientIds = new Map<string, string>();
+  for (const entry of draft.ingredients) {
+    const metadata = relationships?.ingredients[entry.id];
+    if (!metadata) continue;
+    const nutrition = usable(entry.nutrition);
+    const contextual = entry.contextualNutritionOnly && Boolean(metadata.contextualNutritionUnits?.length);
+    if (typeof nutrition === "string" && !contextual && !entry.preparationOnly) {
+      excluded.push({ id: entry.id, name: entry.name, reason: nutrition });
+      continue;
+    }
+    const category = entry.category ?? entry.sourceCategory;
+    const id = resolver.resolve("ingredient", [
+      ...recordIds(entry.sources).map(idKeys.source), idKeys.name(category, entry.name),
+    ], `${prefix}-${entry.name}`).id;
+    ingredientIds.set(entry.id, id);
+    // The existing ingredient resolver reads contextual/preparation identities
+    // without a base panel. Keep the field absent instead of inventing macros.
+    ingredients.push({
+      id, name: entry.name, categories: [category], ...metadata,
+      ...(typeof nutrition === "string" ? {} : { nutrition }),
+      source: sourceIdentity(draft, recordIds(entry.sources), "selectable_component", entry.nutrition),
+    } as IngredientItem);
+  }
+
   // Components that are always part of an item and have no option of their own.
   const includedIngredientId = (label: string, record: NutritionRecord, refs: string[]): string | undefined => {
     const nutrition = usable(record);
@@ -223,9 +253,12 @@ export function projectToRestaurantMenu(draft: RestaurantDraft, options: Project
   const categoryMaxSelections: Record<string, number> = {};
   const categoryRules: Record<string, IngredientCategoryRule> = {};
 
+  const sourceVariantByOwner = new Map<string, Map<string, string>>();
   const projectVariants = (item: DraftItem, runtimeId: string, category: string): { variants: ItemVariant[]; defaultVariantId: string } | string | null => {
     if (item.variants.length === 0) return null;
     const variants: ItemVariant[] = [];
+    const sourceIds = new Map<string, string>();
+    sourceVariantByOwner.set(item.id, sourceIds);
     let defaultVariantId: string | undefined;
     for (const variant of item.variants) {
       const nutrition = usable(variant.nutrition);
@@ -233,18 +266,29 @@ export function projectToRestaurantMenu(draft: RestaurantDraft, options: Project
         excluded.push({ id: variant.id, name: `${item.name} › ${variant.label}`, reason: nutrition });
         continue;
       }
-      const id = resolver.resolve("variant", [idKeys.variant(runtimeId, variant.label)], `${runtimeId}-${variant.label}`).id;
+      const id = resolver.resolve("variant", [
+        ...(variant.sourceVariantId ? [idKeys.variantSource(runtimeId, variant.sourceVariantId)] : []),
+        idKeys.variant(runtimeId, variant.label),
+      ], `${runtimeId}-${variant.label}`, runtimeId).id;
       variantIdOf.set(variant.id, id);
+      sourceIds.set(variant.sourceVariantId ?? variant.id, id);
       if (variant.isDefault) defaultVariantId = id;
       variants.push({
         id,
         label: variant.label,
-        categories: [category],
+        ...(variant.tags ? { tags: variant.tags } : {}),
+        ...(variant.category ? { category: variant.category } : {}),
+        ...(variant.canonicalItemId ? { canonicalItemId: itemIds.get(variant.canonicalItemId) ?? variant.canonicalItemId } : {}),
+        categories: [variant.category ?? category],
+        ...(variant.servingType ? { servingType: variant.servingType } : {}),
         nutrition,
-        source: sourceIdentity(draft, recordIds([variant.source]), "standalone_product", variant.nutrition),
+        source: variant.generatedSource ? { menu: variant.orderingIdentity ?? { tags: [], pins: [] }, generated: variant.generatedSource } :
+          sourceIdentity(draft, recordIds([variant.source]), "standalone_product", variant.nutrition, variant.orderingIdentity),
+        ...(variant.image ? { image: variant.image } : {}),
       });
     }
     if (variants.length === 0) return "no variant has complete nutrition";
+    if (item.requirePublishedDefaultVariant && !defaultVariantId) return "declared default variant has no complete nutrition";
     return { variants, defaultVariantId: defaultVariantId ?? variants[0].id };
   };
 
@@ -276,9 +320,15 @@ export function projectToRestaurantMenu(draft: RestaurantDraft, options: Project
   };
 
   draft.items.forEach((item) => {
+    const metadata = relationships?.items[item.id];
+    if (item.sourceOnly && !metadata && !item.nonNutritionComponent) {
+      excluded.push({ id: item.id, name: item.name, reason: "source-only item" });
+      return;
+    }
     const runtimeId = itemIds.get(item.id)!;
     const category = item.category ?? item.sourceCategory;
     const projectedVariants = projectVariants(item, runtimeId, category);
+    const structuralCombo = item.sourceOnly && item.variants.length === 0 && Boolean(metadata?.comboConfig);
     if (typeof projectedVariants === "string") {
       excluded.push({ id: item.id, name: item.name, reason: projectedVariants });
       return;
@@ -287,23 +337,26 @@ export function projectToRestaurantMenu(draft: RestaurantDraft, options: Project
     const nutrition = projectedVariants
       ? projectedVariants.variants.find((variant) => variant.id === projectedVariants.defaultVariantId)!.nutrition
       : usable(item.nutrition);
-    if (typeof nutrition === "string") {
+    if (typeof nutrition === "string" && !structuralCombo && !(item.sourceOnly && item.nonNutritionComponent)) {
       excluded.push({ id: item.id, name: item.name, reason: item.model === "build-your-own" && !item.composition ? "builder has no default build to total" : nutrition });
       return;
     }
 
-    const base: MenuItem = {
+    const base = {
       id: runtimeId,
       name: item.name,
       image: item.image ?? "",
       category,
+      ...(item.tags ? { tags: item.tags } : {}),
       categories: [category],
       servingType: item.servingType,
-      nutrition,
+      ...(typeof nutrition === "string" ? {} : { nutrition }),
+      ...(item.sourceOnly ? { sourceOnly: true } : {}),
       defaultOrder: item.order ?? 0,
-      source: sourceIdentity(draft, recordIds(item.sources), item.model === "build-your-own" ? "build_container" : "standalone_product", ownRecord),
+      source: item.generatedSource ? { menu: item.orderingIdentity ?? { tags: [], pins: [] }, generated: item.generatedSource } :
+        sourceIdentity(draft, recordIds(item.sources), item.nonNutritionComponent ? "structural" : item.model === "build-your-own" ? "build_container" : "standalone_product", ownRecord, item.orderingIdentity),
       ...(projectedVariants ?? {}),
-    };
+    } as MenuItem; // Source-only combo carriers are relationship records with no panel.
     if (item.model !== "build-your-own") {
       items.push(base);
       return;
@@ -354,6 +407,64 @@ export function projectToRestaurantMenu(draft: RestaurantDraft, options: Project
     entreeOptions[optionKey] = { id: runtimeId, label: item.name, image: item.image ?? "", includedIngredientIds: included };
   });
 
+  const draftItemByRuntimeId = new Map([...itemIds].map(([draftId, runtimeId]) => [runtimeId, draftId]));
+  const remapIds = {
+    item: (id: string) => itemIds.get(id) ?? id,
+    ingredient: (id: string) => ingredientIds.get(id) ?? itemIds.get(id) ?? id,
+    variant: (owner: string, id: string) => sourceVariantByOwner.get(owner)?.get(id) ?? id,
+  };
+  for (const item of items) {
+    const draftId = draftItemByRuntimeId.get(item.id)!;
+    const plan = draft.orderingPlans?.[draftId];
+    if (plan) {
+      const errors = validateOrderingPlan(plan);
+      if (errors.length === 0) item.orderingPlan = remapOrderingPlan(plan, remapIds);
+      else relationshipErrors.push(...errors.map((error) => `${item.id}: ${error}`));
+    }
+    const additional = draft.additionalOrderingPlans?.[draftId];
+    if (additional?.length) item.additionalOrderingPlans = additional.flatMap((entry) => {
+      const errors = validateOrderingPlan(entry);
+      if (errors.length === 0) return [remapOrderingPlan(entry, remapIds)];
+      relationshipErrors.push(...errors.map((error) => `${item.id}: ${error}`));
+      return [];
+    });
+    const metadata = relationships?.items[draftId];
+    if (!metadata) continue;
+    const { variantContexts, ...rest } = remapItemRelationships(draftId, metadata, remapIds);
+    Object.assign(item, Object.fromEntries(Object.entries(rest).filter(([, value]) => value !== undefined)));
+    for (const [id, contexts] of Object.entries(variantContexts ?? {})) {
+      const variant = item.variants?.find((entry) => entry.id === id);
+      if (variant) variant.ingredientNutritionContexts = contexts;
+      else relationshipErrors.push(`${item.id}: contextual nutrition belongs to withheld or unknown variant "${id}".`);
+    }
+  }
+  const presetsById = new Map(draft.items.filter((item) => item.mealPreset).map((item) => [itemIds.get(item.id), item.mealPreset]));
+  const presetBuilderIds = new Set(Object.values(entreeOptions).map((option) => option.id));
+  const presetComponentIds = new Set([...ingredients, ...items].filter((record) =>
+    record.nutrition || record.variants?.some((variant) => variant.nutrition)).map((record) => record.id));
+  for (let index = items.length - 1; index >= 0; index--) {
+    const item = items[index];
+    const preset = presetsById.get(item.id);
+    if (!preset) continue;
+    const remapped = {
+      builderItemId: remapIds.item(preset.builderItemId),
+      selections: preset.selections.map((selection) => ({ ...selection, itemId: remapIds.ingredient(selection.itemId) })),
+    };
+    const errors = getMealPresetErrors(remapped, item.id, presetBuilderIds, presetComponentIds);
+    if (errors.length > 0) {
+      relationshipErrors.push(...errors);
+      excluded.push({ id: item.id, name: item.name, reason: "preset has an invalid builder or selection" });
+      items.splice(index, 1);
+      continue;
+    }
+    item.mealPreset = remapped;
+    item.nutrition = getMealPresetNutrition(remapped);
+  }
+
+  const addonGroups = Object.fromEntries(Object.entries(relationships?.addonGroups ?? {}).map(([id, group]) =>
+    [id, { ...group, itemIds: group.itemIds.map(remapIds.item) }],
+  ));
+
   // The runtime also looks limits up by category name alone. A name-keyed
   // limit is only emitted when every item's group of that name agrees;
   // otherwise one name cannot stand for different limits.
@@ -374,11 +485,19 @@ export function projectToRestaurantMenu(draft: RestaurantDraft, options: Project
       hasBuildYourOwn,
       items,
       ingredients,
-      addonGroups: {},
-      ...(hasBuildYourOwn ? { customizationRules: { ingredientCategories: categoryRules }, builderConfig } : {}),
+      addonGroups,
+      ...(relationships?.customizationRules || hasBuildYourOwn ? { customizationRules: {
+        ...relationships?.customizationRules,
+        ingredientCategories: {
+          ...categoryRules,
+          ...relationships?.customizationRules?.ingredientCategories,
+        },
+      } } : {}),
+      ...(hasBuildYourOwn ? { builderConfig } : {}),
     },
     excluded,
     notes,
+    relationshipErrors,
     ids: { registry: resolver.toRegistry(), additions: resolver.additions, conflicts: resolver.conflicts },
   };
 }
@@ -396,17 +515,76 @@ export function checkRuntimeMenu(menu: RestaurantMenu): string[] {
   };
   const itemIds = unique("item", menu.items.map((item) => item.id));
   const ingredientIds = unique("ingredient", (menu.ingredients ?? []).map((ingredient) => ingredient.id));
-  unique("variant", [...menu.items, ...(menu.ingredients ?? [])].flatMap((record) => (record.variants ?? []).map((variant) => variant.id)));
+  const items = new Map(menu.items.map((item) => [item.id, item]));
+  const selectableIngredients = new Set([...ingredientIds, ...menu.items.filter((item) => item.ingredientEligible).map((item) => item.id)]);
+  const checkIngredient = (id: string, owner: string) => {
+    if (!selectableIngredients.has(id)) errors.push(`${owner}: ingredient "${id}" does not exist or is not selectable.`);
+    return id;
+  };
+  const checkVariant = (owner: string, variant: string) => {
+    if (!items.get(owner)?.variants?.some((entry) => entry.id === variant)) {
+      errors.push(`${owner}: variant "${variant}" does not exist.`);
+    }
+    return variant;
+  };
+  const checkItem = (id: string) => {
+    if (!itemIds.has(id)) errors.push(`Relationship references missing item "${id}".`);
+    return id;
+  };
+  const completePanel = (nutrition: Nutrition) => [nutrition.calories, nutrition.protein, nutrition.carbs, nutrition.totalFat]
+    .every((value) => Number.isFinite(value) && value >= 0);
+  const checkContexts = (contexts: MenuItem["ingredientNutritionContexts"], owner: string) => {
+    for (const [id, context] of Object.entries(contexts ?? {})) {
+      checkIngredient(id, owner);
+      if (!completePanel(context.nutrition)) {
+        errors.push(`${owner}: incomplete contextual nutrition for "${id}".`);
+      }
+    }
+  };
 
   const categoryIds = new Set<string>();
+  const presetComponentIds = new Set([...itemIds, ...ingredientIds]);
+  const presetBuilderIds = new Set(Object.values(menu.builderConfig?.entreeOptions ?? {}).map((option) => option.id));
   for (const record of [...menu.items, ...(menu.ingredients ?? [])]) {
+    unique(`${record.id} variant`, (record.variants ?? []).map((variant) => variant.id));
     if (record.defaultVariantId && !(record.variants ?? []).some((variant) => variant.id === record.defaultVariantId)) {
       errors.push(`${record.id}: default variant "${record.defaultVariantId}" does not exist.`);
     }
   }
+  for (const [id, group] of Object.entries(menu.addonGroups ?? {})) {
+    for (const itemId of group.itemIds) {
+      if (!items.get(itemId)?.addonEligible) errors.push(`Add-on group "${id}" references unavailable add-on "${itemId}".`);
+    }
+  }
   for (const item of menu.items) {
+    if (item.mealPreset) errors.push(...getMealPresetErrors(item.mealPreset, item.id, presetBuilderIds, presetComponentIds));
+    const checkIds = { item: checkItem, ingredient: (id: string) => checkIngredient(id, item.id), variant: checkVariant };
+    const orderingIds = {
+      ...checkIds,
+      ingredient: (id: string) => items.get(id)?.addonEligible ? id : checkIngredient(id, item.id),
+    };
+    if (item.orderingPlan) remapOrderingPlan(item.orderingPlan, orderingIds);
+    for (const plan of item.additionalOrderingPlans ?? []) remapOrderingPlan(plan, orderingIds);
+    if (item.comboConfig) remapCombo(item.comboConfig, item.id, checkIds);
+    for (const [variant, config] of Object.entries(item.comboConfigByVariantId ?? {})) {
+      checkVariant(item.id, variant);
+      remapCombo(config, item.id, checkIds);
+    }
+    for (const id of item.addonRefs ?? []) {
+      if (!menu.addonGroups?.[id]) errors.push(`${item.id}: add-on group "${id}" does not exist.`);
+    }
+    if (item.ingredientRef) checkIngredient(item.ingredientRef, item.id);
+    checkContexts(item.ingredientNutritionContexts, item.id);
+    for (const variant of item.variants ?? []) checkContexts(variant.ingredientNutritionContexts, `${item.id}/${variant.id}`);
+    for (const variant of Object.keys(item.customizationByVariantId ?? {})) checkVariant(item.id, variant);
+    for (const [variant, id] of Object.entries(item.proteinExtraByVariantId ?? {})) {
+      checkVariant(item.id, variant);
+      checkIngredient(id, item.id);
+    }
     for (const reference of item.ingredients ?? []) {
-      if (!ingredientIds.has(reference.split(":")[0])) errors.push(`${item.id}: default ingredient "${reference}" does not exist.`);
+      const delimiter = reference.lastIndexOf(":");
+      const id = selectableIngredients.has(reference) || delimiter < 0 ? reference : reference.slice(0, delimiter);
+      checkIngredient(id, item.id);
     }
     const categories = [
       ...(item.customization?.ingredientCategories ?? []),
@@ -416,13 +594,20 @@ export function checkRuntimeMenu(menu: RestaurantMenu): string[] {
       if (category.id) categoryIds.add(category.id);
       categoryIds.add(category.name);
       for (const id of category.ingredients) {
-        if (!ingredientIds.has(id)) errors.push(`${item.id} › ${category.name}: ingredient "${id}" does not exist.`);
+        checkIngredient(id, `${item.id} › ${category.name}`);
       }
     }
   }
   for (const ingredient of menu.ingredients ?? []) {
-    if (ingredient.canonicalIngredientId && !ingredientIds.has(ingredient.canonicalIngredientId)) {
-      errors.push(`${ingredient.id}: canonical ingredient "${ingredient.canonicalIngredientId}" does not exist.`);
+    if (ingredient.contextualNutritionUnits?.some((unit) => !completePanel(unit.nutrition))) {
+      errors.push(`${ingredient.id}: incomplete contextual nutrition unit.`);
+    }
+    // canonicalIngredientId is a grouping key; it can identify a logical
+    // ingredient with no independently browsable runtime record.
+    for (const [count, delta] of Object.entries(ingredient.nutritionDeltaByCount ?? {})) {
+      if (![delta.calories, delta.protein, delta.carbs, delta.totalFat].every(Number.isFinite)) {
+        errors.push(`${ingredient.id}: incomplete nutrition delta for count "${count}".`);
+      }
     }
   }
   for (const id of [...Object.keys(menu.customizationRules?.ingredientCategories ?? {}), ...Object.keys(menu.builderConfig?.categoryMaxSelections ?? {})]) {

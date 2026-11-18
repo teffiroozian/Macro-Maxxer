@@ -31,6 +31,9 @@
     "validate:starbucks": "node --import tsx scripts/validate/starbucks.ts",
     "pipeline": "node --import tsx scripts/pipeline/run.ts",
     "pipeline:ids:seed": "node --import tsx scripts/pipeline/ids-seed.ts",
+    "pipeline:parity:mcdonalds": "node --import tsx scripts/pipeline/parity/run-mcdonalds.ts",
+    "pipeline:parity:starbucks": "node --import tsx scripts/pipeline/parity/run-starbucks.ts",
+    "pipeline:parity:chickfila": "node --import tsx scripts/pipeline/parity/run-chick-fil-a.ts",
     "pipeline:parity:chipotle": "node --import tsx scripts/pipeline/parity/run-chipotle.ts",
     "review:chick-fil-a": "node --import tsx scripts/review/chick-fil-a.ts"
   },

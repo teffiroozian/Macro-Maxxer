@@ -1,4 +1,4 @@
-import { addNutrition, getNutritionDataQuality, normalizeNutrition } from "@/lib/nutrition";
+import { addNutrition, asFiniteNutritionNumber, getNutritionDataQuality, normalizeNutrition, OPTIONAL_NUTRITION_KEYS } from "@/lib/nutrition";
 import type { CartItem, CartSelection, CartSelectionOption } from "@/types/cart";
 import type { MenuItem, RestaurantAddonGroups } from "@/types/menu";
 import type { Nutrition } from "@/types/nutrition";
@@ -41,10 +41,16 @@ export function getSelectedAddonNutrition(
 }
 
 export function buildCartNutritionTotals(items: CartItem[]): NutritionTotals {
-  return items.reduce<NutritionTotals>(
+  const totals = items.reduce<NutritionTotals>(
     (sum, cartItem) => addNutrition(sum, cartItem.nutritionPerItem, cartItem.quantity),
     normalizeNutrition(),
   );
+  for (const key of OPTIONAL_NUTRITION_KEYS) {
+    if (items.some((item) => asFiniteNutritionNumber(item.nutritionPerItem[key]) === undefined)) {
+      delete totals[key];
+    }
+  }
+  return totals;
 }
 
 export function buildCartMacroTotals(items: CartItem[]) {

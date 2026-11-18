@@ -289,21 +289,29 @@ export function calculateStandardItemNutrition({
 }: {
   baseNutrition: Nutrition;
   addonTotals: Nutrition;
-  ingredientCountTotals: CoreMacros;
+  ingredientCountTotals: Nutrition;
   comboNutritionTotals: CoreMacros & Partial<Nutrition>;
 }): Nutrition {
+  const optionalTotal = (key: "satFat" | "transFat" | "cholesterol" | "sodium" | "fiber" | "sugars") => {
+    const otherDelta = (addonTotals[key] ?? 0) + (comboNutritionTotals[key] ?? 0);
+    if (!Object.hasOwn(ingredientCountTotals, key)) return sumNutritionWithFallback(baseNutrition[key], otherDelta);
+    const ingredientDelta = ingredientCountTotals[key];
+    const base = baseNutrition[key];
+    if (base === undefined || ingredientDelta === undefined) return undefined;
+    return sumNutritionWithFallback(base, otherDelta + ingredientDelta);
+  };
   return normalizeNutrition({
     ...baseNutrition,
     calories: sumNutritionWithFallback(baseNutrition.calories, addonTotals.calories + ingredientCountTotals.calories + comboNutritionTotals.calories) ?? 0,
     protein: sumNutritionWithFallback(baseNutrition.protein, addonTotals.protein + ingredientCountTotals.protein + comboNutritionTotals.protein) ?? 0,
     carbs: sumNutritionWithFallback(baseNutrition.carbs, addonTotals.carbs + ingredientCountTotals.carbs + comboNutritionTotals.carbs) ?? 0,
     totalFat: sumNutritionWithFallback(baseNutrition.totalFat, addonTotals.totalFat + ingredientCountTotals.totalFat + comboNutritionTotals.totalFat) ?? 0,
-    satFat: sumNutritionWithFallback(baseNutrition.satFat, (addonTotals.satFat ?? 0) + (comboNutritionTotals.satFat ?? 0)),
-    transFat: sumNutritionWithFallback(baseNutrition.transFat, (addonTotals.transFat ?? 0) + (comboNutritionTotals.transFat ?? 0)),
-    cholesterol: sumNutritionWithFallback(baseNutrition.cholesterol, (addonTotals.cholesterol ?? 0) + (comboNutritionTotals.cholesterol ?? 0)),
-    sodium: sumNutritionWithFallback(baseNutrition.sodium, (addonTotals.sodium ?? 0) + (comboNutritionTotals.sodium ?? 0)),
-    fiber: sumNutritionWithFallback(baseNutrition.fiber, (addonTotals.fiber ?? 0) + (comboNutritionTotals.fiber ?? 0)),
-    sugars: sumNutritionWithFallback(baseNutrition.sugars, (addonTotals.sugars ?? 0) + (comboNutritionTotals.sugars ?? 0)),
+    satFat: optionalTotal("satFat"),
+    transFat: optionalTotal("transFat"),
+    cholesterol: optionalTotal("cholesterol"),
+    sodium: optionalTotal("sodium"),
+    fiber: optionalTotal("fiber"),
+    sugars: optionalTotal("sugars"),
   });
 }
 
@@ -389,7 +397,7 @@ export function resolveStandardItemConfiguration({
   const selectedSauceOptions = resolveSelectedSauceOptions({ addons, selectedSauceCounts });
   const activeAddons = resolveActiveAddons({ selectedAddons, selectedSauceOptions });
   const addonTotals = calculateAddonTotals(activeAddons);
-  const ingredientCountTotals = calculateIngredientCountTotals(ingredientCounts, resolvedIngredients);
+  const ingredientCountTotals = calculateIngredientCountTotals(ingredientCounts, resolvedIngredients, true);
   const comboSelection = resolveStandardComboSelection({ comboBundles, comboSides, comboDrinks, selectedComboBundleId, selectedComboSideId, selectedComboDrinkId, selectedComboSideVariantId, selectedComboDrinkVariantId });
   const comboNutritionTotals = calculateFullComboNutritionTotals({ isComboEligibleCategory, comboType, ...comboSelection });
   const nutrition = calculateStandardItemNutrition({ baseNutrition, addonTotals, ingredientCountTotals, comboNutritionTotals });

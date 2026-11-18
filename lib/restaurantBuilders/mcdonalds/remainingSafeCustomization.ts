@@ -163,6 +163,7 @@ const BIG_BREAKFAST_REMOVE_NAME_BY_COMPONENT_ID: Record<string, string> = {
 };
 
 export type SafeCustomizationData = {
+  unverifiedNutrition: Record<string, Partial<Nutrition>>;
   ingredients: IngredientItem[];
   byItemId: Record<string, { ingredients: string[]; readOnlyIngredientIds?: string[]; customization: ItemCustomizationOverride }>;
   categoryRules: Record<string, IngredientCategoryRule>;
@@ -172,14 +173,15 @@ const negate = (nutrition: Nutrition): Nutrition => Object.fromEntries(
   Object.entries(nutrition).map(([key, value]) => [key, -(value ?? 0)]),
 ) as Nutrition;
 
-export function buildMcDonaldsRemainingSafeCustomization(): SafeCustomizationData {
+export function buildMcDonaldsRemainingSafeCustomization(menu: { items: unknown[] } = generatedRestaurant): SafeCustomizationData {
+  const unverifiedNutrition: Record<string, Partial<Nutrition>> = {};
   const ingredients: IngredientItem[] = [];
   const byItemId: SafeCustomizationData["byItemId"] = {};
   const categoryRules: Record<string, IngredientCategoryRule> = {};
 
   for (const [itemId, capture] of Object.entries(BREAKFAST_CAPTURE_BY_ITEM_ID)) {
     const itemName = capture.data.itemPage.itemHeader.name;
-    const generatedItems = (generatedRestaurant as unknown as {
+    const generatedItems = (menu as unknown as {
       items: Array<{ id: string; source?: { generated?: { menu?: { componentItemIds?: (string | number)[] } } } }>;
     }).items;
     const sourceComponentIds = new Set((generatedItems
@@ -207,7 +209,9 @@ export function buildMcDonaldsRemainingSafeCustomization(): SafeCustomizationDat
       const orderingGroupIdByCount: Record<number, string> = {};
       const nutritionDeltaByCount: Record<number, Nutrition> = {};
       const component = action.componentId ? BREAKFAST_COMPONENT[action.componentId] : undefined;
-      const baseNutrition = action.exactNutrition ?? incompleteNutrition(component?.calories ?? capturedCalories(increaseOption ?? removeOption) ?? 0);
+      const knownCalories = component?.calories ?? capturedCalories(increaseOption ?? removeOption);
+      const baseNutrition = action.exactNutrition ?? incompleteNutrition(knownCalories ?? 0);
+      if (!action.exactNutrition) unverifiedNutrition[ingredientId] = knownCalories === undefined ? {} : { calories: knownCalories };
       if (removeOption && remove) {
         orderingOptionIdByCount[defaultCount - 1] = removeOption.id;
         orderingGroupIdByCount[defaultCount - 1] = remove.id;
@@ -281,6 +285,9 @@ export function buildMcDonaldsRemainingSafeCustomization(): SafeCustomizationDat
       const extraOption = definition.interactive
         ? group.options.find((option) => option.name === `Extra ${actionName}`)
         : undefined;
+      if (["chicken-strip", "flour-tortilla", "shredded-cheese", "sauce"].includes(definition.key)) {
+        unverifiedNutrition[id] = { calories: definition.nutrition.calories };
+      }
       ingredients.push({
         id, canonicalIngredientId: definition.canonicalId, name: definition.name,
         image: definition.image, categories: [definition.category],
@@ -385,7 +392,7 @@ export function buildMcDonaldsRemainingSafeCustomization(): SafeCustomizationDat
     "mcd-item-201306", "mcd-item-200267", "mcd-item-200322", "mcd-item-200323",
     "mcd-item-200325", "mcd-item-200258", "mcd-item-200284",
   ]);
-  const generatedItems = (generatedRestaurant as unknown as { items: Array<{
+  const generatedItems = (menu as unknown as { items: Array<{
     id: string;
     source?: { generated?: { menu?: { componentItemIds?: string[] } } };
   }> }).items;
@@ -413,6 +420,7 @@ export function buildMcDonaldsRemainingSafeCustomization(): SafeCustomizationDat
       const orderingGroupIdByCount: Record<number, string> = capturedRemoveOption && bigBreakfastRemoveGroup
         ? { 0: bigBreakfastRemoveGroup.id }
         : {};
+      unverifiedNutrition[ingredientId] = { calories: definition.calories };
       ingredients.push({
         id: ingredientId,
         canonicalIngredientId: `mcd-component-${componentId}`,
@@ -470,5 +478,5 @@ export function buildMcDonaldsRemainingSafeCustomization(): SafeCustomizationDat
     };
   }
 
-  return { ingredients, byItemId, categoryRules };
+  return { ingredients, byItemId, categoryRules, unverifiedNutrition };
 }

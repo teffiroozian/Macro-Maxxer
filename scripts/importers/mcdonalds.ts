@@ -146,7 +146,7 @@ function normalizedDisplayName(value: string): string {
   return value.normalize("NFKC").toLocaleLowerCase("en-US").replace(/\s+/g, " ").trim();
 }
 
-function nutritionFor(item: JsonObject): Nutrition | undefined {
+export function nutritionFor(item: JsonObject): Nutrition | undefined {
   const facts = new Map<string, number>();
   const nutrients = array(object(item.nutrient_facts)?.nutrient);
   for (const value of nutrients) {
@@ -284,7 +284,7 @@ function reviewedVariants(sizes: Array<[number, string]>, catalogById: Map<numbe
   });
 }
 
-async function main(): Promise<void> {
+export async function buildMcDonaldsFromCaptures() {
   const [menu, details, catalog, metadata] = await Promise.all([
     readFile(resolve(MENU_SOURCE), "utf8").then((value) => JSON.parse(value) as RawMenu),
     readFile(resolve(DETAILS_SOURCE), "utf8").then((value) => JSON.parse(value) as RawDetails),
@@ -511,8 +511,7 @@ async function main(): Promise<void> {
     },
   };
 
-  await writeAtomically(OUTPUT_PATH, `${JSON.stringify(output, null, 2)}\n`);
-  console.log(JSON.stringify({
+  const summary = {
     output: "data/restaurants/mcdonalds/generated/restaurant.json",
     sourceRecords: menu.items.length,
     generatedItems: items.length,
@@ -524,10 +523,17 @@ async function main(): Promise<void> {
     duplicateNames,
     skipped,
     warnings,
-  }, null, 2));
+  };
+  return { output, summary, menu, details, metadata };
 }
 
-main().catch((error: unknown) => {
+async function main(): Promise<void> {
+  const { output, summary } = await buildMcDonaldsFromCaptures();
+  await writeAtomically(OUTPUT_PATH, `${JSON.stringify(output, null, 2)}\n`);
+  console.log(JSON.stringify(summary, null, 2));
+}
+
+if (process.argv[1] && resolve(process.argv[1]) === resolve("scripts/importers/mcdonalds.ts")) main().catch((error: unknown) => {
   console.error(error instanceof Error ? error.message : error);
   process.exitCode = 1;
 });

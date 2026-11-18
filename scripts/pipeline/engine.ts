@@ -130,14 +130,14 @@ function trimLabels(item: AdapterItem): AdapterItem {
   return item;
 }
 
-function dedupeItems(items: readonly AdapterItem[], issues: Issues): AdapterItem[] {
+function dedupeItems(items: readonly AdapterItem[], issues: Issues, byIdentity: boolean): AdapterItem[] {
   const byKey = new Map<string, AdapterItem>();
   const byId = new Map<string, AdapterItem>();
   const result: AdapterItem[] = [];
 
   for (const source of items) {
     const item = trimLabels(structuredClone(source));
-    const key = `${normalizeName(item.sourceCategory)}|${normalizeName(item.name)}`;
+    const key = byIdentity ? item.id : `${normalizeName(item.sourceCategory)}|${normalizeName(item.name)}`;
     const existing = byKey.get(key);
     if (!existing) {
       const sameId = byId.get(item.id);
@@ -153,6 +153,17 @@ function dedupeItems(items: readonly AdapterItem[], issues: Issues): AdapterItem
       byKey.set(key, item);
       byId.set(item.id, item);
       result.push(item);
+      continue;
+    }
+
+    if (byIdentity && (normalizeName(item.name) !== normalizeName(existing.name) ||
+        normalizeName(item.sourceCategory) !== normalizeName(existing.sourceCategory))) {
+      issues.push({
+        severity: "blocker",
+        code: "duplicate_item_id",
+        message: `Item id "${item.id}" identifies both "${existing.name}" and "${item.name}" in different source records.`,
+        entityIds: [item.id],
+      });
       continue;
     }
 
@@ -184,6 +195,7 @@ function dedupeItems(items: readonly AdapterItem[], issues: Issues): AdapterItem
 function dedupeIngredients(
   ingredients: readonly AdapterIngredient[],
   issues: Issues,
+  byIdentity: boolean,
 ): { ingredients: AdapterIngredient[]; replacedIds: Map<string, string> } {
   const byKey = new Map<string, AdapterIngredient>();
   const byId = new Map<string, AdapterIngredient>();
@@ -193,7 +205,7 @@ function dedupeIngredients(
   for (const source of ingredients) {
     const ingredient = structuredClone(source);
     ingredient.name = ingredient.name.trim();
-    const key = `${normalizeName(ingredient.sourceCategory)}|${normalizeName(ingredient.name)}`;
+    const key = byIdentity ? ingredient.id : `${normalizeName(ingredient.sourceCategory)}|${normalizeName(ingredient.name)}`;
     const existing = byId.get(ingredient.id) ?? byKey.get(key);
     if (!existing) {
       byKey.set(key, ingredient);
@@ -474,7 +486,17 @@ function reconcileTree(
   });
 
   const draftItems = items.map((item): DraftItem => {
-    const expected = Boolean(item.composition) || (item.model === "standard" && item.variants.length === 0);
+    const source = item.sources[0];
+    const composition: typeof item.composition = item.mealPreset && source
+      ? item.mealPreset.selections.map(({ itemId, nutrition, quantity }) => ({
+        label: itemId,
+        quantity: 1, // The resolved panel already represents the selected portion.
+        role: "default_selection",
+        nutrition: [{ source, values: nutrition, basis: { kind: "selected_portion", amount: quantity } }],
+        source,
+      }))
+      : item.composition;
+    const expected = Boolean(composition) || (item.model === "standard" && !item.sourceOnly && item.variants.length === 0);
     return track(
       item.id,
       item.name,
@@ -482,7 +504,7 @@ function reconcileTree(
       {
         ...item,
         nutrition: reconcile(item.nutrition),
-        composition: convertComposition(item.composition),
+        composition: convertComposition(composition),
         variants: item.variants.map((variant): ItemVariant<NutritionRecord> => {
           const variantName = `${item.name} › ${variant.label}`;
           return track(
@@ -506,7 +528,7 @@ function reconcileTree(
 
   const draftIngredients = ingredients.map((ingredient): DraftIngredient => {
     const record = { ...ingredient, nutrition: reconcile(ingredient.nutrition) };
-    pending.push({ id: ingredient.id, label: `${ingredient.sourceCategory} › ${ingredient.name}`, target: record, expected: true });
+    pending.push({ id: ingredient.id, label: `${ingredient.sourceCategory} › ${ingredient.name}`, target: record, expected: !ingredient.contextualNutritionOnly && !ingredient.preparationOnly });
     return record;
   });
 
@@ -624,8 +646,8 @@ function applyCompositions(nodes: ComposableNode[], items: DraftItem[], ingredie
 export function normalizeRestaurant(output: AdapterOutput, options: NormalizeOptions = {}): RestaurantDraft {
   const issues: Issues = [...(output.knownIssues ?? [])];
 
-  const items = dedupeItems(output.items, issues);
-  const { ingredients, replacedIds } = dedupeIngredients(output.ingredients, issues);
+  const items = dedupeItems(output.items, issues, output.deduplicateBy === "identity");
+  const { ingredients, replacedIds } = dedupeIngredients(output.ingredients, issues, output.deduplicateBy === "identity");
   const ingredientIds = new Set(ingredients.map((ingredient) => ingredient.id));
 
   for (const item of items) {
@@ -725,6 +747,11 @@ export function normalizeRestaurant(output: AdapterOutput, options: NormalizeOpt
     menuModels,
     items: draft.items,
     ingredients: draft.ingredients,
+    runtimeRelationships: output.runtimeRelationships,
+    orderingGraph: output.orderingGraph,
+    configurationEvidence: output.configurationEvidence,
+    orderingPlans: output.orderingPlans,
+    additionalOrderingPlans: output.additionalOrderingPlans,
     unmatchedReferenceRows,
     issues,
     summary: {

@@ -1,4 +1,5 @@
 import type { CoreMacros, Nutrition } from "@/types/nutrition";
+import type { SavedOrdering } from "@/types/ordering";
 import type { ItemImagePresentation } from "@/types/menu";
 
 export type CartMacros = CoreMacros;
@@ -65,6 +66,7 @@ export type CartCustomization = {
   itemLabel?: string;
   variantId?: string;
   variantLabel?: string;
+  nutritionSnapshot?: Nutrition;
 };
 
 export type StandardCartSelection = {
@@ -72,6 +74,7 @@ export type StandardCartSelection = {
   variantId?: string;
   variantLabel?: string;
   optionSelections?: CartSelectionOption[];
+  ordering?: SavedOrdering;
 };
 
 // build-your-own item selection

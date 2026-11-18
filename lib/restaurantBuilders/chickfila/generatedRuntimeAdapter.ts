@@ -75,19 +75,19 @@ function canonicalIngredientCategory(groups: Set<string>): ChickfilaIngredientCa
   }
 }
 
-const sourceMenu = generatedRestaurant as unknown as RestaurantMenu;
-const sourceItems = sourceMenu.items ?? [];
-const sourceGroupsByIngredient = buildIngredientSourceGroups(sourceItems);
+export function adaptChickfilaMenuForRuntime(sourceMenu: RestaurantMenu): RestaurantMenu {
+  const sourceGroupsByIngredient = buildIngredientSourceGroups(sourceMenu.items);
 
-const ingredients = (sourceMenu.ingredients ?? []).map((ingredient): IngredientItem => {
-  const category = canonicalIngredientCategory(
-    sourceGroupsByIngredient.get(ingredient.id) ?? new Set<string>(),
-  );
+  const ingredients = (sourceMenu.ingredients ?? []).map((ingredient): IngredientItem => {
+    const category = canonicalIngredientCategory(
+      sourceGroupsByIngredient.get(ingredient.id) ?? new Set<string>(),
+    );
 
-  return category ? { ...ingredient, categories: [category] } : ingredient;
-});
+    return category ? { ...ingredient, categories: [category] } : ingredient;
+  });
 
-export const CHICKFILA_GENERATED_RUNTIME_MENU: RestaurantMenu = {
-  ...sourceMenu,
-  ingredients,
-};
+  return { ...sourceMenu, ingredients };
+}
+
+export const CHICKFILA_GENERATED_RUNTIME_MENU =
+  adaptChickfilaMenuForRuntime(generatedRestaurant as unknown as RestaurantMenu);

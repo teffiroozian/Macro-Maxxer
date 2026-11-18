@@ -1,0 +1,81 @@
+{
+  "valid": true,
+  "readyForApproval": false,
+  "checks": {
+    "structure": {
+      "passed": true,
+      "errors": 0,
+      "warnings": 0,
+      "info": 0,
+      "details": {}
+    },
+    "sources": {
+      "passed": true,
+      "errors": 0,
+      "warnings": 0,
+      "info": 0,
+      "details": {}
+    },
+    "freshness": {
+      "passed": true,
+      "errors": 0,
+      "warnings": 0,
+      "info": 0,
+      "details": {}
+    },
+    "nutrition": {
+      "passed": true,
+      "errors": 0,
+      "warnings": 0,
+      "info": 0,
+      "details": {}
+    },
+    "readiness": {
+      "passed": true,
+      "errors": 0,
+      "warnings": 1,
+      "info": 0,
+      "details": {
+        "blockers": 1,
+        "summary": {
+          "items": 439,
+          "standardItems": 439,
+          "buildYourOwnItems": 0,
+          "ingredients": 59,
+          "nutritionRecords": 2530,
+          "completeNutritionRecords": 2530,
+          "recordsMissingCoreMacros": 0,
+          "nutritionConflicts": 0,
+          "blockers": 1
+        }
+      }
+    }
+  },
+  "errorCounts": {},
+  "warningCounts": {
+    "nested_ordering_graph_not_executable": 1
+  },
+  "errors": [],
+  "summary": {
+    "items": 439,
+    "standardItems": 439,
+    "buildYourOwnItems": 0,
+    "ingredients": 59,
+    "nutritionRecords": 2530,
+    "completeNutritionRecords": 2530,
+    "recordsMissingCoreMacros": 0,
+    "nutritionConflicts": 0,
+    "blockers": 1
+  },
+  "runtimeProjection": {
+    "items": 435,
+    "ingredients": 59,
+    "excluded": 4,
+    "referenceErrors": [],
+    "ids": {
+      "fromRegistry": 987,
+      "minted": 0,
+      "conflicts": 0
+    }
+  }
+}

@@ -1,3 +1,4 @@
+import reviewedCategoryOverrides from "../../data/restaurants/mcdonalds/review/category-overrides.json";
 import { resolve } from "node:path";
 
 import { writeAtomically } from "../lib/write-atomically";
@@ -18,7 +19,7 @@ import {
 
 const RAW_PATH = resolve("data/restaurants/mcdonalds/raw/menu.json");
 const RESTAURANT_PATH = resolve("data/restaurants/mcdonalds/generated/restaurant.json");
-const REPORT_PATH = resolve("data/restaurants/mcdonalds/validation/report.json");
+const REPORT_PATH = resolve(process.argv.includes("--report") ? process.argv[process.argv.indexOf("--report") + 1] : "data/restaurants/mcdonalds/validation/report.json");
 
 const CHECK_NAMES = [
   "structure", "coverage", "identity", "names", "nutrition", "images_urls",
@@ -112,7 +113,8 @@ async function main(): Promise<void> {
         if (variant.canonicalItemId !== id) addFinding(context, "error", "variants", "broken_variant_parent", `${variantId} does not point to parent ${id}.`, { recordIds: [id, variantId] });
         if (validateNutrition(variant.nutrition, `variants.${variantId}.nutrition`, variantId, context, "nutrition") && isObject(variant.nutrition)) validateMacroPlausibility(variant.nutrition, variantId, `variants.${variantId}.nutrition`);
         if (!validImage(variant.image)) addFinding(context, "error", "images_urls", "missing_or_malformed_variant_image", `${variantId} lacks a valid image or explicit no-image marker.`, { recordIds: [variantId] });
-        if (JSON.stringify(variant.categories) !== JSON.stringify(item.categories)) addFinding(context, "error", "categories", "variant_category_mismatch", `${variantId} categories differ from ${id}.`, { recordIds: [id, variantId] });
+        const reviewed = (reviewedCategoryOverrides as Record<string, string[]>)[variantId.replace(/^mcd-item-/, "")];
+        if (JSON.stringify(variant.categories) !== JSON.stringify(reviewed ?? item.categories)) addFinding(context, "error", "categories", "variant_category_mismatch", `${variantId} categories differ from ${id}.`, { recordIds: [id, variantId] });
       }
     } else if (item.defaultVariantId !== undefined) addFinding(context, "error", "variants", "default_without_variants", `${id} has defaultVariantId without variants.`, { recordIds: [id] });
     if (isObject(item.comboConfig)) {
@@ -143,7 +145,7 @@ async function main(): Promise<void> {
 async function finish(): Promise<void> {
   const report = { restaurant: "McDonald's", generatedAt: localDate(), valid: context.errors.length === 0, summary: { errors: context.errors.length, warnings: context.warnings.length, info: context.info.length, errorTypes: findingTypeCounts(context.errors), warningTypes: findingTypeCounts(context.warnings) }, checks: context.checks, errors: context.errors, warnings: context.warnings, info: context.info };
   await writeAtomically(REPORT_PATH, `${JSON.stringify(report, null, 2)}\n`);
-  console.log(JSON.stringify({ report: "data/restaurants/mcdonalds/validation/report.json", valid: report.valid, summary: report.summary }, null, 2));
+  console.log(JSON.stringify({ report: REPORT_PATH, valid: report.valid, summary: report.summary }, null, 2));
   if (!report.valid) process.exitCode = 1;
 }
 

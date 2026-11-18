@@ -45,6 +45,7 @@ import {
   fromUniversalChipotleBuildConfiguration,
   toUniversalChipotleBuildConfiguration,
 } from "@/lib/restaurantBuilders/chipotle/cartAdapter";
+import { isChipotlePipelinePreview } from "@/lib/restaurantBuilders/chipotle/runtimeMenu";
 import type { ChipotleBuildConfiguration } from "@/lib/restaurantBuilders/chipotle";
 import BuildSummaryDrawer from "../BuildSummaryDrawer";
 import type { CompactOption } from "@/components/menu-item-card/IngredientCompactCard";
@@ -1424,6 +1425,7 @@ export default function ChipotleRestaurantBuilderView({
         category,
         selectedEntree,
         selectedKidsMeal,
+        builderConfig: chipotleBuilderConfig,
       });
       if (category && typeof categoryMaxSelections === "number") {
         const selectedQuantityInCategory = getSelectedQuantityForCategory(
@@ -1888,12 +1890,16 @@ export default function ChipotleRestaurantBuilderView({
             return;
           }
 
-          const selectedVariantId =
-            configuration.selectedIngredientVariantIds[ingredientId] ??
-            ingredient.defaultVariantId;
+          const savedVariantId = configuration.selectedIngredientVariantIds[ingredientId];
+          const selectedVariantId = savedVariantId ?? ingredient.defaultVariantId;
           const selectedVariant = ingredient.variants?.find(
             (variant) => variant.id === selectedVariantId,
           );
+
+          if (isChipotlePipelinePreview && savedVariantId && !selectedVariant) {
+            missingIngredientIds.push(ingredientId);
+            return;
+          }
 
           next[ingredientId] = {
             item: {
@@ -1917,6 +1923,11 @@ export default function ChipotleRestaurantBuilderView({
   );
 
   const handleAddBuildToCart = (onAfterAdd?: () => void) => {
+    if (isChipotlePipelinePreview && editingCartItem &&
+        hydratedEditItemIdRef.current !== editingCartItem.id) {
+      window.alert("This saved build has selections unavailable in the preview menu.");
+      return;
+    }
     if (selectedIngredientCount === 0) return;
     const nextBuildConfiguration: BuildConfigurationSnapshot = {
       selectedEntree,
@@ -2190,6 +2201,7 @@ export default function ChipotleRestaurantBuilderView({
         category,
         selectedEntree,
         selectedKidsMeal,
+        builderConfig: chipotleBuilderConfig,
       });
       const selectedQuantityInCategory = category
         ? getSelectedQuantityForCategory(previous, category)

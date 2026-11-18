@@ -1,3 +1,4 @@
+import type { MealPreset } from "../../types/menu";
 // Universal restaurant import contracts.
 //
 // Adapters translate one restaurant's sources into AdapterOutput; the
@@ -5,7 +6,9 @@
 // staging artifact: it may hold incomplete or conflicting nutrition, which the
 // runtime schema (types/menu.ts) cannot. Only projectToRestaurantMenu produces
 // runtime records, and only for entities whose four core macros are known.
-import type { ServingType } from "../../types/menu";
+import type { MenuSourceIdentity, ServingType, SourceProvenanceValue } from "../../types/menu";
+import type { OrderingGraph, RuntimeRelationships } from "./runtime-relationships";
+import type { OrderingPlan } from "../../types/ordering";
 import type { Nutrition } from "../../types/nutrition";
 
 export const CONTRACT_VERSION = 1;
@@ -221,6 +224,15 @@ export type CompositionComponent<N> = {
 export type ItemVariant<N> = {
   id: string;
   label: string;
+  // Some sizes or packs belong to a different menu section or serving type.
+  category?: string;
+  servingType?: ServingType;
+  sourceVariantId?: string;
+  canonicalItemId?: string;
+  orderingIdentity?: MenuSourceIdentity["menu"];
+  generatedSource?: NonNullable<MenuSourceIdentity["generated"]>;
+  tags?: string[];
+  image?: string;
   isDefault: boolean;
   nutrition: N;
   composition?: CompositionComponent<N>[];
@@ -242,6 +254,12 @@ export type UniversalItem<N> = {
   category?: string;
   servingType: ServingType;
   isAvailable: boolean;
+  sourceOnly?: boolean;
+  nonNutritionComponent?: boolean;
+  mealPreset?: MealPreset;
+  orderingIdentity?: MenuSourceIdentity["menu"];
+  generatedSource?: NonNullable<MenuSourceIdentity["generated"]>;
+  tags?: string[];
   // Whole-item nutrition. For a build-your-own item this is usually empty and
   // the total comes from the selected variant plus selections.
   nutrition: N;
@@ -249,6 +267,7 @@ export type UniversalItem<N> = {
   // the item still wins wherever it exists and agrees with the total.
   composition?: CompositionComponent<N>[];
   variants: ItemVariant<N>[];
+  requirePublishedDefaultVariant?: boolean;
   groups: SelectionGroup<N>[];
   image?: string;
   // Position the source itself assigns for display, when it states one.
@@ -262,6 +281,10 @@ export type UniversalIngredient<N> = {
   sourceCategory: string;
   category?: string;
   nutrition: N;
+  // The ingredient has no single serving independent of its parent option.
+  contextualNutritionOnly?: boolean;
+  // Explicit preparation identity with no standalone nutrition panel.
+  preparationOnly?: boolean;
   sources: SourceRef[];
 };
 
@@ -288,6 +311,8 @@ export type AdapterIngredient = UniversalIngredient<NutritionInput>;
 export type AdapterOutput = {
   restaurant: RestaurantIdentity;
   sources: SourceDescriptor[];
+  // Use stable source identities when equal names can describe distinct products.
+  deduplicateBy?: "identity" | "name";
   items: AdapterItem[];
   ingredients: AdapterIngredient[];
   referenceNutrition?: ReferenceNutritionRow[];
@@ -305,6 +330,12 @@ export type AdapterOutput = {
   compositionCalorieTolerance?: number;
   // Known gaps the adapter author wants on the record.
   knownIssues?: DataIssue[];
+  runtimeRelationships?: RuntimeRelationships;
+  orderingGraph?: OrderingGraph;
+  // Adapter evidence with no verified executable nutrition model.
+  configurationEvidence?: Record<string, SourceProvenanceValue>;
+  orderingPlans?: Record<string, OrderingPlan>;
+  additionalOrderingPlans?: Record<string, OrderingPlan[]>;
 };
 
 export interface RestaurantAdapter<Raw> {
@@ -339,6 +370,12 @@ export type RestaurantDraft = {
   menuModels: MenuModel[];
   items: DraftItem[];
   ingredients: DraftIngredient[];
+  runtimeRelationships?: RuntimeRelationships;
+  orderingGraph?: OrderingGraph;
+  // Adapter evidence with no verified executable nutrition model.
+  configurationEvidence?: Record<string, SourceProvenanceValue>;
+  orderingPlans?: Record<string, OrderingPlan>;
+  additionalOrderingPlans?: Record<string, OrderingPlan[]>;
   unmatchedReferenceRows: string[];
   issues: DataIssue[];
   summary: {

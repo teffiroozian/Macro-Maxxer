@@ -33,6 +33,7 @@ export const idKeys = {
   // A source record that means different things in different owners.
   sourceIn: (recordId: string, ownerId: string) => `src:${recordId}@${ownerId}`,
   name: (category: string, name: string) => `name:${normalizeName(category)}/${normalizeName(name)}`,
+  variantSource: (ownerId: string, sourceId: string) => `${ownerId}/variant-source:${sourceId}`,
   variant: (ownerId: string, label: string) => `${ownerId}/variant:${normalizeName(label)}`,
   portion: (ownerId: string, label: string) => `${ownerId}/portion:${normalizeName(label)}`,
   group: (ownerId: string, label: string) => `${ownerId}/group:${normalizeName(label).replace(/s$/, "")}`,
@@ -70,11 +71,11 @@ export class IdResolver {
   // Keys are tried in order, most specific first. The first key that names an
   // id not already given to another record in this run wins. With no match a
   // new id is minted from `base` and recorded as an addition.
-  resolve(kind: IdKind, keys: readonly string[], base: string): IdResolution {
+  resolve(kind: IdKind, keys: readonly string[], base: string, ownerId?: string): IdResolution {
     for (const key of keys) {
       const entry = this.byKey.get(`${kind}|${key}`);
       if (!entry) continue;
-      const claim = `${kind}|${entry.id}`;
+      const claim = JSON.stringify([kind, ownerId, entry.id]);
       // One category id may serve several items (a shared toppings list).
       if (kind !== "category" && this.claimed.has(claim)) {
         // Two records sharing a name is ordinary (one ingredient at two
@@ -95,7 +96,7 @@ export class IdResolver {
     this.entries.push(entry);
     this.additions.push(entry);
     this.usedIds.add(id);
-    this.claimed.add(`${kind}|${id}`);
+    this.claimed.add(JSON.stringify([kind, ownerId, id]));
     for (const key of entry.keys) this.byKey.set(`${kind}|${key}`, entry);
     return { id, isNew: true };
   }
@@ -109,8 +110,8 @@ export class IdResolver {
 
 // ── Seeding from a menu the app already serves ───────────────────────────
 
-type SeedSource = { menu?: { itemIds?: string[] } };
-type SeedVariant = { id: string; label: string; source?: SeedSource };
+type SeedSource = { menu?: { itemIds?: string[]; recordId?: string } };
+type SeedVariant = { id: string; label: string; source?: SeedSource; sourceVariantId?: string };
 type SeedCategory = { name: string; id?: string; ingredients: string[] };
 export type SeedMenu = {
   items: Array<{
@@ -135,11 +136,14 @@ export function seedRegistryFromRuntimeMenu(restaurantId: string, menu: SeedMenu
     for (const key of keys) if (!entry.keys.includes(key)) entry.keys.push(key);
     entries.set(`${kind}|${id}`, entry);
   };
-  const recordIds = (source?: SeedSource) => source?.menu?.itemIds ?? [];
+  const recordIds = (source?: SeedSource) => source?.menu?.itemIds ?? (source?.menu?.recordId ? [source.menu.recordId] : []);
 
   for (const item of menu.items) {
     add("item", item.id, [...recordIds(item.source).map(idKeys.source), idKeys.name(item.categories[0] ?? "", item.name)]);
-    for (const variant of item.variants ?? []) add("variant", variant.id, [idKeys.variant(item.id, variant.label)]);
+    for (const variant of item.variants ?? []) add("variant", variant.id, [
+      ...(variant.sourceVariantId ? [idKeys.variantSource(item.id, variant.sourceVariantId)] : []),
+      idKeys.variant(item.id, variant.label),
+    ]);
     for (const category of item.customization?.ingredientCategories ?? []) {
       if (category.id) add("category", category.id, [idKeys.group(item.id, category.name)]);
     }

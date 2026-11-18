@@ -1,5 +1,6 @@
 import { readFile } from "node:fs/promises";
 import { resolve } from "node:path";
+import { pathToFileURL } from "node:url";
 
 import type {
   IngredientItem,
@@ -545,7 +546,7 @@ function categoryForIngredientName(name: string): string {
 // Main
 // --------------------------------------------------------------------------
 
-async function main(): Promise<void> {
+export async function buildChipotleFromCaptures() {
   const [calculatorMenu, menuMetadata, liveNutritionFile, nutritionFile, onlineMeals] = await Promise.all([
     readJson<RawCalculatorMenu>(CALCULATOR_MENU_PATH),
     readJson<RawMenuMetadata>(MENU_METADATA_PATH),
@@ -2093,6 +2094,7 @@ async function main(): Promise<void> {
   type ResolvedMealComponent = {
     id: string;
     entry: string;
+    orderedQuantity?: number;
     nutrition: Nutrition;
   };
 
@@ -2176,6 +2178,7 @@ async function main(): Promise<void> {
     mealsBySignature.set(mealSignature(meal), [...(mealsBySignature.get(mealSignature(meal)) ?? []), meal]);
   }
 
+  const presetComponents = new Map<string, ResolvedMealComponent[]>();
   const CATERING_NAMESPACE_TYPES = new Set(["BuildYourOwn"]);
 
   for (const group of mealsBySignature.values()) {
@@ -2276,6 +2279,7 @@ async function main(): Promise<void> {
           : 1;
       addResolved({
         ...resolved,
+        orderedQuantity: content.quantity,
         nutrition: scaleNutrition(
           resolved.nutrition,
           content.quantity * tacoContextMultiplier,
@@ -2296,6 +2300,7 @@ async function main(): Promise<void> {
 
     const resolvedComponents = [...resolvedById.values()];
     const composed = addNutrition(...resolvedComponents.map((entry) => entry.nutrition));
+    presetComponents.set(id, resolvedComponents);
     generatedItems.push({
       id,
       name: primary.mealName,
@@ -2452,6 +2457,11 @@ async function main(): Promise<void> {
     records: unresolved,
   };
 
+  return { restaurantOutput, unresolvedOutput, presetComponents };
+}
+
+async function main(): Promise<void> {
+  const { restaurantOutput, unresolvedOutput } = await buildChipotleFromCaptures();
   await Promise.all([
     writeAtomically(OUTPUT_PATH, `${JSON.stringify(restaurantOutput, null, 2)}\n`),
     writeAtomically(UNRESOLVED_PATH, `${JSON.stringify(unresolvedOutput, null, 2)}\n`),
@@ -2462,10 +2472,10 @@ async function main(): Promise<void> {
       {
         output: "data/restaurants/chipotle/generated/restaurant.json",
         unresolvedOutput: "data/restaurants/chipotle/generated/unresolved.json",
-        menuItems: generatedItems.length,
-        ingredients: generatedIngredients.length,
-        unresolved: unresolved.length,
-        unresolvedByReason,
+        menuItems: restaurantOutput.items.length,
+        ingredients: restaurantOutput.ingredients.length,
+        unresolved: unresolvedOutput.records.length,
+        unresolvedByReason: unresolvedOutput.summary.unresolvedByReason,
       },
       null,
       2,
@@ -2473,7 +2483,7 @@ async function main(): Promise<void> {
   );
 }
 
-main().catch((error: unknown) => {
+if (process.argv[1] && pathToFileURL(resolve(process.argv[1])).href === import.meta.url) main().catch((error: unknown) => {
   console.error(error instanceof Error ? error.stack ?? error.message : error);
   process.exitCode = 1;
 });

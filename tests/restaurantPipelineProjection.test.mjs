@@ -305,3 +305,54 @@ test("projection: a name-keyed limit is only emitted when every builder agrees o
   assert.ok(notes.some((note) => /"Toppings" has different maximums/.test(note)));
   assert.deepEqual(checkRuntimeMenu(menu), []);
 });
+
+test("runtime relationships remap item, ingredient and scoped variant IDs and check their targets", () => {
+  const base = standard("entree", "Entree", {
+    variants: [{ id: "draft:entree/small", sourceVariantId: "small-sku", label: "Small", isDefault: true, nutrition: panel(200) }],
+  });
+  const side = standard("side", "Side", {
+    variants: [{ id: "draft:side/small", sourceVariantId: "small-sku", label: "Small", isDefault: true, nutrition: panel(30) }],
+  });
+  const carrier = standard("meal", "Meal", { sourceOnly: true, nutrition: [] });
+  const ingredient = { id: "draft:topping", name: "Topping", sourceCategory: "Toppings", nutrition: [], sources: [{ sourceId: "menu" }], contextualNutritionOnly: true };
+  const context = { nutrition: FULL, source: {
+    sourceType: "ordering_system", sourceId: "portion", sourceUrl: "https://example.test/menu",
+    retailModifiedItemId: "topping", tag: "SMALL_TOPPING", servingWeight: { amount: 12, unit: "g" },
+  } };
+  const draft = draftOf([base, side, carrier], [ingredient]);
+  draft.runtimeRelationships = {
+    ingredients: { [ingredient.id]: { maxQuantity: 2, defaultOrder: 1, contextualNutritionUnits: [context] } },
+    addonGroups: { toppings: { label: "Toppings", itemIds: [side.id], maxPerItem: 2 } },
+    items: {
+      [base.id]: {
+        addonRefs: ["toppings"], ingredients: [ingredient.id],
+        variantContexts: { "small-sku": { [ingredient.id]: context } },
+      },
+      [side.id]: { addonEligible: true },
+      [carrier.id]: { comboConfig: {
+        entreeItemId: base.id, mealItemIdByEntreeVariantId: { "small-sku": carrier.id },
+        sideGroup: { required: true, minSelections: 1, maxSelections: 1,
+          options: [{ itemId: side.id, fixedVariantId: "small-sku" }] },
+      } },
+    },
+  };
+  const { menu, relationshipErrors } = projectToRestaurantMenu(draft);
+  const [entree, projectedSide, meal] = menu.items;
+  const [topping] = menu.ingredients;
+  assert.deepEqual(relationshipErrors, []);
+  assert.deepEqual(checkRuntimeMenu(menu), []);
+  assert.equal(meal.nutrition, undefined);
+  assert.equal(topping.nutrition, undefined);
+  assert.deepEqual(entree.ingredients, [topping.id]);
+  assert.deepEqual(entree.variants[0].ingredientNutritionContexts[topping.id], context);
+  assert.deepEqual(menu.addonGroups.toppings.itemIds, [projectedSide.id]);
+  assert.deepEqual(meal.comboConfig.mealItemIdByEntreeVariantId, { [entree.variants[0].id]: meal.id });
+  assert.equal(meal.comboConfig.sideGroup.options[0].fixedVariantId, projectedSide.variants[0].id);
+
+  meal.comboConfig.sideGroup.options[0].fixedVariantId = entree.variants[0].id;
+  menu.addonGroups.toppings.itemIds.push("missing-addon");
+  assert.match(checkRuntimeMenu(menu).join("\n"), /variant .* does not exist[\s\S]*|missing-addon/);
+  assert.equal(checkRuntimeMenu(menu).length, 2);
+  draft.runtimeRelationships.items[base.id].variantContexts["absent-sku"] = { [ingredient.id]: context };
+  assert.match(projectToRestaurantMenu(draft).relationshipErrors[0], /absent-sku/);
+});

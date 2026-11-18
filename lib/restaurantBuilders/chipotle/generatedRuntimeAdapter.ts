@@ -69,6 +69,7 @@ type GeneratedChipotleItem = {
   defaultVariantId?: string;
   defaultOrder: number;
   ingredients?: string[];
+  mealPreset?: MenuItem["mealPreset"];
   customization?: MenuItem["customization"];
   source?: GeneratedChipotleSource;
 };
@@ -167,11 +168,12 @@ function adaptItem(
     image: chipotlePresentationImageForGeneratedId(item.id).image,
     categories: [...item.categories],
     servingType: servingTypeFor(item.servingType),
-    nutrition: { ...runtimeItemNutrition(item, generatedIngredientsById) },
+    nutrition: item.nutrition === undefined ? item.nutrition : { ...runtimeItemNutrition(item, generatedIngredientsById) },
     variants: item.variants?.map(adaptVariant),
     defaultVariantId: item.defaultVariantId,
     defaultOrder: item.defaultOrder,
     ingredients: item.ingredients ? [...item.ingredients] : undefined,
+    ...(item.mealPreset ? { mealPreset: item.mealPreset } : {}),
     customization: item.customization,
     source: adaptSource(item.source),
     sourceOnly:
@@ -305,8 +307,8 @@ export function adaptGeneratedChipotleMenuForRuntime(
   const presetReferencedItemIds = new Set(
     generated.items
       .filter((item) => item.source?.menu.role === "preconfigured_meal")
-      .flatMap((item) => item.ingredients ?? [])
-      .map((entry) => entry.split(":", 1)[0]),
+      .flatMap((item) => item.mealPreset?.selections.map(({ itemId }) => itemId) ??
+        (item.ingredients ?? []).map((entry) => entry.split(":", 1)[0])),
   );
   // Some official presets include a separately purchasable side. Project
   // that already-generated menu record into the runtime ingredient catalog

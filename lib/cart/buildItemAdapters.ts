@@ -32,6 +32,7 @@ function buildCartFallbackMenuItem(cartItem: CartItem): MenuItem {
     categories: ["Cart"],
     servingType: "single",
     nutrition: {
+      ...cartItem.nutritionPerItem,
       calories: macros.calories,
       protein: macros.protein,
       carbs: macros.carbs,
@@ -140,4 +141,9 @@ export function buildCartMenuItemFromState(cartItem: CartItem, sourceItem: MenuI
     return buildChipotleBuildYourOwnMenuItem(cartItem, ingredientItems);
   }
   return buildCartFallbackMenuItem(cartItem);
+}
+
+export function resolveSavedBuildMode(item: Pick<CartItem, "restaurantId" | "selection"> | null) {
+  if (item?.selection.type !== "build-your-own") return "standard";
+  return item.restaurantId === "chipotle" ? "chipotle" : "snapshot";
 }

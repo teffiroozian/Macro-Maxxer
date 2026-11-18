@@ -1,0 +1,27 @@
+{
+  "registry": "/Users/hateffiroozian/Developer/macro-maxxer-data/data/restaurants/id-registry/chickfila.json",
+  "additions": [],
+  "conflicts": [],
+  "excluded": [
+    {
+      "id": "cfa-group-100438",
+      "name": "Ice Products",
+      "reason": "missing calories, protein, carbs, totalFat"
+    },
+    {
+      "id": "cfa-item-1000353",
+      "name": "Prize (3 & under) - While supplies last",
+      "reason": "missing calories, protein, carbs, totalFat"
+    },
+    {
+      "id": "cfa-item-1000158",
+      "name": "Prize (4 & up) - While supplies last",
+      "reason": "missing calories, protein, carbs, totalFat"
+    },
+    {
+      "id": "cfa-item-1002292",
+      "name": "No Toy",
+      "reason": "missing calories, protein, carbs, totalFat"
+    }
+  ]
+}

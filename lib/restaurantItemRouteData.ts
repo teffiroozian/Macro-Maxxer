@@ -1,6 +1,10 @@
+import { isChickfilaPipelinePreview } from "@/lib/restaurantBuilders/chickfila/runtimeMenu";
+import { isMcDonaldsPipelinePreview } from "@/lib/restaurantBuilders/mcdonalds/runtimeMenu";
+import { isStarbucksPipelinePreview } from "@/lib/restaurantBuilders/starbucks/runtimeMenu";
 import { resolveAddonMenuItems } from "@/lib/addonGroups";
 import { getItemBySlug, getRestaurantData, toItemSlug } from "@/lib/restaurants";
 import { resolveChipotleLegacyItemRoute } from "@/lib/restaurantBuilders/chipotle/legacyCompatibility";
+import { isChipotlePipelinePreview } from "@/lib/restaurantBuilders/chipotle/runtimeMenu";
 import { resolveEffectiveIngredientNutrition } from "@/lib/ingredientNutrition";
 
 export async function getRestaurantItemRouteData(id: string, itemSlug: string, requestedVariantId?: string) {
@@ -56,12 +60,21 @@ export async function getRestaurantItemRouteData(id: string, itemSlug: string, r
       };
     }
   }
-  if (!item) {
+  if (!item || (item.sourceOnly && !item.nutrition)) {
     return null;
   }
 
   if (requestedVariantId && item.variants?.some((variant) => variant.id === requestedVariantId)) {
     initialVariantId = requestedVariantId;
+  } else if (requestedVariantId && ((id === "chickfila" && isChickfilaPipelinePreview) ||
+      (id === "chipotle" && isChipotlePipelinePreview) ||
+      (id === "starbucks" && isStarbucksPipelinePreview) ||
+      (id === "mcdonalds" && isMcDonaldsPipelinePreview))) {
+    return null;
+  }
+  if (id === "chipotle" && isChipotlePipelinePreview && initialVariantId &&
+      !item.variants?.some((variant) => variant.id === initialVariantId)) {
+    return null;
   }
 
   const addons = resolveAddonMenuItems(restaurant.addonGroups, restaurant.items);

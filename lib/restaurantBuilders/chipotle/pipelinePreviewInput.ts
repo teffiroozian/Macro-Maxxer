@@ -43,7 +43,9 @@ export function toGeneratedChipotleInput(menu: RestaurantMenu): GeneratedChipotl
       })),
       defaultVariantId: item.defaultVariantId,
       defaultOrder: item.defaultOrder,
-      ingredients: item.ingredients,
+      ingredients: item.ingredients ?? item.mealPreset?.selections.map(({ itemId, quantity }) =>
+        quantity === 0.5 ? `${itemId}:light` : quantity === 2 ? `${itemId}:extra` : itemId),
+      mealPreset: item.mealPreset,
       customization: item.customization,
       source: generatedSource(item.source),
     })),
