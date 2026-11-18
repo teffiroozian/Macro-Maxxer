@@ -203,6 +203,9 @@ export function liveFetcher(options: LiveOptions = {}): Fetcher & { flush(): Pro
         const message = error instanceof Error ? error.message : String(error);
         // Tell a network that refuses the host apart from a site that failed.
         const diagnosis = await diagnosisFor(new URL(url).hostname);
+        // A name that does not resolve with no proxy in the way is a dead
+        // link (the domain is gone), not a network that refuses the request.
+        if (diagnosis.status === "dns_failure" && !diagnosis.viaProxy) return noResponse(url, "network_error", `dead link: ${diagnosis.host} does not resolve (${diagnosis.detail})`);
         if (diagnosis.status !== "ok" && diagnosis.status !== "http_error") {
           return noResponse(url, "network_blocked", `${diagnosis.status}: ${diagnosis.detail}${diagnosis.fix ? `. ${diagnosis.fix}` : ""}`);
         }

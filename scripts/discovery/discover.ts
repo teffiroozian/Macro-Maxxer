@@ -93,6 +93,10 @@ export function authorityOf(url: string, target: DiscoveryTarget): Authority {
   return "third_party";
 }
 
+// Hosts that serve files for other sites: CDNs, object storage, asset services.
+const FILE_HOST = /(?:^|[.-])(?:cdn|static|assets?|media|files?|uploads?|content|images?)[0-9]*[.-]|cloudfront\.net$|amazonaws\.com$|akamaihd\.net$|azureedge\.net$|blob\.core\.windows\.net$|googleusercontent\.com$|storage\.googleapis\.com$|ctfassets\.net$|cloudinary\.com$|imgix\.net$|squarespace-cdn\.com$|wixstatic\.com$|hubspotusercontent[^.]*\.net$|bynder\.com$|widen\.net$|issuu\.com$/i;
+export const isFileHost = (host: string) => FILE_HOST.test(host);
+
 const STORE_ID_IN_URL = /\/(?:store|stores|location|locations|restaurant|restaurants)\/(\d{2,})(?:\/|$|\?)/i;
 const BUNDLE_WORTH_READING = /(?:_app|main|app|store|menu|pages\/)[^/]*\.js(?:$|\?)/i;
 
@@ -257,8 +261,11 @@ export async function discoverSources(target: DiscoveryTarget, fetcher: Fetcher,
         continue;
       }
       if (DOCUMENT_EXTENSION.test(link.url)) {
-        // A document an official page links to is official even when a CDN serves it.
-        const authority = pageAuthority !== "third_party" && authorityOf(link.url, target) === "third_party" ? pageAuthority : undefined;
+        // A document an official page links to is official when a file host or
+        // CDN serves it. A document on another organization's site (a charity,
+        // a standards body) stays third-party and is never used for macros.
+        const offDomain = authorityOf(link.url, target) === "third_party";
+        const authority = pageAuthority !== "third_party" && offDomain && isFileHost(new URL(link.url).hostname) ? pageAuthority : undefined;
         enqueue(link.url, { depth: page.depth + 1, discoveredBy: `link:${page.url}`, relevance: score + 2, authority, channelHint: "official_document" });
         if (authority) pageCandidate.notes.push(`Links to an off-domain document treated as official: ${link.url}`);
         continue;

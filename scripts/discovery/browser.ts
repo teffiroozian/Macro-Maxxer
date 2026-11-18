@@ -1,7 +1,7 @@
 // Browser retrieval for JavaScript-rendered pages.
 //
 // withBrowser(fetcher) adds render(url): load the page in headless Chromium
-// (Playwright), wait for the network to settle, and return the rendered HTML
+// (Playwright), wait for "load" and briefly for the network to settle, and return the rendered HTML
 // plus every JSON response the page itself fetched with GET. It is passive:
 // no clicks, no form input, no login, no cookies carried between runs. A page
 // that answers with an anti-bot challenge is reported as network_blocked and
@@ -21,6 +21,9 @@ const MAX_RESPONSES = 40;
 
 export type BrowserOptions = {
   timeoutMs?: number;
+  // After "load", how long to wait for the network to go quiet. Sites that
+  // keep connections open (chipotle.com) never do; the page is kept anyway.
+  settleMs?: number;
   // Only keep JSON from these hosts (restaurant and ordering hosts).
   keepHost?: (host: string) => boolean;
   executablePath?: string;
@@ -30,7 +33,7 @@ const blocked = (url: string, detail: string): FetchResult => ({ url, finalUrl: 
 
 // The small part of Playwright's API used here.
 type PwResponse = { url(): string; status(): number; headers(): Record<string, string>; allHeaders(): Promise<Record<string, string>>; body(): Promise<Buffer>; request(): { method(): string } };
-type PwPage = { on(event: "response", listener: (response: PwResponse) => void): void; goto(url: string, options: Record<string, unknown>): Promise<PwResponse | null>; content(): Promise<string>; url(): string };
+type PwPage = { on(event: "response", listener: (response: PwResponse) => void): void; goto(url: string, options: Record<string, unknown>): Promise<PwResponse | null>; content(): Promise<string>; url(): string; waitForLoadState(state: "networkidle", options: { timeout: number }): Promise<void> };
 type PwContext = { newPage(): Promise<PwPage>; close(): Promise<void> };
 type PwBrowser = { newContext(options: Record<string, unknown>): Promise<PwContext>; close(): Promise<void> };
 type PlaywrightModule = { chromium: { launch(options: Record<string, unknown>): Promise<PwBrowser> } };
@@ -98,7 +101,8 @@ export function withBrowser(base: Fetcher, options: BrowserOptions = {}): Fetche
         );
       });
       try {
-        const main = await page.goto(url, { waitUntil: "networkidle", timeout: options.timeoutMs ?? 45_000 });
+        const main = await page.goto(url, { waitUntil: "load", timeout: options.timeoutMs ?? 45_000 });
+        await page.waitForLoadState("networkidle", { timeout: options.settleMs ?? 15_000 }).catch(() => undefined);
         await Promise.all(pending);
         const html = await page.content();
         const headers: Record<string, string> = main ? await main.allHeaders() : {};

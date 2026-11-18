@@ -451,3 +451,50 @@ test("browser fetcher: renders a JavaScript page and captures the JSON it reques
     server.close();
   }
 });
+
+test("live fetcher: a third-party domain that no longer resolves is a dead link, not a network block", async () => {
+  const fetcher = liveFetcher({ delayMs: 0, timeoutMs: 2000, diagnose: async (host) => ({ host, status: "dns_failure", viaProxy: false, detail: "ENOTFOUND" }) });
+  const result = await fetcher.fetch("http://127.0.0.1:9/fs1-en.pdf");
+  assert.equal(result.failure, "network_error");
+  assert.match(result.failureDetail, /dead link/);
+});
+
+test("an off-site PDF on another organization's domain stays third-party; one on a CDN is official", async () => {
+  const fetcher = fakeFetcher({
+    "https://pie.example/our-ingredients": { body: '<a href="https://www.welfare-charity.example/media/report.pdf">Animal welfare report</a><a href="https://d1abc.cloudfront.net/pie/nutrition.pdf">Nutrition PDF</a>' },
+    "https://d1abc.cloudfront.net/pie/nutrition.pdf": { type: "application/pdf", body: pdfWith(NUTRITION_TABLE) },
+  });
+  const report = await discoverSources({ id: "pie", name: "Pie", officialDomains: ["pie.example"], seeds: ["https://pie.example/our-ingredients"], storeIds: ["1", "2"] }, fetcher, { now: NOW });
+  assert.ok(!fetcher.calls.some((url) => url.includes("welfare-charity")), "another organization's document is not fetched");
+  assert.equal(report.candidates.find((c) => c.url.includes("cloudfront")).authority, "official");
+});
+
+test("browser fetcher: keeps a page whose network never goes idle", async (t) => {
+  const server = createServer((request, response) => {
+    if (request.url === "/poll") {
+      setTimeout(() => { response.writeHead(200, { "content-type": "application/json" }); response.end("{}"); }, 400);
+      return;
+    }
+    response.writeHead(200, { "content-type": "text/html" });
+    response.end('<div id="app">Bowl Calories 500</div><script>setInterval(()=>fetch("/poll"),200)</script>');
+  });
+  await new Promise((done) => server.listen(0, "127.0.0.1", done));
+  const origin = `http://127.0.0.1:${server.address().port}`;
+  const passthrough = { mode: "live", async fetch(url) { const r = await fetch(url, { signal: AbortSignal.timeout(5000) }); return { url, finalUrl: url, status: r.status, headers: {}, body: Buffer.from(await r.arrayBuffer()), retrievedAt: NOW }; } };
+  const saved = ["HTTPS_PROXY", "https_proxy", "HTTP_PROXY", "http_proxy"].map((name) => [name, process.env[name]]);
+  for (const [name] of saved) delete process.env[name];
+  const browser = withBrowser(passthrough, { timeoutMs: 10_000, settleMs: 1_000 });
+  try {
+    const { page } = await browser.render(`${origin}/nutrition`);
+    if (page.failure === "network_blocked" && /Playwright is not installed/.test(page.failureDetail)) {
+      t.skip("Playwright not available here");
+      return;
+    }
+    assert.equal(page.status, 200, page.failureDetail);
+    assert.match(page.body.toString(), /Bowl Calories 500/);
+  } finally {
+    await browser.close();
+    for (const [name, value] of saved) if (value !== undefined) process.env[name] = value;
+    server.close();
+  }
+});
