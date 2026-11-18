@@ -5,13 +5,13 @@
     "name": "MOD Pizza"
   },
   "mode": "replay",
-  "runAt": "2026-11-18T21:39:11.110Z",
+  "runAt": "2026-11-18T22:12:16.592Z",
   "budget": {
     "maxRequests": 60,
-    "maxDepth": 2,
+    "maxDepth": 3,
     "maxBundlesPerHost": 8,
     "maxSitemapUrls": 2000,
-    "requestsUsed": 20
+    "requestsUsed": 27
   },
   "freshnessDays": 90,
   "storeIds": [
@@ -52,6 +52,7 @@
       "depth": 0,
       "discoveredBy": "seed",
       "relevance": 10,
+      "level": 1,
       "notes": [],
       "analysis": {
         "nutrients": {
@@ -594,6 +595,7 @@
       "depth": 0,
       "discoveredBy": "seed",
       "relevance": 10,
+      "level": 1,
       "notes": [],
       "analysis": {
         "nutrients": {
@@ -1131,6 +1133,7 @@
       "depth": 0,
       "discoveredBy": "well-known",
       "relevance": 7,
+      "level": 1,
       "notes": [],
       "analysis": {
         "nutrients": {
@@ -1228,6 +1231,7 @@
       "depth": 1,
       "discoveredBy": "header-link:https://modpizza.com/nutrition",
       "relevance": 6,
+      "level": 1,
       "notes": [],
       "analysis": {
         "nutrients": {
@@ -1313,6 +1317,7 @@
       "depth": 0,
       "discoveredBy": "well-known",
       "relevance": 4,
+      "level": 1,
       "notes": [],
       "analysis": {
         "nutrients": {
@@ -1413,6 +1418,7 @@
       "depth": 1,
       "discoveredBy": "script:https://orders.modpizza.com/store/4080",
       "relevance": 4,
+      "level": 1,
       "notes": [
         "API hosts referenced: https://api.koala.io",
         "Read-only-looking API paths (not probed): /v1/ordering/recommendations/products/popular"
@@ -1431,6 +1437,7 @@
       "depth": 0,
       "discoveredBy": "well-known",
       "relevance": 3,
+      "level": 1,
       "notes": [],
       "analysis": {
         "nutrients": {
@@ -1522,6 +1529,7 @@
       "depth": 1,
       "discoveredBy": "platform:koala (store menu (categories, products, option groups))",
       "relevance": 7,
+      "level": 1,
       "notes": [
         "HTTP 401: not readable anonymously."
       ]
@@ -1534,6 +1542,7 @@
       "depth": 0,
       "discoveredBy": "seed",
       "relevance": 10,
+      "level": 1,
       "notes": [
         "no saved response for this URL"
       ]
@@ -1546,6 +1555,7 @@
       "depth": 0,
       "discoveredBy": "seed",
       "relevance": 10,
+      "level": 1,
       "notes": [
         "no saved response for this URL"
       ]
@@ -1558,6 +1568,7 @@
       "depth": 0,
       "discoveredBy": "well-known",
       "relevance": 9,
+      "level": 1,
       "notes": [
         "no saved response for this URL"
       ]
@@ -1570,6 +1581,7 @@
       "depth": 0,
       "discoveredBy": "well-known",
       "relevance": 9,
+      "level": 1,
       "notes": [
         "no saved response for this URL"
       ]
@@ -1582,6 +1594,20 @@
       "depth": 1,
       "discoveredBy": "platform:koala (store menu (categories, products, option groups))",
       "relevance": 7,
+      "level": 1,
+      "notes": [
+        "no saved response for this URL"
+      ]
+    },
+    {
+      "url": "https://modpizza.com/nutrition-calculator",
+      "channel": "unknown",
+      "authority": "official",
+      "outcome": "not_captured",
+      "depth": 1,
+      "discoveredBy": "level-2",
+      "relevance": 7,
+      "level": 2,
       "notes": [
         "no saved response for this URL"
       ]
@@ -1594,6 +1620,20 @@
       "depth": 0,
       "discoveredBy": "well-known",
       "relevance": 7,
+      "level": 1,
+      "notes": [
+        "no saved response for this URL"
+      ]
+    },
+    {
+      "url": "https://modpizza.com/nutrition-guide",
+      "channel": "unknown",
+      "authority": "official",
+      "outcome": "not_captured",
+      "depth": 1,
+      "discoveredBy": "level-2",
+      "relevance": 7,
+      "level": 2,
       "notes": [
         "no saved response for this URL"
       ]
@@ -1606,6 +1646,20 @@
       "depth": 0,
       "discoveredBy": "well-known",
       "relevance": 7,
+      "level": 1,
+      "notes": [
+        "no saved response for this URL"
+      ]
+    },
+    {
+      "url": "https://modpizza.com/nutritional-information",
+      "channel": "unknown",
+      "authority": "official",
+      "outcome": "not_captured",
+      "depth": 1,
+      "discoveredBy": "level-2",
+      "relevance": 7,
+      "level": 2,
       "notes": [
         "no saved response for this URL"
       ]
@@ -1618,6 +1672,7 @@
       "depth": 1,
       "discoveredBy": "platform:wordpress (uploaded files matching \"nutrition\" (finds PDFs that no page links))",
       "relevance": 7,
+      "level": 1,
       "notes": [
         "no saved response for this URL"
       ]
@@ -1630,6 +1685,7 @@
       "depth": 1,
       "discoveredBy": "platform:wordpress (pages matching \"nutrition\")",
       "relevance": 7,
+      "level": 1,
       "notes": [
         "no saved response for this URL"
       ]
@@ -1642,6 +1698,7 @@
       "depth": 0,
       "discoveredBy": "well-known",
       "relevance": 4,
+      "level": 1,
       "notes": [
         "no saved response for this URL"
       ]
@@ -1654,6 +1711,59 @@
       "depth": 1,
       "discoveredBy": "script:https://orders.modpizza.com/store/4080",
       "relevance": 4,
+      "level": 1,
+      "notes": [
+        "no saved response for this URL"
+      ]
+    },
+    {
+      "url": "https://modpizza.com/contact",
+      "channel": "unknown",
+      "authority": "official",
+      "outcome": "not_captured",
+      "depth": 1,
+      "discoveredBy": "level-2",
+      "relevance": 3,
+      "level": 2,
+      "notes": [
+        "no saved response for this URL"
+      ]
+    },
+    {
+      "url": "https://modpizza.com/contact-us",
+      "channel": "unknown",
+      "authority": "official",
+      "outcome": "not_captured",
+      "depth": 1,
+      "discoveredBy": "level-2",
+      "relevance": 3,
+      "level": 2,
+      "notes": [
+        "no saved response for this URL"
+      ]
+    },
+    {
+      "url": "https://modpizza.com/faq",
+      "channel": "unknown",
+      "authority": "official",
+      "outcome": "not_captured",
+      "depth": 1,
+      "discoveredBy": "level-2",
+      "relevance": 3,
+      "level": 2,
+      "notes": [
+        "no saved response for this URL"
+      ]
+    },
+    {
+      "url": "https://modpizza.com/faqs",
+      "channel": "unknown",
+      "authority": "official",
+      "outcome": "not_captured",
+      "depth": 1,
+      "discoveredBy": "level-2",
+      "relevance": 3,
+      "level": 2,
       "notes": [
         "no saved response for this URL"
       ]
@@ -1666,6 +1776,7 @@
       "depth": 1,
       "discoveredBy": "link:https://modpizza.com/menu",
       "relevance": 3,
+      "level": 1,
       "notes": [
         "no saved response for this URL"
       ]
@@ -1683,47 +1794,47 @@
     },
     {
       "need": "protein",
-      "status": "missing",
+      "status": "unverified",
       "sources": []
     },
     {
       "need": "carbs",
-      "status": "missing",
+      "status": "unverified",
       "sources": []
     },
     {
       "need": "totalFat",
-      "status": "missing",
+      "status": "unverified",
       "sources": []
     },
     {
       "need": "satFat",
-      "status": "missing",
+      "status": "unverified",
       "sources": []
     },
     {
       "need": "transFat",
-      "status": "missing",
+      "status": "unverified",
       "sources": []
     },
     {
       "need": "cholesterol",
-      "status": "missing",
+      "status": "unverified",
       "sources": []
     },
     {
       "need": "sodium",
-      "status": "missing",
+      "status": "unverified",
       "sources": []
     },
     {
       "need": "fiber",
-      "status": "missing",
+      "status": "unverified",
       "sources": []
     },
     {
       "need": "sugars",
-      "status": "missing",
+      "status": "unverified",
       "sources": []
     },
     {
@@ -1749,8 +1860,10 @@
         "https://orders.modpizza.com/store/4080",
         "https://orders.modpizza.com/store/4168",
         "https://modpizza.com/nutrition",
-        "https://modpizza.com/allergen",
         "https://modpizza.com/menu"
+      ],
+      "verificationSources": [
+        "https://modpizza.com/allergen"
       ]
     },
     {
@@ -1758,14 +1871,17 @@
       "status": "found",
       "sources": [
         "https://modpizza.com/nutrition",
-        "https://modpizza.com/allergen",
         "https://modpizza.com/menu"
+      ],
+      "verificationSources": [
+        "https://modpizza.com/allergen"
       ]
     },
     {
       "need": "ingredients",
-      "status": "found",
-      "sources": [
+      "status": "needs_verification",
+      "sources": [],
+      "verificationSources": [
         "https://modpizza.com/allergen"
       ]
     }
@@ -1774,7 +1890,7 @@
     {
       "need": "protein",
       "core": true,
-      "message": "No usable official or ordering-system source publishes protein values (6 source(s) inspected). It stays missing; it is never estimated. Official statement: \"Additional nutrition information available upon request\"",
+      "message": "No inspected source publishes protein, but the network blocked or did not capture sources that might. Cannot be called missing until those are checked. Official statement: \"Additional nutrition information available upon request\"",
       "leads": [
         {
           "url": "https://modpizza.com/",
@@ -1783,6 +1899,16 @@
         },
         {
           "url": "https://orders.modpizza.com/",
+          "outcome": "not_captured",
+          "reason": "not in the saved responses; run discovery live to inspect it"
+        },
+        {
+          "url": "https://modpizza.com/nutrition-information",
+          "outcome": "not_captured",
+          "reason": "not in the saved responses; run discovery live to inspect it"
+        },
+        {
+          "url": "https://modpizza.com/nutrition-facts",
           "outcome": "not_captured",
           "reason": "not in the saved responses; run discovery live to inspect it"
         },
@@ -1803,6 +1929,21 @@
         },
         {
           "url": "https://modpizza.com/wp-json/wp/v2/pages?search=nutrition&per_page=20&_fields=id,link,modified_gmt,title",
+          "outcome": "not_captured",
+          "reason": "not in the saved responses; run discovery live to inspect it"
+        },
+        {
+          "url": "https://modpizza.com/nutrition-guide",
+          "outcome": "not_captured",
+          "reason": "not in the saved responses; run discovery live to inspect it"
+        },
+        {
+          "url": "https://modpizza.com/nutritional-information",
+          "outcome": "not_captured",
+          "reason": "not in the saved responses; run discovery live to inspect it"
+        },
+        {
+          "url": "https://modpizza.com/nutrition-calculator",
           "outcome": "not_captured",
           "reason": "not in the saved responses; run discovery live to inspect it"
         }
@@ -1811,7 +1952,7 @@
     {
       "need": "carbs",
       "core": true,
-      "message": "No usable official or ordering-system source publishes carbs values (6 source(s) inspected). It stays missing; it is never estimated. Official statement: \"Additional nutrition information available upon request\"",
+      "message": "No inspected source publishes carbs, but the network blocked or did not capture sources that might. Cannot be called missing until those are checked. Official statement: \"Additional nutrition information available upon request\"",
       "leads": [
         {
           "url": "https://modpizza.com/",
@@ -1820,6 +1961,16 @@
         },
         {
           "url": "https://orders.modpizza.com/",
+          "outcome": "not_captured",
+          "reason": "not in the saved responses; run discovery live to inspect it"
+        },
+        {
+          "url": "https://modpizza.com/nutrition-information",
+          "outcome": "not_captured",
+          "reason": "not in the saved responses; run discovery live to inspect it"
+        },
+        {
+          "url": "https://modpizza.com/nutrition-facts",
           "outcome": "not_captured",
           "reason": "not in the saved responses; run discovery live to inspect it"
         },
@@ -1840,6 +1991,21 @@
         },
         {
           "url": "https://modpizza.com/wp-json/wp/v2/pages?search=nutrition&per_page=20&_fields=id,link,modified_gmt,title",
+          "outcome": "not_captured",
+          "reason": "not in the saved responses; run discovery live to inspect it"
+        },
+        {
+          "url": "https://modpizza.com/nutrition-guide",
+          "outcome": "not_captured",
+          "reason": "not in the saved responses; run discovery live to inspect it"
+        },
+        {
+          "url": "https://modpizza.com/nutritional-information",
+          "outcome": "not_captured",
+          "reason": "not in the saved responses; run discovery live to inspect it"
+        },
+        {
+          "url": "https://modpizza.com/nutrition-calculator",
           "outcome": "not_captured",
           "reason": "not in the saved responses; run discovery live to inspect it"
         }
@@ -1848,7 +2014,7 @@
     {
       "need": "totalFat",
       "core": true,
-      "message": "No usable official or ordering-system source publishes totalFat values (6 source(s) inspected). It stays missing; it is never estimated. Official statement: \"Additional nutrition information available upon request\"",
+      "message": "No inspected source publishes totalFat, but the network blocked or did not capture sources that might. Cannot be called missing until those are checked. Official statement: \"Additional nutrition information available upon request\"",
       "leads": [
         {
           "url": "https://modpizza.com/",
@@ -1857,6 +2023,16 @@
         },
         {
           "url": "https://orders.modpizza.com/",
+          "outcome": "not_captured",
+          "reason": "not in the saved responses; run discovery live to inspect it"
+        },
+        {
+          "url": "https://modpizza.com/nutrition-information",
+          "outcome": "not_captured",
+          "reason": "not in the saved responses; run discovery live to inspect it"
+        },
+        {
+          "url": "https://modpizza.com/nutrition-facts",
           "outcome": "not_captured",
           "reason": "not in the saved responses; run discovery live to inspect it"
         },
@@ -1877,6 +2053,21 @@
         },
         {
           "url": "https://modpizza.com/wp-json/wp/v2/pages?search=nutrition&per_page=20&_fields=id,link,modified_gmt,title",
+          "outcome": "not_captured",
+          "reason": "not in the saved responses; run discovery live to inspect it"
+        },
+        {
+          "url": "https://modpizza.com/nutrition-guide",
+          "outcome": "not_captured",
+          "reason": "not in the saved responses; run discovery live to inspect it"
+        },
+        {
+          "url": "https://modpizza.com/nutritional-information",
+          "outcome": "not_captured",
+          "reason": "not in the saved responses; run discovery live to inspect it"
+        },
+        {
+          "url": "https://modpizza.com/nutrition-calculator",
           "outcome": "not_captured",
           "reason": "not in the saved responses; run discovery live to inspect it"
         }
@@ -1885,7 +2076,7 @@
     {
       "need": "satFat",
       "core": false,
-      "message": "No usable official or ordering-system source publishes satFat values (6 source(s) inspected). It stays missing; it is never estimated.",
+      "message": "No inspected source publishes satFat, but the network blocked or did not capture sources that might. Cannot be called missing until those are checked.",
       "leads": [
         {
           "url": "https://modpizza.com/",
@@ -1894,6 +2085,16 @@
         },
         {
           "url": "https://orders.modpizza.com/",
+          "outcome": "not_captured",
+          "reason": "not in the saved responses; run discovery live to inspect it"
+        },
+        {
+          "url": "https://modpizza.com/nutrition-information",
+          "outcome": "not_captured",
+          "reason": "not in the saved responses; run discovery live to inspect it"
+        },
+        {
+          "url": "https://modpizza.com/nutrition-facts",
           "outcome": "not_captured",
           "reason": "not in the saved responses; run discovery live to inspect it"
         },
@@ -1914,6 +2115,21 @@
         },
         {
           "url": "https://modpizza.com/wp-json/wp/v2/pages?search=nutrition&per_page=20&_fields=id,link,modified_gmt,title",
+          "outcome": "not_captured",
+          "reason": "not in the saved responses; run discovery live to inspect it"
+        },
+        {
+          "url": "https://modpizza.com/nutrition-guide",
+          "outcome": "not_captured",
+          "reason": "not in the saved responses; run discovery live to inspect it"
+        },
+        {
+          "url": "https://modpizza.com/nutritional-information",
+          "outcome": "not_captured",
+          "reason": "not in the saved responses; run discovery live to inspect it"
+        },
+        {
+          "url": "https://modpizza.com/nutrition-calculator",
           "outcome": "not_captured",
           "reason": "not in the saved responses; run discovery live to inspect it"
         }
@@ -1922,7 +2138,7 @@
     {
       "need": "transFat",
       "core": false,
-      "message": "No usable official or ordering-system source publishes transFat values (6 source(s) inspected). It stays missing; it is never estimated.",
+      "message": "No inspected source publishes transFat, but the network blocked or did not capture sources that might. Cannot be called missing until those are checked.",
       "leads": [
         {
           "url": "https://modpizza.com/",
@@ -1931,6 +2147,16 @@
         },
         {
           "url": "https://orders.modpizza.com/",
+          "outcome": "not_captured",
+          "reason": "not in the saved responses; run discovery live to inspect it"
+        },
+        {
+          "url": "https://modpizza.com/nutrition-information",
+          "outcome": "not_captured",
+          "reason": "not in the saved responses; run discovery live to inspect it"
+        },
+        {
+          "url": "https://modpizza.com/nutrition-facts",
           "outcome": "not_captured",
           "reason": "not in the saved responses; run discovery live to inspect it"
         },
@@ -1951,6 +2177,21 @@
         },
         {
           "url": "https://modpizza.com/wp-json/wp/v2/pages?search=nutrition&per_page=20&_fields=id,link,modified_gmt,title",
+          "outcome": "not_captured",
+          "reason": "not in the saved responses; run discovery live to inspect it"
+        },
+        {
+          "url": "https://modpizza.com/nutrition-guide",
+          "outcome": "not_captured",
+          "reason": "not in the saved responses; run discovery live to inspect it"
+        },
+        {
+          "url": "https://modpizza.com/nutritional-information",
+          "outcome": "not_captured",
+          "reason": "not in the saved responses; run discovery live to inspect it"
+        },
+        {
+          "url": "https://modpizza.com/nutrition-calculator",
           "outcome": "not_captured",
           "reason": "not in the saved responses; run discovery live to inspect it"
         }
@@ -1959,7 +2200,7 @@
     {
       "need": "cholesterol",
       "core": false,
-      "message": "No usable official or ordering-system source publishes cholesterol values (6 source(s) inspected). It stays missing; it is never estimated.",
+      "message": "No inspected source publishes cholesterol, but the network blocked or did not capture sources that might. Cannot be called missing until those are checked.",
       "leads": [
         {
           "url": "https://modpizza.com/",
@@ -1968,6 +2209,16 @@
         },
         {
           "url": "https://orders.modpizza.com/",
+          "outcome": "not_captured",
+          "reason": "not in the saved responses; run discovery live to inspect it"
+        },
+        {
+          "url": "https://modpizza.com/nutrition-information",
+          "outcome": "not_captured",
+          "reason": "not in the saved responses; run discovery live to inspect it"
+        },
+        {
+          "url": "https://modpizza.com/nutrition-facts",
           "outcome": "not_captured",
           "reason": "not in the saved responses; run discovery live to inspect it"
         },
@@ -1988,6 +2239,21 @@
         },
         {
           "url": "https://modpizza.com/wp-json/wp/v2/pages?search=nutrition&per_page=20&_fields=id,link,modified_gmt,title",
+          "outcome": "not_captured",
+          "reason": "not in the saved responses; run discovery live to inspect it"
+        },
+        {
+          "url": "https://modpizza.com/nutrition-guide",
+          "outcome": "not_captured",
+          "reason": "not in the saved responses; run discovery live to inspect it"
+        },
+        {
+          "url": "https://modpizza.com/nutritional-information",
+          "outcome": "not_captured",
+          "reason": "not in the saved responses; run discovery live to inspect it"
+        },
+        {
+          "url": "https://modpizza.com/nutrition-calculator",
           "outcome": "not_captured",
           "reason": "not in the saved responses; run discovery live to inspect it"
         }
@@ -1996,7 +2262,7 @@
     {
       "need": "sodium",
       "core": false,
-      "message": "No usable official or ordering-system source publishes sodium values (6 source(s) inspected). It stays missing; it is never estimated.",
+      "message": "No inspected source publishes sodium, but the network blocked or did not capture sources that might. Cannot be called missing until those are checked.",
       "leads": [
         {
           "url": "https://modpizza.com/",
@@ -2005,6 +2271,16 @@
         },
         {
           "url": "https://orders.modpizza.com/",
+          "outcome": "not_captured",
+          "reason": "not in the saved responses; run discovery live to inspect it"
+        },
+        {
+          "url": "https://modpizza.com/nutrition-information",
+          "outcome": "not_captured",
+          "reason": "not in the saved responses; run discovery live to inspect it"
+        },
+        {
+          "url": "https://modpizza.com/nutrition-facts",
           "outcome": "not_captured",
           "reason": "not in the saved responses; run discovery live to inspect it"
         },
@@ -2025,6 +2301,21 @@
         },
         {
           "url": "https://modpizza.com/wp-json/wp/v2/pages?search=nutrition&per_page=20&_fields=id,link,modified_gmt,title",
+          "outcome": "not_captured",
+          "reason": "not in the saved responses; run discovery live to inspect it"
+        },
+        {
+          "url": "https://modpizza.com/nutrition-guide",
+          "outcome": "not_captured",
+          "reason": "not in the saved responses; run discovery live to inspect it"
+        },
+        {
+          "url": "https://modpizza.com/nutritional-information",
+          "outcome": "not_captured",
+          "reason": "not in the saved responses; run discovery live to inspect it"
+        },
+        {
+          "url": "https://modpizza.com/nutrition-calculator",
           "outcome": "not_captured",
           "reason": "not in the saved responses; run discovery live to inspect it"
         }
@@ -2033,7 +2324,7 @@
     {
       "need": "fiber",
       "core": false,
-      "message": "No usable official or ordering-system source publishes fiber values (6 source(s) inspected). It stays missing; it is never estimated.",
+      "message": "No inspected source publishes fiber, but the network blocked or did not capture sources that might. Cannot be called missing until those are checked.",
       "leads": [
         {
           "url": "https://modpizza.com/",
@@ -2042,6 +2333,16 @@
         },
         {
           "url": "https://orders.modpizza.com/",
+          "outcome": "not_captured",
+          "reason": "not in the saved responses; run discovery live to inspect it"
+        },
+        {
+          "url": "https://modpizza.com/nutrition-information",
+          "outcome": "not_captured",
+          "reason": "not in the saved responses; run discovery live to inspect it"
+        },
+        {
+          "url": "https://modpizza.com/nutrition-facts",
           "outcome": "not_captured",
           "reason": "not in the saved responses; run discovery live to inspect it"
         },
@@ -2062,6 +2363,21 @@
         },
         {
           "url": "https://modpizza.com/wp-json/wp/v2/pages?search=nutrition&per_page=20&_fields=id,link,modified_gmt,title",
+          "outcome": "not_captured",
+          "reason": "not in the saved responses; run discovery live to inspect it"
+        },
+        {
+          "url": "https://modpizza.com/nutrition-guide",
+          "outcome": "not_captured",
+          "reason": "not in the saved responses; run discovery live to inspect it"
+        },
+        {
+          "url": "https://modpizza.com/nutritional-information",
+          "outcome": "not_captured",
+          "reason": "not in the saved responses; run discovery live to inspect it"
+        },
+        {
+          "url": "https://modpizza.com/nutrition-calculator",
           "outcome": "not_captured",
           "reason": "not in the saved responses; run discovery live to inspect it"
         }
@@ -2070,7 +2386,7 @@
     {
       "need": "sugars",
       "core": false,
-      "message": "No usable official or ordering-system source publishes sugars values (6 source(s) inspected). It stays missing; it is never estimated.",
+      "message": "No inspected source publishes sugars, but the network blocked or did not capture sources that might. Cannot be called missing until those are checked.",
       "leads": [
         {
           "url": "https://modpizza.com/",
@@ -2079,6 +2395,16 @@
         },
         {
           "url": "https://orders.modpizza.com/",
+          "outcome": "not_captured",
+          "reason": "not in the saved responses; run discovery live to inspect it"
+        },
+        {
+          "url": "https://modpizza.com/nutrition-information",
+          "outcome": "not_captured",
+          "reason": "not in the saved responses; run discovery live to inspect it"
+        },
+        {
+          "url": "https://modpizza.com/nutrition-facts",
           "outcome": "not_captured",
           "reason": "not in the saved responses; run discovery live to inspect it"
         },
@@ -2101,16 +2427,63 @@
           "url": "https://modpizza.com/wp-json/wp/v2/pages?search=nutrition&per_page=20&_fields=id,link,modified_gmt,title",
           "outcome": "not_captured",
           "reason": "not in the saved responses; run discovery live to inspect it"
+        },
+        {
+          "url": "https://modpizza.com/nutrition-guide",
+          "outcome": "not_captured",
+          "reason": "not in the saved responses; run discovery live to inspect it"
+        },
+        {
+          "url": "https://modpizza.com/nutritional-information",
+          "outcome": "not_captured",
+          "reason": "not in the saved responses; run discovery live to inspect it"
+        },
+        {
+          "url": "https://modpizza.com/nutrition-calculator",
+          "outcome": "not_captured",
+          "reason": "not in the saved responses; run discovery live to inspect it"
         }
       ]
+    },
+    {
+      "need": "ingredients",
+      "core": false,
+      "message": "Only official source(s) older than 90 days publish ingredients: https://modpizza.com/allergen (last updated 2026-07-21). Valid evidence, kept for comparison; verify it is current before use. Not approved and not discarded.",
+      "leads": []
     }
   ],
   "macrosReady": false,
-  "missingCore": [
-    "protein",
-    "carbs",
-    "totalFat"
+  "verifyCore": [],
+  "levels": [
+    {
+      "level": 1,
+      "reason": "Automatic discovery of official sources.",
+      "requests": 20
+    },
+    {
+      "level": 2,
+      "reason": "Core nutrients not covered by current sources after Level 1: protein, carbs, totalFat.",
+      "requests": 7
+    },
+    {
+      "level": 3,
+      "reason": "Network-blocked sources must be checked first (protein, carbs, totalFat unverified); request drafted in case they hold nothing.",
+      "requests": 0
+    }
   ],
+  "informationRequest": {
+    "status": "draft_not_sent",
+    "missing": [
+      "protein",
+      "carbs",
+      "totalFat"
+    ],
+    "contacts": [
+      "https://modpizza.com/contact-us"
+    ],
+    "markdown": "# Nutrition information request: MOD Pizza\n\n> DRAFT, NOT SENT. Prepared by source discovery on 2026-11-18. Review and send only with the project owner's approval.\n\n**Contacts found on official pages:** https://modpizza.com/contact-us\n\n## Message\n\nHello,\n\nWe maintain a nutrition guide that lists MOD Pizza menu items. Your published nutrition information does not include protein (g), total carbohydrates (g), total fat (g).\n\nCould you share your current nutrition information for the full menu (each item, ingredient and topping, with portion sizes), including calories, protein, total carbohydrates and total fat? A PDF or spreadsheet is ideal. Please also tell us the date the data was last updated.\n\nThank you.\n\n## Evidence for the reviewer\n\n- protein: unverified\n- carbs: unverified\n- totalFat: unverified\n\nOfficial statements:\n- \"Additional nutrition information available upon request\"\n- \"The calories stated are for each topping when added to a one-topping item and are in addition to the standard preparation\"\n- \"Calories for each topping may be less for multiple-topping items\"\n- \"Additional nutrition information is available upon request\"\n\nSources checked (6):\n- https://orders.modpizza.com/store/4080 (updated 2026-10-21)\n- https://orders.modpizza.com/store/4168 (updated 2026-10-21)\n- https://modpizza.com/nutrition (updated 2026-08-25)\n- https://modpizza.com/wp-json/wp/v2/pages/762 (updated 2026-08-25)\n- https://modpizza.com/allergen (updated 2026-07-21)\n- https://modpizza.com/menu (updated 2026-08-24)\n"
+  },
+  "missingCore": [],
   "proposedSources": [
     {
       "id": "mod:orders-modpizza-com-store-4080",
@@ -2172,7 +2545,9 @@
         "allergens",
         "ingredients"
       ],
-      "stale": false
+      "stale": false,
+      "verificationRequired": true,
+      "compareWith": []
     },
     {
       "id": "mod:modpizza-com-menu",
@@ -2196,6 +2571,7 @@
     "unchanged": 8
   },
   "warnings": [
-    "Replay mode: answers come from saved responses captured 2026-10-20. URLs that were never saved are \"not_captured\", not missing. Run live before relying on this report."
+    "Replay mode: answers come from saved responses captured 2026-10-20. URLs that were never saved are \"not_captured\", not missing. Run live before relying on this report.",
+    "1 source(s) were last updated more than 90 days ago. They stay valid evidence and need verification; compare them with newer sources item by item and portion by portion before use."
   ]
 }

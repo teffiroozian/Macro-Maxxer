@@ -44,17 +44,30 @@ export function renderDiscoveryReport(report: DiscoveryReport): string {
     "",
     "## Nutrient coverage",
     "",
+    "\"Found\" means at least one source publishes values for some records. It is not per-item coverage; the import's review report checks that.",
+    "",
     "| Nutrient | Core | Status | Sources with values |",
     "|---|---|---|---|",
     ...report.coverage
       .filter((entry) => (ALL_NUTRIENTS as readonly string[]).includes(entry.need))
-      .map((entry) => `| ${entry.need} | ${core.includes(entry) ? "yes" : ""} | ${entry.status === "found" ? "found" : "**missing**"} | ${entry.sources.map((url) => cell(shortUrl(url))).join("<br>") || "—"} |`),
+      .map((entry) => `| ${entry.need} | ${core.includes(entry) ? "yes" : ""} | ${entry.status === "found" ? "found" : `**${entry.status.replace("_", " ")}**`} | ${[...entry.sources.map((url) => cell(shortUrl(url))), ...(entry.verificationSources ?? []).map((url) => `${cell(shortUrl(url))} (older than ${report.freshnessDays} days: verify, compare)`)].join("<br>") || "—"} |`),
   ];
+
+  lines.push("", "## Discovery levels", "");
+  lines.push(...(report.levels ?? []).map((entry) => `- Level ${entry.level}${entry.level === 1 ? " (automatic)" : entry.level === 2 ? " (deeper investigation)" : " (escalation)"}: ${entry.reason} ${entry.requests} request(s).`));
+  if (report.informationRequest) lines.push(`- Information request drafted in \`information-request.md\` (${report.informationRequest.status.replace(/_/g, " ")}). Never sent without approval.`);
 
   const coreGaps = report.gaps.filter((gap) => gap.core);
   if (coreGaps.length > 0) {
     lines.push("", "## Gaps in core macros", "");
-    lines.push(coreGaps[0].message.replace(coreGaps[0].need, coreGaps.map((gap) => gap.need).join(", ")));
+    const seenMessages = new Set<string>();
+    for (const gap of coreGaps) {
+      const generic = gap.message.replace(gap.need, "<n>");
+      if (seenMessages.has(generic)) continue;
+      seenMessages.add(generic);
+      const same = coreGaps.filter((other) => other.message.replace(other.need, "<n>") === generic).map((other) => other.need);
+      lines.push(`- **${same.join(", ")}**: ${gap.message.replace(gap.need, same.join(", "))}`);
+    }
     const leads = coreGaps[0].leads;
     if (leads.length > 0) {
       lines.push("", "Leads that could still hold these values but could not be inspected:", "");
@@ -75,7 +88,7 @@ export function renderDiscoveryReport(report: DiscoveryReport): string {
     lines.push(
       ...report.proposedSources.map(
         (source) =>
-          `| \`${source.id}\` | ${source.kind} | ${source.authority} | ${source.provides.join(", ")} | ${source.retrievedAt.slice(0, 10)} | ${source.sourceUpdatedAt ?? "—"} | ${source.stale ? "**yes**" : "no"} |`,
+          `| \`${source.id}\` | ${source.kind} | ${source.authority} | ${source.provides.join(", ")} | ${source.retrievedAt.slice(0, 10)} | ${source.sourceUpdatedAt ?? "—"} | ${source.stale ? "**yes**" : "no"}${source.verificationRequired ? ` (content older than ${report.freshnessDays} days: verify${source.compareWith?.length ? `, compare with ${source.compareWith.map(shortUrl).join(", ")}` : ""})` : ""} |`,
       ),
     );
   }

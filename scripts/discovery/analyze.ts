@@ -309,13 +309,16 @@ export function analyzeJson(root: unknown): ContentAnalysis {
 }
 
 // URLs inside a JSON response (e.g. a WordPress media search's source_url).
-export function urlsInJson(root: unknown): string[] {
+// Absolute URLs, plus site-relative document paths ("/content/…/x.pdf",
+// as CMS APIs such as AEM return them) resolved against base when given.
+export function urlsInJson(root: unknown, base?: string): string[] {
   const urls = new Set<string>();
   const stack: unknown[] = [root];
   while (stack.length > 0) {
     const value = stack.pop();
     if (typeof value === "string") {
       if (/^https?:\/\/\S+$/.test(value)) urls.add(value);
+      else if (base && /^\/[^\s/][^\s]*\.(?:pdf|csv|xlsx?)$/i.test(value)) urls.add(new URL(value, base).toString());
     } else if (value && typeof value === "object") {
       stack.push(...Object.values(value as Record<string, unknown>));
     }

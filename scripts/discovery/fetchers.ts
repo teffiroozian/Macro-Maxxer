@@ -14,6 +14,7 @@ import { gunzipSync, gzipSync } from "node:zlib";
 import { writeAtomically } from "../lib/write-atomically";
 import type { FetchResult, Fetcher, ReplayConfig } from "./contracts";
 import { parseRobots, robotsAllows, type Robots } from "./analyze";
+import { diagnoseHost, isBotChallenge, type HostDiagnosis } from "./network";
 
 export const USER_AGENT = "MacroMaxxer-SourceDiscovery/1.0 (nutrition source research; read-only)";
 const MAX_BYTES = 15 * 1024 * 1024;
@@ -111,6 +112,8 @@ export type LiveOptions = {
   userAgent?: string;
   delayMs?: number;
   timeoutMs?: number;
+  // Injected in tests; defaults to network.ts diagnoseHost.
+  diagnose?: (host: string) => Promise<HostDiagnosis>;
   // Save every response here, with an evidence-manifest.json, so the run can
   // be replayed and audited later.
   recordDir?: string;
@@ -122,6 +125,13 @@ export function liveFetcher(options: LiveOptions = {}): Fetcher & { flush(): Pro
   const robotsByOrigin = new Map<string, Promise<Robots | undefined>>();
   const lastRequestAt = new Map<string, number>();
   const recorded: ManifestFile[] = [];
+  // One diagnosis per host, made the first time a request to it fails.
+  const diagnoses = new Map<string, Promise<HostDiagnosis>>();
+  const diagnose = options.diagnose ?? diagnoseHost;
+  const diagnosisFor = (host: string) => {
+    if (!diagnoses.has(host)) diagnoses.set(host, diagnose(host));
+    return diagnoses.get(host)!;
+  };
 
   const politeFetch = async (url: string, accept?: string): Promise<Response> => {
     const host = new URL(url).host;
@@ -184,10 +194,19 @@ export function liveFetcher(options: LiveOptions = {}): Fetcher & { flush(): Pro
           headers[name] = value;
         });
         const result: FetchResult = { url, finalUrl: response.url || url, status: response.status, headers, body: body.subarray(0, MAX_BYTES), retrievedAt: new Date().toISOString() };
+        if (isBotChallenge(response.status, headers, body.subarray(0, 20_000).toString("utf8"))) {
+          return { ...noResponse(url, "network_blocked", `bot_challenge: HTTP ${response.status} anti-bot challenge page. Not bypassed.`), status: 0 };
+        }
         await record(result);
         return result;
       } catch (error) {
-        return noResponse(url, "network_error", error instanceof Error ? error.message : String(error));
+        const message = error instanceof Error ? error.message : String(error);
+        // Tell a network that refuses the host apart from a site that failed.
+        const diagnosis = await diagnosisFor(new URL(url).hostname);
+        if (diagnosis.status !== "ok" && diagnosis.status !== "http_error") {
+          return noResponse(url, "network_blocked", `${diagnosis.status}: ${diagnosis.detail}${diagnosis.fix ? `. ${diagnosis.fix}` : ""}`);
+        }
+        return noResponse(url, "network_error", message);
       }
     },
     async flush() {

@@ -21,7 +21,17 @@ export const modPizzaTarget: DiscoveryTarget = {
   },
 };
 
+// An existing restaurant, used to check discovery is reusable. No replay:
+// it only runs live. Its nutrition calculator renders in the browser.
+export const chipotleTarget: DiscoveryTarget = {
+  id: "chipotle",
+  name: "Chipotle",
+  officialDomains: ["chipotle.com"],
+  seeds: ["https://www.chipotle.com/", "https://www.chipotle.com/nutrition-calculator"],
+};
+
 export const DISCOVERY_TARGETS: Record<string, DiscoveryTarget> = {
   [modPizzaTarget.id]: modPizzaTarget,
   "mod-pizza": modPizzaTarget,
+  [chipotleTarget.id]: chipotleTarget,
 };

@@ -19,6 +19,7 @@
 // "missing".
 import { ALL_NUTRIENTS, CORE_NUTRIENTS, type CoreNutrient } from "../pipeline/contracts";
 import {
+  nutrientsWithValues,
   analyzeBundle,
   analyzeHtml,
   analyzeJson,
@@ -110,6 +111,7 @@ function outcomeFor(result: FetchResult): CandidateOutcome {
   if (result.status === 0) {
     if (result.failure === "blocked_by_robots") return "blocked_by_robots";
     if (result.failure === "not_captured") return "not_captured";
+    if (result.failure === "network_blocked") return "network_blocked";
     return "network_error";
   }
   if (result.status === 401 || result.status === 403) return "auth_required";
@@ -148,7 +150,13 @@ const LEAD_REASON: Partial<Record<CandidateOutcome, string>> = {
   http_error: "returned a server error",
   blocked_by_robots: "disallowed by robots.txt; not fetched",
   skipped_budget: "not fetched: request budget used up",
+  network_blocked: "the network refused the request before it reached the site; says nothing about the source",
 };
+
+// Level 2 tries these extra paths on every official domain.
+const DEEPER_PATHS = ["/faq", "/faqs", "/nutrition-guide", "/nutritional-information", "/nutrition-calculator", "/contact", "/contact-us"];
+const CONTACT_PATH = /\/(?:contact(?:-us)?|guest-?(?:relations|services|feedback)|customer-?(?:care|service)|support|feedback)(?:\/|$)/i;
+const MAILTO = /mailto:([a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,})/gi;
 
 export async function discoverSources(target: DiscoveryTarget, fetcher: Fetcher, options: DiscoverOptions = {}): Promise<DiscoveryReport> {
   const budget: DiscoveryBudget = { ...DEFAULT_BUDGET, ...options.budget };
@@ -165,6 +173,12 @@ export async function discoverSources(target: DiscoveryTarget, fetcher: Fetcher,
   const storeIds = new Set(target.storeIds ?? []);
   const bundlesPerHost = new Map<string, number>();
   let requestsUsed = 0;
+  // Nutrition pages whose HTML holds no values, with API hosts seen for them.
+  const clientRenderedPages = new Map<string, string[]>();
+  // Sitemap URLs too weak for Level 1 (relevance 3–5), kept for Level 2.
+  const deferredSitemapUrls: string[] = [];
+  const contacts = new Set<string>();
+  let level: 1 | 2 | 3 = 1;
 
   const enqueue = (url: string, item: Omit<QueueItem, "url" | "authority"> & { authority?: Authority }) => {
     let key: string;
@@ -229,8 +243,10 @@ export async function discoverSources(target: DiscoveryTarget, fetcher: Fetcher,
       if (link.kind === "script") {
         const pageHost = new URL(page.url).host;
         const count = bundlesPerHost.get(pageHost) ?? 0;
-        if (linkHost !== pageHost || !BUNDLE_WORTH_READING.test(link.url) || count >= budget.maxBundlesPerHost) continue;
-        if (pageAuthority !== "ordering_system" && !(pageCandidate.analysis?.embedded.some((block) => block.items > 0) ?? false)) continue;
+        // Same host, or another host the restaurant runs (e.g. a CDN subdomain).
+        if ((linkHost !== pageHost && authorityOf(link.url, target) === "third_party") || !BUNDLE_WORTH_READING.test(link.url) || count >= budget.maxBundlesPerHost) continue;
+        const clientRendered = page.relevance >= 6 && pageCandidate.analysis !== undefined && nutrientsWithValues(pageCandidate.analysis).length === 0;
+        if (pageAuthority !== "ordering_system" && !clientRendered && !(pageCandidate.analysis?.embedded.some((block) => block.items > 0) ?? false)) continue;
         bundlesPerHost.set(pageHost, count + 1);
         enqueue(link.url, { depth: page.depth + 1, discoveredBy: `script:${page.url}`, relevance: 4, channelHint: "js_bundle" });
         continue;
@@ -263,7 +279,9 @@ export async function discoverSources(target: DiscoveryTarget, fetcher: Fetcher,
   }
 
   // ── Crawl ──
-  while (queue.length > 0 && requestsUsed < budget.maxRequests) {
+  const crawl = async (maxRequests: number, maxDepth: number) => {
+  budget.maxDepth = maxDepth;
+  while (queue.length > 0 && requestsUsed < maxRequests) {
     queue.sort((a, b) => b.relevance - a.relevance || a.depth - b.depth);
     const item = queue.shift()!;
     const seenStore = item.authority === "ordering_system" ? STORE_ID_IN_URL.exec(item.url)?.[1] : undefined;
@@ -286,6 +304,7 @@ export async function discoverSources(target: DiscoveryTarget, fetcher: Fetcher,
       depth: item.depth,
       discoveredBy: item.discoveredBy,
       relevance: item.relevance,
+      level,
       notes: result.failureDetail ? [result.failureDetail] : [],
     };
     candidates.set(urlKey(item.url), candidate);
@@ -311,6 +330,7 @@ export async function discoverSources(target: DiscoveryTarget, fetcher: Fetcher,
           for (const url of sitemap.urls.slice(0, budget.maxSitemapUrls)) {
             const score = relevance(url);
             if (score >= 6) enqueue(url, { depth: 1, discoveredBy: `sitemap:${item.url}`, relevance: score });
+            else if (score >= 3 || CONTACT_PATH.test(new URL(url).pathname)) deferredSitemapUrls.push(url);
           }
           candidate.notes.push(`${sitemap.urls.length} URL(s), ${sitemap.sitemaps.length} nested sitemap(s).`);
         }
@@ -318,13 +338,21 @@ export async function discoverSources(target: DiscoveryTarget, fetcher: Fetcher,
         const html = body.toString("utf8");
         const { analysis, links } = analyzeHtml(html, pageUrl);
         candidate.analysis = analysis;
+        for (const match of html.matchAll(MAILTO)) contacts.add(`mailto:${match[1].toLowerCase()}`);
+        if (CONTACT_PATH.test(new URL(pageUrl).pathname)) contacts.add(pageUrl);
+        for (const link of links) if (link.kind === "a" && CONTACT_PATH.test(new URL(link.url).pathname) && authorityOf(link.url, target) !== "third_party") contacts.add(urlKey(link.url));
+        if (item.relevance >= 6 && nutrientsWithValues(analysis).length === 0) {
+          const hosts = analyzeBundle(html).apiHosts;
+          candidate.notes.push(`Nutrition-related page without nutrient values in its HTML; it may render in the browser${hosts.length > 0 ? ` from ${hosts.join(", ")}` : ""}.`);
+          clientRenderedPages.set(urlKey(candidate.url), hosts);
+        }
         if (analysis.embedded.some((block) => block.items > 0 || block.nutrientsWithValues.length > 0)) candidate.channel = "embedded_json";
         for (const { platform, evidence, origin } of detectPlatforms(`${html}\n${result.headers.link ?? ""}`)) notePlatform(platform, evidence, pageUrl, origin);
         followLinks([...linksFromHeader(result.headers.link, pageUrl), ...links], item, item.authority, candidate);
       } else if (channel === "api_json") {
         const json = JSON.parse(body.toString("utf8")) as unknown;
         candidate.analysis = analyzeJson(json);
-        for (const url of urlsInJson(json)) {
+        for (const url of urlsInJson(json, pageUrl)) {
           const score = relevance(url);
           if (DOCUMENT_EXTENSION.test(url) || score >= 6) {
             const authority = DOCUMENT_EXTENSION.test(url) && authorityOf(url, target) === "third_party" ? item.authority : undefined;
@@ -345,6 +373,8 @@ export async function discoverSources(target: DiscoveryTarget, fetcher: Fetcher,
         const js = body.toString("utf8");
         const bundle = analyzeBundle(js);
         for (const { platform, evidence, origin } of detectPlatforms(js)) notePlatform(platform, evidence, pageUrl, origin);
+        const parent = item.discoveredBy.startsWith("script:") ? item.discoveredBy.slice(7) : undefined;
+        if (parent && clientRenderedPages.has(urlKey(parent)) ) clientRenderedPages.get(urlKey(parent))!.push(...bundle.apiHosts);
         if (bundle.apiHosts.length > 0) candidate.notes.push(`API hosts referenced: ${bundle.apiHosts.join(", ")}`);
         if (bundle.apiPaths.length > 0) candidate.notes.push(`Read-only-looking API paths (not probed): ${bundle.apiPaths.slice(0, 10).join(", ")}`);
       } else {
@@ -359,6 +389,125 @@ export async function discoverSources(target: DiscoveryTarget, fetcher: Fetcher,
     if (pagePlatforms.length > 0) candidate.platforms = pagePlatforms;
     schedulePlatformProbes();
   }
+  };
+
+  // ── Coverage ──
+  const needs: DataNeed[] = [...ALL_NUTRIENTS, "catalog", "customization", "portions", "allergens", "ingredients"];
+  const ageDays = (iso?: string) => (iso ? Math.floor((Date.parse(runAt) - Date.parse(iso)) / 86_400_000) : undefined);
+  // Older than the freshness window by its own "last updated" date. Such a
+  // source stays valid evidence: it triggers verification, never rejection.
+  // Whether newer data supersedes it can only be decided per item and portion
+  // in validation, so discovery lists newer sources to compare with.
+  const needsVerification = (candidate: Candidate) => (ageDays(candidate.sourceUpdatedAt) ?? 0) > freshnessDays;
+  const isLead = (candidate: Candidate) =>
+    Boolean(LEAD_REASON[candidate.outcome]) &&
+    // Guessed paths (well-known, level-2) that were never answered are not
+    // evidence either way.
+    !(/^(?:well-known|level-2$)/.test(candidate.discoveredBy) && (candidate.outcome === "not_captured" || candidate.outcome === "network_blocked")) &&
+    (candidate.relevance >= 6 || candidate.channel === "api_json" || candidate.channel === "official_document");
+  const evaluate = () => {
+    const all = [...candidates.values()];
+    const blockedLeads = all.filter((candidate) => isLead(candidate) && (candidate.outcome === "network_blocked" || candidate.outcome === "not_captured"));
+    const coverage: Coverage[] = needs.map((need) => {
+      const publishing = all.filter((candidate) => provides(candidate).includes(need));
+      const sources = publishing.filter((candidate) => !needsVerification(candidate)).map((candidate) => candidate.url);
+      const verificationSources = publishing.filter(needsVerification).map((candidate) => candidate.url);
+      const status: Coverage["status"] = sources.length > 0 ? "found" : verificationSources.length > 0 ? "needs_verification" : blockedLeads.length > 0 ? "unverified" : "missing";
+      return { need, status, sources, ...(verificationSources.length > 0 ? { verificationSources } : {}) };
+    });
+    const coreStatus = (status: Coverage["status"]) => CORE_NUTRIENTS.filter((nutrient) => coverage.find((entry) => entry.need === nutrient)?.status === status) as CoreNutrient[];
+    return { all, coverage, missingCore: coreStatus("missing"), unverifiedCore: coreStatus("unverified"), verifyCore: coreStatus("needs_verification") };
+  };
+
+  const levels: DiscoveryReport["levels"] = [];
+  let before = requestsUsed;
+  await crawl(budget.maxRequests, budget.maxDepth);
+  levels.push({ level: 1, reason: "Automatic discovery of official sources.", requests: requestsUsed - before });
+
+  // ── Level 2: deeper investigation when core data is missing ──
+  let state = evaluate();
+  const short = [...state.missingCore, ...state.unverifiedCore, ...state.verifyCore];
+  if (short.length > 0) {
+    level = 2;
+    before = requestsUsed;
+    for (const domain of target.officialDomains) for (const path of DEEPER_PATHS) enqueue(`https://${domain}${path}`, { depth: 1, discoveredBy: "level-2", relevance: relevance(path) + 1 });
+    for (const url of deferredSitemapUrls) enqueue(url, { depth: 1, discoveredBy: "level-2 sitemap", relevance: Math.max(relevance(url), 3) });
+    for (const candidate of candidates.values()) if (candidate.outcome === "skipped_budget") candidates.delete(urlKey(candidate.url));
+    for (const item of queue) item.relevance = Math.max(item.relevance, 3);
+    await crawl(budget.maxRequests * 2, budget.maxDepth + 1);
+    if (fetcher.render) {
+      for (const [key, hosts] of clientRenderedPages) {
+        if (requestsUsed >= budget.maxRequests * 2 + 10) break;
+        const pageCandidate = candidates.get(key);
+        if (!pageCandidate) continue;
+        const rendered = await fetcher.render(pageCandidate.finalUrl ?? pageCandidate.url);
+        requestsUsed += 1;
+        const renderKey = `${key}#rendered`;
+        const renderCandidate: Candidate = {
+          url: `${pageCandidate.url}#rendered`,
+          channel: "browser_rendered",
+          authority: pageCandidate.authority,
+          outcome: outcomeFor(rendered.page),
+          status: rendered.page.status || undefined,
+          bytes: rendered.page.body.length || undefined,
+          sha256: rendered.page.body.length > 0 ? sha256(rendered.page.body) : undefined,
+          retrievedAt: rendered.page.status ? rendered.page.retrievedAt : undefined,
+          depth: pageCandidate.depth,
+          discoveredBy: `browser:${pageCandidate.url}`,
+          relevance: pageCandidate.relevance,
+          level: 2,
+          notes: rendered.page.failureDetail ? [rendered.page.failureDetail] : ["Rendered in a headless browser; passive load, no interaction."],
+        };
+        if (renderCandidate.outcome === "inspected") {
+          renderCandidate.analysis = analyzeHtml(rendered.page.body.toString("utf8"), rendered.page.finalUrl).analysis;
+          renderCandidate.sourceUpdatedAt = latestDate(renderCandidate.analysis, rendered.page.headers);
+          clientRenderedPages.delete(key);
+          if (nutrientsWithValues(renderCandidate.analysis).length === 0 && rendered.responses.length === 0) clientRenderedPages.set(key, hosts);
+        }
+        candidates.set(renderKey, renderCandidate);
+        for (const response of rendered.responses) {
+          const authority = authorityOf(response.url, target);
+          if (authority === "third_party") continue;
+          let analysis: ContentAnalysis | undefined;
+          try {
+            const json = JSON.parse(response.body.toString("utf8")) as unknown;
+            analysis = analyzeJson(json);
+            // Documents the page's own data points to (e.g. a CMS nutrition PDF).
+            for (const url of urlsInJson(json, response.url)) {
+              if (!DOCUMENT_EXTENSION.test(url) && relevance(url) < 6) continue;
+              const docAuthority = DOCUMENT_EXTENSION.test(url) && authorityOf(url, target) === "third_party" ? authority : undefined;
+              enqueue(url, { depth: pageCandidate.depth + 1, discoveredBy: `json:${response.url}`, relevance: relevance(url) + (DOCUMENT_EXTENSION.test(url) ? 2 : 0), authority: docAuthority });
+            }
+          } catch {
+            continue;
+          }
+          candidates.set(urlKey(response.url), {
+            url: response.url,
+            channel: "api_json",
+            authority,
+            outcome: outcomeFor(response),
+            status: response.status,
+            contentType: response.headers["content-type"],
+            bytes: response.body.length,
+            sha256: sha256(response.body),
+            retrievedAt: response.retrievedAt,
+            sourceUpdatedAt: latestDate(analysis, response.headers),
+            depth: pageCandidate.depth + 1,
+            discoveredBy: `browser:${pageCandidate.url}`,
+            relevance: 7,
+            level: 2,
+            analysis,
+            notes: ["JSON the page requested itself while rendering (GET)."],
+          });
+        }
+      }
+    }
+    // Fetch what the rendered pages' data pointed to.
+    if (queue.length > 0) await crawl(budget.maxRequests * 2 + 20, budget.maxDepth + 2);
+    levels.push({ level: 2, reason: `Core nutrients not covered by current sources after Level 1: ${short.join(", ")}.`, requests: requestsUsed - before });
+    state = evaluate();
+  }
+  budget.maxRequests = Math.max(budget.maxRequests, requestsUsed);
 
   if (queue.length > 0) {
     warnings.push(`Request budget (${budget.maxRequests}) used up with ${queue.length} URL(s) still queued.`);
@@ -367,34 +516,57 @@ export async function discoverSources(target: DiscoveryTarget, fetcher: Fetcher,
     }
   }
 
-  // ── Coverage and gaps ──
+  // ── Gaps ──
+  const { coverage, missingCore, unverifiedCore, verifyCore } = evaluate();
   const all = [...candidates.values()];
-  const needs: DataNeed[] = [...ALL_NUTRIENTS, "catalog", "customization", "portions", "allergens", "ingredients"];
-  const coverage: Coverage[] = needs.map((need) => {
-    const sources = all.filter((candidate) => provides(candidate).includes(need)).map((candidate) => candidate.url);
-    return { need, status: sources.length > 0 ? "found" : "missing", sources };
-  });
   const statements = [...new Set(all.filter(isUsable).flatMap((candidate) => candidate.analysis?.statements ?? []))];
   const leads: Lead[] = all
-    .filter((candidate) => LEAD_REASON[candidate.outcome] && !(candidate.outcome === "not_captured" && candidate.discoveredBy === "well-known"))
-    .filter((candidate) => candidate.relevance >= 6 || candidate.channel === "api_json" || candidate.channel === "official_document")
+    .filter(isLead)
     .map((candidate) => ({ url: candidate.url, outcome: candidate.outcome, reason: LEAD_REASON[candidate.outcome]! }));
+  for (const [url, hosts] of clientRenderedPages) {
+    const unique = [...new Set(hosts)];
+    leads.push({ url, outcome: "client_rendered", reason: `nutrition page renders in the browser${unique.length > 0 ? `; its data likely comes from ${unique.join(", ")}` : ""}. ${fetcher.render ? "Browser rendering found no nutrient values or JSON" : "Needs browser rendering (run with --browser); not probed"}` });
+  }
   const gaps: Gap[] = coverage
-    .filter((entry) => entry.status === "missing")
+    .filter((entry) => entry.status !== "found")
     .map((entry) => {
       const core = (CORE_NUTRIENTS as readonly string[]).includes(entry.need);
       const nutrient = (ALL_NUTRIENTS as readonly string[]).includes(entry.need);
       const searched = all.filter(isUsable).length;
-      let message = nutrient
-        ? `No usable official or ordering-system source publishes ${entry.need} values (${searched} source(s) inspected). It stays missing; it is never estimated.`
-        : `No usable source shows ${entry.need} (${searched} source(s) inspected).`;
+      let message: string;
+      if (entry.status === "needs_verification") {
+        const dated = (entry.verificationSources ?? []).map((url) => `${url} (last updated ${all.find((candidate) => candidate.url === url)?.sourceUpdatedAt})`);
+        message = `Only official source(s) older than ${freshnessDays} days publish ${entry.need}: ${dated.join("; ")}. Valid evidence, kept for comparison; verify it is current before use. Not approved and not discarded.`;
+      } else if (entry.status === "unverified") {
+        message = `No inspected source publishes ${entry.need}, but the network blocked or did not capture sources that might. Cannot be called missing until those are checked.`;
+      } else {
+        message = nutrient
+          ? `No usable official or ordering-system source publishes ${entry.need} values (${searched} source(s) inspected). It stays missing; it is never estimated.`
+          : `No usable source shows ${entry.need} (${searched} source(s) inspected).`;
+      }
       if (core && statements.length > 0) message += ` Official statement: "${statements[0]}"`;
       return { need: entry.need, core, message, leads: nutrient || entry.need === "catalog" || entry.need === "customization" ? leads : [] };
     });
-  const missingCore = CORE_NUTRIENTS.filter((nutrient) => coverage.find((entry) => entry.need === nutrient)?.status === "missing") as CoreNutrient[];
+
+  // ── Level 3: escalation when public sources are exhausted ──
+  let informationRequest: DiscoveryReport["informationRequest"];
+  const unresolved = [...missingCore, ...unverifiedCore] as CoreNutrient[];
+  if (unresolved.length > 0 || verifyCore.length > 0) {
+    level = 3;
+    const asked = [...new Set([...unresolved, ...verifyCore])] as CoreNutrient[];
+    const reason = unverifiedCore.length > 0 && missingCore.length === 0
+      ? `Network-blocked sources must be checked first (${unverifiedCore.join(", ")} unverified); request drafted in case they hold nothing.`
+      : `Public official sources checked; ${asked.join(", ")} not available from a current source.`;
+    levels.push({ level: 3, reason, requests: 0 });
+    informationRequest = {
+      status: "draft_not_sent",
+      missing: asked,
+      contacts: [...contacts].sort(),
+      markdown: renderInformationRequest(target.name, asked, verifyCore, coverage, all.filter(isUsable), statements, [...contacts].sort(), runAt),
+    };
+  }
 
   // ── Proposed source declarations for the adapter ──
-  const ageDays = (iso?: string) => (iso ? Math.floor((Date.parse(runAt) - Date.parse(iso)) / 86_400_000) : undefined);
   const proposedSources: ProposedSource[] = all
     .filter((candidate) => provides(candidate).length > 0)
     .map((candidate) => {
@@ -411,6 +583,14 @@ export async function discoverSources(target: DiscoveryTarget, fetcher: Fetcher,
         sha256: candidate.sha256,
         provides: provides(candidate),
         stale: age !== undefined && age > freshnessDays,
+        ...(needsVerification(candidate)
+          ? {
+              verificationRequired: true,
+              compareWith: all
+                .filter((other) => other !== candidate && isUsable(other) && !needsVerification(other) && provides(other).some((need) => provides(candidate).includes(need) && (ALL_NUTRIENTS as readonly string[]).includes(need)))
+                .map((other) => other.url),
+            }
+          : {}),
       };
     })
     .sort((a, b) => (a.authority === b.authority ? 0 : a.authority === "ordering_system" ? -1 : 1));
@@ -424,6 +604,10 @@ export async function discoverSources(target: DiscoveryTarget, fetcher: Fetcher,
   const stale = proposedSources.filter((source) => source.stale);
   if (stale.length > 0) warnings.push(`${stale.length} source(s) were retrieved more than ${freshnessDays} days ago and must be re-collected before publishing (standards §2.3).`);
   const thirdParty = all.filter((candidate) => candidate.outcome === "rejected_third_party").length;
+  const toVerify = proposedSources.filter((source) => source.verificationRequired).length;
+  if (toVerify > 0) warnings.push(`${toVerify} source(s) were last updated more than ${freshnessDays} days ago. They stay valid evidence and need verification; compare them with newer sources item by item and portion by portion before use.`);
+  const networkBlocked = all.filter((candidate) => candidate.outcome === "network_blocked");
+  if (networkBlocked.length > 0) warnings.push(`${networkBlocked.length} request(s) were refused by the network, not the site (${[...new Set(networkBlocked.map((c) => c.notes[0]?.split(":")[0]))].join(", ")}). This run is not proof of what those sources publish.`);
   if (thirdParty > 0) warnings.push(`${thirdParty} third-party nutrition link(s) were found and rejected. They are never used for core macros.`);
 
   let changes: DiscoveryReport["changes"];
@@ -438,7 +622,7 @@ export async function discoverSources(target: DiscoveryTarget, fetcher: Fetcher,
     };
   }
 
-  const order: Record<CandidateOutcome, number> = { inspected: 0, auth_required: 1, unparsed: 2, not_captured: 3, skipped_budget: 4, blocked_by_robots: 5, network_error: 6, http_error: 7, not_found: 8, rejected_third_party: 9 };
+  const order: Record<CandidateOutcome, number> = { network_blocked: 6, client_rendered: 0, inspected: 0, auth_required: 1, unparsed: 2, not_captured: 3, skipped_budget: 4, blocked_by_robots: 5, network_error: 6, http_error: 7, not_found: 8, rejected_third_party: 9 };
   return {
     version: DISCOVERY_VERSION,
     restaurant: { id: target.id, name: target.name },
@@ -451,10 +635,54 @@ export async function discoverSources(target: DiscoveryTarget, fetcher: Fetcher,
     candidates: all.sort((a, b) => order[a.outcome] - order[b.outcome] || b.relevance - a.relevance || a.url.localeCompare(b.url)),
     coverage,
     gaps,
-    macrosReady: missingCore.length === 0,
+    macrosReady: CORE_NUTRIENTS.every((nutrient) => coverage.find((entry) => entry.need === nutrient)?.status === "found"),
+    verifyCore,
+    levels,
+    ...(informationRequest ? { informationRequest } : {}),
     missingCore,
     proposedSources,
     changes,
     warnings,
   };
+}
+
+// A draft for the restaurant's guest relations team. Never sent by discovery.
+export function renderInformationRequest(
+  name: string,
+  missing: CoreNutrient[],
+  verify: CoreNutrient[],
+  coverage: Coverage[],
+  checked: Candidate[],
+  statements: string[],
+  contacts: string[],
+  runAt: string,
+): string {
+  const label: Record<string, string> = { calories: "calories", protein: "protein (g)", carbs: "total carbohydrates (g)", totalFat: "total fat (g)" };
+  const lines = [
+    `# Nutrition information request: ${name}`,
+    "",
+    `> DRAFT, NOT SENT. Prepared by source discovery on ${runAt.slice(0, 10)}. Review and send only with the project owner's approval.`,
+    "",
+    `**Contacts found on official pages:** ${contacts.length > 0 ? contacts.join(", ") : "none found; use the restaurant's guest relations form"}`,
+    "",
+    "## Message",
+    "",
+    "Hello,",
+    "",
+    `We maintain a nutrition guide that lists ${name} menu items. Your published nutrition information does not include ${missing.filter((n) => !verify.includes(n)).map((n) => label[n]).join(", ") || "current values for every nutrient we need"}${verify.length > 0 ? `, and the only official source we found for ${verify.map((n) => label[n]).join(", ")} is older than 90 days` : ""}.`,
+    "",
+    "Could you share your current nutrition information for the full menu (each item, ingredient and topping, with portion sizes), including calories, protein, total carbohydrates and total fat? A PDF or spreadsheet is ideal. Please also tell us the date the data was last updated.",
+    "",
+    "Thank you.",
+    "",
+    "## Evidence for the reviewer",
+    "",
+    ...coverage.filter((entry) => (missing as string[]).includes(entry.need)).map((entry) => `- ${entry.need}: ${entry.status}${entry.verificationSources ? ` (older sources: ${entry.verificationSources.join(", ")})` : ""}`),
+    ...(statements.length > 0 ? ["", "Official statements:", ...statements.map((statement) => `- "${statement}"`)] : []),
+    "",
+    `Sources checked (${checked.length}):`,
+    ...checked.slice(0, 30).map((candidate) => `- ${candidate.url}${candidate.sourceUpdatedAt ? ` (updated ${candidate.sourceUpdatedAt})` : ""}`),
+    "",
+  ];
+  return lines.join("\n");
 }
