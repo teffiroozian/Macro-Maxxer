@@ -1,0 +1,2201 @@
+{
+  "version": 1,
+  "restaurant": {
+    "id": "mod",
+    "name": "MOD Pizza"
+  },
+  "mode": "replay",
+  "runAt": "2026-11-18T21:39:11.110Z",
+  "budget": {
+    "maxRequests": 60,
+    "maxDepth": 2,
+    "maxBundlesPerHost": 8,
+    "maxSitemapUrls": 2000,
+    "requestsUsed": 20
+  },
+  "freshnessDays": 90,
+  "storeIds": [
+    "4080",
+    "4168"
+  ],
+  "platforms": [
+    {
+      "id": "koala",
+      "name": "Koala ordering",
+      "evidence": "api.koala.io",
+      "foundIn": "https://orders.modpizza.com/store/4080"
+    },
+    {
+      "id": "wordpress",
+      "name": "WordPress site",
+      "evidence": "https://modpizza.com/wp-content/",
+      "foundIn": "https://orders.modpizza.com/store/4080"
+    },
+    {
+      "id": "nextjs",
+      "name": "Next.js page data",
+      "evidence": "__NEXT_DATA__",
+      "foundIn": "https://orders.modpizza.com/store/4080"
+    }
+  ],
+  "candidates": [
+    {
+      "url": "https://orders.modpizza.com/store/4080",
+      "channel": "embedded_json",
+      "authority": "ordering_system",
+      "outcome": "inspected",
+      "status": 200,
+      "contentType": "text/html; charset=utf-8",
+      "bytes": 15723357,
+      "sha256": "0009a7021842ecc2f3c5f3944f7dedf51e123c9d0d76d90f82b1d21284d417ac",
+      "retrievedAt": "2026-10-21T00:55:37.000Z",
+      "depth": 0,
+      "discoveredBy": "seed",
+      "relevance": 10,
+      "notes": [],
+      "analysis": {
+        "nutrients": {
+          "calories": {
+            "presence": "values",
+            "count": 12152,
+            "example": "calories: 0"
+          },
+          "protein": {
+            "presence": "absent",
+            "count": 0
+          },
+          "carbs": {
+            "presence": "absent",
+            "count": 0
+          },
+          "totalFat": {
+            "presence": "absent",
+            "count": 0
+          },
+          "satFat": {
+            "presence": "absent",
+            "count": 0
+          },
+          "transFat": {
+            "presence": "absent",
+            "count": 0
+          },
+          "cholesterol": {
+            "presence": "absent",
+            "count": 0
+          },
+          "sodium": {
+            "presence": "absent",
+            "count": 0
+          },
+          "fiber": {
+            "presence": "absent",
+            "count": 0
+          },
+          "sugars": {
+            "presence": "mentioned",
+            "count": 0,
+            "example": "end of cinnamon and sugar. Finished with a salted"
+          }
+        },
+        "menu": {
+          "items": 45,
+          "categories": 0,
+          "optionGroups": 5315,
+          "selectionLimits": true,
+          "portions": true,
+          "allergens": false,
+          "ingredientDeclarations": false
+        },
+        "freshness": [
+          {
+            "value": "2026-10-21T00:00:31+00:00",
+            "from": "json updated_at"
+          },
+          {
+            "value": "2026-10-21T00:03:07+00:00",
+            "from": "json updated_at"
+          },
+          {
+            "value": "2026-10-21T00:03:04+00:00",
+            "from": "json updated_at"
+          },
+          {
+            "value": "2026-10-21T00:03:04+00:00",
+            "from": "json updated_at"
+          },
+          {
+            "value": "2026-10-21T00:03:04+00:00",
+            "from": "json updated_at"
+          },
+          {
+            "value": "2026-10-21T00:03:04+00:00",
+            "from": "json updated_at"
+          },
+          {
+            "value": "2026-10-21T00:03:04+00:00",
+            "from": "json updated_at"
+          },
+          {
+            "value": "2026-10-21T00:03:04+00:00",
+            "from": "json updated_at"
+          },
+          {
+            "value": "2026-10-21T00:03:04+00:00",
+            "from": "json updated_at"
+          },
+          {
+            "value": "2026-10-21T00:03:04+00:00",
+            "from": "json updated_at"
+          },
+          {
+            "value": "2026-10-21T00:03:04+00:00",
+            "from": "json updated_at"
+          },
+          {
+            "value": "2026-10-21T00:03:04+00:00",
+            "from": "json updated_at"
+          },
+          {
+            "value": "2026-10-21T00:03:04+00:00",
+            "from": "json updated_at"
+          },
+          {
+            "value": "2026-10-21T00:03:04+00:00",
+            "from": "json updated_at"
+          },
+          {
+            "value": "2026-10-21T00:03:04+00:00",
+            "from": "json updated_at"
+          },
+          {
+            "value": "2026-10-21T00:03:04+00:00",
+            "from": "json updated_at"
+          },
+          {
+            "value": "2026-10-21T00:03:04+00:00",
+            "from": "json updated_at"
+          },
+          {
+            "value": "2026-10-21T00:03:04+00:00",
+            "from": "json updated_at"
+          },
+          {
+            "value": "2026-10-21T00:03:04+00:00",
+            "from": "json updated_at"
+          },
+          {
+            "value": "2026-10-21T00:03:04+00:00",
+            "from": "json updated_at"
+          },
+          {
+            "value": "2026-10-21T00:03:04+00:00",
+            "from": "json updated_at"
+          },
+          {
+            "value": "2026-10-21T00:03:04+00:00",
+            "from": "json updated_at"
+          },
+          {
+            "value": "2026-10-21T00:03:04+00:00",
+            "from": "json updated_at"
+          },
+          {
+            "value": "2026-10-21T00:03:04+00:00",
+            "from": "json updated_at"
+          },
+          {
+            "value": "2026-10-21T00:03:04+00:00",
+            "from": "json updated_at"
+          },
+          {
+            "value": "2026-10-21T00:03:04+00:00",
+            "from": "json updated_at"
+          },
+          {
+            "value": "2026-10-21T00:03:04+00:00",
+            "from": "json updated_at"
+          },
+          {
+            "value": "2026-10-21T00:03:04+00:00",
+            "from": "json updated_at"
+          },
+          {
+            "value": "2026-10-21T00:03:04+00:00",
+            "from": "json updated_at"
+          },
+          {
+            "value": "2026-10-21T00:03:04+00:00",
+            "from": "json updated_at"
+          },
+          {
+            "value": "2026-10-21T00:03:04+00:00",
+            "from": "json updated_at"
+          },
+          {
+            "value": "2026-10-21T00:03:03+00:00",
+            "from": "json updated_at"
+          },
+          {
+            "value": "2026-10-21T00:03:03+00:00",
+            "from": "json updated_at"
+          },
+          {
+            "value": "2026-10-21T00:03:03+00:00",
+            "from": "json updated_at"
+          },
+          {
+            "value": "2026-10-21T00:03:03+00:00",
+            "from": "json updated_at"
+          },
+          {
+            "value": "2026-10-21T00:03:03+00:00",
+            "from": "json updated_at"
+          },
+          {
+            "value": "2026-10-21T00:03:03+00:00",
+            "from": "json updated_at"
+          },
+          {
+            "value": "2026-10-21T00:03:03+00:00",
+            "from": "json updated_at"
+          },
+          {
+            "value": "2026-10-21T00:03:05+00:00",
+            "from": "json updated_at"
+          },
+          {
+            "value": "2026-10-21T00:03:05+00:00",
+            "from": "json updated_at"
+          },
+          {
+            "value": "2026-10-21T00:03:05+00:00",
+            "from": "json updated_at"
+          },
+          {
+            "value": "2026-10-21T00:03:05+00:00",
+            "from": "json updated_at"
+          },
+          {
+            "value": "2026-10-21T00:03:05+00:00",
+            "from": "json updated_at"
+          },
+          {
+            "value": "2026-10-21T00:03:05+00:00",
+            "from": "json updated_at"
+          },
+          {
+            "value": "2026-10-21T00:03:05+00:00",
+            "from": "json updated_at"
+          },
+          {
+            "value": "2026-10-21T00:03:05+00:00",
+            "from": "json updated_at"
+          },
+          {
+            "value": "2026-10-21T00:03:05+00:00",
+            "from": "json updated_at"
+          },
+          {
+            "value": "2026-10-21T00:03:05+00:00",
+            "from": "json updated_at"
+          },
+          {
+            "value": "2026-10-21T00:03:05+00:00",
+            "from": "json updated_at"
+          },
+          {
+            "value": "2026-10-21T00:03:04+00:00",
+            "from": "json updated_at"
+          },
+          {
+            "value": "2026-10-21T00:03:04+00:00",
+            "from": "json updated_at"
+          },
+          {
+            "value": "2026-10-21T00:03:04+00:00",
+            "from": "json updated_at"
+          },
+          {
+            "value": "2026-10-21T00:03:04+00:00",
+            "from": "json updated_at"
+          },
+          {
+            "value": "2026-10-21T00:03:04+00:00",
+            "from": "json updated_at"
+          },
+          {
+            "value": "2026-10-21T00:03:04+00:00",
+            "from": "json updated_at"
+          },
+          {
+            "value": "2026-10-21T00:03:04+00:00",
+            "from": "json updated_at"
+          },
+          {
+            "value": "2026-10-21T00:00:31+00:00",
+            "from": "json updated_at"
+          },
+          {
+            "value": "2026-10-21T00:03:07+00:00",
+            "from": "json updated_at"
+          },
+          {
+            "value": "2026-10-21T00:03:04+00:00",
+            "from": "json updated_at"
+          },
+          {
+            "value": "2026-10-21T00:03:04+00:00",
+            "from": "json updated_at"
+          },
+          {
+            "value": "2026-10-21T00:03:04+00:00",
+            "from": "json updated_at"
+          },
+          {
+            "value": "2026-10-21T00:03:04+00:00",
+            "from": "json updated_at"
+          },
+          {
+            "value": "2026-10-21T00:03:04+00:00",
+            "from": "json updated_at"
+          },
+          {
+            "value": "2026-10-21T00:03:04+00:00",
+            "from": "json updated_at"
+          },
+          {
+            "value": "2026-10-21T00:03:04+00:00",
+            "from": "json updated_at"
+          },
+          {
+            "value": "2026-10-21T00:03:04+00:00",
+            "from": "json updated_at"
+          },
+          {
+            "value": "2026-10-21T00:03:04+00:00",
+            "from": "json updated_at"
+          },
+          {
+            "value": "2026-10-21T00:03:04+00:00",
+            "from": "json updated_at"
+          },
+          {
+            "value": "2026-10-21T00:03:04+00:00",
+            "from": "json updated_at"
+          },
+          {
+            "value": "2026-10-21T00:03:04+00:00",
+            "from": "json updated_at"
+          },
+          {
+            "value": "2026-10-21T00:03:04+00:00",
+            "from": "json updated_at"
+          },
+          {
+            "value": "2026-10-21T00:03:04+00:00",
+            "from": "json updated_at"
+          },
+          {
+            "value": "2026-10-21T00:03:04+00:00",
+            "from": "json updated_at"
+          },
+          {
+            "value": "2026-10-21T00:03:04+00:00",
+            "from": "json updated_at"
+          },
+          {
+            "value": "2026-10-21T00:03:04+00:00",
+            "from": "json updated_at"
+          },
+          {
+            "value": "2026-10-21T00:03:04+00:00",
+            "from": "json updated_at"
+          },
+          {
+            "value": "2026-10-21T00:03:04+00:00",
+            "from": "json updated_at"
+          },
+          {
+            "value": "2026-10-21T00:03:04+00:00",
+            "from": "json updated_at"
+          },
+          {
+            "value": "2026-10-21T00:03:04+00:00",
+            "from": "json updated_at"
+          },
+          {
+            "value": "2026-10-21T00:03:04+00:00",
+            "from": "json updated_at"
+          },
+          {
+            "value": "2026-10-21T00:03:04+00:00",
+            "from": "json updated_at"
+          },
+          {
+            "value": "2026-10-21T00:03:04+00:00",
+            "from": "json updated_at"
+          },
+          {
+            "value": "2026-10-21T00:03:04+00:00",
+            "from": "json updated_at"
+          },
+          {
+            "value": "2026-10-21T00:03:04+00:00",
+            "from": "json updated_at"
+          },
+          {
+            "value": "2026-10-21T00:03:04+00:00",
+            "from": "json updated_at"
+          },
+          {
+            "value": "2026-10-21T00:03:04+00:00",
+            "from": "json updated_at"
+          },
+          {
+            "value": "2026-10-21T00:03:04+00:00",
+            "from": "json updated_at"
+          },
+          {
+            "value": "2026-10-21T00:03:03+00:00",
+            "from": "json updated_at"
+          },
+          {
+            "value": "2026-10-21T00:03:03+00:00",
+            "from": "json updated_at"
+          },
+          {
+            "value": "2026-10-21T00:03:03+00:00",
+            "from": "json updated_at"
+          },
+          {
+            "value": "2026-10-21T00:03:03+00:00",
+            "from": "json updated_at"
+          },
+          {
+            "value": "2026-10-21T00:03:03+00:00",
+            "from": "json updated_at"
+          },
+          {
+            "value": "2026-10-21T00:03:03+00:00",
+            "from": "json updated_at"
+          },
+          {
+            "value": "2026-10-21T00:03:03+00:00",
+            "from": "json updated_at"
+          },
+          {
+            "value": "2026-10-21T00:03:05+00:00",
+            "from": "json updated_at"
+          },
+          {
+            "value": "2026-10-21T00:03:05+00:00",
+            "from": "json updated_at"
+          },
+          {
+            "value": "2026-10-21T00:03:05+00:00",
+            "from": "json updated_at"
+          },
+          {
+            "value": "2026-10-21T00:03:05+00:00",
+            "from": "json updated_at"
+          },
+          {
+            "value": "2026-10-21T00:03:05+00:00",
+            "from": "json updated_at"
+          },
+          {
+            "value": "2026-10-21T00:03:05+00:00",
+            "from": "json updated_at"
+          },
+          {
+            "value": "2026-10-21T00:03:05+00:00",
+            "from": "json updated_at"
+          },
+          {
+            "value": "2026-10-21T00:03:05+00:00",
+            "from": "json updated_at"
+          },
+          {
+            "value": "2026-10-21T00:03:05+00:00",
+            "from": "json updated_at"
+          },
+          {
+            "value": "2026-10-21T00:03:05+00:00",
+            "from": "json updated_at"
+          },
+          {
+            "value": "2026-10-21T00:03:05+00:00",
+            "from": "json updated_at"
+          },
+          {
+            "value": "2026-10-21T00:03:04+00:00",
+            "from": "json updated_at"
+          },
+          {
+            "value": "2026-10-21T00:03:04+00:00",
+            "from": "json updated_at"
+          },
+          {
+            "value": "2026-10-21T00:03:04+00:00",
+            "from": "json updated_at"
+          },
+          {
+            "value": "2026-10-21T00:03:04+00:00",
+            "from": "json updated_at"
+          },
+          {
+            "value": "2026-10-21T00:03:04+00:00",
+            "from": "json updated_at"
+          },
+          {
+            "value": "2026-10-21T00:03:04+00:00",
+            "from": "json updated_at"
+          },
+          {
+            "value": "2026-10-21T00:03:04+00:00",
+            "from": "json updated_at"
+          }
+        ],
+        "embedded": [
+          {
+            "kind": "__NEXT_DATA__",
+            "bytes": 15605962,
+            "nutrientsWithValues": [
+              "calories"
+            ],
+            "items": 45
+          }
+        ],
+        "statements": [
+          "Additional nutrition information available upon request",
+          "The calories stated are for each topping when added to a one-topping item and are in addition to the standard preparation",
+          "Calories for each topping may be less for multiple-topping items"
+        ],
+        "title": "Hamburg - Order Online | MOD Pizza"
+      },
+      "sourceUpdatedAt": "2026-10-21",
+      "platforms": [
+        "koala",
+        "wordpress",
+        "nextjs"
+      ]
+    },
+    {
+      "url": "https://orders.modpizza.com/store/4168",
+      "channel": "embedded_json",
+      "authority": "ordering_system",
+      "outcome": "inspected",
+      "status": 200,
+      "contentType": "text/html",
+      "bytes": 9538502,
+      "sha256": "27dbb50ea7a17905fcf6e2d11ecc1e29be419fe404caffc4c74cf69730a55b7f",
+      "retrievedAt": "2026-10-20T12:00:00.000Z",
+      "depth": 0,
+      "discoveredBy": "seed",
+      "relevance": 10,
+      "notes": [],
+      "analysis": {
+        "nutrients": {
+          "calories": {
+            "presence": "values",
+            "count": 7257,
+            "example": "calories: 0"
+          },
+          "protein": {
+            "presence": "absent",
+            "count": 0
+          },
+          "carbs": {
+            "presence": "absent",
+            "count": 0
+          },
+          "totalFat": {
+            "presence": "absent",
+            "count": 0
+          },
+          "satFat": {
+            "presence": "absent",
+            "count": 0
+          },
+          "transFat": {
+            "presence": "absent",
+            "count": 0
+          },
+          "cholesterol": {
+            "presence": "absent",
+            "count": 0
+          },
+          "sodium": {
+            "presence": "absent",
+            "count": 0
+          },
+          "fiber": {
+            "presence": "absent",
+            "count": 0
+          },
+          "sugars": {
+            "presence": "mentioned",
+            "count": 0,
+            "example": "end of cinnamon and sugar. Finished with a salted"
+          }
+        },
+        "menu": {
+          "items": 41,
+          "categories": 0,
+          "optionGroups": 3201,
+          "selectionLimits": true,
+          "portions": true,
+          "allergens": false,
+          "ingredientDeclarations": false
+        },
+        "freshness": [
+          {
+            "value": "2026-10-21T00:00:31+00:00",
+            "from": "json updated_at"
+          },
+          {
+            "value": "2026-10-21T00:03:19+00:00",
+            "from": "json updated_at"
+          },
+          {
+            "value": "2026-10-21T00:03:17+00:00",
+            "from": "json updated_at"
+          },
+          {
+            "value": "2026-10-21T00:03:17+00:00",
+            "from": "json updated_at"
+          },
+          {
+            "value": "2026-10-21T00:03:17+00:00",
+            "from": "json updated_at"
+          },
+          {
+            "value": "2026-10-21T00:03:17+00:00",
+            "from": "json updated_at"
+          },
+          {
+            "value": "2026-10-21T00:03:17+00:00",
+            "from": "json updated_at"
+          },
+          {
+            "value": "2026-10-21T00:03:17+00:00",
+            "from": "json updated_at"
+          },
+          {
+            "value": "2026-10-21T00:03:17+00:00",
+            "from": "json updated_at"
+          },
+          {
+            "value": "2026-10-21T00:03:17+00:00",
+            "from": "json updated_at"
+          },
+          {
+            "value": "2026-10-21T00:03:17+00:00",
+            "from": "json updated_at"
+          },
+          {
+            "value": "2026-10-21T00:03:17+00:00",
+            "from": "json updated_at"
+          },
+          {
+            "value": "2026-10-21T00:03:17+00:00",
+            "from": "json updated_at"
+          },
+          {
+            "value": "2026-10-21T00:03:17+00:00",
+            "from": "json updated_at"
+          },
+          {
+            "value": "2026-10-21T00:03:17+00:00",
+            "from": "json updated_at"
+          },
+          {
+            "value": "2026-10-21T00:03:17+00:00",
+            "from": "json updated_at"
+          },
+          {
+            "value": "2026-10-21T00:03:16+00:00",
+            "from": "json updated_at"
+          },
+          {
+            "value": "2026-10-21T00:03:16+00:00",
+            "from": "json updated_at"
+          },
+          {
+            "value": "2026-10-21T00:03:16+00:00",
+            "from": "json updated_at"
+          },
+          {
+            "value": "2026-10-21T00:03:16+00:00",
+            "from": "json updated_at"
+          },
+          {
+            "value": "2026-10-21T00:03:16+00:00",
+            "from": "json updated_at"
+          },
+          {
+            "value": "2026-10-21T00:03:16+00:00",
+            "from": "json updated_at"
+          },
+          {
+            "value": "2026-10-21T00:03:16+00:00",
+            "from": "json updated_at"
+          },
+          {
+            "value": "2026-10-21T00:03:16+00:00",
+            "from": "json updated_at"
+          },
+          {
+            "value": "2026-10-21T00:03:16+00:00",
+            "from": "json updated_at"
+          },
+          {
+            "value": "2026-10-21T00:03:16+00:00",
+            "from": "json updated_at"
+          },
+          {
+            "value": "2026-10-21T00:03:16+00:00",
+            "from": "json updated_at"
+          },
+          {
+            "value": "2026-10-21T00:03:16+00:00",
+            "from": "json updated_at"
+          },
+          {
+            "value": "2026-10-21T00:03:16+00:00",
+            "from": "json updated_at"
+          },
+          {
+            "value": "2026-10-21T00:03:16+00:00",
+            "from": "json updated_at"
+          },
+          {
+            "value": "2026-10-21T00:03:16+00:00",
+            "from": "json updated_at"
+          },
+          {
+            "value": "2026-10-21T00:03:16+00:00",
+            "from": "json updated_at"
+          },
+          {
+            "value": "2026-10-21T00:03:16+00:00",
+            "from": "json updated_at"
+          },
+          {
+            "value": "2026-10-21T00:03:16+00:00",
+            "from": "json updated_at"
+          },
+          {
+            "value": "2026-10-21T00:03:16+00:00",
+            "from": "json updated_at"
+          },
+          {
+            "value": "2026-10-21T00:03:16+00:00",
+            "from": "json updated_at"
+          },
+          {
+            "value": "2026-10-21T00:03:16+00:00",
+            "from": "json updated_at"
+          },
+          {
+            "value": "2026-10-21T00:03:16+00:00",
+            "from": "json updated_at"
+          },
+          {
+            "value": "2026-10-21T00:03:17+00:00",
+            "from": "json updated_at"
+          },
+          {
+            "value": "2026-10-21T00:03:17+00:00",
+            "from": "json updated_at"
+          },
+          {
+            "value": "2026-10-21T00:03:17+00:00",
+            "from": "json updated_at"
+          },
+          {
+            "value": "2026-10-21T00:03:17+00:00",
+            "from": "json updated_at"
+          },
+          {
+            "value": "2026-10-21T00:03:17+00:00",
+            "from": "json updated_at"
+          },
+          {
+            "value": "2026-10-21T00:03:17+00:00",
+            "from": "json updated_at"
+          },
+          {
+            "value": "2026-10-21T00:03:17+00:00",
+            "from": "json updated_at"
+          },
+          {
+            "value": "2026-10-21T00:03:17+00:00",
+            "from": "json updated_at"
+          },
+          {
+            "value": "2026-10-21T00:03:17+00:00",
+            "from": "json updated_at"
+          },
+          {
+            "value": "2026-10-21T00:03:17+00:00",
+            "from": "json updated_at"
+          },
+          {
+            "value": "2026-10-21T00:03:17+00:00",
+            "from": "json updated_at"
+          },
+          {
+            "value": "2026-10-21T00:03:17+00:00",
+            "from": "json updated_at"
+          },
+          {
+            "value": "2026-10-21T00:03:17+00:00",
+            "from": "json updated_at"
+          },
+          {
+            "value": "2026-10-21T00:03:17+00:00",
+            "from": "json updated_at"
+          },
+          {
+            "value": "2026-10-21T00:03:17+00:00",
+            "from": "json updated_at"
+          },
+          {
+            "value": "2026-10-21T00:03:17+00:00",
+            "from": "json updated_at"
+          },
+          {
+            "value": "2026-10-21T00:03:17+00:00",
+            "from": "json updated_at"
+          },
+          {
+            "value": "2026-10-21T00:03:17+00:00",
+            "from": "json updated_at"
+          },
+          {
+            "value": "2026-10-21T00:00:31+00:00",
+            "from": "json updated_at"
+          },
+          {
+            "value": "2026-10-21T00:03:19+00:00",
+            "from": "json updated_at"
+          },
+          {
+            "value": "2026-10-21T00:03:17+00:00",
+            "from": "json updated_at"
+          },
+          {
+            "value": "2026-10-21T00:03:17+00:00",
+            "from": "json updated_at"
+          },
+          {
+            "value": "2026-10-21T00:03:17+00:00",
+            "from": "json updated_at"
+          },
+          {
+            "value": "2026-10-21T00:03:17+00:00",
+            "from": "json updated_at"
+          },
+          {
+            "value": "2026-10-21T00:03:17+00:00",
+            "from": "json updated_at"
+          },
+          {
+            "value": "2026-10-21T00:03:17+00:00",
+            "from": "json updated_at"
+          },
+          {
+            "value": "2026-10-21T00:03:17+00:00",
+            "from": "json updated_at"
+          },
+          {
+            "value": "2026-10-21T00:03:17+00:00",
+            "from": "json updated_at"
+          },
+          {
+            "value": "2026-10-21T00:03:17+00:00",
+            "from": "json updated_at"
+          },
+          {
+            "value": "2026-10-21T00:03:17+00:00",
+            "from": "json updated_at"
+          },
+          {
+            "value": "2026-10-21T00:03:17+00:00",
+            "from": "json updated_at"
+          },
+          {
+            "value": "2026-10-21T00:03:17+00:00",
+            "from": "json updated_at"
+          },
+          {
+            "value": "2026-10-21T00:03:17+00:00",
+            "from": "json updated_at"
+          },
+          {
+            "value": "2026-10-21T00:03:17+00:00",
+            "from": "json updated_at"
+          },
+          {
+            "value": "2026-10-21T00:03:16+00:00",
+            "from": "json updated_at"
+          },
+          {
+            "value": "2026-10-21T00:03:16+00:00",
+            "from": "json updated_at"
+          },
+          {
+            "value": "2026-10-21T00:03:16+00:00",
+            "from": "json updated_at"
+          },
+          {
+            "value": "2026-10-21T00:03:16+00:00",
+            "from": "json updated_at"
+          },
+          {
+            "value": "2026-10-21T00:03:16+00:00",
+            "from": "json updated_at"
+          },
+          {
+            "value": "2026-10-21T00:03:16+00:00",
+            "from": "json updated_at"
+          },
+          {
+            "value": "2026-10-21T00:03:16+00:00",
+            "from": "json updated_at"
+          },
+          {
+            "value": "2026-10-21T00:03:16+00:00",
+            "from": "json updated_at"
+          },
+          {
+            "value": "2026-10-21T00:03:16+00:00",
+            "from": "json updated_at"
+          },
+          {
+            "value": "2026-10-21T00:03:16+00:00",
+            "from": "json updated_at"
+          },
+          {
+            "value": "2026-10-21T00:03:16+00:00",
+            "from": "json updated_at"
+          },
+          {
+            "value": "2026-10-21T00:03:16+00:00",
+            "from": "json updated_at"
+          },
+          {
+            "value": "2026-10-21T00:03:16+00:00",
+            "from": "json updated_at"
+          },
+          {
+            "value": "2026-10-21T00:03:16+00:00",
+            "from": "json updated_at"
+          },
+          {
+            "value": "2026-10-21T00:03:16+00:00",
+            "from": "json updated_at"
+          },
+          {
+            "value": "2026-10-21T00:03:16+00:00",
+            "from": "json updated_at"
+          },
+          {
+            "value": "2026-10-21T00:03:16+00:00",
+            "from": "json updated_at"
+          },
+          {
+            "value": "2026-10-21T00:03:16+00:00",
+            "from": "json updated_at"
+          },
+          {
+            "value": "2026-10-21T00:03:16+00:00",
+            "from": "json updated_at"
+          },
+          {
+            "value": "2026-10-21T00:03:16+00:00",
+            "from": "json updated_at"
+          },
+          {
+            "value": "2026-10-21T00:03:16+00:00",
+            "from": "json updated_at"
+          },
+          {
+            "value": "2026-10-21T00:03:16+00:00",
+            "from": "json updated_at"
+          },
+          {
+            "value": "2026-10-21T00:03:17+00:00",
+            "from": "json updated_at"
+          },
+          {
+            "value": "2026-10-21T00:03:17+00:00",
+            "from": "json updated_at"
+          },
+          {
+            "value": "2026-10-21T00:03:17+00:00",
+            "from": "json updated_at"
+          },
+          {
+            "value": "2026-10-21T00:03:17+00:00",
+            "from": "json updated_at"
+          },
+          {
+            "value": "2026-10-21T00:03:17+00:00",
+            "from": "json updated_at"
+          },
+          {
+            "value": "2026-10-21T00:03:17+00:00",
+            "from": "json updated_at"
+          },
+          {
+            "value": "2026-10-21T00:03:17+00:00",
+            "from": "json updated_at"
+          },
+          {
+            "value": "2026-10-21T00:03:17+00:00",
+            "from": "json updated_at"
+          },
+          {
+            "value": "2026-10-21T00:03:17+00:00",
+            "from": "json updated_at"
+          },
+          {
+            "value": "2026-10-21T00:03:17+00:00",
+            "from": "json updated_at"
+          },
+          {
+            "value": "2026-10-21T00:03:17+00:00",
+            "from": "json updated_at"
+          },
+          {
+            "value": "2026-10-21T00:03:17+00:00",
+            "from": "json updated_at"
+          },
+          {
+            "value": "2026-10-21T00:03:17+00:00",
+            "from": "json updated_at"
+          },
+          {
+            "value": "2026-10-21T00:03:17+00:00",
+            "from": "json updated_at"
+          },
+          {
+            "value": "2026-10-21T00:03:17+00:00",
+            "from": "json updated_at"
+          },
+          {
+            "value": "2026-10-21T00:03:17+00:00",
+            "from": "json updated_at"
+          },
+          {
+            "value": "2026-10-21T00:03:17+00:00",
+            "from": "json updated_at"
+          },
+          {
+            "value": "2026-10-21T00:03:17+00:00",
+            "from": "json updated_at"
+          }
+        ],
+        "embedded": [
+          {
+            "kind": "__NEXT_DATA__",
+            "bytes": 9429219,
+            "nutrientsWithValues": [
+              "calories"
+            ],
+            "items": 41
+          }
+        ],
+        "statements": [
+          "Additional nutrition information available upon request",
+          "The calories stated are for each topping when added to a one-topping item and are in addition to the standard preparation",
+          "Calories for each topping may be less for multiple-topping items"
+        ],
+        "title": "Mobile - Order Online | MOD Pizza"
+      },
+      "sourceUpdatedAt": "2026-10-21"
+    },
+    {
+      "url": "https://modpizza.com/nutrition",
+      "channel": "official_html",
+      "authority": "official",
+      "outcome": "inspected",
+      "status": 200,
+      "contentType": "text/html; charset=UTF-8",
+      "bytes": 310255,
+      "sha256": "5db41ec8c48611cd542a65b263d275328d33871d4a5a90e4072d0aa0dfba5709",
+      "retrievedAt": "2026-10-21T00:55:26.000Z",
+      "depth": 0,
+      "discoveredBy": "well-known",
+      "relevance": 7,
+      "notes": [],
+      "analysis": {
+        "nutrients": {
+          "calories": {
+            "presence": "values",
+            "count": 109,
+            "example": "EANS SESAME Veg Out CALORIES (kcal) 670 MILK DAIRY E"
+          },
+          "protein": {
+            "presence": "absent",
+            "count": 0
+          },
+          "carbs": {
+            "presence": "absent",
+            "count": 0
+          },
+          "totalFat": {
+            "presence": "absent",
+            "count": 0
+          },
+          "satFat": {
+            "presence": "absent",
+            "count": 0
+          },
+          "transFat": {
+            "presence": "absent",
+            "count": 0
+          },
+          "cholesterol": {
+            "presence": "absent",
+            "count": 0
+          },
+          "sodium": {
+            "presence": "absent",
+            "count": 0
+          },
+          "fiber": {
+            "presence": "absent",
+            "count": 0
+          },
+          "sugars": {
+            "presence": "mentioned",
+            "count": 0,
+            "example": "UTS SOYBEANS SESAME sugar CALORIES (kcal) 15 MILK"
+          }
+        },
+        "menu": {
+          "items": 0,
+          "categories": 0,
+          "optionGroups": 0,
+          "selectionLimits": false,
+          "portions": true,
+          "allergens": true,
+          "ingredientDeclarations": false
+        },
+        "freshness": [
+          {
+            "value": "2026-08-25T23:19:03+00:00",
+            "from": "meta article:modified_time"
+          },
+          {
+            "value": "August, 2026",
+            "from": "page text \"Updated August, 2026\""
+          },
+          {
+            "value": "2026-08-25T23:19:03+00:00",
+            "from": "json dateModified"
+          }
+        ],
+        "embedded": [
+          {
+            "kind": "json-ld",
+            "bytes": 1276,
+            "nutrientsWithValues": [],
+            "items": 0
+          }
+        ],
+        "statements": [
+          "Additional nutrition information is available upon request"
+        ],
+        "title": "Nutrition Information | MOD Pizza"
+      },
+      "sourceUpdatedAt": "2026-08-25"
+    },
+    {
+      "url": "https://modpizza.com/wp-json/wp/v2/pages/762",
+      "channel": "api_json",
+      "authority": "official",
+      "outcome": "inspected",
+      "status": 200,
+      "contentType": "application/json",
+      "bytes": 7708,
+      "sha256": "b639873193bbad8bbea51770edcd52ce3bc7fc307a2918e317ab522d138cb40a",
+      "retrievedAt": "2026-10-20T12:00:00.000Z",
+      "depth": 1,
+      "discoveredBy": "header-link:https://modpizza.com/nutrition",
+      "relevance": 6,
+      "notes": [],
+      "analysis": {
+        "nutrients": {
+          "calories": {
+            "presence": "absent",
+            "count": 0
+          },
+          "protein": {
+            "presence": "absent",
+            "count": 0
+          },
+          "carbs": {
+            "presence": "absent",
+            "count": 0
+          },
+          "totalFat": {
+            "presence": "absent",
+            "count": 0
+          },
+          "satFat": {
+            "presence": "absent",
+            "count": 0
+          },
+          "transFat": {
+            "presence": "absent",
+            "count": 0
+          },
+          "cholesterol": {
+            "presence": "absent",
+            "count": 0
+          },
+          "sodium": {
+            "presence": "absent",
+            "count": 0
+          },
+          "fiber": {
+            "presence": "absent",
+            "count": 0
+          },
+          "sugars": {
+            "presence": "absent",
+            "count": 0
+          }
+        },
+        "menu": {
+          "items": 0,
+          "categories": 0,
+          "optionGroups": 0,
+          "selectionLimits": false,
+          "portions": false,
+          "allergens": false,
+          "ingredientDeclarations": false
+        },
+        "freshness": [
+          {
+            "value": "2026-08-25T16:19:03",
+            "from": "json modified"
+          },
+          {
+            "value": "2026-08-25T23:19:03",
+            "from": "json modified_gmt"
+          },
+          {
+            "value": "2026-08-25T23:19:03+00:00",
+            "from": "json dateModified"
+          }
+        ],
+        "embedded": [],
+        "statements": []
+      },
+      "sourceUpdatedAt": "2026-08-25"
+    },
+    {
+      "url": "https://modpizza.com/allergen",
+      "channel": "official_html",
+      "authority": "official",
+      "outcome": "inspected",
+      "status": 200,
+      "contentType": "text/html",
+      "bytes": 298796,
+      "sha256": "97ec63ac20eff07a00dd85d9178bcd361cf57ad16552412fb24e2fe5a7a2e390",
+      "retrievedAt": "2026-10-20T12:00:00.000Z",
+      "depth": 0,
+      "discoveredBy": "well-known",
+      "relevance": 4,
+      "notes": [],
+      "analysis": {
+        "nutrients": {
+          "calories": {
+            "presence": "mentioned",
+            "count": 0,
+            "example": "nu items, including calories and more? Check out our"
+          },
+          "protein": {
+            "presence": "mentioned",
+            "count": 0,
+            "example": "Vinegar, Salt, Whey Protein Concentrate, Garlic,* L"
+          },
+          "carbs": {
+            "presence": "absent",
+            "count": 0
+          },
+          "totalFat": {
+            "presence": "mentioned",
+            "count": 0,
+            "example": "palm oil], reduced‑fat cocoa powder (processed"
+          },
+          "satFat": {
+            "presence": "absent",
+            "count": 0
+          },
+          "transFat": {
+            "presence": "absent",
+            "count": 0
+          },
+          "cholesterol": {
+            "presence": "absent",
+            "count": 0
+          },
+          "sodium": {
+            "presence": "mentioned",
+            "count": 0,
+            "example": "nd Cottonseed Oil), Sodium Aluminum Phosphate, Gra"
+          },
+          "fiber": {
+            "presence": "absent",
+            "count": 0
+          },
+          "sugars": {
+            "presence": "mentioned",
+            "count": 0,
+            "example": "2% or less of: Cane Sugar, Salt, Baking Soda, Ful"
+          }
+        },
+        "menu": {
+          "items": 0,
+          "categories": 0,
+          "optionGroups": 0,
+          "selectionLimits": false,
+          "portions": true,
+          "allergens": true,
+          "ingredientDeclarations": true
+        },
+        "freshness": [
+          {
+            "value": "2026-07-21T20:10:35+00:00",
+            "from": "meta article:modified_time"
+          },
+          {
+            "value": "July 2026",
+            "from": "page text \"Updated July 2026\""
+          },
+          {
+            "value": "2026-07-21T20:10:35+00:00",
+            "from": "json dateModified"
+          }
+        ],
+        "embedded": [
+          {
+            "kind": "json-ld",
+            "bytes": 1255,
+            "nutrientsWithValues": [],
+            "items": 0
+          }
+        ],
+        "statements": [
+          "Additional nutrition information is available upon request"
+        ],
+        "title": "Allergen Information | MOD Pizza"
+      },
+      "sourceUpdatedAt": "2026-07-21"
+    },
+    {
+      "url": "https://orders.modpizza.com/_next/static/chunks/pages/_app-121bdd5ca0fb094b.js",
+      "channel": "js_bundle",
+      "authority": "ordering_system",
+      "outcome": "inspected",
+      "status": 200,
+      "contentType": "application/javascript",
+      "bytes": 1556445,
+      "sha256": "2d6c8c4432a4974634cf483a7b2c01ca8d7e4e5e50732fddff899096247c9ebc",
+      "retrievedAt": "2026-10-20T12:00:00.000Z",
+      "depth": 1,
+      "discoveredBy": "script:https://orders.modpizza.com/store/4080",
+      "relevance": 4,
+      "notes": [
+        "API hosts referenced: https://api.koala.io",
+        "Read-only-looking API paths (not probed): /v1/ordering/recommendations/products/popular"
+      ]
+    },
+    {
+      "url": "https://modpizza.com/menu",
+      "channel": "official_html",
+      "authority": "official",
+      "outcome": "inspected",
+      "status": 200,
+      "contentType": "text/html",
+      "bytes": 184936,
+      "sha256": "400cbd795539b4457f939abe0a33d37946f4fc96835e7828b52df6e3d11555fb",
+      "retrievedAt": "2026-10-20T12:00:00.000Z",
+      "depth": 0,
+      "discoveredBy": "well-known",
+      "relevance": 3,
+      "notes": [],
+      "analysis": {
+        "nutrients": {
+          "calories": {
+            "presence": "mentioned",
+            "count": 0,
+            "example": "sensitivity. 2,000 calories a day is used for gener"
+          },
+          "protein": {
+            "presence": "absent",
+            "count": 0
+          },
+          "carbs": {
+            "presence": "absent",
+            "count": 0
+          },
+          "totalFat": {
+            "presence": "absent",
+            "count": 0
+          },
+          "satFat": {
+            "presence": "absent",
+            "count": 0
+          },
+          "transFat": {
+            "presence": "absent",
+            "count": 0
+          },
+          "cholesterol": {
+            "presence": "absent",
+            "count": 0
+          },
+          "sodium": {
+            "presence": "absent",
+            "count": 0
+          },
+          "fiber": {
+            "presence": "absent",
+            "count": 0
+          },
+          "sugars": {
+            "presence": "mentioned",
+            "count": 0,
+            "example": "end of cinnamon and sugar. Finished with a salted"
+          }
+        },
+        "menu": {
+          "items": 0,
+          "categories": 0,
+          "optionGroups": 0,
+          "selectionLimits": false,
+          "portions": true,
+          "allergens": true,
+          "ingredientDeclarations": false
+        },
+        "freshness": [
+          {
+            "value": "2026-08-24T15:27:59+00:00",
+            "from": "meta article:modified_time"
+          },
+          {
+            "value": "2026-08-24T15:27:59+00:00",
+            "from": "json dateModified"
+          }
+        ],
+        "embedded": [
+          {
+            "kind": "json-ld",
+            "bytes": 1329,
+            "nutrientsWithValues": [],
+            "items": 0
+          }
+        ],
+        "statements": [],
+        "title": "Menu | MOD Pizza"
+      },
+      "sourceUpdatedAt": "2026-08-24"
+    },
+    {
+      "url": "https://api.koala.io/v1/ordering/store-locations/4080/menu?wanted-at=asap",
+      "channel": "api_json",
+      "authority": "ordering_system",
+      "outcome": "auth_required",
+      "status": 401,
+      "contentType": "application/json",
+      "bytes": 103,
+      "sha256": "06b088bdd3a3d6b70f8c658da4beca526bf2778e40b2c4f8fe1af643bf9faf5c",
+      "retrievedAt": "2026-10-21T00:57:07.000Z",
+      "depth": 1,
+      "discoveredBy": "platform:koala (store menu (categories, products, option groups))",
+      "relevance": 7,
+      "notes": [
+        "HTTP 401: not readable anonymously."
+      ]
+    },
+    {
+      "url": "https://modpizza.com/",
+      "channel": "unknown",
+      "authority": "official",
+      "outcome": "not_captured",
+      "depth": 0,
+      "discoveredBy": "seed",
+      "relevance": 10,
+      "notes": [
+        "no saved response for this URL"
+      ]
+    },
+    {
+      "url": "https://orders.modpizza.com/",
+      "channel": "unknown",
+      "authority": "ordering_system",
+      "outcome": "not_captured",
+      "depth": 0,
+      "discoveredBy": "seed",
+      "relevance": 10,
+      "notes": [
+        "no saved response for this URL"
+      ]
+    },
+    {
+      "url": "https://modpizza.com/robots.txt",
+      "channel": "site_index",
+      "authority": "official",
+      "outcome": "not_captured",
+      "depth": 0,
+      "discoveredBy": "well-known",
+      "relevance": 9,
+      "notes": [
+        "no saved response for this URL"
+      ]
+    },
+    {
+      "url": "https://orders.modpizza.com/robots.txt",
+      "channel": "site_index",
+      "authority": "ordering_system",
+      "outcome": "not_captured",
+      "depth": 0,
+      "discoveredBy": "well-known",
+      "relevance": 9,
+      "notes": [
+        "no saved response for this URL"
+      ]
+    },
+    {
+      "url": "https://api.koala.io/v1/ordering/store-locations/4168/menu?wanted-at=asap",
+      "channel": "api_json",
+      "authority": "ordering_system",
+      "outcome": "not_captured",
+      "depth": 1,
+      "discoveredBy": "platform:koala (store menu (categories, products, option groups))",
+      "relevance": 7,
+      "notes": [
+        "no saved response for this URL"
+      ]
+    },
+    {
+      "url": "https://modpizza.com/nutrition-facts",
+      "channel": "unknown",
+      "authority": "official",
+      "outcome": "not_captured",
+      "depth": 0,
+      "discoveredBy": "well-known",
+      "relevance": 7,
+      "notes": [
+        "no saved response for this URL"
+      ]
+    },
+    {
+      "url": "https://modpizza.com/nutrition-information",
+      "channel": "unknown",
+      "authority": "official",
+      "outcome": "not_captured",
+      "depth": 0,
+      "discoveredBy": "well-known",
+      "relevance": 7,
+      "notes": [
+        "no saved response for this URL"
+      ]
+    },
+    {
+      "url": "https://modpizza.com/wp-json/wp/v2/media?search=nutrition&per_page=50&_fields=id,link,source_url,mime_type,modified_gmt,title",
+      "channel": "api_json",
+      "authority": "official",
+      "outcome": "not_captured",
+      "depth": 1,
+      "discoveredBy": "platform:wordpress (uploaded files matching \"nutrition\" (finds PDFs that no page links))",
+      "relevance": 7,
+      "notes": [
+        "no saved response for this URL"
+      ]
+    },
+    {
+      "url": "https://modpizza.com/wp-json/wp/v2/pages?search=nutrition&per_page=20&_fields=id,link,modified_gmt,title",
+      "channel": "api_json",
+      "authority": "official",
+      "outcome": "not_captured",
+      "depth": 1,
+      "discoveredBy": "platform:wordpress (pages matching \"nutrition\")",
+      "relevance": 7,
+      "notes": [
+        "no saved response for this URL"
+      ]
+    },
+    {
+      "url": "https://modpizza.com/allergens",
+      "channel": "unknown",
+      "authority": "official",
+      "outcome": "not_captured",
+      "depth": 0,
+      "discoveredBy": "well-known",
+      "relevance": 4,
+      "notes": [
+        "no saved response for this URL"
+      ]
+    },
+    {
+      "url": "https://orders.modpizza.com/_next/static/chunks/main-1482276fe7f89948.js",
+      "channel": "js_bundle",
+      "authority": "ordering_system",
+      "outcome": "not_captured",
+      "depth": 1,
+      "discoveredBy": "script:https://orders.modpizza.com/store/4080",
+      "relevance": 4,
+      "notes": [
+        "no saved response for this URL"
+      ]
+    },
+    {
+      "url": "https://modpizza.com/our-ingredients/",
+      "channel": "unknown",
+      "authority": "official",
+      "outcome": "not_captured",
+      "depth": 1,
+      "discoveredBy": "link:https://modpizza.com/menu",
+      "relevance": 3,
+      "notes": [
+        "no saved response for this URL"
+      ]
+    }
+  ],
+  "coverage": [
+    {
+      "need": "calories",
+      "status": "found",
+      "sources": [
+        "https://orders.modpizza.com/store/4080",
+        "https://orders.modpizza.com/store/4168",
+        "https://modpizza.com/nutrition"
+      ]
+    },
+    {
+      "need": "protein",
+      "status": "missing",
+      "sources": []
+    },
+    {
+      "need": "carbs",
+      "status": "missing",
+      "sources": []
+    },
+    {
+      "need": "totalFat",
+      "status": "missing",
+      "sources": []
+    },
+    {
+      "need": "satFat",
+      "status": "missing",
+      "sources": []
+    },
+    {
+      "need": "transFat",
+      "status": "missing",
+      "sources": []
+    },
+    {
+      "need": "cholesterol",
+      "status": "missing",
+      "sources": []
+    },
+    {
+      "need": "sodium",
+      "status": "missing",
+      "sources": []
+    },
+    {
+      "need": "fiber",
+      "status": "missing",
+      "sources": []
+    },
+    {
+      "need": "sugars",
+      "status": "missing",
+      "sources": []
+    },
+    {
+      "need": "catalog",
+      "status": "found",
+      "sources": [
+        "https://orders.modpizza.com/store/4080",
+        "https://orders.modpizza.com/store/4168"
+      ]
+    },
+    {
+      "need": "customization",
+      "status": "found",
+      "sources": [
+        "https://orders.modpizza.com/store/4080",
+        "https://orders.modpizza.com/store/4168"
+      ]
+    },
+    {
+      "need": "portions",
+      "status": "found",
+      "sources": [
+        "https://orders.modpizza.com/store/4080",
+        "https://orders.modpizza.com/store/4168",
+        "https://modpizza.com/nutrition",
+        "https://modpizza.com/allergen",
+        "https://modpizza.com/menu"
+      ]
+    },
+    {
+      "need": "allergens",
+      "status": "found",
+      "sources": [
+        "https://modpizza.com/nutrition",
+        "https://modpizza.com/allergen",
+        "https://modpizza.com/menu"
+      ]
+    },
+    {
+      "need": "ingredients",
+      "status": "found",
+      "sources": [
+        "https://modpizza.com/allergen"
+      ]
+    }
+  ],
+  "gaps": [
+    {
+      "need": "protein",
+      "core": true,
+      "message": "No usable official or ordering-system source publishes protein values (6 source(s) inspected). It stays missing; it is never estimated. Official statement: \"Additional nutrition information available upon request\"",
+      "leads": [
+        {
+          "url": "https://modpizza.com/",
+          "outcome": "not_captured",
+          "reason": "not in the saved responses; run discovery live to inspect it"
+        },
+        {
+          "url": "https://orders.modpizza.com/",
+          "outcome": "not_captured",
+          "reason": "not in the saved responses; run discovery live to inspect it"
+        },
+        {
+          "url": "https://api.koala.io/v1/ordering/store-locations/4080/menu?wanted-at=asap",
+          "outcome": "auth_required",
+          "reason": "needs authorization; no workaround attempted"
+        },
+        {
+          "url": "https://api.koala.io/v1/ordering/store-locations/4168/menu?wanted-at=asap",
+          "outcome": "not_captured",
+          "reason": "not in the saved responses; run discovery live to inspect it"
+        },
+        {
+          "url": "https://modpizza.com/wp-json/wp/v2/media?search=nutrition&per_page=50&_fields=id,link,source_url,mime_type,modified_gmt,title",
+          "outcome": "not_captured",
+          "reason": "not in the saved responses; run discovery live to inspect it"
+        },
+        {
+          "url": "https://modpizza.com/wp-json/wp/v2/pages?search=nutrition&per_page=20&_fields=id,link,modified_gmt,title",
+          "outcome": "not_captured",
+          "reason": "not in the saved responses; run discovery live to inspect it"
+        }
+      ]
+    },
+    {
+      "need": "carbs",
+      "core": true,
+      "message": "No usable official or ordering-system source publishes carbs values (6 source(s) inspected). It stays missing; it is never estimated. Official statement: \"Additional nutrition information available upon request\"",
+      "leads": [
+        {
+          "url": "https://modpizza.com/",
+          "outcome": "not_captured",
+          "reason": "not in the saved responses; run discovery live to inspect it"
+        },
+        {
+          "url": "https://orders.modpizza.com/",
+          "outcome": "not_captured",
+          "reason": "not in the saved responses; run discovery live to inspect it"
+        },
+        {
+          "url": "https://api.koala.io/v1/ordering/store-locations/4080/menu?wanted-at=asap",
+          "outcome": "auth_required",
+          "reason": "needs authorization; no workaround attempted"
+        },
+        {
+          "url": "https://api.koala.io/v1/ordering/store-locations/4168/menu?wanted-at=asap",
+          "outcome": "not_captured",
+          "reason": "not in the saved responses; run discovery live to inspect it"
+        },
+        {
+          "url": "https://modpizza.com/wp-json/wp/v2/media?search=nutrition&per_page=50&_fields=id,link,source_url,mime_type,modified_gmt,title",
+          "outcome": "not_captured",
+          "reason": "not in the saved responses; run discovery live to inspect it"
+        },
+        {
+          "url": "https://modpizza.com/wp-json/wp/v2/pages?search=nutrition&per_page=20&_fields=id,link,modified_gmt,title",
+          "outcome": "not_captured",
+          "reason": "not in the saved responses; run discovery live to inspect it"
+        }
+      ]
+    },
+    {
+      "need": "totalFat",
+      "core": true,
+      "message": "No usable official or ordering-system source publishes totalFat values (6 source(s) inspected). It stays missing; it is never estimated. Official statement: \"Additional nutrition information available upon request\"",
+      "leads": [
+        {
+          "url": "https://modpizza.com/",
+          "outcome": "not_captured",
+          "reason": "not in the saved responses; run discovery live to inspect it"
+        },
+        {
+          "url": "https://orders.modpizza.com/",
+          "outcome": "not_captured",
+          "reason": "not in the saved responses; run discovery live to inspect it"
+        },
+        {
+          "url": "https://api.koala.io/v1/ordering/store-locations/4080/menu?wanted-at=asap",
+          "outcome": "auth_required",
+          "reason": "needs authorization; no workaround attempted"
+        },
+        {
+          "url": "https://api.koala.io/v1/ordering/store-locations/4168/menu?wanted-at=asap",
+          "outcome": "not_captured",
+          "reason": "not in the saved responses; run discovery live to inspect it"
+        },
+        {
+          "url": "https://modpizza.com/wp-json/wp/v2/media?search=nutrition&per_page=50&_fields=id,link,source_url,mime_type,modified_gmt,title",
+          "outcome": "not_captured",
+          "reason": "not in the saved responses; run discovery live to inspect it"
+        },
+        {
+          "url": "https://modpizza.com/wp-json/wp/v2/pages?search=nutrition&per_page=20&_fields=id,link,modified_gmt,title",
+          "outcome": "not_captured",
+          "reason": "not in the saved responses; run discovery live to inspect it"
+        }
+      ]
+    },
+    {
+      "need": "satFat",
+      "core": false,
+      "message": "No usable official or ordering-system source publishes satFat values (6 source(s) inspected). It stays missing; it is never estimated.",
+      "leads": [
+        {
+          "url": "https://modpizza.com/",
+          "outcome": "not_captured",
+          "reason": "not in the saved responses; run discovery live to inspect it"
+        },
+        {
+          "url": "https://orders.modpizza.com/",
+          "outcome": "not_captured",
+          "reason": "not in the saved responses; run discovery live to inspect it"
+        },
+        {
+          "url": "https://api.koala.io/v1/ordering/store-locations/4080/menu?wanted-at=asap",
+          "outcome": "auth_required",
+          "reason": "needs authorization; no workaround attempted"
+        },
+        {
+          "url": "https://api.koala.io/v1/ordering/store-locations/4168/menu?wanted-at=asap",
+          "outcome": "not_captured",
+          "reason": "not in the saved responses; run discovery live to inspect it"
+        },
+        {
+          "url": "https://modpizza.com/wp-json/wp/v2/media?search=nutrition&per_page=50&_fields=id,link,source_url,mime_type,modified_gmt,title",
+          "outcome": "not_captured",
+          "reason": "not in the saved responses; run discovery live to inspect it"
+        },
+        {
+          "url": "https://modpizza.com/wp-json/wp/v2/pages?search=nutrition&per_page=20&_fields=id,link,modified_gmt,title",
+          "outcome": "not_captured",
+          "reason": "not in the saved responses; run discovery live to inspect it"
+        }
+      ]
+    },
+    {
+      "need": "transFat",
+      "core": false,
+      "message": "No usable official or ordering-system source publishes transFat values (6 source(s) inspected). It stays missing; it is never estimated.",
+      "leads": [
+        {
+          "url": "https://modpizza.com/",
+          "outcome": "not_captured",
+          "reason": "not in the saved responses; run discovery live to inspect it"
+        },
+        {
+          "url": "https://orders.modpizza.com/",
+          "outcome": "not_captured",
+          "reason": "not in the saved responses; run discovery live to inspect it"
+        },
+        {
+          "url": "https://api.koala.io/v1/ordering/store-locations/4080/menu?wanted-at=asap",
+          "outcome": "auth_required",
+          "reason": "needs authorization; no workaround attempted"
+        },
+        {
+          "url": "https://api.koala.io/v1/ordering/store-locations/4168/menu?wanted-at=asap",
+          "outcome": "not_captured",
+          "reason": "not in the saved responses; run discovery live to inspect it"
+        },
+        {
+          "url": "https://modpizza.com/wp-json/wp/v2/media?search=nutrition&per_page=50&_fields=id,link,source_url,mime_type,modified_gmt,title",
+          "outcome": "not_captured",
+          "reason": "not in the saved responses; run discovery live to inspect it"
+        },
+        {
+          "url": "https://modpizza.com/wp-json/wp/v2/pages?search=nutrition&per_page=20&_fields=id,link,modified_gmt,title",
+          "outcome": "not_captured",
+          "reason": "not in the saved responses; run discovery live to inspect it"
+        }
+      ]
+    },
+    {
+      "need": "cholesterol",
+      "core": false,
+      "message": "No usable official or ordering-system source publishes cholesterol values (6 source(s) inspected). It stays missing; it is never estimated.",
+      "leads": [
+        {
+          "url": "https://modpizza.com/",
+          "outcome": "not_captured",
+          "reason": "not in the saved responses; run discovery live to inspect it"
+        },
+        {
+          "url": "https://orders.modpizza.com/",
+          "outcome": "not_captured",
+          "reason": "not in the saved responses; run discovery live to inspect it"
+        },
+        {
+          "url": "https://api.koala.io/v1/ordering/store-locations/4080/menu?wanted-at=asap",
+          "outcome": "auth_required",
+          "reason": "needs authorization; no workaround attempted"
+        },
+        {
+          "url": "https://api.koala.io/v1/ordering/store-locations/4168/menu?wanted-at=asap",
+          "outcome": "not_captured",
+          "reason": "not in the saved responses; run discovery live to inspect it"
+        },
+        {
+          "url": "https://modpizza.com/wp-json/wp/v2/media?search=nutrition&per_page=50&_fields=id,link,source_url,mime_type,modified_gmt,title",
+          "outcome": "not_captured",
+          "reason": "not in the saved responses; run discovery live to inspect it"
+        },
+        {
+          "url": "https://modpizza.com/wp-json/wp/v2/pages?search=nutrition&per_page=20&_fields=id,link,modified_gmt,title",
+          "outcome": "not_captured",
+          "reason": "not in the saved responses; run discovery live to inspect it"
+        }
+      ]
+    },
+    {
+      "need": "sodium",
+      "core": false,
+      "message": "No usable official or ordering-system source publishes sodium values (6 source(s) inspected). It stays missing; it is never estimated.",
+      "leads": [
+        {
+          "url": "https://modpizza.com/",
+          "outcome": "not_captured",
+          "reason": "not in the saved responses; run discovery live to inspect it"
+        },
+        {
+          "url": "https://orders.modpizza.com/",
+          "outcome": "not_captured",
+          "reason": "not in the saved responses; run discovery live to inspect it"
+        },
+        {
+          "url": "https://api.koala.io/v1/ordering/store-locations/4080/menu?wanted-at=asap",
+          "outcome": "auth_required",
+          "reason": "needs authorization; no workaround attempted"
+        },
+        {
+          "url": "https://api.koala.io/v1/ordering/store-locations/4168/menu?wanted-at=asap",
+          "outcome": "not_captured",
+          "reason": "not in the saved responses; run discovery live to inspect it"
+        },
+        {
+          "url": "https://modpizza.com/wp-json/wp/v2/media?search=nutrition&per_page=50&_fields=id,link,source_url,mime_type,modified_gmt,title",
+          "outcome": "not_captured",
+          "reason": "not in the saved responses; run discovery live to inspect it"
+        },
+        {
+          "url": "https://modpizza.com/wp-json/wp/v2/pages?search=nutrition&per_page=20&_fields=id,link,modified_gmt,title",
+          "outcome": "not_captured",
+          "reason": "not in the saved responses; run discovery live to inspect it"
+        }
+      ]
+    },
+    {
+      "need": "fiber",
+      "core": false,
+      "message": "No usable official or ordering-system source publishes fiber values (6 source(s) inspected). It stays missing; it is never estimated.",
+      "leads": [
+        {
+          "url": "https://modpizza.com/",
+          "outcome": "not_captured",
+          "reason": "not in the saved responses; run discovery live to inspect it"
+        },
+        {
+          "url": "https://orders.modpizza.com/",
+          "outcome": "not_captured",
+          "reason": "not in the saved responses; run discovery live to inspect it"
+        },
+        {
+          "url": "https://api.koala.io/v1/ordering/store-locations/4080/menu?wanted-at=asap",
+          "outcome": "auth_required",
+          "reason": "needs authorization; no workaround attempted"
+        },
+        {
+          "url": "https://api.koala.io/v1/ordering/store-locations/4168/menu?wanted-at=asap",
+          "outcome": "not_captured",
+          "reason": "not in the saved responses; run discovery live to inspect it"
+        },
+        {
+          "url": "https://modpizza.com/wp-json/wp/v2/media?search=nutrition&per_page=50&_fields=id,link,source_url,mime_type,modified_gmt,title",
+          "outcome": "not_captured",
+          "reason": "not in the saved responses; run discovery live to inspect it"
+        },
+        {
+          "url": "https://modpizza.com/wp-json/wp/v2/pages?search=nutrition&per_page=20&_fields=id,link,modified_gmt,title",
+          "outcome": "not_captured",
+          "reason": "not in the saved responses; run discovery live to inspect it"
+        }
+      ]
+    },
+    {
+      "need": "sugars",
+      "core": false,
+      "message": "No usable official or ordering-system source publishes sugars values (6 source(s) inspected). It stays missing; it is never estimated.",
+      "leads": [
+        {
+          "url": "https://modpizza.com/",
+          "outcome": "not_captured",
+          "reason": "not in the saved responses; run discovery live to inspect it"
+        },
+        {
+          "url": "https://orders.modpizza.com/",
+          "outcome": "not_captured",
+          "reason": "not in the saved responses; run discovery live to inspect it"
+        },
+        {
+          "url": "https://api.koala.io/v1/ordering/store-locations/4080/menu?wanted-at=asap",
+          "outcome": "auth_required",
+          "reason": "needs authorization; no workaround attempted"
+        },
+        {
+          "url": "https://api.koala.io/v1/ordering/store-locations/4168/menu?wanted-at=asap",
+          "outcome": "not_captured",
+          "reason": "not in the saved responses; run discovery live to inspect it"
+        },
+        {
+          "url": "https://modpizza.com/wp-json/wp/v2/media?search=nutrition&per_page=50&_fields=id,link,source_url,mime_type,modified_gmt,title",
+          "outcome": "not_captured",
+          "reason": "not in the saved responses; run discovery live to inspect it"
+        },
+        {
+          "url": "https://modpizza.com/wp-json/wp/v2/pages?search=nutrition&per_page=20&_fields=id,link,modified_gmt,title",
+          "outcome": "not_captured",
+          "reason": "not in the saved responses; run discovery live to inspect it"
+        }
+      ]
+    }
+  ],
+  "macrosReady": false,
+  "missingCore": [
+    "protein",
+    "carbs",
+    "totalFat"
+  ],
+  "proposedSources": [
+    {
+      "id": "mod:orders-modpizza-com-store-4080",
+      "kind": "ordering_structured_data",
+      "authority": "ordering_system",
+      "url": "https://orders.modpizza.com/store/4080",
+      "retrievedAt": "2026-10-21T00:55:37.000Z",
+      "sourceUpdatedAt": "2026-10-21",
+      "sha256": "0009a7021842ecc2f3c5f3944f7dedf51e123c9d0d76d90f82b1d21284d417ac",
+      "provides": [
+        "calories",
+        "catalog",
+        "customization",
+        "portions"
+      ],
+      "stale": false
+    },
+    {
+      "id": "mod:orders-modpizza-com-store-4168",
+      "kind": "ordering_structured_data",
+      "authority": "ordering_system",
+      "url": "https://orders.modpizza.com/store/4168",
+      "retrievedAt": "2026-10-20T12:00:00.000Z",
+      "sourceUpdatedAt": "2026-10-21",
+      "sha256": "27dbb50ea7a17905fcf6e2d11ecc1e29be419fe404caffc4c74cf69730a55b7f",
+      "provides": [
+        "calories",
+        "catalog",
+        "customization",
+        "portions"
+      ],
+      "stale": false
+    },
+    {
+      "id": "mod:modpizza-com-nutrition",
+      "kind": "official_html",
+      "authority": "official",
+      "url": "https://modpizza.com/nutrition",
+      "retrievedAt": "2026-10-21T00:55:26.000Z",
+      "sourceUpdatedAt": "2026-08-25",
+      "sha256": "5db41ec8c48611cd542a65b263d275328d33871d4a5a90e4072d0aa0dfba5709",
+      "provides": [
+        "calories",
+        "portions",
+        "allergens"
+      ],
+      "stale": false
+    },
+    {
+      "id": "mod:modpizza-com-allergen",
+      "kind": "official_html",
+      "authority": "official",
+      "url": "https://modpizza.com/allergen",
+      "retrievedAt": "2026-10-20T12:00:00.000Z",
+      "sourceUpdatedAt": "2026-07-21",
+      "sha256": "97ec63ac20eff07a00dd85d9178bcd361cf57ad16552412fb24e2fe5a7a2e390",
+      "provides": [
+        "portions",
+        "allergens",
+        "ingredients"
+      ],
+      "stale": false
+    },
+    {
+      "id": "mod:modpizza-com-menu",
+      "kind": "official_html",
+      "authority": "official",
+      "url": "https://modpizza.com/menu",
+      "retrievedAt": "2026-10-20T12:00:00.000Z",
+      "sourceUpdatedAt": "2026-08-24",
+      "sha256": "400cbd795539b4457f939abe0a33d37946f4fc96835e7828b52df6e3d11555fb",
+      "provides": [
+        "portions",
+        "allergens"
+      ],
+      "stale": false
+    }
+  ],
+  "changes": {
+    "added": [],
+    "removed": [],
+    "changed": [],
+    "unchanged": 8
+  },
+  "warnings": [
+    "Replay mode: answers come from saved responses captured 2026-10-20. URLs that were never saved are \"not_captured\", not missing. Run live before relying on this report."
+  ]
+}
