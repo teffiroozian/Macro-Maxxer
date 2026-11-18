@@ -498,3 +498,31 @@ test("browser fetcher: keeps a page whose network never goes idle", async (t) =>
     server.close();
   }
 });
+
+test("browser fetcher: a page that never finishes loading keeps its rendered document", async (t) => {
+  const server = createServer((request, response) => {
+    if (request.url === "/slow.png") return; // never answers, so "load" never fires
+    response.writeHead(200, { "content-type": "text/html" });
+    response.end('<div id="app">Bowl Calories 500</div><img src="/slow.png">');
+  });
+  await new Promise((done) => server.listen(0, "127.0.0.1", done));
+  const origin = `http://127.0.0.1:${server.address().port}`;
+  const passthrough = { mode: "live", async fetch(url) { const r = await fetch(url, { signal: AbortSignal.timeout(5000) }); return { url, finalUrl: url, status: r.status, headers: {}, body: Buffer.from(await r.arrayBuffer()), retrievedAt: NOW }; } };
+  const saved = ["HTTPS_PROXY", "https_proxy", "HTTP_PROXY", "http_proxy"].map((name) => [name, process.env[name]]);
+  for (const [name] of saved) delete process.env[name];
+  const browser = withBrowser(passthrough, { timeoutMs: 10_000, settleMs: 1_000 });
+  try {
+    const { page } = await browser.render(`${origin}/nutrition`);
+    if (/Playwright is not installed/.test(page.failureDetail ?? "")) {
+      t.skip("Playwright not available here");
+      return;
+    }
+    assert.equal(page.status, 200, page.failureDetail);
+    assert.match(page.body.toString(), /Bowl Calories 500/);
+  } finally {
+    await browser.close();
+    for (const [name, value] of saved) if (value !== undefined) process.env[name] = value;
+    server.closeAllConnections?.();
+    server.close();
+  }
+});

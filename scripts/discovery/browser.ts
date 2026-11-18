@@ -33,7 +33,7 @@ const blocked = (url: string, detail: string): FetchResult => ({ url, finalUrl: 
 
 // The small part of Playwright's API used here.
 type PwResponse = { url(): string; status(): number; headers(): Record<string, string>; allHeaders(): Promise<Record<string, string>>; body(): Promise<Buffer>; request(): { method(): string } };
-type PwPage = { on(event: "response", listener: (response: PwResponse) => void): void; goto(url: string, options: Record<string, unknown>): Promise<PwResponse | null>; content(): Promise<string>; url(): string; waitForLoadState(state: "networkidle", options: { timeout: number }): Promise<void> };
+type PwPage = { on(event: "response", listener: (response: PwResponse) => void): void; goto(url: string, options: Record<string, unknown>): Promise<PwResponse | null>; content(): Promise<string>; url(): string; waitForLoadState(state: "load" | "networkidle", options: { timeout: number }): Promise<void> };
 type PwContext = { newPage(): Promise<PwPage>; close(): Promise<void> };
 type PwBrowser = { newContext(options: Record<string, unknown>): Promise<PwContext>; close(): Promise<void> };
 type PlaywrightModule = { chromium: { launch(options: Record<string, unknown>): Promise<PwBrowser> } };
@@ -101,7 +101,11 @@ export function withBrowser(base: Fetcher, options: BrowserOptions = {}): Fetche
         );
       });
       try {
-        const main = await page.goto(url, { waitUntil: "load", timeout: options.timeoutMs ?? 45_000 });
+        // Wait only for the document; slow sites (chipotle.com under repeated
+        // loads) can take longer than any limit to fire "load". Give "load"
+        // and network idle a bounded chance, then keep what rendered.
+        const main = await page.goto(url, { waitUntil: "domcontentloaded", timeout: options.timeoutMs ?? 45_000 });
+        await page.waitForLoadState("load", { timeout: options.settleMs ?? 15_000 }).catch(() => undefined);
         await page.waitForLoadState("networkidle", { timeout: options.settleMs ?? 15_000 }).catch(() => undefined);
         await Promise.all(pending);
         const html = await page.content();
@@ -113,7 +117,10 @@ export function withBrowser(base: Fetcher, options: BrowserOptions = {}): Fetche
           responses,
         };
       } catch (error) {
-        return { page: blocked(url, `browser: ${error instanceof Error ? error.message : String(error)}`), responses };
+        // The page answered the plain fetch above, so a browser failure is the
+        // page being slow or broken, not the network refusing it.
+        const message = error instanceof Error ? error.message : String(error);
+        return { page: { ...blocked(url, `browser: ${message}`), failure: "network_error" }, responses };
       } finally {
         await context.close().catch(() => undefined);
       }
