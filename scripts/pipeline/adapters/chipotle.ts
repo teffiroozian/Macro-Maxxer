@@ -1,3 +1,4 @@
+import { macroEnergyCalories } from "../nutrition";
 import { normalizePortionCell } from "../../lib/chipotle-portion";
 import type { ExtractedRecord } from "../../extraction/contracts";
 import { extractionObservation, extractionRef, extractionSources, type ExtractionDisposition, type ExtractionInput } from "../extraction-input";
@@ -229,7 +230,7 @@ export function assessLiveNutrition(item: ChipotleLiveItem | undefined): LiveAss
   if (tcal > 0 && prot === 0 && carb === 0 && tfat === 0 && sodi === 0) {
     return { calories, portion, rejection: "live panel has calories but zeroed macros" };
   }
-  const macroCalories = prot * 4 + carb * 4 + tfat * 9;
+  const macroCalories = macroEnergyCalories(prot, carb, tfat);
   if (tcal > 0 && Math.abs(tcal - macroCalories) > Math.max(50, tcal * 0.35)) {
     return { calories, portion, rejection: `live calories (${tcal}) are implausible for the macro panel (~${macroCalories})` };
   }

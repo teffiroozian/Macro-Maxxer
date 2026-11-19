@@ -13,6 +13,10 @@ import {
   type SelectionOption,
 } from "./contracts";
 
+export function macroEnergyCalories(protein: number, carbs: number, totalFat: number): number {
+  return 4 * protein + 4 * carbs + 9 * totalFat;
+}
+
 export function reconcileNutrition(input: NutritionInput, precedence: readonly string[] = []): NutritionRecord {
   const eligible = input.filter((observation) => !observation.comparisonOnly &&
     !observation.source.flags?.includes("needs_verification"));

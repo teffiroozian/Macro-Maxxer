@@ -59,6 +59,15 @@ function reviewReport(draft: RestaurantDraft, validation: DraftValidation, proje
         `- \`${source.id}\` — ${source.url} (${source.authority}; retrieved ${source.retrievedAt}${source.sourceUpdatedAt ? `; source updated ${source.sourceUpdatedAt}` : ""})`,
     ),
   ];
+  if (validation.quality) {
+    lines.push("", "## Automated validation", "",
+      ...Object.entries(validation.quality.counts).map(([status, count]) => `- ${status}: ${count}`));
+    if (Object.keys(validation.quality.blockers).length) {
+      lines.push("", "### Review blockers", "",
+        ...Object.entries(validation.quality.blockers).sort(([, a], [, b]) => b - a)
+          .map(([code, count]) => `- \`${code}\`: ${count}`));
+    }
+  }
   for (const severity of ["blocker", "warning", "info"] as const) {
     const issues = draft.issues.filter((issue) => issue.severity === severity);
     if (issues.length === 0) continue;
@@ -108,7 +117,7 @@ async function main(): Promise<void> {
     : adapter.translate(await adapter.load());
   const adapterLinks = extraction ? collectExtractionLinks(input) : undefined;
   const draft = normalizeRestaurant(input);
-  const validation = validateDraft(draft);
+  const validation = validateDraft(draft, { auditQuality: useExtraction });
   const registryFile = registryPath(draft.restaurant.id);
   const registry = await readFile(registryFile, "utf8").then(
     (text) => JSON.parse(text) as IdRegistry,
@@ -119,10 +128,8 @@ async function main(): Promise<void> {
   validation.readyForApproval &&= runtimeErrors.length === 0 && projection.ids.conflicts.length === 0;
 
   const outputDir = useExtraction ? resolve(staging, "normalization") : staging;
-  if (extraction && adapterLinks) {
-    const matches = extractionMatchReport(extraction, adapterLinks, draft, dispositions);
-    await writeAtomically(resolve(outputDir, "matches.json"), `${JSON.stringify(matches)}\n`);
-  }
+  const matches = extraction && adapterLinks ? extractionMatchReport(extraction, adapterLinks, draft, dispositions) : undefined;
+  if (matches) await writeAtomically(resolve(outputDir, "matches.json"), `${JSON.stringify(matches)}\n`);
   await writeAtomically(resolve(outputDir, "draft.json"), `${JSON.stringify(draft)}\n`);
   await writeAtomically(
     resolve(outputDir, "validation.json"),
@@ -135,6 +142,9 @@ async function main(): Promise<void> {
         warningCounts: findingTypeCounts(validation.context.warnings),
         errors: validation.context.errors,
         summary: draft.summary,
+        ...(validation.quality ? { quality: validation.quality } : {}),
+        ...(matches ? { sourceRecordDispositions: matches.counts } : {}),
+        ...(useExtraction ? { warnings: validation.context.warnings } : {}),
         runtimeProjection: {
           items: projection.menu.items.length,
           ingredients: projection.menu.ingredients?.length ?? 0,

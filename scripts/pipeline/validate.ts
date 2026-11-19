@@ -1,3 +1,4 @@
+import { auditDraftQuality } from "./validate-quality";
 import { validateOrderingPlan } from "../../lib/ordering/evaluate";
 import {
   addFinding,
@@ -24,11 +25,13 @@ export type DraftValidation = {
   // publishing. Publishing itself is always a manual decision.
   readyForApproval: boolean;
   context: ValidationContext<DraftCheck>;
+  quality?: ReturnType<typeof auditDraftQuality>;
 };
 
 export type ValidateDraftOptions = {
   now?: string;
   maxSourceAgeDays?: number;
+  auditQuality?: boolean;
 };
 
 function draftGroups(item: DraftItem): SelectionGroup<NutritionRecord>[] {
@@ -94,6 +97,7 @@ export function validateDraft(draft: RestaurantDraft, options: ValidateDraftOpti
     }
     for (const variant of item.variants) {
       claimId(variant.id, "variant");
+      if (options.auditQuality) checkRef(variant.source, variant.id);
       checkNutrition(variant.nutrition, variant.id);
     }
     if (item.model === "build-your-own" && draftGroups(item).every((group) => group.role !== "ingredient_group")) {
@@ -102,9 +106,14 @@ export function validateDraft(draft: RestaurantDraft, options: ValidateDraftOpti
       });
     }
     for (const group of draftGroups(item)) {
+      if (options.auditQuality) [group.source, ...(group.additionalSources ?? [])].forEach((ref) => checkRef(ref, group.id));
       for (const option of group.options) {
         checkNutrition(option.nutrition, option.id);
-        option.portions?.forEach((portion) => checkNutrition(portion.nutrition, portion.id));
+        if (options.auditQuality) [option.source, ...(option.additionalSources ?? [])].forEach((ref) => checkRef(ref, option.id));
+        option.portions?.forEach((portion) => {
+          if (options.auditQuality) checkRef(portion.source, portion.id);
+          checkNutrition(portion.nutrition, portion.id);
+        });
       }
     }
   }
@@ -146,7 +155,7 @@ export function validateDraft(draft: RestaurantDraft, options: ValidateDraftOpti
   }
 
   const now = Date.parse(options.now ?? draft.generatedAt);
-  const maxAgeDays = options.maxSourceAgeDays ?? 90;
+  const maxAgeDays = Math.min(options.maxSourceAgeDays ?? 90, 90);
   for (const source of draft.sources) {
     const retrieved = Date.parse(source.retrievedAt);
     if (Number.isNaN(retrieved)) {
@@ -154,6 +163,15 @@ export function validateDraft(draft: RestaurantDraft, options: ValidateDraftOpti
         recordIds: [source.id],
       });
       continue;
+    }
+    if (options.auditQuality && source.sourceUpdatedAt) {
+      const published = Date.parse(source.sourceUpdatedAt);
+      if (Number.isNaN(published)) {
+        addFinding(context, "error", "freshness", "source_updated_at_invalid", `Source ${source.id} has an invalid publication date.`, { recordIds: [source.id] });
+      } else if (now - published > maxAgeDays * 86_400_000) {
+        addFinding(context, "warning", "freshness", "published_source_needs_verification",
+          `Source ${source.id} was published outside the ${maxAgeDays}-day freshness window.`, { recordIds: [source.id] });
+      }
     }
     const ageDays = Math.floor((now - retrieved) / 86_400_000);
     if (ageDays > maxAgeDays) {
@@ -171,6 +189,12 @@ export function validateDraft(draft: RestaurantDraft, options: ValidateDraftOpti
   }
   setCheckDetails(context, "readiness", { blockers: blockers.length, summary: draft.summary });
 
+  const quality = options.auditQuality ? auditDraftQuality(draft, context, now, maxAgeDays) : undefined;
   const valid = context.errors.length === 0;
-  return { valid, readyForApproval: valid && blockers.length === 0, context };
+  return {
+    valid,
+    readyForApproval: valid && blockers.length === 0 && (!quality || Object.keys(quality.blockers).length === 0),
+    context,
+    ...(quality ? { quality } : {}),
+  };
 }
