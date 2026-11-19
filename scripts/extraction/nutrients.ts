@@ -31,7 +31,7 @@ export type ParsedCell = { value?: number; range?: [number, number]; unclean?: U
 const CLEAN_NUMBER = /^\d{1,5}(?:,\d{3})*(?:\.\d+)?$/;
 
 // Units printed in a cell or its header ("9g", "600 mg", "320 cal").
-const UNIT_SUFFIX = /\s*(?:g|mg|kcal|cal|calories)\s*$/i;
+const UNIT_SUFFIX = /\s*(?:g|mg|kcal|cals?|calories)\s*$/i;
 
 export function parseCell(nutrient: NutrientKey, raw: string): ParsedCell {
   const text = raw.replace(/ /g, " ").trim().replace(UNIT_SUFFIX, "").trim();

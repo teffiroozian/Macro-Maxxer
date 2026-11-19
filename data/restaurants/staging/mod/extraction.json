@@ -4,44 +4,73 @@
     "id": "mod",
     "name": "MOD Pizza"
   },
-  "mode": "replay",
-  "runAt": "2026-11-19T00:31:31.397Z",
+  "mode": "live",
+  "runAt": "2026-11-19T01:51:39.571Z",
   "discovery": {
-    "runAt": "2026-11-18T22:12:16.592Z",
-    "mode": "replay",
+    "runAt": "2026-11-19T00:35:14.128Z",
+    "mode": "live",
     "file": "data/restaurants/staging/mod/discovery.json"
   },
   "freshnessDays": 90,
   "sources": [
     {
       "source": {
+        "id": "mod:orders-modpizza-com",
+        "kind": "official_html",
+        "authority": "ordering_system",
+        "url": "https://orders.modpizza.com/",
+        "retrievedAt": "2026-11-19T01:51:40.437Z",
+        "sourceUpdatedAt": "2026-11-18",
+        "sha256": "63287afe88121a3e48a3633f57a31d457fe24a36bebfe57c05b22daf76914941"
+      },
+      "method": "official_html",
+      "freshness": "current",
+      "ageDays": 1,
+      "verificationRequired": false,
+      "status": "empty",
+      "statusDetail": "Fetched, but no extractor recognised menu or nutrition records in it.",
+      "extractors": [],
+      "counts": {
+        "menu_item": 0,
+        "variant": 0,
+        "option_group": 0,
+        "option": 0,
+        "portion": 0,
+        "nutrition_row": 0,
+        "ingredient_declaration": 0
+      },
+      "nutrientCounts": {},
+      "warnings": []
+    },
+    {
+      "source": {
         "id": "mod:orders-modpizza-com-store-4080",
         "kind": "ordering_structured_data",
         "authority": "ordering_system",
         "url": "https://orders.modpizza.com/store/4080",
-        "retrievedAt": "2026-10-21T00:55:37.000Z",
-        "sourceUpdatedAt": "2026-10-21",
-        "sha256": "0009a7021842ecc2f3c5f3944f7dedf51e123c9d0d76d90f82b1d21284d417ac"
+        "retrievedAt": "2026-11-19T01:51:41.549Z",
+        "sourceUpdatedAt": "2026-11-18",
+        "sha256": "f57a68ec658481a39c57c868f4d4addf0272c7e26ad3342e8d16f8dcee453313"
       },
       "method": "embedded_json",
       "freshness": "current",
-      "ageDays": 29,
+      "ageDays": 1,
       "verificationRequired": false,
       "status": "extracted",
       "extractors": [
         "embedded:next_data"
       ],
       "counts": {
-        "menu_item": 45,
+        "menu_item": 44,
         "variant": 0,
-        "option_group": 5315,
-        "option": 6390,
-        "portion": 11911,
+        "option_group": 4674,
+        "option": 4345,
+        "portion": 11756,
         "nutrition_row": 0,
         "ingredient_declaration": 0
       },
       "nutrientCounts": {
-        "calories": 12150
+        "calories": 10685
       },
       "warnings": []
     },
@@ -51,31 +80,124 @@
         "kind": "ordering_structured_data",
         "authority": "ordering_system",
         "url": "https://orders.modpizza.com/store/4168",
-        "retrievedAt": "2026-10-20T12:00:00.000Z",
-        "sourceUpdatedAt": "2026-10-21",
-        "sha256": "27dbb50ea7a17905fcf6e2d11ecc1e29be419fe404caffc4c74cf69730a55b7f"
+        "retrievedAt": "2026-11-19T01:51:42.890Z",
+        "sourceUpdatedAt": "2026-11-18",
+        "sha256": "1a24c5e1763191366363601ea2d1cf99d873cb453e0a9cde409d1790592a5ae4"
       },
       "method": "embedded_json",
       "freshness": "current",
-      "ageDays": 29,
+      "ageDays": 1,
       "verificationRequired": false,
       "status": "extracted",
       "extractors": [
         "embedded:next_data"
       ],
       "counts": {
-        "menu_item": 41,
+        "menu_item": 46,
         "variant": 0,
-        "option_group": 3201,
-        "option": 3877,
-        "portion": 7083,
+        "option_group": 4699,
+        "option": 4345,
+        "portion": 11749,
         "nutrition_row": 0,
         "ingredient_declaration": 0
       },
       "nutrientCounts": {
-        "calories": 7257
+        "calories": 10660
       },
+      "warnings": [
+        "Content changed since discovery (sha256 differs)."
+      ]
+    },
+    {
+      "source": {
+        "id": "mod:orders-modpizza-com",
+        "kind": "official_html",
+        "authority": "ordering_system",
+        "url": "https://orders.modpizza.com/#rendered",
+        "retrievedAt": "2026-11-19T01:51:51.812Z",
+        "sourceUpdatedAt": "2026-11-18",
+        "sha256": "36c095b64352e6333ef05e0890120e033875529f2fce03f40210db06261acd03"
+      },
+      "method": "browser_rendered",
+      "freshness": "current",
+      "ageDays": 1,
+      "verificationRequired": false,
+      "status": "empty",
+      "statusDetail": "Fetched, but no extractor recognised menu or nutrition records in it.",
+      "extractors": [],
+      "counts": {
+        "menu_item": 0,
+        "variant": 0,
+        "option_group": 0,
+        "option": 0,
+        "portion": 0,
+        "nutrition_row": 0,
+        "ingredient_declaration": 0
+      },
+      "nutrientCounts": {},
+      "warnings": [
+        "Content changed since discovery (sha256 differs)."
+      ]
+    },
+    {
+      "source": {
+        "id": "mod:api-koala-io-configurations-schema-v1-config-label-web-config",
+        "kind": "public_api",
+        "authority": "ordering_system",
+        "url": "https://api.koala.io/configurations/schema/v1/config/label/web-config",
+        "retrievedAt": "2026-11-19T01:51:52.177Z",
+        "sourceUpdatedAt": "2026-10-20",
+        "sha256": "9a2c894b056a56d19d71deb5cef151cac05374fa018909c596a8191393cfef9a"
+      },
+      "method": "api_json",
+      "freshness": "current",
+      "ageDays": 30,
+      "verificationRequired": false,
+      "status": "network_blocked",
+      "statusDetail": "blocked_by_robots: disallowed by robots.txt",
+      "extractors": [],
+      "counts": {
+        "menu_item": 0,
+        "variant": 0,
+        "option_group": 0,
+        "option": 0,
+        "portion": 0,
+        "nutrition_row": 0,
+        "ingredient_declaration": 0
+      },
+      "nutrientCounts": {},
       "warnings": []
+    },
+    {
+      "source": {
+        "id": "mod:modpizza-com",
+        "kind": "official_html",
+        "authority": "official",
+        "url": "https://modpizza.com/",
+        "retrievedAt": "2026-11-19T01:51:53.066Z",
+        "sourceUpdatedAt": "2026-11-16",
+        "sha256": "1fdaa437f114667502cc96e6f50ca55f55d6834035ca0851bf731882c7d8896a"
+      },
+      "method": "official_html",
+      "freshness": "current",
+      "ageDays": 3,
+      "verificationRequired": false,
+      "status": "empty",
+      "statusDetail": "Fetched, but no extractor recognised menu or nutrition records in it.",
+      "extractors": [],
+      "counts": {
+        "menu_item": 0,
+        "variant": 0,
+        "option_group": 0,
+        "option": 0,
+        "portion": 0,
+        "nutrition_row": 0,
+        "ingredient_declaration": 0
+      },
+      "nutrientCounts": {},
+      "warnings": [
+        "Content changed since discovery (sha256 differs)."
+      ]
     },
     {
       "source": {
@@ -83,9 +205,9 @@
         "kind": "official_html",
         "authority": "official",
         "url": "https://modpizza.com/nutrition",
-        "retrievedAt": "2026-10-21T00:55:26.000Z",
+        "retrievedAt": "2026-11-19T01:51:54.005Z",
         "sourceUpdatedAt": "2026-08-25",
-        "sha256": "5db41ec8c48611cd542a65b263d275328d33871d4a5a90e4072d0aa0dfba5709"
+        "sha256": "bfcc4585ab2000a576657a9af24a0654157e6d24ee5cd91dd1d2a0b40bc7a43c"
       },
       "method": "official_html",
       "freshness": "current",
@@ -107,7 +229,52 @@
       "nutrientCounts": {
         "calories": 98
       },
-      "warnings": []
+      "warnings": [
+        "Content changed since discovery (sha256 differs)."
+      ]
+    },
+    {
+      "source": {
+        "id": "mod:modpizza-com-mod-fresh-nutrition",
+        "kind": "official_html",
+        "authority": "official",
+        "url": "https://modpizza.com/mod-fresh-nutrition/",
+        "retrievedAt": "2026-11-19T01:51:55.283Z",
+        "sourceUpdatedAt": "2023-07-31",
+        "sha256": "7897aaca7471176c592269a0ede736c8e6e41f8f0ceeffb8ee2c9af268158f9a"
+      },
+      "method": "official_html",
+      "freshness": "needs_verification",
+      "ageDays": 1207,
+      "verificationRequired": true,
+      "status": "extracted",
+      "extractors": [
+        "html-repeated-rows"
+      ],
+      "counts": {
+        "menu_item": 0,
+        "variant": 0,
+        "option_group": 0,
+        "option": 0,
+        "portion": 0,
+        "nutrition_row": 98,
+        "ingredient_declaration": 0
+      },
+      "nutrientCounts": {
+        "calories": 87,
+        "totalFat": 44,
+        "satFat": 38,
+        "cholesterol": 66,
+        "sodium": 66,
+        "carbs": 66,
+        "fiber": 66,
+        "sugars": 66,
+        "protein": 66,
+        "transFat": 13
+      },
+      "warnings": [
+        "Content changed since discovery (sha256 differs)."
+      ]
     },
     {
       "source": {
@@ -115,9 +282,9 @@
         "kind": "official_html",
         "authority": "official",
         "url": "https://modpizza.com/allergen",
-        "retrievedAt": "2026-10-20T12:00:00.000Z",
+        "retrievedAt": "2026-11-19T01:51:56.549Z",
         "sourceUpdatedAt": "2026-07-21",
-        "sha256": "97ec63ac20eff07a00dd85d9178bcd361cf57ad16552412fb24e2fe5a7a2e390"
+        "sha256": "6e5cff351f4514de4a74e4aa330a1126127606f2c34a9292fd105b122743f990"
       },
       "method": "official_html",
       "freshness": "needs_verification",
@@ -137,7 +304,9 @@
         "ingredient_declaration": 91
       },
       "nutrientCounts": {},
-      "warnings": []
+      "warnings": [
+        "Content changed since discovery (sha256 differs)."
+      ]
     },
     {
       "source": {
@@ -145,13 +314,47 @@
         "kind": "official_html",
         "authority": "official",
         "url": "https://modpizza.com/menu",
-        "retrievedAt": "2026-10-20T12:00:00.000Z",
+        "retrievedAt": "2026-11-19T01:51:57.292Z",
         "sourceUpdatedAt": "2026-08-24",
-        "sha256": "400cbd795539b4457f939abe0a33d37946f4fc96835e7828b52df6e3d11555fb"
+        "sha256": "3c0ac9eac29df94f88afe136e458d5d1785f11a2766915d376c55b739909cd36"
       },
       "method": "official_html",
       "freshness": "current",
       "ageDays": 87,
+      "verificationRequired": false,
+      "status": "extracted",
+      "extractors": [
+        "html-menu-cards"
+      ],
+      "counts": {
+        "menu_item": 22,
+        "variant": 0,
+        "option_group": 0,
+        "option": 0,
+        "portion": 15,
+        "nutrition_row": 67,
+        "ingredient_declaration": 0
+      },
+      "nutrientCounts": {
+        "calories": 85
+      },
+      "warnings": [
+        "Content changed since discovery (sha256 differs)."
+      ]
+    },
+    {
+      "source": {
+        "id": "mod:modpizza-com-faq",
+        "kind": "official_html",
+        "authority": "official",
+        "url": "https://modpizza.com/faq",
+        "retrievedAt": "2026-11-19T01:51:58.046Z",
+        "sourceUpdatedAt": "2026-10-12",
+        "sha256": "ce14bea615bac315fac7f00a713d0dd67fb1b659e179544778ad363c9edfdbfa"
+      },
+      "method": "official_html",
+      "freshness": "current",
+      "ageDays": 38,
       "verificationRequired": false,
       "status": "empty",
       "statusDetail": "Fetched, but no extractor recognised menu or nutrition records in it.",
@@ -166,104 +369,153 @@
         "ingredient_declaration": 0
       },
       "nutrientCounts": {},
-      "warnings": []
-    }
-  ],
-  "skipped": [
+      "warnings": [
+        "Content changed since discovery (sha256 differs)."
+      ]
+    },
     {
-      "url": "https://api.koala.io/v1/ordering/store-locations/4080/menu?wanted-at=asap",
-      "reason": "Requires login or a key. Not worked around."
+      "source": {
+        "id": "mod:modpizza-com",
+        "kind": "official_html",
+        "authority": "official",
+        "url": "https://modpizza.com/#rendered",
+        "retrievedAt": "2026-11-19T01:52:03.679Z",
+        "sourceUpdatedAt": "2026-11-16",
+        "sha256": "5cce72cdf0890305f6b92a79a478a74f9b44441a4261f0603ae5dcca9a7ded4f"
+      },
+      "method": "browser_rendered",
+      "freshness": "current",
+      "ageDays": 3,
+      "verificationRequired": false,
+      "status": "empty",
+      "statusDetail": "Fetched, but no extractor recognised menu or nutrition records in it.",
+      "extractors": [],
+      "counts": {
+        "menu_item": 0,
+        "variant": 0,
+        "option_group": 0,
+        "option": 0,
+        "portion": 0,
+        "nutrition_row": 0,
+        "ingredient_declaration": 0
+      },
+      "nutrientCounts": {},
+      "warnings": [
+        "Content changed since discovery (sha256 differs)."
+      ]
     }
   ],
+  "skipped": [],
   "coverage": [
     {
       "need": "calories",
       "status": "extracted",
-      "records": 19505,
+      "records": 21615,
       "sources": [
         "mod:orders-modpizza-com-store-4080",
         "mod:orders-modpizza-com-store-4168",
-        "mod:modpizza-com-nutrition"
+        "mod:modpizza-com-nutrition",
+        "mod:modpizza-com-mod-fresh-nutrition",
+        "mod:modpizza-com-menu"
       ],
       "discoveryStatus": "found"
     },
     {
       "need": "protein",
-      "status": "unavailable",
-      "records": 0,
-      "sources": [],
-      "discoveryStatus": "unverified"
+      "status": "needs_verification",
+      "records": 66,
+      "sources": [
+        "mod:modpizza-com-mod-fresh-nutrition"
+      ],
+      "discoveryStatus": "needs_verification"
     },
     {
       "need": "carbs",
-      "status": "unavailable",
-      "records": 0,
-      "sources": [],
-      "discoveryStatus": "unverified"
+      "status": "needs_verification",
+      "records": 66,
+      "sources": [
+        "mod:modpizza-com-mod-fresh-nutrition"
+      ],
+      "discoveryStatus": "needs_verification"
     },
     {
       "need": "totalFat",
-      "status": "unavailable",
-      "records": 0,
-      "sources": [],
-      "discoveryStatus": "unverified"
+      "status": "needs_verification",
+      "records": 44,
+      "sources": [
+        "mod:modpizza-com-mod-fresh-nutrition"
+      ],
+      "discoveryStatus": "needs_verification"
     },
     {
       "need": "satFat",
-      "status": "unavailable",
-      "records": 0,
-      "sources": [],
-      "discoveryStatus": "unverified"
+      "status": "needs_verification",
+      "records": 38,
+      "sources": [
+        "mod:modpizza-com-mod-fresh-nutrition"
+      ],
+      "discoveryStatus": "needs_verification"
     },
     {
       "need": "transFat",
-      "status": "unavailable",
-      "records": 0,
-      "sources": [],
-      "discoveryStatus": "unverified"
+      "status": "needs_verification",
+      "records": 13,
+      "sources": [
+        "mod:modpizza-com-mod-fresh-nutrition"
+      ],
+      "discoveryStatus": "needs_verification"
     },
     {
       "need": "cholesterol",
-      "status": "unavailable",
-      "records": 0,
-      "sources": [],
-      "discoveryStatus": "unverified"
+      "status": "needs_verification",
+      "records": 66,
+      "sources": [
+        "mod:modpizza-com-mod-fresh-nutrition"
+      ],
+      "discoveryStatus": "needs_verification"
     },
     {
       "need": "sodium",
-      "status": "unavailable",
-      "records": 0,
-      "sources": [],
-      "discoveryStatus": "unverified"
+      "status": "needs_verification",
+      "records": 66,
+      "sources": [
+        "mod:modpizza-com-mod-fresh-nutrition"
+      ],
+      "discoveryStatus": "needs_verification"
     },
     {
       "need": "fiber",
-      "status": "unavailable",
-      "records": 0,
-      "sources": [],
-      "discoveryStatus": "unverified"
+      "status": "needs_verification",
+      "records": 66,
+      "sources": [
+        "mod:modpizza-com-mod-fresh-nutrition"
+      ],
+      "discoveryStatus": "needs_verification"
     },
     {
       "need": "sugars",
-      "status": "unavailable",
-      "records": 0,
-      "sources": [],
-      "discoveryStatus": "unverified"
+      "status": "needs_verification",
+      "records": 66,
+      "sources": [
+        "mod:modpizza-com-mod-fresh-nutrition"
+      ],
+      "discoveryStatus": "needs_verification"
     },
     {
       "need": "catalog",
       "status": "extracted",
-      "records": 86,
+      "records": 112,
       "sources": [
         "mod:orders-modpizza-com-store-4080",
-        "mod:orders-modpizza-com-store-4168"
+        "mod:orders-modpizza-com-store-4168",
+        "mod:modpizza-com-menu"
       ],
       "discoveryStatus": "found"
     },
     {
       "need": "customization",
       "status": "extracted",
-      "records": 8516,
+      "records": 9373,
       "sources": [
         "mod:orders-modpizza-com-store-4080",
         "mod:orders-modpizza-com-store-4168"
@@ -273,10 +525,13 @@
     {
       "need": "portions",
       "status": "extracted",
-      "records": 18994,
+      "records": 23673,
       "sources": [
         "mod:orders-modpizza-com-store-4080",
-        "mod:orders-modpizza-com-store-4168"
+        "mod:orders-modpizza-com-store-4168",
+        "mod:modpizza-com-nutrition",
+        "mod:modpizza-com-mod-fresh-nutrition",
+        "mod:modpizza-com-menu"
       ],
       "discoveryStatus": "found"
     },
@@ -293,7 +548,7 @@
     {
       "need": "ingredients",
       "status": "needs_verification",
-      "records": 72,
+      "records": 91,
       "sources": [
         "mod:modpizza-com-allergen"
       ],
@@ -301,9 +556,12 @@
     }
   ],
   "limitations": [
-    "No extracted source publishes protein, carbs, totalFat. These stay empty; they are never estimated.",
-    "Replay run: sources are the saved evidence, not a live fetch. A live run is needed before these records count as current.",
-    "https://modpizza.com/menu: empty (Fetched, but no extractor recognised menu or nutrition records in it.).",
-    "Ingredient declarations are not extracted yet (no recognised structured ingredient lists in the sources read)."
+    "protein, carbs, totalFat come only from sources older than 90 days. Every such record is flagged needs_verification and must not be approved automatically.",
+    "https://orders.modpizza.com/: empty (Fetched, but no extractor recognised menu or nutrition records in it.).",
+    "https://orders.modpizza.com/#rendered: empty (Fetched, but no extractor recognised menu or nutrition records in it.).",
+    "https://api.koala.io/configurations/schema/v1/config/label/web-config: network_blocked (blocked_by_robots: disallowed by robots.txt).",
+    "https://modpizza.com/: empty (Fetched, but no extractor recognised menu or nutrition records in it.).",
+    "https://modpizza.com/faq: empty (Fetched, but no extractor recognised menu or nutrition records in it.).",
+    "https://modpizza.com/#rendered: empty (Fetched, but no extractor recognised menu or nutrition records in it.)."
   ]
 }

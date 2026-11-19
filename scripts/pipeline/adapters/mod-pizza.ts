@@ -1,3 +1,5 @@
+import type { ExtractedRecord } from "../../extraction/contracts";
+import { extractionObservation, extractionRef, extractionSources, type ExtractionInput } from "../extraction-input";
 // MOD Pizza adapter (draft/staging only).
 //
 // Sources, per docs/research/mod-pizza/discovery-report.md:
@@ -28,6 +30,7 @@ import type {
 // ── Raw source shapes (only the fields this adapter reads) ───────────────
 
 export type ModOption = {
+  extraction?: ExtractedRecord;
   id: string;
   global_option_id?: string | null;
   name: string;
@@ -38,6 +41,7 @@ export type ModOption = {
 };
 
 export type ModOptionGroup = {
+  extraction?: ExtractedRecord;
   id: string;
   global_id?: string | null;
   description: string;
@@ -50,6 +54,7 @@ export type ModOptionGroup = {
 };
 
 export type ModProduct = {
+  extraction?: ExtractedRecord;
   id: string;
   global_id?: string | null;
   name: string;
@@ -186,12 +191,21 @@ const itemId = (category: string, name: string) => `mod:item:${slug(category)}:$
 const ingredientId = (category: string, name: string) => `mod:ingredient:${slug(category)}:${slug(name)}`;
 const referenceId = (category: string, name: string) => `mod:reference:${slug(category)}:${slug(name)}`;
 
-function caloriesInput(calories: number | null, sourceId: string, recordId: string, description: string): NutritionInput {
+function modRef(sourceId: string, entry: { id: string; extraction?: ExtractedRecord }, path?: string[]) {
+  return entry.extraction ? extractionRef(entry.extraction) : { sourceId, recordId: entry.id, ...(path ? { path } : {}) };
+}
+
+function caloriesInput(entry: { id: string; calories: number | null; extraction?: ExtractedRecord }, sourceId: string, description: string): NutritionInput {
+  const { calories, extraction } = entry;
+  if (extraction?.nutrition) return [{
+    ...extractionObservation(extraction),
+    basis: extraction.nutrition.basis ?? { kind: "selected_portion", description },
+  }];
   // null means the source shows no value. It is not zero.
   if (calories === null) return [];
   return [
     {
-      source: { sourceId, recordId },
+      source: modRef(sourceId, entry),
       values: { calories },
       basis: { kind: "selected_portion", description },
     },
@@ -271,8 +285,8 @@ function translateGroups(
           id: `${optionId}:${slug(portion.name)}`,
           label: cleanLabel(portion.name),
           isDefault: portion.is_default,
-          nutrition: caloriesInput(portion.calories, context.sourceId, portion.id, `${optionLabel}, ${cleanLabel(portion.name)}`),
-          source: { sourceId: context.sourceId, recordId: portion.id },
+          nutrition: caloriesInput(portion, context.sourceId, `${optionLabel}, ${cleanLabel(portion.name)}`),
+          source: modRef(context.sourceId, portion),
         }),
       );
 
@@ -292,14 +306,14 @@ function translateGroups(
           sources: [],
         };
         context.ingredients.set(linkedIngredientId, ingredient);
-        const ref = { sourceId: context.sourceId };
+        const ref = option.extraction ? modRef(context.sourceId, option) : { sourceId: context.sourceId };
         if (!ingredient.sources.some((entry) => entry.sourceId === ref.sourceId)) ingredient.sources.push(ref);
-        if (context.isReferenceBranch && ingredient.nutrition.every((entry) => entry.source.sourceId !== context.sourceId)) {
+        if (context.isReferenceBranch && ingredient.nutrition.every((entry) => entry.source.sourceId !== ref.sourceId)) {
           const reference = portions?.find((portion) => portion.isDefault);
           const calories = reference ? reference.nutrition[0]?.values.calories : (option.calories ?? undefined);
           if (calories !== undefined) {
             ingredient.nutrition.push({
-              source: { sourceId: context.sourceId, recordId: option.id, path: groupPath },
+              source: (option.extraction ? reference?.nutrition[0]?.source : undefined) ?? modRef(context.sourceId, option, groupPath),
               values: { calories },
               basis: {
                 kind: "selected_portion",
@@ -317,9 +331,10 @@ function translateGroups(
         isDefault: option.is_default,
         isAvailable: option.is_available,
         ...(isExclusive ? { isExclusive: true } : {}),
-        nutrition: portions ? [] : caloriesInput(option.calories, context.sourceId, option.id, optionLabel),
+        nutrition: portions ? [] : caloriesInput(option, context.sourceId, optionLabel),
         ...(portions ? { portionPolicy: "alternative" as const, portions } : {}),
-        source: { sourceId: context.sourceId, recordId: option.id, path: groupPath },
+        source: modRef(context.sourceId, option, groupPath),
+        ...(portionGroup?.extraction ? { additionalSources: [extractionRef(portionGroup.extraction)] } : {}),
       });
     }
 
@@ -340,7 +355,7 @@ function translateGroups(
         minSelections: group.min_selections,
         maxSelections: group.max_selections,
         options,
-        source: { sourceId: context.sourceId, recordId: group.id, path },
+        source: modRef(context.sourceId, group, path),
       });
     }
     for (const nestedGroup of hoisted) {
@@ -471,9 +486,9 @@ export function translateModPizza(raw: ModPizzaRaw): AdapterOutput {
             id: variantId,
             label,
             isDefault: option.is_default,
-            nutrition: caloriesInput(option.calories, sourceId, option.id, `${label}, before selections`),
+            nutrition: caloriesInput(option, sourceId, `${label}, before selections`),
             groups: translateGroups(option.option_groups ?? [], variantId, [name, label], contextFor(isReferenceBranch)),
-            source: { sourceId, recordId: option.id, path: [name] },
+            source: modRef(sourceId, option, [name]),
           };
         });
 
@@ -486,10 +501,10 @@ export function translateModPizza(raw: ModPizzaRaw): AdapterOutput {
           sourceCategory: cleanLabel(category.name),
           servingType: profile?.servingType ?? "single",
           isAvailable: !product.is_disabled,
-          nutrition: caloriesInput(product.calories, sourceId, product.id, "Product calorie field"),
+          nutrition: caloriesInput(product, sourceId, "Product calorie field"),
           variants,
           groups: translateGroups(itemGroups, id, [name], contextFor(false)),
-          sources: [{ sourceId, recordId: product.id }],
+          sources: [modRef(sourceId, product), ...(axis?.extraction ? [extractionRef(axis.extraction)] : [])],
         });
       }
     }
@@ -607,3 +622,136 @@ export const modPizzaAdapter: RestaurantAdapter<ModPizzaRaw> = {
   load: loadModPizza,
   translate: translateModPizza,
 };
+
+export function translateModExtraction(input: ExtractionInput): AdapterOutput {
+  const children = Map.groupBy(input.records.filter((record) => record.parentId), (record) => record.parentId!);
+  const base = (record: ExtractedRecord) => ({
+    id: record.provenance.sourceRecordId ?? record.id,
+    name: record.name,
+    calories: record.nutrition?.values.calories ?? null,
+    extraction: record,
+  });
+  function groups(parent: ExtractedRecord): ModOptionGroup[] {
+    return (children.get(parent.id) ?? []).filter((record) => record.kind === "option_group").map((record) => ({
+      ...base(record),
+      description: record.name,
+      min_selections: record.customization?.minSelections ?? null,
+      max_selections: record.customization?.maxSelections ?? null,
+      is_hidden: record.customization?.hidden,
+      is_adv_nested_modifier: record.customization?.advancedNestedModifier,
+      requires_user_selection: record.customization?.requiresUserSelection,
+      options: (children.get(record.id) ?? []).map((option) => ({
+        ...base(option),
+        is_default: option.customization?.isDefault === true,
+        is_available: option.customization?.isAvailable !== false,
+        option_groups: groups(option),
+      })),
+    }));
+  }
+
+  const catalog = new Map<string, ModStoreMenu>();
+  const siteRecords: ExtractedRecord[] = [];
+  for (const record of input.records) {
+    const url = new URL(record.provenance.url);
+    const storeId = url.hostname === "orders.modpizza.com" ? /^\/store\/(\d+)\/?$/.exec(url.pathname)?.[1] : undefined;
+    if (!storeId) {
+      if (url.hostname === "modpizza.com" || url.hostname === "www.modpizza.com") siteRecords.push(record);
+      continue;
+    }
+    if (record.kind !== "menu_item" || record.parentId || !record.category) continue;
+    const store = catalog.get(storeId) ?? {
+      storeId, url: url.href, retrievedAt: record.provenance.retrievedAt,
+      sha256: record.provenance.sha256, categories: [],
+    };
+    if (store.sha256 !== record.provenance.sha256) throw new Error(`MOD extraction has competing store ${storeId} snapshots`);
+    catalog.set(storeId, store);
+    let category = store.categories.find((entry) => entry.name === record.category);
+    if (!category) {
+      category = { id: record.category, name: record.category, products: [] };
+      store.categories.push(category);
+    }
+    category.products.push({
+      ...base(record),
+      description: record.description,
+      is_disabled: record.customization?.isAvailable === false,
+      option_groups: groups(record),
+    });
+  }
+  if (catalog.size === 0) throw new Error("MOD extraction contains no ordering-store catalog");
+
+  const currentPath = "/nutrition";
+  const pathOf = (record: ExtractedRecord) => new URL(record.provenance.url).pathname.replace(/\/$/, "");
+  const nutritionRows = siteRecords.filter((record) => record.kind === "nutrition_row" && pathOf(record) === currentPath);
+  const first = nutritionRows[0];
+  const output = translateModPizza({
+    stores: [...catalog.values()],
+    nutrition: {
+      url: first?.provenance.url ?? "https://modpizza.com/nutrition/",
+      retrievedAt: first?.provenance.retrievedAt ?? input.runAt,
+      rows: [],
+    },
+  });
+  output.sources = extractionSources(input);
+  output.knownIssues = [
+    ...(output.knownIssues ?? []).filter((issue) => !["macros_unpublished", "allergen_declarations_not_imported", "salad_size_labels_unreconciled"].includes(issue.code)),
+    { severity: "blocker", code: "mod_macros_need_verification", message: "MOD still needs verified protein, carbohydrate, and fat for the menu and its portions. Older observations are available for review." },
+    { severity: "warning", code: "salad_size_labels_unreconciled", message: "National salad sizes and ordering variants have different labels. National size evidence is retained until the serving crosswalk is verified." },
+  ];
+  const references: ReferenceNutritionRow[] = [];
+  const crosswalkIds = new Set(Object.values(output.nutritionCrosswalk ?? {}));
+  const usedCrosswalkIds = new Set<string>();
+  for (const record of nutritionRows) {
+    if (!record.category) continue;
+    const observation = extractionObservation(record);
+    // The tabular ingredient amounts and crust-only rows are useful
+    // comparisons, but don't establish the ordering serving by name alone.
+    if (!["desserts", "more stuff", "beverage"].includes(normalizeName(record.category))) observation.comparisonOnly = true;
+    const raw = record.nutrition?.raw.calories;
+    const pair = raw && /\(16 fl oz \/ 24 fl oz\)/i.test(record.name) ? /^(\d+(?:\.\d+)?)\s*\/\s*(\d+(?:\.\d+)?)$/.exec(raw) : null;
+    if (pair) {
+      for (const [index, amount] of [16, 24].entries()) references.push({
+        id: `${record.id}:${amount}`,
+        name: `${cleanLabel(record.name.replace(/\(16 fl oz \/ 24 fl oz\)/i, ""))} (${amount} fl oz)`,
+        category: record.category,
+        observation: { ...observation, values: { calories: Number(pair[index + 1]) }, basis: { kind: "whole_item", unit: "fl oz", amount } },
+      });
+      continue;
+    }
+    const id = referenceId(record.category, record.name);
+    const explicit = crosswalkIds.has(id) && !usedCrosswalkIds.has(id);
+    if (explicit) usedCrosswalkIds.add(id);
+    references.push({ id: explicit ? id : record.id, name: record.name, category: record.category, observation });
+  }
+  output.nutritionCrosswalk = Object.fromEntries(Object.entries(output.nutritionCrosswalk ?? {}).filter(([, id]) => usedCrosswalkIds.has(id)));
+  output.referenceNutrition = references;
+
+  for (const record of siteRecords) {
+    const path = pathOf(record);
+    if (path === currentPath || !record.category) continue;
+    const category = normalizeName(record.category);
+    const ingredientCategories = REFERENCE_CATEGORY_MAP[record.category]?.map(normalizeName) ?? [];
+    const matchingIngredients = output.ingredients.filter((ingredient) =>
+      ingredientCategories.includes(normalizeName(ingredient.sourceCategory)) &&
+      normalizeName(ingredient.name) === normalizeName(record.name));
+    if (matchingIngredients.length === 1 && (record.kind === "nutrition_row" || record.kind === "ingredient_declaration")) {
+      const ingredient = matchingIngredients[0];
+      if (record.kind === "nutrition_row" && record.flags.includes("needs_verification")) {
+        ingredient.nutrition.push(extractionObservation(record));
+      } else {
+        ingredient.sources.push(extractionRef(record));
+      }
+      continue;
+    }
+    if (path !== "/menu" || record.kind !== "menu_item") continue;
+    const name = normalizeName(record.name);
+    const targetCategory = category === "pizzas" ? "pizza" : category === "something for everyone"
+      ? name === "kids meal" ? "kids meal" : "desserts"
+      : category;
+    const orderName = targetCategory === "pizza" && name === "og pepperoni" ? "og pepperoni pizza" : name;
+    const items = output.items.filter((item) =>
+      normalizeName(item.sourceCategory) === targetCategory && normalizeName(item.name) === orderName);
+    if (new Set(items.map((item) => item.id)).size === 1) items[0].sources.push(extractionRef(record));
+  }
+
+  return output;
+}

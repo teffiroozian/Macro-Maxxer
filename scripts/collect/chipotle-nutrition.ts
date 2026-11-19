@@ -1,3 +1,4 @@
+import { normalizePortionCell, type PortionCell } from "../lib/chipotle-portion";
 import { mkdir, readFile, rename, unlink, writeFile } from "node:fs/promises";
 import { dirname, resolve } from "node:path";
 
@@ -57,8 +58,6 @@ type NutritionField = (typeof NUTRITION_FIELDS)[number];
 const ROW_Y_TOLERANCE = 2.5;
 
 const PORTION_PATTERN = /^\d+(?:\.\d+)?\s*(?:fl\s*oz|oz|ea|g|ml)$/i;
-const PORTION_PARTS_PATTERN =
-  /^(\d+(?:\.\d+)?)\s*(fl\s*oz|oz|ea|g|ml)$/i;
 const PLAIN_NUMBER_PATTERN = /^-?\d+(?:\.\d+)?$/;
 const LESS_THAN_PATTERN = /^<\s*(\d+(?:\.\d+)?)$/;
 const LEADING_NUMBER_PATTERN = /^(-?\d+(?:\.\d+)?)/;
@@ -85,12 +84,6 @@ interface ValueCell {
   raw: string;
   value: number | null;
   clean: boolean;
-}
-
-interface PortionCell {
-  raw: string;
-  amount: number | null;
-  unit: string | null;
 }
 
 interface NutritionRecord {
@@ -200,21 +193,6 @@ function normalizeValueCell(raw: string): ValueCell {
   }
 
   return { raw: trimmed, value: null, clean: false };
-}
-
-function normalizePortionCell(raw: string): PortionCell {
-  const trimmed = raw.trim();
-  const match = trimmed.match(PORTION_PARTS_PATTERN);
-
-  if (!match) {
-    return { raw: trimmed, amount: null, unit: null };
-  }
-
-  return {
-    raw: trimmed,
-    amount: Number(match[1]),
-    unit: match[2].replace(/\s+/g, " ").toLowerCase(),
-  };
 }
 
 function findDocumentVariant(rows: TextItem[][]): string | null {

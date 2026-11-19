@@ -1,3 +1,6 @@
+import { normalizePortionCell } from "../../lib/chipotle-portion";
+import type { ExtractedRecord } from "../../extraction/contracts";
+import { extractionObservation, extractionRef, extractionSources, type ExtractionDisposition, type ExtractionInput } from "../extraction-input";
 // Chipotle adapter: reads the existing raw captures under
 // data/restaurants/chipotle/raw/ and translates them into the universal
 // contracts. It does not read the generated menu and does not replace
@@ -71,6 +74,7 @@ export type ChipotleProduct = {
 };
 
 export type ChipotleLiveItem = {
+  extraction?: ExtractedRecord;
   groupName?: string;
   nutrition?: Partial<Record<"tcal" | "prot" | "carb" | "tfat" | "satu" | "tran" | "sodi" | "fibe" | "suga", number>>;
   portion?: { unit: string; value: number };
@@ -78,6 +82,7 @@ export type ChipotleLiveItem = {
 
 type PdfField = { value: number | null };
 export type ChipotlePdfRow = {
+  extraction?: ExtractedRecord;
   name: string;
   section: "adult" | "kids";
   portion: { raw: string; amount: number | null; unit: string | null };
@@ -94,6 +99,7 @@ export type ChipotlePdfRow = {
 };
 
 export type ChipotleRaw = {
+  publishedPortionsOnly?: boolean;
   calculatorMenu: {
     url: string;
     retrievedAt: string;
@@ -211,6 +217,7 @@ type LiveAssessment = { values?: PartialNutrition; calories?: number; portion?: 
 // Same screening the existing importer applies, minus its one record-specific
 // exception: a live panel is only used when it is complete and plausible.
 export function assessLiveNutrition(item: ChipotleLiveItem | undefined): LiveAssessment {
+  if (item?.extraction?.flags.includes("needs_verification")) return { rejection: "published panel needs verification" };
   if (!item?.nutrition) return { rejection: "no live nutrition record" };
   const n = item.nutrition;
   const calories = n.tcal;
@@ -259,7 +266,7 @@ function buildPdfIndex(rows: readonly ChipotlePdfRow[]): PdfIndex {
   const index: PdfIndex = new Map();
   for (const row of rows) {
     // The PDF's two pages repeat most rows verbatim.
-    const signature = JSON.stringify([row.name, row.section, row.portion.raw, row.calories.value]);
+    const signature = JSON.stringify([row.name, row.section, row.portion.raw, row.extraction ? pdfValues(row) : row.calories.value]);
     if (seen.has(signature)) continue;
     seen.add(signature);
     const key = `${row.section}|${normalizeName(row.name)}`;
@@ -278,15 +285,18 @@ function matchPdfRow(
   section: "adult" | "kids",
   portion: number | undefined,
   calories: number | undefined,
+  unit?: string,
 ): ChipotlePdfRow | undefined {
   if (CHIPOTLE_PDF_KNOWN_UNMATCHED_NAMES.has(name)) return undefined;
+  const sameServing = (row: ChipotlePdfRow) => !row.extraction || !unit || row.portion.unit === unit;
   for (const candidate of [name, CHIPOTLE_PDF_NAME_ALIASES[name]]) {
     if (!candidate) continue;
     const rows = index.get(`${section}|${normalizeName(candidate)}`) ?? [];
     if (rows.length === 1) {
-      if (calories === undefined || rows[0].calories.value === calories) return rows[0];
+      if ((calories === undefined || rows[0].calories.value === calories) &&
+        (!rows[0].extraction || portion === undefined || rows[0].portion.amount === portion) && sameServing(rows[0])) return rows[0];
     } else if (rows.length > 1 && portion !== undefined) {
-      const sized = rows.filter((row) => row.portion.amount === portion);
+      const sized = rows.filter((row) => row.portion.amount === portion && sameServing(row) && (!row.extraction || calories === undefined || row.calories.value === calories));
       if (sized.length === 1) return sized[0];
     }
   }
@@ -295,11 +305,12 @@ function matchPdfRow(
   const qualified = [...index.entries()]
     .filter(([key]) => key.startsWith(prefix))
     .flatMap(([, rows]) => rows)
-    .filter((row) => row.portion.amount === portion && row.calories.value === calories);
+    .filter((row) => row.portion.amount === portion && sameServing(row) && row.calories.value === calories);
   return qualified.length === 1 ? qualified[0] : undefined;
 }
 
 type NutritionContext = {
+  publishedPortionsOnly?: boolean;
   live: ChipotleRaw["liveNutrition"]["items"];
   pdfIndex: PdfIndex;
   rejected: Map<string, string>;
@@ -309,14 +320,23 @@ type NutritionContext = {
   displayOrder: NonNullable<ChipotleRaw["displayOrder"]>;
 };
 
+function pdfRef(row: ChipotlePdfRow) {
+  return row.extraction ? extractionRef(row.extraction) : { sourceId: PDF_SOURCE, recordId: row.name, path: [row.section, row.portion.raw] };
+}
+
+function liveRef(context: NutritionContext, itemId: string) {
+  const record = context.live[itemId]?.extraction;
+  return record ? { ...extractionRef(record), recordId: itemId } : { sourceId: LIVE_SOURCE, recordId: itemId };
+}
+
 function singleTacoTortilla(context: NutritionContext, itemId: string): NutritionInput | undefined {
   const panel = SINGLE_TACO_TORTILLA_PANELS[itemId];
   if (!panel) return undefined;
   if (panel.liveItemId) return observe(context, panel.liveItemId, panel.pdfName, "adult");
-  const row = matchPdfRow(context.pdfIndex, panel.pdfName, "adult", 1, undefined);
+  const row = matchPdfRow(context.pdfIndex, panel.pdfName, "adult", 1, undefined, "ea");
   return row
     ? [{
-        source: { sourceId: PDF_SOURCE, recordId: row.name, path: [row.section, row.portion.raw] },
+        source: pdfRef(row),
         values: pdfValues(row),
         basis: { kind: "selected_portion", unit: row.portion.unit ?? undefined, amount: row.portion.amount ?? undefined },
       }]
@@ -332,7 +352,7 @@ function observe(context: NutritionContext, itemId: string, name: string, sectio
   }
   if (assessment.values) {
     observations.push({
-      source: { sourceId: LIVE_SOURCE, recordId: itemId },
+      source: liveRef(context, itemId),
       values: assessment.values,
       basis: { kind: "selected_portion", unit: context.live[itemId]?.portion?.unit, amount: assessment.portion },
     });
@@ -345,16 +365,19 @@ function observe(context: NutritionContext, itemId: string, name: string, sectio
   const hint = assessment.values?.calories;
   const portion = assessment.portion || undefined;
   const otherSection = section === "adult" ? "kids" : "adult";
+  const unit = context.live[itemId]?.portion?.unit;
   const row =
-    matchPdfRow(context.pdfIndex, name, section, portion, hint) ??
-    (hint !== undefined ? matchPdfRow(context.pdfIndex, name, otherSection, portion, hint) : undefined);
+    matchPdfRow(context.pdfIndex, name, section, portion, hint, unit) ??
+    (hint !== undefined && (!context.publishedPortionsOnly || (portion !== undefined && unit))
+      ? matchPdfRow(context.pdfIndex, name, otherSection, portion, hint, unit)
+      : undefined);
   if (row) {
     observations.push({
-      source: { sourceId: PDF_SOURCE, recordId: row.name, path: [row.section, row.portion.raw] },
+      source: pdfRef(row),
       values: pdfValues(row),
       basis: { kind: "selected_portion", unit: row.portion.unit ?? undefined, amount: row.portion.amount ?? undefined },
     });
-    if (row.portion.amount && row.portion.unit) servings.push({ amount: row.portion.amount, unit: row.portion.unit });
+    if (!row.extraction?.flags.includes("needs_verification") && row.portion.amount && row.portion.unit) servings.push({ amount: row.portion.amount, unit: row.portion.unit });
   }
   if (servings.length > 0) context.servings.set(itemId, servings);
   return observations;
@@ -402,7 +425,7 @@ function proteinOption(
   }
 
   const portions: PortionOption<NutritionInput>[] = [
-    { id: `${id}:normal`, label: "Normal", isDefault: true, multiplier: 1, nutrition: normal, source: { sourceId: MENU_SOURCE, recordId: entree.itemId } },
+    { id: `${id}:normal`, label: "Normal", isDefault: true, ...(context.publishedPortionsOnly ? {} : { multiplier: 1 }), nutrition: normal, source: { sourceId: MENU_SOURCE, recordId: entree.itemId } },
     ...linked.map((content): PortionOption<NutritionInput> => {
       const portionLabel = content.itemType === "HalfPortion" ? "Half" : "Extra";
       const portionCalories = context.live[content.itemId]?.nutrition?.tcal;
@@ -413,7 +436,7 @@ function proteinOption(
       // left out when either value is absent. A record that does publish a
       // sane panel keeps it as an observation.
       const multiplier =
-        Number.isFinite(portionCalories) && Number.isFinite(normalCalories) && normalCalories
+        !context.publishedPortionsOnly && Number.isFinite(portionCalories) && Number.isFinite(normalCalories) && normalCalories
           ? (portionCalories as number) / normalCalories
           : undefined;
       return {
@@ -438,7 +461,7 @@ function proteinOption(
     isDefault: false,
     isAvailable: entree.isItemAvailable,
     nutrition: [],
-    portionPolicy: "multiplier",
+    portionPolicy: context.publishedPortionsOnly ? "alternative" : "multiplier",
     portions,
     ...ordered,
     source: { sourceId: MENU_SOURCE, recordId: entree.itemId },
@@ -547,7 +570,7 @@ function builderComposition(
       const rows = context.pdfIndex.get(`adult|${normalizeName(implicit.pdfName)}`) ?? [];
       nutrition =
         rows.length === 1
-          ? [{ source: { sourceId: PDF_SOURCE, recordId: rows[0].name, path: [rows[0].section, rows[0].portion.raw] }, values: pdfValues(rows[0]) }]
+          ? [{ source: pdfRef(rows[0]), values: pdfValues(rows[0]) }]
           : [];
     } else {
       nutrition = observe(context, implicit.contentItemId, implicit.label, "adult");
@@ -671,11 +694,13 @@ function fountainVariants(
   const size = context.live[product.itemId]?.portion?.value;
   const seen = new Set<string>();
   const variants: ItemVariant<NutritionInput>[] = [];
-  for (const row of pdfRows) {
+  const matchingRows = pdfRows.filter((row) => row.section === "adult" && row.portion.unit === "fl oz" && row.portion.amount === size);
+  const byName = Map.groupBy(matchingRows, (row) => normalizeName(row.name));
+  for (const row of matchingRows) {
     const key = normalizeName(row.name);
     // A fountain flavor is a PDF row at this cup size that is not sold as its
     // own bottled product.
-    if (row.section !== "adult" || row.portion.unit !== "fl oz" || row.portion.amount !== size) continue;
+    if (row.extraction && new Set(byName.get(key)?.map((entry) => JSON.stringify(pdfValues(entry)))).size > 1) continue;
     if (seen.has(key) || bottledNames.has(key)) continue;
     seen.add(key);
     variants.push({
@@ -684,7 +709,7 @@ function fountainVariants(
       isDefault: variants.length === 0,
       nutrition: [
         {
-          source: { sourceId: PDF_SOURCE, recordId: row.name, path: [row.section, row.portion.raw] },
+          source: pdfRef(row),
           values: pdfValues(row),
           basis: { kind: "whole_item", unit: "fl oz", amount: row.portion.amount ?? undefined },
         },
@@ -697,6 +722,7 @@ function fountainVariants(
 
 export function translateChipotle(raw: ChipotleRaw): AdapterOutput {
   const context: NutritionContext = {
+    publishedPortionsOnly: raw.publishedPortionsOnly,
     live: raw.liveNutrition.items,
     pdfIndex: buildPdfIndex(raw.pdf.records),
     rejected: new Map(),
@@ -825,7 +851,7 @@ export function translateChipotle(raw: ChipotleRaw): AdapterOutput {
       // The record's own calorie figure is published even though the rest of
       // its panel is a placeholder. It is kept as a calories-only observation
       // so the engine can check the calculated value against it.
-      source: { sourceId: LIVE_SOURCE, recordId: itemId },
+      source: liveRef(context, itemId),
       values: { calories },
       basis: { kind: "whole_item", description: "Calorie figure of a live panel whose macro fields are placeholders" },
     },
@@ -842,7 +868,8 @@ export function translateChipotle(raw: ChipotleRaw): AdapterOutput {
     if (calories !== undefined) addCandidate(product.itemName, { label: product.itemName, calories, ref: { kind: "item", id }, servings: context.servings.get(product.itemId) ?? [] });
     return { product, id, nutrition, variants };
   });
-  const unresolved = (entry: Product) => entry.variants.length === 0 && entry.nutrition.length === 0 && !entry.composition;
+  const unresolved = (entry: Product) => !raw.publishedPortionsOnly &&
+    entry.variants.length === 0 && entry.nutrition.length === 0 && !entry.composition;
   for (const entry of entries.filter(unresolved)) {
     const live = context.live[entry.product.itemId];
     const calories = live?.nutrition?.tcal;
@@ -1073,3 +1100,151 @@ export const chipotleAdapter: RestaurantAdapter<ChipotleRaw> = {
   load: loadChipotle,
   translate: translateChipotle,
 };
+
+const LIVE_NUTRIENTS = {
+  tcal: "calories", prot: "protein", carb: "carbs", tfat: "totalFat", satu: "satFat",
+  tran: "transFat", sodi: "sodium", fibe: "fiber", suga: "sugars",
+} as const;
+
+export async function translateChipotleExtraction(input: ExtractionInput, dispositions: ExtractionDisposition): Promise<AdapterOutput> {
+  type SourceFile = { source: string; retrieved: string };
+  type OrderedItems = { items?: Array<{ menuItemId: string; sortOrder: number }> };
+  const [menu, menuSource, nutritionMetadata, displayMetadata] = await Promise.all([
+    readJson<Omit<ChipotleRaw["calculatorMenu"], "url" | "retrievedAt">>("calculator-menu.json"),
+    readJson<SourceFile>("calculator-menu-source.json"),
+    readJson<{ items: Record<string, Pick<ChipotleLiveItem, "groupName">> }>("menu-metadata-nutrition.json"),
+    readJson<{ groups?: OrderedItems[]; itemSections?: Record<string, OrderedItems> }>("menu-metadata.json"),
+  ]);
+  const catalogIds = new Set([
+    ...menu.entrees.flatMap((entree) => [entree.itemId, ...entree.contents.map((content) => content.itemId)]),
+    ...[...menu.sides, ...menu.drinks, ...menu.nonFoodItems].map((item) => item.itemId),
+  ]);
+  const unique: ExtractedRecord[] = [];
+  const seen = new Set<string>();
+  for (const record of input.records) {
+    const provenance = record.provenance;
+    const key = provenance.sha256 ? JSON.stringify([provenance.url, provenance.sha256, provenance.locator]) : record.id;
+    if (seen.has(key)) dispositions.set(record.id, "duplicate_capture");
+    else unique.push(record);
+    seen.add(key);
+  }
+  const endpoint = (record: ExtractedRecord, path: string) => {
+    const url = new URL(record.provenance.url);
+    return url.hostname === "services.chipotle.com" && url.pathname === path && record.provenance.method === "browser_rendered";
+  };
+  const panels = unique.filter((record) => record.flags.includes("name_from_key") &&
+    endpoint(record, "/menu-metadata/v1/menu-metadata/nutrition"));
+  const live: Record<string, ChipotleLiveItem> = Object.create(null);
+  for (const [id, candidates] of Map.groupBy(panels, (record) => record.name)) {
+    if (!catalogIds.has(id)) {
+      for (const record of candidates) dispositions.set(record.id, "unknown_calculator_id");
+      continue;
+    }
+    if (candidates.length !== 1) {
+      for (const record of candidates) dispositions.set(record.id, "ambiguous_panel");
+      continue;
+    }
+    const [record] = candidates;
+    const portion = normalizePortionCell(record.servingText ?? "");
+    const values = record.nutrition?.values ?? {};
+    live[id] = {
+      extraction: record,
+      groupName: nutritionMetadata.items[id]?.groupName,
+      nutrition: Object.fromEntries(Object.entries(LIVE_NUTRIENTS).flatMap(([key, nutrient]) =>
+        values[nutrient] === undefined ? [] : [[key, values[nutrient]]])),
+      ...(portion.amount !== null && portion.unit ? { portion: { value: portion.amount, unit: portion.unit } } : {}),
+    };
+    dispositions.set(record.id, assessLiveNutrition(live[id]).values ? "calculator_id_only" : "panel_withheld");
+  }
+  const seenPdfRows = new Set<string>();
+  const pdfRecords = unique.filter((record) => {
+    if (record.kind !== "nutrition_row" || record.provenance.method !== "official_document") return false;
+    const key = JSON.stringify([record.provenance.url, record.provenance.sha256, record.category, record.name,
+      record.servingText, record.nutrition?.raw, record.flags]);
+    if (seenPdfRows.has(key)) {
+      dispositions.set(record.id, "duplicate_pdf_row");
+      return false;
+    }
+    seenPdfRows.add(key);
+    return true;
+  });
+  if (!Object.keys(live).length || !pdfRecords.length) throw new Error("Chipotle extraction needs calculator nutrition panels and official PDF rows");
+  const pdfFields = {
+    calories: "calories", totalFat: "totalFat", saturatedFat: "satFat", transFat: "transFat",
+    cholesterol: "cholesterol", sodium: "sodium", carbohydrates: "carbs", dietaryFiber: "fiber",
+    sugar: "sugars", protein: "protein",
+  } as const;
+  const pdf = pdfRecords.map((record): ChipotlePdfRow => ({
+    extraction: record,
+    name: record.name,
+    section: /^kids\b/i.test(record.category ?? "") ? "kids" : "adult",
+    portion: normalizePortionCell(record.servingText ?? ""),
+    ...Object.fromEntries(Object.entries(pdfFields).map(([key, nutrient]) =>
+      [key, { value: record.nutrition?.values[nutrient] ?? null }])) as Pick<ChipotlePdfRow, keyof typeof pdfFields>,
+  }));
+  const orderOf = (entry: OrderedItems) => Object.fromEntries((entry.items ?? []).map((item) => [item.menuItemId, item.sortOrder]));
+  const output = translateChipotle({
+    publishedPortionsOnly: true,
+    calculatorMenu: { ...menu, url: menuSource.source, retrievedAt: menuSource.retrieved },
+    liveNutrition: { url: panels[0].provenance.url, retrievedAt: panels[0].provenance.retrievedAt, items: live },
+    pdf: { url: pdfRecords[0].provenance.url, retrievedAt: pdfRecords[0].provenance.retrievedAt, records: pdf },
+    displayOrder: {
+      entrees: Object.assign({}, ...(displayMetadata.groups ?? []).map(orderOf)),
+      sections: Object.fromEntries(Object.entries(displayMetadata.itemSections ?? {}).map(([key, section]) => [key, orderOf(section)])),
+    },
+    onlineMealCount: unique.filter((record) => endpoint(record, "/menuinnovation/v1/universalmeals/online")).length,
+  });
+  output.sources = [...output.sources.filter((source) => source.id !== LIVE_SOURCE && source.id !== PDF_SOURCE), ...extractionSources(input)];
+  output.nutritionPrecedence = undefined;
+  const extractedPdfIds = [...new Set(pdfRecords.map((record) => record.provenance.sourceId))];
+  const extractedPanelIds = [...new Set(panels.map((record) => record.provenance.sourceId))];
+  for (const issue of output.knownIssues ?? []) {
+    if (issue.sourceIds) issue.sourceIds = [...new Set(issue.sourceIds.flatMap((id) =>
+      id === LIVE_SOURCE ? extractedPanelIds : id === PDF_SOURCE ? extractedPdfIds : [id]))];
+  }
+  if (pdfRecords.some((record) => record.flags.includes("needs_verification"))) {
+    output.knownIssues?.push({ severity: "blocker", code: "chipotle_pdf_needs_verification", message: "The extracted official PDF is retained as unverified comparison evidence. Confirm the affected servings and nutrition before approval." });
+  }
+  // The menu metadata can repeat calories without a verified serving unit.
+  // Use the same ID to retain that evidence alongside the detailed panel.
+  const metadataById = Map.groupBy(unique.filter((record) => record.flags.includes("name_from_key") &&
+    endpoint(record, "/menu-metadata/v1/menu-metadata")), (record) => record.name);
+  const attachMetadata = (entity: { nutrition: NutritionInput }, refs: AdapterItem["sources"]) => {
+    for (const id of new Set(refs.filter((ref) => ref.sourceId === MENU_SOURCE).map((ref) => ref.recordId))) {
+      const records = id ? metadataById.get(id) : undefined;
+      if (records?.length === 1) entity.nutrition.push({ ...extractionObservation(records[0]), comparisonOnly: true });
+    }
+  };
+  for (const ingredient of output.ingredients) attachMetadata(ingredient, ingredient.sources);
+  for (const item of output.items) {
+    if (item.model === "standard" && item.variants.length === 0) attachMetadata(item, item.sources);
+    for (const group of item.groups) for (const option of group.options) {
+      if (option.source && !option.portions?.length) attachMetadata(option, [option.source]);
+      for (const portion of option.portions ?? []) if (portion.source) attachMetadata(portion, [portion.source]);
+    }
+  }
+  const structural = unique.filter((record) => endpoint(record, "/menuinnovation/v1/universalmenus/menurules"));
+  const extractedItems = new Map<string, ExtractedRecord[]>();
+  for (const record of structural) {
+    const id = record.provenance.sourceRecordId;
+    if (record.kind !== "menu_item" || !id) continue;
+    const records = extractedItems.get(id) ?? [];
+    records.push(record);
+    extractedItems.set(id, records);
+  }
+  const extractedGroups = Map.groupBy(structural.filter((record) => record.kind === "option_group" && record.parentId), (record) => record.parentId!);
+  for (const item of output.items) {
+    const id = item.sources.find((source) => source.sourceId === MENU_SOURCE)?.recordId;
+    if (!id) continue;
+    const records = extractedItems.get(id) ?? [];
+    if (records.length !== 1) continue;
+    const [record] = records;
+    item.sources.push(extractionRef(record));
+    for (const extracted of extractedGroups.get(record.id) ?? []) {
+      const groups = item.groups.filter((group) => group.source?.recordId === extracted.name &&
+        group.minSelections === extracted.customization?.minSelections && group.maxSelections === extracted.customization?.maxSelections);
+      if (groups.length === 1) (groups[0].additionalSources ??= []).push(extractionRef(extracted));
+    }
+  }
+  return output;
+}

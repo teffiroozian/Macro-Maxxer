@@ -228,7 +228,7 @@ function recordsFor(need: DataNeed, source: SourceExtraction): number {
     case "customization":
       return source.counts.option_group;
     case "portions":
-      return source.counts.portion + records.filter((record) => record.servingText).length;
+      return records.filter((record) => record.kind === "portion" || record.servingText).length;
     case "allergens":
       return records.filter((record) => record.allergens?.length).length;
     case "ingredients":

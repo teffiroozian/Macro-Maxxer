@@ -1,6 +1,6 @@
 import { mcdonaldsAdapter } from "./adapters/mcdonalds";
 import { starbucksAdapter } from "./adapters/starbucks";
-// Usage: npm run pipeline -- <adapter-id> [--write-ids]
+// Usage: npm run pipeline -- <adapter-id> [--from-extraction [file] | --write-ids]
 //
 // Runs load → translate → normalize → validate → project for one restaurant
 // and writes a draft, a projected runtime menu and a review report under
@@ -12,13 +12,14 @@ import { starbucksAdapter } from "./adapters/starbucks";
 // to the registry when --write-ids is passed, which is a step for approval
 // time, not for every draft.
 import { readFile } from "node:fs/promises";
-import { resolve } from "node:path";
+import { dirname, resolve } from "node:path";
 import { writeAtomically } from "../lib/write-atomically";
 import { findingTypeCounts } from "../validate/shared";
 import { chickFilAAdapter } from "./adapters/chick-fil-a";
-import { chipotleAdapter } from "./adapters/chipotle";
-import { modPizzaAdapter } from "./adapters/mod-pizza";
+import { chipotleAdapter, translateChipotleExtraction } from "./adapters/chipotle";
+import { modPizzaAdapter, translateModExtraction } from "./adapters/mod-pizza";
 import type { RestaurantAdapter, RestaurantDraft } from "./contracts";
+import { collectExtractionLinks, extractionMatchReport, loadExtractionInput, type ExtractionDisposition } from "./extraction-input";
 import { normalizeRestaurant } from "./engine";
 import { emptyRegistry, type IdRegistry } from "./ids";
 import { registryPath } from "./ids-seed";
@@ -83,7 +84,30 @@ async function main(): Promise<void> {
     return;
   }
 
-  const draft = normalizeRestaurant(adapter.translate(await adapter.load()));
+  const fromExtraction = process.argv.indexOf("--from-extraction");
+  const useExtraction = fromExtraction !== -1;
+  const restaurantId = adapterId === "mod-pizza" ? "mod" : adapterId;
+  const staging = resolve(process.cwd(), "data/restaurants/staging", restaurantId!);
+  if (useExtraction && (restaurantId !== "mod" && restaurantId !== "chipotle")) {
+    throw new Error("--from-extraction is supported by the MOD Pizza and Chipotle adapters");
+  }
+  if (useExtraction && process.argv.includes("--write-ids")) {
+    throw new Error("Extraction-backed normalization writes staging drafts only");
+  }
+  const dispositions: ExtractionDisposition = new Map();
+  let extraction;
+  if (useExtraction) {
+    const pathArg = process.argv[fromExtraction + 1];
+    const file = resolve(pathArg && !pathArg.startsWith("--") ? pathArg : resolve(staging, "extraction-records.json"));
+    const summary = resolve(dirname(file), "extraction.json");
+    extraction = await loadExtractionInput(file, summary);
+    if (extraction.restaurant.id !== restaurantId) throw new Error(`Expected ${restaurantId} extraction input, got ${extraction.restaurant.id}`);
+  }
+  const input = extraction
+    ? restaurantId === "mod" ? translateModExtraction(extraction) : await translateChipotleExtraction(extraction, dispositions)
+    : adapter.translate(await adapter.load());
+  const adapterLinks = extraction ? collectExtractionLinks(input) : undefined;
+  const draft = normalizeRestaurant(input);
   const validation = validateDraft(draft);
   const registryFile = registryPath(draft.restaurant.id);
   const registry = await readFile(registryFile, "utf8").then(
@@ -94,7 +118,11 @@ async function main(): Promise<void> {
   const runtimeErrors = [...projection.relationshipErrors, ...checkRuntimeMenu(projection.menu)];
   validation.readyForApproval &&= runtimeErrors.length === 0 && projection.ids.conflicts.length === 0;
 
-  const outputDir = resolve(process.cwd(), "data/restaurants/staging", draft.restaurant.id);
+  const outputDir = useExtraction ? resolve(staging, "normalization") : staging;
+  if (extraction && adapterLinks) {
+    const matches = extractionMatchReport(extraction, adapterLinks, draft, dispositions);
+    await writeAtomically(resolve(outputDir, "matches.json"), `${JSON.stringify(matches)}\n`);
+  }
   await writeAtomically(resolve(outputDir, "draft.json"), `${JSON.stringify(draft)}\n`);
   await writeAtomically(
     resolve(outputDir, "validation.json"),

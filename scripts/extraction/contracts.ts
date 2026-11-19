@@ -44,6 +44,7 @@ export type Provenance = {
   locator: string;
   // For JSON, the source's own id for the record.
   sourceRecordId?: string;
+  sourceGlobalId?: string;
 };
 
 // A cell the source printed that is not a clean number ("< 1", "10w", "—").
@@ -55,6 +56,8 @@ export type ExtractedNutrition = {
   // The source's own text for every nutrient it printed, verbatim.
   raw: Partial<Record<NutrientKey, string>>;
   unclean: UncleanValue[];
+  // Supplemental evidence, separate from total calories.
+  caloriesFromFatRaw?: string;
   // Core nutrients this record does not publish.
   missingCore: CoreNutrient[];
   basis?: ServingBasis;
@@ -89,8 +92,18 @@ export type ExtractedRecord = {
     isDefault?: boolean;
     isAvailable?: boolean;
     hidden?: boolean;
+    requiresUserSelection?: boolean;
+    advancedNestedModifier?: boolean;
+    isInverted?: boolean;
+    supportsQuantitySelection?: boolean;
+    minChoiceQuantity?: number;
+    maxChoiceQuantity?: number;
+    minAggregateQuantity?: number;
+    maxAggregateQuantity?: number;
+    choiceQuantityIncrement?: number;
   };
   allergens?: string[];
+  allergenNotes?: Array<{ allergen: string; text: string }>;
   ingredientsText?: string;
   provenance: Provenance;
   // "needs_verification" (stale source), "unclean_value", "range_value",

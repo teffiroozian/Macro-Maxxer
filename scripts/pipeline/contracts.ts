@@ -53,6 +53,10 @@ export type SourceRef = {
   recordId?: string;
   // Parent chain inside the source, outermost first.
   path?: string[];
+  extractionId?: string;
+  locator?: string;
+  sourceGlobalId?: string;
+  flags?: string[];
 };
 
 // ── Nutrition ────────────────────────────────────────────────────────────
@@ -69,6 +73,8 @@ export type ServingBasis = {
 
 export type NutritionObservation = {
   source: SourceRef;
+  // The source row identifies the food, but its serving cannot be applied to this entity.
+  comparisonOnly?: boolean;
   values: PartialNutrition;
   basis?: ServingBasis;
 };
@@ -146,6 +152,7 @@ export type PortionOption<N> = {
 };
 
 export type SelectionOption<N> = {
+  additionalSources?: SourceRef[];
   id: string;
   label: string;
   // Links to the restaurant-level ingredient this option places on the item.
@@ -176,6 +183,7 @@ export type SelectionGroupRole =
   | "preparation";
 
 export type SelectionGroup<N> = {
+  additionalSources?: SourceRef[];
   id: string;
   label: string;
   role: SelectionGroupRole;

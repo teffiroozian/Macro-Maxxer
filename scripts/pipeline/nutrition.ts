@@ -14,11 +14,13 @@ import {
 } from "./contracts";
 
 export function reconcileNutrition(input: NutritionInput, precedence: readonly string[] = []): NutritionRecord {
+  const eligible = input.filter((observation) => !observation.comparisonOnly &&
+    !observation.source.flags?.includes("needs_verification"));
   const values: PartialNutrition = {};
   const conflicts: NutritionConflict[] = [];
 
   for (const nutrient of ALL_NUTRIENTS) {
-    const seen = input.flatMap((observation) => {
+    const seen = eligible.flatMap((observation) => {
       const value = observation.values[nutrient];
       return typeof value === "number" && Number.isFinite(value)
         ? [{ sourceId: observation.source.sourceId, value, basis: observation.basis }]

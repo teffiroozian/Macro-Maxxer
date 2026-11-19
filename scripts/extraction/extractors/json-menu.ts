@@ -27,7 +27,7 @@ const OPTIONS_KEYS = /^(?:options|choices|modifiers|items|values)$/i;
 const NUTRITION_CONTAINERS = /^(?:nutrition|nutrients|nutritional_?info|nutritionalInfo|nutrition_?facts|nutritionInfo|nutritionValues)$/i;
 const MIN_KEYS = ["min_selections", "minSelections", "minSelect", "minimum", "min", "minQuantity", "min_quantity"];
 const MAX_KEYS = ["max_selections", "maxSelections", "maxSelect", "maximum", "max", "maxQuantity", "max_quantity"];
-const PORTION_WORDS = /^(?:light|lite|regular|normal|standard|extra|double|easy|heavy|half|side|on the side|no|none|xtra)\b/i;
+const PORTION_WORDS = /^(?:light|lite|regular|normal|standard|extra|double|easy|heavy|half|side|on the side|on top|no|none|xtra)\b/i;
 const DEFAULT_KEYS = ["is_default", "isDefault", "default", "selected", "isSelected"];
 const AVAILABLE_KEYS = ["is_available", "isAvailable", "available", "isItemAvailable"];
 const DISABLED_KEYS = ["is_disabled", "isDisabled", "disabled", "unavailable", "outOfStock"];
@@ -69,9 +69,10 @@ function nutrientCells(obj: Obj, legend: Map<string, NutrientKey>): { cells: Cel
   const cells: Cells = {};
   let serving: string | undefined;
   const take = (key: string, value: Json | undefined) => {
+    if (/^(?:min|max)_?calories$/i.test(key)) return;
     const nutrient = legend.get(key) ?? nutrientForKey(key);
     if (!nutrient || cells[nutrient] !== undefined) return;
-    if (typeof value === "number" || (typeof value === "string" && /\d/.test(value))) cells[nutrient] = String(value);
+    if (typeof value === "number" || typeof value === "string") cells[nutrient] = String(value);
     // { value: 9, unit: "g" } / { min: 60, max: 60 }
     else if (isObj(value)) {
       const inner = value.value ?? value.amount ?? value.quantity;
@@ -79,6 +80,8 @@ function nutrientCells(obj: Obj, legend: Map<string, NutrientKey>): { cells: Cel
       else if (typeof value.min === "number" && typeof value.max === "number") cells[nutrient] = value.min === value.max ? String(value.min) : `${value.min}-${value.max}`;
     }
   };
+  const calorieRange = str(obj.calorie_range ?? obj.calorieRange);
+  if (calorieRange && /\d\s*[-–]\s*\d/.test(calorieRange)) cells.calories = calorieRange;
   for (const [key, value] of Object.entries(obj)) {
     if (NUTRITION_CONTAINERS.test(key)) {
       if (isObj(value)) for (const [inner, innerValue] of Object.entries(value)) take(inner, innerValue);
@@ -120,9 +123,21 @@ export function extractJsonMenu(root: Json, provenance: Omit<Provenance, "locato
     const available = bool(first(obj, AVAILABLE_KEYS));
     const isAvailable = available ?? (disabled === undefined ? undefined : !disabled);
     const isDefault = bool(first(obj, DEFAULT_KEYS));
+    const isInverted = bool(obj.is_inverted);
     const hidden = bool(first(obj, HIDDEN_KEYS));
     const sourceRecordId = str(first(obj, ID_KEYS));
-    const description = kind === "menu_item" ? str(obj.description) : undefined;
+    const sourceGlobalId = str(obj.global_option_id ?? obj.global_id ?? obj.globalId);
+    const description = str(kind === "option_group" ? obj.explanation_text : obj.description);
+    const groupSettings = {
+      requiresUserSelection: bool(obj.requires_user_selection),
+      advancedNestedModifier: bool(obj.is_adv_nested_modifier),
+      supportsQuantitySelection: bool(obj.supports_quantity_selection),
+      minChoiceQuantity: num(obj.min_choice_quantity) ?? undefined,
+      maxChoiceQuantity: num(obj.max_choice_quantity) ?? undefined,
+      minAggregateQuantity: num(obj.min_aggregate_quantity) ?? undefined,
+      maxAggregateQuantity: num(obj.max_aggregate_quantity) ?? undefined,
+      choiceQuantityIncrement: num(obj.choice_quantity_increment) ?? undefined,
+    };
     const flags = [...extraFlags, ...nutritionFlags(nutrition)];
     if (isAvailable === false) flags.push("unavailable");
     records.push({
@@ -135,11 +150,11 @@ export function extractJsonMenu(root: Json, provenance: Omit<Provenance, "locato
       ...(serving ? { servingText: serving } : {}),
       ...(nutrition ? { nutrition } : {}),
       ...(kind === "option_group"
-        ? { customization: { minSelections: num(first(obj, MIN_KEYS)), maxSelections: num(first(obj, MAX_KEYS)), ...(hidden !== undefined ? { hidden } : {}) } }
-        : isDefault !== undefined || isAvailable !== undefined
-          ? { customization: { minSelections: null, maxSelections: null, ...(isDefault !== undefined ? { isDefault } : {}), ...(isAvailable !== undefined ? { isAvailable } : {}) } }
+        ? { customization: { minSelections: num(first(obj, MIN_KEYS)), maxSelections: num(first(obj, MAX_KEYS)), ...(hidden !== undefined ? { hidden } : {}), ...Object.fromEntries(Object.entries(groupSettings).filter(([, value]) => value !== undefined)) } }
+        : isDefault !== undefined || isAvailable !== undefined || isInverted !== undefined
+          ? { customization: { minSelections: null, maxSelections: null, ...(isDefault !== undefined ? { isDefault } : {}), ...(isAvailable !== undefined ? { isAvailable } : {}), ...(isInverted !== undefined ? { isInverted } : {}) } }
           : {}),
-      provenance: { ...provenance, locator: path, ...(sourceRecordId ? { sourceRecordId } : {}) },
+      provenance: { ...provenance, locator: path, ...(sourceRecordId ? { sourceRecordId } : {}), ...(sourceGlobalId ? { sourceGlobalId } : {}) },
       flags,
     });
     return id;
@@ -157,7 +172,8 @@ export function extractJsonMenu(root: Json, provenance: Omit<Provenance, "locato
         const options = optionsOf(group);
         if (!options) return;
         const [optionsKey, entries] = options;
-        const portionGroup = entries.every((entry) => PORTION_WORDS.test(nameOf(entry) ?? ""));
+        const portionGroup = entries.every((entry) => PORTION_WORDS.test(nameOf(entry) ?? "")) ||
+          (num(first(group, MAX_KEYS)) === 1 && bool(group.is_adv_nested_modifier) === true);
         entries.forEach((entry, optionIndex) => {
           const optionPath = `${groupPath}.${optionsKey}.${optionIndex}`;
           const optionName = nameOf(entry) ?? `option ${optionIndex + 1}`;

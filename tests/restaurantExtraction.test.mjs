@@ -70,12 +70,45 @@ test("menu JSON: MOD ordering data gives the same 45 products as the MOD adapter
   const records = extractJsonMenu(payload.json, { ...PROV, method: "embedded_json" });
   const items = records.filter((record) => record.kind === "menu_item");
   assert.deepEqual(items.map((record) => record.name), products.map((product) => product.name.replace(/\s+/g, " ").trim()));
-  for (const [index, product] of products.entries()) assert.equal(items[index].nutrition?.values.calories, product.calories ?? undefined, product.name);
-  const groups = records.filter((record) => record.kind === "option_group");
-  assert.ok(groups.length > 100);
-  assert.ok(groups.every((group) => group.customization && "minSelections" in group.customization && "maxSelections" in group.customization));
-  const portions = records.filter((record) => record.kind === "portion");
-  assert.ok(portions.length > 0 && portions.every((portion) => /^(light|regular|extra|easy|no|side|double|half)/i.test(portion.name)));
+  const byParent = Map.groupBy(records.filter((record) => record.parentId), (record) => record.parentId);
+  function checkGroups(record, source) {
+    const groups = byParent.get(record.id) ?? [];
+    assert.equal(groups.length, source.option_groups?.length ?? 0);
+    for (const [index, group] of (source.option_groups ?? []).entries()) {
+      const extracted = groups[index];
+      assert.equal(extracted.provenance.sourceRecordId, group.id);
+      assert.equal(extracted.customization.minSelections, group.min_selections);
+      assert.equal(extracted.customization.maxSelections, group.max_selections);
+      assert.equal(extracted.customization.requiresUserSelection, group.requires_user_selection);
+      assert.equal(extracted.customization.advancedNestedModifier, group.is_adv_nested_modifier);
+      const choices = byParent.get(extracted.id) ?? [];
+      assert.equal(choices.length, group.options.length);
+      if (group.is_adv_nested_modifier && group.max_selections === 1) {
+        assert.ok(choices.every((choice) => choice.kind === "portion"));
+      }
+      for (const [choiceIndex, option] of group.options.entries()) {
+        const choice = choices[choiceIndex];
+        assert.equal(choice.provenance.sourceRecordId, option.id);
+        assert.equal(choice.nutrition?.values.calories, option.calories ?? undefined);
+        assert.equal(choice.customization.isDefault, option.is_default);
+        assert.equal(choice.customization.isAvailable, option.is_available);
+        checkGroups(choice, option);
+      }
+    }
+  }
+  for (const [index, product] of products.entries()) {
+    const item = items[index];
+    if (product.calorie_range) {
+      assert.equal(item.nutrition.raw.calories, product.calorie_range);
+      assert.deepEqual(item.nutrition.ranges.calories, [product.calories, product.max_calories]);
+      assert.equal(item.nutrition.values.calories, undefined);
+    } else {
+      assert.equal(item.nutrition?.values.calories, product.calories ?? undefined, product.name);
+    }
+    checkGroups(item, product);
+  }
+  assert.ok(records.some((record) => record.kind === "portion" && record.name === "On Top"));
+  assert.ok(records.some((record) => record.kind === "portion" && record.name === "Side Cup"));
   assert.ok(records.every((record) => record.provenance.locator && record.provenance.sourceId === "test:source"));
   assert.ok(records.every((record) => record.nutrition === undefined || record.nutrition.values.protein === undefined), "MOD ordering data has no protein");
 });
@@ -111,11 +144,43 @@ test("HTML: MOD's allergen page gives ingredient statements and allergen marks",
   const { records } = extractHtmlNutrition(html, PROV);
   const declarations = records.filter((record) => record.kind === "ingredient_declaration");
   assert.equal(declarations.length, 91);
+  assert.ok(declarations.every((record) => record.ingredientsText));
+  assert.equal(declarations.find((record) => record.name === "olive oil").ingredientsText, "olive oil");
+  const crossContact = declarations.find((record) => record.allergenNotes?.some((note) => /processed on equipment/i.test(note.text)));
+  assert.ok(crossContact);
+  for (const note of crossContact.allergenNotes) assert.ok(!crossContact.allergens.includes(note.allergen));
   const crust = declarations[0];
   assert.equal(crust.name, "small (thin 6-inch)");
   assert.equal(crust.category, "Crust");
   assert.deepEqual(crust.allergens, ["wheat_gluten"]);
   assert.match(crust.ingredientsText, /^Unbleached Enriched Wheat Flour/);
+});
+
+test("HTML nutrition grids preserve accessibility names and section serving quantities", () => {
+  const html = `<div class="section"><h3>Sauce</h3><p>(per 1 tbsp)</p></div>${Array.from({ length: 5 }, (_, index) => `
+    <div class="grid-row"><div><span aria-label="Sauce ${index}">${index ? "sugar" : ""}</span></div>
+    <div>Calories<br>15</div><div>Calories from fat (kcal)<br>2</div><div>Sugars (g)<br>3</div><div>Protein<br>0</div></div>`).join("")}`;
+  const { records } = extractHtmlNutrition(html, PROV);
+  assert.equal(records.length, 5);
+  assert.equal(records[0].name, "Sauce 0");
+  assert.ok(records[0].flags.includes("name_from_accessibility_label"));
+  assert.equal(records[1].name, "sugar");
+  assert.equal(records[1].nutrition.values.sugars, 3);
+  assert.equal(records[1].nutrition.caloriesFromFatRaw, "2");
+  assert.equal(records[1].servingText, "1 tbsp");
+});
+
+test("official menu cards keep size-specific calories and component listings", async () => {
+  const html = await readFile("docs/research/mod-pizza/evidence/menu.html", "utf8");
+  const { records } = extractHtmlNutrition(html, PROV);
+  assert.equal(records.filter((record) => record.kind === "menu_item").length, 22);
+  assert.equal(records.filter((record) => record.kind === "nutrition_row").length, 67);
+  const caesar = records.find((record) => record.name === "Caesar");
+  const sizes = records.filter((record) => record.parentId === caesar.id);
+  assert.deepEqual(sizes.map((record) => [record.servingText, record.nutrition?.values.calories]),
+    [["MINI (side)", 428], ["MOD (entree)", undefined], ["MEGA (family size)", undefined]]);
+  const kids = records.find((record) => record.name === "Kids Meal");
+  assert.deepEqual(kids.nutrition.ranges.calories, [365, 480]);
 });
 
 test("HTML tables, and an unquoted stray attribute does not break parsing", () => {
