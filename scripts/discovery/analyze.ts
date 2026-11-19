@@ -247,11 +247,11 @@ export function analyzeText(text: string): ContentAnalysis {
 const norm = (key: string) => key.toLowerCase().replace(/[^a-z0-9]/g, "");
 const ITEM_KEYS = new Set(["products", "items", "menuitems", "productlist"]);
 const CATEGORY_KEYS = new Set(["categories", "menucategories", "sections", "menusections"]);
-const GROUP_KEYS = new Set(["optiongroups", "modifiergroups", "modifiers", "customizations", "choicegroups", "addongroups"]);
+const GROUP_KEYS = new Set(["optiongroups", "modifiergroups", "modifiers", "customizations", "choicegroups", "addongroups", "productoptions"]);
 const LIMIT_KEYS = new Set(["minselections", "maxselections", "minselect", "maxselect", "minchoices", "maxchoices", "minquantity", "maxquantity", "mandatory", "minimum", "maximum", "minimumselections", "maximumselections"]);
 const PORTION_VALUE = /^(?:light|regular|extra|easy|double|small|medium|large|half|whole)\b/i;
-const NAME_FIELDS = ["name", "label", "type", "nutrient", "key", "title"];
-const VALUE_FIELDS = ["value", "amount", "quantity", "qty"];
+const NAME_FIELDS = ["name", "label", "type", "nutrient", "key", "title", "displayname"];
+const VALUE_FIELDS = ["value", "amount", "quantity", "qty", "displayvalue"];
 const FRESHNESS_KEYS = new Set(["datemodified", "modifiedgmt", "modified", "updatedat", "lastupdated", "lastmodified"]);
 
 const numeric = (value: unknown): value is number | string =>

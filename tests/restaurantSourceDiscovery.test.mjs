@@ -107,6 +107,25 @@ test("inline label/value pairs count as values; percentages do not", () => {
   assert.equal(analyzeText("Protein 25% of daily value").nutrients.protein.presence, "mentioned");
 });
 
+test("JSON: displayName/displayValue nutrient panels (Starbucks product API shape) are values, and productOptions are option groups", () => {
+  const analysis = analyzeJson({
+    products: [{
+      name: "Caffè Latte",
+      productOptions: [{ name: "Milk", children: [] }, { name: "Espresso & Shot Options", children: [] }],
+      nutrition: {
+        calories: { displayName: "Calories", displayValue: 190 },
+        additionalFacts: [
+          { displayName: "Total Fat", unitOfMeasure: "g", value: 7 },
+          { displayName: "Total Carbohydrates", unitOfMeasure: "g", value: 19 },
+          { displayName: "Protein", unitOfMeasure: "g", value: 13 },
+        ],
+      },
+    }],
+  });
+  for (const nutrient of ["calories", "protein", "carbs", "totalFat"]) assert.equal(analysis.nutrients[nutrient].presence, "values", nutrient);
+  assert.equal(analysis.menu.optionGroups, 2);
+});
+
 test("JSON: numeric nutrient keys are values, null keys are only mentioned, and menu structure is counted", () => {
   const analysis = analyzeJson({
     categories: [
@@ -200,6 +219,23 @@ test("discovery finds an official nutrition PDF on a CDN, rejects third-party so
   assert.equal(proposed.kind, "official_document");
   assert.ok(proposed.provides.includes("protein"));
   assert.equal(report.candidates.find((candidate) => candidate.url === "https://grill.example/nutrition-guide").sourceUpdatedAt, "2026-10-01");
+});
+
+test("a multi-country site is scoped to the seed's country: other markets' pages are not crawled or used", async () => {
+  const fetcher = fakeFetcher({
+    "https://burger.example/robots.txt": { type: "text/plain", body: "User-agent: *\nAllow: /" },
+    "https://burger.example/us/en-us/nutrition.html": {
+      body: '<a href="/us/es-us/nutrition.html">Español</a><a href="/gb/en-gb/nutrition.html">UK nutrition</a><a href="/sa/en-sa/product/cola-zero-calories.html">Cola zero calories</a>',
+    },
+    "https://burger.example/gb/en-gb/nutrition.html": { body: "<p>Burger Calories 500 Protein 25g Carbs 40g Fat 20g</p>" },
+    "https://burger.example/sa/en-sa/product/cola-zero-calories.html": { body: "<p>Cola Calories 0 Protein 0g Carbs 0g Fat 0g</p>" },
+    "https://burger.example/us/es-us/nutrition.html": { body: "<p>Nutrición</p>" },
+  });
+  const report = await discoverSources({ id: "burger", name: "Burger", officialDomains: ["burger.example"], seeds: ["https://burger.example/us/en-us/nutrition.html"], storeIds: ["1", "2"] }, fetcher, { now: NOW });
+  assert.ok(!fetcher.calls.some((url) => /\/(gb|sa)\//.test(url)), "pages for other countries are never fetched");
+  assert.ok(!report.candidates.some((candidate) => /\/(gb|sa)\//.test(candidate.url)));
+  assert.equal(report.macrosReady, false, "another country's values never make this market's macros ready");
+  assert.ok(report.warnings.some((warning) => /2 page\(s\) for other countries \(not us\)/.test(warning)), report.warnings.join("\n"));
 });
 
 test("a calories-only restaurant is reported with missing macros and its uninspectable leads, never filled in", async () => {

@@ -162,6 +162,19 @@ const DEEPER_PATHS = ["/faq", "/faqs", "/nutrition-guide", "/nutritional-informa
 const CONTACT_PATH = /\/(?:contact(?:-us)?|guest-?(?:relations|services|feedback)|customer-?(?:care|service)|support|feedback)(?:\/|$)/i;
 const MAILTO = /mailto:([a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,})/gi;
 
+// A site that serves several countries under /<country>/<lang-country>/ paths
+// (mcdonalds.com/us/en-us/, /gb/en-gb/, ...). When the seeds name a country,
+// pages for other countries are another market's menu and are not crawled.
+const MARKET_PATH = /^\/([a-z]{2})\/([a-z]{2})-([a-z]{2})(?:\/|$)/i;
+export function marketOf(url: string): string | undefined {
+  try {
+    const match = MARKET_PATH.exec(new URL(url).pathname);
+    return match && match[1].toLowerCase() === match[3].toLowerCase() ? match[1].toLowerCase() : undefined;
+  } catch {
+    return undefined;
+  }
+}
+
 export async function discoverSources(target: DiscoveryTarget, fetcher: Fetcher, options: DiscoverOptions = {}): Promise<DiscoveryReport> {
   const budget: DiscoveryBudget = { ...DEFAULT_BUDGET, ...options.budget };
   const runAt = options.now ?? new Date().toISOString();
@@ -183,6 +196,8 @@ export async function discoverSources(target: DiscoveryTarget, fetcher: Fetcher,
   const deferredSitemapUrls: string[] = [];
   const contacts = new Set<string>();
   let level: 1 | 2 | 3 = 1;
+  const seedMarkets = new Set((target.seeds ?? []).map(marketOf).filter((m): m is string => Boolean(m)));
+  let otherMarketSkipped = 0;
 
   const enqueue = (url: string, item: Omit<QueueItem, "url" | "authority"> & { authority?: Authority }) => {
     let key: string;
@@ -193,6 +208,11 @@ export async function discoverSources(target: DiscoveryTarget, fetcher: Fetcher,
     }
     if (seen.has(key)) return;
     seen.add(key);
+    const market = seedMarkets.size ? marketOf(url) : undefined;
+    if (market && !seedMarkets.has(market)) {
+      otherMarketSkipped += 1;
+      return;
+    }
     const authority = item.authority ?? authorityOf(url, target);
     if (authority === "third_party") {
       if (item.relevance >= 6) {
@@ -616,6 +636,7 @@ export async function discoverSources(target: DiscoveryTarget, fetcher: Fetcher,
   const networkBlocked = all.filter((candidate) => candidate.outcome === "network_blocked");
   if (networkBlocked.length > 0) warnings.push(`${networkBlocked.length} request(s) were refused by the network, not the site (${[...new Set(networkBlocked.map((c) => c.notes[0]?.split(":")[0]))].join(", ")}). This run is not proof of what those sources publish.`);
   if (thirdParty > 0) warnings.push(`${thirdParty} third-party nutrition link(s) were found and rejected. They are never used for core macros.`);
+  if (otherMarketSkipped > 0) warnings.push(`${otherMarketSkipped} page(s) for other countries (not ${[...seedMarkets].join(", ")}) were skipped; they describe another market's menu.`);
 
   let changes: DiscoveryReport["changes"];
   if (options.previous) {
