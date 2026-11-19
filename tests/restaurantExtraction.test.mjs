@@ -237,7 +237,7 @@ test("browser rendering: JSON the page loaded is extracted with its own provenan
 });
 
 test("MOD pilot (replay): extraction from the Step 1 discovery report", async () => {
-  const report = await extractFromDiscovery(JSON.parse(await readFile("data/restaurants/staging/mod/discovery.json", "utf8")), await replayFetcher(modPizzaTarget.replay), { runAt: NOW });
+  const report = await extractFromDiscovery(JSON.parse(await readFile("tests/fixtures/extraction/mod-discovery-replay.json", "utf8")), await replayFetcher(modPizzaTarget.replay), { runAt: NOW });
   const byUrl = Object.fromEntries(report.sources.map((source) => [source.source.url, source]));
   assert.equal(byUrl["https://orders.modpizza.com/store/4080"].counts.menu_item, 45);
   assert.equal(byUrl["https://orders.modpizza.com/store/4168"].counts.menu_item, 41);

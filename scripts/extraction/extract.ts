@@ -143,7 +143,7 @@ async function extractSource(
   fetcher: Fetcher,
   initial: SourceDescriptor,
   method: ExtractionMethod,
-  context: { runAt: string; freshnessDays: number; verificationRequired: boolean; browser: boolean },
+  context: { runAt: string; freshnessDays: number; verificationRequired: boolean; browser: boolean; seenResponses: Set<string> },
 ): Promise<SourceExtraction> {
   const warnings: string[] = [];
   let descriptor = initial;
@@ -189,6 +189,10 @@ async function extractSource(
   warnings.push(...primary.warnings);
   for (const [index, response] of responses.entries()) {
     if (response.status !== 200) continue;
+    // Calculator pages often load the same menu JSON; read each body once.
+    const bodyHash = sha256(response.body);
+    if (context.seenResponses.has(bodyHash)) continue;
+    context.seenResponses.add(bodyHash);
     const found = await extractResponse(response, { sourceId: `${descriptor.id}~xhr${index + 1}` }, "browser_rendered");
     if (found.records.length) {
       records.push(...found.records);
@@ -303,6 +307,7 @@ export async function extractFromDiscovery(discovery: DiscoveryReport, fetcher: 
     });
   }
 
+  const seenResponses = new Set<string>();
   for (const entry of plan) {
     if (done.has(key(entry.descriptor.url))) continue;
     done.add(key(entry.descriptor.url));
@@ -310,7 +315,7 @@ export async function extractFromDiscovery(discovery: DiscoveryReport, fetcher: 
       skipped.push({ url: entry.descriptor.url, reason: "Values load in the browser; run with --browser (live) to read them." });
       continue;
     }
-    const extraction = await extractSource(fetcher, entry.descriptor, entry.method, { runAt, freshnessDays, verificationRequired: entry.verificationRequired, browser: entry.browser });
+    const extraction = await extractSource(fetcher, entry.descriptor, entry.method, { runAt, freshnessDays, verificationRequired: entry.verificationRequired, browser: entry.browser, seenResponses });
     // A stale source's sourceUpdatedAt is only known after the fetch for
     // extra sources; carry discovery's date when there is one.
     sources.push(extraction);

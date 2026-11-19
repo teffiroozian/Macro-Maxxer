@@ -57,7 +57,7 @@ Every record carries `provenance` (source id, URL, method, retrieval time, sha25
 | 2.2g | Orchestrator from the discovery report, freshness flags, coverage, `npm run extract`, report | Done |
 | 2.2h | Tests (`tests/restaurantExtraction.test.mjs`): Chipotle PDF parity with the bespoke parser (194/194 rows), MOD ordering/nutrition/allergen parity with the MOD adapter, stale-source flags, auth/unsupported/blocked handling, browser JSON provenance | Done |
 | 2.2i | MOD pilot, replay | Done |
-| 2.2j | MOD and Chipotle, **live** run on Tef's Mac (including the 2023 `mod-fresh-nutrition` page) | Open |
+| 2.2j | MOD and Chipotle, **live** run on Tef's Mac (including the 2023 `mod-fresh-nutrition` page) | Done (see below) |
 | 2.2k | Follow-ups: spreadsheets (shared with 2.1i); Chipotle's LZ4-compressed online menu; adapters reading extraction records (with normalization) | Open |
 
 ## MOD Pizza pilot (replay of the Oct 2026 evidence)
@@ -73,3 +73,11 @@ See [`data/restaurants/staging/mod/extraction.md`](../../data/restaurants/stagin
 ## Chipotle (reusability)
 
 No code is Chipotle-specific. On Chipotle's saved sources the generic PDF extractor reproduces the bespoke `scripts/collect/chipotle-nutrition.ts` output on all 194 rows (names, portions, every clean value, every raw `<1`), and the generic JSON extractor reads the menu-metadata nutrition payload's own key legend (`tcal`, `prot`, `carb`, `tfat`, …). The live run (2.2j) reads the official PDF and the nutrition calculator in the browser.
+
+## Live run, Nov 18, 2026 (Tef's Mac, commit 1aa9b16)
+
+Run in a separate worktree with `--live --browser --record`. Outputs are on Tef's Mac in `Macro-Maxxer-extraction-qa-output/`, not committed.
+
+- **MOD:** 41,952 records. Ordering stores 4080 and 4168: 44 and 46 items, all groups, options and portions, calories only. `/nutrition`: 109 rows, current. `/mod-fresh-nutrition/` (dated 2023-07-31, 1,207 days old): 94 rows; protein, carbs, fat and the optional nutrients on 63 of them (fat on 41). Every one is flagged **needs_verification**. `/allergen`: 91 declarations, needs verification. Koala's web config is blocked by robots.txt and was not fetched.
+- **Chipotle:** official PDF, 194 rows with full macros, needs verification (624 days old). Four `services.chipotle.com` endpoints answered 401 to a direct request and were not worked around. The calculator pages' own JSON was captured passively in the browser. Each of the 7 calculator pages loaded the same menu JSON, so its records were repeated 7 times; fixed after the run (each response body is now read once). Those JSON records are named by item key (`CMG-…`) for normalization to join.
+- Tests on the Mac: 531/531 once the replay test was made independent of `staging/mod/discovery.json`, which a live discover run overwrites (it now reads `tests/fixtures/extraction/mod-discovery-replay.json`).
