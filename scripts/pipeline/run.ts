@@ -1,6 +1,6 @@
 import { mcdonaldsAdapter } from "./adapters/mcdonalds";
 import { starbucksAdapter } from "./adapters/starbucks";
-// Usage: npm run pipeline -- <adapter-id> [--from-extraction [file] | --write-ids]
+// Usage: npm run pipeline -- <adapter-id> [--from-extraction [file] [--enrich] | --write-ids]
 //
 // Runs load → translate → normalize → validate → project for one restaurant
 // and writes a draft, a projected runtime menu and a review report under
@@ -20,6 +20,7 @@ import { chipotleAdapter, translateChipotleExtraction } from "./adapters/chipotl
 import { modPizzaAdapter, translateModExtraction } from "./adapters/mod-pizza";
 import type { RestaurantAdapter, RestaurantDraft } from "./contracts";
 import { collectExtractionLinks, extractionMatchReport, loadExtractionInput, type ExtractionDisposition } from "./extraction-input";
+import { enrichDraft, renderEnrichmentReport } from "./enrich";
 import { normalizeRestaurant } from "./engine";
 import { emptyRegistry, type IdRegistry } from "./ids";
 import { registryPath } from "./ids-seed";
@@ -95,6 +96,8 @@ async function main(): Promise<void> {
 
   const fromExtraction = process.argv.indexOf("--from-extraction");
   const useExtraction = fromExtraction !== -1;
+  const useEnrichment = process.argv.includes("--enrich");
+  if (useEnrichment && !useExtraction) throw new Error("--enrich requires --from-extraction");
   const restaurantId = adapterId === "mod-pizza" ? "mod" : adapterId;
   const staging = resolve(process.cwd(), "data/restaurants/staging", restaurantId!);
   if (useExtraction && (restaurantId !== "mod" && restaurantId !== "chipotle")) {
@@ -130,6 +133,11 @@ async function main(): Promise<void> {
   const outputDir = useExtraction ? resolve(staging, "normalization") : staging;
   const matches = extraction && adapterLinks ? extractionMatchReport(extraction, adapterLinks, draft, dispositions) : undefined;
   if (matches) await writeAtomically(resolve(outputDir, "matches.json"), `${JSON.stringify(matches)}\n`);
+  if (useEnrichment && extraction && matches && validation.quality) {
+    const enrichment = enrichDraft(draft, extraction, matches, validation.quality);
+    await writeAtomically(resolve(outputDir, "enrichment.json"), `${JSON.stringify(enrichment)}\n`);
+    await writeAtomically(resolve(outputDir, "enrichment.md"), renderEnrichmentReport(enrichment));
+  }
   await writeAtomically(resolve(outputDir, "draft.json"), `${JSON.stringify(draft)}\n`);
   await writeAtomically(
     resolve(outputDir, "validation.json"),
