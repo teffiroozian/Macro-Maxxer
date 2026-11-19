@@ -37,7 +37,8 @@
     "pipeline:parity:chickfila": "node --import tsx scripts/pipeline/parity/run-chick-fil-a.ts",
     "pipeline:parity:chipotle": "node --import tsx scripts/pipeline/parity/run-chipotle.ts",
     "review:chick-fil-a": "node --import tsx scripts/review/chick-fil-a.ts",
-    "discover:verify-live": "node --import tsx scripts/discovery/verify-live.ts"
+    "discover:verify-live": "node --import tsx scripts/discovery/verify-live.ts",
+    "extract": "node --import tsx scripts/extraction/run.ts"
   },
   "dependencies": {
     "@capacitor/core": "^8.5.2",
