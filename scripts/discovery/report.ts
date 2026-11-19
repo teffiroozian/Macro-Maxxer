@@ -55,6 +55,9 @@ export function renderDiscoveryReport(report: DiscoveryReport): string {
 
   lines.push("", "## Discovery levels", "");
   lines.push(...(report.levels ?? []).map((entry) => `- Level ${entry.level}${entry.level === 1 ? " (automatic)" : entry.level === 2 ? " (deeper investigation)" : " (escalation)"}: ${entry.reason} ${entry.requests} request(s).`));
+  if (report.informationRequestTracking?.status === "sent") {
+    lines.push("- Nutrition information request sent by the project owner. See `information-request.md` for tracking.");
+  }
   if (report.informationRequest) lines.push(`- Information request drafted in \`information-request.md\` (${report.informationRequest.status.replace(/_/g, " ")}). Never sent without approval.`);
 
   const coreGaps = report.gaps.filter((gap) => gap.core);

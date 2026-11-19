@@ -32,6 +32,7 @@ export type ProjectionExclusion = { id: string; name: string; reason: string };
 
 export type RuntimeProjection = {
   menu: RestaurantMenu;
+  itemIds: ReadonlyMap<string, string>;
   excluded: ProjectionExclusion[];
   // Things the runtime schema cannot express the way the source states them.
   notes: string[];
@@ -481,6 +482,7 @@ export function projectToRestaurantMenu(draft: RestaurantDraft, options: Project
   const builderConfig: RestaurantBuilderConfig | undefined = hasBuildYourOwn ? { entreeOptions, categoryMaxSelections } : undefined;
 
   return {
+    itemIds,
     menu: {
       hasBuildYourOwn,
       items,

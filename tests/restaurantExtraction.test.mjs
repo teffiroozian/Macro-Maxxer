@@ -278,6 +278,7 @@ test("blocked, login-gated and unparsed sources produce no records and say why",
 test("browser rendering: JSON the page loaded is extracted with its own provenance", async () => {
   const fetcher = {
     ...fakeFetcher({}),
+    async fetch(url) { throw new Error(`Unexpected direct fetch: ${url}`); },
     async render(url) {
       return {
         page: { url, finalUrl: url, status: 200, headers: { "content-type": "text/html" }, body: Buffer.from("<div id=app></div>"), retrievedAt: NOW },
@@ -288,10 +289,17 @@ test("browser rendering: JSON the page loaded is extracted with its own provenan
     },
   };
   const report = await extractFromDiscovery(
-    discovery({ candidates: [{ url: "https://pie.test/calculator", channel: "official_html", authority: "official", outcome: "client_rendered", depth: 1, discoveredBy: "seed", relevance: 6, notes: [] }] }),
+    discovery({
+      candidates: [
+        { url: "https://pie.test/calculator", channel: "official_html", authority: "official", outcome: "inspected", depth: 1, discoveredBy: "seed", relevance: 6, notes: [] },
+        { url: "https://pie.test/api/nutrition", channel: "api_json", authority: "official", outcome: "inspected", depth: 1, discoveredBy: "browser:https://pie.test/calculator", relevance: 7, notes: [] },
+      ],
+      proposedSources: [{ id: "pie:passive", url: "https://pie.test/api/nutrition", kind: "public_api", authority: "official", retrievedAt: NOW, provides: ["protein"] }],
+    }),
     fetcher,
-    { runAt: NOW },
+    { runAt: NOW, extraSources: [{ url: "https://pie.test/api/nutrition" }] },
   );
+  assert.equal(report.skipped.length, 2);
   const [source] = report.sources;
   assert.equal(source.method, "browser_rendered");
   assert.equal(source.records.length, 2);

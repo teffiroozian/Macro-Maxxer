@@ -2471,18 +2471,6 @@
       "requests": 0
     }
   ],
-  "informationRequest": {
-    "status": "draft_not_sent",
-    "missing": [
-      "protein",
-      "carbs",
-      "totalFat"
-    ],
-    "contacts": [
-      "https://modpizza.com/contact-us"
-    ],
-    "markdown": "# Nutrition information request: MOD Pizza\n\n> DRAFT, NOT SENT. Prepared by source discovery on 2026-11-18. Review and send only with the project owner's approval.\n\n**Contacts found on official pages:** https://modpizza.com/contact-us\n\n## Message\n\nHello,\n\nWe maintain a nutrition guide that lists MOD Pizza menu items. Your published nutrition information does not include protein (g), total carbohydrates (g), total fat (g).\n\nCould you share your current nutrition information for the full menu (each item, ingredient and topping, with portion sizes), including calories, protein, total carbohydrates and total fat? A PDF or spreadsheet is ideal. Please also tell us the date the data was last updated.\n\nThank you.\n\n## Evidence for the reviewer\n\n- protein: unverified\n- carbs: unverified\n- totalFat: unverified\n\nOfficial statements:\n- \"Additional nutrition information available upon request\"\n- \"The calories stated are for each topping when added to a one-topping item and are in addition to the standard preparation\"\n- \"Calories for each topping may be less for multiple-topping items\"\n- \"Additional nutrition information is available upon request\"\n\nSources checked (6):\n- https://orders.modpizza.com/store/4080 (updated 2026-10-21)\n- https://orders.modpizza.com/store/4168 (updated 2026-10-21)\n- https://modpizza.com/nutrition (updated 2026-08-25)\n- https://modpizza.com/wp-json/wp/v2/pages/762 (updated 2026-08-25)\n- https://modpizza.com/allergen (updated 2026-07-21)\n- https://modpizza.com/menu (updated 2026-08-24)\n"
-  },
   "missingCore": [],
   "proposedSources": [
     {
@@ -2573,5 +2561,9 @@
   "warnings": [
     "Replay mode: answers come from saved responses captured 2026-10-20. URLs that were never saved are \"not_captured\", not missing. Run live before relying on this report.",
     "1 source(s) were last updated more than 90 days ago. They stay valid evidence and need verification; compare them with newer sources item by item and portion by portion before use."
-  ]
+  ],
+  "informationRequestTracking": {
+    "status": "sent",
+    "reportedBy": "owner"
+  }
 }

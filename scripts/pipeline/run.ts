@@ -25,6 +25,7 @@ import { normalizeRestaurant } from "./engine";
 import { emptyRegistry, type IdRegistry } from "./ids";
 import { registryPath } from "./ids-seed";
 import { checkRuntimeMenu, projectToRestaurantMenu, type RuntimeProjection } from "./project";
+import { buildPublicationReview, PUBLICATION_TARGETS, renderPublicationReview, sha256, type PublicationRestaurant } from "./publication";
 import { validateDraft, type DraftValidation } from "./validate";
 
 const ADAPTERS: Record<string, RestaurantAdapter<never>> = {
@@ -137,6 +138,14 @@ async function main(): Promise<void> {
     const enrichment = enrichDraft(draft, extraction, matches, validation.quality);
     await writeAtomically(resolve(outputDir, "enrichment.json"), `${JSON.stringify(enrichment)}\n`);
     await writeAtomically(resolve(outputDir, "enrichment.md"), renderEnrichmentReport(enrichment));
+  }
+  if (useExtraction) {
+    const target = PUBLICATION_TARGETS[draft.restaurant.id as PublicationRestaurant];
+    const baseline = await readFile(resolve(process.cwd(), target.path), "utf8");
+    const review = buildPublicationReview(draft, validation, projection, baseline);
+    const reviewText = `${JSON.stringify(review)}\n`;
+    await writeAtomically(resolve(outputDir, "publication-review.json"), reviewText);
+    await writeAtomically(resolve(outputDir, "publication-review.md"), renderPublicationReview(review, sha256(reviewText)));
   }
   await writeAtomically(resolve(outputDir, "draft.json"), `${JSON.stringify(draft)}\n`);
   await writeAtomically(

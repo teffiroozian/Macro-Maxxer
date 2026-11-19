@@ -1,10 +1,10 @@
 # Nutrition information request: MOD Pizza
 
-> DRAFT, NOT SENT. Prepared by source discovery on 2026-11-18. Review and send only with the project owner's approval.
+> SENT. The project owner confirmed sending the nutrition information email. Send date and reply status are unrecorded. The draft below is retained for reference.
 
 **Contacts found on official pages:** https://modpizza.com/contact-us
 
-## Message
+## Draft retained for reference
 
 Hello,
 

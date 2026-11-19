@@ -30,6 +30,7 @@
     "audit:mcdonalds-customization": "node --import tsx scripts/audit/mcdonalds-customization-coverage.ts",
     "validate:starbucks": "node --import tsx scripts/validate/starbucks.ts",
     "pipeline": "node --import tsx scripts/pipeline/run.ts",
+    "pipeline:publish": "node --import tsx scripts/pipeline/publish.ts",
     "discover": "node --import tsx scripts/discovery/run.ts",
     "pipeline:ids:seed": "node --import tsx scripts/pipeline/ids-seed.ts",
     "pipeline:parity:mcdonalds": "node --import tsx scripts/pipeline/parity/run-mcdonalds.ts",

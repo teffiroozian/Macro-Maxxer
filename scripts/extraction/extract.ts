@@ -272,11 +272,22 @@ export async function extractFromDiscovery(discovery: DiscoveryReport, fetcher: 
 
   const verificationUrls = new Set(discovery.coverage.flatMap((entry) => entry.verificationSources ?? []).map(key));
   const candidateByUrl = new Map(discovery.candidates.map((candidate) => [key(candidate.url), candidate]));
+  const passiveParents = new Map(discovery.candidates.flatMap((candidate) =>
+    candidate.channel === "api_json" && candidate.discoveredBy.startsWith("browser:")
+      ? [[key(candidate.url), candidate.discoveredBy.slice("browser:".length)] as const]
+      : []));
+  const requiredBrowserPages = new Set<string>();
 
   const plan: Array<{ descriptor: SourceDescriptor; method: ExtractionMethod; verificationRequired: boolean; browser: boolean }> = [];
   for (const proposed of discovery.proposedSources) {
     const { provides: _provides, stale: _stale, verificationRequired, compareWith: _compare, ...descriptor } = proposed;
     const candidate = candidateByUrl.get(key(proposed.url));
+    const passiveParent = passiveParents.get(key(proposed.url));
+    if (passiveParent) {
+      requiredBrowserPages.add(passiveParent);
+      skipped.push({ url: proposed.url, reason: "Passive browser source. Collected only from its parent page." });
+      continue;
+    }
     plan.push({
       descriptor,
       method: methodFor(proposed),
@@ -295,8 +306,23 @@ export async function extractFromDiscovery(discovery: DiscoveryReport, fetcher: 
       browser: true,
     });
   }
+  for (const page of requiredBrowserPages) {
+    const url = `${page.split("#", 1)[0]}#rendered`;
+    if (plan.some((entry) => key(entry.descriptor.url) === key(url))) continue;
+    const parent = candidateByUrl.get(key(page));
+    if (!parent || parent.authority === "third_party") continue;
+    plan.push({
+      descriptor: { id: `${discovery.restaurant.id}:browser-parent:${sha256(Buffer.from(url)).slice(0, 16)}`,
+        kind: "browser_observation", authority: parent.authority, url, retrievedAt: parent.retrievedAt ?? runAt },
+      method: "browser_rendered", verificationRequired: false, browser: true,
+    });
+  }
   const officialHosts = new Set(discovery.candidates.filter((candidate) => candidate.authority !== "third_party").map((candidate) => new URL(candidate.url).hostname));
   for (const extra of options.extraSources ?? []) {
+    if (passiveParents.has(key(extra.url))) {
+      skipped.push({ url: extra.url, reason: "Passive browser source. Direct extraction is disabled." });
+      continue;
+    }
     const host = new URL(extra.url).hostname;
     if (![...officialHosts].some((official) => host === official || host.endsWith(`.${official.replace(/^www\./, "")}`))) {
       skipped.push({ url: extra.url, reason: `Not on a host discovery treats as official (${host}).` });

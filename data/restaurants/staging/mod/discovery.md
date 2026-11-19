@@ -33,7 +33,7 @@ Run 2026-11-18T22:12:16.592Z in **replay** mode. 27 of 60 requests used. Stores 
 - Level 1 (automatic): Automatic discovery of official sources. 20 request(s).
 - Level 2 (deeper investigation): Core nutrients not covered by current sources after Level 1: protein, carbs, totalFat. 7 request(s).
 - Level 3 (escalation): Network-blocked sources must be checked first (protein, carbs, totalFat unverified); request drafted in case they hold nothing. 0 request(s).
-- Information request drafted in `information-request.md` (draft not sent). Never sent without approval.
+- Nutrition information request sent by the project owner. See `information-request.md` for tracking.
 
 ## Gaps in core macros
 

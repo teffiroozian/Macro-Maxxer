@@ -245,6 +245,7 @@ export type DiscoveryReport = {
   levels: Array<{ level: 1 | 2 | 3; reason: string; requests: number }>;
   // Level 3: a drafted information request. Never sent automatically.
   informationRequest?: InformationRequest;
+  informationRequestTracking?: { status: "sent"; reportedBy: "owner" };
   missingCore: CoreNutrient[];
   proposedSources: ProposedSource[];
   // Compared with the previous discovery run, by URL and sha256.

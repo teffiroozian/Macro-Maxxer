@@ -106,6 +106,15 @@ async function main(): Promise<void> {
   await recorder?.flush();
   await browser?.close();
 
+  const tracking = await readFile(resolve(outputDir, "information-request.status.json"), "utf8").then(
+    (text) => JSON.parse(text) as DiscoveryReport["informationRequestTracking"],
+    (error: NodeJS.ErrnoException) => { if (error.code === "ENOENT") return undefined; throw error; },
+  );
+  if (tracking) {
+    if (tracking.status !== "sent" || tracking.reportedBy !== "owner") throw new Error("Invalid information request tracking");
+    report.informationRequestTracking = tracking;
+    delete report.informationRequest;
+  }
   await writeAtomically(resolve(outputDir, "discovery.json"), `${JSON.stringify(report, null, 2)}\n`);
   await writeAtomically(resolve(outputDir, "discovery.md"), renderDiscoveryReport(report));
   if (report.informationRequest) await writeAtomically(resolve(outputDir, "information-request.md"), report.informationRequest.markdown);
