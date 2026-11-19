@@ -30,7 +30,7 @@ Nothing in the live restaurant index or menus is touched. Extraction does not jo
 | JSON (API, `__NEXT_DATA__`, JSON-LD, JSON a page loaded in the browser) | `json-menu`: categories → items → option groups (min/max exactly as published, `null` when absent) → options → portions (Light/Regular/Extra). Item dictionaries keyed by id. Payload-defined nutrient keys (`{key:"prot", name:"Protein"}`) | `menu_item`, `option_group`, `option`, `portion` |
 | WordPress JSON | HTML inside `content.rendered`, via the HTML extractors | as HTML |
 | HTML | `html-table`; `html-repeated-rows` (responsive grids where each cell carries its own label); `html-declarations` (ingredient statements and allergen marks) | `nutrition_row`, `ingredient_declaration` |
-| Browser | the rendered page as HTML, plus every JSON GET response the page itself made to official hosts (passive; no clicks, logins or keys) | as above, each with the response URL as provenance |
+| Browser | the rendered page as HTML, plus every JSON GET response the page itself made to official hosts (passive; no clicks, logins or keys). These records are flagged `passive_capture` (Tef approved keeping them, Nov 18); the endpoints are never called directly | as above, each with the response URL as provenance |
 
 Every record carries `provenance` (source id, URL, method, retrieval time, sha256 of the response, a locator inside it, and the source's own record id when it has one) and `flags`.
 

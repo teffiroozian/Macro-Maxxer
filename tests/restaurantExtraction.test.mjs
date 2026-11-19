@@ -232,6 +232,7 @@ test("browser rendering: JSON the page loaded is extracted with its own provenan
   assert.equal(source.records.length, 2);
   assert.equal(source.records[0].provenance.url, "https://pie.test/api/nutrition");
   assert.equal(source.records[0].provenance.sourceRecordId, "p1");
+  assert.ok(source.records.every((record) => record.flags.includes("passive_capture")));
   assert.equal(source.records[1].nutrition.values.protein, undefined);
   assert.deepEqual(source.records[1].nutrition.missingCore, ["protein", "carbs", "totalFat"]);
 });

@@ -195,6 +195,9 @@ async function extractSource(
     context.seenResponses.add(bodyHash);
     const found = await extractResponse(response, { sourceId: `${descriptor.id}~xhr${index + 1}` }, "browser_rendered");
     if (found.records.length) {
+      // JSON the official page requested by itself (Tef, Nov 18: keep it,
+      // flagged). We never call such an endpoint directly.
+      for (const record of found.records) record.flags.push("passive_capture");
       records.push(...found.records);
       extractors.push(...found.extractors.map((name) => `browser-json:${name}`));
     }
