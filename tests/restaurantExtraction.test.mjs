@@ -280,10 +280,20 @@ test("browser rendering: JSON the page loaded is extracted with its own provenan
     ...fakeFetcher({}),
     async fetch(url) { throw new Error(`Unexpected direct fetch: ${url}`); },
     async render(url) {
+      const nutrition = (url, items) => ({
+        url, finalUrl: url, status: 200, headers: { "content-type": "application/json" },
+        retrievedAt: NOW, body: Buffer.from(JSON.stringify({ items })),
+      });
+      const items = [
+        { id: "p1", name: "Cheese", nutrition: { calories: 290, protein: 12 } },
+        { id: "p2", name: "Veggie", nutrition: { calories: 250 } },
+      ];
       return {
         page: { url, finalUrl: url, status: 200, headers: { "content-type": "text/html" }, body: Buffer.from("<div id=app></div>"), retrievedAt: NOW },
         responses: [
-          { url: "https://pie.test/api/nutrition", finalUrl: "https://pie.test/api/nutrition", status: 200, headers: { "content-type": "application/json" }, retrievedAt: NOW, body: Buffer.from(JSON.stringify({ items: [{ id: "p1", name: "Cheese", nutrition: { calories: 290, protein: 12 } }, { id: "p2", name: "Veggie", nutrition: { calories: 250 } }] })) },
+          nutrition("https://third-party.test/api/nutrition", items),
+          nutrition("https://pie.test/api/nutrition", items),
+          nutrition("https://third-party.test/api/private", [{ id: "p2", name: "Veggie", nutrition: { calories: 260, protein: 30 } }]),
         ],
       };
     },

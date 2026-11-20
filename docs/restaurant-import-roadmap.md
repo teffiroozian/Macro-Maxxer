@@ -1,9 +1,9 @@
 # Macro Maxxer — Restaurant Import Automation
 
 **Master roadmap:** 27 tasks across 6 phases  
-**Recorded progress:** 14 / 27 tasks complete
+**Recorded progress:** 17 / 27 tasks complete
 
-**Current focus:** Phase 3 passed final checks and received checklist sign-off. Phase 4 is in progress.
+**Current focus:** The MOD pilot run, review, and follow-up are signed off. MOD nutrition verification and publication remain open. The next test is a new restaurant.
 
 > **Instructions for Claude:** This is the fixed master checklist from Wayne Tower. Preserve the phase names, task names, ordering, and total of 27. Do not add, remove, rename, or mark off master tasks without explicit user approval and verified completion. If implementation needs more steps, track them separately as mini-phases under the relevant existing task; do not alter this list.
 
@@ -32,11 +32,11 @@
 
 ## Phase 4 — MOD Pizza Pilot
 
-- [ ] Run first complete restaurant import
-- [ ] Review imported menu, macros, portions, and customizations
+- [x] Run first complete restaurant import
+- [x] Review imported menu, macros, portions, and customizations
 - [ ] Resolve extraction and validation failures
 - [ ] Approve and publish verified restaurant data
-- [ ] Document findings and improve pipeline
+- [x] Document findings and improve pipeline
 
 ## Phase 5 — Reliability Testing
 

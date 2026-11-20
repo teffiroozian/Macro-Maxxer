@@ -9,8 +9,8 @@
 //   CSV                    → csv-table
 //   JSON                   → json-menu (and HTML inside WordPress "content")
 //   HTML                   → embedded JSON (json-menu) + html tables / rows
-//   browser (client page)  → the rendered HTML as above, plus every JSON
-//                            response the page itself loaded (json-menu)
+//   browser (client page)  → the rendered HTML as above, plus JSON responses
+//                            the page loaded from approved hosts
 //
 // Sources discovery could not use (login or subscription key required,
 // third-party) are listed as skipped with the reason. Nothing is worked
@@ -143,7 +143,14 @@ async function extractSource(
   fetcher: Fetcher,
   initial: SourceDescriptor,
   method: ExtractionMethod,
-  context: { runAt: string; freshnessDays: number; verificationRequired: boolean; browser: boolean; seenResponses: Set<string> },
+  context: {
+    runAt: string;
+    freshnessDays: number;
+    verificationRequired: boolean;
+    browser: boolean;
+    seenResponses: Set<string>;
+    isOfficialBrowserJson: (url: string) => boolean;
+  },
 ): Promise<SourceExtraction> {
   const warnings: string[] = [];
   let descriptor = initial;
@@ -189,6 +196,9 @@ async function extractSource(
   warnings.push(...primary.warnings);
   for (const [index, response] of responses.entries()) {
     if (response.status !== 200) continue;
+    // A page can load JSON from analytics vendors and other third parties.
+    // Filter before deduplication so an unrelated copy cannot mask the official response.
+    if (!context.isOfficialBrowserJson(response.url) || !context.isOfficialBrowserJson(response.finalUrl)) continue;
     // Calculator pages often load the same menu JSON; read each body once.
     const bodyHash = sha256(response.body);
     if (context.seenResponses.has(bodyHash)) continue;
@@ -336,6 +346,15 @@ export async function extractFromDiscovery(discovery: DiscoveryReport, fetcher: 
     });
   }
 
+  const browserJsonHosts = new Set(discovery.candidates
+    .filter((candidate) => candidate.authority !== "third_party" && candidate.channel !== "official_document")
+    .map((candidate) => new URL(candidate.url).host));
+  const isOfficialBrowserJson = (url: string) => {
+    const parsed = new URL(url);
+    const candidate = candidateByUrl.get(key(url));
+    return ["http:", "https:"].includes(parsed.protocol) &&
+      candidate?.authority !== "third_party" && browserJsonHosts.has(parsed.host);
+  };
   const seenResponses = new Set<string>();
   for (const entry of plan) {
     if (done.has(key(entry.descriptor.url))) continue;
@@ -344,7 +363,7 @@ export async function extractFromDiscovery(discovery: DiscoveryReport, fetcher: 
       skipped.push({ url: entry.descriptor.url, reason: "Values load in the browser; run with --browser (live) to read them." });
       continue;
     }
-    const extraction = await extractSource(fetcher, entry.descriptor, entry.method, { runAt, freshnessDays, verificationRequired: entry.verificationRequired, browser: entry.browser, seenResponses });
+    const extraction = await extractSource(fetcher, entry.descriptor, entry.method, { runAt, freshnessDays, verificationRequired: entry.verificationRequired, browser: entry.browser, seenResponses, isOfficialBrowserJson });
     // A stale source's sourceUpdatedAt is only known after the fetch for
     // extra sources; carry discovery's date when there is one.
     sources.push(extraction);
