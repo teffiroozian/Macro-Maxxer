@@ -1,10 +1,11 @@
 // This command changes the active menu only with an explicit owner approval
 // of an exact review against the current production baseline.
 import { mkdir, open, readFile, unlink, writeFile } from "node:fs/promises";
-import { dirname, resolve } from "node:path";
+import { resolve } from "node:path";
 import { writeAtomically } from "../lib/write-atomically";
 import type { RestaurantDraft } from "./contracts";
 import { emptyRegistry, type IdRegistry } from "./ids";
+import { importStaging } from "./import-staging";
 import { registryPath } from "./ids-seed";
 import { checkRuntimeMenu, projectToRestaurantMenu } from "./project";
 import { applyApprovedPanels, buildPublicationReview, PUBLICATION_TARGETS, sha256, type OwnerApproval, type PublicationRestaurant } from "./publication";
@@ -20,15 +21,25 @@ async function immutableFile(path: string, text: string) {
 
 async function main() {
   const [restaurant, flag, approvalFile, ...extra] = process.argv.slice(2);
-  if (!restaurant || !Object.hasOwn(PUBLICATION_TARGETS, restaurant) || flag !== "--apply" || !approvalFile || extra.length) {
-    throw new Error("Usage: npm run pipeline:publish -- <mod|chipotle> --apply <explicit-owner-approval.json>");
+  const runId = extra.length === 2 && extra[0] === "--run-id" ? extra[1] : undefined;
+  if (!restaurant || !Object.hasOwn(PUBLICATION_TARGETS, restaurant) || flag !== "--apply" || !approvalFile || (extra.length && !runId)) {
+    throw new Error("Usage: npm run pipeline:publish -- <mod|chipotle> --apply <explicit-owner-approval.json> [--run-id <run-id>]");
   }
   const target = PUBLICATION_TARGETS[restaurant as PublicationRestaurant];
   if (!target.live) throw new Error("Runtime launch needs separate integration review");
+  const staging = runId
+    ? await importStaging(restaurant, runId)
+    : resolve("data/restaurants/staging", restaurant);
+  if (runId) {
+    const run = JSON.parse(await readFile(resolve(staging, "import-run.json"), "utf8"));
+    if (run.runId !== runId || run.restaurant !== restaurant || run.mode !== "live" || run.status !== "review_ready") {
+      throw new Error("Publishing an import run requires a completed live review for the same restaurant");
+    }
+  }
   const [approvalText, draftText, reviewText, registry] = await Promise.all([
     readFile(resolve(approvalFile), "utf8"),
-    readFile(resolve("data/restaurants/staging", restaurant, "normalization/draft.json"), "utf8"),
-    readFile(resolve("data/restaurants/staging", restaurant, "normalization/publication-review.json"), "utf8"),
+    readFile(resolve(staging, "normalization/draft.json"), "utf8"),
+    readFile(resolve(staging, "normalization/publication-review.json"), "utf8"),
     readFile(registryPath(restaurant), "utf8").then(
       (data) => JSON.parse(data) as IdRegistry,
       (error: NodeJS.ErrnoException) => { if (error.code === "ENOENT") return emptyRegistry(restaurant); throw error; },

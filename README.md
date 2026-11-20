@@ -53,3 +53,7 @@ Macro Maxxer brings multiple restaurant menus into one place and makes nutrition
 - Daily macro tracking
 - More restaurants
 - Progressive Web App (PWA)
+
+## Restaurant data imports
+
+Run `npm run pipeline -- import mod --replay` to prepare a staged restaurant review from saved evidence. See the [restaurant import workflow](docs/phase-3/import-workflow.md) for live collection, adapter integration, and owner review.

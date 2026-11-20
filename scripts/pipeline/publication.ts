@@ -41,10 +41,12 @@ const validPanel = (panel: Nutrition | undefined): panel is Nutrition =>
   !!panel && CORE_NUTRIENTS.every((nutrient) => Number.isFinite(panel[nutrient]) && panel[nutrient] >= 0) &&
   ALL_NUTRIENTS.every((nutrient) => panel[nutrient] === undefined || (Number.isFinite(panel[nutrient]) && panel[nutrient]! >= 0));
 
-export function buildPublicationReview(draft: RestaurantDraft, validation: DraftValidation, projection: RuntimeProjection, baselineText: string, now = draft.generatedAt) {
-  const target = PUBLICATION_TARGETS[draft.restaurant.id as PublicationRestaurant];
-  if (!target || !validation.quality) throw new Error("Publication review requires a supported extraction-backed draft with quality validation");
-  const production = JSON.parse(baselineText) as RestaurantMenu;
+export function buildPublicationReview(draft: RestaurantDraft, validation: DraftValidation, projection: RuntimeProjection, baselineText: string | undefined, now = draft.generatedAt) {
+  const target = Object.hasOwn(PUBLICATION_TARGETS, draft.restaurant.id)
+    ? PUBLICATION_TARGETS[draft.restaurant.id as PublicationRestaurant]
+    : undefined;
+  if (!validation.quality) throw new Error("Publication review requires a supported extraction-backed draft with quality validation");
+  const production: Pick<RestaurantMenu, "items"> = baselineText === undefined ? { items: [] } : JSON.parse(baselineText);
   const sourcesById = new Map(draft.sources.map((source) => [source.id, source]));
   const at = Date.parse(now);
   if (!Number.isFinite(at)) throw new Error("Publication review requires a valid verification time");
@@ -54,9 +56,9 @@ export function buildPublicationReview(draft: RestaurantDraft, validation: Draft
   const relatedChecks = Map.groupBy(validation.quality.records.filter((entry) => entry.id.includes("#")), (entry) => entry.id.split("#", 1)[0]);
   const excluded = Map.groupBy(projection.excluded, (entry) => entry.id);
   const categories = new Set(production.items.filter((item) => !item.sourceOnly).flatMap((item) => item.categories).map(normalizeName));
-  const mainMenuCoverage = target.mainCategories.map((category) => ({ category, retained: target.live && categories.has(normalizeName(category)) }));
+  const mainMenuCoverage = (target?.mainCategories ?? []).map((category) => ({ category, retained: target?.live === true && categories.has(normalizeName(category)) }));
   const restaurantBlockers = [
-    ...(!target.live ? ["runtime_launch_requires_separate_review"] : []),
+    ...(!target?.live ? ["runtime_launch_requires_separate_review"] : []),
     ...(!validation.valid ? ["draft_has_structural_errors"] : []),
     ...(projection.ids.conflicts.length ? ["runtime_id_conflicts"] : []),
     ...(projection.relationshipErrors.length ? ["projection_relationship_errors"] : []),
@@ -174,8 +176,8 @@ export function buildPublicationReview(draft: RestaurantDraft, validation: Draft
     restaurant: draft.restaurant,
     draftGeneratedAt: draft.generatedAt,
     draftSha256: sha256(JSON.stringify(draft)),
-    productionPath: target.path,
-    productionSha256: sha256(baselineText),
+    productionPath: target?.path ?? null,
+    productionSha256: baselineText === undefined ? null : sha256(baselineText),
     mainMenuCoverage,
     restaurantBlockers,
     counts: {

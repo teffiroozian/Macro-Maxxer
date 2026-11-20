@@ -11,6 +11,7 @@
 // can be replayed with --replay-from.
 import { readFile } from "node:fs/promises";
 import { resolve } from "node:path";
+import { importStaging } from "../pipeline/import-staging";
 import { writeAtomically } from "../lib/write-atomically";
 import type { DiscoveryReport, DiscoveryTarget } from "./contracts";
 import { discoverSources } from "./discover";
@@ -72,7 +73,9 @@ async function main(): Promise<void> {
   }
 
   const diagnoseOnly = args.flag("diagnose") === "true";
-  const outputDir = resolve(process.cwd(), "data/restaurants/staging", target.id);
+  const runId = args.flag("run-id");
+  const staging = resolve(process.cwd(), "data/restaurants/staging", target.id);
+  const outputDir = runId ? await importStaging(target.id, runId) : staging;
   const replayFrom = args.flag("replay-from");
   const replay = replayFrom ? { manifest: replayFrom } : target.replay;
   const live = args.flag("live") === "true" || (!args.flag("replay") && !replayFrom && !target.replay);
@@ -106,7 +109,7 @@ async function main(): Promise<void> {
   await recorder?.flush();
   await browser?.close();
 
-  const tracking = await readFile(resolve(outputDir, "information-request.status.json"), "utf8").then(
+  const tracking = await readFile(resolve(staging, "information-request.status.json"), "utf8").then(
     (text) => JSON.parse(text) as DiscoveryReport["informationRequestTracking"],
     (error: NodeJS.ErrnoException) => { if (error.code === "ENOENT") return undefined; throw error; },
   );

@@ -101,7 +101,19 @@ test("publication CLI archives the exact production baseline and refuses replay 
       await mkdir(dirname(resolve(dir, name)), { recursive: true });
       await writeFile(resolve(dir, name), text);
     }
-    const apply = () => run(process.execPath, ["--import", loader, cli, "chipotle", "--apply", "approval.json"], { cwd: dir, env: { ...process.env, TSX_TSCONFIG_PATH: tsconfig } });
+    const runId = "12345678-1234-4123-8123-123456789abc";
+    const isolated = resolve(dir, staging, "../imports", runId);
+    await mkdir(resolve(isolated, "normalization"), { recursive: true });
+    await writeFile(resolve(isolated, "normalization/draft.json"), JSON.stringify(draft));
+    await writeFile(resolve(isolated, "normalization/publication-review.json"), reviewText);
+    const runManifest = { runId, restaurant: "chipotle", status: "review_ready" };
+    const manifestPath = resolve(isolated, "import-run.json");
+    const apply = () => run(process.execPath, ["--import", loader, cli, "chipotle", "--apply", "approval.json", "--run-id", runId], {
+      cwd: dir, env: { ...process.env, TSX_TSCONFIG_PATH: tsconfig },
+    });
+    await writeFile(manifestPath, JSON.stringify({ ...runManifest, mode: "replay" }));
+    await assert.rejects(apply(), /completed live review/);
+    await writeFile(manifestPath, JSON.stringify({ ...runManifest, mode: "live" }));
     await assert.rejects(run(process.execPath, ["--import", loader, cli, "chipotle"], {
       cwd: dir, env: { ...process.env, TSX_TSCONFIG_PATH: tsconfig },
     }), /explicit-owner-approval/);

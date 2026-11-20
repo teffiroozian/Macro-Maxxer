@@ -16,11 +16,13 @@ import { dirname, resolve } from "node:path";
 import { writeAtomically } from "../lib/write-atomically";
 import { findingTypeCounts } from "../validate/shared";
 import { chickFilAAdapter } from "./adapters/chick-fil-a";
-import { chipotleAdapter, translateChipotleExtraction } from "./adapters/chipotle";
-import { modPizzaAdapter, translateModExtraction } from "./adapters/mod-pizza";
+import { chipotleAdapter } from "./adapters/chipotle";
+import { modPizzaAdapter } from "./adapters/mod-pizza";
 import type { RestaurantAdapter, RestaurantDraft } from "./contracts";
 import { collectExtractionLinks, extractionMatchReport, loadExtractionInput, type ExtractionDisposition } from "./extraction-input";
 import { enrichDraft, renderEnrichmentReport } from "./enrich";
+import { EXTRACTION_ADAPTERS } from "./extraction-adapters";
+import { importStaging } from "./import-staging";
 import { normalizeRestaurant } from "./engine";
 import { emptyRegistry, type IdRegistry } from "./ids";
 import { registryPath } from "./ids-seed";
@@ -88,8 +90,14 @@ function reviewReport(draft: RestaurantDraft, validation: DraftValidation, proje
 
 async function main(): Promise<void> {
   const adapterId = process.argv[2];
-  const adapter = adapterId ? ADAPTERS[adapterId] : undefined;
-  if (!adapter) {
+  if (adapterId === "import") {
+    const { runImport } = await import("./import-workflow");
+    process.exitCode = await runImport(process.argv.slice(3));
+    return;
+  }
+  const integration = [...EXTRACTION_ADAPTERS].find(([, entry]) => entry.adapterId === adapterId);
+  const adapter = adapterId && Object.hasOwn(ADAPTERS, adapterId) ? ADAPTERS[adapterId] : undefined;
+  if (!adapter && !integration) {
     console.error(`Usage: npm run pipeline -- <adapter-id>\nAvailable adapters: ${Object.keys(ADAPTERS).join(", ")}`);
     process.exitCode = 1;
     return;
@@ -99,11 +107,15 @@ async function main(): Promise<void> {
   const useExtraction = fromExtraction !== -1;
   const useEnrichment = process.argv.includes("--enrich");
   if (useEnrichment && !useExtraction) throw new Error("--enrich requires --from-extraction");
-  const restaurantId = adapterId === "mod-pizza" ? "mod" : adapterId;
-  const staging = resolve(process.cwd(), "data/restaurants/staging", restaurantId!);
-  if (useExtraction && (restaurantId !== "mod" && restaurantId !== "chipotle")) {
-    throw new Error("--from-extraction is supported by the MOD Pizza and Chipotle adapters");
-  }
+  const restaurantId = integration?.[0] ?? adapterId!;
+  const runFlag = process.argv.indexOf("--run-id");
+  const runId = runFlag === -1 ? undefined : process.argv[runFlag + 1];
+  if (runFlag !== -1 && (!runId || !useExtraction)) throw new Error("--run-id requires an extraction-backed import run");
+  const staging = runId
+    ? await importStaging(restaurantId, runId)
+    : resolve(process.cwd(), "data/restaurants/staging", restaurantId);
+  if (useExtraction && !integration) throw new Error(`Missing extraction adapter for ${restaurantId}`);
+  if (!useExtraction && !adapter) throw new Error(`Adapter ${adapterId} requires --from-extraction`);
   if (useExtraction && process.argv.includes("--write-ids")) {
     throw new Error("Extraction-backed normalization writes staging drafts only");
   }
@@ -112,20 +124,25 @@ async function main(): Promise<void> {
   if (useExtraction) {
     const pathArg = process.argv[fromExtraction + 1];
     const file = resolve(pathArg && !pathArg.startsWith("--") ? pathArg : resolve(staging, "extraction-records.json"));
+    if (runId && file !== resolve(staging, "extraction-records.json")) throw new Error("Run must use its own extraction records");
     const summary = resolve(dirname(file), "extraction.json");
     extraction = await loadExtractionInput(file, summary);
     if (extraction.restaurant.id !== restaurantId) throw new Error(`Expected ${restaurantId} extraction input, got ${extraction.restaurant.id}`);
   }
   const input = extraction
-    ? restaurantId === "mod" ? translateModExtraction(extraction) : await translateChipotleExtraction(extraction, dispositions)
-    : adapter.translate(await adapter.load());
+    ? await integration![1].translate(extraction, dispositions)
+    : adapter!.translate(await adapter!.load());
+  if (useExtraction && input.restaurant.id !== restaurantId) throw new Error("Adapter returned a different restaurant ID");
   const adapterLinks = extraction ? collectExtractionLinks(input) : undefined;
   const draft = normalizeRestaurant(input);
   const validation = validateDraft(draft, { auditQuality: useExtraction });
   const registryFile = registryPath(draft.restaurant.id);
   const registry = await readFile(registryFile, "utf8").then(
     (text) => JSON.parse(text) as IdRegistry,
-    () => emptyRegistry(draft.restaurant.id),
+    (error: NodeJS.ErrnoException) => {
+      if (useExtraction && error.code !== "ENOENT") throw error;
+      return emptyRegistry(draft.restaurant.id);
+    },
   );
   const projection = projectToRestaurantMenu(draft, { registry });
   const runtimeErrors = [...projection.relationshipErrors, ...checkRuntimeMenu(projection.menu)];
@@ -140,8 +157,10 @@ async function main(): Promise<void> {
     await writeAtomically(resolve(outputDir, "enrichment.md"), renderEnrichmentReport(enrichment));
   }
   if (useExtraction) {
-    const target = PUBLICATION_TARGETS[draft.restaurant.id as PublicationRestaurant];
-    const baseline = await readFile(resolve(process.cwd(), target.path), "utf8");
+    const target = Object.hasOwn(PUBLICATION_TARGETS, restaurantId)
+      ? PUBLICATION_TARGETS[restaurantId as PublicationRestaurant]
+      : undefined;
+    const baseline = target ? await readFile(resolve(process.cwd(), target.path), "utf8") : undefined;
     const review = buildPublicationReview(draft, validation, projection, baseline);
     const reviewText = `${JSON.stringify(review)}\n`;
     await writeAtomically(resolve(outputDir, "publication-review.json"), reviewText);

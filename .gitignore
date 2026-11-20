@@ -54,3 +54,6 @@ data/restaurants/staging/*/extraction-evidence/
 
 # Extraction-backed normalization drafts and record-level match evidence.
 data/restaurants/staging/*/normalization/
+
+# Isolated runs of the staged restaurant import workflow.
+data/restaurants/staging/*/imports/

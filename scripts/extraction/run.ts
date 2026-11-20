@@ -16,6 +16,7 @@
 import { readFile } from "node:fs/promises";
 import { resolve } from "node:path";
 import { spawnSync } from "node:child_process";
+import { importStaging } from "../pipeline/import-staging";
 import { writeAtomically } from "../lib/write-atomically";
 import { liveFetcher, replayFetcher } from "../discovery/fetchers";
 import { withBrowser } from "../discovery/browser";
@@ -55,7 +56,9 @@ async function main() {
   }
   const target = DISCOVERY_TARGETS[name];
   const id = target?.id ?? name;
-  const outputDir = resolve(process.cwd(), "data/restaurants/staging", id);
+  const runId = args.flag("run-id");
+  const staging = resolve(process.cwd(), "data/restaurants/staging", id);
+  const outputDir = runId ? await importStaging(id, runId) : staging;
   const discoveryPath = resolve(outputDir, "discovery.json");
   const discovery = JSON.parse(await readFile(discoveryPath, "utf8").catch(() => {
     throw new Error(`No discovery report at ${discoveryPath}. Run npm run discover -- ${name} first.`);
@@ -69,7 +72,7 @@ async function main() {
   const browser = live && args.flag("browser") === "true" ? withBrowser(base) : undefined;
 
   const report = await extractFromDiscovery(discovery, browser ?? base, {
-    discoveryFile: `data/restaurants/staging/${id}/discovery.json`,
+    discoveryFile: runId ? discoveryPath : `data/restaurants/staging/${id}/discovery.json`,
     extraSources: args.all("source").map((url) => ({ url, note: "Added by hand with --source." })),
   });
   await recorder?.flush();

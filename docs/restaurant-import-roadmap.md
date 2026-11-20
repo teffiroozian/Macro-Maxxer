@@ -1,8 +1,9 @@
 # Macro Maxxer — Restaurant Import Automation
 
 **Master roadmap:** 27 tasks across 6 phases  
-**Recorded progress:** 4 / 27 tasks complete  
-**Current focus:** Phase 1 complete (standards: `docs/nutrition-data-quality-standards.md`). Interim "Phase 1.5": verify the universal engine against Chipotle, then the other existing restaurants, before starting Phase 2 tasks on a new restaurant.
+**Recorded progress:** 14 / 27 tasks complete
+
+**Current focus:** Phase 3 passed final checks and received checklist sign-off. Phase 4 is in progress.
 
 > **Instructions for Claude:** This is the fixed master checklist from Wayne Tower. Preserve the phase names, task names, ordering, and total of 27. Do not add, remove, rename, or mark off master tasks without explicit user approval and verified completion. If implementation needs more steps, track them separately as mini-phases under the relevant existing task; do not alter this list.
 
@@ -15,19 +16,19 @@
 
 ## Phase 2 — Build Import Pipeline
 
-- [ ] Build automated source discovery
-- [ ] Implement API/JSON, official-file, and browser extraction
-- [ ] Build restaurant data normalization
-- [ ] Implement automated nutrition and customization validation
-- [ ] Implement optional data enrichment
-- [ ] Build review reports and approval-based publishing
+- [x] Build automated source discovery
+- [x] Implement API/JSON, official-file, and browser extraction
+- [x] Build restaurant data normalization
+- [x] Implement automated nutrition and customization validation
+- [x] Implement optional data enrichment
+- [x] Build review reports and approval-based publishing
 
 ## Phase 3 — Agents & Skills
 
-- [ ] Configure Research, Developer, and QA agents
-- [ ] Create four reusable restaurant-import skills
-- [ ] Build single-command import workflow
-- [ ] Implement publishing and data-integrity safeguards
+- [x] Configure Research, Developer, and QA agents
+- [x] Create four reusable restaurant-import skills
+- [x] Build single-command import workflow
+- [x] Implement publishing and data-integrity safeguards
 
 ## Phase 4 — MOD Pizza Pilot
 
