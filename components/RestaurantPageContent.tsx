@@ -6,6 +6,7 @@ import { resolveAddonMenuItems } from "@/lib/addonGroups";
 import type { RestaurantData } from "@/types/restaurant";
 import { IS_CAPACITOR_BUILD } from "@/lib/buildTarget";
 import NativeRestaurantPage from "@/components/native/restaurant/NativeRestaurantPage";
+import NativeChipotlePage from "@/components/native/chipotle/NativeChipotlePage";
 import { getCanonicalMenuItemCount } from "@/lib/restaurantMenuCount";
 
 export default function RestaurantPageContent({
@@ -14,6 +15,16 @@ export default function RestaurantPageContent({
   restaurantData: RestaurantData;
 }) {
   const addons = resolveAddonMenuItems(restaurantData.addonGroups, restaurantData.items);
+
+  if (IS_CAPACITOR_BUILD && restaurantData.hasBuildYourOwn && restaurantData.id === "chipotle") {
+    return (
+      <>
+        <RecentRestaurantTracker restaurantId={restaurantData.id} />
+        <ScrollToTopOnMount />
+        <NativeChipotlePage restaurantData={restaurantData} />
+      </>
+    );
+  }
 
   if (IS_CAPACITOR_BUILD && !restaurantData.hasBuildYourOwn) {
     return (
