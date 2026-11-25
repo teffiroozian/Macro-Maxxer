@@ -30,6 +30,7 @@ import type {
     RestaurantCustomizationRules,
 } from "@/types/menu";
 import type { RestaurantBuilderConfig } from "@/types/builder";
+import type { CartItem } from "@/types/cart";
 import type { Nutrition } from "@/types/nutrition";
 import { buildStructuredOptionSelections } from "@/lib/menuItemCard/cartLabelUtils";
 import { getDefaultVariantId } from "@/lib/menuItemCalculations";
@@ -197,6 +198,7 @@ export default function ItemRouteModal({
     closeBehavior = "back",
     onClose,
     editCartItemId: editCartItemIdProp,
+    savedItem,
     initialScrollSectionId,
     initialMode,
     initialVariantId,
@@ -213,6 +215,12 @@ export default function ItemRouteModal({
     closeBehavior?: "back" | "replace" | "local";
     onClose?: () => void;
     editCartItemId?: string | null;
+    // Edits an item kept outside the cart (native Saved page). Takes the
+    // place of the cart lookup, and changes go to its own handler.
+    savedItem?: {
+        item: CartItem;
+        onUpdate: (updates: Partial<Omit<CartItem, "id" | "restaurantId">>) => void;
+    };
     // Cart page "jump straight to this section" shortcut (Side/Drink arrow,
     // Customizations arrow) — scrolls to the matching standard-item section
     // once on mount. No effect on the Chipotle build-your-own path, which has
@@ -233,7 +241,9 @@ export default function ItemRouteModal({
     const editCartItemId =
         editCartItemIdProp ?? searchParams.get("editCartItem");
     const { items, removeItem } = useCart();
+    const savedCartItem = savedItem?.item;
     const editingCartItem = useMemo(() => {
+        if (savedCartItem) return savedCartItem;
         if (!editCartItemId) return null;
 
         return (
@@ -244,7 +254,7 @@ export default function ItemRouteModal({
                     cartItem.itemId === (item.id ?? item.name),
             ) ?? null
         );
-    }, [editCartItemId, item.id, item.name, items, restaurantId]);
+    }, [editCartItemId, item.id, item.name, items, restaurantId, savedCartItem]);
 
     useEffect(() => {
         if (IS_CAPACITOR_BUILD) recordView({ restaurantId, kind: "menu-item", refId: item.id });
@@ -1622,6 +1632,7 @@ export default function ItemRouteModal({
         ingredients,
         quantity,
         editingCartItem,
+        onUpdateItem: savedItem?.onUpdate,
         standard: {
             selectedVariant,
             optionSelections,
@@ -1807,7 +1818,7 @@ export default function ItemRouteModal({
                         submitDisabled={!isComboSelectionComplete || !areIngredientSelectionsComplete}
                         onSubmit={submitCartItem}
                         onRemove={
-                            editingCartItem
+                            editingCartItem && !savedItem
                                 ? () => {
                                       removeItem(editingCartItem.id);
                                       handleClose();

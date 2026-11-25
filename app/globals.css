@@ -629,6 +629,13 @@ html.capacitor-native .native-sticky-action {
     box-shadow: 0 1px 3px rgb(15 23 42 / 0.18);
 }
 
+html.capacitor-native .native-menu-range::-webkit-slider-thumb {
+    width: 26px;
+    height: 26px;
+    border: 0;
+    box-shadow: 0 0 0 1px rgb(15 23 42 / 0.08), 0 2px 7px rgb(15 23 42 / 0.24);
+}
+
 .nutrition-range.compact::-webkit-slider-thumb { width: 16px; height: 16px; }
 
 .nutrition-range::-moz-range-thumb {
@@ -898,6 +905,17 @@ html.capacitor-native .native-home-carousel {
 }
 html.capacitor-native .native-home-carousel::-webkit-scrollbar,
 html.capacitor-native .native-home-chips::-webkit-scrollbar { display: none; }
+html.capacitor-native .native-home-arches {
+    margin-inline: calc(-18px - var(--safe-area-left)) calc(-18px - var(--safe-area-right));
+    padding-inline: calc(50% + 18px - 64px);
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+}
+html.capacitor-native .native-home-arches::-webkit-scrollbar { display: none; }
+html.capacitor-native .native-home-arch { transition: width 200ms ease-out, height 200ms ease-out; }
+@media (prefers-reduced-motion: reduce) {
+    html.capacitor-native .native-home-arch { transition: none; }
+}
 @keyframes native-home-appear { from { opacity: 0; } to { opacity: 1; } }
 html.capacitor-native .native-home-reveal { animation: native-home-appear 150ms ease-out; }
 @media (prefers-reduced-motion: reduce) {
@@ -925,13 +943,13 @@ html.capacitor-native .native-bottom-nav {
     max-width: 448px;
     margin-inline: auto;
 }
-html.capacitor-native .native-search-tab:not(.native-search-active):active {
+html.capacitor-native .native-order-tab:not(.native-order-active):active {
     background-color: rgb(15 23 42 / .06);
 }
-html.capacitor-native .native-search-active {
+html.capacitor-native .native-order-active {
     background-color: var(--product-accent);
 }
-html.capacitor-native .native-search-active:active {
+html.capacitor-native .native-order-active:active {
     background-color: var(--product-accent-strong);
 }
 html.capacitor-native .native-nav-page {
@@ -960,14 +978,14 @@ html.capacitor-native .native-order-count {
         -webkit-backdrop-filter: none;
         backdrop-filter: none;
     }
-    html.capacitor-native .native-search-active { background-color: var(--product-accent); }
-    html.capacitor-native .native-search-active:active { background-color: var(--product-accent-strong); }
+    html.capacitor-native .native-order-active { background-color: var(--product-accent); }
+    html.capacitor-native .native-order-active:active { background-color: var(--product-accent-strong); }
 }
 @media (prefers-reduced-motion: reduce) {
     html.capacitor-native .native-order-count { animation: none; }
     html.capacitor-native .native-bottom-nav,
     html.capacitor-native .native-floating-tab,
-    html.capacitor-native .native-search-tab { transition: none; }
+    html.capacitor-native .native-order-tab { transition: none; }
 }
 
 html.capacitor-native .native-search-input::-webkit-search-decoration,
@@ -1021,13 +1039,13 @@ html.capacitor-native.dark .glass-surface {
 @supports ((backdrop-filter: blur(24px)) or (-webkit-backdrop-filter: blur(24px))) {
     html.capacitor-native.dark .glass-surface { background-color: rgb(22 32 51 / .85); }
 }
-html.capacitor-native.dark .native-search-tab:not(.native-search-active):active {
+html.capacitor-native.dark .native-order-tab:not(.native-order-active):active {
     background-color: var(--surface-hover);
 }
-html.capacitor-native.dark .native-search-active { background-color: var(--product-accent); }
-html.capacitor-native.dark .native-search-active:active { background-color: var(--product-accent-strong); }
+html.capacitor-native.dark .native-order-active { background-color: var(--product-accent); }
+html.capacitor-native.dark .native-order-active:active { background-color: var(--product-accent-strong); }
 @media (prefers-reduced-transparency: reduce) {
     html.capacitor-native.dark .glass-surface { background-color: var(--surface-card); }
-    html.capacitor-native.dark .native-search-active { background-color: var(--product-accent); }
-    html.capacitor-native.dark .native-search-active:active { background-color: var(--product-accent-strong); }
+    html.capacitor-native.dark .native-order-active { background-color: var(--product-accent); }
+    html.capacitor-native.dark .native-order-active:active { background-color: var(--product-accent-strong); }
 }

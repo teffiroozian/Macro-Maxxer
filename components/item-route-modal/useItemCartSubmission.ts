@@ -32,6 +32,7 @@ export function useItemCartSubmission({
   ingredients,
   quantity,
   editingCartItem,
+  onUpdateItem,
   standard,
   chipotle,
   onAfterSubmit,
@@ -42,6 +43,8 @@ export function useItemCartSubmission({
   ingredients?: IngredientItem[];
   quantity: number;
   editingCartItem: CartItem | null;
+  // Saves edits somewhere other than the cart (a saved item).
+  onUpdateItem?: (updates: Partial<Omit<CartItem, "id" | "restaurantId">>) => void;
   standard: CartSubmissionStandardState;
   chipotle: ChipotleCartSubmissionState;
   onAfterSubmit: () => void;
@@ -63,7 +66,8 @@ export function useItemCartSubmission({
       const payload = createChipotleCartItemPayload({ item, quantity, chipotle });
 
       if (editingCartItem) {
-        updateItem(editingCartItem.id, payload);
+        if (onUpdateItem) onUpdateItem(payload);
+        else updateItem(editingCartItem.id, payload);
         return;
       }
 
@@ -110,7 +114,8 @@ export function useItemCartSubmission({
     };
 
     if (editingCartItem) {
-      updateItem(editingCartItem.id, nextCartItemPayload);
+      if (onUpdateItem) onUpdateItem(nextCartItemPayload);
+      else updateItem(editingCartItem.id, nextCartItemPayload);
       return;
     }
 
@@ -126,6 +131,7 @@ export function useItemCartSubmission({
     editingCartItem,
     ingredients,
     item,
+    onUpdateItem,
     quantity,
     restaurantId,
     standard,

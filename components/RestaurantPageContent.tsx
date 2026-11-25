@@ -20,7 +20,7 @@ export default function RestaurantPageContent({
       <>
         <RecentRestaurantTracker restaurantId={restaurantData.id} />
         <ScrollToTopOnMount />
-        <NativeRestaurantPage restaurantData={restaurantData} addons={addons} />
+        <NativeRestaurantPage restaurantData={restaurantData} />
       </>
     );
   }

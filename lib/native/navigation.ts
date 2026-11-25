@@ -1,5 +1,5 @@
 export function getOrderCountLabel(count: number) {
-  return count === 0 ? "My Meal" : `My Meal, ${count} ${count === 1 ? "item" : "items"}`;
+  return count === 0 ? "Order" : `Order, ${count} ${count === 1 ? "item" : "items"}`;
 }
 
 export function getOrderCountDigit(count: number) {
@@ -9,6 +9,7 @@ export function getOrderCountDigit(count: number) {
 export function getActiveNativeDestination(pathname: string) {
   if (pathname === "/") return "home";
   if (pathname === "/search") return "search";
+  if (pathname === "/saved") return "saved";
   if (pathname === "/cart") return "order";
   if (pathname === "/restaurants" || pathname.startsWith("/restaurant/")) return "restaurants";
   return null;

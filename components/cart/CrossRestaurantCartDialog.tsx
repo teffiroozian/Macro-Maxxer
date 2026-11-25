@@ -20,7 +20,8 @@ export default function CrossRestaurantCartDialog() {
 
   const restaurantName = (id: string) => restaurants.find((restaurant) => restaurant.id === id)?.name ?? id;
   const existingRestaurantNames = Array.from(new Set(items.map((item) => item.restaurantId))).map(restaurantName);
-  const newRestaurantName = restaurantName(pendingConflict.item.restaurantId);
+  const several = pendingConflict.items.length > 1;
+  const newRestaurantName = Array.from(new Set(pendingConflict.items.map((item) => item.restaurantId))).map(restaurantName).join(" and ");
 
   return (
     <Dialog
@@ -37,8 +38,8 @@ export default function CrossRestaurantCartDialog() {
         Add from {newRestaurantName}?
       </h2>
       <p id="cross-restaurant-dialog-description" className="mt-2 text-sm leading-6 text-slate-600 dark:text-slate-300">
-        Your meal has items from {existingRestaurantNames.join(", ")}. You can add this item alongside them, or
-        replace your meal so it only contains this item.
+        Your meal has items from {existingRestaurantNames.join(", ")}. You can add {several ? "these items" : "this item"} alongside them, or
+        replace your meal so it only contains {several ? "these items" : "this item"}.
       </p>
       <div className="mt-5 flex flex-col gap-2">
         <AppButton variant="primary" size="md" onClick={confirmAddAnyway}>

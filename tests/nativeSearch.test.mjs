@@ -6,8 +6,11 @@ import { NATIVE_RECENTS_KEY, readNativeRecents, persistNativeRecents, addNativeR
 import { nativeResultCount, nativeResultPresentation, readNativeLayout, NATIVE_LAYOUT_KEY } from "../lib/search/nativeSearchPresentation.ts";
 import NativeMenuItemCard from "../components/native/search/NativeMenuItemCard.tsx";
 import { loadSearchIndex } from "../lib/search/searchIndex.ts";
+import { searchAllContent } from "../lib/search/searchAllContent.ts";
+import { clearQueries, readRecentQueries, recordQuery, removeQuery } from "../lib/search/recentQueries.ts";
+import { filterSearchResults, nextRanking, rankingNote, rankSearchResults, searchFilterChips } from "../lib/native/searchResults.ts";
 const storage = new Map();
-globalThis.window = { location: { href: "http://localhost:3000/search" }, localStorage: { getItem: key => storage.get(key) ?? null, setItem: (key,value) => storage.set(key,value) } };
+globalThis.window = { location: { href: "http://localhost:3000/search" }, localStorage: { getItem: key => storage.get(key) ?? null, setItem: (key,value) => storage.set(key,value) }, dispatchEvent() {} };
 
 test("unified native recents seed legacy keys once, dedupe, cap, remove and persist clears", () => {
   storage.clear();
@@ -70,4 +73,41 @@ test("native menu cards retain default variant nutrition and expose missing fiel
     assert.ok(html.includes("—"));
     assert.ok(!html.includes("0g"));
   }
+});
+
+test("recent queries can be removed one at a time and cleared", () => {
+  storage.clear();
+  for (const query of ["chicken","latte","burrito"]) recordQuery(query);
+  assert.deepEqual(readRecentQueries(),["burrito","latte","chicken"]);
+  removeQuery("LATTE");
+  assert.deepEqual(readRecentQueries(),["burrito","chicken"]);
+  clearQueries();
+  assert.deepEqual(readRecentQueries(),[]);
+});
+
+test("search ranking and filters reuse menu metrics and keep relevance order for ties", async () => {
+  const results = searchAllContent(await loadSearchIndex(),"burrito");
+  assert.equal(rankSearchResults(results,null),results);
+  assert.ok(results.some(result => result.kind === "builder-entree"));
+  for (const direction of ["high","low"]) {
+    const ranked = rankSearchResults(results,{metric:"protein",direction});
+    assert.equal(ranked.length,results.length);
+    assert.equal(ranked.at(-1).kind,"builder-entree");
+    const values = ranked.filter(r => r.kind === "menu-item").map(r => nativeResultPresentation(r).nutrition.protein);
+    assert.deepEqual(values,[...values].sort((a,b) => direction === "high" ? b-a : a-b));
+  }
+  assert.equal(filterSearchResults(results,{}),results);
+  const filtered = filterSearchResults(results,{caloriesMax:450});
+  assert.ok(filtered.length > 0);
+  assert.ok(filtered.every(r => r.kind === "menu-item" && nativeResultPresentation(r).nutrition.calories <= 450));
+  assert.match(rankingNote(rankSearchResults(results,{metric:"score",direction:"high"})[0],{metric:"score",direction:"high"}),/^\d+\.\dg \/ 100 cal$/);
+  assert.equal(rankingNote(results[0],{metric:"protein",direction:"high"}),"");
+});
+
+test("tapping a ranking starts in its natural direction and then flips", () => {
+  assert.deepEqual(nextRanking(null,"protein"),{metric:"protein",direction:"high"});
+  assert.deepEqual(nextRanking(null,"calories"),{metric:"calories",direction:"low"});
+  assert.deepEqual(nextRanking({metric:"calories",direction:"low"},"calories"),{metric:"calories",direction:"high"});
+  assert.deepEqual(nextRanking({metric:"calories",direction:"high"},"fat"),{metric:"fat",direction:"low"});
+  assert.deepEqual(searchFilterChips({caloriesMax:450,proteinMin:undefined,scoreMin:9}).map(c => c.label),["450 cal or less","9+ Protein Score"]);
 });

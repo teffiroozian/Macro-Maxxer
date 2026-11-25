@@ -60,7 +60,7 @@ export default function NativeFiltersSheet({ presets, defaultPresetId, applied, 
         <button ref={closeRef} type="button" onClick={onClose} aria-label="Close filters" className="ml-auto flex size-11 items-center justify-center focus-ring"><span className="flex size-9 items-center justify-center rounded-full bg-slate-100"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#64748b" strokeWidth="2.4" strokeLinecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18" /></svg></span></button>
       </div>
       <div className="min-h-0 flex-1 overflow-y-auto px-5">
-        <section aria-label="Categories">
+        {presets.length > 1 ? <section aria-label="Categories">
           {header("Categories", `${preset?.label ?? ""} · ${preset?.items.length ?? 0} items`)}
           <div role="radiogroup" aria-label="Categories" className="flex flex-wrap gap-2 pb-4">
             {presets.map((p) => {
@@ -75,8 +75,8 @@ export default function NativeFiltersSheet({ presets, defaultPresetId, applied, 
               );
             })}
           </div>
-        </section>
-        <section aria-label="Nutrition" className="border-t border-slate-200 pb-4">
+        </section> : null}
+        <section aria-label="Nutrition" className={`pb-4 ${presets.length > 1 ? "border-t border-slate-200" : ""}`}>
           {header("Nutrition", nSet ? `${nSet} set` : "Any")}
           <Segments label="Max calories" value={n.caloriesMax} summary={n.caloriesMax === undefined ? "Any" : `Under ${n.caloriesMax} cal`} steps={CALORIE_STEPS} format={String} onChange={(v) => set({ caloriesMax: v })} />
           <Segments label="Min protein" value={n.proteinMin} summary={n.proteinMin === undefined ? "Any" : `${n.proteinMin}g+`} steps={PROTEIN_STEPS} format={(v) => `${v}g`} onChange={(v) => set({ proteinMin: v })} />

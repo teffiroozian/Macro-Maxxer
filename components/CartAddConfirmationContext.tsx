@@ -6,14 +6,18 @@ import { trackAddToCart } from "@/lib/analytics";
 import { getCartItemAddToCartAnalytics } from "@/lib/cart/itemAccessors";
 import type { CartItem } from "@/types/cart";
 
+type OnAdded = (result: { replaced: boolean }) => void;
+
 type PendingConflict = {
-  item: CartItem;
-  onAdded?: () => void;
+  items: CartItem[];
+  onAdded?: OnAdded;
 };
 
 type CartAddConfirmationContextValue = {
   pendingConflict: PendingConflict | null;
-  requestAddItem: (item: CartItem, onAdded?: () => void) => void;
+  requestAddItem: (item: CartItem, onAdded?: OnAdded) => void;
+  // Adds a whole meal behind one confirmation.
+  requestAddItems: (items: CartItem[], onAdded?: OnAdded) => void;
   confirmAddAnyway: () => void;
   confirmReplaceCart: () => void;
   cancelPendingAdd: () => void;
@@ -41,21 +45,23 @@ export function CartAddConfirmationProvider({ children }: { children: ReactNode 
     trackAddToCart(getCartItemAddToCartAnalytics(item, item.quantity));
   };
 
-  const requestAddItem = (item: CartItem, onAdded?: () => void) => {
+  const requestAddItems = (added: CartItem[], onAdded?: OnAdded) => {
     // Compare against every restaurant already represented in the cart
     // (not just the first item) so an already-mixed cart from a prior "Add
     // Anyway" only reconfirms when the new item is from a restaurant that
     // still isn't present.
-    const hasConflict = items.length > 0 && !items.some((cartItem) => cartItem.restaurantId === item.restaurantId);
+    const hasConflict = items.length > 0 && !items.some((cartItem) => added.some((item) => item.restaurantId === cartItem.restaurantId));
 
     if (!hasConflict) {
-      addItemAndTrack(item);
-      onAdded?.();
+      added.forEach(addItemAndTrack);
+      onAdded?.({ replaced: false });
       return;
     }
 
-    setPendingConflict({ item, onAdded });
+    setPendingConflict({ items: added, onAdded });
   };
+
+  const requestAddItem = (item: CartItem, onAdded?: OnAdded) => requestAddItems([item], onAdded);
 
   const cancelPendingAdd = () => {
     setPendingConflict(null);
@@ -63,22 +69,22 @@ export function CartAddConfirmationProvider({ children }: { children: ReactNode 
 
   const confirmAddAnyway = () => {
     if (!pendingConflict) return;
-    addItemAndTrack(pendingConflict.item);
-    pendingConflict.onAdded?.();
+    pendingConflict.items.forEach(addItemAndTrack);
+    pendingConflict.onAdded?.({ replaced: false });
     setPendingConflict(null);
   };
 
   const confirmReplaceCart = () => {
     if (!pendingConflict) return;
     clearCart();
-    addItemAndTrack(pendingConflict.item);
-    pendingConflict.onAdded?.();
+    pendingConflict.items.forEach(addItemAndTrack);
+    pendingConflict.onAdded?.({ replaced: true });
     setPendingConflict(null);
   };
 
   return (
     <CartAddConfirmationContext.Provider
-      value={{ pendingConflict, requestAddItem, confirmAddAnyway, confirmReplaceCart, cancelPendingAdd }}
+      value={{ pendingConflict, requestAddItem, requestAddItems, confirmAddAnyway, confirmReplaceCart, cancelPendingAdd }}
     >
       {children}
     </CartAddConfirmationContext.Provider>

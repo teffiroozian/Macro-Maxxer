@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useState, type RefObject } from "react";
 
-export const COVER_HEIGHT = 330;
+export const COVER_HEIGHT = 300;
 const BAR_HEIGHT = 52;
 
 // One boolean, flipped once scrollY passes the point where the cover has

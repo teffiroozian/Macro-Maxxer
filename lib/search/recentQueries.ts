@@ -18,3 +18,16 @@ export function recordQuery(query: string) {
     catch { /* Storage is optional. */ }
     window.dispatchEvent(new Event("macro-maxxer:queries-change"));
 }
+function writeRecentQueries(queries: string[]) {
+    try {
+        window.localStorage.setItem(RECENT_QUERIES_KEY, JSON.stringify(queries));
+    }
+    catch { /* Storage is optional. */ }
+    window.dispatchEvent(new Event("macro-maxxer:queries-change"));
+}
+export function removeQuery(query: string) {
+    writeRecentQueries(readRecentQueries().filter(q => q.toLowerCase() !== query.trim().toLowerCase()));
+}
+export function clearQueries() {
+    writeRecentQueries([]);
+}

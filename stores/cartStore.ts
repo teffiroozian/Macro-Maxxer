@@ -257,6 +257,18 @@ const clearCart = () => {
   }));
 };
 
+// Rewrites the cart in one step, for undoing a change. Nothing counts as just
+// added, so the preview stays closed.
+const changeItems = (change: (items: CartItem[]) => CartItem[]) => {
+  setCartState((prev) => ({
+    ...prev,
+    items: change(prev.items),
+    lastAddedItemId: null,
+    lastAddedAt: null,
+    lastAddedEventId: null,
+    lastAddedPreviewDismissedEventId: null,
+  }));
+};
 
 const dismissLastAddedPreview = () => {
   setCartState((prev) => {
@@ -292,6 +304,7 @@ export const __cartStoreTestUtils = {
   removeItem,
   updateQuantity,
   clearCart,
+  changeItems,
   dismissLastAddedPreview,
   resetPersistenceForTests() {
     hasHydratedFromStorage = false;
@@ -324,5 +337,6 @@ export const useCart = () => {
     updateQuantity,
     updateItem,
     clearCart,
+    changeItems,
   };
 };

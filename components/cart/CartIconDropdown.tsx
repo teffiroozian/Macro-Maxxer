@@ -245,7 +245,7 @@ export default function CartIconDropdown({
   const actionButtons = (
     <>
       <AppButton variant="ghost" size="md" onClick={handleViewCart} className="flex-1 font-medium">
-        View My Meal
+        {IS_CAPACITOR_BUILD ? "View Order" : "View My Meal"}
       </AppButton>
       <Link
         href="/cart"

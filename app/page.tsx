@@ -15,6 +15,7 @@ import HomeSectionContainer, { HOME_VISUAL_WIDTH_CLASS } from "@/components/home
 import LiveRestaurantsBadge from "@/components/home/LiveRestaurantsBadge";
 import { IS_CAPACITOR_BUILD } from "@/lib/buildTarget";
 import NativeHomePage from "@/components/native/NativeHomePage";
+import { getHomeExploreSpots } from "@/lib/native/exploreSpots";
 import { getAllRestaurants, getRestaurantData, toItemSlug } from "@/lib/restaurants";
 import { parseIncludedIngredientEntry } from "@/lib/itemIngredients";
 import { resolveEffectiveIngredientNutrition } from "@/lib/ingredientNutrition";
@@ -134,7 +135,7 @@ export default async function Home() {
   if (IS_CAPACITOR_BUILD) {
     return (
       <Suspense fallback={null}>
-        <NativeHomePage restaurants={liveRestaurants} />
+        <NativeHomePage restaurants={liveRestaurants} exploreSpots={await getHomeExploreSpots(liveRestaurants)} />
       </Suspense>
     );
   }

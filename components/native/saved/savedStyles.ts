@@ -1,0 +1,10 @@
+export const card = "border border-black/8 bg-surface-card shadow-elev-2 dark:border-hairline";
+export const pressable = "transition-transform duration-[120ms] active:scale-[.98] motion-reduce:transition-none motion-reduce:active:scale-100";
+export const muted = "text-slate-500 dark:text-slate-400";
+export const soft = "text-slate-600 dark:text-slate-300";
+export const row = "border-t border-slate-200 first:border-t-0 dark:border-divider";
+export const primaryButton = "flex h-[50px] w-full cursor-pointer items-center justify-center rounded-2xl bg-accent-strong text-base font-bold text-white active:opacity-80 disabled:opacity-40 dark:bg-accent dark:text-slate-950 focus-ring";
+export const quietButton = "flex h-11 min-w-0 flex-1 cursor-pointer items-center justify-center rounded-[14px] bg-slate-200/70 px-2 text-[15px] font-semibold active:opacity-70 dark:bg-surface-hover focus-ring";
+export const textButton = "flex h-11 min-w-11 cursor-pointer items-center justify-center px-1 text-base text-accent-strong active:opacity-70 disabled:opacity-40 focus-ring";
+export const addCircle = "flex items-center justify-center rounded-full bg-accent-strong text-white dark:bg-accent dark:text-slate-950";
+export const field = "mt-[7px] block h-[52px] w-full rounded-2xl bg-surface-card px-4 text-[17px] font-semibold text-slate-900 caret-accent outline-none shadow-[inset_0_0_0_1px_var(--border-control)] placeholder:font-medium placeholder:text-slate-500 focus:shadow-[inset_0_0_0_2px_var(--product-accent)] dark:text-slate-50 dark:placeholder:text-slate-400";

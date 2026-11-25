@@ -9,8 +9,8 @@ export default function NativeRecentRestaurants({ recents }: { recents: NativeRe
   const firstKey = first ? `${first.id}:${first.viewedAt}` : "";
   useEffect(() => { scroller.current?.scrollTo({ left: 0 }); }, [firstKey]);
   return (
-    <section className="pt-6">
-      <h2 className="mx-5 mb-[10px] text-[18px] font-bold text-slate-900">Recent Restaurants</h2>
+    <section className="pt-3">
+      <h2 className="flex h-11 items-center px-5 text-xl font-bold text-slate-900 dark:text-slate-50">Recently visited</h2>
       <div
         ref={scroller}
         role="list"
